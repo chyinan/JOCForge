@@ -272,6 +272,7 @@
 | F12A/selected-f12a-public-bap-network | F12A | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
 | F13/measurement-result-aggregate-and-id1-integer-projection | F13 | `metadata` |
+| F13/informational-preferred-input-user-decision-supersession | F13 | `joc` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `joc` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `codec` |
 | F13C/washed-f13c-bsi-importer-static-identity | F13C | `codec` |
@@ -318,6 +319,7 @@
 | F13C/informational-root-history-single-element-stop | F13C | `joc` |
 | F13C/informational-contiguous-destination-direct-consumer-identity | F13C | `joc` |
 | F13C/informational-au-token-equality-not-au | F13C | `joc` |
+| F13C/informational-transport-publication-entry-not-observed | F13C | `joc` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |

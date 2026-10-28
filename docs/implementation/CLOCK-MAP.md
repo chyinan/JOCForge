@@ -272,6 +272,7 @@
 | F12A/selected-f12a-public-bap-network | — | `F12A has no persistent cross-row/block state; BapFrame carries candidate q but source-generation identity remains caller-owned.` |
 | F13/selected-metadata-owner-source-stage | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s`<br>`dispatch s+1`<br>`AU absent for s<2 else s-2`<br>`ordinary writer s-2`<br>`ID14 writer s-1` |
 | F13/measurement-result-aggregate-and-id1-integer-projection | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `One programme-owned ID1 configuration is reused while the metadata owner advances its existing CodecSourceIndex s, dispatch d=s+1, and publication AU j.`<br>`Configuration construction is programme-scoped and has no per-source remeasurement clock; source-count equality to external model domains remains an enclosing-coordinator responsibility.` |
+| F13/informational-preferred-input-user-decision-supersession | — | `No new task/UI value or caller clock is introduced; the selected preferred provider and native caller remain unbound.` |
 | F13C/selected-bsi-count-and-payload-import | — | `The scalar formula, count admission projection, producer and literal importer copy are stateless calls; no source, dispatch, AU, or programme clock is owned.` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | — | `The package records within-capture joins only; no persistent source, frame or AU generation is established.` |
 | F13C/washed-f13c-bsi-importer-static-identity | — | `Same static importer code identity does not bind a callback, source, frame or AU generation.` |
@@ -318,6 +319,7 @@
 | F13C/informational-root-history-single-element-stop | — | `A higher-invocation/root-history receipt is not a consumer generation, source generation, ADM sample, or transport AU clock.` |
 | F13C/informational-contiguous-destination-direct-consumer-identity | — | `Same outer invocation and buffer identity do not define a transport-AU or source-generation clock.` |
 | F13C/informational-au-token-equality-not-au | — | `The helper token is a validation/search input, not a source index or transport-AU clock; the approved local AU numbering remains AU=j=s-2.` |
+| F13C/informational-transport-publication-entry-not-observed | — | `The absent native publication anchor does not block or replace the approved local AU=j=s-2 source-clock rule.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14/authenticated-bit-compaction | — | `Stateless bit-stream projection; no frame, source, AU, or programme clock is owned.` |
 | F14/hmac-sha256-primitive | — | `Stateless byte primitive; no AU, source, programme, or history clock is owned.` |

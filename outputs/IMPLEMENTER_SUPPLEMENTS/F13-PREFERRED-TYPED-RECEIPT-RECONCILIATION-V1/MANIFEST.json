@@ -1,0 +1,36 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1",
+  "scope": "Resolve typed model public-result-to-ID1 path versus opaque native provider tag and preserve selected-value limits",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "TYPED_MODEL_MAPPING_CLOSED_NATIVE_SELECTED_VALUE_UNBOUND",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1326,
+      "sha256": "5daca67f76a5e607c826693551acffc2f1e8efeafd023efd2fd5a1c7f53bd892"
+    },
+    {
+      "file": "TYPED-CALLER-MAP.json",
+      "bytes": 2148,
+      "sha256": "a396fe8c614b64f2f0e6835d41604109781b78b5f3bf00feb212abd2c46dd9ea"
+    },
+    {
+      "file": "SUPERSESSION.json",
+      "bytes": 946,
+      "sha256": "06a67717f3558537bd9cce7ecad70ba916ca2463c02cc434c3e7d0896195e8bd"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 1712,
+      "sha256": "6bf33864f74b8179b94ea25ffb2f26f10db124eb0034e6d6129d6100bcde63c9"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 382,
+      "sha256": "20c909567b4926738b9eadf99a096d67c56ef1b3a0915cea343847f44ee00dea"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V1",
+  "scope": "Fresh setup static facts and unbound native restart identity",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "9f0a3a98a07854ea002d7cbed6030471db0e07a5771a0d2e3304fc3dd5323c4d",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 551,
+      "sha256": "b49aa2e8e0adc68ef8114baf1eb896193a776e6662b7cbd824a8d8cc6c7c71cc"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 678,
+      "sha256": "dfed9bea840bbc11e692d8c563e7ea91f90adb1efa4f15967fbd255056ee636f"
+    }
+  ]
+}

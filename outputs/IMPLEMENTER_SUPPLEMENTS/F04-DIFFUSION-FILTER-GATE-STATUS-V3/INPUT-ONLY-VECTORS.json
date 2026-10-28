@@ -1,0 +1,43 @@
+{
+  "schema": "washed-f04-diffusion-producer-edge-input-only.v3",
+  "input_only": true,
+  "expected_outputs": false,
+  "vectors": [
+    {
+      "case": "approved_clean_filter_boundary",
+      "inputs": {
+        "source_index": "NOT_RECORDED",
+        "callback_index": "NOT_RECORDED",
+        "tail_id": "UNBOUND",
+        "audio_diffuse": "NOT_RECORDED",
+        "width_or_spread": "NOT_RECORDED",
+        "width_domain": "UNBOUND",
+        "quiet": "NOT_RECORDED",
+        "mode_lane": "NOT_RECORDED"
+      }
+    },
+    {
+      "case": "opaque_callback_row",
+      "inputs": {
+        "relative_context_member": "+0xA0",
+        "row_word_0": "NOT_CAPTURED",
+        "row_word_1": "NOT_CAPTURED",
+        "row_word_10": "NOT_CAPTURED",
+        "row_word_11": "NOT_CAPTURED",
+        "owner_token": "UNBOUND",
+        "source_generation": "UNBOUND"
+      }
+    },
+    {
+      "case": "R19_model_input_boundary",
+      "inputs": {
+        "actions": "caller supplied",
+        "tail_rows": "caller supplied",
+        "route_rows": "explicit model input",
+        "PCM": "external model input",
+        "gate_producer": "NOT_IN_MODEL_INPUT_SCHEMA"
+      }
+    }
+  ],
+  "execution": "NOT_RUN"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "f13-preferred-typed-receipt-source-identities.v1",
+  "source_manifests": [
+    {
+      "package_id": "F13-PREFERRED-F06-TYPED-CLOSURE-V1",
+      "manifest_sha256": "d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad"
+    },
+    {
+      "package_id": "F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1",
+      "manifest_sha256": "0055b50cd51168c84923c3b6a5a671976acd77bb200b00fd1a1fc710037e7ede"
+    },
+    {
+      "package_id": "F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1",
+      "manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b"
+    }
+  ],
+  "reviewed_code_hashes": [
+    {
+      "path": "crates/jocforge-domain/src/meter/measurement_receipt.rs",
+      "bytes": 7885,
+      "sha256": "2fff890d6d3e6a1672e13b22f8481b5a14ce2e18c06a1ffb29ee0531081c52aa"
+    },
+    {
+      "path": "crates/jocforge-domain/src/meter/measurement_selection.rs",
+      "bytes": 4668,
+      "sha256": "e1252e3509ef77dfa2ab1cdc775118dd102b9c73d599e1fd0a207fd19a37dbb0"
+    },
+    {
+      "path": "crates/jocforge-domain/src/meter/programme_measurement.rs",
+      "bytes": 13622,
+      "sha256": "f854dd9cbe6385c62731e84dcceac313c2327deacb81fefb42ca7b77c55a6770"
+    },
+    {
+      "path": "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
+      "bytes": 9484,
+      "sha256": "5cb62c6ccf26eff6a450b5e7ec8d4e386870f6e2a8b9cb3b9e100947b83b2aba"
+    },
+    {
+      "path": "docs/implementation/IMPLEMENTATION-MAP.json",
+      "bytes": 1720729,
+      "sha256": "bdbe5c361dd8ff4ad34238758819ec504ce402a0ef1b0fa8341ee5d7b48032b1"
+    }
+  ],
+  "handling": "No raw source code, native addresses, task XML values, audio, private key or authentication material copied."
+}

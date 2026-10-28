@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1",
+  "status": "USER_DECISION_SUPERSEDES_EXPLICIT_JOB_FIELD_PREFERRED_PROVIDER_UNBOUND",
+  "implementation_ready": false,
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 887,
+      "sha256": "e5429956062419eabeffc5512f06fb336aec53d60d2ece12122164a3e8214f28"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1069,
+      "sha256": "96865ded5d54860094b405dd23140090271af2e1eb27bbace9004d5ffff900af"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 648,
+      "sha256": "554b70010cbe8092d9938535e4e4e0e89e432ceb6507935824cd6c657dea4229"
+    },
+    {
+      "file": "WASH-REVIEW.json",
+      "bytes": 623,
+      "sha256": "e92dad73b71dd7901941889e51a8a020f4c7a2683d74a3ce471e7ad4182d9fe4"
+    }
+  ]
+}

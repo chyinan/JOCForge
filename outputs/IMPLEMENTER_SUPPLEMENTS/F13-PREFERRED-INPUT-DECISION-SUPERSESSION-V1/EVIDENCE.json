@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-f13-preferred-user-decision-supersession.v1",
+  "latest_user_direction": "DEE task XML does not contain this input; do not add a user choice",
+  "supersedes_package": "F13-EXPLICIT-PREFERRED-JOB-INPUT-V1",
+  "superseded_manifest_sha256": "c8cdb5f440dff0fc392ed0eb95080c1931a4bb27e684f9235ec3fb222864764c",
+  "approved_model_contract": {
+    "file": "specs/13-emdf-and-timeline.md",
+    "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+    "section": "F13.6",
+    "requires_internal_bool": true,
+    "serialization": "int(preferred) at ID1 config index 2"
+  },
+  "not_established": [
+    "DEE task XML source for preferred",
+    "automatic F01/F06-derived mapping",
+    "default value",
+    "selected native caller argument binding"
+  ],
+  "domain_separation": {
+    "F06_gating_kind_is_preferred": false,
+    "BSI_preferred_downmix_mode_is_F13_preferred": false
+  },
+  "implementation_rule_until_further_evidence": "Do not expose a new task/UI field or invent a default; keep the caller/provider edge unresolved."
+}

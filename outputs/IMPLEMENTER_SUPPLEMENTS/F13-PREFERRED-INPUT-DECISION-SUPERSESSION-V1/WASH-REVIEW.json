@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1",
+  "review_result": "USER_DECISION_RECORDED_NO_DEFAULT_OR_NEW_UI_INPUT",
+  "checks": {
+    "approved_f13_spec_identity": "MATCH",
+    "prior_explicit_input_note": "SUPERSEDED_BY_LATEST_USER_DIRECTION",
+    "preferred_source_mapping": "UNBOUND_PENDING_CALLER_RESEARCH",
+    "related_meter_or_bsi_field_substitution": "PROHIBITED"
+  },
+  "content_boundary": {
+    "source_code_included": false,
+    "private_key_or_auth_material_included": false,
+    "audio_or_pcm_included": false
+  },
+  "implementation_ready": false
+}

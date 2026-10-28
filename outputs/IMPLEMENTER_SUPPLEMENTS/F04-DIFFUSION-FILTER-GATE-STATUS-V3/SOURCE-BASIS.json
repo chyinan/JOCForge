@@ -1,0 +1,32 @@
+{
+  "schema": "washed-f04-diffusion-producer-edge-source-basis.v1",
+  "research_manifest_sha256": "39b4aae87d70ec15c818812fcb662060057653f20f65a2e8fb9e353afadeaa71",
+  "prior_v2_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0",
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_f04_specs_rehashed_by_wash": "5/5",
+  "approved_spec_hashes": [
+    "4b662c3721ba10ad9dafd193bf13e1bc2df571ab4cab580e46a8a6b39e9a3594",
+    "eeba9137918ffb647e3b0a68ca5b210aadd0b0815fed3eec7ae199a08057484d",
+    "e1a420ea0d4284c0cfadcf6962d34ff8cc0f877cee0d0503a6c0e2669c2978b9",
+    "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334",
+    "92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59"
+  ],
+  "frozen_model_hashes": {
+    "r19_filter_core": "88748613c9e6764037f6947a8187e5d267c734d01c3edd16be2f5e6112c6ccec",
+    "r19_a4_projection_core": "03b6e39300d1c6870f20dd3b3464c734330c673deca9b77e24bcf39cb448f269",
+    "r19_row_context_core": "51b1a3c8a0438efd94e1be9ca5973b306a16dab4155e44dde195a2a5c3c5efcd",
+    "r19_component_audio_core": "336f77f41af1adc2f326d9e44f8b9b034dfdfaf556c1bd0edb900997bbc578e5"
+  },
+  "native_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "static_tool": "Ghidra 12.2 fresh isolated project; reporter-attributed; Wash did not reproduce disassembly",
+  "exclusions": [
+    "source code",
+    "decompilation",
+    "machine-code bytes",
+    "absolute addresses",
+    "PCM",
+    "E-AC3 payload",
+    "private key",
+    "auth material"
+  ]
+}

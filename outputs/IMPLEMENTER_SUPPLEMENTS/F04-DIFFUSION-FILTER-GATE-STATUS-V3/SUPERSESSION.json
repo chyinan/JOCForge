@@ -1,0 +1,14 @@
+{
+  "schema": "washed-f04-diffusion-v3-supersession.v1",
+  "supersedes_status_package": "F04-DIFFUSION-FILTER-GATE-STATUS-V2",
+  "prior_v2_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0",
+  "adds": "Fresh isolated static attempt confirming the opaque callback-context row pointer flow and leaving unique writer/typed owner unbound.",
+  "does_not_close": [
+    "typed gate producer",
+    "selected ADM callback path",
+    "source/callback generation",
+    "F04 tail/member alias"
+  ],
+  "implementation_requirement": false,
+  "status": "LATEST_STATIC_STATUS; UNBOUND_NO_REMAINS"
+}

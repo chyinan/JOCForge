@@ -1,0 +1,8 @@
+{
+  "approved_leaf_source_hashes_rechecked": 17,
+  "combined_13_owner_fixture_used_as_standalone_cold": false,
+  "meter_frontend_schema_reference_used_as_runtime_bytes": false,
+  "numeric_root_or_terminal_digest_execution": "NOT_RUN",
+  "filesystem_or_native_execution": "NOT_RUN",
+  "whole_programme_acceptance": "NOT_RUN"
+}

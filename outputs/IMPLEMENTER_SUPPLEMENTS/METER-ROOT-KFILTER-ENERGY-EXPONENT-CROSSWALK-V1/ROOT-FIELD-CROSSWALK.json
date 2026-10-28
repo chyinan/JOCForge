@@ -1,0 +1,49 @@
+{
+  "schema": "meter-root-kfilter-energy-exponent-crosswalk.v1",
+  "package_id": "METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1",
+  "decision": "SERIALIZE_SEPARATE_FIELDS",
+  "existing_v1_field": {
+    "json_pointer": "window_k_energy.exponents_i32",
+    "meaning": "energy_accumulator.exponent_i32_by_channel",
+    "type": "signed I32[6]",
+    "cold": [
+      48,
+      48,
+      48,
+      48,
+      48,
+      48
+    ],
+    "approved_source": "F06W.5 energy-window accumulator"
+  },
+  "distinct_kfilter_field": {
+    "json_pointer": "window_k_energy.k_filter_exponents_i32_by_channel",
+    "type": "signed I32[6]",
+    "native_selected_dplm_cold": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scoped_dplm_update": "no K exponent store observed in selected direct DPLM chain",
+    "source_manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+    "owner_to_local_meter_root": "LOCAL_GTC_MAPPING_DECISION; not native ABI"
+  },
+  "other_leaf_crosswalk": {
+    "k_filter_history": {
+      "type": "F32[6][2][4] bit words",
+      "cold": "positive zero",
+      "source": "approved F06W.3"
+    },
+    "energy_accumulator_mantissa": {
+      "type": "F32[6] bit words",
+      "cold": "positive zero",
+      "source": "approved F06W.5"
+    }
+  },
+  "non_substitution": "Equal shape/type or prior synthetic value [48;6] cannot merge K exponent and energy exponent.",
+  "terminal_boundary": "This field crosswalk does not execute canonical root serialization, terminal digest, MeasurementReceipt, READY or parent commit.",
+  "implementation_requirement": false
+}

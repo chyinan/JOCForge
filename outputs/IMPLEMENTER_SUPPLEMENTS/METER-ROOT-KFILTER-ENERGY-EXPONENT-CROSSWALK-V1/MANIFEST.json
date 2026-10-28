@@ -1,0 +1,36 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1",
+  "scope": "Disambiguates the existing energy exponent field from the distinct native K exponent and rechecks all 17 approved source leaves",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "FIELD_CROSSWALK_AND_APPROVED_SOURCE_RECHECK",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "9993321795a49f5231c9967c1ed007469d3ddc31408a3f07d616cb986005a34c",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 840,
+      "sha256": "849dfcc3963a388a32d69b073ddd2c1bed38e757da5625b77aff1d0aefa42e41"
+    },
+    {
+      "file": "ROOT-FIELD-CROSSWALK.json",
+      "bytes": 1609,
+      "sha256": "766a57c8287d31d57113685288f86425c47ce37d5f6389bb79325ce23e8b3081"
+    },
+    {
+      "file": "APPROVED-LEAF-RECHECK.json",
+      "bytes": 6162,
+      "sha256": "f0951542c90f52463a22a9653aa053dbbab3f77450c770460d1ea0c8fdf35c39"
+    },
+    {
+      "file": "DECISION.json",
+      "bytes": 960,
+      "sha256": "87dd59fb732cb8d2b21fa16b887d6373b8c8e70fb9ddd1528b58fdb7b376282f"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 815,
+      "sha256": "8ccd9d94e13b6d6a1f572404372204c9b3aec8e6b58f467ee489c4e861fd79ed"
+    }
+  ]
+}

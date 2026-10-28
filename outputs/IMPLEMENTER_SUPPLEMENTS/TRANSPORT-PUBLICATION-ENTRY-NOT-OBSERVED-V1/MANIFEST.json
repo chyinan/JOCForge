@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1",
+  "scope": "Transport publication anchor not observed",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "59ce1d5f01dcf0dc4640d5c230762820b3113822a0c4b88556138a44d2354627",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 614,
+      "sha256": "bfb0a1c64588b0d2a391defb955f16e6e1aa013ac91e649a021bc22319db4f66"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 568,
+      "sha256": "7d20bc9d2a3ee8594b2cd8a64866d37b6e3cf18d9509af0e76c865bd20d1bc6f"
+    }
+  ]
+}

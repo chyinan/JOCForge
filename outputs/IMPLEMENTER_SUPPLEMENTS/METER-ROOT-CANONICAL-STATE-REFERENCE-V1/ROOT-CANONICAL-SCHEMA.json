@@ -1,0 +1,103 @@
+{
+  "schema_id": "StandaloneMeterRootV1",
+  "scope": "One GTC meter owner, composed from selected meter leaf state only",
+  "state_ref": {
+    "value": "owners/meter",
+    "meaning": "Stable logical reference to the complete immutable meter-root value inside the enclosing programme-state snapshot; scoped by that snapshot's ProgrammeId and AttemptId. Not a filesystem path or content hash."
+  },
+  "owner_generation": {
+    "type": "U64",
+    "meaning": "Meter owner callback generation; equals the meter callback count in the committed meter schedule. Cold 0; advances once per successfully parent-admitted meter callback."
+  },
+  "canonical_preimage": {
+    "kind": "Field-complete JSON object for the complete materialized standalone meter state; no GTC envelope, no MeasurementReceipt, no DRC/main owner fields.",
+    "top_level_fields": [
+      {
+        "name": "generation",
+        "type": "U64 JSON integer",
+        "value": "Same value as GTC owners.meter.generation."
+      },
+      {
+        "name": "frontend_oar_state_hex",
+        "type": "Lowercase hex of exact F06OC OAR_MODEL_CALLBACK_STATE_V1 canonical bytes",
+        "shape": "1569 + 120*K bytes, K = instantiated cache-task count; cold 1569 bytes; complete runtime bytes include all actual task rows and optional records."
+      },
+      {
+        "name": "shared_dv32_state_hex",
+        "type": "Lowercase hex of exact SHARED_DV32_STATE_V1 portable bytes",
+        "bytes": 812
+      },
+      {
+        "name": "window_k_energy",
+        "type": "Expanded JSON object",
+        "fields": {
+          "window_clock": [
+            "startup",
+            "pending",
+            "processed",
+            "callback_index",
+            "pcm_ring_count",
+            "samples_in_window"
+          ],
+          "k_filter_state_f32_u32_words": "U32[6][2][4] exact F32 words",
+          "mantissa_f32_u32_words": "U32[6] exact F32 words",
+          "exponents_i32": "I32[6]"
+        },
+        "rule": "All arrays use the exact indices/orders in F06OF/F06M/F06WH schemas; repeat descriptors are fully expanded."
+      },
+      {
+        "name": "true_peak",
+        "type": "Expanded JSON object",
+        "fields": {
+          "fir_state_f32_u32_words": "U32[6][4628] exact F32 words",
+          "programme_true_max_f32_u32_words": "U32[6] exact F32 words",
+          "programme_sample_max_f32_u32_words": "U32[6] exact F32 words"
+        },
+        "programme_peak_maxima": "The 12 maxima are represented exactly once as the two arrays above; do not add a duplicate copy."
+      },
+      {
+        "name": "integrated_state_hex",
+        "type": "Lowercase hex of exact METER_INTEGRATED_STATE_V1 portable bytes",
+        "bytes": 24512
+      },
+      {
+        "name": "ungated_state_hex",
+        "type": "Lowercase hex of exact MEAN_STATE_V1 portable bytes",
+        "bytes": 40
+      }
+    ],
+    "exclusions": [
+      "combined 13-owner F06WH whole-state hash or lifecycle owner",
+      "ordinary_history, secondary, none_statistics, none_scheduler or override_fifo (DRC has its own GTC root)",
+      "programme MeasurementReceipt, finalized flag or GTC phase/status",
+      "main four cached drains, codec state or publication ledger",
+      "initializer/schema-file reference descriptors in place of materialized frontend/OAR leaf bytes"
+    ]
+  },
+  "canonical_encoding": {
+    "encoding": "UTF-8 canonical JSON; recursively sort object keys lexicographically; compact comma/colon separators; ensure_ascii=false; no BOM; no trailing newline.",
+    "binary32": "Serialize each persistent F32 as its exact U32 IEEE-754 bit word in the declared word arrays or exact portable leaf bytes; never decimalize floats.",
+    "integer_domains": "U64/U32/U16/I32 are JSON decimal integers in structured objects; I1 is integer 0 or 1, not JSON boolean.",
+    "repeats": "Expand every *_u32_repeat descriptor to its complete indexed word array before serialization.",
+    "digest": "state_sha256 = SHA-256 over the complete canonical preimage bytes. cold_sha256 is computed by the same serializer over the actual fully constructed cold root for that programme input extent. Never reuse the combined 13-owner cold hash or hash a descriptor/wrapper."
+  },
+  "cold_and_reset": {
+    "source_extent": "N is taken from the same validated PreparedJobInput; current GTC count schema remains authoritative and is not generalized by this root representation.",
+    "frontend_oar": "Use the complete selected cold OAR_MODEL_CALLBACK_STATE_V1 constructor for N.",
+    "shared_dv32": "Existing SHARED_DV32_STATE_V1 cold: callback 0, parameters at their specified defaults, 192 positive-zero F32 history words.",
+    "window_k_energy": "Existing F06OF/F06M cold values: startup 3104, pending/processed/callback/ring/window counters at their documented cold values, K/filter accumulators and mantissas positive zero, exponent words at the documented exponent cold (48 where specified).",
+    "true_peak": "Six FIR rows positive zero; true/sample maxima each six values at R32(-15/16).",
+    "integrated": "Existing METER_INTEGRATED_STATE_V1 cold constructor.",
+    "ungated": "Existing MEAN_STATE_V1 cold constructor.",
+    "reset": "Full programme restart destroys the prior meter root and reconstructs exactly these same leaves cold for the new attempt; no partial leaf reset."
+  },
+  "generation_and_receipt": {
+    "normal_meter_callbacks": "Q=ceil(N/1536)",
+    "meter_zero_drains": 3,
+    "terminal_meter_generation": "Q+3 after all meter callbacks are committed; no main cached-drain clock is borrowed.",
+    "owner_state": "GTC ownerState owner_id=meter, generation equals root.generation, state_ref=owners/meter, state_sha256/cold_sha256 use the preimages above.",
+    "owner_receipt": "Use the existing GTC ownerReceipt fields: owner_id, before/after generation and SHA, changed, commit_count, transaction_id. A leaf stage produces a pending proposal; parent-admitted commit_count is exactly 1. Fatal callback has no normal after-root receipt and leaves committed meter bytes unchanged except the GTC lifecycle failure state.",
+    "measurement_terminal_hash": "After the last meter callback's successful parent commit, snapshot SHA-256 of this numeric meter root. Read-only getters run afterward and must not mutate or reserialize a different root. Place the terminal hash in the separate immutable top-level MeasurementReceipt and perform the existing METERING-to-READY parent transition once. The MeasurementReceipt is not part of meter-root bytes, so there is no self-reference."
+  },
+  "scope_boundary": "This is a local clean owner serialization decision composed from existing approved leaf schemas. It does not promote the F06WH combined cold fixture to a standalone root, does not claim original SDK/DEE ABI equivalence, and does not claim a terminal meter hash has been measured."
+}

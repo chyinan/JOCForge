@@ -1,0 +1,19 @@
+{
+  "source_manifest_sha256": "59ce1d5f01dcf0dc4640d5c230762820b3113822a0c4b88556138a44d2354627",
+  "payloads": [
+    {
+      "file": "TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED.json",
+      "bytes": 2590,
+      "sha256": "78021eeb8040d352f1c547f20876cbd89d1ea1338fa00d3e3ba004bd16dd3930"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 665,
+      "sha256": "0a8c04b2640c955d8df222d9c6c9b1f9751d1a616b87e21b1c36b9815938d704"
+    }
+  ],
+  "source_hashes": "2/2_MATCH",
+  "native_AU": "NOT_RUN",
+  "source_generation": "UNBOUND",
+  "no_raw_payload_or_keys": true
+}

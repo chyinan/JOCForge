@@ -1,0 +1,14 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V3",
+  "source_manifest_sha256": "39b4aae87d70ec15c818812fcb662060057653f20f65a2e8fb9e353afadeaa71",
+  "source_payloads_verified": 4,
+  "payload_hashes_and_lengths_match": true,
+  "approved_f04_specs_rehashed_by_wash": "5/5",
+  "native_static_observation_independently_reproduced": false,
+  "native_execution": "NOT_RUN",
+  "full_song_replay": "NOT_RUN",
+  "code_or_addresses_in_wash": false,
+  "private_key_or_auth_material_in_wash": false,
+  "status": "UNBOUND/NO; NOT_READY"
+}

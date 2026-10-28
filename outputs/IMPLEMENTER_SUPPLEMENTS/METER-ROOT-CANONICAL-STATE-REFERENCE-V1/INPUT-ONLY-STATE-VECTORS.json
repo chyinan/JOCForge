@@ -1,0 +1,35 @@
+{
+  "input_only": true,
+  "expected_runtime_hashes_included": false,
+  "cases": [
+    {
+      "id": "cold_meter_N",
+      "N": "validated positive programme extent",
+      "expected": "construct all actual cold leaves, serialize full root, compute cold SHA; do not use the 13-owner combined hash"
+    },
+    {
+      "id": "normal_meter_callback",
+      "callback": 0,
+      "phase": "NORMAL",
+      "expected": "pending complete meter root proposal; parent commit generation once"
+    },
+    {
+      "id": "three_meter_zero_drains",
+      "phase": "DRAIN",
+      "count": 3,
+      "expected": "cursor remains N; meter owner state advances by its own callback schedule"
+    },
+    {
+      "id": "getter_finalize",
+      "expected": "terminal SHA is existing committed meter root; getters are read-only; MeasurementReceipt lives outside meter root"
+    },
+    {
+      "id": "callback_failure",
+      "expected": "no partial meter root or terminal receipt; GTC attempt retires"
+    },
+    {
+      "id": "full_reset",
+      "expected": "all meter leaves reconstruct same cold schema for new attempt"
+    }
+  ]
+}

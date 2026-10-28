@@ -1,0 +1,48 @@
+{
+  "schema": "washed-f04-diffusion-static-producer-edge.v3",
+  "package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V3",
+  "evidence_grade": "REPORTER_ATTRIBUTED_FRESH_STATIC; SEMANTIC_JOIN_UNBOUND",
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "pointer_flow": "Opaque row pointer from callback context through dispatcher/wrapper to four-lane filter caller; relative context member reported as +0xA0.",
+  "gates": {
+    "outer": {
+      "row_word_index": 1,
+      "type": "U32",
+      "condition": "== 0"
+    },
+    "filter_call": [
+      {
+        "row_word_index": 11,
+        "type": "U32",
+        "condition": "!= 0"
+      },
+      {
+        "row_word_index": 10,
+        "type": "F32",
+        "condition": "> +0.0"
+      },
+      {
+        "row_word_index": 0,
+        "type": "U32",
+        "condition": "== 0"
+      }
+    ],
+    "branch_order_preserved": true,
+    "static_values_observed": false
+  },
+  "producer_status": {
+    "context_pointer_writer": "UNBOUND",
+    "row_word_writer": "UNBOUND",
+    "row_words_to_audio_diffuse_width_spread_quiet_F04FM": "UNBOUND",
+    "selected_ADM_callback_path": "UNBOUND",
+    "selected_tail_and_generation_receipt": "UNBOUND"
+  },
+  "bounded_search": {
+    "unique_writer_found": false,
+    "scope": "relative callback-context member and direct caller path only"
+  },
+  "model_boundary": "R19 A4 consumes preconstructed action/tail/route/PCM inputs; it does not produce this row.",
+  "dynamic_capture": "NOT_RUN",
+  "full_song_replay": "NOT_RUN",
+  "implementation_requirement": false
+}

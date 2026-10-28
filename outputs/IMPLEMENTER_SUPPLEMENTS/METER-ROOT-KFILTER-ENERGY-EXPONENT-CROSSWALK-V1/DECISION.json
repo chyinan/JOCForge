@@ -1,0 +1,16 @@
+{
+  "schema": "meter-root-exponent-crosswalk-decision.v1",
+  "decision": "V1 exponents_i32 means energy accumulator only; add a separate K-filter I32[6] field if the local canonical meter root models the selected DPLM state.",
+  "v1_synthetic_k_value": "[48;6] remains a synthetic fixture only and conflicts with native DPLM cold writer.",
+  "native_static_k_cold": "[0;6]",
+  "local_root_mapping": "The canonical owners.meter token and commit remain a GTC parent/local integration choice; static DPLM object flow is not runtime owner/generation capture.",
+  "source_recheck": "17/17 approved leaves match the bound implementer package.",
+  "still_not_run": [
+    "canonical root hash execution",
+    "terminal meter digest",
+    "MeasurementReceipt/READY",
+    "GTC parent commit",
+    "whole-programme/native execution"
+  ],
+  "preferred_input_policy": "No user/XML/UI preferred input; independent F13 typed-result contract handled by its own supplement."
+}

@@ -1,0 +1,28 @@
+{
+  "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V1",
+  "scope": "Standalone GTC meter owner canonical preimage/state_ref/terminal-hash timing only",
+  "files": [
+    {
+      "file": "ROOT-CANONICAL-SCHEMA.json",
+      "bytes": 6851,
+      "sha256": "1c8ede7bc44a5adc57db0dd11f1c6f30c00d68411eb41181905c6883e715f5d9"
+    },
+    {
+      "file": "INPUT-ONLY-STATE-VECTORS.json",
+      "bytes": 1108,
+      "sha256": "cc49ae30d4ce75496928564da10002470e505cb895282beca2ceb6de0553b161"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 3625,
+      "sha256": "664195e1c30ac17731d0f6bb32438efde266d26b0def356523bd08eaf96abd1a"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 326,
+      "sha256": "24596621da9d796b7775106b7de8ee627548087a0ebbf93170e171dee1d50f84"
+    }
+  ],
+  "runtime_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

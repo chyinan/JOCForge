@@ -1,0 +1,14 @@
+{
+  "schema": "f13-preferred-typed-receipt-supersession.v1",
+  "latest_typed_closure_manifest_sha256": "d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad",
+  "prior_user_input_supersession_manifest_sha256": "0055b50cd51168c84923c3b6a5a671976acd77bb200b00fd1a1fc710037e7ede",
+  "native_provider_boundary_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
+  "supersedes_prior_unbound_only_for": "completed finite scalar typed model mapping from public result kind to ID1 preferred",
+  "remains_valid": [
+    "no task/XML/UI preferred input",
+    "native provider I32 tag is opaque and not booleanized directly",
+    "selected native provider branch/value/source epoch remain unbound",
+    "whole-programme measurement receipt/terminal root production remains not run"
+  ],
+  "decision": "Keep the typed model connection. Keep native selected-value and producer bindings separate and unresolved."
+}

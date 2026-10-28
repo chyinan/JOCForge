@@ -1,0 +1,23 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_materials_rechecked": [
+    {
+      "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V1",
+      "manifest_sha256": "9993321795a49f5231c9967c1ed007469d3ddc31408a3f07d616cb986005a34c",
+      "payloads": "4/4"
+    },
+    {
+      "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+      "manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+      "payloads": "6/6"
+    },
+    {
+      "package_id": "METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1",
+      "approved_leaf_recheck": "17/17"
+    }
+  ],
+  "native_or_product_execution": "NOT_RUN",
+  "raw_source_code_in_wash": false,
+  "private_key_or_auth_material_in_wash": false,
+  "status": "FIELD_SEMANTICS_AND_SOURCE_LEAVES_RECONCILED; ROOT_HASH_AND_RECEIPT_NOT_RUN"
+}

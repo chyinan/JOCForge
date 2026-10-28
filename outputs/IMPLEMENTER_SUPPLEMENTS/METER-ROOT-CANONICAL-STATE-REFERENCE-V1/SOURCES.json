@@ -1,0 +1,96 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_sources": [
+    {
+      "file": "specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "bytes": 12153,
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+    },
+    {
+      "file": "specs/06-meter-none-drc-whole-composition.md",
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    {
+      "file": "parameters/f06-meter-none-drc-whole-state-schema-v1.json",
+      "bytes": 4280,
+      "sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be"
+    },
+    {
+      "file": "test-vectors/F06-METER-NONE-DRC-WHOLE-COLD-STATE-IDENTITIES.json",
+      "bytes": 8973,
+      "sha256": "a2283d3e1dd06f32d40e360ee48018501d0b88b2a6dbd0ad8234d9e82d14b74a"
+    },
+    {
+      "file": "specs/06-oar-model-callback-state-and-clock.md",
+      "bytes": 11750,
+      "sha256": "7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9"
+    },
+    {
+      "file": "specs/06-oar-frontend-input-and-clock-join.md",
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    {
+      "file": "specs/06-oar-mix-ramp-and-filter-gate.md",
+      "bytes": 7425,
+      "sha256": "dfe8ceac3e6e9ca9939e3e40bcf985e26a842c70f8646dfc6e61da3065f86de3"
+    },
+    {
+      "file": "specs/06-oar-point-target.md",
+      "bytes": 5893,
+      "sha256": "28d13502086a7ead03daff76c089449fd871297a6c5c56b30b1e07ce8a0565e8"
+    },
+    {
+      "file": "specs/06-shared-dv32-state-and-audio.md",
+      "bytes": 9116,
+      "sha256": "f99c0f47d502d949f726633d100ae8868acf4669dfe99f4624ebfb1bf42d8691"
+    },
+    {
+      "file": "specs/06-integrated-meter-state.md",
+      "bytes": 9368,
+      "sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72"
+    },
+    {
+      "file": "specs/06-ungated-mean-and-fallback.md",
+      "bytes": 8673,
+      "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+    },
+    {
+      "file": "specs/06-true-peak-cascade-and-metrics.md",
+      "bytes": 9824,
+      "sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3"
+    },
+    {
+      "file": "specs/06-meter-k-matrix-generation.md",
+      "bytes": 5811,
+      "sha256": "d6287e17dec2a4b93b5756eb25345fd41cc4329eebeacefabd8e71ad84d33e31"
+    },
+    {
+      "file": "specs/06-meter-window-and-output-clock.md",
+      "bytes": 7388,
+      "sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c"
+    },
+    {
+      "file": "specs/06-meter-log-and-peak.md",
+      "bytes": 7525,
+      "sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f"
+    },
+    {
+      "file": "specs/06-meter-bsi.md",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    }
+  ],
+  "prior_meter_drc_wash_package": {
+    "package_id": "METER-DRC-STANDALONE-ROOT-BINDING-V1",
+    "manifest_sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a",
+    "scope": "field, clock and owner-rule crosswalk; its checker status is not runtime execution"
+  },
+  "authority_note": "Canonical container and state_ref are Wash local implementation representation choices over the listed approved leaf fields; all actual values must come from the real typed leaf states."
+}

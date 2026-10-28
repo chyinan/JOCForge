@@ -1,0 +1,41 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V3",
+  "scope": "Fresh bounded static row-pointer path and producer edge status; typed selected F04 owner remains unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "FRESH_STATIC_STATUS_UNBOUND_NO",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "39b4aae87d70ec15c818812fcb662060057653f20f65a2e8fb9e353afadeaa71",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1239,
+      "sha256": "940a02359ba755e66eef93515356730c434c62a8e70e2627e1b1aa0f8ffb7d80"
+    },
+    {
+      "file": "STATIC-PRODUCER-EDGE.json",
+      "bytes": 1579,
+      "sha256": "e82754e821e856a9b4c759e6cc6c520ca55dbe5087c7902417c90b0a611b6420"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1194,
+      "sha256": "adc602f3f5db1fead0506e9c571193a40826b1826425b212f27c7c9a8008676e"
+    },
+    {
+      "file": "SOURCE-BASIS.json",
+      "bytes": 1616,
+      "sha256": "5088cf5189c33b65171aa43f8a63cb636b408a763a3195ba90e18f230b249cb1"
+    },
+    {
+      "file": "SUPERSESSION.json",
+      "bytes": 617,
+      "sha256": "809698d2f13ce6431bc5a13c20274332ebe8a32f3c3f75286193b88eae2bc0b0"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 585,
+      "sha256": "e70c02e073634965435f8f8b8502f1ad9aba401e53b61ed8d3fd5c59e652dc69"
+    }
+  ]
+}

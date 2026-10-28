@@ -1,0 +1,56 @@
+{
+  "schema": "f13-preferred-typed-receipt-caller-map.v1",
+  "model_rule": {
+    "selection_origin_to_public_kind": {
+      "Ungated": 0,
+      "Level": 2,
+      "Dialogue": 1
+    },
+    "public_kind_to_id1_preferred": "preferred = 1 iff public_result_kind == 1; otherwise 0",
+    "no_user_or_xml_field": true,
+    "no_downmix_preference_substitution": true,
+    "no_direct_origin_code_cast": true
+  },
+  "clean_model_flow": [
+    {
+      "from": "completed finite F06 scalar selector branch",
+      "to": "ProgrammeGatingKind",
+      "binding": "branch origin preserved as semantic enum"
+    },
+    {
+      "from": "ProgrammeGatingKind",
+      "to": "ProgrammeMeasurementReceipt.public_result_kind()",
+      "binding": "explicit conversion to PublicMeasurementResultKind 0/1/2"
+    },
+    {
+      "from": "PublicMeasurementResultKind",
+      "to": "Id1PreferredValue::from_public_result_kind",
+      "binding": "strict public kind == 1"
+    },
+    {
+      "from": "Id1PreferredValue",
+      "to": "ID1 config index 2",
+      "binding": "typed config construction"
+    }
+  ],
+  "current_code_behavior": {
+    "receipt_public_result_kind": "derived from typed ProgrammeGatingKind, not raw I32",
+    "receipt_input": "from_verified_prepass accepts a semantic gating-kind string and parses exact Ungated/Dialogue/Level variants",
+    "finalized_di_off_helper": "current local helper path emits Ungated or Level only; it does not produce Dialogue",
+    "dialogue_branch": "defined by approved F06 typed selector closure and input-only cases, not by an observed selected job run"
+  },
+  "prohibited_substitutions": [
+    "F06 raw/opaque native I32 tag -> preferred",
+    "F06 line/RF gating or DRC gate flag -> preferred",
+    "BSI preferred_downmix_mode LoRo/LtRt -> preferred",
+    "new user/XML/UI preferred field"
+  ],
+  "readiness": {
+    "typed_model_conversion": "LOCALLY_SPECIFIED",
+    "selected_native_provider_branch": "UNBOUND",
+    "selected_native_preferred_value": "UNBOUND",
+    "full_production_measurement_receipt_and_terminal_meter_root": "BLOCKED/NOT_RUN",
+    "whole_chain": "NOT_READY"
+  },
+  "implementation_requirement": false
+}

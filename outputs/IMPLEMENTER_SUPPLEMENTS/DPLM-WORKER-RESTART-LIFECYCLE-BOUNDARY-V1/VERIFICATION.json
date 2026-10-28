@@ -1,0 +1,21 @@
+{
+  "schema": "wash-verification.v1",
+  "source_manifest_sha256": "9f0a3a98a07854ea002d7cbed6030471db0e07a5771a0d2e3304fc3dd5323c4d",
+  "source_payloads": [
+    {
+      "file": "LIFECYCLE-BOUNDARY.md",
+      "bytes": 1815,
+      "sha256": "574c0cb117a501546b74c9fd53d9c41e267647c833888d3e31005d3de4ed1602"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 1762,
+      "sha256": "c02b150b52eccc0db4e05f968d3e7b5a9b49edbee35ab75b41f09fcf55a0fc07"
+    }
+  ],
+  "source_payloads_verified": "2/2",
+  "native_runtime": "NOT_RUN",
+  "native_restart_owner_generation": "UNBOUND",
+  "local_gtc_restart": "APPROVED_MODEL_ONLY",
+  "private_key_or_auth_included": false
+}

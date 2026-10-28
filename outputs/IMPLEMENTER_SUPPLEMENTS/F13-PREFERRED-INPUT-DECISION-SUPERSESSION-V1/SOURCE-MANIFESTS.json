@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-f13-preferred-supersession-sources.v1",
+  "approved_root_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "f13_spec": {
+    "file": "specs/13-emdf-and-timeline.md",
+    "bytes": 12839,
+    "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+  },
+  "superseded_explicit_job_input_note": {
+    "package_id": "F13-EXPLICIT-PREFERRED-JOB-INPUT-V1",
+    "manifest_sha256": "c8cdb5f440dff0fc392ed0eb95080c1931a4bb27e684f9235ec3fb222864764c"
+  },
+  "current_status_source": "user clarification received 2026-10-26; no source value or key material included"
+}

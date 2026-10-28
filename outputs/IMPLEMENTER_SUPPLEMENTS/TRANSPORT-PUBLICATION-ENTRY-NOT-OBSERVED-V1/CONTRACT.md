@@ -1,0 +1,3 @@
+# Transport publication boundary
+
+The bounded validation-vector path ends before publication: the temporary vector is freed, the threshold-selected token is used for validation/search, and root-history scalars carry control state. No independent transport enqueue, AU descriptor consumer or production output owner was observed. Selected transport AU is NOT_RUN/UNBOUND and source generation UNBOUND. Local AU=s-2 remains governed by the approved clock. Locate an independent backend output callback or writer-facing descriptor before tracing one owner token backward; do not reuse the validation vector or token.

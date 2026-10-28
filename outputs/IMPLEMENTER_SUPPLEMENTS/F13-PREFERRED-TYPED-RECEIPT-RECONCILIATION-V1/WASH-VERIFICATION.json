@@ -1,0 +1,11 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_packages_rehashed": 3,
+  "source_payloads_rehashed": "14/14",
+  "reviewed_code_files_rehashed": 4,
+  "implementation_map_rehashed": true,
+  "tests_run": false,
+  "native_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN",
+  "status": "TYPED_MODEL_MAPPING_VALID; SELECTED_NATIVE_VALUE_AND_PRODUCTION_RECEIPT_UNBOUND"
+}

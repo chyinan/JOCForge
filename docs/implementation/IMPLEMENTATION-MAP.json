@@ -3271,11 +3271,11 @@
           "not_run": ["Same-row and same-generation join from clean F04A audio_diffuse/lane values to native gate and selected row list.", "Persistent row-state current value, clean prefix writer identity, source-row/PCM generation and native run remain UNBOUND/NOT_RUN."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
-        {
+                {
           "slice_id": "informational-diffusion-gate-to-prefix-consumer-identity-unbound",
-          "mapping_status": "WASHED_V2_OPAQUE_POINTER_FLOW__F04A_PREFIX_AND_288_CALL_JOIN_UNBOUND",
-          "implementation_status": "INFORMATIONAL_ONLY_NO_F04A_A4_OR_COMPONENT_RECEIPT_JOIN",
-          "scope": "The V2 report does not bind callback-context +0xA0, the opaque row or the held 288 WAV-bound model calls to the F04A diffusion-prefix path, a source tail, callback generation, A4 output or component-consumer receipt; those joins remain UNBOUND. The separate model-prefix rules remain unchanged and are not promoted by this static status.",
+          "mapping_status": "WASHED_V3_STATIC_PRODUCER_EDGE_UNBOUND_NO",
+          "implementation_status": "INFORMATIONAL_ONLY_TYPED_PRODUCER_AND_SELECTED_CALLBACK_UNBOUND",
+          "scope": "V3 confirms only the reporter-attributed opaque callback-context pointer path and filter gate predicates. It does not join the gate row to the F04A prefix consumer or a selected ADM callback; the bounded writer search found no unique row writer. Existing model calls do not supply this native producer identity. Keep prefix-consumer, selected callback and source-generation joins UNBOUND/NO.",
           "owner": "spatial_audio",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -3286,38 +3286,40 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_OPAQUE_GATE_STATUS",
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_V3_PRODUCER_EDGE",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/SOURCE-CHAIN.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/STATIC-GATE-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/SUPERSESSION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/WASH-DECISION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/STATIC-PRODUCER-EDGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/SOURCE-BASIS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/WASH-VERIFICATION.json"
             ],
-            "supplement_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0",
-            "candidate_source_manifest_sha256": "66292330c420151b07e0e6e498c50bde994568c727c94e81c306d9ab645ca34b",
-            "validation_boundary": "V2 source identities are rehashed; static gate remains reporter-attributed, the unique +0xA0/row writer is unidentified, and semantic/owner joins remain UNBOUND."
+            "supplement_manifest_sha256": "dbb1258dfb86976df94246aa51ad1dae286dd530f43ce7104c0d1e076025908c",
+            "candidate_source_manifest_sha256": "39b4aae87d70ec15c818812fcb662060057653f20f65a2e8fb9e353afadeaa71",
+            "validation_boundary": "V3 is reporter-attributed fresh static status; Wash rehashed five approved F04 specs but did not independently reproduce the static observation. Typed producer, unique row writer, selected ADM callback and generation remain UNBOUND/NO.",
+            "superseded_v2_package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V2",
+            "superseded_v2_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0"
           },
           "test_modules": [],
           "vectors": {
-            "kind": "INPUT_ONLY_F04_DIFFUSION_GATE_V2_STATUS_NO_EXPECTED_OUTPUTS",
+            "kind": "INPUT_ONLY_F04_DIFFUSION_V3_STATUS_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
-              "V2 does not link callback-context +0xA0 or opaque row words to the held 288 model calls or F04A prefix consumer.",
-              "Same-tail/source owner, callback generation, A4 output and component-consumer receipt remain UNBOUND.",
-              "The 288 WAV-bound calls remain HOLD/UNBOUND; no selected-ADM output comparison was run."
+              "Opaque row pointer is reported from callback-context +0xA0 through dispatcher/wrapper to the four-lane filter caller.",
+              "Outer U32[1]==0 precedes U32[11]!=0, F32[10]>+0.0 and U32[0]==0; no static values were observed.",
+              "No unique pointer/row writer or selected callback/source-generation join was identified; R19 A4 is not this row producer."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0"
+            "supplement_manifest_sha256": "dbb1258dfb86976df94246aa51ad1dae286dd530f43ce7104c0d1e076025908c"
           },
           "not_run": [
-            "The 288 model calls to F04A diffusion-prefix outputs and component-consumer receipts.",
-            "Same-tail/source owner and callback-generation identity."
+            "Unique context-pointer/row-word writer and typed owner.",
+            "Gate row joins to the selected ADM callback, semantic producer, selected tail and source/callback generation.",
+            "Native execution, dynamic capture, full-song replay and product acceptance."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
@@ -3491,11 +3493,11 @@
             "native primary diffusion acceptance, W04, listening, and product encode"
           ]
         },
-        {
+                {
           "slice_id": "informational-diffusion-filter-opaque-gate-status",
-          "mapping_status": "WASHED_V2_STATIC_POINTER_PATH_REPORTER_ATTRIBUTED__UNIQUE_ROW_WRITER_UNBOUND",
-          "implementation_status": "INFORMATIONAL_ONLY_STATIC_POINTER_PATH_TO_FILTER_CALLER__ROW_WRITER_AND_SEMANTICS_UNBOUND",
-          "scope": "The V2 fresh Ghidra report traces an opaque row-context pointer loaded from callback-context relative +0xA0 through a row dispatcher and wrapper to the filter caller, which checks outer U32 word 1 == 0 and then U32 word 11 != 0, F32 word 10 > +0.0 and U32 word 0 == 0. No unique writer for +0xA0 or the row words was identified. Wash rehashed five source identities but did not independently reproduce the Ghidra analysis; the gate remains reporter-attributed static evidence with no captured values or dynamic run. Predicate words and pointer are not mapped to clean-model activation fields, mode, lane, tail, callback or source generation; all semantic/owner joins remain UNBOUND. Existing F04F model behavior is unchanged.",
+          "mapping_status": "WASHED_V3_STATIC_PRODUCER_EDGE_UNBOUND_NO",
+          "implementation_status": "INFORMATIONAL_ONLY_TYPED_PRODUCER_AND_SELECTED_CALLBACK_UNBOUND",
+          "scope": "The latest V3 bounded reporter-attributed static attempt traces an opaque row pointer from callback-context +0xA0 through dispatcher/wrapper to the four-lane filter caller. Reported gates remain outer row U32[1]==0, then U32[11]!=0, F32[10]>+0.0 and U32[0]==0; static values were not observed. No unique context-pointer or row-word writer, typed producer, selected ADM callback, selected tail, or source/callback generation was established. Frozen R19 A4 consumes preconstructed action/tail/route/PCM and is not this row producer. Keep every semantic/owner join UNBOUND/NO; no algorithm rule is added.",
           "owner": "spatial_audio",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -3506,39 +3508,40 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_OPAQUE_GATE_STATUS",
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_V3_PRODUCER_EDGE",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/SOURCE-CHAIN.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/STATIC-GATE-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/SUPERSESSION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/WASH-DECISION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/STATIC-PRODUCER-EDGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/SOURCE-BASIS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/WASH-VERIFICATION.json"
             ],
-            "supplement_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0",
-            "candidate_source_manifest_sha256": "66292330c420151b07e0e6e498c50bde994568c727c94e81c306d9ab645ca34b",
-            "validation_boundary": "V2 source identities are rehashed; static gate remains reporter-attributed, the unique +0xA0/row writer is unidentified, and semantic/owner joins remain UNBOUND."
+            "supplement_manifest_sha256": "dbb1258dfb86976df94246aa51ad1dae286dd530f43ce7104c0d1e076025908c",
+            "candidate_source_manifest_sha256": "39b4aae87d70ec15c818812fcb662060057653f20f65a2e8fb9e353afadeaa71",
+            "validation_boundary": "V3 is reporter-attributed fresh static status; Wash rehashed five approved F04 specs but did not independently reproduce the static observation. Typed producer, unique row writer, selected ADM callback and generation remain UNBOUND/NO.",
+            "superseded_v2_package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V2",
+            "superseded_v2_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0"
           },
           "test_modules": [],
           "vectors": {
-            "kind": "INPUT_ONLY_F04_DIFFUSION_GATE_V2_STATUS_NO_EXPECTED_OUTPUTS",
+            "kind": "INPUT_ONLY_F04_DIFFUSION_V3_STATUS_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
-              "V2 reports same opaque pointer flow from callback-context +0xA0 through dispatcher/wrapper to filter caller; no unique +0xA0 or row-word writer was identified.",
-              "Outer U32 zero and nested U32 nonzero / F32 positive / U32 zero predicates remain reporter-attributed; no runtime values were captured.",
-              "Semantic fields, owner, tail and callback/source-generation joins remain UNBOUND; no production gate rule is added."
+              "Opaque row pointer is reported from callback-context +0xA0 through dispatcher/wrapper to the four-lane filter caller.",
+              "Outer U32[1]==0 precedes U32[11]!=0, F32[10]>+0.0 and U32[0]==0; no static values were observed.",
+              "No unique pointer/row writer or selected callback/source-generation join was identified; R19 A4 is not this row producer."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0"
+            "supplement_manifest_sha256": "dbb1258dfb86976df94246aa51ad1dae286dd530f43ce7104c0d1e076025908c"
           },
           "not_run": [
-            "Unique producer/owner for callback-context +0xA0 and opaque row words 0, 1, 10, 11.",
-            "Opaque gate predicates to audio_diffuse, width/spread, quiet, F04FM mode/lane, selected tail and callback/source-generation receipt.",
-            "Native dynamic capture and product acceptance."
+            "Unique context-pointer/row-word writer and typed owner.",
+            "Gate row joins to the selected ADM callback, semantic producer, selected tail and source/callback generation.",
+            "Native execution, dynamic capture, full-song replay and product acceptance."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
@@ -3556,11 +3559,11 @@
       "inventory_status": "INVENTORIED",
       "implementation_status": "DEFERRED_DETAILED_MAPPING",
       "direct_slices": [
-        {
+                {
           "slice_id": "informational-diffusion-gate-to-math-output-identity-unbound",
-          "mapping_status": "WASHED_V2_OPAQUE_POINTER_FLOW__F04FM_MODE_LANE_INDEX_UNBOUND",
-          "implementation_status": "INFORMATIONAL_ONLY_NO_DISPATCHER_ROW_TO_F04FM_OUTPUT_JOIN",
-          "scope": "The V2 report traces the opaque row pointer through dispatcher/wrapper to the filter caller but finds no unique pointer/row writer. It does not bind the dispatcher or opaque row to an F04FM mathematical output index, lane or mode; those joins remain UNBOUND. Approved F04FM generation formulas remain unchanged, and no connection is inferred from field shape or row order.",
+          "mapping_status": "WASHED_V3_STATIC_PRODUCER_EDGE_UNBOUND_NO",
+          "implementation_status": "INFORMATIONAL_ONLY_TYPED_PRODUCER_AND_SELECTED_CALLBACK_UNBOUND",
+          "scope": "V3 confirms only the reporter-attributed opaque callback-context pointer path and filter gate predicates. It does not bind row words or dispatcher output to an F04FM mathematical output index, lane or mode; the bounded writer search found no unique row writer. Keep the F04FM producer/selected callback join UNBOUND/NO.",
           "owner": "spatial_audio",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -3571,38 +3574,40 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_OPAQUE_GATE_STATUS",
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_V3_PRODUCER_EDGE",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/SOURCE-CHAIN.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/STATIC-GATE-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/SUPERSESSION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/WASH-DECISION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/STATIC-PRODUCER-EDGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/SOURCE-BASIS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/WASH-VERIFICATION.json"
             ],
-            "supplement_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0",
-            "candidate_source_manifest_sha256": "66292330c420151b07e0e6e498c50bde994568c727c94e81c306d9ab645ca34b",
-            "validation_boundary": "V2 source identities are rehashed; static gate remains reporter-attributed, the unique +0xA0/row writer is unidentified, and semantic/owner joins remain UNBOUND."
+            "supplement_manifest_sha256": "dbb1258dfb86976df94246aa51ad1dae286dd530f43ce7104c0d1e076025908c",
+            "candidate_source_manifest_sha256": "39b4aae87d70ec15c818812fcb662060057653f20f65a2e8fb9e353afadeaa71",
+            "validation_boundary": "V3 is reporter-attributed fresh static status; Wash rehashed five approved F04 specs but did not independently reproduce the static observation. Typed producer, unique row writer, selected ADM callback and generation remain UNBOUND/NO.",
+            "superseded_v2_package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V2",
+            "superseded_v2_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0"
           },
           "test_modules": [],
           "vectors": {
-            "kind": "INPUT_ONLY_F04_DIFFUSION_GATE_V2_STATUS_NO_EXPECTED_OUTPUTS",
+            "kind": "INPUT_ONLY_F04_DIFFUSION_V3_STATUS_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
-              "Pointer reaches the filter caller through dispatcher/wrapper, but its unique writer remains unidentified.",
-              "Dispatcher/opaque row to F04FM output index, lane and mode remains UNBOUND.",
-              "Approved F04FM formulas are unchanged; the status package adds no algorithm rule."
+              "Opaque row pointer is reported from callback-context +0xA0 through dispatcher/wrapper to the four-lane filter caller.",
+              "Outer U32[1]==0 precedes U32[11]!=0, F32[10]>+0.0 and U32[0]==0; no static values were observed.",
+              "No unique pointer/row writer or selected callback/source-generation join was identified; R19 A4 is not this row producer."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0"
+            "supplement_manifest_sha256": "dbb1258dfb86976df94246aa51ad1dae286dd530f43ce7104c0d1e076025908c"
           },
           "not_run": [
-            "Native selector/row to F04FM output index, lane or mode.",
-            "Unique opaque pointer/row writer, owner and callback/source-generation identity."
+            "Unique context-pointer/row-word writer and typed owner.",
+            "Gate row joins to the selected ADM callback, semantic producer, selected tail and source/callback generation.",
+            "Native execution, dynamic capture, full-song replay and product acceptance."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
@@ -3620,11 +3625,11 @@
       "inventory_status": "INVENTORIED",
       "implementation_status": "DEFERRED_DETAILED_MAPPING",
       "direct_slices": [
-        {
+                {
           "slice_id": "informational-diffusion-gate-to-constructor-identity-unbound",
-          "mapping_status": "WASHED_V2_OPAQUE_POINTER_FLOW__F04FCM_CONSTRUCTOR_JOIN_UNBOUND",
-          "implementation_status": "INFORMATIONAL_ONLY_NO_GATE_TO_CONSTRUCTOR_OUTPUT_JOIN",
-          "scope": "The V2 report traces an opaque row pointer to the filter caller but does not identify its unique writer or bind the row to F04FCM constructor output, selected profile or parameter-install invocation; those joins remain UNBOUND. Approved constructor formulas and cold/reset rules remain unchanged, with no native gate semantics inferred.",
+          "mapping_status": "WASHED_V3_STATIC_PRODUCER_EDGE_UNBOUND_NO",
+          "implementation_status": "INFORMATIONAL_ONLY_TYPED_PRODUCER_AND_SELECTED_CALLBACK_UNBOUND",
+          "scope": "V3 confirms only the reporter-attributed opaque callback-context pointer path and filter gate predicates. It does not bind row words to an F04FCM constructor input or selected parameter profile; the bounded writer search found no unique row writer. Keep the constructor/selected callback join UNBOUND/NO.",
           "owner": "spatial_audio",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -3635,38 +3640,40 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_OPAQUE_GATE_STATUS",
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_V3_PRODUCER_EDGE",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/SOURCE-CHAIN.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/STATIC-GATE-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/SUPERSESSION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/WASH-DECISION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/STATIC-PRODUCER-EDGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/SOURCE-BASIS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/WASH-VERIFICATION.json"
             ],
-            "supplement_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0",
-            "candidate_source_manifest_sha256": "66292330c420151b07e0e6e498c50bde994568c727c94e81c306d9ab645ca34b",
-            "validation_boundary": "V2 source identities are rehashed; static gate remains reporter-attributed, the unique +0xA0/row writer is unidentified, and semantic/owner joins remain UNBOUND."
+            "supplement_manifest_sha256": "dbb1258dfb86976df94246aa51ad1dae286dd530f43ce7104c0d1e076025908c",
+            "candidate_source_manifest_sha256": "39b4aae87d70ec15c818812fcb662060057653f20f65a2e8fb9e353afadeaa71",
+            "validation_boundary": "V3 is reporter-attributed fresh static status; Wash rehashed five approved F04 specs but did not independently reproduce the static observation. Typed producer, unique row writer, selected ADM callback and generation remain UNBOUND/NO.",
+            "superseded_v2_package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V2",
+            "superseded_v2_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0"
           },
           "test_modules": [],
           "vectors": {
-            "kind": "INPUT_ONLY_F04_DIFFUSION_GATE_V2_STATUS_NO_EXPECTED_OUTPUTS",
+            "kind": "INPUT_ONLY_F04_DIFFUSION_V3_STATUS_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V2/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V3/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
-              "Pointer reaches the filter caller through dispatcher/wrapper, but the +0xA0/row-word writer remains unidentified.",
-              "Opaque gate row to F04FCM constructor output, selected profile and install call remains UNBOUND.",
-              "Approved F04FCM formulas remain unchanged; no native storage or algorithm rule is added."
+              "Opaque row pointer is reported from callback-context +0xA0 through dispatcher/wrapper to the four-lane filter caller.",
+              "Outer U32[1]==0 precedes U32[11]!=0, F32[10]>+0.0 and U32[0]==0; no static values were observed.",
+              "No unique pointer/row writer or selected callback/source-generation join was identified; R19 A4 is not this row producer."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "1ecb4e67103d0920097268d10f858779afe2020948e6546bb310260128a4ddf0"
+            "supplement_manifest_sha256": "dbb1258dfb86976df94246aa51ad1dae286dd530f43ce7104c0d1e076025908c"
           },
           "not_run": [
-            "Opaque gate row to F04FCM constructor output or admitted profile identity.",
-            "Parameter-install owner/call identity, unique row writer and callback/source-generation identity."
+            "Unique context-pointer/row-word writer and typed owner.",
+            "Gate row joins to the selected ADM callback, semantic producer, selected tail and source/callback generation.",
+            "Native execution, dynamic capture, full-song replay and product acceptance."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
@@ -14314,190 +14321,276 @@
           },
           "error_outcomes": []
         },
-        {
-          "slice_id": "measurement-result-aggregate-and-id1-integer-projection",
-          "mapping_status": "MATERIALIZED_F06_TYPED_MODEL_CONNECTION_AND_PROGRAMME_LIFETIME__WHOLE_CHAIN_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_PUBLIC_KIND_TO_ID1_AND_SINGLE_PROGRAMME_CONFIG_REUSE__WHOLE_MODEL_RUN_NOT_RUN",
-          "scope": "The completed model measurement receipt exposes a semantic ProgrammeGatingKind; an explicit PublicMeasurementResultKind conversion maps ungated/dialogue/level to public 0/1/2, and ID1 preferred is public kind == 1. Internal selector origins map separately as 0/1/2 to public 0/2/1; no cast is used. A single finalized ID1 configuration is supplied when a fresh metadata owner is constructed and reused by all production stage_source transitions; typed source-stage inputs carry no measurement/config field. The raw process_source vector adapter is cfg(test) only and retains fixture config inputs. EOF does not replace the owner configuration, and reset_for_attempt requires the finalized configuration for the new attempt before constructing cold timer/queues. The native paired writer/getter behavior is crosswalked for completed finite scalar tuples, but the actual factory branch/value and native reset equivalence are not observed. Raw 44-byte record offset and raw I32 member storage identity are not asserted. No XML/UI input or downmix-preference inference is used.",
-          "implementation_files": [
-            "crates/jocforge-domain/src/meter/measurement_selection.rs",
-            "crates/jocforge-domain/src/meter/mod.rs",
-            "crates/jocforge-domain/src/meter/measurement_receipt.rs",
-            "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
-            "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs"
-          ],
-          "test_modules": [
-            "crates/jocforge-domain/tests/measurement_selection.rs",
-            "crates/jocforge-domain/src/meter/measurement_receipt.rs",
-            "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
-            "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
-          ],
-          "clock": {
-            "domains": ["CodecSourceIndex", "JocDispatchIndex", "PublishedAuIndex"],
-            "covered_clauses": [
-              "One programme-owned ID1 configuration is reused while the metadata owner advances its existing CodecSourceIndex s, dispatch d=s+1, and publication AU j.",
-              "Configuration construction is programme-scoped and has no per-source remeasurement clock; source-count equality to external model domains remains an enclosing-coordinator responsibility."
-            ]
-          },
-          "parameters": {
-            "kind": "WASH_HASH_BOUND_F06_PUBLIC_RESULT_KIND_CROSSWALK_AND_INTERNAL_PROVIDER_RULES",
-            "provider_files": [
-              "specs/13-emdf-and-timeline.md",
-              "specs/06-meter-bsi.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/INPUT-ONLY-RECIPES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/WASH-REVIEW.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/INPUT-ONLY-RECIPES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/KIND-DOMAINS.csv",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/INPUT-ONLY-CASES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/VERIFICATION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/WASH-DECISION.json"
-            ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
-            "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56",
-            "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac",
-            "programme_lifetime_supplement_manifest_sha256": "50814695b9f57e44e0362b3fe39236057f83e81616be1eada84c1de6a0109acb",
-            "typed_closure_supplement_manifest_sha256": "d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad",
-            "preferred_status_erratum_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
-            "source_contracts": [
-              {
-                "file": "specs/13-emdf-and-timeline.md",
-                "bytes": 12839,
-                "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
-              },
-              {
-                "file": "specs/06-meter-bsi.md",
-                "bytes": 6337,
-                "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
-              }
-            ],
-            "crosswalk_sources": [
-              {
-                "file": "specs/06-meter-bsi.md",
-                "bytes": 6337,
-                "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
-              },
-              {
-                "file": "specs/06-ungated-mean-and-fallback.md",
-                "bytes": 8673,
-                "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
-              },
-              {
-                "file": "specs/13-emdf-and-timeline.md",
-                "bytes": 12839,
-                "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
-              },
-              {
-                "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
-                "bytes": 135066,
-                "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
-              }
-            ],
-            "lifetime_sources": [
-              {
-                "file": "specs/06-meter-bsi.md",
-                "bytes": 6337,
-                "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
-              },
-              {
-                "file": "specs/06-ungated-mean-and-fallback.md",
-                "bytes": 8673,
-                "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
-              },
-              {
-                "file": "specs/13-emdf-and-timeline.md",
-                "bytes": 12839,
-                "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
-              },
-              {
-                "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
-                "bytes": 135066,
-                "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
-              }
-            ],
-            "validation_boundary": "The frozen duration-model caller's public result kind to ID1 rule is hash-bound and locally connected through a distinct PublicMeasurementResultKind. One finalized configuration is stored by the model metadata owner and reused for each source; a new owner starts with cold timer/queues. The tests use input-only scalar receipts and existing source vectors, not a full meter or duration execution. Native member-to-model behavior is crosswalked only on completed finite scalar tuples; selected factory branch/value, upstream DSP, native restart equivalence, and original PE rehash remain unobserved/NOT_RUN."
-          },
-          "vectors": {
-            "kind": "HASH_BOUND_F06_TYPED_CLOSURE_INPUTS_MODEL_LIFETIME_AND_AGGREGATION_RECIPES",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/INPUT-ONLY-RECIPES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/INPUT-ONLY-RECIPES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/INPUT-ONLY-CASES.json",
-              "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json"
-            ],
-            "case_pointers": [
-              "Seven strict I32 equality cases and six unnamed processor raw-I32 remap cases are asserted against the Wash input-only controls.",
-              "Four complete Wash aggregate recipes supply the initial 44-byte record, comparator bits, separate I32 member, and each ordered candidate record/loudness/member tuple; they cover no winner, strict winner/tie, later winner, and no candidates.",
-              "The model crosswalk package supplies scalar model inputs only. Receipt tests distinguish internal Level=1 from public Level=2 and verify public_result_kind==1 drives ID1 preferred; the ungated public-kind-0 projection is also tested without rerunning the F06U producer. No expected body or full model run is claimed.",
-              "The aggregate package supplies inputs only, not expected production outputs. Tests derive each transition from the washed strict-greater rule and do not assert native layout or an expected body.",
-              "The typed-closure package proves branch-independent public-kind/preferred behavior only on completed finite scalar tuples; its historical branch and native execution remain unobserved/not run.",
-              "The typed-stage lifetime test constructs one finalized ID1 configuration, advances five source proposals with that same configuration, verifies EOF accepts no measurement input, and verifies a new attempt starts with cold timer/queues. The separate raw process_source vector adapter is cfg(test) only and may consume its fixture's per-source config; it does not back the production stage path. The scalar recipes are not a full meter or duration run."
-            ],
-            "local_fixture": {
-              "file": "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json",
-              "bytes": 2441,
-              "sha256": "3bf4a13488c10c9460a99e50e2d64a819c2da1af1d722cc58edd629f5c0d5ff4"
-            },
-            "additional_fixtures": [
-              {
-                "file": "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json",
-                "bytes": 2012,
-                "sha256": "4128af1949606008688427092f7b6a503e772a5dda2dd9bd768984d734eee062"
-              }
-            ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
-            "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56",
-            "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac"
-          },
-          "native_status": {
-            "model_public_result_kind_to_id1_preferred": "LOCALLY_VERIFIED",
-            "selected_di_off_level_public_kind_2_to_preferred_false": "LOCALLY_VERIFIED",
-            "ungated_public_kind_0_to_preferred_false": "LOCALLY_VERIFIED",
-            "generic_dialogue_public_kind_1_to_preferred_true": "LOCALLY_VERIFIED",
-            "programme_id1_configuration_created_once_and_reused": "LOCALLY_VERIFIED_MODEL_OWNER_LIFETIME",
-            "fresh_metadata_owner_timer_and_queues": "LOCALLY_VERIFIED_COLD_CONSTRUCTOR",
-            "model_eof_does_not_recompute_measurement_or_preferred": "LOCALLY_VERIFIED",
-            "strict_i32_booleanization": "LOCALLY_VERIFIED_AGAINST_INPUT_ONLY_CONTROLS",
-            "processor_i32_remap": "LOCALLY_VERIFIED_AGAINST_INPUT_ONLY_CONTROLS",
-            "44_byte_aggregate_transition": "LOCALLY_VERIFIED_WITH_SYNTHETIC_LOCAL_RECORDS",
-            "native_member_behavioral_crosswalk": "BOUND_ON_COMPLETED_FINITE_SCALAR_DOMAIN",
-            "selected_native_provider_branch": "UNBOUND",
-            "selected_native_preferred_value": "UNBOUND",
-            "native_same_programme_source_reset_epoch": "UNBOUND",
-            "fresh_original_pe_rehash": "NOT_RUN",
-            "native_or_runtime_execution": "NOT_RUN",
-            "full_model_execution": "NOT_RUN",
-            "native_restart_and_upstream_dsp_equivalence": "NOT_CLAIMED",
-            "whole_f13_acceptance": "NOT_RUN"
-          },
-          "error_outcomes": [],
-          "not_run": [
-            "Selected native factory branch and runtime value are not observed; only branch-independent behavior on completed finite scalar tuples is crosswalked.",
-            "Upstream energy/ITU production from real audio, full model execution, native restart equivalence, and original PE rehash.",
-            "Programme-level frame-count equality to all external clocks, parent transaction installation, whole-chain execution, and product acceptance.",
-            "No expected production body is supplied by the model crosswalk or aggregation input-only packages."
-          ],
-          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
-        }
+                                {
+                  "slice_id": "measurement-result-aggregate-and-id1-integer-projection",
+                  "mapping_status": "WASHED_TYPED_MODEL_CONNECTION_CLOSED__SELECTED_NATIVE_PROVIDER_BRANCH_UNBOUND",
+                  "implementation_status": "LOCALLY_VERIFIED_TYPED_MODEL_CONNECTION__WHOLE_RECEIPT_AND_NATIVE_VALUE_NOT_RUN",
+                  "scope": "The completed model measurement receipt exposes a semantic ProgrammeGatingKind; an explicit PublicMeasurementResultKind conversion maps ungated/dialogue/level to public 0/1/2, and ID1 preferred is public kind == 1. Internal selector origins map separately as 0/1/2 to public 0/2/1; no cast is used. A single finalized ID1 configuration is supplied when a fresh metadata owner is constructed and reused by all production stage_source transitions; typed source-stage inputs carry no measurement/config field. The raw process_source vector adapter is cfg(test) only and retains fixture config inputs. EOF does not replace the owner configuration, and reset_for_attempt requires the finalized configuration for the new attempt before constructing cold timer/queues. The native paired writer/getter behavior is crosswalked for completed finite scalar tuples, but the actual factory branch/value and native reset equivalence are not observed. Raw 44-byte record offset and raw I32 member storage identity are not asserted. No XML/UI input or downmix-preference inference is used.",
+                  "implementation_files": [
+                    "crates/jocforge-domain/src/meter/measurement_selection.rs",
+                    "crates/jocforge-domain/src/meter/mod.rs",
+                    "crates/jocforge-domain/src/meter/measurement_receipt.rs",
+                    "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
+                    "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs"
+                  ],
+                  "test_modules": [
+                    "crates/jocforge-domain/tests/measurement_selection.rs",
+                    "crates/jocforge-domain/src/meter/measurement_receipt.rs",
+                    "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
+                    "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+                  ],
+                  "clock": {
+                    "domains": [
+                      "CodecSourceIndex",
+                      "JocDispatchIndex",
+                      "PublishedAuIndex"
+                    ],
+                    "covered_clauses": [
+                      "One programme-owned ID1 configuration is reused while the metadata owner advances its existing CodecSourceIndex s, dispatch d=s+1, and publication AU j.",
+                      "Configuration construction is programme-scoped and has no per-source remeasurement clock; source-count equality to external model domains remains an enclosing-coordinator responsibility."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "WASH_HASH_BOUND_F06_PUBLIC_RESULT_KIND_CROSSWALK_AND_INTERNAL_PROVIDER_RULES",
+                    "provider_files": [
+                      "specs/13-emdf-and-timeline.md",
+                      "specs/06-meter-bsi.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/EVIDENCE.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/EVIDENCE.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/INPUT-ONLY-RECIPES.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/SOURCE-MANIFESTS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/WASH-REVIEW.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/EVIDENCE.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/INPUT-ONLY-RECIPES.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/KIND-DOMAINS.csv",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/SOURCE-MANIFESTS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/INPUT-ONLY-CASES.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/SOURCE-MANIFESTS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/VERIFICATION.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/WASH-DECISION.json"
+                    ],
+                    "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                    "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
+                    "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56",
+                    "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac",
+                    "programme_lifetime_supplement_manifest_sha256": "50814695b9f57e44e0362b3fe39236057f83e81616be1eada84c1de6a0109acb",
+                    "typed_closure_supplement_manifest_sha256": "d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad",
+                    "preferred_status_erratum_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
+                    "source_contracts": [
+                      {
+                        "file": "specs/13-emdf-and-timeline.md",
+                        "bytes": 12839,
+                        "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+                      },
+                      {
+                        "file": "specs/06-meter-bsi.md",
+                        "bytes": 6337,
+                        "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+                      }
+                    ],
+                    "crosswalk_sources": [
+                      {
+                        "file": "specs/06-meter-bsi.md",
+                        "bytes": 6337,
+                        "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+                      },
+                      {
+                        "file": "specs/06-ungated-mean-and-fallback.md",
+                        "bytes": 8673,
+                        "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+                      },
+                      {
+                        "file": "specs/13-emdf-and-timeline.md",
+                        "bytes": 12839,
+                        "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+                      },
+                      {
+                        "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
+                        "bytes": 135066,
+                        "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+                      }
+                    ],
+                    "lifetime_sources": [
+                      {
+                        "file": "specs/06-meter-bsi.md",
+                        "bytes": 6337,
+                        "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+                      },
+                      {
+                        "file": "specs/06-ungated-mean-and-fallback.md",
+                        "bytes": 8673,
+                        "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+                      },
+                      {
+                        "file": "specs/13-emdf-and-timeline.md",
+                        "bytes": 12839,
+                        "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+                      },
+                      {
+                        "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
+                        "bytes": 135066,
+                        "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+                      }
+                    ],
+                    "validation_boundary": "The frozen duration-model caller's public result kind to ID1 rule is hash-bound and locally connected through a distinct PublicMeasurementResultKind. One finalized configuration is stored by the model metadata owner and reused for each source; a new owner starts with cold timer/queues. The tests use input-only scalar receipts and existing source vectors, not a full meter or duration execution. Native member-to-model behavior is crosswalked only on completed finite scalar tuples; selected factory branch/value, upstream DSP, native restart equivalence, and original PE rehash remain unobserved/NOT_RUN."
+                  },
+                  "vectors": {
+                    "kind": "HASH_BOUND_F06_TYPED_CLOSURE_INPUTS_MODEL_LIFETIME_AND_AGGREGATION_RECIPES",
+                    "authoritative_vectors": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+                      "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json",
+                      "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/INPUT-ONLY-RECIPES.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/INPUT-ONLY-RECIPES.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/INPUT-ONLY-CASES.json",
+                      "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json"
+                    ],
+                    "case_pointers": [
+                      "Seven strict I32 equality cases and six unnamed processor raw-I32 remap cases are asserted against the Wash input-only controls.",
+                      "Four complete Wash aggregate recipes supply the initial 44-byte record, comparator bits, separate I32 member, and each ordered candidate record/loudness/member tuple; they cover no winner, strict winner/tie, later winner, and no candidates.",
+                      "The model crosswalk package supplies scalar model inputs only. Receipt tests distinguish internal Level=1 from public Level=2 and verify public_result_kind==1 drives ID1 preferred; the ungated public-kind-0 projection is also tested without rerunning the F06U producer. No expected body or full model run is claimed.",
+                      "The aggregate package supplies inputs only, not expected production outputs. Tests derive each transition from the washed strict-greater rule and do not assert native layout or an expected body.",
+                      "The typed-closure package proves branch-independent public-kind/preferred behavior only on completed finite scalar tuples; its historical branch and native execution remain unobserved/not run.",
+                      "The typed-stage lifetime test constructs one finalized ID1 configuration, advances five source proposals with that same configuration, verifies EOF accepts no measurement input, and verifies a new attempt starts with cold timer/queues. The separate raw process_source vector adapter is cfg(test) only and may consume its fixture's per-source config; it does not back the production stage path. The scalar recipes are not a full meter or duration run."
+                    ],
+                    "local_fixture": {
+                      "file": "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json",
+                      "bytes": 2441,
+                      "sha256": "3bf4a13488c10c9460a99e50e2d64a819c2da1af1d722cc58edd629f5c0d5ff4"
+                    },
+                    "additional_fixtures": [
+                      {
+                        "file": "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json",
+                        "bytes": 2012,
+                        "sha256": "4128af1949606008688427092f7b6a503e772a5dda2dd9bd768984d734eee062"
+                      }
+                    ],
+                    "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                    "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
+                    "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56",
+                    "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac"
+                  },
+                  "native_status": {
+                    "model_public_result_kind_to_id1_preferred": "LOCALLY_VERIFIED",
+                    "selected_di_off_level_public_kind_2_to_preferred_false": "LOCALLY_VERIFIED",
+                    "ungated_public_kind_0_to_preferred_false": "LOCALLY_VERIFIED",
+                    "generic_dialogue_public_kind_1_to_preferred_true": "LOCALLY_VERIFIED",
+                    "programme_id1_configuration_created_once_and_reused": "LOCALLY_VERIFIED_MODEL_OWNER_LIFETIME",
+                    "fresh_metadata_owner_timer_and_queues": "LOCALLY_VERIFIED_COLD_CONSTRUCTOR",
+                    "model_eof_does_not_recompute_measurement_or_preferred": "LOCALLY_VERIFIED",
+                    "strict_i32_booleanization": "LOCALLY_VERIFIED_AGAINST_INPUT_ONLY_CONTROLS",
+                    "processor_i32_remap": "LOCALLY_VERIFIED_AGAINST_INPUT_ONLY_CONTROLS",
+                    "44_byte_aggregate_transition": "LOCALLY_VERIFIED_WITH_SYNTHETIC_LOCAL_RECORDS",
+                    "native_member_behavioral_crosswalk": "BOUND_ON_COMPLETED_FINITE_SCALAR_DOMAIN",
+                    "selected_native_provider_branch": "UNBOUND",
+                    "selected_native_preferred_value": "UNBOUND",
+                    "native_same_programme_source_reset_epoch": "UNBOUND",
+                    "fresh_original_pe_rehash": "NOT_RUN",
+                    "native_or_runtime_execution": "NOT_RUN",
+                    "full_model_execution": "NOT_RUN",
+                    "native_restart_and_upstream_dsp_equivalence": "NOT_CLAIMED",
+                    "whole_f13_acceptance": "NOT_RUN"
+                  },
+                  "error_outcomes": [],
+                  "not_run": [
+                    "Selected native factory branch and runtime value are not observed; only branch-independent behavior on completed finite scalar tuples is crosswalked.",
+                    "Upstream energy/ITU production from real audio, full model execution, native restart equivalence, and original PE rehash.",
+                    "Programme-level frame-count equality to all external clocks, parent transaction installation, whole-chain execution, and product acceptance.",
+                    "No expected production body is supplied by the model crosswalk or aggregation input-only packages."
+                  ],
+                  "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+                },
+                                {
+                  "slice_id": "informational-preferred-input-user-decision-supersession",
+                  "mapping_status": "WASHED_NO_UI_INPUT_AND_TYPED_MODEL_MAPPING_CLOSED__NATIVE_PROVIDER_UNBOUND",
+                  "implementation_status": "MODEL_TYPED_CONNECTION_CLOSED__WHOLE_RECEIPT_AND_SELECTED_NATIVE_VALUE_NOT_RUN",
+                  "scope": "F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1 remains valid: no task/XML/UI preferred input and no default. F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1 supersedes its UNBOUND conclusion only for the completed finite scalar typed model mapping: selected F06 scalar branch -> semantic ProgrammeGatingKind (Ungated=0, Dialogue=1, Level=2) -> PublicMeasurementResultKind -> Id1PreferredValue (preferred=1 iff Dialogue). This is an explicit typed enum path, not raw/opaque I32 booleanization, an F06 DRC flag, or BSI preferred_downmix_mode. The local typed model connection is closed, while selected native provider branch/value/source epoch and the production MeasurementReceipt/terminal meter root remain UNBOUND/NOT_RUN. The current DI-off helper emits Ungated/Level; Dialogue is covered by the approved F06 typed selector contract and input-only cases, not a selected production run. No whole-programme readiness is claimed.",
+                  "owner": "joc",
+                  "implementation_requirement": false,
+                  "implementation_files": [],
+                  "clock": {
+                    "domains": [],
+                    "covered_clauses": [
+                      "No new task/UI value or caller clock is introduced; the selected preferred provider and native caller remain unbound."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "HASH_BOUND_INFORMATIONAL_USER_DECISION_SUPERSESSION",
+                    "provider_files": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1/EVIDENCE.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1/SOURCE-MANIFESTS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1/WASH-REVIEW.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/TYPED-CALLER-MAP.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/SUPERSESSION.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/SOURCE-IDENTITIES.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/WASH-VERIFICATION.json"
+                    ],
+                    "supplement_manifest_sha256": "0055b50cd51168c84923c3b6a5a671976acd77bb200b00fd1a1fc710037e7ede",
+                    "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                    "superseded_package": {
+                      "package_id": "F13-EXPLICIT-PREFERRED-JOB-INPUT-V1",
+                      "manifest_sha256": "c8cdb5f440dff0fc392ed0eb95080c1931a4bb27e684f9235ec3fb222864764c"
+                    },
+                    "preferred_provider": "UNBOUND_PENDING_CALLER_SOURCE_RECONCILIATION",
+                    "validation_boundary": "User decision removes an invented task/UI input; no caller source, default, or native branch is established.",
+                    "typed_receipt_reconciliation_manifest_sha256": "eff8427982b13aa60be6c5985592d79743c650e659913f686bcc10d1c6fe98d6",
+                    "typed_model_connection": "CLOSED_FOR_COMPLETED_FINITE_SCALAR_DOMAIN",
+                    "selected_native_provider": {
+                      "branch": "UNBOUND",
+                      "preferred_value": "UNBOUND",
+                      "source_epoch": "UNBOUND"
+                    },
+                    "whole_programme_receipt_and_terminal_meter_root": "BLOCKED_NOT_RUN",
+                    "wash_reviewed_map_snapshot": {
+                      "file": "docs/implementation/IMPLEMENTATION-MAP.json",
+                      "bytes": 1720729,
+                      "sha256": "bdbe5c361dd8ff4ad34238758819ec504ce402a0ef1b0fa8341ee5d7b48032b1"
+                    }
+                  },
+                  "test_modules": [],
+                  "vectors": {
+                    "kind": "HASH_BOUND_USER_DECISION_AND_SOURCE_BOUNDARY_NO_EXPECTED_OUTPUTS",
+                    "authoritative_vectors": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1/EVIDENCE.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1/SOURCE-MANIFESTS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1/WASH-REVIEW.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/TYPED-CALLER-MAP.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/SUPERSESSION.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/SOURCE-IDENTITIES.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-TYPED-RECEIPT-RECONCILIATION-V1/WASH-VERIFICATION.json"
+                    ],
+                    "case_pointers": [
+                      "No task/XML/UI preferred input and no default; the earlier explicit-input note is superseded.",
+                      "Finite typed model path is ProgrammeGatingKind -> PublicMeasurementResultKind -> Id1PreferredValue; preferred is true only for Dialogue public kind 1.",
+                      "Raw/opaque native I32 tags, F06 DRC gate flags and BSI preferred_downmix_mode remain prohibited substitutions.",
+                      "Selected native branch/value/source epoch and production MeasurementReceipt/terminal root remain UNBOUND or NOT_RUN."
+                    ],
+                    "expected_outputs_included": false,
+                    "supplement_manifest_sha256": "0055b50cd51168c84923c3b6a5a671976acd77bb200b00fd1a1fc710037e7ede",
+                    "typed_receipt_reconciliation_manifest_sha256": "eff8427982b13aa60be6c5985592d79743c650e659913f686bcc10d1c6fe98d6"
+                  },
+                  "not_run": [
+                    "Selected native provider branch, preferred value and source epoch.",
+                    "Full production MeasurementReceipt and terminal meter-root production.",
+                    "Selected native run and whole-programme acceptance."
+                  ],
+                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                  "implementation_inventory": [],
+                  "test_inventory": []
+                }
       ],
       "exclusions": [
         "F13C JOC complexity BSI producer",
@@ -17769,6 +17862,55 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
+        },
+        {
+          "slice_id": "informational-transport-publication-entry-not-observed",
+          "mapping_status": "WASHED_TRANSPORT_PUBLICATION_ENTRY_NOT_OBSERVED__AU_AND_SOURCE_UNBOUND",
+          "implementation_status": "NEGATIVE_SCOPE_ONLY_NO_PUBLICATION_ANCHOR__LOCAL_AU_CLOCK_UNCHANGED",
+          "scope": "The bounded validation-vector path ends before publication: the temporary vector is released, the threshold-selected token serves validation/search only, and root-history scalars carry control state. No independent transport enqueue, AU-descriptor consumer or production output owner was observed. Selected transport AU is NOT_RUN/UNBOUND and source generation is UNBOUND. Local AU=s-2 remains governed by the approved source clock. The next useful evidence target is an independent backend output callback or writer-facing descriptor; do not reuse the validation vector or token.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The absent native publication anchor does not block or replace the approved local AU=j=s-2 source-clock rule."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_TRANSPORT_PUBLICATION_NEGATIVE_SCOPE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "0ad98657372d5a84524b90e53063b479dfffc2459f6ec52af9c1e520ab4d0aba",
+            "candidate_source_manifest_sha256": "59ce1d5f01dcf0dc4640d5c230762820b3113822a0c4b88556138a44d2354627",
+            "validation_boundary": "No publication entry or AU-descriptor owner was observed; native AU/source remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_NEGATIVE_SCOPE_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "The validation vector is released before publication and the token remains validation/search only.",
+              "No independent enqueue, AU descriptor or production output owner was observed.",
+              "Transport AU and source generation are unbound; local AU=s-2 remains the approved clock."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "0ad98657372d5a84524b90e53063b479dfffc2459f6ec52af9c1e520ab4d0aba"
+          },
+          "not_run": [
+            "Independent backend output callback or writer-facing descriptor and owner token.",
+            "Selected transport-AU identity and source generation.",
+            "Native execution, end-to-end encoding and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
                        ]
     },
@@ -19610,92 +19752,128 @@
       "reset_authority": "Programme full restart reconstructs JOCSEL01 cold; no component-local reset or commit API exists.",
       "parent_install_status": "NOT_RUN; the complete after-state and ID14 body are available as one noncommitting proposal, but all twelve owner roots remain mandatory."
     },
-                {
-      "root_id": "meter",
-      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-      "implementation_status": "NATIVE_STATIC_K_OWNER_CHAIN_CLOSED__GTC_ROOT_COMMIT_AND_MEASUREMENT_RECEIPT_PENDING",
-      "implementation_files": [
-        "crates/jocforge-domain/src/meter/standalone_root.rs",
-        "crates/jocforge-domain/src/meter/mod.rs"
-      ],
-      "test_modules": [
-        "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
-      ],
-      "implementation_inventory": [
-        {
-          "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-          "bytes": 16057,
-          "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
-        },
-        {
-          "path": "crates/jocforge-domain/src/meter/mod.rs",
-          "bytes": 679,
-          "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
-        }
-      ],
-      "test_inventory": [
-        {
-          "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
-          "bytes": 6976,
-          "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
-        }
-      ],
-      "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and attempt+1 policy remain unbound. For K-filter, approved F06W omits the I32 member; native static DPLM owner chain and cold K=[0;6] are closed, with energy exponent separately cold at [48;6]. V4 K=[48;6] is synthetic only and conflicts with native cold. Runtime pointer/generation capture is NOT_RUN. A parent-issued opaque typed MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is decidable as JOCForge LOCAL_MODEL policy, not a DEE formula and not implemented. GTC root serialization, one parent commit and MeasurementReceipt remain pending. Complete terminal owners.meter serialization is blocked; no terminal hash, READY proposal or parent commit exists.",
-      "canonical_gtc_state_ref_status": "NOT_RUN",
-      "gtc_owner_receipt_status": "NOT_RUN",
-      "gtc_single_root_swap_status": "NOT_RUN",
-      "encode_status": "NOT_RUN",
-      "latest_owner_state_reference_supplement": {
-        "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
-        "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
-        "queue_lifecycle_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
-        "payloads": "11/11 locally verified",
-        "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_PRODUCER",
-        "unresolved_fields": [
-          "Native DPLM K exponent type/cold value and static owner chain to the selected reducer are closed; runtime owner/generation receipt to canonical owners.meter and parent commit remain UNBOUND",
-          "input_cursor.model_owner_key model contract and Panner-only callsites are closed; production Meter owner-key producer and runtime cursor/owner identity binding are not part of the current Meter root"
-        ]
-      },
-      "remaining_gates": [
-        "Frozen model semantics and two Panner-only callsites for input_cursor.model_owner_key are closed; production Meter key producer/call receipt and same-root binding are UNBOUND, so terminal owners.meter serialization is BLOCKED.",
-        "K-filter exponent native cold [0;6], separate energy cold [48;6], and static setup-to-reducer owner chain are closed; runtime generation receipt to canonical owners.meter, local GTC root projection/serialization and single parent commit remain pending. No in-place K reset writer was observed; sibling formula is not selected.",
-        "Terminal meter hash and ProgrammeMeasurementReceipt/READY production remain NOT_RUN.",
-        "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration remain NOT_RUN.",
-        "Native EOF/drain evidence, end-to-end encode, W04 and product acceptance remain NOT_RUN."
-      ],
-      "measurement_receipt_ready_status": "NOT_RUN",
-      "terminal_state_reference_status": "BLOCKED_ON_GTC_METER_OWNER_GENERATION_MAPPING_AND_SINGLE_ROOT_COMMIT",
-      "terminal_meter_sha256_status": "NOT_RUN",
-      "synthetic_reference_conflicts": [
-        {
-          "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
-          "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
-          "synthetic_k_filter_cold": [
-            48,
-            48,
-            48,
-            48,
-            48,
-            48
-          ],
-          "native_selected_dplm_k_filter_cold": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "status": "SYNTHETIC_ONLY_CONFLICTS_WITH_NATIVE_COLD",
-          "disposition": "Retain V4 fixture as synthetic; do not claim it as native cold or delete/overwrite it."
-        }
-      ],
-      "readiness_split": {
-        "native_selected_dplm_k_cold_and_static_owner_chain": "CLOSED",
-        "local_parent_meter_owner_id_policy": "DECIDABLE_LOCAL_POLICY_NOT_IMPLEMENTED",
-        "gtc_owners_meter_root_serialization_parent_commit_measurement_receipt": "PENDING"
-      }
-    },
+                                                                {
+                                  "root_id": "meter",
+                                  "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+                                  "implementation_status": "NATIVE_K_COLD_AND_ROOT_FIELD_CROSSWALK_CLOSED__GTC_ROOT_COMMIT_AND_MEASUREMENT_RECEIPT_PENDING",
+                                  "implementation_files": [
+                                    "crates/jocforge-domain/src/meter/standalone_root.rs",
+                                    "crates/jocforge-domain/src/meter/mod.rs"
+                                  ],
+                                  "test_modules": [
+                                    "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
+                                  ],
+                                  "implementation_inventory": [
+                                    {
+                                      "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+                                      "bytes": 16057,
+                                      "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
+                                    },
+                                    {
+                                      "path": "crates/jocforge-domain/src/meter/mod.rs",
+                                      "bytes": 679,
+                                      "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
+                                    }
+                                  ],
+                                  "test_inventory": [
+                                    {
+                                      "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
+                                      "bytes": 6976,
+                                      "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
+                                    }
+                                  ],
+                                  "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and attempt+1 policy remain unbound. For K-filter, approved F06W omits the I32 member; native static DPLM owner chain and cold K=[0;6] are closed, with energy exponent separately cold at [48;6]. V4 K=[48;6] is synthetic only and conflicts with native cold. Runtime pointer/generation capture is NOT_RUN. A parent-issued opaque typed MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is decidable as JOCForge LOCAL_MODEL policy, not a DEE formula and not implemented. The local canonical meter exponent split is now crosswalked: window_k_energy.exponents_i32 is energy cold [48;6], and the distinct selected-DPLM K exponent is cold [0;6]. Runtime owner/generation mapping, root serialization execution, one parent commit and MeasurementReceipt remain pending. Complete terminal owners.meter serialization is blocked; no terminal hash, READY proposal or parent commit exists.",
+                                  "canonical_gtc_state_ref_status": "NOT_RUN",
+                                  "gtc_owner_receipt_status": "NOT_RUN",
+                                  "gtc_single_root_swap_status": "NOT_RUN",
+                                  "encode_status": "NOT_RUN",
+                                  "latest_owner_state_reference_supplement": {
+                                    "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+                                    "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
+                                    "queue_lifecycle_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
+                                    "payloads": "11/11 locally verified",
+                                    "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_PRODUCER",
+                                    "unresolved_fields": [
+                                      "Native DPLM K exponent type/cold value and static owner chain to the selected reducer are closed; runtime owner/generation receipt to canonical owners.meter and parent commit remain UNBOUND",
+                                      "input_cursor.model_owner_key model contract and Panner-only callsites are closed; production Meter owner-key producer and runtime cursor/owner identity binding are not part of the current Meter root"
+                                    ]
+                                  },
+                                  "remaining_gates": [
+                                    "Frozen model semantics and two Panner-only callsites for input_cursor.model_owner_key are closed; production Meter key producer/call receipt and same-root binding are UNBOUND, so terminal owners.meter serialization is BLOCKED.",
+                                    "K-filter exponent native cold [0;6], separate energy cold [48;6], and static setup-to-reducer owner chain are closed; runtime generation receipt to canonical owners.meter, root serialization execution and single parent commit remain pending; the local field semantics are crosswalked. No in-place K reset writer was observed; native close/reopen or next-attempt root reuse remains UNBOUND, and the sibling formula is not selected.",
+                                    "Terminal meter hash and ProgrammeMeasurementReceipt/READY production remain NOT_RUN.",
+                                    "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration remain NOT_RUN.",
+                                    "Native EOF/drain evidence, end-to-end encode, W04 and product acceptance remain NOT_RUN."
+                                  ],
+                                  "measurement_receipt_ready_status": "NOT_RUN",
+                                  "terminal_state_reference_status": "BLOCKED_ON_GTC_METER_OWNER_GENERATION_MAPPING_AND_SINGLE_ROOT_COMMIT",
+                                  "terminal_meter_sha256_status": "NOT_RUN",
+                                  "synthetic_reference_conflicts": [
+                                    {
+                                      "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+                                      "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
+                                      "synthetic_k_filter_cold": [
+                                        48,
+                                        48,
+                                        48,
+                                        48,
+                                        48,
+                                        48
+                                      ],
+                                      "native_selected_dplm_k_filter_cold": [
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0
+                                      ],
+                                      "status": "SYNTHETIC_ONLY_CONFLICTS_WITH_NATIVE_COLD",
+                                      "disposition": "Retain V4 fixture as synthetic; do not claim it as native cold or delete/overwrite it."
+                                    }
+                                  ],
+                                  "readiness_split": {
+                                    "native_selected_dplm_k_cold_and_static_owner_chain": "CLOSED",
+                                    "local_parent_meter_owner_id_policy": "DECIDABLE_LOCAL_POLICY_NOT_IMPLEMENTED",
+                                    "gtc_owners_meter_root_serialization_parent_commit_measurement_receipt": "PENDING",
+                                    "canonical_root_field_semantics": "CLOSED_SEPARATE_K_ZERO_AND_ENERGY_48_FIELDS",
+                                    "canonical_root_hash_and_receipt_execution": "PENDING",
+                                    "native_dplm_restart_owner_and_generation": "UNBOUND",
+                                    "local_gtc_full_restart_contract": "APPROVED_MODEL_ONLY"
+                                  },
+                                  "canonical_meter_root_schema_reference": {
+                                    "reference_package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V1",
+                                    "reference_manifest_sha256": "9993321795a49f5231c9967c1ed007469d3ddc31408a3f07d616cb986005a34c",
+                                    "approved_source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                                    "field_crosswalk_package_id": "METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1",
+                                    "field_crosswalk_manifest_sha256": "2457250dc7b1aefdc223b9e86a8d23c33a0a76f6bd7eb65fd216e433e6c973a0",
+                                    "field_semantics": {
+                                      "window_k_energy.exponents_i32": "energy_accumulator.exponent_i32_by_channel; signed I32[6]; cold [48;6]",
+                                      "window_k_energy.k_filter_exponents_i32_by_channel": "distinct selected DPLM K exponent; signed I32[6]; cold [0;6]",
+                                      "window_k_energy.k_filter_state_f32_u32_words": "F32[6][2][4] bit words; positive-zero cold",
+                                      "window_k_energy.mantissa_f32_u32_words": "energy accumulator F32[6] bit words; positive-zero cold"
+                                    },
+                                    "approved_source_leaf_recheck": {
+                                      "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                                      "expected": 17,
+                                      "verified": 17
+                                    },
+                                    "status": "LOCAL_FIELD_SEMANTICS_CLOSED__CANONICAL_ROOT_EXECUTION_AND_RECEIPT_PENDING",
+                                    "native_runtime_owner_generation": "NOT_RUN",
+                                    "canonical_root_hash": "NOT_RUN",
+                                    "parent_commit_and_measurement_receipt": "NOT_RUN"
+                                  },
+                                  "restart_lifecycle_boundary": {
+                                    "package_id": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V1",
+                                    "manifest_sha256": "0bfca098c0ea304bb3ccd2224dd5f233af7e868f1a60c9c6c9cc5dbd50cabf87",
+                                    "source_manifest_sha256": "9f0a3a98a07854ea002d7cbed6030471db0e07a5771a0d2e3304fc3dd5323c4d",
+                                    "fresh_worker_root_setup": "STATICALLY_RECONSTRUCTS_NUMERIC_STATE; K EXPONENT COLD [0;6]",
+                                    "native_close_reopen_or_next_attempt_reconstruction": "UNBOUND",
+                                    "native_cross_attempt_owner_generation": "UNBOUND",
+                                    "local_gtc_full_restart": "APPROVED_MODEL_ONLY_DESTROY_AND_RECONSTRUCT_COLD_ROOT_WITH_ATTEMPT_PLUS_ONE",
+                                    "native_runtime": "NOT_RUN"
+                                  }
+                                },
                 {
       "root_id": "drc",
       "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
