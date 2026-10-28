@@ -1,0 +1,33 @@
+{
+  "schema": "washed-au-token-validation-stop.v1",
+  "package_id": "AU-TOKEN-EQUALITY-NOT-RUN-V1",
+  "classification": "BOUNDED_NEGATIVE_SCOPE_AND_STOP_EVIDENCE",
+  "observed_slot": {
+    "counter_u64": 0,
+    "selected_token_non_null": true,
+    "selected_token_passed_unchanged": true,
+    "data_length_u32": 4096,
+    "helper_mode_or_search_value_u32": 1
+  },
+  "static_selector": {
+    "counter_compared_to_ordered_u64_thresholds": true,
+    "index_rule": "first threshold greater than counter, else final slot",
+    "parallel_pointer_table_uses_same_index": true
+  },
+  "direct_helper": {
+    "returns_position_or_length_sentinel": true,
+    "caller_compares_result_to_input_length": true,
+    "non_length_result_is_validation_failure": true,
+    "transport_enqueue_or_AU_descriptor": false
+  },
+  "result": {
+    "slot_to_helper_token_equality": "BOUND",
+    "token_role": "AUXILIARY_VALIDATION_OR_SEARCH; NOT_PROVEN_AU_DESCRIPTOR",
+    "selected_transport_AU": "NOT_RUN_UNBOUND",
+    "source_generation": "UNBOUND"
+  },
+  "single_missing_receipt": "Transport owner or AU-descriptor identity token at the first downstream publication boundary after the current processing loop returns.",
+  "stop_rule": "STOP_THIS_TOKEN_PATH",
+  "implementation_requirement": false,
+  "raw_body_or_output_bytes_read_or_persisted": false
+}

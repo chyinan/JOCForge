@@ -17719,6 +17719,56 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
+        },
+        {
+          "slice_id": "informational-au-token-equality-not-au",
+          "mapping_status": "WASHED_COUNTER0_TOKEN_TO_VALIDATION_HELPER_BOUND__AU_AND_SOURCE_UNBOUND",
+          "implementation_status": "NEGATIVE_SCOPE_ONLY_STOP_TOKEN_BRANCH__NO_AU_RULE",
+          "scope": "The bounded Wash path observes counter 0 selecting a non-null token and passing it unchanged to a direct helper. The helper returns a position or the 4096-byte length sentinel; the caller compares the result with 4096 and treats a non-length result as validation failure. This binds slot-to-validation-helper token equality only. The helper is not a transport enqueue or AU descriptor. Selected transport AU identity is NOT_RUN/UNBOUND and source generation is UNBOUND. Stop this token branch; only the first caller-side transport publication boundary after the processing loop returns could add evidence. This does not block or replace the separately approved local source-clock numbering AU=j=s-2.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The helper token is a validation/search input, not a source index or transport-AU clock; the approved local AU numbering remains AU=j=s-2."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_AU_TOKEN_NEGATIVE_SCOPE_STOP",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "fbdf41b86815bc14ccc83566d85653ac79cf68690de6eadcf2daa7aa9c594593",
+            "candidate_source_manifest_sha256": "eab391fbd55e0da6c7f0d5a2f456bd24a979cecef4d83ede4a433606a5c42a1b",
+            "validation_boundary": "Counter-0 slot equals the direct validation-helper token only; no transport-AU or source-generation identity follows."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_NEGATIVE_SCOPE_RECEIPT_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/EDGE-STATUS.json"
+            ],
+            "case_pointers": [
+              "Counter 0 selects a non-null token and passes it unchanged to the validation/search helper.",
+              "The helper returns a position or length sentinel; a non-length result is a validation failure.",
+              "No transport enqueue/AU descriptor is reached; AU token remains NOT_RUN/UNBOUND and source generation remains UNBOUND.",
+              "Stop this token branch; the approved local source-clock AU=j=s-2 remains independently applicable."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "fbdf41b86815bc14ccc83566d85653ac79cf68690de6eadcf2daa7aa9c594593"
+          },
+          "not_run": [
+            "First caller-side transport publication boundary after the processing loop returns.",
+            "Selected transport-AU identity and source generation.",
+            "Native execution, production encoding and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
                        ]
     },

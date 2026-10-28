@@ -1,0 +1,31 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_manifest_sha256": "eab391fbd55e0da6c7f0d5a2f456bd24a979cecef4d83ede4a433606a5c42a1b",
+  "source_payloads_verified": [
+    {
+      "file": "AU-TOKEN-EQUALITY-NOT-RUN.json",
+      "bytes": 2529,
+      "sha256": "5d63f5874b6b3b8dc0454aff462b5c3e36907e9d2f58fb009a82afc6886c204c"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 494,
+      "sha256": "70d201b30b67d942c428c88ef473409f176cfacc583e7505b534f5d65b200d8f"
+    }
+  ],
+  "read_scope": "Only source manifest and two hash-bound payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "no_raw_payload": true,
+    "no_native_addresses_or_code": true,
+    "no_key_or_auth": true
+  },
+  "omitted": [
+    "input/config/reference-output digests",
+    "native code/disassembly/addresses",
+    "raw payload bytes",
+    "private key/auth"
+  ],
+  "evidence_status": "WASHED_REPORT_ONLY; NOT_RUN_AU_IDENTITY"
+}

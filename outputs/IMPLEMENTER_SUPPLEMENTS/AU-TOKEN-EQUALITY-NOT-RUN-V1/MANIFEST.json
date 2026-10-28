@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "AU-TOKEN-EQUALITY-NOT-RUN-V1",
+  "scope": "Bounded slot token to validation helper; transport AU and source-generation not run/unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NEGATIVE_SCOPE_AND_STOP_EVIDENCE",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "eab391fbd55e0da6c7f0d5a2f456bd24a979cecef4d83ede4a433606a5c42a1b",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 922,
+      "sha256": "57bf0b63479a98dc7317191396fde2273fa802fcafcd980a9b6c99dbd36fc124"
+    },
+    {
+      "file": "EDGE-STATUS.json",
+      "bytes": 1329,
+      "sha256": "ee721477adfbde20ab7c9159a26d9787a1e8b372094cf5e47b4cf36c109dcc99"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 993,
+      "sha256": "02e989eec1fbcd87c276df74a031a2451b3e8560ccedbe6a28785d50a09ac5c5"
+    }
+  ]
+}
