@@ -1,0 +1,37 @@
+{
+  "schema": "washed-contiguous-destination-consumer-edge.v1",
+  "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+  "classification": "NATIVE_AND_STATIC_RECEIPT_EVIDENCE",
+  "producer": {
+    "kind": "post-consumer finalized per-lane copy",
+    "word_count_u32": 2048,
+    "byte_count_u32": 4096,
+    "destination": "contiguous caller-owned range"
+  },
+  "downstream": {
+    "first_read": "heap vector construction",
+    "source_equals_contiguous_destination": true,
+    "copied_bytes_u32": 4096,
+    "same_outer_invocation": true,
+    "vector_begin_end_exported": true,
+    "consumer_owner_counter_u64": 0,
+    "consumer_pointer_equals_vector_begin": true,
+    "consumer_bytes_u32": 4096,
+    "consumer_mode_u32": 1,
+    "owner_selected_token_observed": true,
+    "same_call_chain": true
+  },
+  "closed": [
+    "contiguous destination -> heap vector",
+    "heap vector -> direct consumer",
+    "4096-byte producer/consumer length"
+  ],
+  "unbound": [
+    "owner-selected token/counter slot -> selected transport AU identity",
+    "source generation"
+  ],
+  "minimum_next_action": "At owner slot selection, retain selected slot/token and verify equality at first transport enqueue or AU-descriptor consumer.",
+  "raw_body_or_output_bytes_read_or_persisted": false,
+  "production_rule": "BUFFER_IDENTITY_RECEIPT_ONLY; NO_AU_RULE",
+  "implementation_requirement": false
+}

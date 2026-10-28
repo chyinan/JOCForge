@@ -1,0 +1,13 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_manifest_sha256": "e11d26c88eeece76b14f4fc4a6335555c73b62290335a7b47daea60c28ac2363",
+  "source_payloads_verified": 3,
+  "hashes_and_lengths_match": true,
+  "json_payloads_parse": true,
+  "native_execution": "NOT_RUN",
+  "runtime_owner_generation_receipt": "NOT_CAPTURED",
+  "canonical_gtc_root_mapping": "LOCAL_INTEGRATION_DECISION",
+  "no_code_or_addresses_in_wash": true,
+  "no_key_or_auth_material_in_wash": true,
+  "status": "STATIC_DPLM_OWNER_CHAIN_CLOSED; GTC_MAPPING_AND_RUNTIME_RECEIPT_OPEN"
+}

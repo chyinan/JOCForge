@@ -1,0 +1,38 @@
+{
+  "schema": "washed-kfilter-exponent-cold-structure-v1",
+  "input_only": true,
+  "audio_input": "NONE",
+  "native_execution": "NOT_RUN",
+  "vectors": [
+    {
+      "id": "six_channel_selected_dplm_cold",
+      "channels": 6,
+      "expected_static_cold_fields": {
+        "k_filter_exponents_i32_by_channel": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "energy_accumulator_exponents_i32_by_channel": [
+          48,
+          48,
+          48,
+          48,
+          48,
+          48
+        ]
+      },
+      "expected_outputs": false
+    },
+    {
+      "id": "completed_energy_window_boundary",
+      "channels": 6,
+      "expected_transition": "energy exponent returns to 48; no K exponent write observed in scoped DPLM chain",
+      "expected_outputs": false
+    }
+  ],
+  "warning": "Structural expectations from native static evidence; not runtime replay or canonical Meter-root construction."
+}

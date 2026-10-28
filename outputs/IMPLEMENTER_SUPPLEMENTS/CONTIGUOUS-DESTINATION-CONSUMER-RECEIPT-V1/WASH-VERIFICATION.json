@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+  "source_manifest_sha256": "5704d4464bf9e999bf34d8b2613477fb2a60becaee37a22e129af4d219e52c9e",
+  "source_payloads_verified": [
+    {
+      "file": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT.json",
+      "bytes": 2769,
+      "sha256": "59c6b4f3c81e452e54f16cae2bddee6a4454fd5cc84bcfbf1e9a47ad01baf07d"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 482,
+      "sha256": "e2f988a0ce22edf6ee74043e8c8ace8a9f391a7c1ba723c6ac15f4281b0fd3cd"
+    }
+  ],
+  "read_scope": "Only source manifest and two hash-bound payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "source_checker_claim_reviewed": true,
+    "no_raw_body_or_output_bytes": true,
+    "no_native_addresses_or_code": true,
+    "no_key_or_auth_material": true
+  },
+  "omitted": [
+    "input/config/reference-output digests",
+    "raw body bytes",
+    "native code/addresses",
+    "private key/auth"
+  ],
+  "evidence_status": "WASHED_REPORT_ONLY; native observation not independently reproduced"
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_manifest_sha256": "56f0c7b9d227fbacc2ca82f7441e4e73c0a5bc1b8ec6e6674db7dbda2e63f2cb",
+  "source_payloads_verified": 6,
+  "payload_hashes_and_lengths_match": true,
+  "json_payloads_parse": true,
+  "native_static_claim": "REPORTED_HASH_BOUND_AND_REVIEWED; not independently reproduced",
+  "native_execution": "NOT_RUN",
+  "owner_generation_to_canonical_root": "UNBOUND",
+  "no_raw_code_or_addresses_in_wash": true,
+  "no_key_or_auth_material_in_wash": true,
+  "status": "NATIVE_COLD_FIELD_CLOSED; CANONICAL_METER_OWNER_BLOCKED"
+}

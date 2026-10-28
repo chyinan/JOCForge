@@ -1,0 +1,41 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+  "scope": "Native selected-DPLM K exponent cold writer and reset boundary; canonical root owner identity remains unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NATIVE_STATIC_COLD_FIELD_CANONICAL_OWNER_UNBOUND",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "56f0c7b9d227fbacc2ca82f7441e4e73c0a5bc1b8ec6e6674db7dbda2e63f2cb",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1147,
+      "sha256": "b8534b17eadeb4b99c3b6bf51b2d87ab6f5ae4b0f2e10e814242b39eff83ad2a"
+    },
+    {
+      "file": "DPLM-COLD-FIELDS.json",
+      "bytes": 1499,
+      "sha256": "9c74704f0f0d1798e0cd910e2f3c767c61e9d402a7f54b8932b4c8537a58cbb7"
+    },
+    {
+      "file": "OWNER-AND-RESET-BOUNDARY.json",
+      "bytes": 1023,
+      "sha256": "e6fdd9687e53b87e9290fa6dfb816773e4ad1770cfafa97e6555c9a69b924dd5"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 957,
+      "sha256": "cf19eb088fdbc2939ee353d46dc4ab80e3ee357d9e4014c6fe0d971ebc0331c8"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 1711,
+      "sha256": "75a52b1052fe6e6e3041f0448b8dc671aa944e6d7b2e15e74d7e970932019448"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 586,
+      "sha256": "26faf2d4652e30cccf8220595e2c63544f9b48a7a220b8d2b1c8bc7b758084ab"
+    }
+  ]
+}

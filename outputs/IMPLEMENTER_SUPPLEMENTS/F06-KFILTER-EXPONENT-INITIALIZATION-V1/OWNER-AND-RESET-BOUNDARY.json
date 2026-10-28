@@ -1,0 +1,23 @@
+{
+  "schema": "washed-dplm-kfilter-owner-reset-boundary.v1",
+  "same_static_object_flow": {
+    "setup_to_worker_root": true,
+    "worker_root_to_row_object": true,
+    "row_object_to_numeric_state": true,
+    "selected_row_callback_to_same_numeric_state": true,
+    "reducer_consumes_same_numeric_state": true
+  },
+  "field_owner": "Native DPLM numeric-state member; not yet joined to canonical owners.meter by runtime token.",
+  "cold_reset": {
+    "fresh_worker_root_setup": "reconstructs rows and numeric state; K exponent cold zero, energy exponent cold 48",
+    "in_place_k_exponent_reset_writer": "NOT_FOUND_IN_SCOPED_DIRECT_DPLM_CHAIN",
+    "full_root_generation_to_canonical_meter": "UNBOUND"
+  },
+  "remaining_unbound": [
+    "native DPLM root/inner numeric state to canonical owners.meter token",
+    "runtime owner/generation receipt",
+    "native execution/reset capture",
+    "terminal meter digest and MeasurementReceipt"
+  ],
+  "source_status": "STATIC_OBJECT_FLOW_BOUND; CANONICAL_ROOT_IDENTITY_UNBOUND"
+}

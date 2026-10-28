@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+  "scope": "One producer-to-direct-consumer contiguous-buffer identity receipt; transport AU/source generation remain unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NATIVE_AND_STATIC_RECEIPT_EVIDENCE",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "5704d4464bf9e999bf34d8b2613477fb2a60becaee37a22e129af4d219e52c9e",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1133,
+      "sha256": "4c33c9e45a4f831a82e455f683f942ff076ad412a051dd3175839a59abd6258f"
+    },
+    {
+      "file": "EDGE-STATUS.json",
+      "bytes": 1382,
+      "sha256": "b049050b88b76f0dcd26be2104094c48528f0ce1f5373baf4eb82aa1f89e5269"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1154,
+      "sha256": "a9e1d8153fb5702a12472c729c9205ca84d0a53d679a754c2756e7d80c85c7a0"
+    }
+  ]
+}

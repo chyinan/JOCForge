@@ -6108,7 +6108,7 @@
           "slice_id": "prepared-job-input-domain-identity-projection",
           "mapping_status": "MATERIALIZED_LAYER_SAFE_PREPARED_JOB_IDENTITY_PROJECTION__METER_FINALIZE_OPEN",
           "implementation_status": "LOCALLY_VERIFIED_DOMAIN_OWNED_INPUT_IDENTITY_PROJECTION__TERMINAL_PREIMAGE_BLOCKED_ON_PRODUCTION_KEY_PRODUCER_AND_K_FILTER_SOURCE",
-          "scope": "Application derives and stores one immutable Domain-owned PreparedJobInputIdentity during admission from the same PreparedJobInput: whole-resource SHA/byte length, canonical config SHA plus raw XML SHA and typed F01E input kind, and ADM graph parent identity plus AXML/CHNA/DBMD chunk spans. The projection contains no path or I/O capability and rejects graph/resource identity or chunk-span mismatches. It does not compute the terminal meter root hash, mint ProgrammeMeasurementReceipt, set READY, or commit DRC Option<U5>. The frozen model contract for input_cursor.model_owner_key is closed as an ordinary non-empty string; V2 found only two Panner initializer callsites and no Meter ingress caller. The production Meter key producer/call receipt remains UNBOUND. For K-filter, the approved model omits the I32 member while native static evidence distinguishes it from the energy exponent; selected DPLM constructor/cold/reset/owner remains UNBOUND, so no terminal receipt is emitted.",
+          "scope": "Application derives and stores one immutable Domain-owned PreparedJobInputIdentity during admission from the same PreparedJobInput: whole-resource SHA/byte length, canonical config SHA plus raw XML SHA and typed F01E input kind, and ADM graph parent identity plus AXML/CHNA/DBMD chunk spans. The projection contains no path or I/O capability and rejects graph/resource identity or chunk-span mismatches. It does not compute the terminal meter root hash, mint ProgrammeMeasurementReceipt, set READY, or commit DRC Option<U5>. The frozen model contract for input_cursor.model_owner_key is closed as an ordinary non-empty string; V2 found only two Panner initializer callsites and no Meter ingress caller. The production Meter key producer/call receipt remains UNBOUND. For K-filter, native static flow from DPLM worker root through row/numeric state to callback/reducer and cold [0;6] is closed; energy cold [48;6] is a separate member. A parent-issued MeterSourceOwnerId bound to this PreparedJobInputIdentity, ProgrammeId and AttemptId is a decidable JOCForge local policy, not a DEE formula. Runtime owner/generation receipt, canonical owners.meter serialization, parent commit and MeasurementReceipt remain pending. V4 K [48;6] remains synthetic and conflicts with native cold.",
           "owner": "meter",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -6148,13 +6148,25 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/DPLM-COLD-FIELDS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/OWNER-AND-RESET-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/STATIC-OWNER-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256s": {
               "METER-FINALIZE-DOMAIN-PROPOSAL-V1": "abb560381448727aa4c88877373769aa14556a4e365e4bec82637a043155333b",
               "PREPARED-JOB-INPUT-IDENTITY-V1": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f"
             },
-            "validation_boundary": "Typed identity projection remains complete; terminal meter identity is blocked on production owner-key receipt and the selected DPLM K-exponent constructor/cold/reset/owner binding. The approved model omission and native static member distinction do not close these selected-root edges.",
+            "validation_boundary": "Typed identity projection remains complete; native DPLM static owner chain and cold fields are closed, while canonical GTC Meter owner/generation mapping, root serialization, single parent commit and MeasurementReceipt remain pending. A parent-issued opaque MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is decidable as a local policy only; no DEE identity derivation is inferred. Synthetic V4 K [48;6] conflicts with native cold [0;6].",
             "field_contract_update": {
               "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
               "manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
@@ -6174,13 +6186,20 @@
               "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
             },
             "kfilter_lineage_update": {
-              "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
-              "manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
-              "model_field_status": "ABSENT_IN_APPROVED_F06W_MODEL",
-              "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
-              "selected_root_constructor_cold_reset_owner": "UNBOUND",
-              "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
-              "terminal_meter_digest_or_receipt": "BLOCKED"
+              "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+              "manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+              "setup_identity_package_id": "DPLM-SETUP-IDENTITY-RECEIPT-V1",
+              "setup_identity_manifest_sha256": "fd48bcd03154634a89a62774e91eaea944cc67e1230ff8d2aada8a499767fee3",
+              "native_k_cold": "SIGNED_I32[6]=[0;6]",
+              "energy_cold": "SEPARATE_SIGNED_I32[6]=[48;6]",
+              "native_static_owner_chain": "CLOSED_TO_SELECTED_REDUCER",
+              "runtime_pointer_generation_capture": "NOT_RUN",
+              "in_place_k_exponent_reset_writer": "NOT_OBSERVED",
+              "local_owner_id_policy": "DECIDABLE_JOCFORGE_LOCAL_POLICY_NOT_IMPLEMENTED",
+              "local_owner_id_binding": "PARENT_ISSUED_TYPED_ID_BOUND_TO_PreparedJobInputIdentity_ProgrammeId_AttemptId; NOT_DEE_FORMULA",
+              "gtc_root_serialization_commit_measurement_receipt": "PENDING",
+              "v4_synthetic_k_cold": "[48;6] SYNTHETIC_ONLY; CONFLICTS_WITH_NATIVE [0;6]",
+              "sibling_formula": "CANDIDATE_NOT_SELECTED"
             }
           },
           "test_modules": [
@@ -6198,7 +6217,12 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/FIELD-OWNER-CROSSWALK.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/DPLM-COLD-FIELDS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/OWNER-AND-RESET-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/STATIC-OWNER-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "Application integration asserts the stored projection uses the same admitted resource/config/graph values.",
@@ -6227,13 +6251,20 @@
               "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
             },
             "kfilter_lineage_update": {
-              "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
-              "manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
-              "model_field_status": "ABSENT_IN_APPROVED_F06W_MODEL",
-              "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
-              "selected_root_constructor_cold_reset_owner": "UNBOUND",
-              "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
-              "terminal_meter_digest_or_receipt": "BLOCKED"
+              "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+              "manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+              "setup_identity_package_id": "DPLM-SETUP-IDENTITY-RECEIPT-V1",
+              "setup_identity_manifest_sha256": "fd48bcd03154634a89a62774e91eaea944cc67e1230ff8d2aada8a499767fee3",
+              "native_k_cold": "SIGNED_I32[6]=[0;6]",
+              "energy_cold": "SEPARATE_SIGNED_I32[6]=[48;6]",
+              "native_static_owner_chain": "CLOSED_TO_SELECTED_REDUCER",
+              "runtime_pointer_generation_capture": "NOT_RUN",
+              "in_place_k_exponent_reset_writer": "NOT_OBSERVED",
+              "local_owner_id_policy": "DECIDABLE_JOCFORGE_LOCAL_POLICY_NOT_IMPLEMENTED",
+              "local_owner_id_binding": "PARENT_ISSUED_TYPED_ID_BOUND_TO_PreparedJobInputIdentity_ProgrammeId_AttemptId; NOT_DEE_FORMULA",
+              "gtc_root_serialization_commit_measurement_receipt": "PENDING",
+              "v4_synthetic_k_cold": "[48;6] SYNTHETIC_ONLY; CONFLICTS_WITH_NATIVE [0;6]",
+              "sibling_formula": "CANDIDATE_NOT_SELECTED"
             }
           },
           "error_outcomes": [
@@ -6261,7 +6292,7 @@
           ],
           "not_run": [
             "Terminal owners.meter canonical preimage is BLOCKED: no production input_cursor.model_owner_key producer/call receipt or same-root parent commit; frozen model callsites are limited to two Panner initializers.",
-            "Terminal owners.meter canonical preimage is BLOCKED: the K-filter exponent is a native K-associated I32[6] member distinct from the energy exponent, but selected DPLM constructor/first writer/cold-reset/owner token remain UNBOUND. The sibling formula is a candidate and is not selected.",
+            "Terminal owners.meter canonical preimage is BLOCKED: native K-filter cold is signed I32[6]=[0;0;0;0;0;0] and fresh worker-root construction is closed, but canonical owner/generation/commit is UNBOUND. Energy exponent remains separate signed I32[6]=[48;48;48;48;48;48]; do not treat synthetic V4 [48;6] as native.",
             "Terminal meter hash, ProgrammeMeasurementReceipt, READY transition and DRC Option<U5> Some proposal remain NOT_RUN.",
             "GTC single root swap, parent reset/fatal integration and full encode remain NOT_RUN."
           ],
@@ -6399,9 +6430,9 @@
         },
         {
           "slice_id": "informational-kfilter-exponent-state-lineage",
-          "mapping_status": "WASHED_APPROVED_MODEL_OMISSION_AND_NATIVE_MEMBER_DISTINCTION__SELECTED_ROOT_OWNER_OPEN",
-          "implementation_status": "MODEL_FIELD_ABSENT__NATIVE_STATIC_MEMBER_DISTINCTION_CLOSED__DPLM_CONSTRUCTOR_COLD_RESET_OWNER_UNBOUND",
-          "scope": "The approved F06W model defines six-channel [2][4] F32 K-filter history and no K-filter I32 exponent array. Its energy accumulator owns a separate signed I32[6] exponent, cold value 48; that field must not substitute for K state. Native static evidence closes a distinct signed I32[6] K-associated field read by the DPLM 48 kHz reducer and a separate energy-exponent read/update; the scoped K row kernel does not write the K exponent. The selected DPLM constructor/first writer/cold/reset and state-base-to-owners.meter token remain UNBOUND. A sibling reconciliation formula is a candidate and is not selected; it is not connected to DPLM and is prohibited as the selected-root rule. Its fifth scanned F32 is not mapped to F06W. Native execution/replay and terminal meter digest/MeasurementReceipt remain NOT_RUN/BLOCKED.",
+          "mapping_status": "WASHED_NATIVE_DPLM_STATIC_OWNER_CHAIN_AND_ZERO_COLD_CLOSED__LOCAL_GTC_ROOT_MAPPING_OPEN",
+          "implementation_status": "NATIVE_STATIC_K_OWNER_CHAIN_CLOSED__LOCAL_OWNER_POLICY_DECIDABLE__GTC_ROOT_COMMIT_RECEIPT_PENDING",
+          "scope": "The approved F06W model defines six-channel [2][4] F32 K-filter history and no K-filter I32 exponent array. Its energy accumulator owns a separate signed I32[6] exponent, cold value 48; that field must not substitute for K state. Native static DPLM evidence closes the distinct signed I32[6] K-associated reducer read, cold value [0,0,0,0,0,0], separate energy cold [48,48,48,48,48,48], and object flow from instance.worker_root through row table/numeric_state to the selected callback/reducer. The scoped DPLM callback does not write the K exponent; no separate in-place K reset was observed. Runtime pointer/generation capture and mapping of the native object to canonical owners.meter remain UNBOUND. METER-ROOT-CANONICAL-STATE-REFERENCE-V4's K [48;6] is synthetic only and conflicts with native cold; retain the fixture as synthetic. A JOCForge parent-issued typed MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is a decidable LOCAL_MODEL identity policy, not a DEE formula and not implemented here. GTC meter-root serialization, owner/generation receipt, parent commit and MeasurementReceipt remain pending. The sibling reconciliation formula is a candidate and is not selected or connected to DPLM; its fifth scanned F32 is not mapped to F06W.",
           "owner": "meter",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -6421,15 +6452,72 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/DPLM-COLD-FIELDS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/OWNER-AND-RESET-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/STATIC-OWNER-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
             "candidate_source_manifest_sha256": "290988c533a9b96017eab444504d9150e36fee589d889f907718e3949117975b",
             "model_field_status": "NOT_DEFINED_IN_APPROVED_F06W_MODEL",
             "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
-            "selected_root_constructor_cold_reset_owner": "UNBOUND",
+            "native_cold_k_exponent_i32_by_channel": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "energy_exponent_i32_by_channel_cold": [
+              48,
+              48,
+              48,
+              48,
+              48,
+              48
+            ],
+            "native_cold_fresh_worker_root_constructor": "CLOSED_STATICALLY",
+            "native_static_owner_chain_manifest_sha256": "fd48bcd03154634a89a62774e91eaea944cc67e1230ff8d2aada8a499767fee3",
+            "native_static_owner_chain_source_manifest_sha256": "e11d26c88eeece76b14f4fc4a6335555c73b62290335a7b47daea60c28ac2363",
+            "native_static_owner_chain": "CLOSED_TO_SELECTED_REDUCER",
+            "runtime_pointer_capture": "NOT_RUN",
+            "runtime_generation_receipt": "NOT_CAPTURED",
+            "in_place_k_exponent_reset_writer": "NOT_OBSERVED",
+            "canonical_meter_owner_generation_commit": "UNBOUND",
+            "v4_synthetic_k_exponent_48_conflict": "SYNTHETIC_ONLY; NOT_NATIVE_COLD",
+            "local_owner_id_policy": "DECIDABLE_JOCFORGE_LOCAL_POLICY_NOT_IMPLEMENTED",
+            "local_owner_id_binding": "PARENT_ISSUED_TYPED_MeterSourceOwnerId_BOUND_TO_PreparedJobInputIdentity_ProgrammeId_AttemptId; NOT_DEE_FORMULA",
+            "gtc_root_commit_measurement_receipt": "PENDING",
             "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
-            "validation_boundary": "Static member distinction only; selected DPLM owner, constructor, reset, native runtime, and terminal receipt remain open."
+            "native_cold_initialization_manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+            "native_cold_initialization_source_manifest_sha256": "56f0c7b9d227fbacc2ca82f7441e4e73c0a5bc1b8ec6e6674db7dbda2e63f2cb",
+            "validation_boundary": "Native selected-DPLM cold value and fresh worker-root construction are closed; canonical meter owner/generation/commit binding, in-place reset, runtime execution, and terminal receipt remain open.",
+            "kfilter_lineage_update": {
+              "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+              "manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+              "setup_identity_package_id": "DPLM-SETUP-IDENTITY-RECEIPT-V1",
+              "setup_identity_manifest_sha256": "fd48bcd03154634a89a62774e91eaea944cc67e1230ff8d2aada8a499767fee3",
+              "native_k_cold": "SIGNED_I32[6]=[0;6]",
+              "energy_cold": "SEPARATE_SIGNED_I32[6]=[48;6]",
+              "native_static_owner_chain": "CLOSED_TO_SELECTED_REDUCER",
+              "runtime_pointer_generation_capture": "NOT_RUN",
+              "in_place_k_exponent_reset_writer": "NOT_OBSERVED",
+              "local_owner_id_policy": "DECIDABLE_JOCFORGE_LOCAL_POLICY_NOT_IMPLEMENTED",
+              "local_owner_id_binding": "PARENT_ISSUED_TYPED_ID_BOUND_TO_PreparedJobInputIdentity_ProgrammeId_AttemptId; NOT_DEE_FORMULA",
+              "gtc_root_serialization_commit_measurement_receipt": "PENDING",
+              "v4_synthetic_k_cold": "[48;6] SYNTHETIC_ONLY; CONFLICTS_WITH_NATIVE [0;6]",
+              "sibling_formula": "CANDIDATE_NOT_SELECTED"
+            }
           },
           "test_modules": [],
           "vectors": {
@@ -6439,20 +6527,42 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SIBLING-RECONCILIATION-CANDIDATE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/DPLM-COLD-FIELDS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/OWNER-AND-RESET-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/STATIC-OWNER-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "Approved F06W has F32 K-filter histories [6][2][4] and no K I32 exponent member.",
               "Energy exponent is a separate I32[6] owner with cold 48; equal type/cold values do not establish shared state.",
-              "Native static DPLM reads distinct signed I32[6] K-associated state; constructor/first writer/cold/reset and owners.meter token remain unbound.",
+              "Native DPLM owner chain worker_root->row->numeric_state->callback/reducer is statically closed; K cold is signed I32[6]=[0,0,0,0,0,0], energy cold is separate [48;6].",
+              "Canonical owners.meter owner/generation/commit is unbound; V4 synthetic K [48;6] conflicts with native cold and remains synthetic only.",
+              "A parent-issued typed local MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is a decidable JOCForge policy, not DEE equivalence and not implemented.",
               "Sibling reconciliation formula is not connected to DPLM, is not selected, and has an unmapped fifth F32 scan word."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb"
+            "supplement_manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
+            "kfilter_lineage_update": {
+              "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+              "manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+              "setup_identity_package_id": "DPLM-SETUP-IDENTITY-RECEIPT-V1",
+              "setup_identity_manifest_sha256": "fd48bcd03154634a89a62774e91eaea944cc67e1230ff8d2aada8a499767fee3",
+              "native_k_cold": "SIGNED_I32[6]=[0;6]",
+              "energy_cold": "SEPARATE_SIGNED_I32[6]=[48;6]",
+              "native_static_owner_chain": "CLOSED_TO_SELECTED_REDUCER",
+              "runtime_pointer_generation_capture": "NOT_RUN",
+              "in_place_k_exponent_reset_writer": "NOT_OBSERVED",
+              "local_owner_id_policy": "DECIDABLE_JOCFORGE_LOCAL_POLICY_NOT_IMPLEMENTED",
+              "local_owner_id_binding": "PARENT_ISSUED_TYPED_ID_BOUND_TO_PreparedJobInputIdentity_ProgrammeId_AttemptId; NOT_DEE_FORMULA",
+              "gtc_root_serialization_commit_measurement_receipt": "PENDING",
+              "v4_synthetic_k_cold": "[48;6] SYNTHETIC_ONLY; CONFLICTS_WITH_NATIVE [0;6]",
+              "sibling_formula": "CANDIDATE_NOT_SELECTED"
+            }
           },
           "not_run": [
-            "Selected DPLM K exponent constructor/first initialization/cold/reset writer.",
-            "DPLM state-base and generation receipt bound to owners.meter and the parent commit.",
+            "No separate in-place K-exponent reset writer or runtime pointer/generation receipt was captured.",
+            "GTC local Meter owner/generation mapping, complete root serialization, parent commit and MeasurementReceipt.",
             "Sibling reconciliation candidate callgraph/owner join; do not apply it to selected DPLM.",
             "Native execution, numeric replay, terminal meter digest and MeasurementReceipt."
           ],
@@ -17490,7 +17600,7 @@
           "slice_id": "informational-root-history-single-element-stop",
           "mapping_status": "WASHED_FOUR_POINT_ROOT_HISTORY_RECEIPT_CONFIRMS_CONTROL_SCALARS__CONSUMER_JOIN_OPEN",
           "implementation_status": "INFORMATIONAL_ONLY_ROOT_HISTORY_BRANCH_STOPPED__NO_CONSUMER_AU_OR_SOURCE_BINDING",
-          "scope": "A hash-bound four-point receipt follows two non-payload root-owned U32 control/history scalars across before-shift, after-shift, writer-stage and post-serializer common-record points in one root and higher invocation. Both values are zero at every point; serializer-consumer does not write them. The scalars therefore carry no consumer-output identity and cannot close consumer_N to writer_N+1. Stop enumerating adjacent root-history scalars. The common record is not an AU; transport AU and source generation remain UNBOUND. The next useful target is an actual payload or descriptor receipt at the post-consumer contiguous destination and its downstream queue/transport consumer.",
+          "scope": "A hash-bound four-point receipt follows two non-payload root-owned U32 control/history scalars across before-shift, after-shift, writer-stage and post-serializer common-record points in one root and higher invocation. Both values are zero at every point; serializer-consumer does not write them. The scalars carry no consumer-output identity and cannot close consumer_N to writer_N+1. Stop enumerating adjacent root-history scalars. The follow-on actual payload/descriptor receipt in CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1 now closes post-consumer contiguous destination -> heap vector -> direct consumer buffer identity (4096 bytes) in one call chain. It still does not bind the owner-selected token/counter slot to a transport AU or bind source generation; the common record is not an AU.",
           "owner": "joc",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -17506,16 +17616,26 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe",
-            "validation_boundary": "Four points bind same root and higher invocation only; control/history scalar values are not payload or consumer identity."
+            "validation_boundary": "Four points bind same root and higher invocation only; control/history scalar values are not payload or consumer identity.",
+            "followup_buffer_identity_receipt": {
+              "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+              "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+              "status": "CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_BOUND; TRANSPORT_AU_AND_SOURCE_GENERATION_UNBOUND"
+            }
           },
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_INFORMATIONAL_FOUR_POINT_RECEIPT_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json"
             ],
             "case_pointers": [
               "Elements A and B are root-owned U32 control/history scalars with no payload bytes.",
@@ -17524,12 +17644,77 @@
               "Stop adjacent scalar enumeration; next target is a real contiguous payload/descriptor receipt and downstream consumer."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe"
+            "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe",
+            "followup_buffer_identity_receipt": {
+              "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+              "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+              "status": "CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_BOUND; TRANSPORT_AU_AND_SOURCE_GENERATION_UNBOUND"
+            }
           },
           "not_run": [
-            "Consumer-output identity across generation shift.",
-            "Actual contiguous payload/descriptor receipt to downstream queue or transport consumer.",
-            "Transport AU and source-generation identities."
+            "Owner-selected token/counter slot to selected transport-AU descriptor or enqueue consumer identity.",
+            "Source-generation identity.",
+            "Transport-AU rule and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-contiguous-destination-direct-consumer-identity",
+          "mapping_status": "WASHED_CONTIGUOUS_DESTINATION_TO_DIRECT_CONSUMER_BUFFER_IDENTITY__TRANSPORT_AU_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_4096_BYTE_BUFFER_IDENTITY_RECEIPT__NO_AU_OR_SOURCE_GENERATION_RULE",
+          "scope": "One hash-bound receipt follows the post-consumer finalized per-lane copy (2048 words/4096 bytes) into a caller-owned contiguous range, then into a heap vector and a direct consumer in the same outer invocation. The vector source equals the contiguous destination, its begin/end are exported, and the consumer pointer equals vector begin with 4096 bytes and mode 1. This closes buffer identity through the direct consumer only. An owner-selected token/counter was observed, but its slot-to-transport-AU identity is UNBOUND; source generation is also UNBOUND. This is BUFFER_IDENTITY_RECEIPT_ONLY; NO_AU_RULE.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Same outer invocation and buffer identity do not define a transport-AU or source-generation clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_RECEIPT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+            "candidate_source_manifest_sha256": "5704d4464bf9e999bf34d8b2613477fb2a60becaee37a22e129af4d219e52c9e",
+            "validation_boundary": "Post-consumer buffer identity through direct consumer only; transport AU and source-generation remain unbound.",
+            "followup_buffer_identity_receipt": {
+              "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+              "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+              "status": "CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_BOUND; TRANSPORT_AU_AND_SOURCE_GENERATION_UNBOUND"
+            }
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_BUFFER_IDENTITY_RECEIPT_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json"
+            ],
+            "case_pointers": [
+              "Post-consumer finalized copy is 2048 words/4096 bytes to a contiguous caller-owned range.",
+              "Heap vector copies the same contiguous range and exports begin/end in the same outer invocation.",
+              "Direct consumer receives vector begin, 4096 bytes, mode 1, same call chain.",
+              "Owner-selected token/counter is observed but not bound to selected transport AU; source generation remains unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+            "followup_buffer_identity_receipt": {
+              "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+              "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+              "status": "CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_BOUND; TRANSPORT_AU_AND_SOURCE_GENERATION_UNBOUND"
+            }
+          },
+          "not_run": [
+            "Owner-selected token/counter slot to selected transport-AU descriptor or enqueue consumer identity.",
+            "Source-generation identity.",
+            "AU rule, production encoding, native execution and product acceptance."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
@@ -17981,9 +18166,9 @@
       "direct_slices": [
         {
           "slice_id": "informational-production-ingress-readiness-audit",
-          "mapping_status": "WASHED_STATIC_READINESS_AUDIT__F06_MODEL_CALLSITE_AND_KFILTER_MEMBER_DISTINCTION_CLOSED__SELECTED_ROOT_OPEN",
-          "implementation_status": "INFORMATIONAL_ONLY_MODEL_AND_STATIC_MEMBER_FACTS_CLOSED__PRODUCTION_METER_OWNERS_OPEN",
-          "scope": "Read-only audit of approved clean-room contracts, types and supplements. It identifies independently implementable LOCAL_MODEL scopes for N-to-Q clocks, source0/1 suppression while building complete 4096-byte CRC-checked frames, main cached4 versus independent meter zero3 EOF, candidate-infeasibility versus fatal boundaries, F15 provider projection/hash, and source-proposal lineage. Production encode remains blocked: encode() is BackendUnavailable; ValidatedEncodingPlan and its builder are absent; the production ProgrammeOutputBinding constructor is absent and current binding/provider projection are test-support only. Same-source F06/F08/F09/F10/F11/F13 receipts and parent adapters remain incomplete. The F06 V2 package supersedes V1: model_owner_key is ordinary identity and the two frozen callsites are Panner-only, with no external Meter ingress caller found; production Meter owner-key producer/call receipt and attempt+1 policy remain UNBOUND. For K-filter, the approved F06W model-field omission and native DPLM-versus-energy static member distinction are closed; selected DPLM constructor/first-writer/cold-reset/owner token remain UNBOUND. The sibling reconciliation formula is not selected. No terminal meter digest or MeasurementReceipt is admissible until production receipts and the selected K-filter owner are bound. The audit remains a readiness map, not DEE equivalence or product execution.",
+          "mapping_status": "WASHED_NATIVE_K_COLD_AND_STATIC_OWNER_CHAIN_CLOSED__LOCAL_GTC_ROOT_MAPPING_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_NATIVE_FIELD_FACTS_CLOSED__LOCAL_OWNER_POLICY_DECIDABLE__GTC_ROOT_COMMIT_PENDING",
+          "scope": "Read-only audit of approved clean-room contracts, types and supplements. It identifies independently implementable LOCAL_MODEL scopes for N-to-Q clocks, source0/1 suppression while building complete 4096-byte CRC-checked frames, main cached4 versus independent meter zero3 EOF, candidate-infeasibility versus fatal boundaries, F15 provider projection/hash, and source-proposal lineage. Production encode remains blocked: encode() is BackendUnavailable; ValidatedEncodingPlan and its builder are absent; the production ProgrammeOutputBinding constructor is absent and current binding/provider projection are test-support only. Same-source F06/F08/F09/F10/F11/F13 receipts and parent adapters remain incomplete. The F06 V2 package supersedes V1: model_owner_key is ordinary identity and the two frozen callsites are Panner-only, with no external Meter ingress caller found; production Meter owner-key producer/call receipt and attempt+1 policy remain UNBOUND. For K-filter, the approved F06W model omission, native DPLM static owner chain, zero K cold [0;6], and separate energy cold [48;6] are closed; V4 K [48;6] remains synthetic and conflicts with native cold. A parent-issued opaque typed MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is a decidable JOCForge LOCAL_MODEL policy, not a DEE formula and not implemented here. Runtime pointer/generation capture is NOT_RUN; canonical GTC root serialization, a single parent commit, and MeasurementReceipt remain pending. The sibling reconciliation formula is not selected. No terminal meter digest or MeasurementReceipt is admissible until root fields and a single parent commit are complete. The audit remains a readiness map, not DEE equivalence or product execution.",
           "owner": "output",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -18018,7 +18203,19 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/DPLM-COLD-FIELDS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/OWNER-AND-RESET-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/STATIC-OWNER-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d",
             "audited_head": "9bf95d82822a1e74be8d448bf3fb14ecc66c9e41",
@@ -18043,13 +18240,20 @@
               "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
             },
             "kfilter_lineage_update": {
-              "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
-              "manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
-              "model_field_status": "ABSENT_IN_APPROVED_F06W_MODEL",
-              "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
-              "selected_root_constructor_cold_reset_owner": "UNBOUND",
-              "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
-              "terminal_meter_digest_or_receipt": "BLOCKED"
+              "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+              "manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+              "setup_identity_package_id": "DPLM-SETUP-IDENTITY-RECEIPT-V1",
+              "setup_identity_manifest_sha256": "fd48bcd03154634a89a62774e91eaea944cc67e1230ff8d2aada8a499767fee3",
+              "native_k_cold": "SIGNED_I32[6]=[0;6]",
+              "energy_cold": "SEPARATE_SIGNED_I32[6]=[48;6]",
+              "native_static_owner_chain": "CLOSED_TO_SELECTED_REDUCER",
+              "runtime_pointer_generation_capture": "NOT_RUN",
+              "in_place_k_exponent_reset_writer": "NOT_OBSERVED",
+              "local_owner_id_policy": "DECIDABLE_JOCFORGE_LOCAL_POLICY_NOT_IMPLEMENTED",
+              "local_owner_id_binding": "PARENT_ISSUED_TYPED_ID_BOUND_TO_PreparedJobInputIdentity_ProgrammeId_AttemptId; NOT_DEE_FORMULA",
+              "gtc_root_serialization_commit_measurement_receipt": "PENDING",
+              "v4_synthetic_k_cold": "[48;6] SYNTHETIC_ONLY; CONFLICTS_WITH_NATIVE [0;6]",
+              "sibling_formula": "CANDIDATE_NOT_SELECTED"
             }
           },
           "test_modules": [],
@@ -18067,14 +18271,18 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SIBLING-RECONCILIATION-CANDIDATE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/DPLM-COLD-FIELDS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-INITIALIZATION-V1/OWNER-AND-RESET-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/STATIC-OWNER-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-SETUP-IDENTITY-RECEIPT-V1/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "Local-model source-clock, suppression/CRC, EOF, candidate/fatal, F15 projection/hash and proposal-lineage scopes are identified.",
               "Product encode authority is absent; no ValidatedEncodingPlan or production output binding exists.",
               "V2: model contract and two Panner-only initializer callsites are closed; no external Meter ingress caller. Production Meter owner producer, root receipt and attempt+1 policy remain UNBOUND.",
-              "K-filter: F06W model omission and native DPLM-versus-energy static member distinction are closed; selected-root constructor/cold-reset/owner remains UNBOUND; sibling formula is not selected.",
-              "No terminal meter digest or MeasurementReceipt until production owner/root receipts and selected K-filter source are bound."
+              "K-filter: native static owner chain and cold [0;6] are closed; V4 [48;6] remains synthetic only; local MeterSourceOwnerId policy is decidable but not implemented; GTC root/commit/MeasurementReceipt remain pending.",
+              "No terminal meter digest or MeasurementReceipt until canonical root fields and a single parent commit are complete."
             ],
             "expected_outputs_included": false,
             "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d",
@@ -18097,19 +18305,27 @@
               "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
             },
             "kfilter_lineage_update": {
-              "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
-              "manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
-              "model_field_status": "ABSENT_IN_APPROVED_F06W_MODEL",
-              "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
-              "selected_root_constructor_cold_reset_owner": "UNBOUND",
-              "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
-              "terminal_meter_digest_or_receipt": "BLOCKED"
+              "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+              "manifest_sha256": "f301393a75455007e46b1b31e1e5925e24177c126cc043ec7c0cc334bb061bed",
+              "setup_identity_package_id": "DPLM-SETUP-IDENTITY-RECEIPT-V1",
+              "setup_identity_manifest_sha256": "fd48bcd03154634a89a62774e91eaea944cc67e1230ff8d2aada8a499767fee3",
+              "native_k_cold": "SIGNED_I32[6]=[0;6]",
+              "energy_cold": "SEPARATE_SIGNED_I32[6]=[48;6]",
+              "native_static_owner_chain": "CLOSED_TO_SELECTED_REDUCER",
+              "runtime_pointer_generation_capture": "NOT_RUN",
+              "in_place_k_exponent_reset_writer": "NOT_OBSERVED",
+              "local_owner_id_policy": "DECIDABLE_JOCFORGE_LOCAL_POLICY_NOT_IMPLEMENTED",
+              "local_owner_id_binding": "PARENT_ISSUED_TYPED_ID_BOUND_TO_PreparedJobInputIdentity_ProgrammeId_AttemptId; NOT_DEE_FORMULA",
+              "gtc_root_serialization_commit_measurement_receipt": "PENDING",
+              "v4_synthetic_k_cold": "[48;6] SYNTHETIC_ONLY; CONFLICTS_WITH_NATIVE [0;6]",
+              "sibling_formula": "CANDIDATE_NOT_SELECTED"
             }
           },
           "not_run": [
             "Production encode and trusted ValidatedEncodingPlan construction.",
             "Production Meter owner-key producer/call receipt, same meter root/parent commit, and attempt+1 policy.",
-            "Selected DPLM K-exponent constructor/first writer/cold-reset/owner token; do not apply sibling formula.",
+            "Runtime pointer/generation receipt, local MeterSourceOwnerId mint/parent binding, canonical owners.meter serialization, and single parent commit.",
+            "No separate in-place K-exponent reset writer was observed; do not apply sibling formula.",
             "F06 terminal meter root/MeasurementReceipt/READY status.",
             "F08 production frame receipt and F13 production four-body barrier/parent adapter.",
             "Native execution, whole-programme execution, filesystem fault execution, and product acceptance."
@@ -19347,7 +19563,7 @@
                 {
       "root_id": "meter",
       "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-      "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__PRODUCTION_METER_KEY_AND_K_FILTER_SOURCE_BLOCKED",
+      "implementation_status": "NATIVE_STATIC_K_OWNER_CHAIN_CLOSED__GTC_ROOT_COMMIT_AND_MEASUREMENT_RECEIPT_PENDING",
       "implementation_files": [
         "crates/jocforge-domain/src/meter/standalone_root.rs",
         "crates/jocforge-domain/src/meter/mod.rs"
@@ -19374,7 +19590,7 @@
           "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
         }
       ],
-      "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and attempt+1 policy remain unbound. For K-filter, approved F06W omits the I32 member while native static evidence distinguishes it from the separate energy exponent. Selected DPLM constructor/first-writer/cold-reset and Meter-root owner token remain unbound; the sibling formula is not selected. Complete terminal owners.meter serialization is blocked; no terminal hash, ProgrammeMeasurementReceipt, READY proposal or parent commit exists.",
+      "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and attempt+1 policy remain unbound. For K-filter, approved F06W omits the I32 member; native static DPLM owner chain and cold K=[0;6] are closed, with energy exponent separately cold at [48;6]. V4 K=[48;6] is synthetic only and conflicts with native cold. Runtime pointer/generation capture is NOT_RUN. A parent-issued opaque typed MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is decidable as JOCForge LOCAL_MODEL policy, not a DEE formula and not implemented. GTC root serialization, one parent commit and MeasurementReceipt remain pending. Complete terminal owners.meter serialization is blocked; no terminal hash, READY proposal or parent commit exists.",
       "canonical_gtc_state_ref_status": "NOT_RUN",
       "gtc_owner_receipt_status": "NOT_RUN",
       "gtc_single_root_swap_status": "NOT_RUN",
@@ -19386,20 +19602,49 @@
         "payloads": "11/11 locally verified",
         "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_PRODUCER",
         "unresolved_fields": [
-          "DPLM static reducer reads a distinct K-associated I32[6] member, but approved F06W model omits it and selected-root constructor/cold/reset/owner mapping remains UNBOUND",
+          "Native DPLM K exponent type/cold value and static owner chain to the selected reducer are closed; runtime owner/generation receipt to canonical owners.meter and parent commit remain UNBOUND",
           "input_cursor.model_owner_key model contract and Panner-only callsites are closed; production Meter owner-key producer and runtime cursor/owner identity binding are not part of the current Meter root"
         ]
       },
       "remaining_gates": [
         "Frozen model semantics and two Panner-only callsites for input_cursor.model_owner_key are closed; production Meter key producer/call receipt and same-root binding are UNBOUND, so terminal owners.meter serialization is BLOCKED.",
-        "DPLM static K-filter exponents member distinction is closed; selected-root K exponent constructor/first writer/cold-reset/owner token remains UNBOUND, and terminal owners.meter serialization is BLOCKED. Do not apply the sibling candidate formula.",
+        "K-filter exponent native cold [0;6], separate energy cold [48;6], and static setup-to-reducer owner chain are closed; runtime generation receipt to canonical owners.meter, local GTC root projection/serialization and single parent commit remain pending. No in-place K reset writer was observed; sibling formula is not selected.",
         "Terminal meter hash and ProgrammeMeasurementReceipt/READY production remain NOT_RUN.",
         "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration remain NOT_RUN.",
         "Native EOF/drain evidence, end-to-end encode, W04 and product acceptance remain NOT_RUN."
       ],
       "measurement_receipt_ready_status": "NOT_RUN",
-      "terminal_state_reference_status": "BLOCKED_ON_UNBOUND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_AND_K_FILTER_EXPONENT_OWNER",
-      "terminal_meter_sha256_status": "NOT_RUN"
+      "terminal_state_reference_status": "BLOCKED_ON_GTC_METER_OWNER_GENERATION_MAPPING_AND_SINGLE_ROOT_COMMIT",
+      "terminal_meter_sha256_status": "NOT_RUN",
+      "synthetic_reference_conflicts": [
+        {
+          "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+          "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
+          "synthetic_k_filter_cold": [
+            48,
+            48,
+            48,
+            48,
+            48,
+            48
+          ],
+          "native_selected_dplm_k_filter_cold": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "status": "SYNTHETIC_ONLY_CONFLICTS_WITH_NATIVE_COLD",
+          "disposition": "Retain V4 fixture as synthetic; do not claim it as native cold or delete/overwrite it."
+        }
+      ],
+      "readiness_split": {
+        "native_selected_dplm_k_cold_and_static_owner_chain": "CLOSED",
+        "local_parent_meter_owner_id_policy": "DECIDABLE_LOCAL_POLICY_NOT_IMPLEMENTED",
+        "gtc_owners_meter_root_serialization_parent_commit_measurement_receipt": "PENDING"
+      }
     },
                 {
       "root_id": "drc",

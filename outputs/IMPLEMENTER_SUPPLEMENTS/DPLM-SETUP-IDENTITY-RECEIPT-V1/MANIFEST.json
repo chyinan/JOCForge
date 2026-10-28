@@ -1,0 +1,31 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "DPLM-SETUP-IDENTITY-RECEIPT-V1",
+  "scope": "Static native DPLM worker-root to row numeric-state chain and K exponent cold writer; GTC owner mapping remains local",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NATIVE_STATIC_OWNER_CHAIN_RUNTIME_RECEIPT_ABSENT",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "e11d26c88eeece76b14f4fc4a6335555c73b62290335a7b47daea60c28ac2363",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1087,
+      "sha256": "1385a13ecdde74b017d4fe57f8a70a3f5337e2489a8cb6f06983c5284fb1efe6"
+    },
+    {
+      "file": "STATIC-OWNER-CHAIN.json",
+      "bytes": 1931,
+      "sha256": "9571f7479320bea13b3d6acff61b05aa666b34fa08e9ac1762f36e1c93e4492c"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 1254,
+      "sha256": "b9f39278a3f530f340d8c3168c3d531eaaa9eda0282e1cf20454e03f3d578045"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 561,
+      "sha256": "1e7e47656614b6db685631d31015dd03532965f2d3bdc70f874faefbbf98b311"
+    }
+  ]
+}

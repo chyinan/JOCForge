@@ -1,0 +1,67 @@
+{
+  "schema": "washed-dplm-setup-static-owner-chain.v1",
+  "package_id": "DPLM-SETUP-IDENTITY-RECEIPT-V1",
+  "evidence_grade": "NATIVE_STATIC_IDA_CORPUS_AND_TARGET_BYTE_MATCH",
+  "chain": [
+    {
+      "from": "DPLM instance.worker_root member",
+      "to": "native meter worker root",
+      "status": "STATIC_BOUND_SETUP_AND_PROCESS_WRAPPERS"
+    },
+    {
+      "from": "worker root row table[channel]",
+      "to": "per-channel row object",
+      "status": "STATIC_BOUND"
+    },
+    {
+      "from": "row object.numeric_state",
+      "to": "inner numeric meter-state object",
+      "status": "STATIC_BOUND_CONSTRUCTOR_RETURN_STORED"
+    },
+    {
+      "from": "row object.numeric_state",
+      "to": "K-filter and energy reducer argument",
+      "status": "STATIC_BOUND_SAME_MEMBER"
+    }
+  ],
+  "selected_six_channel_cold_fields": {
+    "k_filter_exponents_i32_by_channel": {
+      "type": "signed I32[6]",
+      "cold": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "constructor": "numeric meter-state constructor"
+    },
+    "energy_accumulator_exponents_i32_by_channel": {
+      "type": "signed I32[6]",
+      "cold": [
+        48,
+        48,
+        48,
+        48,
+        48,
+        48
+      ],
+      "constructor": "same constructor, distinct member"
+    }
+  },
+  "reducer": {
+    "k_exponent": "read for per-channel filtered-power normalization",
+    "k_exponent_store_in_scoped_dplm_path": "NOT_OBSERVED",
+    "energy_exponent": "separately updated and reset to 48 on complete-window consumption"
+  },
+  "boundaries": {
+    "dplm_static_owner_chain_closed": true,
+    "runtime_pointer_capture": "NOT_RUN",
+    "runtime_generation_receipt": "NOT_CAPTURED",
+    "native_dplm_to_gtc_owners_meter": "NOT_A_NATIVE_ABI_TOKEN; LOCAL_PARENT_MAPPING_DECISION",
+    "terminal_meter_digest": "NOT_CLAIMED",
+    "measurement_receipt": "NOT_CLAIMED"
+  },
+  "implementation_requirement": false
+}

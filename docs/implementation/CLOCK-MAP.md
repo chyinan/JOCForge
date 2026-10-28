@@ -316,6 +316,7 @@
 | F13C/informational-consumer-writer-temporal-boundary | — | `Higher-invocation order and event counter are not a source-generation, ADM sample, or access-unit clock.` |
 | F13C/informational-higher-invocation-root-history-record-join | — | `Higher-caller frame/root ownership is not an ADM sample, source-generation, or transport access-unit clock.` |
 | F13C/informational-root-history-single-element-stop | — | `A higher-invocation/root-history receipt is not a consumer generation, source generation, ADM sample, or transport AU clock.` |
+| F13C/informational-contiguous-destination-direct-consumer-identity | — | `Same outer invocation and buffer identity do not define a transport-AU or source-generation clock.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14/authenticated-bit-compaction | — | `Stateless bit-stream projection; no frame, source, AU, or programme clock is owned.` |
 | F14/hmac-sha256-primitive | — | `Stateless byte primitive; no AU, source, programme, or history clock is owned.` |

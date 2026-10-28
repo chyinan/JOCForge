@@ -1,0 +1,51 @@
+{
+  "schema": "washed-dplm-kfilter-initialization-source-identities.v1",
+  "source_manifest_sha256": "56f0c7b9d227fbacc2ca82f7441e4e73c0a5bc1b8ec6e6674db7dbda2e63f2cb",
+  "source_payloads_verified": [
+    {
+      "file": "README.md",
+      "bytes": 1175,
+      "sha256": "d288f0c79f68c1f21e92fe916d87cbbc447c1f4d2174b3ae47fc10662c421980"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3683,
+      "sha256": "292603fefd4e026e41b132189edbeb9cd16127ff326b1f0743f0a371a06cd7f1"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 4342,
+      "sha256": "63cfde0296764cabb4ea47ddbd1706124e01dd4c14646ad4acae1f303d46c50d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1561,
+      "sha256": "0ab99e41c5ffd7c51a433959dbc9cc0ac23b60c75012845489be44ba34f7fa27"
+    },
+    {
+      "file": "NOT_RUN-UNBOUND.json",
+      "bytes": 1472,
+      "sha256": "379b4efd71987e67b392dc981f1ae6176451a2498c38e1d96ea9545fe57be8a2"
+    },
+    {
+      "file": "DELIVERY-ENVELOPE.json",
+      "bytes": 1155,
+      "sha256": "f41cc8bbcb12fa1c1552ce46d71df203919561fb96be426bb7a25be0443c3848"
+    }
+  ],
+  "target_module": {
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "function_identity_summary": "18 bounded function instruction-byte identities reported matched to target; source package contains hashes only, no listings/RVAs/code.",
+  "reference_kfilter_lineage_manifest_sha256": "290988c533a9b96017eab444504d9150e36fee589d889f907718e3949117975b",
+  "excluded": [
+    "source code",
+    "disassembly",
+    "execution addresses",
+    "raw PCM",
+    "E-AC3 payload",
+    "private key",
+    "authentication material"
+  ]
+}

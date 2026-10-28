@@ -1,0 +1,53 @@
+{
+  "schema": "washed-dplm-kfilter-exponent-cold-fields.v1",
+  "package_id": "F06-KFILTER-EXPONENT-INITIALIZATION-V1",
+  "evidence_grade": "NATIVE_STATIC_EXACT_BINARY_BYTES",
+  "selected_profile": {
+    "sample_rate_hz": 48000,
+    "channels": 6
+  },
+  "native_cold_fields": {
+    "k_filter_exponents_i32_by_channel": {
+      "type": "signed I32[6]",
+      "cold": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "writer": "numeric meter-state constructor"
+    },
+    "energy_accumulator_exponents_i32_by_channel": {
+      "type": "signed I32[6]",
+      "cold": [
+        48,
+        48,
+        48,
+        48,
+        48,
+        48
+      ],
+      "writer": "same constructor, distinct member"
+    }
+  },
+  "selected_dplm_processing": {
+    "k_exponent": "read by reducer as per-channel normalization input",
+    "k_exponent_write": "NOT_OBSERVED_IN_SCOPED_DIRECT_DPLM_CHAIN",
+    "k_filter_kernel": "uses F32 history; no K exponent store observed",
+    "energy_exponent": "separately updated and reset to 48 on completed-window consumption"
+  },
+  "setup_routes": "Fresh DPLM worker-root setup routes reach the same row/numeric-state constructor.",
+  "sibling_reconciliation": "Separate branch only; no direct callgraph/owner join to selected DPLM; do not use its formula for selected root.",
+  "synthetic_v4_k_exponent": [
+    48,
+    48,
+    48,
+    48,
+    48,
+    48
+  ],
+  "synthetic_v4_value_is_native_cold": false,
+  "implementation_requirement": false
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "washed-dplm-setup-identity-source-identities.v1",
+  "source_manifest_sha256": "e11d26c88eeece76b14f4fc4a6335555c73b62290335a7b47daea60c28ac2363",
+  "source_payloads_verified": [
+    {
+      "file": "README.md",
+      "bytes": 574,
+      "sha256": "06da7e1256593ecb39fa887b6562275ffd45dbf456be7b7f400871adefd574f6"
+    },
+    {
+      "file": "IDENTITY-RECEIPT.json",
+      "bytes": 3270,
+      "sha256": "3d1900227bee0a13bc4f8a81c50d4fe2f8033e44a7c7a1f577e978e6f4df8922"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 3175,
+      "sha256": "7e0b6b732cf3e962266258a3817df2b0e52e8bb314374aab0e574f472b31901f"
+    }
+  ],
+  "native_module": {
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "byte_identity_method": "Source report says each decoded instruction byte in scoped functions matches target module; washed summary omits function code, RVAs and instruction listings.",
+  "prior_kfilter_lineage_manifest_sha256": "56f0c7b9d227fbacc2ca82f7441e4e73c0a5bc1b8ec6e6674db7dbda2e63f2cb",
+  "excluded": [
+    "source code",
+    "disassembly",
+    "execution addresses",
+    "raw PCM",
+    "E-AC3 payload",
+    "private key",
+    "authentication material"
+  ]
+}
