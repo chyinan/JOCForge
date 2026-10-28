@@ -143,6 +143,7 @@ pub struct ReaderTargetStageProposal {
     next_state: ReaderTargetState,
     pending_receipt: Option<ReaderTargetUpdateReceipt>,
     delivered_controls: ReaderTargetControlRows,
+    markers_i32: [i32; TARGET_ROWS],
 }
 
 /// Callback-local typed receipt candidate; never part of ReaderTargetState serialization.
@@ -288,6 +289,7 @@ struct MarkerHistoryPreview {
     next_state: ReaderTargetState,
     delivered_controls: ReaderTargetControlRows,
     active_after: [u8; TARGET_ROWS],
+    markers_i32: [i32; TARGET_ROWS],
 }
 
 struct ReaderTargetComputedRows {
@@ -345,6 +347,15 @@ impl ReaderTargetState {
         self.retired
     }
 
+    pub(crate) fn previous_active_u8(&self) -> Result<[u8; TARGET_ROWS], ReaderTargetError> {
+        self.previous_active
+            .iter()
+            .map(|value| u8::try_from(*value).map_err(|_| ReaderTargetError::StateError))
+            .collect::<Result<Vec<_>, _>>()?
+            .try_into()
+            .map_err(|_| ReaderTargetError::StateError)
+    }
+
     fn staged_copy(&self) -> Self {
         Self {
             callback_index: self.callback_index,
@@ -361,9 +372,13 @@ impl ReaderTargetState {
 
     /// Returns SHA-256 over the schema's complete encode_node-v1 canonical byte preimage.
     pub fn canonical_sha256(&self) -> [u8; 32] {
+        Sha256::digest(self.canonical_bytes()).into()
+    }
+
+    pub(crate) fn canonical_bytes(&self) -> Vec<u8> {
         let mut bytes = Vec::with_capacity(9_047);
         encode_state(self, &mut bytes);
-        Sha256::digest(bytes).into()
+        bytes
     }
 }
 
@@ -399,6 +414,7 @@ pub fn stage_reader_target(
             next_state: staged,
             pending_receipt: None,
             delivered_controls,
+            markers_i32: marker_preview.markers_i32,
         });
     }
 
@@ -434,6 +450,7 @@ pub fn stage_reader_target(
         next_state: staged,
         pending_receipt: Some(receipt),
         delivered_controls,
+        markers_i32: marker_preview.markers_i32,
     })
 }
 
@@ -446,6 +463,39 @@ impl ReaderTargetStageProposal {
     /// Read-only proposed Control52 rows remain pending until the enclosing spatial_control parent admits them.
     pub const fn delivered_controls(&self) -> &ReaderTargetControlRows {
         &self.delivered_controls
+    }
+
+    /// Returns the callback-local F05H marker values consumed by this staged history update.
+    /// The enclosing spatial-control owner may project them into its after-state; this proposal
+    /// does not commit either owner.
+    pub const fn markers_i32(&self) -> &[i32; TARGET_ROWS] {
+        &self.markers_i32
+    }
+
+    pub(crate) fn previous_active_after_u8(&self) -> Result<[u8; TARGET_ROWS], ReaderTargetError> {
+        self.next_state
+            .previous_active
+            .iter()
+            .map(|value| u8::try_from(*value).map_err(|_| ReaderTargetError::StateError))
+            .collect::<Result<Vec<_>, _>>()?
+            .try_into()
+            .map_err(|_| ReaderTargetError::StateError)
+    }
+
+    pub(crate) fn into_parent_parts(
+        self,
+    ) -> (
+        ReaderTargetState,
+        Option<ReaderTargetUpdateReceipt>,
+        ReaderTargetControlRows,
+        [i32; TARGET_ROWS],
+    ) {
+        (
+            self.next_state,
+            self.pending_receipt,
+            self.delivered_controls,
+            self.markers_i32,
+        )
     }
 
     pub(crate) const fn pending_receipt(&self) -> Option<&ReaderTargetUpdateReceipt> {
@@ -623,6 +673,7 @@ fn preview_marker_and_history(
     let mut producer_generations = [HistoryProducerGeneration::Cold; TARGET_ROWS];
     let mut producer_rows = [0_u8; TARGET_ROWS];
     let mut active_after = [0_u8; TARGET_ROWS];
+    let mut markers_i32 = [0_i32; TARGET_ROWS];
     for row in 0..TARGET_ROWS {
         let has_witness = has_quiet_witness(input, row);
         let quiet = !has_witness;
@@ -630,6 +681,7 @@ fn preview_marker_and_history(
         let previous_active = u8::try_from(committed.previous_active[row])
             .map_err(|_| ReaderTargetError::StateError)?;
         let marker = choose_marker(committed, input, row, current_active, previous_active)?;
+        markers_i32[row] = i32::try_from(marker).map_err(|_| ReaderTargetError::StateError)?;
         let fit_record = make_fit_record(input, row, quiet, current_active, previous_active);
         let generated = CleanHistoryRecord {
             payload: words_to_bytes(&fit_record),
@@ -680,6 +732,7 @@ fn preview_marker_and_history(
             rows,
         },
         active_after,
+        markers_i32,
     })
 }
 

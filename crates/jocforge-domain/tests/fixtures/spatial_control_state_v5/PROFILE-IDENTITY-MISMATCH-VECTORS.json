@@ -18,7 +18,7 @@
           "target_projection_sha256": "b1acfa3ce43b6ce987836330a3db3945c81b3d62d96d4973f18b302dc6d2606c",
           "provider_generation": 0
         },
-        "state_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+        "state_sha256": "d68ef7af3e4d2fd0575926e3e44e1bdeda80db3e9c21a1fd1a8daf95010fbb50",
         "generation": 0
       },
       "proposal": {
@@ -35,7 +35,7 @@
           "target_projection_sha256": "b1acfa3ce43b6ce987836330a3db3945c81b3d62d96d4973f18b302dc6d2606c",
           "provider_generation": 0
         },
-        "state_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+        "state_sha256": "d68ef7af3e4d2fd0575926e3e44e1bdeda80db3e9c21a1fd1a8daf95010fbb50",
         "generation": 0
       },
       "expected": {

@@ -506,7 +506,7 @@ impl DiffusionFilterState {
             })
     }
 
-    fn canonical_bytes(&self) -> Vec<u8> {
+    pub(crate) fn canonical_bytes(&self) -> Vec<u8> {
         let mut bytes = Vec::new();
         bytes.extend_from_slice(b"DSTATE1\0");
         push_u32(&mut bytes, self.sample_rate_hz);

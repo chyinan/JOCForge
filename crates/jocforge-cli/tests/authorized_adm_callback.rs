@@ -400,6 +400,29 @@ fn authorized_adm_bwf_produces_one_bound_normal_geometry_and_pcm_callback() {
     assert_eq!(spatial_stage.callback_index().value(), 0);
     assert_eq!(spatial_stage.component_rows().callback_index().value(), 0);
     assert_eq!(spatial_stage.canonical_dense_d_f32_bits().len(), 15 * 48);
+    let spatial_after = spatial_stage.spatial_control_after_proposal().after_state();
+    assert_eq!(spatial_after.callback_index().value(), 1);
+    assert_eq!(spatial_after.source_cursor_samples().value(), 1_536);
+    assert_eq!(spatial_after.normal_callbacks().value(), 1);
+    assert!(!spatial_after.source_cache_is_cold());
+    assert_eq!(spatial_after.regular_raw_history_bits().len(), 37 * 1_536);
+    assert_eq!(spatial_after.previous_pcm_bits().len(), 38 * 1_536);
+    assert_eq!(spatial_after.previous_current_rows_bits().len(), 48 * 1_536);
+    assert_eq!(spatial_after.matrix_f32_bits().len(), 15 * 48);
+    assert_eq!(
+        spatial_stage
+            .spatial_control_after_proposal()
+            .join_metadata()
+            .after_digest(),
+        spatial_after.digest()
+    );
+    assert!(
+        spatial_after
+            .previous_marker_active_u8()
+            .unwrap()
+            .iter()
+            .all(|active| *active <= 1)
+    );
     assert_eq!(owners.spatial_control.digest(), spatial_control_before);
     assert_eq!(owners.spatial_audio.digest(), spatial_audio_before);
     assert_eq!(
@@ -410,7 +433,7 @@ fn authorized_adm_bwf_produces_one_bound_normal_geometry_and_pcm_callback() {
     let handoff = callback
         .bind_spatial_outputs(
             spatial_stage.component_rows(),
-            spatial_stage.reader_target_proposal().delivered_controls(),
+            spatial_stage.reader_target_controls(),
         )
         .unwrap();
     let mut meter_prepass = selected_meter_prepass(source_samples);

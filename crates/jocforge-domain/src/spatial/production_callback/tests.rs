@@ -301,11 +301,36 @@ fn assert_stages_share_one_callback(proposal: &SpatialProductionCallbackProposal
         proposal.component_rows().transaction_id(),
         proposal.transaction_id()
     );
+    assert_eq!(proposal.canonical_dense_d_f32_bits().len(), 15 * 48);
+    let after_state = proposal.spatial_control_after_proposal().after_state();
     assert_eq!(
-        proposal.reader_target.next_state().callback_index(),
+        after_state.callback_index(),
         FrontendCallbackIndex::new(callback.value() + 1)
     );
-    assert_eq!(proposal.canonical_dense_d_f32_bits().len(), 15 * 48);
+    assert_eq!(
+        after_state.reader_targets_callback_index(),
+        FrontendCallbackIndex::new(callback.value() + 1)
+    );
+    assert!(!after_state.source_cache_is_cold());
+    assert_eq!(after_state.matrix_f32_bits().len(), 15 * 48);
+    assert_eq!(
+        after_state.writer_set_record_count() as usize,
+        proposal.active_target_slots().len()
+    );
+    assert_eq!(proposal.reader_target_controls().callback_index(), callback);
+    assert!(
+        after_state
+            .markers_i32()
+            .iter()
+            .all(|marker| (-1..=1).contains(marker))
+    );
+    assert!(
+        after_state
+            .previous_marker_active_u8()
+            .expect("the reader target producer emits binary activity")
+            .iter()
+            .all(|active| *active <= 1)
+    );
 }
 
 #[test]
@@ -327,7 +352,12 @@ fn empty_selection_keeps_empty_c_d_and_stages_all_pending_owners_once() {
         FrontendCallbackIndex::new(0)
     );
     assert_eq!(proposal.component.blocks_processed(), 24);
-    assert!(proposal.reader_target.pending_receipt().is_none());
+    assert!(
+        proposal
+            .spatial_control_after_proposal()
+            .reader_target_receipt()
+            .is_none()
+    );
     assert_eq!(owners.spatial_control.digest(), before_control);
     assert_eq!(owners.spatial_audio.digest(), before_audio);
     assert_eq!(owners.reader_target.canonical_sha256(), before_reader);

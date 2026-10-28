@@ -45,7 +45,7 @@ fn selected_machine() -> SpatialControlMachine {
 }
 
 #[test]
-fn cold_root_has_the_complete_v5_canonical_preimage_and_digest() {
+fn cold_root_has_the_complete_v6_canonical_preimage_and_digest() {
     let machine = selected_machine();
     let state = machine.committed();
     let vector: serde_json::Value = serde_json::from_slice(PROFILE_IDENTITY_VECTORS).unwrap();
@@ -55,10 +55,10 @@ fn cold_root_has_the_complete_v5_canonical_preimage_and_digest() {
     assert_eq!(machine.generation(), 0);
     assert_eq!(machine.profile(), EncodingProfile::selected());
     assert_eq!(state.source_cursor_samples(), AdmSampleIndex::new(0));
-    assert_eq!(state.canonical_bytes().len(), 768_582);
+    assert_eq!(state.canonical_bytes().len(), 777_665);
     assert_eq!(
         state.digest().to_hex(),
-        "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0"
+        "d68ef7af3e4d2fd0575926e3e44e1bdeda80db3e9c21a1fd1a8daf95010fbb50"
     );
     assert_eq!(state.event_control_canonical_bytes().len(), 4_402);
     assert_eq!(
@@ -106,7 +106,7 @@ fn cold_root_has_the_complete_v5_canonical_preimage_and_digest() {
     assert!(state.source_vector_bits().iter().all(|bits| *bits == 0));
     assert!(state.source_scalar_bits().iter().all(|bits| *bits == 0));
     assert_eq!(state.target_active_u8(), &[0; 15]);
-    assert_eq!(state.previous_marker_active_u8(), &[0; 15]);
+    assert_eq!(state.previous_marker_active_u8().unwrap(), [0; 15]);
     assert_eq!(state.callback_index().value(), 0);
     assert_eq!(state.source_cursor_samples().value(), 0);
     assert_eq!(state.normal_callbacks().value(), 0);

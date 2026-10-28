@@ -1,0 +1,13 @@
+{
+  "schema":"prefix-diffusion-bed-control-inputs.v1",
+  "input_only":true,
+  "contains_expected_outputs":false,
+  "cases":[
+    {"id":"direct_lfe_bed","kind":"bed","bed_id":3,"model_defined_words":[0,0,3,2,1,3],"trailing_seven_words":"UNDEFINED"},
+    {"id":"regular_bed","kind":"bed","bed_id":1,"model_defined_words":[0,0,3,2,1,1],"trailing_seven_words":"UNDEFINED"},
+    {"id":"active_object_tail","kind":"object","diffuse":1,"width_f32":0.25,"quiet":0,"previous_instance_present":false},
+    {"id":"inactive_then_reactivate","tail_sequence":[{"diffuse":1,"width_f32":0.25,"quiet":0},{"diffuse":0,"width_f32":0.25,"quiet":0},{"diffuse":1,"width_f32":0.25,"quiet":0}]},
+    {"id":"multiple_prefix_consumers","one_tail_filter_lanes":4,"prefix_output_count":11,"prefix_indices":[0,3,7]}
+  ],
+  "scope":"Input discriminators only; no predicted output, audio payload, raw unknown bed tail, native pointer, source code or authentication material."
+}

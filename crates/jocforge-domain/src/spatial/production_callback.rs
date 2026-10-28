@@ -21,7 +21,10 @@ use super::{
         ComponentStageError, MeterComponentOutputRows, MeterComponentStageProposal,
         SpatialAudioJoinMetadata, SpatialAudioMachine,
     },
-    spatial_control::{SpatialControlError, SpatialControlJoinMetadata, SpatialControlMachine},
+    spatial_control::{
+        SpatialControlAfterStateParts, SpatialControlError, SpatialControlJoinMetadata,
+        SpatialControlMachine,
+    },
     target_context::{
         TargetContextError, TargetContextProjection, build_target_context_projection,
     },
@@ -36,11 +39,11 @@ use crate::{
         NormalControlHeldSourceView, NormalControlSnapshotProposal,
     },
     joc::oamd::reader_target::{
-        ReaderTargetCallbackInputs, ReaderTargetError, ReaderTargetStageProposal,
-        ReaderTargetState, SELECTED_PROFILE_ID, stage_reader_target,
+        ReaderTargetCallbackInputs, ReaderTargetControlRows, ReaderTargetError,
+        ReaderTargetStageProposal, ReaderTargetState, SELECTED_PROFILE_ID, stage_reader_target,
     },
     spatial::installed48_source_map::Installed48SourceMap,
-    timeline::{CodecSourceIndex, FrontendCallbackIndex},
+    timeline::{CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount},
     transaction::CallbackLineageIdentity,
 };
 
@@ -72,6 +75,22 @@ impl NormalControlCallbackSource {
             Self::CachedHold(snapshot) => snapshot.source_origin_generation(),
         }
     }
+
+    pub const fn control38_rows(
+        &self,
+    ) -> &[super::super::frontend::normal_control_snapshot::NormalControlRow; 38] {
+        match self {
+            Self::Normal(snapshot) => snapshot.control38_rows(),
+            Self::CachedHold(snapshot) => snapshot.control38_rows(),
+        }
+    }
+
+    pub const fn normal_callbacks(&self) -> NormalCallbackCount {
+        match self {
+            Self::Normal(snapshot) => snapshot.after_state().next_normal_callbacks(),
+            Self::CachedHold(snapshot) => snapshot.normal_callbacks(),
+        }
+    }
 }
 
 /// Errors from the ordered noncommitting continuation of the selected spatial callback.
@@ -86,6 +105,7 @@ pub enum SpatialProductionCallbackError {
     U04Refinement(U04RefinementError),
     U04DomainMismatch,
     TargetInstall(TargetSlotInstallError),
+    SpatialControlProjection,
     TargetContext(TargetContextError),
     OuterMatrix(super::source_geometry_outer::CompactOuterMatrixError),
     SpatialControl(SpatialControlError),
@@ -127,8 +147,6 @@ pub struct SpatialProductionNormalCallbackInputs<'a> {
 #[must_use]
 pub struct SpatialProductionCallbackProposal {
     transaction_id: CallbackLineageIdentity,
-    frontend: RenderedFrontendFeatureStageProposal,
-    source_snapshot: NormalControlCallbackSource,
     source_geometry: GlobalSourceGeometrySnapshot,
     response: PointResponseProduction,
     selector: Option<CandidateSelectorResult>,
@@ -139,8 +157,41 @@ pub struct SpatialProductionCallbackProposal {
     matrix: CompactOuterMatrix,
     dense_d_f32_bits: Box<[u32]>,
     active_target_slots: Box<[u8]>,
-    reader_target: ReaderTargetStageProposal,
+    spatial_control_after: super::spatial_control::SpatialControlAfterProposal,
     component: MeterComponentStageProposal,
+}
+
+/// Same-callback F03W target, marker, assignment, matrix, and writer-set values.
+/// This is a pending value projection; it has no owner commit authority.
+#[derive(Debug)]
+pub(super) struct SpatialControlCallbackProjection {
+    target_state: TargetSlotState,
+    assignment_i32: [i32; 15],
+    markers_i32: [i32; 15],
+    matrix_f32_bits: Box<[u32]>,
+    writer_set: Box<[u8]>,
+}
+
+impl SpatialControlCallbackProjection {
+    pub(super) const fn target_state(&self) -> &TargetSlotState {
+        &self.target_state
+    }
+
+    pub(super) const fn assignment_i32(&self) -> &[i32; 15] {
+        &self.assignment_i32
+    }
+
+    pub(super) const fn markers_i32(&self) -> &[i32; 15] {
+        &self.markers_i32
+    }
+
+    pub(super) fn matrix_f32_bits(&self) -> &[u32] {
+        &self.matrix_f32_bits
+    }
+
+    pub(super) fn writer_set(&self) -> &[u8] {
+        &self.writer_set
+    }
 }
 
 /// Continues the existing spatial pipeline from the indivisible normal-control/geometry stage.
@@ -189,10 +240,6 @@ impl SpatialProductionCallbackProposal {
         &self.response
     }
 
-    pub const fn source_snapshot(&self) -> &NormalControlCallbackSource {
-        &self.source_snapshot
-    }
-
     pub const fn source_geometry(&self) -> &GlobalSourceGeometrySnapshot {
         &self.source_geometry
     }
@@ -230,8 +277,14 @@ impl SpatialProductionCallbackProposal {
         &self.active_target_slots
     }
 
-    pub const fn reader_target_proposal(&self) -> &ReaderTargetStageProposal {
-        &self.reader_target
+    pub const fn spatial_control_after_proposal(
+        &self,
+    ) -> &super::spatial_control::SpatialControlAfterProposal {
+        &self.spatial_control_after
+    }
+
+    pub const fn reader_target_controls(&self) -> &ReaderTargetControlRows {
+        self.spatial_control_after.reader_target_controls()
     }
 
     pub const fn component_rows(&self) -> &MeterComponentOutputRows {
@@ -241,10 +294,6 @@ impl SpatialProductionCallbackProposal {
     pub const fn component_proposal(&self) -> &MeterComponentStageProposal {
         &self.component
     }
-
-    pub const fn frontend_proposal(&self) -> &RenderedFrontendFeatureStageProposal {
-        &self.frontend
-    }
 }
 
 /// Runs the same-callback source response, selector/U04 handoff, installation, C/d, marker,
@@ -253,7 +302,7 @@ pub fn continue_spatial_production_callback(
     input: SpatialProductionCallbackInputs<'_>,
 ) -> Result<SpatialProductionCallbackProposal, SpatialProductionCallbackError> {
     let SpatialProductionCallbackInputs {
-        frontend,
+        mut frontend,
         source_snapshot,
         source_geometry,
         source_control_clock,
@@ -395,6 +444,10 @@ pub fn continue_spatial_production_callback(
     };
     let reader_target = stage_reader_target(reader_target, &reader_inputs)
         .map_err(SpatialProductionCallbackError::ReaderTarget)?;
+    let spatial_control_projection =
+        spatial_control_callback_projection(&installation, &matrix, &reader_target)?;
+    let (reader_target_state, reader_target_receipt, reader_target_controls, _) =
+        reader_target.into_parent_parts();
     let dense_d_f32_bits = component_preview
         .canonical_dense_matrix_f32_bits()
         .to_vec()
@@ -410,10 +463,86 @@ pub fn continue_spatial_production_callback(
         )
         .map_err(SpatialProductionCallbackError::Component)?;
 
+    if frontend.frontend.current_features.lineage.callback_phase
+        != super::post_window_fanout::CallbackPhase::Normal
+    {
+        return Err(SpatialProductionCallbackError::CallbackIdentity);
+    }
+    let installed48_after = frontend
+        .take_installed48_after()
+        .ok_or(SpatialProductionCallbackError::CallbackIdentity)?;
+    let installed48_projection = installed48_after.into_spatial_control_parts();
+    let source_cursor_samples = installed48_projection.source_cursor;
+    let source_pcm_rows = installed48_projection.previous_pcm_rows;
+    let previous_current_rows_bits = installed48_projection.previous_current_rows;
+    let mut regular_physical_hosts = [false; 38];
+    for binding in source_map.physical_to_global_source() {
+        let host = usize::from(binding.physical_host().value());
+        let slot = regular_physical_hosts
+            .get_mut(host)
+            .ok_or(SpatialProductionCallbackError::CallbackIdentity)?;
+        if std::mem::replace(slot, true) {
+            return Err(SpatialProductionCallbackError::CallbackIdentity);
+        }
+    }
+    let lfe_host = regular_physical_hosts
+        .iter()
+        .position(|regular| !regular)
+        .ok_or(SpatialProductionCallbackError::CallbackIdentity)?;
+    let mut diffusion_tails = std::array::from_fn(|_| None);
+    let mut regular_tail = 0;
+    let mut diffusion_by_host = installed48_projection.diffusion_states;
+    for host in 0..38 {
+        if host == lfe_host {
+            continue;
+        }
+        diffusion_tails[regular_tail] = diffusion_by_host.remove(&(host as u8));
+        regular_tail += 1;
+    }
+    if regular_tail != 37 || !diffusion_by_host.is_empty() {
+        return Err(SpatialProductionCallbackError::CallbackIdentity);
+    }
+    let raw_history_bits = frontend
+        .frontend
+        .raw_history
+        .rows()
+        .iter()
+        .flat_map(|row| row.iter().copied())
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
+    let control38_rows = source_snapshot
+        .control38_rows()
+        .to_vec()
+        .try_into()
+        .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
+    let current_features = frontend.frontend.current_features;
+    let spatial_control_after = spatial_control
+        .propose_callback_after(
+            transaction_id.clone(),
+            SpatialControlAfterStateParts {
+                callback_index,
+                source_cursor_samples,
+                normal_callbacks: source_snapshot.normal_callbacks(),
+                source_pcm_rows,
+                control38_rows,
+                regular_raw_history_bits: raw_history_bits,
+                previous_current_rows_bits: previous_current_rows_bits
+                    .into_iter()
+                    .flatten()
+                    .collect::<Vec<_>>()
+                    .into_boxed_slice(),
+                diffusion_tails,
+                reader_target_state,
+                projection: spatial_control_projection,
+            },
+            current_features,
+            reader_target_receipt,
+            reader_target_controls,
+        )
+        .map_err(SpatialProductionCallbackError::SpatialControl)?;
+
     Ok(SpatialProductionCallbackProposal {
         transaction_id,
-        frontend,
-        source_snapshot,
         source_geometry,
         response,
         selector,
@@ -424,8 +553,56 @@ pub fn continue_spatial_production_callback(
         matrix,
         dense_d_f32_bits,
         active_target_slots: active_target_slots.into_boxed_slice(),
-        reader_target,
+        spatial_control_after,
         component,
+    })
+}
+
+fn spatial_control_callback_projection(
+    installation: &TargetSlotInstallResult,
+    matrix: &CompactOuterMatrix,
+    reader_target: &ReaderTargetStageProposal,
+) -> Result<SpatialControlCallbackProjection, SpatialProductionCallbackError> {
+    if installation.mapping().len() != 15
+        || matrix.destinations().len() != matrix.c_rows_u32().len()
+        || matrix.c_rows_u32().iter().any(|row| row.len() != 48)
+    {
+        return Err(SpatialProductionCallbackError::SpatialControlProjection);
+    }
+
+    let mut assignment_i32 = [0_i32; 15];
+    for (target, mapped_source) in installation.mapping().iter().copied().enumerate() {
+        assignment_i32[target] = i32::from(mapped_source);
+    }
+
+    let mut matrix_f32_bits = vec![0_u32; 15 * 48].into_boxed_slice();
+    let mut writer_set = Vec::with_capacity(matrix.destinations().len());
+    for (compact_row, destination) in matrix.destinations().iter().enumerate() {
+        let target = usize::from(destination.target_slot().value());
+        let row = matrix
+            .c_rows_u32()
+            .get(compact_row)
+            .ok_or(SpatialProductionCallbackError::SpatialControlProjection)?;
+        if target >= 15
+            || writer_set
+                .last()
+                .is_some_and(|previous| *previous >= target as u8)
+        {
+            return Err(SpatialProductionCallbackError::SpatialControlProjection);
+        }
+        matrix_f32_bits[target * 48..(target + 1) * 48].copy_from_slice(row);
+        writer_set.push(
+            u8::try_from(target)
+                .map_err(|_| SpatialProductionCallbackError::SpatialControlProjection)?,
+        );
+    }
+
+    Ok(SpatialControlCallbackProjection {
+        target_state: installation.next_state().clone(),
+        assignment_i32,
+        markers_i32: *reader_target.markers_i32(),
+        matrix_f32_bits,
+        writer_set: writer_set.into_boxed_slice(),
     })
 }
 

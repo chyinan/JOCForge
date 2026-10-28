@@ -87,6 +87,13 @@ pub struct MeterInstalled48State {
     diffusion_states: BTreeMap<u8, DiffusionTailState>,
 }
 
+pub(crate) struct Installed48AfterStateProjection {
+    pub(crate) source_cursor: AdmSampleIndex,
+    pub(crate) previous_pcm_rows: Vec<Vec<u32>>,
+    pub(crate) previous_current_rows: Vec<Vec<u32>>,
+    pub(crate) diffusion_states: BTreeMap<u8, DiffusionTailState>,
+}
+
 impl MeterInstalled48State {
     pub fn cold(source_sha256: [u8; 32], source_samples: MeterSourceSampleCount) -> Self {
         Self {
@@ -112,6 +119,15 @@ impl MeterInstalled48State {
 
     pub const fn source_cursor(&self) -> AdmSampleIndex {
         self.source_cursor
+    }
+
+    pub(crate) fn into_spatial_control_parts(self) -> Installed48AfterStateProjection {
+        Installed48AfterStateProjection {
+            source_cursor: self.source_cursor,
+            previous_pcm_rows: self.previous_pcm_rows,
+            previous_current_rows: self.previous_current_rows,
+            diffusion_states: self.diffusion_states,
+        }
     }
 }
 

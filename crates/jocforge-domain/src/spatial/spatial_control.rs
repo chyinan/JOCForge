@@ -1,8 +1,9 @@
 // pattern: Functional Core
-//! Complete v5 persistent cold root and read-only staging capability boundary.
+//! Complete v6 persistent spatial-control root and read-only staging capability boundary.
 //!
-//! No callback transition or packet producer is implemented here. CurrentFeatures owns its opaque
-//! packet type; no public constructor, default packet, or local commit authority exists here.
+//! A selected normal callback can now produce a complete pending F03W/F05R56 after-root from the
+//! same callback's typed producer outputs. Packets and receipts remain linear, no local commit
+//! authority exists, and the enclosing programme transaction remains the sole committer.
 //!
 //! # Capability guarantees
 //!
@@ -42,16 +43,26 @@
 //! let _proposal = SpatialControlAfterProposal::new();
 //! ```
 
-use super::{current_features::CurrentFeaturesPacket, source_flags::SourceFlagsPacket};
+use super::{
+    current_features::{CurrentFeaturesPacket, CurrentFeaturesProduced},
+    diffusion_tail::DiffusionTailState,
+    production_callback::SpatialControlCallbackProjection,
+    source_flags::SourceFlagsPacket,
+};
+use crate::frontend::normal_control_snapshot::NormalControlRow;
 use crate::frontend::{
     F01EProviderReceipt, F03TargetProviderReceipt, ProviderIdentity, ProviderSha256,
     ValidatedF01EColdProvider, ValidatedF03TargetColdProvider,
+};
+use crate::joc::oamd::reader_target::{
+    ReaderTargetControlRows, ReaderTargetState, ReaderTargetUpdateReceipt,
 };
 use crate::profile::{EncodingProfile, resolve_selected_profile};
 use crate::timeline::{AdmSampleIndex, FrontendCallbackIndex, NormalCallbackCount};
 use crate::transaction::CallbackLineageIdentity;
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
+use std::sync::Arc;
 
 const NORMAL_CALLBACKS_COLD: u64 = 0;
 const CACHED_DRAINS_COLD: u32 = 4;
@@ -59,6 +70,24 @@ const F01E_COLD_BYTES: usize = 4_402;
 const F03_TARGET_PROJECTION_BYTES: u64 = 630;
 const SPATIAL_CONTROL_OWNER_ID: &str = "spatial_control";
 const SPATIAL_CONTROL_STATE_REF: &str = "owners.spatial_control";
+const PHYSICAL_HOST_COUNT: usize = 38;
+const REGULAR_TAIL_COUNT: usize = 37;
+const CONTROL_WORDS_PER_TRACK: usize = 13;
+
+#[derive(Clone, Debug)]
+enum PhysicalControlSnapshotRow {
+    Bed6([u32; 6]),
+    Object13([u32; CONTROL_WORDS_PER_TRACK]),
+}
+
+impl PhysicalControlSnapshotRow {
+    fn from_normal_control(row: &NormalControlRow) -> Self {
+        match row {
+            NormalControlRow::Bed6 { words, .. } => Self::Bed6(*words),
+            NormalControlRow::Object13 { control, .. } => Self::Object13(control.words()),
+        }
+    }
+}
 
 /// Producer capability reserved for the future F03W direct-LFE ingress path.
 #[derive(Debug)]
@@ -280,6 +309,7 @@ pub enum SpatialControlError {
     ProviderLineageMismatch,
     F01ECanonicalIdentityMismatch,
     F03TargetProjectionMismatch,
+    CallbackAfterStateInvalid,
 }
 
 #[derive(Debug)]
@@ -293,18 +323,17 @@ struct ClockState {
 
 #[derive(Debug)]
 struct SourceCacheState {
-    normal_host38_cache_present: bool,
-    control_snapshot_present: bool,
+    last_normal_host38_bits: Option<Arc<[u32]>>,
+    last_control_snapshot: Option<Box<[PhysicalControlSnapshotRow; PHYSICAL_HOST_COUNT]>>,
     phase_u8: u8,
 }
 
 #[derive(Debug)]
 struct RenderAudioState {
     regular_raw_history_bits: Box<[u32]>,
-    previous_pcm_bits: Box<[u32]>,
+    previous_pcm_bits: Arc<[u32]>,
     previous_current_rows_bits: Box<[u32]>,
-    diffusion_instances_present: bool,
-    diffusion_previous_outputs_present: bool,
+    diffusion_tails: [Option<super::diffusion_tail::DiffusionTailState>; REGULAR_TAIL_COUNT],
 }
 
 #[derive(Debug)]
@@ -322,7 +351,6 @@ struct TargetState {
     previous_id_u32: [u32; 15],
     previous_attribute_u32: [u32; 15],
     active_u8: [u8; 15],
-    previous_marker_active_u8: [u8; 15],
 }
 
 #[derive(Debug)]
@@ -330,7 +358,20 @@ struct MatrixAssignmentState {
     assignment_i32: [i32; 15],
     markers_i32: [i32; 15],
     matrix_f32_bits: Box<[u32]>,
-    writer_set_record_count: u32,
+    writer_set: Box<[u8]>,
+}
+
+pub(super) struct SpatialControlAfterStateParts {
+    pub(super) callback_index: FrontendCallbackIndex,
+    pub(super) source_cursor_samples: AdmSampleIndex,
+    pub(super) normal_callbacks: NormalCallbackCount,
+    pub(super) source_pcm_rows: Vec<Vec<u32>>,
+    pub(super) control38_rows: [NormalControlRow; PHYSICAL_HOST_COUNT],
+    pub(super) regular_raw_history_bits: Box<[u32]>,
+    pub(super) previous_current_rows_bits: Box<[u32]>,
+    pub(super) diffusion_tails: [Option<DiffusionTailState>; REGULAR_TAIL_COUNT],
+    pub(super) reader_target_state: ReaderTargetState,
+    pub(super) projection: SpatialControlCallbackProjection,
 }
 
 /// Immutable spatial-control state. This type is materialized only by the validated cold path.
@@ -342,13 +383,19 @@ pub struct SpatialControlState {
     render_audio: RenderAudioState,
     feature: FeatureHistoryState,
     targets: TargetState,
+    reader_targets: ReaderTargetState,
     matrix_assignment: MatrixAssignmentState,
     canonical_bytes: Box<[u8]>,
     digest: SpatialControlDigest,
 }
 
 impl SpatialControlState {
-    fn from_cold(f01e_canonical_bytes: &[u8], f03: &ValidatedF03TargetColdProvider) -> Self {
+    fn from_cold(
+        f01e_canonical_bytes: &[u8],
+        f03: &ValidatedF03TargetColdProvider,
+        reader_targets: ReaderTargetState,
+    ) -> Self {
+        let cold_pcm: Arc<[u32]> = vec![0; PHYSICAL_HOST_COUNT * 1_536].into();
         let mut state = Self {
             clocks: ClockState {
                 callback_index: FrontendCallbackIndex::new(0),
@@ -358,17 +405,16 @@ impl SpatialControlState {
                 retired: false,
             },
             source_cache: SourceCacheState {
-                normal_host38_cache_present: false,
-                control_snapshot_present: false,
+                last_normal_host38_bits: None,
+                last_control_snapshot: None,
                 phase_u8: 0,
             },
             event_control_canonical_bytes: f01e_canonical_bytes.to_vec().into_boxed_slice(),
             render_audio: RenderAudioState {
-                regular_raw_history_bits: vec![0; 37 * 1536].into_boxed_slice(),
-                previous_pcm_bits: vec![0; 38 * 1536].into_boxed_slice(),
+                regular_raw_history_bits: vec![0; REGULAR_TAIL_COUNT * 1_536].into_boxed_slice(),
+                previous_pcm_bits: cold_pcm,
                 previous_current_rows_bits: vec![0; 48 * 1536].into_boxed_slice(),
-                diffusion_instances_present: false,
-                diffusion_previous_outputs_present: false,
+                diffusion_tails: std::array::from_fn(|_| None),
             },
             feature: FeatureHistoryState {
                 source_vector_bits: vec![0; 48 * 24].into_boxed_slice(),
@@ -382,25 +428,26 @@ impl SpatialControlState {
                 previous_id_u32: *f03.previous_id_u32(),
                 previous_attribute_u32: *f03.previous_attribute_u32(),
                 active_u8: *f03.active_u8(),
-                previous_marker_active_u8: *f03.previous_marker_active_u8(),
             },
+            reader_targets,
             matrix_assignment: MatrixAssignmentState {
                 assignment_i32: [-1; 15],
                 markers_i32: [0; 15],
                 matrix_f32_bits: vec![0; 15 * 48].into_boxed_slice(),
-                writer_set_record_count: 0,
+                writer_set: Box::new([]),
             },
             canonical_bytes: Box::new([]),
             digest: SpatialControlDigest([0; 32]),
         };
-        let canonical_bytes = state.serialize_v5();
+        let canonical_bytes = state.serialize_v6();
         state.digest = SpatialControlDigest::digest(&canonical_bytes);
         state.canonical_bytes = canonical_bytes.into_boxed_slice();
         state
     }
 
-    fn serialize_v5(&self) -> Vec<u8> {
+    fn serialize_v6(&self) -> Vec<u8> {
         let mut bytes = Vec::new();
+        bytes.extend_from_slice(b"JOCSCS6\0");
 
         push_u64(&mut bytes, u64::from(self.clocks.callback_index.value()));
         push_u64(&mut bytes, self.clocks.source_cursor_samples.value());
@@ -408,8 +455,29 @@ impl SpatialControlState {
         push_u32(&mut bytes, self.clocks.remaining_cached_drains);
         bytes.push(u8::from(self.clocks.retired));
 
-        bytes.push(u8::from(self.source_cache.normal_host38_cache_present));
-        bytes.push(u8::from(self.source_cache.control_snapshot_present));
+        push_optional_u32_slice(
+            &mut bytes,
+            self.source_cache.last_normal_host38_bits.as_deref(),
+        );
+        match &self.source_cache.last_control_snapshot {
+            None => bytes.push(0),
+            Some(rows) => {
+                bytes.push(1);
+                push_u32(&mut bytes, PHYSICAL_HOST_COUNT as u32);
+                for row in rows.iter() {
+                    match row {
+                        PhysicalControlSnapshotRow::Bed6(words) => {
+                            bytes.push(6);
+                            push_u32_slice(&mut bytes, words);
+                        }
+                        PhysicalControlSnapshotRow::Object13(words) => {
+                            bytes.push(13);
+                            push_u32_slice(&mut bytes, words);
+                        }
+                    }
+                }
+            }
+        }
         bytes.push(self.source_cache.phase_u8);
 
         bytes.extend_from_slice(&self.event_control_canonical_bytes);
@@ -417,10 +485,18 @@ impl SpatialControlState {
         push_u32_slice(&mut bytes, &self.render_audio.regular_raw_history_bits);
         push_u32_slice(&mut bytes, &self.render_audio.previous_pcm_bits);
         push_u32_slice(&mut bytes, &self.render_audio.previous_current_rows_bits);
-        bytes.push(u8::from(self.render_audio.diffusion_instances_present));
-        bytes.push(u8::from(
-            self.render_audio.diffusion_previous_outputs_present,
-        ));
+        push_u32(&mut bytes, REGULAR_TAIL_COUNT as u32);
+        for tail in &self.render_audio.diffusion_tails {
+            match tail {
+                None => bytes.push(0),
+                Some(tail) => {
+                    bytes.push(1);
+                    let tail_bytes = tail.canonical_bytes();
+                    push_u32(&mut bytes, tail_bytes.len() as u32);
+                    bytes.extend_from_slice(&tail_bytes);
+                }
+            }
+        }
 
         push_u32_slice(&mut bytes, &self.feature.source_vector_bits);
         push_u32_slice(&mut bytes, &self.feature.source_scalar_bits);
@@ -432,7 +508,10 @@ impl SpatialControlState {
         push_u32_slice(&mut bytes, &self.targets.previous_id_u32);
         push_u32_slice(&mut bytes, &self.targets.previous_attribute_u32);
         bytes.extend_from_slice(&self.targets.active_u8);
-        bytes.extend_from_slice(&self.targets.previous_marker_active_u8);
+
+        let reader_target_bytes = self.reader_targets.canonical_bytes();
+        push_u32(&mut bytes, reader_target_bytes.len() as u32);
+        bytes.extend_from_slice(&reader_target_bytes);
 
         for value in self.matrix_assignment.assignment_i32 {
             bytes.extend_from_slice(&value.to_le_bytes());
@@ -441,9 +520,165 @@ impl SpatialControlState {
             bytes.extend_from_slice(&value.to_le_bytes());
         }
         push_u32_slice(&mut bytes, &self.matrix_assignment.matrix_f32_bits);
-        push_u32(&mut bytes, self.matrix_assignment.writer_set_record_count);
+        push_u32(&mut bytes, self.matrix_assignment.writer_set.len() as u32);
+        bytes.extend_from_slice(&self.matrix_assignment.writer_set);
 
         bytes
+    }
+
+    fn from_callback_parts(
+        before: &Self,
+        parts: SpatialControlAfterStateParts,
+        source_vector_bits: Box<[u32]>,
+        source_scalar_bits: Box<[u32]>,
+    ) -> Result<Self, SpatialControlError> {
+        let next_callback = before
+            .clocks
+            .callback_index
+            .value()
+            .checked_add(1)
+            .ok_or(SpatialControlError::CallbackAfterStateInvalid)?;
+        let next_normal_callbacks = before
+            .clocks
+            .normal_callbacks
+            .value()
+            .checked_add(1)
+            .ok_or(SpatialControlError::CallbackAfterStateInvalid)?;
+        if parts.callback_index != before.clocks.callback_index
+            || parts.normal_callbacks.value() != next_normal_callbacks
+            || parts.source_cursor_samples.value() < before.clocks.source_cursor_samples.value()
+            || parts.source_pcm_rows.len() != PHYSICAL_HOST_COUNT
+            || parts.source_pcm_rows.iter().any(|row| row.len() != 1_536)
+            || parts.regular_raw_history_bits.len() != REGULAR_TAIL_COUNT * 1_536
+            || parts.previous_current_rows_bits.len() != 48 * 1_536
+            || source_vector_bits.len() != 48 * 24
+            || source_scalar_bits.len() != 48
+            || parts
+                .control38_rows
+                .iter()
+                .enumerate()
+                .any(|(host, row)| usize::from(row.physical_host()) != host)
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
+
+        let pcm_bits: Arc<[u32]> = parts
+            .source_pcm_rows
+            .into_iter()
+            .flatten()
+            .collect::<Vec<_>>()
+            .into();
+        if pcm_bits.len() != PHYSICAL_HOST_COUNT * 1_536
+            || parts
+                .previous_current_rows_bits
+                .iter()
+                .chain(&parts.regular_raw_history_bits)
+                .chain(&source_vector_bits)
+                .chain(&source_scalar_bits)
+                .any(|word| !f32::from_bits(*word).is_finite())
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
+
+        let control_rows = parts
+            .control38_rows
+            .map(|row| PhysicalControlSnapshotRow::from_normal_control(&row));
+        let projection = parts.projection;
+        let target = projection.target_state();
+        let previous_marker_active_u8 = parts
+            .reader_target_state
+            .previous_active_u8()
+            .map_err(|_| SpatialControlError::CallbackAfterStateInvalid)?;
+        if target.active_flags.iter().any(|flag| *flag > 1)
+            || target
+                .xyz_words
+                .iter()
+                .flatten()
+                .chain(target.previous_xyz_words.iter().flatten())
+                .any(|word| !f32::from_bits(*word).is_finite())
+            || previous_marker_active_u8.iter().any(|flag| *flag > 1)
+            || projection
+                .markers_i32()
+                .iter()
+                .any(|marker| !(-1..=1).contains(marker))
+            || projection
+                .assignment_i32()
+                .iter()
+                .any(|assignment| !(-1..15).contains(assignment))
+            || projection.matrix_f32_bits().len() != 15 * 48
+            || projection
+                .matrix_f32_bits()
+                .iter()
+                .any(|word| !f32::from_bits(*word).is_finite())
+            || projection.writer_set().len() > 15
+            || projection.writer_set().iter().any(|slot| *slot >= 15)
+            || projection
+                .writer_set()
+                .windows(2)
+                .any(|pair| pair[0] >= pair[1])
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
+
+        let mut state = Self {
+            clocks: ClockState {
+                callback_index: FrontendCallbackIndex::new(next_callback),
+                source_cursor_samples: parts.source_cursor_samples,
+                normal_callbacks: parts.normal_callbacks,
+                remaining_cached_drains: before.clocks.remaining_cached_drains,
+                retired: false,
+            },
+            source_cache: SourceCacheState {
+                last_normal_host38_bits: Some(Arc::clone(&pcm_bits)),
+                last_control_snapshot: Some(Box::new(control_rows)),
+                phase_u8: 1,
+            },
+            event_control_canonical_bytes: before.event_control_canonical_bytes.clone(),
+            render_audio: RenderAudioState {
+                regular_raw_history_bits: parts.regular_raw_history_bits,
+                previous_pcm_bits: pcm_bits,
+                previous_current_rows_bits: parts.previous_current_rows_bits,
+                diffusion_tails: parts.diffusion_tails,
+            },
+            feature: FeatureHistoryState {
+                source_vector_bits,
+                source_scalar_bits,
+            },
+            targets: TargetState {
+                current_xyz_u32: target
+                    .xyz_words
+                    .into_iter()
+                    .flatten()
+                    .collect::<Vec<_>>()
+                    .try_into()
+                    .map_err(|_| SpatialControlError::CallbackAfterStateInvalid)?,
+                current_id_u32: target.ids_u32,
+                current_attribute_u32: target.attributes_u32,
+                previous_xyz_u32: target
+                    .previous_xyz_words
+                    .into_iter()
+                    .flatten()
+                    .collect::<Vec<_>>()
+                    .try_into()
+                    .map_err(|_| SpatialControlError::CallbackAfterStateInvalid)?,
+                previous_id_u32: target.previous_ids_u32,
+                previous_attribute_u32: target.previous_attributes_u32,
+                active_u8: target.active_flags,
+            },
+            reader_targets: parts.reader_target_state,
+            matrix_assignment: MatrixAssignmentState {
+                assignment_i32: *projection.assignment_i32(),
+                markers_i32: *projection.markers_i32(),
+                matrix_f32_bits: projection.matrix_f32_bits().to_vec().into_boxed_slice(),
+                writer_set: projection.writer_set().to_vec().into_boxed_slice(),
+            },
+            canonical_bytes: Box::new([]),
+            digest: SpatialControlDigest([0; 32]),
+        };
+        let canonical_bytes = state.serialize_v6();
+        state.digest = SpatialControlDigest::digest(&canonical_bytes);
+        state.canonical_bytes = canonical_bytes.into_boxed_slice();
+        Ok(state)
     }
 
     pub fn canonical_bytes(&self) -> &[u8] {
@@ -470,8 +705,14 @@ impl SpatialControlState {
         &self.targets.active_u8
     }
 
-    pub const fn previous_marker_active_u8(&self) -> &[u8; 15] {
-        &self.targets.previous_marker_active_u8
+    pub fn previous_marker_active_u8(&self) -> Result<[u8; 15], SpatialControlError> {
+        self.reader_targets
+            .previous_active_u8()
+            .map_err(|_| SpatialControlError::CallbackAfterStateInvalid)
+    }
+
+    pub const fn reader_targets_callback_index(&self) -> FrontendCallbackIndex {
+        self.reader_targets.callback_index()
     }
 
     pub const fn source_cursor_samples(&self) -> AdmSampleIndex {
@@ -495,8 +736,8 @@ impl SpatialControlState {
     }
 
     pub const fn source_cache_is_cold(&self) -> bool {
-        !self.source_cache.normal_host38_cache_present
-            && !self.source_cache.control_snapshot_present
+        self.source_cache.last_normal_host38_bits.is_none()
+            && self.source_cache.last_control_snapshot.is_none()
             && self.source_cache.phase_u8 == 0
     }
 
@@ -512,12 +753,18 @@ impl SpatialControlState {
         &self.render_audio.previous_current_rows_bits
     }
 
-    pub const fn diffusion_instances_present(&self) -> bool {
-        self.render_audio.diffusion_instances_present
+    pub fn diffusion_instances_present(&self) -> bool {
+        self.render_audio
+            .diffusion_tails
+            .iter()
+            .any(Option::is_some)
     }
 
-    pub const fn diffusion_previous_outputs_present(&self) -> bool {
-        self.render_audio.diffusion_previous_outputs_present
+    pub fn diffusion_previous_outputs_present(&self) -> bool {
+        self.render_audio.diffusion_tails.iter().any(|tail| {
+            tail.as_ref()
+                .is_some_and(|tail| tail.previous_filter_outputs().is_some())
+        })
     }
 
     pub const fn target_current_xyz_u32(&self) -> &[u32; 45] {
@@ -556,19 +803,43 @@ impl SpatialControlState {
         &self.matrix_assignment.matrix_f32_bits
     }
 
-    pub const fn writer_set_record_count(&self) -> u32 {
-        self.matrix_assignment.writer_set_record_count
+    pub fn writer_set_record_count(&self) -> u32 {
+        self.matrix_assignment.writer_set.len() as u32
     }
 }
 
-/// Opaque complete after proposal supplied by future producer-owned capabilities.
+/// Opaque complete v6 after-root staged from producer-owned callback capabilities.
 #[allow(dead_code)]
 #[must_use]
 pub struct SpatialControlAfterProposal {
-    _after_state: SpatialControlState,
-    _join_metadata: SpatialControlJoinMetadata,
-    _source_flags: SourceFlagsPacket,
-    _current_features: CurrentFeaturesPacket,
+    after_state: SpatialControlState,
+    join_metadata: SpatialControlJoinMetadata,
+    source_flags: SourceFlagsPacket,
+    current_features: CurrentFeaturesPacket,
+    reader_target_receipt: Option<ReaderTargetUpdateReceipt>,
+    reader_target_controls: ReaderTargetControlRows,
+}
+
+impl SpatialControlAfterProposal {
+    pub const fn after_state(&self) -> &SpatialControlState {
+        &self.after_state
+    }
+
+    pub const fn join_metadata(&self) -> &SpatialControlJoinMetadata {
+        &self.join_metadata
+    }
+
+    pub const fn callback_packets(&self) -> (&SourceFlagsPacket, &CurrentFeaturesPacket) {
+        (&self.source_flags, &self.current_features)
+    }
+
+    pub const fn reader_target_controls(&self) -> &ReaderTargetControlRows {
+        &self.reader_target_controls
+    }
+
+    pub const fn reader_target_receipt(&self) -> Option<&ReaderTargetUpdateReceipt> {
+        self.reader_target_receipt.as_ref()
+    }
 }
 
 /// Linear preparation capability. No public or test-only constructor exists in D1.
@@ -699,7 +970,7 @@ impl SpatialControlJoinMetadata {
     }
 }
 
-/// Single committed owner for the complete v5 persistent cold root.
+/// Single committed owner for the complete v6 persistent cold root.
 #[must_use]
 pub struct SpatialControlMachine {
     committed: SpatialControlState,
@@ -743,7 +1014,15 @@ impl SpatialControlMachine {
 
         let provider_lineage =
             SpatialControlProviderLineage::from_receipts(f01e_receipt, f03_receipt);
-        let committed = SpatialControlState::from_cold(f01e.canonical_bytes(), f03);
+        let reader_targets = ReaderTargetState::cold();
+        if reader_targets
+            .previous_active_u8()
+            .map_err(|_| SpatialControlError::CallbackAfterStateInvalid)?
+            != *f03.previous_marker_active_u8()
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
+        let committed = SpatialControlState::from_cold(f01e.canonical_bytes(), f03, reader_targets);
         let cold_digest = committed.digest();
         Ok(Self {
             committed,
@@ -751,6 +1030,54 @@ impl SpatialControlMachine {
             cold_digest,
             profile_identity,
             provider_lineage,
+        })
+    }
+
+    pub(super) fn propose_callback_after(
+        &self,
+        transaction_id: CallbackLineageIdentity,
+        parts: SpatialControlAfterStateParts,
+        current_features: CurrentFeaturesProduced,
+        reader_target_receipt: Option<ReaderTargetUpdateReceipt>,
+        reader_target_controls: ReaderTargetControlRows,
+    ) -> Result<SpatialControlAfterProposal, SpatialControlError> {
+        let CurrentFeaturesProduced {
+            feature_state_proposal,
+            packet,
+            source_flags,
+            lineage,
+        } = current_features;
+        if transaction_id.callback_index() != self.committed.callback_index()
+            || lineage.callback_index != self.committed.callback_index()
+            || lineage.transaction_id != transaction_id
+            || lineage.before_generation != self.generation
+            || lineage.before_digest != self.digest()
+            || feature_state_proposal.before_generation != self.generation
+            || feature_state_proposal.before_digest != self.digest()
+            || lineage.profile != self.profile_identity
+            || lineage.provider_lineage != self.provider_lineage
+            || source_flags.lineage().transaction_id() != &transaction_id
+            || source_flags.lineage().callback_index() != self.committed.callback_index()
+            || source_flags.validate_payload().is_err()
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
+
+        let after_state = SpatialControlState::from_callback_parts(
+            &self.committed,
+            parts,
+            feature_state_proposal.source_vector_bits,
+            feature_state_proposal.source_scalar_bits,
+        )?;
+        let mut join_metadata = SpatialControlJoinMetadata::pending_callback(self, transaction_id)?;
+        join_metadata.after_digest = after_state.digest();
+        Ok(SpatialControlAfterProposal {
+            after_state,
+            join_metadata,
+            source_flags,
+            current_features: packet,
+            reader_target_receipt,
+            reader_target_controls,
         })
     }
 
@@ -763,7 +1090,7 @@ impl SpatialControlMachine {
     ) {
         self.committed.feature.source_vector_bits = source_vector_bits.to_vec().into_boxed_slice();
         self.committed.feature.source_scalar_bits = source_scalar_bits.to_vec().into_boxed_slice();
-        let canonical_bytes = self.committed.serialize_v5();
+        let canonical_bytes = self.committed.serialize_v6();
         self.committed.digest = SpatialControlDigest::digest(&canonical_bytes);
         self.committed.canonical_bytes = canonical_bytes.into_boxed_slice();
     }
@@ -870,6 +1197,20 @@ fn push_u32(bytes: &mut Vec<u8>, value: u32) {
     bytes.extend_from_slice(&value.to_le_bytes());
 }
 
+fn push_optional_u32_slice(bytes: &mut Vec<u8>, values: Option<&[u32]>) {
+    match values {
+        None => bytes.push(0),
+        Some(values) => {
+            bytes.push(1);
+            push_u32(
+                bytes,
+                u32::try_from(values.len()).expect("optional U32 slice length fits U32"),
+            );
+            push_u32_slice(bytes, values);
+        }
+    }
+}
+
 fn push_u64(bytes: &mut Vec<u8>, value: u64) {
     bytes.extend_from_slice(&value.to_le_bytes());
 }
@@ -914,7 +1255,7 @@ mod tests {
     }
 
     #[test]
-    fn owner_state_reference_contains_the_complete_v5_cold_root() {
+    fn owner_state_reference_contains_the_complete_v6_cold_root() {
         let machine = selected_machine();
         let reference = machine.state_reference();
 
@@ -926,12 +1267,12 @@ mod tests {
             reference.canonical_bytes(),
             machine.committed().canonical_bytes()
         );
-        assert_eq!(reference.canonical_bytes().len(), 768_582);
+        assert_eq!(reference.canonical_bytes().len(), 777_665);
         assert_eq!(reference.state_sha256(), machine.digest());
         assert_eq!(reference.cold_sha256(), machine.digest());
         assert_eq!(
             reference.state_sha256().to_hex(),
-            "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0"
+            "d68ef7af3e4d2fd0575926e3e44e1bdeda80db3e9c21a1fd1a8daf95010fbb50"
         );
     }
 

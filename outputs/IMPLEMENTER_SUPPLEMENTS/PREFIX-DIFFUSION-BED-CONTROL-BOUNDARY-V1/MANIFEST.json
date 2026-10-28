@@ -1,0 +1,17 @@
+{
+  "package_id": "PREFIX-DIFFUSION-BED-CONTROL-BOUNDARY-V1",
+  "scope": "selected 38-channel profile; model and approved specification; native bed tail unobserved",
+  "research_manifest_sha256": "11a25d4e65c5694e1cb8d7d5749c5f9e6ce44825836a8eb9412f21b7fcf518c3",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4610,
+      "sha256": "df4a1095e5383da30917f4e9cb5c4bd14e2fbdf638ae8163fa6bd6222cd75592"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 947,
+      "sha256": "e8298c88362faf8ff1f5823735cbf1b714bbf479dceb9b653931b7cf4ac8cd33"
+    }
+  ]
+}

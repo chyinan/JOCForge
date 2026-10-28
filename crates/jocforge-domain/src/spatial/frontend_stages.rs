@@ -18,7 +18,9 @@ use super::{
     spatial_control::SpatialControlMachine,
 };
 use crate::frontend::{ValidatedFeatureFft4096MathProvider, ValidatedFeatureProcessorMathProvider};
-use crate::meter::installed48_renderer::{MeterInstalled48Frame, MeterInstalled48Proposal};
+use crate::meter::installed48_renderer::{
+    MeterInstalled48Frame, MeterInstalled48Proposal, MeterInstalled48State,
+};
 use crate::numeric::{FiniteF32, r32_add};
 use crate::spatial::installed48_activity::{PrimaryActivityPhase, PrimaryActivityProposal};
 use crate::transaction::CallbackLineageIdentity;
@@ -55,7 +57,8 @@ pub(super) struct FrontendFeatureStageProposal {
 #[must_use]
 pub struct RenderedFrontendFeatureStageProposal {
     pub(super) primary_activity: PrimaryActivityProposal,
-    pub(super) installed48: MeterInstalled48Proposal,
+    pub(super) installed48: MeterInstalled48Frame,
+    pub(super) installed48_after: Option<MeterInstalled48State>,
     pub(super) frontend: FrontendFeatureStageProposal,
     pub(super) spatial_audio: SpatialAudioPostWindowView,
 }
@@ -65,8 +68,12 @@ impl RenderedFrontendFeatureStageProposal {
         &self.primary_activity
     }
 
-    pub const fn installed48(&self) -> &MeterInstalled48Proposal {
+    pub const fn installed48(&self) -> &MeterInstalled48Frame {
         &self.installed48
+    }
+
+    pub(super) fn take_installed48_after(&mut self) -> Option<MeterInstalled48State> {
+        self.installed48_after.take()
     }
 }
 
@@ -155,7 +162,7 @@ pub fn stage_frontend_features_from_installed48(
     {
         return Err(FrontendFeatureStageError::PrimaryActivityIdentity);
     }
-    let installed48_frame: &MeterInstalled48Frame = installed48.frame();
+    let (installed48_after, installed48_frame) = installed48.into_parts();
     let expected_upstream_generation = u64::from(callback.value())
         .checked_add(1)
         .ok_or(FrontendFeatureStageError::MeterFrameIdentity)?;
@@ -195,7 +202,8 @@ pub fn stage_frontend_features_from_installed48(
     )?;
     Ok(RenderedFrontendFeatureStageProposal {
         primary_activity,
-        installed48,
+        installed48: installed48_frame,
+        installed48_after: Some(installed48_after),
         frontend,
         spatial_audio,
     })

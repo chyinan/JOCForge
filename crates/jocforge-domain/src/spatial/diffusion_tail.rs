@@ -41,6 +41,35 @@ impl DiffusionTailState {
     pub const fn previous_filter_outputs(&self) -> Option<&DiffusionOutputLanes> {
         self.previous_filter_outputs.as_ref()
     }
+
+    pub(crate) fn canonical_bytes(&self) -> Vec<u8> {
+        let filter_bytes = self.filter_state.canonical_bytes();
+        let mut bytes = Vec::new();
+        bytes.extend_from_slice(b"DTAIL1\0");
+        bytes.extend_from_slice(
+            &u32::try_from(filter_bytes.len())
+                .expect("diffusion filter state length fits U32")
+                .to_le_bytes(),
+        );
+        bytes.extend_from_slice(&filter_bytes);
+        match &self.previous_filter_outputs {
+            None => bytes.push(0),
+            Some(lanes) => {
+                bytes.push(1);
+                for lane in lanes {
+                    bytes.extend_from_slice(
+                        &u32::try_from(lane.len())
+                            .expect("diffusion output lane length fits U32")
+                            .to_le_bytes(),
+                    );
+                    for sample in lane {
+                        bytes.extend_from_slice(&sample.to_bits().to_le_bytes());
+                    }
+                }
+            }
+        }
+        bytes
+    }
 }
 
 #[derive(Debug)]

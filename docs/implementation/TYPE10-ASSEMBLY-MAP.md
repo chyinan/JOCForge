@@ -132,9 +132,9 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
       "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
     },
     {
-      "bytes": 33420,
+      "bytes": 47032,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
+      "sha256": "712aab6568ff4854fbb51e2bd7397334673794ea9001c663c6c91a28b8c460b8"
     }
   ],
   "implementation_prohibitions": [
