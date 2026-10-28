@@ -1,0 +1,7 @@
+# Meter LFE ring in canonical root
+
+LOCAL_MODEL decision: MeterLfeDelayState is persistent state of IndependentMeterPrepassState inside StandaloneMeterRoot and must be serialized exactly once under owners.meter; ObjectRendererState canonical bytes do not contain it. No separate GTC owner is introduced.
+
+Add lfe_delay object to the canonical meter preimage: source_samples U64, normal_callbacks U64, callback_index U64, samples_consumed U64, write_index U8, read_index U8, slots array in physical index order 0,1,2. Each empty slot is JSON null; each occupied slot is {origin_callback: U64, sample_words_u32: U32[1536]} preserving all IEEE-754 F32 bit words exactly, including signed zero. Apply existing sorted-key compact UTF-8 canonical JSON rules. Runtime PCM words are part of the in-memory canonical preimage because they affect future output; do not include actual PCM in this supplement or publish logs/fixtures of user audio.
+
+Cold: N>0, normal_callbacks=ceil(N/1536), callback_index=0, samples_consumed=0, write_index=0, read_index=1, all slots null. On each successful callback, the staged after-root includes ring and other meter leaves; the parent commits once and advances owner generation once. A failed stage leaves committed ring unchanged; fatal retires attempt. Full restart reconstructs all leaves cold for the new attempt. Validate existing ring invariants and bounds; no partial leaf reset. This local schema does not claim native ABI equivalence; canonical hash and MeasurementReceipt remain NOT_RUN until implemented and exercised.

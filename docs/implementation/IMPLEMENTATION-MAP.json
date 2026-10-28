@@ -6152,91 +6152,111 @@
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
-        {
-          "slice_id": "standalone-meter-selected-root-and-schedule-stage",
-          "mapping_status": "MATERIALIZED_FIXED_SELECTED_METER_ROOT_STAGE__TERMINAL_RECEIPT_AND_GTC_PARENT_OPEN",
-          "implementation_status": "LOCALLY_MATERIALIZED_SELECTED_SCHEDULE_AND_NONCOMMITTING_CALLBACK_STAGE__MEASUREMENT_RECEIPT_AND_PARENT_NOT_RUN",
-          "scope": "Materializes the fixed selected meter extent N=6,522,906 with 4,247 normal callbacks, three independent zero drains, and 4,250 total meter callbacks. Each callback produces a noncommitting after-root and typed local receipt; finalization exposes read-only measurement values only after the fixed counters match. This does not create the terminal MeasurementReceipt or READY transition.",
-          "owner": "meter",
-          "dependencies": [
-            "independent-meter-prepass-callback-commit",
-            "programme-measurement-finalize-projection"
-          ],
-          "implementation_files": [
-            "crates/jocforge-domain/src/meter/standalone_root.rs",
-            "crates/jocforge-domain/src/meter/mod.rs"
-          ],
-          "clock": {
-            "domains": [
-              "AttemptId",
-              "MeterCallbackIndex",
-              "MeterCallbackPhase",
-              "MeterSourceSampleCount",
-              "MeterCallbackCount",
-              "MeterBlockCount",
-              "MeterSampleCount"
-            ],
-            "covered_clauses": [
-              "The selected source extent is fixed at 6,522,906 samples; unsupported extents reject.",
-              "The schedule is 4,247 normal callbacks, three fresh-zero drains, and 4,250 meter callbacks.",
-              "Each accepted callback returns a staged after-root; the committed root remains unchanged until a parent adopts the proposal.",
-              "Finalization validates the selected complete-block, energy-window, and remainder counts and returns values without minting a terminal receipt."
-            ]
-          },
-          "parameters": {
-            "kind": "HASH_BOUND_SELECTED_STANDALONE_METER_ROOT_AND_SCHEDULE",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/STATUS-AND-VERIFICATION.json"
-            ],
-            "validation_boundary": "Fixed GTC selected meter schema only; no general source-length rule is inferred.",
-            "supplement_manifest_sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a"
-          },
-          "test_modules": [
-            "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
-          ],
-          "vectors": {
-            "kind": "INPUT_ONLY_SELECTED_METER_ROOT_SCHEDULE_AND_RESET_BOUNDARIES",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json"
-            ],
-            "case_pointers": [
-              "Only the selected 6,522,906-sample extent admits the standalone root.",
-              "The normal, zero-drain, and total callback counters match the fixed selected schedule.",
-              "Callback preparation preserves the prior root and full reset rebuilds selected cold state for the next attempt.",
-              "Finalization values borrow the actual terminal root and do not produce MeasurementReceipt or READY."
-            ],
-            "expected_values_are_assertions_only": true
-          },
-          "not_run": [
-            "Canonical GTC meter state_ref preimage and GTC OwnerReceipt are NOT_RUN.",
-            "Terminal MeasurementReceipt and READY production are NOT_RUN.",
-            "Production F06OF cursor-to-meter root composition, GTC single root swap, and programme-origin GTC reset/fatal integration are NOT_RUN.",
-            "Native EOF/drain observation, end-to-end encode, W04, and product acceptance are NOT_RUN."
-          ],
-          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
-          "implementation_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-              "bytes": 16057,
-              "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
-            },
-            {
-              "path": "crates/jocforge-domain/src/meter/mod.rs",
-              "bytes": 679,
-              "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
-            }
-          ],
-          "test_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
-              "bytes": 6976,
-              "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
-            }
-          ]
-        },
+                                {
+                  "slice_id": "standalone-meter-selected-root-and-schedule-stage",
+                  "mapping_status": "MATERIALIZED_SELECTED_METER_ROOT_STAGE_AND_CANONICAL_PREIMAGE__GTC_RECEIPT_AND_COMMIT_OPEN",
+                  "implementation_status": "LOCALLY_VERIFIED_SELECTED_SCHEDULE_CALLBACK_STAGE_AND_CANONICAL_PREIMAGE_HASH__TERMINAL_RECEIPT_NOT_RUN",
+                  "scope": "Materializes the fixed selected meter extent N=6,522,906 with 4,247 normal callbacks, three independent zero drains, and 4,250 total meter callbacks. Each callback produces a noncommitting after-root and typed local receipt; finalization exposes read-only measurement values only after the fixed counters match. This does not create the terminal MeasurementReceipt or READY transition. The local canonical preimage now composes OAR/front-end, shared DV32, queue/window, K-filter history plus separate K=[0;6] and energy exponent=[48;6], true peak, integrated, ungated and the persistent three-slot LFE delay ring. Runtime PCM words are serialized only in the returned in-memory preimage. Cold and one after-root canonical cases are locally tested; GTC owner generation receipt, single parent commit, terminal MeasurementReceipt and production hash remain NOT_RUN.",
+                  "owner": "meter",
+                  "dependencies": [
+                    "independent-meter-prepass-callback-commit",
+                    "programme-measurement-finalize-projection"
+                  ],
+                  "implementation_files": [
+                    "crates/jocforge-domain/src/meter/standalone_root.rs",
+                    "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+                    "crates/jocforge-domain/src/meter/mod.rs"
+                  ],
+                  "clock": {
+                    "domains": [
+                      "AttemptId",
+                      "MeterCallbackIndex",
+                      "MeterCallbackPhase",
+                      "MeterSourceSampleCount",
+                      "MeterCallbackCount",
+                      "MeterBlockCount",
+                      "MeterSampleCount"
+                    ],
+                    "covered_clauses": [
+                      "The selected source extent is fixed at 6,522,906 samples; unsupported extents reject.",
+                      "The schedule is 4,247 normal callbacks, three fresh-zero drains, and 4,250 meter callbacks.",
+                      "Each accepted callback returns a staged after-root; the committed root remains unchanged until a parent adopts the proposal.",
+                      "Finalization validates the selected complete-block, energy-window, and remainder counts and returns values without minting a terminal receipt."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "HASH_BOUND_SELECTED_STANDALONE_METER_ROOT_AND_SCHEDULE",
+                    "provider_files": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/STATUS-AND-VERIFICATION.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V1/ROOT-CANONICAL-SCHEMA.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1/ROOT-FIELD-CROSSWALK.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1/APPROVED-LEAF-RECHECK.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-LFE-RING-CANONICAL-ROOT-DECISION-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-LFE-RING-CANONICAL-ROOT-DECISION-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-LFE-RING-CANONICAL-ROOT-DECISION-V1/STATUS.json"
+                    ],
+                    "validation_boundary": "Canonical hash is over the local typed root only; no GTC receipt/commit or native ABI equivalence is asserted.",
+                    "supplement_manifest_sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a",
+                    "canonical_root_reference_manifest_sha256": "9993321795a49f5231c9967c1ed007469d3ddc31408a3f07d616cb986005a34c",
+                    "exponent_crosswalk_manifest_sha256": "2457250dc7b1aefdc223b9e86a8d23c33a0a76f6bd7eb65fd216e433e6c973a0",
+                    "lfe_ring_decision_manifest_sha256": "6ea1112b96a5d9a8c42d97cc4885a94d11a3bc88db961e2780dacd89a3455e06"
+                  },
+                  "test_modules": [
+                    "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
+                  ],
+                  "vectors": {
+                    "kind": "INPUT_ONLY_SELECTED_METER_ROOT_SCHEDULE_AND_RESET_BOUNDARIES",
+                    "authoritative_vectors": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json"
+                    ],
+                    "case_pointers": [
+                      "Only the selected 6,522,906-sample extent admits the standalone root.",
+                      "The normal, zero-drain, and total callback counters match the fixed selected schedule.",
+                      "Callback preparation preserves the prior root and full reset rebuilds selected cold state for the next attempt.",
+                      "Finalization values borrow the actual terminal root and do not produce MeasurementReceipt or READY.",
+                      "Canonical root preimage serializes separate K exponent [0;6] and energy exponent [48;6] fields plus the LFE ring leaf.",
+                      "Cold and one after-root compact JSON/hash cases are synthetic zero-input unit tests; no user PCM is persisted.",
+                      "Canonical root preimage serializes separate K exponent [0;6] and energy exponent [48;6] fields plus the LFE ring leaf.",
+                      "Cold and one after-root compact JSON/hash cases are synthetic zero-input unit tests; no user PCM is persisted."
+                    ],
+                    "expected_values_are_assertions_only": true
+                  },
+                  "not_run": [
+                    "GTC owners.meter state_ref/owner-generation receipt and single parent commit.",
+                    "Terminal production root hash and MeasurementReceipt/READY.",
+                    "Native ABI equivalence and whole-programme acceptance."
+                  ],
+                  "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+                  "implementation_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+                      "bytes": 22255,
+                      "sha256": "7dc32ee27da6dc532ed0f0412f31d43332abb2f8e51a573143ef7405c03c1838"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+                      "bytes": 32718,
+                      "sha256": "ae59e95bde9589978b2a607875ac9aea16b7c072e774ad0c002c23d87a6e0656"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/meter/mod.rs",
+                      "bytes": 679,
+                      "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
+                    }
+                  ],
+                  "test_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
+                      "bytes": 10612,
+                      "sha256": "49b1f407727cf56568fc88ea1ecaed28187bc5501e9196b9c71afdb38887f707"
+                    }
+                  ]
+                },
         {
           "slice_id": "prepared-job-input-domain-identity-projection",
           "mapping_status": "MATERIALIZED_LAYER_SAFE_PREPARED_JOB_IDENTITY_PROJECTION__METER_FINALIZE_OPEN",
@@ -7216,77 +7236,197 @@
           ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         },
+                                {
+                  "slice_id": "sample-block-queue-lifecycle",
+                  "mapping_status": "MATERIALIZED_WASHED_SAMPLE_QUEUE_LIFECYCLE__SELECTED_METER_ROOT_OPEN",
+                  "implementation_status": "LOCALLY_VERIFIED_ACTUAL_SAMPLE_QUEUE_AND_THREE_DRAIN_LIFECYCLE__SELECTED_PROFILE_NUMERIC_ROOT_NOT_RUN",
+                  "scope": "Stages one normal-source or zero-drain callback through the synchronized six-lane queue, retains actual F32 sample values, publishes only complete 1024-sample blocks, and exposes unconsumed raw and 960-sample energy tails at finalization without adding a flush. The N=9217 case verifies seven normal callbacks plus three drains, 10752 published samples/lane, 10240 consumed samples/lane, a 512-sample raw tail, and a 640-sample energy partial. This is a queue/lifecycle boundary; it is not the selected N=6522906 numeric meter profile or DSP validation.",
+                  "owner": "meter",
+                  "dependencies": [
+                    "k-weighted-complete-block-and-energy-window",
+                    "post-render-meter-callback-composition"
+                  ],
+                  "implementation_files": [
+                    "crates/jocforge-domain/src/meter/sample_block_queue.rs",
+                    "crates/jocforge-domain/src/meter/post_render_meter.rs",
+                    "crates/jocforge-domain/src/meter/standalone_root.rs",
+                    "crates/jocforge-domain/src/meter/mod.rs"
+                  ],
+                  "clock": {
+                    "domains": [
+                      "MeterSourceSampleCount",
+                      "MeterCallbackIndex",
+                      "MeterCallbackCount",
+                      "MeterUpstreamGeneration",
+                      "MeterSampleCount",
+                      "MeterBlockIndex",
+                      "MeterBlockCount",
+                      "SampleBlockFillCursor"
+                    ],
+                    "covered_clauses": [
+                      "For N>0, normal callback count is ceil(N/1536), followed by exactly three zero-source drain callbacks.",
+                      "Startup skip, published sample count, queue generation and callback phase advance together; drain output is not assumed to be zero.",
+                      "The synchronized six-lane queue retains actual values and consumes only complete 1024-sample blocks in lane order.",
+                      "Finalization after all drains preserves the raw tail and energy partial without adding a sample block or codec/DSP flush."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "HASH_BOUND_INTERNAL_METER_SAMPLE_QUEUE_LIFECYCLE",
+                    "provider_files": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/INPUT-ONLY.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/EXPECTED.json"
+                    ],
+                    "supplement_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
+                    "validation_boundary": "Queue scheduling, actual sample value preservation, complete-block order, callback lifecycle and terminal tails only; no OAR/DV32, K-filter/true-peak numerical oracle or selected-profile meter receipt."
+                  },
+                  "test_modules": [
+                    "crates/jocforge-domain/src/meter/sample_block_queue.rs"
+                  ],
+                  "vectors": {
+                    "kind": "INPUT_ONLY_SYMBOLIC_QUEUE_RECIPE_WITH_ACTUAL_LOCAL_SAMPLE_ORDER_ASSERTIONS",
+                    "authoritative_vectors": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/INPUT-ONLY.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/EXPECTED.json"
+                    ],
+                    "case_pointers": [
+                      "N=9217 produces seven normal callbacks and three zero-input drains.",
+                      "Synthetic callback rows are materialized as actual F32 words; complete 1024-sample lane blocks equal the published input slices.",
+                      "Terminal queue has 10752 published, 10240 consumed, 512 raw tail and 640 consumed energy-partial samples per the separate queues.",
+                      "Vector sample IDs and hashes are lifecycle/provenance aids, not PCM values or a production terminal digest."
+                    ],
+                    "expected_dsp_outputs_included": false,
+                    "expected_values_are_assertions_only": true,
+                    "supplement_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606"
+                  },
+                  "error_outcomes": [
+                    {
+                      "error_code": "SampleBlockQueueError::CallbackPhaseMismatch",
+                      "category": "normal/drain schedule",
+                      "trigger": "The supplied phase does not match the typed callback index and source extent.",
+                      "programme_state_after": "No proposal is returned; the before queue remains unchanged.",
+                      "caller_action": "Reject this callback proposal."
+                    },
+                    {
+                      "error_code": "SampleBlockQueueError::InputShape",
+                      "category": "six-lane callback input",
+                      "trigger": "Any lane does not contain exactly 1536 sample words.",
+                      "programme_state_after": "No proposal is returned; the before queue remains unchanged.",
+                      "caller_action": "Reject before queue append."
+                    },
+                    {
+                      "error_code": "SampleBlockQueueError::InputNonFinite",
+                      "category": "callback sample values",
+                      "trigger": "Any input sample word is NaN or infinite.",
+                      "programme_state_after": "No proposal is returned; the before queue remains unchanged.",
+                      "caller_action": "Reject the callback proposal."
+                    },
+                    {
+                      "error_code": "SampleBlockQueueError::FinalizationNotReady",
+                      "category": "queue terminal lifecycle",
+                      "trigger": "Finalization is requested before all normal callbacks and three drains are staged.",
+                      "programme_state_after": "No terminal view is returned; the queue remains unchanged.",
+                      "caller_action": "Continue the approved callback sequence or reject at the parent boundary."
+                    }
+                  ],
+                  "not_run": [
+                    "Selected N=6522906 meter-profile queue, OAR/DV32, true-peak/K numeric outputs and complete meter root parity.",
+                    "Terminal MeasurementReceipt/READY production, GTC owner receipt, single root swap and parent reset/fatal integration.",
+                    "Real ADM, full-programme encode, product and listening acceptance."
+                  ],
+                  "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+                  "implementation_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
+                      "bytes": 34921,
+                      "sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/meter/post_render_meter.rs",
+                      "bytes": 21564,
+                      "sha256": "7e533a1b2a576e495099a117128aa0dce5d62a5f5eb1eeef844d3e71769b941a"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+                      "bytes": 22255,
+                      "sha256": "7dc32ee27da6dc532ed0f0412f31d43332abb2f8e51a573143ef7405c03c1838"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/meter/mod.rs",
+                      "bytes": 679,
+                      "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
+                    }
+                  ],
+                  "test_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
+                      "bytes": 34921,
+                      "sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"
+                    }
+                  ]
+                },
         {
-          "slice_id": "sample-block-queue-lifecycle",
-          "mapping_status": "MATERIALIZED_WASHED_SAMPLE_QUEUE_LIFECYCLE__SELECTED_METER_ROOT_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_ACTUAL_SAMPLE_QUEUE_AND_THREE_DRAIN_LIFECYCLE__SELECTED_PROFILE_NUMERIC_ROOT_NOT_RUN",
-          "scope": "Stages one normal-source or zero-drain callback through the synchronized six-lane queue, retains actual F32 sample values, publishes only complete 1024-sample blocks, and exposes unconsumed raw and 960-sample energy tails at finalization without adding a flush. The N=9217 case verifies seven normal callbacks plus three drains, 10752 published samples/lane, 10240 consumed samples/lane, a 512-sample raw tail, and a 640-sample energy partial. This is a queue/lifecycle boundary; it is not the selected N=6522906 numeric meter profile or DSP validation.",
+          "slice_id": "informational-reader-callback-tail-accounting",
+          "mapping_status": "WASHED_READER_REPORT_COUNT_ACCOUNTING__TAIL_CONTENT_AND_PHYSICAL_FRAME_UNBOUND",
+          "implementation_status": "REPORTER_OBSERVED_CALLBACK_TAIL_COUNT__NO_PADDING_VALUE_OR_FRAME_JOIN",
+          "scope": "One redirected-job metadata observation reports reader interval [0,1536) for the first callback. At callback 4247, reader position 6,521,856 and limit 6,522,906 yield requested 1536, actual 1050, full-count flag 1, reported 1536 and logical cursor 6,523,392; the 486 difference is a count-accounting result only. Extra-slot sample content was not captured, so no padding value is established. File prefetch does not bind a physical ADM callback frame. Callback 4248 reports zero sources/samples. Local source-position/zero-padding implementation remains governed by the approved model; native physical frame join, reset and MeasurementReceipt remain unbound/not run.",
           "owner": "meter",
-          "dependencies": ["k-weighted-complete-block-and-energy-window", "post-render-meter-callback-composition"],
-          "implementation_files": [
-            "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-            "crates/jocforge-domain/src/meter/post_render_meter.rs",
-            "crates/jocforge-domain/src/meter/standalone_root.rs",
-            "crates/jocforge-domain/src/meter/mod.rs"
-          ],
+          "implementation_requirement": false,
+          "implementation_files": [],
           "clock": {
-            "domains": ["MeterSourceSampleCount", "MeterCallbackIndex", "MeterCallbackCount", "MeterUpstreamGeneration", "MeterSampleCount", "MeterBlockIndex", "MeterBlockCount", "SampleBlockFillCursor"],
+            "domains": [],
             "covered_clauses": [
-              "For N>0, normal callback count is ceil(N/1536), followed by exactly three zero-source drain callbacks.",
-              "Startup skip, published sample count, queue generation and callback phase advance together; drain output is not assumed to be zero.",
-              "The synchronized six-lane queue retains actual values and consumes only complete 1024-sample blocks in lane order.",
-              "Finalization after all drains preserves the raw tail and energy partial without adding a sample block or codec/DSP flush."
+              "The reader's logical callback interval is not an absolute physical ADM frame identity."
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_INTERNAL_METER_SAMPLE_QUEUE_LIFECYCLE",
+            "kind": "HASH_BOUND_INFORMATIONAL_READER_CALLBACK_TAIL_ACCOUNTING",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/INPUT-ONLY.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/EXPECTED.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-READER-CALLBACK-TAIL-ACCOUNTING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-READER-CALLBACK-TAIL-ACCOUNTING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-READER-CALLBACK-TAIL-ACCOUNTING-V1/STATUS.json"
             ],
-            "supplement_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
-            "validation_boundary": "Queue scheduling, actual sample value preservation, complete-block order, callback lifecycle and terminal tails only; no OAR/DV32, K-filter/true-peak numerical oracle or selected-profile meter receipt."
+            "supplement_manifest_sha256": "1f50445127843d30a86b1a1718524ae52e3705078c39e6b4535a51734dafd60b",
+            "candidate_source_manifest_sha256": "84af05c84ac62cd791faebe8cb434c89e2203f57ff059ca679d9992bbc49446d",
+            "tail_counts": {
+              "callback_index": 4247,
+              "reader_position": 6521856,
+              "reader_limit": 6522906,
+              "requested": 1536,
+              "actual": 1050,
+              "reported": 1536,
+              "difference": 486,
+              "full_count_flag": 1,
+              "logical_cursor_after": 6523392
+            },
+            "extra_slot_contents": "NOT_CAPTURED",
+            "physical_adm_frame_join": "UNBOUND",
+            "validation_boundary": "Count accounting only; no padding bytes or physical ADM frame are inferred."
           },
-          "test_modules": ["crates/jocforge-domain/src/meter/sample_block_queue.rs"],
+          "test_modules": [],
           "vectors": {
-            "kind": "INPUT_ONLY_SYMBOLIC_QUEUE_RECIPE_WITH_ACTUAL_LOCAL_SAMPLE_ORDER_ASSERTIONS",
+            "kind": "HASH_BOUND_REPORTER_OBSERVED_READER_TAIL_STATUS_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/INPUT-ONLY.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/EXPECTED.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-READER-CALLBACK-TAIL-ACCOUNTING-V1/STATUS.json"
             ],
             "case_pointers": [
-              "N=9217 produces seven normal callbacks and three zero-input drains.",
-              "Synthetic callback rows are materialized as actual F32 words; complete 1024-sample lane blocks equal the published input slices.",
-              "Terminal queue has 10752 published, 10240 consumed, 512 raw tail and 640 consumed energy-partial samples per the separate queues.",
-              "Vector sample IDs and hashes are lifecycle/provenance aids, not PCM values or a production terminal digest."
+              "Callback 4247 requested 1536, read 1050, full-count flag 1, reported 1536; difference 486 is count accounting only.",
+              "The extra 486 samples and their values were not captured; no zero-padding assertion is made.",
+              "Callback 4248 is a zero-source/samples drain; physical ADM frame join remains unbound.",
+              "Approved local source-position rule remains independent of this native reader observation."
             ],
-            "expected_dsp_outputs_included": false,
-            "expected_values_are_assertions_only": true,
-            "supplement_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606"
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "1f50445127843d30a86b1a1718524ae52e3705078c39e6b4535a51734dafd60b"
           },
-          "error_outcomes": [
-            {"error_code":"SampleBlockQueueError::CallbackPhaseMismatch","category":"normal/drain schedule","trigger":"The supplied phase does not match the typed callback index and source extent.","programme_state_after":"No proposal is returned; the before queue remains unchanged.","caller_action":"Reject this callback proposal."},
-            {"error_code":"SampleBlockQueueError::InputShape","category":"six-lane callback input","trigger":"Any lane does not contain exactly 1536 sample words.","programme_state_after":"No proposal is returned; the before queue remains unchanged.","caller_action":"Reject before queue append."},
-            {"error_code":"SampleBlockQueueError::InputNonFinite","category":"callback sample values","trigger":"Any input sample word is NaN or infinite.","programme_state_after":"No proposal is returned; the before queue remains unchanged.","caller_action":"Reject the callback proposal."},
-            {"error_code":"SampleBlockQueueError::FinalizationNotReady","category":"queue terminal lifecycle","trigger":"Finalization is requested before all normal callbacks and three drains are staged.","programme_state_after":"No terminal view is returned; the queue remains unchanged.","caller_action":"Continue the approved callback sequence or reject at the parent boundary."}
-          ],
           "not_run": [
-            "Selected N=6522906 meter-profile queue, OAR/DV32, true-peak/K numeric outputs and complete meter root parity.",
-            "Terminal MeasurementReceipt/READY production, GTC owner receipt, single root swap and parent reset/fatal integration.",
-            "Real ADM, full-programme encode, product and listening acceptance."
+            "Extra-slot sample contents and native padding values.",
+            "Physical ADM callback frame identity, reset and source-generation join.",
+            "MeasurementReceipt, full programme/native output and product acceptance."
           ],
-          "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
-          "implementation_inventory": [
-            {"path":"crates/jocforge-domain/src/meter/sample_block_queue.rs","bytes":34921,"sha256":"8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"},
-            {"path":"crates/jocforge-domain/src/meter/post_render_meter.rs","bytes":21564,"sha256":"7e533a1b2a576e495099a117128aa0dce5d62a5f5eb1eeef844d3e71769b941a"},
-            {"path":"crates/jocforge-domain/src/meter/standalone_root.rs","bytes":16057,"sha256":"69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"},
-            {"path":"crates/jocforge-domain/src/meter/mod.rs","bytes":679,"sha256":"6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"}
-          ],
-          "test_inventory": [
-            {"path":"crates/jocforge-domain/src/meter/sample_block_queue.rs","bytes":34921,"sha256":"8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"}
-          ]
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
       ],
       "production_usable": false,
@@ -14894,6 +15034,132 @@
                                   "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
                                   "implementation_inventory": [],
                                   "test_inventory": []
+                                },
+                                                                {
+                                  "slice_id": "informational-provider-lifetime-source-receipt",
+                                  "mapping_status": "WASHED_PROVIDER_HEAP_ID_BOUND_WITHIN_REDIRECTED_RUN__SOURCE_AND_RESET_OPEN",
+                                  "implementation_status": "REPORTER_OBSERVED_OWNER_ALLOCATION_LIFETIME__NO_MEASUREMENT_RECEIPT",
+                                  "scope": "One redirected-job receipt reports measurement and encode dispatches using the same parent/owner heap allocation IDs; monitored free/reallocate hooks saw none between those dispatches, but in-place destruction/reconstruction is not excluded. A shared processor state handled 4,248 counted callbacks, but individual ADM objects/sample ranges and the complete reset lifecycle were not captured. The same-getter origin1->public kind2->wrapper3->processor2 chain was reported, and encode-scope pointer/config observations are bounded to that scope. The winning candidate pointer and aggregate-to-owner individual store were not captured in the completed run. A separately interrupted run is not joined. No complete MeasurementReceipt, source epoch or product acceptance is established.",
+                                  "owner": "joc",
+                                  "implementation_requirement": false,
+                                  "implementation_files": [],
+                                  "clock": {
+                                    "domains": [],
+                                    "covered_clauses": [
+                                      "Heap allocation identity within the monitored window does not bind callback-to-ADM sample ranges or source generation."
+                                    ]
+                                  },
+                                  "parameters": {
+                                    "kind": "HASH_BOUND_INFORMATIONAL_PROVIDER_LIFETIME_SOURCE_RECEIPT",
+                                    "provider_files": [
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-LIFETIME-SOURCE-RECEIPT-V1/MANIFEST.json",
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-LIFETIME-SOURCE-RECEIPT-V1/CONTRACT.md",
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-LIFETIME-SOURCE-RECEIPT-V1/STATUS.json"
+                                    ],
+                                    "supplement_manifest_sha256": "83ea7850fc1de43a35e589c14e43e921491b3c9a1a109d88feff968b1354dc5f",
+                                    "candidate_source_manifest_sha256": "76e0c66f83ef7514e997f288d571ac7e06b8de3fab6dab9642514bdae33d9fed",
+                                    "callback_count": 4248,
+                                    "heap_allocation_identity": "BOUND_WITHIN_MONITORED_WINDOW",
+                                    "in_place_reconstruction": "NOT_CAPTURED",
+                                    "per_callback_adm_source_range": "NOT_CAPTURED",
+                                    "full_reset": "NOT_CAPTURED",
+                                    "winning_candidate_pointer": "NOT_CAPTURED_IN_COMPLETED_RUN",
+                                    "cross_run_join": "PROHIBITED",
+                                    "measurement_receipt": "NOT_CLAIMED",
+                                    "validation_boundary": "One redirected run only; allocation-ID observation does not bind pointer identity across reset, source generation, typed kind or MeasurementReceipt."
+                                  },
+                                  "test_modules": [],
+                                  "vectors": {
+                                    "kind": "HASH_BOUND_REPORTER_OBSERVED_PROVIDER_LIFETIME_STATUS_NO_EXPECTED_OUTPUTS",
+                                    "authoritative_vectors": [
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-LIFETIME-SOURCE-RECEIPT-V1/STATUS.json"
+                                    ],
+                                    "case_pointers": [
+                                      "Measurement and encode dispatches share parent/owner heap allocation IDs within one monitored window; no free/reallocate was observed.",
+                                      "In-place destruction/reconstruction remains possible; 4,248 callback count does not bind individual ADM sample ranges.",
+                                      "Same-getter origin1->public2->wrapper3->processor2 is reported in this run, but no complete receipt or reset generation was captured.",
+                                      "The separate interrupted attempt is not joined to the completed run."
+                                    ],
+                                    "expected_outputs_included": false,
+                                    "supplement_manifest_sha256": "83ea7850fc1de43a35e589c14e43e921491b3c9a1a109d88feff968b1354dc5f"
+                                  },
+                                  "not_run": [
+                                    "In-place destructor/reconstruction and complete reset lifecycle.",
+                                    "Per-callback ADM object/sample ranges and source generation.",
+                                    "Winning pointer and individual aggregate-to-owner store.",
+                                    "Complete MeasurementReceipt, encoded output and product acceptance."
+                                  ],
+                                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                                  "implementation_inventory": [],
+                                  "test_inventory": []
+                                },
+                                {
+                                  "slice_id": "informational-selected-winner-source-lifecycle",
+                                  "mapping_status": "WASHED_SAME_OWNER_WINNER_AND_FIRST_SOURCE_DESCRIPTOR__ABSOLUTE_FRAME_UNBOUND",
+                                  "implementation_status": "REPORTER_OBSERVED_SINGLE_RUN_SOURCE_PREFIX__NO_MEASUREMENT_RECEIPT",
+                                  "scope": "One redirected-job receipt reports the aggregate winning getter return joined to the processor result and aggregate/wrapper record under one measurement owner; an exact-module static receipt supplies the owner copy. The first source-provider descriptor is the processor callback descriptor under that same owner and reports 38 sources, 1536 samples, local interval [0,1536). Input file reads include metadata/prefetch and do not establish an absolute ADM frame position. The 486-sample difference between cumulative callback count and prior file extent is unexplained. Heap allocation IDs persisted during monitored free/reallocation hooks, but in-place reconstruction, custom allocators and full reset were not captured. An interrupted attempt cannot be joined. No MeasurementReceipt or product acceptance is claimed.",
+                                  "owner": "joc",
+                                  "implementation_requirement": false,
+                                  "implementation_files": [],
+                                  "clock": {
+                                    "domains": [],
+                                    "covered_clauses": [
+                                      "Local descriptor interval [0,1536) is not an absolute ADM frame position or source-generation clock."
+                                    ]
+                                  },
+                                  "parameters": {
+                                    "kind": "HASH_BOUND_INFORMATIONAL_SELECTED_WINNER_SOURCE_LIFECYCLE_RECEIPT",
+                                    "provider_files": [
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-SELECTED-WINNER-SOURCE-LIFECYCLE-V1/MANIFEST.json",
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-SELECTED-WINNER-SOURCE-LIFECYCLE-V1/CONTRACT.md",
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-SELECTED-WINNER-SOURCE-LIFECYCLE-V1/STATUS.json"
+                                    ],
+                                    "supplement_manifest_sha256": "27b2be825d3b1470cffdd8a17421b8d04c37f40c953e3d658e5220de7b0dbd9a",
+                                    "candidate_source_manifest_sha256": "2c1eb155cd818b934af041b8fd4e3a504326354f05167e424e62db49e9e93c71",
+                                    "winner_chain": "SAME_OWNER_GETTER_RETURN_AND_STATIC_OWNER_COPY",
+                                    "public_kind": 2,
+                                    "id1_config_index_2": 0,
+                                    "first_source_descriptor": {
+                                      "source_count": 38,
+                                      "samples": 1536,
+                                      "local_interval": [
+                                        0,
+                                        1536
+                                      ]
+                                    },
+                                    "absolute_adm_frame_mapping": "UNBOUND",
+                                    "sample_count_difference": 486,
+                                    "difference_interpretation": "UNBOUND",
+                                    "source_reset_lifecycle": "NOT_CAPTURED",
+                                    "in_place_reconstruction": "NOT_CAPTURED",
+                                    "cross_run_join": "PROHIBITED",
+                                    "measurement_receipt": "NOT_CLAIMED",
+                                    "validation_boundary": "Single redirected run and bounded prefix only; no selected job, absolute source frame, full reset or terminal receipt."
+                                  },
+                                  "test_modules": [],
+                                  "vectors": {
+                                    "kind": "HASH_BOUND_REPORTER_OBSERVED_SINGLE_RUN_WINNER_SOURCE_STATUS_NO_EXPECTED_OUTPUTS",
+                                    "authoritative_vectors": [
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-SELECTED-WINNER-SOURCE-LIFECYCLE-V1/STATUS.json"
+                                    ],
+                                    "case_pointers": [
+                                      "Winner getter, processor result and aggregate/wrapper record are joined under one measurement owner in one run.",
+                                      "First processor callback descriptor carries 38 sources and 1536 samples at local interval [0,1536); absolute ADM frame is unbound.",
+                                      "The 486-sample file/callback discrepancy is unexplained; do not infer padding or source position.",
+                                      "No full reset, in-place reconstruction, terminal MeasurementReceipt or cross-run join was captured."
+                                    ],
+                                    "expected_outputs_included": false,
+                                    "supplement_manifest_sha256": "27b2be825d3b1470cffdd8a17421b8d04c37f40c953e3d658e5220de7b0dbd9a"
+                                  },
+                                  "not_run": [
+                                    "Absolute ADM frame and sample source identity for the descriptor.",
+                                    "Explanation of the 486-sample difference; no padding inference.",
+                                    "Full reset, in-place reconstruction and selected native epoch.",
+                                    "Complete MeasurementReceipt, encoded output and product acceptance."
+                                  ],
+                                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                                  "implementation_inventory": [],
+                                  "test_inventory": []
                                 }
       ],
       "exclusions": [
@@ -20153,128 +20419,179 @@
       "reset_authority": "Programme full restart reconstructs JOCSEL01 cold; no component-local reset or commit API exists.",
       "parent_install_status": "NOT_RUN; the complete after-state and ID14 body are available as one noncommitting proposal, but all twelve owner roots remain mandatory."
     },
-                                                                {
-                                  "root_id": "meter",
-                                  "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-                                  "implementation_status": "NATIVE_K_COLD_AND_ROOT_FIELD_CROSSWALK_CLOSED__GTC_ROOT_COMMIT_AND_MEASUREMENT_RECEIPT_PENDING",
-                                  "implementation_files": [
-                                    "crates/jocforge-domain/src/meter/standalone_root.rs",
-                                    "crates/jocforge-domain/src/meter/mod.rs"
-                                  ],
-                                  "test_modules": [
-                                    "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
-                                  ],
-                                  "implementation_inventory": [
-                                    {
-                                      "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-                                      "bytes": 16057,
-                                      "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
-                                    },
-                                    {
-                                      "path": "crates/jocforge-domain/src/meter/mod.rs",
-                                      "bytes": 679,
-                                      "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
-                                    }
-                                  ],
-                                  "test_inventory": [
-                                    {
-                                      "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
-                                      "bytes": 6976,
-                                      "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
-                                    }
-                                  ],
-                                  "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and attempt+1 policy remain unbound. For K-filter, approved F06W omits the I32 member; native static DPLM owner chain and cold K=[0;6] are closed, with energy exponent separately cold at [48;6]. V4 K=[48;6] is synthetic only and conflicts with native cold. Runtime pointer/generation capture is NOT_RUN. A parent-issued opaque typed MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is decidable as JOCForge LOCAL_MODEL policy, not a DEE formula and not implemented. The local canonical meter exponent split is now crosswalked: window_k_energy.exponents_i32 is energy cold [48;6], and the distinct selected-DPLM K exponent is cold [0;6]. Runtime owner/generation mapping, root serialization execution, one parent commit and MeasurementReceipt remain pending. Complete terminal owners.meter serialization is blocked; no terminal hash, READY proposal or parent commit exists.",
-                                  "canonical_gtc_state_ref_status": "NOT_RUN",
-                                  "gtc_owner_receipt_status": "NOT_RUN",
-                                  "gtc_single_root_swap_status": "NOT_RUN",
-                                  "encode_status": "NOT_RUN",
-                                  "latest_owner_state_reference_supplement": {
-                                    "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
-                                    "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
-                                    "queue_lifecycle_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
-                                    "payloads": "11/11 locally verified",
-                                    "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_PRODUCER",
-                                    "unresolved_fields": [
-                                      "Native DPLM K exponent type/cold value and static owner chain to the selected reducer are closed; runtime owner/generation receipt to canonical owners.meter and parent commit remain UNBOUND",
-                                      "input_cursor.model_owner_key model contract and Panner-only callsites are closed; production Meter owner-key producer and runtime cursor/owner identity binding are not part of the current Meter root"
-                                    ]
-                                  },
-                                  "remaining_gates": [
-                                    "Frozen model semantics and two Panner-only callsites for input_cursor.model_owner_key are closed; production Meter key producer/call receipt and same-root binding are UNBOUND, so terminal owners.meter serialization is BLOCKED.",
-                                    "K-filter exponent native cold [0;6], separate energy cold [48;6], and static setup-to-reducer owner chain are closed; runtime generation receipt to canonical owners.meter, root serialization execution and single parent commit remain pending; the local field semantics are crosswalked. No in-place K reset writer was observed; native close/reopen or next-attempt root reuse remains UNBOUND, and the sibling formula is not selected.",
-                                    "Terminal meter hash and ProgrammeMeasurementReceipt/READY production remain NOT_RUN.",
-                                    "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration remain NOT_RUN.",
-                                    "Native EOF/drain evidence, end-to-end encode, W04 and product acceptance remain NOT_RUN."
-                                  ],
-                                  "measurement_receipt_ready_status": "NOT_RUN",
-                                  "terminal_state_reference_status": "BLOCKED_ON_GTC_METER_OWNER_GENERATION_MAPPING_AND_SINGLE_ROOT_COMMIT",
-                                  "terminal_meter_sha256_status": "NOT_RUN",
-                                  "synthetic_reference_conflicts": [
-                                    {
-                                      "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
-                                      "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
-                                      "synthetic_k_filter_cold": [
-                                        48,
-                                        48,
-                                        48,
-                                        48,
-                                        48,
-                                        48
-                                      ],
-                                      "native_selected_dplm_k_filter_cold": [
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        0
-                                      ],
-                                      "status": "SYNTHETIC_ONLY_CONFLICTS_WITH_NATIVE_COLD",
-                                      "disposition": "Retain V4 fixture as synthetic; do not claim it as native cold or delete/overwrite it."
-                                    }
-                                  ],
-                                  "readiness_split": {
-                                    "native_selected_dplm_k_cold_and_static_owner_chain": "CLOSED",
-                                    "local_parent_meter_owner_id_policy": "DECIDABLE_LOCAL_POLICY_NOT_IMPLEMENTED",
-                                    "gtc_owners_meter_root_serialization_parent_commit_measurement_receipt": "PENDING",
-                                    "canonical_root_field_semantics": "CLOSED_SEPARATE_K_ZERO_AND_ENERGY_48_FIELDS",
-                                    "canonical_root_hash_and_receipt_execution": "PENDING",
-                                    "native_dplm_restart_owner_and_generation": "UNBOUND",
-                                    "local_gtc_full_restart_contract": "APPROVED_MODEL_ONLY"
-                                  },
-                                  "canonical_meter_root_schema_reference": {
-                                    "reference_package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V1",
-                                    "reference_manifest_sha256": "9993321795a49f5231c9967c1ed007469d3ddc31408a3f07d616cb986005a34c",
-                                    "approved_source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-                                    "field_crosswalk_package_id": "METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1",
-                                    "field_crosswalk_manifest_sha256": "2457250dc7b1aefdc223b9e86a8d23c33a0a76f6bd7eb65fd216e433e6c973a0",
-                                    "field_semantics": {
-                                      "window_k_energy.exponents_i32": "energy_accumulator.exponent_i32_by_channel; signed I32[6]; cold [48;6]",
-                                      "window_k_energy.k_filter_exponents_i32_by_channel": "distinct selected DPLM K exponent; signed I32[6]; cold [0;6]",
-                                      "window_k_energy.k_filter_state_f32_u32_words": "F32[6][2][4] bit words; positive-zero cold",
-                                      "window_k_energy.mantissa_f32_u32_words": "energy accumulator F32[6] bit words; positive-zero cold"
-                                    },
-                                    "approved_source_leaf_recheck": {
-                                      "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-                                      "expected": 17,
-                                      "verified": 17
-                                    },
-                                    "status": "LOCAL_FIELD_SEMANTICS_CLOSED__CANONICAL_ROOT_EXECUTION_AND_RECEIPT_PENDING",
-                                    "native_runtime_owner_generation": "NOT_RUN",
-                                    "canonical_root_hash": "NOT_RUN",
-                                    "parent_commit_and_measurement_receipt": "NOT_RUN"
-                                  },
-                                  "restart_lifecycle_boundary": {
-                                    "package_id": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V1",
-                                    "manifest_sha256": "0bfca098c0ea304bb3ccd2224dd5f233af7e868f1a60c9c6c9cc5dbd50cabf87",
-                                    "source_manifest_sha256": "9f0a3a98a07854ea002d7cbed6030471db0e07a5771a0d2e3304fc3dd5323c4d",
-                                    "fresh_worker_root_setup": "STATICALLY_RECONSTRUCTS_NUMERIC_STATE; K EXPONENT COLD [0;6]",
-                                    "native_close_reopen_or_next_attempt_reconstruction": "UNBOUND",
-                                    "native_cross_attempt_owner_generation": "UNBOUND",
-                                    "local_gtc_full_restart": "APPROVED_MODEL_ONLY_DESTROY_AND_RECONSTRUCT_COLD_ROOT_WITH_ATTEMPT_PLUS_ONE",
-                                    "native_runtime": "NOT_RUN"
-                                  }
-                                },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "root_id": "meter",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "implementation_status": "LOCAL_CANONICAL_ROOT_SERIALIZER_CLOSED__GTC_OWNER_COMMIT_AND_MEASUREMENT_RECEIPT_PENDING",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "implementation_files": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "crates/jocforge-domain/src/meter/standalone_root.rs",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "crates/jocforge-domain/src/meter/mod.rs"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "test_modules": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "implementation_inventory": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "bytes": 22255,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "sha256": "7dc32ee27da6dc532ed0f0412f31d43332abb2f8e51a573143ef7405c03c1838"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "path": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "bytes": 32718,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "sha256": "ae59e95bde9589978b2a607875ac9aea16b7c072e774ad0c002c23d87a6e0656"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "path": "crates/jocforge-domain/src/meter/mod.rs",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "bytes": 679,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "test_inventory": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "bytes": 10612,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "sha256": "49b1f407727cf56568fc88ea1ecaed28187bc5501e9196b9c71afdb38887f707"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and attempt+1 policy remain unbound. For K-filter, approved F06W omits the I32 member; native static DPLM owner chain and cold K=[0;6] are closed, with energy exponent separately cold at [48;6]. V4 K=[48;6] is synthetic only and conflicts with native cold. Runtime pointer/generation capture is NOT_RUN. A parent-issued opaque typed MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is decidable as JOCForge LOCAL_MODEL policy, not a DEE formula and not implemented. The local canonical preimage/hash serializer now composes the F06 typed leaves, separate energy exponent [48;6] and K exponent [0;6] fields, and the persistent LFE delay ring. Cold and one after-root preimages are unit-tested. Runtime owner/generation receipt, GTC single parent commit, and production MeasurementReceipt/terminal digest remain pending; the JSON serializer is not a native ABI. Terminal owners.meter completion remains blocked on the production Meter owner/call receipt, same-root binding and one parent commit; no terminal hash, READY proposal or parent commit exists.",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "canonical_gtc_state_ref_status": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "gtc_owner_receipt_status": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "gtc_single_root_swap_status": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "encode_status": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "latest_owner_state_reference_supplement": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "queue_lifecycle_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "payloads": "11/11 locally verified",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_PRODUCER",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "unresolved_fields": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "Native DPLM K exponent type/cold value and static owner chain to the selected reducer are closed; runtime owner/generation receipt to canonical owners.meter and parent commit remain UNBOUND",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "input_cursor.model_owner_key model contract and Panner-only callsites are closed; production Meter owner-key producer and runtime cursor/owner identity binding are not part of the current Meter root"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ]
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "remaining_gates": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "Frozen model semantics and two Panner-only callsites for input_cursor.model_owner_key are closed; production Meter key producer/call receipt and same-root binding are UNBOUND, so terminal owners.meter receipt remains BLOCKED on the production Meter key producer and same-root owner binding.",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "K-filter exponent native cold [0;6], separate energy cold [48;6], and static setup-to-reducer owner chain are closed; runtime generation receipt to canonical owners.meter, the local canonical serializer is implemented, while runtime owner-generation receipt, terminal production hash and single parent commit remain pending. No in-place K reset writer was observed; native close/reopen or next-attempt root reuse remains UNBOUND, and the sibling formula is not selected.",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "Terminal meter hash and ProgrammeMeasurementReceipt/READY production remain NOT_RUN.",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration remain NOT_RUN.",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "Native EOF/drain evidence, end-to-end encode, W04 and product acceptance remain NOT_RUN."
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "measurement_receipt_ready_status": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "terminal_state_reference_status": "BLOCKED_ON_GTC_METER_OWNER_GENERATION_MAPPING_AND_SINGLE_ROOT_COMMIT",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "terminal_meter_sha256_status": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "synthetic_reference_conflicts": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "synthetic_k_filter_cold": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        48,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        48,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        48,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        48,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        48,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        48
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "native_selected_dplm_k_filter_cold": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        0,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        0,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        0,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        0,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        0,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "status": "SYNTHETIC_ONLY_CONFLICTS_WITH_NATIVE_COLD",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "disposition": "Retain V4 fixture as synthetic; do not claim it as native cold or delete/overwrite it."
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "readiness_split": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "native_selected_dplm_k_cold_and_static_owner_chain": "CLOSED",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "local_parent_meter_owner_id_policy": "DECIDABLE_LOCAL_POLICY_NOT_IMPLEMENTED",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "gtc_owners_meter_root_serialization_parent_commit_measurement_receipt": "PENDING",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "canonical_root_field_semantics": "CLOSED_SEPARATE_K_ZERO_ENERGY_48_AND_LFE_RING",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "canonical_root_hash_and_receipt_execution": "TERMINAL_PRODUCTION_HASH_AND_MEASUREMENT_RECEIPT_PENDING",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "native_dplm_restart_owner_and_generation": "UNBOUND",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "local_gtc_full_restart_contract": "APPROVED_MODEL_ONLY",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "local_canonical_preimage_and_hash_serializer": "LOCALLY_IMPLEMENTED_AND_UNIT_TESTED"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "canonical_meter_root_schema_reference": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "reference_package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V1",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "reference_manifest_sha256": "9993321795a49f5231c9967c1ed007469d3ddc31408a3f07d616cb986005a34c",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "approved_source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "field_crosswalk_package_id": "METER-ROOT-KFILTER-ENERGY-EXPONENT-CROSSWALK-V1",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "field_crosswalk_manifest_sha256": "2457250dc7b1aefdc223b9e86a8d23c33a0a76f6bd7eb65fd216e433e6c973a0",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "field_semantics": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "window_k_energy.exponents_i32": "energy_accumulator.exponent_i32_by_channel; signed I32[6]; cold [48;6]",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "window_k_energy.k_filter_exponents_i32_by_channel": "distinct selected DPLM K exponent; signed I32[6]; cold [0;6]",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "window_k_energy.k_filter_state_f32_u32_words": "F32[6][2][4] bit words; positive-zero cold",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "window_k_energy.mantissa_f32_u32_words": "energy accumulator F32[6] bit words; positive-zero cold"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "approved_source_leaf_recheck": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "expected": 17,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "verified": 17
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "status": "LOCAL_CANONICAL_PREIMAGE_AND_HASH_SERIALIZER_IMPLEMENTED__TERMINAL_RECEIPT_PENDING",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "native_runtime_owner_generation": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "canonical_root_hash": "COLD_AND_AFTER_ROOT_PREIMAGES_EXECUTED_IN_LOCAL_UNIT_TESTS; TERMINAL_PRODUCTION_HASH_NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "parent_commit_and_measurement_receipt": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "implementation_files": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "crates/jocforge-domain/src/meter/standalone_root.rs",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "crates/jocforge-domain/src/meter/mod.rs"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "test_modules": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "lfe_delay_ring_leaf": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "decision_package_id": "METER-LFE-RING-CANONICAL-ROOT-DECISION-V1",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "manifest_sha256": "6ea1112b96a5d9a8c42d97cc4885a94d11a3bc88db961e2780dacd89a3455e06",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "owner": "owners.meter; no separate GTC owner",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "fields": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "source_samples",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "normal_callbacks",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "callback_index",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "samples_consumed",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "write_index",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "read_index",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "slots"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "slot_order": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        0,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        1,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        2
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ],
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "occupied_slot_shape": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "origin_callback": "U64",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "sample_words_u32": "U32[1536] exact F32 bit words"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "cold": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "write_index": 0,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "read_index": 1,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "slots": [
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          null,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          null,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          null
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ]
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "staging": "LFE ring and all other meter leaves appear together in the after-root proposal; parent commit remains one authority.",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "runtime_pcm": "Included only in the in-memory canonical preimage; not copied to package, log or fixture."
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "terminal_production_hash": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "gtc_owner_commit_and_measurement_receipt": "PENDING"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "restart_lifecycle_boundary": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "package_id": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V1",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "manifest_sha256": "0bfca098c0ea304bb3ccd2224dd5f233af7e868f1a60c9c6c9cc5dbd50cabf87",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "source_manifest_sha256": "9f0a3a98a07854ea002d7cbed6030471db0e07a5771a0d2e3304fc3dd5323c4d",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "fresh_worker_root_setup": "STATICALLY_RECONSTRUCTS_NUMERIC_STATE; K EXPONENT COLD [0;6]",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "native_close_reopen_or_next_attempt_reconstruction": "UNBOUND",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "native_cross_attempt_owner_generation": "UNBOUND",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "local_gtc_full_restart": "APPROVED_MODEL_ONLY_DESTROY_AND_RECONSTRUCT_COLD_ROOT_WITH_ATTEMPT_PLUS_ONE",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "native_runtime": "NOT_RUN"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                },
                 {
       "root_id": "drc",
       "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",

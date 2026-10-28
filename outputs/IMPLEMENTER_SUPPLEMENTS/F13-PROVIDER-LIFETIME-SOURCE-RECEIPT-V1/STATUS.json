@@ -1,0 +1,12 @@
+{
+  "source_manifest_sha256": "76e0c66f83ef7514e997f288d571ac7e06b8de3fab6dab9642514bdae33d9fed",
+  "source_payloads_verified": "3/3",
+  "callback_count": 4248,
+  "heap_allocation_identity": "BOUND_WITHIN_MONITORED_WINDOW",
+  "in_place_reconstruction": "NOT_CAPTURED",
+  "per_callback_ADM_source_range": "NOT_CAPTURED",
+  "full_reset": "NOT_CAPTURED",
+  "winning_candidate_pointer": "NOT_CAPTURED_IN_COMPLETED_RUN",
+  "cross_run_join": "PROHIBITED",
+  "measurement_receipt": "NOT_CLAIMED"
+}

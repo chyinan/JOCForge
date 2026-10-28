@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F13-SELECTED-WINNER-SOURCE-LIFECYCLE-V1",
+  "scope": "One run winner/source receipt; ADM frame mapping unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "2c1eb155cd818b934af041b8fd4e3a504326354f05167e424e62db49e9e93c71",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 865,
+      "sha256": "b9852c109128e7746e5a1d1840b7b5a911f106507dfba00a2bccb66476672f43"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 686,
+      "sha256": "cbf519790e31566b7ee3051a8a9b0be2e2b157b1fbaa3758e4a01339fbf8398a"
+    }
+  ]
+}

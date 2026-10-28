@@ -191,6 +191,7 @@
 | F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |
 | F06W/k-weighted-complete-block-and-energy-window | F06W | `meter` |
 | F06W/sample-block-queue-lifecycle | F06W | `meter` |
+| F06W/informational-reader-callback-tail-accounting | F06W | `meter` |
 | F06KG/selected-k-matrix-provider-generator | F06KG | `meter` |
 | F06TP/selected-six-channel-true-peak-block-cascade | F06TP | `meter` |
 | F06OF/meter-lfe-delay-and-oar-packet-assembly | F06OF | `meter` |
@@ -278,6 +279,8 @@
 | F13/informational-selected-preferred-provider-runtime-observation | F13 | `joc` |
 | F13/informational-provider-to-encoder-copy-receipt | F13 | `joc` |
 | F13/informational-provider-public-kind-same-getter-receipt | F13 | `joc` |
+| F13/informational-provider-lifetime-source-receipt | F13 | `joc` |
+| F13/informational-selected-winner-source-lifecycle | F13 | `joc` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `joc` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `codec` |
 | F13C/washed-f13c-bsi-importer-static-identity | F13C | `codec` |

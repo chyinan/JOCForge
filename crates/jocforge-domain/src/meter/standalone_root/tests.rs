@@ -210,3 +210,109 @@ fn full_reset_requires_the_next_attempt_and_reconstructs_meter_cold() {
         Err(StandaloneMeterRootError::AttemptSequence)
     ));
 }
+
+#[test]
+fn standalone_meter_cold_root_serializes_every_canonical_leaf_and_cold_clock() {
+    let root = cold_root(0);
+    let bytes = root.canonical_preimage().unwrap();
+    let value: Value = serde_json::from_slice(&bytes).unwrap();
+
+    assert!(bytes.starts_with(b"{\"frontend_oar_state_hex\":"));
+    assert!(!bytes.ends_with(b"\n"));
+    assert_eq!(
+        value["frontend_oar_state_hex"].as_str().unwrap().len(),
+        1_569 * 2
+    );
+    assert_eq!(
+        value["shared_dv32_state_hex"].as_str().unwrap().len(),
+        812 * 2
+    );
+    assert_eq!(
+        value["integrated_state_hex"].as_str().unwrap().len(),
+        24_512 * 2
+    );
+    assert_eq!(value["ungated_state_hex"].as_str().unwrap().len(), 40 * 2);
+    assert_eq!(value["generation"], 0);
+    assert_eq!(value["window_k_energy"]["window_clock"]["startup"], 3_104);
+    assert_eq!(value["window_k_energy"]["window_clock"]["pending"], 0);
+    assert_eq!(value["window_k_energy"]["window_clock"]["processed"], 0);
+    assert_eq!(
+        value["window_k_energy"]["window_clock"]["callback_index"],
+        0
+    );
+    assert_eq!(
+        value["window_k_energy"]["window_clock"]["pcm_ring_count"],
+        0
+    );
+    assert_eq!(
+        value["window_k_energy"]["window_clock"]["samples_in_window"],
+        0
+    );
+    assert_eq!(
+        value["window_k_energy"]["exponents_i32"],
+        serde_json::json!([48, 48, 48, 48, 48, 48])
+    );
+    assert_eq!(
+        value["window_k_energy"]["k_filter_exponents_i32_by_channel"],
+        serde_json::json!([0, 0, 0, 0, 0, 0])
+    );
+    let k_state = value["window_k_energy"]["k_filter_state_f32_u32_words"]
+        .as_array()
+        .unwrap();
+    assert_eq!(k_state.len(), 6);
+    assert!(k_state.iter().all(|channel| {
+        let stages = channel.as_array().unwrap();
+        stages.len() == 2
+            && stages.iter().all(|stage| {
+                let lanes = stage.as_array().unwrap();
+                lanes.len() == 4 && lanes.iter().all(|word| word.as_u64() == Some(0))
+            })
+    }));
+    assert_eq!(
+        value["lfe_delay"]["slots"],
+        serde_json::json!([null, null, null])
+    );
+    assert_eq!(
+        value["true_peak"]["fir_state_f32_u32_words"]
+            .as_array()
+            .unwrap()
+            .len(),
+        6
+    );
+    assert!(
+        value["true_peak"]["fir_state_f32_u32_words"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|row| row.as_array().unwrap().len() == 4_628)
+    );
+    assert_eq!(
+        root.canonical_sha256().unwrap(),
+        root.cold_canonical_sha256().unwrap()
+    );
+}
+
+#[test]
+fn standalone_meter_after_root_serializes_lfe_ring_words_in_physical_slot_order() {
+    let mut root = cold_root(0);
+    for callback in 0..4 {
+        let proposal = root
+            .prepare_callback(callback_input(callback, MeterCallbackPhase::NormalSource))
+            .unwrap();
+        root = proposal.into_parts().0;
+    }
+    let bytes = root.canonical_preimage().unwrap();
+    let value: Value = serde_json::from_slice(&bytes).unwrap();
+    let lfe = &value["lfe_delay"];
+
+    assert_eq!(value["generation"], 4);
+    assert_eq!(lfe["callback_index"], 4);
+    assert_eq!(lfe["samples_consumed"], 4 * 1_536);
+    for (slot, expected_origin) in [2_u64, 3, 1].into_iter().enumerate() {
+        let slot_value = lfe["slots"][slot].as_object().unwrap();
+        assert_eq!(slot_value["origin_callback"], expected_origin);
+        let words = slot_value["sample_words_u32"].as_array().unwrap();
+        assert_eq!(words.len(), 1_536);
+        assert!(words.iter().all(|word| word.as_u64() == Some(0)));
+    }
+}

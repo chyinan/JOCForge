@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "METER-LFE-RING-CANONICAL-ROOT-DECISION-V1",
+  "scope": "Local canonical meter root LFE delay ring",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "9993321795a49f5231c9967c1ed007469d3ddc31408a3f07d616cb986005a34c",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1557,
+      "sha256": "0e6fb5f472f778172b0d483c6fd36aaff7e75acb1d354eb83185a2863811dd40"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 1008,
+      "sha256": "42dc55b49f4fe3fd55f968b6b0d88f0bd1430a7ff6f67265cdea44c939c30736"
+    }
+  ]
+}

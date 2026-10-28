@@ -1,0 +1,14 @@
+{
+  "source_manifest_sha256": "84af05c84ac62cd791faebe8cb434c89e2203f57ff059ca679d9992bbc49446d",
+  "source_payloads_verified": "3/3",
+  "tail": {
+    "requested": 1536,
+    "actual": 1050,
+    "reported": 1536,
+    "difference": 486,
+    "extra_slot_contents": "NOT_CAPTURED"
+  },
+  "physical_ADM_frame_join": "UNBOUND",
+  "native_observation_independently_reproduced": false,
+  "raw_audio_or_keys_included": false
+}

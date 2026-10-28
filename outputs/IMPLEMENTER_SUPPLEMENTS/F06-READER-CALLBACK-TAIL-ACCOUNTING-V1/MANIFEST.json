@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F06-READER-CALLBACK-TAIL-ACCOUNTING-V1",
+  "scope": "Reader tail count accounting; extra slots and physical frame join unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "84af05c84ac62cd791faebe8cb434c89e2203f57ff059ca679d9992bbc49446d",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 689,
+      "sha256": "084bf13da62bc812e36f09cddbf96f6d0bc550c0bbc9901ffb7ebaaa55f6b142"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 417,
+      "sha256": "99a6a32419fdcc3286d6f5b75c7a4e88308bfa384038851a5835f6beb613bcfc"
+    }
+  ]
+}

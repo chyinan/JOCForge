@@ -1,0 +1,23 @@
+{
+  "source_manifest_sha256": "2c1eb155cd818b934af041b8fd4e3a504326354f05167e424e62db49e9e93c71",
+  "source_payloads_verified": "3/3",
+  "winner_chain": "SAME_OWNER_GETTER_RETURN_AND_STATIC_OWNER_COPY",
+  "public_kind": 2,
+  "id1_config2": 0,
+  "first_callback": {
+    "sources": 38,
+    "samples": 1536,
+    "local_interval": [
+      0,
+      1536
+    ]
+  },
+  "absolute_ADM_frame_mapping": "UNBOUND",
+  "sample_count_difference": 486,
+  "difference_interpretation": "UNBOUND",
+  "source_reset_lifecycle": "NOT_CAPTURED",
+  "in_place_reconstruction": "NOT_CAPTURED",
+  "cross_run_join": "PROHIBITED",
+  "measurement_receipt": "NOT_CLAIMED",
+  "native_independently_reproduced": false
+}

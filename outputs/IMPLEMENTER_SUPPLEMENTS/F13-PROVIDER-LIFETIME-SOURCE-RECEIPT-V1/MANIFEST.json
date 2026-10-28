@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F13-PROVIDER-LIFETIME-SOURCE-RECEIPT-V1",
+  "scope": "Bounded provider heap lifetime and callback summary",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "76e0c66f83ef7514e997f288d571ac7e06b8de3fab6dab9642514bdae33d9fed",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 784,
+      "sha256": "8ba04262fbae633ad541a5f4febf5c4499c6b1e12e8a08457a64a4999fcdf421"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 490,
+      "sha256": "41f2df1c885f1d69c41884a49352e475c7a72276395a0f72e8a8349ebd2593a9"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "classification": "LOCAL_MODEL_OWNER_DECISION",
+  "owner": "owners.meter",
+  "separate_gtc_owner": false,
+  "slot_order": [
+    0,
+    1,
+    2
+  ],
+  "occupied_slot_words": 1536,
+  "serialize_runtime_pcm_bit_words": true,
+  "raw_audio_in_package": false,
+  "cold": {
+    "callback_index": 0,
+    "samples_consumed": 0,
+    "write_index": 0,
+    "read_index": 1,
+    "slots": [
+      null,
+      null,
+      null
+    ]
+  },
+  "sources": [
+    {
+      "file": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+      "sha256": "ca1d10181d49c4ec6c4fcee86bc3fe44d9ca58ec11ee2b669a839bad9c0973c1"
+    },
+    {
+      "file": "crates/jocforge-domain/src/meter/meter_prepass.rs",
+      "sha256": "a654cefe6a81ef78e10958d73a2d57d2a01e9f4b1f425bb085400a63816d9c33"
+    },
+    {
+      "file": "crates/jocforge-domain/src/meter/standalone_root.rs",
+      "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
+    }
+  ],
+  "native_equivalence": "NOT_CLAIMED",
+  "terminal_hash": "NOT_RUN"
+}

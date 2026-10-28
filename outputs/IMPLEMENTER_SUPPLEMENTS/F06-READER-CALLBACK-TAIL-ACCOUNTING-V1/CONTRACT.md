@@ -1,0 +1,3 @@
+# Reader callback tail accounting
+
+One redirected-job metadata observation: first reader logical interval [0,1536), requested/read/reported 1536. At callback 4247, reader position 6521856, limit 6522906, requested 1536, actual 1050, full-count flag 1, reported 1536 and logical cursor 6523392. The 486 difference is a count-accounting result. Extra-slot sample contents were not captured; no padding value is established. File prefetch does not establish physical ADM callback frame identity. Callback 4248 reports zero sources/samples. Source position for implementation remains governed by approved model; native physical frame join, reset and MeasurementReceipt remain unbound/not run.
