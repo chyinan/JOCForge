@@ -277,6 +277,7 @@
 | F13/informational-preferred-input-user-decision-supersession | — | `No new task/UI value or caller clock is introduced; the selected preferred provider and native caller remain unbound.` |
 | F13/informational-selected-preferred-provider-runtime-observation | — | `One redirected-job observation does not bind source/reset generation or a production callback clock.` |
 | F13/informational-provider-to-encoder-copy-receipt | — | `No source generation or cross-attempt lifetime is bound by adjacent values or pointer matches.` |
+| F13/informational-provider-public-kind-same-getter-receipt | — | `Same-getter value conversion does not bind ADM source generation, full reset epoch or later encoder-open lifetime.` |
 | F13C/selected-bsi-count-and-payload-import | — | `The scalar formula, count admission projection, producer and literal importer copy are stateless calls; no source, dispatch, AU, or programme clock is owned.` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | — | `The package records within-capture joins only; no persistent source, frame or AU generation is established.` |
 | F13C/washed-f13c-bsi-importer-static-identity | — | `Same static importer code identity does not bind a callback, source, frame or AU generation.` |

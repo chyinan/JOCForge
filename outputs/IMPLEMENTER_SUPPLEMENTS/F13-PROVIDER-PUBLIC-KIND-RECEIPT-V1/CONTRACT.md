@@ -1,0 +1,3 @@
+# Provider public-kind receipt
+
+One redirected-job run observes a same-getter conversion: selector origin 1 -> public kind 2 -> wrapper tag 3 -> processor result 2. Prior approved selector crosswalk identifies origin 1 as fallback primary/ITU-level; the converter record and formatter input token match within the getter. A fresh-process provider/meter object chain is observed, but source object to ADM generation and full reset lifecycle are not captured. Later encoder input 2/config[2]=0 has pointer matches but cross-call lifetime/generation is not established. A separate interrupted winning-copy attempt cannot be joined to the completed run. No raw payload, key, code or addresses are delivered.

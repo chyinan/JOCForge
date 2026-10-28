@@ -277,6 +277,7 @@
 | F13/informational-preferred-input-user-decision-supersession | F13 | `joc` |
 | F13/informational-selected-preferred-provider-runtime-observation | F13 | `joc` |
 | F13/informational-provider-to-encoder-copy-receipt | F13 | `joc` |
+| F13/informational-provider-public-kind-same-getter-receipt | F13 | `joc` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `joc` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `codec` |
 | F13C/washed-f13c-bsi-importer-static-identity | F13C | `codec` |

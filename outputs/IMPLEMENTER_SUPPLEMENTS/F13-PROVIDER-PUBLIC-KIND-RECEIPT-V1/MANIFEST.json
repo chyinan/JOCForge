@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F13-PROVIDER-PUBLIC-KIND-RECEIPT-V1",
+  "scope": "Same-getter public-kind conversion; cross-call lifetime/source generation unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "8f489e0f01889f60f131706418b5f7f0a8e78744de048c9c75d606aae024224d",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 704,
+      "sha256": "dc9a5934b1cf58bdb77f62a2084928fc4b8497e04257598973295ef1f9879d95"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 572,
+      "sha256": "7831305032f38336c769c41e995ff17387b7370082a990914bdbb5a1d6570648"
+    }
+  ]
+}

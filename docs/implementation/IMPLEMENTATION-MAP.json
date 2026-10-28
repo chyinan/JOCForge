@@ -14834,7 +14834,67 @@
                   "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
                   "implementation_inventory": [],
                   "test_inventory": []
-                }
+                },
+                                                                {
+                                  "slice_id": "informational-provider-public-kind-same-getter-receipt",
+                                  "mapping_status": "WASHED_SAME_GETTER_SELECTOR_TO_PUBLIC_KIND_CHAIN__SOURCE_GENERATION_UNBOUND",
+                                  "implementation_status": "REPORTER_OBSERVED_TYPED_VALUE_PATH__NO_CROSS_CALL_IDENTITY_OR_RECEIPT",
+                                  "scope": "One redirected-job run reports a same-getter conversion selector origin 1 -> public kind 2 -> wrapper tag 3 -> processor result 2; the converter record and formatter input token match within that getter. The previously approved selector crosswalk maps origin 1 to fallback primary/ITU-level semantics. A fresh-process provider/meter object chain was observed, but source object to ADM generation and full-reset lifecycle were not captured. Later encoder input 2 and config[2]=0 have pointer matches but no cross-call lifetime/generation identity. A separate interrupted winning-copy attempt cannot be joined to this completed run. No MeasurementReceipt or native-equivalence claim is made.",
+                                  "owner": "joc",
+                                  "implementation_requirement": false,
+                                  "implementation_files": [],
+                                  "clock": {
+                                    "domains": [],
+                                    "covered_clauses": [
+                                      "Same-getter value conversion does not bind ADM source generation, full reset epoch or later encoder-open lifetime."
+                                    ]
+                                  },
+                                  "parameters": {
+                                    "kind": "HASH_BOUND_INFORMATIONAL_SAME_GETTER_PUBLIC_KIND_RECEIPT",
+                                    "provider_files": [
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-PUBLIC-KIND-RECEIPT-V1/MANIFEST.json",
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-PUBLIC-KIND-RECEIPT-V1/CONTRACT.md",
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-PUBLIC-KIND-RECEIPT-V1/STATUS.json"
+                                    ],
+                                    "supplement_manifest_sha256": "7f745d543e3ddf59b6fd1f630e97a600174dae1f587bb05bd74e2878df9b069f",
+                                    "candidate_source_manifest_sha256": "8f489e0f01889f60f131706418b5f7f0a8e78744de048c9c75d606aae024224d",
+                                    "same_getter_values": {
+                                      "selector_origin": 1,
+                                      "public_kind": 2,
+                                      "wrapper_tag": 3,
+                                      "processor_result": 2
+                                    },
+                                    "origin_semantics": "FALLBACK_PRIMARY_ITU_LEVEL_VIA_APPROVED_SELECTOR_CROSSWALK",
+                                    "cross_call_lifetime": "NOT_CAPTURED",
+                                    "source_generation": "NOT_CAPTURED",
+                                    "measurement_receipt": "NOT_CLAIMED",
+                                    "validation_boundary": "One redirected job and one same-getter conversion only; no source-generation, cross-call lifetime, native reproduction or production MeasurementReceipt."
+                                  },
+                                  "test_modules": [],
+                                  "vectors": {
+                                    "kind": "HASH_BOUND_REPORTER_OBSERVED_SAME_GETTER_STATUS_NO_EXPECTED_OUTPUTS",
+                                    "authoritative_vectors": [
+                                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-PUBLIC-KIND-RECEIPT-V1/STATUS.json"
+                                    ],
+                                    "case_pointers": [
+                                      "Same getter: selector origin 1 -> public kind 2 -> wrapper tag 3 -> processor result 2.",
+                                      "The approved selector crosswalk maps origin 1 to fallback primary/ITU-level semantics.",
+                                      "No pointer/lifetime/source epoch join connects the getter result to a later encoder-open; an interrupted attempt is not joined across runs.",
+                                      "No MeasurementReceipt or product acceptance is claimed."
+                                    ],
+                                    "expected_outputs_included": false,
+                                    "supplement_manifest_sha256": "7f745d543e3ddf59b6fd1f630e97a600174dae1f587bb05bd74e2878df9b069f"
+                                  },
+                                  "not_run": [
+                                    "Source object to ADM generation and full-reset lifecycle.",
+                                    "Cross-call lifetime/identity from same getter through encoder-open and config[2].",
+                                    "Join of any interrupted winning-copy attempt to this run.",
+                                    "Production MeasurementReceipt and product acceptance."
+                                  ],
+                                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                                  "implementation_inventory": [],
+                                  "test_inventory": []
+                                }
       ],
       "exclusions": [
         "F13C JOC complexity BSI producer",

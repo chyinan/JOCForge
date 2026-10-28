@@ -1,0 +1,15 @@
+{
+  "source_manifest_sha256": "8f489e0f01889f60f131706418b5f7f0a8e78744de048c9c75d606aae024224d",
+  "payloads_verified": "3/3",
+  "scope": "one redirected job; same getter",
+  "selector_origin": 1,
+  "public_kind": 2,
+  "wrapper_tag": 3,
+  "processor_result": 2,
+  "origin_semantics": "fallback primary/ITU-level via prior approved selector crosswalk",
+  "source_generation": "NOT_CAPTURED",
+  "cross_call_lifetime": "NOT_CAPTURED",
+  "separate_interrupted_attempt": "NO_CROSS_RUN_JOIN",
+  "measurement_receipt": "NOT_CLAIMED",
+  "native_independently_reproduced": false
+}
