@@ -2,21 +2,63 @@
 //! CLI composition root joining the in-memory reader cursor to application staging.
 
 use jocforge_application::{
-    PreparedJobInput,
+    PreparedJobInput, PreparedJobInputError, ProgrammeId, SelectedAdmResourcePayloads,
+    SelectedWaveDescriptor,
     meter_source_bridge::{
         self as application_bridge, IndependentMeterPrepass, MeterCallbackPhase,
         MeterSourceBridgeError, MeterSourceCallbackFrame, MeterSourceCallbackFrameParts,
         MeterSourceCallbackView, MeterSourceIdentity, MeterSourceOarHandoff, MeterSourceOarReceipt,
         MeterSourcePosition,
     },
+    prepare_selected_job_input,
 };
 use jocforge_io::pcm::{
     meter_source_cursor::{
         MeterPcmSourceCursor, MeterPcmSourceIdentity, MeterPcmSourceProposal,
         MeterSourceCursorError,
     },
-    riff_pcm24::ParsedRiffPcm24,
+    riff_pcm24::{ParsedRiffPcm24, RiffPcm24Error},
 };
+use std::sync::Arc;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedAdmPreparationError {
+    MetadataSelection(RiffPcm24Error),
+    PreparedJobInput(PreparedJobInputError),
+    SourceIdentityMismatch,
+}
+
+/// Builds the admitted application input from metadata and PCM parsed out of one RIFF resource.
+/// `prepare_selected_job_input` verifies that the selected metadata slices belong to `resource`;
+/// the final digest comparison also binds the parser's PCM extent to that same whole resource.
+pub fn prepare_selected_adm_bwf_input(
+    programme_id: ProgrammeId,
+    job_xml: &[u8],
+    resource: Arc<[u8]>,
+    parsed: &ParsedRiffPcm24<'_>,
+) -> Result<PreparedJobInput, SelectedAdmPreparationError> {
+    let metadata = parsed
+        .selected_adm_payloads()
+        .map_err(SelectedAdmPreparationError::MetadataSelection)?;
+    let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
+    let prepared = prepare_selected_job_input(
+        programme_id,
+        job_xml,
+        wave,
+        parsed.total_samples(),
+        resource,
+        SelectedAdmResourcePayloads::new(metadata.axml(), metadata.chna(), metadata.dbmd()),
+    )
+    .map_err(SelectedAdmPreparationError::PreparedJobInput)?;
+    let resource_bytes = u64::try_from(prepared.resource().len())
+        .map_err(|_| SelectedAdmPreparationError::SourceIdentityMismatch)?;
+    if prepared.resource_identity().input_sha256() != parsed.source_sha256()
+        || prepared.resource_identity().resource_bytes() != resource_bytes
+    {
+        return Err(SelectedAdmPreparationError::SourceIdentityMismatch);
+    }
+    Ok(prepared)
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterSourceCoordinatorError {

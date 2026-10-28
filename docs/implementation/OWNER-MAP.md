@@ -128,6 +128,7 @@
 | F01E/normal-control-snapshot-proposal | F01E | `spatial_control` |
 | F01E/informational-primary-geometry-source-recheck | F01E | `frontend` |
 | F01E/same-attempt-normal-sampler-source-geometry-stage | F01E | `frontend` |
+| F01E/selected-adm-riff-to-prepared-job-input | F01E | `frontend` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

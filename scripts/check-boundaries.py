@@ -3490,6 +3490,10 @@ def check_latest_wash_lineage(root,d):
  continuation=next(item for item in next(e for e in d['functional_entries']if e['functional_id']=='F03W')['direct_slices']if item['slice_id']=='capacity-gated-u04-callback-continuation');continuation_source=(root/'crates/jocforge-domain/src/spatial/production_callback.rs').read_text(encoding='utf-8');continuation_test=(root/'crates/jocforge-domain/src/spatial/production_callback/tests.rs').read_text(encoding='utf-8')
  ck(continuation['implementation_status']=='LOCALLY_VERIFIED_SAME_ATTEMPT_NORMAL_GEOMETRY_CONTINUATION__NUMERIC_PARITY_AND_PARENT_COMMIT_OPEN'and continuation['parameters']['same_attempt_sampler_geometry_contract']['manifest_sha256']==packages['sampler_geometry'][1]and 'pub fn continue_spatial_production_callback_from_normal_stage(' in continuation_source and 'pub struct SpatialProductionNormalCallbackInputs' in continuation_source and 'continue_spatial_production_callback_from_normal_stage(' in continuation_test and 'parent commit' in continuation['scope'].lower(),'F03W continuation consumes the combined F01E controls/geometry stage and retains its parent commit boundary')
 
+def check_selected_adm_riff_preparation(root,d):
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F01E');item=next(s for s in entry['direct_slices']if s['slice_id']=='selected-adm-riff-to-prepared-job-input');source_file='crates/jocforge-cli/src/meter_source_bridge.rs';test_file='crates/jocforge-cli/tests/meter_source_bridge.rs';source=(root/source_file).read_text(encoding='utf-8');test=(root/test_file).read_text(encoding='utf-8');inventory=[{'path':name,'bytes':(root/name).stat().st_size,'sha256':hashlib.sha256((root/name).read_bytes()).hexdigest()}for name in (source_file,test_file)]
+ ck(item['implementation_status']=='LOCALLY_VERIFIED_SAME_RESOURCE_METADATA_PCM_ADMISSION__ENCODER_ENTRY_OPEN'and item['implementation_files']==[source_file]and item['test_modules']==[test_file]and item['implementation_inventory']==[inventory[0]]and item['test_inventory']==[inventory[1]]and 'pub fn prepare_selected_adm_bwf_input(' in source and '.selected_adm_payloads()' in source and 'parsed.source_sha256()' in source and 'selected_adm_riff_preparation_binds_metadata_and_pcm_to_one_resource' in test and 'MetadataPayloadBinding' in test and item['not_run']and 'performs no file I/O' in item['scope'],'selected ADM RIFF preparation keeps metadata, PCM and whole-resource identity tied without claiming file or encoder integration')
+
 def check_f13_measurement_selection(root,d):
  entry=next(e for e in d['functional_entries']if e['functional_id']=='F13');s=next((x for x in entry.get('direct_slices',[])if x['slice_id']=='measurement-result-aggregate-and-id1-integer-projection'),None);ck(s is not None,'F13 internal measurement selection slice exists')
  if s is None:return
@@ -4263,7 +4267,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
     entries = {entry["functional_id"]: entry for entry in d["functional_entries"]}
     expected_slices = {
         "F06": ["standalone-meter-selected-root-and-schedule-stage", "prepared-job-input-domain-identity-projection", "informational-input-cursor-model-owner-key-contract", "informational-kfilter-exponent-state-lineage"],
-        "F01E": ["same-attempt-normal-sampler-source-geometry-stage"],
+        "F01E": ["same-attempt-normal-sampler-source-geometry-stage", "selected-adm-riff-to-prepared-job-input"],
         "F06W": ["sample-block-queue-lifecycle"],
         "F06ND": ["selected-none-drc-source-owner-stage"],
         "F06NR": ["selected-f06nr-same-source-drc-proposal"],
@@ -4491,6 +4495,7 @@ def run(root=ROOT):
  check_f04_diffusion_control_provider_lineage(root,d)
  check_f04_descriptor_map_source_join(root,d)
  check_latest_wash_lineage(root,d)
+ check_selected_adm_riff_preparation(root,d)
  check_f13_measurement_selection(root,d)
  check_joc_synthetic_coordinator(root,d)
  check_integrity_owner_root(root,d)
@@ -4772,6 +4777,7 @@ def run(root=ROOT):
  f14_compaction=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F14')['direct_slices']if s['slice_id']=='authenticated-bit-compaction');verified_scopes+=(f14_compaction['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_BIT_RANGES_AND_TAIL_WORD_COMMIT__PRODUCTION_AU_OPEN');ck(verified_scopes==55,'locally verified scoped-task count including F14.1 bit compaction')
  f14_hmac=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F14')['direct_slices']if s['slice_id']=='hmac-sha256-primitive');verified_scopes+=(f14_hmac['implementation_status']=='LOCALLY_VERIFIED_RFC4231_HMAC_SHA256_PRIMITIVE__PRODUCTION_KEY_OPEN');ck(verified_scopes==56,'locally verified scoped-task count including F14.2 RFC HMAC primitive')
  sampler_geometry=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F01E')['direct_slices']if s['slice_id']=='same-attempt-normal-sampler-source-geometry-stage');verified_scopes+=(sampler_geometry['implementation_status']=='LOCALLY_VERIFIED_SAME_CALLBACK_IDENTITY_NONCOMMITTING_CONTROL_AND_48_SOURCE_GEOMETRY');ck(verified_scopes==57,'locally verified scoped-task count including F01E same-attempt sampler/geometry stage')
+ prepared_riff=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F01E')['direct_slices']if s['slice_id']=='selected-adm-riff-to-prepared-job-input');verified_scopes+=(prepared_riff['implementation_status']=='LOCALLY_VERIFIED_SAME_RESOURCE_METADATA_PCM_ADMISSION__ENCODER_ENTRY_OPEN');ck(verified_scopes==58,'locally verified scoped-task count including selected ADM RIFF preparation')
  dep=d['approved_dependencies']['sha2']
  ck(dep=={'version':'=0.10.9','default_features':False,'archive_sha256':'a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283','license_choice':'Apache-2.0','scope':'reader_eof, F01E, F03, CurrentFeatures P1.4-C, F04 P1.4-D1/P1.4-D2 provider/package-manifest identity SHA-256, F05R56 canonical state/reader/target/receipt digests, and F08 math-generated provider file identity'},'sha2 governance')
  json_dep=d['approved_dependencies']['serde_json']

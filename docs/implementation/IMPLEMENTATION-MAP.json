@@ -1164,6 +1164,74 @@
               "sha256": "ac663d159569c0862903fef3cf8aaff12b550675643712075fd6956ed95ffd48"
             }
           ]
+        },
+        {
+          "slice_id": "selected-adm-riff-to-prepared-job-input",
+          "mapping_status": "MATERIALIZED_DIRECT_ADM_RIFF_TO_PREPARED_JOB_INPUT__FULL_PRODUCT_ENCODE_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_RESOURCE_METADATA_PCM_ADMISSION__ENCODER_ENTRY_OPEN",
+          "scope": "The CLI composition helper consumes one parsed selected-profile RIFF/PCM24 byte allocation, selects its unique AXML/CHNA/DBMD payloads, derives the wave descriptor and actual source extent, and calls application::prepare_selected_job_input. The prepared whole-resource SHA-256 and byte count must match the parsed RIFF identity; metadata payload pointer provenance is independently checked by the application binder. This helper performs no file I/O and does not encode, render, or accept a user programme.",
+          "owner": "frontend",
+          "implementation_requirement": true,
+          "implementation_files": [
+            "crates/jocforge-cli/src/meter_source_bridge.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "AdmSampleCount",
+              "ResourceIdentity"
+            ],
+            "covered_clauses": [
+              "The parsed selected PCM frame count binds the admitted source extent; no callback, AU, drain or publication clock is created."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_SELECTED_38_CHANNEL_PCM24_RIFF_DESCRIPTOR",
+            "provider_files": [],
+            "validation_boundary": "Synthetic one-frame RIFF fixture only; source metadata and PCM belong to the same byte allocation. File selection, real user ADM input and complete encode are not exercised."
+          },
+          "test_modules": [
+            "crates/jocforge-cli/tests/meter_source_bridge.rs"
+          ],
+          "vectors": {
+            "kind": "LOCAL_SELECTED_RIFF_PREPARATION_AND_RESOURCE_SPLIT_REJECTION",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+            ],
+            "case_pointers": [
+              "One synthetic 38-channel/48 kHz/PCM24 RIFF with one PCM frame and selected AXML/CHNA/DBMD is admitted.",
+              "A byte-identical RIFF parsed from a different allocation is rejected by the prepared-resource metadata span binding."
+            ],
+            "expected_outputs_included": false
+          },
+          "error_outcomes": [
+            {
+              "error_code": "ADM_RIFF_METADATA_SELECTION | PREPARED_JOB_INPUT_* | SOURCE_IDENTITY_MISMATCH",
+              "category": "selected input admission",
+              "trigger": "Unique metadata selection fails, metadata is not a subslice of the admitted resource, selected job configuration or graph admission rejects, or the parsed whole-resource digest differs.",
+              "programme_state_after": "No PreparedJobInput is returned; no owner or output is created.",
+              "caller_action": "Reject the input before callback staging; do not substitute metadata from a matching but distinct resource allocation."
+            }
+          ],
+          "not_run": [
+            "Filesystem job/input selection and path resolution.",
+            "A real user ADM callback, complete spatial/meter/codec chain, encoded output, external structure/decode and listening."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
+              "bytes": 9005,
+              "sha256": "ed2ce0479b7fd4e2f5e3314f93007fd6c36e396c74f2a2eba1e4ec0417581d27"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
+              "bytes": 19820,
+              "sha256": "e88ca484b5441dd7abfa0b397ffa5a80108eb154f61974f916709e6414ee9c7e"
+            }
+          ]
         }
       ]
     },
@@ -8829,8 +8897,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
-              "bytes": 7214,
-              "sha256": "bea068488e53d3a154ea8ac9fe024929c7b593c40d55a17db854345f863c0c9f"
+              "bytes": 9005,
+              "sha256": "ed2ce0479b7fd4e2f5e3314f93007fd6c36e396c74f2a2eba1e4ec0417581d27"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
@@ -8878,8 +8946,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
-              "bytes": 18116,
-              "sha256": "3a3726b909ca2ad185096a56b74ee0dcfba2c53161027113d4a4ba4327a9c6c4"
+              "bytes": 19820,
+              "sha256": "e88ca484b5441dd7abfa0b397ffa5a80108eb154f61974f916709e6414ee9c7e"
             }
           ],
           "verification": {

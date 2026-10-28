@@ -2,8 +2,8 @@
 //! Synthetic callback-join coverage only; this is not audio/DSP conformance evidence.
 
 use jocforge::meter_source_bridge::{
-    MeterSourceCoordinatorError, ready_to_finalize, reset_meter_source_and_prepass,
-    stage_meter_source_oar_callback, view_for_source_proposal,
+    MeterSourceCoordinatorError, prepare_selected_adm_bwf_input, ready_to_finalize,
+    reset_meter_source_and_prepass, stage_meter_source_oar_callback, view_for_source_proposal,
 };
 use jocforge_application::{
     PreparedJobInput, SelectedAdmResourcePayloads,
@@ -36,6 +36,54 @@ const DBMD: &[u8] =
     include_bytes!("../../jocforge-domain/tests/fixtures/selected_adm_graph/source_metadata.dbmd");
 const ZERO_METER_FIXTURE: &[u8] =
     include_bytes!("../../jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json");
+
+#[test]
+fn selected_adm_riff_preparation_binds_metadata_and_pcm_to_one_resource() {
+    let (resource, _) = selected_resource();
+    let parsed = parse_selected_riff_pcm24(&resource, None).unwrap();
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let job_xml = vectors["config_cases"][0]["input_xml"]
+        .as_str()
+        .unwrap()
+        .as_bytes();
+
+    let prepared = prepare_selected_adm_bwf_input(
+        ProgrammeId::new("selected-adm-resource-binding").unwrap(),
+        job_xml,
+        Arc::clone(&resource),
+        &parsed,
+    )
+    .unwrap();
+
+    assert_eq!(prepared.configuration().source_samples(), 1);
+    assert_eq!(
+        prepared.resource_identity().resource_bytes(),
+        u64::try_from(resource.len()).unwrap()
+    );
+    assert_eq!(
+        prepared.resource_identity().input_sha256(),
+        parsed.source_sha256()
+    );
+    assert_eq!(prepared.graph().graph().tracks().len(), 38);
+
+    let foreign_resource: Arc<[u8]> = Arc::from(resource.as_ref().to_vec().into_boxed_slice());
+    let foreign_parsed = parse_selected_riff_pcm24(&foreign_resource, None).unwrap();
+    assert_eq!(
+        prepare_selected_adm_bwf_input(
+            ProgrammeId::new("foreign-adm-resource-binding").unwrap(),
+            job_xml,
+            Arc::clone(&resource),
+            &foreign_parsed,
+        )
+        .unwrap_err(),
+        jocforge::meter_source_bridge::SelectedAdmPreparationError::PreparedJobInput(
+            jocforge_application::PreparedJobInputError::MetadataPayloadBinding
+        )
+    );
+}
 
 #[test]
 fn selected_pcm_callback_joins_direct_lfe_and_oar_clock_through_three_drains() {
