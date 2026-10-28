@@ -35,7 +35,7 @@ pub(in crate::spatial) enum DirectLfeError {
 
 impl DirectLfeError {
     #[allow(dead_code)]
-    pub(super) const fn code(self) -> &'static str {
+    pub(in crate::spatial) const fn code(self) -> &'static str {
         match self {
             Self::State => "F04_STATE_ERROR",
             Self::PipelineRetired => "F04_PIPELINE_RETIRED",
@@ -67,7 +67,7 @@ impl DirectLfeInputView {
     #[allow(clippy::too_many_arguments)]
     #[allow(dead_code)]
     pub(in crate::spatial) fn try_from_spatial_control(
-        _authority: SpatialControlLfeIngressAuthority,
+        authority: SpatialControlLfeIngressAuthority,
         programme_id: SourceFlagsProgrammeId,
         attempt: SourceFlagsAttempt,
         transaction_id: CallbackLineageIdentity,
@@ -76,6 +76,33 @@ impl DirectLfeInputView {
         profile_identity: EncodingProfile,
         spatial_control: &SpatialControlMachine,
         route: &ValidatedSemanticRoute,
+        samples: Vec<f32>,
+    ) -> Result<Self, DirectLfeError> {
+        Self::try_from_spatial_control_host(
+            authority,
+            programme_id,
+            attempt,
+            transaction_id,
+            callback_index,
+            phase,
+            profile_identity,
+            spatial_control,
+            route.lfe_host(),
+            samples,
+        )
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub(in crate::spatial) fn try_from_spatial_control_host(
+        _authority: SpatialControlLfeIngressAuthority,
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        transaction_id: CallbackLineageIdentity,
+        callback_index: FrontendCallbackIndex,
+        phase: super::super::post_window_fanout::CallbackPhase,
+        profile_identity: EncodingProfile,
+        spatial_control: &SpatialControlMachine,
+        lfe_host: HostId,
         samples: Vec<f32>,
     ) -> Result<Self, DirectLfeError> {
         if resolve_selected_profile(&profile_identity).is_err()
@@ -106,7 +133,7 @@ impl DirectLfeInputView {
             spatial_control_before_generation: spatial_control.generation(),
             spatial_control_before_digest: spatial_control.digest(),
             spatial_control_provider_lineage: spatial_control.provider_lineage(),
-            lfe_host: route.lfe_host(),
+            lfe_host,
             row_bytes: Arc::from(row_bytes.into_boxed_slice()),
         })
     }
@@ -115,7 +142,7 @@ impl DirectLfeInputView {
 /// Linear substage proposal; the future parent composer owns any whole-root replacement.
 #[must_use]
 #[allow(dead_code)]
-pub(super) struct LfeStageProposal {
+pub(in crate::spatial) struct LfeStageProposal {
     after: LfeDelayRingState,
     type10_row0: Option<Type10LfeRow0Input>,
     lineage: DirectLfeStageLineage,
@@ -238,7 +265,7 @@ impl DirectLfeStageLineage {
 }
 
 #[allow(dead_code)]
-pub(super) fn produce_direct_lfe_stage(
+pub(in crate::spatial) fn produce_direct_lfe_stage(
     spatial_audio: &SpatialAudioMachine,
     spatial_audio_join: &SpatialAudioJoinMetadata,
     spatial_control_join: &SpatialControlJoinMetadata,

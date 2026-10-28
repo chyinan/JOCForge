@@ -27,7 +27,7 @@ const TYPE10_SAMPLE_COUNT: usize = TYPE10_ROW_COUNT * FRAME_SAMPLES;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[allow(dead_code)]
-pub(super) enum Type10AssemblyError {
+pub(in crate::spatial) enum Type10AssemblyError {
     State,
     CallbackOrder,
     Input,
@@ -36,7 +36,7 @@ pub(super) enum Type10AssemblyError {
 
 impl Type10AssemblyError {
     #[allow(dead_code)]
-    pub(super) const fn code(self) -> &'static str {
+    pub(in crate::spatial) const fn code(self) -> &'static str {
         match self {
             Self::State => "F04_STATE_ERROR",
             Self::CallbackOrder => "F04_CALLBACK_ORDER",
@@ -180,7 +180,7 @@ pub(super) enum Type10AssemblyOutcome {
 
 #[must_use]
 #[allow(dead_code)]
-pub(super) struct Type10AssemblyProposal {
+pub(in crate::spatial) struct Type10AssemblyProposal {
     component_after: ComponentAfterState,
     lfe_after: LfeDelayRingState,
     outcome: Type10AssemblyOutcome,
@@ -200,7 +200,7 @@ impl Type10AssemblyProposal {
 }
 
 #[allow(dead_code)]
-pub(super) fn assemble_type10(
+pub(in crate::spatial) fn assemble_type10(
     expected_parent: &SpatialAudioJoinMetadata,
     expected_phase: CallbackPhase,
     component: ComponentStageProposal,

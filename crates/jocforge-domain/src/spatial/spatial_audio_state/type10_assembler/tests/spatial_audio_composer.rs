@@ -21,14 +21,9 @@ use crate::{
     },
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
-        ValidatedWindowQ15Provider,
-        spatial_audio_state::{
-            fitting_mode0::Mode0FittingProviderInput,
-            spatial_audio_composer::{
-                ReaderAttemptBinding, SpatialAudioCallbackOutcome, SpatialAudioJocProviders,
-                stage_spatial_audio_callback,
-            },
-            spatial_audio_receiver::SpatialAudioReceiverProviderInput,
+        SpatialAudioJocProviders, ValidatedWindowQ15Provider,
+        spatial_audio_state::spatial_audio_composer::{
+            ReaderAttemptBinding, SpatialAudioCallbackOutcome, stage_spatial_audio_callback,
         },
         validate_descriptor_mathematical_provider, validate_f04_parameter_package_manifest,
         validate_qmf_mathematical_fft_provider, validate_qmf_receiver_functional_provider,
@@ -58,7 +53,6 @@ const JOC_MATH_BYTES: &[u8] = include_bytes!(
 const READER_ATTEMPT_ID: crate::transaction::AttemptId = crate::transaction::AttemptId::new(7);
 
 struct ValidatedProviders {
-    manifest_sha256: String,
     functional: QmfReceiverFunctionalProvider,
     blend: ValidatedWindowQ15Provider,
     fft: QmfMathematicalFftProvider,
@@ -67,20 +61,7 @@ struct ValidatedProviders {
 
 impl ValidatedProviders {
     fn input(&self) -> SpatialAudioJocProviders<'_> {
-        SpatialAudioJocProviders {
-            receiver: SpatialAudioReceiverProviderInput {
-                functional: Some(&self.functional),
-                blend: Some(&self.blend),
-                fft: Some(&self.fft),
-                descriptor: Some(&self.descriptor),
-                selected_manifest_sha256: Some(&self.manifest_sha256),
-            },
-            fitting: Mode0FittingProviderInput::Ready {
-                functional: &self.functional,
-                fft: &self.fft,
-                descriptor: &self.descriptor,
-            },
-        }
+        SpatialAudioJocProviders::new(&self.functional, &self.blend, &self.fft, &self.descriptor)
     }
 }
 
@@ -120,7 +101,6 @@ fn validated_providers() -> ValidatedProviders {
     )
     .expect("descriptor provider validates");
     ValidatedProviders {
-        manifest_sha256: manifest.manifest_sha256().to_hex(),
         functional,
         blend,
         fft,

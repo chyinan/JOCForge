@@ -22,6 +22,10 @@ use crate::{
     joc::oamd::reader_target::{
         HistoryProducerGeneration, ReaderTargetUpdateReceipt, SELECTED_PROFILE_ID,
     },
+    spatial::{
+        DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
+        ValidatedWindowQ15Provider,
+    },
     spatial::{post_window_fanout::CallbackPhase, source_flags::SourceFlagsAttempt},
     timeline::{FrontendCallbackIndex, ReceiverCallbackCount},
 };
@@ -33,13 +37,13 @@ const TARGET_VALUES: usize = 16 * 6;
 
 /// Explicit local binding between spatial-control and reader attempt values.
 #[derive(Clone, Copy)]
-pub(super) struct ReaderAttemptBinding {
+pub(in crate::spatial) struct ReaderAttemptBinding {
     source_attempt: SourceFlagsAttempt,
     reader_attempt_id: SourceFlagsAttempt,
 }
 
 impl ReaderAttemptBinding {
-    pub(super) fn new(
+    pub(in crate::spatial) fn new(
         source_attempt: SourceFlagsAttempt,
         reader_attempt_id: SourceFlagsAttempt,
     ) -> Result<Self, SpatialAudioCompositionError> {
@@ -53,13 +57,31 @@ impl ReaderAttemptBinding {
     }
 }
 
-pub(super) struct SpatialAudioJocProviders<'a> {
-    pub(super) receiver: SpatialAudioReceiverProviderInput<'a>,
-    pub(super) fitting: Mode0FittingProviderInput<'a>,
+pub struct SpatialAudioJocProviders<'a> {
+    functional: &'a QmfReceiverFunctionalProvider,
+    blend: &'a ValidatedWindowQ15Provider,
+    fft: &'a QmfMathematicalFftProvider,
+    descriptor: &'a DescriptorMathematicalProvider,
+}
+
+impl<'a> SpatialAudioJocProviders<'a> {
+    pub fn new(
+        functional: &'a QmfReceiverFunctionalProvider,
+        blend: &'a ValidatedWindowQ15Provider,
+        fft: &'a QmfMathematicalFftProvider,
+        descriptor: &'a DescriptorMathematicalProvider,
+    ) -> Self {
+        Self {
+            functional,
+            blend,
+            fft,
+            descriptor,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(super) enum SpatialAudioCompositionError {
+pub(in crate::spatial) enum SpatialAudioCompositionError {
     State,
     CallbackOrder,
     Type10Lineage,
@@ -67,10 +89,12 @@ pub(super) enum SpatialAudioCompositionError {
     ProviderMissing,
     Receiver(SpatialAudioReceiverError),
     Fitting(Mode0FittingError),
+    DirectLfe(super::direct_lfe::DirectLfeError),
+    Type10(super::type10_assembler::Type10AssemblyError),
 }
 
 impl SpatialAudioCompositionError {
-    pub(super) const fn code(self) -> &'static str {
+    pub(in crate::spatial) const fn code(self) -> &'static str {
         match self {
             Self::State => "F04_STATE_ERROR",
             Self::CallbackOrder => "F04_CALLBACK_ORDER",
@@ -79,6 +103,8 @@ impl SpatialAudioCompositionError {
             Self::ProviderMissing => "F04_PROVIDER_MISSING",
             Self::Receiver(error) => error.code(),
             Self::Fitting(error) => error.code(),
+            Self::DirectLfe(error) => error.code(),
+            Self::Type10(error) => error.code(),
         }
     }
 }
@@ -90,19 +116,21 @@ impl From<SpatialAudioError> for SpatialAudioCompositionError {
 }
 
 #[must_use]
-pub(super) enum SpatialAudioCallbackOutcome {
+pub enum SpatialAudioCallbackOutcome {
     Priming,
     Joc(Box<SelectedJocQmfProjection>),
 }
 
 #[must_use]
-pub(super) struct SpatialAudioCallbackProposal {
+pub(in crate::spatial) struct SpatialAudioCallbackProposal {
     after: SpatialAudioAfterProposal,
     outcome: SpatialAudioCallbackOutcome,
 }
 
 impl SpatialAudioCallbackProposal {
-    pub(super) fn into_parts(self) -> (SpatialAudioAfterProposal, SpatialAudioCallbackOutcome) {
+    pub(in crate::spatial) fn into_parts(
+        self,
+    ) -> (SpatialAudioAfterProposal, SpatialAudioCallbackOutcome) {
         (self.after, self.outcome)
     }
 }
@@ -111,7 +139,7 @@ impl SpatialAudioCallbackProposal {
 /// receiver and fitting stages at most once, then materializes one full-root
 /// after proposal. This function has no commit authority.
 #[allow(clippy::too_many_arguments)]
-pub(super) fn stage_spatial_audio_callback(
+pub(in crate::spatial) fn stage_spatial_audio_callback(
     machine: &SpatialAudioMachine,
     parent: SpatialAudioJoinMetadata,
     phase: CallbackPhase,
@@ -150,6 +178,12 @@ pub(super) fn stage_spatial_audio_callback(
             let attempt_binding =
                 attempt_binding.ok_or(SpatialAudioCompositionError::TargetLineage)?;
             let providers = providers.ok_or(SpatialAudioCompositionError::ProviderMissing)?;
+            let selected_manifest_sha256 = providers
+                .functional
+                .receipt()
+                .validated_manifest_lineage()
+                .manifest_sha256()
+                .to_hex();
             validate_ready_type10(&parent, &packet, &receipt, receiver_before_generation)?;
             validate_target_receipt(
                 &parent,
@@ -204,7 +238,13 @@ pub(super) fn stage_spatial_audio_callback(
                     },
                     &target_values,
                 )),
-                providers: providers.receiver,
+                providers: SpatialAudioReceiverProviderInput {
+                    functional: Some(providers.functional),
+                    blend: Some(providers.blend),
+                    fft: Some(providers.fft),
+                    descriptor: Some(providers.descriptor),
+                    selected_manifest_sha256: Some(&selected_manifest_sha256),
+                },
             })
             .map_err(SpatialAudioCompositionError::Receiver)?;
             let fitting = stage_mode0_fitting_from_receiver(
@@ -212,7 +252,11 @@ pub(super) fn stage_spatial_audio_callback(
                 &machine.committed.root.fitting_qmf_state,
                 &receiver_before,
                 &receiver,
-                providers.fitting,
+                Mode0FittingProviderInput::Ready {
+                    functional: providers.functional,
+                    fft: providers.fft,
+                    descriptor: providers.descriptor,
+                },
             )
             .map_err(SpatialAudioCompositionError::Fitting)?;
             let selected = assemble_selected_joc_qmf(receiver, fitting)

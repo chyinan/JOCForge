@@ -739,6 +739,10 @@ impl SpatialAudioAfterProposal {
         Self { state, join }
     }
 
+    pub const fn after_state(&self) -> &SpatialAudioState {
+        &self.state
+    }
+
     fn join_metadata(&self) -> &SpatialAudioJoinMetadata {
         &self.join
     }

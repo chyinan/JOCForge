@@ -1164,6 +1164,10 @@ impl SpatialControlMachine {
         SpatialControlRenderAuthority::from_spatial_control_renderer()
     }
 
+    pub(super) fn lfe_ingress_authority() -> SpatialControlLfeIngressAuthority {
+        SpatialControlLfeIngressAuthority::for_f03w_lfe_ingress()
+    }
+
     /// Read-only guard for reusing a token under the machine's exact six-dimensional identity.
     pub fn validate_profile_identity(
         &self,

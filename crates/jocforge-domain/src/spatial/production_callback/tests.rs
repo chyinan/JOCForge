@@ -266,6 +266,7 @@ fn run_callback(
             p15_geometry: &p15_geometry,
             spatial_control: &owners.spatial_control,
             spatial_audio: &owners.spatial_audio,
+            spatial_audio_joc_providers: None,
             window: &owners.window,
             parameters: &owners.parameters,
         },
@@ -312,6 +313,10 @@ fn assert_stages_share_one_callback(proposal: &SpatialProductionCallbackProposal
         after_state.reader_targets_callback_index(),
         FrontendCallbackIndex::new(callback.value() + 1)
     );
+    assert!(matches!(
+        proposal.spatial_audio_outcome(),
+        SpatialAudioCallbackOutcome::Priming
+    ));
     assert!(!after_state.source_cache_is_cold());
     assert_eq!(after_state.matrix_f32_bits().len(), 15 * 48);
     assert_eq!(
@@ -352,7 +357,7 @@ fn empty_selection_keeps_empty_c_d_and_stages_all_pending_owners_once() {
         proposal.component_rows().callback_index(),
         FrontendCallbackIndex::new(0)
     );
-    assert_eq!(proposal.component.blocks_processed(), 24);
+    assert_eq!(proposal.component_blocks_processed(), 24);
     assert!(
         proposal
             .spatial_control_after_proposal()
@@ -404,7 +409,7 @@ fn all_zero_active_c_keeps_d_and_advances_component_without_committing_owners() 
             .iter()
             .all(|word| *word == 0)
     );
-    assert_eq!(proposal.component.blocks_processed(), 24);
+    assert_eq!(proposal.component_blocks_processed(), 24);
     assert_eq!(owners.spatial_control.digest(), before_control);
     assert_eq!(owners.spatial_audio.digest(), before_audio);
     assert_eq!(
@@ -441,7 +446,7 @@ fn capacity_reached_runs_u04_and_preserves_selected_identity_through_installatio
         selector.selected_attributes()
     );
     assert_eq!(proposal.installation().next_state().active_flags, [1; 15]);
-    assert_eq!(proposal.component.blocks_processed(), 24);
+    assert_eq!(proposal.component_blocks_processed(), 24);
     assert_eq!(owners.spatial_control.digest(), before_control);
     assert_eq!(owners.spatial_audio.digest(), before_audio);
     assert_eq!(

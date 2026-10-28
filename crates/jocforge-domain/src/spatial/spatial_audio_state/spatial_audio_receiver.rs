@@ -64,7 +64,7 @@ const PRECONDITION_SCALE_BITS: u32 = 0x3e80_0000; // R32(0.25)
 const POST_S09_SCALE_BITS: u32 = 0x3f00_0000; // R32(0.5)
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(super) enum SpatialAudioReceiverError {
+pub(in crate::spatial) enum SpatialAudioReceiverError {
     ProviderMissing,
     ProviderIdentity,
     LineageTargetUpdates,
@@ -77,7 +77,7 @@ pub(super) enum SpatialAudioReceiverError {
 }
 
 impl SpatialAudioReceiverError {
-    pub(super) const fn code(self) -> &'static str {
+    pub(in crate::spatial) const fn code(self) -> &'static str {
         match self {
             Self::ProviderMissing => "F04R_PROVIDER_MISSING",
             Self::ProviderIdentity => "F04R_PROVIDER_IDENTITY",

@@ -151,6 +151,7 @@ def check_spatial_audio_staging_implementation(root,d,programme,e1):
   {'path':'crates/jocforge-domain/src/timeline/mod.rs','bytes':586,'sha256':'7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2'},
  ]
  evolution=e1.get('inventory_evolution',{})
+ local_production=evolution.get('local_production_extension',{})
  expected_amendments=[
   {'package_id':'SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1','manifest_sha256':'915af5789ae57b000d61c12eddd768953d55fe9b0356b0180044f4eedd23aa17','payload_path':'outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1/AMENDMENT.json','payload_sha256':'1f03880ab4531b766fc6d99cec36129ced19dae0c10e7e322496f0d27d8f5856'},
   {'package_id':'IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1','manifest_sha256':'8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991','payload_path':'outputs/IMPLEMENTER_SUPPLEMENTS/IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1/AMENDMENT.json','payload_sha256':'b1b7b84d9d04b5572d8c5fb159d66e1e466b710b88972c8b16cbaef843776ed8'},
@@ -176,11 +177,19 @@ def check_spatial_audio_staging_implementation(root,d,programme,e1):
    exact=amendment.get('exact_current_file',{})
    history=amendment.get('historical_inventory',{})
    ck(exact==base_record and history.get('bytes')==historical_record['bytes']and history.get('sha256')==historical_record['sha256'],'P1.3-E1 Wash module amendment binds the pre-extension module')
-  current_bytes=(root/current_record['path']).read_bytes()
+  frozen_result=subprocess.run(['git','show',f"{local_production['base_commit']}:{current_record['path']}"],cwd=root,capture_output=True)
+  current_bytes=frozen_result.stdout
   matches=lambda data:len(data)==current_record['bytes']and hashlib.sha256(data).hexdigest()==current_record['sha256']
-  ck(matches(current_bytes),'P1.3-E1 current implementation identity '+current_record['path'])
+  ck(frozen_result.returncode==0 and matches(current_bytes),'P1.3-E1 frozen current implementation identity '+current_record['path'])
   mutated=bytearray(current_bytes);mutated[0]^=1
   ck(not matches(bytes(mutated)),'P1.3-E1 current source mutation rejection '+current_record['path'])
+ ck(local_production.get('status')=='LOCALLY_VERIFIED_F04C_G0_PENDING_ROOT__NO_AU'and local_production.get('base_commit')=='ea3aaf432ca083e09abf0bdd8bea0858af2c1756','P1.3-E1 local production extension identity')
+ ck([record.get('path')for record in local_production.get('files',[])]==['crates/jocforge-domain/src/spatial/spatial_audio_state.rs','crates/jocforge-domain/src/spatial/mod.rs','crates/jocforge-domain/src/spatial/spatial_control.rs'],'P1.3-E1 local production extension file scope')
+ for record in local_production.get('files',[]):
+  baseline=subprocess.run(['git','show',f"{local_production['base_commit']}:{record['path']}"],cwd=root,capture_output=True)
+  before=record.get('before',{});after=record.get('after',{});working=(root/record['path']).read_bytes()
+  ck(baseline.returncode==0 and len(baseline.stdout)==before.get('bytes')and hashlib.sha256(baseline.stdout).hexdigest()==before.get('sha256'),'P1.3-E1 local production extension base '+record['path'])
+  ck(len(working)==after.get('bytes')and hashlib.sha256(working).hexdigest()==after.get('sha256'),'P1.3-E1 local production extension current '+record['path'])
  for base_record in base_current:
   base_result=subprocess.run(['git','show',f"{extension['base_commit']}:{base_record['path']}"],cwd=root,capture_output=True)
   ck(base_result.returncode==0 and len(base_result.stdout)==base_record['bytes']and hashlib.sha256(base_result.stdout).hexdigest()==base_record['sha256'],'P1.3-E1 local extension base commit identity '+base_record['path'])
@@ -188,7 +197,12 @@ def check_spatial_audio_staging_implementation(root,d,programme,e1):
   inventory=e1[key]
   ck([entry['path']for entry in inventory]==expected_paths,'P1.3-E1 exact '+key+' paths')
   for entry in inventory:
-   data=(root/entry['path']).read_bytes()
+   if key=='implementation_inventory':
+    frozen=subprocess.run(['git','show',f"{local_production['base_commit']}:{entry['path']}"],cwd=root,capture_output=True)
+    ck(frozen.returncode==0,'P1.3-E1 frozen implementation inventory source '+entry['path'])
+    data=frozen.stdout
+   else:
+    data=(root/entry['path']).read_bytes()
    ck(len(data)==entry['bytes']and hashlib.sha256(data).hexdigest()==entry['sha256'],'P1.3-E1 '+key+' identity '+entry['path'])
  state_path=root/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs';state_source=state_path.read_text(encoding='utf-8');state_code=rust_code_without_comments(state_source)
  required_types={'SpatialAudioState','SpatialAudioMachine','SpatialAudioAfterProposal','SpatialAudioPrepared','SpatialAudioStaged','SpatialAudioJoinMetadata','SpatialAudioDigest','SpatialAudioError','SpatialAudioOwnerStateReference'}
@@ -225,15 +239,9 @@ def check_source_inventory_evolution(root,d):
   {'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','bytes':46100,'sha256':'6eb9640e126dd8e6c7e9bbb69782d2901fb38c79343f48089bea2d7b7b227fcc'},
   {'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs','bytes':57070,'sha256':'c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53'},
  ]
- current=[
-  {'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':55012,'sha256':'037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075'},
-  {'path':'crates/jocforge-domain/src/spatial/mod.rs','bytes':3333,'sha256':'779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c'},
-  {'path':'crates/jocforge-domain/src/spatial/spatial_control.rs','bytes':47309,'sha256':'fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2'},
-  {'path':'crates/jocforge-domain/src/transaction/mod.rs','bytes':14560,'sha256':'51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae'},
-  {'path':'crates/jocforge-domain/src/spatial/source_flags.rs','bytes':61230,'sha256':'55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348'},
-  {'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','bytes':48742,'sha256':'9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b'},
-  {'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs','bytes':61890,'sha256':'9275736d43853f6b137abdeeda5ae4aa4530acda241eacad02dcd28f22f7d555'},
- ]
+ current=record.get('current_source_inventory',[])
+ expected_current_paths=['crates/jocforge-domain/src/spatial/spatial_audio_state.rs','crates/jocforge-domain/src/spatial/mod.rs','crates/jocforge-domain/src/spatial/spatial_control.rs','crates/jocforge-domain/src/transaction/mod.rs','crates/jocforge-domain/src/spatial/source_flags.rs','crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs']
+ ck([item['path']for item in current]==expected_current_paths,'current source inventory path set')
  expected_amendments=[
   {'package_id':'SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1','manifest_sha256':'915af5789ae57b000d61c12eddd768953d55fe9b0356b0180044f4eedd23aa17'},
   {'package_id':'IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1','manifest_sha256':'8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991'},
@@ -1994,7 +2002,9 @@ def check_direct_lfe_implementation(root,task,implementation_files,test_files,fi
  ck(direct_source.startswith('// pattern: Functional Core')and'pub(crate) mod direct_lfe;'in state_code,'Direct-LFE module is classified and owned by spatial_audio_state')
  ck('pub(in crate::spatial) struct DirectLfeInputView' in direct_code and 'pub(in crate::spatial) fn try_from_spatial_control(' in direct_code and 'SpatialControlLfeIngressAuthority' in direct_code and '&ValidatedSemanticRoute' in direct_code and 'route.lfe_host()' in direct_code,'Direct-LFE input constructor is authority/route-bound and uses the validated semantic host')
  constructor_start=direct_code.index('pub(in crate::spatial) fn try_from_spatial_control(');constructor_end=direct_code.index(') -> Result<Self, DirectLfeError>',constructor_start);constructor=direct_code[constructor_start:constructor_end]
- ck('_authority: SpatialControlLfeIngressAuthority' in constructor,'Direct-LFE input view consumes the spatial_control-only authority token')
+ helper_start=direct_code.index('pub(in crate::spatial) fn try_from_spatial_control_host(');helper_end=direct_code.index(') -> Result<Self, DirectLfeError>',helper_start);helper=direct_code[helper_start:helper_end]
+ constructor_body=direct_code[constructor_end:helper_start]
+ ck('authority: SpatialControlLfeIngressAuthority' in constructor and 'Self::try_from_spatial_control_host(' in constructor_body and '            authority,' in constructor_body and '_authority: SpatialControlLfeIngressAuthority' in helper,'Direct-LFE input view forwards and consumes the spatial_control-only authority token')
  input_fields=re.search(r'pub\(in crate::spatial\) struct DirectLfeInputView\s*\{([^}]*)\}',direct_code,re.S)
  ck(input_fields is not None and re.search(r'(?m)^\s*pub(?:\s*\([^)]*\))?\s+\w+\s*:',input_fields.group(1))is None,'Direct-LFE input lineage and row fields remain private')
  linear_names=('DirectLfeInputView','LfeStageProposal')
@@ -2002,7 +2012,7 @@ def check_direct_lfe_implementation(root,task,implementation_files,test_files,fi
  ck(not re.search(r'\bpub\s+fn\s+(?:from_raw|new|default|try_from_spatial_control)\s*\(',direct_code),'Direct-LFE has no public raw/default ingress constructor')
  ck('FiniteF32::new(sample).map_err(|_| DirectLfeError::Input)?' in direct_code and 'samples.len() != LFE_FRAME_SAMPLES' in direct_code and 'bytes.len() == LFE_ROW_BYTES' in direct_code and '.is_finite()' in direct_code,'Direct-LFE ingress enforces exact finite F32 row shape')
  ck('DirectLfeError' in direct_code and all(f'"F04_{code}"' in direct_source for code in ('STATE_ERROR','PIPELINE_RETIRED','CALLBACK_ORDER','INPUT_ERROR','PROFILE_UNSUPPORTED')),'Direct-LFE errors use only the mapped local F04 outcome set')
- stage_start=direct_code.index('pub(super) fn produce_direct_lfe_stage(');stage_end=direct_code.index('\nfn stage_lfe_ring_transition(',stage_start);stage=direct_code[stage_start:stage_end]
+ stage_start=direct_code.index('pub(in crate::spatial) fn produce_direct_lfe_stage(');stage_end=direct_code.index('\nfn stage_lfe_ring_transition(',stage_start);stage=direct_code[stage_start:stage_end]
  ordered=['if before.retired','resolve_selected_profile(&candidate)','spatial_audio_join.callback_index() != callback_index','input.phase != expected_phase','spatial_audio_join.before_generation() != spatial_audio.generation()','spatial_audio_join.before_digest() != spatial_audio.digest()','validate_lfe_ring_state(&before.lfe_state, callback_index)?','input.programme_id != *spatial_audio_join.programme_id()','stage_lfe_ring_transition(']
  ck(all(term in stage for term in ordered)and[stage.index(term)for term in ordered]==sorted(stage.index(term)for term in ordered),'Direct-LFE preflight error priority is retired/profile/callback/state/lineage before transition')
  lineage_terms=['input.attempt != spatial_audio_join.attempt()','input.transaction_id != *spatial_audio_join.transaction_id()','input.transaction_id != *spatial_control_join.transaction_id()','input.spatial_control_provider_lineage != spatial_control.provider_lineage()','spatial_control_join.provider_lineage() != spatial_control.provider_lineage()']
@@ -2387,7 +2397,7 @@ def check_descriptor_control_mapping(root,d):
 
 def check_descriptor_control_implementation(root,task):
  status='LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN'
- expected_impl=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','bytes':22467,'sha256':'aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce'},{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':55012,'sha256':'037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075'}]
+ expected_impl=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','bytes':22467,'sha256':'aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce'},{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':55099,'sha256':'eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84'}]
  historical_impl=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','bytes':22467,'sha256':'aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce'},{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':37303,'sha256':'ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b'}]
  expected_tests=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','bytes':15592,'sha256':'a82e8a8bf747f209e6dbbf4beb05e7e44c85e8ec2a5e5cdc1ab668615ba80a40'}]
  expected_fixtures=[{'path':'crates/jocforge-domain/tests/fixtures/descriptor_control/input-vectors.json','bytes':8878,'sha256':'c622899783197a953fb6c0bcd262b0e7b1a110d605e9301e27782e44cb247528'},{'path':'crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json','bytes':3705450,'sha256':'390cf469a1dde8a4fde9c79de2238f414ea041d6b64630cb669ca4ab26205ad0'}]
@@ -2479,7 +2489,7 @@ def check_type10_assembly_implementation(root,task,implementation_files,test_fil
  module_source=(root/implementation_files[0]).read_text(encoding='utf-8');module_code=rust_code_without_comments(module_source).split('#[cfg(test)]',1)[0]
  state_code=rust_code_without_comments((root/implementation_files[1]).read_text(encoding='utf-8'));component_source=(root/implementation_files[2]).read_text(encoding='utf-8');component_code=rust_code_without_comments(component_source);direct_source=(root/implementation_files[3]).read_text(encoding='utf-8');control_source=(root/implementation_files[4]).read_text(encoding='utf-8');tests_source=(root/test_files[0]).read_text(encoding='utf-8');tests_code=rust_code_without_comments(tests_source)
  ck(module_source.startswith('// pattern: Functional Core')and'pub(crate) mod type10_assembler;'in state_code and '#[cfg(test)]\nmod tests;'in module_source,'Type10 assembly module is classified and locally owns its test module')
- required=('pub(super) fn assemble_type10','pub(super) struct Type10Packet','pub(super) struct Type10AssemblyReceipt','pub(super) struct Type10AssemblyProposal','enum Type10AssemblyOutcome','Arc<[FiniteF32]>','.checked_sub(2)')
+ required=('pub(in crate::spatial) fn assemble_type10','pub(super) struct Type10Packet','pub(super) struct Type10AssemblyReceipt','pub(in crate::spatial) struct Type10AssemblyProposal','enum Type10AssemblyOutcome','Arc<[FiniteF32]>','.checked_sub(2)')
  ck(all(term in module_code for term in required),'Type10 assembly types and scoped API exist')
  receipt=re.search(r'pub\(super\) struct Type10AssemblyReceipt\s*\{([^}]*)\}',module_code,re.S);outcome=re.search(r'enum Type10AssemblyOutcome\s*\{([\s\S]*?)^\}',module_code,re.M)
  receipt_field_names=[] if receipt is None else re.findall(r'(?m)^\s*(?:pub(?:\([^)]*\))?\s+)?([A-Za-z_]\w*)\s*:',receipt.group(1))
@@ -2494,7 +2504,7 @@ def check_type10_assembly_implementation(root,task,implementation_files,test_fil
  ck('const COMPONENT_ROW_COUNT: usize = 15;' in module_code and 'const TYPE10_ROW_COUNT: usize = 16;' in module_code and 'const FRAME_SAMPLES: usize = 1536;' in module_code and 'const TYPE10_SAMPLE_COUNT: usize = TYPE10_ROW_COUNT * FRAME_SAMPLES;' in module_code,'Type10 fixed selected-profile row geometry')
  ck('pub(super) const fn shape(&self) -> [usize; 2]' in module_code and 'self.shape' in module_code and 'self.payload.len() / FRAME_SAMPLES' in module_code,'Type10 packet and receipt expose read-only fixed shape')
  order=['resolve_selected_profile','component_lineage.callback_index()','spatial_audio_before_generation()','component_lfe_same_parent(','validate_lfe_ring_state(','validate_row0_ring_origin(','component_output.len()','payload.extend(component_output.into_vec())']
- body_start=module_code.index('pub(super) fn assemble_type10(');body_end=module_code.index('\n}',body_start);body=module_code[body_start:body_end]
+ body_start=module_code.index('pub(in crate::spatial) fn assemble_type10(');body_end=module_code.index('\n}',body_start);body=module_code[body_start:body_end]
  ck(all(term in body for term in order)and[body.index(term)for term in order]==sorted(body.index(term)for term in order),'Type10 validates phase/profile/parent/provider lineage before origins and payload assembly')
  ck('resolve_selected_profile(&expected_parent.profile_identity()).is_err()' in body and 'component_lineage.profile_identity() != expected_parent.profile_identity()' in body and 'lfe_lineage.profile_identity() != expected_parent.profile_identity()' in body,'Type10 rejects unsupported and mismatched profiles before assembly')
  lineage_start=module_code.index('fn component_lfe_same_parent(');lineage_end=module_code.index('\n}',lineage_start);lineage=module_code[lineage_start:lineage_end]
@@ -2524,7 +2534,7 @@ def check_component_stage_mapping(root,d):
  ck(p['programme_root']=='spatial_audio' and p['scope']=='Consume an opaque future spatial_control-owned input packet and produce only a complete component-stage proposal: matrix, overlap/ring, shared parameter transition, component filter history, callback-local component output, and local receipt; no commit, fatal authority, upstream producer, LFE, receiver/QMF, or parent transaction','P1.3-E2 exact single-owner consumer scope')
  for functional_id in ('F04','F04A','F04P','F04PG','F04C'):
   entry=next(x for x in d['functional_entries']if x['functional_id']==functional_id)
-  expected_status='LOCALLY_VERIFIED_G0_G1_PRIMING_AND_G2_WHOLE_ROOT_J05_PROPOSAL__PARENT_INSTALL_NOT_RUN'if functional_id=='F04C'else'DEFERRED_DETAILED_MAPPING'
+  expected_status='LOCALLY_VERIFIED_SYNTHETIC_G0_G1_G2_AND_REAL_AUTHORIZED_G0_ROOT_PROPOSAL__PARENT_INSTALL_NOT_RUN'if functional_id=='F04C'else'DEFERRED_DETAILED_MAPPING'
   ck(entry['inventory_status']=='INVENTORIED' and entry['implementation_status']==expected_status,'P1.3-E2 scope stays distinct from current global '+functional_id+' status')
  manifest_bytes=(PKG/'MANIFEST.json').read_bytes();manifest_sha='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a'
  ck(p['approved_package_manifest_sha256']==manifest_sha and len(manifest_bytes)==76302 and hashlib.sha256(manifest_bytes).hexdigest()==manifest_sha,'P1.3-E2 approved package manifest identity')
@@ -4550,9 +4560,9 @@ def run(root=ROOT):
    ck(all((PKG/path).is_file()for path in package_paths),'F04R approved-package providers and historical vectors exist')
   elif e['functional_id']=='F04C':
    direct=e.get('direct_slices',[])
-   ck(e['implementation_status']=='LOCALLY_VERIFIED_G0_G1_PRIMING_AND_G2_WHOLE_ROOT_J05_PROPOSAL__PARENT_INSTALL_NOT_RUN'and len(direct)==1,'F04C whole-root J05 composer is one bounded direct slice')
+   ck(e['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_G0_G1_G2_AND_REAL_AUTHORIZED_G0_ROOT_PROPOSAL__PARENT_INSTALL_NOT_RUN'and len(direct)==1,'F04C whole-root J05 composer is one bounded direct slice')
    if direct:
-    s=direct[0];ck(s.get('slice_id')=='whole-spatial-audio-j05-composer'and s.get('implementation_status')=='LOCALLY_VERIFIED_CONTINUOUS_G0_G1_G2_ROOT_AND_J05_PROPOSALS__PARENT_INSTALL_NOT_RUN'and all((root/path).is_file()for path in s.get('implementation_files',[])+s.get('test_modules',[])),'F04C composer files and status')
+    s=direct[0];ck(s.get('slice_id')=='whole-spatial-audio-j05-composer'and s.get('implementation_status')=='LOCALLY_VERIFIED_SYNTHETIC_G0_G1_G2_AND_REAL_AUTHORIZED_G0_ROOT_PROPOSAL__PARENT_INSTALL_NOT_RUN'and all((root/path).is_file()for path in s.get('implementation_files',[])+s.get('test_modules',[])),'F04C composer files and status')
   elif e['functional_id']=='F05JL':
    ck(e['implementation_status']=='LOCALLY_VERIFIED_SELECTED_FIT_DISPATCH_PAYLOAD_PROPOSAL__PROGRAMME_ROOT_INSTALL_NOT_RUN'and len(e.get('direct_slices',[]))==2,'F05JL production component and synthetic seam remain mapped')
   elif e['functional_id']=='F03G':

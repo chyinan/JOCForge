@@ -56,7 +56,7 @@ const DESCRIPTOR_PROVIDER_SHA256: &str =
     "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(super) enum Mode0FittingError {
+pub(in crate::spatial) enum Mode0FittingError {
     ReceiverParameterUnavailable,
     ReceiverParameterInvalid,
     Lineage,
@@ -69,7 +69,7 @@ pub(super) enum Mode0FittingError {
 }
 
 impl Mode0FittingError {
-    pub(super) const fn code(self) -> &'static str {
+    pub(in crate::spatial) const fn code(self) -> &'static str {
         match self {
             Self::ReceiverParameterUnavailable => "RECEIVER_PARAMETER_UNAVAILABLE",
             Self::ReceiverParameterInvalid => "RECEIVER_PARAMETER_INVALID",

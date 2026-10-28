@@ -64,6 +64,9 @@ pub use qmf_receiver_functional_provider::{
     validate_qmf_receiver_functional_provider,
 };
 pub use source_flags::SourceFlagsPacket;
+pub use spatial_audio_state::spatial_audio_composer::{
+    SpatialAudioCallbackOutcome, SpatialAudioJocProviders,
+};
 pub use spatial_audio_state::{
     ComponentBeforeOverlapRows, ComponentStageError, MeterComponentOutputRows,
     MeterComponentStagePreview, MeterComponentStageProposal, SpatialAudioAfterProposal,

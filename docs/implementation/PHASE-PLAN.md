@@ -1572,14 +1572,14 @@
     ],
     "implementation_inventory": [
       {
-        "bytes": 47309,
+        "bytes": 47463,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2"
+        "sha256": "ca200e1f8aebfd23cc1e4082ffec35f15f73696810cf9ee19d81598cced16e85"
       },
       {
-        "bytes": 28563,
+        "bytes": 32121,
         "path": "crates/jocforge-domain/src/spatial/production_callback.rs",
-        "sha256": "90949f7bbd331b2c80af6b2207118fb1cbfd547255ca1a6941d6b20da220c20a"
+        "sha256": "d577291413dcbc065f2ba7406430580e4819ee57d84b1662456fa652e69c04b9"
       },
       {
         "bytes": 12028,
@@ -1607,9 +1607,9 @@
         "sha256": "613f5ff545544d87a89b9395d232d9ceb68aa5934a99dca0d062d1d0af320c9e"
       },
       {
-        "bytes": 3333,
+        "bytes": 3450,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+        "sha256": "8e482a9739c2a9064b8047de74178344bd656b9d5650f389d3fa460ba8d04902"
       }
     ],
     "implementation_status": "LOCALLY_VERIFIED_SELECTED_NORMAL_AFTER_ROOT_STAGING__PARENT_COMMIT_NOT_RUN",
@@ -1748,9 +1748,9 @@
     },
     "test_inventory": [
       {
-        "bytes": 18544,
+        "bytes": 18708,
         "path": "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
-        "sha256": "cf1d815a628ae1891911b624ddde26ebda59e973d5ec818c8dcfce7e9f77c2a7"
+        "sha256": "e5c626ac12017d5e314fe21942e1bd78beb18a67f200889478cbef52c4d21ff4"
       },
       {
         "bytes": 10059,
@@ -1758,14 +1758,14 @@
         "sha256": "15fe37d03b5634768c17ecb5e174978a3e2b947572995c3a19ed978a3316de65"
       },
       {
-        "bytes": 18664,
+        "bytes": 19144,
         "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-        "sha256": "9cd4471d3ce4a465566e7395444ae99d7844fef55133c0cdb0d67daa75095381"
+        "sha256": "ecfca7de381fb904e23d56cd59989c496efd3bcb9d988affc753149a9ae97122"
       },
       {
-        "bytes": 47309,
+        "bytes": 47463,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2"
+        "sha256": "ca200e1f8aebfd23cc1e4082ffec35f15f73696810cf9ee19d81598cced16e85"
       }
     ],
     "test_modules": [
@@ -2679,19 +2679,19 @@
   "classification": "CURRENT_SOURCE_INVENTORY_WITH_PRESERVED_HISTORICAL_SNAPSHOTS",
   "current_source_inventory": [
     {
-      "bytes": 55012,
+      "bytes": 55099,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+      "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
     },
     {
-      "bytes": 3333,
+      "bytes": 3450,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+      "sha256": "8e482a9739c2a9064b8047de74178344bd656b9d5650f389d3fa460ba8d04902"
     },
     {
-      "bytes": 47309,
+      "bytes": 47463,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2"
+      "sha256": "ca200e1f8aebfd23cc1e4082ffec35f15f73696810cf9ee19d81598cced16e85"
     },
     {
       "bytes": 14560,
@@ -2915,6 +2915,50 @@
       "serialization_changed": false,
       "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
       "status": "LOCALLY_VERIFIED_READ_ONLY_OWNER_STATE_REFERENCE_VIEW"
+    },
+    "local_production_extension": {
+      "base_commit": "ea3aaf432ca083e09abf0bdd8bea0858af2c1756",
+      "files": [
+        {
+          "after": {
+            "bytes": 55099,
+            "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+            "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
+          },
+          "before": {
+            "bytes": 55012,
+            "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+          },
+          "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+        },
+        {
+          "after": {
+            "bytes": 3450,
+            "path": "crates/jocforge-domain/src/spatial/mod.rs",
+            "sha256": "8e482a9739c2a9064b8047de74178344bd656b9d5650f389d3fa460ba8d04902"
+          },
+          "before": {
+            "bytes": 3333,
+            "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+          },
+          "path": "crates/jocforge-domain/src/spatial/mod.rs"
+        },
+        {
+          "after": {
+            "bytes": 47463,
+            "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+            "sha256": "ca200e1f8aebfd23cc1e4082ffec35f15f73696810cf9ee19d81598cced16e85"
+          },
+          "before": {
+            "bytes": 47309,
+            "sha256": "fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2"
+          },
+          "path": "crates/jocforge-domain/src/spatial/spatial_control.rs"
+        }
+      ],
+      "runtime_evidence": "One explicitly authorized real-WAV g0 integration test passed and staged a pending after-root. No parent commit, AU, encoded file, or output acceptance was produced.",
+      "scope": "Local F04C production callback hookup from spatial_control PCM/component proposal through direct-LFE, Type10, and complete spatial_audio after-root. Wash packages and prior source identities remain unchanged.",
+      "status": "LOCALLY_VERIFIED_F04C_G0_PENDING_ROOT__NO_AU"
     },
     "verification": {
       "boundary_check": "PASS",
@@ -4517,9 +4561,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 3333,
+      "bytes": 3450,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+      "sha256": "8e482a9739c2a9064b8047de74178344bd656b9d5650f389d3fa460ba8d04902"
     }
   ],
   "implementation_prohibitions": [
@@ -4921,9 +4965,9 @@
       "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
-      "bytes": 3333,
+      "bytes": 3450,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+      "sha256": "8e482a9739c2a9064b8047de74178344bd656b9d5650f389d3fa460ba8d04902"
     }
   ],
   "implementation_prohibitions": [
@@ -5346,9 +5390,9 @@
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 3333,
+      "bytes": 3450,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+      "sha256": "8e482a9739c2a9064b8047de74178344bd656b9d5650f389d3fa460ba8d04902"
     }
   ],
   "implementation_prohibitions": [
@@ -5727,9 +5771,9 @@
       "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
     },
     {
-      "bytes": 3333,
+      "bytes": 3450,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+      "sha256": "8e482a9739c2a9064b8047de74178344bd656b9d5650f389d3fa460ba8d04902"
     }
   ],
   "implementation_prohibitions": [
@@ -6152,9 +6196,9 @@
         "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"
       },
       {
-        "bytes": 55012,
+        "bytes": 55099,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+        "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
       }
     ],
     "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
@@ -6638,9 +6682,9 @@
       "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
     },
     {
-      "bytes": 55012,
+      "bytes": 55099,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+      "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
     }
   ],
   "implementation_prohibitions": [
@@ -7148,14 +7192,14 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 40820,
+      "bytes": 40844,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
-      "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
+      "sha256": "722b35ae5ac975d8298fb3190d6c5278d6976c7bfb502a49618ae6496e763944"
     },
     {
-      "bytes": 55012,
+      "bytes": 55099,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+      "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
     }
   ],
   "implementation_prohibitions": [
@@ -8618,19 +8662,19 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 16562,
+      "bytes": 17481,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
-      "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
+      "sha256": "93f15f67ea011a5c078dc78018d57d521a124f2b19a4f18985462c99a73312fa"
     },
     {
-      "bytes": 55012,
+      "bytes": 55099,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+      "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
     },
     {
-      "bytes": 47309,
+      "bytes": 47463,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2"
+      "sha256": "ca200e1f8aebfd23cc1e4082ffec35f15f73696810cf9ee19d81598cced16e85"
     }
   ],
   "implementation_prohibitions": [
@@ -8937,14 +8981,14 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 12074,
+      "bytes": 12122,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
-      "sha256": "22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"
+      "sha256": "70cd0b70feee7f5bed86f5c2942fa163c007361a7679df6d4fc584439e625b05"
     },
     {
-      "bytes": 55012,
+      "bytes": 55099,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+      "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
     },
     {
       "bytes": 48742,
@@ -8952,14 +8996,14 @@
       "sha256": "9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"
     },
     {
-      "bytes": 16562,
+      "bytes": 17481,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
-      "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
+      "sha256": "93f15f67ea011a5c078dc78018d57d521a124f2b19a4f18985462c99a73312fa"
     },
     {
-      "bytes": 47309,
+      "bytes": 47463,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2"
+      "sha256": "ca200e1f8aebfd23cc1e4082ffec35f15f73696810cf9ee19d81598cced16e85"
     }
   ],
   "implementation_prohibitions": [
@@ -9341,7 +9385,7 @@
 | F03W/user-authorized-adm-first-normal-callback | Phase 3 | An explicitly invoked ignored test read the user-authorized 38-channel ADM BWF in memory, independently checked its full byte count and SHA-256 against the user/Wash-provided identity, and passed the same parsed allocation into application preparation and the PCM cursor. It produced 38 physical PCM rows, 38 F01E control rows, 28 object sampler host updates, 48 source-geometry rows, 48 installed rows, and a noncommitting spatial proposal through stages 5-14 for normal callback g=0. The local test emitted only counts, saved no path or PCM, and did not commit any owner. | — | `crates/jocforge-cli/tests/authorized_adm_callback.rs` | USER_AUTHORIZED_REAL_RESOURCE_G0_SPATIAL_STAGES_5_TO_14_PASSED__PARENT_RECEIPT_AND_OUTPUT_NOT_RUN |
 | F03W/informational-spatial-control-after-root-field-projection | Phase 3 | The selected-profile normal callback now transfers physical PCM, typed Bed6/Object13 controls, 37 regular-tail diffusion states, raw history, current48 history, F03F history, targets, marker values, dense matrix, writer set and nested F05R56 state into one pending spatial_control after-root. JOCSCS6 is an explicit local serialization schema and is not represented as the v3 or v5 byte preimage. Bed tail words remain undefined and are omitted; previous_active is stored once in nested ReaderTargetState. | `crates/jocforge-domain/src/spatial/spatial_control.rs`<br>`crates/jocforge-domain/src/spatial/production_callback.rs`<br>`crates/jocforge-domain/src/spatial/frontend_stages.rs`<br>`crates/jocforge-domain/src/spatial/diffusion_tail.rs`<br>`crates/jocforge-domain/src/spatial/diffusion_filter.rs`<br>`crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/joc/oamd/reader_target.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/src/spatial/production_callback/tests.rs`<br>`crates/jocforge-domain/src/spatial/spatial_control.rs`<br>`crates/jocforge-domain/tests/spatial_control_foundation.rs`<br>`crates/jocforge-cli/tests/authorized_adm_callback.rs` | LOCALLY_VERIFIED_NORMAL_AFTER_ROOT_STAGED__PARENT_COMMIT_NOT_RUN |
 | F04/independent-meter-installed48-postwindow-leaf | Phase 3 | Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity, membership proposals, and identity-validated diffusion parameters. The current formula matches approved F04A.4: binary64 weight literal, binary64 square root, one R32 cast before gain/mode products, and separately rounded R32 mix operations. Current-code g0-g2 actual hashes are recorded; no independent expected-output vector is present, so numeric conformance is not claimed. The isolated Git history has neither the older expression nor a separate correction commit, so the historical cause is UNKNOWN and withdrawn actuals remain invalid as expectations. This is not a committed F06 callback and is not connected to SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. | `crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/meter_installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/installed48_renderer.rs` | LOCALLY_REPLAYED_CURRENT_F04A_REAL_WAVE_G0_G2__EXPECTED_COMPARISON_PENDING__HISTORY_UNKNOWN |
-| F04C/whole-spatial-audio-j05-composer | Phase 3 | Validates existing Type10 and reader-target receipts before receiver execution; g0/g1 advance the full spatial_audio root without receiver/QMF, while g>=2 executes receiver and fitting once, preserves actual buffers and per-row target producer generations, and returns one complete canonical spatial_audio after proposal plus immutable J05 projection. | `crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_composer.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_receiver.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state.rs`<br>`crates/jocforge-domain/src/joc/oamd/reader_target.rs` | `crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs` | LOCALLY_VERIFIED_CONTINUOUS_G0_G1_G2_ROOT_AND_J05_PROPOSALS__PARENT_INSTALL_NOT_RUN |
+| F04C/whole-spatial-audio-j05-composer | Phase 3 | The normal production callback now takes the spatial_control-owned PCM and F04 component proposal, stages direct-LFE and Type10 once, then stages the complete spatial_audio root. The user-authorized real WAV g0 callback produces a pending F04 after-root with priming outcome; the local synthetic whole-composer suite covers g0/g1 priming and g2 receiver/fitting/J05. Neither owner commits locally, and g2 needs injected validated QMF providers. | `crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_composer.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_receiver.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state.rs`<br>`crates/jocforge-domain/src/joc/oamd/reader_target.rs`<br>`crates/jocforge-domain/src/spatial/spatial_control.rs`<br>`crates/jocforge-domain/src/spatial/production_callback.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs`<br>`crates/jocforge-domain/src/meter/installed48_renderer.rs` | `crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs`<br>`crates/jocforge-domain/src/spatial/production_callback/tests.rs`<br>`crates/jocforge-cli/tests/authorized_adm_callback.rs` | LOCALLY_VERIFIED_SYNTHETIC_G0_G1_G2_AND_REAL_AUTHORIZED_G0_ROOT_PROPOSAL__PARENT_INSTALL_NOT_RUN |
 | F04A/independent-meter-installed48-postwindow-leaf | Phase 3 | A fresh same-resource g0-g2 F04A leaf run uses the current approved F04A.4 order: binary64 weight literal, binary64 square root, one R32 cast before gain/mode products, and separately rounded R32 sample mixing. These actual hashes equal withdrawn earlier actual strings; the isolated history contains neither the older expression nor a separate correction commit, so historical cause is UNKNOWN and prior values remain invalid as expectations. No independent F04A expected-output vector is available, so conformance is not claimed. This is not a committed F06 callback and does not connect SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. | `crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/src/meter/installed48_renderer.rs` | CURRENT_REAL_WAVE_G0_G2_ACTUALS_REPLAYED__EXPECTED_COMPARISON_PENDING__HISTORY_UNKNOWN |
 | F04A/active-component-matrix-and-packet-constructor | Phase 3 | Validates paired compact C[n,48] coefficients and ascending target slots, scatters exact words into the canonical dense D[15,48] target-slot view with inactive positive-zero rows, and gathers with the same slots without sorting or coefficient-based activity inference. The non-test packet constructor binds compact C/d, installed48, selected provider lineage, and current spatial-audio/control before-state identities to one callback. It produces only the component consumer packet; it does not implement the outer C/d writer, source installation, owner update, or component commit. | `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs` | `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs` | LOCALLY_VERIFIED_COMPACT_DENSE_SCATTER_GATHER_AND_CURRENT_PACKET_BINDING__OUTER_WRITER_DEFERRED |
 | F04A/washed-membership-producer-owner-status-v2 | Phase 3 | The V2 audit distinguishes the handler gate table from the persistent/cache row-state table and records the native gate and downstream candidate/status-list flow. In the staged raw Control52 branch, offset4 U32 reads raw bytes0..3: one U8 plus three untyped bytes; it is not a typed audio_diffuse field. The package does not bind clean F04A audio_diffuse/lane fields to the handler gate, final row list or prefix writer, and does not establish a same-generation join. | — | — | WASHED_DISTINCT_ROW_OWNERS_AND_MEMBERSHIP_FLOW_CLOSED__CLEAN_IDENTITY_UNBOUND |

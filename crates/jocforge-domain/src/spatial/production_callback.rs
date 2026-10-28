@@ -12,14 +12,20 @@ use super::{
     selector_u04_handoff::{
         SelectorU04HandoffError, finish_selector_u04_handoff_with_xyz, prepare_selector_u04_handoff,
     },
-    source_flags::SourceControlSnapshotClock,
+    source_flags::{HostId, SourceControlSnapshotClock},
     source_geometry_outer::{
         CallbackPointResponseError, CompactOuterMatrix, GlobalSourceGeometrySnapshot,
         NormalSourceGeometryStage, produce_callback_point_response,
     },
     spatial_audio_state::{
-        ComponentStageError, MeterComponentOutputRows, MeterComponentStageProposal,
+        ComponentStageError, MeterComponentOutputRows, SpatialAudioAfterProposal,
         SpatialAudioJoinMetadata, SpatialAudioMachine,
+        direct_lfe::{DirectLfeInputView, produce_direct_lfe_stage},
+        spatial_audio_composer::{
+            ReaderAttemptBinding, SpatialAudioCallbackOutcome, SpatialAudioJocProviders,
+            stage_spatial_audio_callback,
+        },
+        type10_assembler::assemble_type10,
     },
     spatial_control::{
         SpatialControlAfterStateParts, SpatialControlError, SpatialControlJoinMetadata,
@@ -110,6 +116,9 @@ pub enum SpatialProductionCallbackError {
     OuterMatrix(super::source_geometry_outer::CompactOuterMatrixError),
     SpatialControl(SpatialControlError),
     Component(ComponentStageError),
+    DirectLfe(&'static str),
+    Type10(&'static str),
+    SpatialAudioComposition(&'static str),
     ReaderTarget(ReaderTargetError),
     Numeric,
 }
@@ -124,6 +133,7 @@ pub struct SpatialProductionCallbackInputs<'a> {
     pub p15_geometry: &'a SelectedP15Geometry,
     pub spatial_control: &'a SpatialControlMachine,
     pub spatial_audio: &'a SpatialAudioMachine,
+    pub spatial_audio_joc_providers: Option<SpatialAudioJocProviders<'a>>,
     pub window: &'a ValidatedWindowQ15Provider,
     pub parameters: &'a ValidatedComponentParameterProvider,
 }
@@ -137,6 +147,7 @@ pub struct SpatialProductionNormalCallbackInputs<'a> {
     pub p15_geometry: &'a SelectedP15Geometry,
     pub spatial_control: &'a SpatialControlMachine,
     pub spatial_audio: &'a SpatialAudioMachine,
+    pub spatial_audio_joc_providers: Option<SpatialAudioJocProviders<'a>>,
     pub window: &'a ValidatedWindowQ15Provider,
     pub parameters: &'a ValidatedComponentParameterProvider,
 }
@@ -156,7 +167,10 @@ pub struct SpatialProductionCallbackProposal {
     dense_d_f32_bits: Box<[u32]>,
     active_target_slots: Box<[u8]>,
     spatial_control_after: super::spatial_control::SpatialControlAfterProposal,
-    component: MeterComponentStageProposal,
+    spatial_audio_after: SpatialAudioAfterProposal,
+    spatial_audio_outcome: SpatialAudioCallbackOutcome,
+    component_rows: MeterComponentOutputRows,
+    component_blocks_processed: i64,
 }
 
 /// Same-callback F03W target, marker, assignment, matrix, and writer-set values.
@@ -205,6 +219,7 @@ pub fn continue_spatial_production_callback_from_normal_stage(
         p15_geometry,
         spatial_control,
         spatial_audio,
+        spatial_audio_joc_providers,
         window,
         parameters,
     } = input;
@@ -218,6 +233,7 @@ pub fn continue_spatial_production_callback_from_normal_stage(
         p15_geometry,
         spatial_control,
         spatial_audio,
+        spatial_audio_joc_providers,
         window,
         parameters,
     })
@@ -279,16 +295,24 @@ impl SpatialProductionCallbackProposal {
         &self.spatial_control_after
     }
 
+    pub const fn spatial_audio_after_proposal(&self) -> &SpatialAudioAfterProposal {
+        &self.spatial_audio_after
+    }
+
+    pub const fn spatial_audio_outcome(&self) -> &SpatialAudioCallbackOutcome {
+        &self.spatial_audio_outcome
+    }
+
     pub const fn reader_target_controls(&self) -> &ReaderTargetControlRows {
         self.spatial_control_after.reader_target_controls()
     }
 
     pub const fn component_rows(&self) -> &MeterComponentOutputRows {
-        self.component.meter_rows()
+        &self.component_rows
     }
 
-    pub const fn component_proposal(&self) -> &MeterComponentStageProposal {
-        &self.component
+    pub const fn component_blocks_processed(&self) -> i64 {
+        self.component_blocks_processed
     }
 }
 
@@ -306,6 +330,7 @@ pub fn continue_spatial_production_callback(
         p15_geometry,
         spatial_control,
         spatial_audio,
+        spatial_audio_joc_providers,
         window,
         parameters,
     } = input;
@@ -500,6 +525,68 @@ pub fn continue_spatial_production_callback(
     if regular_tail != 37 || !diffusion_by_host.is_empty() {
         return Err(SpatialProductionCallbackError::CallbackIdentity);
     }
+
+    let component_blocks_processed = component.blocks_processed();
+    let (component_stage, component_rows) = component.into_parts();
+    let callback_phase = frontend.frontend.current_features.lineage.callback_phase;
+    let current_lineage = &frontend.frontend.current_features.lineage;
+    let lfe_host_id = HostId::new(
+        u8::try_from(lfe_host).map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?,
+    )
+    .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
+    let lfe_samples = source_pcm_rows
+        .get(lfe_host)
+        .ok_or(SpatialProductionCallbackError::CallbackIdentity)?
+        .iter()
+        .copied()
+        .map(f32::from_bits)
+        .collect::<Vec<_>>();
+    let lfe_input = DirectLfeInputView::try_from_spatial_control_host(
+        SpatialControlMachine::lfe_ingress_authority(),
+        current_lineage.programme_id.clone(),
+        current_lineage.attempt,
+        transaction_id.clone(),
+        callback_index,
+        callback_phase,
+        spatial_control.profile(),
+        spatial_control,
+        lfe_host_id,
+        lfe_samples,
+    )
+    .map_err(|error| SpatialProductionCallbackError::DirectLfe(error.code()))?;
+    let lfe_stage = produce_direct_lfe_stage(
+        spatial_audio,
+        &spatial_audio_join,
+        &spatial_control_join,
+        spatial_control,
+        callback_phase,
+        lfe_input,
+    )
+    .map_err(|error| SpatialProductionCallbackError::DirectLfe(error.code()))?;
+    let type10 = assemble_type10(
+        &spatial_audio_join,
+        callback_phase,
+        component_stage,
+        lfe_stage,
+    )
+    .map_err(|error| SpatialProductionCallbackError::Type10(error.code()))?;
+    let attempt_binding = reader_target_receipt
+        .as_ref()
+        .map(|_| ReaderAttemptBinding::new(current_lineage.attempt, current_lineage.attempt))
+        .transpose()
+        .map_err(|error| SpatialProductionCallbackError::SpatialAudioComposition(error.code()))?;
+    let spatial_audio_callback = stage_spatial_audio_callback(
+        spatial_audio,
+        spatial_audio_join,
+        callback_phase,
+        type10,
+        reader_target_receipt.as_ref(),
+        attempt_binding,
+        spatial_audio_joc_providers,
+    )
+    .map_err(|error| SpatialProductionCallbackError::SpatialAudioComposition(error.code()))?;
+    let (spatial_audio_after, spatial_audio_outcome) = spatial_audio_callback.into_parts();
+
     let raw_history_bits = frontend
         .frontend
         .raw_history
@@ -552,7 +639,10 @@ pub fn continue_spatial_production_callback(
         dense_d_f32_bits,
         active_target_slots: active_target_slots.into_boxed_slice(),
         spatial_control_after,
-        component,
+        spatial_audio_after,
+        spatial_audio_outcome,
+        component_rows,
+        component_blocks_processed,
     })
 }
 
