@@ -1,0 +1,31 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "SERIALIZER-CONSUMER-PARENT-BINDING-V1",
+  "scope": "One same-parent serializer-to-consumer invocation with computed byte-range receipt; AU, source-generation, writer remain unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NATIVE_OBSERVATION_WITH_STATIC_CALL_FRAME_RECEIPT",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "eb19b6c8dbd0850327f4f4f1bda3fad0ecb4050cc006cb5cb33f9c7cbcc90550",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1414,
+      "sha256": "7448e5f152d5d4f997ecff73a3352db8f79725e89b57cf5528466104919ae028"
+    },
+    {
+      "file": "PARENT-CONSUMER-RECEIPT.json",
+      "bytes": 2102,
+      "sha256": "df82f90ae6c3024c48f4daff1d718785c9bbb7a813f803dc76a5b568ec2386a4"
+    },
+    {
+      "file": "SUPERSESSION.json",
+      "bytes": 1380,
+      "sha256": "37032c5cf572f360fcc0a422cd143cc8e7cf045cb6a353f9cc19e9f4d7d092f1"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1386,
+      "sha256": "57739e77f9e5263453edfc57bba1bacc0cfcda7cf19f362c2e2321016e08ad78"
+    }
+  ]
+}

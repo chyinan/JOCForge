@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+  "scope": "Retracts parent/AU grouping labels; retains only bounded sequential-cohort observations",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "CORRECTION_OR_STATIC_OBSERVATION",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "cac232f3a74733119003ffc70f2845cd20f75285a5b4d9d1ef61610e1d37d83c",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 874,
+      "sha256": "c2444cbef199e6dd0dcc8b000982a050ca67e86255b171cc27ddf91b3548eb7d"
+    },
+    {
+      "file": "ERRATUM.json",
+      "bytes": 1537,
+      "sha256": "f1dc346adf709b50d3b53c5366817e7511b30f572e03e4633cadf55084140e38"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 937,
+      "sha256": "aad47b8171f07c444e67f70502c027b9f785559602bdae914aa0bc5b238cd289"
+    }
+  ]
+}

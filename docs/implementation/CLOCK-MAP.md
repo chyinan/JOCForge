@@ -308,6 +308,11 @@
 | F13C/informational-native-count-reader-writer-status | — | `The file-position frame window and event are observational labels only; no source generation or AU clock is established.` |
 | F13C/informational-native-count-same-run-field-subchain | — | `The captured event has no parent/source-generation or selected AU identity; the file-position window is not a codec clock.` |
 | F13C/informational-explicit-byte-boundary-windows | — | `The debugger call-boundary ordinal and parent-pointer token are not an ADM sample, CodecSourceIndex, selected AU or source-generation clock.` |
+| F13C/informational-serializer-refill-writer-alias-status | — | `The old debugger cohorts and the new FUNCTION_ENTRY parent generation are not cross-joined to a codec source or AU clock.` |
+| F13C/informational-provider-prefix-runtime-pointer-chain | — | `The bounded wrapper/descriptor pointer chain has no captured ADM source-generation identity and defines no codec clock.` |
+| F13C/informational-serializer-consumer-single-parent-generation-binding | — | `One parent owner generation is recorded for this invocation; it is not mapped to CodecSourceIndex, an ADM source generation or PublishedAuIndex.` |
+| F13C/informational-consumer-writer-temporal-boundary | — | `Higher-invocation order and event counter are not a source-generation, ADM sample, or access-unit clock.` |
+| F13C/informational-higher-invocation-root-history-record-join | — | `Higher-caller frame/root ownership is not an ADM sample, source-generation, or transport access-unit clock.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14/authenticated-bit-compaction | — | `Stateless bit-stream projection; no frame, source, AU, or programme clock is owned.` |
 | F14/hmac-sha256-primitive | — | `Stateless byte primitive; no AU, source, programme, or history clock is owned.` |

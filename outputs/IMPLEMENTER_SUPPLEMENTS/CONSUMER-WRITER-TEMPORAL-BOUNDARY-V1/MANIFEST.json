@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "CONSUMER-WRITER-TEMPORAL-BOUNDARY-V1",
+  "scope": "Higher-invocation writer-before-consumer ordering; same-AU/source-generation and cross-generation root-shift joins remain unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NATIVE_AND_STATIC_BOUNDARY_EVIDENCE",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "2a70502fe89af97842e054d85cf69ab71ad42ba9f4e7d36411f553c1b677040d",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1317,
+      "sha256": "3e6ba6808a14d12c54cd7ae7637349412c8196c79fce5cc6cd369fd07ad6914e"
+    },
+    {
+      "file": "EDGE-STATUS.json",
+      "bytes": 2043,
+      "sha256": "507f11a039a189d41d36dd2f63302f3c07d78f9472aec3c3ee46fddd863a48e5"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1187,
+      "sha256": "43caa088dc13e4a3e3f78ed857e23e422ef4cfcb26f6a3b63355fbb2ba6a469c"
+    }
+  ]
+}

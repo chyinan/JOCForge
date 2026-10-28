@@ -1,0 +1,37 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "SERIALIZER-CONSUMER-PARENT-BINDING-V1",
+  "source_manifest_sha256": "eb19b6c8dbd0850327f4f4f1bda3fad0ecb4050cc006cb5cb33f9c7cbcc90550",
+  "source_payloads_verified": [
+    {
+      "file": "SERIALIZER-CONSUMER-PARENT-BINDING.json",
+      "bytes": 3711,
+      "sha256": "de82520b537e3ab45cf18b9b02c64c1c1b5de881ff149e0fc2fffb1a760c068a"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 570,
+      "sha256": "e986be2423885548ddd1f9407ec43c58e9c2a9654e3ecc159f92b067d6121de1"
+    }
+  ],
+  "read_scope": "Only the named manifest and two hash-bound payloads; no native research files accessed.",
+  "checks": {
+    "source_manifest_matches_handoff": true,
+    "payload_hashes_and_lengths_match_manifest": true,
+    "source_checker_claim_reviewed": true,
+    "no_raw_body_bytes_in_wash": true,
+    "no_native_addresses_or_code_in_wash": true,
+    "no_key_or_auth_material_in_wash": true,
+    "module_function_identity_reported_bound": true,
+    "parent_generation_reported_bound_for_one_invocation": true
+  },
+  "omitted": [
+    "raw input hash",
+    "runtime XML hash and contents",
+    "reference EC3 hash",
+    "native code/disassembly/addresses",
+    "raw body bytes",
+    "license/key/auth material"
+  ],
+  "evidence_scope": "WASHED_SOURCE_PACKAGE_REPORT; Wash did not independently execute the native run."
+}

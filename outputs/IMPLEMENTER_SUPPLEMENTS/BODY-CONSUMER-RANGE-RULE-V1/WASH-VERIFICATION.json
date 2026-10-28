@@ -1,0 +1,26 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "BODY-CONSUMER-RANGE-RULE-V1",
+  "source_manifest_sha256": "d4cbdff4e94051851776c9c140412454cfff9fc006686d676509ed29318c4cdf",
+  "source_payloads_verified": [
+    {
+      "file": "BODY-CONSUMER-RANGE-RULE.json",
+      "bytes": 3012,
+      "sha256": "6c907331b86ec39150cbac1ffefcef63e690ec04c4807a8227af17b21a842744"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 478,
+      "sha256": "137105443e2bf0e5868b827e9664e0c4acb6ccb7338e887590999c5a0d3fae8c"
+    }
+  ],
+  "read_scope": "Only manifest and two hash-bound payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "source_checker_claim_reviewed": true,
+    "no_native_addresses_or_code_delivered": true,
+    "no_raw_payload_or_key_material_delivered": true
+  },
+  "status": "STATIC_RULE_WASHED; SELECTED_RUNTIME_JOIN_UNBOUND"
+}

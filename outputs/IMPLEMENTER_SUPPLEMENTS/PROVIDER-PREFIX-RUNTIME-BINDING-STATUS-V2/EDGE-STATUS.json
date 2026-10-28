@@ -1,0 +1,24 @@
+{
+  "schema": "washed-provider-prefix-edge-status.v1",
+  "package_id": "PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2",
+  "observed": [
+    "Runtime wrapper prefix pointer to inner-constructor prefix input: reported same-run pointer identity.",
+    "Inner-host destination to descriptor consumer input: reported same-run pointer identity.",
+    "Descriptor output to encoder-open input: reported same-run pointer identity.",
+    "Non-pointer scalar copy equality: reported for offsets 0-84 and 96-100; values omitted."
+  ],
+  "excluded_byte_offsets": {
+    "range": "88-95",
+    "callback_pointer_value_read": false,
+    "pointee_inspected": false,
+    "reason": "Key material possible; contents not inspected."
+  },
+  "unbound": [
+    "Runtime configuration to selected static profile identity; source XML identities differ.",
+    "Runtime configuration fields to prefix-field semantics.",
+    "ADM source object/frame generation to provider prefix."
+  ],
+  "production_rule": "NONE",
+  "implementation_requirement": false,
+  "native_observation_independently_reproduced": false
+}

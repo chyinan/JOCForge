@@ -1,0 +1,31 @@
+{
+  "schema": "washed-serializer-consumer-supersession.v1",
+  "package_id": "SERIALIZER-CONSUMER-PARENT-BINDING-V1",
+  "source_manifest_sha256": "eb19b6c8dbd0850327f4f4f1bda3fad0ecb4050cc006cb5cb33f9c7cbcc90550",
+  "supersedes": [
+    {
+      "washed_package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+      "disposition": "SUPERSEDED_FOR_ORIGINAL_RUNTIME_MARKER; that erratum inspected a different nearby coordinate"
+    },
+    {
+      "washed_package_id": "BODY-CONSUMER-RANGE-RULE-V1",
+      "disposition": "QUARANTINE_LIFTED_FOR_THIS_FUNCTION_IDENTITY; runtime invocation now binds the static consumer"
+    },
+    {
+      "washed_package_id": "SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1",
+      "disposition": "RETAIN_SERIALIZER_TO_CONSUMER_FACTS_AS_REFINED_HERE; WRITER_RELATION_REMAINS_UNBOUND"
+    },
+    {
+      "washed_package_id": "F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1",
+      "disposition": "ORIGINAL_PARENT_MARKER_CLASSIFICATION_RESTORED; keep AU/source-generation joins unbound"
+    }
+  ],
+  "preserved_limitations": [
+    "This package binds one serializer-consumer invocation and parent generation only.",
+    "Same access-unit identity remains UNBOUND.",
+    "Source-generation identity remains UNBOUND.",
+    "Consumer-to-writer relation remains UNBOUND."
+  ],
+  "implementation_requirement": false,
+  "status": "AUTHORITATIVE_WASHED_REPLACEMENT_FOR_THIS_EDGE"
+}

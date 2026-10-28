@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "BODY-CONSUMER-RANGE-RULE-V1",
+  "scope": "Static six-lane body-consumer range rule; argument 3 is not the consumption bound and runtime joins remain open",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "CORRECTION_OR_STATIC_OBSERVATION",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "d4cbdff4e94051851776c9c140412454cfff9fc006686d676509ed29318c4cdf",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1137,
+      "sha256": "5f1f64130036ba5ffcb01101182bf683c842393020ed072c615859244e6105e8"
+    },
+    {
+      "file": "CONSUMPTION-RULE.json",
+      "bytes": 1960,
+      "sha256": "492e98f415f06e010cf6d305b5cdcfb5f3840ba7ac5ebbaaaef4e2013102098e"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 937,
+      "sha256": "e15aa10c7bdbd61fcf1e0e846f3a084be2c4481f8ac5eddd469febbbc37322f7"
+    }
+  ]
+}

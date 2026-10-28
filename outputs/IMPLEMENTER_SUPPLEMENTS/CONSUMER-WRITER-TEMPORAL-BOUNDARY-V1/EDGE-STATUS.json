@@ -1,0 +1,51 @@
+{
+  "schema": "washed-consumer-writer-temporal-boundary.v1",
+  "package_id": "CONSUMER-WRITER-TEMPORAL-BOUNDARY-V1",
+  "classification": "NATIVE_AND_STATIC_BOUNDARY_EVIDENCE",
+  "stage_order": [
+    "shift two root-owned per-generation arrays and clear new tail",
+    "writer sibling stage",
+    "serializer/consumer sibling stage"
+  ],
+  "stage_identity": {
+    "writer_and_consumer_share_higher_invocation": true,
+    "writer_before_consumer": true,
+    "writer_inside_serializer_consumer_function": false,
+    "serializer_consumer_counter_is_writer_generation_token": false
+  },
+  "selected_consumer_observation": {
+    "length_u32": 457,
+    "start_index_u32": 2,
+    "per_lane_counts_u32": [
+      0,
+      0,
+      457,
+      0,
+      0,
+      0
+    ],
+    "consumed_sum_u32": 457,
+    "post_consumer_crc_variant": "FORWARD_WORD_CRC",
+    "finalized_copy_word_count_u32": 2048,
+    "copy_source_direct_alias_to_consumer_body_or_state": false,
+    "writer_first_five_argument_direct_aliases_to_consumer_body_or_state": false
+  },
+  "post_consumer_path": {
+    "consumer_writes_to_root_owned_per_lane_states": true,
+    "per_lane_crc_appended": true,
+    "finalized_per_lane_buffers_copied_to_contiguous_destination": true,
+    "path_stage": "SERIALIZER_CONSUMER_SIBLING_STAGE"
+  },
+  "causality": {
+    "consumer_N_to_writer_N": "RULED_OUT_BY_STAGE_ORDER",
+    "consumer_N_to_writer_N_plus_1": "POSSIBLE_VIA_ROOT_STATE_SHIFT_BUT_UNBOUND",
+    "same_access_unit": "UNBOUND",
+    "writer_output_to_access_unit": "UNBOUND",
+    "source_generation": "UNBOUND",
+    "direct_consumer_to_writer_pointer_receipt": "NOT_OBSERVED"
+  },
+  "legacy_counter_interpretation": "EVENT_ORDER_ONLY; NOT CONSUMER GENERATION OR ACCESS-UNIT IDENTITY",
+  "minimum_next_action": "Capture one root-array element before and after the explicit higher-invocation shift, then compare with the writer-stage result or following serializer-consumer contiguous destination.",
+  "raw_body_or_output_bytes_read_or_persisted": false,
+  "implementation_requirement": false
+}

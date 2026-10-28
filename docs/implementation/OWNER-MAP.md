@@ -308,6 +308,11 @@
 | F13C/informational-native-count-reader-writer-status | F13C | `joc` |
 | F13C/informational-native-count-same-run-field-subchain | F13C | `joc` |
 | F13C/informational-explicit-byte-boundary-windows | F13C | `joc` |
+| F13C/informational-serializer-refill-writer-alias-status | F13C | `joc` |
+| F13C/informational-provider-prefix-runtime-pointer-chain | F13C | `codec` |
+| F13C/informational-serializer-consumer-single-parent-generation-binding | F13C | `joc` |
+| F13C/informational-consumer-writer-temporal-boundary | F13C | `joc` |
+| F13C/informational-higher-invocation-root-history-record-join | F13C | `joc` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |

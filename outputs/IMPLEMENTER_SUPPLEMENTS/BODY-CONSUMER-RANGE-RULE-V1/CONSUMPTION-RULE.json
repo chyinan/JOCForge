@@ -1,0 +1,43 @@
+{
+  "schema": "washed-body-consumer-range-rule.v1",
+  "package_id": "BODY-CONSUMER-RANGE-RULE-V1",
+  "classification": "STATIC_CONTRACT_WITH_RUNTIME_BOUNDARY_CORRECTION",
+  "module_identity_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "arguments": {
+    "argument_1": "state object: unsigned start_index, six unsigned per-lane byte counts, per-lane writer states",
+    "argument_2": "contiguous input byte pointer",
+    "argument_3": "raw 16-bit value stored to ABI home area; not read again in this function body",
+    "argument_4": "16-bit state-initialization condition"
+  },
+  "lane_capacity": 6,
+  "rule": {
+    "if": "start_index < 6",
+    "consumed_byte_count": "sum(per_lane_count[i], i=start_index..5)",
+    "input_range": "argument_2[0..consumed_byte_count)",
+    "order": "ascending lane index",
+    "read_granularity": "one byte per inner-loop iteration",
+    "if_start_index_at_least_6": "no body bytes read"
+  },
+  "corrections": {
+    "argument_3_is_actual_consumption_count": false,
+    "serializer_length_equals_argument_3": "RAW_VALUE_OBSERVATION_ONLY",
+    "serializer_length_equals_actual_consumed_bytes": "NOT_EVALUATED",
+    "runtime_start_index_and_counts": "NOT_CAPTURED",
+    "actual_runtime_consumed_count": "NOT_CAPTURED"
+  },
+  "identity_boundaries": {
+    "argument_2_pointer_value_to_prior_serializer_output": "SEQUENTIAL_COHORT_VALUE_EQUALITY_ONLY",
+    "causal_flow": "UNBOUND",
+    "same_parent": "UNBOUND",
+    "same_access_unit": "UNBOUND",
+    "source_generation": "UNBOUND",
+    "selected_runtime_consumer": "UNBOUND"
+  },
+  "capacity_and_failure": {
+    "explicit_capacity_or_sum_overflow_check_observed": false,
+    "caller_storage_precondition": "storage covers the sum of selected per-lane counts",
+    "malformed_or_short_input_behavior": "NOT_EVALUATED"
+  },
+  "implementation_requirement": false,
+  "production_rule": "STATIC_CONDITIONAL_RULE_ONLY; SELECTED_RUNTIME_JOIN_UNBOUND"
+}

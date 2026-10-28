@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "HIGHER-INVOCATION-ROOT-JOIN-V1",
+  "scope": "Same-frame higher-invocation and shared-root history record; consumer-output identity, AU and source-generation remain unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NATIVE_AND_STATIC_RELATION_EVIDENCE",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "b6af429ec167bd525c13c85ff4b167c25b108225e2a25124a7914bfe3e942369",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1183,
+      "sha256": "21a8784a194daef90181a9d44810cfb1cdb50b510327a1d39a93f016038c0227"
+    },
+    {
+      "file": "EDGE-STATUS.json",
+      "bytes": 1742,
+      "sha256": "8f512718ff6c47c521da839bbca2bba6c46bfdcab71a7c92baed4bfe05b8948a"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1183,
+      "sha256": "dbe7fc50631892dda095f8cac04b4df2a7f305f054f04b44115749736bcf4f0c"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "CONSUMER-WRITER-TEMPORAL-BOUNDARY-V1",
+  "source_manifest_sha256": "2a70502fe89af97842e054d85cf69ab71ad42ba9f4e7d36411f553c1b677040d",
+  "source_payloads_verified": [
+    {
+      "file": "CONSUMER-WRITER-TEMPORAL-BOUNDARY.json",
+      "bytes": 3079,
+      "sha256": "f6caa0f1310e8a3295c23ab78b6f9011afa00308cefe1ca2f5a3261d7dee2fc4"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 547,
+      "sha256": "b11b5fe02608bbbb1f6a83e2d278b30920ee45ff6633bbdd6ed8c0afb849824a"
+    }
+  ],
+  "read_scope": "Only the named manifest and two hash-bound payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "source_checker_claim_reviewed": true,
+    "no_raw_body_or_output_bytes_in_wash": true,
+    "no_native_addresses_or_code_in_wash": true,
+    "no_key_or_auth_material_in_wash": true
+  },
+  "omitted": [
+    "input/config/output digests",
+    "native addresses/code/disassembly",
+    "raw body/output bytes",
+    "license/key/auth material"
+  ],
+  "evidence_status": "WASHED_REPORT_ONLY; NATIVE_OBSERVATION_NOT_INDEPENDENTLY_REPRODUCED"
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "HIGHER-INVOCATION-ROOT-JOIN-V1",
+  "source_manifest_sha256": "b6af429ec167bd525c13c85ff4b167c25b108225e2a25124a7914bfe3e942369",
+  "source_payloads_verified": [
+    {
+      "file": "HIGHER-INVOCATION-ROOT-JOIN.json",
+      "bytes": 2837,
+      "sha256": "9ea831123777e689655cbc467842bf578e3a21522dbf4a3f179a1ded0d0d30bb"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 515,
+      "sha256": "3e02aba1229dcb77402cb2a2c9b490954859c7b6ef1b80865a118e3a3ac628ec"
+    }
+  ],
+  "read_scope": "Only the named manifest and two hash-bound payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "source_check_claim_reviewed": true,
+    "no_raw_body_or_output_bytes_in_wash": true,
+    "no_native_addresses_or_code_in_wash": true,
+    "no_key_or_auth_material_in_wash": true
+  },
+  "omitted": [
+    "input/config/reference-output digests",
+    "native addresses/code/disassembly",
+    "raw body/output bytes",
+    "license/key/auth material"
+  ],
+  "evidence_status": "WASHED_REPORT_ONLY; NATIVE_OBSERVATION_NOT_INDEPENDENTLY_REPRODUCED"
+}

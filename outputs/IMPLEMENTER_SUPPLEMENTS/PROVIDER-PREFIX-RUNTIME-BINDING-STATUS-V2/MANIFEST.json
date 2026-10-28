@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2",
+  "scope": "Same-run provider-prefix pointer chain; selected-profile and ADM-generation joins remain unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NATIVE_OBSERVATION_NOT_ALGORITHM",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "13525247cccbcb55999dda3f293a2a96e5201f489dde511a5f5145e04054bb3e",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 770,
+      "sha256": "9512c3561dee66af2b38b0c03bf80b35a7d4b5abf73e564473d08e13363bc742"
+    },
+    {
+      "file": "EDGE-STATUS.json",
+      "bytes": 1078,
+      "sha256": "de9b586811a1abc944f8f7e044de629e57386d9fd1bc855987b69fa1419ad5c9"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1491,
+      "sha256": "7b3fec17c9aabd8839bfd9bf4e7135e3a63a0fa61da6e38424e66c1d100deac1"
+    }
+  ]
+}

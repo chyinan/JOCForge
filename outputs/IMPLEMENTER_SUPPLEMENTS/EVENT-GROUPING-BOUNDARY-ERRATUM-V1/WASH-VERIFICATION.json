@@ -1,0 +1,26 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+  "source_manifest_sha256": "cac232f3a74733119003ffc70f2845cd20f75285a5b4d9d1ef61610e1d37d83c",
+  "source_payloads_verified": [
+    {
+      "file": "EVENT-GROUPING-BOUNDARY-ERRATUM.json",
+      "bytes": 2213,
+      "sha256": "bea09f61061c26d36b2f74d31b6a91c3055389026379858446dfb948bcd00189"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 453,
+      "sha256": "29de59fd4f195eece6e8394411360c2c07409c8c8bb30050dcdeb9199638abb5"
+    }
+  ],
+  "read_scope": "Only manifest and two hash-bound payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "source_checker_claim_reviewed": true,
+    "no_native_addresses_or_code_delivered": true,
+    "no_raw_payload_or_key_material_delivered": true
+  },
+  "status": "ERRATUM_APPLIES; NO_PRODUCTION_RULE"
+}

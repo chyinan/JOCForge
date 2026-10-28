@@ -1,0 +1,61 @@
+{
+  "schema": "washed-serializer-consumer-parent-binding.v1",
+  "package_id": "SERIALIZER-CONSUMER-PARENT-BINDING-V1",
+  "classification": "WASHED_NATIVE_PLUS_STATIC_RECEIPT",
+  "module_identity_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "parent_boundary": {
+    "classification": "FUNCTION_ENTRY",
+    "serializer_parent_generation": 1,
+    "consumer_parent_generation": 1,
+    "same_thread": true,
+    "same_parent_generation": true,
+    "same_access_unit": "UNBOUND",
+    "source_generation": "UNBOUND"
+  },
+  "invocation": {
+    "serializer_output_length_u32": 312,
+    "consumer_marker_u32": 22584,
+    "consumer_producer_length_u32": 312,
+    "serializer_output_pointer_equals_consumer_body_pointer": true,
+    "start_index_u32": 2,
+    "per_lane_counts_u32": [
+      0,
+      0,
+      312,
+      0,
+      0,
+      0
+    ],
+    "computed_consumed_byte_count_u32": 312,
+    "computed_count_equals_producer_length": true,
+    "computed_count_equals_serializer_length": true
+  },
+  "static_call_frame_receipt": {
+    "serializer_then_consumer_same_caller": true,
+    "same_caller_local_buffer": true,
+    "serializer_length_slot_read_before_consumer": true,
+    "producer_length_passed_to_consumer": true,
+    "fixed_marker_passed_to_consumer": true,
+    "entry_thunk_adjusts_owner_to_state_subobject": true,
+    "lane_capacity": 6,
+    "range_rule": "body[0..sum(per_lane_count[i], i=start_index..5))",
+    "start_index_at_least_six": "NO_BODY_READ"
+  },
+  "corrected_names": {
+    "marker_value": 22584,
+    "producer_length_value": 312,
+    "former_arg2_u32_arg3_u32_names": "CAPTURE_FIELD_LABELS_NOT_ABI_ORDINALS"
+  },
+  "remaining_unbound": [
+    "same access unit",
+    "source generation",
+    "consumer-to-writer relation"
+  ],
+  "limitations": {
+    "scope": "ONE_BOUNDED_INVOCATION",
+    "capacity_check_in_function": "NOT_OBSERVED",
+    "malformed_or_short_input_behavior": "NOT_EVALUATED",
+    "raw_body_bytes_read_or_persisted": false
+  },
+  "production_effect": "SERIALIZER_TO_CONSUMER_EDGE_CONFIRMED_FOR_THIS_CALL; NO_GENERAL_AU_OR_PRODUCT_RULE"
+}

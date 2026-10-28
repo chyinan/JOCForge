@@ -16785,9 +16785,9 @@
         },
         {
           "slice_id": "informational-explicit-byte-boundary-windows",
-          "mapping_status": "WASHED_BOUNDED_TWO_WINDOW_SAME_PARENT_LENGTH_EQUALITIES__GLOBAL_SEMANTICS_OPEN",
-          "implementation_status": "INFORMATIONAL_ONLY_64_PAIR_LOCAL_LENGTH_EQUALITIES__NO_WRITER_AU_JOIN",
-          "scope": "Two bounded file-position windows [2880,2928) and [3168,3216) each contain 64 same-parent pairs: the observed native U32 count, explicit serializer output-length U32 and refill arg3 I32 are equal in every pair. For reservation block ordinal 2, separately typed a[3] U32 and stack-passed a[4] U32 are equal and each is four greater than serialized length in 64/64 pairs per window; block-0 a[4] is excluded. Parent pointer plus debugger ordinal is not source/AU identity. This establishes only sample-local relations; global count units and source-generation/AU identity remain UNBOUND, with no refill-to-writer or writer-to-AU join. Values 507/508/511/512 were not reached in these windows and are not targets.",
+          "mapping_status": "WASHED_SEQUENTIAL_COHORT_RAW_VALUE_EQUALITIES__NEW_PARENT_BINDING_NOT_JOINED_TO_OLD_WINDOWS",
+          "implementation_status": "INFORMATIONAL_ONLY_OLD_COHORT_VALUES__PARENT_AND_CONSUMER_JOIN_UNBOUND",
+          "scope": "Two bounded file-position windows [2880,2928) and [3168,3216) remain same-thread sequential-cohort value observations: native count, serializer output-length and refill arg3 raw values matched within the reported cohorts, and reservation ordinal 2 retains its bounded a[3]/a[4] +4 relation. The new SERIALIZER-CONSUMER-PARENT-BINDING-V1 receipt confirms FUNCTION_ENTRY and consumer range for one separate invocation only. The older window records do not bind to that invocation's FUNCTION_ENTRY marker, so their same-parent, actual-consumer, AU/source-generation joins remain UNBOUND. The new invocation does not establish global count units or refill-to-writer/writer-to-AU flow for these windows. Values 507/508/511/512 remain unreached and non-targets.",
           "owner": "joc",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -16808,31 +16808,433 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/WASH-VERIFICATION.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1/MANIFEST.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/ERRATUM.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/PARENT-CONSUMER-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/CONSUMPTION-RULE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "f9002d867b460280b8044412fd6df5a13470da07d914b8d6f5b56d00d47cfeeb",
             "candidate_source_manifest_sha256": "3160a87763a7e9b394e84a4a8d23b4b02276741d83b1a1324f082bd86ee57d1f",
-            "validation_boundary": "Two bounded windows only. Native count units remain UNBOUND globally; no producer rule, writer/AU identity or full-program inference is established."
+            "validation_boundary": "The one-call parent/consumer receipt is not joined to the older byte windows; retain old windows as sequential-cohort values only.",
+            "superseding_errata": [
+              {
+                "package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+                "manifest_sha256": "df2ec28dc5e2846f3b7ae0d9b257b1e6e7b07af1e79ae216efe8224981644da7",
+                "delivery_status": "WASH_MANIFEST_AND_3_PAYLOADS_VERIFIED",
+                "scope_note": "The sequential-cohort correction remains applicable to older windows that do not identify this new FUNCTION_ENTRY marker; the new parent-generation receipt only supersedes marker classification for its own invocation."
+              }
+            ],
+            "limited_parent_consumer_binding": {
+              "package_id": "SERIALIZER-CONSUMER-PARENT-BINDING-V1",
+              "manifest_sha256": "f040d0e7363bca3bc5708b8b06ac7575e5ac3984265da47ce9501be04f18ce3d",
+              "status": "VERIFIED_FOR_ONE_FUNCTION_ENTRY_PARENT_GENERATION_ONLY",
+              "prior_byte_window_marker_identity": "UNBOUND_TO_THIS_FUNCTION_ENTRY",
+              "same_access_unit": "UNBOUND",
+              "source_generation": "UNBOUND",
+              "consumer_to_writer": "UNBOUND"
+            },
+            "related_body_consumer_candidate": {
+              "package_id": "BODY-CONSUMER-RANGE-RULE-V1",
+              "manifest_sha256": "33febd7dcc2782762afae9dc6e10b963dd6daa76738c9da136587d53b86fcff8",
+              "status": "BOUND_FOR_THIS_FUNCTION_IDENTITY_AND_SINGLE_INVOCATION_ONLY",
+              "prior_window_join": "UNBOUND",
+              "selected_product_consumer": "UNBOUND"
+            }
           },
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_INFORMATIONAL_TWO_WINDOW_CAPTURE_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/BYTE-BOUNDARY-WINDOWS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/BYTE-BOUNDARY-WINDOWS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/ERRATUM.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/PARENT-CONSUMER-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/CONSUMPTION-RULE.json"
             ],
             "case_pointers": [
-              "Frames [2880,2928) and [3168,3216): 64/64 same-parent pairs per window match count U32, serialized output length U32 and refill arg3 I32.",
-              "Reservation block ordinal 2: a[3] U32 and a[4] stack U32 are equal and each is +4 from serializer length in 64/64 pairs per window; block-0 a[4] is excluded.",
-              "507/508/511/512 are not reached in these windows; values are not expected targets. Source generation, refill-to-writer and writer-to-AU remain unbound."
+              "Older byte windows retain 64-pair sequential-cohort raw-value equalities; they do not bind to the new FUNCTION_ENTRY invocation.",
+              "New package confirms one separate consumer call and body-range calculation only.",
+              "Global units, old-window consumer relation, AU/source-generation and writer joins remain UNBOUND."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "f9002d867b460280b8044412fd6df5a13470da07d914b8d6f5b56d00d47cfeeb"
+            "supplement_manifest_sha256": "f9002d867b460280b8044412fd6df5a13470da07d914b8d6f5b56d00d47cfeeb",
+            "superseding_errata": [
+              {
+                "package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+                "manifest_sha256": "df2ec28dc5e2846f3b7ae0d9b257b1e6e7b07af1e79ae216efe8224981644da7",
+                "delivery_status": "WASH_MANIFEST_AND_3_PAYLOADS_VERIFIED",
+                "scope_note": "The sequential-cohort correction remains applicable to older windows that do not identify this new FUNCTION_ENTRY marker; the new parent-generation receipt only supersedes marker classification for its own invocation."
+              }
+            ],
+            "limited_parent_consumer_binding": {
+              "package_id": "SERIALIZER-CONSUMER-PARENT-BINDING-V1",
+              "manifest_sha256": "f040d0e7363bca3bc5708b8b06ac7575e5ac3984265da47ce9501be04f18ce3d",
+              "status": "VERIFIED_FOR_ONE_FUNCTION_ENTRY_PARENT_GENERATION_ONLY",
+              "prior_byte_window_marker_identity": "UNBOUND_TO_THIS_FUNCTION_ENTRY",
+              "same_access_unit": "UNBOUND",
+              "source_generation": "UNBOUND",
+              "consumer_to_writer": "UNBOUND"
+            },
+            "related_body_consumer_candidate": {
+              "package_id": "BODY-CONSUMER-RANGE-RULE-V1",
+              "manifest_sha256": "33febd7dcc2782762afae9dc6e10b963dd6daa76738c9da136587d53b86fcff8",
+              "status": "BOUND_FOR_THIS_FUNCTION_IDENTITY_AND_SINGLE_INVOCATION_ONLY",
+              "prior_window_join": "UNBOUND",
+              "selected_product_consumer": "UNBOUND"
+            }
           },
           "not_run": [
-            "Global count units or package-wide serializer/count rule.",
-            "Source generation and selected AU identity.",
-            "Refill body to writer argument value-flow join and output interference comparison.",
-            "Full-programme coverage and product acceptance."
+            "Older byte-window record to the new FUNCTION_ENTRY marker identity.",
+            "Old-window actual body-consumption, source generation, AU, refill-to-writer and writer-to-AU joins.",
+            "Global count units, full-programme reachability and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-serializer-refill-writer-alias-status",
+          "mapping_status": "WASHED_OLD_SEQUENTIAL_COHORT_POINTER_VALUES__NEW_SINGLE_CALL_PARENT_BINDING_NOT_JOINED",
+          "implementation_status": "INFORMATIONAL_ONLY_OLD_COHORT_NO_ALIAS_CHECK__SINGLE_CALL_CONSUMER_EDGE_SEPARATE",
+          "scope": "The old serializer/refill/writer package remains a bounded sequential-cohort report: 64 pointer/length value pairs and 63 writer triplets with 0/63 direct aliases at seven inspected argument locations. The new FUNCTION_ENTRY package confirms a distinct single serializer-to-consumer invocation at parent generation 1, but the old triplets do not bind to that invocation's original marker; same-parent/AU identity for the old cohort remains UNBOUND. The new package does not bind consumer-to-writer, source generation or selected AU. Keep the old direct-no-alias result bounded to its inspected locations; indirect flow remains possible.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The old debugger cohorts and the new FUNCTION_ENTRY parent generation are not cross-joined to a codec source or AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_SERIALIZER_REFILL_WRITER_ALIAS_STATUS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/ERRATUM.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/PARENT-CONSUMER-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "16f25631696eb53dd731284d11f05da635a3d9991570c8ae61f3864622548df3",
+            "candidate_source_manifest_sha256": "8171b88072a669e2c4cd9516042372392032ed160f4a8d85b2c2fd6ebed28319",
+            "superseding_errata": [
+              {
+                "package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+                "manifest_sha256": "df2ec28dc5e2846f3b7ae0d9b257b1e6e7b07af1e79ae216efe8224981644da7",
+                "delivery_status": "WASH_MANIFEST_AND_3_PAYLOADS_VERIFIED",
+                "scope_note": "The sequential-cohort correction remains applicable to older windows that do not identify this new FUNCTION_ENTRY marker; the new parent-generation receipt only supersedes marker classification for its own invocation."
+              }
+            ],
+            "limited_parent_consumer_binding": {
+              "package_id": "SERIALIZER-CONSUMER-PARENT-BINDING-V1",
+              "manifest_sha256": "f040d0e7363bca3bc5708b8b06ac7575e5ac3984265da47ce9501be04f18ce3d",
+              "status": "VERIFIED_FOR_ONE_FUNCTION_ENTRY_PARENT_GENERATION_ONLY",
+              "prior_byte_window_marker_identity": "UNBOUND_TO_THIS_FUNCTION_ENTRY",
+              "same_access_unit": "UNBOUND",
+              "source_generation": "UNBOUND",
+              "consumer_to_writer": "UNBOUND"
+            },
+            "validation_boundary": "The one-call consumer receipt is a separate invocation and does not retroactively parent/AU-bind the old 63 sequential writer triplets."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_SERIALIZER_REFILL_WRITER_OBSERVATION_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/ERRATUM.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/PARENT-CONSUMER-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/SUPERSESSION.json"
+            ],
+            "case_pointers": [
+              "Old package observations remain sequential cohort only; no direct alias at the seven checked ABI locations.",
+              "New package binds a separate serializer-to-consumer call only; it does not bind old writer triplets to the new parent generation.",
+              "Consumer-to-writer, source-generation and selected-AU remain UNBOUND."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "16f25631696eb53dd731284d11f05da635a3d9991570c8ae61f3864622548df3",
+            "superseding_errata": [
+              {
+                "package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+                "manifest_sha256": "df2ec28dc5e2846f3b7ae0d9b257b1e6e7b07af1e79ae216efe8224981644da7",
+                "delivery_status": "WASH_MANIFEST_AND_3_PAYLOADS_VERIFIED",
+                "scope_note": "The sequential-cohort correction remains applicable to older windows that do not identify this new FUNCTION_ENTRY marker; the new parent-generation receipt only supersedes marker classification for its own invocation."
+              }
+            ],
+            "limited_parent_consumer_binding": {
+              "package_id": "SERIALIZER-CONSUMER-PARENT-BINDING-V1",
+              "manifest_sha256": "f040d0e7363bca3bc5708b8b06ac7575e5ac3984265da47ce9501be04f18ce3d",
+              "status": "VERIFIED_FOR_ONE_FUNCTION_ENTRY_PARENT_GENERATION_ONLY",
+              "prior_byte_window_marker_identity": "UNBOUND_TO_THIS_FUNCTION_ENTRY",
+              "same_access_unit": "UNBOUND",
+              "source_generation": "UNBOUND",
+              "consumer_to_writer": "UNBOUND"
+            }
+          },
+          "not_run": [
+            "Old cohort to the new FUNCTION_ENTRY marker and parent generation.",
+            "Consumer-to-writer, source generation and selected AU identity.",
+            "Indirect/copy/transform writer flow, full-programme coverage and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-provider-prefix-runtime-pointer-chain",
+          "mapping_status": "WASHED_REPORT_ONLY_RUNTIME_PREFIX_POINTER_CHAIN__PROFILE_AND_ADM_GENERATION_UNBOUND",
+          "implementation_status": "INFORMATIONAL_ONLY_SAME_RUN_POINTER_CHAIN__SENSITIVE_RANGE_EXCLUDED",
+          "scope": "One bounded runtime observation reports same-run pointer identity from runtime wrapper prefix to inner-constructor prefix input, inner-host destination to descriptor consumer input, and descriptor output to encoder-open input. Non-pointer scalar-copy equality is reported only for byte offsets 0..84 and 96..100; raw values are omitted. Offsets 88..95 and their pointee were not read or inspected because key material is possible. Runtime and selected static job XML identities differ, so profile-field semantics remain UNBOUND; ADM source-generation identity is also UNBOUND. No production rule follows.",
+          "owner": "codec",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The bounded wrapper/descriptor pointer chain has no captured ADM source-generation identity and defines no codec clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_PROVIDER_PREFIX_RUNTIME_POINTER_CHAIN",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "c240285ca01c9a0aee3b4fbf0da5fb322011d187b5d05295f11a245f4cae7a94",
+            "candidate_source_manifest_sha256": "13525247cccbcb55999dda3f293a2a96e5201f489dde511a5f5145e04054bb3e",
+            "validation_boundary": "Wash-only native report. Profile semantics, source generation, offset 88..95 and pointee contents remain unbound/unobserved; no model or production field mapping is added."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_PROVIDER_PREFIX_POINTER_STATUS_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2/WASH-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Same-run pointer identity is reported across wrapper prefix -> inner constructor -> descriptor consumer -> encoder open.",
+              "Reported scalar-copy equality is limited to offsets 0..84 and 96..100; raw scalar values are omitted.",
+              "Offsets 88..95 and pointee were not inspected; runtime/static XML, profile semantics and ADM source generation remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "c240285ca01c9a0aee3b4fbf0da5fb322011d187b5d05295f11a245f4cae7a94"
+          },
+          "not_run": [
+            "Runtime configuration to selected static profile identity and prefix-field semantics.",
+            "ADM source object/frame generation to provider prefix.",
+            "Offset 88..95 callback pointer/pointee and any key/authentication contents.",
+            "Output-interference comparison and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-serializer-consumer-single-parent-generation-binding",
+          "mapping_status": "WASHED_ONE_FUNCTION_ENTRY_SERIALIZER_TO_CONSUMER_PARENT_GENERATION_BOUND__AU_WRITER_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_ONE_CALL_PARENT_GENERATION_AND_BODY_RANGE_RECEIPT__NO_AU_OR_WRITER_JOIN",
+          "scope": "One bounded invocation binds serializer and body consumer to the same FUNCTION_ENTRY parent generation 1 and thread. Serializer output length 312 is read from its caller-local slot, passed as producer_length, and the same buffer pointer is supplied to the consumer. Consumer start_index=2 with six lane counts [0,0,312,0,0,0] yields computed consumption 312, equal to producer_length and serializer output length. The prior log labels arg2_u32/arg3_u32 are record-field names, not ABI ordinals. Scope is this invocation only: same AU, source generation and consumer-to-writer remain UNBOUND; this is native observation plus static call-frame receipt, not a general product rule.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One parent owner generation is recorded for this invocation; it is not mapped to CodecSourceIndex, an ADM source generation or PublishedAuIndex."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_SINGLE_CALL_SERIALIZER_CONSUMER_PARENT_BINDING",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/PARENT-CONSUMER-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/CONSUMPTION-RULE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/ERRATUM.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "f040d0e7363bca3bc5708b8b06ac7575e5ac3984265da47ce9501be04f18ce3d",
+            "candidate_source_manifest_sha256": "eb19b6c8dbd0850327f4f4f1bda3fad0ecb4050cc006cb5cb33f9c7cbcc90550",
+            "validation_boundary": "One function-entry call only; same AU/source generation/consumer-to-writer identities and product reachability remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_SINGLE_INVOCATION_CAPTURE_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/PARENT-CONSUMER-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SERIALIZER-CONSUMER-PARENT-BINDING-V1/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/BODY-CONSUMER-RANGE-RULE-V1/CONSUMPTION-RULE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EVENT-GROUPING-BOUNDARY-ERRATUM-V1/ERRATUM.json"
+            ],
+            "case_pointers": [
+              "FUNCTION_ENTRY marker; serializer and consumer parent_generation=1 on same thread.",
+              "Same caller-local buffer pointer; serializer output length=312 passed as producer_length.",
+              "start_index=2; lane counts [0,0,312,0,0,0]; computed consumed bytes=312 equals producer_length and serializer length.",
+              "No same AU, source generation or consumer-to-writer join; no raw body bytes included."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "f040d0e7363bca3bc5708b8b06ac7575e5ac3984265da47ce9501be04f18ce3d"
+          },
+          "not_run": [
+            "Same AU identity.",
+            "ADM/source generation identity.",
+            "Consumer-to-writer relation.",
+            "Other calls/windows and full-programme or product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": [],
+          "supersession_scope": {
+            "supersedes": [
+              {
+                "package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+                "manifest_sha256": "df2ec28dc5e2846f3b7ae0d9b257b1e6e7b07af1e79ae216efe8224981644da7",
+                "disposition": "SUPERSEDED_FOR_THIS_FUNCTION_ENTRY_MARKER_ONLY"
+              },
+              {
+                "package_id": "BODY-CONSUMER-RANGE-RULE-V1",
+                "manifest_sha256": "33febd7dcc2782762afae9dc6e10b963dd6daa76738c9da136587d53b86fcff8",
+                "disposition": "QUARANTINE_LIFTED_FOR_THIS_FUNCTION_IDENTITY_ONLY"
+              },
+              {
+                "package_id": "SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1",
+                "manifest_sha256": "16f25631696eb53dd731284d11f05da635a3d9991570c8ae61f3864622548df3",
+                "disposition": "OLD_SEQUENTIAL_COHORT_FACTS_RETAINED; NOT_JOINED_TO_THIS_CALL"
+              },
+              {
+                "package_id": "F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1",
+                "manifest_sha256": "f9002d867b460280b8044412fd6df5a13470da07d914b8d6f5b56d00d47cfeeb",
+                "disposition": "OLD_WINDOW_VALUES_RETAINED; ORIGINAL_MARKER_JOIN_UNBOUND"
+              }
+            ],
+            "older_byte_window_identity": "UNBOUND_TO_THIS_FUNCTION_ENTRY_MARKER",
+            "older_serializer_writer_triplets": "RETAINED_AS_SEQUENTIAL_COHORTS; NOT_JOINED_TO_THIS_CALL"
+          },
+          "related_body_consumer_candidate": {
+            "package_id": "BODY-CONSUMER-RANGE-RULE-V1",
+            "manifest_sha256": "33febd7dcc2782762afae9dc6e10b963dd6daa76738c9da136587d53b86fcff8",
+            "status": "VERIFIED_FOR_THIS_FUNCTION_IDENTITY_AND_SINGLE_INVOCATION_ONLY",
+            "older_window_join": "UNBOUND",
+            "selected_product_consumer": "UNBOUND"
+          }
+        },
+        {
+          "slice_id": "informational-consumer-writer-temporal-boundary",
+          "mapping_status": "WASHED_SAME_INVOCATION_WRITER_BEFORE_CONSUMER__CROSS_GENERATION_JOIN_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_CONSUMER_N_TO_WRITER_N_RULED_OUT__NEXT_GENERATION_UNBOUND",
+          "scope": "Within one higher invocation, root-owned history arrays shift and clear their new tails before the writer sibling stage, followed by serializer/consumer. The consumer_N to writer_N edge is RULED_OUT_BY_STAGE_ORDER; consumer_N to writer_N+1 remains possible through the root shift but UNBOUND. Same AU, source generation, and writer output-to-AU remain UNBOUND. A bounded consumer observation reports start_index=2, six lane counts [0,0,457,0,0,0], 457 consumed bytes, and a separate 2048-word post-consumer copy; no body/output bytes or production rule are included.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Higher-invocation order and event counter are not a source-generation, ADM sample, or access-unit clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_CONSUMER_WRITER_TEMPORAL_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONSUMER-WRITER-TEMPORAL-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONSUMER-WRITER-TEMPORAL-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONSUMER-WRITER-TEMPORAL-BOUNDARY-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONSUMER-WRITER-TEMPORAL-BOUNDARY-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "2ee6120d2d80c886cee8778efeace332ef16ce96af294c5feecb0d2ef6610ee2",
+            "validation_boundary": "Washed evidence only; no production behavior or source/AU identity is inferred."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_CAPTURE_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CONSUMER-WRITER-TEMPORAL-BOUNDARY-V1/EDGE-STATUS.json"
+            ],
+            "case_pointers": [
+              "Same higher invocation orders root-array shift, writer sibling, then serializer/consumer sibling.",
+              "consumer_N to writer_N is ruled out; consumer_N to writer_N+1 is possible but unbound.",
+              "Same access unit, source generation, and direct consumer-to-writer receipt remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "2ee6120d2d80c886cee8778efeace332ef16ce96af294c5feecb0d2ef6610ee2"
+          },
+          "not_run": [
+            "Root-array element identity across the higher-invocation shift.",
+            "Same access unit and source-generation identity.",
+            "Consumer_N to writer_N+1 receipt and writer output-to-AU join."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-higher-invocation-root-history-record-join",
+          "mapping_status": "WASHED_SAME_CALLER_ROOT_AND_COMMON_RECORD_RELATION__CONSUMER_AU_SOURCE_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_ROOT_HISTORY_SHIFT_TO_COMMON_RECORD_STATIC__NO_CONSUMER_OR_AU_JOIN",
+          "scope": "The writer and serializer/consumer are sibling stages in one caller frame and share one root owner; writer executes first. Static tracing binds shifted current history heads from both root arrays into the same later common output record. The writer descriptor is not equal to the serializer descriptor. This shared root/common record does not show that consumer body was consumed by writer and does not bind an access unit or source generation. consumer_N to writer_N is ruled out by stage order; consumer_N to writer_N+1 remains UNBOUND.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Higher-caller frame/root ownership is not an ADM sample, source-generation, or transport access-unit clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_HIGHER_INVOCATION_ROOT_HISTORY_RELATION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/HIGHER-INVOCATION-ROOT-JOIN-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/HIGHER-INVOCATION-ROOT-JOIN-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/HIGHER-INVOCATION-ROOT-JOIN-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/HIGHER-INVOCATION-ROOT-JOIN-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "64c23d091aa8588635fe2e8b44b1f4ff2f798b52232d1953a1f26d4e9d617f92",
+            "validation_boundary": "Washed evidence only; no production behavior or source/AU identity is inferred."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_CAPTURE_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/HIGHER-INVOCATION-ROOT-JOIN-V1/EDGE-STATUS.json"
+            ],
+            "case_pointers": [
+              "Same caller frame and root owner; writer stage index 1536 and writer executes before serializer/consumer.",
+              "After the serializer stage, current history heads from two root arrays are copied to the same common output record.",
+              "Consumer body to writer is NO; transport AU and source generation remain UNBOUND."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "64c23d091aa8588635fe2e8b44b1f4ff2f798b52232d1953a1f26d4e9d617f92"
+          },
+          "not_run": [
+            "One non-payload root-history element receipt across shift, writer entry, and common output record.",
+            "Consumer_N to writer_N+1 receipt.",
+            "Transport access-unit and source-generation identity."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],

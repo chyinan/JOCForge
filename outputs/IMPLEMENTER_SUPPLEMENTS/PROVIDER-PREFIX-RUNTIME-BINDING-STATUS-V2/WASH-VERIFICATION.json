@@ -1,0 +1,44 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "PROVIDER-PREFIX-RUNTIME-BINDING-STATUS-V2",
+  "source_manifest_sha256": "13525247cccbcb55999dda3f293a2a96e5201f489dde511a5f5145e04054bb3e",
+  "source_payloads_verified": [
+    {
+      "file": "SELECTED-PREFIX-RUNTIME-OBSERVATION.json",
+      "bytes": 4468,
+      "sha256": "28bffcb916afc8c68f7e3bbbd941ffbee49f58f06aa29676f2d93600b1966884"
+    },
+    {
+      "file": "EDGE-STATUS.json",
+      "bytes": 1198,
+      "sha256": "55ce5f0f729ae3075b2f88b03cb6cd4e18de676ff0084f3215d0dcbdee9ad2b6"
+    },
+    {
+      "file": "REFERENCE-IDENTITIES.json",
+      "bytes": 684,
+      "sha256": "0736104a38b55bb3e237af9e5ef3cf03c631af0a01befe6402f550e205eb87db"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 514,
+      "sha256": "df81b0f450395e330e1c0f80fdf9952463d93be75f458c2f3af23f38b5808695"
+    }
+  ],
+  "read_scope": "Only the named manifest and four payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "no_native_code_or_addresses_in_wash": true,
+    "no_key_or_auth_material_in_wash": true,
+    "raw_prefix_values_omitted": true,
+    "offsets_88_95_excluded": true
+  },
+  "omitted": [
+    "Raw input/config digests and XML values",
+    "raw prefix words",
+    "callback pointer and pointee",
+    "native code/disassembly",
+    "license/key/auth material"
+  ],
+  "evidence_status": "WASHED_REPORT_ONLY; NOT_INDEPENDENTLY_REPRODUCED"
+}

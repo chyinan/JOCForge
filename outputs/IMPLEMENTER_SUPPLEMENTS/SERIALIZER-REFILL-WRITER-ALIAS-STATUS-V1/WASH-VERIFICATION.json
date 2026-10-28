@@ -1,0 +1,32 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1",
+  "source_manifest_sha256": "8171b88072a669e2c4cd9516042372392032ed160f4a8d85b2c2fd6ebed28319",
+  "source_payloads_verified": [
+    {
+      "file": "SERIALIZER-REFILL-WRITER-OBSERVATION.json",
+      "bytes": 2485,
+      "sha256": "f15746abad3ee254502c38b9f9219c574adf6b197cfba1f779870b328dda5256"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 426,
+      "sha256": "a4a897b477b30cf05b146edd52775d27fda5e5e34375f6410bde5764dbc9a437"
+    }
+  ],
+  "read_scope": "Only the named manifest and two payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "no_native_code_or_addresses_in_wash": true,
+    "no_raw_payload_bytes_in_wash": true,
+    "no_key_or_auth_material_in_wash": true
+  },
+  "omitted": [
+    "Input/XML/output digests",
+    "native code/disassembly/addresses",
+    "raw payload bytes",
+    "license/key/auth material"
+  ],
+  "evidence_status": "WASHED_REPORT_ONLY; NOT_INDEPENDENTLY_REPRODUCED"
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "washed-higher-invocation-root-join.v1",
+  "package_id": "HIGHER-INVOCATION-ROOT-JOIN-V1",
+  "classification": "NATIVE_AND_STATIC_RELATION_EVIDENCE",
+  "native_sibling_join": {
+    "same_caller_frame": true,
+    "same_root_argument": true,
+    "writer_executes_first": true,
+    "writer_stage_index_u32": 1536,
+    "writer_index_arguments_equal": true,
+    "writer_local_descriptor_equals_serializer_descriptor": false
+  },
+  "static_contract": {
+    "same_root_object_drives_both_sibling_stages": true,
+    "pre_writer_shift": [
+      "history array B next element copied into current",
+      "history array A next element copied into current",
+      "new tail elements cleared"
+    ],
+    "stage_order": [
+      "writer sibling",
+      "serializer-consumer sibling"
+    ],
+    "post_serializer_common_output_record": [
+      "current root history array B head copied to record",
+      "current root history array A head copied to same record"
+    ],
+    "fields_written_to_common_record": 2
+  },
+  "relation_status": {
+    "common_higher_invocation": "BOUND",
+    "common_root_owner": "BOUND",
+    "root_history_shift_to_common_output_record": "BOUND_STATICALLY",
+    "consumer_body_directly_consumed_by_writer": "NO",
+    "consumer_N_to_writer_N": "RULED_OUT_BY_STAGE_ORDER",
+    "consumer_N_to_writer_N_plus_1": "UNBOUND",
+    "transport_access_unit": "UNBOUND",
+    "source_generation": "UNBOUND"
+  },
+  "minimum_next_action": "Trace one non-payload root history element before shift, at writer entry in the next higher invocation, and in the post-serializer common output record; stop if it is only a control/history scalar.",
+  "implementation_requirement": false,
+  "raw_body_or_output_bytes_read_or_persisted": false
+}

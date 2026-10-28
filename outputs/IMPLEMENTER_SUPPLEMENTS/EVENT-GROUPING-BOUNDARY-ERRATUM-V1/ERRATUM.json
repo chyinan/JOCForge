@@ -1,0 +1,39 @@
+{
+  "schema": "washed-event-grouping-erratum.v1",
+  "package_id": "EVENT-GROUPING-BOUNDARY-ERRATUM-V1",
+  "classification": "WASH_CORRECTION",
+  "source_manifest_sha256": "cac232f3a74733119003ffc70f2845cd20f75285a5b4d9d1ef61610e1d37d83c",
+  "module_identity_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "corrected_marker_classification": "FUNCTION_EPILOGUE_OR_SECURITY_CHECK_NEIGHBORHOOD",
+  "not_a": [
+    "PARENT_CALL_ENTRY",
+    "ACCESS_UNIT_IDENTITY_BOUNDARY",
+    "SOURCE_GENERATION_BOUNDARY"
+  ],
+  "supersedes": [
+    {
+      "washed_package_id": "F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1",
+      "claim": "same-parent pairs / same-parent invocation grouping"
+    },
+    {
+      "washed_package_id": "SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1",
+      "claim": "triplet ordinal implies parent or AU identity"
+    }
+  ],
+  "replacement_terms": {
+    "byte_window_pairs": "SAME_PARENT_UNBOUND; SAME_THREAD_SEQUENTIAL_COHORT_ONLY",
+    "serializer_refill_writer_triplets": "SEQUENTIAL_COHORT_TRIPLETS; NOT_PARENT_OR_AU_IDENTITY"
+  },
+  "preserved_observations": [
+    "Length and pointer-value equality counts, as value observations within sequential cohorts.",
+    "Writer direct-argument no-alias result, bounded to the inspected argument locations and sequential cohort."
+  ],
+  "unbound": [
+    "serializer-to-refill causal flow",
+    "same-parent identity",
+    "same-access-unit identity",
+    "source-generation identity"
+  ],
+  "implementation_requirement": false,
+  "production_rule": "NONE"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "washed-serializer-refill-writer-edge-status.v1",
+  "package_id": "SERIALIZER-REFILL-WRITER-ALIAS-STATUS-V1",
+  "observed": {
+    "serializer_refill_pairs": 64,
+    "equal_lengths": "64_OF_64",
+    "same_output_and_body_pointer": "64_OF_64",
+    "complete_writer_triplets": 63,
+    "checked_writer_argument_locations": 7,
+    "direct_aliases_at_checked_locations": "0_OF_63",
+    "process_boundary_truncation_preserved": true
+  },
+  "unbound": [
+    "Refill body to writer input through copy, transform, wrapper, or object field.",
+    "Writer input to ADM source generation.",
+    "Writer output to selected access unit."
+  ],
+  "writer_relation": "INDIRECT_OR_TRANSFORMED_OR_UNBOUND",
+  "production_rule": "NONE",
+  "implementation_requirement": false,
+  "native_observation_independently_reproduced": false
+}
