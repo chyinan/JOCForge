@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1",
+  "scope": "Bounded publication receipt; AU index and source generation unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "b7400592ccc469972824d080952865f46ee4936c04f6516204f7b3a2473c53c2",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 655,
+      "sha256": "53241acc3490874344688582edd530fc572fcc70f34646c3a7ba646298f4b494"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 793,
+      "sha256": "c6ec9ab5aec06808dfaab3db4f32ddb66cc3fcf52715e071f07e2c628013ca19"
+    }
+  ]
+}

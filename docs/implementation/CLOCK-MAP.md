@@ -320,6 +320,7 @@
 | F13C/informational-contiguous-destination-direct-consumer-identity | — | `Same outer invocation and buffer identity do not define a transport-AU or source-generation clock.` |
 | F13C/informational-au-token-equality-not-au | — | `The helper token is a validation/search input, not a source index or transport-AU clock; the approved local AU numbering remains AU=j=s-2.` |
 | F13C/informational-transport-publication-entry-not-observed | — | `The absent native publication anchor does not block or replace the approved local AU=j=s-2 source-clock rule.` |
+| F13C/informational-encoded-output-publication-owner-binding | — | `Publication pointer/token equality does not supply the normative transport-AU index or source generation; local AU=s-2 remains unchanged.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14/authenticated-bit-compaction | — | `Stateless bit-stream projection; no frame, source, AU, or programme clock is owned.` |
 | F14/hmac-sha256-primitive | — | `Stateless byte primitive; no AU, source, programme, or history clock is owned.` |

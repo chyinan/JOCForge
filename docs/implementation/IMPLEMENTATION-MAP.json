@@ -17689,224 +17689,321 @@
           "implementation_inventory": [],
           "test_inventory": []
         },
+                                                                                                                                                                                                                                                                {
+                                                                                                                                  "slice_id": "informational-root-history-single-element-stop",
+                                                                                                                                  "mapping_status": "WASHED_FOUR_POINT_ROOT_HISTORY_RECEIPT_CONFIRMS_CONTROL_SCALARS__CONSUMER_JOIN_OPEN",
+                                                                                                                                  "implementation_status": "INFORMATIONAL_ONLY_ROOT_HISTORY_BRANCH_STOPPED__NO_CONSUMER_AU_OR_SOURCE_BINDING",
+                                                                                                                                  "scope": "A hash-bound four-point receipt follows two non-payload root-owned U32 control/history scalars across one root and higher invocation; these scalars remain not an AU. The contiguous-buffer receipt now closes its own direct-consumer buffer identity: CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1 binds the post-consumer contiguous destination through the heap vector to its direct consumer. ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1 separately observes four nested WriteFile calls, but no cross-package invocation join ties those calls to these scalars or to that buffer receipt. Stop enumerating adjacent root-history scalars and stop this branch; keep semantic AU index and source generation UNBOUND. Local source s uses AU=s-2 (j=s-2) under the approved clock.",
+                                                                                                                                  "owner": "joc",
+                                                                                                                                  "implementation_requirement": false,
+                                                                                                                                  "implementation_files": [],
+                                                                                                                                  "clock": {
+                                                                                                                                    "domains": [],
+                                                                                                                                    "covered_clauses": [
+                                                                                                                                      "A higher-invocation/root-history receipt is not a consumer generation, source generation, ADM sample, or transport AU clock."
+                                                                                                                                    ]
+                                                                                                                                  },
+                                                                                                                                  "parameters": {
+                                                                                                                                    "kind": "HASH_BOUND_INFORMATIONAL_ROOT_HISTORY_CONTROL_SCALAR_STOP",
+                                                                                                                                    "provider_files": [
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/MANIFEST.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/CONTRACT.md",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/WASH-VERIFICATION.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/MANIFEST.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/CONTRACT.md",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/WASH-VERIFICATION.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/MANIFEST.json"
+                                                                                                                                    ],
+                                                                                                                                    "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe",
+                                                                                                                                    "validation_boundary": "Four points bind same root and higher invocation only; control/history scalar values are not payload or consumer identity.",
+                                                                                                                                    "followup_buffer_identity_receipt": {
+                                                                                                                                      "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+                                                                                                                                      "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+                                                                                                                                      "status": "CONTIGUOUS_BUFFER_IDENTITY_BOUND; SEPARATE_WRITEFILE_PUBLICATION_OBSERVED_NOT_CROSS_JOINED; AU_AND_SOURCE_UNBOUND"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "test_modules": [],
+                                                                                                                                  "vectors": {
+                                                                                                                                    "kind": "HASH_BOUND_INFORMATIONAL_FOUR_POINT_RECEIPT_NO_EXPECTED_OUTPUTS",
+                                                                                                                                    "authoritative_vectors": [
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/STATUS.json"
+                                                                                                                                    ],
+                                                                                                                                    "case_pointers": [
+                                                                                                                                      "Elements A and B are root-owned U32 control/history scalars with no payload bytes.",
+                                                                                                                                      "Same root/higher invocation; both scalars are zero before shift, after shift, at writer stage, and in the common record.",
+                                                                                                                                      "Serializer-consumer writes neither scalar; consumer_N to writer_N+1 remains unbound.",
+                                                                                                                                      "Stop adjacent scalar enumeration; next target is a real contiguous payload/descriptor receipt and downstream consumer."
+                                                                                                                                    ],
+                                                                                                                                    "expected_outputs_included": false,
+                                                                                                                                    "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe",
+                                                                                                                                    "followup_buffer_identity_receipt": {
+                                                                                                                                      "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+                                                                                                                                      "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+                                                                                                                                      "status": "CONTIGUOUS_BUFFER_IDENTITY_BOUND; SEPARATE_WRITEFILE_PUBLICATION_OBSERVED_NOT_CROSS_JOINED; AU_AND_SOURCE_UNBOUND"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "not_run": [
+                                                                                                                                    "Owner-selected token/counter slot to selected transport-AU descriptor or enqueue consumer identity.",
+                                                                                                                                    "Source-generation identity.",
+                                                                                                                                    "Transport-AU rule and product acceptance."
+                                                                                                                                  ],
+                                                                                                                                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                                                                                                                                  "implementation_inventory": [],
+                                                                                                                                  "test_inventory": []
+                                                                                                                                },
+                                                                                                                                                                                                                                                                {
+                                                                                                                                  "slice_id": "informational-contiguous-destination-direct-consumer-identity",
+                                                                                                                                  "mapping_status": "WASHED_BUFFER_IDENTITY_BOUND__SEPARATE_PUBLICATION_PATH_NOT_CROSS_JOINED",
+                                                                                                                                  "implementation_status": "BUFFER_RECEIPT_CLOSED__CROSS_PACKAGE_CALL_IDENTITY_AND_AU_OPEN",
+                                                                                                                                  "scope": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1 still binds its own finalized per-lane copy to a contiguous range, heap vector and direct consumer buffer identity. ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1 separately observes four nested WriteFile calls with the same pointer/4096-byte request and target EC3 handle on its bounded path. No same-invocation/source receipt joins that WriteFile path to this exact contiguous-consumer receipt, so preserve the buffer facts without merging the two call identities. This remains BUFFER_IDENTITY_RECEIPT_ONLY; NO_AU_RULE. Transport-AU semantic index and source generation remain UNBOUND.",
+                                                                                                                                  "owner": "joc",
+                                                                                                                                  "implementation_requirement": false,
+                                                                                                                                  "implementation_files": [],
+                                                                                                                                  "clock": {
+                                                                                                                                    "domains": [],
+                                                                                                                                    "covered_clauses": [
+                                                                                                                                      "Same outer invocation and buffer identity do not define a transport-AU or source-generation clock."
+                                                                                                                                    ]
+                                                                                                                                  },
+                                                                                                                                  "parameters": {
+                                                                                                                                    "kind": "HASH_BOUND_INFORMATIONAL_CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_RECEIPT",
+                                                                                                                                    "provider_files": [
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/MANIFEST.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/CONTRACT.md",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/WASH-VERIFICATION.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/MANIFEST.json"
+                                                                                                                                    ],
+                                                                                                                                    "supplement_manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+                                                                                                                                    "candidate_source_manifest_sha256": "5704d4464bf9e999bf34d8b2613477fb2a60becaee37a22e129af4d219e52c9e",
+                                                                                                                                    "validation_boundary": "Post-consumer buffer identity through direct consumer only; transport AU and source-generation remain unbound.",
+                                                                                                                                    "followup_buffer_identity_receipt": {
+                                                                                                                                      "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+                                                                                                                                      "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+                                                                                                                                      "status": "CONTIGUOUS_BUFFER_IDENTITY_BOUND; SEPARATE_WRITEFILE_PUBLICATION_OBSERVED_NOT_CROSS_JOINED; AU_AND_SOURCE_UNBOUND"
+                                                                                                                                    },
+                                                                                                                                    "separate_publication_receipt": {
+                                                                                                                                      "package_id": "ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1",
+                                                                                                                                      "manifest_sha256": "9fb42b04a0ca8e2e0c88c066db5f41f7c155f536aca234410a0fd1a90ed79b5d",
+                                                                                                                                      "status": "4 direct WriteFile receipts bound to target EC3 handle, active owner token, data pointer and 4096-byte length; AU/source remain unbound"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "test_modules": [],
+                                                                                                                                  "vectors": {
+                                                                                                                                    "kind": "HASH_BOUND_INFORMATIONAL_BUFFER_IDENTITY_RECEIPT_NO_EXPECTED_OUTPUTS",
+                                                                                                                                    "authoritative_vectors": [
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/STATUS.json"
+                                                                                                                                    ],
+                                                                                                                                    "case_pointers": [
+                                                                                                                                      "Post-consumer finalized copy is 2048 words/4096 bytes to a contiguous caller-owned range.",
+                                                                                                                                      "Heap vector copies the same contiguous range and exports begin/end in the same outer invocation.",
+                                                                                                                                      "Direct consumer receives vector begin, 4096 bytes, mode 1, same call chain.",
+                                                                                                                                      "Owner-selected token/counter is observed but not bound to selected transport AU; source generation remains unbound."
+                                                                                                                                    ],
+                                                                                                                                    "expected_outputs_included": false,
+                                                                                                                                    "supplement_manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+                                                                                                                                    "followup_buffer_identity_receipt": {
+                                                                                                                                      "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
+                                                                                                                                      "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
+                                                                                                                                      "status": "CONTIGUOUS_BUFFER_IDENTITY_BOUND; SEPARATE_WRITEFILE_PUBLICATION_OBSERVED_NOT_CROSS_JOINED; AU_AND_SOURCE_UNBOUND"
+                                                                                                                                    },
+                                                                                                                                    "separate_publication_receipt": {
+                                                                                                                                      "package_id": "ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1",
+                                                                                                                                      "manifest_sha256": "9fb42b04a0ca8e2e0c88c066db5f41f7c155f536aca234410a0fd1a90ed79b5d",
+                                                                                                                                      "status": "4 direct WriteFile receipts bound to target EC3 handle, active owner token, data pointer and 4096-byte length; AU/source remain unbound"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "not_run": [
+                                                                                                                                    "Same-invocation/source identity join between this contiguous consumer receipt and the separate WriteFile receipt.",
+                                                                                                                                    "Owner-selected token/counter slot to semantic transport-AU identity.",
+                                                                                                                                    "Source-generation identity and any broader AU rule."
+                                                                                                                                  ],
+                                                                                                                                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                                                                                                                                  "implementation_inventory": [],
+                                                                                                                                  "test_inventory": []
+                                                                                                                                },
+                                                                                                                                                                                                                                                                {
+                                                                                                                                  "slice_id": "informational-au-token-equality-not-au",
+                                                                                                                                  "mapping_status": "SUPERSEDED_BY_HASH_BOUND_WRITEFILE_PUBLICATION__AU_INDEX_AND_SOURCE_UNBOUND",
+                                                                                                                                  "implementation_status": "ORIGINAL_VALIDATION_ONLY_BOUNDARY_SUPERSEDED__NO_AU_RULE",
+                                                                                                                                  "scope": "AU-TOKEN-EQUALITY-NOT-RUN-V1 remains valid for its original bounded static helper path, but its broader validation-only/publication-exclusion conclusion is superseded by ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1. The newer package binds four direct WriteFile calls to one active owner token, the target EC3 handle and the same data pointer/requested 4096-byte length across a run reporting 64 successful helper entries. It does not establish that the original threshold-selected token is a semantic AU identifier. Transport-AU semantic index and source generation remain UNBOUND; local source s uses AU=s-2 (j=s-2) under the approved clock.",
+                                                                                                                                  "owner": "joc",
+                                                                                                                                  "implementation_requirement": false,
+                                                                                                                                  "implementation_files": [],
+                                                                                                                                  "clock": {
+                                                                                                                                    "domains": [],
+                                                                                                                                    "covered_clauses": [
+                                                                                                                                      "The helper token is a validation/search input, not a source index or transport-AU clock; the approved local AU numbering remains AU=j=s-2."
+                                                                                                                                    ]
+                                                                                                                                  },
+                                                                                                                                  "parameters": {
+                                                                                                                                    "kind": "HASH_BOUND_INFORMATIONAL_AU_TOKEN_NEGATIVE_SCOPE_STOP",
+                                                                                                                                    "provider_files": [
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/MANIFEST.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/CONTRACT.md",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/EDGE-STATUS.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/WASH-VERIFICATION.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/MANIFEST.json"
+                                                                                                                                    ],
+                                                                                                                                    "supplement_manifest_sha256": "fbdf41b86815bc14ccc83566d85653ac79cf68690de6eadcf2daa7aa9c594593",
+                                                                                                                                    "candidate_source_manifest_sha256": "eab391fbd55e0da6c7f0d5a2f456bd24a979cecef4d83ede4a433606a5c42a1b",
+                                                                                                                                    "validation_boundary": "Counter-0 slot equals the direct validation-helper token only; no transport-AU or source-generation identity follows.",
+                                                                                                                                    "superseding_publication_receipt": {
+                                                                                                                                      "package_id": "ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1",
+                                                                                                                                      "manifest_sha256": "9fb42b04a0ca8e2e0c88c066db5f41f7c155f536aca234410a0fd1a90ed79b5d",
+                                                                                                                                      "status": "4 direct WriteFile receipts bound to target EC3 handle, active owner token, data pointer and 4096-byte length; AU/source remain unbound"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "test_modules": [],
+                                                                                                                                  "vectors": {
+                                                                                                                                    "kind": "HASH_BOUND_NEGATIVE_SCOPE_RECEIPT_NO_EXPECTED_OUTPUTS",
+                                                                                                                                    "authoritative_vectors": [
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/EDGE-STATUS.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/STATUS.json"
+                                                                                                                                    ],
+                                                                                                                                    "case_pointers": [
+                                                                                                                                      "Counter 0 selects a non-null token and passes it unchanged to the validation/search helper.",
+                                                                                                                                      "The helper returns a position or length sentinel; a non-length result is a validation failure.",
+                                                                                                                                      "No transport enqueue/AU descriptor is reached; AU token remains NOT_RUN/UNBOUND and source generation remains UNBOUND.",
+                                                                                                                                      "Stop this token branch; the approved local source-clock AU=j=s-2 remains independently applicable."
+                                                                                                                                    ],
+                                                                                                                                    "expected_outputs_included": false,
+                                                                                                                                    "supplement_manifest_sha256": "fbdf41b86815bc14ccc83566d85653ac79cf68690de6eadcf2daa7aa9c594593",
+                                                                                                                                    "superseding_publication_receipt": {
+                                                                                                                                      "package_id": "ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1",
+                                                                                                                                      "manifest_sha256": "9fb42b04a0ca8e2e0c88c066db5f41f7c155f536aca234410a0fd1a90ed79b5d",
+                                                                                                                                      "status": "4 direct WriteFile receipts bound to target EC3 handle, active owner token, data pointer and 4096-byte length; AU/source remain unbound"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "not_run": [
+                                                                                                                                    "Join of the threshold-selected token to the active WriteFile owner token and semantic AU index.",
+                                                                                                                                    "Source-generation identity.",
+                                                                                                                                    "Native full-song execution and product acceptance."
+                                                                                                                                  ],
+                                                                                                                                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                                                                                                                                  "implementation_inventory": [],
+                                                                                                                                  "test_inventory": []
+                                                                                                                                },
+                                                                                                                                                                                                                                                                {
+                                                                                                                                  "slice_id": "informational-transport-publication-entry-not-observed",
+                                                                                                                                  "mapping_status": "SUPERSEDED_BY_HASH_BOUND_WRITEFILE_PUBLICATION__AU_INDEX_AND_SOURCE_UNBOUND",
+                                                                                                                                  "implementation_status": "PUBLICATION_OBSERVED_ON_BOUNDED_PATH__AU_AND_SOURCE_UNBOUND",
+                                                                                                                                  "scope": "TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1 records its bounded path only; its broader absence conclusion is superseded by ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1. The newer receipt directly observed four nested WriteFile calls to the target EC3 handle on the helper thread, using its active owner token and the same data pointer and 4096-byte request; 64 helper entries/returns are not 64 direct WriteFile captures. Semantic transport-AU index and source generation remain UNBOUND. Local AU=s-2 remains unchanged.",
+                                                                                                                                  "owner": "joc",
+                                                                                                                                  "implementation_requirement": false,
+                                                                                                                                  "implementation_files": [],
+                                                                                                                                  "clock": {
+                                                                                                                                    "domains": [],
+                                                                                                                                    "covered_clauses": [
+                                                                                                                                      "The absent native publication anchor does not block or replace the approved local AU=j=s-2 source-clock rule."
+                                                                                                                                    ]
+                                                                                                                                  },
+                                                                                                                                  "parameters": {
+                                                                                                                                    "kind": "HASH_BOUND_INFORMATIONAL_TRANSPORT_PUBLICATION_NEGATIVE_SCOPE",
+                                                                                                                                    "provider_files": [
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/MANIFEST.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/CONTRACT.md",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/VERIFICATION.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/MANIFEST.json"
+                                                                                                                                    ],
+                                                                                                                                    "supplement_manifest_sha256": "0ad98657372d5a84524b90e53063b479dfffc2459f6ec52af9c1e520ab4d0aba",
+                                                                                                                                    "candidate_source_manifest_sha256": "59ce1d5f01dcf0dc4640d5c230762820b3113822a0c4b88556138a44d2354627",
+                                                                                                                                    "validation_boundary": "No publication entry or AU-descriptor owner was observed; native AU/source remain unbound.",
+                                                                                                                                    "superseding_publication_receipt": {
+                                                                                                                                      "package_id": "ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1",
+                                                                                                                                      "manifest_sha256": "9fb42b04a0ca8e2e0c88c066db5f41f7c155f536aca234410a0fd1a90ed79b5d",
+                                                                                                                                      "status": "4 direct WriteFile receipts bound to target EC3 handle, active owner token, data pointer and 4096-byte length; AU/source remain unbound"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "test_modules": [],
+                                                                                                                                  "vectors": {
+                                                                                                                                    "kind": "HASH_BOUND_NEGATIVE_SCOPE_NO_EXPECTED_OUTPUTS",
+                                                                                                                                    "authoritative_vectors": [
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/CONTRACT.md",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/VERIFICATION.json",
+                                                                                                                                      "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/STATUS.json"
+                                                                                                                                    ],
+                                                                                                                                    "case_pointers": [
+                                                                                                                                      "The validation vector is released before publication and the token remains validation/search only.",
+                                                                                                                                      "No independent enqueue, AU descriptor or production output owner was observed.",
+                                                                                                                                      "Transport AU and source generation are unbound; local AU=s-2 remains the approved clock."
+                                                                                                                                    ],
+                                                                                                                                    "expected_outputs_included": false,
+                                                                                                                                    "supplement_manifest_sha256": "0ad98657372d5a84524b90e53063b479dfffc2459f6ec52af9c1e520ab4d0aba",
+                                                                                                                                    "superseding_publication_receipt": {
+                                                                                                                                      "package_id": "ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1",
+                                                                                                                                      "manifest_sha256": "9fb42b04a0ca8e2e0c88c066db5f41f7c155f536aca234410a0fd1a90ed79b5d",
+                                                                                                                                      "status": "4 direct WriteFile receipts bound to target EC3 handle, active owner token, data pointer and 4096-byte length; AU/source remain unbound"
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "not_run": [
+                                                                                                                                    "Join from the active WriteFile owner token to a normative transport-AU semantic index.",
+                                                                                                                                    "Source-generation identity.",
+                                                                                                                                    "Native whole-programme execution and product acceptance."
+                                                                                                                                  ],
+                                                                                                                                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                                                                                                                                  "implementation_inventory": [],
+                                                                                                                                  "test_inventory": []
+                                                                                                                                },
         {
-          "slice_id": "informational-root-history-single-element-stop",
-          "mapping_status": "WASHED_FOUR_POINT_ROOT_HISTORY_RECEIPT_CONFIRMS_CONTROL_SCALARS__CONSUMER_JOIN_OPEN",
-          "implementation_status": "INFORMATIONAL_ONLY_ROOT_HISTORY_BRANCH_STOPPED__NO_CONSUMER_AU_OR_SOURCE_BINDING",
-          "scope": "A hash-bound four-point receipt follows two non-payload root-owned U32 control/history scalars across before-shift, after-shift, writer-stage and post-serializer common-record points in one root and higher invocation. Both values are zero at every point; serializer-consumer does not write them. The scalars carry no consumer-output identity and cannot close consumer_N to writer_N+1. Stop enumerating adjacent root-history scalars. The follow-on actual payload/descriptor receipt in CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1 now closes post-consumer contiguous destination -> heap vector -> direct consumer buffer identity (4096 bytes) in one call chain. It still does not bind the owner-selected token/counter slot to a transport AU or bind source generation; the common record is not an AU.",
+          "slice_id": "informational-encoded-output-publication-owner-binding",
+          "mapping_status": "WASHED_NESTED_WRITEFILE_PUBLICATION_BOUND__AU_INDEX_AND_SOURCE_UNBOUND",
+          "implementation_status": "INFORMATIONAL_ONLY_EC3_HANDLE_OWNER_POINTER_LENGTH_BOUND__NO_AU_RULE",
+          "scope": "ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1 supersedes prior validation-only/vector-before-publication absence conclusions. One bounded run reports 64 helper entries and 64 successful 4096-byte returns; it directly captures four nested WriteFile calls to the target EC3 handle on the helper thread, with the same active owner token and matching data pointer/4096-byte request. The temporary vector is released after publication. Do not claim 64 direct WriteFile captures. This binds a publication sink/active owner token/pointer/length on that bounded path only; the normative transport-AU semantic index and source generation remain UNBOUND. Local AU=s-2 remains the approved clock.",
           "owner": "joc",
           "implementation_requirement": false,
           "implementation_files": [],
           "clock": {
             "domains": [],
             "covered_clauses": [
-              "A higher-invocation/root-history receipt is not a consumer generation, source generation, ADM sample, or transport AU clock."
+              "Publication pointer/token equality does not supply the normative transport-AU index or source generation; local AU=s-2 remains unchanged."
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_INFORMATIONAL_ROOT_HISTORY_CONTROL_SCALAR_STOP",
+            "kind": "HASH_BOUND_INFORMATIONAL_ENCODED_OUTPUT_PUBLICATION_RECEIPT",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/WASH-VERIFICATION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/STATUS.json"
             ],
-            "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe",
-            "validation_boundary": "Four points bind same root and higher invocation only; control/history scalar values are not payload or consumer identity.",
-            "followup_buffer_identity_receipt": {
-              "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
-              "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
-              "status": "CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_BOUND; TRANSPORT_AU_AND_SOURCE_GENERATION_UNBOUND"
-            }
+            "supplement_manifest_sha256": "9fb42b04a0ca8e2e0c88c066db5f41f7c155f536aca234410a0fd1a90ed79b5d",
+            "candidate_source_manifest_sha256": "b7400592ccc469972824d080952865f46ee4936c04f6516204f7b3a2473c53c2",
+            "counts": {
+              "helper_entries": 64,
+              "successful_returns": 64,
+              "bytes_each": 4096,
+              "direct_nested_writefile_receipts": 4
+            },
+            "publication_binding": "TARGET_EC3_HANDLE__SAME_THREAD_ACTIVE_OWNER_TOKEN__SAME_DATA_POINTER_AND_LENGTH",
+            "transport_au_semantic_index": "UNBOUND",
+            "source_generation": "UNBOUND",
+            "validation_boundary": "The package binds four direct writes only; it does not assign a transport-AU index or source generation."
           },
           "test_modules": [],
           "vectors": {
-            "kind": "HASH_BOUND_INFORMATIONAL_FOUR_POINT_RECEIPT_NO_EXPECTED_OUTPUTS",
+            "kind": "HASH_BOUND_STATIC_AND_DYNAMIC_PUBLICATION_STATUS_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ENCODED-OUTPUT-PUBLICATION-OWNER-BINDING-V1/STATUS.json"
             ],
             "case_pointers": [
-              "Elements A and B are root-owned U32 control/history scalars with no payload bytes.",
-              "Same root/higher invocation; both scalars are zero before shift, after shift, at writer stage, and in the common record.",
-              "Serializer-consumer writes neither scalar; consumer_N to writer_N+1 remains unbound.",
-              "Stop adjacent scalar enumeration; next target is a real contiguous payload/descriptor receipt and downstream consumer."
+              "64 helper entries and 64 successful 4096-byte returns were reported; this is not 64 direct WriteFile captures.",
+              "Four nested WriteFile calls target the EC3 handle on the same helper thread with the same active owner token and data pointer/length.",
+              "The temporary vector is released after publication.",
+              "AU semantic index and source generation remain unbound; local AU=s-2 remains governed by the approved clock."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe",
-            "followup_buffer_identity_receipt": {
-              "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
-              "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
-              "status": "CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_BOUND; TRANSPORT_AU_AND_SOURCE_GENERATION_UNBOUND"
-            }
+            "supplement_manifest_sha256": "9fb42b04a0ca8e2e0c88c066db5f41f7c155f536aca234410a0fd1a90ed79b5d"
           },
           "not_run": [
-            "Owner-selected token/counter slot to selected transport-AU descriptor or enqueue consumer identity.",
-            "Source-generation identity.",
-            "Transport-AU rule and product acceptance."
-          ],
-          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
-          "implementation_inventory": [],
-          "test_inventory": []
-        },
-        {
-          "slice_id": "informational-contiguous-destination-direct-consumer-identity",
-          "mapping_status": "WASHED_CONTIGUOUS_DESTINATION_TO_DIRECT_CONSUMER_BUFFER_IDENTITY__TRANSPORT_AU_OPEN",
-          "implementation_status": "INFORMATIONAL_ONLY_4096_BYTE_BUFFER_IDENTITY_RECEIPT__NO_AU_OR_SOURCE_GENERATION_RULE",
-          "scope": "One hash-bound receipt follows the post-consumer finalized per-lane copy (2048 words/4096 bytes) into a caller-owned contiguous range, then into a heap vector and a direct consumer in the same outer invocation. The vector source equals the contiguous destination, its begin/end are exported, and the consumer pointer equals vector begin with 4096 bytes and mode 1. This closes buffer identity through the direct consumer only. An owner-selected token/counter was observed, but its slot-to-transport-AU identity is UNBOUND; source generation is also UNBOUND. This is BUFFER_IDENTITY_RECEIPT_ONLY; NO_AU_RULE.",
-          "owner": "joc",
-          "implementation_requirement": false,
-          "implementation_files": [],
-          "clock": {
-            "domains": [],
-            "covered_clauses": [
-              "Same outer invocation and buffer identity do not define a transport-AU or source-generation clock."
-            ]
-          },
-          "parameters": {
-            "kind": "HASH_BOUND_INFORMATIONAL_CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_RECEIPT",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/WASH-VERIFICATION.json"
-            ],
-            "supplement_manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
-            "candidate_source_manifest_sha256": "5704d4464bf9e999bf34d8b2613477fb2a60becaee37a22e129af4d219e52c9e",
-            "validation_boundary": "Post-consumer buffer identity through direct consumer only; transport AU and source-generation remain unbound.",
-            "followup_buffer_identity_receipt": {
-              "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
-              "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
-              "status": "CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_BOUND; TRANSPORT_AU_AND_SOURCE_GENERATION_UNBOUND"
-            }
-          },
-          "test_modules": [],
-          "vectors": {
-            "kind": "HASH_BOUND_INFORMATIONAL_BUFFER_IDENTITY_RECEIPT_NO_EXPECTED_OUTPUTS",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1/EDGE-STATUS.json"
-            ],
-            "case_pointers": [
-              "Post-consumer finalized copy is 2048 words/4096 bytes to a contiguous caller-owned range.",
-              "Heap vector copies the same contiguous range and exports begin/end in the same outer invocation.",
-              "Direct consumer receives vector begin, 4096 bytes, mode 1, same call chain.",
-              "Owner-selected token/counter is observed but not bound to selected transport AU; source generation remains unbound."
-            ],
-            "expected_outputs_included": false,
-            "supplement_manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
-            "followup_buffer_identity_receipt": {
-              "package_id": "CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1",
-              "manifest_sha256": "8ecca1cc333e9742ce4a37815feb08daa75980c8acf6a2f4b3e2273f2ebd6b42",
-              "status": "CONTIGUOUS_BUFFER_TO_DIRECT_CONSUMER_BOUND; TRANSPORT_AU_AND_SOURCE_GENERATION_UNBOUND"
-            }
-          },
-          "not_run": [
-            "Owner-selected token/counter slot to selected transport-AU descriptor or enqueue consumer identity.",
-            "Source-generation identity.",
-            "AU rule, production encoding, native execution and product acceptance."
-          ],
-          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
-          "implementation_inventory": [],
-          "test_inventory": []
-        },
-        {
-          "slice_id": "informational-au-token-equality-not-au",
-          "mapping_status": "WASHED_COUNTER0_TOKEN_TO_VALIDATION_HELPER_BOUND__AU_AND_SOURCE_UNBOUND",
-          "implementation_status": "NEGATIVE_SCOPE_ONLY_STOP_TOKEN_BRANCH__NO_AU_RULE",
-          "scope": "The bounded Wash path observes counter 0 selecting a non-null token and passing it unchanged to a direct helper. The helper returns a position or the 4096-byte length sentinel; the caller compares the result with 4096 and treats a non-length result as validation failure. This binds slot-to-validation-helper token equality only. The helper is not a transport enqueue or AU descriptor. Selected transport AU identity is NOT_RUN/UNBOUND and source generation is UNBOUND. Stop this token branch; only the first caller-side transport publication boundary after the processing loop returns could add evidence. This does not block or replace the separately approved local source-clock numbering AU=j=s-2.",
-          "owner": "joc",
-          "implementation_requirement": false,
-          "implementation_files": [],
-          "clock": {
-            "domains": [],
-            "covered_clauses": [
-              "The helper token is a validation/search input, not a source index or transport-AU clock; the approved local AU numbering remains AU=j=s-2."
-            ]
-          },
-          "parameters": {
-            "kind": "HASH_BOUND_INFORMATIONAL_AU_TOKEN_NEGATIVE_SCOPE_STOP",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/EDGE-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/WASH-VERIFICATION.json"
-            ],
-            "supplement_manifest_sha256": "fbdf41b86815bc14ccc83566d85653ac79cf68690de6eadcf2daa7aa9c594593",
-            "candidate_source_manifest_sha256": "eab391fbd55e0da6c7f0d5a2f456bd24a979cecef4d83ede4a433606a5c42a1b",
-            "validation_boundary": "Counter-0 slot equals the direct validation-helper token only; no transport-AU or source-generation identity follows."
-          },
-          "test_modules": [],
-          "vectors": {
-            "kind": "HASH_BOUND_NEGATIVE_SCOPE_RECEIPT_NO_EXPECTED_OUTPUTS",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/AU-TOKEN-EQUALITY-NOT-RUN-V1/EDGE-STATUS.json"
-            ],
-            "case_pointers": [
-              "Counter 0 selects a non-null token and passes it unchanged to the validation/search helper.",
-              "The helper returns a position or length sentinel; a non-length result is a validation failure.",
-              "No transport enqueue/AU descriptor is reached; AU token remains NOT_RUN/UNBOUND and source generation remains UNBOUND.",
-              "Stop this token branch; the approved local source-clock AU=j=s-2 remains independently applicable."
-            ],
-            "expected_outputs_included": false,
-            "supplement_manifest_sha256": "fbdf41b86815bc14ccc83566d85653ac79cf68690de6eadcf2daa7aa9c594593"
-          },
-          "not_run": [
-            "First caller-side transport publication boundary after the processing loop returns.",
-            "Selected transport-AU identity and source generation.",
-            "Native execution, production encoding and product acceptance."
-          ],
-          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
-          "implementation_inventory": [],
-          "test_inventory": []
-        },
-        {
-          "slice_id": "informational-transport-publication-entry-not-observed",
-          "mapping_status": "WASHED_TRANSPORT_PUBLICATION_ENTRY_NOT_OBSERVED__AU_AND_SOURCE_UNBOUND",
-          "implementation_status": "NEGATIVE_SCOPE_ONLY_NO_PUBLICATION_ANCHOR__LOCAL_AU_CLOCK_UNCHANGED",
-          "scope": "The bounded validation-vector path ends before publication: the temporary vector is released, the threshold-selected token serves validation/search only, and root-history scalars carry control state. No independent transport enqueue, AU-descriptor consumer or production output owner was observed. Selected transport AU is NOT_RUN/UNBOUND and source generation is UNBOUND. Local AU=s-2 remains governed by the approved source clock. The next useful evidence target is an independent backend output callback or writer-facing descriptor; do not reuse the validation vector or token.",
-          "owner": "joc",
-          "implementation_requirement": false,
-          "implementation_files": [],
-          "clock": {
-            "domains": [],
-            "covered_clauses": [
-              "The absent native publication anchor does not block or replace the approved local AU=j=s-2 source-clock rule."
-            ]
-          },
-          "parameters": {
-            "kind": "HASH_BOUND_INFORMATIONAL_TRANSPORT_PUBLICATION_NEGATIVE_SCOPE",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/VERIFICATION.json"
-            ],
-            "supplement_manifest_sha256": "0ad98657372d5a84524b90e53063b479dfffc2459f6ec52af9c1e520ab4d0aba",
-            "candidate_source_manifest_sha256": "59ce1d5f01dcf0dc4640d5c230762820b3113822a0c4b88556138a44d2354627",
-            "validation_boundary": "No publication entry or AU-descriptor owner was observed; native AU/source remain unbound."
-          },
-          "test_modules": [],
-          "vectors": {
-            "kind": "HASH_BOUND_NEGATIVE_SCOPE_NO_EXPECTED_OUTPUTS",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1/VERIFICATION.json"
-            ],
-            "case_pointers": [
-              "The validation vector is released before publication and the token remains validation/search only.",
-              "No independent enqueue, AU descriptor or production output owner was observed.",
-              "Transport AU and source generation are unbound; local AU=s-2 remains the approved clock."
-            ],
-            "expected_outputs_included": false,
-            "supplement_manifest_sha256": "0ad98657372d5a84524b90e53063b479dfffc2459f6ec52af9c1e520ab4d0aba"
-          },
-          "not_run": [
-            "Independent backend output callback or writer-facing descriptor and owner token.",
-            "Selected transport-AU identity and source generation.",
-            "Native execution, end-to-end encoding and product acceptance."
+            "Normative transport-AU semantic index and source-generation identity.",
+            "Cross-package join to the exact CONTIGUOUS-DESTINATION-CONSUMER-RECEIPT-V1 invocation.",
+            "Full-song native execution, product acceptance and end-to-end encoder output."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],

@@ -320,6 +320,7 @@
 | F13C/informational-contiguous-destination-direct-consumer-identity | F13C | `joc` |
 | F13C/informational-au-token-equality-not-au | F13C | `joc` |
 | F13C/informational-transport-publication-entry-not-observed | F13C | `joc` |
+| F13C/informational-encoded-output-publication-owner-binding | F13C | `joc` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |

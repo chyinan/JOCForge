@@ -1,0 +1,3 @@
+# Encoded output publication receipt
+
+Supersedes the earlier validation-only and no-publication conclusions: one bounded run reports 64 helper entries and successful 4096-byte returns. Four nested WriteFile calls were directly captured on the target EC3 handle, on the helper's thread, with its active owner token and matching data pointer/4096-byte request. The temporary vector is released after publication. These are 64 reported publication chunks, with four direct nested WriteFile receipts; do not claim 64 captured WriteFile calls. Normative AU semantic index and source generation remain UNBOUND. No payload, code, addresses or keys are included.

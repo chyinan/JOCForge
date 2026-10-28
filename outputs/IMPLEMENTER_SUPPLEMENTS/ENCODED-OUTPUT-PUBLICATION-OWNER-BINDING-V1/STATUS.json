@@ -1,0 +1,21 @@
+{
+  "source_manifest_sha256": "b7400592ccc469972824d080952865f46ee4936c04f6516204f7b3a2473c53c2",
+  "source_payloads_verified": "2/2",
+  "helper_entries": 64,
+  "helper_success_returns": 64,
+  "bytes_each": 4096,
+  "direct_nested_writefile_receipts": 4,
+  "same_thread": true,
+  "same_active_owner_token": true,
+  "same_data_pointer_and_length": true,
+  "target_ec3_handle": true,
+  "transport_AU_semantic_index": "UNBOUND",
+  "source_generation": "UNBOUND",
+  "supersedes": [
+    "AU-TOKEN-EQUALITY-NOT-RUN-V1 negative conclusion",
+    "CONTIGUOUS-VECTOR-PUBLICATION-BOUNDARY-V1 negative conclusion",
+    "TRANSPORT-PUBLICATION-ENTRY-NOT-OBSERVED-V1 negative conclusion",
+    "TRANSPORT-ANCHOR-SOURCE-AUDIT-V1 negative conclusion"
+  ],
+  "native_observation_independently_reproduced": false
+}
