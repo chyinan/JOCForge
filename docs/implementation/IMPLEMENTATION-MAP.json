@@ -6108,7 +6108,7 @@
           "slice_id": "prepared-job-input-domain-identity-projection",
           "mapping_status": "MATERIALIZED_LAYER_SAFE_PREPARED_JOB_IDENTITY_PROJECTION__METER_FINALIZE_OPEN",
           "implementation_status": "LOCALLY_VERIFIED_DOMAIN_OWNED_INPUT_IDENTITY_PROJECTION__TERMINAL_PREIMAGE_BLOCKED_ON_PRODUCTION_KEY_PRODUCER_AND_K_FILTER_SOURCE",
-          "scope": "Application derives and stores one immutable Domain-owned PreparedJobInputIdentity during admission from the same PreparedJobInput: whole-resource SHA/byte length, canonical config SHA plus raw XML SHA and typed F01E input kind, and ADM graph parent identity plus AXML/CHNA/DBMD chunk spans. The projection contains no path or I/O capability and rejects graph/resource identity or chunk-span mismatches. It does not compute the terminal meter root hash, mint ProgrammeMeasurementReceipt, set READY, or commit DRC Option<U5>. The frozen model contract for input_cursor.model_owner_key is now closed as an ordinary non-empty Python string with no derivation rule; the production key producer/call receipt and attempt+1 policy remain UNBOUND. The K-filter exponent owner/type source remains UNBOUND, so no terminal meter hash, MeasurementReceipt or READY proposal is emitted. V2 closes the frozen model callsite search to two Panner initializers only; no external Meter-root caller or production owner-key producer was found. The production owner-key receipt remains UNBOUND, and the separate K-filter owner/type source remains UNBOUND. V2 closes the frozen model callsite search to two Panner initializers only; no external Meter-root caller or production owner-key producer was found. The production owner-key receipt remains UNBOUND, and the separate K-filter owner/type source remains UNBOUND. V2 closes the frozen model callsite search to two Panner initializers only; no external Meter-root caller or production owner-key producer was found. The production owner-key receipt remains UNBOUND, and the separate K-filter owner/type source remains UNBOUND.",
+          "scope": "Application derives and stores one immutable Domain-owned PreparedJobInputIdentity during admission from the same PreparedJobInput: whole-resource SHA/byte length, canonical config SHA plus raw XML SHA and typed F01E input kind, and ADM graph parent identity plus AXML/CHNA/DBMD chunk spans. The projection contains no path or I/O capability and rejects graph/resource identity or chunk-span mismatches. It does not compute the terminal meter root hash, mint ProgrammeMeasurementReceipt, set READY, or commit DRC Option<U5>. The frozen model contract for input_cursor.model_owner_key is closed as an ordinary non-empty string; V2 found only two Panner initializer callsites and no Meter ingress caller. The production Meter key producer/call receipt remains UNBOUND. For K-filter, the approved model omits the I32 member while native static evidence distinguishes it from the energy exponent; selected DPLM constructor/cold/reset/owner remains UNBOUND, so no terminal receipt is emitted.",
           "owner": "meter",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -6140,13 +6140,21 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/FIELD-OWNER-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SIBLING-RECONCILIATION-CANDIDATE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256s": {
               "METER-FINALIZE-DOMAIN-PROPOSAL-V1": "abb560381448727aa4c88877373769aa14556a4e365e4bec82637a043155333b",
               "PREPARED-JOB-INPUT-IDENTITY-V1": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f"
             },
-            "validation_boundary": "Typed identity projection and same-resource graph provenance only; frozen owner-key model/callsite semantics are closed, but production Meter owner-key producer/call receipt and K-filter exponent owner/type source remain unbound, so no terminal hash or receipt is emitted.",
+            "validation_boundary": "Typed identity projection remains complete; terminal meter identity is blocked on production owner-key receipt and the selected DPLM K-exponent constructor/cold/reset/owner binding. The approved model omission and native static member distinction do not close these selected-root edges.",
             "field_contract_update": {
               "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
               "manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
@@ -6164,6 +6172,15 @@
               "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
               "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
               "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            },
+            "kfilter_lineage_update": {
+              "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
+              "manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
+              "model_field_status": "ABSENT_IN_APPROVED_F06W_MODEL",
+              "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
+              "selected_root_constructor_cold_reset_owner": "UNBOUND",
+              "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
             }
           },
           "test_modules": [
@@ -6178,7 +6195,10 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/SOURCE-IDENTITIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/FIELD-OWNER-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "Application integration asserts the stored projection uses the same admitted resource/config/graph values.",
@@ -6205,6 +6225,15 @@
               "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
               "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
               "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            },
+            "kfilter_lineage_update": {
+              "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
+              "manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
+              "model_field_status": "ABSENT_IN_APPROVED_F06W_MODEL",
+              "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
+              "selected_root_constructor_cold_reset_owner": "UNBOUND",
+              "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
             }
           },
           "error_outcomes": [
@@ -6232,7 +6261,7 @@
           ],
           "not_run": [
             "Terminal owners.meter canonical preimage is BLOCKED: no production input_cursor.model_owner_key producer/call receipt or same-root parent commit; frozen model callsites are limited to two Panner initializers.",
-            "Terminal owners.meter canonical preimage is BLOCKED: leaves.window_k_energy K-filter exponents have no approved owner/type source and must not be merged with energy accumulator exponents.",
+            "Terminal owners.meter canonical preimage is BLOCKED: the K-filter exponent is a native K-associated I32[6] member distinct from the energy exponent, but selected DPLM constructor/first writer/cold-reset/owner token remain UNBOUND. The sibling formula is a candidate and is not selected.",
             "Terminal meter hash, ProgrammeMeasurementReceipt, READY transition and DRC Option<U5> Some proposal remain NOT_RUN.",
             "GTC single root swap, parent reset/fatal integration and full encode remain NOT_RUN."
           ],
@@ -6363,6 +6392,69 @@
             "Same Meter root, parent generation and commit binding; no Meter ingress caller exists in the frozen model caller set.",
             "Attempt+1 owner-key renewal/reuse policy.",
             "Native static analysis/execution and terminal meter digest/MeasurementReceipt."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-kfilter-exponent-state-lineage",
+          "mapping_status": "WASHED_APPROVED_MODEL_OMISSION_AND_NATIVE_MEMBER_DISTINCTION__SELECTED_ROOT_OWNER_OPEN",
+          "implementation_status": "MODEL_FIELD_ABSENT__NATIVE_STATIC_MEMBER_DISTINCTION_CLOSED__DPLM_CONSTRUCTOR_COLD_RESET_OWNER_UNBOUND",
+          "scope": "The approved F06W model defines six-channel [2][4] F32 K-filter history and no K-filter I32 exponent array. Its energy accumulator owns a separate signed I32[6] exponent, cold value 48; that field must not substitute for K state. Native static evidence closes a distinct signed I32[6] K-associated field read by the DPLM 48 kHz reducer and a separate energy-exponent read/update; the scoped K row kernel does not write the K exponent. The selected DPLM constructor/first writer/cold/reset and state-base-to-owners.meter token remain UNBOUND. A sibling reconciliation formula is a candidate and is not selected; it is not connected to DPLM and is prohibited as the selected-root rule. Its fifth scanned F32 is not mapped to F06W. Native execution/replay and terminal meter digest/MeasurementReceipt remain NOT_RUN/BLOCKED.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The native static field distinction establishes no cold/reset, source-generation, owner-generation, or meter-root commit clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_KFILTER_FIELD_OWNER_AND_SELECTED_ROOT_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/FIELD-OWNER-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SIBLING-RECONCILIATION-CANDIDATE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
+            "candidate_source_manifest_sha256": "290988c533a9b96017eab444504d9150e36fee589d889f907718e3949117975b",
+            "model_field_status": "NOT_DEFINED_IN_APPROVED_F06W_MODEL",
+            "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
+            "selected_root_constructor_cold_reset_owner": "UNBOUND",
+            "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
+            "validation_boundary": "Static member distinction only; selected DPLM owner, constructor, reset, native runtime, and terminal receipt remain open."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "INPUT_ONLY_SYNTHETIC_FIELD_DISCRIMINATORS_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/FIELD-OWNER-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SIBLING-RECONCILIATION-CANDIDATE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Approved F06W has F32 K-filter histories [6][2][4] and no K I32 exponent member.",
+              "Energy exponent is a separate I32[6] owner with cold 48; equal type/cold values do not establish shared state.",
+              "Native static DPLM reads distinct signed I32[6] K-associated state; constructor/first writer/cold/reset and owners.meter token remain unbound.",
+              "Sibling reconciliation formula is not connected to DPLM, is not selected, and has an unmapped fifth F32 scan word."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb"
+          },
+          "not_run": [
+            "Selected DPLM K exponent constructor/first initialization/cold/reset writer.",
+            "DPLM state-base and generation receipt bound to owners.meter and the parent commit.",
+            "Sibling reconciliation candidate callgraph/owner join; do not apply it to selected DPLM.",
+            "Native execution, numeric replay, terminal meter digest and MeasurementReceipt."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
@@ -17889,9 +17981,9 @@
       "direct_slices": [
         {
           "slice_id": "informational-production-ingress-readiness-audit",
-          "mapping_status": "WASHED_STATIC_READINESS_AUDIT__F06_MODEL_CALLSITE_V2_SUPERSEDES_V1",
-          "implementation_status": "INFORMATIONAL_ONLY_MODEL_CALLSITE_CLOSED__PRODUCTION_METER_OWNER_AND_K_FILTER_SOURCE_OPEN",
-          "scope": "Read-only audit of approved clean-room contracts, types and supplements. It identifies independently implementable LOCAL_MODEL scopes for N-to-Q clocks, source0/1 suppression while building complete 4096-byte CRC-checked frames, main cached4 versus independent meter zero3 EOF, candidate-infeasibility versus fatal boundaries, F15 provider projection/hash, and source-proposal lineage. Production encode remains blocked: encode() is BackendUnavailable; ValidatedEncodingPlan and its builder are absent; the production ProgrammeOutputBinding constructor is absent and current binding/provider projection are test-support only. Same-source F06/F08/F09/F10/F11/F13 receipts and parent adapters remain incomplete. The F06 V2 package supersedes V1: the ordinary-string model contract and two Panner-only initializer callsites are closed, with no Meter ingress caller found. Production Meter owner-key producer/call receipt, root/commit binding and attempt+1 policy remain UNBOUND. The K-filter exponent owner/type source also remains UNBOUND. No terminal meter digest or MeasurementReceipt is admissible until these production receipts and the K-filter source are bound. The audit remains a readiness map, not DEE equivalence or product execution.",
+          "mapping_status": "WASHED_STATIC_READINESS_AUDIT__F06_MODEL_CALLSITE_AND_KFILTER_MEMBER_DISTINCTION_CLOSED__SELECTED_ROOT_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_MODEL_AND_STATIC_MEMBER_FACTS_CLOSED__PRODUCTION_METER_OWNERS_OPEN",
+          "scope": "Read-only audit of approved clean-room contracts, types and supplements. It identifies independently implementable LOCAL_MODEL scopes for N-to-Q clocks, source0/1 suppression while building complete 4096-byte CRC-checked frames, main cached4 versus independent meter zero3 EOF, candidate-infeasibility versus fatal boundaries, F15 provider projection/hash, and source-proposal lineage. Production encode remains blocked: encode() is BackendUnavailable; ValidatedEncodingPlan and its builder are absent; the production ProgrammeOutputBinding constructor is absent and current binding/provider projection are test-support only. Same-source F06/F08/F09/F10/F11/F13 receipts and parent adapters remain incomplete. The F06 V2 package supersedes V1: model_owner_key is ordinary identity and the two frozen callsites are Panner-only, with no external Meter ingress caller found; production Meter owner-key producer/call receipt and attempt+1 policy remain UNBOUND. For K-filter, the approved F06W model-field omission and native DPLM-versus-energy static member distinction are closed; selected DPLM constructor/first-writer/cold-reset/owner token remain UNBOUND. The sibling reconciliation formula is not selected. No terminal meter digest or MeasurementReceipt is admissible until production receipts and the selected K-filter owner are bound. The audit remains a readiness map, not DEE equivalence or product execution.",
           "owner": "output",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -17918,7 +18010,15 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/FIELD-OWNER-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SIBLING-RECONCILIATION-CANDIDATE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d",
             "audited_head": "9bf95d82822a1e74be8d448bf3fb14ecc66c9e41",
@@ -17941,6 +18041,15 @@
               "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
               "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
               "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            },
+            "kfilter_lineage_update": {
+              "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
+              "manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
+              "model_field_status": "ABSENT_IN_APPROVED_F06W_MODEL",
+              "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
+              "selected_root_constructor_cold_reset_owner": "UNBOUND",
+              "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
             }
           },
           "test_modules": [],
@@ -17953,13 +18062,19 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/SOURCE-IDENTITIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/FIELD-OWNER-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SIBLING-RECONCILIATION-CANDIDATE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/EVIDENCE-BOUNDARIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-KFILTER-EXPONENT-STATE-LINEAGE-V1/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "Local-model source-clock, suppression/CRC, EOF, candidate/fatal, F15 projection/hash and proposal-lineage scopes are identified.",
               "Product encode authority is absent; no ValidatedEncodingPlan or production output binding exists.",
-              "V2: model contract and two Panner-only initializer callsites are closed; there is no external Meter-root caller. Production Meter owner-key producer/call receipt, same-root binding, and attempt+1 policy remain UNBOUND.",
-              "No terminal meter digest or MeasurementReceipt until production owner/root receipts and the K-filter source are bound."
+              "V2: model contract and two Panner-only initializer callsites are closed; no external Meter ingress caller. Production Meter owner producer, root receipt and attempt+1 policy remain UNBOUND.",
+              "K-filter: F06W model omission and native DPLM-versus-energy static member distinction are closed; selected-root constructor/cold-reset/owner remains UNBOUND; sibling formula is not selected.",
+              "No terminal meter digest or MeasurementReceipt until production owner/root receipts and selected K-filter source are bound."
             ],
             "expected_outputs_included": false,
             "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d",
@@ -17980,12 +18095,21 @@
               "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
               "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
               "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            },
+            "kfilter_lineage_update": {
+              "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
+              "manifest_sha256": "c3c04e661b05fd5fe637b42c53211d919eb2ac653bc5c1bb76cb7ce760a327cb",
+              "model_field_status": "ABSENT_IN_APPROVED_F06W_MODEL",
+              "native_static_member_status": "DISTINCT_SIGNED_I32_6_K_ASSOCIATED_READ_CLOSED",
+              "selected_root_constructor_cold_reset_owner": "UNBOUND",
+              "sibling_formula_status": "CANDIDATE_NOT_SELECTED",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
             }
           },
           "not_run": [
             "Production encode and trusted ValidatedEncodingPlan construction.",
             "Production Meter owner-key producer/call receipt, same meter root/parent commit, and attempt+1 policy.",
-            "K-filter exponents_i32_by_channel owner/type source contract.",
+            "Selected DPLM K-exponent constructor/first writer/cold-reset/owner token; do not apply sibling formula.",
             "F06 terminal meter root/MeasurementReceipt/READY status.",
             "F08 production frame receipt and F13 production four-body barrier/parent adapter.",
             "Native execution, whole-programme execution, filesystem fault execution, and product acceptance."
@@ -19250,7 +19374,7 @@
           "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
         }
       ],
-      "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and K-filter exponent owner/type source remain unbound. Complete terminal owners.meter serialization is blocked; no terminal hash, ProgrammeMeasurementReceipt, READY proposal or parent commit exists.",
+      "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and attempt+1 policy remain unbound. For K-filter, approved F06W omits the I32 member while native static evidence distinguishes it from the separate energy exponent. Selected DPLM constructor/first-writer/cold-reset and Meter-root owner token remain unbound; the sibling formula is not selected. Complete terminal owners.meter serialization is blocked; no terminal hash, ProgrammeMeasurementReceipt, READY proposal or parent commit exists.",
       "canonical_gtc_state_ref_status": "NOT_RUN",
       "gtc_owner_receipt_status": "NOT_RUN",
       "gtc_single_root_swap_status": "NOT_RUN",
@@ -19262,13 +19386,13 @@
         "payloads": "11/11 locally verified",
         "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_PRODUCER",
         "unresolved_fields": [
-          "independent k_filter.exponents_i32_by_channel has no current owner/source/transition mapping",
+          "DPLM static reducer reads a distinct K-associated I32[6] member, but approved F06W model omits it and selected-root constructor/cold/reset/owner mapping remains UNBOUND",
           "input_cursor.model_owner_key model contract and Panner-only callsites are closed; production Meter owner-key producer and runtime cursor/owner identity binding are not part of the current Meter root"
         ]
       },
       "remaining_gates": [
         "Frozen model semantics and two Panner-only callsites for input_cursor.model_owner_key are closed; production Meter key producer/call receipt and same-root binding are UNBOUND, so terminal owners.meter serialization is BLOCKED.",
-        "V4 leaves.window_k_energy K-filter exponents have no approved owner/type source and are distinct from energy accumulator exponents; terminal owners.meter serialization is BLOCKED.",
+        "DPLM static K-filter exponents member distinction is closed; selected-root K exponent constructor/first writer/cold-reset/owner token remains UNBOUND, and terminal owners.meter serialization is BLOCKED. Do not apply the sibling candidate formula.",
         "Terminal meter hash and ProgrammeMeasurementReceipt/READY production remain NOT_RUN.",
         "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration remain NOT_RUN.",
         "Native EOF/drain evidence, end-to-end encode, W04 and product acceptance remain NOT_RUN."

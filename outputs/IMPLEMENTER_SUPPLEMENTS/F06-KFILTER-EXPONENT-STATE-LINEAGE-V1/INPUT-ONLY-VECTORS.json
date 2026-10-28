@@ -1,0 +1,79 @@
+{
+  "schema": "washed-f06-kfilter-exponent-input-only.v1",
+  "input_only": true,
+  "expected_outputs_included": false,
+  "native_state_after_values_included": false,
+  "audio_payload_included": false,
+  "selected_profile": {
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_order": [
+      "L",
+      "R",
+      "C",
+      "LFE",
+      "Ls",
+      "Rs"
+    ],
+    "energy_block_samples": 1024
+  },
+  "synthetic_row_recipe": {
+    "id": "f06-k-exponent-row-dyadic-v1",
+    "sample": "R32((((17*c + 11*i) mod 257) - 128) / 32768)",
+    "indices": {
+      "channel": "c in 0..5",
+      "sample": "i in 0..1023"
+    },
+    "materialization": "in-memory recipe only"
+  },
+  "ownership_discriminator": {
+    "k_exponent": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "energy_exponent": [
+      48,
+      47,
+      46,
+      45,
+      44,
+      43
+    ],
+    "purpose": "unequal synthetic inputs to prevent field conflation; not cold/expected outputs"
+  },
+  "sibling_candidate_inputs": [
+    {
+      "id": "equal-exponent",
+      "old_k_exponent": 0,
+      "input": "constant F32 0.5",
+      "history": "[2][4] positive zero"
+    },
+    {
+      "id": "downshift-under-32",
+      "old_k_exponent": 20,
+      "input": "constant F32 1/64",
+      "history": "[2][4] dyadic"
+    },
+    {
+      "id": "downshift-at-32",
+      "old_k_exponent": 32,
+      "input": "constant F32 0.5",
+      "history": "[2][4] positive zero"
+    },
+    {
+      "id": "upshift-headroom",
+      "old_k_exponent": 0,
+      "input": "constant F32 1/256",
+      "history": "[2][4] finite dyadic"
+    }
+  ],
+  "limitations": [
+    "Native reconciliation not executed",
+    "Selected DPLM root transition NOT_RUN",
+    "F06W fifth headroom-scan word not represented"
+  ]
+}

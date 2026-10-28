@@ -1,0 +1,13 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_manifest_sha256": "290988c533a9b96017eab444504d9150e36fee589d889f907718e3949117975b",
+  "source_payloads_verified": 7,
+  "payload_hashes_and_lengths_match": true,
+  "json_payloads_parse": true,
+  "instruction_byte_identity_report_reviewed": true,
+  "native_execution": "NOT_RUN",
+  "numeric_replay": "NOT_RUN",
+  "raw_code_or_addresses_in_wash": false,
+  "private_key_or_auth_material_in_wash": false,
+  "status": "STATIC_FIELD_DISTINCTION_CLOSED; SELECTED_ROOT_COLD_AND_WRITER_UNBOUND"
+}

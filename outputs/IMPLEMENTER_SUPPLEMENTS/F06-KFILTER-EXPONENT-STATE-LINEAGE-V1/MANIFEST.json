@@ -1,0 +1,46 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
+  "scope": "Approved-model distinction, selected DPLM static K exponent read, sibling reconciliation candidate, and selected-root constructor/reset blockers",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "STATIC_NATIVE_FIELD_DISTINCTION_SELECTED_ROOT_UNBOUND",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "290988c533a9b96017eab444504d9150e36fee589d889f907718e3949117975b",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1633,
+      "sha256": "371752b1717e2dce1a2ccf39507b37fa442308e564ad9a935c6b491ffde97c9f"
+    },
+    {
+      "file": "FIELD-OWNER-CROSSWALK.json",
+      "bytes": 1901,
+      "sha256": "7f94cd416d38a2c8e0ca8405848860f5ae79a420e5a41c7542dfb305183746b7"
+    },
+    {
+      "file": "SIBLING-RECONCILIATION-CANDIDATE.json",
+      "bytes": 1350,
+      "sha256": "aa844197e9391b432f905f202a9ad3c6405041e146be807cab014f82fcdc347a"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1774,
+      "sha256": "4de06e7ea59c10942fdb6d44156d1bd6ebdae4f86fb4f8d1582ca13572d20761"
+    },
+    {
+      "file": "EVIDENCE-BOUNDARIES.json",
+      "bytes": 1196,
+      "sha256": "4438a0033f88d52d52e74ab8c48390dae998decac919ede7cca8f7f26067b8ba"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 2533,
+      "sha256": "dd86f63b05631082b44b82399ec00a37756fa327df712be4106aaf7d76dc9e32"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 547,
+      "sha256": "7c46eabe6d0a749010b60c0192aef60fb0e6088a5beb4371a8bb256a0ea583a8"
+    }
+  ]
+}

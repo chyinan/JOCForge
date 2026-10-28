@@ -1,0 +1,23 @@
+{
+  "schema": "washed-f06-kfilter-exponent-boundaries.v1",
+  "native_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "bound_static_facts": [
+    "DPLM reducer reads a distinct K-associated signed I32[6] and separately reads/updates the energy accumulator signed I32[6] in the same local numeric state base.",
+    "K-filter kernel uses F32 history and does not write the K exponent in the scoped reducer call chain.",
+    "Sibling branch has a static I32 reconciliation writer and max-absolute-input exponent source."
+  ],
+  "unbound": [
+    "DPLM K exponent constructor/first initialization/cold/reset",
+    "DPLM state base pointer and generation to owners.meter token",
+    "sibling reconciler owner to selected DPLM owner",
+    "native runtime pointer capture and numeric replay",
+    "terminal meter digest and MeasurementReceipt"
+  ],
+  "first_update_observation": {
+    "input_call_ordinal": 67,
+    "k_filter_block_calls": 12,
+    "k_energy_consumer_calls": 4,
+    "k_exponent_pointer_or_owner_token": "NOT_CAPTURED"
+  },
+  "stop_or_next": "Trace the DPLM state/setup initializer and reset writer; do not transfer sibling formula to selected root."
+}

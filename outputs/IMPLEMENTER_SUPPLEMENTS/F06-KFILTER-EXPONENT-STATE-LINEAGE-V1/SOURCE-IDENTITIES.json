@@ -1,0 +1,74 @@
+{
+  "schema": "washed-f06-kfilter-exponent-source-identities.v1",
+  "source_package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
+  "source_manifest_sha256": "290988c533a9b96017eab444504d9150e36fee589d889f907718e3949117975b",
+  "source_payloads_verified": [
+    {
+      "file": "README.md",
+      "bytes": 1390,
+      "sha256": "253c8d4d005caf0cd57d90bec86acd6f7906befd6605c1a4aef6fc451b9f361b"
+    },
+    {
+      "file": "FIELD-OWNER-CROSSWALK.json",
+      "bytes": 3585,
+      "sha256": "fd97772237288991dda094742c9828b1280f7f4ea4de6d420648782e6838d46d"
+    },
+    {
+      "file": "UPDATE-RULES-AND-BOUNDARIES.md",
+      "bytes": 3695,
+      "sha256": "3407ad4713490de6f686218631fe3d962df9a8b1a578ed7688202debf21de8fb"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2458,
+      "sha256": "de5a94b03090ee4e58668eee649064229cae6faaa9f933019fd266bfa26e6860"
+    },
+    {
+      "file": "BOUNDARIES.json",
+      "bytes": 1619,
+      "sha256": "e6f5be43b3e4a2a5056a01a3508b7ed9af9177d1d2f94380b5d9ab7449bda782"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 10885,
+      "sha256": "cb37bc78ec2e25149273c3e81c58094d52be942d3d0f59e853696e6b08189fa0"
+    },
+    {
+      "file": "DELIVERY-ENVELOPE.json",
+      "bytes": 538,
+      "sha256": "9a89222b5bd1610fb6415823e2aef5bbf1ee9a25d147d3b73b352315d30ee29e"
+    }
+  ],
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43b32a4297298674a",
+  "python_model_sha256": "b89c2c90c9b6e27213395eaeefc9961c68c1d38464709af51e79f5f01db3bb09",
+  "native_module": {
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "instruction_byte_matches": 18,
+    "rv_as_or_code_included": false
+  },
+  "reference_packages": [
+    {
+      "id": "PRODUCTION-INGRESS-READINESS-AUDIT-V1",
+      "manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d"
+    },
+    {
+      "id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+      "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
+      "status": "synthetic root, not native cold"
+    },
+    {
+      "id": "F06-NATIVE-FIRST-INTEGRATED-UPDATE-V1",
+      "manifest_sha256": "0e42e0805c3a93843321a3f2ce04bf4dc1a7466ae242d97e190c6c850d666bb2",
+      "status": "same DLL identity and call counts; no pointer/owner token"
+    }
+  ],
+  "omitted": [
+    "source code",
+    "disassembly",
+    "addresses",
+    "raw audio",
+    "E-AC3 payload",
+    "private key/auth material"
+  ]
+}

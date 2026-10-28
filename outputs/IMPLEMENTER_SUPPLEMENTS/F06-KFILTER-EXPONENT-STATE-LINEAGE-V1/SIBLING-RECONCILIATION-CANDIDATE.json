@@ -1,0 +1,26 @@
+{
+  "schema": "washed-sibling-kfilter-exponent-reconciliation-candidate.v1",
+  "classification": "STATIC_SIBLING_CANDIDATE_NOT_SELECTED_ROOT_RULE",
+  "input_exponent_source": {
+    "input": "maximum absolute F32 value in a channel row",
+    "u": "(U32_BITS(max_abs) << 1) modulo 2^32",
+    "t": "-127 if u==0; otherwise (u >> 24) - 126",
+    "derived": "min(60, max(0, -t))",
+    "caller_cap": "min(derived, 32)"
+  },
+  "helper": {
+    "domain": "normal finite F32 rows and signed I32 exponent values only",
+    "equal": "leave exponent and history unchanged",
+    "old_greater": "scale four history words per configured stage by 2^(new-old); if exponent difference >=32, clear those words to positive zero",
+    "new_greater": "scan five F32 values per stage; derive per-value shifts clamped 0..60; start headroom at 32, retain minimum and subtract 6 guard; apply the helper's accepted-increase rule, rescale four history words per stage by that power of two, then store and return accepted exponent",
+    "signedness": "I32 comparisons and updates are signed",
+    "unclosed": [
+      "NaN/Inf behavior",
+      "arbitrary old-I32 overflow",
+      "constructor/reset",
+      "identity of this sibling owner with DPLM",
+      "F06W mapping of fifth scanned word"
+    ]
+  },
+  "selected_dplm_use": "PROHIBITED_UNTIL_OWNER_AND_STATE_MEMBERSHIP_JOIN"
+}

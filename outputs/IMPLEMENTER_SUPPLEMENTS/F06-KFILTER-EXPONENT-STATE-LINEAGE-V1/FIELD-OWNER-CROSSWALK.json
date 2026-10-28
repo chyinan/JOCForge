@@ -1,0 +1,65 @@
+{
+  "schema": "washed-f06-kfilter-exponent-field-owner-crosswalk.v1",
+  "package_id": "F06-KFILTER-EXPONENT-STATE-LINEAGE-V1",
+  "approved_f06w_model": {
+    "k_filter_history": {
+      "shape": [
+        6,
+        2,
+        4
+      ],
+      "type": "F32",
+      "cold": "positive zero",
+      "update": "two-stage history"
+    },
+    "k_filter_i32_exponent_array": "NOT_DEFINED",
+    "energy_accumulator": {
+      "mantissa": {
+        "shape": [
+          6
+        ],
+        "type": "F32"
+      },
+      "exponent": {
+        "shape": [
+          6
+        ],
+        "type": "I32",
+        "cold": 48,
+        "owner": "separate F06W.5 energy-window accumulator"
+      }
+    }
+  },
+  "native_dplm_static": {
+    "evidence_grade": "STATIC_INSTRUCTION_BYTES_MATCH_CURRENT_DLL",
+    "chain": [
+      "48 kHz DPLM admission",
+      "outer meter worker",
+      "per-row callback",
+      "K-filter/energy reducer",
+      "K-filter row kernel"
+    ],
+    "k_exponent": {
+      "type": "signed I32[6]",
+      "operation": "read per channel to normalize filtered power",
+      "write_in_scoped_callback": "NOT_OBSERVED",
+      "constructor_cold_reset": "UNBOUND"
+    },
+    "energy_exponent": {
+      "type": "separate signed I32[6]",
+      "operation": "read and updated with energy mantissa",
+      "window_reset": "48 when a complete window is consumed"
+    },
+    "same_local_state_base": true,
+    "state_base_to_meter_root_token": "UNBOUND"
+  },
+  "sibling_branch": {
+    "contains_reconciliation_writer": true,
+    "type": "per-channel signed I32 pointer",
+    "direct_callgraph_to_dplm_owner": false,
+    "may_fill_selected_dplm_rule": false
+  },
+  "non_substitution": "Equal I32 type or cold value does not establish same member or owner.",
+  "selected_root_status": "FIELD EXISTS IN DPLM STATIC REDUCER; MODEL FIELD AND SELECTED OWNER MAPPING UNBOUND",
+  "implementation_requirement": false
+}

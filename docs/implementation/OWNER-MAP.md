@@ -183,6 +183,7 @@
 | F06/standalone-meter-selected-root-and-schedule-stage | F06 | `meter` |
 | F06/prepared-job-input-domain-identity-projection | F06 | `meter` |
 | F06/informational-input-cursor-model-owner-key-contract | F06 | `meter` |
+| F06/informational-kfilter-exponent-state-lineage | F06 | `meter` |
 | F06L/ordered-log-energy-peak-accumulator-window-and-reduction | F06L | `meter` |
 | F06I/integrated-meter-synthetic-state-and-event-transition | F06I | `meter` |
 | F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |
