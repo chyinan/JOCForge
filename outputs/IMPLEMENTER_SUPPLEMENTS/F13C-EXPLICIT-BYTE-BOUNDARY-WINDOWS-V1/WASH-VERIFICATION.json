@@ -1,0 +1,19 @@
+{
+  "count_units_global_contract": "UNBOUND",
+  "expected_outputs_included": false,
+  "native_capture_reproduced_by_wash": false,
+  "output_interference_comparison": "NOT_RUN",
+  "raw_audio_code_addresses_or_license_included": false,
+  "requested_values_hit": false,
+  "reservation_arg3_arg4_field_identity_checked": true,
+  "same_parent_pairs_per_window": [
+    "64/64 equal values",
+    "64/64 equal values"
+  ],
+  "schema": "f13c-byte-boundary-wash-verification.v1",
+  "source_generation": "NOT_CAPTURED",
+  "source_manifest_sha256": "3160a87763a7e9b394e84a4a8d23b4b02276741d83b1a1324f082bd86ee57d1f",
+  "source_payloads_rehashed": "4/4 PASS",
+  "windows": 2,
+  "writer_to_selected_au": "UNBOUND"
+}

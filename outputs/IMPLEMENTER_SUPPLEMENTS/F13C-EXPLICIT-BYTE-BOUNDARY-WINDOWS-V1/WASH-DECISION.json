@@ -1,0 +1,13 @@
+{
+  "decision": "ACCEPT_AS_INFORMATIONAL_BOUNDED_BYTE_OBSERVATION",
+  "implementation_requirement": false,
+  "new_AU_or_F12_rule": false,
+  "new_global_count_unit_rule": false,
+  "open": [
+    "global count units",
+    "source generation/AU identity",
+    "refill body to writer value flow"
+  ],
+  "schema": "wash-decision.v1",
+  "scope": "Only the two specified 48-frame windows and same-parent debugger call-boundary pairs"
+}

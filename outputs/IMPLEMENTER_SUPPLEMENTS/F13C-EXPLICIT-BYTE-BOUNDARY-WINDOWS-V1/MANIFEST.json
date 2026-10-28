@@ -1,0 +1,36 @@
+{
+  "classification": "BOUNDED_OBSERVATION_NOT_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 7054,
+      "file": "BYTE-BOUNDARY-WINDOWS.json",
+      "sha256": "db8515fb7c248ef1a0ce1089a98b5ad9bdfeb07e8591788c0c8a52d364ce9504"
+    },
+    {
+      "bytes": 1896,
+      "file": "CONTRACT.md",
+      "sha256": "c95ac549b0a0aa70428f083147e38aaa54c4ddd77ca54a0d4e05c30f8b37970a"
+    },
+    {
+      "bytes": 1599,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "8159ff3190b4ea87b276ae48ea408f19ec310a70c8afa6a9f2f728b115e0ac49"
+    },
+    {
+      "bytes": 428,
+      "file": "WASH-DECISION.json",
+      "sha256": "f9f42cc8128a3d1dd851cd9125937af4e25d2712d153c7b4e72ee0d898f68436"
+    },
+    {
+      "bytes": 702,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "c2247a130870fefbf1b41d3b918289e027768a4695319d4e395a77e55c56c0be"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Same-parent serializer/refill and reservation byte observations in two bounded windows; no full-program inference",
+  "source_manifest_sha256": "3160a87763a7e9b394e84a4a8d23b4b02276741d83b1a1324f082bd86ee57d1f"
+}

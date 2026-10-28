@@ -16782,6 +16782,61 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
+        },
+        {
+          "slice_id": "informational-explicit-byte-boundary-windows",
+          "mapping_status": "WASHED_BOUNDED_TWO_WINDOW_SAME_PARENT_LENGTH_EQUALITIES__GLOBAL_SEMANTICS_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_64_PAIR_LOCAL_LENGTH_EQUALITIES__NO_WRITER_AU_JOIN",
+          "scope": "Two bounded file-position windows [2880,2928) and [3168,3216) each contain 64 same-parent pairs: the observed native U32 count, explicit serializer output-length U32 and refill arg3 I32 are equal in every pair. For reservation block ordinal 2, separately typed a[3] U32 and stack-passed a[4] U32 are equal and each is four greater than serialized length in 64/64 pairs per window; block-0 a[4] is excluded. Parent pointer plus debugger ordinal is not source/AU identity. This establishes only sample-local relations; global count units and source-generation/AU identity remain UNBOUND, with no refill-to-writer or writer-to-AU join. Values 507/508/511/512 were not reached in these windows and are not targets.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The debugger call-boundary ordinal and parent-pointer token are not an ADM sample, CodecSourceIndex, selected AU or source-generation clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_TWO_WINDOW_BYTE_BOUNDARY_OBSERVATIONS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/BYTE-BOUNDARY-WINDOWS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/WASH-DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1/MANIFEST.json"
+            ],
+            "supplement_manifest_sha256": "f9002d867b460280b8044412fd6df5a13470da07d914b8d6f5b56d00d47cfeeb",
+            "candidate_source_manifest_sha256": "3160a87763a7e9b394e84a4a8d23b4b02276741d83b1a1324f082bd86ee57d1f",
+            "validation_boundary": "Two bounded windows only. Native count units remain UNBOUND globally; no producer rule, writer/AU identity or full-program inference is established."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_TWO_WINDOW_CAPTURE_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1/BYTE-BOUNDARY-WINDOWS.json"
+            ],
+            "case_pointers": [
+              "Frames [2880,2928) and [3168,3216): 64/64 same-parent pairs per window match count U32, serialized output length U32 and refill arg3 I32.",
+              "Reservation block ordinal 2: a[3] U32 and a[4] stack U32 are equal and each is +4 from serializer length in 64/64 pairs per window; block-0 a[4] is excluded.",
+              "507/508/511/512 are not reached in these windows; values are not expected targets. Source generation, refill-to-writer and writer-to-AU remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "f9002d867b460280b8044412fd6df5a13470da07d914b8d6f5b56d00d47cfeeb"
+          },
+          "not_run": [
+            "Global count units or package-wide serializer/count rule.",
+            "Source generation and selected AU identity.",
+            "Refill body to writer argument value-flow join and output interference comparison.",
+            "Full-programme coverage and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
                        ]
     },

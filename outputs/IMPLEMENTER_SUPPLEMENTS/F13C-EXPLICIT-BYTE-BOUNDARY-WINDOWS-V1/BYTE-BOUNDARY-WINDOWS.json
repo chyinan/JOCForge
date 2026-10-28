@@ -1,0 +1,204 @@
+{
+  "boundary_semantics": {
+    "native_count_u32": "Recorded separately. It matched the serialized/refill length per observed parent invocation, but the model/package-wide unit label remains for Wash review.",
+    "refill_arg3": "Explicit native refill argument; same-parent value matched the serialized output length in every paired event.",
+    "reservation_arguments": "The captured fields are separate: a[3] is the U32 in R9D; a[4] is a U32 stack-passed argument; a[6] is the block ordinal. For block ordinal 2, a[3] and a[4] were equal in all 64 same-parent pairs and each was four greater than the serialized output length. The inherited observer labels a[3] wire_bytes and a[4] body_region_bytes, but a[4] was out of plausible length range for block ordinal 0, so its role is not generalized across blocks.",
+    "serialized_output_length": "Explicit output-length value at the native serializer boundary; compared to refill arg3 in the same parent-call observation."
+  },
+  "input": {
+    "kind": "user-provided Logic-generated ADM BWF",
+    "profile": {
+      "data_rate_kbps": 1024,
+      "dialogue_intelligence": false,
+      "frame_rate_hz": 24,
+      "line_mode_drc": "none",
+      "measurement_mode": "1770-4",
+      "rf_mode_drc": "none",
+      "time_base": "file_position"
+    },
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "limits": {
+    "full_program_coverage": "NOT_EVALUATED; TWO_BOUNDED_WINDOWS_ONLY",
+    "native_reference_output_interference_comparison": "NOT_RUN",
+    "selected_access_unit_identity": "UNBOUND",
+    "source_generation_or_adm_sample_identity": "NOT_CAPTURED",
+    "target_boundary_reached": false,
+    "target_values_are_expectations": false,
+    "writer_argument_body_pointer_alias_to_refill": "NOT_OBSERVED_IN_INSPECTED_REGISTER_AND_STACK_ARGS"
+  },
+  "package_id": "F13C-EXPLICIT-BYTE-BOUNDARY-WINDOWS-V1",
+  "requested_boundary_values": [
+    507,
+    508,
+    511,
+    512
+  ],
+  "schema": "f13c-explicit-byte-boundary-windows.v1",
+  "windows": [
+    {
+      "frame_end_exclusive": 2928,
+      "frame_start_inclusive": 2880,
+      "native_reference_run_completed": true,
+      "refill_arg3_i32": {
+        "event_count": 64,
+        "maximum": 458,
+        "minimum": 300,
+        "target_hits": {
+          "507": 0,
+          "508": 0,
+          "511": 0,
+          "512": 0
+        }
+      },
+      "reservation_arg3_u32": {
+        "event_count": 384,
+        "maximum": 462,
+        "minimum": 0,
+        "target_hits": {
+          "507": 0,
+          "508": 0,
+          "511": 0,
+          "512": 0
+        }
+      },
+      "reservation_block_ordinal_2": {
+        "argument_a3_equals_a4_pairs": 64,
+        "argument_a3_u32_in_r9d": {
+          "maximum": 462,
+          "minimum": 265,
+          "serialized_output_length_difference_distinct_values": [
+            4
+          ],
+          "target_hits": {
+            "507": 0,
+            "508": 0,
+            "511": 0,
+            "512": 0
+          }
+        },
+        "argument_a4_u32_stack_passed": {
+          "maximum": 462,
+          "minimum": 265,
+          "serialized_output_length_difference_distinct_values": [
+            4
+          ],
+          "target_hits": {
+            "507": 0,
+            "508": 0,
+            "511": 0,
+            "512": 0
+          }
+        },
+        "block_ordinal_argument_a6": 2,
+        "same_parent_invocation_pair_count": 64
+      },
+      "same_parent_invocation_pairs": {
+        "count_to_refill_length": "64/64 equal values",
+        "count_to_serialized_length": "64/64 equal values",
+        "parent_call_ordinal_semantics": "Debugger-generated boundary ordinal paired with native parent root pointer; not an ADM/sample/source-generation token",
+        "parent_root_pointer_tokens": 1,
+        "refill_body_pointer_alias_to_inspected_writer_arguments": "NONE_OBSERVED_IN_63_SAME_PARENT_PAIRS",
+        "serialized_to_refill_length": "64/64 equal values",
+        "source_generation_join": "NOT_CAPTURED",
+        "writer_entries_observed": 66,
+        "writer_entries_with_matching_parent_pointer_and_debugger_call_ordinal": true
+      },
+      "serialized_output_length_u32": {
+        "event_count": 64,
+        "maximum": 458,
+        "minimum": 300,
+        "target_hits": {
+          "507": 0,
+          "508": 0,
+          "511": 0,
+          "512": 0
+        }
+      },
+      "source_log_sha256": "af4acaa3abea1aca570d0ad26f727fea258dd0ebe75e37a5f26cf5174d9ddea9",
+      "window_id": "file_position_frames_2880_2928"
+    },
+    {
+      "frame_end_exclusive": 3216,
+      "frame_start_inclusive": 3168,
+      "native_reference_run_completed": true,
+      "refill_arg3_i32": {
+        "event_count": 64,
+        "maximum": 425,
+        "minimum": 255,
+        "target_hits": {
+          "507": 0,
+          "508": 0,
+          "511": 0,
+          "512": 0
+        }
+      },
+      "reservation_arg3_u32": {
+        "event_count": 384,
+        "maximum": 429,
+        "minimum": 0,
+        "target_hits": {
+          "507": 0,
+          "508": 0,
+          "511": 0,
+          "512": 0
+        }
+      },
+      "reservation_block_ordinal_2": {
+        "argument_a3_equals_a4_pairs": 64,
+        "argument_a3_u32_in_r9d": {
+          "maximum": 429,
+          "minimum": 259,
+          "serialized_output_length_difference_distinct_values": [
+            4
+          ],
+          "target_hits": {
+            "507": 0,
+            "508": 0,
+            "511": 0,
+            "512": 0
+          }
+        },
+        "argument_a4_u32_stack_passed": {
+          "maximum": 429,
+          "minimum": 259,
+          "serialized_output_length_difference_distinct_values": [
+            4
+          ],
+          "target_hits": {
+            "507": 0,
+            "508": 0,
+            "511": 0,
+            "512": 0
+          }
+        },
+        "block_ordinal_argument_a6": 2,
+        "same_parent_invocation_pair_count": 64
+      },
+      "same_parent_invocation_pairs": {
+        "count_to_refill_length": "64/64 equal values",
+        "count_to_serialized_length": "64/64 equal values",
+        "parent_call_ordinal_semantics": "Debugger-generated boundary ordinal paired with native parent root pointer; not an ADM/sample/source-generation token",
+        "parent_root_pointer_tokens": 1,
+        "refill_body_pointer_alias_to_inspected_writer_arguments": "NONE_OBSERVED_IN_63_SAME_PARENT_PAIRS",
+        "serialized_to_refill_length": "64/64 equal values",
+        "source_generation_join": "NOT_CAPTURED",
+        "writer_entries_observed": 65,
+        "writer_entries_with_matching_parent_pointer_and_debugger_call_ordinal": true
+      },
+      "serialized_output_length_u32": {
+        "event_count": 64,
+        "maximum": 425,
+        "minimum": 255,
+        "target_hits": {
+          "507": 0,
+          "508": 0,
+          "511": 0,
+          "512": 0
+        }
+      },
+      "source_log_sha256": "b2f5500d59bbfae52c4b0c0056bcee3ab439d67b21b028ccb6c285abb7fd6fbf",
+      "window_id": "file_position_frames_3168_3216"
+    }
+  ]
+}
