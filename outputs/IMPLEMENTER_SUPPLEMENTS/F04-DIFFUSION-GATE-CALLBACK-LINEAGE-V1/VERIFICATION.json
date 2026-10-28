@@ -1,0 +1,8 @@
+{
+  "source_manifest_sha256": "5ebca5f4c45a03de51ac381aa2be338519e5c88b7a2ab6f2c41fff78fc777d3b",
+  "source_payloads_verified": "3/3",
+  "source_manifest_and_lengths_match": true,
+  "native_observation_independently_reproduced": false,
+  "raw_audio_or_keys_included": false,
+  "product_acceptance": "NOT_RUN"
+}

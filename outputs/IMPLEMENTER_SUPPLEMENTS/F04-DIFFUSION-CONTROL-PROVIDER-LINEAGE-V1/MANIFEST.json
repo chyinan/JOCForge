@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F04-DIFFUSION-CONTROL-PROVIDER-LINEAGE-V1",
+  "scope": "Bounded native report; typed source/generation remains unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "08de1d3e07cf349a16c579bd15dde0298e54585601e4616b8fc302268b120040",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 614,
+      "sha256": "77970db95877e62287a173eea5c2ec1328c3053fa4f9f371f763a24d9efe45d5"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 265,
+      "sha256": "c553bd3b03b0dece965a1cd8b1fb15417e1328e0a84798e59216bf92876b9938"
+    }
+  ]
+}

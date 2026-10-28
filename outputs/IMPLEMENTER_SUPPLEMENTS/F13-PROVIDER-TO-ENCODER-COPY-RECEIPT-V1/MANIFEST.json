@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F13-PROVIDER-TO-ENCODER-COPY-RECEIPT-V1",
+  "scope": "Bounded native report; typed source/generation remains unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "b9e4c64bc41e371d0ccd9cef66b399c371f2227f5c52f51b8ba845f0895e9bed",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 594,
+      "sha256": "858d12c4fc15d06296d61527c9b192af2a8dc7aed6ef77abcf5d4f5e5d075c12"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 265,
+      "sha256": "b179baa95d10208de2f03f439173ccf4acc34b5783acf65801851d08ef18f3ad"
+    }
+  ]
+}

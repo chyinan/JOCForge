@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F04-DIFFUSION-GATE-CALLBACK-LINEAGE-V1",
+  "scope": "One fixture callback/row-bank join; typed producer remains unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "5ebca5f4c45a03de51ac381aa2be338519e5c88b7a2ab6f2c41fff78fc777d3b",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 583,
+      "sha256": "0aed502cfb232749b5bfeca8be868cee20df21be829c907640a9bbcbda9b686d"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 310,
+      "sha256": "71a40c3040fbcbaa231de7e8594f6d72e75d3aa79ec2ec7f316cf036bcbf3df3"
+    }
+  ]
+}

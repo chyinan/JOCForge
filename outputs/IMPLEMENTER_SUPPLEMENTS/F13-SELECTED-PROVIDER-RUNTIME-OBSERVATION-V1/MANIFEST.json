@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F13-SELECTED-PROVIDER-RUNTIME-OBSERVATION-V1",
+  "scope": "One redirected-job observation; selected typed-kind and owner joins remain unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "55cc5bce1627e1e9647e3b7949f881944d8f14d204c546ce192bed8bc6f87209",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 743,
+      "sha256": "bb52d2910d137963fb34d005d872c895eaf078f95278e9a4612d1f6db291f1cc"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 310,
+      "sha256": "ae8bcc1a7df9efe92edb3420ba22194e8b04947fa8229d22e1ee5a891753b198"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+# Bounded evidence
+
+One ADM fixture: wrapper event table to import 4/4, sampler to control producer 8/8, provider return to builder 8/8, and 296 writer source rows within provider's 38-row table. Consumer callbacks 1..8 use producer callbacks [1,1,2,3,4,5,6,7]; flush retains event/sampler owner. Object conversion maps destination word1<-source word0, word10<-word9, word11<-word10; word0 comes from activity/history predicate. These are reporter-observed/static facts, not typed aliases. F01E host/UID identity, width domain, quiet clock/reset and F04FM lane/tail remain UNBOUND. Model/full-song replay NOT_RUN.

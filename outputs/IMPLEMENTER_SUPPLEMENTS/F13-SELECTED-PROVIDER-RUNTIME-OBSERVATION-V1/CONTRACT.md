@@ -1,0 +1,3 @@
+# Selected provider observation
+
+One redirected job used a full-hash-matched input copy. Factory route=0 and auxiliary=1 select processor-backed by the existing static predicate; constructor was not independently captured. Nested aggregate and owner returned I32=2. A later encoder-open observed I32=2 and config[2]=0, but pointer/copy identity between owner result and encoder input, source/reset generation, and native tag to typed public kind were not captured. Equal values/order do not establish identity. No encoded bytes were produced before stopping. Chinese-path and ASCII-path controls showed different startup behavior, but its mechanism is unproven. This is one reporter-observed redirected job, not product or native equivalence.

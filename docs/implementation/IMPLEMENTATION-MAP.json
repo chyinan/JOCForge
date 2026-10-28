@@ -3546,6 +3546,132 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
+        },
+        {
+          "slice_id": "informational-diffusion-gate-fixture-callback-lineage",
+          "mapping_status": "WASHED_ONE_FIXTURE_ROW_BANK_CALLBACK_JOIN__TYPED_PRODUCER_UNBOUND",
+          "implementation_status": "INFORMATIONAL_ONLY_FIXTURE_LINEAGE__NO_PRODUCTION_SOURCE_OR_TYPED_GATE",
+          "scope": "One ADM BWF fixture reporter-observation closes writer-to-dispatch and writer-to-gate same-callback joins for 296/296 rows each; 54 filter calls match the observed predicate count. The window contains four 1536-sample callbacks and four zero-input flush callbacks. Prepare was not observed. This closes only this fixture's row-bank/callback identity; approved F04 source receipt, typed audio_diffuse/width-spread/quiet/mode-lane-tail producer mappings and production source/callback generation remain UNBOUND. No algorithm rule or product acceptance follows.",
+          "owner": "spatial_audio",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Fixture-relative callback and row-bank joins do not bind a selected production source or callback generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_FIXTURE_CALLBACK_LINEAGE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-GATE-CALLBACK-LINEAGE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-GATE-CALLBACK-LINEAGE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-GATE-CALLBACK-LINEAGE-V1/VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "d508e335ed78ba011fbeec6832cbfb142cfa5ddb9f17f5e53638157aca457c44",
+            "candidate_source_manifest_sha256": "5ebca5f4c45a03de51ac381aa2be338519e5c88b7a2ab6f2c41fff78fc777d3b",
+            "fixture_counts": {
+              "callbacks": 8,
+              "normal_1536_sample_callbacks": 4,
+              "zero_input_flush_callbacks": 4,
+              "writer_dispatch_rows": "296/296",
+              "writer_gate_rows": "296/296",
+              "filter_calls": 54
+            },
+            "typed_producer": "UNBOUND",
+            "approved_source_receipt": "UNBOUND",
+            "validation_boundary": "One reporter-observed fixture only; no production callback, typed producer or whole-song claim."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_REPORTER_OBSERVED_F04_FIXTURE_LINEAGE_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-GATE-CALLBACK-LINEAGE-V1/VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Eight fixture callbacks: four 1536-sample plus four zero-input flush callbacks.",
+              "Writer-to-dispatch and writer-to-gate same-callback joins each cover 296/296 rows; filter calls=54.",
+              "Prepare path, approved source receipt and typed producer remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "d508e335ed78ba011fbeec6832cbfb142cfa5ddb9f17f5e53638157aca457c44"
+          },
+          "not_run": [
+            "Selected ADM/source identity and approved source receipt.",
+            "Typed producer fields, prepare path, mode/lane/tail mapping and production generation.",
+            "Full-song replay and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-diffusion-control-provider-fixture-lineage",
+          "mapping_status": "WASHED_ONE_FIXTURE_ROW_BANK_PROVIDER_LINEAGE__TYPED_PRODUCER_UNBOUND",
+          "implementation_status": "INFORMATIONAL_ONLY_FIXTURE_LINEAGE__NO_APPROVED_SOURCE_RECEIPT_OR_TYPED_GATE",
+          "scope": "One ADM fixture reporter-observation links wrapper event table to import 4/4, sampler to control producer 8/8, provider return to builder 8/8, and 296 writer source rows within the provider's 38-row table. Consumer callbacks 1..8 use producer callbacks [1,1,2,3,4,5,6,7]; flush retains the event/sampler owner. Object conversion reports destination word1<-source0, word10<-source9 and word11<-source10; word0 comes from an activity/history predicate. These are reporter-observed/static facts, not typed aliases. F01E host/UID identity, width domain, quiet clock/reset and F04FM lane/tail remain UNBOUND. No model/full-song replay or product result is established.",
+          "owner": "spatial_audio",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Fixture callback order does not establish selected production source/callback generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_CONTROL_PROVIDER_FIXTURE_LINEAGE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-CONTROL-PROVIDER-LINEAGE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-CONTROL-PROVIDER-LINEAGE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-CONTROL-PROVIDER-LINEAGE-V1/VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "17d62f89fee2a28b1ca6c115a7fe124c6fe79dd0e9734184e7a2448e9d57f322",
+            "candidate_source_manifest_sha256": "08de1d3e07cf349a16c579bd15dde0298e54585601e4616b8fc302268b120040",
+            "fixture_counts": {
+              "wrapper_event_to_import": "4/4",
+              "sampler_to_control_producer": "8/8",
+              "provider_to_builder": "8/8",
+              "writer_source_rows": 296,
+              "provider_rows": 38,
+              "consumer_to_producer_callbacks": [
+                1,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "zero_input_flush_callbacks": 4
+            },
+            "typed_aliases": false,
+            "validation_boundary": "One reporter-observed fixture lineage; approved F01E source identity and typed control producer remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_REPORTER_OBSERVED_F04_CONTROL_PROVIDER_LINEAGE_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-CONTROL-PROVIDER-LINEAGE-V1/VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Wrapper event table -> import 4/4; sampler -> control producer 8/8; provider return -> builder 8/8.",
+              "296 writer rows occur within a 38-row provider table; callbacks 1..8 map to producer callbacks [1,1,2,3,4,5,6,7].",
+              "Flush retains event/sampler owner; object conversion indices are reporter-observed and not typed aliases.",
+              "F01E host/UID, width domain, quiet clock/reset and F04FM lane/tail remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "17d62f89fee2a28b1ca6c115a7fe124c6fe79dd0e9734184e7a2448e9d57f322"
+          },
+          "not_run": [
+            "Approved F01E host/UID source receipt and typed control semantic aliases.",
+            "Selected production callback/source generation, quiet clock/reset and F04FM lane/tail joins.",
+            "Full-song replay and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
                        ]
     },
@@ -14586,6 +14712,124 @@
                     "Selected native provider branch, preferred value and source epoch.",
                     "Full production MeasurementReceipt and terminal meter-root production.",
                     "Selected native run and whole-programme acceptance."
+                  ],
+                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                  "implementation_inventory": [],
+                  "test_inventory": []
+                },
+                {
+                  "slice_id": "informational-selected-preferred-provider-runtime-observation",
+                  "mapping_status": "WASHED_SINGLE_REDIRECTED_JOB_OBSERVATION__SELECTED_PROVIDER_IDENTITY_UNBOUND",
+                  "implementation_status": "REPORTER_OBSERVED_VALUES_ONLY__NATIVE_SOURCE_JOIN_NOT_RUN",
+                  "scope": "One redirected job reported a full-hash-matched input copy. Static predicate route 0/auxiliary 1 selected a processor-backed route, but its constructor was not independently captured. Nested aggregate/owner returned I32=2; a later encoder-open observed I32=2 and config[2]=0. Equal values and event order do not bind owner-result pointer/copy identity to the encoder input. Source/reset generation and native tag to typed PublicMeasurementResultKind are also UNBOUND. The typed model conversion remains closed for its finite semantic enum domain; this single reporter-observed redirected run is not a selected native branch or product-equivalence result.",
+                  "owner": "joc",
+                  "implementation_requirement": false,
+                  "implementation_files": [],
+                  "clock": {
+                    "domains": [],
+                    "covered_clauses": [
+                      "One redirected-job observation does not bind source/reset generation or a production callback clock."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "HASH_BOUND_INFORMATIONAL_SELECTED_PROVIDER_RUNTIME_OBSERVATION",
+                    "provider_files": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-SELECTED-PROVIDER-RUNTIME-OBSERVATION-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-SELECTED-PROVIDER-RUNTIME-OBSERVATION-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-SELECTED-PROVIDER-RUNTIME-OBSERVATION-V1/VERIFICATION.json"
+                    ],
+                    "supplement_manifest_sha256": "adb8d522143e8f2713e02f4c20d9b228095cc6fad58cd49c992b8f61695b062f",
+                    "candidate_source_manifest_sha256": "55cc5bce1627e1e9647e3b7949f881944d8f14d204c546ce192bed8bc6f87209",
+                    "observed_values": {
+                      "route": 0,
+                      "auxiliary": 1,
+                      "nested_aggregate_and_owner_i32": 2,
+                      "encoder_open_i32": 2,
+                      "config_index_2": 0
+                    },
+                    "identity_joins": {
+                      "constructor_branch": "NOT_INDEPENDENTLY_CAPTURED",
+                      "owner_result_to_encoder_input_pointer_or_copy": "UNBOUND",
+                      "source_or_reset_generation": "UNBOUND",
+                      "native_tag_to_typed_public_kind": "UNBOUND"
+                    },
+                    "validation_boundary": "Reporter-observed redirected job only; no native equivalence or selected production provider value."
+                  },
+                  "test_modules": [],
+                  "vectors": {
+                    "kind": "HASH_BOUND_REPORTER_OBSERVED_RUNTIME_STATUS_NO_EXPECTED_OUTPUTS",
+                    "authoritative_vectors": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-SELECTED-PROVIDER-RUNTIME-OBSERVATION-V1/VERIFICATION.json"
+                    ],
+                    "case_pointers": [
+                      "One redirected job used a full-hash-matched input copy.",
+                      "Route 0/auxiliary 1 selected processor-backed by an existing static predicate; constructor was not independently captured.",
+                      "Nested aggregate/owner and later encoder-open both reported I32=2, with config[2]=0; equal values/order do not establish identity.",
+                      "No encoded bytes; source/reset generation and native tag-to-typed-kind binding remain unbound."
+                    ],
+                    "expected_outputs_included": false,
+                    "supplement_manifest_sha256": "adb8d522143e8f2713e02f4c20d9b228095cc6fad58cd49c992b8f61695b062f"
+                  },
+                  "not_run": [
+                    "Original selected XML and selected-job source identity; no new UI input is introduced.",
+                    "Constructor capture, owner-to-encoder pointer/copy join and source/reset epoch.",
+                    "Native tag-to-typed public kind join, encoded output and product acceptance."
+                  ],
+                  "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                  "implementation_inventory": [],
+                  "test_inventory": []
+                },
+                                {
+                  "slice_id": "informational-provider-to-encoder-copy-receipt",
+                  "mapping_status": "WASHED_REDIRECTED_JOB_COPY_VALUES_OBSERVED__CROSS_CALL_IDENTITY_UNBOUND",
+                  "implementation_status": "REPORTER_OBSERVED_POINTER_AND_VALUE_FACTS__NO_SOURCE_EPOCH_OR_TYPED_KIND_JOIN",
+                  "scope": "One redirected-job receipt reports processor constructor token equals factory output and meter setup/open share a root token. Raw tag 3 maps to opaque 2; aggregate/owner/worker/private/encoder fields each show 2, and config[2]=0. Several adjacent handoff pointers match, but cross-call object lifetime and source generation are unbound and pointer reuse remains possible. Aggregate-to-owner is nested invocation plus prior static copy, not a captured individual store. Opaque 2 to typed F06 PublicMeasurementResultKind remains UNBOUND. This supports no selected-native-provider, whole-programme receipt or product-acceptance claim.",
+                  "owner": "joc",
+                  "implementation_requirement": false,
+                  "implementation_files": [],
+                  "clock": {
+                    "domains": [],
+                    "covered_clauses": [
+                      "No source generation or cross-attempt lifetime is bound by adjacent values or pointer matches."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "HASH_BOUND_INFORMATIONAL_PROVIDER_TO_ENCODER_COPY_RECEIPT",
+                    "provider_files": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-TO-ENCODER-COPY-RECEIPT-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-TO-ENCODER-COPY-RECEIPT-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-TO-ENCODER-COPY-RECEIPT-V1/VERIFICATION.json"
+                    ],
+                    "supplement_manifest_sha256": "1eb0b5e9a9142b6980fc6f12d143bba0b03b3ef7d232ee7ec1a2b9f004809d7f",
+                    "candidate_source_manifest_sha256": "b9e4c64bc41e371d0ccd9cef66b399c371f2227f5c52f51b8ba845f0895e9bed",
+                    "validation_boundary": "Reporter-observed redirected job; source epoch, pointer lifetime and opaque-tag-to-typed-kind identity remain unbound.",
+                    "identity_joins": {
+                      "processor_constructor_token_to_factory_output": "REPORTER_OBSERVED_MATCH",
+                      "meter_setup_to_open_root_token": "REPORTER_OBSERVED_MATCH",
+                      "owner_result_to_encoder_input_pointer_or_copy": "UNBOUND",
+                      "source_or_reset_generation": "UNBOUND",
+                      "native_tag_to_typed_public_kind": "UNBOUND"
+                    }
+                  },
+                  "test_modules": [],
+                  "vectors": {
+                    "kind": "HASH_BOUND_REDIRECTED_JOB_COPY_RECEIPT_NO_EXPECTED_OUTPUTS",
+                    "authoritative_vectors": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PROVIDER-TO-ENCODER-COPY-RECEIPT-V1/VERIFICATION.json"
+                    ],
+                    "case_pointers": [
+                      "Processor constructor token equals factory output; meter setup/open share a root token.",
+                      "Raw tag 3 maps to opaque 2; aggregate, owner, worker, private and encoder fields show 2; config[2]=0.",
+                      "Adjacent pointers match, but no source-generation/object-lifetime join or individual aggregate-to-owner store was captured.",
+                      "Opaque 2 to typed public kind remains UNBOUND; zero encoded bytes and no receipt."
+                    ],
+                    "expected_outputs_included": false,
+                    "supplement_manifest_sha256": "1eb0b5e9a9142b6980fc6f12d143bba0b03b3ef7d232ee7ec1a2b9f004809d7f"
+                  },
+                  "not_run": [
+                    "Cross-call owner-to-encoder object identity and source/reset generation.",
+                    "Opaque native tag to typed PublicMeasurementResultKind binding.",
+                    "Selected production run, encoded output, MeasurementReceipt and product acceptance."
                   ],
                   "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
                   "implementation_inventory": [],

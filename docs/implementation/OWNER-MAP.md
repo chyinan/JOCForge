@@ -157,6 +157,8 @@
 | F04F/single-tail-diffusion-filter-block-preview | F04F | `spatial_audio` |
 | F04F/single-tail-active-inactive-callback-lifecycle | F04F | `spatial_audio` |
 | F04F/informational-diffusion-filter-opaque-gate-status | F04F | `spatial_audio` |
+| F04F/informational-diffusion-gate-fixture-callback-lineage | F04F | `spatial_audio` |
+| F04F/informational-diffusion-control-provider-fixture-lineage | F04F | `spatial_audio` |
 | F04FM/informational-diffusion-gate-to-math-output-identity-unbound | F04FM | `spatial_audio` |
 | F04FCM/informational-diffusion-gate-to-constructor-identity-unbound | F04FCM | `spatial_audio` |
 | F04G/selected-p11-prefix-membership-producer | F04G | `spatial_audio` |
@@ -273,6 +275,8 @@
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
 | F13/measurement-result-aggregate-and-id1-integer-projection | F13 | `metadata` |
 | F13/informational-preferred-input-user-decision-supersession | F13 | `joc` |
+| F13/informational-selected-preferred-provider-runtime-observation | F13 | `joc` |
+| F13/informational-provider-to-encoder-copy-receipt | F13 | `joc` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `joc` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `codec` |
 | F13C/washed-f13c-bsi-importer-static-identity | F13C | `codec` |
