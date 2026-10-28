@@ -1,0 +1,14 @@
+{
+  "schema": "spatial-control-clock-marker-input-cases.v1",
+  "input_only": true,
+  "contains_expected_outputs": false,
+  "cases": [
+    {"id":"short_source_and_cached_drains","source_samples":1537,"frame_samples":1536,"schedule_inputs":["NORMAL","NORMAL","CACHED_DRAIN","CACHED_DRAIN","CACHED_DRAIN","CACHED_DRAIN"],"cold_normal_callbacks":0,"cold_remaining_cached_drains":4},
+    {"id":"normal_failure","phase":"NORMAL","committed_before":{"normal_callbacks":1,"callback_index":1},"stage_result":"failure"},
+    {"id":"marker_new_active","target_slot":0,"previous_active":0,"assignment_current_active":1,"eligible_source_flag":0,"matrix_coefficient_f32":1.0},
+    {"id":"marker_quiet_after_empty_selection","target_slot":0,"previous_active":1,"assignment_current_active":1,"selected_count":0,"eligible_positive_witness":false},
+    {"id":"cached_drain_marker","phase":"CACHED_DRAIN","previous_active":[0,1],"assignment_current_active":[1,1],"eligible_positive_witness":[true,false]},
+    {"id":"restart","attempt_before":3,"action":"full_restart","cold_normal_callbacks":0,"cold_previous_marker_active_count":15}
+  ],
+  "scope": "Synthetic discriminators only; no PCM, computed after-state, native pointer or runtime identity."
+}

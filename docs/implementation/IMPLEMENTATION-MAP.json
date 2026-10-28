@@ -3366,6 +3366,65 @@
               "sha256": "210cfc4fdb5c8194e5a5ca5014260127dcda039ee43ebf5cf27ab21311649c12"
             }
           ]
+        },
+        {
+          "slice_id": "informational-spatial-control-after-root-field-projection",
+          "mapping_status": "WASHED_NAMED_F03W_FIELD_PROJECTION__V5_BYTE_MAPPING_PARTIAL",
+          "implementation_status": "WASHED_PRODUCER_SOURCES_CLOSED__COMPLETE_SPATIAL_CONTROL_V5_AFTER_ROOT_NOT_AVAILABLE",
+          "scope": "The Wash LOCAL_MODEL crosswalk names the selected F03W after-state fields and callback0/normal/cached-drain producer sources. It explicitly does not equate selected-adm-installed48-state.v3 named JSON fields with this repository's SpatialControlState v5 canonical bytes. Existing v5 currently stores presence flags for some source-cache/diffusion groups, while the v3 projection requires full cached 38x1536/control38 data and complete diffusion instance/output state. No complete actual F03W v5 after-state is currently produced or serialized; the parent must not reuse before bytes or fill unknown arrays with zeros.",
+          "owner": "spatial_control",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [
+              "FrontendCallbackIndex",
+              "AdmSampleIndex",
+              "NormalCallbackCount"
+            ],
+            "covered_clauses": [
+              "Normal source cursor advances by actual samples, not padded frame length; cached drains do not read source and reuse the last normal source/control snapshot.",
+              "NORMAL-success increments F03W normal_callbacks once and cached drains/failure leave it unchanged only as an explicit JOCForge LOCAL_MODEL choice, not a DEE fact.",
+              "previous_marker_active is sourced from the F05H post-quiet current-active transition; it is not the marker integer or target-position history."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_SPATIAL_CONTROL_V3_FIELD_TO_V5_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-FIELD-PROJECTION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-FIELD-PROJECTION-V1/FIELD-PROJECTION.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-FIELD-PROJECTION-V1/CLOCK-MARKER.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-FIELD-PROJECTION-V1/INPUT-ONLY-CASES.json"
+            ],
+            "supplement_manifest_sha256": "539375a01ca1ae08b22cc0cfb03a3034d7b0de4ad719609f90c9da449d613573",
+            "approved_state_schema_sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46",
+            "approved_f03w_spec_sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9",
+            "normal_callbacks_update_grade": "LOCAL_MODEL_DESIGN_CHOICE_ONLY",
+            "complete_v5_after_root_available": false,
+            "validation_boundary": "Wash named-field after-root projection only; no expected outputs, real ADM replay, complete v5 state bytes, GTC receipt, or parent commit."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INPUT_ONLY_SPATIAL_CONTROL_CLOCK_AND_MARKER_DISCRIMINATORS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-FIELD-PROJECTION-V1/INPUT-ONLY-CASES.json"
+            ],
+            "case_pointers": [
+              "Short source schedule: 2 normal callbacks and four cached drains.",
+              "Normal failure preserves committed clocks.",
+              "F05H quiet-after-active marker cases.",
+              "Input-only cases contain no expected output state."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "539375a01ca1ae08b22cc0cfb03a3034d7b0de4ad719609f90c9da449d613573"
+          },
+          "not_run": [
+            "Complete F03W after-state field projection into SpatialControlState v5 canonical bytes.",
+            "A production F03W staged-after owner reference/receipt and the enclosing one-root GTC commit.",
+            "Normal callback sequence, all cached drains, full programme output and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
       ]
     },
@@ -18085,13 +18144,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 23512,
-              "sha256": "02b83103efdd7b3daa4492ff9ee1886d4e0d0775458b582fed18dff9242f2efe"
+              "bytes": 23903,
+              "sha256": "196d1316390af96239cc50927af222f53eaec4e4b92dec4aa71b827560c85f98"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/tests.rs",
-              "bytes": 8039,
-              "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+              "bytes": 8549,
+              "sha256": "416559deb97b90a5ef34f14719ece3c42fee6674e5372b9a3cc83968447d99b9"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -18132,8 +18191,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication/tests.rs",
-              "bytes": 8039,
-              "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+              "bytes": 8549,
+              "sha256": "416559deb97b90a5ef34f14719ece3c42fee6674e5372b9a3cc83968447d99b9"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
@@ -20174,6 +20233,81 @@
               "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
             }
           ]
+        },
+        {
+          "slice_id": "source-clock-publication-au-projection",
+          "mapping_status": "MATERIALIZED_DIRECT_F15_SOURCE_TO_AU_CLOCK_PROJECTION__SOURCE_ROOT_COMMIT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SOURCE0_1_SUPPRESSION_AND_SOURCE2_TO_AU0__ROOT_COMMIT_OPEN",
+          "scope": "F15 now consumes the approved typed publication_for_source projection instead of independently repeating the source-minus-two AU formula. Sources 0 and 1 are suppressed; source 1 records the consumed JOC writer disposition but does not publish; source 2 maps to published AU0 and ordinary writer0. Output-root source validation uses the same projection for AU identity. This is a pure clock/identity connection and does not produce a codec frame, durable append or parent root commit.",
+          "owner": "output",
+          "implementation_requirement": true,
+          "implementation_files": [
+            "crates/jocforge-application/src/output_publication.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "PublishedAuIndex",
+              "OrdinaryPayloadWriterIndex",
+              "JocPoppedWriterIndex"
+            ],
+            "covered_clauses": [
+              "Sources 0 and 1 are complete but suppressed from AU publication.",
+              "For s>=2, published au_index=s-2 and ordinary writer j=s-2.",
+              "Source 1 consumes JOC writer0 without publishing its AU."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_APPROVED_SOURCE_TRANSACTION_AND_PUBLICATION_CLOCK",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-SOURCE-TRANSACTION-KEYLESS-PUBLICATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-SOURCE-TRANSACTION-KEYLESS-PUBLICATION-V1/CLOCK-AND-EOF-CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/SOURCE-TO-AU-TRANSACTION.json"
+            ],
+            "source_transaction_manifest_sha256": "1a825c5dab7ecd292e53ddd691244c7e4bef2c34d553631c3fe714dd1cf73290",
+            "frame_assembly_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
+            "validation_boundary": "Clock projection only; codec frame, F13 commit, durable write and final output remain outside this tested helper."
+          },
+          "test_modules": [
+            "crates/jocforge-application/src/output_publication/tests.rs"
+          ],
+          "vectors": {
+            "kind": "APPROVED_SOURCE_TO_AU_CLOCK_AND_LOCAL_F15_PROJECTION_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-SOURCE-TRANSACTION-KEYLESS-PUBLICATION-V1/INPUT-ONLY-TRANSACTIONS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/SOURCE-TO-AU-TRANSACTION.json"
+            ],
+            "case_pointers": [
+              "s=0: suppressed, no AU",
+              "s=1: suppressed, JOC writer0 consumed",
+              "s=2: published au0/writer0",
+              "s=3: published au1/writer1"
+            ],
+            "expected_outputs_included": false,
+            "source_transaction_manifest_sha256": "1a825c5dab7ecd292e53ddd691244c7e4bef2c34d553631c3fe714dd1cf73290",
+            "frame_assembly_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"
+          },
+          "not_run": [
+            "GTC SourceTransaction actual owner/attempt/transaction receipt and callback root swap.",
+            "F12 frame candidate, F13 queue commit, F15 durable append and finalization.",
+            "Encoded output, external decode, full-song playback and W04 acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/output_publication.rs",
+              "bytes": 23903,
+              "sha256": "196d1316390af96239cc50927af222f53eaec4e4b92dec4aa71b827560c85f98"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-application/src/output_publication/tests.rs",
+              "bytes": 8549,
+              "sha256": "416559deb97b90a5ef34f14719ece3c42fee6674e5372b9a3cc83968447d99b9"
+            }
+          ]
         }
       ]
     },
@@ -22169,13 +22303,13 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-application/src/output_publication.rs",
-          "bytes": 23512,
-          "sha256": "02b83103efdd7b3daa4492ff9ee1886d4e0d0775458b582fed18dff9242f2efe"
+          "bytes": 23903,
+          "sha256": "196d1316390af96239cc50927af222f53eaec4e4b92dec4aa71b827560c85f98"
         },
         {
           "path": "crates/jocforge-application/src/output_publication/tests.rs",
-          "bytes": 8039,
-          "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+          "bytes": 8549,
+          "sha256": "416559deb97b90a5ef34f14719ece3c42fee6674e5372b9a3cc83968447d99b9"
         },
         {
           "path": "crates/jocforge-application/src/lib.rs",
@@ -22226,8 +22360,8 @@
         },
         {
           "path": "crates/jocforge-application/src/output_publication/tests.rs",
-          "bytes": 8039,
-          "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+          "bytes": 8549,
+          "sha256": "416559deb97b90a5ef34f14719ece3c42fee6674e5372b9a3cc83968447d99b9"
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",

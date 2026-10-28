@@ -1,0 +1,26 @@
+{
+  "package_id": "SPATIAL-CONTROL-FIELD-PROJECTION-V1",
+  "scope": "LOCAL_MODEL_NAMED_FIELDS; v5 byte mapping partial; no native transaction claim",
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_manifests": [
+    "14eb0178e5bd0c9eac56ee10a9715c3f7e69c5cff42182550b35a673a3f8acc6",
+    "d08bc466cb949e0f231eea16ff716909570d9e0bbac2be1aa2a1229a74319a9c"
+  ],
+  "files": [
+    {
+      "file": "CLOCK-MARKER.md",
+      "bytes": 4124,
+      "sha256": "e548da106f061cb02792fd32f4afe244b88f949dc794f13aaf6e64d6d69dbb36"
+    },
+    {
+      "file": "FIELD-PROJECTION.md",
+      "bytes": 7678,
+      "sha256": "87b1b86012d859faaef2333050fe16177629d21752a9e8127bf2116625ea35ac"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 1233,
+      "sha256": "38d162f5f92e3fb6cb37b86b2de81dd9a02425ee57ab0fc704b238141fc9b365"
+    }
+  ]
+}

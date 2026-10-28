@@ -9,7 +9,10 @@ use jocforge_domain::{
     codec::selected_main_q_search::{SelectedMainQOutcome, SelectedMainQSearchResult},
     joc::emdf::metadata_owner::{MetadataEofProposal, MetadataSourceProposal},
     publication::OutputSourceIdentity,
-    timeline::{CodecSourceIndex, PublishedAuIndex},
+    timeline::{
+        ClockError, CodecSourceIndex, PublicationDisposition, PublishedAuIndex,
+        publication_for_source,
+    },
 };
 use sha2::{Digest, Sha256};
 
@@ -217,11 +220,8 @@ impl ProgrammeOutputBinding {
             .ok_or(OutputRootBindingError::GenerationOverflow)?;
         let identity = proposal.identity();
         let expected_dispatch = identity.source_index().value().checked_add(1);
-        let expected_au = identity
-            .source_index()
-            .value()
-            .checked_sub(2)
-            .map(PublishedAuIndex::new);
+        let expected_au = au_for_source(identity.source_index())
+            .map_err(|_| OutputRootBindingError::ProposalBindingMismatch)?;
         if proposal.attempt_id() != canonical_attempt_label(self.attempt_id())
             || proposal.staging_name() != self.output_configuration().staging_name()
             || proposal.product_name() != self.output_configuration().product_name()
@@ -522,10 +522,8 @@ pub fn prepare_output_source(
         return Err(OutputPublicationPreparationError::MetadataDispatchMismatch);
     }
 
-    let expected_au = source_index
-        .value()
-        .checked_sub(2)
-        .map(PublishedAuIndex::new);
+    let expected_au = au_for_source(source_index)
+        .map_err(|_| OutputPublicationPreparationError::MetadataAuMismatch)?;
     if metadata.receipt().au_index() != expected_au {
         return Err(OutputPublicationPreparationError::MetadataAuMismatch);
     }
@@ -546,6 +544,13 @@ pub fn prepare_output_source(
     output_root
         .bind_source_proposal(proposal)
         .map_err(OutputPublicationPreparationError::OutputRootBinding)
+}
+
+fn au_for_source(source_index: CodecSourceIndex) -> Result<Option<PublishedAuIndex>, ClockError> {
+    match publication_for_source(source_index)? {
+        PublicationDisposition::Suppressed { .. } => Ok(None),
+        PublicationDisposition::Published(consumption) => Ok(Some(consumption.au)),
+    }
 }
 
 /// Binds metadata EOF's exact pending-writer disposition to the runtime output

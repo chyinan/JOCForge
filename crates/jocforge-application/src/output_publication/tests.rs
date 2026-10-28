@@ -1,9 +1,12 @@
-use super::{OutputOwner, OutputRootBindingError, OutputStagingOwnerId, ProgrammeOutputBinding};
+use super::{
+    OutputOwner, OutputRootBindingError, OutputStagingOwnerId, ProgrammeOutputBinding,
+    au_for_source,
+};
 use jocforge_domain::transaction::{AttemptId, ProgrammeId};
 use jocforge_domain::{
     profile::{EmdfCarriageProfile, EncodingProfile, resolve_selected_profile},
     publication::{OutputProvider, OutputSourceIdentity},
-    timeline::{CodecSourceIndex, JocDispatchIndex},
+    timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
 };
 use sha2::{Digest, Sha256};
 
@@ -55,6 +58,20 @@ fn private_f15_projection_matches_both_washed_canonical_provider_hashes() {
     assert_eq!(deployed.suppressed_sources, 2);
     assert_eq!(etsi.suppressed_sources, 2);
     assert_ne!(deployed.provider_sha256, etsi.provider_sha256);
+}
+
+#[test]
+fn f15_publication_uses_the_approved_source_to_au_clock_projection() {
+    assert_eq!(au_for_source(CodecSourceIndex::new(0)).unwrap(), None);
+    assert_eq!(au_for_source(CodecSourceIndex::new(1)).unwrap(), None);
+    assert_eq!(
+        au_for_source(CodecSourceIndex::new(2)).unwrap(),
+        Some(PublishedAuIndex::new(0))
+    );
+    assert_eq!(
+        au_for_source(CodecSourceIndex::new(3)).unwrap(),
+        Some(PublishedAuIndex::new(1))
+    );
 }
 
 fn binding(
