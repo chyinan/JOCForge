@@ -318,3 +318,4 @@
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |
+| F15/informational-production-ingress-readiness-audit | F15 | `output` |

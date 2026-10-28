@@ -1,0 +1,14 @@
+{
+  "schema": "washed-package-verification.v1",
+  "audit_id": "PRODUCTION-INGRESS-READINESS-AUDIT-V1",
+  "supplements_verified": 8,
+  "supplement_payloads_verified": 40,
+  "reviewed_code_hashes": 7,
+  "implementation_map_hash_verified": true,
+  "reverse_research_material_accessed": false,
+  "native_execution": "NOT_RUN",
+  "tests_run": false,
+  "production_source_changed": false,
+  "product_acceptance": "NOT_RUN",
+  "status": "LOCAL_CONTRACTS_SCOPED; PRODUCTION_INGRESS_BLOCKED"
+}

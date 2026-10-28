@@ -1,0 +1,85 @@
+{
+  "schema": "production-ingress-dependency-audit.v1",
+  "audited_head": "9bf95d82822a1e74be8d448bf3fb14ecc66c9e41",
+  "product_boundary": {
+    "encode": "BackendUnavailable",
+    "validated_encoding_plan": "ABSENT",
+    "production_output_binding": "ABSENT",
+    "test_support_binding": "PRESENT_TEST_ONLY"
+  },
+  "locally_closable": [
+    "N->Q=ceil(N/1536), callback/source/dispatch/writer/AU conversions with checked arithmetic.",
+    "Sources 0/1 suppress metadata/AU but still advance owners and build complete 4096-byte CRC-checked frames.",
+    "Main EOF four cached callbacks; independent meter EOF three fresh-zero drains; no extra codec flush.",
+    "Candidate infeasibility is trial-scratch-only; invalid plan/provider/no-best is fatal and retires the attempt.",
+    "F15 provider projection/hash from a trusted plan; source proposal lineage checks.",
+    "Local durable append/readback/fsync and finalize ordering."
+  ],
+  "call_order": [
+    "Admit one immutable PreparedJobInput and derive PreparedJobInputIdentity.",
+    "Resolve the exact six-dimensional EncodingProfile; this is admission only.",
+    "Collect same-programme/attempt/source SharedAnalysisIdentity-bound F06/F08/F09/F10/F11/F13 receipts.",
+    "Build private ValidatedEncodingPlan from actual typed receipts; no such type/builder exists today.",
+    "Derive F15 provider and ProgrammeOutputBinding from that plan.",
+    "Wait for the F13 four-body barrier and F12 complete-frame proposal.",
+    "Append/readback/fsync, then parent root and logical ledger commit.",
+    "Check plan-derived EOF totals, finalize/publish, then DONE."
+  ],
+  "existing_producers_and_gaps": {
+    "input": {
+      "available": "PreparedJobInput and PreparedJobInputIdentity bind one resource/config/graph/source extent.",
+      "missing": "No encode-authority or provider receipts."
+    },
+    "profile": {
+      "available": "EncodingProfile plus resolve_selected_profile returns ResolvedEncodingProfile.",
+      "missing": "No full plan/provider validation."
+    },
+    "numeric": {
+      "available": "SharedAnalysisReceipt and NumericPlanReceipt<SelectedSourceNumericPlan>; SelectedFrameTrialPlan checks source identity.",
+      "missing": "Production parent adapter is not wired."
+    },
+    "F06": {
+      "available": "Selected BSI types, DRC fields, local meter leaf/schedule and leaf-finalize proposal.",
+      "missing": "Terminal meter root/MeasurementReceipt/READY and same-source BSI producer are not connected."
+    },
+    "F08": {
+      "available": "Finite F32[6][1536] same-source frame input contract.",
+      "missing": "Production frame receipt/adapter."
+    },
+    "F13": {
+      "available": "Typed absent/published EMDF input; complete container and complexity must share source identity.",
+      "missing": "Production four-body barrier/parent adapter."
+    },
+    "F15": {
+      "available": "Provider projection/hash and source/finalize proposal contracts.",
+      "missing": "ValidatedEncodingPlan-backed binding constructor; current binding is test-support only."
+    }
+  },
+  "f06_owner_source_gaps": [
+    {
+      "field": "input_cursor.model_owner_key",
+      "missing": "approved owner/type/source and cold/reset semantics"
+    },
+    {
+      "field": "window_k_energy.k_filter.exponents_i32_by_channel",
+      "missing": "approved owner/type source; do not merge with energy-accumulator exponents"
+    }
+  ],
+  "minimum_additional_source_evidence": "A hash-bound field contract for both F06 fields specifying exact type, owner, cold/reset source and binding to the selected meter root. Until then, no canonical terminal meter digest or MeasurementReceipt.",
+  "failure_reset_eof": {
+    "candidate": "Discard only candidate scratch.",
+    "fatal": "Invalid/missing plan/provider, producer failure or no accepted candidate retires the attempt.",
+    "partial_io": "Abandon the whole attempt; physical bytes may exist but no logical AU commit or same-attempt resume.",
+    "full_restart": "Destroy owners/measurement/staging identity and reconstruct cold; no partial reset.",
+    "main_eof": "Four cached callbacks, no extra codec/metadata flush; pending writers DROP_AT_DONE.",
+    "meter_eof": "Three fresh-zero drains on a separate meter clock.",
+    "post_rename_parent_sync_failure": "Final path may be visible; no DONE and no rollback claim."
+  },
+  "evidence_boundary": {
+    "local_model_not_dee_equivalence": true,
+    "native_execution": "NOT_RUN",
+    "whole_programme": "NOT_RUN",
+    "product_acceptance": "NOT_RUN"
+  },
+  "verdict": "Pure clock, suppression/EOF and F15 projection/leaf checks are locally implementable. Production encode ingress remains blocked on the named typed receipts and plan."
+}

@@ -1,0 +1,84 @@
+{
+  "schema": "production-ingress-audit-source-identities.v1",
+  "repository": {
+    "head": "9bf95d82822a1e74be8d448bf3fb14ecc66c9e41",
+    "branch": "experimental/independent-encoder"
+  },
+  "supplement_manifests": [
+    {
+      "id": "CODEC-SOURCE-TRANSACTION-KEYLESS-PUBLICATION-V1",
+      "sha256": "1a825c5dab7ecd292e53ddd691244c7e4bef2c34d553631c3fe714dd1cf73290"
+    },
+    {
+      "id": "CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1",
+      "sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"
+    },
+    {
+      "id": "F15-OUTPUT-PROVIDER-PLAN-BINDING-V1",
+      "sha256": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2"
+    },
+    {
+      "id": "F15-PRODUCTION-OUTPUT-API-GATE-V1",
+      "sha256": "954da54ae20ca9288eb00c736ef28ac5dd39870334cc091ad1eef6a7c7eac388"
+    },
+    {
+      "id": "F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1",
+      "sha256": "db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31"
+    },
+    {
+      "id": "METER-FINALIZE-DOMAIN-PROPOSAL-V1",
+      "sha256": "abb560381448727aa4c88877373769aa14556a4e365e4bec82637a043155333b"
+    },
+    {
+      "id": "PREPARED-JOB-INPUT-IDENTITY-V1",
+      "sha256": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f"
+    },
+    {
+      "id": "METER-DRC-STANDALONE-ROOT-BINDING-V1",
+      "sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a"
+    }
+  ],
+  "code_hashes": [
+    {
+      "path": "crates/jocforge-application/src/lib.rs",
+      "bytes": 15925,
+      "sha256": "11a7fadab151c2edf21effa5c0b66dfaff5871467335e2f49d3a9e84d163dbeb"
+    },
+    {
+      "path": "crates/jocforge-application/src/output_publication.rs",
+      "bytes": 23512,
+      "sha256": "02b83103efdd7b3daa4492ff9ee1886d4e0d0775458b582fed18dff9242f2efe"
+    },
+    {
+      "path": "crates/jocforge-domain/src/profile/production.rs",
+      "bytes": 3898,
+      "sha256": "534e0c69532d3c183584abf2145bffefb4b9c694b151e00a95a3ab4fab6b3ce2"
+    },
+    {
+      "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
+      "bytes": 55545,
+      "sha256": "9671fbe3a5066295dc340cd721f234300cca15c680d4f5fd0e4772d57c0d733e"
+    },
+    {
+      "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+      "bytes": 6702,
+      "sha256": "8a215cc272fc6048417afb94ecd9f68458dd15c405ab4f7035aaa08727a453d7"
+    },
+    {
+      "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
+      "bytes": 9354,
+      "sha256": "cbdd13e0658c10fed14f6cee5d82ee5406dfbdec5e26d7a88ee109eca0d1993e"
+    },
+    {
+      "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+      "bytes": 16057,
+      "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
+    },
+    {
+      "path": "docs/implementation/IMPLEMENTATION-MAP.json",
+      "bytes": 1657196,
+      "sha256": "04bb5a5ab46ed2a62626bdc62dad9ac7d5412b6bf8e7b3fb03dcb5dadb13d381"
+    }
+  ],
+  "read_scope": "Only isolated repo docs/code and listed hash-bound supplements; no reverse-research directories or raw native materials."
+}

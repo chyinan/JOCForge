@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "PRODUCTION-INGRESS-READINESS-AUDIT-V1",
+  "scope": "Existing clean-room source-clock/reset/EOF contracts, producer receipts and production encode ingress readiness",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "STATIC_REPOSITORY_READINESS_AUDIT",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "1a825c5dab7ecd292e53ddd691244c7e4bef2c34d553631c3fe714dd1cf73290",
+  "files": [
+    {
+      "file": "DEPENDENCY-AND-ORDER.json",
+      "bytes": 4711,
+      "sha256": "4828365c1d9d661882d91eeee876a14e75bd8028f247c4135470d8e6599af1fb"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 3065,
+      "sha256": "000fdc8816c09548c588fff0b816a23062bb9f60c384bb0002edc08775a9df88"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 485,
+      "sha256": "aac3bb95b133d09783e12456f19836fcfcdab5de009870badd4f7ac4c49d0aed"
+    }
+  ]
+}

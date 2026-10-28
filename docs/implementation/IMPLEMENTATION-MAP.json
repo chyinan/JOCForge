@@ -17731,7 +17731,62 @@
       "owner": "output",
       "planned_phase": "Phase 7",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "informational-production-ingress-readiness-audit",
+          "mapping_status": "WASHED_STATIC_READINESS_AUDIT__LOCAL_MODEL_SCOPES_AND_PRODUCTION_DEPENDENCIES_PINNED",
+          "implementation_status": "INFORMATIONAL_ONLY_LOCAL_MODEL_CLOCK_AND_FAILURE_SCOPES_IDENTIFIED__PRODUCTION_PLAN_AND_RECEIPTS_OPEN",
+          "scope": "Read-only audit of approved clean-room contracts, types and supplements. It identifies independently implementable LOCAL_MODEL scopes for N-to-Q clocks, source0/1 suppression while building complete 4096-byte CRC-checked frames, main cached4 versus independent meter zero3 EOF, candidate-infeasibility versus fatal boundaries, F15 provider projection/hash, and source-proposal lineage. Production encode remains blocked: encode() is BackendUnavailable; ValidatedEncodingPlan and its builder are absent; the production ProgrammeOutputBinding constructor is absent and current binding/provider projection are test-support only. Same-source F06/F08/F09/F10/F11/F13 receipts and parent adapters remain incomplete. F06 additionally lacks approved owner/type/source/cold-reset contracts for input_cursor.model_owner_key and window_k_energy.k_filter.exponents_i32_by_channel; no terminal meter digest or MeasurementReceipt is admissible until those fields bind to the selected meter root. The audit is a readiness map, not DEE equivalence or product execution.",
+          "owner": "output",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The audited sample-count/source/dispatch/writer/AU formulas are LOCAL_MODEL clocks; no new production clock or cross-owner receipt is minted by this audit."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_STATIC_PRODUCTION_INGRESS_READINESS_AUDIT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/DEPENDENCY-AND-ORDER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d",
+            "audited_head": "9bf95d82822a1e74be8d448bf3fb14ecc66c9e41",
+            "audited_implementation_map_sha256": "04bb5a5ab46ed2a62626bdc62dad9ac7d5412b6bf8e7b3fb03dcb5dadb13d381",
+            "validation_boundary": "Audit snapshot is bound to the listed HEAD and source identities; no production source change, test execution, native execution, or product acceptance occurred."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_READINESS_AUDIT_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/DEPENDENCY-AND-ORDER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Local-model source-clock, suppression/CRC, EOF, candidate/fatal, F15 projection/hash and proposal-lineage scopes are identified.",
+              "Product encode authority is absent; no ValidatedEncodingPlan or production output binding exists.",
+              "F06 meter root is blocked on model_owner_key and K-filter exponent owner/type/cold-reset source contracts.",
+              "F08 and F13 remain blocked on same-source production frame and four-body parent adapters/receipts."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d"
+          },
+          "not_run": [
+            "Production encode and trusted ValidatedEncodingPlan construction.",
+            "F06 terminal meter root/MeasurementReceipt and the two missing owner/type source contracts.",
+            "F08 production frame receipt and F13 production four-body barrier/parent adapter.",
+            "Native execution, whole-programme execution, filesystem fault execution, and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        }
+      ]
     },
     {
       "functional_id": "F15P",
