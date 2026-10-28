@@ -9611,8 +9611,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 6539,
-              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+              "bytes": 14560,
+              "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
             },
             {
               "path": "crates/jocforge-domain/src/numeric/finite_f32.rs",
@@ -11393,8 +11393,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 6539,
-              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+              "bytes": 14560,
+              "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
             },
             {
               "path": "crates/jocforge-domain/src/transform/long_transform.rs",
@@ -12003,8 +12003,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 6539,
-              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+              "bytes": 14560,
+              "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
             }
           ],
           "test_inventory": [
@@ -20080,15 +20080,98 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 6539,
-              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+              "bytes": 14560,
+              "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 6539,
-              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+              "bytes": 14560,
+              "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
+            }
+          ]
+        },
+        {
+          "slice_id": "gtc-owner-receipt-from-canonical-state-views",
+          "mapping_status": "MATERIALIZED_LOCAL_GTC_OWNER_RECEIPT_VALIDATOR__PROGRAMME_ROOT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_BYTES_HASH_COLD_ROOT_AND_GENERATION_RULES__NO_OWNER_INTEGRATION",
+          "scope": "Creates a non-owning GTC owner-state view from complete caller-supplied canonical bytes, derives its registered owners.<owner_id> reference, and recomputes state SHA-256. It forms a local owner receipt only when before/after owner IDs and cold hashes match; changed bytes require generation+1 and commit_count=1, unchanged bytes require the same generation and commit_count=0. This helper does not own or commit any product state and does not prove that caller bytes came from a concrete staged owner.",
+          "owner": "transaction",
+          "implementation_requirement": true,
+          "implementation_files": [
+            "crates/jocforge-domain/src/transaction/mod.rs"
+          ],
+          "clock": {
+            "domains": [
+              "GtcOwnerId",
+              "U64OwnerGeneration",
+              "CallbackTransactionId"
+            ],
+            "covered_clauses": [
+              "A changed owner advances exactly one generation and records commit_count=1.",
+              "An unchanged owner retains its generation and records commit_count=0.",
+              "This leaf receipt carries the supplied transaction ID but does not commit the programme phase generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_LOCAL_GTC_OWNER_RECEIPT_RULES",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/STATE-REF-MAP.json"
+            ],
+            "supplement_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+            "approved_global_transaction_spec_sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+            "programme_state_schema_sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4",
+            "validation_boundary": "Unit vectors use synthetic byte strings to exercise receipt rules; production use must pass complete bytes from a concrete typed owner state reference."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/transaction/mod.rs"
+          ],
+          "vectors": {
+            "kind": "LOCAL_SYNTHETIC_GTC_OWNER_RECEIPT_RULE_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/STATE-REF-MAP.json"
+            ],
+            "case_pointers": [
+              "All 12 registered owner references are derived from the closed enum.",
+              "A changed owner byte state hashes its complete bytes and advances generation once.",
+              "An unchanged owner preserves generation and records zero changed-state commit count.",
+              "Cold-root mismatch, generation skip and empty bytes reject before parent commit."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+            "approved_global_transaction_spec_sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+            "programme_state_schema_sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "EMPTY_CANONICAL_STATE | OWNER_IDENTITY_MISMATCH | COLD_ROOT_MISMATCH | GENERATION_MISMATCH | GENERATION_OVERFLOW",
+              "category": "GTC leaf owner transition",
+              "trigger": "Owner IDs/derived state refs differ, cold root changes, transition generation does not follow the changed/unchanged rule, or the canonical byte slice is empty.",
+              "programme_state_after": "No GtcOwnerReceipt is returned; no programme owner or phase generation is mutated.",
+              "caller_action": "Reject the source transaction before parent root swap."
+            }
+          ],
+          "not_run": [
+            "Binding the state-byte view to the actual spatial_control, spatial_audio, meter or other staged owner roots.",
+            "ProgrammeState root construction, receipt set completeness, top-level phase generation and atomic multi-owner swap.",
+            "Fatal retirement, full restart and durable AU/output ledger."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/transaction/mod.rs",
+              "bytes": 14560,
+              "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/transaction/mod.rs",
+              "bytes": 14560,
+              "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
             }
           ]
         }
@@ -21568,8 +21651,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/transaction/mod.rs",
-          "bytes": 6539,
-          "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+          "bytes": 14560,
+          "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
         },
         {
           "path": "crates/jocforge-domain/src/analysis/owner.rs",
@@ -22210,7 +22293,7 @@
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
         {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3333, "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 33420, "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"},
-        {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 6539, "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"},
+        {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 14560, "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"},
         {"path": "crates/jocforge-domain/src/spatial/source_flags.rs", "bytes": 61230, "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs", "bytes": 48742, "sha256": "9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs", "bytes": 61890, "sha256": "9275736d43853f6b137abdeeda5ae4aa4530acda241eacad02dcd28f22f7d555"}
@@ -24037,8 +24120,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/transaction/mod.rs",
-            "bytes": 6539,
-            "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+            "bytes": 14560,
+            "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
           },
           {
             "path": "crates/jocforge-domain/src/timeline/index.rs",

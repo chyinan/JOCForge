@@ -2647,9 +2647,9 @@
       "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
     },
     {
-      "bytes": 6539,
+      "bytes": 14560,
       "path": "crates/jocforge-domain/src/transaction/mod.rs",
-      "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+      "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
     },
     {
       "bytes": 61230,
@@ -2977,9 +2977,9 @@
         "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
       },
       {
-        "bytes": 6539,
+        "bytes": 14560,
         "path": "crates/jocforge-domain/src/transaction/mod.rs",
-        "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+        "sha256": "51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae"
       },
       {
         "bytes": 2672,
@@ -9483,3 +9483,4 @@
 | F14K/public-keyless-integrity-owner | Phase 7 | Public keyless CRC profile and its programme-local integrity owner. stage_source_for_callback validates typed programme/attempt/transaction/callback-to-source identity, then returns the staged source, complete frame, three specialized receipts, full canonical owner snapshot and a noncommitting GTC receipt projection. It does not mutate or retire the committed owner and does not assign a parent commit count. The fixture process API retains its local commit behavior. Private authentication and parent installation are excluded. | `crates/jocforge-domain/src/integrity/mod.rs`<br>`crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs`<br>`crates/jocforge-domain/src/integrity/programme_owner.rs` | `crates/jocforge-domain/src/integrity/programme_owner/tests.rs` | LOCALLY_VERIFIED_OWNER_STATE_REF_AND_RECEIPT_PROJECTION__PARENT_COMMIT_AND_PRIVATE_AUTH_DEFERRED |
 | F15/informational-production-ingress-readiness-audit | Phase 7 | Read-only audit of approved clean-room contracts, types and supplements. It identifies independently implementable LOCAL_MODEL scopes for N-to-Q clocks, source0/1 suppression while building complete 4096-byte CRC-checked frames, main cached4 versus independent meter zero3 EOF, candidate-infeasibility versus fatal boundaries, F15 provider projection/hash, and source-proposal lineage. Production encode remains blocked: encode() is BackendUnavailable; ValidatedEncodingPlan and its builder are absent; the production ProgrammeOutputBinding constructor is absent and current binding/provider projection are test-support only. Same-source F06/F08/F09/F10/F11/F13 receipts and parent adapters remain incomplete. The F06 V2 package supersedes V1: model_owner_key is ordinary identity and the two frozen callsites are Panner-only, with no external Meter ingress caller found; production Meter owner-key producer/call receipt and attempt+1 policy remain UNBOUND. For K-filter, the approved F06W model omission, native DPLM static owner chain, zero K cold [0;6], and separate energy cold [48;6] are closed; V4 K [48;6] remains synthetic and conflicts with native cold. A parent-issued opaque typed MeterSourceOwnerId bound to PreparedJobInputIdentity/ProgrammeId/AttemptId is a decidable JOCForge LOCAL_MODEL policy, not a DEE formula and not implemented here. Runtime pointer/generation capture is NOT_RUN; canonical GTC root serialization, a single parent commit, and MeasurementReceipt remain pending. The sibling reconciliation formula is not selected. No terminal meter digest or MeasurementReceipt is admissible until root fields and a single parent commit are complete. The audit remains a readiness map, not DEE equivalence or product execution. | — | — | INFORMATIONAL_ONLY_NATIVE_FIELD_FACTS_CLOSED__LOCAL_OWNER_POLICY_DECIDABLE__GTC_ROOT_COMMIT_PENDING |
 | F15/gtc-owner-state-ref-convention | Phase 7 | The selected GTC contract supplement defines each logical owner reference as owners.<owner_id>. The implementation represents the 12 registered owner IDs as a closed enum and derives the exact state_ref from that enum; callers cannot supply a separate arbitrary path string. This is only a local snapshot reference convention: it does not serialize owner state bytes, define generation/hash timing, create an owner receipt, or commit the programme root. | `crates/jocforge-domain/src/transaction/mod.rs` | `crates/jocforge-domain/src/transaction/mod.rs` | LOCALLY_VERIFIED_12_REGISTERED_OWNER_REFS__ROOT_AND_RECEIPTS_OPEN |
+| F15/gtc-owner-receipt-from-canonical-state-views | Phase 7 | Creates a non-owning GTC owner-state view from complete caller-supplied canonical bytes, derives its registered owners.<owner_id> reference, and recomputes state SHA-256. It forms a local owner receipt only when before/after owner IDs and cold hashes match; changed bytes require generation+1 and commit_count=1, unchanged bytes require the same generation and commit_count=0. This helper does not own or commit any product state and does not prove that caller bytes came from a concrete staged owner. | `crates/jocforge-domain/src/transaction/mod.rs` | `crates/jocforge-domain/src/transaction/mod.rs` | LOCALLY_VERIFIED_BYTES_HASH_COLD_ROOT_AND_GENERATION_RULES__NO_OWNER_INTEGRATION |

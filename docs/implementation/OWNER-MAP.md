@@ -345,3 +345,4 @@
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |
 | F15/informational-production-ingress-readiness-audit | F15 | `output` |
 | F15/gtc-owner-state-ref-convention | F15 | `transaction` |
+| F15/gtc-owner-receipt-from-canonical-state-views | F15 | `transaction` |
