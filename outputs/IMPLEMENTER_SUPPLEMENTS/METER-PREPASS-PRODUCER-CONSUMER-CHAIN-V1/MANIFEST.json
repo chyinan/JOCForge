@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "METER-PREPASS-PRODUCER-CONSUMER-CHAIN-V1",
+  "status": "APPROVED_CONTRACT_CHAIN_MAPPED_ACTUAL_PREPASS_NOT_RUN",
+  "source_package_manifest_sha256": "8a3b5e22fa5e6ec4867c7c6b2cd4cba4cd1da9cab4fb3ed8625a2b6a6811b3c1",
+  "files": [
+    {
+      "sha256": "64a7728de5069f85c3636922c5a54fdaaac9dc9d4c727fa706de4cc4b0bd217a",
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 959
+    },
+    {
+      "sha256": "1e452acc0ff9afe8e30a35c81f65ad6b7e31eac6a4003265f0216c9d12b09701",
+      "path": "PREPASS-CHAIN.json",
+      "bytes": 12580
+    },
+    {
+      "sha256": "982679bb3aa587a2fd008a39c344b7060ef7bb6b6e88584a887110623d96c2f7",
+      "path": "SOURCE-BINDING.json",
+      "bytes": 689
+    },
+    {
+      "sha256": "40588d5b1cd175b81f9721ebeb1977ef3073d1d75a75573b06f9dbe9d2f433ac",
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 2993
+    }
+  ]
+}

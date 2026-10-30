@@ -1,0 +1,101 @@
+{
+  "schema": "meter-d11-and-dependency-closure-input-only.v1",
+  "cases": [
+    {
+      "id": "index_count_not_runtime",
+      "input": {
+        "upstream_index": 48,
+        "handles_loaded": false
+      },
+      "expected": "NOT_RUNTIME_PROVIDER"
+    },
+    {
+      "id": "direct7_nonexhaustive",
+      "input": {
+        "direct_inventory": 7,
+        "scope": "BOUND_DIRECT_ASSETS_NOT_EXHAUSTIVE"
+      },
+      "expected": "NO_TRANSITIVE_COMPLETENESS_CLAIM"
+    },
+    {
+      "id": "cold5_not_warm",
+      "input": {
+        "cold_json_assets": 5,
+        "live_owner_roots": 0
+      },
+      "expected": "NO_WARM_OWNER_STATE"
+    },
+    {
+      "id": "asset_local_pass_not_owner_validation",
+      "input": {
+        "local_vector_review": "PASS",
+        "selected_input_binding": false
+      },
+      "expected": "OWNER_SEMANTIC_VALIDATOR_NOT_PASSED"
+    },
+    {
+      "id": "meter_key_missing",
+      "input": {
+        "selected_meter_ingress_callers": 0,
+        "owner_key": "UNBOUND"
+      },
+      "expected": "INPUT_BINDING_FALSE"
+    },
+    {
+      "id": "terminal_requires_run",
+      "input": {
+        "prepass": "NOT_RUN",
+        "getter": "NOT_RUN",
+        "receipt": null
+      },
+      "expected": "NO_RECEIPT"
+    },
+    {
+      "id": "GTC_vectors_not_runtime",
+      "input": {
+        "GTC_local_sequence_vectors": "PASS",
+        "actual_meter_prepass": false
+      },
+      "expected": "PREPASS_NOT_RUN"
+    },
+    {
+      "id": "QMF_receiver_rows",
+      "d11_ids": [
+        "D11-QA",
+        "D11-QS",
+        "D11-QR",
+        "D11-QT",
+        "D11-QBR",
+        "D11-QBI",
+        "D11-QG",
+        "D11-QH",
+        "D11-RB"
+      ],
+      "expected_phase": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC"
+    },
+    {
+      "id": "OAMD_wire_rows",
+      "d11_ids": [
+        "D11-XY",
+        "D11-Z"
+      ],
+      "expected_phase": "POST_PREPASS_MAIN_OAMD_METADATA"
+    },
+    {
+      "id": "JOC_score_rows",
+      "d11_ids": [
+        "D11-S9",
+        "D11-SN",
+        "D11-SE"
+      ],
+      "expected_phase": "POST_PREPASS_MAIN_JOC_SCORE"
+    },
+    {
+      "id": "meter_run_boundary",
+      "actual_prepass": "NOT_RUN",
+      "selected_input_binding": "NOT_RUN",
+      "expected": "do_not_promote_local value checks to runtime pass"
+    }
+  ],
+  "status": "NOT_RUN"
+}

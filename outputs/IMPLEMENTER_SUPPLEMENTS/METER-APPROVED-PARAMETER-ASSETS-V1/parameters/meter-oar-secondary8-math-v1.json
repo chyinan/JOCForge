@@ -1,0 +1,84 @@
+{
+  "schema": "meter-oar-secondary8-mathematical-geometry.v1",
+  "coordinate_domain": "normalized layout canvas, not claimed acoustic angles",
+  "slot_names": [
+    "front_left",
+    "front_right",
+    "front_center",
+    "coded_lfe",
+    "side_left",
+    "side_right",
+    "back_left",
+    "back_right"
+  ],
+  "coordinate_rule": "active ideal positions 0, 1/2 or1 to Q15: min(32767,max(0,RNE_integer(32768*x))); inactive coded LFE uses I32 -1 sentinel in each coordinate",
+  "partner_rule": "side_left/right link to corresponding back slot6/7; other slots use sentinel35, one-past global output code domain0..34",
+  "ideal_xy_rule": [
+    "(0,0)",
+    "(1,0)",
+    "(1/2,0)",
+    "INACTIVE",
+    "(0,1/2)",
+    "(1,1/2)",
+    "(0,1)",
+    "(1,1)"
+  ],
+  "z_rule": "positive zero for every active point",
+  "generated_i32_rows": [
+    [
+      0,
+      0,
+      0,
+      35
+    ],
+    [
+      32767,
+      0,
+      0,
+      35
+    ],
+    [
+      16384,
+      0,
+      0,
+      35
+    ],
+    [
+      -1,
+      -1,
+      -1,
+      35
+    ],
+    [
+      0,
+      16384,
+      0,
+      6
+    ],
+    [
+      32767,
+      16384,
+      0,
+      7
+    ],
+    [
+      0,
+      32767,
+      0,
+      35
+    ],
+    [
+      32767,
+      32767,
+      0,
+      35
+    ]
+  ],
+  "i32le_sha256": "3f8b8b5d4880052f66516455883e4c3aee026e2b94f99191bfb0ad74a8f25fc3",
+  "generated_entries": 32,
+  "raw_source_table_copied": false,
+  "delivery_scope": "INTERNAL_ONLY",
+  "original_design_rationale": "NOT_CLAIMED; explicit independent canonical grid definition and identity verification",
+  "full_panner_metadata_and_renderer": "NOT_CLOSED_BY_GEOMETRY_IDENTITY",
+  "implementation_ready": "NO"
+}

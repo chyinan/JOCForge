@@ -1,0 +1,329 @@
+{
+  "schema": "selected-adm-installed48-provider-manifest.v1",
+  "provider_files": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "bytes": 3369,
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135"
+    },
+    {
+      "file": "specs/01-input-and-clock.md",
+      "bytes": 6887,
+      "sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a"
+    },
+    {
+      "file": "specs/01-frontend-config-normalization.md",
+      "bytes": 3582,
+      "sha256": "0dae9b61901e10d002dad26a2addc102f319049900f611722606c7bbc57686b9"
+    },
+    {
+      "file": "specs/01-frontend-config-dbmd-events.md",
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+      "historical_sha256_before_status_reconciliation": "4e40113f66e1b934fbf4b1fe184f8e303e2a5fa40b4035bdb30c3b8120d5e95b",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/01-adm-graph-and-time.md",
+      "bytes": 6441,
+      "sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14"
+    },
+    {
+      "file": "specs/01-bed-routing-and-source-geometry.md",
+      "bytes": 5510,
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2"
+    },
+    {
+      "file": "specs/01-selected-geometry-layout-and-bed-routing.md",
+      "bytes": 9551,
+      "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+      "current_binding_history": [
+        {
+          "bytes": 9456,
+          "sha256": "d55d1079644b5530ae48c7855faeed8aed181cd07a33b3a0f524c00d096b2483",
+          "superseded_by": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+          "reason": "Prior current-live identity retained as provenance; provider semantics and review scope unchanged."
+        }
+      ],
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately"
+    },
+    {
+      "file": "specs/03-source-routing-and-feature-flags.md",
+      "bytes": 4830,
+      "sha256": "ef0a7bd95edc2adc63b07e752879b6ddefb817962b7b6fa44c77b4acb5c51f19"
+    },
+    {
+      "file": "specs/03-feature-processor-and-state.md",
+      "bytes": 4436,
+      "sha256": "dbd1cf259d2e40013910868d31e38909678d3af8add9d80bd59d15e8cc6e8edd"
+    },
+    {
+      "file": "specs/03-gate-and-target-installation.md",
+      "bytes": 5475,
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc",
+      "historical_sha256_before_status_reconciliation": "5c7369572b63b0ea04dbb56a8212792aaba387e3b3bf1aaa7011504bec55134d",
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately",
+      "current_binding_history": [
+        {
+          "bytes": 4583,
+          "sha256": "a6dac875be792c534d3089f159998e51d4e9720d9534fff8043378d7b14afa12",
+          "superseded_by": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc",
+          "reason": "Prior current-live identity retained as provenance; provider semantics and review scope unchanged."
+        }
+      ]
+    },
+    {
+      "file": "specs/03-selector-affinity-and-selection.md",
+      "bytes": 6405,
+      "sha256": "ce95853e007f9282f3d1dce0e43cffb132ed079b5f1cd2fe3e6ce10901d51697"
+    },
+    {
+      "file": "specs/03-rectangular-nnls-initial-fit.md",
+      "bytes": 6652,
+      "sha256": "7cfb51e8905f739e60bebcd30899887bda52cc493a5bab0c976ca645548b09fc"
+    },
+    {
+      "file": "specs/03-u04-refinement-and-projection.md",
+      "bytes": 5458,
+      "sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879"
+    },
+    {
+      "file": "specs/03-outer-energy-correction.md",
+      "bytes": 5150,
+      "sha256": "7ca47864c9fe7573b6cc6edfafdbd2049c5e74aa73f9b240c4c15bf4a427cdb2"
+    },
+    {
+      "file": "specs/03-degenerate-frontier-and-fail-stop.md",
+      "bytes": 6111,
+      "sha256": "b657fb3f4b322a41aee8cb7573191d67a56db71ca2d24e27e0b0d4914e3e2c83"
+    },
+    {
+      "file": "specs/03-point-response-and-target-context.md",
+      "bytes": 9435,
+      "sha256": "8fb727170fb41df5354a17429fc00411010f010cb32dc86e0fdcc81bddaf4964"
+    },
+    {
+      "file": "specs/04-window-matrix-and-component-audio.md",
+      "bytes": 9190,
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334"
+    },
+    {
+      "file": "specs/04-prefix-spread-and-gain.md",
+      "bytes": 12300,
+      "sha256": "ca5b069d16f0a0837ad4501036c74bb6e8ae3d6acfaf8bf3961ca4869923a68b"
+    },
+    {
+      "file": "specs/04-spread-authorized-parameters.md",
+      "bytes": 2365,
+      "sha256": "4c8b966929818a9a0ea8cace90830bd5e7fa9ce8fdb716931078f97ccee83013"
+    },
+    {
+      "file": "specs/04-spread-parameter-provider-and-caller.md",
+      "bytes": 4971,
+      "sha256": "11a9a62467c7992224450bc00bca570a180a293631212e5848ddc7738421f77a",
+      "historical_sha256_before_status_reconciliation": "032480309791eb2059250a04ca511ed838cddc2e270da9a3e5ad586fe3c251a2",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/04-diffusion-filter-and-lifecycle.md",
+      "bytes": 7203,
+      "sha256": "4b662c3721ba10ad9dafd193bf13e1bc2df571ab4cab580e46a8a6b39e9a3594"
+    },
+    {
+      "file": "specs/04-diffusion-mathematical-generation.md",
+      "bytes": 3125,
+      "sha256": "eeba9137918ffb647e3b0a68ca5b210aadd0b0815fed3eec7ae199a08057484d"
+    },
+    {
+      "file": "specs/04-diffusion-constructor-generation.md",
+      "bytes": 4229,
+      "sha256": "e1a420ea0d4284c0cfadcf6962d34ff8cc0f877cee0d0503a6c0e2669c2978b9",
+      "current_binding_history": [
+        {
+          "bytes": 4023,
+          "sha256": "e3d7ff97716a62c0cd0033e410b64fb41b3f8dfd91ff150d1c548501b7a9c481",
+          "superseded_by": "e1a420ea0d4284c0cfadcf6962d34ff8cc0f877cee0d0503a6c0e2669c2978b9",
+          "reason": "Prior current-live identity retained as provenance; provider semantics and review scope unchanged."
+        }
+      ],
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately"
+    },
+    {
+      "file": "specs/04-component-parameter-state.md",
+      "bytes": 5792,
+      "sha256": "3e9b777a36ae722aeccd1054d778484e6a96e44d16f2534159dfe49afc7d1861"
+    },
+    {
+      "file": "specs/04-component-parameter-generation.md",
+      "bytes": 4910,
+      "sha256": "2564879656a5b0e73975d99ef7a55217440131c5d4e2d6b4dc8117adecef76d8",
+      "current_binding_history": [
+        {
+          "bytes": 4760,
+          "sha256": "fbb9cedafd84e34fd8936c5aa3f071ac5232568d3f76017cef12fd7c700749a5",
+          "superseded_by": "2564879656a5b0e73975d99ef7a55217440131c5d4e2d6b4dc8117adecef76d8",
+          "reason": "Prior current-live identity retained as provenance; provider semantics and review scope unchanged."
+        }
+      ],
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately"
+    },
+    {
+      "file": "specs/04-receiver-state-and-routing.md",
+      "bytes": 8332,
+      "sha256": "74b9b01537eb76a37582535b84426138ee8c8ecdca3486f9f43d0504c7c26306"
+    },
+    {
+      "file": "specs/05-oamd-row-and-timing-wire.md",
+      "bytes": 6701,
+      "sha256": "b49694e3026938c1b5f91ef95fd63cc2eea03e25161367ba26095177ff452b11",
+      "historical_sha256_before_status_reconciliation": "46f7e74c08ecdb885cb23fd89cd973ce91ff841343d0e5eae4564fffa2194923",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/05-reader56-target-updates-composition.md",
+      "bytes": 12627,
+      "sha256": "4f4fe2bc3b0dd08bc59e46ea5d3a48e2eafc4051906c2fda258250351261ce0d",
+      "historical_sha256_before_status_reconciliation": "d1c24554a3fc6a741744385cd0539549c0d5e3ea6c6245347eecbe80c635a754",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/06-oar-model-callback-state-and-clock.md",
+      "bytes": 11750,
+      "sha256": "7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9",
+      "current_binding_history": [
+        {
+          "bytes": 11582,
+          "sha256": "6a5846f7342079e5c2d565fa5f47f5b738fac82a5466c71bf3ef2514e1e4a650",
+          "superseded_by": "7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9",
+          "reason": "Prior current-live identity retained as provenance; provider semantics and review scope unchanged."
+        }
+      ],
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately"
+    },
+    {
+      "file": "specs/06-oar-frontend-input-and-clock-join.md",
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    {
+      "file": "specs/06-oar-mix-ramp-and-filter-gate.md",
+      "bytes": 7425,
+      "sha256": "dfe8ceac3e6e9ca9939e3e40bcf985e26a842c70f8646dfc6e61da3065f86de3"
+    },
+    {
+      "file": "specs/06-oar-selected-task-routing.md",
+      "bytes": 7505,
+      "sha256": "effdbd69f19a0b6469568168c1121d1e279ec12385c8192c627c9d91a810d20d",
+      "current_binding_history": [
+        {
+          "bytes": 7283,
+          "sha256": "b3e63d341930c22682b891573400482256c5b32a16f10769a36464ad8d67444e",
+          "superseded_by": "effdbd69f19a0b6469568168c1121d1e279ec12385c8192c627c9d91a810d20d",
+          "reason": "Prior current-live identity retained as provenance; provider semantics and review scope unchanged."
+        }
+      ],
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately"
+    },
+    {
+      "file": "specs/06-oar-snapshot-to-record-bridge.md",
+      "bytes": 10712,
+      "sha256": "5944a659fff3483b90263525ab58106fdc211c97f0901d09b3681b0c4f889c05",
+      "current_binding_history": [
+        {
+          "bytes": 10469,
+          "sha256": "e91bab6d96f16903a912f9de5435694b68782f5670f0ed30408b3fa8f6b53d65",
+          "superseded_by": "5944a659fff3483b90263525ab58106fdc211c97f0901d09b3681b0c4f889c05",
+          "reason": "Prior current-live identity retained as provenance; provider semantics and review scope unchanged."
+        }
+      ],
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately"
+    },
+    {
+      "file": "parameters/spread-authorized-v1.json",
+      "bytes": 2783,
+      "sha256": "5611b37f2a997f75da0ba920e394c0e36eddd9477e11ba94d44852d3e12fd0c9"
+    },
+    {
+      "file": "parameters/diffusion-mathematical-v1.json",
+      "bytes": 1467,
+      "sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa"
+    },
+    {
+      "file": "parameters/diffusion-constructor-mathematical-v1.json",
+      "bytes": 1770,
+      "sha256": "7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106"
+    },
+    {
+      "file": "parameters/component-parameter-mathematical-v1.json",
+      "bytes": 1077,
+      "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5"
+    },
+    {
+      "file": "parameters/geometry-front-side-y-v1.json",
+      "bytes": 1466,
+      "sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185"
+    },
+    {
+      "file": "parameters/feature-fft4096-math-v1.json",
+      "bytes": 279305,
+      "sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33"
+    },
+    {
+      "file": "parameters/feature-processor-math-v1.json",
+      "bytes": 35441,
+      "sha256": "c2cc80eed698285a7a022324bfed36e04c3b6e682cb21674b6316b3ec6a2ec0b"
+    },
+    {
+      "file": "parameters/oamd-coordinate-grid-q15.json",
+      "bytes": 1169,
+      "sha256": "b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243"
+    },
+    {
+      "file": "parameters/point-panner-math-v1.json",
+      "bytes": 812,
+      "sha256": "f79ab4d4ed06983cea05146a39bcfef22c183c1111d1d6103efce25c9c579ef6"
+    },
+    {
+      "file": "parameters/reader56-target-profile-v1.json",
+      "bytes": 1898,
+      "sha256": "ec4c56549a47d1892655345c036aba822d2f0c8baae6c71b398001e9f90ce5d1"
+    },
+    {
+      "file": "parameters/reader56-main-panner-v1.json",
+      "bytes": 1794,
+      "sha256": "b2f2cb31d3ee099db5bf32a8b93c8e1a9c441d84b9246c0908dceabde8e44c47"
+    },
+    {
+      "file": "test-vectors/READER56-TARGET-UPDATES-VERIFICATION.json",
+      "bytes": 502975,
+      "sha256": "7e5e54b0005318ea8a5699272ba3e6381ba10d9f17b81d89d01229e68169b34a",
+      "historical_sha256_before_status_reconciliation": "804adfec9a07cc38bf833646c5bc790d384de064a2eeecca386a156da09d60bd",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "test-vectors/READER56-TARGET-UPDATES-RESULT.json",
+      "bytes": 1825,
+      "sha256": "f246be2cff2dcda42c8abcba882cd3de9a58b90802c8c914a776e17219797d85",
+      "historical_sha256_before_status_reconciliation": "4bce21ee092ea1c96a94e5fea6b84d0e54bcb96bf21b623dea6a9fa2966c5135",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "test-vectors/READER56-TARGET-STATE-SCHEMA.json",
+      "bytes": 23612,
+      "sha256": "bb3d9754073fca1173d52c8c80d19f0a2433306004f5b20d0b83ee6c2d3ae510",
+      "historical_sha256_before_status_reconciliation": "2fb298ff4cc106c73a8e5712cbfd1238fa1c64bbb94c4d006f0b380b673d396e",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "test-vectors/READER56-TARGET-GAPS.json",
+      "bytes": 1754,
+      "sha256": "269d8cfd60a1c078a632c336a3fc8d2e72c2710fdf0608158b24033ca1471018"
+    }
+  ],
+  "provider_file_count": 48,
+  "selected_scope": "48k/38chPCM24/10bed28object/single-zero-start-event/48x3072 installed domain",
+  "reader56_target_boundary": "SELECTED_CANONICAL_SCHEMA_TRANSITION_TARGET_BOUND; SYNTHETIC_WHOLE_R2_RECOMPUTABLE; REAL_ADM_COLD_PENDING",
+  "normal_constants_internal_delivery_authorized": true,
+  "private_key_required": false,
+  "pcm_included": false
+}

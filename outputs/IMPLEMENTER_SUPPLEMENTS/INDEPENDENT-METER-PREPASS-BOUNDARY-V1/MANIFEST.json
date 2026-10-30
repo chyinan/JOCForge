@@ -1,0 +1,28 @@
+{
+  "package_id": "INDEPENDENT-METER-PREPASS-BOUNDARY-V1",
+  "scope": "selected profile local model; synthetic count only; real meter not run",
+  "source_manifest_sha256": "efd8da1b8b8bead44ab5cd3e14bdf165002d1a7eb049e3bb51430ea1e28d5042",
+  "sources_verified": 29,
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 10897,
+      "sha256": "5968b281b96e035cb7723d4d95593b582a39eb43f1ffd31a110042d1a32d9716"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 1303,
+      "sha256": "22c7fb740bc1e1325eea125848faab2db95a8cee20d5f1a5fc4f53fffff124a9"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 6211,
+      "sha256": "a97214b8caac0b5b917554eb538db103990b457c43652de5d72d89bf304a7120"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1188,
+      "sha256": "db5684ba941e825189672975b81ab1e1a4bb56c11b3a7b128cb7eb65d38270a5"
+    }
+  ]
+}

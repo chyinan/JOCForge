@@ -1,0 +1,41 @@
+{
+  "schema": "independent-meter-symbolic-schedule-check.v1",
+  "grade": "SYNTHETIC_COUNT_ONLY_NOT_DSP",
+  "input_sha256": "22c7fb740bc1e1325eea125848faab2db95a8cee20d5f1a5fc4f53fffff124a9",
+  "cases": [
+    {
+      "id": "one_sample",
+      "normal_reads": 1,
+      "meter_callbacks": 4,
+      "published_samples": 1536,
+      "consumed_samples": 1024,
+      "energy_windows": 1,
+      "pending_pcm_samples": 512,
+      "energy_partial_samples": 64,
+      "first_lfe_origin_g": 0
+    },
+    {
+      "id": "short_second_normal",
+      "normal_reads": 2,
+      "meter_callbacks": 5,
+      "published_samples": 3072,
+      "consumed_samples": 3072,
+      "energy_windows": 3,
+      "pending_pcm_samples": 0,
+      "energy_partial_samples": 192,
+      "first_lfe_origin_g": 0
+    },
+    {
+      "id": "selected_example",
+      "normal_reads": 4247,
+      "meter_callbacks": 4250,
+      "published_samples": 6523392,
+      "consumed_samples": 6522880,
+      "energy_windows": 6794,
+      "pending_pcm_samples": 512,
+      "energy_partial_samples": 640,
+      "first_lfe_origin_g": 0
+    }
+  ],
+  "real_pcm_oar_dv_k_peak_or_terminal_hash": "NOT_RUN"
+}

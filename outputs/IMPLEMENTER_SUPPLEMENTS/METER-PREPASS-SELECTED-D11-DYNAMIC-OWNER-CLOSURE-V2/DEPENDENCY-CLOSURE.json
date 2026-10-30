@@ -1,0 +1,1285 @@
+{
+  "schema": "meter-transitive-dependency-closure.v1",
+  "source_scope": "Approved main package, approved upstream expansion/direct/cold packages, F06 owner contracts and GTC contracts only; no implementation source read.",
+  "main_parameter_register": {
+    "item_count": 109,
+    "selected_profile_D11_consumers_exhaustively_enumerated": true,
+    "all_families_exhaustively_enumerated": false
+  },
+  "provider_inventory": {
+    "upstream_index": 48,
+    "index_semantics": "mixed specifications, parameters, review/vector records; not runtime handles and expressly not exhaustive",
+    "direct_assets": 7,
+    "direct_semantics": "bound direct values, explicitly not exhaustive",
+    "cold_assets": 5,
+    "cold_semantics": "schemas/cold preimages, not live owner instances or warm state"
+  },
+  "GTC_owner_rows": [
+    {
+      "owner_id": "reader_eof",
+      "required_phase": "01 admission/source clock",
+      "expected_values_or_assets": "F01 input-clock and ADM graph specs; F01E cold constructor",
+      "dynamic_state_or_receipt": "actual resource identity, N, PCM format, source cursor",
+      "current_status": "key/cursor producer UNBOUND; actual receipt absent"
+    },
+    {
+      "owner_id": "frontend_control",
+      "required_phase": "01 admission; 02 each callback",
+      "expected_values_or_assets": "F01 normalization, DBMD/CHNA/events, bed route; F01E cold constructor",
+      "dynamic_state_or_receipt": "parsed graph, DBMD track map, callback event/control rows",
+      "current_status": "actual Meter attempt/input binding NOT_RUN"
+    },
+    {
+      "owner_id": "spatial_control",
+      "required_phase": "02 frontend callback",
+      "expected_values_or_assets": "F03 source flags, feature, selector/U04, target/matrix specs; F03 target cold; FFT/feature/panner parameters",
+      "dynamic_state_or_receipt": "feature rows, candidate/selected targets, control38 and matrix by current callback",
+      "current_status": "same Meter callback receipt NOT_RUN"
+    },
+    {
+      "owner_id": "spatial_audio",
+      "required_phase": "02 render/OAR each callback and drains",
+      "expected_values_or_assets": "F04 window/component/diffusion/receiver specs; spread/diffusion/component parameters; OAR secondary8 geometry",
+      "dynamic_state_or_receipt": "current component/LFE rows, OAR records/targets, receiver/QMF and warm history",
+      "current_status": "actual six-lane render/OAR receipt NOT_RUN"
+    },
+    {
+      "owner_id": "joc",
+      "required_phase": "08 post-prepass main path",
+      "expected_values_or_assets": "OAMD/reader target specs and profile/panner assets",
+      "dynamic_state_or_receipt": "source-indexed JOC state and dispatches after frozen receipt",
+      "current_status": "main JOC execution NOT_RUN; not a Meter numerical provider"
+    },
+    {
+      "owner_id": "meter",
+      "required_phase": "02-07 independent prepass",
+      "expected_values_or_assets": "six direct assets, F06 owner specs, whole-state schema",
+      "dynamic_state_or_receipt": "OAR/DV32, scheduler spans, peaks/K, energy records, integrated/ungated state, terminal outputs",
+      "current_status": "selected ingress/key/cursor/warm root/getter/receipt NOT_RUN"
+    },
+    {
+      "owner_id": "drc",
+      "required_phase": "08 post-prepass source",
+      "expected_values_or_assets": "none-DRC values/specs and GTC contract",
+      "dynamic_state_or_receipt": "same-source DRC/statistic state using frozen MeasurementReceipt",
+      "current_status": "source execution NOT_RUN"
+    },
+    {
+      "owner_id": "analysis",
+      "required_phase": "08 post-prepass source",
+      "expected_values_or_assets": "GTC analysis root contract",
+      "dynamic_state_or_receipt": "source analysis queues/plans/gain state",
+      "current_status": "source execution NOT_RUN"
+    },
+    {
+      "owner_id": "codec",
+      "required_phase": "08 post-prepass source",
+      "expected_values_or_assets": "GTC codec root/state contract",
+      "dynamic_state_or_receipt": "codec state and source transaction",
+      "current_status": "source execution NOT_RUN"
+    },
+    {
+      "owner_id": "metadata",
+      "required_phase": "08 post-prepass source",
+      "expected_values_or_assets": "GTC metadata queue/timeline contract",
+      "dynamic_state_or_receipt": "ID1/ID11/ID2/ID14 queues and generation",
+      "current_status": "source execution NOT_RUN"
+    },
+    {
+      "owner_id": "integrity",
+      "required_phase": "08 per-frame source",
+      "expected_values_or_assets": "stateless GTC frame-integrity contract",
+      "dynamic_state_or_receipt": "frame CRC/checksum receipt",
+      "current_status": "frame execution NOT_RUN"
+    },
+    {
+      "owner_id": "output",
+      "required_phase": "08 durable append/publication",
+      "expected_values_or_assets": "GTC staging/output contract",
+      "dynamic_state_or_receipt": "attempt temp, durable AU ledger, terminal output digest",
+      "current_status": "output execution NOT_RUN"
+    }
+  ],
+  "meter_subowner_rows": [
+    {
+      "subowner": "D11-FFTS",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-FFTT",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-FFTP",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-FFTR",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-FFTC",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-QA",
+      "provider": "parameters/qmf-receiver-functional-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-QS",
+      "provider": "parameters/qmf-receiver-functional-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-QR",
+      "provider": "parameters/qmf-mathematical-fft-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-QT",
+      "provider": "parameters/qmf-mathematical-fft-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-QBR",
+      "provider": "parameters/qmf-receiver-functional-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-QBI",
+      "provider": "parameters/qmf-receiver-functional-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-QG",
+      "provider": "parameters/descriptor-mathematical.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-QH",
+      "provider": "parameters/qmf-receiver-functional-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-XY",
+      "provider": "parameters/oamd-coordinate-grid-q15.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-Z",
+      "provider": "parameters/oamd-coordinate-grid-q15.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-K",
+      "provider": "parameters/window-q15.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "SPATIAL_RENDER_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-F",
+      "provider": "parameters/component-parameter-mathematical-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "SPATIAL_RENDER_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-S1",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-S2",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-S3",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-S4",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-S5",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-S6",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-S7",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-S8",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-S9",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-SS",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-SN",
+      "provider": "parameters/joc-functional-authorized-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-SG",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-SL",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-SE",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-D",
+      "provider": "parameters/joc-generated-math-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-TIMER",
+      "provider": "parameters/joc-timer-order-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-PM",
+      "provider": "parameters/diffusion-mathematical-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "SPATIAL_RENDER_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-PL",
+      "provider": "parameters/diffusion-mathematical-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "SPATIAL_RENDER_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-DC",
+      "provider": "parameters/diffusion-mathematical-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "SPATIAL_RENDER_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-DP",
+      "provider": "parameters/diffusion-constructor-mathematical-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "SPATIAL_RENDER_PREPASS_CANDIDATE"
+    },
+    {
+      "subowner": "D11-U",
+      "provider": null,
+      "provider_status": "unselected/no value",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "NO_SELECTED_CONSUMER"
+    },
+    {
+      "subowner": "D11-RB",
+      "provider": "parameters/qmf-receiver-functional-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "CROSSWALK_TO_METER_STAGE_REQUIRED"
+    },
+    {
+      "subowner": "D11-JH",
+      "provider": "parameters/joc-huffman-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-JN",
+      "provider": "parameters/joc-functional-authorized-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_JOC_CONDITIONAL"
+    },
+    {
+      "subowner": "D11-JP",
+      "provider": "parameters/joc-functional-authorized-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    },
+    {
+      "subowner": "D11-JL",
+      "provider": "parameters/joc-functional-authorized-v1.json",
+      "provider_status": "approved selected value/formula",
+      "validator_status": "NOT_RUN",
+      "input_binding": "ABSENT",
+      "prepass_phase": "POST_PREPASS_MAIN_CODEC_OR_METADATA"
+    }
+  ],
+  "static_selected_numeric_completeness": {
+    "status": "NO_NEW_SELECTED_NUMERIC_CONSTANT_GAP_IDENTIFIED",
+    "basis": "F06-METER-NONE-DRC-WHOLE-GAP-INVENTORY.json enumerates delivered D12 families; main PARAMETER-INTERFACES has 109 registered items",
+    "meaning": "Approved values/formulas are exportable from the approved main package and references, with source class/validation scope retained. This does not mean loaded, owner-validated or bound to actual input."
+  },
+  "transitive_runtime_closure": {
+    "status": "NOT_ESTABLISHED",
+    "reason": [
+      "Upstream index count and direct inventory are not complete runtime provider sets.",
+      "Actual selected Meter key producer and ingress/cursor receipt are UNBOUND.",
+      "Actual callback rows, same-generation render/OAR/DV32 values and warm owner state do not exist.",
+      "Actual block/energy records, terminal getter output and MeasurementReceipt require a real prepass."
+    ],
+    "not_a_missing_numeric_asset": "For the selected D12 numerical families, no new ordinary constant gap is listed; missing evidence is composition, producer/input binding, owner validators and run-generated state/results."
+  },
+  "GTC_meter_sequence_expected": [
+    "METERING cold root",
+    "F01/F03/F04/F05 frontend/render callback",
+    "Q normal callbacks",
+    "3 fresh-zero drains",
+    "latency 3104 and valid six-channel output scheduling",
+    "same complete1024 blocks to peaks and K",
+    "ordered 960 energy records to independent integrated and ungated owners",
+    "terminal getter/finalize",
+    "immutable MeasurementReceipt",
+    "one top-level METERING-to-READY commit",
+    "post-prepass main transaction"
+  ],
+  "actual_execution": {
+    "provider_loaders": "NOT_RUN",
+    "owner_specific_selected_input_validators": "NOT_RUN",
+    "actual_meter_prepass": "NOT_RUN",
+    "terminal_getter": "NOT_RUN",
+    "MeasurementReceipt": "ABSENT",
+    "GTC_measurement_transaction": "NOT_RUN"
+  },
+  "input_only_cases": [
+    {
+      "id": "index_count_not_runtime",
+      "input": {
+        "upstream_index": 48,
+        "handles_loaded": false
+      },
+      "expected": "NOT_RUNTIME_PROVIDER"
+    },
+    {
+      "id": "direct7_nonexhaustive",
+      "input": {
+        "direct_inventory": 7,
+        "scope": "BOUND_DIRECT_ASSETS_NOT_EXHAUSTIVE"
+      },
+      "expected": "NO_TRANSITIVE_COMPLETENESS_CLAIM"
+    },
+    {
+      "id": "cold5_not_warm",
+      "input": {
+        "cold_json_assets": 5,
+        "live_owner_roots": 0
+      },
+      "expected": "NO_WARM_OWNER_STATE"
+    },
+    {
+      "id": "asset_local_pass_not_owner_validation",
+      "input": {
+        "local_vector_review": "PASS",
+        "selected_input_binding": false
+      },
+      "expected": "OWNER_SEMANTIC_VALIDATOR_NOT_PASSED"
+    },
+    {
+      "id": "meter_key_missing",
+      "input": {
+        "selected_meter_ingress_callers": 0,
+        "owner_key": "UNBOUND"
+      },
+      "expected": "INPUT_BINDING_FALSE"
+    },
+    {
+      "id": "terminal_requires_run",
+      "input": {
+        "prepass": "NOT_RUN",
+        "getter": "NOT_RUN",
+        "receipt": null
+      },
+      "expected": "NO_RECEIPT"
+    },
+    {
+      "id": "GTC_vectors_not_runtime",
+      "input": {
+        "GTC_local_sequence_vectors": "PASS",
+        "actual_meter_prepass": false
+      },
+      "expected": "PREPASS_NOT_RUN"
+    }
+  ],
+  "selected_static_register_scope": {
+    "parameter_interface_items": 109,
+    "selected_profile_D11_consumers_exhaustively_enumerated": true,
+    "all_D01_D13_families_exhaustively_enumerated": false,
+    "interpretation": "The main register says selected-profile D11 consumers are exhaustively enumerated. It does not say all D01-D13 families are exhaustive. Static selected-profile values/refs can be exported from the main package; the 48-entry expansion alone is not the selected runtime dependency proof."
+  },
+  "D11_selected_consumer_ledger": {
+    "count": 43,
+    "register_claim": "selected_profile_D11_consumers_exhaustively_enumerated=true",
+    "rows": [
+      {
+        "id": "D11-FFTS",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/feature-fft4096-math-v1.json",
+        "approved_main_manifest_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+        "approved_main_manifest_bytes": 279305,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 features main FFT；worker实际提供的五项静态资产",
+        "prepass_phase_classification": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-FFTT",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/feature-fft4096-math-v1.json",
+        "approved_main_manifest_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+        "approved_main_manifest_bytes": 279305,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 features main FFT；worker实际提供的五项静态资产",
+        "prepass_phase_classification": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-FFTP",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/feature-fft4096-math-v1.json",
+        "approved_main_manifest_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+        "approved_main_manifest_bytes": 279305,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 features main FFT；worker实际提供的五项静态资产",
+        "prepass_phase_classification": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-FFTR",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/feature-fft4096-math-v1.json",
+        "approved_main_manifest_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+        "approved_main_manifest_bytes": 279305,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 features main FFT；worker实际提供的五项静态资产",
+        "prepass_phase_classification": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-FFTC",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/feature-fft4096-math-v1.json",
+        "approved_main_manifest_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+        "approved_main_manifest_bytes": 279305,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 features main FFT；worker实际提供的五项静态资产",
+        "prepass_phase_classification": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-QA",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/qmf-receiver-functional-v1.json",
+        "approved_main_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+        "approved_main_manifest_bytes": 20325,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 receiver子带/QMF；mode_other未作为当前消费资产登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-QS",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/qmf-receiver-functional-v1.json",
+        "approved_main_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+        "approved_main_manifest_bytes": 20325,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 receiver子带/QMF；mode_other未作为当前消费资产登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-QR",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/qmf-mathematical-fft-v1.json",
+        "approved_main_manifest_sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
+        "approved_main_manifest_bytes": 6983,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 receiver子带/QMF；mode_other未作为当前消费资产登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-QT",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/qmf-mathematical-fft-v1.json",
+        "approved_main_manifest_sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
+        "approved_main_manifest_bytes": 6983,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 receiver子带/QMF；mode_other未作为当前消费资产登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-QBR",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/qmf-receiver-functional-v1.json",
+        "approved_main_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+        "approved_main_manifest_bytes": 20325,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 receiver子带/QMF；mode_other未作为当前消费资产登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-QBI",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/qmf-receiver-functional-v1.json",
+        "approved_main_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+        "approved_main_manifest_bytes": 20325,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 receiver子带/QMF；mode_other未作为当前消费资产登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-QG",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/descriptor-mathematical.json",
+        "approved_main_manifest_sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197",
+        "approved_main_manifest_bytes": 4861,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 receiver子带/QMF；mode_other未作为当前消费资产登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-QH",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/qmf-receiver-functional-v1.json",
+        "approved_main_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+        "approved_main_manifest_bytes": 20325,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 receiver子带/QMF；mode_other未作为当前消费资产登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-XY",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/oamd-coordinate-grid-q15.json",
+        "approved_main_manifest_sha256": "b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243",
+        "approved_main_manifest_bytes": 1169,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F05 regular metadata位置量化",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-Z",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/oamd-coordinate-grid-q15.json",
+        "approved_main_manifest_sha256": "b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243",
+        "approved_main_manifest_bytes": 1169,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F05 regular metadata位置量化",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-K",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/window-q15.json",
+        "approved_main_manifest_sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
+        "approved_main_manifest_bytes": 2704,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04 15路component filter",
+        "prepass_phase_classification": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-F",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "FIXED_PROFILE_EIGHT_PARAMETER_CONSUMERS_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/component-parameter-mathematical-v1.json",
+        "approved_main_manifest_sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
+        "approved_main_manifest_bytes": 1077,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04P/F04PG 当前48k15row64block共享参数producer；8值消费已绑定，原研究表不交付",
+        "prepass_phase_classification": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S1",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S2",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S3",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S4",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S5",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S6",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S7",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S8",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-S9",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score的log10/pow/exp数值网络",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-SS",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "TEN_SELECTED_MATHEMATICAL_SCALARS_GENERATED; REMAINING_STORED_FIELDS_NOT_SELECTED_OR_SEPARATELY_D11_JN",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score分支；字段名见研究登记",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-SN",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_NEAR_ONE_CONSUMER_SUPPLIED_BY_D11_JN; REMAINING_HISTORICAL_FIELDS_UNSELECTED",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/joc-functional-authorized-v1.json",
+        "approved_main_manifest_sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747",
+        "approved_main_manifest_bytes": 2448,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score分支；字段名见研究登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-SG",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score分支；字段名见研究登记",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-SL",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score分支；字段名见研究登记",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-SE",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F03/F05 score分支；字段名见研究登记",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-D",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-generated-math-v1.json",
+        "approved_main_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+        "approved_main_manifest_bytes": 39081,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F05 representation/dequant；索引完整范围与默认分支待审计",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-TIMER",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_ID1_TIMER_CONSUMER_BOUND; LOCAL_REVIEW_PASS",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-timer-order-v1.json",
+        "approved_main_manifest_sha256": "b425f8dffc0d914d660c46bcce5226c80d5fc680ab7c7f02e590fd6f889cb50b",
+        "approved_main_manifest_bytes": 1940,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F13.7 六timer；观察96-call不是period",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-PM",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/diffusion-mathematical-v1.json",
+        "approved_main_manifest_sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+        "approved_main_manifest_bytes": 1467,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04A.4 filtered branch的B系数；每callback所有tail共享；非秘密算法参数，精确值暂留研究侧",
+        "prepass_phase_classification": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-PL",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/diffusion-mathematical-v1.json",
+        "approved_main_manifest_sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+        "approved_main_manifest_bytes": 1467,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04A.4 diffuse非零且lane>=0选择filtered branch及对应四路filter输出；非秘密算法参数，精确值暂留研究侧",
+        "prepass_phase_classification": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-DC",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/diffusion-mathematical-v1.json",
+        "approved_main_manifest_sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+        "approved_main_manifest_bytes": 1467,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04F.4 四级延迟bank的递归与输出；非秘密算法参数；编译sign结构及scale组合，原值暂留研究侧",
+        "prepass_phase_classification": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-DP",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "CONSUMER_IDENTIFIED",
+        "selected_profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/diffusion-constructor-mathematical-v1.json",
+        "approved_main_manifest_sha256": "7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106",
+        "approved_main_manifest_bytes": 1770,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04F.1～3 环/bank尺寸、smoothing和gain限制；非秘密算法参数；取得条件未满足时完整复现受阻",
+        "prepass_phase_classification": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-U",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_GROUP_UNSELECTED",
+        "consumer_binding_status": "EXHAUSTIVELY_UNSELECTED_FOR_SELECTED_PROFILE",
+        "selected_profile_status": "UNSELECTED_SELECTED_PROFILE",
+        "approved_value_provider": null,
+        "approved_main_manifest_sha256": null,
+        "approved_main_manifest_bytes": null,
+        "provider_kind": "unselected/no value",
+        "owner_use": "仅保留历史分组记录；选定48kHz/1024kbps/JOC profile已由逐项D11 provider覆盖，本项不被任何选定消费者读取",
+        "prepass_phase_classification": "NO_SELECTED_CONSUMER",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-RB",
+        "original_asset_classification": "AUTHORIZED_NONSECRET_FUNCTIONAL_AUDIO_VALUES",
+        "consumer_binding_status": "SELECTED_RECEIVER_QMF_JOC_WHOLE_BINDING_PROVIDER_BOUND; R2_LOCAL_REVIEW_PASS",
+        "selected_profile_status": "CONSUMER_REGISTERED_OR_REPLACED_BY_SELECTED_PROVIDER",
+        "approved_value_provider": "parameters/qmf-receiver-functional-v1.json",
+        "approved_main_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+        "approved_main_manifest_bytes": 20325,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F04RB selected receiver/QMF/JOC fitting: QWIN640, band0 real/imag21+21, LFE postfilter20, descriptor threshold127, precondition/accumulator/descriptor scalars12",
+        "prepass_phase_classification": "CROSSWALK_TO_METER_STAGE_REQUIRED",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-JH",
+        "original_asset_classification": "PUBLIC_PROTOCOL_FUNCTIONAL_CONSTANTS",
+        "consumer_binding_status": "SIX_PUBLIC_CODEBOOKS_AND_SELECTED_CONSUMERS_IDENTIFIED",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-huffman-v1.json",
+        "approved_main_manifest_sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae",
+        "approved_main_manifest_bytes": 92323,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F05Q mode0/1 full coefficient deltas, mode2/3 sparse coefficient deltas, and 5/7-channel sparse position deltas",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-JN",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_JOC_ACTUAL_PROVIDER_BOUND; R2_FRESH_REVIEW_RUNNING",
+        "selected_profile_status": "PROVIDER_REGISTERED_BUT_SELECTED_BRANCH_DEAD",
+        "approved_value_provider": "parameters/joc-functional-authorized-v1.json",
+        "approved_main_manifest_sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747",
+        "approved_main_manifest_bytes": 2448,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F05JS q near1 optimized score branch; P0 dead in selected domain and excluded",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_JOC_CONDITIONAL",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-JP",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_JOC_ACTUAL_PROVIDER_BOUND; R2_FRESH_REVIEW_RUNNING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-functional-authorized-v1.json",
+        "approved_main_manifest_sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747",
+        "approved_main_manifest_bytes": 2448,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F05JC selected 1024kbps representation initial profile; auxiliary field excluded",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      },
+      {
+        "id": "D11-JL",
+        "original_asset_classification": "HISTORICAL_ORIGINAL_ASSET_SUPERSEDED_BY_SELECTED_PROVIDER",
+        "consumer_binding_status": "SELECTED_JOC_ACTUAL_PROVIDER_BOUND; R2_FRESH_REVIEW_RUNNING",
+        "selected_profile_status": "SELECTED_MAIN_PATH_CONSUMER_REGISTERED",
+        "approved_value_provider": "parameters/joc-functional-authorized-v1.json",
+        "approved_main_manifest_sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747",
+        "approved_main_manifest_bytes": 2448,
+        "provider_kind": "approved selected value/formula",
+        "owner_use": "F05JC deterministic band lowering retry; enum6 and other modes excluded",
+        "prepass_phase_classification": "POST_PREPASS_MAIN_CODEC_OR_METADATA",
+        "runtime_loader_executed": false,
+        "owner_semantic_validator_on_selected_input": "NOT_RUN",
+        "selected_input_receipt": "ABSENT"
+      }
+    ],
+    "important_boundary": "Rows describe selected-profile consumer/provider status from the approved register. Prepass phase labels distinguish obvious frontend/render families from post-prepass codec/metadata families; entries labelled CROSSWALK_TO_METER_STAGE_REQUIRED are not asserted Meter runtime inputs until the whole Meter route binds them."
+  },
+  "selected_meter_numeric_and_rule_families": [
+    {
+      "family_id": "D12-R",
+      "asset_file": "parameters/meter-oar-secondary8-math-v1.json",
+      "manifest_sha256": "d1a2f3d3a7f1a7e67933acc781be406814f63a2e842975d34960d135a5307a77",
+      "interface": "selected secondary8 grid 8×{x:I32,y:I32,z:I32,partner:I32}; 128 bytes; 7 active points; F06OM/OP/OC/OF selected model metadata/panner/callback input contracts provided",
+      "register_consumer_binding": "SELECTED_SECONDARY8_SUPPLIER_AND_CURRENT_POINT_HELPER_IDENTIFIED; GLOBAL_RULE_AUDIT_PENDING",
+      "provider_validation": "32_I32_WORDS_EXACT_GENERATION; F06OM/OP local conversion/point target and F06OC/OF selected callback/owned input clock contracts independently reviewed; no whole renderer or native angle equivalence claim",
+      "full_meter_dependency_closed": false,
+      "selected_input_owner_validator": "NOT_RUN"
+    },
+    {
+      "family_id": "D12-DV",
+      "asset_file": "parameters/shared-dv32-mathematical-v1.json",
+      "manifest_sha256": "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa",
+      "interface": "8×F32 actual shared post-OAR DV32 parameters; fixed48k6row32block hold_limit3; per-task gain-history helper is separate",
+      "register_consumer_binding": "PARTIAL_OR_UNRESOLVED_SUPPLIER_BINDING",
+      "provider_validation": "8_WORD_PARAMETER_IDENTITY_EXACT; F06D 6SYNTHETIC_CALLBACKS_288BLOCKS_AND32HISTORICAL_OAR_PREFIX_CALLBACKS_ISOLATED_REVIEW_PASS; whole meter not run",
+      "full_meter_dependency_closed": false,
+      "selected_input_owner_validator": "NOT_RUN"
+    },
+    {
+      "family_id": "D12-K",
+      "asset_file": "parameters/meter-k-matrix-math-v1.json",
+      "manifest_sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536",
+      "interface": "fixed48k 2×9×4 F32 generated complete matrix; 8 cold-state words, lower/upper each4 words and noise1 word generated separately",
+      "register_consumer_binding": "FIXED48K_TWO_STAGE_GENERATED_PROVIDER_AND_WINDOW_CONSUMER_BOUND; LOCAL_R2_REVIEW_PASS",
+      "provider_validation": "72_WORDS_288_BYTES_IDENTITY; 4160_OUTPUT_WORDS_48_STATE_WORDS_6_POWER_WORDS_LOCAL_R2_REVIEW_PASS",
+      "full_meter_dependency_closed": false,
+      "selected_input_owner_validator": "NOT_RUN"
+    },
+    {
+      "family_id": "D12-TP",
+      "asset_file": "parameters/meter-truepeak-authorized-v1.json",
+      "manifest_sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
+      "interface": "11 authorized unique F32 values: A6+B5; explicit mirror expansion to A12+B10+two positive zeros; 6×4628 F32 state; 6×1024 source samples",
+      "register_consumer_binding": "SELECTED_F06TP_STATE_CLOCK_AND_METRIC_CONSUMERS_DEFINED; LOCAL_R1_REVIEW_PASS",
+      "provider_validation": "9_SYNTHETIC_CASES_193536_OUTPUT_WORDS_249912_STATE_WORDS_540_PEAK_FIELDS_126_PROGRAMME_FIELDS_EQUAL; ROOT_SCALAR_RECOMPUTED; LOCAL_R1_REVIEW_PASS",
+      "full_meter_dependency_closed": false,
+      "selected_input_owner_validator": "NOT_RUN"
+    },
+    {
+      "family_id": "D12-L",
+      "asset_file": "parameters/meter-log-mathematical-v1.json",
+      "manifest_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "interface": "11 math log constants F32 plus explicit scalar branch rules; F06L provides bounded replacement; full meter remains unresolved",
+      "register_consumer_binding": "PARTIAL_OR_UNRESOLVED_SUPPLIER_BINDING",
+      "provider_validation": "11_CONSTANT_WORDS_EXACT_56_NUMERIC_CASES_AND_3_NORMATIVE_ENTRY_REJECTIONS_EQUAL",
+      "full_meter_dependency_closed": false,
+      "selected_input_owner_validator": "NOT_RUN"
+    },
+    {
+      "family_id": "F06I fixed profile/state/event rules; runtime energy records are dynamic",
+      "asset_file": "specs/06-integrated-meter-state.md",
+      "manifest_sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72",
+      "value_class": "approved specification rule; not a numeric runtime receipt",
+      "selected_input_owner_validator": "NOT_RUN"
+    },
+    {
+      "family_id": "F06L log/metric/sample-peak and ungated rules; runtime sample values are dynamic",
+      "asset_file": "specs/06-meter-log-and-peak.md",
+      "manifest_sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "value_class": "approved specification rule; not a numeric runtime receipt",
+      "selected_input_owner_validator": "NOT_RUN"
+    },
+    {
+      "family_id": "F06W N-dependent callback, block and window schedule; runtime N/output spans are dynamic",
+      "asset_file": "specs/06-meter-window-and-output-clock.md",
+      "manifest_sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c",
+      "value_class": "approved specification rule; not a numeric runtime receipt",
+      "selected_input_owner_validator": "NOT_RUN"
+    }
+  ],
+  "static_and_runtime_completeness_corrected": {
+    "static_selected_D11_set": "EXHAUSTIVELY_ENUMERATED_BY_MAIN_REGISTER",
+    "all_D01_D13_families": "NOT_EXHAUSTIVE_BY_MAIN_REGISTER",
+    "selected_F06_numerical_values": "NO_NEW_SELECTED_CONSTANT_GAP_IN_F06_WHOLE_GAP_INVENTORY; providers/rules identified above",
+    "runtime_provider_load_and_owner_validation": "NOT_RUN",
+    "same_input_transitive_runtime_graph": "NOT_ESTABLISHED",
+    "actual_meter_prepass": "NOT_RUN",
+    "terminal_measurement_receipt": "ABSENT",
+    "correction_to_v2": "Do not say the approved selected static numerical values themselves are unavailable. The unresolved set is runtime producer/input/state/validator/terminal receipts; 48 index and direct-seven counts are not sufficient to derive that runtime closure."
+  }
+}

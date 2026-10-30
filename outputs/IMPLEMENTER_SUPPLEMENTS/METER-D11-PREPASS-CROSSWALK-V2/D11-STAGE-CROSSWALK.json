@@ -1,0 +1,259 @@
+{
+  "schema": "d11-meter-stage-crosswalk.v1",
+  "scope": "Approved main register and approved owner specs only; no implementation source or new reverse evidence.",
+  "main_parameter_interface_items": 109,
+  "selected_D11_consumers_exhaustively_enumerated": true,
+  "all_D01_D13_families_exhaustive": false,
+  "reviewed_rows": [
+    {
+      "id": "D11-QA",
+      "consumer_owner_or_path": "F04RB receiver/QMF selected functional binding",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "F04 receiver/QMF/JOC fitting is a distinct main spatial/JOC owner; GTC Meter prepass uses its independent meter OAR and DV32 chain.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/qmf-receiver-functional-v1.json",
+      "current_provider_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+      "provider_register_validation": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-QBI",
+      "consumer_owner_or_path": "F04RB selected receiver band0 imaginary",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "Selected whole receiver/QMF binding provider supplies the historical named table.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/qmf-receiver-functional-v1.json",
+      "current_provider_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+      "provider_register_validation": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-QBR",
+      "consumer_owner_or_path": "F04RB selected receiver band0 real",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "Selected whole receiver/QMF binding provider supplies the historical named table.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/qmf-receiver-functional-v1.json",
+      "current_provider_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+      "provider_register_validation": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-QG",
+      "consumer_owner_or_path": "F04 descriptor gain",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "Descriptor gain is consumed by receiver descriptor handling; not a Meter OAR/DV32 input.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/descriptor-mathematical.json",
+      "current_provider_manifest_sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197",
+      "provider_register_validation": "CONSUMER_IDENTIFIED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-QH",
+      "consumer_owner_or_path": "F04RB selected descriptor threshold",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "Selected whole receiver/QMF binding supplies the historical named threshold.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/qmf-receiver-functional-v1.json",
+      "current_provider_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+      "provider_register_validation": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-QR",
+      "consumer_owner_or_path": "F04Q mathematical QMF rotation",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "QMF FFT rotation belongs to the receiver/QMF path, not the Meter OAR->DV32 parameter chain.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/qmf-mathematical-fft-v1.json",
+      "current_provider_manifest_sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
+      "provider_register_validation": "CONSUMER_IDENTIFIED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-QS",
+      "consumer_owner_or_path": "F04RB receiver/QMF selected functional binding",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "F04 receiver/QMF/JOC fitting is a distinct main spatial/JOC owner; GTC Meter prepass uses its independent meter OAR and DV32 chain.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/qmf-receiver-functional-v1.json",
+      "current_provider_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+      "provider_register_validation": "SELECTED_VALUES_SUPPLIED_THROUGH_D11_RB_WHOLE_BINDING; ORIGINAL_NAMED_TABLE_NOT_REQUIRED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-QT",
+      "consumer_owner_or_path": "F04Q mathematical QMF twiddle",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "QMF FFT twiddles belong to the receiver/QMF path, not the Meter OAR->DV32 parameter chain.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/qmf-mathematical-fft-v1.json",
+      "current_provider_manifest_sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
+      "provider_register_validation": "CONSUMER_IDENTIFIED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-RB",
+      "consumer_owner_or_path": "F04RB selected receiver/QMF/JOC fitting bundle",
+      "stage": "POST_PREPASS_MAIN_RECEIVER_QMF_JOC",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "The row explicitly binds QWIN, band0, LFE postfilter and descriptor scalars to the selected receiver/QMF/JOC fitting owner.",
+      "approved_contract_refs": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/qmf-receiver-functional-v1.json",
+      "current_provider_manifest_sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+      "provider_register_validation": "SELECTED_RECEIVER_QMF_JOC_WHOLE_BINDING_PROVIDER_BOUND; R2_LOCAL_REVIEW_PASS",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-S9",
+      "consumer_owner_or_path": "F03/F05 JOC score log/pow/exp generated math",
+      "stage": "POST_PREPASS_MAIN_JOC_SCORE",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "The row use is score-kernel math; score/fit occurs in main JOC producer, after measurement.",
+      "approved_contract_refs": [
+        "specs/05-joc-score-kernel.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/joc-generated-math-v1.json",
+      "current_provider_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+      "provider_register_validation": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-SE",
+      "consumer_owner_or_path": "F03/F05 JOC score exponential generated math",
+      "stage": "POST_PREPASS_MAIN_JOC_SCORE",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "The row use is score-kernel math; score/fit occurs in main JOC producer, after measurement.",
+      "approved_contract_refs": [
+        "specs/05-joc-score-kernel.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/joc-generated-math-v1.json",
+      "current_provider_manifest_sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7",
+      "provider_register_validation": "COMPLETE_MATHEMATICAL_GENERATOR_AND_SELECTED_JOC_CONSUMER_BOUND; FRESH_REVIEW_PENDING",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-SN",
+      "consumer_owner_or_path": "F03/F05 JOC near-one score functional constants",
+      "stage": "POST_PREPASS_MAIN_JOC_SCORE",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "The register says the selected near-one consumer is supplied via D11-JN; this remains a main JOC score dependency.",
+      "approved_contract_refs": [
+        "specs/05-joc-score-kernel.md",
+        "specs/05-joc-selected-producer-and-commit.md"
+      ],
+      "current_provider_file": "parameters/joc-functional-authorized-v1.json",
+      "current_provider_manifest_sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747",
+      "provider_register_validation": "SELECTED_NEAR_ONE_CONSUMER_SUPPLIED_BY_D11_JN; REMAINING_HISTORICAL_FIELDS_UNSELECTED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-XY",
+      "consumer_owner_or_path": "F05 OAMD Type11 XY coordinate grid",
+      "stage": "POST_PREPASS_MAIN_OAMD_METADATA",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "The row use is regular metadata position encoding; it is not the F06 meter OAR geometry provider.",
+      "approved_contract_refs": [
+        "specs/05-oamd-row-and-timing-wire.md",
+        "specs/05-reader56-target-updates-composition.md"
+      ],
+      "current_provider_file": "parameters/oamd-coordinate-grid-q15.json",
+      "current_provider_manifest_sha256": "b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243",
+      "provider_register_validation": "CONSUMER_IDENTIFIED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    },
+    {
+      "id": "D11-Z",
+      "consumer_owner_or_path": "F05 OAMD Type11 Z coordinate grid",
+      "stage": "POST_PREPASS_MAIN_OAMD_METADATA",
+      "meter_prepass_role": "NOT_A_METER_PREPASS_NUMERIC_INPUT_BY_APPROVED_OWNER_CONTRACT",
+      "basis": "The row use is regular metadata position encoding; it is not the F06 meter OAR geometry provider.",
+      "approved_contract_refs": [
+        "specs/05-oamd-row-and-timing-wire.md",
+        "specs/05-reader56-target-updates-composition.md"
+      ],
+      "current_provider_file": "parameters/oamd-coordinate-grid-q15.json",
+      "current_provider_manifest_sha256": "b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243",
+      "provider_register_validation": "CONSUMER_IDENTIFIED",
+      "runtime_loaded": "NOT_RUN",
+      "selected_input_receipt": "ABSENT",
+      "new_native_inference": "NONE"
+    }
+  ],
+  "runtime_loaded": "NOT_RUN",
+  "selected_input_receipt": "ABSENT",
+  "actual_prepass": "NOT_RUN"
+}

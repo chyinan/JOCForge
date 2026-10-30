@@ -1,0 +1,21 @@
+{
+  "schema": "washed-meter-owner-provider-boundary.v1",
+  "source_package_manifest": "e287f082257ca42401aa485a7eaa0eecb832faa18a050d3c2b76d4a9b844138e",
+  "coverage_ledger_payload": "66822fc14197c7f9e02c14588a0d8e9e03c3bd3fb21c15acabf497c22d54d483",
+  "direct_provider_manifest": "9295dc88c5fbd696ccb13e8c08527bae08748fecfc8d7fbe0f3c2b12ddb848e7",
+  "frontend_provider_manifest": "aff35d4d426dc5ff203bda1bf55c936b0ffb054bb2d544c4f6bff35048c80c8f",
+  "cold_state_manifest": "d15672b723f8091b576c2228ed7685744f522706d89078050b6486a72a068372",
+  "gtc_manifest": "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e",
+  "cursor_boundary_manifest": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+  "window_q15_sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
+  "transitive_provider_set": "INCOMPLETE",
+  "complete_provider_digest": "NOT_AVAILABLE",
+  "gtc_owner_roots": 12,
+  "owner_roots_with_actual_prepass": 0,
+  "owner_roots_with_committed_state": 0,
+  "production_prepass": "NOT_RUN",
+  "owner_key": "parent-issued local typed identity scoped to programme_id and attempt; not a native token",
+  "source_extent": "validated typed frame and clock extent from PreparedJobInput; not file byte length",
+  "source_code_or_native_payload_forwarded": false,
+  "private_material_forwarded": false
+}

@@ -1,0 +1,309 @@
+{
+  "schema": "meter-prepass-producer-consumer-chain.v1",
+  "approved_sources_only": true,
+  "implementation_source_read": false,
+  "selected_profile_static_numeric_gap": "F06 whole-gap inventory reports no new ordinary selected numeric constant gap. Approved selected values/rules are listed; this does not imply runtime validation.",
+  "prepass_sequence": [
+    "admission",
+    "frontend/OAR normal callbacks",
+    "Q normal callbacks",
+    "3 fresh-zero drains",
+    "latency trim 3104",
+    "same complete1024 blocks to peak and K",
+    "ordered960 records to integrated and ungated",
+    "terminal getter/finalize",
+    "MeasurementReceipt",
+    "single GTC commit to READY"
+  ],
+  "edges": [
+    {
+      "id": "admit_input",
+      "producer": "F01 job/RIFF/ADM admission",
+      "consumer": "reader_eof + Meter source cursor",
+      "stage": "before callback0",
+      "fields": [
+        "input/resource identity",
+        "WAVE format",
+        "N",
+        "config/DBMD/CHNA graph",
+        "programme_id",
+        "attempt",
+        "model_owner_key"
+      ],
+      "static_values": "profile rules and F01E constructor; not a source receipt",
+      "dynamic_values": "identity, extent, graph parse, cursor and owner token",
+      "validator": "F01E parse/profile/DBMD/CHNA rules are specified; selected run NOT_RUN",
+      "binding": "UNBOUND: Meter key producer and cursor/read receipt absent"
+    },
+    {
+      "id": "frontend_producers",
+      "producer": "F01E + F03W + F04C + selected F05 target state",
+      "consumer": "F06OF/F06OC meter frontend and OAR",
+      "stage": "each of Q normal callbacks; drain-specific metadata also needed",
+      "fields": [
+        "callback/generation/phase",
+        "physical control38 and 15 component rows",
+        "direct LFE",
+        "same-callback input PCM",
+        "controls16x13 and PCM16x1536 OAR packet"
+      ],
+      "static_values": "F01/F03/F04/F05 specs and cold assets; not live rows",
+      "dynamic_values": "parsed controls, feature/selector/render rows, LFE, target/control and audio",
+      "validator": "local module contracts/vectors only; complete real frontend/OAR replay NOT_RUN",
+      "binding": "NOT_BOUND to selected Meter root/generation",
+      "contract_gap": "F06OF states drain metadata installation is unresolved; do not infer reuse/zero"
+    },
+    {
+      "id": "oar_render",
+      "producer": "F06OC/OM/OP/OF selected OAR model",
+      "consumer": "shared DV32",
+      "stage": "normal and all 3 drain callbacks",
+      "fields": [
+        "8 ordered tasks/slots",
+        "15 component rows and direct LFE",
+        "same generation controls/geometry/PCM",
+        "OAR target/gain state"
+      ],
+      "static_values": "meter-oar-secondary8 math: 32 I32 words; selected point rules",
+      "dynamic_values": "per-callback OAR inputs, target, task state and rendered six lanes",
+      "validator": "32-word grid and scoped OM/OP tests; global OAR rule audit pending; actual render NOT_RUN",
+      "binding": "NO same-input component/LFE/OAR receipt"
+    },
+    {
+      "id": "shared_dv32",
+      "producer": "OAR output",
+      "consumer": "valid-audio scheduler",
+      "stage": "48 blocks of 32 per normal/drain callback",
+      "fields": [
+        "six rows x32",
+        "8 Q15-derived parameters/kernel32",
+        "six rows of 6x32 history",
+        "block index/hold/gain state"
+      ],
+      "static_values": "shared-dv32-mathematical-v1 + receiver_blend32 Q15 kernel",
+      "dynamic_values": "OAR block samples and warm DV state",
+      "validator": "8-word identity plus synthetic six-callback/288-block scoped review; supplier binding partial",
+      "binding": "NOT_BOUND to actual OAR output or selected Meter state"
+    },
+    {
+      "id": "valid_audio",
+      "producer": "Meter frontend plus OAR/DV history",
+      "consumer": "sample/true-peak and K block owners",
+      "stage": "Q=ceil(N/1536) normals + 3 fresh-zero drains, latency trim",
+      "fields": [
+        "callback/source cursor and N",
+        "3072 spatial +32 DV latency",
+        "startup/pending/processed",
+        "per-channel valid spans and sample count"
+      ],
+      "static_values": "H1536, latency3104, drain3, full1024 and EOF truncation rules",
+      "dynamic_values": "N, actual rendered six lanes and spans",
+      "validator": "schedule arithmetic vectors only; real output-span ledger NOT_RUN",
+      "binding": "NO input identity/N joined to six-lane spans"
+    },
+    {
+      "id": "peak_and_k",
+      "producer": "valid-audio span ledger",
+      "consumer": "F06TP/F06L and F06W/F06KG",
+      "stage": "same complete 1024-sample block identity",
+      "fields": [
+        "block id/span and six channels",
+        "11 truepeak FIR values / 6 FIR states",
+        "72 K matrix words +17 bounds/cold/noise",
+        "six K 2x4 histories, maxima and energy pair"
+      ],
+      "static_values": "truepeak 11 authorized values; K matrix/bounds files",
+      "dynamic_values": "block samples, FIR/K warm states, peaks and mantissa/exponent",
+      "validator": "TP 9 synthetic cases R1; K 72 words +4160 outputs R2; no live blocks",
+      "binding": "NO shared block identity between real peak and K consumers"
+    },
+    {
+      "id": "energy_metrics",
+      "producer": "F06W K energy/windows",
+      "consumer": "separate integrated and ungated owners",
+      "stage": "ordered 960-sample EnergyRecords",
+      "fields": [
+        "record index and channel 0..5",
+        "mantissa/exponent pairs",
+        "integrated recent4x5/histogram3040 state",
+        "separate ungated mean state"
+      ],
+      "static_values": "960-window weights/schedule and 11 log constants; F06I config period5/recent4/bins3040/gate defined in specs",
+      "dynamic_values": "ordered EnergyRecords and both warm metric states/results",
+      "validator": "log 56 cases; integrated synthetic state tests; historical energy fixture is downstream-only",
+      "binding": "NO actual EnergyRecord stream for selected attempt"
+    },
+    {
+      "id": "finalize_receipt",
+      "producer": "terminal getters after successful final Meter callback",
+      "consumer": "GTC parent METERING -> READY; then main source0 may start",
+      "stage": "finalize after Q normals +3 drains",
+      "fields": [
+        "dialogue/speech sentinel",
+        "ITU/ungated/truepeak/samplepeak",
+        "selected LUFS/gating/dialnorm",
+        "terminal owner digest",
+        "input/config hash, attempt, callback/drain/window counts"
+      ],
+      "static_values": "GTC receipt and whole-state schemas; no fixed terminal-value asset",
+      "dynamic_values": "all measured scalars, terminal state/hash and immutable MeasurementReceipt",
+      "validator": "schema/local transaction vectors only; actual getter NOT_RUN",
+      "binding": "receipt absent; cannot commit READY"
+    }
+  ],
+  "post_prepass_owners": [
+    {
+      "owner_id": "joc",
+      "phase": "post-prepass only",
+      "reason": "GTC main/source consumer; not a Meter prepass dependency"
+    },
+    {
+      "owner_id": "drc",
+      "phase": "post-prepass only",
+      "reason": "GTC main/source consumer; not a Meter prepass dependency"
+    },
+    {
+      "owner_id": "analysis",
+      "phase": "post-prepass only",
+      "reason": "GTC main/source consumer; not a Meter prepass dependency"
+    },
+    {
+      "owner_id": "codec",
+      "phase": "post-prepass only",
+      "reason": "GTC main/source consumer; not a Meter prepass dependency"
+    },
+    {
+      "owner_id": "metadata",
+      "phase": "post-prepass only",
+      "reason": "GTC main/source consumer; not a Meter prepass dependency"
+    },
+    {
+      "owner_id": "integrity",
+      "phase": "post-prepass only",
+      "reason": "GTC main/source consumer; not a Meter prepass dependency"
+    },
+    {
+      "owner_id": "output",
+      "phase": "post-prepass only",
+      "reason": "GTC main/source consumer; not a Meter prepass dependency"
+    }
+  ],
+  "value_families": [
+    {
+      "id": "D12-R",
+      "provider": "parameters/meter-oar-secondary8-math-v1.json",
+      "scope": "32 I32 grid words; local generation exact; global renderer binding pending"
+    },
+    {
+      "id": "D12-DV",
+      "provider": "parameters/shared-dv32-mathematical-v1.json + parameters/window-q15.json",
+      "scope": "8 parameter words/kernel32 present; synthetic DV checks only; supplier binding partial"
+    },
+    {
+      "id": "D12-K",
+      "provider": "parameters/meter-k-matrix-math-v1.json + parameters/meter-k-state-bounds-v1.json",
+      "scope": "72 matrix/cold words +17 bounds/cold/noise; local R2 checks"
+    },
+    {
+      "id": "D12-TP",
+      "provider": "parameters/meter-truepeak-authorized-v1.json",
+      "scope": "11 authorized nonsecret words expand to24; synthetic local R1 checks"
+    },
+    {
+      "id": "D12-L/I/U",
+      "provider": "parameters/meter-log-mathematical-v1.json + specs/06-meter-log-and-peak.md + specs/06-integrated-meter-state.md",
+      "scope": "11 log words and F06I/F06U fixed rules available; runtime energy/terminal state dynamic"
+    },
+    {
+      "id": "terminal_measurement",
+      "provider": "GTC receipt schema + parameters/f06-meter-none-drc-whole-state-schema-v1.json",
+      "scope": "output is computed after actual finalize; no fixed value file expected; receipt absent"
+    }
+  ],
+  "state_schema_meter_fields": [
+    "frontend_oar",
+    "shared_dv32",
+    "window_clock",
+    "k_filter",
+    "true_peak",
+    "integrated",
+    "ungated",
+    "programme_peak_maxima",
+    "finalized_measurement"
+  ],
+  "GTC_receipt_fields": [
+    "phase",
+    "meter_finalized",
+    "programme_measurement",
+    "meter_callback",
+    "main_source"
+  ],
+  "gap_inventory_true_gaps": [
+    {
+      "id": "F06-WHOLE-001",
+      "type": "COMPOSITION_SPEC_AND_EXECUTABLE",
+      "description": "No single selected composition currently owns the two-pass call order, state aggregate and atomic transition across meter finalize into main none-DRC."
+    },
+    {
+      "id": "F06-WHOLE-002",
+      "type": "METER_FRONTEND_PRODUCER_COMPOSITION",
+      "description": "F06OF/F06OC/OAR/DV32 are locally specified, but no clean whole producer currently demonstrates real ADM/config to the exact rendered meter six-lane stream with all reset/drain generations."
+    },
+    {
+      "id": "F06-WHOLE-003",
+      "type": "GLOBAL_FAILURE_TRANSACTION",
+      "description": "Local modules define fail-stop, but cross-module zero-commit boundaries before meter callback commit, meter finalize commit and main source commit need explicit whole-chain tests."
+    }
+  ],
+  "execution_status": {
+    "input_receipt": "ABSENT",
+    "selected_meter_owner_key": "UNBOUND",
+    "provider_loader": "NOT_RUN",
+    "actual_meter_prepass": "NOT_RUN",
+    "terminal_getter": "NOT_RUN",
+    "MeasurementReceipt": "ABSENT",
+    "GTC_meter_transaction": "NOT_RUN"
+  },
+  "input_only_cases": [
+    {
+      "id": "static_values_not_runtime",
+      "expected": "provider present does not imply loader/state/receipt"
+    },
+    {
+      "id": "cold_not_warm",
+      "expected": "cold preimage is not a live owner root"
+    },
+    {
+      "id": "drains_not_main_cache",
+      "expected": "three fresh-zero meter drains, not four main cached drains"
+    },
+    {
+      "id": "same_block_peak_k",
+      "expected": "same complete1024 block identity required"
+    },
+    {
+      "id": "energy_not_fixture",
+      "expected": "runtime energy records must be generated by current run"
+    },
+    {
+      "id": "terminal_requires_finalize",
+      "expected": "no MeasurementReceipt before actual terminal getters"
+    },
+    {
+      "id": "no_selected_key_producer",
+      "expected": "Meter cursor/source owner binding remains UNBOUND"
+    }
+  ],
+  "static_contract_gaps": [
+    "F06OF explicitly leaves meter drain metadata installation unbound",
+    "no approved producer emits the runtime meter model_owner_key tied to input/attempt",
+    "whole frontend/OAR/DV32 to six-lane output has no real ADM fresh replay"
+  ],
+  "dynamic_run_gaps": [
+    "selected prepared source identity/extent/cursor",
+    "same-generation frontend controls and rendered six lanes",
+    "warm DV32/K/truepeak/energy states",
+    "ordered actual EnergyRecords",
+    "terminal metrics/digest and receipt"
+  ]
+}

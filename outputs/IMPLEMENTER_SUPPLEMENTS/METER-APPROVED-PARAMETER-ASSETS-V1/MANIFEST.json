@@ -1,0 +1,97 @@
+{
+  "package_id": "METER-APPROVED-PARAMETER-ASSETS-V1",
+  "scope": "approved nonsecret assets; layout and remaining transitive dependencies not claimed complete",
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
+      "bytes": 2584,
+      "file": "parameters/meter-truepeak-authorized-v1.json"
+    },
+    {
+      "sha256": "d1a2f3d3a7f1a7e67933acc781be406814f63a2e842975d34960d135a5307a77",
+      "bytes": 1757,
+      "file": "parameters/meter-oar-secondary8-math-v1.json"
+    },
+    {
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "bytes": 780,
+      "file": "parameters/meter-log-mathematical-v1.json"
+    },
+    {
+      "sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68",
+      "bytes": 970,
+      "file": "parameters/meter-k-state-bounds-v1.json"
+    },
+    {
+      "sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536",
+      "bytes": 3985,
+      "file": "parameters/meter-k-matrix-math-v1.json"
+    },
+    {
+      "sha256": "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa",
+      "bytes": 1236,
+      "file": "parameters/shared-dv32-mathematical-v1.json"
+    },
+    {
+      "sha256": "51305803b05daff498935b3283e56e27bb3e3966f52727bcf803a226871d5e91",
+      "bytes": 14372,
+      "file": "parameters/adm-installed48-providers-v1.json"
+    },
+    {
+      "sha256": "5611b37f2a997f75da0ba920e394c0e36eddd9477e11ba94d44852d3e12fd0c9",
+      "bytes": 2783,
+      "file": "parameters/spread-authorized-v1.json"
+    },
+    {
+      "sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+      "bytes": 1467,
+      "file": "parameters/diffusion-mathematical-v1.json"
+    },
+    {
+      "sha256": "7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106",
+      "bytes": 1770,
+      "file": "parameters/diffusion-constructor-mathematical-v1.json"
+    },
+    {
+      "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
+      "bytes": 1077,
+      "file": "parameters/component-parameter-mathematical-v1.json"
+    },
+    {
+      "sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185",
+      "bytes": 1466,
+      "file": "parameters/geometry-front-side-y-v1.json"
+    },
+    {
+      "sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+      "bytes": 279305,
+      "file": "parameters/feature-fft4096-math-v1.json"
+    },
+    {
+      "sha256": "c2cc80eed698285a7a022324bfed36e04c3b6e682cb21674b6316b3ec6a2ec0b",
+      "bytes": 35441,
+      "file": "parameters/feature-processor-math-v1.json"
+    },
+    {
+      "sha256": "b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243",
+      "bytes": 1169,
+      "file": "parameters/oamd-coordinate-grid-q15.json"
+    },
+    {
+      "sha256": "f79ab4d4ed06983cea05146a39bcfef22c183c1111d1d6103efce25c9c579ef6",
+      "bytes": 812,
+      "file": "parameters/point-panner-math-v1.json"
+    },
+    {
+      "sha256": "ec4c56549a47d1892655345c036aba822d2f0c8baae6c71b398001e9f90ce5d1",
+      "bytes": 1898,
+      "file": "parameters/reader56-target-profile-v1.json"
+    },
+    {
+      "sha256": "b2f2cb31d3ee099db5bf32a8b93c8e1a9c441d84b9246c0908dceabde8e44c47",
+      "bytes": 1794,
+      "file": "parameters/reader56-main-panner-v1.json"
+    }
+  ]
+}

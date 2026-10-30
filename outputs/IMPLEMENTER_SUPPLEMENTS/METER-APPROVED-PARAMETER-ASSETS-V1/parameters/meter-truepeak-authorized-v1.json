@@ -1,0 +1,95 @@
+{
+  "schema": "meter-truepeak-authorized-functional-constants.v1",
+  "classification": "AUTHORIZED_COMPILED_FUNCTIONAL_CONSTANTS",
+  "delivery_scope": "INTERNAL_ONLY",
+  "public_or_third_party_distribution": "NOT_AUTHORIZED",
+  "authorization": "D12-TP-A6 and D12-TP-B5: eleven nonsecret audio FIR functional values for internal delivery and implementation only",
+  "source_classification": "Existing compiled static audio-functional constants, individually authorized; not independently generated mathematical design values",
+  "independent_mathematical_design_claim": false,
+  "secret_or_authentication_material": false,
+  "sample_rate_hz": 48000,
+  "logical_channel_order": [
+    "L",
+    "R",
+    "C",
+    "LFE",
+    "Ls",
+    "Rs"
+  ],
+  "rounding": "binary32 exact words; decimal values are explanatory and must reproduce those words",
+  "stage_a_unique": {
+    "asset": "D12-TP-A6",
+    "words": [
+      "bb8b481d",
+      "3c6ed553",
+      "bd182aa6",
+      "3da83193",
+      "be3a478c",
+      "3f203da5"
+    ],
+    "values": [
+      -0.004250539932399988,
+      0.014577227644622326,
+      -0.03715004771947861,
+      0.08212580531835556,
+      -0.1819135546684265,
+      0.6259406208992004
+    ]
+  },
+  "stage_b_unique": {
+    "asset": "D12-TP-B5",
+    "words": [
+      "3bd3ceed",
+      "bccbd868",
+      "3d8c3d45",
+      "be2f33b8",
+      "3f1f2f3e"
+    ],
+    "values": [
+      0.006463876459747553,
+      -0.024883463978767395,
+      0.06847623735666275,
+      -0.17109572887420654,
+      0.6218146085739136
+    ]
+  },
+  "expansion": {
+    "stage_a_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "stage_b_active_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "stage_b_tail_words": [
+      "00000000",
+      "00000000"
+    ],
+    "stage_a_rule": "A[j]=a[min(j,11-j)] for integer j=0..11",
+    "stage_b_rule": "B[j]=b[min(j,9-j)] for integer j=0..9; B[10]=B[11]=positive zero"
+  },
+  "compact_f32le_sha256": "f9bdfb75951c9660c2d5498c1997e234880ac6b4f27bcb64f3e02af91d711cb4",
+  "expanded_a_then_b_f32le_sha256": "f4878bb808821078480754d676a94191954771757c07010982e97be8c571e84c",
+  "parameter_availability": "RESOLVED_FOR_AUTHORIZED_INTERNAL_SCOPE",
+  "algorithm_spec": "specs/06-true-peak-cascade-and-metrics.md",
+  "scope": "Selected two-stage 4x true-peak measurement only; no full-package readiness or bit-exact DEE claim"
+}

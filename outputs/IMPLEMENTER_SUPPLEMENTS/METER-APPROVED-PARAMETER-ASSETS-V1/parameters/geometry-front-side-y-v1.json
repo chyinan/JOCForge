@@ -1,0 +1,29 @@
+{
+  "schema": "geometry-front-side-y-authorized.v1",
+  "asset_id": "D10-G-FRONT-SIDE-Y",
+  "classification": "AUTHORIZED_COMPILED_NONSECRET_AUDIO_FUNCTIONAL_CONSTANT",
+  "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_ISOLATED_IMPLEMENTATION_ONLY",
+  "authorization": "User expressly authorized normal nonsecret constants for internal delivery; production private keys and authentication secrets remain excluded",
+  "source_classification": "Previously verified compiled static audio geometry functional constant; checked against the frozen Python producer; not an independently derived mathematical design value",
+  "original_table_or_source_delivered": false,
+  "parameter": {
+    "name": "front_side_y_q15",
+    "type": "I32",
+    "encoding": "signed little-endian integer",
+    "fractional_bits": 15,
+    "value": 5285,
+    "word_hex": "000014a5",
+    "valid_range_exclusive": [
+      0,
+      16384
+    ],
+    "uses": "Selected layout 0x159B profile=true P15 basis rows7 and8 Y",
+    "conversion": "R32(R32(value)*2^-15)",
+    "converted_f32_word_hex": "3e252800"
+  },
+  "value_count": 1,
+  "encoded_bytes": 4,
+  "encoded_value_sha256": "336b3be098e0eaf3a17da2b8996f869e792ff4ef5e98d4f09edb4a458bd6e7ad",
+  "generator_spec": "specs/01-selected-geometry-layout-and-bed-routing.md",
+  "scope_limit": "Only selected P11/P15 with profile=true; no complete 35-record original geometry table or profile=false supplier; no whole frontend/audio/spatial validation"
+}

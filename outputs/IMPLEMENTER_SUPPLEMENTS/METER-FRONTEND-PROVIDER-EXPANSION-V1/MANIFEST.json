@@ -1,0 +1,22 @@
+{
+  "package_id": "METER-FRONTEND-PROVIDER-EXPANSION-V1",
+  "scope": "48 approved index assets; other transitive providers and runtime not fully verified",
+  "source_manifest_sha256": "b56c56501870488584063989c9db4cc15be026333d13be60d157cb6f4143ddd9",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4969,
+      "sha256": "a35ba66209e67fed1c4269d370aa369aa6bbada15cb6432dd29970e6e5bda38e"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 461,
+      "sha256": "97004fb5eb38a5c01e359294eb88138521a869e1793b7766f4049fc50df71b38"
+    },
+    {
+      "file": "INVENTORY.json",
+      "bytes": 10351,
+      "sha256": "93fe65733bf72724a773f5b3374fddd33dc1ba34c31173e9dcbf951a16ea0796"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "METER-D11-PREPASS-CROSSWALK-V2",
+  "status": "STATIC_STAGE_CLASSIFICATION_ONLY_RUNTIME_NOT_RUN",
+  "source_package_manifest_sha256": "ef89711054c6ac3e0f556d4ec8c1865ac9a21a7229afae59e8e9ac326dd79865",
+  "files": [
+    {
+      "sha256": "e1ce792b0c80de3e899b7c943827a28cdb995f605b78234b8c3c56911f78151e",
+      "bytes": 14005,
+      "path": "D11-STAGE-CROSSWALK.json"
+    },
+    {
+      "sha256": "0f5c3ae72621f93f38692a41cb02d8a98a581d3ca7fa3b43b9a036b9ce98a640",
+      "bytes": 2408,
+      "path": "INPUT-ONLY-VECTORS.json"
+    },
+    {
+      "sha256": "75d0182a04261f7fdf401f194b2d23321e81d04b90f48d4fc840d183018b1712",
+      "bytes": 576,
+      "path": "SOURCE-BINDING.json"
+    },
+    {
+      "sha256": "e69c3092742f16fb96fc212f7500c2da87130096c64540e3a5ce88965c88b7eb",
+      "bytes": 1763,
+      "path": "WASHED-SUMMARY.md"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "reader56-main-target-panner.v1",
+  "scope": "selected leading-LFE plus flat type2 object rows; internal implementation only",
+  "reader_component_map": [
+    0,
+    3,
+    2,
+    4,
+    1,
+    5,
+    6
+  ],
+  "direct": {
+    "record_type": 1,
+    "selector": 4,
+    "secondary_slot": 3,
+    "required_gain": 4096,
+    "required_row_flag": 0
+  },
+  "object": {
+    "record_type": 2,
+    "required_gain": 4096,
+    "required_row_flag": 0,
+    "coordinate_domain": "word1/2/3 each I32 0..32767",
+    "ignored_numeric_fields": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  },
+  "quarter_pi_f32_u32": 1061752795,
+  "half_f32_u32": 1056964608,
+  "secondary_mask_u64_le_words": [
+    255,
+    0
+  ],
+  "primary_mask_u64_le_words": [
+    63,
+    0
+  ],
+  "fold_mode": 3,
+  "back_to_side_fold": {
+    "6": 4,
+    "7": 5
+  },
+  "geometry_provider": "parameters/meter-oar-secondary8-math-v1.json",
+  "geometry_i32_rows": [
+    [
+      0,
+      0,
+      0,
+      35
+    ],
+    [
+      32767,
+      0,
+      0,
+      35
+    ],
+    [
+      16384,
+      0,
+      0,
+      35
+    ],
+    [
+      -1,
+      -1,
+      -1,
+      35
+    ],
+    [
+      0,
+      16384,
+      0,
+      6
+    ],
+    [
+      32767,
+      16384,
+      0,
+      7
+    ],
+    [
+      0,
+      32767,
+      0,
+      35
+    ],
+    [
+      32767,
+      32767,
+      0,
+      35
+    ]
+  ],
+  "geometry_i32le_sha256": "3f8b8b5d4880052f66516455883e4c3aee026e2b94f99191bfb0ad74a8f25fc3",
+  "f32_semantics": "Every stated add/subtract/multiply/divide rounds separately to binary32; cos/sin are mathematical R64 nearest-even then R32; no FMA.",
+  "ordinary_nonsecret_constants_only": true
+}

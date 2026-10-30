@@ -1,0 +1,40 @@
+{
+  "scope": "BOUND_DIRECT_ASSETS_NOT_EXHAUSTIVE",
+  "files": [
+    {
+      "bytes": 2584,
+      "name": "meter-truepeak-authorized-v1.json",
+      "sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757"
+    },
+    {
+      "bytes": 1757,
+      "name": "meter-oar-secondary8-math-v1.json",
+      "sha256": "d1a2f3d3a7f1a7e67933acc781be406814f63a2e842975d34960d135a5307a77"
+    },
+    {
+      "bytes": 780,
+      "name": "meter-log-mathematical-v1.json",
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+    },
+    {
+      "bytes": 970,
+      "name": "meter-k-state-bounds-v1.json",
+      "sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68"
+    },
+    {
+      "bytes": 3985,
+      "name": "meter-k-matrix-math-v1.json",
+      "sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536"
+    },
+    {
+      "bytes": 1236,
+      "name": "shared-dv32-mathematical-v1.json",
+      "sha256": "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa"
+    },
+    {
+      "bytes": 14372,
+      "name": "adm-installed48-providers-v1.json",
+      "sha256": "51305803b05daff498935b3283e56e27bb3e3966f52727bcf803a226871d5e91"
+    }
+  ]
+}

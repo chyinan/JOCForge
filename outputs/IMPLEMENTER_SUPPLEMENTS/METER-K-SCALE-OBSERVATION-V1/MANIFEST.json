@@ -1,0 +1,11 @@
+{
+  "package_id": "METER-K-SCALE-OBSERVATION-V1",
+  "scope": "selected static formula and bounded runtime observation",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1626,
+      "sha256": "513ff6876c1611a8cbbe1d05a1b3f1bc2aa2ddbfbb834f49cfd2ed34f7c28bdd"
+    }
+  ]
+}

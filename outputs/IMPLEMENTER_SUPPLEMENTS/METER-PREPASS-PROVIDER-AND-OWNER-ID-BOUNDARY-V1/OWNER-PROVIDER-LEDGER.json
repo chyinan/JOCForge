@@ -1,0 +1,986 @@
+{
+  "schema": "meter-provider-owner-coverage-ledger.v1",
+  "counts": {
+    "upstream_index_entries": 48,
+    "direct_meter_assets": 7,
+    "cold_state_assets": 5,
+    "GTC_owner_roots": 12
+  },
+  "ledgers": {
+    "upstream_index": [
+      {
+        "provider_id": "specs/00-numeric-semantics.md",
+        "kind": "specification",
+        "candidate_owners": [],
+        "owner_attribution": "unassigned_or_cross_owner",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/01-input-and-clock.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "reader_eof"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/01-frontend-config-normalization.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "frontend_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/01-frontend-config-dbmd-events.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "frontend_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/01-adm-graph-and-time.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "reader_eof"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/01-bed-routing-and-source-geometry.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "frontend_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/01-selected-geometry-layout-and-bed-routing.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "frontend_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-source-routing-and-feature-flags.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-feature-processor-and-state.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-gate-and-target-installation.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-selector-affinity-and-selection.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-rectangular-nnls-initial-fit.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-u04-refinement-and-projection.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-outer-energy-correction.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-degenerate-frontier-and-fail-stop.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/03-point-response-and-target-context.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-window-matrix-and-component-audio.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-prefix-spread-and-gain.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-spread-authorized-parameters.md",
+        "kind": "specification",
+        "candidate_owners": [],
+        "owner_attribution": "unassigned_or_cross_owner",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-spread-parameter-provider-and-caller.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-diffusion-filter-and-lifecycle.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-diffusion-mathematical-generation.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-diffusion-constructor-generation.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-component-parameter-state.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-component-parameter-generation.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/04-receiver-state-and-routing.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/05-oamd-row-and-timing-wire.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/05-reader56-target-updates-composition.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/06-oar-model-callback-state-and-clock.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/06-oar-frontend-input-and-clock-join.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/06-oar-mix-ramp-and-filter-gate.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/06-oar-selected-task-routing.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "specs/06-oar-snapshot-to-record-bridge.md",
+        "kind": "specification",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/spread-authorized-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/diffusion-mathematical-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/diffusion-constructor-mathematical-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/component-parameter-mathematical-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/geometry-front-side-y-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/feature-fft4096-math-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/feature-processor-math-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/oamd-coordinate-grid-q15.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/point-panner-math-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/reader56-target-profile-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/reader56-main-panner-v1.json",
+        "kind": "parameter",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "test-vectors/READER56-TARGET-UPDATES-VERIFICATION.json",
+        "kind": "review_or_other",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "test-vectors/READER56-TARGET-UPDATES-RESULT.json",
+        "kind": "review_or_other",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "test-vectors/READER56-TARGET-STATE-SCHEMA.json",
+        "kind": "review_or_other",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "test-vectors/READER56-TARGET-GAPS.json",
+        "kind": "review_or_other",
+        "candidate_owners": [
+          "joc"
+        ],
+        "owner_attribution": "contract_crosswalk",
+        "approved_asset_present": true,
+        "runtime_loaded_or_validated": false,
+        "selected_input_binding": "not bound to actual meter input",
+        "entered_actual_prepass": false
+      }
+    ],
+    "direct_provider_inventory": [
+      {
+        "provider_id": "meter-truepeak-authorized-v1.json",
+        "candidate_owners": [
+          "meter"
+        ],
+        "role": "direct_meter_asset",
+        "approved_asset_present": true,
+        "runtime_loaded": false,
+        "owner_semantic_validator": "not executed",
+        "selected_input_binding": "not bound",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "meter-oar-secondary8-math-v1.json",
+        "candidate_owners": [
+          "meter"
+        ],
+        "role": "direct_meter_asset",
+        "approved_asset_present": true,
+        "runtime_loaded": false,
+        "owner_semantic_validator": "not executed",
+        "selected_input_binding": "not bound",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "meter-log-mathematical-v1.json",
+        "candidate_owners": [
+          "meter"
+        ],
+        "role": "direct_meter_asset",
+        "approved_asset_present": true,
+        "runtime_loaded": false,
+        "owner_semantic_validator": "not executed",
+        "selected_input_binding": "not bound",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "meter-k-state-bounds-v1.json",
+        "candidate_owners": [
+          "meter"
+        ],
+        "role": "direct_meter_asset",
+        "approved_asset_present": true,
+        "runtime_loaded": false,
+        "owner_semantic_validator": "not executed",
+        "selected_input_binding": "not bound",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "meter-k-matrix-math-v1.json",
+        "candidate_owners": [
+          "meter"
+        ],
+        "role": "direct_meter_asset",
+        "approved_asset_present": true,
+        "runtime_loaded": false,
+        "owner_semantic_validator": "not executed",
+        "selected_input_binding": "not bound",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "shared-dv32-mathematical-v1.json",
+        "candidate_owners": [
+          "meter"
+        ],
+        "role": "direct_meter_asset",
+        "approved_asset_present": true,
+        "runtime_loaded": false,
+        "owner_semantic_validator": "not executed",
+        "selected_input_binding": "not bound",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "adm-installed48-providers-v1.json",
+        "candidate_owners": [
+          "meter"
+        ],
+        "role": "direct_meter_asset",
+        "approved_asset_present": true,
+        "runtime_loaded": false,
+        "owner_semantic_validator": "not executed",
+        "selected_input_binding": "not bound",
+        "entered_actual_prepass": false
+      }
+    ],
+    "cold_state_assets": [
+      {
+        "provider_id": "parameters/adm-installed48-state-v1.json",
+        "candidate_owners": [
+          "reader_eof",
+          "frontend_control",
+          "spatial_control",
+          "spatial_audio",
+          "joc",
+          "metadata",
+          "output"
+        ],
+        "role": "cold_state_or_projection_input",
+        "asset_present": true,
+        "runtime_owner_instantiated": false,
+        "runtime_semantic_validation": "not run",
+        "selected_input_binding": "none",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/f03-selected-target-cold-v1.json",
+        "candidate_owners": [
+          "spatial_control"
+        ],
+        "role": "cold_state_or_projection_input",
+        "asset_present": true,
+        "runtime_owner_instantiated": false,
+        "runtime_semantic_validation": "not run",
+        "selected_input_binding": "none",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/selected-owner-projection-v1.json",
+        "candidate_owners": [
+          "reader_eof",
+          "frontend_control",
+          "spatial_control",
+          "spatial_audio",
+          "joc",
+          "meter",
+          "drc",
+          "analysis",
+          "codec",
+          "metadata",
+          "integrity",
+          "output"
+        ],
+        "role": "cold_state_or_projection_input",
+        "asset_present": true,
+        "runtime_owner_instantiated": false,
+        "runtime_semantic_validation": "not run",
+        "selected_input_binding": "none",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/window-q15.json",
+        "candidate_owners": [
+          "spatial_audio"
+        ],
+        "role": "cold_state_or_projection_input",
+        "asset_present": true,
+        "runtime_owner_instantiated": false,
+        "runtime_semantic_validation": "not run",
+        "selected_input_binding": "none",
+        "entered_actual_prepass": false
+      },
+      {
+        "provider_id": "parameters/f01e-selected-constructor-v1.json",
+        "candidate_owners": [
+          "reader_eof",
+          "frontend_control"
+        ],
+        "role": "cold_state_or_projection_input",
+        "asset_present": true,
+        "runtime_owner_instantiated": false,
+        "runtime_semantic_validation": "not run",
+        "selected_input_binding": "none",
+        "entered_actual_prepass": false
+      }
+    ],
+    "owner_provider_coverage": [
+      {
+        "owner_id": "reader_eof",
+        "numeric_role": "F01 source/cursor and EOF",
+        "generation_domain": "source cursor/callback",
+        "approved_asset_or_value_refs": [
+          "parameters/adm-installed48-state-v1.json",
+          "parameters/f01e-selected-constructor-v1.json",
+          "parameters/selected-owner-projection-v1.json",
+          "specs/01-adm-graph-and-time.md",
+          "specs/01-input-and-clock.md"
+        ],
+        "owner_specific_semantic_validator_status": "contract-defined cursor/source validation; actual source-owner ingress unbound",
+        "selected_input_binding_status": "NOT_BOUND_TO_METER_OWNER_KEY_OR_CURSOR_RECEIPT",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "frontend_control",
+        "numeric_role": "F01E normalized config, DBMD/CHNA/ADM event controls",
+        "generation_domain": "frontend callback",
+        "approved_asset_or_value_refs": [
+          "parameters/adm-installed48-state-v1.json",
+          "parameters/f01e-selected-constructor-v1.json",
+          "parameters/selected-owner-projection-v1.json",
+          "specs/01-bed-routing-and-source-geometry.md",
+          "specs/01-frontend-config-dbmd-events.md",
+          "specs/01-frontend-config-normalization.md",
+          "specs/01-selected-geometry-layout-and-bed-routing.md"
+        ],
+        "owner_specific_semantic_validator_status": "spec rules exist; runtime frontend validation not run",
+        "selected_input_binding_status": "NO_ACTUAL_METER_FRONTEND_RECEIPT",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "spatial_control",
+        "numeric_role": "F03W feature/selector/target/matrix pipeline",
+        "generation_domain": "frontend callback",
+        "approved_asset_or_value_refs": [
+          "parameters/adm-installed48-state-v1.json",
+          "parameters/f03-selected-target-cold-v1.json",
+          "parameters/feature-fft4096-math-v1.json",
+          "parameters/feature-processor-math-v1.json",
+          "parameters/point-panner-math-v1.json",
+          "parameters/selected-owner-projection-v1.json",
+          "specs/03-degenerate-frontier-and-fail-stop.md",
+          "specs/03-feature-processor-and-state.md",
+          "specs/03-gate-and-target-installation.md",
+          "specs/03-outer-energy-correction.md",
+          "specs/03-point-response-and-target-context.md",
+          "specs/03-rectangular-nnls-initial-fit.md",
+          "specs/03-selector-affinity-and-selection.md",
+          "specs/03-source-routing-and-feature-flags.md",
+          "specs/03-u04-refinement-and-projection.md"
+        ],
+        "owner_specific_semantic_validator_status": "assets/vectors exist; owner-specific validator not run on selected meter input",
+        "selected_input_binding_status": "NO_SAME_CALLBACK_METER_BINDING",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "spatial_audio",
+        "numeric_role": "F04C OAR/component/LFE/receiver/DV inputs",
+        "generation_domain": "frontend callback",
+        "approved_asset_or_value_refs": [
+          "parameters/adm-installed48-state-v1.json",
+          "parameters/component-parameter-mathematical-v1.json",
+          "parameters/diffusion-constructor-mathematical-v1.json",
+          "parameters/diffusion-mathematical-v1.json",
+          "parameters/geometry-front-side-y-v1.json",
+          "parameters/selected-owner-projection-v1.json",
+          "parameters/spread-authorized-v1.json",
+          "parameters/window-q15.json",
+          "specs/04-component-parameter-generation.md",
+          "specs/04-component-parameter-state.md",
+          "specs/04-diffusion-constructor-generation.md",
+          "specs/04-diffusion-filter-and-lifecycle.md",
+          "specs/04-diffusion-mathematical-generation.md",
+          "specs/04-prefix-spread-and-gain.md",
+          "specs/04-receiver-state-and-routing.md",
+          "specs/04-spread-parameter-provider-and-caller.md",
+          "specs/04-window-matrix-and-component-audio.md"
+        ],
+        "owner_specific_semantic_validator_status": "some formula/local model verification exists; real render/OAR/DV not run",
+        "selected_input_binding_status": "NO_METER_RENDER_RECEIPT",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "joc",
+        "numeric_role": "F05JL JOC state and writer",
+        "generation_domain": "JOC dispatch",
+        "approved_asset_or_value_refs": [
+          "parameters/adm-installed48-state-v1.json",
+          "parameters/oamd-coordinate-grid-q15.json",
+          "parameters/reader56-main-panner-v1.json",
+          "parameters/reader56-target-profile-v1.json",
+          "parameters/selected-owner-projection-v1.json",
+          "specs/05-oamd-row-and-timing-wire.md",
+          "specs/05-reader56-target-updates-composition.md",
+          "specs/06-oar-frontend-input-and-clock-join.md",
+          "specs/06-oar-mix-ramp-and-filter-gate.md",
+          "specs/06-oar-model-callback-state-and-clock.md",
+          "specs/06-oar-selected-task-routing.md",
+          "specs/06-oar-snapshot-to-record-bridge.md",
+          "test-vectors/READER56-TARGET-GAPS.json",
+          "test-vectors/READER56-TARGET-STATE-SCHEMA.json",
+          "test-vectors/READER56-TARGET-UPDATES-RESULT.json",
+          "test-vectors/READER56-TARGET-UPDATES-VERIFICATION.json"
+        ],
+        "owner_specific_semantic_validator_status": "contracts exist; no measured-program receipt or same-program binding",
+        "selected_input_binding_status": "NO_MEASUREMENT_TO_JOC_BINDING",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "meter",
+        "numeric_role": "F06 independent OAR/DV32/K/window/integrated/true-peak/terminal",
+        "generation_domain": "meter callback/energy record",
+        "approved_asset_or_value_refs": [
+          "adm-installed48-providers-v1.json",
+          "meter-k-matrix-math-v1.json",
+          "meter-k-state-bounds-v1.json",
+          "meter-log-mathematical-v1.json",
+          "meter-oar-secondary8-math-v1.json",
+          "meter-truepeak-authorized-v1.json",
+          "parameters/selected-owner-projection-v1.json",
+          "shared-dv32-mathematical-v1.json"
+        ],
+        "owner_specific_semantic_validator_status": "direct assets documented; loader and validators not executed",
+        "selected_input_binding_status": "UNBOUND_METER_INGRESS_OWNER_KEY_EXTENT_CURSOR_AND_TERMINAL",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "drc",
+        "numeric_role": "F06 secondary/DRC/statistics/scheduler",
+        "generation_domain": "codec source",
+        "approved_asset_or_value_refs": [
+          "parameters/selected-owner-projection-v1.json"
+        ],
+        "owner_specific_semantic_validator_status": "GTC composition defined; actual measurement receipt absent",
+        "selected_input_binding_status": "NO_MEASUREMENT_RECEIPT",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "analysis",
+        "numeric_role": "F07-F10 analysis/plan histories",
+        "generation_domain": "codec source",
+        "approved_asset_or_value_refs": [
+          "parameters/selected-owner-projection-v1.json"
+        ],
+        "owner_specific_semantic_validator_status": "root contract only; actual selected-source state absent",
+        "selected_input_binding_status": "NO_SAME_PROGRAMME_SOURCE_RECEIPT",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "codec",
+        "numeric_role": "F12 codec state",
+        "generation_domain": "codec source",
+        "approved_asset_or_value_refs": [
+          "parameters/selected-owner-projection-v1.json"
+        ],
+        "owner_specific_semantic_validator_status": "root contract only; no actual measurement or codec source transaction",
+        "selected_input_binding_status": "NO_MEASUREMENT_BINDING",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "metadata",
+        "numeric_role": "F13 metadata queues/timeline",
+        "generation_domain": "codec source",
+        "approved_asset_or_value_refs": [
+          "parameters/adm-installed48-state-v1.json",
+          "parameters/selected-owner-projection-v1.json"
+        ],
+        "owner_specific_semantic_validator_status": "root contract only; meter result not admitted",
+        "selected_input_binding_status": "NO_MEASUREMENT_BINDING",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "integrity",
+        "numeric_role": "F14K per-frame integrity receipt",
+        "generation_domain": "frame",
+        "approved_asset_or_value_refs": [
+          "parameters/selected-owner-projection-v1.json"
+        ],
+        "owner_specific_semantic_validator_status": "stateless root contract; no frame exists",
+        "selected_input_binding_status": "NO_FRAME",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      },
+      {
+        "owner_id": "output",
+        "numeric_role": "F15 staging/durable AU ledger",
+        "generation_domain": "published AU",
+        "approved_asset_or_value_refs": [
+          "parameters/adm-installed48-state-v1.json",
+          "parameters/selected-owner-projection-v1.json"
+        ],
+        "owner_specific_semantic_validator_status": "root contract only; output not produced",
+        "selected_input_binding_status": "NO_OUTPUT_ATTEMPT",
+        "actual_prepass": "NO",
+        "committed_runtime_owner": "ABSENT"
+      }
+    ]
+  },
+  "coverage_conclusion": {
+    "48_index_entries_are_runtime_providers": false,
+    "7_direct_assets_exhaustive": false,
+    "5_cold_assets_are_live_owner_instances": false,
+    "owner_specific_meter_validators_executed": false,
+    "selected_meter_input_bound": false,
+    "actual_prepass_entered": false,
+    "complete_transitive_provider_set_exportable": false,
+    "gaps": [
+      "The 48 entries mix specifications, numerical assets and review/vector records; the expansion package expressly says actual handles and semantic validation were not executed and other independent dependencies may exist.",
+      "The seven direct meter assets are explicitly marked non-exhaustive.",
+      "Cold files define initial values or owner projection, not instantiated warm states or actual callback receipts.",
+      "F06 cursor-key supplement: actual meter key producer UNBOUND; frozen cursor API has two Panner callers, zero selected Meter ingress/read/complete callers.",
+      "Actual selected meter owner state, OAR/DV32 rendering, K/window/energy, integrated/true-peak processing, terminal getter and MeasurementReceipt are absent."
+    ]
+  },
+  "GTC_meter_phase_contract": {
+    "normal_callbacks": "ceil(N/1536)",
+    "zero_input_drains": 3,
+    "published_six_channel_latency_samples": 3104,
+    "measurement_consumes_complete_1024_prefix_only": true,
+    "energy_window_samples": 960,
+    "success": "terminal validation then immutable MeasurementReceipt then single METERING-to-READY commit",
+    "execution_status": "CONTRACT_ONLY_NOT_RUN"
+  }
+}

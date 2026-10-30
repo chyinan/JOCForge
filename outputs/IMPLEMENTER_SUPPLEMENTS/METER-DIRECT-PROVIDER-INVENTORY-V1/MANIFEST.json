@@ -1,0 +1,22 @@
+{
+  "package_id": "METER-DIRECT-PROVIDER-INVENTORY-V1",
+  "scope": "seven direct approved assets; transitive inventory incomplete; runtime not run",
+  "source_manifest_sha256": "0390cdc39f8d16830a6832ee2de9f43dc0bf9a3a6940b0e9d7e15edf06c87821",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4338,
+      "sha256": "f17e5bfc927abdfad65956ab3c1a5a234741ced60f191911881f8b75d5a60b17"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 442,
+      "sha256": "b26b86295da0c4c64eb476ca49905710c8d26dc60531c6d665a5853c6809d667"
+    },
+    {
+      "file": "INVENTORY.json",
+      "bytes": 1269,
+      "sha256": "597ae68251e88cf700a90add3bb01dd4446153daf76615adad1dfe390067bed9"
+    }
+  ]
+}

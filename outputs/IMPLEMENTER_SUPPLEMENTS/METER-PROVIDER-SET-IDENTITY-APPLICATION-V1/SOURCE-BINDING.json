@@ -1,0 +1,16 @@
+{
+  "schema": "washed-meter-provider-identity-rule-binding.v1",
+  "approved_contract_manifests": [
+    "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e",
+    "69a78f828816cac6eaab0549f241f8b5e616ada571ed4fa070cffa7ce4fb56e6",
+    "698f070fe09f0f8e208e7da484163896d20847d39f263cfa8e1722858b4076a8",
+    "163b122717d5f69bfda0372774ca8160d32b81851fe59a6dc4ac5f48495f5c12",
+    "1b076d8fad85be969bbe77b8648f26eb833b8d98fa149f832c2ba5869e9f448d"
+  ],
+  "selected_d11_prepass_rows": 11,
+  "meter_numeric_rule_families": 8,
+  "aggregate_digest_status": "NOT_COMPUTED_UNTIL_ALL_SELECTED_MEMBER_VALIDATORS_PASS",
+  "local_identity_rule": "parent-issued typed receipt scoped to programme/attempt/input/extent; not DEE native token",
+  "implementation_source_read": false,
+  "private_material_forwarded": false
+}

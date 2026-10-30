@@ -1,0 +1,22 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "METER-PROVIDER-SET-IDENTITY-APPLICATION-V1",
+  "status": "LOCAL_RECEIPT_RULE_PROPOSAL_PROVIDER_VALIDATION_NOT_RUN",
+  "files": [
+    {
+      "path": "EXPECTED-MEMBER-ROSTER.json",
+      "sha256": "02320510109e32ad7767d455f093475de0984e471d2c2c0f4f32056cf598cd8e",
+      "bytes": 6994
+    },
+    {
+      "path": "SOURCE-BINDING.json",
+      "sha256": "611d650414a2123da3f06cd1d971122ff72538868dbf5703dc5977d30db13236",
+      "bytes": 834
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "sha256": "445ffc0e33cf5e175b7e3f2834eedeea32c6125b537f88aa823c18a8a921e5d5",
+      "bytes": 3474
+    }
+  ]
+}

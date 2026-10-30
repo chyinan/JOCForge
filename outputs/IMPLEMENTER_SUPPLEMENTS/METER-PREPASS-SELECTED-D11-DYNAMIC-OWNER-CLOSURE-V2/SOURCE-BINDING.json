@@ -1,0 +1,18 @@
+{
+  "schema": "washed-meter-selected-d11-runtime-closure.v1",
+  "source_package_manifest_sha256": "67852ad4cc89c757f97bd9102b65415e9187b8ad20bd7dcbe38691721f1251f0",
+  "dependency_closure_payload_sha256": "0a0ed0d752d7f530ded2fad1d608baa3dd5b290cc3096863c6287466454e9721",
+  "source_checker_sha256": "21945da062c4fabea8dade6d5ff14953517a02fabfe58860246c9f5a601f8a66",
+  "d11_rows": 43,
+  "d11_selected_or_conditional_rows": 41,
+  "d11_selected_dead_rows": 1,
+  "d11_unselected_rows": 1,
+  "static_selected_d11_exhaustive": true,
+  "all_d01_d13_exhaustive": false,
+  "runtime_provider_load": "NOT_RUN",
+  "same_input_transitive_runtime_graph": "NOT_ESTABLISHED",
+  "actual_meter_prepass": "NOT_RUN",
+  "terminal_receipt": "ABSENT",
+  "ready": "NOT_RUN",
+  "native_source_or_private_material_forwarded": false
+}

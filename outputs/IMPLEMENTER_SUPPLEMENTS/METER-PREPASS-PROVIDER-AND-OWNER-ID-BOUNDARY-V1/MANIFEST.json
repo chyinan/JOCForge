@@ -1,0 +1,22 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "METER-PREPASS-PROVIDER-AND-OWNER-ID-BOUNDARY-V1",
+  "status": "ASSET_IDENTITIES_BOUND_BUT_TRANSITIVE_RUNTIME_COVERAGE_INCOMPLETE",
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 5179,
+      "sha256": "e98e1af73c3e2869b982a3280f6168183cd56655b4d1ff9c2aa6b92d11477a11"
+    },
+    {
+      "path": "OWNER-PROVIDER-LEDGER.json",
+      "bytes": 38429,
+      "sha256": "66822fc14197c7f9e02c14588a0d8e9e03c3bd3fb21c15acabf497c22d54d483"
+    },
+    {
+      "path": "SOURCE-BINDING.json",
+      "bytes": 1373,
+      "sha256": "dad5c6312b63558961f515ea9e30d900cbf16bf96c87a6f287fc78228085821d"
+    }
+  ]
+}

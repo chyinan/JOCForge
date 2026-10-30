@@ -1,0 +1,16 @@
+{
+  "schema":"independent-meter-prepass-inputs.v1",
+  "input_only":true,
+  "contains_expected_outputs":false,
+  "cases":[
+    {"id":"one_sample","source_samples":1,"channels":38,"pcm_bits":24,"frame_samples":1536,"normal_callbacks_input":1,"drain_callbacks_input":3},
+    {"id":"short_second_normal","source_samples":1537,"channels":38,"pcm_bits":24,"frame_samples":1536,"normal_callbacks_input":2,"drain_callbacks_input":3},
+    {"id":"selected_example","source_samples":6522906,"channels":38,"pcm_bits":24,"frame_samples":1536,"normal_callbacks_input":4247,"drain_callbacks_input":3},
+    {"id":"interleaved_lfe_binding","channels":38,"semantic_lfe_host":12,"chna_entry_order":"permuted","track_to_host":"explicit bijection"},
+    {"id":"stale_component_generation","callback_g":2,"component_origin_g":1,"control_batch_g":2},
+    {"id":"distinct_history_origin","callback_g":2,"control_batch_generation":3,"regular_history_producer":"ColdConstructor"},
+    {"id":"short_read_error","source_samples":1537,"callback_g":1,"requested_frames":1,"actual_frames":0},
+    {"id":"terminal_identity_mismatch","phase":"METERING","attempt":3,"proposal_attempt":4}
+  ],
+  "scope":"Input metadata and explicit discriminators only; no PCM, EC3, expected terminal hash/receipt, native pointer or private material."
+}

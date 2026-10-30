@@ -1,0 +1,294 @@
+{
+  "source_manifest_sha256": "51305803b05daff498935b3283e56e27bb3e3966f52727bcf803a226871d5e91",
+  "files": [
+    {
+      "kind": "specification",
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "bytes": 3369,
+      "file": "specs/00-numeric-semantics.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a",
+      "bytes": 6887,
+      "file": "specs/01-input-and-clock.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "0dae9b61901e10d002dad26a2addc102f319049900f611722606c7bbc57686b9",
+      "bytes": 3582,
+      "file": "specs/01-frontend-config-normalization.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+      "bytes": 13867,
+      "file": "specs/01-frontend-config-dbmd-events.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14",
+      "bytes": 6441,
+      "file": "specs/01-adm-graph-and-time.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2",
+      "bytes": 5510,
+      "file": "specs/01-bed-routing-and-source-geometry.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+      "bytes": 9551,
+      "file": "specs/01-selected-geometry-layout-and-bed-routing.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "ef0a7bd95edc2adc63b07e752879b6ddefb817962b7b6fa44c77b4acb5c51f19",
+      "bytes": 4830,
+      "file": "specs/03-source-routing-and-feature-flags.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "dbd1cf259d2e40013910868d31e38909678d3af8add9d80bd59d15e8cc6e8edd",
+      "bytes": 4436,
+      "file": "specs/03-feature-processor-and-state.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc",
+      "bytes": 5475,
+      "file": "specs/03-gate-and-target-installation.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "ce95853e007f9282f3d1dce0e43cffb132ed079b5f1cd2fe3e6ce10901d51697",
+      "bytes": 6405,
+      "file": "specs/03-selector-affinity-and-selection.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "7cfb51e8905f739e60bebcd30899887bda52cc493a5bab0c976ca645548b09fc",
+      "bytes": 6652,
+      "file": "specs/03-rectangular-nnls-initial-fit.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879",
+      "bytes": 5458,
+      "file": "specs/03-u04-refinement-and-projection.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "7ca47864c9fe7573b6cc6edfafdbd2049c5e74aa73f9b240c4c15bf4a427cdb2",
+      "bytes": 5150,
+      "file": "specs/03-outer-energy-correction.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "b657fb3f4b322a41aee8cb7573191d67a56db71ca2d24e27e0b0d4914e3e2c83",
+      "bytes": 6111,
+      "file": "specs/03-degenerate-frontier-and-fail-stop.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "8fb727170fb41df5354a17429fc00411010f010cb32dc86e0fdcc81bddaf4964",
+      "bytes": 9435,
+      "file": "specs/03-point-response-and-target-context.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334",
+      "bytes": 9190,
+      "file": "specs/04-window-matrix-and-component-audio.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "ca5b069d16f0a0837ad4501036c74bb6e8ae3d6acfaf8bf3961ca4869923a68b",
+      "bytes": 12300,
+      "file": "specs/04-prefix-spread-and-gain.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "4c8b966929818a9a0ea8cace90830bd5e7fa9ce8fdb716931078f97ccee83013",
+      "bytes": 2365,
+      "file": "specs/04-spread-authorized-parameters.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "11a9a62467c7992224450bc00bca570a180a293631212e5848ddc7738421f77a",
+      "bytes": 4971,
+      "file": "specs/04-spread-parameter-provider-and-caller.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "4b662c3721ba10ad9dafd193bf13e1bc2df571ab4cab580e46a8a6b39e9a3594",
+      "bytes": 7203,
+      "file": "specs/04-diffusion-filter-and-lifecycle.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "eeba9137918ffb647e3b0a68ca5b210aadd0b0815fed3eec7ae199a08057484d",
+      "bytes": 3125,
+      "file": "specs/04-diffusion-mathematical-generation.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "e1a420ea0d4284c0cfadcf6962d34ff8cc0f877cee0d0503a6c0e2669c2978b9",
+      "bytes": 4229,
+      "file": "specs/04-diffusion-constructor-generation.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "3e9b777a36ae722aeccd1054d778484e6a96e44d16f2534159dfe49afc7d1861",
+      "bytes": 5792,
+      "file": "specs/04-component-parameter-state.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "2564879656a5b0e73975d99ef7a55217440131c5d4e2d6b4dc8117adecef76d8",
+      "bytes": 4910,
+      "file": "specs/04-component-parameter-generation.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "74b9b01537eb76a37582535b84426138ee8c8ecdca3486f9f43d0504c7c26306",
+      "bytes": 8332,
+      "file": "specs/04-receiver-state-and-routing.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "b49694e3026938c1b5f91ef95fd63cc2eea03e25161367ba26095177ff452b11",
+      "bytes": 6701,
+      "file": "specs/05-oamd-row-and-timing-wire.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "4f4fe2bc3b0dd08bc59e46ea5d3a48e2eafc4051906c2fda258250351261ce0d",
+      "bytes": 12627,
+      "file": "specs/05-reader56-target-updates-composition.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9",
+      "bytes": 11750,
+      "file": "specs/06-oar-model-callback-state-and-clock.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+      "bytes": 9427,
+      "file": "specs/06-oar-frontend-input-and-clock-join.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "dfe8ceac3e6e9ca9939e3e40bcf985e26a842c70f8646dfc6e61da3065f86de3",
+      "bytes": 7425,
+      "file": "specs/06-oar-mix-ramp-and-filter-gate.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "effdbd69f19a0b6469568168c1121d1e279ec12385c8192c627c9d91a810d20d",
+      "bytes": 7505,
+      "file": "specs/06-oar-selected-task-routing.md"
+    },
+    {
+      "kind": "specification",
+      "sha256": "5944a659fff3483b90263525ab58106fdc211c97f0901d09b3681b0c4f889c05",
+      "bytes": 10712,
+      "file": "specs/06-oar-snapshot-to-record-bridge.md"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "5611b37f2a997f75da0ba920e394c0e36eddd9477e11ba94d44852d3e12fd0c9",
+      "bytes": 2783,
+      "file": "parameters/spread-authorized-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+      "bytes": 1467,
+      "file": "parameters/diffusion-mathematical-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106",
+      "bytes": 1770,
+      "file": "parameters/diffusion-constructor-mathematical-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
+      "bytes": 1077,
+      "file": "parameters/component-parameter-mathematical-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185",
+      "bytes": 1466,
+      "file": "parameters/geometry-front-side-y-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+      "bytes": 279305,
+      "file": "parameters/feature-fft4096-math-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "c2cc80eed698285a7a022324bfed36e04c3b6e682cb21674b6316b3ec6a2ec0b",
+      "bytes": 35441,
+      "file": "parameters/feature-processor-math-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243",
+      "bytes": 1169,
+      "file": "parameters/oamd-coordinate-grid-q15.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "f79ab4d4ed06983cea05146a39bcfef22c183c1111d1d6103efce25c9c579ef6",
+      "bytes": 812,
+      "file": "parameters/point-panner-math-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "ec4c56549a47d1892655345c036aba822d2f0c8baae6c71b398001e9f90ce5d1",
+      "bytes": 1898,
+      "file": "parameters/reader56-target-profile-v1.json"
+    },
+    {
+      "kind": "parameter",
+      "sha256": "b2f2cb31d3ee099db5bf32a8b93c8e1a9c441d84b9246c0908dceabde8e44c47",
+      "bytes": 1794,
+      "file": "parameters/reader56-main-panner-v1.json"
+    },
+    {
+      "kind": "review_or_other",
+      "sha256": "7e5e54b0005318ea8a5699272ba3e6381ba10d9f17b81d89d01229e68169b34a",
+      "bytes": 502975,
+      "file": "test-vectors/READER56-TARGET-UPDATES-VERIFICATION.json"
+    },
+    {
+      "kind": "review_or_other",
+      "sha256": "f246be2cff2dcda42c8abcba882cd3de9a58b90802c8c914a776e17219797d85",
+      "bytes": 1825,
+      "file": "test-vectors/READER56-TARGET-UPDATES-RESULT.json"
+    },
+    {
+      "kind": "review_or_other",
+      "sha256": "bb3d9754073fca1173d52c8c80d19f0a2433306004f5b20d0b83ee6c2d3ae510",
+      "bytes": 23612,
+      "file": "test-vectors/READER56-TARGET-STATE-SCHEMA.json"
+    },
+    {
+      "kind": "review_or_other",
+      "sha256": "269d8cfd60a1c078a632c336a3fc8d2e72c2710fdf0608158b24033ca1471018",
+      "bytes": 1754,
+      "file": "test-vectors/READER56-TARGET-GAPS.json"
+    }
+  ],
+  "count": 48
+}

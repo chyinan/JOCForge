@@ -1,0 +1,46 @@
+{
+  "schema": "shared-dv32-mathematical-parameters.v1",
+  "route": "SHARED_POST_OAR_DV32_Q15_MATH_V1",
+  "profile": {
+    "sample_rate": 48000,
+    "row_count": 6,
+    "block_samples": 32,
+    "hold_limit": 3
+  },
+  "dt_rule": "32/48000 seconds",
+  "coefficient_rules": [
+    "Q15_RNE(2^(-dt/(1/25)))",
+    "1-c0",
+    "Q15_RNE(2^(-dt/(4/25)))",
+    "1-c2",
+    "Q15_RNE(2^(-dt/(1/200)))"
+  ],
+  "reciprocal_pivot_rule": "ceil(32768/sqrt(2))/32768",
+  "target_pivot_rule": "Q15_RNE(10^(-3/40))",
+  "envelope_weight_rule": "Q15_RNE((1/2)*10^(3/40))",
+  "q15_integers": [
+    32392,
+    376,
+    32673,
+    95,
+    29875,
+    23171,
+    27571,
+    19472
+  ],
+  "coefficient_words": [
+    "3f7d1000",
+    "3c3c0000",
+    "3f7f4200",
+    "3b3e0000",
+    "3f696600"
+  ],
+  "reciprocal_pivot_word": "3f350600",
+  "target_pivot_word": "3f576600",
+  "envelope_weight_word": "3f182000",
+  "original_design_rationale": "NOT_CLAIMED equivalent generation settings only",
+  "legacy_per_task_route_substitution": "FORBIDDEN; separate gain-history/direct-division algorithm is not this shared route",
+  "source_tables_copied": false,
+  "delivery_scope": "INTERNAL_ONLY",
+  "implementation_ready": "NO"
+}

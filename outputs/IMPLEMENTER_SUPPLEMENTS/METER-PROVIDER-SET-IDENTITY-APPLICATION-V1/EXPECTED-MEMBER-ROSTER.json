@@ -1,0 +1,147 @@
+{
+  "schema": "expected-selected-meter-provider-roster.v1",
+  "source_closure_manifest_sha256": "67852ad4cc89c757f97bd9102b65415e9187b8ad20bd7dcbe38691721f1251f0",
+  "selected_d11_prepass_rows": [
+    {
+      "id": "D11-FFTS",
+      "phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-FFTT",
+      "phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-FFTP",
+      "phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-FFTR",
+      "phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-FFTC",
+      "phase": "FRONTEND_FEATURE_PREPASS_CANDIDATE",
+      "provider": "parameters/feature-fft4096-math-v1.json",
+      "provider_sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-K",
+      "phase": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+      "provider": "parameters/window-q15.json",
+      "provider_sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-F",
+      "phase": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+      "provider": "parameters/component-parameter-mathematical-v1.json",
+      "provider_sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-PM",
+      "phase": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+      "provider": "parameters/diffusion-mathematical-v1.json",
+      "provider_sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-PL",
+      "phase": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+      "provider": "parameters/diffusion-mathematical-v1.json",
+      "provider_sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-DC",
+      "phase": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+      "provider": "parameters/diffusion-mathematical-v1.json",
+      "provider_sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    },
+    {
+      "id": "D11-DP",
+      "phase": "SPATIAL_RENDER_PREPASS_CANDIDATE",
+      "provider": "parameters/diffusion-constructor-mathematical-v1.json",
+      "provider_sha256": "7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106",
+      "profile_status": "SELECTED_UPSTREAM_CONSUMER_REGISTERED"
+    }
+  ],
+  "meter_numeric_and_rule_families": [
+    {
+      "id": "D12-R",
+      "asset_file": "parameters/meter-oar-secondary8-math-v1.json",
+      "manifest_sha256": "d1a2f3d3a7f1a7e67933acc781be406814f63a2e842975d34960d135a5307a77",
+      "value_class": null,
+      "provider_validation": "32_I32_WORDS_EXACT_GENERATION; F06OM/OP local conversion/point target and F06OC/OF selected callback/owned input clock contracts independently reviewed; no whole renderer or native angle equivalence claim"
+    },
+    {
+      "id": "D12-DV",
+      "asset_file": "parameters/shared-dv32-mathematical-v1.json",
+      "manifest_sha256": "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa",
+      "value_class": null,
+      "provider_validation": "8_WORD_PARAMETER_IDENTITY_EXACT; F06D 6SYNTHETIC_CALLBACKS_288BLOCKS_AND32HISTORICAL_OAR_PREFIX_CALLBACKS_ISOLATED_REVIEW_PASS; whole meter not run"
+    },
+    {
+      "id": "D12-K",
+      "asset_file": "parameters/meter-k-matrix-math-v1.json",
+      "manifest_sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536",
+      "value_class": null,
+      "provider_validation": "72_WORDS_288_BYTES_IDENTITY; 4160_OUTPUT_WORDS_48_STATE_WORDS_6_POWER_WORDS_LOCAL_R2_REVIEW_PASS"
+    },
+    {
+      "id": "D12-TP",
+      "asset_file": "parameters/meter-truepeak-authorized-v1.json",
+      "manifest_sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
+      "value_class": null,
+      "provider_validation": "9_SYNTHETIC_CASES_193536_OUTPUT_WORDS_249912_STATE_WORDS_540_PEAK_FIELDS_126_PROGRAMME_FIELDS_EQUAL; ROOT_SCALAR_RECOMPUTED; LOCAL_R1_REVIEW_PASS"
+    },
+    {
+      "id": "D12-L",
+      "asset_file": "parameters/meter-log-mathematical-v1.json",
+      "manifest_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "value_class": null,
+      "provider_validation": "11_CONSTANT_WORDS_EXACT_56_NUMERIC_CASES_AND_3_NORMATIVE_ENTRY_REJECTIONS_EQUAL"
+    },
+    {
+      "id": "F06I fixed profile/state/event rules; runtime energy records are dynamic",
+      "asset_file": "specs/06-integrated-meter-state.md",
+      "manifest_sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72",
+      "value_class": "approved specification rule; not a numeric runtime receipt",
+      "provider_validation": null
+    },
+    {
+      "id": "F06L log/metric/sample-peak and ungated rules; runtime sample values are dynamic",
+      "asset_file": "specs/06-meter-log-and-peak.md",
+      "manifest_sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "value_class": "approved specification rule; not a numeric runtime receipt",
+      "provider_validation": null
+    },
+    {
+      "id": "F06W N-dependent callback, block and window schedule; runtime N/output spans are dynamic",
+      "asset_file": "specs/06-meter-window-and-output-clock.md",
+      "manifest_sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c",
+      "value_class": "approved specification rule; not a numeric runtime receipt",
+      "provider_validation": null
+    }
+  ],
+  "excluded_d11_statuses": [
+    "post-prepass",
+    "selected dead branch",
+    "unselected"
+  ],
+  "status": "STATIC_ROSTER_ONLY_NOT_RUNTIME_VALIDATED"
+}

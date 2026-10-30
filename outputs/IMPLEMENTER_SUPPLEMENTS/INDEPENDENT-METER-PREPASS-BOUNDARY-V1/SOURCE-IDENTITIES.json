@@ -1,0 +1,151 @@
+{
+  "schema": "independent-meter-prepass-source-identities.v1",
+  "scope": "APPROVED_PACKAGE_AND_WASHED_SUPPLEMENTS_ONLY",
+  "sources": [
+    {
+      "file": "IMPLEMENTER_PACKAGE/MANIFEST.json",
+      "bytes": 76302,
+      "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/01-frontend-config-dbmd-events.md",
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-adm-installed48-whole.md",
+      "bytes": 10079,
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-window-matrix-and-component-audio.md",
+      "bytes": 9190,
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-component-parameter-state.md",
+      "bytes": 5792,
+      "sha256": "3e9b777a36ae722aeccd1054d778484e6a96e44d16f2534159dfe49afc7d1861"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/05-fit-marker-and-metadata-history.md",
+      "bytes": 6252,
+      "sha256": "39cb2ef34ef976b369c4390969d6a38e291d3268e9e2c7e43499ea299b692f26"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/05-reader56-target-updates-composition.md",
+      "bytes": 12627,
+      "sha256": "4f4fe2bc3b0dd08bc59e46ea5d3a48e2eafc4051906c2fda258250351261ce0d"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/06-oar-frontend-input-and-clock-join.md",
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/06-oar-model-callback-state-and-clock.md",
+      "bytes": 11750,
+      "sha256": "7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/06-meter-window-and-output-clock.md",
+      "bytes": 7388,
+      "sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/06-meter-none-drc-whole-composition.md",
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/MANIFEST.json",
+      "bytes": 375,
+      "sha256": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/MANIFEST.json",
+      "bytes": 531,
+      "sha256": "fcd280810e1520131d26d8a2010d6d4a26851a6242a75306720558ff51d69219"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/CONTRACT.json",
+      "bytes": 3703,
+      "sha256": "e2cba0586f94b12f4117aa7ce14331bb9d957d6053d524ce5b781441342207be"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/MANIFEST.json",
+      "bytes": 962,
+      "sha256": "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1/MANIFEST.json",
+      "bytes": 1717,
+      "sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1/CONTRACT.md",
+      "bytes": 8559,
+      "sha256": "5a5269461898eda50ad20c066eac28c3da4b125018efe8efb7d9ffba6c870666"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/MANIFEST.json",
+      "bytes": 1553,
+      "sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/CONTRACT.md",
+      "bytes": 4607,
+      "sha256": "d67791cf8ab2b2168bf61ab38c05beaafe7b5c799c084276c90a8bef8fd917b2"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json",
+      "bytes": 13212,
+      "sha256": "e06697bb73573fbd82e5c3f1665afccc30eb7893082b6a491c4e8ea3aa748d0e"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/MANIFEST.json",
+      "bytes": 528,
+      "sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/CONTRACT.md",
+      "bytes": 4128,
+      "sha256": "8bbd3c0264e4e284bbf563b87f89f6a76771c87a773ec1ebccdfd75b0136bb7f"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/MANIFEST.json",
+      "bytes": 2079,
+      "sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/ROOT-FIELDS.json",
+      "bytes": 10443,
+      "sha256": "45975cb5435bc163b9428d083180bfae46bd9954306713629ca0dbb826dea058"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/INPUT-ONLY-ROOT-RECIPES.json",
+      "bytes": 17016,
+      "sha256": "eb8e953bc8037a887b23b363cdffbf0ac64d6b804c69f8eacbb81b655de41ad4"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/MANIFEST.json",
+      "bytes": 1254,
+      "sha256": "abb560381448727aa4c88877373769aa14556a4e365e4bec82637a043155333b"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/CONTRACT.md",
+      "bytes": 4183,
+      "sha256": "d3da7e1d083b29b369c5b0ff7b215990f3e28ce4acbb90db4a6c9dbab8d1253f"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/01-input-and-clock.md",
+      "bytes": 6887,
+      "sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a"
+    }
+  ]
+}

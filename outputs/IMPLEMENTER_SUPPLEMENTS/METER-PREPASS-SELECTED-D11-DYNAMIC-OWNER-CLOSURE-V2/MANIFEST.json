@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "METER-PREPASS-SELECTED-D11-DYNAMIC-OWNER-CLOSURE-V2",
+  "status": "SELECTED_STATIC_CONSUMER_SET_BOUND_DYNAMIC_RUNTIME_CLOSURE_NOT_RUN",
+  "source_package_manifest_sha256": "67852ad4cc89c757f97bd9102b65415e9187b8ad20bd7dcbe38691721f1251f0",
+  "files": [
+    {
+      "path": "DEPENDENCY-CLOSURE.json",
+      "bytes": 68902,
+      "sha256": "0a0ed0d752d7f530ded2fad1d608baa3dd5b290cc3096863c6287466454e9721"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1528,
+      "sha256": "b0c971c452900dcde424415cfe1e440f7b7b88784f9fb8ea76c2feac8e483ba2"
+    },
+    {
+      "path": "SOURCE-BINDING.json",
+      "bytes": 810,
+      "sha256": "0949a514e5da9a72816504148929993e693ff9aed724671ab14a1d3603b21681"
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 1681,
+      "sha256": "036e18db25603b2490efa075eef62d270910e0ff3c4c0af01a2fb85320b24247"
+    }
+  ]
+}

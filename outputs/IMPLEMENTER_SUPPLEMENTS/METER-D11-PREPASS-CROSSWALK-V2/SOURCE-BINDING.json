@@ -1,0 +1,12 @@
+{
+  "schema": "washed-meter-d11-stage-crosswalk.v1",
+  "source_manifest_sha256": "ef89711054c6ac3e0f556d4ec8c1865ac9a21a7229afae59e8e9ac326dd79865",
+  "source_crosswalk_sha256": "e1ce792b0c80de3e899b7c943827a28cdb995f605b78234b8c3c56911f78151e",
+  "source_vector_sha256": "0f5c3ae72621f93f38692a41cb02d8a98a581d3ca7fa3b43b9a036b9ce98a640",
+  "checker_normal_and_optimized": "PASS",
+  "crosswalk_rows": 14,
+  "all_rows_runtime_loaded": false,
+  "all_rows_selected_input_receipt": "ABSENT",
+  "actual_meter_prepass": "NOT_RUN",
+  "source_or_private_material_forwarded": false
+}
