@@ -51,6 +51,7 @@ fn owner_state_reference_tracks_complete_cold_and_committed_bytes() {
     let mut machine = ReaderEofMachine::cold();
     let cold_state = ReaderEofState::cold();
     let cold_reference = machine.state_reference();
+    let cold_gtc_snapshot = cold_reference.gtc_snapshot().unwrap();
 
     assert_eq!(cold_reference.owner_id(), "reader_eof");
     assert_eq!(cold_reference.state_ref(), "owners.reader_eof");
@@ -58,6 +59,20 @@ fn owner_state_reference_tracks_complete_cold_and_committed_bytes() {
     assert_eq!(
         cold_reference.canonical_bytes(),
         cold_state.canonical_bytes()
+    );
+    assert_eq!(cold_gtc_snapshot.owner_id().as_str(), "reader_eof");
+    assert_eq!(cold_gtc_snapshot.generation(), cold_reference.generation());
+    assert_eq!(
+        cold_gtc_snapshot.canonical_bytes(),
+        cold_reference.canonical_bytes()
+    );
+    assert_eq!(
+        cold_gtc_snapshot.state_sha256(),
+        cold_reference.state_sha256().bytes()
+    );
+    assert_eq!(
+        cold_gtc_snapshot.cold_sha256(),
+        cold_reference.cold_sha256().bytes()
     );
     assert_eq!(cold_reference.state_sha256(), cold_state.digest());
     assert_eq!(cold_reference.cold_sha256(), cold_state.digest());
@@ -72,10 +87,16 @@ fn owner_state_reference_tracks_complete_cold_and_committed_bytes() {
     machine.commit(staged).unwrap();
 
     let committed_reference = machine.state_reference();
+    let committed_gtc_snapshot = committed_reference.gtc_snapshot().unwrap();
     assert_eq!(committed_reference.generation(), 1);
+    assert_eq!(committed_gtc_snapshot.generation(), 1);
     assert_eq!(
         committed_reference.canonical_bytes(),
         machine.committed().canonical_bytes()
+    );
+    assert_eq!(
+        committed_gtc_snapshot.canonical_bytes(),
+        committed_reference.canonical_bytes()
     );
     assert_eq!(
         committed_reference.state_sha256(),

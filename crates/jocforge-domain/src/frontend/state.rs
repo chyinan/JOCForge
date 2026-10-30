@@ -370,6 +370,16 @@ impl FrontendControlOwnerStateReference<'_> {
     pub fn canonical_bytes(&self) -> &[u8] {
         self.state.canonical_bytes()
     }
+
+    /// Adapts the complete owner reference to the registered GTC state member.
+    pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
+        GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::FrontendControl,
+            self.generation,
+            self.cold_sha256.to_bytes(),
+            self.canonical_bytes(),
+        )
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

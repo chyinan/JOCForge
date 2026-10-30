@@ -10,7 +10,10 @@ use super::{
 };
 use crate::{
     timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex, source_for_callback},
-    transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
+    transaction::{
+        AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId,
+        GtcOwnerReceiptError, GtcOwnerStateSnapshot, ProgrammeId,
+    },
 };
 use std::{error::Error, fmt};
 
@@ -244,6 +247,16 @@ impl IntegrityOwnerStateSnapshot {
 
     pub const fn cold_sha256(&self) -> IntegritySha256 {
         self.cold_sha256
+    }
+
+    /// Adapts the complete owner snapshot to the registered GTC state member.
+    pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
+        GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::Integrity,
+            self.state.generation(),
+            *self.cold_sha256.as_bytes(),
+            &self.canonical_bytes,
+        )
     }
 }
 

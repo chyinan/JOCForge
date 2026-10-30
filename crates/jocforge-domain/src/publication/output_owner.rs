@@ -4,6 +4,7 @@
 use crate::{
     integrity::crc16::eac3_crc16,
     timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
+    transaction::{GtcOwnerId, GtcOwnerReceiptError, GtcOwnerStateSnapshot},
 };
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
@@ -471,6 +472,18 @@ impl OutputOwnerStateReference {
 
     pub fn canonical_bytes(&self) -> &[u8] {
         &self.canonical_bytes
+    }
+
+    /// Adapts a complete OutputOwner state reference to the registered GTC state member.
+    ///
+    /// This view does not create a production output binding or grant install authority.
+    pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
+        GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::Output,
+            self.generation,
+            self.cold_sha256,
+            &self.canonical_bytes,
+        )
     }
 }
 

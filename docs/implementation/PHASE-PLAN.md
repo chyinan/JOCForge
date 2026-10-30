@@ -586,9 +586,9 @@
     ],
     "implementation_inventory": [
       {
-        "bytes": 19384,
+        "bytes": 19763,
         "path": "crates/jocforge-domain/src/state/reader_eof.rs",
-        "sha256": "1aaf2daf7534d05783eb042939eb02c5a24b5a4d6969a4ddec731e838fcd8344"
+        "sha256": "0cdf3578aa8b1a4723681e381b196c20e336b8b629bedd3584384b5284595789"
       },
       {
         "bytes": 881,
@@ -702,9 +702,9 @@
     },
     "test_inventory": [
       {
-        "bytes": 7722,
+        "bytes": 8518,
         "path": "crates/jocforge-domain/src/state/reader_eof/lifecycle_tests.rs",
-        "sha256": "64d5759cb0759868cddfadb671e45f7b55676699f656302a4c7df2ca6433ffd6"
+        "sha256": "e27a0705b69ba95d28f605848bb55b27bb0d0cc3f8bc6bb97db21f4be17adbe7"
       }
     ],
     "test_modules": [
@@ -885,9 +885,9 @@
     ],
     "implementation_inventory": [
       {
-        "bytes": 33692,
+        "bytes": 34081,
         "path": "crates/jocforge-domain/src/frontend/state.rs",
-        "sha256": "ba744836758c4e74c0a5848df608a17f65acb002a00c2ba327d8f98d66cab88d"
+        "sha256": "1743651e4c78e9e5bcc8484be84f4e325f5358ee4ec97ab7f7af5651a028761e"
       },
       {
         "bytes": 2789,
@@ -1012,9 +1012,9 @@
     "schema_version": "f01e-selected-constructor.v1",
     "test_inventory": [
       {
-        "bytes": 5653,
+        "bytes": 6053,
         "path": "crates/jocforge-domain/tests/frontend_control_staging.rs",
-        "sha256": "49b641d631f1b2b2849e324c346d0eb212b80d8d647b23643fc883734802928a"
+        "sha256": "e03b3968d781bdd5517ae6f255eef5568b490e95b8fc478b13837418000a0fe5"
       }
     ],
     "test_modules": [

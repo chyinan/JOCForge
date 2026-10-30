@@ -345,6 +345,7 @@ fn gtc_owner_snapshot_contains_exact_state_bytes_hashes_and_reference() {
     let v = vectors();
     let owner = new_owner(0);
     let snapshot = owner.owner_state_snapshot();
+    let gtc_snapshot = snapshot.gtc_snapshot().unwrap();
     let expected = &v["cold"];
 
     assert_eq!(snapshot.owner_id(), "integrity");
@@ -358,6 +359,17 @@ fn gtc_owner_snapshot_contains_exact_state_bytes_hashes_and_reference() {
     assert_eq!(hex(snapshot.canonical_bytes()), expected["canonical_hex"]);
     assert_eq!(snapshot.state_sha256().to_hex(), expected["sha256"]);
     assert_eq!(snapshot.cold_sha256(), snapshot.state_sha256());
+    assert_eq!(gtc_snapshot.owner_id().as_str(), "integrity");
+    assert_eq!(gtc_snapshot.generation(), snapshot.generation());
+    assert_eq!(gtc_snapshot.canonical_bytes(), snapshot.canonical_bytes());
+    assert_eq!(
+        gtc_snapshot.state_sha256(),
+        *snapshot.state_sha256().as_bytes()
+    );
+    assert_eq!(
+        gtc_snapshot.cold_sha256(),
+        *snapshot.cold_sha256().as_bytes()
+    );
 }
 
 #[test]

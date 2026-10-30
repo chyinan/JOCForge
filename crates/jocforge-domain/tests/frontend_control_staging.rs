@@ -73,6 +73,7 @@ fn cold_owner_state_reference_preserves_the_complete_provider_state() {
         FrontendControlMachine::from_provider(provider, programme_id(), AttemptId::new(0)).unwrap();
     let before = machine.committed().canonical_bytes().to_vec();
     let reference = machine.state_reference();
+    let snapshot = reference.gtc_snapshot().unwrap();
 
     assert_eq!(reference.owner_id(), "frontend_control");
     assert_eq!(reference.state_ref(), "owners.frontend_control");
@@ -81,6 +82,11 @@ fn cold_owner_state_reference_preserves_the_complete_provider_state() {
     assert_eq!(reference.canonical_bytes(), before.as_slice());
     assert_eq!(reference.state_sha256().to_hex(), expected_digest.to_hex());
     assert_eq!(reference.cold_sha256().to_hex(), expected_digest.to_hex());
+    assert_eq!(snapshot.owner_id().as_str(), "frontend_control");
+    assert_eq!(snapshot.generation(), reference.generation());
+    assert_eq!(snapshot.canonical_bytes(), before.as_slice());
+    assert_eq!(snapshot.state_sha256(), reference.state_sha256().to_bytes());
+    assert_eq!(snapshot.cold_sha256(), reference.cold_sha256().to_bytes());
     assert_eq!(machine.committed().canonical_bytes(), before.as_slice());
 }
 

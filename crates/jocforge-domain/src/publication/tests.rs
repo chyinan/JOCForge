@@ -78,6 +78,9 @@ fn owner_state_reference_carries_complete_bytes_and_instance_cold_hash() {
     let vectors = fixture_vectors();
     let owner = synthetic_owner();
     let before = owner.state_reference().expect("canonical owner snapshot");
+    let gtc_snapshot = before
+        .gtc_snapshot()
+        .expect("registered GTC output snapshot");
     let cold = &vectors["cold"];
     let expected_bytes = decode_hex(cold["canonical_hex"].as_str().unwrap());
     let expected_sha: [u8; 32] = decode_hex(cold["sha256"].as_str().unwrap())
@@ -90,6 +93,11 @@ fn owner_state_reference_carries_complete_bytes_and_instance_cold_hash() {
     assert_eq!(before.canonical_bytes(), expected_bytes.as_slice());
     assert_eq!(before.state_sha256(), &expected_sha);
     assert_eq!(before.cold_sha256(), &expected_sha);
+    assert_eq!(gtc_snapshot.owner_id().as_str(), "output");
+    assert_eq!(gtc_snapshot.generation(), 0);
+    assert_eq!(gtc_snapshot.canonical_bytes(), expected_bytes.as_slice());
+    assert_eq!(gtc_snapshot.state_sha256(), expected_sha);
+    assert_eq!(gtc_snapshot.cold_sha256(), expected_sha);
 
     let frame = [0_u8; 4_096];
     let proposal = owner

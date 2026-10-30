@@ -202,6 +202,16 @@ impl ReaderEofOwnerStateReference {
     pub fn canonical_bytes(&self) -> &[u8] {
         &self.canonical_bytes
     }
+
+    /// Adapts the complete owner reference to the registered GTC state member.
+    pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
+        GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::ReaderEof,
+            self.generation,
+            self.cold_sha256.bytes(),
+            &self.canonical_bytes,
+        )
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
