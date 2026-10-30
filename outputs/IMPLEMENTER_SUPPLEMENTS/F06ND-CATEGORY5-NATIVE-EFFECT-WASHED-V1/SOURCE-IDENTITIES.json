@@ -1,0 +1,15 @@
+{
+  "schema": "f06nd-category5-native-effect-source-identities.v1",
+  "source_package_seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+  "source_evidence_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+  "source_payload_sha256": {
+    "DECISION-CASES.json": "8a340b65ccef60d808f2a2159fa018ac88ef3ec05adfdf313a860e0729b6b012",
+    "NATIVE-CONTROL-FLOW.json": "635b9ef4f01e655668a1d1439cb8414dfd4de206fae43af55077eb4c2df18a3e",
+    "README.md": "d4a3fb91f38331a9f73e83df9c47a34ff4c2fd64d297886e0ac3d94cff00b191",
+    "SOURCE-IDENTITIES.json": "759661bc10f62ee7e02d64a1038ae5300be6c8460ea81e8b7f25f497a54a1f07"
+  },
+  "native_run": "NOT_RUN",
+  "pcm_payload_read": false,
+  "selected_category5_to_generic_event_join": "UNBOUND",
+  "category5_to_drc_or_bsi_join": "UNBOUND"
+}

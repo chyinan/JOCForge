@@ -4419,6 +4419,19 @@ def check_f06nd_category5_process_boundary(root,d):
  envelope=json.loads((package/'DELIVERY-ENVELOPE.json').read_text(encoding='utf-8'));evidence=json.loads((package/'EVIDENCE.json').read_text(encoding='utf-8'));cases=json.loads((package/'DECISION-CASES.json').read_text(encoding='utf-8'));ck(envelope['manifest_sha256']==manifest_sha and envelope['selected_byte_layout']=='NOT_APPLICABLE_TO_PROCESS_BOUNDARY'and evidence['status']=='SELECTED_PROCESS_BYTE_LAYOUT_NOT_APPLICABLE; GENERIC_EVENT_EDGE_UNBOUND'and evidence['selected_clean_rule']['writes_drc_control_fifo']is False and evidence['selected_clean_rule']['fifo_records_after_submission']=='four zero logical records'and evidence['native_selected_process_boundary']['category5_or_InputControlEvent_parameter']is False and evidence['native_selected_process_boundary']['byte_layout_status']=='NOT_APPLICABLE_TO_THIS_BOUNDARY'and len(cases['cases'])>=1,'F06ND category5 process boundary and open generic edges')
  ck(s['implementation_files']==[]and s['test_modules']==[]and s['native_status']['generic_event_api_join']=='UNBOUND'and s['native_status']['selected_bsi_or_output_effect']=='UNBOUND'and any('No global absence claim' in x for x in s['not_run']),'F06ND category5 status does not invent a global absence or product algorithm')
 
+def check_f06nd_category5_native_effect_supplement(root,d):
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F06ND');row=next((s for s in entry.get('direct_slices',[])if s.get('slice_id')=='washed-selected-category5-process-boundary-status'),None);ck(row is not None,'F06ND category-5 native-effect evidence is attached to the selected process-boundary slice')
+ if row is None:return
+ package=root/'outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1';raw=(package/'MANIFEST.json').read_bytes();manifest=json.loads(raw);expected='ef7a0547ef0e72b54ab9dac3a78e429a451803a70852d3d5c31997f2ee06f6e8'
+ ck(hashlib.sha256(raw).hexdigest()==expected==row['parameters']['native_effect_supplement_manifest_sha256']and (package/'MANIFEST.sha256').read_text(encoding='ascii').split()[0]==expected and manifest.get('package_id')=='F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1'and manifest.get('scope')=='bounded evidence mapping; no product implementation or readiness change'and len(manifest.get('files',[]))==3,'F06ND category-5 native-effect package identity and scope')
+ ck({p.name for p in package.iterdir()if p.is_file()}=={'MANIFEST.json','MANIFEST.sha256',*(x['name']for x in manifest['files'])},'F06ND category-5 native-effect package has no unmanifested files')
+ for record in manifest.get('files',[]):
+  payload=(package/record['name']).read_bytes();ck(len(payload)==record['bytes']and hashlib.sha256(payload).hexdigest()==record['sha256'],'F06ND category-5 native-effect payload '+record['name'])
+ check=json.loads((package/'CHECK.json').read_text(encoding='utf-8'));identities=json.loads((package/'SOURCE-IDENTITIES.json').read_text(encoding='utf-8'));contract=(package/'CONTRACT.md').read_text(encoding='utf-8')
+ ck(check.get('status')=='PASS_HASH_BOUND_STATIC_SCOPE'and check.get('source_seal_and_payload_hashes')=='VERIFIED'and check.get('logical_selected_category5_rule')=='STATIC_CLOSED_NO_DRC_CONTROL_WRITE'and check.get('selected_native_process_path_category5_effect')=='NOT_APPLICABLE_TO_THIS_PROCESS_PATH'and check.get('generic_storage_event_join')=='UNBOUND'and check.get('category5_to_drc_or_bsi_join')=='UNBOUND'and check.get('native_execution')=='NOT_RUN'and check.get('pcm_payload_access')=='NOT_RUN','F06ND category-5 Wash check preserves static-only and open join states')
+ ck('The selected state retains four zero FIFO records and override value 0.' in contract and 'The recovered process interface contains no category-5 or InputControlEvent parameter.' in contract and 'This bounded path finding is not a global absence claim.' in contract and identities.get('native_run')=='NOT_RUN'and identities.get('pcm_payload_read')is False and identities.get('selected_category5_to_generic_event_join')=='UNBOUND'and identities.get('category5_to_drc_or_bsi_join')=='UNBOUND','F06ND category-5 contract and source identities retain their bounded scope')
+ ck(row.get('implementation_requirement')is False and row.get('implementation_files')==[]and row.get('test_modules')==[]and row.get('parameters',{}).get('supplement_manifest_sha256')=='8fc0c53d2d980afde82d623dceb55bbd5b90f9098b9a7f31a6889604dd7a7117'and row.get('parameters',{}).get('native_effect_supplement_manifest_sha256')==expected and row.get('native_status',{}).get('selected_logical_category5_rule')=='STATIC_CLOSED_NO_DRC_CONTROL_WRITE'and row.get('native_status',{}).get('selected_fifo_records_after_submission')=='FOUR_ZERO_LOGICAL_RECORDS'and row.get('native_status',{}).get('selected_override_value')==0 and row.get('native_status',{}).get('category5_to_drc_or_bsi_join')=='UNBOUND'and row.get('native_status',{}).get('global_absence_claim')is False and row.get('native_status',{}).get('native_execution')=='NOT_RUN','F06ND category-5 evidence remains bounded and does not implement the logical rule')
+
 def check_f06nd_numeric_outcome_mapping(root,d):
  entry=next(e for e in d['functional_entries']if e['functional_id']=='F06ND');s=next((x for x in entry.get('direct_slices',[])if x['slice_id']=='selected-none-drc-closed-numeric-outcome-mapping'),None);ck(s is not None,'F06ND declared numeric outcome mapping slice exists')
  if s is None:return
@@ -5430,7 +5443,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
         "F01E": ["same-attempt-normal-sampler-source-geometry-stage", "selected-adm-riff-to-prepared-job-input", "prepared-input-to-f01e-snapshot-binding"],
         "F05JL": ["authorized-main-g2-joc-id14-candidate"],
         "F06W": ["sample-block-queue-lifecycle"],
-        "F06ND": ["selected-none-drc-source-owner-stage", "prepared-input-to-same-source-f12-bsi-bridge"],
+        "F06ND": ["selected-none-drc-source-owner-stage", "prepared-input-to-same-source-f12-bsi-bridge", "washed-selected-category5-process-boundary-status"],
         "F06NR": ["selected-f06nr-same-source-drc-proposal"],
         "F07": ["spatial-final-six-to-installed-audio-source-frame"],
         "F07A": ["analysis-owner-f07-source-stage"],
@@ -6271,6 +6284,7 @@ def run(root=ROOT):
  check_f06nd_frame_composition_slice(root,d)
  check_f06nd_contract_clarification(root,d)
  check_f06nd_category5_process_boundary(root,d)
+ check_f06nd_category5_native_effect_supplement(root,d)
  check_f06nd_numeric_outcome_mapping(root,d)
  check_f06nd_fifo_slice(root,d)
  check_f06nd_bsi_projection_slice(root,d)

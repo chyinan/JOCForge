@@ -1,0 +1,11 @@
+{
+  "schema": "f06nd-category5-native-effect-wash-check.v1",
+  "status": "PASS_HASH_BOUND_STATIC_SCOPE",
+  "source_seal_and_payload_hashes": "VERIFIED",
+  "logical_selected_category5_rule": "STATIC_CLOSED_NO_DRC_CONTROL_WRITE",
+  "selected_native_process_path_category5_effect": "NOT_APPLICABLE_TO_THIS_PROCESS_PATH",
+  "generic_storage_event_join": "UNBOUND",
+  "category5_to_drc_or_bsi_join": "UNBOUND",
+  "native_execution": "NOT_RUN",
+  "pcm_payload_access": "NOT_RUN"
+}

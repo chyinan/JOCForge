@@ -1,0 +1,22 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1",
+  "scope": "bounded evidence mapping; no product implementation or readiness change",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1310,
+      "sha256": "2ea72c274747bb68c231c60cbd5fd22e9ebb2c1a5d6d6ff1da4f71cbe6ece897"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 843,
+      "sha256": "6855ac8d038cdf523913c5517069079590e17bbf514d1c157f9940a6bd5dc3d9"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 475,
+      "sha256": "41d7e68c223993d89fe66fda544d402438e36f6791fc9530346d1aac8e18b049"
+    }
+  ]
+}

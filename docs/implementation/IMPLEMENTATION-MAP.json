@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1725729,
-              "sha256": "a15d8ac838774e2cfd37fb8d590c58f4fbae089fa7b3220c8e568110b1ad57f4"
+              "bytes": 1729666,
+              "sha256": "c4f751086259f35407a2aa09f1c7c45ad009db2bf2c7befbebe5d351a82edc88"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1725729,
-              "sha256": "a15d8ac838774e2cfd37fb8d590c58f4fbae089fa7b3220c8e568110b1ad57f4"
+              "bytes": 1729666,
+              "sha256": "c4f751086259f35407a2aa09f1c7c45ad009db2bf2c7befbebe5d351a82edc88"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -18889,7 +18889,7 @@
           "slice_id": "washed-selected-category5-process-boundary-status",
           "mapping_status": "WASHED_SELECTED_PROCESS_BYTE_LAYOUT_NOT_APPLICABLE__GENERIC_EVENT_EDGE_UNBOUND",
           "implementation_status": "WASHED_CATEGORY5_NO_DRC_FIFO_WRITE_AND_NO_PROCESS_BYTE_LAYOUT__GENERIC_EDGE_OPEN",
-          "scope": "The selected category5/32-bit/count1 clean rule writes no DRC-control FIFO record and preserves four zero logical records. The reviewed selected AtmosProcessor process boundary accepts a PCM frame descriptor and has no category5/InputControlEvent parameter, so a category5 byte layout is not applicable at that boundary. A separate generic event-vector API remains unjoined to the selected producer, metadata, BSI or output; this does not claim global absence of event records.",
+          "scope": "The selected no-DRC logical category-5 rule is static-closed: submission writes no DRC-control FIFO record, retains four zero logical FIFO records, and has override value 0. The examined selected AtmosProcessor PCM-frame path accepts a frame descriptor and has no category-5/InputControlEvent parameter; category-5 byte layout is not applicable to this process boundary. A separate generic event-vector API exists, but no source/owner/generation join connects it to the selected category-5 submission. The generic storage event's DRC/BSI effect remains UNBOUND. These are scoped static facts, not a global absence claim; native execution and PCM payload access are NOT_RUN.",
           "owner": "drc",
           "implementation_files": [],
           "local_mapping_files": [],
@@ -18904,11 +18904,18 @@
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/DECISION-CASES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/DECISION-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1/SOURCE-IDENTITIES.json"
             ],
             "supplement_manifest_sha256": "8fc0c53d2d980afde82d623dceb55bbd5b90f9098b9a7f31a6889604dd7a7117",
             "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
-            "validation_boundary": "Selected process boundary only; the generic event API and downstream effect remain UNBOUND."
+            "validation_boundary": "Selected process boundary only; the generic event API and downstream effect remain UNBOUND.",
+            "native_effect_supplement_manifest_sha256": "ef7a0547ef0e72b54ab9dac3a78e429a451803a70852d3d5c31997f2ee06f6e8",
+            "native_effect_validation_boundary": "Static selected no-DRC logical rule and selected AtmosProcessor process boundary only; generic event-vector and category-5 to DRC/BSI effects remain unbound."
           },
           "test_modules": [],
           "vectors": {
@@ -18920,24 +18927,48 @@
             "case_pointers": [
               "Selected category5/32-bit/count1 does not write the DRC-control FIFO; the four zero logical records remain zero.",
               "The selected process accepts a PCM frame descriptor and no category5 or InputControlEvent input; no byte layout is applicable at this process boundary.",
-              "Generic InputControlEvent, extra metadata and selected BSI/output joins remain UNBOUND."
+              "Generic InputControlEvent, extra metadata and selected BSI/output joins remain UNBOUND.",
+              "Wash V1 confirms the selected no-DRC rule has four zero FIFO records and override 0; the rule writes no DRC control.",
+              "The selected AtmosProcessor PCM-frame path has no category-5/InputControlEvent parameter; category-5 byte layout is not applicable to that process path only.",
+              "A separate generic event-vector API has no joined source/owner/generation to the selected category-5 producer; category-5 to DRC/BSI remains UNBOUND.",
+              "The observation is static; native execution and PCM payload access are NOT_RUN, and no global absence claim is made."
             ],
-            "source_supplement_manifest_sha256": "8fc0c53d2d980afde82d623dceb55bbd5b90f9098b9a7f31a6889604dd7a7117"
+            "source_supplement_manifest_sha256": "8fc0c53d2d980afde82d623dceb55bbd5b90f9098b9a7f31a6889604dd7a7117",
+            "additional_authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-NATIVE-EFFECT-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "native_effect_supplement_manifest_sha256": "ef7a0547ef0e72b54ab9dac3a78e429a451803a70852d3d5c31997f2ee06f6e8"
           },
           "native_status": {
             "selected_category5_drc_control_fifo_write": "NO",
             "selected_process_category5_byte_layout": "NOT_APPLICABLE_TO_THIS_BOUNDARY",
             "generic_event_api_join": "UNBOUND",
             "selected_bsi_or_output_effect": "UNBOUND",
-            "native_execution": "NOT_RUN"
+            "native_execution": "NOT_RUN",
+            "selected_logical_category5_rule": "STATIC_CLOSED_NO_DRC_CONTROL_WRITE",
+            "selected_fifo_records_after_submission": "FOUR_ZERO_LOGICAL_RECORDS",
+            "selected_override_value": 0,
+            "selected_native_process_path_category5_effect": "NOT_APPLICABLE_TO_THIS_PROCESS_PATH",
+            "selected_category5_to_generic_event_join": "UNBOUND",
+            "category5_to_drc_or_bsi_join": "UNBOUND",
+            "global_absence_claim": false,
+            "pcm_payload_access": "NOT_RUN"
           },
           "error_outcomes": [],
           "not_run": [
             "Selected category5 producer to generic InputControlEvent storage API remains UNBOUND.",
             "Generic event records to selected metadata/BSI/output effects remain UNBOUND.",
-            "No global absence claim or byte schema is inferred."
+            "No global absence claim or byte schema is inferred.",
+            "Native execution of the selected category-5 path.",
+            "Selected category-5 producer to generic InputControlEvent source/owner/generation join.",
+            "Generic event vector or category-5 bytes to selected DRC/BSI byte/output effect.",
+            "Any global absence claim beyond the examined process path."
           ],
-          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_requirement": false,
+          "implementation_inventory": [],
+          "test_inventory": []
         },
         {
           "slice_id": "selected-none-drc-closed-numeric-outcome-mapping",
@@ -29927,8 +29958,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1725729,
-              "sha256": "a15d8ac838774e2cfd37fb8d590c58f4fbae089fa7b3220c8e568110b1ad57f4"
+              "bytes": 1729666,
+              "sha256": "c4f751086259f35407a2aa09f1c7c45ad009db2bf2c7befbebe5d351a82edc88"
             }
           ],
           "test_inventory": [
