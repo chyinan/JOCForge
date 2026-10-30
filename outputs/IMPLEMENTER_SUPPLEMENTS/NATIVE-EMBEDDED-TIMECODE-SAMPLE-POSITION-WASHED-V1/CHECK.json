@@ -1,0 +1,13 @@
+{
+  "schema": "native-embedded-timecode-sample-position-wash-check.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_NATIVE_OBSERVATION",
+  "source_manifest_and_payload_hashes": "VERIFIED",
+  "run113": "REJECTED_BEFORE_SAMPLE_POSITION_OBSERVATION",
+  "run115": "NATIVE_ENCODING_COMPLETED_WITH_SAMPLE_RANGE_OBSERVED",
+  "timecode_rate_explicit_in_xml": false,
+  "24_fps_2000_samples_per_frame": "INFERENCE_CONSISTENT_WITH_OBSERVED_OUTPUT",
+  "pcm_access": "NOT_READ_OR_PERSISTED",
+  "spatial_callback_generation_join": "UNBOUND",
+  "model_execution": "NOT_RUN",
+  "uninstrumented_output_comparison": "NOT_RUN"
+}

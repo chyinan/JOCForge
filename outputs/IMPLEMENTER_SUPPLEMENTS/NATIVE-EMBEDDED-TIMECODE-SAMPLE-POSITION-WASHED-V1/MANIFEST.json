@@ -1,0 +1,22 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1",
+  "scope": "single selected embedded_timecode native mapping; frame-rate relation remains inference",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1367,
+      "sha256": "fb3835b02f010f81c076f614338efdf3dbb2a7fd6f839706a1613997bfe31679"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 873,
+      "sha256": "8bd13c6ed0c1e16f7e60f52c7ccf79807bc8c4bbfac18b4a3829b9999c894e4b"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 603,
+      "sha256": "36331c2114512c913b0ce029c18d2dd1db9660bb11ac433f5c2bebc0b08115c0"
+    }
+  ]
+}

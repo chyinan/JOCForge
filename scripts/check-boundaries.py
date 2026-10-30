@@ -5159,6 +5159,19 @@ def check_f12_main_q_search_slice(root,d):
  tests_source=source;ck(all(name in tests_source for name in('input_only_suppressed_plan_has_no_output_seed_and_all_fail_order_is_exact','successful_midpoints_retain_the_last_candidate_and_stop_after_ten','boundary_success_at_four_hundred_retains_that_candidate','preflight_and_converter_errors_are_preserved_before_any_trial')),'F12S.8 schedule, best retention, boundary and fatal propagation tests')
  ck({x['error_code']for x in s['error_outcomes']}=={'Upstream','Trial','NoBest'}and any('source-generation' in x for x in s['not_run'])and any('parent source commit' in x for x in s['not_run']),'F12S.8 preserves upstream errors and keeps parent/source joins open')
 
+def check_f01_embedded_timecode_sample_position(root,d):
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F01');row=next((s for s in entry.get('direct_slices',[])if s.get('slice_id')=='native-embedded-timecode-sample-position-run115'),None);ck(row is not None,'F01 run115 embedded-timecode sample-position evidence slice exists')
+ if row is None:return
+ package=root/'outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1';raw=(package/'MANIFEST.json').read_bytes();manifest=json.loads(raw);expected='b29d8828d0fac45d699254a4000076bb0a167a11b799f21b3022315a3037e2b9'
+ ck(hashlib.sha256(raw).hexdigest()==expected==row['parameters']['supplement_manifest_sha256']and (package/'MANIFEST.sha256').read_text(encoding='ascii').split()[0]==expected and manifest.get('package_id')=='NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1'and manifest.get('scope')=='single selected embedded_timecode native mapping; frame-rate relation remains inference'and len(manifest.get('files',[]))==3,'F01 embedded-timecode package identity and scope')
+ ck({p.name for p in package.iterdir()if p.is_file()}=={'MANIFEST.json','MANIFEST.sha256',*(x['name']for x in manifest['files'])},'F01 embedded-timecode package has no unmanifested files')
+ for record in manifest.get('files',[]):
+  payload=(package/record['name']).read_bytes();ck(len(payload)==record['bytes']and hashlib.sha256(payload).hexdigest()==record['sha256'],'F01 embedded-timecode payload '+record['name'])
+ check=json.loads((package/'CHECK.json').read_text(encoding='utf-8'));identities=json.loads((package/'SOURCE-IDENTITIES.json').read_text(encoding='utf-8'));contract=(package/'CONTRACT.md').read_text(encoding='utf-8')
+ ck(check.get('status')=='PASS_HASH_BOUND_BOUNDED_NATIVE_OBSERVATION'and check.get('source_manifest_and_payload_hashes')=='VERIFIED'and check.get('run113')=='REJECTED_BEFORE_SAMPLE_POSITION_OBSERVATION'and check.get('run115')=='NATIVE_ENCODING_COMPLETED_WITH_SAMPLE_RANGE_OBSERVED'and check.get('timecode_rate_explicit_in_xml')is False and check.get('24_fps_2000_samples_per_frame')=='INFERENCE_CONSISTENT_WITH_OBSERVED_OUTPUT'and check.get('pcm_access')=='NOT_READ_OR_PERSISTED'and check.get('spatial_callback_generation_join')=='UNBOUND'and check.get('model_execution')=='NOT_RUN'and check.get('uninstrumented_output_comparison')=='NOT_RUN','F01 embedded-timecode check preserves inference and unbound joins')
+ ck(identities.get('authorized_source_sha256')=='7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1'and identities.get('runtime_input_equals_authorized_source')is True and identities.get('run113_sample_conversion_evidence')is False and identities.get('xml_timecode_rate_explicit')is False and identities.get('rate_mapping_classification')=='INFERENCE_CONSISTENT_WITH_NATIVE_OUTPUT'and identities.get('spatial_callback_generation_join')=='UNBOUND'and 'This is one bounded native DEE observation' in contract and 'XML did not explicitly specify `timecode_rate`' in contract and 'Do not promote that inference to an explicit task setting or universal rate rule.' in contract,'F01 run115 evidence does not establish a parser rule or general frame-rate mapping')
+ ck(row.get('owner')=='spatial_control'and row.get('implementation_requirement')is False and row.get('implementation_files')==[]and row.get('test_modules')==[]and row.get('parameters',{}).get('supplement_manifest_sha256')==expected and row.get('native_status',{}).get('run113')=='REJECTED_BEFORE_SAMPLE_POSITION_OBSERVATION'and row.get('native_status',{}).get('run115_composite_sample_range_inclusive')==[0,49999]and row.get('native_status',{}).get('24_fps_2000_samples_per_frame')=='INFERENCE_CONSISTENT_WITH_OBSERVED_OUTPUT'and row.get('native_status',{}).get('spatial_callback_generation_join')=='UNBOUND'and row.get('native_status',{}).get('whole_chain_ready')is False,'F01 range evidence remains bounded and does not claim a JOCForge parser')
+
 def check_f01e_normal_control_snapshot(root,d):
  entry=next(e for e in d['functional_entries']if e['functional_id']=='F01E');owner=next((s for s in entry.get('direct_slices',[])if s['slice_id']=='object-track-sampler-owner-binding'),None);snapshot=next((s for s in entry.get('direct_slices',[])if s['slice_id']=='normal-control-snapshot-proposal'),None);ck(owner is not None and snapshot is not None,'F01E owner binding and normal snapshot direct slices exist')
  if owner is None or snapshot is None:return
@@ -5468,6 +5481,7 @@ def check_f06_authorized_meter_g0_g1_probe(root,d):
 def check_partial_root_and_new_slice_mappings(root, d):
     entries = {entry["functional_id"]: entry for entry in d["functional_entries"]}
     expected_slices = {
+        "F01": ["native-embedded-timecode-sample-position-run115"],
         "F06": ["standalone-meter-selected-root-and-schedule-stage", "prepared-job-input-domain-identity-projection", "meter-approved-direct-provider-inventory", "informational-input-cursor-model-owner-key-contract", "parent-meter-source-admission-receipt", "selected-d11-static-consumer-closure", "selected-d11-cross-stage-consumer-disposition", "meter-validated-direct-values-to-prepass-owner", "meter-selected-provider-roster-loader", "meter-provider-set-identity-aggregator", "meter-selected-provider-member-receipt-assembly", "informational-kfilter-exponent-state-lineage", "meter-measurement-to-drc-id1-dependent-owner-inputs", "programme-state-v3-metering-to-ready-availability", "authorized-adm-q3-prepass-terminal-receipt", "authorized-adm-independent-meter-g0-g1-candidate-probe"],
         "F06OF": ["native-oamdi-state-scalar-to-dsp-argument", "native-oamdi-measurement-and-encoder-phase-boundary", "native-oamdi-output-consumer-run036"],
         "F03F": ["current-features-approved-math-asset-pair", "main-current-features-source-callback-candidate"],
@@ -6367,6 +6381,7 @@ def run(root=ROOT):
  check_f03u_native_output_closure(root,d)
  check_f03u_host_output_adapter_boundary(root,d)
  check_f03u_host_output_adapter_boundary(root,d)
+ check_f01_embedded_timecode_sample_position(root,d)
  check_f01e_normal_control_snapshot(root,d)
  check_f07_f08_parent_lifecycle_gap(root,d)
  check_f12_fixed_prefix_slice(root,d)

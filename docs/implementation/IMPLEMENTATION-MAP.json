@@ -296,7 +296,97 @@
       "owner": "spatial_control",
       "planned_phase": "Phase 2",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "native-embedded-timecode-sample-position-run115",
+          "mapping_status": "WASHED_RUN115_EMBEDDED_TIMECODE_SAMPLE_RANGE__RATE_AND_GENERATION_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SINGLE_NATIVE_RANGE__JOCFORGE_PARSER_NOT_RUN",
+          "scope": "This is one bounded native DEE observation for an authorized ADM BWF. Run 115 used embedded_timecode values 86,640..86,664; runtime input matched the authorized source hash, encoding completed, and DEE reported native composite-master samples 0..49,999 inclusive (50,000 samples). The 24 fps / 2,000 samples-per-frame relation is an inference consistent with native output, not an explicit XML timecode_rate. Run 113's values 5,770..5,772 were rejected because computed start time 240.416667 seconds preceded the embedded file origin at 3,610 seconds; that run yielded no sample-position observation. No general parser/rate rule or JOCForge parser implementation is established. PCM was not read or persisted; model execution and uninstrumented output comparison are NOT_RUN; sample-position to spatial-callback generation remains UNBOUND.",
+          "owner": "spatial_control",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run113EmbeddedTimecode",
+              "Run115EmbeddedTimecode",
+              "NativeCompositeSampleIndex",
+              "InferredTimecodeRate",
+              "SpatialCallbackGeneration"
+            ],
+            "covered_clauses": [
+              "Run 115 maps its selected embedded_timecode range to native composite-master sample indices 0..49,999; the XML has no explicit timecode_rate.",
+              "24 fps and 2,000 samples per frame are inference consistent with observed output, not an authored rate field or universal conversion rule.",
+              "Run 113 is a distinct rejected attempt before sample-position observation and is not merged with run 115.",
+              "Sample position to spatial callback/generation has no typed join and remains UNBOUND."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_NATIVE_EMBEDDED_TIMECODE_SAMPLE_POSITION_OBSERVATION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "b29d8828d0fac45d699254a4000076bb0a167a11b799f21b3022315a3037e2b9",
+            "authorized_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+            "validation_boundary": "One run-115 native sample-range observation and one run-113 rejection only; rate is inference, parser implementation and callback-generation join remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN115_EMBEDDED_TIMECODE_TO_NATIVE_SAMPLE_RANGE_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Run 115: XML embedded_timecode 86,640..86,664; authorized runtime input identity matched; native composite samples 0..49,999 inclusive, 50,000 total.",
+              "24 fps and 2,000 samples per frame are inferred from output consistency; XML did not specify timecode_rate.",
+              "Run 113: embedded_timecode 5,770..5,772 rejected before sample-position observation because the computed start preceded the embedded file origin.",
+              "No PCM was read or persisted; model execution and uninstrumented output comparison are NOT_RUN.",
+              "Spatial callback/generation join remains UNBOUND; this observation is not a JOCForge parser implementation."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "b29d8828d0fac45d699254a4000076bb0a167a11b799f21b3022315a3037e2b9"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Explicit authored XML timecode_rate and a general frame-rate/sample conversion rule.",
+            "JOCForge embedded-timecode parser implementation or model/native comparison.",
+            "Sample-position to spatial callback generation or source/AU identity join.",
+            "Uninstrumented output comparison and other rates, inputs, or timecode ranges."
+          ],
+          "validation_boundary": "Single native range evidence only; do not generalize to other rates/inputs or promote inference to an authored setting.",
+          "native_status": {
+            "run113": "REJECTED_BEFORE_SAMPLE_POSITION_OBSERVATION",
+            "run115_encoding": "COMPLETED",
+            "run115_runtime_input_matches_authorized_source": true,
+            "run115_embedded_timecode": [
+              86640,
+              86664
+            ],
+            "run115_composite_sample_range_inclusive": [
+              0,
+              49999
+            ],
+            "run115_composite_sample_count": 50000,
+            "timecode_rate_explicit_in_xml": false,
+            "24_fps_2000_samples_per_frame": "INFERENCE_CONSISTENT_WITH_OBSERVED_OUTPUT",
+            "pcm_access": "NOT_READ_OR_PERSISTED",
+            "model_execution": "NOT_RUN",
+            "uninstrumented_output_comparison": "NOT_RUN",
+            "spatial_callback_generation_join": "UNBOUND",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        }
+      ]
     },
     {
       "functional_id": "F01R",
@@ -8796,8 +8886,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1739300,
-              "sha256": "7b4e0818f9cd276190d180d7c65bb32a96f05ee6044229b454619ed2f71303bb"
+              "bytes": 1743384,
+              "sha256": "5b7b28dc43dd5403a7daa1abba279ef7ed523d9d89b75bf8f1ebe57d07bc69dc"
             }
           ],
           "test_modules": [
@@ -12309,8 +12399,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1739300,
-              "sha256": "7b4e0818f9cd276190d180d7c65bb32a96f05ee6044229b454619ed2f71303bb"
+              "bytes": 1743384,
+              "sha256": "5b7b28dc43dd5403a7daa1abba279ef7ed523d9d89b75bf8f1ebe57d07bc69dc"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -30045,8 +30135,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1739300,
-              "sha256": "7b4e0818f9cd276190d180d7c65bb32a96f05ee6044229b454619ed2f71303bb"
+              "bytes": 1743384,
+              "sha256": "5b7b28dc43dd5403a7daa1abba279ef7ed523d9d89b75bf8f1ebe57d07bc69dc"
             }
           ],
           "test_inventory": [

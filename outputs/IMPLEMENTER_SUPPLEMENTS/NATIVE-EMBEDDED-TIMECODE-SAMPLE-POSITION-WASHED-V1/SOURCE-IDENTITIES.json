@@ -1,0 +1,15 @@
+{
+  "schema": "native-embedded-timecode-sample-position-source-identities.v1",
+  "source_package_manifest_sha256": "7eb9f1625af1136248ed958f1794a571f7c7cfbd53feee82006f6b2c6e1c435e",
+  "source_payload_sha256": {
+    "NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION.json": "4c53f1341319ac4399402a9cf4efc0235aeaee80bc062c7c8a791af97f890f94",
+    "CHECK.json": "f80e7b693f46257fcae85cd21c131d6de1ed8ffe34835e0676b88092f60946ed"
+  },
+  "authorized_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "runtime_input_equals_authorized_source": true,
+  "run113_sample_conversion_evidence": false,
+  "run115_ec3_sha256": "7ea9c29780a43b9bd14137f76ee06fb44f9c500fa8bccafda28706a85a2efe83",
+  "xml_timecode_rate_explicit": false,
+  "rate_mapping_classification": "INFERENCE_CONSISTENT_WITH_NATIVE_OUTPUT",
+  "spatial_callback_generation_join": "UNBOUND"
+}
