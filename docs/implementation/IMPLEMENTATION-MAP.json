@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1675565,
-              "sha256": "53914b31cdefdf97843640cbcaf837a951455f9631484372672963aea4142dc1"
+              "bytes": 1679379,
+              "sha256": "a08078440d36d4dac5e383e6956d204575ddb419475017b1fb8fb47a4ca64fb2"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1675565,
-              "sha256": "53914b31cdefdf97843640cbcaf837a951455f9631484372672963aea4142dc1"
+              "bytes": 1679379,
+              "sha256": "a08078440d36d4dac5e383e6956d204575ddb419475017b1fb8fb47a4ca64fb2"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -16561,6 +16561,89 @@
             "per_object_state_copy_bytes": 30,
             "OAMDI_serializer_or_queue_hit": false,
             "F06OF_target_control_generation_join": "UNBOUND",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "native-oamdi-48b-property-aggregate-copy",
+          "mapping_status": "WASHED_STATIC_NATIVE_48B_PROPERTY_AGGREGATE_COPY__DOWNSTREAM_CONSUMER_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_RUN026_WATCH_NO_DOWNSTREAM_READ__F06OF_JOIN_OPEN",
+          "scope": "Static analysis of the selected native per-object loop shows a 48-byte property record copied into a native aggregate buffer after the state update. Run 026 placed a read watch on the first four bytes of the per-object state destination, then stopped immediately after the initial 16-byte state-store write; no downstream read was observed. The aggregate consumer/owner and EC-3/BSI serializer or queue remain open. A 48-byte extent is not identity with the 52-byte table-B/Control52 record, and F06OF target/control/generation links remain UNBOUND.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [
+            "native-oamdi-run025-state-owner-join"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "NativeBedObjectIndex",
+              "PerObjectPropertyRecordBytes",
+              "NativeAggregateBufferRange",
+              "Run026ReadWatchScope"
+            ],
+            "covered_clauses": [
+              "The native per-object loop copies a 48-byte property record into an aggregate buffer after the state update.",
+              "Run 026 read watch covered the first four destination bytes and stopped after the initial 16-byte state-store write; no downstream read was observed.",
+              "Aggregate consumer owner/generation and aggregate-to-EC-3/BSI serializer or queue are unbound.",
+              "48-byte extent does not identify or equal the 52-byte Control52/table-B record."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_OAMDI_48B_AGGREGATE_COPY_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/APPROVED-CONTRACT-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/NEXT-OUTPUT-JOIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "6da59fa454104d048128538fcdae91e78551f044d725acf1152e7e2a8a10d112",
+            "validation_boundary": "Native static copy edge plus a run-026 read-watch attempt with no downstream read; no consumer or model join is established."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN026_AGGREGATE_COPY_RECEIPT_NO_ROW_OR_PCM_PAYLOAD",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1/NEXT-OUTPUT-JOIN.json"
+            ],
+            "case_pointers": [
+              "Static native per-object loop copies a 48-byte property record into an aggregate buffer.",
+              "Run 026 read watch stopped immediately after a 16-byte initial state write and observed no downstream read.",
+              "48-byte aggregate is not identified as a 52-byte Control52/table-B row.",
+              "OAMD/BSI serializer/queue and F06OF target/control/generation joins remain open."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "6da59fa454104d048128538fcdae91e78551f044d725acf1152e7e2a8a10d112"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Aggregate consumer and owner/generation identity.",
+            "Aggregate buffer to EC-3/BSI serializer or queue and final sink.",
+            "48-byte property aggregate to 52-byte Control52/table-B or F06OF target/control identity.",
+            "Whole-chain and product acceptance."
+          ],
+          "validation_boundary": "Do not infer a downstream read, serializer consumption, or F06OF identity from a static copy or a read watch that observed no read.",
+          "native_status": {
+            "status": "NATIVE_48B_AGGREGATE_COPY_BOUND_DOWNSTREAM_READ_NOT_OBSERVED",
+            "aggregate_property_record_bytes": 48,
+            "run026_watch_size_bytes": 4,
+            "run026_stop_after_initial_state_write_bytes": 16,
+            "downstream_read_observed": false,
+            "aggregate_consumer_owner_generation": "UNBOUND",
+            "aggregate_to_ec3_bsi_serializer_or_queue": "UNBOUND",
+            "F06OF_target_control_generation_join": "UNBOUND",
+            "48B_record_is_52B_control52_identity": false,
             "whole_chain_ready": false
           },
           "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
@@ -29233,8 +29316,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1675565,
-              "sha256": "53914b31cdefdf97843640cbcaf837a951455f9631484372672963aea4142dc1"
+              "bytes": 1679379,
+              "sha256": "a08078440d36d4dac5e383e6956d204575ddb419475017b1fb8fb47a4ca64fb2"
             }
           ],
           "test_inventory": [

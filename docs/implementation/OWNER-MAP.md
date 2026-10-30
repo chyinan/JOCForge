@@ -279,6 +279,7 @@
 | F06OF/washed-native-table-b-one-field-chain | F06OF | `meter` |
 | F06OF/native-oamdi-run024-index-domain-and-state-store-boundary | F06OF | `meter` |
 | F06OF/native-oamdi-run025-state-owner-join | F06OF | `meter` |
+| F06OF/native-oamdi-48b-property-aggregate-copy | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |

@@ -1,0 +1,31 @@
+{
+  "schema": "native-oamdi-48b-aggregate-washed-sources.v1",
+  "research_package": {
+    "package_id": "meter_drain_table_b_oamdi_output_wash_followup_v3",
+    "manifest_sha256": "b79952dec29c931c3656dbc5a69413e4b614bf2fb21eadac3f44284a62c9e4d3",
+    "payloads": {
+      "APPROVED-CONTRACT-DISPOSITION.json": "b45a3f425c4e3766cac6842e5c305ff94d0f51647253e0c56c00d631b70bbd31",
+      "ATTEMPT-LEDGER.json": "cd2fb5bed941df0a7a5d641560579da47aa0c04addb80d4ea0b5fa8a864e16e7",
+      "NATIVE-OAMDI-OUTPUT-RECEIPT.json": "4aad40ebed5bcbd7e67dea25c7f2391d2c9f94ca5e3514db2eee1f8705c147cf",
+      "NEXT-OUTPUT-JOIN.json": "b08c437e9f09dd3315b623f569a01413507a40263fc98068a415c9e4a0229f5c",
+      "README.md": "0c042f1b4b029a3db9e7e1c5f2491c2c68153b6e26a8a485c1fe74857570e87b",
+      "SOURCE-IDENTITIES.json": "5ab0b5a9206f939051c140957955b561399266e3e92daad40ed5910a2ccdd9aef4",
+      "check_native_table_b_oamdi_output.py": "d5de9e22fd8c374383690c03f7ff5cb0b7c78aae26bf6d14e9803fe2d3a6e4b7"
+    }
+  },
+  "approved_model_identity": {
+    "F06OF_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+    "spatial_control52_model_manifest_sha256": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf"
+  },
+  "run026": {
+    "job_sha256": "6b6be284e267440c42026834d2277b216657760cc211ad8d8f85c8d138b48249",
+    "native_log_sha256": "a25c51c587e72435b9e5f21d0caa672914c5a6b389b08c065d62f5826c274e94",
+    "read_watch": "first 4 bytes of state destination; stopped after 16-byte initialization write; no consumer read observed"
+  },
+  "capture_limits": {
+    "pcm_bytes_read": 0,
+    "table_row_payload_bytes_read": 0,
+    "control_row_payload_bytes_read": 0,
+    "oamdi_to_evo_hit": false
+  }
+}

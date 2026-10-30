@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-OAMDI-48B-AGGREGATE-WASHED-V1",
+  "decision": "ACCEPTED_AS_STATIC_NATIVE_AGGREGATE_COPY_BOUNDARY_ONLY",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "7/7 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "unmanifested_files": 0,
+    "pcm_or_row_payload_read": false
+  },
+  "closed": [
+    "static 48-byte native OAMDI property record copy into an aggregate buffer"
+  ],
+  "still_open": [
+    "aggregate consumer and owner/generation",
+    "aggregate to EC3/BSI serializer or queue",
+    "48-byte aggregate identity to 52-byte control52 row",
+    "F06OF target/control/generation crosswalk",
+    "run026 watched read did not observe a downstream consumer"
+  ],
+  "whole_chain_ready": false
+}

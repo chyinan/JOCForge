@@ -1,0 +1,15 @@
+{
+  "additional_PCM_or_row_payload_needed": false,
+  "additional_numeric_capture_needed": false,
+  "closed_native_boundary": "table-B row-0 field to projected record, native bed/object updater, metadata formatter, and per-object state store at index 0",
+  "implementation_readiness": "NO_CHANGE",
+  "next_output_relevant_join": "native 48-byte property aggregate to the final EC3/BSI serializer or queue, then any explicit F06OF/control16 model adapter",
+  "not_closed": [
+    "the table field's named semantic property",
+    "whether the 48-byte property aggregate reaches a particular final EC3/BSI writer call and generation",
+    "a typed adapter from native bed/object index and property to F06OF target slot s/control52 word j/control16 row 1+s"
+  ],
+  "run_026_watchpoint_result": "first stop was immediately after the state-store initialization write; no downstream read was captured",
+  "schema": "native-oamdi-next-output-join.v1",
+  "static_next_native_boundary": "the same per-object loop calls a 48-byte property-record copy after the update; record contents were not read"
+}
