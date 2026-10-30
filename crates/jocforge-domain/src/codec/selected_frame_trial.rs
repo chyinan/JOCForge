@@ -4,9 +4,11 @@
 //! This module consumes an immutable upstream plan. It does not run transforms,
 //! exponent normalization, F06/F11/F13 producers, the q search, or any commit.
 
+use std::sync::Arc;
+
 use super::bap::{
-    BapError, BapFrameInput, BapProfileInput, FULLBAND_BIN_COUNT, FULLBAND_CHANNEL_COUNT,
-    LFE_BIN_COUNT, MAIN_FAST_GAIN_CODE, allocate_bap_frame, load_bap_parameters,
+    BapError, BapFrameInput, BapParameters, BapProfileInput, FULLBAND_BIN_COUNT,
+    FULLBAND_CHANNEL_COUNT, LFE_BIN_COUNT, MAIN_FAST_GAIN_CODE, allocate_bap_frame_with_parameters,
 };
 use super::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
 use super::exponent_packing::PackedExponentGroup;
@@ -49,30 +51,30 @@ pub struct CoefficientBlockInput {
     pub lfe_words: [u32; LFE_BIN_COUNT],
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct FullbandExponentLanePlan<'a> {
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct FullbandExponentLanePlan {
     /// Expanded F10 exponent row consumed by both F12A and F12S.5.
-    pub decoded_exponents: &'a [u8; FULLBAND_BIN_COUNT],
+    pub decoded_exponents: [u8; FULLBAND_BIN_COUNT],
     /// F09/F10 refresh strategy and syntax inputs for this lane and block.
     pub strategy: u8,
     pub bandwidth_code: u8,
     pub base_exponent: u8,
-    pub packed_groups: &'a [PackedExponentGroup],
+    pub packed_groups: Vec<PackedExponentGroup>,
     pub gain_range: u8,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct LfeExponentPlan<'a> {
-    pub decoded_exponents: &'a [u8; LFE_BIN_COUNT],
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LfeExponentPlan {
+    pub decoded_exponents: [u8; LFE_BIN_COUNT],
     pub strategy: u8,
     pub base_exponent: u8,
     pub packed_groups: [PackedExponentGroup; 2],
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct BlockExponentPlan<'a> {
-    pub fullband: [FullbandExponentLanePlan<'a>; FULLBAND_LANE_COUNT],
-    pub lfe: LfeExponentPlan<'a>,
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct BlockExponentPlan {
+    pub fullband: [FullbandExponentLanePlan; FULLBAND_LANE_COUNT],
+    pub lfe: LfeExponentPlan,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -119,9 +121,36 @@ pub struct SelectedBsiInput {
     information: SelectedBsiInformationInput,
 }
 
+/// Same-source BSI field-presence projection consumed by the F11 virtual converter budget.
+/// Numeric RF and line-DRC code values remain private to the F12 BSI writer.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ConverterCostBsiProjection {
+    source_identity: SharedAnalysisIdentity,
+    surround_ex_mode: u8,
+    rf_compression_present: bool,
+    line_drc_presence: [bool; BLOCK_COUNT],
+}
+
+impl ConverterCostBsiProjection {
+    pub const fn source_identity(&self) -> &SharedAnalysisIdentity {
+        &self.source_identity
+    }
+
+    pub const fn surround_ex_mode(&self) -> u8 {
+        self.surround_ex_mode
+    }
+
+    pub const fn rf_compression_present(&self) -> bool {
+        self.rf_compression_present
+    }
+
+    pub const fn line_drc_presence(&self) -> &[bool; BLOCK_COUNT] {
+        &self.line_drc_presence
+    }
+}
+
 impl SelectedBsiInput {
     /// Admits explicit F06 values for a typed trial plan.
-    #[allow(dead_code)] // The parent F06/codec source adapter is not wired yet.
     pub(crate) fn from_parent_values(
         shared_analysis: &SharedAnalysisReceipt,
         dialnorm: u8,
@@ -145,7 +174,7 @@ impl SelectedBsiInput {
     /// Projects the already-bound DRC receipt while keeping its source key.
     pub fn from_drc_fields(
         shared_analysis: &SharedAnalysisReceipt,
-        drc: SelectedBsiDrcFields,
+        drc: &SelectedBsiDrcFields,
         mixing: SelectedBsiMixingInput,
         information: SelectedBsiInformationInput,
     ) -> Result<Self, SelectedFramePlanError> {
@@ -156,7 +185,9 @@ impl SelectedBsiInput {
                 CodecBlockIndex::new(index).map_err(|_| SelectedFramePlanError::InvalidBsiInput)?;
             *destination = drc.line_code(block);
         }
-        if drc.source_index() != shared_analysis.identity().source_index() {
+        if drc.source_index() != shared_analysis.identity().source_index()
+            || drc.source_identity() != shared_analysis.identity()
+        {
             return Err(SelectedFramePlanError::SourceGenerationMismatch);
         }
         Self::from_parent_values(
@@ -175,6 +206,28 @@ impl SelectedBsiInput {
 
     pub const fn source_identity(&self) -> &SharedAnalysisIdentity {
         &self.source_identity
+    }
+
+    /// Selected F11 virtual-header presence inputs; no RF/line numeric code is exposed.
+    pub const fn converter_rf_compression_present(&self) -> bool {
+        self.rf_compression_code.is_some()
+    }
+
+    pub fn converter_line_drc_presence(&self) -> [bool; BLOCK_COUNT] {
+        std::array::from_fn(|block| self.line_dynamic_range_codes[block].is_some())
+    }
+
+    pub const fn converter_surround_ex_mode(&self) -> u8 {
+        self.information.surround_ex_mode
+    }
+
+    pub fn converter_cost_projection(&self) -> ConverterCostBsiProjection {
+        ConverterCostBsiProjection {
+            source_identity: self.source_identity.clone(),
+            surround_ex_mode: self.information.surround_ex_mode,
+            rf_compression_present: self.rf_compression_code.is_some(),
+            line_drc_presence: self.converter_line_drc_presence(),
+        }
     }
 }
 
@@ -213,13 +266,14 @@ impl<'a> PublishedEmdfInput<'a> {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct SelectedSourceNumericPlan<'a> {
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SelectedSourceNumericPlan {
     /// F09LB-clipped PRIMARY words and F09/F10 expanded exponent rows are
     /// frozen together by the parent for every q trial in this source.
-    pub bap_provider_file: Option<&'a [u8]>,
-    pub coefficients_by_block: &'a [CoefficientBlockInput; BLOCK_COUNT],
-    pub exponent_plan_by_block: &'a [BlockExponentPlan<'a>; BLOCK_COUNT],
+    pub bap_parameters: Arc<BapParameters>,
+    pub bap_provider_sha256: [u8; 32],
+    pub coefficients_by_block: [CoefficientBlockInput; BLOCK_COUNT],
+    pub exponent_plan_by_block: [BlockExponentPlan; BLOCK_COUNT],
     pub db_per_bit_codes: [u8; BLOCK_COUNT],
     pub short_flags: [[bool; FULLBAND_LANE_COUNT]; BLOCK_COUNT],
     pub previous_short: [bool; FULLBAND_LANE_COUNT],
@@ -229,7 +283,7 @@ pub struct SelectedSourceNumericPlan<'a> {
 
 pub struct SelectedFrameTrialPlanInput<'a> {
     /// Parent-issued receipt binds the complete fixed source plan to one shared analysis result.
-    pub numeric_plan: &'a NumericPlanReceipt<'a, SelectedSourceNumericPlan<'a>>,
+    pub numeric_plan: &'a NumericPlanReceipt<'a, SelectedSourceNumericPlan>,
     pub bsi: SelectedBsiInput,
     pub emdf: EmdfFrameInput<'a>,
 }
@@ -237,9 +291,9 @@ pub struct SelectedFrameTrialPlanInput<'a> {
 /// Immutable, preflighted inputs shared by every q trial for one source.
 pub struct SelectedFrameTrialPlan<'a> {
     source_identity: SharedAnalysisIdentity,
-    bap_provider_file: &'a [u8],
+    bap_parameters: Arc<BapParameters>,
     coefficients_by_block: &'a [CoefficientBlockInput; BLOCK_COUNT],
-    exponent_plan_by_block: &'a [BlockExponentPlan<'a>; BLOCK_COUNT],
+    exponent_plan_by_block: &'a [BlockExponentPlan; BLOCK_COUNT],
     db_per_bit_codes: [u8; BLOCK_COUNT],
     short_flags: [[bool; FULLBAND_LANE_COUNT]; BLOCK_COUNT],
     main_exponent_syntax: MainExponentSyntax,
@@ -255,6 +309,7 @@ pub struct SelectedFrameTrialPlan<'a> {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SelectedFramePlanError {
     BapProvider(BapError),
+    BapProviderIdentityMismatch,
     SourceGenerationMismatch,
     InvalidBsiInput,
     InvalidConverterInput,
@@ -279,14 +334,9 @@ impl<'a> SelectedFrameTrialPlan<'a> {
     pub fn new(input: SelectedFrameTrialPlanInput<'a>) -> Result<Self, SelectedFramePlanError> {
         let numeric_plan = input.numeric_plan.plan();
         let source_identity = input.numeric_plan.identity();
-        let bap_provider_file =
-            numeric_plan
-                .bap_provider_file
-                .ok_or(SelectedFramePlanError::BapProvider(
-                    BapError::ParameterUnavailable,
-                ))?;
-        load_bap_parameters(Some(bap_provider_file))
-            .map_err(SelectedFramePlanError::BapProvider)?;
+        if numeric_plan.bap_provider_sha256 != numeric_plan.bap_parameters.provider_sha256() {
+            return Err(SelectedFramePlanError::BapProviderIdentityMismatch);
+        }
 
         if input.numeric_plan.shared_analysis().advancement_count() != 1 {
             return Err(SelectedFramePlanError::SourceGenerationMismatch);
@@ -306,8 +356,8 @@ impl<'a> SelectedFrameTrialPlan<'a> {
             return Err(SelectedFramePlanError::InvalidConverterInput);
         }
         validate_exponent_and_coefficient_plan(
-            numeric_plan.coefficients_by_block,
-            numeric_plan.exponent_plan_by_block,
+            &numeric_plan.coefficients_by_block,
+            &numeric_plan.exponent_plan_by_block,
             numeric_plan.main_exponent_syntax,
         )?;
         match &input.emdf {
@@ -339,9 +389,9 @@ impl<'a> SelectedFrameTrialPlan<'a> {
 
         Ok(Self {
             source_identity: source_identity.clone(),
-            bap_provider_file,
-            coefficients_by_block: numeric_plan.coefficients_by_block,
-            exponent_plan_by_block: numeric_plan.exponent_plan_by_block,
+            bap_parameters: Arc::clone(&numeric_plan.bap_parameters),
+            coefficients_by_block: &numeric_plan.coefficients_by_block,
+            exponent_plan_by_block: &numeric_plan.exponent_plan_by_block,
             db_per_bit_codes: numeric_plan.db_per_bit_codes,
             short_flags: numeric_plan.short_flags,
             main_exponent_syntax: numeric_plan.main_exponent_syntax,
@@ -484,21 +534,22 @@ pub fn build_selected_frame_trial(
         caller_all_active_fine_zero_by_block: [fine_zero; BLOCK_COUNT],
         profile: BapProfileInput::selected(),
     };
-    let bap_frame = match allocate_bap_frame(Some(plan.bap_provider_file), &bap_input) {
-        Ok(frame) => frame,
-        Err(BapError::InputError) => {
-            return Ok(SelectedFrameTrialOutcome::Infeasible(
-                CandidateInfeasibleReason::BapInput,
-            ));
-        }
-        Err(
-            error @ (BapError::ParameterUnavailable
-            | BapError::ParameterError
-            | BapError::UnsupportedProfile),
-        ) => {
-            return Err(SelectedFrameTrialFatalError::BapProvider(error));
-        }
-    };
+    let bap_frame =
+        match allocate_bap_frame_with_parameters(plan.bap_parameters.as_ref(), &bap_input) {
+            Ok(frame) => frame,
+            Err(BapError::InputError) => {
+                return Ok(SelectedFrameTrialOutcome::Infeasible(
+                    CandidateInfeasibleReason::BapInput,
+                ));
+            }
+            Err(
+                error @ (BapError::ParameterUnavailable
+                | BapError::ParameterError
+                | BapError::UnsupportedProfile),
+            ) => {
+                return Err(SelectedFrameTrialFatalError::BapProvider(error));
+            }
+        };
     if bap_frame.candidate_q() != q {
         return Err(SelectedFrameTrialFatalError::BapCandidateJoin {
             requested: q,
@@ -634,7 +685,7 @@ fn validate_bsi_input(input: &SelectedBsiInput) -> Result<(), SelectedFramePlanE
 
 fn validate_exponent_and_coefficient_plan(
     coefficients_by_block: &[CoefficientBlockInput; BLOCK_COUNT],
-    exponent_plan_by_block: &[BlockExponentPlan<'_>; BLOCK_COUNT],
+    exponent_plan_by_block: &[BlockExponentPlan; BLOCK_COUNT],
     main_exponent_syntax: MainExponentSyntax,
 ) -> Result<(), SelectedFramePlanError> {
     if let MainExponentSyntax::FrameCodes(codes) = main_exponent_syntax
@@ -874,7 +925,7 @@ fn write_frame_controls(
         }
         MainExponentSyntax::BlockStrategies => {
             for block in plan.exponent_plan_by_block {
-                for lane in block.fullband {
+                for lane in &block.fullband {
                     writer
                         .write_unsigned(u32::from(lane.strategy), 2)
                         .map_err(BuildError::Writer)?;
@@ -937,23 +988,23 @@ fn write_line_drc(
 
 fn write_fullband_exponents(
     writer: &mut FrameBitWriter<'_>,
-    block: &BlockExponentPlan<'_>,
+    block: &BlockExponentPlan,
 ) -> Result<(), BuildError> {
-    for lane in block.fullband {
+    for lane in &block.fullband {
         if lane.strategy != 0 {
             writer
                 .write_unsigned(u32::from(lane.bandwidth_code), 6)
                 .map_err(BuildError::Writer)?;
         }
     }
-    for lane in block.fullband {
+    for lane in &block.fullband {
         if lane.strategy == 0 {
             continue;
         }
         writer
             .write_unsigned(u32::from(lane.base_exponent), 4)
             .map_err(BuildError::Writer)?;
-        for group in lane.packed_groups {
+        for group in &lane.packed_groups {
             writer
                 .write_unsigned(u32::from(group.value()), 7)
                 .map_err(BuildError::Writer)?;
@@ -967,7 +1018,7 @@ fn write_fullband_exponents(
 
 fn write_lfe_exponents(
     writer: &mut FrameBitWriter<'_>,
-    lfe: &LfeExponentPlan<'_>,
+    lfe: &LfeExponentPlan,
 ) -> Result<(), BuildError> {
     if lfe.strategy == 0 {
         return Ok(());
@@ -1144,6 +1195,7 @@ mod tests {
     };
     use serde_json::Value;
     use sha2::{Digest, Sha256};
+    use std::sync::Arc;
 
     const FRAME_PACKAGE_MANIFEST: &[u8] = include_bytes!(
         "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/MANIFEST.json"
@@ -1214,14 +1266,17 @@ mod tests {
         source_transaction
     }
 
-    fn numeric_plan_values<'a>(
-        coefficients_by_block: &'a [CoefficientBlockInput; BLOCK_COUNT],
-        exponent_plan_by_block: &'a [BlockExponentPlan<'a>; BLOCK_COUNT],
-    ) -> SelectedSourceNumericPlan<'a> {
+    fn numeric_plan_values(
+        coefficients_by_block: &[CoefficientBlockInput; BLOCK_COUNT],
+        exponent_plan_by_block: &[BlockExponentPlan; BLOCK_COUNT],
+    ) -> SelectedSourceNumericPlan {
+        let bap_parameters =
+            Arc::new(super::super::bap::load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
         SelectedSourceNumericPlan {
-            bap_provider_file: Some(BAP_PROVIDER),
-            coefficients_by_block,
-            exponent_plan_by_block,
+            bap_provider_sha256: bap_parameters.provider_sha256(),
+            bap_parameters,
+            coefficients_by_block: *coefficients_by_block,
+            exponent_plan_by_block: exponent_plan_by_block.clone(),
             db_per_bit_codes: [2; BLOCK_COUNT],
             short_flags: [[false; FULLBAND_LANE_COUNT]; BLOCK_COUNT],
             previous_short: [false; FULLBAND_LANE_COUNT],
@@ -1299,15 +1354,15 @@ mod tests {
             super::super::exponent_packing::pack_exponent_difference_group(&[0, 0, 0]).unwrap();
         let exponent_blocks = std::array::from_fn(|_| BlockExponentPlan {
             fullband: std::array::from_fn(|_| FullbandExponentLanePlan {
-                decoded_exponents: &zero_fullband_exponents,
+                decoded_exponents: zero_fullband_exponents,
                 strategy: 0,
                 bandwidth_code: 0,
                 base_exponent: 0,
-                packed_groups: &[],
+                packed_groups: Vec::new(),
                 gain_range: 0,
             }),
             lfe: LfeExponentPlan {
-                decoded_exponents: &zero_lfe_exponents,
+                decoded_exponents: zero_lfe_exponents,
                 strategy: 0,
                 base_exponent: 0,
                 packed_groups: [zero_group; 2],
@@ -1448,15 +1503,15 @@ mod tests {
             super::super::exponent_packing::pack_exponent_difference_group(&[0, 0, 0]).unwrap();
         let exponent_blocks = std::array::from_fn(|_| BlockExponentPlan {
             fullband: std::array::from_fn(|_| FullbandExponentLanePlan {
-                decoded_exponents: &zero_fullband_exponents,
+                decoded_exponents: zero_fullband_exponents,
                 strategy: 0,
                 bandwidth_code: 0,
                 base_exponent: 0,
-                packed_groups: &[],
+                packed_groups: Vec::new(),
                 gain_range: 0,
             }),
             lfe: LfeExponentPlan {
-                decoded_exponents: &zero_lfe_exponents,
+                decoded_exponents: zero_lfe_exponents,
                 strategy: 0,
                 base_exponent: 0,
                 packed_groups: [zero_group; 2],
@@ -1469,7 +1524,9 @@ mod tests {
         let source_index = CodecSourceIndex::new(0);
         let mut transaction = source_transaction(source_index, 1, 7, 7);
         let plan_values = numeric_plan_values(&coefficient_blocks, &exponent_blocks);
-        let receipt = transaction.prepare_numeric_plan(plan_values).unwrap();
+        let receipt = transaction
+            .prepare_numeric_plan(plan_values.clone())
+            .unwrap();
         assert_eq!(receipt.identity().source_index(), source_index);
         drop(receipt);
 

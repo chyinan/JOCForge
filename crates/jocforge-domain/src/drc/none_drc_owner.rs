@@ -18,13 +18,18 @@ use crate::{
     },
     meter::{
         measurement_receipt::ProgrammeMeasurementReceipt,
+        prepared_job_identity::PreparedJobInputIdentity,
         programme_measurement::{ProgrammeMeasurementError, dialnorm_from_selected_lufs},
     },
-    timeline::{CodecSourceIndex, source_for_callback},
-    transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
+    timeline::{CodecSourceIndex, FrontendCallbackIndex, source_for_callback},
+    transaction::{
+        AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
+        GtcOwnerReceiptError, GtcOwnerStateSnapshot, ProgrammeId,
+    },
     transform::{long_transform::LongTransformHistory, secondary_overlap::SecondaryOverlapCarry},
 };
 use sha2::{Digest, Sha256};
+use std::sync::Arc;
 
 const SECONDARY_LANE_COUNT: usize = 5;
 #[allow(dead_code)] // Consumed by the future GTC owner-state envelope adapter.
@@ -90,6 +95,7 @@ pub(crate) struct NoneDrcMeasurementBinding {
     config_sha256: [u8; 32],
     meter_terminal_sha256: [u8; 32],
     programme_dialnorm: u8,
+    prepared_job_input_identity: Option<Arc<PreparedJobInputIdentity>>,
 }
 
 impl NoneDrcMeasurementBinding {
@@ -105,7 +111,25 @@ impl NoneDrcMeasurementBinding {
             config_sha256: *receipt.config_sha256(),
             meter_terminal_sha256: *receipt.meter_terminal_sha256(),
             programme_dialnorm,
+            prepared_job_input_identity: None,
         })
+    }
+
+    pub(crate) fn from_receipt_for_prepared_input(
+        receipt: &ProgrammeMeasurementReceipt,
+        prepared_job_input_identity: Arc<PreparedJobInputIdentity>,
+    ) -> Result<Self, NoneDrcOwnerError> {
+        if receipt.input_sha256() != &prepared_job_input_identity.resource().input_sha256()
+            || receipt.config_sha256()
+                != &prepared_job_input_identity
+                    .normalized_configuration()
+                    .config_sha256()
+        {
+            return Err(NoneDrcOwnerError::PreparedJobInputIdentityMismatch);
+        }
+        let mut binding = Self::from_receipt(receipt)?;
+        binding.prepared_job_input_identity = Some(prepared_job_input_identity);
+        Ok(binding)
     }
 
     pub const fn programme_id(&self) -> &ProgrammeId {
@@ -133,6 +157,10 @@ impl NoneDrcMeasurementBinding {
 
     pub const fn programme_dialnorm(&self) -> u8 {
         self.programme_dialnorm
+    }
+
+    pub fn prepared_job_input_identity(&self) -> Option<&Arc<PreparedJobInputIdentity>> {
+        self.prepared_job_input_identity.as_ref()
     }
 }
 
@@ -300,6 +328,24 @@ impl NoneDrcOwnerState {
     }
 }
 
+fn none_drc_state_reference(
+    state: &NoneDrcOwnerState,
+) -> Result<NoneDrcOwnerStateReference, NoneDrcOwnerError> {
+    let generation = state.source_generation()?.value();
+    let canonical_bytes = state.canonical_bytes()?;
+    let state_sha256 = Sha256::digest(&canonical_bytes).into();
+    let cold_bytes = NoneDrcOwnerState::cold(None).canonical_bytes()?;
+    let cold_sha256 = Sha256::digest(&cold_bytes).into();
+    Ok(NoneDrcOwnerStateReference {
+        owner_id: DRC_OWNER_ID,
+        state_ref: DRC_STATE_REF,
+        generation,
+        state_sha256,
+        cold_sha256,
+        canonical_bytes,
+    })
+}
+
 /// Complete canonical owner-state reference for the standalone GTC DRC member.
 #[allow(dead_code)] // Consumed by the future MeasurementTransaction/GTC parent.
 #[must_use]
@@ -337,6 +383,18 @@ impl NoneDrcOwnerStateReference {
 
     pub fn canonical_bytes(&self) -> &[u8] {
         &self.canonical_bytes
+    }
+
+    /// Projects the complete DRC owner preimage into the registered GTC owner slot.
+    ///
+    /// This is an owner snapshot only; it does not admit the receipt to a parent transaction.
+    pub(crate) fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
+        GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::Drc,
+            self.generation,
+            self.cold_sha256,
+            &self.canonical_bytes,
+        )
     }
 }
 
@@ -393,6 +451,39 @@ impl NoneDrcOwnerRoot {
         })
     }
 
+    /// Creates a production-bound DRC root from the same input capability used by the meter,
+    /// source Analysis, and PreparedJobInput. The receipt hashes must match that admitted input.
+    pub fn cold_after_meter_finalize_for_prepared_input(
+        receipt: &ProgrammeMeasurementReceipt,
+        prepared_job_input_identity: Arc<PreparedJobInputIdentity>,
+    ) -> Result<Self, NoneDrcOwnerError> {
+        let measurement = NoneDrcMeasurementBinding::from_receipt_for_prepared_input(
+            receipt,
+            prepared_job_input_identity,
+        )?;
+        let state = NoneDrcOwnerState::cold(Some(measurement.programme_dialnorm()));
+        Ok(Self {
+            measurement: Some(measurement),
+            state,
+        })
+    }
+
+    pub(crate) fn matches_prepared_job_input_identity(
+        &self,
+        shared_analysis: &SharedAnalysisReceipt,
+    ) -> bool {
+        match (
+            self.measurement
+                .as_ref()
+                .and_then(NoneDrcMeasurementBinding::prepared_job_input_identity),
+            shared_analysis.identity().prepared_job_input_identity(),
+        ) {
+            (None, None) => true,
+            (Some(drc), Some(analysis)) => Arc::ptr_eq(drc, analysis),
+            _ => false,
+        }
+    }
+
     pub(crate) const fn measurement(&self) -> Option<&NoneDrcMeasurementBinding> {
         self.measurement.as_ref()
     }
@@ -407,19 +498,34 @@ impl NoneDrcOwnerRoot {
     /// the referenced preimage contains only the complete selected DRC root value.
     #[allow(dead_code)] // Consumed by the future MeasurementTransaction/GTC parent.
     pub(crate) fn state_reference(&self) -> Result<NoneDrcOwnerStateReference, NoneDrcOwnerError> {
-        let generation = self.state.source_generation()?.value();
-        let canonical_bytes = self.state.canonical_bytes()?;
-        let state_sha256 = Sha256::digest(&canonical_bytes).into();
-        let cold_bytes = NoneDrcOwnerState::cold(None).canonical_bytes()?;
-        let cold_sha256 = Sha256::digest(&cold_bytes).into();
-        Ok(NoneDrcOwnerStateReference {
-            owner_id: DRC_OWNER_ID,
-            state_ref: DRC_STATE_REF,
-            generation,
-            state_sha256,
-            cold_sha256,
-            canonical_bytes,
-        })
+        none_drc_state_reference(&self.state)
+    }
+
+    /// Projects an unchanged DRC owner receipt for a callback before codec source dispatch.
+    ///
+    /// The selected meter receipt must already have constructed this DRC root. Callbacks 0 and
+    /// 1 do not advance F06ND/F06NR state; later callbacks require a source proposal instead.
+    #[allow(dead_code)] // Consumed by the future 12-owner callback coordinator.
+    pub(crate) fn gtc_unchanged_callback_receipt(
+        &self,
+        callback_index: FrontendCallbackIndex,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, NoneDrcOwnerError> {
+        if source_for_callback(callback_index).is_some() {
+            return Err(NoneDrcOwnerError::SourceStageRequired);
+        }
+        if self.measurement.is_none() || self.state.programme_dialnorm.is_none() {
+            return Err(NoneDrcOwnerError::MeasurementNotFinalized);
+        }
+        if self.state.source_generation()?.value() != 0 {
+            return Err(NoneDrcOwnerError::UnchangedSourceAlreadyAdvanced);
+        }
+        let reference = self.state_reference()?;
+        let snapshot = reference
+            .gtc_snapshot()
+            .map_err(NoneDrcOwnerError::GtcReceipt)?;
+        GtcOwnerReceipt::from_transition(snapshot, snapshot, transaction_id)
+            .map_err(NoneDrcOwnerError::GtcReceipt)
     }
 
     /// Prepares the F06ND statistics/scheduler/FIFO substage for the same source
@@ -449,6 +555,9 @@ impl NoneDrcOwnerRoot {
             || source_stage_key.attempt_id() != measurement.attempt()
         {
             return Err(NoneDrcOwnerError::AttemptMismatch);
+        }
+        if !self.matches_prepared_job_input_identity(shared_analysis) {
+            return Err(NoneDrcOwnerError::PreparedJobInputIdentityMismatch);
         }
         if source_stage_key.analysis_owner_id()
             != crate::analysis::source_frame::AnalysisOwnerId::Analysis
@@ -614,12 +723,101 @@ impl NoneDrcOwnerAfterProposal {
         self.source_index
     }
 
+    /// Returns the exact input-admission capability retained by the meter-finalized DRC owner.
+    pub fn prepared_job_input_identity(&self) -> Option<&Arc<PreparedJobInputIdentity>> {
+        self.measurement.prepared_job_input_identity()
+    }
+
+    pub const fn meter_terminal_sha256(&self) -> &[u8; 32] {
+        self.measurement.meter_terminal_sha256()
+    }
+
     pub const fn frame_output(&self) -> &crate::drc::none_drc_frame::NoneDrcFrameOutput {
         &self.frame_output
     }
 
     pub const fn state(&self) -> &NoneDrcOwnerState {
         &self.state
+    }
+
+    /// Projects this noncommitting DRC after-root into one owner-level GTC receipt.
+    ///
+    /// The caller supplies the exact committed before-root and shared callback transaction ID.
+    /// The proposal must carry that same parent token through its shared-analysis source key;
+    /// this method never installs either root or assigns top-level commit authority.
+    #[allow(dead_code)] // Consumed by the future 12-owner source transaction preflight.
+    pub(crate) fn gtc_owner_receipt(
+        &self,
+        before: &NoneDrcOwnerRoot,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, NoneDrcOwnerError> {
+        let Some(before_measurement) = before.measurement.as_ref() else {
+            return Err(NoneDrcOwnerError::MeasurementNotFinalized);
+        };
+        if before_measurement != &self.measurement
+            || before.state.programme_dialnorm != Some(before_measurement.programme_dialnorm())
+            || self.state.programme_dialnorm != Some(self.measurement.programme_dialnorm())
+        {
+            return Err(NoneDrcOwnerError::MeasurementOptionMismatch);
+        }
+
+        let source_key = self.shared_analysis_identity.source_stage_key();
+        if source_key.transaction_id() != &transaction_id {
+            return Err(NoneDrcOwnerError::ParentTransactionMismatch);
+        }
+        if self.callback_identity.programme_id() != before_measurement.programme_id()
+            || self.measurement.programme_id() != before_measurement.programme_id()
+        {
+            return Err(NoneDrcOwnerError::ProgrammeMismatch);
+        }
+        if self.callback_identity.attempt_id() != before_measurement.attempt()
+            || self.measurement.attempt() != before_measurement.attempt()
+            || source_key.attempt_id() != before_measurement.attempt()
+        {
+            return Err(NoneDrcOwnerError::AttemptMismatch);
+        }
+        if source_key.source_index() != self.source_index
+            || self.shared_analysis_identity.source_index() != self.source_index
+            || source_for_callback(self.callback_identity.callback_index())
+                != Some(self.source_index)
+        {
+            return Err(NoneDrcOwnerError::SourceMismatch);
+        }
+
+        let before_generation = before.state.source_generation()?;
+        if before_generation != self.source_index {
+            return Err(NoneDrcOwnerError::BeforeStateMismatch);
+        }
+        let expected_after_generation = self
+            .source_index
+            .value()
+            .checked_add(1)
+            .ok_or(NoneDrcOwnerError::GenerationOverflow)?;
+        if self.state.source_generation()? != CodecSourceIndex::new(expected_after_generation) {
+            return Err(NoneDrcOwnerError::AfterStateMismatch);
+        }
+
+        match (
+            before_measurement.prepared_job_input_identity(),
+            self.measurement.prepared_job_input_identity(),
+            self.shared_analysis_identity.prepared_job_input_identity(),
+        ) {
+            (None, None, None) => {}
+            (Some(before), Some(proposal), Some(shared))
+                if Arc::ptr_eq(before, proposal) && Arc::ptr_eq(proposal, shared) => {}
+            _ => return Err(NoneDrcOwnerError::PreparedJobInputIdentityMismatch),
+        }
+
+        let before_reference = before.state_reference()?;
+        let before_snapshot = before_reference
+            .gtc_snapshot()
+            .map_err(NoneDrcOwnerError::GtcReceipt)?;
+        let after_reference = none_drc_state_reference(&self.state)?;
+        let after_snapshot = after_reference
+            .gtc_snapshot()
+            .map_err(NoneDrcOwnerError::GtcReceipt)?;
+        GtcOwnerReceipt::from_transition(before_snapshot, after_snapshot, transaction_id)
+            .map_err(NoneDrcOwnerError::GtcReceipt)
     }
 }
 
@@ -628,6 +826,7 @@ pub enum NoneDrcOwnerError {
     MeasurementDialnorm(ProgrammeMeasurementError),
     MeasurementNotFinalized,
     MeasurementOptionMismatch,
+    PreparedJobInputIdentityMismatch,
     CanonicalSerialization,
     ProgrammeMismatch,
     AttemptMismatch,
@@ -637,6 +836,12 @@ pub enum NoneDrcOwnerError {
     StateGenerationMismatch,
     GenerationOverflow,
     AfterStateGenerationMismatch,
+    SourceStageRequired,
+    UnchangedSourceAlreadyAdvanced,
+    BeforeStateMismatch,
+    AfterStateMismatch,
+    ParentTransactionMismatch,
+    GtcReceipt(GtcOwnerReceiptError),
     Callback(NoneDrcCallbackError),
 }
 
@@ -646,6 +851,7 @@ impl NoneDrcOwnerError {
             Self::MeasurementDialnorm(_)
             | Self::MeasurementNotFinalized
             | Self::MeasurementOptionMismatch
+            | Self::PreparedJobInputIdentityMismatch
             | Self::CanonicalSerialization
             | Self::SharedAnalysisIdentity => None,
             Self::ProgrammeMismatch
@@ -653,7 +859,13 @@ impl NoneDrcOwnerError {
             | Self::PrimingHasNoSource
             | Self::SourceMismatch
             | Self::StateGenerationMismatch
-            | Self::AfterStateGenerationMismatch => Some("DRC_INPUT_ERROR"),
+            | Self::AfterStateGenerationMismatch
+            | Self::SourceStageRequired
+            | Self::UnchangedSourceAlreadyAdvanced
+            | Self::BeforeStateMismatch
+            | Self::AfterStateMismatch
+            | Self::ParentTransactionMismatch => Some("DRC_INPUT_ERROR"),
+            Self::GtcReceipt(_) => Some("DRC_OWNER_RECEIPT_ERROR"),
             Self::GenerationOverflow => Some("NUMERIC_FAILURE"),
             Self::Callback(error) => error.outcome_code(),
         }
@@ -669,11 +881,16 @@ mod tests {
         },
         drc::none_drc_override_fifo::ZeroLogicalRecord,
         meter::measurement_receipt::ProgrammeMeasurementReceiptInput,
+        meter::prepared_job_identity::{
+            NormalizedJobConfigurationIdentity, PreparedAdmChunkSpan, PreparedAdmGraphProvenance,
+            PreparedInputResourceIdentity, PreparedJobInputIdentity,
+        },
         numeric::FiniteF32,
         timeline::FrontendCallbackIndex,
         transaction::CallbackTransactionId,
     };
     use serde_json::Value;
+    use std::sync::Arc;
 
     const SOURCE_LANE_COUNT: usize = 6;
     const SOURCE_SAMPLE_COUNT: usize = 6 * 256;
@@ -704,6 +921,31 @@ mod tests {
         .unwrap()
     }
 
+    fn prepared_job_identity(
+        input_sha256: [u8; 32],
+        config_sha256: [u8; 32],
+    ) -> Arc<PreparedJobInputIdentity> {
+        let resource = PreparedInputResourceIdentity::new(input_sha256, 1_024);
+        let graph = PreparedAdmGraphProvenance::new(
+            resource,
+            PreparedAdmChunkSpan::new(*b"axml", 10, 10, [0x41; 32]),
+            PreparedAdmChunkSpan::new(*b"chna", 20, 10, [0x42; 32]),
+            PreparedAdmChunkSpan::new(*b"dbmd", 30, 10, [0x43; 32]),
+        );
+        Arc::new(
+            PreparedJobInputIdentity::new(
+                resource,
+                NormalizedJobConfigurationIdentity::new(
+                    config_sha256,
+                    [0x44; 32],
+                    crate::frontend::job_configuration::SelectedInputKind::Adm,
+                ),
+                graph,
+            )
+            .unwrap(),
+        )
+    }
+
     fn hex(bytes: &[u8]) -> String {
         const HEX: &[u8; 16] = b"0123456789abcdef";
         let mut encoded = String::with_capacity(bytes.len() * 2);
@@ -726,6 +968,39 @@ mod tests {
         let zero = FiniteF32::new(0.0).unwrap();
         let rows = vec![[zero; SOURCE_SAMPLE_COUNT]; SOURCE_LANE_COUNT].into_boxed_slice();
         Box::<FiniteStatisticsPlanes>::try_from(rows).unwrap()
+    }
+
+    fn source_zero_after(
+        root: &NoneDrcOwnerRoot,
+        transaction_id: CallbackTransactionId,
+    ) -> NoneDrcOwnerAfterProposal {
+        let attempt = root.measurement().unwrap().attempt();
+        let shared_analysis = zeroed_shared_analysis_receipt_for_identity_tests(
+            attempt,
+            transaction_id,
+            CodecSourceIndex::new(0),
+            7,
+            8,
+        );
+        let planes = zero_planes();
+        let source_planes = NoneDrcSourcePlanes::from_parent_analysis(
+            &shared_analysis,
+            planes.as_ref(),
+            planes.as_ref(),
+        );
+        let f06nd = root
+            .prepare_f06nd_source(
+                &shared_analysis,
+                &callback_identity(2, attempt.value()),
+                &source_planes,
+            )
+            .unwrap();
+        let secondary_after = NoneDrcSecondaryState::from_f06nr_after(
+            std::array::from_fn(|_| LongTransformHistory::zeroed()),
+            std::array::from_fn(|_| SecondaryOverlapCarry::cold()),
+            1,
+        );
+        f06nd.join_f06nr_after(secondary_after).unwrap()
     }
 
     #[test]
@@ -770,6 +1045,41 @@ mod tests {
         assert_eq!(
             root.state().override_fifo().records(),
             &[ZeroLogicalRecord; 4]
+        );
+    }
+
+    #[test]
+    fn prepared_input_identity_is_retained_only_when_receipt_hashes_match() {
+        let receipt = measurement_receipt();
+        let identity = prepared_job_identity(*receipt.input_sha256(), *receipt.config_sha256());
+        let root = NoneDrcOwnerRoot::cold_after_meter_finalize_for_prepared_input(
+            &receipt,
+            Arc::clone(&identity),
+        )
+        .unwrap();
+        let stored = root
+            .measurement()
+            .unwrap()
+            .prepared_job_input_identity()
+            .unwrap();
+        assert!(Arc::ptr_eq(&identity, stored));
+
+        let different_resource = prepared_job_identity([0x77; 32], *receipt.config_sha256());
+        assert_eq!(
+            NoneDrcOwnerRoot::cold_after_meter_finalize_for_prepared_input(
+                &receipt,
+                different_resource,
+            ),
+            Err(NoneDrcOwnerError::PreparedJobInputIdentityMismatch)
+        );
+
+        let different_configuration = prepared_job_identity(*receipt.input_sha256(), [0x88; 32]);
+        assert_eq!(
+            NoneDrcOwnerRoot::cold_after_meter_finalize_for_prepared_input(
+                &receipt,
+                different_configuration,
+            ),
+            Err(NoneDrcOwnerError::PreparedJobInputIdentityMismatch)
         );
     }
 
@@ -1050,6 +1360,132 @@ mod tests {
         assert_eq!(
             stage.join_f06nr_after(wrong_secondary_after),
             Err(NoneDrcOwnerError::AfterStateGenerationMismatch)
+        );
+        assert_eq!(
+            root.state().source_generation().unwrap(),
+            CodecSourceIndex::new(0)
+        );
+    }
+
+    #[test]
+    fn gtc_state_reference_preserves_none_some_option_and_the_same_cold_digest() {
+        let before_meter = NoneDrcOwnerRoot::cold_before_meter_finalize();
+        let none_reference = before_meter.state_reference().unwrap();
+        let none_snapshot = none_reference.gtc_snapshot().unwrap();
+        let finalized =
+            NoneDrcOwnerRoot::cold_after_meter_finalize(&measurement_receipt()).unwrap();
+        let some_reference = finalized.state_reference().unwrap();
+        let some_snapshot = some_reference.gtc_snapshot().unwrap();
+        let none_value: Value = serde_json::from_slice(none_snapshot.canonical_bytes()).unwrap();
+        let some_value: Value = serde_json::from_slice(some_snapshot.canonical_bytes()).unwrap();
+
+        assert_eq!(none_snapshot.owner_id(), GtcOwnerId::Drc);
+        assert_eq!(none_snapshot.state_ref().as_str(), "owners.drc");
+        assert_eq!(none_snapshot.generation(), 0);
+        assert_eq!(some_snapshot.generation(), 0);
+        assert_eq!(none_value["programme_dialnorm"], Value::Null);
+        assert!(some_value["programme_dialnorm"].as_u64().is_some());
+        assert_ne!(none_snapshot.state_sha256(), some_snapshot.state_sha256());
+        assert_eq!(none_snapshot.cold_sha256(), some_snapshot.cold_sha256());
+        assert_eq!(
+            none_snapshot.canonical_bytes(),
+            none_reference.canonical_bytes()
+        );
+        assert_eq!(
+            some_snapshot.canonical_bytes(),
+            some_reference.canonical_bytes()
+        );
+    }
+
+    #[test]
+    fn meter_finalized_drc_owner_emits_unchanged_receipts_only_for_callbacks_zero_and_one() {
+        let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&measurement_receipt()).unwrap();
+        assert!(root.state().programme_dialnorm().is_some());
+
+        for callback in [0, 1] {
+            let transaction_id =
+                CallbackTransactionId::new(&format!("drc-callback-{callback}")).unwrap();
+            let receipt = root
+                .gtc_unchanged_callback_receipt(
+                    FrontendCallbackIndex::new(callback),
+                    transaction_id.clone(),
+                )
+                .unwrap();
+
+            assert_eq!(receipt.owner_id(), GtcOwnerId::Drc);
+            assert_eq!(receipt.before_generation(), 0);
+            assert_eq!(receipt.after_generation(), 0);
+            assert_eq!(receipt.before_sha256(), receipt.after_sha256());
+            assert!(!receipt.changed());
+            assert_eq!(receipt.commit_count(), 0);
+            assert_eq!(receipt.transaction_id(), &transaction_id);
+        }
+
+        assert_eq!(
+            root.gtc_unchanged_callback_receipt(
+                FrontendCallbackIndex::new(2),
+                CallbackTransactionId::new("drc-callback-2").unwrap(),
+            ),
+            Err(NoneDrcOwnerError::SourceStageRequired)
+        );
+    }
+
+    #[test]
+    fn source_proposal_gtc_receipt_binds_parent_transaction_and_exact_after_root() {
+        let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&measurement_receipt()).unwrap();
+        let before_reference = root.state_reference().unwrap();
+        let transaction_id = CallbackTransactionId::new("drc-source-zero-transaction").unwrap();
+        let proposal = source_zero_after(&root, transaction_id.clone());
+
+        let receipt = proposal
+            .gtc_owner_receipt(&root, transaction_id.clone())
+            .unwrap();
+        let after_reference = none_drc_state_reference(proposal.state()).unwrap();
+        let before_snapshot = before_reference.gtc_snapshot().unwrap();
+        let after_snapshot = after_reference.gtc_snapshot().unwrap();
+
+        assert_eq!(receipt.owner_id(), GtcOwnerId::Drc);
+        assert_eq!(receipt.before_generation(), before_snapshot.generation());
+        assert_eq!(receipt.after_generation(), after_snapshot.generation());
+        assert_eq!(receipt.before_sha256(), before_snapshot.state_sha256());
+        assert_eq!(receipt.after_sha256(), after_snapshot.state_sha256());
+        assert!(receipt.changed());
+        assert_eq!(receipt.commit_count(), 1);
+        assert_eq!(receipt.transaction_id(), &transaction_id);
+        assert_eq!(before_snapshot.cold_sha256(), after_snapshot.cold_sha256());
+        assert!(
+            serde_json::from_slice::<Value>(after_snapshot.canonical_bytes()).unwrap()
+                ["programme_dialnorm"]
+                .as_u64()
+                .is_some()
+        );
+        assert_eq!(
+            root.state().source_generation().unwrap(),
+            CodecSourceIndex::new(0)
+        );
+    }
+
+    #[test]
+    fn source_proposal_gtc_receipt_rejects_wrong_parent_token_and_stale_before_root() {
+        let receipt = measurement_receipt();
+        let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&receipt).unwrap();
+        let source_transaction = CallbackTransactionId::new("drc-source-zero-transaction").unwrap();
+        let proposal = source_zero_after(&root, source_transaction.clone());
+
+        assert_eq!(
+            proposal.gtc_owner_receipt(
+                &root,
+                CallbackTransactionId::new("foreign-parent-transaction").unwrap(),
+            ),
+            Err(NoneDrcOwnerError::ParentTransactionMismatch)
+        );
+
+        let mut stale_before = NoneDrcOwnerRoot::cold_after_meter_finalize(&receipt).unwrap();
+        let stale_proposal = source_zero_after(&root, source_transaction.clone());
+        stale_before.state = stale_proposal.state;
+        assert_eq!(
+            proposal.gtc_owner_receipt(&stale_before, source_transaction),
+            Err(NoneDrcOwnerError::BeforeStateMismatch)
         );
         assert_eq!(
             root.state().source_generation().unwrap(),

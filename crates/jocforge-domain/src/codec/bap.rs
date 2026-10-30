@@ -50,6 +50,7 @@ impl BapError {
 /// Validated exact public tables for the selected F12A profile.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct BapParameters {
+    provider_sha256: [u8; 32],
     slow_decay: [i16; 4],
     fast_decay: [i16; 4],
     slow_gain: [i16; 4],
@@ -60,6 +61,13 @@ pub struct BapParameters {
     bands: [BapBand; 50],
     hearing_48k: [i16; 50],
     bap_pointer: [u8; 64],
+}
+
+impl BapParameters {
+    /// Identity of the exact provider bytes validated before this table was parsed.
+    pub const fn provider_sha256(&self) -> [u8; 32] {
+        self.provider_sha256
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -252,6 +260,16 @@ pub fn allocate_bap_frame(
     validate_sample_and_profile(input.profile)?;
     let parameters = load_bap_parameters(provider_file)?;
 
+    allocate_bap_frame_with_parameters(&parameters, input)
+}
+
+/// Allocates one selected F12A frame from an already identity-validated provider capability.
+pub fn allocate_bap_frame_with_parameters(
+    parameters: &BapParameters,
+    input: &BapFrameInput<'_>,
+) -> Result<BapFrame, BapError> {
+    validate_sample_and_profile(input.profile)?;
+
     for end_exclusive in input.end_exclusive_by_channel {
         validate_row_extent(end_exclusive)?;
     }
@@ -315,7 +333,7 @@ pub fn allocate_bap_frame(
                     [block_index],
                 profile: input.profile,
             };
-            let codes = compute_bap_row(&row_input, &parameters)?;
+            let codes = compute_bap_row(&row_input, parameters)?;
             if channel < FULLBAND_CHANNEL_COUNT {
                 block.fullband_rows[channel].copy_from_slice(&codes);
             } else {
@@ -442,6 +460,7 @@ fn parse_bap_parameters(provider_file: &[u8]) -> Result<BapParameters, BapError>
     validate_band_coverage(&bands)?;
 
     Ok(BapParameters {
+        provider_sha256: Sha256::digest(provider_file).into(),
         slow_decay,
         fast_decay,
         slow_gain,

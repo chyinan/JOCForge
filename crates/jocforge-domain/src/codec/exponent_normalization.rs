@@ -307,6 +307,44 @@ pub fn normalize_lfe_exponents(
     })
 }
 
+/// Normalizes one converter-source LFE row with F10 option=0 (first pass only).
+///
+/// F11's independent converter reuses the main LFE strategy and decoded rows, but
+/// does not run the main option=1 normalization second pass. No policy parameter
+/// file is consumed by this option=0 path.
+pub fn normalize_lfe_exponents_option0(
+    raw: &[i16; LFE_EXPONENT_BINS],
+) -> Result<NormalizedLfeExponentRow, ExponentNormalizationError> {
+    if raw
+        .iter()
+        .any(|value| !(0..=I16_MAX_EXPONENT).contains(value))
+    {
+        return Err(ExponentNormalizationError::ExponentInputError);
+    }
+
+    let group_count = LFE_GROUPED_EXPONENT_BINS;
+    let base = raw[0].min(I16_BASE_MAX);
+    let representatives: [i16; LFE_GROUPED_EXPONENT_BINS] =
+        std::array::from_fn(|group| raw[group + 1]);
+    let (base, representatives) = repair_differences(base, representatives, group_count, 1, false);
+    let grouped = expand_groups(&representatives, group_count, 1);
+    if !(0..=I16_BASE_MAX).contains(&base)
+        || grouped
+            .iter()
+            .any(|value| !(0..=I16_MAX_EXPONENT).contains(value))
+    {
+        return Err(ExponentNormalizationError::ExponentInputError);
+    }
+
+    let mut expanded_exponents = [0_i16; LFE_EXPONENT_BINS];
+    expanded_exponents[0] = base;
+    expanded_exponents[1..].copy_from_slice(&grouped);
+    Ok(NormalizedLfeExponentRow {
+        base_exponent: base,
+        expanded_exponents,
+    })
+}
+
 fn repair_differences<const N: usize>(
     mut base: i16,
     mut representatives: [i16; N],
@@ -435,4 +473,25 @@ fn lrint_rne_i32(value: f32) -> Result<i32, ExponentNormalizationError> {
         i64::try_from(magnitude).map_err(|_| ExponentNormalizationError::NumericFailure)?
     };
     i32::try_from(signed).map_err(|_| ExponentNormalizationError::NumericFailure)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::normalize_lfe_exponents_option0;
+
+    #[test]
+    fn option0_preserves_a_valid_lfe_exponent_row() {
+        let raw = [2_i16, 4, 6, 8, 10, 12, 14];
+        let normalized = normalize_lfe_exponents_option0(&raw).unwrap();
+        assert_eq!(normalized.base_exponent(), 2);
+        assert_eq!(normalized.expanded_exponents(), &raw);
+    }
+
+    #[test]
+    fn option0_repairs_first_pass_delta_without_a_second_pass() {
+        let raw = [0_i16, 3, 3, 3, 3, 3, 3];
+        let normalized = normalize_lfe_exponents_option0(&raw).unwrap();
+        assert_eq!(normalized.base_exponent(), 0);
+        assert_eq!(normalized.expanded_exponents(), &[0, 2, 3, 3, 3, 3, 3]);
+    }
 }

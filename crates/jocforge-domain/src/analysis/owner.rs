@@ -19,9 +19,11 @@ use super::transient_channel::TransientChannelState;
 use super::transient_parameters::TransientParameters;
 use crate::codec::db_selector::{DbSelectorError, db_selector_from_means};
 use crate::codec::policy_parameters::{PolicyParameters, PolicyProfile};
-use crate::timeline::CodecSourceIndex;
+use crate::meter::prepared_job_identity::PreparedJobInputIdentity;
+use crate::timeline::{CodecSourceIndex, FrontendCallbackIndex, source_for_callback};
 use crate::transaction::{
-    AttemptId, CallbackTransactionId, SourceTransaction, SourceTransactionStageError,
+    AttemptId, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt, GtcOwnerReceiptError,
+    GtcOwnerStateSnapshot, SourceTransaction, SourceTransactionStageError,
 };
 use crate::transform::exponent_inputs::{
     FullBandTransformExponentInputs, LfeTransformExponentInputs, TransformExponentInputError,
@@ -39,6 +41,7 @@ use crate::transform::window_fold::{F08WindowFoldError, f08_window_fold_block};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
+use std::sync::Arc;
 
 const EXTERNAL_AUDIO_LANES: usize = 6;
 const TRANSFORM_HISTORY_WORDS_PER_LANE: usize = 128;
@@ -59,6 +62,15 @@ pub enum AnalysisOwnerStateReferenceError {
     IncompleteRoot,
     InvalidTransientI1,
     CanonicalSerialization,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum AnalysisOwnerGtcReceiptError {
+    StateReference(AnalysisOwnerStateReferenceError),
+    PreparedInputIdentityMissing,
+    PreparedInputIdentityMismatch,
+    SourceStageRequired,
+    Gtc(GtcOwnerReceiptError),
 }
 
 /// Read-only canonical state view for one commit-eligible Analysis owner root.
@@ -102,6 +114,18 @@ impl AnalysisOwnerStateReference<'_> {
     pub const fn cold_sha256(&self) -> &[u8; 32] {
         &self.cold_sha256
     }
+
+    /// Projects the complete canonical Analysis state into the registered GTC owner slot.
+    ///
+    /// The returned snapshot borrows these canonical bytes; it is not a parent commit token.
+    pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
+        GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::Analysis,
+            self.generation,
+            self.cold_sha256,
+            &self.canonical_bytes,
+        )
+    }
 }
 
 /// The four persistent F07-F10 analysis families.
@@ -111,6 +135,7 @@ impl AnalysisOwnerStateReference<'_> {
 /// and remains the sole owner of commit/discard authority.
 #[derive(Debug, Eq, PartialEq)]
 pub struct AnalysisOwnerRoot {
+    prepared_job_input_identity: Option<Arc<PreparedJobInputIdentity>>,
     input_history_generation: u64,
     input_histories: [InputHistory; EXTERNAL_AUDIO_LANES],
     transient_generation: u64,
@@ -130,7 +155,21 @@ pub struct AnalysisOwnerRoot {
 impl AnalysisOwnerRoot {
     /// Creates the exact cold analysis root: all generations and state words are zero.
     pub fn cold() -> Self {
+        Self::cold_with_prepared_identity(None)
+    }
+
+    /// Creates a cold MAIN analysis root carrying the exact identity capability admitted by F01E.
+    pub fn cold_for_prepared_input(
+        prepared_job_input_identity: Arc<PreparedJobInputIdentity>,
+    ) -> Self {
+        Self::cold_with_prepared_identity(Some(prepared_job_input_identity))
+    }
+
+    fn cold_with_prepared_identity(
+        prepared_job_input_identity: Option<Arc<PreparedJobInputIdentity>>,
+    ) -> Self {
         Self {
+            prepared_job_input_identity,
             input_history_generation: 0,
             input_histories: std::array::from_fn(|_| InputHistory::cold()),
             transient_generation: 0,
@@ -152,7 +191,12 @@ impl AnalysisOwnerRoot {
     ///
     /// The parent owns attempt advancement and retires the prior attempt before calling reset.
     pub fn reset(&mut self) {
-        *self = Self::cold();
+        *self = Self::cold_with_prepared_identity(self.prepared_job_input_identity.clone());
+    }
+
+    /// Returns the F01E input identity capability for a bound MAIN root.
+    pub fn prepared_job_input_identity(&self) -> Option<&Arc<PreparedJobInputIdentity>> {
+        self.prepared_job_input_identity.as_ref()
     }
 
     pub const fn input_history_generation(&self) -> u64 {
@@ -234,6 +278,66 @@ impl AnalysisOwnerRoot {
             state_sha256,
             cold_sha256,
         })
+    }
+
+    /// Creates the Analysis owner's GTC receipt for exact committed-before and staged-after
+    /// roots. Both roots must carry the same admission-created resource capability; replacement
+    /// authority remains with the global callback parent.
+    pub fn gtc_owner_receipt_to(
+        &self,
+        after: &Self,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, AnalysisOwnerGtcReceiptError> {
+        let before_identity = self
+            .prepared_job_input_identity()
+            .ok_or(AnalysisOwnerGtcReceiptError::PreparedInputIdentityMissing)?;
+        let after_identity = after
+            .prepared_job_input_identity()
+            .ok_or(AnalysisOwnerGtcReceiptError::PreparedInputIdentityMissing)?;
+        if !Arc::ptr_eq(before_identity, after_identity) {
+            return Err(AnalysisOwnerGtcReceiptError::PreparedInputIdentityMismatch);
+        }
+
+        let before_reference = self
+            .state_reference()
+            .map_err(AnalysisOwnerGtcReceiptError::StateReference)?;
+        let after_reference = after
+            .state_reference()
+            .map_err(AnalysisOwnerGtcReceiptError::StateReference)?;
+        let before_snapshot = before_reference
+            .gtc_snapshot()
+            .map_err(AnalysisOwnerGtcReceiptError::Gtc)?;
+        let after_snapshot = after_reference
+            .gtc_snapshot()
+            .map_err(AnalysisOwnerGtcReceiptError::Gtc)?;
+        GtcOwnerReceipt::from_transition(before_snapshot, after_snapshot, transaction_id)
+            .map_err(AnalysisOwnerGtcReceiptError::Gtc)
+    }
+
+    /// Creates the unchanged Analysis owner receipt for a callback without a codec source stage.
+    ///
+    /// The selected clock has no source at callback indices zero and one. The committed root
+    /// must still carry the admission-created input capability; any later callback must provide
+    /// the exact staged Analysis after-root through `gtc_owner_receipt_to`.
+    pub fn gtc_unchanged_callback_receipt(
+        &self,
+        callback_index: FrontendCallbackIndex,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, AnalysisOwnerGtcReceiptError> {
+        if source_for_callback(callback_index).is_some() {
+            return Err(AnalysisOwnerGtcReceiptError::SourceStageRequired);
+        }
+        if self.prepared_job_input_identity().is_none() {
+            return Err(AnalysisOwnerGtcReceiptError::PreparedInputIdentityMissing);
+        }
+        let reference = self
+            .state_reference()
+            .map_err(AnalysisOwnerGtcReceiptError::StateReference)?;
+        let snapshot = reference
+            .gtc_snapshot()
+            .map_err(AnalysisOwnerGtcReceiptError::Gtc)?;
+        GtcOwnerReceipt::from_transition(snapshot, snapshot, transaction_id)
+            .map_err(AnalysisOwnerGtcReceiptError::Gtc)
     }
 
     fn canonical_state_bytes(&self) -> Result<Vec<u8>, AnalysisOwnerStateReferenceError> {
@@ -379,6 +483,7 @@ impl AnalysisOwnerRoot {
 
     fn staged_copy(&self) -> Self {
         Self {
+            prepared_job_input_identity: self.prepared_job_input_identity.clone(),
             input_history_generation: self.input_history_generation,
             input_histories: std::array::from_fn(|lane| self.input_histories[lane].staged_copy()),
             transient_generation: self.transient_generation,
@@ -440,8 +545,18 @@ impl AnalysisOwnerRoot {
             crate::analysis::source_frame::AnalysisOwnerGeneration::from_parent_snapshot(
                 after_generation,
             );
-        let mut source_transaction =
-            SourceTransaction::new(attempt_id, transaction_id, source_index, before_generation);
+        let mut source_transaction = match &self.prepared_job_input_identity {
+            Some(prepared_job_input_identity) => SourceTransaction::new_for_prepared_input(
+                attempt_id,
+                transaction_id,
+                source_index,
+                before_generation,
+                Arc::clone(prepared_job_input_identity),
+            ),
+            None => {
+                SourceTransaction::new(attempt_id, transaction_id, source_index, before_generation)
+            }
+        };
         source_transaction
             .prepare_shared_analysis(after_generation, f07_proposal)
             .map_err(map_transaction_stage_error)?;
@@ -887,6 +1002,23 @@ impl AnalysisNumericPlanStage {
             .prepare_numeric_plan(plan)
             .map_err(map_transaction_stage_error)
     }
+
+    /// Parent-only one-shot issuer for a downstream projection of this source's numeric plan.
+    ///
+    /// The existing AnalysisNumericPlan and its after-state stay in this stage while the
+    /// downstream receipt is borrowed and consumed. SourceTransaction supplies the exact same
+    /// SharedAnalysisReceipt and rejects a second numeric-plan receipt.
+    pub(crate) fn prepare_selected_source_numeric_plan<T>(
+        &mut self,
+        plan: T,
+    ) -> Result<NumericPlanReceipt<'_, T>, AnalysisOwnerStageError> {
+        if self.plan.is_none() {
+            return Err(AnalysisOwnerStageError::NumericPlanAlreadyPrepared);
+        }
+        self.source_transaction
+            .prepare_numeric_plan(plan)
+            .map_err(map_transaction_stage_error)
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -918,8 +1050,8 @@ fn map_transaction_stage_error(_: SourceTransactionStageError) -> AnalysisOwnerS
 #[cfg(test)]
 mod tests {
     use super::{
-        AnalysisOwnerRoot, AnalysisOwnerStageError, AnalysisOwnerStateReferenceError,
-        F07_BLOCKS_PER_FRAME,
+        AnalysisOwnerGtcReceiptError, AnalysisOwnerRoot, AnalysisOwnerStageError,
+        AnalysisOwnerStateReferenceError, F07_BLOCKS_PER_FRAME,
     };
     use crate::analysis::exponent_plan::{AnalysisBlockIndex, FullbandLaneIndex};
     use crate::analysis::input_history::INPUT_HISTORY_BLOCK_SAMPLES;
@@ -934,12 +1066,17 @@ mod tests {
     };
     use crate::codec::exponent_refresh_state::refresh_exponent_state;
     use crate::codec::policy_parameters::{PolicyProfile, load_policy_parameters};
-    use crate::timeline::CodecSourceIndex;
-    use crate::transaction::{AttemptId, CallbackTransactionId};
+    use crate::meter::prepared_job_identity::{
+        NormalizedJobConfigurationIdentity, PreparedAdmChunkSpan, PreparedAdmGraphProvenance,
+        PreparedInputResourceIdentity, PreparedJobInputIdentity,
+    };
+    use crate::timeline::{CodecSourceIndex, FrontendCallbackIndex};
+    use crate::transaction::{AttemptId, CallbackTransactionId, GtcOwnerId, GtcOwnerReceiptError};
     use crate::transform::math_generated_parameters::MathGeneratedTransformParameters;
     use serde_json::Value;
     use sha2::{Digest, Sha256};
     use std::collections::BTreeMap;
+    use std::sync::Arc;
 
     const D05_PARAMETERS: &[u8] =
         include_bytes!("../../tests/fixtures/transient_channel/PARAMETERS.json");
@@ -965,6 +1102,46 @@ mod tests {
             CallbackTransactionId::new("analysis-root-test").unwrap(),
             CodecSourceIndex::new(0),
         )
+    }
+
+    fn prepared_job_identity() -> Arc<PreparedJobInputIdentity> {
+        let resource = PreparedInputResourceIdentity::new([0x21; 32], 1_024);
+        let graph = PreparedAdmGraphProvenance::new(
+            resource,
+            PreparedAdmChunkSpan::new(*b"axml", 10, 10, [0x31; 32]),
+            PreparedAdmChunkSpan::new(*b"chna", 20, 10, [0x32; 32]),
+            PreparedAdmChunkSpan::new(*b"dbmd", 30, 10, [0x33; 32]),
+        );
+        Arc::new(
+            PreparedJobInputIdentity::new(
+                resource,
+                NormalizedJobConfigurationIdentity::new(
+                    [0x22; 32],
+                    [0x23; 32],
+                    crate::frontend::job_configuration::SelectedInputKind::Adm,
+                ),
+                graph,
+            )
+            .unwrap(),
+        )
+    }
+
+    fn complete_nonzero_root(
+        prepared_identity: Option<Arc<PreparedJobInputIdentity>>,
+    ) -> AnalysisOwnerRoot {
+        let mut root = match prepared_identity {
+            Some(identity) => AnalysisOwnerRoot::cold_for_prepared_input(identity),
+            None => AnalysisOwnerRoot::cold(),
+        };
+        root.input_history_generation = 1;
+        root.transient_generation = 1;
+        root.transform_generation = 1;
+        root.policy_generation = 1;
+        root.gain_range_previous_peak_f32_bits_u32 = [0x3f80_0000; 6];
+        root.gain_range_completed_blocks_u64 = 17;
+        root.db_per_bit_selector_u16 = 2;
+        root.db_per_bit_completed_blocks_u64 = 17;
+        root
     }
 
     fn zero_audio() -> Box<InstalledAudioSourceFrame> {
@@ -1223,6 +1400,136 @@ mod tests {
     }
 
     #[test]
+    fn gtc_snapshot_uses_the_complete_analysis_v6_preimage() {
+        let root = AnalysisOwnerRoot::cold();
+        let reference = root.state_reference().unwrap();
+        let snapshot = reference.gtc_snapshot().unwrap();
+
+        assert_eq!(snapshot.owner_id(), GtcOwnerId::Analysis);
+        assert_eq!(snapshot.state_ref().as_str(), "owners.analysis");
+        assert_eq!(snapshot.generation(), reference.generation());
+        assert_eq!(snapshot.state_sha256(), *reference.state_sha256());
+        assert_eq!(snapshot.cold_sha256(), *reference.cold_sha256());
+        assert_eq!(snapshot.canonical_bytes(), reference.canonical_bytes());
+        assert_eq!(snapshot.canonical_bytes().len(), 19_422);
+    }
+
+    #[test]
+    fn callbacks_zero_and_one_produce_unchanged_analysis_owner_receipts() {
+        let root = AnalysisOwnerRoot::cold_for_prepared_input(prepared_job_identity());
+
+        for callback_index in [0, 1] {
+            let transaction_id =
+                CallbackTransactionId::new(&format!("analysis-callback-{callback_index}")).unwrap();
+            let receipt = root
+                .gtc_unchanged_callback_receipt(
+                    FrontendCallbackIndex::new(callback_index),
+                    transaction_id.clone(),
+                )
+                .unwrap();
+
+            assert_eq!(receipt.owner_id(), GtcOwnerId::Analysis);
+            assert_eq!(receipt.before_generation(), 0);
+            assert_eq!(receipt.after_generation(), 0);
+            assert_eq!(receipt.before_sha256(), receipt.after_sha256());
+            assert!(!receipt.changed());
+            assert_eq!(receipt.commit_count(), 0);
+            assert_eq!(receipt.transaction_id(), &transaction_id);
+        }
+
+        assert_eq!(
+            root.gtc_unchanged_callback_receipt(
+                FrontendCallbackIndex::new(2),
+                CallbackTransactionId::new("analysis-callback-2").unwrap(),
+            ),
+            Err(AnalysisOwnerGtcReceiptError::SourceStageRequired)
+        );
+    }
+
+    #[test]
+    fn changed_analysis_root_receipt_binds_cold_hash_generation_and_parent_token() {
+        let identity = prepared_job_identity();
+        let before = AnalysisOwnerRoot::cold_for_prepared_input(Arc::clone(&identity));
+        let after = complete_nonzero_root(Some(Arc::clone(&identity)));
+        let transaction_id = CallbackTransactionId::new("analysis-source-transaction").unwrap();
+
+        let receipt = before
+            .gtc_owner_receipt_to(&after, transaction_id.clone())
+            .unwrap();
+        let before_reference = before.state_reference().unwrap();
+        let after_reference = after.state_reference().unwrap();
+
+        assert!(Arc::ptr_eq(
+            before.prepared_job_input_identity().unwrap(),
+            after.prepared_job_input_identity().unwrap()
+        ));
+        assert_eq!(receipt.owner_id(), GtcOwnerId::Analysis);
+        assert_eq!(receipt.before_generation(), before_reference.generation());
+        assert_eq!(receipt.after_generation(), after_reference.generation());
+        assert_eq!(receipt.before_sha256(), *before_reference.state_sha256());
+        assert_eq!(receipt.after_sha256(), *after_reference.state_sha256());
+        assert!(receipt.changed());
+        assert_eq!(receipt.commit_count(), 1);
+        assert_eq!(receipt.transaction_id(), &transaction_id);
+        assert_eq!(before, AnalysisOwnerRoot::cold_for_prepared_input(identity));
+    }
+
+    #[test]
+    fn analysis_owner_receipt_rejects_a_different_prepared_input_arc() {
+        let before_identity = prepared_job_identity();
+        let after_identity = prepared_job_identity();
+        assert_eq!(*before_identity, *after_identity);
+        assert!(!Arc::ptr_eq(&before_identity, &after_identity));
+
+        let before = AnalysisOwnerRoot::cold_for_prepared_input(before_identity);
+        let after = complete_nonzero_root(Some(after_identity));
+        assert_eq!(
+            before.gtc_owner_receipt_to(
+                &after,
+                CallbackTransactionId::new("analysis-foreign-input").unwrap(),
+            ),
+            Err(AnalysisOwnerGtcReceiptError::PreparedInputIdentityMismatch)
+        );
+    }
+
+    #[test]
+    fn analysis_owner_receipt_rejects_skipped_generation() {
+        let identity = prepared_job_identity();
+        let before = complete_nonzero_root(Some(Arc::clone(&identity)));
+        let mut skipped_generation = complete_nonzero_root(Some(Arc::clone(&identity)));
+        skipped_generation.input_history_generation = 3;
+        skipped_generation.transient_generation = 3;
+        skipped_generation.transform_generation = 3;
+        skipped_generation.policy_generation = 3;
+
+        assert_eq!(
+            before.gtc_owner_receipt_to(
+                &skipped_generation,
+                CallbackTransactionId::new("analysis-generation-mismatch").unwrap(),
+            ),
+            Err(AnalysisOwnerGtcReceiptError::Gtc(
+                GtcOwnerReceiptError::GenerationMismatch
+            ))
+        );
+    }
+
+    #[test]
+    fn analysis_owner_gtc_receipts_reject_unbound_prepared_input_identity() {
+        let before = AnalysisOwnerRoot::cold();
+        let unbound_after = complete_nonzero_root(None);
+        let transaction_id = CallbackTransactionId::new("analysis-unbound-input").unwrap();
+
+        assert_eq!(
+            before.gtc_owner_receipt_to(&unbound_after, transaction_id.clone()),
+            Err(AnalysisOwnerGtcReceiptError::PreparedInputIdentityMissing)
+        );
+        assert_eq!(
+            before.gtc_unchanged_callback_receipt(FrontendCallbackIndex::new(0), transaction_id,),
+            Err(AnalysisOwnerGtcReceiptError::PreparedInputIdentityMissing)
+        );
+    }
+
+    #[test]
     fn incomplete_analysis_root_cannot_be_published_as_an_owner_reference() {
         let mut partial = AnalysisOwnerRoot::cold();
         partial.input_history_generation = 1;
@@ -1298,6 +1605,44 @@ mod tests {
                 &parameters,
             ),
             Err(AnalysisOwnerStageError::InvalidCommittedGeneration)
+        ));
+    }
+
+    #[test]
+    fn prepared_input_capability_flows_from_cold_analysis_root_into_shared_source_receipt() {
+        let prepared_identity = prepared_job_identity();
+        let mut root = AnalysisOwnerRoot::cold_for_prepared_input(Arc::clone(&prepared_identity));
+        let parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let (attempt, transaction, source) = source_transaction();
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &parameters,
+            )
+            .unwrap();
+        let shared = f07.shared_analysis().unwrap();
+        assert!(Arc::ptr_eq(
+            &prepared_identity,
+            root.prepared_job_input_identity().unwrap()
+        ));
+        assert!(Arc::ptr_eq(
+            &prepared_identity,
+            f07.after_state().prepared_job_input_identity().unwrap()
+        ));
+        assert!(Arc::ptr_eq(
+            &prepared_identity,
+            shared.identity().prepared_job_input_identity().unwrap()
+        ));
+
+        drop(f07);
+        root.reset();
+        assert!(Arc::ptr_eq(
+            &prepared_identity,
+            root.prepared_job_input_identity().unwrap()
         ));
     }
 
@@ -1646,12 +1991,15 @@ mod tests {
         );
 
         let mut expected_fullband_markers = [[0_i16; FBW_LANES]; F07_BLOCKS_PER_FRAME];
+        let mut expected_first_power_refresh_current_after_i16 =
+            [[[0_i16; FBW_BINS]; FBW_LANES]; F07_BLOCKS_PER_FRAME];
         for lane in 0..FBW_LANES {
             let mut work = [0_i16; FBW_BINS];
             for block in 0..F07_BLOCKS_PER_FRAME {
                 let mut current = fullband_power[block][lane];
                 let mut marker = i16::from(structure_refresh[block][lane]);
                 refresh_exponent_state(&mut current, &mut work, &mut marker, 1, 0, 0, 128);
+                expected_first_power_refresh_current_after_i16[block][lane] = current;
                 expected_fullband_markers[block][lane] = marker;
             }
         }
@@ -1668,11 +2016,46 @@ mod tests {
         let expected_strategies =
             expected_fullband_strategies(&expected_fullband_markers, &short_consumed);
         let numeric = gain_db.complete_f09_f10(&policy_parameters).unwrap();
+        let shared_analysis = numeric.shared_analysis().unwrap();
+        assert_eq!(shared_analysis.identity().source_index(), source);
+        assert_eq!(shared_analysis.advancement_count(), 1);
         let numeric_plan = numeric.plan().unwrap();
         let actual_plan = numeric_plan.exponents();
         assert_eq!(
             actual_plan.fullband_refresh_marker_after(),
             &expected_fullband_markers
+        );
+        for (block, expected_block) in expected_first_power_refresh_current_after_i16
+            .iter()
+            .enumerate()
+        {
+            for (lane, expected_value) in expected_block.iter().enumerate() {
+                assert_eq!(
+                    actual_plan
+                        .first_power_refresh_current_after_i16(
+                            AnalysisBlockIndex::new(u8::try_from(block).unwrap()),
+                            FullbandLaneIndex::new(u8::try_from(lane).unwrap()),
+                        )
+                        .unwrap(),
+                    expected_value
+                );
+            }
+        }
+        assert!(
+            actual_plan
+                .first_power_refresh_current_after_i16(
+                    AnalysisBlockIndex::new(6),
+                    FullbandLaneIndex::new(0)
+                )
+                .is_none()
+        );
+        assert!(
+            actual_plan
+                .first_power_refresh_current_after_i16(
+                    AnalysisBlockIndex::new(0),
+                    FullbandLaneIndex::new(5)
+                )
+                .is_none()
         );
         assert_eq!(actual_plan.fullband_strategy(), &expected_strategies);
         assert_eq!(

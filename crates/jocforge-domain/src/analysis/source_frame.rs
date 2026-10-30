@@ -10,17 +10,161 @@ use super::transient_channel::{
     TransientChannelError, TransientChannelState, process_transient_channel_block,
 };
 use super::transient_parameters::TransientParameters;
-use crate::timeline::CodecSourceIndex;
+use crate::meter::prepared_job_identity::PreparedJobInputIdentity;
 use crate::transaction::{AttemptId, CallbackTransactionId};
+use crate::{
+    numeric::FiniteF32,
+    spatial::spatial_audio_state::SelectedJocQmfProjection,
+    timeline::{CodecSourceIndex, source_for_callback},
+};
+use std::sync::Arc;
 
 const EXTERNAL_AUDIO_LANES: usize = 6;
 pub(crate) const FBW_EXTERNAL_ROWS: [usize; F07_FULLBAND_LANES] = [0, 2, 1, 4, 5];
 pub(crate) const LFE_EXTERNAL_ROW: usize = 3;
+const SOURCE_FRAME_SAMPLE_COUNT: usize = INPUT_HISTORY_BLOCK_SAMPLES * F07_BLOCKS_PER_FRAME;
 
 pub type InstalledAudioSourceFrame =
     [[[u32; INPUT_HISTORY_BLOCK_SAMPLES]; F07_BLOCKS_PER_FRAME]; EXTERNAL_AUDIO_LANES];
 pub type DelayedAudioSourceFrame =
     Box<[[[u32; INPUT_HISTORY_BLOCK_SAMPLES]; F07_BLOCKS_PER_FRAME]]>;
+
+/// MAIN source audio copied from one admitted spatial receiver projection.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct SourcedInstalledAudioFrame {
+    source_index: CodecSourceIndex,
+    audio: Box<InstalledAudioSourceFrame>,
+}
+
+impl SourcedInstalledAudioFrame {
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub const fn audio(&self) -> &InstalledAudioSourceFrame {
+        &self.audio
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum InstalledAudioProjectionError {
+    CallbackHasNoCodecSource,
+    SourceIndexMismatch,
+    UnexpectedFinalSixSampleCount { lane: u8, actual_samples: usize },
+}
+
+/// Copies the admitted F04R final six into the six externally ordered F07 source rows.
+///
+/// The receiver projection carries the typed source identity. Its callback must map to that
+/// identity through the shared programme clock; each `[L, R, C, LFE, Ls, Rs]` row is copied
+/// bit-for-bit and partitioned into six consecutive 256-sample blocks.
+pub fn installed_audio_from_final_six(
+    projection: &SelectedJocQmfProjection,
+) -> Result<SourcedInstalledAudioFrame, InstalledAudioProjectionError> {
+    let source_index = source_for_callback(projection.callback_index())
+        .ok_or(InstalledAudioProjectionError::CallbackHasNoCodecSource)?;
+    if source_index != projection.source_index() {
+        return Err(InstalledAudioProjectionError::SourceIndexMismatch);
+    }
+
+    let audio = pack_final_six(projection.final_six())?;
+    Ok(SourcedInstalledAudioFrame {
+        source_index,
+        audio,
+    })
+}
+
+fn pack_final_six(
+    final_six: &[Box<[FiniteF32]>; EXTERNAL_AUDIO_LANES],
+) -> Result<Box<InstalledAudioSourceFrame>, InstalledAudioProjectionError> {
+    let mut audio: Box<InstalledAudioSourceFrame> =
+        vec![[[0_u32; INPUT_HISTORY_BLOCK_SAMPLES]; F07_BLOCKS_PER_FRAME]; EXTERNAL_AUDIO_LANES]
+            .into_boxed_slice()
+            .try_into()
+            .expect("the fixed lane vector converts to the selected audio frame");
+    for (lane, source_row) in final_six.iter().enumerate() {
+        if source_row.len() != SOURCE_FRAME_SAMPLE_COUNT {
+            return Err(
+                InstalledAudioProjectionError::UnexpectedFinalSixSampleCount {
+                    lane: u8::try_from(lane).unwrap_or(u8::MAX),
+                    actual_samples: source_row.len(),
+                },
+            );
+        }
+        for block in 0..F07_BLOCKS_PER_FRAME {
+            let source_offset = block * INPUT_HISTORY_BLOCK_SAMPLES;
+            for sample in 0..INPUT_HISTORY_BLOCK_SAMPLES {
+                audio[lane][block][sample] = source_row[source_offset + sample].to_bits();
+            }
+        }
+    }
+    Ok(audio)
+}
+
+#[cfg(test)]
+mod installed_audio_projection_tests {
+    use super::{
+        EXTERNAL_AUDIO_LANES, F07_BLOCKS_PER_FRAME, INPUT_HISTORY_BLOCK_SAMPLES,
+        InstalledAudioProjectionError, SOURCE_FRAME_SAMPLE_COUNT, pack_final_six,
+    };
+    use crate::numeric::FiniteF32;
+
+    #[test]
+    fn final_six_is_packed_by_external_lane_and_consecutive_sample() {
+        let final_six = std::array::from_fn(|lane| {
+            (0..SOURCE_FRAME_SAMPLE_COUNT)
+                .map(|sample| {
+                    let value = if lane == 0 && sample == 0 {
+                        -0.0
+                    } else {
+                        (lane * SOURCE_FRAME_SAMPLE_COUNT + sample) as f32
+                    };
+                    FiniteF32::new(value).unwrap()
+                })
+                .collect::<Vec<_>>()
+                .into_boxed_slice()
+        });
+
+        let installed = pack_final_six(&final_six).unwrap();
+        assert_eq!(installed[0][0][0], (-0.0_f32).to_bits());
+        for lane in 0..EXTERNAL_AUDIO_LANES {
+            for block in 0..F07_BLOCKS_PER_FRAME {
+                for sample in [0, INPUT_HISTORY_BLOCK_SAMPLES - 1] {
+                    let source_sample = block * INPUT_HISTORY_BLOCK_SAMPLES + sample;
+                    let expected = if lane == 0 && source_sample == 0 {
+                        (-0.0_f32).to_bits()
+                    } else {
+                        ((lane * SOURCE_FRAME_SAMPLE_COUNT + source_sample) as f32).to_bits()
+                    };
+                    assert_eq!(installed[lane][block][sample], expected);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn final_six_rejects_a_malformed_row_before_returning_audio() {
+        let final_six = std::array::from_fn(|lane| {
+            let length = if lane == 4 {
+                SOURCE_FRAME_SAMPLE_COUNT - 1
+            } else {
+                SOURCE_FRAME_SAMPLE_COUNT
+            };
+            vec![FiniteF32::new(0.0).unwrap(); length].into_boxed_slice()
+        });
+
+        assert_eq!(
+            pack_final_six(&final_six),
+            Err(
+                InstalledAudioProjectionError::UnexpectedFinalSixSampleCount {
+                    lane: 4,
+                    actual_samples: SOURCE_FRAME_SAMPLE_COUNT - 1,
+                }
+            )
+        );
+    }
+}
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct F07SourceFrameBeforeState {
@@ -196,6 +340,7 @@ pub struct SourceStageKey {
     source_index: CodecSourceIndex,
     analysis_owner_id: AnalysisOwnerId,
     analysis_before_generation: AnalysisOwnerGeneration,
+    prepared_job_input_identity: Option<Arc<PreparedJobInputIdentity>>,
 }
 
 impl SourceStageKey {
@@ -212,6 +357,25 @@ impl SourceStageKey {
             source_index,
             analysis_owner_id: AnalysisOwnerId::Analysis,
             analysis_before_generation,
+            prepared_job_input_identity: None,
+        }
+    }
+
+    /// Production source key carrying the exact admitted PreparedJobInput capability.
+    pub(crate) fn from_prepared_input_snapshot(
+        attempt_id: AttemptId,
+        transaction_id: CallbackTransactionId,
+        source_index: CodecSourceIndex,
+        analysis_before_generation: AnalysisOwnerGeneration,
+        prepared_job_input_identity: Arc<PreparedJobInputIdentity>,
+    ) -> Self {
+        Self {
+            attempt_id,
+            transaction_id,
+            source_index,
+            analysis_owner_id: AnalysisOwnerId::Analysis,
+            analysis_before_generation,
+            prepared_job_input_identity: Some(prepared_job_input_identity),
         }
     }
 
@@ -234,6 +398,11 @@ impl SourceStageKey {
     pub const fn analysis_before_generation(&self) -> AnalysisOwnerGeneration {
         self.analysis_before_generation
     }
+
+    /// Returns the input-admission capability, if this is a production-bound source key.
+    pub fn prepared_job_input_identity(&self) -> Option<&Arc<PreparedJobInputIdentity>> {
+        self.prepared_job_input_identity.as_ref()
+    }
 }
 
 /// Identity of one parent's staged analysis result, including its exact after generation.
@@ -254,6 +423,11 @@ impl SharedAnalysisIdentity {
 
     pub const fn analysis_after_generation(&self) -> AnalysisOwnerGeneration {
         self.analysis_after_generation
+    }
+
+    /// Carries the same admission-created capability used to construct this source transaction.
+    pub fn prepared_job_input_identity(&self) -> Option<&Arc<PreparedJobInputIdentity>> {
+        self.source_stage_key.prepared_job_input_identity()
     }
 }
 

@@ -9,11 +9,13 @@ use crate::{
     analysis::source_frame::{
         AnalysisOwnerGeneration, F07SourceFrameProposal, SharedAnalysisReceipt, SourceStageKey,
     },
+    meter::prepared_job_identity::PreparedJobInputIdentity,
     timeline::CodecSourceIndex,
     transform::fullband_exponent_pipeline::NumericPlanReceipt,
 };
 
 use super::{AttemptId, CallbackTransactionId};
+use std::sync::Arc;
 
 /// One local parent source stage. It owns no top-level callback/commit authority.
 #[must_use]
@@ -47,6 +49,27 @@ impl SourceTransaction {
                 transaction_id,
                 source_index,
                 analysis_before_generation,
+            ),
+            shared_analysis: None,
+            numeric_plan_prepared: false,
+        }
+    }
+
+    /// Begins a source stage bound to the exact immutable identity admitted by F01E.
+    pub(crate) fn new_for_prepared_input(
+        attempt_id: AttemptId,
+        transaction_id: CallbackTransactionId,
+        source_index: CodecSourceIndex,
+        analysis_before_generation: AnalysisOwnerGeneration,
+        prepared_job_input_identity: Arc<PreparedJobInputIdentity>,
+    ) -> Self {
+        Self {
+            source_stage_key: SourceStageKey::from_prepared_input_snapshot(
+                attempt_id,
+                transaction_id,
+                source_index,
+                analysis_before_generation,
+                prepared_job_input_identity,
             ),
             shared_analysis: None,
             numeric_plan_prepared: false,

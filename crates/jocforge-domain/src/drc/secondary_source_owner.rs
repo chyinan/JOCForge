@@ -250,6 +250,11 @@ fn preflight_source_identity(
             NoneDrcOwnerError::AttemptMismatch,
         ));
     }
+    if !root.matches_prepared_job_input_identity(shared_analysis) {
+        return Err(SecondarySourceError::Owner(
+            NoneDrcOwnerError::PreparedJobInputIdentityMismatch,
+        ));
+    }
     if source_stage_key.analysis_owner_id() != AnalysisOwnerId::Analysis
         || shared_analysis.advancement_count() != 1
     {

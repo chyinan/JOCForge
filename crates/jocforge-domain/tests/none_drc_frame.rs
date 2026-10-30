@@ -1,4 +1,3 @@
-use jocforge_domain::codec::frame_syntax::{CodecBlockIndex, bind_selected_bsi_drc_fields};
 use jocforge_domain::drc::none_drc_callback::{
     NoneDrcCallbackError, NoneDrcCallbackInput, project_none_drc_callback_clock,
     transition_none_drc_callback,
@@ -210,21 +209,6 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
             u64::try_from(step + 1).unwrap()
         );
         assert_eq!(next_fifo_state.records(), &[ZeroLogicalRecord; 4]);
-
-        let bsi_fields =
-            bind_selected_bsi_drc_fields(callback_clock.source_index, &callback_transition)
-                .unwrap();
-        assert_eq!(bsi_fields.dialnorm(), u8::try_from(dialnorm).unwrap());
-        assert_eq!(
-            bsi_fields.rf_code(),
-            Some(transition.output.scheduler.rf_packed_word_u16.to_be_bytes()[0]),
-        );
-        for block in 0..BLOCK_COUNT {
-            assert_eq!(
-                bsi_fields.line_code(CodecBlockIndex::new(u8::try_from(block).unwrap()).unwrap()),
-                Some(transition.output.scheduler.line_packed_words_u16[block].to_be_bytes()[0]),
-            );
-        }
 
         assert_eq!(
             transition.output.bsi_projection.rf_high_byte,

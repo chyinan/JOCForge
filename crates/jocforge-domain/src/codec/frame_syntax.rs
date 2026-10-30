@@ -1,8 +1,9 @@
 // pattern: Functional Core
 //! Boundary for the approved frame schema. It consumes validated field proposals only.
 
+use crate::analysis::source_frame::{SharedAnalysisIdentity, SharedAnalysisReceipt};
+use crate::drc::NoneDrcOwnerAfterProposal;
 use crate::drc::none_drc_bsi_projection::project_u16_high_byte;
-use crate::drc::none_drc_callback::NoneDrcCallbackTransition;
 use crate::timeline::CodecSourceIndex;
 
 const LINE_BLOCK_COUNT: u8 = 6;
@@ -47,28 +48,32 @@ pub enum SelectedBsiDrcSyntaxError {
     BlockIndexOutOfRange(u8),
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SelectedBsiDrcFields {
-    source_index: CodecSourceIndex,
+    source_identity: SharedAnalysisIdentity,
     dialnorm: u8,
     rf_code: Option<u8>,
     line_codes: [Option<u8>; 6],
 }
 
 impl SelectedBsiDrcFields {
-    pub const fn source_index(self) -> CodecSourceIndex {
-        self.source_index
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_identity.source_index()
     }
 
-    pub const fn dialnorm(self) -> u8 {
+    pub const fn source_identity(&self) -> &SharedAnalysisIdentity {
+        &self.source_identity
+    }
+
+    pub const fn dialnorm(&self) -> u8 {
         self.dialnorm
     }
 
-    pub const fn rf_code(self) -> Option<u8> {
+    pub const fn rf_code(&self) -> Option<u8> {
         self.rf_code
     }
 
-    pub fn line_code(self, block: CodecBlockIndex) -> Option<u8> {
+    pub fn line_code(&self, block: CodecBlockIndex) -> Option<u8> {
         self.line_codes[usize::from(block.value())]
     }
 }
@@ -78,20 +83,22 @@ impl SelectedBsiDrcFields {
 /// Only RF and per-block line flags/words are consumed. Auxiliary and limiter
 /// audit words have no destination in this selected BSI mapping.
 pub fn bind_selected_bsi_drc_fields(
-    frame_source: CodecSourceIndex,
-    f06nd: &NoneDrcCallbackTransition,
+    shared_analysis: &SharedAnalysisReceipt,
+    f06nd: &NoneDrcOwnerAfterProposal,
 ) -> Result<SelectedBsiDrcFields, SelectedBsiDrcSyntaxError> {
-    let clock = f06nd.clock();
-    if clock.source_index != frame_source {
+    let identity = shared_analysis.identity();
+    if f06nd.shared_analysis_identity() != identity
+        || f06nd.source_index() != identity.source_index()
+    {
         return Err(SelectedBsiDrcSyntaxError::SourceGenerationMismatch);
     }
 
-    let dialnorm = f06nd.dialnorm();
+    let dialnorm = i32::from(f06nd.programme_dialnorm());
     if !(1..=31).contains(&dialnorm) {
         return Err(SelectedBsiDrcSyntaxError::DialnormOutOfRange(dialnorm));
     }
 
-    let scheduler = &f06nd.frame().output.scheduler;
+    let scheduler = &f06nd.frame_output().scheduler;
     let rf_code =
         (scheduler.rf_flag_u16 == 1).then(|| project_u16_high_byte(scheduler.rf_packed_word_u16));
     let line_codes = std::array::from_fn(|block| {
@@ -100,7 +107,7 @@ pub fn bind_selected_bsi_drc_fields(
     });
 
     Ok(SelectedBsiDrcFields {
-        source_index: frame_source,
+        source_identity: identity.clone(),
         dialnorm: u8::try_from(dialnorm)
             .map_err(|_| SelectedBsiDrcSyntaxError::DialnormOutOfRange(dialnorm))?,
         rf_code,
@@ -113,10 +120,268 @@ mod tests {
     use super::*;
     use crate::codec::bitio::{FrameBitCursor, FrameBitWriter};
     use crate::codec::frame_builder::{SelectedBsiDrcWriter, write_selected_eac3_fixed_prefix};
+    use crate::{
+        analysis::{
+            owner::AnalysisOwnerRoot,
+            source_frame::{
+                InstalledAudioSourceFrame, zeroed_shared_analysis_receipt_for_identity_tests,
+            },
+            transient_parameters::load_transient_parameters,
+        },
+        drc::NoneDrcOwnerRoot,
+        meter::measurement_receipt::{
+            ProgrammeMeasurementReceipt, ProgrammeMeasurementReceiptInput,
+        },
+        timeline::FrontendCallbackIndex,
+        transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
+    };
     use serde_json::Value;
 
     const OWNER_VECTORS: &[u8] =
         include_bytes!("../../tests/fixtures/codec_fixture/CODEC-OWNER-VECTORS.json");
+    const TRANSIENT_PARAMETERS: &[u8] =
+        include_bytes!("../../tests/fixtures/transient_channel/PARAMETERS.json");
+
+    #[test]
+    fn selected_bsi_drc_fields_require_exact_shared_analysis_identity() {
+        let source = CodecSourceIndex::new(0);
+        let originating_analysis =
+            crate::analysis::source_frame::zeroed_shared_analysis_receipt_for_identity_tests(
+                crate::transaction::AttemptId::new(1),
+                crate::transaction::CallbackTransactionId::new("bsi-origin").unwrap(),
+                source,
+                0,
+                1,
+            );
+        let current_analysis =
+            crate::analysis::source_frame::zeroed_shared_analysis_receipt_for_identity_tests(
+                crate::transaction::AttemptId::new(1),
+                crate::transaction::CallbackTransactionId::new("bsi-current").unwrap(),
+                source,
+                1,
+                2,
+            );
+        let drc_fields = SelectedBsiDrcFields {
+            source_identity: originating_analysis.identity().clone(),
+            dialnorm: 1,
+            rf_code: Some(0),
+            line_codes: [Some(0); 6],
+        };
+
+        assert_eq!(
+            crate::codec::selected_frame_trial::SelectedBsiInput::from_drc_fields(
+                &current_analysis,
+                &drc_fields,
+                crate::codec::selected_frame_trial::SelectedBsiMixingInput {
+                    preferred_downmix_mode: 0,
+                    ltrt_center_mix_level: 0,
+                    loro_center_mix_level: 0,
+                    ltrt_surround_mix_level: 0,
+                    loro_surround_mix_level: 0,
+                },
+                crate::codec::selected_frame_trial::SelectedBsiInformationInput {
+                    bitstream_mode: 0,
+                    copyright: false,
+                    original_bitstream: false,
+                    surround_ex_mode: 0,
+                    source_sample_rate_code: 0,
+                },
+            ),
+            Err(crate::codec::selected_frame_trial::SelectedFramePlanError::SourceGenerationMismatch)
+        );
+    }
+
+    #[test]
+    fn selected_drc_binding_consumes_the_same_f07_and_drc_owner_proposals() {
+        let receipt =
+            ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
+                programme_id: ProgrammeId::new("frame-syntax-test").unwrap(),
+                attempt: AttemptId::new(3),
+                input_sha256: [0x11; 32],
+                config_sha256: [0x22; 32],
+                dialogue_word: (-23.0_f32).to_bits(),
+                itu_word: (-23.0_f32).to_bits(),
+                true_peak_word: (-1.0_f32).to_bits(),
+                gating_kind: "LEVEL",
+                selected_lufs_word: (-23.0_f32).to_bits(),
+                meter_terminal_sha256: [0x33; 32],
+                normal_callbacks: 4_247,
+                zero_drains: 3,
+                energy_windows: 6_794,
+            })
+            .unwrap();
+        let attempt = receipt.attempt();
+        let owner = NoneDrcOwnerRoot::cold_after_meter_finalize(&receipt).unwrap();
+        let installed_audio: Box<InstalledAudioSourceFrame> = vec![[[0_u32; 256]; 6]; 6]
+            .into_boxed_slice()
+            .try_into()
+            .unwrap();
+        let transient_parameters = load_transient_parameters(Some(TRANSIENT_PARAMETERS)).unwrap();
+        let f07_stage = AnalysisOwnerRoot::cold()
+            .prepare_f07_source(
+                attempt,
+                CallbackTransactionId::new("frame-syntax-f07-source-0").unwrap(),
+                CodecSourceIndex::new(0),
+                &installed_audio,
+                [false; 5],
+                &transient_parameters,
+            )
+            .unwrap();
+        let shared_analysis = f07_stage.shared_analysis().unwrap();
+        let callback_identity = CallbackLineageIdentity::new(
+            receipt.programme_id().clone(),
+            attempt,
+            FrontendCallbackIndex::new(2),
+        );
+        let drc_proposal = owner
+            .prepare_source_frame_from_f07_stage(&f07_stage, &callback_identity)
+            .unwrap();
+        let fields =
+            bind_selected_bsi_drc_fields(shared_analysis, drc_proposal.after_root()).unwrap();
+
+        assert_eq!(fields.source_index(), CodecSourceIndex::new(0));
+        assert_eq!(fields.source_identity(), shared_analysis.identity());
+        assert_eq!(
+            fields.dialnorm(),
+            drc_proposal.after_root().programme_dialnorm()
+        );
+
+        let different_identity = zeroed_shared_analysis_receipt_for_identity_tests(
+            attempt,
+            CallbackTransactionId::new("different-f07-source-0").unwrap(),
+            CodecSourceIndex::new(0),
+            0,
+            1,
+        );
+        assert_eq!(
+            bind_selected_bsi_drc_fields(&different_identity, drc_proposal.after_root()),
+            Err(SelectedBsiDrcSyntaxError::SourceGenerationMismatch),
+        );
+    }
+
+    #[test]
+    fn selected_bsi_writer_rejects_cursor_order_capacity_and_incomplete_fields() {
+        let fields = fixture_drc_fields();
+        let mut bytes = [0xA5_u8; 8];
+        let mut writer = SelectedBsiDrcWriter::new(fields.clone());
+        let mut wrong_cursor_bytes = [0xA5_u8; 8];
+        let before_wrong_cursor = wrong_cursor_bytes;
+        let cursor =
+            {
+                let mut bit_writer =
+                    FrameBitWriter::new(&mut wrong_cursor_bytes, FrameBitCursor::new(44)).unwrap();
+                assert_eq!(
+                writer.write_header_drc(&mut bit_writer),
+                Err(crate::codec::frame_builder::SelectedBsiDrcWriterError::HeaderCursorMismatch {
+                    actual: 44,
+                }),
+            );
+                bit_writer.cursor().bit_offset()
+            };
+        assert_eq!(cursor, 44);
+        assert_eq!(wrong_cursor_bytes, before_wrong_cursor);
+
+        let header_cursor = {
+            let mut bit_writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
+            write_selected_eac3_fixed_prefix(&mut bit_writer).unwrap();
+            writer.write_header_drc(&mut bit_writer).unwrap();
+            bit_writer.cursor().bit_offset()
+        };
+        assert_eq!(header_cursor, 59);
+        let before_failed_line = bytes;
+        let cursor = {
+            let mut bit_writer =
+                FrameBitWriter::new(&mut bytes, FrameBitCursor::new(header_cursor)).unwrap();
+            assert_eq!(
+                writer.write_line_drc(&mut bit_writer, CodecBlockIndex::new(1).unwrap()),
+                Err(
+                    crate::codec::frame_builder::SelectedBsiDrcWriterError::BlockOutOfOrder {
+                        expected: 0,
+                        actual: 1,
+                    }
+                ),
+            );
+            bit_writer.cursor().bit_offset()
+        };
+        assert_eq!(cursor, header_cursor);
+        assert_eq!(bytes, before_failed_line);
+
+        let mut short_bytes = [0xA5_u8; 8];
+        let mut short_writer = SelectedBsiDrcWriter::new(fields);
+        {
+            let mut bit_writer =
+                FrameBitWriter::new(&mut short_bytes, FrameBitCursor::new(0)).unwrap();
+            write_selected_eac3_fixed_prefix(&mut bit_writer).unwrap();
+            short_writer.write_header_drc(&mut bit_writer).unwrap();
+            assert_eq!(
+                short_writer.write_line_drc(&mut bit_writer, CodecBlockIndex::new(0).unwrap()),
+                Err(
+                    crate::codec::frame_builder::SelectedBsiDrcWriterError::BitWriter(
+                        crate::codec::bitio::FrameBitWriterError::BufferTooSmall,
+                    )
+                ),
+            );
+            assert_eq!(bit_writer.cursor().bit_offset(), header_cursor);
+        }
+        assert!(!short_writer.is_complete());
+        assert_eq!(
+            short_writer.finish(),
+            Err(
+                crate::codec::frame_builder::SelectedBsiDrcWriterError::IncompleteBlockFields {
+                    written: 0,
+                }
+            ),
+        );
+    }
+
+    #[test]
+    fn selected_bsi_writer_rejects_missing_or_duplicate_header() {
+        let fields = fixture_drc_fields();
+        let mut bytes = [0_u8; 32];
+        let mut bit_writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(45)).unwrap();
+        let mut writer = SelectedBsiDrcWriter::new(fields.clone());
+
+        assert_eq!(
+            writer.write_line_drc(&mut bit_writer, CodecBlockIndex::new(0).unwrap()),
+            Err(crate::codec::frame_builder::SelectedBsiDrcWriterError::HeaderNotWritten),
+        );
+        assert_eq!(bit_writer.cursor().bit_offset(), 45);
+        assert_eq!(
+            writer.finish(),
+            Err(crate::codec::frame_builder::SelectedBsiDrcWriterError::HeaderNotWritten),
+        );
+
+        let mut writer = SelectedBsiDrcWriter::new(fields);
+        writer.write_header_drc(&mut bit_writer).unwrap();
+        assert_eq!(
+            writer.write_header_drc(&mut bit_writer),
+            Err(crate::codec::frame_builder::SelectedBsiDrcWriterError::HeaderAlreadyWritten),
+        );
+        assert_eq!(
+            writer.finish(),
+            Err(
+                crate::codec::frame_builder::SelectedBsiDrcWriterError::IncompleteBlockFields {
+                    written: 0,
+                }
+            ),
+        );
+    }
+
+    fn fixture_drc_fields() -> SelectedBsiDrcFields {
+        let analysis = zeroed_shared_analysis_receipt_for_identity_tests(
+            AttemptId::new(3),
+            CallbackTransactionId::new("drc-writer-test").unwrap(),
+            CodecSourceIndex::new(0),
+            0,
+            1,
+        );
+        SelectedBsiDrcFields {
+            source_identity: analysis.identity().clone(),
+            dialnorm: 24,
+            rf_code: Some(0x31),
+            line_codes: [Some(0x11), None, Some(0x22), None, Some(0x33), Some(0x44)],
+        }
+    }
 
     #[test]
     fn manual_codec_fixture_values_match_selected_drc_field_positions() {
@@ -130,8 +395,16 @@ mod tests {
             .unwrap();
         let bsi = &case["input"]["bsi"];
         let line_values = bsi["line_dynamic_range_codes"].as_array().unwrap();
+        let shared_analysis =
+            crate::analysis::source_frame::zeroed_shared_analysis_receipt_for_identity_tests(
+                crate::transaction::AttemptId::new(1),
+                crate::transaction::CallbackTransactionId::new("codec-fixture").unwrap(),
+                CodecSourceIndex::new(0),
+                0,
+                1,
+            );
         let fields = SelectedBsiDrcFields {
-            source_index: CodecSourceIndex::new(0),
+            source_identity: shared_analysis.identity().clone(),
             dialnorm: u8::try_from(bsi["dialnorm"].as_u64().unwrap()).unwrap(),
             rf_code: Some(u8::try_from(bsi["rf_compression_code"].as_u64().unwrap()).unwrap()),
             line_codes: std::array::from_fn(|block| {
@@ -142,7 +415,8 @@ mod tests {
         };
         let expected_frame = decode_hex(case["expected"]["frame_hex"].as_str().unwrap());
         let mut actual_frame = vec![0_u8; expected_frame.len()];
-        let mut drc_writer = SelectedBsiDrcWriter::new(fields);
+        let source_index = fields.source_index();
+        let mut drc_writer = SelectedBsiDrcWriter::new(fields.clone());
         let mut cursor = {
             let mut writer =
                 FrameBitWriter::new(&mut actual_frame, FrameBitCursor::new(0)).unwrap();
@@ -221,10 +495,7 @@ mod tests {
             cursor = next_cursor;
         }
         assert!(drc_writer.is_complete());
-        assert_eq!(
-            drc_writer.finish().unwrap().source_index(),
-            fields.source_index()
-        );
+        assert_eq!(drc_writer.finish().unwrap().source_index(), source_index);
     }
 
     fn find_field<'a>(fields: &'a Value, label: &str) -> &'a Value {

@@ -120,6 +120,8 @@ impl LfeExponentPlanBlock {
 pub struct AnalysisExponentPlan {
     fullband: Vec<FullbandExponentPlanBlock>,
     lfe: Vec<LfeExponentPlanBlock>,
+    first_power_refresh_current_after_i16:
+        [[[i16; FULLBAND_EXPONENT_BINS]; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
     fullband_refresh_marker_after: [[i16; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
     fullband_strategy: [[u8; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
     lfe_refresh_marker_after: [i16; F07_BLOCKS_PER_FRAME],
@@ -147,6 +149,22 @@ impl AnalysisExponentPlan {
     pub fn lfe_block(&self, block: AnalysisBlockIndex) -> Option<LfeExponentPlanBlock> {
         let block = usize::from(block.value());
         self.lfe.get(block).copied()
+    }
+
+    /// Returns S: the current row immediately after the first main F09 POWER refresh.
+    /// This preserves current-limiting effects and is distinct from raw input, work-after,
+    /// and PRIMARY rows for the same source block/lane.
+    pub fn first_power_refresh_current_after_i16(
+        &self,
+        block: AnalysisBlockIndex,
+        lane: FullbandLaneIndex,
+    ) -> Option<&[i16; FULLBAND_EXPONENT_BINS]> {
+        let block = usize::from(block.value());
+        let lane = usize::from(lane.value());
+        if block >= F07_BLOCKS_PER_FRAME || lane >= F07_FULLBAND_LANES {
+            return None;
+        }
+        Some(&self.first_power_refresh_current_after_i16[block][lane])
     }
 
     pub const fn fullband_refresh_marker_after(
@@ -192,6 +210,8 @@ pub fn stage_f09_f10_source_plan(
     }
 
     let mut fullband_refresh_marker_after = [[0_i16; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME];
+    let mut first_power_refresh_current_after_i16 =
+        [[[0_i16; FULLBAND_EXPONENT_BINS]; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME];
     let mut work_by_lane = [[0_i16; FULLBAND_EXPONENT_BINS]; F07_FULLBAND_LANES];
     for (block, marker_row) in fullband_refresh_marker_after.iter_mut().enumerate() {
         for (lane, (work, marker_after)) in work_by_lane
@@ -220,6 +240,7 @@ pub fn stage_f09_f10_source_plan(
                 REFRESH_BEGIN_I16,
                 FBW_REFRESH_END_I16,
             );
+            first_power_refresh_current_after_i16[block][lane] = current;
             if !matches!(marker, 0 | 1)
                 || current.iter().any(|value| !(0..=31).contains(value))
                 || work.iter().any(|value| !(0..=31).contains(value))
@@ -237,6 +258,7 @@ pub fn stage_f09_f10_source_plan(
     Ok(AnalysisExponentPlan {
         fullband: anchor_plans.fullband,
         lfe: anchor_plans.lfe,
+        first_power_refresh_current_after_i16,
         fullband_refresh_marker_after,
         fullband_strategy,
         lfe_refresh_marker_after: anchor_plans.lfe_refresh_marker_after,
