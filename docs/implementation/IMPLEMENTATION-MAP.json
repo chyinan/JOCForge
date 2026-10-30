@@ -3836,6 +3836,80 @@
               }
             ]
           }
+        },
+        {
+          "slice_id": "host-output-adapter-no-global-id-read-boundary",
+          "mapping_status": "WASHED_STATIC_HOST_ADAPTER_NO_ID_READ__OPAQUE_STREAM_AND_FINAL_SINK_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_ADAPTER_METHODS_NO_ID_JOIN__DYNAMIC_NOT_RUN",
+          "scope": "The traced host EC-3 adapter registers output/stream descriptors, selects the output stage sequence, connects the output source and opaque stream_object, invokes the Simple stage and dispatches progress. The inspected adapter methods do not read or join a typed global candidate ID, but stream_object payload identity is opaque and no returned-byte payload is inspected or hashed. The adapter-to-DLL-byte join, final EC-3 file-sink owner and byte-preservation path remain UNBOUND; no dynamic observation ran.",
+          "owner": "u04-source-weight",
+          "implementation_requirement": false,
+          "dependencies": [
+            "native-local-ordinal-output-byte-closure"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeHostAdapterRun",
+              "HostOutputStageProgress",
+              "OpaqueStreamObject",
+              "SerializedByteRange"
+            ],
+            "covered_clauses": [
+              "The inspected adapter methods do not read or join a typed global candidate ID.",
+              "stream_object payload is opaque; no returned byte payload is inspected or hashed.",
+              "No join is established between adapter stream bytes and DLL-returned byte range.",
+              "No final EC-3 file sink owner/callpath or byte-preservation proof is established."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_HOST_OUTPUT_ADAPTER_IDENTITY_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-HOST-OUTPUT-ADAPTER-BOUNDARY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-HOST-OUTPUT-ADAPTER-BOUNDARY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-HOST-OUTPUT-ADAPTER-BOUNDARY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-HOST-OUTPUT-ADAPTER-BOUNDARY-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-HOST-OUTPUT-ADAPTER-BOUNDARY-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "399b55988b48431f5fba07aad316050cce4c875cca80b2a2e06554823d51a5db",
+            "validation_boundary": "Static adapter-method boundary only; dynamic execution and final file sink byte preservation remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_HOST_ADAPTER_NO_MEDIA_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-HOST-OUTPUT-ADAPTER-BOUNDARY-WASHED-V1/CONTRACT.md"
+            ],
+            "case_pointers": [
+              "Adapter connects output source and opaque stream_object and invokes the selected Simple stage.",
+              "No typed global ID read/join is observed within the inspected adapter methods.",
+              "No dynamic observation, final file sink, or byte-preservation comparison ran."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "399b55988b48431f5fba07aad316050cce4c875cca80b2a2e06554823d51a5db"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Dynamic host adapter run and typed stream_object identity.",
+            "Adapter stream to DLL-returned byte-range join.",
+            "Final EC-3/JOC file sink owner/callpath and byte-preservation check.",
+            "Any downstream host/ADM graph identity join and model/output comparison."
+          ],
+          "validation_boundary": "No global ID read is observed only inside the inspected adapter methods; this does not establish final output bytes or whole-chain identity.",
+          "native_status": {
+            "status": "STATIC_ADAPTER_NO_ID_READ_FINAL_SINK_UNBOUND",
+            "global_candidate_id_read_or_join_in_traced_adapter": false,
+            "stream_object_payload_identity": "OPAQUE",
+            "dll_byte_range_to_stream_object_join": "UNBOUND",
+            "final_ec3_file_sink_owner_and_callpath": "UNBOUND",
+            "byte_preservation_to_final_sink": "UNBOUND",
+            "dynamic_observation": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_STATIC_EVIDENCE_ONLY"
         }
       ]
     },
@@ -8722,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1666287,
-              "sha256": "d4767006c39d718284dad6e181fdae8f758b75097bdbd5552128a5c87d49ebc1"
+              "bytes": 1675565,
+              "sha256": "53914b31cdefdf97843640cbcaf837a951455f9631484372672963aea4142dc1"
             }
           ],
           "test_modules": [
@@ -12235,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1666287,
-              "sha256": "d4767006c39d718284dad6e181fdae8f758b75097bdbd5552128a5c87d49ebc1"
+              "bytes": 1675565,
+              "sha256": "53914b31cdefdf97843640cbcaf837a951455f9631484372672963aea4142dc1"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -16322,6 +16396,174 @@
             "manifest_sha256": "b125269fbf21cc9785709a38408fe0e35ed94f88e69a72ad1bf993e12d40f188",
             "superseded_by_current_package": true
           }
+        },
+        {
+          "slice_id": "native-oamdi-run024-index-domain-and-state-store-boundary",
+          "mapping_status": "WASHED_RUN024_TABLE_AND_BED_OBJECT_INDEX_DOMAINS_DISTINCT__F06OF_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_GATE_ZERO_STATE_STORE_PATH__SCALAR_EFFECT_NOT_OBSERVED",
+          "scope": "In run 024 the table-B getter selects the row consumer and the append handler reaches the native bed/object metadata updater. The same projected-record pointer R reaches updater and formatter; target-object pointer O reaches the per-object state store, which copies a 30-byte record at native index 0. The table getter uses an absolute loop counter, while the bed/object updater uses that counter minus a native start/base. Both equal zero for the first observed record, but do not share a proven index domain. The formatter gate was zero, so no table-B scalar effect on stored state or EC-3 bytes was observed.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [
+            "washed-native-table-b-one-field-chain"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "NativeTableReaderIndex",
+              "NativeBedObjectIndex",
+              "ProjectedRecordToken",
+              "TargetObjectToken",
+              "OAMDIStateStoreIndex"
+            ],
+            "covered_clauses": [
+              "Run 024 table getter uses the absolute loop counter; bed/object updater uses loop counter minus native start/base.",
+              "Both index expressions equal zero for the first observed record, which does not establish a shared index domain or F06OF slot identity.",
+              "Projected record R reaches updater/formatter; target object O reaches a 30-byte state store at index 0.",
+              "Formatter gate zero means table-B scalar effect on compact fields or EC-3 bytes was not observed."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_OAMDI_INDEX_AND_STATE_STORE_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/APPROVED-CONTRACT-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/NEXT-OUTPUT-JOIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "483720604c6de498febf5d5a12aff134ad8d9e47bf1753b7d49f1c90fe80db71",
+            "validation_boundary": "Run-scoped native index and state-store receipt only; scalar effects and F06OF generation/slot mapping remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_RUN024_OAMDI_INDEX_RECEIPT_NO_ROW_PAYLOAD",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2/NEXT-OUTPUT-JOIN.json"
+            ],
+            "case_pointers": [
+              "Run 024 gate=0; table reader absolute index and bed/object index expressions are distinct even though both equal 0.",
+              "Target object O receives a 30-byte state record at index 0; projected record R is a separate input.",
+              "No row payload, PCM, Control16/Control52 payload, or field effect on EC-3 was established."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "483720604c6de498febf5d5a12aff134ad8d9e47bf1753b7d49f1c90fe80db71"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native table-B scalar effect on the compact fields or EC-3 output; run-024 gate was zero.",
+            "Native table-reader index to bed/object index or F06OF target-slot/generation join.",
+            "OAMDI per-object state to OAMD/BSI serializer or queue.",
+            "Whole-chain and product acceptance."
+          ],
+          "validation_boundary": "Do not infer index identity from both first observed values being zero; no table-B scalar effect is claimed.",
+          "native_status": {
+            "status": "RUN024_DISTINCT_INDEX_EXPRESSIONS_STATE_STORE_BOUND_GATE_ZERO",
+            "table_reader_index": "ABSOLUTE_LOOP_COUNTER",
+            "bed_object_index": "LOOP_COUNTER_MINUS_NATIVE_START_OR_BASE",
+            "both_first_record_values_zero": true,
+            "same_index_domain_proven": false,
+            "state_record_copy_bytes": 30,
+            "state_store_index": 0,
+            "formatter_gate": 0,
+            "table_scalar_effect_on_compact_fields_or_ec3": "NOT_OBSERVED",
+            "F06OF_target_slot_and_generation_join": "UNBOUND",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "native-oamdi-run025-state-owner-join",
+          "mapping_status": "WASHED_RUN025_UPDATER_TO_STATE_STORE_OWNER_JOIN__OAMD_SERIALIZER_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SAME_RUN_OWNER_TOKEN_BOUND__OUTPUT_AND_F06OF_JOINS_OPEN",
+          "scope": "Run 025 binds the same native per-object state-owner token S at the bed/object updater and state store. Projected-record token R and target-object token O remain separate; O and native bed/object index 0 reach the state store, which copies the 30-byte record. The table reader still uses an absolute loop counter while the updater uses that counter minus a native start/base, so both observed zero values do not join their index domains or identify F06OF target slot 0. OAMD/BSI serializer/queue functions did not fire; F06OF target/control/generation mapping remains UNBOUND.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [
+            "native-oamdi-run024-index-domain-and-state-store-boundary"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "NativeCallbackOrdinal",
+              "ProjectedRecordToken",
+              "TargetObjectToken",
+              "OAMDIStateOwnerToken",
+              "NativeBedObjectIndex"
+            ],
+            "covered_clauses": [
+              "Run 025 uses the same owner token S at updater and per-object state store within the selected EC-3 job.",
+              "Projected record R and target object O remain distinct; O and native index 0 reach the store.",
+              "Absolute table-reader loop index and relative bed/object index remain distinct despite equal observed value 0.",
+              "OAMDI-to-EVO serializer functions did not fire; F06OF target/control/generation joins remain unbound."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_OAMDI_STATE_OWNER_JOIN",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/APPROVED-CONTRACT-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/NEXT-OUTPUT-JOIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "2c73351b05c15c6935fc4feffc4287b6e4455a9f1971af71d2aacbd14ab42221",
+            "validation_boundary": "Same-run updater/store owner-token identity only; serialization/queue, target-slot, and generation joins remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_RUN025_STATE_OWNER_RECEIPT_NO_MEDIA_PAYLOAD",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1/NEXT-OUTPUT-JOIN.json"
+            ],
+            "case_pointers": [
+              "Run 025: updater and state store receive owner token S; target object O and index 0 reach store; record R is separate.",
+              "Per-object state store copies 30 bytes; serializer/queue calls did not fire in this job.",
+              "No OAMD/BSI serialization or F06OF adapter join is established."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "2c73351b05c15c6935fc4feffc4287b6e4455a9f1971af71d2aacbd14ab42221"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "OAMDI per-object state to OAMD/BSI serializer or queue and writer generation.",
+            "Typed F06OF target/control/generation adapter.",
+            "Native index-domain join and gate-zero scalar effect on the run-024 output.",
+            "Whole-chain and product acceptance."
+          ],
+          "validation_boundary": "One same-run owner-token join does not establish value identity, index-domain equivalence, serializer reachability, or product output identity.",
+          "native_status": {
+            "status": "RUN025_STATE_OWNER_BOUND_SERIALIZER_AND_F06OF_JOIN_OPEN",
+            "updater_state_owner_token": "S",
+            "store_state_owner_token": "S",
+            "same_state_owner_token": true,
+            "projected_record_token": "R",
+            "target_object_token": "O",
+            "native_bed_object_index": 0,
+            "per_object_state_copy_bytes": 30,
+            "OAMDI_serializer_or_queue_hit": false,
+            "F06OF_target_control_generation_join": "UNBOUND",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
         }
       ]
     },
@@ -28991,8 +29233,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1666287,
-              "sha256": "d4767006c39d718284dad6e181fdae8f758b75097bdbd5552128a5c87d49ebc1"
+              "bytes": 1675565,
+              "sha256": "53914b31cdefdf97843640cbcaf837a951455f9631484372672963aea4142dc1"
             }
           ],
           "test_inventory": [

@@ -161,6 +161,7 @@
 | F03U/sourceweight-candidate-identity-hold | F03U | `u04-source-weight` |
 | F03U/sourceweight-local-ordinal-producer-consumer-trace | F03U | `u04-source-weight` |
 | F03U/native-local-ordinal-output-byte-closure | F03U | `u04-source-weight` |
+| F03U/host-output-adapter-no-global-id-read-boundary | F03U | `u04-source-weight` |
 | F03F/current-features-approved-math-asset-pair | F03F | `spatial_control` |
 | F03F/main-current-features-source-callback-candidate | F03F | `spatial_control` |
 | F03R/selected-profile-feature-control-and-value-only-source-flags | F03R | `spatial_control` |
@@ -276,6 +277,8 @@
 | F06OF/washed-embedded-time-eof-reader-vector | F06OF | `io` |
 | F06OF/washed-native-table-b-field-role-hold | F06OF | `meter` |
 | F06OF/washed-native-table-b-one-field-chain | F06OF | `meter` |
+| F06OF/native-oamdi-run024-index-domain-and-state-store-boundary | F06OF | `meter` |
+| F06OF/native-oamdi-run025-state-owner-join | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |
