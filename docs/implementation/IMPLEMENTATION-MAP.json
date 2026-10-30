@@ -8722,8 +8722,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1653258,
-              "sha256": "fff8caeaac885946e4f7bc5802827f83f66bee986d23db2ab65eb8ba89138a0c"
+              "bytes": 1656496,
+              "sha256": "ed82dbaa4c80a5bb8d2c4913dd0e6b1c09beebc03221ce3ec81d67efc0db5af2"
             }
           ],
           "test_modules": [
@@ -12235,8 +12235,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1653258,
-              "sha256": "fff8caeaac885946e4f7bc5802827f83f66bee986d23db2ab65eb8ba89138a0c"
+              "bytes": 1656496,
+              "sha256": "ed82dbaa4c80a5bb8d2c4913dd0e6b1c09beebc03221ce3ec81d67efc0db5af2"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -28991,8 +28991,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1653258,
-              "sha256": "fff8caeaac885946e4f7bc5802827f83f66bee986d23db2ab65eb8ba89138a0c"
+              "bytes": 1656496,
+              "sha256": "ed82dbaa4c80a5bb8d2c4913dd0e6b1c09beebc03221ce3ec81d67efc0db5af2"
             }
           ],
           "test_inventory": [
@@ -29298,6 +29298,79 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "washed-drop-frame-static-contract-only",
+          "mapping_status": "WASHED_STATIC_DROP_FRAME_PREDICTION__NATIVE_VECTOR_NOT_RUN",
+          "implementation_status": "EVIDENCE_ONLY_STATIC_CONTRACT__NOT_IMPLEMENTATION_READY",
+          "scope": "The washed static prediction covers lowercase `df` as the final two characters, 29.97 only, nominal rate 30 with scale 1001/1000, two dropped labels per minute except every tenth minute, and direct end-frame position without numeric-token +1. Its input-only vector predicts start/end frame positions 1800/1810 and sample range [2,882,880, 2,898,896), 16,016 samples. Native parsing/capture did not run, so this is not an implementation-ready native rule; model output and comparison remain unrun.",
+          "owner": "timeline",
+          "implementation_requirement": false,
+          "dependencies": [
+            "washed-colon-timecode-file-position-2997-vector"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "StaticDropFrameTimecodeLabel",
+              "NominalFrameRate",
+              "SourceSampleIndex",
+              "NativeCaptureStatus"
+            ],
+            "covered_clauses": [
+              "The prediction recognizes lowercase df at the final two characters and gates the static branch to 29.97.",
+              "The static mapping uses nominal rate 30 and 1001/1000 scale, with two dropped labels per minute except each tenth minute.",
+              "The end label maps directly as a time position; no numeric-token +1 is applied.",
+              "The sample range is a static input-only prediction; native parsing and capture are NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_STATIC_DROP_FRAME_PREDICTION_NOT_NATIVE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/STATIC-PREDICTION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446",
+            "validation_boundary": "Static contract and arithmetic replay only; the package explicitly marks the vector not implementation-ready without native capture."
+          },
+          "vectors": {
+            "kind": "STATIC_DROP_FRAME_INPUT_ONLY_PREDICTION",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/STATIC-PREDICTION.json"
+            ],
+            "case_pointers": [
+              "HH:MM:SS:FFdf lowercase marker, 29.97 only; labels 00:01:00:02df to 00:01:00:12df.",
+              "Predicted frames 1800/1810; predicted source sample range [2,882,880, 2,898,896), count 16,016.",
+              "Native capture NOT_RUN; native output NOT_CREATED; model output NOT_RUN."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native parse/capture of lowercase df tokens and native range comparison.",
+            "Semicolon and uppercase marker behavior.",
+            "Embedded-timecode drop-frame syntax and other rates.",
+            "Model output, model/native comparison, and product acceptance."
+          ],
+          "validation_boundary": "Static prediction only; do not implement or report this as a native-observed drop-frame rule.",
+          "native_status": {
+            "status": "STATIC_DROP_FRAME_RULE_ACCEPTED_NATIVE_VECTOR_NOT_RUN",
+            "native_capture": "NOT_RUN",
+            "native_output": "NOT_CREATED",
+            "model_output": "NOT_RUN",
+            "implementation_ready_for_this_vector": false,
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_STATIC_EVIDENCE_ONLY"
         }
       ]
     },

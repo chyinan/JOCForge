@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1",
+  "decision": "ACCEPTED_AS_STATIC_CONTRACT_ONLY_NOT_IMPLEMENTATION_READY",
+  "independent_verification": {
+    "source_manifest_sha256": "MATCH",
+    "source_payloads": "3/3 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "parent_manifest": "MATCH",
+    "rational_arithmetic_replay": "PASS",
+    "native_drop_frame_capture": "NOT_RUN"
+  },
+  "implementation_ready_for_this_vector": false,
+  "whole_chain_ready": false,
+  "not_closed": [
+    "native parsing of the lowercase df vector",
+    "semicolon or uppercase marker behavior",
+    "drop-frame with embedded-timecode origin",
+    "model output or model/native comparison"
+  ]
+}

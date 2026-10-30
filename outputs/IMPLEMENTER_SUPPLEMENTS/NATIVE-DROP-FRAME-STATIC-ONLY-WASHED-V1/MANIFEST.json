@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1",
+  "status": "STATIC_DROP_FRAME_RULE_ACCEPTED; NATIVE_VECTOR_NOT_RUN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1435,
+      "sha256": "486d0676dbf6757a0e55ec52b05937530dfe10319799b753128023ff5725904f"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1234,
+      "sha256": "e84fbd2220e7c34a3c7f7bc4e8a06e0c803a117798007cfd890bfc430121912a"
+    },
+    {
+      "name": "STATIC-PREDICTION.json",
+      "bytes": 1102,
+      "sha256": "b53dab1cac00b57fd8f9bb2528d31f7da38df9beb83527f4fe01fe8ff3e2285d"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 761,
+      "sha256": "fc730f46eb319fcfde6e025426e5f6adda757d74968277b142c1bc209f8b58c4"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "native-drop-frame-static-wash.v1",
+  "source_package_id": "native-time-range-conversion-wash-v11",
+  "source_manifest_sha256": "c80784dc4e0006bcf1a247fb8fe85645ee7840fdbdc29200f68a7e622812c4cd",
+  "parent_wash_manifest_sha256": "16c4a929270d83697d0f0c1cc2c3479934e62ed06563b548818f684a7105dafe",
+  "timecode_form": "HH:MM:SS:FFdf",
+  "drop_frame_marker": "lowercase df at final two characters",
+  "rate_gate": "29.97 only",
+  "nominal_rate": 30,
+  "scale": "1001/1000",
+  "dropped_labels": "2 per minute except each tenth minute",
+  "invalid_labels": "FF=00 or 01 at SS=00 on non-tenth minutes",
+  "end_component_adjustment": "direct time position; no numeric +1",
+  "input_only_prediction": {
+    "start_token": "00:01:00:02df",
+    "end_token": "00:01:00:12df",
+    "start_frame_after_correction": 1800,
+    "end_frame_after_correction": 1810,
+    "start_sample": 2882880,
+    "end_sample_exclusive": 2898896,
+    "sample_count": 16016
+  },
+  "native_capture": "NOT_RUN",
+  "native_output": "NOT_CREATED",
+  "model_output": "NOT_RUN",
+  "implementation_ready_for_this_vector": false
+}

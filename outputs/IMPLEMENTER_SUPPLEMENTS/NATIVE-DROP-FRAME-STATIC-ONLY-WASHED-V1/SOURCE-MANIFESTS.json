@@ -1,0 +1,24 @@
+{
+  "schema": "native-drop-frame-static-washed-sources.v1",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v11",
+    "manifest_sha256": "c80784dc4e0006bcf1a247fb8fe85645ee7840fdbdc29200f68a7e622812c4cd",
+    "payloads": {
+      "NATIVE-DROP-FRAME-TIMECODE-STATIC-VECTOR.json": "96e0559f32761d1f169362534d7c88d55acd4eda908322a776ddd15b33bed3ad",
+      "README.md": "b823b504905f643b04bfca24cd6aad7b416716b935393220f5d8d4f7e2bcb2a1",
+      "verify_drop_frame_static_vector.py": "877dab58e7c6621e4cf4578a866bfb5a6f5740641b3170b9dfa7ec213ecfefe2"
+    }
+  },
+  "parent_wash_package": {
+    "package_id": "native-time-range-conversion-wash-v10",
+    "manifest_sha256": "16c4a929270d83697d0f0c1cc2c3479934e62ed06563b548818f684a7105dafe",
+    "scope": "non-drop HH:MM:SS:FF at 29.97, file-position only"
+  },
+  "opaque_static_report_digests": {
+    "drop_frame_parser": "8540353de5f4fe4823b57bfc61eb7bc2687f95dd034150e6332255f23307f29b",
+    "drop_frame_validation": "3f58beb9a6ae75715fb9fbd55d497e3079bede41ffffd5bf5aec5ea5686d2afa",
+    "active_range_writer": "5288231a0516553a96472e493d0bf0aca52b76a42a3a8dc6817201599607b979"
+  },
+  "native_capture": "NOT_RUN",
+  "raw_source_or_decompilation_copied": false
+}
