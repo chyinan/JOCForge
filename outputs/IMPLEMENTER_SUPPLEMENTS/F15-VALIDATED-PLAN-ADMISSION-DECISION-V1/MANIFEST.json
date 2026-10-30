@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F15-VALIDATED-PLAN-ADMISSION-DECISION-V1",
+  "status": "PRIVATE_PLAN_CONTRACT_APPROVED; OWNER_LOADERS_AND_OUTPUT_EXECUTION_NOT_RUN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 3639,
+      "sha256": "c8545f08e5fd7dcd2964c846241f0490a9d0ef6eb78145ee67d2383b02244844"
+    },
+    {
+      "name": "INPUT-ONLY.json",
+      "bytes": 1290,
+      "sha256": "8ae8396f9dacb0f090a2cca87f800c733f7445538dc3c828fd8896bfa869d492"
+    },
+    {
+      "name": "ROLE-MATRIX.json",
+      "bytes": 4810,
+      "sha256": "81ede235ad73c0d644906ee1508158963ad7f7fe99338da8500158402ad0143d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 3898,
+      "sha256": "d2639aa0642693d1dca459dec5ac2d6ffc5addcdf4b11159287bd8f48b2cdd3a"
+    },
+    {
+      "name": "WASH-DECISION.json",
+      "bytes": 2955,
+      "sha256": "77cd18fd61b33e5d4383f5c066500ca12950b8959b57ba98eeccb7ddfc22f2fd"
+    }
+  ]
+}

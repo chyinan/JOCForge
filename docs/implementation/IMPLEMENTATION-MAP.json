@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1679379,
-              "sha256": "a08078440d36d4dac5e383e6956d204575ddb419475017b1fb8fb47a4ca64fb2"
+              "bytes": 1685938,
+              "sha256": "854cc379fc5df46a6ebdfdf46ef36738f0aa1ee9e7b1411342a3fba8e3976e25"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1679379,
-              "sha256": "a08078440d36d4dac5e383e6956d204575ddb419475017b1fb8fb47a4ca64fb2"
+              "bytes": 1685938,
+              "sha256": "854cc379fc5df46a6ebdfdf46ef36738f0aa1ee9e7b1411342a3fba8e3976e25"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -27005,8 +27005,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 27888,
-              "sha256": "7529a1af6e261ec3eb65c9be2243c79d64c784d443ce83e907952935b31da507"
+              "bytes": 27906,
+              "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/tests.rs",
@@ -29167,8 +29167,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 27888,
-              "sha256": "7529a1af6e261ec3eb65c9be2243c79d64c784d443ce83e907952935b31da507"
+              "bytes": 27906,
+              "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
             }
           ],
           "test_inventory": [
@@ -29316,8 +29316,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1679379,
-              "sha256": "a08078440d36d4dac5e383e6956d204575ddb419475017b1fb8fb47a4ca64fb2"
+              "bytes": 1685938,
+              "sha256": "854cc379fc5df46a6ebdfdf46ef36738f0aa1ee9e7b1411342a3fba8e3976e25"
             }
           ],
           "test_inventory": [
@@ -29946,6 +29946,147 @@
             "implementation_disposition_package_id": "NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2",
             "implementation_disposition_manifest_sha256": "6335614fb3e70460d164b33a23eb0924c6b16b4973dcc5a5c18cb7c06bac9be1"
           }
+        },
+        {
+          "slice_id": "private-plan-admission-and-destination-capability",
+          "mapping_status": "MATERIALIZED_PRIVATE_F15_PLAN_AND_PRE_IO_DESTINATION_GATE__ROLE_VALIDATORS_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_PRIVATE_PLAN_TYPE_AND_REJECTION_BOUNDARIES__PRODUCTION_PLAN_NOT_RUN",
+          "scope": "Adds a private parent-owned ValidatedEncodingPlan aggregate with four distinct role-typed handles that retain Arc-backed actual typed values, bind the same PreparedJobInputIdentity, all six selected EncodingProfile dimensions, resolved profile/carriage and approved F15 dependency-manifest identity, and derive checked callback/source/AU/output-byte extents plus the selected OutputProvider projection internally. A private parent-issued destination capability binds programme, typed AttemptId, distinct staging owner, exact normalized final destination identity, distinct staging namespace and NoOverwrite policy. Pre-I/O admission rejects missing roles/capability and identity/profile/carriage/manifest/count mismatches. Concrete owner validator handle issuers and destination validation are not integrated; no production plan, OutputOwner, READY transition, or filesystem operation occurs.",
+          "owner": "output",
+          "implementation_requirement": true,
+          "dependencies": [],
+          "implementation_files": [
+            "crates/jocforge-application/src/output_publication.rs",
+            "crates/jocforge-application/src/output_publication/f15_plan_admission.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/output_publication.rs",
+              "bytes": 27906,
+              "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
+            },
+            {
+              "path": "crates/jocforge-application/src/output_publication/f15_plan_admission.rs",
+              "bytes": 31184,
+              "sha256": "859f978c30eab2a367e794bacd727e692236e645c061a39fdae1c5752d466d6b"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-application/src/output_publication/f15_plan_admission.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-application/src/output_publication/f15_plan_admission.rs",
+              "bytes": 31184,
+              "sha256": "859f978c30eab2a367e794bacd727e692236e645c061a39fdae1c5752d466d6b"
+            }
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "ProgrammeId",
+              "PreparedJobInputIdentity",
+              "ResolvedEncodingProfile",
+              "EmdfCarriageProfile",
+              "AttemptId",
+              "StagingOwnerId",
+              "NormalCallbackCount",
+              "CodecSourceIndex",
+              "PublishedAuIndex",
+              "OutputByteCount"
+            ],
+            "covered_clauses": [
+              "All four owner-role handles must bind the exact same input identity Arc, programme, profile dimensions/resolution, carriage and F15 dependency identity.",
+              "The parent derives callback/source/AU counts from the admitted sample count and checks output byte extent multiplication.",
+              "The private destination capability binds the current programme/attempt/staging owner, final destination identity and distinct staging namespace under NoOverwrite policy.",
+              "Stage, durable IO, final exposure receipts, OutputOwner construction, READY install and product encode are not run by plan admission."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F15_PRIVATE_PLAN_ADMISSION_DECISION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/ROLE-MATRIX.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "524d14c69f27f4b1b56a38c166423bd56bc308fe23209f28b1a3bc1a3355b145",
+            "selected_profile_architecture_sha256": "3946d83d245c7acac13aff36d32e14ece5debf9051bada07ee0b1214f912ed4b",
+            "selected_f15_dependency_manifest_sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce",
+            "plan_admission_roles": [
+              "codec/F12",
+              "joc/F05JL",
+              "f13/metadata",
+              "f14/integrity"
+            ],
+            "runtime_loader_receipts": 0,
+            "validation_boundary": "Typed private scaffold only; concrete owner value admissions and normalized destination capability issuer are not integrated."
+          },
+          "vectors": {
+            "kind": "WASH_INPUT_ONLY_PLAN_AND_DESTINATION_ADMISSION_CASES_PLUS_LOCAL_GATE_TESTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/INPUT-ONLY.json",
+              "crates/jocforge-application/src/output_publication/f15_plan_admission.rs"
+            ],
+            "case_pointers": [
+              "Local tests reject each missing role, prepared-input mismatch, profile/carriage/dependency mismatch, destination absence/attempt/staging mismatch and checked count overflow.",
+              "The private plan derives the selected output projection and checked counts in synthetic test scope only.",
+              "Wash input-only cases are not reported as executed provider loaders, destination validation, OutputOwner construction, or filesystem I/O."
+            ],
+            "expected_outputs_included": true,
+            "supplement_manifest_sha256": "524d14c69f27f4b1b56a38c166423bd56bc308fe23209f28b1a3bc1a3355b145"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "F15PlanAdmissionError::MissingOwnerAdmission",
+              "category": "owner provider admission boundary",
+              "trigger": "Any of codec/F12, JOC/F05JL, F13/metadata, or F14/integrity typed actual-value handles is absent.",
+              "programme_state_after": "No ValidatedEncodingPlan or output proposal is returned.",
+              "caller_action": "Stop before OutputOwner construction or I/O; invoke the missing owner validator first."
+            },
+            {
+              "error_code": "F15PlanAdmissionError::{ProgrammeIdentityMismatch,PreparedInputIdentityMismatch,ProfileDimensionMismatch,ResolvedProfileMismatchForRole,CarriageMismatch,DependencyManifestMismatch}",
+              "category": "shared input/profile authority binding",
+              "trigger": "An owner admission handle is bound to a different programme, input Arc identity, selected profile dimensions/resolution, carriage, or F15 dependency manifest.",
+              "programme_state_after": "No ValidatedEncodingPlan or output proposal is returned.",
+              "caller_action": "Reject the complete admission and rerun the owning validator from the same parent input."
+            },
+            {
+              "error_code": "F15PlanAdmissionError::{DestinationCapabilityMissing,DestinationProgrammeMismatch,DestinationAttemptMismatch,DestinationStagingOwnerMismatch,InvalidFinalDestinationIdentity,InvalidStagingNamespace,DestinationAndStagingAlias}",
+              "category": "pre-I/O destination authority binding",
+              "trigger": "The parent-issued destination capability is absent, cross-bound, empty, aliased to staging, or not bound to the current attempt and staging owner.",
+              "programme_state_after": "No ValidatedEncodingPlan or output proposal is returned; no filesystem mutation occurs.",
+              "caller_action": "Validate the existing output request and reserve a distinct staging namespace before retrying admission."
+            },
+            {
+              "error_code": "F15PlanAdmissionError::{ZeroSampleCount,ArithmeticOverflow}",
+              "category": "checked programme extent derivation",
+              "trigger": "The admitted sample count is zero or programme/source/AU/output-byte arithmetic overflows.",
+              "programme_state_after": "No dynamic extent or ValidatedEncodingPlan is returned.",
+              "caller_action": "Reject before OutputOwner construction or I/O."
+            }
+          ],
+          "not_run": [
+            "Codec/F12, JOC/F05JL, F13/metadata and F14/integrity runtime value loaders and owner-issued production handle creation.",
+            "Destination normalization/validation execution and production destination-capability issuance.",
+            "Production ValidatedEncodingPlan construction from actual loaded values.",
+            "OutputOwner construction, GTC READY swap, filesystem operations, durable/exposure receipts, product encode and whole-chain acceptance."
+          ],
+          "validation_boundary": "This slice creates only private type/rejection scaffolding with synthetic unit tests. Production readiness remains disabled until real owner validators and destination validation issue typed values.",
+          "native_status": {
+            "status": "LOCAL_PRIVATE_PLAN_TYPES_AND_PRE_IO_REJECTION_TESTED_PRODUCTION_ADMISSIONS_NOT_RUN",
+            "production_role_handle_issuers": "NOT_INTEGRATED",
+            "production_destination_capability_issuer": "NOT_INTEGRATED",
+            "production_plan_construction": "NOT_RUN",
+            "output_owner_construction": "NOT_RUN",
+            "filesystem_io": "NOT_RUN",
+            "production_allowed": false,
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -32409,8 +32550,8 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-application/src/output_publication.rs",
-          "bytes": 27888,
-          "sha256": "7529a1af6e261ec3eb65c9be2243c79d64c784d443ce83e907952935b31da507"
+          "bytes": 27906,
+          "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
         },
         {
           "path": "crates/jocforge-application/src/output_publication/tests.rs",

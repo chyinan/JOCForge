@@ -1,0 +1,52 @@
+{
+  "schema": "f15-validated-plan-admission-decision-sources.v1",
+  "reverse_crosswalk_package": {
+    "package_id": "output-owner-provider-admission-and-destination",
+    "manifest_sha256": "254c26b2488851f358ae01a0f53ce96b27ad599a231a677057bd214dd6ca2503",
+    "payloads": {
+      "DESTINATION.md": "9f911d53e1f15c7f2d0477f32addf525516c731cdd0e0311cddd8962a6f45659",
+      "INPUT-ONLY.json": "8ae8396f9dacb0f090a2cca87f800c733f7445538dc3c828fd8896bfa869d492",
+      "REPORT.md": "8b0aa3c420ce3ba95c4e3aafa62f74ee46512406e45d0ed84a6846009f2aca66",
+      "ROLE-MATRIX.json": "81ede235ad73c0d644906ee1508158963ad7f7fe99338da8500158402ad0143d",
+      "SOURCES.json": "dfe5f27502aeead05a52eaae2ccf4792509a5945f2fbeab8f29112f6fafae7f9",
+      "VERIFICATION.json": "8a11080c945db025ba0666caa7faf30e254a123f1ea6afe0a258d13c530e7bad"
+    },
+    "source_checker": "NOT_INCLUDED; Wash recomputed listed payload hashes and selected source asset hashes"
+  },
+  "approved_f15_and_output_contracts": [
+    {"package_id":"F15-OUTPUT-PROVIDER-PLAN-BINDING-V1","manifest_sha256":"b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2","payloads":"5/5 MATCH"},
+    {"package_id":"F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1","manifest_sha256":"db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31","payloads":"4/4 MATCH"},
+    {"package_id":"F15-PRODUCTION-OUTPUT-API-GATE-V1","manifest_sha256":"954da54ae20ca9288eb00c736ef28ac5dd39870334cc091ad1eef6a7c7eac388","payloads":"4/4 MATCH"},
+    {"package_id":"OUTPUT-ROOT-GTC-PARENT-BINDING-V1","manifest_sha256":"2101f9c29c663ef53c1629c943e1fc474cc16cf2cac484013399facf2cc7f88f","payloads":"4/4 MATCH"},
+    {"package_id":"OUTPUT-ATTEMPT-IDENTITY-BINDING-V1","manifest_sha256":"4213be803667406082571ece3d7e7dc0c22694796e6bca13242fc60addbf63f6","payloads":"3/3 MATCH"},
+    {"package_id":"PREPARED-JOB-INPUT-IDENTITY-V1","manifest_sha256":"4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f","payloads":"2/2 MATCH"}
+  ],
+  "selected_provider_inventory": {
+    "file": "outputs/IMPLEMENTER_PACKAGE/parameters/keyless-publication-providers-v1.json",
+    "sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce",
+    "entries": 25,
+    "classification": {"specs": 9, "runtime_parameter_files": 3, "cross_module_index": 1, "test_review_vectors": 10, "context_documents": 2}
+  },
+  "selected_profile_dimensions": {
+    "file": "D:/Programs/JOCForge-isolated/docs/architecture/PROFILE-DIMENSIONS.md",
+    "sha256": "3946d83d245c7acac13aff36d32e14ece5debf9051bada07ee0b1214f912ed4b",
+    "status": "tracked, current architecture document"
+  },
+  "owner_provider_value_hashes": {
+    "codec_wire_selected": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+    "public_bap_48k": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+    "live_joc_coordinator": "d66eca446693535cf3a9fc1177a0e31a41dc9f3b6cffaaa42e79672fb0862e3b",
+    "joc_functional_authorized": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747",
+    "joc_huffman": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae",
+    "joc_timer_order": "b425f8dffc0d914d660c46bcce5226c80d5fc680ab7c7f02e590fd6f889cb50b",
+    "f13_emdf_timeline": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+    "f13_id2_profile_metadata": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc",
+    "f14_checksum_profile": "830a8a9b92a5819a5fde3363f0667bf8da204c277690c8289be439de85371382",
+    "f14_public_provider": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d"
+  },
+  "gtc_v3_local_adoption": {
+    "package_id": "GTC-METERING-READY-OWNER-AVAILABILITY-LOCAL-V3",
+    "manifest_sha256": "d55a4de579dcb94ef1bf1f46e59547a21398bea8f2f11e368081cba0ac62764a",
+    "v2_manifest_preserved": "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "output-owner-provider-admission-inputs.v1",
+  "input_only": true,
+  "cases": [
+    {"id": "valid_plan_admission", "prepared_input": "same admitted programme/resource/config/N", "profile": "actual owner-resolved typed value", "carriage": "deployed_compat", "role_handles": ["codec", "F05-JOC", "F13", "F14"], "destination": "parent-validated"},
+    {"id": "manifest_hash_without_values", "manifest_identity_valid": true, "actual_parameter_handles": false},
+    {"id": "fixture_receipt_only", "production_allowed": false, "provider_execution": null},
+    {"id": "missing_role_handle", "missing_role": "F14"},
+    {"id": "profile_mismatch", "prepared_and_resolved_profile_equal": false},
+    {"id": "carriage_mismatch", "plan_carriage": "deployed_compat", "output_projection_carriage": "etsi_emdf"},
+    {"id": "cross_attempt_owner", "programme_attempt": 2, "output_attempt": 1},
+    {"id": "same_attempt_cross_programme", "attempt_equal": true, "programme_equal": false},
+    {"id": "unvalidated_destination", "destination_capability": null},
+    {"id": "runtime_receipt_at_plan_time", "source_transaction_executed": false, "source_receipt": null},
+    {"id": "source_stage_receipts", "source": 2, "receipts": "actual same-source outputs only"}
+  ],
+  "execution": "NOT_RUN"
+}

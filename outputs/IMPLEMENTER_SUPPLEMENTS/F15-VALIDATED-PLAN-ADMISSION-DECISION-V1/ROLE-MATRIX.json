@@ -1,0 +1,52 @@
+{
+  "schema": "selected-output-provider-role-matrix.v1",
+  "plan_admission_roles_from_f15": ["codec", "joc", "f13", "f14"],
+  "roles": [
+    {
+      "role": "codec/F12",
+      "runtime_value_sources": [
+        {"asset": "parameters/codec-wire-selected-v1.json", "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd", "kind": "selected codec constants"},
+        {"asset": "parameters/public-bap-48k-v1.json", "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3", "kind": "BAP tables"}
+      ],
+      "additional_source_index": {"asset": "parameters/codec-wire-cross-module-providers-v1.json", "sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d", "kind": "dependency index; not values or receipt"},
+      "validator_owner": "F12/provider installation for tables and selected profile; exact unified admission result schema absent",
+      "admission_check": "actual selected codec constant set and complete BAP tables match the validated profile and owning F12 constraints",
+      "runtime_receipt_stage": "actual source NumericPlan/codec candidate and accepted owned 4096-byte frame are produced later per source"
+    },
+    {
+      "role": "joc/F05JL",
+      "runtime_value_sources": [
+        {"asset": "parameters/live-joc-coordinator-v1.json", "sha256": "d66eca446693535cf3a9fc1177a0e31a41dc9f3b6cffaaa42e79672fb0862e3b", "kind": "selected coordinator parameters"},
+        {"asset": "parameters/joc-functional-authorized-v1.json", "sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747", "kind": "authorized selected functional parameters"},
+        {"asset": "parameters/joc-huffman-v1.json", "sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae", "kind": "six Huffman and position tables"}
+      ],
+      "validator_owner": "F05/F05JL parameter installation; F05QH checks all six complete tables and F05JL receipts bind provider/case/generation/shape",
+      "admission_check": "complete selected profiles, dimensions, capacities/maps and code tables are actually materialized and pass their owner validators",
+      "runtime_receipt_stage": "six actual F05JL stage receipts and owned ID14 body are generated during each successful dispatch; do not require a future source receipt to build the admission plan"
+    },
+    {
+      "role": "f13/metadata",
+      "runtime_value_sources": [
+        {"asset": "parameters/joc-timer-order-v1.json", "sha256": "b425f8dffc0d914d660c46bcce5226c80d5fc680ab7c7f02e590fd6f889cb50b", "kind": "timer and selected timeline values"},
+        {"asset": "specs/13-emdf-and-timeline.md", "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd", "kind": "carriage/config rules"},
+        {"asset": "specs/13-id2-profile-metadata.md", "sha256": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc", "kind": "selected ID2 body rules"}
+      ],
+      "validator_owner": "F13 parameter/wrapper validator; no unified static admission receipt schema found",
+      "admission_check": "timer periods/maps/state params and fixed selected carriage/wrapper policy are validated; selected F13 owner contract is consistent with selected profile",
+      "runtime_receipt_stage": "ID1 timer proposal, four producer bodies, queue operations, popped lineage, protected EMDF and source receipt are generated at actual source calls"
+    },
+    {
+      "role": "f14/integrity",
+      "runtime_value_sources": [
+        {"asset": "specs/14-keyless-checksum-profile.md", "sha256": "830a8a9b92a5819a5fde3363f0667bf8da204c277690c8289be439de85371382", "kind": "public CRC32/CRC8/CRC16 rules"},
+        {"asset": "IMPLEMENTER_SUPPLEMENTS/INTEGRITY-OWNER-ROOT-V1/integrity-public-provider.json", "sha256": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d", "kind": "public selected checksum provider"}
+      ],
+      "validator_owner": "F14/integrity provider validator; stage receipt schema exists for actual frame processing",
+      "admission_check": "exact selected public keyless profile is supported and matches carriage/codec contract; private authentication profile is rejected",
+      "runtime_receipt_stage": "actual integrity stages are evaluated for each completed frame and remain provisional until parent source commit"
+    }
+  ],
+  "non_receipt_inventory_classes": ["specification files", "expected outputs", "test inputs", "review status", "cross-module indexes", "fixture validation receipts marked production_allowed=false"],
+  "pre_admission_vs_runtime": "Static provider values/handles are validated before plan/output construction. Source/dispatch/frame/durable receipts are emitted only when their actual owner executes.",
+  "unified_provider_admission_receipt_schema": "NOT_DEFINED_IN_INSPECTED_F15_CONTRACT"
+}

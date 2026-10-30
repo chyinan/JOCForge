@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-wash-plan-admission-decision.v1",
+  "package_id": "F15-VALIDATED-PLAN-ADMISSION-DECISION-V1",
+  "decision": "APPROVE_MINIMAL_PRIVATE_PLAN_AND_DESTINATION_CAPABILITY_CONTRACT",
+  "plan_admission_roles": ["codec", "joc", "f13", "f14"],
+  "validated_encoding_plan": {
+    "owner": "trusted programme parent",
+    "must_bind": ["PreparedJobInputIdentity", "all six owner-resolved EncodingProfile dimensions", "selected carriage", "approved F15 dependency manifest", "four typed owner-issued provider admission handles", "checked dynamic counts", "privately derived F15 OutputProvider projection and SHA"],
+    "receipt_rule": "role-specific owner-issued typed values/handles with actual loaded immutable values and validation context; never a generic caller-forgeable PASS token or manifest-only receipt",
+    "private_local_aggregate_allowed": true,
+    "runtime_stage_receipts_pre_minted": false
+  },
+  "destination_capability": {
+    "owner": "trusted programme parent via existing output destination input boundary",
+    "must_bind": ["programme ID", "typed U64 AttemptId", "distinct staging-owner/namespace", "exact normalized final-destination identity", "existing no-overwrite policy"],
+    "validation_before_io": true,
+    "opaque_private_capability_allowed": true,
+    "filesystem_durability_receipt": "issued only by IO shell after actual writes/readback/fsync/rename/exposure operations",
+    "extra_symlink_acl_cross_volume_or_crash_guarantees": false
+  },
+  "implementation_scope": {
+    "allowed_now": [
+      "private ValidatedEncodingPlan type and parent-only constructor that requires same PreparedJobInput identity, owner-resolved profile/carriage, F15 manifest identity, and the four owner-issued provider admission handles",
+      "pre-I/O rejection for missing/failed role handles, identity/profile/carriage mismatch, attempt/staging/destination mismatch, and checked arithmetic failure",
+      "private destination-capability handoff from the existing output-request boundary, bound to programme, typed attempt, staging namespace and existing no-overwrite policy"
+    ],
+    "not_allowed": [
+      "mint provider admissions from manifest hashes, specs, test vectors or generic PASS booleans alone",
+      "pre-mint source-stage/durable IO receipts",
+      "construct or publish a production OutputOwner or enable filesystem writes until actual role validators and destination validation produce the required typed values",
+      "claim native behavior, production READY, or whole-chain readiness from type-only work"
+    ]
+  },
+  "not_closed": [
+    "owner-specific concrete admission result types/handles and runtime loader integration",
+    "production plan construction and validation",
+    "destination validation execution and concrete IO-owner result",
+    "OutputOwner construction, READY installation, filesystem IO, and product encode"
+  ],
+  "production_allowed": false,
+  "whole_chain_ready": false
+}

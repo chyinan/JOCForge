@@ -1,7 +1,6 @@
 // pattern: Imperative Shell
 //! Joins the current metadata and complete-frame proposals into one output-owner proposal.
 
-#[cfg(any(test, feature = "test-support"))]
 use jocforge_domain::profile::EmdfCarriageProfile;
 use jocforge_domain::profile::ResolvedEncodingProfile;
 use jocforge_domain::publication::OutputProvider;
@@ -40,7 +39,6 @@ pub struct SelectedOutputProviderProjection {
 }
 
 impl SelectedOutputProviderProjection {
-    #[cfg(any(test, feature = "test-support"))]
     fn project_selected_f15_output_provider(
         profile: ResolvedEncodingProfile,
     ) -> Result<Self, OutputRootBindingError> {
@@ -74,11 +72,14 @@ impl SelectedOutputProviderProjection {
     }
 }
 
-#[cfg(any(test, feature = "test-support"))]
 const DEPLOYED_COMPAT_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"deployed_compat\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
 
-#[cfg(any(test, feature = "test-support"))]
 const ETSI_EMDF_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"etsi_emdf\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
+
+// This contract scaffold stays private and unwired until role validators and the destination
+// validator produce the required typed values/capability.
+#[allow(dead_code)]
+mod f15_plan_admission;
 
 use super::PreparedJobInput;
 
