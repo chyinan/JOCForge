@@ -264,6 +264,7 @@
 | F06OF/washed-f06of-producer-join-status-and-receipt-hold | F06OF | `meter` |
 | F06OF/selected-pcm24-read-chunk-decoder | F06OF | `io` |
 | F06OF/prepared-adm-physical-pcm-row-cursor-binding | F06OF | `application` |
+| F06OF/fresh-zero-meter-drain-frontend-stage | F06OF | `application` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |

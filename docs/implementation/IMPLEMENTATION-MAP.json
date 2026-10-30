@@ -8312,8 +8312,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1606212,
-              "sha256": "366a5011f12083c02bf606fa662d6bb76625dc75b13c99495b400e779eac2a5a"
+              "bytes": 1610759,
+              "sha256": "f2653711f55d99d0b5867a823c41dbadd1f8527556b6932d421b9d455f9066d5"
             }
           ],
           "test_modules": [
@@ -11825,8 +11825,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1606212,
-              "sha256": "366a5011f12083c02bf606fa662d6bb76625dc75b13c99495b400e779eac2a5a"
+              "bytes": 1610759,
+              "sha256": "f2653711f55d99d0b5867a823c41dbadd1f8527556b6932d421b9d455f9066d5"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -15279,6 +15279,130 @@
             "No GTC meter/output root, top-level source transaction or product encode is committed."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "fresh-zero-meter-drain-frontend-stage",
+          "mapping_status": "MATERIALIZED_WASHED_LOCAL_F06OF_FRESH_ZERO_FRONTEND_PACKET_RULE__NATIVE_JOIN_OPEN",
+          "implementation_status": "LOCAL_FRESH_ZERO_CALLBACK_STAGE_PRESENT__SELECTED_Q_PLUS_3_OAR_SEQUENCE_NOT_RUN",
+          "scope": "The local F06OF contract requires each of the three Meter DRAIN deliveries g=Q..Q+2 to keep source cursor N, form a fresh positive-zero 38x1536 raw frame, run the full frontend/spatial/OAR proposal chain and produce fresh same-generation feature and target-control values. The implementation creates the held source-control view on the final normal callback, rebinds it to each drain delivery, computes fresh Installed48/features from the zero frame, then passes the new rendered proposal through the Meter spatial/OAR stage. The held F01E source snapshot is provenance/input control only; per METER-DRAIN-SOURCE-CONTROL-HOLD-V1, derived target controls and spatial/output state are recomputed. This row records a local model path, not a native drain join or a full selected Q+3 execution.",
+          "owner": "application",
+          "implementation_requirement": true,
+          "dependencies": [
+            "prepared-adm-physical-pcm-row-cursor-binding",
+            "meter-source-oar-callback-handoff"
+          ],
+          "implementation_files": [
+            "crates/jocforge-application/src/independent_meter_callback.rs",
+            "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+            "crates/jocforge-domain/src/meter/installed48_renderer.rs",
+            "crates/jocforge-domain/src/spatial/frontend_stages.rs",
+            "crates/jocforge-domain/src/spatial/production_callback.rs",
+            "crates/jocforge-domain/src/spatial/source_flags.rs",
+            "crates/jocforge-domain/src/spatial/source_geometry_outer.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/independent_meter_callback.rs",
+              "bytes": 62158,
+              "sha256": "cf73426977a0f4bc65a94a8747e560e958faff8b9816187bd204d2da1ace7bd4"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+              "bytes": 101357,
+              "sha256": "3587e70a81c0790861b61b1a4a5c22341b87034b9c911921a81f1056b5dcb258"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
+              "bytes": 24035,
+              "sha256": "4c4c383554e97826e48f68e0bdde30652c3f2cacadd1233e7ca27adb8e7d7b79"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/frontend_stages.rs",
+              "bytes": 18217,
+              "sha256": "83b918d784ffb0bca31b2cb52e989a1409d22c3b45267050dd229bb1c1bc5f2b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/production_callback.rs",
+              "bytes": 52509,
+              "sha256": "63f679a7dd7dd5a71c97f527b58ab5d77cecd65381f4cfdbd09eb43fc0be0cf5"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
+              "bytes": 66664,
+              "sha256": "8f1f7cde44a23417f10cce1b3d739dc4643cfa4483679a6f5aad08dbf35c4441"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
+              "bytes": 41516,
+              "sha256": "e15d84c3e645d70c1c51f92f6491558bae42b632c0c057c4ce2562e3b36e865e"
+            }
+          ],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "MeterCallbackIndex",
+              "FrontendCallbackIndex",
+              "NormalCallbackCount",
+              "MeterSourcePosition",
+              "MeterSourceReadIndex",
+              "CallbackLineageIdentity",
+              "SourceControlSnapshotClock"
+            ],
+            "covered_clauses": [
+              "Q normal callbacks precede drains at g=Q,Q+1,Q+2.",
+              "Each drain leaves source cursor and successful-read index unchanged at N/Q.",
+              "The F01E source-control origin is Q-1; delivery generation is the current drain g.",
+              "Each drain uses a fresh zero 38x1536 raw frame while frontend_samples remains 1536.",
+              "Fresh feature and target-control outputs are current-generation values; they are not copied from a prior drain packet.",
+              "The native source/event-owner to drain packet to OAR same-run generation join is UNBOUND."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_F06OF_LOCAL_METER_DRAIN_RULE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-DRAIN-METADATA-LOCAL-RULE-NATIVE-CALL-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-DRAIN-METADATA-LOCAL-RULE-NATIVE-CALL-BOUNDARY-V2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-DRAIN-METADATA-LOCAL-RULE-NATIVE-CALL-BOUNDARY-V2/DRAIN-METADATA-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-DRAIN-METADATA-LOCAL-RULE-NATIVE-CALL-BOUNDARY-V2/SOURCE-BINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-DRAIN-METADATA-LOCAL-RULE-NATIVE-CALL-BOUNDARY-V2/WASHED-SUMMARY.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRAIN-SOURCE-CONTROL-HOLD-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRAIN-SOURCE-CONTROL-HOLD-V1/CONTRACT.md"
+            ],
+            "supplement_manifest_sha256": "335b1a9f2a1007c033a3f821e769c6b8ed7c6a394bb0453e00a9de74d5d3e537",
+            "source_package_manifest_sha256": "9949acae6775b4b73bcd511e35fd89bb67306b33aa8103a559ff1bc70e8e6662",
+            "source_control_hold_manifest_sha256": "c64eff3db5f596c620c2f8cefb3eeb48aa15a08d1a7c66fb330392b2eaf0ebbc",
+            "validation_boundary": "Wash local model rule plus current code path only; selected Q+3 F06OF producer execution and native packet-owner join remain NOT_RUN/UNBOUND."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_INPUT_ONLY_F06OF_DRAIN_RULE_NO_RUNTIME_EXPECTED_PACKET",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-DRAIN-METADATA-LOCAL-RULE-NATIVE-CALL-BOUNDARY-V2/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Three drain callbacks each create new zero input and rerun the frontend; the prior F01E source snapshot remains the origin.",
+              "Current target controls and spatial/OAR outputs are recomputed per drain.",
+              "The package does not decide raw ADM event-snapshot reinstall versus retention and does not join native zero-length submissions to the source-empty callback."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "335b1a9f2a1007c033a3f821e769c6b8ed7c6a394bb0453e00a9de74d5d3e537"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Full selected 4247-normal plus three F06OF frontend/spatial/OAR drain sequence and same-generation packet receipts.",
+            "Native event/control owner token to DRAIN packet to OAR/F06OC consumer join.",
+            "Production 12-owner GTC READY swap, AU, output, W04, decode and listening."
+          ],
+          "validation_boundary": "The code path is locally present but this slice has no direct full-drain runtime test. Native call identities are not inferred from the package; F06OF drain metadata joins remain unbound.",
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "native_status": {
+            "status": "LOCAL_MODEL_DRAIN_CONTRACT_PRESENT_NATIVE_METADATA_JOIN_OPEN",
+            "fresh_zero_input_and_frontend_packet": "LOCAL_RULE_WASHED; SELECTED_Q_PLUS_3_EXECUTION_NOT_RUN",
+            "same_run_event_owner_to_oar_generation_join": "UNBOUND",
+            "native_zero_length_submissions_to_fresh_zero_callback_generation": "UNBOUND",
+            "product_parent_swap": "NOT_RUN"
+          }
         }
       ]
     },
@@ -27948,8 +28072,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1606212,
-              "sha256": "366a5011f12083c02bf606fa662d6bb76625dc75b13c99495b400e779eac2a5a"
+              "bytes": 1610759,
+              "sha256": "f2653711f55d99d0b5867a823c41dbadd1f8527556b6932d421b9d455f9066d5"
             }
           ],
           "test_inventory": [

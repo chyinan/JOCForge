@@ -1,0 +1,11 @@
+{
+  "schema": "washed-f06of-drain-boundary.v1",
+  "source_manifest_sha256": "9949acae6775b4b73bcd511e35fd89bb67306b33aa8103a559ff1bc70e8e6662",
+  "status_payload_sha256": "174566d296b643539543d1179a32be3fcc12e63aef88c9d762ed7f0761419365",
+  "vectors_sha256": "1b52af65fd6830fde9f558a3cab3941934154597164977fb225d0dc9fdd00bdb",
+  "normal_checker": "PASS",
+  "optimized_checker": "PASS",
+  "native_drain_metadata_owner_join": "NOT_CAPTURED",
+  "meter_production_root_commit": "NOT_RUN",
+  "raw_pcm_or_secret_forwarded": false
+}

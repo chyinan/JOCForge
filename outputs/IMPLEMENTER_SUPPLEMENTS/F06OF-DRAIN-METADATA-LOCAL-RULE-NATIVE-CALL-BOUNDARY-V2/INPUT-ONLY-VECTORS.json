@@ -1,0 +1,31 @@
+{
+  "schema": "meter-drain-metadata-input-only.v1",
+  "cases": [
+    {
+      "id": "F06OF_DRAIN_FRESH_PACKET",
+      "input": "g>=Q; raw38x1536 newly zeroed; cursor=N",
+      "expected": "advance all frontend stages and produce fresh SCP/control"
+    },
+    {
+      "id": "HOLD_LAST_SCP_CONTROL",
+      "input": "replace DRAIN producer execution with cached last SCP/control",
+      "expected": "forbidden by approved F06OF model contract"
+    },
+    {
+      "id": "NATIVE_ZERO_LENGTH_SUBMISSION",
+      "input": "channels=0,samples=0,input_call_generation=null",
+      "expected": "downstream submission only; no F06OF metadata identity inferred"
+    },
+    {
+      "id": "NATIVE_ZERO_SOURCE_CANDIDATE",
+      "input": "generation4248,source_count0,renderer6x1536",
+      "expected": "separate callback observation; no join to three finalizer submissions"
+    },
+    {
+      "id": "EQUAL_PAYLOAD_NO_OWNER_TOKEN",
+      "input": "normal and drain controls may compare equal",
+      "expected": "generation/owner remains unresolved without identity receipt"
+    }
+  ],
+  "status": "NOT_RUN"
+}

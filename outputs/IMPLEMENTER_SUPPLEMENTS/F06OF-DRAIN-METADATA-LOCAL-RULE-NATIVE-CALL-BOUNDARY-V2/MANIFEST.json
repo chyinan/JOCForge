@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "F06OF-DRAIN-METADATA-LOCAL-RULE-NATIVE-CALL-BOUNDARY-V2",
+  "status": "LOCAL_DRAIN_FRESH_PACKET_RULE_NATIVE_METADATA_JOIN_NOT_CAPTURED",
+  "source_package_manifest_sha256": "9949acae6775b4b73bcd511e35fd89bb67306b33aa8103a559ff1bc70e8e6662",
+  "files": [
+    {
+      "sha256": "174566d296b643539543d1179a32be3fcc12e63aef88c9d762ed7f0761419365",
+      "path": "DRAIN-METADATA-STATUS.json",
+      "bytes": 6032
+    },
+    {
+      "sha256": "1b52af65fd6830fde9f558a3cab3941934154597164977fb225d0dc9fdd00bdb",
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1123
+    },
+    {
+      "sha256": "8b03971ca74a6622f1b7c642744b3e3c44ccf271c24f8a4becc910ce0029eaea",
+      "path": "SOURCE-BINDING.json",
+      "bytes": 526
+    },
+    {
+      "sha256": "1521b6dd17f6b8a9bc10eafbe697f27c88bf660c9282c26d822e194bc7bacef3",
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 2825
+    }
+  ]
+}

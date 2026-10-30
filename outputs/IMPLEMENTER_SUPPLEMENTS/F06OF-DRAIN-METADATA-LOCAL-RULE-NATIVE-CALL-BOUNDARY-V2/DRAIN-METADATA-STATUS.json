@@ -1,0 +1,126 @@
+{
+  "schema": "meter-drain-metadata-installation-status.v1",
+  "local_METER_contract": {
+    "F06OF_fresh_zero": "For g>=Q, phase DRAIN; do not read source; cursor stays N; host_input_count=0; allocate fresh 38x1536 positive-zero raw frame; frontend_samples remains1536; advance the complete frontend stage sequence.",
+    "F06OF_packet": "Each callback forms a same-generation SCP16 (16x1536 finite F32) and control16 (16x13 U32) packet; generation=g+1; source controls/metadata are not inferred from zero PCM.",
+    "no_hold_last": "F06OF explicitly forbids repeating the last SCP/control instead of advancing the pipeline. Local model contract requires a freshly produced packet on every drain. Payload equality would not prove identity.",
+    "main_four_cached_drains": "F01E main encoder cached-drain snapshot rule is a distinct owner/clock and must not be substituted for Meter three-drain behavior.",
+    "metadata_installation_gap": "F06OF runs render/flags/feature/selector/finish/marker/metadata-history/component/LFE stages on each DRAIN, but F06W explicitly leaves the drain-time spatial metadata installation binding to the complete Meter frontend. Which event snapshot/producer generation is installed or retained at that boundary remains unresolved by the approved cross-stage receipts."
+  },
+  "existing_native_run": {
+    "source_identity": "native_meter_full_programme_wash receipt; same approved input/job identity; native WAV payload not read by this checker",
+    "source_callback_trace": {
+      "record_count": 4248,
+      "normal_source_records": 4247,
+      "last_source_callback_generation": 4247,
+      "source_callback_kinds": "SOURCE_INPUT",
+      "input_frame_shape": {
+        "rows": 38,
+        "samples": 1536
+      }
+    },
+    "one_source_empty_candidate": {
+      "generation": 4248,
+      "input_source_count": 0,
+      "requested_samples": 0,
+      "frontend_calls": 1,
+      "renderer_outputs": [
+        {
+          "channels": 6,
+          "samples": 1536
+        }
+      ],
+      "meter_input_sample_counts": {
+        "1536": 1
+      },
+      "capture_layer": "native meter outer callback trace"
+    },
+    "three_zero_length_meter_submissions": [
+      {
+        "submission_index": 4249,
+        "channels": 0,
+        "samples": 0,
+        "input_call_generation": null,
+        "integrated_owner_id": 1,
+        "finalizer_call": 1,
+        "getter_call": 1,
+        "records_before": 6692,
+        "records_after": 6794,
+        "histogram_events_before": 1335,
+        "histogram_events_after": 1355,
+        "state_before": {
+          "fnv1a32": "0x872d97ad",
+          "mix32": "0x7245c8a9"
+        },
+        "state_after": {
+          "fnv1a32": "0x3244ca45",
+          "mix32": "0x2698c139"
+        }
+      },
+      {
+        "submission_index": 4250,
+        "channels": 0,
+        "samples": 0,
+        "input_call_generation": null,
+        "integrated_owner_id": 1,
+        "finalizer_call": 2,
+        "getter_call": 2,
+        "records_before": 6794,
+        "records_after": 6794,
+        "histogram_events_before": 1355,
+        "histogram_events_after": 1355,
+        "state_before": {
+          "fnv1a32": "0x3244ca45",
+          "mix32": "0x2698c139"
+        },
+        "state_after": {
+          "fnv1a32": "0x3244ca45",
+          "mix32": "0x2698c139"
+        }
+      },
+      {
+        "submission_index": 4251,
+        "channels": 0,
+        "samples": 0,
+        "input_call_generation": null,
+        "integrated_owner_id": 1,
+        "finalizer_call": 3,
+        "getter_call": 3,
+        "records_before": 6794,
+        "records_after": 6794,
+        "histogram_events_before": 1355,
+        "histogram_events_after": 1355,
+        "state_before": {
+          "fnv1a32": "0x3244ca45",
+          "mix32": "0x2698c139"
+        },
+        "state_after": {
+          "fnv1a32": "0x3244ca45",
+          "mix32": "0x2698c139"
+        }
+      }
+    ],
+    "limits": {
+      "zero_length_submissions_generation_join": "UNBOUND_NULL",
+      "control_or_SCP_rows_captured": false,
+      "F01E_snapshot_or_event_owner_captured": false,
+      "PCM_sample_reads": 0,
+      "raw_PCM_serialized": false,
+      "same_run_link_between_source_empty_candidate_and_three_finalizer_submissions": false
+    }
+  },
+  "determination": {
+    "model_scope": "FRESH_FRONTEND_STAGE_EXECUTION_AND_NEW_SCP/CONTROL_PACKET_REQUIRED; HOLD_LAST_PACKET IS FORBIDDEN.",
+    "event_snapshot_value_policy": "The approved contract does not prove whether the raw ADM event snapshot itself is reinstalled or retained during those DRAIN callbacks. It does require producer execution and forbids reusing previous SCP/control as a substitute.",
+    "DEE_native_scope": "No native DRAIN control/metadata rows or owner-generation tokens were captured. The observed source-empty callback and the three downstream zero-length finalizer submissions are distinct trace events; their source callback generation join is absent.",
+    "exact_missing_edge": "Meter input/event-control owner -> DRAIN-stage marker/metadata-history producer -> generated control16/SCP16 owner -> OAR/F06OC packet consumer, with a same-attempt generation receipt.",
+    "minimum_next_observation": "One bounded same-run hook at the Meter frontend output packet and OAR/F06OC packet entry for last normal plus the three DRAIN callbacks. Record phase/generation, input_count and cursor, event/metadata owner token, control table owner+shape+bounded digest and packet token; do not read PCM. Separately correlate downstream zero-length DPLM calls through same owner/caller stack if they are claimed to be the same drains."
+  },
+  "approved_refs": [
+    "specs/06-oar-frontend-input-and-clock-join.md",
+    "specs/06-meter-window-and-output-clock.md",
+    "specs/06-meter-none-drc-whole-composition.md",
+    "specs/01-frontend-config-dbmd-events.md"
+  ],
+  "actual_Meter_prepass": "NOT_RUN_BY_THIS_SUBTASK"
+}
