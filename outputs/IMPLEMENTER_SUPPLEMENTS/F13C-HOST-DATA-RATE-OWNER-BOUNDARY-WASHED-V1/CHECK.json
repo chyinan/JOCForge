@@ -1,0 +1,12 @@
+{
+  "schema": "f13c-host-data-rate-owner-boundary-wash-check.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_STATIC_SCOPE",
+  "source_manifest_and_payload_hashes": "VERIFIED",
+  "host_task_field_static_registration": "OBSERVED",
+  "base_ddp_data_rate_setter": "OBSERVED_ON_SEPARATE_CONFIG_OBJECT",
+  "atmos_plugin_workflow_parameter_to_importer_record": "UNBOUND",
+  "importer_record_to_complexity_byte": "UNBOUND",
+  "controlled_native_pair": "NOT_RUN",
+  "partial_xsd_as_rejection_boundary": false,
+  "whole_f13c_readiness": false
+}

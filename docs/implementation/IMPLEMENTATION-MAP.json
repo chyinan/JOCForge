@@ -8886,8 +8886,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1752135,
-              "sha256": "fa5154463a70d66123d1c22c31ae69435a75171e46834ef7e4fee30c7839c534"
+              "bytes": 1751039,
+              "sha256": "a34283021c3abbedeb4c69fedcd3d1b0cd74966b7f88a923f736005d72ea436e"
             }
           ],
           "test_modules": [
@@ -12399,8 +12399,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1752135,
-              "sha256": "fa5154463a70d66123d1c22c31ae69435a75171e46834ef7e4fee30c7839c534"
+              "bytes": 1751039,
+              "sha256": "a34283021c3abbedeb4c69fedcd3d1b0cd74966b7f88a923f736005d72ea436e"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -29347,6 +29347,95 @@
             "whole_f13c_readiness": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "host-ddp-and-atmos-plugin-data-rate-owner-boundary",
+          "mapping_status": "HASH_BOUND_HOST_CONFIG_OWNER_SEPARATION__NATIVE_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_HOST_CONFIG_OWNERS_STATIC__IMPORTER_JOIN_UNBOUND",
+          "scope": "Static evidence identifies host route/profile registration and a job-template data_rate value, but the template is not runtime-validated. The base DDP setter writes its own core config object; the Atmos JOC plugin has a separate descriptor and caller-local workflow-parameter aggregate. No typed owner/generation join connects these surfaces to the Atmos importer count-like record or native BSI complexity byte. Equal field names do not establish identity. The bounded dactlib scan is not a global absence claim, and the partial XSD after plugin initialization failure is not a rejection boundary. Controlled native pair remains NOT_RUN.",
+          "owner": "metadata",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "HostTaskDataRate",
+              "BaseDdpCoreConfigObject",
+              "AtmosPluginConfigDescriptor",
+              "AtmosWorkflowParamsAggregate",
+              "AtmosImporterCountLikeRecord",
+              "NativeComplexityConfigurationByte",
+              "NativeOwnerGeneration",
+              "DEEJobTemplate"
+            ],
+            "covered_clauses": [
+              "Static host route and profile-table registration does not validate the inspected job template at runtime.",
+              "The base DDP data_rate setter writes a distinct core config object; the Atmos JOC plugin has a separate config descriptor and caller-local workflow parameter aggregate.",
+              "No typed owner/generation edge connects the host task field or plugin workflow parameters to importer count-like fields or the native complexity byte.",
+              "The bounded dactlib key scan is not a global absence claim.",
+              "The partial XSD after DDP plugin initialization failure is not a task-schema rejection boundary; the controlled native pair is NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_HOST_PLUGIN_CONFIG_TO_IMPORTER_COMPLEXITY_OWNER_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/CHECK.json"
+            ],
+            "supplement_manifest_sha256": "40117ff1663498ab0691fa9f1f7536c3f50a0defdaa3494a4b08147e72beeaec",
+            "source_package_manifest_sha256": "4fb1eac5e5076a11f9d363c9cbd1532a8ca4b7b88d0c673d899c3c5d644a5113",
+            "validation_boundary": "Bounded static configuration surfaces only; no runtime acceptance, same-run native owner lineage, valid rejection semantics, or product readiness is established."
+          },
+          "vectors": {
+            "kind": "F13C_HOST_CONFIG_OWNER_FOLLOWUP_INPUT_ONLY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "The base DDP setter and Atmos JOC plugin configuration surfaces are distinct owners.",
+              "The accepted-task → plugin config → importer record → complexity-byte same-execution capture remains NOT_RUN.",
+              "No inference from equal field names/values, partial XSD omissions, or bounded scan no-hit is permitted."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "40117ff1663498ab0691fa9f1f7536c3f50a0defdaa3494a4b08147e72beeaec"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Runtime validation of the inspected Atmos job template and its data_rate selection.",
+            "A controlled same-execution capture joining host task data_rate, both distinct configuration owners, importer record, complexity byte, and owner/generation lineage.",
+            "A valid task-schema rejection boundary or global absence determination from the partial XSD and bounded key scan.",
+            "F13C native/model source join, whole-slice readiness, and product acceptance."
+          ],
+          "validation_boundary": "Evidence-only static host/plugin configuration boundary; importer and complexity joins remain UNBOUND.",
+          "native_status": {
+            "host_route_and_profile_registration": "STATIC_OBSERVED",
+            "base_ddp_data_rate_setter": "STATIC_FOUND_SEPARATE_CORE_CONFIG_OBJECT",
+            "atmos_plugin_config_descriptor": "STATIC_FOUND_SEPARATE_DESCRIPTOR",
+            "atmos_workflow_parameters": "CALLER_LOCAL_AGGREGATE_STATIC_FOUND",
+            "host_task_to_atmos_plugin_config_owner_join": "UNBOUND",
+            "plugin_config_to_importer_record_join": "UNBOUND",
+            "importer_count_like_record_to_complexity_byte_join": "UNBOUND",
+            "native_owner_generation_relation": "UNBOUND",
+            "template_data_rate_present": true,
+            "template_runtime_validated": false,
+            "bounded_dactlib_data_rate_or_complexity_key_scan": "NO_HIT",
+            "global_field_absence_claim": false,
+            "dee_schema_probe": "PARTIAL_XSD_AFTER_PLUGIN_INITIALIZATION_FAILURE_AND_PROCESS_FAULT",
+            "partial_xsd_is_valid_rejection_boundary": false,
+            "controlled_native_pair": "NOT_RUN",
+            "whole_f13c_readiness": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -30321,8 +30410,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1752135,
-              "sha256": "fa5154463a70d66123d1c22c31ae69435a75171e46834ef7e4fee30c7839c534"
+              "bytes": 1751039,
+              "sha256": "a34283021c3abbedeb4c69fedcd3d1b0cd74966b7f88a923f736005d72ea436e"
             }
           ],
           "test_inventory": [

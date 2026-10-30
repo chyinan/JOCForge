@@ -1,0 +1,19 @@
+{
+  "schema": "f13c-host-data-rate-owner-boundary-source-identities.v1",
+  "source_package_id": "NATIVE-PARAMETER13-HOST-SETTER-FOLLOWUP",
+  "source_manifest_sha256": "4fb1eac5e5076a11f9d363c9cbd1532a8ca4b7b88d0c673d899c3c5d644a5113",
+  "source_payload_sha256": {
+    "REPORT.md": "a4bf45daee956b3b27b7debb2f36bd1074a96f8b82f81ed5fc0ea5438f7a3343",
+    "EVIDENCE.json": "a99c0b6ea431f132236378169a596677a35138192b8321bf1d91aa8e8652aa39",
+    "SOURCE-IDENTITIES.json": "27b6acfb893ef08bcec9ce69d8fa483117c91a1fb29fbc66c2adae212432e94a"
+  },
+  "source_dll_sha256": {
+    "dee_audio_filter_ddp.dll": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+    "dee_audio_filter_ddp_atmos.dll": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "dactlib.dll": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239"
+  },
+  "template_runtime_acceptance": "NOT_RUN",
+  "controlled_native_pair": "NOT_RUN",
+  "task_field_to_atmos_complexity_join": "UNBOUND",
+  "private_key_or_pcm_access": false
+}

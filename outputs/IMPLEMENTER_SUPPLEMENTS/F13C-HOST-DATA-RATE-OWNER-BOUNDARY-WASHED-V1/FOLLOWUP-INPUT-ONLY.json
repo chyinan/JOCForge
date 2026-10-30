@@ -1,0 +1,21 @@
+{
+  "schema": "f13c-host-data-rate-complexity-followup-input-only.v1",
+  "status": "NOT_RUN",
+  "candidate_task_route": "atmos_mezz_to_atmos_ddp / encode_to_atmos_ddp",
+  "candidate_field": "data_rate",
+  "candidate_values_from_static_profile_table": [448, 640, 1024, "auto"],
+  "capture_same_execution": [
+    "accepted task/XML field and owner",
+    "base DDP config object/value",
+    "Atmos plugin config/workflow parameter owner/value",
+    "importer record owner/value",
+    "BSI complexity byte and return status"
+  ],
+  "expected_output": "UNSPECIFIED",
+  "do_not_infer": [
+    "identity from equal field names",
+    "identity from equal numeric values",
+    "XML rejection from incomplete schema output",
+    "absence from one bounded string/xref scan"
+  ]
+}

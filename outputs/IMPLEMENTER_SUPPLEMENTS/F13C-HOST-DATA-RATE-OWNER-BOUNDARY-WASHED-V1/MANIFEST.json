@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1",
+  "scope": "bounded host/plugin config registration; task-to-complexity owner join remains unbound",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1733,
+      "sha256": "598f03cc15d8760af0df5aa53df0b1c3e0a9228a0ed5fd77470bad47becaa9c8"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1036,
+      "sha256": "1224cb0543aba042848cdc6162492bdd3c16ed915a82ae36f6042b69aa2472ae"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 768,
+      "sha256": "5c9c69522d082a5c98a056680b45d29f369e3df5d274e92c3a6b9cf8df7546f7"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 529,
+      "sha256": "f0ebae2b845c4001a667965a5d5b67867d0a9b60db6025a06b8a8c0818f6bd47"
+    }
+  ]
+}
