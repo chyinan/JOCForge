@@ -1,0 +1,41 @@
+{
+  "schema": "native-colon-timecode-washed-vector.v1",
+  "source_package_id": "native-time-range-conversion-wash-v10",
+  "source_manifest_sha256": "16c4a929270d83697d0f0c1cc2c3479934e62ed06563b548818f684a7105dafe",
+  "fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "input": {
+    "time_base": "file_position",
+    "syntax": "HH:MM:SS:FF",
+    "drop_frame": false,
+    "frame_rate_override": "29.97",
+    "nominal_rate": 30,
+    "scale": "1001/1000",
+    "sample_rate_hz": 48000,
+    "start_token": "00:01:30:00",
+    "end_token": "00:01:30:10",
+    "start_frame_position": 2700,
+    "end_frame_position": 2710,
+    "end_plus_one_applied": false
+  },
+  "calculation": {
+    "start_seconds": "2700 / 30 * 1001 / 1000 = 90.09",
+    "end_seconds": "2710 / 30 * 1001 / 1000 = 90.423666666...",
+    "start_sample": 4324320,
+    "end_sample_exclusive": 4340336,
+    "range_samples": 16016,
+    "source_interval_seconds": 0.33366666666666667
+  },
+  "native_reference": {
+    "run_id": "run-66",
+    "native_log_sha256": "2c13609b104346e6310575326e4a93a3e31f37819841a7171555f9a5b09d6e50",
+    "ec3_sha256": "e6abc74501966e4ae099d7572f9300b915e2fcc9ce8431a9b8fc2efc29af5650",
+    "bytes": 45056,
+    "bit_rate_bps": 1024000,
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "track_duration_seconds": 0.352,
+    "duration_domains_equal": false
+  },
+  "model_output": "NOT_RUN",
+  "model_comparison": "NOT_EVALUATED"
+}

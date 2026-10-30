@@ -8626,8 +8626,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1645663,
-              "sha256": "d74d1e9212faf8d769e5299b7f6fb354e7b2cccce1acf3d6fea6ecbc18c7b63f"
+              "bytes": 1648869,
+              "sha256": "9660a18eeece5dc784425f5ac0105afd51650ae42b9c42e5d242a96377d7c14d"
             }
           ],
           "test_modules": [
@@ -12139,8 +12139,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1645663,
-              "sha256": "d74d1e9212faf8d769e5299b7f6fb354e7b2cccce1acf3d6fea6ecbc18c7b63f"
+              "bytes": 1648869,
+              "sha256": "9660a18eeece5dc784425f5ac0105afd51650ae42b9c42e5d242a96377d7c14d"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -28895,8 +28895,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1645663,
-              "sha256": "d74d1e9212faf8d769e5299b7f6fb354e7b2cccce1acf3d6fea6ecbc18c7b63f"
+              "bytes": 1648869,
+              "sha256": "9660a18eeece5dc784425f5ac0105afd51650ae42b9c42e5d242a96377d7c14d"
             }
           ],
           "test_inventory": [
@@ -29116,6 +29116,92 @@
             "ready_swap": "NOT_RUN",
             "whole_chain_ready": false
           }
+        },
+        {
+          "slice_id": "washed-colon-timecode-file-position-2997-vector",
+          "mapping_status": "WASHED_BOUNDED_NON_DROP_COLON_FILE_POSITION_VECTOR__OTHER_SYNTAX_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_COLON_VECTOR__LOCAL_PARSER_AND_OUTPUT_COMPARISON_NOT_RUN",
+          "scope": "For the selected file-position, non-drop HH:MM:SS:FF vector at a 29.97 override, 00:01:30:00 and 00:01:30:10 map to nominal frame positions 2700 and 2710, using nominal rate 30 and scale 1001/1000. The colon end frame is used directly without the numeric-token +1 rule. At 48 kHz this gives [4,324,320, 4,340,336), 16,016 samples. Both products are integral, so this vector does not exercise fractional quantization; the 0.352-second encoded duration remains separate from the source interval.",
+          "owner": "timeline",
+          "implementation_requirement": false,
+          "dependencies": [
+            "active-joc-writer-sample-boundary-quantization"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "FilePositionTimecode",
+              "TimecodeFrameRate",
+              "SampleRate",
+              "SourceSampleIndex",
+              "EncodedTrackDuration"
+            ],
+            "covered_clauses": [
+              "This vector is file-position, non-drop HH:MM:SS:FF at 29.97 with 48 kHz sample rate.",
+              "Colon start/end components map to nominal frames 2700/2710 and use 30×1001/1000.",
+              "The colon end component is used directly; numeric-token +1 is not applied.",
+              "Source interval [4,324,320, 4,340,336) is 16,016 samples and remains separate from encoded duration 0.352 seconds.",
+              "Drop-frame, embedded-timecode colon forms, other rates, model output and fractional quantization are not established by this vector."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_COLON_FILE_POSITION_TIME_RANGE_VECTOR",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "b4fed2f42708d6402506708cb8846dbfdea7f5797ae1924b5390daf08814c456",
+            "validation_boundary": "One non-drop 29.97 file-position HH:MM:SS:FF vector; no general colon/drop-frame or embedded-timecode rule is inferred."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_COLON_TIME_RANGE_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/OBSERVED-VECTOR.json"
+            ],
+            "case_pointers": [
+              "00:01:30:00 → frame 2700; 00:01:30:10 → frame 2710; no colon-end +1.",
+              "Native source interval [4,324,320, 4,340,336), length 16,016 samples at 48 kHz.",
+              "Both sample products are integral; this vector does not test fractional-boundary quantization.",
+              "Encoded duration 0.352 s is distinct; model output/comparison are NOT_RUN/NOT_EVALUATED."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "b4fed2f42708d6402506708cb8846dbfdea7f5797ae1924b5390daf08814c456"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Local model colon-token parser execution and model/native comparison.",
+            "Semicolon/drop-frame, other colon rates, and embedded-timecode colon forms.",
+            "Fractional-sample quantization through this colon syntax.",
+            "Whole-chain and product acceptance."
+          ],
+          "validation_boundary": "The package is native reference evidence only; it does not establish local parser integration, model output, or generic colon-timecode behavior.",
+          "native_status": {
+            "status": "BOUNDED_COLON_2997_FILE_POSITION_VECTOR",
+            "syntax": "HH:MM:SS:FF_NON_DROP",
+            "frame_rate_override": "29.97",
+            "nominal_rate": 30,
+            "scale": "1001/1000",
+            "start_frame_position": 2700,
+            "end_frame_position": 2710,
+            "end_plus_one_applied": false,
+            "source_start_sample": 4324320,
+            "source_end_sample_exclusive": 4340336,
+            "source_interval_samples": 16016,
+            "encoded_track_duration_seconds": 0.352,
+            "model_output": "NOT_RUN",
+            "model_comparison": "NOT_EVALUATED",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
         }
       ]
     },

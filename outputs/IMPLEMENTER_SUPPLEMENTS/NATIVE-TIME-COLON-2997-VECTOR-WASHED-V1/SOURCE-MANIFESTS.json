@@ -1,0 +1,23 @@
+{
+  "schema": "native-colon-timecode-washed-sources.v1",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v10",
+    "manifest_sha256": "16c4a929270d83697d0f0c1cc2c3479934e62ed06563b548818f684a7105dafe",
+    "payloads": {
+      "NATIVE-COLON-TIMECODE-RANGE-VECTOR.json": "0d44a818f2f3b2efc3dd51d461dae06acf52690e401064deabd1488fa538b0ca",
+      "README.md": "d188b33d372700ded202177b3cf6f4e083bd235f1c9b6ef5355adb6ae2565e1c",
+      "verify_colon_timecode_range.py": "b2b74a61bec5525436c844887c264cccd65856358aa41bcdd03567b466e41a78"
+    }
+  },
+  "parent_wash_package": {
+    "package_id": "native-time-range-conversion-wash-v9",
+    "manifest_sha256": "d173fc0ca885a22920032809fc8c8f789d5fca35d2e7bf8570193c287d20b290",
+    "scope": "full default file-position first-frame-of-action to EOF reference vector"
+  },
+  "opaque_source_identities": {
+    "run66_configuration": "c2d9444fbf144d97b86a3e6612713824fb7ac14fdf1158fc4e36a8809c6eec17",
+    "run66_native_log": "2c13609b104346e6310575326e4a93a3e31f37819841a7171555f9a5b09d6e50",
+    "run66_native_output": "e6abc74501966e4ae099d7572f9300b915e2fcc9ce8431a9b8fc2efc29af5650"
+  },
+  "raw_source_or_audio_copied": false
+}

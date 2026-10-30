@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1",
+  "status": "BOUNDED_COLON_2997_VECTOR_ACCEPTED; DROP_FRAME_AND_EMBEDDED_COLON_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1076,
+      "sha256": "d93a5b07c971bdfa792675abb44c26f01afd636d2c5a5d6ca760404ac307897c"
+    },
+    {
+      "name": "OBSERVED-VECTOR.json",
+      "bytes": 1451,
+      "sha256": "c000f766b6a91a99288bf5aaa907393c09e79159b7f9b952a3494d053f5c0a1c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1197,
+      "sha256": "fcb9272cc5b69eb6da3c815a2313abbf5b31f46e939a13348b51dbd4b343872b"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 696,
+      "sha256": "7d07fab315dd3b2e3a27d1f19eb3000f0dbe270e36e7b4826c4a56bd452504d0"
+    }
+  ]
+}

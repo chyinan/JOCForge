@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_NON_DROP_COLON_FILE_POSITION_VECTOR",
+  "independent_verification": {
+    "source_manifest": "MATCH",
+    "source_payloads": "3/3 MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "v9_parent_manifest": "MATCH",
+    "arithmetic_replay": "PASS"
+  },
+  "limits": [
+    "integral sample products do not test fractional quantization",
+    "semicolon/drop-frame remains NOT_EVALUATED",
+    "embedded-timecode colon form remains NOT_EVALUATED",
+    "other rates and model output/comparison remain open"
+  ],
+  "whole_chain_ready": false
+}
