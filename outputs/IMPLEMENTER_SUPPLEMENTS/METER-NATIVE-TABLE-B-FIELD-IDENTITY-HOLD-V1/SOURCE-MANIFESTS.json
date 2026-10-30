@@ -1,0 +1,14 @@
+{
+  "schema": "meter-native-table-b-field-identity-hold-sources.v1",
+  "prior_wash_package": {
+    "package_id": "METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1",
+    "manifest_sha256": "4bc5876f1dbdeb25aea6a91737d469a42d709d73cd6ee4491db39c9c3ec3aee9",
+    "scope": "native map/table-B/consumer path; F06OF typed mapping unbound"
+  },
+  "latest_research_status": {
+    "agent": "Reverse Agent 3",
+    "status": "PROVISIONAL_COMMENTARY_ONLY; NO_HASH-BOUND_CORRECTION_PACKAGE_RECEIVED",
+    "reported_issue": "node +0x1c U32 key-versus-value role is being rechecked through allocator/insert/comparator layout"
+  },
+  "production_execution": "NOT_RUN"
+}

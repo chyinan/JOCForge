@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1",
+  "decision": "PROVISIONAL_FIELD_SEMANTIC_HOLD_PENDING_HASH_BOUND_REVIEW",
+  "prior_native_table_path_claim": "RETAINED_BOUNDEDLY",
+  "U32_NODE_FIELD_ROLE": "UNBOUND_PENDING_R3_CORRECTION_PACKAGE",
+  "source_map_key_preservation": "UNBOUND_PENDING_R3_CORRECTION_PACKAGE",
+  "F06OF_target_slot_and_control_word_join": "UNBOUND",
+  "whole_chain_ready": false
+}

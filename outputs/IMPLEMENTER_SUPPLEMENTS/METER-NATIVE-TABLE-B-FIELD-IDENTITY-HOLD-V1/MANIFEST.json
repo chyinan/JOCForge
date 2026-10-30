@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1",
+  "status": "PROVISIONAL_FIELD_SEMANTIC_HOLD",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1055,
+      "sha256": "223fe25478684b87496b5f938d4dcb8897a3374fd8784f5b344cfc5a5e86f89d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 645,
+      "sha256": "b761c008c4026e9b80f9418fbcc5bb10f1d0fa77447753c52ae22bdbafa88661"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 463,
+      "sha256": "deb9a3cff1e8c5f72bb92a5d65f0d238663fd95b25a1e346e06881db7828fc69"
+    }
+  ]
+}
