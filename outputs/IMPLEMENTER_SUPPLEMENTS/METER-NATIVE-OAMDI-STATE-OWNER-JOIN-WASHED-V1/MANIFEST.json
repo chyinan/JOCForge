@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1",
+  "status": "RUN_SCOPED_OAMDI_STATE_OWNER_BOUND; OAMD_SERIALIZER_AND_F06OF_JOIN_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "APPROVED-CONTRACT-DISPOSITION.json",
+      "bytes": 1768,
+      "sha256": "9f249e7d9b8d4429dc3d1445ff77a44e25c76ac9c463416070bfa1f2cb4d813c"
+    },
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1214,
+      "sha256": "1e3ab96518203ee57b151b232f3871060af15240ccd1bb21cb4bcbf250bc5e68"
+    },
+    {
+      "name": "NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+      "bytes": 3991,
+      "sha256": "b0544c7d3f22e1e9c672ce6fdc3e7dda9bb322d6e453621935b7a9286ab25af3"
+    },
+    {
+      "name": "NEXT-OUTPUT-JOIN.json",
+      "bytes": 808,
+      "sha256": "1e27532e6f0a2f7921ada519276926a613252601b5e1a695577d1e1f87a5d522"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 3897,
+      "sha256": "a699014239e8c0d25cba9a11457cad3610b7fe8e9a583a5577910a2ccdd9aef4"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1709,
+      "sha256": "49933400d4984f91ab94c43fa0323bc2a3252a6e4b23c3742ce49d90f2d39cce"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 999,
+      "sha256": "454dbadad54caf15ba3cd7ee57cd265f5b854ebbd26a694187278d8b0e4be307"
+    }
+  ]
+}

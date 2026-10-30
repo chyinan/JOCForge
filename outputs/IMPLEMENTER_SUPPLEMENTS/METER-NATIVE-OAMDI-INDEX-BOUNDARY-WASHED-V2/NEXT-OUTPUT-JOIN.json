@@ -1,0 +1,13 @@
+{
+  "additional_PCM_or_row_payload_needed": false,
+  "additional_numeric_capture_needed": false,
+  "closed_native_boundary": "table-B row-0 field to projected record, native bed/object updater, metadata formatter, and per-object state store at index 0",
+  "implementation_readiness": "NO_CHANGE",
+  "next_output_relevant_join": "per-object OAMDI state record to its OAMD/BSI serializer or queue, then any explicit F06OF/control16 model adapter",
+  "not_closed": [
+    "the table field's named semantic property",
+    "whether the serialized OAMDI state record reaches a particular ID11/BSI writer call and generation",
+    "a typed adapter from native bed/object index and property to F06OF target slot s/control52 word j/control16 row 1+s"
+  ],
+  "schema": "native-oamdi-next-output-join.v1"
+}

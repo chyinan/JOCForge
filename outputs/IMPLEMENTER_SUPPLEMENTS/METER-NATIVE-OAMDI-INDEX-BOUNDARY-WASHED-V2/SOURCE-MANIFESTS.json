@@ -1,0 +1,32 @@
+{
+  "schema": "native-oamdi-index-boundary-washed-sources.v2",
+  "research_package": {
+    "package_id": "meter_drain_table_b_oamdi_output_wash_followup_v2",
+    "manifest_sha256": "aa524f0dc37c615346aeeb671934e17519bf5b26fdd599e617ac8ceb90fa5812",
+    "payloads": {
+      "APPROVED-CONTRACT-DISPOSITION.json": "9f249e7d9b8d4429dc3d1445ff77a44e25c76ac9c463416070bfa1f2cb4d813c",
+      "ATTEMPT-LEDGER.json": "60fce35e5e2b4d687ded991d936e8299e017d138a691b1fb98d28e1ac397afe3",
+      "NATIVE-OAMDI-OUTPUT-RECEIPT.json": "0400dedb4ac29584ed0165ec4140cd675800ca30f230fc90efd1f6d4ade9fa29",
+      "NEXT-OUTPUT-JOIN.json": "1e27532e6f0a2f7921ada519276926a613252601b5e1a695577d1e1f87a5d522",
+      "README.md": "ab04c621c14905aa3a442dbd235406f08c166845b4625c740f8788a0c313153b",
+      "SOURCE-IDENTITIES.json": "49568f502fe14f971346a9e07435c412814b1fdf3ee8550563337593f8c43cac",
+      "check_native_table_b_oamdi_output.py": "c4174556a8cbcd2e57b423cd34bf997af7d6b154a906be421aeaac5b4d576e37"
+    }
+  },
+  "superseded_washed_package": {
+    "package_id": "METER-NATIVE-OAMDI-STATE-STORE-WASHED-V1",
+    "manifest_sha256": "f8507c5f9b83c4541b834b279ff206c5df14ef55a9be5804757975f3bd9b845d",
+    "superseded_detail": "does not explicitly distinguish absolute table-reader index from base-relative bed/object index"
+  },
+  "opaque_native_identities": {
+    "run024_job": "724b4837ec2bad71e016f795b7b6b904020cdea6c5499a36654aeec26a18f963",
+    "run024_native_log": "0b1a2e901b50809d9e774e9681bdc822d6ae6aa2ed458a66276fc36fd8b6898c",
+    "run024_output_hash_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448"
+  },
+  "capture_limits": {
+    "scalar_bytes_read": 4,
+    "table_row_payload_bytes_read": 0,
+    "control_row_payload_bytes_read": 0,
+    "pcm_bytes_read": 0
+  }
+}

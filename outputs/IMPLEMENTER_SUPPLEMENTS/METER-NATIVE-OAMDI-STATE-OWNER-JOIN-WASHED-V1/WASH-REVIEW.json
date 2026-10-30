@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-OAMDI-STATE-OWNER-JOIN-WASHED-V1",
+  "decision": "ACCEPTED_AS_RUN_SCOPED_NATIVE_STATE_OWNER_JOIN",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "7/7 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "unmanifested_files": 0,
+    "pcm_or_row_payload_read": false
+  },
+  "closed": [
+    "run025 updater and per-object state store receive same native state-owner token S",
+    "run025 selected target-object token O and native bed/object index 0 reach state store",
+    "projected record token R is separately preserved into updater/formatter boundary"
+  ],
+  "not_closed": [
+    "table-reader absolute index equals bed/object relative index",
+    "run024 gate-zero table scalar affects stored state or EC-3 output",
+    "per-object state to OAMD/BSI serializer or queue",
+    "F06OF target/control/generation join"
+  ],
+  "whole_chain_ready": false
+}

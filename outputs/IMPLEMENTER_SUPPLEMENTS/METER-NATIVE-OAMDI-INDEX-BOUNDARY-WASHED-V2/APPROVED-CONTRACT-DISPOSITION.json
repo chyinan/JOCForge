@@ -1,0 +1,36 @@
+{
+  "approved_product_domains": {
+    "F06OF_control16": {
+      "generation": "model callback g delivers g+1",
+      "regular_rows": "target slot s in 0..14 maps to row 1+s and its control52 row",
+      "row0": "delayed LFE"
+    },
+    "carrier_block": {
+      "derived_from_EMDF_length": false,
+      "native_join": "NO_TYPED_JOIN",
+      "selected_value": 2,
+      "source": "independent integer input to the complexity producer; range 0..5"
+    },
+    "downmix_index": {
+      "native_join": "NO_TYPED_JOIN",
+      "selected_value": 3,
+      "source": "config_mode=0 and phase_flag=1"
+    }
+  },
+  "determination": {
+    "native_bed_object_index0_is_F06OF_target_slot0": "UNBOUND; distinct owner/index domains",
+    "native_callback_or_object_index_is_F06OF_generation": "NO_JOIN_OBSERVED",
+    "native_literal3_is_carrier_block2": "NO_TYPED_JOIN",
+    "native_literal3_is_downmix_index3": "NO_TYPED_JOIN; numeric equality only",
+    "native_table_b_field_is_F06OF_control16_word": "UNBOUND",
+    "product_policy_changed": false
+  },
+  "native_domains": {
+    "native_bed_object_index": "separate relative index argument selecting per-object metadata state",
+    "native_output_consumer": "per-object metadata formatter and 30-byte state store",
+    "native_scalar_effect_in_run_024": "the first-F32-to-compact-field branch is guarded and was skipped when its native flag was 0 for index 0",
+    "native_table_reader_index": "absolute loop counter supplied to the table-B getter; the object-state index is computed as counter minus a native start/base",
+    "table_b_row_field": "native projected record first F32 scalar; semantic property name UNBOUND"
+  },
+  "schema": "native-oamdi-state-to-f06of-control16-disposition.v1"
+}

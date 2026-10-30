@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-OAMDI-INDEX-BOUNDARY-WASHED-V2",
+  "decision": "ACCEPTED_AS_DISTINCT_NATIVE_INDEX_DOMAIN_AND_STATE_STORE_BOUNDARY",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "7/7 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "unmanifested_files": 0,
+    "pcm_or_row_payload_read": false
+  },
+  "closed": [
+    "table getter uses absolute loop counter",
+    "bed/object updater uses loop counter minus native start/base",
+    "same record/object pointer reaches per-object state store",
+    "30-byte state record stored at native index 0 in run024"
+  ],
+  "not_claimed": [
+    "gate-zero run024 shows table-B scalar changed compact fields or EC3",
+    "native bed/object index equals F06OF target slot",
+    "native callback generation equals F06OF generation",
+    "OAMDI state-to-OAMD/BSI serializer/queue link"
+  ],
+  "whole_chain_ready": false
+}
