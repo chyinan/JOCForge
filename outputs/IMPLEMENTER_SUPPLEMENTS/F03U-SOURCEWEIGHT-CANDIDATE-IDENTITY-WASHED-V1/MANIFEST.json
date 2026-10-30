@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1536,
+      "sha256": "2b169cae6776190e600bab543950b62816fc7c0112024e2bba9012211d58adba"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3342,
+      "sha256": "b4929b9ace8fcb5d95a7692204df63e08c62d61472a931cdaf78ee01ea8c891a"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1218,
+      "sha256": "334a435754b55ba794a257e1dda6a13be8fbb40ad9e2145f4dddcd3fbdf76e41"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 925,
+      "sha256": "4ac72a41f61f22906bfaa6cbc8d9c9633bd2188736a03d475cb68def150f8962"
+    }
+  ],
+  "status": "WASH_REVIEW_COMPLETE; WHOLE_CHAIN_NOT_READY",
+  "whole_chain_ready": false,
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1"
+}

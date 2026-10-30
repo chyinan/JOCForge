@@ -1,0 +1,28 @@
+{
+  "schema": "f03u-sourceweight-candidate-identity-washed-sources.v1",
+  "research_package": {
+    "package_id": "sourceweight-candidate-identity",
+    "manifest_sha256": "112111e2a9054d57dda8f1cec8fdbf7982430a88c2f1e267472f1ba1ad5a23dd",
+    "payloads": {
+      "EVIDENCE.json": "b4929b9ace8fcb5d95a7692204df63e08c62d61472a931cdaf78ee01ea8c891a",
+      "REPORT.md": "6c81770fc711e8d0e3276a9ee86a895175b4cce469ce68a938b21fc71ab00656",
+      "verify_sourceweight_candidate_identity.py": "14d26015859f609dd2dc44aee1a5858ba986677ad15b90a271e8cb0d8314643e"
+    }
+  },
+  "related_washed_packages": [
+    {
+      "package_id": "F03U-NATURAL-SOURCEWEIGHT-CALLBACK-OBSERVATION-V1",
+      "manifest_sha256": "7c97e29e56696d687e370afc71523618257b6eb55796fbfdd1cb053ebab63b01"
+    },
+    {
+      "package_id": "F03U-DEE-SOURCEWEIGHT-NATIVE-SAMPLE-V1",
+      "manifest_sha256": "bfdb0da9e90ff51fd0661cfde61a7da19762ab70c056067431f31f0df45fa3fe"
+    }
+  ],
+  "target_artifact_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "native_observation_boundary": {
+    "run120_candidate_ids_captured": false,
+    "run121_reached_candidate_callback": false,
+    "global_id_to_weight_column": "UNBOUND"
+  }
+}

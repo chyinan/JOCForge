@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_LOCAL_ORDINAL_AND_MATRIX_OWNERSHIP_EVIDENCE",
+  "independent_checks": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "3/3 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "related_washed_packages": "2/2 manifest and payload sets MATCH",
+    "source_code_or_decompilation_forwarded": false,
+    "raw_candidate_ids_or_features_forwarded": false,
+    "raw_pcm_forwarded": false
+  },
+  "closed": [
+    "candidate filter/feature/descriptor/metadata/selector/gather local-ordinal relationship",
+    "run120 caller matrix object to source-weight consumer ownership"
+  ],
+  "unbound": [
+    "global candidate ID to matrix column",
+    "global candidate ID to weight output",
+    "run121 callback evidence"
+  ],
+  "whole_chain_ready": false
+}
