@@ -1,0 +1,19 @@
+{
+  "schema": "selected-f13-length-boundary-identity-input-only.v1",
+  "status": "NOT_RUN",
+  "purpose": "Resolve whether the run-100 body-length field is the complete selected F13 EMDF container length.",
+  "same_parent_fields": [
+    "F13 payload identities and lengths",
+    "F13 body/container length prefix",
+    "run-100 counted body-length field",
+    "block-2 reservation U16",
+    "9-bit writer operand and status"
+  ],
+  "required_result": "typed owner/generation join or bounded evidence that the fields come from different producers",
+  "do_not_infer": [
+    "native global unreachability from model bounds",
+    "512 overflow behavior",
+    "identity from equal lengths or hashes",
+    "body-length targets as producer inputs"
+  ]
+}

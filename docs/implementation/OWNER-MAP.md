@@ -368,6 +368,7 @@
 | F13/informational-selected-winner-source-lifecycle | F13 | `joc` |
 | F13/authorized-main-g2-metadata-body-proposal | F13 | `metadata` |
 | F13/meter-receipt-to-metadata-owner-cold-candidate | F13 | `metadata` |
+| F13/selected-f13-producer-model-conditional-length-bound | F13 | `metadata` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `joc` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `codec` |
 | F13C/washed-f13c-bsi-importer-static-identity | F13C | `codec` |

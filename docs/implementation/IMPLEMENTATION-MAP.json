@@ -8886,8 +8886,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1747657,
-              "sha256": "72f7c28b0a71ed5f67a1062a2da1f8252fafb59ec52fa6d4490d500f8b77bb28"
+              "bytes": 1752135,
+              "sha256": "fa5154463a70d66123d1c22c31ae69435a75171e46834ef7e4fee30c7839c534"
             }
           ],
           "test_modules": [
@@ -12399,8 +12399,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1747657,
-              "sha256": "72f7c28b0a71ed5f67a1062a2da1f8252fafb59ec52fa6d4490d500f8b77bb28"
+              "bytes": 1752135,
+              "sha256": "fa5154463a70d66123d1c22c31ae69435a75171e46834ef7e4fee30c7839c534"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -25609,6 +25609,103 @@
             "F12 AU publication, output file, OpenJOC, and W04 acceptance."
           ],
           "delivery_scope": "LOCAL_NONCOMMITTING_F13_COLD_OWNER_CANDIDATE"
+        },
+        {
+          "slice_id": "selected-f13-producer-model-conditional-length-bound",
+          "mapping_status": "WASHED_APPROVED_MODEL_F13_LENGTH_UPPER_BOUND__RUN100_CONTAINER_IDENTITY_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_CONDITIONAL_MODEL_BOUND__NO_NATIVE_UNREACHABILITY",
+          "scope": "This is an arithmetic upper bound from the approved selected F13 producer domains, not a native encoder observation. The selected model yields internal F13 body bounds of 477 bytes for deployed_compat and 480 bytes for etsi_emdf; adding the complete four-byte container header yields 481 and 484 bytes. If (and only if) run-100's counted/body-length + 4 writer operand is the complete F13 EMDF container length, those operands would be bounded by 481/484 for these selected model profiles. Run-100 did not bind its counted/body-length field to the complete F13 EMDF container type or serialized F13 payload, so the bound is conditional and is not a DEE native reachability/global-unreachability claim. Native writer targets 507/508/511/512 and 512 overflow remain NOT_OBSERVED. The R4 source manifest hash reported by the sender differs from the exact manifest bytes rehashed by Wash; the supplement records both values and notes the source package has no MANIFEST.sha256 sidecar.",
+          "owner": "metadata",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "SelectedF13InternalBodyBytes",
+              "SelectedF13ContainerBytes",
+              "Run100CountedBodyLength",
+              "Run100Block2WriterOperand"
+            ],
+            "covered_clauses": [
+              "Approved selected-model producer domains give compat/etsi internal body bounds 477/480 bytes and complete four-byte-header container bounds 481/484 bytes.",
+              "The model bound applies to run-100 only under the unverified identity assumption that its counted/body-length + 4 writer operand is the complete F13 container length.",
+              "Run-100 counted/body field to F13 container/payload identity is NOT_OBSERVED; no cross-domain equality or run identity join is established.",
+              "The bound is not a native DEE global-unreachability result; target writer values and 512 overflow remain unobserved."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_F13_MODEL_CONDITIONAL_LENGTH_BOUND",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "46d6ef0f6b98c07711005b68544e6902749f7e171a6ef4c20b94dc53df53df1c",
+            "source_package_id": "run99_target_boundary_producer_bound_wash",
+            "source_manifest_sha256_recomputed_by_wash": "1533fa5fa49bd374aafda903606bc08abffae44d7b43ecb63f7d8eaf3dbfe615",
+            "source_manifest_sha256_reported_by_agent": "1533fa5fa49bd374aadfa903606bc08abffae44d7b43ecb63f7d8eaf3dbfe615",
+            "source_manifest_hash_discrepancy": true,
+            "source_manifest_sidecar": "NOT_PRESENT",
+            "validation_boundary": "Selected-model arithmetic bound only. Run-100 native F13-container identity, target outcomes, and overflow behavior remain unobserved."
+          },
+          "vectors": {
+            "kind": "WASHED_SELECTED_F13_MODEL_BOUND_AND_NATIVE_IDENTITY_FOLLOWUP_INPUT_ONLY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Approved selected-model domains bound compat and etsi F13 internal body lengths at 477 and 480 bytes; complete 4-byte container bounds are 481 and 484 bytes.",
+              "Operands 507, 508, 511, and 512 are unreachable only under the conditional model→run100 container identity assumption.",
+              "Run-100 counted/body-length field to complete F13 EMDF container identity is NOT_OBSERVED; this is not native global unreachability.",
+              "Target native values and 512 overflow are NOT_OBSERVED; follow-up typed-identity capture is NOT_RUN.",
+              "Source MANIFEST actual byte hash and sender-reported hash differ; Wash recorded the recomputed hash and the source package has no sidecar."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "46d6ef0f6b98c07711005b68544e6902749f7e171a6ef4c20b94dc53df53df1c",
+            "source_manifest_sha256_recomputed_by_wash": "1533fa5fa49bd374aafda903606bc08abffae44d7b43ecb63f7d8eaf3dbfe615",
+            "source_manifest_sha256_reported_by_agent": "1533fa5fa49bd374aadfa903606bc08abffae44d7b43ecb63f7d8eaf3dbfe615"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "F13 producer input-domain execution or real selected F13 payload/container generation.",
+            "Same-parent typed run-100 counted/body-length to complete F13 EMDF container/prefix identity join.",
+            "Native target writer values 507/508/511/512 and 512 overflow outcome.",
+            "Any DEE native global-unreachability conclusion or cross-run identity merge.",
+            "JOCForge runtime or end-to-end output execution."
+          ],
+          "validation_boundary": "Model/approved-domain conditional bound only; do not close the native writer boundary or change codec policy/readiness.",
+          "native_status": {
+            "model_internal_body_bound_bytes": {
+              "deployed_compat": 477,
+              "etsi_emdf": 480
+            },
+            "model_complete_container_bound_bytes": {
+              "deployed_compat": 481,
+              "etsi_emdf": 484
+            },
+            "conditional_identity_assumption": "RUN100_BODY_BYTES_PLUS_4_IS_COMPLETE_F13_CONTAINER",
+            "run100_body_field_to_f13_container_identity": "NOT_OBSERVED",
+            "bound_is_native_global_unreachability_proof": false,
+            "target_native_values": "NOT_OBSERVED",
+            "512_overflow_behavior": "NOT_OBSERVED",
+            "native_execution": "NOT_RUN",
+            "input_domain_execution": "NOT_RUN",
+            "source_manifest_recomputed_sha256": "1533fa5fa49bd374aafda903606bc08abffae44d7b43ecb63f7d8eaf3dbfe615",
+            "source_manifest_reported_sha256": "1533fa5fa49bd374aadfa903606bc08abffae44d7b43ecb63f7d8eaf3dbfe615",
+            "source_manifest_sha_discrepancy": true,
+            "source_manifest_sidecar": "NOT_PRESENT",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ],
       "exclusions": [
@@ -30224,8 +30321,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1747657,
-              "sha256": "72f7c28b0a71ed5f67a1062a2da1f8252fafb59ec52fa6d4490d500f8b77bb28"
+              "bytes": 1752135,
+              "sha256": "fa5154463a70d66123d1c22c31ae69435a75171e46834ef7e4fee30c7839c534"
             }
           ],
           "test_inventory": [

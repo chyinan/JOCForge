@@ -1,0 +1,29 @@
+{
+  "schema": "selected-f13-producer-length-bound-source-identities.v1",
+  "source_package_id": "run99_target_boundary_producer_bound_wash",
+  "source_manifest_sha256_recomputed_by_wash": "1533fa5fa49bd374aafda903606bc08abffae44d7b43ecb63f7d8eaf3dbfe615",
+  "source_manifest_sha256_reported_by_agent": "1533fa5fa49bd374aadfa903606bc08abffae44d7b43ecb63f7d8eaf3dbfe615",
+  "source_manifest_sidecar": "NOT_PRESENT",
+  "sender_hash_discrepancy": "REPORTED_HASH_DIFFERS_FROM_RECOMPUTED_MANIFEST_HASH",
+  "source_payload_sha256": {
+    "INPUT-ONLY.json": "bf16b20f650d377b8f21bc0ea1d2540c9307db9a97f211131b1faec3cfbb8cb6",
+    "REPORT.md": "88fd6bde738679f3a92604faa953d7c5676f49b81db61139704cef57a9b582fb",
+    "SOURCES.json": "6e6e0c34f9d5256a97a5a6d752490c260d64f418346ce6caf560d327d5cd3856",
+    "VERIFICATION.json": "6fb48b0ea4e3c302956c14084d723e407775ce6299ed53ca80430475421d1940"
+  },
+  "approved_source_hashes_rechecked": {
+    "specs/05-oamd-id11-live-producer.md": "767005b297614e2ad5c374a9018642a22b577af37941f12486523cc43fb247dc",
+    "specs/05-joc-quantization-and-wire.md": "91fde215d0a6d5d1e820a2e29b467afd2b1fc78a5fa8f87300cc42a346152143",
+    "specs/05-oamd-row-and-timing-wire.md": "b49694e3026938c1b5f91ef95fd63cc2eea03e25161367ba26095177ff452b11",
+    "specs/13-emdf-and-timeline.md": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+    "specs/13-id2-profile-metadata.md": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc",
+    "specs/13-joc-complexity-timer-payload-order.md": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+    "specs/14-keyless-checksum-profile.md": "830a8a9b92a5819a5fde3363f0667bf8da204c277690c8289be439de85371382",
+    "specs/05-oamd-dbmd-and-trim.md": "1e555f51466726833295b53aef5efe1325416e1e99c1652a3200478ceb82ee10",
+    "test-vectors/REAL-DBMD-TRIM-VERIFICATION.json": "ba0bda33761050cbba0285441f12905729614a67fb60375e5517764f7382b94b",
+    "specs/05-live-joc-coordinator.md": "49c3e07298262e2d5867d936eab0ddf6d746a17a9ce844358a0966d1b5d4d779"
+  },
+  "bound_checker_sha256": "e5d8527ecbd7f166aa853fdb9e1dd4281d7ceadb6926ad9755e9d0d28617c9ed",
+  "input_domain_execution": "NOT_RUN",
+  "native_container_identity_to_run100_length": "NOT_OBSERVED"
+}

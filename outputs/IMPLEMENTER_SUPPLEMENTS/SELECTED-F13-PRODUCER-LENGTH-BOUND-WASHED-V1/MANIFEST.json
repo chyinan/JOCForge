@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "SELECTED-F13-PRODUCER-LENGTH-BOUND-WASHED-V1",
+  "scope": "approved selected-model F13 upper bound; native writer identity remains unbound",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1837,
+      "sha256": "3f40d1acd968343d6eb5d94229bb74f45396ebc21484acfaac6999a38ddcf83d"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 2248,
+      "sha256": "4fcb59ce8ddf8cd4ca19cf1ed396f46ba6d514646f8b16dd1389cf6212cc741e"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 659,
+      "sha256": "1a8271eac71c340e773c05dc979f7a15c33c0ebcad046e9e5a27c4db80ebc920"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 746,
+      "sha256": "c77df14703a1b8d9618e26bc0952b153b5c4ae146ef6887f9e3654adf5a66368"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "selected-f13-producer-length-bound-wash-check.v1",
+  "status": "PASS_HASH_BOUND_CONDITIONAL_MODEL_BOUND",
+  "source_payload_hashes": "4_OF_4_VERIFIED",
+  "reported_source_hashes": "9_OF_9_RECHECKED",
+  "checker_source_hashes": "8_OF_8_RECHECKED",
+  "compat_internal_body_bound_bytes": 477,
+  "etsi_internal_body_bound_bytes": 480,
+  "complete_container_bound_bytes": {"deployed_compat": 481, "etsi_emdf": 484},
+  "run100_body_field_to_f13_container_identity": "NOT_OBSERVED",
+  "bound_is_native_unreachability_proof": false,
+  "target_native_values": "NOT_OBSERVED",
+  "512_overflow_behavior": "NOT_OBSERVED",
+  "native_execution": "NOT_RUN"
+}
