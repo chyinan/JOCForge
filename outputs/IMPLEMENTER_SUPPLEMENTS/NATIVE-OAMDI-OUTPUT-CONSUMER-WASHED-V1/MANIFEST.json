@@ -1,0 +1,22 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "NATIVE-OAMDI-OUTPUT-CONSUMER-WASHED-V1",
+  "scope": "selected native encoder-to-FileWriter binding and bounded OAMDI no-hit evidence",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1648,
+      "sha256": "9d140af3870393ac88b026f4bcf25815c64a482066b1364b14d1112b83f48eee"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1349,
+      "sha256": "edfef055bc7a548bc6a8ec10491fd517d9219feba28dc6731690b18b88c11fe1"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 560,
+      "sha256": "c9db71006370b05113d6f7ea6d1cfafd9362cbbbd6e5bd3e22b3354a0152914d"
+    }
+  ]
+}

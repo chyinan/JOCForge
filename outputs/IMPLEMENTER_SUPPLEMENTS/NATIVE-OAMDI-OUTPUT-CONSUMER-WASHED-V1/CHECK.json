@@ -1,0 +1,13 @@
+{
+  "schema": "native-oamdi-output-consumer-wash-check.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_EVIDENCE",
+  "source_manifest_hash": "VERIFIED",
+  "source_payload_hashes": "7_OF_7_VERIFIED",
+  "source_checker_normal_python": "PASS",
+  "source_checker_optimized_python": "PASS",
+  "run_036_filewriter_path_join": "BOUND",
+  "native_oamdi_aggregate_or_dsp_to_writer": "NO_HIT_IN_RUNS_035_AND_036_SELECTED_ENCODER_PASS",
+  "native_generation_join": "NOT_CAPTURED",
+  "F06OF_slot_word_generation_crosswalk": "UNBOUND",
+  "JOCForge_runtime_execution": "NOT_RUN"
+}

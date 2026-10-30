@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1707602,
-              "sha256": "7ab7da8edaa5421386fe2aa5c027ea6010917fb4c153fa03dea8b6343b30d270"
+              "bytes": 1711512,
+              "sha256": "1250d81084f4e7893d30a89badfaba5389f030e59f2be1e60085647c48e62788"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1707602,
-              "sha256": "7ab7da8edaa5421386fe2aa5c027ea6010917fb4c153fa03dea8b6343b30d270"
+              "bytes": 1711512,
+              "sha256": "1250d81084f4e7893d30a89badfaba5389f030e59f2be1e60085647c48e62788"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -16814,6 +16814,97 @@
             "cross_run_output_hash_identity_is_lineage": false,
             "oamdi_to_evo_calls_hit": false,
             "pcm_or_encoded_bytes_read": 0,
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "native-oamdi-output-consumer-run036",
+          "mapping_status": "WASHED_RUN036_OUTPUT_FILEWRITER_PATH_JOIN__OAMDI_WATCH_NO_HIT",
+          "implementation_status": "EVIDENCE_ONLY_RUN036_SINK_PATH__F06OF_CROSSWALK_OPEN",
+          "scope": "Run 036 binds the selected native encoder output list/path to one FileWriter stream and the configured EC-3 job path. The same FILE* remains through open and write, and the returned FILE* matches the fwrite argument; frame 0 selects stream 0 and requests 4,096 bytes, with the native output completing. Runs 035 and 036 selected encoder passes did not hit the monitored 48-byte OAMDI aggregate copy or DSP consumer through FileWriter entry and successful completion. Run 032's +0x18-to-DSP edge is measurement-phase evidence only. These are run-scoped observations, not a global claim that OAMDI cannot affect encoding. Native generation, +0x18 semantics, and the F06OF target/control/generation crosswalk remain UNBOUND; product policy is unchanged.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run036SelectedOutputList",
+              "Run036ConfiguredOutputPath",
+              "Run036FileWriterStream",
+              "Run036NativeFileHandle",
+              "Run036FrameIndex",
+              "Run036StreamIndex",
+              "Run036FileWriterByteCount",
+              "Run035036OAMDIWatcher",
+              "Run032MeasurementStateOwnerToken"
+            ],
+            "covered_clauses": [
+              "Run 036 binds the selected encoder output list/path to one FileWriter stream and the configured EC-3 job path.",
+              "The same FILE* is used through open and write, and the returned FILE* matches the fwrite argument.",
+              "Frame 0 selects stream 0 and requests 4,096 bytes in the completed native output run.",
+              "The monitored OAMDI aggregate/DSP functions had no hits through the selected encoder pass in runs 035 and 036; this is bounded to those runs and monitors.",
+              "Run 032 state-to-DSP is a separate measurement-phase observation; no cross-run owner or generation join is established."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_NATIVE_OAMDI_OUTPUT_CONSUMER_AND_RUN036_FILEWRITER_JOIN",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-OAMDI-OUTPUT-CONSUMER-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-OAMDI-OUTPUT-CONSUMER-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-OAMDI-OUTPUT-CONSUMER-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-OAMDI-OUTPUT-CONSUMER-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-OAMDI-OUTPUT-CONSUMER-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "c0294f3c80916c8a251af875744d444cb65b019cf7beac85ad84f07187a3f24f",
+            "validation_boundary": "Run-036 native FileWriter path/FILE* edge and run-035/036 monitored no-hit only; not JOCForge output, a global OAMDI absence claim, or the F06OF target/control/generation join."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN036_SELECTED_OUTPUT_FILEWRITER_JOIN_AND_RUN035_036_OAMDI_NO_HIT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-OAMDI-OUTPUT-CONSUMER-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-OAMDI-OUTPUT-CONSUMER-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Run 036 selected output path matches the EC-3 path in the job; one FileWriter stream is observed.",
+              "The same FILE* is followed through open to write and matches fwrite's FILE* argument.",
+              "Frame 0, stream 0, and a 4,096-byte request are bound in the completed run.",
+              "Runs 035 and 036 monitored OAMDI aggregate/DSP functions did not hit through the selected encoder pass; this is not a universal absence claim.",
+              "Native generation, +0x18 semantic name, and F06OF slot/word/generation crosswalk remain UNBOUND."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "c0294f3c80916c8a251af875744d444cb65b019cf7beac85ad84f07187a3f24f"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Encoded output bytes, PCM, or metadata/control payload inspection.",
+            "The native OAMDI/DSP state or aggregate joined to the encoder/FileWriter path.",
+            "Native callback generation and F06OF target slot, Control16 word, or generation crosswalk.",
+            "A general absence claim beyond the watched functions in selected encoder runs 035 and 036.",
+            "JOCForge runtime execution or JOCForge output file identity."
+          ],
+          "validation_boundary": "Evidence mapping only; selected native run observations do not establish JOCForge implementation behavior or readiness.",
+          "native_status": {
+            "run036_filewriter_path_join": "BOUND",
+            "run036_output_path_matches_job_ec3_path": true,
+            "run036_stream_count": 1,
+            "run036_same_file_handle_open_to_write": true,
+            "run036_returned_file_pointer_matches_fwrite_argument": true,
+            "run036_frame_index": 0,
+            "run036_stream_index": 0,
+            "run036_requested_bytes": 4096,
+            "run035036_aggregate_or_dsp_watch_hits": false,
+            "run035036_no_hit_scope": "SELECTED_ENCODER_PASSES_AND_MONITORED_FUNCTIONS_ONLY",
+            "run032_state_to_dsp_phase": "MEASUREMENT_ONLY",
+            "native_generation_join": "NOT_CAPTURED",
+            "field_0x18_semantic_name": "UNBOUND",
+            "F06OF_slot_word_generation_crosswalk": "UNBOUND",
+            "product_policy_changed": false,
+            "pcm_or_encoded_payload_included": false,
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
@@ -29587,8 +29678,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1707602,
-              "sha256": "7ab7da8edaa5421386fe2aa5c027ea6010917fb4c153fa03dea8b6343b30d270"
+              "bytes": 1711512,
+              "sha256": "1250d81084f4e7893d30a89badfaba5389f030e59f2be1e60085647c48e62788"
             }
           ],
           "test_inventory": [

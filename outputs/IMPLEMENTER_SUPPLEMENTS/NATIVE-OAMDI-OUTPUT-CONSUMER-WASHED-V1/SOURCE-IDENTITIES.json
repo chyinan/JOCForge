@@ -1,0 +1,23 @@
+{
+  "schema": "native-oamdi-output-consumer-source-identities.v1",
+  "source_package_id": "native_table_b_output_consumer_wash_followup_v6",
+  "source_manifest_sha256": "3a00ec555651406875260a3ff0cf2ffd538b97e1f9362e1f7d0a73ea471b6557",
+  "source_payloads": {
+    "APPROVED-CONTRACT-DISPOSITION.json": "7cb9faf01edaa113656beb03790378d759a3aeafe7454a68377720e818fea156",
+    "ATTEMPT-LEDGER.json": "d092f54893070898b61089df6c1c97f0b29984f7b4c51b03115b743d3ad8b72a",
+    "check_native_table_b_oamdi_output.py": "ba9d5b7a01a1598a0519540ec412cb1c151188afd8529893f624e91285affb1f",
+    "NATIVE-OAMDI-OUTPUT-RECEIPT.json": "2e3e0dba0c7ac3f89baec63ae942ae8dc673f21e1782084272878b22f011dca1",
+    "NEXT-OUTPUT-JOIN.json": "6d3022ee674405089f5cd1280955e0ef500fadcee59b93800841487893135a79",
+    "README.md": "4bcdd3c90cb410c13130c4aab92feaf38d5f37e44e0906a3a4288492b28641a8",
+    "SOURCE-IDENTITIES.json": "5e9e83534a82984979ed12343ca284f123ba55f9bf2ea87ad3fb7c098e45de8d"
+  },
+  "scope": {
+    "native_generation_join": "NO",
+    "native_state_to_dsp": "BOUND_MEASUREMENT_ONLY",
+    "native_state_to_encoder": "NO_HIT_IN_RUNS_035_AND_036_SELECTED_ENCODER_PASS",
+    "filewriter_stream_index_to_named_output_path": "BOUND_FOR_RUN_036",
+    "F06OF_crosswalk": "UNBOUND",
+    "product_policy_changed": false,
+    "pcm_or_encoded_payload_included": false
+  }
+}
