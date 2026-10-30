@@ -1,0 +1,14 @@
+{
+  "schema": "selected-length-boundary-coverage-wash-check.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_NEGATIVE_COVERAGE",
+  "source_manifests_and_payload_hashes": "VERIFIED",
+  "run99_target_hits": "NOT_OBSERVED_IN_CAPTURED_FIELDS",
+  "run100_target_hits": "NOT_OBSERVED",
+  "run109_target_hits": "NOT_OBSERVED",
+  "run110_target_hits": "NOT_OBSERVED",
+  "body_bytes_plus_four": "OBSERVED_WITHIN_RUN100_109_110",
+  "fresh_native_execution": "NOT_RUN",
+  "global_unreachability": "NOT_CLAIMED",
+  "512_overflow_behavior": "NOT_OBSERVED",
+  "parent_invocation_to_adm_sample_position": "UNBOUND"
+}

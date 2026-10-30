@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1720770,
-              "sha256": "bbc7c90a7587622aeac5601aef5aebe0b537defddc1aad2f7a443b9732c0acb1"
+              "bytes": 1725729,
+              "sha256": "a15d8ac838774e2cfd37fb8d590c58f4fbae089fa7b3220c8e568110b1ad57f4"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1720770,
-              "sha256": "bbc7c90a7587622aeac5601aef5aebe0b537defddc1aad2f7a443b9732c0acb1"
+              "bytes": 1725729,
+              "sha256": "a15d8ac838774e2cfd37fb8d590c58f4fbae089fa7b3220c8e568110b1ad57f4"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -23908,6 +23908,99 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-length-target-boundary-fixture-requirement",
+          "mapping_status": "WASHED_SELECTED_PROFILE_TARGET_BOUNDARY_FIXTURE_REQUIREMENT__EXECUTION_NOT_RUN",
+          "implementation_status": "EVIDENCE_ONLY_INPUT_FIXTURE_REQUIREMENT__NOT_RUN",
+          "scope": "This evidence-only slice records limited negative coverage and a future input-only fixture requirement for F12/F06. Existing run-99/100 authorized audio and run-109/110 synthetic-noise captures did not observe writer operands 507/508/511/512; the authorized metadata inventory had no other successful sample hitting them, and this audit added no native execution. The next candidate must retain a valid selected profile-10 38-track ADM graph with admitted metadata (F06 input prerequisite) and independently generated PCM, then let the real selected producer naturally determine body lengths. Body lengths 503/504/507/508 are fixture search requirements, not expected native outputs; if reached, capture same-parent body/reservation/9-bit writer/status and downstream serializer/refill. The requirement remains NOT_RUN. No global-unreachability conclusion, 512 overflow behavior, or parent-invocation to ADM sample-position join is established.",
+          "owner": "codec",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The existing captures are bounded by their own run identities and do not establish a parent-invocation to ADM sample-position clock.",
+              "The future candidate requires same-parent capture of producer input/body length, wire/body-region reservation, 9-bit operand/bits advanced, return status, and downstream serializer/refill status.",
+              "The future fixture and native execution are NOT_RUN; target body lengths are not asserted outputs."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_LENGTH_TARGET_BOUNDARY_FIXTURE_REQUIREMENT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "5edaee3d5f3103b7b8e1d6fc9cbd67a996810082f559ea6274d3bf0acdb70432",
+            "validation_boundary": "Input-only requirement from bounded no-hits; no native execution, predicted target output, overflow behavior, or global-unreachability claim."
+          },
+          "vectors": {
+            "kind": "WASHED_SELECTED_LENGTH_NEGATIVE_COVERAGE_AND_INPUT_ONLY_TARGET_FIXTURE_REQUIREMENT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Authorized run-99/100 audio and metadata-matched run-109/110 generated-noise captures did not observe writer operands 507/508/511/512; no new native run occurred.",
+              "Candidate input prerequisites are valid selected profile-10 38-track graph/admitted metadata plus independently generated PCM.",
+              "Actual producer input is required to naturally generate candidate body lengths 503/504/507/508; these are fixture search conditions, not expected outputs.",
+              "Capture same-parent body/reservation/9-bit operand/bits advanced/status and downstream serializer/refill if a valid candidate naturally reaches the boundary.",
+              "The requirement is NOT_RUN; 512 overflow remains NOT_OBSERVED and bounded no-hits do not imply global unreachability."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "5edaee3d5f3103b7b8e1d6fc9cbd67a996810082f559ea6274d3bf0acdb70432"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Finding and validating an admitted F06 selected-profile 38-track graph/metadata plus independent generated PCM fixture.",
+            "A real selected producer naturally generating any candidate body length 503/504/507/508.",
+            "Same-parent native reservation, writer operand/bits advanced, return status, and downstream serializer/refill observation at target values.",
+            "512 overflow, truncation, rejection, rollback/no-commit, and downstream behavior.",
+            "Parent invocation to ADM sample-position identity and any global-unreachability claim.",
+            "JOCForge runtime execution or implementation readiness change."
+          ],
+          "validation_boundary": "Evidence-only fixture requirement. No candidate output values or native boundary outcomes are predicted.",
+          "native_status": {
+            "run99_target_hits": "NOT_OBSERVED_IN_CAPTURED_FIELDS",
+            "run100_target_hits": "NOT_OBSERVED",
+            "run109_target_hits": "NOT_OBSERVED",
+            "run110_target_hits": "NOT_OBSERVED",
+            "authorized_sample_inventory_target_hit": "NOT_OBSERVED_IN_SUCCESSFUL_SAMPLES_REVIEWED",
+            "fresh_native_execution": "NOT_RUN",
+            "candidate_profile_selector": 10,
+            "candidate_adm_graph_requirement": "VALID_SELECTED_38_TRACK_GRAPH_AND_ADMITTED_METADATA",
+            "candidate_pcm_requirement": "INDEPENDENTLY_GENERATED_NOT_COPIED_FROM_USER_SOURCE",
+            "candidate_body_lengths_search_requirements_bytes": [
+              503,
+              504,
+              507,
+              508
+            ],
+            "target_writer_operands_to_capture": [
+              507,
+              508,
+              511,
+              512
+            ],
+            "target_lengths_are_expected_outputs": false,
+            "512_overflow_behavior": "NOT_OBSERVED",
+            "global_unreachability_claim": false,
+            "parent_invocation_to_adm_sample_position": "UNBOUND",
+            "model_codec_execution": "NOT_RUN",
+            "jocforge_runtime_execution": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -29834,8 +29927,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1720770,
-              "sha256": "bbc7c90a7587622aeac5601aef5aebe0b537defddc1aad2f7a443b9732c0acb1"
+              "bytes": 1725729,
+              "sha256": "a15d8ac838774e2cfd37fb8d590c58f4fbae089fa7b3220c8e568110b1ad57f4"
             }
           ],
           "test_inventory": [

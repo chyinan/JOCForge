@@ -1,0 +1,25 @@
+{
+  "schema": "selected-length-boundary-fixture-input-only.v1",
+  "status": "NOT_RUN",
+  "requirements": {
+    "profile_selector": 10,
+    "adm_graph": "valid selected 38-track graph and admitted metadata",
+    "pcm": "independently generated; not copied from user source",
+    "actual_same_parent_body_length_bytes": [503, 504, 507, 508],
+    "capture_block2_writer_operands": [507, 508, 511, 512],
+    "capture_fields": [
+      "producer input and body length",
+      "wire/body-region reservation",
+      "writer operand and bits advanced",
+      "writer return status",
+      "downstream serializer/refill status"
+    ]
+  },
+  "expected_native_outcomes": "UNSPECIFIED",
+  "do_not_infer": [
+    "that the listed inputs will produce the requested body lengths",
+    "global unreachability from existing no-hits",
+    "512 overflow or rollback behavior",
+    "parent invocation to ADM sample-position identity"
+  ]
+}

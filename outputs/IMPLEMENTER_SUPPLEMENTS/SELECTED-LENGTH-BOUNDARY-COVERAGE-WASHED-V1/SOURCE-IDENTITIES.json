@@ -1,0 +1,12 @@
+{
+  "schema": "selected-length-boundary-coverage-source-identities.v1",
+  "run99_manifest_sha256": "ae7217ffbc881a48e741fbf91329492335501c398a141f2a62e9aa18e9468ac5",
+  "run100_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+  "run100_reservation_manifest_sha256": "df4991d79add578fdbaceb0604885e3be5cbc4e98fa8e2743119bbaa733a8a34",
+  "run109_manifest_sha256": "3efda1655f8c02df369d6fb1167bfa9e0159cde5cd1ec7a2fb262b63e4e4ca4b",
+  "run110_manifest_sha256": "56530c2f0a17f7999b5a34072af89ebb0c75538b1ebf0e68a7d7333776db7550",
+  "authorized_sample_inventory_sha256": "315658978adc02cd43c716a5ef31fa05d799e5183affbbc101766fca71e02df9",
+  "reverse_agent_4_summary_manifest_sha256": "5015a118f986170c74c4f8f578358d4a4dc877de2cf18f1f77c3790cece728bd",
+  "fresh_native_execution": "NOT_RUN",
+  "source_pcm_read_or_persisted": false
+}

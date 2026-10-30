@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "SELECTED-LENGTH-BOUNDARY-COVERAGE-WASHED-V1",
+  "scope": "bounded selected-profile negative coverage and unexecuted target-fixture requirement",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 2605,
+      "sha256": "87dd561b5c40d1563c9709b03082517c63c9179773308b0f27027d504d1d8a45"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 865,
+      "sha256": "023f922114bef0ff93d0a199b921aaed90935acf74bd02ec7460862e6a914140"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 918,
+      "sha256": "52711194f0271829dd1f4d0004a6db4a69389af07188a91603a24a060898ebba"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 595,
+      "sha256": "ac6498fd1795a5102183d31fea6ae6b3ba1f5245042a71e52a4fc6f94b18ec7e"
+    }
+  ]
+}
