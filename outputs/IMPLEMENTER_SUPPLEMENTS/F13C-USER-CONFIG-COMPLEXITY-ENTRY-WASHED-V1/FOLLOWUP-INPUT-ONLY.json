@@ -1,0 +1,22 @@
+{
+  "schema": "f13c-user-config-complexity-entry-input-only.v1",
+  "status": "NOT_RUN",
+  "case": {
+    "input": "same authorized ADM and one accepted selected-profile task configuration",
+    "candidate_task_field": "data_rate",
+    "capture_same_execution": [
+      "task/XML/UI field value and owner",
+      "imported native record value and owner/generation",
+      "BSI complexity byte",
+      "ID14 semantic object-count producer if present",
+      "execution and rejection status"
+    ]
+  },
+  "expected_outcome": "UNSPECIFIED",
+  "do_not_infer": [
+    "that data_rate maps to complexity byte",
+    "that a partial XSD omission is a rejection rule",
+    "that numeric equality establishes producer identity",
+    "that the prior parameter-13 values were a controlled pair"
+  ]
+}

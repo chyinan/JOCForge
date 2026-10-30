@@ -8886,8 +8886,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1743384,
-              "sha256": "5b7b28dc43dd5403a7daa1abba279ef7ed523d9d89b75bf8f1ebe57d07bc69dc"
+              "bytes": 1747657,
+              "sha256": "72f7c28b0a71ed5f67a1062a2da1f8252fafb59ec52fa6d4490d500f8b77bb28"
             }
           ],
           "test_modules": [
@@ -12399,8 +12399,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1743384,
-              "sha256": "5b7b28dc43dd5403a7daa1abba279ef7ed523d9d89b75bf8f1ebe57d07bc69dc"
+              "bytes": 1747657,
+              "sha256": "72f7c28b0a71ed5f67a1062a2da1f8252fafb59ec52fa6d4490d500f8b77bb28"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -29161,6 +29161,95 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
+        },
+        {
+          "slice_id": "user-config-data-rate-to-native-complexity-entry-boundary",
+          "mapping_status": "WASHED_STATIC_DATA_RATE_REGISTRATION__NATIVE_COMPLEXITY_ENTRY_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_CONFIG_TO_NATIVE_PRODUCER_JOIN_OPEN__PAIR_NOT_RUN",
+          "scope": "Static evidence shows the DDP Atmos component registers a task-config `data_rate` field, but no typed join links it to either the count-like native record or the BSI complexity configuration byte. Those are separate native input producers with unresolved owner/generation relationship. The inspected job template has `data_rate` but no explicit parameter-13, complexity, or BSI-count field, and the template is not runtime-validated. `dee.exe --schema` emitted a partial XSD after DDP plugin initialization failed and then exited with an access violation; the missing XSD entries are not a valid rejection boundary or proof of global field absence. A controlled native pair was NOT_RUN; prior parameter-13 values 1 and 16 are rehashed prior observations, not a same-input pair. ID14 model-derived count and native config byte remain distinct and are not joined by numeric equality.",
+          "owner": "metadata",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "UserTaskConfigDataRate",
+              "NativeCountLikeInputRecord",
+              "NativeComplexityConfigurationByte",
+              "NativeOwnerGeneration",
+              "Id14ModelObjectCount",
+              "SchemaProbeProcess"
+            ],
+            "covered_clauses": [
+              "The static `data_rate` plugin registration has no typed edge to the count-like record or native BSI complexity byte.",
+              "The count-like record and complexity configuration byte are separate producers; ownership and generation relation remain unresolved.",
+              "The job template's `data_rate` presence is not runtime validation and does not bind parameter-13, complexity, or BSI-count fields.",
+              "The partial schema probe is not a valid rejection boundary; controlled pair execution remains NOT_RUN.",
+              "Prior numeric parameter-13 values and the ID14 model-derived count are not same-input producer lineage."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_USER_CONFIG_TO_NATIVE_COMPLEXITY_ENTRY_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "6a4a916767bd9697237a0640f21d10487cd174b534e8b5c17e2796388748da5f",
+            "source_package_manifest_sha256": "63b7a47c25e04bd471441db70f4c6a27f50702541eca916e59ea8c96c9d666c4",
+            "validation_boundary": "Static registration and path findings only. No controlled pair, same-input producer join, task-schema rejection rule, owner/generation link, or implementation readiness is established."
+          },
+          "vectors": {
+            "kind": "WASHED_F13C_USER_CONFIG_NATIVE_COMPLEXITY_INPUT_ONLY_FOLLOWUP",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "A plugin statically registers `data_rate`; no typed join to count-like native input or BSI complexity config byte is established.",
+              "The inspected template contains `data_rate`, lacks explicit parameter-13/complexity/BSI-count fields, and is not runtime-validated.",
+              "The `dee.exe --schema` probe produced only partial XSD after plugin initialization failure and access violation; this is not a valid rejection rule.",
+              "A controlled same-input native pair is NOT_RUN; old parameter-13 values 1 and 16 are rehashed prior observations.",
+              "ID14 model-derived object count, count-like native record, and native complexity config byte remain distinct producer domains without owner/generation join."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "6a4a916767bd9697237a0640f21d10487cd174b534e8b5c17e2796388748da5f"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Runtime validation of the inspected job template and an accepted selected-profile task configuration containing `data_rate`.",
+            "Controlled same-input native capture joining task `data_rate`, both native record inputs, and the BSI complexity byte with owner/generation identity.",
+            "Parameter-13 same-input pair execution; prior values 1 and 16 were rehashed, not re-executed as a controlled pair.",
+            "A valid schema rejection boundary; the partial XSD and access violation are not rejection semantics.",
+            "ID14 model count to native configuration byte typed lineage, F13C readiness, and product acceptance."
+          ],
+          "validation_boundary": "Evidence-only static boundary; do not treat XSD omissions as global absence or prior equal values as lineage.",
+          "native_status": {
+            "data_rate_plugin_registration": "STATIC_FOUND",
+            "data_rate_to_count_like_native_record_join": "UNBOUND",
+            "data_rate_to_native_complexity_byte_join": "UNBOUND",
+            "native_input_producers": "COUNT_LIKE_RECORD_AND_COMPLEXITY_CONFIG_BYTE_ARE_DISTINCT",
+            "native_owner_generation_relation": "UNBOUND",
+            "template_has_data_rate": true,
+            "template_has_explicit_parameter13_complexity_bsi_count": false,
+            "template_runtime_validated": false,
+            "dee_schema_probe": "PARTIAL_XSD_AFTER_PLUGIN_INITIALIZATION_FAILURE_THEN_ACCESS_VIOLATION",
+            "partial_xsd_is_valid_rejection_boundary": false,
+            "controlled_pair": "NOT_RUN",
+            "prior_parameter13_values_1_16": "REHASHED_PRIOR_OBSERVATIONS_NOT_SAME_INPUT_PAIR",
+            "id14_model_count_native_config_join": "UNBOUND",
+            "global_field_absence_claim": false,
+            "whole_f13c_readiness": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -30135,8 +30224,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1743384,
-              "sha256": "5b7b28dc43dd5403a7daa1abba279ef7ed523d9d89b75bf8f1ebe57d07bc69dc"
+              "bytes": 1747657,
+              "sha256": "72f7c28b0a71ed5f67a1062a2da1f8252fafb59ec52fa6d4490d500f8b77bb28"
             }
           ],
           "test_inventory": [

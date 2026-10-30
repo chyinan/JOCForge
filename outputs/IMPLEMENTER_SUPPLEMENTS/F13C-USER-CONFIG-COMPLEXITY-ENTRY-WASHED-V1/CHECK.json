@@ -1,0 +1,11 @@
+{
+  "schema": "f13c-user-config-complexity-entry-wash-check.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_STATIC_FINDINGS",
+  "source_manifest_and_payload_hashes": "VERIFIED",
+  "data_rate_to_native_complexity_byte": "UNBOUND",
+  "count_like_fields_to_complexity_byte_owner_join": "UNBOUND",
+  "partial_xsd_is_rejection_boundary": false,
+  "controlled_pair": "NOT_RUN",
+  "model_id14_lineage": "UNBOUND",
+  "whole_f13c_readiness": false
+}

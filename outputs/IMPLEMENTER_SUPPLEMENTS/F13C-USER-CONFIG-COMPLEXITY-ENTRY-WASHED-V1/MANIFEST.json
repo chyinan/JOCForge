@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F13C-USER-CONFIG-COMPLEXITY-ENTRY-WASHED-V1",
+  "scope": "bounded native config-entry lineage and unresolved controlled pair; no runtime implementation rule",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1612,
+      "sha256": "ca9f218b734959d5effdf0b72babb24aefd90b38ec6c2497d244bca52f350628"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 645,
+      "sha256": "0b0ea0394a579e43b94c449ab13887a013848022b82910dddd7cec80ef3b4dd4"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 786,
+      "sha256": "1a45437e30e247b9ec04f69047eb2c7876347a14c8fa982f0e52a76a0ca0ea03"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 435,
+      "sha256": "96b88021dd4095997986a6e94ce3ef836221bbb1bfc007250c453c2a235e4f14"
+    }
+  ]
+}

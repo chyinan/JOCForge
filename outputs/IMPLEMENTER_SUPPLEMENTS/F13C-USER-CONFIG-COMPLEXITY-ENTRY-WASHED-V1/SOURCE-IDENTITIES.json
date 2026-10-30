@@ -1,0 +1,13 @@
+{
+  "schema": "f13c-user-config-complexity-entry-source-identities.v1",
+  "source_package_manifest_sha256": "63b7a47c25e04bd471441db70f4c6a27f50702541eca916e59ea8c96c9d666c4",
+  "source_payload_sha256": {
+    "REPORT.md": "d44eba3ce40b9806436e952c7a78b50984cfeab2a807378c950eb3f6c7c65476",
+    "EVIDENCE.json": "04f6c8db57a4af3d6af38cea39ca3a8471d00e08d7cbd511fe200da571c5ff3d",
+    "DEE-SCHEMA-GENERATION-SUMMARY.txt": "19420d264d3d6c827a470100c5f816ea5212dc883d6a4f698dbc53fdcae261cd"
+  },
+  "runtime_pair": "NOT_RUN",
+  "partial_xsd_used_as_rejection_boundary": false,
+  "user_pcm_or_bitstream_access": false,
+  "private_key_access": false
+}
