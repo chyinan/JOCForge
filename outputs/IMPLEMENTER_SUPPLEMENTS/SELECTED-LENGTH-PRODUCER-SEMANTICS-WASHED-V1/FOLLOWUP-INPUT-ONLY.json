@@ -1,0 +1,23 @@
+{
+  "schema": "selected-length-producer-followup-input-only.v1",
+  "status": "NOT_RUN",
+  "purpose": "Observe selected native block-2 reservation and writer behavior at target operands without persisting PCM or encoded payload.",
+  "target_operands": [507, 508, 511, 512],
+  "required_same_parent_fields": [
+    "U16 body length prefix",
+    "planned body length",
+    "serialized body length",
+    "refill body length",
+    "block-2 wire reservation",
+    "block-2 body-region reservation",
+    "9-bit writer operand",
+    "bits advanced",
+    "reservation and writer return status",
+    "downstream parser/serializer/refill status"
+  ],
+  "non_goals": [
+    "No expected boundary outcome is asserted.",
+    "No inference of the run-99 upstream field units.",
+    "No parent-invocation to ADM-sample-position join."
+  ]
+}

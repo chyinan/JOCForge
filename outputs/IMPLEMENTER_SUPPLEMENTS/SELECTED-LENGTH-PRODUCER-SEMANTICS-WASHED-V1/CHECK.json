@@ -1,0 +1,13 @@
+{
+  "schema": "selected-length-producer-wash-check.v1",
+  "status": "PASS_HASH_BOUND_SUMMARY_CONSISTENCY",
+  "source_package_manifest_and_payload_hashes": "VERIFIED",
+  "run_99_upstream_units": "NOT_ESTABLISHED",
+  "run_100_body_length_unit": "BYTES_WITHIN_RECORDED_CHAIN",
+  "run_100_reservation_relation": "BODY_BYTES_PLUS_4_WITHIN_RECORDED_CHAIN",
+  "target_operands_507_508_511_512": "NOT_OBSERVED",
+  "overflow_behavior": "NOT_OBSERVED",
+  "parent_invocation_to_adm_sample_position": "UNBOUND",
+  "model_codec_execution": "NOT_RUN",
+  "jocforge_runtime_execution": "NOT_RUN"
+}

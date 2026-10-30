@@ -1,0 +1,26 @@
+{
+  "schema": "selected-length-producer-source-identities.v1",
+  "fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "run_99": {
+    "wash_manifest_sha256": "ae7217ffbc881a48e741fbf91329492335501c398a141f2a62e9aa18e9468ac5",
+    "evidence_payload_sha256": "502e957eb9ee58aeec861723770592a45ab4301342add35814e5abb46d8e0ca1",
+    "check_payload_sha256": "d1840915b4412de9dae59cd139e95f5d0e6b4cc5760c2a2083ceaa41a66ab22d"
+  },
+  "run_100_full_chain": {
+    "wash_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+    "evidence_payload_sha256": "1814f5ce9bf53cbc0370c9ae2e94674cd6fab7214748af79a7bbc40213bd538b",
+    "check_payload_sha256": "dc4fa88b3ae47a3d1780f23adc234f34c21aef4e591e2da091132a9e8a57404f",
+    "dll_image_identity": "NOT_PRESENT_IN_SANITIZED_RECEIPT"
+  },
+  "run_100_reservation_addendum": {
+    "wash_manifest_sha256": "df4991d79add578fdbaceb0604885e3be5cbc4e98fa8e2743119bbaa733a8a34",
+    "evidence_payload_sha256": "ed3965e670b18980bc587f27f3f65195897ef8dbe2af15d8543926547e6eea2b",
+    "check_payload_sha256": "1d5d80055b78fe410a2dfd263b69614d767d5679afa15faa182ce1f209b5465a"
+  },
+  "reverse_agent_4_summary": {
+    "wash_manifest_sha256": "ea100c7c0e6da57fd9586311f17e1670cd7f49c1427bb4dc166f0abe72a7c36a",
+    "report_sha256": "1a890a35b2998075b094d884fe7b1bbeefab218c4c8221b9c64ecd3f208d3264",
+    "verification_sha256": "300058ed8f97fefd7b96f209a5955f02c08896aa6f965e64a357b72697f39d66"
+  },
+  "cross_run_identity_join": "NOT_ESTABLISHED"
+}

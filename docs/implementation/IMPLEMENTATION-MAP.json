@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1704018,
-              "sha256": "39d873e325568bf6010630c8f0dd12d707b2bac39c1efdeea3d3d91cd288daad"
+              "bytes": 1707602,
+              "sha256": "7ab7da8edaa5421386fe2aa5c027ea6010917fb4c153fa03dea8b6343b30d270"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1704018,
-              "sha256": "39d873e325568bf6010630c8f0dd12d707b2bac39c1efdeea3d3d91cd288daad"
+              "bytes": 1707602,
+              "sha256": "7ab7da8edaa5421386fe2aa5c027ea6010917fb4c153fa03dea8b6343b30d270"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -23607,6 +23607,107 @@
               "sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e"
             }
           ]
+        },
+        {
+          "slice_id": "selected-length-producer-run99-run100-boundary",
+          "mapping_status": "WASHED_RUN99_CALL_REPLAY_AND_RUN100_BODY_BYTE_CHAIN__INPUT_CLOCK_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_RUN99_RUN100_DISTINCT__MODEL_NOT_RUN",
+          "scope": "This evidence-only slice keeps run 099 and run 100 separate. Run 099 observed 4,249 parent invocations and 4,247 selected-producer calls; bounded U32 reads were joined to the selected cold owner/profile and returned values matched the reported static sum/tail replay for 4,247/4,247 calls. The producer return unit, record semantics, and complete formula remain unestablished; 4,247 is the call count, not each return value. In an independent run 100, 4,247 same-parent calls joined selected body length/count to codec record, planned, serialized, refill, and U16 body-length-prefix values, measured as 232–375 body bytes within that captured chain. For block 2, U16 reservations and the 9-bit writer operand matched body bytes + 4; the meaning of +4 is unknown. The run-100 receipt lacks a DLL image identity, so no cross-run merge is made. Operands 507/508/511/512, overflow behavior, and parent-invocation to ADM sample position are not established. Model codec and JOCForge runtime execution are NOT_RUN.",
+          "owner": "codec",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run99ParentInvocation",
+              "Run99SelectedLengthProducerCall",
+              "Run99ProducerReturnU32",
+              "Run100ParentInvocation",
+              "Run100BodyLengthBytes",
+              "Run100Block2ReservationU16",
+              "Run100WriterOperand9Bit",
+              "AdmSourceSamplePosition"
+            ],
+            "covered_clauses": [
+              "Run 099 has 4,249 parent invocations and 4,247 selected producer calls; replay matched returned values on 4,247/4,247 calls, while return units remain UNBOUND.",
+              "Run 100 independently joins body byte length/count to codec, planned, serialized, refill, and U16 prefix values on 4,247 same-parent calls.",
+              "Run 100 block-2 reservations and the 9-bit writer operand match body bytes + 4; this relation does not establish the meaning of +4.",
+              "Run 099 and run 100 do not share a DLL image identity and are not joined as one execution.",
+              "Parent invocation to ADM sample position remains UNBOUND."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_LENGTH_PRODUCER_AND_BODY_RESERVATION_EVIDENCE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "ff49b19687c2495a74e5d67871a6b8f558329c8fe62b60e32bbab4bdde6d6bed",
+            "validation_boundary": "Run-scoped native evidence only; run-099 producer return units/formula and run-100 target boundaries remain open; runs are not cross-joined."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN99_PRODUCER_REPLAY_AND_RUN100_BODY_LENGTH_RELATION_WITH_TARGET_OBSERVATION_NOT_RUN",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Run 099: 4,247 selected-producer calls matched reported static sum/tail replay; this is a call count, not a per-call returned value.",
+              "Run 099 bounded reads are U32; semantic record, full formula, and return unit remain unestablished.",
+              "Run 100: 4,247 same-parent downstream relations identify body length in bytes within that captured chain, range 232–375 bytes.",
+              "Run 100 block-2 reservation and 9-bit writer operand equal body bytes + 4; +4 meaning is unknown.",
+              "Operands 507, 508, 511, 512 and overflow behavior were not observed; the input-only target observation status is NOT_RUN.",
+              "Run 100 DLL image identity is absent; cross-run identity and parent-invocation to ADM sample position remain unestablished."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "ff49b19687c2495a74e5d67871a6b8f558329c8fe62b60e32bbab4bdde6d6bed"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Model codec execution and targeted 507/508/511/512 boundary observation.",
+            "512 overflow behavior and downstream failure disposition.",
+            "Run-099 complete producer formula, record semantics, and returned-value unit.",
+            "A cross-run identity join between run 099 and run 100.",
+            "Parent invocation to ADM sample-position, source-clock, or AU lineage.",
+            "JOCForge runtime execution and product output."
+          ],
+          "validation_boundary": "Evidence mapping only; no codec rule, overflow outcome, or production readiness is inferred.",
+          "native_status": {
+            "run099_parent_invocations": 4249,
+            "run099_selected_producer_calls": 4247,
+            "run099_reported_sum_tail_replay_matches": "4247/4247",
+            "run099_read_width": "U32",
+            "run099_return_unit": "UNBOUND",
+            "run099_record_semantics": "UNBOUND",
+            "run100_same_parent_calls": 4247,
+            "run100_body_length_unit": "BYTES_WITHIN_RECORDED_CHAIN",
+            "run100_body_length_range_bytes": [
+              232,
+              375
+            ],
+            "run100_block2_reservation_relation": "BODY_BYTES_PLUS_4",
+            "run100_plus4_semantics": "UNBOUND",
+            "run100_writer_bits_advanced": 9,
+            "run100_dll_image_identity": "NOT_PRESENT_IN_SANITIZED_RECEIPT",
+            "cross_run_identity_join": "NOT_ESTABLISHED",
+            "target_operands_507_508_511_512": "NOT_OBSERVED",
+            "overflow_behavior": "NOT_OBSERVED",
+            "input_only_target_observation": "NOT_RUN",
+            "parent_invocation_to_adm_sample_position": "UNBOUND",
+            "model_codec_execution": "NOT_RUN",
+            "jocforge_runtime_execution": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -29486,8 +29587,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1704018,
-              "sha256": "39d873e325568bf6010630c8f0dd12d707b2bac39c1efdeea3d3d91cd288daad"
+              "bytes": 1707602,
+              "sha256": "7ab7da8edaa5421386fe2aa5c027ea6010917fb4c153fa03dea8b6343b30d270"
             }
           ],
           "test_inventory": [

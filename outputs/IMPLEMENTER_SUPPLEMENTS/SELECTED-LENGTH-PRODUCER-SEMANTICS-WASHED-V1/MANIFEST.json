@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "SELECTED-LENGTH-PRODUCER-SEMANTICS-WASHED-V1",
+  "scope": "bounded native evidence and unresolved boundary inventory; not codec conformance",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 2078,
+      "sha256": "d5110ff9f2a431606ee5c7ee6856799172de001245d2f67918bcd44e9362f61d"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1538,
+      "sha256": "d0f163ab31ba30cc496a1791ecae1c7343c4932724586007c2e91523a993a011"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 823,
+      "sha256": "601a7fe3034fbf530f3e87e586271fec328523bd769b84aa388732089b668de2"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 582,
+      "sha256": "da992e1ff6ff175c2f3f3451bedf37f415767f5551232e06b4e67085e6de7217"
+    }
+  ]
+}
