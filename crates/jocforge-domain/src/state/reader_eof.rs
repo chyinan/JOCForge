@@ -1,6 +1,9 @@
 // pattern: Functional Core
 //! Reader/EOF single-root lifecycle contracts.
 
+use crate::transaction::{
+    CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt, GtcOwnerReceiptError, GtcOwnerStateSnapshot,
+};
 use sha2::{Digest, Sha256};
 use std::sync::Arc;
 
@@ -209,6 +212,7 @@ pub enum ReaderEofError {
     EmptyTransactionId,
     GenerationMismatch,
     Retired,
+    GtcReceipt(GtcOwnerReceiptError),
 }
 
 /// Prepared capabilities are linear and cannot be cloned.
@@ -291,6 +295,33 @@ impl ReaderEofReceipt {
     }
 }
 
+/// Parent-owned next-root candidate. It has no authority to mutate the before machine.
+#[must_use]
+#[derive(Debug)]
+pub struct ReaderEofReplacementCandidate {
+    next_machine: ReaderEofMachine,
+    owner_receipt: ReaderEofReceipt,
+    gtc_receipt: GtcOwnerReceipt,
+}
+
+impl ReaderEofReplacementCandidate {
+    pub const fn next_machine(&self) -> &ReaderEofMachine {
+        &self.next_machine
+    }
+
+    pub const fn owner_receipt(&self) -> &ReaderEofReceipt {
+        &self.owner_receipt
+    }
+
+    pub const fn gtc_receipt(&self) -> &GtcOwnerReceipt {
+        &self.gtc_receipt
+    }
+
+    pub fn into_parts(self) -> (ReaderEofMachine, ReaderEofReceipt, GtcOwnerReceipt) {
+        (self.next_machine, self.owner_receipt, self.gtc_receipt)
+    }
+}
+
 /// The committed owner is linear and cannot be cloned.
 ///
 /// ```compile_fail
@@ -368,6 +399,70 @@ impl ReaderEofMachine {
             after_digest,
         })
     }
+
+    /// Builds a new owner value and both receipts from the exact staged state without mutating
+    /// this machine. The enclosing parent is responsible for aggregate replacement.
+    pub fn replacement_candidate(
+        &self,
+        staged: ReaderEofStaged,
+        gtc_transaction_id: CallbackTransactionId,
+    ) -> Result<ReaderEofReplacementCandidate, ReaderEofError> {
+        self.validate_staged(&staged)?;
+        let expected_callback = self
+            .committed
+            .callback_index
+            .value()
+            .checked_add(1)
+            .ok_or(ReaderEofError::GenerationMismatch)?;
+        if staged.after.callback_index.value() != expected_callback
+            || staged.after.digest() != staged.after_digest
+        {
+            return Err(ReaderEofError::GenerationMismatch);
+        }
+        let after_generation = self
+            .generation
+            .checked_add(1)
+            .ok_or(ReaderEofError::GenerationMismatch)?;
+        let next_machine = Self {
+            committed: staged.after,
+            generation: after_generation,
+            retired: false,
+        };
+        let before_reference = self.state_reference();
+        let after_reference = next_machine.state_reference();
+        let before = GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::ReaderEof,
+            before_reference.generation(),
+            before_reference.cold_sha256().bytes(),
+            before_reference.canonical_bytes(),
+        )
+        .map_err(ReaderEofError::GtcReceipt)?;
+        let after = GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::ReaderEof,
+            after_reference.generation(),
+            after_reference.cold_sha256().bytes(),
+            after_reference.canonical_bytes(),
+        )
+        .map_err(ReaderEofError::GtcReceipt)?;
+        let gtc_receipt = GtcOwnerReceipt::from_transition(before, after, gtc_transaction_id)
+            .map_err(ReaderEofError::GtcReceipt)?;
+        let changed = staged.before_digest != staged.after_digest;
+        let owner_receipt = ReaderEofReceipt {
+            owner_id: ReaderEofOwnerId::ReaderEof,
+            transaction_id: staged.transaction_id,
+            before_generation: staged.before_generation,
+            before_digest: staged.before_digest,
+            after_generation,
+            after_digest: staged.after_digest,
+            changed,
+            commit_count: u8::from(changed),
+        };
+        Ok(ReaderEofReplacementCandidate {
+            next_machine,
+            owner_receipt,
+            gtc_receipt,
+        })
+    }
     fn validate_staged(&self, staged: &ReaderEofStaged) -> Result<(), ReaderEofError> {
         if self.retired {
             return Err(ReaderEofError::Retired);
@@ -379,12 +474,19 @@ impl ReaderEofMachine {
         }
         Ok(())
     }
-    pub fn abort(&self, staged: ReaderEofStaged) -> Result<(), ReaderEofError> {
+    /// Coordinator-only lifecycle hook retained for the approved aggregate transaction API.
+    #[allow(dead_code)]
+    pub(crate) fn abort(&self, staged: ReaderEofStaged) -> Result<(), ReaderEofError> {
         let result = self.validate_staged(&staged);
         drop(staged);
         result
     }
-    pub fn commit(&mut self, staged: ReaderEofStaged) -> Result<ReaderEofReceipt, ReaderEofError> {
+    /// Coordinator-only lifecycle hook; no public per-owner success is emitted.
+    #[allow(dead_code)]
+    pub(crate) fn commit(
+        &mut self,
+        staged: ReaderEofStaged,
+    ) -> Result<ReaderEofReceipt, ReaderEofError> {
         self.validate_staged(&staged)?;
         let after_generation = self
             .generation
@@ -403,7 +505,9 @@ impl ReaderEofMachine {
             commit_count: 1,
         })
     }
-    pub fn fatal(&mut self, staged: ReaderEofStaged) -> Result<(), ReaderEofError> {
+    /// Coordinator-only lifecycle hook; fatal state belongs to the programme root.
+    #[allow(dead_code)]
+    pub(crate) fn fatal(&mut self, staged: ReaderEofStaged) -> Result<(), ReaderEofError> {
         self.validate_staged(&staged)?;
         drop(staged);
         self.retired = true;
@@ -415,3 +519,71 @@ impl ReaderEofMachine {
         Self::cold()
     }
 }
+
+#[cfg(test)]
+mod replacement_candidate_tests {
+    use super::{ReaderEofMachine, ReaderEofPhase, ReaderEofState};
+    use crate::{
+        timeline::{FrontendCallbackIndex, NormalCallbackCount},
+        transaction::{CallbackTransactionId, GtcOwnerId},
+    };
+
+    fn next_typed_state() -> ReaderEofState {
+        ReaderEofState::from_parts(
+            FrontendCallbackIndex::new(1),
+            0,
+            NormalCallbackCount::new(0),
+            4,
+            None,
+            None,
+            ReaderEofPhase::Unset,
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn replacement_candidate_preserves_before_and_exact_typed_after_bytes() {
+        let machine = ReaderEofMachine::cold();
+        let before_bytes = machine.committed().canonical_bytes();
+        let after = next_typed_state();
+        let after_bytes = after.canonical_bytes();
+        let prepared = machine.prepare("owner-g0", after).unwrap();
+        let staged = machine.stage(prepared).unwrap();
+        let candidate = machine
+            .replacement_candidate(staged, CallbackTransactionId::new("callback-g0").unwrap())
+            .unwrap();
+
+        assert_eq!(machine.generation(), 0);
+        assert_eq!(machine.committed().canonical_bytes(), before_bytes);
+        let next = candidate.next_machine();
+        assert_eq!(next.generation(), 1);
+        assert_eq!(next.committed().canonical_bytes(), after_bytes);
+        assert_eq!(candidate.owner_receipt().before_generation(), 0);
+        assert_eq!(candidate.owner_receipt().after_generation(), 1);
+        assert_eq!(candidate.owner_receipt().commit_count(), 1);
+        assert_eq!(candidate.gtc_receipt().owner_id(), GtcOwnerId::ReaderEof);
+        assert_eq!(candidate.gtc_receipt().before_generation(), 0);
+        assert_eq!(candidate.gtc_receipt().after_generation(), 1);
+        assert_eq!(candidate.gtc_receipt().commit_count(), 1);
+    }
+
+    #[test]
+    fn stale_staged_replacement_rejects_without_mutating_the_owner() {
+        let machine = ReaderEofMachine::cold();
+        let before_bytes = machine.committed().canonical_bytes();
+        let prepared = machine.prepare("owner-g0", next_typed_state()).unwrap();
+        let mut staged = machine.stage(prepared).unwrap();
+        staged.before_digest = super::ReaderEofDigest::from_canonical_bytes(b"stale");
+
+        assert!(
+            machine
+                .replacement_candidate(staged, CallbackTransactionId::new("callback-g0").unwrap(),)
+                .is_err()
+        );
+        assert_eq!(machine.generation(), 0);
+        assert_eq!(machine.committed().canonical_bytes(), before_bytes);
+    }
+}
+
+#[cfg(test)]
+mod lifecycle_tests;

@@ -1,11 +1,25 @@
 // pattern: Functional Core
 //! Pure transaction identities, GTC owner references and capability boundaries.
-//! No coordinator state is implemented.
+//! The full ProgrammeState commit coordinator is not implemented.
 
 use crate::timeline::FrontendCallbackIndex;
 use sha2::{Digest, Sha256};
 
+mod callback_only_root;
+mod programme_state_availability;
 mod source_transaction;
+
+pub use callback_only_root::{
+    CallbackOnlyCandidates, CallbackOnlyOwnerProjection, CallbackOnlyOwners, CallbackOnlyRootError,
+    CallbackOnlyRootProposal, CallbackOnlyRootStatus, CallbackPhaseGeneration,
+    CallbackProgrammeIdentity,
+};
+pub use programme_state_availability::{
+    MeasurementReadyAvailabilityProposal, ProgrammeMainColdOwnerSnapshots,
+    ProgrammeOwnerAvailability, ProgrammeOwnerConstructionReceipt, ProgrammeOwnerStateReference,
+    ProgrammeOwnersAvailability, ProgrammeStateAvailabilityProjection, ProgrammeStateV3Error,
+    ProgrammeStatus, ProgrammeTransactionIdentity,
+};
 
 #[allow(unused_imports)]
 // Parent source stage is not yet called by the top-level callback root.
