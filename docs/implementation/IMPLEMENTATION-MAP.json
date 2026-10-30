@@ -129,6 +129,75 @@
             "Production callback execution, source transaction, AU publication, W04 and product acceptance."
           ],
           "delivery_scope": "LOCAL_MODEL_NONCOMMITTING_PROJECTION"
+        },
+        {
+          "slice_id": "v3-approval-status-erratum",
+          "mapping_status": "WASHED_V3_APPROVAL_STATUS_CLARIFICATION__PRODUCTION_ROOT_SWAP_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_APPROVED_LOCAL_V3__COLD_ROOT_CONSTRUCTION_AND_SWAP_NOT_RUN",
+          "scope": "Records that the user-approved local v3 owner-availability amendment supersedes the stale proposal-era annotations in its sealed schema payload. The approved v3 METERING shape initializes only the actual meter state and leaves eleven main owners UNINITIALIZED with no placeholders; READY installs the actual receipt and eleven actual cold owner references in one parent swap. Do not edit the sealed v3 payload. This erratum clarifies adoption status only and supplies no runtime owner constructors or production READY evidence.",
+          "owner": "programme_root",
+          "implementation_requirement": false,
+          "dependencies": [
+            "callback-only-four-owner-root-projection"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "ProgrammePhaseGeneration",
+              "MeterCallbackIndex",
+              "AttemptId"
+            ],
+            "covered_clauses": [
+              "The approved local v3 amendment governs current status despite stale proposal-era schema annotations.",
+              "The MEASUREMENT parent proposal preserves the actual terminal meter bytes and installs eleven actual cold references atomically.",
+              "No production root construction, swap, READY, AU or output was observed."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_GTC_LOCAL_V3_STATUS_ERRATUM",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-LOCAL-V3-APPROVAL-STATUS-ERRATUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-LOCAL-V3-APPROVAL-STATUS-ERRATUM-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-LOCAL-V3-APPROVAL-STATUS-ERRATUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-LOCAL-V3-APPROVAL-STATUS-ERRATUM-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-LOCAL-V3-APPROVAL-STATUS-ERRATUM-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "106cd6930ae61745c548e5b7dadaa08ae2d97276457c6f6983fb43d53326398c",
+            "adopted_v3_manifest_sha256": "d55a4de579dcb94ef1bf1f46e59547a21398bea8f2f11e368081cba0ac62764a",
+            "preserved_approved_v2_manifest_sha256": "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e",
+            "validation_boundary": "Status erratum only. The typed availability projection and current code do not establish production root ownership or commit."
+          },
+          "vectors": {
+            "kind": "ERRATUM_STATUS_ONLY_NO_RUNTIME_EXPECTED_HASHES",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "User approval on 2026-10-30 applies to local v3 owner availability.",
+              "The v3 JSON schema remains sealed byte-for-byte with stale proposal annotations; use this erratum for adoption status.",
+              "Actual cold-root construction and one parent swap remain NOT_RUN."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "106cd6930ae61745c548e5b7dadaa08ae2d97276457c6f6983fb43d53326398c"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Eleven production cold-root constructors with matching provider/input identity.",
+            "Plan-bound OutputOwner state reference and GTC receipt.",
+            "Actual terminal Q+3 receipt to v3 METERING projection to single parent READY swap.",
+            "AU, output, W04, whole-chain and product acceptance."
+          ],
+          "validation_boundary": "Status erratum only. The typed availability projection and current code do not establish production root ownership or commit.",
+          "native_status": {
+            "approval": "USER_APPROVED_LOCAL_CONTRACT",
+            "v2": "PRESERVED_UNCHANGED",
+            "v3_schema_payload": "SEALED_WITH_STALE_PROPOSAL_ANNOTATIONS",
+            "production_root_construction": "NOT_RUN",
+            "ready_parent_swap": "NOT_RUN"
+          },
+          "delivery_scope": "LOCAL_MODEL_CONTRACT_STATUS_ONLY"
         }
       ]
     },
@@ -1563,6 +1632,92 @@
             }
           ],
           "parameters.validation_boundary": "Unit mismatch cases plus one real-resource g0 selected-extent snapshot probe pass. The probe is noncommitting and uses the repository selected-profile XML vector."
+        },
+        {
+          "slice_id": "embedded-timecode-explicit-offset-precedence",
+          "mapping_status": "WASHED_BOUNDED_EXPLICIT_OFFSET_RULE__IMPLEMENTATION_SCOPE_RECONCILIATION_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_BOUNDED_FIXTURE__IMPLEMENTATION_DISPOSITION_RECONCILIATION_OPEN",
+          "scope": "Evidence-only crosswalk for the selected 38-channel ADM BWF fixture with embedded_timecode, delimiter-free numeric frame tokens, 24fps, 48kHz, explicit source offset and FFOA=auto. The revised washed contract accepts explicit-offset precedence for this exact fixture/vector. Its sealed addendum still says implementation_delivery=PROHIBITED while WASH-REVIEW says APPROVED_BOUNDED_RULE_ONLY; that status conflict is referred to Wash for clarification. No general fractional-sample quantization rule is inferred.",
+          "owner": "frontend",
+          "implementation_requirement": false,
+          "dependencies": [
+            "selected-job-xml-profile-normalization",
+            "selected-job-resource-and-adm-event-admission"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "EmbeddedTimeBase",
+              "TimecodeFrameIndex",
+              "TimecodeFrameRate",
+              "SourceOffsetSeconds",
+              "SampleRate",
+              "SourceSampleIndex"
+            ],
+            "covered_clauses": [
+              "absolute_start=start_frame/fps; absolute_end_exclusive=(inclusive_end_frame+1)/fps.",
+              "For the one approved vector, explicit offset replaces the auto-FFOA fallback.",
+              "Run47 range is [4320000,4326000); both sample boundaries are integral.",
+              "Frame-rate and auto-FFOA values are transcribed from run43; raw transcript is not persisted.",
+              "No fractional-sample quantization rule is established."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_TIME_RANGE_PRECEDENCE_EVIDENCE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "de85da4b0de96f85a4185df640254b94169e5fd01803c08f427001a73108575c",
+            "reverse_package_manifest_sha256": "4e4fa588b3a701715bfdeb3f97bcb45bd29cf69de9cf0b5ea995095d1aaa3a97",
+            "parent_wash_manifest_sha256": "14b4d2af2c6c67a9a8d840cd2601e30f8c147aa5c840de9aa2546e261deab88d",
+            "implementation_delivery_flag": "PROHIBITED",
+            "wash_review_disposition": "APPROVED_BOUNDED_RULE_ONLY",
+            "fractional_sample_quantization": "NOT_APPROVED",
+            "validation_boundary": "The bounded 24fps vector has integral sample boundaries. Implementation scope remains uncommitted pending reconciliation of the package delivery flag and bounded-rule approval; fractional-sample quantization is NOT_APPROVED."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_RANGE_OBSERVATION_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1/OBSERVED-VECTOR.json"
+            ],
+            "case_pointers": [
+              "Explicit offset 3611s and numeric tokens 88824..88826 at 24fps produce integral sample interval [4320000,4326000).",
+              "Auto-FFOA counterfactual 3610s produces [4368000,4374000).",
+              "Native encoded artifact hashes are identical; no PCM equality is claimed."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "de85da4b0de96f85a4185df640254b94169e5fd01803c08f427001a73108575c"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Model output and model/native comparison.",
+            "Raw run47 native log rehash and raw run43 debugger transcript recovery.",
+            "Fractional-sample boundary quantization; a contrary run48 report is pending Wash package review.",
+            "Both offset and FFOA authored, other time bases/frame rates/token syntaxes, EOF, multi-row, append/prepend."
+          ],
+          "validation_boundary": "The bounded 24fps vector has integral sample boundaries. Implementation scope remains uncommitted pending reconciliation of the package delivery flag and bounded-rule approval; fractional-sample quantization is NOT_APPROVED.",
+          "native_status": {
+            "scope": "ONE_FIXTURE_EXPLICIT_OFFSET_FFOA_AUTO_24FPS_48KHZ",
+            "sample_interval": [
+              4320000,
+              4326000
+            ],
+            "fractional_sample_quantization": "UNBOUND_NOT_APPROVED",
+            "raw_run47_log": "NOT_REHASHED",
+            "source_metadata_provenance": "RUN43_TRANSCRIBED_RAW_TRANSCRIPT_NOT_PERSISTED",
+            "pcm_equality": "NOT_CLAIMED",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "PUBLIC_CLEANROOM_EVIDENCE_ONLY"
         }
       ]
     },
@@ -3426,6 +3581,83 @@
           ],
           "validation_boundary": "Washed formula and observations are recorded with separate run identities. No numeric cross-path or cross-run join is inferred.",
           "delivery_scope": "PUBLIC_CLEANROOM_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "sourceweight-candidate-identity-hold",
+          "mapping_status": "WASHED_LOCAL_ORDINAL_AND_MATRIX_OWNER_FLOW__GLOBAL_CANDIDATE_ID_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RUN120_LOCAL_LINEAGE__RUN121_NOT_REACHED",
+          "scope": "Wash confirms that one 32-bit packed metadata descriptor follows a shared local candidate ordinal across feature location, metadata row, selector and gather. Run120 binds the caller matrix object to the source-weight consumer and observes 600 powf calls in a 24-band/25-source matrix, but does not capture the candidate list or global IDs. Run121 fails before the callback at filter initialization. Global candidate ID to matrix column to weight output remains UNBOUND; no such implementation rule is approved.",
+          "owner": "u04-source-weight",
+          "implementation_requirement": false,
+          "dependencies": [
+            "washed-f03u-natural-sourceweight-callback-observation"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "CallbackInvocationOrdinal",
+              "FeatureProducerInvocationOrdinal",
+              "WeightParentInvocationOrdinal",
+              "LocalCandidateOrdinal",
+              "MatrixSourceColumn"
+            ],
+            "covered_clauses": [
+              "Run120 callback and feature producer invocation ordinal are 30 in the bounded capture.",
+              "The packed descriptor is five fields and consumes its low 12 bits; it is packed metadata, not a proven global candidate identity.",
+              "Local ordinal flow does not identify a global candidate or matrix column.",
+              "Run121 did not reach the candidate/source-weight callback."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F03U_SOURCEWEIGHT_CANDIDATE_IDENTITY_EVIDENCE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "83a0c75f00fa87c676475c7a7b146caddbd13d86a812c3862e79f58322275f1c",
+            "prior_sourceweight_manifest_sha256s": [
+              "58c27ac5c564d94c61bbd185ec4a5a3798c282fcb1dd411db687953456de1e47",
+              "4fa5a08ffe2dd7bde89890c780ad9e40af0194447f46a6e8de8b0f6f96a4f655"
+            ],
+            "validation_boundary": "Evidence-only native/local lineage crosswalk; do not infer global identity from ordinal, descriptor bits, matrix dimensions, or hashes."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_LINEAGE_NO_GLOBAL_CANDIDATE_ID_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Run120 shared local ordinal and matrix object path; 24 bands, 25 sources, 600 powf calls.",
+              "Run121 did not reach callback, candidate filter, or source-weight path.",
+              "Global candidate ID to matrix column to weight output remains UNBOUND."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "83a0c75f00fa87c676475c7a7b146caddbd13d86a812c3862e79f58322275f1c"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "A captured candidate list or global candidate IDs.",
+            "Global candidate identity to matrix column and weight output join.",
+            "Run121 native callback and whole-chain/product acceptance."
+          ],
+          "validation_boundary": "Evidence-only native/local lineage crosswalk; do not infer global identity from ordinal, descriptor bits, matrix dimensions, or hashes.",
+          "native_status": {
+            "status": "BOUNDED_NATIVE_LINEAGE_GLOBAL_CANDIDATE_ID_UNBOUND",
+            "run120_global_candidate_ids": "NOT_CAPTURED",
+            "run121": "FILTER_INITIALIZATION_FAILED_BEFORE_CALLBACK",
+            "global_id_to_matrix_column_to_weight_output": "UNBOUND",
+            "implementation_rule": "NOT_APPROVED"
+          },
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         }
       ]
     },
@@ -8312,8 +8544,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1610759,
-              "sha256": "f2653711f55d99d0b5867a823c41dbadd1f8527556b6932d421b9d455f9066d5"
+              "bytes": 1635693,
+              "sha256": "68cee0cdcc0e27ed164b98efcd25bb5d24fd857c52d076fa0aa09245b5b1c468"
             }
           ],
           "test_modules": [
@@ -11825,8 +12057,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1610759,
-              "sha256": "f2653711f55d99d0b5867a823c41dbadd1f8527556b6932d421b9d455f9066d5"
+              "bytes": 1635693,
+              "sha256": "68cee0cdcc0e27ed164b98efcd25bb5d24fd857c52d076fa0aa09245b5b1c468"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -15402,6 +15634,405 @@
             "same_run_event_owner_to_oar_generation_join": "UNBOUND",
             "native_zero_length_submissions_to_fresh_zero_callback_generation": "UNBOUND",
             "product_parent_swap": "NOT_RUN"
+          }
+        },
+        {
+          "slice_id": "washed-native-meter-oar-edge-owner-path",
+          "mapping_status": "WASHED_NATIVE_OAR_OWNER_PATH__F06OF_TYPE_AND_GENERATION_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_NATIVE_CALLBACKS_AND_MODEL_DRAIN_SEPARATE",
+          "scope": "Wash accepted bounded evidence that the selected Meter callback path constructs native spatial-coding state consumed by the frame and metadata-row paths. Run 020 binds one constructor return to the nested owner and frame consumer, and identifies a 16-row, 52-byte-stride table B read by the metadata consumer. Run 019 observes callback 4247 with 38 sources and 1536 samples, followed by callback 4248 as a 0-source/0-sample SOURCE_EMPTY_CANDIDATE. Those observations do not join the native table/frame to F06OF control16/SCP16 or identify the source-empty callback as the model's fresh-zero drain generation.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "NativeCallbackOrdinal",
+              "NativeSourceCount",
+              "NativeSampleCount"
+            ],
+            "covered_clauses": [
+              "Run 020 callback 1 binds the observed constructor return to the nested OAR state and frame-consumer state pointers.",
+              "The metadata consumer reads constructor table B with 16 rows at 52-byte stride; row indices are run-local observations.",
+              "Run 019 callback 4247 is 38-source/1536-sample; callback 4248 is a zero-source/zero-sample SOURCE_EMPTY_CANDIDATE.",
+              "Native callback ordinals are not joined to F06OF model drain generations or the three downstream zero-length finalizer submissions."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_METER_OAR_EDGE_EVIDENCE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/ATTEMPT-LEDGER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/MODEL-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/NATIVE-TRACE-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "992f2a66c11b7605510890a53c3fe17df9005f1782243a473fe765f40aeb31a4",
+            "validation_boundary": "Bounded native owner-path evidence only; F06OF model type and generation joins remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_CALLBACK_OWNER_PATH_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/NATIVE-TRACE-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAR-EDGE-WASHED-V1/MODEL-CROSSWALK.json"
+            ],
+            "case_pointers": [
+              "Run 020 callback 1: constructor-return to nested OAR owner and frame consumer; table-B metadata consumer path.",
+              "Run 019 callbacks 4247 and 4248: normal source frame followed by a distinct source-empty candidate.",
+              "No F06OF control16/SCP16 type join, model drain-generation join, or native zero-length finalizer join."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "992f2a66c11b7605510890a53c3fe17df9005f1782243a473fe765f40aeb31a4"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native table B to model F06OF control16 identity.",
+            "Native frame to model F06OF SCP16 identity.",
+            "Native callback/generation to model fresh-zero drain generation.",
+            "Three full-width fresh-zero native drain callbacks and their OAR receipts.",
+            "Whole-chain readiness and product acceptance."
+          ],
+          "validation_boundary": "The native 0-source callback is not treated as the model's full-width positive-zero drain.",
+          "native_status": {
+            "status": "NATIVE_OAR_PATH_BOUND_F06OF_TYPE_AND_GENERATION_JOIN_OPEN",
+            "native_table_b_to_control16": "UNBOUND",
+            "native_frame_to_scp16": "UNBOUND",
+            "native_callback_to_model_drain_generation": "UNBOUND",
+            "source_empty_callback_4248_is_model_drain": false,
+            "product_policy_changed": false,
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "washed-file-position-reader-eof-sentinel",
+          "mapping_status": "WASHED_FILE_POSITION_EOF_SENTINEL_TO_SOURCE_EXTENT_RULE__FRAME_FILL_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_ONE_SOURCE_READER_TAIL_VECTOR__MODEL_NOT_RUN",
+          "scope": "For one selected 38-channel ADM BWF file-position vector at 48 kHz and 24 fps, start token 3240 with end_of_file leaves the composite logged end field at zero. The observed source-reader end getter resolves to 6,522,906 samples; cursor 6,521,472 returns 1,434 samples and reaches that physical extent. The source interval [6,480,000, 6,522,906) is 42,906 samples / 0.893875 s, separate from the 0.896 s encoded-track duration. Final encoder-frame fill and model execution remain unobserved.",
+          "owner": "io",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "FilePositionFrameIndex",
+              "SourceSampleIndex",
+              "ReaderRelativeSampleCursor"
+            ],
+            "covered_clauses": [
+              "The end_of_file token is represented by a composite end field of zero in this observation.",
+              "The selected source-reader path resolves that sentinel to the physical extent 6,522,906 samples.",
+              "The tail read starts at cursor 6,521,472, returns 1,434 samples and advances to 6,522,906.",
+              "The 42,906-sample source interval is not the encoded-track duration."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_FILE_POSITION_EOF_READER_VECTOR",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-EOF-READER-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-EOF-READER-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-EOF-READER-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-EOF-READER-WASHED-V1/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-EOF-READER-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-EOF-READER-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "c3f225e30e2a9494b689d8fe3aa7591b79972db0d1f8861fae1fe24910eca775",
+            "validation_boundary": "One native file-position reader vector; no final-frame fill rule or model behavior is inferred."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_FILE_POSITION_EOF_READER_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-EOF-READER-WASHED-V1/OBSERVED-VECTOR.json"
+            ],
+            "case_pointers": [
+              "48 kHz, 24 fps, start token 3240, end token end_of_file; composite logged end remains zero.",
+              "Source reader tail: end 6,522,906; cursor 6,521,472; 1,434 returned; cursor after 6,522,906.",
+              "Final frame fill NOT_EVALUATED; embedded-timecode and multi-row EOF remain open."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "c3f225e30e2a9494b689d8fe3aa7591b79972db0d1f8861fae1fe24910eca775"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Model reader/output and model/native comparison.",
+            "Final incomplete encoder-frame fill behavior.",
+            "Embedded-timecode EOF, multi-row EOF, zero-length/reversed ranges, and append/prepend cases.",
+            "Whole-chain and product acceptance."
+          ],
+          "validation_boundary": "The composite sentinel and resolved source end remain distinct fields; no encoded-frame fill behavior is claimed.",
+          "native_status": {
+            "status": "BOUNDED_NATIVE_FILE_POSITION_EOF_READER_VECTOR",
+            "composite_logged_end": 0,
+            "composite_logged_end_semantics": "END_OF_FILE_SENTINEL",
+            "source_reader_end": 6522906,
+            "tail_cursor_before": 6521472,
+            "tail_returned_samples": 1434,
+            "tail_cursor_after": 6522906,
+            "source_interval_samples": 42906,
+            "encoded_track_duration_seconds": 0.896,
+            "final_frame_fill": "NOT_EVALUATED",
+            "model_output": "NOT_RUN",
+            "model_comparison": "NOT_EVALUATED",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "washed-native-meter-table-b-producer-consumer-path",
+          "mapping_status": "WASHED_NATIVE_TABLE_B_OWNER_CONSUMER_PATH__F06OF_TARGET_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_RUN020_LOCAL_ORDINAL_AND_ROW_PATH__TARGET_AND_GENERATION_UNBOUND",
+          "scope": "Wash bound the selected task-config map through the native SpatialCoder configuration to SpatialCodingState table B and its explicit-row metadata consumer. Run 020 joins the constructor, nested OAR owner and consumer pointers within that native callback; the table has 16 rows at 52-byte stride. A follow-up Wash status hold suspends the prior key/value interpretation of the ordered-map node field: its role, source semantic key retention and F06OF target/control row remain UNBOUND pending a hash-bound correction. Equal row count, stride or index does not establish identity; no row payload or PCM was read.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "NativeCallbackOrdinal",
+              "NativeTableRowOrdinal",
+              "NativeMetadataConsumerInvocation"
+            ],
+            "covered_clauses": [
+              "Run 020 binds the table-B constructor field and consumer table pointer within the same native callback ordinal.",
+              "Table B has 16 constructor rows at 52-byte stride; ordinal selection is local to the native ordered-map writer.",
+              "The metadata consumer selects an explicit row index and projects a separate 15-word local structure.",
+              "Native row ordinals do not identify F06OF target slots, control52/control16 fields, or model callback generations."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_TABLE_B_PRODUCER_CONSUMER_EVIDENCE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/FIELD-MAPPING-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/MINIMUM-FIELD-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/TABLE-B-PRODUCER-CONSUMER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "4bc5876f1dbdeb25aea6a91737d469a42d709d73cd6ee4491db39c9c3ec3aee9",
+            "validation_boundary": "Native table-B owner/writer/consumer path only; typed F06OF target and generation joins remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_TABLE_B_PATH_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/TABLE-B-PRODUCER-CONSUMER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/FIELD-MAPPING-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/MINIMUM-FIELD-RECEIPT.json"
+            ],
+            "case_pointers": [
+              "Selected task-config map to native SpatialCoder config, SpatialCodingState table-B writer, and explicit-row metadata consumer.",
+              "Run 020 joins table-B owner and consumer within native callback 1; the node field role and source semantic-key retention remain under a Wash status hold.",
+              "F06OF target slot/Control52/Control16 field and model generation joins remain UNBOUND.",
+              "Run 019 callback 4248 remains a 0/0 source-empty candidate, not a full 38x1536 model DRAIN."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "4bc5876f1dbdeb25aea6a91737d469a42d709d73cd6ee4491db39c9c3ec3aee9"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native map semantic key to F06OF target slot.",
+            "Native table-B field to F06OF Control52 word or Control16 row.",
+            "Native callback generation to F06OF model generation.",
+            "Three full-width fresh-zero native drains and product acceptance."
+          ],
+          "validation_boundary": "Ordinal, row count, byte stride, index, and scalar value do not establish a typed target-field identity.",
+          "native_status": {
+            "status": "NATIVE_TABLE_LINEAGE_BOUND_F06OF_TYPED_JOIN_OPEN",
+            "native_table_b_owner_and_consumer": "BOUND_WITHIN_NATIVE_SPATIALCODING_STATE",
+            "native_table_b_rows": 16,
+            "native_table_b_stride_bytes": 52,
+            "map_key_preserved_by_table_writer": "UNBOUND_PENDING_HASH_BOUND_CORRECTION",
+            "typed_native_table_b_row_to_f06of_target_slot": "UNBOUND",
+            "typed_native_table_b_field_to_f06of_control_word": "UNBOUND",
+            "native_callback_generation_to_f06of_model_generation": "UNBOUND",
+            "source_empty_callback_4248_is_model_drain": false,
+            "raw_row_payload_or_pcm_read": false,
+            "whole_chain_ready": false,
+            "U32_node_field_role": "UNBOUND_PENDING_HASH_BOUND_CORRECTION"
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY",
+          "correction_of": {
+            "package_id": "METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1",
+            "manifest_sha256": "4bc5876f1dbdeb25aea6a91737d469a42d709d73cd6ee4491db39c9c3ec3aee9",
+            "superseded_field_interpretation": "U32 value role and source map-key drop are not relied on pending correction."
+          }
+        },
+        {
+          "slice_id": "washed-embedded-time-eof-reader-vector",
+          "mapping_status": "WASHED_EMBEDDED_TIME_EOF_READER_VECTOR__OTHER_ORIGINS_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_ONE_EMBEDDED_ORIGIN_AND_SOURCE_TAIL__FRAME_FILL_OPEN",
+          "scope": "For one selected 38-channel ADM BWF vector at 48 kHz with embedded_timecode, 24 fps, start token 89880 and end_of_file, the transcribed origin is 3610 seconds. The observed normalization is 89880/24=3745 seconds, minus the origin to file position 135 seconds / sample 6,480,000. The composite end field remains zero as an EOF sentinel; a same-run source-reader tail reaches 6,522,906 from cursor 6,521,472 with 1,434 returned samples. Source interval and 0.896-second encoded track duration remain separate. Origin source grade is transcribed; raw transcript was not persisted. Final frame fill and model output remain unobserved.",
+          "owner": "io",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "EmbeddedTimeBase",
+              "TimecodeFrameIndex",
+              "SourceOffsetSeconds",
+              "SourceSampleIndex",
+              "ReaderRelativeSampleCursor"
+            ],
+            "covered_clauses": [
+              "The one vector normalizes start token 89880 at 24 fps to 3745 seconds and subtracts the transcribed 3610-second origin.",
+              "The composite end field remains zero with EOF-sentinel semantics.",
+              "The source-reader tail consumes 1,434 samples from cursor 6,521,472 to physical source end 6,522,906.",
+              "The model generation, other embedded origins, and final frame fill are not established."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_EMBEDDED_TIME_EOF_READER_VECTOR",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "f8507c5f9b83c4541b834b279ff206c5df14ef55a9be5804757975f3bd9b845d",
+            "validation_boundary": "One 24-fps embedded-origin EOF vector with transcribed origin; other origins and model behavior remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_EMBEDDED_TIME_EOF_READER_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1/OBSERVED-VECTOR.json"
+            ],
+            "case_pointers": [
+              "Embedded timecode start 89880/24 minus transcribed origin 3610 seconds gives file position 135 seconds / sample 6,480,000.",
+              "Composite end=0 sentinel; source-reader tail returns 1,434 and reaches 6,522,906.",
+              "Final frame fill NOT_EVALUATED; model output NOT_RUN and comparison NOT_EVALUATED."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "f8507c5f9b83c4541b834b279ff206c5df14ef55a9be5804757975f3bd9b845d"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Model output and model/native comparison.",
+            "Final incomplete encoder-frame fill behavior.",
+            "Other embedded origins and rates, embedded-timecode range variants, and multi-row EOF.",
+            "Whole-chain readiness and product acceptance."
+          ],
+          "validation_boundary": "Origin provenance is transcribed and reader scalars are a hash-bound capture reference; no general embedded-time EOF rule is inferred.",
+          "native_status": {
+            "status": "BOUNDED_EMBEDDED_TIME_EOF_READER_VECTOR",
+            "embedded_origin_seconds": 3610,
+            "origin_source_grade": "TRANSCRIBED_RAW_DEBUGGER_TRANSCRIPT_NOT_PERSISTED",
+            "composite_end_field": 0,
+            "composite_end_semantics": "END_OF_FILE_SENTINEL",
+            "source_reader_end": 6522906,
+            "tail_cursor_before": 6521472,
+            "tail_returned_samples": 1434,
+            "tail_cursor_after": 6522906,
+            "source_interval_samples": 42906,
+            "encoded_track_duration_seconds": 0.896,
+            "final_frame_fill": "NOT_EVALUATED",
+            "model_output": "NOT_RUN",
+            "model_comparison": "NOT_EVALUATED",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "washed-native-table-b-field-role-hold",
+          "mapping_status": "WASHED_PROVISIONAL_FIELD_SEMANTIC_HOLD__U32_ROLE_AND_F06OF_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_PENDING_HASH_BOUND_FIELD_ROLE_CORRECTION",
+          "scope": "The Wash status package suspends the prior interpretation that the ordered-map node field is a U32 value and that the map key is dropped. Whether the observed +0x1c field is key or value is unbound pending a hash-bound correction. Keep source semantic-key retention and the F06OF target-slot/control-word crosswalk UNBOUND. The separately accepted native table-B owner/consumer path remains bounded evidence; production and whole-chain readiness remain unverified.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [
+            "washed-native-meter-table-b-producer-consumer-path"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "NativeFieldRole",
+              "NativeSemanticKeyIdentity"
+            ],
+            "covered_clauses": [
+              "The prior native owner/consumer path remains boundedly established.",
+              "The ordered-map node field's key-versus-value role remains unbound pending a hash-bound correction.",
+              "Source semantic-key retention and any F06OF target-slot/control-word join remain unbound.",
+              "The 16-row/52-byte native shape does not establish product field identity."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_TABLE_B_FIELD_ROLE_HOLD",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "b125269fbf21cc9785709a38408fe0e35ed94f88e69a72ad1bf993e12d40f188",
+            "validation_boundary": "Provisional status hold only; no source field semantics or F06OF crosswalk is approved."
+          },
+          "vectors": {
+            "kind": "PROVISIONAL_NATIVE_FIELD_ROLE_HOLD_NO_EXPECTED_OUTPUT",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Wash review status: PROVISIONAL_COMMENTARY_ONLY; NO_HASH_BOUND_CORRECTION_PACKAGE_RECEIVED.",
+              "Do not rely on either 'U32 field is the value' or 'map key is dropped'.",
+              "F06OF target slot/control word and whole-chain readiness remain UNBOUND/NOT_READY."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "b125269fbf21cc9785709a38408fe0e35ed94f88e69a72ad1bf993e12d40f188"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Hash-bound correction identifying the native node field role.",
+            "Source semantic key to native table-B field join.",
+            "F06OF target slot/control word and generation lineage.",
+            "Production execution and whole-chain acceptance."
+          ],
+          "validation_boundary": "This hold supersedes the prior field-role interpretation without withdrawing the bounded native owner/consumer path.",
+          "native_status": {
+            "status": "PROVISIONAL_FIELD_SEMANTIC_HOLD",
+            "U32_node_field_role": "UNBOUND_PENDING_R3_CORRECTION_PACKAGE",
+            "source_map_key_preservation": "UNBOUND_PENDING_R3_CORRECTION_PACKAGE",
+            "F06OF_target_slot_and_control_word_join": "UNBOUND",
+            "production_execution": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_PROVISIONAL_STATUS_ONLY",
+          "correction_of": {
+            "package_id": "METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1",
+            "manifest_sha256": "4bc5876f1dbdeb25aea6a91737d469a42d709d73cd6ee4491db39c9c3ec3aee9",
+            "superseded_field_interpretation": "U32 value role and source map-key drop are not relied on pending correction."
           }
         }
       ]
@@ -28072,8 +28703,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1610759,
-              "sha256": "f2653711f55d99d0b5867a823c41dbadd1f8527556b6932d421b9d455f9066d5"
+              "bytes": 1635693,
+              "sha256": "68cee0cdcc0e27ed164b98efcd25bb5d24fd857c52d076fa0aa09245b5b1c468"
             }
           ],
           "test_inventory": [
@@ -28093,6 +28724,206 @@
               "sha256": "ac02929fe5204c0ba96e7164d186fcc219842773e261c106a1f65d83d65900f7"
             }
           ]
+        },
+        {
+          "slice_id": "active-joc-writer-sample-boundary-quantization",
+          "mapping_status": "MATERIALIZED_DIRECT_SELECTED_NUMERIC_FILE_POSITION_RANGE__OUTPUT_PLAN_WIRING_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_NUMERIC_RANGE_HELPER__OUTPUT_PLAN_INTEGRATION_OPEN",
+          "scope": "Implements a pure selected numeric file-position source range for 48kHz and the washed 23.976, 29.97, and 59.94 filter-rate mappings. The inclusive nonzero end frame advances by one before conversion. SampleRange validation rounds positive products; final active-writer boundaries truncate toward zero. Validation and writer indices use distinct newtypes. The helper is not yet called by ValidatedEncodingPlan or a production OutputOwner; embedded_timecode offset precedence is separate.",
+          "owner": "timeline",
+          "implementation_requirement": true,
+          "dependencies": [
+            "source-clock-publication-au-projection"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/timeline/source_time_range.rs",
+            "crates/jocforge-domain/src/timeline/mod.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/timeline/source_time_range.rs",
+              "bytes": 11824,
+              "sha256": "59512aa5b2711560645de902632ca79280a59bbcb9891d44adde02c4119f010d"
+            },
+            {
+              "path": "crates/jocforge-domain/src/timeline/mod.rs",
+              "bytes": 858,
+              "sha256": "cc75f249849655c2fd68bf68f153d27b1ee1d37105bffdb51f37ebe02c21e55a"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/timeline/source_time_range.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/timeline/source_time_range.rs",
+              "bytes": 11824,
+              "sha256": "59512aa5b2711560645de902632ca79280a59bbcb9891d44adde02c4119f010d"
+            }
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "SelectedNumericFrameRate",
+              "ValidationSampleIndex",
+              "ActiveWriterSampleIndex",
+              "SourceSampleCount"
+            ],
+            "covered_clauses": [
+              "Only file_position and 48 kHz are supported.",
+              "23.976 maps to nominal24, 29.97 to nominal30, 59.94 to nominal60, each with scale1001/1000.",
+              "Nonzero inclusive end increments by one frame.",
+              "Validation rounds positive sample products; final writer truncates toward zero.",
+              "Embedded-timecode fractional conversion and unsupported rates remain outside this helper."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_ACTIVE_JOC_WRITER_SAMPLE_RANGE_RULE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-SAMPLE-QUANTIZATION-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-SAMPLE-QUANTIZATION-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-SAMPLE-QUANTIZATION-WASHED-V1/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-5994-VECTOR-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-5994-VECTOR-WASHED-V1/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-23976-VECTOR-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-23976-VECTOR-WASHED-V1/OBSERVED-VECTOR.json"
+            ],
+            "supplement_manifest_sha256": "5b3ed49ba9600678bf2df9d8e7fcd9bd8cdfa36c147538385daa9eddb18fd047",
+            "numeric_5994_manifest_sha256": "d76d97ffda07490d7094367cc7a1141273984c8a870dc2b9e1fda9f49f81e7c4",
+            "numeric_23976_manifest_sha256": "fde25e3badbc0bba19f735cd5941de5db99fa3e5a3aa0bdb27f231a8882a8be6",
+            "validation_boundary": "Pure arithmetic helper only; no ValidatedEncodingPlan or OutputOwner wiring. Washed vectors are not model/native output comparison."
+          },
+          "vectors": {
+            "kind": "WASHED_ACTIVE_WRITER_RATE_ARITHMETIC_INPUT_VECTORS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-SAMPLE-QUANTIZATION-WASHED-V1/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-5994-VECTOR-WASHED-V1/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-23976-VECTOR-WASHED-V1/OBSERVED-VECTOR.json"
+            ],
+            "case_pointers": [
+              "29.97 distinguishes validation round (3464261) from final writer truncate (3464260).",
+              "59.94 and 23.976 provide bounded file-position ranges; their endpoints do not independently distinguish the two conversions."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "5b3ed49ba9600678bf2df9d8e7fcd9bd8cdfa36c147538385daa9eddb18fd047"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "UnsupportedTimeBase",
+              "trigger": "time_base is not file_position",
+              "result": "Reject before conversion."
+            },
+            {
+              "error_code": "UnsupportedSampleRate",
+              "trigger": "sample rate is not 48 kHz",
+              "result": "Reject before conversion."
+            },
+            {
+              "error_code": "UnsupportedFrameRate",
+              "trigger": "rate is outside the three washed numeric modes",
+              "result": "Reject; no fallback rate mapping."
+            },
+            {
+              "error_code": "InvalidFrameToken",
+              "trigger": "frame token is empty, signed or nonnumeric",
+              "result": "Reject before conversion."
+            },
+            {
+              "error_code": "SourceBounds",
+              "trigger": "rounded SampleRange exceeds source extent",
+              "result": "Reject before returning writer boundaries."
+            }
+          ],
+          "not_run": [
+            "Integration into ValidatedEncodingPlan and active output writer.",
+            "23.976 dynamic writer capture; only a bounded native range vector is available.",
+            "Fractional embedded-timecode, colon/drop-frame, negative/halfway products, EOF, multi-row, append/prepend and model comparison."
+          ],
+          "validation_boundary": "Local input-only arithmetic tests match washed vectors; no active native writer or encoded artifact was produced.",
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "native_status": {
+            "model_output": "NOT_RUN",
+            "model_comparison": "NOT_EVALUATED",
+            "whole_chain_ready": false
+          }
+        },
+        {
+          "slice_id": "plan-bound-output-owner-admission-crosswalk",
+          "mapping_status": "WASHED_LOCAL_PLAN_AUTHORITY_BOUNDARY__PROVIDER_ROLES_AND_DESTINATION_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_TYPED_PLAN_AND_OUTPUT_AUTHORITY__PRODUCTION_BINDING_NOT_RUN",
+          "scope": "Wash accepts a private parent-owned ValidatedEncodingPlan binding same PreparedJobInput identity, full six-dimensional profile/carriage, approved F15 dependency identity, actual owner-issued loaded-value admissions and validated destination. OutputOwner must derive the F15 provider projection/hash internally from that plan plus the same typed AttemptId and distinct opaque staging owner. Provider admission is distinct from runtime source-stage receipts. The exact provider-role/handle set and destination capability producer remain open; no production plan, binding, READY swap or output is claimed.",
+          "owner": "programme_root",
+          "implementation_requirement": true,
+          "dependencies": [
+            "source-clock-publication-au-projection",
+            "atomic-output-no-replace-finalization"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "ProgrammeId",
+              "AttemptId",
+              "PreparedJobInputIdentity",
+              "EncodingProfile",
+              "EmdfCarriageProfile",
+              "OutputStagingOwnerId",
+              "ValidatedDestination"
+            ],
+            "covered_clauses": [
+              "Plan binds same programme/resource/config/N, resolved full profile and carriage.",
+              "Actual owner-issued provider admissions are required; manifest-only PASS is insufficient.",
+              "Runtime source-stage receipts are created only when their stages execute.",
+              "OutputOwner is parent-only, plan-derived, and tied to typed attempt, opaque staging owner and validated destination."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F15_PLAN_BOUND_OUTPUT_OWNER_CROSSWALK",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "d3bd531af2bce9dae043e2309b9a558085cecdc97435b309f1a454f61c2edb1d",
+            "profile_dimensions_path": "docs/architecture/PROFILE-DIMENSIONS.md",
+            "profile_dimensions_sha256": "3946d83d245c7acac13aff36d32e14ece5debf9051bada07ee0b1214f912ed4b",
+            "gtc_v3_erratum_manifest_sha256": "106cd6930ae61745c548e5b7dadaa08ae2d97276457c6f6983fb43d53326398c",
+            "validation_boundary": "Typed authority boundary only. Exact runtime role closure and destination capability producer are still under Wash investigation."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_PLAN_AND_BINDING_GUARDS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "PreparedJobInput and a dependency manifest alone are insufficient for output authority.",
+              "Reject wrong profile/carriage/resource/attempt/programme/staging-owner/destination and pre-minted runtime receipts.",
+              "No expected plan PASS, provider receipt hash or owner-state digest is supplied."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "d3bd531af2bce9dae043e2309b9a558085cecdc97435b309f1a454f61c2edb1d"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Exact selected runtime provider-role list and owner-issued typed loaded-value handles.",
+            "Destination-capability producer and complete validation contract.",
+            "Production plan construction/loader and plan-derived ProgrammeOutputBinding/OutputOwner.",
+            "Actual GTC MEASUREMENT parent swap, READY, AU, filesystem output, W04 and whole-chain run."
+          ],
+          "validation_boundary": "No ValidatedEncodingPlan or production ProgrammeOutputBinding exists in current code. Implement only after every provider admission and destination capability has a typed producer.",
+          "delivery_scope": "PUBLIC_CLEANROOM_EVIDENCE_ONLY",
+          "native_status": {
+            "production_plan": "NOT_RUN",
+            "production_output_binding": "NOT_RUN",
+            "ready_swap": "NOT_RUN",
+            "whole_chain_ready": false
+          }
         }
       ]
     },

@@ -116,6 +116,7 @@
 | slice_id | parent_functional_id | owner |
 |---|---|---|
 | GTC/callback-only-four-owner-root-projection | GTC | `programme_root` |
+| GTC/v3-approval-status-erratum | GTC | `programme_root` |
 | F01R/selected-riff-pcm24-reader-and-hop | F01R | `io` |
 | F01G/selected-real-axml-chna-host-identity-and-source-join | F01G | `frontend` |
 | F01B/candidate-normalized-bed-source-points | F01B | `spatial_control` |
@@ -131,6 +132,7 @@
 | F01E/same-attempt-normal-sampler-source-geometry-stage | F01E | `frontend` |
 | F01E/selected-adm-riff-to-prepared-job-input | F01E | `frontend` |
 | F01E/prepared-input-to-f01e-snapshot-binding | F01E | `frontend` |
+| F01E/embedded-timecode-explicit-offset-precedence | F01E | `frontend` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |
@@ -156,6 +158,7 @@
 | F03U/ddp-run38-main-reader-extent-writer-correction | F03U | `u04-ddp-reader-extent-boundary` |
 | F03U/ddp-run37-source-storage-sample-count-boundary | F03U | `u04-source-storage-range-boundary` |
 | F03U/ddp-composite-reader-extent-rule-v18 | F03U | `u04-composite-reader-extent-boundary` |
+| F03U/sourceweight-candidate-identity-hold | F03U | `u04-source-weight` |
 | F03F/current-features-approved-math-asset-pair | F03F | `spatial_control` |
 | F03F/main-current-features-source-callback-candidate | F03F | `spatial_control` |
 | F03R/selected-profile-feature-control-and-value-only-source-flags | F03R | `spatial_control` |
@@ -265,6 +268,11 @@
 | F06OF/selected-pcm24-read-chunk-decoder | F06OF | `io` |
 | F06OF/prepared-adm-physical-pcm-row-cursor-binding | F06OF | `application` |
 | F06OF/fresh-zero-meter-drain-frontend-stage | F06OF | `application` |
+| F06OF/washed-native-meter-oar-edge-owner-path | F06OF | `meter` |
+| F06OF/washed-file-position-reader-eof-sentinel | F06OF | `io` |
+| F06OF/washed-native-meter-table-b-producer-consumer-path | F06OF | `meter` |
+| F06OF/washed-embedded-time-eof-reader-vector | F06OF | `io` |
+| F06OF/washed-native-table-b-field-role-hold | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |
@@ -402,3 +410,5 @@
 | F15/gtc-owner-receipt-from-canonical-state-views | F15 | `transaction` |
 | F15/source-clock-publication-au-projection | F15 | `output` |
 | F15/atomic-output-no-replace-finalization | F15 | `output` |
+| F15/active-joc-writer-sample-boundary-quantization | F15 | `timeline` |
+| F15/plan-bound-output-owner-admission-crosswalk | F15 | `programme_root` |
