@@ -1,0 +1,29 @@
+{
+  "schema": "native-oamdi-state-to-dsp-washed-sources.v1",
+  "research_package": {
+    "package_id": "native_table_b_oamdi_output_wash_followup_v2",
+    "manifest_sha256": "c2b6ab3a2930e24fb03b9459e4228d0755b19d42b27c08d4fc25edd2867e2980",
+    "payloads": {
+      "APPROVED-CONTRACT-DISPOSITION.json": "90d8fa1bdb64f664202b891cc54b8f7c5162315c925b6f6345ab396bbeba6664",
+      "ATTEMPT-LEDGER.json": "fe0d546006fe21d5e58d4adfb5032a755dcd1333ec2aeeaf71138bc00c89e0b2",
+      "NATIVE-OAMDI-OUTPUT-RECEIPT.json": "98651a3eea3c8afe9600f6a39fb162ad75164fd34e4f5574267e9d1e90d5807d",
+      "NEXT-OUTPUT-JOIN.json": "1e27532e6f0a2f7921ada519276926a613252601b5e1a695577d1e1f87a5d522",
+      "README.md": "de477d2ab7924316af7dca5eb6c47090364209d57bc1089bc298d3165e2fe9f2",
+      "SOURCE-IDENTITIES.json": "3c0fe7075586ce5d7b1991e44e4ca88b42fe4acacf118e57491961951e7a9b11",
+      "check_native_table_b_oamdi_output.py": "36cf5ecc8a6afe12e594857805d27ee22189861c99dfb03589759727a13a37b5"
+    }
+  },
+  "opaque_run032_identities": {
+    "job_sha256": "691f59d240ae74b8c469a6d1e8e3da1dc9a2cb4adccde32c7cd6fb4c398d61f4",
+    "native_log_sha256": "e0a22d918537b4cbb8c0a14390b4325708b253c644003c84118eec1bf649d8e0",
+    "windbg_state_to_dsp_capture_sha256": "5ad8b3a4f67bc592a6b7b9f400a4ef74f5be469595fb48ea33f7c30e829580c8",
+    "encoded_output_hash_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448"
+  },
+  "capture_limits": {
+    "run032_non_pcm_scalar_bytes_read": 8,
+    "pcm_bytes_read": 0,
+    "table_row_payload_bytes_read": 0,
+    "control_row_payload_bytes_read": 0,
+    "raw_output_bytes_read": 0
+  }
+}

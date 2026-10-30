@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1",
+  "decision": "ACCEPTED_AS_RUN_SCOPED_STATE_SCALAR_TO_DSP_ARGUMENT_LINEAGE",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "7/7 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "unmanifested_files": 0,
+    "captured_scalar_bytes": 8,
+    "pcm_or_row_payload_read": false
+  },
+  "closed": [
+    "state owner +0x18 signed-I32 to DSP fifth-argument four-byte value via static field flow and direct call stack",
+    "DSP body consumes fifth argument into DSP context"
+  ],
+  "still_unbound": [
+    "semantic name of state +0x18",
+    "native callback generation and F06OF generation join",
+    "relation to downmix_index, carrier_block or control16",
+    "DSP/property output to final EC3/BSI serializer or queue",
+    "run032 state scalar effect on final EC3 output"
+  ],
+  "whole_chain_ready": false
+}

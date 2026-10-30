@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1695535,
-              "sha256": "8a5d169756ad6b3c151fb1a20afdd1db9522dbcbdb485216c219e9e5760e25ef"
+              "bytes": 1699826,
+              "sha256": "d73b8f8aaec7af147b4b73dbd95f5bd5d49786bce3c9b21605bf3caf61387f20"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1695535,
-              "sha256": "8a5d169756ad6b3c151fb1a20afdd1db9522dbcbdb485216c219e9e5760e25ef"
+              "bytes": 1699826,
+              "sha256": "d73b8f8aaec7af147b4b73dbd95f5bd5d49786bce3c9b21605bf3caf61387f20"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -16647,6 +16647,88 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "native-oamdi-state-scalar-to-dsp-argument",
+          "mapping_status": "WASHED_RUN032_STATE_SCALAR_TO_DSP_CONTEXT__OUTPUT_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SAME_OWNER_AND_CALLSTACK__SEMANTIC_AND_OUTPUT_UNBOUND",
+          "scope": "For the selected native profile/object path, static field flow shows signed I32 state at offset +0x18 passed through a helper as the DSP function's fifth argument; the DSP body consumes that argument into its context by storing its negative. Run 032 joins the field to the fifth argument through the direct call stack returning to the property update, within the same OAMDI owner token S. The observed values were both zero, but equality is not the proof. The field semantic name, callback generation, F06OF generation, relation to downmix/carrier/control rows, and effect on final EC-3 output remain unbound.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "OAMDIStateOwnerToken",
+              "SignedI32StateField",
+              "DSPFifthArgument",
+              "DSPContext"
+            ],
+            "covered_clauses": [
+              "Static field flow binds signed I32 state at +0x18 through a helper to the DSP function's fifth argument.",
+              "Run 032 joins the field and argument by direct call stack within the same OAMDI owner token S; equality of the observed zero values is not the basis of the join.",
+              "The DSP function consumes the fifth argument into its context by storing its negative.",
+              "No callback/model generation, semantic property, downmix/carrier/control row, or final-output join was captured."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_NATIVE_OAMDI_STATE_SCALAR_TO_DSP_ARGUMENT_LINEAGE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/APPROVED-CONTRACT-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/NEXT-OUTPUT-JOIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "599eca007383c5f5a8b963306d19c2d534f368ab3699f3e9359f31d58ec23146",
+            "validation_boundary": "Same native OAMDI owner field to DSP call argument/context edge; no semantic label, model generation join, or encoded-output effect."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN032_SAME_OWNER_STATE_SCALAR_TO_DSP_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1/NEXT-OUTPUT-JOIN.json"
+            ],
+            "case_pointers": [
+              "Run 032 binds same-owner state field +0x18 to the DSP fifth argument through static flow plus direct call stack.",
+              "The DSP body stores the negative fifth-argument value into its context.",
+              "The observed scalar values are zero; equality does not establish the lineage.",
+              "The semantic field name, generation, control/downmix/carrier mapping, and final output effect remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "599eca007383c5f5a8b963306d19c2d534f368ab3699f3e9359f31d58ec23146"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Semantic name for the native state field at +0x18.",
+            "Native callback generation and F06OF generation join.",
+            "Mapping to downmix_index, carrier_block, Control16 or Control52.",
+            "Effect of this scalar on final EC-3 output.",
+            "Native DSP/property output through a codec or queue to the final EC-3/BSI writer."
+          ],
+          "validation_boundary": "Run-scoped native field-to-DSP argument lineage only; output path and implementation readiness remain open.",
+          "native_status": {
+            "same_owner_token_field_to_argument": true,
+            "lineage_basis": "STATIC_FIELD_FLOW_PLUS_DIRECT_CALL_STACK",
+            "observed_values_equal_zero": true,
+            "equality_used_as_join_evidence": false,
+            "field_semantic_name": "UNBOUND",
+            "callback_generation": "NOT_CAPTURED",
+            "f06of_generation_join": "UNBOUND",
+            "control_downmix_or_carrier_join": "UNBOUND",
+            "final_output_effect": "NOT_OBSERVED",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -29316,8 +29398,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1695535,
-              "sha256": "8a5d169756ad6b3c151fb1a20afdd1db9522dbcbdb485216c219e9e5760e25ef"
+              "bytes": 1699826,
+              "sha256": "d73b8f8aaec7af147b4b73dbd95f5bd5d49786bce3c9b21605bf3caf61387f20"
             }
           ],
           "test_inventory": [

@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "METER-NATIVE-OAMDI-STATE-TO-DSP-WASHED-V1",
+  "status": "STATE_SCALAR_TO_DSP_BOUND; SEMANTIC_NAME_AND_OUTPUT_JOIN_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "APPROVED-CONTRACT-DISPOSITION.json",
+      "bytes": 2447,
+      "sha256": "90d8fa1bdb64f664202b891cc54b8f7c5162315c925b6f6345ab396bbeba6664"
+    },
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1324,
+      "sha256": "54a956128ce316cf296e42c467a5601fa32bab55525da7b91c7b56d0040800ab"
+    },
+    {
+      "name": "NATIVE-OAMDI-OUTPUT-RECEIPT.json",
+      "bytes": 6523,
+      "sha256": "98651a3eea3c8afe9600f6a39fb162ad75164fd34e4f5574267e9d1e90d5807d"
+    },
+    {
+      "name": "NEXT-OUTPUT-JOIN.json",
+      "bytes": 1289,
+      "sha256": "b5b8f74237520389b90c7d19d37a9840e225d32fdd8130d834e43d2bcde11a1a"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 5298,
+      "sha256": "3c0fe7075586ce5d7b1991e44e4ca88b42fe4acacf118e57491961951e7a9b11"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1621,
+      "sha256": "b0c7e91816d5873a573303b888c461038e4835a1c10e07718c8b4b946a5c66a3"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 982,
+      "sha256": "17aa28e15dead537acb206b36177feedc4135286ac64a1b607d50e2b84105020"
+    }
+  ]
+}
