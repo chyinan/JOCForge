@@ -1,0 +1,38 @@
+{
+  "schema": "native-oamdi-measurement-encoder-phase-boundaries.v1",
+  "source_package_id": "native_table_b_output_consumer_wash_followup_v3",
+  "source_manifest_sha256": "30d8d1f5ad7970f9caf91990ec7ba45a55a3e544caf682c5b580bcfbd00bf643",
+  "measurement_phase": {
+    "run": "run-032",
+    "state_owner_token": "S",
+    "field_offset_bytes": 24,
+    "field_type": "signed I32",
+    "consumer": "DSP fifth argument and context store",
+    "join_basis": "static field flow plus direct call stack, not equal values",
+    "field_semantic_name": "UNBOUND",
+    "phase_classification": "MEASUREMENT_ONLY"
+  },
+  "encoder_phase": {
+    "run033": {
+      "encoder_and_block_wrapper_hit": true,
+      "watched_state_to_DSP_functions_hit": false,
+      "run_completed": true
+    },
+    "run034": {
+      "FileWriter_entry_hit": true,
+      "frame_index": 0,
+      "requested_bytes": 4096,
+      "static_fwrite_path": true,
+      "buffer_dereferenced": false,
+      "output_stream_index": "NOT_CAPTURED",
+      "FILE_to_named_path_identity": "NOT_CAPTURED",
+      "state_to_encoder_join": "NO_HIT_IN_THIS_SELECTED_ENCODER_PASS",
+      "run_completed": true
+    }
+  },
+  "product_output_sha256_recorded_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+  "oamdi_to_evo_calls_hit": false,
+  "pcm_or_encoded_bytes_read": 0,
+  "model_output": "NOT_RUN",
+  "model_comparison": "NOT_EVALUATED"
+}

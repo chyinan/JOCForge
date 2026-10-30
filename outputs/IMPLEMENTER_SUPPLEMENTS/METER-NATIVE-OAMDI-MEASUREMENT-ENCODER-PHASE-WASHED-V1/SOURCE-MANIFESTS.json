@@ -1,0 +1,27 @@
+{
+  "schema": "native-oamdi-measurement-encoder-phase-sources.v1",
+  "research_package": {
+    "package_id": "native_table_b_output_consumer_wash_followup_v3",
+    "manifest_sha256": "30d8d1f5ad7970f9caf91990ec7ba45a55a3e544caf682c5b580bcfbd00bf643",
+    "payloads": {
+      "APPROVED-CONTRACT-DISPOSITION.json": "7d15afa5559b26fe0213808792ab383d508ec3c4e9cd0644e15d2f40602cf04f",
+      "ATTEMPT-LEDGER.json": "d0094f7c390280bdb447110bc6b605f64c5f01da9ef032363778a52acc4d5d69",
+      "NATIVE-OAMDI-OUTPUT-RECEIPT.json": "9df5f79f51117faaf848a49a7cd207a6a29143f1994fa1946f3137acfe259529",
+      "NEXT-OUTPUT-JOIN.json": "b139133beb04716593651d8a4e7fc1ad23b91183e93792e2f4c82c471928e726",
+      "README.md": "ba7e752d7ae395eab132652307c9f1b2e53eabfa5e0bddd5ec0afcf0db981572",
+      "SOURCE-IDENTITIES.json": "d1ea138744a9039c5f47bdace5ebd88b8b063bc87ef8fd8b18d986c82ae8ae8e",
+      "check_native_table_b_oamdi_output.py": "181d834d5030a3ba3b2a9334fe060bab1807cd8e9ed4086c6dfb30248e6a1e8f"
+    },
+    "source_package_verification": "Normal and -O checker and payload hashes were run by Wash earlier in the review; source directory is not copied into this supplement."
+  },
+  "related_host_sink_package": {
+    "package_id": "DEE-REFERENCE-OUTPUT-SINK-WASHED-V1",
+    "manifest_sha256": "935a406459e5438a6ff1960476eabee06c403199ca3f79a032c47cbfe1e91d55",
+    "relation": "separate native reference run; no typed cross-run owner join"
+  },
+  "opaque_run_hashes": {
+    "run032_state_to_DSP_capture": "5ad8b3a4f67bc592a6b7b9f400a4ef74f5be469595fb48ea33f7c30e829580c8",
+    "run033_encoder_pass": "6ea4b8ef84e3809b1a7ec350274c066ddb3088bcda8875bd128e7d54c6e0ef79",
+    "run034_filewriter_observation": "8a5de092cabc9d39cfa5594490b542766131516c4c82636fdbf6a556d1eb00a1"
+  }
+}

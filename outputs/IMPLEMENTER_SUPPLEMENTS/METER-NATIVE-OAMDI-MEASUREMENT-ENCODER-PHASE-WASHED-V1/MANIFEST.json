@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1",
+  "status": "MEASUREMENT_DSP_EDGE_BOUND; ENCODER_OUTPUT_JOIN_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1504,
+      "sha256": "0cb8d1299dff4f692f65893c5769d15cfa057386d00682b18b7ee152877085ef"
+    },
+    {
+      "name": "NATIVE-PHASE-BOUNDARIES.json",
+      "bytes": 1405,
+      "sha256": "943de311c31282b282c3f11887158cfa5f6f0edca1a9288aa0dadf5a7e63e051"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1768,
+      "sha256": "58be27c2d0ceaaa8024512f668b475bb4f728957554c305d1d7d3f55db7cf688"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 1036,
+      "sha256": "4e2ef1ebb72c296de1a1105898a8a8985d41ebf2cdeebb49903b82434967274f"
+    }
+  ]
+}

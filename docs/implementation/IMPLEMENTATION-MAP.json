@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1699826,
-              "sha256": "d73b8f8aaec7af147b4b73dbd95f5bd5d49786bce3c9b21605bf3caf61387f20"
+              "bytes": 1704018,
+              "sha256": "39d873e325568bf6010630c8f0dd12d707b2bac39c1efdeea3d3d91cd288daad"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1699826,
-              "sha256": "d73b8f8aaec7af147b4b73dbd95f5bd5d49786bce3c9b21605bf3caf61387f20"
+              "bytes": 1704018,
+              "sha256": "39d873e325568bf6010630c8f0dd12d707b2bac39c1efdeea3d3d91cd288daad"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -16726,6 +16726,94 @@
             "f06of_generation_join": "UNBOUND",
             "control_downmix_or_carrier_join": "UNBOUND",
             "final_output_effect": "NOT_OBSERVED",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "native-oamdi-measurement-and-encoder-phase-boundary",
+          "mapping_status": "WASHED_MEASUREMENT_ONLY_DSP_EDGE__ENCODER_WRITER_UNJOINED",
+          "implementation_status": "EVIDENCE_ONLY_ENCODER_FILEWRITER_SEEN_NO_STATE_JOIN",
+          "scope": "The run-032 state +0x18 to DSP-context edge is measurement-phase evidence only. The encoder pass is separate: run-033 reached the encoder marker and encoded-block wrapper, while watched state/DSP functions did not hit; run-034 reached a 4,096-byte FileWriter/fwrite entry for frame index 0, but the buffer was not dereferenced and stream index or FILE-to-named-path identity was not captured. These observations establish encoder/FileWriter activity, not a state-scalar-to-encoder/output join. OAMD/BSI serializer/queue and F06OF slot/control/generation joins remain open. Equal output hashes across runs are not cross-run lineage.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [
+            "native-oamdi-state-scalar-to-dsp-argument"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "NativeProcessingPhase",
+              "OAMDIStateOwnerToken",
+              "EncoderFrameIndex",
+              "FileWriterByteCount",
+              "OutputStreamIdentity"
+            ],
+            "covered_clauses": [
+              "Run 032 binds state +0x18 to the DSP fifth argument/context during measurement only.",
+              "Run 033 encoder and block-wrapper markers hit, while watched state/DSP functions did not hit before successful exit.",
+              "Run 034 reaches a 4,096-byte FileWriter/fwrite entry for frame index 0; the buffer is not dereferenced.",
+              "Run 034 output stream index and FILE-to-named-path identity were not captured.",
+              "Matching output hashes across runs do not establish cross-run state lineage."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_NATIVE_OAMDI_MEASUREMENT_ENCODER_PHASE_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1/NATIVE-PHASE-BOUNDARIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "0ae434889d1cb7fa11bcc00162bd7fa0e7eb817d8c2b31668e67c92f2fb79f63",
+            "validation_boundary": "Measurement-phase state-to-DSP lineage and separate encoder/FileWriter activity only; no state/output join, buffer observation, configured-path binding, or cross-run identity."
+          },
+          "vectors": {
+            "kind": "WASHED_MEASUREMENT_ONLY_STATE_TO_DSP_AND_SEPARATE_ENCODER_WRITER_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1/NATIVE-PHASE-BOUNDARIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "case_pointers": [
+              "Measurement run 032: OAMDI owner S, signed I32 field +0x18 to DSP context; phase classification is MEASUREMENT_ONLY.",
+              "Encoder run 033: encoder/block wrapper hit; watched state/DSP functions did not hit.",
+              "Encoder run 034: FileWriter/fwrite entry at frame index 0 with a 4,096-byte request; buffer not dereferenced.",
+              "Stream index and FILE-to-named-path identity are NOT_CAPTURED; no state-to-encoder join.",
+              "Output hashes shared across runs are not used as lineage; model output and comparison are not run/evaluated."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "0ae434889d1cb7fa11bcc00162bd7fa0e7eb817d8c2b31668e67c92f2fb79f63"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "State scalar or DSP context joined to encoder-pass state, frame, or output.",
+            "Run-034 output stream index and FILE handle to configured named EC-3 path identity.",
+            "DSP/property output to the final EC-3/BSI serializer or queue.",
+            "F06OF slot, control word, or generation typed adapter.",
+            "Model output or model/native comparison."
+          ],
+          "validation_boundary": "Measurement-phase and encoder-pass observations remain distinct; native output bytes and whole-chain readiness are not established.",
+          "native_status": {
+            "measurement_state_scalar_to_dsp": "MEASUREMENT_ONLY",
+            "run033_encoder_wrapper_hit": true,
+            "run033_watched_state_dsp_functions_hit": false,
+            "run034_filewriter_entry_hit": true,
+            "run034_frame_index": 0,
+            "run034_requested_bytes": 4096,
+            "run034_buffer_dereferenced": false,
+            "run034_output_stream_index": "NOT_CAPTURED",
+            "run034_FILE_to_named_path_identity": "NOT_CAPTURED",
+            "state_to_encoder_join": "NO_HIT_IN_THIS_SELECTED_ENCODER_PASS",
+            "cross_run_output_hash_identity_is_lineage": false,
+            "oamdi_to_evo_calls_hit": false,
+            "pcm_or_encoded_bytes_read": 0,
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
@@ -29398,8 +29486,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1699826,
-              "sha256": "d73b8f8aaec7af147b4b73dbd95f5bd5d49786bce3c9b21605bf3caf61387f20"
+              "bytes": 1704018,
+              "sha256": "39d873e325568bf6010630c8f0dd12d707b2bac39c1efdeea3d3d91cd288daad"
             }
           ],
           "test_inventory": [

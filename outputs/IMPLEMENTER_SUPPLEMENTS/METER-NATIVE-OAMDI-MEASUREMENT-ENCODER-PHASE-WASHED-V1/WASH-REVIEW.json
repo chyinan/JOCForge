@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-OAMDI-MEASUREMENT-ENCODER-PHASE-WASHED-V1",
+  "decision": "ACCEPTED_AS_MEASUREMENT_ONLY_STATE_TO_DSP_AND_SEPARATE_ENCODER_FILEWRITER_EVIDENCE",
+  "independent_verification": {
+    "source_manifest_sha256": "MATCH",
+    "source_payloads": "7/7 MATCH",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "raw_PCM_or_encoded_bytes_read": false
+  },
+  "closed": [
+    "run032 state +0x18 scalar to DSP fifth argument/context during measurement only",
+    "run034 encoder pass reaches a 4096-byte FileWriter/fwrite entry"
+  ],
+  "still_unbound": [
+    "state scalar semantic name and effect on output",
+    "state/DSP to encoder pass; run033/034 watched consumers had no hit",
+    "FileWriter stream index and FILE handle to configured named EC3 path in this run",
+    "DSP/property output to final EC3/BSI sink",
+    "F06OF slot/word/generation typed adapter"
+  ],
+  "cross_run_output_hash_identity_is_not_lineage": true,
+  "whole_chain_ready": false
+}

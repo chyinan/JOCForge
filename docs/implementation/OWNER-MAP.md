@@ -281,6 +281,7 @@
 | F06OF/native-oamdi-run025-state-owner-join | F06OF | `meter` |
 | F06OF/native-oamdi-48b-property-aggregate-copy | F06OF | `meter` |
 | F06OF/native-oamdi-state-scalar-to-dsp-argument | F06OF | `meter` |
+| F06OF/native-oamdi-measurement-and-encoder-phase-boundary | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |
