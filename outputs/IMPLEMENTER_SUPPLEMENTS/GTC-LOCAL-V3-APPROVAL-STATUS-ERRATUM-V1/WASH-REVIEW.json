@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "GTC-LOCAL-V3-APPROVAL-STATUS-ERRATUM-V1",
+  "decision": "ACCEPTED_AS_ADOPTION_STATUS_CLARIFICATION",
+  "v3_package_hashes": "4/4 payloads and manifest match",
+  "v2_schema_gap": "RESOLVED_BY_USER_APPROVED_LOCAL_V3_AVAILABILITY_SCHEMA",
+  "stale_v3_proposal_annotations": "SUPERSEDED_BY_ADOPTION_PACKAGE; sealed source payload unchanged",
+  "remaining_production_gaps": [
+    "eleven actual cold-owner constructors/materialization",
+    "plan-bound OutputOwner provider receipt aggregate",
+    "production READY atomic swap execution"
+  ],
+  "whole_chain_ready": false
+}

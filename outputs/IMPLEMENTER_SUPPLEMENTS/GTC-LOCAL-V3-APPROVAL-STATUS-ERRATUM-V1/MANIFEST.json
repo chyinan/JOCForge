@@ -1,0 +1,23 @@
+{
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1419,
+      "sha256": "259148d10de078ea0cf5ccbff4617439f6770e3518ab92e6de766287385ba593"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 979,
+      "sha256": "a6e70454f625181dd0f300d4b0dcc648d6a36e776378825f235a2eeefe27512b"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 628,
+      "sha256": "66d3097e0955e664a91f4f3274c02e580a8e732eef3cc1ec89dd84d6425e5d11"
+    }
+  ],
+  "status": "WASH_REVIEW_COMPLETE; WHOLE_CHAIN_NOT_READY",
+  "whole_chain_ready": false,
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "GTC-LOCAL-V3-APPROVAL-STATUS-ERRATUM-V1"
+}
