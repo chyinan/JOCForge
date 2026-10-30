@@ -1,0 +1,88 @@
+{
+  "schema": "wash.native-frame-source-descriptor-consumption.v1",
+  "capture_run": "run-36",
+  "parent_wash_manifest_sha256": "f30c5d04c35ec6087488d41599219c177d94ff08ea043c86e1d0d39329ba78d3",
+  "job_xml_sha256": "8591f6060d85f8450ee22a94476773388380c1729a5dfab218143f647f210b8a",
+  "native_log_sha256": "c0ad4ad8d5faa3076760c416adb13d27376d955eef4407c596cd524a1f443bb9",
+  "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "encoder_completed_normally": true,
+  "capture_method": "Bounded read-only debugger inspection of call arguments, scalar descriptor fields and cursor state; no audio samples or pointer values were read or retained.",
+  "same_call_observations": {
+    "call_context": "One normal reference invocation. The outer producer call, nested frame provider, span helper and encoder consumer were observed on the same worker thread and tied by descriptor pointer equality predicates and the reader cursor interval.",
+    "source_loop_producer": {
+      "role": "Frame-source descriptor producer adapter called by the outer source loop.",
+      "descriptor_output_is_outer_loop_local": true,
+      "reader_cursor_domain": "Reader-relative sample cursor. No typed mapping to ADM file sample position or host frame index is established.",
+      "cursor_before_samples": 1536,
+      "requested_samples": 1536,
+      "reader_total_extent_samples": 98000
+    },
+    "frame_source_provider": {
+      "same_reader_state_as_outer_source_call": true,
+      "descriptor_output_matches_outer_loop_local": true,
+      "cursor_at_entry_samples": 1536,
+      "requested_samples": 1536,
+      "reader_total_extent_samples": 98000,
+      "channel_configuration_count_written": 38,
+      "sample_span_written": 1536,
+      "event_count_written": 38
+    },
+    "read_span_helper": {
+      "call_path": "Reached beneath the frame provider's float-read path.",
+      "requested_sample_span": 1536,
+      "returned_consumed_sample_span": 1536,
+      "audio_sample_values_inspected": false
+    },
+    "encoder_consumer": {
+      "input_descriptor_matches_outer_loop_local": true,
+      "channel_configuration_count_received": 38,
+      "sample_span_received": 1536,
+      "event_count_received": 38,
+      "reader_cursor_after_provider_samples": 3072
+    },
+    "typed_lineage": {
+      "outer_loop_to_provider_descriptor": "BOUND_WITHIN_RUN36_BY_SAME_LOCAL_DESCRIPTOR_POINTER",
+      "provider_to_read_span_result": "BOUND_WITHIN_RUN36_BY_NESTED_CALL_PATH_AND_RETURN_VALUE",
+      "provider_to_encoder_input": "BOUND_WITHIN_RUN36_BY_SAME_LOCAL_DESCRIPTOR_POINTER",
+      "generation_anchor": "Reader-relative cursor interval [1536, 3072) with a 1536-sample request; descriptor pointer alone is not a generation identifier.",
+      "host_frame_or_adm_sample_position_join": "UNBOUND"
+    }
+  },
+  "cross_domain_observations": {
+    "execution_log_reported_input_start_sample": 4320000,
+    "execution_log_reported_input_end_sample": 4418000,
+    "execution_log_reported_interval_length_samples": 98000,
+    "reader_total_extent_samples": 98000,
+    "numeric_equality_is_not_a_typed_join": true,
+    "reader_cursor_to_adm_sample_position": "UNBOUND"
+  },
+  "static_relationships": {
+    "source_adapter_returns_the_descriptor_argument": true,
+    "frame_provider_calls_event_count_and_float_read_helpers": true,
+    "float_read_result_populates_frame_sample_span_in_observed_mode": true,
+    "frame_provider_advances_its_reader_cursor_by_requested_frame_samples": true,
+    "span_helper_bounds_request_to_available_reader_interval_and_returns_consumed_span": true,
+    "encoder_frame_size_rule": "Accepts a 1536-sample frame or a zero-sample flush request.",
+    "static_report_sha256": "abbda51835fc8b0bfdcfc2eb3e0d696808091dc5f6143d31ce5eb5a9663ed40b",
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "unbound": [
+    "Reader-relative sample cursor to ADM file sample position, embedded timecode, or host frame index.",
+    "The 98000-sample reader extent to the execution-log interval by typed argument or writer lineage; equality is numerical only.",
+    "The 38 channel-configuration entries to ADM CHNA UID, physical track, global source ID, selector column, or prior source identity.",
+    "The writer, allocation owner and capacity rule for the frame pointer table and each configuration row.",
+    "The semantic ownership of the 38 event-count entries beyond the observed count field and static helper flow.",
+    "Any relation between this source-read generation and U04, fit generation, spatial callback identity, or a later consumer generation."
+  ],
+  "payload": {
+    "audio_sample_values_read": false,
+    "audio_sample_values_persisted": false,
+    "raw_pointer_values_included": false,
+    "addresses_or_disassembly_included": false,
+    "license_material_included": false
+  },
+  "model_comparison": "NOT_EVALUATED",
+  "implementation_delivery": "PROHIBITED"
+}

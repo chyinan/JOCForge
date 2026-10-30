@@ -1,0 +1,18 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "CURRENT-JOB-U04-SOURCE-SLOT-PRODUCER-BOUNDARY-V3",
+  "status": "PARTIAL_STATIC_EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "027005783ec9afd7323cd5b02c634523bcf0ba1b825b517586aeef88d74f50cc",
+  "files": [
+    {
+      "sha256": "e7e733058145d3777453961e9506764a18b008bc03162118ff3aa86bd0db15b7",
+      "bytes": 946,
+      "path": "SOURCE-BINDING.json"
+    },
+    {
+      "sha256": "7ce1911c2a670082760f5a5e8d5b749ed96b86d1ba2f72eda1bffff4b1cf865c",
+      "bytes": 4200,
+      "path": "WASHED-SUMMARY.md"
+    }
+  ]
+}

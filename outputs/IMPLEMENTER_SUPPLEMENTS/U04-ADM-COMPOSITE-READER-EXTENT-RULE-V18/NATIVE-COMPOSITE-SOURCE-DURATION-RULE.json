@@ -1,0 +1,79 @@
+{
+  "schema": "wash.native-composite-source-duration-rule.v1",
+  "parent_wash_manifest_sha256": "22f36b20684eecb0f3b058c5bd36fc7ca97f2a2df3b2a6c94cfc8cab0c70d665",
+  "run38": {
+    "job_xml_sha256": "4fc2df4dfc4ccf96555be749e1ecc7aebd26887940d008643e88f4628294f18d",
+    "native_log_sha256": "b2cbd4968f2811a7708bee8e835538317b202e65c90d4eedb046044b4aa7db98",
+    "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "reference_output_bytes": 262144,
+    "main_reader_extent_writer_value": 98000,
+    "source_record": {
+      "count": 1,
+      "stride_bytes": 64,
+      "prepend_samples": 0,
+      "start_sample": 4320000,
+      "end_sample": 4418000,
+      "append_samples": 0
+    }
+  },
+  "run39": {
+    "job_xml_sha256": "9495badc4838185113ac410b70b057d35f38f84952f3d2db008a31d46c7c2644",
+    "native_log_sha256": "aeb58dee9881f1bd3a327c8f3be3a89c257291c90625255a1d1e21a5fb12eddd",
+    "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "reference_output_bytes": 262144,
+    "composite_duration_method_fields_samples": {
+      "start": 0,
+      "end": 98000,
+      "result": 98000
+    }
+  },
+  "static_composite_builder_rule": {
+    "source_record_role_mapping": {
+      "item_index_2": "prepend_samples",
+      "item_index_3": "append_samples",
+      "item_index_4": "start_sample",
+      "item_index_5": "end_sample"
+    },
+    "per_item_duration_samples": "end_sample - start_sample",
+    "composite_item_start_samples": "prior_composite_end + prepend_samples",
+    "composite_end_accumulator_samples": "prior_composite_end + prepend_samples + end_sample - start_sample + append_samples",
+    "duration_accessor": "composite_end_position - composite_start_position"
+  },
+  "single_item_result": {
+    "prepend_samples": 0,
+    "start_sample": 4320000,
+    "end_sample": 4418000,
+    "append_samples": 0,
+    "composite_start_position": 0,
+    "composite_end_position": 98000,
+    "reader_extent_written": 98000
+  },
+  "typed_lineage": {
+    "source_row_to_per_item_start_end": "BOUND_BY_SOURCE_RECORD_COPY_AND_COMPOSITE_BUILDER_FIELD_FLOW",
+    "composite_interval_to_duration_accessor": "BOUND_BY_STATIC_RETURN_FORMULA_AND_RUN39_METHOD_FIELDS",
+    "duration_accessor_to_reader_extent": "BOUND_BY_RUN38_WRITE_WATCH",
+    "reader_relative_cursor_to_adm_absolute_sample_position": "UNBOUND",
+    "host_frame_or_timecode_join": "UNBOUND"
+  },
+  "correction": {
+    "6522906_role": "Source storage sample count used for per-source end-sample validation.",
+    "6522906_to_98000_same_object_transition": "NOT_PRESENT; these values belong to different getters and objects.",
+    "v15_v16_same_reader_duration_attribution": "WITHDRAWN_AND_REPLACED_BY_V17_ROLE_SEPARATION"
+  },
+  "unbound": [
+    "Generalization beyond the one source record exercised in the dynamic fixture.",
+    "Precise mapping from the composite reader-relative cursor to ADM file sample position after trimming and inserted silence.",
+    "38 channel-configuration entries to ADM CHNA UID, physical track, global source ID or selector column.",
+    "Frame pointer-table writer, allocation owner and capacity rule.",
+    "Any relation to U04, fit generation, spatial callback generation or later consumer generation."
+  ],
+  "payload": {
+    "audio_sample_values_read": false,
+    "audio_sample_values_persisted": false,
+    "raw_pointer_values_included": false,
+    "addresses_or_disassembly_included": false,
+    "license_material_included": false
+  },
+  "model_comparison": "NOT_EVALUATED",
+  "implementation_delivery": "PROHIBITED"
+}

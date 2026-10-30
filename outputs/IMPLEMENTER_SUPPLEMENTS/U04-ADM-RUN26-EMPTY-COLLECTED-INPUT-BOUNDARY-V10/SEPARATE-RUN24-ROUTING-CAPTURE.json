@@ -1,0 +1,98 @@
+{
+  "schema": "wash.native-ddp-channel-routing-capture.v1",
+  "capture_run": "run-24",
+  "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "execution_job_xml_sha256": "3cf0ff7299c00ff70d09addf755661fafa38930f327a7d72427fa33d189b816e",
+  "native_log_sha256": "05270d4ded633a4e57f399a10b327e857437d29d5cb05ce1504970ced26f0993",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "encoder_completed": true,
+  "capture_method": "Read-only WinDbg inspection of bounded DDP context fields at one route-consumer call; no audio sample values read or retained.",
+  "same_call_observations": {
+    "frame_input_channel_count": 38,
+    "primary_route_group_count": 1,
+    "primary_route_entry_count": 10,
+    "primary_route_pairs": [
+      {
+        "category_code": 1,
+        "frame_pointer_slot": 0
+      },
+      {
+        "category_code": 2,
+        "frame_pointer_slot": 1
+      },
+      {
+        "category_code": 3,
+        "frame_pointer_slot": 2
+      },
+      {
+        "category_code": 4,
+        "frame_pointer_slot": 3
+      },
+      {
+        "category_code": 5,
+        "frame_pointer_slot": 4
+      },
+      {
+        "category_code": 6,
+        "frame_pointer_slot": 5
+      },
+      {
+        "category_code": 7,
+        "frame_pointer_slot": 6
+      },
+      {
+        "category_code": 8,
+        "frame_pointer_slot": 7
+      },
+      {
+        "category_code": 9,
+        "frame_pointer_slot": 8
+      },
+      {
+        "category_code": 10,
+        "frame_pointer_slot": 9
+      }
+    ],
+    "additional_route_entry_count": 28,
+    "additional_route_frame_pointer_slots": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37
+    ],
+    "additional_record_index_semantics": "The first 32-bit field of each 12-byte record is consumed as an index into the same frame input pointer table.",
+    "category_code_labels": "NOT_OBSERVED"
+  },
+  "still_unbound": [
+    "DDP frame pointer slot to ADM CHNA UID",
+    "DDP frame pointer slot to one-based CHNA track index or physical ADM slot",
+    "DDP frame pointer slot to global source ID",
+    "DDP frame pointer slot to prior selector source column",
+    "named semantics for numeric category codes"
+  ]
+}

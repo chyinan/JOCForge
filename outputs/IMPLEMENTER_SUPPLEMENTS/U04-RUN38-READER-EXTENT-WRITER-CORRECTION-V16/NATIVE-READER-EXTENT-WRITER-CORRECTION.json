@@ -1,0 +1,70 @@
+{
+  "schema": "wash.native-reader-extent-writer-correction.v1",
+  "capture_run": "run-38",
+  "parent_wash_manifest_sha256": "a526c30f1b086e588e0e1c42060dd494a018b1bfbb330d38134ab33ac3de9b06",
+  "job_xml_sha256": "4fc2df4dfc4ccf96555be749e1ecc7aebd26887940d008643e88f4628294f18d",
+  "native_log_sha256": "b2cbd4968f2811a7708bee8e835538317b202e65c90d4eedb046044b4aa7db98",
+  "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "encoder_completed_normally": true,
+  "v15_correction": {
+    "previous_claim": "The master-duration accessor return 6522906 and the 98000 outer-loop reader extent were attributed to one reader constructor.",
+    "disposition": "WITHDRAWN_AS_A_CROSS_PATH_JOIN",
+    "new_separation": "The 6522906 observation came from an earlier prepass reader branch. Run38 binds the main encoding-path constructor accessor to 98000 and records the state-field write directly."
+  },
+  "same_call_observations": {
+    "source_record": {
+      "record_count": 1,
+      "record_stride_bytes": 64,
+      "prepend": 0,
+      "start": 4320000,
+      "end": 4418000,
+      "append": 0,
+      "same_main_constructor_call_chain": true
+    },
+    "reader_extent_writer": {
+      "reader_state_total_extent_field": true,
+      "initial_constructor_write": 0,
+      "duration_accessor_return": 98000,
+      "store_of_accessor_return_into_reader_state": true,
+      "reader_state_pointer_matches_outer_loop_inner_state": true,
+      "writer_binding": "BOUND_TO_MAIN_READER_CONSTRUCTOR_IN_RUN38"
+    },
+    "first_frame_and_encoder": {
+      "reader_total_extent": 98000,
+      "reader_cursor_before_frame": 0,
+      "frame_request_samples": 1536,
+      "read_span_helper_request_samples": 1536,
+      "read_span_helper_return_samples": 1536,
+      "reader_cursor_after_frame": 1536,
+      "same_frame_descriptor_at_encoder": true,
+      "encoder_channel_configuration_count": 38,
+      "encoder_sample_span": 1536,
+      "encoder_event_count": 38
+    }
+  },
+  "numeric_relation": {
+    "end_minus_start": 98000,
+    "duration_accessor_return": 98000,
+    "equality_is_observed": true,
+    "duration_accessor_internal_formula": "UNBOUND",
+    "start_end_units_to_adm_clock": "UNBOUND"
+  },
+  "unbound": [
+    "The internal formula and unit semantics of the composite-master duration accessor, although its run38 return and reader-state store are bound.",
+    "Whether start and end are ADM file sample coordinates in all input modes.",
+    "The 38 channel-configuration entries to ADM CHNA UID, physical track, global source ID or selector column.",
+    "The frame pointer-table writer, allocation owner and capacity rule.",
+    "Any relation to U04, fit generation, spatial callback generation or later consumer generation."
+  ],
+  "payload": {
+    "audio_sample_values_read": false,
+    "audio_sample_values_persisted": false,
+    "raw_pointer_values_included": false,
+    "addresses_or_disassembly_included": false,
+    "license_material_included": false
+  },
+  "model_comparison": "NOT_EVALUATED",
+  "implementation_delivery": "PROHIBITED"
+}

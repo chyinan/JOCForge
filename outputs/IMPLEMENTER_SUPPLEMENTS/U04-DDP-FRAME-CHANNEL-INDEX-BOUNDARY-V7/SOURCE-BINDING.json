@@ -1,0 +1,17 @@
+{
+  "schema": "washed-ddp-selector-identity-binding.v1",
+  "ddp_source_manifest": "1ff077f7e348212df989762d34928da28546473ec022530afcf2dd5072d1c27e",
+  "selector_source_manifest": "55ec6020b9b5f5f5802a359febaf37498592621b8b026e9a407d67e0d121892f",
+  "source_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "approved_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+  "current_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+  "selector_reference_job_xml_sha256": "befb67c91ae67489090062d287785121c07bd34db0985d9b0dbed70279376b9e",
+  "reference_is_current_job": false,
+  "ddp_local_slot_to_frame_channel": "BOUND_STATIC_NON_MODE1_BRANCH_RUNTIME_NOT_CAPTURED",
+  "ddp_frame_channel_to_adm_global_id": "UNBOUND",
+  "ddp_frame_channel_to_selector_column": "UNBOUND",
+  "same_generation_ddp_capture": "NOT_CAPTURED",
+  "gate1_closed": false,
+  "static_trace_reproduced_by_wash": false,
+  "source_code_or_native_payload_forwarded": false
+}

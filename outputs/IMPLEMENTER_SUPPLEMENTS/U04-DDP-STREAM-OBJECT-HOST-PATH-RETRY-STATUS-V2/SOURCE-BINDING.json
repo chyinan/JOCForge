@@ -1,0 +1,12 @@
+{
+  "schema": "washed-ddp-retry-status-binding.v1",
+  "source_package_manifest_sha256": "49fe7373af9ec66d7aebfab9641d18ba8b3d96e5b4168ffa7d50cad7bb92d1d5",
+  "source_evidence_sha256": "2cd9f2ba300d043e0618ca8869e2f66acc45ed3fefbe2fcea0205b749a6786e8",
+  "run12_base_job_xml_sha256": "1aa7e1d702ccaa4fa6f7a5fece4d0749b593ccc0fd0a31717b3f06606e7c3255",
+  "run12_log_sha256": "b8bee7cf49b5afdcfb19d4659ed2942f83f708bb55bf80f56ab0a9d12943cff5",
+  "run14_log_sha256": "ab70d7450b9bab683c0b8b013b6f90a2b3ae39b53ccb31ae739da14696bd967a",
+  "ddp_frame_capture": "NOT_CAPTURED",
+  "output": "NOT_PRODUCED",
+  "gate1": false,
+  "raw_native_material_forwarded": false
+}

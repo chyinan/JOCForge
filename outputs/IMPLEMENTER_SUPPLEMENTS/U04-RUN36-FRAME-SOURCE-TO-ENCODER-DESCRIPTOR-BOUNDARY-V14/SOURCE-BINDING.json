@@ -1,0 +1,18 @@
+{
+  "schema": "washed-frame-source-descriptor-binding.v1",
+  "source_manifest_sha256": "e594526e3599acd7cd2afacf7226f78290a9b40a3e927c72227ca1a15d783619",
+  "capture_payload_sha256": "1c8352df6dd06ff859b94253b10cd3a6eccf797a7d0b0f6b8ba7d308913de2a0",
+  "source_job_xml_sha256": "8591f6060d85f8450ee22a94476773388380c1729a5dfab218143f647f210b8a",
+  "input_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "reader_cursor_before": 1536,
+  "requested_sample_span": 1536,
+  "returned_sample_span": 1536,
+  "reader_cursor_after": 3072,
+  "frame_channel_config_count": 38,
+  "reader_extent": 98000,
+  "execution_log_extent": 98000,
+  "cursor_to_adm_time": "UNBOUND",
+  "frame_source_ids": "UNBOUND",
+  "model_comparison": "NOT_EVALUATED",
+  "implementation_source_or_private_material_forwarded": false
+}

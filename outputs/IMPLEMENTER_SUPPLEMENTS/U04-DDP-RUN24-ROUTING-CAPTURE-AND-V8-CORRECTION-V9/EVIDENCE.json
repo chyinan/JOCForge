@@ -1,0 +1,299 @@
+{
+  "schema": "wash.spatial-selector-identity-producer-evidence.v9",
+  "evidence_status": "DDP_38_INPUT_SLOT_ROUTE_TABLES_BOUND_WITHIN_ONE_REFERENCE_CALL; ADM_AND_SELECTOR_IDENTITY_JOIN_UNBOUND",
+  "supersedes_manifest_sha256": "49fe7373af9ec66d7aebfab9641d18ba8b3d96e5b4168ffa7d50cad7bb92d1d5",
+  "handoff_recipient": "Wash",
+  "implementation_delivery": "PROHIBITED",
+  "scope": "Add a same-call native capture of both DDP route tables for one 38-channel reference frame. Keep DDP input slot identity separate from ADM CHNA identity and the prior 48-column selector map. Correct the unsupported direct AtmosMezz stream-object attribution.",
+  "ddp_local_slot_chain": {
+    "caller_metadata_input": "A DDP open/config branch receives a caller-owned channel-config object containing a 16-bit count and a pointer to six-byte records.",
+    "descriptor_conversion": "The six-byte records are converted into internal category descriptors. Their sequence is preserved; a separate 16-bit key groups adjacent records by equality and is not stored as the source-pointer-table slot.",
+    "slot_writer": "The descriptor-row builder writes the zero-based record sequence ordinal into the source-pointer-table slot field; a special high-bit record carries the same local ordinal through a dependent-item table.",
+    "slot_consumer": "The category dispatcher uses the stored slot as an index into the DDP core descriptor's internal channel-pointer table.",
+    "local_slot_to_internal_pointer_table_entry": "BOUND_BY_STATIC_INDEX_WRITE_AND_INDEX_USE"
+  },
+  "ddp_frame_adapter_static_lineage": {
+    "top_level_frame_descriptor_fields": {
+      "input_pcm_pointer_table": "field 0",
+      "per_source_record_count": "field 3",
+      "per_source_record_table": "field 4; 96-byte input records are copied into 88-byte core rows",
+      "channel_config_object": "field 5",
+      "secondary_config_object": "field 6"
+    },
+    "channel_config_object": {
+      "channel_count_u16_offset_bytes": 10,
+      "six_byte_record_pointer_offset_bytes": 16,
+      "count_used_for_pcm_channel_copy": "the same 16-bit field at offset 10",
+      "count_used_for_six_byte_config_copy": "the same 16-bit field at offset 10",
+      "six_byte_config_copy_branch": "static non-mode-1 branch; runtime branch state for the reference call is NOT_CAPTURED"
+    },
+    "pcm_copy": {
+      "frame_sample_count_contract": "1536 samples or 0 for flush",
+      "input": "field 0 channel-pointer array",
+      "internal_buffer_setup": "open allocates one per-channel buffer and one pointer-table entry per channel using the channel-config count",
+      "per_frame_copy": "the adapter loops over channel index i and copies input pointer-table entry i into internal buffer slot i",
+      "internal_pointer_table_slot_i_to_frame_input_channel_slot_i": "BOUND_BY_STATIC_ORDINAL_PRESERVING_COPY"
+    },
+    "core_descriptor_assembly": "The core adapter combines the converted per-source rows with the DDP-owned internal channel-pointer table. The six-byte config row sequence is separately used to produce local slot ordinals that index this pointer table.",
+    "count_domains": {
+      "pcm_channel_count": "channel-config object field at offset 10",
+      "six_byte_config_record_count": "the same field at offset 10 on the static non-mode-1 branch",
+      "per_source_96_byte_record_count": "top-level frame descriptor field 3",
+      "prior_selector_source_columns": 48,
+      "prior_selector_target_capacity": 15,
+      "equality_or_global_join_between_per_source_count_and_selector_columns": "NOT_PROVEN"
+    },
+    "local_slot_to_frame_input_channel_index": "BOUND_STATIC_FOR_NON_MODE1_BRANCH; reference-call branch and runtime values are NOT_CAPTURED",
+    "frame_input_channel_index_to_adm_physical_slot": "UNBOUND"
+  },
+  "dee_host_stream_object_chain": {
+    "source_stage_input": "DEE RunInput resolves the configured upstream source target's stream_object property and stores that returned object in the StageRunner input-node record.",
+    "filter_consumption": "DEE RunAudioFilter iterates that input-node record and passes its stored stream_object to the audio-filter process method.",
+    "atmos_mezz_producer": "The AtmosMezz Run method is identified and executed in the reference job, but its function body does not directly write the stream_object property. The native stream-object producer for the ADM job remains UNBOUND.",
+    "storage_owner": "The input stage receives its storage object through the storage property created by the StageObjectWithStorage factory; local multi-path storage is a declared storage type.",
+    "atmos_mezz_run_to_stage_stream_object": "UNBOUND; the prior direct Run-to-stream_object attribution is withdrawn as unsupported.",
+    "stage_stream_object_to_ddp_process_argument": "BOUND_BY_STATIC_STAGE_RUNNER_TRANSFER",
+    "storage_provider_method_implementation_to_adm_channel_identity": "UNBOUND",
+    "stream_object_frame_pointer_table_producer_to_chna_uid": "UNBOUND"
+  },
+  "adm_bwf_crosswalk_chain": {
+    "chna_entry_semantics": "The reader iterates fixed-size CHNA entries, extracts the AudioTrackUID string and the entry's 16-bit track index, and inserts a UID-to-track-index lookup record.",
+    "bed_uid_consumer": "The bed reader looks up a track-UID reference in that table, receives the one-based CHNA track index, uses index minus one as a physical slot, and stores the ADM source-channel index for that slot.",
+    "approved_input_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+    "approved_crosswalk_edges": {
+      "track_uid_to_chna_track_index": "BOUND_FOR_APPROVED_PRIMARY_INPUT",
+      "chna_track_index_to_physical_slot": "track_index - 1",
+      "physical_slot_to_regular_global_source_id": "F03R assigns 11 + rank among physical source slots after excluding the semantic direct LFE; aggregate prefix IDs 0..10 remain a separate domain"
+    }
+  },
+  "converter_identifier_decoders": {
+    "audio_object_id": {
+      "accepted_text_pattern": "AO_%04x",
+      "normalized_channel_input_id": "parsed hexadecimal value - 0x1001",
+      "minimum_success_value": "0x1001",
+      "mapping_to_ddp_frame_input_channel_index": "UNBOUND"
+    },
+    "audio_track_uid_reference": {
+      "accepted_text_pattern": "ATU_%08x",
+      "normalized_numeric_value": "parsed hexadecimal value - 1",
+      "meaning_as_chna_track_index": "NOT_PROVEN",
+      "mapping_to_ddp_frame_input_channel_index": "UNBOUND"
+    },
+    "cross_validation": "The converter compares decoded ADM channel-input and UID-derived values with IAB frame metadata and reports ADM-versus-IAB discrepancies. This does not identify the DDP frame channel-pointer slot."
+  },
+  "prior_same_generation_selector_evidence": {
+    "package_manifest_sha256": "55ec6020b9b5f5f5802a359febaf37498592621b8b026e9a407d67e0d121892f",
+    "package_evidence_sha256": "f6d84b07d4071f59216bf3111f704f53fbab8d48432b68f5801c550b82cb201c",
+    "source_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "approved_input_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+    "native_capture_scope": "One completed reference invocation; owner, selector, assignment, and matrix-consumer lineage were joined within that invocation.",
+    "source_descriptor_columns": 48,
+    "aggregate_prefix_columns": 11,
+    "regular_owner_rows": 37,
+    "eligible_rows_with_flag_zero": 46,
+    "candidate_gate_rows": 36,
+    "selected_rows": 15,
+    "active_target_rows": 15,
+    "matrix_consumer_shape": [
+      15,
+      48
+    ],
+    "owner_row_to_source_column": "owner_row_index + 11",
+    "regular_source_column_to_global_source_id": "columns 11 through 47 map to global source IDs 11 through 47 under the hash-matched F03R crosswalk",
+    "aggregate_prefix_identity": "columns 0 through 10 are aggregate provenance and have no ADM AO UID",
+    "numeric_matrix_coefficients": "NOT_CAPTURED",
+    "u04_invocation_and_numeric_output": "NOT_CAPTURED"
+  },
+  "cross_component_join": {
+    "ddp_frame_input_channel_index_to_selector_source_column": "UNBOUND",
+    "ddp_frame_input_channel_index_to_adm_track_uid_or_physical_slot": "UNBOUND",
+    "ddp_frame_input_channel_index_to_global_source_id": "UNBOUND",
+    "same_generation_runtime_join_for_ddp_frame_channel": "BOUND_FOR_FRAME_COUNT_AND_BOTH_ROUTE_TABLES_WITHIN_RUN24; CROSS_COMPONENT_SELECTOR_AND_ADM_IDENTITY_JOIN_UNBOUND",
+    "reason": "Run24 binds the 38-channel frame count, the ten-entry category route table, and the 28-entry additional route table within one DDP consumer call. Static consumers use both tables to index the same frame input pointer table. No typed producer edge from these DDP input slots to ADM CHNA UID/physical track identity or the prior 48-column selector descriptor is captured."
+  },
+  "native_capture_status": {
+    "new_ddp_frame_capture": "CAPTURED_RUN19_RUN21_RUN22_RUN24; RUN24 BINDS COUNT AND BOTH ROUTE TABLES IN ONE CALL",
+    "attempt_run_12_known_short_job": "The approved 2160-2208 atmos_mezz/1024 kbps/EC-3 job XML was replayed with only temp and output paths changed; source, executable, and DDP Atmos component hashes matched the earlier successful run, but the DDP family failed initialization before measurement.",
+    "attempt_run_12_base_job_xml_sha256": "1aa7e1d702ccaa4fa6f7a5fece4d0749b593ccc0fd0a31717b3f06606e7c3255",
+    "attempt_run_12_log_sha256": "b8bee7cf49b5afdcfb19d4659ed2942f83f708bb55bf80f56ab0a9d12943cff5",
+    "attempt_run_13": "DEE exited before measurement; DDP component initialization failed and the legacy XML lacked misc/temp_dir",
+    "attempt_run_14": "misc/temp_dir was added using the authorized temp path; DDP component initialization still failed, workflow reported unknown encode_to_atmos_ddp filter, and no DDP frame hook ran",
+    "attempt_run_14_log_sha256": "ab70d7450b9bab683c0b8b013b6f90a2b3ae39b53ccb31ae739da14696bd967a",
+    "attempt_run_14_reference_output": "NOT_PRODUCED",
+    "memory_pressure_hypothesis": "NOT_SUPPORTED_BY_CURRENT_CHECK; approximately 28.7 GiB physical memory and 19.1 GiB commit capacity were available",
+    "run24_native_reference": "Completed under WinDbg with the approved 2160-2208 frame window; output is byte-identical by SHA-256 to the prior reference.",
+    "run24_job_xml_sha256": "3cf0ff7299c00ff70d09addf755661fafa38930f327a7d72427fa33d189b816e",
+    "run24_log_sha256": "05270d4ded633a4e57f399a10b327e857437d29d5cb05ce1504970ced26f0993",
+    "run24_reference_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "run24_reference_bytes": 262144,
+    "run23_atmosmezz_run_probe": "AtmosMezz Run entry observed in a completed native reference. Candidate method target from the object was not hit before process exit; no provider identity or stream-object return was captured."
+  },
+  "model_status": {
+    "selector_model_replay": "NOT_RUN",
+    "native_matrix_numeric_comparison": "NOT_EVALUATED",
+    "u04_numeric_replay": "NOT_RUN",
+    "type10_composition": "NOT_RUN",
+    "six_plane_validation": "NOT_RUN",
+    "gate1_closed": false
+  },
+  "source_evidence_digests": [
+    {
+      "evidence_id": "ddp_local_slot_and_frame_adapter_static_trace",
+      "sha256": "5ce9a87d79a744da33fa03b46083538f7997ad493d4538cdffa1913e7771a833",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "dee_audio_filter_stage_runner_flow_static_trace",
+      "sha256": "871ac08be4fafb774bebac1d39db1b51e7547d046de65824b2c220d07ce6fc9d",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "dee_atmos_mezz_input_plugin_and_vtable_static_trace",
+      "sha256": "2c88d207baa80f33f125dc3b420d2c2edb7a67ca3ce55f9913639ae79183d694",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "dee_stage_storage_and_stream_object_static_trace",
+      "sha256": "472f83d5da297100746f007e94554d5755d98490bc7de22682bdca8e0d60bc8b",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "dee_stream_object_lookup_callers_static_trace",
+      "sha256": "042ddc032a94eb2fd9a8ced1b1869f323e9a1c8a72eeb0e715d1185a46260d89",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "adm_bwf_input_stage_identity_search",
+      "sha256": "7303bfa2d7391a10e672361dc5d1a9ab38b10e5081512e5eff4026a23633cf80",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "adm_chna_uid_lookup_and_bed_channel_static_trace",
+      "sha256": "c54539888f37ea75f23059cbd58c50dcba517115167b6731aaf3b1c7c600fb17",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "converter_adm_identifier_decoder_static_trace",
+      "sha256": "e32286b6155988c725cc374c485944b5fb6bdd52a5b0111dd180b1a3920774ab",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "prior_same_generation_selector_identity_package_manifest",
+      "sha256": "55ec6020b9b5f5f5802a359febaf37498592621b8b026e9a407d67e0d121892f",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "approved_input_only_crosswalk",
+      "sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "known_short_job_replay_failure_log",
+      "sha256": "b8bee7cf49b5afdcfb19d4659ed2942f83f708bb55bf80f56ab0a9d12943cff5",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "corrected_misc_ddp_loader_failure_log",
+      "sha256": "ab70d7450b9bab683c0b8b013b6f90a2b3ae39b53ccb31ae739da14696bd967a",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "native_same_call_ddp_route_capture_run24",
+      "sha256": "05270d4ded633a4e57f399a10b327e857437d29d5cb05ce1504970ced26f0993",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "native_same_call_reference_output_run24",
+      "sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+      "source_artifact_in_handoff": false
+    },
+    {
+      "evidence_id": "dee_stream_object_producer_static_trace_v2",
+      "sha256": "4f5250daa65675498c982615f3c63094bfa839260c1738d2cb57e772b74c5bfa",
+      "source_artifact_in_handoff": false
+    }
+  ],
+  "minimum_next_action": "Resolve the storage-provider method that returns the AtmosMezz stream_object, then follow its reader/buffer construction back to DACTLIB's CHNA UID-to-track-index mapping. Verify which typed field reaches the DDP channel-config rows and PCM pointer table. Then bind one DDP frame channel index to the existing same-generation selector descriptor and approved F03R crosswalk; preserve separate count domains until verified.",
+  "native_runtime_channel_routing": {
+    "capture_run": "run-24",
+    "capture_scope": "One DEE reference invocation; the frame count and both routing tables were read at the same DDP route-consumer call.",
+    "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "execution_job_xml_sha256": "3cf0ff7299c00ff70d09addf755661fafa38930f327a7d72427fa33d189b816e",
+    "native_log_sha256": "05270d4ded633a4e57f399a10b327e857437d29d5cb05ce1504970ced26f0993",
+    "reference_ec3_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "reference_ec3_bytes": 262144,
+    "frame_input_channel_count": 38,
+    "primary_route_group_count": 1,
+    "primary_route_entry_count": 10,
+    "primary_route_category_codes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "primary_route_frame_pointer_slots": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "additional_route_entry_count": 28,
+    "additional_route_frame_pointer_slots": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37
+    ],
+    "additional_route_index_field": "first 32-bit field of each 12-byte route record; static consumer uses the value to index the same frame input pointer table",
+    "category_code_meanings": "UNBOUND; retain numeric codes only",
+    "frame_input_pointer_slot_to_ADM_CHNA_or_physical_track": "UNBOUND",
+    "frame_input_pointer_slot_to_global_source_id": "UNBOUND",
+    "frame_input_pointer_slot_to_selector_column": "UNBOUND",
+    "same_generation_route_tables": "BOUND_WITHIN_RUN24_AT_ONE_DDP_ROUTE_CONSUMER_CALL",
+    "sample_values_read": false
+  },
+  "upstream_attribution_reconciliation": {
+    "atmos_mezz_run_method": "The DEE AtmosMezz Run method was reached in a normal reference invocation. Its static body handles metadata and temporary-file setup; it does not contain the direct stream_object property write previously attributed to it.",
+    "previous_v8_direct_attribution": "WITHDRAWN_AS_UNSUPPORTED",
+    "runtime_followup": "A candidate virtual target derived from the observed input object was not hit before run23 completed; object-to-provider identity is not established by that probe.",
+    "current_atmos_mezz_run_to_stream_object_status": "UNBOUND",
+    "source_static_report_sha256": "2c88d207baa80f33f125dc3b420d2c2edb7a67ca3ce55f9913639ae79183d694",
+    "stream_object_static_report_v2_sha256": "4f5250daa65675498c982615f3c63094bfa839260c1738d2cb57e772b74c5bfa"
+  }
+}

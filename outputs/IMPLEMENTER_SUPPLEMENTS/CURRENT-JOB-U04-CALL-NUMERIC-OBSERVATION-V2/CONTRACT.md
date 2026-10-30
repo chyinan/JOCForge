@@ -1,0 +1,7 @@
+# Current-job U04 helper numeric observation
+
+The second observed helper call is bound to the current PreparedJobInput XML/config and authorized source identity. It uses mode0, range [0,7), auxiliary20, and returns raw value0. In the same call it consumes a 20x7 F32 slice from a local 20x34 matrix; output is 7x20 F32. The included input/output bytes and vector record are hash-bound. Recomputed 140 products match the native output bit-for-bit under the reported inferred row scales. v8 and v9 same-config output bytes match, but the calls are different generations.
+
+This is a bounded native helper computation, not proof that the input slice equals approved F03U band-major source_weight 24xN. Global candidate IDs, source callback generation, consumer, U04 status/success semantics, Type10 and six-plane remain unbound/not run. The first observed call output was not captured; do not call it zero. The returned 0 is a helper return value, not a success code. Range length7 is not a global candidate/source count and is unrelated to active-layout count6 or capacity15.
+
+Identity: job XML SHA 20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9; normalized config SHA 02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0; source BWF SHA 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1. Whole encode/model replay/product acceptance are not claimed. No raw PCM, EC3 payload, addresses, code or private credentials included. Source package manifest SHA 256 c3ce75f4bc90943354eaafb8da3966a8f95059a017562fcffb5955d521492189.

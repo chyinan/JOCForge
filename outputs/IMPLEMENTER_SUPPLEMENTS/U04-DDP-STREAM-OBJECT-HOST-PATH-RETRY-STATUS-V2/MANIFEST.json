@@ -1,0 +1,18 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-DDP-STREAM-OBJECT-HOST-PATH-RETRY-STATUS-V2",
+  "status": "RETRY_FAILURE_METADATA_ONLY",
+  "source_package_manifest_sha256": "49fe7373af9ec66d7aebfab9641d18ba8b3d96e5b4168ffa7d50cad7bb92d1d5",
+  "files": [
+    {
+      "sha256": "5a0f6f0784dd14b8addeed43daac279df53bb0e355752b52bc5d2ee2fd6e80c4",
+      "path": "SOURCE-BINDING.json",
+      "bytes": 659
+    },
+    {
+      "sha256": "c610a7d4a252540beef3f4c98cc53a443fd2fa835a6cc4de54c1f3437e298e84",
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 1821
+    }
+  ]
+}

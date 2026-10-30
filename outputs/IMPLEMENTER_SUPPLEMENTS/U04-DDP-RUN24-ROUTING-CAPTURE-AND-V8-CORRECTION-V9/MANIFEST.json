@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-DDP-RUN24-ROUTING-CAPTURE-AND-V8-CORRECTION-V9",
+  "status": "NATIVE_REFERENCE_ROUTE_CAPTURED_ADM_SELECTOR_JOIN_OPEN",
+  "source_package_manifest_sha256": "4fbb097f00ee01a2559eb45747d81b761677801b0951c5a4d7fdc7402919d6b5",
+  "files": [
+    {
+      "sha256": "5cfa77a40f51c27e9ac5a906d6cdfd0226a45926d9e9c33fc4b968f9236ba529",
+      "path": "EVIDENCE.json",
+      "bytes": 17775
+    },
+    {
+      "sha256": "deb407163796774f199ce55000865676cecc77fccfd04074ba3c3757130cddd4",
+      "path": "NATIVE-ROUTING-CAPTURE.json",
+      "bytes": 2616
+    },
+    {
+      "sha256": "186cecf94214e0b8861b894e5941d61d31eabf0cc335596bfbb9c61271753f70",
+      "path": "SOURCE-BINDING.json",
+      "bytes": 889
+    },
+    {
+      "sha256": "9ba7f8886bfe313729207c02ae47583fd02fee4ed35a3c7c5e347a8a5bb9c6e2",
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 2992
+    }
+  ]
+}

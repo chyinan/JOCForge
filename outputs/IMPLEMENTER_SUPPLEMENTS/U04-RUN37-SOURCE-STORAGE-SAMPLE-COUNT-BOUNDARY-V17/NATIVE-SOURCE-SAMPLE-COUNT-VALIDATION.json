@@ -1,0 +1,57 @@
+{
+  "schema": "wash.native-source-sample-count-validation.v1",
+  "capture_run": "run-37",
+  "parent_wash_manifest_sha256": "0194bc328e2a6c0a3db1966fc530813236359993fead62a6f1b96895427fca03",
+  "job_xml_sha256": "a0c30b0b71efe7348ba307f1028855b0ed3a1c39d7d2855392269946ffa6622b",
+  "native_log_sha256": "72dc7ebab601e7e1e339a598ee9f20e1038b730d6ad967c1b65acfbc5c1f8c4f",
+  "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "encoder_completed_normally": true,
+  "dynamic_observation": {
+    "generic_getter_return_value": 6522906,
+    "attribution": "Source-storage sample-count validation callsite, not the main reader extent callsite.",
+    "same_reader_object_as_run38_main_extent_writer": false,
+    "source_path_identity_for_this_object": "UNBOUND",
+    "same_run_main_encoder_generation_join": "UNBOUND"
+  },
+  "static_source_item_contract": {
+    "record_fields": {
+      "start_sample": "Source record start value.",
+      "end_sample": "Source record end value."
+    },
+    "open_path": "The per-source item opens an Atmos storage input before validating its source range.",
+    "sample_count_getter": "The generic getter is called on the opened source storage object.",
+    "zero_end_rule": "If end_sample is zero, the getter result is substituted as the end_sample.",
+    "bounds_checks": [
+      "end_sample must not exceed the opened source storage sample count",
+      "start_sample must not exceed end_sample"
+    ],
+    "status": "STATIC_CALLER_FLOW_BOUND; RUN37_GETTER_RETURN_OBSERVED; OBJECT_TO_MAIN_READER_JOIN_UNBOUND"
+  },
+  "run38_main_reader_extent_reconciliation": {
+    "run38_extent_writer_return_value": 98000,
+    "run38_store_target": "Main reader total-extent field.",
+    "relation_to_6522906": "Different getter callsite and object role; do not join as a value transition."
+  },
+  "corrections": {
+    "v15_attribution": "WITHDRAWN_AS_A_SAME_READER_DURATION_JOIN",
+    "v16_attribution": "The separate prepass distinction is correct; this package further identifies the callsite as source-storage sample-count validation."
+  },
+  "unbound": [
+    "Which opened source path produced the run37 sample-count result, because the path identity was not captured at that call.",
+    "A typed join from the run37 source-item object to the run38 main encoder's source record.",
+    "The precise duration accessor implementation that returns 98000 for the main composite reader.",
+    "The start/end record domain to ADM file sample position, embedded timecode or host frame domain.",
+    "Channel configuration identity to ADM CHNA UID, physical track, global source ID or selector column."
+  ],
+  "payload": {
+    "audio_sample_values_read": false,
+    "audio_sample_values_persisted": false,
+    "raw_pointer_values_included": false,
+    "addresses_or_disassembly_included": false,
+    "license_material_included": false
+  },
+  "model_comparison": "NOT_EVALUATED",
+  "implementation_delivery": "PROHIBITED"
+}

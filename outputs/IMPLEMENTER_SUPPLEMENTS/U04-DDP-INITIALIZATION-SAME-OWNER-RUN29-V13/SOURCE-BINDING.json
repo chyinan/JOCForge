@@ -1,0 +1,15 @@
+{
+  "schema": "washed-ddp-initialization-binding.v1",
+  "source_package_manifest_sha256": "f30c5d04c35ec6087488d41599219c177d94ff08ea043c86e1d0d39329ba78d3",
+  "capture_payload_sha256": "01aac2c45cede7bd6e0baac3418a7b2e56369bffff8f74b1d9904bad6dac2cb3",
+  "prior_v12_manifest_sha256": "7b0bdaae6cf2825bf36e229cdca9372dbbe72da3c1c7cd50b033e12f841a60d0",
+  "source_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "run29_job_sha256": "208f69e5033dd0475fd671ee182935589287be86efa206ff0dca5ecb4b5158ca",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "same_owner_initializer_children": true,
+  "sample_or_memory_values_read": false,
+  "reader_and_slot_writer": "UNBOUND",
+  "model_comparison": "NOT_EVALUATED",
+  "product_acceptance": false
+}

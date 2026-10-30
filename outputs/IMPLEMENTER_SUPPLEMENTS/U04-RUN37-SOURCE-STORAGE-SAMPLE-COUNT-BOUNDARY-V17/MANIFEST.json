@@ -1,0 +1,23 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-RUN37-SOURCE-STORAGE-SAMPLE-COUNT-BOUNDARY-V17",
+  "status": "SOURCE_SAMPLE_COUNT_OBSERVED_MAIN_READER_JOIN_WITHDRAWN",
+  "source_package_manifest_sha256": "22f36b20684eecb0f3b058c5bd36fc7ca97f2a2df3b2a6c94cfc8cab0c70d665",
+  "files": [
+    {
+      "path": "NATIVE-SOURCE-SAMPLE-COUNT-VALIDATION.json",
+      "bytes": 3109,
+      "sha256": "10a508fc57a98ea34ccfc560373162aa2e55095d6ca44ec52fdd730703ff3ae2"
+    },
+    {
+      "path": "SOURCE-BINDING.json",
+      "bytes": 845,
+      "sha256": "b97a127bc70b7807b1c3cc3d7515b4747171b7de709d5829785450fe635049a0"
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 1751,
+      "sha256": "bcc7308de9eaea7c91735b8f819b83481e5295e91dfb6b4cd2ccafe687fd49b5"
+    }
+  ]
+}

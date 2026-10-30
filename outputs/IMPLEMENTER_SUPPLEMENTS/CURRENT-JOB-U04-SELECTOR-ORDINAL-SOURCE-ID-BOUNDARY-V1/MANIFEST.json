@@ -1,0 +1,18 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "CURRENT-JOB-U04-SELECTOR-ORDINAL-SOURCE-ID-BOUNDARY-V1",
+  "status": "EVIDENCE_ONLY_PARTIAL",
+  "source_package_manifest_sha256": "31b7e8d9e1d43f6a2f61f0171a9e99c73d41914d9b79418f69764cee7fbff1ff",
+  "files": [
+    {
+      "path": "SOURCE-BINDING.json",
+      "sha256": "955f9aba2dc906faff99b6c4c17c0fd18cc6a385fa6b1926659c9ab2036d1b4b",
+      "bytes": 901
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "sha256": "311e1f515db06900559d68e53c70f3c8667d81b3c58084cfcd5ee116a85f8439",
+      "bytes": 3017
+    }
+  ]
+}

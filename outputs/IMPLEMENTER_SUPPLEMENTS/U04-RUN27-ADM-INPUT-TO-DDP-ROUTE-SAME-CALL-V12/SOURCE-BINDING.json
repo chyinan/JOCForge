@@ -1,0 +1,15 @@
+{
+  "schema": "washed-run27-input-route-binding.v2",
+  "source_manifest_sha256": "7b0bdaae6cf2825bf36e229cdca9372dbbe72da3c1c7cd50b033e12f841a60d0",
+  "source_evidence_sha256": "867507d27937e53ac8720e84099dac9315019e661e60981e0eea15cf7f9ba161",
+  "run27_capture_sha256": "50827ff605a22ce3f5b2393a98a18b30ac46d63168b32f06cc2c26150fe7ed99",
+  "separate_run24_capture_sha256": "deb407163796774f199ce55000865676cecc77fccfd04074ba3c3757130cddd4",
+  "separate_run26_capture_sha256": "360d3414609829e8e23587950fc2110dff6d150b1f741a84340cf640e0ac1138",
+  "run27_job_xml_sha256": "739f0053a4eb87dfc99c3d8111d3b243aa38d07cf444c1e4ae87300f1687f193",
+  "current_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+  "route_run_is_current_job": false,
+  "run24_run26_joined_to_run27": false,
+  "reader_identity": "UNBOUND",
+  "chna_global_source_selector_join": "UNBOUND",
+  "raw_pcm_or_source_material_forwarded": false
+}

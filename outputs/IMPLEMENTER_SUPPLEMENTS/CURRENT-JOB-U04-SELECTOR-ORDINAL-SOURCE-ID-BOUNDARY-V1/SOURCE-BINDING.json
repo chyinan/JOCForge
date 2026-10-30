@@ -1,0 +1,21 @@
+{
+  "schema": "washed-native-evidence-binding.v1",
+  "source_package_id": "spatial-selector-identity-wash-v1",
+  "source_manifest_sha256": "31b7e8d9e1d43f6a2f61f0171a9e99c73d41914d9b79418f69764cee7fbff1ff",
+  "source_evidence_sha256": "3fe9e525cd1e8c768af1facdf6120f0cae370095e3a0fd51c0931c47c1267802",
+  "identity": {
+    "base_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "execution_xml_relation": "distinct_schema_version_and_temp_directory_only",
+    "codec_and_loudness_preserved_in_attempted_xml": true,
+    "physical_input_channels": 38
+  },
+  "source_verification": {
+    "ordinary_python": "PASS",
+    "python_optimize": "PASS",
+    "all_source_payload_hashes": "PASS"
+  },
+  "status": "EVIDENCE_ONLY_PARTIAL",
+  "raw_feature_or_audio_forwarded": false,
+  "source_code_forwarded": false,
+  "private_material_forwarded": false
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-DDP-FRAME-CHANNEL-INDEX-BOUNDARY-V7",
+  "status": "PARTIAL_STATIC_BOUNDARY_EVIDENCE",
+  "files": [
+    {
+      "bytes": 1044,
+      "sha256": "a3df09ae9587d3626ba27b6f8e8692442ba63b8daa2372ab802b4e492c11a14e",
+      "path": "SOURCE-BINDING.json"
+    },
+    {
+      "bytes": 3494,
+      "sha256": "e0969be5c191c64986b79c39e8e191e1ce5efdd186227674d610cdba2851bf35",
+      "path": "WASHED-SUMMARY.md"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "washed-run38-reader-extent-binding.v1",
+  "source_manifest_sha256": "0194bc328e2a6c0a3db1966fc530813236359993fead62a6f1b96895427fca03",
+  "capture_payload_sha256": "41d3912376a77736a821e82d2452e76b812aef5be8d1999fb476e1b2d5bc34f4",
+  "superseded_v15_manifest_sha256": "a526c30f1b086e588e0e1c42060dd494a018b1bfbb330d38134ab33ac3de9b06",
+  "run38_reader_object_extent_store": 98000,
+  "prior_6522906_observation": "DIFFERENT_PREPASS_READER_PATH; JOIN_WITHDRAWN",
+  "start_end_difference": 98000,
+  "numeric_equality_is_typed_clock_join": false,
+  "reader_cursor_before_frame": 0,
+  "requested_and_returned_samples": 1536,
+  "reader_cursor_after_frame": 1536,
+  "reader_to_adm_clock": "UNBOUND",
+  "adm_global_source_identity": "UNBOUND",
+  "product_acceptance": false,
+  "raw_audio_or_source_forwarded": false
+}

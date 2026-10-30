@@ -1,0 +1,18 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "CURRENT-JOB-U04-SELECTOR-LOCAL-SLOT-CATEGORY-PATH-V2",
+  "status": "PARTIAL_STATIC_EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "112ecbde696f35a440c769d5d5c315930596b7c9c77ed724a597274628992326",
+  "files": [
+    {
+      "bytes": 1100,
+      "path": "SOURCE-BINDING.json",
+      "sha256": "d583ddc3179640cdd1832a375c82b23194fdab239e2409e2c12d6b98c87076a7"
+    },
+    {
+      "bytes": 3832,
+      "path": "WASHED-SUMMARY.md",
+      "sha256": "8ee34278c6f6174a1dce430ea15bc998824a92664cd544ce519d8f48dadf837e"
+    }
+  ]
+}

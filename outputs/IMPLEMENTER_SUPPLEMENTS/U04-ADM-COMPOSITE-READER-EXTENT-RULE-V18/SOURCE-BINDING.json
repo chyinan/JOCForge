@@ -1,0 +1,15 @@
+{
+  "schema": "washed-composite-reader-extent-binding.v1",
+  "source_manifest_sha256": "bacae28bb9f0586656b5a5c842c12672e5f451396510a7fa3c1001ce060b5248",
+  "rule_payload_sha256": "2aa293fde05a320c6657982f5e92d6210041b38c9142504a5418b7e7341b2896",
+  "run38_job_xml_sha256": "4fc2df4dfc4ccf96555be749e1ecc7aebd26887940d008643e88f4628294f18d",
+  "run39_job_xml_sha256": "9495badc4838185113ac410b70b057d35f38f84952f3d2db008a31d46c7c2644",
+  "input_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "reader_extent_one_item": 98000,
+  "per_item_rule": "end-start",
+  "composite_rule": "prior_end+prepend+(end-start)+append",
+  "absolute_clock_join": "UNBOUND",
+  "multi_item_dynamic_case": "NOT_RUN",
+  "product_acceptance": false,
+  "raw_audio_or_source_forwarded": false
+}

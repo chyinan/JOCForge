@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-RUN27-ADM-INPUT-TO-DDP-ROUTE-SAME-CALL-V11",
+  "status": "NATIVE_PATH_DRIVEN_DDP_ROUTE_OBSERVED_READER_IDENTITY_UNBOUND",
+  "source_package_manifest_sha256": "25dc9ac778206b07eedaabe0c49fbb09075752ab92fad653902da694727e6ee9",
+  "files": [
+    {
+      "path": "NATIVE-ADM-TARGET-LOOKUP-CAPTURE.json",
+      "bytes": 4009,
+      "sha256": "50827ff605a22ce3f5b2393a98a18b30ac46d63168b32f06cc2c26150fe7ed99"
+    },
+    {
+      "path": "SEPARATE-RUN24-ROUTING-CAPTURE.json",
+      "bytes": 2616,
+      "sha256": "deb407163796774f199ce55000865676cecc77fccfd04074ba3c3757130cddd4"
+    },
+    {
+      "path": "SOURCE-BINDING.json",
+      "bytes": 1236,
+      "sha256": "9741df93ef551a3eb43882b9e1cb4a0d3252c1ae432773c056a5804b3717096c"
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 2797,
+      "sha256": "91268e99620649f9439f15937284e43eaacb5365c1c8bd6e0f76ef9b70f69eda"
+    }
+  ]
+}

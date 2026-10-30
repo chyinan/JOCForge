@@ -1,0 +1,23 @@
+{
+  "schema": "washed-run37-reader-clock-binding.v1",
+  "source_manifest_sha256": "a526c30f1b086e588e0e1c42060dd494a018b1bfbb330d38134ab33ac3de9b06",
+  "capture_payload_sha256": "1c8352df6dd06ff859b94253b10cd3a6eccf797a7d0b0f6b8ba7d308913de2a0",
+  "run37_job_xml_sha256": "8591f6060d85f8450ee22a94476773388380c1729a5dfab218143f647f210b8a",
+  "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "composite_source_interval": [
+    4320000,
+    4418000
+  ],
+  "interval_length": 98000,
+  "reader_extent": 98000,
+  "master_duration_accessor": 6522906,
+  "reader_cursor_start": 0,
+  "requested_and_returned_span": 1536,
+  "reader_cursor_after": 1536,
+  "channels": 38,
+  "event_count": 38,
+  "numeric_equality_is_typed_clock_join": false,
+  "model_comparison": "NOT_EVALUATED",
+  "product_acceptance": false,
+  "raw_audio_or_source_forwarded": false
+}

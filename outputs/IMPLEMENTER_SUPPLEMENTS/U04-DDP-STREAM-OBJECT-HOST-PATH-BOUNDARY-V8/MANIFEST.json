@@ -1,0 +1,18 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-DDP-STREAM-OBJECT-HOST-PATH-BOUNDARY-V8",
+  "status": "PARTIAL_STATIC_HOST_PATH_EVIDENCE",
+  "source_package_manifest_sha256": "6b2aeb764ddea372e7f3bd43a09a96597716d64a24463e9ae36e1e59ad3866f8",
+  "files": [
+    {
+      "bytes": 1119,
+      "path": "SOURCE-BINDING.json",
+      "sha256": "b96eaa29ec7d3cd656d6bee533b0144d0446076dbfa451c43bfd9e8f72393102"
+    },
+    {
+      "bytes": 3550,
+      "path": "WASHED-SUMMARY.md",
+      "sha256": "04b1e5aa1d14bee3f14402dcfc86c35ea71bb4e699939b976c7a24409c98e41c"
+    }
+  ]
+}

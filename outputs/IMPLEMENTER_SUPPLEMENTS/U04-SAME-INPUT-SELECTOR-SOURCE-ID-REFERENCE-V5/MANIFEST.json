@@ -1,0 +1,17 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-SAME-INPUT-SELECTOR-SOURCE-ID-REFERENCE-V5",
+  "status": "REFERENCE_RUN_SOURCE_IDENTITY_BOUND_DDP_JOIN_UNBOUND",
+  "files": [
+    {
+      "path": "SOURCE-BINDING.json",
+      "bytes": 965,
+      "sha256": "a9a0dc8c4570ad51ec2903cb6d3569e7386b6971f9196c31d8eb72501a76f5a2"
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 3660,
+      "sha256": "234bf4893aa2c05f768783dc2e41f67120d6afdf346211101efb9a2231a822c1"
+    }
+  ]
+}

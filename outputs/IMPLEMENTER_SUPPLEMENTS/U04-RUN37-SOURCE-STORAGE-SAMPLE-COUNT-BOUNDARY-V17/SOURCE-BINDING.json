@@ -1,0 +1,16 @@
+{
+  "schema": "washed-run37-source-sample-count-binding.v1",
+  "source_manifest_sha256": "22f36b20684eecb0f3b058c5bd36fc7ca97f2a2df3b2a6c94cfc8cab0c70d665",
+  "capture_payload_sha256": "10a508fc57a98ea34ccfc560373162aa2e55095d6ca44ec52fdd730703ff3ae2",
+  "run37_job_xml_sha256": "a0c30b0b71efe7348ba307f1028855b0ed3a1c39d7d2855392269946ffa6622b",
+  "input_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "getter_return_sample_count": 6522906,
+  "range_rule": "end=0 => end=sample_count; else end<=sample_count and start<=end",
+  "source_path_identity": "UNBOUND",
+  "same_reader_as_run38_main_extent_writer": false,
+  "run38_main_reader_duration_value": 98000,
+  "v15_cross_path_join": "WITHDRAWN",
+  "model_comparison": "NOT_EVALUATED",
+  "raw_sample_values_forwarded": false,
+  "product_acceptance": false
+}

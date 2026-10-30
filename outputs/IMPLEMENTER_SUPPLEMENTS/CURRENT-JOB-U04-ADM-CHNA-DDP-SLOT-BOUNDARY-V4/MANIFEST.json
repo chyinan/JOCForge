@@ -1,0 +1,18 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "CURRENT-JOB-U04-ADM-CHNA-DDP-SLOT-BOUNDARY-V4",
+  "status": "PARTIAL_STATIC_EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "e2d162c30b689f2cc01b57c775755388aca441da2faa53ad534c986b1fecb08f",
+  "files": [
+    {
+      "sha256": "f30cf9cacdaef75fe4b4e60181df40ac37ab5fe0da31581e768e46163877d10d",
+      "path": "SOURCE-BINDING.json",
+      "bytes": 1144
+    },
+    {
+      "sha256": "13796ee823db8a2926b7dca4c24fbb86b8e6cd70944fe7bc5c2089e844a0575b",
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 3586
+    }
+  ]
+}

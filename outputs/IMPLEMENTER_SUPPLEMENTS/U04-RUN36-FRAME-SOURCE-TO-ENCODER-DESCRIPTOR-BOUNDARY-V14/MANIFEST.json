@@ -1,0 +1,23 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-RUN36-FRAME-SOURCE-TO-ENCODER-DESCRIPTOR-BOUNDARY-V14",
+  "status": "SAME_INVOCATION_DESCRIPTOR_LINEAGE_OBSERVED_TIME_AND_SOURCE_ID_OPEN",
+  "source_package_manifest_sha256": "e594526e3599acd7cd2afacf7226f78290a9b40a3e927c72227ca1a15d783619",
+  "files": [
+    {
+      "path": "NATIVE-FRAME-SOURCE-DESCRIPTOR-CONSUMPTION.json",
+      "sha256": "1c8352df6dd06ff859b94253b10cd3a6eccf797a7d0b0f6b8ba7d308913de2a0",
+      "bytes": 5101
+    },
+    {
+      "path": "SOURCE-BINDING.json",
+      "sha256": "66adbea7684f950f0d920719383f9aefe2212bca5a3ca75c62eda6030f3fedce",
+      "bytes": 831
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "sha256": "32543425ae8ccd56868b0b4f534e5cca399570f9817da0d51962049dc18a73d1",
+      "bytes": 2310
+    }
+  ]
+}

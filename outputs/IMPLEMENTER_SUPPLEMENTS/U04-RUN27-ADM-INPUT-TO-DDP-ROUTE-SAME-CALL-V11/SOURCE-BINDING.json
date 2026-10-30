@@ -1,0 +1,21 @@
+{
+  "schema": "washed-run27-input-route-binding.v1",
+  "source_manifest_sha256": "25dc9ac778206b07eedaabe0c49fbb09075752ab92fad653902da694727e6ee9",
+  "source_target_capture_sha256": "50827ff605a22ce3f5b2393a98a18b30ac46d63168b32f06cc2c26150fe7ed99",
+  "source_input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "source_job_xml_sha256": "739f0053a4eb87dfc99c3d8111d3b243aa38d07cf444c1e4ae87300f1687f193",
+  "current_accepted_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+  "one_adm_path_target": true,
+  "stream_object_lookup": false,
+  "collected_stream_object_entries": 0,
+  "ddp_frame_count": 38,
+  "same_thread_route": true,
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "reader_or_decoder": "UNBOUND",
+  "chna_global_id_selector_join": "UNBOUND",
+  "raw_pcm_or_source_material_forwarded": false,
+  "product_acceptance": false,
+  "run27_same_invocation_capture_sha256": "50827ff605a22ce3f5b2393a98a18b30ac46d63168b32f06cc2c26150fe7ed99",
+  "separate_run24_capture_sha256": "deb407163796774f199ce55000865676cecc77fccfd04074ba3c3757130cddd4"
+}

@@ -1,0 +1,83 @@
+{
+  "schema": "wash.native-adm-interval-frame-reader-lineage.v1",
+  "capture_run": "run-37",
+  "parent_wash_manifest_sha256": "e594526e3599acd7cd2afacf7226f78290a9b40a3e927c72227ca1a15d783619",
+  "job_xml_sha256": "a0c30b0b71efe7348ba307f1028855b0ed3a1c39d7d2855392269946ffa6622b",
+  "native_log_sha256": "72dc7ebab601e7e1e339a598ee9f20e1038b730d6ad967c1b65acfbc5c1f8c4f",
+  "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "encoder_completed_normally": true,
+  "capture_method": "Read-only WinDbg scalar and call-identity inspection combined with a hash-bound static field-flow report; no audio samples or raw pointer values were read or retained.",
+  "same_call_observations": {
+    "source_record_builder": {
+      "source_record_count": 1,
+      "record_stride_bytes": 64,
+      "fields": {
+        "prepend": 0,
+        "start": 4320000,
+        "end": 4418000,
+        "append": 0
+      },
+      "field_mapping_basis": "The same native vector arguments are consumed into the record fields, and the native composite-master log renders those fields as prepend, start, end and append."
+    },
+    "reader_parameter_copy": {
+      "same_outer_source_call_chain": true,
+      "record_count": 1,
+      "copied_fields": {
+        "prepend": 0,
+        "start": 4320000,
+        "end": 4418000,
+        "append": 0
+      },
+      "frame_sample_request": 1536
+    },
+    "reader_state": {
+      "constructor_input_matches_copied_reader_parameters": true,
+      "composite_builder_input_matches_constructor_input": true,
+      "inner_reader_matches_outer_loop_reader_state": true,
+      "master_duration_accessor_return_value": 6522906,
+      "reader_total_extent_at_first_frame": 98000,
+      "reader_cursor_before_first_frame": 0,
+      "requested_frame_samples": 1536,
+      "master_duration_and_frame_extent_relation": "The same reader object is statically initialized from the master-duration accessor, but its total extent is 98000 by the outer frame-loop call. The intervening writer or transformation is not yet identified."
+    },
+    "frame_read_and_encoder": {
+      "read_span_request": 1536,
+      "read_span_return": 1536,
+      "reader_cursor_after_first_frame": 1536,
+      "same_descriptor_from_outer_source_to_encoder": true,
+      "encoder_channel_configuration_count": 38,
+      "encoder_sample_span": 1536,
+      "encoder_event_count": 38
+    }
+  },
+  "cross_domain_observations": {
+    "native_log_start_value": 4320000,
+    "native_log_end_value": 4418000,
+    "reader_extent": 98000,
+    "end_minus_start_equals_extent_numerically": true,
+    "typed_start_end_to_reader_extent_rule": "UNBOUND",
+    "adm_sample_position_to_reader_relative_cursor": "UNBOUND",
+    "host_frame_to_reader_relative_cursor": "UNBOUND",
+    "writer_of_98000_reader_extent": "UNBOUND"
+  },
+  "unbound": [
+    "The writer or transformation that changes the reader-state extent from the master-duration accessor value to 98000.",
+    "The exact unit and clock identity of the master-duration accessor return value.",
+    "Whether the start/end record values are file sample coordinates in every supported input mode.",
+    "Reader-relative cursor to ADM file sample position, embedded timecode or host frame index.",
+    "The 38 channel-configuration entries to ADM CHNA UID, physical track, global source ID or selector column.",
+    "The frame pointer-table writer, allocation owner and capacity rule.",
+    "Any relation from this input generation to U04, fit generation or spatial callback generation."
+  ],
+  "payload": {
+    "audio_sample_values_read": false,
+    "audio_sample_values_persisted": false,
+    "raw_pointer_values_included": false,
+    "addresses_or_disassembly_included": false,
+    "license_material_included": false
+  },
+  "model_comparison": "NOT_EVALUATED",
+  "implementation_delivery": "PROHIBITED"
+}

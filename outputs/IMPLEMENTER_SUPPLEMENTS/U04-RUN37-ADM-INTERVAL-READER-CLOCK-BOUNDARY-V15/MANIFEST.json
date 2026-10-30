@@ -1,0 +1,23 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-RUN37-ADM-INTERVAL-READER-CLOCK-BOUNDARY-V15",
+  "status": "SAME_CALL_INTERVAL_AND_READER_READ_OBSERVED_CLOCK_TRANSFORM_UNBOUND",
+  "source_package_manifest_sha256": "a526c30f1b086e588e0e1c42060dd494a018b1bfbb330d38134ab33ac3de9b06",
+  "files": [
+    {
+      "sha256": "677c94ddcbaf454ea061da243c3ff00c4c20f7eca66f3918026463c46e0b18ca",
+      "bytes": 3999,
+      "path": "NATIVE-ADM-INTERVAL-TO-FRAME-READER-LINEAGE.json"
+    },
+    {
+      "sha256": "e4613bffa6fe8a441f03df677db44a85856d509837d3e3edd8bd11c0c03604b1",
+      "bytes": 892,
+      "path": "SOURCE-BINDING.json"
+    },
+    {
+      "sha256": "f883802c7ca742655a362ece8eab16b6f423eb1237bc917122b1322447f1dc09",
+      "bytes": 2512,
+      "path": "WASHED-SUMMARY.md"
+    }
+  ]
+}

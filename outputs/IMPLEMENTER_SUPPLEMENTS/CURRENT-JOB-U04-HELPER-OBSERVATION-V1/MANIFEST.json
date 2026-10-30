@@ -1,0 +1,26 @@
+{
+  "package_id": "CURRENT-JOB-U04-HELPER-OBSERVATION-V1",
+  "scope": "exact current PreparedJobInput one U04 helper call; candidate source/model/output lineage open",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1110,
+      "sha256": "a1d3454d920c46abe4fd4ff0dac61b009e30bafd261a15bae318d8b0b38f787b"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 5218,
+      "sha256": "d3a4a566aa7fe6c384007f5436d5aaafa1161c707a7645ebc32eea4ecb671c9a"
+    },
+    {
+      "file": "u04_helper_output_7x20.f32le",
+      "bytes": 560,
+      "sha256": "a93041d5645eac86691dfdf61be3965ba5dd27c5160a0b288290c876ffbaca45"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 594,
+      "sha256": "17891003365cee6171ac1c0d068fb46a1e418b6784b4e0b9c116ce49f68e3df1"
+    }
+  ]
+}

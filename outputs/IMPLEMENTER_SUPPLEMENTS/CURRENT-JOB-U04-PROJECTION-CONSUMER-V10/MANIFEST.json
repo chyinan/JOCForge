@@ -1,0 +1,37 @@
+{
+  "package_id": "CURRENT-JOB-U04-PROJECTION-CONSUMER-V10",
+  "source_manifest_sha256": "5c86e63ec2d5d887f668749027f4ab6c8cc51cf2363b50b6607e57a41212c872",
+  "scope": "two same-job helper calls and first direct consumer contribution; F03U source-weight mapping and full reduction open",
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 9461,
+      "sha256": "8c2cbca99d5f1d97c19206feb1d6f54f4a7331218c4f2216523673d8b50a8630"
+    },
+    {
+      "file": "u04_helper_input_20x7_call1.f32le",
+      "bytes": 560,
+      "sha256": "951385afa401baa11cad25f1befb04a593295bdace3fe5c254e92d1422bc22a4"
+    },
+    {
+      "file": "u04_helper_output_7x20_call1.f32le",
+      "bytes": 560,
+      "sha256": "738c079dff6c9b77a0891ac42db1cabcab933a672b14aed8ecfcf94c0e77bb40"
+    },
+    {
+      "file": "u04_helper_input_20x7_call2.f32le",
+      "bytes": 560,
+      "sha256": "951385afa401baa11cad25f1befb04a593295bdace3fe5c254e92d1422bc22a4"
+    },
+    {
+      "file": "u04_helper_output_7x20_call2.f32le",
+      "bytes": 560,
+      "sha256": "a93041d5645eac86691dfdf61be3965ba5dd27c5160a0b288290c876ffbaca45"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 366,
+      "sha256": "a69d4a4e1ee90efae9bc3c5c16cf56e9e515459da9bfbd034b846bc9692d1205"
+    }
+  ]
+}

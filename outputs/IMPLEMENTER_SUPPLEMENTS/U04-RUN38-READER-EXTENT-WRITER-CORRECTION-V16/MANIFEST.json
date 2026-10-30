@@ -1,0 +1,23 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-RUN38-READER-EXTENT-WRITER-CORRECTION-V16",
+  "status": "MAIN_READER_EXTENT_WRITER_BOUND_CLOCK_IDENTITY_OPEN",
+  "source_package_manifest_sha256": "0194bc328e2a6c0a3db1966fc530813236359993fead62a6f1b96895427fca03",
+  "files": [
+    {
+      "path": "NATIVE-READER-EXTENT-WRITER-CORRECTION.json",
+      "sha256": "41d3912376a77736a821e82d2452e76b812aef5be8d1999fb476e1b2d5bc34f4",
+      "bytes": 3217
+    },
+    {
+      "path": "SOURCE-BINDING.json",
+      "sha256": "7fe1aee9f6447eee4d7671592ef06d5e558361f289444568a73f98f1ab41e2eb",
+      "bytes": 825
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "sha256": "6b6b2f8e6c2bd55297452a8d3a287b828d8b19f03055e3dfad7851028015418c",
+      "bytes": 2243
+    }
+  ]
+}

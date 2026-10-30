@@ -1,0 +1,19 @@
+{
+  "schema": "washed-ddp-host-path-binding.v1",
+  "source_package_manifest_sha256": "6b2aeb764ddea372e7f3bd43a09a96597716d64a24463e9ae36e1e59ad3866f8",
+  "source_evidence_sha256": "ad588338874bbfe011cfed96134996fa56c04960b51307ad03f12092a9097f51",
+  "prior_v7_manifest_sha256": "1ff077f7e348212df989762d34928da28546473ec022530afcf2dd5072d1c27e",
+  "prior_selector_manifest_sha256": "55ec6020b9b5f5f5802a359febaf37498592621b8b026e9a407d67e0d121892f",
+  "approved_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+  "source_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "static_trace_reproduced_by_wash": false,
+  "stream_object_to_ddp_argument": "BOUND_BY_STATIC_TRACE",
+  "local_slot_to_frame_channel": "BOUND_STATIC_NON_MODE1_BRANCH_RUNTIME_NOT_CAPTURED",
+  "frame_channel_to_adm_uid_or_global_id": "UNBOUND",
+  "frame_channel_to_selector_column": "UNBOUND",
+  "run14_ddp_init": "FAILED_UNKNOWN_FILTER",
+  "frame_hook": "NOT_CAPTURED",
+  "output_bytes": 0,
+  "gate1_closed": false,
+  "raw_native_material_forwarded": false
+}

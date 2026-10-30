@@ -1,0 +1,18 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "CURRENT-JOB-U04-GEOMETRY-PROJECTION-BOUNDARY-V1",
+  "status": "EVIDENCE_ONLY_PARTIAL",
+  "source_package_manifest_sha256": "6fedddd07ce459c865fb002666f4329d63d7e02a232bf886d2e44d93a8f34765",
+  "files": [
+    {
+      "path": "SOURCE-BINDING.json",
+      "sha256": "f8aca7ab09368485d349738c87a2cc9bb203fa188b7a4b2e006cae722d218854",
+      "bytes": 1036
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "sha256": "058d87f718fbbd5d8ea3e279432af70c573b63dc799580ed5839e8e9c9dbf365",
+      "bytes": 3556
+    }
+  ]
+}

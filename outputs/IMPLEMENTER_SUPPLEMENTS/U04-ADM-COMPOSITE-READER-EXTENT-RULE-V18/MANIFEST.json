@@ -1,0 +1,23 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-ADM-COMPOSITE-READER-EXTENT-RULE-V18",
+  "status": "SINGLE_ITEM_DURATION_RULE_BOUND_CLOCK_DOMAIN_OPEN",
+  "source_package_manifest_sha256": "bacae28bb9f0586656b5a5c842c12672e5f451396510a7fa3c1001ce060b5248",
+  "files": [
+    {
+      "bytes": 3603,
+      "sha256": "2aa293fde05a320c6657982f5e92d6210041b38c9142504a5418b7e7341b2896",
+      "path": "NATIVE-COMPOSITE-SOURCE-DURATION-RULE.json"
+    },
+    {
+      "bytes": 803,
+      "sha256": "8c1955f6f211be37579c70a5a5a110d39acd8df5826675e96d5a192e355528c3",
+      "path": "SOURCE-BINDING.json"
+    },
+    {
+      "bytes": 2151,
+      "sha256": "6c878e6eb9778ac1a75ecf88a9d731f8b2c76b80d18e2cdef41a3dae6d6a91bd",
+      "path": "WASHED-SUMMARY.md"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "package_id": "CURRENT-JOB-U04-CALL-NUMERIC-OBSERVATION-V2",
+  "source_manifest_sha256": "c3ce75f4bc90943354eaafb8da3966a8f95059a017562fcffb5955d521492189",
+  "scope": "second U04 helper call numeric observation; source-feature and downstream joins remain open",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1572,
+      "sha256": "0549c8a692989f31ca6f95a8ce83977bb9e61e747ea21d26f8918287a6fd47e8"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1235,
+      "sha256": "c8c82865a1c2eb8d96e4fa21a5c9363e141c9afb98125f6332d809eea916e8e7"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 18624,
+      "sha256": "92cbc9438832565010ea1c443852aeaa0f69981ab33304baf9ab4846f4d6e660"
+    },
+    {
+      "file": "u04_call_input_output_vectors.json",
+      "bytes": 10597,
+      "sha256": "dc1482c675a9ad1d40a142a5d9123394de5d7e4428707e17f56f7f1aaf620e21"
+    },
+    {
+      "file": "u04_helper_input_20x7.f32le",
+      "bytes": 560,
+      "sha256": "951385afa401baa11cad25f1befb04a593295bdace3fe5c254e92d1422bc22a4"
+    },
+    {
+      "file": "u04_helper_output_7x20.f32le",
+      "bytes": 560,
+      "sha256": "a93041d5645eac86691dfdf61be3965ba5dd27c5160a0b288290c876ffbaca45"
+    }
+  ]
+}

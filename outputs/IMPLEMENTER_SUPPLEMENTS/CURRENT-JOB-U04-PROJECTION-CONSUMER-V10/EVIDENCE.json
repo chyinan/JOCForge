@@ -1,0 +1,193 @@
+{
+  "schema": "u04-projection-consumer-native-evidence.v1",
+  "purpose": "Bind two native U04-helper invocations to their local input/output matrices and the immediate same-frame consumer under one exact PreparedJobInput identity.",
+  "identity": {
+    "job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "authorized_input_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "authorized_input_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+    "physical_input_channels": 38
+  },
+  "capture": {
+    "run_id": "prepared-job-u04-projection-consumer-capture-v10",
+    "source_xml_is_byte_identical_to_identity_xml": true,
+    "source_bwf_copy_sha256_matches_authorized_input": true,
+    "native_helper_invocations_captured": 2,
+    "total_helper_invocation_count_for_complete_job": "NOT_CAPTURED",
+    "full_encoding_in_this_observation_run": "NOT_RUN_TO_COMPLETION",
+    "complete_same_identity_reference": {
+      "run_id": "prepared-job-matrix-capture-v4",
+      "status": "DEE_ENCODER_DONE_OUTPUT_100_PERCENT",
+      "native_ec3_bytes": 17395712,
+      "native_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+      "is_model_output": false
+    },
+    "static_decompilation_report_sha256": "052b66de1c72eb210223719735fc81e1516576d5611c01a5594c9712632be93b",
+    "observation_tool": "WinDbg MCP",
+    "raw_pcm_or_adm_payload_included": false,
+    "binary_module_paths_or_addresses_included": false,
+    "private_key_or_license_material_included": false
+  },
+  "static_call_contract": {
+    "helper_return_contract": "void; no status value is defined by the decompiled helper contract",
+    "helper_input_storage": {
+      "parent_matrix_shape_f32": [20, 34],
+      "row_stride_f32": 34,
+      "helper_consumed_candidate_range": "half-open [start,end)",
+      "helper_consumed_slice_shape_for_these_calls": [20, 7],
+      "helper_consumed_bytes": 560,
+      "maximum_consumed_byte_offset_exclusive": 2612,
+      "caller_capacity_bytes": 2720
+    },
+    "helper_output": {
+      "shape_f32": [7, 20],
+      "layout": "candidate-range-major; output[candidate_offset * 20 + spatial_row]",
+      "bytes": 560,
+      "per_cell_rule": "F32(row_scale * input[spatial_row, candidate_column])"
+    },
+    "immediate_consumer": {
+      "same_projection_wrapper_frame": true,
+      "uses_helper_output_before_the_wrapper_returns": true,
+      "iterates_20_values_per_candidate_for_mode_0_or_1": true,
+      "first_consumer_scalar_is_passed_by_value": true,
+      "complete_20_value_reduction_observed_dynamically": false
+    }
+  },
+  "invocations": [
+    {
+      "observation_index": 1,
+      "mode_u32": 0,
+      "candidate_range_start_u32": 0,
+      "candidate_range_end_exclusive_u32": 7,
+      "candidate_range_length_u32": 7,
+      "formal_float_argument_2_bits": "0x00000000",
+      "formal_float_argument_3_bits": "0x00000000",
+      "formal_float_argument_3_f32": 0.0,
+      "input": {
+        "file": "u04_helper_input_20x7_call1.f32le",
+        "sha256": "951385afa401baa11cad25f1befb04a593295bdace3fe5c254e92d1422bc22a4",
+        "shape_f32": [20, 7],
+        "row_stride_f32": 34,
+        "bytes": 560,
+        "finite_value_count": 140,
+        "nonzero_value_count": 114
+      },
+      "output": {
+        "file": "u04_helper_output_7x20_call1.f32le",
+        "sha256": "738c079dff6c9b77a0891ac42db1cabcab933a672b14aed8ecfcf94c0e77bb40",
+        "shape_f32": [7, 20],
+        "bytes": 560,
+        "finite_value_count": 140,
+        "nonzero_value_count": 0,
+        "all_positive_zero": true
+      },
+      "immediate_consumer": {
+        "first_input_cell": [0, 0],
+        "first_input_bits": "0x00000000",
+        "first_input_matches_helper_output_cell_0": true,
+        "full_reduction_output": "NOT_CAPTURED"
+      }
+    },
+    {
+      "observation_index": 2,
+      "mode_u32": 0,
+      "candidate_range_start_u32": 0,
+      "candidate_range_end_exclusive_u32": 7,
+      "candidate_range_length_u32": 7,
+      "formal_float_argument_2_bits": "0x00000000",
+      "formal_float_argument_3_bits": "0x3d16e7bf",
+      "formal_float_argument_3_f32": 0.03684210404753685,
+      "unassigned_integer_register_r8_value": 20,
+      "input": {
+        "file": "u04_helper_input_20x7_call2.f32le",
+        "sha256": "951385afa401baa11cad25f1befb04a593295bdace3fe5c254e92d1422bc22a4",
+        "byte_identical_to_call1_input": true,
+        "shape_f32": [20, 7],
+        "row_stride_f32": 34,
+        "bytes": 560,
+        "maximum_consumed_byte_offset_exclusive": 2612,
+        "caller_capacity_bytes": 2720,
+        "finite_value_count": 140,
+        "nonzero_value_count": 114
+      },
+      "output": {
+        "file": "u04_helper_output_7x20_call2.f32le",
+        "sha256": "a93041d5645eac86691dfdf61be3965ba5dd27c5160a0b288290c876ffbaca45",
+        "shape_f32": [7, 20],
+        "layout": "candidate-range-major",
+        "bytes": 560,
+        "finite_value_count": 140,
+        "nonzero_value_count": 15
+      },
+      "row_scales_inferred_from_same_call_native_input_output": [
+        {"spatial_row": 0, "scale_f32": 1.0, "scale_bits": "0x3f800000"},
+        {"spatial_row": 1, "scale_f32": 0.8277710676193237, "scale_bits": "0x3f53e8ce"},
+        {"spatial_row": 2, "scale_f32": 0.04812432825565338, "scale_bits": "0x3d451e04"},
+        {"spatial_row": 3, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 4, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 5, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 6, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 7, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 8, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 9, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 10, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 11, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 12, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 13, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 14, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 15, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 16, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 17, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 18, "scale_f32": 0.0, "scale_bits": "0x00000000"},
+        {"spatial_row": 19, "scale_f32": 0.0, "scale_bits": "0x00000000"}
+      ],
+      "all_140_products_reproduced_by_f32_row_scale": true,
+      "same_configuration_prior_capture": {
+        "run_id": "prepared-job-u04-input-capture-v9",
+        "output_sha256": "a93041d5645eac86691dfdf61be3965ba5dd27c5160a0b288290c876ffbaca45",
+        "byte_identical_output": true,
+        "same_runtime_generation": false
+      },
+      "immediate_consumer": {
+        "same_thread_and_same_outer_wrapper_frame": true,
+        "first_helper_output_cell": [0, 0],
+        "first_scalar_bits_before_call": "0x3f800000",
+        "first_scalar_f32_before_call": 1.0,
+        "transform_vector_first_f32": 6.0,
+        "consumer_return_bits": "0x3f80b49c",
+        "consumer_return_f32": 1.00551176071167,
+        "accumulator_before_first_store_bits": "0x00000000",
+        "accumulator_after_first_store_bits": "0x3f80b49c",
+        "first_scalar_matches_helper_output_cell_0": true,
+        "pointer_relation": "helper output buffer is the same caller-frame local buffer read at the immediate consumer callsite",
+        "captured_extent": "first candidate, first of 20 reduction contributions only",
+        "full_20_value_candidate_reduction": "NOT_CAPTURED"
+      }
+    }
+  ],
+  "identity_and_semantic_limits": {
+    "global_candidate_ids": "NOT_CAPTURED",
+    "mapping_of_local_columns_0_through_6_to_global_source_ids": "UNBOUND",
+    "join_to_approved_band_major_24xN_source_weight_inputs": "UNBOUND",
+    "interpretation_of_range_length_7_as_global_candidate_count": false,
+    "callback_generation": "NOT_CAPTURED",
+    "ADM_sample_position": "NOT_CAPTURED",
+    "host_frame": "NOT_CAPTURED",
+    "fit_generation": "NOT_CAPTURED",
+    "complete_projection_output": "NOT_CAPTURED",
+    "model_replay": "NOT_RUN",
+    "native_vs_model_numeric_comparison": "NOT_EVALUATED",
+    "Type10_composition": "NOT_RUN",
+    "six_plane_comparison": "NOT_RUN",
+    "Gate1_closed": false
+  },
+  "corrections_to_prior_interpretations": {
+    "r8_value_20": "Not the third floating parameter. The mixed-argument call places the third float in XMM2; the observed XMM2 value changes from zero in call 1 to bits 0x3d16e7bf in call 2 while R8 remains 20.",
+    "prior_return_u32_zero": "Not a helper status. The static helper contract is void; a raw return-register snapshot is not a semantic status value.",
+    "v8_first_entry_output": "Still NOT_CAPTURED in v8. This v10 run adds a separately identified first observation with a captured all-zero output."
+  },
+  "static_report_provenance": {
+    "sha256": "052b66de1c72eb210223719735fc81e1516576d5611c01a5594c9712632be93b",
+    "summary": "Hash-bound local decompilation and call-chain report; raw report intentionally not included in the Wash package."
+  }
+}

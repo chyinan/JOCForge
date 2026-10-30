@@ -1,0 +1,23 @@
+{
+  "schema": "washed-native-evidence-binding.v1",
+  "source_package_id": "spatial-selector-identity-wash-v4",
+  "source_manifest_sha256": "e2d162c30b689f2cc01b57c775755388aca441da2faa53ad534c986b1fecb08f",
+  "source_evidence_sha256": "3714303d7867ee3b08ddb9eb7fff9a1f17b5b4a821dcb718131ba2427da84172",
+  "supersedes_source_manifest_sha256": "027005783ec9afd7323cd5b02c634523bcf0ba1b825b517586aeef88d74f50cc",
+  "approved_input_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+  "identity": {
+    "base_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "authorized_input_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "physical_input_channels": 38
+  },
+  "source_verification": {
+    "ordinary_python": "PASS",
+    "python_optimize": "PASS",
+    "all_source_payload_hashes": "PASS"
+  },
+  "source_trace_reproduction": "NOT_PERFORMED",
+  "new_native_measurement": "NOT_CAPTURED",
+  "status": "PARTIAL_STATIC_EVIDENCE_ONLY",
+  "raw_payload_or_source_forwarded": false,
+  "private_material_forwarded": false
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "washed-native-evidence-binding.v1",
+  "source_package_id": "u04-spatial-input-lineage-wash-v1",
+  "source_manifest_sha256": "6fedddd07ce459c865fb002666f4329d63d7e02a232bf886d2e44d93a8f34765",
+  "source_evidence_sha256": "121bfcbb56a5a8c659f2c230797b246c4a3cdd2f896bab8b8f6542fbc760fcb3",
+  "identity": {
+    "job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "authorized_input_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "authorized_input_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+    "physical_input_channels": 38
+  },
+  "source_verifier": {
+    "ordinary_python": "PASS",
+    "python_optimize": "PASS"
+  },
+  "wash_disposition": "EVIDENCE_ONLY_PARTIAL",
+  "forwarded_raw_capture_bytes": false,
+  "source_code_forwarded": false,
+  "private_key_or_license_forwarded": false
+}

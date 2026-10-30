@@ -1,0 +1,23 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-DDP-INITIALIZATION-SAME-OWNER-RUN29-V13",
+  "status": "NATIVE_INITIALIZATION_CHAIN_OBSERVED_SOURCE_IDENTITY_UNBOUND",
+  "source_package_manifest_sha256": "f30c5d04c35ec6087488d41599219c177d94ff08ea043c86e1d0d39329ba78d3",
+  "files": [
+    {
+      "sha256": "01aac2c45cede7bd6e0baac3418a7b2e56369bffff8f74b1d9904bad6dac2cb3",
+      "bytes": 2059,
+      "path": "NATIVE-DDP-INITIALIZATION-CAPTURE.json"
+    },
+    {
+      "sha256": "0c0007c51e82c10468e9da771c408770a8f577538702ffcb672d016ea5d88f32",
+      "bytes": 861,
+      "path": "SOURCE-BINDING.json"
+    },
+    {
+      "sha256": "8d065f6fab894653664a53bde495de06f9f238e3467efd12fc1a3dd4053aacbf",
+      "bytes": 2164,
+      "path": "WASHED-SUMMARY.md"
+    }
+  ]
+}

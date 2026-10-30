@@ -1,0 +1,16 @@
+{
+  "schema": "washed-ddp-run24-routing-capture.v1",
+  "source_package_manifest_sha256": "4fbb097f00ee01a2559eb45747d81b761677801b0951c5a4d7fdc7402919d6b5",
+  "evidence_sha256": "5cfa77a40f51c27e9ac5a906d6cdfd0226a45926d9e9c33fc4b968f9236ba529",
+  "capture_sha256": "deb407163796774f199ce55000865676cecc77fccfd04074ba3c3757130cddd4",
+  "supersedes_v8_manifest_sha256": "49fe7373af9ec66d7aebfab9641d18ba8b3d96e5b4168ffa7d50cad7bb92d1d5",
+  "run24_frame_channels": 38,
+  "same_call_ddp_route_table_binding": true,
+  "ddp_frame_to_adm_identity": "UNBOUND",
+  "ddp_frame_to_selector_column": "UNBOUND",
+  "atmosmezz_direct_stream_object_attribution": "WITHDRAWN_AS_UNSUPPORTED",
+  "run14_status": "FAILED_UNKNOWN_FILTER_NO_FRAME_HOOK",
+  "pcm_sample_read": false,
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "product_acceptance": false
+}

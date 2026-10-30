@@ -1,0 +1,38 @@
+{
+  "schema": "wash.native-ddp-initialization-capture.v1",
+  "capture_run": "run-29",
+  "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "execution_job_xml_sha256": "208f69e5033dd0475fd671ee182935589287be86efa206ff0dca5ecb4b5158ca",
+  "native_log_sha256": "c090ad3225f08868a015143b9bd5b4b1a5f2544bd23824552f43f753cff8630f",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "encoder_completed": true,
+  "capture_method": "Read-only one-shot entry observations during a normal licensed reference encode. No audio samples were read or retained.",
+  "same_invocation_observations": {
+    "ddp_process_method_entry": "OBSERVED",
+    "ddp_state_initializer_entry": "OBSERVED",
+    "ordered_initialization_child_entries": [
+      "DDP initialization child 1",
+      "DDP initialization child 2",
+      "DDP initialization child 3"
+    ],
+    "ordered_child_call_relationship": "BOUND_BY_SAME_THREAD_STACK_AND_STATIC_DIRECT_CALL_ORDER",
+    "same_ddp_state_owner_across_initializer_and_children": "BOUND_BY_EQUAL_THIS_ARGUMENT_WITHIN_THIS_INVOCATION",
+    "generic_wav_mediainfo_parser_entry": "NOT_HIT; one-shot breakpoint remained armed until normal process exit",
+    "normal_process_exit": "ENCODER_COMPLETED",
+    "event_time_domain": "ordered entries within one process and thread; no ADM-sample, callback, or DDP-generation counter was captured"
+  },
+  "unbound": [
+    "ADM file reader or decoder that populates DDP frame input pointers",
+    "writer and capacity of the DDP frame input pointer table",
+    "typed mapping from DDP input slot to ADM CHNA UID, physical track, or global source ID",
+    "same-generation identity between selector source column and DDP frame slot",
+    "DDP state generation identifier"
+  ],
+  "payload": {
+    "audio_samples_read": false,
+    "audio_samples_persisted": false,
+    "native_memory_snapshots": false
+  },
+  "model_comparison": "NOT_EVALUATED"
+}

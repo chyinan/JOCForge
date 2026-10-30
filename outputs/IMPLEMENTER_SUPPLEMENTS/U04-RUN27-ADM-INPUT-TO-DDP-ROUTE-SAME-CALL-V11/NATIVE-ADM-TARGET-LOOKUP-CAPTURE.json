@@ -1,0 +1,113 @@
+{
+  "schema": "wash.native-adm-input-target-and-ddp-route-capture.v1",
+  "capture_run": "run-27",
+  "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "execution_job_xml_sha256": "739f0053a4eb87dfc99c3d8111d3b243aa38d07cf444c1e4ae87300f1687f193",
+  "native_log_sha256": "5c35bf9190b28aebfc1811b673082c1dc8c869b55a19de2a3abe1a90e819b780",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "encoder_completed": true,
+  "capture_method": "Read-only WinDbg inspection of StageRunner input lookup, filter input-list metadata, and DDP routing fields; no audio sample values read or retained.",
+  "same_invocation_observations": {
+    "audio_input_target_lookup_succeeded": true,
+    "resolved_input_target_count": 1,
+    "resolved_target_kind": "ADM fixture pathname",
+    "stream_object_property_lookup_suffix": ".stream_object",
+    "stream_object_property_lookup_result": false,
+    "stream_object_output_value": "NULL_OR_UNSET",
+    "run_audio_filter_collected_stream_object_entries": 0,
+    "collected_list_still_empty_during_DDP_frame_call": true,
+    "dee_audio_filter_source_value_kind": "file pathname string with input options; full value omitted",
+    "frame_input_channel_count": 38,
+    "primary_route_group_count": 1,
+    "primary_route_pairs": [
+      {
+        "category_code": 1,
+        "frame_pointer_slot": 0
+      },
+      {
+        "category_code": 2,
+        "frame_pointer_slot": 1
+      },
+      {
+        "category_code": 3,
+        "frame_pointer_slot": 2
+      },
+      {
+        "category_code": 4,
+        "frame_pointer_slot": 3
+      },
+      {
+        "category_code": 5,
+        "frame_pointer_slot": 4
+      },
+      {
+        "category_code": 6,
+        "frame_pointer_slot": 5
+      },
+      {
+        "category_code": 7,
+        "frame_pointer_slot": 6
+      },
+      {
+        "category_code": 8,
+        "frame_pointer_slot": 7
+      },
+      {
+        "category_code": 9,
+        "frame_pointer_slot": 8
+      },
+      {
+        "category_code": 10,
+        "frame_pointer_slot": 9
+      }
+    ],
+    "additional_route_entry_count": 28,
+    "additional_route_frame_pointer_slots": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37
+    ],
+    "same_thread_stage_input_to_ddp_route_call": true
+  },
+  "static_collection_rule": {
+    "RunInput": "Resolves the configured audio input target, then queries each target's stream_object property and adds successful values to the collected input list.",
+    "RunAudioFilter": "Transfers entries in that collected list to the filter process object.",
+    "stage_flow_static_report_sha256": "24093524dc9b4e31e56a227333861bb6d390a62bb0c6fe0e1e29e3e33e2947bd",
+    "ddp_route_consumer_static_report_sha256": "b78197855efd50bbd48a915ac8d4acbd8b480d4cd3ae0777d61b1d4cfbb129e5"
+  },
+  "bounded_conclusion": "For this ADM reference invocation, one pathname target was resolved, its derived stream_object property lookup returned false, and the collected stream_object list remained empty while the same thread reached DDP frame processing. The native DDP route table therefore belongs to a path-driven source route whose file reader/decoder remains unidentified.",
+  "does_not_establish": [
+    "whether the pathname is opened by DEE, a DDP component, DACTLIB, libmezzanine, or another reader",
+    "DDP frame pointer slot to ADM CHNA UID or physical track slot",
+    "DDP frame pointer slot to global source ID",
+    "DDP frame pointer slot to prior selector source column",
+    "named semantics for numeric route category codes"
+  ],
+  "sample_values_read": false
+}

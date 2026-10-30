@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "U04-ADM-RUN26-EMPTY-COLLECTED-INPUT-BOUNDARY-V10",
+  "status": "NATIVE_INPUT_PROPERTY_OBSERVED_ADM_IDENTITY_OPEN",
+  "source_package_manifest_sha256": "d4c031a263cd486f1799d764a2ed57f9fdd6b88c9e92cbeb2d131bc097021e69",
+  "files": [
+    {
+      "bytes": 2357,
+      "sha256": "360d3414609829e8e23587950fc2110dff6d150b1f741a84340cf640e0ac1138",
+      "path": "NATIVE-INPUT-PROPERTY-CAPTURE.json"
+    },
+    {
+      "bytes": 2616,
+      "sha256": "deb407163796774f199ce55000865676cecc77fccfd04074ba3c3757130cddd4",
+      "path": "SEPARATE-RUN24-ROUTING-CAPTURE.json"
+    },
+    {
+      "bytes": 1094,
+      "sha256": "c15e3b0a964d7f7a4c93e7cd1e1abc3ec8bc922c1f08c1d88cc36ff63ec0ed24",
+      "path": "SOURCE-BINDING.json"
+    },
+    {
+      "bytes": 2668,
+      "sha256": "b13fc4d0fb65cfd585ac4256fca687726dec769a5b3b22d68588d7a9e5fe9b0a",
+      "path": "WASHED-SUMMARY.md"
+    }
+  ]
+}

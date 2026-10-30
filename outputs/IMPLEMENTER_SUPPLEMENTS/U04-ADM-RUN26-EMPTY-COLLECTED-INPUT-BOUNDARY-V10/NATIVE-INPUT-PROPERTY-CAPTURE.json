@@ -1,0 +1,34 @@
+{
+  "schema": "wash.native-adm-filter-input-property-capture.v1",
+  "capture_run": "run-26",
+  "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "execution_job_xml_sha256": "b099ecb8f999e95ec7ebe7986ee050dda5adde832317ee9e48d5b0196fe72a7a",
+  "native_log_sha256": "755541ef5331e827e06c9d7862afef853f2c4e0dab00eca6dffb48696dd93b0a",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "encoder_completed": true,
+  "capture_method": "Read-only WinDbg inspection of StageRunner property-list metadata and DDP call stack; no audio sample values read or retained.",
+  "same_invocation_observations": {
+    "input_stage_name_in_native_log": "input:audio:{adm}",
+    "filter_source_property_name": "dee_audio_filter_source",
+    "filter_source_property_value_kind": "file path string matching the approved ADM fixture; full path omitted",
+    "collected_stream_object_list_entries_at_RunAudioFilter_entry": 0,
+    "collected_stream_object_list_entries_during_DDP_frame_processing": 0,
+    "RunAudioFilter_and_DDP_frame_same_call_thread": true,
+    "reference_frame_count_and_route_tables": "NOT_CAPTURED_IN_RUN26; see the separate run24 same-call routing capture"
+  },
+  "static_property_rule": {
+    "RunInput": "For each configured input target, queries its stream_object property and appends a successful value to the StageRunner collected-input list.",
+    "RunAudioFilter": "Transfers entries in that collected-input list to the filter process object.",
+    "static_source_report_sha256": "24093524dc9b4e31e56a227333861bb6d390a62bb0c6fe0e1e29e3e33e2947bd"
+  },
+  "bounded_conclusion": "No stream_object value was transferred through the collected-input list in this ADM reference invocation. The list was empty at filter entry and remained empty while the same invocation reached DDP frame processing.",
+  "does_not_establish": [
+    "whether RunInput had zero targets or each target lacked a stream_object value",
+    "the implementation that opens or decodes the ADM file path",
+    "DDP frame pointer slot to ADM CHNA UID or physical track slot",
+    "DDP frame pointer slot to global source ID",
+    "DDP frame pointer slot to prior selector source column"
+  ],
+  "sample_values_read": false
+}

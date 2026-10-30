@@ -1,0 +1,12 @@
+{
+  "package_id": "CURRENT-JOB-U04-RETURN-INTERPRETATION-CORRECTION-V1",
+  "source_manifest_sha256": "4191de2a79eb4d72957ef3f5fd08b5696e67a0e5caa56294249e38f9e9d1fd04",
+  "scope": "return-value semantics correction; U04 remains partially observed",
+  "files": [
+    {
+      "file": "CORRECTION.md",
+      "bytes": 995,
+      "sha256": "a3a3e333ffdb362506f69d159dc306dab83d841b4136a84b02542b0190ad7b60"
+    }
+  ]
+}
