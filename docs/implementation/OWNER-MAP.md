@@ -354,6 +354,7 @@
 | F12/selected-length-producer-run99-run100-boundary | F12 | `codec` |
 | F12/selected-length-synthetic-noise-coverage-run109-run110 | F12 | `codec` |
 | F12/selected-length-target-boundary-fixture-requirement | F12 | `codec` |
+| F12/f06nd-f12-finalized-measurement-receipt-edge | F12 | `programme_root` |
 | F12S/mantissa-quantizer | F12S | `codec` |
 | F12A/selected-f12a-public-bap-network | F12A | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |

@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1729666,
-              "sha256": "c4f751086259f35407a2aa09f1c7c45ad009db2bf2c7befbebe5d351a82edc88"
+              "bytes": 1733422,
+              "sha256": "f20b24d30c78a5e17ce40e1220960b4e186e8bc3b4aaa52faf2edb3cec7e5e35"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1729666,
-              "sha256": "c4f751086259f35407a2aa09f1c7c45ad009db2bf2c7befbebe5d351a82edc88"
+              "bytes": 1733422,
+              "sha256": "f20b24d30c78a5e17ce40e1220960b4e186e8bc3b4aaa52faf2edb3cec7e5e35"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -24032,6 +24032,93 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "f06nd-f12-finalized-measurement-receipt-edge",
+          "mapping_status": "WASHED_PROGRAMME_MEASUREMENT_DIGEST_REQUIRED__F06ND_F12_TYPED_EDGE_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_MEASUREMENT_RECEIPT_EDGE_NOT_READY__MODEL_NATIVE_REVIEW_NOT_RUN",
+          "scope": "The approved contracts separately require a programme-fixed dialnorm value, same-source/generation F06ND DRC input, and same-source F12 BSI input; the whole-composition contract additionally requires the finalized programme measurement digest on BSI/ID1 source projections. No verified typed finalized-programme identity or receipt is shown as consumed by both the F06ND source input and F12 BSI input. The reviewed clauses name scalar/source-generation values but no typed measurement receipt. A bounded frozen-model source stores a plain measurement dictionary and digest, but it is absent from the cited freeze manifest and has not had independent review; its event strings do not prove typed F06ND/F12 calls. This edge is UNBOUND and NOT_READY. Native execution and independent model review are NOT_RUN.",
+          "owner": "programme_root",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "ProgrammeMeasurementDigest",
+              "F06NDSourceGeneration",
+              "F12CodecSourceIndex",
+              "F12BsiSourceIdentity"
+            ],
+            "covered_clauses": [
+              "The selected meter contract calls for one programme-level loudness/dialnorm value.",
+              "F06ND requires the dialnorm scalar per source generation and emits same-generation RF/line control; F12 writes a five-bit same-source BSI dialnorm field that carries no programme identity.",
+              "The whole-composition contract requires a finalized programme measurement digest on BSI and ID1 source projections.",
+              "No verified typed receipt or identity is shown to join the F06ND input and F12 BSI input; their common source/generation/digest edge remains UNBOUND."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06ND_F12_FINALIZED_MEASUREMENT_DIALNORM_EDGE_AUDIT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-MEASUREMENT-DIALNORM-EDGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-MEASUREMENT-DIALNORM-EDGE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-MEASUREMENT-DIALNORM-EDGE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-MEASUREMENT-DIALNORM-EDGE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-MEASUREMENT-DIALNORM-EDGE-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "2bf5fa14c1ff01a3f77d79ae8301e11f7c4797ef082a81123dbd4021f2d369f5",
+            "approved_spec_sha256": {
+              "06-meter-bsi.md": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+              "06-none-drc-statistics-and-control.md": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+              "06-meter-none-drc-whole-composition.md": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2",
+              "12-selected-source-frame-composition.md": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769",
+              "12-selected-codec-wire.md": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+            },
+            "validation_boundary": "Approved spec requirements and interface gap only; no validated measurement receipt, same-source/generation identity, independent model review, or native execution.",
+            "model_source_sha256": "4fd4e35105d5137fdfd2458eac4f076efa5bcf877d31d3932f28258e163e4d51",
+            "model_freeze_manifest_sha256": "59a57908eabc664d097d96b3a07330b3dc07afe4cc1a81d240ad92bc56891c4f",
+            "model_source_listed_in_freeze_manifest": false,
+            "model_independent_review": "NOT_RUN",
+            "native_execution": "NOT_RUN"
+          },
+          "vectors": {
+            "kind": "WASHED_F06ND_F12_MEASUREMENT_RECEIPT_EDGE_FINDINGS_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-MEASUREMENT-DIALNORM-EDGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-MEASUREMENT-DIALNORM-EDGE-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "The approved contracts require programme-fixed dialnorm, same-source/generation F06ND DRC input, same-source F12 BSI, and a finalized measurement digest in BSI/ID1 composition.",
+              "No verified typed finalized-measurement receipt is shown as consumed by both F06ND and F12.",
+              "The bounded model source is not in the cited freeze manifest and independent review is NOT_RUN; event strings do not prove typed calls.",
+              "Receipt edge remains UNBOUND/NOT_READY; native execution and model independent review are NOT_RUN."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "2bf5fa14c1ff01a3f77d79ae8301e11f7c4797ef082a81123dbd4021f2d369f5"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Typed finalized-programme identity/receipt consumed by both F06ND and F12.",
+            "Same-source and same-generation join from the F06ND DRC scalar/control input to the F12 BSI input.",
+            "Independent review of the referenced frozen-model source and model execution.",
+            "Native execution and native measurement-receipt consumption.",
+            "Any inferred digest-to-owner, equal-dialnorm, or parent-commit join."
+          ],
+          "validation_boundary": "Contract-boundary evidence only; no digest schema, owner join, runtime receipt, or readiness change is defined.",
+          "native_status": {
+            "approved_spec_hashes": "RECORDED",
+            "typed_measurement_receipt_consumed_by_f06nd_and_f12": "NOT_ESTABLISHED",
+            "receipt_edge_status": "UNBOUND",
+            "overall_status": "NOT_READY",
+            "model_source_in_freeze_manifest": false,
+            "model_independent_review": "NOT_RUN",
+            "native_execution": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -29958,8 +30045,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1729666,
-              "sha256": "c4f751086259f35407a2aa09f1c7c45ad009db2bf2c7befbebe5d351a82edc88"
+              "bytes": 1733422,
+              "sha256": "f20b24d30c78a5e17ce40e1220960b4e186e8bc3b4aaa52faf2edb3cec7e5e35"
             }
           ],
           "test_inventory": [

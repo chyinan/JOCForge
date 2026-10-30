@@ -1,0 +1,21 @@
+{
+  "schema": "f06nd-f12-measurement-dialnorm-edge-source-identities.v1",
+  "source_package_seal_sha256": "b2d1092b37355b2c62cf968fd4031ffc96c992b74bf683a98925889f0f8508b5",
+  "source_evidence_manifest_sha256": "b0e79e0fd8f0214d8a29d7ee7254ab8ea93291d7110143885e3cba8148520099",
+  "source_payload_sha256": {
+    "README.md": "eefa48e288f4d13db96cac46c23a584741ef2f3bb5a73303857773c64b5f4dd6",
+    "RECEIPT-EDGE-FINDINGS.json": "e990ef536c25d218250ad393c594ada54d12863d0668c0230d59fc34852f6acf"
+  },
+  "approved_spec_sha256": {
+    "06-meter-bsi.md": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+    "06-none-drc-statistics-and-control.md": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+    "06-meter-none-drc-whole-composition.md": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2",
+    "12-selected-source-frame-composition.md": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769",
+    "12-selected-codec-wire.md": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+  },
+  "model_source_sha256": "4fd4e35105d5137fdfd2458eac4f076efa5bcf877d31d3932f28258e163e4d51",
+  "model_freeze_manifest_sha256": "59a57908eabc664d097d96b3a07330b3dc07afe4cc1a81d240ad92bc56891c4f",
+  "model_source_listed_in_freeze_manifest": false,
+  "model_independent_review": "NOT_RUN",
+  "native_execution": "NOT_RUN"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "f06nd-f12-measurement-dialnorm-edge-wash-check.v1",
+  "status": "PASS_HASH_BOUND_UNBOUND_EDGE",
+  "source_seal_and_payload_hashes": "VERIFIED",
+  "approved_spec_hashes": "RECORDED",
+  "typed_measurement_receipt_consumed_by_f06nd_and_f12": "NOT_ESTABLISHED",
+  "receipt_edge_status": "UNBOUND",
+  "overall_status": "NOT_READY",
+  "model_independent_review": "NOT_RUN",
+  "native_execution": "NOT_RUN"
+}

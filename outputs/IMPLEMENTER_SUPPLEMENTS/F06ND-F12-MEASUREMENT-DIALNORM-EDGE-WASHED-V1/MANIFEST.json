@@ -1,0 +1,22 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06ND-F12-MEASUREMENT-DIALNORM-EDGE-WASHED-V1",
+  "scope": "bounded evidence mapping; no product implementation or readiness change",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1572,
+      "sha256": "85eecc29fe53109a6c718935f23de3bdfd47bf73880e47b62923014fad408727"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1386,
+      "sha256": "fd3835f1afb165ff8ab796b31ea2df666aeec5586f35b933a59da641d569611d"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 417,
+      "sha256": "27d8f70e8a65869cbc745782721ad7a27cac522e9c88b49d237606e308a6e872"
+    }
+  ]
+}
