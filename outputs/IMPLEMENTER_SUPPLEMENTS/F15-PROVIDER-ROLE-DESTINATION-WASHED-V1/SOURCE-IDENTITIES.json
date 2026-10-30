@@ -1,0 +1,22 @@
+{
+  "schema": "f15-provider-role-destination-source-identities.v1",
+  "source_package_id": "output_owner_provider_roles_destination_wash",
+  "source_manifest_sha256": "04b656527d36be5919b00c891cc5b84c686fdeadd3da6ba54e20af4ecf6cd0c2",
+  "source_payload_sha256": {
+    "CONTRACT.md": "1ea144e5d26d5e83bf38a42bc8d45e5370f9e7ae1b9baf02f3b5d3b0f4fc4b7f",
+    "INPUT-ONLY.json": "ff630102104c45c2c25693b7cf82dc5ce45166ab1e5850f77d6b414e690f6a99",
+    "ROLE-MATRIX.json": "81ede235ad73c0d644906ee1508158963ad7f7fe99338da8500158402ad0143d",
+    "SOURCES.json": "3f0876dda0d7a8e53ad255542cbd22320d77ff9de8f7a78a3374bf8f4f0534bf",
+    "VERIFICATION.json": "7b008f93b51d8a18ea46fd94656cd10a43a7e7869d35f8a587b63a55815c4781"
+  },
+  "approved_manifest_sha256": {
+    "PREPARED-JOB-INPUT-IDENTITY-V1": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f",
+    "OUTPUT-ATTEMPT-IDENTITY-BINDING-V1": "4213be803667406082571ece3d7e7dc0c22694796e6bca13242fc60addbf63f6",
+    "F15-OUTPUT-PROVIDER-PLAN-BINDING-V1": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2",
+    "F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1": "db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31",
+    "F15-PRODUCTION-OUTPUT-API-GATE-V1": "954da54ae20ca9288eb00c736ef28ac5dd39870334cc091ad1eef6a7c7eac388",
+    "OUTPUT-ROOT-GTC-PARENT-BINDING-V1": "2101f9c29c663ef53c1629c943e1fc474cc16cf2cac484013399facf2cc7f88f"
+  },
+  "proposal_status": "LOCAL_DESIGN_OPTION_NOT_APPROVED_AS_RUNTIME_SCHEMA",
+  "runtime_validation": "NOT_RUN"
+}

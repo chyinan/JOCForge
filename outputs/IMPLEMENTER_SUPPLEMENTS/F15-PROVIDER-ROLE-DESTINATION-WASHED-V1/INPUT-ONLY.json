@@ -1,0 +1,19 @@
+{
+  "schema": "f15-provider-role-destination-input-only.v1",
+  "classification": "INPUTS_ONLY_NO_EXPECTED_OUTCOMES",
+  "execution": "NOT_RUN",
+  "cases": [
+    {"id":"all_roles_loaded","roles":["codec","joc","f13","f14"],"values":"actual validated immutable handles","profile_and_carriage_match":true},
+    {"id":"manifest_only","roles":["codec","joc","f13","f14"],"asset_manifest_hashes_present":true,"loaded_values":false},
+    {"id":"fixture_review_as_role_handle","fixture_production_allowed":false},
+    {"id":"missing_joc_table","missing_asset_role":"joc.huffman"},
+    {"id":"profile_mismatch","resolved_profile_matches_prepared_input":false},
+    {"id":"carriage_mismatch","profile_carriage":"deployed_compat","f13_admission_carriage":"etsi_emdf"},
+    {"id":"bad_destination","destination_capability":null},
+    {"id":"destination_attempt_mismatch","programme_attempt":4,"destination_capability_attempt":3},
+    {"id":"cross_programme_staging_owner","programme_equal":false,"attempt_equal":true},
+    {"id":"source_receipt_before_execution","source_executed":false,"claimed_fourqueue_receipt":true},
+    {"id":"suppressed_source","source":1,"durable_append_receipt":null},
+    {"id":"published_source","source":2,"durable_append_receipt":"only after actual durable shell operation"}
+  ]
+}

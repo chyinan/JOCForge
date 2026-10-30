@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F15-PROVIDER-ROLE-DESTINATION-WASHED-V1",
+  "scope": "approved F15 role sources and destination boundary mapping; internal schema proposal remains unapproved",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 2081,
+      "sha256": "d55bb19ffd97715c0046cf95d096050f3590a4e96d1311cfc5ac79c4f9a4d744"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1532,
+      "sha256": "d204eca2c209000d43237967637132572931ec05be4dbbb96082e34c8a517ae6"
+    },
+    {
+      "name": "INPUT-ONLY.json",
+      "bytes": 1298,
+      "sha256": "5b318eb8ab6ef8482456c2a2b9cc56defd7f23b51e0f9f9377c5f30e825307bd"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 612,
+      "sha256": "3c4608d6568eb7c7df552c6f4c4622e06f14cacfbd3e7f9cd1de8dfb7ce3aedf"
+    }
+  ]
+}

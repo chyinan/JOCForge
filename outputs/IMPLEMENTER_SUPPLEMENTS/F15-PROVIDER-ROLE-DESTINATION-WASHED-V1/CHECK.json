@@ -1,0 +1,12 @@
+{
+  "schema": "f15-provider-role-destination-wash-check.v1",
+  "status": "PASS_HASH_BOUND_ROLE_SOURCE_MAPPING",
+  "source_manifest_and_payload_hashes": "VERIFIED",
+  "approved_manifest_hashes": "6_OF_6_VERIFIED_IN_IMPLEMENTER_SUPPLEMENTS",
+  "top_level_plan_roles": ["codec", "joc", "f13", "f14"],
+  "provider_values_loaded_and_validated": "NOT_RUN",
+  "unified_admission_receipt_schema": "NOT_DEFINED_IN_INSPECTED_F15_CONTRACT",
+  "destination_capability_producer_and_schema": "NOT_RUN",
+  "filesystem_durability_and_final_exposure": "NOT_RUN",
+  "role_aggregation_proposal": "NOT_APPROVED_AS_RUNTIME_SCHEMA"
+}

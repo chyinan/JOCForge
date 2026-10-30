@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1733422,
-              "sha256": "f20b24d30c78a5e17ce40e1220960b4e186e8bc3b4aaa52faf2edb3cec7e5e35"
+              "bytes": 1738284,
+              "sha256": "d9d3b0095a72c2b2ac4c2d0f9f67daf4d706ef5b7ee1558abd56682b8f08088c"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1733422,
-              "sha256": "f20b24d30c78a5e17ce40e1220960b4e186e8bc3b4aaa52faf2edb3cec7e5e35"
+              "bytes": 1738284,
+              "sha256": "d9d3b0095a72c2b2ac4c2d0f9f67daf4d706ef5b7ee1558abd56682b8f08088c"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -30045,8 +30045,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1733422,
-              "sha256": "f20b24d30c78a5e17ce40e1220960b4e186e8bc3b4aaa52faf2edb3cec7e5e35"
+              "bytes": 1738284,
+              "sha256": "d9d3b0095a72c2b2ac4c2d0f9f67daf4d706ef5b7ee1558abd56682b8f08088c"
             }
           ],
           "test_inventory": [
@@ -30191,9 +30191,9 @@
         },
         {
           "slice_id": "plan-bound-output-owner-admission-crosswalk",
-          "mapping_status": "WASHED_LOCAL_PLAN_AUTHORITY_BOUNDARY__PROVIDER_ROLES_AND_DESTINATION_OPEN",
+          "mapping_status": "WASHED_FOUR_ROLE_SOURCE_MAPPING__UNIFIED_ADMISSION_AND_DESTINATION_PRODUCER_OPEN",
           "implementation_status": "EVIDENCE_ONLY_TYPED_PLAN_AND_OUTPUT_AUTHORITY__PRODUCTION_BINDING_NOT_RUN",
-          "scope": "Wash accepts a private parent-owned ValidatedEncodingPlan binding same PreparedJobInput identity, full six-dimensional profile/carriage, approved F15 dependency identity, actual owner-issued loaded-value admissions and validated destination. OutputOwner must derive the F15 provider projection/hash internally from that plan plus the same typed AttemptId and distinct opaque staging owner. Provider admission is distinct from runtime source-stage receipts. The exact provider-role/handle set and destination capability producer remain open; no production plan, binding, READY swap or output is claimed.",
+          "scope": "Wash maps the four approved F15 top-level plan roles to their source assets, existing validator ownership, and later execution-receipt timing: codec/F12, JOC/F05, F13 metadata, and F14 public integrity. Six approved manifest hashes match repository packages. The 25-entry provider manifest is a mixed specification/asset/index/fixture/review/context inventory, not 25 runtime receipts. Actual values loading and role validation remain NOT_RUN. The approved contract has no unified provider-admission receipt schema and no exact destination-capability producer/result type. The reverse package's role-aggregation and destination-capability shapes are local proposals, not approved Rust APIs; no runtime schema is added. Destination validation, plan/OutputOwner construction, filesystem durability, and final exposure remain NOT_RUN.",
           "owner": "programme_root",
           "implementation_requirement": true,
           "dependencies": [
@@ -30230,40 +30230,89 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/INPUT-ONLY.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/WASH-REVIEW.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/WASH-REVIEW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ATTEMPT-IDENTITY-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PRODUCTION-OUTPUT-API-GATE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/MANIFEST.json"
             ],
             "supplement_manifest_sha256": "d3bd531af2bce9dae043e2309b9a558085cecdc97435b309f1a454f61c2edb1d",
             "profile_dimensions_path": "docs/architecture/PROFILE-DIMENSIONS.md",
             "profile_dimensions_sha256": "3946d83d245c7acac13aff36d32e14ece5debf9051bada07ee0b1214f912ed4b",
             "gtc_v3_erratum_manifest_sha256": "106cd6930ae61745c548e5b7dadaa08ae2d97276457c6f6983fb43d53326398c",
-            "validation_boundary": "Typed authority boundary only. Exact runtime role closure and destination capability producer are still under Wash investigation."
+            "validation_boundary": "Approved role-source manifests and boundary mapping only. Manifest hashes do not establish loaded/validated values; unified admission receipt schema and destination producer/result type remain undefined.",
+            "role_destination_supplement_manifest_sha256": "404b166ca5bcc5b17ecf01c33f01f0a10a9f2641b5da061c9271e9a4881dea19",
+            "approved_manifest_sha256": {
+              "PREPARED-JOB-INPUT-IDENTITY-V1": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f",
+              "OUTPUT-ATTEMPT-IDENTITY-BINDING-V1": "4213be803667406082571ece3d7e7dc0c22694796e6bca13242fc60addbf63f6",
+              "F15-OUTPUT-PROVIDER-PLAN-BINDING-V1": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2",
+              "F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1": "db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31",
+              "F15-PRODUCTION-OUTPUT-API-GATE-V1": "954da54ae20ca9288eb00c736ef28ac5dd39870334cc091ad1eef6a7c7eac388",
+              "OUTPUT-ROOT-GTC-PARENT-BINDING-V1": "2101f9c29c663ef53c1629c943e1fc474cc16cf2cac484013399facf2cc7f88f"
+            },
+            "top_level_plan_roles": [
+              "codec",
+              "joc",
+              "f13",
+              "f14"
+            ]
           },
           "vectors": {
             "kind": "INPUT_ONLY_PLAN_AND_BINDING_GUARDS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "PreparedJobInput and a dependency manifest alone are insufficient for output authority.",
               "Reject wrong profile/carriage/resource/attempt/programme/staging-owner/destination and pre-minted runtime receipts.",
-              "No expected plan PASS, provider receipt hash or owner-state digest is supplied."
+              "No expected plan PASS, provider receipt hash or owner-state digest is supplied.",
+              "Four top-level roles are codec/F12, JOC/F05, F13 metadata, and F14 public integrity; the 25-entry inventory is mixed context, not 25 runtime receipts.",
+              "The package maps approved source assets, validator ownership and execution-time receipt boundaries; source hashes alone do not mean values were loaded or validated.",
+              "Six approved manifest hashes are matched individually to repository manifest files.",
+              "No unified admission receipt schema or exact destination-capability producer/result type is defined by the approved contract.",
+              "Role aggregation and destination-capability shapes from the reverse package are local proposals and are not approved as runtime schemas."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "d3bd531af2bce9dae043e2309b9a558085cecdc97435b309f1a454f61c2edb1d"
+            "supplement_manifest_sha256": "d3bd531af2bce9dae043e2309b9a558085cecdc97435b309f1a454f61c2edb1d",
+            "role_destination_supplement_manifest_sha256": "404b166ca5bcc5b17ecf01c33f01f0a10a9f2641b5da061c9271e9a4881dea19"
           },
           "error_outcomes": [],
           "not_run": [
             "Exact selected runtime provider-role list and owner-issued typed loaded-value handles.",
             "Destination-capability producer and complete validation contract.",
             "Production plan construction/loader and plan-derived ProgrammeOutputBinding/OutputOwner.",
-            "Actual GTC MEASUREMENT parent swap, READY, AU, filesystem output, W04 and whole-chain run."
+            "Actual GTC MEASUREMENT parent swap, READY, AU, filesystem output, W04 and whole-chain run.",
+            "Actual provider-value loading and execution by codec/F12, JOC/F05, F13 and F14 validators.",
+            "Unified provider-admission receipt schema and runtime role aggregation type.",
+            "Exact destination-capability producer/result type and destination validation execution.",
+            "Production plan/OutputOwner construction, filesystem operation, durability and final exposure."
           ],
           "validation_boundary": "No ValidatedEncodingPlan or production ProgrammeOutputBinding exists in current code. Implement only after every provider admission and destination capability has a typed producer.",
           "delivery_scope": "PUBLIC_CLEANROOM_EVIDENCE_ONLY",
           "native_status": {
-            "production_plan": "NOT_RUN",
-            "production_output_binding": "NOT_RUN",
-            "ready_swap": "NOT_RUN",
+            "approved_manifest_hashes": "6_OF_6_VERIFIED_IN_IMPLEMENTER_SUPPLEMENTS",
+            "top_level_plan_roles": [
+              "codec",
+              "joc",
+              "f13",
+              "f14"
+            ],
+            "provider_values_loaded_and_validated": "NOT_RUN",
+            "unified_admission_receipt_schema": "NOT_DEFINED_IN_INSPECTED_F15_CONTRACT",
+            "destination_capability_producer_and_schema": "NOT_RUN",
+            "role_aggregation_proposal": "NOT_APPROVED_AS_RUNTIME_SCHEMA",
+            "filesystem_durability_and_final_exposure": "NOT_RUN",
             "whole_chain_ready": false
           }
         },
@@ -30892,6 +30941,105 @@
             "jocforge_output": "NOT_RUN",
             "model_comparison": "NOT_EVALUATED",
             "host_stream_to_dll_buffer_identity": "NOT_A_FULL_TYPED_RUNTIME_POINTER_JOIN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-f15-provider-role-and-destination-contract-boundary",
+          "mapping_status": "WASHED_F15_FOUR_ROLE_SOURCE_MAPPING__ADMISSION_SCHEMA_AND_DESTINATION_PRODUCER_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_ROLE_ASSETS_MAPPED__LOADING_VALIDATION_AND_IO_NOT_RUN",
+          "scope": "Wash verifies six approved F15 manifest hashes and maps the four top-level plan roles to their approved source assets and existing validation ownership: codec/F12, JOC/F05, F13 metadata, and F14 public integrity. The 25-entry provider inventory is mixed source/dependency context, not 25 runtime receipts. Actual values loading, role validators, destination validator, plan/OutputOwner construction, and filesystem execution remain NOT_RUN. The approved F15 contract does not define a unified admission receipt schema or the exact destination-capability producer/result type. Any role aggregation or destination-capability shape in the reverse materials is a local proposal, not an approved Rust API; this evidence slice adds no runtime schema.",
+          "owner": "programme_root",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "ProgrammeId",
+              "AttemptId",
+              "ResolvedEncodingProfile",
+              "EmdfCarriageProfile",
+              "ValidatedDestination",
+              "OutputStagingOwnerId"
+            ],
+            "covered_clauses": [
+              "The approved parent plan has four top-level roles: codec/F12, JOC/F05, F13 metadata, and F14 public integrity.",
+              "Role validators must validate actual loaded/compiled values against the same resolved profile and carriage; manifest hashes identify source assets, not loaded or valid runtime values.",
+              "Runtime source, dispatch, frame, measurement, integrity, and durable-publication receipts arise only after their owning stages execute.",
+              "Parent destination validation must bind programme/attempt, a distinct staging owner and no-overwrite policy; the precise producer/result type remains undefined."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F15_PROVIDER_ROLE_AND_DESTINATION_BOUNDARY_CROSSWALK",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "404b166ca5bcc5b17ecf01c33f01f0a10a9f2641b5da061c9271e9a4881dea19",
+            "approved_manifest_sha256": {
+              "PREPARED-JOB-INPUT-IDENTITY-V1": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f",
+              "OUTPUT-ATTEMPT-IDENTITY-BINDING-V1": "4213be803667406082571ece3d7e7dc0c22694796e6bca13242fc60addbf63f6",
+              "F15-OUTPUT-PROVIDER-PLAN-BINDING-V1": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2",
+              "F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1": "db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31",
+              "F15-PRODUCTION-OUTPUT-API-GATE-V1": "954da54ae20ca9288eb00c736ef28ac5dd39870334cc091ad1eef6a7c7eac388",
+              "OUTPUT-ROOT-GTC-PARENT-BINDING-V1": "2101f9c29c663ef53c1629c943e1fc474cc16cf2cac484013399facf2cc7f88f"
+            },
+            "top_level_plan_roles": [
+              "codec",
+              "joc",
+              "f13",
+              "f14"
+            ],
+            "validation_boundary": "Approved source-manifest and role-source mapping only; no runtime values, unified admission receipt schema, destination capability producer/type, plan/OutputOwner, or filesystem operation is implemented or run."
+          },
+          "vectors": {
+            "kind": "WASHED_F15_INPUT_ONLY_ROLE_AND_DESTINATION_ADMISSION_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PROVIDER-ROLE-DESTINATION-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Four top-level roles are codec, JOC, F13 metadata, and F14 public integrity; the 25-entry mixed dependency inventory is not a receipt set.",
+              "Manifest presence without validated loaded values is insufficient; fixture review cannot act as a production role handle.",
+              "Profile/carriage mismatch, missing role, invalid destination, attempt mismatch, and cross-programme staging-owner cases are input-only with no expected outcomes.",
+              "Runtime receipts are not pre-minted before source execution; suppressed-source append receipt is null.",
+              "Role aggregation is not approved as a runtime schema; unified admission receipt and exact destination producer/result schema are undefined."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "404b166ca5bcc5b17ecf01c33f01f0a10a9f2641b5da061c9271e9a4881dea19"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Actual values loading and per-role owner validators for codec/F12, JOC/F05, F13 metadata and F14 integrity.",
+            "Unified provider-admission receipt schema and runtime aggregation type.",
+            "Exact destination-capability producer and result type, and destination validation execution.",
+            "ValidatedEncodingPlan and OutputOwner construction or production READY transition.",
+            "Filesystem staging/open, append, readback, durability, final exposure, encode and W04/product acceptance."
+          ],
+          "validation_boundary": "Evidence/contract-gap mapping only. Local role/destination shapes are unapproved proposals and do not authorize new Rust runtime APIs.",
+          "native_status": {
+            "approved_manifest_hashes": "6_OF_6_VERIFIED_IN_IMPLEMENTER_SUPPLEMENTS",
+            "top_level_plan_roles": [
+              "codec",
+              "joc",
+              "f13",
+              "f14"
+            ],
+            "provider_values_loaded_and_validated": "NOT_RUN",
+            "unified_admission_receipt_schema": "NOT_DEFINED_IN_INSPECTED_F15_CONTRACT",
+            "destination_capability_producer_and_schema": "NOT_RUN",
+            "role_aggregation_proposal": "NOT_APPROVED_AS_RUNTIME_SCHEMA",
+            "filesystem_durability_and_final_exposure": "NOT_RUN",
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
