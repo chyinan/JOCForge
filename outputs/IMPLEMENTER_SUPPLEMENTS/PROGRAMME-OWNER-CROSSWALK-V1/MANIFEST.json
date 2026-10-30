@@ -1,0 +1,17 @@
+{
+  "package_id": "PROGRAMME-OWNER-CROSSWALK-V1",
+  "scope": "local model summary; original approved contracts authoritative; real execution not run",
+  "source_manifest_sha256": "401a521d0c3af7ef64f7ecd3a4766708aa158aa6e8db5b22ccde36bd92175a52",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2683,
+      "sha256": "1e8e3e277439bd3c71c815c8551ee3c17b7e8288990f0147495b2e4fbbcbd98e"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 245,
+      "sha256": "1b7da7c62e5cf99423182dd593c7d8b45ab4dc036511afe3709fdd64c9670cda"
+    }
+  ]
+}

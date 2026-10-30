@@ -1,0 +1,9 @@
+{
+  "schema": "local-gtc-schema-adoption-identities.v1",
+  "approved_proposal_manifest_sha256": "2b938b927a918a46842acc4ab1b10017e98093c861dd4905739f36e294268a2d",
+  "preserved_approved_v2_manifest_sha256": "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e",
+  "preserved_approved_v2_schema_sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4",
+  "adopted_v3_schema_source_sha256": "7490ec2dcef87d1925ae83dfc85898141048957f627fef39938efe93ea1e1a96",
+  "user_approval_date": "2026-10-30",
+  "approval_scope": "local owner-availability schema amendment only; no native behavior or production READY claim"
+}

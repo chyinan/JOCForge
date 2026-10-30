@@ -1,0 +1,32 @@
+{
+  "package_id": "GTC-MEASUREMENT-READY-APPROVED-CONTRACTS-V1",
+  "scope": "exact approved GTC schema/F06 measurement/clock contracts; execution not run by package",
+  "approved_parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "bytes": 12153,
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+    },
+    {
+      "file": "specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "specs/06-meter-none-drc-whole-composition.md",
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    {
+      "file": "specs/06-meter-window-and-output-clock.md",
+      "bytes": 7388,
+      "sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 930,
+      "sha256": "591f4dadfdb78d7a26439bf1ffde48dcca9fd01a92e68078947909cd125f3bf6"
+    }
+  ]
+}

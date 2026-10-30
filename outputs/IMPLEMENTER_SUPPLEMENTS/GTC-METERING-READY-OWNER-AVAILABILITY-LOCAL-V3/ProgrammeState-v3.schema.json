@@ -1,0 +1,1025 @@
+{
+  "$defs": {
+    "clocks": {
+      "additionalProperties": false,
+      "properties": {
+        "codec_source": {
+          "$ref": "#/$defs/u64"
+        },
+        "joc_dispatch": {
+          "$ref": "#/$defs/u64"
+        },
+        "joc_writer": {
+          "$ref": "#/$defs/u64"
+        },
+        "main_callback": {
+          "$ref": "#/$defs/u64"
+        },
+        "meter_callback": {
+          "$ref": "#/$defs/u64"
+        },
+        "meter_energy_record": {
+          "$ref": "#/$defs/u64"
+        },
+        "published_au": {
+          "$ref": "#/$defs/u64"
+        }
+      },
+      "required": [
+        "meter_callback",
+        "meter_energy_record",
+        "main_callback",
+        "codec_source",
+        "joc_dispatch",
+        "joc_writer",
+        "published_au"
+      ],
+      "type": "object"
+    },
+    "durableAppendReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "$ref": "#/$defs/u64"
+        },
+        "au_index": {
+          "$ref": "#/$defs/u64"
+        },
+        "bytes": {
+          "const": 4096
+        },
+        "crc_residual": {
+          "const": 0
+        },
+        "durable": {
+          "const": true
+        },
+        "frame_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "offset": {
+          "$ref": "#/$defs/u64"
+        },
+        "readback_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "attempt",
+        "au_index",
+        "offset",
+        "bytes",
+        "frame_sha256",
+        "crc_residual",
+        "readback_sha256",
+        "durable"
+      ],
+      "type": "object"
+    },
+    "eofLedger": {
+      "additionalProperties": false,
+      "properties": {
+        "codec_extra_flush": {
+          "const": 0
+        },
+        "codec_sources": {
+          "maximum": 4249,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "joc_dispatches": {
+          "maximum": 4249,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "last_padding_samples": {
+          "maximum": 1536,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "last_real_samples": {
+          "maximum": 1536,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "main_cached_callbacks": {
+          "maximum": 4,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "main_total_callbacks": {
+          "maximum": 4251,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "normal_callbacks": {
+          "maximum": 4247,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "pending_payloads": {
+          "items": {
+            "$ref": "#/$defs/pendingPayload"
+          },
+          "type": "array"
+        },
+        "published_aus": {
+          "maximum": 4247,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "normal_callbacks",
+        "last_real_samples",
+        "last_padding_samples",
+        "main_cached_callbacks",
+        "main_total_callbacks",
+        "codec_sources",
+        "joc_dispatches",
+        "published_aus",
+        "codec_extra_flush",
+        "pending_payloads"
+      ],
+      "type": "object"
+    },
+    "fatalReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "committed_root_unchanged": {
+          "type": "boolean"
+        },
+        "error": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "first_failure": {
+          "const": true
+        },
+        "later_stages": {
+          "const": "NOT_RUN"
+        },
+        "retry_allowed": {
+          "const": false
+        },
+        "stage": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "temp_output_disposition": {
+          "enum": [
+            "UNCHANGED",
+            "ABANDONED"
+          ]
+        },
+        "transaction_id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "transaction_id",
+        "stage",
+        "error",
+        "first_failure",
+        "committed_root_unchanged",
+        "temp_output_disposition",
+        "later_stages",
+        "retry_allowed"
+      ],
+      "type": "object"
+    },
+    "measurementReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "$ref": "#/$defs/u64"
+        },
+        "config_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "dialogue_u32": {
+          "maximum": 4294967295,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "energy_windows": {
+          "const": 6794
+        },
+        "gating_kind": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "input_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "itu_u32": {
+          "maximum": 4294967295,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "meter_terminal_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "normal_callbacks": {
+          "const": 4247
+        },
+        "programme_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "selected_lufs_u32": {
+          "maximum": 4294967295,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "true_peak_u32": {
+          "maximum": 4294967295,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "zero_drains": {
+          "const": 3
+        }
+      },
+      "required": [
+        "programme_id",
+        "attempt",
+        "input_sha256",
+        "config_sha256",
+        "dialogue_u32",
+        "itu_u32",
+        "true_peak_u32",
+        "gating_kind",
+        "selected_lufs_u32",
+        "meter_terminal_sha256",
+        "normal_callbacks",
+        "zero_drains",
+        "energy_windows"
+      ],
+      "type": "object"
+    },
+    "outputLedger": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt_temp_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "durable_au_count": {
+          "maximum": 4247,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "durable_bytes": {
+          "maximum": 17395712,
+          "minimum": 0,
+          "multipleOf": 4096,
+          "type": "integer"
+        },
+        "final_output_sha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha256"
+            }
+          ]
+        },
+        "last_au_sha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha256"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "OPEN",
+            "ABANDONED",
+            "SEALED",
+            "PUBLISHED"
+          ]
+        }
+      },
+      "required": [
+        "attempt_temp_id",
+        "status",
+        "durable_au_count",
+        "durable_bytes",
+        "last_au_sha256",
+        "final_output_sha256"
+      ],
+      "type": "object"
+    },
+    "ownerAvailability": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ownerUninitialized"
+        },
+        {
+          "$ref": "#/$defs/ownerInitialized"
+        }
+      ]
+    },
+    "ownerConstructionReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "after_generation": {
+          "$ref": "#/$defs/u64"
+        },
+        "after_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "before_availability": {
+          "const": "UNINITIALIZED"
+        },
+        "changed": {
+          "const": true
+        },
+        "cold_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "commit_count": {
+          "const": 1
+        },
+        "owner_id": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "state_ref": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "transaction_id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "owner_id",
+        "before_availability",
+        "after_generation",
+        "after_sha256",
+        "cold_sha256",
+        "state_ref",
+        "changed",
+        "commit_count",
+        "transaction_id"
+      ],
+      "type": "object"
+    },
+    "ownerId": {
+      "enum": [
+        "reader_eof",
+        "frontend_control",
+        "spatial_control",
+        "spatial_audio",
+        "joc",
+        "meter",
+        "drc",
+        "analysis",
+        "codec",
+        "metadata",
+        "integrity",
+        "output"
+      ]
+    },
+    "ownerInitialized": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "const": "INITIALIZED"
+        },
+        "cold_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "generation": {
+          "$ref": "#/$defs/u64"
+        },
+        "owner_id": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "state_ref": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "state_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "owner_id",
+        "availability",
+        "generation",
+        "state_sha256",
+        "cold_sha256",
+        "state_ref"
+      ],
+      "type": "object"
+    },
+    "ownerReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "after_generation": {
+          "$ref": "#/$defs/u64"
+        },
+        "after_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "before_generation": {
+          "$ref": "#/$defs/u64"
+        },
+        "before_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "changed": {
+          "type": "boolean"
+        },
+        "commit_count": {
+          "enum": [
+            0,
+            1
+          ],
+          "type": "integer"
+        },
+        "owner_id": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "transaction_id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "owner_id",
+        "before_generation",
+        "before_sha256",
+        "after_generation",
+        "after_sha256",
+        "changed",
+        "commit_count",
+        "transaction_id"
+      ],
+      "type": "object"
+    },
+    "ownerState": {
+      "additionalProperties": false,
+      "properties": {
+        "cold_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "generation": {
+          "$ref": "#/$defs/u64"
+        },
+        "owner_id": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "state_ref": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "state_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "owner_id",
+        "generation",
+        "state_sha256",
+        "cold_sha256",
+        "state_ref"
+      ],
+      "type": "object"
+    },
+    "ownerUninitialized": {
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "const": "UNINITIALIZED"
+        },
+        "owner_id": {
+          "$ref": "#/$defs/ownerId"
+        }
+      },
+      "required": [
+        "owner_id",
+        "availability"
+      ],
+      "type": "object"
+    },
+    "pendingPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "disposition": {
+          "enum": [
+            "PENDING",
+            "DROP_AT_DONE"
+          ]
+        },
+        "payload_id": {
+          "enum": [
+            1,
+            2,
+            11,
+            14
+          ]
+        },
+        "payload_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "writer_generation": {
+          "$ref": "#/$defs/u64"
+        }
+      },
+      "required": [
+        "payload_id",
+        "writer_generation",
+        "payload_sha256",
+        "disposition"
+      ],
+      "type": "object"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "transactionReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "$ref": "#/$defs/u64"
+        },
+        "au_index": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/u64"
+            }
+          ]
+        },
+        "callback_index": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/u64"
+            }
+          ]
+        },
+        "dispatch": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/u64"
+            }
+          ]
+        },
+        "durable_append": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/durableAppendReceipt"
+            }
+          ]
+        },
+        "fatal": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/fatalReceipt"
+            }
+          ]
+        },
+        "kind": {
+          "enum": [
+            "MEASUREMENT",
+            "CALLBACK",
+            "SOURCE",
+            "FINALIZE",
+            "RESTART"
+          ]
+        },
+        "owner_receipts": {
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ownerReceipt"
+              },
+              {
+                "$ref": "#/$defs/ownerConstructionReceipt"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "result": {
+          "enum": [
+            "COMMITTED",
+            "ABORTED",
+            "REJECTED"
+          ]
+        },
+        "schema": {
+          "const": "selected-profile-transaction-receipt.v1"
+        },
+        "source_index": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/u64"
+            }
+          ]
+        },
+        "top_level_commit_count": {
+          "enum": [
+            0,
+            1
+          ],
+          "type": "integer"
+        },
+        "transaction_id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema",
+        "transaction_id",
+        "kind",
+        "result",
+        "attempt",
+        "callback_index",
+        "source_index",
+        "dispatch",
+        "au_index",
+        "owner_receipts",
+        "durable_append",
+        "fatal",
+        "top_level_commit_count"
+      ],
+      "type": "object"
+    },
+    "u64": {
+      "maximum": 18446744073709551615,
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "$id": "urn:selected-profile:programme-transaction-state:v3-local-proposal",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "DONE"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "eof_ledger": {
+            "properties": {
+              "codec_extra_flush": {
+                "const": 0
+              },
+              "codec_sources": {
+                "const": 4249
+              },
+              "joc_dispatches": {
+                "const": 4249
+              },
+              "last_padding_samples": {
+                "const": 486
+              },
+              "last_real_samples": {
+                "const": 1050
+              },
+              "main_cached_callbacks": {
+                "const": 4
+              },
+              "main_total_callbacks": {
+                "const": 4251
+              },
+              "normal_callbacks": {
+                "const": 4247
+              },
+              "pending_payloads": {
+                "items": {
+                  "properties": {
+                    "disposition": {
+                      "const": "DROP_AT_DONE"
+                    }
+                  }
+                }
+              },
+              "published_aus": {
+                "const": 4247
+              }
+            }
+          },
+          "output_ledger": {
+            "properties": {
+              "durable_au_count": {
+                "const": 4247
+              },
+              "durable_bytes": {
+                "const": 17395712
+              },
+              "status": {
+                "const": "PUBLISHED"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "METERING"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "measurement_receipt": {
+            "type": "null"
+          },
+          "owners": {
+            "properties": {
+              "analysis": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "codec": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "drc": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "frontend_control": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "integrity": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "joc": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "metadata": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "meter": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "output": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "reader_eof": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "spatial_audio": {
+                "$ref": "#/$defs/ownerUninitialized"
+              },
+              "spatial_control": {
+                "$ref": "#/$defs/ownerUninitialized"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "READY",
+              "ACTIVE",
+              "FINALIZING",
+              "DONE"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "measurement_receipt": {
+            "$ref": "#/$defs/measurementReceipt"
+          },
+          "owners": {
+            "properties": {
+              "analysis": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "codec": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "drc": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "frontend_control": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "integrity": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "joc": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "metadata": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "meter": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "output": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "reader_eof": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "spatial_audio": {
+                "$ref": "#/$defs/ownerInitialized"
+              },
+              "spatial_control": {
+                "$ref": "#/$defs/ownerInitialized"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "attempt": {
+      "$ref": "#/$defs/u64"
+    },
+    "clocks": {
+      "$ref": "#/$defs/clocks"
+    },
+    "eof_ledger": {
+      "$ref": "#/$defs/eofLedger"
+    },
+    "fatal": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/fatalReceipt"
+        }
+      ]
+    },
+    "measurement_receipt": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/measurementReceipt"
+        }
+      ]
+    },
+    "output_ledger": {
+      "$ref": "#/$defs/outputLedger"
+    },
+    "owners": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "codec": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "drc": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "frontend_control": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "integrity": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "joc": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "metadata": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "meter": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "output": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "reader_eof": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "spatial_audio": {
+          "$ref": "#/$defs/ownerAvailability"
+        },
+        "spatial_control": {
+          "$ref": "#/$defs/ownerAvailability"
+        }
+      },
+      "required": [
+        "reader_eof",
+        "frontend_control",
+        "spatial_control",
+        "spatial_audio",
+        "joc",
+        "meter",
+        "drc",
+        "analysis",
+        "codec",
+        "metadata",
+        "integrity",
+        "output"
+      ],
+      "type": "object"
+    },
+    "phase_generation": {
+      "$ref": "#/$defs/u64"
+    },
+    "profile_id": {
+      "const": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx"
+    },
+    "programme_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "selected-profile-programme-state.v3"
+    },
+    "status": {
+      "enum": [
+        "METERING",
+        "READY",
+        "ACTIVE",
+        "RETIRED",
+        "FINALIZING",
+        "DONE"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "programme_id",
+    "attempt",
+    "status",
+    "phase_generation",
+    "profile_id",
+    "clocks",
+    "measurement_receipt",
+    "owners",
+    "output_ledger",
+    "eof_ledger",
+    "fatal"
+  ],
+  "title": "Selected-profile programme state and transaction receipts (proposed local v3)",
+  "type": "object",
+  "x-local-transition-notes": [
+    "RETIRED preserves the last committed availability; transition validator prevents partial installation.",
+    "METERING meter callbacks change only meter state.",
+    "One MEASUREMENT parent swap installs receipt and all eleven main cold roots atomically, retains meter terminal root, sets READY, increments phase_generation once.",
+    "Full restart increments attempt, discards receipt, reconstructs cold meter, resets eleven main owners to UNINITIALIZED."
+  ],
+  "x-proposal-status": "PROPOSAL_PENDING_USER_APPROVAL",
+  "x-runtime-invariants": [
+    "Across committed snapshots in one attempt, eof_ledger.normal_callbacks, main_cached_callbacks, main_total_callbacks, codec_sources, joc_dispatches and published_aus are monotonic nondecreasing.",
+    "main_total_callbacks equals normal_callbacks plus main_cached_callbacks.",
+    "codec_sources is max(main_total_callbacks-2,0) only after the corresponding callback transaction commits.",
+    "published_aus is max(codec_sources-2,0) only after durable append and source transaction commit.",
+    "last_real_samples and last_padding_samples are zero until the final normal callback commits, then become 1050 and 486 and remain immutable.",
+    "codec_extra_flush remains zero in every state.",
+    "DONE is the only status that requires all terminal constants and DROP_AT_DONE pending dispositions."
+  ]
+}

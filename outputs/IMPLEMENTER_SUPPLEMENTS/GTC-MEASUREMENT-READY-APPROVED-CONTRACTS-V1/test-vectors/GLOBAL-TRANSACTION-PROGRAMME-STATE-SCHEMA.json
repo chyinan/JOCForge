@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:selected-profile:programme-transaction-state:v2",
+  "title": "Selected-profile programme state and transaction receipts",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "programme_id",
+    "attempt",
+    "status",
+    "phase_generation",
+    "profile_id",
+    "clocks",
+    "measurement_receipt",
+    "owners",
+    "output_ledger",
+    "eof_ledger",
+    "fatal"
+  ],
+  "properties": {
+    "schema": {"const": "selected-profile-programme-state.v2"},
+    "programme_id": {"type": "string", "minLength": 1},
+    "attempt": {"$ref": "#/$defs/u64"},
+    "status": {"enum": ["METERING", "READY", "ACTIVE", "RETIRED", "FINALIZING", "DONE"]},
+    "phase_generation": {"$ref": "#/$defs/u64"},
+    "profile_id": {"const": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx"},
+    "clocks": {"$ref": "#/$defs/clocks"},
+    "measurement_receipt": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/measurementReceipt"}]},
+    "owners": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reader_eof", "frontend_control", "spatial_control", "spatial_audio", "joc", "meter", "drc", "analysis", "codec", "metadata", "integrity", "output"],
+      "properties": {
+        "reader_eof": {"$ref": "#/$defs/ownerState"},
+        "frontend_control": {"$ref": "#/$defs/ownerState"},
+        "spatial_control": {"$ref": "#/$defs/ownerState"},
+        "spatial_audio": {"$ref": "#/$defs/ownerState"},
+        "joc": {"$ref": "#/$defs/ownerState"},
+        "meter": {"$ref": "#/$defs/ownerState"},
+        "drc": {"$ref": "#/$defs/ownerState"},
+        "analysis": {"$ref": "#/$defs/ownerState"},
+        "codec": {"$ref": "#/$defs/ownerState"},
+        "metadata": {"$ref": "#/$defs/ownerState"},
+        "integrity": {"$ref": "#/$defs/ownerState"},
+        "output": {"$ref": "#/$defs/ownerState"}
+      }
+    },
+    "output_ledger": {"$ref": "#/$defs/outputLedger"},
+    "eof_ledger": {"$ref": "#/$defs/eofLedger"},
+    "fatal": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/fatalReceipt"}]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "DONE"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "eof_ledger": {
+            "properties": {
+              "normal_callbacks": {"const": 4247},
+              "last_real_samples": {"const": 1050},
+              "last_padding_samples": {"const": 486},
+              "main_cached_callbacks": {"const": 4},
+              "main_total_callbacks": {"const": 4251},
+              "codec_sources": {"const": 4249},
+              "joc_dispatches": {"const": 4249},
+              "published_aus": {"const": 4247},
+              "codec_extra_flush": {"const": 0},
+              "pending_payloads": {"items": {"properties": {"disposition": {"const": "DROP_AT_DONE"}}}}
+            }
+          },
+          "output_ledger": {
+            "properties": {
+              "status": {"const": "PUBLISHED"},
+              "durable_au_count": {"const": 4247},
+              "durable_bytes": {"const": 17395712}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "x-runtime-invariants": [
+    "Across committed snapshots in one attempt, eof_ledger.normal_callbacks, main_cached_callbacks, main_total_callbacks, codec_sources, joc_dispatches and published_aus are monotonic nondecreasing.",
+    "main_total_callbacks equals normal_callbacks plus main_cached_callbacks.",
+    "codec_sources is max(main_total_callbacks-2,0) only after the corresponding callback transaction commits.",
+    "published_aus is max(codec_sources-2,0) only after durable append and source transaction commit.",
+    "last_real_samples and last_padding_samples are zero until the final normal callback commits, then become 1050 and 486 and remain immutable.",
+    "codec_extra_flush remains zero in every state.",
+    "DONE is the only status that requires all terminal constants and DROP_AT_DONE pending dispositions."
+  ],
+  "$defs": {
+    "u64": {"type": "integer", "minimum": 0, "maximum": 18446744073709551615},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "ownerId": {"enum": ["reader_eof", "frontend_control", "spatial_control", "spatial_audio", "joc", "meter", "drc", "analysis", "codec", "metadata", "integrity", "output"]},
+    "ownerState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_id", "generation", "state_sha256", "cold_sha256", "state_ref"],
+      "properties": {
+        "owner_id": {"$ref": "#/$defs/ownerId"},
+        "generation": {"$ref": "#/$defs/u64"},
+        "state_sha256": {"$ref": "#/$defs/sha256"},
+        "cold_sha256": {"$ref": "#/$defs/sha256"},
+        "state_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "ownerReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_id", "before_generation", "before_sha256", "after_generation", "after_sha256", "changed", "commit_count", "transaction_id"],
+      "properties": {
+        "owner_id": {"$ref": "#/$defs/ownerId"},
+        "before_generation": {"$ref": "#/$defs/u64"},
+        "before_sha256": {"$ref": "#/$defs/sha256"},
+        "after_generation": {"$ref": "#/$defs/u64"},
+        "after_sha256": {"$ref": "#/$defs/sha256"},
+        "changed": {"type": "boolean"},
+        "commit_count": {"type": "integer", "enum": [0, 1]},
+        "transaction_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "clocks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["meter_callback", "meter_energy_record", "main_callback", "codec_source", "joc_dispatch", "joc_writer", "published_au"],
+      "properties": {
+        "meter_callback": {"$ref": "#/$defs/u64"},
+        "meter_energy_record": {"$ref": "#/$defs/u64"},
+        "main_callback": {"$ref": "#/$defs/u64"},
+        "codec_source": {"$ref": "#/$defs/u64"},
+        "joc_dispatch": {"$ref": "#/$defs/u64"},
+        "joc_writer": {"$ref": "#/$defs/u64"},
+        "published_au": {"$ref": "#/$defs/u64"}
+      }
+    },
+    "measurementReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["programme_id", "attempt", "input_sha256", "config_sha256", "dialogue_u32", "itu_u32", "true_peak_u32", "gating_kind", "selected_lufs_u32", "meter_terminal_sha256", "normal_callbacks", "zero_drains", "energy_windows"],
+      "properties": {
+        "programme_id": {"type": "string", "minLength": 1},
+        "attempt": {"$ref": "#/$defs/u64"},
+        "input_sha256": {"$ref": "#/$defs/sha256"},
+        "config_sha256": {"$ref": "#/$defs/sha256"},
+        "dialogue_u32": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+        "itu_u32": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+        "true_peak_u32": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+        "gating_kind": {"type": "string", "minLength": 1},
+        "selected_lufs_u32": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+        "meter_terminal_sha256": {"$ref": "#/$defs/sha256"},
+        "normal_callbacks": {"const": 4247},
+        "zero_drains": {"const": 3},
+        "energy_windows": {"const": 6794}
+      }
+    },
+    "durableAppendReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt", "au_index", "offset", "bytes", "frame_sha256", "crc_residual", "readback_sha256", "durable"],
+      "properties": {
+        "attempt": {"$ref": "#/$defs/u64"},
+        "au_index": {"$ref": "#/$defs/u64"},
+        "offset": {"$ref": "#/$defs/u64"},
+        "bytes": {"const": 4096},
+        "frame_sha256": {"$ref": "#/$defs/sha256"},
+        "crc_residual": {"const": 0},
+        "readback_sha256": {"$ref": "#/$defs/sha256"},
+        "durable": {"const": true}
+      }
+    },
+    "outputLedger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt_temp_id", "status", "durable_au_count", "durable_bytes", "last_au_sha256", "final_output_sha256"],
+      "properties": {
+        "attempt_temp_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["OPEN", "ABANDONED", "SEALED", "PUBLISHED"]},
+        "durable_au_count": {"type": "integer", "minimum": 0, "maximum": 4247},
+        "durable_bytes": {"type": "integer", "minimum": 0, "maximum": 17395712, "multipleOf": 4096},
+        "last_au_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+        "final_output_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]}
+      }
+    },
+    "pendingPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload_id", "writer_generation", "payload_sha256", "disposition"],
+      "properties": {
+        "payload_id": {"enum": [1, 2, 11, 14]},
+        "writer_generation": {"$ref": "#/$defs/u64"},
+        "payload_sha256": {"$ref": "#/$defs/sha256"},
+        "disposition": {"enum": ["PENDING", "DROP_AT_DONE"]}
+      }
+    },
+    "eofLedger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["normal_callbacks", "last_real_samples", "last_padding_samples", "main_cached_callbacks", "main_total_callbacks", "codec_sources", "joc_dispatches", "published_aus", "codec_extra_flush", "pending_payloads"],
+      "properties": {
+        "normal_callbacks": {"type": "integer", "minimum": 0, "maximum": 4247},
+        "last_real_samples": {"type": "integer", "minimum": 0, "maximum": 1536},
+        "last_padding_samples": {"type": "integer", "minimum": 0, "maximum": 1536},
+        "main_cached_callbacks": {"type": "integer", "minimum": 0, "maximum": 4},
+        "main_total_callbacks": {"type": "integer", "minimum": 0, "maximum": 4251},
+        "codec_sources": {"type": "integer", "minimum": 0, "maximum": 4249},
+        "joc_dispatches": {"type": "integer", "minimum": 0, "maximum": 4249},
+        "published_aus": {"type": "integer", "minimum": 0, "maximum": 4247},
+        "codec_extra_flush": {"const": 0},
+        "pending_payloads": {"type": "array", "items": {"$ref": "#/$defs/pendingPayload"}}
+      }
+    },
+    "fatalReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transaction_id", "stage", "error", "first_failure", "committed_root_unchanged", "temp_output_disposition", "later_stages", "retry_allowed"],
+      "properties": {
+        "transaction_id": {"type": "string", "minLength": 1},
+        "stage": {"type": "string", "minLength": 1},
+        "error": {"type": "string", "minLength": 1},
+        "first_failure": {"const": true},
+        "committed_root_unchanged": {"type": "boolean"},
+        "temp_output_disposition": {"enum": ["UNCHANGED", "ABANDONED"]},
+        "later_stages": {"const": "NOT_RUN"},
+        "retry_allowed": {"const": false}
+      }
+    },
+    "transactionReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "transaction_id", "kind", "result", "attempt", "callback_index", "source_index", "dispatch", "au_index", "owner_receipts", "durable_append", "fatal", "top_level_commit_count"],
+      "properties": {
+        "schema": {"const": "selected-profile-transaction-receipt.v1"},
+        "transaction_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["MEASUREMENT", "CALLBACK", "SOURCE", "FINALIZE", "RESTART"]},
+        "result": {"enum": ["COMMITTED", "ABORTED", "REJECTED"]},
+        "attempt": {"$ref": "#/$defs/u64"},
+        "callback_index": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/u64"}]},
+        "source_index": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/u64"}]},
+        "dispatch": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/u64"}]},
+        "au_index": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/u64"}]},
+        "owner_receipts": {"type": "array", "items": {"$ref": "#/$defs/ownerReceipt"}},
+        "durable_append": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/durableAppendReceipt"}]},
+        "fatal": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/fatalReceipt"}]},
+        "top_level_commit_count": {"type": "integer", "enum": [0, 1]}
+      }
+    }
+  }
+}

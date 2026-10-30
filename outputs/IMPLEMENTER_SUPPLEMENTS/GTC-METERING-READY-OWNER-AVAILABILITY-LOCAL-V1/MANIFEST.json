@@ -1,0 +1,11 @@
+{
+  "package_id": "GTC-METERING-READY-OWNER-AVAILABILITY-LOCAL-V1",
+  "scope": "selected local v3 state-model amendment; production not run",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4055,
+      "sha256": "bcbc75a2b5f24ac3347f43974b51b3abf3711edfb4f6c474755c7a85c363f12d"
+    }
+  ]
+}

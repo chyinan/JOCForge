@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "bytes": 24964,
+      "file": "ProgrammeState-v3-proposal.schema.json",
+      "sha256": "7490ec2dcef87d1925ae83dfc85898141048957f627fef39938efe93ea1e1a96"
+    },
+    {
+      "bytes": 3737,
+      "file": "PROPOSAL.md",
+      "sha256": "94ac27ce949e2420820c3c2daf6fe1b590be3ff8353786a1cb2e11bcdb203642"
+    },
+    {
+      "bytes": 1419,
+      "file": "TRANSITION-INPUT-ONLY.json",
+      "sha256": "5ce9d2c091709c60d8a8c82ebfb9457dc4eae49b74a251e30a1ef30c5ea4b1f8"
+    }
+  ],
+  "package_id": "GTC-METERING-READY-OWNER-AVAILABILITY-PROPOSAL-V2",
+  "scope": "local v3 state-availability amendment; v2 unchanged",
+  "status": "PROPOSAL_PENDING_USER_APPROVAL"
+}

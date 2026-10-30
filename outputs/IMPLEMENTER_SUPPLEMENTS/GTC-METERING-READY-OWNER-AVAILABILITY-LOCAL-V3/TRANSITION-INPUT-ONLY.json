@@ -1,0 +1,46 @@
+{
+  "cases": [
+    {
+      "id": "metering-cold",
+      "input": "meter initialized, receipt null, eleven main owners uninitialized",
+      "purpose": "accept valid METERING state"
+    },
+    {
+      "id": "placeholder-owner",
+      "input": "uninitialized owner carries hash/ref/generation",
+      "purpose": "reject fabricated owner identity"
+    },
+    {
+      "id": "meter-callback",
+      "input": "successful meter callback proposal",
+      "purpose": "only meter state changes"
+    },
+    {
+      "id": "ready-success",
+      "input": "valid receipt plus eleven actual cold-owner proposals for same attempt/input/config",
+      "purpose": "single atomic METERING to READY swap"
+    },
+    {
+      "id": "missing-provider",
+      "input": "one required owner provider absent",
+      "purpose": "no partial install or READY"
+    },
+    {
+      "id": "stale-identity",
+      "input": "receipt attempt/input/config mismatch",
+      "purpose": "reject and preserve prior root"
+    },
+    {
+      "id": "fatal-meter",
+      "input": "fatal meter callback",
+      "purpose": "retire without receipt"
+    },
+    {
+      "id": "restart",
+      "input": "new attempt after retirement",
+      "purpose": "fresh meter cold, receipt null, eleven uninitialized owners"
+    }
+  ],
+  "expected_states_included": false,
+  "schema": "gtc-metering-ready-v3-transition-input-only.v1"
+}

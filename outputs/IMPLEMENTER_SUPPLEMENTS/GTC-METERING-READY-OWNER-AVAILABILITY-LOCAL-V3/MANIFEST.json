@@ -1,0 +1,30 @@
+{
+  "schema": "local-schema-amendment-package.v1",
+  "package_id": "GTC-METERING-READY-OWNER-AVAILABILITY-LOCAL-V3",
+  "status": "USER_APPROVED_LOCAL_SCHEMA_ADOPTION",
+  "scope": "local v3 owner availability and measurement-ready transition projection; approved v2 unchanged",
+  "approved_proposal_manifest_sha256": "2b938b927a918a46842acc4ab1b10017e98093c861dd4905739f36e294268a2d",
+  "preserved_approved_v2_manifest_sha256": "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e",
+  "files": [
+    {
+      "file": "LOCAL-CONTRACT.md",
+      "bytes": 1722,
+      "sha256": "c917010aa67d77c921c5ecb8ab79b46553af9b3c87140b4fcd41acfa4ff920a6"
+    },
+    {
+      "file": "ProgrammeState-v3.schema.json",
+      "bytes": 24964,
+      "sha256": "7490ec2dcef87d1925ae83dfc85898141048957f627fef39938efe93ea1e1a96"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 653,
+      "sha256": "c4035d8c019b9d3b4436e87adaa4878536c5e211a67ac064336e31753ac558b7"
+    },
+    {
+      "file": "TRANSITION-INPUT-ONLY.json",
+      "bytes": 1419,
+      "sha256": "5ce9d2c091709c60d8a8c82ebfb9457dc4eae49b74a251e30a1ef30c5ea4b1f8"
+    }
+  ]
+}
