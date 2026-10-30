@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_LOCAL_ORDINAL_AND_SOURCEWEIGHT_PATH",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "4/4 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "related_washed_package_manifests_and_payloads": "2/2 MATCH",
+    "source_code_or_decompilation_forwarded": false,
+    "candidate_ids_or_feature_values_forwarded": false,
+    "raw_pcm_forwarded": false
+  },
+  "closed": [
+    "outer callback to candidate materializer local-ordinal flow",
+    "selector local-ordinal output to reassembly/default-row helper",
+    "source-weight matrix-view/column-position input and run120 ownership"
+  ],
+  "still_unbound": [
+    "global candidate ID to local ordinal/matrix column",
+    "outer ADM graph/export identity join",
+    "run121 identity observer did not reach callback"
+  ],
+  "whole_chain_ready": false
+}

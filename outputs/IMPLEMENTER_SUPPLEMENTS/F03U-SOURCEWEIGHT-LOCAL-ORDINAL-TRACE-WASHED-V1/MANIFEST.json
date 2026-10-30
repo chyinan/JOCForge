@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1",
+  "status": "LOCAL_ORDINAL_PATH_BOUND; GLOBAL_ID_OUTER_JOIN_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1498,
+      "sha256": "b29da0a4d504cb033186194e35e90f814bd9c4489c44fbbca3b51300edc12194"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3966,
+      "sha256": "d6568d3d1938daa7ff61bf275d2d30e265b8edbefc64a5d94bb39e3a59c79aa3"
+    },
+    {
+      "name": "PRODUCER-CONSUMER-TRACE.json",
+      "bytes": 5652,
+      "sha256": "7ed0aa093071337b9ebc4ae44eaac8b2476b28e6324ad6e8b3b0bb77504e3ddb"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1346,
+      "sha256": "10df7cf410a8c5e63f0cb1afecf980adc2f7a351fe515190858820c72f04819b"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 1012,
+      "sha256": "57fe0badaa2336544768f2838fce0c6370fd3e93f17dc70d31b61b6a55a284fd"
+    }
+  ]
+}

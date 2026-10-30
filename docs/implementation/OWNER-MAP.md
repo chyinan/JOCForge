@@ -159,6 +159,7 @@
 | F03U/ddp-run37-source-storage-sample-count-boundary | F03U | `u04-source-storage-range-boundary` |
 | F03U/ddp-composite-reader-extent-rule-v18 | F03U | `u04-composite-reader-extent-boundary` |
 | F03U/sourceweight-candidate-identity-hold | F03U | `u04-source-weight` |
+| F03U/sourceweight-local-ordinal-producer-consumer-trace | F03U | `u04-source-weight` |
 | F03F/current-features-approved-math-asset-pair | F03F | `spatial_control` |
 | F03F/main-current-features-source-callback-candidate | F03F | `spatial_control` |
 | F03R/selected-profile-feature-control-and-value-only-source-flags | F03R | `spatial_control` |

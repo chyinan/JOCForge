@@ -1,0 +1,96 @@
+{
+  "schema": "washed.sourceweight-producer-consumer-trace.v1",
+  "source_grade": {
+    "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_tool": "Ghidra 12.2 with Temurin JDK 25.0.5+8",
+    "static_result": "TARGET_PATH_DECOMPILED_AND_DIRECT_CALL_EDGES_CLOSED",
+    "private_decompilation_report_sha256": "df393bbfe209e7db5c2619065438644100ae39b962c366c2f1dc3b742bbb8c73",
+    "runtime_identity_join": "NOT_OBSERVED",
+    "frozen_model_scope": "HASH_BOUND_NUMERIC_WEIGHT_MODEL_ONLY"
+  },
+  "callback_producer_path": {
+    "outer_callback_to_candidate_materializer": "STATIC_DIRECT_CALL",
+    "candidate_materializer_inputs": [
+      "candidate_count",
+      "count-indexed source-buffer pointer vector",
+      "source feature stride"
+    ],
+    "candidate_materializer_action": "For each local ordinal, reads that ordinal's source-buffer pointer and copies its feature data to the corresponding destination buffer.",
+    "typed_global_candidate_id_read": false,
+    "output_to_spatial_handler": "STATIC_DIRECT_CALL",
+    "spatial_handler_to_strategy_dispatcher": "STATIC_DIRECT_CALL",
+    "strategy_dispatcher_to_candidate_handler": "INDIRECT_TABLE_DISPATCH"
+  },
+  "candidate_descriptor": {
+    "field_kind": "32_BIT_PACKED_METADATA_DESCRIPTOR",
+    "construction": "A native packer combines five scalar fields into the word; the per-candidate handler passes the word to the inverse parser.",
+    "parser_result": "Five fields are extracted from the low 12 bits.",
+    "candidate_record_join": "The descriptor, feature location, and per-candidate metadata row share the handler's local ordinal.",
+    "global_candidate_id_semantics": "NOT_PROVEN",
+    "global_id_to_weight_column_join": "UNBOUND"
+  },
+  "selector_output_consumer": {
+    "selector_output_type": "LOCAL_CANDIDATE_ORDINAL_ARRAY",
+    "consumer_action": "The output reassembly stage iterates local ordinals from zero to candidate_count, searches the selector's ordinal array, and inserts a default row at that ordinal when absent.",
+    "default_row_helper": "Shifts matrix rows and copies the supplied row at the requested local ordinal.",
+    "subsequent_score_inputs": "Matrix views, dimensions, and scalar accumulators; no global candidate ID argument is present in the traced score calls.",
+    "outer_graph_export_identity": "NOT_TRACED"
+  },
+  "source_weight_model_api": {
+    "frozen_package_manifest_sha256": "ab3e1495898bd1cbf36a8c449fabcccfb64ac747c7b2a1955665362ceceaa0ab",
+    "frozen_vector_schema": "washed.source-weight-pow32-input-vectors.v1",
+    "frozen_vector_sha256": "80fe0c35671e8bc7346d345ddbbd24db095b5b7a749b6ef029ea239ad925bbee",
+    "case_count": 6,
+    "candidate_count_values": [1],
+    "band_count_values": [24],
+    "case_fields": [
+      "band_count",
+      "candidate_count",
+      "feature_bits_u32_by_band",
+      "id",
+      "question",
+      "raw_feature_sum_at_least_half"
+    ],
+    "id_field_semantics": "VECTOR_CASE_LABEL_ONLY",
+    "python_model_builder_sha256": "a58783eb56012055592f2d47192d6974b7017407b25427cc01a548188f4c9d76",
+    "native_helper_wrapper_sha256": "d99b10c01659e38e4a9ad6e269cefe64df78740f18518e4bd790ff343a7b8112",
+    "matrix_api_fields": [
+      "band_count",
+      "source_stride",
+      "band_major_values"
+    ],
+    "weight_api_arguments": [
+      "feature_matrix",
+      "weight_output",
+      "source_count"
+    ],
+    "id_to_column_api": "ABSENT_FROM_FROZEN_NUMERIC_MODEL"
+  },
+  "dynamic_observation": {
+    "run120": {
+      "status": "NATURAL_SOURCEWEIGHT_MATRIX_AND_OUTPUT_HASHED",
+      "candidate_identity_fields_captured": false,
+      "global_candidate_ids_captured": false
+    },
+    "run121": {
+      "status": "FAILED_BEFORE_NATIVE_CALLBACK",
+      "ddp_filter_initialization_and_workflow_build": "FAILED_IN_C_WORKSPACE_OUTPUT_LAYOUT",
+      "fresh_E_layout": "NOT_RUN; WINDOWS_DENIED_NEW_RUN_DIRECTORY_BEFORE_HOST_LAUNCH",
+      "candidate_identity_fields_captured": false,
+      "output_bytes": 0
+    }
+  },
+  "minimal_observer_design": {
+    "status": "DESIGNED_NOT_EXECUTED",
+    "layout": "Use a new isolated run directory with the same E-drive input/output/temp layout as the successful run120 job; do not reuse or overwrite run120 artifacts.",
+    "capture_points": [
+      "callback invocation scope and any typed owner/generation field available from the input context",
+      "candidate materializer's count-indexed source pointer tokens and corresponding destination buffer owner tokens, with local ordinals",
+      "strategy handler's explicit selector index array and any explicit index remap at matrix writes",
+      "source-weight input matrix owner token, matrix-column ordinals, source count, and weight-output vector hash"
+    ],
+    "privacy_and_join_rule": "Persist only field types, callback scope, owner-token digests, local ordinal/remap, column ordinal, dimensions, and hashes. Do not persist ADM records, raw pointers, descriptor values, feature values, or PCM. Join by typed owner/generation identity and explicit remap; never by event order, row position alone, equal values, or equal hashes.",
+    "execution_boundary": "No dynamic candidate identity observer ran because run120 must remain untouched and Windows denied creation of a separate E-drive run directory. The known C-drive attempt failed before the callback and is not to be repeated."
+  },
+  "disposition": "The observed native producer, selector consumer, and source-weight API use local ordinals and matrix positions. No typed global candidate ID to column to weight-output mapping is established; any outer ADM graph/export join remains outside this trace."
+}

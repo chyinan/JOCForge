@@ -1,0 +1,30 @@
+{
+  "schema": "f03u-sourceweight-local-ordinal-washed-sources.v1",
+  "research_package": {
+    "package_id": "sourceweight-candidate-identity",
+    "manifest_sha256": "b6603b9ed04e88820533eac0a56d6d27f72f54e6cb19841f0efdf22c72160704",
+    "payloads": {
+      "EVIDENCE.json": "d6568d3d1938daa7ff61bf275d2d30e265b8edbefc64a5d94bb39e3a59c79aa3",
+      "PRODUCER-CONSUMER-TRACE.json": "7ed0aa093071337b9ebc4ae44eaac8b2476b28e6324ad6e8b3b0bb77504e3ddb",
+      "REPORT.md": "9c930926772607d9fecda0ae79e477e3ac058def7578e562620721ca0b4f2a22",
+      "verify_sourceweight_candidate_identity.py": "f1de3e468bb79a837a3992dd0fb35375750600cba8bfa69ff35d7bac54498fd5"
+    },
+    "ordinary_and_optimized_checkers": "PASS"
+  },
+  "related_washed_packages": [
+    {
+      "package_id": "F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1",
+      "manifest_sha256": "83a0c75f00fa87c676475c7a7b146caddbd13d86a812c3862e79f58322275f1c"
+    },
+    {
+      "package_id": "F03U-DEE-SOURCEWEIGHT-NATIVE-SAMPLE-V1",
+      "manifest_sha256": "bfdb0da9e90ff51fd0661cfde61a7da19762ab70c056067431f31f0df45fa3fe"
+    }
+  ],
+  "native_target_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "dynamic_boundary": {
+    "run120_identity_fields_captured": false,
+    "run121_reached_callback": false,
+    "outer_graph_export_identity": "NOT_TRACED"
+  }
+}

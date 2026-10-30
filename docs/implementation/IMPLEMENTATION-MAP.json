@@ -3658,6 +3658,88 @@
             "implementation_rule": "NOT_APPROVED"
           },
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "sourceweight-local-ordinal-producer-consumer-trace",
+          "mapping_status": "WASHED_LOCAL_ORDINAL_CALLBACK_TO_SOURCEWEIGHT_PATH__GLOBAL_ID_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_CALLBACK_MATERIALIZER_SELECTOR_REASSEMBLY_MATRIX_VIEW",
+          "scope": "The bounded trace follows callback materialization through selector output, default-row reassembly and source-weight matrix view by local ordinal. Run 120 binds the caller matrix object to the consumer for 24 bands and 25 sources with 600 in-helper powf calls. The trace does not establish a global candidate ID to matrix column or weight-output join, and it does not close the outer ADM graph/export identity path. Run 121 did not reach the callback; the dynamic identity observer remains unexecuted.",
+          "owner": "u04-source-weight",
+          "implementation_requirement": false,
+          "dependencies": [
+            "sourceweight-candidate-identity-hold"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "CallbackInvocationOrdinal",
+              "FeatureProducerInvocationOrdinal",
+              "WeightParentInvocationOrdinal",
+              "LocalCandidateOrdinal",
+              "MatrixBandIndex",
+              "MatrixSourceColumn"
+            ],
+            "covered_clauses": [
+              "Callback materialization copies candidate feature data by the same local ordinal.",
+              "Selector membership and output reassembly/default-row placement use local candidate ordinals.",
+              "Run 120 binds one 24-band/25-source caller matrix object to the source-weight consumer; 600 powf calls are observed inside that helper.",
+              "The traced score call has no explicit global candidate-ID argument; this does not close the outer ADM graph/export identity join.",
+              "Run 121 did not reach the callback, and the identity observer was designed but not executed."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_F03U_LOCAL_ORDINAL_SOURCEWEIGHT_TRACE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/PRODUCER-CONSUMER-TRACE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "ad851a99019f967a9f1761781e2199c517966f4df4fe3acbe780c0f5d4159f64",
+            "validation_boundary": "Local-ordinal callback/selector/reassembly/matrix path only; global candidate ID and outer graph/export joins remain UNBOUND."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_LOCAL_ORDINAL_TRACE_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1/PRODUCER-CONSUMER-TRACE.json"
+            ],
+            "case_pointers": [
+              "Run 120 matrix object and consumer match: 24 bands, 25 sources, 600 powf calls; candidate IDs and raw feature/PCM data were not persisted.",
+              "Run 121 stopped before workflow build/callback and produced no output bytes.",
+              "Packed descriptor is five scalar metadata fields; it is not a proven global candidate ID.",
+              "Global candidate ID to local ordinal/matrix column/weight output and outer ADM graph/export identity remain UNBOUND."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "ad851a99019f967a9f1761781e2199c517966f4df4fe3acbe780c0f5d4159f64"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Global candidate ID to local ordinal, matrix column and weight output join.",
+            "Outer ADM graph/export identity join.",
+            "Run 121 native identity observer; it did not reach the callback.",
+            "Model output, complete product execution and whole-chain acceptance."
+          ],
+          "validation_boundary": "Do not infer global identity from local ordinal, packed descriptor, row count, matrix column order, scalar values, or hashes.",
+          "native_status": {
+            "status": "BOUNDED_LOCAL_ORDINAL_PATH_GLOBAL_ID_UNBOUND",
+            "local_ordinal_callback_to_reassembly_path": "STATIC_PATH_BOUND",
+            "run120_matrix_owner_to_consumer": "BOUND_FOR_24_BANDS_25_SOURCES",
+            "global_candidate_id_to_matrix_column_to_weight_output": "UNBOUND",
+            "outer_adm_graph_export_identity_join": "UNBOUND",
+            "run121_callback_reached": false,
+            "dynamic_identity_observer": "DESIGNED_NOT_EXECUTED",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
         }
       ]
     },
@@ -8544,8 +8626,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1635693,
-              "sha256": "68cee0cdcc0e27ed164b98efcd25bb5d24fd857c52d076fa0aa09245b5b1c468"
+              "bytes": 1640635,
+              "sha256": "b73bb4b91c6d24874aa4616908d68fc058a93499c3006dfbe7064920645dc884"
             }
           ],
           "test_modules": [
@@ -12057,8 +12139,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1635693,
-              "sha256": "68cee0cdcc0e27ed164b98efcd25bb5d24fd857c52d076fa0aa09245b5b1c468"
+              "bytes": 1640635,
+              "sha256": "b73bb4b91c6d24874aa4616908d68fc058a93499c3006dfbe7064920645dc884"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -28703,8 +28785,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1635693,
-              "sha256": "68cee0cdcc0e27ed164b98efcd25bb5d24fd857c52d076fa0aa09245b5b1c468"
+              "bytes": 1640635,
+              "sha256": "b73bb4b91c6d24874aa4616908d68fc058a93499c3006dfbe7064920645dc884"
             }
           ],
           "test_inventory": [
