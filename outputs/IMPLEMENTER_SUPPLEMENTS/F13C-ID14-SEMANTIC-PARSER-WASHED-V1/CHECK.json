@@ -1,0 +1,14 @@
+{
+  "schema": "f13c-id14-semantic-parser-wash-check.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_MODEL_NATIVE_SEPARATION",
+  "source_manifest_sha256": "VERIFIED",
+  "source_payload_hashes": "8_OF_8_VERIFIED",
+  "source_checker_normal_python": "PASS",
+  "source_checker_optimized_python": "PASS",
+  "model_debug_release_cases": 13,
+  "complete_selected_wrapper_execution": "NOT_RUN",
+  "native_semantic_parser_execution": "NOT_RUN",
+  "native_formula_from_id14_count": "NOT_OBSERVED",
+  "native_count_to_configuration_byte_join": "UNBOUND",
+  "whole_f13c_readiness": false
+}

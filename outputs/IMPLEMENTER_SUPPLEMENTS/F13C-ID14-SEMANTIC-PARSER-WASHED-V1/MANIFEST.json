@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F13C-ID14-SEMANTIC-PARSER-WASHED-V1",
+  "scope": "selected model parser fact and bounded native parser/configuration evidence; whole F13C remains open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1954,
+      "sha256": "6eb1f1c695a5658cfeb04dda1b0b668153f66fba97be32fc1ab93271cec73c76"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1331,
+      "sha256": "9dde7375046d031c2089d70b7f61c434f30f7cfe9156fc6447cc77d807b59cc3"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1697,
+      "sha256": "009d0ca4166cabf4489401be7aee2e453e1fbf13bd3e8356a86f9e101a1b7ef4"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 571,
+      "sha256": "f98b72647fd4701aa133f3a99785600de1562e71ba6737bf361ef0be5cd542b9"
+    }
+  ]
+}

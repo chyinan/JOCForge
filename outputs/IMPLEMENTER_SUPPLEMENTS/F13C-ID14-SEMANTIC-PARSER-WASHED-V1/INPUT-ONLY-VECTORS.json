@@ -1,0 +1,58 @@
+{
+  "schema": "f13c-id14-semantic-parser-input-only.v1",
+  "classification": "INPUTS_ONLY_NO_EXPECTED_OUTCOMES",
+  "status": "MODEL_CASES_REPLAYED__COMPLETE_SELECTED_WRAPPER_NOT_RUN__NATIVE_PARSER_NOT_RUN",
+  "cases": [
+    {
+      "id": "header_prefix_lengths",
+      "inputs": {
+        "available_prefix_lengths_bytes": [0, 1, 2, 3, 4, 5, 6],
+        "clip_gain_x_bits": 0,
+        "clip_gain_y_bits": 0,
+        "downmix_index": 3,
+        "extension_index": 0,
+        "object_count_bits": 14,
+        "sequence_count": 0
+      }
+    },
+    {
+      "id": "object_count_domain",
+      "inputs": {
+        "object_count_bits_domain": [0, 15],
+        "selected_profile_object_count": 15
+      }
+    },
+    {
+      "id": "selected_oamd_id14_wrapper",
+      "inputs": {
+        "declared_container_extent_matches_supplied_extent": true,
+        "joc_channel_count": 5,
+        "joc_downmix_index": 3,
+        "joc_object_count": 15,
+        "oamd_object_slots": 16,
+        "payload_ids": [11, 14]
+      }
+    },
+    {
+      "id": "container_extent_variants",
+      "inputs": {
+        "payload_ids": [14],
+        "mutations": ["append_one_zero_byte_after_declared_container", "truncate_declared_body_by_one_byte"]
+      }
+    },
+    {
+      "id": "joc_syntax_variants",
+      "inputs": {
+        "mutations": ["set_final_padding_bit_nonzero", "reserved_downmix_index_7", "truncate_header_prefix_at_each_byte"]
+      }
+    },
+    {
+      "id": "independent_complexity_sources",
+      "inputs": {
+        "cross_source_owner_or_generation_token": null,
+        "model_id14_object_count": 15,
+        "native_configuration_parameter_13_i32_values_observed_previously": [1, 16]
+      }
+    }
+  ]
+}

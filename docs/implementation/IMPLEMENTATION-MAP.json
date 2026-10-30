@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1716025,
-              "sha256": "24cfe4169f8c4d5fb083604ff9c79276a6fda84bfa4b3801f692c74b5a27e47f"
+              "bytes": 1720770,
+              "sha256": "bbc7c90a7587622aeac5601aef5aebe0b537defddc1aad2f7a443b9732c0acb1"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1716025,
-              "sha256": "24cfe4169f8c4d5fb083604ff9c79276a6fda84bfa4b3801f692c74b5a27e47f"
+              "bytes": 1720770,
+              "sha256": "bbc7c90a7587622aeac5601aef5aebe0b537defddc1aad2f7a443b9732c0acb1"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -26049,7 +26049,7 @@
           "slice_id": "id14-model-parser-and-native-bsi-source-clarification",
           "mapping_status": "MATERIALIZED_WASHED_MODEL_AND_NATIVE_SOURCE_EVIDENCE__WHOLE_F13C_DEFERRED",
           "implementation_status": "WASHED_EVIDENCE_CUSTODY_ONLY__NO_PARSER_IMPLEMENTATION",
-          "scope": "Records the hash-bound frozen model/helper ID14 parser and object_count+1 result separately from the selected native BSI producer, whose validated configuration-count source is present with ID14 storage absent in selected cases. The 13 vectors are model observations, not fresh parser execution or native semantic-parser evidence. R22 separately establishes that the recovered selected outgoing encode path has no ID14 semantic-reader invocation; this does not establish global parser absence or whole F13C readiness.",
+          "scope": "The hash-bound Wash supplement separates frozen R33 model parser facts from bounded native facts. The selected model semantically validates complete EMDF/ID14 and derives U8(object_count + 1); 15 objects produce model value 16, with 13 recorded debug/release cases consistent. Complete selected-wrapper execution is NOT_RUN. The examined native path has an ID14 writer/queue and generic collector/parser, but no ID14 semantic decoder call was observed; this bounded no-hit is not global parser absence, and native valid/malformed parser execution is NOT_RUN. The native complexity byte comes from a configuration record and enters the BSI working header before outgoing EMDF serialization. Prior parameter-13 values 1 and 16 were rehashed, not re-executed in this package. Model object_count+1 and the native configuration byte are distinct producers: numeric equality at 16 is not lineage, and the native ID14 count-to-configuration-byte owner/generation join remains UNBOUND. Whole F13C readiness remains false.",
           "owner": "metadata",
           "implementation_files": [],
           "local_mapping_files": [
@@ -26064,39 +26064,86 @@
             ]
           },
           "parameters": {
-            "kind": "NONE_EVIDENCE_CUSTODY_ONLY",
-            "provider_files": [],
-            "validation_boundary": "Does not invoke or implement the frozen model parser and does not produce native BSI values; it preserves the selected source attribution and native/model boundary."
+            "kind": "HASH_BOUND_F13C_ID14_MODEL_PARSER_AND_NATIVE_BSI_SOURCE_EVIDENCE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "9b977564f235e324e69d305f58c5bcc5f1c66865a2e9a3c71d17d21152873c61",
+            "prior_local_evidence_manifest_sha256": "d248175ea03a6cb6838b8c14995ea197a3529db2639afb51cb23185ab490bea8",
+            "validation_boundary": "Evidence custody only. Model parsing is not a DEE rule; native parser execution, producer identity/generation join, and whole F13C readiness remain unrun or unbound."
           },
           "test_modules": [
             "crates/jocforge-domain/tests/washed_f13c_scope_evidence.rs"
           ],
           "vectors": {
-            "kind": "HASH_BOUND_MODEL_HELPER_AND_SELECTED_NATIVE_BSI_SOURCE_CLARIFICATION",
+            "kind": "HASH_BOUND_F13C_ID14_MODEL_FACT_AND_BOUNDED_NATIVE_EVIDENCE_NO_EXPECTED_OUTCOMES",
             "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-ID14-SEMANTIC-PARSER-WASHED-V1/SOURCE-IDENTITIES.json",
               "crates/jocforge-domain/tests/fixtures/id14_model_native_bsi/MODEL-PARSER-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/id14_model_native_bsi/NATIVE-BSI-SOURCE.json"
             ],
             "case_pointers": [
-              "13 recorded model-helper cases; debug/release recorded outputs agree, but the checker does not run a fresh parser execution.",
-              "Selected native validated configuration counts 1 and 16 reach the BSI complexity field while ID14 body/queue/serializer storage is absent.",
-              "The selected model's object_count+1 value equals 16 numerically but is not the selected native BSI producer source.",
-              "R22 closes parser applicability only for the recovered selected outgoing encode path; other DLL modules, profiles, indirect entry points and decoders remain outside scope."
+              "Model fact: selected semantic parser derives U8(object_count + 1); selected model input 15 yields 16, with 13 recorded debug/release cases consistent.",
+              "Complete selected model wrapper execution remains NOT_RUN.",
+              "Bounded native selected path has an ID14 writer/queue and generic collector/parser, with no ID14 semantic decoder call observed; this is not a global absence claim.",
+              "Native valid/malformed semantic parser execution is NOT_RUN.",
+              "Native BSI complexity byte comes from a configuration record before outgoing EMDF serialization; prior parameter-13 observations were rehashed, not re-executed.",
+              "The model's object_count+1 and native configuration byte are distinct producers; equal numeric value 16 is not lineage and the owner/generation join remains UNBOUND."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/id14_model_native_bsi/MODEL-PARSER-VECTORS.json",
               "bytes": 4806,
               "sha256": "2bc5edbdb3d92e767c3f8c6d210546f696c60dd9328b7792c2c2b87cfb51da7a"
             },
-            "source_supplement_manifest_sha256": "d248175ea03a6cb6838b8c14995ea197a3529db2639afb51cb23185ab490bea8"
+            "source_supplement_manifest_sha256": "d248175ea03a6cb6838b8c14995ea197a3529db2639afb51cb23185ab490bea8",
+            "wash_supplement_manifest_sha256": "9b977564f235e324e69d305f58c5bcc5f1c66865a2e9a3c71d17d21152873c61",
+            "expected_outputs_included": false
           },
           "error_outcomes": [],
           "not_run": [
-            "fresh model parser execution and a valid selected OAMD+ID14 wrapper success case",
-            "native malformed/full-container parser semantics outside the recovered selected outgoing path",
-            "global native parser absence",
-            "whole F13C and product encode"
-          ]
+            "Complete selected model OAMD-plus-ID14 wrapper execution.",
+            "Native valid or malformed ID14 semantic parser execution.",
+            "Native ID14 count to configuration byte owner/generation typed join.",
+            "Fresh re-execution of the prior parameter-13 values 1 and 16.",
+            "Whole F13C readiness, product encode, and native/model producer equivalence."
+          ],
+          "implementation_requirement": false,
+          "implementation_inventory": [],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/washed_f13c_scope_evidence.rs",
+              "bytes": 25114,
+              "sha256": "dd00b9685da1aefa4751f2542014bd1b7418e8c334479201919b9c6ce67c0579"
+            }
+          ],
+          "native_status": {
+            "model_selected_rule": "U8(object_count + 1)",
+            "model_selected_input": {
+              "object_count": 15,
+              "complexity_value": 16
+            },
+            "model_debug_release_cases": 13,
+            "complete_selected_wrapper_execution": "NOT_RUN",
+            "native_id14_writer_queue_path": "OBSERVED_STATICALLY",
+            "native_generic_collector_parser_path": "OBSERVED_STATICALLY",
+            "native_id14_semantic_decoder_call": "NOT_OBSERVED_IN_EXAMINED_PATH",
+            "global_native_parser_absence_claim": false,
+            "native_valid_malformed_parser_execution": "NOT_RUN",
+            "native_complexity_byte_source": "CONFIGURATION_RECORD",
+            "native_bsi_precedes_outgoing_emdf_serializer": true,
+            "prior_parameter13_values_1_16": "REHASHED_NOT_REEXECUTED",
+            "model_native_producer_identity": "DISTINCT_PRODUCERS_NO_TYPED_JOIN",
+            "native_id14_count_to_configuration_byte_owner_generation_join": "UNBOUND",
+            "whole_f13c_readiness": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
           "slice_id": "washed-selected-adm-metadata-to-native-profile-crosswalk-status",
@@ -29787,8 +29834,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1716025,
-              "sha256": "24cfe4169f8c4d5fb083604ff9c79276a6fda84bfa4b3801f692c74b5a27e47f"
+              "bytes": 1720770,
+              "sha256": "bbc7c90a7587622aeac5601aef5aebe0b537defddc1aad2f7a443b9732c0acb1"
             }
           ],
           "test_inventory": [

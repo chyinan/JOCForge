@@ -1,0 +1,21 @@
+{
+  "schema": "f13c-id14-semantic-parser-source-identities.v1",
+  "wash_only_source_package": "id14-parser-complexity-ghidra-wash",
+  "source_manifest_sha256": "f6831853e46884f5c1a18b31444be687001411093b447680125113c8ace92569",
+  "source_payload_sha256": {
+    "COMPLEXITY-FIELD-LINEAGE.json": "eb2a1fce8d2023d2a8986e6f6ffd832b2e53e9966202a865c0974f7ae07c30f7",
+    "INPUT-ONLY-VECTORS.json": "5c047a4e7d0e3cd0b2cbe32d47e20313ee9e5b2e95fcd964e5611a24750ec7f4",
+    "MODEL-PARSER-OBSERVATIONS.json": "890f0af2ed87e72f88140282c1c27b6d1a5588c63f29309f3917554e4dd896ea",
+    "NATIVE-GHIDRA-PATH.json": "ffd05db550712775452cd5f7cd2fcbfe3ff98fe2cc0d4c884b1565534facbd09",
+    "PRIOR-NATIVE-OBSERVATIONS.json": "4bff967a6bee0d3caa2c6c1b64d632fadb1fcd1b8adca5293747bb05c0d9ea03",
+    "REPORT.md": "6dc84eb596af17de41f1a8d4ddfafe11d0ec5d9621c0ed6ef83e6985a6ce5a61",
+    "SOURCE-IDENTITIES.json": "98db66d601af982f41921435de469ec5a21118781e0ffe26c772f6bcf02d2348"
+  },
+  "frozen_model_inputs_sha256": {
+    "main_rs": "b3b9cbbd9a22308e5a3f0e4b4118b628dbcf27a16d00caf5fedaedbfe8242ce7",
+    "codec_core_rs": "7f7b7179cac59b510f0b5a0e71f3d97d3cd7e602181ccbe7174e191f6f2c056d"
+  },
+  "prior_native_observations": "REHASHED_NOT_REEXECUTED",
+  "native_parser_global_absence_claim": false,
+  "native_count_to_configuration_byte_join": "UNBOUND"
+}
