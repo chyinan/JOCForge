@@ -1,0 +1,36 @@
+{
+  "schema": "native-active-joc-sample-quantization-washed-vector.v1",
+  "source_package_id": "native-time-range-conversion-wash-v4",
+  "source_manifest_sha256": "868f3f00a1999cf1bc77aa3c75a52327ccb39b890fafeea5b32ac6a8548d48c0",
+  "fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "input": {
+    "time_base": "file_position",
+    "filter_rate": "29.97",
+    "nominal_rate": 30,
+    "rate_factor": "1001/1000",
+    "sample_rate_hz": 48000,
+    "start_token": 2160,
+    "inclusive_end_token": 2162,
+    "exclusive_end_frame": 2163
+  },
+  "calculation": {
+    "start_seconds": "2160 / 30 * 1001 / 1000 = 72.072",
+    "end_seconds_exclusive": "2163 / 30 * 1001 / 1000 = 72.1721",
+    "start_sample_product": 3459456,
+    "end_sample_product": 3464260.8,
+    "sample_range_validation_round": [3459456, 3464261],
+    "active_writer_truncate_toward_zero": [3459456, 3464260]
+  },
+  "observed": {
+    "run_id": "run-53",
+    "native_log_sha256": "19e67e79a2e40a149ab705202b3663abc5950bbb2cffa21ee43e45554622479b",
+    "private_capture_sha256": "6645220ab84c94a0ec03f6c98b9f91d080b630c2e0e4af7135d981c5a82bf5a3",
+    "final_start_sample": 3459456,
+    "final_end_sample_exclusive": 3464260,
+    "range_sample_count": 4804,
+    "dynamic_capture": "one-shot active-writer entry, returned to caller, final 64-bit fields read",
+    "raw_debugger_transcript_persisted": false
+  },
+  "model_output": "NOT_RUN",
+  "model_comparison": "NOT_EVALUATED"
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "native-active-joc-sample-quantization-washed-sources.v1",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v4",
+    "manifest_sha256": "868f3f00a1999cf1bc77aa3c75a52327ccb39b890fafeea5b32ac6a8548d48c0",
+    "payloads": {
+      "ACTIVE-JOC-SAMPLE-BOUNDARY-RULE.json": "c1e740dd51b1c6d067504bb1c0d31ffa21aba6ea4e3aede4de6b763a528c5d68",
+      "README.md": "06aec60f14a952628154dd3371fbdcb24febeea77f409a9492e4421028399914",
+      "verify_active_joc_sample_boundary.py": "bcdf16bbb2122edcd181b819a7a354707519ab493cef13a18697e7bf2d2cc994"
+    }
+  },
+  "parent_wash_package": {
+    "package_id": "native-time-range-conversion-wash-v3",
+    "manifest_sha256": "4e4fa588b3a701715bfdeb3f97bcb45bd29cf69de9cf0b5ea995095d1aaa3a97",
+    "scope": "bounded explicit offset over auto-FFOA on selected embedded-timecode vector"
+  },
+  "opaque_source_identities": {
+    "run48_configuration": "bbe54da99c1c247672b064a68fe7fec3416d129240b924498f73a64c46ac7752",
+    "run48_native_log": "08be53d389f802accc49d55f5fd2d08bcb43d37e8aeac02ef13be8083ea4c95b",
+    "run53_configuration": "21e29741ca1c36bc8751ae0f8b2f7dfaa30d08e6a982a2fcaf9ac2b1ea75e2bb",
+    "run53_native_log": "19e67e79a2e40a149ab705202b3663abc5950bbb2cffa21ee43e45554622479b",
+    "run53_capture_record": "6645220ab84c94a0ec03f6c98b9f91d080b630c2e0e4af7135d981c5a82bf5a3",
+    "active_joc_static_report": "cc7b858a5ff0e1a6b3b2ce58aa414dd887e7a5b4a89092d93e4a6a4515173001"
+  },
+  "raw_sources_copied": false,
+  "audio_samples_or_pcm_copied": false
+}

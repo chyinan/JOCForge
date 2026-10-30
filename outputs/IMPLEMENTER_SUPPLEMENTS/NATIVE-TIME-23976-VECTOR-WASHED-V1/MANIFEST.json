@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "NATIVE-TIME-23976-VECTOR-WASHED-V1",
+  "status": "BOUNDED_23976_VECTOR_ACCEPTED; OTHER_SYNTAX_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1080,
+      "sha256": "0b9c0094594ac0bd7d50edad0d25e57937efacdbf48fdb2dd5947002fda424d5"
+    },
+    {
+      "name": "OBSERVED-VECTOR.json",
+      "bytes": 1370,
+      "sha256": "e37aa2b624bf1382a7c81dfa27da34aa58d5efe9fc83c4ebd53660fa03f2661c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1191,
+      "sha256": "372db784443a6a5d7539024501ed746e87c2780c1a83a314ac676060c088ac9b"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 644,
+      "sha256": "da2bc297de241be0709833d7f47391d7ca400600dd383619b00813c3301213ce"
+    }
+  ]
+}

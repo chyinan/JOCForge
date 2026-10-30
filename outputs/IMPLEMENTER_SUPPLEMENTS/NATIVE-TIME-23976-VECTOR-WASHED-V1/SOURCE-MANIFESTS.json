@@ -1,0 +1,23 @@
+{
+  "schema": "native-23976-vector-washed-sources.v1",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v6",
+    "manifest_sha256": "2786651bba57f094c97adb61e67166d768282dcc135c6fade5c2ed786c82e29a",
+    "payloads": {
+      "NATIVE-23976-RANGE-VECTOR.json": "c1961e044e89afbe36eeb5a53335d48458a7883274faec8b01b82d6f19f4b2ce",
+      "README.md": "a760ac3179a39ec89312f21235dd6fb1522e06072cf2dac17b2ea840ca013005",
+      "verify_23976_range_vector.py": "3303b4ae43e34913a521c160ddf43afb1ca381c677202274bc66d16d3f38fdf9"
+    }
+  },
+  "parent_wash_package": {
+    "package_id": "native-time-range-conversion-wash-v5",
+    "manifest_sha256": "9f95ca1d0361e77c73723d89699463a8dbc17c8e6126cc367ceef692a68eaa4c",
+    "scope": "59.94 special-rate numeric file-position vector under active JOC truncation rule"
+  },
+  "opaque_source_identities": {
+    "run56_configuration": "6f6cb1ed407dd8516cc0987682d9898b6a4c12872cd6ad048c8495e4e92425d1",
+    "run56_native_log": "35ea24205a3d4098fb5c1a648a27624a454a0a5701722bb10a04948f0c557e10",
+    "run56_native_output": "99e612616c6f07c762e05ed9b75d136174bbf75f80cce7dfe12bc02a6de57591"
+  },
+  "raw_source_or_audio_copied": false
+}

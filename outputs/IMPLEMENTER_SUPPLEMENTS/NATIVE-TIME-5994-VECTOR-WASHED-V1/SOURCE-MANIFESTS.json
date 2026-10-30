@@ -1,0 +1,23 @@
+{
+  "schema": "native-5994-vector-washed-sources.v1",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v5",
+    "manifest_sha256": "9f95ca1d0361e77c73723d89699463a8dbc17c8e6126cc367ceef692a68eaa4c",
+    "payloads": {
+      "NATIVE-5994-RANGE-VECTOR.json": "e1cb344399880dd8eb2562c183f5ae0f50b7976f0dacf9721ab12569dfb2127a",
+      "README.md": "d2381d597f43b10f0ae5e89b707eccd3887cacf473cd47d84439f975d379d365",
+      "verify_5994_range_vector.py": "94ad38180dfec33da35a4ee8b1dd50fff1c41a474e00c3b21134e277ad5d32dc"
+    }
+  },
+  "parent_wash_package": {
+    "package_id": "native-time-range-conversion-wash-v4",
+    "manifest_sha256": "868f3f00a1999cf1bc77aa3c75a52327ccb39b890fafeea5b32ac6a8548d48c0",
+    "scope": "active writer truncation on 29.97 vector; SampleRange rounds for validation"
+  },
+  "opaque_source_identities": {
+    "run55_configuration": "6723efcb6d2ba8545e923ded708f83d96c8b8b679cba89a0f90020ccb9f5be1e",
+    "run55_native_log": "132277e6efb4cacdb9534ec4cacd7cd239a9ded8c11e1cfe378c8dc4eaa65e12",
+    "run55_native_output": "4a91142e1291a8cd1914e889f1fcefdca74df08a357f5e075146c05a1af0ce02"
+  },
+  "raw_source_or_audio_copied": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "NATIVE-TIME-SAMPLE-QUANTIZATION-WASHED-V1",
+  "status": "BOUNDED_ACTIVE_JOC_TRUNCATION_ACCEPTED; OTHER_MODES_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 2549,
+      "sha256": "6677b443723f102df3bc3c157ef52306d24f7256434545fcf094c9343d9258bb"
+    },
+    {
+      "name": "OBSERVED-VECTOR.json",
+      "bytes": 1476,
+      "sha256": "2af4eb346a73c49e2d48fb3f576ba247069a90d9805c188d5014ac17c3c74c35"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1538,
+      "sha256": "6323785b11510f5b349c47c7e327bb7785072501b17ab880750d701db17b181a"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 1050,
+      "sha256": "f6aa9d3ccebaba46ce600c70d11ec87b03e3b8bec466997a06fbb4d85632732e"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-TIME-SAMPLE-QUANTIZATION-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_ACTIVE_JOC_WRITER_TRUNCATION_RULE",
+  "independent_verification": {
+    "source_manifest": "MATCH",
+    "source_payloads": "3/3 MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "v3_parent_manifest": "MATCH",
+    "wash_arithmetic_replay": "PASS",
+    "raw_native_logs_or_capture_rehashed_by_wash": "NOT_RUN; opaque artifacts excluded"
+  },
+  "rule": {
+    "validation_helper": "round for source bounds/nonempty checks",
+    "active_writer": "truncate positive normalized seconds * sample_rate toward zero",
+    "verified_fractional_endpoint": {"product": 3464260.8, "validation": 3464261, "final": 3464260}
+  },
+  "limits": [
+    "dynamic fractional vector covers file_position only",
+    "embedded-timecode fractional path has static evidence only",
+    "other frame rates and timecode syntaxes remain open",
+    "model output/comparison not run"
+  ],
+  "whole_chain_ready": false
+}

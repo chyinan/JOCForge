@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-TIME-5994-VECTOR-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_5994_NUMERIC_FILE_POSITION_VECTOR",
+  "independent_verification": {
+    "source_manifest": "MATCH",
+    "source_payloads": "3/3 MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "v4_parent_manifest": "MATCH",
+    "arithmetic_replay": "PASS"
+  },
+  "interpretation": "Adds a successful 59.94 vector to the already-washed active JOC truncation rule; this .4 fractional vector does not independently distinguish rounding from truncation.",
+  "limits": [
+    "23.976 dynamic execution remains NOT_RUN",
+    "other rate strings and timecode syntaxes remain open",
+    "track duration remains distinct from selected source interval",
+    "model output and comparison remain NOT_RUN/NOT_EVALUATED"
+  ],
+  "whole_chain_ready": false
+}

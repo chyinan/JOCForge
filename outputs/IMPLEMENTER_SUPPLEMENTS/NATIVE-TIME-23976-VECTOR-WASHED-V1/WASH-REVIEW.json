@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-TIME-23976-VECTOR-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_23976_NUMERIC_FILE_POSITION_VECTOR",
+  "independent_verification": {
+    "source_manifest": "MATCH",
+    "source_payloads": "3/3 MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "v5_parent_manifest": "MATCH",
+    "arithmetic_replay": "PASS"
+  },
+  "limits": [
+    "integral vector does not distinguish rounding from truncation",
+    "colon-delimited/drop-frame timecode remains open",
+    "model output and comparison remain NOT_RUN/NOT_EVALUATED"
+  ],
+  "whole_chain_ready": false
+}
