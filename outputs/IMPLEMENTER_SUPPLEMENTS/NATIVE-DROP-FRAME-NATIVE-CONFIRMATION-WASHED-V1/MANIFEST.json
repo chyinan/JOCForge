@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1",
+  "status": "SINGLE_NATIVE_DF_VECTOR_CONFIRMED; OTHER_DF_MODES_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1327,
+      "sha256": "57623324045494e3e2d3616050ffc5ee820ce608c7a9c53f33f98a91483d7581"
+    },
+    {
+      "name": "NATIVE-DROP-FRAME-TIMECODE-REFERENCE-VECTOR.json",
+      "bytes": 2815,
+      "sha256": "486ab5505c9eb5ccd01caf6452132a412d7f3b6b2182887d0a9777b955c8e9cb"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1347,
+      "sha256": "05a9134b4e4955204cfb645ef9eb81fc011c9a6276d8db573ebf3b91424a0dd1"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 896,
+      "sha256": "c66ec93876d4fccea44f3232021ca04e3d1d22479a68561fa293a6d8f9a8b692"
+    },
+    {
+      "name": "WINDBG-LAUNCH-RECEIPT.json",
+      "bytes": 571,
+      "sha256": "33d83d6cf8893f4c9cf7befc1d7dab33492044ce8108adc45410ee052918f8a3"
+    }
+  ]
+}

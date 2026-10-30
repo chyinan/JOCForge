@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1",
+  "decision": "ACCEPTED_AS_NATIVE_CONFIRMED_SINGLE_DF_VECTOR",
+  "implementation_scope": "APPROVED_FOR_EXACT_LOWERCASE_DF_29_97_FILE_POSITION_VECTOR_AND_STATIC_RULE_ONLY",
+  "independent_verification": {
+    "native_manifest_sha256": "MATCH",
+    "native_payloads": "4/4 MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "static_parent_manifest": "MATCH",
+    "arithmetic_replay": "PASS",
+    "target_memory_read_by_debugger": false,
+    "code_or_data_breakpoints_set": false
+  },
+  "not_approved_by_this_vector": [
+    "semicolon/drop-frame punctuation variants",
+    "uppercase DF",
+    "other frame rates",
+    "embedded-timecode df",
+    "runtime invalid-label rejection",
+    "model output or model/native comparison"
+  ],
+  "whole_chain_ready": false
+}

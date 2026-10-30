@@ -1,0 +1,17 @@
+{
+  "schema": "wash.native-reference-debugger-launch-receipt.v1",
+  "run_id": "run-79",
+  "process_created_by_debugger": true,
+  "initial_break_observed": true,
+  "exception_filters_enabled": [
+    "access violation",
+    "DLL initialization failure"
+  ],
+  "code_or_data_breakpoints_set": false,
+  "target_memory_read_by_observer": false,
+  "active_filter_modules_loaded_during_resume": true,
+  "target_reached_natural_exit": true,
+  "unexpected_exception_stop_observed": false,
+  "normal_reference_log_and_output_created": true,
+  "business_parameter_changes": false
+}

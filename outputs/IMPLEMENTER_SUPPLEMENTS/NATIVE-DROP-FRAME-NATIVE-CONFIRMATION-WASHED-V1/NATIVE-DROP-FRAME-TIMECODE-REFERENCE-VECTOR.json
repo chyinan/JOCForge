@@ -1,0 +1,68 @@
+{
+  "schema": "wash.native-drop-frame-timecode-reference-vector.v1",
+  "package_id": "native-time-range-conversion-wash-v12",
+  "parent_wash_manifest_sha256": "c80784dc4e0006bcf1a247fb8fe85645ee7840fdbdc29200f68a7e622812c4cd",
+  "implementation_delivery": "PROHIBITED",
+  "scope": {
+    "claim_scope": "one lowercase df file-position vector at 29.97, run through the active DEE reference encoder",
+    "not_claimed": [
+      "semicolon punctuation behavior",
+      "uppercase DF marker behavior",
+      "other frame-rate or embedded-timecode combinations",
+      "final track duration or stream profile probe",
+      "model output or model/native byte comparison"
+    ]
+  },
+  "native_reference": {
+    "execution_status": "EXECUTED_REFERENCE_WITH_DEBUGGER_ATTACHED",
+    "run_id": "run-79",
+    "configuration_sha256": "aec8a8ebea01a35823d35ad1608b9573773bf35b44831ff28046af42f85677ec",
+    "native_log_sha256": "a550573aca3bfe93720a0319a0b7110af1338ece494d8de2403332e41b0eb85d",
+    "reference_ec3_sha256": "bbc90d7fe57bacf180ca9d24679b68e001ce7477a117026a8dec3244bea0193f",
+    "reference_ec3_bytes": 45056,
+    "backend_status": "NORMAL_REFERENCE_ENCODING_COMPLETED",
+    "output_interference_comparison": "NOT_RUN",
+    "model_output": "NOT_RUN",
+    "model_comparison": "NOT_EVALUATED",
+    "audio_sample_values_read": false,
+    "audio_sample_values_persisted": false
+  },
+  "input_vector": {
+    "fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "sample_rate_hz": 48000,
+    "filter_timecode_frame_rate": "29.97",
+    "time_base": "file_position",
+    "start_token": "00:01:00:02df",
+    "end_token": "00:01:00:12df",
+    "configured_data_rate_kbps": 1024
+  },
+  "debugger_receipt": {
+    "initial_break_observed": true,
+    "exception_filters_enabled": [
+      "access violation",
+      "DLL initialization failure"
+    ],
+    "code_or_data_breakpoints_set": false,
+    "target_memory_read_by_observer": false,
+    "target_process_reached_natural_exit": true,
+    "access_violation_stop_observed": false,
+    "dll_initialization_failure_stop_observed": false,
+    "module_loads_observed_during_resume": true
+  },
+  "native_mapping": {
+    "source": "native composite-master log",
+    "start_sample": 2882880,
+    "end_sample_exclusive": 2898896,
+    "sample_count": 16016,
+    "source_interval_seconds": "1001 / 3000",
+    "static_prediction_match": true,
+    "interpretation": "The native log reached composite initialization and recorded the exact same start/end sample boundaries predicted by the hash-bound static df contract."
+  },
+  "remaining_boundaries": {
+    "semicolon": "NOT_EVALUATED",
+    "uppercase_df": "NOT_EVALUATED",
+    "embedded_timecode_df": "NOT_EVALUATED",
+    "model_replay": "NOT_RUN",
+    "output_interference_comparison": "NOT_RUN"
+  }
+}

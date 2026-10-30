@@ -8722,8 +8722,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1656496,
-              "sha256": "ed82dbaa4c80a5bb8d2c4913dd0e6b1c09beebc03221ce3ec81d67efc0db5af2"
+              "bytes": 1660896,
+              "sha256": "62e25a81d04d69bef7997778c25c83b910e912dfc7a1d8f311b389ad937f154b"
             }
           ],
           "test_modules": [
@@ -12235,8 +12235,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1656496,
-              "sha256": "ed82dbaa4c80a5bb8d2c4913dd0e6b1c09beebc03221ce3ec81d67efc0db5af2"
+              "bytes": 1660896,
+              "sha256": "62e25a81d04d69bef7997778c25c83b910e912dfc7a1d8f311b389ad937f154b"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -28991,8 +28991,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1656496,
-              "sha256": "ed82dbaa4c80a5bb8d2c4913dd0e6b1c09beebc03221ce3ec81d67efc0db5af2"
+              "bytes": 1660896,
+              "sha256": "62e25a81d04d69bef7997778c25c83b910e912dfc7a1d8f311b389ad937f154b"
             }
           ],
           "test_inventory": [
@@ -29371,6 +29371,106 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "WASHED_STATIC_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "washed-drop-frame-native-confirmed-single-vector",
+          "mapping_status": "WASHED_NATIVE_CONFIRMED_LOWERCASE_DF_2997_FILE_POSITION_VECTOR__OTHER_MODES_OPEN",
+          "implementation_status": "NATIVE_CONFIRMED_EXACT_VECTOR__IMPLEMENTATION_DELIVERY_FLAG_CONFLICT",
+          "scope": "Run 79 completed a normal reference encode for lowercase `df`, 29.97, file-position, start 00:01:00:02df and end 00:01:00:12df. The native composite log range [2,882,880, 2,898,896) matches the hash-bound static prediction. The reference EC-3 is 45,056 bytes. The debugger only launched/resumed with exception filters; it set no code/data breakpoints and read no target memory. This confirms only the exact vector. The payload says implementation_delivery=PROHIBITED while WASH-REVIEW says the exact vector/static rule is approved, so implementation scope requires Wash reconciliation before code changes.",
+          "owner": "timeline",
+          "implementation_requirement": false,
+          "dependencies": [
+            "washed-drop-frame-static-contract-only"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "FilePositionTimecode",
+              "TimecodeFrameRate",
+              "SourceSampleIndex",
+              "ReferenceOutputIdentity"
+            ],
+            "covered_clauses": [
+              "The native-confirmed case is lowercase df, 29.97, file-position, 48 kHz, tokens 00:01:00:02df through 00:01:00:12df.",
+              "The native composite log range is [2,882,880, 2,898,896), 16,016 samples, matching the static prediction.",
+              "Run 79 completed a normal reference encode; output identity is recorded by hash/length only, with no model output or comparison.",
+              "Debugger observation used no code/data breakpoints and read no target memory.",
+              "This single run does not close semicolon, uppercase DF, other-rate, embedded-timecode, or invalid-label behavior."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_DROP_FRAME_CONFIRMATION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/NATIVE-DROP-FRAME-TIMECODE-REFERENCE-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/WASH-REVIEW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/WINDBG-LAUNCH-RECEIPT.json"
+            ],
+            "supplement_manifest_sha256": "ae7921aad6211118b7927e993425a77b7cbfbe29d7d9919d6bc5fbf486634985",
+            "parent_static_package_manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446",
+            "implementation_delivery_flag": "PROHIBITED",
+            "wash_review_implementation_scope": "APPROVED_FOR_EXACT_LOWERCASE_DF_29_97_FILE_POSITION_VECTOR_AND_STATIC_RULE_ONLY",
+            "implementation_scope_reconciliation": "REQUIRED_BEFORE_CODE_CHANGES",
+            "validation_boundary": "Native confirms only this vector; model output/comparison and all other syntax/rates remain unrun or unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_DROP_FRAME_RANGE_VECTOR_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/NATIVE-DROP-FRAME-TIMECODE-REFERENCE-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1/WINDBG-LAUNCH-RECEIPT.json"
+            ],
+            "case_pointers": [
+              "Lowercase df, 29.97, file-position: 00:01:00:02df to 00:01:00:12df.",
+              "Native range [2,882,880, 2,898,896) matches the v11 static prediction.",
+              "Reference EC-3 completed; no PCM/sample values, target memory, or model output were read/generated by this Wash task.",
+              "Implementation flag conflict is recorded; no local implementation readiness is asserted."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "ae7921aad6211118b7927e993425a77b7cbfbe29d7d9919d6bc5fbf486634985"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Implementation scope reconciliation for the payload's PROHIBITED flag versus Wash Review approval.",
+            "Model output and model/native comparison.",
+            "Semicolon, uppercase DF, other rates, embedded-timecode df, and invalid-label runtime behavior.",
+            "Whole-chain product readiness and acceptance."
+          ],
+          "validation_boundary": "Record the exact native-confirmed vector only; do not implement until Wash reconciles the conflicting implementation disposition.",
+          "native_status": {
+            "status": "SINGLE_NATIVE_DF_VECTOR_CONFIRMED_OTHER_DF_MODES_OPEN",
+            "run_id": "run-79",
+            "timecode_form": "lowercase_df_suffix",
+            "rate_token": "29.97",
+            "time_base": "file_position",
+            "start_token": "00:01:00:02df",
+            "end_token": "00:01:00:12df",
+            "start_sample": 2882880,
+            "end_sample_exclusive": 2898896,
+            "sample_count": 16016,
+            "native_static_prediction_match": true,
+            "reference_encode_status": "NORMAL_REFERENCE_ENCODING_COMPLETED",
+            "reference_ec3_bytes": 45056,
+            "debugger_code_or_data_breakpoints": false,
+            "target_memory_read": false,
+            "model_output": "NOT_RUN",
+            "model_comparison": "NOT_EVALUATED",
+            "implementation_ready_conflict": true,
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY",
+          "correction_of": {
+            "package_id": "NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1",
+            "manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446",
+            "scope_extended": "This exact lowercase-df vector is now native-confirmed; other modes remain open."
+          }
         }
       ]
     },
