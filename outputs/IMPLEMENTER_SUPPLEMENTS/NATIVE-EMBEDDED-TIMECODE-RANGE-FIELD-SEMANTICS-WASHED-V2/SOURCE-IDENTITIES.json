@@ -1,0 +1,14 @@
+{
+  "schema": "native-embedded-timecode-range-field-semantics-source-identities.v1",
+  "range_semantics_source_manifest_sha256": "c0938d12e1b7e377ae76d22081d4bad4f214a5b296271e685fce3b55b4e81ba7",
+  "range_semantics_source_payload_sha256": {
+    "NATIVE-RANGE-SAMPLE-FIELD-SEMANTICS.json": "3bf25402add28750a05a0a5ae92e103aa0d5a528f1c9025a1e118205ec429106"
+  },
+  "run121_sample_count_addendum_manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
+  "run115_original_manifest_sha256": "7eb9f1625af1136248ed958f1794a571f7c7cfbd53feee82006f6b2c6e1c435e",
+  "ghidra_static_report_sha256": "640dced700f854d96fdf5c2c9a813df5e5a1c04ac5a026e7f58239b622a1fba5",
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "r115_r121_owner_join": "UNBOUND",
+  "end_sample_endpoint_convention": "UNBOUND"
+}

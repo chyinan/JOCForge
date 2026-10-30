@@ -1,0 +1,19 @@
+{
+  "schema": "native-reader-sample-endpoint-followup-input-only.v1",
+  "status": "NOT_RUN",
+  "purpose": "Resolve native range field units/endpoint and absolute sample origin without conflating reader-relative cursors or padded callback span.",
+  "required_same_execution_fields": [
+    "native range start/end field names and units",
+    "reader absolute sample/file offset before and after each read",
+    "direct actual read-count vector per channel",
+    "pre-read zero-fill extent and tail read extent",
+    "downstream descriptor frame span and generation owner"
+  ],
+  "expected_outcomes": "UNSPECIFIED",
+  "do_not_infer": [
+    "end inclusive/exclusive from numeric value alone",
+    "absolute positions from reader-relative cursor",
+    "source sample count from padded callback span",
+    "cross-run identity from equal input/output hashes"
+  ]
+}

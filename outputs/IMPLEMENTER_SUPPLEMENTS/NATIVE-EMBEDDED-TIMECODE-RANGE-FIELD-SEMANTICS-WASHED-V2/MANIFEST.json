@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2",
+  "scope": "StartSample/EndSample types and validation bound statically; endpoint and cross-run owner remain unbound",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1475,
+      "sha256": "a8bc7a076023255d8d02ecf6474b3500a274594d50a2f82cc26f0928418af9df"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 957,
+      "sha256": "3d5b2fb6f2c9452efc097925e10869abf81f646b9b6b2798e84dbd7879e57d20"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 586,
+      "sha256": "076bb839085236a10136446b32df439a85ff24a2bbd8d5ecd250795650b2696d"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 627,
+      "sha256": "a2dffdaab0809579ef6d61cc8069117acba514079291cae2c7321bd9d75dc159"
+    }
+  ]
+}

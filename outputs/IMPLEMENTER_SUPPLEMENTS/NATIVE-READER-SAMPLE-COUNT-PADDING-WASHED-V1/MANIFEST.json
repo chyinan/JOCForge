@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1",
+  "scope": "bounded native observation; source/count and target-generation edges remain explicit",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1576,
+      "sha256": "3dc101456cb24de1222512ea49747874251b84de139a6bd23d66a7737acd2a1b"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 962,
+      "sha256": "1cf4827c3983ae28853d3c5add05484eb227e023c9c68815590c9ccd023e01e5"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 723,
+      "sha256": "8181922e56359789df1a74810c7e4dd5819b9f1149fcc9b79f92f794d422ee14"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 858,
+      "sha256": "372acd1b8f17b9f1aec1afda562a441c0d0eb2e3c9909d2f6a43011e7730c394"
+    }
+  ]
+}

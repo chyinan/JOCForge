@@ -1,0 +1,15 @@
+{
+  "schema": "native-reader-sample-count-padding-source-identities.v1",
+  "source_package_manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
+  "source_payload_sha256": {
+    "NATIVE-READER-SAMPLE-COUNT-AND-PADDING-ADDENDUM.json": "8adab4b681c5ed5849f7c38d8cff5898390309fe754bda47523179fd153b40bc",
+    "CHECK.json": "e9c9442306de2fe96e0c7584e000af9287eca15210fb12b1658be53420be9640"
+  },
+  "run121_authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "run121_runtime_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "run121_dee_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "run121_atmos_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "cross_run_identity_with_run115": "UNBOUND",
+  "sample_endpoint_convention": "UNBOUND",
+  "sample_position_to_spatial_generation": "UNBOUND"
+}

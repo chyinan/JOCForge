@@ -302,7 +302,7 @@
           "slice_id": "native-embedded-timecode-sample-position-run115",
           "mapping_status": "WASHED_RUN115_EMBEDDED_TIMECODE_SAMPLE_RANGE__RATE_AND_GENERATION_JOIN_OPEN",
           "implementation_status": "EVIDENCE_ONLY_SINGLE_NATIVE_RANGE__JOCFORGE_PARSER_NOT_RUN",
-          "scope": "This is one bounded native DEE observation for an authorized ADM BWF. Run 115 used embedded_timecode values 86,640..86,664; runtime input matched the authorized source hash, encoding completed, and DEE reported native composite-master samples 0..49,999 inclusive (50,000 samples). The 24 fps / 2,000 samples-per-frame relation is an inference consistent with native output, not an explicit XML timecode_rate. Run 113's values 5,770..5,772 were rejected because computed start time 240.416667 seconds preceded the embedded file origin at 3,610 seconds; that run yielded no sample-position observation. No general parser/rate rule or JOCForge parser implementation is established. PCM was not read or persisted; model execution and uninstrumented output comparison are NOT_RUN; sample-position to spatial-callback generation remains UNBOUND.",
+          "scope": "This is one bounded native DEE observation for an authorized ADM BWF. Run 115 used embedded_timecode values 86,640..86,664; runtime input matched the authorized source hash, encoding completed, and the native composite range fields were reported as 0..49,999. The prior inclusive/50,000-sample interpretation is withdrawn; endpoint convention and sample-count interpretation remain UNBOUND. The 24 fps / 2,000 samples-per-frame relation remains an inference, not an explicit XML timecode_rate. Run 113 was rejected before a sample-position observation. No general parser/rate rule or JOCForge parser implementation is established. PCM was not read or persisted; model execution and uninstrumented output comparison are NOT_RUN; R115/R121 execution identity and sample-position-to-spatial-callback generation remain UNBOUND.",
           "owner": "spatial_control",
           "implementation_requirement": false,
           "dependencies": [],
@@ -320,10 +320,10 @@
               "SpatialCallbackGeneration"
             ],
             "covered_clauses": [
-              "Run 115 maps its selected embedded_timecode range to native composite-master sample indices 0..49,999; the XML has no explicit timecode_rate.",
-              "24 fps and 2,000 samples per frame are inference consistent with observed output, not an authored rate field or universal conversion rule.",
-              "Run 113 is a distinct rejected attempt before sample-position observation and is not merged with run 115.",
-              "Sample position to spatial callback/generation has no typed join and remains UNBOUND."
+              "Run 115 reported composite range field values 0..49,999; the earlier inclusive 50,000-sample interpretation is withdrawn and endpoint convention is UNBOUND.",
+              "The 24 fps / 2,000 samples-per-frame relation remains an inference because XML has no explicit timecode_rate.",
+              "Run 113 was rejected before any sample-position observation; no parser or universal rate rule is established.",
+              "Run-121 range semantics and reader count are a separate execution; R115/R121 owner-generation identity is UNBOUND."
             ]
           },
           "parameters": {
@@ -337,7 +337,7 @@
             ],
             "supplement_manifest_sha256": "b29d8828d0fac45d699254a4000076bb0a167a11b799f21b3022315a3037e2b9",
             "authorized_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
-            "validation_boundary": "One run-115 native sample-range observation and one run-113 rejection only; rate is inference, parser implementation and callback-generation join remain open."
+            "validation_boundary": "One run-115 native range-field observation plus a separate hash-bound run-121 semantics addendum; endpoint interpretation, cross-run identity, parser implementation, and spatial-generation join remain open."
           },
           "vectors": {
             "kind": "WASHED_RUN115_EMBEDDED_TIMECODE_TO_NATIVE_SAMPLE_RANGE_NO_MODEL_OUTPUT",
@@ -346,11 +346,9 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-SAMPLE-POSITION-WASHED-V1/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
-              "Run 115: XML embedded_timecode 86,640..86,664; authorized runtime input identity matched; native composite samples 0..49,999 inclusive, 50,000 total.",
-              "24 fps and 2,000 samples per frame are inferred from output consistency; XML did not specify timecode_rate.",
-              "Run 113: embedded_timecode 5,770..5,772 rejected before sample-position observation because the computed start preceded the embedded file origin.",
-              "No PCM was read or persisted; model execution and uninstrumented output comparison are NOT_RUN.",
-              "Spatial callback/generation join remains UNBOUND; this observation is not a JOCForge parser implementation."
+              "Run 115: embedded_timecode 86,640..86,664; native composite range fields reported as 0..49,999, without an inclusive/exclusive interpretation.",
+              "The prior 50,000-sample inclusive interpretation is withdrawn by a hash-bound range-field semantics addendum; R115/R121 owner identity remains UNBOUND.",
+              "Run 113: embedded_timecode 5,770..5,772 rejected before sample-position observation because its start preceded the embedded origin."
             ],
             "expected_outputs_included": false,
             "supplement_manifest_sha256": "b29d8828d0fac45d699254a4000076bb0a167a11b799f21b3022315a3037e2b9"
@@ -371,10 +369,6 @@
               86640,
               86664
             ],
-            "run115_composite_sample_range_inclusive": [
-              0,
-              49999
-            ],
             "run115_composite_sample_count": 50000,
             "timecode_rate_explicit_in_xml": false,
             "24_fps_2000_samples_per_frame": "INFERENCE_CONSISTENT_WITH_OBSERVED_OUTPUT",
@@ -382,6 +376,201 @@
             "model_execution": "NOT_RUN",
             "uninstrumented_output_comparison": "NOT_RUN",
             "spatial_callback_generation_join": "UNBOUND",
+            "whole_chain_ready": false,
+            "run115_reported_composite_range_fields": [
+              0,
+              49999
+            ],
+            "run115_endpoint_convention": "UNBOUND",
+            "run115_sample_count_interpretation": "UNBOUND",
+            "prior_inclusive_50000_sample_interpretation": "WITHDRAWN_BY_RANGE_FIELD_SEMANTICS_V2",
+            "r115_r121_owner_generation_join": "UNBOUND"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "run-121-native-reader-count-and-padding-boundary",
+          "mapping_status": "WASHED_RUN121_NATIVE_READER_COUNT_AND_PADDING__ENDPOINT_AND_SPATIAL_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RUN121_READER_COUNT_AND_PADDING__NO_CROSS_RUN_OR_GENERATION_JOIN",
+          "scope": "One bounded run-121 native execution matched the authorized input hash. Its range record reports start=0 and end=49,999, but units and endpoint convention are UNBOUND. In that run each of two readers made 32 reads of 1,536 sample frames per channel plus one 847-frame tail read, totaling 49,999 per reader. Each read was preceded by zero-fill of 38x1536 float elements; the tail retained 689 zero elements per plane. The downstream path received 33 data-frame calls of 1,536 frames and five zero-span flush calls. Run-121 is not joined to run-115 despite matching source hashes; absolute sample origin and spatial generation remain unbound. This does not revise run-115 endpoint semantics.",
+          "owner": "spatial_control",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run121ExecutionIdentity",
+              "CompositeRangeStartEnd",
+              "ReaderSampleFrameCount",
+              "ReaderRelativeCursor",
+              "ProviderPreReadZeroFill",
+              "PaddedCallbackSpan",
+              "DownstreamDataFrameSpan",
+              "SpatialCallbackGeneration",
+              "Run115ExecutionIdentity"
+            ],
+            "covered_clauses": [
+              "Run-121's same-execution range record and reader-state count path are joined, but range units and endpoint convention are UNBOUND.",
+              "The direct reader count is 32*1536+847=49,999 sample frames per channel for each of two readers; relative cursor values are not absolute positions.",
+              "Pre-read zero-fill spans 38x1536 float elements; the tail reads 847 and leaves 689 zeros per channel, yielding a padded 1536-frame span.",
+              "The downstream path has 33 data-frame calls of 1536 frames and five zero-span flush calls; flush calls are not source samples.",
+              "Run-121 to run-115 identity and sample position to spatial generation remain UNBOUND; equal source hashes do not join executions."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_RUN121_NATIVE_READER_COUNT_AND_PADDING_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "supplement_manifest_sha256": "09f00963049bbc5bcbb5c843573cb85d84d559ea1d1568a0b6b2f9c55b0343f5",
+            "source_package_manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
+            "validation_boundary": "Single run-121 native observation; endpoint units, absolute origin, run-115 identity, model behavior, and spatial-generation join remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN121_NATIVE_SAMPLE_COUNT_AND_PADDING_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-READER-SAMPLE-COUNT-PADDING-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "Two readers each report 32*1536 plus an 847-frame tail, totaling 49,999 sample frames per channel.",
+              "The 847-frame tail is delivered in a 1536-frame zero-filled span with 689 zero elements per channel.",
+              "The end=49,999 range field remains unit/endpoint ambiguous and is not joined to run-115."
+            ],
+            "expected_outputs_included": false,
+            "native_output_included": false,
+            "supplement_manifest_sha256": "09f00963049bbc5bcbb5c843573cb85d84d559ea1d1568a0b6b2f9c55b0343f5"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Range field units and inclusive/exclusive endpoint convention.",
+            "Absolute sample-position origin and any sample-position-to-spatial-generation join.",
+            "Run-121 to run-115 same-execution/source-generation identity; equal input/output hashes are insufficient.",
+            "Model execution and comparison with uninstrumented native output."
+          ],
+          "validation_boundary": "Native reader/count/padding facts for run-121 only; does not determine run-115 range semantics or imply a product source-generation join.",
+          "native_status": {
+            "run121_runtime_input_matches_authorized_source": true,
+            "reader_direct_count_per_instance": "32*1536+847=49999_SAMPLE_FRAMES_PER_CHANNEL",
+            "range_fields": "start=0,end=49999; units_and_endpoint_convention_UNBOUND",
+            "reader_relative_cursor_is_absolute_position": false,
+            "provider_zero_fill": "38*1536_FLOATS_BEFORE_EACH_READ",
+            "tail_read_frames_per_channel": 847,
+            "tail_zero_padding_per_channel": 689,
+            "downstream_data_frame_calls": 33,
+            "downstream_data_frame_span_per_call": 1536,
+            "downstream_zero_span_flush_calls": 5,
+            "per_callback_generation": "NOT_OBSERVED",
+            "run115_cross_run_join": "UNBOUND",
+            "sample_to_spatial_generation": "UNBOUND",
+            "model_execution": "NOT_RUN",
+            "uninstrumented_output_comparison": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "native-embedded-timecode-range-field-semantics-v2",
+          "mapping_status": "WASHED_STATIC_SAMPLE_BOUNDARY_FIELDS__ENDPOINT_AND_CROSS_RUN_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RANGE_FIELD_TYPE_AND_VALIDATION__NO_SAMPLE_CONVERTER",
+          "scope": "Hash-matched static analysis identifies StartSample and EndSample as sample-boundary values, not byte offsets. The selected path uses AtmosStorage.sample_count when EndSample is zero, rejects EndSample greater than the storage sample count, and rejects StartSample greater than EndSample. Neither the field names nor validations define whether EndSample is inclusive or exclusive. Run-121 dynamically reports range fields 0..49,999 while the per-channel direct reader count is also 49,999 and the padded callback span is 1,536; numeric agreement does not resolve endpoint semantics. Run-115 remains a separate execution and its previous inclusive/50,000 interpretation is withdrawn. Cross-run owner identity and sample-position-to-spatial-generation remain UNBOUND.",
+          "owner": "spatial_control",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run121ExecutionIdentity",
+              "StartSampleBoundaryValue",
+              "EndSampleBoundaryValue",
+              "AtmosStorageSampleCount",
+              "ReaderSampleFrameCount",
+              "PaddedCallbackSpan",
+              "Run115ExecutionIdentity",
+              "SpatialCallbackGeneration"
+            ],
+            "covered_clauses": [
+              "StartSample and EndSample are sample-boundary values, not byte offsets.",
+              "EndSample zero selects AtmosStorage.sample_count; EndSample greater than storage count and StartSample greater than EndSample are statically rejected.",
+              "The endpoint convention is not specified by the field types or comparisons.",
+              "Run-121 range fields, reader count, and padded callback span are distinct values/domains despite numeric agreement.",
+              "Run-115 is a separate execution; its earlier inclusive interpretation is withdrawn and cross-run owner/generation identity is UNBOUND."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F01_NATIVE_RANGE_FIELD_SEMANTICS_AND_RUN121_CORRELATION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "supplement_manifest_sha256": "0efba67355c043dabb6d8092bee31117d6b94034ef131d661f17596fa883cb2f",
+            "range_semantics_source_manifest_sha256": "c0938d12e1b7e377ae76d22081d4bad4f214a5b296271e685fce3b55b4e81ba7",
+            "run121_addendum_manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
+            "run115_original_manifest_sha256": "7eb9f1625af1136248ed958f1794a571f7c7cfbd53feee82006f6b2c6e1c435e",
+            "validation_boundary": "Static field typing and selected validation comparisons plus same-run run-121 correlation; no endpoint convention, run-115/run-121 owner join, or spatial-generation join is established."
+          },
+          "vectors": {
+            "kind": "WASHED_F01_RANGE_FIELD_SEMANTICS_AND_RUN121_INPUT_ONLY_FOLLOWUP",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "EndSample zero uses storage sample_count; the selected static path rejects end beyond storage count and start beyond end.",
+              "Run-121 logs range fields 0..49,999, direct per-channel reader count 49,999, and a padded callback span of 1,536; none selects an endpoint convention by numeric equality.",
+              "The run-115 inclusive/50,000 interpretation is withdrawn; R115/R121 owner-generation identity remains UNBOUND."
+            ],
+            "expected_outputs_included": false,
+            "native_execution": "RUN121_OBSERVED; MODEL_NOT_RUN",
+            "supplement_manifest_sha256": "0efba67355c043dabb6d8092bee31117d6b94034ef131d661f17596fa883cb2f"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "EndSample inclusive/exclusive convention and absolute sample-position origin.",
+            "R115-to-R121 owner/generation identity and run-115 endpoint interpretation.",
+            "Sample-position-to-spatial-callback generation join.",
+            "Model execution and uninstrumented-output comparison."
+          ],
+          "validation_boundary": "Evidence-only static range-field semantics with bounded run-121 correlation; no generic sample converter or cross-run identity rule is inferred.",
+          "native_status": {
+            "start_sample_end_sample_type": "SAMPLE_BOUNDARY_VALUES",
+            "end_sample_zero_behavior": "USES_STORAGE_SAMPLE_COUNT",
+            "bounds_validation": "VERIFIED_STATICALLY",
+            "inclusive_exclusive_endpoint": "UNBOUND",
+            "run121_range_log_fields": [
+              0,
+              49999
+            ],
+            "run121_reader_direct_count_per_channel": 49999,
+            "run121_tail_read_and_padding": {
+              "read_frames": 847,
+              "callback_span": 1536,
+              "zero_padding": 689
+            },
+            "r115_r121_owner_join": "UNBOUND",
+            "sample_to_spatial_generation": "UNBOUND",
+            "rate_mapping": "24_FPS_2000_SAMPLES_PER_FRAME_INFERENCE",
+            "xml_timecode_rate_explicit": false,
+            "model_execution": "NOT_RUN",
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
@@ -8886,8 +9075,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1756545,
-              "sha256": "2d579447218bfc8c871acd51d07febdf90234358c211058e5059f733e149d784"
+              "bytes": 1767436,
+              "sha256": "2bc04e1d145fd6c9ca5fa8ba40a7bf41eb7dee1f9a9b44af73457c8254e72b83"
             }
           ],
           "test_modules": [
@@ -12399,8 +12588,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1756545,
-              "sha256": "2d579447218bfc8c871acd51d07febdf90234358c211058e5059f733e149d784"
+              "bytes": 1767436,
+              "sha256": "2bc04e1d145fd6c9ca5fa8ba40a7bf41eb7dee1f9a9b44af73457c8254e72b83"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -30493,8 +30682,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1756545,
-              "sha256": "2d579447218bfc8c871acd51d07febdf90234358c211058e5059f733e149d784"
+              "bytes": 1767436,
+              "sha256": "2bc04e1d145fd6c9ca5fa8ba40a7bf41eb7dee1f9a9b44af73457c8254e72b83"
             }
           ],
           "test_inventory": [

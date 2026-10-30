@@ -1,0 +1,18 @@
+{
+  "schema": "native-embedded-timecode-range-endpoint-followup-input-only.v1",
+  "status": "NOT_RUN",
+  "same_run_fields_needed": [
+    "StartSample and EndSample values and owner",
+    "AtmosStorage.sample_count",
+    "reader absolute cursor before/after",
+    "direct per-channel read count",
+    "callback span and zero-fill extent",
+    "spatial callback/source generation token"
+  ],
+  "expected_endpoint_interpretation": "UNSPECIFIED",
+  "do_not_infer": [
+    "inclusive/exclusive from equal numeric count",
+    "cross-run owner identity from matching hashes",
+    "absolute positions from reader-relative cursor"
+  ]
+}

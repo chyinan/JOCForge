@@ -1,0 +1,13 @@
+{
+  "schema": "native-embedded-timecode-range-field-semantics-wash-check.v1",
+  "status": "PASS_HASH_BOUND_STATIC_AND_SAME_RUN_SCOPE",
+  "range_semantics_source_manifest_and_payload_hashes": "VERIFIED",
+  "run121_addendum_manifest_and_payload_hashes": "VERIFIED",
+  "StartSample_EndSample_type": "SAMPLE_BOUNDARY_VALUES",
+  "EndSample_zero_behavior": "USES_STORAGE_SAMPLE_COUNT",
+  "bounds_validation": "VERIFIED_STATICALLY",
+  "inclusive_exclusive_endpoint": "UNBOUND",
+  "r115_r121_owner_join": "UNBOUND",
+  "sample_to_spatial_generation": "UNBOUND",
+  "model_execution": "NOT_RUN"
+}

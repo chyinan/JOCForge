@@ -1,0 +1,15 @@
+{
+  "schema": "native-reader-sample-count-padding-wash-check.v1",
+  "status": "PASS_HASH_BOUND_NATIVE_COUNT_AND_PADDING_WITH_ENDPOINT_GAPS",
+  "source_manifest_and_payload_hashes": "VERIFIED",
+  "reader_direct_count_per_instance": "32*1536+847=49999_SAMPLE_FRAMES_PER_CHANNEL",
+  "range_log_fields": "start=0,end=49999; units_and_endpoint_convention_UNBOUND",
+  "reader_relative_cursor_is_absolute_position": false,
+  "provider_zero_fill": "38*1536_FLOATS_BEFORE_EACH_READ",
+  "tail_zero_padding_per_channel": 689,
+  "downstream_data_frame_span_per_call": 1536,
+  "run115_cross_run_join": "UNBOUND",
+  "per_callback_generation": "NOT_OBSERVED",
+  "sample_to_spatial_generation": "UNBOUND",
+  "model_execution": "NOT_RUN"
+}
