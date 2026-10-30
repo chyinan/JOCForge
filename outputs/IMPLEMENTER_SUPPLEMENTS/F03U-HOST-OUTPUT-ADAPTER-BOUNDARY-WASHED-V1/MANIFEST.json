@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F03U-HOST-OUTPUT-ADAPTER-BOUNDARY-WASHED-V1",
+  "status": "HOST_ADAPTER_STATIC_BOUNDARY_ONLY; FINAL_WRITER_JOIN_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1204,
+      "sha256": "55762c159802fe1264beed18922b6d906eeb510c60a10b5b96683cc44aa8a8d8"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1215,
+      "sha256": "b955c4f76a5d7f5a8ff976b6ca2acbf0f642704ec144c12538c60b04b9ec9e95"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 873,
+      "sha256": "2479e47ce2a2397ed72cd201579b6c8ab8130dad1156a8f0021222c11d5c8678"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "f03u-host-output-adapter-boundary-washed-sources.v1",
+  "research_package": {
+    "package_id": "sourceweight-host-output-consumer-wash-v1",
+    "manifest_sha256": "eeb1a2c3f1a081d0d524b4d24ffd08814f195f9435cbaed67799477d8c673a60",
+    "payloads": {
+      "EVIDENCE.json": "99af2851afaa76004e8ee4b22abea21ae36a0bda67323c58d027bf57496f1006",
+      "HOST-OUTPUT-CONSUMER.json": "766d5ed361c02f7702ac4e1813c558499d7e94a2cf0ec4734098387d96449e44",
+      "REPORT.md": "7e431cc44d0d1f92c894681be63944215fee6516a2e1e1277f5dafa5b22873c9",
+      "verify_host_output_consumer.py": "517652dda5e64672af895a6d921d72de5a136ee7a8257972a3c49a2d1e0354f2"
+    },
+    "source_artifacts_forwarded": false
+  },
+  "prior_washed_local_ordinal_package": {
+    "package_id": "F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1",
+    "manifest_sha256": "c72d8c244cab387751f0a942af7659dbf3f87b8b5ee6691d2a65da31c5eaf198",
+    "scope": "in-target-DLL local-ordinal path to host-facing output byte buffer"
+  },
+  "opaque_binary_identities": {
+    "host_binary_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd3ce1cce8b7e95d2"
+  }
+}
