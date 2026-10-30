@@ -1,0 +1,196 @@
+{
+  "schema": "main-six-audio-producer-source-identities.v1",
+  "scope": "APPROVED_PACKAGE_AND_WASHED_SUPPLEMENTS_ONLY",
+  "sources": [
+    {
+      "file": "IMPLEMENTER_PACKAGE/MANIFEST.json",
+      "bytes": 76302,
+      "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/00-numeric-semantics.md",
+      "bytes": 3369,
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/00-selected-owner-projection-and-j05.md",
+      "bytes": 4504,
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/01-input-and-clock.md",
+      "bytes": 6887,
+      "sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/01-frontend-config-dbmd-events.md",
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/01-bed-routing-and-source-geometry.md",
+      "bytes": 5510,
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-adm-installed48-whole.md",
+      "bytes": 10079,
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-source-routing-and-feature-flags.md",
+      "bytes": 4830,
+      "sha256": "ef0a7bd95edc2adc63b07e752879b6ddefb817962b7b6fa44c77b4acb5c51f19"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-feature-processor-and-state.md",
+      "bytes": 4436,
+      "sha256": "dbd1cf259d2e40013910868d31e38909678d3af8add9d80bd59d15e8cc6e8edd"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-gate-and-target-installation.md",
+      "bytes": 5475,
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-u04-refinement-and-projection.md",
+      "bytes": 5458,
+      "sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-rectangular-nnls-initial-fit.md",
+      "bytes": 6652,
+      "sha256": "7cfb51e8905f739e60bebcd30899887bda52cc493a5bab0c976ca645548b09fc"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-outer-energy-correction.md",
+      "bytes": 5150,
+      "sha256": "7ca47864c9fe7573b6cc6edfafdbd2049c5e74aa73f9b240c4c15bf4a427cdb2"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-window-matrix-and-component-audio.md",
+      "bytes": 9190,
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-component-parameter-state.md",
+      "bytes": 5792,
+      "sha256": "3e9b777a36ae722aeccd1054d778484e6a96e44d16f2534159dfe49afc7d1861"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-prefix-spread-and-gain.md",
+      "bytes": 12300,
+      "sha256": "ca5b069d16f0a0837ad4501036c74bb6e8ae3d6acfaf8bf3961ca4869923a68b"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-diffusion-filter-and-lifecycle.md",
+      "bytes": 7203,
+      "sha256": "4b662c3721ba10ad9dafd193bf13e1bc2df571ab4cab580e46a8a6b39e9a3594"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-receiver-state-and-routing.md",
+      "bytes": 8332,
+      "sha256": "74b9b01537eb76a37582535b84426138ee8c8ecdca3486f9f43d0504c7c26306"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-descriptor-control.md",
+      "bytes": 4009,
+      "sha256": "da42e76828eb9cf4c882a72af65b5b26f3ca29d0437643ba5c79ed8546618b7e"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-qmf-analysis-and-synthesis.md",
+      "bytes": 5584,
+      "sha256": "13a2907c8e60bd81f948f33b9ad07f2d7dc0552b0b12f53224d27b80af610edf"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-qmf-mathematical-fft.md",
+      "bytes": 3258,
+      "sha256": "e915152a13098a18c4028ef5f3e72ba417341cdf87b17dc76645e73395319823"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-qmf-receiver-whole-binding.md",
+      "bytes": 13595,
+      "sha256": "104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/04-whole-spatial-chain-composition.md",
+      "bytes": 9103,
+      "sha256": "92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/05-reader56-target-updates-composition.md",
+      "bytes": 12627,
+      "sha256": "4f4fe2bc3b0dd08bc59e46ea5d3a48e2eafc4051906c2fda258250351261ce0d"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/reader56-main-panner-v1.json",
+      "bytes": 1794,
+      "sha256": "b2f2cb31d3ee099db5bf32a8b93c8e1a9c441d84b9246c0908dceabde8e44c47"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/qmf-receiver-functional-v1.json",
+      "bytes": 20325,
+      "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/qmf-mathematical-fft-v1.json",
+      "bytes": 6983,
+      "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/descriptor-mathematical.json",
+      "bytes": 4861,
+      "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/window-q15.json",
+      "bytes": 2704,
+      "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F04R-RECEIVER-FINAL-SIX-V1/MANIFEST.json",
+      "bytes": 7383,
+      "sha256": "075b90e684c4edc55eb7c8d78cf0c60161ad68d2d585c82a7b7da614cb5dbc3c"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F04R-RECEIVER-FINAL-SIX-V1/SPEC.md",
+      "bytes": 7780,
+      "sha256": "2e76a75a549d5963ee38ccdfc605fa81840b7e944084a288c72076739a136085"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/J05-PARENT-ASSEMBLY-REFERENCES-V1/MANIFEST.json",
+      "bytes": 693,
+      "sha256": "c56d839b45d5e22440ba1a75ef7386b011c8f1c5cd76e9f71be1dcd0bcd68863"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/J05-PARENT-ASSEMBLY-REFERENCES-V1/CONTRACT.md",
+      "bytes": 3467,
+      "sha256": "2759266f4629d2247055060905f9aef71e4fe516d64e8198ef18e9d66e9b18b9"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/MANIFEST.json",
+      "bytes": 1553,
+      "sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/MANIFEST.json",
+      "bytes": 531,
+      "sha256": "fcd280810e1520131d26d8a2010d6d4a26851a6242a75306720558ff51d69219"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1/MANIFEST.json",
+      "bytes": 1717,
+      "sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1"
+    }
+  ]
+}

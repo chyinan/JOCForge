@@ -178,12 +178,11 @@ pub(in crate::spatial) fn stage_spatial_audio_callback(
             let attempt_binding =
                 attempt_binding.ok_or(SpatialAudioCompositionError::TargetLineage)?;
             let providers = providers.ok_or(SpatialAudioCompositionError::ProviderMissing)?;
-            let selected_manifest_sha256 = providers
-                .functional
-                .receipt()
-                .validated_manifest_lineage()
-                .manifest_sha256()
-                .to_hex();
+            let functional_lineage = providers.functional.receipt().validated_manifest_lineage();
+            let selected_manifest_sha256 = functional_lineage
+                .approved_source_manifest_sha256()
+                .ok_or(SpatialAudioCompositionError::ProviderMissing)?;
+            let validated_manifest_sha256 = functional_lineage.manifest_sha256().to_hex();
             validate_ready_type10(&parent, &packet, &receipt, receiver_before_generation)?;
             validate_target_receipt(
                 &parent,
@@ -243,7 +242,8 @@ pub(in crate::spatial) fn stage_spatial_audio_callback(
                     blend: Some(providers.blend),
                     fft: Some(providers.fft),
                     descriptor: Some(providers.descriptor),
-                    selected_manifest_sha256: Some(&selected_manifest_sha256),
+                    validated_manifest_sha256: Some(&validated_manifest_sha256),
+                    selected_manifest_sha256: Some(selected_manifest_sha256),
                 },
             })
             .map_err(SpatialAudioCompositionError::Receiver)?;

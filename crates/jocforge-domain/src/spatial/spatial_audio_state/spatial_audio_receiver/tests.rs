@@ -149,7 +149,8 @@ const DIRECT_CASES: [DirectCase; 3] = [
 ];
 
 struct ValidatedProviders {
-    manifest_sha256: String,
+    validated_manifest_sha256: String,
+    approved_source_manifest_sha256: String,
     functional: QmfReceiverFunctionalProvider,
     blend: ValidatedWindowQ15Provider,
     fft: QmfMathematicalFftProvider,
@@ -163,20 +164,65 @@ impl ValidatedProviders {
             blend: Some(&self.blend),
             fft: Some(&self.fft),
             descriptor: Some(&self.descriptor),
-            selected_manifest_sha256: Some(&self.manifest_sha256),
+            validated_manifest_sha256: Some(&self.validated_manifest_sha256),
+            selected_manifest_sha256: Some(&self.approved_source_manifest_sha256),
         }
     }
 }
 
 fn validated_providers() -> ValidatedProviders {
+    validated_providers_from_manifest(
+        MANIFEST_BYTES,
+        QMF_FUNCTIONAL_BYTES,
+        WINDOW_Q15_BYTES,
+        QMF_FFT_BYTES,
+        DESCRIPTOR_BYTES,
+        "shared F01E manifest fixture",
+    )
+}
+
+fn validated_receiver_subset_providers() -> ValidatedProviders {
+    const SUBSET_MANIFEST: &[u8] = include_bytes!(
+        "../../../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F04-RECEIVER-APPROVED-PARAMETERS-V1/MANIFEST.json"
+    );
+    const FUNCTIONAL: &[u8] = include_bytes!(
+        "../../../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F04-RECEIVER-APPROVED-PARAMETERS-V1/parameters/qmf-receiver-functional-v1.json"
+    );
+    const WINDOW: &[u8] = include_bytes!(
+        "../../../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F04-RECEIVER-APPROVED-PARAMETERS-V1/parameters/window-q15.json"
+    );
+    const FFT: &[u8] = include_bytes!(
+        "../../../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F04-RECEIVER-APPROVED-PARAMETERS-V1/parameters/qmf-mathematical-fft-v1.json"
+    );
+    const DESCRIPTOR: &[u8] = include_bytes!(
+        "../../../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F04-RECEIVER-APPROVED-PARAMETERS-V1/parameters/descriptor-mathematical.json"
+    );
+    validated_providers_from_manifest(
+        SUBSET_MANIFEST,
+        FUNCTIONAL,
+        WINDOW,
+        FFT,
+        DESCRIPTOR,
+        "Wash F04 receiver subset manifest",
+    )
+}
+
+fn validated_providers_from_manifest(
+    manifest_bytes: &[u8],
+    functional_bytes: &[u8],
+    window_bytes: &[u8],
+    fft_bytes: &[u8],
+    descriptor_bytes: &[u8],
+    source_name: &str,
+) -> ValidatedProviders {
     let manifest = validate_f04_parameter_package_manifest(&PackageManifestEvidence::new(
-        Arc::from(MANIFEST_BYTES),
-        Some("shared F01E manifest fixture".to_owned()),
+        Arc::from(manifest_bytes),
+        Some(source_name.to_owned()),
     ))
-    .expect("the shared package manifest validates");
+    .expect("the F04 provider manifest validates");
     let functional = validate_qmf_receiver_functional_provider(
         &ProviderFileEvidence::new(
-            Arc::from(QMF_FUNCTIONAL_BYTES),
+            Arc::from(functional_bytes),
             Some("QMF receiver functional fixture".to_owned()),
         ),
         &manifest,
@@ -184,7 +230,7 @@ fn validated_providers() -> ValidatedProviders {
     .expect("selected QMF receiver provider validates");
     let blend = validate_window_q15_provider(
         &ProviderFileEvidence::new(
-            Arc::from(WINDOW_Q15_BYTES),
+            Arc::from(window_bytes),
             Some("window Q15 fixture".to_owned()),
         ),
         &manifest,
@@ -192,7 +238,7 @@ fn validated_providers() -> ValidatedProviders {
     .expect("selected window provider validates");
     let fft = validate_qmf_mathematical_fft_provider(
         &ProviderFileEvidence::new(
-            Arc::from(QMF_FFT_BYTES),
+            Arc::from(fft_bytes),
             Some("QMF mathematical FFT fixture".to_owned()),
         ),
         &manifest,
@@ -200,19 +246,38 @@ fn validated_providers() -> ValidatedProviders {
     .expect("selected FFT provider validates");
     let descriptor = validate_descriptor_mathematical_provider(
         &ProviderFileEvidence::new(
-            Arc::from(DESCRIPTOR_BYTES),
+            Arc::from(descriptor_bytes),
             Some("descriptor mathematical fixture".to_owned()),
         ),
         &manifest,
     )
     .expect("selected descriptor provider validates");
     ValidatedProviders {
-        manifest_sha256: manifest.manifest_sha256().to_hex(),
+        validated_manifest_sha256: manifest.manifest_sha256().to_hex(),
+        approved_source_manifest_sha256: manifest.approved_source_manifest_sha256().to_owned(),
         functional,
         blend,
         fft,
         descriptor,
     }
+}
+
+#[test]
+fn receiver_accepts_the_wash_subset_with_its_approved_parent_identity() {
+    let providers = validated_receiver_subset_providers();
+    assert_eq!(
+        providers.validated_manifest_sha256,
+        "161147c7959083738f5426b2280457454b08b73ee58a075322c33880cecc818b"
+    );
+    assert_eq!(
+        providers.approved_source_manifest_sha256,
+        "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    );
+    let proposal = run_case(DIRECT_CASES[0], ModelState::cold(), &providers);
+    assert_eq!(
+        encode_model_state(&proposal.after),
+        DIRECT_CASES[0].after_model_state
+    );
 }
 
 fn parent(callback_index: u64) -> SpatialAudioJoinMetadata {
@@ -527,7 +592,8 @@ fn each_direct_error_case_maps_to_its_approved_outcome() {
         blend: Some(&providers.blend),
         fft: Some(&providers.fft),
         descriptor: Some(&providers.descriptor),
-        selected_manifest_sha256: Some(&providers.manifest_sha256),
+        validated_manifest_sha256: Some(&providers.validated_manifest_sha256),
+        selected_manifest_sha256: Some(&providers.approved_source_manifest_sha256),
     };
     assert_eq!(
         stage_case(

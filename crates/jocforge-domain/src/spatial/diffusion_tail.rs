@@ -34,6 +34,16 @@ pub struct DiffusionTailState {
 }
 
 impl DiffusionTailState {
+    pub(crate) fn copy_for_projection(&self) -> Self {
+        Self {
+            filter_state: self.filter_state.copy_for_projection(),
+            previous_filter_outputs: self
+                .previous_filter_outputs
+                .as_ref()
+                .map(|lanes| std::array::from_fn(|lane| lanes[lane].clone())),
+        }
+    }
+
     pub const fn filter_state(&self) -> &DiffusionFilterState {
         &self.filter_state
     }

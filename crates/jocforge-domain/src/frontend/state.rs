@@ -2,19 +2,37 @@
 //! Staging-only frontend-control root for the approved cold provider.
 
 use super::ProviderSha256;
+use super::normal_control_snapshot::{
+    NormalControlAfterState, NormalControlAfterStateParts, NormalControlObjectState,
+    NormalControlPreparedSnapshot, NormalControlSnapshotOutput, NormalControlSnapshotProposal,
+};
 use super::provider::{F01EProviderReceipt, NormalizedConfig, ValidatedF01EColdProvider};
 use crate::timeline::{FrontendCallbackIndex, NormalCallbackCount};
-use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
+use crate::transaction::{
+    AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
+    GtcOwnerReceiptError, GtcOwnerStateSnapshot, ProgrammeId,
+};
+use serde_json::{Map, Value, json};
+use std::collections::BTreeMap;
 use std::sync::Arc;
 
 const FRONTEND_CONTROL_OWNER_ID: &str = "frontend_control";
 const FRONTEND_CONTROL_STATE_REF: &str = "owners.frontend_control";
+const FRONTEND_CONTROL_AFTER_STATE_SCHEMA: &str = "FRONTEND_CONTROL_AFTER_STATE_V1";
+const FRONTEND_CONTROL_ROWS: usize = 38;
+const FRONTEND_CONTROL_REGULAR_ROWS: usize = 37;
+const FRONTEND_CONTROL_WORDS_PER_ROW: usize = 13;
+const FRONTEND_OBJECTS: usize = 28;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct FrontendControlDigest(ProviderSha256);
 impl FrontendControlDigest {
     pub fn to_hex(self) -> String {
         self.0.to_hex()
+    }
+
+    pub const fn to_bytes(self) -> [u8; 32] {
+        self.0.to_bytes()
     }
 }
 
@@ -156,6 +174,7 @@ pub struct FrontendControlState {
     schema: &'static str,
     programme_id: ProgrammeId,
     attempt_id: AttemptId,
+    owner_generation: u64,
     callback_index: FrontendCallbackIndex,
     normal_callbacks: NormalCallbackCount,
     remaining_cached_drains: u32,
@@ -166,6 +185,7 @@ pub struct FrontendControlState {
     dbmd_binding: Option<Arc<[u8]>>,
     physical_binding: Option<Arc<[u8]>>,
     normalized_config: Arc<FrontendNormalizedConfig>,
+    prepared_identity: Option<Arc<NormalControlPreparedSnapshot>>,
     canonical: Arc<[u8]>,
     provider_receipt: F01EProviderReceipt,
 }
@@ -198,6 +218,7 @@ impl FrontendControlState {
             schema: "F01E_SELECTED_COLD_V1",
             programme_id,
             attempt_id,
+            owner_generation: 0,
             callback_index,
             normal_callbacks: NormalCallbackCount::new(cold.normal_callbacks),
             remaining_cached_drains: cold.remaining_cached_drains,
@@ -208,10 +229,56 @@ impl FrontendControlState {
             dbmd_binding: None,
             physical_binding: None,
             normalized_config: Arc::new(cold.config.into()),
+            prepared_identity: None,
             canonical,
             provider_receipt,
         })
     }
+
+    fn from_normal_after_parts(
+        before: &Self,
+        parts: NormalControlAfterStateParts,
+    ) -> Result<Self, FrontendControlError> {
+        if !parts.prepared_identity.binds_frontend_state(before)
+            || !parts.prepared_identity.binds_normal_objects(&parts.objects)
+            || parts.control38_snapshot.len()
+                != FRONTEND_CONTROL_ROWS * FRONTEND_CONTROL_WORDS_PER_ROW
+            || parts.regular37_snapshot.len()
+                != FRONTEND_CONTROL_REGULAR_ROWS * FRONTEND_CONTROL_WORDS_PER_ROW
+            || parts.objects.len() != FRONTEND_OBJECTS
+        {
+            return Err(FrontendControlError::NormalAfterStateMismatch);
+        }
+        let objects: Arc<[FrontendObjectState]> = parts
+            .objects
+            .into_iter()
+            .map(frontend_object_from_normal_control)
+            .collect::<Vec<_>>()
+            .into();
+        let mut state = Self {
+            schema: FRONTEND_CONTROL_AFTER_STATE_SCHEMA,
+            programme_id: parts.programme_id,
+            attempt_id: parts.attempt_id,
+            owner_generation: parts.next_owner_generation,
+            callback_index: parts.next_callback_index,
+            normal_callbacks: parts.next_normal_callbacks,
+            remaining_cached_drains: parts.remaining_cached_drains,
+            phase: parts.phase,
+            objects,
+            last_control38_snapshot: Some(parts.control38_snapshot),
+            last_regular37_snapshot: Some(parts.regular37_snapshot),
+            dbmd_binding: parts.dbmd_binding_before,
+            physical_binding: parts.physical_binding_before,
+            normalized_config: Arc::clone(&before.normalized_config),
+            prepared_identity: Some(parts.prepared_identity),
+            canonical: Arc::from([]),
+            provider_receipt: before.provider_receipt.clone(),
+        };
+        let canonical = encode_frontend_control_after_state(&state)?;
+        state.canonical = Arc::from(canonical.into_boxed_slice());
+        Ok(state)
+    }
+
     pub const fn schema(&self) -> &'static str {
         self.schema
     }
@@ -250,6 +317,9 @@ impl FrontendControlState {
     }
     pub fn normalized_config(&self) -> &FrontendNormalizedConfig {
         &self.normalized_config
+    }
+    pub fn prepared_identity(&self) -> Option<&NormalControlPreparedSnapshot> {
+        self.prepared_identity.as_deref()
     }
     pub fn canonical_bytes(&self) -> &[u8] {
         &self.canonical
@@ -308,7 +378,10 @@ pub enum FrontendControlError {
     CallbackIndexMismatch,
     CallbackIndexOutOfRange,
     GenerationMismatch,
+    NormalAfterStateMismatch,
     ProviderMismatch,
+    CanonicalEncoding,
+    GtcReceipt(GtcOwnerReceiptError),
 }
 
 /// Linear prepare capability; intentionally not `Clone` or `Copy`.
@@ -337,6 +410,7 @@ pub struct FrontendControlStaged {
     join: FrontendControlJoinMetadata,
     after: FrontendControlState,
     after_digest: FrontendControlDigest,
+    after_generation: u64,
 }
 impl FrontendControlStaged {
     pub const fn join_metadata(&self) -> &FrontendControlJoinMetadata {
@@ -347,6 +421,58 @@ impl FrontendControlStaged {
     }
     pub fn staged_state_digest(&self) -> FrontendControlDigest {
         self.after.digest()
+    }
+    pub const fn after_generation(&self) -> u64 {
+        self.after_generation
+    }
+    pub const fn after_state(&self) -> &FrontendControlState {
+        &self.after
+    }
+}
+
+/// Complete replacement value for the parent-owned frontend-control slot.
+/// It carries no authority to mutate the committed machine that produced it.
+#[must_use]
+#[derive(Debug)]
+pub struct FrontendControlReplacementCandidate {
+    next_machine: FrontendControlMachine,
+    receipt: GtcOwnerReceipt,
+}
+
+/// Linear parent handoff containing both the next frontend owner and the same-callback F03W view.
+/// The projection shares the proposal's computed values; it does not resample objects.
+#[must_use]
+#[derive(Debug)]
+pub struct FrontendControlNormalStage {
+    staged: FrontendControlStaged,
+    output: NormalControlSnapshotOutput,
+}
+
+impl FrontendControlNormalStage {
+    pub const fn staged_owner(&self) -> &FrontendControlStaged {
+        &self.staged
+    }
+
+    pub const fn callback_output(&self) -> &NormalControlSnapshotOutput {
+        &self.output
+    }
+
+    pub fn into_parts(self) -> (FrontendControlStaged, NormalControlSnapshotOutput) {
+        (self.staged, self.output)
+    }
+}
+
+impl FrontendControlReplacementCandidate {
+    pub const fn next_machine(&self) -> &FrontendControlMachine {
+        &self.next_machine
+    }
+
+    pub const fn receipt(&self) -> &GtcOwnerReceipt {
+        &self.receipt
+    }
+
+    pub fn into_parts(self) -> (FrontendControlMachine, GtcOwnerReceipt) {
+        (self.next_machine, self.receipt)
     }
 }
 
@@ -485,6 +611,8 @@ impl FrontendControlMachine {
         {
             return Err(FrontendControlError::ProviderMismatch);
         }
+        // This provider-identity stage is a no-op snapshot only. It is not an F01E
+        // normal callback transition; use `stage_normal_snapshot` for callback after-state.
         let after = self.committed.clone();
         let after_digest = after.digest();
         Ok(FrontendControlStaged {
@@ -497,6 +625,273 @@ impl FrontendControlMachine {
             },
             after,
             after_digest,
+            after_generation: self.generation,
         })
+    }
+
+    /// Converts the complete typed normal-callback after-state into the frontend owner’s
+    /// versioned local canonical representation. The current owner remains unchanged.
+    fn stage_normal_after_state(
+        &self,
+        transaction_id: CallbackLineageIdentity,
+        after_state: NormalControlAfterState,
+    ) -> Result<FrontendControlStaged, FrontendControlError> {
+        if transaction_id.programme_id() != &self.committed.programme_id
+            || transaction_id.attempt_id() != self.committed.attempt_id
+        {
+            return Err(FrontendControlError::CallbackIdentityMismatch);
+        }
+        if transaction_id.callback_index() != self.committed.callback_index {
+            return Err(FrontendControlError::CallbackIndexMismatch);
+        }
+        let parts = after_state.into_frontend_owner_parts();
+        let expected_callback = self
+            .committed
+            .callback_index
+            .value()
+            .checked_add(1)
+            .ok_or(FrontendControlError::CallbackIndexOutOfRange)?;
+        let expected_generation = self
+            .generation
+            .checked_add(1)
+            .ok_or(FrontendControlError::GenerationMismatch)?;
+        if parts.programme_id != self.committed.programme_id
+            || parts.attempt_id != self.committed.attempt_id
+            || parts.next_callback_index.value() != expected_callback
+            || parts.next_owner_generation != expected_generation
+            || parts.phase != self.committed.phase
+            || parts.remaining_cached_drains != self.committed.remaining_cached_drains
+            || parts.physical_binding_before != self.committed.physical_binding
+            || parts.dbmd_binding_before != self.committed.dbmd_binding
+            || !parts
+                .prepared_identity
+                .binds_frontend_state(&self.committed)
+            || !parts.prepared_identity.binds_normal_objects(&parts.objects)
+            || parts.control38_snapshot.len()
+                != FRONTEND_CONTROL_ROWS * FRONTEND_CONTROL_WORDS_PER_ROW
+            || parts.regular37_snapshot.len()
+                != FRONTEND_CONTROL_REGULAR_ROWS * FRONTEND_CONTROL_WORDS_PER_ROW
+        {
+            return Err(FrontendControlError::NormalAfterStateMismatch);
+        }
+        let before_generation = self.generation;
+        let before_digest = self.committed.digest();
+        let provider_manifest_sha256 = self.committed.provider_receipt.manifest_sha256();
+        let provider_file_sha256 = self.committed.provider_receipt.provider_file_sha256();
+        let after = FrontendControlState::from_normal_after_parts(&self.committed, parts)?;
+        let after_digest = after.digest();
+        Ok(FrontendControlStaged {
+            join: FrontendControlJoinMetadata {
+                transaction_id,
+                before_generation,
+                before_digest,
+                provider_manifest_sha256,
+                provider_file_sha256,
+            },
+            after,
+            after_digest,
+            after_generation: expected_generation,
+        })
+    }
+
+    /// Consumes the exact normal proposal, transferring its after-state to the frontend owner
+    /// while retaining the same computed source projection for F03W.
+    pub fn stage_normal_snapshot(
+        &self,
+        proposal: NormalControlSnapshotProposal,
+    ) -> Result<FrontendControlNormalStage, FrontendControlError> {
+        let (after_state, output) = proposal.into_frontend_parent_parts();
+        let transaction_id = output.transaction_id().clone();
+        let staged = self.stage_normal_after_state(transaction_id, after_state)?;
+        Ok(FrontendControlNormalStage { staged, output })
+    }
+
+    /// Returns a new owner value and its GTC transition receipt without mutating this machine.
+    /// The application parent installs the candidate only with the other staged callback roots.
+    pub fn replacement_candidate(
+        &self,
+        staged: FrontendControlStaged,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<FrontendControlReplacementCandidate, FrontendControlError> {
+        let next_generation = self
+            .generation
+            .checked_add(1)
+            .ok_or(FrontendControlError::GenerationMismatch)?;
+        if staged.after_generation != next_generation
+            || staged.after.schema != FRONTEND_CONTROL_AFTER_STATE_SCHEMA
+            || staged.after.prepared_identity.is_none()
+            || staged.join.before_generation != self.generation
+            || staged.join.before_digest != self.committed.digest()
+            || staged.join.transaction_id.programme_id() != &self.committed.programme_id
+            || staged.join.transaction_id.attempt_id() != self.committed.attempt_id
+            || staged.join.transaction_id.callback_index() != self.committed.callback_index
+            || staged.join.provider_manifest_sha256
+                != self.committed.provider_receipt.manifest_sha256()
+            || staged.join.provider_file_sha256
+                != self.committed.provider_receipt.provider_file_sha256()
+            || staged.after.digest() != staged.after_digest
+            || staged.after.owner_generation != staged.after_generation
+        {
+            return Err(FrontendControlError::GenerationMismatch);
+        }
+        let next_machine = Self {
+            committed: staged.after,
+            generation: staged.after_generation,
+            cold_digest: self.cold_digest,
+        };
+        let before_reference = self.state_reference();
+        let after_reference = next_machine.state_reference();
+        let before = GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::FrontendControl,
+            before_reference.generation(),
+            before_reference.cold_sha256().to_bytes(),
+            before_reference.canonical_bytes(),
+        )
+        .map_err(FrontendControlError::GtcReceipt)?;
+        let after = GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::FrontendControl,
+            after_reference.generation(),
+            after_reference.cold_sha256().to_bytes(),
+            after_reference.canonical_bytes(),
+        )
+        .map_err(FrontendControlError::GtcReceipt)?;
+        let receipt = GtcOwnerReceipt::from_transition(before, after, transaction_id)
+            .map_err(FrontendControlError::GtcReceipt)?;
+        Ok(FrontendControlReplacementCandidate {
+            next_machine,
+            receipt,
+        })
+    }
+}
+
+fn frontend_object_from_normal_control(value: NormalControlObjectState) -> FrontendObjectState {
+    let parts = value.into_frontend_parts();
+    FrontendObjectState {
+        object_ordinal: parts.object_ordinal,
+        event_cache: parts.event_cache,
+        host_channel_index: parts.host_channel_index,
+        sampler_previous_present: parts.sampler_previous_present,
+        sampler_previous_xyz_u32: parts.sampler_previous_xyz_u32,
+    }
+}
+
+fn encode_frontend_control_after_state(
+    state: &FrontendControlState,
+) -> Result<Vec<u8>, FrontendControlError> {
+    let prepared = state
+        .prepared_identity
+        .as_ref()
+        .ok_or(FrontendControlError::NormalAfterStateMismatch)?;
+    let control38 = snapshot_rows_json(
+        state
+            .last_control38_snapshot
+            .as_ref()
+            .ok_or(FrontendControlError::NormalAfterStateMismatch)?,
+        FRONTEND_CONTROL_ROWS,
+    )?;
+    let regular37 = snapshot_rows_json(
+        state
+            .last_regular37_snapshot
+            .as_ref()
+            .ok_or(FrontendControlError::NormalAfterStateMismatch)?,
+        FRONTEND_CONTROL_REGULAR_ROWS,
+    )?;
+    let objects = state
+        .objects
+        .iter()
+        .map(|object| {
+            json!({
+                "object_ordinal": object.object_ordinal,
+                "event_cache_bytes": object.event_cache.as_deref(),
+                "host_channel_index": object.host_channel_index,
+                "sampler_previous_present": object.sampler_previous_present,
+                "sampler_previous_xyz_u32": object.sampler_previous_xyz_u32,
+            })
+        })
+        .collect::<Vec<_>>();
+    let config = &state.normalized_config;
+    let provider = &state.provider_receipt;
+    let value = json!({
+        "schema": state.schema,
+        "owner_id": FRONTEND_CONTROL_OWNER_ID,
+        "programme_id": state.programme_id.as_str(),
+        "attempt_id": state.attempt_id.value(),
+        "owner_generation": state.owner_generation,
+        "callback_index": state.callback_index.value(),
+        "normal_callbacks": state.normal_callbacks.value(),
+        "remaining_cached_drains": state.remaining_cached_drains,
+        "phase": frontend_phase_name(state.phase),
+        "objects": objects,
+        "last_control38_snapshot": control38,
+        "last_regular37_snapshot": regular37,
+        "physical_binding_bytes": state.physical_binding.as_deref(),
+        "dbmd_binding_bytes": state.dbmd_binding.as_deref(),
+        "normalized_config": {
+            "sample_rate_hz": config.sample_rate_hz(),
+            "channels": config.channels(),
+            "pcm_bits": config.pcm_bits(),
+            "source_samples": config.source_samples(),
+            "bit_rate_kbps": config.bit_rate_kbps(),
+            "bit_rate_enum": config.bit_rate_enum(),
+            "layout_enum": config.layout_enum(),
+            "target_capacity": config.target_capacity(),
+            "frame_samples": config.frame_samples(),
+            "spatial_config_mode": config.spatial_config_mode(),
+            "dispatch_mode": config.dispatch_mode(),
+            "virtual_prefix_count": config.virtual_prefix_count(),
+            "bed_count": config.bed_count(),
+            "object_count": config.object_count(),
+            "event_start_samples": config.event_start_samples(),
+            "line_drc": config.line_drc(),
+            "rf_drc": config.rf_drc(),
+            "time_base": config.time_base(),
+        },
+        "provider_identity": {
+            "manifest_sha256": provider.manifest_sha256().to_hex(),
+            "provider_file_sha256": provider.provider_file_sha256().to_hex(),
+            "provider_file_bytes": provider.provider_file_bytes(),
+            "canonical_sha256": provider.canonical_sha256().to_hex(),
+            "canonical_bytes": provider.canonical_bytes(),
+            "provider_generation": provider.provider_generation(),
+        },
+        "prepared_identity": prepared
+            .canonical_json_value()
+            .map_err(|_| FrontendControlError::CanonicalEncoding)?,
+    });
+    let canonical = canonicalize_json(value);
+    serde_json::to_vec(&canonical).map_err(|_| FrontendControlError::CanonicalEncoding)
+}
+
+fn snapshot_rows_json(words: &[u32], row_count: usize) -> Result<Value, FrontendControlError> {
+    let expected_words = row_count
+        .checked_mul(FRONTEND_CONTROL_WORDS_PER_ROW)
+        .ok_or(FrontendControlError::CanonicalEncoding)?;
+    if words.len() != expected_words {
+        return Err(FrontendControlError::NormalAfterStateMismatch);
+    }
+    let rows = words
+        .chunks_exact(FRONTEND_CONTROL_WORDS_PER_ROW)
+        .map(|row| Value::Array(row.iter().copied().map(Value::from).collect()))
+        .collect::<Vec<_>>();
+    Ok(Value::Array(rows))
+}
+
+fn frontend_phase_name(phase: FrontendControlPhase) -> &'static str {
+    match phase {
+        FrontendControlPhase::BeforeFirstNormal => "BEFORE_FIRST_NORMAL",
+    }
+}
+
+fn canonicalize_json(value: Value) -> Value {
+    match value {
+        Value::Object(object) => {
+            let sorted: BTreeMap<_, _> = object
+                .into_iter()
+                .map(|(key, value)| (key, canonicalize_json(value)))
+                .collect();
+            Value::Object(sorted.into_iter().collect::<Map<_, _>>())
+        }
+        Value::Array(values) => Value::Array(values.into_iter().map(canonicalize_json).collect()),
+        scalar => scalar,
     }
 }

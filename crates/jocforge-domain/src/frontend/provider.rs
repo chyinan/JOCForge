@@ -6,6 +6,8 @@ use sha2::{Digest, Sha256};
 use std::fmt::Write as _;
 use std::sync::Arc;
 
+use super::selected_provider_manifests::ValidatedF01bColdAssetManifest;
+
 const PROVIDER_BYTES: u64 = 20_138;
 const PROVIDER_SHA: [u8; 32] = [
     0xb0, 0x54, 0x8b, 0x0c, 0x45, 0xe3, 0x21, 0x79, 0x54, 0x55, 0xc6, 0x80, 0x95, 0xe8, 0x04, 0xde,
@@ -36,6 +38,10 @@ impl ProviderSha256 {
                 write!(&mut hex, "{byte:02x}").expect("writing to String cannot fail");
                 hex
             })
+    }
+
+    pub const fn to_bytes(self) -> [u8; 32] {
+        self.0
     }
 }
 
@@ -427,6 +433,27 @@ pub fn validate_f01e_provider(
         canonical: canonical.into(),
         receipt,
     })
+}
+
+/// Validates the exact F01E cold asset from the separate F01B cold/state bundle.
+///
+/// The content validator remains the same as the original package path; this adapter changes
+/// only the authenticated manifest lineage to the independently pinned cold-bundle manifest.
+pub fn validate_f01e_provider_from_f01b_cold_assets(
+    evidence: &ProviderFileEvidence,
+    manifest: &ValidatedF01bColdAssetManifest,
+) -> Result<ValidatedF01EColdProvider, F01EProviderError> {
+    let entry = manifest
+        .entry("parameters/f01e-selected-constructor-v1.json")
+        .ok_or(F01EProviderError::PackageManifestEntry)?;
+    let provider_sha256 = parse_sha256(entry.sha256())?;
+    let package_manifest = ValidatedF01EPackageManifest {
+        manifest_sha256: manifest.manifest_sha256(),
+        provider_path: entry.path(),
+        provider_bytes: entry.bytes(),
+        provider_sha256,
+    };
+    validate_f01e_provider(evidence, &package_manifest)
 }
 
 fn parse_value(v: &Value) -> Result<F01ECold, F01EProviderError> {

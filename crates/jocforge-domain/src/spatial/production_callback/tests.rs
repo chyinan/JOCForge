@@ -1,4 +1,5 @@
 use super::*;
+use crate::timeline::AdmSampleIndex;
 use crate::{
     frontend::{
         PackageManifestEvidence, ProviderFileEvidence, ValidatedFeatureFft4096MathProvider,
@@ -18,26 +19,40 @@ use crate::{
     spatial::candidate_selector::SelectorStatus,
     spatial::{
         SpatialControlMachine,
-        frontend_stages::stage_frontend_features_from_installed48,
+        frontend_stages::{
+            stage_frontend_features_from_installed48,
+            stage_spatial_control_frontend_features_from_installed48,
+        },
         installed48_activity::{
             PrimaryActivityInput, PrimaryActivityProposal, PrimaryInstalled48ActivityProducer,
         },
         post_window_fanout::CallbackPhase,
+        production_callback::selected_audio_provider_bundle::{
+            SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderEvidence,
+        },
         selected_p15_geometry::generate_selected_p15_geometry,
         source_flags::{
             BeforeRegularHistory, CurrentHostPcm, PrefixWriterSet, SourceFlagsInput,
-            SourceFlagsParentLineage, project_normal_control_snapshot_source_controls,
+            SourceFlagsParentLineage, project_normal_control_snapshot_output_source_controls,
+            project_normal_control_snapshot_source_controls,
         },
-        source_geometry_outer::stage_normal_source_geometry,
+        source_geometry_outer::{
+            build_global_source_geometry_snapshot_from_output, stage_normal_source_geometry,
+        },
         spatial_audio_state::{SpatialAudioDigest, SpatialAudioMachine},
         spatial_control::SpatialControlDigest,
+        spatial_control::{
+            SpatialControlInstalled48Callback, SpatialControlInstalled48Input,
+            stage_spatial_control_installed48,
+        },
         validate_component_parameter_provider, validate_f04_parameter_package_manifest,
         validate_window_q15_provider,
     },
-    timeline::AdmSampleIndex,
 };
 use serde_json::Value;
 use std::sync::Arc;
+
+mod meter_component;
 
 const MANIFEST_BYTES: &[u8] = include_bytes!("../../../tests/fixtures/f01e_provider/MANIFEST.json");
 const F01E_PROVIDER_BYTES: &[u8] =
@@ -53,6 +68,12 @@ const WINDOW_Q15_BYTES: &[u8] =
 const COMPONENT_PARAMETERS_BYTES: &[u8] = include_bytes!(
     "../../../tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"
 );
+const QMF_RECEIVER_FUNCTIONAL_BYTES: &[u8] =
+    include_bytes!("../../../tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json");
+const QMF_MATHEMATICAL_FFT_BYTES: &[u8] =
+    include_bytes!("../../../tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json");
+const DESCRIPTOR_MATHEMATICAL_BYTES: &[u8] =
+    include_bytes!("../../../tests/fixtures/f04_parameters/descriptor-mathematical.json");
 const SELECTOR_VECTORS_BYTES: &[u8] =
     include_bytes!("../../../tests/fixtures/f04_component/unit-vectors.json");
 
@@ -63,6 +84,7 @@ struct CallbackOwners {
     fft: ValidatedFeatureFft4096MathProvider,
     window: ValidatedWindowQ15Provider,
     parameters: ValidatedComponentParameterProvider,
+    spatial_audio_provider_bundle: SelectedSpatialAudioProviderBundle,
 }
 
 fn callback_owners() -> CallbackOwners {
@@ -92,17 +114,29 @@ fn callback_owners() -> CallbackOwners {
     )
     .unwrap();
     let f04_manifest = validate_f04_parameter_package_manifest(&manifest).unwrap();
-    let window = validate_window_q15_provider(
-        &ProviderFileEvidence::new(Arc::from(WINDOW_Q15_BYTES), None),
-        &f04_manifest,
+    let window_evidence = ProviderFileEvidence::new(Arc::from(WINDOW_Q15_BYTES), None);
+    let component_evidence = ProviderFileEvidence::new(Arc::from(COMPONENT_PARAMETERS_BYTES), None);
+    let qmf_receiver_functional =
+        ProviderFileEvidence::new(Arc::from(QMF_RECEIVER_FUNCTIONAL_BYTES), None);
+    let qmf_mathematical_fft =
+        ProviderFileEvidence::new(Arc::from(QMF_MATHEMATICAL_FFT_BYTES), None);
+    let descriptor_mathematical =
+        ProviderFileEvidence::new(Arc::from(DESCRIPTOR_MATHEMATICAL_BYTES), None);
+    let spatial_audio_provider_bundle = SelectedSpatialAudioProviderBundle::validate_selected(
+        &SelectedSpatialAudioProviderEvidence::new(
+            &manifest,
+            &component_evidence,
+            &window_evidence,
+            &qmf_receiver_functional,
+            &qmf_mathematical_fft,
+            &descriptor_mathematical,
+        ),
     )
     .unwrap();
-    let parameters = validate_component_parameter_provider(
-        &ProviderFileEvidence::new(Arc::from(COMPONENT_PARAMETERS_BYTES), None),
-        &f04_manifest,
-        &profile,
-    )
-    .unwrap();
+    let window = validate_window_q15_provider(&window_evidence, &f04_manifest).unwrap();
+    let parameters =
+        validate_component_parameter_provider(&component_evidence, &f04_manifest, &profile)
+            .unwrap();
     CallbackOwners {
         spatial_control: SpatialControlMachine::new_cold(profile, &f01e, &f03).unwrap(),
         spatial_audio: SpatialAudioMachine::new_cold(profile).unwrap(),
@@ -110,6 +144,7 @@ fn callback_owners() -> CallbackOwners {
         fft,
         window,
         parameters,
+        spatial_audio_provider_bundle,
     }
 }
 
@@ -197,6 +232,7 @@ fn run_callback(
     [u8; 32],
 ) {
     let fixture = super::super::source_geometry_outer::tests::f01b_f01e_fixture();
+    let (_, normal_output) = fixture.normal.into_frontend_parent_parts();
     let mut owners = callback_owners();
     if warm_candidate_source_count > 0 {
         let mut feature_vector = vec![0_u32; 48 * 24];
@@ -216,61 +252,82 @@ fn run_callback(
         .committed()
         .reader_target_state()
         .canonical_sha256();
-    let (activity, installed48) = stage_activity_and_installed48(&fixture);
     let resolved_profile = resolve_selected_profile(&owners.spatial_control.profile()).unwrap();
-    let source_projection = project_normal_control_snapshot_source_controls(
-        &fixture.normal,
+    let source_projection = project_normal_control_snapshot_output_source_controls(
+        &normal_output,
         &fixture.graph,
         resolved_profile,
     )
     .unwrap();
     let source_control_clock = source_projection.clock();
+    let source_geometry = build_global_source_geometry_snapshot_from_output(
+        &fixture.graph,
+        &fixture.source_map,
+        &normal_output,
+    )
+    .unwrap();
     let before_history =
         BeforeRegularHistory::from_owner(&owners.spatial_control, source_projection.route())
             .unwrap();
-    let prefix_writers =
-        PrefixWriterSet::new(activity.output().prefix_writer_indices().to_vec()).unwrap();
     let parent = SourceFlagsParentLineage::new(
-        fixture.normal.transaction_id().clone(),
+        normal_output.transaction_id().clone(),
         &owners.spatial_control,
     )
     .unwrap();
+    let current_pcm_rows = vec![vec![0_u32; 1_536]; 38];
+    let installed48 = stage_spatial_control_installed48(
+        &owners.spatial_control,
+        SpatialControlInstalled48Input {
+            callback: SpatialControlInstalled48Callback::Normal {
+                controls: &normal_output,
+                physical_pcm_rows: &current_pcm_rows,
+            },
+            source_map: &fixture.source_map,
+            diffusion_parameters: None,
+        },
+    )
+    .unwrap();
+    let prefix_writers = PrefixWriterSet::new(installed48.prefix_writer_indices()).unwrap();
     let source_flags_input = SourceFlagsInput::from_primary_regular_source_controls(
-        CurrentHostPcm::new(vec![vec![0.0_f32; 1_536]; 38]).unwrap(),
+        CurrentHostPcm::new(
+            current_pcm_rows
+                .iter()
+                .map(|row| row.iter().copied().map(f32::from_bits).collect())
+                .collect(),
+        )
+        .unwrap(),
         Some(before_history),
         source_projection,
         prefix_writers,
         parent,
     )
     .unwrap();
-    let frontend = stage_frontend_features_from_installed48(
+    let frontend = stage_spatial_control_frontend_features_from_installed48(
         &owners.spatial_control,
-        fixture.normal.transaction_id().clone(),
-        activity,
-        installed48,
         source_flags_input,
-        CallbackPhase::Normal,
+        installed48,
         &owners.processor,
         &owners.fft,
     )
     .unwrap();
-    let normal_source_geometry =
-        stage_normal_source_geometry(&fixture.graph, &fixture.source_map, fixture.normal).unwrap();
     let p15_geometry = generate_selected_p15_geometry(0x159b, true).unwrap();
-    let proposal = continue_spatial_production_callback_from_normal_stage(
-        SpatialProductionNormalCallbackInputs {
-            frontend,
-            normal_source_geometry,
-            source_control_clock,
-            source_map: &fixture.source_map,
-            p15_geometry: &p15_geometry,
-            spatial_control: &owners.spatial_control,
-            spatial_audio: &owners.spatial_audio,
-            spatial_audio_joc_providers: None,
-            window: &owners.window,
-            parameters: &owners.parameters,
-        },
-    )
+    let proposal = continue_spatial_production_callback(SpatialProductionCallbackInputs {
+        frontend,
+        source_snapshot: NormalControlCallbackSource::NormalOutput(Box::new(normal_output)),
+        source_geometry,
+        source_control_clock,
+        source_map: &fixture.source_map,
+        p15_geometry: &p15_geometry,
+        spatial_control: &owners.spatial_control,
+        spatial_audio: &owners.spatial_audio,
+        spatial_audio_joc_providers: Some(
+            owners
+                .spatial_audio_provider_bundle
+                .spatial_audio_joc_providers(),
+        ),
+        window: &owners.window,
+        parameters: &owners.parameters,
+    })
     .unwrap();
     (
         proposal,

@@ -6,7 +6,9 @@ use std::fmt::Write as _;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 
-use crate::frontend::{PackageManifestEvidence, ProviderFileEvidence, ProviderSha256};
+use crate::frontend::{
+    PackageManifestEvidence, ProviderFileEvidence, ProviderSha256, ValidatedF03wProviderManifest,
+};
 
 const PACKAGE_BYTES: usize = 76_302;
 const PACKAGE_SHA256: &str = "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a";
@@ -173,6 +175,59 @@ pub struct DiffusionFilterParameters {
 }
 
 impl DiffusionFilterParameters {
+    /// Returns the selected mathematical diffusion values as fixed-order canonical words.
+    ///
+    /// # Panics
+    ///
+    /// Panics only if a compile-time selected shape constant cannot fit in `u32`.
+    pub fn mathematical_value_words(&self) -> Vec<u32> {
+        let mut words = Vec::with_capacity(3 + STAGE_COUNT * LANE_COUNT + PREFIX_COUNT * 2);
+        words.extend_from_slice(&[
+            u32::try_from(STAGE_COUNT).expect("diffusion stage count fits u32"),
+            u32::try_from(LANE_COUNT).expect("diffusion lane count fits u32"),
+            u32::try_from(PREFIX_COUNT).expect("diffusion prefix count fits u32"),
+        ]);
+        words.extend(
+            self.coefficients
+                .iter()
+                .flatten()
+                .map(|value| value.to_bits()),
+        );
+        words.extend(
+            self.modes
+                .iter()
+                .map(|value| u32::from_le_bytes(value.to_le_bytes())),
+        );
+        words.extend(
+            self.filter_lanes
+                .iter()
+                .map(|value| u32::from_le_bytes(value.to_le_bytes())),
+        );
+        words
+    }
+
+    /// Returns the validated selected constructor outputs as fixed-order canonical words.
+    ///
+    /// # Panics
+    ///
+    /// Panics only if validated selected lengths or compile-time shape constants cannot fit in
+    /// `u32`.
+    pub fn constructor_value_words(&self) -> Vec<u32> {
+        let mut words = Vec::with_capacity(CONFIGURATION_COUNT + BANK_COUNT * 2 + 2);
+        words.push(SAMPLE_RATE_HZ);
+        words.push(u32::try_from(CONFIGURATION_COUNT).expect("diffusion config count fits u32"));
+        words.push(u32::try_from(BANK_COUNT).expect("diffusion bank count fits u32"));
+        words.extend_from_slice(&self.configuration_words);
+        words.extend_from_slice(&self.smoothing_words);
+        words.extend(self.bank_lengths.iter().map(|length| {
+            u32::try_from(*length).expect("validated diffusion bank length fits u32")
+        }));
+        words.push(
+            u32::try_from(self.ring_length).expect("validated diffusion ring length fits u32"),
+        );
+        words
+    }
+
     pub const fn modes(&self) -> &[i32; PREFIX_COUNT] {
         &self.modes
     }
@@ -351,6 +406,36 @@ pub fn validate_diffusion_filter_parameters(
     })
 }
 
+/// Validates the two diffusion assets selected from the exact F03W provider manifest.
+pub fn validate_diffusion_filter_parameters_from_f03w_bundle(
+    coefficient_evidence: &ProviderFileEvidence,
+    constructor_evidence: &ProviderFileEvidence,
+    manifest: &ValidatedF03wProviderManifest,
+) -> Result<DiffusionFilterParameters, DiffusionFilterError> {
+    let coefficient = manifest
+        .entry(COEFFICIENT_PATH)
+        .ok_or(DiffusionFilterError::PackageManifestEntry)?;
+    let constructor = manifest
+        .entry(CONSTRUCTOR_PATH)
+        .ok_or(DiffusionFilterError::PackageManifestEntry)?;
+    let manifest = ValidatedDiffusionFilterPackageManifest {
+        manifest_sha256: manifest.manifest_sha256(),
+        coefficient: ManifestEntry {
+            path: coefficient.path(),
+            bytes: usize::try_from(coefficient.bytes())
+                .map_err(|_| DiffusionFilterError::PackageManifestEntry)?,
+            sha256: coefficient.sha256(),
+        },
+        constructor: ManifestEntry {
+            path: constructor.path(),
+            bytes: usize::try_from(constructor.bytes())
+                .map_err(|_| DiffusionFilterError::PackageManifestEntry)?,
+            sha256: constructor.sha256(),
+        },
+    };
+    validate_diffusion_filter_parameters(coefficient_evidence, constructor_evidence, &manifest)
+}
+
 fn validate_file_evidence(
     evidence: &ProviderFileEvidence,
     entry: ManifestEntry,
@@ -479,6 +564,10 @@ pub struct DiffusionFilterState {
 }
 
 impl DiffusionFilterState {
+    pub(crate) fn copy_for_projection(&self) -> Self {
+        copy_state(self)
+    }
+
     pub const fn sample_rate_hz(&self) -> u32 {
         self.sample_rate_hz
     }

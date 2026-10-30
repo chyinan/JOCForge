@@ -490,6 +490,12 @@ mod tests {
             .collect()
     }
 
+    fn one_candidate_with_features(feature_words: &[u32]) -> CandidateSelectorInput {
+        let mut input = candidate_input(&[0], &[[0.0, 0.0, 0.0]], &[0x0b00]);
+        input.feature_u32 = feature_words.iter().map(|word| vec![*word]).collect();
+        input
+    }
+
     #[test]
     fn candidate16_weights_and_gain_rows_keep_candidate_order_with_selected15_order() {
         let ids = [0, 2, 5, 6, 8, 9, 11, 14, 17, 20, 23, 27, 32, 36, 41, 47];
@@ -520,14 +526,71 @@ mod tests {
 
         assert_eq!(proposal.source_ids(), ids);
         assert_eq!(proposal.source_weight_u32().len(), 16);
+        let expected_source_weights = (1..=16_u32)
+            .map(|band_count| (band_count as f32).to_bits())
+            .collect::<Vec<_>>();
+        assert_eq!(proposal.source_weight_u32(), expected_source_weights);
         assert_eq!(proposal.membership_gain_u32().len(), 16);
         assert_eq!(proposal.membership_gain_u32()[15].len(), 15);
         assert_eq!(proposal.selected_target_ids(), selected_order);
         assert_eq!(proposal.projected_xyz_u32().len(), 15);
-        assert_ne!(
-            proposal.source_weight_u32()[0],
-            proposal.source_weight_u32()[15]
-        );
+    }
+
+    #[test]
+    fn source_weight_entrypoint_matches_approved_pow32_numeric_vectors() {
+        let exponent = POWER_EXPONENT_WORD;
+        let repeated_features = [0x3d0a_c7c7; FEATURE_BANDS];
+        let repeated_input = one_candidate_with_features(&repeated_features);
+        let repeated_proposal = produce_u04_refinement(
+            &repeated_input,
+            &selected_targets(&[0], &[[0.0, 0.0, 0.0]], &[0x0b00]),
+        )
+        .unwrap();
+        assert_eq!(pow32(repeated_features[0], exponent).unwrap(), 0x3f02_1640);
+        assert_eq!(repeated_proposal.source_weight_u32()[0], 0x4143_2160);
+
+        let mut fold_features = [0; FEATURE_BANDS];
+        fold_features[..3].copy_from_slice(&[0x3f80_0000, 0x0380_0000, 0x0380_0000]);
+        let fold_powers = [0x3f80_0000, 0x337f_fffc, 0x337f_fffc];
+        for band in 0..3 {
+            assert_eq!(
+                pow32(fold_features[band], exponent).unwrap(),
+                fold_powers[band]
+            );
+        }
+        let fold_input = one_candidate_with_features(&fold_features);
+        let fold_proposal = produce_u04_refinement(
+            &fold_input,
+            &selected_targets(&[0], &[[0.0, 0.0, 0.0]], &[0x0b00]),
+        )
+        .unwrap();
+        assert_eq!(fold_proposal.source_weight_u32()[0], 0x3f80_0000);
+
+        let mut extreme_features = [0; FEATURE_BANDS];
+        extreme_features[..2].copy_from_slice(&[0x7f7f_ffff, 0x0000_0001]);
+        assert_eq!(pow32(extreme_features[0], exponent).unwrap(), 0x4c42_0303);
+        assert_eq!(pow32(extreme_features[1], exponent).unwrap(), 0x3093_0889);
+        let extreme_input = one_candidate_with_features(&extreme_features);
+        let extreme_proposal = produce_u04_refinement(
+            &extreme_input,
+            &selected_targets(&[0], &[[0.0, 0.0, 0.0]], &[0x0b00]),
+        )
+        .unwrap();
+        assert_eq!(extreme_proposal.source_weight_u32()[0], 0x4c42_0303);
+
+        for invalid_word in [0xbf80_0000, 0x7f80_0000, 0x7fc0_0000] {
+            let mut invalid_features = [0; FEATURE_BANDS];
+            invalid_features[0] = invalid_word;
+            let invalid_input = one_candidate_with_features(&invalid_features);
+            assert_eq!(
+                produce_u04_refinement(
+                    &invalid_input,
+                    &selected_targets(&[0], &[[0.0, 0.0, 0.0]], &[0x0b00]),
+                ),
+                Err(U04RefinementError::InvalidInput),
+                "{invalid_word:#010x} is rejected before evaluating a source weight"
+            );
+        }
     }
 
     #[test]

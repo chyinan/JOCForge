@@ -2,6 +2,11 @@
 
 use super::*;
 use crate::{
+    analysis::{
+        owner::AnalysisOwnerRoot, source_frame::SourcedInstalledAudioFrame,
+        transient_parameters::load_transient_parameters,
+    },
+    codec::policy_parameters::{PolicyProfile, load_policy_parameters},
     frontend::{
         PackageManifestEvidence, ProviderFileEvidence,
         job_configuration::{
@@ -17,7 +22,7 @@ use crate::{
             HistoryProducerGeneration, ReaderTargetCallbackInputs, ReaderTargetState,
             SELECTED_PROFILE_ID, stage_reader_target,
         },
-        source_stage::stage_joc_source,
+        source_stage::stage_joc_source_with_transaction,
     },
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
@@ -29,6 +34,8 @@ use crate::{
         validate_qmf_mathematical_fft_provider, validate_qmf_receiver_functional_provider,
         validate_window_q15_provider,
     },
+    transaction::{AttemptId, CallbackTransactionId},
+    transform::math_generated_parameters::MathGeneratedTransformParameters,
 };
 
 const MANIFEST_BYTES: &[u8] =
@@ -41,6 +48,12 @@ const WINDOW_Q15_BYTES: &[u8] =
     include_bytes!("../../../../../tests/fixtures/f04_parameters/window-q15.json");
 const DESCRIPTOR_BYTES: &[u8] =
     include_bytes!("../../../../../tests/fixtures/f04_parameters/descriptor-mathematical.json");
+const TRANSIENT_PARAMETERS: &[u8] =
+    include_bytes!("../../../../../tests/fixtures/transient_channel/PARAMETERS.json");
+const MATH_PARAMETERS: &[u8] =
+    include_bytes!("../../../../../src/transform/ordinary_transform_math_parameters.json");
+const POLICY_PARAMETERS: &[u8] =
+    include_bytes!("../../../../../tests/fixtures/policy_authorized/PARAMETERS.json");
 const JOB_CONFIGURATION_VECTORS: &[u8] = include_bytes!(
     "../../../../../tests/fixtures/job_configuration/job-configuration-vectors.json"
 );
@@ -122,8 +135,68 @@ fn selected_job_configuration() -> SelectedJobConfiguration {
     .expect("selected job fixture admits the supported profile")
 }
 
+fn assert_final_six_stages_one_f07_to_f10_source(
+    attempt_id: AttemptId,
+    installed_audio: &SourcedInstalledAudioFrame,
+) {
+    let expected_source_index = installed_audio.source_index();
+    let analysis_before = AnalysisOwnerRoot::cold();
+    let before_reference = analysis_before.state_reference().unwrap();
+    let transient = load_transient_parameters(Some(TRANSIENT_PARAMETERS)).unwrap();
+    let transform = MathGeneratedTransformParameters::from_provider_bytes(MATH_PARAMETERS).unwrap();
+    let policy =
+        load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS)).unwrap();
+
+    let after = crate::analysis::source_analysis::prepare_source_analysis_frame(
+        crate::analysis::source_analysis::SourceAnalysisInput {
+            analysis_before: &analysis_before,
+            attempt_id,
+            transaction_id: CallbackTransactionId::new("spatial-final-six-source-analysis")
+                .unwrap(),
+            installed_audio,
+            previous_short: [false; crate::analysis::structure_refresh::F07_FULLBAND_LANES],
+            providers: crate::analysis::source_analysis::SourceAnalysisProviders {
+                transient: &transient,
+                transform: &transform,
+                policy: &policy,
+            },
+        },
+    )
+    .expect("the admitted final-six value stages one selected F07-F10 source");
+
+    let shared = after
+        .shared_analysis()
+        .expect("F07 issues the same-source analysis receipt");
+    assert_eq!(shared.identity().source_index(), expected_source_index);
+    assert_eq!(
+        shared.identity().source_stage_key().attempt_id(),
+        attempt_id
+    );
+    assert_eq!(shared.advancement_count(), 1);
+    assert_eq!(after.after_state().input_history_generation(), 1);
+    assert_eq!(after.after_state().transient_generation(), 1);
+    assert_eq!(after.after_state().transform_generation(), 1);
+    assert_eq!(after.after_state().policy_generation(), 1);
+    assert!(after.after_state().is_commit_eligible());
+    let plan = after.plan().expect("F07-F10 retain one source-local plan");
+    assert!(plan.f08().is_six_block_complete());
+    assert!(plan.exponents().is_six_block_complete());
+    assert_eq!(analysis_before.state_reference().unwrap(), before_reference);
+    assert_eq!(analysis_before.input_history_generation(), 0);
+}
+
 #[test]
 fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
+    let source = compose_full_parent_source();
+    assert_final_six_stages_one_f07_to_f10_source(source.attempt_id, &source.installed_audio);
+}
+
+struct ComposedSourceFixture {
+    attempt_id: AttemptId,
+    installed_audio: SourcedInstalledAudioFrame,
+}
+
+fn compose_full_parent_source() -> ComposedSourceFixture {
     let mut context = context();
     let providers = validated_providers();
     let configuration = selected_job_configuration();
@@ -133,6 +206,7 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
     let current_attributes = [0_u32; 15];
     let assignment_active = [0_u8; 15];
     let source_flags = [0_u8; 48];
+    let mut source_audio = None;
     let silent_row = [0.0_f32; FRAME_SAMPLES];
     let previous_overlap_rows: [&[f32]; 15] = std::array::from_fn(|_| silent_row.as_slice());
     let current_mixer_rows: [&[f32]; 15] = std::array::from_fn(|_| silent_row.as_slice());
@@ -198,6 +272,25 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
             SpatialAudioCallbackOutcome::Priming => assert!(callback < 2),
             SpatialAudioCallbackOutcome::Joc(projection) => {
                 assert_eq!(callback, 2);
+                let installed_audio =
+                    crate::analysis::source_frame::installed_audio_from_final_six(&projection)
+                        .expect("the receiver's final six is the same typed F07 source");
+                assert_eq!(installed_audio.source_index(), projection.source_index());
+                for lane in 0..6 {
+                    for block in 0..6 {
+                        for sample in [0, 255] {
+                            let source_sample = block * 256 + sample;
+                            assert_eq!(
+                                installed_audio.audio()[lane][block][sample],
+                                projection.final_six()[lane][source_sample].to_bits(),
+                            );
+                        }
+                    }
+                }
+                source_audio = Some(ComposedSourceFixture {
+                    attempt_id: projection.attempt(),
+                    installed_audio,
+                });
                 let payload_input = JocPayloadInput::from_projection(&projection)
                     .expect("the selected QMF projection binds a writer input");
                 assert_eq!(
@@ -246,10 +339,12 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
                 let retry_provider =
                     RepresentationRetryProvider::from_approved_bytes(JOC_FUNCTIONAL_BYTES)
                         .expect("selected ID14 representation provider validates");
-                let joc_source = stage_joc_source(
+                let joc_source = stage_joc_source_with_transaction(
                     &CoefficientFitState::cold(),
                     &JocDispatchState::cold(),
                     &projection,
+                    CallbackTransactionId::new("spatial-final-six-source-analysis")
+                        .expect("the parent callback transaction ID is nonempty"),
                     &providers.functional,
                     &score_provider,
                     &retry_provider,
@@ -262,7 +357,7 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
                 assert_eq!(joc_source.dispatch_after().sequence_counter(), 0);
                 assert_eq!(joc_source.dispatch_after().successful_dispatches(), 1);
                 assert_eq!(
-                    joc_source.id14_body().writer_generation,
+                    joc_source.id14_body().body().writer_generation,
                     projection.source_index()
                 );
                 let bodies = joc_source
@@ -284,4 +379,5 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
         assert_eq!(context.spatial_audio.generation(), callback + 1);
         reader_state = reader_after;
     }
+    source_audio.expect("the ready g2 projection supplies source s=0")
 }

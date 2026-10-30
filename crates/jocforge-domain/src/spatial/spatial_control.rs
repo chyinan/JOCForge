@@ -59,10 +59,21 @@ use crate::joc::oamd::reader_target::{
 };
 use crate::profile::{EncodingProfile, resolve_selected_profile};
 use crate::timeline::{AdmSampleIndex, FrontendCallbackIndex, NormalCallbackCount};
-use crate::transaction::CallbackLineageIdentity;
+use crate::transaction::{
+    CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
+    GtcOwnerReceiptError, GtcOwnerStateSnapshot,
+};
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
 use std::sync::Arc;
+
+mod installed48_producer;
+pub use installed48_producer::{
+    SpatialControlInstalled48AfterParts, SpatialControlInstalled48AfterProjection,
+    SpatialControlInstalled48Callback, SpatialControlInstalled48Error,
+    SpatialControlInstalled48Input, SpatialControlInstalled48Proposal,
+    stage_spatial_control_installed48,
+};
 
 const NORMAL_CALLBACKS_COLD: u64 = 0;
 const CACHED_DRAINS_COLD: u32 = 4;
@@ -74,7 +85,7 @@ const PHYSICAL_HOST_COUNT: usize = 38;
 const REGULAR_TAIL_COUNT: usize = 37;
 const CONTROL_WORDS_PER_TRACK: usize = 13;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 enum PhysicalControlSnapshotRow {
     Bed6([u32; 6]),
     Object13([u32; CONTROL_WORDS_PER_TRACK]),
@@ -310,6 +321,7 @@ pub enum SpatialControlError {
     F01ECanonicalIdentityMismatch,
     F03TargetProjectionMismatch,
     CallbackAfterStateInvalid,
+    GtcReceipt(GtcOwnerReceiptError),
 }
 
 #[derive(Debug)]
@@ -363,6 +375,7 @@ struct MatrixAssignmentState {
 
 pub(super) struct SpatialControlAfterStateParts {
     pub(super) callback_index: FrontendCallbackIndex,
+    pub(super) callback_phase: super::post_window_fanout::CallbackPhase,
     pub(super) source_cursor_samples: AdmSampleIndex,
     pub(super) normal_callbacks: NormalCallbackCount,
     pub(super) source_pcm_rows: Vec<Vec<u32>>,
@@ -538,17 +551,43 @@ impl SpatialControlState {
             .value()
             .checked_add(1)
             .ok_or(SpatialControlError::CallbackAfterStateInvalid)?;
-        let next_normal_callbacks = before
-            .clocks
-            .normal_callbacks
-            .value()
-            .checked_add(1)
-            .ok_or(SpatialControlError::CallbackAfterStateInvalid)?;
+        let next_normal_callbacks = match parts.callback_phase {
+            super::post_window_fanout::CallbackPhase::Normal => before
+                .clocks
+                .normal_callbacks
+                .value()
+                .checked_add(1)
+                .ok_or(SpatialControlError::CallbackAfterStateInvalid)?,
+            super::post_window_fanout::CallbackPhase::FreshZeroInputDrain
+            | super::post_window_fanout::CallbackPhase::CachedDrain => {
+                before.clocks.normal_callbacks.value()
+            }
+        };
+        let next_cached_drains = match parts.callback_phase {
+            super::post_window_fanout::CallbackPhase::CachedDrain => before
+                .clocks
+                .remaining_cached_drains
+                .checked_sub(1)
+                .ok_or(SpatialControlError::CallbackAfterStateInvalid)?,
+            super::post_window_fanout::CallbackPhase::Normal
+            | super::post_window_fanout::CallbackPhase::FreshZeroInputDrain => {
+                before.clocks.remaining_cached_drains
+            }
+        };
         if parts.callback_index != before.clocks.callback_index
             || parts.reader_target_state.callback_index()
                 != FrontendCallbackIndex::new(next_callback)
             || parts.reader_target_state.is_retired()
             || parts.normal_callbacks.value() != next_normal_callbacks
+            || (parts.callback_phase
+                == super::post_window_fanout::CallbackPhase::FreshZeroInputDrain
+                && (before.source_cache.last_normal_host38_bits.is_none()
+                    || before.source_cache.last_control_snapshot.is_none()))
+            || (parts.callback_phase == super::post_window_fanout::CallbackPhase::CachedDrain
+                && (before.clocks.remaining_cached_drains == 0
+                    || before.source_cache.last_normal_host38_bits.is_none()
+                    || before.source_cache.last_control_snapshot.is_none()
+                    || parts.source_cursor_samples != before.clocks.source_cursor_samples))
             || parts.source_cursor_samples.value() < before.clocks.source_cursor_samples.value()
             || parts.source_pcm_rows.len() != PHYSICAL_HOST_COUNT
             || parts.source_pcm_rows.iter().any(|row| row.len() != 1_536)
@@ -571,6 +610,16 @@ impl SpatialControlState {
             .flatten()
             .collect::<Vec<_>>()
             .into();
+        let callback_control_snapshot: Box<[PhysicalControlSnapshotRow; PHYSICAL_HOST_COUNT]> =
+            Box::new(
+                parts
+                    .control38_rows
+                    .iter()
+                    .map(PhysicalControlSnapshotRow::from_normal_control)
+                    .collect::<Vec<_>>()
+                    .try_into()
+                    .map_err(|_| SpatialControlError::CallbackAfterStateInvalid)?,
+            );
         if pcm_bits.len() != PHYSICAL_HOST_COUNT * 1_536
             || parts
                 .previous_current_rows_bits
@@ -582,10 +631,43 @@ impl SpatialControlState {
         {
             return Err(SpatialControlError::CallbackAfterStateInvalid);
         }
+        if parts.callback_phase == super::post_window_fanout::CallbackPhase::CachedDrain
+            && (before.source_cache.last_normal_host38_bits.as_deref() != Some(pcm_bits.as_ref())
+                || before.source_cache.last_control_snapshot.as_deref()
+                    != Some(callback_control_snapshot.as_ref()))
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
 
-        let control_rows = parts
-            .control38_rows
-            .map(|row| PhysicalControlSnapshotRow::from_normal_control(&row));
+        let source_cache = match parts.callback_phase {
+            super::post_window_fanout::CallbackPhase::Normal => SourceCacheState {
+                last_normal_host38_bits: Some(Arc::clone(&pcm_bits)),
+                last_control_snapshot: Some(Box::new(
+                    parts
+                        .control38_rows
+                        .map(|row| PhysicalControlSnapshotRow::from_normal_control(&row)),
+                )),
+                phase_u8: 1,
+            },
+            super::post_window_fanout::CallbackPhase::FreshZeroInputDrain => SourceCacheState {
+                last_normal_host38_bits: before.source_cache.last_normal_host38_bits.clone(),
+                last_control_snapshot: before
+                    .source_cache
+                    .last_control_snapshot
+                    .as_ref()
+                    .map(|rows| Box::new((**rows).clone())),
+                phase_u8: before.source_cache.phase_u8,
+            },
+            super::post_window_fanout::CallbackPhase::CachedDrain => SourceCacheState {
+                last_normal_host38_bits: before.source_cache.last_normal_host38_bits.clone(),
+                last_control_snapshot: before
+                    .source_cache
+                    .last_control_snapshot
+                    .as_ref()
+                    .map(|rows| Box::new((**rows).clone())),
+                phase_u8: before.source_cache.phase_u8,
+            },
+        };
         let projection = parts.projection;
         let target = projection.target_state();
         let previous_marker_active_u8 = parts
@@ -628,14 +710,10 @@ impl SpatialControlState {
                 callback_index: FrontendCallbackIndex::new(next_callback),
                 source_cursor_samples: parts.source_cursor_samples,
                 normal_callbacks: parts.normal_callbacks,
-                remaining_cached_drains: before.clocks.remaining_cached_drains,
+                remaining_cached_drains: next_cached_drains,
                 retired: false,
             },
-            source_cache: SourceCacheState {
-                last_normal_host38_bits: Some(Arc::clone(&pcm_bits)),
-                last_control_snapshot: Some(Box::new(control_rows)),
-                phase_u8: 1,
-            },
+            source_cache,
             event_control_canonical_bytes: before.event_control_canonical_bytes.clone(),
             render_audio: RenderAudioState {
                 regular_raw_history_bits: parts.regular_raw_history_bits,
@@ -847,23 +925,127 @@ impl SpatialControlAfterProposal {
     pub const fn reader_target_receipt(&self) -> Option<&ReaderTargetUpdateReceipt> {
         self.reader_target_receipt.as_ref()
     }
+
+    fn into_parent_parts(
+        self,
+    ) -> (
+        SpatialControlState,
+        SpatialControlJoinMetadata,
+        SpatialControlAfterOutputs,
+    ) {
+        (
+            self.after_state,
+            self.join_metadata,
+            SpatialControlAfterOutputs {
+                source_flags: self.source_flags,
+                current_features: self.current_features,
+                reader_target_receipt: self.reader_target_receipt,
+                reader_target_controls: self.reader_target_controls,
+            },
+        )
+    }
+}
+
+/// Non-owning F03W/F05R56 callback values preserved alongside the staged spatial-control root.
+#[must_use]
+pub struct SpatialControlAfterOutputs {
+    source_flags: SourceFlagsPacket,
+    current_features: CurrentFeaturesPacket,
+    reader_target_receipt: Option<ReaderTargetUpdateReceipt>,
+    reader_target_controls: ReaderTargetControlRows,
+}
+
+impl SpatialControlAfterOutputs {
+    pub const fn callback_packets(&self) -> (&SourceFlagsPacket, &CurrentFeaturesPacket) {
+        (&self.source_flags, &self.current_features)
+    }
+
+    pub const fn reader_target_receipt(&self) -> Option<&ReaderTargetUpdateReceipt> {
+        self.reader_target_receipt.as_ref()
+    }
+
+    pub const fn reader_target_controls(&self) -> &ReaderTargetControlRows {
+        &self.reader_target_controls
+    }
+}
+
+/// Parent-owned replacement candidate for the complete spatial-control root.
+#[must_use]
+pub struct SpatialControlReplacementCandidate {
+    next_machine: SpatialControlMachine,
+    receipt: GtcOwnerReceipt,
+    outputs: SpatialControlAfterOutputs,
+}
+
+impl SpatialControlReplacementCandidate {
+    pub const fn next_machine(&self) -> &SpatialControlMachine {
+        &self.next_machine
+    }
+
+    pub const fn receipt(&self) -> &GtcOwnerReceipt {
+        &self.receipt
+    }
+
+    pub const fn outputs(&self) -> &SpatialControlAfterOutputs {
+        &self.outputs
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        SpatialControlMachine,
+        GtcOwnerReceipt,
+        SpatialControlAfterOutputs,
+    ) {
+        (self.next_machine, self.receipt, self.outputs)
+    }
 }
 
 /// Linear preparation capability. No public or test-only constructor exists in D1.
 #[allow(dead_code)]
 #[must_use]
 pub struct SpatialControlPrepared {
-    _proposal: SpatialControlAfterProposal,
-    _before_generation: u64,
-    _before_digest: SpatialControlDigest,
+    proposal: SpatialControlAfterProposal,
+    before_generation: u64,
+    before_digest: SpatialControlDigest,
 }
 
 /// Linear staged-after capability. No local commit operation exists in D1.
 #[allow(dead_code)]
 #[must_use]
 pub struct SpatialControlStaged {
-    _proposal: SpatialControlAfterProposal,
-    _after_digest: SpatialControlDigest,
+    proposal: SpatialControlAfterProposal,
+    after_digest: SpatialControlDigest,
+}
+
+impl SpatialControlStaged {
+    pub const fn after_state(&self) -> &SpatialControlState {
+        &self.proposal.after_state
+    }
+
+    pub const fn join_metadata(&self) -> &SpatialControlJoinMetadata {
+        &self.proposal.join_metadata
+    }
+
+    pub const fn after_digest(&self) -> SpatialControlDigest {
+        self.after_digest
+    }
+
+    fn into_parent_parts(
+        self,
+    ) -> (
+        SpatialControlState,
+        SpatialControlJoinMetadata,
+        SpatialControlDigest,
+        SpatialControlAfterOutputs,
+    ) {
+        let Self {
+            proposal,
+            after_digest,
+        } = self;
+        let (after_state, join_metadata, outputs) = proposal.into_parent_parts();
+        (after_state, join_metadata, after_digest, outputs)
+    }
 }
 
 /// Opaque constructor authority for the future spatial-control render stage.
@@ -1037,6 +1219,117 @@ impl SpatialControlMachine {
             cold_digest,
             profile_identity,
             provider_lineage,
+        })
+    }
+
+    fn validate_after_proposal(
+        &self,
+        proposal: &SpatialControlAfterProposal,
+    ) -> Result<(), SpatialControlError> {
+        let join = &proposal.join_metadata;
+        let expected_after_callback = join
+            .callback_index
+            .value()
+            .checked_add(1)
+            .ok_or(SpatialControlError::CallbackAfterStateInvalid)?;
+        if self.committed.retired()
+            || join.callback_index != self.committed.callback_index()
+            || join.transaction_id.callback_index() != join.callback_index
+            || join.before_generation != self.generation
+            || join.before_digest != self.digest()
+            || join.profile_identity != self.profile_identity
+            || join.provider_lineage != self.provider_lineage
+            || proposal.after_state.callback_index().value() != expected_after_callback
+            || proposal.after_state.reader_targets_callback_index()
+                != proposal.after_state.callback_index()
+            || proposal.after_state.retired()
+            || join.after_digest != proposal.after_state.digest()
+            || proposal.source_flags.lineage().transaction_id() != &join.transaction_id
+            || proposal.source_flags.lineage().callback_index() != join.callback_index
+            || proposal.source_flags.validate_payload().is_err()
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
+        Ok(())
+    }
+
+    /// Creates a parent-owned prepare capability for the exact F03W after-root.
+    pub fn prepare(
+        &self,
+        proposal: SpatialControlAfterProposal,
+    ) -> Result<SpatialControlPrepared, SpatialControlError> {
+        self.validate_after_proposal(&proposal)?;
+        Ok(SpatialControlPrepared {
+            proposal,
+            before_generation: self.generation,
+            before_digest: self.digest(),
+        })
+    }
+
+    /// Converts a matching prepare capability into a linear staged-after capability.
+    pub fn stage(
+        &self,
+        prepared: SpatialControlPrepared,
+    ) -> Result<SpatialControlStaged, SpatialControlError> {
+        if prepared.before_generation != self.generation || prepared.before_digest != self.digest()
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
+        self.validate_after_proposal(&prepared.proposal)?;
+        let after_digest = prepared.proposal.after_state.digest();
+        Ok(SpatialControlStaged {
+            proposal: prepared.proposal,
+            after_digest,
+        })
+    }
+
+    /// Builds a replacement machine and complete GTC owner receipt without mutating this root.
+    pub fn replacement_candidate(
+        &self,
+        staged: SpatialControlStaged,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<SpatialControlReplacementCandidate, SpatialControlError> {
+        if staged.proposal.join_metadata.before_generation != self.generation
+            || staged.proposal.join_metadata.before_digest != self.digest()
+            || staged.after_digest != staged.proposal.after_state.digest()
+        {
+            return Err(SpatialControlError::CallbackAfterStateInvalid);
+        }
+        self.validate_after_proposal(&staged.proposal)?;
+        let after_generation = self
+            .generation
+            .checked_add(1)
+            .ok_or(SpatialControlError::CallbackAfterStateInvalid)?;
+        let (committed, _, _, outputs) = staged.into_parent_parts();
+        let next_machine = Self {
+            committed,
+            generation: after_generation,
+            cold_digest: self.cold_digest,
+            profile_identity: self.profile_identity,
+            provider_lineage: self.provider_lineage,
+        };
+        let before_reference = self.state_reference();
+        let after_reference = next_machine.state_reference();
+        let before = GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::SpatialControl,
+            before_reference.generation(),
+            before_reference.cold_sha256().0,
+            before_reference.canonical_bytes(),
+        )
+        .map_err(SpatialControlError::GtcReceipt)?;
+        let after = GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::SpatialControl,
+            after_reference.generation(),
+            after_reference.cold_sha256().0,
+            after_reference.canonical_bytes(),
+        )
+        .map_err(SpatialControlError::GtcReceipt)?;
+        let receipt = GtcOwnerReceipt::from_transition(before, after, transaction_id)
+            .map_err(SpatialControlError::GtcReceipt)?;
+        Ok(SpatialControlReplacementCandidate {
+            next_machine,
+            receipt,
+            outputs,
         })
     }
 
@@ -1234,14 +1527,25 @@ fn push_u32_slice(bytes: &mut Vec<u8>, values: &[u32]) {
 
 #[cfg(test)]
 mod tests {
-    use super::{SpatialControlError, SpatialControlMachine};
+    use super::{
+        PhysicalControlSnapshotRow, SpatialControlAfterStateParts, SpatialControlError,
+        SpatialControlMachine, SpatialControlState,
+    };
     use crate::{
         frontend::{
             PackageManifestEvidence, ProviderFileEvidence, ProviderSha256,
             validate_f01e_package_manifest, validate_f01e_provider, validate_f03_package_manifest,
             validate_f03_target_cold_provider,
         },
+        joc::oamd::reader_target::{
+            ReaderTargetCallbackInputs, ReaderTargetState, SELECTED_PROFILE_ID, stage_reader_target,
+        },
         profile::EncodingProfile,
+        spatial::{
+            post_window_fanout::CallbackPhase, source_geometry_outer::tests::f01b_f01e_fixture,
+        },
+        timeline::{AdmSampleIndex, FrontendCallbackIndex, NormalCallbackCount},
+        transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
     };
     use std::sync::Arc;
 
@@ -1263,6 +1567,47 @@ mod tests {
         let f03_evidence = ProviderFileEvidence::new(Arc::from(F03_PROVIDER_BYTES), None);
         let f03 = validate_f03_target_cold_provider(&f03_evidence, &f03_manifest).unwrap();
         SpatialControlMachine::new_cold(EncodingProfile::selected(), &f01e, &f03).unwrap()
+    }
+
+    fn reader_target_after_g2(programme_id: &ProgrammeId, attempt: AttemptId) -> ReaderTargetState {
+        let mut state = ReaderTargetState::cold();
+        let current_xyz_words = [0_u32; 45];
+        let current_ids = [u32::MAX; 15];
+        let current_attributes = [0_u32; 15];
+        let assignment_active = [0_u8; 15];
+        let source_flags = [0_u8; 48];
+        let energy_row = vec![0.0_f32; 1_536];
+        let previous_overlap_rows = std::array::from_fn(|_| energy_row.as_slice());
+        let current_mixer_rows = std::array::from_fn(|_| energy_row.as_slice());
+
+        for callback in 0..=2 {
+            let callback_index = FrontendCallbackIndex::new(callback);
+            let transaction_id =
+                CallbackLineageIdentity::new(programme_id.clone(), attempt, callback_index);
+            let input = ReaderTargetCallbackInputs {
+                callback_index,
+                reader_enabled: callback >= 2,
+                snapshot_keys_complete: true,
+                programme_id: programme_id.clone(),
+                attempt_id: attempt,
+                transaction_id,
+                profile_id: SELECTED_PROFILE_ID,
+                current_xyz_words: &current_xyz_words,
+                current_ids: &current_ids,
+                current_attributes: &current_attributes,
+                assignment_active: &assignment_active,
+                active_target_indices: &[],
+                matrix: &[],
+                source_flags: &source_flags,
+                previous_overlap_rows,
+                current_mixer_rows,
+            };
+            state = stage_reader_target(&state, &input)
+                .unwrap()
+                .into_parent_parts()
+                .0;
+        }
+        state
     }
 
     #[test]
@@ -1317,5 +1662,68 @@ mod tests {
         );
         assert_eq!(machine.digest(), before_digest);
         assert_eq!(machine.generation(), before_generation);
+    }
+
+    #[test]
+    fn cached_drain_advances_spatial_control_history_and_decrements_its_budget() {
+        let fixture = f01b_f01e_fixture();
+        let control38_rows = fixture.normal.control38_rows().clone();
+        let mut machine = selected_machine();
+        let source_samples = 3_072_u64;
+        let cached_pcm: Arc<[u32]> = vec![0; 38 * 1_536].into();
+        let control_cache = Box::new(std::array::from_fn(|host| {
+            PhysicalControlSnapshotRow::from_normal_control(&control38_rows[host])
+        }));
+        {
+            let before = &mut machine.committed;
+            before.clocks.callback_index = FrontendCallbackIndex::new(2);
+            before.clocks.source_cursor_samples = AdmSampleIndex::new(source_samples);
+            before.clocks.normal_callbacks = NormalCallbackCount::new(2);
+            before.clocks.remaining_cached_drains = 4;
+            before.source_cache.last_normal_host38_bits = Some(Arc::clone(&cached_pcm));
+            before.source_cache.last_control_snapshot = Some(control_cache);
+            before.source_cache.phase_u8 = 1;
+            before.render_audio.previous_pcm_bits = Arc::clone(&cached_pcm);
+            let canonical = before.serialize_v6();
+            before.digest = super::SpatialControlDigest::digest(&canonical);
+            before.canonical_bytes = canonical.into_boxed_slice();
+        }
+
+        let programme_id = ProgrammeId::new("spatial-control-cached-test").unwrap();
+        let attempt = AttemptId::new(0);
+        let reader_target_state = reader_target_after_g2(&programme_id, attempt);
+        let projection =
+            crate::spatial::production_callback::SpatialControlCallbackProjection::fixture_zero();
+        let pcm_rows = (0..38).map(|_| vec![0; 1_536]).collect();
+        let after = SpatialControlState::from_callback_parts(
+            machine.committed(),
+            SpatialControlAfterStateParts {
+                callback_index: FrontendCallbackIndex::new(2),
+                callback_phase: CallbackPhase::CachedDrain,
+                source_cursor_samples: AdmSampleIndex::new(source_samples),
+                normal_callbacks: NormalCallbackCount::new(2),
+                source_pcm_rows: pcm_rows,
+                control38_rows,
+                regular_raw_history_bits: vec![0; 37 * 1_536].into_boxed_slice(),
+                previous_current_rows_bits: vec![0; 48 * 1_536].into_boxed_slice(),
+                diffusion_tails: std::array::from_fn(|_| None),
+                reader_target_state,
+                projection,
+            },
+            vec![0; 48 * 24].into_boxed_slice(),
+            vec![0; 48].into_boxed_slice(),
+        )
+        .unwrap();
+
+        assert_eq!(after.callback_index(), FrontendCallbackIndex::new(3));
+        assert_eq!(after.normal_callbacks(), NormalCallbackCount::new(2));
+        assert_eq!(after.source_cursor_samples().value(), source_samples);
+        assert_eq!(after.remaining_cached_drains(), 3);
+        assert_eq!(after.previous_pcm_bits(), cached_pcm.as_ref());
+        assert!(!after.source_cache_is_cold());
+        assert_eq!(
+            machine.committed().callback_index(),
+            FrontendCallbackIndex::new(2)
+        );
     }
 }

@@ -677,8 +677,10 @@ fn providers_match_contract(
     let fft_lineage = fft_receipt.validated_manifest_lineage();
     let descriptor_receipt = descriptor.receipt();
     let descriptor_lineage = descriptor_receipt.validated_manifest_lineage();
+    let validated_manifest_sha256 = functional_lineage.manifest_sha256();
     let common_manifest = |lineage: &crate::spatial::F04ParameterProviderLineage| {
-        lineage.manifest_sha256().to_hex() == PACKAGE_MANIFEST_SHA256
+        lineage.manifest_sha256() == validated_manifest_sha256
+            && lineage.approved_source_manifest_sha256() == Some(PACKAGE_MANIFEST_SHA256)
     };
     common_manifest(functional_lineage)
         && common_manifest(fft_lineage)

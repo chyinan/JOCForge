@@ -1,5 +1,6 @@
 // pattern: Functional Core
-//! Spatial-owner storage boundary. CurrentFeatures stages a proposal; render and owner composition remain deferred.
+//! Spatial-owner storage boundary. MAIN F03W can now stage its installed48 post-window proposal;
+//! F04 assembly and enclosing-owner composition remain deferred.
 
 pub mod bed_source_points;
 pub mod candidate_selector;
@@ -11,6 +12,7 @@ pub mod diffusion_filter;
 pub mod diffusion_tail;
 pub mod frontend_stages;
 pub mod installed48_activity;
+pub(crate) mod installed48_render;
 pub mod installed48_source_map;
 pub mod outer_active_update;
 pub mod outer_empty_matrix;
@@ -50,8 +52,11 @@ pub use descriptor_mathematical_provider::{
     validate_descriptor_mathematical_provider,
 };
 pub use production_callback::{
-    NormalControlCallbackSource, SpatialProductionCallbackError, SpatialProductionCallbackInputs,
-    SpatialProductionCallbackProposal, continue_spatial_production_callback,
+    MeterSpatialProductionCallbackInputs, MeterSpatialProductionCallbackParentParts,
+    MeterSpatialProductionCallbackProposal, NormalControlCallbackSource,
+    SpatialProductionCallbackError, SpatialProductionCallbackInputs,
+    SpatialProductionCallbackParentParts, SpatialProductionCallbackProposal,
+    continue_meter_spatial_production_callback, continue_spatial_production_callback,
 };
 pub use qmf_fft64::{QmfFftError, QmfFftInput, QmfFftOutput, execute_qmf_fft64};
 pub use qmf_mathematical_fft_provider::{
@@ -69,15 +74,16 @@ pub use spatial_audio_state::spatial_audio_composer::{
 };
 pub use spatial_audio_state::{
     ComponentBeforeOverlapRows, ComponentStageError, MeterComponentOutputRows,
-    MeterComponentStagePreview, MeterComponentStageProposal, SpatialAudioAfterProposal,
-    SpatialAudioDigest, SpatialAudioError, SpatialAudioJoinMetadata, SpatialAudioMachine,
-    SpatialAudioOwnerStateReference, SpatialAudioPrepared, SpatialAudioStaged, SpatialAudioState,
+    MeterComponentStagePreview, MeterComponentStageProposal, MeterSpatialAudioCallbackProposal,
+    SpatialAudioAfterProposal, SpatialAudioDigest, SpatialAudioError, SpatialAudioJoinMetadata,
+    SpatialAudioMachine, SpatialAudioOwnerStateReference, SpatialAudioPrepared,
+    SpatialAudioReplacementCandidate, SpatialAudioStaged, SpatialAudioState,
 };
 pub use spatial_control::{
-    PacketReadiness, SpatialControlAfterProposal, SpatialControlDigest, SpatialControlError,
-    SpatialControlJoinMetadata, SpatialControlMachine, SpatialControlOwnerStateReference,
-    SpatialControlPrepared, SpatialControlProviderLineage, SpatialControlStaged,
-    SpatialControlState,
+    PacketReadiness, SpatialControlAfterOutputs, SpatialControlAfterProposal, SpatialControlDigest,
+    SpatialControlError, SpatialControlJoinMetadata, SpatialControlMachine,
+    SpatialControlOwnerStateReference, SpatialControlPrepared, SpatialControlProviderLineage,
+    SpatialControlReplacementCandidate, SpatialControlStaged, SpatialControlState,
 };
 pub use window_q15_provider::{
     F04ParameterProviderError, F04ParameterProviderLineage, ValidatedF04ParameterPackageManifest,

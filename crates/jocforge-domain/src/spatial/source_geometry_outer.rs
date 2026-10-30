@@ -21,8 +21,9 @@ use crate::{
     frontend::{
         dbmd_sections::DbmdTrackFields,
         normal_control_snapshot::{
-            NormalControlDbmdFields, NormalControlHeldSourceView, NormalControlPreparedSnapshot,
-            NormalControlRow, NormalControlSnapshotProposal,
+            NormalControlDbmdFields, NormalControlFreshZeroMeterView, NormalControlHeldSourceView,
+            NormalControlPreparedSnapshot, NormalControlRow, NormalControlSnapshotOutput,
+            NormalControlSnapshotProposal,
         },
         selected_adm_graph::{PhysicalHostIndex, SelectedAdmGraph, SelectedTrackKind},
     },
@@ -371,6 +372,39 @@ pub fn build_global_source_geometry_snapshot(
     )
 }
 
+/// Builds same-callback source geometry from the non-owning F03W projection emitted alongside
+/// the frontend owner stage. The full frontend after-state has already moved to its owner stage.
+pub fn build_global_source_geometry_snapshot_from_output(
+    graph: &SelectedAdmGraph,
+    source_map: &Installed48SourceMap,
+    output: &NormalControlSnapshotOutput,
+) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
+    let prepared = output.prepared_identity();
+    let transaction_id = output.transaction_id();
+    let expected_next = output
+        .value_generation()
+        .value()
+        .checked_add(1)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    if transaction_id.programme_id() != prepared.programme_id()
+        || transaction_id.attempt_id() != prepared.attempt_id()
+        || transaction_id.callback_index() != output.value_generation()
+        || output.normal_origin_generation() != output.value_generation()
+        || output.next_callback_index().value() != expected_next
+    {
+        return Err(GlobalSourceGeometryError::CallbackIdentityMismatch);
+    }
+    build_global_source_geometry_from_rows(
+        graph,
+        source_map,
+        transaction_id,
+        output.value_generation(),
+        output.normal_origin_generation(),
+        prepared,
+        output.control38_rows(),
+    )
+}
+
 /// Stages F01E normal controls and their 48-source geometry under the same callback identity.
 /// The complete normal after-state remains pending for the parent transaction to adopt.
 pub fn stage_normal_source_geometry(
@@ -401,6 +435,44 @@ pub fn build_held_global_source_geometry_snapshot(
 ) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
     let transaction_id = held.delivery_transaction_id();
     if transaction_id.callback_index() != held.delivery_generation()
+        || held.source_origin_transaction_id().programme_id() != transaction_id.programme_id()
+        || held.source_origin_transaction_id().attempt_id() != transaction_id.attempt_id()
+        || held.source_origin_transaction_id().callback_index() != held.source_origin_generation()
+    {
+        return Err(GlobalSourceGeometryError::CallbackIdentityMismatch);
+    }
+    build_global_source_geometry_from_rows(
+        graph,
+        source_map,
+        transaction_id,
+        held.delivery_generation(),
+        held.source_origin_generation(),
+        held.prepared_identity(),
+        held.control38_rows(),
+    )
+}
+
+/// Reuses Q-1 F01E controls for one independent fresh-zero Meter delivery callback.
+pub fn build_meter_fresh_zero_global_source_geometry_snapshot(
+    graph: &SelectedAdmGraph,
+    source_map: &Installed48SourceMap,
+    held: &NormalControlFreshZeroMeterView,
+) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
+    let transaction_id = held.delivery_transaction_id();
+    let normal_callbacks = held.normal_callbacks().value();
+    let expected_source_callbacks = held.prepared_identity().source_samples().div_ceil(1_536);
+    let expected_source_origin = normal_callbacks
+        .checked_sub(1)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    let delivery_end = normal_callbacks
+        .checked_add(3)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    if normal_callbacks == 0
+        || expected_source_callbacks != normal_callbacks
+        || u64::from(held.delivery_generation().value()) < normal_callbacks
+        || u64::from(held.delivery_generation().value()) >= delivery_end
+        || u64::from(held.source_origin_generation().value()) != expected_source_origin
+        || transaction_id.callback_index() != held.delivery_generation()
         || held.source_origin_transaction_id().programme_id() != transaction_id.programme_id()
         || held.source_origin_transaction_id().attempt_id() != transaction_id.attempt_id()
         || held.source_origin_transaction_id().callback_index() != held.source_origin_generation()

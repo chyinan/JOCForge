@@ -1,7 +1,8 @@
 use super::*;
 use crate::profile::{EncodingProfile, resolve_selected_profile};
 use crate::spatial::source_flags::{
-    HostId, project_normal_control_snapshot_source_controls_from_prepared,
+    HostId, SourceControlSnapshotClock,
+    project_normal_control_snapshot_source_controls_from_prepared,
 };
 
 const SNAPSHOT_INPUTS: &str = include_str!(
@@ -188,6 +189,117 @@ fn proposal_uses_carried_xyz_and_short_last_normal_frame() {
             .unwrap()
     };
     assert_ne!(row_for_uid(&last)[5..8], row_for_uid(&alternate)[5..8]);
+}
+
+#[test]
+fn meter_fresh_zero_views_hold_the_last_normal_controls_for_three_drains() {
+    let prepared = synthetic_one_callback_prepared_snapshot();
+    let before = cold_before_state(&prepared);
+    let normal =
+        propose_normal_control_snapshot(&before, &prepared, transaction_id(&prepared, 0)).unwrap();
+    assert_eq!(normal.after_state().next_normal_callbacks().value(), 1);
+    assert_eq!(normal.after_state().next_callback_index().value(), 1);
+
+    let after = normal.after_state().clone();
+    let first_view = after
+        .held_source_view_for_meter_fresh_zero_drain(
+            transaction_id(&prepared, 1),
+            NormalCallbackCount::new(1),
+        )
+        .unwrap();
+    let assert_held_view = |view: &NormalControlFreshZeroMeterView, delivery_callback: u32| {
+        assert_eq!(view.delivery_generation().value(), delivery_callback);
+        assert_eq!(view.source_origin_generation().value(), 0);
+        assert_eq!(view.normal_callbacks().value(), 1);
+        assert_eq!(
+            view.source_origin_transaction_id(),
+            &transaction_id(&prepared, 0)
+        );
+        assert_eq!(
+            view.delivery_transaction_id(),
+            &transaction_id(&prepared, delivery_callback)
+        );
+        assert_eq!(view.control38_rows(), normal.control38_rows());
+        assert_eq!(view.regular37_rows(), normal.regular37_rows());
+        assert_eq!(view.prepared_identity().source_samples(), 1_536);
+        let clock = SourceControlSnapshotClock::for_fresh_zero_meter_drain(
+            view.delivery_generation(),
+            view.normal_callbacks(),
+        )
+        .unwrap();
+        assert_eq!(clock.callback_index().value(), delivery_callback);
+        assert_eq!(clock.source_origin().value(), 0);
+        assert!(!clock.is_cached_drain());
+    };
+    assert_held_view(&first_view, 1);
+    for delivery_callback in 2..=3 {
+        let view = first_view
+            .for_delivery(transaction_id(&prepared, delivery_callback))
+            .unwrap();
+        assert_held_view(&view, delivery_callback);
+    }
+    assert!(
+        first_view
+            .for_delivery(transaction_id(&prepared, 4))
+            .is_err()
+    );
+    assert!(
+        first_view
+            .for_delivery(CallbackLineageIdentity::new(
+                prepared.programme_id().clone(),
+                AttemptId::new(1),
+                FrontendCallbackIndex::new(2),
+            ))
+            .is_err()
+    );
+
+    assert!(matches!(
+        after.held_source_view_for_meter_fresh_zero_drain(
+            transaction_id(&prepared, 4),
+            NormalCallbackCount::new(1),
+        ),
+        Err(NormalControlSnapshotError::CallbackClockMismatch)
+    ));
+    assert_eq!(after.remaining_cached_drains(), MAIN_CACHED_DRAIN_CALLBACKS);
+    for delivery_callback in 1..=MAIN_CACHED_DRAIN_CALLBACKS {
+        let main_cached = after
+            .held_source_view_for_cached_callback(
+                transaction_id(&prepared, delivery_callback),
+                NormalCallbackCount::new(1),
+            )
+            .unwrap();
+        assert_eq!(main_cached.delivery_generation().value(), delivery_callback);
+        assert_eq!(main_cached.source_origin_generation().value(), 0);
+    }
+    assert!(
+        after
+            .held_source_view_for_cached_callback(
+                transaction_id(&prepared, MAIN_CACHED_DRAIN_CALLBACKS + 1),
+                NormalCallbackCount::new(1),
+            )
+            .is_err()
+    );
+    let main_cached_clock = SourceControlSnapshotClock::for_cached_drain(
+        FrontendCallbackIndex::new(1),
+        NormalCallbackCount::new(1),
+    )
+    .unwrap();
+    assert!(main_cached_clock.is_cached_drain());
+    assert_eq!(main_cached_clock.source_origin().value(), 0);
+    assert!(
+        SourceControlSnapshotClock::for_fresh_zero_meter_drain(
+            FrontendCallbackIndex::new(4),
+            NormalCallbackCount::new(1),
+        )
+        .is_err()
+    );
+    assert!(
+        SourceControlSnapshotClock::for_fresh_zero_meter_drain(
+            FrontendCallbackIndex::new(0),
+            NormalCallbackCount::new(0),
+        )
+        .is_err()
+    );
 }
 
 #[test]
@@ -608,6 +720,31 @@ fn synthetic_prepared_snapshot() -> Arc<NormalControlPreparedSnapshot> {
         lfe_host,
         regular37_hosts,
     })
+}
+
+fn synthetic_one_callback_prepared_snapshot() -> Arc<NormalControlPreparedSnapshot> {
+    let mut prepared = (*synthetic_prepared_snapshot()).clone();
+    prepared.source_identity.source_samples = 1_536;
+    prepared.profile.source_samples = 1_536;
+    for event in &mut prepared.object_events {
+        let authored = event.control_event;
+        let [x, y, z] = authored.authored_coordinates();
+        let [width, depth, height] = authored.authored_spread();
+        event.control_event = SelectedObjectEvent::new(
+            authored.host_channel_index(),
+            authored.start_sample(),
+            authored.duration_samples(),
+            1_536,
+            x,
+            y,
+            z,
+            width,
+            depth,
+            height,
+            authored.diffuse(),
+        );
+    }
+    Arc::new(prepared)
 }
 
 fn synthetic_dbmd(host: u8) -> NormalControlDbmdFields {

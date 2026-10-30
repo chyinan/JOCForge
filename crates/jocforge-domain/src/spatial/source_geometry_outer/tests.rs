@@ -98,7 +98,7 @@ pub(in crate::spatial) fn f01b_f01e_fixture() -> F01bF01eFixture {
         Sha256::digest(serde_json::to_vec(&config_identity).unwrap()).into();
     let identity = SelectedPrimaryRuntimeIdentity {
         source_file_bytes: primary_format["source_file_bytes"].as_u64().unwrap(),
-        data_bytes: primary_format["data_bytes"].as_u64().unwrap(),
+        data_bytes: source_samples.checked_mul(114).unwrap(),
         metadata_hashes,
         // This test-only identity names the metadata fixture; no PCM bytes are read or rehashed.
         resource_sha256: Sha256::digest(metadata_identity).into(),
@@ -131,12 +131,9 @@ pub(in crate::spatial) fn f01b_f01e_fixture() -> F01bF01eFixture {
         &dbmd,
     )
     .unwrap();
-    let before = NormalControlBeforeState::from_frontend_state(
-        machine.committed(),
-        machine.generation(),
-        None,
-    )
-    .unwrap();
+    let before =
+        NormalControlBeforeState::from_frontend_state(machine.committed(), machine.generation())
+            .unwrap();
     let transaction_id =
         CallbackLineageIdentity::new(programme_id, attempt_id, FrontendCallbackIndex::new(0));
     let normal = propose_normal_control_snapshot(&before, &prepared, transaction_id).unwrap();

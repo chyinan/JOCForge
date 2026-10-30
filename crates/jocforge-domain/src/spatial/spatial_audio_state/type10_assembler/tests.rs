@@ -134,6 +134,7 @@ fn component_proposal(
     let component_phase = match phase {
         CallbackPhase::Normal => ComponentCallbackPhase::Normal,
         CallbackPhase::CachedDrain => ComponentCallbackPhase::CachedDrain,
+        CallbackPhase::FreshZeroInputDrain => ComponentCallbackPhase::FreshZeroInputDrain,
     };
     ComponentStageProposal::fixture_for_type10(
         join,
@@ -293,6 +294,7 @@ fn g2_g5_row_order_origins_and_bit_preservation() {
             match phase {
                 CallbackPhase::Normal => ComponentCallbackPhase::Normal,
                 CallbackPhase::CachedDrain => ComponentCallbackPhase::CachedDrain,
+                CallbackPhase::FreshZeroInputDrain => ComponentCallbackPhase::FreshZeroInputDrain,
             },
             &context.spatial_control,
             context.provider_lineage,
@@ -398,6 +400,34 @@ fn g2_g5_row_order_origins_and_bit_preservation() {
             }
         }
     }
+}
+
+#[test]
+fn fresh_zero_meter_phase_is_not_admitted_to_type10_assembly() {
+    let context = context();
+    let callback = 0;
+    let parent = selected_parent(&context, callback);
+    let phase = CallbackPhase::FreshZeroInputDrain;
+    let component = component_proposal(
+        &context,
+        &parent,
+        phase,
+        None,
+        COMPONENT_ROWS * FRAME_SAMPLES,
+    );
+    let lfe = lfe_proposal(
+        &context,
+        &parent,
+        phase,
+        None,
+        ring_after(callback, None),
+        None,
+    );
+
+    assert_error(
+        assemble_type10(&parent, phase, component, lfe),
+        Type10AssemblyError::CallbackOrder,
+    );
 }
 
 #[test]

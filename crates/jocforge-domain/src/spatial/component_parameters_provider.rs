@@ -1,14 +1,15 @@
 // pattern: Functional Core
 use super::window_q15_provider::{
     F04ParameterProviderError, F04ParameterProviderLineage, ValidatedF04ParameterPackageManifest,
-    exact_keys, exact_u64_field, provider_lineage, q15_array, string_field,
-    validate_provider_identity,
+    exact_keys, exact_u64_field, provider_lineage, provider_manifest_entry, q15_array,
+    string_field, validate_provider_identity,
 };
-use crate::frontend::{ProviderFileEvidence, ProviderSha256};
+use crate::frontend::{ProviderFileEvidence, ProviderSha256, ValidatedF03wProviderManifest};
 use crate::profile::{EncodingProfile, ResolvedEncodingProfile, resolve_selected_profile};
 use serde_json::{Map, Value};
 
 const COMPONENT_SCHEMA: &str = "component-parameter-mathematical-generation.v1";
+const COMPONENT_PARAMETERS_PATH: &str = "parameters/component-parameter-mathematical-v1.json";
 const COMPONENT_ROUTE: &str = "COMPONENT_FIXED_48K_Q15_PARAMETER_MATH_V1";
 const COMPONENT_FIELDS: &[&str] = &[
     "schema",
@@ -149,11 +150,51 @@ pub fn validate_component_parameter_provider(
     profile: &EncodingProfile,
 ) -> Result<ValidatedComponentParameterProvider, F04ParameterProviderError> {
     let entry = manifest.component_parameters_entry();
+    validate_component_parameter_provider_entry(
+        evidence,
+        entry,
+        manifest.manifest_sha256(),
+        Some(manifest.approved_source_manifest_sha256()),
+        *profile,
+    )
+}
+
+/// Validates the exact component parameters carried by the selected 48-asset provider bundle.
+pub fn validate_component_parameter_provider_from_f03w_bundle(
+    evidence: &ProviderFileEvidence,
+    manifest: &ValidatedF03wProviderManifest,
+    profile: EncodingProfile,
+) -> Result<ValidatedComponentParameterProvider, F04ParameterProviderError> {
+    let entry = manifest
+        .entry(COMPONENT_PARAMETERS_PATH)
+        .ok_or(F04ParameterProviderError::PackageManifestEntry)?;
+    validate_component_parameter_provider_entry(
+        evidence,
+        provider_manifest_entry(entry),
+        manifest.manifest_sha256(),
+        None,
+        profile,
+    )
+}
+
+fn validate_component_parameter_provider_entry(
+    evidence: &ProviderFileEvidence,
+    entry: super::window_q15_provider::ProviderManifestEntry,
+    manifest_sha256: ProviderSha256,
+    approved_source_manifest_sha256: Option<&'static str>,
+    profile: EncodingProfile,
+) -> Result<ValidatedComponentParameterProvider, F04ParameterProviderError> {
     let provider_sha = validate_provider_identity(evidence, entry)?;
+    let profile = &profile;
     let selected_profile = resolve_selected_profile(profile)
         .map_err(|_| F04ParameterProviderError::UnsupportedProfile)?;
     let parsed = parse_component_parameter_provider(evidence.bytes())?;
-    let lineage = provider_lineage(manifest.manifest_sha256(), entry, provider_sha);
+    let lineage = provider_lineage(
+        manifest_sha256,
+        approved_source_manifest_sha256,
+        entry,
+        provider_sha,
+    );
     let receipt = ComponentParameterProviderReceipt {
         validated_manifest_lineage: lineage,
         provider_file_sha256: provider_sha,

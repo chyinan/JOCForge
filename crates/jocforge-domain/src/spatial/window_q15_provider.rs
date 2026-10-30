@@ -1,9 +1,14 @@
 // pattern: Functional Core
+use crate::frontend::{F03wManifestEntry, ValidatedF01bColdAssetManifest};
 use crate::frontend::{PackageManifestEvidence, ProviderFileEvidence, ProviderSha256};
 use serde_json::{Map, Value};
 
 const PACKAGE_BYTES: u64 = 76_302;
 const PACKAGE_SHA256: &str = "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a";
+const RECEIVER_PARAMETER_BUNDLE_BYTES: u64 = 1_218;
+const RECEIVER_PARAMETER_BUNDLE_SHA256: &str =
+    "161147c7959083738f5426b2280457454b08b73ee58a075322c33880cecc818b";
+const RECEIVER_PARAMETER_BUNDLE_ID: &str = "F04-RECEIVER-APPROVED-PARAMETERS-V1";
 
 const WINDOW_PATH: &str = "parameters/window-q15.json";
 const WINDOW_BYTES: u64 = 2_704;
@@ -69,9 +74,18 @@ pub(crate) struct ProviderManifestEntry {
     sha256: &'static str,
 }
 
+pub(crate) const fn provider_manifest_entry(entry: F03wManifestEntry) -> ProviderManifestEntry {
+    ProviderManifestEntry {
+        path: entry.path(),
+        bytes: entry.bytes(),
+        sha256: entry.sha256(),
+    }
+}
+
 /// Authenticated manifest entries for the two scoped F04 parameter providers.
 pub struct ValidatedF04ParameterPackageManifest {
     manifest_sha256: ProviderSha256,
+    approved_source_manifest_sha256: &'static str,
     window_q15: ProviderManifestEntry,
     component_parameters: ProviderManifestEntry,
     qmf_receiver_functional: ProviderManifestEntry,
@@ -82,6 +96,10 @@ pub struct ValidatedF04ParameterPackageManifest {
 impl ValidatedF04ParameterPackageManifest {
     pub const fn manifest_sha256(&self) -> ProviderSha256 {
         self.manifest_sha256
+    }
+
+    pub const fn approved_source_manifest_sha256(&self) -> &'static str {
+        self.approved_source_manifest_sha256
     }
 
     pub(crate) const fn window_q15_entry(&self) -> ProviderManifestEntry {
@@ -109,6 +127,7 @@ impl ValidatedF04ParameterPackageManifest {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct F04ParameterProviderLineage {
     manifest_sha256: ProviderSha256,
+    approved_source_manifest_sha256: Option<&'static str>,
     provider_path: &'static str,
     manifest_entry_bytes: u64,
     manifest_entry_sha256: ProviderSha256,
@@ -117,6 +136,10 @@ pub struct F04ParameterProviderLineage {
 impl F04ParameterProviderLineage {
     pub const fn manifest_sha256(&self) -> ProviderSha256 {
         self.manifest_sha256
+    }
+
+    pub const fn approved_source_manifest_sha256(&self) -> Option<&'static str> {
+        self.approved_source_manifest_sha256
     }
 
     pub const fn provider_path(&self) -> &'static str {
@@ -195,23 +218,51 @@ pub fn validate_f04_parameter_package_manifest(
     evidence: &PackageManifestEvidence,
 ) -> Result<ValidatedF04ParameterPackageManifest, F04ParameterProviderError> {
     let actual_sha = ProviderSha256::digest(evidence.bytes());
-    if actual_sha.to_hex() != PACKAGE_SHA256 {
+    let full_manifest = actual_sha.to_hex() == PACKAGE_SHA256;
+    let receiver_bundle = actual_sha.to_hex() == RECEIVER_PARAMETER_BUNDLE_SHA256;
+    if !full_manifest && !receiver_bundle {
         return Err(F04ParameterProviderError::PackageManifestIdentityMismatch);
     }
     if evidence.observed_byte_length() != evidence.bytes().len() as u64
         || evidence.observed_sha256() != actual_sha
-        || evidence.bytes().len() as u64 != PACKAGE_BYTES
+        || (full_manifest && evidence.bytes().len() as u64 != PACKAGE_BYTES)
+        || (receiver_bundle && evidence.bytes().len() as u64 != RECEIVER_PARAMETER_BUNDLE_BYTES)
     {
         return Err(F04ParameterProviderError::ObservedManifestEvidenceMismatch);
     }
 
     let root: Value = serde_json::from_slice(evidence.bytes())
         .map_err(|_| F04ParameterProviderError::PackageManifestSyntax)?;
+    if receiver_bundle {
+        let fields = root
+            .as_object()
+            .ok_or(F04ParameterProviderError::PackageManifestEntry)?;
+        if !exact_keys(
+            fields,
+            &[
+                "approved_package_manifest_sha256",
+                "files",
+                "package_id",
+                "scope",
+            ],
+        ) || fields.get("package_id").and_then(Value::as_str)
+            != Some(RECEIVER_PARAMETER_BUNDLE_ID)
+            || fields
+                .get("approved_package_manifest_sha256")
+                .and_then(Value::as_str)
+                != Some(PACKAGE_SHA256)
+        {
+            return Err(F04ParameterProviderError::PackageManifestEntry);
+        }
+    }
     let files = root
         .as_object()
         .and_then(|manifest| manifest.get("files"))
         .and_then(Value::as_array)
         .ok_or(F04ParameterProviderError::PackageManifestEntry)?;
+    if receiver_bundle && files.len() != 5 {
+        return Err(F04ParameterProviderError::PackageManifestEntry);
+    }
     let window_q15 = unique_manifest_entry(files, WINDOW_PATH, WINDOW_BYTES, WINDOW_SHA256)?;
     let component_parameters = unique_manifest_entry(
         files,
@@ -240,6 +291,7 @@ pub fn validate_f04_parameter_package_manifest(
 
     Ok(ValidatedF04ParameterPackageManifest {
         manifest_sha256: actual_sha,
+        approved_source_manifest_sha256: PACKAGE_SHA256,
         window_q15,
         component_parameters,
         qmf_receiver_functional,
@@ -254,9 +306,40 @@ pub fn validate_window_q15_provider(
     manifest: &ValidatedF04ParameterPackageManifest,
 ) -> Result<ValidatedWindowQ15Provider, F04ParameterProviderError> {
     let entry = manifest.window_q15_entry();
+    validate_window_q15_provider_entry(
+        evidence,
+        manifest.manifest_sha256,
+        Some(manifest.approved_source_manifest_sha256),
+        entry,
+    )
+}
+
+/// Validates the cold-bundle Q15 window without treating that bundle as the complete F04 package.
+pub fn validate_window_q15_provider_from_f01b_cold_assets(
+    evidence: &ProviderFileEvidence,
+    manifest: &ValidatedF01bColdAssetManifest,
+) -> Result<ValidatedWindowQ15Provider, F04ParameterProviderError> {
+    let entry = manifest
+        .entry(WINDOW_PATH)
+        .ok_or(F04ParameterProviderError::PackageManifestEntry)?;
+    let entry = provider_manifest_entry(entry);
+    validate_window_q15_provider_entry(evidence, manifest.manifest_sha256(), None, entry)
+}
+
+fn validate_window_q15_provider_entry(
+    evidence: &ProviderFileEvidence,
+    manifest_sha256: ProviderSha256,
+    approved_source_manifest_sha256: Option<&'static str>,
+    entry: ProviderManifestEntry,
+) -> Result<ValidatedWindowQ15Provider, F04ParameterProviderError> {
     let provider_sha = validate_provider_identity(evidence, entry)?;
     let parsed = parse_window_q15_provider(evidence.bytes())?;
-    let lineage = provider_lineage(manifest.manifest_sha256, entry, provider_sha);
+    let lineage = provider_lineage(
+        manifest_sha256,
+        approved_source_manifest_sha256,
+        entry,
+        provider_sha,
+    );
     let receipt = WindowQ15ProviderReceipt {
         validated_manifest_lineage: lineage,
         provider_file_sha256: provider_sha,
@@ -290,11 +373,13 @@ pub(crate) fn validate_provider_identity(
 
 pub(crate) fn provider_lineage(
     manifest_sha256: ProviderSha256,
+    approved_source_manifest_sha256: Option<&'static str>,
     entry: ProviderManifestEntry,
     provider_sha256: ProviderSha256,
 ) -> F04ParameterProviderLineage {
     F04ParameterProviderLineage {
         manifest_sha256,
+        approved_source_manifest_sha256,
         provider_path: entry.path,
         manifest_entry_bytes: entry.bytes,
         manifest_entry_sha256: provider_sha256,
@@ -482,10 +567,60 @@ pub(crate) fn q15_array<const N: usize>(
 
 #[cfg(test)]
 mod tests {
-    use super::{F04ParameterProviderError, parse_window_q15_provider};
+    use super::{
+        F04ParameterProviderError, PACKAGE_SHA256, RECEIVER_PARAMETER_BUNDLE_ID,
+        RECEIVER_PARAMETER_BUNDLE_SHA256, parse_window_q15_provider,
+        validate_f04_parameter_package_manifest,
+    };
+    use crate::frontend::PackageManifestEvidence;
     use serde_json::Value;
+    use std::sync::Arc;
 
     const WINDOW_Q15: &[u8] = include_bytes!("../../tests/fixtures/f04_parameters/window-q15.json");
+    const WASH_RECEIVER_MANIFEST: &[u8] = include_bytes!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F04-RECEIVER-APPROVED-PARAMETERS-V1/MANIFEST.json"
+    );
+
+    #[test]
+    fn wash_receiver_subset_manifest_binds_five_assets_to_the_approved_parent() {
+        let evidence = PackageManifestEvidence::new(
+            Arc::from(WASH_RECEIVER_MANIFEST),
+            Some("MANIFEST.json".to_owned()),
+        );
+        let manifest = validate_f04_parameter_package_manifest(&evidence)
+            .expect("Wash-approved receiver subset manifest is valid");
+
+        assert_eq!(
+            manifest.manifest_sha256().to_hex(),
+            RECEIVER_PARAMETER_BUNDLE_SHA256
+        );
+        assert_eq!(manifest.approved_source_manifest_sha256(), PACKAGE_SHA256);
+        assert_eq!(manifest.window_q15.path, "parameters/window-q15.json");
+        assert_eq!(
+            manifest.component_parameters.path,
+            "parameters/component-parameter-mathematical-v1.json"
+        );
+        assert_eq!(
+            manifest.qmf_receiver_functional.path,
+            "parameters/qmf-receiver-functional-v1.json"
+        );
+        assert_eq!(
+            manifest.qmf_mathematical_fft.path,
+            "parameters/qmf-mathematical-fft-v1.json"
+        );
+        assert_eq!(
+            manifest.descriptor_mathematical.path,
+            "parameters/descriptor-mathematical.json"
+        );
+        assert_eq!(
+            PACKAGE_SHA256,
+            "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+        );
+        assert_eq!(
+            RECEIVER_PARAMETER_BUNDLE_ID,
+            "F04-RECEIVER-APPROVED-PARAMETERS-V1"
+        );
+    }
 
     fn fixture() -> Value {
         serde_json::from_slice(WINDOW_Q15).expect("window fixture is valid JSON")

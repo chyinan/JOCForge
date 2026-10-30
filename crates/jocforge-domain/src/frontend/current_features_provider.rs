@@ -7,6 +7,12 @@ use std::collections::HashSet;
 
 const PACKAGE_BYTES: u64 = 76_302;
 const PACKAGE_SHA256: &str = "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a";
+const METER_ASSET_SUBSET_PACKAGE_ID: &str = "METER-APPROVED-PARAMETER-ASSETS-V1";
+const METER_ASSET_SUBSET_SCOPE: &str =
+    "approved nonsecret assets; layout and remaining transitive dependencies not claimed complete";
+const METER_ASSET_SUBSET_MANIFEST_SHA256: &str =
+    "f802dd4b0576fe72b9f6be5538974cd91149df26c8aa01f9efa6822783d4df04";
+const METER_ASSET_SUBSET_FILE_COUNT: usize = 18;
 
 const PROCESSOR_PATH: &str = "parameters/feature-processor-math-v1.json";
 const PROCESSOR_BYTES: u64 = 35_441;
@@ -74,14 +80,26 @@ struct ProviderManifestEntry {
 /// Proof that the approved package manifest and both unique provider entries were validated.
 pub struct ValidatedCurrentFeaturesPackageManifest {
     manifest_sha256: ProviderSha256,
+    approved_source_manifest_sha256: &'static str,
     processor: ProviderManifestEntry,
     fft: ProviderManifestEntry,
+}
+
+impl ValidatedCurrentFeaturesPackageManifest {
+    pub const fn manifest_sha256(&self) -> ProviderSha256 {
+        self.manifest_sha256
+    }
+
+    pub const fn approved_source_manifest_sha256(&self) -> &'static str {
+        self.approved_source_manifest_sha256
+    }
 }
 
 /// Immutable identity lineage for one math provider entry in the approved package manifest.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CurrentFeaturesProviderLineage {
     manifest_sha256: ProviderSha256,
+    approved_source_manifest_sha256: &'static str,
     provider_path: &'static str,
     manifest_entry_bytes: u64,
     manifest_entry_sha256: ProviderSha256,
@@ -90,6 +108,11 @@ pub struct CurrentFeaturesProviderLineage {
 impl CurrentFeaturesProviderLineage {
     pub const fn manifest_sha256(&self) -> ProviderSha256 {
         self.manifest_sha256
+    }
+
+    /// Identity of the complete approved source manifest named by this payload manifest.
+    pub const fn approved_source_manifest_sha256(&self) -> &'static str {
+        self.approved_source_manifest_sha256
     }
 
     pub const fn provider_path(&self) -> &'static str {
@@ -295,6 +318,56 @@ pub fn validate_current_features_package_manifest(
 
     Ok(ValidatedCurrentFeaturesPackageManifest {
         manifest_sha256: actual_manifest_sha,
+        approved_source_manifest_sha256: PACKAGE_SHA256,
+        processor,
+        fft,
+    })
+}
+
+/// Authenticates only the two CurrentFeatures assets listed in the approved 18-asset subset.
+///
+/// The subset manifest is not promoted to the complete selected provider manifest: its own hash,
+/// non-exhaustive scope, approved source-manifest identity, and the two exact entries are retained
+/// separately. Other listed assets are neither loaded nor validated by this function.
+pub fn validate_current_features_asset_subset_manifest(
+    evidence: &PackageManifestEvidence,
+) -> Result<ValidatedCurrentFeaturesPackageManifest, CurrentFeaturesProviderError> {
+    let actual_manifest_sha = ProviderSha256::digest(evidence.bytes());
+    if actual_manifest_sha.to_hex() != METER_ASSET_SUBSET_MANIFEST_SHA256 {
+        return Err(CurrentFeaturesProviderError::PackageManifestIdentityMismatch);
+    }
+    if evidence.observed_byte_length() != evidence.bytes().len() as u64
+        || evidence.observed_sha256() != actual_manifest_sha
+    {
+        return Err(CurrentFeaturesProviderError::ObservedManifestEvidenceMismatch);
+    }
+
+    let root: Value = serde_json::from_slice(evidence.bytes())
+        .map_err(|_| CurrentFeaturesProviderError::PackageManifestSyntax)?;
+    let fields = root
+        .as_object()
+        .ok_or(CurrentFeaturesProviderError::PackageManifestEntry)?;
+    if !exact_keys(
+        fields,
+        &["approved_manifest_sha256", "files", "package_id", "scope"],
+    ) || string(fields, "package_id")? != METER_ASSET_SUBSET_PACKAGE_ID
+        || string(fields, "scope")? != METER_ASSET_SUBSET_SCOPE
+        || string(fields, "approved_manifest_sha256")? != PACKAGE_SHA256
+    {
+        return Err(CurrentFeaturesProviderError::PackageManifestEntry);
+    }
+    let files = fields
+        .get("files")
+        .and_then(Value::as_array)
+        .filter(|files| files.len() == METER_ASSET_SUBSET_FILE_COUNT)
+        .ok_or(CurrentFeaturesProviderError::PackageManifestEntry)?;
+    let processor =
+        unique_manifest_entry(files, PROCESSOR_PATH, PROCESSOR_BYTES, PROCESSOR_SHA256)?;
+    let fft = unique_manifest_entry(files, FFT_PATH, FFT_BYTES, FFT_SHA256)?;
+
+    Ok(ValidatedCurrentFeaturesPackageManifest {
+        manifest_sha256: actual_manifest_sha,
+        approved_source_manifest_sha256: PACKAGE_SHA256,
         processor,
         fft,
     })
@@ -307,7 +380,12 @@ pub fn validate_feature_processor_math_provider(
 ) -> Result<ValidatedFeatureProcessorMathProvider, CurrentFeaturesProviderError> {
     let actual_sha = validate_provider_identity(evidence, manifest.processor)?;
     let parsed = parse_feature_processor_math_provider(evidence.bytes())?;
-    let lineage = provider_lineage(manifest.manifest_sha256, manifest.processor, actual_sha);
+    let lineage = provider_lineage(
+        manifest.manifest_sha256,
+        manifest.approved_source_manifest_sha256,
+        manifest.processor,
+        actual_sha,
+    );
     let receipt = FeatureProcessorMathProviderReceipt {
         validated_manifest_lineage: lineage,
         provider_file_sha256: actual_sha,
@@ -336,7 +414,12 @@ pub fn validate_feature_fft4096_math_provider(
 ) -> Result<ValidatedFeatureFft4096MathProvider, CurrentFeaturesProviderError> {
     let actual_sha = validate_provider_identity(evidence, manifest.fft)?;
     let parsed = parse_feature_fft4096_math_provider(evidence.bytes())?;
-    let lineage = provider_lineage(manifest.manifest_sha256, manifest.fft, actual_sha);
+    let lineage = provider_lineage(
+        manifest.manifest_sha256,
+        manifest.approved_source_manifest_sha256,
+        manifest.fft,
+        actual_sha,
+    );
     let route = FeatureFft4096MathRoute::RealFft4096Radix2MathV1;
     let receipt = FeatureFft4096MathProviderReceipt {
         validated_manifest_lineage: lineage,
@@ -404,11 +487,13 @@ fn validate_provider_identity(
 
 fn provider_lineage(
     manifest_sha256: ProviderSha256,
+    approved_source_manifest_sha256: &'static str,
     entry: ProviderManifestEntry,
     provider_sha256: ProviderSha256,
 ) -> CurrentFeaturesProviderLineage {
     CurrentFeaturesProviderLineage {
         manifest_sha256,
+        approved_source_manifest_sha256,
         provider_path: entry.path,
         manifest_entry_bytes: entry.bytes,
         manifest_entry_sha256: provider_sha256,

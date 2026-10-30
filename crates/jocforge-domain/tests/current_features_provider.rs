@@ -1,12 +1,23 @@
 // pattern: Imperative Shell
 use jocforge_domain::frontend::{
     CurrentFeaturesProviderError, FeatureFft4096MathRoute, PackageManifestEvidence,
-    ProviderFileEvidence, validate_current_features_package_manifest,
-    validate_feature_fft4096_math_provider, validate_feature_processor_math_provider,
+    ProviderFileEvidence, ProviderSha256, validate_current_features_asset_subset_manifest,
+    validate_current_features_package_manifest, validate_feature_fft4096_math_provider,
+    validate_feature_processor_math_provider,
 };
 use serde_json::Value;
 use std::path::PathBuf;
 use std::sync::Arc;
+
+const METER_ASSET_SUBSET_MANIFEST: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/METER-APPROVED-PARAMETER-ASSETS-V1/MANIFEST.json"
+);
+const METER_FEATURE_PROCESSOR: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/METER-APPROVED-PARAMETER-ASSETS-V1/parameters/feature-processor-math-v1.json"
+);
+const METER_FEATURE_FFT: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/METER-APPROVED-PARAMETER-ASSETS-V1/parameters/feature-fft4096-math-v1.json"
+);
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/current_features")
@@ -22,6 +33,88 @@ fn provider_evidence(name: &str) -> ProviderFileEvidence {
         Arc::from(std::fs::read(fixture_root().join(name)).unwrap()),
         None,
     )
+}
+
+#[test]
+fn approved_non_exhaustive_asset_manifest_validates_the_exact_current_features_pair() {
+    let manifest_evidence = PackageManifestEvidence::new(
+        Arc::from(METER_ASSET_SUBSET_MANIFEST),
+        Some("approved Meter asset subset manifest".to_owned()),
+    );
+    let manifest = validate_current_features_asset_subset_manifest(&manifest_evidence)
+        .expect("the exact approved subset manifest authenticates the CurrentFeatures entries");
+    assert_eq!(
+        manifest.manifest_sha256().to_hex(),
+        "f802dd4b0576fe72b9f6be5538974cd91149df26c8aa01f9efa6822783d4df04"
+    );
+
+    let processor_evidence = ProviderFileEvidence::new(
+        Arc::from(METER_FEATURE_PROCESSOR),
+        Some("approved feature processor asset".to_owned()),
+    );
+    let processor = validate_feature_processor_math_provider(&processor_evidence, &manifest)
+        .expect("the exact feature processor asset validates");
+    let fft_evidence = ProviderFileEvidence::new(
+        Arc::from(METER_FEATURE_FFT),
+        Some("approved feature FFT asset".to_owned()),
+    );
+    let fft = validate_feature_fft4096_math_provider(&fft_evidence, &manifest)
+        .expect("the exact feature FFT asset validates");
+
+    for lineage in [
+        processor.receipt().validated_manifest_lineage(),
+        fft.receipt().validated_manifest_lineage(),
+    ] {
+        assert_eq!(
+            lineage.manifest_sha256().to_hex(),
+            "f802dd4b0576fe72b9f6be5538974cd91149df26c8aa01f9efa6822783d4df04"
+        );
+        assert_eq!(
+            lineage.approved_source_manifest_sha256(),
+            "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+        );
+    }
+    assert_eq!(processor.sample_rate(), 48_000);
+    assert_eq!(processor.coefficient_u32().len(), 2_048);
+    assert_eq!(fft.fft_length(), 4_096);
+    assert_eq!(fft.stages().len(), 12);
+
+    // These exact inputs remain input-only: the provider assets themselves retain NOT_RUN.
+    let processor_json: Value = serde_json::from_slice(METER_FEATURE_PROCESSOR).unwrap();
+    let fft_json: Value = serde_json::from_slice(METER_FEATURE_FFT).unwrap();
+    assert_eq!(processor_json["real_ADM_new_route_acceptance"], "NOT_RUN");
+    assert_eq!(fft_json["real_ADM_new_route_acceptance"], "NOT_RUN");
+    let subset_json: Value = serde_json::from_slice(METER_ASSET_SUBSET_MANIFEST).unwrap();
+    assert_eq!(subset_json["files"].as_array().unwrap().len(), 18);
+    assert_eq!(
+        subset_json["scope"],
+        "approved nonsecret assets; layout and remaining transitive dependencies not claimed complete"
+    );
+}
+
+#[test]
+fn approved_asset_subset_rejects_unbound_manifest_metadata_and_provider_bytes() {
+    let forged_manifest = PackageManifestEvidence::from_observed(
+        Arc::from(METER_ASSET_SUBSET_MANIFEST),
+        None,
+        METER_ASSET_SUBSET_MANIFEST.len() as u64 + 1,
+        ProviderSha256::digest(METER_ASSET_SUBSET_MANIFEST),
+    );
+    assert!(matches!(
+        validate_current_features_asset_subset_manifest(&forged_manifest),
+        Err(CurrentFeaturesProviderError::ObservedManifestEvidenceMismatch)
+    ));
+
+    let manifest_evidence =
+        PackageManifestEvidence::new(Arc::from(METER_ASSET_SUBSET_MANIFEST), None);
+    let manifest = validate_current_features_asset_subset_manifest(&manifest_evidence).unwrap();
+    let mut changed = METER_FEATURE_PROCESSOR.to_vec();
+    changed[0] ^= 1;
+    let changed_processor = ProviderFileEvidence::new(Arc::from(changed), None);
+    assert!(matches!(
+        validate_feature_processor_math_provider(&changed_processor, &manifest),
+        Err(CurrentFeaturesProviderError::ProviderIdentityMismatch)
+    ));
 }
 
 #[test]

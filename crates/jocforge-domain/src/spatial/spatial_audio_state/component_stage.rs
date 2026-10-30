@@ -64,6 +64,7 @@ impl ComponentStageError {
 pub(crate) enum ComponentCallbackPhase {
     Normal,
     CachedDrain,
+    FreshZeroInputDrain,
 }
 
 /// Opaque future-producer packet; fields are intentionally private and have no production constructor in E2.

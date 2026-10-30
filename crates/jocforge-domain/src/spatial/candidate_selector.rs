@@ -812,5 +812,12 @@ pub(crate) fn pow32(base: u32, exponent: u32) -> Result<u32, SelectorError> {
     if !base.is_finite() || !exponent.is_finite() || base < 0.0 {
         return Err(SelectorError::NumericFailure);
     }
-    finite_word(base.powf(exponent))
+
+    // Promote the exact input words before power evaluation and round the result once to F32.
+    // This avoids using the host's single-precision powf result as an extra numeric path.
+    let powered = f64::from(base).powf(f64::from(exponent));
+    if !powered.is_finite() {
+        return Err(SelectorError::NumericFailure);
+    }
+    finite_word(powered as f32)
 }

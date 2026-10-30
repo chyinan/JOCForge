@@ -1,0 +1,16 @@
+{
+  "schema":"main-six-audio-producer-inputs.v1",
+  "input_only":true,
+  "contains_expected_outputs":false,
+  "cases":[
+    {"id":"one_sample_schedule","source_samples":1,"input_channels":38,"pcm_bits":24,"frame_samples":1536,"main_cached_drains":4},
+    {"id":"short_last_frame","source_samples":1537,"input_channels":38,"pcm_bits":24,"frame_samples":1536,"main_cached_drains":4},
+    {"id":"selected_example_schedule","source_samples":6522906,"input_channels":38,"pcm_bits":24,"frame_samples":1536,"main_cached_drains":4},
+    {"id":"interleaved_bed_object","physical_channels":38,"lfe_host":12,"chna_entry_order":"permuted","mapping":"explicit UID-track-host bijection"},
+    {"id":"same_callback_mixed_origins","frontend_g":2,"component_origin_g":2,"lfe_origin_g":0,"target_envelope_g":2,"target_history_origin":"explicit row lineage"},
+    {"id":"stale_target_receipt","frontend_g":3,"type10_envelope_g":3,"target_envelope_g":2},
+    {"id":"pcm24_boundaries","u24le_samples":["000000","ffffff","000080","ffff7f"]},
+    {"id":"receiver_target_direct","record_kind":1,"selector":4,"gain":4096,"row_flag":0}
+  ],
+  "scope":"Input descriptors only; no expected output, source PCM payload, EC3, private key or native pointer."
+}

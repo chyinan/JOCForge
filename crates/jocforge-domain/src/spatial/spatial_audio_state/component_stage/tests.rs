@@ -9,8 +9,9 @@ use crate::{
     profile::{EmdfCarriageProfile, EncodingProfile},
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     spatial::{
-        SpatialControlJoinMetadata, validate_component_parameter_provider,
-        validate_f04_parameter_package_manifest, validate_window_q15_provider,
+        MeterComponentOutputRows, MeterComponentStageProposal, SpatialControlJoinMetadata,
+        validate_component_parameter_provider, validate_f04_parameter_package_manifest,
+        validate_window_q15_provider,
     },
     timeline::FrontendCallbackIndex,
     transaction::CallbackLineageIdentity,
@@ -1182,6 +1183,114 @@ fn cold_component_stage_produces_complete_proposal_without_local_commit() {
         proposal.receipt.transaction_id,
         component_transaction_id(FrontendCallbackIndex::new(0))
     );
+}
+
+#[test]
+fn fresh_zero_meter_drain_advances_component_proposal_without_reusing_cached_phase() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let join = callback_join(&context, callback);
+    let control_join = control_join(&context, callback);
+    let before_digest = context.spatial_audio.digest();
+    let mut packet = zero_packet(&context);
+    packet.phase = ComponentCallbackPhase::FreshZeroInputDrain;
+
+    let proposal = produce_component_stage(
+        &context.spatial_audio,
+        &join,
+        &control_join,
+        &context.spatial_control,
+        ComponentCallbackPhase::FreshZeroInputDrain,
+        packet,
+        &context.window,
+        &context.parameters,
+    )
+    .expect("fresh-zero Meter input is a distinct accepted component phase");
+
+    assert_eq!(
+        proposal.receipt.phase,
+        ComponentCallbackPhase::FreshZeroInputDrain
+    );
+    assert_eq!(proposal.after.parameters.blocks_processed, 24);
+    assert_eq!(proposal.after.parameters.hold, 1);
+    assert_eq!(proposal.component_output.len(), COMPONENT_WORDS);
+    assert!(
+        proposal
+            .component_output
+            .iter()
+            .all(|sample| sample.to_bits() == 0)
+    );
+    assert_eq!(context.spatial_audio.generation(), 0);
+    assert_eq!(context.spatial_audio.digest(), before_digest);
+
+    let mut cached_packet = zero_packet(&context);
+    cached_packet.phase = ComponentCallbackPhase::FreshZeroInputDrain;
+    assert_stage_error(
+        &context,
+        &join,
+        ComponentCallbackPhase::CachedDrain,
+        cached_packet,
+        ComponentStageError::CallbackOrder,
+    );
+}
+
+#[test]
+fn meter_component_after_root_advances_only_component_clock_and_leaves_receiver_lanes_untouched() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let join = callback_join(&context, callback);
+    let control_join = control_join(&context, callback);
+    let before_digest = context.spatial_audio.digest();
+    let before_root = &context.spatial_audio.committed().root;
+    let receiver_before = before_root.receiver_state.clone();
+    let fitting_before = before_root.fitting_qmf_state.clone();
+    let lfe_before = before_root.lfe_state.clone();
+    let receiver_count_before = before_root.receiver_callback_count;
+    let mut packet = zero_packet(&context);
+    packet.phase = ComponentCallbackPhase::FreshZeroInputDrain;
+
+    let component = produce_component_stage(
+        &context.spatial_audio,
+        &join,
+        &control_join,
+        &context.spatial_control,
+        ComponentCallbackPhase::FreshZeroInputDrain,
+        packet,
+        &context.window,
+        &context.parameters,
+    )
+    .expect("the fresh-zero F04A proposal is valid");
+    let rows = MeterComponentOutputRows::fixture(
+        callback,
+        component_transaction_id(callback),
+        crate::spatial::post_window_fanout::CallbackPhase::FreshZeroInputDrain,
+        Vec::new(),
+    );
+    let expected_rows = rows.clone();
+    let meter_stage = MeterComponentStageProposal {
+        component,
+        meter_rows: rows,
+    };
+
+    let proposal = context
+        .spatial_audio
+        .stage_meter_component_after(&join, provider_lineage(&context), meter_stage)
+        .expect("F04A composes into a complete Meter-only after root");
+    let after = proposal.spatial_audio_after().after_state();
+
+    assert_eq!(after.callback_index(), FrontendCallbackIndex::new(1));
+    assert_eq!(after.root.component_parameter_state.blocks_processed, 24);
+    assert_eq!(after.root.receiver_callback_count, receiver_count_before);
+    assert_eq!(after.root.receiver_state, receiver_before);
+    assert_eq!(after.root.fitting_qmf_state, fitting_before);
+    assert_eq!(after.root.lfe_state, lfe_before);
+    assert_eq!(proposal.component_rows(), &expected_rows);
+    assert_eq!(
+        proposal.component_rows().phase(),
+        crate::spatial::post_window_fanout::CallbackPhase::FreshZeroInputDrain
+    );
+    assert_eq!(context.spatial_audio.generation(), 0);
+    assert_eq!(context.spatial_audio.digest(), before_digest);
 }
 
 #[test]

@@ -3,7 +3,8 @@
 use crate::{
     profile::{EncodingProfile, resolve_selected_profile},
     spatial::{
-        ValidatedComponentParameterProvider, ValidatedWindowQ15Provider,
+        F04ParameterProviderLineage, ValidatedComponentParameterProvider,
+        ValidatedWindowQ15Provider,
         post_window_fanout::CallbackPhase,
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
         source_geometry_outer::CompactOuterMatrix,
@@ -11,7 +12,10 @@ use crate::{
         target_context::TargetSlotIndex,
     },
     timeline::{FrontendCallbackIndex, ReceiverCallbackCount},
-    transaction::CallbackLineageIdentity,
+    transaction::{
+        CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
+        GtcOwnerReceiptError, GtcOwnerStateSnapshot,
+    },
 };
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
@@ -50,6 +54,7 @@ pub enum SpatialAudioError {
     NodeFieldCountOverflow,
     DeclaredFieldCountMismatch,
     ColdValueMismatch,
+    GtcReceipt(GtcOwnerReceiptError),
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -328,10 +333,25 @@ pub(crate) fn component_output_rows_for_meter(
         phase: match receipt.phase() {
             component_stage::ComponentCallbackPhase::Normal => CallbackPhase::Normal,
             component_stage::ComponentCallbackPhase::CachedDrain => CallbackPhase::CachedDrain,
+            component_stage::ComponentCallbackPhase::FreshZeroInputDrain => {
+                CallbackPhase::FreshZeroInputDrain
+            }
         },
         active_target_slots,
         canonical_rows_f32_bits,
     })
+}
+
+const fn callback_phase_for_component(
+    phase: component_stage::ComponentCallbackPhase,
+) -> CallbackPhase {
+    match phase {
+        component_stage::ComponentCallbackPhase::Normal => CallbackPhase::Normal,
+        component_stage::ComponentCallbackPhase::CachedDrain => CallbackPhase::CachedDrain,
+        component_stage::ComponentCallbackPhase::FreshZeroInputDrain => {
+            CallbackPhase::FreshZeroInputDrain
+        }
+    }
 }
 
 /// Noncommitting F04A result paired with its canonical component rows for the meter adapter.
@@ -362,7 +382,92 @@ impl MeterComponentStageProposal {
     }
 }
 
+/// Noncommitting Meter callback result before F04C/Type10 receiver work.
+#[must_use]
+pub struct MeterSpatialAudioCallbackProposal {
+    component_rows: MeterComponentOutputRows,
+    spatial_audio_after: SpatialAudioAfterProposal,
+}
+
+impl MeterSpatialAudioCallbackProposal {
+    pub const fn component_rows(&self) -> &MeterComponentOutputRows {
+        &self.component_rows
+    }
+
+    pub const fn spatial_audio_after(&self) -> &SpatialAudioAfterProposal {
+        &self.spatial_audio_after
+    }
+
+    pub fn into_parts(self) -> (SpatialAudioAfterProposal, MeterComponentOutputRows) {
+        (self.spatial_audio_after, self.component_rows)
+    }
+}
+
 impl SpatialAudioMachine {
+    /// Builds a Meter-only F04A after-root from the staged component result.
+    ///
+    /// This proposal advances the callback clock and component overlap, ring,
+    /// parameter, and filter-history leaves. Receiver, fitting-QMF, LFE, and
+    /// receiver callback-count leaves remain copied from the before-root.
+    pub fn stage_meter_component_after(
+        &self,
+        expected_join: &SpatialAudioJoinMetadata,
+        expected_provider_lineage: [F04ParameterProviderLineage; 2],
+        proposal: MeterComponentStageProposal,
+    ) -> Result<MeterSpatialAudioCallbackProposal, component_stage::ComponentStageError> {
+        let (component, component_rows) = proposal.into_parts();
+        let (component_after, _, receipt) = component.into_parts();
+
+        if receipt.spatial_audio_before_generation() != self.generation
+            || receipt.spatial_audio_before_digest() != self.digest()
+            || receipt.callback_index() != self.committed.callback_index()
+            || expected_join.programme_id() != receipt.programme_id()
+            || expected_join.attempt() != receipt.attempt()
+            || expected_join.transaction_id() != receipt.transaction_id()
+            || expected_join.callback_index() != receipt.callback_index()
+            || expected_join.before_generation() != receipt.spatial_audio_before_generation()
+            || expected_join.before_digest() != receipt.spatial_audio_before_digest()
+            || expected_join.profile_identity() != receipt.profile_identity()
+            || receipt.profile_identity() != self.profile_identity
+            || receipt.provider_lineage() != expected_provider_lineage
+            || component_rows.callback_index() != receipt.callback_index()
+            || component_rows.transaction_id() != receipt.transaction_id()
+            || component_rows.phase() != callback_phase_for_component(receipt.phase())
+        {
+            return Err(ComponentStageError::State);
+        }
+
+        let next_callback = receipt
+            .callback_index()
+            .value()
+            .checked_add(1)
+            .map(FrontendCallbackIndex::new)
+            .ok_or(ComponentStageError::CallbackOrder)?;
+
+        let mut state = self.committed.staged_copy();
+        state.root.callback_index = next_callback;
+        state.root.component_state = component_after.audio;
+        state.root.component_parameter_state = component_after.parameters;
+        state.root.component_filter_history = component_after.filter_history;
+        let state =
+            SpatialAudioState::from_root(state.root).map_err(|_| ComponentStageError::State)?;
+
+        let parent = SpatialAudioJoinMetadata::new(
+            receipt.programme_id().clone(),
+            receipt.attempt(),
+            receipt.transaction_id().clone(),
+            receipt.callback_index(),
+            receipt.spatial_audio_before_generation(),
+            receipt.spatial_audio_before_digest(),
+            receipt.profile_identity(),
+        );
+
+        Ok(MeterSpatialAudioCallbackProposal {
+            component_rows,
+            spatial_audio_after: SpatialAudioAfterProposal::new(state, parent),
+        })
+    }
+
     /// Copies the committed overlap rows for F05R56 energy preview without advancing F04A state.
     pub fn component_before_overlap_rows(
         &self,
@@ -435,6 +540,9 @@ impl SpatialAudioMachine {
         let component_phase = match phase {
             CallbackPhase::Normal => component_stage::ComponentCallbackPhase::Normal,
             CallbackPhase::CachedDrain => component_stage::ComponentCallbackPhase::CachedDrain,
+            CallbackPhase::FreshZeroInputDrain => {
+                component_stage::ComponentCallbackPhase::FreshZeroInputDrain
+            }
         };
         let packet = component_stage::SpatialAudioInputPacket::from_current_component_callback(
             self,
@@ -697,6 +805,69 @@ impl SpatialAudioMachine {
         })
     }
 
+    /// Builds a new owner value and GTC receipt from the exact staged root without changing this
+    /// machine. The application parent installs it only with the other callback owner candidates.
+    pub fn replacement_candidate(
+        &self,
+        staged: SpatialAudioStaged,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<SpatialAudioReplacementCandidate, SpatialAudioError> {
+        if staged.before_generation != self.generation {
+            return Err(SpatialAudioError::GenerationMismatch);
+        }
+        if staged.before_digest != self.committed.digest() {
+            return Err(SpatialAudioError::BeforeDigestMismatch);
+        }
+        self.validate_join(staged.join_metadata())?;
+        let expected_callback = staged
+            .join_metadata()
+            .callback_index()
+            .value()
+            .checked_add(1)
+            .ok_or(SpatialAudioError::GenerationMismatch)?;
+        if staged.after_state().callback_index().value() != expected_callback
+            || staged.after_state().digest() != staged.after_digest
+        {
+            return Err(SpatialAudioError::GenerationMismatch);
+        }
+        let after_generation = self
+            .generation
+            .checked_add(1)
+            .ok_or(SpatialAudioError::GenerationMismatch)?;
+        let (committed, _, before_generation, before_digest) = staged.into_parts();
+        if before_generation != self.generation || before_digest != self.committed.digest() {
+            return Err(SpatialAudioError::BeforeDigestMismatch);
+        }
+        let next_machine = Self {
+            committed,
+            generation: after_generation,
+            cold_digest: self.cold_digest,
+            profile_identity: self.profile_identity,
+        };
+        let before_reference = self.state_reference();
+        let after_reference = next_machine.state_reference();
+        let before = GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::SpatialAudio,
+            before_reference.generation(),
+            before_reference.cold_sha256().0,
+            before_reference.canonical_bytes(),
+        )
+        .map_err(SpatialAudioError::GtcReceipt)?;
+        let after = GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::SpatialAudio,
+            after_reference.generation(),
+            after_reference.cold_sha256().0,
+            after_reference.canonical_bytes(),
+        )
+        .map_err(SpatialAudioError::GtcReceipt)?;
+        let receipt = GtcOwnerReceipt::from_transition(before, after, transaction_id)
+            .map_err(SpatialAudioError::GtcReceipt)?;
+        Ok(SpatialAudioReplacementCandidate {
+            next_machine,
+            receipt,
+        })
+    }
+
     fn validate_join(&self, join: &SpatialAudioJoinMetadata) -> Result<(), SpatialAudioError> {
         if join.profile_identity != self.profile_identity {
             return Err(SpatialAudioError::ProfileBindingMismatch);
@@ -722,6 +893,28 @@ impl SpatialAudioMachine {
         self.generation = before_generation
             .checked_add(1)
             .expect("test callback generation remains bounded");
+    }
+}
+
+/// Parent-owned replacement value for the complete spatial-audio root.
+#[must_use]
+#[derive(Debug)]
+pub struct SpatialAudioReplacementCandidate {
+    next_machine: SpatialAudioMachine,
+    receipt: GtcOwnerReceipt,
+}
+
+impl SpatialAudioReplacementCandidate {
+    pub const fn next_machine(&self) -> &SpatialAudioMachine {
+        &self.next_machine
+    }
+
+    pub const fn receipt(&self) -> &GtcOwnerReceipt {
+        &self.receipt
+    }
+
+    pub fn into_parts(self) -> (SpatialAudioMachine, GtcOwnerReceipt) {
+        (self.next_machine, self.receipt)
     }
 }
 

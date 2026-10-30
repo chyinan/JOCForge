@@ -25,6 +25,7 @@ pub(super) const PAYLOAD_BYTE_COUNT: u64 =
 pub enum CallbackPhase {
     Normal,
     CachedDrain,
+    FreshZeroInputDrain,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

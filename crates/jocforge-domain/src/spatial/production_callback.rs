@@ -1,25 +1,32 @@
 // pattern: Functional Core
 //! Noncommitting F03W continuation from the current frontend feature proposal.
 
+pub mod selected_audio_provider_bundle;
+use self::selected_audio_provider_bundle::SelectedSpatialAudioProviderBundle;
+
 use super::{
     ValidatedComponentParameterProvider, ValidatedWindowQ15Provider,
     candidate_selector::{
         CandidateSelectorInput, CandidateSelectorResult, SelectorError, candidate_selector,
     },
-    frontend_stages::RenderedFrontendFeatureStageProposal,
+    frontend_stages::{
+        FrontendFeatureStageProposal, RenderedFrontendFeatureStageProposal,
+        SpatialControlFrontendFeatureStageProposal,
+    },
     point_response::PointResponseProduction,
+    post_window_fanout::CallbackPhase,
     selected_p15_geometry::SelectedP15Geometry,
     selector_u04_handoff::{
         SelectorU04HandoffError, finish_selector_u04_handoff_with_xyz, prepare_selector_u04_handoff,
     },
-    source_flags::{HostId, SourceControlSnapshotClock},
+    source_flags::{HostId, SourceControlSnapshotClock, SourceFlagsAttempt},
     source_geometry_outer::{
         CallbackPointResponseError, CompactOuterMatrix, GlobalSourceGeometrySnapshot,
         NormalSourceGeometryStage, produce_callback_point_response,
     },
     spatial_audio_state::{
-        ComponentStageError, MeterComponentOutputRows, SpatialAudioAfterProposal,
-        SpatialAudioJoinMetadata, SpatialAudioMachine,
+        ComponentStageError, MeterComponentOutputRows, MeterComponentStageProposal,
+        SpatialAudioAfterProposal, SpatialAudioJoinMetadata, SpatialAudioMachine,
         direct_lfe::{DirectLfeInputView, produce_direct_lfe_stage},
         spatial_audio_composer::{
             ReaderAttemptBinding, SpatialAudioCallbackOutcome, SpatialAudioJocProviders,
@@ -28,7 +35,8 @@ use super::{
         type10_assembler::assemble_type10,
     },
     spatial_control::{
-        SpatialControlAfterStateParts, SpatialControlError, SpatialControlJoinMetadata,
+        SpatialControlAfterProposal, SpatialControlAfterStateParts, SpatialControlError,
+        SpatialControlInstalled48AfterProjection, SpatialControlJoinMetadata,
         SpatialControlMachine,
     },
     target_context::{
@@ -41,13 +49,15 @@ use super::{
     u04_refinement::{U04RefinementError, U04RefinementProposal, produce_u04_refinement},
 };
 use crate::{
+    frontend::normal_control_snapshot::NormalControlSnapshotOutput,
     frontend::normal_control_snapshot::{
-        NormalControlHeldSourceView, NormalControlSnapshotProposal,
+        NormalControlFreshZeroMeterView, NormalControlHeldSourceView, NormalControlSnapshotProposal,
     },
     joc::oamd::reader_target::{
         ReaderTargetCallbackInputs, ReaderTargetControlRows, ReaderTargetError,
         ReaderTargetStageProposal, SELECTED_PROFILE_ID, stage_reader_target,
     },
+    meter::installed48_renderer::MeterInstalled48State,
     spatial::installed48_source_map::Installed48SourceMap,
     timeline::{CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount},
     transaction::CallbackLineageIdentity,
@@ -57,28 +67,45 @@ use crate::{
 #[derive(Debug)]
 pub enum NormalControlCallbackSource {
     Normal(Box<NormalControlSnapshotProposal>),
+    NormalOutput(Box<NormalControlSnapshotOutput>),
     CachedHold(Box<NormalControlHeldSourceView>),
+    FreshZeroMeterHold(Box<NormalControlFreshZeroMeterView>),
 }
 
 impl NormalControlCallbackSource {
     pub fn transaction_id(&self) -> &CallbackLineageIdentity {
         match self {
             Self::Normal(snapshot) => snapshot.transaction_id(),
+            Self::NormalOutput(snapshot) => snapshot.transaction_id(),
             Self::CachedHold(snapshot) => snapshot.delivery_transaction_id(),
+            Self::FreshZeroMeterHold(snapshot) => snapshot.delivery_transaction_id(),
+        }
+    }
+
+    pub fn source_origin_transaction_id(&self) -> &CallbackLineageIdentity {
+        match self {
+            Self::Normal(snapshot) => snapshot.transaction_id(),
+            Self::NormalOutput(snapshot) => snapshot.transaction_id(),
+            Self::CachedHold(snapshot) => snapshot.source_origin_transaction_id(),
+            Self::FreshZeroMeterHold(snapshot) => snapshot.source_origin_transaction_id(),
         }
     }
 
     pub const fn delivery_generation(&self) -> FrontendCallbackIndex {
         match self {
             Self::Normal(snapshot) => snapshot.value_generation(),
+            Self::NormalOutput(snapshot) => snapshot.value_generation(),
             Self::CachedHold(snapshot) => snapshot.delivery_generation(),
+            Self::FreshZeroMeterHold(snapshot) => snapshot.delivery_generation(),
         }
     }
 
     pub const fn source_origin_generation(&self) -> FrontendCallbackIndex {
         match self {
             Self::Normal(snapshot) => snapshot.normal_origin_generation(),
+            Self::NormalOutput(snapshot) => snapshot.normal_origin_generation(),
             Self::CachedHold(snapshot) => snapshot.source_origin_generation(),
+            Self::FreshZeroMeterHold(snapshot) => snapshot.source_origin_generation(),
         }
     }
 
@@ -87,14 +114,18 @@ impl NormalControlCallbackSource {
     ) -> &[super::super::frontend::normal_control_snapshot::NormalControlRow; 38] {
         match self {
             Self::Normal(snapshot) => snapshot.control38_rows(),
+            Self::NormalOutput(snapshot) => snapshot.control38_rows(),
             Self::CachedHold(snapshot) => snapshot.control38_rows(),
+            Self::FreshZeroMeterHold(snapshot) => snapshot.control38_rows(),
         }
     }
 
     pub const fn normal_callbacks(&self) -> NormalCallbackCount {
         match self {
             Self::Normal(snapshot) => snapshot.after_state().next_normal_callbacks(),
+            Self::NormalOutput(snapshot) => snapshot.normal_callbacks(),
             Self::CachedHold(snapshot) => snapshot.normal_callbacks(),
+            Self::FreshZeroMeterHold(snapshot) => snapshot.normal_callbacks(),
         }
     }
 }
@@ -125,7 +156,7 @@ pub enum SpatialProductionCallbackError {
 
 /// Inputs already staged by the F03W frontend and owner-specific providers.
 pub struct SpatialProductionCallbackInputs<'a> {
-    pub frontend: RenderedFrontendFeatureStageProposal,
+    pub frontend: SpatialControlFrontendFeatureStageProposal,
     pub source_snapshot: NormalControlCallbackSource,
     pub source_geometry: GlobalSourceGeometrySnapshot,
     pub source_control_clock: SourceControlSnapshotClock,
@@ -138,9 +169,23 @@ pub struct SpatialProductionCallbackInputs<'a> {
     pub parameters: &'a ValidatedComponentParameterProvider,
 }
 
+/// Meter-only F03W/F04A/F05R56 callback inputs with no F04C or receiver provider surface.
+pub struct MeterSpatialProductionCallbackInputs<'a> {
+    pub frontend: RenderedFrontendFeatureStageProposal,
+    pub source_snapshot: NormalControlCallbackSource,
+    pub source_geometry: GlobalSourceGeometrySnapshot,
+    pub source_control_clock: SourceControlSnapshotClock,
+    pub source_map: &'a Installed48SourceMap,
+    pub p15_geometry: &'a SelectedP15Geometry,
+    pub spatial_control: &'a SpatialControlMachine,
+    pub spatial_audio: &'a SpatialAudioMachine,
+    pub window: &'a ValidatedWindowQ15Provider,
+    pub parameters: &'a ValidatedComponentParameterProvider,
+}
+
 /// Same-callback continuation when F01E controls and source geometry were staged together.
 pub struct SpatialProductionNormalCallbackInputs<'a> {
-    pub frontend: RenderedFrontendFeatureStageProposal,
+    pub frontend: SpatialControlFrontendFeatureStageProposal,
     pub normal_source_geometry: NormalSourceGeometryStage,
     pub source_control_clock: SourceControlSnapshotClock,
     pub source_map: &'a Installed48SourceMap,
@@ -173,6 +218,50 @@ pub struct SpatialProductionCallbackProposal {
     component_blocks_processed: i64,
 }
 
+/// Consumed callback proposal parts retained for a parent transaction.
+/// The owner after-states and all same-callback projections remain available without cloning.
+#[must_use]
+pub struct SpatialProductionCallbackParentParts {
+    pub transaction_id: CallbackLineageIdentity,
+    pub source_geometry: GlobalSourceGeometrySnapshot,
+    pub response: PointResponseProduction,
+    pub selector: Option<CandidateSelectorResult>,
+    pub u04_refinement: Option<U04RefinementProposal>,
+    pub selected_targets: SelectedTargetSlots,
+    pub installation: TargetSlotInstallResult,
+    pub target_context: TargetContextProjection,
+    pub matrix: CompactOuterMatrix,
+    pub dense_d_f32_bits: Box<[u32]>,
+    pub active_target_slots: Box<[u8]>,
+    pub spatial_control_after: super::spatial_control::SpatialControlAfterProposal,
+    pub spatial_audio_after: SpatialAudioAfterProposal,
+    pub spatial_audio_outcome: SpatialAudioCallbackOutcome,
+    pub component_rows: MeterComponentOutputRows,
+    pub component_blocks_processed: i64,
+}
+
+/// Component-only Meter spatial callback result; F04C, direct LFE, and Type10 are absent.
+#[must_use]
+pub struct MeterSpatialProductionCallbackProposal {
+    transaction_id: CallbackLineageIdentity,
+    spatial_control_after: SpatialControlAfterProposal,
+    spatial_audio_after: SpatialAudioAfterProposal,
+    component_rows: MeterComponentOutputRows,
+    component_blocks_processed: i64,
+    installed48_after: MeterInstalled48State,
+}
+
+/// Pending owner values exposed to the Meter parent without granting commit authority.
+#[must_use]
+pub struct MeterSpatialProductionCallbackParentParts {
+    pub transaction_id: CallbackLineageIdentity,
+    pub spatial_control_after: SpatialControlAfterProposal,
+    pub spatial_audio_after: SpatialAudioAfterProposal,
+    pub component_rows: MeterComponentOutputRows,
+    pub component_blocks_processed: i64,
+    pub installed48_after: MeterInstalled48State,
+}
+
 /// Same-callback F03W target, marker, assignment, matrix, and writer-set values.
 /// This is a pending value projection; it has no owner commit authority.
 #[derive(Debug)]
@@ -203,6 +292,27 @@ impl SpatialControlCallbackProjection {
 
     pub(super) fn writer_set(&self) -> &[u8] {
         &self.writer_set
+    }
+
+    /// Test-only cold projection for validating SpatialControl state transitions. It is not a
+    /// producer receipt, callback candidate, or production constructor.
+    #[cfg(test)]
+    pub(in crate::spatial) fn fixture_zero() -> Self {
+        Self {
+            target_state: TargetSlotState {
+                xyz_words: [[0; 3]; 15],
+                ids_u32: [u32::MAX; 15],
+                attributes_u32: [0; 15],
+                previous_xyz_words: [[0; 3]; 15],
+                previous_ids_u32: [u32::MAX; 15],
+                previous_attributes_u32: [0; 15],
+                active_flags: [0; 15],
+            },
+            assignment_i32: [-1; 15],
+            markers_i32: [0; 15],
+            matrix_f32_bits: vec![0; 15 * 48].into_boxed_slice(),
+            writer_set: Box::new([]),
+        }
     }
 }
 
@@ -239,7 +349,64 @@ pub fn continue_spatial_production_callback_from_normal_stage(
     })
 }
 
+/// Selected-profile normal callback wrapper using one validated F04 provider bundle.
+///
+/// The owned normal-stage proposals are moved exactly once into the existing low-level path.
+/// This wrapper supplies only the validated provider view; it performs no additional DSP or
+/// owner commit.
+pub fn continue_spatial_production_callback_from_normal_stage_with_provider_bundle<'a>(
+    input: SpatialProductionNormalCallbackInputs<'a>,
+    provider_bundle: &'a SelectedSpatialAudioProviderBundle,
+) -> Result<SpatialProductionCallbackProposal, SpatialProductionCallbackError> {
+    let SpatialProductionNormalCallbackInputs {
+        frontend,
+        normal_source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        window,
+        parameters,
+        ..
+    } = input;
+
+    continue_spatial_production_callback_from_normal_stage(SpatialProductionNormalCallbackInputs {
+        frontend,
+        normal_source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        spatial_audio_joc_providers: Some(provider_bundle.spatial_audio_joc_providers()),
+        window,
+        parameters,
+    })
+}
+
 impl SpatialProductionCallbackProposal {
+    pub fn into_parent_parts(self) -> SpatialProductionCallbackParentParts {
+        SpatialProductionCallbackParentParts {
+            transaction_id: self.transaction_id,
+            source_geometry: self.source_geometry,
+            response: self.response,
+            selector: self.selector,
+            u04_refinement: self.u04_refinement,
+            selected_targets: self.selected_targets,
+            installation: self.installation,
+            target_context: self.target_context,
+            matrix: self.matrix,
+            dense_d_f32_bits: self.dense_d_f32_bits,
+            active_target_slots: self.active_target_slots,
+            spatial_control_after: self.spatial_control_after,
+            spatial_audio_after: self.spatial_audio_after,
+            spatial_audio_outcome: self.spatial_audio_outcome,
+            component_rows: self.component_rows,
+            component_blocks_processed: self.component_blocks_processed,
+        }
+    }
+
     pub fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
@@ -316,13 +483,108 @@ impl SpatialProductionCallbackProposal {
     }
 }
 
-/// Runs the same-callback source response, selector/U04 handoff, installation, C/d, marker,
-/// history and component stages once each, returning every owner after-value still pending.
+impl MeterSpatialProductionCallbackProposal {
+    pub fn into_parent_parts(self) -> MeterSpatialProductionCallbackParentParts {
+        MeterSpatialProductionCallbackParentParts {
+            transaction_id: self.transaction_id,
+            spatial_control_after: self.spatial_control_after,
+            spatial_audio_after: self.spatial_audio_after,
+            component_rows: self.component_rows,
+            component_blocks_processed: self.component_blocks_processed,
+            installed48_after: self.installed48_after,
+        }
+    }
+
+    pub fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.transaction_id.callback_index()
+    }
+
+    pub const fn spatial_control_after_proposal(&self) -> &SpatialControlAfterProposal {
+        &self.spatial_control_after
+    }
+
+    pub const fn spatial_audio_after_proposal(&self) -> &SpatialAudioAfterProposal {
+        &self.spatial_audio_after
+    }
+
+    pub const fn component_rows(&self) -> &MeterComponentOutputRows {
+        &self.component_rows
+    }
+
+    pub const fn reader_target_controls(&self) -> &ReaderTargetControlRows {
+        self.spatial_control_after.reader_target_controls()
+    }
+
+    pub const fn component_blocks_processed(&self) -> i64 {
+        self.component_blocks_processed
+    }
+
+    pub const fn installed48_after(&self) -> &MeterInstalled48State {
+        &self.installed48_after
+    }
+}
+
+/// Shared F03W/F04 value stages. Owner-specific after-state assembly happens in typed callbacks.
+struct SpatialProductionCallbackCore<'a> {
+    transaction_id: CallbackLineageIdentity,
+    source_snapshot: NormalControlCallbackSource,
+    source_geometry: GlobalSourceGeometrySnapshot,
+    frontend: SpatialProductionFrontend,
+    response: PointResponseProduction,
+    selector: Option<CandidateSelectorResult>,
+    u04_refinement: Option<U04RefinementProposal>,
+    selected_targets: SelectedTargetSlots,
+    installation: TargetSlotInstallResult,
+    target_context: TargetContextProjection,
+    matrix: CompactOuterMatrix,
+    dense_d_f32_bits: Box<[u32]>,
+    active_target_slots: Box<[u8]>,
+    spatial_control: &'a SpatialControlMachine,
+    spatial_control_join: SpatialControlJoinMetadata,
+    spatial_audio_component: MeterComponentStageProposal,
+    component_blocks_processed: i64,
+    spatial_audio: &'a SpatialAudioMachine,
+    spatial_audio_join: SpatialAudioJoinMetadata,
+    spatial_audio_joc_providers: Option<SpatialAudioJocProviders<'a>>,
+    source_map: &'a Installed48SourceMap,
+    window: &'a ValidatedWindowQ15Provider,
+    parameters: &'a ValidatedComponentParameterProvider,
+    callback_phase: CallbackPhase,
+    reader_attempt: SourceFlagsAttempt,
+    reader_target_state: crate::joc::oamd::reader_target::ReaderTargetState,
+    reader_target_receipt: Option<crate::joc::oamd::reader_target::ReaderTargetUpdateReceipt>,
+    reader_target_controls: ReaderTargetControlRows,
+    spatial_control_projection: SpatialControlCallbackProjection,
+}
+
+struct SpatialProductionFrontend {
+    frontend: FrontendFeatureStageProposal,
+    spatial_audio: super::post_window_fanout::SpatialAudioPostWindowView,
+}
+
+struct SpatialProductionCallbackCoreInput<'a> {
+    frontend: SpatialProductionFrontend,
+    source_snapshot: NormalControlCallbackSource,
+    source_geometry: GlobalSourceGeometrySnapshot,
+    source_control_clock: SourceControlSnapshotClock,
+    source_map: &'a Installed48SourceMap,
+    p15_geometry: &'a SelectedP15Geometry,
+    spatial_control: &'a SpatialControlMachine,
+    spatial_audio: &'a SpatialAudioMachine,
+    spatial_audio_joc_providers: Option<SpatialAudioJocProviders<'a>>,
+    window: &'a ValidatedWindowQ15Provider,
+    parameters: &'a ValidatedComponentParameterProvider,
+}
+
 pub fn continue_spatial_production_callback(
     input: SpatialProductionCallbackInputs<'_>,
 ) -> Result<SpatialProductionCallbackProposal, SpatialProductionCallbackError> {
     let SpatialProductionCallbackInputs {
-        mut frontend,
+        frontend,
         source_snapshot,
         source_geometry,
         source_control_clock,
@@ -334,6 +596,136 @@ pub fn continue_spatial_production_callback(
         window,
         parameters,
     } = input;
+    let (post_window, installed48_after) = frontend.into_parts();
+    let core = prepare_spatial_production_core(SpatialProductionCallbackCoreInput {
+        frontend: SpatialProductionFrontend {
+            frontend: post_window.frontend,
+            spatial_audio: post_window.spatial_audio,
+        },
+        source_snapshot,
+        source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        spatial_audio_joc_providers,
+        window,
+        parameters,
+    })?;
+    finish_spatial_production_callback(core, installed48_after)
+}
+
+/// Produces the Meter F03W/F04A/F05R56 proposal without entering F04C or receiver work.
+pub fn continue_meter_spatial_production_callback(
+    input: MeterSpatialProductionCallbackInputs<'_>,
+) -> Result<MeterSpatialProductionCallbackProposal, SpatialProductionCallbackError> {
+    let MeterSpatialProductionCallbackInputs {
+        frontend,
+        source_snapshot,
+        source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        window,
+        parameters,
+    } = input;
+    let mut frontend = frontend;
+    let installed48_after = frontend
+        .take_installed48_after()
+        .ok_or(SpatialProductionCallbackError::CallbackIdentity)?;
+    let core = prepare_spatial_production_core(SpatialProductionCallbackCoreInput {
+        frontend: SpatialProductionFrontend {
+            frontend: frontend.frontend,
+            spatial_audio: frontend.spatial_audio,
+        },
+        source_snapshot,
+        source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        spatial_audio_joc_providers: None,
+        window,
+        parameters,
+    })?;
+    finish_meter_spatial_production_callback(core, installed48_after)
+}
+
+/// Selected-profile callback wrapper for the general source-snapshot form.
+///
+/// `NormalControlCallbackSource::CachedHold` remains available through this form. The validated
+/// provider bundle does not change callback phase or relax the existing low-level phase checks;
+/// the wrapper only supplies the provider view and delegates the moved inputs.
+pub fn continue_spatial_production_callback_with_provider_bundle<'a>(
+    input: SpatialProductionCallbackInputs<'a>,
+    provider_bundle: &'a SelectedSpatialAudioProviderBundle,
+) -> Result<SpatialProductionCallbackProposal, SpatialProductionCallbackError> {
+    let SpatialProductionCallbackInputs {
+        frontend,
+        source_snapshot,
+        source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        window,
+        parameters,
+        ..
+    } = input;
+
+    continue_spatial_production_callback(SpatialProductionCallbackInputs {
+        frontend,
+        source_snapshot,
+        source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        spatial_audio_joc_providers: Some(provider_bundle.spatial_audio_joc_providers()),
+        window,
+        parameters,
+    })
+}
+
+fn prepare_spatial_production_core(
+    input: SpatialProductionCallbackCoreInput<'_>,
+) -> Result<SpatialProductionCallbackCore<'_>, SpatialProductionCallbackError> {
+    let SpatialProductionCallbackCoreInput {
+        frontend,
+        source_snapshot,
+        source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        spatial_audio_joc_providers,
+        window,
+        parameters,
+    } = input;
+    let callback_phase = frontend.frontend.current_features.lineage.callback_phase;
+    let allowed_phase = matches!(
+        (callback_phase, &source_snapshot),
+        (
+            CallbackPhase::Normal,
+            NormalControlCallbackSource::Normal(_) | NormalControlCallbackSource::NormalOutput(_)
+        ) | (
+            CallbackPhase::CachedDrain,
+            NormalControlCallbackSource::CachedHold(_)
+        ) | (
+            CallbackPhase::FreshZeroInputDrain,
+            NormalControlCallbackSource::FreshZeroMeterHold(_)
+        )
+    );
+    if !allowed_phase {
+        return Err(SpatialProductionCallbackError::CallbackIdentity);
+    }
     let transaction_id = frontend
         .frontend
         .current_features
@@ -346,6 +738,19 @@ pub fn continue_spatial_production_callback(
         || source_snapshot.delivery_generation() != callback_index
         || source_snapshot.source_origin_generation().value() > callback_index.value()
         || source_snapshot.transaction_id() != &transaction_id
+        || source_control_clock.callback_index() != callback_index
+        || source_control_clock.source_origin() != source_snapshot.source_origin_generation()
+        || source_control_clock.normal_callbacks() != source_snapshot.normal_callbacks()
+        || source_snapshot
+            .source_origin_transaction_id()
+            .callback_index()
+            != source_control_clock.source_origin()
+        || source_snapshot
+            .source_origin_transaction_id()
+            .programme_id()
+            != transaction_id.programme_id()
+        || source_snapshot.source_origin_transaction_id().attempt_id()
+            != transaction_id.attempt_id()
         || spatial_control.committed().callback_index() != callback_index
         || spatial_audio.generation() != u64::from(callback_index.value())
         || spatial_control.committed().reader_targets_callback_index() != callback_index
@@ -486,65 +891,129 @@ pub fn continue_spatial_production_callback(
         )
         .map_err(SpatialProductionCallbackError::Component)?;
 
-    if frontend.frontend.current_features.lineage.callback_phase
-        != super::post_window_fanout::CallbackPhase::Normal
+    let component_blocks_processed = component.blocks_processed();
+    let current_lineage = &frontend.frontend.current_features.lineage;
+    let reader_attempt = current_lineage.attempt;
+    Ok(SpatialProductionCallbackCore {
+        transaction_id,
+        source_snapshot,
+        source_geometry,
+        frontend,
+        response,
+        selector,
+        u04_refinement,
+        selected_targets,
+        installation,
+        target_context,
+        matrix,
+        dense_d_f32_bits,
+        active_target_slots: active_target_slots.into_boxed_slice(),
+        spatial_control,
+        spatial_control_join,
+        spatial_audio_component: component,
+        component_blocks_processed,
+        spatial_audio,
+        spatial_audio_join,
+        spatial_audio_joc_providers,
+        source_map,
+        window,
+        parameters,
+        callback_phase,
+        reader_attempt,
+        reader_target_state,
+        reader_target_receipt,
+        reader_target_controls,
+        spatial_control_projection,
+    })
+}
+
+fn finish_spatial_production_callback(
+    core: SpatialProductionCallbackCore<'_>,
+    installed48_after: SpatialControlInstalled48AfterProjection,
+) -> Result<SpatialProductionCallbackProposal, SpatialProductionCallbackError> {
+    let SpatialProductionCallbackCore {
+        transaction_id,
+        source_snapshot,
+        source_geometry,
+        frontend,
+        response,
+        selector,
+        u04_refinement,
+        selected_targets,
+        installation,
+        target_context,
+        matrix,
+        dense_d_f32_bits,
+        active_target_slots,
+        spatial_control,
+        spatial_control_join,
+        spatial_audio_component,
+        component_blocks_processed,
+        spatial_audio,
+        spatial_audio_join,
+        spatial_audio_joc_providers,
+        source_map,
+        callback_phase,
+        reader_attempt,
+        reader_target_state,
+        reader_target_receipt,
+        reader_target_controls,
+        spatial_control_projection,
+        ..
+    } = core;
+    let parts = installed48_after.into_parts();
+    let callback_index = transaction_id.callback_index();
+    let regular_raw_history = current_regular_raw_history(&frontend.frontend);
+    if parts.callback_index != callback_index
+        || parts.callback_phase != callback_phase
+        || parts.normal_callbacks != source_snapshot.normal_callbacks()
+        || parts.regular_raw_history_bits.as_ref() != regular_raw_history.as_ref()
     {
         return Err(SpatialProductionCallbackError::CallbackIdentity);
     }
-    let installed48_after = frontend
-        .take_installed48_after()
-        .ok_or(SpatialProductionCallbackError::CallbackIdentity)?;
-    let installed48_projection = installed48_after.into_spatial_control_parts();
-    let source_cursor_samples = installed48_projection.source_cursor;
-    let source_pcm_rows = installed48_projection.previous_pcm_rows;
-    let previous_current_rows_bits = installed48_projection.previous_current_rows;
-    let mut regular_physical_hosts = [false; 38];
-    for binding in source_map.physical_to_global_source() {
-        let host = usize::from(binding.physical_host().value());
-        let slot = regular_physical_hosts
-            .get_mut(host)
-            .ok_or(SpatialProductionCallbackError::CallbackIdentity)?;
-        if std::mem::replace(slot, true) {
-            return Err(SpatialProductionCallbackError::CallbackIdentity);
-        }
-    }
-    let lfe_host = regular_physical_hosts
-        .iter()
-        .position(|regular| !regular)
-        .ok_or(SpatialProductionCallbackError::CallbackIdentity)?;
-    let mut diffusion_tails = std::array::from_fn(|_| None);
-    let mut regular_tail = 0;
-    let mut diffusion_by_host = installed48_projection.diffusion_states;
-    for host in 0..38 {
-        if host == lfe_host {
-            continue;
-        }
-        diffusion_tails[regular_tail] = diffusion_by_host.remove(&(host as u8));
-        regular_tail += 1;
-    }
-    if regular_tail != 37 || !diffusion_by_host.is_empty() {
-        return Err(SpatialProductionCallbackError::CallbackIdentity);
-    }
 
-    let component_blocks_processed = component.blocks_processed();
-    let (component_stage, component_rows) = component.into_parts();
-    let callback_phase = frontend.frontend.current_features.lineage.callback_phase;
-    let current_lineage = &frontend.frontend.current_features.lineage;
-    let lfe_host_id = HostId::new(
-        u8::try_from(lfe_host).map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?,
-    )
-    .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
-    let lfe_samples = source_pcm_rows
-        .get(lfe_host)
+    let lfe_host = source_map.direct_lfe_host();
+    let lfe_samples = parts
+        .source_pcm_rows
+        .get(usize::from(lfe_host.value()))
         .ok_or(SpatialProductionCallbackError::CallbackIdentity)?
         .iter()
         .copied()
         .map(f32::from_bits)
         .collect::<Vec<_>>();
+    let control38_rows = source_snapshot
+        .control38_rows()
+        .to_vec()
+        .try_into()
+        .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
+    let spatial_control_after = spatial_control
+        .propose_callback_after(
+            transaction_id.clone(),
+            SpatialControlAfterStateParts {
+                callback_index,
+                callback_phase,
+                source_cursor_samples: parts.source_cursor,
+                normal_callbacks: parts.normal_callbacks,
+                source_pcm_rows: parts.source_pcm_rows,
+                control38_rows,
+                regular_raw_history_bits: parts.regular_raw_history_bits,
+                previous_current_rows_bits: parts.current_rows_bits,
+                diffusion_tails: parts.diffusion_after,
+                reader_target_state,
+                projection: spatial_control_projection,
+            },
+            frontend.frontend.current_features,
+            reader_target_receipt,
+            reader_target_controls,
+        )
+        .map_err(SpatialProductionCallbackError::SpatialControl)?;
+
+    let lfe_host_id = HostId::new(lfe_host.value())
+        .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
     let lfe_input = DirectLfeInputView::try_from_spatial_control_host(
         SpatialControlMachine::lfe_ingress_authority(),
-        current_lineage.programme_id.clone(),
-        current_lineage.attempt,
+        transaction_id.programme_id().clone(),
+        transaction_id.attempt_id(),
         transaction_id.clone(),
         callback_index,
         callback_phase,
@@ -563,6 +1032,7 @@ pub fn continue_spatial_production_callback(
         lfe_input,
     )
     .map_err(|error| SpatialProductionCallbackError::DirectLfe(error.code()))?;
+    let (component_stage, component_rows) = spatial_audio_component.into_parts();
     let type10 = assemble_type10(
         &spatial_audio_join,
         callback_phase,
@@ -570,9 +1040,10 @@ pub fn continue_spatial_production_callback(
         lfe_stage,
     )
     .map_err(|error| SpatialProductionCallbackError::Type10(error.code()))?;
-    let attempt_binding = reader_target_receipt
-        .as_ref()
-        .map(|_| ReaderAttemptBinding::new(current_lineage.attempt, current_lineage.attempt))
+
+    let attempt_binding = spatial_control_after
+        .reader_target_receipt()
+        .map(|_| ReaderAttemptBinding::new(reader_attempt, reader_attempt))
         .transpose()
         .map_err(|error| SpatialProductionCallbackError::SpatialAudioComposition(error.code()))?;
     let spatial_audio_callback = stage_spatial_audio_callback(
@@ -580,51 +1051,12 @@ pub fn continue_spatial_production_callback(
         spatial_audio_join,
         callback_phase,
         type10,
-        reader_target_receipt.as_ref(),
+        spatial_control_after.reader_target_receipt(),
         attempt_binding,
         spatial_audio_joc_providers,
     )
     .map_err(|error| SpatialProductionCallbackError::SpatialAudioComposition(error.code()))?;
     let (spatial_audio_after, spatial_audio_outcome) = spatial_audio_callback.into_parts();
-
-    let raw_history_bits = frontend
-        .frontend
-        .raw_history
-        .rows()
-        .iter()
-        .flat_map(|row| row.iter().copied())
-        .collect::<Vec<_>>()
-        .into_boxed_slice();
-    let control38_rows = source_snapshot
-        .control38_rows()
-        .to_vec()
-        .try_into()
-        .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
-    let current_features = frontend.frontend.current_features;
-    let spatial_control_after = spatial_control
-        .propose_callback_after(
-            transaction_id.clone(),
-            SpatialControlAfterStateParts {
-                callback_index,
-                source_cursor_samples,
-                normal_callbacks: source_snapshot.normal_callbacks(),
-                source_pcm_rows,
-                control38_rows,
-                regular_raw_history_bits: raw_history_bits,
-                previous_current_rows_bits: previous_current_rows_bits
-                    .into_iter()
-                    .flatten()
-                    .collect::<Vec<_>>()
-                    .into_boxed_slice(),
-                diffusion_tails,
-                reader_target_state,
-                projection: spatial_control_projection,
-            },
-            current_features,
-            reader_target_receipt,
-            reader_target_controls,
-        )
-        .map_err(SpatialProductionCallbackError::SpatialControl)?;
 
     Ok(SpatialProductionCallbackProposal {
         transaction_id,
@@ -637,13 +1069,124 @@ pub fn continue_spatial_production_callback(
         target_context,
         matrix,
         dense_d_f32_bits,
-        active_target_slots: active_target_slots.into_boxed_slice(),
+        active_target_slots,
         spatial_control_after,
         spatial_audio_after,
         spatial_audio_outcome,
         component_rows,
         component_blocks_processed,
     })
+}
+
+fn finish_meter_spatial_production_callback(
+    core: SpatialProductionCallbackCore<'_>,
+    installed48_after: MeterInstalled48State,
+) -> Result<MeterSpatialProductionCallbackProposal, SpatialProductionCallbackError> {
+    let SpatialProductionCallbackCore {
+        transaction_id,
+        source_snapshot,
+        source_geometry: _,
+        frontend,
+        response: _,
+        selector: _,
+        u04_refinement: _,
+        selected_targets: _,
+        installation: _,
+        target_context: _,
+        matrix: _,
+        dense_d_f32_bits: _,
+        active_target_slots: _,
+        spatial_control,
+        spatial_control_join: _,
+        spatial_audio_component,
+        component_blocks_processed,
+        spatial_audio,
+        spatial_audio_join,
+        spatial_audio_joc_providers: _,
+        source_map,
+        window,
+        parameters,
+        callback_phase,
+        reader_attempt: _,
+        reader_target_state,
+        reader_target_receipt,
+        reader_target_controls,
+        spatial_control_projection,
+    } = core;
+    if callback_phase == CallbackPhase::CachedDrain {
+        return Err(SpatialProductionCallbackError::CallbackIdentity);
+    }
+    let projection = installed48_after.spatial_control_projection();
+    let mut diffusion_by_host = projection.diffusion_states;
+    let mut diffusion_after = std::array::from_fn(|_| None);
+    for (tail, binding) in source_map.physical_to_global_source().iter().enumerate() {
+        diffusion_after[tail] = diffusion_by_host.remove(&binding.physical_host().value());
+    }
+    if !diffusion_by_host.is_empty() {
+        return Err(SpatialProductionCallbackError::CallbackIdentity);
+    }
+    let control38_rows = source_snapshot
+        .control38_rows()
+        .to_vec()
+        .try_into()
+        .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
+    let spatial_control_after = spatial_control
+        .propose_callback_after(
+            transaction_id.clone(),
+            SpatialControlAfterStateParts {
+                callback_index: transaction_id.callback_index(),
+                callback_phase,
+                source_cursor_samples: projection.source_cursor,
+                normal_callbacks: source_snapshot.normal_callbacks(),
+                source_pcm_rows: projection.previous_pcm_rows,
+                control38_rows,
+                regular_raw_history_bits: current_regular_raw_history(&frontend.frontend),
+                previous_current_rows_bits: projection
+                    .previous_current_rows
+                    .into_iter()
+                    .flatten()
+                    .collect::<Vec<_>>()
+                    .into_boxed_slice(),
+                diffusion_tails: diffusion_after,
+                reader_target_state,
+                projection: spatial_control_projection,
+            },
+            frontend.frontend.current_features,
+            reader_target_receipt,
+            reader_target_controls,
+        )
+        .map_err(SpatialProductionCallbackError::SpatialControl)?;
+    let provider_lineage = [
+        *window.receipt().validated_manifest_lineage(),
+        *parameters.receipt().validated_manifest_lineage(),
+    ];
+    let (spatial_audio_after, component_rows) = spatial_audio
+        .stage_meter_component_after(
+            &spatial_audio_join,
+            provider_lineage,
+            spatial_audio_component,
+        )
+        .map_err(SpatialProductionCallbackError::Component)?
+        .into_parts();
+
+    Ok(MeterSpatialProductionCallbackProposal {
+        transaction_id,
+        spatial_control_after,
+        spatial_audio_after,
+        component_rows,
+        component_blocks_processed,
+        installed48_after,
+    })
+}
+
+fn current_regular_raw_history(frontend: &FrontendFeatureStageProposal) -> Box<[u32]> {
+    frontend
+        .raw_history
+        .rows()
+        .iter()
+        .flat_map(|row| row.iter().copied())
+        .collect::<Vec<_>>()
+        .into_boxed_slice()
 }
 
 fn spatial_control_callback_projection(
@@ -724,7 +1267,7 @@ fn finish_selection_with_u04(
 }
 
 fn candidate_selector_input(
-    frontend: &RenderedFrontendFeatureStageProposal,
+    frontend: &SpatialProductionFrontend,
     source_geometry: &GlobalSourceGeometrySnapshot,
     source_map: &Installed48SourceMap,
     response: &PointResponseProduction,
@@ -823,7 +1366,7 @@ fn flatten_target_xyz(xyz: [[u32; 3]; 15]) -> [u32; 45] {
 }
 
 fn installed48_bits(
-    frontend: &RenderedFrontendFeatureStageProposal,
+    frontend: &SpatialProductionFrontend,
 ) -> Result<Vec<u32>, SpatialProductionCallbackError> {
     let rows = (0..48)
         .map(|source| {

@@ -3,6 +3,8 @@
 
 use std::sync::Arc;
 
+use serde_json::{Number, Value, json};
+
 use crate::numeric::FiniteF32;
 use crate::timeline::{AdmSampleCount, FrontendCallbackIndex, NormalCallbackCount};
 use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
@@ -38,6 +40,36 @@ const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
 const SELECTED_CHANNELS: u32 = 38;
 const SELECTED_PCM_BITS: u32 = 24;
 
+fn optional_f64_json(value: Option<f64>) -> Result<Value, NormalControlSnapshotError> {
+    match value {
+        Some(value) => Number::from_f64(value)
+            .map(Value::Number)
+            .ok_or(NormalControlSnapshotError::CanonicalSerialization),
+        None => Ok(Value::Null),
+    }
+}
+
+fn dbmd_fields_json(fields: NormalControlDbmdFields) -> Value {
+    json!({
+        "track_index": fields.track_index(),
+        "enum48": fields.enum48(),
+        "enum52": fields.enum52(),
+        "flag64": fields.flag64(),
+        "raw_flag_low2": fields.raw_flag_low2(),
+        "raw_packed": fields.raw_packed(),
+    })
+}
+
+fn hex_sha256(bytes: &[u8; 32]) -> String {
+    const HEX: &[u8; 16] = b"0123456789abcdef";
+    let mut output = String::with_capacity(64);
+    for byte in bytes {
+        output.push(char::from(HEX[usize::from(byte >> 4)]));
+        output.push(char::from(HEX[usize::from(byte & 0x0f)]));
+    }
+    output
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum NormalControlSnapshotError {
     ColdStateRequired,
@@ -61,6 +93,7 @@ pub enum NormalControlSnapshotError {
     SnapshotShapeMismatch,
     IndexOverflow,
     ObjectControl(ObjectControlError),
+    CanonicalSerialization,
 }
 
 impl NormalControlSnapshotError {
@@ -87,6 +120,7 @@ impl NormalControlSnapshotError {
             Self::SnapshotShapeMismatch => "NORMAL_CONTROL_SNAPSHOT_SHAPE",
             Self::IndexOverflow => "NORMAL_CONTROL_INDEX_OVERFLOW",
             Self::ObjectControl(error) => error.code(),
+            Self::CanonicalSerialization => "NORMAL_CONTROL_CANONICAL_SERIALIZATION",
         }
     }
 }
@@ -414,14 +448,14 @@ pub struct NormalControlPreparedSnapshot {
 impl NormalControlPreparedSnapshot {
     /// Binds already parsed, admitted inputs into the immutable F01E normal-call view.
     pub fn from_validated(
-        cold_state: &FrontendControlState,
+        frontend_state: &FrontendControlState,
         source_binding: &SelectedPrimaryControlBinding,
         graph: &SelectedAdmGraph,
         admitted_events: &AdmittedSelectedObjectEvents,
         dbmd: &SelectedDbmdSections,
     ) -> Result<Arc<Self>, NormalControlSnapshotError> {
-        validate_cold_owner_state(cold_state)?;
-        let profile = NormalControlProfileIdentity::from_config(cold_state.normalized_config());
+        validate_frontend_owner_state(frontend_state)?;
+        let profile = NormalControlProfileIdentity::from_config(frontend_state.normalized_config());
         let source_identity = NormalControlSourceIdentity::from_binding(source_binding);
         validate_selected_profile(&profile, &source_identity)?;
 
@@ -502,12 +536,12 @@ impl NormalControlPreparedSnapshot {
                 .map_err(|_| NormalControlSnapshotError::BedJoinMismatch)?;
         let regular37_hosts = *graph.bed_channel_join().regular_control_order();
         let prepared = Self {
-            programme_id: cold_state.programme_id().clone(),
-            attempt_id: cold_state.attempt_id(),
+            programme_id: frontend_state.programme_id().clone(),
+            attempt_id: frontend_state.attempt_id(),
             profile,
             source_identity,
             graph_identity: NormalControlGraphIdentity::from_receipt(graph.receipt()),
-            frontend_state_digest: Some(cold_state.digest()),
+            frontend_state_digest: Some(frontend_state.digest()),
             dbmd_payload_sha256: *dbmd.payload_sha256(),
             physical_tracks,
             owner_bindings,
@@ -534,6 +568,38 @@ impl NormalControlPreparedSnapshot {
         self.profile.source_samples
     }
 
+    /// Checks that this prepared F01E view was derived from the caller's exact
+    /// admitted primary binding, ADM graph and DBMD payload.
+    pub fn matches_selected_input(
+        &self,
+        binding: &SelectedPrimaryControlBinding,
+        graph: &SelectedAdmGraph,
+        dbmd: &SelectedDbmdSections,
+    ) -> bool {
+        self.source_identity == NormalControlSourceIdentity::from_binding(binding)
+            && self.graph_identity == NormalControlGraphIdentity::from_receipt(graph.receipt())
+            && self.dbmd_payload_sha256 == *dbmd.payload_sha256()
+    }
+
+    /// Compares immutable admitted inputs while allowing each callback preparation to bind its
+    /// own actual frontend before-state digest.
+    pub(crate) fn same_prepared_input_identity(&self, other: &Self) -> bool {
+        self.programme_id == other.programme_id
+            && self.attempt_id == other.attempt_id
+            && self.profile == other.profile
+            && self.source_identity == other.source_identity
+            && self.graph_identity == other.graph_identity
+            && self.dbmd_payload_sha256 == other.dbmd_payload_sha256
+            && self.physical_tracks == other.physical_tracks
+            && self.owner_bindings == other.owner_bindings
+            && self.object_events == other.object_events
+            && self.bed_pack_channel_format_ids == other.bed_pack_channel_format_ids
+            && self.bed_pack_hosts == other.bed_pack_hosts
+            && self.regular_source_bindings == other.regular_source_bindings
+            && self.lfe_host == other.lfe_host
+            && self.regular37_hosts == other.regular37_hosts
+    }
+
     pub fn physical_tracks(&self) -> &[NormalControlPhysicalTrack; PHYSICAL_TRACK_COUNT] {
         &self.physical_tracks
     }
@@ -554,6 +620,181 @@ impl NormalControlPreparedSnapshot {
 
     pub const fn regular37_hosts(&self) -> &[u8; REGULAR_TRACK_COUNT] {
         &self.regular37_hosts
+    }
+
+    /// Returns every validated prepared-input identity used by the local after-state serializer.
+    /// This is a value projection; it does not reparse the input or alter its admission.
+    pub(crate) fn canonical_json_value(&self) -> Result<Value, NormalControlSnapshotError> {
+        let source = &self.source_identity;
+        let profile = &self.profile;
+        let source_value = json!({
+            "input_kind": source.input_kind.selected_label(),
+            "source_file_name": source.source_file_name,
+            "source_file_bytes": source.source_file_bytes,
+            "data_bytes": source.data_bytes,
+            "wave": {
+                "sample_rate_hz": source.wave.sample_rate_hz(),
+                "channels": source.wave.channels(),
+                "pcm_bits": source.wave.pcm_bits(),
+            },
+            "source_samples": source.source_samples,
+            "metadata_hashes": {
+                "axml_sha256": hex_sha256(&source.metadata_hashes.axml()),
+                "chna_sha256": hex_sha256(&source.metadata_hashes.chna()),
+                "dbmd_sha256": hex_sha256(&source.metadata_hashes.dbmd()),
+            },
+            "job_projection_sha256": hex_sha256(&source.job_projection_sha256),
+            "source_receipt_sha256": hex_sha256(&source.source_receipt_sha256),
+            "original_job_sha256_declaration": hex_sha256(&source.original_job_sha256_declaration),
+            "original_job_bytes_declaration": source.original_job_bytes_declaration,
+            "original_job_bytes_available": source.original_job_bytes_available,
+            "full_pcm_identity_rehashed": source.full_pcm_identity_rehashed,
+            "runtime_resource_bound": source.runtime_resource_bound,
+        });
+        let graph_value = json!({
+            "axml_sha256": hex_sha256(&self.graph_identity.axml_sha256),
+            "chna_sha256": hex_sha256(&self.graph_identity.chna_sha256),
+            "physical_track_count": self.graph_identity.physical_track_count,
+            "bed_track_count": self.graph_identity.bed_track_count,
+            "object_track_count": self.graph_identity.object_track_count,
+            "direct_lfe_host": self.graph_identity.direct_lfe_host,
+            "virtual_prefix_source_count": self.graph_identity.virtual_prefix_source_count,
+            "total_source_count": self.graph_identity.total_source_count,
+        });
+        let profile_value = json!({
+            "sample_rate_hz": profile.sample_rate_hz,
+            "channels": profile.channels,
+            "pcm_bits": profile.pcm_bits,
+            "source_samples": profile.source_samples,
+            "bit_rate_kbps": profile.bit_rate_kbps,
+            "bit_rate_enum": profile.bit_rate_enum,
+            "layout_enum": profile.layout_enum,
+            "target_capacity": profile.target_capacity,
+            "frame_samples": profile.frame_samples,
+            "spatial_config_mode": profile.spatial_config_mode,
+            "dispatch_mode": profile.dispatch_mode,
+            "virtual_prefix_count": profile.virtual_prefix_count,
+            "bed_count": profile.bed_count,
+            "object_count": profile.object_count,
+            "event_start_samples": profile.event_start_samples,
+            "line_drc": profile.line_drc,
+            "rf_drc": profile.rf_drc,
+            "time_base": profile.time_base,
+        });
+        let physical_tracks = self
+            .physical_tracks
+            .iter()
+            .map(|track| {
+                let kind = match &track.kind {
+                    NormalControlTrackKind::Bed {
+                        bed_id,
+                        bed_pack_ordinal,
+                        semantic_role,
+                        bed_input_id,
+                    } => json!({
+                        "kind": "bed",
+                        "bed_id": bed_id,
+                        "bed_pack_ordinal": bed_pack_ordinal,
+                        "semantic_role": semantic_role,
+                        "bed_input_id": bed_input_id,
+                    }),
+                    NormalControlTrackKind::Object {
+                        semantic_key,
+                        local_owner_ordinal,
+                    } => json!({
+                        "kind": "object",
+                        "semantic_key": semantic_key,
+                        "local_owner_ordinal": local_owner_ordinal,
+                    }),
+                };
+                json!({
+                    "track_uid": track.track_uid,
+                    "object_id": track.object_id,
+                    "physical_host": track.physical_host,
+                    "channel_format_id": track.channel_format_id,
+                    "kind": kind,
+                    "dbmd": dbmd_fields_json(track.dbmd),
+                })
+            })
+            .collect::<Vec<_>>();
+        let object_owner_bindings = self
+            .owner_bindings
+            .iter()
+            .map(|binding| {
+                json!({
+                    "track_uid": binding.track_uid,
+                    "local_owner_ordinal": binding.local_owner_ordinal,
+                    "semantic_key": binding.semantic_key,
+                    "physical_host": binding.physical_host,
+                    "channel_format_id": binding.channel_format_id,
+                })
+            })
+            .collect::<Vec<_>>();
+        let object_events = self
+            .object_events
+            .iter()
+            .map(|event| {
+                let coordinates = event
+                    .control_event
+                    .authored_coordinates()
+                    .map(optional_f64_json)
+                    .into_iter()
+                    .collect::<Result<Vec<_>, _>>()?;
+                let spread = event
+                    .control_event
+                    .authored_spread()
+                    .map(optional_f64_json)
+                    .into_iter()
+                    .collect::<Result<Vec<_>, _>>()?;
+                Ok(json!({
+                    "track_uid": event.track_uid,
+                    "object_id": event.object_id,
+                    "physical_host": event.physical_host,
+                    "object_start": event.object_start,
+                    "block_rtime": event.block_rtime,
+                    "interpolation_length": event.interpolation_length,
+                    "object_duration": event.object_duration,
+                    "block_duration": event.block_duration,
+                    "control_event": {
+                        "host_channel_index": event.control_event.host_channel_index(),
+                        "start_sample": event.control_event.start_sample(),
+                        "duration_samples": event.control_event.duration_samples(),
+                        "programme_samples": event.control_event.programme_samples(),
+                        "coordinates": coordinates,
+                        "spread": spread,
+                        "diffuse": event.control_event.diffuse(),
+                    }
+                }))
+            })
+            .collect::<Result<Vec<_>, NormalControlSnapshotError>>()?;
+        let regular_source_bindings = self
+            .regular_source_bindings
+            .iter()
+            .map(|binding| {
+                json!({
+                    "physical_host": binding.physical_host,
+                    "global_source": binding.global_source,
+                })
+            })
+            .collect::<Vec<_>>();
+        Ok(json!({
+            "schema": "frontend_control_prepared_identity_v1",
+            "programme_id": self.programme_id.as_str(),
+            "attempt_id": self.attempt_id.value(),
+            "profile": profile_value,
+            "source_identity": source_value,
+            "graph_identity": graph_value,
+            "frontend_state_digest": self.frontend_state_digest.map(FrontendControlDigest::to_hex),
+            "dbmd_payload_sha256": hex_sha256(&self.dbmd_payload_sha256),
+            "physical_tracks": physical_tracks,
+            "object_owner_bindings": object_owner_bindings,
+            "object_events": object_events,
+            "bed_pack_channel_format_ids": self.bed_pack_channel_format_ids,
+            "bed_pack_hosts": self.bed_pack_hosts,
+            "regular_source_bindings": regular_source_bindings,
+            "lfe_host": self.lfe_host,
+            "regular37_hosts": self.regular37_hosts.to_vec(),
+        }))
     }
 
     pub const fn profile_identity(&self) -> crate::profile::ResolvedEncodingProfile {
@@ -659,6 +900,72 @@ impl NormalControlPreparedSnapshot {
             .sort_by(|left, right| left.track_uid.as_bytes().cmp(right.track_uid.as_bytes()));
         self.object_events.as_slice() == object_events.as_slice()
     }
+
+    pub(crate) fn binds_frontend_state(&self, state: &FrontendControlState) -> bool {
+        let config = state.normalized_config();
+        self.programme_id == *state.programme_id()
+            && self.attempt_id == state.attempt_id()
+            && self.frontend_state_digest == Some(state.digest())
+            && self.profile.sample_rate_hz == config.sample_rate_hz()
+            && self.profile.channels == config.channels()
+            && self.profile.pcm_bits == config.pcm_bits()
+            && self.profile.source_samples == config.source_samples()
+            && self.profile.bit_rate_kbps == config.bit_rate_kbps()
+            && self.profile.bit_rate_enum == config.bit_rate_enum()
+            && self.profile.layout_enum == config.layout_enum()
+            && self.profile.target_capacity == config.target_capacity()
+            && self.profile.frame_samples == config.frame_samples()
+            && self.profile.spatial_config_mode == config.spatial_config_mode()
+            && self.profile.dispatch_mode == config.dispatch_mode()
+            && self.profile.virtual_prefix_count == config.virtual_prefix_count()
+            && self.profile.bed_count == config.bed_count()
+            && self.profile.object_count == config.object_count()
+            && self.profile.event_start_samples == config.event_start_samples()
+            && self.profile.line_drc == config.line_drc()
+            && self.profile.rf_drc == config.rf_drc()
+            && self.profile.time_base == config.time_base()
+            && self.source_identity.source_samples == config.source_samples()
+    }
+
+    pub(crate) fn binds_normal_objects(
+        &self,
+        objects: &[NormalControlObjectState; OBJECT_TRACK_COUNT],
+    ) -> bool {
+        let mut seen = [false; OBJECT_TRACK_COUNT];
+        for object in objects {
+            let Ok(ordinal) = usize::try_from(object.object_ordinal()) else {
+                return false;
+            };
+            let Some(slot) = seen.get_mut(ordinal) else {
+                return false;
+            };
+            if *slot {
+                return false;
+            }
+            *slot = true;
+            let Some(binding) = self
+                .owner_bindings
+                .iter()
+                .find(|binding| usize::from(binding.local_owner_ordinal) == ordinal)
+            else {
+                return false;
+            };
+            if object.host_channel_index() != Some(u32::from(binding.physical_host)) {
+                return false;
+            }
+            let Some(event) = self
+                .object_events
+                .iter()
+                .find(|event| event.track_uid == binding.track_uid)
+            else {
+                return false;
+            };
+            if event.physical_host != binding.physical_host {
+                return false;
+            }
+        }
+        seen.into_iter().all(|value| value)
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -691,6 +998,16 @@ impl NormalControlObjectState {
         self.event_cache.as_ref()
     }
 
+    pub(crate) fn into_frontend_parts(self) -> NormalControlObjectStateParts {
+        NormalControlObjectStateParts {
+            object_ordinal: self.object_ordinal,
+            event_cache: self.event_cache,
+            host_channel_index: self.host_channel_index,
+            sampler_previous_present: self.sampler_previous_present,
+            sampler_previous_xyz_u32: self.sampler_previous_xyz_u32,
+        }
+    }
+
     fn from_frontend_state(state: &FrontendObjectState) -> Self {
         Self {
             object_ordinal: state.object_ordinal(),
@@ -710,6 +1027,14 @@ impl NormalControlObjectState {
             sampler_previous_xyz_u32: previous_xyz,
         }
     }
+}
+
+pub(crate) struct NormalControlObjectStateParts {
+    pub(crate) object_ordinal: u32,
+    pub(crate) event_cache: Option<Arc<[u8]>>,
+    pub(crate) host_channel_index: Option<u32>,
+    pub(crate) sampler_previous_present: bool,
+    pub(crate) sampler_previous_xyz_u32: [u32; 3],
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -736,7 +1061,6 @@ impl NormalControlBeforeState {
     pub fn from_frontend_state(
         state: &FrontendControlState,
         owner_generation: u64,
-        previous_prepared_identity: Option<Arc<NormalControlPreparedSnapshot>>,
     ) -> Result<Self, NormalControlSnapshotError> {
         let objects: [NormalControlObjectState; OBJECT_TRACK_COUNT] = state
             .objects()
@@ -745,6 +1069,16 @@ impl NormalControlBeforeState {
             .collect::<Vec<_>>()
             .try_into()
             .map_err(|_| NormalControlSnapshotError::StateShapeMismatch)?;
+        let previous_prepared_identity = if state.callback_index().value() == 0 {
+            None
+        } else {
+            Some(Arc::new(
+                state
+                    .prepared_identity()
+                    .ok_or(NormalControlSnapshotError::PreparedIdentityMismatch)?
+                    .clone(),
+            ))
+        };
         Ok(Self {
             programme_id: state.programme_id().clone(),
             attempt_id: state.attempt_id(),
@@ -976,6 +1310,24 @@ impl NormalControlAfterState {
         &self.prepared_identity
     }
 
+    pub(crate) fn into_frontend_owner_parts(self) -> NormalControlAfterStateParts {
+        NormalControlAfterStateParts {
+            programme_id: self.programme_id,
+            attempt_id: self.attempt_id,
+            next_callback_index: self.next_callback_index,
+            next_normal_callbacks: self.next_normal_callbacks,
+            next_owner_generation: self.next_owner_generation,
+            remaining_cached_drains: self.remaining_cached_drains,
+            phase: self.phase,
+            objects: self.objects,
+            control38_snapshot: self.control38_snapshot,
+            regular37_snapshot: self.regular37_snapshot,
+            physical_binding_before: self.physical_binding_before,
+            dbmd_binding_before: self.dbmd_binding_before,
+            prepared_identity: self.prepared_identity,
+        }
+    }
+
     /// Reuses this committed last-normal source snapshot for one main cached-audio delivery.
     pub fn held_source_view_for_cached_callback(
         &self,
@@ -1054,6 +1406,86 @@ impl NormalControlAfterState {
         })
     }
 
+    /// Reuses this completed Meter-owned normal snapshot for one fresh-zero Meter drain.
+    ///
+    /// Unlike the main cached-audio view, this consumes no cached-drain budget and is limited to
+    /// the Meter phase's three delivery callbacks after the Q normal source callbacks.
+    pub fn held_source_view_for_meter_fresh_zero_drain(
+        &self,
+        delivery_transaction_id: CallbackLineageIdentity,
+        normal_callbacks: NormalCallbackCount,
+    ) -> Result<NormalControlFreshZeroMeterView, NormalControlSnapshotError> {
+        let normal_count = normal_callbacks.value();
+        let expected_source_callbacks = self
+            .prepared_identity
+            .source_samples()
+            .div_ceil(NORMAL_CALLBACK_SAMPLES);
+        let expected_delivery_index =
+            u32::try_from(normal_count).map_err(|_| NormalControlSnapshotError::IndexOverflow)?;
+        let delivery_callback = delivery_transaction_id.callback_index();
+        let delivery_end = normal_count
+            .checked_add(3)
+            .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+        if normal_count == 0
+            || expected_source_callbacks != normal_count
+            || self.next_normal_callbacks != normal_callbacks
+            || self.next_callback_index.value() != expected_delivery_index
+            || self.next_owner_generation != normal_count
+            || delivery_transaction_id.programme_id() != &self.programme_id
+            || delivery_transaction_id.attempt_id() != self.attempt_id
+            || u64::from(delivery_callback.value()) < normal_count
+            || u64::from(delivery_callback.value()) >= delivery_end
+        {
+            return Err(NormalControlSnapshotError::CallbackClockMismatch);
+        }
+
+        let control38_snapshot = self.control38_snapshot.clone();
+        let regular37_snapshot = self.regular37_snapshot.clone();
+        let prepared_identity = Arc::clone(&self.prepared_identity);
+        let source_origin_generation = FrontendCallbackIndex::new(
+            u32::try_from(normal_count - 1)
+                .map_err(|_| NormalControlSnapshotError::IndexOverflow)?,
+        );
+        let source_origin_transaction_id = CallbackLineageIdentity::new(
+            self.programme_id.clone(),
+            self.attempt_id,
+            source_origin_generation,
+        );
+
+        if control38_snapshot.len() != CONTROL38_WORD_COUNT
+            || regular37_snapshot.len() != REGULAR37_WORD_COUNT
+            || prepared_identity.physical_tracks().len() != PHYSICAL_TRACK_COUNT
+            || prepared_identity.regular37_hosts().len() != REGULAR_TRACK_COUNT
+        {
+            return Err(NormalControlSnapshotError::SnapshotShapeMismatch);
+        }
+
+        let control38_rows = held_control38_rows(&control38_snapshot, &prepared_identity)?;
+        validate_held_regular_snapshot(&regular37_snapshot, &prepared_identity, &control38_rows)?;
+        let regular37_rows = prepared_identity
+            .regular37_hosts()
+            .iter()
+            .map(|host| {
+                control38_rows
+                    .get(usize::from(*host))
+                    .cloned()
+                    .ok_or(NormalControlSnapshotError::PhysicalHostDomain)
+            })
+            .collect::<Result<Vec<_>, _>>()?
+            .try_into()
+            .map_err(|_| NormalControlSnapshotError::SnapshotShapeMismatch)?;
+
+        Ok(NormalControlFreshZeroMeterView {
+            delivery_transaction_id,
+            source_origin_transaction_id,
+            normal_callbacks,
+            source_origin_generation,
+            prepared_identity,
+            control38_rows,
+            regular37_rows,
+        })
+    }
+
     /// Test-only clock fixture. It preserves source bytes and does not assert an F01E replay.
     #[cfg(test)]
     pub(crate) fn fixture_as_last_normal_clock(&self) -> Result<Self, NormalControlSnapshotError> {
@@ -1072,6 +1504,22 @@ impl NormalControlAfterState {
     }
 }
 
+pub(crate) struct NormalControlAfterStateParts {
+    pub(crate) programme_id: ProgrammeId,
+    pub(crate) attempt_id: AttemptId,
+    pub(crate) next_callback_index: FrontendCallbackIndex,
+    pub(crate) next_normal_callbacks: NormalCallbackCount,
+    pub(crate) next_owner_generation: u64,
+    pub(crate) remaining_cached_drains: u32,
+    pub(crate) phase: FrontendControlPhase,
+    pub(crate) objects: [NormalControlObjectState; OBJECT_TRACK_COUNT],
+    pub(crate) control38_snapshot: Arc<[u32]>,
+    pub(crate) regular37_snapshot: Arc<[u32]>,
+    pub(crate) physical_binding_before: Option<Arc<[u8]>>,
+    pub(crate) dbmd_binding_before: Option<Arc<[u8]>>,
+    pub(crate) prepared_identity: Arc<NormalControlPreparedSnapshot>,
+}
+
 /// Immutable main cached-drain view of the last committed normal F01E source snapshot.
 /// Delivery g advances while all source values retain origin Q-1.
 #[derive(Debug, PartialEq)]
@@ -1083,6 +1531,101 @@ pub struct NormalControlHeldSourceView {
     prepared_identity: Arc<NormalControlPreparedSnapshot>,
     control38_rows: [NormalControlRow; PHYSICAL_TRACK_COUNT],
     regular37_rows: [NormalControlRow; REGULAR_TRACK_COUNT],
+}
+
+/// Immutable Meter fresh-zero drain view of a completed normal F01E snapshot.
+///
+/// The delivery callback advances through the Meter drain window while all values keep their
+/// source origin at Q-1. This type is intentionally distinct from the main cached-drain view.
+#[derive(Debug, PartialEq)]
+pub struct NormalControlFreshZeroMeterView {
+    delivery_transaction_id: CallbackLineageIdentity,
+    source_origin_transaction_id: CallbackLineageIdentity,
+    normal_callbacks: NormalCallbackCount,
+    source_origin_generation: FrontendCallbackIndex,
+    prepared_identity: Arc<NormalControlPreparedSnapshot>,
+    control38_rows: [NormalControlRow; PHYSICAL_TRACK_COUNT],
+    regular37_rows: [NormalControlRow; REGULAR_TRACK_COUNT],
+}
+
+impl NormalControlFreshZeroMeterView {
+    /// Rebinds these held normal rows to another delivery in the Meter fresh-zero window.
+    ///
+    /// This lets one last-normal source view carry across Q+1 and Q+2 without consulting or
+    /// advancing the main cached-drain budget.
+    pub fn for_delivery(
+        &self,
+        delivery_transaction_id: CallbackLineageIdentity,
+    ) -> Result<Self, NormalControlSnapshotError> {
+        let normal_count = self.normal_callbacks.value();
+        let delivery_end = normal_count
+            .checked_add(3)
+            .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+        let expected_origin = normal_count
+            .checked_sub(1)
+            .and_then(|value| u32::try_from(value).ok())
+            .map(FrontendCallbackIndex::new)
+            .ok_or(NormalControlSnapshotError::CallbackClockMismatch)?;
+        let prepared = self.prepared_identity.as_ref();
+        if normal_count == 0
+            || prepared.source_samples().div_ceil(NORMAL_CALLBACK_SAMPLES) != normal_count
+            || self.delivery_transaction_id.programme_id() != prepared.programme_id()
+            || self.delivery_transaction_id.attempt_id() != prepared.attempt_id()
+            || u64::from(self.delivery_generation().value()) < normal_count
+            || u64::from(self.delivery_generation().value()) >= delivery_end
+            || self.source_origin_generation != expected_origin
+            || self.source_origin_transaction_id.programme_id() != prepared.programme_id()
+            || self.source_origin_transaction_id.attempt_id() != prepared.attempt_id()
+            || self.source_origin_transaction_id.callback_index() != expected_origin
+            || delivery_transaction_id.programme_id() != prepared.programme_id()
+            || delivery_transaction_id.attempt_id() != prepared.attempt_id()
+            || u64::from(delivery_transaction_id.callback_index().value()) < normal_count
+            || u64::from(delivery_transaction_id.callback_index().value()) >= delivery_end
+        {
+            return Err(NormalControlSnapshotError::CallbackClockMismatch);
+        }
+        Ok(Self {
+            delivery_transaction_id,
+            source_origin_transaction_id: self.source_origin_transaction_id.clone(),
+            normal_callbacks: self.normal_callbacks,
+            source_origin_generation: self.source_origin_generation,
+            prepared_identity: Arc::clone(&self.prepared_identity),
+            control38_rows: self.control38_rows.clone(),
+            regular37_rows: self.regular37_rows.clone(),
+        })
+    }
+
+    pub fn delivery_transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.delivery_transaction_id
+    }
+
+    pub fn source_origin_transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.source_origin_transaction_id
+    }
+
+    pub const fn delivery_generation(&self) -> FrontendCallbackIndex {
+        self.delivery_transaction_id.callback_index()
+    }
+
+    pub const fn source_origin_generation(&self) -> FrontendCallbackIndex {
+        self.source_origin_generation
+    }
+
+    pub const fn normal_callbacks(&self) -> NormalCallbackCount {
+        self.normal_callbacks
+    }
+
+    pub fn prepared_identity(&self) -> &NormalControlPreparedSnapshot {
+        &self.prepared_identity
+    }
+
+    pub const fn control38_rows(&self) -> &[NormalControlRow; PHYSICAL_TRACK_COUNT] {
+        &self.control38_rows
+    }
+
+    pub const fn regular37_rows(&self) -> &[NormalControlRow; REGULAR_TRACK_COUNT] {
+        &self.regular37_rows
+    }
 }
 
 impl NormalControlHeldSourceView {
@@ -1228,7 +1771,134 @@ pub struct NormalControlSnapshotProposal {
     after_state: NormalControlAfterState,
 }
 
+/// One-shot projection retained for F03W after ownership of the complete normal after-state is
+/// transferred to the frontend-control owner stage.
+#[derive(Debug)]
+pub struct NormalControlSnapshotOutput {
+    transaction_id: CallbackLineageIdentity,
+    value_generation: FrontendCallbackIndex,
+    normal_origin_generation: FrontendCallbackIndex,
+    next_callback_index: FrontendCallbackIndex,
+    next_owner_generation: u64,
+    normal_callbacks: NormalCallbackCount,
+    prepared_identity: Arc<NormalControlPreparedSnapshot>,
+    query_sample: u64,
+    actual_samples: u32,
+    invocation_hosts: [u8; OBJECT_TRACK_COUNT],
+    sampler_before: [NormalControlSamplerBefore; OBJECT_TRACK_COUNT],
+    control38_rows: [NormalControlRow; PHYSICAL_TRACK_COUNT],
+    regular37_rows: [NormalControlRow; REGULAR_TRACK_COUNT],
+    control38_carrier_words: Arc<[u32]>,
+    regular37_carrier_words: Arc<[u32]>,
+}
+
+impl NormalControlSnapshotOutput {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub const fn value_generation(&self) -> FrontendCallbackIndex {
+        self.value_generation
+    }
+
+    pub const fn normal_origin_generation(&self) -> FrontendCallbackIndex {
+        self.normal_origin_generation
+    }
+
+    pub const fn next_callback_index(&self) -> FrontendCallbackIndex {
+        self.next_callback_index
+    }
+
+    pub const fn next_owner_generation(&self) -> u64 {
+        self.next_owner_generation
+    }
+
+    pub const fn normal_callbacks(&self) -> NormalCallbackCount {
+        self.normal_callbacks
+    }
+
+    pub fn prepared_identity(&self) -> &NormalControlPreparedSnapshot {
+        &self.prepared_identity
+    }
+
+    pub const fn query_sample(&self) -> u64 {
+        self.query_sample
+    }
+
+    pub const fn actual_samples(&self) -> u32 {
+        self.actual_samples
+    }
+
+    pub const fn invocation_hosts(&self) -> &[u8; OBJECT_TRACK_COUNT] {
+        &self.invocation_hosts
+    }
+
+    pub const fn sampler_before(&self) -> &[NormalControlSamplerBefore; OBJECT_TRACK_COUNT] {
+        &self.sampler_before
+    }
+
+    pub const fn control38_rows(&self) -> &[NormalControlRow; PHYSICAL_TRACK_COUNT] {
+        &self.control38_rows
+    }
+
+    pub const fn regular37_rows(&self) -> &[NormalControlRow; REGULAR_TRACK_COUNT] {
+        &self.regular37_rows
+    }
+
+    pub fn control38_carrier_words(&self) -> &[u32] {
+        &self.control38_carrier_words
+    }
+
+    pub fn regular37_carrier_words(&self) -> &[u32] {
+        &self.regular37_carrier_words
+    }
+}
+
 impl NormalControlSnapshotProposal {
+    /// Splits the complete proposal without duplicating its mutable sampler after-state.
+    pub fn into_frontend_parent_parts(
+        self,
+    ) -> (NormalControlAfterState, NormalControlSnapshotOutput) {
+        let Self {
+            transaction_id,
+            value_generation,
+            normal_origin_generation,
+            query_sample,
+            actual_samples,
+            invocation_hosts,
+            sampler_before,
+            control38_rows,
+            regular37_rows,
+            control38_carrier_words,
+            regular37_carrier_words,
+            after_state,
+        } = self;
+        let next_callback_index = after_state.next_callback_index;
+        let next_owner_generation = after_state.next_owner_generation;
+        let normal_callbacks = after_state.next_normal_callbacks;
+        let prepared_identity = Arc::clone(&after_state.prepared_identity);
+        (
+            after_state,
+            NormalControlSnapshotOutput {
+                transaction_id,
+                value_generation,
+                normal_origin_generation,
+                next_callback_index,
+                next_owner_generation,
+                normal_callbacks,
+                prepared_identity,
+                query_sample,
+                actual_samples,
+                invocation_hosts,
+                sampler_before,
+                control38_rows,
+                regular37_rows,
+                control38_carrier_words,
+                regular37_carrier_words,
+            },
+        )
+    }
+
     pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
@@ -1282,28 +1952,15 @@ impl NormalControlSnapshotProposal {
     }
 }
 
-fn validate_cold_owner_state(
+fn validate_frontend_owner_state(
     state: &FrontendControlState,
 ) -> Result<(), NormalControlSnapshotError> {
-    if state.callback_index().value() != 0
-        || state.normal_callbacks().value() != 0
-        || state.phase() != FrontendControlPhase::BeforeFirstNormal
-        || state.last_control38_snapshot().is_some()
-        || state.last_regular37_snapshot().is_some()
-        || state.physical_binding().is_some()
-        || state.dbmd_binding().is_some()
-        || state.objects().len() != OBJECT_TRACK_COUNT
-    {
-        return Err(NormalControlSnapshotError::ColdStateRequired);
+    if state.objects().len() != OBJECT_TRACK_COUNT {
+        return Err(NormalControlSnapshotError::StateShapeMismatch);
     }
     for (index, object) in state.objects().iter().enumerate() {
-        if object.object_ordinal() != u32::try_from(index).unwrap_or(u32::MAX)
-            || object.event_cache().is_some()
-            || object.host_channel_index().is_some()
-            || object.sampler_previous_present()
-            || object.sampler_previous_xyz_u32() != [0; 3]
-        {
-            return Err(NormalControlSnapshotError::ColdStateRequired);
+        if object.object_ordinal() != u32::try_from(index).unwrap_or(u32::MAX) {
+            return Err(NormalControlSnapshotError::StateShapeMismatch);
         }
     }
     Ok(())
@@ -1598,7 +2255,7 @@ fn validate_before_state(
             .previous_prepared_identity
             .as_ref()
             .ok_or(NormalControlSnapshotError::PreparedIdentityMismatch)?;
-        if previous.as_ref() != prepared {
+        if !previous.same_prepared_input_identity(prepared) {
             return Err(NormalControlSnapshotError::PreparedIdentityMismatch);
         }
         if before

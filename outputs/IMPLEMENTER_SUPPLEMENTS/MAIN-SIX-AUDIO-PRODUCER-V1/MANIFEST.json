@@ -1,0 +1,28 @@
+{
+  "package_id": "MAIN-SIX-AUDIO-PRODUCER-V1",
+  "scope": "selected profile approved model crosswalk; real audio not run",
+  "source_manifest_sha256": "695b34f6f937bba372a9f03883ba085d6f1f5845729f380e9d8bc9f9df02adba",
+  "sources_verified": 38,
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 9561,
+      "sha256": "2f46ceb5675de7081791480001b5d639e8f55b0fff54d50c23863d6e2824da56"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 1229,
+      "sha256": "04ba1d09751fe5b178c720640bbb292c40728124c0505c9533ac0b156710881c"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 7752,
+      "sha256": "071839fd6128997fcf2e344735ec739a9fe7205ecbffa4c0a3bdab251f904980"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 862,
+      "sha256": "bb0bdf9f4d9c2a3a80c4ee741d44a33000a8f4ee980c469fc03fb8cdb665f00a"
+    }
+  ]
+}

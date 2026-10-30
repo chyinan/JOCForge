@@ -1,0 +1,32 @@
+{
+  "schema": "main-six-symbolic-schedule-check.v1",
+  "grade": "SYNTHETIC_COUNT_ONLY_NOT_AUDIO",
+  "input_sha256": "04ba1d09751fe5b178c720640bbb292c40728124c0505c9533ac0b156710881c",
+  "cases": [
+    {
+      "id": "one_sample_schedule",
+      "normal_callbacks": 1,
+      "frontend_callbacks": 5,
+      "receiver_sources": 3,
+      "published_aus": 1,
+      "f07_blocks": 18
+    },
+    {
+      "id": "short_last_frame",
+      "normal_callbacks": 2,
+      "frontend_callbacks": 6,
+      "receiver_sources": 4,
+      "published_aus": 2,
+      "f07_blocks": 24
+    },
+    {
+      "id": "selected_example_schedule",
+      "normal_callbacks": 4247,
+      "frontend_callbacks": 4251,
+      "receiver_sources": 4249,
+      "published_aus": 4247,
+      "f07_blocks": 25494
+    }
+  ],
+  "actual_pcm_receiver_codec_or_player": "NOT_RUN"
+}

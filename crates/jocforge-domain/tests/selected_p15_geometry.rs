@@ -6,13 +6,19 @@ use serde_json::Value;
 use sha2::{Digest, Sha256};
 
 const PACKAGE_MANIFEST: &[u8] = include_bytes!(
-    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/MANIFEST.json"
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P11-P15-SELECTED-BASIS-V1/MANIFEST.json"
 );
 const BASIS_RECIPE: &[u8] = include_bytes!(
-    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json"
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P11-P15-SELECTED-BASIS-V1/SELECTED-P15-INPUT-RECIPE.json"
+);
+const PACKAGE_CONTRACT: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P11-P15-SELECTED-BASIS-V1/CONTRACT.md"
+);
+const SOURCE_IDENTITIES: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P11-P15-SELECTED-BASIS-V1/SOURCE-IDENTITIES.json"
 );
 const PACKAGE_MANIFEST_SHA256: &str =
-    "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7";
+    "5bf3a586ec210261fff1fd916a8874dc41f98ee7102ac3e762ef660e5550f7e3";
 
 fn sha256(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
@@ -22,18 +28,39 @@ fn sha256(bytes: &[u8]) -> String {
 fn selected_p15_generator_matches_the_hash_bound_stable_basis_recipe() {
     assert_eq!(sha256(PACKAGE_MANIFEST), PACKAGE_MANIFEST_SHA256);
     let manifest: Value = serde_json::from_slice(PACKAGE_MANIFEST).unwrap();
-    let recipe_hash = sha256(BASIS_RECIPE);
-    let entry = manifest["files"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .find(|entry| entry["file"] == "CONTRACT-AND-INPUT-RECIPE.json")
-        .unwrap();
+    assert_eq!(manifest["package_id"], "SPATIAL-P11-P15-SELECTED-BASIS-V1");
     assert_eq!(
-        entry["bytes"].as_u64().unwrap(),
-        u64::try_from(BASIS_RECIPE.len()).unwrap()
+        manifest["approved_manifest_sha256"],
+        "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
     );
-    assert_eq!(entry["sha256"].as_str().unwrap(), recipe_hash);
+    assert_eq!(manifest["files"].as_array().unwrap().len(), 3);
+    for (path, bytes) in [
+        ("CONTRACT.md", PACKAGE_CONTRACT),
+        ("SELECTED-P15-INPUT-RECIPE.json", BASIS_RECIPE),
+        ("SOURCE-IDENTITIES.json", SOURCE_IDENTITIES),
+    ] {
+        let entry = manifest["files"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|entry| entry["file"] == path)
+            .unwrap();
+        assert_eq!(
+            entry["bytes"].as_u64().unwrap(),
+            u64::try_from(bytes.len()).unwrap()
+        );
+        assert_eq!(entry["sha256"].as_str().unwrap(), sha256(bytes));
+    }
+
+    let source_identities: Value = serde_json::from_slice(SOURCE_IDENTITIES).unwrap();
+    assert_eq!(
+        source_identities["approved_package_manifest_sha256"],
+        manifest["approved_manifest_sha256"]
+    );
+    assert_eq!(
+        source_identities["existing_approved_provider_manifest_sha256"],
+        "369d20fb6242ce8fd6835d6c75484304c97f21b0cbc3c228d47af21802efba6"
+    );
 
     let recipe: Value = serde_json::from_slice(BASIS_RECIPE).unwrap();
     let geometry = generate_selected_p15_geometry(

@@ -8,7 +8,8 @@ use crate::{
     frontend::{
         ProviderSha256,
         normal_control_snapshot::{
-            NormalControlHeldSourceView, NormalControlPreparedSnapshot, NormalControlRow,
+            NormalControlFreshZeroMeterView, NormalControlHeldSourceView,
+            NormalControlPreparedSnapshot, NormalControlRow, NormalControlSnapshotOutput,
             NormalControlSnapshotProposal, NormalControlTrackKind,
         },
         primary_metadata_control::{PrimaryControl38Fields, PrimaryMetadataControlRows},
@@ -473,6 +474,37 @@ impl SourceControlSnapshotClock {
         })
     }
 
+    /// Binds held normal controls to a fresh-zero Meter delivery callback.
+    ///
+    /// For Q normal callbacks, Meter drains occupy g in [Q, Q+3) and keep source origin Q-1.
+    /// This is not a main cached-audio drain, so `is_cached_drain()` remains false.
+    pub fn for_fresh_zero_meter_drain(
+        callback_index: FrontendCallbackIndex,
+        normal_callbacks: NormalCallbackCount,
+    ) -> Result<Self, SourceFlagsError> {
+        let normal_count = normal_callbacks.value();
+        let delivery_end = normal_count
+            .checked_add(3)
+            .ok_or(SourceFlagsError::SourceControlClock)?;
+        if normal_count == 0
+            || u64::from(callback_index.value()) < normal_count
+            || u64::from(callback_index.value()) >= delivery_end
+        {
+            return Err(SourceFlagsError::SourceControlClock);
+        }
+        let source_origin = normal_count
+            .checked_sub(1)
+            .and_then(|value| u32::try_from(value).ok())
+            .map(FrontendCallbackIndex::new)
+            .ok_or(SourceFlagsError::SourceControlClock)?;
+        Ok(Self {
+            callback_index,
+            normal_callbacks,
+            source_origin,
+            cached_drain: false,
+        })
+    }
+
     pub const fn callback_index(self) -> FrontendCallbackIndex {
         self.callback_index
     }
@@ -660,6 +692,58 @@ pub fn project_normal_control_snapshot_source_controls(
     )
 }
 
+/// Projects the non-owning F03W view returned by the same one-shot frontend owner stage.
+/// The mutable after-state has already moved into `FrontendControlStaged`.
+pub fn project_normal_control_snapshot_output_source_controls(
+    output: &NormalControlSnapshotOutput,
+    graph: &SelectedAdmGraph,
+    profile_identity: ResolvedEncodingProfile,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    let prepared = output.prepared_identity();
+    if !prepared.matches_graph(graph) {
+        return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
+    }
+    if prepared.profile_identity() != profile_identity {
+        return Err(SourceFlagsError::UnsupportedProfile);
+    }
+    let callback_index = output.transaction_id().callback_index();
+    let expected_next = callback_index
+        .value()
+        .checked_add(1)
+        .ok_or(SourceFlagsError::SourceControlClockMismatch)?;
+    let query_sample = u64::from(callback_index.value())
+        .checked_mul(
+            u64::try_from(FRAME_SAMPLES)
+                .map_err(|_| SourceFlagsError::SourceControlClockMismatch)?,
+        )
+        .ok_or(SourceFlagsError::SourceControlClockMismatch)?;
+    let expected_actual = prepared.source_samples().saturating_sub(query_sample);
+    if output.transaction_id().programme_id() != prepared.programme_id()
+        || output.transaction_id().attempt_id() != prepared.attempt_id()
+        || output.value_generation() != callback_index
+        || output.normal_origin_generation() != callback_index
+        || output.next_callback_index().value() != expected_next
+        || output.query_sample() != query_sample
+        || query_sample >= prepared.source_samples()
+        || u64::from(output.actual_samples()) != expected_actual.min(FRAME_SAMPLES as u64)
+        || output.normal_callbacks().value() != u64::from(expected_next)
+    {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    let clock =
+        SourceControlSnapshotClock::for_normal_callback(callback_index, output.normal_callbacks())?;
+    if clock.is_cached_drain() || clock.source_origin() != output.normal_origin_generation() {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    project_normal_control_rows(
+        output.control38_rows(),
+        output.regular37_rows(),
+        prepared,
+        profile_identity,
+        clock,
+    )
+}
+
 /// Core projection for the exact prepared map, also usable by frontend unit tests.
 pub(crate) fn project_normal_control_snapshot_source_controls_from_prepared(
     proposal: &NormalControlSnapshotProposal,
@@ -731,6 +815,44 @@ pub fn project_held_normal_control_snapshot_source_controls(
         || held.delivery_transaction_id().programme_id() != prepared.programme_id()
         || held.delivery_transaction_id().attempt_id() != prepared.attempt_id()
         || held.delivery_transaction_id().callback_index() != clock.callback_index()
+    {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    project_normal_control_rows(
+        held.control38_rows(),
+        held.regular37_rows(),
+        prepared,
+        profile_identity,
+        clock,
+    )
+}
+
+/// Projects held normal controls for an independent fresh-zero Meter delivery.
+/// Source values remain from Q-1 while the control projection is bound to the current delivery g.
+pub fn project_meter_fresh_zero_normal_control_snapshot_source_controls(
+    held: &NormalControlFreshZeroMeterView,
+    graph: &SelectedAdmGraph,
+    profile_identity: ResolvedEncodingProfile,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    let prepared = held.prepared_identity();
+    if !prepared.matches_graph(graph) {
+        return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
+    }
+    if prepared.profile_identity() != profile_identity {
+        return Err(SourceFlagsError::UnsupportedProfile);
+    }
+    let clock = SourceControlSnapshotClock::for_fresh_zero_meter_drain(
+        held.delivery_generation(),
+        held.normal_callbacks(),
+    )?;
+    if clock.is_cached_drain()
+        || clock.source_origin() != held.source_origin_generation()
+        || held.delivery_transaction_id().programme_id() != prepared.programme_id()
+        || held.delivery_transaction_id().attempt_id() != prepared.attempt_id()
+        || held.delivery_transaction_id().callback_index() != clock.callback_index()
+        || held.source_origin_transaction_id().programme_id() != prepared.programme_id()
+        || held.source_origin_transaction_id().attempt_id() != prepared.attempt_id()
+        || held.source_origin_transaction_id().callback_index() != clock.source_origin()
     {
         return Err(SourceFlagsError::SourceControlClockMismatch);
     }

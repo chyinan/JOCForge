@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Identity-first validation for the approved F03 selected-target cold provider.
 
+use super::selected_provider_manifests::ValidatedF01bColdAssetManifest;
 use super::{PackageManifestEvidence, ProviderFileEvidence, ProviderSha256};
 use serde_json::{Map, Value};
 
@@ -305,6 +306,26 @@ pub fn validate_f03_target_cold_provider(
         target_projection,
         receipt,
     })
+}
+
+/// Validates the F03 target cold payload from the distinct F01B cold/state bundle.
+///
+/// This preserves the same exact payload parser and projection check while recording the actual
+/// cold-bundle manifest digest in the target provider lineage.
+pub fn validate_f03_target_cold_provider_from_f01b_assets(
+    evidence: &ProviderFileEvidence,
+    manifest: &ValidatedF01bColdAssetManifest,
+) -> Result<ValidatedF03TargetColdProvider, F03TargetProviderError> {
+    let entry = manifest
+        .entry(PROVIDER_PATH)
+        .ok_or(F03TargetProviderError::PackageManifestEntry)?;
+    let package_manifest = ValidatedF03PackageManifest {
+        manifest_sha256: manifest.manifest_sha256(),
+        provider_path: entry.path(),
+        provider_bytes: entry.bytes(),
+        provider_sha256: entry.sha256(),
+    };
+    validate_f03_target_cold_provider(evidence, &package_manifest)
 }
 
 fn parse_f03_provider(bytes: &[u8]) -> Result<F03TargetArrays, F03TargetProviderError> {

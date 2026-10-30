@@ -100,7 +100,12 @@ pub fn validate_qmf_mathematical_fft_provider(
     let entry = manifest.qmf_mathematical_fft_entry();
     let provider_sha = validate_provider_identity(evidence, entry)?;
     let (stages, rotation_u32) = parse_qmf_mathematical_fft_provider(evidence.bytes())?;
-    let lineage = provider_lineage(manifest.manifest_sha256(), entry, provider_sha);
+    let lineage = provider_lineage(
+        manifest.manifest_sha256(),
+        Some(manifest.approved_source_manifest_sha256()),
+        entry,
+        provider_sha,
+    );
     let receipt = QmfMathematicalFftProviderReceipt {
         validated_manifest_lineage: lineage,
         provider_file_sha256: provider_sha,

@@ -97,6 +97,7 @@ pub(super) struct SpatialAudioReceiverProviderInput<'a> {
     pub(super) blend: Option<&'a ValidatedWindowQ15Provider>,
     pub(super) fft: Option<&'a QmfMathematicalFftProvider>,
     pub(super) descriptor: Option<&'a DescriptorMathematicalProvider>,
+    pub(super) validated_manifest_sha256: Option<&'a str>,
     pub(super) selected_manifest_sha256: Option<&'a str>,
 }
 
@@ -479,18 +480,29 @@ fn target_qmf_rows(preconditioned: &[f32]) -> Result<[Box<[f32]>; 15], SpatialAu
 fn validate_providers<'a>(
     input: &SpatialAudioReceiverProviderInput<'a>,
 ) -> Result<ValidatedProviders<'a>, SpatialAudioReceiverError> {
-    let (Some(functional), Some(blend), Some(fft), Some(descriptor), Some(manifest_sha)) = (
+    let (
+        Some(functional),
+        Some(blend),
+        Some(fft),
+        Some(descriptor),
+        Some(validated_manifest_sha),
+        Some(approved_source_manifest_sha),
+    ) = (
         input.functional,
         input.blend,
         input.fft,
         input.descriptor,
+        input.validated_manifest_sha256,
         input.selected_manifest_sha256,
-    ) else {
+    )
+    else {
         return Err(SpatialAudioReceiverError::ProviderMissing);
     };
-    if manifest_sha != PACKAGE_MANIFEST_SHA256
+    if approved_source_manifest_sha != PACKAGE_MANIFEST_SHA256
         || !lineage_matches(
             functional.receipt().validated_manifest_lineage(),
+            validated_manifest_sha,
+            approved_source_manifest_sha,
             FUNCTIONAL_PROVIDER_PATH,
             FUNCTIONAL_PROVIDER_BYTES,
             FUNCTIONAL_PROVIDER_SHA256,
@@ -499,6 +511,8 @@ fn validate_providers<'a>(
         || functional.receipt().provider_file_sha256().to_hex() != FUNCTIONAL_PROVIDER_SHA256
         || !lineage_matches(
             blend.receipt().validated_manifest_lineage(),
+            validated_manifest_sha,
+            approved_source_manifest_sha,
             WINDOW_PROVIDER_PATH,
             WINDOW_PROVIDER_BYTES,
             WINDOW_PROVIDER_SHA256,
@@ -507,6 +521,8 @@ fn validate_providers<'a>(
         || blend.receipt().provider_file_sha256().to_hex() != WINDOW_PROVIDER_SHA256
         || !lineage_matches(
             fft.receipt().validated_manifest_lineage(),
+            validated_manifest_sha,
+            approved_source_manifest_sha,
             FFT_PROVIDER_PATH,
             FFT_PROVIDER_BYTES,
             FFT_PROVIDER_SHA256,
@@ -516,6 +532,8 @@ fn validate_providers<'a>(
         || fft.receipt().route() != "QMF_FFT_RADIX2_MATH_V1"
         || !lineage_matches(
             descriptor.receipt().validated_manifest_lineage(),
+            validated_manifest_sha,
+            approved_source_manifest_sha,
             DESCRIPTOR_PROVIDER_PATH,
             DESCRIPTOR_PROVIDER_BYTES,
             DESCRIPTOR_PROVIDER_SHA256,
@@ -577,11 +595,14 @@ fn validate_providers<'a>(
 
 fn lineage_matches(
     lineage: &crate::spatial::F04ParameterProviderLineage,
+    validated_manifest_sha256: &str,
+    approved_source_manifest_sha256: &str,
     path: &str,
     bytes: u64,
     sha256: &str,
 ) -> bool {
-    lineage.manifest_sha256().to_hex() == PACKAGE_MANIFEST_SHA256
+    lineage.manifest_sha256().to_hex() == validated_manifest_sha256
+        && lineage.approved_source_manifest_sha256() == Some(approved_source_manifest_sha256)
         && lineage.provider_path() == path
         && lineage.manifest_entry_bytes() == bytes
         && lineage.manifest_entry_sha256().to_hex() == sha256
