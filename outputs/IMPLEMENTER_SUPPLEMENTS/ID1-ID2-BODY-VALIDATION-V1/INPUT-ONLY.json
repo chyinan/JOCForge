@@ -1,0 +1,19 @@
+{
+  "schema": "selected-id1-id2-body-inputs.v1",
+  "input_only": true,
+  "cases": [
+    {"id": "id1_default_absent", "timer_output": [-2, 1, 0, 0, -512, -512, -512, -512, -512]},
+    {"id": "id1_multiple_fields_primitive", "timer_output": [-2, 1, 1, 0, -46, -48, -512, -3, -512], "scope": "wire primitive, not a claim one selected timer call refreshes multiple fields"},
+    {"id": "id1_present_cached_sentinel", "timer_output": [-2, 1, 1, 0, -512, -1024, -512, -512, -512], "scope": "wire primitive"},
+    {"id": "id1_field8_reserved_code", "mutation": "set_field8_present_with_code31"},
+    {"id": "id1_nonzero_padding", "mutation": "set_final_padding_bit"},
+    {"id": "id1_extra_byte", "mutation": "append_zero_byte"},
+    {"id": "id2_lfe_zero", "same_writer_id11_lfe": 0, "line_profile": "none", "rf_profile": "none", "phase_indicator": 1, "format_mask": 1},
+    {"id": "id2_lfe_one", "same_writer_id11_lfe": 1, "line_profile": "none", "rf_profile": "none", "phase_indicator": 1, "format_mask": 1},
+    {"id": "id2_invalid_reserved", "mutation": "set_phase_reserved_bit"},
+    {"id": "id2_wrong_profile", "line_code": 4, "selected_line_profile": "none"},
+    {"id": "id2_wrong_lfe_writer", "source": 2, "popped_id2_writer": 0, "comparison_id11_writer": 2},
+    {"id": "id2_truncated", "mutation": "remove_last_byte"}
+  ],
+  "production_execution": "NOT_RUN"
+}

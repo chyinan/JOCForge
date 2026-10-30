@@ -6,3 +6,4 @@ pub mod id1_configuration;
 pub mod id2_wire;
 pub mod metadata_bodies;
 pub mod metadata_owner;
+pub mod protected_container;

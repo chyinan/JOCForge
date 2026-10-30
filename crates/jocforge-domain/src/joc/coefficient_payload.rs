@@ -11,6 +11,11 @@ use super::huffman::{
     HuffmanCodebooks, HuffmanError, Id14HeaderInput, Id14InputShapeError, Id14ObjectDescriptor,
     Id14Presence, Id14WriterReturnCode, Id14WriterState, write_id14_header,
 };
+use super::{
+    coefficient_fitting::FitSourceLineage,
+    id14_body::{Id14BodyProposal, Id14ObjectCount},
+};
+use crate::{timeline::JocDispatchIndex, transaction::CallbackTransactionId};
 
 const BAND_COEFFICIENT_COUNTS: [usize; 8] = [1, 3, 5, 7, 9, 12, 15, 23];
 const COEFFICIENT_BODY_SCRATCH_LIMIT_BITS: u64 = 4_344;
@@ -131,6 +136,8 @@ pub struct CoefficientPayloadOutcome {
     writer_valid_bit_count: Option<HuffmanBitCount>,
     padding_zero_bits: Option<u8>,
     output_length_bytes: Option<u64>,
+    object_count: Id14ObjectCount,
+    sequence_count: u16,
     coefficient_scratch_exceeded: bool,
     payload: Option<Vec<u8>>,
     descriptor_copy: Option<Id14DescriptorCopy>,
@@ -162,6 +169,30 @@ impl CoefficientPayloadOutcome {
         }
     }
 
+    pub(crate) fn into_id14_body_proposal(
+        self,
+        writer_generation: crate::timeline::CodecSourceIndex,
+        dispatch: JocDispatchIndex,
+        expected_sequence_count: u16,
+        producer_transaction_id: Option<CallbackTransactionId>,
+        lineage: FitSourceLineage,
+    ) -> Option<Id14BodyProposal> {
+        if self.sequence_count != expected_sequence_count {
+            return None;
+        }
+        let object_count = self.object_count;
+        let sequence_count = self.sequence_count;
+        let body = self.try_into_metadata_body(writer_generation).ok()?;
+        Id14BodyProposal::from_successful_writer(
+            body,
+            lineage,
+            producer_transaction_id,
+            dispatch,
+            sequence_count,
+            object_count,
+        )
+    }
+
     pub const fn header_bit_count(&self) -> u64 {
         self.header_bit_count
     }
@@ -188,6 +219,14 @@ impl CoefficientPayloadOutcome {
 
     pub const fn output_length_bytes(&self) -> Option<u64> {
         self.output_length_bytes
+    }
+
+    pub const fn object_count(&self) -> Id14ObjectCount {
+        self.object_count
+    }
+
+    pub const fn sequence_count(&self) -> u16 {
+        self.sequence_count
     }
 
     pub const fn coefficient_scratch_exceeded(&self) -> bool {
@@ -229,6 +268,9 @@ pub fn write_selected_id14_coefficient_payload(
             writer_valid_bit_count: None,
             padding_zero_bits: None,
             output_length_bytes: None,
+            object_count: Id14ObjectCount::from_selected_slots(input.objects.len())
+                .ok_or(CoefficientPayloadWriterFailure::InputShape)?,
+            sequence_count: input.sequence_count,
             coefficient_scratch_exceeded: true,
             payload: None,
             descriptor_copy: None,
@@ -284,6 +326,9 @@ pub fn write_selected_id14_coefficient_payload(
         writer_valid_bit_count: Some(writer_outcome.valid_bit_count()),
         padding_zero_bits: Some(writer_outcome.padding_zero_bits()),
         output_length_bytes: Some(writer.output_length().value()),
+        object_count: Id14ObjectCount::from_selected_slots(input.objects.len())
+            .ok_or(CoefficientPayloadWriterFailure::InputShape)?,
+        sequence_count: input.sequence_count,
         coefficient_scratch_exceeded: false,
         payload,
         descriptor_copy,

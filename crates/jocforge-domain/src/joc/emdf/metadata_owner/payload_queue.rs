@@ -1,11 +1,15 @@
-use super::{MetadataOwnerError, hex_encode};
-use crate::timeline::CodecSourceIndex;
+use super::{MetadataOwnerError, MetadataQueueProducerProvenance, hex_encode};
+use crate::{
+    timeline::{CodecSourceIndex, JocDispatchIndex},
+    transaction::CallbackTransactionId,
+};
 use serde_json::{Value, json};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(super) struct QueuedBody {
     pub writer_generation: CodecSourceIndex,
     pub payload: Vec<u8>,
+    pub producer_provenance: Option<MetadataQueueProducerProvenance>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -63,6 +67,10 @@ impl PayloadQueue {
             queue_id: self.id,
             pushed_writer: body.writer_generation,
             pushed_bytes: body.payload.len() as u16,
+            pushed_provenance: body.producer_provenance.clone(),
+            consumer_transaction_id: None,
+            consumer_source_index: None,
+            consumer_dispatch: None,
             popped_writer: popped.as_ref().map(|entry| entry.writer_generation),
             popped_buffer_id,
             before,
@@ -77,10 +85,14 @@ impl PayloadQueue {
             .iter()
             .map(|slot| {
                 slot.as_ref().map_or(Value::Null, |body| {
-                    json!({
+                    let mut value = json!({
                         "writer_generation": body.writer_generation.value(),
                         "payload_hex": hex_encode(&body.payload),
-                    })
+                    });
+                    if let Some(provenance) = &body.producer_provenance {
+                        value["producer_provenance"] = provenance.as_json();
+                    }
+                    value
                 })
             })
             .collect::<Vec<_>>();
@@ -113,6 +125,10 @@ pub(super) struct QueueOperation {
     pub queue_id: u8,
     pub pushed_writer: CodecSourceIndex,
     pub pushed_bytes: u16,
+    pub pushed_provenance: Option<MetadataQueueProducerProvenance>,
+    pub consumer_transaction_id: Option<CallbackTransactionId>,
+    pub consumer_source_index: Option<CodecSourceIndex>,
+    pub consumer_dispatch: Option<JocDispatchIndex>,
     pub popped_writer: Option<CodecSourceIndex>,
     pub popped_buffer_id: u16,
     pub before: Value,
@@ -121,8 +137,19 @@ pub(super) struct QueueOperation {
 }
 
 impl QueueOperation {
+    pub fn bind_consumer(
+        &mut self,
+        transaction_id: CallbackTransactionId,
+        source_index: CodecSourceIndex,
+        dispatch: JocDispatchIndex,
+    ) {
+        self.consumer_transaction_id = Some(transaction_id);
+        self.consumer_source_index = Some(source_index);
+        self.consumer_dispatch = Some(dispatch);
+    }
+
     pub fn as_json(&self) -> Value {
-        json!({
+        let mut value = json!({
             "queue_id": self.queue_id,
             "pushed_writer": self.pushed_writer.value(),
             "pushed_bytes": self.pushed_bytes,
@@ -130,6 +157,26 @@ impl QueueOperation {
             "popped_buffer_id": self.popped_buffer_id,
             "before": self.before,
             "after": self.after,
-        })
+        });
+        if let Some(provenance) = &self.pushed_provenance {
+            value["pushed_producer_provenance"] = provenance.as_json();
+        }
+        if let (Some(transaction_id), Some(source_index), Some(dispatch)) = (
+            &self.consumer_transaction_id,
+            self.consumer_source_index,
+            self.consumer_dispatch,
+        ) {
+            value["consumer_transaction_id"] = Value::String(transaction_id.as_str().to_owned());
+            value["consumer_source_index"] = Value::from(source_index.value());
+            value["consumer_dispatch"] = Value::from(dispatch.value());
+        }
+        if let Some(provenance) = self
+            .popped
+            .as_ref()
+            .and_then(|body| body.producer_provenance.as_ref())
+        {
+            value["popped_producer_provenance"] = provenance.as_json();
+        }
+        value
     }
 }

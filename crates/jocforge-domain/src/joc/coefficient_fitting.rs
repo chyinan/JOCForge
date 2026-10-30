@@ -145,6 +145,27 @@ impl FitSourceLineage {
     pub const fn spatial_before_digest(&self) -> crate::spatial::SpatialAudioDigest {
         self.spatial_before_digest
     }
+
+    #[cfg(test)]
+    pub(crate) fn for_test(
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        transaction_id: CallbackLineageIdentity,
+        source_index: CodecSourceIndex,
+        dispatch: crate::timeline::JocDispatchIndex,
+        spatial_before_generation: u64,
+        spatial_before_digest: crate::spatial::SpatialAudioDigest,
+    ) -> Self {
+        Self {
+            programme_id,
+            attempt,
+            transaction_id,
+            source_index,
+            dispatch,
+            spatial_before_generation,
+            spatial_before_digest,
+        }
+    }
 }
 
 impl CoefficientFitProposal {
@@ -589,10 +610,15 @@ mod tests {
                 metadata_body.writer_generation.value(),
                 u64::try_from(generation).unwrap()
             );
-            let payload_input = JocPayloadInput::for_test(
+            let producer_transaction_id = crate::transaction::CallbackTransactionId::new(&format!(
+                "selected-fit-parent-{generation}"
+            ))
+            .unwrap();
+            let payload_input = JocPayloadInput::for_test_with_transaction(
                 programme_id.clone(),
                 attempt,
                 transaction_id.clone(),
+                producer_transaction_id.clone(),
                 source_index,
                 128,
                 0x3d80_0000,
@@ -666,9 +692,37 @@ mod tests {
             let source =
                 assemble_staged_source(&dispatch_state, proposal, &payload_input, &retry_provider)
                     .unwrap();
-            assert_eq!(source.id14_body().bytes, metadata_body.bytes);
-            assert_eq!(source.id14_body().writer_generation, source_index);
+            assert_eq!(source.id14_body().body().bytes, metadata_body.bytes);
+            assert_eq!(source.id14_body().body().writer_generation, source_index);
             assert_eq!(source.lineage().source_index(), source_index);
+            assert_eq!(source.id14_body().provenance().lineage(), source.lineage());
+            assert_eq!(
+                source.id14_body().provenance().producer_transaction_id(),
+                Some(&producer_transaction_id)
+            );
+            assert_eq!(
+                source.id14_body().provenance().producer_generation(),
+                source_index
+            );
+            assert_eq!(
+                source.id14_body().provenance().dispatch(),
+                source_index.dispatch().unwrap()
+            );
+            assert_eq!(
+                source.id14_body().provenance().writer().value(),
+                source_index.value()
+            );
+            assert_eq!(
+                source.id14_body().provenance().sequence_count(),
+                sequences[generation]
+            );
+            assert_eq!(source.id14_body().provenance().object_count().value(), 15);
+            assert!(
+                source
+                    .id14_body()
+                    .provenance()
+                    .matches_body(source_index, &source.id14_body().body().bytes)
+            );
             let (fit_after, dispatch_after, _, _) = source.into_parts();
             assert_eq!(
                 dispatch_after.sequence_counter(),

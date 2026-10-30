@@ -1,0 +1,12 @@
+{
+  "approved_manifest_verified_sha256": {
+    "specs/13-emdf-and-timeline.md": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+    "specs/13-id2-profile-metadata.md": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc",
+    "specs/13-joc-complexity-timer-payload-order.md": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+    "parameters/joc-timer-order-v1.json": "b425f8dffc0d914d660c46bcce5226c80d5fc680ab7c7f02e590fd6f889cb50b",
+    "test-vectors/JOC-TIMER-ORDER-INPUT-VECTORS.json": "7469213950e80fde353cf033bdd20c9befa37a2db20763243c4b3316762bb8c3"
+  },
+  "synthetic_checker_sha256": "c0a2216e1f3a3884d33ab489ea44f12eca2ae6ac52910c9ae0e825c214452680",
+  "synthetic_layout_normal_and_optimized": "PASS",
+  "native_and_real_adm": "NOT_RUN"
+}

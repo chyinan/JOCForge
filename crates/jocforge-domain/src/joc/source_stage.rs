@@ -10,23 +10,22 @@ use crate::{
         },
         coefficient_representation::{RepresentationRetryError, RepresentationRetryProvider},
         dispatch_state::{JocDispatchError, JocDispatchState, JocPayloadInput, stage_joc_payload},
-        emdf::{
-            metadata_bodies::{
-                MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
-            },
-            metadata_owner::MetadataPayloadBody,
+        emdf::metadata_bodies::{
+            MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
         },
         fit_score::FitScoreProvider,
+        id14_body::Id14BodyProposal,
         oamd::reader_target::ReaderTargetUpdateReceipt,
     },
     spatial::{QmfReceiverFunctionalProvider, spatial_audio_state::SelectedJocQmfProjection},
+    transaction::CallbackTransactionId,
 };
 
 #[derive(Debug)]
 pub struct JocSourceProposal {
     fit_after: CoefficientFitState,
     dispatch_after: JocDispatchState,
-    id14_body: MetadataPayloadBody,
+    id14_body: Id14BodyProposal,
     lineage: FitSourceLineage,
 }
 
@@ -39,7 +38,7 @@ impl JocSourceProposal {
         &self.dispatch_after
     }
 
-    pub const fn id14_body(&self) -> &MetadataPayloadBody {
+    pub const fn id14_body(&self) -> &Id14BodyProposal {
         &self.id14_body
     }
 
@@ -70,7 +69,7 @@ impl JocSourceProposal {
         {
             return Err(MetadataBodiesError::Lineage);
         }
-        if self.id14_body.writer_generation != lineage.source_index() {
+        if self.id14_body.body().writer_generation != lineage.source_index() {
             return Err(MetadataBodiesError::WriterGeneration);
         }
         assemble_metadata_bodies(
@@ -86,7 +85,7 @@ impl JocSourceProposal {
     ) -> (
         CoefficientFitState,
         JocDispatchState,
-        MetadataPayloadBody,
+        Id14BodyProposal,
         FitSourceLineage,
     ) {
         (
@@ -115,8 +114,10 @@ impl std::fmt::Display for JocSourceStageError {
 
 impl std::error::Error for JocSourceStageError {}
 
-/// Runs the first JOC-owned stage through a complete ID14 proposal. All
-/// returned state remains staged for the enclosing programme source parent.
+/// Runs the first JOC-owned stage through a local ID14 proposal without a parent transaction ID.
+///
+/// This unbound entry is useful for isolated F05JL validation. Its provenance has no
+/// `CallbackTransactionId`, so it cannot cross the production F13 metadata body barrier.
 pub fn stage_joc_source(
     fit_before: &CoefficientFitState,
     dispatch_before: &JocDispatchState,
@@ -125,10 +126,60 @@ pub fn stage_joc_source(
     score_provider: &FitScoreProvider,
     retry_provider: &RepresentationRetryProvider,
 ) -> Result<JocSourceProposal, JocSourceStageError> {
+    stage_joc_source_inner(
+        fit_before,
+        dispatch_before,
+        projection,
+        qmf_provider,
+        score_provider,
+        retry_provider,
+        None,
+    )
+}
+
+/// Parent-bound entry which carries the actual GTC callback transaction token into ID14.
+///
+/// The token remains distinct from F05JL's `CallbackLineageIdentity`. The older
+/// `stage_joc_source` entry can produce an isolated body proposal, but that proposal cannot
+/// cross the F13 metadata body barrier without this parent-supplied token.
+pub fn stage_joc_source_with_transaction(
+    fit_before: &CoefficientFitState,
+    dispatch_before: &JocDispatchState,
+    projection: &SelectedJocQmfProjection,
+    producer_transaction_id: CallbackTransactionId,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+    retry_provider: &RepresentationRetryProvider,
+) -> Result<JocSourceProposal, JocSourceStageError> {
+    stage_joc_source_inner(
+        fit_before,
+        dispatch_before,
+        projection,
+        qmf_provider,
+        score_provider,
+        retry_provider,
+        Some(producer_transaction_id),
+    )
+}
+
+fn stage_joc_source_inner(
+    fit_before: &CoefficientFitState,
+    dispatch_before: &JocDispatchState,
+    projection: &SelectedJocQmfProjection,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+    retry_provider: &RepresentationRetryProvider,
+    producer_transaction_id: Option<CallbackTransactionId>,
+) -> Result<JocSourceProposal, JocSourceStageError> {
     let fit = stage_coefficient_fit_from_qmf(fit_before, projection, qmf_provider, score_provider)
         .map_err(JocSourceStageError::Fit)?;
-    let payload_input =
-        JocPayloadInput::from_projection(projection).map_err(JocSourceStageError::Payload)?;
+    let payload_input = match producer_transaction_id {
+        Some(transaction_id) => {
+            JocPayloadInput::from_projection_with_transaction(projection, transaction_id)
+        }
+        None => JocPayloadInput::from_projection(projection),
+    }
+    .map_err(JocSourceStageError::Payload)?;
     assemble_staged_source(dispatch_before, fit, &payload_input, retry_provider)
 }
 
@@ -146,7 +197,7 @@ pub(crate) fn assemble_staged_source(
         .map_err(JocSourceStageError::Payload)?;
     let fit_after = fit.into_after();
     let (dispatch_after, id14_body) = payload.into_parts().map_err(JocSourceStageError::Payload)?;
-    if id14_body.writer_generation != lineage.source_index()
+    if id14_body.body().writer_generation != lineage.source_index()
         || dispatch_after.successful_dispatches() != fit_after.fit_generation()
     {
         return Err(JocSourceStageError::WriterLineage);

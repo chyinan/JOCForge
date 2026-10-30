@@ -7,14 +7,14 @@ use crate::{
         coefficient_representation::{
             RepresentationRetryError, RepresentationRetryProvider, RepresentationWriteResult,
         },
-        emdf::metadata_owner::MetadataPayloadBody,
+        id14_body::Id14BodyProposal,
     },
     spatial::{
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
         spatial_audio_state::SelectedJocQmfProjection,
     },
     timeline::{CodecSourceIndex, JocDispatchIndex},
-    transaction::CallbackLineageIdentity,
+    transaction::{CallbackLineageIdentity, CallbackTransactionId},
 };
 
 const SELECTED_CAPACITY_BYTES: u16 = 372;
@@ -99,6 +99,7 @@ pub struct JocPayloadInput {
     programme_id: SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
     transaction_id: CallbackLineageIdentity,
+    producer_transaction_id: Option<CallbackTransactionId>,
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
     clip_gain_index: u8,
@@ -108,6 +109,20 @@ pub struct JocPayloadInput {
 impl JocPayloadInput {
     pub fn from_projection(
         projection: &SelectedJocQmfProjection,
+    ) -> Result<Self, JocDispatchError> {
+        Self::from_projection_with_optional_transaction(projection, None)
+    }
+
+    pub fn from_projection_with_transaction(
+        projection: &SelectedJocQmfProjection,
+        producer_transaction_id: CallbackTransactionId,
+    ) -> Result<Self, JocDispatchError> {
+        Self::from_projection_with_optional_transaction(projection, Some(producer_transaction_id))
+    }
+
+    fn from_projection_with_optional_transaction(
+        projection: &SelectedJocQmfProjection,
+        producer_transaction_id: Option<CallbackTransactionId>,
     ) -> Result<Self, JocDispatchError> {
         let expected_dispatch = projection
             .source_index()
@@ -129,6 +144,7 @@ impl JocPayloadInput {
             programme_id: projection.programme_id().clone(),
             attempt: projection.attempt(),
             transaction_id: projection.transaction_id().clone(),
+            producer_transaction_id,
             source_index: projection.source_index(),
             dispatch: projection.dispatch(),
             clip_gain_index: projection.descriptor_selected_index(),
@@ -154,11 +170,34 @@ impl JocPayloadInput {
             programme_id,
             attempt,
             transaction_id,
+            producer_transaction_id: None,
             source_index,
             dispatch: source_index.dispatch().expect("bounded test source"),
             clip_gain_index,
             descriptor_target_gain_word,
         }
+    }
+
+    #[cfg(test)]
+    pub(crate) fn for_test_with_transaction(
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        transaction_id: CallbackLineageIdentity,
+        producer_transaction_id: CallbackTransactionId,
+        source_index: CodecSourceIndex,
+        clip_gain_index: u8,
+        descriptor_target_gain_word: u32,
+    ) -> Self {
+        let mut input = Self::for_test(
+            programme_id,
+            attempt,
+            transaction_id,
+            source_index,
+            clip_gain_index,
+            descriptor_target_gain_word,
+        );
+        input.producer_transaction_id = Some(producer_transaction_id);
+        input
     }
 }
 
@@ -170,6 +209,8 @@ pub struct JocPayloadProposal {
     sequence_count: u16,
     clip_gain_index: u8,
     descriptor_target_gain_word: u32,
+    lineage: FitSourceLineage,
+    producer_transaction_id: Option<CallbackTransactionId>,
     representation: RepresentationWriteResult,
 }
 
@@ -202,10 +243,16 @@ impl JocPayloadProposal {
         &self.representation
     }
 
-    pub fn into_parts(self) -> Result<(JocDispatchState, MetadataPayloadBody), JocDispatchError> {
+    pub fn into_parts(self) -> Result<(JocDispatchState, Id14BodyProposal), JocDispatchError> {
         let body = self
             .representation
-            .into_metadata_body(self.writer_generation)
+            .into_id14_body_proposal(
+                self.writer_generation,
+                self.dispatch,
+                self.sequence_count,
+                self.producer_transaction_id,
+                self.lineage,
+            )
             .ok_or(JocDispatchError::PayloadAbsent)?;
         Ok((self.after, body))
     }
@@ -250,6 +297,10 @@ pub fn stage_joc_payload(
         return Err(JocDispatchError::Clock);
     }
     validate_fit_lineage(fit.source_lineage(), input)?;
+    let lineage = fit
+        .source_lineage()
+        .cloned()
+        .ok_or(JocDispatchError::Lineage)?;
     let sequence_count = match before.sequence_counter {
         -1 => 0,
         0..=1_023 => {
@@ -296,6 +347,8 @@ pub fn stage_joc_payload(
         sequence_count,
         clip_gain_index: input.clip_gain_index,
         descriptor_target_gain_word: input.descriptor_target_gain_word,
+        lineage,
+        producer_transaction_id: input.producer_transaction_id.clone(),
         representation,
     })
 }

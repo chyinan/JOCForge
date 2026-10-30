@@ -6,7 +6,14 @@ use crate::joc::coefficient_payload::{
     CoefficientPayloadPoint, CoefficientPayloadWriterFailure,
     write_selected_id14_coefficient_payload,
 };
-use crate::{joc::emdf::metadata_owner::MetadataPayloadBody, timeline::CodecSourceIndex};
+use crate::{
+    joc::{
+        coefficient_fitting::FitSourceLineage, emdf::metadata_owner::MetadataPayloadBody,
+        id14_body::Id14BodyProposal,
+    },
+    timeline::{CodecSourceIndex, JocDispatchIndex},
+    transaction::CallbackTransactionId,
+};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 
@@ -139,6 +146,23 @@ impl RepresentationWriteResult {
         writer_generation: CodecSourceIndex,
     ) -> Option<MetadataPayloadBody> {
         self.outcome.into_metadata_body(writer_generation)
+    }
+
+    pub(crate) fn into_id14_body_proposal(
+        self,
+        writer_generation: CodecSourceIndex,
+        dispatch: JocDispatchIndex,
+        expected_sequence_count: u16,
+        producer_transaction_id: Option<CallbackTransactionId>,
+        lineage: FitSourceLineage,
+    ) -> Option<Id14BodyProposal> {
+        self.outcome.into_id14_body_proposal(
+            writer_generation,
+            dispatch,
+            expected_sequence_count,
+            producer_transaction_id,
+            lineage,
+        )
     }
 }
 

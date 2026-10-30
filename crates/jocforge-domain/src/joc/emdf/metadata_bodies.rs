@@ -3,10 +3,11 @@
 
 use super::{
     id2_wire::{Id2WireError, build_id2_body},
-    metadata_owner::{MetadataBodies, MetadataPayloadBody},
+    metadata_owner::MetadataBodies,
 };
 use crate::{
     frontend::job_configuration::SelectedJobConfiguration,
+    joc::id14_body::{Id14BodyProposal, Id14ProducerProvenance},
     joc::oamd::reader_target::ReaderTargetUpdateReceipt,
     spatial::{
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
@@ -21,6 +22,9 @@ pub enum MetadataBodiesError {
     Lineage,
     WriterGeneration,
     Id11Body,
+    Id14Provenance,
+    Id14ObjectCount,
+    TransactionIdentity,
     Id2(Id2WireError),
 }
 
@@ -30,6 +34,9 @@ impl MetadataBodiesError {
             Self::Lineage => "METADATA_BODIES_LINEAGE",
             Self::WriterGeneration => "METADATA_BODIES_WRITER_GENERATION",
             Self::Id11Body => "METADATA_BODIES_ID11",
+            Self::Id14Provenance => "METADATA_BODIES_ID14_PROVENANCE",
+            Self::Id14ObjectCount => "METADATA_BODIES_ID14_OBJECT_COUNT",
+            Self::TransactionIdentity => "METADATA_BODIES_TRANSACTION_IDENTITY",
             Self::Id2(_) => "METADATA_BODIES_ID2",
         }
     }
@@ -107,6 +114,10 @@ impl MetadataBodiesProposal {
         &self.bodies
     }
 
+    pub const fn id14_provenance(&self) -> Option<&Id14ProducerProvenance> {
+        self.bodies.id14_provenance.as_ref()
+    }
+
     pub fn into_parts(self) -> (MetadataBodiesLineage, MetadataBodies) {
         (self.lineage, self.bodies)
     }
@@ -130,8 +141,28 @@ impl MetadataBodiesProposal {
                 reader_state_after_sha256: [0; 32],
                 reader_semantic_sha256: [0; 32],
             },
-            bodies,
+            bodies: MetadataBodies {
+                id11: bodies.id11,
+                id2: bodies.id2,
+                id14: bodies.id14,
+                id14_provenance: None,
+            },
         }
+    }
+
+    #[cfg(test)]
+    pub(crate) fn for_test_with_id14_provenance(
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        transaction_id: CallbackLineageIdentity,
+        source_index: CodecSourceIndex,
+        bodies: MetadataBodies,
+        provenance: Id14ProducerProvenance,
+    ) -> Self {
+        let mut proposal =
+            Self::for_test(programme_id, attempt, transaction_id, source_index, bodies);
+        proposal.bodies.id14_provenance = Some(provenance);
+        proposal
     }
 }
 
@@ -142,7 +173,7 @@ pub fn assemble_metadata_bodies(
     configuration: &SelectedJobConfiguration,
     projection: &SelectedJocQmfProjection,
     reader_receipt: &ReaderTargetUpdateReceipt,
-    id14: MetadataPayloadBody,
+    id14: Id14BodyProposal,
 ) -> Result<MetadataBodiesProposal, MetadataBodiesError> {
     let source_index = projection.source_index();
     let expected_dispatch = source_index
@@ -167,8 +198,28 @@ pub fn assemble_metadata_bodies(
     {
         return Err(MetadataBodiesError::Lineage);
     }
+    let (id14, id14_provenance) = id14.into_parts();
     if id14.writer_generation != source_index {
         return Err(MetadataBodiesError::WriterGeneration);
+    }
+    let producer_lineage = id14_provenance.lineage();
+    if producer_lineage.programme_id() != projection.programme_id()
+        || producer_lineage.attempt() != projection.attempt()
+        || producer_lineage.transaction_id() != projection.transaction_id()
+        || producer_lineage.source_index() != source_index
+        || producer_lineage.dispatch() != expected_dispatch
+        || id14_provenance.producer_generation() != source_index
+        || id14_provenance.dispatch() != expected_dispatch
+        || id14_provenance.writer().value() != source_index.value()
+        || !id14_provenance.matches_body(source_index, &id14.bytes)
+    {
+        return Err(MetadataBodiesError::Id14Provenance);
+    }
+    if id14_provenance.producer_transaction_id().is_none() {
+        return Err(MetadataBodiesError::TransactionIdentity);
+    }
+    if id14_provenance.object_count().value() != 15 {
+        return Err(MetadataBodiesError::Id14ObjectCount);
     }
     let id11_bytes = reader_receipt.id11_body();
     if id11_bytes.is_empty() {
@@ -197,6 +248,7 @@ pub fn assemble_metadata_bodies(
             id11: Some(id11),
             id2: Some(id2),
             id14: Some(id14),
+            id14_provenance: Some(id14_provenance),
         },
     })
 }

@@ -1,0 +1,22 @@
+{
+  "package_id": "ID1-ID2-BODY-VALIDATION-V1",
+  "scope": "selected model body validation; native and real ADM not run",
+  "source_manifest_sha256": "32b736347348d70b88f642c58ac85c1b08d89237e2d13be2c9963a0411a0c5d4",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 6533,
+      "sha256": "66989f90c1b1321dfb5362f2ad46a48c01b4658e8db336935bf69db2dc4e8d32"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 1365,
+      "sha256": "d094f58eea7c919617e367e28c447be006c91f95d90284d901681378066820d3"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 801,
+      "sha256": "86dcbddf20fcd6245d2c61d36513c96120d5cfbacd9b8ab249bd145b5e77b320"
+    }
+  ]
+}
