@@ -1,0 +1,22 @@
+{
+  "package_id": "SPATIAL-REFERENCE-PREFIX-DESCRIPTOR-LINEAGE-V1",
+  "scope": "one selected 38-track reference job; current prepared job and Gate1 remain unbound/open",
+  "source_research_manifest_sha256": "9c1ee463ccc8387c048561bccec648989932e843fa6ba4ab0c431ffb7edd7be5",
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 10972,
+      "sha256": "b20c079316a6d49d738a8c5624366048105acb9f0702411689da202ae89911cd"
+    },
+    {
+      "file": "NATIVE-WRITE-BOUNDARY.json",
+      "bytes": 741,
+      "sha256": "d2b1b798898d8c838074c55028ebbdbaf6ad4358caa80c003825a3e3bf4a5fa0"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 702,
+      "sha256": "3d7f6058ed6f03cb6a38ccffb1d972a586d23059b85dd6013fb5ab5ec8c22eb5"
+    }
+  ]
+}

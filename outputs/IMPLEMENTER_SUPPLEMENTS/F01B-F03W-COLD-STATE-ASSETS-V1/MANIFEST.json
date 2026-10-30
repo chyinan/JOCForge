@@ -1,0 +1,37 @@
+{
+  "package_id": "F01B-F03W-COLD-STATE-ASSETS-V1",
+  "scope": "approved selected profile cold schemas and Q15 kernel assets",
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "parameters/adm-installed48-state-v1.json",
+      "bytes": 7237,
+      "sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46"
+    },
+    {
+      "file": "parameters/f03-selected-target-cold-v1.json",
+      "bytes": 3139,
+      "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00"
+    },
+    {
+      "file": "parameters/selected-owner-projection-v1.json",
+      "bytes": 3637,
+      "sha256": "b8e78dd1d15091e88877b2ead3e0608dbc1554c13afbcde46d5da24a2fd136dd"
+    },
+    {
+      "file": "parameters/window-q15.json",
+      "bytes": 2704,
+      "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130"
+    },
+    {
+      "file": "parameters/f01e-selected-constructor-v1.json",
+      "bytes": 20138,
+      "sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 664,
+      "sha256": "ad0b564931c057235daf5518bfd6b2d15c14cdaeb8e6d13399dc1f47cab8e5d2"
+    }
+  ]
+}

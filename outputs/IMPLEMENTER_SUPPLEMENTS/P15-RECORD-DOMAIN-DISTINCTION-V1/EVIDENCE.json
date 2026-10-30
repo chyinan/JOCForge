@@ -1,0 +1,53 @@
+{
+  "schema": "spatial-record-domain-boundary-evidence.v1",
+  "evidence_status": "SELECTOR_AND_P15_GEOMETRY_RECORDS_PROVEN_DISTINCT; ADAPTER_COPY_EXPLAINS_IMMEDIATE_POINTER_GAP",
+  "identities": {
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+    "wash_reported_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "wash_reported_normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "job_identity_relation": "DISTINCT_XML_IDENTITIES; NO_XML_HASH_JOIN",
+    "raw_capture_sha256": "c9d6f702147d677ce56ab7d261845c08bd338d40474ec30524e561e3f743f572",
+    "native_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "native_reference_output_bytes": 262144
+  },
+  "same_run_facts": {
+    "source_context_field_offset_8_value": 8,
+    "mapped_selector_key": 15,
+    "selector_flags": 5531,
+    "selector_dispatch_record_length_bytes": 60,
+    "p15_adapter_input_record_length_bytes": 60,
+    "selector_dispatch_output_record_pointer_equals_p15_adapter_input_pointer": false,
+    "selector_dispatch_output_record_u32_vector_equals_p15_adapter_input_u32_vector": false,
+    "p15_adapter_input_u32_vector_equals_transform_input_u32_vector": true,
+    "p15_adapter_input_pointer_equals_transform_input_pointer": false,
+    "p15_profile_context_and_transform_control_join": true,
+    "p15_selected_point_count": 15,
+    "p11_and_p15_share_spatial_parent": true
+  },
+  "static_adapter_rule": {
+    "immediate_adapter_record_copy_bytes": 60,
+    "copy_source_range": "[0,60)",
+    "copy_destination": "stack-local record passed to point transform",
+    "function_bytes_sha256": "1ea0eb3712f276bf71dd7a911818a43dfa16395bc5f2c10cd5ae0f52cd8a4dba"
+  },
+  "conclusion": "The selector-produced 60-byte record and the record supplied to the P15 geometry adapter are distinct in both pointer identity and captured U32 content. The P15 adapter then copies its own input record to a stack-local 60-byte copy for the point transform; this explains the immediate caller-to-transform pointer inequality while preserving its 15 U32 values.",
+  "unbound_edge": "No producer/consumer mapping from selector output record to the P15 geometry adapter input record has been established.",
+  "delivery_boundary": {
+    "native_addresses_or_binary_paths_included": false,
+    "native_binary_name_included": false,
+    "analysis_tool_names_included": false,
+    "runtime_pointers_included": false,
+    "raw_audio_or_metadata_payload_included": false,
+    "implementation_code_or_repository_read": false,
+    "research_result_only": true
+  },
+  "gate_status": {
+    "immediate_p15_adapter_copy": "CLOSED_FOR_THIS_NATIVE_CALL",
+    "selector_to_p15_geometry_record_mapping": "UNBOUND",
+    "independent_model_execution": "NOT_RUN",
+    "GATE1_CLOSED": false,
+    "IMPLEMENTATION_READY": false,
+    "PRODUCTION_ALLOWED": false
+  }
+}

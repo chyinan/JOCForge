@@ -1,0 +1,47 @@
+{
+  "schema": "washed.pow32-model-results.v1",
+  "source_package_manifest_sha256": "ab3e1495898bd1cbf36a8c449fabcccfb64ac747c7b2a1955665362ceceaa0ab",
+  "source_model_replay_sha256": "1c68f544fbeddd6f5dde0497131e1695051957b0a922700a28220dd7d92004b9",
+  "exponent_word": "0x3e4ccccd",
+  "results": {
+    "repeated_base": {
+      "feature_word": "0x3d0ac7c7",
+      "normative_power": "0x3f021640",
+      "normative_serial24_total": "0x41432160",
+      "windows_ucrt_powf": "0x3f02163f",
+      "windows_ucrt_serial24_total": "0x4143215f",
+      "rust_standalone_f32_powf": "0x3f021640",
+      "f64_pow_cast_then_serial_r32": "0x41432160",
+      "status": "MODEL_AND_HOST_DISCRIMINATOR_ONLY"
+    },
+    "fold_order": {
+      "feature_words": [
+        "0x3f800000",
+        "0x03800000",
+        "0x03800000"
+      ],
+      "power_words": [
+        "0x3f800000",
+        "0x337ffffc",
+        "0x337ffffc"
+      ],
+      "serial_r32_left_fold": "0x3f800000",
+      "regrouped_r32": "0x3f800001",
+      "f64_sum_then_cast": "0x3f800001"
+    },
+    "finite_extremes": {
+      "max_f32_power": "0x4c420303",
+      "min_subnormal_power": "0x30930889",
+      "serial24_total": "0x4c420303"
+    },
+    "invalid_inputs_reject": [
+      "negative_finite",
+      "positive_infinity",
+      "quiet_nan"
+    ]
+  },
+  "native_target": "NOT_RUN",
+  "product_source_comparison": "NOT_RUN",
+  "general_product_vectors": "TO_BE_REPLAYED_BY_IMPLEMENTER",
+  "global_native_parity_gate": "NOT_REQUIRED_BY_APPROVED_CONTRACT"
+}

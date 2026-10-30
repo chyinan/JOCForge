@@ -1,0 +1,36 @@
+{
+  "package_id": "SPATIAL-REFERENCE-SOURCE-SELECTION-V2",
+  "scope": "single matched reference fixture; source-column mapping closed for this profile/crosswalk; current PreparedJobInput not joined",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1251,
+      "sha256": "d4ca545d9288a7120f60b8663fada87b8f1b73667c97a76de6f980ff7044329d"
+    },
+    {
+      "file": "README.md",
+      "bytes": 2798,
+      "sha256": "ef61e40a88cdd01bb329c21c3d0dae11ab12f52365fbd6ed0fc6f6dfa3830d98"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 4164,
+      "sha256": "f6d84b07d4071f59216bf3111f704f53fbab8d48432b68f5801c550b82cb201c"
+    },
+    {
+      "file": "GATE-INPUT-ONLY-VECTOR.json",
+      "bytes": 8994,
+      "sha256": "d70b9ad566c126ee9ccde6a97e123d0a047daad7ecd220ca231caceeacb63e0f"
+    },
+    {
+      "file": "SELECTION-OUTPUT-VECTOR.json",
+      "bytes": 8971,
+      "sha256": "06047ed37a98cf40a37baa344391d61de9b4d0bdc0e7afacd5a08bfce78045c2"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 716,
+      "sha256": "d82193c1ab16104ac5a76b80cf857d74896101806e04d3e7d9b8770a408f939d"
+    }
+  ]
+}

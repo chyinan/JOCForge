@@ -1,0 +1,115 @@
+{
+  "schema": "selected-adm-installed48-state.v3",
+  "purpose": "Production state layout and cross-owner references. Synthetic repeat/truncate payloads are forbidden.",
+  "f03w_owned_fields": {
+    "clocks": {
+      "callback_index": "U64LE",
+      "source_cursor_samples": "U64LE",
+      "normal_callbacks": "U64LE",
+      "remaining_cached_drains": "U32LE",
+      "retired": "U8 bool"
+    },
+    "source_cache": {
+      "last_normal_host38": "optional owned F32[38][1536]",
+      "last_control_snapshot": "optional owned control[38][13] U32LE",
+      "last_phase": "U8 enum UNSET=0, NORMAL=1, CACHED_DRAIN=2; cold exact value UNSET/0"
+    },
+    "event_control": {
+      "owned_state": "exact nested F01E_SELECTED_COLD_V1 / warm successor using parameters/f01e-selected-constructor-v1.json schema: objects[28], optional control snapshots, optional DBMD binding, cold-null then runtime graph-derived physical binding, immutable config",
+      "derived_control38": "callback-local U32[38][13] per provider graph adapter; not persistent independent state",
+      "derived_regular37": "callback-local rows control38[sorted hosts excluding semantic lfe_host]; not a 37x13 sampler state"
+    },
+    "render_audio": {
+      "regular_raw_history": "F32[37][1536]",
+      "previous_pcm": "F32[38][1536]",
+      "previous_current_rows": "F32[48][1536]",
+      "diffusion_instances": "optional[37] exact F04F state encoded by specs/04-diffusion-filter-and-lifecycle.md section 6",
+      "diffusion_previous_outputs": "optional F32[37][4][1536] with presence bound to the same active instance"
+    },
+    "source_flags": {
+      "current_flags": "U8[48][2]; histories alias no storage and read render_audio.regular_raw_history before its single commit"
+    },
+    "feature": {
+      "source_vector": "F32[48][24]",
+      "source_scalar": "F32[48]",
+      "fft4096_work": "callback-local scratch; not persistent state",
+      "current_features": "F32[24][48] immutable callback output"
+    },
+    "selection_outer": {
+      "profile_dimensions": {
+        "source_count_N": 48,
+        "feature_bands_B": 24,
+        "target_capacity_T": 15,
+        "axes": 3,
+        "active_target_count_n": "runtime integer 0..15; arrays allocate T=15 and consume prefix [0:n]"
+      },
+      "target_current_xyz": "F32[T=15][3]; cold exact U32 words from parameters/f03-selected-target-cold-v1.json",
+      "target_current_id": "U32[T=15]; cold exact words from parameters/f03-selected-target-cold-v1.json",
+      "target_current_attribute": "U32[T=15]; cold exact words from parameters/f03-selected-target-cold-v1.json",
+      "target_previous_xyz": "F32[15][3] positive zero",
+      "target_previous_id": "U32[15] all 0xffffffff",
+      "target_previous_attribute": "U32[15] copied from cold target_current_attribute",
+      "target_active": "U8[15] all zero",
+      "previous_marker_active": "U8[15] all zero",
+      "f03g_gate_output": "callback-local candidate_ids U32[N=48] plus candidate_count 0..48; no persistent state",
+      "f03a_selector": "callback-local affinity F32[N=48][N=48], complement U8[48][48], feature F32[B=24][48], response F32[T=15][48], support F32[48], Q F32[15], total/weight F32[24], mask U8[15], coverage F32[15], selected U32[T=15] plus selected_count 0..15; cold scratch all positive zero/empty",
+      "f03u_refinement": "callback-local source_weight F32[N=48], membership_gain F32[N=48][T=15], projection_matrix F32[T=15][N=48], projected_xyz F32[T=15][3]; consume candidate/selected prefixes; cold scratch positive zero; allocate only for CAPACITY_REACHED",
+      "f03n_nnls": "callback-local context F32[T=15][T=15], response F32[T=15], seed/solution F32[T=15], passive/active index U32[T=15], active count n in 0..15 and loops use [0:n]; cold scratch positive zero/index zero",
+      "f03s_outer": "per source callback-local H/L F32[T=15][T=15], rhs/solution/correction F32[T=15], index_state U32[T=15] cold zero and scalar_flag U32=0; active n in 0..15 and loops use [0:n]; no persistent state"
+    },
+    "matrix_assignment": {
+      "assignment": "I32[15]",
+      "markers": "I32[15]",
+      "matrix": "F32[15][48]",
+      "writer_set": "ordered unique destination records; no metadata history stored here"
+    }
+  },
+  "external_owner_refs": {
+    "reader_target": {
+      "owner": "F05R56",
+      "state_schema": "test-vectors/READER56-TARGET-STATE-SCHEMA.json",
+      "receipt": "immutable reader56/target transition receipt"
+    },
+    "component_lfe_receiver_qmf": {
+      "owner": "F04C",
+      "state_schema": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json",
+      "receipt": "selected-j05-owner-receipt.v1"
+    },
+    "joc_after_j05": {
+      "owner": "F05JL",
+      "state_schema": "test-vectors/JOC-OWNED-STATE-COMPLETE-SCHEMA.json",
+      "cold_preimage": "test-vectors/JOC-OWNED-COLD-PREIMAGE.bin",
+      "receipt": "immutable temporal/geometry/fit/huffman receipt"
+    },
+    "metadata_queues": {
+      "owner": "F13",
+      "state_schema": "parameters/keyless-publication-state-v1.json",
+      "receipt": "four-queue metadata receipt"
+    },
+    "source_publication": {
+      "owner": "F15",
+      "state_schema": "parameters/keyless-publication-state-v1.json",
+      "receipt": "source transaction/durable append receipt"
+    }
+  },
+  "functional_constant_providers": {
+    "f01e_cold": "parameters/f01e-selected-constructor-v1.json",
+    "f03_target_cold": "parameters/f03-selected-target-cold-v1.json"
+  },
+  "cold_constructors": {
+    "clocks": "all zero except remaining_cached_drains=4",
+    "source_cache": "both optional caches absent; last_phase U8=0 UNSET",
+    "event_control": "parameters/f01e-selected-constructor-v1.json exact canonical cold",
+    "render_audio": "all numeric histories positive zero and no diffusion instances",
+    "source_flags": "flags are callback output, no independent history",
+    "feature": "source_vector/source_scalar positive zero",
+    "selection_outer": "parameters/f03-selected-target-cold-v1.json plus all declared scratch positive-zero/empty/index-zero constructors",
+    "matrix_assignment": "assignment=-1, markers=0, matrix positive zero, writer_set empty"
+  },
+  "serialization": "Canonical map in shown field order; fixed arrays row-major; integers little-endian; F32 exact U32 bits; optional values carry presence byte; variable records carry U32LE count and length. Callback-local scratch is never serialized. No pointers, padding, hash-expanded bytes or zero-filled unknown state.",
+  "commit": "F03W commits only f03w_owned_fields once after its leaf stages and downstream receipts all pass. External state is committed by its unique owner under the enclosing source transaction.",
+  "failure": "All owner roots retain complete before bytes and generation; top-level result is RETIRED with commit_count=0.",
+  "reset": "Destroy every owner root and call each referenced cold constructor. Missing cold constructor is fatal; unknown arrays may not be zero-filled.",
+  "fixture_note": "AI48ST01 repeated-digest payloads belong only to historical r2 composition fixture and are not production state.",
+  "native_abi_claim": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "F03U-NATURAL-SOURCEWEIGHT-CALLBACK-OBSERVATION-V1",
+  "status": "ONE_NATURAL_CALLBACK_OBSERVED_FULL_ENCODING_NOT_RUN",
+  "source_package_manifest_sha256": "58c27ac5c564d94c61bbd185ec4a5a3798c282fcb1dd411db687953456de1e47",
+  "files": [
+    {
+      "sha256": "aa8fee99a37a116a1c27af8e166956e1288d95c41bcafa6f7f57f96ac07cf41e",
+      "path": "CALL-LINEAGE.json",
+      "bytes": 2324
+    },
+    {
+      "sha256": "0d392f50d24a83054e06e740434b98c2db15d271c9f410e6791bd142aa770700",
+      "path": "NATURAL-CALLBACK.json",
+      "bytes": 1636
+    },
+    {
+      "sha256": "8c3583066305b49f3d8ae311ff4141bdfbb654b2977a486744f7399b5a4cccf0",
+      "path": "SOURCE-BINDING.json",
+      "bytes": 894
+    },
+    {
+      "sha256": "2071d225eb7ea2ff54dea944dd1620531fac51e13a128cdc1c236626d98d7a99",
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 2608
+    }
+  ]
+}

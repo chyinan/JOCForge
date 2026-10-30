@@ -1,0 +1,104 @@
+{
+  "schema": "parameters.spread-authorized.v1",
+  "delivery_scope": "INTERNAL_ISOLATED_IMPLEMENTATION_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "authorization": "User explicitly authorized internal delivery and use of ordinary nonsecret audio constants; private key and authentication secrets excluded.",
+  "classification": "AUTHORIZED_NONSECRET_FUNCTIONAL_AUDIO_PARAMETERS_NOT_INDEPENDENT_GENERATION",
+  "groups": {
+    "D10-W": {
+      "count": 10,
+      "type": "F32LE",
+      "words": [
+        "00000000",
+        "00000000",
+        "3e4ccccd",
+        "3d99999a",
+        "3f000000",
+        "3e800000",
+        "3f400000",
+        "3ee66666",
+        "3f800000",
+        "3f333333"
+      ],
+      "sha256": "046f0a6a56eb4df5f13840a9df11396576bfd1484f6ff5158acdf97523de1963",
+      "source_class": "EXISTING_STATIC_AUDIO_CONSTANT_EVIDENCE",
+      "original_compiled_location_reverified_this_round": false
+    },
+    "D10-WK": {
+      "count": 2,
+      "type": "F32LE",
+      "words": [
+        "3f220000",
+        "41d49a78"
+      ],
+      "sha256": "39b06e6c918fa26a476f40383ef38eb1047d15439ee37e2aa5c21c7bab607ed0",
+      "source_class": "EXISTING_STATIC_AUDIO_CONSTANT_EVIDENCE",
+      "original_compiled_location_reverified_this_round": false
+    },
+    "D10-PC": {
+      "count": 7,
+      "type": "F32LE",
+      "words": [
+        "40c0afdb",
+        "4048907a",
+        "4083c679",
+        "3f9d9b95",
+        "3f2fb000",
+        "3e827800",
+        "3d714000"
+      ],
+      "sha256": "65a0e821be6b2e5be26a0c16d61f389da7bf5e703fde75a829ea470760c27f0d",
+      "source_class": "VERIFIED_FROZEN_PYTHON_AUDIO_MODEL",
+      "original_compiled_location_reverified_this_round": false
+    },
+    "D10-SC": {
+      "count": 5,
+      "type": "F32LE",
+      "words": [
+        "40c00000",
+        "3e000000",
+        "40dbd37a",
+        "40de9bd4",
+        "3eaed623"
+      ],
+      "sha256": "58f8111480a233047de740a50ab09c83ede9d79d90f3dea616b026807154d592",
+      "source_class": "VERIFIED_FROZEN_PYTHON_AUDIO_MODEL",
+      "original_compiled_location_reverified_this_round": false
+    }
+  },
+  "field_order": {
+    "D10-W": [
+      "input0",
+      "mapped0",
+      "input1",
+      "mapped1",
+      "input2",
+      "mapped2",
+      "input3",
+      "mapped3",
+      "input4",
+      "mapped4"
+    ],
+    "D10-WK": [
+      "kernel_c0",
+      "kernel_c1"
+    ],
+    "D10-PC": [
+      "log_a",
+      "log_b",
+      "log_c",
+      "log_d",
+      "exp_u",
+      "exp_v",
+      "exp_w"
+    ],
+    "D10-SC": [
+      "power_low",
+      "power_breakpoint",
+      "power_intercept",
+      "power_slope",
+      "z_angle_scale"
+    ]
+  },
+  "total_f32": 24,
+  "total_bytes": 96
+}

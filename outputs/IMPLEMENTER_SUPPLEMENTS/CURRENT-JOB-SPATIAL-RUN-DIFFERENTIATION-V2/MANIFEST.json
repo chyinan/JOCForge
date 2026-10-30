@@ -1,0 +1,27 @@
+{
+  "package_id": "CURRENT-JOB-SPATIAL-RUN-DIFFERENTIATION-V2",
+  "scope": "same job/input across two distinct runs; matrix only v4, masks only v5; no cross-run causal join",
+  "source_manifest_sha256": "167dba14ba433843fcd2d9e10ffd77d08565aa7d1e9eb8374b26dc7a4ef73b8e",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1675,
+      "sha256": "9b24b8cab60f2aaa08c4e11aa1e958e6a1b4cbca1d21b57b3aa5f36f5142f59c"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 25138,
+      "sha256": "93fe24d6e6eb6975e84a3a0dc02a8d9b5fb0cb33934728eed15d1288b64a0c72"
+    },
+    {
+      "file": "native_matrix_6x48.f32le",
+      "bytes": 1152,
+      "sha256": "8585c5af0989da7422ad78ee948fd5dc5122d7d872a720104845563f77656178"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 575,
+      "sha256": "1461d9f699c3b8ff2815ac485feab93eff606a126f972097d9c0071ab93a8dff"
+    }
+  ]
+}

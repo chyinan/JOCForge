@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "F03C-POW32-F03U-SOURCE-WEIGHT-NUMERIC-SEMANTICS-V1",
+  "status": "APPROVED_CONTRACT_WITH_INPUT_ONLY_MODEL_VECTORS",
+  "source_package_manifest_sha256": "ab3e1495898bd1cbf36a8c449fabcccfb64ac747c7b2a1955665362ceceaa0ab",
+  "files": [
+    {
+      "sha256": "69450cab80d8b52cceb4f093fe0ec6e88e44365498bcddd755b68e4d78b4e3c7",
+      "bytes": 1550,
+      "path": "EXPECTED-RESULTS.json"
+    },
+    {
+      "sha256": "80fe0c35671e8bc7346d345ddbbd24db095b5b7a749b6ef029ea239ad925bbee",
+      "bytes": 3940,
+      "path": "INPUT-ONLY-VECTORS.json"
+    },
+    {
+      "sha256": "65f1bce3d58f73cd7bc967eb82105099f9ba36ac8f186c1d5ccd54f2affd77f5",
+      "bytes": 1396,
+      "path": "SOURCE-BINDING.json"
+    },
+    {
+      "sha256": "d53da6580e7870004747c73f9489cae225b0c84eadcdcdce89256a6623f34f92",
+      "bytes": 3454,
+      "path": "WASHED-SUMMARY.md"
+    }
+  ]
+}

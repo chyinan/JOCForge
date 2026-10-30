@@ -1,0 +1,28 @@
+{
+  "schema": "washed-numeric-evidence-binding.v1",
+  "source_package_manifest_sha256": "ab3e1495898bd1cbf36a8c449fabcccfb64ac747c7b2a1955665362ceceaa0ab",
+  "source_expected_report_sha256": "b00c29388da9cb56fa693d62598ac8f48403783b5eaa69451ec699ae415debc7",
+  "source_vector_sha256": "80fe0c35671e8bc7346d345ddbbd24db095b5b7a749b6ef029ea239ad925bbee",
+  "approved_parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_F03C_contract_sha256": "ce95853e007f9282f3d1dce0e43cffb132ed079b5f1cd2fe3e6ce10901d51697",
+  "approved_F03U_contract_sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879",
+  "approved_N00_numeric_contract_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+  "approved_caller_binding_manifest_sha256": "b16da90125002cebd14658240b517f5163e8b3b230cde18ca488cb526062c835",
+  "verification": {
+    "source_manifest": "PASS",
+    "source_member_hashes": "PASS",
+    "source_checker_normal": "PASS",
+    "source_checker_optimized": "PASS",
+    "F03C_F03U_refs_cross_checked_against_approved_caller_binding": "PASS",
+    "target_DLL": "NOT_RUN",
+    "product_source": "NOT_INSPECTED_BY_REVERSE_AGENT"
+  },
+  "content_exclusions": [
+    "source code",
+    "disassembly",
+    "native addresses",
+    "raw audio",
+    "private key",
+    "license material"
+  ]
+}

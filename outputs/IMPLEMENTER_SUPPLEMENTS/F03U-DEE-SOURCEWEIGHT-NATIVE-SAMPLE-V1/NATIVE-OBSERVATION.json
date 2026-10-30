@@ -1,0 +1,66 @@
+{
+  "schema": "washed.native-source-weight-observation.v1",
+  "status": "NATIVE_VECTOR_OBSERVED",
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "module_path_matches_target": true,
+  "exponent_word": "0x3e4ccccd",
+  "runtime_isa_dispatch_value": 1,
+  "fma3_branch_selected_by_static_guard": true,
+  "direct_powf_results": [
+    {
+      "base_word": "0x00000000",
+      "powf_word": "0x00000000"
+    },
+    {
+      "base_word": "0x00000001",
+      "powf_word": "0x30930889"
+    },
+    {
+      "base_word": "0x03800000",
+      "powf_word": "0x337ffffc"
+    },
+    {
+      "base_word": "0x3d0ac7c7",
+      "powf_word": "0x3f02163f"
+    },
+    {
+      "base_word": "0x3f800000",
+      "powf_word": "0x3f800000"
+    },
+    {
+      "base_word": "0x7f7fffff",
+      "powf_word": "0x4c420303"
+    }
+  ],
+  "source_weight_results": [
+    {
+      "vector_id": "repeat_24_pow_precision",
+      "band_count": 24,
+      "source_count": 1,
+      "in_loop_powf_call_count": 24,
+      "output_word": "0x4143215f"
+    },
+    {
+      "vector_id": "three_term_fold_order",
+      "band_count": 24,
+      "source_count": 1,
+      "in_loop_powf_call_count": 24,
+      "output_word": "0x3f800000"
+    },
+    {
+      "vector_id": "finite_extreme_and_subnormal",
+      "band_count": 24,
+      "source_count": 1,
+      "in_loop_powf_call_count": 24,
+      "output_word": "0x4c420303"
+    }
+  ],
+  "natural_host_source_weight_caller_seen": false,
+  "direct_helper_calls_in_host_process": 3,
+  "authorized_job_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "authorized_job_input_channels": 38,
+  "raw_pcm_or_audio_buffer_persisted": false,
+  "encoded_output_bytes": 0,
+  "full_encode_completed": false,
+  "invalid_domain_inputs": "NOT_RUN"
+}

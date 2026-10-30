@@ -1,0 +1,67 @@
+{
+  "schema": "diffusion-mathematical-parameters.v1",
+  "route": "HADAMARD4_AND_PREFIX_PAIR_CYCLE_V1",
+  "coefficient_rule": "pole=-RNE_binary32(2/5); C[stage,lane]=pole*(-1)^popcount(stage & lane)",
+  "coefficient_order": "stage-major/lane-minor, stage/lane 0..3",
+  "coefficient_words": [
+    [
+      "becccccd",
+      "becccccd",
+      "becccccd",
+      "becccccd"
+    ],
+    [
+      "becccccd",
+      "3ecccccd",
+      "becccccd",
+      "3ecccccd"
+    ],
+    [
+      "becccccd",
+      "becccccd",
+      "3ecccccd",
+      "3ecccccd"
+    ],
+    [
+      "becccccd",
+      "3ecccccd",
+      "3ecccccd",
+      "becccccd"
+    ]
+  ],
+  "prefix_rule": "five ordered left/right pairs, lane=pair_index mod 4, modes +1/-1; insert center after pair0 with mode0/lane-1",
+  "prefix_pair_count": 5,
+  "filter_lane_count": 4,
+  "center_output_index": 2,
+  "mode": [
+    1,
+    -1,
+    0,
+    1,
+    -1,
+    1,
+    -1,
+    1,
+    -1,
+    1,
+    -1
+  ],
+  "filter_lane": [
+    0,
+    0,
+    -1,
+    1,
+    1,
+    2,
+    2,
+    3,
+    3,
+    0,
+    0
+  ],
+  "scope": "selected 11-prefix output ordering only; not arbitrary layouts",
+  "production_diffusion_config_D11_DP": "NOT_SUPPLIED_BY_THIS_ROUTE",
+  "source_parameter_table_copied": false,
+  "validation": "38 entries match accepted selected-profile parameters; continuous output/state match with remaining config held equal",
+  "implementation_ready": "NO"
+}

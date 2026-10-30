@@ -1,0 +1,97 @@
+{
+  "schema": "hanmao-reference-spatial-mask-evidence.v1",
+  "evidence_status": "SAME_RUN_NATIVE_PROFILE_PRODUCER_CHAIN_CAPTURED",
+  "identities": {
+    "source_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_bytes": 743696526,
+    "wave_format": {
+      "container": "RIFF/WAVE",
+      "format_tag": 1,
+      "channels": 38,
+      "sample_rate_hz": 48000,
+      "bits_per_sample": 24,
+      "block_align_bytes": 114,
+      "data_bytes": 743611284,
+      "samples_per_channel": 6522906,
+      "adm_chunks_present": ["axml", "chna", "dbmd"]
+    },
+    "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+    "wash_reported_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "wash_reported_normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "job_identity_relation": "DISTINCT_XML_IDENTITIES; NO_XML_HASH_JOIN",
+    "raw_capture_sha256": "5af0f03a4070bb3b2efd5f60c17296a98135b0ba080c499102c909b2ba136538",
+    "observer_sha256": "109474c8949ee3783e6ba7d95dfb306847c86dd7b6fd5534176606023161be63",
+    "native_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "native_output_bytes": 262144
+  },
+  "experiment": {
+    "native_reference_encoding_completed": true,
+    "native_job_data_rate_kbps": 1024,
+    "configured_file_position_start": 2160,
+    "configured_file_position_end_exclusive": 2208,
+    "native_log_complete": true,
+    "observer_error_count": 0,
+    "instrumented_output_matches_prior_reference_output": true,
+    "independent_model_output": "NOT_RUN"
+  },
+  "normalized_config_reconciliation": {
+    "wash_reported_input_kind_adm": "MATCHED_BY_RIFF_WAVE_AND_ADM_CHUNKS",
+    "wash_reported_sample_rate_48000": "MATCHED_BY_SOURCE_HEADER_AND_NATIVE_CALL_ARGUMENT",
+    "wash_reported_source_channels_38": "MATCHED_BY_SOURCE_HEADER_AND_NATIVE_CALL_ARGUMENT",
+    "wash_reported_bit_depth_24": "MATCHED_BY_SOURCE_HEADER",
+    "wash_reported_sample_count_6522906": "MATCHED_BY_SOURCE_DATA_CHUNK_ARITHMETIC",
+    "wash_reported_data_rate_1024_code_5": "JOB_XML_AND_NATIVE_PREFIX_WORD0_MATCH; DESCRIPTOR_FIELD_NOT_CAPTURED_IN_THIS_RUN",
+    "wash_reported_layout_enum_8": "SOURCE_CONTEXT_FIELD_OFFSET_8_VALUE_8_OBSERVED; SEMANTIC_IDENTITY_UNBOUND",
+    "wash_reported_dispatch_mode_2": "DISPATCH_ARGUMENT_VALUE_2_OBSERVED",
+    "wash_reported_target_capacity_15": "P15_OWNER_SELECTED_15_POINT_TABLE; SEMANTIC_IDENTITY_UNBOUND",
+    "wash_reported_frame_size_1536": "P11_SOURCE_CALL_ARGUMENT_1536_OBSERVED",
+    "wash_reported_prefix_11": "P11_OWNER_SELECTED_11_POINT_TABLE; SEMANTIC_IDENTITY_UNBOUND",
+    "wash_reported_spatial_config_mode_0": "NOT_BOUND",
+    "wash_reported_sample_length_enum_1": "NOT_BOUND",
+    "wash_reported_joc_downmix_mode0_phase1_index3": "NOT_EVALUATED",
+    "wash_reported_independent_dependent_substream_topology": "NOT_EVALUATED"
+  },
+  "native_profile_chain": {
+    "p11_source_arguments_u32": [38, 1536, 48000, 0],
+    "p11_mask_builder_arguments_u32": [4379, 1, 1],
+    "p11_synthesized_mask_words_u32": [6316279, 8],
+    "p11_owner_input_words_u32": [6316279, 8],
+    "p11_selected_point_count": 11,
+    "p11_normalized_outputs_u32": [4, 4],
+    "selector_source_field_offset_u32": 8,
+    "selector_source_field_value_u32": 8,
+    "selector_key_u32": 15,
+    "selector_returned_flags_u32": 5531,
+    "p15_mask_builder_arguments_u32": [5531, 1, 1],
+    "p15_synthesized_mask_words_u32": [6715639, 8],
+    "p15_owner_input_words_u32": [6715639, 8],
+    "p15_selected_point_count": 15,
+    "p15_normalized_outputs_u32": [6, 6],
+    "same_spatial_parent_for_p11_and_p15": true,
+    "p11_point_transform_source_record_join": true,
+    "p15_point_transform_source_record_join": false
+  },
+  "delivery_boundary": {
+    "native_addresses_or_binary_paths_included": false,
+    "runtime_pointers_included": false,
+    "raw_audio_or_metadata_payload_included": false,
+    "native_reference_ec3_included": false,
+    "implementation_code_or_repository_read": false,
+    "research_result_only": true
+  },
+  "open_boundaries": [
+    "The experiment XML has a different hash from the prepared-job XML reported by Wash. The package records a field-level reconciliation and does not claim XML identity.",
+    "The field at source offset 8 has value 8 and maps to selector key 15; its semantic name remains unbound in this capture.",
+    "P15 selects a 15-point table under the same spatial parent, but its transform source-record pointer does not equal the selector source-record pointer.",
+    "Sample-length enum, spatial-config mode, JOC downmix identity, and independent/dependent output topology were not independently evaluated here.",
+    "No independent model output, U04 numeric replay, complete matrix composition, or Gate 1 validation ran."
+  ],
+  "gate_status": {
+    "selected_reference_profile_producers": "CLOSED_FOR_CAPTURED_JOB_AND_SOURCE",
+    "prepared_job_xml_identity_equal": false,
+    "model_execution": "NOT_RUN",
+    "GATE1_CLOSED": false,
+    "IMPLEMENTATION_READY": false,
+    "PRODUCTION_ALLOWED": false
+  }
+}

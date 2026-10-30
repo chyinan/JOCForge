@@ -1,0 +1,42 @@
+{
+  "schema": "reader56-target-updates-gaps.v1",
+  "closed_in_this_scope": [
+    "15-row fit record to marker input",
+    "marker to three-slot history with generation tags",
+    "delivered S0 to control52 projection",
+    "two-callback reader gate",
+    "Type11 encode/decode to previous-aware reader56",
+    "16x6 target updates and provenance",
+    "cold/reset and fail-stop transaction"
+  ],
+  "remaining": [
+    {
+      "id": "R56T-GAP-01",
+      "description": "selector/U04/outer and target installation must generate the real current snapshot, active rows, matrix and source flags for each ADM callback",
+      "blocks": "whole ADM producer claim"
+    },
+    {
+      "id": "R56T-GAP-02",
+      "description": "the full-song main path has not been rerun from cold with this clean composition",
+      "blocks": "real programme acceptance"
+    },
+    {
+      "id": "R56T-GAP-03",
+      "description": "nonzero width, ancillary, position extension, component6 or7 producer branches remain outside the selected point profile",
+      "blocks": "general Type11 profile support"
+    },
+    {
+      "id": "R56T-GAP-04",
+      "description": "Type11 wire leaf is reused from the existing F05O/F05T definition; reader56 materializer and selected main type2 panner now have independent clean models but still need fresh package-only review",
+      "blocks": "fresh implementation-view signoff"
+    },
+    {
+      "id": "R56T-GAP-05",
+      "description": "native mid-callback rollback equivalence remains unknown; the independent contract is fail-stop and full cold rebuild",
+      "blocks": "native transaction equivalence only"
+    }
+  ],
+  "normal_constant_permission_blocker": false,
+  "secret_material_required": false,
+  "implementation_ready": "NO"
+}

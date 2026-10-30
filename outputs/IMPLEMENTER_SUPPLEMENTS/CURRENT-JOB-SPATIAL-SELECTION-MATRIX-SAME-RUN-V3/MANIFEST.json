@@ -1,0 +1,26 @@
+{
+  "package_id": "CURRENT-JOB-SPATIAL-SELECTION-MATRIX-SAME-RUN-V3",
+  "scope": "current PreparedJobInput v7 same-generation selection-to-6x48 matrix; final encode not run",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1865,
+      "sha256": "6db0171df75c18beb4d04075ba597b8bca0d4679e64a2b26a5443c1f5b33c8d7"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 25138,
+      "sha256": "93fe24d6e6eb6975e84a3a0dc02a8d9b5fb0cb33934728eed15d1288b64a0c72"
+    },
+    {
+      "file": "native_matrix_6x48.f32le",
+      "bytes": 1152,
+      "sha256": "8585c5af0989da7422ad78ee948fd5dc5122d7d872a720104845563f77656178"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 600,
+      "sha256": "d4adc702baab82c1363c4892b542c6d1100e98d5be53054e723b6a93d123d365"
+    }
+  ]
+}

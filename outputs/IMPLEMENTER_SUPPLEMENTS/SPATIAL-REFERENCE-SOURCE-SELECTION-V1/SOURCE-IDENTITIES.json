@@ -1,0 +1,7 @@
+{
+  "research_manifest_sha256": "f899782becbfbdbcc598f6196f6fa9deb56e706976eabd51e5c81eb9fbf32a67",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "reference_job_sha256": "1aa7e1d702ccaa4fa6f7a5fece4d0749b593ccc0fd0a31717b3f06606e7c3255",
+  "current_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+  "f03r_crosswalk_input_projection_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2"
+}

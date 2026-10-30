@@ -1,0 +1,26 @@
+{
+  "package_id": "SPATIAL-PROFILE-MASK-POINT-TABLE-SELECTION-V1",
+  "scope": "one bounded 38-track selected reference config; selection chain partly bound; Gate1 remains open",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2038,
+      "sha256": "b24e85bd7438fb1db0e54cc5e26c114d7e5fda6d8b14b48e01db5b0a706c9662"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 10972,
+      "sha256": "b20c079316a6d49d738a8c5624366048105acb9f0702411689da202ae89911cd"
+    },
+    {
+      "file": "NATIVE-WRITE-BOUNDARY.json",
+      "bytes": 741,
+      "sha256": "d2b1b798898d8c838074c55028ebbdbaf6ad4358caa80c003825a3e3bf4a5fa0"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 718,
+      "sha256": "564956f8c4b149b466782c6d51083fcc0f8dcc3572b9525e4bfd02dca8e33fed"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "package_id": "P15-TRANSFORM-RECORD-COPY-BOUNDARY-V1",
+  "scope": "one bounded reference call; immediate value-copy edge explained; selector-origin and current prepared job remain unbound",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1372,
+      "sha256": "d990be42f2dc0ae66073551396d75a902f3864958fc4cc5500512267657e5fd4"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2500,
+      "sha256": "dd744daaa370286e7107d8fe8af80b8515b82ff7fb661bf9bc5980f1b1c3e9d2"
+    },
+    {
+      "file": "NATIVE-EVENTS.json",
+      "bytes": 1412,
+      "sha256": "2397e867a47797014ceabce45caf4ffd0c4070600fcb6f6bcae2e771b3f73e5b"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 515,
+      "sha256": "8ecb17fdfdb50155c44b614955329a3a412f2b055f1e2ce0d8bb8a644f1df488"
+    }
+  ]
+}

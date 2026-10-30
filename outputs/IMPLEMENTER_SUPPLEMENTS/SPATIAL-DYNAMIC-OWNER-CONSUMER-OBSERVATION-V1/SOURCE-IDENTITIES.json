@@ -1,0 +1,8 @@
+{
+  "research_manifest_sha256": "4a87e68a2114b39331b86700f1f3190138c7f7c6523887f32f67fee317da70ea",
+  "observation_sha256": "72ed793068191399b733ee8a814d50524146fb3ada7e8aca52dac68532c21bc5",
+  "authorized_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "approved_geometry_spec_sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+  "approved_parameter_sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185",
+  "runtime_join_grade": "same spatial process owner/consumer only; host/ADM clock not joined"
+}

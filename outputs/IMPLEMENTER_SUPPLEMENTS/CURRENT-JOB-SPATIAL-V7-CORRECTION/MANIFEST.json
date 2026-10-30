@@ -1,0 +1,22 @@
+{
+  "package_id": "CURRENT-JOB-SPATIAL-V7-CORRECTION",
+  "source_manifest_sha256": "167dba14ba433843fcd2d9e10ffd77d08565aa7d1e9eb8374b26dc7a4ef73b8e",
+  "scope": "v7 same-generation capture; output completion not claimed",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 634,
+      "sha256": "b8105ced34991448dbdd40d288420e9e65c0227d0d5244548802fb50d690bd03"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 38362,
+      "sha256": "505f2959fa2c2ff338b7cf053738e256ad45465f6089ef6193d1d81fcab322db"
+    },
+    {
+      "file": "native_matrix_6x48.f32le",
+      "bytes": 1152,
+      "sha256": "8585c5af0989da7422ad78ee948fd5dc5122d7d872a720104845563f77656178"
+    }
+  ]
+}

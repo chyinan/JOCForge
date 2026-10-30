@@ -1,0 +1,15 @@
+{
+  "schema": "wash.native-descriptor-data-rate-write-boundary.v1",
+  "capture_kind": "BOUNDED_WRITE_WATCH",
+  "target_field": "descriptor_data_rate_code",
+  "source_object_word0_u32": 5,
+  "field_value_after_initial_zero_copy_u32": 0,
+  "field_value_after_source_assignment_u32": 5,
+  "source_register_u32_at_assignment": 5,
+  "same_reference_job_sha256": "1aa7e1d702ccaa4fa6f7a5fece4d0749b593ccc0fd0a31717b3f06606e7c3255",
+  "same_source_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "native_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "native_reference_output_bytes": 262144,
+  "raw_addresses_persisted": false,
+  "raw_audio_persisted": false
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "spatial-source-position-identity-addendum.v1",
+  "evidence_status": "POSITION_ROW_AND_CANDIDATE_FIELD_SHARE_DESCRIPTOR_AND_ORDINAL",
+  "identities": {
+    "source_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+    "wash_reported_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "wash_reported_normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "job_identity_relation": "DISTINCT_XML_IDENTITIES; NO_XML_HASH_JOIN",
+    "native_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "position_context_static_report_sha256": "4bb8aac0282fff5d1caf7d4e0a72e347e1a7f1ffac2f90333ba69778edd278ba",
+    "candidate_installer_static_report_sha256": "233b8b526f246531cc58b27ac030c4e16cb065da22024f724519a3e215ba8226"
+  },
+  "same_call_descriptor_join": {
+    "position_builder_and_candidate_installer_received_same_descriptor_object": true,
+    "native_row_list_count": 48,
+    "native_target_capacity": 15,
+    "wave_physical_channel_count": 38,
+    "count_domains_are_distinct": true
+  },
+  "row_20_fields": {
+    "zero_based_ordinal": 20,
+    "row_stride_bytes": 56,
+    "position_subrecord_starts_at_descriptor_offset": 24,
+    "candidate_id_field_is_at_descriptor_offset": 40,
+    "candidate_id_field_value_u32": 0,
+    "candidate_id_field_is_position_subrecord_offset": 16,
+    "position_subrecord_sha256": "fc9971588057c25421fee991b3834785d20ff2bbb0999e69c74fca413b731415",
+    "candidate_id_to_adm_uid_or_global_source_id": "UNBOUND",
+    "candidate_gate_for_this_row": "NOT_CAPTURED"
+  },
+  "interpretation_limits": [
+    "The shared descriptor pointer was compared in one native invocation and discarded; no pointer value is delivered.",
+    "The value 0 is the row's candidate-ID field consumed by the installer path, not a proven ADM UID/global source ID.",
+    "Ordinal20 is a row index, not an asserted source20/global ID.",
+    "The row's selected/installed status and the mapping from its candidate-ID field to ADM host track remain unbound.",
+    "This addendum supplements the 56-byte source-row to 60-byte position-converter rule; it does not close all 48 row mappings."
+  ],
+  "delivery_boundary": {
+    "native_addresses_or_binary_paths_included": false,
+    "native_binary_name_included": false,
+    "analysis_tool_names_included": false,
+    "runtime_pointers_included": false,
+    "raw_audio_or_metadata_included": false,
+    "implementation_code_or_repository_read": false,
+    "research_result_only": true
+  },
+  "gate_status": {
+    "same_descriptor_object_join": "CLOSED_FOR_THIS_CALL",
+    "row20_candidate_field_to_global_source_identity": "UNBOUND",
+    "candidate_gate_and_install_for_row20": "NOT_CAPTURED",
+    "model_output": "NOT_RUN",
+    "GATE1_CLOSED": false,
+    "IMPLEMENTATION_READY": false,
+    "PRODUCTION_ALLOWED": false
+  }
+}

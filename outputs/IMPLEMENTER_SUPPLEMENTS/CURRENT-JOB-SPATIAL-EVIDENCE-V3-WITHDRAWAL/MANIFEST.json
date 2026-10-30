@@ -1,0 +1,11 @@
+{
+  "package_id": "CURRENT-JOB-SPATIAL-EVIDENCE-V3-WITHDRAWAL",
+  "superseded_package_manifest_sha256": "05d034d46e2880b2097679e9c54ed32dfac87ebfed10ac9d6ed72e839f3e19e1",
+  "files": [
+    {
+      "file": "WITHDRAWAL.md",
+      "bytes": 1089,
+      "sha256": "3eaef0fc6b8b73cf0c4dce3dd3550fec220bc411fabb1a3c6e2258d2a319f511"
+    }
+  ]
+}

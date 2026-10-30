@@ -1,0 +1,32 @@
+{
+  "package_id": "F04-RECEIVER-APPROVED-PARAMETERS-V1",
+  "scope": "five exact approved F04 parameter assets requested for selected receiver wiring; not exhaustive transitive provider set",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "parameters/component-parameter-mathematical-v1.json",
+      "bytes": 1077,
+      "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5"
+    },
+    {
+      "file": "parameters/window-q15.json",
+      "bytes": 2704,
+      "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130"
+    },
+    {
+      "file": "parameters/qmf-receiver-functional-v1.json",
+      "bytes": 20325,
+      "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c"
+    },
+    {
+      "file": "parameters/qmf-mathematical-fft-v1.json",
+      "bytes": 6983,
+      "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431"
+    },
+    {
+      "file": "parameters/descriptor-mathematical.json",
+      "bytes": 4861,
+      "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197"
+    }
+  ]
+}

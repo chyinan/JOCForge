@@ -1,0 +1,989 @@
+{
+  "schema": "native-spatial-layout-mask-matrix-evidence.v1",
+  "scope": "one authorized 38-track ADM-BWF fixture, one exact PreparedJobInput config identity; two separate native invocations are kept distinct",
+  "identities": {
+    "prepared_job_xml_bytes": 1363,
+    "prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "input_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "approved_input_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+    "approved_crosswalk_manifest_sha256": "18caf60dea865e03009168761e4ccba00337414ec8e2f2fd571a7aa765d5ee0d",
+    "input_metadata": {
+      "axml_sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659",
+      "chna_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6",
+      "physical_channels": 38
+    },
+    "analysis_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "normalized_config_identity_verification": "Wash-reported selected-job-config-identity.v1 canonical envelope hash recomputed as 1325-byte compact UTF-8 JSON; exact match"
+  },
+  "native_runs": {
+    "complete_reference_run": {
+      "run_label": "prepared-job-matrix-capture-v4",
+      "job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "execution_status": "DEE_ENCODER_DONE_OUTPUT_100_PERCENT",
+      "reference_output_kind": "native DEE EC-3; not model output",
+      "reference_output_bytes": 17395712,
+      "reference_output_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+      "temp_files_confined_to_continuation": true,
+      "exit_code": "NOT_CAPTURED",
+      "matrix_and_selection_capture_provenance": "The v4 complete-reference invocation captured writer-entry active flags, selected ordinal list and selected geometry, then the direct 6x48 consumer matrix in the same caller frame and call chain."
+    },
+    "producer_observation_run": {
+      "run_label": "prepared-job-layout-mask-writer-capture-v5",
+      "job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "execution_status": "STOPPED_AT_FIRST_MATRIX_WRITER_AFTER_CAPTURE",
+      "reference_output": "NOT_RUN_TO_COMPLETION",
+      "purpose": "capture packed layout mask, active flags, selected ordinals, and row records",
+      "capture_provenance": "The separate v5 observation-only invocation captured the packed 0x0B00 masks and all 15 writer output rows; it stopped at the writer and did not capture a matrix."
+    }
+  },
+  "count_domains": {
+    "physical_input_channels": 38,
+    "source_feature_columns": 48,
+    "row_capacity": 15,
+    "packed_mask_rows": 15,
+    "nonzero_selection_flags": 6,
+    "selected_ordinals_count": 6,
+    "selected_ordinals": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "final_matrix_consumer_rows": 6,
+    "final_matrix_consumer_columns": 48
+  },
+  "same_generation_matrix_run": {
+    "writer_consumer_same_parent_call": true,
+    "writer_consumer_same_thread_call_chain": true,
+    "writer_to_consumer_call_order": "matrix writer returns, then direct consumer call in the same caller frame",
+    "selected_index_table_pointer_identity_writer_to_consumer": true,
+    "matrix_descriptor_pointer_identity_writer_entry_to_consumer_entry": true,
+    "descriptor_shape_before_writer": [
+      15,
+      49
+    ],
+    "transform_input_descriptor_shape": [
+      15,
+      48
+    ],
+    "transform_output_descriptor_shape": [
+      15,
+      6
+    ],
+    "descriptor_shape_at_consumer": [
+      6,
+      48
+    ],
+    "adm_sample_position": "NOT_CAPTURED",
+    "host_frame": "NOT_CAPTURED",
+    "fit_generation": "NOT_CAPTURED",
+    "u04_invocation": "NOT_CAPTURED",
+    "active_flags_selected_indices_and_geometry_run": "prepared-job-matrix-capture-v4",
+    "packed_mask_and_row_unpack_run": "prepared-job-layout-mask-writer-capture-v5; same raw XML/config/input identity, separate runtime invocation"
+  },
+  "packed_layout_mask": {
+    "input_u32_per_row": [
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816,
+      2816
+    ],
+    "input_hex_per_row": [
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00",
+      "0x00000b00"
+    ],
+    "value_is_uniform_across_15_rows": true,
+    "observed_value_decimal": 2816,
+    "observed_value_hex": "0x00000B00",
+    "static_unpack_rule": {
+      "row_plus36": "mask & 1",
+      "row_plus48": "(mask >> 1) & 7",
+      "row_plus8": "(mask >> 4) & 15",
+      "row_plus12": "(mask >> 8) & 3",
+      "row_plus16": "(mask >> 10) & 3"
+    },
+    "all_15_observed_fields_match_static_unpack": true,
+    "active_flags": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "active_predicate": "flag != 0",
+    "active_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "selected_ordinals": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "active_flags_match_selected_ordinals": true,
+    "row_stride_bytes": 56,
+    "point_transform_input_offset_bytes": 24,
+    "point_transform_max_read_bytes_from_input_offset": 32,
+    "rows": [
+      {
+        "ordinal": 0,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 1,
+        "selected_by_nonzero_flag": true,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 1,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 1,
+        "selected_by_nonzero_flag": true,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0.5,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 2,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 1,
+        "selected_by_nonzero_flag": true,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0.999969482421875,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 3,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 1,
+        "selected_by_nonzero_flag": true,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 1,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 4,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 1,
+        "selected_by_nonzero_flag": true,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 1,
+          "row_plus28": 0.5,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 5,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 1,
+        "selected_by_nonzero_flag": true,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0.999969482421875,
+          "row_plus28": 0.999969482421875,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 6,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 7,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 8,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 9,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 10,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 11,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 12,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 13,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      },
+      {
+        "ordinal": 14,
+        "packed_mask_u32": 2816,
+        "active_flag_u32": 0,
+        "selected_by_nonzero_flag": false,
+        "layout_fields": {
+          "row_plus8_u32": 0,
+          "row_plus12_u32": 3,
+          "row_plus16_u32": 2,
+          "row_plus36_u32": 0,
+          "row_plus48_u32": 0,
+          "row_plus52_u32": 1
+        },
+        "transform_source_f32": {
+          "row_plus24": 0,
+          "row_plus28": 0,
+          "row_plus32": 0
+        },
+        "mask_unpack_expected": {
+          "row_plus8": 0,
+          "row_plus12": 3,
+          "row_plus16": 2,
+          "row_plus36": 0,
+          "row_plus48": 0
+        }
+      }
+    ],
+    "packed_mask_input_source_run": "prepared-job-layout-mask-writer-capture-v5",
+    "active_flags_and_selected_list_source_runs": [
+      "prepared-job-matrix-capture-v4",
+      "prepared-job-layout-mask-writer-capture-v5"
+    ]
+  },
+  "point_transform_static_rule": {
+    "branch_for_selected_rows": "general 3D point path; the special branch condition (field at input +12 == 0 AND field at input +16 != 0) is false for observed rows",
+    "input_fields_read_offsets_bytes": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      24,
+      28
+    ],
+    "coordinate_scale_f32": 32768,
+    "positive_rounding_bias_f32": 0.5,
+    "negative_rounding_bias_f32": -0.5,
+    "conversion": "binary32 multiply then add sign-dependent half; truncate toward zero; clamp only values >= 32768 to 32767",
+    "channel_map": {
+      "0": 0,
+      "1": 3,
+      "2": 2,
+      "3": 4,
+      "4": 1,
+      "5": 5,
+      "other": "UINT32_MAX"
+    },
+    "selected_rows_map_input_raw_u32": 0,
+    "selected_rows_map_output": 0,
+    "transformed_output": "NATIVE_NOT_CAPTURED; matrix values below are native consumer output, not a point-transform snapshot"
+  },
+  "native_matrix": {
+    "file": "native_matrix_6x48.f32le",
+    "encoding": "little-endian IEEE-754 binary32, row-major",
+    "shape": [
+      6,
+      48
+    ],
+    "bytes": 1152,
+    "sha256": "8585c5af0989da7422ad78ee948fd5dc5122d7d872a720104845563f77656178",
+    "nonzero_coefficients": 76,
+    "nonfinite_coefficients": 0,
+    "row_summaries": [
+      {
+        "row": 0,
+        "nonzero": 14,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "row": 1,
+        "nonzero": 13,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "row": 2,
+        "nonzero": 11,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "row": 3,
+        "nonzero": 14,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "row": 4,
+        "nonzero": 13,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "row": 5,
+        "nonzero": 11,
+        "min": 0,
+        "max": 1
+      }
+    ],
+    "values": [
+      [
+        1,
+        0,
+        0.6987490653991699,
+        0,
+        0,
+        0,
+        0,
+        0.908778965473175,
+        0.19732405245304108,
+        0.005193022545427084,
+        0,
+        1,
+        0,
+        0.6987490653991699,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.999083399772644,
+        0,
+        0.9995712041854858,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.03852159157395363,
+        0.0031636187341064215,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0.10842281579971313,
+        1,
+        0,
+        0,
+        0,
+        0.3676474690437317,
+        0,
+        0.3676735460758209,
+        0,
+        0,
+        0,
+        0.10842281579971313,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.23032565414905548,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.041456546634435654,
+        0.0002762614458333701,
+        0.027873223647475243,
+        0.0003278536314610392,
+        0,
+        0,
+        0,
+        0,
+        0.9490843415260315,
+        0.41326603293418884,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0.005194411147385836,
+        0,
+        0.9087665677070618,
+        0.19730989634990692,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.9731135964393616,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.010606460273265839,
+        0.0010653916979208589,
+        0.00879551563411951,
+        0.001293624984100461,
+        0,
+        0,
+        0,
+        0,
+        0.004537960980087519,
+        0.0013163606636226177,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0.6987402439117432,
+        0,
+        0,
+        0,
+        0,
+        0.19730335474014282,
+        0.9087734818458557,
+        0,
+        0.0051882304251194,
+        0,
+        1,
+        0.6987402439117432,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.9990829825401306,
+        0,
+        0.9997841715812683,
+        0,
+        0,
+        0,
+        0,
+        0.01206826139241457,
+        0.007406312506645918,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.9999999403953552,
+        0,
+        0.9999999403953552,
+        0,
+        0.9999999403953552
+      ],
+      [
+        0,
+        0,
+        0.10842489451169968,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0.3676498532295227,
+        0,
+        0.36767539381980896,
+        0,
+        0,
+        0.10842489451169968,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.22873914241790771,
+        0,
+        0,
+        0,
+        0,
+        0.00027611019322648644,
+        0.04146681725978851,
+        0.00042836228385567665,
+        0.019714342430233955,
+        0,
+        0,
+        0,
+        0,
+        0.31235700845718384,
+        0.9105727672576904,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0.005177182611078024,
+        0.19731146097183228,
+        0.9087661504745483,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.9734877347946167,
+        0,
+        0,
+        0,
+        0,
+        0.0010663007851690054,
+        0.01060275174677372,
+        0.001712963916361332,
+        0.006411063019186258,
+        0,
+        0,
+        0,
+        0,
+        0.00466637359932065,
+        0.0013414243003353477,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "model_matrix_comparison": "NOT_RUN"
+  },
+  "cross_run_replay": {
+    "exact_job_xml_identity_match": true,
+    "exact_input_hash_match": true,
+    "active_flags_equal_between_v4_and_v5": true,
+    "selected_ordinals_equal_between_v4_and_v5": true,
+    "selected_geometry_records_equal_for_rows_0_through_5": true,
+    "matrix_values_from_v4_only": true,
+    "same_runtime_generation_across_v4_and_v5": false
+  },
+  "prior_job_separation": {
+    "prior_spatial_reference_job_xml_sha256": "befb67c91ae67489090062d287785121c07bd34db0985d9b0dbed70279376b9e",
+    "current_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "relation": "DISTINCT_XML_IDENTITIES",
+    "prior_15_selected_rows_or_15x48_matrix_join_to_current_job": "PROHIBITED"
+  },
+  "delivery_boundary": {
+    "raw_pcm_persisted": false,
+    "raw_adm_or_metadata_payload_persisted": false,
+    "native_addresses_persisted": false,
+    "native_binary_paths_persisted": false,
+    "license_or_private_key_persisted": false,
+    "native_reference_ec3_payload_included": false,
+    "implementation_source_or_repository_read": false,
+    "model_output_included": false
+  },
+  "gate_status": {
+    "packed_mask_to_row_field_unpack": "CLOSED_FOR_THIS_CONFIGURED_CALL",
+    "active_flag_to_selected_ordinal_list": "CLOSED_FOR_THIS_CONFIGURED_CALL",
+    "selected_geometry_input_records": "CAPTURED_FOR_SELECTED_ROWS",
+    "native_6x48_matrix": "CAPTURED",
+    "model_matrix_replay": "NOT_RUN",
+    "U04_output_and_consumption": "NOT_CAPTURED",
+    "Type10_or_six_plane_composition": "NOT_RUN",
+    "GATE1_CLOSED": false,
+    "IMPLEMENTATION_READY": false,
+    "PRODUCTION_ALLOWED": false
+  }
+}

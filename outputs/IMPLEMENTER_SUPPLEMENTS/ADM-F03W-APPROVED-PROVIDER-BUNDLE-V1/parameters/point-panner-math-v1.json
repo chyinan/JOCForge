@@ -1,0 +1,17 @@
+{
+  "schema": "point-panner-mathematical-angle.v1",
+  "route": "MATHEMATICAL_R64_R32",
+  "specification": "specs/03-point-response-and-target-context.md",
+  "angle_bound_formula": "RNE_binary32(pi/4)",
+  "angle_bound_u32": "3f490fdb",
+  "angle_scale_formula": "RNE_binary32(pi/4)",
+  "final_threshold_formula": "RNE_binary32(10^-6)",
+  "final_threshold_u32": "358637bd",
+  "sincos_rounding": "exact real function -> RNE binary64 -> RNE binary32",
+  "reference_algorithm": "exact rational alternating-series enclosure; stop only when both enclosure endpoints round to identical binary64",
+  "legacy_compiled_coefficients_required": false,
+  "legacy_bit_exact_claim": false,
+  "full_input_rounding_proof_from_sample_tests": false,
+  "real_adm_audio_spatial_acceptance": "NOT_RUN",
+  "implementation_ready": "NO"
+}

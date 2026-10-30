@@ -1,0 +1,142 @@
+{
+  "schema": "selected-owner-projection.v1",
+  "authoritative_for": [
+    "F03W",
+    "F04C",
+    "F05R56",
+    "F05JL",
+    "F05L",
+    "F13",
+    "F15"
+  ],
+  "field_groups": [
+    {
+      "group": "frontend_and_installed48",
+      "executor": "F03W",
+      "receipt_owner": "F03W",
+      "commit_owner": "spatial_control",
+      "fields": [
+        "source_cursor",
+        "EOF_cache",
+        "event_control",
+        "render_diffusion",
+        "source_flags",
+        "feature",
+        "target_state",
+        "selector_scratch",
+        "u04_scratch",
+        "nnls_outer_scratch",
+        "matrix",
+        "markers",
+        "writer_set"
+      ]
+    },
+    {
+      "group": "reader56_targets",
+      "executor": "F05R56",
+      "receipt_owner": "F05R56",
+      "commit_owner": "spatial_control",
+      "fields": [
+        "metadata_history",
+        "previous_active",
+        "current_target_snapshot",
+        "reader_records_16x56",
+        "target_words_16x6",
+        "reader_invocations"
+      ]
+    },
+    {
+      "group": "component_lfe_j05",
+      "executor": "F04C",
+      "receipt_owner": "F04C",
+      "commit_owner": "spatial_audio",
+      "fields": [
+        "component_overlap_15x1536",
+        "component_ring_15x1472",
+        "filter_history_15x64",
+        "component_parameters",
+        "lfe_slots_3x1536",
+        "lfe_indices",
+        "receiver_state",
+        "receiver_audio_qmf",
+        "fitting_qmf"
+      ]
+    },
+    {
+      "group": "joc_after_j05",
+      "executor": "F05JL",
+      "receipt_owner": "F05JL",
+      "commit_owner": "joc",
+      "fields": [
+        "temporal",
+        "geometry",
+        "fit180",
+        "profile_retry",
+        "huffman",
+        "id14_writer",
+        "sequence"
+      ]
+    },
+    {
+      "group": "body_proposals",
+      "executor": "F05L",
+      "receipt_owner": "F05L",
+      "commit_owner": "none_pure_value",
+      "fields": [
+        "id11_body",
+        "id14_body"
+      ]
+    },
+    {
+      "group": "metadata_timeline",
+      "executor": "F13",
+      "receipt_owner": "F13",
+      "commit_owner": "metadata",
+      "fields": [
+        "id1_timer",
+        "queue11",
+        "queue1",
+        "queue2",
+        "queue14",
+        "emdf_assembly"
+      ]
+    },
+    {
+      "group": "codec_and_publication",
+      "executor": "F12_then_F15",
+      "receipt_owner": "F15",
+      "commit_owner": "codec_and_output",
+      "fields": [
+        "codec_state",
+        "integrity_receipt",
+        "staging_stream",
+        "durable_ledger",
+        "published_au_count"
+      ]
+    }
+  ],
+  "u04_admission": {
+    "execute_status": [
+      "CAPACITY_REACHED"
+    ],
+    "skip_status": [
+      "CANDIDATES_EXHAUSTED"
+    ],
+    "selected_count_does_not_override_status": true
+  },
+  "j05": {
+    "frontend_to_source": {
+      "source_index": "g-2",
+      "dispatch": "g-1",
+      "valid_when": "g>=2"
+    },
+    "type10": "LFE[g-2] concatenated with component15[g]",
+    "targets": "F05R56 target_words[g]",
+    "executor": "F04C",
+    "qmf_reshape": "for object o=0..14, slot s=0..47, bin b=0..63: joc[o][s][b] = target_qmf[o//3][s][(o%3)*64+b]; inverse writes the exact same cell",
+    "downstream": "F05JL consumes reshaped 15x48x64 projection; must not rerun receiver or QMF"
+  },
+  "queue_rule": "Only F13 mutates metadata queues. F05L/F05JL produce immutable bodies.",
+  "commit_rule": "F15 coordinates one source-root commit; leaf executor counts remain exactly one.",
+  "private_key_required": false
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "spatial-source-position-identity-events.v1",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+  "native_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "native_reference_output_bytes": 262144,
+  "same_native_call": {
+    "descriptor_pointer_passed_to_position_builder_matches_descriptor_pointer_passed_to_candidate_installer": true,
+    "descriptor_pointer_values_persisted": false,
+    "source_row_count_argument_u32": 48,
+    "target_capacity_argument_u32": 15,
+    "bwf_physical_channel_count": 38
+  },
+  "row_20": {
+    "ordinal_zero_based": 20,
+    "record_stride_bytes": 56,
+    "position_subrecord_descriptor_offset": 24,
+    "position_subrecord_sha256": "fc9971588057c25421fee991b3834785d20ff2bbb0999e69c74fca413b731415",
+    "candidate_id_field_descriptor_offset": 40,
+    "candidate_id_field_u32": 0,
+    "candidate_id_field_inside_position_subrecord_offset": 16,
+    "row_selected_or_installed": "NOT_CAPTURED",
+    "adm_or_global_source_id_semantics": "UNBOUND"
+  }
+}

@@ -1,0 +1,7 @@
+# Same-generation dynamic spatial geometry observation
+
+This observation binds one 38-track, 48-frame authorized reference run at spatial process sequence 1: constructor and process use the same owner; the selected geometry matrix equals the owners current F32[15][3] descriptor; all 15 active flags are set; 59 downstream calls receive the same current and previous descriptor pointers in the captured argument slots. The payload lists the captured coordinate words and source IDs.
+
+These coordinates are callback-dynamic source geometry, not the static selected P11/P15 layout basis. Zero captured rows match the approved P11/P15 basis. The separate table-read probe saw no coordinate loads at ten candidate sites and is not joined to the owner capture. Layout/mask to basis-owner, host-frame, ADM sample position, fit-generation, and U04 invocation remain NOT_BOUND/NOT_CAPTURED. Do not infer static layout identity from capacity=15 or dynamic values.
+
+The reference completed a 48-frame encoding with a hash-bound authorized input and output identity; it is a bounded native observation, not a full-length run or product acceptance. No PCM, bitstream payload, native code, addresses, module names, private key, or auth material is included. Source research manifest SHA-256 4a87e68a2114b39331b86700f1f3190138c7f7c6523887f32f67fee317da70ea; approved geometry spec SHA-256 8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830; authorized P15 Y parameter SHA-256 5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185.

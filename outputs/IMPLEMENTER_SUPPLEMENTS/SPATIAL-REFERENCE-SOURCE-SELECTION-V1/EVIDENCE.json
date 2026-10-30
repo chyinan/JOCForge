@@ -1,0 +1,90 @@
+{
+  "schema": "wash.spatial-owner-selector-native-join-evidence.v1",
+  "scope": "one authorized 38-track ADM-BWF fixture, one licensed native reference encode, one same-generation spatial owner/candidate/selection/assignment call chain",
+  "fixture_metadata": {
+    "axml_sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659",
+    "chna_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6",
+    "source_file_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "exact_match_to_approved_input_crosswalk": true,
+  "approved_input_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+    "approved_crosswalk_manifest_sha256": "18caf60dea865e03009168761e4ccba00337414ec8e2f2fd571a7aa765d5ee0d"
+  },
+  "native_reference": {
+    "execution_completed": true,
+    "output_kind": "reference EC-3; not model output",
+    "output_bytes": 262144,
+    "output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "configured_file_position_frame_window": [
+      2160,
+      2208
+    ],
+    "job_xml_sha256": "befb67c91ae67489090062d287785121c07bd34db0985d9b0dbed70279376b9e",
+    "analysis_input_build_digest": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "observer_mutated_business_state": false
+  },
+  "same_generation_source_identity_join": {
+    "same_native_invocation": true,
+    "source_descriptor_columns": 48,
+    "explicit_prefix_count": 11,
+    "regular_owner_rows": 37,
+    "owner_state_pointer_table_is_descriptor_suffix": true,
+    "owner_state_pointer_suffix_offset_bytes": 88,
+    "owner_state_pointer_suffix_bytewise_equal": true,
+    "owner_geometry_row_table_is_descriptor_suffix": true,
+    "owner_geometry_suffix_offset_bytes": 616,
+    "owner_geometry_suffix_bytewise_equal": true,
+    "row_stride_bytes": 56,
+    "owner_row_to_source_column": "owner_row_index + 11",
+    "regular_source_id_join": "source descriptor columns 11..47 map to global source IDs 11..47 under the hash-matched F03R input crosswalk",
+    "direct_lfe_physical_slot_zero_based": 3,
+    "aggregate_prefix_rows_have_adm_uid": false
+  },
+  "count_domains": {
+    "source_descriptor_columns": 48,
+    "regular_owner_rows": 37,
+    "aggregate_prefix_rows": 11,
+    "eligible_rows_with_flag_zero": 46,
+    "candidate_gate_rows": 36,
+    "selector_capacity": 15,
+    "selected_rows": 15,
+    "active_target_rows": 15
+  },
+  "downstream": {
+    "source_pointer_table_consumed_by_matrix": true,
+    "matrix_shape": [
+      15,
+      48
+    ],
+    "numeric_matrix_values": "NOT_CAPTURED",
+    "u04_invocation_and_numeric_output": "NOT_CAPTURED"
+  },
+  "time_domains": {
+    "adm_sample_position": "NOT_CAPTURED",
+    "host_frame": "NOT_CAPTURED",
+    "configured_input_window_frames": [
+      2160,
+      2208
+    ],
+    "fit_generation": "NOT_CAPTURED",
+    "owner_selector_generation": "same native nested call chain",
+    "consumer_generation": "source matrix consumer observed in the same native call chain"
+  },
+  "further_evaluation": {
+    "independent_model_replay": "NOT_RUN",
+    "full_gate1_model_composition": "NOT_RUN",
+    "type10_composition": "NOT_RUN",
+    "six_plane_values": "NOT_RUN",
+    "generic_selector_rule_coverage": "PARTIAL; native vector captured, helper branch thresholds and supporting rules not washed as general rules",
+    "implementation_ready": false,
+    "gate1_closed": false
+  },
+  "handling": {
+    "raw_pcm_persisted": false,
+    "raw_feature_band_values_persisted": false,
+    "per_row_binary32_sums_persisted": true,
+    "native_addresses_or_module_names_in_wash_package": false,
+    "private_key_or_private_provider_data_included": false,
+    "implementation_agent_contacted": false
+  }
+}
+

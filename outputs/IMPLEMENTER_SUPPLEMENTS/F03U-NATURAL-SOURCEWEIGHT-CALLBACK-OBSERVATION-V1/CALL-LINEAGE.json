@@ -1,0 +1,50 @@
+{
+  "schema": "washed.sourceweight-feature-call-lineage.v1",
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "instruction_byte_match": true,
+  "roles": {
+    "callback_wrapper": {
+      "instruction_count": 285,
+      "listing_sha256": "174be41a65d25ccf652c40ebedb2e755f87a1bbbc549e6b5afa43830701cba71",
+      "instruction_stream_sha256": "75f819dfb9e30456dd533725dcc1eb58c92e6e03b7db6d9972ab455a2365090f",
+      "all_instruction_bytes_match": true
+    },
+    "feature_orchestrator": {
+      "instruction_count": 360,
+      "listing_sha256": "468d77f52cab625f0b2b2114a240e563f297c8188e7c265a7b5e08fce9c9945a",
+      "instruction_stream_sha256": "124713ada7ccc4c1d7ae2d3403c64ffc54e14cf22442c354fecfa306c1d36d0f",
+      "all_instruction_bytes_match": true
+    },
+    "sourceweight_caller": {
+      "instruction_count": 93,
+      "listing_sha256": "e8d0a4bee4d21ce1df08480affee6218820ff4d57143a12534bdfabbcd7ff8f7",
+      "instruction_stream_sha256": "52e8af42d9b34951a60fd911366bc0fcaf200b06103d8679f96094ceb692c5cd",
+      "all_instruction_bytes_match": true
+    },
+    "sourceweight_helper": {
+      "instruction_count": 62,
+      "listing_sha256": "6b07863273fb1e2e29ecf07f13ab0ca82121c3db4df7d64cdf3b81d7b3b61c11",
+      "instruction_stream_sha256": "5c7925e89c28d58922ffd5758ba6ea55b68a4279a7e425b3dc08f924b9faceab",
+      "all_instruction_bytes_match": true
+    },
+    "local_powf": {
+      "instruction_count": 744,
+      "listing_sha256": "1d6fc031b79df4d08717c44c9a14db5694c38e9ec20ced4dec9b17dfb589fb02",
+      "instruction_stream_sha256": "1e494b07d1cd8633ef48211c144fb059c10441853f56764937b8e46843903039",
+      "all_instruction_bytes_match": true
+    }
+  },
+  "static_edges": {
+    "feature_orchestrator_to_sourceweight_caller": true,
+    "sourceweight_caller_passes_matrix_argument_to_helper": true,
+    "sourceweight_helper_calls_same_image_powf": true,
+    "sourceweight_accumulates_serial_f32": true,
+    "system_powf_import": false
+  },
+  "native_join": {
+    "one_callback_and_feature_producer_scope_active_at_helper_entry": true,
+    "caller_matrix_pointer_equals_helper_matrix_pointer": true,
+    "feature_input_values_stored": false,
+    "feature_input_digest_covers_consumed_24_by_25_f32_words": true
+  }
+}

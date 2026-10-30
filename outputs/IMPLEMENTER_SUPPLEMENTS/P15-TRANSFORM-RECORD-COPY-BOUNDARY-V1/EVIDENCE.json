@@ -1,0 +1,49 @@
+{
+  "schema": "spatial-transform-record-copy-evidence.v1",
+  "evidence_status": "P15_IMMEDIATE_CALLER_TO_TRANSFORM_POINTER_DIFFERENCE_EXPLAINED",
+  "identities": {
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+    "wash_reported_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "wash_reported_normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "job_identity_relation": "DISTINCT_XML_IDENTITIES; NO_XML_HASH_JOIN",
+    "capture_sha256": "5af0f03a4070bb3b2efd5f60c17296a98135b0ba080c499102c909b2ba136538",
+    "adapter_function_bytes_sha256": "1ea0eb3712f276bf71dd7a911818a43dfa16395bc5f2c10cd5ae0f52cd8a4dba"
+  },
+  "closed_edge": {
+    "edge": "P15 immediate caller record -> point-transform input record",
+    "caller_pointer_equals_transform_pointer": false,
+    "static_adapter_copy_bytes": 60,
+    "static_adapter_copy_range": "source bytes [0,60) copied into a stack-local record",
+    "stack_local_copy_passed_to_point_transform": true,
+    "native_caller_record_u32_count": 15,
+    "native_transform_record_u32_count": 15,
+    "native_caller_and_transform_values_equal": true,
+    "same_profile_context": true,
+    "same_spatial_parent": true,
+    "selected_point_count": 15
+  },
+  "interpretation": "The observed immediate pointer inequality is the adapter's expected local-record copy. The runtime vectors are equal and the transform receives the stack-local copy during the same adapter call.",
+  "unbound_edges": {
+    "selector_source_record_to_p15_adapter_input_record_identity": "UNBOUND",
+    "selector_source_record_to_p15_transform_record_identity": "UNBOUND",
+    "pointer_equality": "NOT_CLAIMED"
+  },
+  "delivery_boundary": {
+    "native_addresses_or_binary_paths_included": false,
+    "native_binary_name_included": false,
+    "analysis_tool_names_included": false,
+    "runtime_pointers_included": false,
+    "raw_audio_or_metadata_payload_included": false,
+    "implementation_code_or_repository_read": false,
+    "research_result_only": true
+  },
+  "gate_status": {
+    "p15_immediate_adapter_pointer_mismatch": "EXPLAINED_BY_COPY",
+    "selector_to_transform_record_identity": "UNBOUND",
+    "independent_model_execution": "NOT_RUN",
+    "GATE1_CLOSED": false,
+    "IMPLEMENTATION_READY": false,
+    "PRODUCTION_ALLOWED": false
+  }
+}

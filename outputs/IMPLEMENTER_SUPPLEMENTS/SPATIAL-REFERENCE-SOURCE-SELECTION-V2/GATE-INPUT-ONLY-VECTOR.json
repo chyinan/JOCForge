@@ -1,0 +1,401 @@
+{
+  "schema": "wash.spatial-source-gate-input-only-vector.v1",
+  "source_descriptor_rows": 48,
+  "feature_matrix": {
+    "bands": 24,
+    "source_stride": 48,
+    "bytes_read": 4608
+  },
+  "position_descriptor": {
+    "row_stride_bytes": 56,
+    "bytes_read": 2688
+  },
+  "gate_rule": {
+    "active_flag_field_offset_bytes": 4,
+    "active_flag_must_equal": 0,
+    "accumulation": "ordered binary32; sequential additions in groups of four bands",
+    "threshold_binary32": 0.5,
+    "candidate_field_offset_bytes": 40,
+    "candidate_field_semantics": "UNBOUND; observed zero in all 48 rows; do not use as source identity"
+  },
+  "rows": [
+    {
+      "source_descriptor_row": 0,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 4502000.5,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 1,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 2113082.75,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 2,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 1236.2523193359375,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 3,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 16948044,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 4,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 14456550,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 5,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 13660238,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 6,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 13168207,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 7,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 845362.6875,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 8,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 763215.5625,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 9,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 3594214.75,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 10,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 3441354.5,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 11,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 557315520,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 12,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 547049856,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 13,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 11272.8671875,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 14,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 34037340,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 15,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 35991908,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 16,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 50214.64453125,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 17,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 104249.3828125,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 18,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0.0018928359495475888,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 19,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0.0006553929415531456,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 20,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 443.49749755859375,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 21,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 115.80897521972656,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 22,
+      "active_flag": 1,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 23,
+      "active_flag": 1,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 24,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 355.3747863769531,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 25,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 166.1414337158203,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 26,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0.16633030772209167,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 27,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0.19925817847251892,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 28,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0.5012016296386719,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 29,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 2.7501556873321533,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 30,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 31,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 32,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 33,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 34,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 737.5965576171875,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 35,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 238959.65625,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 36,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 133158544,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 37,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 133158544,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 38,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0.23847490549087524,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 39,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 0.23847490549087524,
+      "gate_pass": false
+    },
+    {
+      "source_descriptor_row": 40,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 91424160,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 41,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 91424176,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 42,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 786018048,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 43,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 761555648,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 44,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 41.973873138427734,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 45,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 6.8999834060668945,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 46,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 123751720,
+      "gate_pass": true
+    },
+    {
+      "source_descriptor_row": 47,
+      "active_flag": 0,
+      "candidate_field_40": 0,
+      "ordered_f32_sum": 111123816,
+      "gate_pass": true
+    }
+  ],
+  "candidate_rows": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    20,
+    21,
+    24,
+    25,
+    28,
+    29,
+    34,
+    35,
+    36,
+    37,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "candidate_count": 36,
+  "raw_pcm_persisted": false,
+  "raw_feature_band_values_persisted": false
+}
+

@@ -1,0 +1,59 @@
+{
+  "schema": "spatial-source-descriptor-identity-evidence.v1",
+  "evidence_status": "SAME_NATIVE_DESCRIPTOR_ARGUMENT_JOIN_AND_ROW20_CANDIDATE_FIELD_BOUND",
+  "identities": {
+    "source_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+    "wash_reported_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "wash_reported_normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "job_identity_relation": "DISTINCT_XML_IDENTITIES; NO_XML_HASH_JOIN",
+    "native_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "static_call_path_report_hashes": {
+      "position_context_builder": "4bb8aac0282fff5d1caf7d4e0a72e347e1a7f1ffac2f90333ba69778edd278ba",
+      "candidate_installer": "233b8b526f246531cc58b27ac030c4e16cb065da22024f724519a3e215ba8226"
+    }
+  },
+  "same_call_identity": {
+    "geometry_position_context_and_candidate_installer_receive_same_descriptor_object": true,
+    "native_row_count_argument": 48,
+    "native_target_capacity_argument": 15,
+    "bwf_physical_channel_count": 38,
+    "count_domains_remain_distinct": true
+  },
+  "row_20_identity": {
+    "loop_ordinal_zero_based": 20,
+    "record_stride_bytes": 56,
+    "position_subrecord_origin": "descriptor + 24 + 56*ordinal",
+    "candidate_id_field_origin": "descriptor + 40 + 56*ordinal",
+    "candidate_id_field_u32": 0,
+    "candidate_id_field_offset_inside_position_subrecord": 16,
+    "position_record_sha256": "fc9971588057c25421fee991b3834785d20ff2bbb0999e69c74fca413b731415",
+    "candidate_id_to_adm_global_source_id": "UNBOUND",
+    "candidate_gate_pass_or_install": "NOT_CAPTURED"
+  },
+  "interpretation_limits": [
+    "The descriptor argument pointer equality was compared transiently within one process call; pointer values were discarded.",
+    "The numeric value 0 is the candidate-ID field consumed by the native installer for this row, but its semantic mapping to an ADM UID/global source ID is unbound.",
+    "The source row count 48 is not the BWF physical channel count 38 and is not the target capacity 15.",
+    "The row ordinal 20 is not asserted to be global source ID 20.",
+    "No claim is made that row 20 passes the candidate energy gate or becomes an active/selected target."
+  ],
+  "delivery_boundary": {
+    "native_addresses_or_binary_paths_included": false,
+    "native_binary_name_included": false,
+    "analysis_tool_names_included": false,
+    "runtime_pointers_included": false,
+    "raw_audio_or_metadata_included": false,
+    "implementation_code_or_repository_read": false,
+    "research_result_only": true
+  },
+  "gate_status": {
+    "row20_position_record_to_candidate_id_field": "BOUND_FOR_SELECTED_NATIVE_CALL",
+    "candidate_id_to_adm_global_source_id": "UNBOUND",
+    "row20_candidate_gate_and_target_install": "NOT_CAPTURED",
+    "independent_model_execution": "NOT_RUN",
+    "GATE1_CLOSED": false,
+    "IMPLEMENTATION_READY": false,
+    "PRODUCTION_ALLOWED": false
+  }
+}

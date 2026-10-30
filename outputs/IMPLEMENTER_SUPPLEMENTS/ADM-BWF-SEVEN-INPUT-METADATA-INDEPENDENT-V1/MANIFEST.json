@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "ADM-BWF-SEVEN-INPUT-METADATA-INDEPENDENT-V1",
+  "scope": "Seven authorized sample metadata observations",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 776,
+      "sha256": "3ec9c32b125a700794da9ef3e3ee8e559f3124bb336eda83dcfaad5a2aae8976"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 448,
+      "sha256": "989b804993f618cab3a86c1db6fe007b2aa9ca964ec8e644319279610f438069"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "source_manifest_sha256": "77c8f3de1c944724648941f06bd5a872626586dc45b917559795fe735517e39a",
+  "source_payloads_verified": "3/3",
+  "independent_of_implementation_repo": true,
+  "samples": 2,
+  "input_tracks": 36,
+  "bed_tracks": 10,
+  "objects": 26,
+  "active_sources": 46,
+  "regular_writer_rows": 35,
+  "native_audio_storage_capacity": 47,
+  "unused_slot_control_metadata": "NOT_READ",
+  "joc_input_rows": 16,
+  "reference_AUs_per_sample": 4,
+  "reference_decode": "REPORTED_PASS",
+  "model_36_replay": "NOT_RUN",
+  "implementation_output": "NOT_RUN",
+  "spatial_and_listening": "NOT_RUN",
+  "native_observation_independently_reproduced_by_wash": false
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "washed.pow32-native-comparison.v1",
+  "source_model_manifest_sha256": "ab3e1495898bd1cbf36a8c449fabcccfb64ac747c7b2a1955665362ceceaa0ab",
+  "source_vectors_sha256": "80fe0c35671e8bc7346d345ddbbd24db095b5b7a749b6ef029ea239ad925bbee",
+  "cases": {
+    "repeat_24_pow_precision": {
+      "model_power_word": "0x3f021640",
+      "model_source_weight_word": "0x41432160"
+    },
+    "three_term_fold_order": {
+      "model_source_weight_word": "0x3f800000",
+      "regrouped_candidate_word": "0x3f800001"
+    },
+    "finite_extreme_and_subnormal": {
+      "model_power_words": [
+        "0x4c420303",
+        "0x30930889"
+      ],
+      "model_source_weight_word": "0x4c420303"
+    }
+  },
+  "native_general_values_are_sample_evidence_only": true,
+  "no_universal_bitwise_parity_gate_added": true
+}

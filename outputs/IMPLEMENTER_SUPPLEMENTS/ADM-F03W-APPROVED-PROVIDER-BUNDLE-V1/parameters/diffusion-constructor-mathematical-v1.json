@@ -1,0 +1,79 @@
+{
+  "schema": "diffusion-constructor-mathematical-parameters.v1",
+  "route": "DIFFUSION_FIXED_48K_CONSTRUCTOR_MATH_V1",
+  "sample_rate": 48000,
+  "configuration_order": [
+    "ring_seconds",
+    "bank_total_seconds",
+    "bank_geometric_base",
+    "bank_exponent_step",
+    "gain_seconds",
+    "slow_seconds",
+    "fast_seconds",
+    "input_seconds",
+    "envelope_epsilon",
+    "envelope_limit"
+  ],
+  "configuration_words": [
+    "3b03126f",
+    "3ca3d70a",
+    "40400000",
+    "3e800000",
+    "3d4ccccd",
+    "3da3d70a",
+    "3ba3d70a",
+    "385e8427",
+    "3727c5ac",
+    "3f8ccccd"
+  ],
+  "rational_configuration_rules": [
+    "1/500",
+    "1/50",
+    "3",
+    "1/4",
+    "1/20",
+    "2/25",
+    "1/200",
+    "rne_integer(10^9/(2*pi*(48000/16)))/10^9",
+    "1/100000",
+    "11/10"
+  ],
+  "input_time_nanoseconds": 53052,
+  "input_time_rule": "exact Machin pi enclosure, nearest-even integer nanosecond, then R32 seconds",
+  "nominal_pole_frequency_rule": "sample_rate/16; an equivalent generation parameterization, not a proved vendor design explanation",
+  "bank_ratio_words": [
+    "3f800000",
+    "3fa8751d",
+    "3fddb3d7",
+    "4011e372"
+  ],
+  "smoothing_order": [
+    "gain",
+    "slow",
+    "fast",
+    "input"
+  ],
+  "smoothing_argument_words": [
+    "b9da740e",
+    "b9888889",
+    "bb888889",
+    "bec90f82"
+  ],
+  "smoothing_words": [
+    "3f7fe4b3",
+    "3f7feef0",
+    "3f7eef80",
+    "3f2cdc1d"
+  ],
+  "bank_lengths": [
+    152,
+    200,
+    263,
+    346
+  ],
+  "ring_length": 96,
+  "specification": "specs/04-diffusion-constructor-generation.md",
+  "source_table_copied": false,
+  "public_or_third_party_distribution": "NOT_AUTHORIZED",
+  "implementation_ready": "NO"
+}

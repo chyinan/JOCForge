@@ -1,0 +1,84 @@
+{
+  "schema": "spatial-source-position-producer-evidence.v1",
+  "evidence_status": "SELECTED_NATIVE_ROW_TO_POSITION_RECORD_RULE_BOUND; GLOBAL_SOURCE_ID_JOIN_OPEN",
+  "identities": {
+    "source_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+    "wash_reported_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "wash_reported_normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+    "job_identity_relation": "DISTINCT_XML_IDENTITIES; NO_XML_HASH_JOIN",
+    "source_channels_from_wave_header": 38,
+    "sample_rate_hz_from_wave_header": 48000,
+    "bits_per_sample_from_wave_header": 24,
+    "samples_per_channel_from_wave_data_chunk": 6522906,
+    "native_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "native_reference_output_bytes": 262144,
+    "static_function_hashes": {
+      "source_row_conversion": "9d40a1ad63e40da9efd17d4a5f9e8f22d39fe52adc62b6b93f861f364bf08e08",
+      "source_row_loop": "3ce2b80f48c03ba029ebeea18a41bc4e1fdf9e04a91c8b7bb55e1f1719a66007",
+      "position_context_dispatch": "ada94373e11a24feacef4ce5952cd77f9c1a31d090845489ab50bdf5a7eb4841",
+      "position_context_branch": "10cb9341c0f8f1337bfae86d8ed2dfe0bcbd80623d695f749eff2a84c664a1c8",
+      "position_adapter_copy": "1ea0eb3712f276bf71dd7a911818a43dfa16395bc5f2c10cd5ae0f52cd8a4dba",
+      "mode2_point_transform_decompile": "02ffc472ef350bb07078924b04bc8a2769bd8040f0d33c7cbf41154520f6f8f0",
+      "enum_conversion_code": "6fdf4ef5076fc1cbe2180ebc61a2f82c5e1b320c29b5563eb6621f257b0e8dbd",
+      "enum_conversion_table": "9668bf39829a21ea28acc391f9c981a46d16cb5c4a4578584f539a2dbf71928c"
+    }
+  },
+  "producer_contract": {
+    "input": "56-byte row, selected by zero-based loop ordinal i from a 48-row loop",
+    "input_row_origin": "loop_base + 24 + i*56",
+    "producer_output": "60-byte point-transform record in a caller-local buffer",
+    "producer_call_order": "row conversion completes before the same loop iteration dispatches the point-context wrapper",
+    "loop_ordinal_20_global_source_identity": "UNBOUND",
+    "loop_bound_48_source_count_domain": "UNBOUND_TO_38_WAVE_CHANNELS"
+  },
+  "position_conversion_contract": {
+    "mode_selection": "mode2 when input U32 at offset12 is nonzero, or F32 at offset16 is unordered or equal to zero; otherwise mode3",
+    "coordinate_sources_f32_offsets_bytes": [0, 4, 8],
+    "coordinate_destinations_s32_offsets_bytes": [4, 8, 12],
+    "q15_scale_f32": 32768.0,
+    "sign_bias_f32": {"nonnegative": 0.5, "negative": -0.5},
+    "operation_order": "R32 multiply -> R32 bias add -> CVTTSS2SI truncation -> signed upper clamp at 32767",
+    "enum_source_offset_bytes": 24,
+    "enum_mapping_for_inputs_0_to_5": [0, 3, 2, 4, 1, 5],
+    "mode2_unused_field_offsets_bytes": [32, 36],
+    "mode3_field_at_offset32_source_offset_bytes": 28,
+    "field_at_output_offset36": "not read in the scoped point transform",
+    "nan_inf_native_runtime_vectors": "NOT_RUN"
+  },
+  "observed_row": {
+    "zero_based_loop_ordinal": 20,
+    "loop_bound": 48,
+    "converted_mode_word_u32": 2,
+    "input_record_bytes": 56,
+    "input_record_sha256": "fc9971588057c25421fee991b3834785d20ff2bbb0999e69c74fca413b731415",
+    "output_record_bytes": 60,
+    "output_record_sha256": "447c47b4d948f01421ba637baf2f0f752dcf29a67ecc81068053aa18e7b66f53",
+    "raw_record_bytes_persisted": false
+  },
+  "delivery_boundary": {
+    "native_addresses_or_binary_paths_included": false,
+    "native_binary_name_included": false,
+    "analysis_tool_names_included": false,
+    "runtime_pointers_included": false,
+    "raw_audio_or_metadata_included": false,
+    "implementation_code_or_repository_read": false,
+    "research_result_only": true
+  },
+  "remaining_open": [
+    "Loop ordinal20 has not been joined to an ADM UID, track index, global source ID or source20 semantic identity.",
+    "The 48-row loop bound and 38 source-channel count remain distinct count domains.",
+    "Source-row table construction from the ADM parser and complete writer ownership remain unbound.",
+    "NaN/Inf native input vectors and their producer-side admissibility were not executed.",
+    "The prepared-job XML hash is different from the independent experiment XML hash.",
+    "Independent model output, U04 numeric replay, composed matrix, Type10 output and Gate1 remain NOT_RUN/OPEN."
+  ],
+  "gate_status": {
+    "native_row20_56_to_60_position_conversion": "CLOSED_FOR_CAPTURED_LOOP_ROW",
+    "loop_row_to_global_source_identity": "UNBOUND",
+    "model_execution": "NOT_RUN",
+    "GATE1_CLOSED": false,
+    "IMPLEMENTATION_READY": false,
+    "PRODUCTION_ALLOWED": false
+  }
+}

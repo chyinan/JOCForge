@@ -1,0 +1,22 @@
+{
+  "package_id": "OAMD-COORDINATE-PROVIDER-V1",
+  "scope": "selected approved integer grid; complete parser not run",
+  "source_manifest_sha256": "0281af81847675965223d25bb457f6d3d7e523b9026d99a071ddf78799ac0ee2",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4576,
+      "sha256": "25bac7646320e0befe0305960ef56068623bef9363bc3ee2f383e7822ede30be"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 547,
+      "sha256": "8c75f4d2ed6c188192a877616515dc83d3a6b527a551b38520da5fb66c360954"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 521,
+      "sha256": "028020014e7d0ae2bfa22a3aa54603adcc31260cc62a72ce6882339c64919fdc"
+    }
+  ]
+}

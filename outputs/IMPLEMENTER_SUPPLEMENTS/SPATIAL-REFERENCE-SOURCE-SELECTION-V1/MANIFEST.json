@@ -1,0 +1,31 @@
+{
+  "package_id": "SPATIAL-REFERENCE-SOURCE-SELECTION-V1",
+  "scope": "one bounded reference profile; current prepared input and global row20 identity not joined",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1559,
+      "sha256": "830ee48c9c6b96cad9045a0c7b244fd923c6c9a6c127ced21dac95e407efa8fb"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3769,
+      "sha256": "36de8ef30486e8263d0d05f9cc1170e0991bcfb052b1937faf619041d1c2534e"
+    },
+    {
+      "file": "GATE-INPUT-ONLY-VECTOR.json",
+      "bytes": 8994,
+      "sha256": "d70b9ad566c126ee9ccde6a97e123d0a047daad7ecd220ca231caceeacb63e0f"
+    },
+    {
+      "file": "SELECTION-OUTPUT-VECTOR.json",
+      "bytes": 8971,
+      "sha256": "06047ed37a98cf40a37baa344391d61de9b4d0bdc0e7afacd5a08bfce78045c2"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 504,
+      "sha256": "7bcfe45fd8e0e81169cdec29a6c09bcbefd265eb70b3d50ba0bdc9fd604300c3"
+    }
+  ]
+}

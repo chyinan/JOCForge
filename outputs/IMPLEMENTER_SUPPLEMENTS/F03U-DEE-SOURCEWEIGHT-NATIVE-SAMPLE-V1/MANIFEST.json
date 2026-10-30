@@ -1,0 +1,38 @@
+{
+  "schema": "washed-implementer-supplement.v1",
+  "package_id": "F03U-DEE-SOURCEWEIGHT-NATIVE-SAMPLE-V1",
+  "status": "NATIVE_HELPER_SAMPLE_OBSERVED_NATURAL_CALLBACK_NOT_RUN",
+  "source_package_manifest_sha256": "4fa5a08ffe2dd7bde89890c780ad9e40af0194447f46a6e8de8b0f6f96a4f655",
+  "files": [
+    {
+      "bytes": 3940,
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "80fe0c35671e8bc7346d345ddbbd24db095b5b7a749b6ef029ea239ad925bbee"
+    },
+    {
+      "bytes": 831,
+      "path": "MODEL-EXPECTED.json",
+      "sha256": "b0b582a2851d4f3cf7177d1b9c24c12f126a09a34f4bd62f5f55ef20387462a4"
+    },
+    {
+      "bytes": 1864,
+      "path": "NATIVE-OBSERVATION.json",
+      "sha256": "067f571120087ef31cfbf64f39af46284d1342b7adc9ba48fdd65069513ca2ad"
+    },
+    {
+      "bytes": 883,
+      "path": "SOURCE-BINDING.json",
+      "sha256": "b49fba98a0ecf091196e8e519171d3bd26f82a4b697a1eb62ec19e33707cc305"
+    },
+    {
+      "bytes": 1281,
+      "path": "STATIC-CALL-PATH.json",
+      "sha256": "78f9878e7f6e245eaf37e046d3ca65b706c65b87a28b20ddb4337fd54e08bca5"
+    },
+    {
+      "bytes": 3211,
+      "path": "WASHED-SUMMARY.md",
+      "sha256": "a3d5e533dca45f17578003a955abb78d09724556566494ca2d36806b0ca96bed"
+    }
+  ]
+}

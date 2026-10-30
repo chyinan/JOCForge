@@ -1,0 +1,30 @@
+{
+  "schema": "spatial-transform-record-copy-events.v1",
+  "raw_capture_sha256": "5af0f03a4070bb3b2efd5f60c17296a98135b0ba080c499102c909b2ba136538",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+  "p15_record": {
+    "selected_point_count": 15,
+    "caller_input_record_words_u32": [2, 0, 0, 0, 0, 0, 1, 0, 0, 1072693248, 0, 0, 1, 4096, 0],
+    "point_transform_input_record_words_u32": [2, 0, 0, 0, 0, 0, 1, 0, 0, 1072693248, 0, 0, 1, 4096, 0],
+    "caller_and_transform_record_values_equal": true,
+    "caller_and_transform_record_pointer_equal": false,
+    "profile_context_identity_equal": true,
+    "same_spatial_parent": true
+  },
+  "adapter_static_evidence": {
+    "adapter_function_bytes_sha256": "1ea0eb3712f276bf71dd7a911818a43dfa16395bc5f2c10cd5ae0f52cd8a4dba",
+    "record_copy_ranges": [
+      {"source_offset": 0, "length": 16},
+      {"source_offset": 16, "length": 16},
+      {"source_offset": 32, "length": 16},
+      {"source_offset": 48, "length": 8},
+      {"source_offset": 56, "length": 4}
+    ],
+    "total_record_bytes_copied": 60,
+    "copy_destination_role": "stack_local_record_passed_to_point_transform",
+    "point_transform_call_observed_in_static_control_flow": true
+  },
+  "observer_error_count": 0,
+  "runtime_pointers_persisted": false
+}

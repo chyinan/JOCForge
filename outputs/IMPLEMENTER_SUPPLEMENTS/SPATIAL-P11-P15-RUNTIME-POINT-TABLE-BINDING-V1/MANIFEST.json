@@ -1,0 +1,21 @@
+{
+  "package_id": "SPATIAL-P11-P15-RUNTIME-POINT-TABLE-BINDING-V1",
+  "scope": "one bounded authorized 38-track run; runtime point values and immediate consumer bound; raw layout/mask origin open",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1806,
+      "sha256": "8b0e75998ff10475252c16ebdd22a0e0e05ddb3541f55bde2730b16b97d0d89a"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 6791,
+      "sha256": "0bcd38f9bf65fa66d185af1550e870609f968db009eb22eda792ef8a887dc0a9"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 606,
+      "sha256": "9d5ed5f246b963e401237c27246ebd8e4bc4a4fa6ee46886376022a414447876"
+    }
+  ]
+}

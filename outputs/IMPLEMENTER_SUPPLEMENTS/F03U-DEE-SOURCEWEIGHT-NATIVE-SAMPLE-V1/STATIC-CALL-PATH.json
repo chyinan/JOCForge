@@ -1,0 +1,25 @@
+{
+  "schema": "washed.native-source-weight-call-path.v1",
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "source_weight": {
+    "instruction_count": 62,
+    "listing_sha256": "6b07863273fb1e2e29ecf07f13ab0ca82121c3db4df7d64cdf3b81d7b3b61c11",
+    "instruction_stream_sha256": "5c7925e89c28d58922ffd5758ba6ea55b68a4279a7e425b3dc08f924b9faceab",
+    "all_instruction_bytes_match": true,
+    "operation_order": "positive-zero F32 accumulator; band-major F32 load; local powf call; scalar F32 addss; advance by source stride; repeat band_count; store one F32 output per source",
+    "exponent_word": "0x3e4ccccd"
+  },
+  "powf": {
+    "instruction_count": 744,
+    "listing_sha256": "1d6fc031b79df4d08717c44c9a14db5694c38e9ec20ced4dec9b17dfb589fb02",
+    "instruction_stream_sha256": "1e494b07d1cd8633ef48211c144fb059c10441853f56764937b8e46843903039",
+    "all_instruction_bytes_match": true,
+    "image_scope": "same DLL .text image",
+    "system_powf_import": false,
+    "fma_instruction_count": 5,
+    "dispatch_rule": "nonzero runtime ISA flag selects FMA3-labeled path"
+  },
+  "imported_pow_symbols": [],
+  "ida_instruction_bytes_match_current_target": true,
+  "addresses_and_decompilation_forwarded": false
+}

@@ -1,0 +1,17 @@
+{
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "sources": [
+    {
+      "path": "specs/01-selected-geometry-layout-and-bed-routing.md",
+      "bytes": 9551,
+      "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830"
+    },
+    {
+      "path": "parameters/geometry-front-side-y-v1.json",
+      "bytes": 1466,
+      "sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185"
+    }
+  ],
+  "existing_approved_provider_manifest_sha256": "369d20fb6242ce8fd6835d6c75484304c97f21b0cbc3c228d47af21802efba6",
+  "recomputation": "P15 Q15 rows independently recomputed from the cited rules and Y_front=5285; F32 words and digest match payload"
+}

@@ -1,0 +1,7 @@
+# Source descriptor row and candidate-ID field binding
+
+In one bounded selected native call, the geometry position-context builder and candidate installer receive the same descriptor object. The observed loop has 48 rows, separate from the 38 physical BWF channels and target capacity 15. For ordinal 20 (not global source ID 20), the 56-byte position subrecord begins at descriptor+24+56*i; the candidate ID is the U32 at descriptor+40+56*i, offset 16 inside that subrecord. Its observed candidate-ID value is 0. The position-record digest and same-call join are recorded in EVIDENCE.json.
+
+This binds only the row-20 position record to its candidate-ID field for this call. Candidate ID 0 is not identified as an ADM UID or global source ID. Whether this row passes its energy gate or is installed/selected was not captured. Do not map ordinal 20 directly to source20 or a physical channel. The 48-row native domain remains distinct from 38 BWF tracks and 15 target slots.
+
+The experiment uses a reference job XML different from the implementation PreparedJobInput XML. No current-job identity join or Gate1 closure is claimed. No address, pointer, code, PCM, metadata payload, key or authorization material is included. Research manifest SHA-256 73f291035fff332a8948678ac0bc20175ad47f710f40b29bb9cbbe001dc5217b is recorded in SOURCE-IDENTITIES.json.

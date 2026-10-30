@@ -1,0 +1,9 @@
+# Selected source row to point-transform position producer
+
+A bounded authorized 38-track reference capture identifies one row in a native loop bounded at 48. For loop ordinal 20, a 56-byte input row is read at loop_base+24+i*56 and converted to a 60-byte caller-local point-transform record before the same iteration dispatches the point-context wrapper. The captured input/output records are identified by SHA-256 only; their raw bytes are not included.
+
+For the scoped conversion, input F32 words at offsets 0,4,8 produce signed Q15 outputs at offsets 4,8,12. Each coordinate applies R32 multiply by 32768, R32 addition of +0.5 for nonnegative or -0.5 for negative, CVTTSS2SI truncation, then upper clamp at 32767. Enum input at offset24 maps 0..5 to [0,3,2,4,1,5]. Mode2 is selected when offset12 U32 is nonzero or offset16 F32 is unordered/zero; mode2 does not write output offsets32/36 in the scoped function. NaN/Inf native vectors were not run.
+
+This closes only the conversion for captured loop ordinal20. It does not bind ordinal20 to an ADM UID, physical track, global source ID or semantic source20. The loop count48 and WAVE channel count38 remain separate domains; row-table construction/ownership is also open. Experiment job XML SHA 84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d differs from current PreparedJobInput XML SHA 20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9. No full model replay, matrix, Type10 or Gate1 validation is claimed.
+
+Research manifest SHA-256 d4e27f2554e3d719f6b699a5deda79afc9ec47fe2041ff0cdf3d200f896d71ac. No binary address/path, code, PCM, metadata payload, key or auth material is included.

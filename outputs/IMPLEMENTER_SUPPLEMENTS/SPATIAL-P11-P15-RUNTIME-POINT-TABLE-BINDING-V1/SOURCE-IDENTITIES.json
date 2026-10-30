@@ -1,0 +1,8 @@
+{
+  "research_manifest_sha256": "43597bc6ffa0df5584db621eeec04665247135f85b417bfc9f5069ebabc40c3d",
+  "observation_sha256": "0bcd38f9bf65fa66d185af1550e870609f968db009eb22eda792ef8a887dc0a9",
+  "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_geometry_spec_sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+  "approved_y_parameter_sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "washed.natural-sourceweight-callback.v1",
+  "status": "NATURAL_SOURCEWEIGHT_OBSERVED",
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "module_path_matches_target": true,
+  "callback_invocation_ordinal": 30,
+  "feature_producer_invocation_ordinal": 30,
+  "sourceweight_caller_invocation_ordinal": 1,
+  "callback_scope_active_on_sourceweight_thread": true,
+  "feature_producer_scope_active_on_sourceweight_thread": true,
+  "same_matrix_object_from_caller_to_helper": true,
+  "feature_matrix_shape": {
+    "bands": 24,
+    "source_stride": 25,
+    "source_count": 25
+  },
+  "feature_matrix_consumed_bytes_hashed": 2400,
+  "feature_matrix_sha256_band_major_consumed_words": "7040820f4b589ec7c0594a3f58ca58e3a5a96c906eb207a9feaa7e54fc7ca84f",
+  "sourceweight_output_bytes_hashed": 100,
+  "sourceweight_output_sha256": "f21df5be039699f5ad68b348b0dfe12bb1f907b27779a6c6d214e011a962b1bb",
+  "powf_calls_inside_this_sourceweight_call": 600,
+  "powf_count_equals_bands_times_sources": true,
+  "authorized_38ch_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "raw_feature_values_persisted_by_observer": false,
+  "raw_pcm_values_persisted_by_observer": false,
+  "host_temp_payload_type": "NOT_EVALUATED; two opaque files are reported separately",
+  "raw_ec3_forwarded": false,
+  "isolated_partial_ec3_bytes_at_stop": 102400,
+  "full_encode_completed": false,
+  "candidate_global_ids_captured": false,
+  "same_generation_identity_scope": "only this process-local callback invocation; no cross-run identity inference"
+}

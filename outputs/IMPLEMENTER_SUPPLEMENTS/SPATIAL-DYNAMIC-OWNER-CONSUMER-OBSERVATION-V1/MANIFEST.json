@@ -1,0 +1,21 @@
+{
+  "package_id": "SPATIAL-DYNAMIC-OWNER-CONSUMER-OBSERVATION-V1",
+  "scope": "one bounded 38-track native spatial run; dynamic owner-consumer only; P11/P15 static basis unbound",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1541,
+      "sha256": "556e495a7af532a98c7ae88936d2d2048d6240f717ae91469288cdab032fbf67"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 5183,
+      "sha256": "72ed793068191399b733ee8a814d50524146fb3ada7e8aca52dac68532c21bc5"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 595,
+      "sha256": "07768d62954d99da028afe8c3d600ba301b4a52b42d7cba5064a1384cb6ba9d9"
+    }
+  ]
+}

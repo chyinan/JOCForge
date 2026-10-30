@@ -1,0 +1,7 @@
+# Approved F01B/F03W installed48 provider bundle
+
+This bundle materializes every entry in the approved selected-adm-installed48 provider manifest (48 files; manifest SHA-256 51305803b05daff498935b3283e56e27bb3e3966f52727bcf803a226871d5e91). It includes approved specifications, parameter assets and input/review vectors, copied with their original relative paths and verified byte-for-byte. It contains no source code, binary encoder, PCM or EC3 media.
+
+Scope is the selected 48 kHz, 38-channel PCM24, 10-bed/28-object, one zero-start event profile and its F03W installed48/provider dependencies. These payloads close the approved model parameters, cold schemas and generation rules for implementation. They do not prove the actual authorized ADM layout selection, runtime provider loading, callback callsite lineage, dynamic P11/P15 point table identity, real F03W audio execution, or whole-chain output; those remain separately NOT_RUN unless independently observed.
+
+The companion P11/P15 selected-basis supplement closes the local mathematical generator and Y_front source, but it is not a native runtime layout observation. Treat each owner/provider validator and state schema as authoritative; do not use test vectors as runtime provider values.

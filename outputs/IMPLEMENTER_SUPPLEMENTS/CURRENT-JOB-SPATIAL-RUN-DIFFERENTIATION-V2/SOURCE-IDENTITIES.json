@@ -1,0 +1,11 @@
+{
+  "research_manifest_sha256": "167dba14ba433843fcd2d9e10ffd77d08565aa7d1e9eb8374b26dc7a4ef73b8e",
+  "prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+  "normalized_config_sha256": "02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0",
+  "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "runs": [
+    "v4 complete run includes native matrix",
+    "v5 producer capture includes packed masks and row records",
+    "v4/v5 are distinct runtime generations"
+  ]
+}

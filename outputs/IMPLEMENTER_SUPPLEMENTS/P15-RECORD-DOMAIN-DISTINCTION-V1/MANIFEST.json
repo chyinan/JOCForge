@@ -1,0 +1,26 @@
+{
+  "package_id": "P15-RECORD-DOMAIN-DISTINCTION-V1",
+  "scope": "one bounded reference call; selector output and P15 geometry record distinct; upstream mapping unbound",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1383,
+      "sha256": "c658552b4b972ee8f59bf300d6dd5f3ac675e5b79560eb4ee183d068c91f8433"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3075,
+      "sha256": "db66a5db8f1a389cb0cfd7f3f439dae1d7123d178a6cd0005d383695160119ce"
+    },
+    {
+      "file": "NATIVE-EVENTS.json",
+      "bytes": 1570,
+      "sha256": "8ebc9f7b3d9800d1809aefa68002229a70ef47a95432a270c8435bf445877bf2"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 396,
+      "sha256": "912e4a02fb99a9d3e0edf4dc86ada2c27517bafd440f4f6db439c4adf1952bea"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# P15 record-domain distinction
+
+In the bounded reference call, the selector-dispatch output record and the P15 geometry adapter input are distinct 60-byte records: their pointers differ and their captured 15-U32 values also differ. Do not treat selector output as the P15 geometry record. The P15 adapter input is then copied byte-for-byte over [0,60) to a stack-local record; that local record has the same 15 U32 values as the adapter input and is passed to the transform. The immediate adapter-to-transform pointer difference is explained by this copy.
+
+The profile context and transform control share the selected spatial parent and point count 15. The producer mapping from selector output record to the separate P15 geometry adapter input remains UNBOUND; no semantic field map between these two records is established. The run used experiment job XML SHA-256 84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d, distinct from current PreparedJobInput XML SHA-256 20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9. Do not join the records or runs based on matching parent, count, or hashes.
+
+This is bounded native evidence for one reference call, not Gate1 or product closure. No raw audio, addresses, binary paths, code, key or auth material is included. Research manifest SHA-256 ae32cd6143481e1a4fac6f82d72c92a1f799560d7616b3e348eb7061488b1829.

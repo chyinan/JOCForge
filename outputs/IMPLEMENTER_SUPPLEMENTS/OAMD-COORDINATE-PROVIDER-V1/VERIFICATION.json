@@ -1,0 +1,13 @@
+{
+  "status": "PASS_INTEGER_GENERATION_AND_ASSET_IDENTITY",
+  "normal_python": "PASS",
+  "optimized_python": "PASS",
+  "xy_count": 63,
+  "z_count": 16,
+  "provider_raw_sha256": "b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243",
+  "xy_u32le_sha256": "9e0d88ece1babc8cec8e53911dd52830ca08e9f00cdfcfde8bce7f5bf69b9a6d",
+  "z_u32le_sha256": "bc119b5b79f29e36b492f74f7b4ceb900a9cf126b3801ed1d7befabfcaeef963",
+  "full_container_parser": "NOT_RUN",
+  "native_runtime": "NOT_RUN",
+  "adm_playback": "NOT_RUN"
+}

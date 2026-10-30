@@ -1,0 +1,219 @@
+{
+  "schema": "wash.native-spatial-profile-selector-producer-evidence.v1",
+  "package_id": "SPATIAL-PROFILE-SELECTOR-PRODUCER-WASH-V1",
+  "status": "SELECTED_38CH_PROFILE_INPUT_CHAIN_HASH_BOUND; OVERALL_GATE1_OPEN",
+  "delivery_boundary": {
+    "native_addresses_or_rvas": "NOT_INCLUDED",
+    "binary_names_or_paths": "NOT_INCLUDED",
+    "private_keys_or_license_material": "NOT_INCLUDED",
+    "raw_audio_or_native_payload": "NOT_INCLUDED",
+    "implementation_agent_contacted": false,
+    "research_result_only": true
+  },
+  "identities": {
+    "native_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "authorized_38_track_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "reference_job_sha256": "1aa7e1d702ccaa4fa6f7a5fece4d0749b593ccc0fd0a31717b3f06606e7c3255",
+    "reference_ec3_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "reference_ec3_bytes": 262144,
+    "runtime_capture_summary_sha256": "0a50d8b7122e640b22767aacecfa0062c181952ef0dec14d9a4928fa02e4807b",
+    "runtime_capture_event_log_sha256": "18a7b79a037d5c81ed5bc95ab34edcc061dbf0e8b576e45d021762fb165b1824",
+    "runtime_observer_sha256": "f3dd7ff1866cb75cabe6dc10c811d3f8cf5f74e362b6cdb0103a1da28b2e8e17",
+    "prior_point_table_wash_manifest_sha256": "43597bc6ffa0df5584db621eeec04665247135f85b417bfc9f5069ebabc40c3d"
+  },
+  "run_scope": {
+    "source_channels": 38,
+    "reference_frame_start": 2160,
+    "reference_frame_end_exclusive": 2208,
+    "reference_frame_count": 48,
+    "native_reference_encoding_completed": true,
+    "native_output_matches_prior_capture": true,
+    "observer_error_count": 0
+  },
+  "source_parameter_lineage": {
+    "current_job_data_rate_kbps": 1024,
+    "current_prefix_word0_u32": 5,
+    "current_inner_copy_word0_u32": 5,
+    "current_inner_object_word0_u32_at_native_input": 5,
+    "same_configuration_prefix_and_inner_copy_join": true,
+    "same_wrapper_inner_slot_and_copied_object_join": true,
+    "same_inner_object_and_descriptor_builder_input_join": true,
+    "descriptor_data_rate_code_u32": 5,
+    "same_descriptor_and_spatial_context_input_join": true,
+    "producer_edge": "The selected configuration prefix word was copied into the inner object; the same inner object supplied the descriptor builder. The descriptor's data_rate code was preserved into the spatial context input."
+  },
+  "native_write_boundary": {
+    "target_field": "descriptor_data_rate_code",
+    "receipt_sha256": "d2b1b798898d8c838074c55028ebbdbaf6ad4358caa80c003825a3e3bf4a5fa0",
+    "source_object_word0_u32": 5,
+    "field_after_initial_zero_copy_u32": 0,
+    "field_after_source_code_assignment_u32": 5,
+    "source_register_value_u32_at_assignment": 5,
+    "same_native_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+    "same_native_reference_output_bytes": 262144,
+    "raw_memory_addresses_persisted": false
+  },
+  "control_normalization": {
+    "descriptor_data_rate_code_u32": 5,
+    "normalizer_input_code_u32": 5,
+    "normalizer_output_selector_input_u32": 8,
+    "native_return_status_u32": 0,
+    "static_mode_rule": {
+      "input_code_0_output_code": 6,
+      "input_codes_1_through_5_output_code": 8,
+      "input_codes_above_5_failure_code": 2,
+      "record_count_valid_range_inclusive": [1, 128],
+      "current_record_count": 38
+    },
+    "other_record_outputs": "NOT_SEMANTICALLY_CLOSED"
+  },
+  "selector_key_mapping": {
+    "static_input_to_key_table": [
+      {"input_u32": 0, "output_key_u32": 2},
+      {"input_u32": 1, "output_key_u32": 3},
+      {"input_u32": 2, "output_key_u32": 4},
+      {"input_u32": 3, "output_key_u32": 5},
+      {"input_u32": 4, "output_key_u32": 7},
+      {"input_u32": 5, "output_key_u32": 9},
+      {"input_u32": 6, "output_key_u32": 11},
+      {"input_u32": 7, "output_key_u32": 13},
+      {"input_u32": 8, "output_key_u32": 15},
+      {"input_u32": 9, "output_key_u32": 23},
+      {"input_u32": 10, "output_key_u32": 31},
+      {"input_u32": 11, "output_key_u32": 47}
+    ],
+    "input_u32_above_11_output_key_u32": 0,
+    "current_input_selector_u32": 8,
+    "current_native_key_u32": 15,
+    "same_record_key_and_native_lookup_input_join": true
+  },
+  "selector_flags_lookup": {
+    "static_key_to_flags_table": [
+      {"key_u32": 2, "flags_u32": 1},
+      {"key_u32": 3, "flags_u32": 3},
+      {"key_u32": 4, "flags_u32": 9},
+      {"key_u32": 5, "flags_u32": 11},
+      {"key_u32": 7, "flags_u32": 1043},
+      {"key_u32": 9, "flags_u32": 4363},
+      {"key_u32": 11, "flags_u32": 4379},
+      {"key_u32": 13, "flags_u32": 4507},
+      {"key_u32": 15, "flags_u32": 5531}
+    ],
+    "lookup_miss_output_u32": 0,
+    "current_native_key_u32": 15,
+    "current_native_flags_u32": 5531
+  },
+  "mask_synthesis_rule": {
+    "semantics_of_input_bits": "UNBOUND",
+    "low_word_bit_expansion": [
+      {"input_bit": 0, "low_word_or_u32": "0x00000003"},
+      {"input_bit": 1, "low_word_or_u32": "0x00000004"},
+      {"input_bit": 2, "low_word_or_u32": "0x00000008"},
+      {"input_bit": 3, "low_word_or_u32": "0x00000030"},
+      {"input_bit": 4, "low_word_or_u32": "0x000000c0"},
+      {"input_bit": 5, "low_word_or_u32": "0x00000100"},
+      {"input_bit": 6, "low_word_or_u32": "0x00000600"},
+      {"input_bit": 7, "low_word_or_u32": "0x00001800"},
+      {"input_bit": 8, "low_word_or_u32": "0x00006000"},
+      {"input_bit": 9, "low_word_or_u32": "0x00018000"},
+      {"input_bit": 10, "low_word_or_u32": "0x00060000"},
+      {"input_bit": 11, "low_word_or_u32": "0x00180000"},
+      {"input_bit": 12, "low_word_or_u32": "0x00600000"},
+      {"input_bit": 13, "low_word_or_u32": "0x01800000"},
+      {"input_bit": 14, "low_word_or_u32": "0x06000000"},
+      {"input_bit": 15, "low_word_or_u32": "0x18000000"},
+      {"input_bit": 16, "low_word_or_u32": "0x60000000"},
+      {"input_bit": 17, "low_word_or_u32": "0x80000000", "high_word_or_u32": "0x00000001"},
+      {"input_bit": 18, "high_word_or_u32": "0x00000006"}
+    ],
+    "secondary_argument_nonzero_high_word_or_u32": "0x00000008",
+    "current_p15_input_flags_u32": 5531,
+    "current_p15_secondary_argument_u32": 1,
+    "current_p15_mask_u64_hex": "0x00000008006678f7",
+    "current_p15_little_endian_u32_words": [6715639, 8],
+    "current_p11_input_flags_u32": 4379,
+    "current_p11_secondary_argument_u32": 1,
+    "current_p11_mask_u64_hex": "0x00000008006060f7",
+    "current_p11_little_endian_u32_words": [6316279, 8],
+    "owner_input_words_equal_synthesized_results": true
+  },
+  "normalizer_projection_rule": {
+    "bit_id_semantics": "UNBOUND; retain the listed IDs as opaque numeric bit selectors",
+    "getter_read_order_u32": [13, 15, 17, 19, 21, 11, 25, 4, 27, 29, 6, 31, 33, 8],
+    "output_a_doubled_bit_ids_u32": [13, 15, 17, 19, 21],
+    "output_b_doubled_bit_ids_u32": [11, 25, 4, 27, 29, 6, 31, 33],
+    "output_b_single_bit_id_u32": 8,
+    "output_a_formula": "2 * sum(bit(mask, id) for id in output_a_doubled_bit_ids_u32)",
+    "output_b_formula": "2 * sum(bit(mask, id) for id in output_b_doubled_bit_ids_u32) + bit(mask, output_b_single_bit_id_u32)",
+    "native_vectors": {
+      "P11": [[13, 1], [15, 0], [17, 0], [19, 0], [21, 1], [11, 0], [25, 0], [4, 1], [27, 0], [29, 0], [6, 1], [31, 0], [33, 0], [8, 0]],
+      "P15": [[13, 1], [15, 0], [17, 1], [19, 0], [21, 1], [11, 1], [25, 0], [4, 1], [27, 0], [29, 0], [6, 1], [31, 0], [33, 0], [8, 0]]
+    },
+    "native_normalizer_outputs_u32": {
+      "P11": [4, 4],
+      "P15": [6, 6]
+    },
+    "other_bits_in_mask_words": "NOT_SEMANTICALLY_NAMED_OR_CLOSED_BY_THIS_NORMALIZER"
+  },
+  "native_profile_selection": {
+    "same_spatial_parent_generation": true,
+    "parent_alias": "PARENT-A",
+    "p11": {
+      "owner_alias": "OWNER-A",
+      "point_count": 11,
+      "native_mode_word_u32_uninterpreted": 3,
+      "selected_profile_code_u32_uninterpreted": 0,
+      "normalized_output_a_u32": 4,
+      "normalized_output_b_u32": 4,
+      "table_f32le_sha256": "ea7577cf5fa0bce6ab76aeb81447c452cbac498fa79bd039a11149d970d7de68",
+      "mask_input_origin_status": "STATIC_ZERO_INITIALIZER_TO_LITERAL_FLAG_WORD; RUNTIME_SCALAR_NOT_CAPTURED"
+    },
+    "p15": {
+      "owner_alias": "OWNER-B",
+      "point_count": 15,
+      "native_mode_word_u32_uninterpreted": 2,
+      "selected_profile_code_u32_uninterpreted": 0,
+      "normalized_output_a_u32": 6,
+      "normalized_output_b_u32": 6,
+      "table_f32le_sha256": "ac82fb195a748642715db4314a7c67e13b5d49a42d3123b05537eda4cf1b5c93",
+      "mask_input_origin_status": "BOUND_TO_DATA_RATE_PREFIX_SELECTOR_CHAIN"
+    },
+    "point_table_consumer_identity": "BOUND_BY_PRIOR_HASH_BOUND_WASH_PACKAGE",
+    "prior_wash_manifest_sha256": "43597bc6ffa0df5584db621eeec04665247135f85b417bfc9f5069ebabc40c3d"
+  },
+  "static_evidence_receipts_sha256": {
+    "mask_synthesis": "1e2162d8a57978e83c44b647733891965c6dc60dafb932d39cf901b559bf6529",
+    "selector_flags_table": "84d86c14aceb73c5d79e85d53c24d5e7275fc3d07c237f7d3943316caf46e86a",
+    "selector_key_jump_table": "7624e9e88b8af8a362fd77ddb00bec9b85c75b72d374e477079c684c52f0ef8b",
+    "configuration_prefix_transport": "b7b1af7eea13a70b35e7fff8fbfe51e9d81c091b4f5ae54bc0afe8e013194057",
+    "source_context_writer": "c967f6dbd0ec0668a6183cbbf1aec15a981228583dc6cfc190990c613318aa93",
+    "selector_input_source": "52caf62d9196c350ffc30248b0998733bd723e007faf1c5680f6ebd8819fa046",
+    "inner_context_consumer": "29a02fd562e21e25228eacae9d5fecb0a995a3a1b36810038685226ff78450fc"
+  },
+  "domain_separation": {
+    "ADM_sample_position_join": "NOT_CAPTURED",
+    "host_frame_join": "NOT_CAPTURED",
+    "fit_generation_join": "NOT_CAPTURED",
+    "U04_invocation_join": "NOT_CAPTURED",
+    "full_matrix_composition": "NOT_RUN",
+    "seedless_history_replay": "NOT_RUN",
+    "model_generated_control_schedule": "NOT_RUN",
+    "Type10_six_plane_composition": "NOT_RUN",
+    "native_output_bytes_equal_to_model_output": "NOT_EVALUATED"
+  },
+  "completion": {
+    "selected_job_P11_P15_profile_mask_dependency": "CLOSED_FOR_THIS_REFERENCE_CONFIGURATION",
+    "all_spatial_input_producers_model_owned": false,
+    "Gate1_closed": false,
+    "implementation_ready": false,
+    "R32_frozen_input_verified_for_full_R33_goal": false
+  },
+  "remaining_open": [
+    "P11 builder scalar source was resolved statically to a zero-initialized control slot, but that scalar itself was not separately captured at the call boundary.",
+    "Other outputs of the record-to-control converter are not semantically closed and may affect later spatial values.",
+    "The complete ADM source20 position producer remains unbound.",
+    "Exact-contract U04 numeric replay and second-object matrix composition remain NOT_RUN.",
+    "Seedless history, model-generated schedules, composed continuity, and six-plane Type10 validation remain NOT_RUN.",
+    "The frozen R32 correction input has not yet been found and independently verified in the current workspace."
+  ]
+}

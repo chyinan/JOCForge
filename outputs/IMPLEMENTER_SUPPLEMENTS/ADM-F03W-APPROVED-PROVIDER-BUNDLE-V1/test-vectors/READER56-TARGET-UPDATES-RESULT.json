@@ -1,0 +1,43 @@
+{
+  "schema": "reader56-target-updates-result.v1",
+  "status": "PASS_MODEL_POSTCOMPARE",
+  "vector_sha256": "7e5e54b0005318ea8a5699272ba3e6381ba10d9f17b81d89d01229e68169b34a",
+  "parameter_sha256": "ec4c56549a47d1892655345c036aba822d2f0c8baae6c71b398001e9f90ce5d1",
+  "panner_parameter_sha256": "b2f2cb31d3ee099db5bf32a8b93c8e1a9c441d84b9246c0908dceabde8e44c47",
+  "state_schema_semantic_sha256": "d7ff277fea97560d969a5b59ccb19d53d7a7b2ab0c25c1e0d14cab6affbb4045",
+  "counts": {
+    "callbacks": 8,
+    "marker_rows": 120,
+    "record56_bytes_compared": 6720,
+    "control52_bytes_compared": 6240,
+    "history_payload_bytes_compared": 20160,
+    "generation_tags_compared": 360,
+    "reader_invocations": 6,
+    "reader56_records": 96,
+    "target_f32_words": 576,
+    "type11_wire_bytes": 414,
+    "independently_generated_reader56_records": 96,
+    "independently_generated_target_f32_words": 576,
+    "reader_materializer_edge_records": 16,
+    "target_leaf_rejection_cases": 4
+  },
+  "marker_history_model_mismatches": 0,
+  "type11_leaf": "REUSED_EXISTING_DEFINED_AND_LOCALLY_REVIEWED_F05O_MODEL",
+  "reader56_materializer": "INDEPENDENT_CLEAN_MODEL_POSTCOMPARE_PASS_96_RECORDS",
+  "target_leaf": "INDEPENDENT_CLEAN_MAIN_TYPE2_PANNER_POSTCOMPARE_PASS_576_WORDS",
+  "reset": {
+    "cold_sha256": "309a342e6fcb4d6dee13b8da144c7e61880ce1fbd4a5e555291bd3c62470a588",
+    "matches_original_cold": true,
+    "callback0_after_sha256": "866d4dea39b594080eaa7ea824e4857d3c62217f44f0225dde3d0caa76ccc89f",
+    "matches_original_callback0_after": true,
+    "proof_matches_original": true
+  },
+  "rejections": {
+    "count": 7,
+    "mismatches": 0
+  },
+  "pcm_content_read": false,
+  "secret_material_read": false,
+  "sdk_or_native_runtime_called": false,
+  "implementation_ready": "NO"
+}

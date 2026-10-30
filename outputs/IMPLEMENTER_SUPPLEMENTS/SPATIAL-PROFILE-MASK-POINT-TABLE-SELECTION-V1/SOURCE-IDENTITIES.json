@@ -1,0 +1,9 @@
+{
+  "research_manifest_sha256": "e5e1a43c5db59bb2b6f516ec4203e142118ace789776ebcae8805284b6c8cadb",
+  "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "reference_job_sha256": "1aa7e1d702ccaa4fa6f7a5fece4d0749b593ccc0fd0a31717b3f06606e7c3255",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "approved_geometry_spec_sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+  "approved_y_parameter_sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185",
+  "prior_runtime_table_consumer_manifest_sha256": "43597bc6ffa0df5584db621eeec04665247135f85b417bfc9f5069ebabc40c3d"
+}

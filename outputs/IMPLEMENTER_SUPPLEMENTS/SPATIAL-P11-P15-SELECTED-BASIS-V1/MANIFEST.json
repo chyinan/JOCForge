@@ -1,0 +1,22 @@
+{
+  "package_id": "SPATIAL-P11-P15-SELECTED-BASIS-V1",
+  "scope": "selected local mathematical provider; native runtime layout observation not claimed",
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1887,
+      "sha256": "8c90527edfde698e25a1d8d7a295f7db29e54e6b18a350255f1a8118a88382d7"
+    },
+    {
+      "file": "SELECTED-P15-INPUT-RECIPE.json",
+      "bytes": 3495,
+      "sha256": "f485f7d37854ff94fe695cc8b963e553a381ac4800b34c80681fdae5990f6951"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 754,
+      "sha256": "a55fdbc41d0bc947b1ef0c140ea81b492926fc40b5fcd58a8c36959e5138ff9a"
+    }
+  ]
+}

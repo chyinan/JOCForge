@@ -1,0 +1,432 @@
+{
+  "schema": "wash.spatial-source-selection-output-vector.v1",
+  "source_descriptor_count": 48,
+  "prefix_aggregate_count": 11,
+  "owner_regular_source_row_count": 37,
+  "owner_row_to_source_column": [
+    {
+      "owner_regular_row": 0,
+      "source_descriptor_column": 11,
+      "regular_global_source_id": 11
+    },
+    {
+      "owner_regular_row": 1,
+      "source_descriptor_column": 12,
+      "regular_global_source_id": 12
+    },
+    {
+      "owner_regular_row": 2,
+      "source_descriptor_column": 13,
+      "regular_global_source_id": 13
+    },
+    {
+      "owner_regular_row": 3,
+      "source_descriptor_column": 14,
+      "regular_global_source_id": 14
+    },
+    {
+      "owner_regular_row": 4,
+      "source_descriptor_column": 15,
+      "regular_global_source_id": 15
+    },
+    {
+      "owner_regular_row": 5,
+      "source_descriptor_column": 16,
+      "regular_global_source_id": 16
+    },
+    {
+      "owner_regular_row": 6,
+      "source_descriptor_column": 17,
+      "regular_global_source_id": 17
+    },
+    {
+      "owner_regular_row": 7,
+      "source_descriptor_column": 18,
+      "regular_global_source_id": 18
+    },
+    {
+      "owner_regular_row": 8,
+      "source_descriptor_column": 19,
+      "regular_global_source_id": 19
+    },
+    {
+      "owner_regular_row": 9,
+      "source_descriptor_column": 20,
+      "regular_global_source_id": 20
+    },
+    {
+      "owner_regular_row": 10,
+      "source_descriptor_column": 21,
+      "regular_global_source_id": 21
+    },
+    {
+      "owner_regular_row": 11,
+      "source_descriptor_column": 22,
+      "regular_global_source_id": 22
+    },
+    {
+      "owner_regular_row": 12,
+      "source_descriptor_column": 23,
+      "regular_global_source_id": 23
+    },
+    {
+      "owner_regular_row": 13,
+      "source_descriptor_column": 24,
+      "regular_global_source_id": 24
+    },
+    {
+      "owner_regular_row": 14,
+      "source_descriptor_column": 25,
+      "regular_global_source_id": 25
+    },
+    {
+      "owner_regular_row": 15,
+      "source_descriptor_column": 26,
+      "regular_global_source_id": 26
+    },
+    {
+      "owner_regular_row": 16,
+      "source_descriptor_column": 27,
+      "regular_global_source_id": 27
+    },
+    {
+      "owner_regular_row": 17,
+      "source_descriptor_column": 28,
+      "regular_global_source_id": 28
+    },
+    {
+      "owner_regular_row": 18,
+      "source_descriptor_column": 29,
+      "regular_global_source_id": 29
+    },
+    {
+      "owner_regular_row": 19,
+      "source_descriptor_column": 30,
+      "regular_global_source_id": 30
+    },
+    {
+      "owner_regular_row": 20,
+      "source_descriptor_column": 31,
+      "regular_global_source_id": 31
+    },
+    {
+      "owner_regular_row": 21,
+      "source_descriptor_column": 32,
+      "regular_global_source_id": 32
+    },
+    {
+      "owner_regular_row": 22,
+      "source_descriptor_column": 33,
+      "regular_global_source_id": 33
+    },
+    {
+      "owner_regular_row": 23,
+      "source_descriptor_column": 34,
+      "regular_global_source_id": 34
+    },
+    {
+      "owner_regular_row": 24,
+      "source_descriptor_column": 35,
+      "regular_global_source_id": 35
+    },
+    {
+      "owner_regular_row": 25,
+      "source_descriptor_column": 36,
+      "regular_global_source_id": 36
+    },
+    {
+      "owner_regular_row": 26,
+      "source_descriptor_column": 37,
+      "regular_global_source_id": 37
+    },
+    {
+      "owner_regular_row": 27,
+      "source_descriptor_column": 38,
+      "regular_global_source_id": 38
+    },
+    {
+      "owner_regular_row": 28,
+      "source_descriptor_column": 39,
+      "regular_global_source_id": 39
+    },
+    {
+      "owner_regular_row": 29,
+      "source_descriptor_column": 40,
+      "regular_global_source_id": 40
+    },
+    {
+      "owner_regular_row": 30,
+      "source_descriptor_column": 41,
+      "regular_global_source_id": 41
+    },
+    {
+      "owner_regular_row": 31,
+      "source_descriptor_column": 42,
+      "regular_global_source_id": 42
+    },
+    {
+      "owner_regular_row": 32,
+      "source_descriptor_column": 43,
+      "regular_global_source_id": 43
+    },
+    {
+      "owner_regular_row": 33,
+      "source_descriptor_column": 44,
+      "regular_global_source_id": 44
+    },
+    {
+      "owner_regular_row": 34,
+      "source_descriptor_column": 45,
+      "regular_global_source_id": 45
+    },
+    {
+      "owner_regular_row": 35,
+      "source_descriptor_column": 46,
+      "regular_global_source_id": 46
+    },
+    {
+      "owner_regular_row": 36,
+      "source_descriptor_column": 47,
+      "regular_global_source_id": 47
+    }
+  ],
+  "source_column_semantics": {
+    "input_metadata_crosswalk_sha256": "dda4c052c11b47e5f2d4245ae3d9e9736ebb0dc1fb793ebdb5bd0b4cbf7bbac2",
+    "crosswalk_manifest_sha256": "18caf60dea865e03009168761e4ccba00337414ec8e2f2fd571a7aa765d5ee0d",
+    "metadata_hashes_match": true,
+    "regular_columns": "11..47",
+    "regular_global_source_id_rule": "source descriptor column index is the global source ID for columns 11 through 47 under the matched F03R input crosswalk",
+    "prefix_columns": "0..10 are aggregate-prefix sources; no ADM AO UID is assigned"
+  },
+  "candidate_rows": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    20,
+    21,
+    24,
+    25,
+    28,
+    29,
+    34,
+    35,
+    36,
+    37,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "selected_candidate_rows": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    5,
+    6,
+    40,
+    41,
+    7,
+    8,
+    9,
+    10,
+    35,
+    25
+  ],
+  "selected_count": 15,
+  "selected_attribute_field_values": [
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816,
+    2816
+  ],
+  "assignment_map": [
+    0,
+    7,
+    3,
+    2,
+    13,
+    8,
+    1,
+    5,
+    9,
+    14,
+    4,
+    6,
+    10,
+    11,
+    12
+  ],
+  "final_target_slot_to_source_descriptor_column": [
+    11,
+    40,
+    14,
+    13,
+    35,
+    41,
+    12,
+    5,
+    7,
+    25,
+    15,
+    6,
+    8,
+    9,
+    10
+  ],
+  "final_target_slots": [
+    {
+      "target_slot": 0,
+      "source_descriptor_column": 11,
+      "source_kind": "regular_input_source",
+      "global_source_id": 11
+    },
+    {
+      "target_slot": 1,
+      "source_descriptor_column": 40,
+      "source_kind": "regular_input_source",
+      "global_source_id": 40
+    },
+    {
+      "target_slot": 2,
+      "source_descriptor_column": 14,
+      "source_kind": "regular_input_source",
+      "global_source_id": 14
+    },
+    {
+      "target_slot": 3,
+      "source_descriptor_column": 13,
+      "source_kind": "regular_input_source",
+      "global_source_id": 13
+    },
+    {
+      "target_slot": 4,
+      "source_descriptor_column": 35,
+      "source_kind": "regular_input_source",
+      "global_source_id": 35
+    },
+    {
+      "target_slot": 5,
+      "source_descriptor_column": 41,
+      "source_kind": "regular_input_source",
+      "global_source_id": 41
+    },
+    {
+      "target_slot": 6,
+      "source_descriptor_column": 12,
+      "source_kind": "regular_input_source",
+      "global_source_id": 12
+    },
+    {
+      "target_slot": 7,
+      "source_descriptor_column": 5,
+      "source_kind": "aggregate_prefix",
+      "prefix_aggregate_index": 5,
+      "global_source_id": null
+    },
+    {
+      "target_slot": 8,
+      "source_descriptor_column": 7,
+      "source_kind": "aggregate_prefix",
+      "prefix_aggregate_index": 7,
+      "global_source_id": null
+    },
+    {
+      "target_slot": 9,
+      "source_descriptor_column": 25,
+      "source_kind": "regular_input_source",
+      "global_source_id": 25
+    },
+    {
+      "target_slot": 10,
+      "source_descriptor_column": 15,
+      "source_kind": "regular_input_source",
+      "global_source_id": 15
+    },
+    {
+      "target_slot": 11,
+      "source_descriptor_column": 6,
+      "source_kind": "aggregate_prefix",
+      "prefix_aggregate_index": 6,
+      "global_source_id": null
+    },
+    {
+      "target_slot": 12,
+      "source_descriptor_column": 8,
+      "source_kind": "aggregate_prefix",
+      "prefix_aggregate_index": 8,
+      "global_source_id": null
+    },
+    {
+      "target_slot": 13,
+      "source_descriptor_column": 9,
+      "source_kind": "aggregate_prefix",
+      "prefix_aggregate_index": 9,
+      "global_source_id": null
+    },
+    {
+      "target_slot": 14,
+      "source_descriptor_column": 10,
+      "source_kind": "aggregate_prefix",
+      "prefix_aggregate_index": 10,
+      "global_source_id": null
+    }
+  ],
+  "active_target_flags": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "active_target_count": 15,
+  "matrix_consumer": {
+    "rows": 15,
+    "source_columns": 48,
+    "source_pointer_table_same_object_as_descriptor": true,
+    "numeric_coefficients": "NOT_CAPTURED"
+  },
+  "raw_pcm_persisted": false
+}
+

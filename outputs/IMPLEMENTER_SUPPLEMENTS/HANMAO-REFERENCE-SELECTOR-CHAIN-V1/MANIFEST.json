@@ -1,0 +1,26 @@
+{
+  "package_id": "HANMAO-REFERENCE-SELECTOR-CHAIN-V1",
+  "scope": "one hash-bound 38-track reference job; current implementation job identity differs; Gate1 open",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1517,
+      "sha256": "7b4e6edfdd8c321d48ad33b597748dd330e8d1315fbda24c8d3679dc45c66b52"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 5184,
+      "sha256": "f4ee6bb3beaa8ce1dfa407cb7b342e6d3f596f733def2689c2a8bc76a6f61abd"
+    },
+    {
+      "file": "NATIVE-EVENTS.json",
+      "bytes": 2102,
+      "sha256": "2afd8dd426c4b66abdfa2bab93e8606712ff6850163b4517d334af4745a495a3"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 542,
+      "sha256": "608995f1597ce73626bf2a1a448fbb4753b405a14d03dc4dd387790c112625d0"
+    }
+  ]
+}

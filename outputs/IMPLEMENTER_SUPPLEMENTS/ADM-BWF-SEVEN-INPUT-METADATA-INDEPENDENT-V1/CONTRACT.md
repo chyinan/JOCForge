@@ -1,0 +1,3 @@
+# Seven authorized ADM BWF metadata observations
+
+Independent research-side metadata inspection reports all seven inputs as RIFF/WAVE integer PCM24 at 48 kHz with ten DirectSpeakers tracks. Six contain 36 physical tracks (10 bed + 26 object); the primary contains 38 (10 bed + 28 object). In these files LFE is track 4/physical slot 3. CHNA covers each physical track once and reported AXML references resolve; object tracks each have one zero-start block with duration close to the PCM extent. This is sample-scoped metadata inspection, not full ADM admission. DBMD semantic decoding, encoding, JOC structure, rendering and listening remain NOT_RUN. Input track count does not determine output layout. Whole-file hashing streamed the resources; no PCM values were delivered.

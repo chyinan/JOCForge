@@ -1,0 +1,40 @@
+{
+  "schema": "spatial-source-row-conversion-events.v1",
+  "experiment_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+  "debug_reference_log_sha256": "f4b313eef5933f7410ed5533a939451572283852b9a9b1dffe9bdfdd5fe21286",
+  "debug_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "debug_reference_output_bytes": 262144,
+  "captured_row": {
+    "loop_ordinal_zero_based": 20,
+    "loop_bound_u32": 48,
+    "loop_ordinal_is_global_source_id": false,
+    "input_record_bytes": 56,
+    "input_record_sha256": "fc9971588057c25421fee991b3834785d20ff2bbb0999e69c74fca413b731415",
+    "converted_record_bytes": 60,
+    "converted_record_sha256": "447c47b4d948f01421ba637baf2f0f752dcf29a67ecc81068053aa18e7b66f53",
+    "output_mode_word_u32": 2,
+    "row_record_contents_persisted": false,
+    "runtime_pointers_persisted": false
+  },
+  "static_producer_rules": {
+    "input_row_stride_bytes": 56,
+    "row_base_offset_from_loop_base": 24,
+    "position_float_input_offsets_bytes": [0, 4, 8],
+    "mode_flag_input_offset_bytes": 12,
+    "mode_scalar_input_offset_bytes": 16,
+    "enum_input_offset_bytes": 24,
+    "additional_value_input_offset_bytes": 28,
+    "enum_input_0_to_5_output": [0, 3, 2, 4, 1, 5],
+    "output_record_size_bytes": 60,
+    "output_mode_words": [2, 3],
+    "q15_scale_f32": 32768.0,
+    "round_bias_nonnegative_f32": 0.5,
+    "round_bias_negative_f32": -0.5,
+    "rounding_order": "R32 multiply, R32 sign-dependent bias add, truncate-to-signed-int, upper clamp at 32767",
+    "lower_clamp": "NO_STATIC_WRITE_FOUND",
+    "mode3_additional_float_input_offset_bytes": 16,
+    "mode2_unwritten_output_offsets_bytes": [32, 36],
+    "mode2_transform_reads_of_output_offsets_32_36": false
+  }
+}

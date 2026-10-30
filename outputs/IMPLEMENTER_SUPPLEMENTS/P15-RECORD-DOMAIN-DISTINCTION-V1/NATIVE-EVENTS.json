@@ -1,0 +1,34 @@
+{
+  "schema": "spatial-record-domain-boundary-events.v1",
+  "raw_capture_sha256": "c9d6f702147d677ce56ab7d261845c08bd338d40474ec30524e561e3f743f572",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+  "native_reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "native_reference_output_bytes": 262144,
+  "selector": {
+    "source_field_offset_u32": 8,
+    "source_field_value_u32": 8,
+    "selector_key_u32": 15,
+    "configuration_flags_u32": 5531
+  },
+  "record_domains": {
+    "selector_dispatch_record_bytes": 60,
+    "p15_adapter_input_record_bytes": 60,
+    "selector_dispatch_record_and_p15_adapter_input_pointer_equal": false,
+    "selector_dispatch_record_and_p15_adapter_input_values_equal": false,
+    "p15_adapter_input_and_transform_record_pointer_equal": false,
+    "p15_adapter_input_and_transform_record_values_equal": true,
+    "p15_profile_context_matches_transform_control": true,
+    "p15_selected_point_count": 15,
+    "p15_and_p11_same_spatial_parent": true
+  },
+  "interpretation": {
+    "selector_output_to_p15_geometry_record_mapping": "UNBOUND",
+    "immediate_p15_adapter_to_transform_pointer_difference": "EXPLAINED_BY_60_BYTE_STACK_LOCAL_COPY",
+    "selector_output_record_semantics": "NOT_ASSIGNED",
+    "p15_geometry_record_semantics": "NOT_ASSIGNED",
+    "runtime_pointers_persisted": false
+  },
+  "observer_error_count": 0,
+  "native_log_complete": true
+}

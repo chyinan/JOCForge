@@ -1,0 +1,26 @@
+{
+  "package_id": "SPATIAL-SOURCE-POSITION-PRODUCER-V1",
+  "scope": "one captured 38-track reference loop row; ordinal-to-ADM source identity unbound",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1674,
+      "sha256": "1786b9b2e8565cbf526de027635ba9e1106af0d18ccbce7053a7e57b6368cd19"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 4843,
+      "sha256": "d7dadbedcc2819a0f3c6c265b9bfd8926a392a8db68092d9fda66555b901d3fb"
+    },
+    {
+      "file": "NATIVE-EVENTS.json",
+      "bytes": 1883,
+      "sha256": "91a0b2303fda848b187e8f637d5b334752745d7da94d98ca9208adc9e8454d72"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 396,
+      "sha256": "7a8c45019b29829b58137958079e758a7eabd13cb4433d920d9d7199ae116639"
+    }
+  ]
+}

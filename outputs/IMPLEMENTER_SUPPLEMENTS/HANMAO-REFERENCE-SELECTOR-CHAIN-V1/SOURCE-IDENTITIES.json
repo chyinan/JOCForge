@@ -1,0 +1,7 @@
+{
+  "research_manifest_sha256": "e5e1a43c5db59bb2b6f516ec4203e142118ace789776ebcae8805284b6c8cadb",
+  "runtime_point_table_manifest_sha256": "43597bc6ffa0df5584db621eeec04665247135f85b417bfc9f5069ebabc40c3d",
+  "current_dynamic_point_observation_manifest_sha256": "4a87e68a2114b39331b86700f1f3190138c7f7c6523887f32f67fee317da70ea",
+  "current_prepared_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+  "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d"
+}

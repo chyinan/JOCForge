@@ -1,0 +1,200 @@
+{
+  "scope": "Explicit selected P15 basis recipe from existing approved F01GL.3",
+  "layout": 5531,
+  "layout_hex": "0x159B",
+  "profile_enabled": true,
+  "source_geometry_indices_in_stable_row_order": [
+    0,
+    1,
+    2,
+    4,
+    5,
+    6,
+    7,
+    11,
+    12,
+    13,
+    14,
+    17,
+    18,
+    21,
+    22
+  ],
+  "q15_xyz_rows": [
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      32767,
+      0,
+      0
+    ],
+    [
+      16384,
+      0,
+      0
+    ],
+    [
+      0,
+      16384,
+      0
+    ],
+    [
+      32767,
+      16384,
+      0
+    ],
+    [
+      0,
+      32767,
+      0
+    ],
+    [
+      32767,
+      32767,
+      0
+    ],
+    [
+      0,
+      5285,
+      0
+    ],
+    [
+      32767,
+      5285,
+      0
+    ],
+    [
+      0,
+      0,
+      32767
+    ],
+    [
+      32767,
+      0,
+      32767
+    ],
+    [
+      0,
+      16384,
+      32767
+    ],
+    [
+      32767,
+      16384,
+      32767
+    ],
+    [
+      0,
+      32767,
+      32767
+    ],
+    [
+      32767,
+      32767,
+      32767
+    ]
+  ],
+  "conversion": "Each signed I32 coordinate -> R32 -> separate R32 multiplication by exact 2^-15. Values here are exactly representable at both steps.",
+  "authorized_parameter": {
+    "path": "parameters/geometry-front-side-y-v1.json",
+    "sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185",
+    "type": "I32 Q15",
+    "value": 5285,
+    "validation": "0 < Y_front < 16384",
+    "applied_rows": [
+      7,
+      8
+    ],
+    "applied_axis": "Y"
+  },
+  "validation": "Selected provider supports only layout0x111B or0x159B with profile_enabled bool true. This recipe is exclusively0x159B; reject other rows for P15. Reject bool-as-int, invalid U32/layout>=2^19, missing/invalid parameter. Freeze provider per programme. No coordinate sorting or second fallback is applied to this direct generator.",
+  "basis_identity": "Bind the existing typed geometry provider identity to exact selected layout/profile, approved generation spec identity and parameter file identity; stable row order is mandatory. Do not introduce a native receipt, mandatory new hash or extra DSP state.",
+  "diagnostic_f32_words": [
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      1065352704,
+      0,
+      0
+    ],
+    [
+      1056964608,
+      0,
+      0
+    ],
+    [
+      0,
+      1056964608,
+      0
+    ],
+    [
+      1065352704,
+      1056964608,
+      0
+    ],
+    [
+      0,
+      1065352704,
+      0
+    ],
+    [
+      1065352704,
+      1065352704,
+      0
+    ],
+    [
+      0,
+      1042622464,
+      0
+    ],
+    [
+      1065352704,
+      1042622464,
+      0
+    ],
+    [
+      0,
+      0,
+      1065352704
+    ],
+    [
+      1065352704,
+      0,
+      1065352704
+    ],
+    [
+      0,
+      1056964608,
+      1065352704
+    ],
+    [
+      1065352704,
+      1056964608,
+      1065352704
+    ],
+    [
+      0,
+      1065352704,
+      1065352704
+    ],
+    [
+      1065352704,
+      1065352704,
+      1065352704
+    ]
+  ],
+  "diagnostic_f32le_sha256": "ac82fb195a748642715db4314a7c67e13b5d49a42d3123b05537eda4cf1b5c93",
+  "authority": {
+    "spec_file": "specs/01-selected-geometry-layout-and-bed-routing.md",
+    "spec_sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+    "section": "3 Selected P11/P15 direct generator",
+    "parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+  },
+  "execution_claim": "45 words generated from approved integer recipe, not native or real-ADM execution"
+}

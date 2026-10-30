@@ -1,0 +1,26 @@
+{
+  "package_id": "SPATIAL-SOURCE-DESCRIPTOR-ROW-CANDIDATE-ID-V1",
+  "scope": "one bounded reference call; row20 to candidate ID bound; ADM/global identity and gate remain open",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1352,
+      "sha256": "3a118c03124ee5f7c185a6076dc42602554ad6a144e0c7f4a049da09117cc911"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3159,
+      "sha256": "a05c65d2507de4d902cf08b5f63cf23c96967d1beb63f53634af14a15f7616c7"
+    },
+    {
+      "file": "NATIVE-EVENTS.json",
+      "bytes": 1194,
+      "sha256": "d845da0b2ffbb2a415134661b91b45276d165fd519d3b0e3ddee9200c5b42dc8"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 396,
+      "sha256": "3f7ef5b7d8de2c70101490bb3ecd330b604853103dabb15cdd6b320123e52648"
+    }
+  ]
+}

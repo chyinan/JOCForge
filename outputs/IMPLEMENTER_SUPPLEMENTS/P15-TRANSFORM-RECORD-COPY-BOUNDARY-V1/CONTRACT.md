@@ -1,0 +1,7 @@
+# P15 adapter record copy identity boundary
+
+In the bounded authorized 38-track reference run, the P15 adapter caller record pointer differs from the point-transform input pointer because the adapter copies bytes [0,60) (15 U32 words) into a stack-local record and passes that copy to the transform. The two 15-word value arrays match exactly, and profile context, spatial parent and selected point count 15 match within the same call. The immediate pointer mismatch is therefore explained by the observed copy, not by different values at that edge.
+
+This closes only the immediate adapter-input to transform-input value edge for the captured reference call. It does not establish that the upstream selector source record is the object copied by the adapter; selector-source to adapter/transform record identity remains UNBOUND. The experiment XML hash 84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d differs from the implementation PreparedJobInput XML hash 20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9, so no current-job XML identity join is claimed.
+
+The evidence is a bounded native observation, not GATE1 closure or product acceptance. No address, runtime pointer, binary name/path, code, PCM, metadata payload or key is included. Source research manifest SHA-256: 1e863e9b14fe9ccedde4bde229083802dcc30506132a340a0d930d82b50f9aa0.

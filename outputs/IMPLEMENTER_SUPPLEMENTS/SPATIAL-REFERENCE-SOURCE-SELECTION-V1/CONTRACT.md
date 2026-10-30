@@ -1,0 +1,7 @@
+# Reference source-selection chain and owner-row mapping
+
+This bounded native observation applies to one hash-bound 38-track reference job/source, not the current implementation PreparedJobInput (their job XML hashes differ). The same-generation chain records 1024 kbps through data-rate code 5, selector input 8, key15 and flags5531 to P15 mask/context; P11 has its own mask/context. The 48-source pointer/descriptor tables share an 11-entry prefix with the 37-row regular owner suffix. Within this matched reference fixture, regular row r maps to descriptor/source column r+11; the accompanying approved F03R crosswalk maps columns 11..47 to global source IDs 11..47, while prefix columns 0..10 are aggregate provenance without AO UID.
+
+This row mapping is fixture/profile-scoped. It does not equate native candidate-ID values with ADM UIDs. Row20 candidate ID0 remains unbound to a global identity and its gate/install outcome was not captured. Selector/Gate1 numeric helper completeness, matrix values, source20 construction and model/audio acceptance remain open.
+
+The package contains sanitized evidence and input/output vectors only. Research manifest SHA-256 f899782becbfbdbcc598f6196f6fa9deb56e706976eabd51e5c81eb9fbf32a67; authorized source SHA-256 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1; reference job SHA-256 1aa7e1d702ccaa4fa6f7a5fece4d0749b593ccc0fd0a31717b3f06606e7c3255. The current PreparedJobInput XML hash differs. Keep them as a reference experiment; they do not prove the implementation job used the same config.

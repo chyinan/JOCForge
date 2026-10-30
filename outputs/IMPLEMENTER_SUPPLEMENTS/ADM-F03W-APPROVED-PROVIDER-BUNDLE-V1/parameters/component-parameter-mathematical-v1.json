@@ -1,0 +1,41 @@
+{
+  "schema": "component-parameter-mathematical-generation.v1",
+  "route": "COMPONENT_FIXED_48K_Q15_PARAMETER_MATH_V1",
+  "sample_rate": 48000,
+  "block_samples": 64,
+  "coefficient_rules": [
+    "Q15_RNE(2^(-dt/(1/25)))",
+    "1-c0",
+    "Q15_RNE(2^(-dt/(4/25)))",
+    "1-c2",
+    "Q15_RNE(2^(-dt/(1/200)))"
+  ],
+  "dt_rule": "64/48000 seconds",
+  "reciprocal_pivot_rule": "ceil(32768/sqrt(2))/32768",
+  "target_pivot_rule": "Q15_RNE(10^(-3/40))",
+  "envelope_weight_rule": "Q15_RNE(0.5*10^(3/40))",
+  "q15_integers": [
+    32020,
+    748,
+    32579,
+    189,
+    27238,
+    23171,
+    27571,
+    19472
+  ],
+  "coefficient_words": [
+    "3f7a2800",
+    "3cbb0000",
+    "3f7e8600",
+    "3bbd0000",
+    "3f54cc00"
+  ],
+  "reciprocal_pivot_word": "3f350600",
+  "target_pivot_word": "3f576600",
+  "envelope_weight_word": "3f182000",
+  "original_design_rationale": "not claimed; equivalent generation settings only",
+  "source_table_copied": false,
+  "public_or_third_party_distribution": "NOT_AUTHORIZED",
+  "implementation_ready": "NO"
+}

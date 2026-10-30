@@ -1,0 +1,59 @@
+{
+  "schema": "hanmao-reference-spatial-mask-events.v1",
+  "raw_capture_sha256": "5af0f03a4070bb3b2efd5f60c17296a98135b0ba080c499102c909b2ba136538",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "experiment_job_xml_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+  "reference_output_sha256": "077977564a8da534a52dee3feb1c791cc0825dd9cd7eb975575799b02450e686",
+  "reference_output_bytes": 262144,
+  "events": [
+    {
+      "event": "p11_default_mask_source_arguments",
+      "sequence": 324,
+      "arguments_u32": [38, 1536, 48000, 0]
+    },
+    {
+      "event": "p11_mask_builder",
+      "sequence": 325,
+      "arguments_u32": [4379, 1, 1],
+      "synthesized_mask_words_u32": [6316279, 8],
+      "owner_input_words_u32": [6316279, 8],
+      "selected_point_count": 11,
+      "normalized_output_u32": [4, 4],
+      "source_record_matches_point_transform_record": true
+    },
+    {
+      "event": "selector_source_and_key",
+      "sequence": 323,
+      "source_field_offset_u32": 8,
+      "source_field_value_u32": 8,
+      "mapped_selector_key_u32": 15
+    },
+    {
+      "event": "p15_selector_dispatch_and_flags",
+      "sequence": 349,
+      "dispatch_arguments_u32": [15, 2, 1, 1],
+      "selector_key_u32": 15,
+      "returned_configuration_flags_u32": 5531
+    },
+    {
+      "event": "p15_mask_builder",
+      "sequence": 350,
+      "arguments_u32": [5531, 1, 1],
+      "synthesized_mask_words_u32": [6715639, 8],
+      "owner_input_words_u32": [6715639, 8],
+      "selected_point_count": 15,
+      "normalized_output_u32": [6, 6],
+      "source_record_matches_point_transform_record": false
+    }
+  ],
+  "joins": {
+    "p11_and_p15_selected_under_same_spatial_parent": true,
+    "p11_mask_source_to_owner_to_selected_11_point_table": true,
+    "source_field_8_to_key_15_to_flags_5531_to_p15_owner": true,
+    "p15_owner_to_selected_15_point_table": true,
+    "p15_transform_source_record_identity": "NOT_MATCHED",
+    "runtime_pointers_persisted": false
+  },
+  "observer_error_count": 0,
+  "native_log_complete": true
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "washed-natural-sourceweight-callback-binding.v1",
+  "source_package_manifest_sha256": "58c27ac5c564d94c61bbd185ec4a5a3798c282fcb1dd411db687953456de1e47",
+  "call_lineage_sha256": "aa8fee99a37a116a1c27af8e166956e1288d95c41bcafa6f7f57f96ac07cf41e",
+  "natural_callback_sha256": "0d392f50d24a83054e06e740434b98c2db15d271c9f410e6791bd142aa770700",
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "authorized_input_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "callback_ordinal": 30,
+  "feature_producer_ordinal": 30,
+  "source_count": 25,
+  "bands": 24,
+  "powf_calls": 600,
+  "matrix_pointer_identity": true,
+  "global_candidate_ids": "NOT_CAPTURED",
+  "full_encoding": false,
+  "partial_output_bytes": 102400,
+  "raw_pcm_or_feature_values_forwarded": false,
+  "private_material_forwarded": false
+}

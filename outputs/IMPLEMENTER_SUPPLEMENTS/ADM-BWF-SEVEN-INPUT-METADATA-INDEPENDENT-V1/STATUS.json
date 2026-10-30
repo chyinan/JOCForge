@@ -1,0 +1,15 @@
+{
+  "source_manifest_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9",
+  "source_payloads_verified": "2/2",
+  "samples": 7,
+  "track_counts": {
+    "36": 6,
+    "38": 1
+  },
+  "scope": "reported metadata inspection only",
+  "independent_from_R2_implementation_probe": true,
+  "wash_independently_replayed": false,
+  "DBMD_semantic_decode": "NOT_RUN",
+  "full_admission": "NOT_RUN",
+  "encoding_and_listening": "NOT_RUN"
+}

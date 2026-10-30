@@ -1,0 +1,7 @@
+# Selected reference job profile selector chain
+
+This bounded native observation uses the authorized 38-track source with its hash-bound reference job and 48-frame segment. The selected reference run captures the configuration data-rate prefix (1024 kbps/code 5), descriptor builder, normalized selector input 8, key 15, selected flags 5531, synthesized P11/P15 masks and point counts under one spatial parent. P11 and P15 selected table identities are interpreted only within this reference run. The P11 transform source-record pointer joins; P15 does not join that selector source-record pointer.
+
+This run used experiment job XML SHA-256 84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d. It differs from the implementation-reported PreparedJobInput XML SHA-256 20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9; field-level config reconciliation is evidence, not an XML identity join. Descriptor data-rate field was not captured in this run and remains supported only by its separate reference observation. Layout/source-field semantic name, sample-length enum, spatial-config mode, JOC downmix/topology and P15 transform record identity remain open.
+
+The same source/job/output identities and point-table observation are bound through the listed hashes. This closes only the captured reference selector chain, not the current PreparedJobInput, arbitrary jobs, full Gate 1 or product output. No audio payload, binary addresses, module paths, code, keys or auth material are included.

@@ -1,0 +1,15 @@
+{
+  "schema": "washed-native-helper-observation-binding.v1",
+  "source_package_manifest_sha256": "4fa5a08ffe2dd7bde89890c780ad9e40af0194447f46a6e8de8b0f6f96a4f655",
+  "source_static_call_path_sha256": "78f9878e7f6e245eaf37e046d3ca65b706c65b87a28b20ddb4337fd54e08bca5",
+  "source_native_observation_sha256": "067f571120087ef31cfbf64f39af46284d1342b7adc9ba48fdd65069513ca2ad",
+  "source_vectors_sha256": "80fe0c35671e8bc7346d345ddbbd24db095b5b7a749b6ef029ea239ad925bbee",
+  "model_package_manifest_sha256": "ab3e1495898bd1cbf36a8c449fabcccfb64ac747c7b2a1955665362ceceaa0ab",
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "natural_callback_observed": false,
+  "direct_native_helper_calls": 3,
+  "output_bytes": 0,
+  "full_encoding": false,
+  "product_wide_native_parity_gate": false,
+  "source_code_or_private_material_forwarded": false
+}

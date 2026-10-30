@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "ADM36-SOURCE-ALLOCATION-SAMPLE-VALIDATION-V1",
+  "scope": "Two 36-track native excerpts: source allocation and consumer boundaries",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "77c8f3de1c944724648941f06bd5a872626586dc45b917559795fe735517e39a",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1112,
+      "sha256": "9a09a50dc4fed0d794e24ec486dc64b65b2d2b82eb49ff6c47645dffbe2dc8cd"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 662,
+      "sha256": "4f23729714f41abfceab29619e5c76ab7788e564958af24a9059a2c3f22aca7a"
+    }
+  ]
+}

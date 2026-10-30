@@ -1,0 +1,9 @@
+# Current PreparedJobInput same-generation spatial selection and matrix
+
+The v7 observation uses the exact current PreparedJobInput XML SHA 20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9, normalized config SHA 02c68b5dffddc2557cc6b841268a4d4a0395377c5643607ff1f72b8dd44c24a0, and authorized 38-track input SHA 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1. In the same runtime generation it captured constructor packing, owner arrays, process entry, packed masks, active flags, selected ordinals, writer, and 6x48 matrix consumer. The 1152-byte little-endian F32 matrix is included and its payload identity is bound in MANIFEST.
+
+The selected rows are six ordinals [0,1,2,3,4,5] from capacity 15 and source width 48; physical WAVE input channels remain 38. The matrix has six rows and 48 source columns. The same-call matrix bytes equal a separately completed v4 DEE reference run with identical job/input identity; v7 itself stopped at matrix consumer before final encoding. Same-generation v7 directly links mask/selection and matrix; it supersedes the earlier interpretation that only cross-run evidence was available.
+
+This closes selected configured-call mask unpack, active selection, writer-to-consumer shape and matrix-value capture for this exact PreparedJobInput. It does not establish an independent model replay. Transform output/coefficients, U04 numeric output, Type10, six-plane comparison, ADM sample position, host frame and fit-generation remain open/not captured. Do not generalize to other profiles. The old 15-selected / 15x48 result from a distinct job is excluded.
+
+DEE output is reference only and not model output. No EC3 payload, raw PCM, addresses, private keys or binary paths are included. Updated research manifest SHA-256 167dba14ba433843fcd2d9e10ffd77d08565aa7d1e9eb8374b26dc7a4ef73b8e.

@@ -1,0 +1,12 @@
+{
+  "schema": "oamd-grid-input-only.v1",
+  "xy_indices": {"start_inclusive": 0, "end_inclusive": 62, "step": 1},
+  "z_indices": {"start_inclusive": 0, "end_inclusive": 15, "step": 1},
+  "xy_wire_codes": [0, 1, 30, 31, 32, 61, 62, 63],
+  "z_wire_magnitudes": [0, 1, 7, 14, 15],
+  "z_signs": ["positive", "negative"],
+  "muted_object_case": true,
+  "negative_index_case": -1,
+  "out_of_grid_index_cases": {"xy": 63, "z": 16},
+  "note": "Array index63 is invalid, while six-bit XY wire code63 is clamped to index62; expected arrays are not input."
+}
