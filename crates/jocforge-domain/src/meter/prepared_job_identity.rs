@@ -160,7 +160,7 @@ pub enum PreparedJobInputIdentityError {
 ///
 /// This carries no path or file handle. It is provenance for a future meter-finalization
 /// proposal; it does not itself mint a measurement receipt or authorize a parent commit.
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct PreparedJobInputIdentity {
     resource: PreparedInputResourceIdentity,
     normalized_configuration: NormalizedJobConfigurationIdentity,

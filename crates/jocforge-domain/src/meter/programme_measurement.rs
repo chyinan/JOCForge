@@ -217,11 +217,20 @@ pub(crate) fn compute_programme_measurement_values(
     integrated: &IntegratedMeterState,
     ungated: &UngatedMeanState,
 ) -> Result<ProgrammeMeasurementValue, ProgrammeMeasurementError> {
+    let true_peak_word = true_peak
+        .final_true_peak_host_word()
+        .map_err(map_peak_error)?;
+    let sample_peak_word = true_peak
+        .final_sample_peak_host_word()
+        .map_err(map_peak_error)?;
     let itu_word =
         multiply_words(integrated.result_word(), HOST_SCALE_WORD).map_err(map_peak_error)?;
+    let ungated_state_word = ungated.result_word();
+    let ungated_word =
+        multiply_words(ungated_state_word, HOST_SCALE_WORD).map_err(map_peak_error)?;
     let getter = di_off_getter(
         Some(itu_word),
-        ungated.result_word(),
+        ungated_state_word,
         "1770-4",
         false,
         100.0_f32.to_bits(),
@@ -232,15 +241,8 @@ pub(crate) fn compute_programme_measurement_values(
         2 => ProgrammeGatingKind::Level,
         _ => return Err(ProgrammeMeasurementError::Gating),
     };
-    let true_peak_word = true_peak
-        .final_true_peak_host_word()
-        .map_err(map_peak_error)?;
-    let sample_peak_word = true_peak
-        .final_sample_peak_host_word()
-        .map_err(map_peak_error)?;
-    let ungated_word =
-        multiply_words(ungated.result_word(), HOST_SCALE_WORD).map_err(map_peak_error)?;
-    let dialnorm = dialnorm_from_selected_lufs(getter.selected_host_word())?;
+    let selected_word = getter.selected_host_word();
+    let dialnorm = dialnorm_from_selected_lufs(selected_word)?;
     let measurement = ProgrammeMeasurementValue::from_words(
         getter.dialogue_word(),
         getter.speech_percentage_word(),
@@ -248,7 +250,7 @@ pub(crate) fn compute_programme_measurement_values(
         ungated_word,
         true_peak_word,
         sample_peak_word,
-        getter.selected_host_word(),
+        selected_word,
         gating_kind,
         dialnorm,
     )?;

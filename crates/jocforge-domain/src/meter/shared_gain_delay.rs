@@ -6,6 +6,9 @@
 //! scheduling, and meter finalization remain outside this boundary.
 
 use crate::numeric::{FiniteF32, R32Error, r32_add, r32_mul, r32_sub};
+use crate::spatial::ValidatedWindowQ15Provider;
+use serde_json::Value;
+use sha2::{Digest, Sha256};
 
 pub const SHARED_GAIN_DELAY_ROWS: usize = 6;
 pub const SHARED_GAIN_DELAY_CALLBACK_SAMPLES: usize = 1_536;
@@ -38,6 +41,138 @@ const SELECTED_KERNEL_Q15: [u16; SHARED_GAIN_DELAY_BLOCK_SAMPLES] = [
     13_980, 15_580, 17_188, 18_788, 20_365, 21_904, 23_389, 24_807, 26_144, 27_387, 28_524, 29_544,
     30_437, 31_195, 31_810, 32_277, 32_591, 32_748,
 ];
+const DIRECT_PROVIDER_SHA256: &str =
+    "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa";
+
+/// Exact selected DV32 coefficient words from the approved direct parameter asset.
+///
+/// This intentionally omits the 32-sample receiver-blend kernel. The direct inventory does not
+/// include that separate provider, so this type cannot be used as a complete runtime parameter
+/// bundle until an owner-approved kernel is supplied.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SharedGainDelayDirectParameters {
+    q15_integers: [u16; 8],
+    coefficient_words: [u32; 5],
+    reciprocal_pivot_word: u32,
+    target_pivot_word: u32,
+    envelope_weight_word: u32,
+}
+
+impl SharedGainDelayDirectParameters {
+    pub fn validate_approved_asset(bytes: &[u8]) -> Result<Self, SharedGainDelayError> {
+        if sha256_hex(bytes) != DIRECT_PROVIDER_SHA256 {
+            return Err(SharedGainDelayError::ParameterUnavailable);
+        }
+        let provider: Value = serde_json::from_slice(bytes)
+            .map_err(|_| SharedGainDelayError::ParameterUnavailable)?;
+        if provider["schema"] != "shared-dv32-mathematical-parameters.v1"
+            || provider["route"] != "SHARED_POST_OAR_DV32_Q15_MATH_V1"
+            || provider["profile"]["sample_rate"] != 48_000
+            || provider["profile"]["row_count"] != 6
+            || provider["profile"]["block_samples"] != 32
+            || provider["profile"]["hold_limit"] != 3
+            || provider["delivery_scope"] != "INTERNAL_ONLY"
+        {
+            return Err(SharedGainDelayError::ParameterUnavailable);
+        }
+        let q15_integers = parse_u16_array::<8>(&provider["q15_integers"])?;
+        let coefficient_words = parse_hex_array::<5>(&provider["coefficient_words"])?;
+        let reciprocal_pivot_word = parse_hex_word(&provider["reciprocal_pivot_word"])?;
+        let target_pivot_word = parse_hex_word(&provider["target_pivot_word"])?;
+        let envelope_weight_word = parse_hex_word(&provider["envelope_weight_word"])?;
+
+        if q15_integers != [32_392, 376, 32_673, 95, 29_875, 23_171, 27_571, 19_472]
+            || coefficient_words != COEFFICIENT_WORDS
+            || reciprocal_pivot_word != RECIPROCAL_PIVOT_WORD
+            || target_pivot_word != TARGET_PIVOT_WORD
+            || envelope_weight_word != ENVELOPE_WEIGHT_WORD
+        {
+            return Err(SharedGainDelayError::ParameterUnavailable);
+        }
+
+        Ok(Self {
+            q15_integers,
+            coefficient_words,
+            reciprocal_pivot_word,
+            target_pivot_word,
+            envelope_weight_word,
+        })
+    }
+
+    pub const fn q15_integers(&self) -> &[u16; 8] {
+        &self.q15_integers
+    }
+
+    pub const fn coefficient_words(&self) -> &[u32; 5] {
+        &self.coefficient_words
+    }
+
+    pub const fn reciprocal_pivot_word(&self) -> u32 {
+        self.reciprocal_pivot_word
+    }
+
+    pub const fn target_pivot_word(&self) -> u32 {
+        self.target_pivot_word
+    }
+
+    pub const fn envelope_weight_word(&self) -> u32 {
+        self.envelope_weight_word
+    }
+}
+
+fn parse_u16_array<const N: usize>(value: &Value) -> Result<[u16; N], SharedGainDelayError> {
+    let values = value
+        .as_array()
+        .filter(|values| values.len() == N)
+        .ok_or(SharedGainDelayError::ParameterUnavailable)?;
+    let parsed = values
+        .iter()
+        .map(|value| {
+            value
+                .as_u64()
+                .and_then(|value| u16::try_from(value).ok())
+                .ok_or(SharedGainDelayError::ParameterUnavailable)
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    parsed
+        .try_into()
+        .map_err(|_| SharedGainDelayError::ParameterUnavailable)
+}
+
+fn parse_hex_array<const N: usize>(value: &Value) -> Result<[u32; N], SharedGainDelayError> {
+    let values = value
+        .as_array()
+        .filter(|values| values.len() == N)
+        .ok_or(SharedGainDelayError::ParameterUnavailable)?;
+    let parsed = values
+        .iter()
+        .map(parse_hex_word)
+        .collect::<Result<Vec<_>, _>>()?;
+    parsed
+        .try_into()
+        .map_err(|_| SharedGainDelayError::ParameterUnavailable)
+}
+
+fn parse_hex_word(value: &Value) -> Result<u32, SharedGainDelayError> {
+    u32::from_str_radix(
+        value
+            .as_str()
+            .ok_or(SharedGainDelayError::ParameterUnavailable)?,
+        16,
+    )
+    .map_err(|_| SharedGainDelayError::ParameterUnavailable)
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    const HEX: &[u8; 16] = b"0123456789abcdef";
+    let digest = Sha256::digest(bytes);
+    let mut output = String::with_capacity(digest.len() * 2);
+    for byte in digest {
+        output.push(char::from(HEX[usize::from(byte >> 4)]));
+        output.push(char::from(HEX[usize::from(byte & 0x0f)]));
+    }
+    output
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SharedGainDelayError {
@@ -177,7 +312,7 @@ impl SharedGainDelayState {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct SharedGainDelayParameters {
     coefficients: [FiniteF32; 5],
     reciprocal_pivot: FiniteF32,
@@ -187,6 +322,34 @@ pub struct SharedGainDelayParameters {
 }
 
 impl SharedGainDelayParameters {
+    /// Composes runtime parameters from the separately validated DV32 direct asset
+    /// and selected receiver-blend provider.
+    pub fn from_approved_direct_parameters(
+        direct: &SharedGainDelayDirectParameters,
+        window: &ValidatedWindowQ15Provider,
+    ) -> Result<Self, SharedGainDelayError> {
+        let coefficients = collect_results(direct.coefficient_words().map(finite_parameter_word))?;
+        let mut kernel = [finite_constant(0.0)?; SHARED_GAIN_DELAY_BLOCK_SAMPLES];
+        for (destination, q15) in kernel
+            .iter_mut()
+            .zip(window.receiver_blend32().iter().copied())
+        {
+            if q15 > i16::MAX as u16 {
+                return Err(SharedGainDelayError::ParameterUnavailable);
+            }
+            *destination = FiniteF32::new(f32::from(q15) / 32_768.0)
+                .map_err(|_| SharedGainDelayError::ParameterUnavailable)?;
+        }
+
+        Ok(Self {
+            coefficients,
+            reciprocal_pivot: finite_parameter_word(direct.reciprocal_pivot_word())?,
+            target_pivot: finite_parameter_word(direct.target_pivot_word())?,
+            envelope_weight: finite_parameter_word(direct.envelope_weight_word())?,
+            kernel,
+        })
+    }
+
     /// Builds the selected provider after the caller supplies the authenticated
     /// `receiver_blend32` Q15 record.
     pub fn selected(kernel_q15: &[u16]) -> Result<Self, SharedGainDelayError> {

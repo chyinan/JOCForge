@@ -8,17 +8,17 @@ use crate::{
     meter::sample_block_queue::{
         MeterCallbackIndex, MeterSourceSampleCount, SampleBlockQueueError,
     },
-    numeric::{FiniteF32, r32_add, r32_mul},
     spatial::{
         diffusion_filter::DiffusionFilterParameters,
-        diffusion_tail::{
-            DiffusionTailError, DiffusionTailState, DiffusionTailTransition, preview_diffusion_tail,
-        },
+        diffusion_tail::{DiffusionTailError, DiffusionTailState},
         installed48_activity::{PrimaryActivityOutput, PrimaryActivityPhase},
+        installed48_render::{
+            Installed48Activity, Installed48AudioControl, Installed48RenderError,
+            Installed48RenderInput, render_installed48,
+        },
         installed48_source_map::{
             Installed48SourceMap, Installed48SourceOwner, PrimaryPrefixRoute,
         },
-        source_flags::triangle_window,
     },
     timeline::AdmSampleIndex,
 };
@@ -29,11 +29,6 @@ pub const METER_INSTALLED48_FRAME_SAMPLES: usize = 1_536;
 pub const METER_INSTALLED48_PREFIX_ROWS: usize = 11;
 pub const METER_INSTALLED48_REGULAR_ROWS: usize = 37;
 const METER_INSTALLED48_HOST_ROWS: usize = 38;
-const MEMBERSHIP_GAIN_THRESHOLD: f32 = 0.000_001;
-const SELECTED_WIDE_OBJECT_THRESHOLD: f32 = 0.2;
-const SELECTED_SPREAD_DENOMINATOR: f32 = 0.4;
-const PREFIX_DIRECT_WEIGHT: f64 = 0.85;
-const PREFIX_FILTER_WEIGHT: f64 = 0.15;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterInstalled48Error {
@@ -73,6 +68,22 @@ impl MeterInstalled48Error {
 impl From<SampleBlockQueueError> for MeterInstalled48Error {
     fn from(_: SampleBlockQueueError) -> Self {
         Self::SourceExtentMismatch
+    }
+}
+
+impl From<Installed48RenderError> for MeterInstalled48Error {
+    fn from(error: Installed48RenderError) -> Self {
+        match error {
+            Installed48RenderError::InputShape => Self::InputShape,
+            Installed48RenderError::SourceMapBinding => Self::SourceMapBinding,
+            Installed48RenderError::ControlDomain => Self::ControlDomain,
+            Installed48RenderError::MembershipOrder => Self::MembershipOrder,
+            Installed48RenderError::DiffusionParametersUnavailable => {
+                Self::DiffusionParametersUnavailable
+            }
+            Installed48RenderError::Diffusion(error) => Self::Diffusion(error),
+            Installed48RenderError::NumericFailure => Self::NumericFailure,
+        }
     }
 }
 
@@ -121,12 +132,22 @@ impl MeterInstalled48State {
         self.source_cursor
     }
 
-    pub(crate) fn into_spatial_control_parts(self) -> Installed48AfterStateProjection {
+    /// Copies the spatial-control projection while retaining this typed Meter after-state.
+    ///
+    /// Meter's independent callback parent may need this owner to continue the three fresh-zero
+    /// drains. The projection is a separate spatial-control value and carries no Meter owner
+    /// identity, so keeping both values explicit prevents the parent from rebuilding this state
+    /// from cold inputs between callbacks.
+    pub(crate) fn spatial_control_projection(&self) -> Installed48AfterStateProjection {
         Installed48AfterStateProjection {
             source_cursor: self.source_cursor,
-            previous_pcm_rows: self.previous_pcm_rows,
-            previous_current_rows: self.previous_current_rows,
-            diffusion_states: self.diffusion_states,
+            previous_pcm_rows: self.previous_pcm_rows.clone(),
+            previous_current_rows: self.previous_current_rows.clone(),
+            diffusion_states: self
+                .diffusion_states
+                .iter()
+                .map(|(host, state)| (*host, state.copy_for_projection()))
+                .collect(),
         }
     }
 }
@@ -194,47 +215,46 @@ pub fn stage_meter_installed48(
 ) -> Result<MeterInstalled48Proposal, MeterInstalled48Error> {
     validate_input(before, &input)?;
     let regular_rows = regular_rows(input.source_map)?;
-    let controls = regular_controls(input.source_map, &regular_rows)?;
-    let mut previous_regular = Vec::with_capacity(METER_INSTALLED48_REGULAR_ROWS);
-    let mut current_regular = Vec::with_capacity(METER_INSTALLED48_REGULAR_ROWS);
-    for (tail, (host, control)) in regular_rows.iter().zip(&controls).enumerate() {
-        let current = &input.raw_pcm_rows[usize::from(*host)];
-        let previous = &before.previous_pcm_rows[usize::from(*host)];
-        let quiet = input.activity.quiet37()[tail];
-        if control.mute != 0 {
-            return Err(MeterInstalled48Error::ControlDomain);
-        }
-        let factor = spread_factor(control.spread, quiet)?;
-        previous_regular.push(scale_row(previous, factor)?);
-        current_regular.push(scale_row(current, factor)?);
+    let controls: [Installed48AudioControl; METER_INSTALLED48_REGULAR_ROWS] =
+        regular_controls(input.source_map, &regular_rows)?
+            .try_into()
+            .map_err(|_| MeterInstalled48Error::SourceMapBinding)?;
+    if controls.iter().any(|control| control.mute != 0) {
+        return Err(MeterInstalled48Error::ControlDomain);
     }
-
-    let prefix_rows = produce_prefix_rows(before, &input, &regular_rows, &controls)?;
-    let mut previous_current = Vec::with_capacity(METER_INSTALLED48_ROWS);
-    previous_current.extend(prefix_rows.previous);
-    previous_current.extend(previous_regular);
-    let mut current_current = Vec::with_capacity(METER_INSTALLED48_ROWS);
-    current_current.extend(prefix_rows.current);
-    current_current.extend(current_regular);
-
-    let window = triangle_window().map_err(|_| MeterInstalled48Error::NumericFailure)?;
-    if window.len() != METER_INSTALLED48_SAMPLES {
-        return Err(MeterInstalled48Error::InputShape);
-    }
-    let mut rendered_rows = Vec::with_capacity(METER_INSTALLED48_ROWS);
-    for (previous, current) in previous_current.iter().zip(&current_current) {
-        let mut row = Vec::with_capacity(METER_INSTALLED48_SAMPLES);
-        for sample in 0..METER_INSTALLED48_FRAME_SAMPLES {
-            row.push(multiply(previous[sample], window[sample].value())?);
+    let previous_pcm_bits = before
+        .previous_pcm_rows
+        .iter()
+        .flatten()
+        .copied()
+        .collect::<Vec<_>>();
+    let diffusion_before =
+        std::array::from_fn(|tail| before.diffusion_states.get(&regular_rows[tail]));
+    let activity = Installed48Activity {
+        quiet: *input.activity.quiet37(),
+        mute_reset: [false; METER_INSTALLED48_REGULAR_ROWS],
+    };
+    let rendered = render_installed48(Installed48RenderInput {
+        current_pcm_rows: input.raw_pcm_rows,
+        previous_pcm_bits: &previous_pcm_bits,
+        controls: &controls,
+        activity: &activity,
+        membership_route: input.membership_route,
+        source_map: input.source_map,
+        diffusion_before: &diffusion_before,
+        diffusion_parameters: input.diffusion_parameters,
+    })?;
+    let mut diffusion_states = BTreeMap::new();
+    for (tail, state) in rendered.diffusion_after.into_iter().enumerate() {
+        if let Some(state) = state {
+            diffusion_states.insert(regular_rows[tail], state);
         }
-        for sample in 0..METER_INSTALLED48_FRAME_SAMPLES {
-            row.push(multiply(
-                current[sample],
-                window[METER_INSTALLED48_FRAME_SAMPLES + sample].value(),
-            )?);
-        }
-        rendered_rows.push(row.into_iter().map(f32::to_bits).collect());
     }
+    let previous_current_rows = rendered
+        .current_rows_bits
+        .chunks_exact(METER_INSTALLED48_FRAME_SAMPLES)
+        .map(<[u32]>::to_vec)
+        .collect();
 
     let next_callback = before
         .callback_index
@@ -255,18 +275,15 @@ pub fn stage_meter_installed48(
         callback_index: MeterCallbackIndex::new(next_callback),
         source_cursor: AdmSampleIndex::new(next_cursor),
         previous_pcm_rows: input.raw_pcm_rows.to_vec(),
-        previous_current_rows: current_current
-            .iter()
-            .map(|row| row.iter().copied().map(f32::to_bits).collect())
-            .collect(),
-        diffusion_states: prefix_rows.diffusion_states,
+        previous_current_rows,
+        diffusion_states,
     };
     Ok(MeterInstalled48Proposal {
         after,
         frame: MeterInstalled48Frame {
             callback_index: input.callback_index,
             upstream_generation: next_callback,
-            rows: rendered_rows,
+            rows: rendered.postwindow_rows,
         },
     })
 }
@@ -375,19 +392,6 @@ fn validate_input(
     Ok(())
 }
 
-#[derive(Clone, Copy)]
-struct TailControl {
-    mute: u8,
-    spread: f32,
-    diffuse: u8,
-}
-
-struct PrefixRows {
-    previous: Vec<Vec<f32>>,
-    current: Vec<Vec<f32>>,
-    diffusion_states: BTreeMap<u8, DiffusionTailState>,
-}
-
 fn regular_rows(source_map: &Installed48SourceMap) -> Result<Vec<u8>, MeterInstalled48Error> {
     let mut hosts = Vec::with_capacity(METER_INSTALLED48_REGULAR_ROWS);
     for binding in source_map.physical_to_global_source() {
@@ -413,7 +417,7 @@ fn regular_rows(source_map: &Installed48SourceMap) -> Result<Vec<u8>, MeterInsta
 fn regular_controls(
     source_map: &Installed48SourceMap,
     hosts: &[u8],
-) -> Result<Vec<TailControl>, MeterInstalled48Error> {
+) -> Result<Vec<Installed48AudioControl>, MeterInstalled48Error> {
     hosts
         .iter()
         .map(|host| {
@@ -437,7 +441,7 @@ fn regular_controls(
             if mute > 1 || !spread.is_finite() || diffuse > 1 || component != 0 {
                 return Err(MeterInstalled48Error::ControlDomain);
             }
-            Ok(TailControl {
+            Ok(Installed48AudioControl {
                 mute,
                 spread,
                 diffuse,
@@ -446,239 +450,13 @@ fn regular_controls(
         .collect()
 }
 
-fn produce_prefix_rows(
-    before: &MeterInstalled48State,
-    input: &MeterInstalled48Input<'_>,
-    hosts: &[u8],
-    controls: &[TailControl],
-) -> Result<PrefixRows, MeterInstalled48Error> {
-    let mut previous_prefix = zero_float_rows(
-        METER_INSTALLED48_PREFIX_ROWS,
-        METER_INSTALLED48_FRAME_SAMPLES,
-    );
-    let mut current_prefix = zero_float_rows(
-        METER_INSTALLED48_PREFIX_ROWS,
-        METER_INSTALLED48_FRAME_SAMPLES,
-    );
-    let mut next_diffusion_states = BTreeMap::new();
-    let mut diffusion_outputs = BTreeMap::new();
-    for (tail, host) in hosts.iter().copied().enumerate() {
-        let control = controls[tail];
-        let quiet = input.activity.quiet37()[tail];
-        let active_diffusion = control.diffuse != 0 && control.spread > 0.0 && quiet == 0;
-        if active_diffusion {
-            let parameters = input
-                .diffusion_parameters
-                .ok_or(MeterInstalled48Error::DiffusionParametersUnavailable)?;
-            let previous: [f32; METER_INSTALLED48_FRAME_SAMPLES] = before.previous_pcm_rows
-                [usize::from(host)]
-            .iter()
-            .copied()
-            .map(f32::from_bits)
-            .collect::<Vec<_>>()
-            .try_into()
-            .map_err(|_| MeterInstalled48Error::InputShape)?;
-            let current: [f32; METER_INSTALLED48_FRAME_SAMPLES] = input.raw_pcm_rows
-                [usize::from(host)]
-            .iter()
-            .copied()
-            .map(f32::from_bits)
-            .collect::<Vec<_>>()
-            .try_into()
-            .map_err(|_| MeterInstalled48Error::InputShape)?;
-            let transition = preview_diffusion_tail(
-                parameters,
-                before.diffusion_states.get(&host),
-                true,
-                &previous,
-                &current,
-            )
-            .map_err(MeterInstalled48Error::Diffusion)?;
-            let DiffusionTailTransition::Active(proposal) = transition else {
-                return Err(MeterInstalled48Error::DiffusionParametersUnavailable);
-            };
-            let (previous_lanes, current_lanes, next_state) = (*proposal).into_parts();
-            diffusion_outputs.insert(host, (previous_lanes, current_lanes));
-            next_diffusion_states.insert(host, next_state);
-        }
-    }
-
-    let mut previous_source = None;
-    for contribution in input.membership_route.contributions() {
-        let source_index = contribution.source_index().value();
-        if previous_source.is_some_and(|previous| previous >= source_index) {
-            return Err(MeterInstalled48Error::MembershipOrder);
-        }
-        previous_source = Some(source_index);
-        let tail = usize::try_from(source_index - METER_INSTALLED48_PREFIX_ROWS as u64)
-            .map_err(|_| MeterInstalled48Error::MembershipOrder)?;
-        if tail >= hosts.len() {
-            return Err(MeterInstalled48Error::MembershipOrder);
-        }
-        let host = hosts[tail];
-        let control = controls[tail];
-        let gains = contribution.result().gain_words();
-        for prefix in contribution.result().positive_members() {
-            let prefix = usize::from(*prefix);
-            if prefix >= METER_INSTALLED48_PREFIX_ROWS {
-                return Err(MeterInstalled48Error::MembershipOrder);
-            }
-            let gain = f32::from_bits(gains[prefix]);
-            if !gain.is_finite() || gain < MEMBERSHIP_GAIN_THRESHOLD {
-                return Err(MeterInstalled48Error::ControlDomain);
-            }
-            let filtered =
-                control.diffuse != 0 && control.spread > 0.0 && input.activity.quiet37()[tail] == 0;
-            let (mode, lane) = if let Some(parameters) = input.diffusion_parameters {
-                (
-                    parameters.modes()[prefix],
-                    parameters.filter_lanes()[prefix],
-                )
-            } else if filtered {
-                return Err(MeterInstalled48Error::DiffusionParametersUnavailable);
-            } else {
-                (0, -1)
-            };
-            if !(-1..=1).contains(&mode) || !(-1..=3).contains(&lane) {
-                return Err(MeterInstalled48Error::ControlDomain);
-            }
-            let use_filter = filtered && lane >= 0;
-            let (direct_scale, filter_scale) = filtered_prefix_scales(gain, mode)?;
-            let output_lane = usize::try_from(lane).ok();
-            let lanes = diffusion_outputs.get(&host);
-            if use_filter && (lanes.is_none() || output_lane.is_none()) {
-                return Err(MeterInstalled48Error::DiffusionParametersUnavailable);
-            }
-            for sample in 0..METER_INSTALLED48_FRAME_SAMPLES {
-                let previous_input =
-                    f32::from_bits(before.previous_pcm_rows[usize::from(host)][sample]);
-                let current_input = f32::from_bits(input.raw_pcm_rows[usize::from(host)][sample]);
-                if use_filter {
-                    let lane = output_lane.ok_or(MeterInstalled48Error::ControlDomain)?;
-                    let (previous_lanes, current_lanes) =
-                        lanes.ok_or(MeterInstalled48Error::DiffusionParametersUnavailable)?;
-                    previous_prefix[prefix][sample] = mix_filtered_prefix_sample(
-                        previous_prefix[prefix][sample],
-                        previous_input,
-                        previous_lanes[lane][sample],
-                        direct_scale,
-                        filter_scale,
-                    )?;
-                    current_prefix[prefix][sample] = mix_filtered_prefix_sample(
-                        current_prefix[prefix][sample],
-                        current_input,
-                        current_lanes[lane][sample],
-                        direct_scale,
-                        filter_scale,
-                    )?;
-                } else {
-                    previous_prefix[prefix][sample] = add(
-                        multiply(previous_input, gain)?,
-                        previous_prefix[prefix][sample],
-                    )?;
-                    current_prefix[prefix][sample] = add(
-                        multiply(current_input, gain)?,
-                        current_prefix[prefix][sample],
-                    )?;
-                }
-            }
-        }
-    }
-    Ok(PrefixRows {
-        previous: previous_prefix,
-        current: current_prefix,
-        diffusion_states: next_diffusion_states,
-    })
-}
-
-fn filtered_prefix_scales(gain: f32, mode: i32) -> Result<(f32, f32), MeterInstalled48Error> {
-    let direct_scale = multiply(sqrt64_to_f32(PREFIX_DIRECT_WEIGHT), gain)?;
-    let filter_scale = multiply(
-        multiply(sqrt64_to_f32(PREFIX_FILTER_WEIGHT), mode as f32)?,
-        gain,
-    )?;
-    Ok((direct_scale, filter_scale))
-}
-
-fn mix_filtered_prefix_sample(
-    previous_output: f32,
-    source: f32,
-    filtered: f32,
-    direct_scale: f32,
-    filter_scale: f32,
-) -> Result<f32, MeterInstalled48Error> {
-    let direct_product = multiply(source, direct_scale)?;
-    let filter_product = multiply(filtered, filter_scale)?;
-    let first_sum = add(direct_product, previous_output)?;
-    add(first_sum, filter_product)
-}
-
-fn spread_factor(spread: f32, quiet: u8) -> Result<f32, MeterInstalled48Error> {
-    if !spread.is_finite() || quiet > 1 {
-        return Err(MeterInstalled48Error::ControlDomain);
-    }
-    if spread <= 0.0 || quiet != 0 {
-        return Ok(1.0);
-    }
-    if spread >= SELECTED_WIDE_OBJECT_THRESHOLD {
-        return Ok(0.0);
-    }
-    let theta = divide(
-        multiply(
-            spread.min(SELECTED_WIDE_OBJECT_THRESHOLD),
-            std::f64::consts::PI as f32,
-        )?,
-        SELECTED_SPREAD_DENOMINATOR,
-    )?;
-    let cosine = (f64::from(theta)).cos() as f32;
-    multiply(cosine, cosine)
-}
-
-fn scale_row(row: &[u32], factor: f32) -> Result<Vec<f32>, MeterInstalled48Error> {
-    row.iter()
-        .map(|word| multiply(f32::from_bits(*word), factor))
-        .collect()
-}
-
-fn multiply(left: f32, right: f32) -> Result<f32, MeterInstalled48Error> {
-    r32_mul(
-        FiniteF32::new(left).map_err(|_| MeterInstalled48Error::NumericFailure)?,
-        FiniteF32::new(right).map_err(|_| MeterInstalled48Error::NumericFailure)?,
-    )
-    .map(FiniteF32::value)
-    .map_err(|_| MeterInstalled48Error::NumericFailure)
-}
-
-fn add(left: f32, right: f32) -> Result<f32, MeterInstalled48Error> {
-    r32_add(
-        FiniteF32::new(left).map_err(|_| MeterInstalled48Error::NumericFailure)?,
-        FiniteF32::new(right).map_err(|_| MeterInstalled48Error::NumericFailure)?,
-    )
-    .map(FiniteF32::value)
-    .map_err(|_| MeterInstalled48Error::NumericFailure)
-}
-
-fn divide(left: f32, right: f32) -> Result<f32, MeterInstalled48Error> {
-    FiniteF32::new(left / right)
-        .map(FiniteF32::value)
-        .map_err(|_| MeterInstalled48Error::NumericFailure)
-}
-
-fn sqrt64_to_f32(value: f64) -> f32 {
-    value.sqrt() as f32
-}
-
 fn zero_rows(row_count: usize, sample_count: usize) -> Vec<Vec<u32>> {
     (0..row_count).map(|_| vec![0; sample_count]).collect()
 }
 
-fn zero_float_rows(row_count: usize, sample_count: usize) -> Vec<Vec<f32>> {
-    (0..row_count).map(|_| vec![0.0; sample_count]).collect()
-}
-
 #[cfg(test)]
 mod prefix_precision_tests {
-    use super::{filtered_prefix_scales, mix_filtered_prefix_sample};
+    use crate::spatial::installed48_render::{filtered_prefix_scales, mix_filtered_prefix_sample};
     use serde_json::Value;
 
     const INPUT_ONLY_RECIPES: &[u8] = include_bytes!(

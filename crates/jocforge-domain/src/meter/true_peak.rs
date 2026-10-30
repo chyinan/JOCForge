@@ -125,6 +125,18 @@ pub fn process_true_peak_block(
     input: &[Vec<u32>],
 ) -> Result<TruePeakBlockResult, TruePeakError> {
     let parameters = selected_parameters()?;
+    process_true_peak_block_with_parameters(state, input, &parameters)
+}
+
+/// Processes one block with an owner-validated immutable parameter value.
+///
+/// This lets a caller use the direct approved provider projection without replacing the
+/// true-peak owner or its state. It does not imply a complete Meter prepass or terminal receipt.
+pub fn process_true_peak_block_with_parameters(
+    state: &TruePeakState,
+    input: &[Vec<u32>],
+    parameters: &TruePeakParameters,
+) -> Result<TruePeakBlockResult, TruePeakError> {
     validate_state(state)?;
     if input.len() != CHANNEL_COUNT
         || input
@@ -142,13 +154,13 @@ pub fn process_true_peak_block(
             (source_row.clone(), None, 1_u8)
         } else {
             let (samples, history) =
-                interpolate_channel(&state.lanes[channel].words, source_row, &parameters)?;
+                interpolate_channel(&state.lanes[channel].words, source_row, parameters)?;
             (samples, Some(history), 4_u8)
         };
         if let Some(history) = next_history {
             next_state.lanes[channel].words = history;
         }
-        let metrics = measure_channel(&measurement, source_row, factor, &parameters)?;
+        let metrics = measure_channel(&measurement, source_row, factor, parameters)?;
         if f32::from_bits(metrics.true_peak_internal_word)
             > f32::from_bits(next_state.true_peak_internal_words[channel])
         {
@@ -170,19 +182,45 @@ pub fn process_true_peak_block(
     })
 }
 
-#[derive(Clone)]
-struct TruePeakParameters {
+/// Immutable typed selected parameters validated from the authorized true-peak and log assets.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct TruePeakParameters {
     a: [u32; FIR_TAPS],
     b: [u32; FIR_TAPS],
     log: [u32; 11],
 }
 
-fn selected_parameters() -> Result<TruePeakParameters, TruePeakError> {
-    if sha256(TRUE_PEAK_PARAMETER_BYTES) != TRUE_PEAK_PARAMETER_SHA256 {
+impl TruePeakParameters {
+    pub const fn stage_a_words(&self) -> &[u32; FIR_TAPS] {
+        &self.a
+    }
+
+    pub const fn stage_b_words(&self) -> &[u32; FIR_TAPS] {
+        &self.b
+    }
+
+    pub const fn log_words(&self) -> &[u32; 11] {
+        &self.log
+    }
+}
+
+pub(crate) fn selected_parameters() -> Result<TruePeakParameters, TruePeakError> {
+    validate_approved_provider_assets(TRUE_PEAK_PARAMETER_BYTES, LOG_PARAMETER_BYTES)
+}
+
+/// Validates the selected authorized true-peak and F06 log assets and binds their actual values.
+///
+/// Asset hashes, scope, profile and generated compact/expanded FIR words are checked before a
+/// typed provider is returned. This does not imply a complete Meter provider set or prepass.
+pub fn validate_approved_provider_assets(
+    true_peak_bytes: &[u8],
+    log_bytes: &[u8],
+) -> Result<TruePeakParameters, TruePeakError> {
+    if sha256(true_peak_bytes) != TRUE_PEAK_PARAMETER_SHA256 {
         return Err(TruePeakError::ParameterUnavailable);
     }
-    let parameter: Value = serde_json::from_slice(TRUE_PEAK_PARAMETER_BYTES)
-        .map_err(|_| TruePeakError::ParameterUnavailable)?;
+    let parameter: Value =
+        serde_json::from_slice(true_peak_bytes).map_err(|_| TruePeakError::ParameterUnavailable)?;
     if parameter["classification"] != "AUTHORIZED_COMPILED_FUNCTIONAL_CONSTANTS"
         || parameter["delivery_scope"] != "INTERNAL_ONLY"
         || parameter["public_or_third_party_distribution"] != "NOT_AUTHORIZED"
@@ -210,7 +248,7 @@ fn selected_parameters() -> Result<TruePeakParameters, TruePeakError> {
         return Err(TruePeakError::ParameterUnavailable);
     }
 
-    let log = selected_log_constants()?;
+    let log = validate_approved_log_constants(log_bytes)?;
     Ok(TruePeakParameters {
         a: expanded_a,
         b: expanded_b,
@@ -218,12 +256,13 @@ fn selected_parameters() -> Result<TruePeakParameters, TruePeakError> {
     })
 }
 
-pub(crate) fn selected_log_constants() -> Result<[u32; 11], TruePeakError> {
-    if sha256(LOG_PARAMETER_BYTES) != LOG_PARAMETER_SHA256 {
+/// Validates the direct F06 log constants into the exact typed word array consumed by Meter.
+pub fn validate_approved_log_constants(bytes: &[u8]) -> Result<[u32; 11], TruePeakError> {
+    if sha256(bytes) != LOG_PARAMETER_SHA256 {
         return Err(TruePeakError::ParameterUnavailable);
     }
-    let log_parameters: Value = serde_json::from_slice(LOG_PARAMETER_BYTES)
-        .map_err(|_| TruePeakError::ParameterUnavailable)?;
+    let log_parameters: Value =
+        serde_json::from_slice(bytes).map_err(|_| TruePeakError::ParameterUnavailable)?;
     if log_parameters["schema"] != "meter-log-mathematical-constants.v1"
         || log_parameters["delivery_scope"] != "INTERNAL_ONLY"
         || log_parameters["public_or_third_party_distribution"] != "NOT_AUTHORIZED"
@@ -234,6 +273,10 @@ pub(crate) fn selected_log_constants() -> Result<[u32; 11], TruePeakError> {
     let mut constants = [0; 11];
     constants.copy_from_slice(&words);
     Ok(constants)
+}
+
+pub(crate) fn selected_log_constants() -> Result<[u32; 11], TruePeakError> {
+    validate_approved_log_constants(LOG_PARAMETER_BYTES)
 }
 
 fn words_from_hex(value: &Value, expected: usize) -> Result<Vec<u32>, TruePeakError> {

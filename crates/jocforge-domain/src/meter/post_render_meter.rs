@@ -1,6 +1,8 @@
 // pattern: Functional Core
 //! Noncommitting post-render meter chain from an explicit object-render packet.
 
+use std::sync::Arc;
+
 use super::{
     energy_window::{EnergyWindowError, EnergyWindowState, stage_energy_window_block},
     integrated_meter::{
@@ -12,24 +14,28 @@ use super::{
         MeterFrontendCallbackInput, MeterLfeCallbackOrigin, MeterLfeDelayState, MeterLfeError,
         stage_meter_frontend_oar_packet,
     },
+    object_render_metadata::SecondaryGeometry,
     object_renderer::{
         ObjectRenderCallbackPacket, ObjectRenderCallbackPhase, ObjectRendererError,
-        ObjectRendererState, RenderSourceSampleCount, stage_object_render_callback,
+        ObjectRendererState, RenderSourceSampleCount, stage_object_render_callback_with_geometry,
     },
     sample_block_queue::{
-        MeterCallbackFrame, MeterCallbackIndex, MeterCallbackPhase, MeterSourceSampleCount,
-        MeterUpstreamGeneration, SampleBlockQueueError, SampleBlockQueueState,
-        stage_sample_block_queue_callback,
+        CompleteSampleBlock, MeterCallbackFrame, MeterCallbackIndex, MeterCallbackPhase,
+        MeterSourceSampleCount, MeterUpstreamGeneration, SampleBlockQueueError,
+        SampleBlockQueueState, SampleQueueCallbackReceipt, stage_sample_block_queue_callback,
     },
     shared_gain_delay::{
         SharedGainDelayError, SharedGainDelayParameters, SharedGainDelayState,
         stage_shared_gain_delay_callback,
     },
-    true_peak::{TruePeakError, TruePeakState, process_true_peak_block},
+    true_peak::{
+        TruePeakError, TruePeakParameters, TruePeakState, process_true_peak_block_with_parameters,
+    },
     ungated_mean::{
         UngatedMeanError, UngatedMeanInput, UngatedMeanParameters, UngatedMeanState,
         process_ungated_mean,
     },
+    window_clock::{MeterWindowClockError, MeterWindowClockState},
 };
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
@@ -47,6 +53,7 @@ pub enum PostRenderMeterError {
     ObjectRenderer(ObjectRendererError),
     GainDelay(SharedGainDelayError),
     SampleQueue(SampleBlockQueueError),
+    WindowClock(MeterWindowClockError),
     TruePeak(TruePeakError),
     EnergyWindow(EnergyWindowError),
     IntegratedMeter(IntegratedMeterError),
@@ -55,14 +62,72 @@ pub enum PostRenderMeterError {
     ArithmeticOverflow,
 }
 
+/// Owner-validated immutable parameters consumed by post-render meter leaves.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PostRenderMeterParameters {
+    true_peak: TruePeakParameters,
+    integrated: IntegratedMeterParameters,
+    ungated: UngatedMeanParameters,
+    oar_geometry: SecondaryGeometry,
+}
+
+impl PostRenderMeterParameters {
+    pub const fn new(
+        true_peak: TruePeakParameters,
+        integrated: IntegratedMeterParameters,
+        ungated: UngatedMeanParameters,
+        oar_geometry: SecondaryGeometry,
+    ) -> Self {
+        Self {
+            true_peak,
+            integrated,
+            ungated,
+            oar_geometry,
+        }
+    }
+
+    /// Loads the selected embedded reference values for existing test/model callers.
+    pub fn selected() -> Result<Self, PostRenderMeterError> {
+        let true_peak =
+            super::true_peak::selected_parameters().map_err(PostRenderMeterError::TruePeak)?;
+        let integrated =
+            IntegratedMeterParameters::selected().map_err(PostRenderMeterError::IntegratedMeter)?;
+        let ungated =
+            UngatedMeanParameters::selected().map_err(PostRenderMeterError::UngatedMean)?;
+        Ok(Self::new(
+            true_peak,
+            integrated,
+            ungated,
+            SecondaryGeometry::selected(),
+        ))
+    }
+
+    pub const fn true_peak(&self) -> &TruePeakParameters {
+        &self.true_peak
+    }
+
+    pub const fn integrated(&self) -> &IntegratedMeterParameters {
+        &self.integrated
+    }
+
+    pub const fn ungated(&self) -> &UngatedMeanParameters {
+        &self.ungated
+    }
+
+    pub const fn oar_geometry(&self) -> &SecondaryGeometry {
+        &self.oar_geometry
+    }
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct PostRenderMeterState {
     object_renderer: ObjectRendererState,
     shared_gain_delay: SharedGainDelayState,
     sample_queue: SampleBlockQueueState,
+    window_clock: MeterWindowClockState,
     true_peak: TruePeakState,
     energy_window: EnergyWindowState,
-    integrated_meter: IntegratedMeterState,
+    integrated_meter: Arc<IntegratedMeterState>,
     ungated_mean: UngatedMeanState,
 }
 
@@ -80,10 +145,12 @@ impl PostRenderMeterState {
             shared_gain_delay: SharedGainDelayState::cold(),
             sample_queue: SampleBlockQueueState::cold(queue_source_samples)
                 .map_err(PostRenderMeterError::SampleQueue)?,
+            window_clock: MeterWindowClockState::cold(queue_source_samples)
+                .map_err(PostRenderMeterError::WindowClock)?,
             true_peak: TruePeakState::cold(),
             energy_window: EnergyWindowState::cold(k_matrix)
                 .map_err(PostRenderMeterError::EnergyWindow)?,
-            integrated_meter: IntegratedMeterState::cold(),
+            integrated_meter: Arc::new(IntegratedMeterState::cold()),
             ungated_mean: UngatedMeanState::cold(),
         })
     }
@@ -100,6 +167,10 @@ impl PostRenderMeterState {
         &self.sample_queue
     }
 
+    pub const fn window_clock(&self) -> &MeterWindowClockState {
+        &self.window_clock
+    }
+
     pub const fn true_peak(&self) -> &TruePeakState {
         &self.true_peak
     }
@@ -108,8 +179,8 @@ impl PostRenderMeterState {
         &self.energy_window
     }
 
-    pub const fn integrated_meter(&self) -> &IntegratedMeterState {
-        &self.integrated_meter
+    pub fn integrated_meter(&self) -> &IntegratedMeterState {
+        self.integrated_meter.as_ref()
     }
 
     pub const fn ungated_mean(&self) -> &UngatedMeanState {
@@ -147,6 +218,23 @@ impl PostRenderMeterReceipt {
 pub struct PostRenderMeterProposal {
     after: PostRenderMeterState,
     receipt: PostRenderMeterReceipt,
+}
+
+struct PostRenderScheduleAfter {
+    object_renderer: ObjectRendererState,
+    shared_gain_delay: SharedGainDelayState,
+    sample_queue: SampleBlockQueueState,
+    window_clock: MeterWindowClockState,
+    complete_blocks: Vec<CompleteSampleBlock>,
+    queue_receipt: SampleQueueCallbackReceipt,
+}
+
+struct PostRenderNumericAfter {
+    true_peak: TruePeakState,
+    energy_window: EnergyWindowState,
+    integrated_meter: Arc<IntegratedMeterState>,
+    ungated_mean: UngatedMeanState,
+    energy_records: EnergyRecordCount,
 }
 
 impl PostRenderMeterProposal {
@@ -204,6 +292,26 @@ pub fn stage_independent_meter_callback(
     gain_parameters: &SharedGainDelayParameters,
     k_matrix: &KMatrixProvider,
 ) -> Result<IndependentMeterCallbackProposal, PostRenderMeterError> {
+    let parameters = PostRenderMeterParameters::selected()?;
+    stage_independent_meter_callback_with_parameters(
+        before_lfe,
+        before_post_render,
+        input,
+        gain_parameters,
+        k_matrix,
+        &parameters,
+    )
+}
+
+/// Stages one callback using the exact owner-validated post-render parameter values.
+pub fn stage_independent_meter_callback_with_parameters(
+    before_lfe: &MeterLfeDelayState,
+    before_post_render: &PostRenderMeterState,
+    input: MeterFrontendCallbackInput,
+    gain_parameters: &SharedGainDelayParameters,
+    k_matrix: &KMatrixProvider,
+    parameters: &PostRenderMeterParameters,
+) -> Result<IndependentMeterCallbackProposal, PostRenderMeterError> {
     if before_lfe.callback_index().value()
         != before_post_render.object_renderer.callback_index().value()
     {
@@ -212,8 +320,14 @@ pub fn stage_independent_meter_callback(
     let packet_proposal = stage_meter_frontend_oar_packet(before_lfe, input)
         .map_err(PostRenderMeterError::FrontendLfe)?;
     let (after_lfe, packet, lfe_output_origin) = packet_proposal.into_parts();
+    let scheduled = stage_post_render_schedule(
+        before_post_render,
+        &packet,
+        gain_parameters,
+        parameters.oar_geometry(),
+    )?;
     let post_render =
-        stage_post_render_meter_callback(before_post_render, &packet, gain_parameters, k_matrix)?;
+        finish_post_render_schedule(before_post_render, scheduled, k_matrix, parameters)?;
     let (after_post_render, receipt) = post_render.into_parts();
     Ok(IndependentMeterCallbackProposal {
         after_lfe,
@@ -229,11 +343,75 @@ pub fn stage_post_render_meter_callback(
     gain_parameters: &SharedGainDelayParameters,
     k_matrix: &KMatrixProvider,
 ) -> Result<PostRenderMeterProposal, PostRenderMeterError> {
-    validate_shared_clock(before, packet)?;
-    let object_proposal = stage_object_render_callback(&before.object_renderer, packet)
-        .map_err(PostRenderMeterError::ObjectRenderer)?;
-    let (object_after, object_output) = object_proposal.into_parts();
+    let parameters = PostRenderMeterParameters::selected()?;
+    stage_post_render_meter_callback_with_parameters(
+        before,
+        packet,
+        gain_parameters,
+        k_matrix,
+        &parameters,
+    )
+}
 
+/// Stages one rendered callback with explicit validated true-peak/log values.
+pub fn stage_post_render_meter_callback_with_parameters(
+    before: &PostRenderMeterState,
+    packet: &ObjectRenderCallbackPacket,
+    gain_parameters: &SharedGainDelayParameters,
+    k_matrix: &KMatrixProvider,
+    parameters: &PostRenderMeterParameters,
+) -> Result<PostRenderMeterProposal, PostRenderMeterError> {
+    let schedule =
+        stage_post_render_schedule(before, packet, gain_parameters, parameters.oar_geometry())?;
+    finish_post_render_schedule(before, schedule, k_matrix, parameters)
+}
+
+fn finish_post_render_schedule(
+    before: &PostRenderMeterState,
+    schedule: PostRenderScheduleAfter,
+    k_matrix: &KMatrixProvider,
+    parameters: &PostRenderMeterParameters,
+) -> Result<PostRenderMeterProposal, PostRenderMeterError> {
+    let PostRenderScheduleAfter {
+        object_renderer,
+        shared_gain_delay,
+        sample_queue,
+        window_clock,
+        complete_blocks,
+        queue_receipt,
+    } = schedule;
+    let numeric = stage_post_render_numeric(before, &complete_blocks, k_matrix, parameters)?;
+    Ok(PostRenderMeterProposal {
+        after: PostRenderMeterState {
+            object_renderer,
+            shared_gain_delay,
+            sample_queue,
+            window_clock,
+            true_peak: numeric.true_peak,
+            energy_window: numeric.energy_window,
+            integrated_meter: numeric.integrated_meter,
+            ungated_mean: numeric.ungated_mean,
+        },
+        receipt: PostRenderMeterReceipt {
+            callback_index: queue_receipt.callback_index(),
+            upstream_generation: queue_receipt.upstream_generation(),
+            completed_blocks: queue_receipt.completed_blocks(),
+            energy_records: numeric.energy_records,
+        },
+    })
+}
+
+fn stage_post_render_schedule(
+    before: &PostRenderMeterState,
+    packet: &ObjectRenderCallbackPacket,
+    gain_parameters: &SharedGainDelayParameters,
+    oar_geometry: &SecondaryGeometry,
+) -> Result<PostRenderScheduleAfter, PostRenderMeterError> {
+    validate_shared_clock(before, packet)?;
+    let object_proposal =
+        stage_object_render_callback_with_geometry(&before.object_renderer, packet, oar_geometry)
+            .map_err(PostRenderMeterError::ObjectRenderer)?;
+    let (object_after, object_output) = object_proposal.into_parts();
     let gain_proposal = stage_shared_gain_delay_callback(
         &before.shared_gain_delay,
         &object_output,
@@ -254,38 +432,59 @@ pub fn stage_post_render_meter_callback(
     )
     .map_err(PostRenderMeterError::SampleQueue)?;
     let queue_receipt = *queue_proposal.receipt();
-    let (queue_after, complete_blocks, _) = queue_proposal.into_parts();
+    let window_clock = before
+        .window_clock
+        .stage_callback(&queue_receipt)
+        .map_err(PostRenderMeterError::WindowClock)?;
+    let (queue_after, complete_blocks, queue_receipt) = queue_proposal.into_parts();
+    Ok(PostRenderScheduleAfter {
+        object_renderer: object_after,
+        shared_gain_delay: gain_after,
+        sample_queue: queue_after,
+        window_clock,
+        complete_blocks,
+        queue_receipt,
+    })
+}
 
-    let integrated_parameters =
-        IntegratedMeterParameters::selected().map_err(PostRenderMeterError::IntegratedMeter)?;
-    let ungated_parameters =
-        UngatedMeanParameters::selected().map_err(PostRenderMeterError::UngatedMean)?;
+fn stage_post_render_numeric(
+    before: &PostRenderMeterState,
+    complete_blocks: &[CompleteSampleBlock],
+    k_matrix: &KMatrixProvider,
+    parameters: &PostRenderMeterParameters,
+) -> Result<PostRenderNumericAfter, PostRenderMeterError> {
     let mut true_peak_after = before.true_peak.clone();
     let mut energy_after = before.energy_window.clone();
-    let mut integrated_after = before.integrated_meter.clone();
+    let mut integrated_after = Arc::clone(&before.integrated_meter);
     let mut ungated_after = before.ungated_mean.clone();
     let mut energy_record_count = 0_u64;
-    for block in &complete_blocks {
+    for block in complete_blocks {
         let block_rows = block.lanes().map(<[u32]>::to_vec);
-        true_peak_after = process_true_peak_block(&true_peak_after, &block_rows)
-            .map_err(PostRenderMeterError::TruePeak)?
-            .next_state;
+        true_peak_after = process_true_peak_block_with_parameters(
+            &true_peak_after,
+            &block_rows,
+            parameters.true_peak(),
+        )
+        .map_err(PostRenderMeterError::TruePeak)?
+        .next_state;
         let block_views = std::array::from_fn(|lane| block_rows[lane].as_slice());
         let energy_proposal = stage_energy_window_block(&energy_after, &block_views, k_matrix)
             .map_err(PostRenderMeterError::EnergyWindow)?;
         let (next_energy, records) = energy_proposal.into_parts();
         energy_after = next_energy;
         for record in records {
-            integrated_after = process_integrated_meter(
-                &integrated_after,
-                IntegratedMeterInput {
-                    mantissa_word: record.mantissa_word(),
-                    exponent: record.exponent(),
-                },
-                &integrated_parameters,
-            )
-            .map_err(PostRenderMeterError::IntegratedMeter)?
-            .into_next_state();
+            integrated_after = Arc::new(
+                process_integrated_meter(
+                    &integrated_after,
+                    IntegratedMeterInput {
+                        mantissa_word: record.mantissa_word(),
+                        exponent: record.exponent(),
+                    },
+                    parameters.integrated(),
+                )
+                .map_err(PostRenderMeterError::IntegratedMeter)?
+                .into_next_state(),
+            );
             ungated_after = process_ungated_mean(
                 &ungated_after,
                 UngatedMeanInput {
@@ -293,7 +492,7 @@ pub fn stage_post_render_meter_callback(
                     exponent: record.exponent(),
                     ungated_enabled: true,
                 },
-                &ungated_parameters,
+                parameters.ungated(),
             )
             .map_err(PostRenderMeterError::UngatedMean)?
             .into_next_state();
@@ -302,23 +501,12 @@ pub fn stage_post_render_meter_callback(
                 .ok_or(PostRenderMeterError::ArithmeticOverflow)?;
         }
     }
-
-    Ok(PostRenderMeterProposal {
-        after: PostRenderMeterState {
-            object_renderer: object_after,
-            shared_gain_delay: gain_after,
-            sample_queue: queue_after,
-            true_peak: true_peak_after,
-            energy_window: energy_after,
-            integrated_meter: integrated_after,
-            ungated_mean: ungated_after,
-        },
-        receipt: PostRenderMeterReceipt {
-            callback_index,
-            upstream_generation,
-            completed_blocks: queue_receipt.completed_blocks(),
-            energy_records: EnergyRecordCount(energy_record_count),
-        },
+    Ok(PostRenderNumericAfter {
+        true_peak: true_peak_after,
+        energy_window: energy_after,
+        integrated_meter: integrated_after,
+        ungated_mean: ungated_after,
+        energy_records: EnergyRecordCount(energy_record_count),
     })
 }
 

@@ -4,6 +4,7 @@
 use super::true_peak::{
     TruePeakError, add_words, divide_words, energy_metric, multiply_words,
     power_of_two as f32_power_of_two, selected_log_constants, shift_word, subtract_words,
+    validate_approved_log_constants,
 };
 use crate::numeric::FiniteF32;
 use sha2::{Digest, Sha256};
@@ -46,6 +47,16 @@ impl IntegratedMeterParameters {
     /// Loads the selected 48 kHz F06I profile and verifies its generated event period.
     pub fn selected() -> Result<Self, IntegratedMeterError> {
         let log_constants = selected_log_constants().map_err(map_numeric_error)?;
+        Self::from_log_constants(log_constants)
+    }
+
+    /// Constructs the selected F06I parameter set from the approved direct log asset.
+    pub fn from_approved_log_asset(bytes: &[u8]) -> Result<Self, IntegratedMeterError> {
+        let log_constants = validate_approved_log_constants(bytes).map_err(map_numeric_error)?;
+        Self::from_log_constants(log_constants)
+    }
+
+    fn from_log_constants(log_constants: [u32; 11]) -> Result<Self, IntegratedMeterError> {
         let period = selected_period()?;
         if period != PERIOD {
             return Err(IntegratedMeterError::ParameterUnavailable);
@@ -58,6 +69,10 @@ impl IntegratedMeterParameters {
 
     pub const fn period(&self) -> u32 {
         self.period
+    }
+
+    pub const fn log_words(&self) -> &[u32; 11] {
+        &self.log_constants
     }
 }
 

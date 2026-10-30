@@ -32,6 +32,20 @@ impl MeterSourcePosition {
     }
 }
 
+/// Count of successful normal Meter source reads. Zero-input drains do not advance it.
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub struct MeterSourceReadIndex(u64);
+
+impl MeterSourceReadIndex {
+    pub const fn new(value: u64) -> Self {
+        Self(value)
+    }
+
+    pub const fn value(self) -> u64 {
+        self.0
+    }
+}
+
 /// Typed fields copied from one in-memory source-cursor proposal at the CLI boundary.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct MeterSourceCallbackFrameParts<'a> {
@@ -43,6 +57,8 @@ pub struct MeterSourceCallbackFrameParts<'a> {
     pub normal_callbacks: MeterCallbackCount,
     pub source_cursor_before: MeterSourcePosition,
     pub source_cursor_after: MeterSourcePosition,
+    pub source_read_index_before: MeterSourceReadIndex,
+    pub source_read_index_after: MeterSourceReadIndex,
     pub host_input_count: MeterSampleCount,
     pub source_padding_count: MeterSampleCount,
     pub rows: &'a [Vec<u32>],
@@ -89,6 +105,14 @@ impl<'a> MeterSourceCallbackFrame<'a> {
 
     pub const fn source_cursor_after(self) -> MeterSourcePosition {
         self.parts.source_cursor_after
+    }
+
+    pub const fn source_read_index_before(self) -> MeterSourceReadIndex {
+        self.parts.source_read_index_before
+    }
+
+    pub const fn source_read_index_after(self) -> MeterSourceReadIndex {
+        self.parts.source_read_index_after
     }
 
     pub const fn host_input_count(self) -> MeterSampleCount {

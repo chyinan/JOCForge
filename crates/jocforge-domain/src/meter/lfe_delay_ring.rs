@@ -151,36 +151,6 @@ impl MeterLfeDelayState {
             .map(|frame| frame.sample_words.as_slice())
     }
 
-    /// Functional Core: returns the complete local meter-root value for this
-    /// persistent delay ring. PCM is kept only in the returned in-memory value.
-    pub(crate) fn canonical_root_value(&self) -> Result<serde_json::Value, MeterLfeError> {
-        self.validate()?;
-        let mut slots = Vec::with_capacity(usize::from(LFE_DELAY_SLOTS));
-        for slot in 0..LFE_DELAY_SLOTS {
-            let value = match (self.slot_origin(slot), self.slot_samples(slot)) {
-                (None, None) => serde_json::Value::Null,
-                (Some(origin), Some(sample_words)) if sample_words.len() == CALLBACK_SAMPLES => {
-                    serde_json::json!({
-                        "origin_callback": origin.callback_index().value(),
-                        "sample_words_u32": sample_words,
-                    })
-                }
-                _ => return Err(MeterLfeError::StateInvalid),
-            };
-            slots.push(value);
-        }
-
-        Ok(serde_json::json!({
-            "source_samples": self.source_samples.value(),
-            "normal_callbacks": self.normal_callbacks,
-            "callback_index": self.callback_index.value(),
-            "samples_consumed": self.samples_consumed,
-            "write_index": self.write_index,
-            "read_index": self.read_index,
-            "slots": slots,
-        }))
-    }
-
     fn validate(&self) -> Result<(), MeterLfeError> {
         let expected_callbacks = self
             .normal_callbacks
@@ -375,7 +345,8 @@ impl MeterFrontendCallbackInput {
             crate::spatial::post_window_fanout::CallbackPhase::Normal => {
                 MeterCallbackPhase::NormalSource
             }
-            crate::spatial::post_window_fanout::CallbackPhase::CachedDrain => {
+            crate::spatial::post_window_fanout::CallbackPhase::CachedDrain
+            | crate::spatial::post_window_fanout::CallbackPhase::FreshZeroInputDrain => {
                 MeterCallbackPhase::ZeroInputDrain
             }
         };

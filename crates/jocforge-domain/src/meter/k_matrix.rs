@@ -12,6 +12,10 @@ const MATRIX_INPUTS_SHA256: &str =
 const STATE_BOUNDS: &str = include_str!("k_matrix_bounds.json");
 const STATE_BOUNDS_SHA256: &str =
     "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68";
+const APPROVED_DIRECT_MATRIX_SHA256: &str =
+    "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536";
+const APPROVED_DIRECT_STATE_BOUNDS_SHA256: &str =
+    "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum KMatrixMode {
@@ -93,15 +97,53 @@ impl KMatrixProvider {
 
 /// Generates the selected K matrix and cold/bounds provider from input parameters only.
 pub fn generate_k_matrix(profile: KMatrixProfile) -> Result<KMatrixProvider, KMatrixError> {
+    validate_profile(profile)?;
+    let inputs = parse_matrix_inputs()?;
+    let bounds = parse_state_bounds()?;
+    generate_provider(&inputs, &bounds)
+}
+
+/// Validates and constructs the selected K-matrix value from the approved direct assets.
+///
+/// The direct provider is a typed input to the existing K-matrix producer. Its immutable asset
+/// identity is checked by the Meter direct-inventory boundary; this function separately checks
+/// the owner-specific profile, rules, bounds and generated word receipt.
+pub fn generate_k_matrix_from_approved_direct_assets(
+    profile: KMatrixProfile,
+    matrix_parameters: &[u8],
+    state_bounds: &[u8],
+) -> Result<KMatrixProvider, KMatrixError> {
+    validate_profile(profile)?;
+    if sha256(matrix_parameters) != APPROVED_DIRECT_MATRIX_SHA256
+        || sha256(state_bounds) != APPROVED_DIRECT_STATE_BOUNDS_SHA256
+    {
+        return Err(KMatrixError::ParameterUnavailable);
+    }
+    let matrix_document: Value = serde_json::from_slice(matrix_parameters)
+        .map_err(|_| KMatrixError::ParameterUnavailable)?;
+    let bounds_document: Value =
+        serde_json::from_slice(state_bounds).map_err(|_| KMatrixError::ParameterUnavailable)?;
+    let inputs = parse_matrix_inputs_document(&matrix_document)?;
+    let bounds = parse_state_bounds_document(&bounds_document)?;
+    let provider = generate_provider(&inputs, &bounds)?;
+    validate_direct_generated_words(&matrix_document, &provider)?;
+    Ok(provider)
+}
+
+fn validate_profile(profile: KMatrixProfile) -> Result<(), KMatrixError> {
     if profile.sample_rate_hz != 48_000
         || profile.mode != KMatrixMode::Modern
         || profile.stage_count != 2
     {
         return Err(KMatrixError::UnsupportedProfile);
     }
+    Ok(())
+}
 
-    let inputs = parse_matrix_inputs()?;
-    let bounds = parse_state_bounds()?;
+fn generate_provider(
+    inputs: &MatrixInputs,
+    bounds: &StateBounds,
+) -> Result<KMatrixProvider, KMatrixError> {
     let mut complete_words = [0; 72];
     for (stage_index, stage) in inputs.stages.iter().enumerate() {
         let matrix = generate_stage_matrix(stage)?;
@@ -138,6 +180,10 @@ fn parse_matrix_inputs() -> Result<MatrixInputs, KMatrixError> {
     }
     let root: Value =
         serde_json::from_str(MATRIX_INPUTS).map_err(|_| KMatrixError::ParameterUnavailable)?;
+    parse_matrix_inputs_document(&root)
+}
+
+fn parse_matrix_inputs_document(root: &Value) -> Result<MatrixInputs, KMatrixError> {
     if root["schema"] != "meter-k-matrix-mathematical-parameter.v1"
         || root["parameter_route"] != "K_MATRIX_PUBLIC_BIQUAD_RATIONAL_DECIMAL_V1"
         || !matrix_rules_are_selected(&root["matrix_generation"])
@@ -242,6 +288,10 @@ fn parse_state_bounds() -> Result<StateBounds, KMatrixError> {
     }
     let root: Value =
         serde_json::from_str(STATE_BOUNDS).map_err(|_| KMatrixError::ParameterUnavailable)?;
+    parse_state_bounds_document(&root)
+}
+
+fn parse_state_bounds_document(root: &Value) -> Result<StateBounds, KMatrixError> {
     if root["schema"] != "meter-k-basic-state-and-bounds.v1"
         || root["stage_count"] != 2
         || root["cold_state_rule"] != "positive zero for every stage/lane"
@@ -276,6 +326,32 @@ fn parse_state_bounds() -> Result<StateBounds, KMatrixError> {
                 .ok_or(KMatrixError::ParameterUnavailable)?,
         )?,
     })
+}
+
+fn validate_direct_generated_words(
+    document: &Value,
+    provider: &KMatrixProvider,
+) -> Result<(), KMatrixError> {
+    let generated_words = document["generated_f32_words"]
+        .as_array()
+        .filter(|words| words.len() == provider.complete_words().len())
+        .ok_or(KMatrixError::ParameterUnavailable)?
+        .iter()
+        .map(|word| {
+            word.as_u64()
+                .and_then(|value| u32::try_from(value).ok())
+                .ok_or(KMatrixError::ParameterUnavailable)
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    let expected_digest = document["generated_bytes_sha256"]
+        .as_str()
+        .ok_or(KMatrixError::ParameterUnavailable)?;
+    if generated_words.as_slice() != provider.complete_words()
+        || expected_digest != sha256(&provider.complete_f32le_bytes())
+    {
+        return Err(KMatrixError::ParameterUnavailable);
+    }
+    Ok(())
 }
 
 struct StateBounds {

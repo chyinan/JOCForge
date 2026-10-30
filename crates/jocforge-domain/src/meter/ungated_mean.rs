@@ -1,7 +1,9 @@
 // pattern: Functional Core
 //! F06U selected single-slot ungated mean and DI-off getter projection.
 
-use crate::meter::true_peak::{TruePeakError, energy_metric, selected_log_constants};
+use crate::meter::true_peak::{
+    TruePeakError, energy_metric, selected_log_constants, validate_approved_log_constants,
+};
 use crate::numeric::{FiniteF32, r32_add, r32_mul, r32_sub};
 use sha2::{Digest, Sha256};
 
@@ -185,6 +187,22 @@ impl UngatedMeanParameters {
             }
         })?;
         Ok(Self { log_constants })
+    }
+
+    /// Constructs F06U's immutable log dependency from the approved direct log asset.
+    pub fn from_approved_log_asset(bytes: &[u8]) -> Result<Self, UngatedMeanError> {
+        let log_constants =
+            validate_approved_log_constants(bytes).map_err(|error| match error {
+                TruePeakError::ParameterUnavailable => UngatedMeanError::ParameterUnavailable,
+                TruePeakError::Input | TruePeakError::NumericFailure => {
+                    UngatedMeanError::ParameterUnavailable
+                }
+            })?;
+        Ok(Self { log_constants })
+    }
+
+    pub const fn log_words(&self) -> &[u32; 11] {
+        &self.log_constants
     }
 }
 

@@ -292,6 +292,15 @@ pub fn stage_object_render_callback(
     before: &ObjectRendererState,
     packet: &ObjectRenderCallbackPacket,
 ) -> Result<ObjectRenderCallbackProposal, ObjectRendererError> {
+    stage_object_render_callback_with_geometry(before, packet, &SecondaryGeometry::selected())
+}
+
+/// Stages one callback using the owner-validated OAR secondary geometry.
+pub fn stage_object_render_callback_with_geometry(
+    before: &ObjectRendererState,
+    packet: &ObjectRenderCallbackPacket,
+    geometry: &SecondaryGeometry,
+) -> Result<ObjectRenderCallbackProposal, ObjectRendererError> {
     validate_state(before)?;
     if before.retired {
         return Err(ObjectRendererError::PipelineRetired);
@@ -300,7 +309,6 @@ pub fn stage_object_render_callback(
     validate_pcm(&packet.pcm_words)?;
     let metadata = validate_and_project_metadata(&packet.controls)?;
 
-    let geometry = SecondaryGeometry::selected();
     let direct_selector =
         direct_selector_from_coded_mask(SELECTED_CODED_MASK).map_err(map_value_error)?;
     let mut records = Vec::with_capacity(SOURCE_COUNT);
@@ -313,7 +321,7 @@ pub fn stage_object_render_callback(
             true,
         )
         .map_err(map_value_error)?;
-        let target = point_render_target(&record, &geometry).map_err(map_value_error)?;
+        let target = point_render_target(&record, geometry).map_err(map_value_error)?;
         records.push(record);
         targets.push(target.values());
     }
@@ -742,6 +750,26 @@ mod tests {
             "49dc6b1c902471e1c1ce469268f5d6bfc0a84910d2c9ef2c7aa3cb8f28c07522"
         );
         assert!(state.tasks().iter().all(|task| task.records().is_none()));
+    }
+
+    #[test]
+    fn validated_geometry_entrypoint_matches_selected_renderer_entrypoint() {
+        let before = ObjectRendererState::cold(RenderSourceSampleCount::try_new(4_625).unwrap());
+        let callback = packet(
+            1,
+            ObjectRenderCallbackPhase::Normal,
+            stable_controls(1),
+            affine_pcm(1),
+        );
+        let geometry = SecondaryGeometry::try_from_rows(*SecondaryGeometry::selected().rows())
+            .expect("the selected provider rows satisfy the renderer geometry contract");
+
+        let selected = stage_object_render_callback(&before, &callback).unwrap();
+        let supplied =
+            stage_object_render_callback_with_geometry(&before, &callback, &geometry).unwrap();
+
+        assert_eq!(supplied.output_words(), selected.output_words());
+        assert_eq!(supplied.after(), selected.after());
     }
 
     #[test]

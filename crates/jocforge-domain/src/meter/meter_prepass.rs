@@ -7,8 +7,9 @@ use super::{
         MeterFrontendCallbackInput, MeterLfeCallbackOrigin, MeterLfeDelayState, MeterLfeError,
     },
     post_render_meter::{
-        IndependentMeterCallbackProposal, PostRenderMeterError, PostRenderMeterReceipt,
-        PostRenderMeterState, stage_independent_meter_callback,
+        IndependentMeterCallbackProposal, PostRenderMeterError, PostRenderMeterParameters,
+        PostRenderMeterReceipt, PostRenderMeterState,
+        stage_independent_meter_callback_with_parameters,
     },
     sample_block_queue::{MeterCallbackCount, MeterCallbackIndex, MeterSourceSampleCount},
     shared_gain_delay::SharedGainDelayParameters,
@@ -49,6 +50,7 @@ pub struct IndependentMeterPrepass {
     source_samples: MeterSourceSampleCount,
     gain_parameters: SharedGainDelayParameters,
     k_matrix: KMatrixProvider,
+    post_render_parameters: PostRenderMeterParameters,
     state: IndependentMeterPrepassState,
 }
 
@@ -58,11 +60,29 @@ impl IndependentMeterPrepass {
         gain_parameters: SharedGainDelayParameters,
         k_matrix: KMatrixProvider,
     ) -> Result<Self, IndependentMeterPrepassError> {
+        let post_render_parameters = PostRenderMeterParameters::selected()
+            .map_err(IndependentMeterPrepassError::ColdPostRender)?;
+        Self::cold_with_post_render_parameters(
+            source_samples,
+            gain_parameters,
+            k_matrix,
+            post_render_parameters,
+        )
+    }
+
+    /// Constructs a cold prepass with owner-validated true-peak and log values.
+    pub fn cold_with_post_render_parameters(
+        source_samples: MeterSourceSampleCount,
+        gain_parameters: SharedGainDelayParameters,
+        k_matrix: KMatrixProvider,
+        post_render_parameters: PostRenderMeterParameters,
+    ) -> Result<Self, IndependentMeterPrepassError> {
         let state = Self::cold_state(source_samples, &k_matrix)?;
         Ok(Self {
             source_samples,
             gain_parameters,
             k_matrix,
+            post_render_parameters,
             state,
         })
     }
@@ -95,6 +115,10 @@ impl IndependentMeterPrepass {
         &self.state.post_render
     }
 
+    pub const fn post_render_parameters(&self) -> &PostRenderMeterParameters {
+        &self.post_render_parameters
+    }
+
     /// Indicates that all normal callbacks and the three specified zero-input
     /// drains have committed. This does not finalize or mint a measurement.
     pub fn ready_to_finalize(&self) -> bool {
@@ -109,6 +133,12 @@ impl IndependentMeterPrepass {
                 .sample_queue()
                 .finalization_view()
                 .is_ok()
+            && self
+                .state
+                .post_render
+                .window_clock()
+                .is_ready_to_finalize()
+                .unwrap_or(false)
     }
 
     /// Stages one callback in owned leaf proposals. The returned non-Clone
@@ -122,12 +152,13 @@ impl IndependentMeterPrepass {
             return Err(IndependentMeterPrepassError::Failed);
         }
 
-        match stage_independent_meter_callback(
+        match stage_independent_meter_callback_with_parameters(
             &self.state.lfe,
             &self.state.post_render,
             input,
             &self.gain_parameters,
             &self.k_matrix,
+            &self.post_render_parameters,
         ) {
             Ok(proposal) => Ok(IndependentMeterCallbackStage {
                 owner: self,
@@ -153,12 +184,13 @@ impl IndependentMeterPrepass {
             return Err(IndependentMeterPrepassError::Failed);
         }
 
-        let proposal = stage_independent_meter_callback(
+        let proposal = stage_independent_meter_callback_with_parameters(
             &self.state.lfe,
             &self.state.post_render,
             input,
             &self.gain_parameters,
             &self.k_matrix,
+            &self.post_render_parameters,
         )
         .map_err(IndependentMeterPrepassError::Callback)?;
         let receipt = proposal.receipt();
@@ -168,6 +200,7 @@ impl IndependentMeterPrepass {
             source_samples: self.source_samples,
             gain_parameters: self.gain_parameters.clone(),
             k_matrix: self.k_matrix.clone(),
+            post_render_parameters: self.post_render_parameters.clone(),
             state: IndependentMeterPrepassState {
                 phase: IndependentMeterPrepassPhase::Meter,
                 failure_stage: None,
@@ -185,8 +218,13 @@ impl IndependentMeterPrepass {
     /// Reconstructs both callback owners from cold providers before replacing
     /// the current state; no partial reset is observable.
     pub fn reset(&mut self) -> Result<(), IndependentMeterPrepassError> {
-        let cold = Self::cold_state(self.source_samples, &self.k_matrix)?;
-        self.state = cold;
+        let cold = Self::cold_with_post_render_parameters(
+            self.source_samples,
+            self.gain_parameters.clone(),
+            self.k_matrix.clone(),
+            self.post_render_parameters.clone(),
+        )?;
+        *self = cold;
         Ok(())
     }
 
