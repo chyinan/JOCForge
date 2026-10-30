@@ -1,0 +1,45 @@
+{
+  "capture_limits": {
+    "control16_or_control52_payload_bytes_read": 0,
+    "cross_run_pointer_identity": "NOT_JOINED",
+    "destination_write_bytes_observed": 4,
+    "raw_PCM_bytes_read": 0,
+    "source_scalar_bytes_read": 4,
+    "table_row_payload_bytes_read": 0
+  },
+  "consumer": {
+    "row_index": 0,
+    "same_native_meter_callback_ordinal": 1,
+    "same_table_owner_token": true
+  },
+  "conversion": {
+    "input_signed_i32": 3,
+    "normalized_u32_result": 3,
+    "semantic_name": "UNBOUND"
+  },
+  "destination": {
+    "field_offset_bytes": 20,
+    "hardware_write_watch_width_bytes": 4,
+    "observed_write_u32": 3,
+    "row_index": 0,
+    "row_stride_bytes": 52,
+    "table": "native SpatialCodingState table B",
+    "table_owner_token_joined_with_source_and_consumer": true
+  },
+  "run": {
+    "job_config_sha256": "55970df0ea9c5f0579b267103b6c8007dd17c2952c4fbc5c48393e9b9e2aa8d0",
+    "native_callback_ordinal": 1,
+    "native_log_sha256": "e117bd95a40fb8efbc5db0fddb716c3fd03b1c7d8de96e9c0916704d0f6ac5eb",
+    "output_payload_included": false,
+    "successful_EC3_job": true
+  },
+  "schema": "native-table-b-one-field-producer-consumer-receipt.v1",
+  "source": {
+    "element_ordinal": 0,
+    "element_width_bytes": 4,
+    "owner": "selected task-config ordered set on the native spatial-coding path",
+    "owner_token_joined_with_ordinal_getter": true,
+    "raw_signed_i32_element": 3,
+    "semantic_enum_or_input_field": "UNBOUND"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2",
+  "decision": "ACCEPTED_AS_BOUNDED_NATIVE_SET_ELEMENT_TO_TABLE_FIELD_CHAIN",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "8/8 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "unmanifested_files": 0,
+    "raw_pcm_or_table_payload_read": false
+  },
+  "closed": [
+    "node structure is an ordered set of signed I32 elements, not a key/value map",
+    "run022 set element ordinal 0 value 3 through conversion to table-B row 0 field offset 20 and same-owner consumer row 0"
+  ],
+  "still_unbound": [
+    "semantic code name to ADM/input field",
+    "native table-B row/field to F06OF target slot/control52 word/control16 row",
+    "native callback generation to F06OF model generation",
+    "outer graph/export/global candidate ID join"
+  ],
+  "numeric_value_3_match_is_identity": false,
+  "whole_chain_ready": false
+}

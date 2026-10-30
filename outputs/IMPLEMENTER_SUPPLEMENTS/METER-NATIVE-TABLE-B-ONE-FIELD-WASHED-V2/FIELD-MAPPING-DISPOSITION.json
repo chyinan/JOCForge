@@ -1,0 +1,31 @@
+{
+  "approved_f06of_side": {
+    "callback_generation": "F06OF g+1; independently defined by the approved model contract",
+    "control16_adapter": "control16[0] is direct LFE; control16[s+1] is the 13-word control52 row for target slot s in 0..14",
+    "regular_control52_owner": "F05H/F05R56 target-slot state"
+  },
+  "determination": {
+    "native_callback_ordinal_is_F06OF_generation": false,
+    "native_constructor_count_16_is_control16_identity": false,
+    "native_record_stride_52_is_control16_identity": false,
+    "native_row_index_0_is_F06OF_LFE_identity": false,
+    "ordered_set_vs_map_classification": "ORDERED_SIGNED_I32_SET; no separate key/value pair",
+    "product_policy_changed": false,
+    "run_022_value_3_matches_F06OF_direct_word2_value_3": "NUMERIC_EQUALITY_ONLY; NOT_A_JOIN",
+    "typed_native_table_b_field_to_f06of_control_word": "NO_TYPED_MAPPING_OBSERVED; UNBOUND",
+    "typed_native_table_b_row_to_f06of_target_slot": "NO_TYPED_MAPPING_OBSERVED; UNBOUND"
+  },
+  "native_side": {
+    "native_one_field_source_to_row0_field_and_consumer": "DYNAMICALLY_BOUND_WITHIN_RUN_022_CALLBACK_1",
+    "native_table_b_owner_and_consumer": "BOUND_WITHIN_NATIVE_SPATIALCODING_STATE",
+    "selected_task_config_to_native_table_b": "STATIC_TYPED_OWNER_PATH; ordered-set element is copied through a native code normalizer",
+    "source_semantic_code_name": "UNBOUND"
+  },
+  "schema": "native-table-b-to-f06of-control16-disposition.v2",
+  "why_the_mapping_remains_unbound": [
+    "the ordered-set element has no captured semantic enum label or typed ADM/input-field definition",
+    "the native table-B field has no typed crosswalk to an F06OF target slot or control16 word",
+    "the F06OF generation token is defined on the approved model side and is not joined to this native callback",
+    "equal scalar values, counts, row indices, or strides do not establish a shared typed field"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2",
+  "status": "ONE_NATIVE_FIELD_CHAIN_BOUND; F06OF_TYPED_CROSSWALK_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1590,
+      "sha256": "02ca237175d28083bd7dc15f1dcf033e7b2c3473851975d01ef96487ed9d0c86"
+    },
+    {
+      "name": "FIELD-MAPPING-DISPOSITION.json",
+      "bytes": 1936,
+      "sha256": "43958fea0c29f2c7c1720991e72be68a1ae6ef870ea05b687adbbb978255128a"
+    },
+    {
+      "name": "MINIMUM-FIELD-RECEIPT.json",
+      "bytes": 1089,
+      "sha256": "47e15e29e2171976483e841c9fe39fda1c169fa7b5f8df8a65aae13dfaf34fba"
+    },
+    {
+      "name": "NATIVE-ONE-FIELD-RECEIPT.json",
+      "bytes": 1503,
+      "sha256": "0b6103f609705eedf6dad2c4d6e142ab61814c9000952ea45e174fed4b2b6f91"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 2759,
+      "sha256": "b2db736fcb25700545e39a504525534225c135c501ec0990163f8f6b3d04fd76"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 2045,
+      "sha256": "9f20e0eb1c4ad9ad8e138de490f4f201febfc1834969e15747e05b64478a6159"
+    },
+    {
+      "name": "TABLE-B-PRODUCER-CONSUMER.json",
+      "bytes": 3813,
+      "sha256": "4148a69e28a716c2a66e9c2e8033bfba9f28061b6fbc16db7f6e96b07183d05c"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 999,
+      "sha256": "6262998c6cf0b8a32618327847ea65bdd4b70713dfa31f94259885872e68c107"
+    }
+  ]
+}

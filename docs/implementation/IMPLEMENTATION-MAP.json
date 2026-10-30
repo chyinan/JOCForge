@@ -8626,8 +8626,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1640635,
-              "sha256": "b73bb4b91c6d24874aa4616908d68fc058a93499c3006dfbe7064920645dc884"
+              "bytes": 1645663,
+              "sha256": "d74d1e9212faf8d769e5299b7f6fb354e7b2cccce1acf3d6fea6ecbc18c7b63f"
             }
           ],
           "test_modules": [
@@ -12139,8 +12139,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1640635,
-              "sha256": "b73bb4b91c6d24874aa4616908d68fc058a93499c3006dfbe7064920645dc884"
+              "bytes": 1645663,
+              "sha256": "d74d1e9212faf8d769e5299b7f6fb354e7b2cccce1acf3d6fea6ecbc18c7b63f"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -15877,7 +15877,7 @@
           "slice_id": "washed-native-meter-table-b-producer-consumer-path",
           "mapping_status": "WASHED_NATIVE_TABLE_B_OWNER_CONSUMER_PATH__F06OF_TARGET_JOIN_OPEN",
           "implementation_status": "EVIDENCE_ONLY_RUN020_LOCAL_ORDINAL_AND_ROW_PATH__TARGET_AND_GENERATION_UNBOUND",
-          "scope": "Wash bound the selected task-config map through the native SpatialCoder configuration to SpatialCodingState table B and its explicit-row metadata consumer. Run 020 joins the constructor, nested OAR owner and consumer pointers within that native callback; the table has 16 rows at 52-byte stride. A follow-up Wash status hold suspends the prior key/value interpretation of the ordered-map node field: its role, source semantic key retention and F06OF target/control row remain UNBOUND pending a hash-bound correction. Equal row count, stride or index does not establish identity; no row payload or PCM was read.",
+          "scope": "Wash bounded the native SpatialCodingState table-B owner/consumer path. The later hash-bound one-field trace classifies the source as an ordered set of signed I32 elements, not a key/value map, and binds Run 022 set element ordinal 0 through normalization and a four-byte write to table-B row 0 offset 20 and the same-owner consumer row 0. This does not identify the semantic code name or join the native field/row or callback generation to F06OF target/control state. Equal numeric values, row counts, stride, or indices do not establish identity.",
           "owner": "meter",
           "implementation_requirement": false,
           "dependencies": [],
@@ -15914,7 +15914,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1/WASH-REVIEW.json"
             ],
             "supplement_manifest_sha256": "4bc5876f1dbdeb25aea6a91737d469a42d709d73cd6ee4491db39c9c3ec3aee9",
-            "validation_boundary": "Native table-B owner/writer/consumer path only; typed F06OF target and generation joins remain unbound."
+            "validation_boundary": "Native owner/consumer path plus one same-owner field chain only; semantic code, F06OF target/control, and generation joins remain unbound."
           },
           "vectors": {
             "kind": "WASHED_NATIVE_TABLE_B_PATH_NO_MODEL_OUTPUT",
@@ -15925,7 +15925,7 @@
             ],
             "case_pointers": [
               "Selected task-config map to native SpatialCoder config, SpatialCodingState table-B writer, and explicit-row metadata consumer.",
-              "Run 020 joins table-B owner and consumer within native callback 1; the node field role and source semantic-key retention remain under a Wash status hold.",
+              "Run 022 one-field chain: ordered signed-I32 set element ordinal 0/value 3 to normalized 3, table-B row 0 offset 20, same owner consumer row 0; semantic/F06OF joins remain open.",
               "F06OF target slot/Control52/Control16 field and model generation joins remain UNBOUND.",
               "Run 019 callback 4248 remains a 0/0 source-empty candidate, not a full 38x1536 model DRAIN."
             ],
@@ -15941,18 +15941,23 @@
           ],
           "validation_boundary": "Ordinal, row count, byte stride, index, and scalar value do not establish a typed target-field identity.",
           "native_status": {
-            "status": "NATIVE_TABLE_LINEAGE_BOUND_F06OF_TYPED_JOIN_OPEN",
+            "status": "NATIVE_TABLE_LINEAGE_AND_ONE_FIELD_CHAIN_BOUND_F06OF_TYPED_CROSSWALK_OPEN",
             "native_table_b_owner_and_consumer": "BOUND_WITHIN_NATIVE_SPATIALCODING_STATE",
             "native_table_b_rows": 16,
             "native_table_b_stride_bytes": 52,
-            "map_key_preserved_by_table_writer": "UNBOUND_PENDING_HASH_BOUND_CORRECTION",
+            "map_key_preserved_by_table_writer": "NOT_APPLICABLE_NO_KEY_VALUE_PAIR",
             "typed_native_table_b_row_to_f06of_target_slot": "UNBOUND",
             "typed_native_table_b_field_to_f06of_control_word": "UNBOUND",
             "native_callback_generation_to_f06of_model_generation": "UNBOUND",
             "source_empty_callback_4248_is_model_drain": false,
             "raw_row_payload_or_pcm_read": false,
             "whole_chain_ready": false,
-            "U32_node_field_role": "UNBOUND_PENDING_HASH_BOUND_CORRECTION"
+            "U32_node_field_role": "SUPERSEDED_BY_SIGNED_I32_SET_CLASSIFICATION",
+            "native_table_structure": "ORDERED_SIGNED_I32_SET_NOT_KEY_VALUE_MAP",
+            "native_element_role": "SIGNED_I32_SET_ELEMENT",
+            "semantic_code_name": "UNBOUND",
+            "one_field_chain": "RUN022_ORDINAL0_I32_3_TO_NORMALIZED3_TO_TABLE_B_ROW0_OFFSET20_TO_SAME_OWNER_CONSUMER_ROW0",
+            "F06OF_target_slot_and_control_word_join": "UNBOUND"
           },
           "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY",
           "correction_of": {
@@ -16045,9 +16050,9 @@
         },
         {
           "slice_id": "washed-native-table-b-field-role-hold",
-          "mapping_status": "WASHED_PROVISIONAL_FIELD_SEMANTIC_HOLD__U32_ROLE_AND_F06OF_JOIN_UNBOUND",
-          "implementation_status": "EVIDENCE_ONLY_PENDING_HASH_BOUND_FIELD_ROLE_CORRECTION",
-          "scope": "The Wash status package suspends the prior interpretation that the ordered-map node field is a U32 value and that the map key is dropped. Whether the observed +0x1c field is key or value is unbound pending a hash-bound correction. Keep source semantic-key retention and the F06OF target-slot/control-word crosswalk UNBOUND. The separately accepted native table-B owner/consumer path remains bounded evidence; production and whole-chain readiness remain unverified.",
+          "mapping_status": "WASHED_PROVISIONAL_FIELD_HOLD_SUPERSEDED_BY_V2__F06OF_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_HISTORICAL_HOLD_SUPERSEDED_BY_ONE_FIELD_TRACE",
+          "scope": "This package recorded a provisional hold on the prior key/value interpretation. It is retained as historical status evidence and is superseded by METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2, which establishes an ordered signed-I32 set and one same-owner element-to-field chain. The semantic code name, F06OF target/control crosswalk, and callback-generation join remain UNBOUND.",
           "owner": "meter",
           "implementation_requirement": false,
           "dependencies": [
@@ -16081,7 +16086,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1/WASH-REVIEW.json"
             ],
             "supplement_manifest_sha256": "b125269fbf21cc9785709a38408fe0e35ed94f88e69a72ad1bf993e12d40f188",
-            "validation_boundary": "Provisional status hold only; no source field semantics or F06OF crosswalk is approved."
+            "validation_boundary": "Historical provisional hold; superseded by hash-bound one-field v2 for container and element role, while semantic/F06OF joins remain unbound."
           },
           "vectors": {
             "kind": "PROVISIONAL_NATIVE_FIELD_ROLE_HOLD_NO_EXPECTED_OUTPUT",
@@ -16096,18 +16101,21 @@
           },
           "error_outcomes": [],
           "not_run": [
-            "Hash-bound correction identifying the native node field role.",
-            "Source semantic key to native table-B field join.",
-            "F06OF target slot/control word and generation lineage.",
+            "Semantic code name/input field to the ordered-set element.",
+            "Native table-B field to F06OF target slot/control word.",
+            "Native callback generation to F06OF model generation.",
             "Production execution and whole-chain acceptance."
           ],
           "validation_boundary": "This hold supersedes the prior field-role interpretation without withdrawing the bounded native owner/consumer path.",
           "native_status": {
-            "status": "PROVISIONAL_FIELD_SEMANTIC_HOLD",
-            "U32_node_field_role": "UNBOUND_PENDING_R3_CORRECTION_PACKAGE",
-            "source_map_key_preservation": "UNBOUND_PENDING_R3_CORRECTION_PACKAGE",
+            "status": "SUPERSEDED_PROVISIONAL_FIELD_SEMANTIC_HOLD",
+            "historical_field_role_at_hold": "UNBOUND_PENDING_HASH_BOUND_REVIEW",
+            "superseded_by_package_id": "METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2",
+            "superseded_by_manifest_sha256": "cee62bbc2dc155b6296898c9bc73b7bef087e82836718525dd5ee17c79e78d7f",
+            "current_node_structure": "ORDERED_SIGNED_I32_SET_NOT_KEY_VALUE_MAP",
+            "current_element_role": "SIGNED_I32_SET_ELEMENT",
+            "semantic_code_name": "UNBOUND",
             "F06OF_target_slot_and_control_word_join": "UNBOUND",
-            "production_execution": "NOT_RUN",
             "whole_chain_ready": false
           },
           "delivery_scope": "WASHED_PROVISIONAL_STATUS_ONLY",
@@ -16115,6 +16123,108 @@
             "package_id": "METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1",
             "manifest_sha256": "4bc5876f1dbdeb25aea6a91737d469a42d709d73cd6ee4491db39c9c3ec3aee9",
             "superseded_field_interpretation": "U32 value role and source map-key drop are not relied on pending correction."
+          }
+        },
+        {
+          "slice_id": "washed-native-table-b-one-field-chain",
+          "mapping_status": "WASHED_ONE_SIGNED_I32_ELEMENT_TO_NATIVE_TABLE_FIELD__F06OF_TYPED_CROSSWALK_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_RUN022_SAME_OWNER_FIELD_CHAIN__SEMANTIC_AND_F06OF_JOIN_OPEN",
+          "scope": "The selected native source structure is an ordered set of signed I32 elements, not a key/value map. Run 022 binds one same-callback chain: ordinal-0 element 3, native normalization to 3, a four-byte write to table-B row 0 offset 20, and the same table-owner consumer row 0. The source semantic code/input field, F06OF target slot/control word and native-to-model generation relation remain UNBOUND; numeric equality is not identity.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [
+            "washed-native-meter-table-b-producer-consumer-path",
+            "washed-native-table-b-field-role-hold"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "NativeCallbackOrdinal",
+              "NativeSetElementOrdinal",
+              "NativeSignedI32Element",
+              "NativeTableRowOrdinal",
+              "NativeFieldByteOffset",
+              "NativeConsumerRowOrdinal",
+              "NativeOwnerToken"
+            ],
+            "covered_clauses": [
+              "The source structure is an ordered set of signed I32 elements, with no key/value pair.",
+              "Run 022 binds ordinal 0/value 3 through normalization to 3 and a four-byte table-B row 0 offset 20 write.",
+              "The destination table owner and consumer row 0 are joined within native callback 1.",
+              "Semantic code/input identity, F06OF target/control mapping, and model callback generation remain unbound."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_TABLE_B_ONE_FIELD_CHAIN",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/FIELD-MAPPING-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/MINIMUM-FIELD-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/NATIVE-ONE-FIELD-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/TABLE-B-PRODUCER-CONSUMER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "cee62bbc2dc155b6296898c9bc73b7bef087e82836718525dd5ee17c79e78d7f",
+            "validation_boundary": "One typed native set-element-to-table-field chain only; no F06OF or semantic-code join is established."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_ONE_FIELD_RECEIPT_NO_MODEL_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/NATIVE-ONE-FIELD-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/TABLE-B-PRODUCER-CONSUMER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/FIELD-MAPPING-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-NATIVE-TABLE-B-ONE-FIELD-WASHED-V2/MINIMUM-FIELD-RECEIPT.json"
+            ],
+            "case_pointers": [
+              "Run 022 callback 1, ordinal-0 signed-I32 set element 3 → normalized 3 → four-byte write to table-B row 0 offset 20 → same-owner consumer row 0.",
+              "No raw PCM, Control16/Control52 payload, or table-row payload was read.",
+              "Semantic code name/input field and F06OF target/control/generation joins remain UNBOUND.",
+              "Numeric value 3 equality is explicitly not an identity join."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "cee62bbc2dc155b6296898c9bc73b7bef087e82836718525dd5ee17c79e78d7f"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Semantic code name/input field to the signed-I32 set element.",
+            "Native table-B row/field to F06OF target slot, Control52 word, or Control16 row.",
+            "Native callback generation to F06OF model generation.",
+            "Whole-chain readiness and product acceptance."
+          ],
+          "validation_boundary": "The one-field chain is local to a native owner/callback; numeric equality, row index, stride, or adjacency does not establish product identity.",
+          "native_status": {
+            "status": "ONE_NATIVE_FIELD_CHAIN_BOUND_F06OF_TYPED_CROSSWALK_OPEN",
+            "source_structure": "ORDERED_SIGNED_I32_SET_NOT_KEY_VALUE_MAP",
+            "element_ordinal": 0,
+            "source_signed_i32": 3,
+            "normalized_u32": 3,
+            "destination_table": "native SpatialCodingState table B",
+            "destination_row": 0,
+            "destination_field_offset_bytes": 20,
+            "destination_write_width_bytes": 4,
+            "consumer_row": 0,
+            "same_callback_and_owner": true,
+            "semantic_code_name": "UNBOUND",
+            "F06OF_target_slot_and_control_word_join": "UNBOUND",
+            "native_callback_generation_to_f06of_model_generation": "UNBOUND",
+            "numeric_value_3_match_is_identity": false,
+            "raw_pcm_or_table_payload_read": false,
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY",
+          "correction_of": {
+            "package_id": "METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1",
+            "manifest_sha256": "b125269fbf21cc9785709a38408fe0e35ed94f88e69a72ad1bf993e12d40f188",
+            "superseded_by_current_package": true
           }
         }
       ]
@@ -28785,8 +28895,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1640635,
-              "sha256": "b73bb4b91c6d24874aa4616908d68fc058a93499c3006dfbe7064920645dc884"
+              "bytes": 1645663,
+              "sha256": "d74d1e9212faf8d769e5299b7f6fb354e7b2cccce1acf3d6fea6ecbc18c7b63f"
             }
           ],
           "test_inventory": [

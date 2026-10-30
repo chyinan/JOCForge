@@ -1,0 +1,35 @@
+{
+  "absolute_paths_in_payloads": "OMITTED",
+  "approved_model": {
+    "F06OF_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+    "F06W_spec_sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c",
+    "spatial_control52_model_manifest_sha256": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf"
+  },
+  "native_assets": {
+    "DDP_Atmos_meter_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "DEE_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "run_019_job_config_sha256": "887544b4f4f79cc15d4010b77bfbea37e24e9ab78ce2c86706f9ecdaae79cab0",
+    "run_019_native_log_sha256": "60b695f8a62ceb787a6f73c11ba747268be41b3cdaf992d4ae073ba94a1f92b7",
+    "run_019_static_set_interpretation_export_sha256": "11edca7beed63eac973cc1f371020203a6ea5daf9b26fd87b37c15502f1a489f",
+    "run_019_static_table_source_export_sha256": "10b71f18c7153cf1483dbd6c6d0a58e920c8feccc00dd7ae6b9ba4031ee6afee",
+    "run_019_static_task_metadata_export_sha256": "1d1e1b0b16f4d5208459dce4bd965ea55804dac197b62c06341b40385a8eb4f6",
+    "run_019_static_tree_semantics_export_sha256": "1edf1c68283a56cd0c17afaace1cd50e73d38a2f6ab9dbb38b317bd0224aeacc",
+    "run_020_job_config_sha256": "efd429948a2a9688f3b64a422e937f764c7022748d74793047ea55915d27c5fd",
+    "run_020_native_log_sha256": "84b1eb51d992121ffc6b4bcc5c18b1a2fd2bd5c1b21a1a41d1119024a2df7b4e",
+    "run_022_encoded_output_sha256_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "run_022_job_config_sha256": "55970df0ea9c5f0579b267103b6c8007dd17c2952c4fbc5c48393e9b9e2aa8d0",
+    "run_022_native_log_sha256": "e117bd95a40fb8efbc5db0fddb716c3fd03b1c7d8de96e9c0916704d0f6ac5eb",
+    "run_022_output_bytes_included": false,
+    "selected_validation_wave_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "reference_packages": {
+    "frontend_producer_lineage_manifest_sha256": "d9196ac37e53d8757fbf71cf815ec7bd9d5178ac918799044a9db4586bb04968",
+    "native_meter_full_programme_manifest_sha256": "618214e3a13d74ccdba6a874f22cad8fac2aa11a81ca0d72d23b3659e978a3bc",
+    "native_oar_owner_followup_manifest_sha256": "ccb3bc50872035f055d090e4c98bc9762d3defe02dc460cd31d50864358c5c31",
+    "spatial_control52_model_manifest_sha256": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf",
+    "superseded_table_b_followup_manifest_sha256": "5129fbf98c0cd7b72e3a6a4929baaa73cc9584903aee5335d6c850234f605881"
+  },
+  "run_019_and_run_020_EC3_job_semantics_match": true,
+  "schema": "native-table-b-followup-source-identities.v2",
+  "static_decompilation_in_payloads": "OMITTED"
+}

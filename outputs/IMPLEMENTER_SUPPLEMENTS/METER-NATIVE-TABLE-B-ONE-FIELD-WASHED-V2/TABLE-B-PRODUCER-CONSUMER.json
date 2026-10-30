@@ -1,0 +1,96 @@
+{
+  "consumer_rule": {
+    "consumer": "native spatial-domain metadata consumer",
+    "dynamic_sampled_indices": {
+      "run_019_callback_1": 0,
+      "run_019_callback_4247": 0,
+      "run_019_callback_4248": 0,
+      "run_020_callback_1": 1,
+      "run_022_callback_1": 0
+    },
+    "field_names": "UNBOUND",
+    "index_semantics": "UNBOUND; preserve observed differences across runs",
+    "projection": "selected native record is projected into a separate 15-word local structure",
+    "selection": "explicit row-index input selects table-B base plus i times 52 bytes",
+    "table_row_payload_bytes_read": 0
+  },
+  "native_dynamic_owner_receipts": {
+    "cross_run_pointer_identity": "NOT_JOINED",
+    "run_019": {
+      "same_native_meter_callback_stack": true,
+      "same_run_pointer_tokens_only": true,
+      "sampled_callback_ordinals": [
+        1,
+        4247,
+        4248
+      ],
+      "table_b_row_consumer_in_native_meter_callbacks": true
+    },
+    "run_020": {
+      "constructor_return_matches_oar_nested_state": true,
+      "consumer_row_index": 1,
+      "same_native_meter_callback_ordinal": 1,
+      "table_b_count": 16,
+      "table_b_pointer_matches_constructor_field_and_consumer_table": true,
+      "table_b_stride_bytes": 52
+    },
+    "run_022": {
+      "consumer_row_index": 0,
+      "same_native_meter_callback_ordinal": 1,
+      "source_set_owner_matches_ordinal_getter_owner": true,
+      "table_b_pointer_matches_field_write_and_consumer_table": true
+    }
+  },
+  "native_table_shapes": [
+    {
+      "constructor_argument_count": 38,
+      "record_stride_bytes": 52,
+      "role": "SpatialCodingState table A"
+    },
+    {
+      "constructor_argument_count": 16,
+      "record_stride_bytes": 52,
+      "role": "SpatialCodingState table B"
+    }
+  ],
+  "producer_source": {
+    "additional_static_semantic_search": {
+      "native_code_to_internal_position_lookup_observed": true,
+      "resulting_semantic_name": "UNBOUND",
+      "typed_F06OF_crosswalk": "UNBOUND"
+    },
+    "collection_semantics": {
+      "comparison": "signed integer comparison against the node's single element field",
+      "container": "ordered tree set",
+      "element_type": "signed 32-bit integer code",
+      "ordinal_access": "in-order tree walk returns that same element",
+      "separate_key_value_pair": false
+    },
+    "conversion": {
+      "mapping_source": "static converter in the selected DLL",
+      "operation": "native code normalization through a switch",
+      "semantic_field_name": "UNBOUND"
+    },
+    "direct_ADM_input_field_mapping": "UNBOUND",
+    "native_owner": "selected SymphonyRenderer task-config ordered set, copied into SpatialCoder configuration",
+    "source_entry_selection": "in-order set element by ordinal i; the table writer requests the i-th element",
+    "source_scalar_access": "ordinal getter returns the single 32-bit set element stored at the tree node element field",
+    "source_semantic_code_name": "UNBOUND",
+    "task_config_path": [
+      "selected task-config ordered set",
+      "ordered-set copy into SpatialCoder configuration",
+      "SpatialCodingState constructor",
+      "table-B writer"
+    ]
+  },
+  "schema": "native-spatial-coding-table-b-lineage.v2",
+  "table_b_writer_rule": {
+    "destination": "table-B row i, one native metadata-code field",
+    "destination_field_offset_bytes": 20,
+    "destination_field_semantics": "UNBOUND",
+    "row_index": "i from 0 up to constructor table-B count minus one",
+    "separate_map_key_or_value_pair": false,
+    "source_set_guard": "write converted code only when i is less than ordered-set element count",
+    "source_value": "one signed 32-bit set element returned by in-order ordinal access"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "already_closed": [
+    "native task-config ordered-set owner to ordinal element 0",
+    "one signed 32-bit element through conversion into table-B row 0 field offset 20",
+    "same-run table-B row-0 consumer index on callback 1"
+  ],
+  "current_F06OF_field_mapping": "UNBOUND",
+  "minimum_additional_numeric_capture": {
+    "control_table_payload_bytes": 0,
+    "needed": false,
+    "raw_PCM_bytes": 0,
+    "reason": "another scalar capture cannot supply the missing enum/type and crosswalk"
+  },
+  "remaining_to_prove_one_typed_mapping": [
+    "the approved native enum/type or producer field definition that names the selected set element",
+    "an independent F06OF receipt for target slot s, control52 row s, word j, control16 row 1+s and generation g+1",
+    "an explicit typed join from the native semantic enum/field to that F06OF target-slot/word field"
+  ],
+  "schema": "minimum-evidence-for-native-table-b-to-f06of-crosswalk.v2",
+  "scope": "one typed join proves one field; a complete mapping requires typed receipts for all relevant rows and words"
+}

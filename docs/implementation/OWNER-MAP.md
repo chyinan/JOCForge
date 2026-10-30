@@ -274,6 +274,7 @@
 | F06OF/washed-native-meter-table-b-producer-consumer-path | F06OF | `meter` |
 | F06OF/washed-embedded-time-eof-reader-vector | F06OF | `io` |
 | F06OF/washed-native-table-b-field-role-hold | F06OF | `meter` |
+| F06OF/washed-native-table-b-one-field-chain | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |

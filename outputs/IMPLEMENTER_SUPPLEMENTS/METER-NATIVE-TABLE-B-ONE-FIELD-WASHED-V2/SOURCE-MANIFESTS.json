@@ -1,0 +1,35 @@
+{
+  "schema": "meter-native-table-b-one-field-washed-sources.v2",
+  "research_package": {
+    "package_id": "meter_drain_table_b_metadata_wash_followup_v3",
+    "manifest_sha256": "bed2c66fff73c021868fa926bdc2e103704b8ecad853ab6811120e9dd4ef2b49",
+    "payloads": {
+      "ATTEMPT-LEDGER.json": "8a00a3d1b8c848acf3e2504a272a2e8443917da1a9beb0a6b3abc9e904bb421c",
+      "FIELD-MAPPING-DISPOSITION.json": "43958fea0c29f2c7c1720991e72be68a1ae6ef870ea05b687adbbb978255128a",
+      "MINIMUM-FIELD-RECEIPT.json": "47e15e29e2171976483e841c9fe39fda1c169fa7b5f8df8a65aae13dfaf34fba",
+      "NATIVE-ONE-FIELD-RECEIPT.json": "0b6103f609705eedf6dad2c4d6e142ab61814c9000952ea45e174fed4b2b6f91",
+      "README.md": "69296e991c6f951437db328996c2a5f2c4870f91c2acce3dfc31e0d21989dce3",
+      "SOURCE-IDENTITIES.json": "b2db736fcb25700545e39a504525534225c135c501ec0990163f8f6b3d04fd76",
+      "TABLE-B-PRODUCER-CONSUMER.json": "4148a69e28a716c2a66e9c2e8033bfba9f28061b6fbc16db7f6e96b07183d05c",
+      "check_native_table_b_lineage.py": "2697b52f50af66a3040204afd7ac4860f436f850e951eef087c770c8354048df"
+    }
+  },
+  "superseded_wash_records": [
+    {
+      "package_id": "METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1",
+      "manifest_sha256": "4bc5876f1dbdeb25aea6a91737d469a42d709d73cd6ee4491db39c9c3ec3aee9",
+      "superseded_claim": "U32 node field may be key/value; key-discard wording pending review"
+    },
+    {
+      "package_id": "METER-NATIVE-TABLE-B-FIELD-IDENTITY-HOLD-V1",
+      "manifest_sha256": "b125269fbf21cc9785709a38408fe0e35ed94f88e69a72ad1bf993e12d40f188",
+      "superseded_claim": "node field role UNBOUND pending allocator/comparator review"
+    }
+  ],
+  "approved_f06of_model_identities": {
+    "F06OF_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+    "spatial_control52_manifest_sha256": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf"
+  },
+  "run022_native_log_sha256": "e117bd95a40fb8efbc5db0fddb716c3fd03b1c7d8de96e9c0916704d0f6ac5eb",
+  "raw_pcm_or_table_payload_copied": false
+}
