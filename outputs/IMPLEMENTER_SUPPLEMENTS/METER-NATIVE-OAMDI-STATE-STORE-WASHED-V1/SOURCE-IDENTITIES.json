@@ -1,0 +1,52 @@
+{
+  "absolute_paths_in_payloads": "OMITTED",
+  "approved_specs": {
+    "F05_joc_dispatch_and_commit": {
+      "bytes": 4759,
+      "sha256": "fc549d4bdeb598b801987dc153764835b61a2e56bdd6e734b127460527397c9e"
+    },
+    "F05_oamd_id11_live_producer": {
+      "bytes": 13201,
+      "sha256": "767005b297614e2ad5c374a9018642a22b577af37941f12486523cc43fb247dc"
+    },
+    "F06_oar_frontend_input_and_clock_join": {
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    "F13_joc_complexity_timer_payload_order": {
+      "bytes": 8367,
+      "sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b"
+    }
+  },
+  "native_assets": {
+    "DEE_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "encoded_outputs_in_package": false,
+    "meter_DLL_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "run_019_origin_static_sha256": "2033c103dfcac9c1e807c5ae26923496950da40ec064d85292377cffe83c1a6c",
+    "run_019_table_static_sha256": "10b71f18c7153cf1483dbd6c6d0a58e920c8feccc00dd7ae6b9ba4031ee6afee",
+    "run_019_tree_static_sha256": "1edf1c68283a56cd0c17afaace1cd50e73d38a2f6ab9dbb38b317bd0224aeacc",
+    "run_022_encoded_output_sha256_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "run_022_job_sha256": "55970df0ea9c5f0579b267103b6c8007dd17c2952c4fbc5c48393e9b9e2aa8d0",
+    "run_022_log_sha256": "e117bd95a40fb8efbc5db0fddb716c3fd03b1c7d8de96e9c0916704d0f6ac5eb",
+    "run_023_encoded_output_sha256_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "run_023_job_sha256": "5f6b1a617401a9b28d819d816da2841c8ce22befe2113cbe1332f983b6218f6a",
+    "run_023_log_sha256": "d809ebe846790232eaa6f9dbd5f041d34bc42c40d661c612b4da6fcc124ae42d",
+    "run_023_output_edge_static_sha256": "793f61d1ea2586d79dff5d0f98ff95cc5ffe7bfd9de6d5e51383786b9ea6c95b",
+    "run_023_property_consumer_static_sha256": "c0ac67a4193d2c8e2870048c352b761a2044ae14951c773bcdc36c224d8b15c6",
+    "run_024_bed_object_consumer_static_sha256": "55de11e367e8e2e81fdb2c49680505f9ab090e3d6c63b9a5ec981e29cebd823f",
+    "run_024_encoded_output_sha256_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "run_024_job_sha256": "724b4837ec2bad71e016f795b7b6b904020cdea6c5499a36654aeec26a18f963",
+    "run_024_log_sha256": "0b1a2e901b50809d9e774e9681bdc822d6ae6aa2ed458a66276fc36fd8b6898c",
+    "run_024_oamdi_state_consumer_static_sha256": "dcd508dd6d30dabc834a1fb07800671ff114af520d41290830f8b2577a4e449f",
+    "validation_wave_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "raw_PCM_or_native_row_payload_included": false,
+  "reference_manifests": {
+    "Wash_accepted_one_field_manifest_sha256": "cee62bbc2dc155b6296898c9bc73b7bef087e82836718525dd5ee17c79e78d7f",
+    "parent_local_semantic_source_manifest_sha256": "b2c36d1e976dec15deef644f9c5e79962050b37b9f8c769b9039f02e6d990507",
+    "parent_local_symbol_availability_manifest_sha256": "caa3acead6c69fb42f844d86d8d2b91f98100ae2e3ccea2e9ce09b8188760869",
+    "spatial_control52_model_manifest_sha256": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf"
+  },
+  "run_023_and_run_024_effective_job_semantics_match": true,
+  "schema": "native-table-b-oamdi-output-identities.v1"
+}

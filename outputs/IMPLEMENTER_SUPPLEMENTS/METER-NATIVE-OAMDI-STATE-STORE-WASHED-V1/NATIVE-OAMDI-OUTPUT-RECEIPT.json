@@ -1,0 +1,58 @@
+{
+  "capture_limits": {
+    "additional_numeric_metadata_bytes_read": 0,
+    "control16_or_control52_payload_bytes_read": 0,
+    "cross_run_pointer_identity": "NOT_JOINED",
+    "raw_PCM_bytes_read": 0,
+    "raw_encoded_output_in_package": false,
+    "source_scalar_bytes_read": 4,
+    "table_row_payload_bytes_read": 0
+  },
+  "run_022_one_field_source": {
+    "callback_ordinal": 1,
+    "converted_u32": 3,
+    "field_offset_bytes": 20,
+    "raw_signed_i32": 3,
+    "same_owner_consumer_row": 0,
+    "set_element_ordinal": 0,
+    "table_b_row": 0,
+    "write_value": 3,
+    "write_width_bytes": 4
+  },
+  "run_023_consumer_observation": {
+    "encoded_output_sha256_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "float_clamp_consumer_hit": true,
+    "native_row_consumer_hit": true,
+    "property_vector_helper_4435b0_hit": false,
+    "run_completed_successfully": true,
+    "same_thread_stack_in_AtmosProcessor_process": true
+  },
+  "run_024_output_boundary": {
+    "conditional_scalar_to_compact_coordinate_branch_taken": false,
+    "encoded_output_sha256_only": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "measurement_and_encoding_output_progress": "100%",
+    "metadata_formatter_gate_at_run_024": 0,
+    "native_bed_object_index_at_updater": 0,
+    "native_callback_generation": "NOT_CAPTURED",
+    "output_bytes_included": false,
+    "per_object_state_record_copy_bytes": 30,
+    "per_object_state_store_index": 0,
+    "projected_record_token": "R",
+    "projected_record_token_flow": [
+      "runtime vtable getter result is statically reused by the append call",
+      "run_024 bed/object updater entry receives R in the projected-record argument",
+      "run_024 metadata formatter entry receives the same R pointer"
+    ],
+    "run_completed_successfully": true,
+    "runtime_vtable_append_target_role": "native bed/object metadata updater wrapper",
+    "runtime_vtable_getter_target_role": "native table-B row consumer",
+    "same_effective_job_semantics_as_run_023": true,
+    "same_thread_across_native_consumer_stops": true,
+    "target_object_record_token": "O",
+    "target_object_token_flow": [
+      "metadata formatter receives O as the selected bed/object record pointer",
+      "per-object state-store receives the same O pointer and index 0"
+    ]
+  },
+  "schema": "native-table-b-to-oamdi-state-runtime-receipt.v1"
+}
