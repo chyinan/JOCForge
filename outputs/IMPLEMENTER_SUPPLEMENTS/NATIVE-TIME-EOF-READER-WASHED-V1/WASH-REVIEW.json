@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-TIME-EOF-READER-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_FILE_POSITION_EOF_READER_VECTOR",
+  "independent_verification": {
+    "source_manifest": "MATCH",
+    "source_payloads": "3/3 MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "v6_parent_manifest": "MATCH",
+    "arithmetic_replay": "PASS"
+  },
+  "explicit_nonclaims": [
+    "composite logged end sentinel zero is not rewritten by this observation",
+    "final encoder frame fill behavior is not evaluated",
+    "track duration is not source interval duration",
+    "embedded-timecode EOF and multi-row EOF remain open"
+  ],
+  "whole_chain_ready": false
+}

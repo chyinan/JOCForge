@@ -1,0 +1,23 @@
+{
+  "current_capture_values_read": false,
+  "minimum_bounded_value_budget_if_values_are_needed": {
+    "control_table_payload_reads": 0,
+    "converted_values_per_row": 1,
+    "maximum_raw_metadata_value_bytes": 4,
+    "native_table_b_rows": 1,
+    "pcm_sample_bytes": 0,
+    "scope": "one discriminating row can prove existence of one typed mapping; a complete 16-row mapping requires per-row identity receipts",
+    "source_values_per_row": 1
+  },
+  "reason": "Static field flow established the producer and consumer, but it drops the map key before table B; a raw U32 value without a semantic key and F06OF-side typed field receipt cannot answer the mapping question.",
+  "required_to_prove_one_typed_mapping": [
+    "hash-bound DEE, meter DLL, job config, and input identities for one selected run",
+    "same-run owner token for the task-config ordered map and the native table-B writer",
+    "semantic key/type token for one selected task/input map entry; redact the raw key if it can contain a name or identifier",
+    "map ordinal plus the source U32 field value (or a hash/token if policy requires) and the native conversion result",
+    "destination native table-B row/field token and OAR consumer row-index token on the same native callback stack",
+    "an independent F06OF-side typed receipt mapping target slot s to control52[s], word j, and control16[s+1][j] with model callback generation g+1",
+    "an explicit typed join between the native metadata key and that F06OF target-slot/word field; numeric equality is insufficient"
+  ],
+  "schema": "minimum-field-level-receipt-for-native-control-crosswalk.v1"
+}

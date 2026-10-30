@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-TABLE-B-PRODUCER-WASHED-V1",
+  "decision": "ACCEPTED_AS_NATIVE_TABLE_OWNER_AND_CONSUMER_PATH_ONLY",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "6/6 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "raw_PCM_or_control_payload_read": false
+  },
+  "closed": [
+    "task-config map clone to native SpatialCoder configuration",
+    "ordered map ordinal to U32 conversion and table-B row writer",
+    "table-B consumer row selection and local projection",
+    "same-callback native constructor/OAR/frame/metadata owner path"
+  ],
+  "still_unbound": [
+    "native map semantic key to F06OF target slot",
+    "native table-B field to F06OF control52 word/control16 row",
+    "native callback generation to F06OF model generation",
+    "three full-width fresh-zero native drains"
+  ],
+  "whole_chain_ready": false
+}

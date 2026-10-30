@@ -1,0 +1,71 @@
+{
+  "approved_specs": {
+    "F01E_frontend_config_dbmd_events": {
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    "F06OF_frontend_input_and_clock_join": {
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    "F06W_meter_window_and_output_clock": {
+      "bytes": 7388,
+      "sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c"
+    },
+    "F06_meter_none_drc_whole_composition": {
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    }
+  },
+  "assets": {
+    "DEE_5_2_1_DDP_Atmos_meter_module": {
+      "bytes": 10942464,
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    },
+    "DEE_5_2_1_executable": {
+      "bytes": 4233728,
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+    },
+    "approved_validation_wave": {
+      "bytes": 743696526,
+      "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+    },
+    "run_019_EC3_job_config": {
+      "bytes": 2050,
+      "sha256": "887544b4f4f79cc15d4010b77bfbea37e24e9ab78ce2c86706f9ecdaae79cab0"
+    },
+    "run_020_EC3_job_config": {
+      "bytes": 2050,
+      "sha256": "efd429948a2a9688f3b64a422e937f764c7022748d74793047ea55915d27c5fd"
+    },
+    "successful_run_011_job_template": {
+      "bytes": 2154,
+      "sha256": "7ce57f2bf44d244e2f74e9f0277906b23978d815f82b60071757cb442c52f0d2"
+    }
+  },
+  "native_output_payload_in_wash_package": "OMITTED; only size and SHA256 are included",
+  "paths_in_wash_payload": "OMITTED",
+  "prior_wash_basis": {
+    "prior_frontend_producer_lineage_manifest": {
+      "bytes": 23774,
+      "sha256": "d9196ac37e53d8757fbf71cf815ec7bd9d5178ac918799044a9db4586bb04968"
+    },
+    "prior_meter_drain_installation_manifest": {
+      "bytes": 897,
+      "sha256": "9949acae6775b4b73bcd511e35fd89bb67306b33aa8103a559ff1bc70e8e6662"
+    },
+    "prior_native_meter_evidence_manifest": {
+      "bytes": 6925,
+      "sha256": "618214e3a13d74ccdba6a874f22cad8fac2aa11a81ca0d72d23b3659e978a3bc"
+    },
+    "run_019_static_function_export": {
+      "bytes": 46858,
+      "sha256": "cbfcfa8c74cdd67dbb47ad2a80f6272cc6b85dd85eb992843ff10c827dece73c"
+    },
+    "run_020_static_constructor_export": {
+      "bytes": 49194,
+      "sha256": "5b5cc9690396e9a9bf5ebd379203f4ad00d79c5f289fd9f02eee97bb44c3dd10"
+    }
+  },
+  "schema": "meter-native-oar-followup-source-identities.v1"
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "meter-native-table-b-producer-washed-sources.v1",
+  "research_package": {
+    "package_id": "meter_drain_table_b_metadata_wash_followup_v2",
+    "manifest_sha256": "5129fbf98c0cd7b72e3a6a4929baaa73cc9584903aee5335d6c850234f605881",
+    "payloads": {
+      "FIELD-MAPPING-DISPOSITION.json": "442f53bec5b953ae2dcc889b8c68047ccd98ea714d2e6d73a7092ca93d757ae0",
+      "MINIMUM-FIELD-RECEIPT.json": "6fb1770800e78307b8398cfec8e45cc82bc457465856584178eb3403da37d304",
+      "MODEL-CROSSWALK.json": "46343c2fa49c5de600ea0c2900d9c9f2eb476eb760c0add4388b9abe17b95ede",
+      "NATIVE-TRACE-RECEIPT.json": "3dcbbb7f6609b5847f4eaec8e93ad1785c02220140b1946de82b10bdb57ff868",
+      "SOURCE-IDENTITIES.json": "fc0e9c42fe911a89af0c8811eac59d826b1e33f4f9aac1fcb7fc92f78a1041d4",
+      "TABLE-B-PRODUCER-CONSUMER.json": "c5e872b0f193f2c062710d5ec40977f2be35cf5220be81e3b5717c5219e3587d"
+    }
+  },
+  "approved_model_identities": {
+    "F06OF_frontend_input_and_clock_join": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+    "F06W_meter_window_and_output_clock": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c",
+    "spatial_control52_model_manifest": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf"
+  },
+  "prior_native_owner_edge_manifest_sha256": "ccb3bc50872035f055d090e4c98bc9762d3defe02dc460cd31d50864358c5c31",
+  "capture_boundary": {
+    "maximum_raw_metadata_value_bytes_if_needed": 4,
+    "pcm_bytes_read": 0,
+    "control_row_payload_bytes_read": 0,
+    "typed_F06OF_field_mapping": "UNBOUND",
+    "native_F06OF_generation": "NOT_CAPTURED"
+  }
+}

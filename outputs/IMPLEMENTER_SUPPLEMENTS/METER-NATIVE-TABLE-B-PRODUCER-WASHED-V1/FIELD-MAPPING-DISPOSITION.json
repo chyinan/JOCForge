@@ -1,0 +1,27 @@
+{
+  "approved_f06of_side": {
+    "callback_generation": "F06OF g+1; independently defined by the approved model contract",
+    "control16_adapter": "control16[0] is direct LFE; control16[s+1] is the 13-word control52 row for target slot s in 0..14",
+    "regular_control52_owner": "F05H/F05R56 target-slot state"
+  },
+  "determination": {
+    "native_constructor_count_16_is_control16_identity": false,
+    "native_record_stride_52_is_control16_identity": false,
+    "native_row_index_0_or_1_is_target_slot_identity": false,
+    "product_policy_changed": false,
+    "typed_native_table_b_field_to_f06of_control_word": "NO_TYPED_MAPPING_OBSERVED; UNBOUND",
+    "typed_native_table_b_row_to_f06of_target_slot": "NO_TYPED_MAPPING_OBSERVED; UNBOUND"
+  },
+  "native_side": {
+    "native_frame_generation": "BOUND_TO_NATIVE_CALLBACK_STACK_ORDINAL_ONLY",
+    "native_table_b_owner_and_consumer": "BOUND_WITHIN_NATIVE_SPATIALCODING_STATE",
+    "selected_task_config_to_native_table_b": "STATIC_TYPED_PATH; source map key and input semantic field are not retained in row B"
+  },
+  "schema": "native-table-b-to-f06of-control16-disposition.v1",
+  "why_values_alone_would_not_close": [
+    "the native writer selects ordered-map entries by ordinal and writes a converted U32",
+    "the native table writer does not copy the source map key into table B",
+    "the approved F06OF adapter preserves target-slot provenance separately from row values",
+    "equal row counts, byte strides, indices, or scalar values do not establish a shared typed field"
+  ]
+}

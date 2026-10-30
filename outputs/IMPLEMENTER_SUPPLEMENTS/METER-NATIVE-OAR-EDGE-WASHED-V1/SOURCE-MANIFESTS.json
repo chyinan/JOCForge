@@ -1,0 +1,27 @@
+{
+  "schema": "meter-native-oar-edge-washed-sources.v1",
+  "research_package": {
+    "package_id": "meter_drain_native_edge_wash_followup_v2",
+    "manifest_sha256": "ccb3bc50872035f055d090e4c98bc9762d3defe02dc460cd31d50864358c5c31",
+    "payloads": {
+      "ATTEMPT-LEDGER.json": "22fd3ee299a758834f5e4a28f122417a2e4627dc214b489dc664d85f7f2e41f3",
+      "MODEL-CROSSWALK.json": "46343c2fa49c5de600ea0c2900d9c9f2eb476eb760c0add4388b9abe17b95ede",
+      "NATIVE-TRACE-RECEIPT.json": "3dcbbb7f6609b5847f4eaec8e93ad1785c02220140b1946de82b10bdb57ff868",
+      "SOURCE-IDENTITIES.json": "fc0e9c42fe911a89af0c8811eac59d826b1e33f4f9aac1fcb7fc92f78a1041d4",
+      "README.md": "181a1ddad598880302145b99088c25e0fc47c01fbec810871816667bf2169b3c",
+      "check_meter_drain_native_edge.py": "d0f5d10cfcadc48c96d5d353569690a82c3dd95079bb82357863388709a9829a"
+    }
+  },
+  "prior_evidence": {
+    "meter_prepass_producer_consumer_chain_v4_manifest_sha256": "8a3b5e22fa5e6ec4867c7c6b2cd4cba4cd1da9cab4fb3ed8625a2b6a6811b3c1",
+    "meter_d11_stage_crosswalk_manifest_sha256": "5116fd85e2562c731facbf6850c34084a24385bd0f25e49c79be48cfcdd18df9",
+    "prior_native_meter_evidence_manifest_sha256": "618214e3a13d74ccdba6a874f22cad8fac2aa11a81ca0d72d23b3659e978a3bc"
+  },
+  "capture_boundary": {
+    "raw_pcm_bytes_read": 0,
+    "control_row_payload_bytes_read": 0,
+    "native_scp16_join": "UNBOUND",
+    "native_control16_join": "UNBOUND",
+    "native_f06of_generation": "NOT_CAPTURED"
+  }
+}

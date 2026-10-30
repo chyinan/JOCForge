@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "METER-NATIVE-OAR-EDGE-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_NATIVE_OAR_OWNER_PATH_EVIDENCE",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "6/6 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "raw_pcm_or_control_payload_read": false
+  },
+  "closed": [
+    "native OAR/spatial state/frame consumer/metadata consumer path nested in selected Meter callbacks",
+    "run_020 table-B construction-return/consumer pointer lineage and 16x52 native table boundary"
+  ],
+  "still_unbound": [
+    "native table-B identity to F06OF control16",
+    "native frame identity to F06OF SCP16",
+    "native callback/generation identity to model drain generation",
+    "three full-width fresh-zero native DRAIN callbacks"
+  ],
+  "source_empty_callback_4248_is_model_drain": false,
+  "product_policy_changed": false,
+  "whole_chain_ready": false
+}

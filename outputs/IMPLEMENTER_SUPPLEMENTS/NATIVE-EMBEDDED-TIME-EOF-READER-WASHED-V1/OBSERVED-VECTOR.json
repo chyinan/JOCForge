@@ -1,0 +1,39 @@
+{
+  "schema": "native-embedded-eof-reader-washed-vector.v1",
+  "source_package_id": "native-time-range-conversion-wash-v8",
+  "source_manifest_sha256": "55b85d21791bf1186ded9915dacf4172a0f86dd40c48a414cb32eefd5fbbccf6",
+  "fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "input": {
+    "time_base": "embedded_timecode",
+    "source_frame_rate_hz": 24,
+    "embedded_origin_seconds": 3610,
+    "start_token": 89880,
+    "end_token": "end_of_file",
+    "sample_rate_hz": 48000
+  },
+  "start_normalization": {
+    "absolute_seconds": "89880 / 24 = 3745",
+    "file_position_seconds": "3745 - 3610 = 135",
+    "start_sample": 6480000
+  },
+  "composite_item": {
+    "start_sample": 6480000,
+    "end_field_value": 0,
+    "end_field_semantics": "END_OF_FILE_SENTINEL"
+  },
+  "source_reader_tail": {
+    "source_end_getter": 6522906,
+    "cursor_before": 6521472,
+    "request_samples": 1434,
+    "returned_samples": 1434,
+    "cursor_after": 6522906
+  },
+  "source_interval": {
+    "length_samples": 42906,
+    "duration_seconds": 0.893875
+  },
+  "encoded_track_duration_seconds": 0.896,
+  "final_frame_fill_semantics": "NOT_EVALUATED",
+  "model_output": "NOT_RUN",
+  "model_comparison": "NOT_EVALUATED"
+}

@@ -1,0 +1,191 @@
+{
+  "assets": {
+    "DDP_Atmos_module_SHA256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "DEE_SHA256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "validation_wave_SHA256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "capture_limits": {
+    "control_row_payload_bytes_read": 0,
+    "native_control16_owner_or_shape": "UNBOUND",
+    "native_eof_marker": "NOT_CAPTURED",
+    "native_f06of_generation_token": "NOT_CAPTURED",
+    "native_input_cursor": "NOT_CAPTURED",
+    "native_scp16_owner_or_shape": "UNBOUND",
+    "raw_ec3_in_wash_payload": false,
+    "raw_pcm_bytes_read": 0,
+    "raw_pcm_values_serialized": false,
+    "source_or_decompile_code_in_wash_payload": false
+  },
+  "cross_run_comparison": {
+    "observed_metadata_row_indices": {
+      "run_019_sampled_callbacks": [
+        0,
+        0,
+        0
+      ],
+      "run_020_callback_1": [
+        1
+      ]
+    },
+    "output_container": "EC3 in both instrumented successful runs",
+    "pointer_tokens_joined_across_runs": false,
+    "row_index_semantics": "UNBOUND; the difference is preserved and not normalized to a target slot",
+    "same_executable_module_and_input_hashes": true
+  },
+  "model_native_disposition": {
+    "F06OF_drain_rule": "three fresh 38x1536 positive-zero raw inputs, each processing a full frontend callback",
+    "F06OF_expected_control16_shape": "16x13 U32",
+    "F06OF_expected_scp16_shape": "16x1536 finite F32",
+    "F06OF_packet_generation_rule": "MODEL_ONLY: generation=g+1 with a same-generation SCP16/control16 packet",
+    "implementation_readiness": "NO",
+    "native_downstream_zero_length_submissions": "Not recaptured; prior sealed receipt says input_call_generation is null and does not join them to a frontend callback",
+    "native_oar_frame_named_as_f06of_scp16": "NO",
+    "native_oar_table_named_as_f06of_control16": "NO",
+    "native_source_empty_is_f06of_drain": "NO; run_019 callback 4248 is a 0-row/0-sample source-empty candidate",
+    "native_three_fresh_zero_callbacks_observed": "NO",
+    "product_policy_changed": false
+  },
+  "native_run_019_first_callback": {
+    "metadata_record_stride_bytes": 52,
+    "metadata_row_consumer_hit_inside_meter_callback": true,
+    "metadata_row_index": 0,
+    "metadata_table_writer_hit_inside_meter_callback": true,
+    "native_callback_ordinal": 1,
+    "oar_process_and_frame_consumer_hit_inside_meter_callback": true,
+    "row_payload_bytes_read": 0,
+    "spatial_domain_config_producer_hit_inside_meter_callback": true
+  },
+  "native_run_019_terminal_callbacks": [
+    {
+      "classification": "SOURCE_INPUT_FRAME",
+      "f06of_g_mapping": "UNBOUND",
+      "metadata_record_stride_bytes": 52,
+      "metadata_row_index": 0,
+      "metadata_row_payload_bytes_read": 0,
+      "native_callback_ordinal": 4247,
+      "requested_samples": 1536,
+      "same_thread_stack_contains_metadata_row_consumer": true,
+      "same_thread_stack_contains_oar_process_callback": true,
+      "same_thread_stack_contains_spatial_coding_frame_consumer": true,
+      "source_count": 38
+    },
+    {
+      "classification": "SOURCE_EMPTY_CANDIDATE",
+      "f06of_g_mapping": "UNBOUND",
+      "metadata_record_stride_bytes": 52,
+      "metadata_row_index": 0,
+      "metadata_row_payload_bytes_read": 0,
+      "native_callback_ordinal": 4248,
+      "requested_samples": 0,
+      "same_thread_stack_contains_metadata_row_consumer": true,
+      "same_thread_stack_contains_oar_process_callback": true,
+      "same_thread_stack_contains_spatial_coding_frame_consumer": true,
+      "source_count": 0
+    }
+  ],
+  "native_run_020_constructor_and_consumer_join": {
+    "callback_requested_samples": 1536,
+    "callback_source_count": 38,
+    "constructor_argument_3_raw": 1536,
+    "constructor_argument_5_raw": 38,
+    "constructor_argument_7_raw": 16,
+    "constructor_argument_semantics": "UNASSIGNED; values are not used to name F06OF source, component, or control rows",
+    "constructor_entry_on_meter_callback_stack": true,
+    "constructor_return_matches_frame_consumer_state_container": true,
+    "constructor_return_matches_oar_nested_state_field": true,
+    "constructor_table_a_rows": 38,
+    "constructor_table_b_rows": 16,
+    "f06of_packet_type_join": "UNBOUND",
+    "frame_consumer_first_argument_matches_state_child_pointer": true,
+    "frame_consumer_second_argument_is_pointer_into_state_container": true,
+    "frame_consumer_third_argument_matches_stored_frame_pointer": true,
+    "metadata_consumer_payload_bytes_read": 0,
+    "metadata_consumer_reads_constructor_table_b": true,
+    "metadata_consumer_record_stride_bytes": 52,
+    "metadata_consumer_row_index": 1,
+    "native_callback_ordinal": 1,
+    "oar_native_state_owner_join": "BOUND_WITHIN_RUN_020_CALLBACK_1",
+    "table_a_row_stride_bytes": 52,
+    "table_b_row_stride_bytes": 52
+  },
+  "pointer_tokens": {
+    "raw_pointer_addresses_in_wash_payload": false,
+    "run_019": {
+      "frame_array_arg": "F19A",
+      "frame_data_arg": "F19D",
+      "meter_receiver": "M19",
+      "oar_adapter_receiver": "A19",
+      "oar_spatial_state_container": "S19",
+      "spatial_coding_instance_arg": "I19",
+      "spatial_metadata_table": "T19"
+    },
+    "run_020": {
+      "frame_array_arg": "F20A",
+      "frame_data_arg": "F20D",
+      "meter_receiver": "M20",
+      "oar_adapter_receiver": "A20",
+      "spatial_coding_constructor_return": "S20",
+      "spatial_coding_instance_arg": "I20",
+      "spatial_metadata_table_a": "T20A",
+      "spatial_metadata_table_b": "T20B"
+    },
+    "token_scope": "Each token is local to its run and represents a runtime pointer value observed at a typed function argument or a statically identified field path. Tokens are not cross-run identities or generation counters."
+  },
+  "runs": [
+    {
+      "control_row_payload_bytes_read": 0,
+      "debugger_route": "WINDBG_DBGENG_USER_MODE_LAUNCH",
+      "input_sample_count_from_native_log": 6522906,
+      "job_config": {
+        "bytes": 2050,
+        "sha256": "887544b4f4f79cc15d4010b77bfbea37e24e9ab78ce2c86706f9ecdaae79cab0"
+      },
+      "job_config_semantic_digest": "cdde2fd13ef27d23f746720accd845157483e5efec3fef61b8ee5407e99922f3",
+      "native_log": {
+        "bytes": 16170,
+        "sha256": "60b695f8a62ceb787a6f73c11ba747268be41b3cdaf992d4ae073ba94a1f92b7"
+      },
+      "native_log_error_line_count": 0,
+      "output_format": "EC3",
+      "raw_pcm_bytes_read": 0,
+      "raw_pcm_values_read": false,
+      "run_id": "run_019",
+      "status": "TARGET_EXITED_AND_JOB_COMPLETED",
+      "target_output": {
+        "bytes": 17395712,
+        "format": "EC3",
+        "included_in_wash_package": false,
+        "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448"
+      }
+    },
+    {
+      "control_row_payload_bytes_read": 0,
+      "debugger_route": "WINDBG_DBGENG_USER_MODE_LAUNCH",
+      "input_sample_count_from_native_log": 6522906,
+      "job_config": {
+        "bytes": 2050,
+        "sha256": "efd429948a2a9688f3b64a422e937f764c7022748d74793047ea55915d27c5fd"
+      },
+      "job_config_semantic_digest": "cdde2fd13ef27d23f746720accd845157483e5efec3fef61b8ee5407e99922f3",
+      "native_log": {
+        "bytes": 16210,
+        "sha256": "84b1eb51d992121ffc6b4bcc5c18b1a2fd2bd5c1b21a1a41d1119024a2df7b4e"
+      },
+      "native_log_error_line_count": 0,
+      "output_format": "EC3",
+      "raw_pcm_bytes_read": 0,
+      "raw_pcm_values_read": false,
+      "run_id": "run_020",
+      "status": "TARGET_EXITED_AND_JOB_COMPLETED",
+      "target_output": {
+        "bytes": 17395712,
+        "format": "EC3",
+        "included_in_wash_package": false,
+        "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448"
+      }
+    }
+  ],
+  "schema": "meter-native-oar-edge-receipt.v1",
+  "scope": "Successful WinDbg-observed DEE EC3 route with the approved validation input and the same DDP Atmos module hash. Output container differs from the earlier MP4 reference because the moved installation could not supply its MP4 mux component.",
+  "status": "NATIVE_OAR_CALLCHAIN_BOUND__F06OF_PACKET_TYPE_UNBOUND"
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "native-eof-reader-washed-vector.v1",
+  "source_package_id": "native-time-range-conversion-wash-v7",
+  "source_manifest_sha256": "885e0e224ef42e1dddbf52dc87d144deaabcaa78232cc8c71ea8dfd0362412c4",
+  "fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "input": {
+    "time_base": "file_position",
+    "sample_rate_hz": 48000,
+    "effective_frame_rate": 24,
+    "start_token": 3240,
+    "end_token": "end_of_file"
+  },
+  "composite_item": {
+    "start_sample": 6480000,
+    "logged_end_field": 0,
+    "logged_end_semantics": "END_OF_FILE_SENTINEL"
+  },
+  "source_reader_tail": {
+    "source_end_getter": 6522906,
+    "cursor_before": 6521472,
+    "remaining_request_samples": 1434,
+    "returned_samples": 1434,
+    "cursor_after": 6522906
+  },
+  "source_interval": {
+    "start_sample": 6480000,
+    "end_sample_exclusive": 6522906,
+    "length_samples": 42906,
+    "duration_seconds": 0.893875
+  },
+  "encoded_track_duration_seconds": 0.896,
+  "final_frame_fill_semantics": "NOT_EVALUATED",
+  "model_output": "NOT_RUN",
+  "model_comparison": "NOT_EVALUATED"
+}

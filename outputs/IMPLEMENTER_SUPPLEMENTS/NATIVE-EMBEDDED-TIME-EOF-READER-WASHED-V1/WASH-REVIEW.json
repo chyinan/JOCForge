@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_EMBEDDED_TIME_EOF_READER_VECTOR",
+  "independent_verification": {
+    "source_manifest": "MATCH",
+    "source_payloads": "3/3 MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "v7_parent_manifest": "MATCH",
+    "arithmetic_replay": "PASS",
+    "origin_metadata_source_grade": "TRANSCRIBED; raw debugger transcript not persisted",
+    "reader_scalar_capture": "DIRECT HASH-BOUND CAPTURE REFERENCE; raw transcript excluded"
+  },
+  "limits": [
+    "composite end sentinel zero is preserved",
+    "other embedded origins/rates remain open",
+    "final frame fill remains NOT_EVALUATED",
+    "model output and comparison remain NOT_RUN/NOT_EVALUATED"
+  ],
+  "whole_chain_ready": false
+}

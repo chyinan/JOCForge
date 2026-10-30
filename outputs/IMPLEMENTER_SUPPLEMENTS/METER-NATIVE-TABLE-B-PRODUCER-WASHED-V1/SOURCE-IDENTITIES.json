@@ -1,0 +1,19 @@
+{
+  "approved_model": {
+    "F06OF_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+    "F06W_spec_sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c",
+    "spatial_control52_model_manifest_sha256": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf"
+  },
+  "native_assets": {
+    "DDP_Atmos_meter_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "DEE_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "run_019_job_config_sha256": "887544b4f4f79cc15d4010b77bfbea37e24e9ab78ce2c86706f9ecdaae79cab0",
+    "run_019_static_table_source_export_sha256": "10b71f18c7153cf1483dbd6c6d0a58e920c8feccc00dd7ae6b9ba4031ee6afee",
+    "run_019_static_task_metadata_export_sha256": "1d1e1b0b16f4d5208459dce4bd965ea55804dac197b62c06341b40385a8eb4f6",
+    "run_020_job_config_sha256": "efd429948a2a9688f3b64a422e937f764c7022748d74793047ea55915d27c5fd",
+    "selected_validation_wave_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "paths_in_wash_payload": "OMITTED",
+  "prior_native_owner_followup_manifest_sha256": "ccb3bc50872035f055d090e4c98bc9762d3defe02dc460cd31d50864358c5c31",
+  "schema": "native-table-b-followup-source-identities.v1"
+}

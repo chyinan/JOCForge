@@ -1,0 +1,48 @@
+{
+  "attempts": [
+    {
+      "reason": "selected components failed initialization in the non-debug launch; all 11 hook roles armed but no native frame entry occurred",
+      "run_id": "run_013",
+      "status": "NO_FRAME_CALLBACK"
+    },
+    {
+      "reason": "DEE reported DLL initialization failures, then unknown encode_to_atmos_ddp filter and application error 10",
+      "run_id": "run_014",
+      "status": "NO_FRAME_CALLBACK"
+    },
+    {
+      "reason": "plain launch without observer reproduced the component initialization failure and abnormal process exit",
+      "run_id": "run_015",
+      "status": "NO_FRAME_CALLBACK"
+    },
+    {
+      "reason": "WinDbg launch loaded DDP components and read input metadata; MP4 output initialization failed because the mp4_mux plugin was unavailable",
+      "run_id": "run_016",
+      "status": "INPUT_REACHED_OUTPUT_BLOCK"
+    },
+    {
+      "reason": "plain EC3 launch with the selected DLL search path still reproduced the component initialization failure",
+      "run_id": "run_017",
+      "status": "NO_FRAME_CALLBACK"
+    },
+    {
+      "reason": "WinDbg EC3 control run completed measurement and encoding; used to confirm the alternate output route",
+      "run_id": "run_018",
+      "status": "SUCCESS_NO_EDGE_HOOKS"
+    },
+    {
+      "reason": "WinDbg EC3 run completed; captured selected Meter callback 4247/4248 and nested OAR spatial coding callbacks",
+      "run_id": "run_019",
+      "status": "SUCCESS_WITH_TERMINAL_OAR_EDGE_CAPTURE"
+    },
+    {
+      "reason": "WinDbg EC3 run completed; captured constructor return to OAR nested state and spatial coding frame-consumer argument chain",
+      "run_id": "run_020",
+      "status": "SUCCESS_WITH_CONSTRUCTOR_OWNER_CAPTURE"
+    }
+  ],
+  "original_source_job_file": "NOT_PRESENT_AT_MIGRATED_PATH; run_011 successful job template was hash-verified and only run-local output/temp paths and EC3 container were substituted",
+  "schema": "meter-native-edge-attempt-ledger.v1",
+  "selected_output_scope": "EC3 is an observation-compatible output already used by the local DEE tree. The original MP4 output was blocked by the missing mp4_mux component. This changes only this native observation config and does not change product policy.",
+  "timed_debugger_elapsed_is_performance_metric": false
+}

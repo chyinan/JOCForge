@@ -1,0 +1,50 @@
+{
+  "approved_model": {
+    "drain_packet_generations": [
+      4248,
+      4249,
+      4250
+    ],
+    "each_drain_input_shape": "38x1536 positive-zero F32 raw-frame boundary",
+    "frame_size": 1536,
+    "last_normal_padding_samples": 486,
+    "last_normal_start": 6521856,
+    "last_normal_valid_samples": 1050,
+    "normal_callbacks_Q": 4247,
+    "packet_generation_rule": "g+1; do not join it to native callback ordinal by numeric equality",
+    "source_samples": 6522906,
+    "spec_logical_id": "F06OF frontend input and clock join",
+    "total_callbacks_Q_plus_three": 4250
+  },
+  "determination": {
+    "F06OF_SCP16_control16_native_same_generation_packet": "UNBOUND",
+    "fresh_zero_equivalence": "NO EQUIVALENCE CLAIM; native #4248 has 0/0 descriptor fields and is not the model 38x1536 fresh-zero input",
+    "native_oar_process_path": "Observed synchronously inside selected native Meter callbacks",
+    "native_route_policy": "local-only evidence for the selected DEE EC3 route; no product-policy changes",
+    "native_spatial_coding_state_and_metadata_table": "Bound as a native-only owner path in run_020 callback 1; separate from any F06OF model owner until a typed adapter receipt exists",
+    "numeric_4248_is_not_a_f06of_generation_join": true
+  },
+  "native_observations": {
+    "native_callback_ordinals_are_f06of_g": "UNBOUND",
+    "numeric_4248_is_not_a_f06of_generation_join": true,
+    "run_019_callback_4247": {
+      "requested_samples": 1536,
+      "source_count": 38
+    },
+    "run_019_callback_4248": {
+      "requested_samples": 0,
+      "source_count": 0
+    },
+    "run_020_callback_1": {
+      "requested_samples": 1536,
+      "source_count": 38
+    }
+  },
+  "prior_zero_length_boundary_reuse": {
+    "generation_join": "UNBOUND_NULL",
+    "manifest_sha256": "618214e3a13d74ccdba6a874f22cad8fac2aa11a81ca0d72d23b3659e978a3bc",
+    "package_logical_id": "native_meter_full_programme_wash",
+    "presence_chain_recaptured": false
+  },
+  "schema": "meter-native-oar-model-crosswalk.v1"
+}

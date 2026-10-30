@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "NATIVE-EMBEDDED-TIME-EOF-READER-WASHED-V1",
+  "status": "EMBEDDED_EOF_READER_VECTOR_ACCEPTED; OTHER_ORIGINS_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1194,
+      "sha256": "62f7a77d481274028232e18be07fe8d93c4d4a44dffb347e119c98ee1c46b5c8"
+    },
+    {
+      "name": "OBSERVED-VECTOR.json",
+      "bytes": 1239,
+      "sha256": "524a842cf17d3a5307be51cbfccdb5413007efe3d027ad452f133490a7ddc6c1"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1390,
+      "sha256": "ceb9cfe80ac9e4abd9fc3df868ea35f1c0c526cdfb174dff47d9d8c5c5322b96"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 848,
+      "sha256": "8ee423f88a30de70ceed2e6fae4dcccb8d4715aebc1f71cb95abc59cc486d90f"
+    }
+  ]
+}

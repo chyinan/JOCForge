@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "METER-NATIVE-OAR-EDGE-WASHED-V1",
+  "status": "NATIVE_OAR_PATH_BOUND; F06OF_TYPE_AND_GENERATION_JOIN_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "ATTEMPT-LEDGER.json",
+      "bytes": 2353,
+      "sha256": "22fd3ee299a758834f5e4a28f122417a2e4627dc214b489dc664d85f7f2e41f3"
+    },
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1757,
+      "sha256": "0db7657d30b2d4546854e128ad8d17ebc72262f4992501abd483243ddf57dd6c"
+    },
+    {
+      "name": "MODEL-CROSSWALK.json",
+      "bytes": 2071,
+      "sha256": "46343c2fa49c5de600ea0c2900d9c9f2eb476eb760c0add4388b9abe17b95ede"
+    },
+    {
+      "name": "NATIVE-TRACE-RECEIPT.json",
+      "bytes": 8344,
+      "sha256": "3dcbbb7f6609b5847f4eaec8e93ad1785c02220140b1946de82b10bdb57ff868"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 2631,
+      "sha256": "fc0e9c42fe911a89af0c8811eac59d826b1e33f4f9aac1fcb7fc92f78a1041d4"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1473,
+      "sha256": "5c88bfbac31ea1c6e57719929a9f7c152542a315e24d2f77f370494c778fccec"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 975,
+      "sha256": "fa500882b7e91f84f13898d4aa84ed384041d9c263d2d0f7e375dc3493079c83"
+    }
+  ]
+}

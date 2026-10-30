@@ -1,0 +1,24 @@
+{
+  "schema": "native-eof-reader-washed-sources.v1",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v7",
+    "manifest_sha256": "885e0e224ef42e1dddbf52dc87d144deaabcaa78232cc8c71ea8dfd0362412c4",
+    "payloads": {
+      "NATIVE-END-OF-FILE-READER-VECTOR.json": "61c4d9298314bd1044985f332e17f0f6ffd5d2be46cdd60ef3a0a19e8ce592ea",
+      "README.md": "2cc0b05327551c6032893e28cc68a502258ee442aa4ece9bc344654726132a85",
+      "verify_eof_reader_vector.py": "4f06b8980ea89ce43d8db11a1f59746dfa54055af6c09c11385f1fcf9e8efc53"
+    }
+  },
+  "parent_wash_package": {
+    "package_id": "native-time-range-conversion-wash-v6",
+    "manifest_sha256": "2786651bba57f094c97adb61e67166d768282dcc135c6fade5c2ed786c82e29a",
+    "scope": "23.976 numeric file-position range vector"
+  },
+  "opaque_source_identities": {
+    "run58_configuration": "9b5c44091e04afc6f4485f1c0b1f05f263445c26f706c6546d755ac3d767a522",
+    "run58_native_log": "eb95918172078feb543fb1b7c9d2a77027abc6f52c8e9132aa3dcdd3095d3e20",
+    "run58_native_output": "d964d0656123fa24b9e361a4505977a0a6abfb05f711db11888e9dce1ae6fec0",
+    "run58_scalar_capture": "aa1dae66a9f8eea87585b705f9c7a211fa982dfdd944a3c40e178357ec143815"
+  },
+  "raw_source_or_audio_copied": false
+}

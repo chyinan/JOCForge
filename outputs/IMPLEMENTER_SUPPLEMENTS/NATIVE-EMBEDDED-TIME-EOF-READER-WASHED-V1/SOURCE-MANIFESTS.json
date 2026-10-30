@@ -1,0 +1,25 @@
+{
+  "schema": "native-embedded-eof-reader-washed-sources.v1",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v8",
+    "manifest_sha256": "55b85d21791bf1186ded9915dacf4172a0f86dd40c48a414cb32eefd5fbbccf6",
+    "payloads": {
+      "EMBEDDED-EOF-READER-ADDENDUM.json": "402c1c8892203971081a60a792b802b3e5083f185201965b5fc67e67f8c1c727",
+      "README.md": "26e8a63885a34b82c2239e28cc68a502258ee442aa4ece9bc344654726132a85",
+      "verify_embedded_eof_reader.py": "352803067831017540d6e092ae9ab63c0c371c4ccb594d38610491676386bff4"
+    }
+  },
+  "parent_wash_package": {
+    "package_id": "native-time-range-conversion-wash-v7",
+    "manifest_sha256": "885e0e224ef42e1dddbf52dc87d144deaabcaa78232cc8c71ea8dfd0362412c4",
+    "scope": "file-position EOF sentinel reaches physical source reader end"
+  },
+  "opaque_source_identities": {
+    "run60_configuration": "3b5ce51f828f22084eec2b98a295541b68bf52d2e0f4ba0ef7c0462f05f47446",
+    "run60_native_log": "01a72a8f0ab31d5339d7d71fe3fd34839fbf6db123aec63850059fd3c14a2fdf",
+    "run60_native_output": "d964d0656123fa24b9e361a4505977a0a6abfb05f711db11888e9dce1ae6fec0",
+    "run60_scalar_capture": "6af7c8d65f6b536a5fcf8b9a1944f72bf5c33a91de310326e85150d5dd54eea6",
+    "run43_source_metadata_transcription": "86a08c106715d2c62bd7014df3231f9204c513fc99f70872c489ce30c9ef5d4a"
+  },
+  "raw_source_or_audio_copied": false
+}

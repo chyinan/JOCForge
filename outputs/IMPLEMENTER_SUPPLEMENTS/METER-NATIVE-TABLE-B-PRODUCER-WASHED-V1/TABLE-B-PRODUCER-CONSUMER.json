@@ -1,0 +1,76 @@
+{
+  "consumer_rule": {
+    "consumer": "native spatial-domain metadata consumer",
+    "dynamic_sampled_indices": {
+      "run_019_callback_1": 0,
+      "run_019_callback_4247": 0,
+      "run_019_callback_4248": 0,
+      "run_020_callback_1": 1
+    },
+    "field_names": "UNBOUND",
+    "index_semantics": "UNBOUND; preserve the cross-run difference",
+    "projection": "selected native record is projected into a separate 15-word local structure",
+    "row_payload_bytes_read": 0,
+    "selection": "explicit row-index input selects table-B base plus i times 52 bytes"
+  },
+  "native_dynamic_owner_receipt": {
+    "cross_run_pointer_identity": "NOT_JOINED",
+    "run_019": {
+      "same_native_meter_callback_stack": true,
+      "same_run_pointer_tokens_only": true,
+      "sampled_callback_ordinals": [
+        1,
+        4247,
+        4248
+      ],
+      "table_b_row_consumer_in_native_meter_callbacks": true
+    },
+    "run_020": {
+      "constructor_return_matches_oar_nested_state": true,
+      "consumer_row_index": 1,
+      "same_native_meter_callback_ordinal": 1,
+      "table_b_count": 16,
+      "table_b_pointer_matches_constructor_field_and_consumer_table": true,
+      "table_b_stride_bytes": 52
+    }
+  },
+  "native_table_shapes": [
+    {
+      "constructor_argument_count": 38,
+      "record_stride_bytes": 52,
+      "role": "SpatialCodingState table A"
+    },
+    {
+      "constructor_argument_count": 16,
+      "record_stride_bytes": 52,
+      "role": "SpatialCodingState table B"
+    }
+  ],
+  "producer_source": {
+    "conversion": {
+      "mapping_source": "static converter in the selected DLL",
+      "operation": "native enum/code normalization",
+      "semantic_field_name": "UNBOUND"
+    },
+    "direct_ADM_input_field_mapping": "UNBOUND",
+    "native_owner": "selected SymphonyRenderer task-config object",
+    "source_entry_selection": "in-order map iteration by ordinal i; table writer requests the i-th entry",
+    "source_scalar_access": "row getter returns one U32 field from the selected map node",
+    "task_config_path": [
+      "selected preprocessor task-config map",
+      "ordered-map clone into SpatialCoderPlatform config",
+      "SpatialCodingState constructor",
+      "table writer"
+    ],
+    "typed_source_field_key": "NOT_PRESERVED_BY_TABLE_WRITER"
+  },
+  "schema": "native-spatial-coding-table-b-lineage.v1",
+  "table_b_writer_rule": {
+    "destination": "table-B row i, one native metadata-code field",
+    "destination_field_semantics": "UNBOUND",
+    "map_key_copied_to_table_b": false,
+    "row_index": "i from 0 up to constructor table-B count minus one",
+    "source_map_guard": "write mapped metadata code only when i is less than ordered-map entry count",
+    "source_value": "U32 read from an ordered-map node field"
+  }
+}
