@@ -5778,6 +5778,12 @@ def check_main_spatial_identity_binding(root, data):
     ck('spatial_callback: &\'a MainSpatialCallbackCandidate' in bridge_source and 'spatial_callback.is_bound_to(prepared)' in bridge_source, 'F07 source-analysis bridge requires the matching MAIN callback identity')
     ck('alternate_job_xml' in test_source and 'different-output.ec3' in test_source and 'SourceAnalysisBridgeError::SpatialCallbackIdentityMismatch' in test_source, 'same-programme callback from a different normalized job identity is rejected')
 
+def check_supplement_catalog(root):
+ builder=root/'scripts/build_supplement_catalog.py';catalog=root/'outputs/IMPLEMENTER_SUPPLEMENTS/CATALOG.md';ck(builder.is_file()and catalog.is_file(),'supplement catalog generator and generated locator exist')
+ if not(builder.is_file()and catalog.is_file()):return
+ checked=subprocess.run([sys.executable,'-B',str(builder),'--check'],cwd=root,capture_output=True,text=True,encoding='utf-8');ck(checked.returncode==0 and '"index_is_locator_only": true' in checked.stdout and '"catalog_is_current": true' in checked.stdout,'washed supplement catalog is fresh against package directories')
+ text=catalog.read_text(encoding='utf-8');ck('Generated locator only. A catalog row is not evidence.' in text and 'Package directories:' in text and 'Top-level manifests:' in text and 'NO_TOP_LEVEL_MANIFEST' in text and not re.search(r'(?i)\b[A-Z]:\\',text),'supplement catalog is clearly a sanitized locator, not evidence or an absolute-path index')
+
 
 def run(root=ROOT):
  check_unsafe_boundary(root)
@@ -5849,6 +5855,7 @@ def run(root=ROOT):
  check_integrity_owner_root(root,d)
  check_f14_bit_compaction_slice(root,d)
  check_f14_hmac_primitive_slice(root,d)
+ check_supplement_catalog(root)
  for e in future:
   if e['functional_id']=='F04D':
    audit=d['phase_one'].get('DESCRIPTOR_CONTROL_AUDIT',{});ck(e['implementation_status']==audit.get('status')=='LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN'and all(key in e for key in('parameters','vectors','error_outcomes','clock'))and e.get('implementation_files')==audit.get('implementation_files')and e.get('test_modules')==audit.get('test_files'),'F04D traceability maps the exact local stage contract and inventory')
