@@ -1,0 +1,21 @@
+{
+  "schema": "plan-bound-output-owner-admission-cases.v1",
+  "input_only": true,
+  "cases": [
+    {"id": "valid_selected_plan", "prepared_identity": "same programme/resource/config/N", "profile": "resolved full owner-issued value", "carriage": "deployed_compat", "provider_admissions": "actual validator-owned handles", "attempt": 0, "staging_owner": "distinct opaque parent identity", "destination": "parent-validated"},
+    {"id": "prepared_input_only", "resolved_profile": true, "provider_admissions": null},
+    {"id": "dependency_manifest_only", "manifest_hash_valid": true, "loaded_parameter_values": false},
+    {"id": "one_provider_missing", "missing_role": "F14 integrity"},
+    {"id": "wrong_profile", "prepared_and_resolved_profile_equal": false},
+    {"id": "wrong_carriage", "plan": "deployed_compat", "provider": "etsi_emdf"},
+    {"id": "test_fixture_receipt", "production_allowed": false},
+    {"id": "wrong_attempt", "programme_attempt": 0, "output_owner_attempt": 1},
+    {"id": "same_attempt_other_programme", "attempt_equal": true, "programme_equal": false},
+    {"id": "wrong_resource", "prepared_input_sha_equals_plan": false},
+    {"id": "destination_rejected", "validated_destination_capability": false},
+    {"id": "runtime_receipt_pre_minted", "source_stage_executed": false, "source_receipt": "must not exist yet"},
+    {"id": "runtime_source_receipt", "source_stage_executed": true, "owner_generation": "current source"}
+  ],
+  "execution": "NOT_RUN",
+  "note": "Inputs only; no expected provider PASS, receipt hash or owner-state digest is supplied."
+}

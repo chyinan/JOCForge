@@ -1,0 +1,35 @@
+{
+  "schema": "f15-plan-bound-output-owner-washed-sources.v1",
+  "research_package": {
+    "package_id": "plan-bound-output-owner-receipt-crosswalk",
+    "manifest_sha256": "c22d3409980db3d14821870d70da1f34130f7809a7be5dc5ea2db3462f2d3344",
+    "payloads": {
+      "CONTRACT.md": "70f855064e73cae51c41462742ef0b3b3f588286c61e01766a94d973132cc0ee",
+      "INPUT-ONLY.json": "7e438afad8cff18ccb82a40833e6bab72c3524e47e4c140abb5fe169b0b50fa1",
+      "SOURCES.json": "26e31fac532ab8b95fa9bc63920033307bb8f8971a83755e4135d6a3b37bf0e2",
+      "VERIFICATION.json": "5c9e473dad9c8373086e18705cabb8bf823b12ac77f64bf49666f10cd3ec200c"
+    },
+    "checker_in_package": false,
+    "reported_normal_and_optimized_checkers": "NOT_RERUN_BY_WASH"
+  },
+  "verified_approved_packages": [
+    {"package_id":"F15-OUTPUT-PROVIDER-PLAN-BINDING-V1","manifest_sha256":"b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2","payloads":"5/5 MATCH"},
+    {"package_id":"F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1","manifest_sha256":"db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31","payloads":"4/4 MATCH"},
+    {"package_id":"F15-PRODUCTION-OUTPUT-API-GATE-V1","manifest_sha256":"954da54ae20ca9288eb00c736ef28ac5dd39870334cc091ad1eef6a7c7eac388","payloads":"4/4 MATCH"},
+    {"package_id":"OUTPUT-ROOT-GTC-PARENT-BINDING-V1","manifest_sha256":"2101f9c29c663ef53c1629c943e1fc474cc16cf2cac484013399facf2cc7f88f","payloads":"4/4 MATCH"},
+    {"package_id":"OUTPUT-ATTEMPT-IDENTITY-BINDING-V1","manifest_sha256":"4213be803667406082571ece3d7e7dc0c22694796e6bca13242fc60addbf63f6","payloads":"3/3 MATCH"},
+    {"package_id":"PREPARED-JOB-INPUT-IDENTITY-V1","manifest_sha256":"4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f","payloads":"2/2 MATCH"}
+  ],
+  "architecture_source": {
+    "file": "docs/architecture/PROFILE-DIMENSIONS.md",
+    "sha256": "3946d83d245c7acac13aff36d32e14ece5debf9051bada07ee0b1214f912ed4b",
+    "status": "tracked current architecture document"
+  },
+  "gtc_v3_adoption": {
+    "package_id": "GTC-METERING-READY-OWNER-AVAILABILITY-LOCAL-V3",
+    "manifest_sha256": "d55a4de579dcb94ef1bf1f46e59547a21398bea8f2f11e368081cba0ac62764a",
+    "approval_status_erratum_manifest_sha256": "106cd6930ae61745c548e5b7dadaa08ae2d97276457c6f6983fb43d53326398c",
+    "approved_v2_manifest_sha256": "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e"
+  },
+  "f15_dependency_manifest_sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce"
+}

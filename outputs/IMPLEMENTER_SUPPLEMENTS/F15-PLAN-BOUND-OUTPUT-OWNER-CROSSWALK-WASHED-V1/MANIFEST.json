@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1",
+  "status": "LOCAL_PLAN_BOUNDARY_ACCEPTED; PROVIDER_ROLE_AND_DESTINATION_ADMISSION_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 3241,
+      "sha256": "4304ed060779cb157a0d7f46ba009091b54daa57021f9e71a0533462c8d18199"
+    },
+    {
+      "name": "INPUT-ONLY.json",
+      "bytes": 1583,
+      "sha256": "7e438afad8cff18ccb82a40833e6bab72c3524e47e4c140abb5fe169b0b50fa1"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 2502,
+      "sha256": "313c4a80f2dd3d67a67ccd86396c2bc9b35bba8387b9d01ac218af51568fe251"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 1295,
+      "sha256": "063f6f976420e0b0a758ed1dbf0984b0811d1af75e2a87f1b94b91f5befd6fd5"
+    }
+  ]
+}

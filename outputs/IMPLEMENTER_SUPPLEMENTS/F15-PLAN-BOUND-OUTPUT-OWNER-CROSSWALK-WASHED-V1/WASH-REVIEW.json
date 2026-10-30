@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F15-PLAN-BOUND-OUTPUT-OWNER-CROSSWALK-WASHED-V1",
+  "decision": "ACCEPTED_AS_LOCAL_PLAN_AND_OUTPUTOWNER_AUTHORITY_BOUNDARY",
+  "research_package_manifest": "MATCH",
+  "research_payloads": "4/4 MATCH",
+  "approved_f15_packages": "6/6 manifests and payload sets MATCH",
+  "profile_dimensions": "FOUND_IN_HASHED_TRACKED_ARCHITECTURE_DOC",
+  "gtc_v3_status_projection": "ALREADY_USER_APPROVED; v2 unchanged",
+  "contract_boundary_accepted": [
+    "private parent-owned ValidatedEncodingPlan",
+    "same PreparedJobInput identity plus resolved profile and carriage",
+    "owner-issued loaded-value admissions; manifest hashes alone are insufficient",
+    "separate plan-time admission from execution-time stage receipts",
+    "OutputOwner consumes plan, typed attempt, distinct staging owner and validated destination",
+    "provider projection/hash derived internally; parent performs atomic READY install"
+  ],
+  "still_open": [
+    "exact selected runtime provider-role list and each owner receipt/handle schema",
+    "destination capability producer and complete validation contract",
+    "production provider load, OutputOwner construction and READY installation"
+  ],
+  "production_execution": "NOT_RUN",
+  "whole_chain_ready": false
+}
