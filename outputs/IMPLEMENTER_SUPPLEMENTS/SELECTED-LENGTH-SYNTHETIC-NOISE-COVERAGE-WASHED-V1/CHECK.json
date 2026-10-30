@@ -1,0 +1,13 @@
+{
+  "schema": "selected-length-synthetic-noise-wash-check.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_NEGATIVE_COVERAGE",
+  "source_manifests_and_payload_hashes": "VERIFIED",
+  "run_109_check_status": "PASS_VALID_SYNTHETIC_INPUT_BOUNDARY_NOT_CLOSED",
+  "run_110_check_status": "PASS_VALID_SYNTHETIC_INPUT_BOUNDARY_NOT_CLOSED",
+  "body_bytes_plus_four_relation": "OBSERVED_IN_RUN_100_109_110_WITHIN_EACH_CAPTURE",
+  "writer_operands_507_508_511_512": "NOT_OBSERVED",
+  "512_overflow_behavior": "NOT_OBSERVED",
+  "parent_invocation_to_adm_sample_position": "UNBOUND",
+  "model_codec_execution": "NOT_RUN",
+  "jocforge_runtime_execution": "NOT_RUN"
+}

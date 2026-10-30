@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1711512,
-              "sha256": "1250d81084f4e7893d30a89badfaba5389f030e59f2be1e60085647c48e62788"
+              "bytes": 1716025,
+              "sha256": "24cfe4169f8c4d5fb083604ff9c79276a6fda84bfa4b3801f692c74b5a27e47f"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1711512,
-              "sha256": "1250d81084f4e7893d30a89badfaba5389f030e59f2be1e60085647c48e62788"
+              "bytes": 1716025,
+              "sha256": "24cfe4169f8c4d5fb083604ff9c79276a6fda84bfa4b3801f692c74b5a27e47f"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -23799,6 +23799,115 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-length-synthetic-noise-coverage-run109-run110",
+          "mapping_status": "WASHED_RUN109_RUN110_REPEAT_BODY_BYTES_PLUS_FOUR__TARGET_BOUNDARY_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SYNTHETIC_INPUT_COVERAGE__MODEL_NOT_RUN",
+          "scope": "This evidence-only slice records three separate selected-profile native captures: run 100's authorized source input, run 109's 30-second generated-noise prefix with a zero-filled tail, and run 110's full-duration generated noise. Each capture independently reports a same-parent body-length chain. Run 109 has 938 same-parent events, body lengths 297-440 bytes, and block-2 writer operands up to 444; run 110 has 4,247 same-parent events, body lengths 297-413 bytes, and operands up to 417. In each run the body prefix/refill lengths are same-parent joined, reservation U16 values and the 9-bit operand equal body bytes + 4, and the writer advances 9 bits. This repeats the observed relation for these inputs only; it does not establish the meaning of +4 or behavior outside the observed ranges. The runs are not merged into a single execution identity and are not comparisons to original source-audio output. Operands 507/508/511/512, 512 overflow behavior, run-99 upstream units/formula, and parent invocation to ADM sample position remain open. Model codec and JOCForge runtime execution are NOT_RUN.",
+          "owner": "codec",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run100ParentInvocation",
+              "Run109ParentInvocation",
+              "Run109BodyLengthBytes",
+              "Run109Block2ReservationU16",
+              "Run109WriterOperand9Bit",
+              "Run110ParentInvocation",
+              "Run110BodyLengthBytes",
+              "Run110Block2ReservationU16",
+              "Run110WriterOperand9Bit",
+              "AdmSourceSamplePosition"
+            ],
+            "covered_clauses": [
+              "Run 109 (30-second generated-noise prefix with zero-filled tail) has 938 same-parent events; body lengths are 297-440 bytes and block-2 operands reach 444.",
+              "Run 110 (full-duration generated noise) has 4,247 same-parent events; body lengths are 297-413 bytes and block-2 operands reach 417.",
+              "Within each capture, body prefix/refill is same-parent joined; reservation U16 and 9-bit operand equal body bytes + 4, and the writer advances 9 bits.",
+              "Runs 100, 109, and 110 remain separate execution identities; no comparison to original source-audio output is made.",
+              "Parent invocation to ADM sample position remains UNBOUND."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_LENGTH_SYNTHETIC_NOISE_COVERAGE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "supplement_manifest_sha256": "f59133ac1e7744649d978e932c8bbafb93c03c4d91e50fedc9f66034372e4cbf",
+            "validation_boundary": "Repeated selected-path relation on runs 100/109/110 only; target boundary, run-99 producer formula/units, sample position, model, and JOCForge runtime remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN109_RUN110_SYNTHETIC_NOISE_SAME_PARENT_BODY_AND_RESERVATION_COVERAGE",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Run 109: 938 same-parent events; body bytes 297-440; block-2 writer operand maximum 444.",
+              "Run 110: 4,247 same-parent events; body bytes 297-413; block-2 writer operand maximum 417.",
+              "Both captures independently show reservation U16 and 9-bit operand = body bytes + 4, with 9 bits advanced.",
+              "Source PCM bytes are skipped without reading or copying; generated-noise output is not compared with original-audio output.",
+              "507/508/511/512 remain unobserved; 512 overflow behavior is unknown and the targeted follow-up is NOT_RUN.",
+              "Run 99 upstream units/formula and parent invocation to ADM sample-position remain unresolved; no cross-run identity merge is established."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "f59133ac1e7744649d978e932c8bbafb93c03c4d91e50fedc9f66034372e4cbf"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Targeted 507/508/511/512 operand observation and reservation/writer outcomes.",
+            "512 overflow behavior and downstream error disposition.",
+            "Run-99 upstream threshold/candidate/pretrim units and complete producer formula.",
+            "Parent invocation to ADM sample-position, source-clock, or AU lineage.",
+            "Any cross-run execution identity merge or original-source-audio output comparison.",
+            "Model codec execution and JOCForge runtime/product output."
+          ],
+          "validation_boundary": "Bounded repeated native evidence on listed inputs; no algorithm rule, universal range, error outcome, or production readiness is inferred.",
+          "native_status": {
+            "run100_source_input_identity": "SEPARATE_CAPTURE; NO_CROSS_RUN_JOIN",
+            "run109_same_parent_events": 938,
+            "run109_input": "30_SECOND_GENERATED_NOISE_PREFIX_WITH_ZERO_FILLED_TAIL",
+            "run109_body_length_range_bytes": [
+              297,
+              440
+            ],
+            "run109_block2_writer_operand_max": 444,
+            "run110_same_parent_events": 4247,
+            "run110_input": "FULL_DURATION_GENERATED_NOISE",
+            "run110_body_length_range_bytes": [
+              297,
+              413
+            ],
+            "run110_block2_writer_operand_max": 417,
+            "within_each_run_same_parent_body_prefix_refill_join": true,
+            "within_each_run_reservation_relation": "BODY_BYTES_PLUS_4",
+            "within_each_run_writer_bits_advanced": 9,
+            "plus_four_semantics": "UNBOUND",
+            "source_pcm_read_or_copied": false,
+            "comparison_to_original_source_audio_output": "NOT_PERFORMED",
+            "target_operands_507_508_511_512": "NOT_OBSERVED",
+            "512_overflow_behavior": "NOT_OBSERVED",
+            "run99_upstream_units_and_formula": "UNBOUND",
+            "parent_invocation_to_adm_sample_position": "UNBOUND",
+            "cross_run_execution_identity": "NOT_ESTABLISHED",
+            "input_only_target_observation": "NOT_RUN",
+            "model_codec_execution": "NOT_RUN",
+            "jocforge_runtime_execution": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -29678,8 +29787,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1711512,
-              "sha256": "1250d81084f4e7893d30a89badfaba5389f030e59f2be1e60085647c48e62788"
+              "bytes": 1716025,
+              "sha256": "24cfe4169f8c4d5fb083604ff9c79276a6fda84bfa4b3801f692c74b5a27e47f"
             }
           ],
           "test_inventory": [

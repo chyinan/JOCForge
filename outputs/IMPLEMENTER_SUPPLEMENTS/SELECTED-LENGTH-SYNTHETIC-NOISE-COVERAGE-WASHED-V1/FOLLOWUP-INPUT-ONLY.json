@@ -1,0 +1,20 @@
+{
+  "schema": "selected-length-writer-boundary-input-only.v1",
+  "status": "NOT_RUN",
+  "target_block2_operands": [507, 508, 511, 512],
+  "capture_same_parent": [
+    "body-length prefix",
+    "planned/serialized/refill body length",
+    "wire and body-region reservation",
+    "9-bit writer operand and bits advanced",
+    "reservation/writer return status",
+    "downstream parser/serializer/refill status"
+  ],
+  "expected_outcomes": "UNSPECIFIED",
+  "do_not_infer": [
+    "universal profile behavior",
+    "run-99 upstream field units",
+    "parent invocation to ADM sample position",
+    "512 overflow behavior"
+  ]
+}

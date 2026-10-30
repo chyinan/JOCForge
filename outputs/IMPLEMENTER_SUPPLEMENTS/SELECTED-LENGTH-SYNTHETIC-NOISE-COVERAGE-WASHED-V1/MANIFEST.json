@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "SELECTED-LENGTH-SYNTHETIC-NOISE-COVERAGE-WASHED-V1",
+  "scope": "bounded selected-profile evidence from run-100, run-109 and run-110; target boundary remains open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1775,
+      "sha256": "e8f887d75dc1fad0cea4f1c4fe8ecafe6a71a8fb6b6fd8e41a6e3a602770702e"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1156,
+      "sha256": "9d4bf4367f752e127c2aa684db17266ba8986e4bab0d5dca794491f1f35c012d"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 646,
+      "sha256": "833286d899d62e66937367b1e079930717d290eb1d74e9f4e73c33d6684c2b2c"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 623,
+      "sha256": "28fbb3c65a388c3dd4baa690ac71cf38673acae2602d282cc22f5d97747c27c9"
+    }
+  ]
+}
