@@ -1,0 +1,32 @@
+{
+  "schema": "native-time-range-precedence-washed-sources.v1",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v3",
+    "manifest_sha256": "4e4fa588b3a701715bfdeb3f97bcb45bd29cf69de9cf0b5ea995095d1aaa3a97",
+    "payloads": {
+      "OFFSET-FFOA-PRECEDENCE-ADDENDUM.json": "fe7bd978c85d143bd0187cc744ac19ec7e2c27e3d43528f2deb4baa8bc56fb1c",
+      "README.md": "7f4db1c9b252b53cf30e57f190970be76e79d63d18d97d68a940e49e738d4cc1",
+      "verify_offset_ffoa_precedence.py": "f64586116db6ee0d9f279c51b59600153844b4c50f10a6911c190e2c4b666cfe"
+    }
+  },
+  "parent_wash_packages": [
+    {
+      "package_id": "native-time-range-conversion-wash-v2",
+      "manifest_sha256": "14b4d2af2c6c67a9a8d840cd2601e30f8c147aa5c840de9aa2546e261deab88d",
+      "scope": "numeric embedded-timecode normalization with equal offset and auto FFOA values"
+    },
+    {
+      "package_id": "native-time-range-conversion-wash-v1",
+      "manifest_sha256": "1db7dcd7663abce62b483da41d81dadd3c49d2faf63d79047a6aab5b41ce0411",
+      "scope": "plain numeric file-position frame token conversion"
+    }
+  ],
+  "opaque_native_evidence_digests": {
+    "run47_configuration": "884d1edd426da3c3842a2b3d8a81b983a1532832434b8a2a2617f948557f5d85",
+    "run47_native_log": "7a353c6c8b1161573f08de59aa7e607a80dad6e22b2867ac8d04581f0ccc0a87",
+    "source_metadata_transcription": "86a08c106715d2c62bd7014df3231f9204c513fc99f70872c489ce30c9ef5d4a",
+    "run43_run46_run47_encoded_artifact": "d7444b415c88e2ef9677041c41499da7ba694cd03cb2a37001aaf8b32b452533"
+  },
+  "source_artifacts_copied": false,
+  "audio_samples_or_pcm_copied": false
+}

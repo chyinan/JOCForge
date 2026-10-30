@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_EXPLICIT_OFFSET_PRECEDENCE_RULE",
+  "implementation_disposition": {
+    "status": "APPROVED_BOUNDED_RULE_ONLY",
+    "target_responsibility": "selected ADM input/time-range reader path",
+    "not_target": "F03U source-weight path",
+    "preconditions": {
+      "profile": "selected 48 kHz / 1024 kbps / 5.1 E-AC-3 JOC fixture",
+      "time_base": "embedded_timecode",
+      "offset": "explicit 01:00:11:00",
+      "ffoa": "auto",
+      "source_frame_rate_hz": 24,
+      "sample_rate_hz": 48000,
+      "start_token": 88824,
+      "inclusive_end_token": 88826
+    },
+    "expected_exclusive_samples": [4320000, 4326000],
+    "fractional_sample_quantization": "NOT_APPROVED; exact vector has integral sample boundaries",
+    "broader_offset_or_timecode_modes": "NOT_APPROVED_BY_THIS_SUPPLEMENT"
+  },
+  "scope": "selected fixture; embedded_timecode; numeric frame tokens; explicit offset present; FFOA auto; 24 fps; 48 kHz",
+  "independent_verification": {
+    "reverse_manifest": "MATCH",
+    "reverse_payloads": "3/3 MATCH",
+    "v2_parent_manifest": "MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "arithmetic_replay": "PASS",
+    "run47_native_log_rehashed_by_wash": "NOT_RUN; raw log excluded",
+    "source_metadata_provenance": "TRANSCRIBED; raw debugger transcript not persisted"
+  },
+  "result": {
+    "run47_native_samples": [4320000, 4326000],
+    "explicit_offset_candidate_samples": [4320000, 4326000],
+    "auto_ffoa_counterfactual_samples": [4368000, 4374000],
+    "encoded_artifact_hash_identity": true,
+    "pcm_equality_claimed": false
+  },
+  "not_closed": [
+    "fractional-sample boundary quantization; Agent 1 reports a contrary run-48 vector, but its hash-bound package is pending Wash review",
+    "both offset and FFOA explicitly authored",
+    "other ADM metadata combinations or frame-rate modes",
+    "colon-delimited or drop-frame timecode",
+    "EOF, multi-row, append or prepend behavior",
+    "model output or model/native comparison"
+  ],
+  "whole_chain_ready": false
+}

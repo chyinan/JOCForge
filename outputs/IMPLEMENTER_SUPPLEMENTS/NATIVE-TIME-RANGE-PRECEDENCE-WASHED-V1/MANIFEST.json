@@ -1,0 +1,28 @@
+{
+  "package_id": "NATIVE-TIME-RANGE-PRECEDENCE-WASHED-V1",
+  "status": "BOUNDED_EXPLICIT_OFFSET_PRECEDENCE_ACCEPTED; OTHER_MODES_OPEN",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 2986,
+      "sha256": "e288093ac662b4011fe6e0ee6b6822298849e83769f21edde45d14dc359c6fcb"
+    },
+    {
+      "name": "OBSERVED-VECTOR.json",
+      "bytes": 3498,
+      "sha256": "fe7bd978c85d143bd0187cc744ac19ec7e2c27e3d43528f2deb4baa8bc56fb1c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1624,
+      "sha256": "2f5009f3fc4cfa45f07f40727bb675448c4cff9542ccbd60d0301ab614121614"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 2162,
+      "sha256": "4f8f34c6a6aeac3b02f09e865efebf20b48f3f98d03628ce2a78ebae884eebfa"
+    }
+  ],
+  "whole_chain_ready": false
+}

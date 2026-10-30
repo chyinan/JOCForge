@@ -1,0 +1,73 @@
+{
+  "schema": "wash.native-offset-ffoa-precedence-addendum.v1",
+  "package_id": "native-time-range-conversion-wash-v3",
+  "parent_wash_manifest_sha256": "14b4d2af2c6c67a9a8d840cd2601e30f8c147aa5c840de9aa2546e261deab88d",
+  "implementation_delivery": "PROHIBITED",
+  "scope": {
+    "claim_scope": "one explicit source offset override, auto FFOA, numeric embedded-timecode range, and native composite-item boundary",
+    "not_claimed": [
+      "all ADM input metadata combinations",
+      "colon-delimited offset parsing for every frame-rate mode",
+      "producer precedence when both offset and FFOA are explicitly authored",
+      "model-generated output or model/native comparison",
+      "wordwise audio sample equality"
+    ]
+  },
+  "source_metadata_context": {
+    "fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_timecode_frame_rate": 24,
+    "source_sample_rate_hz": 48000,
+    "source_auto_ffoa_seconds": 3610,
+    "provenance": "Frame rate and auto FFOA are transcribed from the run43 observation on this same hash-identified fixture; raw debugger transcript was not persisted."
+  },
+  "run47_configuration": {
+    "configuration_sha256": "884d1edd426da3c3842a2b3d8a81b983a1532832434b8a2a2617f948557f5d85",
+    "native_log_sha256": "7a353c6c8b1161573f08de59aa7e607a80dad6e22b2867ac8d04581f0ccc0a87",
+    "time_base": "embedded_timecode",
+    "input_offset_override": "01:00:11:00",
+    "input_ffoa": "auto",
+    "filter_timecode_frame_rate_override": "not_indicated",
+    "start_token": "88824",
+    "end_token": "88826"
+  },
+  "native_result": {
+    "composite_start_sample": 4320000,
+    "composite_end_sample_exclusive": 4326000,
+    "composite_range_samples": 6000,
+    "encoder_completed": true,
+    "reference_ec3_sha256": "d7444b415c88e2ef9677041c41499da7ba694cd03cb2a37001aaf8b32b452533",
+    "reference_ec3_bytes": 16384,
+    "codec": "eac3",
+    "bit_rate_bps": 1024000,
+    "channels": 6,
+    "track_duration_seconds": 0.128
+  },
+  "precedence_vector": {
+    "explicit_offset_seconds": 3611,
+    "start_absolute_seconds": "88824 / 24 = 3701",
+    "end_absolute_seconds_exclusive": "(88826 + 1) / 24 = 3701.125",
+    "file_position_if_explicit_offset_is_used": "[3701 - 3611, 3701.125 - 3611) = [90, 90.125)",
+    "sample_interval_if_explicit_offset_is_used": "[4320000, 4326000)",
+    "sample_interval_if_auto_ffoa_3610_were_used": "[4368000, 4374000)",
+    "observed_interval": "[4320000, 4326000)",
+    "static_rule": "The source metadata loader reads ffoa as a fallback, then replaces that value when an explicit offset entry is present.",
+    "status": "STATIC_PRECEDENCE_RULE_MATCHES_NATIVE_RANGE_LOG"
+  },
+  "native_output_identity_crosscheck": {
+    "run43_file_position_output_sha256": "d7444b415c88e2ef9677041c41499da7ba694cd03cb2a37001aaf8b32b452533",
+    "run46_embedded_auto_offset_output_sha256": "d7444b415c88e2ef9677041c41499da7ba694cd03cb2a37001aaf8b32b452533",
+    "run47_embedded_explicit_offset_output_sha256": "d7444b415c88e2ef9677041c41499da7ba694cd03cb2a37001aaf8b32b452533",
+    "all_three_native_reference_artifacts_byte_identical": true,
+    "pcm_equality_claimed": false
+  },
+  "model_status": {
+    "model_output": "NOT_RUN",
+    "model_comparison": "NOT_EVALUATED"
+  },
+  "remaining_boundaries": {
+    "other_offset_and_ffoa_inputs": "NOT_EVALUATED",
+    "colon_delimited_and_drop_frame": "NOT_EVALUATED",
+    "end_of_file_runtime": "NOT_EVALUATED",
+    "multi_row_or_append_prepend": "NOT_RUN"
+  }
+}
