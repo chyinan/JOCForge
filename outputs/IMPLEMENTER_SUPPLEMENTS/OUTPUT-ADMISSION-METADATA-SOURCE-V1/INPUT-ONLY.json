@@ -1,0 +1,18 @@
+{
+  "kind": "input-only-cases-for-wash-review",
+  "cases": [
+    {"id": "valid_selected_default", "carriage": "deployed_compat", "sample_count": 1537, "source": 2, "producer_inputs": "actual typed approved producer inputs and receipts"},
+    {"id": "valid_selected_experimental", "carriage": "etsi_emdf", "sample_count": 1537, "source": 2, "producer_inputs": "actual typed approved producer inputs and receipts"},
+    {"id": "priming_zero", "source": 0, "input": "four same-writer producer bodies and cold queues"},
+    {"id": "priming_one", "source": 1, "input": "four same-writer producer bodies and previous committed queues"},
+    {"id": "wrong_carriage", "plan_carriage": "deployed_compat", "provider_carriage": "etsi_emdf"},
+    {"id": "missing_plan", "prepared_input_present": true, "plan_present": false},
+    {"id": "wrong_programme", "plan_and_input_programme_equal": false},
+    {"id": "producer_failure", "source": 2, "failed_body_id": 14},
+    {"id": "append_failure", "source": 2, "shell_event": "failed_or_zero_progress_write"},
+    {"id": "missing_id14", "source": 2, "emdf_payload_ids": [11, 2, 1]},
+    {"id": "wrong_selected_id14_profile", "source": 2, "emdf_payload_ids": [11, 14, 2, 1], "joc_object_count": 14}
+  ],
+  "status": "NOT_RUN",
+  "note": "Inputs and scenario descriptions only; no expected bytes, production authority or execution result is supplied."
+}

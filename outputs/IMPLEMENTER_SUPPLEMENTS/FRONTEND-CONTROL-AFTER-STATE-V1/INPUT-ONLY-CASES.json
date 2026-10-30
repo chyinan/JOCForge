@@ -1,0 +1,15 @@
+{
+  "schema":"frontend-control-after-state-inputs.v1",
+  "input_only":true,
+  "contains_expected_outputs":false,
+  "cases":[
+    {"id":"cold_first_normal","source_samples":1537,"frame_samples":1536,"callback_g":0,"object_count":28,"bed_count":10,"lfe_host":12,"object_host_order":"interleaved explicit bijection"},
+    {"id":"short_last_normal","source_samples":1537,"frame_samples":1536,"callback_g":1,"actual_samples":1,"sampler_previous":"explicit per-object before state"},
+    {"id":"cached_drain","phase":"CACHED_DRAIN","last_normal_origin":1,"current_callback_g":2,"snapshot_input":"complete previous normal control38 and regular37 references"},
+    {"id":"bed_defined_fields","physical_host":12,"kind":"Bed6","defined_words":[0,0,3,2,1,3],"carrier_tail":"local unconsumed zero padding"},
+    {"id":"mapping_collision","object_count":28,"mutation":"duplicate TrackUID or physical host in prepared mapping"},
+    {"id":"late_failure","phase":"NORMAL","mutation":"last object invalid after earlier objects were staged"},
+    {"id":"new_attempt","action":"full_restart","previous_attempt":3,"source_samples":1537}
+  ],
+  "scope":"Input descriptions only; no computed after-state, PCM, native pointer, source code or private material."
+}

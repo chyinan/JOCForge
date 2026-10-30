@@ -1,0 +1,104 @@
+{
+  "schema": "metadata-owner-replay-check.v2",
+  "checks": [
+    {
+      "id": "provider_identity",
+      "pass": true
+    },
+    {
+      "id": "wrapper_config_identity",
+      "pass": true
+    },
+    {
+      "id": "cold_identity",
+      "pass": true
+    },
+    {
+      "id": "source_0_full_replay",
+      "pass": true
+    },
+    {
+      "id": "source_1_full_replay",
+      "pass": true
+    },
+    {
+      "id": "source_2_full_replay",
+      "pass": true
+    },
+    {
+      "id": "source_3_full_replay",
+      "pass": true
+    },
+    {
+      "id": "source_4_full_replay",
+      "pass": true
+    },
+    {
+      "id": "eof_full_replay",
+      "pass": true
+    },
+    {
+      "id": "failure_wrong_source_index",
+      "pass": true
+    },
+    {
+      "id": "failure_wrong_dispatch",
+      "pass": true
+    },
+    {
+      "id": "failure_wrong_au_index",
+      "pass": true
+    },
+    {
+      "id": "failure_body_readiness",
+      "pass": true
+    },
+    {
+      "id": "failure_capacity_id11",
+      "pass": true
+    },
+    {
+      "id": "failure_capacity_id1_via_invalid_wire",
+      "pass": true
+    },
+    {
+      "id": "failure_capacity_id2",
+      "pass": true
+    },
+    {
+      "id": "failure_capacity_id14",
+      "pass": true
+    },
+    {
+      "id": "failure_writer_mismatch_id11",
+      "pass": true
+    },
+    {
+      "id": "failure_writer_mismatch_id2",
+      "pass": true
+    },
+    {
+      "id": "failure_writer_mismatch_id14",
+      "pass": true
+    },
+    {
+      "id": "failure_timer_type",
+      "pass": true
+    },
+    {
+      "id": "failure_occupied_destination",
+      "pass": true
+    },
+    {
+      "id": "failure_post_final_source",
+      "pass": true
+    },
+    {
+      "id": "reset_retry",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "expected_used_as_seed": false,
+  "independent_implementation": false
+}

@@ -1,0 +1,15 @@
+{
+  "schema":"frame-exponent-pattern-verification.v1",
+  "source_grade":"OFFICIAL_ETSI_PUBLIC_PDF",
+  "pdf_page_index":136,
+  "printed_page":137,
+  "generated_rows":32,
+  "generated_cells":192,
+  "unique_rows":32,
+  "pdf_extracted_row_comparison":"32_OF_32_MATCH",
+  "row_major_u8_bytes":192,
+  "row_major_u8_sha256":"acfcaf98c12fa9688ef75943537a2f2f0a97a41ab75aa342468bd649b783d6bc",
+  "generation_rule_origin":"DERIVED_EQUIVALENT_RULE_NOT_A_SPECIFIED_ETSI_FORMULA",
+  "native_or_real_encoder_execution":"NOT_RUN",
+  "f11_f12_product_execution":"NOT_RUN"
+}

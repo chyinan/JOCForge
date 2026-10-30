@@ -1,0 +1,17 @@
+{
+  "approved_manifest_verified_specifications": {
+    "13-emdf-and-timeline.md": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+    "13-joc-complexity-timer-payload-order.md": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+    "14-keyless-checksum-profile.md": "830a8a9b92a5819a5fde3363f0667bf8da204c277690c8289be439de85371382",
+    "05-oamd-row-and-timing-wire.md": "b49694e3026938c1b5f91ef95fd63cc2eea03e25161367ba26095177ff452b11",
+    "05-oamd-dbmd-and-trim.md": "1e555f51466726833295b53aef5efe1325416e1e99c1652a3200478ceb82ee10",
+    "05-joc-quantization-and-wire.md": "91fde215d0a6d5d1e820a2e29b467afd2b1fc78a5fa8f87300cc42a346152143",
+    "05-joc-huffman-codebooks.md": "1b593718504078e9fba296a120bd7bc7d180a8c77b4887a060d5ae1f3fa77857"
+  },
+  "washed_boundary_packages": ["F13C-ID11-PARSER-BOUNDARY-V1", "F13C-ID14-MODEL-PARSER-NATIVE-BSI-SOURCE-V1", "F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1"],
+  "research_prototype_sha256": "3d3235d99f15ae0a318cce66708256f7860bd0001c219ad6d5e203734b824da0",
+  "synthetic_framing_crc": "PASS_NORMAL_AND_OPTIMIZED",
+  "synthetic_body_semantics": "NOT_RUN",
+  "complete_selected_model_wrapper": "NOT_RUN",
+  "native_and_adm": "NOT_RUN"
+}

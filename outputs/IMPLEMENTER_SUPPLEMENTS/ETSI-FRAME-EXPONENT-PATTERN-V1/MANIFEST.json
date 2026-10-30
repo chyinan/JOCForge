@@ -1,0 +1,27 @@
+{
+  "package_id": "ETSI-FRAME-EXPONENT-PATTERN-V1",
+  "scope": "ETSI 32 pattern generation; F11 integration not run",
+  "source_manifest_sha256": "2152d1f57fda60e2bb712de798907ae56300cb52e15ed9d7cc9d7132a311b453",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2891,
+      "sha256": "a75d4bc73ad7c8284e15bbf99c34e09e06b6e5cd3092f471de25038db459b1b6"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 871,
+      "sha256": "d19e317026cce0bb1d4ae253e50e867a81d6866c6ae347cc0e33081348a2b0ec"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 1635,
+      "sha256": "8dec4c1691bdf76452ee75010e1dd536c4449abbae25fa351bc752e0a78cec4c"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 558,
+      "sha256": "69ed19decfd869fc72fb883b501d145d66ee7564e73aa35fced57af20dfa383c"
+    }
+  ]
+}

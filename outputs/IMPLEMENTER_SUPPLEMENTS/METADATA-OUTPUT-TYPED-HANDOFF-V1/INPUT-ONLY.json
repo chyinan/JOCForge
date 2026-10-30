@@ -1,0 +1,19 @@
+{
+  "kind": "input-only-selected-model-scenarios",
+  "status": "NOT_RUN",
+  "cases": [
+    {"id": "priming_writer0", "source": 1, "dispatch": 2, "queue_before": "contains_successful_id14_writer0", "four_current_writers": 1},
+    {"id": "first_published", "source": 2, "dispatch": 3, "id14_popped_writer": 1, "ordinary_popped_writer": 0, "producer_object_count": 15, "carrier_block": 2, "carriage": "deployed_compat"},
+    {"id": "cross_attempt", "producer_attempt": 0, "consumer_attempt": 1, "source": 2},
+    {"id": "wrong_id14_generation", "source": 2, "id14_popped_writer": 2},
+    {"id": "body_count_disagreement", "source": 2, "producer_object_count": 15, "header_object_count": 14},
+    {"id": "header_truncated", "id14_header_bits_available": 24},
+    {"id": "invalid_id11_profile", "source": 2, "joc_object_count": 15, "oamd_slots": 15},
+    {"id": "parser_absence", "container_payload_ids": [11, 2, 1], "carrier_block": 2, "scope": "parser primitive only"},
+    {"id": "mismatched_carriage", "plan_carriage": "deployed_compat", "container_carriage": "etsi_emdf"},
+    {"id": "missing_provider_validation", "profile_resolved": true, "codec_provider_receipt": null},
+    {"id": "existing_destination", "destination_kind": "local_file", "destination_exists": true},
+    {"id": "append_no_progress", "source": 2, "write_result": 0}
+  ],
+  "note": "Scenario inputs only. No expected bitstreams, native identity, PASS or production fixture authority is supplied."
+}

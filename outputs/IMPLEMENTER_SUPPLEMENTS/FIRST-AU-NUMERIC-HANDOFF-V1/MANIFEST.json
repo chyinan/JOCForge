@@ -1,0 +1,23 @@
+{
+  "package_id": "FIRST-AU-NUMERIC-HANDOFF-V1",
+  "scope": "selected profile local model crosswalk; production integration not run",
+  "source_manifest_sha256": "c393a158c6028b860bf57bd509ade43b5d3290b7992b2523fa33d514e12059a2",
+  "sources_verified": 26,
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 8133,
+      "sha256": "f5c689a9cfdead35470321d3513f1e32b8a834bca931eebc7c6fe6ba15e9f08a"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 1368,
+      "sha256": "d719390759941898d4290ce36bb50eef9bb8baf7d52458dd7485883fdada37c5"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 5391,
+      "sha256": "5dd0ec5cf5dbf0cac3bbafb8eb0a989b770fba8880687c5006d3cbe917a5efce"
+    }
+  ]
+}

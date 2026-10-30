@@ -1,0 +1,13 @@
+{
+  "status": "PASS_SOURCE_HASH_AND_CANONICAL_PROJECTION",
+  "verified_packages": [
+    {"package": "F15-OUTPUT-PROVIDER-PLAN-BINDING-V1", "manifest_sha256": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2", "payloads": 5},
+    {"package": "F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1", "manifest_sha256": "db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31", "payloads": 4},
+    {"package": "F15-PRODUCTION-OUTPUT-API-GATE-V1", "manifest_sha256": "954da54ae20ca9288eb00c736ef28ac5dd39870334cc091ad1eef6a7c7eac388", "payloads": 4},
+    {"package": "F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1", "manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0", "payloads": 5}
+  ],
+  "approved_f15_base_files_checked": 3,
+  "provider_canonical_hashes_checked": 2,
+  "implementation_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

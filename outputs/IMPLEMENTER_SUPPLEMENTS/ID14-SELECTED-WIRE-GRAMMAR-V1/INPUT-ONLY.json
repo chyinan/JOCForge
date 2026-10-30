@@ -1,0 +1,20 @@
+{
+  "kind": "id14-descriptor-codec-inputs-only",
+  "cases": [
+    {"id": "selected_full_coarse", "objects": 15, "present": true, "band_enum": 5, "mode": 0, "points": 1, "steep": false, "quantized_recipe": "all coefficients 48"},
+    {"id": "selected_full_fine", "objects": 15, "present": true, "band_enum": 5, "mode": 1, "points": 1, "steep": false, "quantized_recipe": "all coefficients 96"},
+    {"id": "selected_sparse_coarse", "objects": 15, "present": true, "band_enum": 5, "mode": 2, "points": 1, "steep": false, "quantized_recipe": "all coefficients 50", "channels": "(object_index+band_index) mod 5"},
+    {"id": "selected_sparse_fine", "objects": 15, "present": true, "band_enum": 5, "mode": 3, "points": 1, "steep": false, "quantized_recipe": "all coefficients 100", "channels": "(object_index+band_index) mod 5"},
+    {"id": "retry_bands", "objects": 15, "band_enums": [1, 2, 3, 4, 5], "mode": 1, "points": 1},
+    {"id": "selected_steep", "objects": 15, "band_enum": 5, "mode": 1, "points": 1, "steep": true, "zero_based_offsets": [0, 23]},
+    {"id": "offset_out_of_range", "offset": 24},
+    {"id": "selected_two_points", "points": 2, "scope": "selected live producer"},
+    {"id": "generic_absent_object", "object_present": false, "scope": "F05Q leaf only"},
+    {"id": "bad_padding", "mutation": "set_final_padding_bit"},
+    {"id": "truncated_codeword", "mutation": "truncate_stream_at_huffman_internal_node"},
+    {"id": "sparse_invalid_first_channel", "direct_channel": 5, "selected_channel_count": 5}
+  ],
+  "input_only": true,
+  "no_expected_wire_bytes": true,
+  "production_composition": "NOT_RUN"
+}

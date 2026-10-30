@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "metadata-source-receipt.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "owner_id", "source_index", "dispatch", "au_index",
+    "before_generation", "before_sha256", "proposed_after_generation",
+    "proposed_after_sha256", "provider_sha256", "wrapper_config_sha256", "timer_before_sha256",
+    "timer_after_sha256", "timer_refreshed_field", "queue_operations",
+    "publication_order", "published", "published_payloads", "emdf_hex", "emdf_sha256", "terminal_layout",
+    "commit_count"
+  ],
+  "properties": {
+    "schema": {"const": "metadata-source-receipt.v1"},
+    "owner_id": {"const": "metadata"},
+    "source_index": {"type": "integer", "minimum": 0},
+    "dispatch": {"type": "integer", "minimum": 1},
+    "au_index": {"type": ["integer", "null"], "minimum": 0},
+    "before_generation": {"type": "integer", "minimum": 0},
+    "before_sha256": {"$ref": "#/$defs/sha"},
+    "proposed_after_generation": {"type": "integer", "minimum": 1},
+    "proposed_after_sha256": {"$ref": "#/$defs/sha"},
+    "provider_sha256": {"$ref": "#/$defs/sha"},
+    "wrapper_config_sha256": {"$ref": "#/$defs/sha"},
+    "timer_before_sha256": {"$ref": "#/$defs/sha"},
+    "timer_after_sha256": {"$ref": "#/$defs/sha"},
+    "timer_refreshed_field": {"type": ["integer", "null"]},
+    "queue_operations": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {"type": "object"}
+    },
+    "publication_order": {"const": [11, 14, 2, 1]},
+    "published": {"type": "boolean"},
+    "published_payloads": {"type": "array"},
+    "emdf_hex": {"type": ["string", "null"], "pattern": "^[0-9a-f]*$"},
+    "emdf_sha256": {"anyOf": [{"$ref": "#/$defs/sha"}, {"type": "null"}]},
+    "terminal_layout": {"type": ["object", "null"]},
+    "commit_count": {"const": 1}
+  },
+  "$defs": {"sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

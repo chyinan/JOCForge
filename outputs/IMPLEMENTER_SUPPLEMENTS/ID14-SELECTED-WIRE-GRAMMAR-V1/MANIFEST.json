@@ -1,0 +1,22 @@
+{
+  "package_id": "ID14-SELECTED-WIRE-GRAMMAR-V1",
+  "scope": "selected clean-model bounded inverse; native reader and real ADM not run",
+  "source_manifest_sha256": "3c3e37c027e80d0e74abe16d2f6ac7909508ffb79ae4c58d8404b2c09d25a883",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 7110,
+      "sha256": "f843def8d72b4d11f8803bf7589a6815f034f0cd0433ffd7368d141093efd705"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 1622,
+      "sha256": "5eb0e7394583b88aed44be6a056ae921df73c6ef64e09435d561f698efc25bfb"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 763,
+      "sha256": "c6f348ef7335dd23c1881da62961f1cae5b1118d00ee2fe43b9d2635b971d82d"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "approved_manifest_verified": {
+    "specs/05-joc-quantization-and-wire.md": "91fde215d0a6d5d1e820a2e29b467afd2b1fc78a5fa8f87300cc42a346152143",
+    "specs/05-joc-huffman-codebooks.md": "1b593718504078e9fba296a120bd7bc7d180a8c77b4887a060d5ae1f3fa77857",
+    "specs/05-live-joc-coordinator.md": "49c3e07298262e2d5867d936eab0ddf6d746a17a9ce844358a0966d1b5d4d779",
+    "parameters/joc-huffman-v1.json": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"
+  },
+  "prior_wash_evidence": ["F05Q-ID14-HEADER-FRAMING", "F13C-ID14-COEFFICIENT-PAYLOAD-WRITER-V1"],
+  "synthetic_checker_sha256": "84b87500565ad529b5d81541b9a639375de1d4587a13c946bf17310496784fdf",
+  "synthetic_roundtrip": "PASS_NORMAL_AND_OPTIMIZED",
+  "real_production_adm": "NOT_RUN"
+}

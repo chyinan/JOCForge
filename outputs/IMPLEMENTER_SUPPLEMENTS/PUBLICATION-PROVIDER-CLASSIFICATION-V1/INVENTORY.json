@@ -1,0 +1,156 @@
+{
+  "files": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "role": "specification",
+      "bytes": 3369
+    },
+    {
+      "file": "specs/13-joc-complexity-timer-payload-order.md",
+      "sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+      "role": "specification",
+      "bytes": 8367
+    },
+    {
+      "file": "specs/13-emdf-and-timeline.md",
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+      "role": "specification",
+      "bytes": 12839
+    },
+    {
+      "file": "specs/13-id2-profile-metadata.md",
+      "sha256": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc",
+      "role": "specification",
+      "bytes": 3236
+    },
+    {
+      "file": "specs/05-oamd-id11-live-producer.md",
+      "sha256": "767005b297614e2ad5c374a9018642a22b577af37941f12486523cc43fb247dc",
+      "role": "specification",
+      "bytes": 13201
+    },
+    {
+      "file": "specs/05-live-joc-coordinator.md",
+      "sha256": "49c3e07298262e2d5867d936eab0ddf6d746a17a9ce844358a0966d1b5d4d779",
+      "role": "specification",
+      "bytes": 14599
+    },
+    {
+      "file": "specs/12-selected-codec-wire.md",
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+      "role": "specification",
+      "bytes": 14760
+    },
+    {
+      "file": "specs/12-bit-allocation.md",
+      "sha256": "fa347045793bf3ce88349052526a758bc47e9d33fb1f1a1265a50c249ccd45f7",
+      "role": "specification",
+      "bytes": 10061
+    },
+    {
+      "file": "specs/14-keyless-checksum-profile.md",
+      "sha256": "830a8a9b92a5819a5fde3363f0667bf8da204c277690c8289be439de85371382",
+      "role": "specification",
+      "bytes": 2169
+    },
+    {
+      "file": "parameters/joc-timer-order-v1.json",
+      "sha256": "b425f8dffc0d914d660c46bcce5226c80d5fc680ab7c7f02e590fd6f889cb50b",
+      "role": "functional_parameters",
+      "bytes": 1940
+    },
+    {
+      "file": "parameters/codec-wire-selected-v1.json",
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+      "role": "functional_parameters",
+      "bytes": 3081
+    },
+    {
+      "file": "parameters/public-bap-48k-v1.json",
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+      "role": "functional_parameters",
+      "bytes": 8509
+    },
+    {
+      "file": "parameters/codec-wire-cross-module-providers-v1.json",
+      "sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d",
+      "role": "dependency_index",
+      "bytes": 15764
+    },
+    {
+      "file": "test-vectors/JOC-TIMER-ORDER-INPUT-VECTORS.json",
+      "sha256": "7469213950e80fde353cf033bdd20c9befa37a2db20763243c4b3316762bb8c3",
+      "role": "test_or_review",
+      "bytes": 2689
+    },
+    {
+      "file": "test-vectors/JOC-TIMER-ORDER-EXPECTED.json",
+      "sha256": "5332ec297e04800c597d1e303afc2dd1639d183e0961fc698c97c2738fae60d0",
+      "role": "test_or_review",
+      "bytes": 62382
+    },
+    {
+      "file": "test-vectors/JOC-TIMER-ORDER-VERIFICATION-RESULT.json",
+      "sha256": "d4f5ff26f44d97314fd65c4345a95de1f85abbaac43d42ea2d46de3d1c76f430",
+      "role": "test_or_review",
+      "bytes": 1248
+    },
+    {
+      "file": "test-vectors/JOC-TIMER-ORDER-LOCAL-REVIEW-STATUS.json",
+      "sha256": "cbcce00d8143408ad0015ecb72e10fed933eba2464bf62fe531a6141a8ee22a9",
+      "role": "test_or_review",
+      "bytes": 6692
+    },
+    {
+      "file": "test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json",
+      "sha256": "698c2ec69a8250251a3b3295ce135d1178079a5a2750a9ea5381c4e688db527a",
+      "role": "test_or_review",
+      "bytes": 4996244
+    },
+    {
+      "file": "test-vectors/CODEC-WIRE-COMPLETE-FRAME-VERIFICATION.json",
+      "sha256": "4615b59e39dfd1606f205e833b95f3f99b135c502ad15f5b8ebd94c7f7261fff",
+      "role": "test_or_review",
+      "bytes": 641
+    },
+    {
+      "file": "test-vectors/CODEC-WIRE-EMDF-MODE-INPUT-VECTORS.json",
+      "sha256": "aa18b1bffacfc665b19dd12c279896118e1ddad9f0d7169da245f6cc876404b8",
+      "role": "test_or_review",
+      "bytes": 2317
+    },
+    {
+      "file": "test-vectors/CODEC-WIRE-SELECTED-INPUT-VECTORS.json",
+      "sha256": "8333a23ccd093659dd0f4b296528a3f44120f78caf41546991ed9113ce14d017",
+      "role": "test_or_review",
+      "bytes": 23808
+    },
+    {
+      "file": "test-vectors/CODEC-WIRE-SELECTED-VERIFICATION.json",
+      "sha256": "20a7f9743845391b3d2d1dd98940282ffcda5d8b058fc49b4d2950e98047ac5b",
+      "role": "test_or_review",
+      "bytes": 989
+    },
+    {
+      "file": "test-vectors/KEYLESS-COMPATIBILITY-VERIFICATION.json",
+      "sha256": "784a6630ae8e557807f3f11ce70e5f3e6f78cade91a741270102bc5cb4f63c70",
+      "role": "test_or_review",
+      "bytes": 5806
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "role": "context_document",
+      "bytes": 15967
+    },
+    {
+      "file": "SCOPE-AND-ACCEPTANCE.md",
+      "sha256": "0a0644a3e0bb13d6f2eda7a97162394bc2f969acededd2a652367eefe5d509a4",
+      "role": "context_document",
+      "bytes": 8376
+    }
+  ],
+  "manifest_sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce",
+  "verification": "25_RAW_HASH_AND_SIZE_PASS"
+}

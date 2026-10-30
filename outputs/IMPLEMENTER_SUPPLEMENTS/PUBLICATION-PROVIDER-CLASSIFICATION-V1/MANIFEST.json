@@ -1,0 +1,23 @@
+{
+  "package_id": "PUBLICATION-PROVIDER-CLASSIFICATION-V1",
+  "scope": "selected local runtime provider classification; real admission not run",
+  "source_manifest_sha256": "47d5516f92f4b05a16f582d17f45fa33a9c4bd761a98ff4653751c98d0232b58",
+  "verified_source_count": 25,
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 7819,
+      "sha256": "867e19b960bf89f15c4651956fc1d5887bc53e3dd88cbde51d024a8281c51225"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 620,
+      "sha256": "923bf5256024aad809b90d3b02c6827149a27d093228da17863e8771bf4c4247"
+    },
+    {
+      "file": "INVENTORY.json",
+      "bytes": 5530,
+      "sha256": "4da37ad4097e92c062329e68b48fbb3f3e05324148c5ab39e3751a4209cbc4e6"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "emdf-terminal-independent-check.v1",
+  "checks": [
+    {
+      "id": "cold_empty_wire",
+      "pass": true
+    },
+    {
+      "id": "cold_empty_positions",
+      "pass": true
+    },
+    {
+      "id": "first_published_wire",
+      "pass": true
+    },
+    {
+      "id": "first_published_positions",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_metadata_root": false,
+  "expected_used_as_seed": false
+}

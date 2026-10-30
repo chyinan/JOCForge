@@ -1,0 +1,18 @@
+{
+  "schema": "selected-metadata-wrapper-admission-inputs.v1",
+  "cases": [
+    {"id": "mode_compat", "mode": "deployed_compat", "source": 2, "id1_wrapper_duration": 1536, "id2_discard": true, "body_lengths": {"11": 69, "1": 4, "2": 3, "14": 132}},
+    {"id": "mode_etsi", "mode": "etsi_emdf", "source": 2, "id1_wrapper_duration": 1536, "id2_discard": true, "body_lengths": {"11": 69, "1": 4, "2": 3, "14": 132}},
+    {"id": "id1_wrong_duration", "id1_wrapper_duration": 1535},
+    {"id": "id1_aligned_wrong", "id1_aligned": true},
+    {"id": "id2_wrong_discard", "id2_discard": false},
+    {"id": "id2_unconsumed_tail", "id2_discard": true, "injected_aligned_bit": true},
+    {"id": "producer_fifo_difference", "id14_body_lengths": [372, 373, 543, 544]},
+    {"id": "other_fifo_limits", "id11_body_lengths": [160, 161], "id1_body_lengths": [10, 11], "id2_body_lengths": [8, 9]},
+    {"id": "aggregate_carrier_limit", "container_byte_lengths": [511, 512]},
+    {"id": "source_priming", "source_indices": [0, 1]},
+    {"id": "mismatched_popped_writers", "source": 2, "ordinary_writer": 1, "joc_writer": 1}
+  ],
+  "input_only": true,
+  "execution": "NOT_RUN"
+}

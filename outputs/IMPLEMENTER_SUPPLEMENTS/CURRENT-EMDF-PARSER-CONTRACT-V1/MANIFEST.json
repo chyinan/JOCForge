@@ -1,0 +1,22 @@
+{
+  "package_id": "CURRENT-EMDF-PARSER-CONTRACT-V1",
+  "scope": "selected local model parser specification; full body semantic validation not run",
+  "source_manifest_sha256": "8806fb5c603915bca70f9b8ec351c34fd2e488a8247b16760ef45ef956d786f0",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 8689,
+      "sha256": "a7096961ad6183a752167c29fe4ae2adbe0913759d29691922771195eaa5d9aa"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 1759,
+      "sha256": "4b6258b121f01890917d84f124599cced1aa57ac5aca689f47a28734110e98df"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1223,
+      "sha256": "396a65d463608647edcc6d462b4834eaeb505e2ba796913f6f1edae107dc358b"
+    }
+  ]
+}

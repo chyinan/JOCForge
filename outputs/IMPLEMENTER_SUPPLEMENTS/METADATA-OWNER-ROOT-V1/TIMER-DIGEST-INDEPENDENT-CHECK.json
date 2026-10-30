@@ -1,0 +1,40 @@
+{
+  "schema": "metadata-timer-digest-independent-check.v1",
+  "checks": [
+    {
+      "id": "domain_prefix",
+      "pass": true
+    },
+    {
+      "id": "cold_preimage",
+      "pass": true
+    },
+    {
+      "id": "cold_digest",
+      "pass": true
+    },
+    {
+      "id": "source0_after_state",
+      "pass": true
+    },
+    {
+      "id": "source0_after_digest",
+      "pass": true
+    },
+    {
+      "id": "preimage_bytes",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_metadata_root": false,
+  "expected_used_as_seed": false,
+  "cold": {
+    "preimage_hex": "4d6574616461746154696d65725374617465563100c05d00000000000080bb00000000000080bb000000000000c012000000000000c05d00000000000080bb000000000000ffffffffffffffff00fcffffffffffff00fcffffffffffff00fcffffffffffff00fcffffffffffff00fcffffffffffff0100000000000000fffdffffffffffff",
+    "sha256": "ed0a60584d1598b114b9d32a5dfc4e7679d2069cf9e6294472f85c5ce0aac85f"
+  },
+  "source0_after": {
+    "preimage_hex": "4d6574616461746154696d65725374617465563100c05d00000000000080b500000000000080b5000000000000c012000000000000c05700000000000080bb000000000000ffffffffffffffffdcffffffffffffffdeffffffffffffff00fcfffffffffffff8ffffffffffffff00fcffffffffffff0100000000000000fffdffffffffffff",
+    "sha256": "8148b8ce768697bc26fba197e020fde8299478d36dc08e4a25c6134bdcfc71a9"
+  }
+}

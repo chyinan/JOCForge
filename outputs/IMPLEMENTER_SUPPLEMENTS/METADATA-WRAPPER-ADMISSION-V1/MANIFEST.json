@@ -1,0 +1,22 @@
+{
+  "package_id": "METADATA-WRAPPER-ADMISSION-V1",
+  "scope": "selected model wrapper and capacity; full parser not run",
+  "source_manifest_sha256": "a5dad65a0d436cf49174e123895cb4a6d5df2f6a3ff5667030d32bc9efe605a8",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 5966,
+      "sha256": "96b0d7bd12f5862e3aaa71e19e7d860a201900bc5402a83f9c63c2459be55ed8"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 1159,
+      "sha256": "be8c7827c9be67f9f639891997cda2f3302b46a69e4382f46452886184b15743"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 620,
+      "sha256": "148617b556ca738a910d31244409dcb0fc3cf2ef2a8f172e7b956102d5eff680"
+    }
+  ]
+}

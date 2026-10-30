@@ -1,0 +1,17 @@
+{
+  "package_id": "FRONTEND-SNAPSHOT-CODEC-ADAPTER-V1",
+  "scope": "selected local model; production execution not run",
+  "source_manifest_sha256": "93dd520c008bc77f901f2774a60f47b59767ac533ec740a04da60eec477345e8",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2976,
+      "sha256": "58e14fb8f989ba42d67cefec0daf447b133bd634112da9c5a1159a174eca3be6"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 663,
+      "sha256": "51b8bfa34d7ce8811b944eaca2d9459da2c1d960c103797a5bd6fcb9ac1e2ac4"
+    }
+  ]
+}

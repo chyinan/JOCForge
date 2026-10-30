@@ -1,0 +1,22 @@
+{
+  "package_id": "OUTPUT-ADMISSION-METADATA-SOURCE-V1",
+  "scope": "local selected output admission and model metadata source; production not run",
+  "source_manifest_sha256": "2549ea57de9fca917662a28b3a7aa58f44ce8e44ada6833e71123af7648a62c2",
+  "files": [
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 1386,
+      "sha256": "9fc378d475d2981d5e7ae9f6493dd174ef16f7b6527c4f13e31362a34858feca"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 6758,
+      "sha256": "78f8e0f9f9911abe7952b7785a091287dc6be5ca3d2b96b98795a2a52319b204"
+    },
+    {
+      "file": "SOURCE-CHECK.json",
+      "bytes": 892,
+      "sha256": "6cc1d0bb93a76795b7e87c996289228c3a4ff538b5e2be6cab5c69c1e5bf4da4"
+    }
+  ]
+}

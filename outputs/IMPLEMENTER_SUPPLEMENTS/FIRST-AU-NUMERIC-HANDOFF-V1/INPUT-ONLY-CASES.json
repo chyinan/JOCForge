@@ -1,0 +1,15 @@
+{
+  "schema":"first-au-numeric-handoff-inputs.v1",
+  "input_only":true,
+  "contains_expected_outputs":false,
+  "cases":[
+    {"id":"source0_suppressed","frontend_callback":2,"source_index":0,"dispatch_index":1,"audio_shape":[6,1536],"blocks":6,"fbw_lanes":5,"f13_disposition":"ABSENT_PUBLISHED_PAYLOAD_V1"},
+    {"id":"source1_suppressed","frontend_callback":3,"source_index":1,"dispatch_index":2,"audio_shape":[6,1536],"blocks":6,"fbw_lanes":5,"f13_disposition":"ABSENT_PUBLISHED_PAYLOAD_V1"},
+    {"id":"source2_first_publication","frontend_callback":4,"source_index":2,"dispatch_index":3,"audio_shape":[6,1536],"blocks":6,"writer_proposal_ids":[11,1,2,14],"prior_queues":"explicit committed inputs required"},
+    {"id":"clip_boundaries","fbw_primary_f32_words":["bf800001","bf800000","80000000","00000000","3f800000","3f800001"],"lfe_row_length":7},
+    {"id":"anchor_and_reuse","fbw_strategy_input":[1,0,2,0,3,0],"lfe_strategy_input":[1,0,0,1,0,0],"fbw_row_length":217,"lfe_row_length":7},
+    {"id":"cross_owner_mismatch","attempt_before":3,"receipt_attempt":4,"source_index":2,"provider_identity":"synthetic-provider-A"},
+    {"id":"candidate_retry","source_index":2,"fixed_plan_token":"synthetic-plan-A","candidate_q_inputs":[16,400,208]}
+  ],
+  "scope":"Input descriptions only; no PCM, EC3, expected plan/frame, prior body, native pointer or private key."
+}

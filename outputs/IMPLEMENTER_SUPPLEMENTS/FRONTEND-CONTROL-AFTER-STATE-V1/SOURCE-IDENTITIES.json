@@ -1,0 +1,76 @@
+{
+  "schema": "frontend-control-after-state-source-identities.v1",
+  "scope": "APPROVED_PACKAGE_AND_WASHED_SUPPLEMENTS",
+  "sources": [
+    {
+      "file": "IMPLEMENTER_PACKAGE/MANIFEST.json",
+      "bytes": 76302,
+      "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/01-frontend-config-dbmd-events.md",
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/03-adm-installed48-whole.md",
+      "bytes": 10079,
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/f01e-selected-constructor-v1.json",
+      "bytes": 20138,
+      "sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/adm-installed48-state-v1.json",
+      "bytes": 7237,
+      "sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/selected-owner-projection-v1.json",
+      "bytes": 3637,
+      "sha256": "b8e78dd1d15091e88877b2ead3e0608dbc1554c13afbcde46d5da24a2fd136dd"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/test-vectors/FRONTEND-CONFIG-EVENT-INPUT-VECTORS.json",
+      "bytes": 943694,
+      "sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/MANIFEST.json",
+      "bytes": 962,
+      "sha256": "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/CONTRACT.md",
+      "bytes": 7458,
+      "sha256": "95cb7e006f22ece1fcff339cfd0d6b9db686ed29cb5043ef2940886b466bb547"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/INTERFACE.json",
+      "bytes": 4335,
+      "sha256": "0e610997ab85d32532f33a8d14b7067a05fa16036fae609be8c9adb6e52cf460"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/MANIFEST.json",
+      "bytes": 954,
+      "sha256": "b5a21ba892c071256aab26f1a4733b122cd0ba0dc3b27ad0182135a4b1c2cde3"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/CONTRACT.md",
+      "bytes": 4897,
+      "sha256": "e3c332136f4b8aaa7165507d2dd0ad2d0e8f5bee3e9bff94f4f406adb6902d80"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/MANIFEST.json",
+      "bytes": 375,
+      "sha256": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f"
+    }
+  ]
+}

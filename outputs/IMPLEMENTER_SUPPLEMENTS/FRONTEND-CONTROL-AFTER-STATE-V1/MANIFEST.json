@@ -1,0 +1,23 @@
+{
+  "package_id": "FRONTEND-CONTROL-AFTER-STATE-V1",
+  "scope": "selected profile local model; warm serialization and owner projection local; real execution not run",
+  "source_manifest_sha256": "bc04107390f807108e66dfa50fd1728004edd2ac2587580f1ea975e22883bcad",
+  "sources_verified": 14,
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 6604,
+      "sha256": "c94e8af58fe53bc015641581f3e2ccd5dabf39dd1260772497f75b966ccafda0"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 1241,
+      "sha256": "b59889fa959f6003af751d9530bea1781579204bb4c84126ff943eed92efa915"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 3034,
+      "sha256": "dfd6f69910de173eb50184712eb417378f6a536107aa3e9371115fcafd82b572"
+    }
+  ]
+}

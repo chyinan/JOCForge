@@ -1,0 +1,136 @@
+{
+  "schema": "first-au-handoff-source-identities.v1",
+  "scope": "APPROVED_PACKAGE_AND_WASHED_SUPPLEMENTS_ONLY",
+  "sources": [
+    {
+      "file": "IMPLEMENTER_PACKAGE/MANIFEST.json",
+      "bytes": 76302,
+      "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/08-transforms.md",
+      "bytes": 9916,
+      "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/09-gain-and-db.md",
+      "bytes": 5440,
+      "sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/09-lfe-gate-mantissa-boundaries.md",
+      "bytes": 4786,
+      "sha256": "9aff19192a8b5cba7db8bec26b05106edf214b4149a5f1c9d4be040691c80951"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/11-converter.md",
+      "bytes": 5172,
+      "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/06-meter-bsi.md",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/13-emdf-and-timeline.md",
+      "bytes": 12839,
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/parameters/f07-f12-source-state-schema-v1.json",
+      "bytes": 5359,
+      "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F09-F10-STAGE-CONTROL-ADAPTER-V1/MANIFEST.json",
+      "bytes": 1005,
+      "sha256": "edce469334d871edba0c5bb634b8e74f0d938b610f19ad5df005f0dfd55ec0fb"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F09-F10-STAGE-CONTROL-ADAPTER-V1/CONTRACT.md",
+      "bytes": 8172,
+      "sha256": "3f629194864d43e830b80a5cb19e16e409ba55445853868b48900d4a74576164"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F11-F12-NUMERIC-PLAN-TYPED-BOUNDARY-V1/MANIFEST.json",
+      "bytes": 1307,
+      "sha256": "88f5d8145910e6eac6eb33dbf12fba0ce1f865d4083da54a6ac628b4e5dfe1cc"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F11-F12-NUMERIC-PLAN-TYPED-BOUNDARY-V1/RECEIPT-FIELD-MAP.json",
+      "bytes": 3427,
+      "sha256": "ef9e8a9de764c748a80c4fe41b20bf76c115999eb3db3a36efc51961154a3884"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1/MANIFEST.json",
+      "bytes": 1340,
+      "sha256": "a8e682949508281eccd7bbceacc8efd029ddec6d8df4c668ea0bc6c84cea9673"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1/DECISION.md",
+      "bytes": 5456,
+      "sha256": "eab9a4daabb5ed91cedead55ac62c73ac39d7509e4ea39af4fec8bdfd5ccdfbe"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/SHARED-ANALYSIS-PARENT-IDENTITY-CROSSWALK-V1/MANIFEST.json",
+      "bytes": 534,
+      "sha256": "8726ae5e979abf587718df55e68f3f8a056ee26e09ed02f25a2f103f8ac79b23"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/SHARED-ANALYSIS-PARENT-IDENTITY-CROSSWALK-V1/CROSSWALK.md",
+      "bytes": 8355,
+      "sha256": "402806c757366c5f38975de538e6cad24ced1e493acab2d1b9cfa444aea4e9cb"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/MANIFEST.json",
+      "bytes": 826,
+      "sha256": "4e9e6a566acbc186e7ff6f11c98b47a62df616336338b8453fa39810592fe39e"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/CONTRACT.md",
+      "bytes": 3177,
+      "sha256": "fd1d1cadef3a088bf679ba0e87da2b0496ebb415f89d07860958b7a53b5e9192"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F13-PRODUCER-BARRIER-REFERENCES-V1/MANIFEST.json",
+      "bytes": 529,
+      "sha256": "d70f60e95c6185132cdb149e040896ba466b80805f629f1febe887c92a50a499"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F13-PRODUCER-BARRIER-REFERENCES-V1/CONTRACT.md",
+      "bytes": 2870,
+      "sha256": "131acdc2ab004ac5dff0f15121c632abd3e40438d9f604b33dbce07f5c1be32b"
+    }
+  ]
+}

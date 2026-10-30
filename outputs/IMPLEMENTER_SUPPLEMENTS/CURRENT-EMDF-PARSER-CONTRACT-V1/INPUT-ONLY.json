@@ -1,0 +1,24 @@
+{
+  "kind": "input-only-parser-scenarios",
+  "cases": [
+    {"id": "selected_compatible", "carriage": "deployed_compat", "payloads": "same-source approved generated ID11, ID14, ID2, ID1", "carrier_block": 2},
+    {"id": "selected_etsi", "carriage": "etsi_emdf", "payloads": "same-source approved generated ID11, ID14, ID2, ID1", "carrier_block": 2},
+    {"id": "carrier_bounds", "carrier_blocks": [-1, 0, 5, 6]},
+    {"id": "length_varints", "payload_lengths": [0, 1, 255, 256], "group_limit": 2},
+    {"id": "outer_trailing_byte", "mutation": "append_one_zero_byte_after_declared_container"},
+    {"id": "invalid_length", "mutation": "increase_declared_body_length_without_adding_bytes"},
+    {"id": "reserved_codec_data", "carriage": "etsi_emdf", "mutation": "set_codec_reserved_bit"},
+    {"id": "corrupt_primary", "mutation": "flip_one_primary_checksum_bit"},
+    {"id": "corrupt_secondary", "mutation": "flip_one_secondary_checksum_bit"},
+    {"id": "unaligned_checksum", "payload_recipe": "choose_variable_payloads_with_non_byte_aligned_checksum_slots"},
+    {"id": "missing_id11", "payload_ids": [14, 2, 1]},
+    {"id": "missing_id14_primitive", "payload_ids": [11, 2, 1]},
+    {"id": "wrong_id14_count", "joc_object_count": 14, "oamd_slots": 16},
+    {"id": "wrong_oamd_count", "joc_object_count": 15, "oamd_slots": 15},
+    {"id": "truncated_huffman", "mutation": "truncate_id14_inside_codeword"},
+    {"id": "nonzero_section_padding", "mutation": "set_padding_bit_in_bounded_id11_section"},
+    {"id": "wrong_id14_writer", "source": 2, "popped_id14_writer": 2}
+  ],
+  "production_parser_cases": "NOT_RUN",
+  "note": "Input-only recipes; complete protected containers must be newly generated from supplied inputs, not borrowed from expected data."
+}

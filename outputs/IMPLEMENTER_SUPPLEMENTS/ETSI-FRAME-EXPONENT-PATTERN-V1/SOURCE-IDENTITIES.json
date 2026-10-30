@@ -1,0 +1,44 @@
+{
+  "schema": "etsi-frame-exponent-pattern-source-identities.v1",
+  "official_document": {
+    "title": "ETSI TS 102 366 V1.4.1 (2017-09)",
+    "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+    "bytes": 1833684,
+    "sha256": "0229e151dfd9f8cec427f234798cac679a66fdec096feecc4d5ce455bbe3cadf",
+    "table": "E.1.9",
+    "printed_page": 137,
+    "pdf_page_index": 136
+  },
+  "approved_sources": [
+    {
+      "file": "IMPLEMENTER_PACKAGE/MANIFEST.json",
+      "bytes": 76302,
+      "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/11-converter.md",
+      "bytes": 5172,
+      "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8"
+    },
+    {
+      "file": "IMPLEMENTER_PACKAGE/specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1/MANIFEST.json",
+      "bytes": 1340,
+      "sha256": "a8e682949508281eccd7bbceacc8efd029ddec6d8df4c668ea0bc6c84cea9673"
+    },
+    {
+      "file": "IMPLEMENTER_SUPPLEMENTS/F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1/DECISION.md",
+      "bytes": 5456,
+      "sha256": "eab9a4daabb5ed91cedead55ac62c73ac39d7509e4ea39af4fec8bdfd5ccdfbe"
+    }
+  ]
+}

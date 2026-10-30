@@ -1,0 +1,60 @@
+{
+  "schema": "metadata-wrapper-config.v1",
+  "profile_id": "selected-deployed-compat.v1",
+  "payloads": {
+    "11": {
+      "sample_offset": null,
+      "duration": null,
+      "group_id": 0,
+      "codec_data_present": false,
+      "discard_unknown_payload": false,
+      "payload_frame_aligned": false,
+      "create_duplicate": null,
+      "remove_duplicate": null,
+      "priority": null,
+      "processing_allowed": null
+    },
+    "1": {
+      "sample_offset": null,
+      "duration": 1536,
+      "group_id": null,
+      "codec_data_present": false,
+      "discard_unknown_payload": false,
+      "payload_frame_aligned": false,
+      "create_duplicate": null,
+      "remove_duplicate": null,
+      "priority": null,
+      "processing_allowed": null
+    },
+    "2": {
+      "sample_offset": null,
+      "duration": null,
+      "group_id": null,
+      "codec_data_present": false,
+      "discard_unknown_payload": true,
+      "payload_frame_aligned": null,
+      "create_duplicate": null,
+      "remove_duplicate": null,
+      "priority": null,
+      "processing_allowed": null
+    },
+    "14": {
+      "sample_offset": null,
+      "duration": null,
+      "group_id": 0,
+      "codec_data_present": false,
+      "discard_unknown_payload": false,
+      "payload_frame_aligned": true,
+      "create_duplicate": false,
+      "remove_duplicate": false,
+      "priority": 0,
+      "processing_allowed": 0
+    }
+  },
+  "id1_relation": {
+    "timer_output": "ID1 payload body fields and bytes",
+    "wrapper_duration": 1536,
+    "relationship": "independent fixed wrapper duration; not read from timer output and not encoded inside the timer payload fields",
+    "clock": "one ID1 body per 1536-sample codec source call, including two priming calls"
+  }
+}

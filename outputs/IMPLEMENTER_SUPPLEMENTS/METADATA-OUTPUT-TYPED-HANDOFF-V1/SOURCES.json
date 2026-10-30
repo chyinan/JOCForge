@@ -1,0 +1,16 @@
+{
+  "approved_spec_sha256": {
+    "05-live-joc-coordinator.md": "49c3e07298262e2d5867d936eab0ddf6d746a17a9ce844358a0966d1b5d4d779",
+    "05-joc-quantization-and-wire.md": "91fde215d0a6d5d1e820a2e29b467afd2b1fc78a5fa8f87300cc42a346152143",
+    "13-joc-complexity-timer-payload-order.md": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+    "13-emdf-and-timeline.md": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+    "00-global-transaction-contract.md": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+    "15-keyless-publication.md": "47beaa9d415d6d26eb8d6a7df63ca3d86514c37740618c3a041a46c7961b3a72"
+  },
+  "prior_wash_manifests": {
+    "F15-OUTPUT-PROVIDER-PLAN-BINDING-V1": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2",
+    "F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1": "db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31",
+    "F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0"
+  },
+  "checks": {"synthetic_header_and_clock": "PASS_NORMAL_AND_OPTIMIZED", "full_parser_producer_publication_native_adm": "NOT_RUN"}
+}

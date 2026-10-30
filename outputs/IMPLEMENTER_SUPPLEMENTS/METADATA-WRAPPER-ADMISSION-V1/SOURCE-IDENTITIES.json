@@ -1,0 +1,9 @@
+{
+  "metadata_owner_manifest_sha256": "94774c412ce8457f3220d84e4b3386c0b48c21837d4a4943570791bb66f034b3",
+  "metadata_wrapper_file_sha256": "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56",
+  "metadata_wrapper_canonical_sha256": "e5d4a8f50324b4d1a7af7631b76244ea91da12cf9fa1f1b668c045c2ac6ad352",
+  "metadata_owner_contract_sha256": "6b5584a57c0fc22b0f3b7a9f4d101f5a92404468c96ad7d0270b52f46dc467c2",
+  "metadata_public_provider_sha256": "6d94c55c8c011fd4762e60ec92ed491f19b17540c72ba82094a36f6e666f2ef7",
+  "wrapper_config_check": "PASS_NORMAL_AND_OPTIMIZED",
+  "selected_parser_and_adm": "NOT_RUN"
+}

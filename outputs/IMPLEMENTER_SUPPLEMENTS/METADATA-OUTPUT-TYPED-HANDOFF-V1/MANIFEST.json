@@ -1,0 +1,22 @@
+{
+  "package_id": "METADATA-OUTPUT-TYPED-HANDOFF-V1",
+  "scope": "selected local model typed handoff; native BSI identity unbound; actual producer not run",
+  "source_manifest_sha256": "f9866fa765d7c4076d3be860ecac0714504e6910a10278e123e8d80fd224331e",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 9481,
+      "sha256": "edd1803d79b7a0c204d7c775342778ccf9797b8a162574121b6ab7060ce69c7f"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 1469,
+      "sha256": "6f93a66fdef73d8f0e3502333e850fe71e2fbe39e796ff4e1309105630c4992d"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1180,
+      "sha256": "8e1499ddba91644ec10aeba936239df330c882fd9aece306e8b067ca56a76e8e"
+    }
+  ]
+}

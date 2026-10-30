@@ -1,0 +1,77 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "identity": "metadata-owner-root.selected-48k-1536-four-queue.v2",
+  "status": "SOURCE_RECEIPT_AND_EOF_PROPOSAL_READY_CANDIDATE",
+  "delivery_scope": "internal implementation only",
+  "files": [
+    {
+      "file": "METADATA-OWNER-CONTRACT.md",
+      "bytes": 8767,
+      "sha256": "6b5584a57c0fc22b0f3b7a9f4d101f5a92404468c96ad7d0270b52f46dc467c2"
+    },
+    {
+      "file": "METADATA-OWNER-MACHINE-MAP.json",
+      "bytes": 2221,
+      "sha256": "499e155c55cd770f0184477a02ced516d07f1b3cc0010ba5ac5aba431b1b7e72"
+    },
+    {
+      "file": "metadata-public-provider.json",
+      "bytes": 1399,
+      "sha256": "6d94c55c8c011fd4762e60ec92ed491f19b17540c72ba82094a36f6e666f2ef7"
+    },
+    {
+      "file": "metadata-wrapper-config.json",
+      "bytes": 1754,
+      "sha256": "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56"
+    },
+    {
+      "file": "METADATA-SOURCE-RECEIPT.schema.json",
+      "bytes": 1940,
+      "sha256": "3ce5bf0eda0f32bf387241ba3255160791f6ecb3cc40de7781cff375123f7510"
+    },
+    {
+      "file": "METADATA-OWNER-VECTORS.json",
+      "bytes": 227297,
+      "sha256": "4271ce47e911ba107c1f76931cf872d8240e7152381d0f12bd5b17bf3e2eb023"
+    },
+    {
+      "file": "REPLAY-CHECK.json",
+      "bytes": 1940,
+      "sha256": "14eb467adc2d7c61db8169698610f149735dd6c1767d6273f302891d97a92c91"
+    },
+    {
+      "file": "EMDF-TERMINAL-FIXTURES.json",
+      "bytes": 4953,
+      "sha256": "18081b8176e969ff37fe6d6134d843b4a8057e152ac6ea6ddd57da435ebea924"
+    },
+    {
+      "file": "EMDF-TERMINAL-INDEPENDENT-CHECK.json",
+      "bytes": 455,
+      "sha256": "f8c45a1100ec6b53cbe120eb0a06291148774c2664e0f6331d4feb40575532f0"
+    },
+    {
+      "file": "TIMER-DIGEST-INDEPENDENT-CHECK.json",
+      "bytes": 1370,
+      "sha256": "187c8678158b3f4e10dac14a237fca2ef2638b99d7a65fded049cf9eda99364c"
+    },
+    {
+      "file": "OCCUPIED-DESTINATION-INDEPENDENT-CHECK.json",
+      "bytes": 2325,
+      "sha256": "596175ddc8db659eef8e73bb3ed58d3551e72762c11fbb3588071b2586380dda"
+    }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "a6a4ae1e2a4969bec8dc121aa55d43bfe5095ce5a02276aab2d52337e37459a6",
+    "source_class": "frozen_timer_queue_model_and_clean_room_root_design",
+    "replay_check_independent_implementation": false,
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_vendor_key": "excluded"
+  },
+  "blocked": [
+    "measurement root receipt",
+    "finalize root receipt",
+    "restart root receipt",
+    "global callback transaction",
+    "durable output integration"
+  ]
+}
