@@ -9075,8 +9075,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1772248,
-              "sha256": "7e47599557d9444922b798c2efd8944bca1b36223944a093be5a8765f8ed54aa"
+              "bytes": 1778035,
+              "sha256": "18fd8eeb3d3ca5d1b418ed3039c4c2b48a9e64246be52802a08be9daf2a89159"
             }
           ],
           "test_modules": [
@@ -12588,8 +12588,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1772248,
-              "sha256": "7e47599557d9444922b798c2efd8944bca1b36223944a093be5a8765f8ed54aa"
+              "bytes": 1778035,
+              "sha256": "18fd8eeb3d3ca5d1b418ed3039c4c2b48a9e64246be52802a08be9daf2a89159"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -26064,6 +26064,106 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "native-run100-body-length-to-f13-container-identity-boundary",
+          "mapping_status": "WASHED_RUN100_LENGTH_CHAIN_MATCHED__F13_TYPED_CONTAINER_IDENTITY_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RUN100_SAME_PARENT_LENGTHS__NO_F13_CONTAINER_JOIN",
+          "scope": "Run-100 recorded 4,247 same-parent count/codec events. In every event, counted body bytes matched the codec-record, planned, serialized, refill, and U16 body-length-prefix values. The block-2 reservation fields and 9-bit writer operand matched counted body bytes plus 4, and the writer advanced 9 bits. The event stream contains no EMDF type or payload-field tag for the counted object. Targeted static analysis partially corroborates the parent/count/serializer paths; whole-program analysis timed out. Counted length to typed F13 container identity and source generation remain UNBOUND. Target operands 507/508/511/512 and 512-overflow behavior remain NOT_OBSERVED; the selected model upper bound is not native global unreachability.",
+          "owner": "metadata",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run100ExecutionIdentity",
+              "Run100ParentInvocation",
+              "CountedBodyByteValue",
+              "CodecRecordBodyLength",
+              "PlannedBodyLength",
+              "SerializedBodyLength",
+              "RefillBodyLength",
+              "U16BodyLengthPrefix",
+              "Block2ReservationValue",
+              "NineBitWriterOperand",
+              "F13EmdfTypeAndPayloadTag",
+              "F13SourceGeneration"
+            ],
+            "covered_clauses": [
+              "Run-100 same-parent count, codec record, plan, serialized, refill, and U16 prefix body-length values matched across 4,247 events.",
+              "The block-2 reservation fields and 9-bit writer operand equal counted body bytes plus 4; the writer advanced 9 bits.",
+              "No EMDF type/payload-field tag identifies the counted object as a complete F13 container.",
+              "Targeted static path analysis is bounded; whole-program analysis timed out at 180 seconds.",
+              "F13 container identity and source generation remain UNBOUND; target writer operands and 512 overflow are NOT_OBSERVED."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_RUN100_F13_BODY_LENGTH_CHAIN_AND_CONTAINER_IDENTITY_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/CHECK.json"
+            ],
+            "supplement_manifest_sha256": "db46c73540f45dd47d43644be91b14b9db439a7c3c055be811ae87c298ab5bf5",
+            "source_run100_package_manifest_sha256": "c9b00de09eaefdb6ff4956b0b0a4ae137a420fc20d195a862cf40e925d010923",
+            "run100_event_stream_sha256": "4062e6f07755bc79f82b507d19832202c064c9f7509e51727f762ee158e0f35e",
+            "run100_native_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+            "selected_model_bound_manifest_sha256": "46d6ef0f6b98c07711005b68544e6902749f7e171a6ef4c20b94dc53df53df1c",
+            "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+            "validation_boundary": "Run-100 same-parent length-chain evidence plus partial targeted static corroboration; no typed F13 container or source-generation identity, target-boundary observation, or product readiness."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN100_SAME_PARENT_BODY_LENGTH_CHAIN_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "Counted body bytes matched codec-record, planned, serialized, refill, and U16 prefix values in 4,247 same-parent events.",
+              "Reservation and writer operands matched counted body bytes plus 4, but no F13 EMDF field tag was recorded.",
+              "The model upper bound is conditional on the still-unbound container identity; native targets and overflow remain unobserved."
+            ],
+            "expected_outputs_included": false,
+            "native_output_included": false,
+            "supplement_manifest_sha256": "db46c73540f45dd47d43644be91b14b9db439a7c3c055be811ae87c298ab5bf5"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "A typed same-parent F13 EMDF type/payload tag and owner/generation join for the counted object.",
+            "Run-100 parent invocation to ADM sample/frame/source-generation identity.",
+            "Target writer operands 507, 508, 511, and 512 and 512-overflow behavior.",
+            "Whole-program Ghidra analysis, which timed out at 180 seconds.",
+            "Any native global-unreachability conclusion from the selected model upper bound."
+          ],
+          "validation_boundary": "Evidence-only length-chain and partial static corroboration; conditional model bound remains non-native and product readiness is unchanged.",
+          "native_status": {
+            "run100_same_parent_length_chain": "MATCHED_4247_OF_4247",
+            "observed_body_length_range_bytes": [
+              232,
+              375
+            ],
+            "reservation_and_nine_bit_operand": "COUNTED_BODY_BYTES_PLUS_4",
+            "writer_advanced_bits": 9,
+            "run100_typed_f13_container_field_tag": "NOT_RECORDED",
+            "native_f13_container_identity": "UNBOUND",
+            "f13_source_generation": "UNBOUND",
+            "ghidra_targeted_functions": "COMPLETED",
+            "ghidra_whole_program_analysis": "TIMED_OUT_AT_180_SECONDS",
+            "target_writer_operands": "NOT_OBSERVED",
+            "512_overflow_behavior": "NOT_OBSERVED",
+            "audio_or_payload_access": false,
+            "native_global_unreachability_claim": false,
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ],
       "exclusions": [
@@ -30768,8 +30868,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1772248,
-              "sha256": "7e47599557d9444922b798c2efd8944bca1b36223944a093be5a8765f8ed54aa"
+              "bytes": 1778035,
+              "sha256": "18fd8eeb3d3ca5d1b418ed3039c4c2b48a9e64246be52802a08be9daf2a89159"
             }
           ],
           "test_inventory": [

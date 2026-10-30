@@ -1,0 +1,18 @@
+{
+  "schema": "native-f13-container-length-identity-followup-input-only.v1",
+  "status": "NOT_RUN",
+  "same_parent_fields_needed": [
+    "F13 producer owner/source generation",
+    "F13 EMDF type and payload field tag",
+    "F13 serialized container body length",
+    "run-100 counted body-byte field",
+    "reservation U16 and 9-bit writer operand"
+  ],
+  "success_condition": "typed same-parent identity relation, or bounded evidence that the two lengths come from different owners/producers",
+  "do_not_infer": [
+    "F13 identity from equal lengths",
+    "source generation from parent invocation ordinal",
+    "native global unreachability from the selected model upper bound",
+    "512 overflow behavior"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "native-f13-container-length-identity-wash-check.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_NATIVE_AND_STATIC_SCOPE",
+  "source_manifest_and_payload_hashes": "VERIFIED",
+  "run100_same_parent_length_chain": "MATCHED_4247_OF_4247",
+  "run100_typed_f13_container_field_tag": "NOT_RECORDED",
+  "ghidra_targeted_functions": "COMPLETED",
+  "ghidra_whole_program_analysis": "TIMED_OUT_AT_180_SECONDS",
+  "native_f13_container_identity": "UNBOUND",
+  "target_writer_operands": "NOT_OBSERVED",
+  "512_overflow_behavior": "NOT_OBSERVED",
+  "audio_or_payload_access": false
+}

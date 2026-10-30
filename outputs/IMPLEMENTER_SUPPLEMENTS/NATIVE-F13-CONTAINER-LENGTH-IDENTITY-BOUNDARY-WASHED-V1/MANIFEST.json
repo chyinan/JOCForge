@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "NATIVE-F13-CONTAINER-LENGTH-IDENTITY-BOUNDARY-WASHED-V1",
+  "scope": "run-100 body-length chain and partial static corroboration; F13 container identity remains unbound",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1614,
+      "sha256": "7f7e4e24e8ada3be99e7d205e9a3bb649c9f36b208a503a49f01d890c0dc2d4b"
+    },
+    {
+      "name": "SOURCES.json",
+      "bytes": 1206,
+      "sha256": "e52dae0c61207dfc6da9126ca331cb2ac56ee5cd1a7cf0764ed1b27d7791557d"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 717,
+      "sha256": "b22fb67f3c22942786f2f3321e747dec351b2d43341936e208d798ec4c073657"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 579,
+      "sha256": "01f63f110d727b32d0abbfd752514fe1b16628177b753f588caa1e9b70711c5d"
+    }
+  ]
+}
