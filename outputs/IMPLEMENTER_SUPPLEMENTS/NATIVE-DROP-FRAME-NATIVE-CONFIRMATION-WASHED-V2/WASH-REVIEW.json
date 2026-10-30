@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2",
+  "decision": "APPROVED_FOR_EXACT_NATIVE_CONFIRMED_29_97_FILE_POSITION_BRANCH",
+  "supersedes": {
+    "package_id": "NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1",
+    "manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446",
+    "change": "native capture now executed and output completed for the exact lowercase df vector"
+  },
+  "independent_verification": {
+    "native_manifest_sha256": "MATCH",
+    "native_payloads": "4/4 MATCH",
+    "ordinary_verifier": "PASS",
+    "optimized_verifier": "PASS",
+    "static_parent_manifest": "MATCH",
+    "arithmetic_replay": "PASS"
+  },
+  "allowed_scope": "valid lowercase df HH:MM:SS:FF at 29.97 in file_position mode; run79 exact vector and static parser contract",
+  "still_not_approved": [
+    "semicolon/drop-frame punctuation",
+    "uppercase DF",
+    "other frame-rate tokens",
+    "embedded-timecode df",
+    "native invalid-label runtime behavior",
+    "model output or model/native comparison"
+  ],
+  "whole_chain_ready": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2",
+  "status": "NATIVE_CONFIRMED_EXACT_BRANCH_APPROVED; OTHER_DF_MODES_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1611,
+      "sha256": "cc50b6a4bf0619f1b8335c803d7a2a5e99287f32519c1e29dbd7bf2ee4f564b6"
+    },
+    {
+      "name": "OBSERVED-VECTOR.json",
+      "bytes": 1367,
+      "sha256": "ad0ccac707a5ce6befd0a60dbef2a5f62f991eb0f5c919ce03fcb0718ae118cc"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1386,
+      "sha256": "ba91057f47e0cfc47e0fdd619d5953589295adbe9eceb136ebcd40351694b68b"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 1115,
+      "sha256": "d20b82e4c8ebfc7ebc6ee0fb54a9171dc6ff9acf566bf8b7e8c2e35551f0fc33"
+    }
+  ]
+}

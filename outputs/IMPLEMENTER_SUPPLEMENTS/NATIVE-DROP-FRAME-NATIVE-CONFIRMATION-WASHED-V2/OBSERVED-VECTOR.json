@@ -1,0 +1,34 @@
+{
+  "schema": "native-drop-frame-native-confirmed-vector.v2",
+  "source_package_id": "native-time-range-conversion-wash-v12",
+  "source_manifest_sha256": "43ef9fa083a1a7f10fbb4f5ec467456aa25ebe33e7569ff2082c4b2f1c2d10f5",
+  "static_parent_package_id": "native-time-range-conversion-wash-v11",
+  "static_parent_manifest_sha256": "c80784dc4e0006bcf1a247fb8fe85645ee7840fdbdc29200f68a7e622812c4cd",
+  "scope": {
+    "timecode_form": "HH:MM:SS:FFdf",
+    "drop_frame_marker": "lowercase df suffix",
+    "frame_rate_token": "29.97",
+    "time_base": "file_position",
+    "other_modes": "NOT_APPROVED_BY_THIS_SUPPLEMENT"
+  },
+  "input": {
+    "start_token": "00:01:00:02df",
+    "end_token": "00:01:00:12df",
+    "sample_rate_hz": 48000
+  },
+  "native_observation": {
+    "run_id": "run-79",
+    "native_log_sha256": "a550573aca3bfe93720a0319a0b7110af1338ece494d8de2403332e41b0eb85d",
+    "reference_ec3_sha256": "bbc90d7fe57bacf180ca9d24679b68e001ce7477a117026a8dec3244bea0193f",
+    "reference_ec3_bytes": 45056,
+    "backend_status": "NORMAL_REFERENCE_ENCODING_COMPLETED",
+    "start_sample": 2882880,
+    "end_sample_exclusive": 2898896,
+    "sample_count": 16016,
+    "static_prediction_match": true,
+    "debugger_code_or_data_breakpoints_set": false,
+    "debugger_target_memory_read": false
+  },
+  "model_output": "NOT_RUN",
+  "model_comparison": "NOT_EVALUATED"
+}

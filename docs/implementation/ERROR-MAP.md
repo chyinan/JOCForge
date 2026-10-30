@@ -532,3 +532,5 @@
 | F15/active-joc-writer-sample-boundary-quantization | `UnsupportedFrameRate` | — | rate is outside the three washed numeric modes | Reject; no fallback rate mapping. | — |
 | F15/active-joc-writer-sample-boundary-quantization | `InvalidFrameToken` | — | frame token is empty, signed or nonnumeric | Reject before conversion. | — |
 | F15/active-joc-writer-sample-boundary-quantization | `SourceBounds` | — | rounded SampleRange exceeds source extent | Reject before returning writer boundaries. | — |
+| F15/native-drop-frame-exact-branch-implementation | `SourceTimeRangeError::UnsupportedFrameRate` | selected drop-frame profile gate | Lowercase df is supplied with a rate token other than the selected 29.97 branch. | No sample range is returned. | Reject the unsupported drop-frame mode before output planning. |
+| F15/native-drop-frame-exact-branch-implementation | `SourceTimeRangeError::InvalidFrameToken` | selected drop-frame static grammar | The token is malformed or violates the static dropped-label/nominal-frame constraints. | No sample range is returned. | Reject the token; native runtime invalid-label behavior was not observed. |

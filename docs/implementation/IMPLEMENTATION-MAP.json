@@ -8722,8 +8722,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1660896,
-              "sha256": "62e25a81d04d69bef7997778c25c83b910e912dfc7a1d8f311b389ad937f154b"
+              "bytes": 1666287,
+              "sha256": "d4767006c39d718284dad6e181fdae8f758b75097bdbd5552128a5c87d49ebc1"
             }
           ],
           "test_modules": [
@@ -12235,8 +12235,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1660896,
-              "sha256": "62e25a81d04d69bef7997778c25c83b910e912dfc7a1d8f311b389ad937f154b"
+              "bytes": 1666287,
+              "sha256": "d4767006c39d718284dad6e181fdae8f758b75097bdbd5552128a5c87d49ebc1"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -28991,8 +28991,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1660896,
-              "sha256": "62e25a81d04d69bef7997778c25c83b910e912dfc7a1d8f311b389ad937f154b"
+              "bytes": 1666287,
+              "sha256": "d4767006c39d718284dad6e181fdae8f758b75097bdbd5552128a5c87d49ebc1"
             }
           ],
           "test_inventory": [
@@ -29030,8 +29030,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/timeline/source_time_range.rs",
-              "bytes": 11824,
-              "sha256": "59512aa5b2711560645de902632ca79280a59bbcb9891d44adde02c4119f010d"
+              "bytes": 20455,
+              "sha256": "7b615c78ef82446903003196f63efc0acf93cd3bbe0006b1a40d287fea784012"
             },
             {
               "path": "crates/jocforge-domain/src/timeline/mod.rs",
@@ -29045,8 +29045,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/timeline/source_time_range.rs",
-              "bytes": 11824,
-              "sha256": "59512aa5b2711560645de902632ca79280a59bbcb9891d44adde02c4119f010d"
+              "bytes": 20455,
+              "sha256": "7b615c78ef82446903003196f63efc0acf93cd3bbe0006b1a40d287fea784012"
             }
           ],
           "local_mapping_files": [],
@@ -29215,18 +29215,34 @@
         },
         {
           "slice_id": "washed-colon-timecode-file-position-2997-vector",
-          "mapping_status": "WASHED_BOUNDED_NON_DROP_COLON_FILE_POSITION_VECTOR__OTHER_SYNTAX_OPEN",
-          "implementation_status": "EVIDENCE_ONLY_COLON_VECTOR__LOCAL_PARSER_AND_OUTPUT_COMPARISON_NOT_RUN",
-          "scope": "For the selected file-position, non-drop HH:MM:SS:FF vector at a 29.97 override, 00:01:30:00 and 00:01:30:10 map to nominal frame positions 2700 and 2710, using nominal rate 30 and scale 1001/1000. The colon end frame is used directly without the numeric-token +1 rule. At 48 kHz this gives [4,324,320, 4,340,336), 16,016 samples. Both products are integral, so this vector does not exercise fractional quantization; the 0.352-second encoded duration remains separate from the source interval.",
+          "mapping_status": "MATERIALIZED_DIRECT_NON_DROP_COLON_2997_FILE_POSITION_RANGE__OUTPUT_PLAN_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_NON_DROP_2997_COLON_RANGE__OUTPUT_PLAN_OPEN",
+          "scope": "Implements the bounded Wash-confirmed file-position, non-drop HH:MM:SS:FF branch at 29.97 and 48 kHz: the four two-digit components map to nominal frame positions and the colon end is direct, with no numeric-token +1. Local tests match the native [4,324,320, 4,340,336) vector. Other colon rates, drop-frame, embedded-timecode colon, output-plan integration, and model/native comparison remain open.",
           "owner": "timeline",
-          "implementation_requirement": false,
+          "implementation_requirement": true,
           "dependencies": [
             "active-joc-writer-sample-boundary-quantization"
           ],
-          "implementation_files": [],
-          "implementation_inventory": [],
-          "test_modules": [],
-          "test_inventory": [],
+          "implementation_files": [
+            "crates/jocforge-domain/src/timeline/source_time_range.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/timeline/source_time_range.rs",
+              "bytes": 20455,
+              "sha256": "7b615c78ef82446903003196f63efc0acf93cd3bbe0006b1a40d287fea784012"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/timeline/source_time_range.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/timeline/source_time_range.rs",
+              "bytes": 20455,
+              "sha256": "7b615c78ef82446903003196f63efc0acf93cd3bbe0006b1a40d287fea784012"
+            }
+          ],
           "local_mapping_files": [],
           "clock": {
             "domains": [
@@ -29256,28 +29272,30 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/WASH-REVIEW.json"
             ],
             "supplement_manifest_sha256": "b4fed2f42708d6402506708cb8846dbfdea7f5797ae1924b5390daf08814c456",
-            "validation_boundary": "One non-drop 29.97 file-position HH:MM:SS:FF vector; no general colon/drop-frame or embedded-timecode rule is inferred."
+            "validation_boundary": "Local helper implements only the selected non-drop 29.97 file-position branch; no other colon mode is implied."
           },
           "vectors": {
-            "kind": "WASHED_NATIVE_COLON_TIME_RANGE_NO_MODEL_OUTPUT",
+            "kind": "WASHED_NATIVE_COLON_VECTOR_PLUS_LOCAL_RANGE_TEST",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/OBSERVED-VECTOR.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIME-COLON-2997-VECTOR-WASHED-V1/OBSERVED-VECTOR.json",
+              "crates/jocforge-domain/src/timeline/source_time_range.rs"
             ],
             "case_pointers": [
               "00:01:30:00 → frame 2700; 00:01:30:10 → frame 2710; no colon-end +1.",
               "Native source interval [4,324,320, 4,340,336), length 16,016 samples at 48 kHz.",
               "Both sample products are integral; this vector does not test fractional-boundary quantization.",
-              "Encoded duration 0.352 s is distinct; model output/comparison are NOT_RUN/NOT_EVALUATED."
+              "Encoded duration 0.352 s is distinct; model output/comparison are NOT_RUN/NOT_EVALUATED.",
+              "Local source_time_range test matches all four validation/writer sample boundaries."
             ],
-            "expected_outputs_included": false,
+            "expected_outputs_included": true,
             "supplement_manifest_sha256": "b4fed2f42708d6402506708cb8846dbfdea7f5797ae1924b5390daf08814c456"
           },
           "error_outcomes": [],
           "not_run": [
-            "Local model colon-token parser execution and model/native comparison.",
-            "Semicolon/drop-frame, other colon rates, and embedded-timecode colon forms.",
-            "Fractional-sample quantization through this colon syntax.",
-            "Whole-chain and product acceptance."
+            "Other colon rates and embedded-timecode colon forms.",
+            "Drop-frame syntax (tracked in its own Wash-approved slice).",
+            "ValidatedEncodingPlan/output-plan integration and product encoding.",
+            "Model output and model/native comparison."
           ],
           "validation_boundary": "The package is native reference evidence only; it does not establish local parser integration, model output, or generic colon-timecode behavior.",
           "native_status": {
@@ -29295,15 +29313,17 @@
             "encoded_track_duration_seconds": 0.352,
             "model_output": "NOT_RUN",
             "model_comparison": "NOT_EVALUATED",
-            "whole_chain_ready": false
+            "whole_chain_ready": false,
+            "local_parser_status": "LOCALLY_VERIFIED_SELECTED_VECTOR",
+            "other_colon_modes": "NOT_IMPLEMENTED"
           },
           "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
         },
         {
           "slice_id": "washed-drop-frame-static-contract-only",
-          "mapping_status": "WASHED_STATIC_DROP_FRAME_PREDICTION__NATIVE_VECTOR_NOT_RUN",
-          "implementation_status": "EVIDENCE_ONLY_STATIC_CONTRACT__NOT_IMPLEMENTATION_READY",
-          "scope": "The washed static prediction covers lowercase `df` as the final two characters, 29.97 only, nominal rate 30 with scale 1001/1000, two dropped labels per minute except every tenth minute, and direct end-frame position without numeric-token +1. Its input-only vector predicts start/end frame positions 1800/1810 and sample range [2,882,880, 2,898,896), 16,016 samples. Native parsing/capture did not run, so this is not an implementation-ready native rule; model output and comparison remain unrun.",
+          "mapping_status": "WASHED_STATIC_DROP_FRAME_PREDICTION_SUPERSEDED_BY_NATIVE_V2__OTHER_MODES_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_STATIC_PREDICTION__EXACT_VECTOR_CONFIRMED_IN_V12",
+          "scope": "The washed static prediction covers lowercase `df` as the final two characters, 29.97 only, nominal rate 30 with scale 1001/1000, two dropped labels per minute except every tenth minute, and direct end-frame position without numeric-token +1. Its input-only vector predicts start/end frame positions 1800/1810 and sample range [2,882,880, 2,898,896), 16,016 samples. Native parsing/capture did not run, so this is not an implementation-ready native rule; model output and comparison remain unrun. A later Wash native-confirmation package verifies the exact lowercase-df vector; this original package remains the static-contract source.",
           "owner": "timeline",
           "implementation_requirement": false,
           "dependencies": [
@@ -29339,7 +29359,9 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/WASH-REVIEW.json"
             ],
             "supplement_manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446",
-            "validation_boundary": "Static contract and arithmetic replay only; the package explicitly marks the vector not implementation-ready without native capture."
+            "validation_boundary": "Static contract and arithmetic replay only; the package explicitly marks the vector not implementation-ready without native capture.",
+            "superseded_by_native_confirmation_manifest_sha256": "ae7921aad6211118b7927e993425a77b7cbfbe29d7d9919d6bc5fbf486634985",
+            "current_implementation_authority_manifest_sha256": "6335614fb3e70460d164b33a23eb0924c6b16b4973dcc5a5c18cb7c06bac9be1"
           },
           "vectors": {
             "kind": "STATIC_DROP_FRAME_INPUT_ONLY_PREDICTION",
@@ -29368,15 +29390,17 @@
             "native_output": "NOT_CREATED",
             "model_output": "NOT_RUN",
             "implementation_ready_for_this_vector": false,
-            "whole_chain_ready": false
+            "whole_chain_ready": false,
+            "superseded_by_native_confirmation_manifest_sha256": "ae7921aad6211118b7927e993425a77b7cbfbe29d7d9919d6bc5fbf486634985",
+            "implementation_scope_status": "APPROVED_FOR_EXACT_BRANCH_BY_NATIVE_CONFIRMATION_V2"
           },
           "delivery_scope": "WASHED_STATIC_EVIDENCE_ONLY"
         },
         {
           "slice_id": "washed-drop-frame-native-confirmed-single-vector",
-          "mapping_status": "WASHED_NATIVE_CONFIRMED_LOWERCASE_DF_2997_FILE_POSITION_VECTOR__OTHER_MODES_OPEN",
-          "implementation_status": "NATIVE_CONFIRMED_EXACT_VECTOR__IMPLEMENTATION_DELIVERY_FLAG_CONFLICT",
-          "scope": "Run 79 completed a normal reference encode for lowercase `df`, 29.97, file-position, start 00:01:00:02df and end 00:01:00:12df. The native composite log range [2,882,880, 2,898,896) matches the hash-bound static prediction. The reference EC-3 is 45,056 bytes. The debugger only launched/resumed with exception filters; it set no code/data breakpoints and read no target memory. This confirms only the exact vector. The payload says implementation_delivery=PROHIBITED while WASH-REVIEW says the exact vector/static rule is approved, so implementation scope requires Wash reconciliation before code changes.",
+          "mapping_status": "WASHED_NATIVE_V1_VECTOR__IMPLEMENTATION_FLAG_CONFLICT_SUPERSEDED_BY_V2",
+          "implementation_status": "EVIDENCE_ONLY_V1_DISPOSITION_SUPERSEDED_BY_V2",
+          "scope": "This V1 package confirmed the exact run-79 lowercase-df vector but carried conflicting implementation-delivery wording. Wash V2 resolves the disposition for the exact selected 29.97 file-position branch and its static parser contract. Other drop-frame modes, invalid-label native behavior, model output and comparison remain open.",
           "owner": "timeline",
           "implementation_requirement": false,
           "dependencies": [
@@ -29418,8 +29442,9 @@
             "parent_static_package_manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446",
             "implementation_delivery_flag": "PROHIBITED",
             "wash_review_implementation_scope": "APPROVED_FOR_EXACT_LOWERCASE_DF_29_97_FILE_POSITION_VECTOR_AND_STATIC_RULE_ONLY",
-            "implementation_scope_reconciliation": "REQUIRED_BEFORE_CODE_CHANGES",
-            "validation_boundary": "Native confirms only this vector; model output/comparison and all other syntax/rates remain unrun or unbound."
+            "implementation_scope_reconciliation": "RESOLVED_BY_NATIVE_CONFIRMATION_V2",
+            "validation_boundary": "Native confirms only this vector; model output/comparison and all other syntax/rates remain unrun or unbound.",
+            "superseded_by_manifest_sha256": "6335614fb3e70460d164b33a23eb0924c6b16b4973dcc5a5c18cb7c06bac9be1"
           },
           "vectors": {
             "kind": "WASHED_NATIVE_DROP_FRAME_RANGE_VECTOR_NO_MODEL_OUTPUT",
@@ -29438,10 +29463,9 @@
           },
           "error_outcomes": [],
           "not_run": [
-            "Implementation scope reconciliation for the payload's PROHIBITED flag versus Wash Review approval.",
             "Model output and model/native comparison.",
-            "Semicolon, uppercase DF, other rates, embedded-timecode df, and invalid-label runtime behavior.",
-            "Whole-chain product readiness and acceptance."
+            "Semicolon/drop-frame, uppercase DF, other frame rates, embedded-timecode df, and invalid-label runtime behavior.",
+            "Whole-chain readiness and product acceptance."
           ],
           "validation_boundary": "Record the exact native-confirmed vector only; do not implement until Wash reconciles the conflicting implementation disposition.",
           "native_status": {
@@ -29462,14 +29486,140 @@
             "target_memory_read": false,
             "model_output": "NOT_RUN",
             "model_comparison": "NOT_EVALUATED",
-            "implementation_ready_conflict": true,
-            "whole_chain_ready": false
+            "implementation_ready_conflict": false,
+            "whole_chain_ready": false,
+            "historical_v1_implementation_flag_conflict": true,
+            "current_implementation_disposition": "APPROVED_BY_NATIVE_CONFIRMATION_V2_FOR_EXACT_BRANCH",
+            "superseded_by_manifest_sha256": "6335614fb3e70460d164b33a23eb0924c6b16b4973dcc5a5c18cb7c06bac9be1"
           },
           "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY",
           "correction_of": {
             "package_id": "NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1",
             "manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446",
             "scope_extended": "This exact lowercase-df vector is now native-confirmed; other modes remain open."
+          }
+        },
+        {
+          "slice_id": "native-drop-frame-exact-branch-implementation",
+          "mapping_status": "MATERIALIZED_NATIVE_CONFIRMED_LOWERCASE_DF_2997_FILE_POSITION_BRANCH__OTHER_MODES_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_RUN79_VECTOR_AND_STATIC_DF_RULE__OTHER_MODES_OPEN",
+          "scope": "Implements the Wash-approved lowercase `df` branch for selected 29.97 file-position timecodes at 48 kHz. Parse `HH:MM:SS:FFdf`, map to nominal 30-frame positions, subtract two labels per minute except every tenth minute, reject the static-contract invalid labels, and use the colon end position directly without numeric-token +1. Local tests match run-79 `[2,882,880, 2,898,896)` and the static tenth-minute rule. This helper is not integrated into ValidatedEncodingPlan/output production; other modes and native invalid-label behavior remain open.",
+          "owner": "timeline",
+          "implementation_requirement": true,
+          "dependencies": [
+            "active-joc-writer-sample-boundary-quantization",
+            "washed-drop-frame-native-confirmed-single-vector"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/timeline/source_time_range.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/timeline/source_time_range.rs",
+              "bytes": 20455,
+              "sha256": "7b615c78ef82446903003196f63efc0acf93cd3bbe0006b1a40d287fea784012"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/timeline/source_time_range.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/timeline/source_time_range.rs",
+              "bytes": 20455,
+              "sha256": "7b615c78ef82446903003196f63efc0acf93cd3bbe0006b1a40d287fea784012"
+            }
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "FilePositionDropFrameTimecode",
+              "TimecodeFrameRate",
+              "TimecodeFrameIndex",
+              "SampleRate",
+              "ValidatedSampleIndex",
+              "ActiveWriterSampleIndex"
+            ],
+            "covered_clauses": [
+              "The lowercase df parser is limited to the selected 29.97 file-position branch at 48 kHz.",
+              "Nominal 30 labels and 1001/1000 scale are used; two labels are omitted per minute except every tenth minute.",
+              "The end frame position is direct; the numeric-token +1 applies only to numeric tokens.",
+              "SampleRange validation rounds; the active writer truncates positive products toward zero.",
+              "The exact run-79 native range matches; native invalid-label behavior and other modes are not established."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_NATIVE_DROP_FRAME_IMPLEMENTATION_SCOPE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2/WASH-REVIEW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/STATIC-PREDICTION.json"
+            ],
+            "supplement_manifest_sha256": "6335614fb3e70460d164b33a23eb0924c6b16b4973dcc5a5c18cb7c06bac9be1",
+            "static_contract_manifest_sha256": "229be8034aecb8b2fc64c9e5ed2623dcae01349cf428a756c3445d8d087f5446",
+            "validation_boundary": "Wash V2 authorizes only the exact lowercase-df, 29.97, file-position branch and its static parser contract; no other modes are implied."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_RUN79_VECTOR_PLUS_LOCAL_STATIC_RULE_TESTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2/OBSERVED-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-DROP-FRAME-STATIC-ONLY-WASHED-V1/STATIC-PREDICTION.json",
+              "crates/jocforge-domain/src/timeline/source_time_range.rs"
+            ],
+            "case_pointers": [
+              "Run 79: 00:01:00:02df through 00:01:00:12df maps to [2,882,880, 2,898,896), 16,016 samples.",
+              "Local test matches the native-confirmed range and direct drop-frame end boundary.",
+              "Local static-contract test confirms label correction at a tenth-minute boundary and rejects invalid dropped labels.",
+              "Model output/comparison and native invalid-label behavior remain NOT_RUN/NOT_OBSERVED."
+            ],
+            "expected_outputs_included": true,
+            "supplement_manifest_sha256": "6335614fb3e70460d164b33a23eb0924c6b16b4973dcc5a5c18cb7c06bac9be1"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SourceTimeRangeError::UnsupportedFrameRate",
+              "category": "selected drop-frame profile gate",
+              "trigger": "Lowercase df is supplied with a rate token other than the selected 29.97 branch.",
+              "programme_state_after": "No sample range is returned.",
+              "caller_action": "Reject the unsupported drop-frame mode before output planning."
+            },
+            {
+              "error_code": "SourceTimeRangeError::InvalidFrameToken",
+              "category": "selected drop-frame static grammar",
+              "trigger": "The token is malformed or violates the static dropped-label/nominal-frame constraints.",
+              "programme_state_after": "No sample range is returned.",
+              "caller_action": "Reject the token; native runtime invalid-label behavior was not observed."
+            }
+          ],
+          "not_run": [
+            "ValidatedEncodingPlan/output-plan integration and product encoding.",
+            "Semicolon/drop-frame punctuation, uppercase DF, other rates, and embedded-timecode df.",
+            "Native invalid-label rejection, model output, and model/native comparison.",
+            "Whole-chain readiness and product acceptance."
+          ],
+          "validation_boundary": "A pure selected range helper is locally verified against the exact native vector and static parser rule; product output remains unintegrated.",
+          "native_status": {
+            "status": "NATIVE_CONFIRMED_RUN79_VECTOR_LOCAL_RULE_IMPLEMENTED_OTHER_MODES_OPEN",
+            "implementation_scope": "APPROVED_FOR_EXACT_LOWERCASE_DF_29_97_FILE_POSITION_BRANCH_AND_STATIC_PARSER_RULE",
+            "native_range_matches_local": true,
+            "native_invalid_label_runtime_behavior": "NOT_OBSERVED",
+            "other_df_modes": "NOT_APPROVED_BY_V2",
+            "model_output": "NOT_RUN",
+            "model_comparison": "NOT_EVALUATED",
+            "output_plan_integration": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "correction_of": {
+            "previous_native_confirmation_package_id": "NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V1",
+            "previous_native_confirmation_manifest_sha256": "ae7921aad6211118b7927e993425a77b7cbfbe29d7d9919d6bc5fbf486634985",
+            "implementation_disposition_package_id": "NATIVE-DROP-FRAME-NATIVE-CONFIRMATION-WASHED-V2",
+            "implementation_disposition_manifest_sha256": "6335614fb3e70460d164b33a23eb0924c6b16b4973dcc5a5c18cb7c06bac9be1"
           }
         }
       ]

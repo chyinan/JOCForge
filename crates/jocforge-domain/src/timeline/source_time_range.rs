@@ -1,5 +1,5 @@
 // pattern: Functional Core
-//! Bounded numeric file-position ranges for the selected active JOC writer.
+//! Bounded file-position ranges for the selected active JOC writer.
 
 const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
 const RATE_SCALE_NUMERATOR: u128 = 1_001;
@@ -92,13 +92,13 @@ impl SelectedFilePositionSampleRange {
     }
 }
 
-/// Input to the bounded selected numeric file-position conversion.
+/// Input to the bounded selected file-position conversion.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SelectedFilePositionRangeInput<'a> {
     time_base: &'a str,
     frame_rate_override: &'a str,
     start_frame_token: &'a str,
-    inclusive_end_frame_token: &'a str,
+    end_frame_token: &'a str,
     sample_rate_hz: u32,
     source_samples: u64,
 }
@@ -108,7 +108,7 @@ impl<'a> SelectedFilePositionRangeInput<'a> {
         time_base: &'a str,
         frame_rate_override: &'a str,
         start_frame_token: &'a str,
-        inclusive_end_frame_token: &'a str,
+        end_frame_token: &'a str,
         sample_rate_hz: u32,
         source_samples: u64,
     ) -> Self {
@@ -116,19 +116,22 @@ impl<'a> SelectedFilePositionRangeInput<'a> {
             time_base,
             frame_rate_override,
             start_frame_token,
-            inclusive_end_frame_token,
+            end_frame_token,
             sample_rate_hz,
             source_samples,
         }
     }
 }
 
-/// Resolves numeric file-position frame tokens into distinct validation and writer clocks.
+/// Resolves selected numeric and approved 29.97 colon/drop-frame file-position tokens.
 ///
-/// The selected rule covers only 23.976, 29.97, and 59.94 filter-rate overrides at 48 kHz.
+/// Numeric tokens cover 23.976, 29.97, and 59.94; colon and lowercase drop-frame forms are
+/// limited to 29.97 at 48 kHz. Drop-frame conversion follows the approved static label-correction
+/// rule and the exact native-confirmed run-79 vector.
 /// `SampleRange` rounds positive sample products for bounds/nonempty validation; the active JOC
-/// writer truncates the same positive products toward zero. Embedded-timecode offset precedence
-/// is a separate rule and is not handled here.
+/// writer truncates the same positive products toward zero. Numeric end tokens advance by one;
+/// colon and drop-frame end positions are used directly.
+/// Embedded-timecode offset precedence is a separate rule and is not handled here.
 pub fn resolve_selected_file_position_sample_range(
     input: SelectedFilePositionRangeInput<'_>,
 ) -> Result<SelectedFilePositionSampleRange, SourceTimeRangeError> {
@@ -140,17 +143,30 @@ pub fn resolve_selected_file_position_sample_range(
     }
 
     let frame_rate = SelectedNumericFrameRate::parse(input.frame_rate_override)?;
-    let start_frame = parse_frame_token(input.start_frame_token)?;
-    let inclusive_end_frame = parse_frame_token(input.inclusive_end_frame_token)?;
-    if inclusive_end_frame == 0 {
-        return Err(SourceTimeRangeError::ZeroInclusiveEndUnsupported);
-    }
-    if inclusive_end_frame < start_frame {
-        return Err(SourceTimeRangeError::EndBeforeStart);
-    }
-    let end_frame_exclusive = inclusive_end_frame
-        .checked_add(1)
-        .ok_or(SourceTimeRangeError::ArithmeticOverflow)?;
+    let start_token = parse_frame_token(input.start_frame_token, frame_rate)?;
+    let end_token = parse_frame_token(input.end_frame_token, frame_rate)?;
+    let (start_frame, end_frame_exclusive) = match (start_token, end_token) {
+        (ParsedFrameToken::Numeric(start), ParsedFrameToken::Numeric(inclusive_end)) => {
+            if inclusive_end == 0 {
+                return Err(SourceTimeRangeError::ZeroInclusiveEndUnsupported);
+            }
+            if inclusive_end < start {
+                return Err(SourceTimeRangeError::EndBeforeStart);
+            }
+            let end_exclusive = inclusive_end
+                .checked_add(1)
+                .ok_or(SourceTimeRangeError::ArithmeticOverflow)?;
+            (start, end_exclusive)
+        }
+        (ParsedFrameToken::NonDropColon(start), ParsedFrameToken::NonDropColon(end))
+        | (ParsedFrameToken::DropFrame(start), ParsedFrameToken::DropFrame(end)) => {
+            if end < start {
+                return Err(SourceTimeRangeError::EndBeforeStart);
+            }
+            (start, end)
+        }
+        _ => return Err(SourceTimeRangeError::InvalidFrameToken),
+    };
 
     let start_product = sample_product(start_frame, frame_rate)?;
     let end_product = sample_product(end_frame_exclusive, frame_rate)?;
@@ -171,10 +187,115 @@ pub fn resolve_selected_file_position_sample_range(
     })
 }
 
-fn parse_frame_token(value: &str) -> Result<u64, SourceTimeRangeError> {
-    if value.is_empty() || !value.is_ascii() || !value.bytes().all(|byte| byte.is_ascii_digit()) {
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum ParsedFrameToken {
+    Numeric(u64),
+    NonDropColon(u64),
+    DropFrame(u64),
+}
+
+fn parse_frame_token(
+    value: &str,
+    frame_rate: SelectedNumericFrameRate,
+) -> Result<ParsedFrameToken, SourceTimeRangeError> {
+    if !value.is_empty() && value.is_ascii() && value.bytes().all(|byte| byte.is_ascii_digit()) {
+        return value
+            .parse::<u64>()
+            .map(ParsedFrameToken::Numeric)
+            .map_err(|_| SourceTimeRangeError::InvalidFrameToken);
+    }
+
+    if let Some(timecode) = value.strip_suffix("df") {
+        return parse_drop_frame_timecode(timecode, frame_rate).map(ParsedFrameToken::DropFrame);
+    }
+
+    parse_non_drop_colon_timecode(value, frame_rate).map(ParsedFrameToken::NonDropColon)
+}
+
+fn parse_non_drop_colon_timecode(
+    value: &str,
+    frame_rate: SelectedNumericFrameRate,
+) -> Result<u64, SourceTimeRangeError> {
+    if frame_rate != SelectedNumericFrameRate::Fps2997 {
+        return Err(SourceTimeRangeError::UnsupportedFrameRate);
+    }
+
+    let (hours, minutes, seconds, frames) = parse_timecode_components(value)?;
+    let nominal_frames_per_second = frame_rate.nominal_frames_per_second();
+    if minutes >= 60 || seconds >= 60 || frames >= nominal_frames_per_second {
         return Err(SourceTimeRangeError::InvalidFrameToken);
     }
+
+    let total_seconds = hours
+        .checked_mul(60)
+        .and_then(|value| value.checked_add(minutes))
+        .and_then(|value| value.checked_mul(60))
+        .and_then(|value| value.checked_add(seconds))
+        .ok_or(SourceTimeRangeError::ArithmeticOverflow)?;
+    total_seconds
+        .checked_mul(nominal_frames_per_second)
+        .and_then(|value| value.checked_add(frames))
+        .ok_or(SourceTimeRangeError::ArithmeticOverflow)
+}
+
+fn parse_drop_frame_timecode(
+    value: &str,
+    frame_rate: SelectedNumericFrameRate,
+) -> Result<u64, SourceTimeRangeError> {
+    if frame_rate != SelectedNumericFrameRate::Fps2997 {
+        return Err(SourceTimeRangeError::UnsupportedFrameRate);
+    }
+
+    let (hours, minutes, seconds, frames) = parse_timecode_components(value)?;
+    let nominal_frames_per_second = frame_rate.nominal_frames_per_second();
+    if minutes >= 60 || seconds >= 60 || frames >= nominal_frames_per_second {
+        return Err(SourceTimeRangeError::InvalidFrameToken);
+    }
+
+    let total_minutes = hours
+        .checked_mul(60)
+        .and_then(|value| value.checked_add(minutes))
+        .ok_or(SourceTimeRangeError::ArithmeticOverflow)?;
+    if seconds == 0 && total_minutes % 10 != 0 && frames < 2 {
+        return Err(SourceTimeRangeError::InvalidFrameToken);
+    }
+
+    let elapsed_seconds = total_minutes
+        .checked_mul(60)
+        .and_then(|value| value.checked_add(seconds))
+        .ok_or(SourceTimeRangeError::ArithmeticOverflow)?;
+    let nominal_frame_index = elapsed_seconds
+        .checked_mul(nominal_frames_per_second)
+        .and_then(|value| value.checked_add(frames))
+        .ok_or(SourceTimeRangeError::ArithmeticOverflow)?;
+    let dropped_labels = total_minutes
+        .checked_sub(total_minutes / 10)
+        .and_then(|value| value.checked_mul(2))
+        .ok_or(SourceTimeRangeError::ArithmeticOverflow)?;
+    nominal_frame_index
+        .checked_sub(dropped_labels)
+        .ok_or(SourceTimeRangeError::InvalidFrameToken)
+}
+
+fn parse_timecode_components(value: &str) -> Result<(u64, u64, u64, u64), SourceTimeRangeError> {
+    let fields = value.split(':').collect::<Vec<_>>();
+    if fields.len() != 4
+        || fields.iter().any(|field| {
+            field.len() != 2 || !field.is_ascii() || !field.bytes().all(|b| b.is_ascii_digit())
+        })
+    {
+        return Err(SourceTimeRangeError::InvalidFrameToken);
+    }
+
+    Ok((
+        parse_timecode_field(fields[0])?,
+        parse_timecode_field(fields[1])?,
+        parse_timecode_field(fields[2])?,
+        parse_timecode_field(fields[3])?,
+    ))
+}
+
+fn parse_timecode_field(value: &str) -> Result<u64, SourceTimeRangeError> {
     value
         .parse::<u64>()
         .map_err(|_| SourceTimeRangeError::InvalidFrameToken)
@@ -256,6 +377,124 @@ mod tests {
         assert_eq!(rate_23976.writer_start().value(), 4_324_320);
         assert_eq!(rate_23976.writer_end_exclusive().value(), 4_350_346);
         assert_eq!(rate_23976.validation_end_exclusive().value(), 4_350_346);
+    }
+
+    #[test]
+    fn selected_non_drop_colon_timecode_2997_uses_end_frame_directly() {
+        let range = resolve("29.97", "00:01:30:00", "00:01:30:10");
+        assert_eq!(range.validation_start().value(), 4_324_320);
+        assert_eq!(range.validation_end_exclusive().value(), 4_340_336);
+        assert_eq!(range.writer_start().value(), 4_324_320);
+        assert_eq!(range.writer_end_exclusive().value(), 4_340_336);
+    }
+
+    #[test]
+    fn colon_timecode_parser_rejects_unapproved_rates_and_syntax() {
+        let input = |rate, start, end| {
+            SelectedFilePositionRangeInput::new(
+                "file_position",
+                rate,
+                start,
+                end,
+                48_000,
+                SOURCE_SAMPLES,
+            )
+        };
+        assert_eq!(
+            resolve_selected_file_position_sample_range(input(
+                "23.976",
+                "00:01:30:00",
+                "00:01:30:10",
+            )),
+            Err(SourceTimeRangeError::UnsupportedFrameRate),
+        );
+        assert_eq!(
+            resolve_selected_file_position_sample_range(input(
+                "29.97",
+                "00;01;30;00",
+                "00;01;30;10",
+            )),
+            Err(SourceTimeRangeError::InvalidFrameToken),
+        );
+        assert_eq!(
+            resolve_selected_file_position_sample_range(input("29.97", "2160", "00:01:30:10",)),
+            Err(SourceTimeRangeError::InvalidFrameToken),
+        );
+        assert_eq!(
+            resolve_selected_file_position_sample_range(input(
+                "29.97",
+                "00:01:30:30",
+                "00:01:31:00",
+            )),
+            Err(SourceTimeRangeError::InvalidFrameToken),
+        );
+    }
+
+    #[test]
+    fn selected_lowercase_drop_frame_2997_matches_native_run79_range() {
+        let range = resolve("29.97", "00:01:00:02df", "00:01:00:12df");
+        assert_eq!(range.validation_start().value(), 2_882_880);
+        assert_eq!(range.validation_end_exclusive().value(), 2_898_896);
+        assert_eq!(range.writer_start().value(), 2_882_880);
+        assert_eq!(range.writer_end_exclusive().value(), 2_898_896);
+    }
+
+    #[test]
+    fn lowercase_drop_frame_parser_enforces_its_static_29_97_contract() {
+        assert_eq!(
+            super::parse_drop_frame_timecode(
+                "00:10:00:00",
+                super::SelectedNumericFrameRate::Fps2997
+            ),
+            Ok(17_982),
+        );
+        assert_eq!(
+            super::parse_drop_frame_timecode(
+                "00:10:00:01",
+                super::SelectedNumericFrameRate::Fps2997
+            ),
+            Ok(17_983),
+        );
+
+        let input = |time_base, rate, start, end| {
+            SelectedFilePositionRangeInput::new(time_base, rate, start, end, 48_000, SOURCE_SAMPLES)
+        };
+        assert_eq!(
+            resolve_selected_file_position_sample_range(input(
+                "file_position",
+                "23.976",
+                "00:01:00:02df",
+                "00:01:00:12df",
+            )),
+            Err(SourceTimeRangeError::UnsupportedFrameRate),
+        );
+        assert_eq!(
+            resolve_selected_file_position_sample_range(input(
+                "file_position",
+                "29.97",
+                "00:01:00:02DF",
+                "00:01:00:12DF",
+            )),
+            Err(SourceTimeRangeError::InvalidFrameToken),
+        );
+        assert_eq!(
+            resolve_selected_file_position_sample_range(input(
+                "file_position",
+                "29.97",
+                "00:01:00:00df",
+                "00:01:00:02df",
+            )),
+            Err(SourceTimeRangeError::InvalidFrameToken),
+        );
+        assert_eq!(
+            resolve_selected_file_position_sample_range(input(
+                "embedded_timecode",
+                "29.97",
+                "00:01:00:02df",
+                "00:01:00:12df",
+            )),
+            Err(SourceTimeRangeError::UnsupportedTimeBase),
+        );
     }
 
     #[test]

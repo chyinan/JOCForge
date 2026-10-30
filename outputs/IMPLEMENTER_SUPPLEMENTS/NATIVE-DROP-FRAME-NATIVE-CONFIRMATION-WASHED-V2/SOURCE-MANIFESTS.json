@@ -1,0 +1,25 @@
+{
+  "schema": "native-drop-frame-native-confirmed-washed-sources.v2",
+  "reverse_package": {
+    "package_id": "native-time-range-conversion-wash-v12",
+    "manifest_sha256": "43ef9fa083a1a7f10fbb4f5ec467456aa25ebe33e7569ff2082c4b2f1c2d10f5",
+    "payloads": {
+      "NATIVE-DROP-FRAME-TIMECODE-REFERENCE-VECTOR.json": "486ab5505c9eb5ccd01caf6452132a412d7f3b6b2182887d0a9777b955c8e9cb",
+      "WINDBG-LAUNCH-RECEIPT.json": "33d83d6cf8893f4c9cf7befc1d7dab33492044ce8108adc45410ee052918f8a3",
+      "README.md": "98163859c1906a19b3a59421762c2ede5ef33259a1b785cbe609af29c69f38e2",
+      "verify_drop_frame_native_vector.py": "1faacd83229bd15ea0dc0c2a0021d2c4ce7ab07e0ed74eef52de8a015954ee0d"
+    }
+  },
+  "static_contract_parent": {
+    "package_id": "native-time-range-conversion-wash-v11",
+    "manifest_sha256": "c80784dc4e0006bcf1a247fb8fe85645ee7840fdbdc29200f68a7e622812c4cd",
+    "scope": "static parser/validation rules and prediction; native capture was not run in that package"
+  },
+  "opaque_native_identities": {
+    "run79_configuration": "aec8a8ebea01a35823d35ad1608b9573773bf35b44831ff28046af42f85677ec",
+    "run79_native_log": "a550573aca3bfe93720a0319a0b7110af1338ece494d8de2403332e41b0eb85d",
+    "run79_reference_ec3": "bbc90d7fe57bacf180ca9d24679b68e001ce7477a117026a8dec3244bea0193f"
+  },
+  "raw_source_or_audio_copied": false,
+  "raw_logs_or_binary_copied": false
+}
