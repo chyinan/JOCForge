@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "DEE-REFERENCE-OUTPUT-SINK-WASHED-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_NATIVE_REFERENCE_FILE_SINK_EVIDENCE",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "7/7 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "range_count": 4247,
+    "range_coverage_bytes": 17395712,
+    "range_hash_and_pointer_checks": "4247/4247 PASS",
+    "file_handle_open_write_close_checks": "PASS",
+    "raw_native_output_rehashed_by_wash": "NOT_RUN; artifact omitted"
+  },
+  "closed": [
+    "for this native reference run, encoded byte ranges reach the final EC3 file sink with complete contiguous coverage and matching range hashes"
+  ],
+  "still_not_closed": [
+    "JOCForge implementation output to final-file identity",
+    "general host stream_object to exact DLL returned-buffer pointer identity beyond static graph plus same-thread observation",
+    "other DEE host routes or file-writer modes",
+    "model/native audio comparison and subjective acceptance"
+  ],
+  "whole_chain_ready": false
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "dee-reference-output-sink-washed-sources.v1",
+  "research_package": {
+    "package_id": "sourceweight-host-output-sink-lineage-wash-v2",
+    "manifest_sha256": "6135d1b68214bce1b667e772c287a1ffb2391c500afaf5a812c2a81231742e2a",
+    "payloads": {
+      "CAPTURE-SUMMARY.json": "6d1480a63d0a973a9087923fd312a47ee9d4013caefb46bbd8a7333f3b05300e",
+      "INPUT-ONLY.json": "f20679fdf1f1881f7f727c7ffdab408fdbfa0bb4a7d189d7b8de173ede491570",
+      "RANGE-LINEAGE.json": "f16b06d4d6ab4222d1f7fd31a2256ca47f60181d7eef9bc89c01244d0227f0fb",
+      "REPORT.md": "604fab2dd57e0b2f2e0f1be357ea2a9744e06396cd2866151919bd284da20ff7",
+      "SOURCES.json": "7fab4572e0be926a976d21e2fe6a7b6a955de6de4cc5ebd94ddc5bbc2521ca87",
+      "STATIC-CALLPATH.json": "e1d99983c59064951d2edb6b41cb9ffdfdeefd0c9e7d3cf8e556260949a2873d",
+      "verify_output_sink_lineage.py": "a0c254be9967b7b212a89d4429f7afe57d5113ab91228347cc6b48ed23ca8c94"
+    },
+    "source_artifacts_copied": false
+  },
+  "prior_washed_packages": [
+    {
+      "package_id": "F03U-HOST-OUTPUT-ADAPTER-BOUNDARY-WASHED-V1",
+      "manifest_sha256": "399b55988b48431f5fba07aad316050cce4c875cca80b2a2e06554823d51a5db",
+      "scope": "static adapter boundary only; final EC3 sink not bound"
+    },
+    {
+      "package_id": "F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1",
+      "manifest_sha256": "c72d8c244cab387751f0a942af7659dbf3f87b8b5ee6691d2a65da31c5eaf198",
+      "scope": "target DLL local-ordinal path to host-facing byte buffer"
+    }
+  ],
+  "opaque_source_identities": {
+    "DEE_host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "target_DDP_Atmos_DLL_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd3ce1cce8b7e95d2",
+    "input_fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "native_output_sha256_recorded_not_copied": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448"
+  },
+  "native_output_rehash_by_wash": "NOT_RUN; artifact omitted"
+}

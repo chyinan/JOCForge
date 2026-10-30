@@ -1,0 +1,34 @@
+{
+  "schema": "dee-reference-output-sink-washed-summary.v1",
+  "source_package_id": "sourceweight-host-output-sink-lineage-wash-v2",
+  "source_manifest_sha256": "6135d1b68214bce1b667e772c287a1ffb2391c500afaf5a812c2a81231742e2a",
+  "run_id": "host_output_sink_capture_v3",
+  "process_exit_code": 0,
+  "observer_errors": 0,
+  "encoder_callbacks": 4252,
+  "nonempty_ranges": 4247,
+  "empty_ranges": 5,
+  "range_bytes": 4096,
+  "output_bytes": 17395712,
+  "file_coverage": {"start": 0, "end_exclusive": 17395712, "gaps": 0},
+  "range_lineage_matches": {
+    "source_to_copy": 4247,
+    "copy_to_filewriter": 4247,
+    "filewriter_to_writefile": 4247,
+    "writefile_to_final_file": 4247
+  },
+  "file_handle_lifecycle": {"opens": 1, "successful_closes": 1},
+  "output_sha256_recorded": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+  "file_parse_observation": {
+    "format": "E-AC-3 with JOC",
+    "bit_rate_bps": 1024000,
+    "bit_rate_mode": "CBR",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "track_duration_seconds": 135.904,
+    "tool": "MediaInfo CLI 26.05"
+  },
+  "model_output": "NOT_RUN",
+  "model_comparison": "NOT_EVALUATED",
+  "jocforge_output": "NOT_RUN"
+}

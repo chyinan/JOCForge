@@ -424,3 +424,4 @@
 | F15/washed-drop-frame-native-confirmed-single-vector | F15 | `timeline` |
 | F15/native-drop-frame-exact-branch-implementation | F15 | `timeline` |
 | F15/private-plan-admission-and-destination-capability | F15 | `output` |
+| F15/native-reference-output-file-sink | F15 | `output` |

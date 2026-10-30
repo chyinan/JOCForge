@@ -8796,8 +8796,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1685938,
-              "sha256": "854cc379fc5df46a6ebdfdf46ef36738f0aa1ee9e7b1411342a3fba8e3976e25"
+              "bytes": 1695535,
+              "sha256": "8a5d169756ad6b3c151fb1a20afdd1db9522dbcbdb485216c219e9e5760e25ef"
             }
           ],
           "test_modules": [
@@ -12309,8 +12309,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1685938,
-              "sha256": "854cc379fc5df46a6ebdfdf46ef36738f0aa1ee9e7b1411342a3fba8e3976e25"
+              "bytes": 1695535,
+              "sha256": "8a5d169756ad6b3c151fb1a20afdd1db9522dbcbdb485216c219e9e5760e25ef"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -29316,8 +29316,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1685938,
-              "sha256": "854cc379fc5df46a6ebdfdf46ef36738f0aa1ee9e7b1411342a3fba8e3976e25"
+              "bytes": 1695535,
+              "sha256": "8a5d169756ad6b3c151fb1a20afdd1db9522dbcbdb485216c219e9e5760e25ef"
             }
           ],
           "test_inventory": [
@@ -30084,6 +30084,85 @@
             "output_owner_construction": "NOT_RUN",
             "filesystem_io": "NOT_RUN",
             "production_allowed": false,
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "native-reference-output-file-sink",
+          "mapping_status": "WASHED_NATIVE_REFERENCE_COMPLETE_RANGE_TO_FILE_SINK__JOCFORGE_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_DEE_REFERENCE_RUN__JOCFORGE_OUTPUT_NOT_RUN",
+          "scope": "A selected DEE reference run completed 4,252 encoder callbacks: 4,247 nonempty 4,096-byte ranges and five empty ranges. The 4,247 nonempty ranges are joined through the native copy, FileWriter, WriteFile, and final file offset/hash, covering [0, 17,395,712) without gaps; the output handle opened and closed successfully. MediaInfo parsed the recorded artifact as E-AC-3 with JOC, 1,024 kbps CBR, 48 kHz, six channels and 135.904 seconds. This is DEE reference evidence only: raw artifact rehash by Wash was not run, JOCForge output and model comparison were not run, and the host stream to exact DLL returned-buffer identity is not a full typed runtime pointer join.",
+          "owner": "output",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "EncoderCallbackOrdinal",
+              "OutputRangeByteOffset",
+              "FinalFileOffset",
+              "OutputArtifactIdentity"
+            ],
+            "covered_clauses": [
+              "The selected run completed 4,252 encoder callbacks: 4,247 nonempty 4,096-byte ranges and five empty ranges.",
+              "Every nonempty range was joined through native copy, FileWriter, WriteFile and final file offset/hash; 4,247 ranges cover [0, 17,395,712) without gaps.",
+              "One output handle was opened and closed successfully.",
+              "The host stream to exact DLL returned-buffer identity remains static graph plus same-thread observation, not a full typed runtime pointer join."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_DEE_REFERENCE_OUTPUT_SINK_EVIDENCE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/CAPTURE-SUMMARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/OUTPUT-IDENTITY-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "935a406459e5438a6ff1960476eabee06c403199ca3f79a032c47cbfe1e91d55",
+            "validation_boundary": "Selected DEE reference run final-file sink only; no JOCForge output, raw artifact rehash by Wash, model comparison, or subjective audio acceptance."
+          },
+          "vectors": {
+            "kind": "WASHED_DEE_REFERENCE_OUTPUT_RANGE_AND_FILE_SINK_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/CAPTURE-SUMMARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-REFERENCE-OUTPUT-SINK-WASHED-V1/OUTPUT-IDENTITY-BOUNDARY.json"
+            ],
+            "case_pointers": [
+              "4,247 ranges of 4,096 bytes cover [0, 17,395,712) with no gaps and match through final file offsets/hashes.",
+              "Five of 4,252 callbacks produced empty ranges; one output handle opened and closed successfully.",
+              "Recorded final artifact hash: 34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448; raw artifact is omitted and was not rehashed by Wash.",
+              "JOCForge output is NOT_RUN and model comparison is NOT_EVALUATED."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "935a406459e5438a6ff1960476eabee06c403199ca3f79a032c47cbfe1e91d55"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Raw DEE reference artifact rehash by Wash; the artifact is omitted from the package.",
+            "JOCForge encoded bytes reaching its final file sink.",
+            "Model/native output comparison and subjective audio acceptance.",
+            "Full typed runtime pointer identity from host stream_object to the exact DLL returned buffer.",
+            "Other host routes or file-writer modes."
+          ],
+          "validation_boundary": "Native reference sink for the selected run; not JOCForge product output or whole-chain readiness.",
+          "native_status": {
+            "selected_run_completed": true,
+            "range_lineage_matches": "4247/4247",
+            "contiguous_file_coverage_bytes": 17395712,
+            "file_handle_lifecycle": "OPEN_AND_SUCCESSFUL_CLOSE",
+            "raw_artifact_rehashed_by_wash": "NOT_RUN; artifact omitted",
+            "jocforge_output": "NOT_RUN",
+            "model_comparison": "NOT_EVALUATED",
+            "host_stream_to_dll_buffer_identity": "NOT_A_FULL_TYPED_RUNTIME_POINTER_JOIN",
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"

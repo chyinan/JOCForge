@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-REFERENCE-OUTPUT-SINK-WASHED-V1",
+  "status": "NATIVE_DEE_FILE_SINK_BOUND_FOR_RUN; JOCFORGE_OUTPUT_UNRUN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CAPTURE-SUMMARY.json",
+      "bytes": 1196,
+      "sha256": "990ba0887ed13e8e630020e0d144f8d25ccaaee052262a153eb8db9ae0ac4d06"
+    },
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1726,
+      "sha256": "fcaf7ae4c8d6e7d920e3168a7d54aeb503204f525b05bad2188f3dd2f2c26a67"
+    },
+    {
+      "name": "OUTPUT-IDENTITY-BOUNDARY.json",
+      "bytes": 1091,
+      "sha256": "a6822f1b9d9a5ec5baf714bed2b0b200635970356389d36fb9a5482101c11009"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 2010,
+      "sha256": "9870ee8ed8ba35d20631b99b9562fb0231a84a441b668ac81ba1a4a8bd9d4e15"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 1117,
+      "sha256": "c4470fc6c09825be47f3b00801fb4701e01bc235a09a64784ef55f12c4925e11"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "dee-reference-output-identity-boundary.v1",
+  "static_host_adapter": {
+    "output_type": "EC-3",
+    "stream_object": "opaque descriptor/payload at adapter boundary",
+    "typed_global_candidate_id_read_or_join": "NOT_OBSERVED_IN_TRACED_ADAPTER"
+  },
+  "dynamic_host_to_dll": {
+    "same_thread_output_wrapper_and_encoder": true,
+    "static_host_graph_edge": true,
+    "full_deep_stack_unwind": "INCOMPLETE"
+  },
+  "dynamic_dll_to_file": {
+    "nonempty_range_count": 4247,
+    "range_size_bytes": 4096,
+    "same_pointer_and_length_through_filewriter_writefile": true,
+    "same_range_hash_through_final_file": true,
+    "contiguous_file_offset_coverage": true,
+    "successful_file_handle_close": true
+  },
+  "native_reference_artifact_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+  "raw_artifact_in_wash_package": false,
+  "host_stream_to_exact_dll_returned_buffer_identity": "STATIC_GRAPH_PLUS_SAME_THREAD_OBSERVATION; NOT_A_FULL_TYPED_RUNTIME_POINTER_JOIN",
+  "jocforge_to_final_file_identity": "NOT_RUN",
+  "whole_chain_ready": false
+}
