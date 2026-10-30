@@ -1,0 +1,17 @@
+{
+  "package_id": "WINDOWS-RENAME-ACCESS-OBSERVATION-V1",
+  "scope": "local NTFS synthetic observation; access denied not reproduced",
+  "source_manifest_sha256": "6861d2448c80587a71d73b1b7f58cac82cf18d663b9f3b440ebf34d06e2d214f",
+  "files": [
+    {
+      "file": "RECIPE.md",
+      "bytes": 1611,
+      "sha256": "b5c2c7dfba8af87b2e5cf1b47eab020931547078d96a52cef640f2565747ca15"
+    },
+    {
+      "file": "RESULTS.json",
+      "bytes": 15409,
+      "sha256": "0c62971d5eb94cc8b4e697516eb45bbcd97f20c5776387b4ebb5ea57f27e2110"
+    }
+  ]
+}

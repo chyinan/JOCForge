@@ -22,7 +22,7 @@ fn output_provider() -> OutputProvider {
 }
 
 #[test]
-fn private_f15_projection_matches_both_washed_canonical_provider_hashes() {
+fn selected_output_projection_matches_both_approved_carriage_hashes() {
     let deployed_profile = resolve_selected_profile(&EncodingProfile::selected())
         .expect("selected default carriage resolves");
     let etsi_profile = resolve_selected_profile(&EncodingProfile::selected_with_carriage(
@@ -30,10 +30,18 @@ fn private_f15_projection_matches_both_washed_canonical_provider_hashes() {
     ))
     .expect("selected ETSI carriage resolves");
 
-    let deployed = super::project_selected_f15_output_provider(deployed_profile)
+    let deployed_projection =
+        super::SelectedOutputProviderProjection::project_selected_f15_output_provider(
+            deployed_profile,
+        )
         .expect("deployed compatibility provider projection");
-    let etsi = super::project_selected_f15_output_provider(etsi_profile)
-        .expect("ETSI EMDF provider projection");
+    let etsi_projection =
+        super::SelectedOutputProviderProjection::project_selected_f15_output_provider(etsi_profile)
+            .expect("ETSI EMDF provider projection");
+    assert_eq!(deployed_projection.profile(), deployed_profile);
+    assert_eq!(etsi_projection.profile(), etsi_profile);
+    let deployed = deployed_projection.output_provider();
+    let etsi = etsi_projection.output_provider();
 
     assert_eq!(
         deployed.provider_sha256,

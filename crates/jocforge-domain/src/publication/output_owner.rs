@@ -879,9 +879,40 @@ impl OutputAppendProposal {
         Ok(sha256(&bytes))
     }
 
-    /// Constructs the typed receipt only after the IO shell completed all writes,
-    /// readback checks and file fsync. This does not perform filesystem operations.
-    pub fn record_durable_io_success(
+    /// Constructs the typed receipt after the trusted IO shell reports successful durability.
+    /// This does not perform filesystem operations.
+    ///
+    /// # Safety
+    ///
+    /// The caller must have consumed this exact proposal through the trusted IO shell and
+    /// completed its full append protocol: write exactly `FRAME_BYTES` at this proposal's
+    /// expected offset using the configured attempt and staging file; verify the resulting
+    /// length; read back bytes identical to `self.frame_bytes` and verify their SHA-256; verify
+    /// CRC residual zero; flush the file; and successfully call the platform file durability
+    /// operation. `write_calls`, `readback_sha256`, and `crc_residual` must be the observations
+    /// from that operation, not caller-asserted values. Calling this without those completed IO
+    /// facts would create false durable evidence and violate the publication contract.
+    #[allow(unsafe_code)]
+    pub unsafe fn record_durable_io_success(
+        &self,
+        write_calls: Vec<u64>,
+        readback_sha256: [u8; 32],
+        crc_residual: u16,
+    ) -> Result<OutputDurableAppendReceipt, OutputOwnerError> {
+        self.build_durable_append_receipt(write_calls, readback_sha256, crc_residual)
+    }
+
+    #[cfg(test)]
+    pub(crate) fn synthetic_durable_append_receipt(
+        &self,
+        write_calls: Vec<u64>,
+        readback_sha256: [u8; 32],
+        crc_residual: u16,
+    ) -> Result<OutputDurableAppendReceipt, OutputOwnerError> {
+        self.build_durable_append_receipt(write_calls, readback_sha256, crc_residual)
+    }
+
+    fn build_durable_append_receipt(
         &self,
         write_calls: Vec<u64>,
         readback_sha256: [u8; 32],
@@ -978,6 +1009,10 @@ impl OutputDurableAppendReceipt {
 
     pub const fn au_index(&self) -> PublishedAuIndex {
         self.au_index
+    }
+
+    pub fn attempt_id(&self) -> &str {
+        &self.attempt_id
     }
 
     pub const fn offset(&self) -> u64 {

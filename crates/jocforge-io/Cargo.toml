@@ -10,6 +10,9 @@ jocforge-domain = { path = "../jocforge-domain" }
 sha2 = { version = "=0.10.9", default-features = false }
 serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }
 
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "=0.61.2", default-features = false, features = ["Win32_Foundation", "Win32_Security", "Win32_Storage_FileSystem"] }
+
 [dev-dependencies]
 jocforge-application = { path = "../jocforge-application" }
 

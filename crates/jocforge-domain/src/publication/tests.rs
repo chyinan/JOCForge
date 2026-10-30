@@ -155,8 +155,12 @@ fn source_proposals_match_suppression_writer_and_durable_ledger_vectors() {
         assert_eq!(proposal.as_json(), call["prepared"]["proposal"]);
 
         let durable = proposal
-            .record_durable_io_success(vec![u64::try_from(frame.len()).unwrap()], digest(&frame), 0)
-            .expect("typed durable receipt after exact synthetic I/O");
+            .synthetic_durable_append_receipt(
+                vec![u64::try_from(frame.len()).unwrap()],
+                digest(&frame),
+                0,
+            )
+            .expect("test-only durable receipt after exact synthetic I/O");
         let after = proposal.complete(durable).expect("proposal/receipt join");
         let commit_receipt = after.receipt().as_json();
         assert_eq!(commit_receipt["schema"], "output-owner-commit-receipt.v1");

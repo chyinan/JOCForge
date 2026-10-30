@@ -11,6 +11,9 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
+#[cfg(windows)]
+use std::process::Command;
+
 const SYNTHETIC_PROVIDER: &[u8] = include_bytes!(
     "../../../jocforge-domain/tests/fixtures/output_owner/synthetic-output-provider.json"
 );
@@ -23,8 +26,16 @@ impl ScratchDirectory {
             .duration_since(UNIX_EPOCH)
             .map_err(io::Error::other)?
             .as_nanos();
-        let path =
-            std::env::temp_dir().join(format!("jocforge-output-{}-{nonce}", std::process::id()));
+        #[cfg(windows)]
+        // Keep Win32 rename tests on the workspace volume; the process temp
+        // directory is sandbox-backed and does not exercise the host NTFS path.
+        let base_directory = std::env::current_exe()?
+            .parent()
+            .map(Path::to_path_buf)
+            .ok_or_else(|| io::Error::other("test executable has no parent directory"))?;
+        #[cfg(not(windows))]
+        let base_directory = std::env::temp_dir();
+        let path = base_directory.join(format!("jocforge-output-{}-{nonce}", std::process::id()));
         fs::create_dir(&path)?;
         Ok(Self(path))
     }
@@ -359,6 +370,68 @@ fn finalize_preflight_never_overwrites_an_existing_product() {
             .join(owner.configuration().intent_name())
             .exists()
     );
+}
+
+#[cfg(windows)]
+const RENAME_COLLISION_DESTINATION_ENV: &str = "JOCFORGE_RENAME_COLLISION_DESTINATION";
+
+#[cfg(windows)]
+#[test]
+fn windows_create_collision_destination_child() -> io::Result<()> {
+    let Some(destination) = std::env::var_os(RENAME_COLLISION_DESTINATION_ENV) else {
+        return Ok(());
+    };
+    let mut file = std::fs::OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(destination)?;
+    file.write_all(b"created by competing process")?;
+    file.sync_all()
+}
+
+#[cfg(windows)]
+#[test]
+fn windows_finalize_uses_atomic_no_replace_when_destination_appears_after_preflight()
+-> io::Result<()> {
+    let scratch = ScratchDirectory::new()?;
+    let (owner, mut staging) = terminal_output(&scratch);
+    let proposal = owner.prepare_finalize().unwrap();
+    let destination = staging.product_path();
+    let staging_path = staging.staging_path();
+    let expected_staging = vec![0_u8; 12_288];
+
+    let error = staging
+        .finalize_with_parent_sync_and_before_rename(
+            &proposal,
+            || {
+                let status = Command::new(std::env::current_exe()?)
+                    .arg("--exact")
+                    .arg("atomic_output::tests::windows_create_collision_destination_child")
+                    .arg("--nocapture")
+                    .env(RENAME_COLLISION_DESTINATION_ENV, &destination)
+                    .status()?;
+                if status.success() {
+                    Ok(())
+                } else {
+                    Err(io::Error::other(
+                        "competing process could not create the final destination",
+                    ))
+                }
+            },
+            |_| Ok(()),
+        )
+        .unwrap_err();
+
+    assert_eq!(error.phase(), OutputIoPhase::FinalizeRename);
+    assert_eq!(error.failure(), OutputIoFailure::FinalPathExistsAtRename);
+    assert_eq!(error.io_kind(), Some(io::ErrorKind::AlreadyExists));
+    assert!(staging.is_abandoned());
+    assert_eq!(fs::read(&staging_path)?, expected_staging);
+    assert_eq!(
+        fs::read(&destination)?,
+        b"created by competing process".to_vec()
+    );
+    Ok(())
 }
 
 fn hex_lower(bytes: &[u8]) -> String {

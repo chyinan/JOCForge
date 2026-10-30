@@ -5,6 +5,10 @@ edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
 
+[features]
+default = []
+test-support = ["jocforge-application/test-support"]
+
 [dependencies]
 jocforge-application = { path = "../jocforge-application" }
 jocforge-io = { path = "../jocforge-io" }

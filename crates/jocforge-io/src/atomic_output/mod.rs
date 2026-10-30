@@ -4,6 +4,9 @@
 #[cfg(test)]
 mod tests;
 
+#[cfg(windows)]
+mod windows_rename;
+
 use jocforge_domain::{
     integrity::crc16::eac3_crc16,
     publication::{
@@ -267,6 +270,19 @@ impl AtomicOutputStaging {
     where
         F: FnOnce(&Path) -> io::Result<()>,
     {
+        self.finalize_with_parent_sync_and_before_rename(proposal, || Ok(()), parent_sync)
+    }
+
+    fn finalize_with_parent_sync_and_before_rename<F, B>(
+        &mut self,
+        proposal: &OutputFinalizeProposal,
+        before_rename: B,
+        parent_sync: F,
+    ) -> Result<OutputFinalExposureReceipt, OutputIoError>
+    where
+        F: FnOnce(&Path) -> io::Result<()>,
+        B: FnOnce() -> io::Result<()>,
+    {
         match self.state {
             SessionState::Abandoned => {
                 return Err(OutputIoError::new(
@@ -289,7 +305,7 @@ impl AtomicOutputStaging {
             SessionState::Open => {}
         }
 
-        let result = self.finalize_inner(proposal, parent_sync);
+        let result = self.finalize_inner(proposal, before_rename, parent_sync);
         match result {
             Ok(receipt) => {
                 self.state = SessionState::Finalized;
@@ -306,6 +322,7 @@ impl AtomicOutputStaging {
         }
     }
 
+    #[allow(unsafe_code)]
     fn append_inner(
         &mut self,
         proposal: &OutputAppendProposal,
@@ -395,8 +412,10 @@ impl AtomicOutputStaging {
         file.sync_all()
             .map_err(|error| OutputIoError::from_io(OutputIoPhase::AppendFileSync, &error))?;
 
-        proposal
-            .record_durable_io_success(write_calls, sha256(&readback), crc_residual)
+        // SAFETY: this exact proposal was written at its declared offset; write
+        // progress, final length, exact readback, frame hash, CRC residual,
+        // flush, and file sync were all checked on this same staging handle.
+        unsafe { proposal.record_durable_io_success(write_calls, sha256(&readback), crc_residual) }
             .map_err(|_| {
                 OutputIoError::new(
                     OutputIoPhase::AppendFileSync,
@@ -405,13 +424,15 @@ impl AtomicOutputStaging {
             })
     }
 
-    fn finalize_inner<F>(
+    fn finalize_inner<F, B>(
         &mut self,
         proposal: &OutputFinalizeProposal,
+        before_rename: B,
         parent_sync: F,
     ) -> Result<OutputFinalExposureReceipt, OutputIoError>
     where
         F: FnOnce(&Path) -> io::Result<()>,
+        B: FnOnce() -> io::Result<()>,
     {
         if proposal.attempt_id() != self.attempt_id
             || proposal.staging_name() != self.staging_name
@@ -438,10 +459,7 @@ impl AtomicOutputStaging {
         // Reopen the staging artifact and verify the exact terminal length and
         // complete product digest before any final-path namespace operation.
         drop(self.file.take());
-        let mut staging_file = OpenOptions::new()
-            .read(true)
-            .write(true)
-            .open(&staging_path)
+        let mut staging_file = open_staging_for_finalize(&staging_path)
             .map_err(|error| OutputIoError::from_io(OutputIoPhase::FinalizePreflight, &error))?;
         let staging_length = staging_file
             .metadata()
@@ -500,8 +518,9 @@ impl AtomicOutputStaging {
             .map_err(|error| OutputIoError::from_io(OutputIoPhase::FinalizeIntentSync, &error))?;
         drop(intent_file);
 
-        // This is a selected no-overwrite precondition. The local model makes
-        // no cross-process/filesystem atomicity claim for a concurrent creator.
+        // This is an advisory preflight. Windows also performs an atomic
+        // handle-based no-replace rename; other platforms keep the previous
+        // path-based behavior without a cross-process no-replace guarantee.
         if path_exists(&product_path)
             .map_err(|error| OutputIoError::from_io(OutputIoPhase::FinalizeRename, &error))?
         {
@@ -510,11 +529,37 @@ impl AtomicOutputStaging {
                 OutputIoFailure::FinalPathExistsAtRename,
             ));
         }
-        fs::rename(&staging_path, &product_path).map_err(|error| OutputIoError {
+        before_rename().map_err(|error| OutputIoError {
             phase: OutputIoPhase::FinalizeRename,
             failure: OutputIoFailure::Rename,
             io_kind: Some(error.kind()),
         })?;
+
+        #[cfg(windows)]
+        let rename_file = windows_rename::open_staging_file_for_rename(&staging_path)
+            .map_err(|error| OutputIoError::from_io(OutputIoPhase::FinalizeRename, &error))?;
+
+        #[cfg(windows)]
+        let _parent_directory_handle = product_path
+            .parent()
+            .ok_or(OutputIoError {
+                phase: OutputIoPhase::FinalizeRename,
+                failure: OutputIoFailure::Rename,
+                io_kind: Some(io::ErrorKind::InvalidInput),
+            })
+            .and_then(|parent| {
+                windows_rename::open_parent_directory(parent)
+                    .map_err(|error| OutputIoError::from_io(OutputIoPhase::FinalizeRename, &error))
+            })?;
+
+        #[cfg(windows)]
+        let rename_result = windows_rename::rename_file_no_replace(&rename_file, &product_path);
+        #[cfg(not(windows))]
+        let rename_result = fs::rename(&staging_path, &product_path);
+        rename_result.map_err(|error| final_rename_error(&error))?;
+
+        #[cfg(windows)]
+        drop(rename_file);
 
         parent_sync(&self.directory).map_err(|error| OutputIoError {
             phase: OutputIoPhase::FinalizeParentSync,
@@ -546,6 +591,39 @@ impl AtomicOutputStaging {
 
     pub fn is_exposure_uncertain(&self) -> bool {
         self.state == SessionState::ExposureUncertain
+    }
+}
+
+#[cfg(windows)]
+fn open_staging_for_finalize(path: &Path) -> io::Result<File> {
+    windows_rename::open_staging_file(path)
+}
+
+#[cfg(not(windows))]
+fn open_staging_for_finalize(path: &Path) -> io::Result<File> {
+    OpenOptions::new().read(true).write(true).open(path)
+}
+
+#[cfg(windows)]
+fn final_rename_error(error: &io::Error) -> OutputIoError {
+    let failure = if windows_rename::is_destination_exists(error) {
+        OutputIoFailure::FinalPathExistsAtRename
+    } else {
+        OutputIoFailure::Rename
+    };
+    OutputIoError {
+        phase: OutputIoPhase::FinalizeRename,
+        failure,
+        io_kind: Some(error.kind()),
+    }
+}
+
+#[cfg(not(windows))]
+fn final_rename_error(error: &io::Error) -> OutputIoError {
+    OutputIoError {
+        phase: OutputIoPhase::FinalizeRename,
+        failure: OutputIoFailure::Rename,
+        io_kind: Some(error.kind()),
     }
 }
 

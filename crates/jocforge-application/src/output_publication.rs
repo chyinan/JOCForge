@@ -2,11 +2,16 @@
 //! Joins the current metadata and complete-frame proposals into one output-owner proposal.
 
 #[cfg(any(test, feature = "test-support"))]
-use jocforge_domain::profile::{EmdfCarriageProfile, ResolvedEncodingProfile};
-#[cfg(any(test, feature = "test-support"))]
+use jocforge_domain::profile::EmdfCarriageProfile;
+use jocforge_domain::profile::ResolvedEncodingProfile;
 use jocforge_domain::publication::OutputProvider;
 use jocforge_domain::{
-    codec::selected_main_q_search::{SelectedMainQOutcome, SelectedMainQSearchResult},
+    codec::{
+        owner::AcceptedCodecFrame,
+        published_emdf_binding::emdf_frame_input_for_source,
+        selected_main_q_search::{SelectedMainQOutcome, SelectedMainQSearchResult},
+        source_frame_writer::SelectedSourceFrameCandidate,
+    },
     joc::emdf::metadata_owner::{MetadataEofProposal, MetadataSourceProposal},
     publication::OutputSourceIdentity,
     timeline::{
@@ -15,6 +20,7 @@ use jocforge_domain::{
     },
 };
 use sha2::{Digest, Sha256};
+use std::sync::Arc;
 
 pub use jocforge_domain::publication::OutputConfiguration;
 pub use jocforge_domain::transaction::{AttemptId, ProgrammeId};
@@ -24,41 +30,60 @@ pub use jocforge_domain::publication::{
     OutputSourceAfterProposal, OutputSourceProposal,
 };
 
+/// Exact output-policy provider projection for one resolved selected carriage.
+///
+/// This value is not a validated encoding plan or publication authority.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SelectedOutputProviderProjection {
+    profile: ResolvedEncodingProfile,
+    provider: OutputProvider,
+}
+
+impl SelectedOutputProviderProjection {
+    #[cfg(any(test, feature = "test-support"))]
+    fn project_selected_f15_output_provider(
+        profile: ResolvedEncodingProfile,
+    ) -> Result<Self, OutputRootBindingError> {
+        let canonical_utf8 = match profile.carriage() {
+            EmdfCarriageProfile::DeployedCompat => DEPLOYED_COMPAT_PROVIDER_CANONICAL_UTF8,
+            EmdfCarriageProfile::EtsiEmdf => ETSI_EMDF_PROVIDER_CANONICAL_UTF8,
+            EmdfCarriageProfile::Unsupported => {
+                return Err(OutputRootBindingError::UnsupportedProfile);
+            }
+        };
+        let provider_sha256 = Sha256::digest(canonical_utf8.as_bytes()).into();
+        Ok(Self {
+            profile,
+            provider: OutputProvider {
+                profile_id: "selected-keyless-output-policy.v1".to_owned(),
+                provider_sha256,
+                frame_bytes: 4_096,
+                suppressed_sources: 2,
+                staging_name_template: "attempt-{attempt_id}.ec3.partial".to_owned(),
+                intent_name_template: "attempt-{attempt_id}.finalize-intent.json".to_owned(),
+            },
+        })
+    }
+
+    pub const fn profile(&self) -> ResolvedEncodingProfile {
+        self.profile
+    }
+
+    pub const fn output_provider(&self) -> &OutputProvider {
+        &self.provider
+    }
+}
+
 #[cfg(any(test, feature = "test-support"))]
 const DEPLOYED_COMPAT_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"deployed_compat\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
 
 #[cfg(any(test, feature = "test-support"))]
 const ETSI_EMDF_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"etsi_emdf\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
 
-#[cfg(any(test, feature = "test-support"))]
 use super::PreparedJobInput;
 
 #[cfg(test)]
 mod tests;
-
-/// Private pure projection of the selected F15 publication policy.
-///
-/// This helper is test-only until a trusted `ValidatedEncodingPlan` exists.
-/// It does not create an output binding or grant CLI filesystem authority.
-#[cfg(any(test, feature = "test-support"))]
-fn project_selected_f15_output_provider(
-    profile: ResolvedEncodingProfile,
-) -> Option<OutputProvider> {
-    let canonical_utf8 = match profile.carriage() {
-        EmdfCarriageProfile::DeployedCompat => DEPLOYED_COMPAT_PROVIDER_CANONICAL_UTF8,
-        EmdfCarriageProfile::EtsiEmdf => ETSI_EMDF_PROVIDER_CANONICAL_UTF8,
-        EmdfCarriageProfile::Unsupported => return None,
-    };
-    let provider_sha256 = Sha256::digest(canonical_utf8.as_bytes()).into();
-    Some(OutputProvider {
-        profile_id: "selected-keyless-output-policy.v1".to_owned(),
-        provider_sha256,
-        frame_bytes: 4_096,
-        suppressed_sources: 2,
-        staging_name_template: "attempt-{attempt_id}.ec3.partial".to_owned(),
-        intent_name_template: "attempt-{attempt_id}.finalize-intent.json".to_owned(),
-    })
-}
 
 /// Constructors exposed only to unit/integration tests for isolated IO checks.
 ///
@@ -68,7 +93,7 @@ fn project_selected_f15_output_provider(
 pub mod test_support {
     use super::{
         OutputRootBindingError, OutputStagingOwnerId, ProgrammeOutputBinding,
-        project_selected_f15_output_provider,
+        SelectedOutputProviderProjection,
     };
     use crate::PreparedJobInput;
     use jocforge_domain::transaction::AttemptId;
@@ -79,9 +104,11 @@ pub mod test_support {
         attempt_id: AttemptId,
         staging_owner_id: OutputStagingOwnerId,
     ) -> Result<ProgrammeOutputBinding, OutputRootBindingError> {
-        let provider =
-            project_selected_f15_output_provider(input.configuration().selected_profile())
-                .ok_or(OutputRootBindingError::UnsupportedProfile)?;
+        let provider = SelectedOutputProviderProjection::project_selected_f15_output_provider(
+            input.configuration().selected_profile(),
+        )?
+        .output_provider()
+        .clone();
         ProgrammeOutputBinding::for_test_from_prepared_input(
             input,
             attempt_id,
@@ -454,6 +481,8 @@ pub enum OutputPublicationPreparationError {
     MetadataDispatchMismatch,
     MetadataAuMismatch,
     MetadataContainerDisposition,
+    PreparedInputMismatch,
+    CodecCandidateIntegrity,
     MetadataEofDisposition,
     OutputOwner(OutputOwnerError),
 }
@@ -481,6 +510,10 @@ impl std::fmt::Display for OutputPublicationPreparationError {
             Self::MetadataContainerDisposition => {
                 formatter.write_str("OUTPUT_METADATA_CONTAINER_DISPOSITION")
             }
+            Self::PreparedInputMismatch => formatter.write_str("OUTPUT_PREPARED_INPUT_MISMATCH"),
+            Self::CodecCandidateIntegrity => {
+                formatter.write_str("OUTPUT_CODEC_CANDIDATE_INTEGRITY")
+            }
             Self::MetadataEofDisposition => formatter.write_str("OUTPUT_METADATA_EOF_DISPOSITION"),
             Self::OutputOwner(error) => write!(formatter, "{}", error.code()),
         }
@@ -496,13 +529,84 @@ pub fn prepare_output_source(
     metadata: &MetadataSourceProposal,
     q_search: &SelectedMainQSearchResult,
 ) -> Result<ProgrammeOutputSourceProposal, OutputPublicationPreparationError> {
-    let lineage = metadata.bodies_lineage();
-    output_root.validate_lineage(lineage.programme_id(), lineage.attempt())?;
     let SelectedMainQOutcome::Best(candidate) = q_search.outcome() else {
         return Err(OutputPublicationPreparationError::NoBestFrame);
     };
-    let source_index = lineage.source_index();
-    if candidate.source_index() != source_index {
+    prepare_output_source_for_frame(
+        output_root,
+        metadata,
+        candidate.source_index(),
+        candidate.frame_bytes(),
+    )
+}
+
+/// Prepares an F15 source from the actual accepted F12 candidate and its retained same-source
+/// receipts. It never reconstructs a q-search result or reruns F12.
+pub fn prepare_output_source_from_candidate(
+    prepared: &PreparedJobInput,
+    output_root: &ProgrammeOutputBinding,
+    metadata: &MetadataSourceProposal,
+    candidate: &SelectedSourceFrameCandidate<'_>,
+) -> Result<ProgrammeOutputSourceProposal, OutputPublicationPreparationError> {
+    let numeric_plan = candidate.numeric_plan_receipt();
+    let source_identity = numeric_plan.identity();
+    let source_key = source_identity.source_stage_key();
+    let frame = candidate.frame();
+    let prepared_identity = prepared.domain_identity_capability();
+    let candidate_prepared_identity = source_key
+        .prepared_job_input_identity()
+        .ok_or(OutputPublicationPreparationError::PreparedInputMismatch)?;
+    if !Arc::ptr_eq(candidate_prepared_identity, &prepared_identity)
+        || source_identity != frame.source_generation_identity()
+        || candidate.bsi_input().source_identity() != source_identity
+        || source_identity.source_index() != frame.source_index()
+        || source_key.attempt_id() != metadata.bodies_lineage().attempt()
+        || source_key.source_index() != metadata.bodies_lineage().source_index()
+        || Some(source_key.transaction_id()) != metadata.consumer_transaction_id()
+        || prepared.programme_id() != output_root.programme_id()
+        || prepared.programme_id() != metadata.bodies_lineage().programme_id()
+        || prepared.configuration().source_samples()
+            != output_root.output_configuration().source_samples()
+    {
+        return Err(OutputPublicationPreparationError::PreparedInputMismatch);
+    }
+
+    let expected_emdf = emdf_frame_input_for_source(
+        metadata.parsed_container(),
+        numeric_plan.shared_analysis(),
+        prepared.programme_id(),
+        &prepared_identity,
+    )
+    .map_err(|_| OutputPublicationPreparationError::MetadataContainerDisposition)?;
+    if &expected_emdf != candidate.emdf_input() {
+        return Err(OutputPublicationPreparationError::MetadataContainerDisposition);
+    }
+
+    let accepted_frame = AcceptedCodecFrame::from_candidate(frame)
+        .map_err(|_| OutputPublicationPreparationError::CodecCandidateIntegrity)?;
+    if accepted_frame != candidate.accepted_codec_frame()
+        || !candidate.attempted_qs().contains(&frame.q())
+    {
+        return Err(OutputPublicationPreparationError::CodecCandidateIntegrity);
+    }
+
+    prepare_output_source_for_frame(
+        output_root,
+        metadata,
+        frame.source_index(),
+        frame.frame_bytes(),
+    )
+}
+
+fn prepare_output_source_for_frame(
+    output_root: &ProgrammeOutputBinding,
+    metadata: &MetadataSourceProposal,
+    source_index: CodecSourceIndex,
+    frame: &[u8],
+) -> Result<ProgrammeOutputSourceProposal, OutputPublicationPreparationError> {
+    let lineage = metadata.bodies_lineage();
+    output_root.validate_lineage(lineage.programme_id(), lineage.attempt())?;
+    if source_index != lineage.source_index() {
         return Err(OutputPublicationPreparationError::FrameSourceMismatch);
     }
     let expected_dispatch = source_index
@@ -531,7 +635,6 @@ pub fn prepare_output_source(
         return Err(OutputPublicationPreparationError::MetadataContainerDisposition);
     }
 
-    let frame = candidate.frame_bytes();
     let declared_frame_sha256: [u8; 32] = Sha256::digest(frame).into();
     let proposal = output_root
         .output_owner()
