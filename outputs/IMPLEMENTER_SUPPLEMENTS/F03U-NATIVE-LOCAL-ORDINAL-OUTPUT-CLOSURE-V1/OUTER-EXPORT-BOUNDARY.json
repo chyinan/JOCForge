@@ -1,0 +1,48 @@
+{
+  "schema": "washed.sourceweight-outer-export-boundary.v1",
+  "source_grade": {
+    "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_tool": "Ghidra 12.2 with Temurin JDK 25.0.5+8",
+    "private_decompilation_report_sha256": "df393bbfe209e7db5c2619065438644100ae39b962c366c2f1dc3b742bbb8c73",
+    "dynamic_outer_id_join": "NOT_EXECUTED",
+    "prior_natural_weight_observation_manifest_sha256": "58c27ac5c564d94c61bbd185ec4a5a3798c282fcb1dd411db687953456de1e47"
+  },
+  "selected_callback_chain": {
+    "callback_to_output_flow": "The callback's candidate-processing branch calls the candidate materializer, then the spatial-coding strategy dispatcher. Both callback branches converge on the same in-DLL metadata/bitstream output routine. The branch taken by run120 was not recorded.",
+    "candidate_input_boundary": "The materializer reads a count-indexed source-buffer pointer vector and copies feature data by local ordinal. The decompiled operation does not read a typed global candidate ID field.",
+    "post_weight_metadata_vector": {
+      "record_kind": "POINTERS_TO_PER_SOURCE_FLOAT_ARRAYS",
+      "consumer_format": "F32_ARRAY",
+      "consumer_action": "The type-specific serializer reads each F32 array by local ordinal and copies its values into the output metadata block.",
+      "candidate_global_id_field": "NOT_PRESENT_IN_THIS_TYPED_PAYLOAD"
+    },
+    "stream_writer": "The writer validates a common stream/object kind and dispatches type-specific serializers. Its per-source payload path uses float-array pointers and local ordinals; it does not join a candidate global ID to a source-weight column.",
+    "byte_sink": "The callback sink allocates an output byte range and copies the serialized bytes into the host-facing buffer.",
+    "complete_in_dll_consumer_boundary": "candidate input materialization -> local-ordinal selection/reassembly -> matrix-only scoring -> typed F32 metadata serialization -> output byte buffer",
+    "external_host_adm_graph_consumer": "OUTSIDE_TARGET_DLL_AND_NOT_TRACED"
+  },
+  "identity_conclusion": {
+    "native_sourceweight_needs_global_candidate_id_for_traced_operations": false,
+    "native_sourceweight_column_identity": "LOCAL_ORDINAL_AND_MATRIX_POSITION",
+    "outer_graph_id_to_exported_byte_join": "UNBOUND_OUTSIDE_TARGET_DLL",
+    "reason": "No typed global candidate ID is read by the candidate materializer, passed to the source-weight helper, consulted by the selector reassembly consumer, or serialized in the observed per-source F32 metadata path. The graph-level owner of the source buffers is outside the target DLL boundary."
+  },
+  "dynamic_status": {
+    "run120": "NATURAL_MATRIX_AND_WEIGHT_HASHES_CAPTURED; OUTER_GRAPH_ID_NOT_CAPTURED",
+    "run121": "FAILED_BEFORE_NATIVE_CALLBACK; NO_IDENTITY_JOIN",
+    "new_run": "NOT_RUN; NO FRESH E-DRIVE RUN DIRECTORY WAS WRITABLE"
+  },
+  "minimal_future_observer_design": {
+    "status": "DESIGNED_NOT_EXECUTED",
+    "required_host_edge": "At the host-side ADM graph producer, capture the typed global ID (or an explicitly typed stable graph token) and the owner token for the source buffer passed to the DLL.",
+    "dll_side_edges": [
+      "At candidate materialization, hash the count-indexed source-buffer pointer tokens and record destination-buffer owner tokens by local ordinal.",
+      "At selector and reassembly, record the explicit local-ordinal remap into each matrix column.",
+      "At source-weight entry, record the matrix owner token, column ordinals, source count, and weight-output vector hash.",
+      "At metadata serialization, record the typed F32-array owner tokens and local ordinals reaching the output byte buffer."
+    ],
+    "generation_rule": "Join records only within a typed owner generation captured from the host/graph producer and the same callback scope. A thread ID or callback sequence alone is a scope label, not a global generation identity.",
+    "privacy_rule": "Persist only field types, opaque owner-token digests, generation token, local ordinal/remap, column ordinal, dimensions, and hashes. Do not persist raw ADM records, raw pointer values, descriptor words, feature values, PCM, or serialized media.",
+    "execution_blocker": "The successful run120 directory is preserved. The C-drive run121 attempt failed before workflow construction, and Windows denied creation of a separate E-drive run directory before host launch."
+  }
+}

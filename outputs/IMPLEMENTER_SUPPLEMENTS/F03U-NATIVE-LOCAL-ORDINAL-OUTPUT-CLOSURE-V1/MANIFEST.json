@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1",
+  "status": "TRACED_DLL_PATH_DOES_NOT_REQUIRE_GLOBAL_ID; EXTERNAL_GRAPH_JOIN_OPEN",
+  "whole_chain_ready": false,
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1601,
+      "sha256": "0cb78f2840bb03187e0b5660e373d4379fc6b0915e271551a025a8e254c6b0d1"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 4538,
+      "sha256": "b24b33acadcd92a46f7a39fc65f79bef415dfd5c24039b27e5b4e06489f2cdb6"
+    },
+    {
+      "name": "OUTER-EXPORT-BOUNDARY.json",
+      "bytes": 4447,
+      "sha256": "46bdfe1108b141804ec6813b8777354b77723f8a16ee9ae9a11f65e3fd628982"
+    },
+    {
+      "name": "PRODUCER-CONSUMER-TRACE.json",
+      "bytes": 5803,
+      "sha256": "6ff3dc1cb29865170236c3d13d12b09fefb8ca712debcc5f620e7e0583dd725c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1407,
+      "sha256": "60af7c5e83b8e5875ee7fdd72773833db2cd31c95c2a68052bd38ff0111f46d5"
+    },
+    {
+      "name": "WASH-REVIEW.json",
+      "bytes": 957,
+      "sha256": "d6fe26cb0d7bd1b7d80b12f8e190e242cfa4b6b0f0cb59959b3c88479bcada9f"
+    }
+  ]
+}

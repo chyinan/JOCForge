@@ -1,0 +1,90 @@
+{
+  "schema": "washed.sourceweight-candidate-identity-evidence.v1",
+  "disposition": "BOUNDED_NATIVE_LINEAGE_GLOBAL_CANDIDATE_ID_UNBOUND",
+  "scope": {
+    "target_artifact_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_analysis": {
+      "tool": "Ghidra",
+      "version": "12.2",
+      "runtime": "Temurin JDK 25.0.5+8",
+      "program_import": "SUCCEEDED",
+      "analysis": "SUCCEEDED_WITH_NON_TARGET_WARNINGS",
+      "target_function_decompilation": "SUCCEEDED",
+      "private_report_sha256": "9fd739bead05409fbf4503efda6c153a6e5762017ae858d539d2e2ad6a775d3c"
+    },
+    "prior_wash_packages": [
+      {
+        "role": "natural_sourceweight_callback_lineage",
+        "manifest_sha256": "58c27ac5c564d94c61bbd185ec4a5a3798c282fcb1dd411db687953456de1e47"
+      },
+      {
+        "role": "native_sourceweight_callpath_confirmation",
+        "manifest_sha256": "4fa5a08ffe2dd7bde89890c780ad9e40af0194447f46a6e8de8b0f6f96a4f655"
+      }
+    ]
+  },
+  "native_run_120": {
+    "disposition": "NATURAL_SOURCEWEIGHT_OBSERVED",
+    "callback_invocation_ordinal": 30,
+    "feature_producer_invocation_ordinal": 30,
+    "weight_parent_invocation_ordinal": 1,
+    "callback_scope_active": true,
+    "feature_producer_scope_active": true,
+    "caller_matrix_object_matches_consumer": true,
+    "band_count": 24,
+    "source_stride": 25,
+    "source_count": 25,
+    "feature_matrix_sha256": "7040820f4b589ec7c0594a3f58ca58e3a5a96c906eb207a9feaa7e54fc7ca84f",
+    "weight_output_sha256": "f21df5be039699f5ad68b348b0dfe12bb1f907b27779a6c6d214e011a962b1bb",
+    "powf_calls_inside_sourceweight": 600,
+    "candidate_list_captured": false,
+    "global_candidate_ids_captured": false,
+    "raw_feature_values_persisted": false,
+    "raw_pcm_persisted": false
+  },
+  "static_candidate_lineage": {
+    "candidate_filter_descriptor_and_feature_share_local_ordinal": true,
+    "candidate_metadata_row_shares_local_ordinal": true,
+    "selector_emits_local_candidate_ordinal": true,
+    "selected_metadata_gather_uses_local_candidate_ordinal": true,
+    "descriptor_parser_field_count": 5,
+    "descriptor_parser_consumes_low_12_bits": true,
+    "descriptor_semantic_identity": "PACKED_METADATA_DESCRIPTOR; GLOBAL_CANDIDATE_ID_NOT_PROVEN",
+    "sourceweight_consumes_matrix_view_and_source_count": true,
+    "global_candidate_id_to_matrix_column_to_weight_output": "UNBOUND"
+  },
+  "native_run_121": {
+    "disposition": "DID_NOT_REACH_NATIVE_CALLBACK",
+    "job_sha256": "08f6af8a2adbbd29ac87390e75da7fcea5dd947aa8efd7b9063a2e9fc135ba3a",
+    "output_and_temp_drive": "C_WORKSPACE",
+    "target_module_loaded": false,
+    "workflow_built": false,
+    "candidate_filter_observed": false,
+    "sourceweight_observed": false,
+    "output_bytes_at_stop": 0,
+    "host_disposition": "DDP_FILTER_INITIALIZATION_FAILED_BEFORE_WORKFLOW_BUILD",
+    "same_E_layout_retry": "NOT_RUN_OS_ACCESS_DENIED_BEFORE_HOST_LAUNCH",
+    "raw_feature_values_persisted": false,
+    "raw_pcm_persisted": false
+  },
+  "producer_consumer_continuation": {
+    "outer_callback_calls_candidate_materializer": true,
+    "run120_materializer_branch_captured": false,
+    "candidate_materializer_reads_typed_global_candidate_id": false,
+    "strategy_dispatch_to_candidate_handler": true,
+    "selector_output_consumer_uses_local_ordinal_membership": true,
+    "default_row_helper_writes_by_local_ordinal": true,
+    "subsequent_score_path_has_explicit_global_candidate_id_argument": false,
+    "frozen_numeric_model_id_to_column_api": "ABSENT",
+    "dynamic_identity_observer": "DESIGNED_NOT_EXECUTED",
+    "source_grade": "GHIDRA_STATIC_DECOMPILE_PLUS_PRIOR_NATIVE_WEIGHT_HASH_OBSERVATION"
+  },
+  "outer_export_boundary": {
+    "in_dll_metadata_serializer_consumes_typed_F32_arrays": true,
+    "callback_byte_sink_consumes_serialized_byte_range": true,
+    "per_candidate_global_id_join_in_this_dll_path": "NOT_PRESENT_IN_OBSERVED_CONSUMER_ARGUMENTS",
+    "external_host_or_ADM_graph_consumer": "OUTSIDE_TARGET_DLL_NOT_TRACED",
+    "private_static_report_sha256": "8615cc15615fc8f74cf225d866c89346c33d7ec141ff5f947a69be08ad1ffec5"
+  },
+  "handoff_boundary": "The target DLL path from candidate materialization through local-ordinal selection, matrix scoring, typed F32 metadata serialization, and output byte buffering does not consume a global candidate ID. An external host or ADM graph join after the DLL returns bytes remains UNBOUND. The packed descriptor is not proven to be a global ID, and run120 did not capture candidate identity."
+}

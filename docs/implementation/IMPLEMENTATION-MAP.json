@@ -3740,6 +3740,102 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "native-local-ordinal-output-byte-closure",
+          "mapping_status": "WASHED_TARGET_DLL_LOCAL_ORDINAL_TO_OUTPUT_BYTES__EXTERNAL_HOST_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_GLOBAL_ID_NOT_CONSUMED_WITHIN_TRACED_DLL_PATH",
+          "scope": "The bounded target-DLL path runs from candidate materialization through local-ordinal selection/reassembly, matrix-only scoring/sourceweight, per-source typed F32 metadata serialization, and copying the serialized range into the host-facing byte buffer. No global candidate ID is read by the materializer, passed to the weight helper, consumed by the traced reassembly/serializer, or present in the per-source F32 payload. Local ordinals and matrix positions suffice within this traced DLL route; the host/ADM graph consumer after DLL return remains outside scope and UNBOUND.",
+          "owner": "u04-source-weight",
+          "implementation_requirement": false,
+          "dependencies": [
+            "sourceweight-local-ordinal-producer-consumer-trace"
+          ],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeRunIdentity",
+              "CallbackInvocationOrdinal",
+              "LocalCandidateOrdinal",
+              "MatrixBandIndex",
+              "MatrixSourceColumn",
+              "PerSourceF32ArrayOrdinal",
+              "SerializedOutputByteRange"
+            ],
+            "covered_clauses": [
+              "The traced in-DLL consumer boundary is candidate materialization → local-ordinal selection/reassembly → matrix-only scoring → typed F32 metadata serialization → output byte buffer.",
+              "No global candidate ID is consumed in those traced DLL operations or serialized in the observed typed per-source payload.",
+              "Run 120 supplies one natural 24-band/25-source matrix and weight-output hash observation; candidate IDs and the callback branch were not captured.",
+              "The external host/ADM graph consumer after DLL return was not traced; whole-chain readiness remains false."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_F03U_DLL_OUTPUT_IDENTITY_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/OUTER-EXPORT-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/PRODUCER-CONSUMER-TRACE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "c72d8c244cab387751f0a942af7659dbf3f87b8b5ee6691d2a65da31c5eaf198",
+            "validation_boundary": "The no-global-ID requirement is bounded to the traced target-DLL path; the external host/ADM graph consumer remains unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_NATIVE_DLL_LOCAL_ORDINAL_OUTPUT_PATH_NO_MEDIA_BYTES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/OUTER-EXPORT-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1/PRODUCER-CONSUMER-TRACE.json"
+            ],
+            "case_pointers": [
+              "Candidate materializer to selector/reassembly to matrix-only weight path uses local ordinals/matrix positions.",
+              "Per-source F32 metadata serializer and callback byte sink consume typed array/byte ranges without a candidate global-ID field.",
+              "The external host/ADM graph consumer after DLL return is OUTSIDE_TARGET_DLL_NOT_TRACED.",
+              "Run 120 captured only matrix/weight hashes; Run 121 did not reach the callback; no model/native media equality is claimed."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "c72d8c244cab387751f0a942af7659dbf3f87b8b5ee6691d2a65da31c5eaf198"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Host/ADM graph consumer after DLL return and any global-ID-to-output-byte owner join.",
+            "Fresh dynamic outer identity observer; Run 120 is preserved and Run 121 failed before callback.",
+            "Model output/native comparison, complete product chain, and whole-chain acceptance."
+          ],
+          "validation_boundary": "No global-ID plumbing is required solely for the traced DLL operations; this does not establish cross-system identity or close the external host/graph join.",
+          "native_status": {
+            "status": "TRACED_DLL_PATH_DOES_NOT_REQUIRE_GLOBAL_ID_EXTERNAL_GRAPH_JOIN_OPEN",
+            "global_id_consumed_within_traced_dll_path": false,
+            "local_ordinal_and_matrix_position_suffice_within_traced_dll_path": true,
+            "per_source_f32_metadata_serializer_and_byte_sink_bound": true,
+            "run120_candidate_identity_and_callback_branch": "NOT_CAPTURED",
+            "run121": "DID_NOT_REACH_NATIVE_CALLBACK",
+            "external_host_adm_graph_consumer_after_dll_return": "UNBOUND_NOT_TRACED",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "WASHED_NATIVE_EVIDENCE_ONLY",
+          "correction_of": {
+            "packages": [
+              {
+                "package_id": "F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1",
+                "manifest_sha256": "83a0c75f00fa87c676475c7a7b146caddbd13d86a812c3862e79f58322275f1c",
+                "scope_extended": "The traced DLL path now extends through F32 metadata serialization and output byte buffering."
+              },
+              {
+                "package_id": "F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1",
+                "manifest_sha256": "ad851a99019f967a9f1761781e2199c517966f4df4fe3acbe780c0f5d4159f64",
+                "scope_extended": "The internal global-ID question is closed as not consumed within the DLL path; the external host/ADM graph join remains open."
+              }
+            ]
+          }
         }
       ]
     },
@@ -8626,8 +8722,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1648869,
-              "sha256": "9660a18eeece5dc784425f5ac0105afd51650ae42b9c42e5d242a96377d7c14d"
+              "bytes": 1653258,
+              "sha256": "fff8caeaac885946e4f7bc5802827f83f66bee986d23db2ab65eb8ba89138a0c"
             }
           ],
           "test_modules": [
@@ -12139,8 +12235,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1648869,
-              "sha256": "9660a18eeece5dc784425f5ac0105afd51650ae42b9c42e5d242a96377d7c14d"
+              "bytes": 1653258,
+              "sha256": "fff8caeaac885946e4f7bc5802827f83f66bee986d23db2ab65eb8ba89138a0c"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -28895,8 +28991,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1648869,
-              "sha256": "9660a18eeece5dc784425f5ac0105afd51650ae42b9c42e5d242a96377d7c14d"
+              "bytes": 1653258,
+              "sha256": "fff8caeaac885946e4f7bc5802827f83f66bee986d23db2ab65eb8ba89138a0c"
             }
           ],
           "test_inventory": [

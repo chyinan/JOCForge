@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F03U-NATIVE-LOCAL-ORDINAL-OUTPUT-CLOSURE-V1",
+  "decision": "ACCEPTED_AS_SCOPED_NO_GLOBAL_ID_REQUIREMENT_IN_TRACED_DLL_PATH",
+  "independent_verification": {
+    "research_manifest_sha256": "MATCH",
+    "research_payloads": "5/5 MATCH",
+    "ordinary_checker": "PASS",
+    "optimized_checker": "PASS",
+    "prior_washed_package_manifests_and_payloads": "2/2 MATCH",
+    "raw_PCM_or_feature_values_forwarded": false
+  },
+  "closed_scope": "callback candidate materialization through local-ordinal selection/reassembly, matrix-only scoring/source-weight and per-source F32 serialization to output bytes",
+  "outside_scope": "host/ADM graph consumer after the DLL returns bytes; not traced",
+  "implementation_rule": "Use local ordinal/matrix-column order within the traced DLL path; do not add global-ID plumbing there without a downstream typed consumer requirement.",
+  "whole_chain_ready": false
+}

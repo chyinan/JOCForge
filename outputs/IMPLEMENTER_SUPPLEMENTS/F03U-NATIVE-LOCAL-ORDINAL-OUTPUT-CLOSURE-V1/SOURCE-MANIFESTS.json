@@ -1,0 +1,30 @@
+{
+  "schema": "f03u-native-local-ordinal-output-closure-sources.v1",
+  "research_package": {
+    "package_id": "sourceweight-candidate-identity",
+    "manifest_sha256": "9cf77b592bc1e716f57d498970e5e2c85aaf69ce27f629d5f285634df124309b",
+    "payloads": {
+      "EVIDENCE.json": "b24b33acadcd92a46f7a39fc65f79bef415dfd5c24039b27e5b4e06489f2cdb6",
+      "OUTER-EXPORT-BOUNDARY.json": "46bdfe1108b141804ec6813b8777354b77723f8a16ee9ae9a11f65e3fd628982",
+      "PRODUCER-CONSUMER-TRACE.json": "6ff3dc1cb29865170236c3d13d12b09fefb8ca712debcc5f620e7e0583dd725c",
+      "REPORT.md": "4afa256f4feeb0b4ba774da3c4e9e85952eae901fd264a34c0e09aa6aedc1660",
+      "verify_sourceweight_candidate_identity.py": "9f0ce51f91c2a6c289be78e830ab25c51c3d7e8e71cc73a813f04de4de479e6a"
+    }
+  },
+  "prior_washed_packages": [
+    {
+      "package_id": "F03U-SOURCEWEIGHT-LOCAL-ORDINAL-TRACE-WASHED-V1",
+      "manifest_sha256": "ad851a99019f967a9f1761781e2199c517966f4df4fe3acbe780c0f5d4159f64"
+    },
+    {
+      "package_id": "F03U-SOURCEWEIGHT-CANDIDATE-IDENTITY-WASHED-V1",
+      "manifest_sha256": "83a0c75f00fa87c676475c7a7b146caddbd13d86a812c3862e79f58322275f1c"
+    }
+  ],
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd3ce1cce8b7e95d2",
+  "dynamic_boundary": {
+    "run120_candidate_id_capture": false,
+    "run121_reached_callback": false,
+    "outer_host_or_adm_graph_join": "NOT_TRACED"
+  }
+}
