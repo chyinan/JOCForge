@@ -8886,8 +8886,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1751039,
-              "sha256": "a34283021c3abbedeb4c69fedcd3d1b0cd74966b7f88a923f736005d72ea436e"
+              "bytes": 1756545,
+              "sha256": "2d579447218bfc8c871acd51d07febdf90234358c211058e5059f733e149d784"
             }
           ],
           "test_modules": [
@@ -12399,8 +12399,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1751039,
-              "sha256": "a34283021c3abbedeb4c69fedcd3d1b0cd74966b7f88a923f736005d72ea436e"
+              "bytes": 1756545,
+              "sha256": "2d579447218bfc8c871acd51d07febdf90234358c211058e5059f733e149d784"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -16996,6 +16996,89 @@
             "product_policy_changed": false,
             "pcm_or_encoded_payload_included": false,
             "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-native-oamdi-key-to-owner-and-f06of-crosswalk",
+          "mapping_status": "WASHED_STATIC_NATIVE_U16_KEY_TO_OWNER__MODEL_CROSSWALK_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_NATIVE_PATH__MODEL_VECTOR_REPLAY_AND_CROSSWALK_NOT_RUN",
+          "scope": "Static analysis establishes that a U16 key in each 48-byte OAMDI event record is bounds-checked, selects a native per-object owner, and is carried into the queued event. A separate U8 candidate from byte 2 of each six-byte channel descriptor is collected into a native index list, but is not joined to the event U16 key. Neither surface is typed as an ADM ID, SelectedGlobalTargetId, TargetSlotIndex, control16 word, or callback generation. The table-B literal-row path is separate. The one-hot F03G/F05H/F06OF projection is approved-model-only; native capture and fresh model replay are NOT_RUN, so no native-to-model crosswalk or product readiness is established.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "NativeChannelDescriptorU8Index",
+              "NativeOamdiEventU16Key",
+              "NativePerObjectOwner",
+              "SelectedGlobalTargetId",
+              "TargetSlotIndex",
+              "F06OFControl16Row",
+              "CallbackGeneration",
+              "NativeTableBPath"
+            ],
+            "covered_clauses": [
+              "The static U16 event key is bounds-checked and selects a native per-object owner on the inspected path.",
+              "The descriptor U8 candidate and event U16 key are separate domains with no observed join.",
+              "Native keys are not typed as ADM IDs, model target IDs, target slots, control16 words, or callback generations.",
+              "The table-B literal-row path is separate and unjoined to this OAMDI event path.",
+              "The one-hot target-to-slot-to-control16 projection is approved-model-only; native capture and fresh model replay are NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_NATIVE_OAMDI_KEY_TO_OWNER_AND_MODEL_CROSSWALK_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-OAMDI-KEY-PATH-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-OAMDI-KEY-PATH-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-OAMDI-KEY-PATH-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-OAMDI-KEY-PATH-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-OAMDI-KEY-PATH-WASHED-V1/MODEL-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-OAMDI-KEY-PATH-WASHED-V1/CHECK.json"
+            ],
+            "supplement_manifest_sha256": "8c41d120df3adbe2d07dae684bc213e080dbcca570c21f8cb392ea03cb1a5d91",
+            "source_evidence_manifest_sha256": "e43d560daeb0463fa9dce7be21c2ef1c19cdcb14412f7b797f206cf6fb60fbf6",
+            "source_package_seal_sha256": "d7133347764403e080eb2239d206dcc0e4114dd53e9489b9c66645808f53cc57",
+            "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+            "validation_boundary": "Bounded static native index-to-owner path and approved model vector only; native capture, model replay, target crosswalk, and product readiness remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_F06OF_APPROVED_MODEL_ONE_HOT_VECTOR_NOT_NATIVE_CROSSWALK",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-OAMDI-KEY-PATH-WASHED-V1/MODEL-ONLY-VECTOR.json"
+            ],
+            "case_pointers": [
+              "The model-only one-hot pair changes target B coordinates while preserving the approved target IDs and callback generation.",
+              "The package records the expected model assignment and control16 row 2 word 5 via the approved 1+s adapter.",
+              "Native execution and fresh model replay are both NOT_RUN; the vector does not bind native indices to model identities."
+            ],
+            "expected_outputs_included": true,
+            "native_execution": "NOT_RUN",
+            "fresh_model_replay": "NOT_RUN",
+            "supplement_manifest_sha256": "8c41d120df3adbe2d07dae684bc213e080dbcca570c21f8cb392ea03cb1a5d91"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native capture of the U8 descriptor candidate and U16 event key on a selected execution.",
+            "A typed join from either native index/key to ADM identity, SelectedGlobalTargetId, TargetSlotIndex, control16 word, or callback generation.",
+            "A join from the separate table-B literal-row path to the native OAMDI event path.",
+            "Fresh replay of the approved one-hot model vector, native-to-model crosswalk, whole F06OF readiness, and product acceptance."
+          ],
+          "validation_boundary": "Partial static native index-to-owner fact; all cross-domain and generation relations remain explicitly UNBOUND or NOT_CAPTURED.",
+          "native_status": {
+            "native_u16_key_to_per_object_owner": "STATICALLY_ESTABLISHED",
+            "descriptor_u8_to_event_u16_join": "UNBOUND",
+            "native_key_to_model_target_id_slot_control16_generation": "UNBOUND",
+            "table_b_literal_path_to_oamdi_path": "UNBOUND",
+            "native_capture": "NOT_RUN",
+            "fresh_model_replay": "NOT_RUN",
+            "whole_f06of_readiness": false,
+            "product_policy_changed": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -30410,8 +30493,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1751039,
-              "sha256": "a34283021c3abbedeb4c69fedcd3d1b0cd74966b7f88a923f736005d72ea436e"
+              "bytes": 1756545,
+              "sha256": "2d579447218bfc8c871acd51d07febdf90234358c211058e5059f733e149d784"
             }
           ],
           "test_inventory": [

@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06OF-NATIVE-OAMDI-KEY-PATH-WASHED-V1",
+  "scope": "bounded static native index-to-owner path and approved model one-hot vector; native F06OF bridge remains unbound",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1667,
+      "sha256": "bba838bf22d3b6efdf3a6b255fad974c1c2e890f62e9ff2346515e63d56dfdfb"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1243,
+      "sha256": "6b0bc376a880af0a1d29d82b012a6d9ce45b8fce6a8e4cd0c4b67c5db0e1efb8"
+    },
+    {
+      "name": "MODEL-ONLY-VECTOR.json",
+      "bytes": 1044,
+      "sha256": "cc3371f1d8eadfd021f3395b193dce2b3a17fd83ab6caf76cbe72ed0b05a1107"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 445,
+      "sha256": "c401fc2b9d94c430d7b33d7c543c468ca90a455cae8eac962eeb162851e3c771"
+    }
+  ]
+}

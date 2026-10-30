@@ -1,0 +1,20 @@
+{
+  "schema": "f06of-native-oamdi-key-path-source-identities.v1",
+  "source_package_id": "native_property_to_f06of_target_lineage_wash_v1",
+  "evidence_manifest_sha256": "e43d560daeb0463fa9dce7be21c2ef1c19cdcb14412f7b797f206cf6fb60fbf6",
+  "package_seal_sha256": "d7133347764403e080eb2239d206dcc0e4114dd53e9489b9c66645808f53cc57",
+  "source_payload_sha256": {
+    "APPROVED-TARGET-SLOT-PATH.json": "ee77ef9b77f45e451e1b643c2146c1443f3efd57d1811d5b2762844f471d965c",
+    "CONTRACT.md": "144d85ab48fa2060d58e41cfb10db3aa7c715eb94efd8188d271e414c269c276",
+    "INPUT-ONLY-VECTORS.json": "8b5d0b471b6c0801fb936fe6baded5ed9e2019edd6ea532407dcd9cf7777466e",
+    "NATIVE-KEY-AND-OWNER-PATH.json": "fb10fa28fee699bc4e9ffc9305d507be9fb50f4b67f086733f961f5e9f23fc4a",
+    "README.md": "1cd4487016bdea0eb88419ad3a2920a56950e2d3f2adbc6f2efc7fa86c4035b0",
+    "SOURCE-IDENTITIES.json": "d467bf9e4d14dfb352f05aec0bc513d41c7fe1ef6787d0dd91a0f0a61793b900"
+  },
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "new_native_capture": "NOT_RUN",
+  "model_vector_fresh_replay": "NOT_RUN",
+  "native_to_f06of_crosswalk": "UNBOUND",
+  "raw_pcm_or_control_row_payload_included": false,
+  "product_policy_changed": false
+}

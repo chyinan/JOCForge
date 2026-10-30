@@ -1,0 +1,26 @@
+{
+  "schema": "f06of-oamdi-model-only-one-hot-vector.v1",
+  "classification": "APPROVED_MODEL_INPUTS_AND_CHECKED_PROJECTION_ONLY",
+  "native_execution": "NOT_RUN",
+  "fresh_model_replay": "NOT_RUN",
+  "same_for_both_members": {
+    "selected_target_A_id": "0x0000a001",
+    "selected_target_A_attribute": "0x00000b00",
+    "selected_target_A_xyz": [0.0, 0.0, 0.0],
+    "selected_target_B_id": "0x0000b002",
+    "selected_target_B_attribute": "0x00000b00",
+    "selected_order": ["target-A", "target-B"],
+    "callback_generation_g": 0
+  },
+  "members": [
+    {"id":"pair_A","selected_target_B_xyz":[0.0,0.0,0.0]},
+    {"id":"pair_B","selected_target_B_xyz":[0.5,0.0,0.0]}
+  ],
+  "checked_model_projection": {
+    "pair_A_assignment": {"slot_0":"0x0000a001","slot_1":"0x0000b002"},
+    "pair_B_assignment": {"slot_0":"0x0000a001","slot_1":"0x0000b002"},
+    "pair_B_control16_row": "row 2, word 5 via the approved 1+s adapter",
+    "packet_generation": "g+1; history producer generation remains distinct"
+  },
+  "not_a_native_crosswalk": true
+}

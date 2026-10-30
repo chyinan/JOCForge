@@ -1,0 +1,11 @@
+{
+  "schema": "f06of-native-oamdi-key-path-wash-check.v1",
+  "status": "PASS_HASH_BOUND_PARTIAL_NATIVE_PATH",
+  "source_seal_and_payload_hashes": "VERIFIED",
+  "native_u16_key_to_per_object_owner": "STATICALLY_ESTABLISHED",
+  "descriptor_u8_to_event_u16_join": "UNBOUND",
+  "native_key_to_model_target_id_slot_control16_generation": "UNBOUND",
+  "native_capture": "NOT_RUN",
+  "fresh_model_replay": "NOT_RUN",
+  "whole_f06of_readiness": false
+}
