@@ -1,0 +1,28 @@
+{
+  "schema": "implementer-run-result-package.v1",
+  "package_id": "METER-AUTHORIZED-ADM-Q3-PREPASS-RESULT-V1",
+  "status": "LOCAL_REAL_INPUT_Q3_PASS_PARENT_READY_NOT_RUN",
+  "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "files": [
+    {
+      "path": "RUN-RESULT.json",
+      "bytes": 1922,
+      "sha256": "74a24a403e49aed14309afc5c1395ccf09e1d7c86c7d470dad40f9c928006efc"
+    },
+    {
+      "path": "SOURCE-BINDING.json",
+      "bytes": 734,
+      "sha256": "2dcc8bef4ae5463f36d10e44562161beffcc859835f702046ef9397b5f2e97aa"
+    },
+    {
+      "path": "WASHED-SUMMARY.md",
+      "bytes": 1509,
+      "sha256": "6ca32fca2e79eda839a79ae65e58009ba1f175c826249fc1076dbe301ddfc43c"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 3997,
+      "sha256": "336e681e0de17d4aac49cca95c8fabc19650f39a5ee4b7cb3bb033939569086d"
+    }
+  ]
+}

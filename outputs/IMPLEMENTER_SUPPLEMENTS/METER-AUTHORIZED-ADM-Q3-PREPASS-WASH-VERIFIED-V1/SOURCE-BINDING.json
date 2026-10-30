@@ -1,0 +1,19 @@
+{
+  "schema": "implementer.authorized-meter-input-binding.v1",
+  "binding_basis": "User-authorized real ADM BWF; independently hashed before the local integration test.",
+  "input_path_included": false,
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "input_bytes": 743696526,
+  "selected_wave": {
+    "sample_rate_hz": 48000,
+    "channels": 38,
+    "pcm_bits": 24,
+    "block_align": 114,
+    "source_samples": 6522906
+  },
+  "selected_job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+  "job_xml_is_current_accepted_selection": true,
+  "raw_pcm_in_package": false,
+  "partial_encoded_output_in_package": false,
+  "private_key_material_in_package": false
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "implementer.authorized-meter-q3-run-result.v1",
+  "run_status": "PASS",
+  "evidence_tier": "LOCAL_IGNORED_INTEGRATION_TEST_ON_USER_AUTHORIZED_REAL_INPUT",
+  "test": {
+    "target": "jocforge",
+    "integration_test_file": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
+    "test_name": "authorized_adm_bwf_stages_complete_independent_meter_prepass_receipt",
+    "ignored_by_default": true,
+    "explicitly_selected": true,
+    "passed": 1,
+    "failed": 0,
+    "filtered_out": 2,
+    "duration_seconds": 3293.53
+  },
+  "input": {
+    "user_authorized": true,
+    "path_recorded": false,
+    "pcm_persisted": false,
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "container": "RIFF/WAVE ADM BWF",
+    "sample_rate_hz": 48000,
+    "channels": 38,
+    "pcm_bits": 24,
+    "block_align": 114,
+    "source_samples": 6522906
+  },
+  "selected_configuration": {
+    "job_xml_sha256": "20669e276ac7b708b0a03b127d3f37331c8cbc5cfce9a0f4a2498739ecc36cb9",
+    "matches_current_accepted_selection": true
+  },
+  "prepass": {
+    "normal_callbacks": 4247,
+    "fresh_zero_drains": 3,
+    "typed_meter_owner_receipts": 4250,
+    "final_callback_index": 4250,
+    "final_source_cursor": 6522906,
+    "final_read_index": 4247,
+    "terminal_measurement_receipt_proposal": true,
+    "measurement_dependents_receipt_matches_terminal_receipt": true,
+    "id1_measurement_input_matches_prepared_source": true,
+    "drc_root_constructed": true,
+    "drc_root_has_dialnorm": true,
+    "metadata_cold_owner_constructed": true,
+    "metadata_owner_generation": 0,
+    "standalone_meter_root_unchanged": true
+  },
+  "not_run": {
+    "gtc_ready_admission": true,
+    "twelve_owner_parent_swap": true,
+    "w04": true,
+    "codec_au_generation": true,
+    "end_to_end_encode": true,
+    "output_publication": true,
+    "playback_or_product_acceptance": true
+  }
+}
