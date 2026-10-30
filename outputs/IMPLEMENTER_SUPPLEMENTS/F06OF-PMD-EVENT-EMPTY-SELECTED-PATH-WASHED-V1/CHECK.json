@@ -1,0 +1,12 @@
+{
+  "schema": "f06of-pmd-event-empty-selected-path-wash-check.v1",
+  "status": "PASS_HASH_BOUND_SELECTED_STATIC_BOUNDARY",
+  "source_seal_and_payload_hashes": "VERIFIED",
+  "selected_pmd_oamdi_event_count": 0,
+  "selected_pmd_oamdi_record_pointer": "NULL",
+  "other_pmd_producers_or_modes": "NOT_RULED_OUT",
+  "descriptor_u8_or_oar_u16_to_oamdi_u16_join": "UNBOUND",
+  "native_to_f06of_target_join": "UNBOUND",
+  "native_capture": "NOT_RUN",
+  "fresh_model_replay": "NOT_RUN"
+}

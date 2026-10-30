@@ -9075,8 +9075,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1767436,
-              "sha256": "2bc04e1d145fd6c9ca5fa8ba40a7bf41eb7dee1f9a9b44af73457c8254e72b83"
+              "bytes": 1772248,
+              "sha256": "7e47599557d9444922b798c2efd8944bca1b36223944a093be5a8765f8ed54aa"
             }
           ],
           "test_modules": [
@@ -12588,8 +12588,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1767436,
-              "sha256": "2bc04e1d145fd6c9ca5fa8ba40a7bf41eb7dee1f9a9b44af73457c8254e72b83"
+              "bytes": 1772248,
+              "sha256": "7e47599557d9444922b798c2efd8944bca1b36223944a093be5a8765f8ed54aa"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -17268,6 +17268,92 @@
             "fresh_model_replay": "NOT_RUN",
             "whole_f06of_readiness": false,
             "product_policy_changed": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-f06of-selected-pmd-builder-empty-oamdi-event-boundary",
+          "mapping_status": "WASHED_SELECTED_STATIC_PMD_EMPTY_OAMDI_EVENT__OTHER_PRODUCERS_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SELECTED_BUILDER_EVENT_EMPTY__NATIVE_MODEL_CROSSWALK_UNBOUND",
+          "scope": "In the selected hash-bound PcmMd builder, the OAMDI event count is set to zero and the event-record pointer is null before the OAMDI setter call; this selected builder therefore supplies no 48-byte OAMDI event record or U16 event key to that setter. The same PcmMd has a separate descriptor wrapper with a count and pointer to six-byte entries, while its OAR path derives separate candidate indices and a 96-byte OAR event key. These domains are distinct. Other PcmMd producers or modes are not ruled out. Native capture, fresh model replay, and joins to ADM identity, F06OF target slot, control16, or generation remain open.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "SelectedPcmMdBuilder",
+              "SelectedOamdiEventCount",
+              "SelectedOamdiRecordPointer",
+              "DescriptorU8Index",
+              "OarU16EventKey",
+              "OamdiU16EventKey",
+              "F06OFTargetSlot",
+              "CallbackGeneration",
+              "OtherPmdProducerOrMode"
+            ],
+            "covered_clauses": [
+              "The selected PcmMd builder sets OAMDI event count to zero and record pointer to null before the OAMDI setter call.",
+              "This selected builder supplies no 48-byte OAMDI event record or U16 event key to that setter.",
+              "The descriptor six-byte entries and OAR 96-byte event key are separate domains from the OAMDI U16 key and F06OF target slots.",
+              "Other PcmMd producers or modes are not ruled out; native capture and fresh model replay are NOT_RUN.",
+              "ADM identity, target slot, control16 word, and callback generation joins remain UNBOUND."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_SELECTED_PMD_EMPTY_OAMDI_EVENT_PATH_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PMD-EVENT-EMPTY-SELECTED-PATH-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PMD-EVENT-EMPTY-SELECTED-PATH-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PMD-EVENT-EMPTY-SELECTED-PATH-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PMD-EVENT-EMPTY-SELECTED-PATH-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PMD-EVENT-EMPTY-SELECTED-PATH-WASHED-V1/CHECK.json"
+            ],
+            "supplement_manifest_sha256": "2bd84e29486fac896f11fbe5f2e3fe5e9d6b1c64c0a14cea286874d463ee1b79",
+            "source_evidence_manifest_sha256": "692fc57430f580d63bf5dc0de17f5d84ed4002bed0219cafbd87f33763fcaf00",
+            "source_package_seal_sha256": "8a380d7272969dc44860e6f2822df5d1b31e27a4a361b81bc44c6d1ad3f0a23b",
+            "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+            "validation_boundary": "One selected static PcmMd builder only; other producers/modes and all native-to-model owner/generation joins remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_F06OF_SELECTED_PMD_EMPTY_EVENT_STATIC_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PMD-EVENT-EMPTY-SELECTED-PATH-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PMD-EVENT-EMPTY-SELECTED-PATH-WASHED-V1/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Selected builder event count is zero and event-record pointer is null before the OAMDI setter call.",
+              "The separate descriptor and OAR key surfaces are not joined to the OAMDI U16 event key or F06OF target slots.",
+              "This selected-path finding does not rule out another producer or mode."
+            ],
+            "expected_outputs_included": false,
+            "native_execution": "NOT_RUN",
+            "fresh_model_replay": "NOT_RUN",
+            "supplement_manifest_sha256": "2bd84e29486fac896f11fbe5f2e3fe5e9d6b1c64c0a14cea286874d463ee1b79"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native capture and fresh replay of the selected model vector.",
+            "Other PcmMd producer/mode population behavior.",
+            "Descriptor U8 or OAR U16 to OAMDI U16 event-key join.",
+            "Native event key to ADM identity, F06OF target slot, control16 word, or callback generation."
+          ],
+          "validation_boundary": "Selected static builder has an empty OAMDI event input; no global absence or F06OF crosswalk closure is claimed.",
+          "native_status": {
+            "selected_pmd_oamdi_event_count": 0,
+            "selected_pmd_oamdi_record_pointer": "NULL",
+            "selected_builder_supplies_48_byte_oamdi_record": false,
+            "selected_builder_supplies_oamdi_u16_event_key": false,
+            "descriptor_u8_or_oar_u16_to_oamdi_u16_join": "UNBOUND",
+            "native_to_f06of_target_join": "UNBOUND",
+            "other_pmd_producers_or_modes": "NOT_RULED_OUT",
+            "native_capture": "NOT_RUN",
+            "fresh_model_replay": "NOT_RUN",
+            "whole_f06of_readiness": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -30682,8 +30768,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1767436,
-              "sha256": "2bc04e1d145fd6c9ca5fa8ba40a7bf41eb7dee1f9a9b44af73457c8254e72b83"
+              "bytes": 1772248,
+              "sha256": "7e47599557d9444922b798c2efd8944bca1b36223944a093be5a8765f8ed54aa"
             }
           ],
           "test_inventory": [

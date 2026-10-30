@@ -287,6 +287,7 @@
 | F06OF/native-oamdi-measurement-and-encoder-phase-boundary | F06OF | `meter` |
 | F06OF/native-oamdi-output-consumer-run036 | F06OF | `meter` |
 | F06OF/washed-native-oamdi-key-to-owner-and-f06of-crosswalk | F06OF | `meter` |
+| F06OF/washed-f06of-selected-pmd-builder-empty-oamdi-event-boundary | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |

@@ -1,0 +1,22 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06OF-PMD-EVENT-EMPTY-SELECTED-PATH-WASHED-V1",
+  "scope": "bounded native observation; source/count and target-generation edges remain explicit",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 964,
+      "sha256": "7d00600390f93af731840dc0061e67b58f6e201a91618f657cf9b7983dcd214c"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 917,
+      "sha256": "b69002dac1bfd567ca3149112343d55120d2ac332d78df23268bb3a250e608d2"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 478,
+      "sha256": "e0c8b5d924bf22d4252de6035572360a2a50502b2e3bc8f0a6e0db5b469ccae6"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "f06of-pmd-event-empty-selected-path-source-identities.v1",
+  "source_evidence_manifest_sha256": "692fc57430f580d63bf5dc0de17f5d84ed4002bed0219cafbd87f33763fcaf00",
+  "source_package_seal_sha256": "8a380d7272969dc44860e6f2822df5d1b31e27a4a361b81bc44c6d1ad3f0a23b",
+  "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "source_payload_sha256": {
+    "APPROVED-TARGET-SLOT-PATH.json": "ee77ef9b77f45e451e1b643c2146c1443f3efd57d1811d5b2762844f471d965c",
+    "NATIVE-KEY-AND-OWNER-PATH.json": "fb10fa28fee699bc4e9ffc9305d507be9fb50f4b67f086733f961f5e9f23fc4a",
+    "INPUT-ONLY-VECTORS.json": "8b5d0b471b6c0801fb936fe6baded5ed9e2019edd6ea532407dcd9cf7777466e"
+  },
+  "selected_builder_event_count": 0,
+  "selected_builder_event_record_pointer": "NULL",
+  "other_pmd_producers_or_modes": "NOT_RULED_OUT",
+  "native_capture": "NOT_RUN",
+  "f06of_crosswalk": "UNBOUND"
+}
