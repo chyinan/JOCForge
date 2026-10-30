@@ -115,6 +115,7 @@
 
 | slice_id | parent_functional_id | owner |
 |---|---|---|
+| GTC/callback-only-four-owner-root-projection | GTC | `programme_root` |
 | F01R/selected-riff-pcm24-reader-and-hop | F01R | `io` |
 | F01G/selected-real-axml-chna-host-identity-and-source-join | F01G | `frontend` |
 | F01B/candidate-normalized-bed-source-points | F01B | `spatial_control` |
@@ -136,7 +137,29 @@
 | F03C/selector-pairwise-affinity | F03C | `spatial_control` |
 | F03U/u04-membership-projection | F03U | `spatial_control` |
 | F03U/u04-refinement-admission-gate | F03U | `spatial_control` |
+| F03U/current-job-u04-helper-call-observation | F03U | `spatial_control` |
+| F03U/current-job-u04-same-call-numeric-capture | F03U | `spatial_control` |
+| F03U/current-job-u04-first-consumer-contribution-v10 | F03U | `spatial_control` |
+| F03U/current-job-u04-geometry-projection-boundary | F03U | `spatial_control` |
+| F03U/current-job-u04-selector-ordinal-source-id-boundary | F03U | `spatial_control` |
+| F03U/selected-u04-source-weight-original-candidate-order | F03U | `spatial_control` |
+| F03U/current-job-u04-local-slot-category-boundary | F03U | `spatial_control` |
+| F03U/current-job-u04-source-slot-producer-boundary | F03U | `spatial_control` |
+| F03U/current-job-u04-ddp-frame-channel-index-boundary | F03U | `u04-ddp-frame-channel-boundary` |
+| F03U/current-job-u04-ddp-stream-object-host-path | F03U | `u04-ddp-host-stream-object-boundary` |
+| F03U/current-job-u04-ddp-retry-status | F03U | `u04-ddp-host-retry-status` |
+| F03U/ddp-reference-run-routing-capture | F03U | `u04-ddp-frame-channel-boundary` |
+| F03U/natural-sourceweight-callback-matrix-view | F03U | `spatial_control` |
+| F03U/ddp-run27-adm-path-to-route-same-call | F03U | `u04-ddp-frame-channel-boundary` |
+| F03U/ddp-run29-initializer-same-owner-call-chain | F03U | `u04-ddp-initializer-boundary` |
+| F03U/ddp-run36-descriptor-to-encoder-boundary | F03U | `u04-ddp-frame-source-boundary` |
+| F03U/ddp-run38-main-reader-extent-writer-correction | F03U | `u04-ddp-reader-extent-boundary` |
+| F03U/ddp-run37-source-storage-sample-count-boundary | F03U | `u04-source-storage-range-boundary` |
+| F03U/ddp-composite-reader-extent-rule-v18 | F03U | `u04-composite-reader-extent-boundary` |
+| F03F/current-features-approved-math-asset-pair | F03F | `spatial_control` |
+| F03F/main-current-features-source-callback-candidate | F03F | `spatial_control` |
 | F03R/selected-profile-feature-control-and-value-only-source-flags | F03R | `spatial_control` |
+| F03R/reference-owner-row-to-descriptor-column-crosswalk | F03R | `spatial_control` |
 | F03P/selected-p15-basis-generation | F03P | `spatial_control` |
 | F03P/selected-target-context-and-compact-projection | F03P | `spatial_control` |
 | F03N/rectangular-nnls-solver | F03N | `spatial_control` |
@@ -146,6 +169,11 @@
 | F03S/outer-active-update | F03S | `spatial_control` |
 | F03S/outer-empty-matrix-skip | F03S | `spatial_control` |
 | F03S/source-geometry-to-compact-outer-matrix | F03S | `spatial_control` |
+| F03S/dynamic-spatial-owner-consumer-observation | F03S | `spatial_audio` |
+| F03S/runtime-p11-p15-point-table-values-and-consumer | F03S | `spatial_audio` |
+| F03S/reference-profile-mask-point-table-selection | F03S | `spatial_control` |
+| F03S/current-job-spatial-run-differentiation | F03S | `spatial_control` |
+| F03S/current-job-spatial-v7-same-generation-capture | F03S | `spatial_control` |
 | F03W/selected-primary-installed48-source-map-and-activity | F03W | `spatial_control` |
 | F03W/source-flags-current-features-and-source-gate | F03W | `spatial_control` |
 | F03W/primary-metadata-source-control-projection | F03W | `spatial_control` |
@@ -154,6 +182,8 @@
 | F03W/capacity-gated-u04-callback-continuation | F03W | `spatial_control` |
 | F03W/user-authorized-adm-first-normal-callback | F03W | `spatial_audio` |
 | F03W/informational-spatial-control-after-root-field-projection | F03W | `spatial_control` |
+| F03W/main-spatial-control-installed48-postwindow-producer | F03W | `spatial_control` |
+| F03W/selected-spatial-callback-provider-inputs | F03W | `cli` |
 | F04/independent-meter-installed48-postwindow-leaf | F04 | `meter` |
 | F04C/whole-spatial-audio-j05-composer | F04C | `spatial_audio` |
 | F04A/independent-meter-installed48-postwindow-leaf | F04A | `meter` |
@@ -177,6 +207,8 @@
 | F04G/washed-raw-width-lifecycle-and-membership-status | F04G | `spatial_audio` |
 | F04P/informational-f04p-native-counter-boundary-status | F04P | `spatial_audio` |
 | F04PG/informational-f04pg-profile-install-boundary-status | F04PG | `spatial_audio` |
+| F04R/selected-spatial-audio-provider-bundle | F04R | `spatial_audio` |
+| F04R/receiver-subset-parent-lineage-and-authorized-g2-candidate | F04R | `spatial_audio` |
 | F04RB/actual-receiver-to-joc-qmf-projection | F04RB | `spatial_audio` |
 | F05/selected-coefficient-fit-retry-and-payload | F05 | `joc` |
 | F05Q/quantized-huffman-body-writer | F05Q | `joc` |
@@ -184,6 +216,7 @@
 | F05QH/huffman-codebook-table-provider | F05QH | `joc` |
 | F05JL/synthetic-coordinator-receipt-validation | F05JL | `joc` |
 | F05JL/selected-fit-dispatch-and-id14-proposal | F05JL | `joc` |
+| F05JL/authorized-main-g2-joc-id14-candidate | F05JL | `joc` |
 | F05O/oamd-rowdata-body-encoder | F05O | `joc` |
 | F05O/oamd-single-rowdata-body-decoder | F05O | `joc` |
 | F05O/single-frame-oamd-body-assembler | F05O | `joc` |
@@ -197,6 +230,18 @@
 | F06/informational-input-cursor-model-owner-key-contract | F06 | `meter` |
 | F06/informational-kfilter-exponent-state-lineage | F06 | `meter` |
 | F06/informational-dplm-restart-lifecycle-boundary | F06 | `meter` |
+| F06/meter-approved-direct-provider-inventory | F06 | `meter` |
+| F06/meter-measurement-to-drc-id1-dependent-owner-inputs | F06 | `meter` |
+| F06/programme-state-v3-metering-to-ready-availability | F06 | `programme_state` |
+| F06/parent-meter-source-admission-receipt | F06 | `meter-source-admission` |
+| F06/selected-d11-static-consumer-closure | F06 | `meter-selected-d11-consumer-coverage` |
+| F06/selected-d11-cross-stage-consumer-disposition | F06 | `d11-cross-stage-main-consumer-disposition` |
+| F06/meter-validated-direct-values-to-prepass-owner | F06 | `meter` |
+| F06/meter-selected-provider-roster-loader | F06 | `meter-provider-roster-loader` |
+| F06/meter-provider-set-identity-aggregator | F06 | `meter-provider-set-identity` |
+| F06/meter-selected-provider-member-receipt-assembly | F06 | `meter-provider-identity-adapter` |
+| F06/authorized-adm-q3-prepass-terminal-receipt | F06 | `meter` |
+| F06/authorized-adm-independent-meter-g0-g1-candidate-probe | F06 | `meter` |
 | F06L/ordered-log-energy-peak-accumulator-window-and-reduction | F06L | `meter` |
 | F06I/integrated-meter-synthetic-state-and-event-transition | F06I | `meter` |
 | F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |
@@ -240,10 +285,12 @@
 | F06ND/selected-none-drc-bsi-high-byte-projection | F06ND | `drc` |
 | F06ND/selected-f06nd-controls-to-f12-bsi-drc-fields | F06ND | `drc` |
 | F06ND/selected-none-drc-source-owner-stage | F06ND | `drc` |
+| F06ND/prepared-input-to-same-source-f12-bsi-bridge | F06ND | `application` |
 | F07/input-history-block-transition | F07 | `analysis` |
 | F07/structure-refresh-flag-projection | F07 | `analysis` |
 | F07/selected-dither-flag-plan | F07 | `analysis` |
 | F07/actual-d05-transient-channel-block | F07 | `analysis` |
+| F07/spatial-final-six-to-installed-audio-source-frame | F07 | `analysis` |
 | F07/washed-f07-f08-native-parent-lifecycle-boundary | F07 | `analysis` |
 | F07A/selected-d05-transient-parameter-provider | F07A | `analysis` |
 | F07A/five-fbw-source-frame-orchestrator | F07A | `analysis` |
@@ -275,6 +322,7 @@
 | F10/same-source-f09-f10-exponent-plan | F10 | `analysis` |
 | F11/virtual-header-fixed-bit-cost | F11 | `analysis` |
 | F11/converter-offset-search | F11 | `analysis` |
+| F11/same-source-converter-pattern-and-offset-plan | F11 | `analysis` |
 | F12/grouped-quantizer-helper | F12 | `codec` |
 | F12/bounded-msb-frame-bit-writer | F12 | `codec` |
 | F12/selected-fixed-profile-header-prefix | F12 | `codec` |
@@ -282,6 +330,8 @@
 | F12/selected-q-frame-trial-and-keyless-crc | F12 | `codec` |
 | F12/selected-main-q-search | F12 | `codec` |
 | F12/selected-codec-owner-generation-previous-short-stage | F12 | `codec` |
+| F12/same-source-selected-source-numeric-plan-receipt | F12 | `codec` |
+| F12/same-source-frame-candidate-writer | F12 | `codec` |
 | F12S/mantissa-quantizer | F12S | `codec` |
 | F12A/selected-f12a-public-bap-network | F12A | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
@@ -292,6 +342,8 @@
 | F13/informational-provider-public-kind-same-getter-receipt | F13 | `joc` |
 | F13/informational-provider-lifetime-source-receipt | F13 | `joc` |
 | F13/informational-selected-winner-source-lifecycle | F13 | `joc` |
+| F13/authorized-main-g2-metadata-body-proposal | F13 | `metadata` |
+| F13/meter-receipt-to-metadata-owner-cold-candidate | F13 | `metadata` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `joc` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `codec` |
 | F13C/washed-f13c-bsi-importer-static-identity | F13C | `codec` |
@@ -348,3 +400,4 @@
 | F15/gtc-owner-state-ref-convention | F15 | `transaction` |
 | F15/gtc-owner-receipt-from-canonical-state-views | F15 | `transaction` |
 | F15/source-clock-publication-au-projection | F15 | `output` |
+| F15/atomic-output-no-replace-finalization | F15 | `output` |

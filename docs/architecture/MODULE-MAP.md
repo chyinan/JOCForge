@@ -31,7 +31,7 @@
 | domain/timeline | 已批准 callback/source/writer/AU 时钟类型边界 | Typed g/q/s/d/writer/j indices and selected conversion rules are implemented and used by J05/F05/F13 boundaries；不得用裸 `usize` 跨域。 |
 | domain/publication | 不可变待发布结果与声明 | 空壳 |
 | domain/transaction | 纯提交/撤销决策 | 空壳 |
-| application | 验证请求并协调各 owner | 仅拒绝 encode |
+| application | 验证输入并协调各 owner | 已接入 PreparedJobInput 输入准备、MAIN callback g0/g1/g2 和 F07～F10 source-analysis stage；这些接口只返回非提交候选。encode 仍返回 BackendUnavailable，没有安装 owner 状态根，也没有产出 AU。 |
 | io/bw64、pcm | 有界字节、chunk 和 PCM 读取适配 | 空壳；未复制旧扫描器 |
 | io/atomic_output | 临时写入、flush、rename 和回滚副作用 | 空壳 |
 | CLI | 参数、退出码、未来 I/O 协调 | help/version/拒绝编码 |

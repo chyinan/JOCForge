@@ -72,9 +72,9 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
         "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"
       },
       {
-        "bytes": 55099,
+        "bytes": 63125,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
+        "sha256": "d5a5f1667d2025870e07bb18f3eca3e5d183d990a529e1669556183f9331ba09"
       }
     ],
     "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
@@ -94,9 +94,9 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
         "sha256": "9bc20e80319c4a5df182a7937f69b28587de85fb3c037825890e300f3c117d53"
       },
       {
-        "bytes": 24485,
+        "bytes": 25335,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
-        "sha256": "bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"
+        "sha256": "cd94f394c9e1591978b18cb260c8ab69d830f2a362923b61dd35907876238f31"
       }
     ]
   },

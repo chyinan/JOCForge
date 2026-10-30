@@ -147,7 +147,7 @@ POINT_RESPONSE = "255b5a1b6d3648099ec31abd61c490b02987a5f320fcea7a3cf51d9f524343
 NORMAL = "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23"
 OWNER_BINDING = "b5a21ba892c071256aab26f1a4733b122cd0ba0dc3b27ad0182135a4b1c2cde3"
 OUTER = "d676c206090cd103334a1a3704c5b97efdcf191a7f262b670ddaad32d5851d36"
-P15_BASIS = "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7"
+P15_BASIS = "5bf3a586ec210261fff1fd916a8874dc41f98ee7102ac3e762ef660e5550f7e3"
 FRAME = "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"
 SOURCE_TX = "1a825c5dab7ecd292e53ddd691244c7e4bef2c34d553631c3fe714dd1cf73290"
 SHARED_ANALYSIS = "8726ae5e979abf587718df55e68f3f8a056ee26e09ed02f25a2f103f8ac79b23"
@@ -193,7 +193,7 @@ replace_slice(
                 "outputs/IMPLEMENTER_SUPPLEMENTS/POINT-RESPONSE-SOURCE-FIELD-MAPPING-V1/INPUT-ONLY-VECTORS.json",
                 "outputs/IMPLEMENTER_SUPPLEMENTS/POINT-RESPONSE-SOURCE-FIELD-MAPPING-V1/SOURCES.json",
                 "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1/CONTRACT.json",
-                "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P11-P15-SELECTED-BASIS-V1/SELECTED-P15-INPUT-RECIPE.json",
             ],
             "validation_boundary": "The four semantic source fields are joined from the approved installed prefix/bed record or the same-callback Object13 Control52 words; source+0 remains unproduced. No DBMD alias, processing flag substitution, point arithmetic approximation or commit is introduced.",
         },

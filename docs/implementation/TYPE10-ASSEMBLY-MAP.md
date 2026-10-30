@@ -117,14 +117,14 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
       "sha256": "70cd0b70feee7f5bed86f5c2942fa163c007361a7679df6d4fc584439e625b05"
     },
     {
-      "bytes": 55099,
+      "bytes": 63125,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "eda80fadd3964f0faf3f34189da3f9e6b7031032c27dfa395ab2328698758c84"
+      "sha256": "d5a5f1667d2025870e07bb18f3eca3e5d183d990a529e1669556183f9331ba09"
     },
     {
-      "bytes": 48742,
+      "bytes": 48767,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
-      "sha256": "9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"
+      "sha256": "cae0c79e1ee76bbdaa563efbf12ddd38f1a77b7db945743f13d93fd11d869a5b"
     },
     {
       "bytes": 17481,
@@ -132,9 +132,9 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
       "sha256": "93f15f67ea011a5c078dc78018d57d521a124f2b19a4f18985462c99a73312fa"
     },
     {
-      "bytes": 47463,
+      "bytes": 64598,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "ca200e1f8aebfd23cc1e4082ffec35f15f73696810cf9ee19d81598cced16e85"
+      "sha256": "16920191053f65237c620a5ec2e25414b8f35d72e677515dca47b159abaf4441"
     }
   ],
   "implementation_prohibitions": [
@@ -237,14 +237,14 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
   ],
   "test_inventory": [
     {
-      "bytes": 24485,
+      "bytes": 25335,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
-      "sha256": "bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"
+      "sha256": "cd94f394c9e1591978b18cb260c8ab69d830f2a362923b61dd35907876238f31"
     },
     {
-      "bytes": 61890,
+      "bytes": 66050,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs",
-      "sha256": "9275736d43853f6b137abdeeda5ae4aa4530acda241eacad02dcd28f22f7d555"
+      "sha256": "781c9d62b5266966cf3168b11a7bf01c76e78a44ba0784adefaf4872e2aa9526"
     }
   ],
   "vectors": {
@@ -290,7 +290,7 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
     "receiver_qmf": "NOT_IMPLEMENTED",
     "targeted_implementation_mutations_rejected": 36,
     "targeted_mapping_mutations_rejected": 20,
-    "type10_assembly_test_count": 13,
+    "type10_assembly_test_count": 14,
     "type10_packet": "LOCALLY_VERIFIED_CALLBACK_LOCAL_NONCLONE",
     "workspace_test_ignored": 1,
     "workspace_test_passed": 209

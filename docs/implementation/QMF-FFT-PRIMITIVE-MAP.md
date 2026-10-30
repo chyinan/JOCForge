@@ -111,9 +111,9 @@ The primitive is a 64-point complex transform over 128 interleaved F32 scalar sl
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 3450,
+      "bytes": 3884,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "8e482a9739c2a9064b8047de74178344bd656b9d5650f389d3fa460ba8d04902"
+      "sha256": "a3b3a73ffc0ada871bdb3aac82aac439a8f559f2723cb0c960ea0c58193abb07"
     }
   ],
   "implementation_prohibitions": [

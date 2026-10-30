@@ -6,6 +6,10 @@ The PCM I/O crate also uses the locked `sha2` dependency to bind a borrowed pars
 
 The atomic output adapter uses the locked `serde_json` dependency to serialize the F15 finalize-intent value into the contract's canonical compact JSON bytes before durable staging. This serialization stays inside `jocforge-io`; domain and application exchange typed proposals and receipts, not JSON values.
 
+Windows output finalization uses the exactly pinned, Windows-only `windows-sys` 0.61.2 dependency in `jocforge-io/src/atomic_output/windows_rename.rs`. After validation and fsync through a separate read/write handle, the shell reopens staging with `GENERIC_READ | DELETE`, holds a read-capable parent-directory handle opened with `FILE_FLAG_BACKUP_SEMANTICS`, and calls `SetFileInformationByHandle` with `FileRenameInfo`, a null root directory, an absolute destination, and a zeroed rename union (`ReplaceIfExists = false`). The path existence check remains advisory; the operating-system rename result decides a concurrent no-replace collision, and `ERROR_ALREADY_EXISTS` or `ERROR_FILE_EXISTS` maps to `FinalPathExistsAtRename`.
+
+The workspace `unsafe_code` lint is `deny`. Its only allowed exceptions are the Windows rename module, `OutputAppendProposal::record_durable_io_success` as the guarded receipt issuer, and the trusted append callsite in `jocforge-io/src/atomic_output/mod.rs`; `scripts/check-boundaries.py` checks the exact source locations and rejects any other unsafe use or allow. Domain, application, CLI and all other I/O code remain denied. The Windows rename behavior was verified in the host's local NTFS workspace test directory, including a destination created by a competing process after preflight. UNC, ReFS, reparse-point or ancestor stability, and crash durability are not established. Non-Windows keeps the prior path-based rename behavior without an atomic cross-process no-replace claim.
+
 当前实际 crate 依赖图：
 
 ```mermaid
