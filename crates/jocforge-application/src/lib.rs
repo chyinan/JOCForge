@@ -34,8 +34,16 @@ use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
+pub mod codec_source_bridge;
+pub mod independent_meter_callback;
+pub mod metadata_source_bridge;
+pub mod meter_finalization_bridge;
+pub mod meter_source_admission;
 pub mod meter_source_bridge;
 pub mod output_publication;
+pub mod source_analysis_bridge;
+pub mod source_frame_bridge;
+pub mod spatial_callback;
 
 /// LOCAL_TRANSLATION: immutable caller-resource binding after the input adapter
 /// validates RIFF and supplies its descriptor and sample extent. This value is
@@ -53,7 +61,7 @@ pub struct PreparedJobInput {
     config_sha256: [u8; 32],
     resource: Arc<[u8]>,
     resource_identity: ResourceIdentity,
-    domain_identity: PreparedJobInputIdentity,
+    domain_identity: Arc<PreparedJobInputIdentity>,
     primary_control_binding: Option<SelectedPrimaryControlBinding>,
     primary_metadata_controls: Option<PrimaryMetadataControlRows>,
 }
@@ -212,8 +220,13 @@ impl PreparedJobInput {
     }
 
     /// Returns the one domain-owned identity projection derived during admission.
-    pub const fn domain_identity(&self) -> &PreparedJobInputIdentity {
-        &self.domain_identity
+    pub fn domain_identity(&self) -> &PreparedJobInputIdentity {
+        self.domain_identity.as_ref()
+    }
+
+    /// Clones the one admission-created identity capability without recomputing either hash.
+    pub fn domain_identity_capability(&self) -> Arc<PreparedJobInputIdentity> {
+        Arc::clone(&self.domain_identity)
     }
 
     pub const fn primary_control_binding(&self) -> Option<&SelectedPrimaryControlBinding> {
@@ -481,7 +494,7 @@ pub fn prepare_selected_job_input(
         config_sha256,
         resource,
         resource_identity,
-        domain_identity,
+        domain_identity: Arc::new(domain_identity),
         primary_control_binding: None,
         primary_metadata_controls: None,
     })

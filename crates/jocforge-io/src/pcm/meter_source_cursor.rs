@@ -6,6 +6,7 @@ use jocforge_domain::{
         MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase, MeterSampleCount,
         MeterSourceSampleCount, MeterUpstreamGeneration,
     },
+    meter::source_frame::MeterSourceReadIndex,
     timeline::AdmSampleIndex,
 };
 
@@ -69,6 +70,7 @@ pub struct MeterPcmSourceCursor {
     normal_callbacks: MeterCallbackCount,
     callback_index: MeterCallbackIndex,
     source_cursor: MeterSourcePosition,
+    read_index: MeterSourceReadIndex,
 }
 
 impl MeterPcmSourceCursor {
@@ -99,6 +101,7 @@ impl MeterPcmSourceCursor {
             normal_callbacks: MeterCallbackCount::new(normal_callbacks),
             callback_index: MeterCallbackIndex::new(0),
             source_cursor: MeterSourcePosition(0),
+            read_index: MeterSourceReadIndex::new(0),
         })
     }
 
@@ -121,6 +124,10 @@ impl MeterPcmSourceCursor {
     pub const fn source_cursor(&self) -> MeterSourcePosition {
         self.source_cursor
     }
+
+    pub const fn read_index(&self) -> MeterSourceReadIndex {
+        self.read_index
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -130,6 +137,8 @@ pub struct MeterRawInputFrame {
     phase: MeterCallbackPhase,
     source_cursor_before: MeterSourcePosition,
     source_cursor_after: MeterSourcePosition,
+    source_read_index_before: MeterSourceReadIndex,
+    source_read_index_after: MeterSourceReadIndex,
     host_input_count: MeterSampleCount,
     source_padding_count: MeterSampleCount,
     raw_input_rows: Vec<Vec<u32>>,
@@ -154,6 +163,14 @@ impl MeterRawInputFrame {
 
     pub const fn source_cursor_after(&self) -> MeterSourcePosition {
         self.source_cursor_after
+    }
+
+    pub const fn source_read_index_before(&self) -> MeterSourceReadIndex {
+        self.source_read_index_before
+    }
+
+    pub const fn source_read_index_after(&self) -> MeterSourceReadIndex {
+        self.source_read_index_after
     }
 
     pub const fn host_input_count(&self) -> MeterSampleCount {
@@ -268,6 +285,17 @@ pub fn stage_meter_pcm_source_frame(
         return Err(MeterSourceCursorError::SourceProfileMismatch);
     }
 
+    let source_read_index_before = before.read_index;
+    let source_read_index_after = if normal {
+        let next_read_index = source_read_index_before
+            .value()
+            .checked_add(1)
+            .ok_or(MeterSourceCursorError::ArithmeticOverflow)?;
+        MeterSourceReadIndex::new(next_read_index)
+    } else {
+        source_read_index_before
+    };
+
     let next_index = callback_index
         .value()
         .checked_add(1)
@@ -279,6 +307,7 @@ pub fn stage_meter_pcm_source_frame(
         normal_callbacks: before.normal_callbacks,
         callback_index: MeterCallbackIndex::new(next_index),
         source_cursor: MeterSourcePosition(source_cursor_after),
+        read_index: source_read_index_after,
     };
     let frame = MeterRawInputFrame {
         callback_index,
@@ -286,6 +315,8 @@ pub fn stage_meter_pcm_source_frame(
         phase,
         source_cursor_before: MeterSourcePosition(cursor_before),
         source_cursor_after: MeterSourcePosition(source_cursor_after),
+        source_read_index_before,
+        source_read_index_after,
         host_input_count: MeterSampleCount::new(host_input_count),
         source_padding_count: MeterSampleCount::new(METER_FRAME_SAMPLES_U64 - host_input_count),
         raw_input_rows: rows,
@@ -387,6 +418,7 @@ mod tests {
             MeterPcmSourceCursor::cold(&parsed, selected_source_identity, selected_source_samples)
                 .unwrap();
         assert_eq!(state.source_identity().sha256(), parsed.source_sha256());
+        assert_eq!(state.read_index().value(), 0);
 
         for callback in 0..total_callbacks {
             let cursor_before = callback * METER_FRAME_SAMPLES_U64;
@@ -399,6 +431,12 @@ mod tests {
                 stage_meter_pcm_source_frame(&state, MeterCallbackIndex::new(callback), &parsed)
                     .unwrap();
             let frame = proposal.frame();
+            let expected_read_index_before = callback.min(normal_callbacks);
+            let expected_read_index_after = if callback < normal_callbacks {
+                callback + 1
+            } else {
+                normal_callbacks
+            };
             let expected_phase = if callback < normal_callbacks {
                 MeterCallbackPhase::NormalSource
             } else {
@@ -411,6 +449,18 @@ mod tests {
                 METER_FRAME_SAMPLES_U64 - expected_read
             );
             assert_eq!(frame.upstream_generation().value(), callback + 1);
+            assert_eq!(
+                frame.source_read_index_before().value(),
+                expected_read_index_before
+            );
+            assert_eq!(
+                frame.source_read_index_after().value(),
+                expected_read_index_after
+            );
+            assert_eq!(
+                proposal.after().read_index().value(),
+                expected_read_index_after
+            );
             assert_eq!(
                 frame.source_cursor_before().value(),
                 cursor_before.min(source_sample_count)
@@ -443,6 +493,29 @@ mod tests {
         }
         assert_eq!(state.callback_index().value(), total_callbacks);
         assert_eq!(state.source_cursor().value(), source_sample_count);
+        assert_eq!(state.read_index().value(), normal_callbacks);
+    }
+
+    #[test]
+    fn dropping_normal_source_proposal_keeps_committed_read_index_cold() {
+        let recipe = input_recipe();
+        let source_bytes = in_memory_pcm24_wave(&recipe);
+        let parsed = parse_selected_riff_pcm24(&source_bytes, None).unwrap();
+        let source_samples = MeterSourceSampleCount::new(parsed.total_samples()).unwrap();
+        let source_identity =
+            MeterPcmSourceIdentity::from_selected_resource_sha256(parsed.source_sha256());
+        let state = MeterPcmSourceCursor::cold(&parsed, source_identity, source_samples).unwrap();
+
+        assert_eq!(state.read_index().value(), 0);
+        let proposal =
+            stage_meter_pcm_source_frame(&state, state.callback_index(), &parsed).unwrap();
+        assert_eq!(proposal.frame().source_read_index_before().value(), 0);
+        assert_eq!(proposal.frame().source_read_index_after().value(), 1);
+        drop(proposal);
+
+        assert_eq!(state.callback_index().value(), 0);
+        assert_eq!(state.source_cursor().value(), 0);
+        assert_eq!(state.read_index().value(), 0);
     }
 
     #[test]
@@ -506,6 +579,8 @@ mod tests {
             .frame()
             .clone();
         assert_eq!(frame.host_input_count().value(), 1_050);
+        assert_eq!(frame.source_read_index_before().value(), 0);
+        assert_eq!(frame.source_read_index_after().value(), 1);
         assert_eq!(frame.source_padding_count().value(), 486);
         assert_eq!(frame.rows().len(), 38);
         let expected_rows = parsed

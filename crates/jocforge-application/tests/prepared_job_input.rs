@@ -1,6 +1,8 @@
 // pattern: Functional Core
 use jocforge_application::{
-    PreparedJobInputError, SelectedAdmResourcePayloads, prepare_selected_job_input,
+    PreparedJobInputError, SelectedAdmResourcePayloads,
+    meter_source_admission::{MeterSourceAdmissionError, admit_meter_source_owner},
+    prepare_selected_job_input,
 };
 use jocforge_domain::frontend::adm_file_storage_map::AdmFileStorageTrackSlot;
 use jocforge_domain::frontend::selected_adm_graph::SelectedTrackKind;
@@ -9,6 +11,7 @@ use jocforge_domain::frontend::{
     job_configuration::SelectedWaveDescriptor, normal_control_snapshot::NormalControlSnapshotError,
     validate_f01e_package_manifest, validate_f01e_provider,
 };
+use jocforge_domain::meter::sample_block_queue::MeterSourceSampleCount;
 use jocforge_domain::transaction::{AttemptId, ProgrammeId};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -318,6 +321,84 @@ fn programme_id_is_caller_supplied_and_separate_from_content_identity() {
     assert_eq!(first.job_xml_sha256(), second.job_xml_sha256());
     assert_eq!(first.config_sha256(), second.config_sha256());
     assert!(first.identity_envelope().get("programme_id").is_none());
+}
+
+#[test]
+fn meter_source_admission_binds_owner_identity_to_prepared_input_and_attempt() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = &vectors["config_cases"][0];
+    let descriptor = &case["pcm_descriptor"];
+    let (resource, spans) = selected_resource();
+    let prepared = prepare_selected_job_input(
+        test_programme_id(),
+        case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(
+            descriptor["sample_rate"].as_u64().unwrap() as u32,
+            descriptor["channels"].as_u64().unwrap() as u16,
+            descriptor["pcm_bits"].as_u64().unwrap() as u16,
+        ),
+        descriptor["source_samples"].as_u64().unwrap(),
+        Arc::clone(&resource),
+        metadata_payloads(&resource, &spans),
+    )
+    .unwrap();
+    let samples = MeterSourceSampleCount::new(prepared.configuration().source_samples()).unwrap();
+    let first = admit_meter_source_owner(&prepared, AttemptId::new(0), samples).unwrap();
+    let repeated = admit_meter_source_owner(&prepared, AttemptId::new(0), samples).unwrap();
+    let restarted = admit_meter_source_owner(&prepared, AttemptId::new(1), samples).unwrap();
+
+    assert!(first.matches(&prepared, AttemptId::new(0), samples));
+    assert_eq!(first.owner_id(), repeated.owner_id());
+    assert_ne!(first.owner_id(), restarted.owner_id());
+    assert_eq!(first.programme_id(), prepared.programme_id());
+    assert_eq!(first.resource_identity(), prepared.resource_identity());
+    assert_eq!(first.prepared_identity(), prepared.domain_identity());
+    assert_eq!(first.config_sha256(), prepared.config_sha256());
+    assert_eq!(
+        first.selected_profile(),
+        prepared.configuration().selected_profile()
+    );
+    assert_eq!(first.wave(), prepared.configuration().wave());
+    assert_eq!(first.source_samples(), samples);
+    assert_ne!(
+        first.standalone_meter_identity(),
+        restarted.standalone_meter_identity()
+    );
+    assert!(!first.matches(&prepared, AttemptId::new(1), samples));
+}
+
+#[test]
+fn meter_source_admission_rejects_a_mismatched_typed_extent() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = &vectors["config_cases"][0];
+    let descriptor = &case["pcm_descriptor"];
+    let (resource, spans) = selected_resource();
+    let prepared = prepare_selected_job_input(
+        test_programme_id(),
+        case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(
+            descriptor["sample_rate"].as_u64().unwrap() as u32,
+            descriptor["channels"].as_u64().unwrap() as u16,
+            descriptor["pcm_bits"].as_u64().unwrap() as u16,
+        ),
+        descriptor["source_samples"].as_u64().unwrap(),
+        Arc::clone(&resource),
+        metadata_payloads(&resource, &spans),
+    )
+    .unwrap();
+    let wrong_samples =
+        MeterSourceSampleCount::new(prepared.configuration().source_samples() + 1).unwrap();
+
+    assert_eq!(
+        admit_meter_source_owner(&prepared, AttemptId::new(0), wrong_samples),
+        Err(MeterSourceAdmissionError::SourceExtentMismatch)
+    );
 }
 
 fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {

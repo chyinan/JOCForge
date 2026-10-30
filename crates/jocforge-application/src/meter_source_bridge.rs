@@ -3,12 +3,14 @@
 
 pub use jocforge_domain::{
     frontend::{
+        FrontendControlReplacementCandidate, ValidatedFeatureFft4096MathProvider,
         adm_file_storage_map::{
             AdmFileStorageChannelEntry, AdmFileStorageChannelMap, AdmFileStorageMapError,
             AdmFileStorageTrackSlot, ConverterChannelInputId,
         },
         dbmd_sections::{DbmdTrackFields, SelectedDbmdSections},
         job_configuration::{SelectedInputKind, SelectedWaveDescriptor},
+        normal_control_snapshot::NormalControlSnapshotOutput,
         selected_adm_graph::{
             ChnaTrackIndex, PhysicalHostIndex, SelectedAdmGraph, SelectedPhysicalTrack,
             SelectedTrackKind,
@@ -16,26 +18,44 @@ pub use jocforge_domain::{
     },
     joc::oamd::reader_target::{ReaderTargetControlLineage, ReaderTargetControlRows},
     meter::{
-        k_matrix::{KMatrixMode, KMatrixProfile, generate_k_matrix},
+        direct_provider_inventory::{MeterDirectProviderAssetId, MeterDirectProviderInventory},
+        k_matrix::{KMatrixMode, KMatrixProfile, KMatrixProvider, generate_k_matrix},
         lfe_delay_ring::{MeterFrontendCallbackInput, MeterLfeError},
         meter_prepass::{
             IndependentMeterCallbackStage, IndependentMeterPrepass, IndependentMeterPrepassError,
         },
         object_renderer::ObjectRenderCallbackGeneration,
         post_render_meter::PostRenderMeterReceipt,
+        provider_set_identity::{
+            ExpectedMeterProviderMember, MeterProviderMemberReceipt, MeterProviderSetIdentityError,
+            SelectedMeterProviderRoster, SelectedMeterProviderSetIdentity,
+            validated_value_words_sha256,
+        },
         sample_block_queue::{
             MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase, MeterSampleCount,
             MeterSourceSampleCount, MeterUpstreamGeneration,
         },
-        shared_gain_delay::SharedGainDelayParameters,
+        shared_gain_delay::{SharedGainDelayDirectParameters, SharedGainDelayParameters},
         source_frame::{
             MeterSourceCallbackFrame, MeterSourceCallbackFrameParts, MeterSourceIdentity,
             MeterSourcePosition,
         },
+        standalone_root::{
+            MeterKFilterExponentState, MeterProviderIdentity, MeterProviderSet,
+            MeterRootCallbackProgress, MeterSourceOwnerId, MeterSourceReadIndex,
+            StandaloneMeterCallbackReceipt, StandaloneMeterIdentity, StandaloneMeterRoot,
+            StandaloneMeterRootError,
+        },
+        true_peak::TruePeakParameters,
     },
-    spatial::spatial_audio_state::MeterComponentOutputRows,
+    profile::{EmdfCarriageProfile, ResolvedEncodingProfile},
+    spatial::{
+        SpatialAudioCallbackOutcome, SpatialAudioReplacementCandidate,
+        SpatialControlReplacementCandidate, ValidatedComponentParameterProvider,
+        ValidatedWindowQ15Provider, spatial_audio_state::MeterComponentOutputRows,
+    },
     timeline::FrontendCallbackIndex,
-    transaction::ProgrammeId,
+    transaction::{GtcOwnerId, ProgrammeId},
 };
 
 use crate::{PreparedJobInput, PreparedJobInputError, ResourceIdentity};
@@ -403,9 +423,18 @@ impl<'a> MeterSourceCallbackView<'a> {
         } else {
             0
         };
+        let source_read_index_before = frame.source_read_index_before().value();
+        let expected_source_read_index_after = if normal {
+            source_read_index_before
+                .checked_add(1)
+                .ok_or(MeterSourceBridgeError::SourceClock)?
+        } else {
+            source_read_index_before
+        };
         if frame.phase() != expected_phase
             || host_count != expected_host_count
             || padding_count != CALLBACK_SAMPLES - expected_host_count
+            || frame.source_read_index_after().value() != expected_source_read_index_after
             || (!normal && (source_before != source_samples || source_after != source_samples))
         {
             return Err(MeterSourceBridgeError::SourceClock);
@@ -453,6 +482,14 @@ impl<'a> MeterSourceCallbackView<'a> {
 
     pub const fn source_cursor_after(&self) -> MeterSourcePosition {
         self.frame.source_cursor_after()
+    }
+
+    pub const fn source_read_index_before(&self) -> MeterSourceReadIndex {
+        self.frame.source_read_index_before()
+    }
+
+    pub const fn source_read_index_after(&self) -> MeterSourceReadIndex {
+        self.frame.source_read_index_after()
     }
 
     pub const fn source_samples(&self) -> MeterSourceSampleCount {
@@ -521,6 +558,8 @@ impl<'a> MeterSourceCallbackView<'a> {
                 phase: self.frame.phase(),
                 source_cursor_before: self.frame.source_cursor_before(),
                 source_cursor_after: self.frame.source_cursor_after(),
+                source_read_index_before: self.frame.source_read_index_before(),
+                source_read_index_after: self.frame.source_read_index_after(),
                 source_samples: self.frame.source_samples(),
                 normal_callbacks: self.frame.normal_callbacks(),
                 host_input_count: self.frame.host_input_count(),
@@ -566,6 +605,12 @@ impl MeterSourceOarHandoff {
     pub const fn source_receipt(&self) -> MeterSourceOarReceipt {
         self.source_receipt
     }
+
+    /// Transfers the exact OAR input and its source/spatial lineage to the
+    /// selected meter-root coordinator without committing a leaf owner.
+    pub fn into_parts(self) -> (MeterFrontendCallbackInput, MeterSourceOarReceipt) {
+        (self.input, self.source_receipt)
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -575,6 +620,8 @@ pub struct MeterSourceOarReceipt {
     phase: MeterCallbackPhase,
     source_cursor_before: MeterSourcePosition,
     source_cursor_after: MeterSourcePosition,
+    source_read_index_before: MeterSourceReadIndex,
+    source_read_index_after: MeterSourceReadIndex,
     source_samples: MeterSourceSampleCount,
     normal_callbacks: MeterCallbackCount,
     host_input_count: MeterSampleCount,
@@ -606,6 +653,14 @@ impl MeterSourceOarReceipt {
 
     pub const fn source_cursor_after(self) -> MeterSourcePosition {
         self.source_cursor_after
+    }
+
+    pub const fn source_read_index_before(self) -> MeterSourceReadIndex {
+        self.source_read_index_before
+    }
+
+    pub const fn source_read_index_after(self) -> MeterSourceReadIndex {
+        self.source_read_index_after
     }
 
     pub const fn source_samples(self) -> MeterSourceSampleCount {
@@ -689,6 +744,7 @@ pub fn ready_to_finalize(
     prepass: &IndependentMeterPrepass,
     source_callback_index: MeterCallbackIndex,
     source_cursor_after: MeterSourcePosition,
+    source_read_index: MeterSourceReadIndex,
     source_samples: MeterSourceSampleCount,
     normal_callbacks: MeterCallbackCount,
 ) -> bool {
@@ -700,6 +756,7 @@ pub fn ready_to_finalize(
         && prepass.next_callback_index().value() == total_callbacks
         && source_callback_index.value() == total_callbacks
         && source_cursor_after.value() == source_samples.value()
+        && source_read_index.value() == normal_callbacks.value()
         && prepass.ready_to_finalize()
 }
 

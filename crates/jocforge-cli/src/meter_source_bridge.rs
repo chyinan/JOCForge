@@ -80,9 +80,17 @@ pub fn view_for_source_proposal<'a>(
     prepared: &'a PreparedJobInput,
     proposal: &'a MeterPcmSourceProposal,
 ) -> Result<MeterSourceCallbackView<'a>, MeterSourceCoordinatorError> {
+    application_bridge::MeterSourceCallbackView::new(prepared, source_frame_for_proposal(proposal))
+        .map_err(MeterSourceCoordinatorError::Bridge)
+}
+
+/// Projects the actual IO cursor proposal into the immutable application frame.
+pub fn source_frame_for_proposal(
+    proposal: &MeterPcmSourceProposal,
+) -> MeterSourceCallbackFrame<'_> {
     let frame = proposal.frame();
     let after = proposal.after();
-    let source_frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+    MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
         callback_index: frame.callback_index(),
         upstream_generation: frame.upstream_generation(),
         phase: frame.phase(),
@@ -91,12 +99,12 @@ pub fn view_for_source_proposal<'a>(
         normal_callbacks: after.normal_callbacks(),
         source_cursor_before: MeterSourcePosition::new(frame.source_cursor_before().value()),
         source_cursor_after: MeterSourcePosition::new(frame.source_cursor_after().value()),
+        source_read_index_before: frame.source_read_index_before(),
+        source_read_index_after: frame.source_read_index_after(),
         host_input_count: frame.host_input_count(),
         source_padding_count: frame.source_padding_count(),
         rows: frame.rows(),
-    });
-    application_bridge::MeterSourceCallbackView::new(prepared, source_frame)
-        .map_err(MeterSourceCoordinatorError::Bridge)
+    })
 }
 
 #[must_use]
@@ -136,16 +144,20 @@ pub fn stage_meter_source_oar_callback<'a>(
 
     if source_cursor.callback_index() != callback_index
         || source_cursor.source_cursor().value() != frame.source_cursor_before().value()
+        || source_cursor.read_index() != frame.source_read_index_before()
         || source_cursor.source_identity() != cursor_after.source_identity()
         || source_cursor.source_samples() != cursor_after.source_samples()
         || source_cursor.normal_callbacks() != cursor_after.normal_callbacks()
         || cursor_after.callback_index().value() != expected_next
         || cursor_after.source_cursor().value() != frame.source_cursor_after().value()
+        || cursor_after.read_index() != frame.source_read_index_after()
         || receipt.callback_index() != callback_index
         || receipt.upstream_generation().value() != frame.upstream_generation().value()
         || receipt.phase() != frame.phase()
         || receipt.source_cursor_before().value() != frame.source_cursor_before().value()
         || receipt.source_cursor_after().value() != frame.source_cursor_after().value()
+        || receipt.source_read_index_before() != frame.source_read_index_before()
+        || receipt.source_read_index_after() != frame.source_read_index_after()
         || receipt.source_samples() != cursor_after.source_samples()
         || receipt.normal_callbacks() != cursor_after.normal_callbacks()
         || receipt.host_input_count() != frame.host_input_count()
@@ -219,6 +231,7 @@ pub fn ready_to_finalize(
         prepass,
         source_cursor.callback_index(),
         MeterSourcePosition::new(source_cursor.source_cursor().value()),
+        source_cursor.read_index(),
         source_cursor.source_samples(),
         source_cursor.normal_callbacks(),
     )

@@ -12,7 +12,7 @@ use jocforge_application::{
         MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase, MeterFrontendCallbackInput,
         MeterSampleCount, MeterSourceBridgeError, MeterSourceCallbackFrame,
         MeterSourceCallbackFrameParts, MeterSourceCallbackView, MeterSourceIdentity,
-        MeterSourcePosition, MeterSourceSampleCount, MeterUpstreamGeneration,
+        MeterSourcePosition, MeterSourceReadIndex, MeterSourceSampleCount, MeterUpstreamGeneration,
         ObjectRenderCallbackGeneration, ProgrammeId, SelectedTrackKind, SelectedWaveDescriptor,
         SharedGainDelayParameters, generate_k_matrix,
     },
@@ -131,6 +131,12 @@ fn selected_pcm_callback_joins_direct_lfe_and_oar_clock_through_three_drains() {
             source_view.source_padding_count().value(),
             if callback == 0 { 1_535 } else { 1_536 }
         );
+        let expected_read_index_before = u64::from(callback != 0);
+        assert_eq!(
+            source_view.source_read_index_before().value(),
+            expected_read_index_before
+        );
+        assert_eq!(source_view.source_read_index_after().value(), 1);
 
         let input = frontend_input(&source_view, callback);
         let handoff = source_view.bind_frontend_input(input).unwrap();
@@ -141,7 +147,13 @@ fn selected_pcm_callback_joins_direct_lfe_and_oar_clock_through_three_drains() {
         assert_eq!(meter_receipt.callback_index().value(), callback);
         assert_eq!(source_receipt.callback_index().value(), callback);
         assert_eq!(source_receipt.upstream_generation().value(), callback + 1);
+        assert_eq!(
+            source_receipt.source_read_index_before().value(),
+            expected_read_index_before
+        );
+        assert_eq!(source_receipt.source_read_index_after().value(), 1);
         assert_eq!(cursor.callback_index().value(), callback + 1);
+        assert_eq!(cursor.read_index().value(), 1);
     }
 
     assert_eq!(cursor.source_cursor().value(), parsed.total_samples());
@@ -150,6 +162,7 @@ fn selected_pcm_callback_joins_direct_lfe_and_oar_clock_through_three_drains() {
     reset_meter_source_and_prepass(&mut cursor, &mut prepass, &prepared, &parsed).unwrap();
     assert_eq!(cursor.callback_index().value(), 0);
     assert_eq!(cursor.source_cursor().value(), 0);
+    assert_eq!(cursor.read_index().value(), 0);
     assert_eq!(prepass.next_callback_index().value(), 0);
 }
 
@@ -412,6 +425,16 @@ fn callback_frame<'a>(
     rows: &'a [Vec<u32>],
     source_samples: u64,
 ) -> MeterSourceCallbackFrame<'a> {
+    callback_frame_with_read_indices(prepared, rows, source_samples, 0, 1)
+}
+
+fn callback_frame_with_read_indices<'a>(
+    prepared: &PreparedJobInput,
+    rows: &'a [Vec<u32>],
+    source_samples: u64,
+    source_read_index_before: u64,
+    source_read_index_after: u64,
+) -> MeterSourceCallbackFrame<'a> {
     let normal_callbacks = source_samples.div_ceil(1_536);
     let host_input_count = source_samples.min(1_536);
     MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
@@ -425,10 +448,30 @@ fn callback_frame<'a>(
         normal_callbacks: MeterCallbackCount::new(normal_callbacks),
         source_cursor_before: MeterSourcePosition::new(0),
         source_cursor_after: MeterSourcePosition::new(host_input_count),
+        source_read_index_before: MeterSourceReadIndex::new(source_read_index_before),
+        source_read_index_after: MeterSourceReadIndex::new(source_read_index_after),
         host_input_count: MeterSampleCount::new(host_input_count),
         source_padding_count: MeterSampleCount::new(1_536 - host_input_count),
         rows,
     })
+}
+
+#[test]
+fn application_source_boundary_rejects_a_normal_read_without_read_index_advance() {
+    let prepared = prepared_job_input();
+    let rows = vec![vec![0; 1_536]; 38];
+    let frame = callback_frame_with_read_indices(
+        &prepared,
+        &rows,
+        prepared.configuration().source_samples(),
+        0,
+        0,
+    );
+
+    assert!(matches!(
+        MeterSourceCallbackView::new(&prepared, frame),
+        Err(MeterSourceBridgeError::SourceClock)
+    ));
 }
 
 fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
