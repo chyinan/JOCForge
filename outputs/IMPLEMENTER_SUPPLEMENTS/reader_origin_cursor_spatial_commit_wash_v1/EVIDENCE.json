@@ -1,0 +1,153 @@
+{
+  "schema": "reader-origin-cursor-spatial-commit-native-evidence.v1",
+  "purpose": "Bind the selected native reader call to its configured sample origin and relative cursor, then preserve the same-call provider-to-codec-to-writer relation.",
+  "identity": {
+    "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_path_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "authorized_input_alias_hash_match": true,
+    "job_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "native_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "native_processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_reader_sample_address_report_sha256": "ef0776227f4d4f2534f98de020017184bcc47dfdf2a24d484e42f555ae8a5b22",
+    "static_offset_owner_report_sha256": "4b60421cd2578013fad30d2180d0b72d1883cd48d5d121e3bbe026e8ec565790",
+    "static_reader_codec_generation_report_sha256": "b929139a5ab1b6e49b213a3faf4f93ba0a5425d95c901a762498ce19bfe3b8f6",
+    "native_execution_log_sha256": "66b123188d24a4b4414a4edb8e169a8a135696e87ea427531dba9f54beffb7c",
+    "native_reference_output_sha256": "7ea9c29780a43b9bd14137f76ee06fb44f9c500fa8bccafda28706a85a2efe83",
+    "native_reference_output_bytes": 135168,
+    "native_reference_output_payload_retained": false
+  },
+  "capture": {
+    "run_id": "run-138",
+    "capture_kind": "bounded same-run debugger stops plus hash-matched static tracing",
+    "native_job_completion": "ENCODER_DONE_AND_OUTPUT_100_PERCENT",
+    "native_process_exit_code": "NOT_CAPTURED",
+    "dee_logged_elapsed_seconds": 1276,
+    "debugger_pause_time_included_in_logged_elapsed": true,
+    "capture_transcript_persisted": false,
+    "raw_audio_or_pcm_read_by_observer": false,
+    "raw_audio_or_pcm_persisted": false,
+    "raw_pointer_values_persisted": false,
+    "private_license_contents_read_or_persisted": false,
+    "model_execution": "NOT_RUN",
+    "model_comparison": "NOT_EVALUATED",
+    "type10_composition": "NOT_RUN",
+    "six_plane_composition": "NOT_RUN",
+    "gate1_closed": false
+  },
+  "reader_origin_and_cursor": {
+    "setter_configuration_token": "config-A",
+    "same_configuration_object_reused_by_reader_state": true,
+    "sample_rate": 48000,
+    "source_offset_seconds_observed": 3610.0,
+    "source_offset_owner": "UNBOUND_AUTO_OFFSET_VS_FFOA_SOURCE",
+    "absolute_start_boundary_samples": 173280000,
+    "absolute_end_boundary_samples": 173330000,
+    "relative_start_sample": 0,
+    "relative_end_sample": 49999,
+    "reader_state_token": "reader-state-A",
+    "reader_state_extent_samples": 49999,
+    "reader_state_initial_cursor": 0,
+    "reader_inner_object_token": "reader-inner-A",
+    "selected_provider_call": {
+      "reader_state_token": "reader-state-A",
+      "cursor_before_samples": 6144,
+      "extent_samples": 49999,
+      "requested_frame_samples": 1536,
+      "provider_descriptor_token": "descriptor-A"
+    },
+    "selected_call_absolute_adm_sample_position": {
+      "value": 173286144,
+      "status": "DERIVED_FOR_THIS_SELECTED_CALL",
+      "derivation": "absolute_start_boundary_samples + relative_start_sample + cursor_before_samples",
+      "native_absolute_position_field_observed": false,
+      "general_offset_and_cursor_rule": "PARTIALLY_BOUND_SOURCE_OFFSET_OWNER_OPEN"
+    }
+  },
+  "same_call_codec_and_writer": {
+    "native_thread_token": "thread-A",
+    "native_parent_activation_token": "activation-A",
+    "reader_provider_to_codec_input": {
+      "provider_descriptor_token": "descriptor-A",
+      "codec_input_descriptor_token": "descriptor-A",
+      "same_descriptor_pointer_identity": true,
+      "same_thread_and_parent_activation": true,
+      "codec_consumed_sample_span": 1536,
+      "descriptor_field_1_raw_value": 38,
+      "descriptor_field_1_semantics": "UNBOUND",
+      "descriptor_field_3_raw_value": 38,
+      "descriptor_field_3_semantics": "UNBOUND",
+      "plane_table_token": "plane-table-A",
+      "plane_values_compared_to_model": "NOT_EVALUATED"
+    },
+    "codec_output_to_file_writer": {
+      "codec_output_descriptor_token": "codec-output-descriptor-A",
+      "encoded_buffer_begin_token": "encoded-buffer-A",
+      "encoded_buffer_end_token": "encoded-end-A",
+      "encoded_buffer_capacity_end_token": "encoded-end-A",
+      "encoded_byte_length": 4096,
+      "capacity_end_matches_end": true,
+      "writer_data_token": "encoded-buffer-A",
+      "writer_byte_length": 4096,
+      "writer_data_matches_codec_output_begin": true,
+      "writer_length_matches_codec_output_length": true,
+      "writer_ordinal_value": 0,
+      "writer_ordinal_static_role": "ENCODER_OUTPUT_ORDINAL_USED_FOR_OUTPUT_STREAM_ROUTING",
+      "writer_ordinal_is_generation_token": false,
+      "writer_normal_return_observed": true,
+      "same_thread_and_parent_activation": true
+    },
+    "binding_basis": "In one native caller activation, the provider output descriptor and codec input descriptor had pointer identity. The codec output byte buffer and length matched the writer input pointer and length, and the writer returned normally. Static caller and writer analysis shows the ordinal selects an output stream segment; it is not a generation token. No event ordering, ordinal, equal scalar, or hash was used as a generation join.",
+    "native_generation_field": "NOT_CAPTURED"
+  },
+  "clock_domains": {
+    "adm_sample_position": "DERIVED_FOR_SELECTED_CALL: 173286144",
+    "host_frame": "NOT_CAPTURED",
+    "spatial_callback": "NOT_CAPTURED",
+    "fit_generation": "NOT_CAPTURED",
+    "u04_invocation": "NOT_CAPTURED",
+    "reader_relative_cursor": "CAPTURED: 6144",
+    "codec_invocation": "SAME_PARENT_ACTIVATION_BOUND",
+    "writer_output_ordinal": "CAPTURED: 0; OUTPUT_STREAM_ROUTING_ROLE_STATICALLY_BOUND",
+    "consumer_generation": "NOT_CAPTURED"
+  },
+  "static_findings": {
+    "reader_state_cursor_initialization": "BOUND_TO_ZERO",
+    "reader_state_extent_source": "BOUND_TO_INNER_READER_DURATION",
+    "provider_cursor_domain": "READER_RELATIVE",
+    "provider_advances_cursor_by_requested_frame_size": "STATICALLY_BOUND",
+    "range_setter_reads_offset_key_and_applies_it_to_file_position_bounds": "STATICALLY_BOUND",
+    "offset_numeric_source_owner": "UNBOUND_AUTO_OFFSET_VS_FFOA_SOURCE",
+    "explicit_native_generation_field_in_scoped_reader_codec_writer_chain": "NOT_OBSERVED"
+  },
+  "prior_same_configuration_corroboration": {
+    "zero_span_flush_codec_calls": 5,
+    "nonzero_span_codec_calls": 33,
+    "nonzero_span_samples": 1536,
+    "source": "Earlier same-configuration bounded scalar trace; not joined to this R138 call or generation",
+    "per_flush_codec_output_to_writer_identity": "UNBOUND"
+  },
+  "open_items": {
+    "source_offset_owner_and_auto_offset_ffoa_precedence": "UNBOUND",
+    "native_absolute_position_field": "NOT_CAPTURED",
+    "per_channel_reader_values_and_full_consumed_ranges": "NOT_CAPTURED",
+    "plane_table_numeric_rules": "NOT_EVALUATED",
+    "host_frame_and_spatial_callback_join": "UNBOUND",
+    "fit_u04_consumer_generation_join": "UNBOUND",
+    "flush_output_to_individual_writer_identity": "UNBOUND",
+    "model_execution_and_replay": "NOT_RUN",
+    "model_native_comparison": "NOT_EVALUATED",
+    "type10_and_six_plane_composition": "NOT_RUN",
+    "gate1": "OPEN",
+    "minimum_next_action": "Trace the typed producer of the normalized source offset and the first explicit consumer that carries reader or ADM sample position into the spatial/fit call. Preserve host frame, callback, codec call, and writer ordinal as separate domains, then replay the selected input through the model."
+  },
+  "delivery": {
+    "recipient_role": "wash-agent",
+    "implementation_agent_contacted": false,
+    "implementation_delivery": "PROHIBITED",
+    "contains_raw_addresses": false,
+    "contains_binary_excerpts": false,
+    "contains_audio_or_pcm": false,
+    "contains_reference_ec3_payload": false,
+    "contains_private_license_material": false
+  }
+}

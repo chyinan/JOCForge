@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1842121,
-              "sha256": "ac9b8694b1f8da8e40d5f0422dc0838bb5e4305b7731bbb81f0fa0075bf0d0aa"
+              "bytes": 1853603,
+              "sha256": "eb60bc1e52553ef7cc68a09a500a7c4df77048727152f741dc4df5e9509b5f08"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1842121,
-              "sha256": "ac9b8694b1f8da8e40d5f0422dc0838bb5e4305b7731bbb81f0fa0075bf0d0aa"
+              "bytes": 1853603,
+              "sha256": "eb60bc1e52553ef7cc68a09a500a7c4df77048727152f741dc4df5e9509b5f08"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -25286,6 +25286,142 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-reader-origin-to-codec-writer-single-call-boundary",
+          "mapping_status": "WASHED_R138_SINGLE_CALL_READER_CODEC_WRITER_POINTER_BOUND__ORIGIN_AND_GENERATION_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SINGLE_CALL_CHAIN__NO_SOURCE_OR_SPATIAL_GENERATION_JOIN",
+          "scope": "Wash R138 records one bounded native call. The package reports the authorized ADM BWF and ASCII path alias with the same SHA-256; the source was not changed. For this call only, configured absolute start boundary 173,280,000 samples, relative start 0, and reader-relative cursor 6,144 derive sample position 173,286,144; no native absolute-position field was captured. In the same parent activation, provider descriptor and codec input share pointer identity; codec output buffer/length match writer input and the writer returns normally. The writer ordinal is statically an output-stream routing value, not a generation. This does not bind the source offset owner, native position, host frame, spatial callback, fit/U04/consumer generation, per-channel values, plane/model semantics, or Type10/six-plane composition. Model replay is NOT_RUN and Gate 1 remains OPEN.",
+          "owner": "codec",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "AuthorizedAdmBwfIdentity",
+              "AsciiPathAliasIdentity",
+              "JobConfigurationIdentity",
+              "ConfiguredAbsoluteStartBoundary",
+              "RelativeStartSample",
+              "ReaderRelativeCursor",
+              "DerivedAdmSamplePosition",
+              "NativeAbsolutePositionField",
+              "ParentActivation",
+              "ReaderStateToken",
+              "ReaderInnerObjectToken",
+              "ProviderDescriptorPointer",
+              "CodecInputDescriptorPointer",
+              "CodecConsumedSampleSpan",
+              "PlaneTableToken",
+              "CodecOutputBufferPointer",
+              "CodecOutputByteLength",
+              "WriterInputPointer",
+              "WriterInputByteLength",
+              "WriterReturn",
+              "WriterOrdinal",
+              "OutputStreamRoute",
+              "NativeGeneration",
+              "HostFrame",
+              "SpatialCallback",
+              "FitGeneration",
+              "U04Invocation",
+              "ConsumerGeneration",
+              "PerChannelReaderValues",
+              "PlaneTableNumericRules",
+              "Type10SixPlaneComposition",
+              "Gate1Status"
+            ],
+            "covered_clauses": [
+              "For this selected call, absolute start + relative start + reader-relative cursor is a derived position only; the native absolute-position field was not captured.",
+              "Provider descriptor and codec input have pointer identity within the same native thread and parent activation.",
+              "The codec output buffer pointer and 4096-byte length match the writer input pointer and length; the writer returned normally.",
+              "Writer ordinal 0 is statically used for output-stream routing and is explicitly not a generation token.",
+              "Offset owner/auto-offset versus FFOA, native generation, host frame, spatial callback, fit/U04/consumer joins remain open.",
+              "Per-channel values/ranges are not captured; plane values were not evaluated; model replay and Type10/six-plane composition were not run; Gate 1 remains open."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_R138_SINGLE_CALL_READER_ORIGIN_AND_CODEC_WRITER_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/verify_reader_origin_cursor_spatial_commit.py"
+            ],
+            "supplement_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+            "package_id": "reader-origin-cursor-spatial-commit-wash-v1",
+            "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+            "ascii_path_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+            "job_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+            "native_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+            "native_processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+            "validation_boundary": "One selected R138 native call and associated static path only; no source-offset owner, native absolute-position field, generation or spatial/fit/consumer join."
+          },
+          "vectors": {
+            "kind": "WASHED_R138_SINGLE_CALL_READER_CODEC_WRITER_OBSERVATION",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/README.md"
+            ],
+            "case_pointers": [
+              "Configured absolute start 173,280,000 + relative start 0 + cursor-before 6,144 derives 173,286,144 for this call only.",
+              "The provider and codec input descriptors share pointer identity within one parent activation.",
+              "The 4096-byte output buffer/length match the writer input and the writer returns normally; ordinal is routing, not generation.",
+              "Source offset owner, native absolute position, generation, spatial/fit/U04/consumer joins, model replay and Gate 1 remain open."
+            ],
+            "expected_outputs_included": false,
+            "native_execution": "R138_SELECTED_CALL_OBSERVED; PROCESS_EXIT_CODE_NOT_CAPTURED",
+            "model_execution": "NOT_RUN",
+            "product_acceptance": "NOT_RUN",
+            "supplement_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Normalized source offset owner and auto-offset versus FFOA precedence.",
+            "Native absolute-position field and any native generation field.",
+            "Host frame, spatial callback, fit, U04 invocation and consumer-generation joins.",
+            "Per-channel reader values and complete consumed ranges; plane-table numeric rules.",
+            "Model execution/replay, model/native comparison, Type10/six-plane composition, and Gate 1 closure.",
+            "Process exit code capture and per-flush output-to-writer identity beyond this selected call."
+          ],
+          "validation_boundary": "R138 is one selected-call observation; it does not establish the general offset rule, AU/source identity, spatial lineage, product conformance, or end-to-end chain.",
+          "native_status": {
+            "run_id": "run-138",
+            "native_job_completion_markers": "ENCODER_DONE_AND_OUTPUT_100_PERCENT",
+            "native_process_exit_code": "NOT_CAPTURED",
+            "authorized_input_and_ascii_alias_hash_match": true,
+            "configured_absolute_start_boundary_samples": 173280000,
+            "relative_start_sample": 0,
+            "reader_cursor_before_samples": 6144,
+            "derived_absolute_adm_sample_position": 173286144,
+            "derived_position_scope": "SELECTED_CALL_ONLY",
+            "native_absolute_position_field": "NOT_CAPTURED",
+            "source_offset_owner": "UNBOUND_AUTO_OFFSET_VS_FFOA_SOURCE",
+            "provider_descriptor_to_codec_input": "SAME_POINTER_AND_PARENT_ACTIVATION",
+            "codec_consumed_sample_span": 1536,
+            "codec_output_to_writer": "SAME_BUFFER_POINTER_AND_BYTE_LENGTH",
+            "writer_byte_length": 4096,
+            "writer_normal_return_observed": true,
+            "writer_ordinal": 0,
+            "writer_ordinal_role": "OUTPUT_STREAM_ROUTING_ONLY_NOT_GENERATION",
+            "native_generation": "NOT_CAPTURED",
+            "host_frame_spatial_fit_u04_consumer_joins": "NOT_CAPTURED_OR_UNBOUND",
+            "per_channel_reader_values": "NOT_CAPTURED",
+            "plane_table_numeric_rules": "NOT_EVALUATED",
+            "model_execution": "NOT_RUN",
+            "model_comparison": "NOT_EVALUATED",
+            "type10_six_plane_composition": "NOT_RUN",
+            "gate1": "OPEN",
+            "implementation_delivery_declared_in_package": "PROHIBITED"
+          }
         }
       ]
     },
@@ -31794,8 +31930,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1842121,
-              "sha256": "ac9b8694b1f8da8e40d5f0422dc0838bb5e4305b7731bbb81f0fa0075bf0d0aa"
+              "bytes": 1853603,
+              "sha256": "eb60bc1e52553ef7cc68a09a500a7c4df77048727152f741dc4df5e9509b5f08"
             }
           ],
           "test_inventory": [
@@ -34921,7 +35057,22 @@
         "12-owner receipt admission, atomic root swap, durable AU publication, and full output remain NOT_RUN."
       ],
       "provider_plan_lineage_status": "NOT_RUN",
-      "canonical_state_reference_manifest_sha256": "56a8571992471dae17cb023dd50a0165984e0662937cb6ed70842e9e0fbb1c1f"
+      "canonical_state_reference_manifest_sha256": "56a8571992471dae17cb023dd50a0165984e0662937cb6ed70842e9e0fbb1c1f",
+      "evidence_boundary_references": [
+        {
+          "package_id": "reader-origin-cursor-spatial-commit-wash-v1",
+          "manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+          "direct_slice_ref": "F12/washed-reader-origin-to-codec-writer-single-call-boundary",
+          "evidence_status": "ONE_SELECTED_CALL_READER_CODEC_WRITER_POINTER_CHAIN_BOUND",
+          "scope": "R138 selected call only; derived sample position and same-activation pointer/buffer joins only",
+          "native_absolute_position_field": "NOT_CAPTURED",
+          "source_offset_owner": "UNBOUND_AUTO_OFFSET_VS_FFOA_SOURCE",
+          "native_generation": "NOT_CAPTURED",
+          "spatial_fit_u04_consumer_join": "UNBOUND_OR_NOT_CAPTURED",
+          "model_replay": "NOT_RUN",
+          "gate1": "OPEN"
+        }
+      ]
     },
     {
       "root_id": "metadata",

@@ -1,0 +1,18 @@
+{
+  "schema": "reader-origin-cursor-spatial-commit-check.v1",
+  "check_status": "PASS",
+  "same_run_native_chain": {
+    "reader_origin_to_selected_relative_cursor_derivation": "PASS_BOUNDED_ARITHMETIC_DERIVATION",
+    "provider_descriptor_to_codec_input": "PASS_SAME_POINTER_AND_PARENT_ACTIVATION",
+    "codec_output_to_writer": "PASS_SAME_BUFFER_POINTER_AND_BYTE_LENGTH",
+    "writer_normal_return": "PASS",
+    "writer_ordinal_role": "PASS_STATIC_OUTPUT_STREAM_ROUTING_ROLE_ONLY"
+  },
+  "explicit_limits": {
+    "native_absolute_position_field": "NOT_CAPTURED",
+    "source_offset_owner": "UNBOUND_AUTO_OFFSET_VS_FFOA_SOURCE",
+    "native_generation": "NOT_CAPTURED",
+    "model_replay": "NOT_RUN",
+    "gate1_closed": false
+  }
+}

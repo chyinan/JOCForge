@@ -1,0 +1,68 @@
+{
+  "schema": "wash-evidence-manifest.v1",
+  "package_id": "reader-origin-cursor-spatial-commit-wash-v1",
+  "package_kind": "selected reader cursor to absolute ADM sample derivation and same-call codec writer lineage",
+  "recipient_role": "wash-agent",
+  "implementation_agent_contacted": false,
+  "implementation_delivery": "PROHIBITED",
+  "contains_raw_addresses": false,
+  "contains_binary_excerpts": false,
+  "contains_audio_or_pcm": false,
+  "contains_reference_ec3_payload": false,
+  "contains_private_license_material": false,
+  "identity": {
+    "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_path_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "authorized_input_alias_hash_match": true,
+    "job_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "native_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "native_processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_reader_sample_address_report_sha256": "ef0776227f4d4f2534f98de020017184bcc47dfdf2a24d484e42f555ae8a5b22",
+    "static_offset_owner_report_sha256": "4b60421cd2578013fad30d2180d0b72d1883cd48d5d121e3bbe026e8ec565790",
+    "static_reader_codec_generation_report_sha256": "b929139a5ab1b6e49b213a3faf4f93ba0a5425d95c901a762498ce19bfe3b8f6",
+    "native_execution_log_sha256": "66b123188d24a4b4414a4edb8e169a8a135696e87ea427531dba9f54beffb7c",
+    "native_reference_output_sha256": "7ea9c29780a43b9bd14137f76ee06fb44f9c500fa8bccafda28706a85a2efe83",
+    "native_reference_output_bytes": 135168,
+    "native_reference_output_payload_retained": false
+  },
+  "native_run": {
+    "run_id": "run-138",
+    "completion": "ENCODER_DONE_AND_OUTPUT_100_PERCENT",
+    "process_exit_code": "NOT_CAPTURED",
+    "model_execution": "NOT_RUN",
+    "gate1_closed": false
+  },
+  "files": [
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 8109,
+      "sha256": "5b2cd710ee6fa3dc8ab295e594e481c85cdab412373adaa4b86c64bbd8c72d67"
+    },
+    {
+      "path": "CHECK.json",
+      "bytes": 734,
+      "sha256": "b94fa8c60744bcef2b2d7bb29a5b548f57612d80882581c5f8576ad9bb0c6f7c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1615,
+      "sha256": "d554826500e6294b46e3ec51c4c6366a51e4a7ee384afac8edaf4f01ed7156b6"
+    },
+    {
+      "path": "verify_reader_origin_cursor_spatial_commit.py",
+      "bytes": 6998,
+      "sha256": "9cee232a3270e0aba0301106878a7430bef21d3dc7b239b18cd711fb153bf851"
+    }
+  ],
+  "supporting_local_evidence_sha256": {
+    "authorized_original_and_ascii_alias": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "native_executable_image": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "native_processing_image": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "run_configuration": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "sample_address_static_report": "ef0776227f4d4f2534f98de020017184bcc47dfdf2a24d484e42f555ae8a5b22",
+    "offset_owner_static_report": "4b60421cd2578013fad30d2180d0b72d1883cd48d5d121e3bbe026e8ec565790",
+    "reader_codec_generation_static_report": "b929139a5ab1b6e49b213a3faf4f93ba0a5425d95c901a762498ce19bfe3b8f6",
+    "native_execution_log": "66b123188d24a4b4414a4edb8e169a8a135696e87ea427531dba9f54beffb7c",
+    "native_reference_output_payload_hash": "7ea9c29780a43b9bd14137f76ee06fb44f9c500fa8bccafda28706a85a2efe83"
+  }
+}
