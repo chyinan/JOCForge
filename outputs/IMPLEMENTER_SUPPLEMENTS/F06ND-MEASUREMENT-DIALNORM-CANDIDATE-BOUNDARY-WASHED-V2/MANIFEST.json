@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2",
+  "scope": "revised source package after extended Ghidra analysis; static 5-bit candidate remains untyped; measurement-to-F06ND and F06ND-to-F12 DialNorm joins remain UNBOUND",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1942,
+      "sha256": "33a5b70d028c82c8863fe4905f22d96746d453c08652e014c539791de754584a"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 2639,
+      "sha256": "37ad275f42bfb7eb60e875989678e21fb403db18df33ecc615166029b7adbaf9"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 882,
+      "sha256": "3387ba90c64981c8549143e3f1713866b8a16dfe0c2adc267422b74c14a8eaba"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1767,
+      "sha256": "27e42f46c123d6baadd59138fc3a7de01321ecd3f6ee2cb794aa90834a938733"
+    }
+  ]
+}

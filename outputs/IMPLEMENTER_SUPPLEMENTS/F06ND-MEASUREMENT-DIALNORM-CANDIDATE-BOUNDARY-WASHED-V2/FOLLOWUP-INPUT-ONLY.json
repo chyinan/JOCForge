@@ -1,0 +1,44 @@
+{
+  "schema": "washed-measurement-dialnorm-candidate-followup.v2",
+  "implementation_mapping": {
+    "allowed_claim": "Run-100 lacks custom_dialnorm; a codec-reachable 5-bit scalar writer candidate exists but remains semantically untyped.",
+    "scope": "static source/option boundary only",
+    "do_not_infer": [
+      "the 5-bit candidate is programme DialNorm",
+      "an absent override selects measurement finalize by default",
+      "ADM DialNorm metadata is measurement output",
+      "measurement finalize writes an F06ND value",
+      "the F12 BSI field consumes this candidate",
+      "a 600-second analysis warning yields a fully recovered prototype"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "measurement receipt owner or generation"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "measurement finalize scalar and units to F06ND DRC input",
+      "status": "UNBOUND; NATIVE_EXECUTION_NOT_RUN",
+      "next_action": "Trace the finalize getter and typed owner into the selected DRC config writer; use a scalar-only observation during a valid authorized run."
+    },
+    {
+      "gap": "candidate U16 field semantic identity and owner/generation",
+      "status": "UNBOUND",
+      "next_action": "Trace its unique producer and typed object lineage; do not map by offset or width alone."
+    },
+    {
+      "gap": "F06ND DRC input to F12 BSI DialNorm",
+      "status": "UNBOUND"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_paths_may_be_used_if_relevant": true,
+    "reapproval_needed": false,
+    "user_already_authorized_experiments": true,
+    "native_output_is_permitted_when_needed": true,
+    "keep_output_task_owned": true,
+    "no_private_key_or_license_diagnostics": true
+  }
+}

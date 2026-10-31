@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1822030,
-              "sha256": "0ab386a0bba436ce3af98b1d096b9110b022372f1533a55b25b7113b0d9f39ae"
+              "bytes": 1822785,
+              "sha256": "5dbfcdca1401edd039a5517ceaa1f21d5ebdbac9f8be7fefc4b8a3fe69b466b0"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1822030,
-              "sha256": "0ab386a0bba436ce3af98b1d096b9110b022372f1533a55b25b7113b0d9f39ae"
+              "bytes": 1822785,
+              "sha256": "5dbfcdca1401edd039a5517ceaa1f21d5ebdbac9f8be7fefc4b8a3fe69b466b0"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -20404,7 +20404,7 @@
           "slice_id": "washed-f06nd-measurement-to-f12-dialnorm-candidate-boundary",
           "mapping_status": "WASHED_STATIC_DIALNORM_CANDIDATE__MEASUREMENT_AND_F12_JOINS_UNBOUND",
           "implementation_status": "EVIDENCE_ONLY_RUN100_OPTION_AND_5BIT_CANDIDATE__NO_DIALNORM_OWNER",
-          "scope": "The hash-identified run-100 configuration has no custom_dialnorm override. Static help describes the option as optional in [-31,0], with 0 disabling the override; the default or selected branch when absent is UNBOUND. ADM GenericSoundEssenceDescriptor_DialNorm is a separate metadata path with no measured-finalize lineage to a DRC value. Ghidra located a codec-reachable candidate that reads a 16-bit member at offset 1244 and sends a scalar to a 5-bit writer, but no semantic tag, typed owner, generation token, or receipt identifies it as programme DialNorm. DactMain's meter-related path is not joined to DialNorm/DRC/finalize. Measurement finalize→F06ND DRC input and F06ND DRC input→F12 BSI DialNorm remain UNBOUND; native execution is NOT_RUN.",
+          "scope": "Current Wash evidence is V2, which supersedes V1's source-package manifest identity while retaining V1 as history. The hash-identified run-100 configuration has no custom_dialnorm override. Static help describes the option as optional in [-31,0], with 0 disabling the override; the default or selected branch when absent remains UNBOUND. A 600-second read-only Ghidra analysis completed with data-creation warnings, while the target prototype is incomplete and the typed candidate owner/generation remains UNBOUND. The U16 member at offset 1244 to 5-bit writer remains an untyped static candidate, not programme DialNorm. Measurement finalize→F06ND DRC input and F06ND DRC input→F12 BSI DialNorm remain UNBOUND; native execution is NOT_RUN.",
           "owner": "drc",
           "implementation_requirement": false,
           "dependencies": [],
@@ -20430,34 +20430,55 @@
             "covered_clauses": [
               "Run-100 config lacks custom_dialnorm; the option is static-help optional in [-31,0] and zero disables the override.",
               "The default/selected branch when custom_dialnorm is absent remains UNBOUND; no runtime input was confirmed.",
+              "The V2 source package supersedes V1 source identity; 600-second Ghidra analysis completed with warnings and incomplete target prototype, without resolving semantic tag or owner/generation.",
               "ADM DialNorm metadata is a separate input path and has no joined measured-finalize lineage.",
-              "A codec-reachable U16 member at offset 1244 reaches a 5-bit writer only as an untagged static candidate; semantic field, owner and generation remain UNBOUND.",
+              "A codec-reachable U16 member at offset 1244 reaches a 5-bit writer only as an untagged static candidate.",
               "Measurement finalize→F06ND input and F06ND→F12 BSI DialNorm both remain UNBOUND; native execution is NOT_RUN."
             ]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06ND_MEASUREMENT_DIALNORM_CANDIDATE_BOUNDARY",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/MANIFEST.sha256",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/FOLLOWUP-INPUT-ONLY.json"
             ],
-            "supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306",
-            "run100_source_manifest_sha256": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437",
+            "supplement_manifest_sha256": "80cab5a61de2ae1d01cc08bea8ce50c7dbcfa2260c643131115b51fd19d95c79",
+            "run100_source_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
             "meter_finalize_domain_boundary_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
             "drc_owner_option_dialnorm_erratum_manifest_sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
             "first_access_unit_numeric_model_contract_sha256": "f5c689a9cfdead35470321d3513f1e32b8a834bca931eebc7c6fe6ba15e9f08a",
-            "validation_boundary": "Run-100 static option/config boundary and untyped 5-bit consumer candidate only; no DialNorm source, measurement receipt, F06ND or F12 join, or native execution is established."
+            "validation_boundary": "Revised V2 source identity and longer static-analysis status; candidate semantics/owner, measurement receipt edges, and native execution remain open.",
+            "historical_superseded_v1": {
+              "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1",
+              "supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306",
+              "source_package_manifest_sha256": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437",
+              "status": "SUPERSEDED_BY_WASHED_V2; RETAINED_AS_HISTORY",
+              "provider_files": [
+                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/MANIFEST.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/MANIFEST.sha256",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CONTRACT.md",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CHECK.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+              ]
+            },
+            "analysis_update": {
+              "limit_seconds": 600,
+              "status": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS",
+              "target_function_prototype": "INCOMPLETE",
+              "typed_candidate_owner_generation": "UNBOUND"
+            }
           },
           "vectors": {
-            "kind": "F06ND_RUN100_OPTION_ABSENCE_AND_UNTYPED_5BIT_CANDIDATE",
+            "kind": "F06ND_RUN100_OPTION_ABSENCE_AND_UNTYPED_5BIT_CANDIDATE_V2",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/FOLLOWUP-INPUT-ONLY.json"
             ],
             "case_pointers": [
               "Run-100 config has no custom_dialnorm; absence does not identify a default or selected measurement branch.",
@@ -20466,7 +20487,8 @@
             ],
             "expected_outputs_included": false,
             "native_execution": "NOT_RUN",
-            "supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306"
+            "supplement_manifest_sha256": "80cab5a61de2ae1d01cc08bea8ce50c7dbcfa2260c643131115b51fd19d95c79",
+            "historical_superseded_v1_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306"
           },
           "error_outcomes": [],
           "not_run": [
@@ -20494,7 +20516,15 @@
             "f06nd_to_f12_bsi_dialnorm": "UNBOUND",
             "dactmain_meter_to_dialnorm": "UNBOUND",
             "native_execution": "NOT_RUN",
-            "whole_chain_ready": false
+            "whole_chain_ready": false,
+            "source_package_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+            "superseded_v1_supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306",
+            "superseded_v1_source_package_manifest_sha256": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437",
+            "v1_status": "SUPERSEDED_BY_V2; RETAINED_AS_HISTORY",
+            "extended_analysis_limit_seconds": 600,
+            "extended_analysis_status": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS",
+            "target_function_prototype": "INCOMPLETE",
+            "typed_candidate_owner_generation": "UNBOUND"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -31519,8 +31549,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1822030,
-              "sha256": "0ab386a0bba436ce3af98b1d096b9110b022372f1533a55b25b7113b0d9f39ae"
+              "bytes": 1822785,
+              "sha256": "5dbfcdca1401edd039a5517ceaa1f21d5ebdbac9f8be7fefc4b8a3fe69b466b0"
             }
           ],
           "test_inventory": [

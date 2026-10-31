@@ -1,0 +1,18 @@
+{
+  "schema": "washed-measurement-dialnorm-candidate-check.v2",
+  "checks": {
+    "source_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+    "source_payload_hashes_recomputed": true,
+    "run100_custom_dialnorm_absent": true,
+    "native_binary_hashes_recomputed": "PASS",
+    "extended_600s_analysis_status_preserved": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS",
+    "prototype_incomplete_and_typed_owner_unbound": true,
+    "candidate_U16_to_5bit_writer": "STATIC_CANDIDATE_ONLY",
+    "measurement_finalize_to_F06ND": "UNBOUND",
+    "F06ND_to_F12_DialNorm": "UNBOUND",
+    "native_execution": "NOT_RUN",
+    "private_key_or_license_material_read": false
+  },
+  "status": "PASS_REVISED_STATIC_BOUNDARY; MEASUREMENT_AND_DIALNORM_JOINS_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}
