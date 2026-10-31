@@ -2,7 +2,7 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
-> 状态基准：JOCForge `3a0fd28`，2026-10-31。此基准没有完整的 Rust 编码输出。DEE 生成的参考文件不属于 JOCForge 产物。
+> 状态基准：JOCForge `552bbf4`，2026-10-31。此基准没有完整的 Rust 编码输出。DEE 生成的参考文件不属于 JOCForge 产物。
 
 ## 目标与边界
 
@@ -157,6 +157,7 @@ EOF 不补造 codec flush。selected 计划的长度是 4,247 个 AU，即 17,39
 | F04 spatial | component、LFE、Type10、部分 receiver/fitting slices 有局部验证。 | 完整 receiver callback、上游 render、所有 drains、J05 parent 和真实 ADM 输入。 |
 | F05 JOC | 部分 fit、dispatch、state schema 和直接向量已验证。 | 完整 producer 运行、root 安装、生产 AU 及真实空间/听感验证。 |
 | F06 measurement / OAMDI / DRC | meter primitives、receipt schema 和部分原生阶段证据已记录。run-032 的 state `+0x18 → DSP` 只在 measurement 路径观察到。run-035/036 的选定 encoder pass 中，48-byte aggregate copy 和 DSP 监视点未命中。选定 logical category-5 规则关闭 DRC 写入，保留四个零 FIFO 项和 override 0。 | production meter prepass/finalize、最终 measurement receipt、`+0x18` 字段语义与 generation、category-5 到 generic event/DRC/BSI 的 typed join、其他 OAMDI state 到 encoder 的路径。限定 no-hit 不证明所有输入或路径都没有连接。 |
+| F06ND / F12 DialNorm candidate | Run-100 没有 `custom_dialnorm`；override 是可选的 -31..0，0 disables；缺省/selected branch 未知。ADM DialNorm metadata 是独立输入。一个 U16 member→5-bit writer 只是未标语义的 static candidate。 | measurement finalize→F06ND DRC input、F06ND DRC→F12 BSI DialNorm、candidate semantic/owner/generation 均 `UNBOUND`；native execution `NOT_RUN`。不把 5-bit candidate 称为 DialNorm。 |
 | F06OF target crosswalk | 新增 native static alternate path：descriptor U8 index list 与独立 event U16 key 两类输入；U16 key 在所查路径中选择 per-object owner。Approved converter 将 AO_XXXX suffix 静态转换为 ChannelInputId；AO_1015→ChannelInputId(0x14)，元数据报告 CHNA track 21 / host slot 20，数值相等不构成身份。另有独立 PCM metadata record writer 将 16-byte pair 写入 +0xD8..+0xE7 并入队；它未连到 PcmMd getter 的 receiver，offset 相同不构成 owner 连接。selected PcmMd builder 的 OAMDI event count=0、pointer=NULL 只限该 builder。 | ChannelInputId 与 host slot 的 join、候选 D8 record pointer 到 getter receiver 的连接、generation token、descriptor/OAR/OAMDI key 跨域 join、native key 到 ADM/SelectedGlobalTargetId/TargetSlotIndex/control16/generation 的 typed join仍 `UNBOUND`/`NOT_CAPTURED`。其他 producer/mode 未排除。DEE setup 在 workflow 前失败，input processing `NOT_CONFIRMED`、native capture `NOT_RUN`；这不是 no-hit。one-hot 仅模型。 |
 | F12 E-AC-3 | 目标 AU 尺寸和选定 profile 合同已列明。 | frame syntax、BAP、mantissa、bit writer、完整 E-AC-3 producer。F06 finalized measurement 到 F06ND source input 与 F12 BSI 的 typed receipt edge 仍 `UNBOUND` / `NOT_READY`；wire 中的 dialnorm 字段本身不携带 programme identity。 |
 | F13 metadata / ID14 | 一些 body、配置和 noncommitting source proposal 有局部验证。模型的 ID14 parser 对完整容器做语义校验；模型复杂度规则是 `U8(object_count + 1)`，选定模型值为 16。run-100 另绑定了同-parent 的泛化 body-length 链。 | 这是 model/native sliced evidence。native run-100 事件没有记录 EMDF type/payload tag；counted body-length 到 F13 complete-container identity 仍 `UNBOUND`。native 复杂度字节来自配置记录；ID14 parser 执行和完整 wrapper 执行均 `NOT_RUN`。插件静态注册 `data_rate`，但它到 native count/config 字段的 typed join仍 `UNBOUND`；partial XSD不是拒绝规则。 |
@@ -228,6 +229,7 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 | F06OF selected PMD empty OAMDI-event Wash supplement | `2bd84e29486fac896f11fbe5f2e3fe5e9d6b1c64c0a14cea286874d463ee1b79` | 仅 selected builder 的 event count=0、pointer=NULL；其他 producer/mode 未排除，F06OF crosswalk 未闭合 |
 | F06ND category-5 native-effect Wash supplement | `ef7a0547ef0e72b54ab9dac3a78e429a451803a70852d3d5c31997f2ee06f6e8` | 选定 no-DRC 逻辑规则闭合；selected AtmosProcessor path 没有 category-5 输入，generic storage event 与 category-5 的连接仍 `UNBOUND` |
 | F06ND/F12 measurement-dialnorm Wash supplement | `2bf5fa14c1ff01a3f77d79ae8301e11f7c4797ef082a81123dbd4021f2d369f5` | finalized measurement identity/receipt 到 F06ND source 输入和 F12 BSI 的 typed edge 仍 `UNBOUND` / `NOT_READY` |
+| F06ND measurement/DialNorm candidate Wash supplement | `4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306` | Run-100 无 custom override；U16 member +1244→5-bit writer 未识别为 DialNorm；measurement→F06ND 与 F06ND→F12 edge 均 `UNBOUND` |
 | F15 provider-role/destination Wash supplement | `404b166ca5bcc5b17ecf01c33f01f0a10a9f2641b5da061c9271e9a4881dea19` | 四 role 来源映射已核对；统一 schema 与 destination capability producer 仍未定义/未运行，proposal 未冒充现有 API |
 | OAMDI output consumer Wash supplement | `c0294f3c80916c8a251af875744d444cb65b019cf7beac85ad84f07187a3f24f` | 仅记录 run-036 的 selected FileWriter/path/FILE* join 和 run-035/036 bounded no-hit；不关闭 F06OF slot/word/generation crosswalk |
 | F06OF native OAMDI key path Wash supplement | `8c41d120df3adbe2d07dae684bc213e080dbcca570c21f8cb392ea03cb1a5d91` | 仅闭合 native U16 key→per-object owner 的 selected static path；跨到模型 target slot/word/generation仍 `UNBOUND` |
