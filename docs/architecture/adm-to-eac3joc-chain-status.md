@@ -2,7 +2,7 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
-> 状态基准：JOCForge `9e19227`，2026-10-31。此基准没有完整的 Rust 编码输出。DEE 生成的参考文件不属于 JOCForge 产物。
+> 状态基准：JOCForge `edcbf63`，2026-10-31。此基准没有完整的 Rust 编码输出。DEE 生成的参考文件不属于 JOCForge 产物。
 
 ## 目标与边界
 
@@ -157,7 +157,7 @@ EOF 不补造 codec flush。selected 计划的长度是 4,247 个 AU，即 17,39
 | F04 spatial | component、LFE、Type10、部分 receiver/fitting slices 有局部验证。 | 完整 receiver callback、上游 render、所有 drains、J05 parent 和真实 ADM 输入。 |
 | F05 JOC | 部分 fit、dispatch、state schema 和直接向量已验证。 | 完整 producer 运行、root 安装、生产 AU 及真实空间/听感验证。 |
 | F06 measurement / OAMDI / DRC | meter primitives、receipt schema 和部分原生阶段证据已记录。run-032 的 state `+0x18 → DSP` 只在 measurement 路径观察到。run-035/036 的选定 encoder pass 中，48-byte aggregate copy 和 DSP 监视点未命中。选定 logical category-5 规则关闭 DRC 写入，保留四个零 FIFO 项和 override 0。 | production meter prepass/finalize、最终 measurement receipt、`+0x18` 字段语义与 generation、category-5 到 generic event/DRC/BSI 的 typed join、其他 OAMDI state 到 encoder 的路径。限定 no-hit 不证明所有输入或路径都没有连接。 |
-| F06OF target crosswalk | 新增 native static alternate path：descriptor U8 index list 与独立 event U16 key 两类输入；U16 key 在所查路径中选择 per-object owner、更新 metadata 并入队。另一个 selected PcmMd builder 在 OAMDI setter 前设置 event count=0、record pointer=NULL，因此该 builder 不提供 48-byte OAMDI event；这不排除其他 producer/mode。批准模型的一热向量描述 target ID→slot→control16 row projection。 | descriptor U8 与 event U16 的 join、native key 到 ADM/SelectedGlobalTargetId/TargetSlotIndex/control16/generation 的 typed join、table-B path 与 OAMDI path 的 join仍 `UNBOUND`；empty-event 观察只适用于所选 builder；one-hot 仅模型，native capture 和 fresh model replay `NOT_RUN`。 |
+| F06OF target crosswalk | 新增 native static alternate path：descriptor U8 index list 与独立 event U16 key 两类输入；U16 key 在所查路径中选择 per-object owner。Approved converter 将 AO_XXXX suffix 静态转换为 ChannelInputId；AO_1015→ChannelInputId(0x14)，元数据报告 CHNA track 21 / host slot 20，数值相等不构成身份。另一个 selected PcmMd builder 在 OAMDI setter 前设置 event count=0、record pointer=NULL，因此该 builder 不提供 48-byte OAMDI event；这不排除其他 producer/mode。 | ChannelInputId 与 host slot 的 join、descriptor/OAR/OAMDI key 跨域 join、native key 到 ADM/SelectedGlobalTargetId/TargetSlotIndex/control16/generation 的 typed join仍 `UNBOUND`。DEE setup 在 workflow 前失败，input processing `NOT_CONFIRMED`、native capture `NOT_RUN`；这不是 no-hit。one-hot 仅模型。 |
 | F12 E-AC-3 | 目标 AU 尺寸和选定 profile 合同已列明。 | frame syntax、BAP、mantissa、bit writer、完整 E-AC-3 producer。F06 finalized measurement 到 F06ND source input 与 F12 BSI 的 typed receipt edge 仍 `UNBOUND` / `NOT_READY`；wire 中的 dialnorm 字段本身不携带 programme identity。 |
 | F13 metadata / ID14 | 一些 body、配置和 noncommitting source proposal 有局部验证。模型的 ID14 parser 对完整容器做语义校验；模型复杂度规则是 `U8(object_count + 1)`，选定模型值为 16。run-100 另绑定了同-parent 的泛化 body-length 链。 | 这是 model/native sliced evidence。native run-100 事件没有记录 EMDF type/payload tag；counted body-length 到 F13 complete-container identity 仍 `UNBOUND`。native 复杂度字节来自配置记录；ID14 parser 执行和完整 wrapper 执行均 `NOT_RUN`。插件静态注册 `data_rate`，但它到 native count/config 字段的 typed join仍 `UNBOUND`；partial XSD不是拒绝规则。 |
 | F13C code13 → complexity byte | 一个 hash-bound static same-worker path 将 parameter-list code 13 的低字节接到选定 worker complexity byte，再映射到 F12 `complexity_index_type_a`（bits 105–112）；code 13 缺省为 11。 | Host task/XML→code13、runtime parent/source generation、semantic ID14 object_count→native byte、carrier-block owner 仍 `UNBOUND`。Code 14 与 type-4 是独立字段；四个 vectors 是 static expectation，native pair `NOT_RUN`。 |
@@ -230,6 +230,7 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 | F15 provider-role/destination Wash supplement | `404b166ca5bcc5b17ecf01c33f01f0a10a9f2641b5da061c9271e9a4881dea19` | 四 role 来源映射已核对；统一 schema 与 destination capability producer 仍未定义/未运行，proposal 未冒充现有 API |
 | OAMDI output consumer Wash supplement | `c0294f3c80916c8a251af875744d444cb65b019cf7beac85ad84f07187a3f24f` | 仅记录 run-036 的 selected FileWriter/path/FILE* join 和 run-035/036 bounded no-hit；不关闭 F06OF slot/word/generation crosswalk |
 | F06OF native OAMDI key path Wash supplement | `8c41d120df3adbe2d07dae684bc213e080dbcca570c21f8cb392ea03cb1a5d91` | 仅闭合 native U16 key→per-object owner 的 selected static path；跨到模型 target slot/word/generation仍 `UNBOUND` |
+| F06OF ADM object to ChannelInputId Wash supplement | `8aa4821d87e3c4c6ebbff8fec05ce927a016573cfcf7d56b7698c6323fd7d570` | AO_1015 的 static ChannelInputId(0x14) 与 metadata host slot 20 分属不同域；workflow 未到达，target/generation bridge 仍 `UNBOUND` |
 
 ## 当前阻塞顺序
 
