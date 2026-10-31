@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1832364,
-              "sha256": "1a633ebc424891a50e3454f9b66ce1b312c4c60c071bf3df38e69a87e2a0d746"
+              "bytes": 1842121,
+              "sha256": "ac9b8694b1f8da8e40d5f0422dc0838bb5e4305b7731bbb81f0fa0075bf0d0aa"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1832364,
-              "sha256": "1a633ebc424891a50e3454f9b66ce1b312c4c60c071bf3df38e69a87e2a0d746"
+              "bytes": 1842121,
+              "sha256": "ac9b8694b1f8da8e40d5f0422dc0838bb5e4305b7731bbb81f0fa0075bf0d0aa"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -30527,9 +30527,9 @@
         },
         {
           "slice_id": "host-ddp-and-atmos-plugin-data-rate-owner-boundary",
-          "mapping_status": "HASH_BOUND_HOST_CONFIG_OWNER_SEPARATION__NATIVE_JOIN_UNBOUND",
-          "implementation_status": "EVIDENCE_ONLY_HOST_CONFIG_OWNERS_STATIC__IMPORTER_JOIN_UNBOUND",
-          "scope": "Static evidence identifies host route/profile registration and a job-template data_rate value, but the template is not runtime-validated. The base DDP setter writes its own core config object; the Atmos JOC plugin has a separate descriptor and caller-local workflow-parameter aggregate. No typed owner/generation join connects these surfaces to the Atmos importer count-like record or native BSI complexity byte. Equal field names do not establish identity. The bounded dactlib scan is not a global absence claim, and the partial XSD after plugin initialization failure is not a rejection boundary. Controlled native pair remains NOT_RUN.",
+          "mapping_status": "WASHED_STATIC_HOST_ROUTES_AND_CODE13_SYNTHESIS__RUNTIME_AND_SLOT10_SEMANTICS_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_HOST_AND_PLUGIN_STATIC_PATHS__NO_RUNTIME_PACKET_JOIN",
+          "scope": "Hash-bound static evidence identifies the host ADM/AtmosMezz file_name adapter route and a separate encode_to_atmos_ddp task route. In the selected plugin path, a plugin-owned StringListType/map supplies adapter slot 10, while the selected code-13 list builder synthesizes code 13 from two parser/configuration arguments rather than copying an XML code-13 element. Slot-10 task semantics remain UNBOUND and it is not identified as data_rate. The F58 measurement block at owner +0xF58 remains distinct from the slot-10 source at a separate subblock +0xD8. The existing code13 static slice separately binds the selected same-worker low-byte path to the F12 complexity field. Host Run output to plugin process packet, task-route to plugin factory selection, runtime parent/source generation, semantic ID14 lineage, and F06ND measurement joins remain UNBOUND; native observation is NOT_RUN.",
           "owner": "metadata",
           "implementation_requirement": false,
           "dependencies": [],
@@ -30547,14 +30547,35 @@
               "AtmosImporterCountLikeRecord",
               "NativeComplexityConfigurationByte",
               "NativeOwnerGeneration",
-              "DEEJobTemplate"
+              "DEEJobTemplate",
+              "HostAtmosMezzFileNameRoute",
+              "HostEncodeToAtmosDdpTaskRoute",
+              "AtmosMezzReaderAdapter",
+              "AtmosMezzRunOutputPacket",
+              "PluginFactorySelection",
+              "PluginProcessPacket",
+              "StringListTypeMap",
+              "AdapterSlot10",
+              "Slot10TaskSemanticLabel",
+              "ParserConfigurationArgumentA",
+              "ParserConfigurationArgumentB",
+              "SelectedCode13Value",
+              "F58MeasurementBlock",
+              "Slot10SourceSubblockD8",
+              "WorkerComplexityByte",
+              "F12ComplexityIndexTypeA",
+              "SemanticId14ObjectCount",
+              "ParentSourceGeneration"
             ],
             "covered_clauses": [
-              "Static host route and profile-table registration does not validate the inspected job template at runtime.",
-              "The base DDP data_rate setter writes a distinct core config object; the Atmos JOC plugin has a separate config descriptor and caller-local workflow parameter aggregate.",
-              "No typed owner/generation edge connects the host task field or plugin workflow parameters to importer count-like fields or the native complexity byte.",
-              "The bounded dactlib key scan is not a global absence claim.",
-              "The partial XSD after DDP plugin initialization failure is not a task-schema rejection boundary; the controlled native pair is NOT_RUN."
+              "The host ADM/AtmosMezz file_name adapter route and encode_to_atmos_ddp task route are separate static routes.",
+              "The host reader adapter route does not establish that its Run output packet reaches the selected plugin process packet.",
+              "The selected plugin slot 10 comes from a plugin-owned StringListType/map path; task/XML semantics are UNBOUND and it is not identified as data_rate.",
+              "The selected plugin code-13 list builder synthesizes code 13 from two parser/configuration arguments, not from a recovered XML code-13 element.",
+              "The task route is not joined to plugin-factory selection; runtime parent/source generation remains UNBOUND.",
+              "The F58 measurement block and slot-10 source at subblock +0xD8 are separate fields/domains.",
+              "A separate same-worker static slice binds the selected code13 low byte through the worker complexity byte to F12 complexity_index_type_a; this is not a host/runtime identity join.",
+              "Semantic ID14 object_count and F06ND measurement/DialNorm do not join to this host/code13 path; native observation is NOT_RUN."
             ]
           },
           "parameters": {
@@ -30565,35 +30586,59 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/CHECK.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
             ],
             "supplement_manifest_sha256": "40117ff1663498ab0691fa9f1f7536c3f50a0defdaa3494a4b08147e72beeaec",
             "source_package_manifest_sha256": "4fb1eac5e5076a11f9d363c9cbd1532a8ca4b7b88d0c673d899c3c5d644a5113",
-            "validation_boundary": "Bounded static configuration surfaces only; no runtime acceptance, same-run native owner lineage, valid rejection semantics, or product readiness is established."
+            "validation_boundary": "Static host/plugin routes and selected code13 synthesis only; packet, task/factory, selector semantics, generation, semantic ID14 and F06ND joins remain unbound.",
+            "supporting_host_code13_manifest_sha256": "a15f33eb790c4c9a037787dac42315ee0b92591c6c992363d1be555be62f3370",
+            "supporting_host_source_manifest_sha256": "b52359eb67fedd103406b8ab62a1d978bb460a3b5f604743544cb502bba130fb",
+            "supporting_static_code13_to_f12_manifest_sha256": "cec6b93609eeda43cd24bf19215bedaa4c62d30a8e7eb3428745be4dc59f1098",
+            "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
           },
           "vectors": {
-            "kind": "F13C_HOST_CONFIG_OWNER_FOLLOWUP_INPUT_ONLY",
+            "kind": "F13C_HOST_INPUT_AND_CODE13_STATIC_BOUNDARY_NOT_NATIVE_RUN",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/CHECK.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DATA-RATE-OWNER-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "The base DDP setter and Atmos JOC plugin configuration surfaces are distinct owners.",
               "The accepted-task → plugin config → importer record → complexity-byte same-execution capture remains NOT_RUN.",
-              "No inference from equal field names/values, partial XSD omissions, or bounded scan no-hit is permitted."
+              "No inference from equal field names/values, partial XSD omissions, or bounded scan no-hit is permitted.",
+              "Host file_name input and encode_to_atmos_ddp task are separate; Run output packet and plugin process packet have no pointer/generation join.",
+              "Slot 10 is plugin-owned StringListType/map data with task semantics UNBOUND; do not call it data_rate.",
+              "Code 13 is synthesized from parser/configuration arguments; the static low-byte-to-F12 field path is in a separate code13 package.",
+              "F58 measurement and slot-10 subblock +0xD8 remain distinct; native observation is NOT_RUN."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "40117ff1663498ab0691fa9f1f7536c3f50a0defdaa3494a4b08147e72beeaec"
+            "supplement_manifest_sha256": "a15f33eb790c4c9a037787dac42315ee0b92591c6c992363d1be555be62f3370"
           },
           "error_outcomes": [],
           "not_run": [
             "Runtime validation of the inspected Atmos job template and its data_rate selection.",
             "A controlled same-execution capture joining host task data_rate, both distinct configuration owners, importer record, complexity byte, and owner/generation lineage.",
             "A valid task-schema rejection boundary or global absence determination from the partial XSD and bounded key scan.",
-            "F13C native/model source join, whole-slice readiness, and product acceptance."
+            "F13C native/model source join, whole-slice readiness, and product acceptance.",
+            "Host AtmosMezz::Run output object/packet to selected plugin process context by explicit pointer and generation.",
+            "The encode_to_atmos_ddp task route to selected plugin-factory slot.",
+            "Slot-10 task/XML semantic label and accepted task configuration; it remains unidentified as data_rate.",
+            "Runtime parent/source generation, semantic ID14 object_count to native code13/complexity byte, and F06ND measurement joins.",
+            "Native observation and dynamic execution of the selected code13 path."
           ],
-          "validation_boundary": "Evidence-only static host/plugin configuration boundary; importer and complexity joins remain UNBOUND.",
+          "validation_boundary": "Static host/plugin routes and selected code13 synthesis only; packet, task/factory, selector semantics, generation, semantic ID14 and F06ND joins remain unbound.",
           "native_status": {
             "host_route_and_profile_registration": "STATIC_OBSERVED",
             "base_ddp_data_rate_setter": "STATIC_FOUND_SEPARATE_CORE_CONFIG_OBJECT",
@@ -30610,7 +30655,20 @@
             "dee_schema_probe": "PARTIAL_XSD_AFTER_PLUGIN_INITIALIZATION_FAILURE_AND_PROCESS_FAULT",
             "partial_xsd_is_valid_rejection_boundary": false,
             "controlled_native_pair": "NOT_RUN",
-            "whole_f13c_readiness": false
+            "whole_f13c_readiness": false,
+            "host_input_route_and_file_name_property": "STATIC_BOUND",
+            "host_encode_to_atmos_ddp_task_route": "STATIC_BOUND_SEPARATE_ROUTE",
+            "host_Run_output_to_plugin_packet": "UNBOUND",
+            "task_route_to_plugin_factory_selection": "UNBOUND",
+            "code13_synthesized_from_parser_config_arguments": "STATIC_BOUND",
+            "slot10_source": "PLUGIN_OWNED_STRINGLISTTYPE_MAP",
+            "slot10_task_semantics": "UNBOUND",
+            "slot10_not_identified_as_data_rate": true,
+            "F58_measurement_block_kept_separate_from_slot10": true,
+            "runtime_parent_source_generation": "UNBOUND",
+            "semantic_ID14_object_count_to_native_complexity_byte": "UNBOUND",
+            "F06ND_measurement_join": "UNBOUND",
+            "native_observation": "NOT_RUN"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
@@ -30618,7 +30676,7 @@
           "slice_id": "native-code13-low-byte-to-f12-complexity-field",
           "mapping_status": "WASHED_STATIC_CODE13_TO_COMPLEXITY_BYTE__HOST_AND_GENERATION_UNBOUND",
           "implementation_status": "EVIDENCE_ONLY_SAME_WORKER_STATIC_PATH__NO_RUNTIME_HOST_JOIN",
-          "scope": "For one hash-identified Atmos DLL, static analysis follows parameter-list code 13 through a selected config builder and a same-worker child-table path to the low byte of the selected worker's complexity byte, then to F12 complexity_index_type_a at bits 105..112. Missing code 13 defaults to 11; a supplied scalar is copied only after a separate validation call whose runtime acceptance is NOT_OBSERVED. Code 14 (default 0) and type-4 are separate fields. This does not identify code 14 with semantic ID14 or join object_count+1 to the native byte. Host task/XML to code 13, runtime parent/source generation, semantic ID14 object_count to native byte, and carrier-block owner remain UNBOUND; four vectors are static expectations and native pair is NOT_RUN.",
+          "scope": "For one hash-identified Atmos DLL, static analysis follows parameter-list code 13 through a selected config builder and a same-worker child-table path to the low byte of the selected worker's complexity byte, then to F12 complexity_index_type_a at bits 105..112. Missing code 13 defaults to 11; a supplied scalar is copied only after a separate validation call whose runtime acceptance is NOT_OBSERVED. Code 14 (default 0) and type-4 are separate fields. The supporting host-input package binds static host file_name and separate encode_to_atmos_ddp routes plus plugin code13 synthesis from parser/configuration arguments; it does not join host Run output, task selection, slot-10 semantics, or runtime generation. This does not identify code 14 with semantic ID14 or join object_count+1 to the native byte. F06ND measurement, parent/source generation, and carrier-block owner remain UNBOUND; four vectors are static expectations and native pair is NOT_RUN.",
           "owner": "metadata",
           "implementation_requirement": false,
           "dependencies": [],
@@ -30639,14 +30697,31 @@
               "Type4Parameter",
               "SemanticId14ObjectCount",
               "ParentSourceGeneration",
-              "CarrierBlockOwner"
+              "CarrierBlockOwner",
+              "HostAtmosMezzFileNameRoute",
+              "HostEncodeToAtmosDdpTaskRoute",
+              "AtmosMezzRunOutputPacket",
+              "PluginProcessPacket",
+              "PluginFactorySelection",
+              "StringListTypeMap",
+              "AdapterSlot10",
+              "Slot10TaskSemanticLabel",
+              "ParserConfigurationArgumentA",
+              "ParserConfigurationArgumentB",
+              "F58MeasurementBlock",
+              "Slot10SourceSubblockD8",
+              "F06NDMeasurementReceipt"
             ],
             "covered_clauses": [
               "Static same-worker path connects parameter-list code 13 to the low byte of the worker complexity byte and the selected F12 complexity field.",
               "Missing code 13 defaults to 11; supplied-value runtime acceptance remains NOT_OBSERVED because a separate validation call precedes the copy.",
               "Code 14 and type-4 are separate worker fields; code 14 is not semantic ID14.",
               "No host task/XML to code-13 join, runtime generation join, ID14 object-count join, or carrier-block owner is established.",
-              "The four vectors are static expectations; native pair and dynamic host input are NOT_RUN."
+              "The four vectors are static expectations; native pair and dynamic host input are NOT_RUN.",
+              "The host AtmosMezz file_name route and encode_to_atmos_ddp task route are distinct and are not joined to plugin Run/factory context.",
+              "Selected plugin code13 is synthesized from parser/configuration arguments; slot 10 is opaque plugin map data, not identified as data_rate or XML code13.",
+              "The static code13 low-byte-to-F12 field path is supplied by a separate hash-bound supplement; host identity and generation remain open.",
+              "F58 measurement block is distinct from slot-10 source; semantic ID14 and F06ND measurement joins remain UNBOUND."
             ]
           },
           "parameters": {
@@ -30657,31 +30732,46 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/SOURCE-IDENTITIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
             ],
             "supplement_manifest_sha256": "cec6b93609eeda43cd24bf19215bedaa4c62d30a8e7eb3428745be4dc59f1098",
             "source_package_manifest_sha256": "caad76bdcb6f363feb263b0c3e387e23b1b32489c34921abacc5772e69027bbf",
             "supporting_config_package_manifest_sha256": "63b7a47c25e04bd471441db70f4c6a27f50702541eca916e59ea8c96c9d666c4",
             "supporting_f12_field_package_manifest_sha256": "cd516f23b2c28538864aa1a7649a421444ac255eaa8b281daee1dcfc1bd20863",
             "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
-            "validation_boundary": "Static same-worker producer path only; host input, runtime generation, semantic ID14, and carrier-block joins remain unbound."
+            "validation_boundary": "Static code13-to-F12 worker path plus separately observed host/plugin routes; no runtime host packet, task/factory, selector semantics, generation, ID14, F06ND, or carrier-block join.",
+            "supporting_host_input_manifest_sha256": "a15f33eb790c4c9a037787dac42315ee0b92591c6c992363d1be555be62f3370",
+            "supporting_host_source_manifest_sha256": "b52359eb67fedd103406b8ab62a1d978bb460a3b5f604743544cb502bba130fb"
           },
           "vectors": {
             "kind": "F13C_CODE13_STATIC_SCALAR_EXPECTATIONS_NOT_NATIVE_RUN",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/CHECK.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
             ],
             "case_pointers": [
               "Four static scalar vectors were checked as static expectations only; none ran natively.",
               "The output field is the low byte of a worker scalar mapped to F12 complexity_index_type_a bits 105..112.",
-              "The code-14 field is separate from semantic ID14 and object_count+1."
+              "The code-14 field is separate from semantic ID14 and object_count+1.",
+              "Host file_name adapter and encode task routes are statically separate; returned packet/factory selection joins remain UNBOUND.",
+              "Plugin code13 synthesis from configuration arguments is not recovered XML code13; slot-10 task meaning remains UNBOUND.",
+              "F58 measurement and slot-10 source are separate; these static facts do not establish native execution or same-generation lineage."
             ],
             "expected_outputs_included": true,
             "native_execution": "NOT_RUN",
             "fresh_model_replay": "NOT_RUN",
-            "supplement_manifest_sha256": "cec6b93609eeda43cd24bf19215bedaa4c62d30a8e7eb3428745be4dc59f1098"
+            "supplement_manifest_sha256": "cec6b93609eeda43cd24bf19215bedaa4c62d30a8e7eb3428745be4dc59f1098",
+            "supporting_host_input_manifest_sha256": "a15f33eb790c4c9a037787dac42315ee0b92591c6c992363d1be555be62f3370"
           },
           "error_outcomes": [],
           "not_run": [
@@ -30689,9 +30779,12 @@
             "Host task/XML owner to parameter-list code-13 entry join.",
             "Runtime parent/source generation and selected child-worker instance capture.",
             "Semantic ID14 object_count to the native complexity byte join and carrier-block native owner.",
-            "Native execution of the four static scalar vectors and a native pair."
+            "Native execution of the four static scalar vectors and a native pair.",
+            "Host AtmosMezz::Run packet to plugin process packet and encode task to plugin factory selection.",
+            "Slot-10 semantic label, runtime code13 acceptance, and parent/source generation.",
+            "Semantic ID14 object_count and F06ND measurement to native complexity byte."
           ],
-          "validation_boundary": "Bounded static path only; no runtime host acceptance, semantic ID14 identity, or production readiness is established.",
+          "validation_boundary": "Static code13-to-F12 worker path plus separately observed host/plugin routes; no runtime host packet, task/factory, selector semantics, generation, ID14, F06ND, or carrier-block join.",
           "native_status": {
             "code13_static_same_worker_path": "CLOSED",
             "code13_missing_entry_default": 11,
@@ -30713,7 +30806,18 @@
             "static_vector_count": 4,
             "four_vectors_executed_natively": false,
             "native_pair": "NOT_RUN",
-            "whole_f13c_readiness": false
+            "whole_f13c_readiness": false,
+            "host_input_route_and_file_name_property": "STATIC_BOUND",
+            "host_encode_to_atmos_ddp_task_route": "STATIC_BOUND_SEPARATE_ROUTE",
+            "host_Run_output_to_plugin_packet": "UNBOUND",
+            "task_route_to_plugin_factory_selection": "UNBOUND",
+            "code13_synthesized_from_parser_config_arguments": "STATIC_BOUND",
+            "slot10_task_semantics": "UNBOUND",
+            "slot10_not_identified_as_data_rate": true,
+            "F58_measurement_block_kept_separate_from_slot10": true,
+            "runtime_parent_source_generation": "UNBOUND",
+            "F06ND_measurement_join": "UNBOUND",
+            "native_observation": "NOT_RUN"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -31690,8 +31794,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1832364,
-              "sha256": "1a633ebc424891a50e3454f9b66ce1b312c4c60c071bf3df38e69a87e2a0d746"
+              "bytes": 1842121,
+              "sha256": "ac9b8694b1f8da8e40d5f0422dc0838bb5e4305b7731bbb81f0fa0075bf0d0aa"
             }
           ],
           "test_inventory": [
