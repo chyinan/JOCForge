@@ -2,7 +2,7 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
-> 状态基准：JOCForge `8720248`，2026-10-31。此基准没有完整的 Rust 编码输出。DEE 生成的参考文件不属于 JOCForge 产物。
+> 状态基准：JOCForge `eecd15a`，2026-10-31。此基准没有完整的 Rust 编码输出。DEE 生成的参考文件不属于 JOCForge 产物。
 
 ## 目标与边界
 
@@ -114,7 +114,7 @@ EOF 不补造 codec flush。selected 计划的长度是 4,247 个 AU，即 17,39
 | 切片 | 已确认 | 尚未确认 |
 |---|---|---|
 | 输入与 profile | 六个 production profile 维度和拒绝规则已列明。F01E 等输入解析存在局部验证。 | 完整 ADM → Rust source callback → AU 的运行路径。 |
-| F01 embedded timecode | run-121 的 hash-bound Ghidra 静态切片将 range 字段命名为 `StartSample` / `EndSample`：它们是 sample boundary values；End=0 替换为 storage sample_count，越界 End 和 Start>End 会拒绝。run-121 同次捕获把 range record 接到 reader state 调用边界。 | `EndSample` inclusive/exclusive 仍未定义。run-121 日志记 start=0/end=49,999；reader 每声道实际读 49,999 samples，最后 callback span 为 1,536 且尾部 689 预清零；这些值不能合并成绝对位置结论。run-115 原先的 inclusive/50,000-sample 解读已撤回；它与 run-121 是不同执行，owner join 未建立。24 fps/每帧 2,000 samples 仍为 inference，XML 未显式给 rate；sample-position→spatial callback generation 仍 `UNBOUND`。 |
+| F01 embedded timecode | R121 的 hash-bound reader path 将 `StartSample` / `EndSample` 绑定为 sample-boundary values；End=0 使用 storage sample_count，等于 count 接受，越界 End 和 Start>End 拒绝。消费者仅在 `reader_cursor < reader_extent` 时读取，因此 EndSample 在该 R121 reader path 上为 exclusive。 | R121 的 range 0..49,999、每声道读数 49,999 和 1,536-frame 尾 callback（847 read + 689 zero padding）分属 range、read count 和 padded span；它们不代表绝对 sample position。embedded-timecode 到 EndSample 仍有一采样差异（此前期望 50,000、R121 为 49,999），未做 one-sample pair。R115 是独立执行，端点和 R115/R121 owner-generation join 不推定；sample-position→spatial generation 仍 `UNBOUND`。Exclusive 规则不推广到其他 producer/mode。 |
 | F03U | 本次所追踪的 DLL 路径使用本地序号；未观察到全局 candidate ID 被该路径消费。 | 外层 host/ADM 到 Rust input identity 的完整 join。数值相等不能证明 lineage。 |
 | F04 spatial | component、LFE、Type10、部分 receiver/fitting slices 有局部验证。 | 完整 receiver callback、上游 render、所有 drains、J05 parent 和真实 ADM 输入。 |
 | F05 JOC | 部分 fit、dispatch、state schema 和直接向量已验证。 | 完整 producer 运行、root 安装、生产 AU 及真实空间/听感验证。 |
@@ -166,6 +166,8 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 | run-115 embedded-timecode range | `7eb9f1625af1136248ed958f1794a571f7c7cfbd53feee82006f6b2c6e1c435e` | 单次授权输入的原生 `embedded_timecode` → sample range 观察；24 fps 映射是 inference，XML 未显式给 rate |
 | run-121 range field semantics addendum | `c0938d12e1b7e377ae76d22081d4bad4f214a5b296271e685fce3b55b4e81ba7` | Ghidra 将字段绑定为 StartSample/EndSample sample boundaries；end convention 与跨 run owner 未闭合 |
 | run-121 reader count and padding Wash supplement | `09f00963049bbc5bcbb5c843573cb85d84d559ea1d1568a0b6b2f9c55b0343f5` | 两个 reader 每声道各读 49,999 sample frames；1,536-frame 尾 callback 含 847 read + 689 zero padding；range endpoint、绝对位置和 run-115 identity 未闭合 |
+| R121 EndSample exclusive Wash supplement | `b5965175c3fac3543936b043be191400f696e1ed2c62e0702fad4b959f37e505` | Exclusive 仅适用于 hash-identified R121 reader path；upstream one-sample conversion gap、cross-run identity 与 source-report rehash 仍 OPEN |
+| R121 source-report metadata discrepancy | prior V2 `640dced700f854d96fdf5c2c9a813df5e5a1c04ac5a026e7f58239b622a1fba5`; current R1 `640dced700f854d96fdf5c2c9a813df9e5a1c04ac5a026e7f58239b622a1fba5` | Report bytes 未随包交付或独立重算；哈希协调保持 `OPEN_REHASH_REQUIRED`，不静默选用任一值 |
 | run-109 synthetic-noise coverage | `3efda1655f8c02df369d6fb1167bfa9e0159cde5cd1ec7a2fb262b63e4e4ca4b` | 938 个 same-parent 关系；body 297～440 bytes，block-2 operand 最大 444；507/508/511/512 未观察 |
 | run-110 synthetic-noise coverage | `56530c2f0a17f7999b5a34072af89ebb0c75538b1ebf0e68a7d7333776db7550` | 4,247 个 same-parent 关系；body 297～413 bytes，block-2 operand 最大 417；507/508/511/512 未观察 |
 | run-99 target boundary coverage audit | `5015a118f986170c74c4f8f578358d4a4dc877de2cf18f1f77c3790cece728bd` | 未发现其他已成功授权样本命中目标；没有新 native run，目标 fixture 仍未运行 |
