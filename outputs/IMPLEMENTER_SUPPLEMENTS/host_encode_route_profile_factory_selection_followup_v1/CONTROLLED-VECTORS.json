@@ -1,0 +1,27 @@
+{
+  "schema": "encode-route-profile-factory-selection-vectors.v1",
+  "classification": "STATIC_AND_HASH_BOUND_PROFILE_CROSSWALK_NOT_FACTORY_SELECTION",
+  "native_execution": "NOT_RUN",
+  "vectors": [
+    {
+      "case_id": "r138_profile_route_identity",
+      "input": {"route_key": "encode_to_atmos_ddp", "input_type": "audio.adm", "data_rate": 1024},
+      "expected_static": {"profile_lookup": "STATIC_CLOSED", "factory_index_recorded": false}
+    },
+    {
+      "case_id": "audio_filter_indices_enumerated",
+      "input": {"category": "audio_filter", "table_count": 3},
+      "expected_static": {"registered_indices": [0, 1, 2], "index_source": "enumeration counter"}
+    },
+    {
+      "case_id": "dll_registration_index_crosswalk",
+      "input": {"factory_indices": [0, 1, 2]},
+      "expected_static": {"descriptor_names": ["encode_to_atmos_ddp", "atmos_mezz_to_atmos_ddp", "pcm_to_atmos_ddp"]}
+    },
+    {
+      "case_id": "host_route_to_selected_factory_index",
+      "input": {"route_key": "encode_to_atmos_ddp", "profile_output_domain": "profile/config option values"},
+      "expected_static": {"selected_factory_index": null, "status": "UNBOUND", "index_zero": "CANDIDATE_ONLY_NOT_SELECTION_EVIDENCE"}
+    }
+  ]
+}

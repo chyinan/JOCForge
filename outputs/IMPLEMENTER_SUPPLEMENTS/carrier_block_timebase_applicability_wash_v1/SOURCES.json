@@ -1,0 +1,13 @@
+{
+  "schema": "carrier-block-timebase-applicability-sources.v1",
+  "wash_reported_r138_config_sha256_prefix": "fa6514",
+  "r138_time_base_source": "Wash coordination message reporting the hash-bound config value embedded_timecode.",
+  "full_r138_hash_revalidated_here": false,
+  "capture_spec_manifest_sha256": "8e01e47819ddb6bc573847548025bbbb10d8f1a26bfd1db2c8aa3af2bb935d91",
+  "existing_carrier_native_lineage_manifest_sha256": "9ce0768a7d7642024506e9ff1bae649b17f495e28ed1a58a48f6ce9b16d93408",
+  "existing_authorized_input_crosswalk_manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+  "current_native_capture": "NOT_RUN",
+  "raw_ghidra_output_included": false,
+  "raw_pcm_or_payload_included": false,
+  "approved_product_policy_modified": false
+}

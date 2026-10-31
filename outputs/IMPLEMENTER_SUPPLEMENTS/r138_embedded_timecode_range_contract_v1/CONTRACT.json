@@ -1,0 +1,68 @@
+{
+  "schema": "implementation-safe-embedded-timecode-contract.v1",
+  "purpose": "Correct the R138 selected range route using semantic, hash-bound facts only.",
+  "evidence_identity": {
+    "r138_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "r138_reader_cursor_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+    "embedded_timecode_static_correction_manifest_sha256": "eed397699816567c38fc9af746063014592a63268e6f65b6730fcbd1d1102bf7",
+    "range_to_ioset_static_manifest_sha256": "dbefabd48ecaaddf5bc6f95582a995a9b743aee21b54b3c5b1e0baf7d598a5b5",
+    "conditional_file_position_branch_manifest_sha256": "4939e82571e38fd7d933bed4e4542d38b824eecfc54b6fe3e17c6e31e6032695"
+  },
+  "r138_selected_profile": {
+    "time_base": "embedded_timecode",
+    "start_token": "86640",
+    "end_token": "86664",
+    "input_timecode_frame_rate_setting": "not_indicated",
+    "filter_timecode_frame_rate_setting": "not_indicated",
+    "resolved_timecode_frame_rate": "NOT_CAPTURED",
+    "source_sample_rate_hz": 48000,
+    "offset_setting": "auto",
+    "ffoa_setting": "auto"
+  },
+  "embedded_timecode_range_rule": {
+    "start_end_parse": "Parse both timecode tokens with the separately resolved timecode frame rate.",
+    "seconds_to_sample_indices": "round(sample_rate_hz * parsed_seconds)",
+    "source_bound_check": "Check converted start/end sample indices against source sample bound.",
+    "reader_relative_conversion": "Subtract source offset from converted start/end time to obtain reader-relative bounds.",
+    "resolved_frame_rate_in_r138": "NOT_CAPTURED",
+    "endpoint_convention_in_r138": "UNBOUND",
+    "offset_auto_resolution_for_r138": "UNBOUND",
+    "source_writer_for_offset_auto": "UNBOUND"
+  },
+  "conditional_branch_separation": {
+    "file_position_first_frame_of_action_rule": "max(offset_seconds, ffoa_seconds) - offset_seconds",
+    "applicable_to_r138_selected_route": false,
+    "applicability": "CONDITIONAL_FILE_POSITION_BRANCH_ONLY"
+  },
+  "range_and_spatial_domains": {
+    "range_to_io_set_layout": "STATICALLY_BOUND",
+    "runtime_range_owner_and_generation": "NOT_CAPTURED",
+    "spatial_query_type": "geometry-derived binary32",
+    "spatial_query_is_absolute_sample_time": "NOT_ESTABLISHED",
+    "range_to_spatial_same_time_domain": "UNBOUND",
+    "reader_to_spatial_same_call_join": "UNBOUND"
+  },
+  "selected_call_position": {
+    "value": 173286144,
+    "status": "DERIVED_ONLY",
+    "derivation": "173280000 absolute start + 0 relative start + 6144 reader cursor",
+    "native_absolute_position_field": "NOT_CAPTURED",
+    "substitute_for_embedded_timecode_conversion": false
+  },
+  "execution_status": {
+    "new_native_job": "NOT_RUN",
+    "model_replay": "NOT_RUN",
+    "gate1_closed": false
+  },
+  "delivery": {
+    "recipient_role": "wash-agent",
+    "implementation_agent_contacted": false,
+    "implementation_delivery": "PROHIBITED",
+    "absolute_paths_in_package": false,
+    "binary_addresses_or_rvas_in_package": false,
+    "binary_module_names_in_package": false,
+    "raw_xml_or_ghidra_output_in_package": false,
+    "audio_or_payload_in_package": false,
+    "private_license_material_in_package": false
+  }
+}

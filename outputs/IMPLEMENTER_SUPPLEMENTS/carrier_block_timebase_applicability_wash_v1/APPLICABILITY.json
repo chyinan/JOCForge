@@ -1,0 +1,36 @@
+{
+  "schema": "carrier-block-timebase-applicability.v1",
+  "status": "R138_CAPTURE_SPEC_APPLICABILITY_NOT_EVALUATED",
+  "selected_capture_spec": {
+    "package_id": "carrier_block_third_scalar_capture_spec_wash_v1",
+    "manifest_sha256": "8e01e47819ddb6bc573847548025bbbb10d8f1a26bfd1db2c8aa3af2bb935d91",
+    "native_capture": "NOT_RUN"
+  },
+  "r138_configuration": {
+    "wash_reported_manifest_sha256_prefix": "fa6514",
+    "hash_identity_status": "WASH_REPORTED_HASH_BOUND_PREFIX; FULL_HASH_NOT_RECHECKED_IN_THIS_ADDENDUM",
+    "time_base": "embedded_timecode",
+    "file_position_assumption": "NOT_APPLICABLE_TO_THIS_HASH_BOUND_CONFIGURATION"
+  },
+  "applicability": {
+    "third_u32_capture_spec_to_r138_profile": "NOT_EVALUATED",
+    "plan_call_path_to_r138_profile": "NOT_EVALUATED",
+    "profile_carrier_to_native_owner": "UNBOUND",
+    "approved_scope_changed": false,
+    "approved_carrier_block": 2,
+    "complete_emdf_container_max_bytes": 511,
+    "single_fragment_required": true,
+    "whole_f13_readiness": "NOT_EVALUATED"
+  },
+  "coordination": {
+    "native_job_authorized_by_this_addendum": false,
+    "combined_run_decision": "PENDING_WASH_RECONCILIATION_OF_TIME_BASE_AND_CALL_PATH",
+    "presence_bsi_chain_recaptured": false,
+    "cross_sample_join_performed": false
+  },
+  "minimum_reconciliation": [
+    "Bind the selected hash-bound R138 configuration and its embedded_timecode time base.",
+    "Confirm which listed planner caller path occurs for that configuration.",
+    "Only then merge the scalar watch with the already scheduled combined observation; keep owner/generation tokens separate."
+  ]
+}

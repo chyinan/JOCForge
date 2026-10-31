@@ -1,0 +1,34 @@
+{
+  "schema": "wash-only-timebase-applicability-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "sealed_at_utc": "2026-10-31T11:05:46Z",
+  "seal_file_excluded_from_own_hash_list": true,
+  "file_count": 5,
+  "files": [
+    {
+      "file": "APPLICABILITY.json",
+      "bytes": 1629,
+      "sha256": "3f71af09a9e829a35f4ec96c82eb446ed008e90fb0817816c1298c89a6b85474"
+    },
+    {
+      "file": "README.md",
+      "bytes": 632,
+      "sha256": "5568fb01f7605214d21ba70e0d1cd333c848bcf645e38d3de8fa803079f02075"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 789,
+      "sha256": "b387b3af3d7a72050fcc7aae348209f7437bb72018dcb0582f029a40bbb68ba6"
+    },
+    {
+      "file": "check_timebase_applicability.py",
+      "bytes": 4612,
+      "sha256": "8e541ebcf1426193082facd9fff35b1944dafddff2b3ed3995cec9c2ff6bee4c"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1255,
+      "sha256": "1020d0280684ccbe3478e398ee6bf6ef52a902f0887edbf2f0ca02aa0b5dff2e"
+    }
+  ]
+}

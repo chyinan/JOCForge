@@ -1,0 +1,35 @@
+{
+  "schema": "controlled-r138-timebase-correction-vectors.v1",
+  "cases": [
+    {
+      "id": "hash_bound_r138_timebase",
+      "input": {
+        "config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4"
+      },
+      "expected": "embedded_timecode"
+    },
+    {
+      "id": "prior_package_value",
+      "input": {
+        "package_manifest_sha256": "e063f866fea761037281845f186d12847dd605b1df5ec24bb7f0d9d5e27431ae",
+        "value": "file_position"
+      },
+      "expected": "RETRACTED_DO_NOT_USE_FOR_R138"
+    },
+    {
+      "id": "route_and_input_unchanged",
+      "input": {
+        "route_key": "encode_to_atmos_ddp",
+        "input_type": "audio.adm"
+      },
+      "expected": "HASH_BOUND_R138_ROUTE_AND_INPUT"
+    },
+    {
+      "id": "factory_selection",
+      "input": {
+        "selected_factory_index": null
+      },
+      "expected": "UNBOUND"
+    }
+  ]
+}

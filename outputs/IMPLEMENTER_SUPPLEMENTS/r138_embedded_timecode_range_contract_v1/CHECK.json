@@ -1,0 +1,14 @@
+{
+  "schema": "implementation-safe-embedded-timecode-check.v1",
+  "checks": {
+    "r138_configuration_hash_bound": "PASS",
+    "selected_route": "EMBEDDED_TIMECODE",
+    "timecode_frame_rate": "NOT_CAPTURED; NO FPS INFERENCE",
+    "file_position_formula_is_r138_route": false,
+    "range_to_ioset": "STATICALLY_BOUND; RUNTIME OWNER/GENERATION NOT_CAPTURED",
+    "spatial_query_domain": "GEOMETRY_F32; SAME_TIME_DOMAIN UNBOUND",
+    "absolute_sample_position": "DERIVED_ONLY",
+    "model_replay": "NOT_RUN",
+    "gate1_closed": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "R138-PROFILE-TIMEBASE-CORRECTION-V1",
+  "scope": "Wash-only correction of the R138 hash-bound time_base; prior file_position claim is retracted; route-to-factory remains UNBOUND.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2980,
+      "sha256": "7c2aee245c6b94c0fd7ece95bf27043a3b2acdef0af0bc03595148b806bdb90d"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 900,
+      "sha256": "43b1ae98c41f65560673e8f1e08f219bd6959eb5bcd3f2ac48ac12bfaa657336"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1398,
+      "sha256": "8846b8e8aa2fc2ec710394e9d80852a8e31cd7e1840c76877b78ebc2c9e2cf3b"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 860,
+      "sha256": "009d9666ff1aa29830c943353ee150233802b1bc5282ac594fc2b54428f34698"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 803,
+      "sha256": "cb5d4f379bde8cdc837b18aceb00cdd49543360d6365f9b89a2b286d40802211"
+    }
+  ]
+}

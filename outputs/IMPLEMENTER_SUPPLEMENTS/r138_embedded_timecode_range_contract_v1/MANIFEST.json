@@ -1,0 +1,40 @@
+{
+  "schema": "implementation-safe-contract-manifest.v1",
+  "package_id": "r138-embedded-timecode-implementation-contract-supplement-v1",
+  "package_kind": "sanitized implementation-safe R138 embedded-timecode sample-range contract",
+  "recipient_role": "wash-agent",
+  "implementation_agent_contacted": false,
+  "implementation_delivery": "wash-mediated only",
+  "supersedes_profile_applicability_only": [
+    "2705bbb6e22a45e55abf70ff214b9e60fff38d2c4e3807d93e0131d575b0a93b",
+    "c113d0513da3dd2c8620e413a56dc5e51ae6b40571c2fba2dd488557b3668654"
+  ],
+  "parent_evidence_manifests": [
+    "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+    "4939e82571e38fd7d933bed4e4542d38b824eecfc54b6fe3e17c6e31e6032695",
+    "dbefabd48ecaaddf5bc6f95582a995a9b743aee21b54b3c5b1e0baf7d598a5b5",
+    "eed397699816567c38fc9af746063014592a63268e6f65b6730fcbd1d1102bf7"
+  ],
+  "artifacts": [
+    {
+      "name": "README.md",
+      "bytes": 1750,
+      "sha256": "e288f61b14a7a2d44b52f57e3d75695c4a0633c1fb8bc4937825114057caf7bd"
+    },
+    {
+      "name": "CONTRACT.json",
+      "bytes": 3237,
+      "sha256": "5399152a57b24fa2c2e1d949e384b91a481bddc734bf3a2f590121c4cf267179"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 539,
+      "sha256": "7a28fc2be50d57b2ce9ba37f227a2866669b04dfd3acd2274f96cc959e54f50d"
+    },
+    {
+      "name": "verify_embedded_timecode_contract.py",
+      "bytes": 3370,
+      "sha256": "58888d84a85e5de4bdc49bd9bb762196557ee0ed3a25d5bef158f1f429b71723"
+    }
+  ]
+}

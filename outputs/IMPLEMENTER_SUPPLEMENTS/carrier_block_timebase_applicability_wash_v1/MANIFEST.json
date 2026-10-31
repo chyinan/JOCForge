@@ -1,0 +1,35 @@
+{
+  "schema": "wash-only-timebase-applicability-manifest.v1",
+  "package_id": "carrier_block_timebase_applicability_wash_v1",
+  "status": "R138_EMBEDDED_TIMECODE_APPLICABILITY_NOT_EVALUATED",
+  "implementation_ready": "NO",
+  "selected_carrier_blocker_revocable": true,
+  "selected_scope": "carrier_block=2; complete EMDF container<=511 bytes; one fragment; whole F13 readiness not evaluated",
+  "native_capture": "NOT_RUN",
+  "bsi_presence_chain_recaptured": false,
+  "raw_ghidra_output_included": false,
+  "raw_pcm_or_payload_included": false,
+  "approved_product_policy_modified": false,
+  "payloads": [
+    {
+      "file": "APPLICABILITY.json",
+      "bytes": 1629,
+      "sha256": "3f71af09a9e829a35f4ec96c82eb446ed008e90fb0817816c1298c89a6b85474"
+    },
+    {
+      "file": "README.md",
+      "bytes": 632,
+      "sha256": "5568fb01f7605214d21ba70e0d1cd333c848bcf645e38d3de8fa803079f02075"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 789,
+      "sha256": "b387b3af3d7a72050fcc7aae348209f7437bb72018dcb0582f029a40bbb68ba6"
+    },
+    {
+      "file": "check_timebase_applicability.py",
+      "bytes": 4612,
+      "sha256": "8e541ebcf1426193082facd9fff35b1944dafddff2b3ed3995cec9c2ff6bee4c"
+    }
+  ]
+}

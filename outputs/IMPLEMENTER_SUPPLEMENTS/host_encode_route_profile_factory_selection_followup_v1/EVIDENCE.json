@@ -1,0 +1,66 @@
+{
+  "schema": "wash-only-encode-route-profile-factory-selection.v1",
+  "package_id": "HOST-ENCODE-ROUTE-PROFILE-FACTORY-SELECTION-FOLLOWUP-V1",
+  "result": "R138_ROUTE_AND_PROFILE_CONFIG_HASH_BOUND; DLL_DESCRIPTOR_TO_FACTORY_INDEX_CLOSED; HOST_ROUTE_TO_SELECTED_FACTORY_INDEX_UNBOUND",
+  "evidence_tier": "GHIDRA_STATIC_PLUS_HASH_BOUND_RUN_RECORD",
+  "source_modules": [
+    {
+      "role": "host executable",
+      "file_name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728
+    },
+    {
+      "role": "Atmos audio-filter plugin",
+      "file_name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464
+    }
+  ],
+  "existing_profile_record": {
+    "run_id": "run-138",
+    "execution_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "prior_wash_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "profile_fields": {"data_rate": 1024, "time_base": "file_position"},
+    "same_call_reader_to_codec_to_writer_evidence": "PRESENT_IN_PRIOR_HASH_BOUND_R138_RECORD",
+    "selected_audio_filter_factory_index": null,
+    "factory_selection_evidence": "NOT_CAPTURED"
+  },
+  "host_route_profile_lookup": {
+    "route_key": "encode_to_atmos_ddp",
+    "lookup_output_domain": "profile/config option values",
+    "profile_lookup_status": "STATIC_ROUTE_TO_PROFILE_CONFIG_LOOKUP_CLOSED",
+    "profile_output_to_index_argument": "NONE_OBSERVED"
+  },
+  "host_audio_filter_index_registration": {
+    "category": "audio_filter",
+    "table_count": 3,
+    "indices_registered": [0, 1, 2],
+    "index_argument_source": "table enumeration counter during category registration",
+    "selected_route_index": null
+  },
+  "dll_factory_registration": {
+    "descriptor_to_index_status": "STATIC_CLOSED",
+    "entries": [
+      {"index": 0, "descriptor_name": "encode_to_atmos_ddp"},
+      {"index": 1, "descriptor_name": "atmos_mezz_to_atmos_ddp"},
+      {"index": 2, "descriptor_name": "pcm_to_atmos_ddp"}
+    ],
+    "index_zero_route_match": "CANDIDATE_ONLY_NOT_SELECTION_EVIDENCE"
+  },
+  "unclosed_selection_edge": {
+    "route_profile_output_to_factory_index": "UNBOUND",
+    "same_invocation_or_owner_transfer": "NOT_OBSERVED",
+    "actual_factory_dispatch_callsite": "NOT_IDENTIFIED",
+    "runtime_task_parent_token": "NOT_OBSERVED",
+    "native_observation": "NOT_RUN"
+  },
+  "run_coordination": {
+    "r138_live_process_or_debugger_session": "NONE",
+    "r4_reuse_or_new_run": "AWAITING_WASH_COORDINATION",
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

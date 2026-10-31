@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "HOST-ENCODE-ROUTE-PROFILE-FACTORY-SELECTION-FOLLOWUP-V1",
+  "scope": "Sanitized, hash-bound static crosswalk between the R138 profile route, the DLL descriptor table, and the host audio_filter index enumerator; selected factory index remains UNBOUND. No raw analysis output or native payload.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 7329,
+      "sha256": "f724eca08e0cda8bfa17ef9a41fccdc45e5dea95a91eedea9d37f5f9e7f91e7b"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 1230,
+      "sha256": "12b4463d35b2c232cefeb650a63ba489cc56f032b1c64a1fda761a1ee489f9b0"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2802,
+      "sha256": "0a47bbd00d5794f57a3115068cd9502841171d25ca113489e8300d18a6c4168d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1791,
+      "sha256": "dde5b31e3ad30b13b8ff4579650415c05bcfcf557cd72818ee9d37e2ba042c43"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 803,
+      "sha256": "cb5d4f379bde8cdc837b18aceb00cdd49543360d6365f9b89a2b286d40802211"
+    }
+  ]
+}

@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1879120,
-              "sha256": "6dc38ce597d5b78adc57dcc5699ec0784d2725fcbac1318a499b97b8193228f9"
+              "bytes": 1901578,
+              "sha256": "51e765d108c8af9cc6e8eeae78fb6e0b733dcb3dc3701a1adceff9fddd1c3e17"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1879120,
-              "sha256": "6dc38ce597d5b78adc57dcc5699ec0784d2725fcbac1318a499b97b8193228f9"
+              "bytes": 1901578,
+              "sha256": "51e765d108c8af9cc6e8eeae78fb6e0b733dcb3dc3701a1adceff9fddd1c3e17"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -24489,7 +24489,13 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/FINDING.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/SOURCES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/README.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/check_third_scalar_owner.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/check_third_scalar_owner.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/APPLICABILITY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/check_timebase_applicability.py"
             ],
             "validation_boundary": "This pure per-q builder consumes caller-supplied typed plan values and checks provider/profile/shape/range, candidate q, BSI/EMDF source_index equality, pre-tail capacity, tail, and CRC residual. Source-index tags do not prove the missing shared F09/F10 generation receipt; F06/F11/F13 producer identities and root transaction remain caller-owned.",
             "frame_supplement_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
@@ -24508,7 +24514,33 @@
               "native_positive_request_branch": "1..2040 bytes selects first_block=2 in the prior scoped capture",
               "selected_model_to_native_plan_transfer": "UNBOUND",
               "third_u32_capacity_effect": "SEPARATE_FROM_FIRST_BLOCK; NOT_CARRIER_BLOCK",
-              "third_u32_first_writer_and_semantic_owner": "UNBOUND"
+              "third_u32_first_writer_and_semantic_owner": "UNBOUND",
+              "r138_timebase_capture_spec_applicability": "NOT_EVALUATED",
+              "r138_carrier_to_native_owner": "UNBOUND",
+              "r138_native_job_authorized_by_applicability_note": false
+            },
+            "r138_carrier_applicability_manifest_sha256": "1020d0280684ccbe3478e398ee6bf6ef52a902f0887edbf2f0ca02aa0b5dff2e",
+            "r138_carrier_applicability_seal_sha256": "3eda9beb18096227acc4c7d75c111e44fe33a8666d4d1fae7a06a6686f4c1392",
+            "r138_carrier_timebase_applicability": {
+              "package_id": "carrier_block_timebase_applicability_wash_v1",
+              "manifest_sha256": "1020d0280684ccbe3478e398ee6bf6ef52a902f0887edbf2f0ca02aa0b5dff2e",
+              "seal_sha256": "3eda9beb18096227acc4c7d75c111e44fe33a8666d4d1fae7a06a6686f4c1392",
+              "status": "R138_EMBEDDED_TIMECODE_APPLICABILITY_NOT_EVALUATED",
+              "r138_configuration_hash_prefix_reported_by_wash": "fa6514",
+              "full_configuration_hash_rechecked_in_this_addendum": false,
+              "time_base": "embedded_timecode",
+              "file_position_assumption": "NOT_APPLICABLE_TO_THIS_HASH_BOUND_CONFIGURATION",
+              "third_u32_capture_spec_to_r138_profile": "NOT_EVALUATED",
+              "plan_call_path_to_r138_profile": "NOT_EVALUATED",
+              "profile_carrier_to_native_owner": "UNBOUND",
+              "approved_carrier_block": 2,
+              "complete_emdf_container_max_bytes": 511,
+              "single_fragment_required": true,
+              "whole_f13_readiness": "NOT_EVALUATED",
+              "native_job_authorized_by_note": false,
+              "combined_run_decision": "PENDING_WASH_RECONCILIATION_OF_TIME_BASE_AND_CALL_PATH",
+              "presence_bsi_chain_recaptured": false,
+              "cross_sample_join_performed": false
             }
           },
           "vectors": {
@@ -24525,7 +24557,13 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/FINDING.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/SOURCES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/README.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/MANIFEST.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/APPLICABILITY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_timebase_applicability_wash_v1/check_timebase_applicability.py"
             ],
             "case_pointers": [
               "The suppressed source0 input-only plan exercises complete frame construction without publishing an AU or fabricating EMDF.",
@@ -24535,7 +24573,10 @@
               "The trial uses private local scratch and returns only after pre-tail, tail and CRC constraints pass.",
               "For the approved selected model scope, B<=507 is length-compatible with the washed native positive-request branch selecting first_block=2.",
               "This compatibility does not prove that the model carrier_block field transfers to the native plan owner or generation.",
-              "The third U32 is not first_block and has no bound profile-carrier identity; its first writer/semantic owner remains UNBOUND."
+              "The third U32 is not first_block and has no bound profile-carrier identity; its first writer/semantic owner remains UNBOUND.",
+              "R138 applicability note is an applicability hold only: the third-U32 capture spec and plan-call-path join are NOT_EVALUATED.",
+              "The addendum reuses only a six-hex-character R138 config prefix; its own package did not recheck the full hash.",
+              "No native job is authorized by the applicability note; profile-carrier owner remains UNBOUND."
             ],
             "local_fixture": {
               "file": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
@@ -24573,7 +24614,8 @@
             "Typed approved-profile carrier_block transfer to the native transport-plan owner/generation.",
             "The first writer and semantic owner of the separate native U32 capacity-adjustment scalar.",
             "First writer and semantic owner of the native third U32 capacity-adjustment parameter.",
-            "Approved carrier_block typed transfer to the same native frame descriptor/plan owner and generation."
+            "Approved carrier_block typed transfer to the same native frame descriptor/plan owner and generation.",
+            "R138-specific third-U32 capture-spec applicability and planner call-path reconciliation remain NOT_EVALUATED; no job is authorized by this note."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
@@ -25439,9 +25481,9 @@
         },
         {
           "slice_id": "washed-reader-origin-to-codec-writer-single-call-boundary",
-          "mapping_status": "WASHED_R138_SINGLE_CALL_READER_CODEC_WRITER_POINTER_BOUND__ORIGIN_AND_GENERATION_OPEN",
+          "mapping_status": "WASHED_R138_EMBEDDED_TIMECODE_RANGE_CONTRACT__FPS_ENDPOINT_OFFSET_AND_SPATIAL_JOINS_OPEN",
           "implementation_status": "EVIDENCE_ONLY_SINGLE_CALL_CHAIN__NO_SOURCE_OR_SPATIAL_GENERATION_JOIN",
-          "scope": "Wash R138 records one bounded native call. The package reports the authorized ADM BWF and ASCII path alias with the same SHA-256; the source was not changed. For this call only, configured absolute start boundary 173,280,000 samples, relative start 0, and reader-relative cursor 6,144 derive sample position 173,286,144; no native absolute-position field was captured. In the same parent activation, provider descriptor and codec input share pointer identity; codec output buffer/length match writer input and the writer returns normally. The writer ordinal is statically an output-stream routing value, not a generation. This does not bind the source offset owner, native position, host frame, spatial callback, fit/U04/consumer generation, per-channel values, plane/model semantics, or Type10/six-plane composition. Model replay is NOT_RUN and Gate 1 remains OPEN.",
+          "scope": "Wash R138 records one bounded native call. The package reports the authorized ADM BWF and ASCII path alias with the same SHA-256; the source was not changed. For this call only, configured absolute start boundary 173,280,000 samples, relative start 0, and reader-relative cursor 6,144 derive sample position 173,286,144; no native absolute-position field was captured. In the same parent activation, provider descriptor and codec input share pointer identity; codec output buffer/length match writer input and the writer returns normally. The writer ordinal is statically an output-stream routing value, not a generation. This does not bind the source offset owner, native position, host frame, spatial callback, fit/U04/consumer generation, per-channel values, plane/model semantics, or Type10/six-plane composition. Model replay is NOT_RUN and Gate 1 remains OPEN. Wash V1 binds the hash-identified R138 config to time_base=embedded_timecode and retracts the old file_position profile field only for this config. The implementation-safe R138 contract binds start/end tokens 86640/86664 and the embedded-timecode conversion sequence; resolved FPS, endpoint convention, offset=auto resolution, range owner/generation, and spatial same-time-domain use remain unbound.",
           "owner": "codec",
           "implementation_requirement": false,
           "dependencies": [],
@@ -25483,7 +25525,11 @@
               "PerChannelReaderValues",
               "PlaneTableNumericRules",
               "Type10SixPlaneComposition",
-              "Gate1Status"
+              "Gate1Status",
+              "R138ProfileTimeBase",
+              "R138StartTimecodeToken",
+              "R138EndTimecodeToken",
+              "R138TimecodeFrameRateTag"
             ],
             "covered_clauses": [
               "For this selected call, absolute start + relative start + reader-relative cursor is a derived position only; the native absolute-position field was not captured.",
@@ -25502,7 +25548,27 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/CHECK.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/README.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/verify_reader_origin_cursor_spatial_commit.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/verify_reader_origin_cursor_spatial_commit.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/CONTROLLED-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/CONTROLLED-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/verify_embedded_timecode_contract.py"
             ],
             "supplement_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
             "package_id": "reader-origin-cursor-spatial-commit-wash-v1",
@@ -25511,7 +25577,92 @@
             "job_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
             "native_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
             "native_processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
-            "validation_boundary": "One selected R138 native call and associated static path only; no source-offset owner, native absolute-position field, generation or spatial/fit/consumer join."
+            "validation_boundary": "The R138 profile-timebase correction V1 retracts only the prior file_position field for this exact config. The hash-bound implementation-safe range contract binds embedded_timecode tokens 86640/86664, source rate 48 kHz, and the parse/seconds/round/source-bounds/offset-subtraction sequence. The resolved timecode FPS is NOT_CAPTURED, endpoint convention and offset=auto resolution/source writer remain UNBOUND, and runtime range owner/generation and same-time-domain spatial joins remain open. The file_position max-minus-offset rule is conditional to that branch and is not applied to R138. The separate 173286144 reader-call sample position is not a substitute for embedded-timecode conversion.",
+            "r138_profile_timebase_correction": {
+              "package_id": "R138-PROFILE-TIMEBASE-CORRECTION-V1",
+              "manifest_sha256": "a3f0f574b45d3b024ae5c1c62e9e6b4bdd1535d3d273c7888c7f64df2fb9ee0a",
+              "config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+              "route_key": "encode_to_atmos_ddp",
+              "input_type": "audio.adm",
+              "time_base": "embedded_timecode",
+              "supersedes": {
+                "package_id": "HOST-ENCODE-ROUTE-PROFILE-FACTORY-SELECTION-FOLLOWUP-V1",
+                "manifest_sha256": "e063f866fea761037281845f186d12847dd605b1df5ec24bb7f0d9d5e27431ae",
+                "prior_package_files": [
+                  "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/MANIFEST.json",
+                  "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/MANIFEST.sha256",
+                  "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/SOURCE-IDENTITIES.json",
+                  "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/REPORT.md",
+                  "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/EVIDENCE.json",
+                  "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/CONTROLLED-VECTORS.json",
+                  "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/CHECK.py"
+                ],
+                "field": "existing_profile_record.profile_fields.time_base",
+                "prior_value": "file_position",
+                "corrected_value": "embedded_timecode",
+                "prior_claim_status": "RETRACTED_DO_NOT_USE_FOR_R138"
+              },
+              "unaffected_edges": {
+                "route_to_profile_option_lookup": "STATIC_CLOSED",
+                "profile_owner_to_selected_factory_index": "UNBOUND",
+                "actual_host_dispatch_callsite": "NOT_IDENTIFIED_STATICALLY",
+                "parent_task_generation": "NOT_OBSERVED",
+                "native_observation": "NOT_RUN"
+              },
+              "timecode_fields_attestation": {
+                "source_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+                "source": "WASH_DIRECT_READ_OF_HASH_BOUND_NATIVE_REFERENCE_EXECUTION_XML",
+                "source_file_available_in_implementation_checkout": false,
+                "source_lines": "29-34",
+                "time_base": "embedded_timecode",
+                "start_token": "86640",
+                "end_token": "86664",
+                "timecode_frame_rate_tag": "not_indicated",
+                "numeric_frame_rate": "NOT_CAPTURED",
+                "token_interpretation": "EXACT_XML_VALUES; NO_SAMPLE_OR_FPS_CONVERSION_INFERRED",
+                "packaging_status": "HASH_BOUND_R138_EMBEDDED_TIMECODE_RANGE_CONTRACT_V1_VERIFIED"
+              }
+            },
+            "r138_file_position_rule_applied": false,
+            "r139_file_position_max_minus_offset_rule_applies_to_r138": false,
+            "r138_derived_sample_position_basis": "configured_absolute_start_boundary_samples + relative_start_sample + reader_cursor_before_samples; selected call only, not a profile-frame or timebase conversion",
+            "r138_profile_timebase_correction_manifest_sha256": "a3f0f574b45d3b024ae5c1c62e9e6b4bdd1535d3d273c7888c7f64df2fb9ee0a",
+            "r138_embedded_timecode_range_contract_manifest_sha256": "28287221a73d7a2842399e38279b893c0ba830127924756b7537189d1ccaf34c",
+            "r138_embedded_timecode_range_contract": {
+              "package_id": "r138-embedded-timecode-implementation-contract-supplement-v1",
+              "manifest_sha256": "28287221a73d7a2842399e38279b893c0ba830127924756b7537189d1ccaf34c",
+              "configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+              "time_base": "embedded_timecode",
+              "start_token": "86640",
+              "end_token": "86664",
+              "input_timecode_frame_rate_setting": "not_indicated",
+              "filter_timecode_frame_rate_setting": "not_indicated",
+              "resolved_timecode_frame_rate": "NOT_CAPTURED",
+              "source_sample_rate_hz": 48000,
+              "offset_setting": "auto",
+              "ffoa_setting": "auto",
+              "conversion_steps": [
+                "parse start/end timecode tokens with the separately resolved rate",
+                "convert parsed seconds using round(sample_rate_hz * seconds)",
+                "check converted bounds against source sample bounds",
+                "subtract offset to obtain reader-relative bounds"
+              ],
+              "endpoint_convention": "UNBOUND",
+              "offset_auto_resolution": "UNBOUND",
+              "source_writer_for_offset_auto": "UNBOUND",
+              "range_to_io_set_layout": "STATICALLY_BOUND",
+              "runtime_range_owner_and_generation": "NOT_CAPTURED",
+              "spatial_query_type": "geometry-derived binary32",
+              "spatial_query_is_absolute_sample_time": "NOT_ESTABLISHED",
+              "range_to_spatial_same_time_domain": "UNBOUND",
+              "reader_to_spatial_same_call_join": "UNBOUND",
+              "file_position_first_frame_of_action_rule": "CONDITIONAL_FILE_POSITION_BRANCH_ONLY",
+              "file_position_rule_applies_to_r138": false,
+              "selected_call_position": 173286144,
+              "selected_call_position_status": "DERIVED_ONLY; NOT_A_SUBSTITUTE_FOR_TIMECODE_CONVERSION",
+              "model_replay": "NOT_RUN",
+              "gate1_closed": false
+            }
           },
           "vectors": {
             "kind": "WASHED_R138_SINGLE_CALL_READER_CODEC_WRITER_OBSERVATION",
@@ -25519,19 +25670,102 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/README.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/reader_origin_cursor_spatial_commit_wash_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/CONTROLLED-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_profile_timebase_correction_v1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/CONTROLLED-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_encode_route_profile_factory_selection_followup_v1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/verify_embedded_timecode_contract.py"
             ],
             "case_pointers": [
               "Configured absolute start 173,280,000 + relative start 0 + cursor-before 6,144 derives 173,286,144 for this call only.",
               "The provider and codec input descriptors share pointer identity within one parent activation.",
               "The 4096-byte output buffer/length match the writer input and the writer returns normally; ordinal is routing, not generation.",
-              "Source offset owner, native absolute position, generation, spatial/fit/U04/consumer joins, model replay and Gate 1 remain open."
+              "Source offset owner, native absolute position, generation, spatial/fit/U04/consumer joins, model replay and Gate 1 remain open.",
+              "Hash-bound R138 config time_base is embedded_timecode; the prior file_position value is retracted only for this config.",
+              "Correction V1 does not include R138 start/end tokens or a frame-rate value; do not borrow R128/R129 values.",
+              "The 173286144 reader-derived sample position remains one-call sample-domain arithmetic, not the R139 max-minus-offset rule.",
+              "Profile-owner to selected factory index, dispatch callsite, and generation remain unbound/unobserved.",
+              "Wash directly re-read R138 XML fields start=86640, end=86664, timecode_frame_rate=not_indicated; the sealed V2 evidence supplement is pending.",
+              "Do not infer numeric FPS, reinterpret the timecode tokens as sample boundaries, or borrow R128/R129 conventions.",
+              "Resolved R138 timecode frame rate and endpoint convention; not_indicated is a configured token, not a numeric FPS.",
+              "The range contract parses tokens with the separately resolved rate, rounds sample-rate products, checks source bounds, then subtracts offset.",
+              "Offset=auto resolution/source writer, runtime range owner/generation, and range-to-spatial same-time-domain use.",
+              "The 173286144 reader-derived sample position remains one-call sample-domain arithmetic and does not replace embedded-timecode conversion."
             ],
             "expected_outputs_included": false,
             "native_execution": "R138_SELECTED_CALL_OBSERVED; PROCESS_EXIT_CODE_NOT_CAPTURED",
             "model_execution": "NOT_RUN",
             "product_acceptance": "NOT_RUN",
-            "supplement_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb"
+            "supplement_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+            "r138_profile_timebase_correction_manifest_sha256": "a3f0f574b45d3b024ae5c1c62e9e6b4bdd1535d3d273c7888c7f64df2fb9ee0a",
+            "r138_profile_timebase_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+            "r138_corrected_time_base": "embedded_timecode",
+            "r138_file_position_claim_status": "RETRACTED_DO_NOT_USE_FOR_R138",
+            "r138_timecode_fields_attestation": {
+              "source_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+              "source": "WASH_DIRECT_READ_OF_HASH_BOUND_NATIVE_REFERENCE_EXECUTION_XML",
+              "source_file_available_in_implementation_checkout": false,
+              "source_lines": "29-34",
+              "time_base": "embedded_timecode",
+              "start_token": "86640",
+              "end_token": "86664",
+              "timecode_frame_rate_tag": "not_indicated",
+              "numeric_frame_rate": "NOT_CAPTURED",
+              "token_interpretation": "EXACT_XML_VALUES; NO_SAMPLE_OR_FPS_CONVERSION_INFERRED",
+              "packaging_status": "HASH_BOUND_R138_EMBEDDED_TIMECODE_RANGE_CONTRACT_V1_VERIFIED"
+            },
+            "r138_embedded_timecode_range_contract_manifest_sha256": "28287221a73d7a2842399e38279b893c0ba830127924756b7537189d1ccaf34c",
+            "r138_embedded_timecode_range_contract": {
+              "package_id": "r138-embedded-timecode-implementation-contract-supplement-v1",
+              "manifest_sha256": "28287221a73d7a2842399e38279b893c0ba830127924756b7537189d1ccaf34c",
+              "configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+              "time_base": "embedded_timecode",
+              "start_token": "86640",
+              "end_token": "86664",
+              "input_timecode_frame_rate_setting": "not_indicated",
+              "filter_timecode_frame_rate_setting": "not_indicated",
+              "resolved_timecode_frame_rate": "NOT_CAPTURED",
+              "source_sample_rate_hz": 48000,
+              "offset_setting": "auto",
+              "ffoa_setting": "auto",
+              "conversion_steps": [
+                "parse start/end timecode tokens with the separately resolved rate",
+                "convert parsed seconds using round(sample_rate_hz * seconds)",
+                "check converted bounds against source sample bounds",
+                "subtract offset to obtain reader-relative bounds"
+              ],
+              "endpoint_convention": "UNBOUND",
+              "offset_auto_resolution": "UNBOUND",
+              "source_writer_for_offset_auto": "UNBOUND",
+              "range_to_io_set_layout": "STATICALLY_BOUND",
+              "runtime_range_owner_and_generation": "NOT_CAPTURED",
+              "spatial_query_type": "geometry-derived binary32",
+              "spatial_query_is_absolute_sample_time": "NOT_ESTABLISHED",
+              "range_to_spatial_same_time_domain": "UNBOUND",
+              "reader_to_spatial_same_call_join": "UNBOUND",
+              "file_position_first_frame_of_action_rule": "CONDITIONAL_FILE_POSITION_BRANCH_ONLY",
+              "file_position_rule_applies_to_r138": false,
+              "selected_call_position": 173286144,
+              "selected_call_position_status": "DERIVED_ONLY; NOT_A_SUBSTITUTE_FOR_TIMECODE_CONVERSION",
+              "model_replay": "NOT_RUN",
+              "gate1_closed": false
+            }
           },
           "error_outcomes": [],
           "not_run": [
@@ -25540,7 +25774,12 @@
             "Host frame, spatial callback, fit, U04 invocation and consumer-generation joins.",
             "Per-channel reader values and complete consumed ranges; plane-table numeric rules.",
             "Model execution/replay, model/native comparison, Type10/six-plane composition, and Gate 1 closure.",
-            "Process exit code capture and per-flush output-to-writer identity beyond this selected call."
+            "Process exit code capture and per-flush output-to-writer identity beyond this selected call.",
+            "Profile-owner to selected factory index, host dispatch callsite, and task-generation transfer.",
+            "Resolved R138 timecode frame rate; not_indicated is a configured tag, not a numeric FPS.",
+            "Endpoint convention, offset=auto resolution/source writer, runtime range owner/generation, and range-to-spatial same-time-domain use.",
+            "Applying the conversion contract to a parsed range with a captured resolved FPS and checking actual source bounds; no converted result is available.",
+            "The 173286144 reader-derived position does not substitute for the embedded-timecode conversion result."
           ],
           "validation_boundary": "R138 is one selected-call observation; it does not establish the general offset rule, AU/source identity, spatial lineage, product conformance, or end-to-end chain.",
           "native_status": {
@@ -25570,7 +25809,36 @@
             "model_comparison": "NOT_EVALUATED",
             "type10_six_plane_composition": "NOT_RUN",
             "gate1": "OPEN",
-            "implementation_delivery_declared_in_package": "PROHIBITED"
+            "implementation_delivery_declared_in_package": "PROHIBITED",
+            "r138_profile_time_base": "embedded_timecode",
+            "r138_profile_time_base_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+            "r138_profile_route_key": "encode_to_atmos_ddp",
+            "r138_profile_input_type": "audio.adm",
+            "r138_prior_file_position_profile_claim": "RETRACTED_DO_NOT_USE_FOR_R138",
+            "r138_start_frame": "NOT_INCLUDED_IN_CORRECTION_V1",
+            "r138_end_frame": "NOT_INCLUDED_IN_CORRECTION_V1",
+            "r138_timecode_frame_rate": "NOT_INCLUDED_IN_CORRECTION_V1",
+            "r138_file_position_rule_applied": false,
+            "r139_file_position_max_minus_offset_rule_applies_to_r138": false,
+            "derived_position_basis": "configured_absolute_start_boundary_samples + relative_start_sample + reader_cursor_before_samples; selected call only, not a profile-frame or timebase conversion",
+            "derived_position_timebase_conversion": "NOT_CLAIMED",
+            "r138_start_timecode_token": "86640",
+            "r138_end_timecode_token": "86664",
+            "r138_timecode_frame_rate_tag": "not_indicated",
+            "r138_numeric_frame_rate": "NOT_CAPTURED",
+            "r138_timecode_field_attestation": "HASH_BOUND_IMPLEMENTATION_SAFE_CONTRACT_V1",
+            "r138_offset_auto_resolution": "UNBOUND",
+            "r138_source_writer_for_offset_auto": "UNBOUND",
+            "r138_endpoint_convention": "UNBOUND",
+            "r138_range_to_io_set_layout": "STATICALLY_BOUND",
+            "r138_runtime_range_owner_and_generation": "NOT_CAPTURED",
+            "r138_spatial_query_type": "geometry-derived binary32",
+            "r138_spatial_query_is_absolute_sample_time": "NOT_ESTABLISHED",
+            "r138_range_to_spatial_same_time_domain": "UNBOUND",
+            "r138_reader_to_spatial_same_call_join": "UNBOUND",
+            "r138_file_position_first_frame_of_action_rule": "CONDITIONAL_FILE_POSITION_BRANCH_ONLY",
+            "r138_resolved_timecode_frame_rate": "NOT_CAPTURED",
+            "r138_selected_call_position_substitutes_for_timecode_conversion": false
           }
         },
         {
@@ -32216,8 +32484,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1879120,
-              "sha256": "6dc38ce597d5b78adc57dcc5699ec0784d2725fcbac1318a499b97b8193228f9"
+              "bytes": 1901578,
+              "sha256": "51e765d108c8af9cc6e8eeae78fb6e0b733dcb3dc3701a1adceff9fddd1c3e17"
             }
           ],
           "test_inventory": [

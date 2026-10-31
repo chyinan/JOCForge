@@ -1,0 +1,33 @@
+{
+  "schema": "wash-only-profile-field-correction.v1",
+  "package_id": "R138-PROFILE-TIMEBASE-CORRECTION-V1",
+  "result": "R138_TIME_BASE_CORRECTED; PRIOR_FILE_POSITION_CLAIM_RETRACTED; ROUTE_TO_FACTORY_UNBOUND",
+  "corrected_source": {
+    "run_id": "run-138",
+    "execution_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "time_base": "embedded_timecode",
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "source_status": "WASH_VERIFIED_HASH_BOUND_EXECUTION_XML",
+    "r2_local_xml_rehash": "NOT_AVAILABLE_IN_THIS_CHECKOUT"
+  },
+  "supersedes": {
+    "package_id": "HOST-ENCODE-ROUTE-PROFILE-FACTORY-SELECTION-FOLLOWUP-V1",
+    "manifest_sha256": "e063f866fea761037281845f186d12847dd605b1df5ec24bb7f0d9d5e27431ae",
+    "field": "existing_profile_record.profile_fields.time_base",
+    "prior_value": "file_position",
+    "corrected_value": "embedded_timecode",
+    "prior_claim_status": "RETRACTED_DO_NOT_USE_FOR_R138"
+  },
+  "unaffected_edges": {
+    "route_to_profile_option_lookup": "STATIC_CLOSED",
+    "profile_owner_to_selected_factory_index": "UNBOUND",
+    "actual_host_dispatch_callsite": "NOT_IDENTIFIED_STATICALLY",
+    "parent_task_generation": "NOT_OBSERVED",
+    "native_observation": "NOT_RUN"
+  },
+  "scope": {
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}
