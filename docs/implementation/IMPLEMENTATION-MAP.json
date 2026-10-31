@@ -9201,8 +9201,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1793365,
-              "sha256": "de6262149f5f83fb66da0ebfd4decefcc0df927630749fe83ed65f2cb90a7e67"
+              "bytes": 1800201,
+              "sha256": "c0fdc0564570c4d0ac9660018c0bc66641c5cc1886689c6e41e20969f9f5cecd"
             }
           ],
           "test_modules": [
@@ -12714,8 +12714,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1793365,
-              "sha256": "de6262149f5f83fb66da0ebfd4decefcc0df927630749fe83ed65f2cb90a7e67"
+              "bytes": 1800201,
+              "sha256": "c0fdc0564570c4d0ac9660018c0bc66641c5cc1886689c6e41e20969f9f5cecd"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -17479,6 +17479,108 @@
             "other_pmd_producers_or_modes": "NOT_RULED_OUT",
             "native_capture": "NOT_RUN",
             "fresh_model_replay": "NOT_RUN",
+            "whole_f06of_readiness": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-adm-object-to-channelinput-static-converter-boundary",
+          "mapping_status": "WASHED_STATIC_AO_SUFFIX_TO_CHANNELINPUT__PHYSICAL_SLOT_IDENTITY_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_STATIC_CONVERTER_MAPPING__NATIVE_F06OF_TARGET_BRIDGE_UNBOUND",
+          "scope": "For the hash-identified approved converter, AO_XXXX object suffix is parsed as hexadecimal; suffix values at or below 0x1000 are rejected, and the static conversion yields typed ChannelInputId=suffix-0x1001 before checking the IAB frame channel/source metadata. A metadata-only observation of the authorized BWF reports AO_1015 with one referenced audioTrackUID and CHNA track index 21 / physical host slot 20; static conversion produces ChannelInputId(0x14). The equal integer 20/0x14 does not establish identity between ChannelInputId and the host slot. The selected PcmMd builder's empty OAMDI event list is a separate selected-path fact; other producers/modes are not excluded. Setup failed before workflow, so input processing is NOT_CONFIRMED and native capture is NOT_RUN; this is not a no-hit. Native F06OF target and generation bridge remain UNBOUND.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "AdmObjectSuffixHex",
+              "ChannelInputId",
+              "AudioTrackUid",
+              "ChnaTrackIndex",
+              "PhysicalHostSlot",
+              "PcmMdBuilderInstance",
+              "DescriptorU8Candidate",
+              "OarU16EventKey",
+              "OamdiU16EventKey",
+              "SelectedGlobalTargetId",
+              "TargetSlotIndex",
+              "CallbackGeneration",
+              "DeeWorkflowExecution"
+            ],
+            "covered_clauses": [
+              "The selected converter parses AO_XXXX suffix as hexadecimal, rejects values <=0x1000, and maps suffix to ChannelInputId by subtracting 0x1001.",
+              "AO_1015 maps statically to ChannelInputId(0x14); a metadata-only observation reports CHNA track index 21 / physical host slot 20, but equal integers do not join domains.",
+              "The selected PcmMd builder has an empty OAMDI event list; this does not rule out other producers or modes.",
+              "Plugin/filter initialization failed before workflow; input processing is NOT_CONFIRMED and native capture is NOT_RUN, not a no-hit.",
+              "Descriptor, OAR, OAMDI, ADM, ChannelInputId, F06OF target, and generation domains remain distinct."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_ADM_OBJECT_TO_CHANNELINPUT_STATIC_INPUT_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "supplement_manifest_sha256": "8aa4821d87e3c4c6ebbff8fec05ce927a016573cfcf7d56b7698c6323fd7d570",
+            "source_r3_manifest_sha256": "a92f891a28f1a8e4b60ad4f9e0c37819185dbc1d79f9e226fd6b0d68869ca6f0",
+            "approved_converter_dll_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+            "target_atmos_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+            "authorized_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+            "approved_f01g_spec_sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14",
+            "validation_boundary": "Static converter mapping plus metadata-only ADM identity report; no ChannelInputId-to-host-slot identity, no successful DEE workflow, and no native F06OF target/generation bridge."
+          },
+          "vectors": {
+            "kind": "WASHED_AO1015_STATIC_CHANNELINPUT_AND_METADATA_REPORT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "AO_1015 suffix 0x1015 converts statically to ChannelInputId(0x14).",
+              "Authorized metadata reports AO_1015 with one audioTrackUID and CHNA track index 21 / physical host slot 20; this does not join the ChannelInputId domain.",
+              "Selected PcmMd builder event list is empty, but other producers/modes and the F06OF target bridge remain open."
+            ],
+            "expected_outputs_included": false,
+            "native_execution": "WORKFLOW_NOT_REACHED; NATIVE_CAPTURE_NOT_RUN",
+            "supplement_manifest_sha256": "8aa4821d87e3c4c6ebbff8fec05ce927a016573cfcf7d56b7698c6323fd7d570"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Successful DEE workflow/input processing on the authorized BWF; setup failed before workflow.",
+            "A ChannelInputId-to-CHNA physical host slot or track index identity edge.",
+            "Other PcmMd producer/mode behavior and a nonempty OAMDI event producer.",
+            "Descriptor U8/U16, OAMDI U16, OAR U16, ADM object/UID, ChannelInputId, and F06OF target/generation crosswalks.",
+            "Native capture or fresh model replay of target identity."
+          ],
+          "validation_boundary": "Evidence-only selected converter/input boundary; setup failure is not a negative/no-hit, and no target or generation identity is established.",
+          "native_status": {
+            "converter_suffix_parse": "AO_XXXX_HEXADECIMAL",
+            "converter_rejects_suffix_at_or_below": "0x1000",
+            "converter_channel_input_id_rule": "suffix_minus_0x1001",
+            "ao1015_channel_input_id": "0x14",
+            "ao1015_metadata_audio_track_uid_count": 1,
+            "ao1015_chna_track_index": 21,
+            "ao1015_physical_host_slot": 20,
+            "channel_input_id_equals_physical_host_slot_identity": "UNBOUND_NUMERIC_EQUALITY_ONLY",
+            "selected_pmd_oamdi_event_count": 0,
+            "selected_pmd_oamdi_record_pointer": "NULL",
+            "other_pmd_producers_or_modes": "NOT_RULED_OUT",
+            "setup_failure_boundary": "PLUGIN_FILTER_INITIALIZATION_BEFORE_WORKFLOW",
+            "dee_input_processing": "NOT_CONFIRMED",
+            "native_capture": "NOT_RUN",
+            "failed_setup_promoted_to_no_hit": false,
+            "native_to_f06of_target_bridge": "UNBOUND",
+            "runtime_generation_join": "UNBOUND",
             "whole_f06of_readiness": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
@@ -31097,8 +31199,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1793365,
-              "sha256": "de6262149f5f83fb66da0ebfd4decefcc0df927630749fe83ed65f2cb90a7e67"
+              "bytes": 1800201,
+              "sha256": "c0fdc0564570c4d0ac9660018c0bc66641c5cc1886689c6e41e20969f9f5cecd"
             }
           ],
           "test_inventory": [

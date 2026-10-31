@@ -1,0 +1,44 @@
+{
+  "schema": "washed-adm-channel-input-boundary-followup.v1",
+  "implementation_mapping": {
+    "allowed_claim": "The approved converter statically maps AO_1015 suffix to ChannelInputId(0x14); the selected native PcmMd builder has an empty OAMDI event list.",
+    "scope": "evidence-only; one authorized BWF metadata observation and one hash-matched selected builder path",
+    "do_not_infer": [
+      "ChannelInputId(0x14) equals CHNA physical host slot 20",
+      "the selected builder represents every producer or job mode",
+      "the native U16 event key equals an ADM UID or F06OF target slot",
+      "the converter rule was exercised by a successful DEE workflow",
+      "the native capture or model replay passed"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "F06OF owner or generation joins"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "nonempty native 48-byte OAMDI event producer in another supported producer/mode",
+      "status": "UNBOUND",
+      "next_action": "Trace alternate producers and their typed owner/source; demonstrate a nonempty event record before mapping its U16 key."
+    },
+    {
+      "gap": "native key or descriptor to F06OF SelectedGlobalTargetId/TargetSlotIndex",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "native callback owner/source generation to F06OF packet generation",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "DEE input processing on the authorized BWF",
+      "status": "NOT_CONFIRMED; setup failed before workflow"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_paths_may_be_used_if_needed": true,
+    "reapproval_needed": false,
+    "raw_BWF_must_remain_unmodified": true,
+    "persist_PCM_or_encoded_payload": false
+  }
+}

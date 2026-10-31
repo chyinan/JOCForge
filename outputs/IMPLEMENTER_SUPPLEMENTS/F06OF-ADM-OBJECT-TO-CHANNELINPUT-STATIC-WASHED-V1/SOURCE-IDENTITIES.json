@@ -1,0 +1,58 @@
+{
+  "schema": "washed-adm-channel-input-boundary-source-identities.v1",
+  "verified_native_package": {
+    "package_id": "native_property_to_f06of_target_lineage_wash_v3",
+    "manifest_sha256": "a92f891a28f1a8e4b60ad4f9e0c37819185dbc1d79f9e226fd6b0d68869ca6f0",
+    "seal_sha256": "f0268b28c893f83c054fb2e39a43ecafe9ecd5cdd9e9395b4f975150b29d6fc7",
+    "sealed_file_count": 9,
+    "payload_count": 8,
+    "source_and_wash_copy_files_identical": true,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "source_identities_recomputed_by_wash": [
+    {
+      "id": "target_atmos_ddp_dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "size_bytes": 10942464,
+      "D_and_E_copies_match": true
+    },
+    {
+      "id": "approved_atmos_mezz_converter_dll",
+      "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+      "size_bytes": 6286336,
+      "current_file_hash_recomputed": true
+    },
+    {
+      "id": "authorized_adm_bwf",
+      "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "size_bytes": 743696526,
+      "whole_file_hash_recomputed": true,
+      "metadata_reparsed_by_wash": false,
+      "audio_data_chunk_parsed_or_saved": false
+    },
+    {
+      "id": "approved_F01G_ADM_graph_and_time_spec",
+      "sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14",
+      "size_bytes": 6441,
+      "current_file_hash_recomputed": true
+    }
+  ],
+  "analysis_identity": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "ida_used": false,
+    "analysis_claim": "hash-matched static converter rule and native selected-builder boundary",
+    "Ghidra_report_bytes_replayed_or_rehashed_by_wash": false
+  },
+  "excluded_unverified_references": [
+    "Historical table-B or other package references listed in the R3 source-identity file are not used for this washed claim; their hashes were not revalidated here."
+  ],
+  "excluded_material": [
+    "raw Ghidra reports and addresses",
+    "research scripts",
+    "PCM samples",
+    "encoded bitstream payload",
+    "private keys, license contents, or authentication secrets"
+  ]
+}

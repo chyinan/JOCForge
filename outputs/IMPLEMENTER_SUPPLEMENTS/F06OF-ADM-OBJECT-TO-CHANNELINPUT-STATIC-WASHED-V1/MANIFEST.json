@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06OF-ADM-OBJECT-TO-CHANNELINPUT-STATIC-WASHED-V1",
+  "scope": "authorized ADM AO to ChannelInputId static converter boundary plus selected native empty OAMDI event-list boundary; F06OF target and generation bridge remain UNBOUND",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1653,
+      "sha256": "9e4b407edb3b2873da61a0aa6b4adb30405c5ed9ad0eedc4005e09c718dde264"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 2173,
+      "sha256": "15955ffd57c3de8647073e6adf1d8ad4a5157a129cb28af64d0b5cbe7302f6f1"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 1010,
+      "sha256": "0df7b1d8bb27b12d074b15e96de9be157ebaa2e595932d4ae327bfd6bc536fa7"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1762,
+      "sha256": "fb7a4c6f60cc1cacd7df0bbc1200b899b2532d868e931f0395c785195acb8aaa"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "washed-adm-channel-input-boundary-check.v1",
+  "checks": {
+    "R3_manifest_sha256": "a92f891a28f1a8e4b60ad4f9e0c37819185dbc1d79f9e226fd6b0d68869ca6f0",
+    "R3_source_and_wash_copy_files_identical": true,
+    "R3_checker_normal_and_python_O": "PASS",
+    "R3_payload_hashes": "PASS",
+    "approved_D_and_E_target_DLL_hash_recomputed": "PASS",
+    "converter_DLL_hash_recomputed": "PASS",
+    "authorized_BWF_hash_recomputed": "PASS",
+    "approved_F01G_spec_hash_recomputed": "PASS",
+    "BWF_metadata_reparsed_by_wash": false,
+    "numeric_equality_used_as_identity": false,
+    "selected_PcmMd_builder_event_list": "count=0; pointer=null",
+    "DEE_input_processing": "NOT_CONFIRMED",
+    "native_capture": "NOT_RUN",
+    "failed_setup_promoted_to_no_hit": false,
+    "F06OF_target_bridge": "UNBOUND"
+  },
+  "status": "PASS_STATIC_INPUT_BOUNDARY; NATIVE_TARGET_BRIDGE_UNBOUND; RUNTIME_NOT_RUN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}
