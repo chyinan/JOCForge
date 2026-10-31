@@ -1,0 +1,54 @@
+{
+  "schema": "washed-host-code13-input-lineage-source-identities.v1",
+  "source_package": {
+    "package_id": "HOST-ATMOS-CODE13-INPUT-LINEAGE-FOLLOWUP-V1",
+    "manifest_sha256": "b52359eb67fedd103406b8ab62a1d978bb460a3b5f604743544cb502bba130fb",
+    "payload_count": 25,
+    "payload_hashes_recomputed": true,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "native_images_recomputed": [
+    {
+      "image": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "size_bytes": 4233728
+    },
+    {
+      "image": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "size_bytes": 10942464
+    }
+  ],
+  "supporting_manifests_reverified_by_source_checker": [
+    {
+      "package_id": "config-parameter13-record-producer-followup",
+      "manifest_sha256": "caad76bdcb6f363feb263b0c3e387e23b1b32489c34921abacc5772e69027bbf"
+    },
+    {
+      "package_id": "config-parameter13-native-entry-investigation",
+      "manifest_sha256": "63b7a47c25e04bd471441db70f4c6a27f50702541eca916e59ea8c96c9d666c4"
+    },
+    {
+      "package_id": "id14-complexity-f12-field-lineage",
+      "manifest_sha256": "cd516f23b2c28538864aa1a7649a421444ac255eaa8b281daee1dcfc1bd20863"
+    },
+    {
+      "package_id": "config-parameter13-host-setter-followup",
+      "manifest_sha256": "4fb1eac5e5076a11f9d363c9cbd1532a8ca4b7b88d0c673d899c3c5d644a5113"
+    }
+  ],
+  "analysis": {
+    "tool": "Ghidra",
+    "version": "12.2 PUBLIC",
+    "ida_used": false,
+    "native_observation": "NOT_RUN"
+  },
+  "excluded_material": [
+    "raw Ghidra reports and addresses",
+    "Java tracing scripts",
+    "PCM samples",
+    "bitstream payload",
+    "private keys or license contents"
+  ]
+}

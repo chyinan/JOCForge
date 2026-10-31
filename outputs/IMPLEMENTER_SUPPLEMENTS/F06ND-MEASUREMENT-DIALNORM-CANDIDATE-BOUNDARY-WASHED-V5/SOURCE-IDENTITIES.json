@@ -1,0 +1,57 @@
+{
+  "schema": "washed-run100-measurement-output-source-identities.v5",
+  "source_package": {
+    "manifest_sha256": "b72e13f17f9c09f59c1afc8cb70f109831c4c5283bb15be935f45c360dc10983",
+    "payload_hashes_recomputed": true,
+    "prior_R4_manifest_sha256_superseded": [
+      "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+      "7572517cd4a0f325d3b4df2caf1072cd80b2d7922891333e2a61a25fbc33457c",
+      "32fe7bce991e2bc3c50a86b14b339338590345e0d89509d78dca97f2a4abb9f"
+    ]
+  },
+  "run100": {
+    "native_wash_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+    "execution_xml_sha256": "f5a9f4870eabf146c25442bd705383ce52c01907743eb19751d8a02267c384d1",
+    "dee_reference_log_sha256": "a9be16dd72cf305ce0316b9c815cca5bf90bcf34e6425674bf46d296e010e48b",
+    "capture_result_json_sha256": "7b6230761c1a51d71a99878a02529f02e0b6c1f27476a0e999acaf1f6e0841e6",
+    "manifest_xml_log_and_result_hashes_recomputed": true,
+    "custom_dialnorm_field_present_in_execution_xml": false,
+    "process_exit": "OBSERVED",
+    "numeric_dee_exit_code": "NOT_CAPTURED",
+    "encoder_done_marker_in_log": true,
+    "encoding_progress_100_in_log": true,
+    "output_stage_progress_100_in_log": true,
+    "reference_output": {
+      "exists_rechecked_by_file_metadata": true,
+      "bytes_rechecked_by_file_metadata": 17395712,
+      "sha256_reported_by_result_json": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+      "payload_opened_or_hashed_by_wash": false,
+      "payload_listening_or_bitstream_validation": "NOT_RUN"
+    },
+    "measurement_log_scalars": {
+      "final_integrated_loudness": -16.784912,
+      "measured_loudness": -16.78,
+      "dialogue_loudness": -120.0,
+      "itu_loudness": -16.78,
+      "loudness_range": 5.73,
+      "sample_peak": -4.13,
+      "true_peak": -3.95,
+      "units_stated": false,
+      "typed_receipt_present": false
+    }
+  },
+  "native_binaries_recomputed_at_current_paths": {
+    "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "dactlib_sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239",
+    "libmezzanine_sha256": "8ce9476c2a9d59a3e968912e203a051e7a3501cae7588f3ceb90762710597fd0",
+    "convert_atmos_mezz_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "run100_runtime_loaded_image_identity": "UNBOUND; execution XML does not record loaded module hashes",
+  "excluded_material": [
+    "PCM samples",
+    "EC3 payload bytes",
+    "private keys or license contents",
+    "raw disassembly"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "washed-run100-measurement-log-source-identities.v3",
+  "source_r4_package": {
+    "manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+    "payload_hashes_recomputed": true,
+    "old_manifest_sha256_superseded": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437"
+  },
+  "run100": {
+    "native_wash_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+    "execution_xml_sha256": "f5a9f4870eabf146c25442bd705383ce52c01907743eb19751d8a02267c384d1",
+    "dee_reference_log_sha256": "a9be16dd72cf305ce0316b9c815cca5bf90bcf34e6425674bf46d296e010e48b",
+    "current_manifest_xml_and_log_hashes_recomputed": true,
+    "custom_dialnorm_field_present_in_execution_xml": false,
+    "observed_log_fields": [
+      "Measurement done",
+      "Final Integrated loudness",
+      "measured_loudness",
+      "dialogue_loudness",
+      "itu_loudness",
+      "loudness_range",
+      "sample_peak",
+      "true_peak"
+    ],
+    "units_stated_in_log": false
+  },
+  "native_binaries_recomputed": {
+    "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "dactlib_sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239",
+    "libmezzanine_sha256": "8ce9476c2a9d59a3e968912e203a051e7a3501cae7588f3ceb90762710597fd0",
+    "convert_atmos_mezz_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "analysis_limits": {
+    "ghidra_tool": "Ghidra",
+    "ida_used": false,
+    "600_second_analysis": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS; FUNCTION_PROTOTYPE_INCOMPLETE",
+    "candidate_field_owner_and_generation": "UNBOUND",
+    "native_measurement_finalize_receipt": "NOT_RUN",
+    "f06nd_drc_input": "NOT_RUN",
+    "f12_bsi_dialnorm_value": "NOT_RUN"
+  },
+  "excluded_material": [
+    "PCM samples",
+    "EC3 or bitstream payload",
+    "license content or private keys",
+    "raw disassembly"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "washed-host-code13-input-lineage-check.v1",
+  "checks": {
+    "R2_manifest_sha256": "b52359eb67fedd103406b8ab62a1d978bb460a3b5f604743544cb502bba130fb",
+    "R2_payload_hashes_recomputed": true,
+    "R2_checker_normal_and_python_O": "PASS",
+    "supporting_manifests_and_payloads": "PASS",
+    "host_and_plugin_image_hashes_recomputed": "PASS",
+    "host_input_route_and_file_name_property": "STATIC_BOUND",
+    "host_Run_output_to_plugin_packet": "UNBOUND",
+    "code13_synthesized_from_parser_config_arguments": "STATIC_BOUND",
+    "slot10_task_semantics": "UNBOUND",
+    "slot10_not_identified_as_data_rate": true,
+    "F58_measurement_block_kept_separate_from_slot10": true,
+    "native_observation": "NOT_RUN",
+    "runtime_parent_source_generation": "UNBOUND"
+  },
+  "status": "PASS_STATIC_HOST_AND_CODE13_PATH; CROSS_MODULE_RUNTIME_JOIN_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

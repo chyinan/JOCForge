@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5",
+  "scope": "selected AtmosProcessor getter owner, constructor initial state, and one same-receiver process update; other writers, queue transfer, generation and F06OF target remain open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1538,
+      "sha256": "2953fae752f76a6232aa5bdce1f73627161f1db0a92b743164fd2b982736a90a"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1466,
+      "sha256": "91bc71ffe76d27cf242e31d2e8892fc1807da4614e454fc62fc53e8a4905f7cd"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 991,
+      "sha256": "42134d36d6922196f80d12963f0a43867fbaeabfe421d4155d864dd35c52dd6d"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1440,
+      "sha256": "55643c44e3820207a181b0abe2f9725fd63216f1895f7e64c75ed79fbd262c9c"
+    }
+  ]
+}

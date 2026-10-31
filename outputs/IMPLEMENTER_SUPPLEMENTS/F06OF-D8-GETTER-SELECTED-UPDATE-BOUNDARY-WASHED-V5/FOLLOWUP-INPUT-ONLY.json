@@ -1,0 +1,42 @@
+{
+  "schema": "washed-atmosprocessor-getter-update-followup.v5",
+  "implementation_mapping": {
+    "allowed_claim": "The selected PcmMd getter reads +0xD8/+0xE0 from a specific AtmosProcessor inner state whose constructor zeros those slots; one selected update on that same receiver does not write +0xD8.",
+    "scope": "one hash-identified static constructor/getter/update path",
+    "do_not_infer": [
+      "no other +0xD8 writer exists",
+      "a separate queued PCM record or CBIReader field supplies the getter",
+      "the initial zero is the final runtime value",
+      "same owner or generation was observed at runtime",
+      "the native field is an F06OF target slot"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "F06OF target or generation model"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "later writer to the same AtmosProcessor inner +0xD8 and semantic source",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "queued record/view to getter receiver pointer identity",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "same programme/attempt/source generation token",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "gap": "native target slot and F06OF generation",
+      "status": "UNBOUND"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_paths_may_be_used_if_relevant": true,
+    "reapproval_needed": false,
+    "persist_PCM_or_EC3": false
+  }
+}

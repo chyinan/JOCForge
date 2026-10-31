@@ -1,0 +1,45 @@
+{
+  "schema": "washed-run100-measurement-output-followup.v5",
+  "implementation_mapping": {
+    "allowed_claim": "Run100 log records measurement scalar values and Encoder done/100% output-stage markers; the controller observed process exit and result metadata reports a nonempty output file.",
+    "scope": "one hash-bound run log and result; Wash checked file existence/size metadata only",
+    "do_not_infer": [
+      "numeric DEE exit code was captured",
+      "runtime-loaded modules match current D-drive binaries",
+      "the output payload was opened, hashed, decoded, or listened to by Wash",
+      "logged values include units or form a typed MeasurementReceipt",
+      "the log values are the F06ND DRC input",
+      "the 5-bit candidate is programme DialNorm",
+      "F12 BSI value or owner/generation was observed"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "measurement/DRC owner or generation joins"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "run100 log scalar to typed measurement finalize receipt",
+      "status": "OBSERVED_LOG_ONLY; UNITS_AND_OWNER_UNBOUND"
+    },
+    {
+      "gap": "measurement result to F06ND DRC input",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "F06ND DRC input to F12 BSI DialNorm",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "run100 output payload validation or listening",
+      "status": "NOT_RUN"
+    }
+  ],
+  "experiment_authorization": {
+    "user_authorized_experiments_remain_approved": true,
+    "reapproval_needed": false,
+    "do_not_read_private_keys_or_license_diagnostics": true,
+    "do_not_open_PCM_or_EC3_payload_in_Wash": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "washed-d8-getter-owner-followup.v3",
+  "implementation_mapping": {
+    "allowed_claim": "The selected PcmMd getter reads +0xD8/+0xE0 from the selected AtmosProcessor inner state; constructor initialization zeroes those slots, and one selected update does not write +0xD8.",
+    "scope": "one static constructor/getter/update path",
+    "do_not_infer": [
+      "the separate AtmosReaderCC queued record supplies the getter",
+      "the same +0xD8 offset has the same meaning or owner in both record types",
+      "the selected update is the only writer",
+      "a runtime generation token was captured",
+      "the native field is F06OF target metadata"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "F06OF owner or generation model"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "later AtmosProcessor inner +0xD8 writer and field semantics",
+      "status": "UNBOUND",
+      "next_action": "Trace all typed writes to the exact inner state through constructors, update routines, and callbacks."
+    },
+    {
+      "gap": "queued record pointer or serializer view to AtmosProcessor getter receiver",
+      "status": "UNBOUND",
+      "next_action": "Find explicit pointer transfer or same-run pointer receipt."
+    },
+    {
+      "gap": "owner/source generation and F06OF target identity",
+      "status": "UNBOUND/NOT_CAPTURED"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_paths_may_be_used_if_relevant": true,
+    "reapproval_needed": false,
+    "persist_PCM_or_EC3": false
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06OF-D8-GETTER-OWNER-INITIAL-STATE-WASHED-V3",
+  "scope": "AtmosProcessor getter receiver owner and constructor initial D8/E0 state; later writer, queued-record crosswalk, generation and F06OF join remain open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1695,
+      "sha256": "40bd4c2deac578b51a1a4475fa58dfea50d5df261548e81eb6122b0908c9552d"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1708,
+      "sha256": "f653b7d4079155c14f4aae5ee531a86e67039a52d4627123744be48804314897"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 984,
+      "sha256": "911857fccb43149de796863d92f1490f5da458039dbdd7a6e94f79fdfff6c96b"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1563,
+      "sha256": "8703ec8dd1bddca503258a566eb5bd5bc3e78dc083f89c91a8851bb7a9eefbb6"
+    }
+  ]
+}

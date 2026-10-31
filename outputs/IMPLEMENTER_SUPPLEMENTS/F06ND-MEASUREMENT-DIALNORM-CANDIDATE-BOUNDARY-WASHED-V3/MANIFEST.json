@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V3",
+  "scope": "run100 native measurement values are observed in a hash-bound log only; units, typed finalize receipt, F06ND and F12 DialNorm joins remain open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1662,
+      "sha256": "64f2b7c3ca432c9507694c8a23db0670e35be33d658896cd3fe553cebe1bd71f"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 2066,
+      "sha256": "39752837429798bfa74deb090468b3a01b6f723c367c153b4536cae509837802"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 877,
+      "sha256": "5adcfbc27ff1ae3db2c2051fd0a85ec8a83fdd06dad949102637a5abe25d6bde"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1691,
+      "sha256": "8f43570ef10a7e13da862abdc626198a0500a2d23bde45d82f15156ae2364255"
+    }
+  ]
+}

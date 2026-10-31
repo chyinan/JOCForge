@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2",
+  "scope": "same-worker D8 record writer through queue consumer and serializer view; no typed join to selected PcmMd getter, native generation, or F06OF target",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1628,
+      "sha256": "6be81c6653c23eb134edeca29951c2a35053eb109d3b3d40f6a47c77c2fd27de"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1576,
+      "sha256": "eadf377e6cb133382c79232a7e75eb70491653b68a5b2207ecf5c70370a030c8"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 989,
+      "sha256": "4483906c1b6ba9739e99657030eaa0816089871698d09425989e58368a713465"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1642,
+      "sha256": "0d89260d6d1dca871f24da8ff9fdf7734ea6f06a812be6196187c22d57e20f35"
+    }
+  ]
+}

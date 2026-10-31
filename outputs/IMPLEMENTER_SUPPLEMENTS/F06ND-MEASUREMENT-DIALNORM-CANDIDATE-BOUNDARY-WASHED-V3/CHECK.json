@@ -1,0 +1,19 @@
+{
+  "schema": "washed-run100-measurement-log-check.v3",
+  "checks": {
+    "R4_source_package_manifest_and_payloads": "PASS",
+    "run100_native_manifest_hash_recomputed": "PASS",
+    "run100_execution_xml_hash_recomputed": "PASS",
+    "run100_dee_reference_log_hash_recomputed": "PASS",
+    "measurement_scalar_lines_present_in_hash_matched_log": "PASS",
+    "units_in_log": "NOT_STATED",
+    "custom_dialnorm_absent_from_run100_config": "PASS",
+    "native_binary_hashes_recomputed": "PASS",
+    "five_bit_candidate_semantics": "UNBOUND",
+    "measurement_finalize_to_F06ND_DRC": "UNBOUND",
+    "F06ND_DRC_to_F12_DialNorm": "UNBOUND",
+    "typed_owner_generation_capture": "NOT_RUN"
+  },
+  "status": "PASS_RUN100_LOG_SCALARS_OBSERVED_ONLY; TYPED_MEASUREMENT_AND_DRC_JOINS_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

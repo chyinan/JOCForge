@@ -1,0 +1,45 @@
+{
+  "schema": "washed-host-code13-input-lineage-followup.v1",
+  "implementation_mapping": {
+    "allowed_claim": "Ghidra statically traces the host AtmosMezz file_name input adapter and a separate plugin code-13 producer; code 13 is synthesized from parser/config arguments.",
+    "scope": "selected hash-identified host and plugin static paths only",
+    "do_not_infer": [
+      "host AtmosMezz::Run returns the same pointer/packet received by the plugin process function",
+      "the task route selects the identified factory slot at runtime",
+      "slot10 means data_rate",
+      "owner +0xF58 measurement value is the slot10/code13 source",
+      "code13 is semantic ID14 object_count + 1",
+      "runtime source generation or native execution was captured"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "owner or generation joins"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "host AtmosMezz Run-return object/packet to plugin process packet",
+      "status": "UNBOUND",
+      "next_action": "Trace or observe one same-task typed pointer and parent/source-generation token across the host/plugin boundary."
+    },
+    {
+      "gap": "encode_to_atmos_ddp task route to native factory slot",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "slot10 selector host semantic label",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "code13 native value acceptance and runtime generation",
+      "status": "NOT_RUN/UNBOUND"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_paths_may_be_used_if_relevant": true,
+    "reapproval_needed": false,
+    "do_not_read_private_keys_or_license_diagnostics": true,
+    "do_not_persist_PCM_or_bitstream": true
+  }
+}

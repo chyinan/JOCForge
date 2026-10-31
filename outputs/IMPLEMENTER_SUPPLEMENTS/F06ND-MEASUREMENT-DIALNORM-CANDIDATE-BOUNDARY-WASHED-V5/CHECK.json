@@ -1,0 +1,22 @@
+{
+  "schema": "washed-run100-measurement-output-check.v5",
+  "checks": {
+    "source_R4_manifest_and_payloads": "PASS",
+    "run100_native_manifest_sha256": "PASS",
+    "run100_XML_SHA256": "PASS",
+    "run100_DEE_log_SHA256": "PASS",
+    "run100_result_json_SHA256": "PASS",
+    "run100_measurement_scalar_lines": "MATCH; UNITS_NOT_STATED",
+    "encoder_done_and_100_percent_output_logged": true,
+    "process_exit_observed": true,
+    "numeric_DEE_exit_code": "NOT_CAPTURED",
+    "output_file_exists_and_size": "PASS_METADATA_ONLY",
+    "output_payload_opened_or_validated": false,
+    "run100_runtime_loaded_image_identity": "UNBOUND",
+    "typed_measurement_receipt": "NOT_OBSERVED",
+    "measurement_to_F06ND": "UNBOUND",
+    "F06ND_to_F12_DialNorm": "UNBOUND"
+  },
+  "status": "PASS_RUN100_LOG_AND_OUTPUT-STAGE_OBSERVED; TYPED_MEASUREMENT_AND_DRC_JOINS_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

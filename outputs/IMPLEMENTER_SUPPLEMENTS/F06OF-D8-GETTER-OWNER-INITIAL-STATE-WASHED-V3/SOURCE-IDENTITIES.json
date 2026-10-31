@@ -1,0 +1,43 @@
+{
+  "schema": "washed-d8-getter-owner-source-identities.v3",
+  "source_package": {
+    "package_id": "native_property_to_f06of_target_lineage_wash_v6",
+    "manifest_sha256": "dd4ec3f895254cb6ba62e2d09d5bf085bd44f770fe4f0ec505de553cc0854955",
+    "seal_sha256": "5d5c2cbcad81ed360a1800716158423dcf9872581baca410a4118b74da26a980",
+    "payload_count": 11,
+    "sealed_file_count": 12,
+    "source_and_wash_copy_files_identical": true,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "target_binary": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "current_file_hash_recomputed": true
+  },
+  "analysis": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "mode": "read-only",
+    "ida_used": false,
+    "raw_report_or_decompilation_copied_to_wash": false
+  },
+  "previous_washed_package": {
+    "package_id": "F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2",
+    "manifest_sha256": "237640d321b2516c6e5dbe5400a6571b57787171dd5de062a9e93ab85f1fcdd3",
+    "status": "separate writer/queue consumer path; PcmMd getter bridge UNBOUND"
+  },
+  "excluded_historical_references": [
+    "Other table-B and prior package references in the R3 source identity file are not used for this washed getter-owner claim."
+  ],
+  "runtime_limits": {
+    "native_capture": "NOT_RUN",
+    "DEE_input_processing": "NOT_CONFIRMED",
+    "later_inner_plus_d8_writer": "UNBOUND",
+    "same_pointer_to_reader_queue_record": "UNBOUND",
+    "generation_token": "NOT_CAPTURED",
+    "F06OF_target_slot_and_generation": "UNBOUND",
+    "PCM_or_EC3_payload_read_or_saved": false,
+    "private_key_or_license_content_read": false
+  }
+}

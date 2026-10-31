@@ -1,0 +1,43 @@
+{
+  "schema": "washed-d8-queue-consumer-followup.v2",
+  "implementation_mapping": {
+    "allowed_claim": "A separate hash-identified record writer transfers the same record pointer through a same-worker ring consumer into a serializer view; +0xD8 is inside that returned view.",
+    "scope": "one static writer/queue/consumer/serializer path",
+    "do_not_infer": [
+      "the returned serializer view is passed to the selected PcmMd getter",
+      "matching +0xD8 offsets establish one owner or field",
+      "same worker state establishes the same callback generation",
+      "a native event record exists for the selected empty PcmMd builder",
+      "the record identifies an ADM object or F06OF target slot"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "F06OF target or generation model"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "serializer view or queued record to selected PcmMd getter receiver",
+      "status": "UNBOUND",
+      "next_action": "Find an explicit call argument, typed field transfer, or same-pointer runtime receipt joining the exact objects."
+    },
+    {
+      "gap": "record source-field semantics and generation",
+      "status": "UNBOUND/NOT_CAPTURED"
+    },
+    {
+      "gap": "native key/owner to F06OF target slot and packet generation",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "nonempty OAMDI event producer outside the selected empty builder",
+      "status": "UNBOUND"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_paths_may_be_used_if_relevant": true,
+    "reapproval_needed": false,
+    "persist_PCM_or_EC3": false
+  }
+}

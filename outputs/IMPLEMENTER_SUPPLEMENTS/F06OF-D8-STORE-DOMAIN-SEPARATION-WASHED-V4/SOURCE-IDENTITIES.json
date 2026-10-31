@@ -1,0 +1,43 @@
+{
+  "schema": "washed-d8-store-domain-source-identities.v4",
+  "source_package": {
+    "package_id": "native_property_to_f06of_target_lineage_wash_v7",
+    "manifest_sha256": "dda847dc9cd5ee70d0b2b7a2e79008d1af5a12548dafd778cea09f93f2d987b8",
+    "seal_sha256": "1e3db00076a757230ba449c59d96482169fad10f2154f83c7f2a991950df0a84",
+    "payload_count": 12,
+    "sealed_file_count": 13,
+    "source_and_wash_copy_files_identical": true,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "target_binary": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "current_file_hash_recomputed": true
+  },
+  "analysis": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "mode": "read-only",
+    "ida_used": false,
+    "raw_reports_or_decompilation_copied_to_wash": false
+  },
+  "prior_washed_package": {
+    "package_id": "F06OF-D8-GETTER-OWNER-INITIAL-STATE-WASHED-V3",
+    "manifest_sha256": "cb7a5d1cd642102754b988738cca8097dd0eb7d5a614410a2765219fffba8f3e",
+    "status": "AtmosProcessor getter owner and initial zero bounded; later writers and queue bridge open"
+  },
+  "excluded_historical_references": [
+    "Other table-B and prior-package hashes listed by the R3 source bundle are not used for this store-domain separation claim."
+  ],
+  "runtime_limits": {
+    "native_capture": "NOT_RUN",
+    "DEE_input_processing": "NOT_CONFIRMED",
+    "AtmosProcessor_later_plus_d8_writer": "UNBOUND",
+    "record_to_getter_same_pointer": "UNBOUND",
+    "generation_token": "NOT_CAPTURED",
+    "F06OF_target_slot_and_generation": "UNBOUND",
+    "PCM_or_EC3_payload_read_or_saved": false,
+    "private_key_or_license_content_read": false
+  }
+}

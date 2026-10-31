@@ -1,0 +1,44 @@
+{
+  "schema": "washed-run100-measurement-output-followup.v4",
+  "implementation_mapping": {
+    "allowed_claim": "Run-100 logged measurement scalars, Encoder done, 100% progress and output-stage completion; the reference output file exists with the recorded size.",
+    "scope": "one hash-bound run log and result metadata; no output payload validation",
+    "do_not_infer": [
+      "logged scalars have stated units or constitute a typed MeasurementReceipt",
+      "the logged scalar is the F06ND DRC input",
+      "the static five-bit candidate is programme DialNorm",
+      "the output bitstream conforms or has been listened to",
+      "the run's loaded modules are proven identical to current D-drive binaries",
+      "the missing numeric process exit code is zero"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "measurement/DRC owner or generation joins"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "run100 log scalar to typed measurement finalize receipt",
+      "status": "OBSERVED_LOG_ONLY; UNITS_AND_OWNER_UNBOUND"
+    },
+    {
+      "gap": "measurement result to F06ND DRC input",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "F06ND DRC input to F12 BSI DialNorm",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "run100 output validation/listening",
+      "status": "NOT_RUN"
+    }
+  ],
+  "experiment_authorization": {
+    "user_authorized_experiments_remain_approved": true,
+    "reapproval_needed": false,
+    "do_not_read_private_keys_or_license_diagnostics": true,
+    "do_not_persist_pcm_or_encoded_payload": true
+  }
+}

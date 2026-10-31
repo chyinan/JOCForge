@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1822785,
-              "sha256": "5dbfcdca1401edd039a5517ceaa1f21d5ebdbac9f8be7fefc4b8a3fe69b466b0"
+              "bytes": 1832364,
+              "sha256": "1a633ebc424891a50e3454f9b66ce1b312c4c60c071bf3df38e69a87e2a0d746"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1822785,
-              "sha256": "5dbfcdca1401edd039a5517ceaa1f21d5ebdbac9f8be7fefc4b8a3fe69b466b0"
+              "bytes": 1832364,
+              "sha256": "1a633ebc424891a50e3454f9b66ce1b312c4c60c071bf3df38e69a87e2a0d746"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -17712,9 +17712,9 @@
         },
         {
           "slice_id": "washed-f06of-d8-record-writer-queue-separate-path",
-          "mapping_status": "WASHED_STATIC_D8_RECORD_WRITER_QUEUE__PMD_GETTER_JOIN_UNBOUND",
-          "implementation_status": "EVIDENCE_ONLY_SEPARATE_RECORD_PATH__NO_F06OF_TARGET_JOIN",
-          "scope": "Hash-bound Ghidra evidence identifies a bounded writer/queue path for a separate PCM metadata record: the producer initializes a record, copies a 16-byte provider pair into record-relative bytes +0xD8..+0xE7, and transfers that record pointer into a ring/queue. The selected PcmMd getter is a different receiver path that reads its own receiver-relative +0xD8/+0xE0 fields. The candidate queued pointer is not transferred to that receiver, and no shared call or generation token joins them. Another processing-row store at the same displacement is also a separate domain. The selected PcmMd builder's event count=0/pointer=NULL applies only to that builder; other producers/modes are not excluded. F06OF target identity and generation remain UNBOUND.",
+          "mapping_status": "WASHED_STATIC_D8_GETTER_CALLER_AND_UPDATE__STORE_DOMAINS_DISTINCT__TARGET_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SEPARATE_D8_OBJECT_DOMAINS__NO_F06OF_TARGET_JOIN",
+          "scope": "V2 statically binds a separate PCM metadata record writer through the same-worker ring/queue consumer to a serializer view; the serializer does not dereference record-relative +0xD8. V4 distinguishes that queued record from the selected AtmosProcessor getter inner state, a separate CBIReader inner object, and a separate 0x100-stride processing-row domain. V5 binds the selected PcmMd getter's direct caller chain to the selected AtmosProcessor inner-state owner, the constructor's initial +0xD8/+0xE0 values to zero, and one same-receiver process update whose selected function does not write +0xD8. These facts are limited to those paths; later AtmosProcessor writers and other routes are not excluded. No same-pointer transfer or generation token joins the queue, CBIReader, or processing-row stores to the getter. The selected builder's empty OAMDI event list is scoped only to that builder. F06OF target slot/generation remains UNBOUND; input processing is NOT_CONFIRMED and native capture is NOT_RUN.",
           "owner": "meter",
           "implementation_requirement": false,
           "dependencies": [],
@@ -17725,81 +17725,162 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [
-              "CandidateRecordOwner",
-              "ProviderPairSource",
-              "CandidateRecordByteRange",
-              "CandidateRecordPointer",
-              "RingQueueSlot",
+              "AtmosProcessorOuterObject",
+              "AtmosProcessorInnerState",
+              "AtmosProcessorConstructor",
+              "AtmosProcessorSelectedUpdate",
               "PmdGetterReceiver",
               "PmdGetterD8Field",
               "PmdGetterE0Field",
-              "ProcessingRowD8Field",
+              "PmdGetterOutputWrapper",
+              "QueuedRecordOwner",
+              "ProviderPairSource",
+              "QueuedRecordByteRange",
+              "QueuedRecordPointer",
+              "ReaderWorkerState",
+              "RingQueueSlot",
+              "QueueConsumer",
+              "SerializerView",
+              "CbiReaderOuterObject",
+              "CbiReaderInnerObject",
+              "CbiReaderD8Store",
+              "ProcessingRowOwner",
+              "ProcessingRowD8Store",
               "SelectedPmdEventList",
               "F06OFTargetSlot",
-              "CallbackGeneration"
+              "CallbackGeneration",
+              "DeeWorkflowExecution"
             ],
             "covered_clauses": [
-              "A separate record writer copies a 16-byte provider pair to record-relative +0xD8..+0xE7 and transfers that record pointer into a queue.",
-              "The candidate record pointer is not transferred to the selected PcmMd getter receiver; no shared call or generation token joins them.",
-              "The selected PcmMd getter's receiver-relative +0xD8/+0xE0 fields and another processing-row D8 store are separate domains.",
-              "Selected PcmMd event count=0/pointer=NULL is scoped to that builder; other producers/modes are not ruled out.",
-              "No native target-slot or callback-generation bridge is established; input processing was not confirmed."
+              "V2 binds the separate record producer to its same-worker queue consumer and serializer view; the serializer does not dereference +0xD8.",
+              "The selected PcmMd getter reads +0xD8/+0xE0 from the inner state owned by the selected AtmosProcessor path; that constructor initializes both qwords to zero.",
+              "One selected AtmosProcessor update routine does not write +0xD8; later writers and other routes are not excluded.",
+              "A separate CBIReader inner object has its own type/allocation and +0xD8 store; it is not joined to the getter receiver.",
+              "The 0x100-stride processing-row +0xD8 store is a separate owner/value domain.",
+              "No same-pointer or same-generation transfer from the queued record or CBIReader to the getter is established; F06OF target/generation remains UNBOUND.",
+              "Selected builder event count=0/pointer=NULL remains limited to that builder; other producers/modes are not ruled out."
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_F06OF_SEPARATE_D8_RECORD_WRITER_AND_QUEUE_BOUNDARY",
+            "kind": "HASH_BOUND_F06OF_D8_STORE_DOMAIN_SEPARATION_AND_GETTER_INITIAL_STATE",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/MANIFEST.sha256",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/FOLLOWUP-INPUT-ONLY.json"
             ],
-            "supplement_manifest_sha256": "904ce29ff7f39781c0563fd43de042a6dd136ee988e1ec47828bf8ea448511b1",
+            "supplement_manifest_sha256": "c62dd9ced363a315a627f90b8db93efcd744ff01b1eb2da84fc5fd74e367020e",
             "source_r3_v4_manifest_sha256": "29acf8bba25aa110ebf95b1bf2d9720ffb6ebf5bdc909dded5fc26e616e92bbc",
             "source_r3_v4_seal_sha256": "d48600b90c17e9609a2fcb8b7582b577ca33331adb92fb96db8d31f7637fa90c",
             "target_d_and_e_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
-            "validation_boundary": "Separate static record writer/queue path only; no typed pointer/generation join to PcmMd getter or F06OF target."
+            "validation_boundary": "Static getter caller/owner/default and selected-update boundaries plus distinct object domains only; queue-to-getter pointer/generation, later writer, and F06OF target joins remain open.",
+            "source_r3_v7_manifest_sha256": "dda847dc9cd5ee70d0b2b7a2e79008d1af5a12548dafd778cea09f93f2d987b8",
+            "source_r3_v7_seal_sha256": "1e3db00076a757230ba449c59d96482169fad10f2154f83c7f2a991950df0a84",
+            "source_r3_v8_manifest_sha256": "f258d48dd06b321988ac7fc69d9861d65f3302543d2b0590492c1adb4d63fff3",
+            "source_r3_v8_seal_sha256": "50877dcafaf32f3ba49090556774887ebd41accc644663fefecef7cb6af6ad35",
+            "supporting_supplements": [
+              {
+                "package_id": "F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2",
+                "manifest_sha256": "237640d321b2516c6e5dbe5400a6571b57787171dd5de062a9e93ab85f1fcdd3",
+                "bound_facts": "separate record writer to same-worker queue consumer and serializer view; getter and F06OF joins open"
+              },
+              {
+                "package_id": "F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4",
+                "manifest_sha256": "e0f90f0db257e079fa50ec79322223afd990c85b0019014816d0d5a443147db2",
+                "bound_facts": "queued record, AtmosProcessor getter inner state, CBIReader inner object, and processing-row stores are distinct domains"
+              },
+              {
+                "package_id": "F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5",
+                "manifest_sha256": "c62dd9ced363a315a627f90b8db93efcd744ff01b1eb2da84fc5fd74e367020e",
+                "bound_facts": "selected getter direct caller and inner-state owner, constructor zero state, and one same-receiver update bound; other writers open"
+              }
+            ],
+            "historical_superseded_supplements": [
+              {
+                "package_id": "F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1",
+                "manifest_sha256": "904ce29ff7f39781c0563fd43de042a6dd136ee988e1ec47828bf8ea448511b1",
+                "status": "RETAINED_AS_HISTORICAL_FOUNDATION; V2 ADDS QUEUE CONSUMER/SERIALIZER VIEW"
+              },
+              {
+                "package_id": "F06OF-D8-GETTER-OWNER-INITIAL-STATE-WASHED-V3",
+                "manifest_sha256": "cb7a5d1cd642102754b988738cca8097dd0eb7d5a614410a2765219fffba8f3e",
+                "status": "RETAINED_AS_HISTORY; V5 ADDS DIRECT CALLER AND SAME-RECEIVER UPDATE REFINEMENT"
+              }
+            ]
           },
           "vectors": {
-            "kind": "WASHED_F06OF_D8_WRITER_QUEUE_STATIC_BOUNDARY",
+            "kind": "WASHED_F06OF_D8_GETTER_CALLER_AND_STORE_DOMAIN_BOUNDARIES_V5",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-GETTER-SELECTED-UPDATE-BOUNDARY-WASHED-V5/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-CONSUMER-BOUNDARY-WASHED-V2/CONTRACT.md"
             ],
             "case_pointers": [
-              "The candidate record writer copies provider bytes +0xD8..+0xE7 and transfers the same candidate record pointer into a queue.",
-              "No same pointer or generation reaches the selected PcmMd getter receiver; matching +0xD8 offsets are not identity.",
-              "Native capture and generation token are not available; selected builder empty-list evidence does not exclude another producer/mode."
+              "The separate PCM record flows through its same-worker queue consumer to a serializer view; this path does not reach the selected getter.",
+              "The selected PcmMd getter direct caller and same-receiver update are bound; inner +0xD8/+0xE0 begin at zero and this update does not write +0xD8.",
+              "CBIReader inner and 0x100-stride processing-row +0xD8 stores are distinct domains, not identity aliases.",
+              "No same pointer/generation or F06OF target bridge is established; the selected builder's empty-event result is not global."
             ],
             "expected_outputs_included": false,
             "native_capture": "NOT_RUN",
-            "supplement_manifest_sha256": "904ce29ff7f39781c0563fd43de042a6dd136ee988e1ec47828bf8ea448511b1"
+            "supplement_manifest_sha256": "c62dd9ced363a315a627f90b8db93efcd744ff01b1eb2da84fc5fd74e367020e"
           },
           "error_outcomes": [],
           "not_run": [
-            "A typed pointer transfer from the queued candidate record to the PcmMd getter receiver.",
-            "Candidate source-field semantics and generation token.",
-            "A nonempty 48-byte OAMDI event producer in another supported mode.",
+            "A typed pointer transfer from the queued record or CBIReader inner object to the selected PcmMd getter receiver.",
+            "A same-generation token joining the separate writer domains to the getter or F06OF target.",
+            "Later AtmosProcessor +0xD8 writers and other producer/mode routes beyond the selected getter caller/update paths.",
+            "A nonempty OAMDI event producer outside the selected empty-event builder.",
             "Native owner/key to F06OF TargetSlotIndex and packet generation.",
             "Native capture and confirmed DEE workflow input processing."
           ],
-          "validation_boundary": "Evidence-only separate writer/queue path; same offset, package adjacency, or event order do not join record owners.",
+          "validation_boundary": "Static getter caller/owner/default and selected-update boundaries plus distinct object domains only; queue-to-getter pointer/generation, later writer, and F06OF target joins remain open.",
           "native_status": {
+            "getter_direct_caller_chain": "STATIC_BOUND",
+            "AtmosProcessor_getter_receiver_owner": "ATMOSPROCESSOR_INNER_STATE",
+            "getter_owner_status": "STATIC_BOUND",
+            "AtmosProcessor_constructor_initial_d8_e0": "ZERO_INITIALIZED",
+            "selected_process_update_same_receiver": "STATIC_BOUND",
+            "selected_AtmosProcessor_update_d8_write": "NOT_PRESENT_IN_THIS_FUNCTION",
+            "other_AtmosProcessor_d8_writers_excluded": false,
+            "later_AtmosProcessor_d8_writer": "UNBOUND",
             "candidate_record_byte_range": {
               "start": "+0xD8",
               "end": "+0xE7",
               "bytes": 16
             },
-            "candidate_writer_to_queue_chain": "STATIC_BOUND_WITHIN_SEPARATE_RECORD_PATH",
-            "candidate_writer_pointer_to_pmd_getter_receiver": "UNBOUND",
+            "queued_record_writer_to_queue_consumer": "STATIC_BOUND_WITHIN_SEPARATE_RECORD_PATH",
+            "queue_consumer_to_serializer_view": "STATIC_BOUND_WITHIN_SEPARATE_RECORD_PATH",
+            "serializer_view_relative_d8_offset": "+0x40",
+            "serializer_dereferences_record_d8": false,
+            "CBIReader_d8_byte_store": "SEPARATE_OBJECT_TYPE_AND_ALLOCATION",
+            "processing_row_d8_writer": "SEPARATE_ROW_DOMAIN",
+            "same_d8_offset_used_as_identity": false,
+            "record_or_CBIReader_to_getter_pointer_join": "UNBOUND",
             "same_generation_token": "NOT_CAPTURED",
-            "same_displacement_other_row_path": "SEPARATE_DOMAIN",
             "selected_pmd_event_count_pointer": "ZERO_AND_NULL_FOR_SELECTED_BUILDER",
             "other_pmd_producers_or_modes": "NOT_RULED_OUT",
             "f06of_target_slot_bridge": "UNBOUND",
+            "runtime_generation_join": "UNBOUND",
             "dee_input_processing": "NOT_CONFIRMED",
             "native_capture": "NOT_RUN",
             "whole_f06of_readiness": false,
@@ -20402,9 +20483,9 @@
         },
         {
           "slice_id": "washed-f06nd-measurement-to-f12-dialnorm-candidate-boundary",
-          "mapping_status": "WASHED_STATIC_DIALNORM_CANDIDATE__MEASUREMENT_AND_F12_JOINS_UNBOUND",
-          "implementation_status": "EVIDENCE_ONLY_RUN100_OPTION_AND_5BIT_CANDIDATE__NO_DIALNORM_OWNER",
-          "scope": "Current Wash evidence is V2, which supersedes V1's source-package manifest identity while retaining V1 as history. The hash-identified run-100 configuration has no custom_dialnorm override. Static help describes the option as optional in [-31,0], with 0 disabling the override; the default or selected branch when absent remains UNBOUND. A 600-second read-only Ghidra analysis completed with data-creation warnings, while the target prototype is incomplete and the typed candidate owner/generation remains UNBOUND. The U16 member at offset 1244 to 5-bit writer remains an untyped static candidate, not programme DialNorm. Measurement finalize→F06ND DRC input and F06ND DRC input→F12 BSI DialNorm remain UNBOUND; native execution is NOT_RUN.",
+          "mapping_status": "WASHED_RUN100_LOG_AND_OUTPUT_STAGE_OBSERVED__TYPED_MEASUREMENT_AND_DIALNORM_JOINS_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_LOG_AND_OUTPUT_METADATA__NO_TYPED_RECEIPT_OR_DIALNORM_FIELD_JOIN",
+          "scope": "Current Wash evidence is V5. The hash-bound run-100 DEE log records measurement scalars without units, an Encoder done marker, 100% encoding progress, and 100% output-stage progress. The controller result records process exit observed and a reference output file whose existence and 17,395,712-byte size were checked by metadata only; the numeric exit code was not captured and the output payload was not opened, hashed, parsed, decoded, or listened to. Runtime-loaded image identity remains UNBOUND. These observations do not establish a typed MeasurementReceipt, programme/attempt/generation lineage, measurement-finalize to F06ND DRC input, or F06ND to F12 BSI DialNorm. A U16-to-5-bit writer remains an untyped static candidate; the V2-only member offset is retained only as historical evidence and is not promoted by V5.",
           "owner": "drc",
           "implementation_requirement": false,
           "dependencies": [],
@@ -20418,87 +20499,127 @@
               "Run100ConfigurationIdentity",
               "CustomDialnormOverride",
               "AdmDialnormMetadata",
-              "MeasurementFinalizeScalar",
+              "MeasurementLogScalar",
+              "MeasurementUnits",
+              "TypedMeasurementReceipt",
+              "ProgrammeAttemptGeneration",
               "F06NFDrcInput",
-              "CandidateU16Member1244",
+              "CandidateU16Member",
               "CandidateFiveBitWriter",
               "F12BsiDialnormField",
               "CandidateOwnerGeneration",
               "DactMainMeterPath",
-              "NativeExecution"
+              "Run100Manifest",
+              "Run100ExecutionXml",
+              "Run100ReferenceLog",
+              "Run100ResultJson",
+              "DEEProcessExitObservation",
+              "ReferenceOutputFileMetadata",
+              "ReferenceOutputPayload",
+              "RuntimeLoadedImageIdentity"
             ],
             "covered_clauses": [
-              "Run-100 config lacks custom_dialnorm; the option is static-help optional in [-31,0] and zero disables the override.",
-              "The default/selected branch when custom_dialnorm is absent remains UNBOUND; no runtime input was confirmed.",
-              "The V2 source package supersedes V1 source identity; 600-second Ghidra analysis completed with warnings and incomplete target prototype, without resolving semantic tag or owner/generation.",
-              "ADM DialNorm metadata is a separate input path and has no joined measured-finalize lineage.",
-              "A codec-reachable U16 member at offset 1244 reaches a 5-bit writer only as an untagged static candidate.",
-              "Measurement finalize→F06ND input and F06ND→F12 BSI DialNorm both remain UNBOUND; native execution is NOT_RUN."
+              "Run-100 execution XML has no custom_dialnorm; the optional override range is -31..0 and zero disables it, while the absent-option default/selected branch remains UNBOUND.",
+              "V5 binds run-100 log scalars, execution XML, controller result, and output-stage observations to their recorded hashes; scalar units are NOT_STATED.",
+              "The log records Encoder done and 100% encoding/output progress; process exit is observed but its numeric DEE exit code is NOT_CAPTURED.",
+              "The reference output exists and is 17,395,712 bytes by file metadata only; the payload was not opened, hashed, parsed, decoded, or listened to.",
+              "Runtime-loaded image identity remains UNBOUND; output metadata does not establish output conformance.",
+              "The U16-to-5-bit writer remains semantically untyped; the V2-only member offset is not current V5 evidence.",
+              "Typed measurement receipt, programme/attempt/generation, measurement-finalize to F06ND, and F06ND to F12 DialNorm remain NOT_OBSERVED or UNBOUND."
             ]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06ND_MEASUREMENT_DIALNORM_CANDIDATE_BOUNDARY",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/MANIFEST.sha256",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/FOLLOWUP-INPUT-ONLY.json"
             ],
-            "supplement_manifest_sha256": "80cab5a61de2ae1d01cc08bea8ce50c7dbcfa2260c643131115b51fd19d95c79",
-            "run100_source_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+            "supplement_manifest_sha256": "dedc2b7201b372882f0684a6022d85e03e3f2eb8c493c944c7ab7fcdac59e2d6",
+            "run100_source_manifest_sha256": "b72e13f17f9c09f59c1afc8cb70f109831c4c5283bb15be935f45c360dc10983",
             "meter_finalize_domain_boundary_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
             "drc_owner_option_dialnorm_erratum_manifest_sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
             "first_access_unit_numeric_model_contract_sha256": "f5c689a9cfdead35470321d3513f1e32b8a834bca931eebc7c6fe6ba15e9f08a",
-            "validation_boundary": "Revised V2 source identity and longer static-analysis status; candidate semantics/owner, measurement receipt edges, and native execution remain open.",
-            "historical_superseded_v1": {
-              "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1",
-              "supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306",
-              "source_package_manifest_sha256": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437",
-              "status": "SUPERSEDED_BY_WASHED_V2; RETAINED_AS_HISTORY",
-              "provider_files": [
-                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/MANIFEST.json",
-                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/MANIFEST.sha256",
-                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CONTRACT.md",
-                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
-                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CHECK.json",
-                "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
-              ]
-            },
+            "validation_boundary": "V5 establishes hash-bound log and output-stage metadata observations only. Output payload validation, typed measurement receipt, loaded-image identity, and measurement/DRC/DialNorm joins remain open.",
             "analysis_update": {
               "limit_seconds": 600,
               "status": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS",
               "target_function_prototype": "INCOMPLETE",
-              "typed_candidate_owner_generation": "UNBOUND"
-            }
+              "candidate_owner_generation": "UNBOUND"
+            },
+            "run100_native_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+            "run100_execution_xml_sha256": "f5a9f4870eabf146c25442bd705383ce52c01907743eb19751d8a02267c384d1",
+            "run100_dee_reference_log_sha256": "a9be16dd72cf305ce0316b9c815cca5bf90bcf34e6425674bf46d296e010e48b",
+            "run100_result_json_sha256": "7b6230761c1a51d71a99878a02529f02e0b6c1f27476a0e999acaf1f6e0841e6",
+            "run100_runtime_loaded_image_identity": "UNBOUND",
+            "source_r4_prior_manifests_superseded": [
+              "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+              "7572517cd4a0f325d3b4df2caf1072cd80b2d7922891333e2a61a25fbc33457c",
+              "32fe7bce991e2bc3c50a86b14b339338590345e0d89509d78dca97f2a4abb9f"
+            ],
+            "historical_superseded_packages": [
+              {
+                "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1",
+                "supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306",
+                "source_package_manifest_sha256": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437",
+                "status": "SUPERSEDED_BY_V2; RETAINED_AS_HISTORY"
+              },
+              {
+                "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2",
+                "supplement_manifest_sha256": "80cab5a61de2ae1d01cc08bea8ce50c7dbcfa2260c643131115b51fd19d95c79",
+                "source_package_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+                "status": "SUPERSEDED_BY_V3; RETAINED_AS_HISTORY"
+              },
+              {
+                "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V3",
+                "supplement_manifest_sha256": "695b23a992be20f9c0d9203eefffdd80f60227d103f56365d11ac2a46700b67a",
+                "source_package_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+                "status": "SUPERSEDED_BY_V4; RETAINED_AS_HISTORY"
+              },
+              {
+                "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V4",
+                "supplement_manifest_sha256": "06b18967c7ea59019e64cad9a26c96213b51245efe26f64876c5f880034828c7",
+                "source_package_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
+                "status": "SUPERSEDED_BY_V5; RETAINED_AS_HISTORY"
+              }
+            ]
           },
           "vectors": {
-            "kind": "F06ND_RUN100_OPTION_ABSENCE_AND_UNTYPED_5BIT_CANDIDATE_V2",
+            "kind": "F06ND_RUN100_LOG_AND_OUTPUT_STAGE_OBSERVATIONS_V5",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V2/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/FOLLOWUP-INPUT-ONLY.json"
             ],
             "case_pointers": [
-              "Run-100 config has no custom_dialnorm; absence does not identify a default or selected measurement branch.",
-              "The U16 member at offset 1244 reaches a 5-bit writer but has no semantic DialNorm tag or owner/generation join.",
-              "The synthetic input-only vector remains model-only and was not used as native evidence."
+              "Run-100 measurement scalars are present in the hash-bound log; units are not stated and no typed MeasurementReceipt was observed.",
+              "Encoder done and 100% encoding/output-stage markers plus process-exit observation are recorded; the numeric exit code is not captured.",
+              "Reference output existence/size is metadata-only; the payload is not opened, hashed, parsed, decoded, or listened to.",
+              "No measurement-to-F06ND or F06ND-to-F12 DialNorm typed join is established."
             ],
             "expected_outputs_included": false,
-            "native_execution": "NOT_RUN",
-            "supplement_manifest_sha256": "80cab5a61de2ae1d01cc08bea8ce50c7dbcfa2260c643131115b51fd19d95c79",
-            "historical_superseded_v1_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306"
+            "native_execution": "RUN100_LOG_AND_OUTPUT_STAGE_OBSERVED; OUTPUT_PAYLOAD_UNVALIDATED",
+            "supplement_manifest_sha256": "dedc2b7201b372882f0684a6022d85e03e3f2eb8c493c944c7ab7fcdac59e2d6",
+            "historical_superseded_manifests": [
+              "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306",
+              "80cab5a61de2ae1d01cc08bea8ce50c7dbcfa2260c643131115b51fd19d95c79",
+              "695b23a992be20f9c0d9203eefffdd80f60227d103f56365d11ac2a46700b67a",
+              "06b18967c7ea59019e64cad9a26c96213b51245efe26f64876c5f880034828c7"
+            ]
           },
           "error_outcomes": [],
           "not_run": [
-            "Measurement-finalize scalar and units to F06ND DRC input receipt.",
-            "The U16 candidate field's semantic tag, producer owner, and generation.",
-            "F06ND DRC input to F12 BSI DialNorm identity.",
-            "Run-100 native execution, default/selected custom_dialnorm branch, and any positive native pair.",
-            "DactMain meter-related path to DialNorm/DRC/finalize join."
+            "Units and typed owner for the logged measurement scalars.",
+            "Typed measurement-finalize receipt bound to programme/attempt/generation.",
+            "Measurement-finalize value to F06ND DRC input and F06ND DRC input to F12 BSI DialNorm.",
+            "Semantic tag and owner/generation for the untyped U16-to-5-bit writer candidate; V2's offset is not promoted as V5 evidence.",
+            "Numeric DEE exit code capture and runtime-loaded image identity.",
+            "Opening, hashing, parsing, decoding, listening to, or product-validating the reference output payload."
           ],
-          "validation_boundary": "Evidence-only; the 5-bit candidate is not labeled DialNorm and no algorithm/readiness change is authorized.",
+          "validation_boundary": "V5 establishes hash-bound log and output-stage metadata observations only. Output payload validation, typed measurement receipt, loaded-image identity, and measurement/DRC/DialNorm joins remain open.",
           "native_status": {
             "run100_custom_dialnorm_present": false,
             "custom_dialnorm_option_range": [
@@ -20508,23 +20629,43 @@
             "zero_disables_override": true,
             "default_or_selected_branch_when_absent": "UNBOUND",
             "adm_dialnorm_metadata_to_measurement_finalize": "UNBOUND",
-            "candidate_u16_member_offset": 1244,
+            "candidate_static_status": "UNTYPED_5BIT_WRITER_CANDIDATE",
             "candidate_writer_width_bits": 5,
             "candidate_semantic_tag": "UNBOUND",
             "candidate_owner_generation": "UNBOUND",
             "measurement_finalize_to_f06nd": "UNBOUND",
             "f06nd_to_f12_bsi_dialnorm": "UNBOUND",
             "dactmain_meter_to_dialnorm": "UNBOUND",
-            "native_execution": "NOT_RUN",
-            "whole_chain_ready": false,
-            "source_package_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
-            "superseded_v1_supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306",
-            "superseded_v1_source_package_manifest_sha256": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437",
-            "v1_status": "SUPERSEDED_BY_V2; RETAINED_AS_HISTORY",
-            "extended_analysis_limit_seconds": 600,
-            "extended_analysis_status": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS",
-            "target_function_prototype": "INCOMPLETE",
-            "typed_candidate_owner_generation": "UNBOUND"
+            "native_execution": "RUN100_LOG_AND_OUTPUT_STAGE_OBSERVED",
+            "run100_measurement_scalar_status": "OBSERVED_LOG_ONLY",
+            "run100_logged_measurement_scalars": {
+              "final_integrated_loudness": -16.784912,
+              "measured_loudness": -16.78,
+              "dialogue_loudness": -120.0,
+              "itu_loudness": -16.78,
+              "loudness_range": 5.73,
+              "sample_peak": -4.13,
+              "true_peak": -3.95
+            },
+            "units_in_log": "NOT_STATED",
+            "typed_measurement_finalize_receipt": "NOT_OBSERVED",
+            "programme_attempt_generation": "UNBOUND",
+            "encoder_done_marker_in_log": true,
+            "encoding_progress_100_in_log": true,
+            "output_stage_progress_100_in_log": true,
+            "process_exit_observed": true,
+            "numeric_dee_exit_code": "NOT_CAPTURED",
+            "reference_output_exists": true,
+            "reference_output_size_bytes_metadata_only": 17395712,
+            "reference_output_sha256_reported_by_result_json": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+            "reference_output_payload_opened_hashed_validated_or_listened": false,
+            "run100_runtime_loaded_image_identity": "UNBOUND",
+            "run100_source_manifest_sha256": "b72e13f17f9c09f59c1afc8cb70f109831c4c5283bb15be935f45c360dc10983",
+            "run100_native_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+            "run100_execution_xml_sha256": "f5a9f4870eabf146c25442bd705383ce52c01907743eb19751d8a02267c384d1",
+            "run100_dee_reference_log_sha256": "a9be16dd72cf305ce0316b9c815cca5bf90bcf34e6425674bf46d296e010e48b",
+            "run100_result_json_sha256": "7b6230761c1a51d71a99878a02529f02e0b6c1f27476a0e999acaf1f6e0841e6",
+            "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -31549,8 +31690,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1822785,
-              "sha256": "5dbfcdca1401edd039a5517ceaa1f21d5ebdbac9f8be7fefc4b8a3fe69b466b0"
+              "bytes": 1832364,
+              "sha256": "1a633ebc424891a50e3454f9b66ce1b312c4c60c071bf3df38e69a87e2a0d746"
             }
           ],
           "test_inventory": [

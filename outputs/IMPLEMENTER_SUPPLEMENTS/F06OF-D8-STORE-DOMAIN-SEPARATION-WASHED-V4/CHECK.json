@@ -1,0 +1,23 @@
+{
+  "schema": "washed-d8-store-domain-check.v4",
+  "checks": {
+    "R3_v7_manifest_and_seal": "PASS",
+    "R3_v7_payload_hashes": "PASS",
+    "source_and_Wash_copy_files_match_14_of_14": true,
+    "R3_checker_normal_and_python_O": "PASS",
+    "target_DLL_hash_recomputed": "PASS",
+    "AtmosProcessor_getter_receiver_owner": "STATIC_BOUND",
+    "AtmosProcessor_constructor_initial_d8_e0": "ZERO_INITIALIZED",
+    "CBIReader_d8_byte_store": "SEPARATE_OBJECT_TYPE_AND_ALLOCATION",
+    "queued_PCM_record_d8_writer_consumer": "SEPARATE_READER_WORKER_STATE",
+    "processing_row_d8_writer": "SEPARATE_ROW_DOMAIN",
+    "same_d8_offset_used_as_identity": false,
+    "later_AtmosProcessor_d8_writer": "UNBOUND",
+    "record_or_CBIReader_to_getter_pointer_join": "UNBOUND",
+    "generation_token": "NOT_CAPTURED",
+    "native_capture": "NOT_RUN",
+    "F06OF_target_bridge": "UNBOUND"
+  },
+  "status": "PASS_STORE_DOMAIN_SEPARATION; GETTER_WRITER_AND_TARGET_JOIN_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

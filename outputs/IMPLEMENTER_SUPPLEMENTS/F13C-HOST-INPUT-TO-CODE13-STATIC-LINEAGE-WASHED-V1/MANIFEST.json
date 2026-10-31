@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F13C-HOST-INPUT-TO-CODE13-STATIC-LINEAGE-WASHED-V1",
+  "scope": "hash-identified host AtmosMezz file_name adapter and selected plugin code13 static producer; cross-module runtime packet, selector semantics, generation and measurement joins remain open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 2275,
+      "sha256": "145cabb0ec2cc7a22bbadacfcd0d8f3e36042c539265166b096f5311606c8860"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1792,
+      "sha256": "21001153f129ef0dd9a33765da0fda57770af9cd60e8245a80f2905c0a8141b6"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 962,
+      "sha256": "66e0cd281b307f50a37ce4e800deefaa1ffaee8b2961f51a16c81d6ed2db666a"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1726,
+      "sha256": "009a3be248d1b928ce82112046a4286f6594a8bbd6f3cccb12849009abbffccd"
+    }
+  ]
+}

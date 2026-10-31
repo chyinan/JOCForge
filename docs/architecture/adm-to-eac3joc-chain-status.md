@@ -14,115 +14,45 @@ profile 细节见 [PROFILE-DIMENSIONS.md](PROFILE-DIMENSIONS.md)。模块边界�
 
 实线表示当前合同或模块依赖。虚线表示需要实现或运行验证的连接。节点中的状态是当前证据级别，不是完成承诺。
 
-### 输入与准入
-
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Segoe UI, Microsoft YaHei, sans-serif", "fontSize": "18px", "primaryColor": "#e8f1ff", "primaryTextColor": "#10243a", "lineColor": "#60758a"}, "flowchart": {"nodeSpacing": 28, "rankSpacing": 36, "htmlLabels": true}}}%%
 flowchart TB
-  ADM[授权 ADM BWF]
-  TASK[任务 XML 与显式选项]
-  ADMIT[F01E 输入解析与准入<br/>局部解析已验证]
-  PREP[PreparedJobInputIdentity<br/>候选输入身份]
-  PROFILE[六维 EncodingProfile<br/>选定行；不自动降级]
+  INPUT["授权 ADM BWF<br/>任务 XML 与显式选项"]
+  ADMIT["F01E 输入准入<br/>局部解析已验证"]
+  PROFILE["PreparedJobInputIdentity + selected EncodingProfile<br/>38-channel PCM24 · 48 kHz · 5.1"]
+  PCM["38-channel PCM blocks"]
+  METER["F06 metering / OAMDI<br/>局部组件可用"]
+  MEASUREMENT["ProgrammeMeasurementReceipt<br/>typed receipt 未观察 / 未接入"]
+  READY["GTC READY<br/>12-owner cold-root 安装未运行"]
+  PRODUCERS["Callback / AU producer group<br/>F03U · F04 · F05 · F13 · F12 · F14<br/>有局部切片；生产链未接通"]
+  TRANSACTION["GTC parent transaction<br/>12-owner 原子提交未运行"]
+  OUTPUT["F15 / OutputOwner<br/>4,096-byte AU append 与 durable output 未运行"]
+  VALIDATE["独立验证<br/>parse · decode · render · 产品验收均未运行"]
 
-  ADM --> ADMIT
-  TASK --> ADMIT
-  ADMIT --> PREP --> PROFILE
+  INPUT --> ADMIT --> PROFILE --> PCM
+  PCM -. "measurement prepass" .-> METER
+  METER -. "typed receipt" .-> MEASUREMENT
+  MEASUREMENT -. "receipt admission" .-> READY
+  READY -. "owner roots" .-> PRODUCERS
+  PRODUCERS -. "staged states + receipts" .-> TRANSACTION
+  TRANSACTION -. "committed AU" .-> OUTPUT
+  OUTPUT -. "independent checks" .-> VALIDATE
 
-  classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a;
-  classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800;
-  classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010;
-  class PREP,PROFILE contract;
-  class ADMIT partial;
+  classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a,stroke-width:2px;
+  classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800,stroke-width:2px;
+  classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010,stroke-width:2px;
+  class INPUT,ADMIT,PROFILE,PCM contract;
+  class METER,PRODUCERS partial;
+  class MEASUREMENT,READY,TRANSACTION,OUTPUT,VALIDATE missing;
 ```
 
-### 计量与 READY
+F03U 负责 sourceweight / source proposal；F04 提供 spatial 处理；F05 生成 JOC 数据，供 F13 metadata/EMDF 与 F12 E-AC-3 frame 汇合；F14 为 AU 提供 keyless integrity。图中将这些节点合并显示以控制宽度，模块级边界仍以架构文档和下方证据表为准。
 
-```mermaid
-flowchart TB
-  PROFILE[来自输入阶段的六维 EncodingProfile]
-  PCM[38 通道 PCM block]
-  METER[F06 计量与 OAMDI 路径<br/>局部 primitive / receipt schema]
-  MEAS[ProgrammeMeasurementReceipt<br/>生产生成器未接入]
-  GTCM[GTC METERING 状态<br/>完整生产转换未运行]
-  READY[GTC READY 与 owner root 安装<br/>12-root parent swap NOT_RUN]
-
-  PCM -. measurement prepass .-> METER
-  METER -. receipt .-> MEAS
-  PROFILE --> GTCM
-  MEAS -. admission input .-> GTCM
-  GTCM -. 原子安装 cold roots .-> READY
-
-  classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a;
-  classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800;
-  classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010;
-  class PROFILE contract;
-  class METER partial;
-  class MEAS,GTCM,READY missing;
-```
-
-### Callback 与 AU
-
-```mermaid
-flowchart TB
-  CLOCK[callback/source/dispatch/AU typed clocks<br/>局部映射已验证]
-  F03[F03U sourceweight 与本地序号<br/>外层输入身份 join 未闭合]
-  F04[F04 spatial producer<br/>局部 stage 有验证；完整 receiver 未运行]
-  F05[F05 JOC producer<br/>局部 fit / dispatch；生产 parent 未运行]
-  F13[F13 metadata / EMDF<br/>proposal 与队列生产未完整接入]
-  F12[F12 E-AC-3 frame builder<br/>production codec 仍为空壳]
-  F14[F14 keyless integrity<br/>局部 owner；parent admission 未运行]
-
-  CLOCK -.-> F03
-  F03 -. source proposal .-> F04
-  F04 -. fitting / target projection .-> F05
-  F05 -. JOC metadata inputs .-> F13
-  F13 -. EMDF body .-> F12
-  F05 -. core / JOC payload .-> F12
-  F12 -. completed AU .-> F14
-
-  classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a;
-  classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800;
-  classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010;
-  class CLOCK contract;
-  class F03,F04,F05,F13,F14 partial;
-  class F12 missing;
-```
-
-### 事务与输出
-
-跨阶段输入在本图重复显示，作为依赖边界节点。
-
-```mermaid
-flowchart TB
-  PROFILE[来自输入阶段的 EncodingProfile]
-  PREP[来自输入阶段的 PreparedJobInputIdentity]
-  PLAN[F15 plan admission<br/>合同已批准；仅有拒绝边界切片]
-  DEST[destination capability<br/>目标路径预检合同已批准；未运行]
-  READY[来自计量阶段的 READY candidate<br/>12-root parent swap NOT_RUN]
-  ROOTS[GTC 12 个 programme roots<br/>单 root / callback parent swap NOT_RUN]
-  F14[来自 producer 阶段的 F14 AU receipt]
-  TXN[CallbackTransaction / source transaction<br/>完整 12-owner 提交未运行]
-  OWNER[OutputOwner 与 staging stream<br/>生产构造未运行]
-  APPEND[4096-byte AU append<br/>Rust 生产 AU 未生成]
-  DURABLE[flush / readback / replace / DONE<br/>JOCForge 文件验收未运行]
-  VALIDATE[独立验证<br/>结构解析、解码与产品验收未运行]
-
-  PROFILE -. same input/profile identity .-> PLAN
-  PREP -. same input identity .-> PLAN
-  PLAN --> DEST --> ROOTS
-  READY -. 原子安装 cold roots .-> ROOTS
-  ROOTS -. all touched roots and receipts .-> TXN
-  F14 -. AU receipt .-> TXN
-  TXN -. committed AU .-> OWNER
-  OWNER --> APPEND --> DURABLE -. independent parse / render .-> VALIDATE
-
-  classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a;
-  classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800;
-  classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010;
-  class PROFILE,PREP,PLAN,DEST contract;
-  class F14 partial;
-  class READY,ROOTS,TXN,OWNER,APPEND,DURABLE,VALIDATE missing;
-```
+| 图例 | 含义 |
+|---|---|
+| 蓝色节点、实线 | 已选合同或局部输入准入关系 |
+| 黄色节点 | 存在已验证局部切片，生产连接仍未闭合 |
+| 红色节点、虚线 | 目标边界明确，实现或运行验证尚未完成 |
 
 ### 事务层的含义
 
@@ -157,8 +87,8 @@ EOF 不补造 codec flush。selected 计划的长度是 4,247 个 AU，即 17,39
 | F04 spatial | component、LFE、Type10、部分 receiver/fitting slices 有局部验证。 | 完整 receiver callback、上游 render、所有 drains、J05 parent 和真实 ADM 输入。 |
 | F05 JOC | 部分 fit、dispatch、state schema 和直接向量已验证。 | 完整 producer 运行、root 安装、生产 AU 及真实空间/听感验证。 |
 | F06 measurement / OAMDI / DRC | meter primitives、receipt schema 和部分原生阶段证据已记录。run-032 的 state `+0x18 → DSP` 只在 measurement 路径观察到。run-035/036 的选定 encoder pass 中，48-byte aggregate copy 和 DSP 监视点未命中。选定 logical category-5 规则关闭 DRC 写入，保留四个零 FIFO 项和 override 0。 | production meter prepass/finalize、最终 measurement receipt、`+0x18` 字段语义与 generation、category-5 到 generic event/DRC/BSI 的 typed join、其他 OAMDI state 到 encoder 的路径。限定 no-hit 不证明所有输入或路径都没有连接。 |
-| F06ND / F12 DialNorm candidate | Run-100 没有 `custom_dialnorm`；override 是可选的 -31..0，0 disables；缺省/selected branch 未知。ADM DialNorm metadata 是独立输入。一个 U16 member→5-bit writer 只是未标语义的 static candidate。 | measurement finalize→F06ND DRC input、F06ND DRC→F12 BSI DialNorm、candidate semantic/owner/generation 均 `UNBOUND`；native execution `NOT_RUN`。不把 5-bit candidate 称为 DialNorm。 |
-| F06OF target crosswalk | 新增 native static alternate path：descriptor U8 index list 与独立 event U16 key 两类输入；U16 key 在所查路径中选择 per-object owner。Approved converter 将 AO_XXXX suffix 静态转换为 ChannelInputId；AO_1015→ChannelInputId(0x14)，元数据报告 CHNA track 21 / host slot 20，数值相等不构成身份。另有独立 PCM metadata record writer 将 16-byte pair 写入 +0xD8..+0xE7 并入队；它未连到 PcmMd getter 的 receiver，offset 相同不构成 owner 连接。selected PcmMd builder 的 OAMDI event count=0、pointer=NULL 只限该 builder。 | ChannelInputId 与 host slot 的 join、候选 D8 record pointer 到 getter receiver 的连接、generation token、descriptor/OAR/OAMDI key 跨域 join、native key 到 ADM/SelectedGlobalTargetId/TargetSlotIndex/control16/generation 的 typed join仍 `UNBOUND`/`NOT_CAPTURED`。其他 producer/mode 未排除。DEE setup 在 workflow 前失败，input processing `NOT_CONFIRMED`、native capture `NOT_RUN`；这不是 no-hit。one-hot 仅模型。 |
+| F06ND / F12 DialNorm candidate | Run-100 的 hash-bound log 记录七个计量标量，但未注明单位，也未观察到 typed MeasurementReceipt。V5 还记录 `Encoder done`、编码与 output-stage 100%、process exit observed，以及 reference output 存在且大小为 17,395,712 bytes（metadata only）。 | Numeric DEE exit code 未捕获，runtime-loaded image identity `UNBOUND`；输出 payload 未打开、hash、解析、解码或试听。measurement finalize→F06ND DRC、F06ND→F12 BSI DialNorm、candidate semantic/owner/generation 仍 `UNBOUND`；不据输出阶段日志宣称 bitstream 符合性。 |
+| F06OF target crosswalk | Approved converter 将 AO_XXXX suffix 静态转换为 ChannelInputId；AO_1015→ChannelInputId(0x14)，metadata 报 CHNA track 21 / host slot 20，数值相等不构成身份。D8 V2 绑定独立 PCM metadata record writer→同 worker queue consumer→serializer view，serializer 不读取 +0xD8。D8 V4/V5 区分 AtmosProcessor getter inner state、queued record、CBIReader inner object 和 0x100-stride processing row；selected getter direct caller/owner、构造初始 +0xD8/+0xE0 为零、一个 same-receiver update 不写 +0xD8。 | queue/CBIReader/processing-row 到 getter 的 same-pointer / generation join、后续 AtmosProcessor +0xD8 writer、native key 到 ADM/SelectedGlobalTargetId/TargetSlotIndex/control16/generation 的 typed join仍 `UNBOUND`/`NOT_CAPTURED`。Selected builder 的空 OAMDI event list仅限该 builder；其他 producer/mode 未排除。DEE workflow input 未确认，native capture `NOT_RUN`，F06OF target bridge仍 `UNBOUND`。 |
 | F12 E-AC-3 | 目标 AU 尺寸和选定 profile 合同已列明。 | frame syntax、BAP、mantissa、bit writer、完整 E-AC-3 producer。F06 finalized measurement 到 F06ND source input 与 F12 BSI 的 typed receipt edge 仍 `UNBOUND` / `NOT_READY`；wire 中的 dialnorm 字段本身不携带 programme identity。 |
 | F13 metadata / ID14 | 一些 body、配置和 noncommitting source proposal 有局部验证。模型的 ID14 parser 对完整容器做语义校验；模型复杂度规则是 `U8(object_count + 1)`，选定模型值为 16。run-100 另绑定了同-parent 的泛化 body-length 链。 | 这是 model/native sliced evidence。native run-100 事件没有记录 EMDF type/payload tag；counted body-length 到 F13 complete-container identity 仍 `UNBOUND`。native 复杂度字节来自配置记录；ID14 parser 执行和完整 wrapper 执行均 `NOT_RUN`。插件静态注册 `data_rate`，但它到 native count/config 字段的 typed join仍 `UNBOUND`；partial XSD不是拒绝规则。 |
 | F13C code13 → complexity byte | 一个 hash-bound static same-worker path 将 parameter-list code 13 的低字节接到选定 worker complexity byte，再映射到 F12 `complexity_index_type_a`（bits 105–112）；code 13 缺省为 11。 | Host task/XML→code13、runtime parent/source generation、semantic ID14 object_count→native byte、carrier-block owner 仍 `UNBOUND`。Code 14 与 type-4 是独立字段；四个 vectors 是 static expectation，native pair `NOT_RUN`。 |
@@ -230,11 +160,19 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 | F06ND category-5 native-effect Wash supplement | `ef7a0547ef0e72b54ab9dac3a78e429a451803a70852d3d5c31997f2ee06f6e8` | 选定 no-DRC 逻辑规则闭合；selected AtmosProcessor path 没有 category-5 输入，generic storage event 与 category-5 的连接仍 `UNBOUND` |
 | F06ND/F12 measurement-dialnorm Wash supplement | `2bf5fa14c1ff01a3f77d79ae8301e11f7c4797ef082a81123dbd4021f2d369f5` | finalized measurement identity/receipt 到 F06ND source 输入和 F12 BSI 的 typed edge 仍 `UNBOUND` / `NOT_READY` |
 | F06ND measurement/DialNorm candidate Wash supplement | `4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306` | Run-100 无 custom override；U16 member +1244→5-bit writer 未识别为 DialNorm；measurement→F06ND 与 F06ND→F12 edge 均 `UNBOUND` |
+| F06ND measurement/DialNorm candidate Wash supplement V2 | `80cab5a61de2ae1d01cc08bea8ce50c7dbcfa2260c643131115b51fd19d95c79` | Extended Ghidra analysis remained warning-limited; five-bit candidate is untyped and measurement/F06ND/F12 joins remain `UNBOUND` (historical). |
+| F06ND measurement/DialNorm candidate Wash supplement V3 | `695b23a992be20f9c0d9203eefffdd80f60227d103f56365d11ac2a46700b67a` | Run-100 scalars are hash-bound log observations only; units and typed receipt absent; DRC/DialNorm joins remain open (historical). |
+| F06ND measurement/DialNorm candidate Wash supplement V4 | `06b18967c7ea59019e64cad9a26c96213b51245efe26f64876c5f880034828c7` | Run-100 log/completion/output metadata observed; payload unvalidated, loaded image identity and typed joins remain open (historical). |
+| F06ND measurement/DialNorm candidate Wash supplement V5 | `dedc2b7201b372882f0684a6022d85e03e3f2eb8c493c944c7ab7fcdac59e2d6` | Adds encoder/output-stage markers, observed process exit, and output file existence/size metadata only; numeric exit, payload validation, loaded image identity, typed receipt and DRC/DialNorm joins remain open. |
 | F15 provider-role/destination Wash supplement | `404b166ca5bcc5b17ecf01c33f01f0a10a9f2641b5da061c9271e9a4881dea19` | 四 role 来源映射已核对；统一 schema 与 destination capability producer 仍未定义/未运行，proposal 未冒充现有 API |
 | OAMDI output consumer Wash supplement | `c0294f3c80916c8a251af875744d444cb65b019cf7beac85ad84f07187a3f24f` | 仅记录 run-036 的 selected FileWriter/path/FILE* join 和 run-035/036 bounded no-hit；不关闭 F06OF slot/word/generation crosswalk |
 | F06OF native OAMDI key path Wash supplement | `8c41d120df3adbe2d07dae684bc213e080dbcca570c21f8cb392ea03cb1a5d91` | 仅闭合 native U16 key→per-object owner 的 selected static path；跨到模型 target slot/word/generation仍 `UNBOUND` |
 | F06OF ADM object to ChannelInputId Wash supplement | `8aa4821d87e3c4c6ebbff8fec05ce927a016573cfcf7d56b7698c6323fd7d570` | AO_1015 的 static ChannelInputId(0x14) 与 metadata host slot 20 分属不同域；workflow 未到达，target/generation bridge 仍 `UNBOUND` |
 | F06OF D8 writer/queue boundary Wash supplement | `904ce29ff7f39781c0563fd43de042a6dd136ee988e1ec47828bf8ea448511b1` | Separate record writer/queue path 仅闭合静态边界；到 PcmMd getter 的 pointer/generation join 与 F06OF target bridge 仍 `UNBOUND` |
+| F06OF D8 queue-consumer Wash supplement V2 | `237640d321b2516c6e5dbe5400a6571b57787171dd5de062a9e93ab85f1fcdd3` | Same-worker record writer/queue consumer/serializer view bound; getter pointer, generation and target bridge open. |
+| F06OF D8 getter-owner Wash supplement V3 | `cb7a5d1cd642102754b988738cca8097dd0eb7d5a614410a2765219fffba8f3e` | Selected AtmosProcessor getter owner and constructor zero state bound; later writer and queue crosswalk open (historical refinement). |
+| F06OF D8 store-domain Wash supplement V4 | `e0f90f0db257e079fa50ec79322223afd990c85b0019014816d0d5a443147db2` | Separates queued record, CBIReader inner object, processing-row store, and getter inner state; no pointer/generation join. |
+| F06OF D8 getter-update Wash supplement V5 | `c62dd9ced363a315a627f90b8db93efcd744ff01b1eb2da84fc5fd74e367020e` | Selected getter direct caller and one same-receiver update bound; constructor zero state confirmed, other writers/target join remain open. |
 
 ## 当前阻塞顺序
 

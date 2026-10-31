@@ -1,0 +1,44 @@
+{
+  "schema": "washed-d8-store-domain-followup.v4",
+  "implementation_mapping": {
+    "allowed_claim": "Several independently typed/native object domains contain a +0xD8 displacement; the selected AtmosProcessor getter owner/initial value is bounded, but the other writer domains are not joined to it.",
+    "scope": "hash-matched static object-layout and call-flow findings only",
+    "do_not_infer": [
+      "CBIReader +0xD8 equals AtmosProcessor inner +0xD8",
+      "queued record +0xD8 supplies PcmMd getter +0x28",
+      "the selected update is the only AtmosProcessor +0xD8 writer",
+      "same offset means same owner, semantic field, or generation",
+      "the native F06OF target bridge is closed"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "F06OF target or generation model"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "later AtmosProcessor inner +0xD8 writer and semantic field source",
+      "status": "UNBOUND",
+      "next_action": "Trace typed writes and all relevant callers on the exact inner object."
+    },
+    {
+      "gap": "CBIReader or queued record pointer to AtmosProcessor getter receiver",
+      "status": "UNBOUND",
+      "next_action": "Find a direct typed pointer transfer or same-run object receipt."
+    },
+    {
+      "gap": "owner/callback generation and F06OF target slot",
+      "status": "UNBOUND/NOT_CAPTURED"
+    },
+    {
+      "gap": "nonempty OAMDI event producer outside selected empty builder",
+      "status": "UNBOUND"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_inputs_may_be_used_if_relevant": true,
+    "reapproval_needed": false,
+    "persist_PCM_or_EC3": false
+  }
+}

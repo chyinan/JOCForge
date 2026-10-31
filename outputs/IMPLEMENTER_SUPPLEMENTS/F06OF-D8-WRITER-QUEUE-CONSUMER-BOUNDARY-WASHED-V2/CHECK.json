@@ -1,0 +1,21 @@
+{
+  "schema": "washed-d8-queue-consumer-check.v2",
+  "checks": {
+    "R3_v5_manifest_and_seal": "PASS",
+    "R3_v5_payload_hashes": "PASS",
+    "source_and_wash_copy_files_match_12_of_12": true,
+    "R3_checker_normal_and_python_O": "PASS",
+    "target_DLL_hash_recomputed": "PASS",
+    "producer_to_ring_queue_pointer_transfer": "STATIC_BOUND",
+    "same_worker_state_queue_consumer": "STATIC_BOUND",
+    "popped_record_pointer_to_serializer": "STATIC_BOUND",
+    "serializer_view_contains_record_relative_d8": "STATIC_BOUND",
+    "serializer_or_record_to_selected_PcmMd_getter_receiver": "UNBOUND",
+    "same_generation_token": "NOT_CAPTURED",
+    "F06OF_target_slot_and_generation": "UNBOUND",
+    "selected_Pmd_event_list": "EMPTY_FOR_SELECTED_BUILDER_ONLY",
+    "native_capture": "NOT_RUN"
+  },
+  "status": "PASS_SEPARATE_WRITER_QUEUE_CONSUMER_PATH; PMD_GETTER_AND_TARGET_BRIDGES_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

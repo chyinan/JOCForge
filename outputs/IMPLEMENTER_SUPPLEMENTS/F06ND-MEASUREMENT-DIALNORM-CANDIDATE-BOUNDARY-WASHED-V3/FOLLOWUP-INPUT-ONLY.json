@@ -1,0 +1,43 @@
+{
+  "schema": "washed-run100-measurement-log-followup.v3",
+  "implementation_mapping": {
+    "allowed_claim": "The hash-matched run-100 DEE reference log records measurement-complete scalar values, with no units stated.",
+    "scope": "native log observation only; not a typed finalization receipt",
+    "do_not_infer": [
+      "the log values are a same-programme/attempt typed MeasurementReceipt",
+      "the logged loudness scalar is the F06ND DRC input",
+      "the 5-bit U16-member candidate is programme DialNorm",
+      "absence of custom_dialnorm selects the measured branch",
+      "the F12 DialNorm value or field tag was observed",
+      "full output conformance or listening passed"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "owner or generation joins"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "run100 log scalar to typed measurement finalize receipt (units, programme/attempt, owner generation)",
+      "status": "UNBOUND",
+      "next_action": "Trace the log emitter to the typed finalized result and owner."
+    },
+    {
+      "gap": "typed final measurement to F06ND DRC input",
+      "status": "UNBOUND",
+      "next_action": "Trace the DRC config writer/consumer for this same programme/attempt."
+    },
+    {
+      "gap": "F06ND DRC input to F12 BSI DialNorm field",
+      "status": "UNBOUND",
+      "next_action": "Identify the exact writer field tag and same-generation value."
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_experiments_remain_approved": true,
+    "reapproval_needed": false,
+    "do_not_read_private_keys_or_license_diagnostics": true,
+    "do_not_persist_PCM_or_EC3": true
+  }
+}

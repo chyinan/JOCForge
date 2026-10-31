@@ -1,0 +1,22 @@
+{
+  "schema": "washed-atmosprocessor-getter-update-check.v5",
+  "checks": {
+    "R3_v8_manifest_and_seal": "PASS",
+    "R3_v8_payload_hashes": "PASS",
+    "source_and_Wash_copy_files_match_15_of_15": true,
+    "R3_checker_normal_and_python_O": "PASS",
+    "target_DLL_hash_recomputed": "PASS",
+    "getter_direct_caller_chain": "STATIC_BOUND",
+    "getter_receiver_owner": "ATMOSPROCESSOR_INNER_STATE",
+    "constructor_initial_inner_d8_e0": "ZERO_INITIALIZED",
+    "selected_process_update_same_receiver": "STATIC_BOUND",
+    "selected_update_inner_d8_write": "NOT_PRESENT_IN_THIS_FUNCTION",
+    "other_writers_excluded": false,
+    "same_pointer_from_reader_queue_to_getter": "UNBOUND",
+    "generation_token": "NOT_CAPTURED",
+    "native_capture": "NOT_RUN",
+    "F06OF_target_bridge": "UNBOUND"
+  },
+  "status": "PASS_GETTER_OWNER_AND_ONE_UPDATE_BOUND; LATER_WRITERS_AND_TARGET_JOIN_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5",
+  "scope": "run100 log scalars and encoder/output-stage markers observed; output metadata only; units, typed receipt, loaded image identity, F06ND and F12 DialNorm joins remain open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1963,
+      "sha256": "49ec26e522058c0a7c80f8098539dfcb059b99f1446657b7d57f6d22f4e4a7f7"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 2704,
+      "sha256": "88d05f3bfa50cdaff14c1f8fa4b0e7e3049ed960237a31378a2fbedc6f20b4e3"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 963,
+      "sha256": "044eeef79dce2b89a081248eda3ffcc0ed4c75654aefdfc9cd37399f29fccf3c"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1669,
+      "sha256": "c9c62a8d19a02178502f10f836cf812c7e2fdcd91f737df8ba91bf92e7ff178f"
+    }
+  ]
+}

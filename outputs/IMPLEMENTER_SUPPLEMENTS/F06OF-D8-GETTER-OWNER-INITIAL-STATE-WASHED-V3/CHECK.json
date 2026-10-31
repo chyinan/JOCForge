@@ -1,0 +1,21 @@
+{
+  "schema": "washed-d8-getter-owner-check.v3",
+  "checks": {
+    "R3_v6_manifest_and_seal": "PASS",
+    "R3_v6_payload_hashes": "PASS",
+    "source_and_Wash_copy_files_match_13_of_13": true,
+    "R3_checker_normal_and_python_O": "PASS",
+    "target_DLL_hash_recomputed": "PASS",
+    "AtmosProcessor_getter_inner_owner": "STATIC_BOUND",
+    "constructor_initial_inner_plus_d8_and_e0": "ZERO_INITIALIZED",
+    "selected_process_update_plus_d8_write": "NOT_PRESENT_IN_THAT_FUNCTION_ONLY",
+    "later_writers_or_other_routes_excluded": false,
+    "separate_dlb_pcm_queue_path": "STATIC_BOUND_WITHIN_ITS_OWN_WORKER",
+    "queue_record_to_getter_receiver_pointer_join": "UNBOUND",
+    "same_generation_token": "NOT_CAPTURED",
+    "native_capture": "NOT_RUN",
+    "F06OF_target_bridge": "UNBOUND"
+  },
+  "status": "PASS_GETTER_OWNER_AND_INITIAL_STATE; LATER_WRITER_AND_QUEUE_CROSSWALK_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

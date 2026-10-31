@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06OF-D8-STORE-DOMAIN-SEPARATION-WASHED-V4",
+  "scope": "typed separation of distinct D8 writer/getter objects; AtmosProcessor getter initial state bounded, later writer and F06OF bridge remain UNBOUND",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1806,
+      "sha256": "e26c00009e28cd5e321899a479e1e3b45fa495ade76f324d06838746edbe3e22"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1730,
+      "sha256": "3af969df16a00b966d6773735525b27729118f59029e87e6012c67bd0e1f435f"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 1058,
+      "sha256": "f2c72a5fbe9ca15244470c87f2afa4b6b18889fd8149d63a2b2c3e08a127a8bd"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1692,
+      "sha256": "6c94799336b857984e64167f189aa6a9e3fa41379c5f02aa3cf9c5b428a556d6"
+    }
+  ]
+}
