@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1",
+  "scope": "hash-identified run-100 override/config boundary and static 5-bit consumer candidate; measurement-to-F06ND and F06ND-to-F12 DialNorm joins remain UNBOUND",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1495,
+      "sha256": "4eaa3198c033ae598093305a560756e18f762b936fdb65cc69a3fd153b492193"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 2282,
+      "sha256": "3a98f912ae445fa4d669b6298a43cf04064fb4d59c9a72778533b8af072b5fb7"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 889,
+      "sha256": "0428d4fa3e358539f3f6c0e9de047d89599f52ed81dbb38e94ec60aaa79bd92e"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1648,
+      "sha256": "3dd0cae26bc388629ffcba2f265c16765759b9a75ea227757ed243017cd61b4d"
+    }
+  ]
+}

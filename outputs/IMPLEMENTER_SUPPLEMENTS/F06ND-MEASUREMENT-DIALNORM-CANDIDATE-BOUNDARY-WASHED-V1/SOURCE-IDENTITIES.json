@@ -1,0 +1,59 @@
+{
+  "schema": "washed-measurement-dialnorm-candidate-source-identities.v1",
+  "source_package": {
+    "manifest_sha256": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437",
+    "payload_hashes_recomputed": true
+  },
+  "verified_supporting_sources": [
+    {
+      "id": "meter_finalize_domain_boundary_manifest",
+      "sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
+      "current_file_hash_recomputed": true
+    },
+    {
+      "id": "drc_owner_option_dialnorm_erratum_manifest",
+      "sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
+      "current_file_hash_recomputed": true
+    },
+    {
+      "id": "drc_input_only_synthetic_vector",
+      "sha256": "b5bbfa59c6651d8d5ef31c6211b238e6f62279b79dea848759fd29bc5b39d2a4",
+      "current_file_hash_recomputed": true
+    },
+    {
+      "id": "first_access_unit_numeric_model_contract",
+      "sha256": "f5c689a9cfdead35470321d3513f1e32b8a834bca931eebc7c6fe6ba15e9f08a",
+      "current_file_hash_recomputed": true
+    },
+    {
+      "id": "run100_native_wash_manifest",
+      "sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+      "current_file_hash_recomputed": true
+    },
+    {
+      "id": "run100_native_execution_configuration",
+      "sha256": "f5a9f4870eabf146c25442bd705383ce52c01907743eb19751d8a02267c384d1",
+      "current_file_hash_recomputed": true,
+      "custom_dialnorm_string_present": false
+    }
+  ],
+  "native_binaries": {
+    "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "dactlib_sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239",
+    "libmezzanine_sha256": "8ce9476c2a9d59a3e968912e203a051e7a3501cae7588f3ceb90762710597fd0",
+    "convert_atmos_mezz_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "current_files_rehashed": true
+  },
+  "analysis": {
+    "tool": "Ghidra",
+    "ida_used": false,
+    "raw_decompilation_or_instruction_excerpt_copied": false
+  },
+  "excluded_material": [
+    "PCM samples",
+    "EC3 or bitstream payload",
+    "license or private key material",
+    "raw binary excerpts"
+  ]
+}

@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1814823,
-              "sha256": "c4438f5c4aeee33ba566e05a69203d35dd282deaed6ced5e7bb04a30e8e3993f"
+              "bytes": 1822030,
+              "sha256": "0ab386a0bba436ce3af98b1d096b9110b022372f1533a55b25b7113b0d9f39ae"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1814823,
-              "sha256": "c4438f5c4aeee33ba566e05a69203d35dd282deaed6ced5e7bb04a30e8e3993f"
+              "bytes": 1822030,
+              "sha256": "0ab386a0bba436ce3af98b1d096b9110b022372f1533a55b25b7113b0d9f39ae"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -20399,6 +20399,104 @@
               "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
             }
           ]
+        },
+        {
+          "slice_id": "washed-f06nd-measurement-to-f12-dialnorm-candidate-boundary",
+          "mapping_status": "WASHED_STATIC_DIALNORM_CANDIDATE__MEASUREMENT_AND_F12_JOINS_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RUN100_OPTION_AND_5BIT_CANDIDATE__NO_DIALNORM_OWNER",
+          "scope": "The hash-identified run-100 configuration has no custom_dialnorm override. Static help describes the option as optional in [-31,0], with 0 disabling the override; the default or selected branch when absent is UNBOUND. ADM GenericSoundEssenceDescriptor_DialNorm is a separate metadata path with no measured-finalize lineage to a DRC value. Ghidra located a codec-reachable candidate that reads a 16-bit member at offset 1244 and sends a scalar to a 5-bit writer, but no semantic tag, typed owner, generation token, or receipt identifies it as programme DialNorm. DactMain's meter-related path is not joined to DialNorm/DRC/finalize. Measurement finalize→F06ND DRC input and F06ND DRC input→F12 BSI DialNorm remain UNBOUND; native execution is NOT_RUN.",
+          "owner": "drc",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run100ConfigurationIdentity",
+              "CustomDialnormOverride",
+              "AdmDialnormMetadata",
+              "MeasurementFinalizeScalar",
+              "F06NFDrcInput",
+              "CandidateU16Member1244",
+              "CandidateFiveBitWriter",
+              "F12BsiDialnormField",
+              "CandidateOwnerGeneration",
+              "DactMainMeterPath",
+              "NativeExecution"
+            ],
+            "covered_clauses": [
+              "Run-100 config lacks custom_dialnorm; the option is static-help optional in [-31,0] and zero disables the override.",
+              "The default/selected branch when custom_dialnorm is absent remains UNBOUND; no runtime input was confirmed.",
+              "ADM DialNorm metadata is a separate input path and has no joined measured-finalize lineage.",
+              "A codec-reachable U16 member at offset 1244 reaches a 5-bit writer only as an untagged static candidate; semantic field, owner and generation remain UNBOUND.",
+              "Measurement finalize→F06ND input and F06ND→F12 BSI DialNorm both remain UNBOUND; native execution is NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06ND_MEASUREMENT_DIALNORM_CANDIDATE_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306",
+            "run100_source_manifest_sha256": "f845bed9f6e24027032b12550e305da26c114c7a3ff0abf6ae58b17e83c95437",
+            "meter_finalize_domain_boundary_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
+            "drc_owner_option_dialnorm_erratum_manifest_sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
+            "first_access_unit_numeric_model_contract_sha256": "f5c689a9cfdead35470321d3513f1e32b8a834bca931eebc7c6fe6ba15e9f08a",
+            "validation_boundary": "Run-100 static option/config boundary and untyped 5-bit consumer candidate only; no DialNorm source, measurement receipt, F06ND or F12 join, or native execution is established."
+          },
+          "vectors": {
+            "kind": "F06ND_RUN100_OPTION_ABSENCE_AND_UNTYPED_5BIT_CANDIDATE",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "Run-100 config has no custom_dialnorm; absence does not identify a default or selected measurement branch.",
+              "The U16 member at offset 1244 reaches a 5-bit writer but has no semantic DialNorm tag or owner/generation join.",
+              "The synthetic input-only vector remains model-only and was not used as native evidence."
+            ],
+            "expected_outputs_included": false,
+            "native_execution": "NOT_RUN",
+            "supplement_manifest_sha256": "4f94cc3dca7e08eddde9cc368ee1edaf7199e827414f272a60d8c7325c1e0306"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Measurement-finalize scalar and units to F06ND DRC input receipt.",
+            "The U16 candidate field's semantic tag, producer owner, and generation.",
+            "F06ND DRC input to F12 BSI DialNorm identity.",
+            "Run-100 native execution, default/selected custom_dialnorm branch, and any positive native pair.",
+            "DactMain meter-related path to DialNorm/DRC/finalize join."
+          ],
+          "validation_boundary": "Evidence-only; the 5-bit candidate is not labeled DialNorm and no algorithm/readiness change is authorized.",
+          "native_status": {
+            "run100_custom_dialnorm_present": false,
+            "custom_dialnorm_option_range": [
+              -31,
+              0
+            ],
+            "zero_disables_override": true,
+            "default_or_selected_branch_when_absent": "UNBOUND",
+            "adm_dialnorm_metadata_to_measurement_finalize": "UNBOUND",
+            "candidate_u16_member_offset": 1244,
+            "candidate_writer_width_bits": 5,
+            "candidate_semantic_tag": "UNBOUND",
+            "candidate_owner_generation": "UNBOUND",
+            "measurement_finalize_to_f06nd": "UNBOUND",
+            "f06nd_to_f12_bsi_dialnorm": "UNBOUND",
+            "dactmain_meter_to_dialnorm": "UNBOUND",
+            "native_execution": "NOT_RUN",
+            "whole_chain_ready": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -31421,8 +31519,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1814823,
-              "sha256": "c4438f5c4aeee33ba566e05a69203d35dd282deaed6ced5e7bb04a30e8e3993f"
+              "bytes": 1822030,
+              "sha256": "0ab386a0bba436ce3af98b1d096b9110b022372f1533a55b25b7113b0d9f39ae"
             }
           ],
           "test_inventory": [

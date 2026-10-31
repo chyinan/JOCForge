@@ -314,6 +314,7 @@
 | F06ND/selected-f06nd-controls-to-f12-bsi-drc-fields | F06ND | `drc` |
 | F06ND/selected-none-drc-source-owner-stage | F06ND | `drc` |
 | F06ND/prepared-input-to-same-source-f12-bsi-bridge | F06ND | `application` |
+| F06ND/washed-f06nd-measurement-to-f12-dialnorm-candidate-boundary | F06ND | `drc` |
 | F07/input-history-block-transition | F07 | `analysis` |
 | F07/structure-refresh-flag-projection | F07 | `analysis` |
 | F07/selected-dither-flag-plan | F07 | `analysis` |
