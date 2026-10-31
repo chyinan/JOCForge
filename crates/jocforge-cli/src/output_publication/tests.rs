@@ -1,10 +1,11 @@
-use super::ProgrammeOutputStaging;
+use super::{ProgrammeOutputStaging, SourceFrameOutputStageError, validate_candidate_output_pair};
 use jocforge_application::{
     PreparedJobInput, SelectedAdmResourcePayloads,
     output_publication::{AttemptId, OutputRootBindingError, OutputStagingOwnerId},
     prepare_selected_job_input,
 };
 use jocforge_application::{ProgrammeId, SelectedWaveDescriptor};
+use jocforge_domain::timeline::CodecSourceIndex;
 use serde_json::Value;
 use std::{
     fs,
@@ -166,4 +167,48 @@ fn staging_preflight_accepts_the_same_binding_and_rejects_cross_programme_or_sta
         "rejected cross-root preflight must not create or write the staging file"
     );
     assert!(!staging.is_abandoned());
+}
+
+#[test]
+fn candidate_output_pair_requires_the_same_source_and_exact_append_bytes() {
+    let frame = [0x0b, 0x77, 0xa5];
+    let mut different_frame = frame;
+    different_frame[2] ^= 0xff;
+
+    assert!(matches!(
+        validate_candidate_output_pair(
+            &CodecSourceIndex::new(2),
+            &frame,
+            &CodecSourceIndex::new(2),
+            Some(&frame),
+        ),
+        Ok(true)
+    ));
+    assert!(matches!(
+        validate_candidate_output_pair(
+            &CodecSourceIndex::new(0),
+            &frame,
+            &CodecSourceIndex::new(0),
+            None,
+        ),
+        Ok(false)
+    ));
+    assert!(matches!(
+        validate_candidate_output_pair(
+            &CodecSourceIndex::new(2),
+            &frame,
+            &CodecSourceIndex::new(3),
+            Some(&frame),
+        ),
+        Err(SourceFrameOutputStageError::CandidateSourceMismatch)
+    ));
+    assert!(matches!(
+        validate_candidate_output_pair(
+            &CodecSourceIndex::new(2),
+            &frame,
+            &CodecSourceIndex::new(2),
+            Some(&different_frame),
+        ),
+        Err(SourceFrameOutputStageError::CandidateFrameMismatch)
+    ));
 }

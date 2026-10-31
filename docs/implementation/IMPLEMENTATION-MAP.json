@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1920870,
-              "sha256": "db1d1493108ce85569481e04b6bba7e0f150f5b886c39daac501be7efcba64ea"
+              "bytes": 1921966,
+              "sha256": "1c65746513dd5087b3c00a54a8cf6f0741e7e80186f5e066f35a8a48a372af7e"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1920870,
-              "sha256": "db1d1493108ce85569481e04b6bba7e0f150f5b886c39daac501be7efcba64ea"
+              "bytes": 1921966,
+              "sha256": "1c65746513dd5087b3c00a54a8cf6f0741e7e80186f5e066f35a8a48a372af7e"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -25073,9 +25073,9 @@
         },
         {
           "slice_id": "same-source-frame-candidate-writer",
-          "mapping_status": "MATERIALIZED_DIRECT_F11_F12_FRAME_CANDIDATE_WRITER__PROGRAMME_PUBLICATION_OPEN",
-          "implementation_status": "LOCALLY_COMPILED_CODEC_OWNER_PROPOSAL_BRIDGE__SOURCE_OUTPUT_AND_PARENT_INSTALL_NOT_RUN",
-          "scope": "Consumes one existing AnalysisNumericPlanStage and same-source BSI/EMDF inputs, derives the F11 converter result and F12 selected numeric plan, runs the bounded main-q search, and returns a complete 4096-byte CRC-checked SelectedSourceFrameCandidate. The candidate now retains the actual NumericPlanReceipt, same-source BSI/EMDF-or-ABSENT inputs, accepted q/search trace, owned frame and AcceptedCodecFrame CRC proof. The local domain test uses a synthetic all-zero analysis frame and test-supplied BSI values. The application source_frame_bridge connects PreparedJobInput, F06ND after proposal and F13 MetadataSourceProposal—including suppressed-source receipts—with typed lineage checks. It returns only a noncommitting candidate. There is no direct positive-path test for the composite bridge; this path has not been run on real source callbacks or installed by a parent. The application bridge binds F13 parsed-container queue-pop lineage through published_emdf_binding::emdf_frame_input_for_source. The source-frame preflight now also requires the exact PreparedJobInput Arc in the DRC after-root and SharedAnalysis receipt, then matches F13 ID1 input/config/terminal-meter hashes to that same receipt before frame assembly. The application bridge now stages CodecOwnerProposal from the exact F12 candidate: it reads the six-block short flags retained in the same numeric plan, passes the candidate's accepted frame and optional OutputSourceAfterProposal through CodecOwnerRoot.stage_source, and returns a proposal only. Published sources still require the matching durable output after-receipt; installation remains parent-owned.",
+          "mapping_status": "MATERIALIZED_DIRECT_F11_F12_FRAME_CANDIDATE__TEST_SUPPORT_F15_STAGE__PARENT_INSTALL_OPEN",
+          "implementation_status": "LOCALLY_COMPILED_TEST_SUPPORT_F12_F15_STAGE_AND_CODEC_PROPOSAL__PARENT_INSTALL_NOT_RUN",
+          "scope": "Consumes one existing AnalysisNumericPlanStage and same-source BSI/EMDF inputs, derives the F11 converter result and F12 selected numeric plan, runs the bounded main-q search, and returns a complete 4096-byte CRC-checked SelectedSourceFrameCandidate. The candidate now retains the actual NumericPlanReceipt, same-source BSI/EMDF-or-ABSENT inputs, accepted q/search trace, owned frame and AcceptedCodecFrame CRC proof. The local domain test uses a synthetic all-zero analysis frame and test-supplied BSI values. The application source_frame_bridge connects PreparedJobInput, F06ND after proposal and F13 MetadataSourceProposal—including suppressed-source receipts—with typed lineage checks. It returns only a noncommitting candidate. There is no direct positive-path test for the composite bridge; this path has not been run on real source callbacks or installed by a parent. The application bridge binds F13 parsed-container queue-pop lineage through published_emdf_binding::emdf_frame_input_for_source. The source-frame preflight now also requires the exact PreparedJobInput Arc in the DRC after-root and SharedAnalysis receipt, then matches F13 ID1 input/config/terminal-meter hashes to that same receipt before frame assembly. The application bridge now stages CodecOwnerProposal from the exact F12 candidate: it reads the six-block short flags retained in the same numeric plan, passes the candidate's accepted frame and optional OutputSourceAfterProposal through CodecOwnerRoot.stage_source, and returns a proposal only. Published sources still require the matching durable output after-receipt; installation remains parent-owned. The CLI test-support stage_source_frame_output composes a prebuilt F15 proposal with the exact F12 candidate: attempt, source, and append bytes are checked before staging; it then obtains the durable F15 after-proposal and stages the same candidate short flags/frame into CodecOwnerProposal. Both after-values remain parent-owned proposals. The helper is test-support gated; default production output remains blocked on validated-plan and destination admission.",
           "owner": "codec",
           "dependencies": [
             "same-source-converter-pattern-and-offset-plan",
@@ -25088,11 +25088,12 @@
             "F13 ID1 configuration derived from the same Meter terminal receipt"
           ],
           "implementation_files": [
-            "crates/jocforge-domain/src/codec/source_frame_writer.rs",
-            "crates/jocforge-domain/src/codec/mod.rs",
-            "crates/jocforge-application/src/source_frame_bridge.rs",
             "crates/jocforge-application/src/lib.rs",
+            "crates/jocforge-application/src/source_frame_bridge.rs",
+            "crates/jocforge-cli/src/output_publication.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
             "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
+            "crates/jocforge-domain/src/codec/source_frame_writer.rs",
             "crates/jocforge-domain/src/drc/none_drc_owner.rs",
             "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs"
           ],
@@ -25128,7 +25129,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/METADATA-OUTPUT-TYPED-HANDOFF-APPROVAL-V1/MANIFEST.json"
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "validation_boundary": "The synthetic domain candidate verifies source identity, syncword, selected q membership, bounded search and CRC. The application suite and clippy pass after the typed F06ND/F13/F12 composition was added, but no direct positive-path bridge test or real source frame has run; parent commit, AU append and publication remain open.",
+            "validation_boundary": "F12 domain candidate construction and F15 output staging have constituent tests. A focused preflight test verifies source/append-byte identity for the new CLI test-support composition; the composite has not been exercised with a production PreparedJobInput/MetadataSourceProposal, actual F12 candidate, or parent installation.",
             "codec_owner_proposal_bridge": {
               "application_function": "stage_codec_owner_after_source_frame",
               "candidate_acceptance": "AcceptedCodecFrame from the same selected frame candidate",
@@ -25136,12 +25137,27 @@
               "published_source_output_after": "required and validated by CodecOwnerRoot.stage_source through OutputSourceAfterProposal durable receipt",
               "suppressed_source_output_after": "must be absent",
               "result": "NONCOMMITTING_CODEC_OWNER_PROPOSAL",
+              "parent_install": "NOT_RUN",
+              "cli_source_output_stage": "stage_source_frame_output; returns both owner after-values without installation"
+            },
+            "candidate_output_stage": {
+              "cli_function": "stage_source_frame_output",
+              "gate": "jocforge-cli output_publication is test-support gated",
+              "preflight": [
+                "candidate attempt equals output binding attempt",
+                "candidate source equals F15 proposal source",
+                "append bytes equal the accepted F12 frame",
+                "codec generation has increment headroom"
+              ],
+              "append": "uses stage_output_source; append receipt requires atomic staging exact readback and file fsync",
+              "result": "F15 OutputSourceAfterProposal plus noncommitting CodecOwnerProposal",
               "parent_install": "NOT_RUN"
             }
           },
           "test_modules": [
-            "crates/jocforge-domain/src/codec/source_frame_writer.rs",
-            "crates/jocforge-application/src/codec_source_bridge.rs"
+            "crates/jocforge-application/src/codec_source_bridge.rs",
+            "crates/jocforge-cli/src/output_publication/tests.rs",
+            "crates/jocforge-domain/src/codec/source_frame_writer.rs"
           ],
           "vectors": {
             "kind": "SYNTHETIC_SOURCE_FRAME_CANDIDATE_ASSERTIONS_WITH_ABSENT_PAYLOAD_REJECTION",
@@ -25157,7 +25173,8 @@
               "Application source_frame_bridge composes typed production proposal APIs but has no direct positive-path assertion; its constituent app/domain tests are not an end-to-end source result.",
               "The F12 candidate exposes the six short-flag blocks from the same numeric plan that built its frame.",
               "The application bridge uses the candidate's AcceptedCodecFrame and plan short flags to stage CodecOwnerRoot; it does not install the root.",
-              "A published source requires its validated OutputSourceAfterProposal durable receipt; suppressed sources require no output after-proposal."
+              "A published source requires its validated OutputSourceAfterProposal durable receipt; suppressed sources require no output after-proposal.",
+              "The CLI test-support preflight rejects a source mismatch and append-byte mismatch before staging; matching append bytes and suppressed-source shape are accepted by the pure preflight."
             ],
             "expected_dsp_outputs_included": false,
             "expected_values_are_assertions_only": true,
@@ -25185,14 +25202,27 @@
             "Codec/analysis owner commit, parent transaction, append receipt, AU publication and durable output.",
             "Complete-programme replay, OpenJOC/LAV decode, W04 and product acceptance.",
             "Calling the codec-owner proposal bridge from a committed production callback and installing it in the twelve-owner parent transaction.",
-            "Real ADM source callbacks, durable output append receipts, programme replay, decode and product acceptance."
+            "Real ADM source callbacks, durable output append receipts, programme replay, decode and product acceptance.",
+            "Direct composite execution with a production PreparedJobInput, F13 MetadataSourceProposal, actual F12 candidate, durable append and parent root installation.",
+            "Continuous multi-source output with parent-installed F15 and CodecOwner after-roots.",
+            "Production output plan/destination admission, real ADM codec output, decode, playback and W04."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
             {
-              "path": "crates/jocforge-domain/src/codec/source_frame_writer.rs",
-              "bytes": 11681,
-              "sha256": "1efce8126b43e6d4f13ad29c29245f5b3383332cb5af4bc88a0c39980c5b4b07"
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 20834,
+              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+            },
+            {
+              "path": "crates/jocforge-application/src/source_frame_bridge.rs",
+              "bytes": 7247,
+              "sha256": "a78e4e32190d9762ac9f8f163f6e6fb58b5483ad4c2e2071133221ab19ae9cdd"
+            },
+            {
+              "path": "crates/jocforge-cli/src/output_publication.rs",
+              "bytes": 10861,
+              "sha256": "1b48c2afd5084262260b6cd49dd182ceb22caca7fbb6f6107d7ce5760b456e7e"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -25200,19 +25230,14 @@
               "sha256": "55f0e0c32d09e502639e59058556b86f5232bb29908a39b1a4503c9b3ddf4ba1"
             },
             {
-              "path": "crates/jocforge-application/src/source_frame_bridge.rs",
-              "bytes": 7200,
-              "sha256": "2374c55048db8a9b77be5d8aaf397f2ce6c218d67ef9a72d31a258c82f3cc8cd"
-            },
-            {
-              "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
-            },
-            {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
               "bytes": 9622,
               "sha256": "08b2e39bf5cc9f1d20cad8ecf27814611f889aaf15d099b7a89e7af031f52206"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/source_frame_writer.rs",
+              "bytes": 11681,
+              "sha256": "1efce8126b43e6d4f13ad29c29245f5b3383332cb5af4bc88a0c39980c5b4b07"
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
@@ -25227,14 +25252,19 @@
           ],
           "test_inventory": [
             {
-              "path": "crates/jocforge-domain/src/codec/source_frame_writer.rs",
-              "bytes": 11681,
-              "sha256": "1efce8126b43e6d4f13ad29c29245f5b3383332cb5af4bc88a0c39980c5b4b07"
-            },
-            {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
               "bytes": 18285,
               "sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e"
+            },
+            {
+              "path": "crates/jocforge-cli/src/output_publication/tests.rs",
+              "bytes": 7213,
+              "sha256": "35adc4a2dd5dce8c4d3566c2e8be0234b9a906e9c0d108aafed2d667ed636c0a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/source_frame_writer.rs",
+              "bytes": 11681,
+              "sha256": "1efce8126b43e6d4f13ad29c29245f5b3383332cb5af4bc88a0c39980c5b4b07"
             }
           ]
         },
@@ -30025,13 +30055,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 5594,
-              "sha256": "3394b38b0e1d9abd2d93c2da227ea3a17784918fec721abcf12c79e7f7000cff"
+              "bytes": 10861,
+              "sha256": "1b48c2afd5084262260b6cd49dd182ceb22caca7fbb6f6107d7ce5760b456e7e"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
-              "bytes": 5919,
-              "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+              "bytes": 7213,
+              "sha256": "35adc4a2dd5dce8c4d3566c2e8be0234b9a906e9c0d108aafed2d667ed636c0a"
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
@@ -30062,8 +30092,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
-              "bytes": 5919,
-              "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+              "bytes": 7213,
+              "sha256": "35adc4a2dd5dce8c4d3566c2e8be0234b9a906e9c0d108aafed2d667ed636c0a"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
@@ -32701,8 +32731,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1920870,
-              "sha256": "db1d1493108ce85569481e04b6bba7e0f150f5b886c39daac501be7efcba64ea"
+              "bytes": 1921966,
+              "sha256": "1c65746513dd5087b3c00a54a8cf6f0741e7e80186f5e066f35a8a48a372af7e"
             }
           ],
           "test_inventory": [
@@ -36197,13 +36227,13 @@
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
-          "bytes": 5594,
-          "sha256": "3394b38b0e1d9abd2d93c2da227ea3a17784918fec721abcf12c79e7f7000cff"
+          "bytes": 10861,
+          "sha256": "1b48c2afd5084262260b6cd49dd182ceb22caca7fbb6f6107d7ce5760b456e7e"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",
-          "bytes": 5919,
-          "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+          "bytes": 7213,
+          "sha256": "35adc4a2dd5dce8c4d3566c2e8be0234b9a906e9c0d108aafed2d667ed636c0a"
         },
         {
           "path": "crates/jocforge-domain/src/publication/output_owner.rs",
@@ -36244,8 +36274,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",
-          "bytes": 5919,
-          "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+          "bytes": 7213,
+          "sha256": "35adc4a2dd5dce8c4d3566c2e8be0234b9a906e9c0d108aafed2d667ed636c0a"
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",

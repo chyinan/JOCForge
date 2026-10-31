@@ -1,11 +1,17 @@
 // pattern: Imperative Shell
 //! F15P append composition for already prepared source proposals.
 
-use jocforge_application::output_publication::{
-    AttemptId, OutputConfiguration, OutputFinalizedProposal, OutputOwnerError,
-    OutputRootBindingError, OutputSourceAfterProposal, OutputSourceProposal, OutputStagingOwnerId,
-    ProgrammeId, ProgrammeOutputBinding, ProgrammeOutputFinalizeProposal,
-    ProgrammeOutputSourceProposal,
+use jocforge_application::{
+    output_publication::{
+        AttemptId, OutputConfiguration, OutputFinalizedProposal, OutputOwnerError,
+        OutputRootBindingError, OutputSourceAfterProposal, OutputSourceProposal,
+        OutputStagingOwnerId, ProgrammeId, ProgrammeOutputBinding, ProgrammeOutputFinalizeProposal,
+        ProgrammeOutputSourceProposal,
+    },
+    source_frame_bridge::{
+        CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError, SelectedSourceFrameCandidate,
+        stage_codec_owner_after_source_frame,
+    },
 };
 use jocforge_io::atomic_output::{AtomicOutputStaging, OutputIoError};
 
@@ -102,6 +108,133 @@ impl std::fmt::Display for OutputPublicationError {
 }
 
 impl std::error::Error for OutputPublicationError {}
+
+/// One source's durable F15 result and its matching noncommitting codec-owner proposal.
+///
+/// The parent still owns installation of both after-values with the other source roots.
+#[must_use]
+#[derive(Debug)]
+pub struct StagedSourceFrameOutput {
+    output_after: OutputSourceAfterProposal,
+    codec_owner_proposal: CodecOwnerProposal,
+}
+
+impl StagedSourceFrameOutput {
+    pub const fn output_after(&self) -> &OutputSourceAfterProposal {
+        &self.output_after
+    }
+
+    pub const fn codec_owner_proposal(&self) -> &CodecOwnerProposal {
+        &self.codec_owner_proposal
+    }
+
+    pub fn into_parts(self) -> (OutputSourceAfterProposal, CodecOwnerProposal) {
+        (self.output_after, self.codec_owner_proposal)
+    }
+}
+
+/// Errors while joining an accepted F12 source frame to durable F15 output and codec state.
+#[derive(Debug)]
+pub enum SourceFrameOutputStageError {
+    CandidateSourceMismatch,
+    CandidateFrameMismatch,
+    CandidateAttemptMismatch,
+    MissingDurableAppend,
+    UnexpectedDurableAppend,
+    Output(OutputPublicationError),
+    CodecOwner(CodecOwnerStageError),
+}
+
+impl std::fmt::Display for SourceFrameOutputStageError {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::CandidateSourceMismatch => formatter.write_str("SOURCE_FRAME_OUTPUT_SOURCE"),
+            Self::CandidateFrameMismatch => formatter.write_str("SOURCE_FRAME_OUTPUT_BYTES"),
+            Self::CandidateAttemptMismatch => formatter.write_str("SOURCE_FRAME_OUTPUT_ATTEMPT"),
+            Self::MissingDurableAppend => formatter.write_str("SOURCE_FRAME_OUTPUT_APPEND_MISSING"),
+            Self::UnexpectedDurableAppend => {
+                formatter.write_str("SOURCE_FRAME_OUTPUT_APPEND_UNEXPECTED")
+            }
+            Self::Output(error) => write!(formatter, "{error}"),
+            Self::CodecOwner(error) => write!(formatter, "{error:?}"),
+        }
+    }
+}
+
+impl std::error::Error for SourceFrameOutputStageError {}
+
+/// Durably stages the already validated F15 proposal for one accepted F12 candidate.
+///
+/// The caller prepares `output_proposal` with
+/// `jocforge_application::output_publication::prepare_output_source_from_candidate`.
+/// This function checks candidate source and bytes before touching the staging file, then
+/// returns both owner after-values without installing either. The CLI output module is
+/// test-support gated until production plan and destination admission are available.
+pub fn stage_source_frame_output(
+    staging: &mut ProgrammeOutputStaging,
+    binding: &ProgrammeOutputBinding,
+    codec_owner: &CodecOwnerRoot,
+    candidate: &SelectedSourceFrameCandidate<'_>,
+    output_proposal: ProgrammeOutputSourceProposal,
+) -> Result<StagedSourceFrameOutput, SourceFrameOutputStageError> {
+    let frame = candidate.frame();
+    let proposal = output_proposal.proposal();
+    if candidate.accepted_codec_frame().attempt_id() != binding.attempt_id()
+        || output_proposal.attempt_id() != binding.attempt_id()
+    {
+        return Err(SourceFrameOutputStageError::CandidateAttemptMismatch);
+    }
+    let append_expected = match proposal {
+        OutputSourceProposal::Suppressed(_) => None,
+        OutputSourceProposal::Append(append) => Some(append.frame_bytes().as_slice()),
+    };
+    let append_expected = validate_candidate_output_pair(
+        &frame.source_index(),
+        frame.frame_bytes(),
+        &proposal.identity().source_index(),
+        append_expected,
+    )?;
+    if codec_owner.generation().value().checked_add(1).is_none() {
+        return Err(SourceFrameOutputStageError::CodecOwner(
+            CodecOwnerStageError::GenerationOverflow,
+        ));
+    }
+
+    let output_after = stage_output_source(staging, binding, output_proposal)
+        .map_err(SourceFrameOutputStageError::Output)?;
+    let codec_output_after = match (append_expected, output_after.durable_append_receipt()) {
+        (true, Some(_)) => Some(&output_after),
+        (false, None) => None,
+        (true, None) => return Err(SourceFrameOutputStageError::MissingDurableAppend),
+        (false, Some(_)) => return Err(SourceFrameOutputStageError::UnexpectedDurableAppend),
+    };
+    let codec_owner_proposal =
+        stage_codec_owner_after_source_frame(codec_owner, candidate, codec_output_after)
+            .map_err(SourceFrameOutputStageError::CodecOwner)?;
+
+    Ok(StagedSourceFrameOutput {
+        output_after,
+        codec_owner_proposal,
+    })
+}
+
+fn validate_candidate_output_pair<SourceIndex: Eq>(
+    candidate_source: &SourceIndex,
+    candidate_frame: &[u8],
+    proposal_source: &SourceIndex,
+    proposal_frame: Option<&[u8]>,
+) -> Result<bool, SourceFrameOutputStageError> {
+    if candidate_source != proposal_source {
+        return Err(SourceFrameOutputStageError::CandidateSourceMismatch);
+    }
+    let Some(proposal_frame) = proposal_frame else {
+        return Ok(false);
+    };
+    if candidate_frame != proposal_frame {
+        return Err(SourceFrameOutputStageError::CandidateFrameMismatch);
+    }
+    Ok(true)
+}
 
 /// Applies the approved suppression/append branch. Append returns only after
 /// exact readback and file fsync; the returned owner proposal remains uninstalled.
