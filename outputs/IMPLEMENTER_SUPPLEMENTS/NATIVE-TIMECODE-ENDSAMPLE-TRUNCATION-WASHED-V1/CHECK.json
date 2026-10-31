@@ -1,0 +1,23 @@
+{
+  "schema": "washed-embedded-timecode-endsample-truncation-check.v1",
+  "checks": {
+    "R128_R129_package_manifest_and_payload_hashes": "PASS",
+    "R128_R129_supporting_event_log_job_and_result_hashes": "PASS",
+    "authorized_input_and_runtime_copy_hashes": "PASS",
+    "DEE_and_four_relevant_DLL_hashes": "PASS",
+    "Ghidra_static_report_bytes_rehashed": "PASS",
+    "old_V2_timecode_origin_package_checker_normal_and_python_O": "PASS",
+    "R121_exclusive_EndSample_package_manifest_and_payloads": "PASS",
+    "one_frame_absolute_boundary_delta_recomputed": 2000,
+    "relative_float_products_recomputed": [49999.999999992724, 52000.000000007276],
+    "relative_setter_values_recomputed": [49999, 52000],
+    "setter_call_id_to_CompositeMasterItem_join": "PASS_IN_SOURCE_PACKAGE",
+    "DEE_numeric_exit_code": "NOT_CAPTURED_BY_CONTROLLER",
+    "reference_outputs_nonempty_but_not_included": true,
+    "cross_run_owner_or_generation_join": "UNBOUND",
+    "sample_to_spatial_generation": "UNBOUND",
+    "not_run_not_promoted_to_pass": true
+  },
+  "status": "PASS_BOUNDED_TIME_CODE_TO_EXCLUSIVE_ENDSAMPLE_RESIDUAL; CROSS_RUN_AND_SPATIAL_JOIN_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

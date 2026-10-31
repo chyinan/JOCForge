@@ -590,7 +590,7 @@
           "slice_id": "native-endsample-exclusive-r121-reader-boundary",
           "mapping_status": "WASHED_R121_READER_ENDSAMPLE_EXCLUSIVE__UPSTREAM_AND_REPORT_IDENTITY_OPEN",
           "implementation_status": "EVIDENCE_ONLY_R121_READER_BOUNDARY__NO_GENERIC_CONVERTER_OR_READINESS_CHANGE",
-          "scope": "Only for the hash-identified R121 native reader path, EndSample is an exclusive upper sample boundary, supported by the consumer's reader_cursor < reader_extent check. EndSample=0 selects storage sample_count; equality to storage count is accepted, greater-than is rejected, and StartSample>EndSample is rejected. The same R121 run reports StartSample=0, EndSample=49,999, reader_extent=49,999, and 49,999 frames per channel, with a 1,536-frame tail callback containing 847 read and 689 zero-padded positions. This resolves the endpoint only for that reader path; embedded-timecode-to-EndSample conversion still has a one-sample discrepancy, R115/R121 identity and sample-to-spatial generation remain UNBOUND, and other producers/modes are outside scope. The old range-semantics V2 Ghidra report hash metadata differs from the current R1 value; the report bytes are absent and rehash reconciliation remains OPEN.",
+          "scope": "Only for the hash-identified R121 native reader path, EndSample is an exclusive upper sample boundary, supported by the consumer's reader_cursor < reader_extent check. EndSample=0 selects storage sample_count; equality to storage count is accepted, greater-than is rejected, and StartSample>EndSample is rejected. The same R121 run reports StartSample=0, EndSample=49,999, reader_extent=49,999, and 49,999 frames per channel, with a 1,536-frame tail callback containing 847 read and 689 zero-padded positions. This resolves the endpoint only for that reader path; a separate R128/R129 pair maps the one-sample truncation residual for that numeric-frame path; it is not joined to R121 or R115, so R121 conversion identity and sample-to-spatial generation remain UNBOUND, and other producers/modes are outside scope. The old range-semantics V2 Ghidra report hash metadata differs from the current R1 value; the report bytes are absent and rehash reconciliation remains OPEN.",
           "owner": "spatial_control",
           "implementation_requirement": false,
           "dependencies": [],
@@ -663,7 +663,7 @@
           },
           "error_outcomes": [],
           "not_run": [
-            "A one-sample pair resolving embedded-timecode-to-EndSample conversion.",
+            "An R121-scoped one-sample pair; the R128/R129 pair is a separate execution and has no owner/generation join to R121.",
             "R115-to-R121 execution owner/generation join and sample-to-spatial-generation join.",
             "Absolute sample position from reader-relative cursor values.",
             "Source Ghidra report bytes and reconciliation of the prior V2 metadata hash mismatch.",
@@ -687,8 +687,8 @@
               "read": 847,
               "zero_padding": 689
             },
-            "embedded_timecode_to_end_sample": "ONE_SAMPLE_DISCREPANCY_OPEN",
-            "one_sample_pair": "NOT_RUN",
+            "embedded_timecode_to_end_sample": "R121_RELATION_UNBOUND; R128_R129_RESIDUAL_MAPPED_SEPARATELY",
+            "one_sample_pair": "NOT_RUN_IN_R121_SCOPE; R128_R129_SEPARATE_PAIR_MAPPED",
             "r115_r121_owner_generation_join": "UNBOUND",
             "sample_to_spatial_generation": "UNBOUND",
             "other_producers_or_modes_generalized": false,
@@ -697,7 +697,132 @@
             "source_report_hash_reconciliation": "OPEN_REHASH_REQUIRED",
             "source_report_bytes_included": false,
             "source_report_bytes_rehashed": false,
-            "implementation_effect": "EVIDENCE_ONLY_NO_ALGORITHM_OR_READINESS_CHANGE"
+            "implementation_effect": "EVIDENCE_ONLY_NO_ALGORITHM_OR_READINESS_CHANGE",
+            "r128_r129_truncation_pair_manifest_sha256": "694b1ead05ddc062bf69c733f2684e7685fc0598508bf3be9282cf41b03ef508"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "native-timecode-endsample-truncation-pair-r128-r129",
+          "mapping_status": "WASHED_R128_R129_SETTER_LINKED_TRUNCATION_RESIDUAL__CROSS_RUN_IDENTITY_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_NUMERIC_FRAME_PAIR__NO_GENERIC_TIME_CONVERTER_RULE",
+          "scope": "For the bounded R128/R129 numeric-frame path, the two process executions use the same authorized input and recomputed binary identities and differ only in end-frame token 86664 versus 86665 (start token 86640). The inclusive frame token is advanced before absolute boundary conversion; absolute sample boundaries are 173,330,000 and 173,332,000 (delta 2,000). After subtracting the same source-time offset, the binary64 products are 49,999.999999992724 and 52,000.000000007276; the relative setter truncates toward zero to 49,999 and 52,000 (delta 2,001). Setter-call identifiers bind these values to same-run CompositeMasterItem fields and reader observations. This explains the residual only on this hash-matched R128/R129 path. EndSample remains exclusive. R115/R121/R128 execution identity, offset-versus-FFOA owner, and sample-to-spatial generation remain UNBOUND. No output payload was included or reviewed; native numeric exit code was not captured.",
+          "owner": "spatial_control",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run128ExecutionIdentity",
+              "Run129ExecutionIdentity",
+              "EndFrameToken",
+              "AbsoluteTimeBoundary",
+              "AbsoluteSampleBoundary",
+              "SourceTimeOffset",
+              "RelativeSeconds",
+              "Binary64SampleProduct",
+              "EndSampleSetterResult",
+              "CompositeMasterItem",
+              "ReaderActualSampleCount",
+              "R115ExecutionIdentity",
+              "R121ExecutionIdentity",
+              "SpatialCallbackGeneration",
+              "OffsetOrFfoaOwner"
+            ],
+            "covered_clauses": [
+              "R128/R129 are two separate native runs with identical authorized input/binary identities; only the end-frame token changes by one.",
+              "The inclusive end-frame token is advanced before absolute time/sample boundary conversion; the absolute boundary delta is 2,000 samples.",
+              "Subtracting the same source-time offset produces binary64 products just below/above integers; the relative setter truncates toward zero to 49,999 and 52,000, a 2,001 delta.",
+              "Setter-call identifiers bind conversion values to same-run CompositeMasterItem fields and reader observations.",
+              "This resolves the residual only for the hash-matched R128/R129 numeric-frame path; R115/R121/R128 identity, source offset owner, and sample-to-spatial generation remain UNBOUND.",
+              "Reference outputs were nonempty but not included or listened to; numeric DEE exit code was not captured, and this is not bitstream/audio conformance."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F01_R128_R129_ENDSAMPLE_RELATIVE_TRUNCATION_PAIR",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "supplement_manifest_sha256": "694b1ead05ddc062bf69c733f2684e7685fc0598508bf3be9282cf41b03ef508",
+            "source_pair_manifest_sha256": "a8bcb8ec6852208bde422aafc6285201d6de7d04325d66d7b41d7dfe5d816105",
+            "source_pair_checkers": {
+              "normal": "PASS",
+              "python_O": "PASS"
+            },
+            "ghidra_report_sha256_rehashed_by_wash": "f531a227d26ba91464c1e070ed13118f34a0b0c95d4dc20c2c724cf1b1ac7e17",
+            "prior_R121_report_hash_reconciliation": "OPEN_REHASH_REQUIRED; not inferred from the different R128 producer report",
+            "prior_timecode_origin_manifest_sha256": "14b4d2af2c6c67a9a8d840cd2601e30f8c147aa5c840de9aa2546e261deab88d",
+            "validation_boundary": "Two-run setter-linked pair for one numeric-frame path only; no cross-run identity to R115/R121, no global timecode rule, and no output conformance claim."
+          },
+          "vectors": {
+            "kind": "WASHED_R128_R129_SETTER_LINKED_END_FRAME_PAIR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "R128 end token 86664 → absolute boundary 173330000 → relative product 49999.999999992724 → setter 49999.",
+              "R129 end token 86665 → absolute boundary 173332000 → relative product 52000.000000007276 → setter 52000.",
+              "The absolute boundary delta is 2000; the relative setter result delta is 2001 due to truncation on this pair.",
+              "This pair does not join to R115/R121 and does not establish output conformance or generality to other timecode formats."
+            ],
+            "expected_outputs_included": false,
+            "native_execution": "R128_R129_PAIR_OBSERVED; NUMERIC_DEE_EXIT_NOT_CAPTURED",
+            "reference_outputs_nonempty": true,
+            "reference_output_payloads_included": false,
+            "supplement_manifest_sha256": "694b1ead05ddc062bf69c733f2684e7685fc0598508bf3be9282cf41b03ef508"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Numeric DEE process exit code; controller return status is not substituted for it.",
+            "Output payload comparison, decoding, or listening/conformance review.",
+            "R115/R121/R128 cross-run owner/generation identity.",
+            "Offset-versus-FFOA source-field ownership and sample-to-spatial-generation join.",
+            "Generalization to other timecode formats or source paths."
+          ],
+          "validation_boundary": "Evidence-only R128/R129 conversion residual pair; no codec algorithm, product readiness, or output conformance change.",
+          "native_status": {
+            "path_scope": "HASH_IDENTIFIED_R128_R129_NUMERIC_FRAME_PATH_ONLY",
+            "run128_end_token": 86664,
+            "run129_end_token": 86665,
+            "start_token_both_runs": 86640,
+            "runs_differ_only_in_end_token": true,
+            "absolute_sample_boundaries": [
+              173330000,
+              173332000
+            ],
+            "absolute_boundary_delta": 2000,
+            "relative_binary64_products": [
+              "49999.999999992724",
+              "52000.000000007276"
+            ],
+            "relative_setter_results": [
+              49999,
+              52000
+            ],
+            "relative_setter_delta": 2001,
+            "setter_truncation": "TOWARD_ZERO",
+            "setter_call_to_composite_master_and_reader_join": "PASS_IN_SOURCE_PACKAGE",
+            "end_sample_semantics": "EXCLUSIVE_UPPER_SAMPLE_BOUNDARY",
+            "numeric_dee_exit_code": "NOT_CAPTURED_BY_CONTROLLER",
+            "reference_outputs_nonempty": true,
+            "reference_output_payloads_included": false,
+            "output_conformance_or_listening": "NOT_RUN",
+            "r115_r121_r128_execution_identity": "UNBOUND",
+            "offset_versus_ffoa_owner": "UNBOUND",
+            "sample_to_spatial_generation": "UNBOUND",
+            "prior_R121_report_hash_reconciliation": "OPEN_REHASH_REQUIRED",
+            "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -9201,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1800201,
-              "sha256": "c0fdc0564570c4d0ac9660018c0bc66641c5cc1886689c6e41e20969f9f5cecd"
+              "bytes": 1808039,
+              "sha256": "5fd13cecaef2aa587cd05212ad3d1681576cd9f4bcf96a91b1553e743dc6c659"
             }
           ],
           "test_modules": [
@@ -12714,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1800201,
-              "sha256": "c0fdc0564570c4d0ac9660018c0bc66641c5cc1886689c6e41e20969f9f5cecd"
+              "bytes": 1808039,
+              "sha256": "5fd13cecaef2aa587cd05212ad3d1681576cd9f4bcf96a91b1553e743dc6c659"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -31199,8 +31324,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1800201,
-              "sha256": "c0fdc0564570c4d0ac9660018c0bc66641c5cc1886689c6e41e20969f9f5cecd"
+              "bytes": 1808039,
+              "sha256": "5fd13cecaef2aa587cd05212ad3d1681576cd9f4bcf96a91b1553e743dc6c659"
             }
           ],
           "test_inventory": [

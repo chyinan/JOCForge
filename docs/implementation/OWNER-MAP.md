@@ -121,6 +121,7 @@
 | F01/run-121-native-reader-count-and-padding-boundary | F01 | `spatial_control` |
 | F01/native-embedded-timecode-range-field-semantics-v2 | F01 | `spatial_control` |
 | F01/native-endsample-exclusive-r121-reader-boundary | F01 | `spatial_control` |
+| F01/native-timecode-endsample-truncation-pair-r128-r129 | F01 | `spatial_control` |
 | F01R/selected-riff-pcm24-reader-and-hop | F01R | `io` |
 | F01G/selected-real-axml-chna-host-identity-and-source-join | F01G | `frontend` |
 | F01B/candidate-normalized-bed-source-points | F01B | `spatial_control` |

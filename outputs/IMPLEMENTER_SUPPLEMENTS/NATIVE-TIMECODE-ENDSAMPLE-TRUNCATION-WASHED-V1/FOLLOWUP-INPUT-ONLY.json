@@ -1,0 +1,43 @@
+{
+  "schema": "washed-embedded-timecode-endsample-truncation-followup.v1",
+  "implementation_mapping": {
+    "allowed_claim": "For the hash-identified R128/R129 numeric-frame path, the inclusive end-frame token is advanced before absolute boundary conversion; a later relative floating-point setter truncates to an exclusive EndSample. The tested one-frame pair yields 49,999 then 52,000 samples.",
+    "scope": "two separate bounded native executions with the same authorized input and binary identities; no generalization to other timecode formats",
+    "do_not_infer": [
+      "EndSample is inclusive",
+      "raw PCM sample equality or audio algorithm equivalence",
+      "R115/R121/R128 execution identity",
+      "sample-to-spatial-generation identity",
+      "offset equals FFOA when values differ",
+      "DEE numeric process exit code was captured"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "owner or generation joins"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "offset versus FFOA source-field owner",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "R115/R121/R128 execution owner/generation identity",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "sample to spatial-generation identity",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "old R121 Ghidra report source-identity metadata",
+      "status": "OPEN_REHASH_REQUIRED"
+    }
+  ],
+  "experiment_authorization": {
+    "same_authorized_adm_pair_already_run": true,
+    "reapproval_needed": false,
+    "persist_pcm_or_ec3_payload": false
+  }
+}

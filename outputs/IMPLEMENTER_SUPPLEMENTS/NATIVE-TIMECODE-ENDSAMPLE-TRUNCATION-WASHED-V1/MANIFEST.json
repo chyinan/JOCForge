@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "NATIVE-TIMECODE-ENDSAMPLE-TRUNCATION-WASHED-V1",
+  "scope": "R128/R129 inclusive frame-token to absolute boundary and relative EndSample setter residual; exclusive EndSample field; owner/generation joins remain open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 2799,
+      "sha256": "e5bc3d8f39052c397ceecd35bd09e483e5b41864e7a78c944aac1e245452d5ba"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 3692,
+      "sha256": "d5d1e4854033c093c5176d593aa8de2e6518ce8e1508d50755c1bb9f75f68106"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 1251,
+      "sha256": "073342a57843087ea74e06cf793712fe087b4b8d71799a14b363f9ee4568c6c8"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1582,
+      "sha256": "f115d37f98e66291a05860ab7041cec8ab89831e3c67e9d172c21f3c62879d27"
+    }
+  ]
+}

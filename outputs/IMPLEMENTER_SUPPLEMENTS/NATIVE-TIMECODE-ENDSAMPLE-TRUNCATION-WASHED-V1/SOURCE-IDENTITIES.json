@@ -1,0 +1,75 @@
+{
+  "schema": "washed-embedded-timecode-endsample-truncation-source-identities.v1",
+  "source_pair_package": {
+    "manifest_sha256": "a8bcb8ec6852208bde422aafc6285201d6de7d04325d66d7b41d7dfe5d816105",
+    "payload_sha256": {
+      "NATIVE-EMBEDDED-TIMECODE-ENDSAMPLE-PAIR.json": "eb6df1df2add61c7c5c35f5d0185d86cf78c1e8cc70445d2a5463e7588357ca4",
+      "CHECK.json": "ddb23f0c8e8a6ea8fead43e5525f507fc724deaa8387fc6f89b0977be41a5e67"
+    },
+    "manifest_and_payload_hashes_recomputed": true,
+    "source_support_hashes_recomputed": true,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "runs": {
+    "run128": {
+      "events_sha256": "9a3d183917c6b7f88e80c50265f6abbcab48d1afac2c02c60dd4ecf530695c20",
+      "native_log_sha256": "a7ab7fa6c40249f4aee3bb2d50e08e7fab003a591577651778b869ff553dcd99",
+      "job_config_sha256": "03bf72650fc84f82f6d81d45b5275f001bce32b83c19ed88d7cd4a309c7a8b08",
+      "result_sha256": "1f84d8b626604b86986ec73d9e5c26eb7d1f3f261929c78f4dfc894448f749e1",
+      "end_token": 86664,
+      "end_sample_setter": 49999,
+      "per_channel_actual_read_count": 49999
+    },
+    "run129": {
+      "events_sha256": "4784527cd06fa6e48760362f3905612f5bdbed87d4db24e53295aefadce39418",
+      "native_log_sha256": "36936dafa7f7b06adf8132d4e4d2b96437468e8cff1805151dddd191c3af99d2",
+      "job_config_sha256": "4be607924cd3ab7c3853009771863faee15bd63e4b5699ce6b620555f3a60546",
+      "result_sha256": "eb3912c65240642d05376e50aaae5e55a0816ca7ef4de855181761ad6acab7fe",
+      "end_token": 86665,
+      "end_sample_setter": 52000,
+      "per_channel_actual_read_count": 52000
+    }
+  },
+  "recomputed_source_identities": {
+    "authorized_adm_bwf_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "target_atmos_filter_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "adm_input_converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_core_sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+    "atmos_storage_support_sha256": "8ce9476c2a9d59a3e968912e203a051e7a3501cae7588f3ceb90762710597fd0",
+    "recomputed_from_current_files": true,
+    "pcm_or_ec3_payload_read_by_wash": false
+  },
+  "ghidra_static_report": {
+    "path": "run-122/embedded-range-conversion-producer-chain-v3.txt",
+    "bytes": 95299,
+    "sha256": "f531a227d26ba91464c1e070ed13118f34a0b0c95d4dc20c2c724cf1b1ac7e17",
+    "rehashed_by_wash": true,
+    "ida_used": false
+  },
+  "prior_metadata_sources": {
+    "run121_end_sample_semantics_manifest_sha256": "e6769ae0f01cbb28b24e132383d7cbdc045e69c317dd0ec1904f9c60440ddafa",
+    "run121_sample_count_manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
+    "timecode_origin_metadata_manifest_sha256": "14b4d2af2c6c67a9a8d840cd2601e30f8c147aa5c840de9aa2546e261deab88d",
+    "timecode_origin": {
+      "source_frame_rate": 24,
+      "sample_rate_hz": 48000,
+      "embedded_origin_seconds": 3610,
+      "provenance": "transcribed from earlier native observation; raw debugger transcript absent"
+    },
+    "prior_R121_report_hash_metadata_reconciliation": "OPEN; not inferred from the different R128 producer report"
+  },
+  "cross_run_identity": {
+    "R115_to_R128_owner_or_generation": "UNBOUND",
+    "sample_to_spatial_generation": "UNBOUND",
+    "offset_versus_FFOA_owner": "UNBOUND"
+  },
+  "excluded_material": [
+    "PCM samples",
+    "EC3 output payloads",
+    "raw event logs and job files",
+    "raw disassembly or addresses",
+    "private keys or license contents"
+  ]
+}
