@@ -1,0 +1,41 @@
+{
+  "schema": "wash-evidence-manifest.v1",
+  "status": "FOR_WASH_REVIEW",
+  "package": "native-measurement-dialnorm-caller-edge-correction-wash",
+  "package_id": "native-measurement-dialnorm-caller-edge-correction-wash-v2",
+  "recipient_role": "wash-agent",
+  "implementation_agent_contacted": false,
+  "contains_raw_addresses": false,
+  "contains_binary_or_decompilation_excerpt": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_local_absolute_paths": false,
+  "parent_research_manifest_sha256": "421ff0855ef7f0a35d77083dadbd3651c038a2b62b2e0ba6c03a574feb4844d",
+  "superseded_sanitized_package_manifest_sha256": "5f0e505f013fea63702737d4bebcdd1519a294c54b18b4ccb466c698696aee57",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "2be47181ec9160e04eaa7640460b19a03663d51d495cb6c623bcefacbff845fc",
+      "bytes": 1686
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "aa70abcfbb99445d7e6bb8e307df47298d92f55e24bd34e451697c6f49e28653",
+      "bytes": 2451
+    },
+    {
+      "name": "validate_caller_edge_correction.py",
+      "sha256": "224c9b1a1f3dff60b69e34e23446216d24d737e7011c4d02f6838862e8ce4532",
+      "bytes": 4963
+    }
+  ],
+  "identity_summary": {
+    "runtime_caller": "ATMOS_DDP_METADATA_SERIALIZATION_ROUTINE",
+    "helper_arguments": "FIELD_POINTER; ELEMENT_COUNT_1; WIDTH_5",
+    "field_scalar_value": "NOT_CAPTURED",
+    "field_tag_and_typed_producer": "UNBOUND",
+    "measurement_to_f06nd_drc": "UNBOUND",
+    "f06nd_drc_to_f12_bsi_dialnorm": "UNBOUND",
+    "playback_and_full_e2e": "NOT_RUN"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "wash-evidence-manifest.v1",
+  "status": "FOR_WASH_REVIEW",
+  "package": "native-measurement-dialnorm-writer-producer-gap-wash",
+  "package_id": "native-measurement-dialnorm-writer-producer-gap-wash-v3",
+  "recipient_role": "wash-agent",
+  "implementation_agent_contacted": false,
+  "contains_raw_addresses": false,
+  "contains_binary_or_decompilation_excerpt": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_local_absolute_paths": false,
+  "parent_correction_manifest_sha256": "3d4fcdc99858fa0fb02023bb075ce7b6382a06190ffc3db38f1510c386724ddc",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "3210f2e0924904b18babc43054337c6e56de1a3a14f9914b43b9826000e051fb",
+      "bytes": 1899
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "fcd01f1cc11dc493fc7474a75901e8e5ccfc1e208521ddf6972e8bd357e7341d",
+      "bytes": 2970
+    },
+    {
+      "name": "NEXT-OBSERVATION-PLAN.md",
+      "sha256": "c8813d8d96102aaf64b13a5b40338a3ffbf0b0d796e3b93f8695eddf786e2d91",
+      "bytes": 882
+    },
+    {
+      "name": "validate_writer_producer_gap_package.py",
+      "sha256": "5175ce82cd9895eeb813a97276e1787357d2d5cf17d6276c78508ff202fdc65f",
+      "bytes": 5992
+    }
+  ],
+  "identity_summary": {
+    "runtime_caller": "ATMOS_DDP_METADATA_SERIALIZER_IN_CODEC_LOOP",
+    "record_member_field_value": "NOT_CAPTURED",
+    "run11_execution_config_filter_and_factory_index": "NOT_CAPTURED",
+    "field_semantic_tag_and_typed_producer": "UNBOUND",
+    "measurement_to_f06nd_drc": "UNBOUND",
+    "f06nd_drc_to_f12_bsi_dialnorm": "UNBOUND",
+    "next_observation": "PROPOSED_NOT_RUN_PENDING_WASH_COORDINATION"
+  }
+}

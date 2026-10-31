@@ -1,0 +1,69 @@
+{
+  "schema": "native-measurement-dialnorm-writer-producer-gap.v1",
+  "package_id": "native-measurement-dialnorm-writer-producer-gap-wash-v3",
+  "parent_correction_manifest_sha256": "3d4fcdc99858fa0fb02023bb075ce7b6382a06190ffc3db38f1510c386724ddc",
+  "sample_scope": {
+    "run11_input_argument_filename": "selected_adm_38ch.wav",
+    "run11_input_type": "NOT_CAPTURED_FROM_RETAINED_RUN_METADATA",
+    "run11_execution_config_sha256": "NOT_CAPTURED",
+    "run11_filter_or_route_key": "NOT_CAPTURED",
+    "run11_data_rate_kbps": "NOT_CAPTURED",
+    "run11_factory_index": "NOT_CAPTURED",
+    "run11_standalone_manifest": "NOT_CREATED",
+    "48khz_output": "NOT_VERIFIED",
+    "5_1_joc_signaling": "NOT_VERIFIED",
+    "player_playback": "NOT_RUN"
+  },
+  "source_module_hashes": [
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+    },
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    }
+  ],
+  "runtime_helper_call": {
+    "capture_token": "run11-helper-hit-1",
+    "thread_token": "run11-thread-1",
+    "caller_role": "Atmos DDP metadata serialization routine",
+    "codec_path": "codec loop -> metadata serialization routine -> generic bit writer",
+    "helper_argument_shape": ["field_pointer", "element_count", "width_bits"],
+    "element_count": 1,
+    "width_bits": 5,
+    "serializer_input_member_offset_bytes": 8,
+    "member_scalar_value": "NOT_CAPTURED",
+    "raw_return_address_or_pointer_persisted": false,
+    "temporary_output_removed_after_capture": true
+  },
+  "static_field_lineage": {
+    "same_parent_context_member_read_later_as_short": true,
+    "later_read_copied_to_downstream_record_slot": true,
+    "field_semantic_tag": "UNBOUND",
+    "constructor_or_first_writer": "UNBOUND",
+    "typed_producer": "UNBOUND",
+    "owner_and_generation": "UNBOUND",
+    "three_immediate_builder_transformer_helpers_typed_producer": "NOT_IDENTIFIED"
+  },
+  "measurement_and_output_relations": {
+    "static_candidate_is_this_runtime_callsite": false,
+    "measurement_to_f06nd_drc": "UNBOUND",
+    "f06nd_drc_to_f12_bsi_dialnorm": "UNBOUND",
+    "dialnorm_correctness": "NOT_VERIFIED",
+    "full_e2e_and_playback": "NOT_RUN"
+  },
+  "next_observation_plan": {
+    "status": "PROPOSED_NOT_RUN_PENDING_WASH_COORDINATION",
+    "site": "serializer entry record base and Ghidra-mapped member-plus-eight helper call",
+    "capture": ["opaque record token", "same-thread task token", "two-byte member scalar", "element count", "width", "status"],
+    "run11_execution_config_sha256": "NOT_CAPTURED",
+    "run11_filter_or_route_key": "NOT_CAPTURED",
+    "run11_factory_index": "NOT_CAPTURED",
+    "raw_pointer_persisted": false,
+    "audio_or_bitstream_payload_read_or_persisted": false,
+    "license_or_auth_contents_read": false,
+    "repeat_if_no_hit": false
+  },
+  "implementation_agent_contacted": false
+}

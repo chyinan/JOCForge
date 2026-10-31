@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1870959,
-              "sha256": "7c8e6e2dead4c30f4de94ca8548300fc78356be2311c2755a9e0b72caa74fa46"
+              "bytes": 1879120,
+              "sha256": "6dc38ce597d5b78adc57dcc5699ec0784d2725fcbac1318a499b97b8193228f9"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1870959,
-              "sha256": "7c8e6e2dead4c30f4de94ca8548300fc78356be2311c2755a9e0b72caa74fa46"
+              "bytes": 1879120,
+              "sha256": "6dc38ce597d5b78adc57dcc5699ec0784d2725fcbac1318a499b97b8193228f9"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -20486,9 +20486,9 @@
         },
         {
           "slice_id": "washed-f06nd-measurement-to-f12-dialnorm-candidate-boundary",
-          "mapping_status": "WASHED_RUN100_LOG_AND_OUTPUT_STAGE_OBSERVED__TYPED_MEASUREMENT_AND_DIALNORM_JOINS_UNBOUND",
-          "implementation_status": "EVIDENCE_ONLY_LOG_AND_OUTPUT_METADATA__NO_TYPED_RECEIPT_OR_DIALNORM_FIELD_JOIN",
-          "scope": "Current Wash evidence is V5. The hash-bound run-100 DEE log records measurement scalars without units, an Encoder done marker, 100% encoding progress, and 100% output-stage progress. The controller result records process exit observed and a reference output file whose existence and 17,395,712-byte size were checked by metadata only; the numeric exit code was not captured and the output payload was not opened, hashed, parsed, decoded, or listened to. Runtime-loaded image identity remains UNBOUND. These observations do not establish a typed MeasurementReceipt, programme/attempt/generation lineage, measurement-finalize to F06ND DRC input, or F06ND to F12 BSI DialNorm. A U16-to-5-bit writer remains an untyped static candidate; the V2-only member offset is retained only as historical evidence and is not promoted by V5.",
+          "mapping_status": "WASHED_RUN100_LOG_AND_OUTPUT_PLUS_RUN11_WIDTH5_CALLER__MEASUREMENT_AND_DIALNORM_JOINS_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_LOG_METADATA_AND_UNNAMED_WIDTH5_SERIALIZER_MEMBER__NO_SCALAR_OR_DIALNORM_JOIN",
+          "scope": "V5 binds Run-100 measurement log and output-stage metadata only; those observations still lack units, a typed MeasurementReceipt, runtime-loaded image identity, and measurement/F06ND/F12 joins. Separate V2 ABI correction and V3 static tracing bind a Run-11 helper call on the Atmos DDP codec-loop metadata serializer path: the helper receives field_pointer, element_count=1, width=5, and the input member is at relative +8. The captured 1 is the element count; the field scalar is NOT_CAPTURED. V3 reports the same-context member later read as a short and copied to a downstream record slot, but its semantic tag, builder/first writer, typed producer, and owner/generation remain UNBOUND. The Run-11 callsite does not match the existing static candidate and is not joined to the separate Run-100 candidate. The earlier V1 U16=1 scalar interpretation is superseded as invalid.",
           "owner": "drc",
           "implementation_requirement": false,
           "dependencies": [],
@@ -20539,14 +20539,23 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/SOURCE-IDENTITIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_caller_edge_correction_wash_v2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_caller_edge_correction_wash_v2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_caller_edge_correction_wash_v2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_caller_edge_correction_wash_v2/validate_caller_edge_correction.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/NEXT-OBSERVATION-PLAN.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/validate_writer_producer_gap_package.py"
             ],
             "supplement_manifest_sha256": "dedc2b7201b372882f0684a6022d85e03e3f2eb8c493c944c7ab7fcdac59e2d6",
             "run100_source_manifest_sha256": "b72e13f17f9c09f59c1afc8cb70f109831c4c5283bb15be935f45c360dc10983",
             "meter_finalize_domain_boundary_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
             "drc_owner_option_dialnorm_erratum_manifest_sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
             "first_access_unit_numeric_model_contract_sha256": "f5c689a9cfdead35470321d3513f1e32b8a834bca931eebc7c6fe6ba15e9f08a",
-            "validation_boundary": "V5 establishes hash-bound log and output-stage metadata observations only. Output payload validation, typed measurement receipt, loaded-image identity, and measurement/DRC/DialNorm joins remain open.",
+            "validation_boundary": "V5 establishes hash-bound Run-100 log and output-stage metadata only. V2/V3 bind a separate Run-11 serializer caller/member path: the observed 1 is the element count, the field scalar is NOT_CAPTURED, and the +8 member has no semantic tag, producer, or owner/generation join. It is not joined to the separate Run-100 candidate or to measurement, F06ND DRC, or F12 DialNorm.",
             "analysis_update": {
               "limit_seconds": 600,
               "status": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS",
@@ -20588,20 +20597,75 @@
                 "source_package_manifest_sha256": "f66ec2fad38de50a9a38cbd69937d766d82937e80b92f929cca9a4d672019e01",
                 "status": "SUPERSEDED_BY_V5; RETAINED_AS_HISTORY"
               }
-            ]
+            ],
+            "abi_correction_v2_manifest_sha256": "3d4fcdc99858fa0fb02023bb075ce7b6382a06190ffc3db38f1510c386724ddc",
+            "writer_producer_gap_v3_manifest_sha256": "055515926b06f7a1ecb4f2df45dec57af36b0144a5b538c63f8ab0cb86cf5167",
+            "superseded_scalar_interpretation": {
+              "package_id": "native_measurement_dialnorm_scoped_observation_wash_v1",
+              "manifest_sha256": "5f0e505f013fea63702737d4bebcdd1519a294c54b18b4ccb466c698696aee57",
+              "superseded_claim": "U16 field scalar was interpreted as 1",
+              "disposition": "SUPERSEDED_INVALID_INTERPRETATION_BY_ABI_CORRECTION_V2",
+              "corrected_helper_shape": "field_pointer, element_count=1, width_bits=5",
+              "field_scalar_value": "NOT_CAPTURED"
+            },
+            "run11_writer_producer_boundary": {
+              "caller_role": "Atmos DDP metadata serialization routine in codec loop",
+              "helper_shape": [
+                "field_pointer",
+                "element_count",
+                "width_bits"
+              ],
+              "element_count": 1,
+              "width_bits": 5,
+              "serializer_input_member_offset_bytes": 8,
+              "field_scalar_value": "NOT_CAPTURED",
+              "field_semantic_tag": "UNBOUND",
+              "same_context_member_read_later_as_short": true,
+              "later_read_copied_to_downstream_record_slot": true,
+              "immediate_builder_producer": "NOT_RESOLVED_IN_TARGETED_THREE_HELPER_TRACE",
+              "builder_or_first_writer": "UNBOUND",
+              "typed_field_producer": "UNBOUND",
+              "owner_generation": "UNBOUND",
+              "static_candidate_callsite_match": false,
+              "run11_to_run100_candidate_identity": "UNBOUND",
+              "measurement_to_f06nd_drc": "UNBOUND",
+              "f06nd_to_f12_bsi_dialnorm": "UNBOUND"
+            },
+            "run11_capture_identity": {
+              "input_filename": "selected_adm_38ch.wav",
+              "input_type": "NOT_CAPTURED_FROM_RETAINED_RUN_METADATA",
+              "execution_config_sha256": "NOT_CAPTURED",
+              "filter_or_route_key": "NOT_CAPTURED",
+              "data_rate_kbps": "NOT_CAPTURED",
+              "factory_index": "NOT_CAPTURED",
+              "standalone_manifest": "NOT_CREATED"
+            }
           },
           "vectors": {
-            "kind": "F06ND_RUN100_LOG_AND_OUTPUT_STAGE_OBSERVATIONS_V5",
+            "kind": "F06ND_RUN100_LOG_OUTPUT_METADATA_AND_RUN11_WIDTH5_ABI_CORRECTION_V3",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/CHECK.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/FOLLOWUP-INPUT-ONLY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/FOLLOWUP-INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_caller_edge_correction_wash_v2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_caller_edge_correction_wash_v2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_caller_edge_correction_wash_v2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_caller_edge_correction_wash_v2/validate_caller_edge_correction.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/NEXT-OBSERVATION-PLAN.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/validate_writer_producer_gap_package.py"
             ],
             "case_pointers": [
               "Run-100 measurement scalars are present in the hash-bound log; units are not stated and no typed MeasurementReceipt was observed.",
               "Encoder done and 100% encoding/output-stage markers plus process-exit observation are recorded; the numeric exit code is not captured.",
               "Reference output existence/size is metadata-only; the payload is not opened, hashed, parsed, decoded, or listened to.",
-              "No measurement-to-F06ND or F06ND-to-F12 DialNorm typed join is established."
+              "No measurement-to-F06ND or F06ND-to-F12 DialNorm typed join is established.",
+              "Run-11 helper ABI is field pointer, element_count=1, width=5; the source scalar is NOT_CAPTURED.",
+              "The member at relative +8 is in the Atmos DDP metadata serializer path; its semantic tag and producer remain UNBOUND.",
+              "Run-11 callsite does not match the static candidate and has no owner/generation join to Run-100 or F06ND/F12.",
+              "The earlier V1 U16=1 scalar interpretation is superseded as invalid; sealed V1 remains unchanged."
             ],
             "expected_outputs_included": false,
             "native_execution": "RUN100_LOG_AND_OUTPUT_STAGE_OBSERVED; OUTPUT_PAYLOAD_UNVALIDATED",
@@ -20611,16 +20675,29 @@
               "80cab5a61de2ae1d01cc08bea8ce50c7dbcfa2260c643131115b51fd19d95c79",
               "695b23a992be20f9c0d9203eefffdd80f60227d103f56365d11ac2a46700b67a",
               "06b18967c7ea59019e64cad9a26c96213b51245efe26f64876c5f880034828c7"
-            ]
+            ],
+            "abi_correction_v2_manifest_sha256": "3d4fcdc99858fa0fb02023bb075ce7b6382a06190ffc3db38f1510c386724ddc",
+            "writer_producer_gap_v3_manifest_sha256": "055515926b06f7a1ecb4f2df45dec57af36b0144a5b538c63f8ab0cb86cf5167",
+            "superseded_v1_scalar_interpretation": {
+              "package_id": "native_measurement_dialnorm_scoped_observation_wash_v1",
+              "manifest_sha256": "5f0e505f013fea63702737d4bebcdd1519a294c54b18b4ccb466c698696aee57",
+              "superseded_claim": "U16 field scalar was interpreted as 1",
+              "disposition": "SUPERSEDED_INVALID_INTERPRETATION_BY_ABI_CORRECTION_V2",
+              "corrected_helper_shape": "field_pointer, element_count=1, width_bits=5",
+              "field_scalar_value": "NOT_CAPTURED"
+            }
           },
           "error_outcomes": [],
           "not_run": [
             "Units and typed owner for the logged measurement scalars.",
             "Typed measurement-finalize receipt bound to programme/attempt/generation.",
             "Measurement-finalize value to F06ND DRC input and F06ND DRC input to F12 BSI DialNorm.",
-            "Semantic tag and owner/generation for the untyped U16-to-5-bit writer candidate; V2's offset is not promoted as V5 evidence.",
             "Numeric DEE exit code capture and runtime-loaded image identity.",
-            "Opening, hashing, parsing, decoding, listening to, or product-validating the reference output payload."
+            "Opening, hashing, parsing, decoding, listening to, or product-validating the reference output payload.",
+            "Run-11 serializer member semantic tag, constructor/builder/first writer, typed producer, and owner/generation.",
+            "Run-11 callsite to the separate Run-100 static candidate identity.",
+            "Measurement-finalize to F06ND DRC and F06ND to F12 BSI DialNorm; DialNorm correctness.",
+            "Any additional native capture; the V3 next-observation plan is proposed and pending Wash coordination."
           ],
           "validation_boundary": "V5 establishes hash-bound log and output-stage metadata observations only. Output payload validation, typed measurement receipt, loaded-image identity, and measurement/DRC/DialNorm joins remain open.",
           "native_status": {
@@ -20668,7 +20745,31 @@
             "run100_execution_xml_sha256": "f5a9f4870eabf146c25442bd705383ce52c01907743eb19751d8a02267c384d1",
             "run100_dee_reference_log_sha256": "a9be16dd72cf305ce0316b9c815cca5bf90bcf34e6425674bf46d296e010e48b",
             "run100_result_json_sha256": "7b6230761c1a51d71a99878a02529f02e0b6c1f27476a0e999acaf1f6e0841e6",
-            "whole_chain_ready": false
+            "whole_chain_ready": false,
+            "run11_width5_serializer_call": {
+              "caller_role": "Atmos DDP metadata serialization routine in codec loop",
+              "helper_shape": [
+                "field_pointer",
+                "element_count",
+                "width_bits"
+              ],
+              "element_count": 1,
+              "width_bits": 5,
+              "serializer_input_member_offset_bytes": 8,
+              "field_scalar_value": "NOT_CAPTURED",
+              "field_semantic_tag": "UNBOUND",
+              "same_context_member_read_later_as_short": true,
+              "later_read_copied_to_downstream_record_slot": true,
+              "immediate_builder_producer": "NOT_RESOLVED_IN_TARGETED_THREE_HELPER_TRACE",
+              "builder_or_first_writer": "UNBOUND",
+              "typed_field_producer": "UNBOUND",
+              "owner_generation": "UNBOUND",
+              "static_candidate_callsite_match": false,
+              "run11_to_run100_candidate_identity": "UNBOUND",
+              "measurement_to_f06nd_drc": "UNBOUND",
+              "f06nd_to_f12_bsi_dialnorm": "UNBOUND"
+            },
+            "superseded_v1_u16_one_interpretation": "INVALID; captured 1 was element_count, field scalar NOT_CAPTURED"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -32115,8 +32216,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1870959,
-              "sha256": "7c8e6e2dead4c30f4de94ca8548300fc78356be2311c2755a9e0b72caa74fa46"
+              "bytes": 1879120,
+              "sha256": "6dc38ce597d5b78adc57dcc5699ec0784d2725fcbac1318a499b97b8193228f9"
             }
           ],
           "test_inventory": [

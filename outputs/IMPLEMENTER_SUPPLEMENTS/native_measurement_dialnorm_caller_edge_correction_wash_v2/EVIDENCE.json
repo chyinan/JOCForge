@@ -1,0 +1,55 @@
+{
+  "schema": "native-measurement-dialnorm-caller-edge-correction.v1",
+  "package_id": "native-measurement-dialnorm-caller-edge-correction-wash-v2",
+  "supersedes_interpretations_in_research_manifest_sha256": "421ff0855ef7f0a35d77083dadbd3651c038a2b62b2e0ba6c03a574feb4844d",
+  "supersedes_interpretations_in_sanitized_manifest_sha256": "5f0e505f013fea63702737d4bebcdd1519a294c54b18b4ccb466c698696aee57",
+  "source_module_hashes": [
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+    },
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    }
+  ],
+  "runtime_hit": {
+    "observation_token": "run11-helper-hit-1",
+    "thread_token": "run11-thread-1",
+    "helper_argument_shape": ["field_pointer", "element_count", "width_bits"],
+    "element_count": 1,
+    "width_bits": 5,
+    "serializer_input_member_offset_bytes": 8,
+    "field_scalar_value": "NOT_CAPTURED",
+    "caller_role": "Atmos DDP metadata serialization routine",
+    "caller_return_site_mapped_by_ghidra": true,
+    "static_candidate_callsite_match": false,
+    "native_parent_generation": "UNBOUND",
+    "raw_return_address_or_pointer_persisted": false,
+    "output_payload_read_or_retained": false,
+    "temporary_output_removed": true
+  },
+  "ghidra_static_path": {
+    "path": "Atmos DDP codec loop -> metadata serialization routine -> generic bit writer",
+    "direct_caller_count_for_serializer": 1,
+    "serializer_field_role": "unnamed record member supplied by pointer",
+    "field_semantic_tag": "UNBOUND",
+    "same_context_member_downstream_read": "same member location later read as a short and copied into a downstream record slot; semantic role unknown",
+    "typed_field_producer": "UNBOUND",
+    "immediate_record_builder_producer": "NOT_RESOLVED_IN_TARGETED_THREE_HELPER_TRACE",
+    "same_owner_or_generation_join": "UNBOUND"
+  },
+  "measurement_chain": {
+    "run100_log_scalar_status": "OBSERVED_LOG_ONLY; UNITS_NOT_STATED",
+    "finalized_measurement_receipt_join": "UNBOUND",
+    "measurement_to_f06nd_drc": "UNBOUND",
+    "f06nd_drc_to_f12_bsi_dialnorm": "UNBOUND",
+    "dialnorm_correctness": "NOT_VERIFIED",
+    "playback_and_full_e2e": "NOT_RUN"
+  },
+  "environment_class": {
+    "TEMP_TMP": "SYSTEM_DEFAULT",
+    "license_or_auth_contents_read": false
+  },
+  "implementation_agent_contacted": false
+}
