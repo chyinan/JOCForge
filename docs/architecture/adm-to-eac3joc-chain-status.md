@@ -14,76 +14,114 @@ profile 细节见 [PROFILE-DIMENSIONS.md](PROFILE-DIMENSIONS.md)。模块边界�
 
 实线表示当前合同或模块依赖。虚线表示需要实现或运行验证的连接。节点中的状态是当前证据级别，不是完成承诺。
 
+### 输入与准入
+
 ```mermaid
-flowchart LR
-  subgraph INPUT[输入与 profile]
-    ADM[授权 ADM BWF]
-    TASK[任务 XML 与显式选项]
-    ADMIT[F01E 输入解析与准入<br/>局部解析已验证]
-    PREP[PreparedJobInputIdentity<br/>候选输入身份]
-    PROFILE[六维 EncodingProfile<br/>选定行；不自动降级]
-    ADM --> ADMIT
-    TASK --> ADMIT
-    ADMIT --> PREP --> PROFILE
-  end
+flowchart TB
+  ADM[授权 ADM BWF]
+  TASK[任务 XML 与显式选项]
+  ADMIT[F01E 输入解析与准入<br/>局部解析已验证]
+  PREP[PreparedJobInputIdentity<br/>候选输入身份]
+  PROFILE[六维 EncodingProfile<br/>选定行；不自动降级]
 
-  subgraph PREFLIGHT[计量与 programme 准备]
-    PCM[38 通道 PCM block]
-    METER[F06 计量与 OAMDI 路径<br/>局部 primitive / receipt schema]
-    MEAS[ProgrammeMeasurementReceipt<br/>生产生成器未接入]
-    GTCM[GTC METERING 状态<br/>完整生产转换未运行]
-    READY[GTC READY 与 owner root 安装<br/>12-root parent swap NOT_RUN]
-    PCM -. measurement prepass .-> METER
-    METER -. receipt .-> MEAS
-    MEAS -. admission input .-> GTCM
-    PROFILE --> GTCM
-    GTCM -. 原子安装 cold roots .-> READY
-  end
-
-  subgraph PRODUCERS[MAIN callback 与 AU producer]
-    CLOCK[callback/source/dispatch/AU typed clocks<br/>局部映射已验证]
-    F03[F03U sourceweight 与本地序号<br/>外层输入身份 join 未闭合]
-    F04[F04 spatial producer<br/>局部 stage 有验证；完整 receiver 未运行]
-    F05[F05 JOC producer<br/>局部 fit / dispatch；生产 parent 未运行]
-    F13[F13 metadata / EMDF<br/>proposal 与队列生产未完整接入]
-    F12[F12 E-AC-3 frame builder<br/>production codec 仍为空壳]
-    F14[F14 keyless integrity<br/>局部 owner；parent admission 未运行]
-    CLOCK -.-> F03
-    F03 -. source proposal .-> F04
-    F04 -. fitting / target projection .-> F05
-    F05 -. JOC metadata inputs .-> F13
-    F13 -. EMDF body .-> F12
-    F05 -. core / JOC payload .-> F12
-    F12 -. completed AU .-> F14
-  end
-
-  subgraph TX[事务与输出]
-    PLAN[F15 plan admission<br/>合同已批准；仅有拒绝边界切片]
-    DEST[destination capability<br/>目标路径预检合同已批准；未运行]
-    ROOTS[GTC 12 个 programme roots<br/>单 root / callback parent swap NOT_RUN]
-    TXN[CallbackTransaction / source transaction<br/>完整 12-owner 提交未运行]
-    OWNER[OutputOwner 与 staging stream<br/>生产构造未运行]
-    APPEND[4096-byte AU append<br/>Rust 生产 AU 未生成]
-    DURABLE[flush / readback / replace / DONE<br/>JOCForge 文件验收未运行]
-    PLAN --> DEST --> ROOTS
-    READY -.-> ROOTS
-    ROOTS -. all touched roots and receipts .-> TXN
-    F14 -. AU receipt .-> TXN
-    TXN -. committed AU .-> OWNER
-    OWNER -.-> APPEND -.-> DURABLE
-  end
-
-  PROFILE -. same input/profile identity .-> PLAN
-  PREP -. same input identity .-> PLAN
-  DURABLE -. independent parse / render validation .-> VALIDATE
-  VALIDATE[独立验证<br/>结构解析、解码与产品验收未运行]
+  ADM --> ADMIT
+  TASK --> ADMIT
+  ADMIT --> PREP --> PROFILE
 
   classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a;
   classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800;
   classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010;
-  class PROFILE,PREP,PLAN,DEST,CLOCK contract;
-  class ADMIT,F03,F04,F05,F13,F14 partial;
-  class MEAS,GTCM,READY,F12,ROOTS,TXN,OWNER,APPEND,DURABLE,VALIDATE missing;
+  class PREP,PROFILE contract;
+  class ADMIT partial;
+```
+
+### 计量与 READY
+
+```mermaid
+flowchart TB
+  PROFILE[来自输入阶段的六维 EncodingProfile]
+  PCM[38 通道 PCM block]
+  METER[F06 计量与 OAMDI 路径<br/>局部 primitive / receipt schema]
+  MEAS[ProgrammeMeasurementReceipt<br/>生产生成器未接入]
+  GTCM[GTC METERING 状态<br/>完整生产转换未运行]
+  READY[GTC READY 与 owner root 安装<br/>12-root parent swap NOT_RUN]
+
+  PCM -. measurement prepass .-> METER
+  METER -. receipt .-> MEAS
+  PROFILE --> GTCM
+  MEAS -. admission input .-> GTCM
+  GTCM -. 原子安装 cold roots .-> READY
+
+  classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a;
+  classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800;
+  classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010;
+  class PROFILE contract;
+  class METER partial;
+  class MEAS,GTCM,READY missing;
+```
+
+### Callback 与 AU
+
+```mermaid
+flowchart TB
+  CLOCK[callback/source/dispatch/AU typed clocks<br/>局部映射已验证]
+  F03[F03U sourceweight 与本地序号<br/>外层输入身份 join 未闭合]
+  F04[F04 spatial producer<br/>局部 stage 有验证；完整 receiver 未运行]
+  F05[F05 JOC producer<br/>局部 fit / dispatch；生产 parent 未运行]
+  F13[F13 metadata / EMDF<br/>proposal 与队列生产未完整接入]
+  F12[F12 E-AC-3 frame builder<br/>production codec 仍为空壳]
+  F14[F14 keyless integrity<br/>局部 owner；parent admission 未运行]
+
+  CLOCK -.-> F03
+  F03 -. source proposal .-> F04
+  F04 -. fitting / target projection .-> F05
+  F05 -. JOC metadata inputs .-> F13
+  F13 -. EMDF body .-> F12
+  F05 -. core / JOC payload .-> F12
+  F12 -. completed AU .-> F14
+
+  classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a;
+  classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800;
+  classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010;
+  class CLOCK contract;
+  class F03,F04,F05,F13,F14 partial;
+  class F12 missing;
+```
+
+### 事务与输出
+
+跨阶段输入在本图重复显示，作为依赖边界节点。
+
+```mermaid
+flowchart TB
+  PROFILE[来自输入阶段的 EncodingProfile]
+  PREP[来自输入阶段的 PreparedJobInputIdentity]
+  PLAN[F15 plan admission<br/>合同已批准；仅有拒绝边界切片]
+  DEST[destination capability<br/>目标路径预检合同已批准；未运行]
+  READY[来自计量阶段的 READY candidate<br/>12-root parent swap NOT_RUN]
+  ROOTS[GTC 12 个 programme roots<br/>单 root / callback parent swap NOT_RUN]
+  F14[来自 producer 阶段的 F14 AU receipt]
+  TXN[CallbackTransaction / source transaction<br/>完整 12-owner 提交未运行]
+  OWNER[OutputOwner 与 staging stream<br/>生产构造未运行]
+  APPEND[4096-byte AU append<br/>Rust 生产 AU 未生成]
+  DURABLE[flush / readback / replace / DONE<br/>JOCForge 文件验收未运行]
+  VALIDATE[独立验证<br/>结构解析、解码与产品验收未运行]
+
+  PROFILE -. same input/profile identity .-> PLAN
+  PREP -. same input identity .-> PLAN
+  PLAN --> DEST --> ROOTS
+  READY -. 原子安装 cold roots .-> ROOTS
+  ROOTS -. all touched roots and receipts .-> TXN
+  F14 -. AU receipt .-> TXN
+  TXN -. committed AU .-> OWNER
+  OWNER --> APPEND --> DURABLE -. independent parse / render .-> VALIDATE
+
+  classDef contract fill:#e8f1ff,stroke:#3867a8,color:#10243a;
+  classDef partial fill:#fff2cc,stroke:#b58b21,color:#342800;
+  classDef missing fill:#f8d7da,stroke:#a94442,color:#3b1010;
+  class PROFILE,PREP,PLAN,DEST contract;
+  class F14 partial;
+  class READY,ROOTS,TXN,OWNER,APPEND,DURABLE,VALIDATE missing;
 ```
 
 ### 事务层的含义
