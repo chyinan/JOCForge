@@ -2,7 +2,7 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
-> 状态基准：JOCForge `eecd15a`，2026-10-31。此基准没有完整的 Rust 编码输出。DEE 生成的参考文件不属于 JOCForge 产物。
+> 状态基准：JOCForge `9e19227`，2026-10-31。此基准没有完整的 Rust 编码输出。DEE 生成的参考文件不属于 JOCForge 产物。
 
 ## 目标与边界
 
@@ -122,6 +122,7 @@ EOF 不补造 codec flush。selected 计划的长度是 4,247 个 AU，即 17,39
 | F06OF target crosswalk | 新增 native static alternate path：descriptor U8 index list 与独立 event U16 key 两类输入；U16 key 在所查路径中选择 per-object owner、更新 metadata 并入队。另一个 selected PcmMd builder 在 OAMDI setter 前设置 event count=0、record pointer=NULL，因此该 builder 不提供 48-byte OAMDI event；这不排除其他 producer/mode。批准模型的一热向量描述 target ID→slot→control16 row projection。 | descriptor U8 与 event U16 的 join、native key 到 ADM/SelectedGlobalTargetId/TargetSlotIndex/control16/generation 的 typed join、table-B path 与 OAMDI path 的 join仍 `UNBOUND`；empty-event 观察只适用于所选 builder；one-hot 仅模型，native capture 和 fresh model replay `NOT_RUN`。 |
 | F12 E-AC-3 | 目标 AU 尺寸和选定 profile 合同已列明。 | frame syntax、BAP、mantissa、bit writer、完整 E-AC-3 producer。F06 finalized measurement 到 F06ND source input 与 F12 BSI 的 typed receipt edge 仍 `UNBOUND` / `NOT_READY`；wire 中的 dialnorm 字段本身不携带 programme identity。 |
 | F13 metadata / ID14 | 一些 body、配置和 noncommitting source proposal 有局部验证。模型的 ID14 parser 对完整容器做语义校验；模型复杂度规则是 `U8(object_count + 1)`，选定模型值为 16。run-100 另绑定了同-parent 的泛化 body-length 链。 | 这是 model/native sliced evidence。native run-100 事件没有记录 EMDF type/payload tag；counted body-length 到 F13 complete-container identity 仍 `UNBOUND`。native 复杂度字节来自配置记录；ID14 parser 执行和完整 wrapper 执行均 `NOT_RUN`。插件静态注册 `data_rate`，但它到 native count/config 字段的 typed join仍 `UNBOUND`；partial XSD不是拒绝规则。 |
+| F13C code13 → complexity byte | 一个 hash-bound static same-worker path 将 parameter-list code 13 的低字节接到选定 worker complexity byte，再映射到 F12 `complexity_index_type_a`（bits 105–112）；code 13 缺省为 11。 | Host task/XML→code13、runtime parent/source generation、semantic ID14 object_count→native byte、carrier-block owner 仍 `UNBOUND`。Code 14 与 type-4 是独立字段；四个 vectors 是 static expectation，native pair `NOT_RUN`。 |
 | F14 integrity | keyless public profile 的 checksum 与局部 owner stage 有验证。 | source/AU receipt 接入 GTC parent；私有认证路径不属于当前 keyless 目标。 |
 | F15 plan/output | Wash 已批准 private plan 和 destination capability 的 admission 合同。F15 绑定列出 codec、JOC、F13、F14 四个顶层 role，已映射各 owner 的参数资产与验证职责。代码有少量类型与拒绝边界切片。 | 生产 provider load/validator、实际 immutable role handles、统一 admission receipt schema、完整 plan 构造、destination capability producer/schema、OutputOwner、AU append、flush、readback、replace 和 DONE。role aggregation 和 capability 的局部字段形状仍是设计候选，不是既有 Rust API。 |
 | GTC transactions | 多个 owner state/schema/receipt adapter 已材料化，部分 callback/source proposals 可单独验证。 | 12-owner roots 的生产 cold construction、READY 安装和 atomic parent commit。 |
@@ -183,6 +184,7 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 | F13C ID14 semantic parser Wash supplement | `9b977564f235e324e69d305f58c5bcc5f1c66865a2e9a3c71d17d21152873c61` | 分开登记模型 `object_count + 1` 与 native 配置字节来源；native ID14 解析、跨来源 join 和 whole F13C 均未闭合 |
 | F13C user-config complexity-entry Wash supplement | `6a4a916767bd9697237a0640f21d10487cd174b534e8b5c17e2796388748da5f` | `data_rate` 静态注册已观察；到 native count/config 字段仍 `UNBOUND`，受控 pair `NOT_RUN`，partial XSD 不作为拒绝边界 |
 | F13C host data-rate owner Wash supplement | `40117ff1663498ab0691fa9f1f7536c3f50a0defdaa3494a4b08147e72beeaec` | Base DDP setter 与 Atmos plugin workflow parameters 属于不同 config object；到 importer record/complexity byte 的 owner join 仍 `UNBOUND` |
+| F13C code13 to complexity-byte Wash supplement | `cec6b93609eeda43cd24bf19215bedaa4c62d30a8e7eb3428745be4dc59f1098` | 静态同 worker code13 low-byte→F12 field path；host input、runtime generation、semantic ID14 与 carrier-block joins 均未闭合 |
 | F01 range field semantics Wash supplement v2 | `0efba67355c043dabb6d8092bee31117d6b94034ef131d661f17596fa883cb2f` | StartSample/EndSample 为 sample-boundary values，End=0 使用 storage count；inclusive/exclusive 与 R115/R121 owner join 仍 `UNBOUND` |
 | F06OF selected PMD empty OAMDI-event Wash supplement | `2bd84e29486fac896f11fbe5f2e3fe5e9d6b1c64c0a14cea286874d463ee1b79` | 仅 selected builder 的 event count=0、pointer=NULL；其他 producer/mode 未排除，F06OF crosswalk 未闭合 |
 | F06ND category-5 native-effect Wash supplement | `ef7a0547ef0e72b54ab9dac3a78e429a451803a70852d3d5c31997f2ee06f6e8` | 选定 no-DRC 逻辑规则闭合；selected AtmosProcessor path 没有 category-5 输入，generic storage event 与 category-5 的连接仍 `UNBOUND` |
