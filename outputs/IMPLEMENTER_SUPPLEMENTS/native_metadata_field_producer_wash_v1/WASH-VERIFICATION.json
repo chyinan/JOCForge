@@ -1,0 +1,17 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "779c5872f7afab32aa187484ea8cbfc7d6e3452a8c49c99b1bf4e5bfcf504d53",
+  "checks": {
+    "source_manifest_and_payload_hashes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "same_owner_setter_to_serializer_static_edge": "CLOSED_STATICALLY_FOR_THIS_CALL_PATH",
+    "static_value_u16": 16,
+    "semantic_tag": "UNBOUND",
+    "dialnorm_identity": "NOT_ESTABLISHED",
+    "runtime_value": "NOT_CAPTURED",
+    "e2e": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "scope_note": "Wash independently checked package identity, payload hashes, and status boundaries. RVA/decompilation material was excluded; no runtime or media payload was inspected."
+}

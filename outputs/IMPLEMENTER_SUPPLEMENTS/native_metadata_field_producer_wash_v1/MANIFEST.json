@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "native-metadata-field-producer-wash-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "779c5872f7afab32aa187484ea8cbfc7d6e3452a8c49c99b1bf4e5bfcf504d53",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "2727332da9f2248c541bab06efc5ef85b835cb6d02ec7a437846452f69a44495",
+      "bytes": 978
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "0ae7850ea093137d1d183debff9848be48429270362f38c17d073d69dd3d0944",
+      "bytes": 1405
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "cef587f213bd46ff83c8380257c09deb56606c2b569b72509c32c11a83f8bed6",
+      "bytes": 770
+    }
+  ]
+}

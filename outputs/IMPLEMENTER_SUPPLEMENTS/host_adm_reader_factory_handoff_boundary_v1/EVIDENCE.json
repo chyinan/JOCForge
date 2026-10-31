@@ -1,0 +1,52 @@
+{
+  "schema": "wash-only-adm-reader-handoff-boundary.v1",
+  "package_id": "HOST-ADM-READER-FACTORY-HANDOFF-BOUNDARY-V1",
+  "result": "HOST_WAVE_ADAPTER_LOCAL_METADATA_EDGE_STATIC; R138_ADM_FACTORY_AND_ATMOS_HANDOFF_UNBOUND",
+  "selected_r138_profile": {
+    "config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "time_base": "embedded_timecode",
+    "timecode_frame_rate": "not_indicated"
+  },
+  "static_roles": {
+    "host_audio_input_adapter": "WAVE_FILE_INPUT_ADAPTER_WITH_INIT_RUN_AND_PROPERTY_HANDLERS",
+    "host_reader_provider_member": "PRESENT_AND_CONSUMED_BY_ADAPTER_RUN",
+    "dact_adm_bwf_components": [
+      "ADM_FILE_STORAGE",
+      "ADM_FILE_STORAGE_DESCRIPTOR",
+      "WAVE_FILE_STORAGE"
+    ],
+    "dact_adm_component_status": "STATIC_CLASS_AND_PARSER_EVIDENCE_PRESENT",
+    "host_audio_adm_to_dact_adm_factory": "UNBOUND"
+  },
+  "first_handoff_candidate": {
+    "producer_role": "host WAVE input adapter Run",
+    "consumer_role": "shared source-time metadata normalizer",
+    "value_domains": [
+      "timecode_frame_rate",
+      "offset",
+      "FFOA",
+      "source metadata maps"
+    ],
+    "static_edge_status": "DIRECT_CALL_IN_WAVE_ADAPTER_PATH",
+    "R138_selection_status": "NOT_BOUND_TO_AUDIO_ADM_INPUT_TYPE",
+    "consumer_role_scope": "SHARED_BY_MULTIPLE_INPUT_ADAPTER_PATHS",
+    "audio_frame_payload": "NOT_ESTABLISHED_BY_THIS_EDGE"
+  },
+  "unclosed_edges": {
+    "R138_audio_adm_to_concrete_host_reader_factory": "UNBOUND",
+    "host_reader_provider_to_dact_adm_bwf_factory": "UNBOUND",
+    "parsed_source_descriptor_metadata_to_3d_atmos_codec_consumer": "UNBOUND",
+    "reader_output_to_first_processing_consumer_for_r138": "UNBOUND",
+    "parent_task_generation": "NOT_OBSERVED"
+  },
+  "applicability": {
+    "atmosmezz_reader_selected_by_r138_audio_adm": "NOT_PROVEN; NON_GATING_FOR_THIS_PROFILE",
+    "static_analysis_only": true,
+    "native_run": "NOT_RUN",
+    "authorized_audio_sample_used": "NO; STATIC_GHIDRA_SCOPE_ONLY_AND_R4_RUN_COORDINATION_PENDING",
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

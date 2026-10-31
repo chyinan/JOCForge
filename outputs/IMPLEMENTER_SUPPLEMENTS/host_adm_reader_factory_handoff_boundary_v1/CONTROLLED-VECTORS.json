@@ -1,0 +1,44 @@
+{
+  "schema": "controlled-adm-reader-handoff-vectors.v1",
+  "cases": [
+    {
+      "id": "r138_adm_reader_selection",
+      "input": {
+        "config_input_type": "audio.adm",
+        "typed_factory_transfer": null
+      },
+      "expected": "READER_FACTORY_UNBOUND"
+    },
+    {
+      "id": "host_wave_adapter_local_edge",
+      "input": {
+        "producer": "host_wave_input_adapter_run",
+        "consumer": "shared_source_time_metadata_normalizer"
+      },
+      "expected": "STATIC_DIRECT_CALL; R138_APPLICABILITY_UNBOUND"
+    },
+    {
+      "id": "dact_adm_parser_class_exists",
+      "input": {
+        "host_owner_transfer": null
+      },
+      "expected": "STATIC_COMPONENT_ONLY; HOST_SELECTION_UNBOUND"
+    },
+    {
+      "id": "reader_to_atmos_consumer",
+      "input": {
+        "typed_descriptor_handoff": null,
+        "generation_token": null
+      },
+      "expected": "UNBOUND; NOT_OBSERVED"
+    },
+    {
+      "id": "authorized_sample_use",
+      "input": {
+        "analysis_mode": "read_only_ghidra"
+      },
+      "expected": "NO_AUDIO_SAMPLE_USED"
+    }
+  ],
+  "payload_reads": 0
+}

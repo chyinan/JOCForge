@@ -1,0 +1,18 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "native-eac3-writer-field-classification-wash-v4",
+  "source_manifest_sha256": "71772ccf1ac3881d6724225322420c3cbcd338228ca62b95673eab145d4aad30",
+  "checks": {
+    "source_manifest_hash_matches_reported": true,
+    "all_source_manifest_payload_hashes_and_sizes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "field_scalar": "NOT_CAPTURED",
+    "field_semantic_tag": "UNBOUND",
+    "typed_producer_first_writer": "UNBOUND",
+    "dialnorm_identity": "NOT_ESTABLISHED",
+    "measurement_f06nd_f12_join": "UNBOUND",
+    "playback_and_full_e2e": "NOT_RUN"
+  },
+  "scope_note": "The semantic statements are reported source-package findings; this Wash verification independently checked package identity, payload hashes, status fields, and bounded scope, not the underlying native execution."
+}

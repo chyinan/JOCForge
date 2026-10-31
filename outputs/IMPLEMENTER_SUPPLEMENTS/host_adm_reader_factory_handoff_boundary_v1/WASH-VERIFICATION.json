@@ -1,0 +1,20 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "HOST-ADM-READER-FACTORY-HANDOFF-BOUNDARY-V1",
+  "source_manifest_sha256": "eb1c1349fe01cb4b5d70370c893ec716e44724ed7ab1da250a57afdce14997f8",
+  "checks": {
+    "source_manifest_hash_matches_reported": true,
+    "source_manifest_sidecar_matches": true,
+    "all_source_payload_hashes_and_sizes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "R138_input_type": "audio.adm",
+    "host_wave_edge": "STATIC_LOCAL_EDGE_ONLY",
+    "R138_factory_selection": "UNBOUND",
+    "reader_to_first_processing_consumer": "UNBOUND",
+    "authorized_audio_sample_used": "NO; STATIC_GHIDRA_ONLY",
+    "native_run": "NOT_RUN",
+    "pcm_or_bitstream_read_or_saved": false
+  },
+  "scope_note": "The static reverse-engineering claims are source-package findings; this Wash verification independently checked source identity, payload hashes, status fields, and bounded scope, not a live host or native execution."
+}

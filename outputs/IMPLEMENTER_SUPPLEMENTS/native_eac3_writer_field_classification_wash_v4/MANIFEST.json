@@ -1,0 +1,35 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "native-eac3-writer-field-classification-wash-v4",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "71772ccf1ac3881d6724225322420c3cbcd338228ca62b95673eab145d4aad30",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "e75707f4b59c119a9ea30755fa19823f673b616fb543e577c14e937e3e662372",
+      "bytes": 1309
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "c2bbcff63883f0d2e6d3aa6234d9f9d9702ea50595cce7fd8edaa7bc3e0573d6",
+      "bytes": 1844
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "b484b1a503886d1c85c78b139b7cb0600216df524a3bc00d053e1e4e0c4aeaa5",
+      "bytes": 1024
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "779017a960ce766e42e0d65f06e9be453aabf7b2119829c85cba14d971427bab",
+      "bytes": 909
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "washed-native-metadata-field-producer.v1",
+  "source_package_id": "native-metadata-field-producer-wash-v1",
+  "source_package_manifest_sha256": "779c5872f7afab32aa187484ea8cbfc7d6e3452a8c49c99b1bf4e5bfcf504d53",
+  "source_evidence_sha256": "0f51875281e00a9420c9c28d6e6446f3a64c3020599fb8af210d0963195b776a",
+  "processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "selected_path": {
+    "same_parent_owner_setter_to_serializer": "CLOSED_STATICALLY_FOR_THIS_CALL_PATH",
+    "owner_field_byte_offset": 102848,
+    "field_width_bytes": 2,
+    "static_value_u16": 16,
+    "setter_branches_write_same_value": true,
+    "serializer_input_base_owner_offset": 102840,
+    "member_relative_offset": 8,
+    "writer_element_count": 1,
+    "writer_width_bits": 5
+  },
+  "remaining": {
+    "semantic_field_tag": "UNBOUND",
+    "field_is_dialnorm": "NOT_ESTABLISHED",
+    "runtime_field_value": "NOT_CAPTURED",
+    "lifetime_first_writer": "UNBOUND",
+    "native_object_type_name": "UNBOUND",
+    "measurement_or_drc_relationship": "UNBOUND",
+    "playback_impact": "NOT_EVALUATED",
+    "full_e2e": "NOT_RUN",
+    "player_playback": "NOT_RUN"
+  },
+  "interpretation": "This closes one static same-owner producer-to-serializer path only. The static value 16 is not an implementation input until the field semantic tag and approved codec rule are established."
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "native-eac3-writer-field-classification.v1",
+  "package_id": "native-eac3-writer-field-classification-wash-v4",
+  "parent_producer_gap_manifest_sha256": "055515926b06f7a1ecb4f2df45dec57af36b0144a5b538c63f8ab0cb86cf5167",
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "static_serialization_path": {
+    "module_role": "Atmos DDP encoder",
+    "serializer_role": "multi-field E-AC-3 bitstream metadata serializer",
+    "codec_loop_to_serializer": "STATIC_DIRECT_CALL_PATH_BOUND",
+    "serializer_writes_eac3_frame_syncword": true,
+    "runtime_helper_hit_maps_to_this_serializer": true,
+    "runtime_member_role": "unnamed record member at relative offset +8",
+    "member_is_written_through_bitstream_helper": true,
+    "specific_decoder_semantic_tag": "UNBOUND",
+    "specific_audible_effect": "NOT_ESTABLISHED"
+  },
+  "runtime_helper_arguments": {
+    "shape": ["field_pointer", "element_count", "width_bits"],
+    "element_count": 1,
+    "width_bits": 5,
+    "field_scalar_value": "NOT_CAPTURED",
+    "prior_register_value_one_interpretation": "ELEMENT_COUNT; NOT_FIELD_VALUE",
+    "raw_pointer_or_absolute_address_persisted": false
+  },
+  "field_lineage": {
+    "same_parent_context_member_read_later": true,
+    "typed_producer_or_first_writer": "UNBOUND",
+    "semantic_field_tag": "UNBOUND",
+    "owner_and_generation": "UNBOUND"
+  },
+  "measurement_dialnorm_relation": {
+    "measurement_to_f06nd_drc": "UNBOUND",
+    "f06nd_drc_to_f12_bsi_dialnorm": "UNBOUND",
+    "field_is_dialnorm": "NOT_ESTABLISHED"
+  },
+  "run11_metadata": {
+    "execution_config_sha256": "NOT_CAPTURED",
+    "input_type": "NOT_CAPTURED",
+    "filter_or_route_key": "NOT_CAPTURED",
+    "factory_index": "NOT_CAPTURED"
+  },
+  "playback_and_full_e2e": "NOT_RUN",
+  "implementation_agent_contacted": false
+}

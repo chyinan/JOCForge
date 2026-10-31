@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1901578,
-              "sha256": "51e765d108c8af9cc6e8eeae78fb6e0b733dcb3dc3701a1adceff9fddd1c3e17"
+              "bytes": 1919759,
+              "sha256": "f8d91f1edf0ad8fba8889b40323f55886ae50844a53f8d4557781fb0da923fa4"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1901578,
-              "sha256": "51e765d108c8af9cc6e8eeae78fb6e0b733dcb3dc3701a1adceff9fddd1c3e17"
+              "bytes": 1919759,
+              "sha256": "f8d91f1edf0ad8fba8889b40323f55886ae50844a53f8d4557781fb0da923fa4"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -20488,7 +20488,7 @@
           "slice_id": "washed-f06nd-measurement-to-f12-dialnorm-candidate-boundary",
           "mapping_status": "WASHED_RUN100_LOG_AND_OUTPUT_PLUS_RUN11_WIDTH5_CALLER__MEASUREMENT_AND_DIALNORM_JOINS_UNBOUND",
           "implementation_status": "EVIDENCE_ONLY_LOG_METADATA_AND_UNNAMED_WIDTH5_SERIALIZER_MEMBER__NO_SCALAR_OR_DIALNORM_JOIN",
-          "scope": "V5 binds Run-100 measurement log and output-stage metadata only; those observations still lack units, a typed MeasurementReceipt, runtime-loaded image identity, and measurement/F06ND/F12 joins. Separate V2 ABI correction and V3 static tracing bind a Run-11 helper call on the Atmos DDP codec-loop metadata serializer path: the helper receives field_pointer, element_count=1, width=5, and the input member is at relative +8. The captured 1 is the element count; the field scalar is NOT_CAPTURED. V3 reports the same-context member later read as a short and copied to a downstream record slot, but its semantic tag, builder/first writer, typed producer, and owner/generation remain UNBOUND. The Run-11 callsite does not match the existing static candidate and is not joined to the separate Run-100 candidate. The earlier V1 U16=1 scalar interpretation is superseded as invalid.",
+          "scope": "V5 binds Run-100 measurement log and output-stage metadata only; those observations still lack units, a typed MeasurementReceipt, runtime-loaded image identity, and measurement/F06ND/F12 joins. Separate V2 ABI correction and V3 static tracing bind a Run-11 helper call on the Atmos DDP codec-loop metadata serializer path: the helper receives field_pointer, element_count=1, width=5, and the input member is at relative +8. The captured 1 is the element count; the field scalar is NOT_CAPTURED. V3 reports the same-context member later read as a short and copied to a downstream record slot, but its semantic tag, builder/first writer, typed producer, and owner/generation remain UNBOUND. The Run-11 callsite does not match the existing static candidate and is not joined to the separate Run-100 candidate. The earlier V1 U16=1 scalar interpretation is superseded as invalid. V4 places the Run-11 width-five helper hit on an E-AC-3 bitstream metadata serializer path, but the member is unnamed and its scalar is NOT_CAPTURED; it is not established as DialNorm or as a specific decoded-audio effect. V1 closes one static same-parent setter-to-serializer path at owner-relative +102848 / serializer base +102840+8, with static U16=16. It does not capture the Run-11 runtime scalar, establish semantic/DialNorm identity, bind lifetime first writer or owner generation, or authorize writing 16 into audio metadata.",
           "owner": "drc",
           "implementation_requirement": false,
           "dependencies": [],
@@ -20548,14 +20548,23 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/REPORT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/NEXT-OBSERVATION-PLAN.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/validate_writer_producer_gap_package.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/validate_writer_producer_gap_package.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "dedc2b7201b372882f0684a6022d85e03e3f2eb8c493c944c7ab7fcdac59e2d6",
             "run100_source_manifest_sha256": "b72e13f17f9c09f59c1afc8cb70f109831c4c5283bb15be935f45c360dc10983",
             "meter_finalize_domain_boundary_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
             "drc_owner_option_dialnorm_erratum_manifest_sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
             "first_access_unit_numeric_model_contract_sha256": "f5c689a9cfdead35470321d3513f1e32b8a834bca931eebc7c6fe6ba15e9f08a",
-            "validation_boundary": "V5 establishes hash-bound Run-100 log and output-stage metadata only. V2/V3 bind a separate Run-11 serializer caller/member path: the observed 1 is the element count, the field scalar is NOT_CAPTURED, and the +8 member has no semantic tag, producer, or owner/generation join. It is not joined to the separate Run-100 candidate or to measurement, F06ND DRC, or F12 DialNorm.",
+            "validation_boundary": "V5 establishes hash-bound Run-100 log and output-stage metadata only. V2/V3 bind a separate Run-11 serializer caller/member path: the observed 1 is the element count, the field scalar is NOT_CAPTURED, and the +8 member has no semantic tag, producer, or owner/generation join. It is not joined to the separate Run-100 candidate or to measurement, F06ND DRC, or F12 DialNorm. V4 classifies the corrected Run-11 hit as an E-AC-3 bitstream metadata serializer call on the codec loop and confirms syncword serialization; it still supplies no field scalar, semantic tag, typed producer, owner/generation, DialNorm identity, measurement join, or audible-effect conclusion. V1 closes one static same-parent owner setter-to-serializer field path: U16 16 is written at owner-relative 102848 and the serializer reads the same owner-relative member at base 102840 plus 8. This is a static-path value only; the runtime scalar remains NOT_CAPTURED, semantic/DialNorm tag and lifetime first writer remain UNBOUND, and static 16 is not an implementation input.",
             "analysis_update": {
               "limit_seconds": 600,
               "status": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS",
@@ -20639,6 +20648,61 @@
               "data_rate_kbps": "NOT_CAPTURED",
               "factory_index": "NOT_CAPTURED",
               "standalone_manifest": "NOT_CREATED"
+            },
+            "native_eac3_writer_field_classification_v4_manifest_sha256": "c3de7b3feab86f7c9b919fdaeed16e8b3402f6dd4f10171fa9833338b9ecb91d",
+            "native_eac3_writer_field_classification_v4_source_manifest_sha256": "71772ccf1ac3881d6724225322420c3cbcd338228ca62b95673eab145d4aad30",
+            "run11_eac3_writer_field_classification_v4": {
+              "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+              "serializer_role": "multi-field E-AC-3 bitstream metadata serializer",
+              "codec_loop_to_serializer": "STATIC_DIRECT_CALL_PATH_BOUND",
+              "serializer_writes_eac3_frame_syncword": true,
+              "runtime_helper_hit_maps_to_this_serializer": true,
+              "runtime_member_role": "unnamed record member at relative offset +8",
+              "member_is_written_through_bitstream_helper": true,
+              "helper_arguments": {
+                "shape": [
+                  "field_pointer",
+                  "element_count",
+                  "width_bits"
+                ],
+                "element_count": 1,
+                "width_bits": 5
+              },
+              "field_scalar_value": "NOT_CAPTURED",
+              "prior_register_value_one_interpretation": "ELEMENT_COUNT; NOT_FIELD_VALUE",
+              "specific_decoder_semantic_tag": "UNBOUND",
+              "typed_producer_or_first_writer": "UNBOUND",
+              "owner_and_generation": "UNBOUND",
+              "field_is_dialnorm": "NOT_ESTABLISHED",
+              "measurement_to_f06nd_drc": "UNBOUND",
+              "f06nd_drc_to_f12_bsi_dialnorm": "UNBOUND",
+              "specific_audible_effect": "NOT_ESTABLISHED",
+              "run11_execution_config_input_route_and_factory": "NOT_CAPTURED",
+              "playback_and_full_e2e": "NOT_RUN",
+              "implementation_rule_provided": false
+            },
+            "native_metadata_field_producer_v1_manifest_sha256": "7d31fc3d598d510f18c60399bc33e8d82273a0e43cd4074516e1497f6f46b248",
+            "native_metadata_field_producer_v1_source_manifest_sha256": "779c5872f7afab32aa187484ea8cbfc7d6e3452a8c49c99b1bf4e5bfcf504d53",
+            "run11_static_same_owner_writer_boundary": {
+              "source_manifest_sha256": "779c5872f7afab32aa187484ea8cbfc7d6e3452a8c49c99b1bf4e5bfcf504d53",
+              "same_parent_owner_setter_to_serializer": "CLOSED_STATICALLY_FOR_THIS_CALL_PATH",
+              "owner_field_byte_offset": 102848,
+              "field_width_bytes": 2,
+              "static_value_u16": 16,
+              "setter_branches_write_same_value": true,
+              "serializer_input_base_owner_offset": 102840,
+              "member_relative_offset": 8,
+              "writer_element_count": 1,
+              "writer_width_bits": 5,
+              "runtime_field_value": "NOT_CAPTURED",
+              "semantic_field_tag": "UNBOUND",
+              "field_is_dialnorm": "NOT_ESTABLISHED",
+              "lifetime_first_writer": "UNBOUND",
+              "native_object_type_name": "UNBOUND",
+              "owner_generation_runtime_join": "UNBOUND",
+              "measurement_or_drc_relationship": "UNBOUND",
+              "playback_impact": "NOT_EVALUATED",
+              "implementation_rule_provided": false
             }
           },
           "vectors": {
@@ -20655,7 +20719,16 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/REPORT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/NEXT-OBSERVATION-PLAN.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/validate_writer_producer_gap_package.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_measurement_dialnorm_writer_producer_gap_wash_v3/validate_writer_producer_gap_package.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/WASH-VERIFICATION.json"
             ],
             "case_pointers": [
               "Run-100 measurement scalars are present in the hash-bound log; units are not stated and no typed MeasurementReceipt was observed.",
@@ -20665,7 +20738,12 @@
               "Run-11 helper ABI is field pointer, element_count=1, width=5; the source scalar is NOT_CAPTURED.",
               "The member at relative +8 is in the Atmos DDP metadata serializer path; its semantic tag and producer remain UNBOUND.",
               "Run-11 callsite does not match the static candidate and has no owner/generation join to Run-100 or F06ND/F12.",
-              "The earlier V1 U16=1 scalar interpretation is superseded as invalid; sealed V1 remains unchanged."
+              "The earlier V1 U16=1 scalar interpretation is superseded as invalid; sealed V1 remains unchanged.",
+              "V4 classifies the corrected helper hit as an E-AC-3 bitstream metadata serializer call and maps the codec-loop path.",
+              "The helper's 1 is element_count; the unnamed +8 member scalar remains NOT_CAPTURED and its semantic tag remains UNBOUND.",
+              "A bitstream serializer path does not establish that the member is DialNorm or prove a specific audible effect.",
+              "One static same-owner path writes U16=16 at +102848 and the serializer reads the same member at base +102840 plus 8.",
+              "The static value does not establish the Run-11 runtime scalar, semantic tag, DialNorm identity, or an implementation rule."
             ],
             "expected_outputs_included": false,
             "native_execution": "RUN100_LOG_AND_OUTPUT_STAGE_OBSERVED; OUTPUT_PAYLOAD_UNVALIDATED",
@@ -20685,7 +20763,9 @@
               "disposition": "SUPERSEDED_INVALID_INTERPRETATION_BY_ABI_CORRECTION_V2",
               "corrected_helper_shape": "field_pointer, element_count=1, width_bits=5",
               "field_scalar_value": "NOT_CAPTURED"
-            }
+            },
+            "native_metadata_field_producer_v1_manifest_sha256": "7d31fc3d598d510f18c60399bc33e8d82273a0e43cd4074516e1497f6f46b248",
+            "native_metadata_field_producer_v1_source_manifest_sha256": "779c5872f7afab32aa187484ea8cbfc7d6e3452a8c49c99b1bf4e5bfcf504d53"
           },
           "error_outcomes": [],
           "not_run": [
@@ -20694,10 +20774,13 @@
             "Measurement-finalize value to F06ND DRC input and F06ND DRC input to F12 BSI DialNorm.",
             "Numeric DEE exit code capture and runtime-loaded image identity.",
             "Opening, hashing, parsing, decoding, listening to, or product-validating the reference output payload.",
-            "Run-11 serializer member semantic tag, constructor/builder/first writer, typed producer, and owner/generation.",
             "Run-11 callsite to the separate Run-100 static candidate identity.",
             "Measurement-finalize to F06ND DRC and F06ND to F12 BSI DialNorm; DialNorm correctness.",
-            "Any additional native capture; the V3 next-observation plan is proposed and pending Wash coordination."
+            "Any additional native capture; the V3 next-observation plan is proposed and pending Wash coordination.",
+            "Run-11 unnamed E-AC-3 serializer member semantic tag, typed producer/first writer, owner/generation, and specific audible effect.",
+            "DialNorm identity and measurement-to-F06ND-to-F12 joins; playback and full E2E remain NOT_RUN.",
+            "Runtime scalar value, semantic/DialNorm tag, lifetime first writer, object type, owner/generation join, and measurement/DRC relation for the +8 member.",
+            "The static U16=16 value is not an implementation input; playback effect and E2E remain NOT_EVALUATED/NOT_RUN."
           ],
           "validation_boundary": "V5 establishes hash-bound log and output-stage metadata observations only. Output payload validation, typed measurement receipt, loaded-image identity, and measurement/DRC/DialNorm joins remain open.",
           "native_status": {
@@ -20769,7 +20852,59 @@
               "measurement_to_f06nd_drc": "UNBOUND",
               "f06nd_to_f12_bsi_dialnorm": "UNBOUND"
             },
-            "superseded_v1_u16_one_interpretation": "INVALID; captured 1 was element_count, field scalar NOT_CAPTURED"
+            "superseded_v1_u16_one_interpretation": "INVALID; captured 1 was element_count, field scalar NOT_CAPTURED",
+            "run11_eac3_writer_field_classification_v4": {
+              "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+              "serializer_role": "multi-field E-AC-3 bitstream metadata serializer",
+              "codec_loop_to_serializer": "STATIC_DIRECT_CALL_PATH_BOUND",
+              "serializer_writes_eac3_frame_syncword": true,
+              "runtime_helper_hit_maps_to_this_serializer": true,
+              "runtime_member_role": "unnamed record member at relative offset +8",
+              "member_is_written_through_bitstream_helper": true,
+              "helper_arguments": {
+                "shape": [
+                  "field_pointer",
+                  "element_count",
+                  "width_bits"
+                ],
+                "element_count": 1,
+                "width_bits": 5
+              },
+              "field_scalar_value": "NOT_CAPTURED",
+              "prior_register_value_one_interpretation": "ELEMENT_COUNT; NOT_FIELD_VALUE",
+              "specific_decoder_semantic_tag": "UNBOUND",
+              "typed_producer_or_first_writer": "UNBOUND",
+              "owner_and_generation": "UNBOUND",
+              "field_is_dialnorm": "NOT_ESTABLISHED",
+              "measurement_to_f06nd_drc": "UNBOUND",
+              "f06nd_drc_to_f12_bsi_dialnorm": "UNBOUND",
+              "specific_audible_effect": "NOT_ESTABLISHED",
+              "run11_execution_config_input_route_and_factory": "NOT_CAPTURED",
+              "playback_and_full_e2e": "NOT_RUN",
+              "implementation_rule_provided": false
+            },
+            "run11_static_same_owner_writer": {
+              "source_manifest_sha256": "779c5872f7afab32aa187484ea8cbfc7d6e3452a8c49c99b1bf4e5bfcf504d53",
+              "same_parent_owner_setter_to_serializer": "CLOSED_STATICALLY_FOR_THIS_CALL_PATH",
+              "owner_field_byte_offset": 102848,
+              "field_width_bytes": 2,
+              "static_value_u16": 16,
+              "setter_branches_write_same_value": true,
+              "serializer_input_base_owner_offset": 102840,
+              "member_relative_offset": 8,
+              "writer_element_count": 1,
+              "writer_width_bits": 5,
+              "runtime_field_value": "NOT_CAPTURED",
+              "semantic_field_tag": "UNBOUND",
+              "field_is_dialnorm": "NOT_ESTABLISHED",
+              "lifetime_first_writer": "UNBOUND",
+              "native_object_type_name": "UNBOUND",
+              "owner_generation_runtime_join": "UNBOUND",
+              "measurement_or_drc_relationship": "UNBOUND",
+              "playback_impact": "NOT_EVALUATED",
+              "implementation_rule_provided": false
+            },
+            "static_value_u16_is_implementation_input": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -25483,7 +25618,7 @@
           "slice_id": "washed-reader-origin-to-codec-writer-single-call-boundary",
           "mapping_status": "WASHED_R138_EMBEDDED_TIMECODE_RANGE_CONTRACT__FPS_ENDPOINT_OFFSET_AND_SPATIAL_JOINS_OPEN",
           "implementation_status": "EVIDENCE_ONLY_SINGLE_CALL_CHAIN__NO_SOURCE_OR_SPATIAL_GENERATION_JOIN",
-          "scope": "Wash R138 records one bounded native call. The package reports the authorized ADM BWF and ASCII path alias with the same SHA-256; the source was not changed. For this call only, configured absolute start boundary 173,280,000 samples, relative start 0, and reader-relative cursor 6,144 derive sample position 173,286,144; no native absolute-position field was captured. In the same parent activation, provider descriptor and codec input share pointer identity; codec output buffer/length match writer input and the writer returns normally. The writer ordinal is statically an output-stream routing value, not a generation. This does not bind the source offset owner, native position, host frame, spatial callback, fit/U04/consumer generation, per-channel values, plane/model semantics, or Type10/six-plane composition. Model replay is NOT_RUN and Gate 1 remains OPEN. Wash V1 binds the hash-identified R138 config to time_base=embedded_timecode and retracts the old file_position profile field only for this config. The implementation-safe R138 contract binds start/end tokens 86640/86664 and the embedded-timecode conversion sequence; resolved FPS, endpoint convention, offset=auto resolution, range owner/generation, and spatial same-time-domain use remain unbound.",
+          "scope": "Wash R138 records one bounded native call. The package reports the authorized ADM BWF and ASCII path alias with the same SHA-256; the source was not changed. For this call only, configured absolute start boundary 173,280,000 samples, relative start 0, and reader-relative cursor 6,144 derive sample position 173,286,144; no native absolute-position field was captured. In the same parent activation, provider descriptor and codec input share pointer identity; codec output buffer/length match writer input and the writer returns normally. The writer ordinal is statically an output-stream routing value, not a generation. This does not bind the source offset owner, native position, host frame, spatial callback, fit/U04/consumer generation, per-channel values, plane/model semantics, or Type10/six-plane composition. Model replay is NOT_RUN and Gate 1 remains OPEN. Wash V1 binds the hash-identified R138 config to time_base=embedded_timecode and retracts the old file_position profile field only for this config. The implementation-safe R138 contract binds start/end tokens 86640/86664 and the embedded-timecode conversion sequence; resolved FPS, endpoint convention, offset=auto resolution, range owner/generation, and spatial same-time-domain use remain unbound. A separate R138 profile-bound handoff review finds a static WAVE adapter Run-to-shared-normalizer edge, but does not bind that adapter to audio.adm; DACT parser presence does not establish R138 factory selection or reader handoff.",
           "owner": "codec",
           "implementation_requirement": false,
           "dependencies": [],
@@ -25529,7 +25664,12 @@
               "R138ProfileTimeBase",
               "R138StartTimecodeToken",
               "R138EndTimecodeToken",
-              "R138TimecodeFrameRateTag"
+              "R138TimecodeFrameRateTag",
+              "R138InputType",
+              "HostWaveAdapterRun",
+              "SourceTimeMetadataNormalizer",
+              "DactAdmFactory",
+              "FirstReaderProcessingConsumer"
             ],
             "covered_clauses": [
               "For this selected call, absolute start + relative start + reader-relative cursor is a derived position only; the native absolute-position field was not captured.",
@@ -25568,7 +25708,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/README.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/CONTRACT.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/verify_embedded_timecode_contract.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/verify_embedded_timecode_contract.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/CONTROLLED-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
             "package_id": "reader-origin-cursor-spatial-commit-wash-v1",
@@ -25577,7 +25724,7 @@
             "job_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
             "native_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
             "native_processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
-            "validation_boundary": "The R138 profile-timebase correction V1 retracts only the prior file_position field for this exact config. The hash-bound implementation-safe range contract binds embedded_timecode tokens 86640/86664, source rate 48 kHz, and the parse/seconds/round/source-bounds/offset-subtraction sequence. The resolved timecode FPS is NOT_CAPTURED, endpoint convention and offset=auto resolution/source writer remain UNBOUND, and runtime range owner/generation and same-time-domain spatial joins remain open. The file_position max-minus-offset rule is conditional to that branch and is not applied to R138. The separate 173286144 reader-call sample position is not a substitute for embedded-timecode conversion.",
+            "validation_boundary": "The R138 profile-timebase correction V1 retracts only the prior file_position field for this exact config. The hash-bound implementation-safe range contract binds embedded_timecode tokens 86640/86664, source rate 48 kHz, and the parse/seconds/round/source-bounds/offset-subtraction sequence. The resolved timecode FPS is NOT_CAPTURED, endpoint convention and offset=auto resolution/source writer remain UNBOUND, and runtime range owner/generation and same-time-domain spatial joins remain open. The file_position max-minus-offset rule is conditional to that branch and is not applied to R138. The separate 173286144 reader-call sample position is not a substitute for embedded-timecode conversion. The new R138 reader handoff package confirms only a static WAVE-adapter-local metadata-normalizer call and static DACT ADM component presence; it does not bind R138 audio.adm to a concrete factory, provider/parser, Atmos/codec metadata consumer, or first reader-output consumer.",
             "r138_profile_timebase_correction": {
               "package_id": "R138-PROFILE-TIMEBASE-CORRECTION-V1",
               "manifest_sha256": "a3f0f574b45d3b024ae5c1c62e9e6b4bdd1535d3d273c7888c7f64df2fb9ee0a",
@@ -25662,6 +25809,30 @@
               "selected_call_position_status": "DERIVED_ONLY; NOT_A_SUBSTITUTE_FOR_TIMECODE_CONVERSION",
               "model_replay": "NOT_RUN",
               "gate1_closed": false
+            },
+            "r138_adm_reader_handoff_manifest_sha256": "33b58850f29632616a311c970ebbd2d562bb1fc3759d7b7a8f9124a5c93905ae",
+            "r138_adm_reader_source_manifest_sha256": "eb1c1349fe01cb4b5d70370c893ec716e44724ed7ab1da250a57afdce14997f8",
+            "r138_adm_reader_factory_handoff": {
+              "r138_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+              "route_key": "encode_to_atmos_ddp",
+              "input_type": "audio.adm",
+              "time_base": "embedded_timecode",
+              "timecode_frame_rate": "not_indicated",
+              "host_wave_adapter_run_to_shared_normalizer": "STATIC_DIRECT_CALL_PATH; R138_AUDIO_ADM_SELECTION_UNBOUND",
+              "dact_adm_components": [
+                "ADM_FILE_STORAGE",
+                "ADM_FILE_STORAGE_DESCRIPTOR",
+                "WAVE_FILE_STORAGE"
+              ],
+              "dact_component_status": "STATIC_CLASS_AND_PARSER_EVIDENCE_PRESENT",
+              "r138_concrete_host_reader_factory": "UNBOUND",
+              "host_reader_provider_to_dact_adm_factory": "UNBOUND",
+              "parsed_descriptor_metadata_to_atmos_codec": "UNBOUND",
+              "reader_output_to_first_processing_consumer": "UNBOUND",
+              "parent_task_generation": "NOT_OBSERVED",
+              "atmosmezz_reader_selected_for_r138_audio_adm": "NOT_PROVEN; NON_GATING_FOR_THIS_PROFILE",
+              "audio_sample_used": "NO",
+              "native_run": "NOT_RUN"
             }
           },
           "vectors": {
@@ -25690,7 +25861,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/README.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/CONTRACT.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/CHECK.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/verify_embedded_timecode_contract.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_embedded_timecode_range_contract_v1/verify_embedded_timecode_contract.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/CONTROLLED-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/WASH-VERIFICATION.json"
             ],
             "case_pointers": [
               "Configured absolute start 173,280,000 + relative start 0 + cursor-before 6,144 derives 173,286,144 for this call only.",
@@ -25706,7 +25884,10 @@
               "Resolved R138 timecode frame rate and endpoint convention; not_indicated is a configured token, not a numeric FPS.",
               "The range contract parses tokens with the separately resolved rate, rounds sample-rate products, checks source bounds, then subtracts offset.",
               "Offset=auto resolution/source writer, runtime range owner/generation, and range-to-spatial same-time-domain use.",
-              "The 173286144 reader-derived sample position remains one-call sample-domain arithmetic and does not replace embedded-timecode conversion."
+              "The 173286144 reader-derived sample position remains one-call sample-domain arithmetic and does not replace embedded-timecode conversion.",
+              "The WAVE adapter's local Run-to-normalizer call is static but is not selected for R138 audio.adm.",
+              "DACT ADM parser class presence does not prove the concrete R138 factory, provider/parser transfer, or first reader-output consumer.",
+              "AtmosMezz-specific reader remains non-gating for this ADM profile because no explicit R138 dispatch into it was established."
             ],
             "expected_outputs_included": false,
             "native_execution": "R138_SELECTED_CALL_OBSERVED; PROCESS_EXIT_CODE_NOT_CAPTURED",
@@ -25779,7 +25960,9 @@
             "Resolved R138 timecode frame rate; not_indicated is a configured tag, not a numeric FPS.",
             "Endpoint convention, offset=auto resolution/source writer, runtime range owner/generation, and range-to-spatial same-time-domain use.",
             "Applying the conversion contract to a parsed range with a captured resolved FPS and checking actual source bounds; no converted result is available.",
-            "The 173286144 reader-derived position does not substitute for the embedded-timecode conversion result."
+            "The 173286144 reader-derived position does not substitute for the embedded-timecode conversion result.",
+            "R138 audio.adm to concrete host reader factory, provider-to-DACT parser, parsed descriptor to Atmos/codec, and reader output to first processing consumer.",
+            "R138 reader owner/generation and runtime input dispatch; no authorized audio sample or native run was used in this static package."
           ],
           "validation_boundary": "R138 is one selected-call observation; it does not establish the general offset rule, AU/source identity, spatial lineage, product conformance, or end-to-end chain.",
           "native_status": {
@@ -25838,7 +26021,27 @@
             "r138_reader_to_spatial_same_call_join": "UNBOUND",
             "r138_file_position_first_frame_of_action_rule": "CONDITIONAL_FILE_POSITION_BRANCH_ONLY",
             "r138_resolved_timecode_frame_rate": "NOT_CAPTURED",
-            "r138_selected_call_position_substitutes_for_timecode_conversion": false
+            "r138_selected_call_position_substitutes_for_timecode_conversion": false,
+            "r138_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+            "route_key": "encode_to_atmos_ddp",
+            "input_type": "audio.adm",
+            "time_base": "embedded_timecode",
+            "timecode_frame_rate": "not_indicated",
+            "host_wave_adapter_run_to_shared_normalizer": "STATIC_DIRECT_CALL_PATH; R138_AUDIO_ADM_SELECTION_UNBOUND",
+            "dact_adm_components": [
+              "ADM_FILE_STORAGE",
+              "ADM_FILE_STORAGE_DESCRIPTOR",
+              "WAVE_FILE_STORAGE"
+            ],
+            "dact_component_status": "STATIC_CLASS_AND_PARSER_EVIDENCE_PRESENT",
+            "r138_concrete_host_reader_factory": "UNBOUND",
+            "host_reader_provider_to_dact_adm_factory": "UNBOUND",
+            "parsed_descriptor_metadata_to_atmos_codec": "UNBOUND",
+            "reader_output_to_first_processing_consumer": "UNBOUND",
+            "parent_task_generation": "NOT_OBSERVED",
+            "atmosmezz_reader_selected_for_r138_audio_adm": "NOT_PROVEN; NON_GATING_FOR_THIS_PROFILE",
+            "audio_sample_used": "NO",
+            "native_run": "NOT_RUN"
           }
         },
         {
@@ -32484,8 +32687,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1901578,
-              "sha256": "51e765d108c8af9cc6e8eeae78fb6e0b733dcb3dc3701a1adceff9fddd1c3e17"
+              "bytes": 1919759,
+              "sha256": "f8d91f1edf0ad8fba8889b40323f55886ae50844a53f8d4557781fb0da923fa4"
             }
           ],
           "test_inventory": [
