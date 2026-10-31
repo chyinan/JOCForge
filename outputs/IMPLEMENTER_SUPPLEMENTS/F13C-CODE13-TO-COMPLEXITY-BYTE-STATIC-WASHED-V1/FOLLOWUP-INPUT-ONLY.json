@@ -1,0 +1,45 @@
+{
+  "schema": "washed-parameter13-complexity-byte-followup.v1",
+  "implementation_mapping": {
+    "allowed_claim": "On the selected hash-identified static worker path, code-13's low byte reaches the F12 complexity_index_type_a field.",
+    "scope": "static evidence only",
+    "do_not_infer": [
+      "that code 13 is a user-facing preferred input",
+      "that a DEE host XML/task currently supplies code 13",
+      "that code 14 is semantic ID14",
+      "that ID14 object_count + 1 produces this native byte",
+      "that a runtime object, parent, or generation was captured",
+      "that the native scalar vectors ran"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "owner or generation joins"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "host task/XML or config source to code-13 input-list entry",
+      "status": "UNBOUND",
+      "next_action": "Trace the real host input table/setter to the selected builder; use an authorized scalar-only runtime observation when a validated job route is available."
+    },
+    {
+      "gap": "runtime object and parent/source generation",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "semantic ID14 object count to native byte",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "carrier-block native owner",
+      "status": "UNBOUND"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_experiments_may_be_used_if_needed": true,
+    "reapproval_needed": false,
+    "native_pair_for_this_source_package": "NOT_RUN",
+    "persist_pcm_or_bitstream": false
+  }
+}

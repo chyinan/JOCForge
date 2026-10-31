@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1",
+  "scope": "static same-worker parameter code 13 to F12 complexity_index_type_a path; native input, host XML, semantic ID14, and runtime generation remain open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1995,
+      "sha256": "53dae545da72d1c1883c2e2be5fbe5f76f8d8f90fcfb87f838899a1f0f5cf1d2"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1852,
+      "sha256": "41b15ad7d92d5e985d752af04e92d1b14058e3d1d22b5677c7b8f7f0c79b5af3"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 855,
+      "sha256": "c7e59c1d1e83a44aa765ee529a48d6d613475e886a1480ebd6cff5617fda8fbc"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1573,
+      "sha256": "b1e5a954bb247aa914fef4b688cb70ed1b8290931329b872a72835c01f4edc88"
+    }
+  ]
+}

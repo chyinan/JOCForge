@@ -1,0 +1,18 @@
+{
+  "schema": "washed-parameter13-complexity-byte-check.v1",
+  "checks": {
+    "source_manifest_sha256": "caad76bdcb6f363feb263b0c3e387e23b1b32489c34921abacc5772e69027bbf",
+    "source_payload_hashes_recomputed": true,
+    "source_checker_normal": "PASS",
+    "source_checker_python_O": "PASS",
+    "required_Ghidra_anchors_and_instructions": "PASS",
+    "supporting_package_manifest_and_payload_checks": "PASS",
+    "target_DLL_hash_recomputed_from_D_and_E_copies": "PASS",
+    "four_vectors_executed_natively": false,
+    "host_xml_owner_join": "UNBOUND",
+    "runtime_generation_join": "UNBOUND",
+    "semantic_ID14_to_native_byte_join": "UNBOUND"
+  },
+  "status": "PASS_STATIC_SAME_WORKER_PATH; NATIVE_EXECUTION_NOT_RUN; HOST_AND_GENERATION_JOINS_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

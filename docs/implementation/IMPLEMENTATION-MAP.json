@@ -9201,8 +9201,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1786811,
-              "sha256": "3521072d8dc83c0b5556082602a7c88368f8d3a3de6a06dabd27bfc903ef3aea"
+              "bytes": 1793365,
+              "sha256": "de6262149f5f83fb66da0ebfd4decefcc0df927630749fe83ed65f2cb90a7e67"
             }
           ],
           "test_modules": [
@@ -12714,8 +12714,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1786811,
-              "sha256": "3521072d8dc83c0b5556082602a7c88368f8d3a3de6a06dabd27bfc903ef3aea"
+              "bytes": 1793365,
+              "sha256": "de6262149f5f83fb66da0ebfd4decefcc0df927630749fe83ed65f2cb90a7e67"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -30020,6 +30020,109 @@
             "whole_f13c_readiness": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "native-code13-low-byte-to-f12-complexity-field",
+          "mapping_status": "WASHED_STATIC_CODE13_TO_COMPLEXITY_BYTE__HOST_AND_GENERATION_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_SAME_WORKER_STATIC_PATH__NO_RUNTIME_HOST_JOIN",
+          "scope": "For one hash-identified Atmos DLL, static analysis follows parameter-list code 13 through a selected config builder and a same-worker child-table path to the low byte of the selected worker's complexity byte, then to F12 complexity_index_type_a at bits 105..112. Missing code 13 defaults to 11; a supplied scalar is copied only after a separate validation call whose runtime acceptance is NOT_OBSERVED. Code 14 (default 0) and type-4 are separate fields. This does not identify code 14 with semantic ID14 or join object_count+1 to the native byte. Host task/XML to code 13, runtime parent/source generation, semantic ID14 object_count to native byte, and carrier-block owner remain UNBOUND; four vectors are static expectations and native pair is NOT_RUN.",
+          "owner": "metadata",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "HostTaskOrXmlField",
+              "ParameterListEntryCode13",
+              "Code13ConfigScalar",
+              "ChildWorkerTable",
+              "WorkerComplexityByte",
+              "F12ComplexityIndexTypeA",
+              "ParameterCode14",
+              "Type4Parameter",
+              "SemanticId14ObjectCount",
+              "ParentSourceGeneration",
+              "CarrierBlockOwner"
+            ],
+            "covered_clauses": [
+              "Static same-worker path connects parameter-list code 13 to the low byte of the worker complexity byte and the selected F12 complexity field.",
+              "Missing code 13 defaults to 11; supplied-value runtime acceptance remains NOT_OBSERVED because a separate validation call precedes the copy.",
+              "Code 14 and type-4 are separate worker fields; code 14 is not semantic ID14.",
+              "No host task/XML to code-13 join, runtime generation join, ID14 object-count join, or carrier-block owner is established.",
+              "The four vectors are static expectations; native pair and dynamic host input are NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_CODE13_STATIC_WORKER_PATH_TO_F12_COMPLEXITY_FIELD",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "supplement_manifest_sha256": "cec6b93609eeda43cd24bf19215bedaa4c62d30a8e7eb3428745be4dc59f1098",
+            "source_package_manifest_sha256": "caad76bdcb6f363feb263b0c3e387e23b1b32489c34921abacc5772e69027bbf",
+            "supporting_config_package_manifest_sha256": "63b7a47c25e04bd471441db70f4c6a27f50702541eca916e59ea8c96c9d666c4",
+            "supporting_f12_field_package_manifest_sha256": "cd516f23b2c28538864aa1a7649a421444ac255eaa8b281daee1dcfc1bd20863",
+            "target_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+            "validation_boundary": "Static same-worker producer path only; host input, runtime generation, semantic ID14, and carrier-block joins remain unbound."
+          },
+          "vectors": {
+            "kind": "F13C_CODE13_STATIC_SCALAR_EXPECTATIONS_NOT_NATIVE_RUN",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CODE13-TO-COMPLEXITY-BYTE-STATIC-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "Four static scalar vectors were checked as static expectations only; none ran natively.",
+              "The output field is the low byte of a worker scalar mapped to F12 complexity_index_type_a bits 105..112.",
+              "The code-14 field is separate from semantic ID14 and object_count+1."
+            ],
+            "expected_outputs_included": true,
+            "native_execution": "NOT_RUN",
+            "fresh_model_replay": "NOT_RUN",
+            "supplement_manifest_sha256": "cec6b93609eeda43cd24bf19215bedaa4c62d30a8e7eb3428745be4dc59f1098"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Runtime acceptance of a supplied code-13 value through the separate validation call.",
+            "Host task/XML owner to parameter-list code-13 entry join.",
+            "Runtime parent/source generation and selected child-worker instance capture.",
+            "Semantic ID14 object_count to the native complexity byte join and carrier-block native owner.",
+            "Native execution of the four static scalar vectors and a native pair."
+          ],
+          "validation_boundary": "Bounded static path only; no runtime host acceptance, semantic ID14 identity, or production readiness is established.",
+          "native_status": {
+            "code13_static_same_worker_path": "CLOSED",
+            "code13_missing_entry_default": 11,
+            "code13_to_worker_complexity_byte": "STATIC_LOW_BYTE_COPY",
+            "f12_target_field": {
+              "name": "complexity_index_type_a",
+              "bit_start": 105,
+              "bit_width": 8
+            },
+            "runtime_acceptance_after_validation_call": "NOT_OBSERVED",
+            "code14_separate_field": true,
+            "code14_default": 0,
+            "type4_separate_field": true,
+            "host_xml_owner_join": "UNBOUND",
+            "runtime_generation_join": "UNBOUND",
+            "semantic_id14_to_native_byte_join": "UNBOUND",
+            "carrier_block_native_owner": "UNBOUND",
+            "runtime_invocation_order": "NOT_OBSERVED",
+            "static_vector_count": 4,
+            "four_vectors_executed_natively": false,
+            "native_pair": "NOT_RUN",
+            "whole_f13c_readiness": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -30994,8 +31097,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1786811,
-              "sha256": "3521072d8dc83c0b5556082602a7c88368f8d3a3de6a06dabd27bfc903ef3aea"
+              "bytes": 1793365,
+              "sha256": "de6262149f5f83fb66da0ebfd4decefcc0df927630749fe83ed65f2cb90a7e67"
             }
           ],
           "test_inventory": [

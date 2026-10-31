@@ -425,6 +425,7 @@
 | F13C/informational-encoded-output-publication-owner-binding | F13C | `joc` |
 | F13C/user-config-data-rate-to-native-complexity-entry-boundary | F13C | `metadata` |
 | F13C/host-ddp-and-atmos-plugin-data-rate-owner-boundary | F13C | `metadata` |
+| F13C/native-code13-low-byte-to-f12-complexity-field | F13C | `metadata` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |
