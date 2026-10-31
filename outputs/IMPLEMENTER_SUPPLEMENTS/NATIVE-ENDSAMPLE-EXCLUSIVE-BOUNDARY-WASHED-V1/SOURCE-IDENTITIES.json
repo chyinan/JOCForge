@@ -1,0 +1,65 @@
+{
+  "schema": "washed-end-sample-exclusive-source-identities.v1",
+  "verified_input_packages": [
+    {
+      "id": "run121-end-sample-exclusive-addendum",
+      "manifest_sha256": "e6769ae0f01cbb28b24e132383d7cbdc045e69c317dd0ec1904f9c60440ddafa",
+      "payload_sha256": {
+        "NATIVE-END-SAMPLE-EXCLUSIVE-SEMANTICS.json": "5ccaec85a83f29f1d5c088aedc0252d08514a672923934e346d90b053bd8c533",
+        "CHECK.json": "64cc06098dca76ef893aa6feb65d5c11e1b7e9b29f75dedfab12f492da7ff5e8"
+      },
+      "payload_hashes_recomputed": true
+    },
+    {
+      "id": "run121-sample-count-and-padding-addendum",
+      "manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
+      "payload_sha256": {
+        "NATIVE-READER-SAMPLE-COUNT-AND-PADDING-ADDENDUM.json": "8adab4b681c5ed5849f7c38d8cff5898390309fe754bda47523179fd153b40bc",
+        "CHECK.json": "e9c9442306de2fe96e0c7584e000af9287eca15210fb12b1658be53420be9640"
+      },
+      "manifest_and_payload_hashes_recomputed": true
+    },
+    {
+      "id": "run121-range-sample-field-semantics-addendum",
+      "manifest_sha256": "c0938d12e1b7e377ae76d22081d4bad4f214a5b296271e685fce3b55b4e81ba7",
+      "payload_sha256": {
+        "NATIVE-RANGE-SAMPLE-FIELD-SEMANTICS.json": "3bf25402add28750a05a0a5ae92e103aa0d5a528f1c9025a1e118205ec429106",
+        "CHECK.json": "cf351cd9d3cad7a5cc682e879a9dff5e2558e0e7fa0732b0bf99436ef110b0f6"
+      },
+      "manifest_and_payload_hashes_recomputed": true
+    }
+  ],
+  "run121_source_identity": {
+    "authorized_adm_role": "user-authorized legal ADM BWF experiment input",
+    "authorized_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "runtime_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_hash_recomputed_from_authorized_file": true,
+    "input_data_chunk_decoded_or_saved": false,
+    "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "dee_and_atmos_hashes_recomputed_from_current_files": true
+  },
+  "ghidra_static_report": {
+    "tool": "Ghidra",
+    "ida_used": false,
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "report_sha256_as_recorded_by_current_source_manifest": "640dced700f854d96fdf5c2c9a813df9e5a1c04ac5a026e7f58239b622a1fba5",
+    "report_sha256_as_recorded_by_current_evidence_payload": "640dced700f854d96fdf5c2c9a813df9e5a1c04ac5a026e7f58239b622a1fba5",
+    "report_bytes_in_bundle": false,
+    "report_bytes_independently_rehashed_by_wash": false,
+    "reconciliation_status": "OPEN"
+  },
+  "prior_wash_metadata_discrepancy": {
+    "package_id": "NATIVE-EMBEDDED-TIMECODE-RANGE-FIELD-SEMANTICS-WASHED-V2",
+    "manifest_sha256": "0efba67355c043dabb6d8092bee31117d6b94034ef131d661f17596fa883cb2f",
+    "recorded_ghidra_static_report_sha256": "640dced700f854d96fdf5c2c9a813df5e5a1c04ac5a026e7f58239b622a1fba5",
+    "current_r1_report_sha256": "640dced700f854d96fdf5c2c9a813df9e5a1c04ac5a026e7f58239b622a1fba5",
+    "status": "MISMATCH_REQUIRES_SOURCE_REPORT_REHASH; prior field semantics not expanded beyond its own verified payload"
+  },
+  "excluded_material": [
+    "PCM samples",
+    "EC3 payload",
+    "raw disassembly or addresses",
+    "private keys or authentication secrets"
+  ]
+}

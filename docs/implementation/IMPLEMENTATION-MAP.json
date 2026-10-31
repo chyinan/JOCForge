@@ -369,7 +369,6 @@
               86640,
               86664
             ],
-            "run115_composite_sample_count": 50000,
             "timecode_rate_explicit_in_xml": false,
             "24_fps_2000_samples_per_frame": "INFERENCE_CONSISTENT_WITH_OBSERVED_OUTPUT",
             "pcm_access": "NOT_READ_OR_PERSISTED",
@@ -414,11 +413,11 @@
               "Run115ExecutionIdentity"
             ],
             "covered_clauses": [
-              "Run-121's same-execution range record and reader-state count path are joined, but range units and endpoint convention are UNBOUND.",
+              "Run-121's same-execution range record and reader-state count path are joined; a separate hash-bound follow-up establishes exclusive EndSample semantics only for this R121 reader path.",
               "The direct reader count is 32*1536+847=49,999 sample frames per channel for each of two readers; relative cursor values are not absolute positions.",
               "Pre-read zero-fill spans 38x1536 float elements; the tail reads 847 and leaves 689 zeros per channel, yielding a padded 1536-frame span.",
               "The downstream path has 33 data-frame calls of 1536 frames and five zero-span flush calls; flush calls are not source samples.",
-              "Run-121 to run-115 identity and sample position to spatial generation remain UNBOUND; equal source hashes do not join executions."
+              "Absolute sample origin, Run-121 to run-115 identity, and sample position to spatial generation remain UNBOUND."
             ]
           },
           "parameters": {
@@ -433,7 +432,8 @@
             ],
             "supplement_manifest_sha256": "09f00963049bbc5bcbb5c843573cb85d84d559ea1d1568a0b6b2f9c55b0343f5",
             "source_package_manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
-            "validation_boundary": "Single run-121 native observation; endpoint units, absolute origin, run-115 identity, model behavior, and spatial-generation join remain open."
+            "validation_boundary": "Single run-121 native observation; EndSample is exclusive only for the hash-identified R121 reader path. Absolute origin, run-115 identity, and spatial-generation join remain open.",
+            "r121_exclusive_boundary_supplement_manifest_sha256": "b5965175c3fac3543936b043be191400f696e1ed2c62e0702fad4b959f37e505"
           },
           "vectors": {
             "kind": "WASHED_RUN121_NATIVE_SAMPLE_COUNT_AND_PADDING_RECEIPT",
@@ -445,7 +445,8 @@
             "case_pointers": [
               "Two readers each report 32*1536 plus an 847-frame tail, totaling 49,999 sample frames per channel.",
               "The 847-frame tail is delivered in a 1536-frame zero-filled span with 689 zero elements per channel.",
-              "The end=49,999 range field remains unit/endpoint ambiguous and is not joined to run-115."
+              "The end=49,999 range field remains unit/endpoint ambiguous and is not joined to run-115.",
+              "A separate hash-bound follow-up resolves EndSample as exclusive only on the R121 reader path; it does not resolve the upstream embedded-timecode conversion discrepancy."
             ],
             "expected_outputs_included": false,
             "native_output_included": false,
@@ -462,7 +463,6 @@
           "native_status": {
             "run121_runtime_input_matches_authorized_source": true,
             "reader_direct_count_per_instance": "32*1536+847=49999_SAMPLE_FRAMES_PER_CHANNEL",
-            "range_fields": "start=0,end=49999; units_and_endpoint_convention_UNBOUND",
             "reader_relative_cursor_is_absolute_position": false,
             "provider_zero_fill": "38*1536_FLOATS_BEFORE_EACH_READ",
             "tail_read_frames_per_channel": 847,
@@ -475,7 +475,10 @@
             "sample_to_spatial_generation": "UNBOUND",
             "model_execution": "NOT_RUN",
             "uninstrumented_output_comparison": "NOT_RUN",
-            "whole_chain_ready": false
+            "whole_chain_ready": false,
+            "range_fields_observed_in_count_padding_package": "start=0,end=49999; original package left endpoint open",
+            "range_endpoint_semantics": "EXCLUSIVE_UPPER_BOUND_FOR_HASH_IDENTIFIED_R121_READER_PATH",
+            "r121_exclusive_boundary_supplement_manifest_sha256": "b5965175c3fac3543936b043be191400f696e1ed2c62e0702fad4b959f37e505"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
@@ -525,7 +528,14 @@
             "range_semantics_source_manifest_sha256": "c0938d12e1b7e377ae76d22081d4bad4f214a5b296271e685fce3b55b4e81ba7",
             "run121_addendum_manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
             "run115_original_manifest_sha256": "7eb9f1625af1136248ed958f1794a571f7c7cfbd53feee82006f6b2c6e1c435e",
-            "validation_boundary": "Static field typing and selected validation comparisons plus same-run run-121 correlation; no endpoint convention, run-115/run-121 owner join, or spatial-generation join is established."
+            "validation_boundary": "Static field typing and selected validation comparisons plus same-run run-121 correlation; no endpoint convention, run-115/run-121 owner join, or spatial-generation join is established.",
+            "source_report_reconciliation": {
+              "status": "OPEN_REHASH_REQUIRED",
+              "current_r1_recorded_sha256": "640dced700f854d96fdf5c2c9a813df9e5a1c04ac5a026e7f58239b622a1fba5",
+              "prior_v2_recorded_sha256": "640dced700f854d96fdf5c2c9a813df5e5a1c04ac5a026e7f58239b622a1fba5",
+              "report_bytes_in_bundle": false,
+              "report_bytes_independently_rehashed": false
+            }
           },
           "vectors": {
             "kind": "WASHED_F01_RANGE_FIELD_SEMANTICS_AND_RUN121_INPUT_ONLY_FOLLOWUP",
@@ -571,7 +581,123 @@
             "rate_mapping": "24_FPS_2000_SAMPLES_PER_FRAME_INFERENCE",
             "xml_timecode_rate_explicit": false,
             "model_execution": "NOT_RUN",
-            "whole_chain_ready": false
+            "whole_chain_ready": false,
+            "source_report_hash_reconciliation": "OPEN_REHASH_REQUIRED"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "native-endsample-exclusive-r121-reader-boundary",
+          "mapping_status": "WASHED_R121_READER_ENDSAMPLE_EXCLUSIVE__UPSTREAM_AND_REPORT_IDENTITY_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_R121_READER_BOUNDARY__NO_GENERIC_CONVERTER_OR_READINESS_CHANGE",
+          "scope": "Only for the hash-identified R121 native reader path, EndSample is an exclusive upper sample boundary, supported by the consumer's reader_cursor < reader_extent check. EndSample=0 selects storage sample_count; equality to storage count is accepted, greater-than is rejected, and StartSample>EndSample is rejected. The same R121 run reports StartSample=0, EndSample=49,999, reader_extent=49,999, and 49,999 frames per channel, with a 1,536-frame tail callback containing 847 read and 689 zero-padded positions. This resolves the endpoint only for that reader path; embedded-timecode-to-EndSample conversion still has a one-sample discrepancy, R115/R121 identity and sample-to-spatial generation remain UNBOUND, and other producers/modes are outside scope. The old range-semantics V2 Ghidra report hash metadata differs from the current R1 value; the report bytes are absent and rehash reconciliation remains OPEN.",
+          "owner": "spatial_control",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "Run121ExecutionIdentity",
+              "StartSampleBoundaryValue",
+              "EndSampleBoundaryValue",
+              "AtmosStorageSampleCount",
+              "ReaderCursor",
+              "ReaderExtent",
+              "ReaderSampleFrameCount",
+              "PaddedCallbackSpan",
+              "EmbeddedTimecodeConversion",
+              "Run115ExecutionIdentity",
+              "SpatialCallbackGeneration",
+              "GhidraReportMetadataIdentity"
+            ],
+            "covered_clauses": [
+              "On the hash-identified R121 reader path only, EndSample is exclusive because the consumer reads while reader_cursor < reader_extent.",
+              "EndSample zero uses storage sample_count; equality is accepted, greater-than is rejected, and StartSample greater than EndSample is rejected.",
+              "R121's 49,999-frame read count and 1,536-frame padded tail span are separate; numeric agreement alone does not define endpoint semantics.",
+              "The embedded-timecode-to-EndSample conversion has a one-sample discrepancy; R115/R121 identity and sample-to-spatial generation remain UNBOUND.",
+              "The old V2 report metadata records a different Ghidra digest; report bytes are absent and source-report rehash reconciliation remains OPEN."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_R121_READER_EXCLUSIVE_ENDSAMPLE_BOUNDARY_AND_SOURCE_REPORT_DISCREPANCY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "supplement_manifest_sha256": "b5965175c3fac3543936b043be191400f696e1ed2c62e0702fad4b959f37e505",
+            "run121_sample_count_manifest_sha256": "09563a0e9d2581d2b661f6c38947f75e2de072865a27e2833194a641f1866b59",
+            "range_field_semantics_v2_manifest_sha256": "0efba67355c043dabb6d8092bee31117d6b94034ef131d661f17596fa883cb2f",
+            "source_report_reconciliation": {
+              "status": "OPEN_REHASH_REQUIRED",
+              "current_r1_recorded_sha256": "640dced700f854d96fdf5c2c9a813df9e5a1c04ac5a026e7f58239b622a1fba5",
+              "prior_v2_recorded_sha256": "640dced700f854d96fdf5c2c9a813df5e5a1c04ac5a026e7f58239b622a1fba5",
+              "report_bytes_in_bundle": false,
+              "report_bytes_independently_rehashed": false
+            },
+            "validation_boundary": "Exclusive EndSample semantics apply only to the hash-identified R121 reader path; upstream timecode conversion, cross-run identity, source generation, other producers/modes, and report-byte reconciliation remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_R121_EXCLUSIVE_READER_BOUNDARY_AND_OPEN_FOLLOWUPS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "R121 reader path consumes while reader_cursor < reader_extent; EndSample is exclusive for this path only.",
+              "R121 has one-sample discrepancy between embedded-timecode conversion expectation 50,000 and EndSample/read count 49,999.",
+              "R115/R121 and sample/spatial generation remain unjoined; no one-sample pair was run.",
+              "The source-report hash discrepancy remains open because report bytes were not delivered for rehash."
+            ],
+            "expected_outputs_included": false,
+            "native_execution": "R121_OBSERVED; NO_ONE_SAMPLE_PAIR",
+            "supplement_manifest_sha256": "b5965175c3fac3543936b043be191400f696e1ed2c62e0702fad4b959f37e505"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "A one-sample pair resolving embedded-timecode-to-EndSample conversion.",
+            "R115-to-R121 execution owner/generation join and sample-to-spatial-generation join.",
+            "Absolute sample position from reader-relative cursor values.",
+            "Source Ghidra report bytes and reconciliation of the prior V2 metadata hash mismatch.",
+            "Generalization to every producer, job mode, or the full ADM-to-E-AC-3 JOC chain."
+          ],
+          "validation_boundary": "Bounded R121 reader exclusive-end semantics only; source-report reconciliation and upstream conversion remain OPEN.",
+          "native_status": {
+            "exclusive_boundary_scope": "HASH_IDENTIFIED_R121_READER_PATH_ONLY",
+            "end_sample_semantics": "EXCLUSIVE_UPPER_SAMPLE_BOUNDARY",
+            "reader_loop_condition": "reader_cursor < reader_extent",
+            "end_sample_zero_behavior": "USES_STORAGE_SAMPLE_COUNT",
+            "end_sample_equal_storage_count": "ACCEPTED",
+            "end_sample_greater_than_storage_count": "REJECTED",
+            "start_sample_greater_than_end_sample": "REJECTED",
+            "run121_start_sample": 0,
+            "run121_end_sample": 49999,
+            "run121_reader_extent": 49999,
+            "run121_actual_frames_per_channel": 49999,
+            "run121_tail_callback": {
+              "span": 1536,
+              "read": 847,
+              "zero_padding": 689
+            },
+            "embedded_timecode_to_end_sample": "ONE_SAMPLE_DISCREPANCY_OPEN",
+            "one_sample_pair": "NOT_RUN",
+            "r115_r121_owner_generation_join": "UNBOUND",
+            "sample_to_spatial_generation": "UNBOUND",
+            "other_producers_or_modes_generalized": false,
+            "prior_v2_report_sha256": "640dced700f854d96fdf5c2c9a813df5e5a1c04ac5a026e7f58239b622a1fba5",
+            "current_r1_report_sha256": "640dced700f854d96fdf5c2c9a813df9e5a1c04ac5a026e7f58239b622a1fba5",
+            "source_report_hash_reconciliation": "OPEN_REHASH_REQUIRED",
+            "source_report_bytes_included": false,
+            "source_report_bytes_rehashed": false,
+            "implementation_effect": "EVIDENCE_ONLY_NO_ALGORITHM_OR_READINESS_CHANGE"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -9075,8 +9201,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1778035,
-              "sha256": "18fd8eeb3d3ca5d1b418ed3039c4c2b48a9e64246be52802a08be9daf2a89159"
+              "bytes": 1786811,
+              "sha256": "3521072d8dc83c0b5556082602a7c88368f8d3a3de6a06dabd27bfc903ef3aea"
             }
           ],
           "test_modules": [
@@ -12588,8 +12714,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1778035,
-              "sha256": "18fd8eeb3d3ca5d1b418ed3039c4c2b48a9e64246be52802a08be9daf2a89159"
+              "bytes": 1786811,
+              "sha256": "3521072d8dc83c0b5556082602a7c88368f8d3a3de6a06dabd27bfc903ef3aea"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -30868,8 +30994,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1778035,
-              "sha256": "18fd8eeb3d3ca5d1b418ed3039c4c2b48a9e64246be52802a08be9daf2a89159"
+              "bytes": 1786811,
+              "sha256": "3521072d8dc83c0b5556082602a7c88368f8d3a3de6a06dabd27bfc903ef3aea"
             }
           ],
           "test_inventory": [

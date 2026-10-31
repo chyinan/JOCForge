@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "NATIVE-ENDSAMPLE-EXCLUSIVE-BOUNDARY-WASHED-V1",
+  "scope": "exclusive EndSample upper-bound semantics on the hash-identified R121 native reader path; evidence-only; source-report rehash and upstream timecode conversion remain open",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1971,
+      "sha256": "f63f7493509a830de980990bd74eb34be86e8737ed673a4cf884933a8713d665"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 3399,
+      "sha256": "3ec385b00761e4774aa60b5783161986dc672e350f05bbfba5e8b7a6cefffde0"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 952,
+      "sha256": "33a7e8db73a71ae9520597eaa3aa062344c66b0da16fbcf9c6e183e3c7233635"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1622,
+      "sha256": "5add889acde9b96fb938fe81c02ea4229b578a82d1c8d4119979f2015c096b37"
+    }
+  ]
+}

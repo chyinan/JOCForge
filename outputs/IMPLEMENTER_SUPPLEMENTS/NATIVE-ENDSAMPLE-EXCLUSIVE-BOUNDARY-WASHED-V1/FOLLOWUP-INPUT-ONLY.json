@@ -1,0 +1,45 @@
+{
+  "schema": "washed-end-sample-exclusive-followup.v1",
+  "implementation_mapping": {
+    "allowed_claim": "For the hash-identified R121 native reader path, EndSample is an exclusive upper sample boundary.",
+    "scope": "evidence-only",
+    "do_not_infer": [
+      "global behavior across other producers or job modes",
+      "absolute sample positions from reader-relative cursors",
+      "the embedded-timecode-to-EndSample conversion rule",
+      "R115-to-R121 execution identity",
+      "sample-to-spatial-generation identity"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "owner or generation joins"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "Ghidra static report source-file identity",
+      "status": "OPEN",
+      "reason": "The report bytes are not in the source bundle; current R1 manifest and payload agree, but the earlier Wash V2 metadata records a different digest."
+    },
+    {
+      "gap": "embedded timecode to EndSample one-sample discrepancy",
+      "status": "OPEN",
+      "next_action": "Trace the native conversion; if needed, use the already authorized ADM BWF in an isolated minimal pair and compare the exact boundary field plus same-run reader counts."
+    },
+    {
+      "gap": "R115 to R121 execution owner/generation join",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "sample to spatial-generation join",
+      "status": "UNBOUND"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_paths_already_exist": true,
+    "reapproval_needed": false,
+    "keep_raw_input_unmodified": true,
+    "persist_pcm_or_ec3": false
+  }
+}

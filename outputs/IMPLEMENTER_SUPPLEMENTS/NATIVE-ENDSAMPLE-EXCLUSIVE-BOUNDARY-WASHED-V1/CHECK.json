@@ -1,0 +1,20 @@
+{
+  "schema": "washed-end-sample-exclusive-check.v1",
+  "checks": {
+    "source_manifest_sha256_matches_declared": true,
+    "source_payload_hashes_match": true,
+    "related_run121_manifests_and_payload_hashes_match": true,
+    "authorized_adm_current_file_hash_matches_run121": true,
+    "dee_executable_hash_recomputed": true,
+    "atmos_dll_hash_recomputed": true,
+    "current_r1_report_hash_fields_are_internally_equal": true,
+    "report_file_bytes_rehashed": false,
+    "prior_wash_report_hash_field_reconciled": false,
+    "exclusive_boundary_scope_limited_to_r121_reader_path": true,
+    "upstream_timecode_conversion_gap_preserved": true,
+    "cross_run_and_spatial_generation_joins_preserved_open": true,
+    "not_run_not_promoted_to_pass": true
+  },
+  "status": "PASS_BOUNDED_NATIVE_BOUNDARY_WITH_REPORT_REHASH_AND_UPSTREAM_CONVERSION_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}
