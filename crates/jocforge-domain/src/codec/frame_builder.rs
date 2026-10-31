@@ -3,7 +3,8 @@
 
 use crate::codec::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
 use crate::codec::frame_syntax::{
-    CodecBlockIndex, SelectedBsiDrcFields, SelectedComplexityIndexTypeA,
+    CodecBlockIndex, SelectedBsiDrcFields, SelectedBsiMixingInformationValues,
+    SelectedComplexityIndexTypeA,
 };
 use crate::timeline::CodecSourceIndex;
 
@@ -12,6 +13,9 @@ const SELECTED_FIXED_PREFIX_BITS: u32 = 45;
 const COMPLEXITY_INDEX_TYPE_A_BIT_OFFSET: u32 = 105;
 const COMPLEXITY_INDEX_TYPE_A_WIDTH: u8 = 8;
 const LINE_BLOCK_COUNT: u8 = 6;
+const SELECTED_DRC_HEADER_BITS_WITHOUT_COMPR: u32 = 6;
+const SELECTED_DRC_HEADER_BITS_WITH_COMPR: u32 = 14;
+const SELECTED_MIXING_INFORMATION_BITS: u32 = 31;
 const SELECTED_FIXED_PREFIX_FIELDS: [(u32, u8); 9] = [
     (0x0B77, 16),
     (0, 2),
@@ -197,5 +201,251 @@ impl SelectedBsiDrcWriter {
         Ok(SelectedBsiDrcFieldsWritten {
             source_index: self.fields.source_index(),
         })
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedBsiMixingInformationField {
+    Dmixmod,
+    Ltrtcmixlev,
+    Lorocmixlev,
+    Ltrtsurmixlev,
+    Lorosurmixlev,
+    Bsmod,
+    Dsurexmod,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedBsiMixingInformationWriteError {
+    HeaderCursorMismatch {
+        actual: u32,
+    },
+    FieldOutOfRange {
+        field: SelectedBsiMixingInformationField,
+        value: u8,
+    },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for SelectedBsiMixingInformationWriteError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Writes selected-profile `mixmdate` and `infomdate` syntax after the DRC header.
+///
+/// The fixed acmod=7/lfeon=1/strmtyp=0 profile emits the selected conditional
+/// fields and fixed zero presence flags from the approved frame-assembly
+/// contract. The caller supplies normalized profile values; this writer does
+/// not produce or bind their source owner/generation.
+pub fn write_selected_bsi_mixing_information(
+    writer: &mut FrameBitWriter<'_>,
+    fields: &SelectedBsiMixingInformationValues,
+) -> Result<FrameBitCursor, SelectedBsiMixingInformationWriteError> {
+    let actual = writer.cursor().bit_offset();
+    let cursor_without_compr = DIALNORM_BIT_OFFSET + SELECTED_DRC_HEADER_BITS_WITHOUT_COMPR;
+    let cursor_with_compr = DIALNORM_BIT_OFFSET + SELECTED_DRC_HEADER_BITS_WITH_COMPR;
+    if actual != cursor_without_compr && actual != cursor_with_compr {
+        return Err(SelectedBsiMixingInformationWriteError::HeaderCursorMismatch { actual });
+    }
+
+    for (field, value, maximum) in [
+        (
+            SelectedBsiMixingInformationField::Dmixmod,
+            fields.dmixmod,
+            3,
+        ),
+        (
+            SelectedBsiMixingInformationField::Ltrtcmixlev,
+            fields.ltrtcmixlev,
+            7,
+        ),
+        (
+            SelectedBsiMixingInformationField::Lorocmixlev,
+            fields.lorocmixlev,
+            7,
+        ),
+        (
+            SelectedBsiMixingInformationField::Ltrtsurmixlev,
+            fields.ltrtsurmixlev,
+            7,
+        ),
+        (
+            SelectedBsiMixingInformationField::Lorosurmixlev,
+            fields.lorosurmixlev,
+            7,
+        ),
+        (SelectedBsiMixingInformationField::Bsmod, fields.bsmod, 7),
+        (
+            SelectedBsiMixingInformationField::Dsurexmod,
+            fields.dsurexmod,
+            3,
+        ),
+    ] {
+        if value > maximum {
+            return Err(SelectedBsiMixingInformationWriteError::FieldOutOfRange { field, value });
+        }
+    }
+
+    writer.preflight_capacity(SELECTED_MIXING_INFORMATION_BITS)?;
+
+    // The selected profile has mixmdate=1; conditional mix levels follow MSB-first.
+    writer.write_bit(true)?;
+    writer.write_unsigned(u32::from(fields.dmixmod), 2)?;
+    writer.write_unsigned(u32::from(fields.ltrtcmixlev), 3)?;
+    writer.write_unsigned(u32::from(fields.lorocmixlev), 3)?;
+    writer.write_unsigned(u32::from(fields.ltrtsurmixlev), 3)?;
+    writer.write_unsigned(u32::from(fields.lorosurmixlev), 3)?;
+
+    // Selected zero presence flags suppress their optional payloads.
+    writer.write_bit(false)?; // lfemixlevcode
+    writer.write_bit(false)?; // pgmscle
+    writer.write_bit(false)?; // extpgmscle
+    writer.write_unsigned(0, 2)?; // mixdef=0, no additional payload
+    writer.write_bit(false)?; // frmmixcfginfoe
+
+    // The selected profile has infomdate=1; acmod=7 omits dsurmod/dheadphonmod.
+    writer.write_bit(true)?;
+    writer.write_unsigned(u32::from(fields.bsmod), 3)?;
+    writer.write_bit(fields.copyrightb)?;
+    writer.write_bit(fields.origbs)?;
+    writer.write_unsigned(u32::from(fields.dsurexmod), 2)?;
+    writer.write_bit(false)?; // audprodie
+    writer.write_bit(fields.sourcefscod)?;
+
+    Ok(writer.cursor())
+}
+
+#[cfg(test)]
+mod selected_bsi_mixing_information_tests {
+    use super::*;
+
+    fn append_bits(bits: &mut Vec<bool>, value: u32, width: u8) {
+        for shift in (0..width).rev() {
+            bits.push((value >> shift) & 1 != 0);
+        }
+    }
+
+    fn bit_at(bytes: &[u8], bit_offset: u32) -> bool {
+        (bytes[(bit_offset / 8) as usize] >> (7 - bit_offset % 8)) & 1 != 0
+    }
+
+    fn fixture_fields() -> SelectedBsiMixingInformationValues {
+        SelectedBsiMixingInformationValues {
+            dmixmod: 2,
+            ltrtcmixlev: 1,
+            lorocmixlev: 2,
+            ltrtsurmixlev: 4,
+            lorosurmixlev: 7,
+            bsmod: 5,
+            copyrightb: true,
+            origbs: false,
+            dsurexmod: 3,
+            sourcefscod: true,
+        }
+    }
+
+    #[test]
+    fn writes_selected_mixing_and_information_fields_msb_first() {
+        let start = DIALNORM_BIT_OFFSET + SELECTED_DRC_HEADER_BITS_WITHOUT_COMPR;
+        let before = [0xa5_u8; 16];
+        let mut bytes = before;
+        let cursor = {
+            let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(start)).unwrap();
+            write_selected_bsi_mixing_information(&mut writer, &fixture_fields()).unwrap()
+        };
+
+        let mut expected = Vec::with_capacity(SELECTED_MIXING_INFORMATION_BITS as usize);
+        append_bits(&mut expected, 1, 1); // mixmdate
+        append_bits(&mut expected, 2, 2); // dmixmod
+        append_bits(&mut expected, 1, 3); // ltrtcmixlev
+        append_bits(&mut expected, 2, 3); // lorocmixlev
+        append_bits(&mut expected, 4, 3); // ltrtsurmixlev
+        append_bits(&mut expected, 7, 3); // lorosurmixlev
+        append_bits(&mut expected, 0, 1); // lfemixlevcode
+        append_bits(&mut expected, 0, 1); // pgmscle
+        append_bits(&mut expected, 0, 1); // extpgmscle
+        append_bits(&mut expected, 0, 2); // mixdef
+        append_bits(&mut expected, 0, 1); // frmmixcfginfoe
+        append_bits(&mut expected, 1, 1); // infomdate
+        append_bits(&mut expected, 5, 3); // bsmod
+        append_bits(&mut expected, 1, 1); // copyrightb
+        append_bits(&mut expected, 0, 1); // origbs
+        append_bits(&mut expected, 3, 2); // dsurexmod
+        append_bits(&mut expected, 0, 1); // audprodie
+        append_bits(&mut expected, 1, 1); // sourcefscod
+
+        assert_eq!(expected.len(), SELECTED_MIXING_INFORMATION_BITS as usize);
+        assert_eq!(
+            cursor.bit_offset(),
+            start + SELECTED_MIXING_INFORMATION_BITS
+        );
+        for (offset, bit) in expected.into_iter().enumerate() {
+            assert_eq!(bit_at(&bytes, start + offset as u32), bit);
+        }
+        for bit in 0..start {
+            assert_eq!(bit_at(&bytes, bit), bit_at(&before, bit));
+        }
+        for bit in (start + SELECTED_MIXING_INFORMATION_BITS)..128 {
+            assert_eq!(bit_at(&bytes, bit), bit_at(&before, bit));
+        }
+    }
+
+    #[test]
+    fn accepts_the_header_cursor_after_either_drc_compre_branch() {
+        let start = DIALNORM_BIT_OFFSET + SELECTED_DRC_HEADER_BITS_WITH_COMPR;
+        let mut bytes = [0_u8; 16];
+        let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(start)).unwrap();
+        let cursor = write_selected_bsi_mixing_information(&mut writer, &fixture_fields()).unwrap();
+        assert_eq!(
+            cursor.bit_offset(),
+            start + SELECTED_MIXING_INFORMATION_BITS
+        );
+    }
+
+    #[test]
+    fn rejects_invalid_fields_cursor_and_capacity_before_mutation() {
+        let start = DIALNORM_BIT_OFFSET + SELECTED_DRC_HEADER_BITS_WITHOUT_COMPR;
+        let mut bytes = [0xa5_u8; 16];
+        let before = bytes;
+        let mut invalid = fixture_fields();
+        invalid.dmixmod = 4;
+        let error = {
+            let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(start)).unwrap();
+            write_selected_bsi_mixing_information(&mut writer, &invalid).unwrap_err()
+        };
+        assert_eq!(
+            error,
+            SelectedBsiMixingInformationWriteError::FieldOutOfRange {
+                field: SelectedBsiMixingInformationField::Dmixmod,
+                value: 4,
+            }
+        );
+        assert_eq!(bytes, before);
+
+        let mut bytes = before;
+        let error = {
+            let mut writer =
+                FrameBitWriter::new(&mut bytes, FrameBitCursor::new(start + 1)).unwrap();
+            write_selected_bsi_mixing_information(&mut writer, &fixture_fields()).unwrap_err()
+        };
+        assert_eq!(
+            error,
+            SelectedBsiMixingInformationWriteError::HeaderCursorMismatch { actual: start + 1 }
+        );
+        assert_eq!(bytes, before);
+
+        let mut short = [0xa5_u8; 10];
+        let before = short;
+        let error = {
+            let mut writer = FrameBitWriter::new(&mut short, FrameBitCursor::new(start)).unwrap();
+            write_selected_bsi_mixing_information(&mut writer, &fixture_fields()).unwrap_err()
+        };
+        assert_eq!(
+            error,
+            SelectedBsiMixingInformationWriteError::BitWriter(FrameBitWriterError::BufferTooSmall)
+        );
+        assert_eq!(short, before);
     }
 }

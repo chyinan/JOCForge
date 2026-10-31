@@ -78,6 +78,25 @@ impl SelectedBsiDrcFields {
     }
 }
 
+/// Selected-profile mixing and information values supplied by the normalized
+/// configuration provider. Width validation is performed before frame writes.
+///
+/// This value carries no producer identity, source generation, or persistence;
+/// those joins remain the caller's responsibility.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SelectedBsiMixingInformationValues {
+    pub dmixmod: u8,
+    pub ltrtcmixlev: u8,
+    pub lorocmixlev: u8,
+    pub ltrtsurmixlev: u8,
+    pub lorosurmixlev: u8,
+    pub bsmod: u8,
+    pub copyrightb: bool,
+    pub origbs: bool,
+    pub dsurexmod: u8,
+    pub sourcefscod: bool,
+}
+
 /// Binds same-source F06ND controls to the selected F12 BSI field values.
 ///
 /// Only RF and per-block line flags/words are consumed. Auxiliary and limiter

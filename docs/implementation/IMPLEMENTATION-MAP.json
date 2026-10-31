@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1853603,
-              "sha256": "eb60bc1e52553ef7cc68a09a500a7c4df77048727152f741dc4df5e9509b5f08"
+              "bytes": 1861599,
+              "sha256": "7bfe49855507a21c270adbd39bcdf50fbba3063069bcca44c9d9e9a06ff0305c"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1853603,
-              "sha256": "eb60bc1e52553ef7cc68a09a500a7c4df77048727152f741dc4df5e9509b5f08"
+              "bytes": 1861599,
+              "sha256": "7bfe49855507a21c270adbd39bcdf50fbba3063069bcca44c9d9e9a06ff0305c"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -20454,8 +20454,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
-              "bytes": 20670,
-              "sha256": "f5ee75d2fcdc79bb21268601facd6b9a5ea940acb5bea8d8a1913a9ee6630859"
+              "bytes": 21301,
+              "sha256": "2ddb4c631e0b2602d51ad9545ae2fa9dbbf491638e3875982428ad4acbd67cec"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -24003,8 +24003,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
-              "bytes": 20670,
-              "sha256": "f5ee75d2fcdc79bb21268601facd6b9a5ea940acb5bea8d8a1913a9ee6630859"
+              "bytes": 21301,
+              "sha256": "2ddb4c631e0b2602d51ad9545ae2fa9dbbf491638e3875982428ad4acbd67cec"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -25422,6 +25422,142 @@
             "gate1": "OPEN",
             "implementation_delivery_declared_in_package": "PROHIBITED"
           }
+        },
+        {
+          "slice_id": "selected-profile-bsi-mixing-information-writer",
+          "mapping_status": "MATERIALIZED_DIRECT_F12_SELECTED_PROFILE_MIXINFO_BSI_WRITER__FULL_FRAME_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_MIXINFO_FIELD_WRITER__UPSTREAM_PROVIDER_AND_COMPLETE_FRAME_OPEN",
+          "scope": "Pure selected-profile F12 writer for the BSI mixmdate/infomdate fields after the selected DRC header. It accepts caller-supplied normalized mixing/information values, validates U2/U3 ranges and the allowed post-DRC cursor, preflights 31 bits, then writes the selected conditional fields MSB-first. Profile-fixed presence flags and absent optional payloads follow the approved CODEC-COMPLETE-FRAME-ASSEMBLY contract. The writer neither derives upstream values nor binds their producer/source generation; it does not assemble the full BSI, six-block syntax, EMDF, frame budget/tail, CRC, or output.",
+          "owner": "codec",
+          "implementation_requirement": true,
+          "dependencies": [],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_syntax.rs",
+            "crates/jocforge-domain/src/codec/frame_builder.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
+              "bytes": 21301,
+              "sha256": "2ddb4c631e0b2602d51ad9545ae2fa9dbbf491638e3875982428ad4acbd67cec"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 15964,
+              "sha256": "170e3f220a795abfff5d296e8b53a8436b621e547c064e3aa3d4a781217c3829"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/codec/frame_builder.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 15964,
+              "sha256": "170e3f220a795abfff5d296e8b53a8436b621e547c064e3aa3d4a781217c3829"
+            }
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "FrameBitCursor"
+            ],
+            "covered_clauses": [
+              "The selected prefix fixes strmtyp=0, acmod=7, lfeon=1 and fscod=0; mixmdate and infomdate are present.",
+              "Selected acmod=7 writes dmixmod and all four selected 3-bit mix levels; absent conditional payloads are not emitted.",
+              "Selected lfe/pgmscl/extpgmscl/frame-mix/audprodi presence flags are zero; mixdef=0 has no extra payload.",
+              "The input fields are validated before mutation; writer accepts only the cursor after the DRC header (bit 51 or 59) and preflights the complete 31-bit segment.",
+              "This leaf writes BSI syntax only; input producer identity, source/generation joins and complete frame assembly remain open."
+            ]
+          },
+          "parameters": {
+            "kind": "WASH_BOUND_SELECTED_F12_MIXING_INFORMATION_SYNTAX",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-ORDER-AND-BUDGET.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-INPUT-SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
+            "selected_profile": "48 kHz / 1024 kbps / 5.1 / acmod=7 / lfeon=1 / six blocks",
+            "mix_info_segment_bits": 31,
+            "input_owner_binding": "NOT_ESTABLISHED_BY_THIS_WRITER",
+            "validation_boundary": "Selected profile field encoding and local cursor/range/capacity guards only; no producer lineage or complete frame trial."
+          },
+          "vectors": {
+            "kind": "WASHED_FRAME_CONTRACT_AND_LOCAL_MSB_FIELD_LAYOUT_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-ORDER-AND-BUDGET.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-INPUT-SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/WASH-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "One-hot/distinct field values verify MSB widths and ordering for mixmdate, five mixing values, fixed suppress flags, infomdate and information fields.",
+              "Invalid U2/U3 values, incorrect post-DRC cursor, and insufficient capacity are rejected before any frame bytes change.",
+              "Wash package input plans provide field-shape cases only; no expected frame bytes or audio outputs are used."
+            ],
+            "expected_outputs_included": false,
+            "native_execution": "NOT_RUN",
+            "full_frame_trial": "NOT_RUN",
+            "supplement_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SELECTED_BSI_MIXINFO_FIELD_OUT_OF_RANGE",
+              "category": "input width",
+              "trigger": "A caller-supplied U2/U3 mix or information value exceeds its syntax width.",
+              "programme_state_after": "No frame bytes are written; writer has no persistent state.",
+              "caller_action": "Reject the malformed BSI input before frame assembly."
+            },
+            {
+              "error_code": "SELECTED_BSI_MIXINFO_HEADER_CURSOR",
+              "category": "field order",
+              "trigger": "The cursor is not the selected post-DRC header position (bit 51 or 59).",
+              "programme_state_after": "No frame bytes are written.",
+              "caller_action": "Reject the out-of-order BSI write."
+            },
+            {
+              "error_code": "SELECTED_BSI_MIXINFO_BIT_WRITER",
+              "category": "capacity",
+              "trigger": "The complete 31-bit segment does not fit the caller-owned buffer.",
+              "programme_state_after": "No frame bytes are written.",
+              "caller_action": "Reject the candidate scratch buffer."
+            }
+          ],
+          "not_run": [
+            "Runtime producer binding for normalized downmix and information values from F06.4.",
+            "Same-programme/source generation lineage from the selected provider through a production caller.",
+            "Complete BSI composition, full six-block syntax, F11 candidate plan integration, and 4096-byte frame budget/tail assembly.",
+            "Same-source F13 EMDF/container and F14 integrity composition, full frame CRC trial, durable append, and output publication.",
+            "Native execution, W04, full-programme replay, and product acceptance."
+          ],
+          "validation_boundary": "Pure selected-profile field writer only; no end-to-end codec or production readiness claim.",
+          "native_status": {
+            "selected_profile_fields_written": [
+              "mixmdate",
+              "dmixmod",
+              "four mix levels",
+              "infomdate",
+              "information fields"
+            ],
+            "presence_flags_selected_zero": [
+              "lfemixlevcode",
+              "pgmscle",
+              "extpgmscle",
+              "frmmixcfginfoe",
+              "audprodie"
+            ],
+            "conditional_payloads_omitted_by_selected_flags": true,
+            "field_values_derived_by_writer": false,
+            "source_owner_generation_bound": false,
+            "bit_count_written": 31,
+            "complete_frame_constructed": false,
+            "full_frame_trial": "NOT_RUN",
+            "production_encode_integration": "NOT_RUN"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -31930,8 +32066,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1853603,
-              "sha256": "eb60bc1e52553ef7cc68a09a500a7c4df77048727152f741dc4df5e9509b5f08"
+              "bytes": 1861599,
+              "sha256": "7bfe49855507a21c270adbd39bcdf50fbba3063069bcca44c9d9e9a06ff0305c"
             }
           ],
           "test_inventory": [
