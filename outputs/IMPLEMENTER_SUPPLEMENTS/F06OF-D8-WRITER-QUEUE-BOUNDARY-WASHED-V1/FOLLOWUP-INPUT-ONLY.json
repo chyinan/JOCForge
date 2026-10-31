@@ -1,0 +1,44 @@
+{
+  "schema": "washed-d8-writer-queue-followup.v1",
+  "implementation_mapping": {
+    "allowed_claim": "A separate hash-matched PCM metadata record writer copies a 16-byte provider pair to record-relative +0xD8..+0xE7 and transfers the record pointer into a queue.",
+    "scope": "one bounded static writer/queue path",
+    "do_not_infer": [
+      "the candidate record supplies PcmMd+0x28",
+      "same displacement implies same owner or field",
+      "a runtime object or generation was observed",
+      "the selected PcmMd builder creates an OAMDI event",
+      "the candidate key equals ADM object identity, ChannelInputId, global target ID, or TargetSlotIndex",
+      "the native target bridge is closed"
+    ],
+    "do_not_change": [
+      "codec algorithm",
+      "production readiness",
+      "F06OF target or generation model"
+    ]
+  },
+  "wash_followups": [
+    {
+      "gap": "typed pointer transfer from candidate queued record to PcmMd getter receiver",
+      "status": "UNBOUND",
+      "next_action": "Trace constructor, queue consumer, getter call arguments, and exact pointer identity in the same object path."
+    },
+    {
+      "gap": "candidate source field semantics and callback generation",
+      "status": "UNBOUND/NOT_CAPTURED"
+    },
+    {
+      "gap": "nonempty 48-byte OAMDI event producer in another supported mode",
+      "status": "UNBOUND"
+    },
+    {
+      "gap": "native owner/key to F06OF TargetSlotIndex and packet generation",
+      "status": "UNBOUND"
+    }
+  ],
+  "experiment_authorization": {
+    "authorized_adm_inputs_may_be_used_if_relevant": true,
+    "reapproval_needed": false,
+    "do_not_persist_PCM_or_EC3": true
+  }
+}

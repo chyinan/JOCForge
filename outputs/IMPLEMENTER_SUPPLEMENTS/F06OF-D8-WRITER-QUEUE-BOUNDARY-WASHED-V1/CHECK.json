@@ -1,0 +1,20 @@
+{
+  "schema": "washed-d8-writer-queue-check.v1",
+  "checks": {
+    "R3_v4_manifest_and_seal_hashes": "PASS",
+    "R3_v4_payload_hashes_normal": "PASS",
+    "R3_v4_payload_hashes_python_O": "PASS",
+    "R3_source_and_Wash_copy_files_identical_11_of_11": true,
+    "target_D_and_E_DLL_hash_recomputed": "PASS",
+    "candidate_writer_to_queue_chain": "STATIC_BOUND_WITHIN_SEPARATE_RECORD_PATH",
+    "candidate_writer_pointer_to_PcmMd_getter_receiver": "UNBOUND",
+    "same_generation_token": "NOT_CAPTURED",
+    "other_same_displacement_row_path": "SEPARATE_DOMAIN",
+    "selected_PcmMd_event_count_pointer": "ZERO_AND_NULL_FOR_SELECTED_BUILDER",
+    "F06OF_target_slot_bridge": "UNBOUND",
+    "native_capture": "NOT_RUN",
+    "failed_setup_is_no_hit": false
+  },
+  "status": "PASS_SEPARATE_RECORD_WRITER_BOUNDARY; PMD_GETTER_AND_F06OF_BRIDGE_OPEN",
+  "implementation_effect": "evidence-only; no codec algorithm or production permission change"
+}

@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1808039,
-              "sha256": "5fd13cecaef2aa587cd05212ad3d1681576cd9f4bcf96a91b1553e743dc6c659"
+              "bytes": 1814823,
+              "sha256": "c4438f5c4aeee33ba566e05a69203d35dd282deaed6ced5e7bb04a30e8e3993f"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1808039,
-              "sha256": "5fd13cecaef2aa587cd05212ad3d1681576cd9f4bcf96a91b1553e743dc6c659"
+              "bytes": 1814823,
+              "sha256": "c4438f5c4aeee33ba566e05a69203d35dd282deaed6ced5e7bb04a30e8e3993f"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -17707,6 +17707,103 @@
             "native_to_f06of_target_bridge": "UNBOUND",
             "runtime_generation_join": "UNBOUND",
             "whole_f06of_readiness": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-f06of-d8-record-writer-queue-separate-path",
+          "mapping_status": "WASHED_STATIC_D8_RECORD_WRITER_QUEUE__PMD_GETTER_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_SEPARATE_RECORD_PATH__NO_F06OF_TARGET_JOIN",
+          "scope": "Hash-bound Ghidra evidence identifies a bounded writer/queue path for a separate PCM metadata record: the producer initializes a record, copies a 16-byte provider pair into record-relative bytes +0xD8..+0xE7, and transfers that record pointer into a ring/queue. The selected PcmMd getter is a different receiver path that reads its own receiver-relative +0xD8/+0xE0 fields. The candidate queued pointer is not transferred to that receiver, and no shared call or generation token joins them. Another processing-row store at the same displacement is also a separate domain. The selected PcmMd builder's event count=0/pointer=NULL applies only to that builder; other producers/modes are not excluded. F06OF target identity and generation remain UNBOUND.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "CandidateRecordOwner",
+              "ProviderPairSource",
+              "CandidateRecordByteRange",
+              "CandidateRecordPointer",
+              "RingQueueSlot",
+              "PmdGetterReceiver",
+              "PmdGetterD8Field",
+              "PmdGetterE0Field",
+              "ProcessingRowD8Field",
+              "SelectedPmdEventList",
+              "F06OFTargetSlot",
+              "CallbackGeneration"
+            ],
+            "covered_clauses": [
+              "A separate record writer copies a 16-byte provider pair to record-relative +0xD8..+0xE7 and transfers that record pointer into a queue.",
+              "The candidate record pointer is not transferred to the selected PcmMd getter receiver; no shared call or generation token joins them.",
+              "The selected PcmMd getter's receiver-relative +0xD8/+0xE0 fields and another processing-row D8 store are separate domains.",
+              "Selected PcmMd event count=0/pointer=NULL is scoped to that builder; other producers/modes are not ruled out.",
+              "No native target-slot or callback-generation bridge is established; input processing was not confirmed."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_SEPARATE_D8_RECORD_WRITER_AND_QUEUE_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "supplement_manifest_sha256": "904ce29ff7f39781c0563fd43de042a6dd136ee988e1ec47828bf8ea448511b1",
+            "source_r3_v4_manifest_sha256": "29acf8bba25aa110ebf95b1bf2d9720ffb6ebf5bdc909dded5fc26e616e92bbc",
+            "source_r3_v4_seal_sha256": "d48600b90c17e9609a2fcb8b7582b577ca33331adb92fb96db8d31f7637fa90c",
+            "target_d_and_e_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+            "validation_boundary": "Separate static record writer/queue path only; no typed pointer/generation join to PcmMd getter or F06OF target."
+          },
+          "vectors": {
+            "kind": "WASHED_F06OF_D8_WRITER_QUEUE_STATIC_BOUNDARY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/CHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1/FOLLOWUP-INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "The candidate record writer copies provider bytes +0xD8..+0xE7 and transfers the same candidate record pointer into a queue.",
+              "No same pointer or generation reaches the selected PcmMd getter receiver; matching +0xD8 offsets are not identity.",
+              "Native capture and generation token are not available; selected builder empty-list evidence does not exclude another producer/mode."
+            ],
+            "expected_outputs_included": false,
+            "native_capture": "NOT_RUN",
+            "supplement_manifest_sha256": "904ce29ff7f39781c0563fd43de042a6dd136ee988e1ec47828bf8ea448511b1"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "A typed pointer transfer from the queued candidate record to the PcmMd getter receiver.",
+            "Candidate source-field semantics and generation token.",
+            "A nonempty 48-byte OAMDI event producer in another supported mode.",
+            "Native owner/key to F06OF TargetSlotIndex and packet generation.",
+            "Native capture and confirmed DEE workflow input processing."
+          ],
+          "validation_boundary": "Evidence-only separate writer/queue path; same offset, package adjacency, or event order do not join record owners.",
+          "native_status": {
+            "candidate_record_byte_range": {
+              "start": "+0xD8",
+              "end": "+0xE7",
+              "bytes": 16
+            },
+            "candidate_writer_to_queue_chain": "STATIC_BOUND_WITHIN_SEPARATE_RECORD_PATH",
+            "candidate_writer_pointer_to_pmd_getter_receiver": "UNBOUND",
+            "same_generation_token": "NOT_CAPTURED",
+            "same_displacement_other_row_path": "SEPARATE_DOMAIN",
+            "selected_pmd_event_count_pointer": "ZERO_AND_NULL_FOR_SELECTED_BUILDER",
+            "other_pmd_producers_or_modes": "NOT_RULED_OUT",
+            "f06of_target_slot_bridge": "UNBOUND",
+            "dee_input_processing": "NOT_CONFIRMED",
+            "native_capture": "NOT_RUN",
+            "whole_f06of_readiness": false,
+            "product_policy_changed": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -31324,8 +31421,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1808039,
-              "sha256": "5fd13cecaef2aa587cd05212ad3d1681576cd9f4bcf96a91b1553e743dc6c659"
+              "bytes": 1814823,
+              "sha256": "c4438f5c4aeee33ba566e05a69203d35dd282deaed6ced5e7bb04a30e8e3993f"
             }
           ],
           "test_inventory": [

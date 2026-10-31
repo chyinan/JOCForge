@@ -1,0 +1,27 @@
+{
+  "schema": "washed-supplement-manifest.v1",
+  "package_id": "F06OF-D8-WRITER-QUEUE-BOUNDARY-WASHED-V1",
+  "scope": "separate hash-identified PCM metadata record writer and queue path; no pointer/generation join to selected PcmMd getter or F06OF target",
+  "files": [
+    {
+      "name": "CONTRACT.md",
+      "bytes": 1951,
+      "sha256": "5a3db4397b463f980639a929947ff2143fc96bddc5847af40c59d9f65829b73f"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1611,
+      "sha256": "eeca69db8465b79d942ad51fc29d902f7a7e5c4cbef7bb14fbd0b2e69bc170f4"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 944,
+      "sha256": "49807020f36e37b962111dec8b5baf844a2c74f466ec75eea306a6f396edf0f0"
+    },
+    {
+      "name": "FOLLOWUP-INPUT-ONLY.json",
+      "bytes": 1669,
+      "sha256": "7eaf5996730cc9f9b5e2ade16948c11451218bdbc2e8ae63c079f9a3fcdbdd3c"
+    }
+  ]
+}
