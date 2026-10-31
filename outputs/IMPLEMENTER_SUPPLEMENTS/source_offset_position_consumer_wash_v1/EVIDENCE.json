@@ -1,0 +1,114 @@
+{
+  "schema": "source-offset-position-consumer-evidence.v1",
+  "purpose": "Bind the authorized ADM metadata time origin through its typed source-information adapter and the first explicit file-position range consumer; report the spatial/fit join separately.",
+  "identity": {
+    "authorized_sample_count": 7,
+    "authorized_sample_hashes_rechecked": true,
+    "prior_metadata_audit_manifest_sha256": "6a2ccb7cc514736fd16b1acc3e8f6f2243a98cb429443bdbfd90410519d398d9",
+    "prior_input_only_metadata_sha256": "1df83f697dd893f19a9d1b348a64d271690f156a3cc58b909c4be6e95530bc53",
+    "prior_metadata_audit_receipt_sha256": "02750b4badf913faafc7774b112a614a9e79303be8e09ba43ce080302d383917",
+    "samples": [
+      {"sample_id": "sample-1", "sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335", "physical_channels": 36},
+      {"sample_id": "sample-2", "sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e", "physical_channels": 36},
+      {"sample_id": "sample-3", "sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d", "physical_channels": 36},
+      {"sample_id": "sample-4", "sha256": "809e27c0c44801af93abe24644546e2ed5ffc4bf05cacfaa35b0d127964e32c5", "physical_channels": 36},
+      {"sample_id": "sample-5", "sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82", "physical_channels": 36},
+      {"sample_id": "sample-6", "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1", "physical_channels": 38},
+      {"sample_id": "sample-7", "sha256": "bbe7bd5cd45e764d55317ad5d0142426661d483a5f912fc46f021a419f8a36e2", "physical_channels": 36}
+    ],
+    "static_processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "source_metadata_component_sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+    "r138_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "r138_reference_log_sha256": "66b123188d24a4b4414a4edb8e169a8a135696e87ea427531dba9f54beffb7c",
+    "r138_origin_cursor_package_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+    "current_source_metadata_static_report_sha256": "80f4223bb36e4f4a33736e0b320e388f951cd55a2f78bfe3ab8ed6671703c490",
+    "current_source_metadata_static_process_sha256": "2e1e1cf659455898cac7e10b64f1a9a1781f43881ab8d00edb3e362bad658cfe",
+    "current_source_metadata_static_script_sha256": "ba9f2176cdbb494463884c89cc0393222a246acef43f7fe9b491324c24654b52",
+    "current_input_field_label_static_report_sha256": "7f437b4fd64f5ce3ec5fa05acfa2d40bafef652398ab3eab7a0473455b435751",
+    "current_seven_sample_metadata_scan_sha256": "76018b7f6ad8dd7e56953b872f6ae00f40e1c54394559fb83cbf0777be49f855",
+    "current_metadata_scan_script_sha256": "c8ae86a4e0f949761527a7b2188b388873c0c2ed499e836dc71a4ad55ee40492"
+  },
+  "seven_sample_metadata_scan": {
+    "source_file_hashes_match_prior_identity_record": true,
+    "sample_values_decoded_or_saved": false,
+    "data_chunk_bytes_read_by_metadata_scanner": 0,
+    "data_chunk_read_method": "SEEK_OVER_DATA_CHUNK",
+    "bext_time_reference_present_count": 0,
+    "ixml_time_reference_present_count": 0,
+    "explicit_axml_offset_or_ffoa_field_present_count": 0,
+    "adm_audio_programme_start_tokens": ["01:00:10.00000"],
+    "adm_audio_programme_start_seconds_derived": [3610.0],
+    "programme_start_is_same_across_all_seven": true,
+    "discriminating_offset_vs_ffoa_sample_identified": false,
+    "interpretation_limit": "The audited BWF metadata exposes a common ADM programme start but no direct offset/FFOA tag. This does not prove every native offset and FFOA field is equal."
+  },
+  "r138_native_scalar_observation": {
+    "observed_sample_id": "sample-6",
+    "sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "sample_rate_hz": 48000,
+    "native_ffoa_seconds": 3610.0,
+    "native_offset_seconds": 3610.0,
+    "scalar_pair_status": "CAPTURED_EQUAL_FOR_THIS_SAMPLE",
+    "other_six_native_offset_ffoa_pairs": "NOT_CAPTURED",
+    "new_native_run_this_continuation": "NOT_RUN"
+  },
+  "typed_source_metadata_edge": {
+    "source_master_metadata_accessor": "VIRTUAL_METADATA_GETTER",
+    "source_time_field_a": {
+      "storage_width_bits": 64,
+      "numeric_consumption_type": "IEEE754_BINARY64_SECONDS",
+      "normalized_metadata_key": "offset"
+    },
+    "source_time_field_b": {
+      "storage_width_bits": 64,
+      "numeric_consumption_type": "IEEE754_BINARY64_SECONDS",
+      "normalized_metadata_key": "ffoa"
+    },
+    "source_field_writer_implementation": "UNBOUND_VIRTUAL_METADATA_IMPLEMENTATION",
+    "normalization_adapter": "SOURCE_INFO_DOUBLE_FIELDS_TO_DECIMAL_METADATA_MAP",
+    "ffoa_auto_schema_semantics": "AUTO_RETAINS_FFOA_FROM_SOURCE",
+    "offset_auto_resolution_rule": "UNBOUND"
+  },
+  "first_explicit_range_consumer": {
+    "consumer_role": "FILE_POSITION_RANGE_NORMALIZER",
+    "time_base_route": "file_position",
+    "separately_consumes": ["ffoa_seconds", "offset_seconds", "sample_rate_hz"],
+    "first_frame_of_action_relative_start_seconds": "max(offset_seconds, ffoa_seconds) - offset_seconds",
+    "source_position_fields_are_double_seconds": true,
+    "range_result_unit": "SAMPLES_AT_SOURCE_SAMPLE_RATE",
+    "multi_file_alignment_expression": "round_half_away_from_zero((ffoa_seconds - offset_seconds) * sample_rate_hz), then signed integer conversion toward zero",
+    "multi_file_sample_count_is_separate_from_alignment_offset": true,
+    "r138_equal_value_result_samples": 0,
+    "edge_disposition": "MUST_HAVE_FOR_EXACT_SOURCE_INTERVAL_AND_CODEC_INPUT"
+  },
+  "spatial_fit_position_join": {
+    "first_typed_consumer_in_spatial_or_fit": "NOT_OBSERVED",
+    "reader_range_to_reader_relative_cursor": "BOUND_IN_R138_FOR_ONE_SELECTED_CALL",
+    "reader_provider_to_codec_input_descriptor": "SAME_CALL_BOUND_IN_R138",
+    "absolute_sample_position_field_in_codec_descriptor": "NOT_CAPTURED",
+    "host_frame": "NOT_CAPTURED",
+    "spatial_callback": "NOT_CAPTURED",
+    "fit_generation": "NOT_CAPTURED",
+    "u04_invocation": "NOT_CAPTURED",
+    "consumer_generation": "NOT_CAPTURED",
+    "writer_ordinal_is_generation": false,
+    "minimum_next_action": "Continue the typed range-array consumer trace into the first spatial/fit call and resolve the source-master virtual metadata writer; keep sample position, host frame, callback, fit generation, U04 invocation, and codec/writer domains separate."
+  },
+  "gate_status": {
+    "source_time_metadata_to_reader_range_rule": "STATIC_RULE_BOUND; SOURCE_FIELD_WRITER_UNBOUND",
+    "spatial_fit_sample_position_join": "UNBOUND",
+    "model_execution": "NOT_RUN",
+    "model_comparison": "NOT_EVALUATED",
+    "type10_and_six_plane_composition": "NOT_RUN",
+    "gate1_closed": false
+  },
+  "delivery": {
+    "recipient_role": "wash-agent",
+    "implementation_agent_contacted": false,
+    "implementation_delivery": "PROHIBITED",
+    "contains_sample_names_or_paths": false,
+    "contains_raw_addresses": false,
+    "contains_audio_or_pcm": false,
+    "contains_private_license_material": false
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "wash-only-atmosmezz-storage-provider-lineage.v1",
+  "package_id": "HOST-ATMOSMEZZ-STORAGE-PROVIDER-LINEAGE-FOLLOWUP-V1",
+  "result": "HOST_STORAGE_PROPERTY_TO_RUN_AND_GETTARGETS_PROVIDER_FIELD_CLOSED; PROVIDER_TO_PLUGIN_PROCESS_PACKET_IDENTITY_AND_GENERATION_UNBOUND; NATIVE_OBSERVATION_NOT_RUN",
+  "evidence_tier": "GHIDRA_STATIC",
+  "source_modules": [
+    {
+      "role": "host executable",
+      "file_name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728
+    },
+    {
+      "role": "Atmos audio-filter plugin",
+      "file_name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464
+    }
+  ],
+  "host_storage_provider_lineage": {
+    "property_dispatch_role": "host reader property dispatch",
+    "storage_property_key": "storage",
+    "storage_value_transfer": "supplied property value stored in the AtmosMezz reader storage-provider member",
+    "separate_property_key": "dee_misc_container",
+    "separate_property_transfer": "stored in a distinct reader member",
+    "consumers": ["Init", "Run", "GetTargets"],
+    "provider_field_lineage_status": "STATIC_MEMBER_TRANSFER_CLOSED",
+    "runtime_provider_identity_token": "NOT_OBSERVED"
+  },
+  "run_and_targets_outputs": {
+    "run_return_role": "completion status scalar",
+    "run_reader_owned_output": "metadata entries including sampling_rate, samples, timecode_frame_rate, offset, and ffoa",
+    "get_targets_return_role": "target-label string vector",
+    "neither_method_returns_plugin_process_packet": true
+  },
+  "cross_module_packet_identity": {
+    "storage_provider_to_plugin_process_packet": "UNBOUND",
+    "AtmosMezz_Run_GetTargets_to_plugin_process_packet_same_object": "UNBOUND",
+    "same_task_invocation": "UNBOUND",
+    "same_parent_or_source_generation": "UNBOUND",
+    "native_execution": "NOT_RUN",
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

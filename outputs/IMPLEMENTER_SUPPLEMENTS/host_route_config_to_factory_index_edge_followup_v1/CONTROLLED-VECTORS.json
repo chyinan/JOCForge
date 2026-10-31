@@ -1,0 +1,27 @@
+{
+  "schema": "route-config-to-factory-index-static-vectors.v1",
+  "classification": "STATIC_CALLSITE_AND_REGISTRATION_CROSSWALK_NOT_EXECUTED",
+  "native_execution": "NOT_RUN",
+  "vectors": [
+    {
+      "case_id": "host_route_profile_config_output",
+      "input": {"route_key": "encode_to_atmos_ddp"},
+      "expected_static": {"output_domain": "profile/config option values", "route_to_profile_config": "STATIC_CLOSED"}
+    },
+    {
+      "case_id": "audio_filter_category_registration_loop",
+      "input": {"category": "audio_filter", "table_count": 3},
+      "expected_static": {"registered_indices": [0, 1, 2], "index_source": "table enumeration loop"}
+    },
+    {
+      "case_id": "profile_output_to_factory_index_edge",
+      "input": {"profile_config_output": "route option values"},
+      "expected_static": {"factory_index": null, "status": "UNBOUND", "same_invocation_owner_transfer": "NONE_OBSERVED"}
+    },
+    {
+      "case_id": "same_name_index_zero_candidate",
+      "input": {"route_key": "encode_to_atmos_ddp", "dll_descriptor_at_index_zero": "encode_to_atmos_ddp"},
+      "expected_static": {"selected_factory_index": null, "status": "CANDIDATE_ONLY_NOT_SELECTION_EVIDENCE"}
+    }
+  ]
+}

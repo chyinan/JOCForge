@@ -1,0 +1,50 @@
+{
+  "schema": "wash-only-host-route-config-to-factory-index.v1",
+  "package_id": "HOST-ROUTE-CONFIG-TO-FACTORY-INDEX-EDGE-FOLLOWUP-V1",
+  "result": "ROUTE_TO_PROFILE_CONFIG_OUTPUT_CLOSED; CONFIG_OUTPUT_TO_FACTORY_INDEX_UNBOUND_AT_PRECISE_CALLSITES; NATIVE_OBSERVATION_NOT_RUN",
+  "evidence_tier": "GHIDRA_STATIC",
+  "source_modules": [
+    {
+      "role": "host executable",
+      "file_name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728
+    },
+    {
+      "role": "Atmos audio-filter plugin",
+      "file_name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464
+    }
+  ],
+  "route_profile_lookup": {
+    "route_key": "encode_to_atmos_ddp",
+    "output_domain": "profile/config option values",
+    "consumer_role": "task-profile option application",
+    "route_to_profile_config_status": "STATIC_CLOSED"
+  },
+  "audio_filter_index_registration": {
+    "category": "audio_filter",
+    "entry_count": 3,
+    "registered_indices": [0, 1, 2],
+    "index_argument_source": "loop counter over the returned three-entry plugin table",
+    "registration_role": "category index enumeration; not the task's selected factory dispatch"
+  },
+  "cross_edge": {
+    "profile_config_output_to_factory_index_argument": "UNBOUND",
+    "same_invocation_or_owner_transfer": "NONE_OBSERVED",
+    "route_key_to_factory_dispatch_callsite": "NOT_IDENTIFIED",
+    "selected_factory_index": null,
+    "same_name_index_zero": "CANDIDATE_ONLY_NOT_SELECTION_EVIDENCE",
+    "does_route_gate_profile_config": true,
+    "does_route_gate_factory_selection": "NOT_PROVEN"
+  },
+  "remaining_identity_boundaries": {
+    "runtime_task_parent_token": "NOT_OBSERVED",
+    "AtmosMezz_Run_GetTargets_to_plugin_process_packet_same_object": "UNBOUND",
+    "same_parent_or_source_generation": "UNBOUND",
+    "native_execution": "NOT_RUN",
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

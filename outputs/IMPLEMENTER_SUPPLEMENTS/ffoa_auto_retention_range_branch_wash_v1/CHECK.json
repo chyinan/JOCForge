@@ -1,0 +1,24 @@
+{
+  "schema": "ffoa-auto-retention-range-branch-check.v1",
+  "check_status": "PASS",
+  "ffoa_policy": {
+    "default": "auto",
+    "auto_retains_source_ffoa": true,
+    "auto_skips_explicit_setter": true,
+    "source_writer": "UNBOUND"
+  },
+  "range_consumer": {
+    "formula": "max(offset, ffoa) - offset",
+    "numeric_type": "BINARY64_SECONDS",
+    "sample_rate_hz": 48000,
+    "observed_equal_pair_seconds": 3610.0,
+    "derived_start_sample": 0,
+    "must_have_for_exact_source_interval": true
+  },
+  "limits": {
+    "offset_auto_rule": "UNBOUND",
+    "spatial_fit_position_join": "NOT_OBSERVED",
+    "model_execution": "NOT_RUN",
+    "gate1_closed": false
+  }
+}

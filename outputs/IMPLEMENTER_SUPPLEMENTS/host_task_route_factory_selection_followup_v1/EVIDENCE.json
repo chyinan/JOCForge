@@ -1,0 +1,53 @@
+{
+  "schema": "wash-only-host-route-factory-selection.v1",
+  "package_id": "HOST-TASK-ROUTE-FACTORY-SELECTION-FOLLOWUP-V1",
+  "result": "DLL_REGISTRATION_NAME_TO_FACTORY_INDEX_CLOSED; HOST_TASK_ROUTE_TO_FACTORY_INDEX_UNBOUND; HOST_PACKET_IDENTITY_AND_GENERATION_UNBOUND; NATIVE_OBSERVATION_NOT_RUN",
+  "evidence_tier": "GHIDRA_STATIC",
+  "source_modules": [
+    {
+      "role": "host executable",
+      "file_name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728
+    },
+    {
+      "role": "Atmos audio-filter plugin",
+      "file_name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464
+    }
+  ],
+  "host_route": {
+    "route_key": "encode_to_atmos_ddp",
+    "evidence_scope": "static task/config registry and route catalog",
+    "runtime_selected_route": "NOT_OBSERVED",
+    "selected_audio_filter_factory_index": null,
+    "route_to_factory_index_status": "UNBOUND",
+    "reason": "The host route registry and audio_filter category-index registration are separate static paths in the inspected host code. no typed value transfer or route-conditioned branch selecting one index was recovered."
+  },
+  "host_audio_filter_loader": {
+    "category": "audio_filter",
+    "loader_resolves_category_export": true,
+    "factory_table_count": 3,
+    "registered_indices": [0, 1, 2],
+    "registration_scope": "all table indices are registered under the category; this does not select one for the task route"
+  },
+  "dll_factory_registration": {
+    "mapping_status": "STATIC_DESCRIPTOR_TO_FACTORY_INDEX_CLOSED",
+    "entries": [
+      {"index": 0, "descriptor_name": "encode_to_atmos_ddp"},
+      {"index": 1, "descriptor_name": "atmos_mezz_to_atmos_ddp"},
+      {"index": 2, "descriptor_name": "pcm_to_atmos_ddp"}
+    ],
+    "binding_evidence": "Each module-initialized descriptor global is passed by its corresponding ordered factory entry into the common FilterDDPJocEncPlugin constructor.",
+    "host_route_identity_join": "UNBOUND; matching descriptor text does not prove selected host factory index"
+  },
+  "identity_boundaries": {
+    "runtime_parent_task_token": "NOT_OBSERVED",
+    "AtmosMezz_Run_GetTargets_to_plugin_process_packet_same_object": "UNBOUND",
+    "same_parent_or_source_generation": "UNBOUND",
+    "native_execution": "NOT_RUN",
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

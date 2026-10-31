@@ -1,0 +1,21 @@
+{
+  "schema": "prior-native-sample-separation.v1",
+  "status": "PRIOR_NATIVE_CAPTURE_MATCHES_NONE_OF_SEVEN_SEPARATE_AUTHORIZED_INPUT_IDENTITIES; NO_JOIN",
+  "prior_native_job_sha256": "8fba0b22b93b5cf27d072e95e3f6518f645f5536d31b58dcfc1e6257d27cba1f",
+  "prior_native_input_file_sha256": "adfee1efadd5d331497ec55a1c94b89c7f1a717ad959d6d5c726efb0b64e81aa",
+  "prior_native_lineage_id": "historical_r24_native_input",
+  "authorized_input_crosswalk": [
+    {"lineage_id": "authorized_adm_bwf_01", "input_file_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335", "matches_prior_native_input": false},
+    {"lineage_id": "authorized_adm_bwf_02", "input_file_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e", "matches_prior_native_input": false},
+    {"lineage_id": "authorized_adm_bwf_03", "input_file_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d", "matches_prior_native_input": false},
+    {"lineage_id": "authorized_adm_bwf_04", "input_file_sha256": "809e27c0c44801af93abe24644546e2ed5ffc4bf05cacfaa35b0d127964e32c5", "matches_prior_native_input": false},
+    {"lineage_id": "authorized_adm_bwf_05", "input_file_sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82", "matches_prior_native_input": false},
+    {"lineage_id": "authorized_adm_bwf_06", "input_file_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1", "matches_prior_native_input": false},
+    {"lineage_id": "authorized_adm_bwf_07", "input_file_sha256": "bbe7bd5cd45e764d55317ad5d0142426661d483a5f912fc46f021a419f8a36e2", "matches_prior_native_input": false}
+  ],
+  "matches_any_authorized_input_identity": false,
+  "lineage_rule": "Each authorized BWF hash is a separate input identity. The crosswalk compares identities only; the prior native capture may support its own historical run only and its selector, BSI, owner, and generation observations are not joined to any authorized input.",
+  "unapproved_sample_path_persisted": false,
+  "unapproved_sample_name_persisted": false,
+  "unapproved_sample_content_included": false
+}

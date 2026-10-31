@@ -1,0 +1,27 @@
+{
+  "schema": "host-route-factory-gate-vectors.v1",
+  "classification": "STATIC_REGISTRATION_AND_CALLSITE_CROSSWALK_NOT_EXECUTED",
+  "native_execution": "NOT_RUN",
+  "vectors": [
+    {
+      "case_id": "dll_index_zero_candidate",
+      "input": {"factory_index": 0},
+      "expected_static": {"descriptor_name": "encode_to_atmos_ddp", "host_selection": "UNBOUND"}
+    },
+    {
+      "case_id": "dll_index_one_registration",
+      "input": {"factory_index": 1},
+      "expected_static": {"descriptor_name": "atmos_mezz_to_atmos_ddp"}
+    },
+    {
+      "case_id": "dll_index_two_registration",
+      "input": {"factory_index": 2},
+      "expected_static": {"descriptor_name": "pcm_to_atmos_ddp"}
+    },
+    {
+      "case_id": "host_route_profile_lookup",
+      "input": {"route_key": "encode_to_atmos_ddp"},
+      "expected_static": {"lookup_result_domain": "profile/config option values", "factory_index_transfer": "NONE_OBSERVED", "factory_index_status": "UNBOUND"}
+    }
+  ]
+}

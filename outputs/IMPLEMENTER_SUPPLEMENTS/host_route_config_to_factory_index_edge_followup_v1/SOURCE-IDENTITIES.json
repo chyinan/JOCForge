@@ -1,0 +1,23 @@
+{
+  "schema": "wash-only-source-identities.v1",
+  "analysis": {
+    "tool": "Ghidra",
+    "version": "12.2 PUBLIC",
+    "read_only_project": true,
+    "ida_used": false
+  },
+  "sources": [
+    {
+      "role": "host executable",
+      "file_name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728
+    },
+    {
+      "role": "Atmos audio-filter plugin",
+      "file_name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464
+    }
+  ]
+}

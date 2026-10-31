@@ -1,0 +1,71 @@
+{
+  "schema": "native-measurement-dialnorm-scoped-observation.v1",
+  "sample_scope": {
+    "authorized_real_adm_sample_count": 1,
+    "sample_channel_count": 38,
+    "configured_filter": "encode_to_atmos_ddp",
+    "configured_data_rate_kbps": 1024,
+    "output_sample_rate_48khz": "NOT_VERIFIED",
+    "output_channel_mode_5_1": "NOT_VERIFIED",
+    "joc_signaling_and_playback": "NOT_RUN",
+    "second_real_adm_sample": "NOT_RUN"
+  },
+  "source_module_hashes": [
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+    },
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    }
+  ],
+  "static_candidate": {
+    "source_scalar_kind": "U16 indexed object member",
+    "semantic_field_tag": "UNBOUND",
+    "helper_calls_in_candidate_function": {
+      "width_1_count": 3,
+      "width_5_count": 1
+    },
+    "exact_candidate_callsites_observed_in_completed_run": false,
+    "is_f12_dialnorm": "NOT_ESTABLISHED"
+  },
+  "generic_runtime_writer": {
+    "observed": true,
+    "scalar_u16": 1,
+    "width_bits": 5,
+    "return_site_matches_static_candidate": false,
+    "source_field_value_in_same_call": "NOT_OBSERVED",
+    "typed_owner_task_generation_join": "UNBOUND"
+  },
+  "measurement_chain": {
+    "run100_log_final_integrated_loudness": -16.784912,
+    "run100_log_measured_loudness": -16.78,
+    "units": "NOT_STATED_IN_LOG",
+    "finalized_receipt_join": "UNBOUND",
+    "fresh_finalize_observer": "NOT_RUN",
+    "measurement_to_f06nd_drc_input": "UNBOUND",
+    "f06nd_drc_to_f12_bsi_dialnorm": "UNBOUND",
+    "dialnorm_correctness": "NOT_VERIFIED",
+    "candidate_gate_to_sample_process_completion": "NOT_DEMONSTRATED"
+  },
+  "run_metadata": {
+    "successful_process_runs": 2,
+    "job_duration_seconds_observed": [27, 30],
+    "temporary_output_file_bytes_observed": 17395712,
+    "explicit_dee_exit_code": "NOT_CAPTURED",
+    "explicit_encoder_success_marker": "NOT_FOUND",
+    "output_payload_read_or_retained_by_observer": false,
+    "temporary_outputs_removed_after_metadata_checks": true
+  },
+  "environment_class": {
+    "successful_win_dbg_runs": "TEMP_TMP_SYSTEM_DEFAULT",
+    "earlier_overridden_temp_attempts": "PLUGIN_INITIALIZATION_FAILED",
+    "causal_factor": "NOT_ISOLATED",
+    "run100_cwd_temp_tmp_and_license_path": "NOT_RECORDED"
+  },
+  "private_auth_or_key_contents_read": false,
+  "implementation_agent_contacted": false,
+  "branch_disposition": "NON_GATING_FOR_OBSERVED_PROCESS_COMPLETION_ONLY; OWNER_JOIN_AND_OUTPUT_CORRECTNESS_UNBOUND",
+  "full_e2e_and_player_playback": "NOT_RUN"
+}

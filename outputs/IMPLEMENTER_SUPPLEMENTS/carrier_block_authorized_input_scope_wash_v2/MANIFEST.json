@@ -1,0 +1,46 @@
+{
+  "schema": "wash-only-input-scope-manifest.v1",
+  "package_id": "carrier_block_authorized_input_scope_wash_v2",
+  "status": "AUTHORIZED_BWF_INPUT_IDENTITIES_KEPT_SEPARATE_PRIOR_NATIVE_INPUT_EXCLUDED_SELECTED_SCOPE_UNCHANGED",
+  "implementation_ready": "NO",
+  "selected_carrier_blocker_revocable": true,
+  "selected_scope": "carrier_block=2; complete EMDF container<=511 bytes; one fragment; whole F13 readiness not evaluated",
+  "new_native_capture": "NOT_RUN",
+  "authorized_audio_files_hashed": 7,
+  "audio_data_decoded": false,
+  "raw_pcm_or_bitstream_included": false,
+  "unapproved_sample_path_or_name_included": false,
+  "license_or_key_diagnostics_included": false,
+  "payloads": [
+    {
+      "file": "AUTHORIZED-BWF-INPUT-IDENTITIES.json",
+      "bytes": 1874,
+      "sha256": "19b134d2d3409d48429bdbf9d0779452fd26099c2ebb64ae39a47bb11a6f4e11"
+    },
+    {
+      "file": "AUTHORIZED-INPUT-NATIVE-SETUP.json",
+      "bytes": 2631,
+      "sha256": "29b46c27fa29d330937fe21d3c5f8c7b1ceb473f57386d1e6df16d1d10c5bc54"
+    },
+    {
+      "file": "PRIOR-NATIVE-SAMPLE-SEPARATION.json",
+      "bytes": 2118,
+      "sha256": "a1310ac6a3c1a2007a3c0f5b0a2c7c1559cf502b008381f67e783630d31ce95a"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1671,
+      "sha256": "644c3e3b752d54a36ba9d177708881ccdf8596da02111005a5d7a70b4713c631"
+    },
+    {
+      "file": "SELECTED-CARRIER-SCOPE.json",
+      "bytes": 1438,
+      "sha256": "18c424cb45e970d41c1e8075b3e44f1064fc2d7045346d3424aaf99d75b4ad3d"
+    },
+    {
+      "file": "check_authorized_input_scope.py",
+      "bytes": 7504,
+      "sha256": "3cec59735715df1c14c6445bf63a6f3817119e3e07e01fda2f14be36537985cb"
+    }
+  ]
+}

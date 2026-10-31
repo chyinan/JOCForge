@@ -1,0 +1,36 @@
+{
+  "schema": "source-offset-position-consumer-check.v1",
+  "check_status": "PASS",
+  "sample_identity_check": {
+    "count": 7,
+    "sha256_values_unique": true,
+    "prior_metadata_audit_identity_bound": true,
+    "current_full_file_hash_recheck": "PASS_ALL_SEVEN"
+  },
+  "metadata_only_check": {
+    "programme_start_distinct_count": 1,
+    "programme_start_seconds": 3610.0,
+    "bext_reference_count": 0,
+    "explicit_offset_ffoa_xml_count": 0,
+    "metadata_scanner_data_chunk_bytes_read": 0,
+    "pcm_samples_decoded_or_saved": false
+  },
+  "typed_mapping_check": {
+    "source_field_a_to_offset": "PASS_BINARY64_SECONDS",
+    "source_field_b_to_ffoa": "PASS_BINARY64_SECONDS",
+    "ffoa_auto_retains_source_value": "PASS_SCHEMA_DECLARATION",
+    "source_field_writer": "UNBOUND"
+  },
+  "range_rule_check": {
+    "file_position_foa_start": "PASS_MAX_MINUS_OFFSET_RULE",
+    "multi_file_alignment": "PASS_FFOA_MINUS_OFFSET_TIMES_SAMPLE_RATE_THEN_ROUND",
+    "r138_equal_pair_result_samples": 0,
+    "spatial_fit_position_join": "NOT_OBSERVED"
+  },
+  "limits": {
+    "native_pairs_for_samples_1_through_5_and_7": "NOT_CAPTURED",
+    "sample_position_to_spatial_fit": "UNBOUND",
+    "model_execution": "NOT_RUN",
+    "gate1_closed": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "authorized-input-native-setup-status.v1",
+  "status": "XSD_VALID_ATTEMPT_STOPPED_AT_DDP_FILTER_LIBRARY_INITIALIZATION; NATIVE_INPUT_PROCESSING_NOT_CONFIRMED",
+  "attempt_id": "run_authorized_bwf_filter_alias_12",
+  "input_lineage_id": "authorized_adm_bwf_06",
+  "input_identity_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "job_xml_sha256": "538fc7fac9521afff3da17ede0c227f6d8f14eff7d4581390df0213733247090",
+  "dee_console_log_sha256": "15922f61c996deca3f7b633d7e5f8abe3e4821812ee09e52510fce9d59bd49f1",
+  "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "converter_filter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+  "ddp_filter_libraries": [
+    {
+      "component": "dee_audio_filter_ddp.dll",
+      "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+      "startup_status": "Failed to load library"
+    },
+    {
+      "component": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "startup_status": "Failed to load library"
+    },
+    {
+      "component": "dee_audio_filter_ddp_single_pass.dll",
+      "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+      "startup_status": "Failed to load library"
+    }
+  ],
+  "ddp_atmos_filter_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "schema_validation": "PASS for the new job configuration",
+  "safe_observed_status": [
+    "DEE announced dee_audio_filter_cod.dll, dee_audio_filter_convert_atmos_mezz.dll, and dee_audio_filter_ddp_transcode.dll as loading.",
+    "The DDP, DDP Atmos, DDP single-pass, and DTHD filter libraries reported load/init failure.",
+    "DEE logged internal application exit code 10; the process wrapper observed exit -1073741819 (0xC0000005).",
+    "No Unknown filter or Could not build workflow line appeared in this XSD-valid alias attempt's safe log excerpt; workflow construction was not observed."
+  ],
+  "faulting_module_or_exception_context": "NOT_CAPTURED; no matching Application Error record or task-owned dump was found",
+  "diagnostic_rule": "This is a setup/load-stage failure, not a native input-processing no-hit.",
+  "workflow_built": false,
+  "encoder_completion_observed": false,
+  "output_file_created": false,
+  "native_capture": "NOT_RUN",
+  "dee_input_processing": "NOT_CONFIRMED",
+  "raw_pcm_or_bitstream_read": false,
+  "raw_pcm_or_bitstream_persisted": false,
+  "license_or_key_diagnostics_read": false,
+  "failed_setup_is_no_hit": false
+}

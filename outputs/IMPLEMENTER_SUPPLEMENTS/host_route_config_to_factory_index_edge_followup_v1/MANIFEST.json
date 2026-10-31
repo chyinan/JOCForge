@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "HOST-ROUTE-CONFIG-TO-FACTORY-INDEX-EDGE-FOLLOWUP-V1",
+  "scope": "Sanitized, hash-bound Ghidra semantic evidence for the route-profile output to audio_filter factory-index boundary; selection remains UNBOUND and no native payload is included.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 8169,
+      "sha256": "c8b63641bfbf1b09615949100b6cb47c8a5f3b254d98b4c45e0210f7fca444f5"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 1209,
+      "sha256": "599f505a657d3f01ac01c6c1e4c15bdc596b9c0fd970d0e4c8ec4c68a1e3f3c6"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2064,
+      "sha256": "70bdcd2732438791060be54dd53d58f520045a5a43c454c25bbaad18f05b10ae"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1618,
+      "sha256": "d36dcc4c6b15459899c6b8060eedb3021529984b57399cc38345115c900cd98c"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 594,
+      "sha256": "7ca09b1f9197c97c7f672f9e7aa8feb98161b5ebc570e8fa714846aa45fb3c2a"
+    }
+  ]
+}

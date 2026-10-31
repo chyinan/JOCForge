@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "HOST-TASK-ROUTE-FACTORY-SELECTION-FOLLOWUP-V1",
+  "scope": "Sanitized, hash-bound Ghidra evidence for the DLL descriptor-to-audio_filter factory-index crosswalk and the unresolved host task-route selection. No disassembly, addresses, binary excerpts, or native payloads.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 7627,
+      "sha256": "d2ff338e665502676c9f6f7285ca3f69d01832f3594ef59333acdc744f1f7de6"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 996,
+      "sha256": "16792da4be7437c4e6dcb3a562cda21bc63798c07b25fd35712db1629f3f445f"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2514,
+      "sha256": "58f51e5ecbea22c4a2b1b36e45104377b0d82783a7bb1f1b2ef6af47d522a29f"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2549,
+      "sha256": "4b9bbe163c100ba77828e0faee152441db8895824d6ee9e89271a17b698e5443"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 594,
+      "sha256": "7ca09b1f9197c97c7f672f9e7aa8feb98161b5ebc570e8fa714846aa45fb3c2a"
+    }
+  ]
+}

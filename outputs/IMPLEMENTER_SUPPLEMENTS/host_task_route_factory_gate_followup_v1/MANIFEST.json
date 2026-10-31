@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "HOST-TASK-ROUTE-FACTORY-GATE-FOLLOWUP-V1",
+  "scope": "Sanitized, hash-bound Ghidra semantic evidence for the host route-profile config lookup and its still-unbound factory-index selection; no raw analysis output or native payload.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 7522,
+      "sha256": "c2f9adfb67f882842ab04c443106014e2495d5073e0e2e3f283dfc71738d3b22"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 979,
+      "sha256": "1a66e633558f6747fb75ac83a899f7c1dab63e0a1be77fe0ae3165f9660cccf5"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2078,
+      "sha256": "7b35ce883c8554bc3eb168024c6d5df377d4a45b776526591ca126e046a4f953"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1741,
+      "sha256": "6864573eeda24fc3d666b83a53519da6369fed35f4d3469695a6b5376653d1a0"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 594,
+      "sha256": "7ca09b1f9197c97c7f672f9e7aa8feb98161b5ebc570e8fa714846aa45fb3c2a"
+    }
+  ]
+}

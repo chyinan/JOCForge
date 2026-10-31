@@ -1,0 +1,27 @@
+{
+  "schema": "host-audio-filter-factory-registration-vectors.v1",
+  "classification": "STATIC_REGISTRATION_CROSSWALK_ONLY_NOT_TASK_SELECTION",
+  "native_execution": "NOT_RUN",
+  "vectors": [
+    {
+      "case_id": "audio_filter_factory_index_zero",
+      "input": {"category": "audio_filter", "factory_index": 0},
+      "expected_static": {"descriptor_name": "encode_to_atmos_ddp"}
+    },
+    {
+      "case_id": "audio_filter_factory_index_one",
+      "input": {"category": "audio_filter", "factory_index": 1},
+      "expected_static": {"descriptor_name": "atmos_mezz_to_atmos_ddp"}
+    },
+    {
+      "case_id": "audio_filter_factory_index_two",
+      "input": {"category": "audio_filter", "factory_index": 2},
+      "expected_static": {"descriptor_name": "pcm_to_atmos_ddp"}
+    },
+    {
+      "case_id": "host_encode_route_factory_selection",
+      "input": {"host_route_key": "encode_to_atmos_ddp"},
+      "expected_static": {"selected_factory_index": null, "status": "UNBOUND"}
+    }
+  ]
+}

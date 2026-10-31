@@ -1,0 +1,31 @@
+{
+  "schema": "selected-carrier-scope-reference.v1",
+  "status": "SELECTED_BLOCKER_REVOCABLE_WITHIN_FROZEN_SCOPE; WHOLE_F13_NOT_EVALUATED",
+  "source_package": {
+    "manifest_sha256": "9ce0768a7d7642024506e9ff1bae649b17f495e28ed1a58a48f6ce9b16d93408",
+    "product_scope_decision_file_sha256": "38126a5f046b64f4dc62524b7362682dc29d1303eabd60cd5e5b67b0a5b65d95"
+  },
+  "approved_selected_contract": {
+    "sample_rate_hz": 48000,
+    "bit_rate_bps": 1024000,
+    "layout": "5.1",
+    "audio_blocks": 6,
+    "carrier_block": 2,
+    "complete_emdf_container_max_bytes": 511,
+    "single_fragment_required": true,
+    "selected_carrier_blocker_revocable": true,
+    "arbitrary_0_to_5_product_placement_required": false,
+    "fragmentation_over_511_product_requirement": false,
+    "approved_product_policy_modified": false,
+    "whole_F13_implementation_ready": "NOT_EVALUATED",
+    "whole_product_ready": "NOT_CLAIMED"
+  },
+  "lineage_boundary": {
+    "prior_native_capture_is_sample_specific": true,
+    "prior_native_capture_source_job_sha256": "8fba0b22b93b5cf27d072e95e3f6518f645f5536d31b58dcfc1e6257d27cba1f",
+    "prior_native_capture_source_file_sha256": "adfee1efadd5d331497ec55a1c94b89c7f1a717ad959d6d5c726efb0b64e81aa",
+    "source_file_hash_matches_any_authorized_input_identity": false,
+    "native_observations_joined_to_any_authorized_input_identity": false,
+    "input_paths_or_names_from_prior_sample_included": false
+  }
+}

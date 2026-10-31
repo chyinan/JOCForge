@@ -1,0 +1,32 @@
+{
+  "schema": "atmosmezz-storage-provider-static-lineage-vectors.v1",
+  "classification": "STATIC_CONDITIONAL_EXPECTATIONS_NOT_EXECUTED",
+  "native_execution": "NOT_RUN",
+  "vectors": [
+    {
+      "case_id": "storage_property_writes_provider_member",
+      "input": {"property_key": "storage", "value_role": "provider object"},
+      "expected_static": {"destination_role": "AtmosMezz storage-provider member", "status": "STATIC_MEMBER_TRANSFER_CLOSED"}
+    },
+    {
+      "case_id": "misc_container_property_uses_separate_member",
+      "input": {"property_key": "dee_misc_container", "value_role": "container object"},
+      "expected_static": {"destination_role": "separate AtmosMezz member", "aliases_storage_provider": false}
+    },
+    {
+      "case_id": "run_returns_status_and_metadata",
+      "input": {"method_role": "Run"},
+      "expected_static": {"return_role": "completion status scalar", "metadata_written": true, "process_packet_returned": false}
+    },
+    {
+      "case_id": "get_targets_returns_names",
+      "input": {"method_role": "GetTargets"},
+      "expected_static": {"return_role": "target-label string vector", "process_packet_returned": false}
+    },
+    {
+      "case_id": "provider_to_plugin_process_packet_join",
+      "input": {"source_role": "AtmosMezz storage provider", "consumer_role": "plugin process packet"},
+      "expected_static": {"same_object": "UNBOUND", "same_task_invocation": "UNBOUND", "same_parent_generation": "UNBOUND"}
+    }
+  ]
+}

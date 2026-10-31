@@ -1,0 +1,44 @@
+{
+  "schema": "wash-only-input-scope-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "sealed_at_utc": "2026-10-31T09:50:46Z",
+  "seal_file_excluded_from_own_hash_list": true,
+  "file_count": 7,
+  "files": [
+    {
+      "file": "AUTHORIZED-BWF-INPUT-IDENTITIES.json",
+      "bytes": 1874,
+      "sha256": "19b134d2d3409d48429bdbf9d0779452fd26099c2ebb64ae39a47bb11a6f4e11"
+    },
+    {
+      "file": "AUTHORIZED-INPUT-NATIVE-SETUP.json",
+      "bytes": 2631,
+      "sha256": "29b46c27fa29d330937fe21d3c5f8c7b1ceb473f57386d1e6df16d1d10c5bc54"
+    },
+    {
+      "file": "PRIOR-NATIVE-SAMPLE-SEPARATION.json",
+      "bytes": 2118,
+      "sha256": "a1310ac6a3c1a2007a3c0f5b0a2c7c1559cf502b008381f67e783630d31ce95a"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1671,
+      "sha256": "644c3e3b752d54a36ba9d177708881ccdf8596da02111005a5d7a70b4713c631"
+    },
+    {
+      "file": "SELECTED-CARRIER-SCOPE.json",
+      "bytes": 1438,
+      "sha256": "18c424cb45e970d41c1e8075b3e44f1064fc2d7045346d3424aaf99d75b4ad3d"
+    },
+    {
+      "file": "check_authorized_input_scope.py",
+      "bytes": 7504,
+      "sha256": "3cec59735715df1c14c6445bf63a6f3817119e3e07e01fda2f14be36537985cb"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1726,
+      "sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b"
+    }
+  ]
+}

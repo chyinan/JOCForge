@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "HOST-ATMOSMEZZ-STORAGE-PROVIDER-LINEAGE-FOLLOWUP-V1",
+  "scope": "Sanitized, hash-bound Ghidra semantic trace from the AtmosMezz storage property to Run/GetTargets provider calls; provider-to-plugin process packet and generation remain UNBOUND. No raw analysis output or native payload.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 7655,
+      "sha256": "857eba66d55873545d7a8f71ccfb6ea257cfe9873ceaa6d30f5f198cca06f600"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 1487,
+      "sha256": "19fae17713c85424d7cfa3a93a3752756344545c82d7ea152fbc566e581201dc"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2057,
+      "sha256": "026d81f2565202ba792ce31048427449da9df55d18e9408c0817c3dede9950f6"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1695,
+      "sha256": "bc5576836100228d41948da3045812250e65a1e873261d7e64b24fc3971a1653"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 594,
+      "sha256": "7ca09b1f9197c97c7f672f9e7aa8feb98161b5ebc570e8fa714846aa45fb3c2a"
+    }
+  ]
+}
