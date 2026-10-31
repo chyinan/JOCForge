@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1861599,
-              "sha256": "7bfe49855507a21c270adbd39bcdf50fbba3063069bcca44c9d9e9a06ff0305c"
+              "bytes": 1861804,
+              "sha256": "893df55f1f4b24d7cd39cfd7b39c8a27517fdb5474923cfb37082125ee4a6d56"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1861599,
-              "sha256": "7bfe49855507a21c270adbd39bcdf50fbba3063069bcca44c9d9e9a06ff0305c"
+              "bytes": 1861804,
+              "sha256": "893df55f1f4b24d7cd39cfd7b39c8a27517fdb5474923cfb37082125ee4a6d56"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -17858,6 +17858,7 @@
             "getter_direct_caller_chain": "STATIC_BOUND",
             "AtmosProcessor_getter_receiver_owner": "ATMOSPROCESSOR_INNER_STATE",
             "getter_owner_status": "STATIC_BOUND",
+            "getter_default_status": "STATIC_BOUND_ZERO_INITIALIZED",
             "AtmosProcessor_constructor_initial_d8_e0": "ZERO_INITIALIZED",
             "selected_process_update_same_receiver": "STATIC_BOUND",
             "selected_AtmosProcessor_update_d8_write": "NOT_PRESENT_IN_THIS_FUNCTION",
@@ -17876,6 +17877,8 @@
             "processing_row_d8_writer": "SEPARATE_ROW_DOMAIN",
             "same_d8_offset_used_as_identity": false,
             "record_or_CBIReader_to_getter_pointer_join": "UNBOUND",
+            "queued_record_to_getter_pointer_join": "UNBOUND",
+            "queued_record_to_getter_generation_join": "UNBOUND",
             "same_generation_token": "NOT_CAPTURED",
             "selected_pmd_event_count_pointer": "ZERO_AND_NULL_FOR_SELECTED_BUILDER",
             "other_pmd_producers_or_modes": "NOT_RULED_OUT",
@@ -32066,8 +32069,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1861599,
-              "sha256": "7bfe49855507a21c270adbd39bcdf50fbba3063069bcca44c9d9e9a06ff0305c"
+              "bytes": 1861804,
+              "sha256": "893df55f1f4b24d7cd39cfd7b39c8a27517fdb5474923cfb37082125ee4a6d56"
             }
           ],
           "test_inventory": [
