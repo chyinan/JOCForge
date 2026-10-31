@@ -1,0 +1,27 @@
+{
+  "schema": "carrier-block-third-scalar-owner-sources.v1",
+  "ghidra_static_identity": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "ghidra_version": "12.2",
+    "program_executable_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "review_scope": "Planner and selected callers; exact per-frame descriptor displacements for the request-byte field and separate third U32; caller instruction windows.",
+    "raw_ghidra_output_included": false
+  },
+  "reused_carrier_lineage": {
+    "producer_followup_manifest_sha256": "fe7da26714bf09be3820ace5629d388c7db30243f6db435e93a02ab43a75a648",
+    "semantic_carrier_package_manifest_sha256": "9ce0768a7d7642024506e9ff1bae649b17f495e28ed1a58a48f6ce9b16d93408",
+    "native_capture_trace_sha256": "e0e8fb03b777093cb55ac9e842abe162a3ec930c8a030d50d4d9a1283d6e0c28",
+    "prior_capture_owner_generation_join": "BOUND_WITHIN_THAT_SAMPLE_ONLY",
+    "bsi_presence_chain_recaptured": false
+  },
+  "authorized_input_boundary": {
+    "input_crosswalk_manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+    "prior_capture_joined_to_authorized_bwf_inputs": false,
+    "current_selected_profile_scalar_observation": "NOT_AVAILABLE"
+  },
+  "scope": {
+    "native_capture_this_followup": "NOT_RUN",
+    "whole_f13_or_product_readiness": "NOT_CLAIMED",
+    "approved_product_policy_modified": false
+  }
+}

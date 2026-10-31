@@ -1,0 +1,34 @@
+{
+  "schema": "wash-only-third-scalar-owner-manifest.v1",
+  "package_id": "carrier_block_third_scalar_owner_followup_wash_v1",
+  "status": "THIRD_U32_READ_EDGE_BOUND_FIRST_WRITER_AND_SEMANTIC_OWNER_UNBOUND",
+  "implementation_ready": "NO",
+  "selected_scope": "carrier_block=2; complete EMDF container<=511 bytes; one fragment",
+  "new_native_capture": "NOT_RUN",
+  "bsi_presence_chain_recaptured": false,
+  "raw_ghidra_output_included": false,
+  "raw_pcm_or_payload_included": false,
+  "approved_product_policy_modified": false,
+  "payloads": [
+    {
+      "file": "FINDING.json",
+      "bytes": 2824,
+      "sha256": "6f6937093927983c76df2481755550a026bfdfe795f598e95a14d594b3e70905"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1453,
+      "sha256": "902e9eff9d48fc057181ff74934ea3794104a03932f2bdea5dfaf1e28b05b5c2"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1408,
+      "sha256": "8e7483b47a1623bfbe636800dff1cb8762f7f2e09416171696ee447fee16952f"
+    },
+    {
+      "file": "check_third_scalar_owner.py",
+      "bytes": 6348,
+      "sha256": "bbdbd0864342c508d6c01ca8d594663c55f9a5f758f985e515a8a1b83296cf1a"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "carrier-block-third-scalar-owner-followup.v1",
+  "status": "THIRD_U32_READ_EDGE_BOUND; FIRST_WRITER_AND_SEMANTIC_OWNER_UNBOUND",
+  "implementation_ready": "NO",
+  "selected_scope": {
+    "carrier_block": 2,
+    "complete_emdf_container_max_bytes": 511,
+    "single_fragment_required": true,
+    "arbitrary_0_to_5_placement_required": false,
+    "fragmentation_over_511_required": false,
+    "selected_carrier_blocker_revocable": true,
+    "approved_product_policy_modified": false,
+    "whole_f13_readiness": "NOT_EVALUATED"
+  },
+  "third_scalar": {
+    "type": "u32",
+    "plan_argument_position": 3,
+    "selected_caller_read": "A 32-bit scalar is loaded from the per-frame descriptor and passed separately to the native transport planner.",
+    "planner_effect": "Controls a first-segment capacity adjustment; it does not select first_block.",
+    "first_writer": "UNBOUND",
+    "semantic_owner": "UNBOUND",
+    "approved_carrier_block_join": "UNBOUND",
+    "direct_store_at_selected_frame_displacement": "NOT_FOUND_IN_GHIDRA_OPERAND_SURVEY",
+    "bulk_initialization_or_indirect_write": "NOT_EXCLUDED",
+    "same_numeric_displacement_on_other_base": "NOT_JOINED"
+  },
+  "native_owner_generation": {
+    "third_scalar_to_plan_call_owner": "Selected call structure is statically bounded; a same-object first-writer join is not available.",
+    "plan_to_bsi_owner_generation": "BOUND_WITHIN_EXISTING_SAMPLE_SPECIFIC_CAPTURE",
+    "approved_profile_owner_to_native_frame_descriptor": "UNBOUND",
+    "native_capture_this_followup": "NOT_RUN"
+  },
+  "reused_scalar_observation": {
+    "selected_scope_scalar_observation": "NOT_AVAILABLE",
+    "reason": "No existing scalar value capture is joined to the selected approved profile and authorized input lineage.",
+    "no_cross_sample_join": true
+  },
+  "minimum_next_observation": {
+    "status": "PENDING_COORDINATION_AFTER_CURRENT_AUTHORIZED_WIDTH5_OBSERVATION",
+    "object_window": "One selected frame descriptor from construction through its first plan call.",
+    "observe": [
+      "third U32 initial value and first write",
+      "writer input and call path",
+      "descriptor object token",
+      "parent and frontend generation tokens",
+      "plan arguments in the same owner/generation"
+    ],
+    "avoid": [
+      "a second native job before the current width-5 job completes",
+      "recapturing the closed BSI presence chain",
+      "reading PCM, EMDF payload, or encoded output bytes"
+    ],
+    "closure_condition": "Bind the approved carrier field only if a typed field-owner transfer is observed; otherwise retain UNBOUND."
+  },
+  "privacy": {
+    "function_bodies_included": false,
+    "ghidra_addresses_included": false,
+    "binary_included": false,
+    "pcm_or_payload_included": false,
+    "license_or_key_content_included": false
+  }
+}

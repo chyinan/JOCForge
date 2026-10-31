@@ -12,8 +12,14 @@ use super::bap::{
 };
 use super::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
 use super::exponent_packing::PackedExponentGroup;
-use super::frame_builder::{SelectedEac3PrefixError, write_selected_eac3_fixed_prefix};
-use super::frame_syntax::{CodecBlockIndex, SelectedBsiDrcFields, SelectedComplexityIndexTypeA};
+use super::frame_builder::{
+    SelectedBsiMixingInformationWriteError, SelectedEac3PrefixError,
+    write_selected_bsi_mixing_information, write_selected_eac3_fixed_prefix,
+};
+use super::frame_syntax::{
+    CodecBlockIndex, SelectedBsiDrcFields, SelectedBsiMixingInformationValues,
+    SelectedComplexityIndexTypeA,
+};
 use super::grouped_quantizer::{
     MantissaBlockError, MantissaBlockItemInput, MantissaChannel, pack_block_mantissas,
 };
@@ -433,6 +439,7 @@ pub enum CandidateInfeasibleReason {
     MantissaBitStream,
     FrameCapacity,
     FrameField(FrameBitWriterError),
+    BsiMixingInformation(SelectedBsiMixingInformationWriteError),
     CrcResidual(u16),
 }
 
@@ -483,12 +490,14 @@ pub enum SelectedFrameTrialOutcome {
     Built(Box<SelectedMainFrameCandidate>),
 }
 
-/// Builds a fresh 4096-byte candidate from one immutable plan and one U10 q.
+/// Builds a fresh 4096-byte selected-profile frame candidate from one plan and one U10 q.
 ///
 /// BAP, block-local groupers, frame scratch, and the bit cursor are recreated
 /// for every call. BAP input failures are candidate-local after preflight;
 /// provider failures remain fatal. Converter-plan production is an upstream
-/// input and is never converted into a main-trial retry result.
+/// input and is never converted into a main-trial retry result. All writes use
+/// private local scratch; a candidate is returned only after the complete body,
+/// tail, and CRC checks succeed, so failed trials expose no partial frame.
 pub fn build_selected_frame_trial(
     plan: &SelectedFrameTrialPlan<'_>,
     q: u16,
@@ -567,6 +576,11 @@ pub fn build_selected_frame_trial(
                 ));
             }
         };
+        if let Err(error) = writer.preflight_capacity(FRAME_BITS) {
+            return Ok(SelectedFrameTrialOutcome::Infeasible(
+                CandidateInfeasibleReason::FrameField(error),
+            ));
+        }
         let mantissa_bits_by_block = match write_frame_body(&mut writer, plan, q, &bap_frame) {
             Ok(bits) => bits,
             Err(BuildError::Writer(error)) => {
@@ -587,6 +601,11 @@ pub fn build_selected_frame_trial(
             Err(BuildError::PrefixCursorMismatch) => {
                 return Ok(SelectedFrameTrialOutcome::Infeasible(
                     CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
+                ));
+            }
+            Err(BuildError::BsiMixingInformation(error)) => {
+                return Ok(SelectedFrameTrialOutcome::Infeasible(
+                    CandidateInfeasibleReason::BsiMixingInformation(error),
                 ));
             }
         };
@@ -832,45 +851,22 @@ fn write_bsi_header(
             .map_err(BuildError::Writer)?;
     }
 
-    // F12S.7 fixes mixmdate=1 for the selected profile.
-    writer.write_bit(true).map_err(BuildError::Writer)?;
-    writer
-        .write_unsigned(u32::from(bsi.mixing.preferred_downmix_mode), 2)
-        .map_err(BuildError::Writer)?;
-    for level in [
-        bsi.mixing.ltrt_center_mix_level,
-        bsi.mixing.loro_center_mix_level,
-        bsi.mixing.ltrt_surround_mix_level,
-        bsi.mixing.loro_surround_mix_level,
-    ] {
-        writer
-            .write_unsigned(u32::from(level), 3)
-            .map_err(BuildError::Writer)?;
-    }
-    writer.write_bit(false).map_err(BuildError::Writer)?;
-    writer.write_bit(false).map_err(BuildError::Writer)?;
-    writer.write_bit(false).map_err(BuildError::Writer)?;
-    writer.write_unsigned(0, 2).map_err(BuildError::Writer)?;
-    writer.write_bit(false).map_err(BuildError::Writer)?;
-
-    // F12S.7 fixes infomdate=1 for the selected profile.
-    writer.write_bit(true).map_err(BuildError::Writer)?;
-    writer
-        .write_unsigned(u32::from(bsi.information.bitstream_mode), 3)
-        .map_err(BuildError::Writer)?;
-    writer
-        .write_bit(bsi.information.copyright)
-        .map_err(BuildError::Writer)?;
-    writer
-        .write_bit(bsi.information.original_bitstream)
-        .map_err(BuildError::Writer)?;
-    writer
-        .write_unsigned(u32::from(bsi.information.surround_ex_mode), 2)
-        .map_err(BuildError::Writer)?;
-    writer.write_bit(false).map_err(BuildError::Writer)?;
-    writer
-        .write_unsigned(u32::from(bsi.information.source_sample_rate_code), 1)
-        .map_err(BuildError::Writer)?;
+    write_selected_bsi_mixing_information(
+        writer,
+        &SelectedBsiMixingInformationValues {
+            dmixmod: bsi.mixing.preferred_downmix_mode,
+            ltrtcmixlev: bsi.mixing.ltrt_center_mix_level,
+            lorocmixlev: bsi.mixing.loro_center_mix_level,
+            ltrtsurmixlev: bsi.mixing.ltrt_surround_mix_level,
+            lorosurmixlev: bsi.mixing.loro_surround_mix_level,
+            bsmod: bsi.information.bitstream_mode,
+            copyrightb: bsi.information.copyright,
+            origbs: bsi.information.original_bitstream,
+            dsurexmod: bsi.information.surround_ex_mode,
+            sourcefscod: bsi.information.source_sample_rate_code == 1,
+        },
+    )
+    .map_err(BuildError::BsiMixingInformation)?;
 
     match &plan.emdf {
         EmdfFrameInput::AbsentPublishedPayloadV1 => {
@@ -1171,6 +1167,7 @@ fn ba_syntax_required(db_per_bit_codes: [u8; BLOCK_COUNT]) -> bool {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum BuildError {
     Writer(FrameBitWriterError),
+    BsiMixingInformation(SelectedBsiMixingInformationWriteError),
     Mantissa {
         block: usize,
         error: MantissaBlockError,

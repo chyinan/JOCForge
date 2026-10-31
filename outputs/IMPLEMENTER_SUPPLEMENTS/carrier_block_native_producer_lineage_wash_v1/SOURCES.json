@@ -1,0 +1,46 @@
+{
+  "schema": "carrier-block-native-producer-sources.v1",
+  "approved_scope": {
+    "source_package_manifest_sha256": "9ce0768a7d7642024506e9ff1bae649b17f495e28ed1a58a48f6ce9b16d93408",
+    "product_scope_decision_sha256": "38126a5f046b64f4dc62524b7362682dc29d1303eabd60cd5e5b67b0a5b65d95",
+    "approved_input_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "approved_input_package_stage": "PRE_HANDOFF",
+    "independent_implementation_validation": "NOT_RUN",
+    "product_acceptance": "NOT_RUN"
+  },
+  "frozen_model": {
+    "codec_freeze_manifest_sha256": "a4ca3690287bee75a6304882d07515559c9563595410268cdcd97e277107e6a8",
+    "approved_codec_plan_sha256": "e42e24fed75a37af20006ab09be39fbc1f895a5fdfe3a27117ca4478ca8703ac",
+    "codec_actual_execution_sha256": "c43dabce54cdda0d951eca7734a35e0bf39abe621362f1c94b8766b7364d78e3",
+    "actual_model_carrier_argument": 2,
+    "model_input_is_explicit": true,
+    "native_owner_transfer_observed": false
+  },
+  "native_static_identity": {
+    "ghidra_program": "dee_audio_filter_ddp_atmos.dll",
+    "ghidra_version": "12.2",
+    "ghidra_program_executable_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity_relation": "Matches the Atmos plugin identity in the existing sealed native lineage package and its Ghidra program executable hash.",
+    "static_scope": "Transport planner, its selected callers, and reads/writes of the per-frame request and separate third scalar.",
+    "raw_ghidra_output_in_package": false
+  },
+  "reused_native_capture": {
+    "source_package_manifest_sha256": "9ce0768a7d7642024506e9ff1bae649b17f495e28ed1a58a48f6ce9b16d93408",
+    "capture_trace_sha256": "e0e8fb03b777093cb55ac9e842abe162a3ec930c8a030d50d4d9a1283d6e0c28",
+    "owner_parent_generation_join": "BOUND_WITHIN_THAT_SAMPLE_SPECIFIC_CAPTURE",
+    "bsi_presence_consumer_join": "BOUND_WITHIN_THAT_SAMPLE_SPECIFIC_CAPTURE",
+    "recaptured": false,
+    "cross_join_to_seven_authorized_bwf_inputs": false
+  },
+  "authorized_input_separation": {
+    "crosswalk_package_manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+    "prior_native_input_matches_any_authorized_identity": false,
+    "authorized_input_lineages_merged": false
+  },
+  "limits": {
+    "new_native_capture": "NOT_RUN",
+    "current_authorized_bwf_native_processing": "NOT_CONFIRMED",
+    "whole_f13_or_product_readiness": "NOT_CLAIMED",
+    "approved_product_policy_changed": false
+  }
+}

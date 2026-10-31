@@ -1,0 +1,81 @@
+{
+  "schema": "carrier-block-native-producer-lineage.v1",
+  "status": "NATIVE_REQUEST_LENGTH_TO_PLAN_BOUND; APPROVED_PROFILE_TO_NATIVE_SEMANTIC_CARRIER_UNBOUND",
+  "implementation_ready": "NO",
+  "selected_scope": {
+    "sample_rate_hz": 48000,
+    "bit_rate_bps": 1024000,
+    "layout": "5.1",
+    "audio_blocks": 6,
+    "approved_carrier_block": 2,
+    "complete_emdf_container_max_bytes": 511,
+    "single_fragment_required": true,
+    "arbitrary_0_to_5_placement_required": false,
+    "fragmentation_over_511_required": false,
+    "selected_blocker_revocable": true,
+    "product_policy_modified": false,
+    "whole_f13_readiness": "NOT_EVALUATED",
+    "whole_product_readiness": "NOT_CLAIMED"
+  },
+  "frozen_model_contract": {
+    "carrier_block_type": "usize",
+    "domain": [0, 1, 2, 3, 4, 5],
+    "selected_value": 2,
+    "input_source": "Explicit frozen codec run argument; copied into AncillaryPayload through validated_at_block.",
+    "wire_consumer_rule": "For each audio block, presence is selected when block equals payload.carrier_block.",
+    "model_owner_and_generation": "Run-wide explicit model input; copied into each nonempty per-frame payload.",
+    "native_owner_join": "UNBOUND"
+  },
+  "native_static_edge": {
+    "analysis": "Ghidra 12.2 static review of the exact Atmos plugin program identity recorded below.",
+    "request_type": "u32 byte count",
+    "request_source": "Per-frame descriptor request-byte scalar, conditionally bounded by the caller's frame/configuration arithmetic.",
+    "plan_output_type": "u32 first_block in the mutable transport plan",
+    "positive_request_rule": [
+      {"request_bytes_min": 1, "request_bytes_max": 2040, "first_block": 2},
+      {"request_bytes_min": 2041, "request_bytes_max": 2551, "first_block": 1},
+      {"request_bytes_min": 2552, "request_bytes_max": null, "first_block": 0}
+    ],
+    "zero_request_rule": "The positive-request branch does not assign first_block; zero/absence is not evidence for a selected placement.",
+    "separate_third_scalar": {
+      "type": "u32",
+      "source": "Loaded separately from the same per-frame descriptor and passed as the third plan argument.",
+      "effect": "Can alter first-segment capacity adjustment; it does not choose first_block in the reviewed producer.",
+      "first_writer_and_semantic_owner": "UNBOUND",
+      "profile_carrier_block_join": "UNBOUND"
+    },
+    "native_request_to_plan_owner": "BOUND within the prior selected native capture.",
+    "native_plan_to_bsi_consumer": "BOUND within the prior selected native capture; existing evidence reused without repeating the presence chain.",
+    "approved_profile_to_native_plan_owner": "UNBOUND",
+    "native_capture_this_followup": "NOT_RUN"
+  },
+  "selected_scope_compatibility": {
+    "existing_container_relation": "C=B+4",
+    "complete_container_cap_bytes": 511,
+    "implied_positive_body_max_bytes": 507,
+    "native_positive_length_branch_result": "first_block=2 for 1..507 requested body bytes",
+    "typed_profile_field_transfer_proven": false,
+    "product_disposition_source": "Existing approved-scope decision only; this follow-up does not change it."
+  },
+  "owner_generation_boundary": {
+    "native_plan_and_bsi_join": "BOUND_WITHIN_SAMPLE_SPECIFIC_PRIOR_CAPTURE",
+    "approved_profile_owner_to_native_owner": "UNBOUND",
+    "native_capture_joined_to_current_authorized_bwf_inputs": false,
+    "model_frame_generation_joined_to_native_generation": false
+  },
+  "minimum_next_observation": {
+    "status": "NOT_RUN",
+    "site": "One selected transport-plan call and the first writer of its separate third scalar.",
+    "record_only": ["scalar types and values", "plan/frame owner tokens", "active parent/frontend generation", "first-writer call path"],
+    "do_not_capture": ["PCM", "EMDF payload bytes", "encoded output bytes"],
+    "reuse": "Existing BSI presence/consumer lineage; do not recapture it.",
+    "closure_condition": "Only mark the profile-to-native edge bound if an explicit typed source field and owner/generation transfer are observed; numeric equality is insufficient."
+  },
+  "privacy": {
+    "function_bodies_included": false,
+    "ghidra_addresses_included": false,
+    "binary_included": false,
+    "pcm_or_payload_included": false,
+    "license_or_key_content_included": false
+  }
+}

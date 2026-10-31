@@ -1,0 +1,34 @@
+{
+  "schema": "wash-only-carrier-native-producer-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "sealed_at_utc": "2026-10-31T10:08:23Z",
+  "seal_file_excluded_from_own_hash_list": true,
+  "file_count": 5,
+  "files": [
+    {
+      "file": "FINDING.json",
+      "bytes": 4309,
+      "sha256": "9025995fd5006ac34124d36b9e169ef64bd5057906a412b910095a1b0d04087b"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1747,
+      "sha256": "792bf2a549429dc8ecb831e9a030bf7d7c095caf221deb12ba308597422ae59d"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 2518,
+      "sha256": "1463cfb801c748efab4dad9ad62c831e0b02caa31f92025993988a4af2d84d00"
+    },
+    {
+      "file": "check_native_carrier_producer.py",
+      "bytes": 7523,
+      "sha256": "b3d16e779eff7a6ca3939f85da148406d9ece0d39c2aa0d795ad5613b83c8982"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1298,
+      "sha256": "fe7da26714bf09be3820ace5629d388c7db30243f6db435e93a02ab43a75a648"
+    }
+  ]
+}

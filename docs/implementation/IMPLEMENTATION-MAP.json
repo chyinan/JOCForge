@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1861804,
-              "sha256": "893df55f1f4b24d7cd39cfd7b39c8a27517fdb5474923cfb37082125ee4a6d56"
+              "bytes": 1870959,
+              "sha256": "7c8e6e2dead4c30f4de94ca8548300fc78356be2311c2755a9e0b72caa74fa46"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1861804,
-              "sha256": "893df55f1f4b24d7cd39cfd7b39c8a27517fdb5474923cfb37082125ee4a6d56"
+              "bytes": 1870959,
+              "sha256": "7c8e6e2dead4c30f4de94ca8548300fc78356be2311c2755a9e0b72caa74fa46"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -20462,8 +20462,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-              "bytes": 57506,
-              "sha256": "7e9b9dced709bd75e8be05c3ac974d77169fee51ec7182eeffa3f961a0114868"
+              "bytes": 57582,
+              "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
             }
           ],
           "test_inventory": [
@@ -24011,8 +24011,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-              "bytes": 57506,
-              "sha256": "7e9b9dced709bd75e8be05c3ac974d77169fee51ec7182eeffa3f961a0114868"
+              "bytes": 57582,
+              "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
             }
           ],
           "test_inventory": [
@@ -24336,7 +24336,7 @@
           "slice_id": "selected-q-frame-trial-and-keyless-crc",
           "mapping_status": "MATERIALIZED_DIRECT_F12_SELECTED_Q_FRAME_TRIAL__SOURCE_ROOT_OPEN",
           "implementation_status": "LOCALLY_VERIFIED_4096_BYTE_CANDIDATE_FRAME_TRIAL_AND_CRC__SOURCE_PLAN_JOIN_OPEN",
-          "scope": "Builds one selected 48 kHz/1024 kbps/5.1 source-frame candidate from an immutable caller plan and one U10 q. Each call generates fresh six-block BAP, quantizes clipped coefficient/exponent rows, resets grouped mantissa state per block, writes the selected header/block order to bounded scratch, enforces the 32,734-bit pre-tail limit, writes the 34-bit tail and shared E-AC-3 CRC16, and returns a complete source-index/q-tagged candidate. It does not produce F06/F09/F10/F11/F13 values, commit source state, schedule source/AU clocks, append output, or publish.",
+          "scope": "Builds one selected 48 kHz/1024 kbps/5.1 source-frame candidate from an immutable caller plan and one U10 q. Each call generates fresh six-block BAP, quantizes clipped coefficient/exponent rows, resets grouped mantissa state per block, writes the selected header/block order to bounded scratch, enforces the 32,734-bit pre-tail limit, writes the 34-bit tail and shared E-AC-3 CRC16, and returns a complete source-index/q-tagged candidate. It does not produce F06/F09/F10/F11/F13 values, commit source state, schedule source/AU clocks, append output, or publish. The trial composes the fixed prefix, same-source DRC plus the selected mix/info BSI writer, six block sections, EMDF skip/payload, tail and CRC in private 4096-byte scratch. It preflights the full buffer, checks the 32734-bit pre-tail boundary, and returns a candidate only after complete tail/CRC validation; failures expose no partial frame.",
           "implementation_files": [
             "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
             "crates/jocforge-domain/src/codec/mod.rs",
@@ -24376,10 +24376,39 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F11-F12-APPROVED-SOURCE-LEAVES-V1/approved/specs/12-selected-codec-wire.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F11-F12-APPROVED-SOURCE-LEAVES-V1/approved/specs/13-emdf-and-timeline.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/specs/12-selected-source-frame-composition.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/CONTRACT.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/FINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/check_native_carrier_producer.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/FINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/check_third_scalar_owner.py"
             ],
             "validation_boundary": "This pure per-q builder consumes caller-supplied typed plan values and checks provider/profile/shape/range, candidate q, BSI/EMDF source_index equality, pre-tail capacity, tail, and CRC residual. Source-index tags do not prove the missing shared F09/F10 generation receipt; F06/F11/F13 producer identities and root transaction remain caller-owned.",
-            "frame_supplement_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"
+            "frame_supplement_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
+            "assembly_preflight_contract": "Full 32768-bit scratch capacity is preflighted before section writes; actual body cursor must remain <=32734 before the 34-bit tail; only a complete CRC-residual-zero candidate is returned.",
+            "carrier_native_producer_lineage_manifest_sha256": "fe7da26714bf09be3820ace5629d388c7db30243f6db435e93a02ab43a75a648",
+            "carrier_native_producer_lineage_seal_sha256": "0313634f77e296c432d7c9f6766b3de450a1a2ed6c1f06c761507b2287b24f3a",
+            "carrier_profile_to_native_plan_transfer": "UNBOUND",
+            "carrier_native_length_branch_use": "COMPATIBILITY_ONLY; DO_NOT_DERIVE_PROFILE_OWNER",
+            "carrier_third_scalar_owner_manifest_sha256": "d3de48e5b079a84524d93c1c337dd3728eee6e9885a8b72bef23bd1a64bb0963",
+            "carrier_third_scalar_owner_seal_sha256": "023447cfc10817a365d15a78da3a88110ff57c6ee2aed518df696f05482f9e05",
+            "third_scalar_first_writer_and_semantic_owner": "UNBOUND",
+            "third_scalar_is_carrier_block": false,
+            "native_carrier_boundary": {
+              "selected_model_scope": "carrier_block=2; complete EMDF container<=511 bytes; one fragment",
+              "selected_body_length_bound": "C=B+4 implies B<=507",
+              "native_positive_request_branch": "1..2040 bytes selects first_block=2 in the prior scoped capture",
+              "selected_model_to_native_plan_transfer": "UNBOUND",
+              "third_u32_capacity_effect": "SEPARATE_FROM_FIRST_BLOCK; NOT_CARRIER_BLOCK",
+              "third_u32_first_writer_and_semantic_owner": "UNBOUND"
+            }
           },
           "vectors": {
             "kind": "HASH_BOUND_SELECTED_FRAME_TRIAL_INPUT_ONLY_PLANS",
@@ -24387,12 +24416,25 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-ORDER-AND-BUDGET.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-INPUT-SOURCES.json",
-              "crates/jocforge-domain/src/codec/selected_frame_trial.rs"
+              "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/FINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_native_producer_lineage_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/FINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/README.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/carrier_block_third_scalar_owner_followup_v1/MANIFEST.json"
             ],
             "case_pointers": [
               "The suppressed source0 input-only plan exercises complete frame construction without publishing an AU or fabricating EMDF.",
               "The test verifies deterministic repeat for the same plan/q, 4096-byte length, fixed syncword, pre-tail budget, zero tail fields, and CRC residual zero.",
-              "The package contains no expected frame/AM bytes or PCM; these tests are structural and do not claim byte-level frame conformance."
+              "The package contains no expected frame/AM bytes or PCM; these tests are structural and do not claim byte-level frame conformance.",
+              "The selected mix/info BSI writer is composed between the DRC header and later frame syntax.",
+              "The trial uses private local scratch and returns only after pre-tail, tail and CRC constraints pass.",
+              "For the approved selected model scope, B<=507 is length-compatible with the washed native positive-request branch selecting first_block=2.",
+              "This compatibility does not prove that the model carrier_block field transfers to the native plan owner or generation.",
+              "The third U32 is not first_block and has no bound profile-carrier identity; its first writer/semantic owner remains UNBOUND."
             ],
             "local_fixture": {
               "file": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
@@ -24426,7 +24468,11 @@
           "not_run": [
             "F12S.8 q search is a separate direct slice.",
             "source-generation identity between F09/F10 and the caller plan remains unresolved.",
-            "durable output and publication are not implemented."
+            "durable output and publication are not implemented.",
+            "Typed approved-profile carrier_block transfer to the native transport-plan owner/generation.",
+            "The first writer and semantic owner of the separate native U32 capacity-adjustment scalar.",
+            "First writer and semantic owner of the native third U32 capacity-adjustment parameter.",
+            "Approved carrier_block typed transfer to the same native frame descriptor/plan owner and generation."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
@@ -24596,8 +24642,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-              "bytes": 57506,
-              "sha256": "7e9b9dced709bd75e8be05c3ac974d77169fee51ec7182eeffa3f961a0114868"
+              "bytes": 57582,
+              "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
@@ -24730,8 +24776,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-              "bytes": 57506,
-              "sha256": "7e9b9dced709bd75e8be05c3ac974d77169fee51ec7182eeffa3f961a0114868"
+              "bytes": 57582,
+              "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_source_plan.rs",
@@ -32069,8 +32115,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1861804,
-              "sha256": "893df55f1f4b24d7cd39cfd7b39c8a27517fdb5474923cfb37082125ee4a6d56"
+              "bytes": 1870959,
+              "sha256": "7c8e6e2dead4c30f4de94ca8548300fc78356be2311c2755a9e0b72caa74fa46"
             }
           ],
           "test_inventory": [
@@ -35165,8 +35211,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-          "bytes": 57506,
-          "sha256": "7e9b9dced709bd75e8be05c3ac974d77169fee51ec7182eeffa3f961a0114868"
+          "bytes": 57582,
+          "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
         },
         {
           "path": "crates/jocforge-domain/src/publication/output_owner.rs",

@@ -1,0 +1,34 @@
+{
+  "schema": "wash-only-third-scalar-owner-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "sealed_at_utc": "2026-10-31T10:16:45Z",
+  "seal_file_excluded_from_own_hash_list": true,
+  "file_count": 5,
+  "files": [
+    {
+      "file": "FINDING.json",
+      "bytes": 2824,
+      "sha256": "6f6937093927983c76df2481755550a026bfdfe795f598e95a14d594b3e70905"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1453,
+      "sha256": "902e9eff9d48fc057181ff74934ea3794104a03932f2bdea5dfaf1e28b05b5c2"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1408,
+      "sha256": "8e7483b47a1623bfbe636800dff1cb8762f7f2e09416171696ee447fee16952f"
+    },
+    {
+      "file": "check_third_scalar_owner.py",
+      "bytes": 6348,
+      "sha256": "bbdbd0864342c508d6c01ca8d594663c55f9a5f758f985e515a8a1b83296cf1a"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1185,
+      "sha256": "d3de48e5b079a84524d93c1c337dd3728eee6e9885a8b72bef23bd1a64bb0963"
+    }
+  ]
+}
