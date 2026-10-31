@@ -10,7 +10,7 @@ use crate::{
     },
     codec::{
         bap::BapParameters,
-        owner::{AcceptedCodecFrame, CodecOwnerStageError},
+        owner::{AcceptedCodecFrame, CodecOwnerStageError, CodecShortFlags},
         selected_frame_trial::{
             EmdfFrameInput, SelectedBsiInput, SelectedFramePlanError, SelectedFrameTrialFatalError,
             SelectedFrameTrialPlan, SelectedFrameTrialPlanInput, SelectedMainFrameCandidate,
@@ -59,6 +59,11 @@ impl<'a> SelectedSourceFrameCandidate<'a> {
 
     pub const fn accepted_codec_frame(&self) -> AcceptedCodecFrame {
         self.accepted_codec_frame
+    }
+
+    /// Returns the exact six-block short flags retained in the numeric plan that built this frame.
+    pub const fn codec_short_flags(&self) -> CodecShortFlags {
+        self.numeric_plan.plan().short_flags
     }
 
     pub fn attempted_qs(&self) -> &[u16] {
@@ -266,6 +271,10 @@ mod tests {
             &expected_identity
         );
         assert_eq!(candidate.bsi_input().source_identity(), &expected_identity);
+        assert_eq!(
+            candidate.codec_short_flags(),
+            candidate.numeric_plan_receipt().plan().short_flags
+        );
         assert_eq!(
             candidate.emdf_input(),
             &EmdfFrameInput::AbsentPublishedPayloadV1

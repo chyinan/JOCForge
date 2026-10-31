@@ -9326,8 +9326,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1919759,
-              "sha256": "f8d91f1edf0ad8fba8889b40323f55886ae50844a53f8d4557781fb0da923fa4"
+              "bytes": 1920870,
+              "sha256": "db1d1493108ce85569481e04b6bba7e0f150f5b886c39daac501be7efcba64ea"
             }
           ],
           "test_modules": [
@@ -12839,8 +12839,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1919759,
-              "sha256": "f8d91f1edf0ad8fba8889b40323f55886ae50844a53f8d4557781fb0da923fa4"
+              "bytes": 1920870,
+              "sha256": "db1d1493108ce85569481e04b6bba7e0f150f5b886c39daac501be7efcba64ea"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -25074,8 +25074,8 @@
         {
           "slice_id": "same-source-frame-candidate-writer",
           "mapping_status": "MATERIALIZED_DIRECT_F11_F12_FRAME_CANDIDATE_WRITER__PROGRAMME_PUBLICATION_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_SOURCE_FRAME_CANDIDATE__REAL_INPUT_AND_PARENT_PUBLICATION_NOT_RUN",
-          "scope": "Consumes one existing AnalysisNumericPlanStage and same-source BSI/EMDF inputs, derives the F11 converter result and F12 selected numeric plan, runs the bounded main-q search, and returns a complete 4096-byte CRC-checked SelectedSourceFrameCandidate. The candidate now retains the actual NumericPlanReceipt, same-source BSI/EMDF-or-ABSENT inputs, accepted q/search trace, owned frame and AcceptedCodecFrame CRC proof. The local domain test uses a synthetic all-zero analysis frame and test-supplied BSI values. The application source_frame_bridge connects PreparedJobInput, F06ND after proposal and F13 MetadataSourceProposal—including suppressed-source receipts—with typed lineage checks. It returns only a noncommitting candidate. There is no direct positive-path test for the composite bridge; this path has not been run on real source callbacks or installed by a parent. The application bridge binds F13 parsed-container queue-pop lineage through published_emdf_binding::emdf_frame_input_for_source. The source-frame preflight now also requires the exact PreparedJobInput Arc in the DRC after-root and SharedAnalysis receipt, then matches F13 ID1 input/config/terminal-meter hashes to that same receipt before frame assembly.",
+          "implementation_status": "LOCALLY_COMPILED_CODEC_OWNER_PROPOSAL_BRIDGE__SOURCE_OUTPUT_AND_PARENT_INSTALL_NOT_RUN",
+          "scope": "Consumes one existing AnalysisNumericPlanStage and same-source BSI/EMDF inputs, derives the F11 converter result and F12 selected numeric plan, runs the bounded main-q search, and returns a complete 4096-byte CRC-checked SelectedSourceFrameCandidate. The candidate now retains the actual NumericPlanReceipt, same-source BSI/EMDF-or-ABSENT inputs, accepted q/search trace, owned frame and AcceptedCodecFrame CRC proof. The local domain test uses a synthetic all-zero analysis frame and test-supplied BSI values. The application source_frame_bridge connects PreparedJobInput, F06ND after proposal and F13 MetadataSourceProposal—including suppressed-source receipts—with typed lineage checks. It returns only a noncommitting candidate. There is no direct positive-path test for the composite bridge; this path has not been run on real source callbacks or installed by a parent. The application bridge binds F13 parsed-container queue-pop lineage through published_emdf_binding::emdf_frame_input_for_source. The source-frame preflight now also requires the exact PreparedJobInput Arc in the DRC after-root and SharedAnalysis receipt, then matches F13 ID1 input/config/terminal-meter hashes to that same receipt before frame assembly. The application bridge now stages CodecOwnerProposal from the exact F12 candidate: it reads the six-block short flags retained in the same numeric plan, passes the candidate's accepted frame and optional OutputSourceAfterProposal through CodecOwnerRoot.stage_source, and returns a proposal only. Published sources still require the matching durable output after-receipt; installation remains parent-owned.",
           "owner": "codec",
           "dependencies": [
             "same-source-converter-pattern-and-offset-plan",
@@ -25128,7 +25128,16 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/METADATA-OUTPUT-TYPED-HANDOFF-APPROVAL-V1/MANIFEST.json"
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "validation_boundary": "The synthetic domain candidate verifies source identity, syncword, selected q membership, bounded search and CRC. The application suite and clippy pass after the typed F06ND/F13/F12 composition was added, but no direct positive-path bridge test or real source frame has run; parent commit, AU append and publication remain open."
+            "validation_boundary": "The synthetic domain candidate verifies source identity, syncword, selected q membership, bounded search and CRC. The application suite and clippy pass after the typed F06ND/F13/F12 composition was added, but no direct positive-path bridge test or real source frame has run; parent commit, AU append and publication remain open.",
+            "codec_owner_proposal_bridge": {
+              "application_function": "stage_codec_owner_after_source_frame",
+              "candidate_acceptance": "AcceptedCodecFrame from the same selected frame candidate",
+              "current_short_flags": "copied from that candidate's retained NumericPlanReceipt",
+              "published_source_output_after": "required and validated by CodecOwnerRoot.stage_source through OutputSourceAfterProposal durable receipt",
+              "suppressed_source_output_after": "must be absent",
+              "result": "NONCOMMITTING_CODEC_OWNER_PROPOSAL",
+              "parent_install": "NOT_RUN"
+            }
           },
           "test_modules": [
             "crates/jocforge-domain/src/codec/source_frame_writer.rs",
@@ -25145,7 +25154,10 @@
               "Synthetic source 0 candidate has 4096 bytes, E-AC-3 syncword 0x0b77, source generation identity preserved, candidate q is in the attempted search, at most ten midpoint trials, and CRC residual zero.",
               "Synthetic source 2 with AbsentPublishedPayloadV1 is rejected as PublishedPayloadRequired.",
               "The test assertions are not an independent golden frame or a real ADM result.",
-              "Application source_frame_bridge composes typed production proposal APIs but has no direct positive-path assertion; its constituent app/domain tests are not an end-to-end source result."
+              "Application source_frame_bridge composes typed production proposal APIs but has no direct positive-path assertion; its constituent app/domain tests are not an end-to-end source result.",
+              "The F12 candidate exposes the six short-flag blocks from the same numeric plan that built its frame.",
+              "The application bridge uses the candidate's AcceptedCodecFrame and plan short flags to stage CodecOwnerRoot; it does not install the root.",
+              "A published source requires its validated OutputSourceAfterProposal durable receipt; suppressed sources require no output after-proposal."
             ],
             "expected_dsp_outputs_included": false,
             "expected_values_are_assertions_only": true,
@@ -25171,14 +25183,16 @@
             "Real authorized 38-channel ADM audio through F04R, installed-six adaptation and F07-F10 source analysis.",
             "Direct positive-path application bridge test and real F06ND/F13 proposals through an actual ADM source plan are NOT_RUN; constructing the production F13 owner still requires a finalized ProgrammeMeasurementReceipt.",
             "Codec/analysis owner commit, parent transaction, append receipt, AU publication and durable output.",
-            "Complete-programme replay, OpenJOC/LAV decode, W04 and product acceptance."
+            "Complete-programme replay, OpenJOC/LAV decode, W04 and product acceptance.",
+            "Calling the codec-owner proposal bridge from a committed production callback and installing it in the twelve-owner parent transaction.",
+            "Real ADM source callbacks, durable output append receipts, programme replay, decode and product acceptance."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/source_frame_writer.rs",
-              "bytes": 11311,
-              "sha256": "2c14ea2f2b8abc8a5cd80c6c53cff643d2f68fc829d7f42582972441f3d8dc24"
+              "bytes": 11681,
+              "sha256": "1efce8126b43e6d4f13ad29c29245f5b3383332cb5af4bc88a0c39980c5b4b07"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -25187,8 +25201,8 @@
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
-              "bytes": 6223,
-              "sha256": "df2cf1beff1bdfb915e8e546a68cf821352e8739da826eb15b7d47c148d0b84b"
+              "bytes": 7200,
+              "sha256": "2374c55048db8a9b77be5d8aaf397f2ce6c218d67ef9a72d31a258c82f3cc8cd"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -25214,8 +25228,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/source_frame_writer.rs",
-              "bytes": 11311,
-              "sha256": "2c14ea2f2b8abc8a5cd80c6c53cff643d2f68fc829d7f42582972441f3d8dc24"
+              "bytes": 11681,
+              "sha256": "1efce8126b43e6d4f13ad29c29245f5b3383332cb5af4bc88a0c39980c5b4b07"
             },
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
@@ -32687,8 +32701,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1919759,
-              "sha256": "f8d91f1edf0ad8fba8889b40323f55886ae50844a53f8d4557781fb0da923fa4"
+              "bytes": 1920870,
+              "sha256": "db1d1493108ce85569481e04b6bba7e0f150f5b886c39daac501be7efcba64ea"
             }
           ],
           "test_inventory": [

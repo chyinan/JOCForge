@@ -7,6 +7,7 @@ use jocforge_domain::{
     analysis::{owner::AnalysisNumericPlanStage, source_frame::SharedAnalysisReceipt},
     codec::{
         bap::BapParameters,
+        owner::{CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError},
         published_emdf_binding::{PublishedEmdfBindingError, emdf_frame_input_for_source},
         source_frame_writer::{
             SelectedSourceFrameCandidate, SelectedSourceFrameWriterError,
@@ -15,6 +16,7 @@ use jocforge_domain::{
     },
     drc::NoneDrcOwnerAfterProposal,
     joc::emdf::metadata_owner::MetadataSourceProposal,
+    publication::OutputSourceAfterProposal,
     timeline::{PublicationDisposition, publication_for_source, source_for_callback},
 };
 
@@ -65,6 +67,22 @@ pub fn prepare_source_frame_from_proposals<'a>(
 
     prepare_selected_source_frame_candidate(analysis_stage, &bsi, &emdf, bap_parameters)
         .map_err(SourceFrameBridgeError::FrameWriter)
+}
+
+/// Stages the codec-owner proposal from the exact F12 candidate and its output disposition.
+///
+/// The short flags are taken from the retained numeric plan that produced this candidate. A
+/// published source therefore needs the matching durable output after-proposal; suppressed
+/// sources pass no output proposal. The function only stages an immutable proposal and leaves
+/// installation to the parent callback transaction.
+pub fn stage_codec_owner_after_source_frame(
+    codec_owner: &CodecOwnerRoot,
+    candidate: &SelectedSourceFrameCandidate<'_>,
+    output_after: Option<&OutputSourceAfterProposal>,
+) -> Result<CodecOwnerProposal, CodecOwnerStageError> {
+    let short_flags = candidate.codec_short_flags();
+    let accepted_frame = candidate.accepted_codec_frame();
+    codec_owner.stage_source(&accepted_frame, &short_flags, output_after)
 }
 
 fn validate_metadata_source_lineage(
