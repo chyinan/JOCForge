@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "F12-ID12-COUNT-AND-FRAMESET-PARENT-BOUNDARY-V1",
+  "vectors": [
+    {
+      "id": "setter-count-shorter-than-output",
+      "kind": "SYNTHETIC_CONTROL_FLOW_ONLY",
+      "inputs": {"setter_count": 1, "output_count": 2, "shared_pointer_table_slots": ["p0", "p1"]},
+      "derived_control_flow": {"common_index": 0, "output_only_tail": [1]},
+      "not_a_runtime_observation": true
+    },
+    {
+      "id": "setter-count-longer-than-output",
+      "kind": "SYNTHETIC_CONTROL_FLOW_ONLY",
+      "inputs": {"setter_count": 2, "output_count": 1, "shared_pointer_table_slots": ["p0", "p1"]},
+      "derived_control_flow": {"common_index": 0, "setter_only_tail": [1]},
+      "not_a_runtime_observation": true
+    },
+    {
+      "id": "frame-record-arithmetic",
+      "kind": "SYNTHETIC_ADDRESS_ARITHMETIC_ONLY",
+      "inputs": {"frame_set_base": 2097152, "frame_ordinal_rbx": 3, "record_offset": 208},
+      "derived_record_address": 2097536,
+      "formula": "base + ordinal*0x38 + 0xd0",
+      "not_a_runtime_pointer": true
+    }
+  ]
+}

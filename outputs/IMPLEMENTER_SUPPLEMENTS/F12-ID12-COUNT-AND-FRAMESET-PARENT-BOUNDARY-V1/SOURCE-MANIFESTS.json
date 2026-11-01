@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-7-multi-adm-dialnorm\\outputs\\multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "439df32fce6b2dfe8f20026225536ef1e954784d1e99fd50d94e1a0b27b2ed33",
+    "checker_result": "PASS normal and python -O; 77 payloads"
+  },
+  "exact_evidence_payloads": [
+    {"file": "ID12-PARENT-INDEX-GENERATION-BOUNDARY-ADDENDUM.md", "sha256": "90c0724e6fe9a4b193ade931e68c21c4f7c5413523b1e7e7fa911118edf4f8df"},
+    {"file": "ID12-PARENT-INDEX-GENERATION-BOUNDARY-ADDENDUM.json", "sha256": "e1b811a35cf4110a1844e114f69a29cdb815afdfa8edb415b180a6335198c81e"},
+    {"file": "DDPI-STREAM-TABLE-COUNT-BOUNDARY-TRACE.txt", "sha256": "44ec516d7a2c1b808aba70aa9d9438717449e18dbadbba057c1abab898c8cf70"},
+    {"file": "DDPI-STREAM-TO-CONTEXT-TYPED-COPY-TRACE.txt", "sha256": "dc4ba446ae287a352fd036e3e086edd0926133b3e9ce876a64f60bda21b52c33"}
+  ],
+  "exclusions": [
+    "No source, decompilation, disassembly, binary, media payload, PCM, key or HMAC copied.",
+    "No runtime generation token was captured."
+  ]
+}

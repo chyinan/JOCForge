@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F12-ID12-COUNT-AND-FRAMESET-PARENT-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "439df32fce6b2dfe8f20026225536ef1e954784d1e99fd50d94e1a0b27b2ed33",
+  "status": "SAME_PARENT_INDEX_STATIC; COUNT_TAIL_POSSIBLE; RUNTIME_VALUES_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1926,
+      "sha256": "4fcbf18a2319e6663da1dbb4aaf5fc6a8485e24b509f4cdd0ee9c66d1c2e05d8"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1095,
+      "sha256": "cfbf4da9176432ce92d27a5fa17d14ca2abe8c8d6bc0deb7903e2a670d6fc4cd"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2010,
+      "sha256": "91ca6ba32db0e1ecb972b39fed9daa589017cdc88de1d9812bc8fbe92d462b99"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1199,
+      "sha256": "01a1c90ca007cb2da1527b98548f10dded71dea69256980264fdc7931cb09aeb"
+    }
+  ]
+}

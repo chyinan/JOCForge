@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F12-ID12-COUNT-AND-FRAMESET-PARENT-BOUNDARY-V1",
+  "source": {
+    "source_package_id": "multi-adm-dialnorm-cross-input",
+    "source_manifest_sha256": "439df32fce6b2dfe8f20026225536ef1e954784d1e99fd50d94e1a0b27b2ed33",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payloads": 77,
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "container": {
+    "parent_receiver": "piVar1 in FUN_140315db0",
+    "shared_pointer_table_offset": "+0x4298",
+    "setter_count_offset": "+0x4290 (dword index 0x10a4)",
+    "output_count_offset": "+0x4294 (dword index 0x10a5)",
+    "setter_loop": "FUN_14034ff60, slot +0x10",
+    "output_loop": "FUN_140350d00, slot +0x28",
+    "static_count_equality_invariant": "NOT_FOUND",
+    "common_index_pointer_identity": "STATIC_SAME_TABLE_SLOT",
+    "tail_if_setter_count_gt_output_count": "setter-only tail is not output by frame loop",
+    "tail_if_output_count_gt_setter_count": "output-only tail is not written by current setter pass",
+    "runtime_count_values": "NOT_OBSERVED"
+  },
+  "frame_set": {
+    "source_field": "stream+0xb28",
+    "passed_register": "R8",
+    "callee_saved_register": "RSI",
+    "record_address_formula": "frame_set + RBX*0x38 + 0xd0",
+    "same_call_parent_and_frame_set": "STATIC",
+    "runtime_generation_token": "NOT_CAPTURED"
+  },
+  "id12_boundary": {
+    "stream_field": "stream+0x9c dword",
+    "typed_copy_path_summary": "ID12 stream dword -> nested context +0x34 -> +0x19140 -> serializer input",
+    "final_bsi_u5_join": "UNBOUND_TO_R5_SELECTOR"
+  },
+  "status": {
+    "static_parent_index_frame_set_boundary": "CLOSED_STATIC",
+    "tail_occurrence_in_real_run": "UNBOUND",
+    "runtime_generation": "NOT_CAPTURED",
+    "dee_run": "NOT_RUN",
+    "media_or_payload_read": false,
+    "implementation_ready": false
+  }
+}
