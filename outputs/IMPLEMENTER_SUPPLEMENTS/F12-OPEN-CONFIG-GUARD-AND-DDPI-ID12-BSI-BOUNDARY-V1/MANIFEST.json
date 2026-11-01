@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F12-OPEN-CONFIG-GUARD-AND-DDPI-ID12-BSI-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "4b0cbdb03e8bb5fa73e330dc60d13dc7bbb0ac754c3325fb638b63cdb549754d",
+  "status": "OPEN_GUARD_ZERO_INIT_STATIC; ID12_TO_BSI_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2328,
+      "sha256": "8dbf57595f157b28a775cd79afb1b50b30e4da2467ae67a4dca817a8e400b09d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1047,
+      "sha256": "0bd38f3b9850afefc44509241579300209ddf712c8ddce36961db94d814ae16d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1352,
+      "sha256": "849e8ea49f653430f48273c946eb0206c2499cdf8822ef25fa874953b443db50"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 800,
+      "sha256": "f188369713f023a7000cbc89709dcb98e3c8e991f352e4d03e22f7febe23b38d"
+    }
+  ]
+}

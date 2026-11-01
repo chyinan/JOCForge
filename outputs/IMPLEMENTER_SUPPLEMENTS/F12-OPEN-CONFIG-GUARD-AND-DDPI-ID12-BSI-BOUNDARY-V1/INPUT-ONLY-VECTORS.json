@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-f12-id12-open-config-structural-vectors.v1",
+  "kind": "static object/field identity checks; no audio data",
+  "vectors": [
+    {
+      "id": "open-config-byte-default",
+      "input": {"workspace_size": "0x3948", "initialization": "zero-fill", "guard_byte_offset": "+0x10a"},
+      "expected": {"resolved_open_closure_reads": 1, "resolved_open_closure_writes": 0, "same_object_as_ddpi_id12": "NOT_PROVEN"}
+    },
+    {
+      "id": "ddpi-id12-setter-and-validator",
+      "input": {"api_id": "0x12", "stream_field": "+0x9c", "width_bits": 32},
+      "expected": {"valid_range": [1, 31], "f12_bsi_u5_join": "UNBOUND"}
+    },
+    {
+      "id": "nested-context-offset-is-a-different-base",
+      "input": {"stream_plus_0xdf8": "nested base stream+0xe00", "nested_plus_0x9c_source": "stream+0xb0 (ID17)"},
+      "expected": {"consumer_fun_140348000_reads_id17_copy": true, "ddpi_id12_dword_copied": false}
+    }
+  ],
+  "lineage": {"source_manifest_sha256": "4b0cbdb03e8bb5fa73e330dc60d13dc7bbb0ac754c3325fb638b63cdb549754d"}
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "4b0cbdb03e8bb5fa73e330dc60d13dc7bbb0ac754c3325fb638b63cdb549754d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_count": 68
+  },
+  "approved_f12_model": {
+    "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+    "contract_sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61"
+  },
+  "prior_ddpi_id12_boundary": {
+    "package_id": "F12-DDPI-DIALNORM-API-TO-BSI-BOUNDARY-V1",
+    "manifest_sha256": "da53268b8f92c4b84a0684a7d4f9e7e73c3fce268c4bd4e2c1519326a9c7a5c4"
+  },
+  "copied_ghidra_trace_or_script": false,
+  "copied_pcm_payload_or_key": false
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F12-OPEN-CONFIG-GUARD-AND-DDPI-ID12-BSI-BOUNDARY-V1",
+  "source": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "4b0cbdb03e8bb5fa73e330dc60d13dc7bbb0ac754c3325fb638b63cdb549754d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_count": 68
+  },
+  "targets": [
+    {"program": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"program": "dee_ddp_encoder.exe", "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"}
+  ],
+  "open_config_guard": {
+    "function": "FUN_1801a7d50",
+    "workspace_alignment": 8,
+    "workspace_zero_bytes": "0x3948",
+    "guard_byte_offset": "+0x10a",
+    "consumer_rva": "0x1a8241",
+    "consumer_use": "compare negated normalizer result; mismatch sets flag 0x04",
+    "resolved_direct_closure_functions": 648,
+    "indirect_or_unresolved_calls": 15,
+    "resolved_closure_accesses": "one byte read; no write",
+    "candidate_writers_outside_closure": ["FUN_180096770", "FUN_1801e9740"],
+    "same_object_as_ddpi_id_0x12": "NOT_PROVEN"
+  },
+  "ddpi_id12": {
+    "setter": "FUN_14034ff60 case 0x12",
+    "field": "32-bit per-stream state+0x9c",
+    "validator": "FUN_140318610 checks [1,31]",
+    "pointer_table": "param_1+0x10a6",
+    "setter_count_field": "param_1[0x10a4]",
+    "frame_process_count_field": "param_1[0x10a5]",
+    "same_index_or_generation": "UNBOUND"
+  },
+  "nested_context": {
+    "stream_member": "+0xdf8 points to stream workspace +0xe00",
+    "id15_copy": "stream+0xa8 to nested-context+0x94",
+    "id17_copy": "stream+0xb0 to nested-context+0x9c",
+    "consumer": "FUN_140348000 reads nested-context+0x9c as U16 and compares with 0x33",
+    "id12_copied_to_nested_context": false
+  },
+  "serializer_boundary": {
+    "resolved_direct_call_closure_functions": 533,
+    "indirect_or_unresolved_calls": 28,
+    "stream_base_id12_dword_read_found": false,
+    "typed_f12_bsi_u5": "integer bits 45..49 per frozen model",
+    "id12_to_bsi_u5_consumer": "UNBOUND",
+    "root_cause_for_attempt10_hash_mismatch": "NOT_INFERRED"
+  },
+  "execution_scope": {"dee_run": false, "pcm_or_payload_read": false, "key_or_license_read": false, "implementation_ready": false}
+}
