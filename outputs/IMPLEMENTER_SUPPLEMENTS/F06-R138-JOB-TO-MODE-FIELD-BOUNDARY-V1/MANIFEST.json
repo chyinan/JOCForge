@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 3760,
+      "file": "CHECK.py",
+      "sha256": "6b4d82a1ee30d9328a4f7d2dcbd130180865bc9f24b6f279a1a613600347c0d9"
+    },
+    {
+      "bytes": 1676,
+      "file": "EVIDENCE.json",
+      "sha256": "bbd9701281c1dd99359eea3df7d318c64c267536e340a93c5a2ca7b14773b8fb"
+    },
+    {
+      "bytes": 1211,
+      "file": "REPORT.md",
+      "sha256": "c4f4cd234d32a1bc8b440132f24017069ca3161e9a6dc6f5d26abc9631ba6663"
+    },
+    {
+      "bytes": 772,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "bba0ce0ab9e179926f355b00dbf27cdef3cbd4aafd63c1fa5b405978f13a2f50"
+    },
+    {
+      "bytes": 1019,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "2abf3a90afcedb9c19c61d27555a7e45367bee2fc9bdbc14404bb8288b97ed24"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F06-R138-JOB-TO-MODE-FIELD-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "47c0931c8843cbcc2ae664b3d57168597349a5d9921056e9d86dc1a6357fb7fb",
+  "status": "ADAPTER_READS_COMPONENT_MODE_SOURCE; R138_XML_TO_MEMBER_UNBOUND"
+}

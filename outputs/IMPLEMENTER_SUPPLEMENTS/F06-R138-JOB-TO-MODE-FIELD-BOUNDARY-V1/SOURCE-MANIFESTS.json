@@ -1,0 +1,16 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "native-f06-r138-job-to-component-mode-field-provenance-addendum",
+    "manifest_sha256": "47c0931c8843cbcc2ae664b3d57168597349a5d9921056e9d86dc1a6357fb7fb",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "related_wash_package": {
+    "package_id": "F06-R138-CONTEXT-MODE-OWNER-CONDITION-BOUNDARY-V1",
+    "manifest_sha256": "54ac629045a8d5b348f43f993894bbd9f0a707e6f165ff91d8e946ea41505810",
+    "relationship": "The component member +0x54 producer remains open specifically at the R138 XML-to-member edge."
+  },
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "raw_r138_xml_or_audio_copied": false
+}

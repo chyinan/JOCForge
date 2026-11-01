@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "47c0931c8843cbcc2ae664b3d57168597349a5d9921056e9d86dc1a6357fb7fb",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed the incoming manifest and ran its verifier normally and under Python optimization.",
+    "Confirmed the adapter reads component member +0x54 for the translated mode source and data rate uses a distinct member.",
+    "Kept all R138 job/profile values hash-bound to the sanitized receipt and did not open raw XML.",
+    "Preserved the XML-to-member, mode, update-flag, owner U16, and conditional-zero applicability gaps."
+  ],
+  "not_promoted": [
+    "absence of custom DialNorm element as a component mode value",
+    "R138 mode/update-flag values",
+    "U16 zero applicability in R138",
+    "allocation-time value before conditional writer",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-f06-r138-job-mode-field-boundary.v1",
+  "package_id": "F06-R138-JOB-TO-MODE-FIELD-BOUNDARY-V1",
+  "status": "ADAPTER_READS_COMPONENT_MODE_SOURCE; R138_XML_TO_MEMBER_UNBOUND",
+  "implementation_ready": false,
+  "r138_job": {
+    "job_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_sha256_from_parent_receipt": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_type": "audio.adm",
+    "output_route": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "time_base": "embedded_timecode",
+    "start": 86640,
+    "end": 86664,
+    "metering_mode": "1770-4",
+    "dialogue_intelligence": false,
+    "line_mode_drc": "none",
+    "rf_mode_drc": "none",
+    "custom_dialnorm_element": "ABSENT"
+  },
+  "typed_path": {
+    "component_callback_receives_existing_state": true,
+    "configuration_adapter_reads_member": "+0x54",
+    "member_drives_context_mode_source": true,
+    "data_rate_comes_from_separate_member": true,
+    "xml_field_to_component_member_plus_0x54": "NOT_PROVEN",
+    "member_owner_setter_or_initializer": "NOT_FOUND_IN_BOUNDED_PATH",
+    "r138_component_mode": "UNBOUND",
+    "r138_update_flag": "UNBOUND",
+    "r138_custom_bsi_owner_u16": "UNBOUND",
+    "r138_zero_rule_applicability": "UNBOUND"
+  },
+  "minimum_next_edge": "First writer/initializer of component state member +0x54 in component-open/configuration path, typed to the R138 job decoder.",
+  "policy": {
+    "new_dee_run": false,
+    "u16_capture": false,
+    "pcm_payload_read": false,
+    "key_or_license_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}
