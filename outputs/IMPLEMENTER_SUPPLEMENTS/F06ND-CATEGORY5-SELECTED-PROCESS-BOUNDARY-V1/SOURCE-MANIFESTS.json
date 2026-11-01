@@ -1,0 +1,25 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_sealed_package": {
+    "package_id": "f06nd_category5_native_effect_wash_v1",
+    "evidence_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+    "package_seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+    "file_count": 5,
+    "seal_members": [
+      {"file": "DECISION-CASES.json", "bytes": 2606, "sha256": "8a340b65ccef60d808f2a2159fa018ac88ef3ec05adfdf313a860e0729b6b012"},
+      {"file": "NATIVE-CONTROL-FLOW.json", "bytes": 5321, "sha256": "635b9ef4f01e655668a1d1439cb8414dfd4de206fae43af55077eb4c2df18a3e"},
+      {"file": "README.md", "bytes": 1453, "sha256": "d4a3fb91f38331a9f73e83df9c47a34ff4c2fd64d297886e0ac3d94cff00b191"},
+      {"file": "SOURCE-IDENTITIES.json", "bytes": 1462, "sha256": "759661bc10f62ee7e02d64a1038ae5300be6c8460ea81e8b7f25f497a54a1f07"},
+      {"file": "evidence_manifest.json", "bytes": 1138, "sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947"}
+    ]
+  },
+  "approved_source_leaf": {
+    "package_id": "F06NR-APPROVED-SOURCE-LEAVES-V1",
+    "file": "approved/specs/06-none-drc-statistics-and-control.md",
+    "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+    "parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "source_file_path_recreated": false
+  },
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "copied_pcm_payload_or_key": false
+}

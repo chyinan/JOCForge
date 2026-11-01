@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F06ND-CATEGORY5-SELECTED-PROCESS-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "f06nd_category5_native_effect_wash_v1",
+    "evidence_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+    "package_seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+    "sealed_payload_count": 5,
+    "payloads_independently_hash_and_size_checked": true,
+    "status": "SEALED_PARTIAL"
+  },
+  "target": {
+    "image": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "size_bytes": 10942464,
+    "analysis": "Ghidra 12.2 static PE analysis; no execution"
+  },
+  "approved_logical_rule": {
+    "source_leaf_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+    "source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "selected_profile": "48 kHz / 1024 kbps / 5.1 / six blocks / uncoupled / no SPX",
+    "input": {"category": 5, "width_bits": 32, "count": 1},
+    "effect": {"writes_drc_control_fifo": false, "logical_record_count": 4, "records": "all zero", "override": 0},
+    "category5_equals_emdf_id1_or_id11": false
+  },
+  "selected_native_process": {
+    "path": ["RVA 0x17a690", "RVA 0x18adf0", "RVA 0x18ae20"],
+    "interface_has_category5_or_input_control_event_parameter": false,
+    "nonzero_frame_branch": ["copy per-channel samples via RVA 0x18d640", "Atmos backend", "advance cursors", "build output descriptor"],
+    "selected_category5_byte_record_write": false,
+    "selected_process_byte_layout": "NOT_APPLICABLE_TO_THIS_PROCESS_PATH"
+  },
+  "separate_generic_storage_surface": {
+    "api": ["AdmFileStorage::writeData<int>", "AdmFileStorage::writeData<float>"],
+    "event_parameter": "std::vector<InputControlEvent>",
+    "generic_helper_rva": "0x3ee430",
+    "selected_category5_producer_join": "UNBOUND",
+    "record_layout": "NOT_INFERRED",
+    "bsi_or_output_consumer": "UNBOUND"
+  },
+  "execution_and_privacy": {
+    "native_execution_performed": false,
+    "pcm_accessed": false,
+    "payload_accessed": false,
+    "private_key_or_license_accessed": false,
+    "implementation_ready": false
+  }
+}

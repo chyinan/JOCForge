@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06ND-CATEGORY5-SELECTED-PROCESS-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+  "status": "SELECTED_PROCESS_BOUNDARY_STATIC; GENERIC_STORAGE_EVENT_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2280,
+      "sha256": "7bfc8fc54e5197216a6f89301ff3936fe7dbe499b0deae6894e68de06ee61004"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1599,
+      "sha256": "0f5814c7f2d14bddfeedf365b7b3611f1d3cd9431f03668da190700b12a0efba"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1974,
+      "sha256": "5ccadebd9f8bb4b46a64f47363136e3b13e8f038de5f5a7e10fd203dfe68118f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1557,
+      "sha256": "db682c2147b3a5240ce0a75c4ea04a3bae67d1b9c28fd5ebf2c8cfea1e59b961"
+    }
+  ]
+}

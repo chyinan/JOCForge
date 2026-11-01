@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-f06nd-selected-process-vectors.v1",
+  "kind": "input-only decision and static interface vectors; not runtime captures",
+  "vectors": [
+    {
+      "id": "approved-selected-category5-logical-decision",
+      "input": {"profile": "48 kHz / 1024 kbps / 5.1 / six blocks / uncoupled / no SPX", "category": 5, "width_bits": 32, "count": 1},
+      "expected": {"drc_control_fifo_write": false, "logical_records": 4, "records_after_submission": "all zero", "override": 0},
+      "evidence_tier": "APPROVED_LOGICAL_CONTRACT; source leaf independently hash-checked"
+    },
+    {
+      "id": "selected-atmosprocessor-nonzero-frame-interface",
+      "input": {"frameSize": "nonzero", "frame_descriptor_fields": ["channel_count", "frameSize", "per-channel sample pointers"]},
+      "expected": {"category5_parameter": false, "selected_category5_record_write": false, "byte_layout": "NOT_APPLICABLE_TO_THIS_PROCESS_PATH"},
+      "evidence_tier": "STATIC"
+    },
+    {
+      "id": "generic-storage-event-api-is-not-category5-join",
+      "input": {"api_event_type": "std::vector<InputControlEvent>"},
+      "expected": {"selected_category5_producer_join": "UNBOUND", "record_layout": "NOT_INFERRED"},
+      "evidence_tier": "STATIC_WITH_UNBOUND_SELECTED_JOIN"
+    }
+  ],
+  "lineage": {
+    "evidence_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "approved_source_leaf_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+  }
+}
