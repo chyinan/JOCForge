@@ -1,0 +1,30 @@
+{
+  "schema": "washed-native-measurement-to-dialnorm-conversion-boundary.v1",
+  "package_id": "native_measurement_to_dialnorm_conversion_boundary_v1",
+  "status": "F06_FLOAT_TO_PARAMETER_RECORD_STATIC; U16_DIALNORM_SOURCE_JOIN_UNBOUND",
+  "implementation_readiness": "NO_FOR_F06_TO_DIALNORM",
+  "source_static_package_manifest_sha256": "8d7abc0bea2d3931661dfd14b4f7fab0abddb0f5cc0899290e0f4e975dbc5d59",
+  "source_run144_wash_manifest_sha256": "3e691852c0e0c2b9026d23a189bfa72fb3901ebcbc3d14de0e949fc4d0401c12",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1368,
+      "sha256": "3c89c8eaffd5ab004e5c1bcab6868e27cdb5d3daa5a846a26f5b8b2c13403048"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2278,
+      "sha256": "fb9725334d91b4abd914eb80aff980b1c01aab91e4c271a78893a24331ffd64e"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 623,
+      "sha256": "dbe9319b8863f2a70460d5a4c4f7b62b38135b9f6caaa78cc3220b469e823093"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1575,
+      "sha256": "6b47f2afb50d511e47c033b3b8966a19792f07068501e7b82c7a7a76c4eea608"
+    }
+  ]
+}

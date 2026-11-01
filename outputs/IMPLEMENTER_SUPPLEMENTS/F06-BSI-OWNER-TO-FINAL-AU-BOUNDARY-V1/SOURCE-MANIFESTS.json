@@ -1,0 +1,41 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "source_packages": [
+    {
+      "package_id": "native-f06-bsi-final-au-writer-generation-addendum",
+      "manifest_sha256": "5d8af71b76ae1b0d56affbdbaa0679c143c31ff5e939727df657656507017647",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "scope": "one same-generation BSI owner to FileWriter frame; U16 numeric meaning and owner default open"
+    },
+    {
+      "package_id": "native-f06-bsi-owner-lifetime-default-addendum",
+      "manifest_sha256": "dc9a0d3c3363b4fc2c41b05f89e11b982beb48d01662d89c3d2ca00355aa184d",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "scope": "typed owner constructor path explicitly initializes +0x34 to zero; alternate writers and numeric meaning open"
+    },
+    {
+      "package_id": "native-f06-bsi-u16-standard-header-generation-boundary-addendum",
+      "manifest_sha256": "034cc25f8b12e3794bc5580468a0cf7aa54928f13613496352acb46422aef104",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "scope": "short run owner serializer and standard header observed, but first writer call was zero length; disclosed scope deviation"
+    },
+    {
+      "package_id": "native-f06-bsi-u16-value-lineage-addendum",
+      "manifest_sha256": "33cb42032997d5f79ddaf50b6e0b7eeebaefac77e7aea4863d18377ccac49d89",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "scope": "conditional zero-code update to separate BSI owner; source vector relation remains open"
+    },
+    {
+      "package_id": "native-f06-source-vector-bsi-owner-generation-addendum",
+      "manifest_sha256": "3d03c7894b14dead56c2dea63be9b5b5d50e4914cab751d5906c4ca6a5f6ad66",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "scope": "source vector owner/generation and separate BSI owner; numeric lineage open"
+    }
+  ],
+  "scope_note": "The short-run zero U16 and the full-run U5 17 are separate observations. The full-run package explicitly states that its U16 was not reread."
+}

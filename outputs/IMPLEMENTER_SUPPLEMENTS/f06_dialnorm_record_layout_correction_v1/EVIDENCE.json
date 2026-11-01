@@ -1,0 +1,81 @@
+{
+  "schema": "washed-f06-dialnorm-record-layout-correction.v1",
+  "package_id": "f06_dialnorm_record_layout_correction_v1",
+  "status": "PER_SOURCE_VECTOR_LAYOUT_SEPARATE_FROM_BSI_U16_OWNER; MEASUREMENT_JOIN_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "supersedes_manifest_sha256": "96ae1cd29cdf62070cd57fd22a58c88456ac5e90aa7373475e6f5b407bf215dd",
+  "upstream_package": {
+    "manifest_sha256": "2b0e4dab3ab8fcd25057d5a30d79d2ea1e2da7feee006113459d2620b169042a",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_hashes_recomputed": "ALL_MATCH"
+  },
+  "target": {
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "current_file_rehash": "MATCH",
+    "analysis": "Ghidra 12.2 static read-only"
+  },
+  "record_layout": {
+    "per_source_header_offset": "+0x30",
+    "per_source_header_shape": "THREE_POINTER_VECTOR",
+    "per_source_header_byte_extent": "+0x30..+0x47",
+    "element_stride_bytes": 32,
+    "vector_assigned_from": "source descriptor vector field",
+    "per_source_header_first_writer": "vector-assignment helper",
+    "byte_plus_0x34_is_bsi_u16": false,
+    "layout_conclusion": "The per-source record +0x34 bytes are part of the first pointer; they cannot be the BSI owner's U16 at +0x34."
+  },
+  "bsi_owner_u16": {
+    "owner_relative_offset": "+0x34",
+    "serializer_reads_u16": true,
+    "special_values": [
+      0,
+      8,
+      16,
+      18,
+      24
+    ],
+    "other_values": "passed to width-5 writer",
+    "first_writer": "NOT_LOCATED",
+    "same_generation_join": "UNBOUND"
+  },
+  "measurement": {
+    "result_slots": "+0xf58..+0xf80",
+    "copied_to_per_source_record_slots": "+0x110..+0x130",
+    "measurement_to_per_source_copy": "STATIC_COPY_OBSERVED",
+    "per_source_record_to_bsi_owner": "UNBOUND"
+  },
+  "observed_u5": {
+    "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "run_process_pid": 25168,
+    "target_module_same_process": true,
+    "logged_measured_loudness": -33.03,
+    "units_stated": false,
+    "value": 31,
+    "class": "LOWER_CLAMP_SAMPLE_ONLY",
+    "output_prefix_bytes_read": 7,
+    "payload_body_read": false,
+    "raw_prefix_retained": false
+  },
+  "approved_formula": {
+    "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+    "formula_status": "MODEL_STATIC_CLOSED",
+    "native_rounding": "NOT_CLOSED"
+  },
+  "older_nonclamped_candidate": {
+    "measurement": -20.665958,
+    "module_process_receipt": "UNBOUND",
+    "output_metadata_inspected": false,
+    "usable_as_native_join": false
+  },
+  "execution": {
+    "new_dee_job": false,
+    "private_key_or_license_content_read": false,
+    "PCM_read": false
+  },
+  "open_edges": [
+    "F06 selected_lufs source and unit to per-source descriptor vector producer",
+    "per-source record to BSI owner U16 owner/generation transfer",
+    "BSI owner U16 first writer and active-PE update conversion"
+  ]
+}

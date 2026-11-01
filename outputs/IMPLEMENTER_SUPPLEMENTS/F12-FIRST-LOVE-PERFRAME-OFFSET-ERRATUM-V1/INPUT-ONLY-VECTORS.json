@@ -1,0 +1,18 @@
+{
+  "schema": "washed-pointer-element-offset-vectors.v1",
+  "evidence_class": "STATIC_TYPE_ARITHMETIC_ONLY",
+  "cases": [
+    {
+      "id": "int-pointer-plus-0x3c",
+      "pointer_element_size_bytes": 4,
+      "element_offset_hex": "0x3c",
+      "expected_byte_offset_hex": "0xf0"
+    },
+    {
+      "id": "compare-distinct-empireenc-fields",
+      "per_frame_write_byte_offset_hex": "0xf0",
+      "scalar_config_field_byte_offset_hex": "0x3c",
+      "expected_same_destination": false
+    }
+  ]
+}

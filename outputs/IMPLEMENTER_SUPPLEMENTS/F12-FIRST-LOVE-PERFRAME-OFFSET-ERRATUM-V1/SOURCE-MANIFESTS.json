@@ -1,0 +1,14 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "36f97eb3422cab3b3fedb7c94f22dcfca3b750f94b1cd6fa6702d48a64d89612",
+    "updated_consumer_closure_json_sha256": "f3f9f657c3fc004df5f8d820e3a15a61381a0c183713add811edb0cd0203d7a1",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "corrected_measurement_supplement": {
+    "package_id": "F12-FIRST-LOVE-NATIVE-SCALAR-ENCODER-CONFIG-BOUNDARY-V1",
+    "manifest_sha256": "e3bfcb7bde5fb217071c605c122cd4bfeeabaa8763df013e3c37e5289d047fcc"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_BOUND_OPTION_BOUNDARY",
+  "source_package_manifest_sha256": "ffd2cf177d48bf871fba45c6425a92a44efdcb43aa2838d0982bd370f09c62f3",
+  "source_checker_normal": "PASS",
+  "source_checker_optimized": "PASS",
+  "implementation_readiness": "NO_FOR_MEASUREMENT_TO_DIALNORM_FORMULA",
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binary": false,
+    "PCM": false,
+    "private_key": false,
+    "absolute_path": false
+  }
+}

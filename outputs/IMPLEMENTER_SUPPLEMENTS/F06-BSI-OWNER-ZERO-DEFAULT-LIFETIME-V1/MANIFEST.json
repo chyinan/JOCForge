@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 6300,
+      "file": "CHECK.py",
+      "sha256": "67ec254d5a84ae363c24cabf56aa94e3e68fcd9bff32d68c14b1b1ba702dc2a4"
+    },
+    {
+      "bytes": 2355,
+      "file": "EVIDENCE.json",
+      "sha256": "7c342ff011838ba9fff26c91ab77e6d62f4369a9f6e98a2dcaafa02eedd328fa"
+    },
+    {
+      "bytes": 954,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "3471857d74c236a1e166e518a148d49746b5302f2630f9e86a8a378ee02f4371"
+    },
+    {
+      "bytes": 1703,
+      "file": "REPORT.md",
+      "sha256": "5f407c8f41d8a4dd3f1dc591bbfdecf37461e74e39904d37a34bb41d765c40d7"
+    },
+    {
+      "bytes": 854,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "34925427190afb7cc6178303972d65891f9444d78fc5eb56b934ea3ee7aeefba"
+    },
+    {
+      "bytes": 948,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "a849c87aa0676b9d3a3aff778a14e6056297d81aed724a719e115de5c77b0a98"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F06-BSI-OWNER-ZERO-DEFAULT-LIFETIME-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "dc9a0d3c3363b4fc2c41b05f89e11b982beb48d01662d89c3d2ca00355aa184d",
+  "status": "ACTIVE_TYPED_OWNER_ZERO_DEFAULT_BOUND; ALTERNATE_WRITERS_NOT_EXHAUSTIVE; U16_TO_STANDARD_DIALNORM_UNBOUND"
+}

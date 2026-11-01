@@ -1,0 +1,9 @@
+{
+  "schema": "washed-open-edges.v1",
+  "layout_correction": "per-source record +0x34 is pointer data, not BSI U16",
+  "unbound": [
+    "F06 measurement source vector producer",
+    "same-generation per-source-to-BSI-owner join",
+    "BSI owner U16 first writer/rounding"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "f06_measurement_dialnorm_typed_edge_wash_v1",
+  "status": "EVIDENCE_ONLY_AUDIO_VALUE_UNBOUND",
+  "source_package_manifest_sha256": "31a3a57a43325c29f8f5d49073fdc24c3ba5817296231b7e12b2dd647f09b80a",
+  "parent_field_classification_manifest_sha256": "0cb7cf1ce05b509cffc82605f319deb733c465e3d7578c3fea4748ffec3d9335",
+  "implementation_allowed_for": "BOUNDARY_REFERENCE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "files": [
+    {
+      "name": "F06-DIALNORM-EDGE.json",
+      "bytes": 1803,
+      "sha256": "ad04ce5917790ea190097239b461f66cc44a55503a290ff8cff9b6eabc4ccdf6"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1047,
+      "sha256": "fc866b554d971e7a4f7bab0ec2d23a06a998d6af483d173c29f7db432c3c9eee"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 885,
+      "sha256": "14b4cb67b5381179de6d90106d41afdc4a1ee37bf79f81abb7383abfefcb4ab8"
+    }
+  ]
+}

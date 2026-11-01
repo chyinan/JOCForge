@@ -1,0 +1,28 @@
+{
+  "schema": "washed-f06-bsi-u16-native-observation-v1",
+  "contract": "One captured condition/value tuple only. No general expected output is supplied.",
+  "vectors": [
+    {
+      "id": "authorized_measurement_update_capture",
+      "input": {
+        "context_mode": 0,
+        "context_update_flag": 0,
+        "metering_mode": "1770-4",
+        "data_rate_kbps": 1024,
+        "file_position_start": 2160,
+        "file_position_end": 2208,
+        "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+      },
+      "observed": {
+        "selected_branch": "MEASUREMENT_UPDATE",
+        "owner_plus_0x34_signed_u16": 0
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "NATIVE_POINTER_SCALAR_OBSERVED_ONE_RUN"
+    }
+  ],
+  "proposed_other_modes": {
+    "expected_output": "NOT_SUPPLIED",
+    "status": "NOT_RUN"
+  }
+}

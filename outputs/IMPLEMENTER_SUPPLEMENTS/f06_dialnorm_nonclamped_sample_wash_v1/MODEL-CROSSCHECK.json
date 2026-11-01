@@ -1,0 +1,18 @@
+{
+  "schema": "f06-dialnorm-nonclamped-model-comparison.v1",
+  "input_only": true,
+  "model_formula_is_not_claimed_as_native_rule": true,
+  "measured_scalar": -20.665958,
+  "conditional_assumption": "native scalar is selected_lufs",
+  "formula_intermediate": "trunc(-20.665958 - 0.5) = -21",
+  "predicted_u5": 21,
+  "observed_first_au_u5": 21,
+  "observed_field": {
+    "bit_offset": 45,
+    "width_bits": 5,
+    "raw_value": 21
+  },
+  "body_bytes_read": 0,
+  "raw_prefix_retained": false,
+  "conclusion": "One conditional nonclamped match for this input/profile only."
+}

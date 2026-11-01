@@ -1,0 +1,67 @@
+{
+  "package_id": "f12_dialnorm_measurement_config_and_aggregate_v1",
+  "status": "METER_METHOD_SELECTOR_AND_FLOAT_MAX_AGGREGATOR_STATIC_BOUND; ONE_NATIVE_SCALAR_OBSERVED; UNIT_SOURCE_JOIN_AND_PER_SOURCE_DSP_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One hash-bound DDP measurement configuration and the static per-source float aggregation rule, with one observed scalar. Does not specify per-source audio measurement, physical unit, rounded BSI value, or generation join.",
+  "source": {
+    "incoming_package_id": "multi-adm-dialnorm-cross-input",
+    "incoming_manifest_sha256": "9ed0dc83824be3dfe7dd45d6919a814f1b49245053e008eadb5ec742bbc54575",
+    "incoming_upstream_trace_json_sha256": "dd510385d9368aa61b9047d0b285555f6fb46f35b618e981d775158c7b5da4e5",
+    "incoming_upstream_trace_md_sha256": "e026ac2983635975263d9e7b1710aabd727b307eee51458583f05c1631755b87",
+    "previous_multi_sample_wash_manifest_sha256": "8921b81482220ca81ef8361a479aa6202edd80ca3871f2bb5e0c4681742f95ec",
+    "incoming_checker_normal": "PASS",
+    "incoming_checker_python_o": "PASS"
+  },
+  "input": {
+    "sample_label": "authorized My jealousy ADM BWF ASCII alias",
+    "sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "size_bytes": 791588070,
+    "format": "RIFF/WAVE PCM24, 36 channels, 48 kHz",
+    "axml_sha256": "0d6f0999d4e86a7637e52af5132375d570d1b55038186be79a1948b995ab1d63",
+    "axml_loudness_fields": [],
+    "pcm_bytes_read_or_decoded": false,
+    "whole_source_streamed_for_hash_and_alias_copy": true
+  },
+  "configuration": {
+    "metering_mode": "1770-4",
+    "internal_selector_slot": "+0x1f0",
+    "default": "1770-4",
+    "meaning": "measurement method selector, not loudness scalar",
+    "measure_only_present": true,
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "custom_dialnorm_element_present": false,
+    "sample_data_rate_kbps": 1024
+  },
+  "native_measurement": {
+    "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis_tool": "Ghidra 12.2",
+    "dispatch_mode": 0,
+    "per_source_result_stride_bytes": 32,
+    "candidate_float_offset_bytes": 20,
+    "initial_aggregate_float": -120.0,
+    "selection": "strict maximum; replace only when candidate > current aggregate",
+    "tie_behavior": "earlier aggregate retained when equal",
+    "native_scalar_observed": -17.093924,
+    "native_scalar_unit": "NOT_STATED_IN_NATIVE_LOG_OR_STATIC_LABELS",
+    "meter_vtable_unit_conversion": "NOT_TRACED",
+    "aggregator_rounding_or_quantization": "NONE_OBSERVED",
+    "per_source_dsp_algorithm": "OUTSIDE_SCOPE"
+  },
+  "limits": {
+    "adm_programme_to_native_measurement_entry": "NOT_PROVEN",
+    "metering_mode_slot_to_measurement_invocation": "PARTIAL",
+    "measurement_generation_to_bsi_owner": "+0x34 JOIN NOT_ESTABLISHED HERE",
+    "native_scalar_to_physical_db": "UNCONFIRMED",
+    "native_scalar_to_bsi_code": "CONDITIONAL_ONLY_IN_PRIOR_MULTI_SAMPLE_WASH",
+    "eac3_output_parse": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "private_key_or_license_contents_read": false,
+    "pcm_decoded": false,
+    "ec3_payload_read": false,
+    "audio_output_created": false
+  }
+}

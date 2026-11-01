@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "native-eac3-dialnorm-gain-reference-correction-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "927c0ab97318472e71767ad033bb0517f275e21ec1014aa5a1f3a4096b7b1d8c",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "a3ad7d428ac5947a3eb98858f873ba0ed1a6f27b8539d1fbd69089920183921e",
+      "bytes": 1073
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "6d463e0b8af8ba180b44c44c3d07ab7790a49f4ff193d66eed51434753f21e20",
+      "bytes": 1530
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "77df830d280660cd2a75fe73534bab3ba648c1fd1723b29f237c5596553a4390",
+      "bytes": 794
+    }
+  ]
+}

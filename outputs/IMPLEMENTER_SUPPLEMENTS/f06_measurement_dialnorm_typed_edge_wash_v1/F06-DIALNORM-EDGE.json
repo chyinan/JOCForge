@@ -1,0 +1,36 @@
+{
+  "schema": "washed-f06-measurement-dialnorm-edge.v1",
+  "status": "MEASURE_ONLY_AND_OVERRIDE_ENTRIES_DISTINCT_DDP_FIELD_COPY_CLOSED_F06_TO_OWNER_UNBOUND",
+  "source_wash_manifest_sha256": "31a3a57a43325c29f8f5d49073fdc24c3ba5817296231b7e12b2dd647f09b80a",
+  "dee_host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "ddp_processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "r138_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+  "config": {
+    "measure_only_entry_present": true,
+    "custom_dialnorm_entry_present": false,
+    "entries_are_distinct": true,
+    "custom_dialnorm_help_range": [
+      -31,
+      0
+    ],
+    "zero_behavior": "DISABLES_THIS_OVERRIDE",
+    "runtime_dispatch": "UNBOUND",
+    "default_origin": "UNBOUND"
+  },
+  "measurement": {
+    "native_MeasuredHistory_size_bytes": 1,
+    "recovered_members": 0,
+    "native_F06_finalize_result_field": "NOT_IDENTIFIED",
+    "model_selected_lufs_u32_to_native": "UNBOUND",
+    "logged_loudness_to_native_finalize": "UNBOUND"
+  },
+  "ddp_owner": {
+    "same_owner_source": "owner_plus_0x34_u16",
+    "copy_to_serializer_member": "owner_plus_0x20",
+    "write_width_bits": 5,
+    "field_classification": "EAC3_DIALNORM_PER_PREVIOUS_WASHED_FIELD_CLASSIFICATION"
+  },
+  "unresolved": "F06 measurement/finalize result field -> same-job DDP owner +0x34 U16, with owner/generation join.",
+  "authority": "DEE_GHIDRA_STATIC_ONLY; FFmpeg/OpenJOC do not supply DialNorm values, defaults, units, gain, or audio behavior.",
+  "minimum_next_observation": "Only if an authorized DEE run reaches the DDP setter: capture typed finalized F06 member and same owner +0x34 U16 under one job/generation. No new job requested by this package."
+}

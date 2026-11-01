@@ -1,0 +1,74 @@
+{
+  "schema": "washed-f06-dialnorm-native-observation.v1",
+  "package_id": "f06_dialnorm_native_observation_boundary_v1",
+  "status": "ONE_LOWER_CLAMP_REFERENCE_MATCH_BSI_OWNER_JOIN_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "implementation_effect": "ONE_NATIVE_BSI_FIELD_OBSERVATION_ONLY",
+  "source_package": {
+    "manifest_sha256": "3a2962689b729bc12a7a354a33e86ac4723e31d6704cb318a8970f31e0d5a39b",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_hashes_recomputed": "ALL_MATCH"
+  },
+  "input": {
+    "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "task_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "authorized_file_current_rehash": "MATCH"
+  },
+  "process": {
+    "image": "dee.exe",
+    "pid": 25168,
+    "same_process_module_load": true,
+    "exit_code": 0
+  },
+  "loaded_module": {
+    "image": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "expected_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "same_process_pid": 25168,
+    "runtime_pe_matches_resolved_file": true
+  },
+  "measurement": {
+    "integrated_loudness": -33.025146,
+    "measured_itu_loudness": -33.03,
+    "units_stated_in_native_log": false,
+    "backend": "PE"
+  },
+  "observation": {
+    "syncframe": "first_independent",
+    "sample_rate_hz": 48000,
+    "audio_blocks": 6,
+    "frame_bytes": 4096,
+    "dialnorm_bit_offset": 45,
+    "dialnorm_width_bits": 5,
+    "dialnorm_u5": 31,
+    "dialnorm_db": -31,
+    "prefix_bytes_read": 7,
+    "payload_body_bytes_read": 0,
+    "raw_prefix_retained": false
+  },
+  "formula_comparison": {
+    "approved_formula_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+    "formula_status": "STATIC_CLOSED_IN_MODEL_CONTRACT",
+    "assumption": "measured scalar equals selected_lufs",
+    "predicted_u5": 31,
+    "observed_u5": 31,
+    "comparison": "LOWER_CLAMP_SAMPLE_ONLY",
+    "same_owner_generation": "UNBOUND",
+    "native_rounding_rule": "NOT_CLOSED",
+    "native_units": "NOT_STATED"
+  },
+  "static_lineage": {
+    "measurement_to_per_source_record": "STATIC_COPY_OBSERVED",
+    "per_source_record_to_BSI_owner_plus_0x34": "NOT_BOUND",
+    "BSI_owner_first_writer": "NOT_LOCATED"
+  },
+  "execution": {
+    "temporary_ec3_bytes": 135168,
+    "temporary_ec3_read_or_hashed": false,
+    "temporary_ec3_deleted": true,
+    "private_key_or_license_contents_read": false,
+    "PCM_read_or_retained": false,
+    "playback": "NOT_RUN"
+  }
+}

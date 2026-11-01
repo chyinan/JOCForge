@@ -1,0 +1,24 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "77755d22ea8cc19b90dfd03c4b27a552b9c807f31a74f548ae6abfc8abd0afd5",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "input_vectors": 3,
+    "first_love_observation_added": true
+  },
+  "reused_prior_cross_sample_package": {
+    "manifest_sha256": "2f597ae39b3cbdada02866ae05ad09b410049ac2d18e1d4f0460f053c931302c"
+  },
+  "prior_distinct_input_hashes": [
+    {"sample_label": "authorized_adm_a", "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"},
+    {"sample_label": "authorized_adm_b", "sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e"},
+    {"sample_label": "authorized_adm_c", "sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d"}
+  ],
+  "new_measurement_input_hash_from_prior_authorized_identity_record": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+  "target_module": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "washed-multi-adm-dialnorm-three-sample-open-edges.v1",
+  "package_id": "multi_adm_dialnorm_three_sample_addendum_v1",
+  "closed": [
+    "three distinct authorized input hashes",
+    "same profile/window reported for all runs",
+    "same target module hash joined to each process PID",
+    "seven-byte helper source/binary hashes and OpenJOC 0.20.1 crate versions rehashed",
+    "approved model predictions match three observed U5 values conditionally"
+  ],
+  "open": [
+    "native measurement unit",
+    "general native rounding rule",
+    "measurement-to-BSI owner update/generation join",
+    "official CLI invocation (would read full declared frames)"
+  ],
+  "status": {
+    "unit": "NOT_STATED_IN_NATIVE_LOG",
+    "rounding": "NOT_CLOSED",
+    "owner_generation": "NOT_CLOSED",
+    "official_cli": "NOT_RUN"
+  },
+  "guidance": "For the current MVP, these three cross-input matches support the already-approved F12 formula under the selected_lufs assumption. Do not claim a general native rule or owner lineage."
+}

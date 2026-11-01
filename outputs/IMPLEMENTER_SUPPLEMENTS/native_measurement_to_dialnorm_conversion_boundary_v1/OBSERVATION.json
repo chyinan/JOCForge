@@ -1,0 +1,38 @@
+{
+  "schema": "washed-native-measurement-to-dialnorm-conversion-boundary.v1",
+  "status": "F06_FLOAT_TO_PARAMETER_RECORD_STATIC; U16_DIALNORM_SOURCE_JOIN_UNBOUND",
+  "source_static_package_manifest_sha256": "8d7abc0bea2d3931661dfd14b4f7fab0abddb0f5cc0899290e0f4e975dbc5d59",
+  "source_run144_wash_manifest_sha256": "3e691852c0e0c2b9026d23a189bfa72fb3901ebcbc3d14de0e949fc4d0401c12",
+  "f06_float_chain": {
+    "result_type": "Float32",
+    "result_selection": "maximum of result-record Float32 values, logged as Final Integrated loudness and measured_loudness",
+    "unit": "NOT_STATED",
+    "cache_transfer": "same Float32 bits copied into a cached owner member",
+    "parameter_record_transfer": "cached Float32 copied into a Float32 encode-parameter record field",
+    "conditional_overwrite": "a later conditional Float32 store to that parameter-record field exists; source semantics UNBOUND",
+    "rounding_or_integer_conversion_to_dialnorm": "NOT_FOUND_IN_TRACED_PATH"
+  },
+  "u16_wire_chain": {
+    "source_type": "U16",
+    "consumer": "same-owner setter copy into serializer staging, then 5-bit writer",
+    "runtime_observation_parent": "run144",
+    "run144_value": "28 (U5 28)",
+    "owner_and_generation": "same owner for U16 setter/serializer; generation token UNBOUND"
+  },
+  "cross_chain": {
+    "typed_f06_float_to_ddp_u16_edge": "UNBOUND",
+    "same_owner_or_generation_join": "UNBOUND",
+    "formula": "NOT_ESTABLISHED",
+    "do_not_join_by": "equal member offsets across unrelated objects or matching numeric values"
+  },
+  "one_run_observation_plan": {
+    "use": "augment the already authorized R3 single scalar run; no second DEE job",
+    "observe": "F06 Float32 getter/result, cache and parameter-record copy/optional overwrite; same-run DDP U16 owner field, setter/staging and 5-bit serializer",
+    "join_rule": "join only on an explicit typed owner/record/generation path; otherwise keep the cross-chain edge UNBOUND",
+    "retention": "scalar values and opaque run-local owner tokens only; no PCM, EC-3 payload or dumps"
+  },
+  "implementation_disposition": {
+    "dialnorm_formula_approved": false,
+    "instruction": "Do not convert logged integrated loudness into the U16/5-bit field from this static evidence or the run144 numeric match."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f06_dialnorm_nonclamped_sample_wash_v1",
+  "scope": "One conditional nonclamped F06 measurement-to-first-AU DialNorm observation for the authorized input; general native unit/rounding and measurement-owner join remain open.",
+  "status": "ONE_NONCLAMPED_SAMPLE_U5_OBSERVED; CONDITIONAL_MODEL_MATCH; GENERAL_NATIVE_RULE_AND_OWNER_JOIN_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1531,
+      "sha256": "bd6a1a416143351061bdf3f1ccea0e34870fe88b5b6704933981da5e3edc69eb"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3747,
+      "sha256": "35f62a6b39a8544458925ffcca3f36305b74fad659d28eb67ba56ef2e23de989"
+    },
+    {
+      "name": "MODEL-CROSSCHECK.json",
+      "bytes": 572,
+      "sha256": "12c8da4dc0db66b65139e7ca5f0a0c9fd83302361f4de0b92baf5e2f0e7fb6b6"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1057,
+      "sha256": "7dd6b88d7351bf6dcc62f9c0d91e37abcc2a9f8dd632f12680222525d98fc65e"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1035,
+      "sha256": "30a12e1ee70a4d876a8b71ee776730af982fd9898529465af5d562333cb5d3ea"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2761,
+      "sha256": "67eaf38a17c034388ed91c71407168b1c78b3d03dc7c367a726d0ff7523dc6a9"
+    }
+  ]
+}

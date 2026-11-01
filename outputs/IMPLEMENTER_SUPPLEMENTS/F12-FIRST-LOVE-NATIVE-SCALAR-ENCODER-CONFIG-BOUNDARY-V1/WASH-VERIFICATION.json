@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "77755d22ea8cc19b90dfd03c4b27a552b9c807f31a74f548ae6abfc8abd0afd5",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed incoming manifest SHA-256 and ran its checker normally and under Python optimization.",
+    "Confirmed First Love source identity is inherited and not rehashed in this run; measurement Job XML, wrapper, executable, result and metadata scan receipts are hash-bound in the source package.",
+    "Confirmed the inherited First Love input hash differs from the three prior cross-sample input hashes; it is a distinct sample, not a universal rule proof.",
+    "Separated the native scalar observation from Ghidra static float handoff facts and from the model-only boundary candidate.",
+    "Preserved native unit, per-frame overwrite join and final BSI DialNorm conversion as open."
+  ],
+  "not_promoted": [
+    "native scalar interpreted as LUFS or DialNorm",
+    "current run's target module loaded into process",
+    "per-frame overwrite equals measurement aggregate",
+    "standard BSI field or plugin rounding/quantization",
+    "bitstream output correctness or playback"
+  ]
+}

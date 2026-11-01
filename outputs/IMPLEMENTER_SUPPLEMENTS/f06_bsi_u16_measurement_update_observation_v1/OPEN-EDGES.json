@@ -1,0 +1,24 @@
+{
+  "package_id": "f06_bsi_u16_measurement_update_observation_v1",
+  "closed_within_scope": [
+    "The authorized ASCII alias matched the original input SHA for this observation.",
+    "At context mode 0 and update flag 0, the measurement-update branch was taken.",
+    "The same BSI owner pointer reached the serializer and exposed signed U16 zero at owner +0x34 in this run.",
+    "The source qword vector was not read and the two confirmed fixed-block setters remain independent of its values."
+  ],
+  "open": [
+    "Owner-lifetime constructor-time default/first write.",
+    "Runtime behavior for context mode 1 or other update-flag states.",
+    "Any alternate owner writer outside confirmed paths.",
+    "Final EC3 AU owner/generation join and output value.",
+    "Exit-code receipt, output validation, and playback."
+  ],
+  "status": {
+    "mode_one_branch": "NOT_TAKEN",
+    "measurement_update_branch": "TAKEN_FOR_THIS_RUN",
+    "serializer_u16": "ZERO_FOR_THIS_RUN_ONLY",
+    "constructor_default": "NOT_LOCATED",
+    "output": "NOT_CREATED_AT_FINAL_CHECK"
+  },
+  "guidance": "Do not generalize this one observed value as the BSI owner global default. Do not claim successful audio output or a final EC3 AU value."
+}

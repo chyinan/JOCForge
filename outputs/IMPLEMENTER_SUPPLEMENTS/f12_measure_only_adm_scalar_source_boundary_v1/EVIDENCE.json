@@ -1,0 +1,68 @@
+{
+  "package_id": "f12_measure_only_adm_scalar_source_boundary_v1",
+  "status": "SAMPLE_AXML_NO_LOUDNESS_FIELD; JOB_MEASURE_ONLY_SOURCE_SUPPORTED; FLOAT_MAX_AGGREGATOR_BOUND; UNIT_AND_SOURCE_ROW_JOIN_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One authorized sample AXML/Job configuration and the DEE measurement-pass aggregate path with one logged scalar. No native unit, ADM programme-to-per-source row join, BSI value, or output is established.",
+  "source": {
+    "incoming_package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "9ed0dc83824be3dfe7dd45d6919a814f1b49245053e008eadb5ec742bbc54575",
+    "upstream_addendum_manifest_sha256": "2f597ae39b3cbdada02866ae05ad09b410049ac2d18e1d4f0460f053c931302c",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "prior_aggregate_wash_manifest_sha256": "50fada2dbe30050f52ede76f4ee31ea05e077a2906091eb457b77a7e3281e6bd"
+  },
+  "sample": {
+    "label": "authorized My jealousy ADM BWF",
+    "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "format": "RIFF/WAVE PCM24, 36 channels, 48 kHz",
+    "axml_sha256": "0d6f0999d4e86a7637e52af5132375d570d1b55038186be79a1948b995ab1d63",
+    "axml_audio_programme_ids": [
+      "APR_1001"
+    ],
+    "axml_loudness_related_fields": [],
+    "dbmd_parsed": false
+  },
+  "job_configuration": {
+    "measure_only": true,
+    "metering_mode": "1770-4",
+    "metering_mode_default": "1770-4",
+    "metering_mode_role": "measurement-method selector, not a loudness scalar",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "custom_dialnorm_element_present": false,
+    "custom_dialnorm_zero_default_overrides_measured_value": false,
+    "window": {
+      "time_base": "file_position",
+      "start": 2160,
+      "end": 2208
+    },
+    "data_rate_kbps": 1024
+  },
+  "native_measurement": {
+    "process_module_join": true,
+    "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "logged_scalar": -17.093924,
+    "unit": "NOT_STATED_IN_NATIVE_LOG",
+    "aggregator": "strict maximum of per-source floats",
+    "aggregate_initial_value": -120.0,
+    "per_source_stride_bytes": 32,
+    "candidate_offset_bytes": 20,
+    "rounding_or_quantization_in_aggregator": "NONE_OBSERVED",
+    "meter_vtable_conversion": "NOT_TRACED"
+  },
+  "interpretation": {
+    "explicit_user_loudness_scalar_in_job_xml": false,
+    "measurement_source": "inferred DEE measure-only pass under job method settings",
+    "programme_to_native_source_row": "NOT_PROVEN",
+    "native_unit": "UNCONFIRMED",
+    "native_rounding": "NOT_ESTABLISHED",
+    "scalar_to_BSI_owner": "+0x34 NOT JOINED HERE"
+  },
+  "execution": {
+    "new_dee_run": false,
+    "pcm_decoded_or_analyzed": false,
+    "output_created": false,
+    "output_contents_read": false,
+    "private_key_or_license_contents_read": false
+  }
+}

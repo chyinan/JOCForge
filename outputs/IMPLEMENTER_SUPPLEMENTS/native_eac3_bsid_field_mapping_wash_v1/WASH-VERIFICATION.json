@@ -1,0 +1,20 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "native-eac3-bsid-field-mapping-wash-v1",
+  "source_manifest_sha256": "75503650988a4deafd73c1f46025062482a70dc0d484805b9307447864f10881",
+  "checks": {
+    "source_manifest_and_payload_hashes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "serializer_field_order_matches_public_parser_crosswalk": true,
+    "R141_dynamic_record_value": 16,
+    "same_parent_token": true,
+    "record_plus_8_semantic": "EAC3_BSID",
+    "following_field": "EAC3_DIALNORM",
+    "output_payload_read_or_hashed": false,
+    "dialnorm_scalar": "NOT_CAPTURED",
+    "full_e2e": "NOT_VERIFIED",
+    "playback": "NOT_RUN"
+  },
+  "scope_note": "Wash reviewed a hash-bound Ghidra package and public parser crosswalk; the R141 output payload is absent and no output bytes were independently inspected."
+}

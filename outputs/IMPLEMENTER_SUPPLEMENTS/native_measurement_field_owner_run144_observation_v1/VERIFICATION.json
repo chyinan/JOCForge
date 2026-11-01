@@ -1,0 +1,18 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_BOUND_SINGLE_RUN_SCOPE",
+  "source_package_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "source_package_seal_sha256": "c48d32d6e93e54f94f4a4ae2691a32821e7001e0b2b4bdd57c2fa88d275ed410",
+  "source_checker_normal": "PASS",
+  "source_checker_optimized": "PASS",
+  "implementation_readiness": "NO_FOR_F06_MEASUREMENT_FORMULA",
+  "excluded_materials": {
+    "media": false,
+    "pcm_or_payload": false,
+    "binary_or_decompilation": false,
+    "raw_log": false,
+    "private_license_contents": false,
+    "absolute_paths": false,
+    "module_coordinates": false
+  }
+}

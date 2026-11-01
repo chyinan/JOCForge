@@ -1,0 +1,11 @@
+{
+  "schema": "washed-f06-source-vector-bsi-source-binding.v1",
+  "package_id": "f06_source_vector_bsi_measurement_context_v1",
+  "incoming_manifest_sha256": "3d03c7894b14dead56c2dea63be9b5b5d50e4914cab751d5906c4ca6a5f6ad66",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "authorized_input_current_hash": "MATCH",
+  "target_file_current_hash": "MATCH",
+  "target_module_process_receipt": "NOT_CAPTURED",
+  "raw_pointer_tokens_copied": false,
+  "private_key_license_read": false
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "multi_adm_dialnorm_three_sample_addendum_v1",
+  "scope": "Three distinct authorized ADM first-AU U5 observations conditionally matching approved F12 formula using a verified OpenJOC 0.20.1 crate-based 7-byte helper; native unit/rounding and BSI owner-generation remain open.",
+  "status": "THREE_DISTINCT_AUTHORIZED_INPUTS_MATCH_CONDITIONALLY; OFFICIAL_CLI_NOT_RUN; NATIVE_UNIT_AND_OWNER_JOIN_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1347,
+      "sha256": "0a1450f08262f130182245be84bf63426f52d0706e329daadaad0cce9ee74346"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 5527,
+      "sha256": "876839a00dcb311f149818b250a76714c13bb46a215a2f22025668e6705931be"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1057,
+      "sha256": "63751a4cf63d7e841d3ff8daba50d0f404a6a02cc449d76515a5003df560acc3"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1033,
+      "sha256": "b50fe1164c84f2f30b0488086ac82cc295a00393908cbe13d0327ee93796f304"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1655,
+      "sha256": "442f041a7f81936bfcbc3275c615d11d3a95e69c72eec3930eb5eab424f487e6"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 3350,
+      "sha256": "281449709afeb8469974ed9bc49f7dc13c61970ac84ecd83c44e423ee7af88fa"
+    }
+  ]
+}

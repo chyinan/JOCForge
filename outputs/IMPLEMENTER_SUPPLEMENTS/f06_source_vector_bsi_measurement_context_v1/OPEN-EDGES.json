@@ -1,0 +1,23 @@
+{
+  "schema": "washed-f06-source-vector-bsi-open-edges.v1",
+  "package_id": "f06_source_vector_bsi_measurement_context_v1",
+  "closed": [
+    "descriptor +0x68 qword vector first writer and stride 8",
+    "deep copy to record +0x30 with stride 8",
+    "record argument forwarded to measurement consumer",
+    "BSI callback in same consumer context and owner pointer matches serializer owner"
+  ],
+  "open": [
+    "qword semantic type and numeric use",
+    "first writer/default/update of distinct BSI U16 +0x34",
+    "process-bound loaded module identity",
+    "source/frame generation"
+  ],
+  "status": {
+    "numeric_lineage": "UNBOUND",
+    "owner_value": "NOT_READ",
+    "module_identity": "NOT_CAPTURED",
+    "generation": "UNBOUND"
+  },
+  "guidance": "Keep qword vectors opaque; do not infer numeric lineage from same call, equal values, or adjacent fields."
+}

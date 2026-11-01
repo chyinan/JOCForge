@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 6135,
+      "file": "CHECK.py",
+      "sha256": "5feabb61e4668c6c4a9758db1ef83cf7e9a018c9118d2067e560bd791ef560fc"
+    },
+    {
+      "bytes": 1607,
+      "file": "EVIDENCE.json",
+      "sha256": "54c4c04107ce840e94a5a86e3ce299c441292bcff8f92da58043be19e22949f6"
+    },
+    {
+      "bytes": 498,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "52deba51d04298f8ff33fadc07e3a794e4a65c22baeef2a43c675f01eeadd4c5"
+    },
+    {
+      "bytes": 1259,
+      "file": "REPORT.md",
+      "sha256": "4e90a9531ed696068f999c8605679cb177e44b9c1268684bfd5a31aacd85ec57"
+    },
+    {
+      "bytes": 618,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "acd7ff3ad618d0eb120dd7369c79df33c8c21aae0018cd56c5ea9e34b59ed57b"
+    },
+    {
+      "bytes": 990,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "07e5ccec09beec46115bbc1fe8c1d4ce43d1b77bf0df33da405b4cb7d32b9bed"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F12-FIRST-LOVE-PERFRAME-OFFSET-ERRATUM-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "36f97eb3422cab3b3fedb7c94f22dcfca3b750f94b1cd6fa6702d48a64d89612",
+  "status": "PER_FRAME_DESTINATION_OFFSET_CORRECTED; PER_FRAME_VALUE_SEMANTICS_AND_FINAL_BSI_FIELD_OPEN"
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "SCOPE_CORRECTION",
+  "source_package_manifest_sha256": "927c0ab97318472e71767ad033bb0517f275e21ec1014aa5a1f3a4096b7b1d8c",
+  "checks": {
+    "source_package_payload_hashes_match": true,
+    "prior_wash_supplement_manifest_superseded": "9c59b9d8e92c996f75dee14143131817dad5ef969a41eeb452094627ec602754",
+    "DEE_audio_effect": "NOT_ESTABLISHED",
+    "FFmpeg_reference": "EXTERNAL_CROSSCHECK_ONLY",
+    "implementation_rule_from_FFmpeg": false,
+    "R141_DialNorm_value": "NOT_CAPTURED"
+  },
+  "scope_note": "This correction prevents external decoder behavior from being treated as evidence for DEE."
+}

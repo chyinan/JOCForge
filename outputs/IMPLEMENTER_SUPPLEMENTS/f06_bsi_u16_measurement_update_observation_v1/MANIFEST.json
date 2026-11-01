@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f06_bsi_u16_measurement_update_observation_v1",
+  "scope": "One authorized run observed context mode=0, update_flag=0, the measurement-update branch, and signed U16 zero at BSI owner +0x34. Constructor default, other branches, final EC3 AU owner, exit receipt, and output remain open.",
+  "status": "MEASUREMENT_UPDATE_BRANCH_AND_SERIALIZER_U16_ZERO_OBSERVED_FOR_ONE_RUN; OWNER_DEFAULT_AND_FINAL_AU_JOIN_OPEN; OUTPUT_NOT_CREATED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2782,
+      "sha256": "23d3affa1d2ae859e8ffd9d59d52e4b314d4caa264c08b5bf8aa5471ad611d72"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 871,
+      "sha256": "30073f52ca3104c79bb3eac6606b6b5793636b3cc6c18f2398904a4c83549a80"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1227,
+      "sha256": "e79eb473f7b220ed7b00f517f5f671927d86bd0c78b242942b5e09c3edf43ac1"
+    },
+    {
+      "name": "README.md",
+      "bytes": 955,
+      "sha256": "4b89fefa062ff2ea5d491bc4a3e47ff80f0147bfd764b1c36b19891ee5320af4"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1483,
+      "sha256": "a62147a337f08d81529b011ed60cd68d13fcef5778c61af98b3012a5e6e598af"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 234,
+      "sha256": "d3f6009c1c6d3216df4abf09bdc9427d56d4920437baf9d16e99db0776fb3503"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2483,
+      "sha256": "9931f2b4d1b6266b6a6a35ea2a50f47d02c0130d51cac092b53ab7883c12c6d7"
+    }
+  ]
+}

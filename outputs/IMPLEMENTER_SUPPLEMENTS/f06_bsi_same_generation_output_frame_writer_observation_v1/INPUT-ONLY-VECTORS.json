@@ -1,0 +1,25 @@
+{
+  "schema": "washed-f06-bsi-writer-frame-reference-v1",
+  "contract": "One observed reference run and frame only; no predicted output byte vector is supplied.",
+  "vectors": [
+    {
+      "id": "dee_reference_frame3481",
+      "input": {
+        "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+        "job_xml_sha256": "d61f8cec69faaad78bd266f5dffd29d9ba462b7eaa969e165d3ba6f3209d57a4",
+        "frame_index": 3481,
+        "frame_size_bytes": 4096
+      },
+      "observed": {
+        "writer_size_delta_bytes": 4096,
+        "header_bytes_read": 7,
+        "sample_rate_hz": 48000,
+        "audio_blocks": 6,
+        "bitstream_id": 16,
+        "dialnorm_u5": 17
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "DEE_REFERENCE_OBSERVED_NOT_JOCFORGE_CONFORMANCE"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "washed-f12-native-measurement-input-only.v1",
+  "contract": "Configuration and shape inputs only. No predicted BSI code or output bitstream is supplied.",
+  "vectors": [
+    {
+      "id": "observed_measurement_job",
+      "input": {
+        "metering_mode": "1770-4",
+        "measure_only": true,
+        "dialogue_intelligence": false,
+        "custom_dialnorm": "ABSENT",
+        "sample_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "observed_scalar": -17.093924,
+      "unit": "UNSTATED",
+      "status": "NATIVE_SCALAR_OBSERVED"
+    },
+    {
+      "id": "aggregate_shape",
+      "input": {
+        "initial": -120.0,
+        "stride_bytes": 32,
+        "candidate_offset_bytes": 20,
+        "comparison": "candidate > current"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "STATIC_RULE"
+    }
+  ]
+}

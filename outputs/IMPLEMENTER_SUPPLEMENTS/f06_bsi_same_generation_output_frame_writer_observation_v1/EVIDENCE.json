@@ -1,0 +1,74 @@
+{
+  "package_id": "f06_bsi_same_generation_output_frame_writer_observation_v1",
+  "status": "SAME_GENERATION_BSI_OWNER_TO_FILEWRITER_FRAME_BOUND_FOR_ONE_FULL_RUN; HEADER_ONLY_U5_17_OBSERVED; U16_NUMERIC_MAPPING_AND_OWNER_DEFAULT_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One DEE full-file reference run binds a same-generation BSI owner to a FileWriter frame and a seven-byte header-only AU observation. Does not validate JOCForge, parse frame body, or map BSI owner U16 to encoded DialNorm.",
+  "source": {
+    "incoming_package_id": "native-f06-bsi-final-au-writer-generation-addendum",
+    "manifest_sha256": "5d8af71b76ae1b0d56affbdbaa0679c143c31ff5e939727df657656507017647",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "run": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_alias_sha_matches_original": true,
+    "job_xml_sha256": "d61f8cec69faaad78bd266f5dffd29d9ba462b7eaa969e165d3ba6f3209d57a4",
+    "dee_exit_code": 0,
+    "data_rate_kbps": 1024,
+    "full_file": true,
+    "time_base": "file_position",
+    "metering_mode": "1770-4",
+    "output_bytes": 17395712,
+    "frame_bytes": 4096,
+    "whole_frame_count": 4247,
+    "remainder_bytes": 0,
+    "output_retained": false,
+    "output_content_hash": "NOT_COMPUTED"
+  },
+  "same_generation_writer": {
+    "bsi_serializer_owner_to_filewriter_frame_input": "BOUND_FOR_ONE_OBSERVED_FRAME",
+    "writer_frame_index": 3481,
+    "file_size_before": 14258176,
+    "file_size_after": 14262272,
+    "size_delta": 4096,
+    "frame_index_times_frame_size": 14258176,
+    "append_size_is_one_complete_frame": true,
+    "writer_implementation": "FileWriter::write path reaches fwrite",
+    "current_run_bsi_owner_u16_read": false
+  },
+  "header_only": {
+    "frame_index": 3481,
+    "bytes_examined": 7,
+    "syncframe_type": "INDEPENDENT",
+    "substream_id": 0,
+    "bitstream_id": 16,
+    "sample_rate_hz": 48000,
+    "audio_blocks": 6,
+    "frame_size_bytes": 4096,
+    "dialnorm_bit_offset": 45,
+    "dialnorm_width_bits": 5,
+    "dialnorm_u5": 17,
+    "dialnorm_db": -17,
+    "parser_source_sha256": "b4764de96c53de81fccbf720c11bbddc58b1d680b5af58b0ee1005b45ab62e67",
+    "header_bytes_retained": false
+  },
+  "owner_lifetime": {
+    "constructor_time_first_write": "NOT_LOCATED",
+    "pre_conditional_update_default": "NOT_CAPTURED",
+    "alternate_writer_coverage": "NOT_EXHAUSTIVE",
+    "same_offset_candidate": "REJECTED_DIFFERENT_OBJECT"
+  },
+  "semantic_limits": {
+    "bsi_u16_to_standard_ec3_dialnorm_numeric_relation": "NOT_BOUND",
+    "separate_measurement_callback_u16_zero_to_this_frame": "NOT_JOINED",
+    "playback": "NOT_RUN",
+    "full_frame_parse": "NOT_RUN"
+  },
+  "exclusions": {
+    "pcm_bytes_read_by_researcher": 0,
+    "ec3_body_bytes_read": 0,
+    "private_key_or_license_contents_read": false,
+    "raw_addresses_in_package": false,
+    "absolute_paths_in_package": false
+  }
+}

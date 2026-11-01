@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f06_dialnorm_record_layout_correction_v1",
+  "scope": "Corrects per-source +0x34 interpretation; confirms separate BSI U16 and keeps measurement owner/generation join open.",
+  "status": "PER_SOURCE_VECTOR_LAYOUT_SEPARATE_FROM_BSI_U16_OWNER_MEASUREMENT_JOIN_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2991,
+      "sha256": "1aec9b8b1654ab81db4b698fb542c6f142a8c098f1a17c540dd6a809ab9b6a70"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 278,
+      "sha256": "e92d8a4c9b8ad48a2dc6155b32069a00b71fc3167623f167a8da96637ea9149d"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1231,
+      "sha256": "d75b46d430bab8afa718ec112b8ff954b9754a297edeacb0090278c502dce589"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1515,
+      "sha256": "bd41b5e389f2766367a3c55bd305c5e4d84f0cf82fbae990c4e64cc1b922866a"
+    }
+  ]
+}

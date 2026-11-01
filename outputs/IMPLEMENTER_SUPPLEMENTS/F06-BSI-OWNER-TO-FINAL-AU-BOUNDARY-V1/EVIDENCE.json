@@ -1,0 +1,71 @@
+{
+  "schema": "jocforge-f06-bsi-owner-final-au-boundary.v1",
+  "package_id": "F06-BSI-OWNER-TO-FINAL-AU-BOUNDARY-V1",
+  "status": "SAME_GENERATION_OWNER_TO_FINAL_EC3_FRAME_BOUND_FOR_ONE_RUN; U16_TO_HEADER_U5_UNBOUND",
+  "implementation_ready": false,
+  "target_input": {
+    "sample_id": "authorized_adm_a",
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_identity_basis": "authorized receipt; run used byte-identical task-local ASCII alias"
+  },
+  "full_run_writer_observation": {
+    "dee_exit_code": 0,
+    "output_file_bytes": 17395712,
+    "frame_bytes": 4096,
+    "frame_count": 4247,
+    "frame_index": 3481,
+    "file_size_before_bytes": 14258176,
+    "file_size_after_bytes": 14262272,
+    "writer_buffer_to_file_write": "SAME_POINTER_WITHIN_ONE_CALL_CHAIN",
+    "same_generation_bsi_owner_to_serializer_to_composition_to_filewriter": true,
+    "header_probe_bytes": 7,
+    "header_result": {
+      "syncframe": "E-AC-3 independent substream",
+      "sample_rate_hz": 48000,
+      "audio_blocks": 6,
+      "frame_bytes": 4096,
+      "dialnorm_u5": 17,
+      "dialnorm_db": -17
+    },
+    "raw_header_retained": false,
+    "payload_bytes_read": 0
+  },
+  "typed_owner_default_path": {
+    "context_allocation_zeroed": true,
+    "descriptor_context_offset": "0x3948",
+    "owner_descriptor_offset": "0x138",
+    "owner_initialization_bytes_cleared": 200,
+    "owner_field_offset": "0x34",
+    "owner_field_type": "signed U16",
+    "explicit_constructor_value": 0,
+    "scope": "typed active owner constructor path; alternate writers not exhaustive"
+  },
+  "separate_short_run_observation": {
+    "mode": 0,
+    "update_flag": 0,
+    "owner_u16": 0,
+    "same_owner_pointer_entered_serializer": true,
+    "custom_bsi_code": "00",
+    "first_filewriter_length": 0,
+    "join_to_first_nonempty_writer_frame": "UNBOUND"
+  },
+  "field_relationships": {
+    "owner_u16_plus_0x34_to_standard_header_u5": "UNBOUND/NOT_PROVEN",
+    "owner_u16_numeric_unit_or_conversion": "NOT_PROVEN",
+    "opaque_source_vector_qword_to_owner_u16": "NOT_PROVEN",
+    "full_run_owner_u16_value": "NOT_REREAD",
+    "alternate_writer_search_exhaustive": false
+  },
+  "scope_deviations": {
+    "earlier_short_run_prefix_bytes_read": 16,
+    "authorized_prefix_cap_bytes": 7,
+    "later_hash_stream_bytes": 262144,
+    "hash_retained_in_package": false,
+    "raw_bytes_retained": false
+  },
+  "policy": {
+    "pcm_read_or_decode_by_wash": false,
+    "private_key_license_or_hmac_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}

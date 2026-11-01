@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "bytes": 5539,
+      "file": "CHECK.py",
+      "sha256": "a4ad297b191cf81e9b3e9023b523095042fe9e6602e84703710c6acbee85bfb0"
+    },
+    {
+      "bytes": 2593,
+      "file": "EVIDENCE.json",
+      "sha256": "491a2f5a873b94365055e9245d7b86da5f3d97ae81405ed9b5f95663424caf1e"
+    },
+    {
+      "bytes": 2144,
+      "file": "REPORT.md",
+      "sha256": "caf303a0f712695b9a0ecc7687959c829e3e902a16a6e019df62280c6e892a63"
+    },
+    {
+      "bytes": 2089,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "69dbf4e7136790ce0d8588b3a33298cd230dce7ad5bd55e756330d72a88143d8"
+    },
+    {
+      "bytes": 1292,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "e7da984d23b1a97b8ee7e9c25058cce0b32b0ebce49d4fa073072f781830b193"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F06-BSI-OWNER-TO-FINAL-AU-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_manifest_sha256s": {
+    "native-f06-bsi-final-au-writer-generation-addendum": "5d8af71b76ae1b0d56affbdbaa0679c143c31ff5e939727df657656507017647",
+    "native-f06-bsi-owner-lifetime-default-addendum": "dc9a0d3c3363b4fc2c41b05f89e11b982beb48d01662d89c3d2ca00355aa184d",
+    "native-f06-bsi-u16-standard-header-generation-boundary-addendum": "034cc25f8b12e3794bc5580468a0cf7aa54928f13613496352acb46422aef104",
+    "native-f06-bsi-u16-value-lineage-addendum": "33cb42032997d5f79ddaf50b6e0b7eeebaefac77e7aea4863d18377ccac49d89",
+    "native-f06-source-vector-bsi-owner-generation-addendum": "3d03c7894b14dead56c2dea63be9b5b5d50e4914cab751d5906c4ca6a5f6ad66"
+  },
+  "status": "SAME_GENERATION_OWNER_TO_FINAL_EC3_FRAME_BOUND_FOR_ONE_RUN; U16_TO_HEADER_U5_UNBOUND"
+}

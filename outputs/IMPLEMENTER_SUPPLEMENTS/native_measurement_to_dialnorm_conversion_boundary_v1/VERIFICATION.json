@@ -1,0 +1,17 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_BOUND_PARTIAL_TYPED_CHAINS",
+  "source_static_package_manifest_sha256": "8d7abc0bea2d3931661dfd14b4f7fab0abddb0f5cc0899290e0f4e975dbc5d59",
+  "source_run144_wash_manifest_sha256": "3e691852c0e0c2b9026d23a189bfa72fb3901ebcbc3d14de0e949fc4d0401c12",
+  "source_checkers_normal": "PASS",
+  "source_checkers_optimized": "PASS",
+  "implementation_readiness": "NO_FOR_F06_TO_DIALNORM",
+  "excluded": {
+    "raw_disassembly": false,
+    "source_code": false,
+    "binary": false,
+    "pcm": false,
+    "private_key": false,
+    "absolute_path": false
+  }
+}

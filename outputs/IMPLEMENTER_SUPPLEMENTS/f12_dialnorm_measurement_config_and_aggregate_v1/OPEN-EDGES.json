@@ -1,0 +1,18 @@
+{
+  "package_id": "f12_dialnorm_measurement_config_and_aggregate_v1",
+  "closed": [
+    "The sampled metering_mode value selects a measurement method and equals the configured default.",
+    "The native aggregate begins at -120.0 and selects the strict maximum of per-source result floats at offset +0x14 with 0x20-byte stride.",
+    "Equal values preserve the earlier aggregate.",
+    "One authorized sample produced a logged native scalar; its unit remains unstated."
+  ],
+  "open": [
+    "What audio-weighting/measurement algorithm creates each per-source float.",
+    "Native physical unit and any meter-vtable conversion.",
+    "Whether the selected ADM programme maps into the observed measurement entry and generation.",
+    "Direct slot-to-invocation data dependency for metering_mode.",
+    "Native scalar to BSI owner/value mapping and physical dB interpretation.",
+    "Final E-AC-3 output parse and playback."
+  ],
+  "guidance": "Do not treat metering_mode=1770-4 as a loudness scalar, do not assign dB units to -17.093924, and do not infer measurement generation or BSI field value from the aggregate alone."
+}

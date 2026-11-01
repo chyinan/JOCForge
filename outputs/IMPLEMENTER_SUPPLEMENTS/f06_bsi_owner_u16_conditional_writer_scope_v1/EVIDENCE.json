@@ -1,0 +1,59 @@
+{
+  "schema": "washed-f06-bsi-owner-u16-conditional-writer.v1",
+  "package_id": "f06_bsi_owner_u16_conditional_writer_scope_v1",
+  "status": "SIGNED_U16_RAW_BSI_CONSUMER_BOUND; TWO_CONDITIONAL_ZERO_LOW_U16_SETTERS_STATIC_BOUND; SOURCE_VECTOR_NOT_READ_BY_CONFIRMED_SETTERS; OWNER_DEFAULT_ACTIVE_BRANCH_RUNTIME_VALUE_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Signed U16 consumer and two confirmed conditional fixed-block setters at BSI owner +0x34. No constructor-time default, active-branch observation, global writer exclusion, physical dB mapping, or native value is claimed.",
+  "source_package": {
+    "package_id": "native-f06-bsi-u16-value-lineage-addendum",
+    "manifest_sha256": "62d0d2904475007a8a7de1b2965a830d60451aca5ab8307e951b902f1a47ef5b",
+    "checker_result": "PASS_NORMAL_AND_PYTHON_O",
+    "parent_package_manifest_sha256": "3d03c7894b14dead56c2dea63be9b5b5d50e4914cab751d5906c4ca6a5f6ad66"
+  },
+  "field": {
+    "owner_relative_offset": "+0x34",
+    "storage_type": "SIGNED_U16",
+    "width_bits": 16,
+    "serializer_treatment": "RAW_BSI_CODE; selected special-tag cases or a five-bit path",
+    "physical_unit_or_db_mapping": "NOT_IDENTIFIED"
+  },
+  "confirmed_setters": [
+    {
+      "role": "CONTEXT_INITIALIZATION_BRANCH",
+      "guard": "context mode equals 1",
+      "destination": "same BSI owner dereferenced from the context",
+      "writer": "copy fixed 36-byte parameter block",
+      "first_u16_at_owner_plus_0x34": 0,
+      "source_vector_read_by_assignment": false
+    },
+    {
+      "role": "MEASUREMENT_CONTEXT_UPDATE_BRANCH",
+      "guard": "context update flag equals 0",
+      "destination": "same BSI owner dereferenced from the context",
+      "writer": "copy the same fixed 36-byte parameter block",
+      "first_u16_at_owner_plus_0x34": 0,
+      "per_source_rows_also_processed": true,
+      "source_vector_read_by_assignment": false
+    }
+  ],
+  "owner_and_source_separation": {
+    "same_context_owner_reaches_serializer_and_confirmed_update_helpers": true,
+    "owner_is_source_descriptor_or_per_source_record": false,
+    "source_vector_element_type": "OPAQUE_U64_QWORD",
+    "typed_dataflow_from_source_vector_to_u16": "NOT_FOUND_IN_CONFIRMED_SETTER_CHAIN",
+    "global_no_other_writer_claim": false
+  },
+  "native_observation": {
+    "new_dee_run": false,
+    "owner_constructor_first_write": "NOT_LOCATED",
+    "allocation_default_before_setters": "NOT_BOUND",
+    "active_guard": "NOT_CAPTURED",
+    "serializer_time_u16": "NOT_CAPTURED",
+    "pointer_observation_reused_from_parent_package": true
+  },
+  "payload_scope": {
+    "pcm_or_ec3_bytes_read": false,
+    "private_key_or_license_material_read": false,
+    "source_code_or_decompilation_included": false
+  }
+}

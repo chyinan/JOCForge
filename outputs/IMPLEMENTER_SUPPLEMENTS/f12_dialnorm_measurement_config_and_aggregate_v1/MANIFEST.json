@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f12_dialnorm_measurement_config_and_aggregate_v1",
+  "scope": "One hash-bound measurement config and static native float-max aggregation path with one observed scalar. Per-source DSP, unit, native rounding, source-generation join and output remain open.",
+  "status": "METER_METHOD_SELECTOR_AND_FLOAT_MAX_AGGREGATOR_STATIC_BOUND; ONE_NATIVE_SCALAR_OBSERVED; UNIT_SOURCE_JOIN_AND_PER_SOURCE_DSP_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3307,
+      "sha256": "44a3009da2aa0d82c11375f8b535e9802dfa5a6cc2d57efd8c257696693bdcf7"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 926,
+      "sha256": "0e9ac2c3c4c753e8cb77074beda76c22a2538c8fa9082d6f02c63c20343b3edd"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1124,
+      "sha256": "8cc03f59e37710cb20e77a63ec45937fbb98e18d86d387bffd31eafe9d94d5a5"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1163,
+      "sha256": "86af5663ab3e180da3a1aecfa86146c6bf4e659627b6667389b0b9eea10fa70e"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1007,
+      "sha256": "605512c1b426bb3a3cd1d3b3859dafa9515eda582d19cfc593f10c022d1067eb"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 237,
+      "sha256": "70cda6a12743a2b5b2dd996da99f4f912637b1c30353c956edc13669aedfc11d"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2553,
+      "sha256": "10c2597361aad89652420d968df6182fae9d424230443aca79299c2f8dfe6364"
+    }
+  ]
+}

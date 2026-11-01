@@ -1,0 +1,89 @@
+{
+  "schema": "washed-f06-dialnorm-nonclamped-sample.v1",
+  "package_id": "f06_dialnorm_nonclamped_sample_wash_v1",
+  "status": "ONE_NONCLAMPED_SAMPLE_U5_OBSERVED; CONDITIONAL_MODEL_MATCH; GENERAL_NATIVE_RULE_AND_OWNER_JOIN_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One bounded first-AU observation for one authorized ADM and one R138-equivalent 48 kHz / 1024 kbps / 5.1 PE profile. It is a conditional cross-check of the approved model formula, not a general native unit/rounding or measurement-owner rule.",
+  "source": {
+    "input_label": "authorized Human Is Cat ADM/WAVE",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_alias_same_bytes": true,
+    "current_input_file_hash": "MATCH",
+    "target_module": "dee_audio_filter_ddp_atmos.dll",
+    "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "same_process_module_load_receipt": true,
+    "current_module_file_hash": "MATCH"
+  },
+  "nonclamped_observation": {
+    "attempt1": {
+      "dee_exit_code": 0,
+      "measured_scalar": -20.665958,
+      "units_stated": false,
+      "prefix_bytes_read": 0,
+      "payload_body_bytes_read": 0,
+      "u5_observation": "NONE; NOT COUNTED"
+    },
+    "attempt2": {
+      "dee_exit_code": 0,
+      "profile": "same nonclamped settings; task-local IO paths changed",
+      "process_id": 34092,
+      "target_module_same_process": true,
+      "measured_scalar": -20.665958,
+      "units_stated": false,
+      "output_ec3_bytes": 262144,
+      "prefix_bytes_read": 7,
+      "payload_body_bytes_read": 0,
+      "raw_prefix_retained": false,
+      "first_syncframe_independent": true,
+      "sample_rate_hz": 48000,
+      "audio_blocks": 6,
+      "frame_size_bytes": 4096,
+      "dialnorm_field_bit_offset": 45,
+      "dialnorm_width_bits": 5,
+      "dialnorm_u5": 21,
+      "dialnorm_db": -21,
+      "output_removed_after_probe": true
+    }
+  },
+  "formula_comparison": {
+    "approved_model_package": "F12-SELECTED-PREFIX-DIALNORM-V1",
+    "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+    "contract_sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61",
+    "conditional_assumption": "native measured scalar is the model selected_lufs input",
+    "formula": "R32(selected_lufs - 0.5), truncate toward zero, clamp to [-31,-1], negate to U5",
+    "intermediate": "trunc(-20.665958 - 0.5) = -21",
+    "predicted_u5": 21,
+    "native_u5": 21,
+    "comparison": "MATCHES_ON_THIS_NONCLAMPED_SAMPLE_ONLY"
+  },
+  "prior_clamped_boundary": {
+    "package_id": "f06_dialnorm_native_observation_boundary_v1",
+    "manifest_sha256": "96ae1cd29cdf62070cd57fd22a58c88456ac5e90aa7373475e6f5b407bf215dd",
+    "measurement": -33.025146,
+    "predicted_u5": 31,
+    "native_u5": 31,
+    "interpretation": "LOWER_CLAMP_BOUNDARY_ONLY; NOT_GENERAL_RULE"
+  },
+  "failed_capture_disclosure": {
+    "first_nonclamped_run_completed": true,
+    "output_removed_before_prefix_probe": true,
+    "prefix_bytes_read": 0,
+    "cleanup_error_disclosed": true,
+    "source_package_records_attempt": true
+  },
+  "open_edges": {
+    "native_measurement_unit": "UNBOUND_NOT_STATED_IN_LOG",
+    "general_rounding_rule": "UNBOUND",
+    "active_pe_measurement_conversion": "UNBOUND",
+    "measurement_to_bsi_owner_same_parent_generation": "UNBOUND",
+    "owner_startup_default_vs_measurement_update": "UNBOUND",
+    "validation_on_other_authorized_adm_inputs": "NOT_RUN"
+  },
+  "exclusions": {
+    "raw_prefix_included": false,
+    "ec3_or_payload_included": false,
+    "pcm_or_media_included": false,
+    "private_key_or_license_contents_read": false,
+    "absolute_paths": false
+  }
+}

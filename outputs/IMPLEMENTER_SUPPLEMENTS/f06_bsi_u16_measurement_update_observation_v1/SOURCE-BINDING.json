@@ -1,0 +1,23 @@
+{
+  "package_id": "f06_bsi_u16_measurement_update_observation_v1",
+  "incoming_package_manifest_sha256": "33cb42032997d5f79ddaf50b6e0b7eeebaefac77e7aea4863d18377ccac49d89",
+  "incoming_payload_sha256": {
+    "README.md": "75a30db37bd84ec32a0d43144d7bbf4b518348d4bf93083ffabc30515ee4ab56",
+    "EVIDENCE.json": "765f6ba9576796c92482a8ac42275377b2759b352190b3ba597a15c2d6f50d6c",
+    "MATRIX.json": "848e210e523f9d88326722f5bfcde9b2df47e91726fbd493e881f53e156479c6",
+    "INPUT_ONLY_VECTORS.json": "099ccfac7471021c11e5ca7fd1c952ae398f294ceb21ed83fe6e3e6563b5f2d7",
+    "SCALAR_POINTER_OBSERVATION.json": "5ced120389516744c6ba3f7c5961ab871dff6cbd101c9f6fdaab1490b4204803",
+    "verify_bsi_u16_value_lineage.py": "388a391d7999944d01f6845ff8730071bd63830166505968aecdbc3abedc338d"
+  },
+  "parent_static_package_manifest_sha256": "3d03c7894b14dead56c2dea63be9b5b5d50e4914cab751d5906c4ca6a5f6ad66",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "ascii_alias_matches_original_sha256": true,
+  "host_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "ddp_atmos_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "loaded_module_identity_matches_target": true,
+  "raw_pointer_tokens_included": false,
+  "source_code_or_decompilation_included": false,
+  "private_key_or_license_contents_read": false,
+  "pcm_or_ec3_bytes_read": false,
+  "output_file_contents_included": false
+}

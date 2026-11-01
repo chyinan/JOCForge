@@ -1,0 +1,21 @@
+{
+  "schema": "washed-f12-prefix-dialnorm-receipt-gap.v1",
+  "source_package_manifest_sha256": "b0e79e0fd8f0214d8a29d7ee7254ab8ea93291d7110143885e3cba8148520099",
+  "source_package_seal_sha256": "b2d1092b37355b2c62cf968fd4031ffc96c992b74bf683a98925889f0f8508b5",
+  "status": "NOT_READY",
+  "receipt_edge_status": "UNBOUND",
+  "finding": "No verified typed finalized-programme identity/receipt was found that both the F06ND source input and the same-source F12 BSI input consume.",
+  "model_boundary": {
+    "source_in_freeze_manifest": false,
+    "promotion_status": "PROMOTED_AND_FROZEN_NOT_REVIEWED",
+    "independent_review_status": "NOT_RUN",
+    "measurement_representation": "in-state dictionary plus content digest; no programme/source identity or measurement-generation member",
+    "consumer_calls": "event-name strings only; no typed F06ND/F12 consumer receipt is passed"
+  },
+  "approved_spec_boundary": {
+    "F06ND_input": "scalar dialnorm d in [1,31] plus source generation",
+    "F12_BSI_input": "same-source BSI; five-bit dialnorm field carries no programme identity",
+    "whole_composition_digest": "required for BSI/ID1 projections, but no shared typed F06ND/F12 receipt field is specified"
+  },
+  "conclusion": "This is an unbound local receipt/API join, not evidence that an additional product receipt API is required for the audio algorithm. Do not block already-supported audio-core implementation or invent a receipt schema from this package."
+}

@@ -1,0 +1,22 @@
+{
+  "package_id": "f06_bsi_same_generation_output_frame_writer_observation_v1",
+  "incoming_manifest_sha256": "5d8af71b76ae1b0d56affbdbaa0679c143c31ff5e939727df657656507017647",
+  "incoming_payload_sha256": {
+    "README.md": "137e45b74e36874a882a1ee97c18f7bb3db381b56dbd4e0ec358c3526cc2e677",
+    "EVIDENCE.json": "6941543902069f57654d6af43d2090abc8cf5d8eb396896c5d0b184c0475ebb5",
+    "MATRIX.json": "206bcfde0b7f0ea2555a6f1763b415d1def97d159fcaede5d06f251ab272939c",
+    "WRITER_FRAME_OBSERVATION.json": "aac8e45524342b3d024935600551b30a459f2eec3820daa988c5c8db80de556d",
+    "AU_HEADER_OBSERVATION.json": "5b5d5fb2e0023088424e897c058555ca73ce9332c680468816b1822d5495ba5f",
+    "verify_bsi_frame_generation_binding.py": "b0d1483364d22718781fb505dd22d2f72cd418b859f09296b0ec56ba5aafb823"
+  },
+  "parent_static_bsi_manifest_sha256": "33cb42032997d5f79ddaf50b6e0b7eeebaefac77e7aea4863d18377ccac49d89",
+  "parent_washed_measurement_owner_manifest_sha256": "de84926d5e4c473541b1e8bd34a49e2d64f628c05494e96812eb2da9296b69b7",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "job_xml_sha256": "d61f8cec69faaad78bd266f5dffd29d9ba462b7eaa969e165d3ba6f3209d57a4",
+  "dee_host_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "ddp_atmos_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "parser_source_sha256": "b4764de96c53de81fccbf720c11bbddc58b1d680b5af58b0ee1005b45ab62e67",
+  "no_pcm_or_ec3_body_bytes_read": true,
+  "no_output_content_hash": true,
+  "private_key_or_license_contents_read": false
+}

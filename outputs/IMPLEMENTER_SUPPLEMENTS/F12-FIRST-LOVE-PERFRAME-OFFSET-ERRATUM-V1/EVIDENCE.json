@@ -1,0 +1,35 @@
+{
+  "schema": "washed-f12-per-frame-offset-erratum.v1",
+  "status": "PER_FRAME_DESTINATION_OFFSET_CORRECTED; PER_FRAME_VALUE_SEMANTICS_AND_FINAL_BSI_FIELD_OPEN",
+  "implementation_ready": false,
+  "supersedes": {
+    "package_id": "F12-FIRST-LOVE-NATIVE-SCALAR-ENCODER-CONFIG-BOUNDARY-V1",
+    "manifest_sha256": "e3bfcb7bde5fb217071c605c122cd4bfeeabaa8763df013e3c37e5289d047fcc",
+    "correction_scope": "only the claimed equality between the per-frame write destination and scalar-bearing byte offset +0x3C"
+  },
+  "corrected_type_arithmetic": {
+    "function": "FUN_180178DC0",
+    "param_1_native_type": "int*",
+    "expression": "param_1 + 0x3C",
+    "pointer_element_size_bytes": 4,
+    "computed_destination_byte_offset": "0xF0",
+    "per_frame_source": "param_4[10]",
+    "scalar_bearing_empireenc_byte_offset": "0x3C",
+    "same_destination": false,
+    "param_4_10_semantic_source_join": "UNBOUND"
+  },
+  "unchanged_f12_boundary": {
+    "measurement_scalar": -21.010569,
+    "native_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "authorized_input_sha256_from_prior_record": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "input_sha_recomputed_in_measurement_continuation": false,
+    "aggregate_to_empireenc_scalar_config_copy": "BIT_PRESERVING_RAW_FLOAT_COPY_BOUND",
+    "final_bsi_dialnorm_field": "NOT_PROVEN",
+    "plugin_internal_unit_scale_rounding_quantization": "NOT_PROVEN_OR_TRACED"
+  },
+  "access_boundary": {
+    "new_measurement_for_erratum": "NOT_RUN",
+    "pcm_payload_bitstream_or_output_read": false,
+    "private_key_hmac_or_license_contents_read": false
+  }
+}

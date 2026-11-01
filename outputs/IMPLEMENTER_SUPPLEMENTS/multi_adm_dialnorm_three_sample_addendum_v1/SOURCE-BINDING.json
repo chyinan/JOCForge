@@ -1,0 +1,33 @@
+{
+  "schema": "washed-multi-adm-dialnorm-three-sample-source-binding.v1",
+  "package_id": "multi_adm_dialnorm_three_sample_addendum_v1",
+  "incoming_research_manifest_sha256": "68d259dc4536af958ffbf1f06b925d680a1b64a1fef725765d10813581ae7d82",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "input_hashes_currently_rehashed": [
+    {
+      "sample": "人是猫",
+      "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "status": "MATCH"
+    },
+    {
+      "sample": "Hortus Regis Alti",
+      "sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "status": "MATCH"
+    },
+    {
+      "sample": "My jealousy (Original ver.)",
+      "sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+      "status": "MATCH"
+    }
+  ],
+  "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "target_module_current_hash": "MATCH",
+  "parser_source_sha256": "497f9e4262e3e46b28519bd2cdd5450f81c2238d1b46f08b59600c19a9c2a3ab",
+  "parser_binary_sha256": "b9a96c0add9f94145c111ea01e0994df0f6716f0679cca2cc457d854aa63f84a",
+  "parser_cargo_lock_sha256": "2e51feb10c211882d4782e6b87a92b408b82540e6e1244df5d56e882eb59feaa",
+  "official_cli_sha256": "2e84afcfa5e197332a84f9386ffa4c69f0c12e8ca5cf95c23690af320cfa1a39",
+  "model_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+  "model_contract_sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61",
+  "profile_job_hash_and_wrappers": "reported in sealed source package; temp XML/wrappers removed",
+  "no_private_material_access": true
+}

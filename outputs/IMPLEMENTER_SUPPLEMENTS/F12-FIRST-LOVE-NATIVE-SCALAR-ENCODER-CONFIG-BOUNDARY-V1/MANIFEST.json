@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 479,
+      "file": "BOUNDARY-CANDIDATE.json",
+      "sha256": "907bc6e250e033fd082643768ddfef5bb4e3f3e2f8295a4131c921a6a3328af8"
+    },
+    {
+      "bytes": 6056,
+      "file": "CHECK.py",
+      "sha256": "bc0d7c779dff3450bee0a783e3ccca1e2632495003a09f606190621f924b7433"
+    },
+    {
+      "bytes": 3770,
+      "file": "EVIDENCE.json",
+      "sha256": "da86f43661bbdd3cfc01001801c47963dd0ad7e1051cda243867f1a90ca2af92"
+    },
+    {
+      "bytes": 2589,
+      "file": "REPORT.md",
+      "sha256": "41e97414221d6e460f6737d8d45c9f5b81fe2dc451b4e58dc502a79cac2d9333"
+    },
+    {
+      "bytes": 1186,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "0cad1161a4bc8e2341af715b1fa5182446fb036f71118d6d614c7b7450b5419d"
+    },
+    {
+      "bytes": 1226,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "1d801c2ab8ebd65a8140fb4d6b9f811dfaebfe5a9f066a1a73c1a8f15771b165"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F12-FIRST-LOVE-NATIVE-SCALAR-ENCODER-CONFIG-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "77755d22ea8cc19b90dfd03c4b27a552b9c807f31a74f548ae6abfc8abd0afd5",
+  "status": "MEASURE_ONLY_SCALAR_OBSERVED; FLOAT_CONFIG_HANDOFF_BOUND; NATIVE_UNIT_AND_SERIALIZED_BSI_FIELD_OPEN"
+}

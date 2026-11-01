@@ -1,0 +1,84 @@
+{
+  "schema": "washed-native-eac3-dialnorm-bsi-field-binding.v1",
+  "status": "OWNER_U16_FIELD_STATICALLY_BOUND_TO_BSI_DIALNORM; PRODUCER_FORMULA_OPEN",
+  "source_static_package_manifest_sha256": "cdac36b418fddeb8e587894622d4c6019b9909b632ff4437e8a97c54fde3d3a0",
+  "source_run144_package_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "static_same_owner_path": {
+    "owner_field_type": "U16",
+    "owner_field_offset": "+0x34",
+    "setter_staged_member": "+0x191d8",
+    "serializer_record_base": "+0x191b8",
+    "serializer_record_member": "+0x20",
+    "same_owner_equation": "+0x191b8 + +0x20 = +0x191d8"
+  },
+  "bsi_order": {
+    "syncword_bits": [
+      0,
+      16
+    ],
+    "strmtyp_bits": [
+      16,
+      18
+    ],
+    "substreamid_bits": [
+      18,
+      21
+    ],
+    "frmsiz_bits": [
+      21,
+      32
+    ],
+    "fscod_bits": [
+      32,
+      34
+    ],
+    "numblkscod_bits": [
+      34,
+      36
+    ],
+    "acmod_bits": [
+      36,
+      39
+    ],
+    "lfeon_bits": [
+      39,
+      40
+    ],
+    "bsid_bits": [
+      40,
+      45
+    ],
+    "dialnorm_bits": [
+      45,
+      50
+    ],
+    "compre_bits": [
+      50,
+      51
+    ],
+    "field_mapping": "owner U16 +0x34 -> setter/staging U16 -> serializer U5 DialNorm"
+  },
+  "runtime_reference": {
+    "run_id": "run144",
+    "owner_u16": 28,
+    "serializer_u5": 28,
+    "count": 1,
+    "width_bits": 5,
+    "same_owner_captured": true,
+    "output_frame_bits_reopened": "NOT_READ"
+  },
+  "producer_boundary": {
+    "F06_logged_loudness": "-27.774199 / measured_loudness -27.77; unit NOT_STATED",
+    "custom_dialnorm_xml": "ABSENT",
+    "custom_dialnorm_option_default": "0 means override disabled",
+    "F06_Float32_to_owner_U16_typed_edge": "UNBOUND",
+    "formula_rounding_clamp": "NOT_ESTABLISHED",
+    "numeric_match_is_causality": false
+  },
+  "disposition": {
+    "field_semantic_identity": "STATIC_CLOSED_AS_DIALNORM",
+    "measured_loudness_to_dialnorm_production_rule_approved": false,
+    "instruction": "Use the semantic name DialNorm for this U16 serializer field; do not derive its value from measured loudness until a typed producer rule is washed."
+  }
+}

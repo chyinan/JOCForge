@@ -1,0 +1,52 @@
+{
+  "schema": "washed-f06-bsi-owner-u16-input-only.v1",
+  "contract": "Input shapes and guard conditions only. No expected full output bytes or runtime values are asserted; proposed cases were not executed.",
+  "vectors": [
+    {
+      "id": "source_vector_one_element_shape",
+      "element_type": "OPAQUE_U64_QWORD",
+      "stride_bytes": 8,
+      "element_count": 1,
+      "elements": "NOT_CAPTURED",
+      "expected_output": "NOT_SUPPLIED",
+      "status": "SHAPE_OBSERVED_IN_PARENT_PACKAGE"
+    },
+    {
+      "id": "source_vector_empty_shape",
+      "element_type": "OPAQUE_U64_QWORD",
+      "stride_bytes": 8,
+      "element_count": 0,
+      "elements": [],
+      "expected_output": "NOT_SUPPLIED",
+      "status": "PROPOSED_NOT_RUN"
+    },
+    {
+      "id": "source_vector_two_symbolic_elements",
+      "element_type": "OPAQUE_U64_QWORD",
+      "stride_bytes": 8,
+      "element_count": 2,
+      "elements": [
+        "SYMBOLIC_A",
+        "SYMBOLIC_B"
+      ],
+      "expected_output": "NOT_SUPPLIED",
+      "status": "PROPOSED_NOT_RUN"
+    }
+  ],
+  "conditional_write_inputs": [
+    {
+      "id": "context_mode_one",
+      "guard": "context mode equals 1",
+      "confirmed_static_low_u16": 0,
+      "native_branch_observed": false,
+      "status": "STATIC_ONLY"
+    },
+    {
+      "id": "context_update_flag_zero",
+      "guard": "context update flag equals 0",
+      "confirmed_static_low_u16": 0,
+      "native_branch_observed": false,
+      "status": "STATIC_ONLY"
+    }
+  ]
+}

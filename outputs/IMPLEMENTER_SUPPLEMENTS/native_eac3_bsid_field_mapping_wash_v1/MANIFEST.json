@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "native-eac3-bsid-field-mapping-wash-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "75503650988a4deafd73c1f46025062482a70dc0d484805b9307447864f10881",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "5ee117d0756e0b27121f3e54d19eadbb60cd94a5c98676bf0751ea700e02595d",
+      "bytes": 1055
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "da61c48d2a0be5b523570859e82fa86bc5a9edf7e5c2eb30fe0a717ebbdce4c9",
+      "bytes": 1770
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "ca8400333d4bfb351260c053c39d5f09019332fb2902f0942a009fb7d2e4dcdb",
+      "bytes": 895
+    }
+  ]
+}

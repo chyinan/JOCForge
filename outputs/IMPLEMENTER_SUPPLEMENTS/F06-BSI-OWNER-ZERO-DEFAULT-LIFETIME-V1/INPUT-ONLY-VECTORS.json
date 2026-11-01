@@ -1,0 +1,29 @@
+{
+  "schema": "washed-f06-owner-zero-default-vectors.v1",
+  "evidence_class": "STATIC_MODEL_ONLY_NOT_CURRENT_RUN_OBSERVATION",
+  "cases": [
+    {
+      "id": "successful-typed-owner-construction",
+      "input": {
+        "size_query_success": true,
+        "outer_allocation_zeroed_before_constructor": true,
+        "owner_block_clear_covers_plus_0x34": true,
+        "field_type": "SIGNED_U16",
+        "initializer_store_width_bits": 32,
+        "initializer_store_value": 0
+      },
+      "expected_constructor_default_u16": 0,
+      "current_run_owner_u16": "NOT_CAPTURED_PER_NO_REPEAT",
+      "expected_standard_ec3_dialnorm": "NOT_SUPPLIED"
+    },
+    {
+      "id": "header-u5-is-not-inferred-from-unobserved-owner-u16",
+      "input": {
+        "parent_frame_header_u5": 17,
+        "current_run_owner_u16": "NOT_CAPTURED_PER_NO_REPEAT"
+      },
+      "expected_numeric_mapping": "NOT_SUPPLIED",
+      "equality_claim": "PROHIBITED"
+    }
+  ]
+}

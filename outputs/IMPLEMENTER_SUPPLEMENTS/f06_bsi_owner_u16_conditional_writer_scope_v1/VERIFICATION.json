@@ -1,0 +1,8 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "package_integrity": "PASS_PACKAGE_INTEGRITY_ONLY",
+  "checker": "verify_package.py",
+  "normal_python": "PASS",
+  "optimized_python": "PASS",
+  "scope": "Package hashes and scope assertions only; not a native value observation or codec conformance test."
+}

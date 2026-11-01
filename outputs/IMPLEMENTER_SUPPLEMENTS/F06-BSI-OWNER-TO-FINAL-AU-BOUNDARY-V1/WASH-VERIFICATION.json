@@ -1,0 +1,20 @@
+{
+  "schema": "wash-verification.v1",
+  "independent_review": [
+    "Recomputed all five referenced source manifest digests and ran every source package checker normally and under Python optimization.",
+    "Confirmed the full-run source package binds one nonempty 4096-byte FileWriter call at frame index 3481 and a seven-byte header-only U5 observation at the matching offset.",
+    "Confirmed the owner lifetime source explicitly initializes signed U16 +0x34 to zero for the typed owner path.",
+    "Kept the short-run U16 zero separate from the full-run U5 17 because the full-run U16 was not reread.",
+    "Preserved the source-vector-to-U16 numeric relationship as not proven.",
+    "Preserved the 16-byte diagnostic prefix read and 262144-byte hash stream disclosure; no raw bytes were retained.",
+    "Did not derive an owner-U16-to-standard-U5 conversion or claim alternate-writer exhaustiveness."
+  ],
+  "not_promoted": [
+    "U16=0 in the full-run frame whose U5 is 17",
+    "any numeric mapping from custom BSI U16 to standard header DialNorm",
+    "source vector values as the U16 source",
+    "a universal owner constructor/default across modules",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

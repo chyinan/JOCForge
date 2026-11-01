@@ -1,0 +1,6 @@
+{
+  "package_integrity": "PENDING_PACKAGE_CHECK",
+  "normal_python": "PENDING",
+  "optimized_python": "PENDING",
+  "scope": "Hash and one-frame writer/header metadata only; no bitstream body or playback validation."
+}

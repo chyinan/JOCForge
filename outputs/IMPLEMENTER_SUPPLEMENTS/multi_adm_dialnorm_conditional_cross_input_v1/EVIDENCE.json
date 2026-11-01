@@ -1,0 +1,135 @@
+{
+  "schema": "washed-multi-adm-dialnorm-conditional-cross-input.v1",
+  "package_id": "multi_adm_dialnorm_conditional_cross_input_v1",
+  "status": "TWO_DISTINCT_AUTHORIZED_INPUTS_MATCH_APPROVED_F12_FORMULA_CONDITIONALLY; NATIVE_UNIT_AND_OWNER_JOIN_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Two distinct authorized ADM inputs, same R138-equivalent PE profile and 48-frame file-position window; seven-byte first-syncframe U5 observations conditionally match the approved F12 model. Supports an MVP cross-input check for this profile only; not a general native unit, rounding, or measurement-owner rule.",
+  "reference_profile": {
+    "source_job_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+    "xml_and_wrapper_hashes": "per-attempt hashes are recorded in the incoming Wash package; source files were cleaned and not rehashed by Wash",
+    "rate_kbps": 1024,
+    "metering_mode": "1770-4",
+    "window_start": 2160,
+    "window_end": 2208,
+    "time_base": "file_position",
+    "dialogue_intelligence": false,
+    "drc": "none",
+    "channel_profile": "5.1 R138-equivalent",
+    "settings_changed_beyond_io": false
+  },
+  "attempts": [
+    {
+      "sample_id": "authorized_adm_a",
+      "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "source_hash_rechecked": "MATCH",
+      "ascii_alias_hash": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "measurement": -20.665958,
+      "unit": "NOT_STATED_IN_NATIVE_LOG",
+      "u5": 21,
+      "profile": {
+        "rate_kbps": 1024,
+        "metering_mode": "1770-4",
+        "window": "file_position 2160..2208",
+        "dialogue_intelligence": false,
+        "drc": "none",
+        "channels": "5.1 R138-equivalent"
+      },
+      "process_id": 35004,
+      "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "prefix_bytes": 7,
+      "payload_bytes": 0
+    },
+    {
+      "sample_id": "authorized_adm_b",
+      "sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "source_hash_rechecked": "MATCH",
+      "ascii_alias_hash": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "measurement": -14.418104,
+      "unit": "NOT_STATED_IN_NATIVE_LOG",
+      "u5": 14,
+      "profile": {
+        "rate_kbps": 1024,
+        "metering_mode": "1770-4",
+        "window": "file_position 2160..2208",
+        "dialogue_intelligence": false,
+        "drc": "none",
+        "channels": "5.1 R138-equivalent"
+      },
+      "process_id": 8836,
+      "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "prefix_bytes": 7,
+      "payload_bytes": 0
+    }
+  ],
+  "formula": {
+    "model_package_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+    "model_contract_sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61",
+    "formula_class": "approved model specification, not native rule",
+    "assumption": "native measured scalar is selected_lufs",
+    "rule": "R32(selected_lufs - 0.5), truncate toward zero, clamp to [-31,-1], negate to U5",
+    "comparisons": [
+      {
+        "sample_id": "authorized_adm_a",
+        "intermediate": "trunc(-20.665958 - 0.5) = -21",
+        "predicted_u5": 21,
+        "observed_u5": 21,
+        "result": "MATCH_FOR_THIS_INPUT_AND_CONFIGURATION"
+      },
+      {
+        "sample_id": "authorized_adm_b",
+        "intermediate": "trunc(-14.418104 - 0.5) = -14",
+        "predicted_u5": 14,
+        "observed_u5": 14,
+        "result": "MATCH_FOR_THIS_INPUT_AND_CONFIGURATION"
+      }
+    ]
+  },
+  "parser": {
+    "implementation": "custom seven-byte OpenJOC helper, not the official CLI binary",
+    "source_sha256": "497f9e4262e3e46b28519bd2cdd5450f81c2238d1b46f08b59600c19a9c2a3ab",
+    "binary_sha256": "b9a96c0add9f94145c111ea01e0994df0f6716f0679cca2cc457d854aa63f84a",
+    "source_rehashed_by_wash": true,
+    "binary_rehashed_by_wash": true,
+    "cargo_lock_sha256": "2e51feb10c211882d4782e6b87a92b408b82540e6e1244df5d56e882eb59feaa",
+    "crate_versions": {
+      "openjoc_eac3": "0.20.1",
+      "openjoc_bitio": "0.20.1"
+    },
+    "official_cli_binary_sha256": "2e84afcfa5e197332a84f9386ffa4c69f0c12e8ca5cf95c23690af320cfa1a39",
+    "official_cli_used": false,
+    "reason": "source review found inspect reads complete declared frames to EOF; not used under seven-byte-only boundary",
+    "prefix_bytes_per_attempt": 7,
+    "payload_bytes_per_attempt": 0,
+    "raw_prefix_retained": false
+  },
+  "open_edges": {
+    "native_measurement_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "general_native_rounding_rule": "NOT_CLOSED",
+    "F06_measurement_to_BSI_owner_generation": "NOT_CLOSED",
+    "native_scalar_equals_selected_lufs": "CONDITIONAL_ASSUMPTION",
+    "cross_input_scope": "TWO_INPUTS_ONLY"
+  },
+  "cleanup": {
+    "ascii_aliases_removed": true,
+    "task_work_directory_removed": true,
+    "output_files_removed": true,
+    "license_or_authorization_contents_read": false,
+    "license_or_authorization_paths_recorded": false,
+    "raw_prefix_retained": false
+  },
+  "inherited_failed_capture": {
+    "attempt_count": 1,
+    "successful_dee_exit": true,
+    "prefix_bytes_read": 0,
+    "u5_observation": false,
+    "counted_as_observation": false,
+    "cleanup_mistake_disclosed": true
+  },
+  "exclusions": {
+    "audio_payload_included": false,
+    "raw_prefix_included": false,
+    "pcm_or_media_included": false,
+    "private_key_or_license_material_included": false,
+    "absolute_paths": false
+  }
+}

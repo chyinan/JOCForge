@@ -1,0 +1,31 @@
+{
+  "schema": "multi-adm-dialnorm-three-sample-input-only.v1",
+  "classification": "HASH_BOUND_INPUTS_AND_SCALAR_METADATA_ONLY_NO_MEDIA_BYTES",
+  "samples": [
+    {
+      "label": "人是猫",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "measurement_scalar": -20.665958,
+      "u5": 21,
+      "predicted_u5": 21,
+      "conditional_assumption": "native scalar is selected_lufs"
+    },
+    {
+      "label": "Hortus Regis Alti",
+      "input_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "measurement_scalar": -14.418104,
+      "u5": 14,
+      "predicted_u5": 14,
+      "conditional_assumption": "native scalar is selected_lufs"
+    },
+    {
+      "label": "My jealousy (Original ver.)",
+      "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+      "measurement_scalar": -17.093924,
+      "u5": 17,
+      "predicted_u5": 17,
+      "conditional_assumption": "native scalar is selected_lufs"
+    }
+  ],
+  "audio_payload_values": false
+}

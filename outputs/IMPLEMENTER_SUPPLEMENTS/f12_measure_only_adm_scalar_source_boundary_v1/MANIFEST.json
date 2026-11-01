@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f12_measure_only_adm_scalar_source_boundary_v1",
+  "scope": "One authorized ADM sample AXML/Job XML and DEE measure-only aggregate evidence; no explicit loudness scalar is present in that sample, but native unit, per-source row join and BSI/output mapping remain open.",
+  "status": "SAMPLE_AXML_AND_JOB_NO_EXPLICIT_LOUDNESS_SCALAR; MEASURE_ONLY_FLOAT_MAX_AGGREGATION_BOUND; UNIT_AND_ROW_JOIN_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2926,
+      "sha256": "b1e48a52892a419ad71ea5f15b430c398a09920240110cb0fc72aef93eb22b06"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 740,
+      "sha256": "0d63716ecf13808dd2b1ed44d82e710279eddaf668b14fd27ab8cb480b6fa4e2"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1153,
+      "sha256": "2abc07e6a3d90c9b34cc0cd7dfc6ee55e1cfc7ba2f371c124c7cf0fa476f920d"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1104,
+      "sha256": "b4d9b55fb29194a19b5312d4e0c81d289484c6680bb03e73925a15b2ca2596fc"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1138,
+      "sha256": "d7da9c869b38eaf7512e531a3df170a7f0537c31ca5f52f266296fd8b9eb6271"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 225,
+      "sha256": "dbc5abda558711019ef5eaf5fe95a2cec7b2c6ba49fb50f18037b450fa221174"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2143,
+      "sha256": "494f3177b6e1b653e9f84bb5b4705f373992c321ac71a2feb985503f3fc1f3b9"
+    }
+  ]
+}

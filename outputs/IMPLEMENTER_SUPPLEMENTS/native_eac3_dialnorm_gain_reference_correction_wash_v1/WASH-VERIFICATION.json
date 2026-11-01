@@ -1,0 +1,17 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "927c0ab97318472e71767ad033bb0517f275e21ec1014aa5a1f3a4096b7b1d8c",
+  "checks": {
+    "source_manifest_and_payload_hashes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "normal_path_DialNorm_field": "record +0x20, five bits",
+    "same_owner_source": "owner-relative +0x34 U16",
+    "R141_value": "NOT_CAPTURED",
+    "R141_DialNorm_hit": false,
+    "public_EAC3_gain_reference": "verified against FFmpeg source lines 305-313 and 1265-1269",
+    "output_payload_read": false,
+    "playback": "NOT_RUN"
+  },
+  "scope_note": "Wash verified the source package and consulted public FFmpeg source; no R141 DialNorm value, output payload, or playback was observed."
+}

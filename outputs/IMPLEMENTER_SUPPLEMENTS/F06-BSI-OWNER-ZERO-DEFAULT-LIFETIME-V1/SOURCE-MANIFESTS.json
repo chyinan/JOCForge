@@ -1,0 +1,18 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_addendum": {
+    "package_id": "native-f06-bsi-owner-lifetime-default-addendum",
+    "manifest_sha256": "dc9a0d3c3363b4fc2c41b05f89e11b982beb48d01662d89c3d2ca00355aa184d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "parent_packages": [
+    {"package_id": "f06_bsi_u16_conditional_writer_scope_v1", "manifest_sha256": "33cb42032997d5f79ddaf50b6e0b7eeebaefac77e7aea4863d18377ccac49d89"},
+    {"package_id": "native-f06-bsi-final-au-writer-generation-addendum", "manifest_sha256": "5d8af71b76ae1b0d56affbdbaa0679c143c31ff5e939727df657656507017647"}
+  ],
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "current_run_value": "NOT_CAPTURED_PER_NO_REPEAT"
+}

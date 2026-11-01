@@ -1,0 +1,30 @@
+{
+  "schema": "washed-native-dialnorm-owner-cold-default-boundary.v1",
+  "package_id": "native_dialnorm_owner_cold_default_boundary_v1",
+  "status": "COLD_U16_DEFAULT_AND_CONSUMER_OWNER_BOUND; POST_INIT_VALUE_WRITER_UNBOUND",
+  "implementation_readiness": "NO_FOR_MEASUREMENT_TO_DIALNORM_RULE",
+  "source_static_package_manifest_sha256": "ef0492602370717210f10ec9df5b9456b8c33ce64433c0f1b16e53b94e7cabe2",
+  "source_run144_package_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1130,
+      "sha256": "33fd9f532cda2238326adc5072f8331260d7defbeb39d60470650be2b7e6372e"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2125,
+      "sha256": "62fa3d3f090437de8beb8762cfcef2d0ebfdd68a38097beea20ddb92c19c470c"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 647,
+      "sha256": "de6d9c54bfe0f66e2ad5fd00aba5e2d3e42fc03b488259fe207a3ebafcd2cd79"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1533,
+      "sha256": "781eec0ffdafa6eff4254adc53eafd59b883344433bd173cf223f2e562e1b3ee"
+    }
+  ]
+}

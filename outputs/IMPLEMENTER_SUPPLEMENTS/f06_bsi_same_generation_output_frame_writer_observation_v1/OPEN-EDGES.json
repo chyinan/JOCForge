@@ -1,0 +1,23 @@
+{
+  "package_id": "f06_bsi_same_generation_output_frame_writer_observation_v1",
+  "closedWithinScope": [
+    "One DEE run completed with a full-file EC3 length exactly divisible into 4247 4096-byte frames.",
+    "A same-generation BSI serializer owner to FileWriter frame input relation was observed for frame index 3481.",
+    "That writer call appended one complete 4096-byte frame.",
+    "A seven-byte header-only parse at that frame observed 48 kHz, six blocks, bitstream_id 16, and U5=17."
+  ],
+  "open": [
+    "BSI owner U16 to standard EC3 DialNorm numeric mapping.",
+    "Whether a separate measurement callback U16 value maps to this frame U5.",
+    "Owner construction default and alternate writers.",
+    "Whole-frame/body validation and playback."
+  ],
+  "status": {
+    "same_generation_owner_to_frame": "BOUND_FOR_ONE_FRAME",
+    "header_parse": "SEVEN_BYTES_ONLY",
+    "bsi_u16_numeric_mapping": "NOT_BOUND",
+    "whole_output_validation": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "guidance": "Use the U5 value as a one-frame DEE reference observation only. Do not claim bit-exactness, whole-stream conformance, or equivalence to JOCForge output."
+}

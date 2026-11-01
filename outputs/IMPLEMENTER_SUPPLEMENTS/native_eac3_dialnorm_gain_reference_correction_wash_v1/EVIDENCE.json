@@ -1,0 +1,35 @@
+{
+  "schema": "washed-eac3-dialnorm-gain-reference-correction.v1",
+  "source_package_manifest_sha256": "927c0ab97318472e71767ad033bb0517f275e21ec1014aa5a1f3a4096b7b1d8c",
+  "parent_dialnorm_source_manifest_sha256": "76a8135647dbe72ee0fa778ab61859c830ac694e584875431fb8af913e0fa3c8",
+  "parent_bsid_mapping_manifest_sha256": "75503650988a4deafd73c1f46025062482a70dc0d484805b9307447864f10881",
+  "field_crosswalk": {
+    "record_plus_8": "E-AC3 BSID",
+    "record_plus_0x20": "E-AC3 DialNorm by header order"
+  },
+  "normal_path_dialnorm_field": {
+    "record_member_offset_bytes": 32,
+    "width_bits": 5,
+    "same_owner_source_offset_bytes": 52,
+    "source_type": "U16",
+    "setter_copies_to_dialnorm_member": true
+  },
+  "runtime": {
+    "r141_dialnorm_value": "NOT_CAPTURED",
+    "r141_dialnorm_writer_hit": false,
+    "explicit_generation": "UNBOUND",
+    "output_payload": "NOT_READ",
+    "playback": "NOT_RUN",
+    "full_e2e": "NOT_VERIFIED"
+  },
+  "public_playback_reference": {
+    "eac3_specific": "FFmpeg eac3dec.c lines 305-313 derives level_gain from dialog_normalization when target_level is enabled",
+    "coefficient_application": "FFmpeg ac3dec.c lines 1265-1269 applies level_gain while scaling transform coefficients",
+    "interpretation": "E-AC3 DialNorm can affect playback level when target-level normalization is active"
+  },
+  "residuals": {
+    "owner_plus_0x34_upstream_writer_and_semantics": "UNBOUND",
+    "measurement_or_DRC_join": "UNBOUND",
+    "general_interoperability": "NOT_ESTABLISHED"
+  }
+}

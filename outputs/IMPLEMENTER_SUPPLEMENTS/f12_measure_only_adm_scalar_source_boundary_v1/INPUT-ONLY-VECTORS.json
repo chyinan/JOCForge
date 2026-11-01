@@ -1,0 +1,24 @@
+{
+  "schema": "washed-f12-measure-only-input-only.v1",
+  "contract": "One observed sample/config case. No predicted BSI code or encoded output is supplied.",
+  "vectors": [
+    {
+      "id": "my_jealousy_measure_only_case",
+      "input": {
+        "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+        "axml_loudness_fields": [],
+        "measure_only": true,
+        "metering_mode": "1770-4",
+        "custom_dialnorm": "ABSENT",
+        "data_rate_kbps": 1024
+      },
+      "observed": {
+        "native_scalar": -17.093924,
+        "unit": "UNSTATED",
+        "aggregate": "FLOAT_MAX"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "OBSERVED_SOURCE_AND_NATIVE_LOG"
+    }
+  ]
+}

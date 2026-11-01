@@ -1,0 +1,24 @@
+{
+  "schema": "washed-multi-adm-dialnorm-open-edges.v1",
+  "package_id": "multi_adm_dialnorm_conditional_cross_input_v1",
+  "closed": [
+    "two distinct authorized input hashes bound",
+    "same profile/settings reported for both attempts",
+    "same target module hash bound to each process PID",
+    "seven-byte parser helper source/binary identity rehashed and crates pinned to OpenJOC 0.20.1",
+    "conditional model predictions match both observed U5 values"
+  ],
+  "open": [
+    "native measurement unit",
+    "general native rounding rule",
+    "measurement-to-BSI owner U16 same-generation join",
+    "behavior outside the two tested inputs/profile"
+  ],
+  "status": {
+    "unit": "NOT_STATED",
+    "rounding": "NOT_CLOSED",
+    "owner_generation": "NOT_CLOSED",
+    "official_cli_crosscheck": "NOT_RUN"
+  },
+  "guidance": "This evidence is sufficient as a two-input MVP cross-check of the approved formula under the stated assumption; do not claim a universal native rule."
+}

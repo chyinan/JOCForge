@@ -1,0 +1,48 @@
+{
+  "schema": "washed-native-eac3-bsid-field-mapping.v1",
+  "source_package_manifest_sha256": "75503650988a4deafd73c1f46025062482a70dc0d484805b9307447864f10881",
+  "source_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "r141_source_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "r141_r138_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+  "serializer_field_mapping": {
+    "sync_word_bits": 16,
+    "header_width_sequence_after_sync_word": [
+      2,
+      3,
+      11,
+      2,
+      2,
+      3,
+      1,
+      5,
+      5,
+      1
+    ],
+    "record_member_offset_bytes": 8,
+    "record_member_width_bits": 5,
+    "semantic": "E-AC3 BSID",
+    "following_5_bit_member_offset_bytes": 32,
+    "following_member_semantic": "E-AC3 DialNorm by header order"
+  },
+  "r141_dynamic_observation": {
+    "same_parent_record_token": true,
+    "member_u16_value": 16,
+    "element_count": 1,
+    "width_bits": 5,
+    "wire_output_read_or_hashed": false
+  },
+  "basis": {
+    "native_static": "Ghidra serializer bit-field order",
+    "public_crosswalk": "FFmpeg E-AC-3 parser skips 5-bit BSID, then reads 5-bit dialnorm",
+    "bitstream_id_16_accepted_by_parser": "true"
+  },
+  "residuals": {
+    "DialNorm_scalar": "NOT_CAPTURED",
+    "DialNorm_producer": "NOT_TRACED_IN_THIS_MAPPING_PASS",
+    "measurement_or_DRC_relationship": "UNBOUND",
+    "output_metadata": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "full_e2e": "NOT_VERIFIED"
+  },
+  "interpretation": "The record +8 field is statically mapped to BSID on this serializer path; the R141 value 16 is consistent with BSID 16. This does not prove the bytes in the removed EC-3 output or close DialNorm/JOC/E2E."
+}

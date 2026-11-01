@@ -1,0 +1,26 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_package_manifest_sha256": "31a3a57a43325c29f8f5d49073fdc24c3ba5817296231b7e12b2dd647f09b80a",
+  "source_validator": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "parent_field_classification_manifest_sha256": "0cb7cf1ce05b509cffc82605f319deb733c465e3d7578c3fea4748ffec3d9335",
+  "checks": {
+    "measure_only_and_custom_dialnorm_separate": true,
+    "ddp_owner_plus_0x34_to_plus_0x20_same_owner": true,
+    "native_f06_finalize_field": "NOT_IDENTIFIED",
+    "f06_to_owner_join": "UNBOUND",
+    "default_origin": "UNBOUND"
+  },
+  "included": {
+    "source_code": false,
+    "binary_or_decompilation": false,
+    "raw_addresses_or_rvas": false,
+    "payload": false,
+    "private_key_or_license": false,
+    "absolute_paths": false
+  },
+  "audio_algorithm_value_supplied": false
+}

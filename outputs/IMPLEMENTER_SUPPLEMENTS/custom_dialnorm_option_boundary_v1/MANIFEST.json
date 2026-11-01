@@ -1,0 +1,30 @@
+{
+  "schema": "washed-custom-dialnorm-option-boundary.v1",
+  "package_id": "custom_dialnorm_option_boundary_v1",
+  "status": "OPTION_ID_AND_DEFAULT_STATIC; HOST_INSTANCE_TRANSFER_AND_U16_EDGE_UNBOUND",
+  "implementation_readiness": "NO_FOR_MEASUREMENT_TO_DIALNORM_FORMULA",
+  "source_package_manifest_sha256": "ffd2cf177d48bf871fba45c6425a92a44efdcb43aa2838d0982bd370f09c62f3",
+  "source_run144_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1254,
+      "sha256": "9a8f9aaa1c9da2c21d2d0e3ed1f38de746c9182d9fd35665db25acc8dcb623bf"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2100,
+      "sha256": "8fde2a7ba904316179c7f34253f11bf325eafece8db9154fcbf544e613ebe0e6"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 515,
+      "sha256": "4261a86bd01b0219118d21cf325aa67a3d6de83b2c0451455c9b38dadc3beb44"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1573,
+      "sha256": "c709e6cdb01c75415b52c2d840de82abf52d01d3093e9951614a9a180ef837b9"
+    }
+  ]
+}

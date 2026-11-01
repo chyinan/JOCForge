@@ -1,0 +1,23 @@
+{
+  "package_id": "f12_measure_only_adm_scalar_source_boundary_v1",
+  "closed": [
+    "The sample AXML contains no explicit loudness/DialNorm/metering value.",
+    "The sample Job XML selects measure_only and metering_mode 1770-4; custom_dialnorm is absent and its zero default is documented as non-overriding.",
+    "The DEE measurement aggregate selects the strict maximum of per-source floats, with the stated stride and offset.",
+    "One native scalar was logged for this sample."
+  ],
+  "open": [
+    "Whether APR_1001 maps to a particular per-source measurement entry.",
+    "Meter vtable unit, scale conversion, and rounding.",
+    "Per-source audio measurement algorithm.",
+    "Native scalar to BSI +0x34 value or physical dB mapping.",
+    "Final E-AC-3 output parse and playback."
+  ],
+  "status": {
+    "explicit_user_scalar": "NOT_PRESENT_IN_THIS_SAMPLE_JOB_AND_AXML",
+    "native_unit": "UNCONFIRMED",
+    "row_generation_join": "NOT_PROVEN",
+    "output": "NOT_RUN"
+  },
+  "guidance": "Do not add a required user loudness input based on these observations; do not label the logged scalar dB or map it to BSI without further evidence."
+}

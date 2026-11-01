@@ -1,0 +1,9 @@
+{
+  "schema": "washed-f12-boundary-candidate-not-native.v1",
+  "status": "MODEL_CANDIDATE_ONLY",
+  "candidate_values": [-20.5001, -20.5, -20.4999],
+  "assumption_required": "Input scalar already has the model's LUFS meaning; native unit is not established.",
+  "native_run": "NOT_RUN",
+  "expected_serialized_bsi_values": "NOT_SUPPLIED",
+  "purpose": "Potential half-step discriminator only; not part of the First Love measured result and not evidence for the native formula."
+}

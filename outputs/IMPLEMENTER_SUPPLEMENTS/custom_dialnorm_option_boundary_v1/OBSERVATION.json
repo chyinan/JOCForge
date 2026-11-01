@@ -1,0 +1,53 @@
+{
+  "schema": "washed-custom-dialnorm-option-boundary.v1",
+  "status": "OPTION_ID_AND_DEFAULT_STATIC; HOST_INSTANCE_TRANSFER_AND_U16_EDGE_UNBOUND",
+  "source_package_manifest_sha256": "ffd2cf177d48bf871fba45c6425a92a44efdcb43aa2838d0982bd370f09c62f3",
+  "source_run144_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "option": {
+    "xml_key": "custom_dialnorm",
+    "type": "Int64",
+    "range_inclusive": [
+      -31,
+      0
+    ],
+    "default": 0,
+    "zero_semantics": "disable override of measured loudness"
+  },
+  "separation": {
+    "loudness_target": "separate host XML key; not the same option",
+    "host_xml_key_exposed": true,
+    "host_parser_to_ddp_instance_transfer": "NOT_TYPED_IN_STATIC_DATABASES"
+  },
+  "conditional_override": {
+    "nonzero": true,
+    "conversion": "Int64 to Float32",
+    "writes_parameter_record_fields": [
+      "+0x100",
+      "+0x104",
+      "+0x114"
+    ],
+    "rounding_or_clamp": "NOT_OBSERVED",
+    "direct_write_to_ddp_owner_u16_0x34": false
+  },
+  "run144": {
+    "task_xml_custom_dialnorm": "ABSENT",
+    "runtime_option_value": "NOT_CAPTURED",
+    "override_branch": "NOT_CAPTURED",
+    "measured_loudness": -27.774199,
+    "unit": "NOT_STATED",
+    "u16_serializer_value": 28,
+    "measurement_to_u16_causality": false
+  },
+  "unbound": [
+    "host parser value to DDP instance token",
+    "parameter-record Float32 to DDP U16 +0x34 typed edge",
+    "field generation/owner join",
+    "measured loudness to U16 formula"
+  ],
+  "implementation_disposition": {
+    "user_choice_required_for_this_run": false,
+    "production_dialnorm_formula_approved": false,
+    "instruction": "For XML with no custom_dialnorm, preserve documented default zero; do not prompt the user to choose a value or derive U16 from measured loudness without a typed producer rule."
+  },
+  "next_minimum_observation": "Capture the absent/default option value and any nonzero override branch inside the already authorized R3 run, with distinct owner tokens; also capture the same-job U16 field/setter/serializer. No second DEE job."
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "washed-f06-dialnorm-open-edges.v1",
+  "package_id": "f06_dialnorm_nonclamped_sample_wash_v1",
+  "closed": [
+    "authorized input identity and byte-identical ASCII alias",
+    "same-process target module identity for the successful nonclamped attempt",
+    "bounded seven-byte first independent syncframe parse and U5 value",
+    "conditional arithmetic comparison to the approved selected_lufs formula"
+  ],
+  "open": [
+    "native measured scalar unit/conversion",
+    "general native rounding rule",
+    "measurement value to BSI owner +0x34 same-generation update",
+    "owner startup/default versus measurement overwrite",
+    "cross-input confirmation on additional authorized ADM files"
+  ],
+  "status": {
+    "general_rule": "NOT_CLOSED",
+    "measurement_owner_join": "UNBOUND",
+    "additional_adm_vectors": "NOT_RUN"
+  },
+  "guidance": "Do not generalize from one nonclamped sample. Keep the F06 measurement-to-BSI owner dependency scoped; the current value may be used only as a run-specific observation."
+}

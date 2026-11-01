@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "multi_adm_dialnorm_conditional_cross_input_v1",
+  "scope": "Two distinct ADM cross-input observations conditionally matching approved F12 formula with parser provenance bound; native unit/rounding and BSI owner-generation join remain open.",
+  "status": "TWO_DISTINCT_AUTHORIZED_INPUTS_MATCH_APPROVED_F12_FORMULA_CONDITIONALLY; NATIVE_UNIT_AND_OWNER_JOIN_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1550,
+      "sha256": "1a85ff2af0595501369fa01a8c824ea07740d39307de8424cad79f9b66ffa1e4"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 5608,
+      "sha256": "4c3c10401741a3214173f8812f7752159cffa3e0f1f42a97fa970a797268b3ed"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2022,
+      "sha256": "273038d261d69b9c5a20d915335f3c54ac82adcb2d76ddc0c7bd59a6890d1b5c"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 986,
+      "sha256": "ecbb405bc19bdf3b025208d42a1c2efc2801132e69e77d8be0a2a169a361fed1"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1451,
+      "sha256": "fc0148bec4a36589d09bde586fc1255dd36453e0506b064e8c93a01e6ae5f8a9"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 3306,
+      "sha256": "4f479ebd218242c63aeba7f52ff645ed8556467ac8732fe7f63ef223bc04cc88"
+    }
+  ]
+}

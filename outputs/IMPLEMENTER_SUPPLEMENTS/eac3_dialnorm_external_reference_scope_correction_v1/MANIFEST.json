@@ -1,0 +1,31 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "eac3-dialnorm-external-reference-scope-correction-v1",
+  "status": "SCOPE_CORRECTION",
+  "source_package_manifest_sha256": "927c0ab97318472e71767ad033bb0517f275e21ec1014aa5a1f3a4096b7b1d8c",
+  "supersedes_wash_supplement_manifest_sha256": "9c59b9d8e92c996f75dee14143131817dad5ef969a41eeb452094627ec602754",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "eb8c3c1e88e5844f47b610cc8a4fbac439c282b89f762c826b18cb340830479f",
+      "bytes": 1617
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "a2a0e9033f97544af82cb465f98a1317dfe6e2cbe58d78176ec2c2f6fee816bb",
+      "bytes": 896
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "92551ef3486490a1b08fe4665f7edbe1e5d278baa8d928428813d8f0b259eb00",
+      "bytes": 659
+    }
+  ]
+}

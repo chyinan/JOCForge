@@ -1,0 +1,30 @@
+{
+  "schema": "washed-native-eac3-dialnorm-bsi-field-binding.v1",
+  "package_id": "native_eac3_dialnorm_bsi_field_binding_v1",
+  "status": "OWNER_U16_FIELD_STATICALLY_BOUND_TO_BSI_DIALNORM; PRODUCER_FORMULA_OPEN",
+  "implementation_readiness": "NO_FOR_DIALNORM_PRODUCER_RULE",
+  "source_static_package_manifest_sha256": "cdac36b418fddeb8e587894622d4c6019b9909b632ff4437e8a97c54fde3d3a0",
+  "source_run144_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1598,
+      "sha256": "b4f15fecf52814d830abfcac93be9ffacc3e622bf663b5d9a7a75d6a2024f9ca"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2280,
+      "sha256": "e858409dddc195c4993be101d3b97c42decfaacfd54a9627fa303c8af88cfe62"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 607,
+      "sha256": "a07912c6a44a767e793cb3588a8d2b0371c1c893a34d146831e4cf9cf303e765"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1532,
+      "sha256": "afd44ae8b7f170b953c5ea8b2a26a57bd67779fe7716a24f279b992c794f3a0e"
+    }
+  ]
+}

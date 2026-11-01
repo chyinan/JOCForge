@@ -1,0 +1,57 @@
+{
+  "schema": "multi-adm-dialnorm-input-only-vectors.v1",
+  "classification": "INPUT_ONLY_CROSS_INPUT_OBSERVATIONS_NO_MEDIA_BYTES",
+  "vectors": [
+    {
+      "sample_id": "authorized_adm_a",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "ascii_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "profile": {
+        "rate_kbps": 1024,
+        "metering_mode": "1770-4",
+        "window": "file_position 2160..2208",
+        "dialogue_intelligence": false,
+        "drc": "none",
+        "channels": "5.1 R138-equivalent"
+      },
+      "measurement_scalar": -20.665958,
+      "unit": "NOT_STATED_IN_NATIVE_LOG",
+      "first_au_u5": 21,
+      "prefix_bytes": 7,
+      "payload_bytes": 0,
+      "model_comparison": {
+        "sample_id": "authorized_adm_a",
+        "intermediate": "trunc(-20.665958 - 0.5) = -21",
+        "predicted_u5": 21,
+        "observed_u5": 21,
+        "result": "MATCH_FOR_THIS_INPUT_AND_CONFIGURATION"
+      }
+    },
+    {
+      "sample_id": "authorized_adm_b",
+      "input_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "ascii_alias_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "profile": {
+        "rate_kbps": 1024,
+        "metering_mode": "1770-4",
+        "window": "file_position 2160..2208",
+        "dialogue_intelligence": false,
+        "drc": "none",
+        "channels": "5.1 R138-equivalent"
+      },
+      "measurement_scalar": -14.418104,
+      "unit": "NOT_STATED_IN_NATIVE_LOG",
+      "first_au_u5": 14,
+      "prefix_bytes": 7,
+      "payload_bytes": 0,
+      "model_comparison": {
+        "sample_id": "authorized_adm_b",
+        "intermediate": "trunc(-14.418104 - 0.5) = -14",
+        "predicted_u5": 14,
+        "observed_u5": 14,
+        "result": "MATCH_FOR_THIS_INPUT_AND_CONFIGURATION"
+      }
+    }
+  ],
+  "claim_scope": "Two distinct inputs under the same profile only; no general rule or owner join."
+}

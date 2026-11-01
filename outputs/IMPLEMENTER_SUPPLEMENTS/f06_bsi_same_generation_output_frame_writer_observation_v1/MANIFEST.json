@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f06_bsi_same_generation_output_frame_writer_observation_v1",
+  "scope": "One DEE full-file reference run binds a same-generation BSI serializer owner to one FileWriter frame and a seven-byte header observation; no BSI U16 to output DialNorm relation or JOCForge output is claimed.",
+  "status": "SAME_GENERATION_BSI_OWNER_TO_FILEWRITER_FRAME_BOUND_FOR_ONE_RUN; HEADER_ONLY_U5_17_OBSERVED; U16_NUMERIC_MAPPING_AND_OWNER_DEFAULT_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3053,
+      "sha256": "a2ba450559593e57e4bd21ad2c988e6c34be482bebae990b874249db8cf49bef"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 857,
+      "sha256": "28935cb7d2ee00972971f288a9c1fcdf76aa528e8c570ad90e8a2e92d6bcb079"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1191,
+      "sha256": "7ff27ad5c4eb725bdbf1c1354a8ae382d596563ab6b13cc15a658fd970609e6e"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1122,
+      "sha256": "20e3aec23237d992589fb113948705db27c1035cc832b6d773e59eeee82758a1"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1635,
+      "sha256": "facb8f1924fdac8f71ac7daef2513a60bbfbe8d698a980644bdc6587ebd8d512"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 224,
+      "sha256": "56394455a508dab4068e4c17d847f1986cea1c0e3daef8d36156d00f277f6b20"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2221,
+      "sha256": "60dbe06deac35f00e5a725c1bd2b0cc087dd7ac6c966afcd315440c7434ec4ae"
+    }
+  ]
+}

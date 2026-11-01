@@ -1,0 +1,37 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "496e2fccadf0fcf1f369f5862d83eb62da339e79e3fbe7d090ca30d7cd536483",
+    "manifest_seal_matches": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "checker_result": "PASS: three distinct inputs, attempt joins, seven-byte parser boundary, cleanup, and package hashes"
+  },
+  "related_wash_packages": [
+    {
+      "package_id": "F12-FIRST-LOVE-NATIVE-SCALAR-ENCODER-CONFIG-BOUNDARY-V1",
+      "manifest_sha256": "e3bfcb7bde5fb217071c605c122cd4bfeeabaa8763df013e3c37e5289d047fcc",
+      "relationship": "Earlier scalar/config path; retain its known scope limit."
+    },
+    {
+      "package_id": "F12-FIRST-LOVE-PERFRAME-OFFSET-ERRATUM-V1",
+      "manifest_sha256": "f519075ad73a6b57811739eaf3ff3ea76a6a15e99144c1efb78c1c610b7b66b3",
+      "relationship": "Offset correction remains controlling: int* + 0x3C is byte +0xF0, not byte +0x3C."
+    },
+    {
+      "package_id": "F12-SELECTED-PREFIX-DIALNORM-V1",
+      "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+      "relationship": "Supplies a clean model formula; its typed programme/source identity join remains not ready."
+    }
+  ],
+  "incoming_payload_scope": {
+    "target_images": [
+      {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+      {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+      {"name": "dee_ddp_encoder.exe", "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"}
+    ],
+    "raw_adm_pcm_payload_or_key_files_copied_to_this_supplement": false,
+    "included_research_code_or_decompilation": false
+  }
+}

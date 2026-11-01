@@ -1,0 +1,99 @@
+{
+  "schema": "jocforge-f12-multi-adm-api-boundary.v1",
+  "package_id": "F12-MULTI-ADM-DIALNORM-API-BOUNDARY-V1",
+  "status": "THREE_CONDITIONAL_SAMPLE_MATCHES; API_BOUNDARY_PARTIAL; NATIVE_UNIT_AND_BSI_MAPPING_UNBOUND",
+  "implementation_ready": false,
+  "reference_profile": {
+    "source_job_sha256": "84ef098c6150f50985003b191f66e6bfc107efc904f9a8e797379819f5afb19d",
+    "metering_mode": "1770-4",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "data_rate_kbps": 1024,
+    "time_window": {"time_base": "file_position", "start": "2160", "end": "2208"},
+    "line_mode_drc_profile": "none",
+    "rf_mode_drc_profile": "none",
+    "channel_profile": "5.1 R138-equivalent reference profile"
+  },
+  "cross_input_observations": [
+    {
+      "sample_id": "authorized_adm_a",
+      "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "dee_status": "DEE_SUCCEEDED",
+      "measurement_scalar_decimal": "-20.665958",
+      "native_unit": "NOT_STATED_IN_NATIVE_LOG",
+      "helper": "bounded custom OpenJOC-based seven-byte first-syncframe header probe",
+      "u5": 21,
+      "payload_bytes_read": 0,
+      "raw_prefix_retained": false,
+      "conditional_model": "MATCH_IF_SCALAR_IS_SELECTED_LUFS"
+    },
+    {
+      "sample_id": "authorized_adm_b",
+      "source_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "dee_status": "DEE_SUCCEEDED",
+      "measurement_scalar_decimal": "-14.418104",
+      "native_unit": "NOT_STATED_IN_NATIVE_LOG",
+      "helper": "bounded custom OpenJOC-based seven-byte first-syncframe header probe",
+      "u5": 14,
+      "payload_bytes_read": 0,
+      "raw_prefix_retained": false,
+      "conditional_model": "MATCH_IF_SCALAR_IS_SELECTED_LUFS"
+    },
+    {
+      "sample_id": "authorized_adm_c",
+      "source_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+      "dee_status": "DEE_SUCCEEDED",
+      "measurement_scalar_decimal": "-17.093924",
+      "native_unit": "NOT_STATED_IN_NATIVE_LOG",
+      "helper": "bounded custom OpenJOC-based seven-byte first-syncframe header probe",
+      "u5": 17,
+      "payload_bytes_read": 0,
+      "raw_prefix_retained": false,
+      "conditional_model": "MATCH_IF_SCALAR_IS_SELECTED_LUFS",
+      "source_processing_note": "Incoming evidence says the full ADM file was streamed for SHA-256 and byte-identical alias creation; PCM frames were not decoded."
+    }
+  ],
+  "additional_scalar_observation": {
+    "sample_id": "authorized_adm_first_love",
+    "source_sha256_from_prior_authorized_record": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "source_sha256_recomputed_in_incoming_continuation": false,
+    "dee_status": "DEE_SUCCEEDED",
+    "measurement_scalar_decimal": "-21.010569",
+    "native_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "u5_observation": "NOT_RUN"
+  },
+  "static_lineage": {
+    "measurement_aggregate": "binary32 max over per-source float fields at +0x14 with stride 0x20; initialized to -120.0",
+    "handoff": ["aggregate to owner +0xF6C", "owner +0xF6C to encode config +0x114", "bit-preserving copy into EmpireEnc subobject state +0x3C"],
+    "unit_conversion_or_rounding_before_encoder_api": "NOT_OBSERVED",
+    "frame_field_candidate": {
+      "source": "param_3+0x60",
+      "clamp": [1, 31],
+      "encoder_api": "ddpi_enc_setparams parameter ID 0x12",
+      "join_to_measurement_scalar": "NOT_PROVEN",
+      "serialized_bsi_field": "NOT_PROVEN"
+    },
+    "optional_setparams_ids_0x30_0x31_join_to_measurement_scalar": "NOT_PROVEN",
+    "dplc_setdata_float_path_join_to_measurement_scalar": "NOT_PROVEN",
+    "abs_float_plus_half_logger_is_bsi_rule": "NOT_PROVEN",
+    "final_bsi_writer_or_bit_packer": "NOT_TRACED",
+    "same_generation_measurement_to_encoder_api_join": "NOT_PROVEN"
+  },
+  "comparison_limits": {
+    "conditional_formula_source": "F12-SELECTED-PREFIX-DIALNORM-V1",
+    "assumption": "native scalar is the model's finalized selected_lufs F32",
+    "official_openjoc_cli_cross_check": "NOT_RUN",
+    "raw_prefix_or_payload_retained": false,
+    "three_matches_prove_a_general_native_rule": false
+  },
+  "minimum_next_observation": {
+    "status": "NOT_RUN",
+    "requires_encode_bearing_runtime": true,
+    "read_scope": "bounded scalar/frame/API metadata only; no PCM, payload, or output bytes",
+    "authorization_from_this_package": false
+  },
+  "policy": {
+    "private_key_hmac_or_license_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}

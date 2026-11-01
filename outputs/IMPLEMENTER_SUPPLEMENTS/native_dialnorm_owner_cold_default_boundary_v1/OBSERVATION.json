@@ -1,0 +1,38 @@
+{
+  "schema": "washed-native-dialnorm-owner-cold-default-boundary.v1",
+  "status": "COLD_U16_DEFAULT_AND_CONSUMER_OWNER_BOUND; POST_INIT_VALUE_WRITER_UNBOUND",
+  "source_static_package_manifest_sha256": "ef0492602370717210f10ec9df5b9456b8c33ce64433c0f1b16e53b94e7cabe2",
+  "source_run144_package_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "cold_state": {
+    "owner_member": "U16 +0x34",
+    "constructor_and_reset_default": 27,
+    "adjacent_U16_at_plus_0x38": 27,
+    "typed_owner_chain": "core codec state -> wrapper -> frame loop -> same-owner setter and serializer"
+  },
+  "consumer_chain": {
+    "setter": "reads U16 +0x34 and copies it into same-owner staging member +0x191d8",
+    "serializer": "same owner record +0x20 from base +0x191b8; count1,width5; semantically E-AC-3 DialNorm",
+    "semantic_binding_manifest": "76391b5b86a4691ea9d8ffeb1b8a6b6a64b06d7a0cb50e93017d4be3cd51fc16"
+  },
+  "later_writer_boundary": {
+    "run144_same_owner_or_instance_u16": 28,
+    "post_init_writer_for_28": "NOT_CAPTURED",
+    "typed_F06_float32_to_U16_conversion": "NOT_FOUND_IN_TRACED_STATIC_PATH",
+    "custom_dialnorm_float_override_to_U16": "NOT_FOUND_IN_TRACED_STATIC_PATH",
+    "displacement_only_candidates_scanned": 52,
+    "same_owner_typed_candidate_writers_found": 0,
+    "global_absence_claimed": false
+  },
+  "next_minimum_observation": {
+    "job": "already authorized R3 single job; do not launch another",
+    "watch": "one 2-byte watch from the core-state cold initializer at owner+0x34, then follow the same owner through setter and DialNorm serializer",
+    "capture": "writer module/RVA, thread, before/after U16, owner token; keep F06 Float32 and custom_dialnorm value on separate typed tokens"
+  },
+  "implementation_disposition": {
+    "cold_default": 27,
+    "run144_observed": 28,
+    "conversion_formula_approved": false,
+    "instruction": "Treat 27 as the static cold value. Do not infer the later 28 source from run144 loudness or from same offset writes."
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f06_bsi_owner_u16_conditional_writer_scope_v1",
+  "scope": "Two confirmed conditional fixed-block writes to the signed U16 at BSI owner +0x34; constructor default, active branch, runtime value, global writer exclusion, and physical unit remain UNBOUND/NOT_IDENTIFIED.",
+  "status": "SIGNED_U16_RAW_BSI_CONSUMER_BOUND; TWO_CONDITIONAL_ZERO_LOW_U16_SETTERS_STATIC_BOUND; OWNER_DEFAULT_ACTIVE_BRANCH_RUNTIME_VALUE_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2767,
+      "sha256": "e1f7806435a4766260779d90cde80715c4ce13fdd6b049c5924c00a76c1f2045"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1491,
+      "sha256": "08952367242ba4e1c261be080a7927e75a2beb1e99b993274045bc2097123858"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1191,
+      "sha256": "9ace8af7d472ca9afab954f19c5dac031108fb1d71d4b4eb24261911efc45477"
+    },
+    {
+      "name": "README.md",
+      "bytes": 919,
+      "sha256": "bb23df49142c30378b95dbe476caa4315cf5128e98750912cafdd5417d7a104a"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1184,
+      "sha256": "07e909826b2b8952e21c57aa08740202fe9a38f0fcf2a9e976e5b929c67c3804"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 311,
+      "sha256": "7bc832f36b8069d9a61081ca24b91c440b47d5877222505e53e9a12c4aa3b3e0"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 3304,
+      "sha256": "f7ba398ac197e394b9b47834f71ec6aa07233e7c86ff08ced1182374d2f399b0"
+    }
+  ]
+}

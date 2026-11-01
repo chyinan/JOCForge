@@ -1,0 +1,18 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "36f97eb3422cab3b3fedb7c94f22dcfca3b750f94b1cd6fa6702d48a64d89612",
+  "incoming_consumer_closure_json_sha256": "f3f9f657c3fc004df5f8d820e3a15a61381a0c183713add811edb0cd0203d7a1",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed the current top-level manifest hash from MANIFEST.json and checked it against MANIFEST.sha256.",
+    "Ran the incoming package verifier normally and under Python optimization.",
+    "Recomputed the typed-pointer offset arithmetic: int* + 0x3C is a byte offset of 0xF0.",
+    "Confirmed the corrected report keeps the parameter source and final BSI DialNorm mapping open."
+  ],
+  "not_promoted": [
+    "param_4[10] semantic role or relation to the measured scalar",
+    "scalar native unit or LUFS interpretation",
+    "final BSI DialNorm field or value",
+    "native rounding, scale, or quantization inside the codec plugin"
+  ]
+}

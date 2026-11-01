@@ -1,0 +1,39 @@
+{
+  "schema": "external-reference-scope-correction.v1",
+  "supersedes_wash_supplement_manifest_sha256": "9c59b9d8e92c996f75dee14143131817dad5ef969a41eeb452094627ec602754",
+  "source_package_manifest_sha256": "927c0ab97318472e71767ad033bb0517f275e21ec1014aa5a1f3a4096b7b1d8c",
+  "DEEspecific_audio_behavior": "NOT_ESTABLISHED",
+  "field_crosswalk": {
+    "record_plus_8": "EAC3_BSID",
+    "record_plus_0x20": "EAC3_DIALNORM_BY_HEADER_ORDER",
+    "dialnorm_value": "NOT_CAPTURED",
+    "owner_plus_0x34_upstream_semantics": "UNBOUND",
+    "R141_dialnorm_writer_hit": false
+  },
+  "external_reference": {
+    "project": "FFmpeg",
+    "files": [
+      {
+        "path": "libavcodec/eac3dec.c",
+        "lines": "305-313",
+        "purpose": "Shows FFmpeg's E-AC-3 decoder handling, not DEE behavior"
+      },
+      {
+        "path": "libavcodec/ac3dec.c",
+        "lines": "1265-1269",
+        "purpose": "Shows FFmpeg shared coefficient gain application, not DEE behavior"
+      }
+    ],
+    "use": "Field/decoder cross-check only",
+    "normative_for_DEE": false,
+    "implementation_source_for_DEE": false,
+    "may_define_DEE_gain_or_default": false
+  },
+  "interpretation": "The external FFmpeg behavior cannot establish DEE's encoder field value, playback effect, gain policy, or sound. Implement audio-affecting behavior only from DEE static/runtime evidence, approved codec specification, and authorized ADM observations.",
+  "DEE_runtime_status": {
+    "R141_output_payload_read_or_hashed": false,
+    "playback": "NOT_RUN",
+    "full_e2e": "NOT_VERIFIED",
+    "general_interoperability": "NOT_ESTABLISHED"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "washed-f06-dialnorm-sample-source-binding.v1",
+  "package_id": "f06_dialnorm_nonclamped_sample_wash_v1",
+  "incoming_research_manifest_sha256": "c43faf611ba1edef4dd7a5e5d8388625e3938eef626e68cb1a670f2fe849d8f1",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "incoming_payloads": "ALL_MANIFEST_HASHES_MATCH",
+  "current_input_hash_rechecked": true,
+  "current_target_module_hash_rechecked": true,
+  "approved_model": {
+    "package_id": "F12-SELECTED-PREFIX-DIALNORM-V1",
+    "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+    "contract_sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61",
+    "checker": "PASS_NORMAL_AND_PYTHON_O"
+  },
+  "prior_clamped_boundary": {
+    "package_id": "f06_dialnorm_native_observation_boundary_v1",
+    "manifest_sha256": "96ae1cd29cdf62070cd57fd22a58c88456ac5e90aa7373475e6f5b407bf215dd",
+    "checker": "PASS_NORMAL_AND_PYTHON_O"
+  },
+  "private_key_or_license_contents_read": false,
+  "media_pcm_payload_or_bitstream_body_read": false
+}

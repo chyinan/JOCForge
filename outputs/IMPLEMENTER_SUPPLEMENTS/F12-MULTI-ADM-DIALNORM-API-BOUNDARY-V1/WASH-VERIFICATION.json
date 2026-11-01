@@ -1,0 +1,25 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "496e2fccadf0fcf1f369f5862d83eb62da339e79e3fbe7d090ca30d7cd536483",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed the incoming manifest SHA-256 and confirmed its seal file matches.",
+    "Ran the incoming package checker normally and under Python optimization.",
+    "Reviewed the three run receipts, source/profile joins, seven-byte U5 probe scope, and explicit zero-payload/no-raw-prefix claims.",
+    "Reviewed the First Love scalar receipt separately; no U5 observation is claimed for it.",
+    "Confirmed the conditional comparison relies on the assumption that the unitless DEE scalar is selected_lufs.",
+    "Reviewed the separate dee_ddp_encoder.exe trace: frame +0x60 reaches encoder API ID 0x12, while the scalar-to-frame join and final BSI writer remain open.",
+    "Preserved the already-washed int* offset erratum and did not merge its +0xF0 destination with EmpireEnc byte +0x3C.",
+    "Kept all four identity/serialization gaps and the minimum runtime observation explicitly unbound or not run."
+  ],
+  "not_promoted": [
+    "native scalar unit or meter conversion",
+    "general native dialnorm rounding rule",
+    "same-owner or same-generation scalar-to-frame/API mapping",
+    "semantic mapping of optional setparams IDs 0x30/0x31 or DPLC fields",
+    "final BSI DialNorm write or bit-packer",
+    "official OpenJOC CLI cross-check",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

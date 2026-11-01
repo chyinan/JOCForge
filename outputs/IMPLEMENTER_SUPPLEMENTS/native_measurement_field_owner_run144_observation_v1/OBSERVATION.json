@@ -1,0 +1,73 @@
+{
+  "schema": "washed-native-measurement-field-owner-observation.v1",
+  "status": "SAME_OWNER_SERIALIZER_CONSUMPTION_OBSERVED; F06_PRODUCER_JOIN_UNBOUND",
+  "source_package_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "source_package_seal_sha256": "c48d32d6e93e54f94f4a4ae2691a32821e7001e0b2b4bdd57c2fa88d275ed410",
+  "input": {
+    "label": "Hortus Regis Alti",
+    "sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+    "route": "audio.adm -> encode_to_atmos_ddp",
+    "sample_rate_hz": 48000,
+    "requested_bitrate_kbps": 1024,
+    "embedded_timecode_range": [
+      86664,
+      86688
+    ],
+    "measure_only": {
+      "metering_mode": "1770-4",
+      "dialogue_intelligence": false,
+      "speech_threshold": 100
+    },
+    "custom_dialnorm": "ABSENT",
+    "profile_match": "R138 measure_only fields preserved; one bounded run"
+  },
+  "measurement_log": {
+    "final_integrated_loudness": -27.774199,
+    "measured_loudness": -27.77,
+    "unit": "NOT_STATED",
+    "measurement_member_identity": "UNBOUND",
+    "measurement_generation": "UNBOUND"
+  },
+  "same_owner_dynamic_observation": {
+    "owner_field_type": "U16",
+    "owner_field_value": 28,
+    "setter_source_value": 28,
+    "setter_staged_destination_value": 28,
+    "serializer_width_bits": 5,
+    "serializer_consumed_value": 28,
+    "same_owner_join": true,
+    "setter_to_serializer_join": true,
+    "F06_measurement_to_owner_field_join": "UNBOUND",
+    "causality_claim": false
+  },
+  "output_metadata": {
+    "bytes": 135168,
+    "sha256_before_and_after": "b85a77ac531aae0fe34954de9272a0f92d651f86076944118ca0442188df8e7b",
+    "same_source_run_comparison": "matches an earlier R3 run output",
+    "format": "raw E-AC-3 JOC / Atmos metadata",
+    "access_units": 33,
+    "joc_signaled_access_units": 33,
+    "sample_rate_hz": 48000,
+    "layout": "5.1(side)",
+    "bitrate_bps": 1024000,
+    "deployed_compatibility": "PASS 33/33",
+    "etsi_strict": "FAIL 33/33",
+    "render_or_playback": "NOT_RUN"
+  },
+  "candidate_not_approved": {
+    "candidate": "clamp(round(abs(logged_loudness)),0,31)",
+    "observed_point_fit": true,
+    "controlled_rounding_vector": "loudness=-27.6; nearest=28; truncate=27; NOT_RUN",
+    "reason_not_a_rule": "one source point and earlier non-controlled comparator runs do not bind the F06 typed producer field or generation"
+  },
+  "cleanup": {
+    "source_modified": false,
+    "output_retained": false,
+    "raw_pcm_or_payload_in_wash": false,
+    "private_license_contents_read": false
+  },
+  "implementation_disposition": {
+    "production_formula_approved": false,
+    "instruction": "Use only the measured same-owner U16-to-5-bit consumer fact as a runtime boundary. Do not implement the candidate loudness formula or call the owner field DialNorm until F06 producer/member/generation is joined."
+  }
+}

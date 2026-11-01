@@ -1,0 +1,20 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "dc9a0d3c3363b4fc2c41b05f89e11b982beb48d01662d89c3d2ca00355aa184d",
+  "incoming_checker": {
+    "normal": "PASS",
+    "python_optimized": "PASS"
+  },
+  "independent_review": [
+    "Recomputed incoming manifest SHA-256 and ran its checker normally and under Python optimization.",
+    "Confirmed the active typed owner construction/default claim is separate from alternate-writer exhaustiveness and standard EC3 DialNorm mapping.",
+    "Kept the parent frame header U5 observation separate from the current-run owner U16, which was not reread.",
+    "Recomputed the constructor-default model vectors without treating them as a dynamic current-run observation."
+  ],
+  "not_promoted": [
+    "all dependency/lifetime alternate writers absent",
+    "current-run BSI U16 scalar",
+    "owner U16 to standard E-AC-3 header DialNorm numeric conversion",
+    "whole-chain readiness"
+  ]
+}

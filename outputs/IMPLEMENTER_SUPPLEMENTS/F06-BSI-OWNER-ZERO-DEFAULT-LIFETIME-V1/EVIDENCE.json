@@ -1,0 +1,52 @@
+{
+  "schema": "washed-f06-bsi-owner-default-evidence.v1",
+  "status": "ACTIVE_TYPED_OWNER_ZERO_DEFAULT_BOUND; ALTERNATE_WRITERS_NOT_EXHAUSTIVE; U16_TO_STANDARD_DIALNORM_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_WITH_REUSED_PARENT_FULL_RUN_POINTER_RECEIPT",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "owner_construction": {
+    "size_query_success_required": true,
+    "size_formula_base_hex": "0x394f",
+    "success_path_fixed_addition_hex": "0x2c096",
+    "success_path_minimum_size_hex": "0x2fac2",
+    "dynamic_size_terms_present": true,
+    "outer_allocation_zeroed_before_context_constructor": true,
+    "context_constructor_zero_range_bytes": 14664,
+    "descriptor_pointer_context_offset_hex": "0x828",
+    "descriptor_context_offset_hex": "0x3948",
+    "owner_descriptor_offset_hex": "0x138",
+    "owner_context_offset_hex": "0x3a80",
+    "owner_field_offset_hex": "0x34",
+    "owner_field_context_offset_hex": "0x3ab4",
+    "owner_field_type": "SIGNED_U16",
+    "owner_factory_alignment_bytes": 32,
+    "owner_block_clear_bytes": 200,
+    "block_clear_covers_owner_plus_0x34": true,
+    "typed_initializer_store_width_bits": 32,
+    "typed_initializer_store_value": 0,
+    "typed_initializer_store_targets_owner_plus_0x34": true,
+    "later_constructor_setup_rewrites_owner_plus_0x34": false,
+    "constructor_default_before_conditional_updates": 0
+  },
+  "parent_runtime_identity": {
+    "final_au_writer_package_manifest_sha256": "5d8af71b76ae1b0d56affbdbaa0679c143c31ff5e939727df657656507017647",
+    "runtime_context_descriptor_owner_offsets_match_static": true,
+    "owner_pointer_matches_serializer_parameter": true,
+    "one_frame_generation_join": "BOUND_BY_PARENT_PACKAGE",
+    "header_u5_observed": 17,
+    "current_run_bsi_u16_value": "NOT_CAPTURED_PER_NO_REPEAT"
+  },
+  "unbound": {
+    "alternate_writers_across_all_dependencies_and_lifetimes": true,
+    "owner_u16_to_standard_ec3_dialnorm_numeric_mapping": true,
+    "same_offset_ddp_candidate_constructor_identity": true,
+    "current_run_owner_u16_dynamic_value": true
+  },
+  "access_boundary": {
+    "new_encode_run": "NOT_RUN",
+    "pcm_body_bytes_read": 0,
+    "ec3_body_bytes_read": 0,
+    "private_key_or_license_contents_read": false,
+    "raw_header_retained": false
+  }
+}

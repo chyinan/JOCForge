@@ -1,0 +1,59 @@
+{
+  "schema": "washed-f06-source-vector-bsi-measurement-context.v1",
+  "package_id": "f06_source_vector_bsi_measurement_context_v1",
+  "status": "SOURCE_VECTOR_FIRST_WRITER_STATIC_BOUND; SAME_MEASUREMENT_CALL_CONTEXT_SUPPORTED; NUMERIC_BSI_LINEAGE_AND_PROCESS_IMAGE_JOIN_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Static source-vector producer/copy and measurement-consumer call context. No numeric qword-to-BSI-U16 mapping or process-bound module identity is established.",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "target_file_rehash": "MATCH",
+  "target_process_load_receipt": false,
+  "source_vector": {
+    "descriptor_offset": "+0x68",
+    "header": "three pointers begin/end/capacity",
+    "header_bytes": 24,
+    "element_stride_bytes": 8,
+    "element_type": "opaque U64 qword",
+    "semantic_type": "UNBOUND",
+    "first_writer": "per-source IO-set builder appends qword from context-selected source-map column"
+  },
+  "record_copy": {
+    "to_offset": "+0x30",
+    "copy_kind": "deep vector copy",
+    "element_stride_bytes": 8,
+    "separate_row_vector": "record +0x00, 32-byte rows; distinct"
+  },
+  "measurement_context": {
+    "per_source_record_passed_to_measurement_consumer": true,
+    "bsi_serializer_call_inside_same_measurement_consumer": true,
+    "pointer_only_attempts": 2,
+    "same_thread_each_attempt": true,
+    "bsi_context_owner_equals_serializer_owner": true,
+    "bsi_owner_equals_source_record": false,
+    "source_qword_value_read": false,
+    "bsi_u16_value_read": false,
+    "raw_pointer_values_retained": false,
+    "process_bound_module_identity_receipt": false,
+    "dee_exit_receipts": "NOT_CAPTURED"
+  },
+  "bsi_owner": {
+    "field_offset": "+0x34",
+    "type": "signed U16",
+    "first_writer": "NOT_LOCATED",
+    "startup_default": "NOT_BOUND",
+    "measurement_update": "NOT_BOUND"
+  },
+  "open_edges": {
+    "qword_semantics": "UNBOUND",
+    "numeric_qword_to_dialnorm": "UNBOUND",
+    "module_process_join": "NOT_CAPTURED",
+    "input_generation": "UNBOUND"
+  },
+  "exclusions": {
+    "raw_code": false,
+    "raw_decompilation": false,
+    "media_pcm_payload_bitstream": false,
+    "private_key_license_contents": false,
+    "absolute_paths": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "washed-native-measurement-field-owner-observation.v1",
+  "package_id": "native_measurement_field_owner_run144_observation_v1",
+  "status": "SAME_OWNER_SERIALIZER_CONSUMPTION_OBSERVED; F06_PRODUCER_JOIN_UNBOUND",
+  "implementation_readiness": "NO_FOR_F06_MEASUREMENT_FORMULA",
+  "source_package_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "source_package_seal_sha256": "c48d32d6e93e54f94f4a4ae2691a32821e7001e0b2b4bdd57c2fa88d275ed410",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1514,
+      "sha256": "69593c8cab7f8ebf601fede6b5092ca47e31523993dbb97290ecea5757388ec0"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2884,
+      "sha256": "7feb08bdb0445f7f6a20e3e96553285807106881c53d2a571f7af814fde347ec"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 681,
+      "sha256": "40a1f8fc0d4d3210a9a0f3a5af8d44d21c62e819098f046a0ddf122f13d524ae"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2074,
+      "sha256": "752a8e482176d7b5dfb81ea413d7aa5bbccc4c132a68fac32547739b234f833c"
+    }
+  ]
+}

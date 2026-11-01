@@ -1,0 +1,17 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_BOUND_FIELD_IDENTITY",
+  "source_static_package_manifest_sha256": "cdac36b418fddeb8e587894622d4c6019b9909b632ff4437e8a97c54fde3d3a0",
+  "source_run144_manifest_sha256": "fe3ed5df47b60ea4861a314225ef14aaa4f2d2398f5b59a2c30e35b6c022ae64",
+  "source_checker_normal": "PASS",
+  "source_checker_optimized": "PASS",
+  "implementation_readiness": "NO_FOR_DIALNORM_PRODUCER_RULE",
+  "excluded": {
+    "binary": false,
+    "source_code": false,
+    "decompilation": false,
+    "private_key": false,
+    "pcm": false,
+    "media": false
+  }
+}

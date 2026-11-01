@@ -1,0 +1,82 @@
+{
+  "schema": "washed-f12-native-scalar-config-boundary.v1",
+  "status": "MEASURE_ONLY_SCALAR_OBSERVED; FLOAT_CONFIG_HANDOFF_BOUND; NATIVE_UNIT_AND_SERIALIZED_BSI_FIELD_OPEN",
+  "implementation_ready": false,
+  "native_observation": {
+    "sample_label": "First Love.wav",
+    "authorized_source_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "source_sha_recomputed_in_this_attempt": false,
+    "source_bytes_observed": 1335078774,
+    "prior_source_bytes": 1335078774,
+    "last_write_utc": "2026-10-11T10:05:34.656118+00:00",
+    "job_xml_sha256": "411f1a17b3e0744e29d936b5b4d2d1d3352647174cad84412fe9bdc115a191b4",
+    "wrapper_sha256": "08a87ad26290475d5719e3900634cbde69a3377df0e5d01fc7e20fedc9031dc8",
+    "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "target_module_disk_sha256_before_launch": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "loaded_module_pid_join": false,
+    "measure_only": true,
+    "metering_mode": "1770-4",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "custom_dialnorm_element_present": false,
+    "window": {"time_base": "file_position", "start": "2160", "end": "2208"},
+    "data_rate_kbps": 1024,
+    "drc_profiles": "none",
+    "result": {
+      "exit_code": 0,
+      "backend": "PE",
+      "scalar": -21.010569,
+      "unit": "NOT_STATED_IN_NATIVE_LOG"
+    },
+    "output": {
+      "file_created": true,
+      "file_removed": true,
+      "output_bytes_read": 0,
+      "temporary_directory_removed": true
+    }
+  },
+  "metadata_scan": {
+    "bytes_read_headers_and_metadata": 78630,
+    "axml_bytes": 78570,
+    "axml_sha256": "27318f160cdaad8f752524feb3dbd87695e4b4f5505a8fe9b9ebee436d5ecf51",
+    "programme_ids": ["APR_1001"],
+    "loudness_related_elements_or_attributes": [],
+    "data_chunk_bytes_read": 0,
+    "dbmd_parsed": false,
+    "raw_xml_retained": false
+  },
+  "static_config_handoff": {
+    "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "aggregate": {
+      "function": "FUN_1801769A0",
+      "binary_format": "IEEE-754 binary32",
+      "initial_value": -120.0,
+      "operation": "maximum over per-source float values at row +0x14, stride 0x20",
+      "unit": "UNKNOWN"
+    },
+    "copy_chain": [
+      {"function": "FUN_18014ABA0", "source": "aggregate +0x14", "destination": "owner +0xF6C", "width_bytes": 4},
+      {"function": "FUN_1801535B0", "source": "owner +0xF6C", "destination": "encode-config +0x114", "width_bytes": 4},
+      {"function": "FUN_180177E50/FUN_180177EB0", "source": "PE encoder config subobject +0xD8; qword at +0x38", "destination": "EmpireEnc state field +0x3C", "behavior": "bit-preserving qword copy; scalar occupies copied four-byte portion"}
+    ],
+    "pre_api_unit_conversion_observed": false,
+    "pre_api_rounding_or_quantization_observed": false,
+    "encoder_api_path": ["ddp_joc_pro_encode_open", "ddp_joc_pro_encode_process"]
+  },
+  "open_fields": {
+    "native_scalar_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "scalar_to_standard_ec3_dialnorm_formula": "NOT_PROVEN",
+    "per_frame_empireenc_plus_0x3c_write_source_join": "NOT_PROVEN; FUN_180178DC0 uses param_4[10]",
+    "plugin_internal_scale_rounding_or_quantization": "NOT_TRACED",
+    "final_bsi_dialnorm_field": "NOT_PROVEN",
+    "empire_loudness_plus_0x3c": "SEPARATE Compr-to-DDP_COMPR enum field"
+  },
+  "access_boundary": {
+    "dee_internal_processing_for_measurement": true,
+    "pcm_manually_read_or_retained": false,
+    "payload_bitstream_or_output_contents_read": false,
+    "private_key_hmac_or_license_contents_read": false,
+    "existing_runtime_license_handling_inspected": false,
+    "new_user_option_indicated": false
+  }
+}

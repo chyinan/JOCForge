@@ -1,0 +1,23 @@
+{
+  "schema": "washed-f06-bsi-owner-u16-open-edges.v1",
+  "package_id": "f06_bsi_owner_u16_conditional_writer_scope_v1",
+  "closed_within_scope": [
+    "The serializer reads a signed U16 at BSI owner +0x34 and treats it as a raw BSI code.",
+    "Two guarded pre-serialize copy paths target the same BSI owner; each confirmed fixed block has low U16 zero at +0x34.",
+    "The confirmed +0x34 assignments do not read the opaque source qword vector or the separately processed per-source rows."
+  ],
+  "open": [
+    "Owner-lifetime constructor first write/default.",
+    "Any alternate writer outside the two confirmed setter chains.",
+    "Which guard was active in a native run and the U16 value at serialization.",
+    "Physical unit or dB mapping.",
+    "Relationship of this BSI field to a final output owner/generation."
+  ],
+  "status": {
+    "constructor_default": "NOT_LOCATED",
+    "active_branch": "NOT_CAPTURED",
+    "runtime_value": "NOT_CAPTURED",
+    "global_writer_exclusion": "NOT_CLAIMED"
+  },
+  "guidance": "Use only the two stated guards and confirmed setter behavior. Do not set the field to zero unconditionally, infer a dB value, or claim that no other writer exists."
+}

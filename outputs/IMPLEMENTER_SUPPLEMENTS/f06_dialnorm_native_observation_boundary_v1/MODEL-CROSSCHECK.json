@@ -1,0 +1,9 @@
+{
+  "schema": "washed-dialnorm-model-crosscheck.v1",
+  "approved_f12_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+  "formula": "special-case near -120 to 31; otherwise t=trunc(R32(selected_lufs-0.5)), dialnorm=-clamp(t,-31,-1)",
+  "input_assumption": "selected_lufs=-33.03",
+  "predicted_u5": 31,
+  "native_observed_u5": 31,
+  "scope": "saturated lower-clamp sample only; does not distinguish rounding or units"
+}

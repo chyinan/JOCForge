@@ -1,0 +1,59 @@
+{
+  "package_id": "f06_bsi_u16_measurement_update_observation_v1",
+  "status": "MEASUREMENT_UPDATE_BRANCH_AND_SERIALIZER_U16_ZERO_OBSERVED_FOR_ONE_RUN; OWNER_LIFETIME_DEFAULT_AND_FINAL_AU_JOIN_OPEN; OUTPUT_NOT_CREATED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One pointer/scalar-only measurement callback observation at the BSI serializer; confirms the update-flag-zero branch and U16 value for this one run only. No constructor default, global mode behavior, final EC3 AU mapping, or playback is claimed.",
+  "source": {
+    "incoming_package_id": "native-f06-bsi-u16-value-lineage-addendum",
+    "incoming_manifest_sha256": "33cb42032997d5f79ddaf50b6e0b7eeebaefac77e7aea4863d18377ccac49d89",
+    "incoming_checker_normal": "PASS",
+    "incoming_checker_python_o": "PASS",
+    "parent_static_package_manifest_sha256": "3d03c7894b14dead56c2dea63be9b5b5d50e4914cab751d5906c4ca6a5f6ad66"
+  },
+  "run": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_alias_sha256_matches_original": true,
+    "job_xml_sha256": "4f952041d7056fafdefffa7e5df3e6400a758cb4fbcc7504815bf067dc08545e",
+    "data_rate_kbps": 1024,
+    "metering_mode": "1770-4",
+    "dialogue_intelligence": false,
+    "line_mode_drc": "none",
+    "rf_mode_drc": "none",
+    "file_position_start": 2160,
+    "file_position_end": 2208,
+    "host_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_atmos_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "loaded_image_matches_target_file": true,
+    "context_mode": 0,
+    "mode_one_initializer_branch": "NOT_TAKEN",
+    "context_update_flag": 0,
+    "measurement_update_branch": "TAKEN",
+    "bsi_owner_field_offset": "+0x34",
+    "storage_type": "SIGNED_U16",
+    "serializer_time_value": 0,
+    "owner_same_as_context_and_serializer": true,
+    "same_thread_guard_and_serializer": true
+  },
+  "static_context": {
+    "confirmed_pre_serialize_setters": 2,
+    "each_copies_fixed_block_bytes": 36,
+    "each_confirmed_low_u16_at_owner_plus_0x34": 0,
+    "source_qword_vector_read_by_those_assignments": false,
+    "constructor_time_first_write": "NOT_LOCATED"
+  },
+  "terminal": {
+    "dee_process_completion_observed": true,
+    "dee_exit_code_receipt": "NOT_CAPTURED",
+    "ec3_output_present_at_final_check": false,
+    "ec3_bytes_read": 0,
+    "pcm_bytes_read": 0,
+    "playback": "NOT_RUN"
+  },
+  "boundaries": {
+    "mode_one_branch_value": "STATIC_ZERO_ONLY; NOT_TAKEN_IN_THIS_RUN",
+    "other_modes": "UNOBSERVED",
+    "final_ec3_au_owner_generation": "UNBOUND/NO",
+    "source_vector_to_u16_numeric_flow": "NOT_FOUND_IN_CONFIRMED_SETTER_CHAIN",
+    "private_license_or_hmac_read": false
+  }
+}
