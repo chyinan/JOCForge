@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "USER-DESIGNATED-KEYLESS-JOC-COMPARATOR-IDENTITY-CLARIFICATION-V1",
+  "source_wash_package": {
+    "package_id": "keyless_prototype_comparator_identity_wash_v1",
+    "manifest_sha256": "0408ea2f104827371f808566c15c67525f889c7890b5253d90306eb1ba83ad7f",
+    "seal_sha256": "796228267ac2b5260995a0fd3f4e7bfc897af3b6737c2c5d8c817e12e87739cb",
+    "checker_normal": "VALID_PARTIAL",
+    "checker_python_optimized": "VALID_PARTIAL"
+  },
+  "comparator": {
+    "relative_path": "outputs/AUDIO_COMPATIBILITY_PROBE/candidate-keyless-compatible-joc.ec3",
+    "sha256": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+    "bytes": 17395712,
+    "identity_status": "STREAM_HASH_VERIFIED",
+    "contents_read_or_decoded": false,
+    "private_hmac_key_used": false,
+    "hmac_claim_source": "adjacent AUDIO-COMPARISON receipt; no Python-run seal present"
+  },
+  "input_adm": {
+    "lineage_id": "authorized_adm_bwf_06",
+    "user_confirmed_same_as_python_prototype_original_adm": true,
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "crosswalk_manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+    "crosswalk_seal_sha256": "f9842904d54ad2ae7d15e0bb978212c9933632a5f2cae461f5d35c3df43e6e09"
+  },
+  "python_run_receipt": {
+    "status": "USER_ASSERTED_NOT_RESEALED",
+    "run_id": "NOT_PRESENT",
+    "prototype_source_hash": "NOT_RECORDED",
+    "recorded_input_sha256": "NOT_RECORDED",
+    "blocks_exact_hash_comparison": false
+  },
+  "protected_dee_matching_candidate": "EXCLUDED_NOT_ACCESSED",
+  "implementation_ready": false
+}

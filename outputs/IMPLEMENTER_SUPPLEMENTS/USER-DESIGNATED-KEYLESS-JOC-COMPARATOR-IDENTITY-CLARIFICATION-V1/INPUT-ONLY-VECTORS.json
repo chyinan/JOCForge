@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-keyless-comparator-acceptance-vector.v1",
+  "vectors": [
+    {
+      "id": "exact-file-identity-comparison",
+      "input": {
+        "candidate_sha256": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+        "candidate_bytes": 17395712,
+        "generated_sha256": "COMPUTE_AFTER_SUCCESSFUL_RUN",
+        "generated_bytes": "READ_FILE_METADATA"
+      },
+      "expected": {
+        "acceptance_predicate": "generated_sha256 == candidate_sha256 AND generated_bytes == candidate_bytes",
+        "application_exit_code": 0,
+        "durable_application_receipt": "REQUIRED",
+        "payload_read_or_decoded": false
+      }
+    }
+  ],
+  "limits": [
+    "This vector defines the user's exact-hash acceptance check; it does not predict the generated hash.",
+    "A missing sealed Python run receipt does not block performing the comparator check.",
+    "Metadata-only JOC detection and exit-2 output do not satisfy acceptance."
+  ]
+}

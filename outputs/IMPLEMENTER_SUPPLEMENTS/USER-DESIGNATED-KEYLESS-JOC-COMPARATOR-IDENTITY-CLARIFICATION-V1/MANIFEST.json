@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "USER-DESIGNATED-KEYLESS-JOC-COMPARATOR-IDENTITY-CLARIFICATION-V1",
+  "source_reverse_manifest_sha256": "0408ea2f104827371f808566c15c67525f889c7890b5253d90306eb1ba83ad7f",
+  "status": "COMPARATOR_HASH_AND_ADM_IDENTITY_BOUND; PYTHON_RUN_RECEIPT_NOT_RESEALED",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1694,
+      "sha256": "993bb65a72bff771fd07a354e774d5da3a0b6403db9b100c72233abcf194c169"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 975,
+      "sha256": "c931cfb9c3084a2aee552eda3ee3f217f138bef8cb76136dab2cfc66449df2b1"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1622,
+      "sha256": "17bdfe93cb99a6504d0d0c09e95b2219587f2dd39cb2fe960186d7dab0e31722"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 981,
+      "sha256": "28a24af2cec0fabcce14e0449f7761e04ed3c7b32f53e4094c76afcd66973e3c"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "source_comparator_identity_package": {
+    "package_id": "keyless_prototype_comparator_identity_wash_v1",
+    "manifest_sha256": "0408ea2f104827371f808566c15c67525f889c7890b5253d90306eb1ba83ad7f",
+    "seal_sha256": "796228267ac2b5260995a0fd3f4e7bfc897af3b6737c2c5d8c817e12e87739cb",
+    "checker_normal": "VALID_PARTIAL",
+    "checker_python_optimized": "VALID_PARTIAL"
+  },
+  "authorized_adm_crosswalk": {
+    "manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+    "seal_sha256": "f9842904d54ad2ae7d15e0bb978212c9933632a5f2cae461f5d35c3df43e6e09",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "adjacent_probe_receipts": {
+    "probe_folder_sealed": false,
+    "candidate_hash_and_length_bound": true,
+    "private_hmac_key_use_reported": false,
+    "python_run_to_input_bound": false
+  },
+  "raw_audio_or_prototype_source_copied": false
+}
