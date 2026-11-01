@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ADM-CONVERTER-CHANNEL-ID-TO-BWF-SLOT-CROSSWALK-V1",
+  "source_reverse_manifest_sha256": "70eb0c02891fb3963d575f3783e809d3c7840b3ee0aa7e78cef0d7191bbc0c48",
+  "status": "STATIC_BWF_SLOT_CROSSWALK_BOUND; NATIVE_ROW_CONSUMPTION_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2562,
+      "sha256": "991c2bb3957afe542f6b8932f02e968d6c6fb3faaa457d889c8c80769f231c43"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1301,
+      "sha256": "9b0888c6309244e45774f667cb9931def3b86d772747a41c45f3877e2766a0d3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1626,
+      "sha256": "9d2084ffd32d8b8b6e61779b2f71f634c240d28cc03e775b9b599e4ebf663dc1"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1031,
+      "sha256": "b5e9272ed69ce766a34dc214d6c3ac40e442520cd741167f5b7e1ce841a5f6a6"
+    }
+  ]
+}

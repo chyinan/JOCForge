@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ADM-CONVERTER-CHANNEL-ID-TO-BWF-SLOT-CROSSWALK-V1",
+  "source": {
+    "package_id": "hanmao_adm_physical_slot_crosswalk_v1",
+    "manifest_sha256": "70eb0c02891fb3963d575f3783e809d3c7840b3ee0aa7e78cef0d7191bbc0c48",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "input_identity": {
+    "sample_sha256_from_prior_receipt": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "whole_file_hash_recomputed_in_this_pass": false,
+    "channels": 38,
+    "sample_rate_hz": 48000,
+    "pcm_container_bits": 24,
+    "sample_frames": 6522906,
+    "data_chunk_bytes": 743611284,
+    "data_chunk_bytes_read": 0,
+    "fmt_axml_chna_chunk_hashes_recomputed_and_matched": true,
+    "chna_track_count": 38,
+    "bed_track_count": 10,
+    "object_track_count": 28
+  },
+  "static_converter_mapping": {
+    "disk_converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "mapping_package_manifest_sha256": "b98a0010672b79434fece33d8ca4576faa6e582096aeb44c2943759572118813",
+    "descriptor_slot_formula": "CHNA track_index - 1",
+    "converter_id_type": "ConverterChannelInputId; distinct logical value",
+    "object_id_formula": "AO numeric suffix - 0x1001",
+    "bed_id_formula": "AO numeric suffix - 0x1001 + zero-based AXML pack channel ordinal"
+  },
+  "input_crosswalk": {
+    "manifest_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9",
+    "bwf_interleaved_slot_formula": "CHNA track_index - 1",
+    "logical_ids_equal_bwf_slots_in_this_sample": 38,
+    "numeric_equality_used_as_identity": false,
+    "bed_object_discriminator": {
+      "bed": {"track_index": 10, "pack": "DirectSpeakers", "audio_object_id": "AO_1001", "bed_ordinal": 9, "logical_id": 9, "bwf_slot": 9},
+      "object": {"track_index": 11, "audio_object_id": "AO_100B", "name": "BACKVo-L", "logical_id": 10, "bwf_slot": 10}
+    }
+  },
+  "runtime_boundary": {
+    "run149_module_mapped_sha256": "UNBOUND/NO",
+    "run149_loaded_module_size_bytes": 6549504,
+    "run149_loaded_module_timestamp": 1654888279,
+    "current_e_build_sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+    "current_e_build_loaded_in_run149": false,
+    "actual_reader_row_selection": "NOT_OBSERVED",
+    "cursor_or_eof": "NOT_OBSERVED",
+    "meter_descriptor_join": "UNBOUND"
+  },
+  "execution_scope": {
+    "encoder_or_converter_run_performed": false,
+    "pcm_or_payload_read": false,
+    "implementation_ready": false
+  }
+}

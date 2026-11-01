@@ -1,0 +1,25 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "hanmao_adm_physical_slot_crosswalk_v1",
+    "manifest_sha256": "70eb0c02891fb3963d575f3783e809d3c7840b3ee0aa7e78cef0d7191bbc0c48",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "raw_converter_mapping_and_38_row_table_copied": false
+  },
+  "converter_mapping": {
+    "manifest_sha256": "b98a0010672b79434fece33d8ca4576faa6e582096aeb44c2943759572118813",
+    "disk_pe_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+  },
+  "input_metadata_crosswalk": {
+    "manifest_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9",
+    "full_file_sha_recomputed": false,
+    "data_chunk_bytes_read": 0
+  },
+  "runtime_correction": {
+    "package_manifest_sha256": "14e53b06b28d83a4f8ffcb55b0b60557df671efb3f89d6050c84c88ee5389200",
+    "mapped_image_sha256": "UNBOUND/NO",
+    "runtime_row_consumption": "NOT_OBSERVED"
+  },
+  "copied_pcm_payload_or_audio_data": false
+}

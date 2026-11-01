@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-adm-channel-slot-crosswalk-vectors.v1",
+  "kind": "metadata-only crosswalk examples; no PCM values",
+  "vectors": [
+    {
+      "id": "bed-track-10",
+      "input": {"track_index_1based": 10, "pack_type": "DirectSpeakers", "audio_object_id": "AO_1001", "bed_ordinal_0based": 9},
+      "expected": {"converter_descriptor_slot_0based": 9, "logical_converter_id": 9, "bwf_interleaved_slot_0based": 9}
+    },
+    {
+      "id": "object-track-11",
+      "input": {"track_index_1based": 11, "pack_type": "object", "audio_object_id": "AO_100B", "name": "BACKVo-L"},
+      "expected": {"converter_descriptor_slot_0based": 10, "logical_converter_id": 10, "bwf_interleaved_slot_0based": 10}
+    }
+  ],
+  "limits": [
+    "The two examples demonstrate distinct bed and object formulas.",
+    "Their numeric equality with BWF slots in this sample is not an identity rule.",
+    "Native reader row consumption and meter-descriptor join remain unobserved/unbound."
+  ],
+  "lineage": {
+    "source_manifest_sha256": "70eb0c02891fb3963d575f3783e809d3c7840b3ee0aa7e78cef0d7191bbc0c48",
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "input_metadata_crosswalk_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9"
+  }
+}
