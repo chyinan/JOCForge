@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F13C-CALLBACK-CONTROL-BLOCK-SLOT-BOUNDARY-V1",
+  "source": {
+    "package_id": "F13C-callback-control-block-edge-addendum-v12",
+    "manifest_sha256": "f21807af691ba950aa88c0964fe6091b5ed3daff44be4362c4aefe119fc0dcbe",
+    "parent_v11_manifest_sha256": "9b57083d1b97f38801e0906e88ec9b7ff336c7b1462d0581fd092f949e469d9a",
+    "verifier": "PowerShell manifest verifier PASS",
+    "ghidra_project_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_executable_rehashed": false
+  },
+  "typed_static_edge": {
+    "initializer": "FUN_1403f1a50",
+    "control_block_size": "0x18",
+    "rtti_type": "std::_Ref_count<AtmosMasterFileStorageDesc>",
+    "vptr": "0x140bcf970",
+    "slot": "+0",
+    "slot_va": "0x1403f2a40",
+    "slot_rva": "0x3f2a40",
+    "object_field": "+0x10",
+    "target_behavior": "Loads control_block+0x10 and branches on null."
+  },
+  "receiver_join": {
+    "f13c_indirect_callsite": "0x1403a69a2",
+    "old_receiver_table_identity": "UNBOUND",
+    "known_initializer_callers_clear_pair": true,
+    "runtime_generation": "UNBOUND"
+  },
+  "downstream": {
+    "consumer": "FUN_1404813f0",
+    "inputs": "Two doubles and a context pointer; units and semantic names are UNKNOWN.",
+    "context_writes": ["+0x80", "+0x84", "+0x88"],
+    "preferred_downmix_relation": "UNBOUND",
+    "f13c_writer": "UNBOUND",
+    "ddp_joc_ec3_writer": "UNBOUND"
+  },
+  "restrictions": {
+    "ghidra_scripts_copied": false,
+    "disassembly_copied": false,
+    "binary_copied": false,
+    "pcm_or_payload_copied": false,
+    "key_material_copied": false,
+    "implementation_ready": false
+  }
+}

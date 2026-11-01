@@ -1,0 +1,15 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "F13C-callback-control-block-edge-addendum-v12",
+    "manifest_sha256": "f21807af691ba950aa88c0964fe6091b5ed3daff44be4362c4aefe119fc0dcbe",
+    "manifest_verifier": "PASS",
+    "parent_v11_manifest_sha256": "9b57083d1b97f38801e0906e88ec9b7ff336c7b1462d0581fd092f949e469d9a"
+  },
+  "target_image": {
+    "program": "dee_ddpjoc_encoder.exe",
+    "project_recorded_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "installed_image_rehashed": false
+  },
+  "copied_raw_analysis_or_media": false
+}

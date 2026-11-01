@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-CALLBACK-CONTROL-BLOCK-SLOT-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "f21807af691ba950aa88c0964fe6091b5ed3daff44be4362c4aefe119fc0dcbe",
+  "status": "STATIC_NEW_SLOT_BOUND;_OLD_RECEIVER_AND_WRITER_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1691,
+      "sha256": "4601862b243ef9bac7763c1b6e2b483d6873bf3570dc64afd087175b648310fd"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1305,
+      "sha256": "bac8c9f93a2830c4d985e6b394a8bf9eb36ed8d80aa3e05ef2aeff974ea25079"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1851,
+      "sha256": "bff93b55ebb9dd6ad8dacb1aef714b41564bf50f81daf2bb0898b4dbd63767a9"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 618,
+      "sha256": "95a66edd4bb8fcd5959881b7dcba2abe8ed5ec209675e228b4fb60e11818bf9e"
+    }
+  ]
+}

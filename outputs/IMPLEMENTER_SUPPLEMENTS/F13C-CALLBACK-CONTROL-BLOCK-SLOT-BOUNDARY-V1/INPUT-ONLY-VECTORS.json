@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-f13c-control-block-structural-vectors.v1",
+  "kind": "static pointer/field discriminator; not runtime input",
+  "vectors": [
+    {
+      "id": "new-control-block-slot-versus-old-dispatch-receiver",
+      "input": {
+        "initializer": "FUN_1403f1a50",
+        "new_object_type": "std::_Ref_count<AtmosMasterFileStorageDesc>",
+        "new_object_vptr": "0x140bcf970",
+        "slot_offset": "+0",
+        "old_dispatch_site": "0x1403a69a2",
+        "known_initializer_pair_state_before_call": "both fields zero"
+      },
+      "expected": {
+        "new_control_block_slot_target_rva": "0x3f2a40",
+        "old_receiver_same_table_proven": false,
+        "runtime_generation": "UNBOUND",
+        "writer": "UNBOUND"
+      }
+    },
+    {
+      "id": "context-writes-do-not-imply-downmix-field",
+      "input": {
+        "consumer": "FUN_1404813f0",
+        "writes": ["param_3+0x80", "param_3+0x84", "param_3+0x88"]
+      },
+      "expected": {
+        "preferred_downmix_semantics": "UNBOUND",
+        "f13c_or_ec3_writer_join": "UNBOUND"
+      }
+    }
+  ],
+  "lineage": {
+    "source_manifest_sha256": "f21807af691ba950aa88c0964fe6091b5ed3daff44be4362c4aefe119fc0dcbe",
+    "parent_v11_manifest_sha256": "9b57083d1b97f38801e0906e88ec9b7ff336c7b1462d0581fd092f949e469d9a"
+  }
+}
