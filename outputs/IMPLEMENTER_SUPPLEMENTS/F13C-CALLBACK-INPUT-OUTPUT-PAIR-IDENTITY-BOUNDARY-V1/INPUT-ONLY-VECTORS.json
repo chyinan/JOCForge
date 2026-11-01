@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge-f13c-pair-identity-vectors.v1",
+  "kind": "static pointer-identity discriminator; not runtime input",
+  "vectors": [
+    {
+      "id": "slot-call-receives-input-pair",
+      "input": {
+        "callsite": "FUN_1403c2eee -> FUN_1403c0ad0",
+        "param3": "&uStack_48",
+        "pair_source": "param_4 via FUN_1403a6960"
+      },
+      "expected": {
+        "slot_0xf0_call_receiver": "input pair object",
+        "new_callback_output_object": "not identified as this receiver"
+      }
+    },
+    {
+      "id": "field-writer-uses-distinct-output-pair",
+      "input": {
+        "builder_buffer": "auStack_830",
+        "field_writer": "FUN_1404813f0",
+        "pair_transfer_destination": "plStack_a78"
+      },
+      "expected": {
+        "first_consumer_of_callback_fields": "UNBOUND",
+        "preferred_downmix_or_writer_join": "UNBOUND"
+      }
+    }
+  ],
+  "lineage": {
+    "source_manifest_sha256": "aa6ec1ec9a96d823fb96025599829374912b0ad885c63cf64dfe6c2c12a162c3",
+    "parent_v13_manifest_sha256": "7cee591c7649aaa2d285ec0cd88697d01ca31cd2b85832d2a13c4e23df29c45f"
+  }
+}

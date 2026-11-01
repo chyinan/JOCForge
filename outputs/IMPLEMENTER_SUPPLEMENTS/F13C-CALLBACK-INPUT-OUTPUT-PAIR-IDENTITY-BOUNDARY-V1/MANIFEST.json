@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-CALLBACK-INPUT-OUTPUT-PAIR-IDENTITY-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "aa6ec1ec9a96d823fb96025599829374912b0ad885c63cf64dfe6c2c12a162c3",
+  "status": "INPUT_OUTPUT_PAIR_DISTINCT; OUTPUT_CONSUMER_AND_WRITER_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1673,
+      "sha256": "95b549268d7cedf1265fcf65ed351033b5b73e242bc73fced47571fbe203df8b"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1106,
+      "sha256": "c65cc2cba37b56a3825d3058b47a656d2667cd0fa037b281fdf87ea9c900ce1e"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1579,
+      "sha256": "93176c2ea2de236aa6da17e126938d31a20233f8603745b3d257f54dad27345c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 618,
+      "sha256": "56cfe8c4eca421ca203ce163f87aef66547aca356417f6971374bbe7cf90a358"
+    }
+  ]
+}

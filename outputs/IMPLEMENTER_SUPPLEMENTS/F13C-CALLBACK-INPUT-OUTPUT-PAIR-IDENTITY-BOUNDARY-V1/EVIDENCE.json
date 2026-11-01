@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F13C-CALLBACK-INPUT-OUTPUT-PAIR-IDENTITY-BOUNDARY-V1",
+  "source": {
+    "package_id": "F13C-callback-parameter-identity-addendum-v14",
+    "manifest_sha256": "aa6ec1ec9a96d823fb96025599829374912b0ad885c63cf64dfe6c2c12a162c3",
+    "manifest_verifier": "PASS",
+    "parent_v13_manifest_sha256": "7cee591c7649aaa2d285ec0cd88697d01ca31cd2b85832d2a13c4e23df29c45f",
+    "project_recorded_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "installed_image_rehashed": false
+  },
+  "input_pair_path": {
+    "caller": "FUN_1403c2e50",
+    "callsite": "0x1403c2eee",
+    "callee": "FUN_1403c0ad0",
+    "param3": "address of local pair uStack_48",
+    "pair_source": "param_4 copied via FUN_1403a6960 at 0x1403c2ed1",
+    "candidate_slot_callsite": "0x1403c1bb9",
+    "receiver": "object from input param_3 pair"
+  },
+  "output_pair_path": {
+    "builder": "FUN_1403f2d80 at 0x1403c192e",
+    "local_buffer": "auStack_830",
+    "field_writer": "FUN_1404813f0",
+    "field_offsets": ["+0xf0", "+0xf4", "+0xf8"],
+    "pair_transfer": "FUN_140450eb0 at 0x1403c193e",
+    "destination_pair": "plStack_a78",
+    "identity_with_input_param3_pair": "DISTINCT_LOCAL_PATH; NO SHARED POINTER JOIN"
+  },
+  "open_edges": {
+    "first_consumer_of_output_fields": "UNBOUND",
+    "preferred_downmix": "UNBOUND",
+    "ddp_joc_ec3_writer": "UNBOUND",
+    "final_f13c_writer": "UNBOUND"
+  },
+  "execution_scope": {
+    "encoder_launched": false,
+    "pcm_read": false,
+    "payload_read": false,
+    "private_key_read": false,
+    "audio_output_created": false,
+    "implementation_ready": false
+  }
+}

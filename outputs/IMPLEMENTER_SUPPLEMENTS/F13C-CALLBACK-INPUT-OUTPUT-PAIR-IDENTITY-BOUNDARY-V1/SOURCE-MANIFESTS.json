@@ -1,0 +1,15 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "F13C-callback-parameter-identity-addendum-v14",
+    "manifest_sha256": "aa6ec1ec9a96d823fb96025599829374912b0ad885c63cf64dfe6c2c12a162c3",
+    "manifest_verifier": "PASS",
+    "parent_v13_manifest_sha256": "7cee591c7649aaa2d285ec0cd88697d01ca31cd2b85832d2a13c4e23df29c45f"
+  },
+  "target_image": {
+    "program": "dee_ddpjoc_encoder.exe",
+    "project_recorded_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "installed_image_rehashed": false
+  },
+  "copied_raw_analysis_or_media": false
+}
