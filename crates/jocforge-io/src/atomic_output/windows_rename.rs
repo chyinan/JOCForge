@@ -20,7 +20,9 @@ use std::{
     ptr,
 };
 use windows_sys::Win32::{
-    Foundation::{ERROR_ALREADY_EXISTS, ERROR_FILE_EXISTS, GENERIC_READ, INVALID_HANDLE_VALUE},
+    Foundation::{
+        ERROR_ALREADY_EXISTS, ERROR_FILE_EXISTS, GENERIC_READ, GENERIC_WRITE, INVALID_HANDLE_VALUE,
+    },
     Storage::FileSystem::{
         CreateFileW, FILE_FLAG_BACKUP_SEMANTICS, FILE_SHARE_DELETE, FILE_SHARE_READ,
         FILE_SHARE_WRITE, FileRenameInfo, OPEN_EXISTING, SetFileInformationByHandle,
@@ -75,7 +77,7 @@ pub(super) fn open_parent_directory(path: &Path) -> io::Result<File> {
     let directory = unsafe {
         let handle = CreateFileW(
             path_wide.as_ptr(),
-            GENERIC_READ,
+            GENERIC_READ | GENERIC_WRITE,
             FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
             ptr::null(),
             OPEN_EXISTING,
