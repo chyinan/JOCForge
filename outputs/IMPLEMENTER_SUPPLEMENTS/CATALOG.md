@@ -2,7 +2,7 @@
 
 > Generated locator only. A catalog row is not evidence. Read the selected package, verify its manifest and payload hashes, then use only its stated scope.
 
-Package directories: 513. Top-level manifests: 511.
+Package directories: 514. Top-level manifests: 512.
 
 Search by function, parameter, status, or package name:
 
@@ -40,6 +40,7 @@ Rebuild with `rtk proxy python -B scripts/build_supplement_catalog.py`.
 | atmosmezz_adm_bwf_helper_boundary_v2 | 811a434c4f21b7c28837e4b1ba8d99a1c66f4596130692857445efbc2eeea844 | manifest: EVIDENCE_ONLY_STATIC_INPUT_CAPABILITY_RUN_JOIN_OPEN | READER-OBSERVATION-PLAN.json, WASH-REVIEW.md, WASH-VERIFICATION.json | No hash-verified summary payload declared. |
 | atmosmezz_helper_metadata_vs_sample_reader_boundary_v1 | e9256d2131b232c113546ceca0a84feeb2987d37934b2637d9f98c76a4da3f47 | manifest: EVIDENCE_ONLY_PCM_READER_OWNER_UNBOUND | HELPER-READ-BOUNDARY.json, WASH-REVIEW.md, WASH-VERIFICATION.json | No hash-verified summary payload declared. |
 | atmosmezz_sample_read_open_query_boundary_v1 | 031415461a06401b4828baf8225a6d376d537ce7bd95d92e96806ad3d43fd3b4 | manifest: EVIDENCE_ONLY_SAMPLE_READ_TARGET_JOIN_OPEN | SAMPLE-READ-BOUNDARY.json, WASH-REVIEW.md, WASH-VERIFICATION.json | No hash-verified summary payload declared. |
+| ATTEMPT10-KEYLESS-MVP-MISMATCH-AND-PROFILE-BOUNDARY-V1 | 8629b25ad97079e468d23232cd60f4f0d0f3a66435ab90292b01255b0c7f1d30 | manifest: DONE_EXIT0_HASH_MISMATCH; TARGET_OUTPUT_PROFILE_UNBOUND | EVIDENCE.json, INPUT-ONLY-VECTORS.json, REPORT.md, SOURCE-MANIFESTS.json | Attempt sample6-keyless-full-20261101-10 completed with application DONE and exit code 0. Its run receipt binds the authorized “人是猫” input SHA-256 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1. The output and user-designated keyless comparator have equal lengths, 17,395,712 bytes, but different streaming SHA-256 values: - Attempt-10 output |
 | AU-TOKEN-EQUALITY-NOT-RUN-V1 | fbdf41b86815bc14ccc83566d85653ac79cf68690de6eadcf2daa7aa9c594593 | NOT_DECLARED | CONTRACT.md, EDGE-STATUS.json, WASH-VERIFICATION.json | Bounded slot token to validation helper; transport AU and source-generation not run/unbound \| A bounded selected path observes a threshold selector choosing a non-null pointer token and passing it unchanged to a direct helper. The helper returns either a position or a length sentinel; the caller compares that result with the 4096-byte input length and treats |
 | authorized-adm-eac3joc-metadata-comparison-v1 | 4b1a7d5960f4a3ca85ad49c93de6033e2df4306f48736db45ca9526b79ebdf1e | manifest: EVIDENCE_ONLY | samples/first_love/ffprobe-input-metadata.json, samples/first_love/ffprobe-output-metadata.json, samples/first_love/metadata_receipt.json, samples/first_love/openjoc-metadata.json, samples/first_love/README.md, samples/hortus_regis_alti/bwf-window-active.json, samples/hortus_regis_alti/bwf-window-initial.json, samples/hortus_regis_alti/bwf-window-scan.json, +7 more | No hash-verified summary payload declared. |
 | authorized_adm_eac3_joc_metadata_comparison_v2 | None | NO_TOP_LEVEL_MANIFEST |  | Not cataloged as a verified implementer supplement. |
