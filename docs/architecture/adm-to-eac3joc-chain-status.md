@@ -22,7 +22,7 @@ OpenJOC 0.20.1 metadata-only `inspect --json` 对该目标 exit=0，分类 `eac3
 
 Wash 补充包 `F06-CUSTOM-BSI-VS-STANDARD-HEADER-PATH-V1`（本地 manifest SHA-256 `42c532661827ac727aee5578a77c7aca1a54125db76689e8ea702c2abfc7ab69`）确认：owner `+0x34` signed U16 经 custom BSI serializer 进入 type `0x0B` metadata item/container；standard syncframe U5 DialNorm 是独立 header field，由另一 per-frame encoder-request 参数供应。当前证据没有 owner U16 到 U5 的 typed transfer，数值映射、转换、clamp、rounding 和范围继续 `UNBOUND/NOT_PROVEN`。本地 CHECK 正常与 `-O` 均通过；该包 reference-only，不改变实现规则。
 
-Wash 已撤回已提交包 `F06-R138-COMPONENT-RECEIVER-FIRST-STORE-BOUNDARY-V1` 中 process-state source `+0x7E4` 的说法：重新按 `longlong*` 解释索引 `+0x1F9` 对应字节偏移 `+0xFC8`。正式 Wash erratum 待交付前，R138 process-state 来源边为 `UNBOUND`，不得消费旧包的 `+0x7E4` 结论。另一个独立观察仍支持 `+0x50` block copy 覆盖 `+0x54`；它不闭合 R138 source applicability。
+Wash correction 包 `F06-R138-PROCESS-STATE-FC8-PRODUCER-BOUNDARY-V1`（manifest SHA-256 `03704ec06fa99d2bfadb8e2c2ed1e6abcef87d311b052396d7e0fae65354b11a`，本地 checker 普通与 `-O` 均 PASS）正式撤回已提交旧包 `F06-R138-COMPONENT-RECEIVER-FIRST-STORE-BOUNDARY-V1` 的 process-state source `+0x7E4`：typed `longlong*` 的索引 `+0x1F9` 对应字节偏移 `+0xFC8`。旧偏移不得用于实现；修正后 R138 process-state 来源、mode applicability 和 owner join 仍为 `UNBOUND`。另一个独立观察仍支持 receiver `+0x50` block copy 覆盖 `+0x54`，不闭合 R138 source applicability。
 
 attempt-09 仅创建了 runner PID 11648，但没有 started marker、输出、stderr 或退出码收据；其 run receipt 标记 `LAUNCH_FAILED_BEFORE_STARTED_MARKER`，没有确认启动任何 encode process。
 
