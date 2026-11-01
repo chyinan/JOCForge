@@ -1,0 +1,12 @@
+{
+  "package_id": "f09_4_d45_pcm_route_attempt10_11_boundary_v1",
+  "incoming_manifest_sha256": "d2f7526b327c3a7d88761e9a91e1a86c0317c363c20f968e35ec2ed23d8b29e0",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "attempt10_job_sha256": "5322ee23b5f2430abbd854c5b683c6fd6b3e0996105dbad3a6312e879e65141b",
+  "attempt11_job_sha256": "4f2d6cb4b0412a38ed526086fb65c129f6e89d19caf1e712a56724439dfcc144",
+  "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "single_pass_module_sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+  "raw_source_or_decompilation_included": false,
+  "pcm_or_payload_read": false,
+  "private_key_or_license_contents_read": false
+}

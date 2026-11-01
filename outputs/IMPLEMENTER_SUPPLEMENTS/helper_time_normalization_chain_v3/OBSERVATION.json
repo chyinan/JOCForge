@@ -1,0 +1,74 @@
+{
+  "schema": "washed-helper-time-normalization-chain.v3",
+  "status": "SOURCE_INFO_FIELDS_AND_FINAL_FFOA_NORMALIZATION_STATIC_BOUND; SOURCE_INFO_FIELD_ORIGIN_UNBOUND",
+  "source_package_manifest_sha256": "4b3d24c9dd0910fdd9a53d16987cffa2ae9e64334e28a9bb1e84f7d5ca35d1f6",
+  "supersedes": [
+    {
+      "package_id": "helper_ffoa_offset_auto_normalization_v1",
+      "manifest_sha256": "59aea88e1beacf1b8ca8337d7627fe0daaad81c06b54059598f67a166a95a0e2"
+    },
+    {
+      "package_id": "helper_time_normalization_chain_v2",
+      "manifest_sha256": "ec2f7e549e7bef3626ff258bf4ebe509a6c69177e1c0a47e940aca68599d8048"
+    }
+  ],
+  "source_identity": {
+    "sample6_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "channels": 38,
+    "sample_rate_hz": 48000,
+    "samples": 6522906
+  },
+  "source_info": {
+    "start_time": {
+      "type": "binary64 seconds",
+      "constructor_default": 0.0,
+      "getter_and_master_write": "same source-info object getter -> master start_time"
+    },
+    "absolute_ffoa": {
+      "type": "binary64 seconds",
+      "constructor_default": -1.0,
+      "getter_and_relative_write": "same source-info object getter -> master relative FFOA"
+    }
+  },
+  "final_rule": {
+    "if_absolute_ffoa_negative": "relative FFOA = -1.0 missing sentinel",
+    "if_absolute_ffoa_nonnegative": "relative FFOA = max(0, absolute FFOA - start_time)",
+    "if_absolute_ffoa_before_start": "warning; relative becomes 0",
+    "helper_outputs": {
+      "offset": "start_time",
+      "ffoa": "start_time + max(relative FFOA,0)"
+    },
+    "host_result_defaults": {
+      "offset": 0.0,
+      "ffoa": 0.0
+    },
+    "host_missing_line": "corresponding host slot retains initialized zero"
+  },
+  "superseded_intermediate": {
+    "three_signed32_components_formula": "c0*3600 + c1*60 + c2/100000",
+    "semantics": "hour/minute/100000-second scales inferred from coefficients",
+    "role": "intermediate source-info write later overwritten by absolute-FFOA normalization"
+  },
+  "sample6": {
+    "axml_start_seconds": 3610.0,
+    "bext_time_reference": "absent",
+    "explicit_axml_offset_ffoa": "absent",
+    "dbmd_bytes": 580,
+    "dbmd_interpretation": "NOT_EVALUATED",
+    "native_offset_seconds": 3610.0,
+    "native_ffoa_seconds": 3610.0,
+    "full_file_relative_start_sample": 0,
+    "numeric_match_causal": false
+  },
+  "unbound": [
+    "source-info start_time/absolute FFOA first writer and its AXML/BEXT/DBMD origin",
+    "helper candidate image to runtime loaded helper image",
+    "post-load absent field behavior",
+    "overflow/NaN/Inf bounds"
+  ],
+  "next_minimum_observation": "Use the already-running R3 scalar job to capture the first source-info start_time write on the same parsed source object, owner, and generation; also bind helper image identity.",
+  "implementation_disposition": {
+    "sample6_full_file_start0": "supported for this hash-identified input",
+    "general_auto_time_writer_rule": "UNBOUND"
+  }
+}

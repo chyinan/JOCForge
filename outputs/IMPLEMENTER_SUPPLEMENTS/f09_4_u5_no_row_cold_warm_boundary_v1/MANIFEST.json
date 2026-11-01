@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f09_4_u5_no_row_cold_warm_boundary_v1",
+  "scope": "Static cold-path no-row exclusion plus synthetic force-mask no-row boundary and unchecked caller behavior; native warm-mask reachability remains UNBOUND.",
+  "status": "COLD_NO_ROW_EXCLUDED_BY_ENUMERATION; WARM_FORCE_SYNTHETIC_NO_ROW_POSSIBLE; NATIVE_FORCE_REACHABILITY_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1357,
+      "sha256": "5768ff9dd817c273d72aed290d81e27fee6101aa12104fa4f7930eb697013cc7"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3095,
+      "sha256": "a5fd9a4f3e29758ec05e3613f2abbb81c5a770be48b67d6e63d05bf2e0fc1714"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 695,
+      "sha256": "912a5673307ab5c20cbe6b9d81bf648f2d0aa33c1ac5a971d3a9cc0bb4f1f3c5"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 838,
+      "sha256": "79a538ceef4a522f744a5e1d19fed9bba6fd942d0e7d0ab1899fcb63fc69ec99"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 677,
+      "sha256": "b08a1a2327d254ef91c7521336673584c1235964fcf403fc56302059f9a0ddc0"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 3307,
+      "sha256": "c8361d8c88ac721d94cbf1cc72eb3a6975f9b1b7f7c5b880b0c3e28e4d2140da"
+    }
+  ]
+}

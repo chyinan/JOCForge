@@ -1,0 +1,16 @@
+{
+  "schema": "washed-f09-4-native-u5-selector-source-binding.v1",
+  "package_id": "f09_4_native_u5_selector_handoff_v1",
+  "incoming_package_manifest_sha256": "db07c110665ae286a93dd10b9567b2266c43c6b6cab9db6193640a3b22890265",
+  "incoming_package_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "current_target_image_sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+  "current_target_image_rehash": "MATCH",
+  "native_table_log_sha256": "b5c64384e9886448deb9948f757746fbe319d9e72afebc511b1b52dcc035b734",
+  "native_table_script_sha256": "0b2e1e9487226d36470c78aca640a045d34a96d15f664fc821a2711ad09ebf6d",
+  "approved_table_package_manifest_sha256": "03f7cef4874dc2c0f79cfce87191c07afc1468616014b87a4ee9bf46f74b95df",
+  "approved_table_package_payloads": "4_OF_4_HASH_AND_SIZE_MATCH",
+  "prior_native_u5_boundary_manifest_sha256": "becc45429eec928684c0a5c70083ce176f0d0689c2714bc2f085682438569",
+  "raw_ghidra_output_or_script_copied": false,
+  "dee_run": "NOT_RUN",
+  "private_key_or_license_contents_read": false
+}

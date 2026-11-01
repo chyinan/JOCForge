@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f09_4_d45_pcm_route_attempt10_11_boundary_v1",
+  "scope": "Attempt10/11 stage-only route reachability observations and static PCM guard; target callback linkage and later nonzero D45 history remain open.",
+  "status": "ATTEMPTS10_11_ROUTE_BOUNDED; D45_TARGET_UNOBSERVED_OR_NOT_INSTRUMENTED; REGISTRATION_TO_ADAPTER_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2228,
+      "sha256": "14eac40059a66b1f8da2b1daf9e08f54df1d0e81419806dc303a78ca0c25b3ce"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 895,
+      "sha256": "3cf8de88593c37766bed94ebbeb1b78e4b911a45d3a9abf8151594631739c84e"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 986,
+      "sha256": "90d175a68cc3eac890a8eea19f9b2bad04e36952e17adea502192ecfeb71fa7c"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1018,
+      "sha256": "a6b1d1370fb44dfd8c720058fc6caeda6c43ed9a9bb69e8bacfed364b4ae5bfd"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 775,
+      "sha256": "b464357af3432c024cac8359ea19e2019ceeb31cd2540fad41380419ed954a13"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 200,
+      "sha256": "201ec6c43e36f467009f542db1af235ba08f88fe9bd133e0b77ef3bfe8e63acd"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1870,
+      "sha256": "b7c8a62813a745fe6e2310418f1f95e20a79c5cbba3c2e4417b7505916a355ad"
+    }
+  ]
+}

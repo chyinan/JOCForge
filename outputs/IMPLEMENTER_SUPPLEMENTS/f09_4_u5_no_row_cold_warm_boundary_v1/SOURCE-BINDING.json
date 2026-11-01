@@ -1,0 +1,13 @@
+{
+  "schema": "washed-f09-4-u5-no-row-source-binding.v1",
+  "package_id": "f09_4_u5_no_row_cold_warm_boundary_v1",
+  "incoming_r5_manifest_sha256": "2f88b20cffc6d65540beac887a19fe1a54094d913d18dcd5ede783847bef0480",
+  "incoming_r5_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "approved_table_projection_sha256": "acfcaf98c12fa9688ef75943537a2f2f0a97a41ab75aa342468bd649b783d6bc",
+  "target_image_sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+  "current_target_image_hash": "MATCH",
+  "raw_decompilation_or_binary_copied": false,
+  "dee_job": "NOT_RUN",
+  "media_pcm_payload_or_bitstream_read": false,
+  "private_key_or_license_contents_read": false
+}

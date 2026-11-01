@@ -1,0 +1,81 @@
+{
+  "schema": "wash-f15-owner-admission-runtime-gate.v1",
+  "status": "NO_PRODUCTION_PROVIDER_VALUES_OR_TRUSTED_DESTINATION_ISSUER",
+  "checkout": {
+    "branch": "experimental/independent-encoder",
+    "git_head": "70439c8c4961dff3aa27c4dca262577d61994b05",
+    "worktree_dirty": true
+  },
+  "approved_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "f15_spec": "specs/15-keyless-publication.md",
+    "selected_owner_projection": "parameters/selected-owner-projection-v1.json"
+  },
+  "source_files": [
+    {
+      "path": "crates/jocforge-application/src/output_publication/f15_plan_admission.rs",
+      "bytes": 31184,
+      "sha256": "859f978c30eab2a367e794bacd727e692236e645c061a39fdae1c5752d466d6b"
+    },
+    {
+      "path": "crates/jocforge-application/src/output_publication.rs",
+      "bytes": 27906,
+      "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
+    },
+    {
+      "path": "crates/jocforge-application/src/lib.rs",
+      "bytes": 20834,
+      "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+    },
+    {
+      "path": "outputs/IMPLEMENTER_PACKAGE/specs/15-keyless-publication.md",
+      "bytes": 8329,
+      "sha256": "47beaa9d415d6d26eb8d6a7df63ca3d86514c37740618c3a041a46c7961b3a72"
+    }
+  ],
+  "roles": [
+    {
+      "role": "CodecF12",
+      "expected_value": "F12 owning validator's immutable selected codec value",
+      "production_type": "NONE_FOUND",
+      "production_validator_entrypoint": "NONE_FOUND"
+    },
+    {
+      "role": "JocF05Jl",
+      "expected_value": "F05JL owning validator's immutable selected JOC value",
+      "production_type": "NONE_FOUND",
+      "production_validator_entrypoint": "NONE_FOUND"
+    },
+    {
+      "role": "F13Metadata",
+      "expected_value": "F13 owning validator's immutable metadata value",
+      "production_type": "NONE_FOUND",
+      "production_validator_entrypoint": "NONE_FOUND"
+    },
+    {
+      "role": "F14Integrity",
+      "expected_value": "F14 owning validator's immutable integrity value",
+      "production_type": "NONE_FOUND",
+      "production_validator_entrypoint": "NONE_FOUND"
+    }
+  ],
+  "current_scaffold": {
+    "marker_trait": "F15RoleValidatedValue<Role> is empty; source comment states production impls are absent until each loader exposes its selected validated value.",
+    "only_implementations": "TestProviderValue implements all four role markers inside the test module.",
+    "admissions": "F15ProviderAdmissionCandidates has four Option<OwnerIssuedProviderAdmission<Role,Value>> slots; OwnerIssuedProviderAdmission stores Arc<Value> plus binding. No production role loader callsite found.",
+    "plan": "ValidatedEncodingPlan and admit_validated_encoding_plan are private; no production callsite found. The only plan-admission invocation is the test adapter.",
+    "existing_prepared_input": "F15PlanParentContext::from_prepared_input binds programme ID, PreparedJobInputIdentity Arc, selected profile, resolved profile, selected dependency-manifest identity and source sample count. This is real input context, not four provider-role values."
+  },
+  "destination": {
+    "capability": "ParentValidatedDestinationCapability is private and parent-bound to programme, attempt, staging owner, final identity, staging namespace and NoOverwrite policy.",
+    "issuer": "No production issuer callsite found. from_parent_validation is private and called only in test helpers/test cases.",
+    "identity_checks": "Private constructor rejects empty/NUL final identity and staging namespace and rejects exact alias; admission checks programme/attempt/staging owner and NoOverwrite.",
+    "test_seam": "ProgrammeOutputBinding::for_test_from_prepared_input is gated by cfg(test) or feature test-support.",
+    "public_staging_id": "OutputStagingOwnerId::new only wraps a nonempty opaque string; it does not validate/issue a destination capability."
+  },
+  "product_entry": {
+    "function": "jocforge_application::encode",
+    "current_result": "BackendUnavailable",
+    "output_io_reached": false
+  }
+}

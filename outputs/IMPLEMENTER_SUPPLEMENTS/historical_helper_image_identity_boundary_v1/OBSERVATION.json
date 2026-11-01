@@ -1,0 +1,68 @@
+{
+  "schema": "washed-historical-helper-image-identity-boundary.v1",
+  "package_id": "historical_helper_image_identity_boundary_v1",
+  "evidence_class": "HASH_BOUND_CURRENT_IMAGE_IDENTITY_AND_STATIC_HOST_COMMAND_EDGE",
+  "status": "R138_HOST_IMAGE_MATCHED; HOST_HELPER_COMMAND_EDGE_BOUND; HISTORICAL_CHILD_HELPER_IMAGE_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "r138_host_sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "current_host_sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "host_image_match": true,
+    "host_pe": {
+      "machine": 34404,
+      "optional_magic": 523,
+      "coff_timestamp": 1654888263,
+      "size_of_image": 4288512,
+      "subsystem": 3
+    },
+    "candidate_helper_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+    "helper_ghidra_import_match": true,
+    "helper_pe": {
+      "machine": 34404,
+      "optional_magic": 523,
+      "coff_timestamp": 1654888258,
+      "size_of_image": 6029312,
+      "subsystem": 3
+    },
+    "current_host_and_helper_coexist_same_tree": true,
+    "named_files_at_primary_engine_root": {
+      "host": false,
+      "helper": false
+    }
+  },
+  "static_host_command_edge": {
+    "host_static_report_sha256": "f5770b29ad00ea5d845a3abcb4c5ea06006bdb20603b2c9430761d5f37e85628",
+    "host_ghidra_import_process_sha256": "3f183f97720292accc06a865c94c1432fb135baef17526b240b4676208431502",
+    "helper_ghidra_import_process_sha256": "164076c373761ff753c614b82d3201b475435f156139efbd9a6b37d8e6b593d4",
+    "helper_name_built_into_command": true,
+    "input_argument_built_into_command": true,
+    "command_passed_to_timeout_bounded_host_wrapper": true,
+    "resolved_runtime_path_prefix": "DYNAMIC_AND_NOT_BOUND_TO_R138",
+    "static_host_to_helper_command_edge": "BOUND_FOR_HASH_IDENTIFIED_HOST_IMAGE"
+  },
+  "historical_r138_child_process": {
+    "log_sha256": "66b123188d24a4b4414a4edb8e169a8a135696e87ea427531dba9f54beffb7c",
+    "execution_record_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "resolved_child_helper_path_recorded": false,
+    "child_helper_sha256_recorded": false,
+    "historical_child_helper_path": "UNBOUND",
+    "historical_child_helper_image_sha256": "UNBOUND"
+  },
+  "nonexecution": {
+    "new_dee_job": "NOT_RUN",
+    "binary_copy": "NOT_PERFORMED",
+    "binary_decompilation": "NOT_PERFORMED",
+    "private_key_access": "NOT_PERFORMED"
+  },
+  "related_wash_packages": [
+    {
+      "package_id": "helper_time_producer_candidate_closure_v1",
+      "manifest_sha256": "d8a1c0c623d4b35d3c60728c17199f1098651b1baa7e45d32318e4aaef3a4205"
+    },
+    {
+      "package_id": "sample6_dbmd_negative_ffoa_sentinel_crosscheck_v1",
+      "manifest_sha256": "dd2bc672c93ef75af1fbca8eaca30aace71ced12520ae42bed6ec0608f67a83d"
+    }
+  ],
+  "minimum_missing_evidence": "Same R138 host-process child-launch or file-open receipt with resolved helper path and SHA-256, joined to the host process/run."
+}

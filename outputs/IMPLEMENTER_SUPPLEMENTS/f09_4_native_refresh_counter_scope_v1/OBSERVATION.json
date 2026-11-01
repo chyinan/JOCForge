@@ -1,0 +1,90 @@
+{
+  "schema": "washed-f09-4-native-refresh-counter-scope.v1",
+  "package_id": "f09_4_native_refresh_counter_scope_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_PARTIAL_WITH_APPROVED_MODEL_VECTOR",
+  "status": "NATIVE_F09_4_U5_PARITY_NOT_CLOSED; F10_SEGMENT_COUNTER_IS_DISTINCT",
+  "implementation_readiness": "APPROVED_MODEL_RULE_AVAILABLE; NATIVE_PARITY_NOT_ESTABLISHED",
+  "scope": {
+    "analysis_tool": "Ghidra 12.2 PUBLIC static import/decompile",
+    "module_sha256": {
+      "ddp_core": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+      "ddp_atmos": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "ddp_single_pass": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+      "converter": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80"
+    },
+    "runtime_execution": "NOT_RUN",
+    "implementation_source_inspection": "NOT_RUN",
+    "pcm_or_audio_read": "NOT_RUN"
+  },
+  "native_static_observations": {
+    "marker_segment_grouping": {
+      "status": "OBSERVED_IN_F10_EXPONENT_ROW_MERGE_ONLY",
+      "behavior": "zero marker extends current segment; refresh marker starts new segment with length one",
+      "output_role": "per-bin exponent-row minima/normalization",
+      "produces_u5_e1_9_frame_code": false
+    },
+    "frame_set_aggregation": {
+      "status": "OBSERVED",
+      "behavior": "accumulates incoming frame block count and acts when total equals six",
+      "output_role": "frame-set packing; not lane refresh-distance"
+    },
+    "five_bit_stuffer": {
+      "status": "SERIALIZES_PREEXISTING_CODE",
+      "derives_table_e1_9_row": false
+    },
+    "actual_u5_table_e1_9_producer": "NOT_CLOSED"
+  },
+  "approved_model_rule": {
+    "source_package_id": "ETSI-FRAME-EXPONENT-PATTERN-V1",
+    "source_package_manifest_sha256": "03f7cef4874dc2c0f79cfce87191c07afc1468616014b87a4ee9bf46f74b95df",
+    "contract_file_sha256": "a75d4bc73ad7c8284e15bbf99c34e09e06b6e5cd3092f471de25038db459b1b6",
+    "rule": "increment W16 distance for each visited block before testing refresh; refresh block is counted, then distance resets",
+    "lane0_vector": {
+      "markers_after": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "short_consumed": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "row_block_order": [
+        2,
+        0,
+        0,
+        2,
+        0,
+        3
+      ],
+      "table_e1_9_code": 5
+    },
+    "native_parity": "NOT_ESTABLISHED"
+  },
+  "exact_remaining_static_gap": {
+    "location_role": "single-pass block writer input record",
+    "question": "first writer of lane-0 six-strategy/frame-code fields and its relation to the approved U5 Table E.1.9 selector",
+    "no_native_runtime_claim": true
+  },
+  "related_approved_package": {
+    "package_id": "F09-F10-STAGE-CONTROL-ADAPTER-V1",
+    "manifest_sha256": "edce469334d871edba0c5bb634b8e74f0d938b610f19ad5df005f0dfd55ec0fb"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

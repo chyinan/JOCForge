@@ -1,0 +1,19 @@
+{
+  "schema": "source-time-setter-upstream-producer-check.v1",
+  "status": "PASS_STATIC_BOUNDARY_ONLY_NOT_CLOSED",
+  "checks": {
+    "authorized_sample_hash_matches_r138_sample_6": true,
+    "current_turn_audio_read": false,
+    "current_turn_native_job": "NOT_RUN",
+    "current_turn_ascii_copy": "NOT_CREATED",
+    "setter_slots_10_and_11_semantics": "STATICALLY_BOUND_AS_BINARY64_SECONDS",
+    "setter_minimum_record_extent": "STATICALLY_BOUND_120_BYTES",
+    "direct_setter_caller": "UNBOUND",
+    "input_record_writer": "UNBOUND",
+    "r138_setter_invocation": "NOT_CAPTURED",
+    "resolved_timecode_rate": "NOT_CAPTURED",
+    "model_replay": "NOT_RUN",
+    "gate1_closed": false,
+    "implementation_contact": false
+  }
+}

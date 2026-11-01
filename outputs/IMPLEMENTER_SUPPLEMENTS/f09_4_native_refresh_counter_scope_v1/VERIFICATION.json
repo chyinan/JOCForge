@@ -1,0 +1,29 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; NATIVE_F09_4_NOT_CLOSED",
+  "source_package_id": "frame_exponent_native_rule_wash",
+  "source_package_manifest_sha256": "9d8f8576a7f88e52d5f446d4939bde0c24eab7892ed045ed181706dd5cbca3d7",
+  "source_package_seal_sha256": "9d8f8576a7f88e52d5f446d4939bde0c24eab7892ed045ed181706dd5cbca3d7",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_package_payloads_checked": 21,
+  "approved_etsi_contract_manifest": "03f7cef4874dc2c0f79cfce87191c07afc1468616014b87a4ee9bf46f74b95df",
+  "approved_f09_f10_contract_manifest": "edce469334d871edba0c5bb634b8e74f0d938b610f19ad5df005f0dfd55ec0fb",
+  "implementation_ready": "NO",
+  "limitations": [
+    "A native refresh counter was found in a separate F10 exponent-row grouping path, not a Table E.1.9 U5 frame-code producer.",
+    "The DDP frame-set six-block total is a separate aggregate and not lane refresh-distance.",
+    "The first writer of the U5 strategy/frame-code fields remains unresolved.",
+    "The approved model vector and specification do not establish native runtime parity or JOCForge runtime output."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_IDENTITY_SCOPE; HISTORICAL_CHILD_HELPER_UNBOUND",
+  "source_package_id": "historical-helper-image-identity-boundary",
+  "source_package_manifest_sha256": "6166ffb0277e05e341f5dfd8f0a33677b3bc5c02b3943c0c875cd390654dec3b",
+  "source_package_payloads_checked": 3,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "host_image_identity_crosscheck": "R138_SHA_MATCHES_CURRENT_HOST_AND_GHIDRA_IMPORT",
+  "candidate_helper_identity_crosscheck": "CURRENT_HELPER_MATCHES_GHIDRA_IMPORT",
+  "host_to_helper_static_command_edge": "BOUND",
+  "historical_child_image_identity": "UNBOUND",
+  "previous_wash_manifests_checked": 2,
+  "new_dee_job": "NOT_RUN",
+  "binary_copy_or_decompilation": "NOT_PERFORMED",
+  "private_key_access": "NOT_PERFORMED",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The static command path uses a dynamic runtime prefix.",
+    "R138 log and execution XML contain no child helper path or image hash.",
+    "A current same-tree helper file is not proof that the historical R138 process launched that file."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

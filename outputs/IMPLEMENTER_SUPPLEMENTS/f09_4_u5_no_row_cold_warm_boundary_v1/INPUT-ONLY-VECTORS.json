@@ -1,0 +1,43 @@
+{
+  "schema": "f09-4-u5-no-row-input-only-vectors.v1",
+  "classification": "SYNTHETIC_CONTROL_INPUTS_ONLY",
+  "audio_or_payload_values": false,
+  "cold_marker_patterns": 32,
+  "cold_table_matches": 32,
+  "cold_no_rows": 0,
+  "force_mask_sweep": {
+    "marker_patterns": 32,
+    "force_masks_each": 64,
+    "total": 2048,
+    "matches": 553,
+    "no_rows": 1495
+  },
+  "minimal_no_row": {
+    "markers": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "force_flags": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "u2_row": [
+      3,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "table_match": false
+  },
+  "native_force_reachability": "UNBOUND"
+}

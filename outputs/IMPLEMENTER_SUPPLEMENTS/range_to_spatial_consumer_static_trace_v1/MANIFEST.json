@@ -1,0 +1,33 @@
+{
+  "schema": "wash-static-trace-manifest.v1",
+  "package_id": "range-to-spatial-static-trace-wash-v1",
+  "package_kind": "static range-vector to spatial-time candidate trace with bounded observation plan",
+  "recipient_role": "wash-agent",
+  "implementation_delivery": "PROHIBITED",
+  "parent_manifests": [
+    "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+    "4939e82571e38fd7d933bed4e4542d38b824eecfc54b6fe3e17c6e31e6032695"
+  ],
+  "artifacts": [
+    {
+      "name": "README.md",
+      "bytes": 2279,
+      "sha256": "5bc63839fd79e16ed7da75fb14d289dff6d643b6baa4b324a7476defb3958665"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 4699,
+      "sha256": "8f6717db728cea7dab94cf5585491d34f5941a1ae66e11afa28af65e91be9fdd"
+    },
+    {
+      "name": "CHECK.json",
+      "bytes": 484,
+      "sha256": "be70ef75d24b1e8f767d4048139f530efa45060beac82e77bfa69537e304f4b0"
+    },
+    {
+      "name": "verify_range_to_spatial_static_trace.py",
+      "bytes": 3259,
+      "sha256": "a6b50f3714c9ca63a12d3e92466700b815a741d935c250e1162106e0a4826e2a"
+    }
+  ]
+}

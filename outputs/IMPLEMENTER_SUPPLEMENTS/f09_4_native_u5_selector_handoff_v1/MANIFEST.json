@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f09_4_native_u5_selector_handoff_v1",
+  "scope": "F09.4 native six-block marker/U2/table selector/U5 stuffer static path; force-D45 state source, marker thresholds, and no-row handling remain open.",
+  "status": "NATIVE_TABLE_AND_SELECTOR_TO_STUFFER_STATICALLY_BOUND; D45_HISTORY_AND_MARKER_THRESHOLDS_UNBOUND; NO_MATCH_HANDLING_UNPROVEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1643,
+      "sha256": "3f132bfa186cb9b4f86cf7e47ab6c08cc9bc6890d18757be67df163f1fb8f796"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 6118,
+      "sha256": "dee971effef9c39a972136f5f3848f1b5af8849305a6ae04963ef9a0982001cf"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 832,
+      "sha256": "c728a624839e342c7ee48bdfe96f2bb1c94e1fad9f6ec2379caa45ab5d62ea0e"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1037,
+      "sha256": "619abe4e3271eab1e302e86ede8e2df91a82ef86837284e212b4b3db23b6bab4"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2380,
+      "sha256": "fe21cf0b792d32dfea2350a36ecef5bceb665fbd75d4c326fa5d8eb658a40e04"
+    }
+  ]
+}

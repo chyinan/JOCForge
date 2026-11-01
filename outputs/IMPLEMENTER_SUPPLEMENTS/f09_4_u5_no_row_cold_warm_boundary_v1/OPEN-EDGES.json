@@ -1,0 +1,16 @@
+{
+  "schema": "washed-f09-4-u5-no-row-open-edges.v1",
+  "package_id": "f09_4_u5_no_row_cold_warm_boundary_v1",
+  "closed": [
+    "cold marker patterns with zero history all match the 32-row table under the approved distance rule",
+    "static no-row return does not write a code slot",
+    "caller ignores no-row return and sets ready flag",
+    "downstream stuffer reads the existing code"
+  ],
+  "open": [
+    "whether native force-D45 history can become nonzero",
+    "whether any real native input reaches a no-row vector",
+    "whether warm stale-code output occurs at runtime"
+  ],
+  "guidance": "A synthetic counterexample proves only that arbitrary force masks can create an unmatched row. Do not claim native reachability. For implementation, reject unmatched rows until a producer/owner contract establishes the legal state."
+}

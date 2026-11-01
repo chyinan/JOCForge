@@ -1,0 +1,6 @@
+{
+  "package_integrity": "PASS_PACKAGE_INTEGRITY_ONLY",
+  "normal_python": "PASS",
+  "optimized_python": "PASS",
+  "scope": "Hash and terminal run metadata only; no EC3 conformance, parse, or playback claim."
+}

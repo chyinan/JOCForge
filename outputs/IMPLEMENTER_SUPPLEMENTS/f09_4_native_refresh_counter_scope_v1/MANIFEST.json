@@ -1,0 +1,37 @@
+{
+  "schema": "washed-f09-4-native-refresh-counter-scope.v1",
+  "package_id": "f09_4_native_refresh_counter_scope_v1",
+  "status": "NATIVE_F09_4_U5_PARITY_NOT_CLOSED; F10_SEGMENT_COUNTER_IS_DISTINCT",
+  "implementation_readiness": "APPROVED_MODEL_RULE_AVAILABLE; NATIVE_PARITY_NOT_ESTABLISHED",
+  "source_package_manifest_sha256": "9d8f8576a7f88e52d5f446d4939bde0c24eab7892ed045ed181706dd5cbca3d7",
+  "implementation_allowed_for": "APPROVED_F09_4_MODEL_RULE_REFERENCE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3248,
+      "sha256": "a3159a9e2ba31f22998dab3f97d1235d70db0642db642e52efe9ed1da0cc1e8e"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1465,
+      "sha256": "1321724d697e5ede8973ad645117f42946e21f3094d4cc7121362c27a098e18d"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1103,
+      "sha256": "9228612f5eca5f8e19458a7e77e21eff3c0e59e3b70fb90c4bcf6e54328f08f8"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2169,
+      "sha256": "1a69b9945f5ccb7a57894d99151305b8553b7cdb9cd8d81fd9ebfb1177f556a5"
+    }
+  ]
+}

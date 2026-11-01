@@ -1,0 +1,58 @@
+{
+  "schema": "washed-helper-time-normalization-chain.v2",
+  "status": "SOURCE_INFO_NORMALIZATION_STATIC_BOUND; SOURCE_INFO_START_WRITER_UNBOUND",
+  "source_package_manifest_sha256": "f344b8ef98afe38d4f216f7e50e2cc4a6b6e7d8abb71b99eca058d8916de79b5",
+  "supersedes": {
+    "package_id": "helper_ffoa_offset_auto_normalization_v1",
+    "manifest_sha256": "59aea88e1beacf1b8ca8337d7627fe0daaad81c06b54059598f67a166a95a0e2",
+    "claim": "tuple conversion is final relative-FFOA writer"
+  },
+  "source_identity": {
+    "sample6_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "channels": 38,
+    "sample_rate_hz": 48000,
+    "samples": 6522906
+  },
+  "source_info_contract": {
+    "start_time_type": "binary64 seconds",
+    "absolute_ffoa_type": "binary64 seconds",
+    "same_object_read": true,
+    "master_start_time_default": 0.0,
+    "master_relative_ffoa_default": -1.0,
+    "relative_when_absolute_ffoa_negative": -1.0,
+    "relative_when_absolute_ffoa_nonnegative": "max(0, absolute_ffoa - start_time)",
+    "when_absolute_ffoa_precedes_start": "warning; relative becomes 0",
+    "helper_output": {
+      "offset": "start_time",
+      "ffoa": "start_time + max(relative_ffoa,0)"
+    },
+    "host_result_slots": {
+      "offset_default": 0.0,
+      "ffoa_default": 0.0,
+      "missing_helper_line": "retain initialized zero"
+    }
+  },
+  "tuple_intermediate": {
+    "formula_seconds": "c0*3600+c1*60+c2/100000",
+    "components": "three signed32 values; semantics inferred from scale coefficients",
+    "role": "intermediate write later overwritten by source-info getter normalization"
+  },
+  "sample6": {
+    "axml_start_seconds": 3610.0,
+    "native_offset_seconds": 3610.0,
+    "native_absolute_ffoa_seconds": 3610.0,
+    "derived_relative_start_sample": 0,
+    "causality": "UNBOUND"
+  },
+  "unbound": [
+    "source-info start_time first writer",
+    "source-info to AXML/BEXT/DBMD field",
+    "helper image loaded by historical host process",
+    "post-load absent-field default",
+    "overflow/NaN/Inf behavior"
+  ],
+  "disposition": {
+    "sample6_full_file_start0_supported": true,
+    "general_auto_rule_approved": false
+  }
+}

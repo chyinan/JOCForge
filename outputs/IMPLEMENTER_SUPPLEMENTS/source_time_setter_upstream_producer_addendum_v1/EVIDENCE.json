@@ -1,0 +1,109 @@
+{
+  "schema": "source-time-setter-upstream-producer-evidence.v1",
+  "purpose": "Bind the static source-time setter field meanings and specify the minimal scalar-only observation needed to identify its caller and input writer.",
+  "identity": {
+    "r138_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "r138_reference_log_sha256": "66b123188d24a4b4414a4edb8e169a8a135696e87ea427531dba9f54beffb7c",
+    "r138_reader_cursor_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+    "r139_source_range_manifest_sha256": "4939e82571e38fd7d933bed4e4542d38b824eecfc54b6fe3e17c6e31e6032695",
+    "r140_embedded_timecode_correction_manifest_sha256": "eed397699816567c38fc9af746063014592a63268e6f65b6730fcbd1d1102bf7",
+    "r140_prior_time_origin_spec_manifest_sha256": "c113d0513da3dd2c8620e413a56dc5e51ae6b40571c2fba2dd488557b3668654",
+    "processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_report_sha256": {
+      "setter_dispatch_and_callsite_candidates": "5a79dc50c654df8ef33a6e4ec6f0e660d884cfb3f1f23fac51bdf07bcb9f2a1d",
+      "master_vtable_constructor_and_factory_trace": "8f07735fb0372ef516191d9f06dc92a6bae4aab09f9cfbc8dfe95377090f947e",
+      "master_vtable_slot_map": "6f432edc346b7b1f657ee7160cdacad903bd3a9589341edd3e38daf2d4736034",
+      "source_time_key_and_range_normalizer_trace": "8478a7b3d583f467fbcb6ca10c20dbe3b1eeb0c36b959281f37397b1110dfec8"
+    },
+    "authorized_input": {
+      "sample_id": "sample-6",
+      "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "identity_match": "MATCHES_R138_SAMPLE_6",
+      "source_path_in_sanitized_package": "OMITTED",
+      "use_this_turn": "HASH_PREFLIGHT_ONLY; NO_AUDIO_PAYLOAD_READ_OR_NATIVE_JOB",
+      "ascii_copy_this_turn": "NOT_CREATED",
+      "other_authorized_adm_samples": "NOT_USED; STATIC_CALLER_AND_WRITER_GAP_IS_INPUT_INDEPENDENT"
+    }
+  },
+  "r138_profile": {
+    "time_base": "embedded_timecode",
+    "start_token": "86640",
+    "end_token": "86664",
+    "timecode_rate_configuration": "not_indicated",
+    "resolved_timecode_rate": "NOT_CAPTURED",
+    "offset_configuration": "auto",
+    "ffoa_configuration": "auto",
+    "native_offset_seconds": 3610.0,
+    "native_ffoa_seconds": 3610.0,
+    "equal_values_writer_attribution": "UNBOUND"
+  },
+  "setter_contract": {
+    "master_type_identity": "atmos_storage_master_s",
+    "virtual_dispatch_slot_byte_offset": 104,
+    "direct_code_call_reference": "NOT_FOUND_IN_STATIC_IMAGE",
+    "generic_same_slot_call_candidates_in_scanned_image": 156,
+    "candidate_receiver_owner_binding": "UNBOUND",
+    "mode_guard": "master_mode_byte_greater_than_1",
+    "input_record_pointer_argument": "second_argument",
+    "input_record_minimum_readable_extent_bytes": 120,
+    "copied_qword_slots": "0_through_14_inclusive",
+    "offset_input_slot": 10,
+    "offset_input_byte_offset": 80,
+    "ffoa_input_slot": 11,
+    "ffoa_input_byte_offset": 88,
+    "master_offset_destination_byte_offset": 168,
+    "master_ffoa_destination_byte_offset": 176,
+    "destination_interpretation": "IEEE754_BINARY64_SECONDS",
+    "later_getter_and_adapter_labels": ["offset", "ffoa"]
+  },
+  "producer_and_profile_join": {
+    "input_record_writer": "UNBOUND",
+    "setter_callsite": "UNBOUND",
+    "setter_master_owner_in_r138": "NOT_CAPTURED",
+    "setter_invocation_in_r138": "NOT_CAPTURED",
+    "setter_values_to_r138_embedded_timecode_normalizer": "UNBOUND",
+    "resolved_timecode_rate_to_same_invocation": "NOT_CAPTURED",
+    "static_presence_of_master_constructor": "BOUND",
+    "constructor_presence_proves_r138_invocation": false
+  },
+  "minimal_observation_plan": {
+    "review_existing_r4_receipt_first": true,
+    "new_native_job_this_turn": "NOT_RUN",
+    "authorized_source_hash_required": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_copy_required_if_dee_rejects_original_path": true,
+    "ascii_copy_location": "new isolated run input directory",
+    "copy_hash_must_equal_source_hash": true,
+    "capture_only": [
+      "R138_job_config_and_input_hash_identity",
+      "master_owner_token_and_explicit_generation_token_if_present",
+      "mode_guard_and_setter_caller_return_with_bounded_stack_token",
+      "input_pointer_extent_through_byte_119_without_record_dump",
+      "only_binary64_values_at_input_byte_offsets_80_and_88",
+      "same_master_post_write_values_and_normalized_getter_values_joined_by_owner_and_job_generation",
+      "resolved_frame_rate_as_a_separate_field"
+    ],
+    "join_rule": "Require the same explicit master owner and job or generation token across setter and getter observations; if the generation token is absent, retain UNBOUND.",
+    "payload_or_pcm_read_or_saved": false,
+    "non_hit_disposition": "NOT_HIT_FOR_THIS_R138_RUN; NO_GLOBAL_ABSENCE_INFERENCE"
+  },
+  "status": {
+    "static_field_semantics": "BOUND",
+    "upstream_producer": "UNBOUND",
+    "setter_caller": "UNBOUND",
+    "R138_invocation": "NOT_CAPTURED",
+    "resolved_timecode_rate": "NOT_CAPTURED",
+    "model_replay": "NOT_RUN",
+    "gate1_closed": false
+  },
+  "delivery": {
+    "recipient_role": "wash-agent",
+    "implementation_agent_contacted": false,
+    "implementation_delivery": "PROHIBITED",
+    "absolute_paths_in_package": false,
+    "absolute_addresses_or_rvas_in_package": false,
+    "module_names_in_package": false,
+    "decompilation_in_package": false,
+    "audio_or_pcm_in_package": false,
+    "private_license_material_in_package": false
+  }
+}

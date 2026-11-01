@@ -1,0 +1,33 @@
+{
+  "schema": "washed-helper-time-normalization-chain.v3",
+  "package_id": "helper_time_normalization_chain_v3",
+  "status": "SOURCE_INFO_FIELDS_AND_FINAL_FFOA_NORMALIZATION_STATIC_BOUND; SOURCE_INFO_FIELD_ORIGIN_UNBOUND",
+  "implementation_readiness": "SAMPLE6_START_ZERO_ONLY",
+  "source_package_manifest_sha256": "4b3d24c9dd0910fdd9a53d16987cffa2ae9e64334e28a9bb1e84f7d5ca35d1f6",
+  "supersedes_manifests": [
+    "59aea88e1beacf1b8ca8337d7627fe0daaad81c06b54059598f67a166a95a0e2",
+    "ec2f7e549e7bef3626ff258bf4ebe509a6c69177e1c0a47e940aca68599d8048"
+  ],
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1688,
+      "sha256": "9664ca566a4bb0c4d65870bf3fc3f553c8ce6f43490abd01128a3469e66b09d6"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2973,
+      "sha256": "4a4c3b84c5a65072b6021bbffa20537a5fdbaaf60ca02ac6f865e98aa49f6ced"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 510,
+      "sha256": "3cd8832a994095a167695d06a8ac6e13afd9bb0bda241e8c4d7c92d3d957deda"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1684,
+      "sha256": "66f4de4eab1c7124ba73e9bdd27daf0eac5959cd4cfe5d37ffd14ed12d0712b4"
+    }
+  ]
+}

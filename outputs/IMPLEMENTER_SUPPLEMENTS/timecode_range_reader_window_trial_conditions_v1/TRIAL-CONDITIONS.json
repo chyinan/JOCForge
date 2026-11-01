@@ -1,0 +1,57 @@
+{
+  "schema": "wash-dee-mvp-trial-conditions.v1",
+  "status": "CONFIGURATION_TRIAL_ONLY_AUDIO_ALGORITHM_UNCHANGED",
+  "input": {
+    "sample_id": "authorized_sample6_people_is_cat",
+    "user_authorized": true,
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_bytes": 743696526,
+    "handling": "Rehash original; leave unchanged; if needed make an ASCII-named copy and verify equal SHA-256; derive full extent from the actual BWF header."
+  },
+  "dee_full_song_reference": {
+    "provenance": "User-supplied transcript, not separately hash-bound.",
+    "input_type": "atmos_mezz",
+    "route": "encode_to_atmos_ddp",
+    "time_base": "file_position",
+    "start_end": "empty_full_file",
+    "data_rate_kbps": 1024,
+    "sample_rate_hz": 48000,
+    "source_sample_count_claim": 6522906,
+    "offset_seconds": 3610,
+    "ffoa_seconds": 3610,
+    "timecode_rate_fps": 24,
+    "composite_master_start_end": [
+      0,
+      0
+    ],
+    "source_join": "USER_ASSERTED_SAMPLE6_IDENTITY; RUN_ALIAS_HASH_NOT_IN_TRANSCRIPT",
+    "use": "Trial cross-check only; use actual BWF header for JOCForge full-file extent."
+  },
+  "dee_static_file_position_rule": {
+    "source": "Hash-bound Ghidra observation in source Wash package.",
+    "expression": "max(offset, ffoa) - offset",
+    "observed_equal_pair_result_seconds": 0,
+    "scope": "This observed branch and supplied equal-pair condition only; not universal."
+  },
+  "r3_embedded_timecode_observation": {
+    "source_package_manifest_sha256": "12fb4d5695230fb07f2c3f73425fe8974bacba66c07586390412a51ef9030cb9",
+    "inputs": [
+      "hortus_regis_alti",
+      "my_jealousy"
+    ],
+    "input_type": "audio.adm",
+    "route": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "time_base": "embedded_timecode",
+    "tokens": {
+      "start": "86664",
+      "end": "86688"
+    },
+    "both_runs_reported_pcm_frames_inclusive": [
+      48000,
+      97999
+    ],
+    "scope": "Two-input exact-token observation only; not the full-song file_position route."
+  },
+  "remaining_open_edge": "Resolved frame-rate and source-offset/FFOA owner join to parsed bounds and reader extent remains unbound for embedded_timecode."
+}

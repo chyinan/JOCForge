@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f09_4_force_d45_cross_image_scan_v1",
+  "scope": "Seven-image direct-write scan and failed pointer observation for force-D45 source; later nonzero writes and runtime reachability remain unbound.",
+  "status": "NO_DIRECT_NONZERO_SOURCE_WRITER_FOUND_IN_SEVEN_HASHED_IMAGES; INDIRECT_OR_EXTERNAL_WRITES_UNBOUND; RUNTIME_OWNER_NOT_CAPTURED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 924,
+      "sha256": "9ab75f36d1ca35dcbd11bfdad35375cbdc4148d6752577e9e7394503be436ab9"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3749,
+      "sha256": "03b7b1c8bd0c2046f5b10877461f2a9246b5278b0a9207f6b7f97d8464cf2003"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 727,
+      "sha256": "8a7205e5d75fd1981b6c4b29cf38d2e18aa8807b07ec82541631d689159668cf"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 2033,
+      "sha256": "1ef2d108124e90040f920f2775cae3ea941ca73f339ba7863a6c11684582ab1e"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2278,
+      "sha256": "d7d55c67fd8cf36157675f47590baafccf1e43f1202e7952793c169628660d4b"
+    }
+  ]
+}

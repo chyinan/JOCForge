@@ -1,0 +1,18 @@
+{
+  "package_id": "f09_4_d45_pcm_atmos_route_nonhit_attempt10_v1",
+  "incoming_manifest_sha256": "72d8e5d160b21f9b38da1bf4fb4937f8cde9220d22249a8c20ba5bd0cef0f0e0",
+  "incoming_payload_sha256": {
+    "README.md": "18f35639e008c9dc4c397a9d2c2abf07ab0ed11bd1c74778ec514c1e8282f7ae",
+    "EVIDENCE.json": "cee06bb98334d1ffe6f632ac59b76e72b402d5d8efaa912f4a9b02815b44aed0",
+    "SOURCE-INVENTORY.json": "8c2df5732e0a9bc5aeff09cacaf82843bbeee2d0dd59d979207fd02bc0401853",
+    "verify_package.py": "fb0790db54229209afa0145932708d02737f53c3ff1cf93b8f6b631121e69b5f",
+    "CANDIDATE_PCM_ATMOS_JOB.xml": "5322ee23b5f2430abbd854c5b683c6fd6b3e0996105dbad3a6312e879e65141b",
+    "RUN10_STARTUP_RECEIPT.json": "ad863d3a8f5f53d41c75300161ecbf8c7d3849da0e290f825c6fa43e3553dba3"
+  },
+  "candidate_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "candidate_job_sha256": "5322ee23b5f2430abbd854c5b683c6fd6b3e0996105dbad3a6312e879e65141b",
+  "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "raw_source_or_decompilation_included": false,
+  "pcm_or_ec3_contents_read": false,
+  "private_key_or_license_contents_read": false
+}

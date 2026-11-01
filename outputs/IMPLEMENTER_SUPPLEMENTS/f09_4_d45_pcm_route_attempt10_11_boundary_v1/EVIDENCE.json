@@ -1,0 +1,61 @@
+{
+  "package_id": "f09_4_d45_pcm_route_attempt10_11_boundary_v1",
+  "status": "ATTEMPTS10_11_NORMAL_EXIT_ROUTE_SPECIFIC_D45_NOT_OBSERVED; PCM_FRAME_GUARD_STATIC; REGISTRATION_TO_FRAME_ADAPTER_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Two stage-only DEE route comparisons plus a static PCM frame guard and D45 state path. Does not prove D45 route-wide unreachable or output validity.",
+  "source": {
+    "incoming_package_id": "force_d45_native_reachability_wash",
+    "manifest_sha256": "d2f7526b327c3a7d88761e9a91e1a86c0317c363c20f968e35ec2ed23d8b29e0",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "source_hash_count": 7
+  },
+  "input": {
+    "type": "ADM",
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "alias_file_id_matches_authorized_source": true,
+    "data_rate_kbps": 1024
+  },
+  "attempts": [
+    {
+      "n": 10,
+      "filter_stage": "pcm_to_atmos_ddp",
+      "exit_code": 0,
+      "breakpoints_resolved": 25,
+      "breakpoints_armed": true,
+      "target_hits": 0,
+      "output_bytes_before_cleanup": 17395712,
+      "output_read_or_parsed": false,
+      "output_deleted": true
+    },
+    {
+      "n": 11,
+      "filter_stage": "pcm_to_ddp",
+      "exit_code": 0,
+      "single_pass_module_loaded": true,
+      "module_load_stop_received": false,
+      "target_breakpoints_armed": false,
+      "target_status": "NOT_INSTRUMENTED",
+      "output_bytes_before_cleanup": 17395712,
+      "output_read_or_parsed": false,
+      "output_deleted": true
+    }
+  ],
+  "static_pcm_gate": {
+    "accepted_frame_samples": 1536,
+    "accepted_flush_samples": 0,
+    "other_nonzero_counts": "REJECTED_BEFORE_OWNER_ALLOCATION",
+    "two_adapters_call_guard": true,
+    "registration_to_adapter_table": "UNBOUND_STATIC"
+  },
+  "d45_state": {
+    "cold_initialization": "STATIC_ZERO",
+    "later_nonzero": "OPEN; no direct writer found in scanned images, indirect/outside-image writes not excluded"
+  },
+  "terminal": {
+    "bitstream_parse": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false
+  }
+}

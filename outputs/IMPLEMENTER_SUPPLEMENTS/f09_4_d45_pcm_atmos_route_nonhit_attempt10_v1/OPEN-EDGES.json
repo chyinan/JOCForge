@@ -1,0 +1,22 @@
+{
+  "package_id": "f09_4_d45_pcm_atmos_route_nonhit_attempt10_v1",
+  "closed_within_scope": [
+    "Attempt10 changed only the filter stage to pcm_to_atmos_ddp while preserving ADM input and 1024 kbps.",
+    "This run completed normally and produced an output file measured only by metadata before deletion.",
+    "The monitored owner/history functions did not hit in this attempt."
+  ],
+  "open": [
+    "Whether a different valid DEE route reaches the owner/history functions.",
+    "Later nonzero force/history state reachability.",
+    "Owner pointer, lane values, force matrix, and six-block consumer values.",
+    "Bitstream validity and playback."
+  ],
+  "status": {
+    "attempt10": "COMPLETED_CODE0",
+    "target_owner_history": "NOT_HIT",
+    "later_nonzero": "OPEN",
+    "output_parse": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "guidance": "Do not interpret the non-hit as global unreachability, and do not treat output size/progress as codec conformance."
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "washed-f09-4-force-d45-history-open-edges.v1",
+  "package_id": "f09_4_force_d45_history_v1",
+  "closed": [
+    "owner arena and per-substream constructor lineage",
+    "five lane records and 16-bit source field cold-zero initialization",
+    "block-major six-block/five-lane copy into force-D45 matrix",
+    "downstream zero/nonzero force-D45 condition"
+  ],
+  "open": [
+    "later nonzero owner+0x135c0 writer",
+    "possible indirect or cross-image mutation",
+    "runtime value and generation join",
+    "separate selector no-row 0xC propagation"
+  ],
+  "status": {
+    "cold_first_generation": "STATIC_ZERO",
+    "later_update": "UNBOUND",
+    "runtime_capture": "NOT_RUN"
+  },
+  "guidance": "The cold-start zero does not prove the history field is permanently zero. Do not drop nonzero updates or invent a producer."
+}

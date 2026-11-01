@@ -1,0 +1,92 @@
+{
+  "schema": "washed-f09-4-force-d45-cross-image-scan.v1",
+  "package_id": "f09_4_force_d45_cross_image_scan_v1",
+  "status": "NO_DIRECT_NONZERO_SOURCE_WRITER_FOUND_IN_SEVEN_HASHED_IMAGES; INDIRECT_OR_EXTERNAL_WRITES_UNBOUND; RUNTIME_OWNER_NOT_CAPTURED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Static bounded cross-image scan for direct writes to force-D45 source owner+0x135c0 and related fields, plus one failed pointer-observation attempt. Does not prove the field is permanently zero.",
+  "source_field": {
+    "base": "owner+0x135c0",
+    "lanes": 5,
+    "lane_stride_bytes": 8,
+    "first_word_width_bits": 16,
+    "constructor": "FUN_1802e51b0 clears first generation to zero",
+    "consumer": "FUN_180316730 reads first U16 per lane"
+  },
+  "target_modules": [
+    {
+      "name": "dee_audio_filter_ddp_single_pass.dll",
+      "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+      "findings": "constructor clear and read/copy path; no direct later source store found"
+    },
+    {
+      "name": "dee_audio_filter_ddp.dll",
+      "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+      "findings": "same clear and read/copy pattern; no direct nonzero source store found"
+    },
+    {
+      "name": "dee_audio_filter_ddp_transcode.dll",
+      "sha256": "a5d2dde93a256c4cb1e821bd809fb6aed93f2a346c72210c1bed1b3bd5b35f58",
+      "findings": "matching reader/copy path; no direct source store found"
+    },
+    {
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "findings": "no relevant data-memory operand references in bounded scan"
+    },
+    {
+      "name": "dee_audio_filter_convert_atmos_mezz.dll",
+      "sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+      "findings": "no relevant instruction references in bounded scan"
+    },
+    {
+      "name": "dee_audio_filter_cod.dll",
+      "sha256": "527dc873b9be7e348698e66195250cbb9382cbec16c590abe547a87e9159abc8",
+      "findings": "no relevant instruction references in bounded scan"
+    },
+    {
+      "name": "dactlib.dll",
+      "sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239",
+      "findings": "offset-like hits resolved to code branch/call destinations, not data operands"
+    }
+  ],
+  "reference_attempt": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_alias_same_bytes": true,
+    "dee_job_attempted_once": true,
+    "output_sink": "NUL",
+    "log_sink": "NUL",
+    "winDbg_breakpoints": [
+      "dee_audio_filter_ddp_single_pass+0x311900",
+      "dee_audio_filter_ddp_single_pass+0x337980"
+    ],
+    "breakpoints_resolved": false,
+    "target_gone_before_capture": true,
+    "process_exit_status": "UNKNOWN",
+    "owner_fields_captured": false,
+    "retry": "NOT_RUN"
+  },
+  "inference_boundary": {
+    "direct_writer_in_scanned_images": "NOT_FOUND",
+    "indirect_writer": "NOT_EXCLUDED",
+    "outside_scanned_images": "NOT_EXCLUDED",
+    "later_nonzero_runtime_value": "NOT_OBSERVED"
+  },
+  "parents": [
+    {
+      "package_id": "force_d45_history_lineage_wash",
+      "manifest_sha256": "1c6a71de5193eadd0400a7545b74a8c5f42e8bf304a217daf8410f7d70c4fc53"
+    },
+    {
+      "package_id": "no_row_u5_cold_path_wash",
+      "manifest_sha256": "2f88b20cffc6d65540beac887a19fe1a54094d913d18dcd5ede783847bef0480"
+    }
+  ],
+  "exclusions": {
+    "source_code_copied": false,
+    "raw_decompilation_copied": false,
+    "binaries_included": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "absolute_paths": false
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "source-time-setter-upstream-producer-wash-v1",
+  "source_manifest_sha256": "dff1227f24cbe29e5ca9bddfcb1d8ff42c589ad948e2c4ca40727c45a9fd1f74",
+  "checks": {
+    "source_manifest_sidecar_and_artifacts_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "offset_field": "F64_FROM_RECORD_SLOT_10_BYTE_OFFSET_80",
+    "ffoa_field": "F64_FROM_RECORD_SLOT_11_BYTE_OFFSET_88",
+    "record_minimum_readable_extent_bytes": 120,
+    "observed_r138_offset_and_ffoa_seconds": [
+      3610.0,
+      3610.0
+    ],
+    "input_record_writer": "UNBOUND",
+    "setter_callsite": "UNBOUND",
+    "r138_setter_invocation": "NOT_CAPTURED",
+    "resolved_timecode_rate": "NOT_CAPTURED",
+    "gate1_closed": false,
+    "native_job_this_turn": "NOT_RUN"
+  },
+  "scope_note": "Wash independently verified package integrity and status boundaries; static semantic claims are the reverse-agent evidence and no live R138 setter invocation was observed."
+}

@@ -1,0 +1,147 @@
+{
+  "schema": "washed-f09-4-native-u5-selector-handoff.v1",
+  "package_id": "f09_4_native_u5_selector_handoff_v1",
+  "status": "NATIVE_TABLE_AND_SELECTOR_TO_STUFFER_STATICALLY_BOUND; D45_HISTORY_AND_MARKER_THRESHOLDS_UNBOUND; NO_MATCH_HANDLING_UNPROVEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "implementation_scope": "Static Ghidra rule for six-block per-lane marker -> U2 strategy -> exact 32-row Table E.1.9 match -> 5-bit U5 stuffer, with explicit unresolved D45 history and no-row behavior. Dynamic marker inputs and threshold units remain unbound. This is not a runtime sample or full audio-conformance result.",
+  "target_image": {
+    "module": "dee_audio_filter_ddp_single_pass.dll",
+    "bytes": 13193728,
+    "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+    "current_file_hash": "MATCH"
+  },
+  "static_tool": {
+    "name": "Ghidra 12.2 PUBLIC",
+    "ida_used": false,
+    "dee_execution": "NOT_RUN"
+  },
+  "approved_reference": {
+    "package_id": "ETSI-FRAME-EXPONENT-PATTERN-V1",
+    "manifest_sha256": "03f7cef4874dc2c0f79cfce87191c07afc1468616014b87a4ee9bf46f74b95df",
+    "standard": "ETSI TS 102 366 V1.4.1 Table E.1.9 and Table 6.4",
+    "projection_sha256": "acfcaf98c12fa9688ef75943537a2f2f0a97a41ab75aa342468bd649b783d6bc",
+    "model_source_checker": "PASS_NORMAL_AND_PYTHON_O"
+  },
+  "parents": [
+    {
+      "package_id": "frame_exponent_native_u5_producer_wash",
+      "manifest_sha256": "db07c110665ae286a93dd10b9567b2266c43c6b6cab9db6193640a3b22890265",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "f09_4_native_u5_writer_boundary_v1",
+      "manifest_sha256": "becc45429eec928684c0a5c70083ce176f0d0689c2714bc2f085682438569",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    }
+  ],
+  "source_receipts": {
+    "target_image_current_hash_match": true,
+    "native_table_log_sha256": "b5c64384e9886448deb9948f757746fbe319d9e72afebc511b1b52dcc035b734",
+    "native_table_script_sha256": "0b2e1e9487226d36470c78aca640a045d34a96d15f664fc821a2711ad09ebf6d",
+    "native_table_script_log_sha256": "c76d597e574343b62c2af48651998657d2d0030e0453ccc58002bb8a4ccdc52e",
+    "raw_ghidra_output_or_script_copied": false
+  },
+  "marker_producer": {
+    "function": "FUN_1802fd810",
+    "entry_address": "0x1802fd810",
+    "caller": "FUN_1802fc200",
+    "marker_buffer": "owner+0x140f0, six 16-bit slots per lane, 12-byte lane stride",
+    "initialization": "marker[0]=1; markers 1..5 are cleared then conditionally set by adjacent-state comparisons",
+    "helper": {
+      "function": "FUN_18032ee50",
+      "behavior": "may promote a zero marker after exponent-change threshold comparison and updates exponent state on nonzero markers"
+    },
+    "marker_threshold_units": "UNBOUND"
+  },
+  "strategy_generation": {
+    "function": "FUN_1802fd710",
+    "entry_address": "0x1802fd710",
+    "input_marker_addressing": "marker_base + 2*(lane*6 + block)",
+    "output_u2_addressing": "descriptor+0x3a + 2*lane + 10*block",
+    "cell_width_bits": 16,
+    "legal_u2_values": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "scan_order": "block 5 down to 0",
+    "distance_unit": "visited blocks",
+    "update_order": "distance_next = distance + 1 before marker test, including the marker block",
+    "base_mapping": {
+      "marker_zero": 0,
+      "marker_nonzero_distance_1": 3,
+      "marker_nonzero_distance_2_or_3": 2,
+      "marker_nonzero_distance_4_or_more": 1,
+      "after_nonzero_marker": "distance resets to 0"
+    },
+    "force_d45_override": {
+      "condition": "parallel short at owner+0x15208+2*lane+10*block != 0 and computed strategy != 3",
+      "effect": "strategy forced to 3",
+      "source_history_copy": "FUN_180316730 shifts matrix from owner+0x135c0+8*lane",
+      "first_writer_of_owner_0x135c0": "NOT_LOCATED"
+    }
+  },
+  "table_selector": {
+    "function": "FUN_1802fd9a0",
+    "entry_address": "0x1802fd9a0",
+    "native_table_address": "0x180897ac0",
+    "rows": 32,
+    "cells_per_row": 6,
+    "cell_width_bits": 16,
+    "row_stride_bytes": 12,
+    "all_cells_u2": true,
+    "unique_rows": 32,
+    "comparison": "exact equality for all six cells; rows checked in ascending code order 0..31",
+    "output": "short code 0..31 stored at descriptor+0x3ca8+2*lane",
+    "output_width_bits": 16,
+    "wire_width_bits": 5,
+    "native_projection_sha256": "acfcaf98c12fa9688ef75943537a2f2f0a97a41ab75aa342468bd649b783d6bc",
+    "input_only_vector": {
+      "row": [
+        2,
+        0,
+        0,
+        2,
+        0,
+        3
+      ],
+      "code": 5,
+      "classification": "STATIC_TABLE_MATCH_NOT_RUNTIME_SAMPLE"
+    }
+  },
+  "no_match": {
+    "selector_return": "0xC",
+    "code_store": "none on no-row path",
+    "caller": "FUN_1802fc200 ignores selector return then sets ready flag at state+0x3cb2",
+    "status": "NO_MATCH_INVARIANT_OR_ERROR_PROPAGATION_UNPROVEN"
+  },
+  "handoff": {
+    "code_array": "descriptor+0x3ca8",
+    "ready_flag": "descriptor+0x3cb2",
+    "pointer_export": "FUN_1802fcfe0 -> owner+0x13350",
+    "count_export": "owner+0x1334c",
+    "frame_set_writer": "FUN_180337e20",
+    "writer_semantics": "serializes existing U5 value as five-bit convexpstr; does not choose a Table E.1.9 row"
+  },
+  "separate_mechanisms": {
+    "f10_segment_grouping": "FUN_1802fafc0 groups exponent segments; not the U5 lookup",
+    "frame_set_gate": "FUN_1803086d0 reaches total six blocks before frame-set writer; not per-lane distance",
+    "lane_refresh_distance": "FUN_1802fd710 maintains separate per-lane distance counter"
+  },
+  "open_edges": {
+    "force_d45_source_owner_first_writer": "UNBOUND",
+    "marker_threshold_source_units_and_input_producers": "UNBOUND",
+    "no_row_caller_error_propagation": "UNPROVEN",
+    "dynamic_input_vectors": "NOT_RUN",
+    "native_dee_output_or_playback": "NOT_RUN"
+  },
+  "exclusions": {
+    "source_code_copied": false,
+    "raw_decompilation_copied": false,
+    "native_binary_included": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "absolute_paths": false
+  }
+}

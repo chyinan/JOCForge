@@ -1,0 +1,102 @@
+{
+  "schema": "washed-f09-4-u5-no-row-cold-warm-boundary.v1",
+  "package_id": "f09_4_u5_no_row_cold_warm_boundary_v1",
+  "status": "COLD_NO_ROW_EXCLUDED_BY_ENUMERATION; WARM_FORCE_SYNTHETIC_NO_ROW_POSSIBLE; NATIVE_FORCE_REACHABILITY_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Static unchecked no-row return/caller behavior plus synthetic enumeration for cold-zero and arbitrary force-D45 masks. Nonzero force-state reachability is not established natively.",
+  "target_image": {
+    "module": "dee_audio_filter_ddp_single_pass.dll",
+    "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+    "current_file_hash": "MATCH"
+  },
+  "parent_packages": [
+    {
+      "package_id": "no_row_u5_cold_path_wash",
+      "manifest_sha256": "2f88b20cffc6d65540beac887a19fe1a54094d913d18dcd5ede783847bef0480",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "force_d45_history_lineage_wash",
+      "manifest_sha256": "1c6a71de5193eadd0400a7545b74a8c5f42e8bf304a217daf8410f7d70c4fc53",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "f09_4_native_u5_selector_handoff_v1",
+      "manifest_sha256": "827139044a5fb85ee9eeee9fc4c68f303a47252d619c0e7b29e82bb54b5668ff",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    }
+  ],
+  "selector": {
+    "function": "FUN_1802fd9a0",
+    "no_row_return": "0xC",
+    "output_store_on_no_row": false,
+    "caller": "FUN_1802fc200",
+    "caller_checks_return": false,
+    "caller_sets_ready_flag": true,
+    "descriptor_slot": "descriptor+0x3ca8+2*lane",
+    "cold_initial_value": 0,
+    "warm_value_if_no_row": "previous successful code remains if no store and slot not cleared",
+    "stuffer": "FUN_180337e20",
+    "stuffer_validates_code": false
+  },
+  "cold_synthetic": {
+    "marker0_fixed": 1,
+    "other_marker_bits": 5,
+    "pattern_count": 32,
+    "history_force_values": "all zero",
+    "table_matches": 32,
+    "distinct_codes": 32,
+    "no_row_count": 0,
+    "classification": "SYNTHETIC_INPUT_ONLY"
+  },
+  "force_synthetic": {
+    "marker_patterns": 32,
+    "force_bits_per_pattern": 6,
+    "force_masks_per_pattern": 64,
+    "total_cases": 2048,
+    "table_matches": 553,
+    "no_row_count": 1495,
+    "classification": "SYNTHETIC_INPUT_ONLY_NOT_NATIVE_REACHABILITY"
+  },
+  "counterexample": {
+    "markers": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "force_flags": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "resulting_u2_row": [
+      3,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "table_match": false
+  },
+  "native_boundary": {
+    "force_history_cold_start": 0,
+    "first_generation_source_zero": true,
+    "later_nonzero_source_writer": "UNBOUND",
+    "runtime_nonzero_force_observed": false,
+    "DEE_execution": "NOT_RUN"
+  },
+  "exclusions": {
+    "source_code_included": false,
+    "raw_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false
+  }
+}

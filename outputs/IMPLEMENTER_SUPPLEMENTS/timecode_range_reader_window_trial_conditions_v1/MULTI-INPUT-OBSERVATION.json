@@ -1,0 +1,52 @@
+{
+  "schema": "wash-authorized-adm-metadata-crosscheck.v1",
+  "status": "THREE_RECEIPTS_HASH_CHECKED_METADATA_ONLY",
+  "samples": [
+    {
+      "sample_id": "first_love",
+      "manifest_sha256": "a9021104fb8c4579667b0fec95d7e5205fadc258e05a5b37f7aeda74a2c82fc7",
+      "source_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "disposition": "QUIET_WINDOW_NOT_VALID_ACTIVE_AUDIO_SAMPLE"
+    },
+    {
+      "sample_id": "hortus_regis_alti",
+      "manifest_sha256": "e76aa0cb9cb6ecabaee7cc8c59363d6d8526bdaa23e7dfe76caef65e3db9d348",
+      "source_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "disposition": "ACTIVE_WINDOW_CONFIRMED"
+    },
+    {
+      "sample_id": "my_jealousy",
+      "manifest_sha256": "0d349be7ab35c7144573d215e796e8a986fa4b85ca0becc2bc46868290e0a96b",
+      "source_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+      "disposition": "ACTIVE_WINDOW_CONFIRMED"
+    }
+  ],
+  "shared_posthoc_metadata": {
+    "codec": "E-AC-3",
+    "sample_rate_hz": 48000,
+    "channels": "5.1(side)",
+    "bit_rate_bps": 1024000,
+    "output_bytes_claimed": 135168,
+    "duration_seconds_claimed": 1.056,
+    "parser": "OpenJOC 0.20.1",
+    "joc_addbsi_signaled_aus": "33/33",
+    "joc_profile_index": 3,
+    "joc_profile": "five_x_phase",
+    "coded_object_rows": 15,
+    "complexity_index": 16,
+    "oamd_slots": 16,
+    "deployed_compatibility": "pass 33/33",
+    "etsi_strict": "fail 33/33",
+    "render_verified": false
+  },
+  "boundary": {
+    "source_hashes_recomputed_by_wash": [
+      "first_love",
+      "hortus_regis_alti",
+      "my_jealousy"
+    ],
+    "output_hashes": "Receipt claims only, not rehashed by Wash; payloads excluded.",
+    "pcm_decode_or_playback": false,
+    "external_tools": "POSTHOC_OUTPUT_METADATA_ONLY; NOT_SOURCE_OF_DEE_ALGORITHM_OR_POLICY"
+  }
+}

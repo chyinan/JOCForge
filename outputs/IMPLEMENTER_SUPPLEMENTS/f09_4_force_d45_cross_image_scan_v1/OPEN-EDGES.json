@@ -1,0 +1,20 @@
+{
+  "schema": "washed-f09-4-force-d45-cross-image-open-edges.v1",
+  "package_id": "f09_4_force_d45_cross_image_scan_v1",
+  "closed": [
+    "bounded seven-image source hash inventory",
+    "no direct nonzero source write found in the scanned images",
+    "single attempted pointer observation did not capture owner fields"
+  ],
+  "open": [
+    "indirect/external writes to owner+0x135c0",
+    "later nonzero state at runtime",
+    "owner/generation tokens and processing frame"
+  ],
+  "status": {
+    "runtime_capture": "NOT_CAPTURED",
+    "later_source_writer": "UNBOUND",
+    "cross_image_direct_writer": "NOT_FOUND"
+  },
+  "guidance": "Do not convert no direct write in these seven images into a permanent-zero invariant."
+}

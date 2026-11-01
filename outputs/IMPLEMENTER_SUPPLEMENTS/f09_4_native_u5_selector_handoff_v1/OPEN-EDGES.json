@@ -1,0 +1,21 @@
+{
+  "schema": "washed-f09-4-native-u5-selector-open-edges.v1",
+  "package_id": "f09_4_native_u5_selector_handoff_v1",
+  "closed": [
+    "native six-cell U2 strategy to exact 32-row table code selection",
+    "native selected code storage and five-bit U5 stuffer handoff",
+    "separate F10 segment grouping from F09.4 U5 lookup"
+  ],
+  "open": [
+    "first writer and typed source of owner+0x135c0 force-D45 history",
+    "marker threshold units and full input producer",
+    "no-row 0xC invariant or caller error propagation",
+    "runtime DEE/sample confirmation"
+  ],
+  "status": {
+    "dynamic_execution": "NOT_RUN",
+    "force_d45_history": "UNBOUND",
+    "no_row_handling": "UNPROVEN"
+  },
+  "guidance": "Use the approved Table E.1.9 contract; do not substitute F10 grouping, six-block count, or a guessed row on no match."
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "timecode_range_reader_window_trial_conditions_v1",
+  "status": "EVIDENCE_ONLY_CONFIGURATION_TRIAL",
+  "source_package_manifest_sha256s": [
+    "12fb4d5695230fb07f2c3f73425fe8974bacba66c07586390412a51ef9030cb9",
+    "a9021104fb8c4579667b0fec95d7e5205fadc258e05a5b37f7aeda74a2c82fc7",
+    "e76aa0cb9cb6ecabaee7cc8c59363d6d8526bdaa23e7dfe76caef65e3db9d348",
+    "0d349be7ab35c7144573d215e796e8a986fa4b85ca0becc2bc46868290e0a96b"
+  ],
+  "implementation_allowed_for": "TRIAL_CONFIGURATION_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_eac3_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "files": [
+    {
+      "name": "MULTI-INPUT-OBSERVATION.json",
+      "bytes": 1888,
+      "sha256": "9d7802d2451f29bf2c4e0b55e4bb0c7b6f3c35e30deedf8d470af7020991423a"
+    },
+    {
+      "name": "TRIAL-CONDITIONS.json",
+      "bytes": 2214,
+      "sha256": "449b29f11714335d4a39f9985b505e0d55d04383ec2c7ac5e7962ad6abe0453b"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1756,
+      "sha256": "4902abc89919b4e573df9602b60589dc7d42cdf432c518a203c6e88964c2544b"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 1665,
+      "sha256": "62381aeedb4d40272cb50c7f767682e3326fd9d47024e5ac8d64eb88e759cf3b"
+    }
+  ]
+}

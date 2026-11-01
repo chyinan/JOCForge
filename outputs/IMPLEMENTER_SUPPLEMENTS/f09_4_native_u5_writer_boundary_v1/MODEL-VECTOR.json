@@ -1,0 +1,58 @@
+{
+  "schema": "washed-f09-4-minimal-lane-vector.v1",
+  "source_contract_manifest_sha256": "03f7cef4874dc2c0f79cfce87191c07afc1468616014b87a4ee9bf46f74b95df",
+  "lane": 0,
+  "block_order": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "marker_after": [
+    1,
+    0,
+    0,
+    1,
+    0,
+    1
+  ],
+  "short_consumed": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "approved_scan_order": [
+    5,
+    4,
+    3,
+    2,
+    1,
+    0
+  ],
+  "approved_distance_rule": "Increment once for every visited block before the marker branch; reset after a refresh selects its strategy.",
+  "approved_strategy_row_block_order": [
+    2,
+    0,
+    0,
+    2,
+    0,
+    3
+  ],
+  "table_e1_9_code": 5,
+  "refresh_excluded_alternative": {
+    "row": [
+      2,
+      0,
+      0,
+      3,
+      0,
+      3
+    ],
+    "table_row_match": false
+  }
+}

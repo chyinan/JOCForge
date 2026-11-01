@@ -1,0 +1,93 @@
+{
+  "schema": "range-to-spatial-static-trace-evidence.v1",
+  "purpose": "Bind the source file-position range through its first static IO-set consumer and report the still-open spatial/fit time join.",
+  "identity": {
+    "authorized_sample_id": "sample-6",
+    "authorized_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "reader_cursor_parent_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
+    "source_range_parent_manifest_sha256": "4939e82571e38fd7d933bed4e4542d38b824eecfc54b6fe3e17c6e31e6032695",
+    "static_evidence": [
+      {
+        "evidence_id": "range_member_consumer_scan",
+        "sha256": "e13659ef98c853cd6377ff5cf43c090022b27a6663552b9e1f6f3cde19747265"
+      },
+      {
+        "evidence_id": "spatial_time_candidate_trace",
+        "sha256": "784c20b38fbd39f9bd41bf5c630ed733fac05e919249c34a7123e44ab9fd665c"
+      },
+      {
+        "evidence_id": "spatial_source_index_flow_report",
+        "sha256": "e2cfff2bacb598a8fa5759607a6e324929a03ae61043fa75fa25696a385a4df9"
+      },
+      {
+        "evidence_id": "range_member_consumer_script",
+        "sha256": "c23e44587a18c6453049202e5ee138883fe8ee57d4d1834cd89f48a1ba7012f2"
+      },
+      {
+        "evidence_id": "spatial_time_candidate_script",
+        "sha256": "d721e10f4fbc7d63b92dd24e9c7af53646f727caf8c460ff68bb57a791f6bb2c"
+      }
+    ]
+  },
+  "existing_native_observation": {
+    "source_pair_seconds": {
+      "offset": 3610.0,
+      "ffoa": 3610.0,
+      "status": "CAPTURED_EQUAL_FOR_THIS_SAMPLE"
+    },
+    "sample_rate_hz": 48000,
+    "configured_absolute_start_samples": 173280000,
+    "reader_relative_start_samples": 0,
+    "reader_cursor_before_samples": 6144,
+    "absolute_adm_sample_position": 173286144,
+    "absolute_position_status": "DERIVED_FOR_SELECTED_CALL; NATIVE_ABSOLUTE_FIELD_NOT_CAPTURED",
+    "reader_to_provider_to_codec_and_writer": "SAME_CALL_BOUND_IN_PARENT_EVIDENCE"
+  },
+  "static_range_path": {
+    "source_start_end_offsets": "TWO_DISTINCT_SAMPLE_OFFSETS_IN_THE_SOURCE_CONFIGURATION",
+    "first_consumer_role": "MULTI_SOURCE_IO_SET_BUILDER",
+    "consumer_operation": "Reads each source start/end offset, applies each to the source-side range vector, and appends the selected qword entries to two output vectors.",
+    "consumer_sample_rate_input": "READ_FROM_SOURCE_CONFIGURATION; DEFAULT_48000_HZ",
+    "output_vector_to_encoder_setup": "STATIC_CALL_PATH_BOUND; SAME_RUN_OBJECT_AND_GENERATION_NOT_CAPTURED",
+    "edge_status": "STATICALLY_BOUND_TO_IO_SET_BUILDER"
+  },
+  "spatial_time_candidate": {
+    "query_type": "IEEE754_BINARY32",
+    "control_point_type": "IEEE754_BINARY32",
+    "selection_rule": "Finds adjacent control points bracketing the query and computes the normalized interpolation fraction; writes interpolation weights.",
+    "fixed_grid_callers_observed": true,
+    "query_origin_or_unit": "UNBOUND",
+    "range_vector_to_spatial_query": "NOT_OBSERVED",
+    "absolute_adm_position_to_spatial_query": "NOT_OBSERVED",
+    "live_render_callback_identity": "NOT_CAPTURED",
+    "host_frame_identity": "NOT_CAPTURED",
+    "fit_generation_identity": "NOT_CAPTURED",
+    "consumer_generation_identity": "NOT_CAPTURED"
+  },
+  "same_call_join": {
+    "range_io_set_to_spatial_fit": "UNBOUND",
+    "reader_cursor_to_spatial_fit": "UNBOUND",
+    "join_basis_available": "No same-call owner, callback, frame, or generation token spans the static IO-set and spatial time-query paths.",
+    "event_order_or_equal_scalar_used_as_join": false
+  },
+  "execution": {
+    "ghidra_import_or_reanalysis": "NO; reused the already imported read-only image",
+    "new_native_run": "NOT_RUN",
+    "r4_capture_status": "USER_REPORTED_IN_PROGRESS",
+    "model_replay": "NOT_RUN",
+    "type10_or_six_plane_composition": "NOT_RUN",
+    "gate1_closed": false
+  },
+  "minimum_next_action": "Inspect the R4 receipt first. If any fields remain absent, one bounded reference capture should record range-vector owner/count/start/end/rate; the first live spatial query scalar and track/output identities plus callback/frame/fit tokens; and the adjacent reader owner/cursor/request count, joining only through explicit object and nested-call identity.",
+  "delivery": {
+    "recipient_role": "wash-agent",
+    "implementation_agent_contacted": false,
+    "implementation_delivery": "PROHIBITED",
+    "raw_addresses_in_package": false,
+    "binary_module_names_or_paths_in_package": false,
+    "sample_paths_in_package": false,
+    "audio_or_pcm_in_package": false,
+    "private_license_material_in_package": false
+  }
+}

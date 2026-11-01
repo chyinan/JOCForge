@@ -1,0 +1,65 @@
+{
+  "package_id": "f09_4_d45_pcm_atmos_route_nonhit_attempt10_v1",
+  "status": "ATTEMPT10_PCM_TO_ATMOS_COMPLETED_CODE0_TARGET_OWNER_HISTORY_NOT_HIT; OUTPUT_METADATA_ONLY; LATER_NONZERO_REACHABILITY_OPEN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One schema-valid DEE comparison run with only the filter stage changed to pcm_to_atmos_ddp. It completed but did not reach the monitored owner/history routines. Does not establish route-wide unreachability or output validity.",
+  "source": {
+    "incoming_package_id": "force_d45_native_reachability_wash",
+    "manifest_sha256": "72d8e5d160b21f9b38da1bf4fb4937f8cde9220d22249a8c20ba5bd0cef0f0e0",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "source_hash_count": 7
+  },
+  "attempt10": {
+    "job_sha256": "5322ee23b5f2430abbd854c5b683c6fd6b3e0996105dbad3a6312e879e65141b",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_type": "ADM",
+    "filter_stage": "pcm_to_atmos_ddp",
+    "filter_version": 3,
+    "data_rate_kbps": 1024,
+    "other_job_settings_unchanged": true,
+    "xsd_validation": "PASS",
+    "exit_code": 0,
+    "output_progress_percent": 100,
+    "target_owner_history_functions_hit": false,
+    "single_pass_registration_and_metadata_callbacks_observed": true,
+    "output_bytes_before_cleanup": 17395712,
+    "output_finally_absent": true,
+    "payload_or_bitstream_read": false,
+    "playback": "NOT_RUN"
+  },
+  "observed_images": [
+    {
+      "role": "DDP Atmos",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "identity": "MATCHED"
+    },
+    {
+      "role": "DDP",
+      "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+      "identity": "MATCHED"
+    },
+    {
+      "role": "DDP single-pass",
+      "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+      "identity": "MATCHED"
+    },
+    {
+      "role": "DDP transcode",
+      "sha256": "a5d2dde93a256c4cb1e821bd809fb6aed93f2a346c72210c1bed1b3bd5b35f58",
+      "identity": "MATCHED"
+    }
+  ],
+  "separate_context": {
+    "normal_sink_runs_completed": 6,
+    "nul_sink_causal_claim": "NOT_SUPPORTED_BY_THESE_RUNS",
+    "d45_cold_zero": "STATICALLY_SUPPORTED_IN_SEPARATE_PACKAGE",
+    "later_nonzero_state": "OPEN"
+  },
+  "exclusions": {
+    "binary_or_source_code_included": false,
+    "raw_pointer_tokens_included": false,
+    "pcm_or_ec3_contents_read": false,
+    "private_key_or_license_contents_read": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "washed-helper-time-normalization-chain.v2",
+  "package_id": "helper_time_normalization_chain_v2",
+  "status": "SOURCE_INFO_NORMALIZATION_STATIC_BOUND; SOURCE_INFO_START_WRITER_UNBOUND",
+  "implementation_readiness": "SAMPLE6_START_ZERO_ONLY",
+  "source_package_manifest_sha256": "f344b8ef98afe38d4f216f7e50e2cc4a6b6e7d8abb71b99eca058d8916de79b5",
+  "supersedes_manifest_sha256": "59aea88e1beacf1b8ca8337d7627fe0daaad81c06b54059598f67a166a95a0e2",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1010,
+      "sha256": "6ab517fe9f699014e60532c77d09992c9df90c95c7326d739d1df3bff47f6f0b"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2172,
+      "sha256": "e2dd7c14edfcc32b964702a878ab34ada29396003cd8878825934e96b6a4a3a9"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 439,
+      "sha256": "df5c5e8efb622fc4486c42d71d2830fb69eab52878976a0cdcbf885c76c7d6cd"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1522,
+      "sha256": "375a80847e6591fdf7bae1efde14888e2f7f045bdde4629749eb21f1cd497240"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "package_id": "f09_4_d45_pcm_route_attempt10_11_boundary_v1",
+  "closed": [
+    "Attempt10 pcm_to_atmos_ddp and attempt11 pcm_to_ddp comparisons completed code 0 with ADM input and 1024 kbps.",
+    "Attempt10 resolved but did not hit monitored D45 targets.",
+    "Attempt11 did not arm D45 breakpoints because its module-load stop was not captured.",
+    "A static 1536-sample/flush-zero PCM guard precedes owner allocation."
+  ],
+  "open": [
+    "Registered FilterDDPEncodePlugin to PCM-frame adapter table typed path.",
+    "D45 owner/history path reachability from registered plugin.",
+    "Later nonzero source state and writer identity.",
+    "Bitstream validity and playback."
+  ],
+  "status": {
+    "attempt10": "TARGETS_NOT_HIT",
+    "attempt11": "TARGETS_NOT_INSTRUMENTED",
+    "later_nonzero": "OPEN",
+    "bitstream": "NOT_RUN"
+  },
+  "guidance": "Do not generalize these two routes to all possible DEE paths or treat attempt11 as a D45 non-hit."
+}

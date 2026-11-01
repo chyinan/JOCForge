@@ -1,0 +1,47 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_r1_manifest_sha256": "12fb4d5695230fb07f2c3f73425fe8974bacba66c07586390412a51ef9030cb9",
+  "source_r1_checkers": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "r3_checkers": {
+    "first_love": {
+      "manifest_sha256": "a9021104fb8c4579667b0fec95d7e5205fadc258e05a5b37f7aeda74a2c82fc7",
+      "normal": "PASS",
+      "optimized": "PASS"
+    },
+    "hortus_regis_alti": {
+      "manifest_sha256": "e76aa0cb9cb6ecabaee7cc8c59363d6d8526bdaa23e7dfe76caef65e3db9d348",
+      "normal": "PASS",
+      "optimized": "PASS"
+    },
+    "my_jealousy": {
+      "manifest_sha256": "0d349be7ab35c7144573d215e796e8a986fa4b85ca0becc2bc46868290e0a96b",
+      "normal": "PASS",
+      "optimized": "PASS"
+    }
+  },
+  "source_hashes": {
+    "my_jealousy_recomputed_this_turn": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "first_love_and_hortus_recomputed_in_prior_wash": true,
+    "aliases_hash_equal": true
+  },
+  "output_payloads": "Not included and not rehashed by Wash.",
+  "separation": {
+    "source_code": false,
+    "binary_or_decompilation": false,
+    "raw_addresses_or_rvas": false,
+    "pcm_or_eac3_payload": false,
+    "key_or_license_contents": false,
+    "absolute_paths": false,
+    "external_audio_algorithm_source": false
+  },
+  "limits": [
+    "First Love is not active-audio evidence.",
+    "The two active R3 windows support only their exact input/config/token scope.",
+    "The user-supplied full-song transcript is not separately hash-bound.",
+    "No decode, rendering, listening, or full-track validation is claimed."
+  ]
+}

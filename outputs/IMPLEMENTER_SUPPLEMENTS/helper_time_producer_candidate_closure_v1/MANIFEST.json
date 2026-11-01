@@ -1,0 +1,37 @@
+{
+  "schema": "washed-helper-time-producer-candidate.v1",
+  "package_id": "helper_time_producer_candidate_closure_v1",
+  "status": "AXML_START_AND_DBMD_FFOA_CANDIDATE_RULES_BOUND; HISTORICAL_DEE_HELPER_JOIN_AND_FIXTURE_DBMD_TUPLE_UNBOUND",
+  "implementation_ready": "CANDIDATE_HELPER_RULE_ONLY; DEE_HOST_JOIN_OPEN",
+  "source_package_manifest_sha256": "387f3a4b650b1c282047b63be2829928c7c1e093d119a24a3ddbc224991d7cca",
+  "implementation_allowed_for": "CANDIDATE_HELPER_TIME_METADATA_RULE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 4234,
+      "sha256": "b2e613f2dbe2534646d2797ec76fcc3d96b608563c1b53bb5533407e0517b4d1"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1399,
+      "sha256": "63526b5d83f2bbd532bcc8af8dbc7196e5d64deb2051859227869c97be62a6c0"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 2330,
+      "sha256": "28a667b14a9feee3cac993c705b4918a7f06e4bd51ffa8cbb023cee5e13b314e"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2675,
+      "sha256": "5bbb5b0db4374f0a6a5faa195ea71deebb639080e0441e909b87b558dbce3203"
+    }
+  ]
+}

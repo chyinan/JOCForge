@@ -1,0 +1,29 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; CANDIDATE_HELPER_ONLY",
+  "source_package_id": "axml-dbmd-source-time-producer-closure-addendum",
+  "source_package_manifest_sha256": "387f3a4b650b1c282047b63be2829928c7c1e093d119a24a3ddbc224991d7cca",
+  "source_package_payloads_checked": 4,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "static_source_report_hashes_checked": 5,
+  "static_source_report_hashes_match": true,
+  "prior_wash_manifests_checked": 3,
+  "input_identity_basis": "source package records exact SHA-256 match on authorized ASCII-named copy; shared with prior sample-6 identity",
+  "implementation_ready": "NO",
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "pcm_or_audio_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  },
+  "limitations": [
+    "Candidate helper image is not joined to the helper image loaded by the historical DEE process.",
+    "The 580-byte fixture DBMD payload tuple was not captured; equal final 3610-second values do not select its decoding branch.",
+    "No new DEE encode job, model run, or codec execution occurred.",
+    "Do not generalize this candidate helper rule to other ADM files without corresponding evidence."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "source-time-setter-upstream-producer-addendum-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "dff1227f24cbe29e5ca9bddfcb1d8ff42c589ad948e2c4ca40727c45a9fd1f74",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "README.md",
+      "sha256": "8f85a46455269934cd1edd5d04d250153c47e99dae2d6f910bb1f87be3997477",
+      "bytes": 3514
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "49dfdc1f2f180c9dec9fff3c0e57c27d568b03630c96f0ac83c8df209b968f9f",
+      "bytes": 5593
+    },
+    {
+      "name": "CHECK.json",
+      "sha256": "35edf77a9ca79b972a1cc38089152efea1d7edd403fc07f922761572049a4616",
+      "bytes": 728
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "ce69e5b47bf9a6d7d0f8c3adf5e2deac35a693ce8b37eaa0bb8c43edfff004fa",
+      "bytes": 1097
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "89d4a6db9b3e082589cef21c145e36e9e6dfe377a2adff32ab005315ad8d84d6",
+      "bytes": 1042
+    }
+  ]
+}

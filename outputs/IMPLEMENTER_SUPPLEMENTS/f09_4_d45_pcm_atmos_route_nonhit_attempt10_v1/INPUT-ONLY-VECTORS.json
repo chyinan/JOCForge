@@ -1,0 +1,22 @@
+{
+  "contract": "Configuration identity only. No expected encoded bytes are supplied.",
+  "vectors": [
+    {
+      "id": "attempt10_route_change",
+      "input": {
+        "input_type": "ADM",
+        "filter_stage": "pcm_to_atmos_ddp",
+        "filter_version": 3,
+        "data_rate_kbps": 1024,
+        "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+      },
+      "observed": {
+        "exit_code": 0,
+        "output_progress_percent": 100,
+        "target_owner_history_hit": false
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "NATIVE_RUN_METADATA_ONLY"
+    }
+  ]
+}

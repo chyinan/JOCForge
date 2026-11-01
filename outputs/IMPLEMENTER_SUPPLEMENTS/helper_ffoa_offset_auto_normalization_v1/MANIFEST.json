@@ -1,0 +1,29 @@
+{
+  "schema": "washed-helper-ffoa-offset-auto-normalization.v1",
+  "package_id": "helper_ffoa_offset_auto_normalization_v1",
+  "status": "RELATIVE_FFOA_NORMALIZATION_STATIC; START_TIME_PRODUCER_UNBOUND",
+  "implementation_readiness": "SAMPLE6_START_ZERO_ONLY",
+  "source_package_manifest_sha256": "617a513d7a628b831c820e44e120d25d7b5abf2b6eb71680fc440cecba383151",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1150,
+      "sha256": "8823f610a1faffe2c4cb1bae7f0639f52b8071a5fe849347a5edd416191a9b5d"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2453,
+      "sha256": "c98b775e6c76da07d49352755017880f7dbe18804331f282eb78cac77ce350e8"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 502,
+      "sha256": "bf123000019c39927946c9672d156e0d14f299d2cb8ee80ec5a865fc119870e6"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1659,
+      "sha256": "5dfb482dbdcca60a339d0f1a22e0cca0d0aa7b620eb00c8bb84714e56a0dfa7e"
+    }
+  ]
+}

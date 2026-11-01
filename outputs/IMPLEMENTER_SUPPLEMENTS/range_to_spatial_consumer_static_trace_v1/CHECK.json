@@ -1,0 +1,13 @@
+{
+  "schema": "range-to-spatial-static-trace-check.v1",
+  "checks": {
+    "authorized_sample_identity_bound": "PASS",
+    "source_range_to_first_io_set_consumer": "STATICALLY_BOUND",
+    "spatial_query_scalar_typed": "PASS_BINARY32",
+    "reader_or_absolute_sample_to_spatial_fit": "UNBOUND",
+    "owner_callback_frame_generation_join": "NOT_CAPTURED",
+    "r4_capture_reused_or_duplicated": "NO_NEW_NATIVE_JOB_STARTED",
+    "model_replay": "NOT_RUN",
+    "gate1_closed": false
+  }
+}

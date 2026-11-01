@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f09_4_force_d45_history_v1",
+  "scope": "F09.4 force-D45 cold initialization and history copy path; later source mutation and runtime value remain UNBOUND.",
+  "status": "FORCE_D45_COLD_ZERO_AND_COPY_PATH_STATICALLY_BOUND; LATER_SOURCE_WRITER_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1338,
+      "sha256": "8a726427b9435226d4fb32272a3cb5a31120cdf9445e8dedf2593a387e7c8e31"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3537,
+      "sha256": "bef616d678abdb6fba2fa9a64b2c3b37073d5c943a7a4e2111d3803d0e85300f"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 839,
+      "sha256": "cb10bc878c1e903e3e493ec2269589e795e0dd89989aee5eeb1b106b73fe9057"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 689,
+      "sha256": "9d36d31224edf9bf7dc6d557b384892788024d6c6bd1da492ab6a02c9356db8e"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2342,
+      "sha256": "b4e39ff49874ca28411730476bc25e011bfb8fe2806e3976ff8b716c922b861d"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "schema": "washed-f09-4-native-u5-boundary.v1",
+  "package_id": "f09_4_native_u5_writer_boundary_v1",
+  "status": "F10_SEGMENT_COUNT_STATIC_ONLY_NATIVE_F09_4_U5_NOT_CLOSED",
+  "implementation_delivery": "PROHIBITED",
+  "implementation_code_inspected": false,
+  "source_package": {
+    "manifest_sha256": "9d8f8576a7f88e52d5f446d4939bde0c24eab7892ed045ed181706dd5cbca3d7",
+    "seal_matches": true,
+    "payload_count": 21,
+    "payload_hashes_recomputed": "ALL_MATCH",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "module_identities": [
+    {
+      "module": "dee_audio_filter_ddp.dll",
+      "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+      "current_file_rehash": "MATCH"
+    },
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "current_file_rehash": "MATCH"
+    },
+    {
+      "module": "dee_audio_filter_ddp_single_pass.dll",
+      "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+      "current_file_rehash": "MATCH"
+    },
+    {
+      "module": "dee_audio_filter_convert_atmos_mezz.dll",
+      "sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+      "current_file_rehash": "MATCH"
+    }
+  ],
+  "approved_model_contracts": [
+    {
+      "package_id": "ETSI-FRAME-EXPONENT-PATTERN-V1",
+      "manifest_sha256": "03f7cef4874dc2c0f79cfce87191c07afc1468616014b87a4ee9bf46f74b95df",
+      "manifest_recomputed": "MATCH"
+    },
+    {
+      "package_id": "F09-F10-STAGE-CONTROL-ADAPTER-V1",
+      "manifest_sha256": "edce469334d871edba0c5bb634b8e74f0d938b610f19ad5df005f0dfd55ec0fb",
+      "manifest_recomputed": "MATCH",
+      "contract_sha256": "3f629194864d43e830b80a5cb19e16e409ba55445853868b48900d4a74576164"
+    }
+  ],
+  "static_contract": {
+    "f10_segment_grouping": "STATIC_ONLY_NOT_U5",
+    "segment_rule_observed": "A nonzero marker starts a segment with length 1; zero markers extend it; exponent rows are merged by minimum.",
+    "frame_set_counter": "Adds frame block counts and acts at six total blocks; not a per-lane F09.4 distance.",
+    "convexpstr_writer": "Serializes a preexisting five-bit descriptor value; does not select Table E.1.9.",
+    "six_block_writer": "Calls the per-block writer for blocks 0 through 5 from a frame record.",
+    "first_writer_of_lane0_strategy_and_u5": "NOT_LOCATED"
+  },
+  "native_u5_producer": "NOT_CLOSED",
+  "approved_model_vector": {
+    "block_order": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "marker_after": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      1
+    ],
+    "distance_includes_refresh_block": true,
+    "strategy_row_block_order": [
+      2,
+      0,
+      0,
+      2,
+      0,
+      3
+    ],
+    "table_e1_9_code": 5,
+    "without_refresh_increment_row": [
+      2,
+      0,
+      0,
+      3,
+      0,
+      3
+    ],
+    "without_refresh_row_is_legal": false,
+    "evidence_class": "MODEL"
+  },
+  "disposition": "Current Rust rule matches the approved model contract; native parity remains unproven. Do not treat the F10 segment count as the U5 selector.",
+  "execution": {
+    "ghidra_static_only": true,
+    "new_dee_job": "NOT_RUN",
+    "pcm_read": "NOT_RUN",
+    "render_or_playback": "NOT_RUN",
+    "private_key_read": "NO"
+  },
+  "minimum_next_edge": "Trace the first writer of lane-0 strategy/U5 fields in the six-block frame record entering the per-block writer."
+}

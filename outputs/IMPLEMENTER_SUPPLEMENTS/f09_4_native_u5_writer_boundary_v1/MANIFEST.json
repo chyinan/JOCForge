@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f09_4_native_u5_writer_boundary_v1",
+  "scope": "Hash-bound Ghidra static F10/U5 distinction plus approved model vector; native F09.4 U5 producer remains open.",
+  "status": "F10_SEGMENT_COUNT_STATIC_ONLY_NATIVE_F09_4_U5_NOT_CLOSED",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3496,
+      "sha256": "b49aaf78c1075122eacd37e7e72fb2be90dc7862a0f25382d73981a5cc998ecd"
+    },
+    {
+      "name": "MODEL-VECTOR.json",
+      "bytes": 838,
+      "sha256": "da00de5ae7936ce61ad20213ded1ddeaac143a7b61fcd143ef7c2c387f5f3a64"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1277,
+      "sha256": "e3ac85a530d7c9bdcf84170ea066987d04c3f6f5bad6151b689bd2b8e233cb50"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1890,
+      "sha256": "4c90af5e59a5775df624c09a1e7b56bfe0f4a6497afa2c95207573dd63a47fdd"
+    }
+  ]
+}

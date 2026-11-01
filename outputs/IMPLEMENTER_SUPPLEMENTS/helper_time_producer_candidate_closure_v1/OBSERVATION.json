@@ -1,0 +1,97 @@
+{
+  "schema": "washed-helper-time-producer-candidate-observation.v1",
+  "package_id": "helper_time_producer_candidate_closure_v1",
+  "evidence_class": "HASH_BOUND_STATIC_CANDIDATE_RULES_PLUS_DIRECT_FIXTURE_HELPER_OBSERVATION",
+  "disposition": "AXML_START_AND_DBMD_FFOA_CANDIDATE_RULES_BOUND; HISTORICAL_DEE_HELPER_JOIN_AND_FIXTURE_DBMD_TUPLE_UNBOUND",
+  "implementation_readiness": "CANDIDATE_HELPER_RULE_ONLY; DEE_HOST_JOIN_OPEN",
+  "scope": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_bytes": 743696526,
+    "channel_count": 38,
+    "sample_rate_hz": 48000,
+    "sample_count": 6522906,
+    "helper_candidate_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+    "helper_tool": "AtmosInfo Tool 1.1",
+    "helper_exit_code": 0,
+    "helper_runtime_observed_start_seconds": 3610,
+    "helper_runtime_observed_first_frame_of_action_seconds": 3610,
+    "dee_encoding_job": "NOT_RUN",
+    "audio_output_written": false
+  },
+  "axml_start_time": {
+    "field": "audioProgramme.start",
+    "parse": "HH:MM:SS.fraction to seconds = hours*3600 + minutes*60 + seconds + fraction",
+    "fractional_precision": "right-pad fraction to six decimal digits before conversion",
+    "missing_attribute_default_seconds": 0,
+    "invalid_hour_minute_or_second": "REJECTED_AS_INVALID_TIMECODE_FORMAT",
+    "destination": "candidate helper source-info StartTime, binary64 seconds",
+    "static_rule": "BOUND_FOR_CANDIDATE_IMAGE",
+    "fixture_vector": {
+      "input": "01:00:10.00000",
+      "expected_seconds": 3610,
+      "helper_observed_seconds": 3610,
+      "status": "MATCH"
+    }
+  },
+  "dbmd_first_frame_of_action": {
+    "chunk_required": true,
+    "missing_chunk_behavior": "VALIDATION_ERROR",
+    "decode_failure_behavior": "USE_ZERO_INITIALIZED_DECODED_STRUCTURE",
+    "nonnegative_tuple_rule": "absolute_source_ffoa = StartTime + hours*3600 + minutes*60 + subsecond_ticks/100000",
+    "negative_first_component_behavior": "-1.0 missing sentinel; do not set absolute source FFOA",
+    "static_rule": "BOUND_FOR_CANDIDATE_IMAGE",
+    "fixture_chunk_bytes": 580,
+    "decoded_fixture_tuple": "NOT_CAPTURED",
+    "final_equal_scalars_discriminate_tuple_branch": false
+  },
+  "normalization": {
+    "source_info_start_default_seconds": 0,
+    "source_info_absolute_ffoa_default_seconds": -1,
+    "negative_absolute_ffoa_relative_value": -1,
+    "nonnegative_relative_value": "max(0, absolute_ffoa - StartTime)",
+    "helper_output_start": "StartTime",
+    "helper_output_ffoa": "StartTime + max(relative_ffoa, 0)",
+    "host_property_labels": {
+      "start": "offset, binary64 seconds",
+      "first_frame_of_action": "ffoa, binary64 seconds"
+    },
+    "intermediate_tuple_value_is_final_writer": false
+  },
+  "prior_native_sample_observation": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "prior_native_offset_seconds": 3610,
+    "prior_native_ffoa_seconds": 3610,
+    "helper_candidate_start_seconds": 3610,
+    "helper_candidate_ffoa_seconds": 3610,
+    "interpretation": "SAME_INPUT_AND_EQUAL_FINAL_VALUES_ONLY; NOT_HELPER_IMAGE_IDENTITY_OR_TUPLE_BRANCH_JOIN"
+  },
+  "open_edges": {
+    "fixture_dbmd_tuple_to_helper_output": "UNBOUND",
+    "helper_candidate_image_to_historical_dee_loaded_helper": "UNBOUND",
+    "generality_to_other_adm_files": "NOT_ESTABLISHED",
+    "new_dee_job_or_codec_execution": "NOT_RUN"
+  },
+  "source_packages": [
+    {
+      "package_id": "helper_time_normalization_chain_v3",
+      "manifest_sha256": "c794d494a739b44513fbd5de5694bf374d03866bc0b1c8c625f8a977f5efd83b"
+    },
+    {
+      "package_id": "sample6_source_time_value_correlation_v1",
+      "manifest_sha256": "9b3808f2292c404e61281af6fe578e0d687520dc382a011a4cf4930f628409d8"
+    },
+    {
+      "package_id": "source_time_setter_upstream_producer_addendum_v1",
+      "manifest_sha256": "641ed1e33b0c8c816c36db5b8759dc979d2c4d67f5017f8835a616c53af52d7d"
+    }
+  ],
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "pcm_or_audio_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

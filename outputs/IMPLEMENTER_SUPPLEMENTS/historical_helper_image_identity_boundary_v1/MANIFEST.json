@@ -1,0 +1,37 @@
+{
+  "schema": "washed-historical-helper-image-identity-boundary.v1",
+  "package_id": "historical_helper_image_identity_boundary_v1",
+  "status": "R138_HOST_IMAGE_MATCHED; HOST_HELPER_COMMAND_EDGE_BOUND; HISTORICAL_CHILD_HELPER_IMAGE_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "6166ffb0277e05e341f5dfd8f0a33677b3bc5c02b3943c0c875cd390654dec3b",
+  "implementation_allowed_for": "HISTORICAL_HELPER_IDENTITY_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3019,
+      "sha256": "7743baee807d4f7b380c29653f8ea9ffac6918054cf18c4d863be053c9915e44"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1396,
+      "sha256": "e1b3152f29909567e3ee06612c18d7487981fe7335da786c109d4979738ba0ee"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1160,
+      "sha256": "40cf21b307b8f41eabd74f692d50f59964b0286f1eafda06b7bd01bd96a8e065"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2252,
+      "sha256": "f37978d6e2e2436bb7c941349c28609e1b0ff4cd403bd29169b28774d25ae3d7"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "washed-f09-4-force-d45-cross-image-source-binding.v1",
+  "package_id": "f09_4_force_d45_cross_image_scan_v1",
+  "incoming_research_manifest_sha256": "dcf83a14b027b75fe6b5f9b7868d6ea93e001b6596985374b0891d917e666972",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "source_hash_mismatch_count": 0,
+  "images": [
+    {
+      "name": "dee_audio_filter_ddp_single_pass.dll",
+      "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+      "findings": "constructor clear and read/copy path; no direct later source store found"
+    },
+    {
+      "name": "dee_audio_filter_ddp.dll",
+      "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+      "findings": "same clear and read/copy pattern; no direct nonzero source store found"
+    },
+    {
+      "name": "dee_audio_filter_ddp_transcode.dll",
+      "sha256": "a5d2dde93a256c4cb1e821bd809fb6aed93f2a346c72210c1bed1b3bd5b35f58",
+      "findings": "matching reader/copy path; no direct source store found"
+    },
+    {
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "findings": "no relevant data-memory operand references in bounded scan"
+    },
+    {
+      "name": "dee_audio_filter_convert_atmos_mezz.dll",
+      "sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+      "findings": "no relevant instruction references in bounded scan"
+    },
+    {
+      "name": "dee_audio_filter_cod.dll",
+      "sha256": "527dc873b9be7e348698e66195250cbb9382cbec16c590abe547a87e9159abc8",
+      "findings": "no relevant instruction references in bounded scan"
+    },
+    {
+      "name": "dactlib.dll",
+      "sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239",
+      "findings": "offset-like hits resolved to code branch/call destinations, not data operands"
+    }
+  ],
+  "dee_job_attempted_once": true,
+  "private_key_or_license_contents_read": false,
+  "pcm_or_payload_read": false
+}

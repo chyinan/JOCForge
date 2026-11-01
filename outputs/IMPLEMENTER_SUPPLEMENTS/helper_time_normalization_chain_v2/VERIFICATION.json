@@ -1,0 +1,9 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_BOUND_SUPERSEDING_TIME_RULE",
+  "source_package_manifest_sha256": "f344b8ef98afe38d4f216f7e50e2cc4a6b6e7d8abb71b99eca058d8916de79b5",
+  "source_checker_normal": "PASS",
+  "source_checker_optimized": "PASS",
+  "supersedes_manifest_sha256": "59aea88e1beacf1b8ca8337d7627fe0daaad81c06b54059598f67a166a95a0e2",
+  "implementation_readiness": "SAMPLE6_START_ZERO_ONLY"
+}

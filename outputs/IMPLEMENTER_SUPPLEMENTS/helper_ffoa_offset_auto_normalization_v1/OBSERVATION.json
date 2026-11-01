@@ -1,0 +1,73 @@
+{
+  "schema": "washed-helper-ffoa-offset-auto-normalization.v1",
+  "status": "RELATIVE_FFOA_NORMALIZATION_STATIC; START_TIME_PRODUCER_UNBOUND",
+  "source_package_manifest_sha256": "617a513d7a628b831c820e44e120d25d7b5abf2b6eb71680fc440cecba383151",
+  "input_identity": {
+    "sample6_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "sample_rate_hz": 48000,
+    "samples_per_channel": 6522906,
+    "axml_programme_start_seconds": 3610.0
+  },
+  "helper_time_fields": {
+    "start_time_type": "binary64 seconds",
+    "start_time_default": 0.0,
+    "relative_ffoa_type": "binary64 seconds",
+    "relative_ffoa_default_sentinel": -1.0,
+    "host_output_property_mapping": {
+      "Start time (seconds)": "offset",
+      "First frame of action (seconds)": "ffoa"
+    },
+    "host_result_slot_defaults": {
+      "offset": 0.0,
+      "ffoa": 0.0
+    },
+    "missing_helper_line": "corresponding host output slot remains at its initialized zero"
+  },
+  "relative_ffoa": {
+    "source_components": "three signed 32-bit time components",
+    "formula_seconds": "c0*3600 + c1*60 + c2/100000",
+    "normalization": "relative < 0 becomes 0",
+    "absolute_ffoa_formula": "start_time + max(relative_ffoa,0)"
+  },
+  "input_only_vectors": [
+    {
+      "start_time": 3610.0,
+      "relative_ffoa": -1.0,
+      "absolute_ffoa": 3610.0
+    },
+    {
+      "start_time": 3610.0,
+      "relative_ffoa": 0.0,
+      "absolute_ffoa": 3610.0
+    },
+    {
+      "start_time": 3610.0,
+      "relative_ffoa": 2.5,
+      "absolute_ffoa": 3612.5
+    },
+    {
+      "start_time": 3610.0,
+      "relative_ffoa": -0.25,
+      "absolute_ffoa": 3610.0
+    }
+  ],
+  "sample6_crosscheck": {
+    "prior_native_offset_seconds": 3610.0,
+    "prior_native_absolute_ffoa_seconds": 3610.0,
+    "same_input_sha256": true,
+    "start_time_equals_axml_start": "NUMERICALLY_MATCHES; writer causality not proven",
+    "full_file_range_start_sample_by_existing_formula": 0
+  },
+  "unbound": [
+    "master start_time first writer/source",
+    "AXML programme.start to master start_time typed edge",
+    "helper image actually loaded by historical host run",
+    "overflow and NaN/Infinity behavior",
+    "actual first reader request"
+  ],
+  "implementation_disposition": {
+    "selected_sample6_full_file_relative_start": "0 samples, consistent with native scalar pair",
+    "general_offset_auto_rule_approved": false,
+    "general_ffoa_source_rule_approved": false
+  }
+}

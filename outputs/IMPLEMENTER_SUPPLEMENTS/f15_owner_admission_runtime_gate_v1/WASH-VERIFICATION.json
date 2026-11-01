@@ -1,0 +1,25 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_SOURCE_AUDIT",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_sha256s": {
+    "crates/jocforge-application/src/output_publication/f15_plan_admission.rs": "859f978c30eab2a367e794bacd727e692236e645c061a39fdae1c5752d466d6b",
+    "crates/jocforge-application/src/output_publication.rs": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438",
+    "crates/jocforge-application/src/lib.rs": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35",
+    "approved/specs/15-keyless-publication.md": "47beaa9d415d6d26eb8d6a7df63ca3d86514c37740618c3a041a46c7961b3a72"
+  },
+  "search_scope": "Current production crates and the exact F15 admission module at HEAD/working-tree snapshot.",
+  "results": {
+    "production_role_marker_impls": 0,
+    "test_role_marker_impls": 4,
+    "production_admission_callers": 0,
+    "production_destination_issuers": 0,
+    "product_encode": "BackendUnavailable"
+  },
+  "boundaries": {
+    "source_code_in_package": false,
+    "binary_or_decompilation": false,
+    "private_key": false,
+    "audio_algorithm_inference": false
+  }
+}

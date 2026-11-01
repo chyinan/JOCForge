@@ -1,0 +1,93 @@
+{
+  "schema": "washed-f09-4-force-d45-history-lineage.v1",
+  "package_id": "f09_4_force_d45_history_v1",
+  "status": "FORCE_D45_COLD_ZERO_AND_COPY_PATH_STATICALLY_BOUND; LATER_SOURCE_WRITER_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Static cold initialization and per-frame copy semantics for the force-D45 history token in the selected six-block single-pass image. Later nonzero source writes and runtime values remain unbound.",
+  "target_image": {
+    "module": "dee_audio_filter_ddp_single_pass.dll",
+    "bytes": 13193728,
+    "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+    "current_file_hash": "MATCH"
+  },
+  "tool": {
+    "name": "Ghidra 12.2 PUBLIC",
+    "ida_used": false,
+    "dee_execution": "NOT_RUN",
+    "live_observation": "NOT_RUN"
+  },
+  "parents": [
+    {
+      "package_id": "force_d45_history_lineage_wash",
+      "manifest_sha256": "1c6a71de5193eadd0400a7545b74a8c5f42e8bf304a217daf8410f7d70c4fc53",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "f09_4_native_u5_selector_handoff_v1",
+      "manifest_sha256": "827139044a5fb85ee9eeee9fc4c68f303a47252d619c0e7b29e82bb54b5668ff",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    }
+  ],
+  "owner_lineage": {
+    "arena_allocator": "FUN_180295d30 calloc",
+    "owner_carver": "FUN_1802e1660",
+    "owner_pointer_slot": "component+0xdf8",
+    "constructor": "FUN_1802e51b0",
+    "owner_scope": "per component/substream context"
+  },
+  "source_state": {
+    "base": "owner+0x135c0",
+    "lane_records": 5,
+    "record_stride_bytes": 8,
+    "u16_words_per_record": 4,
+    "width_bits": 16,
+    "explicit_constructor_clear": true,
+    "initial_value": 0,
+    "consumer_reads": "first U16 at owner+0x135c0+8*lane",
+    "value_domain": "raw U16 bit pattern; zero/nonzero only; no scaling/clamp"
+  },
+  "history_matrix": {
+    "base": "owner+0x15208",
+    "shape": "6 blocks x 5 FBW lanes",
+    "layout": "block-major, lane-minor",
+    "cell_offset": "2*(block*5+lane)",
+    "cell_width_bits": 16,
+    "initial_owner_arena_calloc_zero": true
+  },
+  "copy_path": {
+    "writer": "FUN_180316730",
+    "caller": "FUN_180311900",
+    "source": "owner+0x135c0+8*lane",
+    "destination": "owner+0x15208+2*(block*5+lane)",
+    "copy": "first U16 copied unchanged",
+    "block_ordinal": "low 16-bit block ordinal starts at 0 and advances per block",
+    "call_order": "per-block history copy occurs before FUN_1802fc200 force-D45 strategy evaluation"
+  },
+  "consumer": {
+    "function": "FUN_1802fd710",
+    "condition": "history cell is nonzero and computed strategy != 3",
+    "effect": "force U2 strategy to 3 (D45)",
+    "physical_unit": "none established; consumer tests zero/nonzero"
+  },
+  "source_writer_boundary": {
+    "first_generation_source_value": 0,
+    "later_direct_writer_in_single_pass_image": "NOT_FOUND",
+    "indirect_or_external_writer": "NOT_EXCLUDED",
+    "nonzero_runtime_value": "NOT_OBSERVED",
+    "runtime_generation_id": "NOT_CAPTURED"
+  },
+  "open_edges": {
+    "later_nonzero_source_first_writer": "UNBOUND",
+    "cross_image_or_indirect_mutation": "UNBOUND",
+    "runtime_same_generation_values": "NOT_RUN",
+    "selector_no_row_0xC_handling": "SEPARATE_UNPROVEN_EDGE"
+  },
+  "exclusions": {
+    "raw_source_code_included": false,
+    "raw_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "absolute_paths": false
+  }
+}
