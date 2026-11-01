@@ -1,0 +1,16 @@
+{
+  "schema":"washed-source-manifest-bindings.v1",
+  "incoming_package":{
+    "package_id":"native-f06-r138-bsi-context-condition-producer-addendum",
+    "manifest_sha256":"34149ece54163b4de2b1e7ff883097db8aa946b7c455da46ebc5647484de0fcb",
+    "checker_normal":"PASS",
+    "checker_python_optimized":"PASS",
+    "scope":"Ghidra 12.2 read-only static producer trace; no new run"
+  },
+  "parent_source_packages":[
+    {"package_id":"native-f06-measurement-dialnorm-u5-path","manifest_sha256":"c43faf611ba1edef4dd7a5e5d8388625e3938eef626e68cb1a670f2fe849d8f1"},
+    {"package_id":"native-f06-bsi-u16-value-lineage-addendum","manifest_sha256":"33cb42032997d5f79ddaf50b6e0b7eeebaefac77e7aea4863d18377ccac49d89"},
+    {"package_id":"native-f06-bsi-custom-category-bit-width-and-length-addendum","manifest_sha256":"cfc5c4975226f66b4d21e7c786fe6bff83ac09211680b0bc36b0b5ef47222b46"}
+  ],
+  "raw_xml_or_audio_copied":false
+}

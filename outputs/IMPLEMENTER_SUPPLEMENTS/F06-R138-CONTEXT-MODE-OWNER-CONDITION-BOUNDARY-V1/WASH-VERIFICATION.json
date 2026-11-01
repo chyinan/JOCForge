@@ -1,0 +1,20 @@
+{
+  "schema":"wash-verification.v1",
+  "incoming_manifest_sha256":"34149ece54163b4de2b1e7ff883097db8aa946b7c455da46ebc5647484de0fcb",
+  "incoming_checker":{"normal":"PASS","python_optimized":"PASS"},
+  "independent_review":[
+    "Recomputed the incoming package manifest and ran its checker normally and under Python optimization.",
+    "Confirmed the mode producer is the Boolean comparison on component member +0x54 and is not a data-rate field.",
+    "Confirmed constructor zero initialization and the mode-zero/mode-one update-flag outcomes.",
+    "Preserved the two conditional fixed-block U16-zero writers while keeping their applicability to R138 unbound.",
+    "Kept the prior mode-0 runtime observation tied to its different job XML hash."
+  ],
+  "not_promoted":[
+    "R138 XML to component source member +0x54 mapping",
+    "R138 mode/update flag values",
+    "R138 U16 zero applicability",
+    "allocation-time default before conditional setter",
+    "implementation readiness"
+  ],
+  "implementation_delivery":"REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

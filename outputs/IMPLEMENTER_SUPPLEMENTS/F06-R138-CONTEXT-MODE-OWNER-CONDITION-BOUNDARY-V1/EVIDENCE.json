@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge-f06-r138-context-owner-condition.v1",
+  "package_id": "F06-R138-CONTEXT-MODE-OWNER-CONDITION-BOUNDARY-V1",
+  "status": "MODE_AND_CONDITIONAL_ZERO_RULE_STATIC_BOUND; R138_PROFILE_TO_MODE_UNBOUND",
+  "implementation_ready": false,
+  "r138_profile": {
+    "job_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_type": "audio.adm",
+    "output_profile": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "time_base": "embedded_timecode",
+    "start": 86640,
+    "end": 86664,
+    "metering_mode": "1770-4",
+    "dialogue_intelligence": false,
+    "line_mode_drc": "none",
+    "rf_mode_drc": "none",
+    "custom_dialnorm_element": "ABSENT",
+    "context_mode_captured": false,
+    "update_flag_captured": false
+  },
+  "typed_mode_producer": {
+    "component_state_member_offset": "+0x54",
+    "translation": "mode_boolean = (source_member == 1)",
+    "xml_profile_to_component_member": "NOT_BOUND",
+    "data_rate_source_is_separate": true
+  },
+  "context_constructor": {
+    "allocation_size_bytes": 14664,
+    "zero_initialized": true,
+    "mode_destination_offset": "+0x00",
+    "update_flag_offset": "+0x854",
+    "update_flag_initial_value": 0,
+    "mode_zero_outcome": {"mode":0,"update_flag":0},
+    "mode_one_success_outcome": {"mode":1,"update_flag":1}
+  },
+  "conditional_owner_u16": {
+    "offset": "+0x34",
+    "mode_0_update_0": "measurement-update fixed-block writer sets low U16 to zero",
+    "mode_1_update_1": "context-initialization fixed-block writer sets low U16 to zero",
+    "r138_specific_mode": "UNBOUND",
+    "r138_specific_owner_u16": "UNBOUND",
+    "r138_zero_applicability": "UNBOUND",
+    "allocation_time_value_before_conditional_writer": "UNBOUND"
+  },
+  "prior_runtime_observation": {
+    "job_xml_sha256": "4f952041d7056fafdefffa7e5df3e6400a758cb4fbcc7504815bf067dc08545e",
+    "mode": 0,
+    "update_flag": 0,
+    "same_as_r138_profile": false,
+    "transfer_to_r138": "PROHIBITED"
+  },
+  "policy": {
+    "new_dee_run": false,
+    "new_u16_capture": false,
+    "audio_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}

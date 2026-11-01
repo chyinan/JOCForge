@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 4116,
+      "file": "CHECK.py",
+      "sha256": "60b0b23563d82d88c8bedab177136aa77662b0b3b08451acf91a8e2fdf3a29ba"
+    },
+    {
+      "bytes": 2198,
+      "file": "EVIDENCE.json",
+      "sha256": "323745db0677db471cce07f40fb67dd4460b9f838fabaf43ed4483446c957c65"
+    },
+    {
+      "bytes": 1518,
+      "file": "REPORT.md",
+      "sha256": "5981a9bc92686884c184a1c090bf95fc0c242919f57483a682069cf6e4124c3a"
+    },
+    {
+      "bytes": 916,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "3e5664c50421825cdb34196e459edf84f35f6b58dc50ef940359bc00f497837e"
+    },
+    {
+      "bytes": 1086,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "810f09d0ba99d23b0bf311066319d458f2f8a35d0719827dcdcb8353dc9d2a2a"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F06-R138-CONTEXT-MODE-OWNER-CONDITION-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "34149ece54163b4de2b1e7ff883097db8aa946b7c455da46ebc5647484de0fcb",
+  "status": "MODE_AND_CONDITIONAL_ZERO_RULE_STATIC_BOUND; R138_PROFILE_TO_MODE_UNBOUND"
+}
