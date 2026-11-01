@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-f09-d45-selector-accumulator-vectors.v1",
+  "kind": "static structural vectors; no media or runtime values",
+  "vectors": [
+    {
+      "id": "selector-cell-to-symbol-entry",
+      "input": {
+        "block": 0,
+        "lane": 0,
+        "selector_cell": "U16 owner+0x1bb22",
+        "selector_domain": [0, 1, 2, 3]
+      },
+      "expected": {
+        "reader": "FUN_1802fa870",
+        "symbol_entry": "owner+0x140f0+0x2c8",
+        "symbol_type": "U16 values",
+        "exact_symbol_values": "NOT_INFERRED_BY_THIS_VECTOR"
+      }
+    },
+    {
+      "id": "symbol-to-bit-width-and-accumulator",
+      "input": {
+        "symbol_entry": "owner+0x140f0+0x2c8",
+        "frame_paths": ["FUN_18033c670", "FUN_18033b2f0"]
+      },
+      "expected": {
+        "generic_writer": "FUN_1802fd640",
+        "code_width_bits": 4,
+        "symbol_width_bits": 7,
+        "accumulator_width_bits": 16,
+        "semantic_field": "UNBOUND",
+        "absolute_stream_bit_range": "UNBOUND"
+      }
+    }
+  ],
+  "lineage": {
+    "source_manifest_sha256": "3a525c19200e50424d4109013f898ca59b34a11d52ecc11fb21c6885e56cdb4a",
+    "target_image_sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9"
+  }
+}

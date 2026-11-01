@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F09-D45-SELECTOR-CELL-TO-BIT-ACCUMULATOR-BOUNDARY-V1",
+  "source": {
+    "package_id": "force_d45_native_reachability_wash",
+    "manifest_sha256": "3a525c19200e50424d4109013f898ca59b34a11d52ecc11fb21c6885e56cdb4a",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_count": 10
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_single_pass.dll",
+    "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+    "analysis": "Ghidra 12.2 static analysis"
+  },
+  "selector_cell": {
+    "lane0_block0": "owner+0x1bb22",
+    "equivalent_offset": "owner+0x1bae8+0x3a",
+    "type": "U16",
+    "domain": [0, 1, 2, 3],
+    "address_formula": "owner+0x1bb22 + 10*block + 2*lane",
+    "reader": "FUN_1802fa870"
+  },
+  "symbol_buffer": {
+    "owner_root": "owner+0x140f0",
+    "entry_formula": "owner+0x140f0+0x2c8+8*(5*block+lane)",
+    "writer": "FUN_1802fa870",
+    "symbol_semantics": "difference-derived U16 symbols; detailed mapping remains bounded by upstream force-selector supplement"
+  },
+  "frame_paths": [
+    {"function": "FUN_18033c670", "role": "current frame", "table_owner_argument": "param_11"},
+    {"function": "FUN_18033b2f0", "role": "predecessor frame", "table_owner_argument": "param_8"}
+  ],
+  "bit_writer": {
+    "function": "FUN_1802fd640",
+    "calls": [
+      {"value_count": 1, "width_bits": 4},
+      {"value_source": "symbol buffer", "width_bits": 7}
+    ],
+    "state": "16-bit accumulator with carry/remainder",
+    "field_name": "UNBOUND",
+    "absolute_stream_bit_range": "UNBOUND",
+    "writer_state_initializer_and_field_order": "UNBOUND"
+  },
+  "execution_scope": {
+    "runtime_selector_values_captured": false,
+    "pcm_or_payload_read": false,
+    "private_key_read": false,
+    "implementation_ready": false
+  }
+}

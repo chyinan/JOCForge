@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F09-D45-SELECTOR-CELL-TO-BIT-ACCUMULATOR-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "3a525c19200e50424d4109013f898ca59b34a11d52ecc11fb21c6885e56cdb4a",
+  "status": "SELECTOR_TO_BIT_ACCUMULATOR_STATIC_BOUND; SEMANTIC_FIELD_AND_OFFSET_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1869,
+      "sha256": "003d41d4a5fcb3d3ed35c771a560c10667c5724f4e96a26976e1ec67e799ae54"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1232,
+      "sha256": "7471de3eb6ec972923f4ad8a46143816aa64f4c5ef2c9306e6739329376f00a7"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1996,
+      "sha256": "22fea9d2c626b247ba728afccb6223c5ec90404a47e2848c4bfd363990b4b1c8"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 770,
+      "sha256": "d3ea36c78bc4bb1f517f0be0134b6c03ad9d6960ee9dce57eddc7ef35db46a6d"
+    }
+  ]
+}
