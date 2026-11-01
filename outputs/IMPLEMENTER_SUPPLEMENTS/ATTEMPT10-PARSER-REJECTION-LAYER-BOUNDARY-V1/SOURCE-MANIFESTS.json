@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "attempt10-parser-compatibility-wash-v1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-9-f05-f13-static-lineage\\outputs\\attempt10-parser-compatibility-wash-v1",
+    "manifest_sha256": "65bce3601c10d36d223e8a9852e4222d04cfcfbadf023f974a11a64062b52b78",
+    "checker_result": "PASS normal and optimized; four sealed summary payloads"
+  },
+  "source_identities": [
+    {"repository": "OpenJOC", "file": "crates/openjoc-inspect/src/aggregate.rs", "sha256": "5fe4b90e04e4e1d665e89ce4877d36a4aa6f075ac5cadeaf4a9aa4e9f0bf1d5f"},
+    {"repository": "OpenJOC", "file": "crates/openjoc-eac3/src/lib.rs", "sha256": "6cfec34defba20deedfe359e0f4dcfb8e06aca03d719a54d07272b215a31ba31"},
+    {"repository": "OpenJOC", "file": "crates/openjoc-eac3/src/audio_block.rs", "sha256": "969303c175302b6002e13a979d9d466d4dfcc36ae66e9f46a605536747104074"},
+    {"repository": "OpenJOC", "file": "crates/openjoc-emdf/src/lib.rs", "sha256": "2f9493f0037de4819bf24fee2454afbde2ad9ec9a7627c05cd748c01f6940cc7"},
+    {"repository": "JOCForge", "file": "crates/jocforge-domain/src/codec/selected_frame_trial.rs", "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"}
+  ],
+  "approved_wash_references": [
+    {"package_id": "CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1", "manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"},
+    {"package_id": "F11-F12-APPROVED-SOURCE-LEAVES-V1", "manifest_sha256": "01dbb8fe97bc8f40247340b93eccd008826c2330e6c4616323f2cbd1aa2ab81f"},
+    {"package_id": "METADATA-OUTPUT-TYPED-HANDOFF-APPROVAL-V1", "manifest_sha256": "5d59d710a65005c3c35317726674f228bc7a4e13b340f6eb56b2d4541037e29d"}
+  ],
+  "exclusions": [
+    "No raw source code or bitstream included.",
+    "No output bytes, PCM, key, HMAC or license material read or copied by Wash."
+  ]
+}

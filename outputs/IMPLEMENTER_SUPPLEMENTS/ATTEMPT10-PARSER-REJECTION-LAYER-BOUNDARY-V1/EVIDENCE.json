@@ -1,0 +1,73 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ATTEMPT10-PARSER-REJECTION-LAYER-BOUNDARY-V1",
+  "source": {
+    "source_package_id": "attempt10-parser-compatibility-wash-v1",
+    "source_manifest_sha256": "65bce3601c10d36d223e8a9852e4222d04cfcfbadf023f974a11a64062b52b78",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "sealed_summary_payloads": 4,
+    "output_payload_in_package": false
+  },
+  "parser": {
+    "name": "OpenJOC",
+    "version": "0.20.1",
+    "executable_sha256": "2e84afcfa5e197332a84f9386ffa4c69f0c12e8ca5cf95c23690af320cfa1a39",
+    "inspection_scope": "whole-file AU/frame structure; no decode/render/playback"
+  },
+  "attempt10_observation_from_source_package": {
+    "run_id": "sample6-keyless-full-20261101-10",
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "file_length_bytes": 17395712,
+    "output_sha256": "NOT_COMPUTED_BY_REQUEST",
+    "au_count": 4247,
+    "frame_count": 4247,
+    "etsi_strict": "FAIL",
+    "openjoc_compatibility": "PASS",
+    "diagnostic_count": 3481,
+    "first_diagnostic": {
+      "label": "INVALID_JOC_CARRIAGE",
+      "au": 0,
+      "elementary_byte_offset": 0,
+      "message": "decoded E-AC-3 exponent -1 is out of range",
+      "specific_bit_interval": "UNBOUND"
+    }
+  },
+  "comparator_observation_from_source_package": {
+    "sha256_from_prior_wash": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+    "file_length_bytes": 17395712,
+    "au_count": 4247,
+    "frame_count": 4247,
+    "etsi_strict": "FAIL",
+    "openjoc_compatibility": "PASS",
+    "diagnostic_count": 0
+  },
+  "static_error_layer": {
+    "classification": "STATIC_SOURCE_CHECK_ONLY",
+    "aggregate_label_semantics": "INVALID_JOC_CARRIAGE wraps parse_joc_access_unit errors and does not name the underlying layer",
+    "underlying_layer": "E-AC-3 audio-block exponent legality while scanning skip-field carriers",
+    "allowed_exponent_range": [0, 24],
+    "decoded_minus_one_behavior": "ExponentOutOfRange",
+    "exact_lane_block_and_bit_interval": "UNBOUND",
+    "specific_metadata_deviation": "UNBOUND_NOT_RETAINED"
+  },
+  "user_report": {
+    "ffmpeg_import_failure": true,
+    "adobe_audition_import_failure": true,
+    "source": "USER_REPORTED",
+    "independently_reproduced_in_this_pass": false
+  },
+  "interpretation": {
+    "candidate_eac3_syntax_or_cursor_defect": "SUPPORTED_AS_AUDIT_CANDIDATE_NOT_CAUSALLY_PROVEN",
+    "emdf_joc_root_cause": "NOT_ESTABLISHED",
+    "whole_file_or_all_au_damage": "NOT_PROVEN",
+    "ffmpeg_or_audition_acceptance": "NOT_RUN_IN_THIS_WASH_PASS"
+  },
+  "scope": {
+    "output_bytes_opened_or_reparsed": false,
+    "output_decode_or_render": false,
+    "pcm_read_or_retained": false,
+    "private_key_hmac_or_license_read": false,
+    "implementation_ready": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATTEMPT10-PARSER-REJECTION-LAYER-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "65bce3601c10d36d223e8a9852e4222d04cfcfbadf023f974a11a64062b52b78",
+  "status": "USER_REPORTED_IMPORT_FAILURE; OPENJOC_EAC3_EXPONENT_DIAGNOSTIC; ROOT_CAUSE_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2853,
+      "sha256": "824d74bd621fd880b40a2047d500076c87a23a5d5b9695f9a2e0de5833126944"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 923,
+      "sha256": "17d0cae2fc578ba87fd90ff6ff1f9aa5b0a39eba297d4fec763eab490f5e5b5d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2635,
+      "sha256": "e53937a5271f65998beefb6939c8b22fd8985e093e4b30c05ff2dddc1ce79da9"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1933,
+      "sha256": "ac253215462743d4a3d5a57bc08f6eae75b2ae1ddcfcd73f8b9311f9a54b3fa4"
+    }
+  ]
+}

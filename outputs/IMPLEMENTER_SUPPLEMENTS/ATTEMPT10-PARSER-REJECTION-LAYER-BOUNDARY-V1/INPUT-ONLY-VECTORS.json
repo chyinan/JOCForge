@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "ATTEMPT10-PARSER-REJECTION-LAYER-BOUNDARY-V1",
+  "vectors": [
+    {
+      "id": "attempt10-source-reported-first-diagnostic",
+      "kind": "PARSER_SUMMARY_ONLY",
+      "inputs": {
+        "parser_sha256": "2e84afcfa5e197332a84f9386ffa4c69f0c12e8ca5cf95c23690af320cfa1a39",
+        "reported_decoded_exponent": -1,
+        "parser_allowed_range": [0, 24],
+        "source_package_au": 0
+      },
+      "source_reported_result": "OUT_OF_RANGE",
+      "not_independent_media_parse_in_wash": true,
+      "does_not_identify_bit_interval": true
+    },
+    {
+      "id": "attempt10-interoperability-report",
+      "kind": "USER_REPORTED_ONLY",
+      "inputs": {
+        "applications": ["FFmpeg", "Adobe Audition"],
+        "reported_result": "cannot import attempt-10 output"
+      },
+      "independently_reproduced": false,
+      "cause": "UNBOUND"
+    }
+  ]
+}
