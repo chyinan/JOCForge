@@ -1,0 +1,17 @@
+{
+  "schema":"washed-source-manifest-bindings.v1",
+  "incoming_package":{
+    "package_id":"force_d45_native_reachability_wash",
+    "manifest_sha256":"331d481f03dc8d49cfebff135e521604ebf4b4012d4491f7be6e4ab93b23031c",
+    "manifest_seal_matches":true,
+    "checker_normal":"PASS",
+    "checker_python_optimized":"PASS",
+    "payload_count":10
+  },
+  "supersedes_wash_package":{
+    "package_id":"F09-D45-COLD-STATE-AND-ROUTE-BOUNDARY-V1",
+    "manifest_sha256":"e88fb02651d65da5a81515348d4d96dfc74dac3490ca2a20b91e28d1e9817114",
+    "scope":"Adds Force-D45 selector/staging detail; retains unknown wire-field and runtime-owner edges."
+  },
+  "raw_audio_or_decompilation_copied":false
+}

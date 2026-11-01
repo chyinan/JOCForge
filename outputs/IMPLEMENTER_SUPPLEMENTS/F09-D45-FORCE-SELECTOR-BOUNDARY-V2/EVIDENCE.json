@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge-f09-d45-force-selector-boundary.v2",
+  "package_id": "F09-D45-FORCE-SELECTOR-BOUNDARY-V2",
+  "status": "COLD_SOURCE_AND_FORCE_STAGING_STATIC_BOUND; RUNTIME_OWNER_AND_WIRE_FIELD_UNBOUND",
+  "implementation_ready": false,
+  "source_image": {"name":"dee_audio_filter_ddp_single_pass.dll","sha256":"1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9","ghidra":"12.2","ida_used":false},
+  "cold_source": {
+    "constructor":"FUN_1802e51b0",
+    "source_base":"owner+0x135C0",
+    "records":"5 lanes x 4 U16 cells in 8-byte lane records",
+    "initial_value":0,
+    "later_direct_writer":"NOT_FOUND_IN_SEVEN_SCANNED_IMAGES; indirect/outside-image writes not excluded"
+  },
+  "history_copy": {
+    "function":"FUN_180316730",
+    "source":"owner+0x135C0+8*lane",
+    "destination":"owner+0x15208+2*(block*5+lane)",
+    "shape":"6 blocks x 5 lanes; block-major/lane-minor",
+    "gate":"param_1==0 and lane<short(owner+0x19130)",
+    "conversion":"none; direct U16 copy"
+  },
+  "force_selector": {
+    "entry_points":["FUN_1802fc200","FUN_1802fc4e0"],
+    "input_history":"U16 at owner+0x140F0+2*(block+6*channel); zero/nonzero test",
+    "output_cells":"U16 at owner+0x1BAE8+2*(0x1D+channel+5*block)",
+    "six_slot_thresholds":[2,4],
+    "short_window_branch":"thresholds become param_3-1 and param_3 when param_1==0 and param_3-1<3",
+    "mapping":"zero history -> 0; nonzero -> 3 when run<threshold1, 2 when run<threshold2, otherwise 1",
+    "control_override":"nonzero control promotes codes 1/2 to 3; code 3 remains 3",
+    "selector_table":"six U16 fields per row, exact equality, candidate indices 0..31",
+    "no_match":"0x0C; required selector remains 0xFFFF and missing-selector flag is raised",
+    "wire_field_name":"UNKNOWN",
+    "wire_bit_range":"UNKNOWN"
+  },
+  "stuffer_boundary": {
+    "path":["FUN_180305630","FUN_180307640","FUN_180306630","FUN_180337980"],
+    "frame_and_block_count_cap":6,
+    "no_direct_cell_to_named_wire_field":"TRUE"
+  },
+  "runtime": {
+    "attempt10_11_owner_history_breakpoints":"NOT_HIT",
+    "attempt12_plugin_loaded":true,
+    "attempt12_failure":"MediaInfo unavailable before PCM-frame delivery",
+    "runtime_force_values":"NOT_CAPTURED",
+    "ec3_field_parse":"NOT_RUN",
+    "hash_matched_same_root_dee_mediainfo_plugin":"NOT_FOUND"
+  },
+  "policy": {"pcm_or_payload_read":false,"key_license_content_read":false,"other_encoder_used":false,"implementation_delivery":"REFERENCE_ONLY; NO_PRODUCT_RULE"}
+}

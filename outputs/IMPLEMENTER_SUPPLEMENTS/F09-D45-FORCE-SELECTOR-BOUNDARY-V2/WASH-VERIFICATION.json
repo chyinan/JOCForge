@@ -1,0 +1,20 @@
+{
+  "schema":"wash-verification.v1",
+  "incoming_manifest_sha256":"331d481f03dc8d49cfebff135e521604ebf4b4012d4491f7be6e4ab93b23031c",
+  "incoming_checker":{"normal":"PASS","python_optimized":"PASS","manifest_seal_matches":true},
+  "independent_review":[
+    "Ran the source package verifier in normal and optimized modes.",
+    "Confirmed the five-lane U16 source to six-by-five history copy and owner-relative offsets.",
+    "Confirmed the Force-D45 code mapping, zero-run thresholds, control override, selector matching and missing-selector boundary as static DEE rules.",
+    "Kept the staged code's DDP/EC3 field and bit-range unknown.",
+    "Kept runtime owner/history/force and PCM route NOT_CAPTURED after the MediaInfo pre-delivery failure."
+  ],
+  "not_promoted":[
+    "selected R138 owner reaches this D45 state",
+    "staged codes' audio semantics or serialized wire bits",
+    "later nonzero history producer reachability",
+    "runtime Force-D45 acceptance",
+    "implementation readiness"
+  ],
+  "implementation_delivery":"REFERENCE_ONLY; STATIC_DEE_RULES_ONLY; implementation_ready=false"
+}

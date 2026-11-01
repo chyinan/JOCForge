@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 4453,
+      "file": "CHECK.py",
+      "sha256": "a087c7102a23ffbe1bea08d99bfd981f55340a011a9c9080727b97bbab99d09d"
+    },
+    {
+      "bytes": 2484,
+      "file": "EVIDENCE.json",
+      "sha256": "00e30df14dd463d2cf29a8bd8d29c3082ac13e1a43b9cb933beee9844b2121cc"
+    },
+    {
+      "bytes": 1245,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "0bde3ae61b6546166a5de088ca053a3bd6d6fbd1ed0bd76ef14f325f648433bc"
+    },
+    {
+      "bytes": 1749,
+      "file": "REPORT.md",
+      "sha256": "7e1506082ce4d08bcd4689d520f386407a25560fac05ac89cb53c0f439aed623"
+    },
+    {
+      "bytes": 687,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "174f05022993721709393315dfded2c1a622888f59aa011b9aaa3fd53f63a6c4"
+    },
+    {
+      "bytes": 1106,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "a131a7f65ccc3fc64a50bdc66083caf5d85f42e3f1b292e7cef392cd148d95f8"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F09-D45-FORCE-SELECTOR-BOUNDARY-V2",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "331d481f03dc8d49cfebff135e521604ebf4b4012d4491f7be6e4ab93b23031c",
+  "status": "COLD_SOURCE_AND_FORCE_STAGING_STATIC_BOUND; WIRE_FIELD_AND_RUNTIME_OWNER_UNBOUND"
+}

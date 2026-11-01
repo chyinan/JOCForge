@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-f09-d45-force-selector-input-only.v1",
+  "contains_pcm": false,
+  "contains_payload": false,
+  "vectors": [
+    {"id":"D45_ZERO_HISTORY","input":{"history_u16":0,"zero_run":0,"thresholds":[2,4],"control_u16":0},"expected":{"staged_code":0}},
+    {"id":"D45_NONZERO_RUN_BELOW_T1","input":{"history_u16":1,"zero_run":0,"thresholds":[2,4],"control_u16":0},"expected":{"staged_code":3}},
+    {"id":"D45_NONZERO_RUN_AT_T1","input":{"history_u16":1,"zero_run":2,"thresholds":[2,4],"control_u16":0},"expected":{"staged_code":2}},
+    {"id":"D45_NONZERO_RUN_AT_T2","input":{"history_u16":1,"zero_run":4,"thresholds":[2,4],"control_u16":0},"expected":{"staged_code":1}},
+    {"id":"D45_CONTROL_PROMOTES_CODE_2","input":{"history_u16":1,"zero_run":2,"thresholds":[2,4],"control_u16":1},"expected":{"staged_code":3}},
+    {"id":"D45_NO_SELECTOR_MATCH","input":{"selector_row_match":false,"selector_slot_initial":"0xFFFF"},"expected":{"status":"0x0C","missing_selector_flag":true,"staging_rule":"NOT_EVALUATED"}}
+  ],
+  "limits":["Vectors exercise only the washed static branch rules; they are not runtime DEE captures.","Staged code semantic field and bit range are UNKNOWN.","Active R138 owner/runtime reachability is UNBOUND."]
+}
