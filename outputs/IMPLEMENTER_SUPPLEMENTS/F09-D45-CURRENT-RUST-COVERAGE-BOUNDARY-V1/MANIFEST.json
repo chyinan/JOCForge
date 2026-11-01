@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F09-D45-CURRENT-RUST-COVERAGE-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "74b07756b07c1c2c73268d095b8fd32d845856bafce5d67e18e0a2064f996644",
+  "status": "F12_SOURCE_PATH_IMPLEMENTED; D45_PATH_MISSING_IN_SCANNED_SOURCE; MISMATCH_CAUSE_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2492,
+      "sha256": "d5054f9d2307d80db90117d01596dd86a5e1bfc2ac89afefad7647c5559e5666"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1071,
+      "sha256": "72b3de6356793e2ff2c2efb2ec65e56651db9f52e9b6d0230e3cb0599e1eacdc"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1189,
+      "sha256": "eef7fc459fd6671492013262f7900a20a6feddc9b70e8fabaa7081592e8704bf"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 896,
+      "sha256": "65370d2a94099b3205ac9b16010603c3336b4283fe68ea37200dde30b0f1ea0a"
+    }
+  ]
+}

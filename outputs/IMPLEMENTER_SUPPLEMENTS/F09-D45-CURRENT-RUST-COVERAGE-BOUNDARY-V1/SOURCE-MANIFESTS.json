@@ -1,0 +1,17 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "f09_d45_f12_source_coverage_wash_v1",
+    "manifest_sha256": "74b07756b07c1c2c73268d095b8fd32d845856bafce5d67e18e0a2064f996644",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "source_identity_rehash_files": 25,
+    "mismatches": 0
+  },
+  "contracts": [
+    {"package_id": "F09-D45-SELECTOR-CELL-TO-BIT-ACCUMULATOR-BOUNDARY-V1", "manifest_sha256": "a5df1c8de351fa6ca59b1d6600805fd71cc79d83c18fc07663a89f62de669164"},
+    {"package_id": "F11-F12-APPROVED-SOURCE-LEAVES-V1", "manifest_sha256": "01dbb8fe97bc8f40247340b93eccd008826c2330e6c4616323f2cbd1aa2ab81f"},
+    {"package_id": "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1", "manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f"}
+  ],
+  "raw_prototype_source_or_output_copied": false
+}

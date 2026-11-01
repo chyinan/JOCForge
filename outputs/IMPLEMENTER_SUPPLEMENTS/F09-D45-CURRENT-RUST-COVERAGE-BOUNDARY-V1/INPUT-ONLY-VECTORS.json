@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-f09-d45-rust-coverage-vectors.v1",
+  "kind": "source/contract coverage classification; no media input",
+  "vectors": [
+    {
+      "id": "f12-path-coverage",
+      "input": {"contract": "approved F12 coefficient/exponent quantization and BAP packing"},
+      "expected": {"current_rust_status": "IMPLEMENTED", "native_parity": "NOT_CLAIMED"}
+    },
+    {
+      "id": "d45-path-coverage",
+      "input": {"contract": "DEE F09-D45 selector U16 -> symbol entry -> 4/7-bit accumulator"},
+      "expected": {"current_rust_status": "MISSING_IN_SCANNED_CURRENT_SOURCE", "field_and_absolute_offset": "UNBOUND"}
+    },
+    {
+      "id": "dB-selector-is-not-D45",
+      "input": {"current_path": "db_selector_from_means -> 2-bit BA tuple"},
+      "expected": {"identity_with_d45_selector_proven": false}
+    }
+  ],
+  "limits": ["Search scope is limited to current domain/application/CLI Rust source.", "No hash-mismatch root cause is inferred."],
+  "lineage": {"source_manifest_sha256": "74b07756b07c1c2c73268d095b8fd32d845856bafce5d67e18e0a2064f996644"}
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F09-D45-CURRENT-RUST-COVERAGE-BOUNDARY-V1",
+  "source": {
+    "package_id": "f09_d45_f12_source_coverage_wash_v1",
+    "manifest_sha256": "74b07756b07c1c2c73268d095b8fd32d845856bafce5d67e18e0a2064f996644",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "source_identity_rehash": {"files": 25, "mismatches": 0}
+  },
+  "approved_contracts": {
+    "f09_d45_package": "F09-D45-SELECTOR-CELL-TO-BIT-ACCUMULATOR-BOUNDARY-V1",
+    "f09_d45_manifest_sha256": "a5df1c8de351fa6ca59b1d6600805fd71cc79d83c18fc07663a89f62de669164",
+    "f12_package": "F11-F12-APPROVED-SOURCE-LEAVES-V1",
+    "f12_manifest_sha256": "01dbb8fe97bc8f40247340b93eccd008826c2330e6c4616323f2cbd1aa2ab81f",
+    "f12_quantizer_contract_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f"
+  },
+  "current_source": {
+    "f12_quantization": "IMPLEMENTED",
+    "f12_bap_group_and_mantissa_packing": "IMPLEMENTED",
+    "f09_d45_u16_selector_to_symbol_to_4_7_bit_path": "MISSING_IN_SCANNED_CURRENT_SOURCE",
+    "scan_roots": ["crates/jocforge-domain/src", "crates/jocforge-application/src", "crates/jocforge-cli/src"],
+    "scan_markers": ["D45", "owner+0x1bb22", "owner+0x1bae8", "FUN_1802fa870", "FUN_1802fd640", "selector_cell", "symbol_entry"],
+    "dB_per_bit_selector": "SEPARATE_IMPLEMENTED_PATH; not identified with D45"
+  },
+  "source_hashes_recomputed_by_wash": [
+    {"path": "crates/jocforge-domain/src/codec/mantissa.rs", "sha256": "77a0bcc00b0d5ee68e7e0c6e53528fff9d8738218484b5b3861ad11de86c6367"},
+    {"path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs", "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"},
+    {"path": "crates/jocforge-domain/src/codec/grouped_quantizer.rs", "sha256": "f4840fefdb7bb10f2afd85c63e88dc62c96c76962abb514e51c65a523f342c40"},
+    {"path": "crates/jocforge-domain/src/codec/db_selector.rs", "sha256": "7977e0185ac44ba78178beec8b86c9be627af050d5fc6c00931f5b8b25f3e387"},
+    {"path": "crates/jocforge-domain/src/analysis/owner.rs", "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"}
+  ],
+  "attempt10": {
+    "run_id": "sample6-keyless-full-20261101-10",
+    "binary_to_source_tree": "UNBOUND",
+    "hash_mismatch_causality": "NOT_ESTABLISHED"
+  },
+  "execution_scope": {"tests": false, "encoder_run": false, "prototype_source_read": false, "output_payload_accessed": false, "implementation_ready": false}
+}
