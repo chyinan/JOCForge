@@ -24,7 +24,9 @@ Wash 补充包 `F06-CUSTOM-BSI-VS-STANDARD-HEADER-PATH-V1`（本地 manifest SHA
 
 attempt-09 仅创建了 runner PID 11648，但没有 started marker、输出、stderr 或退出码收据；其 run receipt 标记 `LAUNCH_FAILED_BEFORE_STARTED_MARKER`，没有确认启动任何 encode process。
 
-attempt-10 于 2026-11-01T23:58:34+08:00 启动，run receipt 绑定 input SHA 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1、target-diagnostic/debug/jocforge.exe SHA `f7b60dd98ac7475134175fce0405c127615321e39088f60031f1ed2e8b70d278`、runner script SHA `b8c0d9c7a670cc7e92ca341a2869c2554e626a25a18c90438e8ae9025a4d523f` 和 PID 51180。新二进制由修复后的 parent-sync 源码构建，cargo build exit=0（有非致命 incremental hardlink warnings）。截至 2026-11-02T00:32:29+08:00，Meter prepass 为 2,646/4,250（62%，34:06），programme callbacks 尚未开始；目标与 exit-code 尚不存在，后台日志仍在增长。
+attempt-10（run ID `sample6-keyless-full-20261101-10`）于 2026-11-01T23:58:34+08:00 启动，run receipt 绑定 input SHA 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1、target-diagnostic/debug/jocforge.exe SHA `f7b60dd98ac7475134175fce0405c127615321e39088f60031f1ed2e8b70d278`、runner script SHA `b8c0d9c7a670cc7e92ca341a2869c2554e626a25a18c90438e8ae9025a4d523f` 和 PID 51180。修复后的 Windows parent sync 由新二进制运行成功：Meter prepass 4,250/4,250（53:50），programme callbacks 4,251/4,251（113:12），sources=4,249，published AU=4,247；EOF committed，7 个 pending-drop receipts，最终 17,395,712 bytes。F15 exposure receipt 被应用层接收，日志报告 `status=DONE`，runner exit=0。输出 `.test-tmp/sample6-keyless-full-20261101-10.ec3` 的 SHA-256 为 `593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473`。
+
+用户指定的 keyless Python comparator `candidate-keyless-compatible-joc.ec3` 长度同为 17,395,712 bytes，流式 SHA-256 为 `383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86`；因此 attempt-10 是 **SHA256_MISMATCH**，单曲 MVP 精确等值验收未通过。用户确认 comparator 与本次授权输入为同一 ADM/input SHA；原 Python run receipt 状态仍为 `USER_ASSERTED_NOT_RESEALED`，作为 provenance caveat 单列，不阻止本次哈希比较。仅做了长度/退出收据/流式 SHA-256 核验；没有打开、解析、解码或播放 comparator/输出码流，也没有运行 OpenJOC、渲染或播放验收。
 
 ## 目标与边界
 
