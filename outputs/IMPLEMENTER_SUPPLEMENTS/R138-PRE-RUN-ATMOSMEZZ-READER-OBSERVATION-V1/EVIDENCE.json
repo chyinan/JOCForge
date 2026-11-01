@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-r138-prerun-reader-observation.v1",
+  "package_id": "R138-PRE-RUN-ATMOSMEZZ-READER-OBSERVATION-V1",
+  "status": "PRE_RUN_BOUNDARY_REACHED; INPUT_OVERRIDE_CONFounds_PROFILE_READER_JOIN",
+  "implementation_ready": false,
+  "profile": {
+    "source_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "source_xml_bytes": 2473,
+    "source_file_found_on_D": true,
+    "source_used_unchanged": true,
+    "declared_input_type": "audio.adm",
+    "declared_output_route": "encode_to_atmos_ddp",
+    "declared_timebase": "embedded_timecode",
+    "declared_start": 86640,
+    "declared_end": 86664
+  },
+  "input": {
+    "authorized_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "alias_name": "native-safe-input.wav",
+    "alias_hash_matches_authorized_sample": true,
+    "command_used_input_override": true,
+    "override_flag": "-a"
+  },
+  "runtime_stop": {
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "pre_run_callsite": "dee.exe+0xCA9FC",
+    "run_called": false,
+    "process_terminated_while_stopped": true,
+    "output_created": false,
+    "reader_vtable_class": "dee::input::AtmosMezz",
+    "reader_vtable_rva": "dee.exe+0x2E7CE0",
+    "reader_slot": 6,
+    "reader_target": "FUN_1400F09D0 / dee.exe+0xF09D0",
+    "profile_type_to_runtime_reader_join": "UNBOUND_DUE_TO_INPUT_OVERRIDE"
+  },
+  "getter_observation": {
+    "site": "dee.exe+0x16AA72 / FUN_14016A1C0",
+    "audio_filter_getter_hits": 6,
+    "audio_input_getter_hit": false,
+    "global_audio_input_absence_claim": false,
+    "getter_table_count_local_slot": "NOT_CAPTURED"
+  },
+  "unbound": {
+    "r138_selected_audio_input_factory": "UNBOUND",
+    "stage_runner_candidate_index": "UNBOUND",
+    "typed_reader_owner_and_generation": "UNBOUND",
+    "effective_successful_run_module_set": "UNBOUND"
+  },
+  "policy": {
+    "row_or_table_bytes_read": false,
+    "pcm_or_audio_samples_read": false,
+    "payload_read": false,
+    "key_or_license_content_read": false,
+    "full_encode_started": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}

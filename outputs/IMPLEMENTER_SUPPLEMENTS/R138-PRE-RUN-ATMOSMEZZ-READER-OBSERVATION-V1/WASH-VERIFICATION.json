@@ -1,0 +1,21 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "b1beec3b6bc54c020737c4a52d51f92abffd52455f4b0cb497fc73b0cdbe844b",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed the incoming manifest and ran its verifier normally and under Python optimization.",
+    "Confirmed the sanitized R138 profile receipt binds input_type audio.adm while the command line also used -a with a same-hash authorized ADM alias.",
+    "Kept the live AtmosMezz vtable as the observed runtime reader class for this overridden invocation, not proof of the R138-selected audio.adm reader.",
+    "Confirmed the debugger stopped before Run and the process was terminated before any audio processing/output.",
+    "Kept the six audio_filter getter observations separate from the unobserved audio_input getter, selected candidate index, and reader owner generation."
+  ],
+  "not_promoted": [
+    "R138 selected audio_input reader/factory",
+    "profile type to runtime reader mapping",
+    "StageRunner candidate index",
+    "typed reader owner/vtable generation",
+    "successful R138 encode or output",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 4463,
+      "file": "CHECK.py",
+      "sha256": "0f89f305221a16ba60f8d368a91c1185bff90634d1458dafcf17d23bb74d83ef"
+    },
+    {
+      "bytes": 2179,
+      "file": "EVIDENCE.json",
+      "sha256": "964a184b0f8d7bd112e01af1c31589337b564e32d17c640581834567ae51f43c"
+    },
+    {
+      "bytes": 2027,
+      "file": "REPORT.md",
+      "sha256": "9996a9bf18a43d759cd71b1bf1a7d9da5027540e6f280db7e396e812e7875634"
+    },
+    {
+      "bytes": 1294,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "26581a1d8dd7dab35be3a347bb00f8857bd71874262da03225fa73a60707d36c"
+    },
+    {
+      "bytes": 1282,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "4a17249831c5898fd15facf95512d181950069b28c6a3f4413c80d30df8693d3"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "R138-PRE-RUN-ATMOSMEZZ-READER-OBSERVATION-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "b1beec3b6bc54c020737c4a52d51f92abffd52455f4b0cb497fc73b0cdbe844b",
+  "status": "PRE_RUN_BOUNDARY_REACHED; INPUT_OVERRIDE_CONFounds_PROFILE_READER_JOIN"
+}

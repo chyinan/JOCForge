@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "R138-READER-STARTUP-OBSERVATION-V2",
+    "manifest_sha256": "b1beec3b6bc54c020737c4a52d51f92abffd52455f4b0cb497fc73b0cdbe844b",
+    "checker_normal": "PASS; VALID_PARTIAL",
+    "checker_python_optimized": "PASS; VALID_PARTIAL",
+    "source_hash_count": 13
+  },
+  "related_wash_packages": [
+    {"package_id": "R138-INPUT-OBJECT-RUN-CALLSITE-BOUNDARY-V1", "manifest_sha256": "69abcfe6b33c85af0e198e34969038ffac3a1cbd1985c2689f5adedd3d95f600"},
+    {"package_id": "R138-AUDIO-INPUT-FACTORY-REGISTRY-BOUNDARY-V1", "manifest_sha256": "44d75abfac4025fb4cd97cea95d452676020b243ac7d0a0ef8c835157d2443ef"},
+    {"package_id": "R138-AUDIO-INPUT-TAG-SELECTION-BOUNDARY-V1", "manifest_sha256": "82cdf2fb12cc395d58dad80ac5cd38c18363c15fe4fd6d2e90e98c9866309619"}
+  ],
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+  ],
+  "source_scope_note": "The exact profile XML remained outside the washed package; only its hash-bound sanitized receipt is included. The authorized ADM is represented by its hash only."
+}
