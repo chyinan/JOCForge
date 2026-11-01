@@ -1,0 +1,20 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "02d8a3bc76d1f25faba8a3ef5564c539f198834e618c6d14577b0f963bccb7b4",
+  "incoming_checker": "NOT_PROVIDED",
+  "independent_review": [
+    "Recomputed the incoming manifest, both payload hashes/sizes, SHA256SUMS.txt, and the six referenced Ghidra log hashes.",
+    "Verified the v6 parent package manifest hash and its relationship to the already washed callback-gate supplement.",
+    "Confirmed 0x1403c2eee is within FUN_1403c2e50, not FUN_1403c2d50.",
+    "Confirmed the caller-supplied owner expression, sibling vtable slots, and static callback-wrapper paths in targeted Ghidra excerpts.",
+    "Kept indirect vtable invocation, selected stage, and F13C writer reachability unresolved."
+  ],
+  "not_promoted": [
+    "typed semantic producer for the supplied owner pointer",
+    "indirect caller of FUN_1403c3980",
+    "selected DDP-JOC 5.1 stage or F13C writer",
+    "global absence-of-writer claim",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

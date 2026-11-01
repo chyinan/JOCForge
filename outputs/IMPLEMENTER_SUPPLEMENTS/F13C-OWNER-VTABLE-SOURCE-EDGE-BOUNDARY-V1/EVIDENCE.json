@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-f13c-owner-vtable-source-edges.v1",
+  "package_id": "F13C-OWNER-VTABLE-SOURCE-EDGE-BOUNDARY-V1",
+  "status": "OWNER_SOURCE_AND_VTABLE_SLOT_BOUND; SELECTED_WRITER_UNBOUND",
+  "implementation_ready": false,
+  "image": {
+    "program": "dee_ddpjoc_encoder.exe",
+    "sha256_from_historical_ghidra_metadata": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_install_rehashed": false
+  },
+  "owner_input": {
+    "requested_callsite": "0x1403c2eee",
+    "actual_containing_function": "FUN_1403c2e50",
+    "function_range": ["0x1403c2e50", "0x1403c2f9e"],
+    "callee": "FUN_1403c0ad0",
+    "owner_expression": "*(param_1+0x8)",
+    "method_vtable": "0x140bca558",
+    "method_slot": "+0x20",
+    "slot_address": "0x140bca578",
+    "misattributed_function_excluded": "FUN_1403c2d50 is separate; it has four direct code references"
+  },
+  "other_vtable_method": {
+    "function": "FUN_1403c3980",
+    "vtable": "0x140bca558",
+    "slot_offset": "+0x8",
+    "slot_address": "0x140bca560",
+    "vptr_install_site": "0x1403c1fb0",
+    "direct_code_xrefs": 0,
+    "other_reference": ".pdata record at 0x141310cec",
+    "indirect_invocation_site": "UNRESOLVED",
+    "direct_callee": "FUN_1403f5270 at 0x1403c3aae"
+  },
+  "storage_callback_path": [
+    {"function": "FUN_1403c0ad0", "callsite": "0x1403c192e", "callee": "FUN_1403f2d80"},
+    {"function": "FUN_1403f2d80", "callsite": "0x1403f2dd9", "callee": "FUN_1403f1dd0"},
+    {"function": "FUN_1403f5270", "callsite": "0x1403f52c4", "callee": "FUN_1403f1dd0"}
+  ],
+  "writer_reachability": {
+    "selected_ddp_joc_5_1_stage": "UNBOUND",
+    "ddp_joc_ec3_writer": "UNBOUND",
+    "f13c_writer": "UNBOUND",
+    "global_absence_of_use_proven": false
+  },
+  "execution_scope": {
+    "encoder_launched": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "private_license_hmac_key_content_read_or_exported": false,
+    "audio_output_created": false
+  }
+}

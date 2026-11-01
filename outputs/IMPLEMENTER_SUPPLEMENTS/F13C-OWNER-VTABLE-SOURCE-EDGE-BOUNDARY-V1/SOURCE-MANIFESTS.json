@@ -1,0 +1,29 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "F13C owner and vtable edge addendum v7",
+    "manifest_sha256": "02d8a3bc76d1f25faba8a3ef5564c539f198834e618c6d14577b0f963bccb7b4",
+    "sha256sums_file_sha256": "c3070eed099f8c26a55df7bd500876a536ce26203f6ec2f3dccbb41d045706d1",
+    "payloads": [
+      {"file": "ADDENDUM.md", "bytes": 3133, "sha256": "87336a0471d7ede8b73e498bab41ef74c05cbd197aa2cbcccf5c4c5ba959a859"},
+      {"file": "GHIDRA-OWNER-VTABLE-EDGES.json", "bytes": 4523, "sha256": "693bd04102fc67a7587c6cdd01cac176bf52e1d6a769245fefcc51345aa45012"}
+    ],
+    "checker": "NOT_PROVIDED; Wash manually checked package inventory and hashes"
+  },
+  "recomputed_ghidra_logs": [
+    {"path": "work/ghidra_owner_function_xrefs_script.log", "bytes": 1983, "sha256": "5ae7a56c9dde3ad31a098a383a7bfd8ceb87312b22802335308e251597c57c67"},
+    {"path": "work/ghidra_event_context_callers2_script.log", "bytes": 10149, "sha256": "b9dff0657ee4314af3aefb10b91cad0c83601039532f2cecd6b18538ad26751b"},
+    {"path": "work/ghidra_event_owner_factory_headless.log", "bytes": 588622, "sha256": "52aa31f3002c04ba9e7cd655c24ccb8b339f95d0505bf5f274a54dd537485f7b"},
+    {"path": "work/ghidra_atmos_vtable_use_script.log", "bytes": 1352, "sha256": "afe86c95e39aebd43fc42670c2b79c9d352eade3c65d85cbbe9e9c4c75fdc2f8"},
+    {"path": "work/ghidra_atmos_vtable_install_script.log", "bytes": 14451, "sha256": "b1d1440421e0c39c13f0fbcead470eb9a4d15d5a81f5685b2697d86c9244ddd1"},
+    {"path": "work/ghidra_event_outer_caller_script.log", "bytes": 4446, "sha256": "e33feba4e454de8394dee44dee5cc73e2d44b89efb51de305f4fbffd217ab2cd"}
+  ],
+  "parent_source_package": {
+    "package_id": "F13C event callback owner addendum v6",
+    "manifest_sha256": "b42be389f86010d6d4d62a7b726c550f0eaef2487ec57966c57fd8da25baa1ab"
+  },
+  "related_wash_packages": [
+    {"package_id": "F13C-RESULT-TREE-CALLBACK-GATE-BOUNDARY-V1", "manifest_sha256": "3411fefb9e16cb7ff76a4c31b4c020d7aaf603edeee2b4e130b8d4830e558625"},
+    {"package_id": "F13C-DMIXMOD-PARSER-RESULT-BOUNDARY-V1", "manifest_sha256": "d66aedf9a09b0ed79b36132818eca991fb843c750057904bb2599c596d1759c6"}
+  ]
+}
