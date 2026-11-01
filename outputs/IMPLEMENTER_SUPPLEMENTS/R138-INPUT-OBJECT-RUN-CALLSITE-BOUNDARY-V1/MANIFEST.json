@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 6240,
+      "file": "CHECK.py",
+      "sha256": "9f3b3dcb14bb7dc202c4d04f8871794ef0fe207c36d0105a1df322f0218a586b"
+    },
+    {
+      "bytes": 2131,
+      "file": "EVIDENCE.json",
+      "sha256": "4bc0749a74f6dfe568f6ba2eedaa88a241fa9eecd35ae8d57317125ea539c963"
+    },
+    {
+      "bytes": 1127,
+      "file": "OBSERVATION-PLAN.json",
+      "sha256": "d8cb5b85a60d91d3cab652bc1140e241b6b73e08de863a9bd453a335b0d2de07"
+    },
+    {
+      "bytes": 1563,
+      "file": "REPORT.md",
+      "sha256": "26ee436780a606f680bdd16ac293a0db9c690aa1cf21b5efbf9aba83551325eb"
+    },
+    {
+      "bytes": 2075,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "5a15a262cc15cd80157587d09fb0b6af3fa322caf51bb0004422302bd8fbddef"
+    },
+    {
+      "bytes": 1464,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "eedab21fd13df5d9ba5db3f13a914b3110b27c506e5964d760b43c0d0701038d"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "R138-INPUT-OBJECT-RUN-CALLSITE-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "0c79d0e16be7f07a559bfc9a57eee6c821156713c9898844a4258789e16b3352",
+  "status": "STATIC_CALLSITE_BOUND; R138_SELECTION_AND_OWNER_JOIN_UNBOUND"
+}

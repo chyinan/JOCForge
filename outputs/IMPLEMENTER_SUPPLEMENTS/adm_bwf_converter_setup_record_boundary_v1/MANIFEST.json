@@ -1,0 +1,29 @@
+{
+  "schema": "washed-adm-bwf-converter-setup-record-boundary.v1",
+  "package_id": "adm_bwf_converter_setup_record_boundary_v1",
+  "status": "ADM_SELECTOR3_AND_SETUP_CONSUMER_BOUND; PARAM4_RECORD_PRODUCER_TO_CHNA_UNBOUND",
+  "implementation_readiness": "NO_FOR_END_TO_END_ROW_PERMUTATION",
+  "source_package_manifest_sha256": "cf9e93fcf64b1a3cc89e3a51ebd08b0c0de3bab50a282218ad0ff3bb3d374848",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1507,
+      "sha256": "726d86ad5306f1fbec1c10db29c15810b932ebd7095a735ccb121ce5ee2f83b0"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2225,
+      "sha256": "45fd096b4b6645dac5dda6f59b806eb5269b928254d95ba2bac112e14bc0b712"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 510,
+      "sha256": "398a73391adeac2fb8f707c06c085c876fa63a2be00fba1ce48d339528acf85e"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1556,
+      "sha256": "e7395f96422bcbcb43931d2dd988ef12441a31342216ec40c8ccefe9ab8ffae8"
+    }
+  ]
+}

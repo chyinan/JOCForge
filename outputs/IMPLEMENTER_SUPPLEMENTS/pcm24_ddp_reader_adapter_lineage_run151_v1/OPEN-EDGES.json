@@ -1,0 +1,28 @@
+{
+  "schema": "washed-ddp-reader-adapter-open-edges.v1",
+  "package_id": "pcm24_ddp_reader_adapter_lineage_run151_v1",
+  "closed_within_scope": [
+    "Ghidra host RunInput-to-StageRunner callback path",
+    "Run151 same-thread host callback and AtmosMezz Init/Run stops",
+    "DDP source-record pointer passed through reader stub into source measurement routine",
+    "Static conversion from DDP record to a distinct local reader configuration",
+    "Reader configuration pointer forwarded unchanged through three constructor calls",
+    "Descriptor offset zero equals DDP row-table argument"
+  ],
+  "open": [
+    "Run151 input identity is only preflight-referenced and was not rehashed during capture",
+    "selected ADM master identity and generation",
+    "typed lineage from host selected ADM owner to DDP measurement record",
+    "DDP row contents, channel count, and frame count",
+    "current converter mapped-image hash",
+    "output bitstream validity and playback"
+  ],
+  "status": {
+    "selected_adm_identity": "UNBOUND/NO",
+    "selected_adm_generation": "UNBOUND/NO",
+    "row_contents": "NOT_CAPTURED",
+    "output_parse": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "guidance": "Do not infer a selected ADM to DDP owner join from same-thread stops, callback order, or the preflight-only input hash. This package does not close the F13C task-key to provider edge."
+}

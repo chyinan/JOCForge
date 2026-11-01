@@ -1,0 +1,54 @@
+{
+  "schema": "wash-only-host-audio-input-candidate-binding.v1",
+  "package_id": "HOST-AUDIO-INPUT-CANDIDATE-BINDING-AUDIT-V1",
+  "result": "CANDIDATE_INTERNAL_CONSTRUCTOR_AND_TYPED_LABEL_CLOSED; AUDIO_INPUT_GETTER_SLOT_AND_R138_OWNER_JOIN_UNBOUND",
+  "candidate": {
+    "module_role": "DEE host executable",
+    "factory_role": "internal plugin-object virtual method that allocates an AtmosMezz input object",
+    "constructor_role": "installs the AtmosMezz input-object vtable",
+    "factory_to_constructor": "STATIC_CLOSED",
+    "supported_input_type_label": "audio.atmos_mezz",
+    "type_label_edge": "STATIC_CLOSED",
+    "candidate_pointer_role": "object-vtable method",
+    "category_getter_slot_identity": "UNBOUND"
+  },
+  "host_audio_input_registry": {
+    "category": "audio_input",
+    "getter_return_role": "ordered function-pointer table and count",
+    "generic_registry_insertion": "STATIC_CLOSED",
+    "concrete_getter_identity_and_table_contents": "UNBOUND",
+    "candidate_factory_to_returned_slot": "UNBOUND",
+    "interpretation": "An object-vtable method is not itself evidence of a category getter table entry."
+  },
+  "r138_binding": {
+    "config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "typed_input": "audio.adm",
+    "host_audio_adm_label_presence": "STATIC_PRESENT_IN_A_TYPE_LIST_CONSTRUCTION_PATH",
+    "audio_adm_owner_to_candidate_factory": "UNBOUND",
+    "reader_instance_and_run_target_for_same_owner": "NOT_OBSERVED",
+    "parent_task_generation": "NOT_OBSERVED"
+  },
+  "minimum_r141_join": {
+    "scope": "one task and one parent generation",
+    "required_tokens": [
+      "loaded module identity",
+      "audio_input getter identity",
+      "returned table pointer and count",
+      "selected table slot and exact factory function pointer",
+      "typed audio.adm input-owner token",
+      "reader object, vtable and resolved Run target",
+      "parent task-generation token"
+    ],
+    "join_rule": "Bind all listed values through the same owner and parent-generation tokens; do not infer a join from names, ordinals, or equal scalar values."
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "read_only": true,
+    "no_analysis": true,
+    "ida_used": false,
+    "native_run": "NOT_RUN",
+    "media_payload_read_or_saved": false,
+    "implementation_delivery": "PROHIBITED",
+    "downstream_audio_consumer": "NOT_CLAIMED"
+  }
+}

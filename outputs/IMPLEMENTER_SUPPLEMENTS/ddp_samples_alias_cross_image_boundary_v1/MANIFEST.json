@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "ddp_samples_alias_cross_image_boundary_v1",
+  "status": "EVIDENCE_ONLY_CROSS_IMAGE_BOUNDARY",
+  "source_package_manifest_sha256": "154587d0f397889896942026f97846a408f4e29965ea60ea08e7e94f0525995a",
+  "parent_source_manifest_sha256": "7083cc69d8fe895cc585a2c0d1f58cd41127cd5a579dbed254c9d8863d7cb85b",
+  "implementation_allowed_for": "CONDITIONAL_SOURCE_FIELD_CROSSWALK_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "files": [
+    {
+      "name": "CROSS-IMAGE-BOUNDARY.json",
+      "bytes": 2027,
+      "sha256": "b8a1221cc6a7d6ed4458ba3045b3329ef7c54aa2e6a03ec93eb97938d427e8d3"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1229,
+      "sha256": "1e919220581649e485429961cfb4a6259d55d66e229fdf3285d4810ac8c75363"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 726,
+      "sha256": "9d9fdc548a45e6949c45287308090dbb11a3955b6603debf05c6d13010f5d3a3"
+    }
+  ]
+}

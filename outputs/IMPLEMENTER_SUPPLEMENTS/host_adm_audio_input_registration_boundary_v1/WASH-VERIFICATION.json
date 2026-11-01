@@ -1,0 +1,19 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "HOST-ADM-AUDIO-INPUT-REGISTRATION-BOUNDARY-V1",
+  "source_manifest_sha256": "f7cc3a1fb83386014b220ef0ce0ad9b44abfafb107b6193f531cfc221226fd95",
+  "checks": {
+    "source_manifest_sidecar_and_payload_hashes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "generic_audio_input_registration": "STATIC_CLOSED",
+    "module_specific_adm_reader_entry": "UNBOUND",
+    "R138_concrete_reader_factory": "UNBOUND",
+    "reader_output_to_first_atmos_codec_consumer": "UNBOUND",
+    "analysis_tool": "Ghidra",
+    "authorized_sample_used": "NO_STATIC_ONLY",
+    "native_run": "NOT_RUN",
+    "payload_reads": 0
+  },
+  "scope_note": "Wash independently checked package hashes and state boundaries; Ghidra role claims remain static source-package findings, not runtime observation."
+}

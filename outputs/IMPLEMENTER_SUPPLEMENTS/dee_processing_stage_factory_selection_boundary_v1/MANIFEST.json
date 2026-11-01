@@ -1,0 +1,38 @@
+{
+  "schema": "washed-dee-processing-stage-factory-selection.v1",
+  "package_id": "dee_processing_stage_factory_selection_boundary_v1",
+  "status": "REGISTRY_CONFIG_AND_STAGE_FACTORY_SLOT_BOUND; PCM_TO_DDP_CONCRETE_OVERRIDE_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "02364d310db27b7beffe5478cd0193528a32c206acc0956ce25d926184c8a754",
+  "source_package_seal_sha256": "e464df9d688c045bb4d9afa53df4f5ff76f83695002731bb92bc7e0a8603c37a",
+  "implementation_allowed_for": "HOST_STAGE_FACTORY_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2589,
+      "sha256": "ba105053809a08818d1df01406e309eb414da33c7688fbe28c0a57025a80a70c"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1282,
+      "sha256": "d24dc22128dc7948028aa92f8689c4ad5c07351d068d652553257189f9027309"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1142,
+      "sha256": "0ccdb5fa366cc1e0794e8aef7d554f0a5c9291e28aa20512dbd10a57b7359698"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2111,
+      "sha256": "f3645c974ef871b719012829293c0264f66206563d6442c3af402681b444ecdf"
+    }
+  ]
+}

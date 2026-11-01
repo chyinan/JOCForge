@@ -1,0 +1,29 @@
+{
+  "contract": "Pointer-role comparison only. Tokens are intentionally omitted and no output expectation is supplied.",
+  "vectors": [
+    {
+      "id": "run152_role_alias",
+      "input": {
+        "host_slot38_argument_role": "stack-local metadata key",
+        "ddp_record_argument_role": "stack-local record destination",
+        "same_thread": true,
+        "same_stack_frame": false
+      },
+      "observed_relation": "equal token but different roles",
+      "expected_output": "NOT_SUPPLIED",
+      "status": "OBSERVED_NOT_IDENTITY"
+    },
+    {
+      "id": "run153_role_alias",
+      "input": {
+        "host_slot38_argument_role": "stack-local metadata key",
+        "ddp_record_argument_role": "stack-local record destination",
+        "same_thread": true,
+        "same_stack_frame": false
+      },
+      "observed_relation": "equal token but different roles",
+      "expected_output": "NOT_SUPPLIED",
+      "status": "OBSERVED_NOT_IDENTITY"
+    }
+  ]
+}

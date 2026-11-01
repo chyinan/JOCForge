@@ -1,0 +1,20 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "r138-adm-time-normalization-static-candidate-wash-v1",
+  "source_manifest_sha256": "fd881c4a93f7989029fd11bb8347e8e9d5466090f4bef601da8a6d5ac329ce93",
+  "checks": {
+    "source_manifest_sidecar_and_artifacts_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "authorized_sample_hash_matches_r138": true,
+    "R138_input_type": "ADM",
+    "R138_time_base": "embedded_timecode",
+    "normalizer_path": "STATIC_CANDIDATE",
+    "R138_selected_internal_run_method": "UNBOUND",
+    "host_map_to_setter_record": "UNBOUND",
+    "resolved_fps": "NOT_CAPTURED",
+    "native_job": "NOT_RUN",
+    "implementation_contacted": false
+  },
+  "scope_note": "Wash independently verified package hashes and status fields; static Ghidra relations are candidates until joined to a same-task runtime owner/generation."
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "washed-ddp-samples-alias-cross-image-boundary.v2",
+  "status": "DDP_CONDITIONAL_SAMPLINGCOUNT_ALIAS_TO_DDP_OUTPUT_MAP__ATMOSMEZZ_OWNER_JOIN_UNBOUND",
+  "source_package_manifest_sha256": "f529ff35586b7f6cc98df00f62ad36988bcbadb497b7f9d4b39f54796423d324",
+  "previous_local_package_manifest_sha256": "154587d0f397889896942026f97846a408f4e29965ea60ea08e7e94f0525995a",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "atmosmezz_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+  "ddp_input_source_map": {
+    "owner": "DDP outer context +0xa0",
+    "required_keys": [
+      "channels",
+      "sampling_rate",
+      "samples"
+    ],
+    "if_complete": "existing map values copied forward; SamplingCount fallback skipped",
+    "if_missing": "conditional MediaInfo aliases Channels/SamplingRate/SamplingCount populate caller-provided local map",
+    "same_context_copy": "local samples copied into same DDP context output map +0xf88",
+    "downstream": "a later DDP timeline consumer reads the output-map samples value"
+  },
+  "unproven": {
+    "preexisting_source_map_samples_writer": "UNBOUND",
+    "MediaInfo_SamplingCount_formula": "NOT_ESTABLISHED",
+    "data_chunk_bytes_divided_by_block_align": "NOT_OBSERVED_IN_THIS_DDP_CHAIN",
+    "DDP_output_map_to_AtmosMezz_converter_samples_map": "UNBOUND",
+    "DDP_source_map_to_AtmosMezz_reader_object": "UNBOUND",
+    "equality_or_same_key_as_identity_basis": "PROHIBITED"
+  },
+  "minimal_runtime_join": "One same-job/generation capture across DDP source/fallback map, AtmosMezz samples map read and reader extent/cursor/EOF; record pointer/owner tokens and whether fallback branch was taken.",
+  "audio_boundary": "Conditional metadata field-name/value crosswalk only. No audio algorithm, default, or output-field rule supplied."
+}

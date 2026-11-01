@@ -1,0 +1,29 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; SELECTED_CALLBACK_UNBOUND",
+  "source_package_id": "dee_host_processing_stage_factory_wash_v3",
+  "source_package_manifest_sha256": "2754effb28af31df2ebd455294d254b0cb04b6cf98c24da7ec4b79fe6b301754",
+  "source_package_seal_sha256": "ac57261eb5bf63674608d018c2fd3e4137f672fd395a166eb4699a1b93a1f3d8",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_hashes_recomputed_by_wash": 9,
+  "source_hashes_all_match": true,
+  "previous_wash_package_manifest": "fb7473523d726c13221d913557014a7ab3435071900a1a94d8a4b54dd025470c",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The pcm_to_ddp registry category string does not identify the selected callback or its dynamic config type.",
+    "The concrete config vtable factory override and returned ProcessingStage module remain unbound.",
+    "No DDP source-row descriptor, descriptor offset-0 writer, or owner/generation bridge was observed."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

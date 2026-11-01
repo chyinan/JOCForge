@@ -1,0 +1,27 @@
+{
+  "schema": "source-converter-runtime-identity-check.v1",
+  "check_status": "PASS",
+  "role_check": {
+    "r139_static_component_role": "ADM_INPUT_CONVERTER",
+    "r128_runtime_component_role": "ADM_INPUT_CONVERTER",
+    "same_role": true,
+    "same_bytes": false,
+    "hash_difference_means_build_incompatibility": false
+  },
+  "r138_join_check": {
+    "r138_executable_and_processing_image_identity_recorded": true,
+    "r138_converter_image_hash": "NOT_CAPTURED",
+    "r138_to_r128_converter_module_join": "UNBOUND"
+  },
+  "static_branch_check": {
+    "ffoa_auto_branch": "PASS_EXACT_9972_IMAGE_ONLY",
+    "file_position_first_frame_rule": "PASS_MAX_MINUS_OFFSET",
+    "r138_application_status": "BUILD_IDENTITY_UNJOINED_PROVISIONAL"
+  },
+  "open_items": {
+    "source_virtual_field_writer": "UNBOUND",
+    "spatial_fit_first_position_consumer": "NOT_OBSERVED",
+    "model_execution": "NOT_RUN",
+    "gate1_closed": false
+  }
+}

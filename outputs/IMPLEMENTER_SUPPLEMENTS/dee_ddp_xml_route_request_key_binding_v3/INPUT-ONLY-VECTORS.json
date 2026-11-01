@@ -1,0 +1,37 @@
+{
+  "contract": "Static route input/output mapping only; no output bytes or playback expectation is supplied.",
+  "vectors": [
+    {
+      "id": "run145_route_key",
+      "input": {
+        "filter_audio": "encode_to_atmos_ddp",
+        "xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80"
+      },
+      "static_result": {
+        "copied_request_key": "encode_to_atmos_ddp",
+        "selected_local_config_slot": 0
+      },
+      "status": "STATIC_BOUND"
+    },
+    {
+      "id": "run148_route_key",
+      "input": {
+        "filter_audio": "encode_to_atmos_ddp",
+        "xml_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3"
+      },
+      "static_result": {
+        "copied_request_key": "encode_to_atmos_ddp",
+        "selected_local_config_slot": 0
+      },
+      "status": "STATIC_BOUND"
+    },
+    {
+      "id": "unmatched_route",
+      "input": {
+        "filter_audio": "SYMBOLIC_OTHER_ROUTE"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "PROPOSED_NOT_RUN"
+    }
+  ]
+}

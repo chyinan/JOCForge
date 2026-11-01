@@ -1,0 +1,31 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "r138-normalizer-record-list-type-correction-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "12e28af74c7fa1d1ff7570b6177730eda054f30a48431e7d0ab6e33d4ff041d8",
+  "supersedes_wash_supplement_manifest_sha256": "96487b8069c5f77895c247fe20ebb7499b4bd921930b9e3738994e958cc265ee27",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "ab04fb556976a0f390bccea4508e456b327f98baa9249f31b6f77878d8f2e244",
+      "bytes": 711
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "05dbbeef734a6a6c5a327227d55bcc1332d6287daa28d1c3417a259412e3aaeb",
+      "bytes": 1211
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "5ce897646aab9fc32f461e9073733ee8fd80676a840e78aeec9f540463f2e089",
+      "bytes": 650
+    }
+  ]
+}

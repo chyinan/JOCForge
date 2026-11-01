@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "dee_host_pcm_to_ddp_registry_factory_boundary_v2",
+  "scope": "Hash-bound static host integration boundary; the concrete pcm_to_ddp callback, module override, and descriptor transfer remain unresolved.",
+  "status": "HOST_REGISTRY_TO_FACTORY_BOUND_SELECTED_CALLBACK_AND_DESCRIPTOR_EDGE_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1930,
+      "sha256": "e13ecb3db5296b89072afc604260b4a2c02b125b5f87d339ce5457a8430e0b3e"
+    },
+    {
+      "name": "NEXT-EDGE.json",
+      "bytes": 382,
+      "sha256": "9b3715eceba7801e11932642b2bb244cfae1a4097fd25d200043e27b1c974121"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1005,
+      "sha256": "c13e81f809cb6d7980e906fe0990f90d1af5fd7700277af0c1256637ca7c9eca"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 6321,
+      "sha256": "2df9ad01574be5520d3e242bc85c9fdf8869ff7cadef25c67c60c85dacc894b7"
+    }
+  ]
+}

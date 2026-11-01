@@ -1,0 +1,20 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_manifest_sha256": "7083cc69d8fe895cc585a2c0d1f58cd41127cd5a579dbed254c9d8863d7cb85b",
+  "source_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "parent_range_manifest_sha256": "f18722e50d2e65ec49beac10e8b0a6f02f7aedb0ce20140ccdf0dbaf12c8f94c",
+  "sample6_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "separation": {
+    "code": false,
+    "binary_or_decompilation": false,
+    "rva": false,
+    "pcm_or_ec3": false,
+    "key_or_license": false,
+    "absolute_paths": false,
+    "audio_algorithm": false
+  }
+}

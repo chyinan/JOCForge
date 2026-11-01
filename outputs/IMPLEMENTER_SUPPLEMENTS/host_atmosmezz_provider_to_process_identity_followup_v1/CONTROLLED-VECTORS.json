@@ -1,0 +1,32 @@
+{
+  "schema": "atmosmezz-provider-process-identity-vectors.v1",
+  "classification": "STATIC_VALUE_DOMAIN_AND_RUN_APPLICABILITY_NOT_NEW_CAPTURE",
+  "native_execution": "NOT_RUN",
+  "vectors": [
+    {
+      "case_id": "run_return_not_process_packet",
+      "input": {"host_value_role": "Run return"},
+      "expected_static": {"identity": "NOT_SAME", "value_domain": "completion status scalar"}
+    },
+    {
+      "case_id": "get_targets_return_not_process_packet",
+      "input": {"host_value_role": "GetTargets return"},
+      "expected_static": {"identity": "NOT_SAME", "value_domain": "target-label string vector"}
+    },
+    {
+      "case_id": "storage_provider_to_process_packet",
+      "input": {"host_value_role": "AtmosMezz storage-provider object", "consumer_value_role": "DLL frame packet"},
+      "expected_static": {"identity": "UNBOUND", "same_task_generation": "NOT_OBSERVED"}
+    },
+    {
+      "case_id": "r138_not_atmosmezz_input",
+      "input": {"route_key": "encode_to_atmos_ddp", "input_type": "audio.adm"},
+      "expected_static": {"AtmosMezz_input_used": false, "reuse_for_provider_identity": "NOT_COMPATIBLE"}
+    },
+    {
+      "case_id": "process_frame_size_domain",
+      "input": {"packet_role": "DLL process frame packet"},
+      "expected_static": {"accepted_frame_size_units": [1536, 0], "zero_size_role": "flush"}
+    }
+  ]
+}

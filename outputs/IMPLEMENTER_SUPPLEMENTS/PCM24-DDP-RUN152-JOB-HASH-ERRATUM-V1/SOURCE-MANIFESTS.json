@@ -1,0 +1,16 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "base_package": {
+    "package_id": "pcm24_ddp_storage_record_address_alias_audit_v1",
+    "manifest_sha256": "1082dd1460fa133a727ff0daeed99b18bfa2b8e6668bdfc4f3f2a2876153baef",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "erratum_package": {
+    "package_id": "pcm24_ddp_run152_job_receipt_hash_erratum_v1",
+    "manifest_sha256": "f1e303eb14ebf6153c29e11cba4f3ed5cf03df76ca13ec852ad68cbd4a1c5e89",
+    "upstream_package_manifest_sha256": "650d77fa7223583e108478a384c227b83bcf792852dd98b99bbe8ea8936dbef4",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  }
+}

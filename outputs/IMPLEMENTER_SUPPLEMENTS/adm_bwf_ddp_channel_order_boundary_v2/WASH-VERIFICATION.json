@@ -1,0 +1,24 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_manifest_sha256": "a8751ffce6b110d7f05e352198db354db87145d75b7ccb3b372394064de33d38",
+  "source_seal_sha256": "35d0daeb55ac648d752bc723d465d8c150a7d26c398bccd97e2af7292788ec19",
+  "source_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "source_hash": {
+    "sample6": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "output_payload": "Not copied, not rehashed by Wash; hash remains receipt claim.",
+  "separation": {
+    "source_code": false,
+    "binary": false,
+    "rvas": false,
+    "absolute_pointers": false,
+    "pcm_values": false,
+    "license": false,
+    "absolute_paths": false,
+    "audio_algorithm": false
+  }
+}

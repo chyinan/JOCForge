@@ -1,0 +1,28 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_SOURCE_HASH_AND_SCOPE_CHECK; CALLBACK_TARGET_UNBOUND",
+  "source_package_id": "dee-host-pcm-to-ddp-registry-factory-wash-v1",
+  "source_package_manifest_sha256": "593b671e5a371556a05e801c2bc37352213821585c40f0c0fb94233b3f5d5120",
+  "source_package_seal_sha256": "26eb684ec79377a984f3b74be1711b9c843187427b1f4a309da63588abc434d4",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "host_static_source_hashes_checked": 15,
+  "host_static_source_hashes_match": true,
+  "implementation_ready": "NO",
+  "limitations": [
+    "The static pcm_to_ddp category mapping is not the selected StageRunner registry entry.",
+    "The nine literal references do not bind the callback pointer, config object's dynamic type, or factory override.",
+    "No DDP descriptor writer or owner/generation edge was observed."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "ddp_samples_prefill_owner_boundary_v1",
+  "status": "EVIDENCE_ONLY_SOURCE_MAP_OWNER_UNBOUND",
+  "source_package_manifest_sha256": "a7f7f8ff82a68f2a7d990a8b01eeccb0cff16065cfc7285e1f6a8adddf33ab1e",
+  "implementation_allowed_for": "SOURCE_METADATA_OWNERSHIP_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "files": [
+    {
+      "name": "SOURCE-MAP-OWNER.json",
+      "bytes": 1436,
+      "sha256": "77aa92900343cdcbbaf809d98005d6387e02c03c7c95631950a031ed0bf56d5b"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1060,
+      "sha256": "94c58ae9a0b678cbb3beb3aadd007190a46e700045181db4bdacdb54e77247e8"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 541,
+      "sha256": "5ad7b1cfcf0b39015adc478d6258320acf8a94eb309caefaece5f67920d7f861"
+    }
+  ]
+}

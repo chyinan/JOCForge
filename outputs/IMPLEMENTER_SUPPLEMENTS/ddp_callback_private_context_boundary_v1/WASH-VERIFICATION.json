@@ -1,0 +1,22 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_manifest_sha256": "a880dcee09b29e5653035a159350b794db4e10663c4bc2c08da3026f89fe72a6",
+  "source_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "identities": {
+    "ddp_image": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "separation": {
+    "source_code": false,
+    "binary": false,
+    "decompilation": false,
+    "rva": false,
+    "pcm": false,
+    "key": false,
+    "absolute_path": false,
+    "audio_algorithm": false
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "wash-only-host-profile-factory-boundary.v1",
+  "package_id": "HOST-PROFILE-ROUTE-FACTORY-STATIC-BOUNDARY-V1",
+  "result": "PROFILE_FIELD_REGISTRATION_AND_PLUGIN_SETUP_OBSERVED; R138_PROFILE_TO_SELECTED_FACTORY_UNBOUND",
+  "source_binding": {
+    "r138_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "time_base": "embedded_timecode",
+    "time_base_source_status": "WASH_VERIFIED_HASH_BOUND_CONFIG"
+  },
+  "role_edges": [
+    {
+      "producer_role": "R138 route/profile option lookup",
+      "consumer_role": "host profile/config option values",
+      "status": "STATIC_LOOKUP_CLOSED"
+    },
+    {
+      "producer_role": "route-specific profile schema construction",
+      "consumer_role": "start/time_base option registration",
+      "status": "STATIC_FIELD_REGISTRATION_CLOSED"
+    },
+    {
+      "producer_role": "job configuration setup",
+      "consumer_role": "StageRunner construction and plugin registration",
+      "status": "STATIC_SETUP_PATH_CLOSED"
+    },
+    {
+      "producer_role": "module category getter",
+      "consumer_role": "ordered category factory pointer registration",
+      "status": "STATIC_REGISTRATION_CLOSED_NOT_TASK_SELECTION"
+    },
+    {
+      "producer_role": "StageRunner schema request",
+      "consumer_role": "XML schema construction",
+      "status": "SCHEMA_PATH_ONLY"
+    },
+    {
+      "producer_role": "R138 profile owner/task generation",
+      "consumer_role": "selected audio_filter factory index/entry",
+      "status": "UNBOUND"
+    }
+  ],
+  "open_edges": {
+    "route_profile_to_actual_factory_dispatch": "UNBOUND",
+    "typed_same_invocation_owner_transfer": "NOT_OBSERVED",
+    "parent_task_generation": "NOT_OBSERVED",
+    "route_conditioned_host_dispatch_callsite": "NOT_IDENTIFIED",
+    "generic_factory_entry_hit_applicability_to_r138": "NON_GATING_UNTIL_TYPED_OWNER_JOIN",
+    "native_observation": "NOT_RUN"
+  },
+  "scope": {
+    "raw_decompiler_text_in_package": false,
+    "raw_function_symbols_in_package": false,
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

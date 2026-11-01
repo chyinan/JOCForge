@@ -1,0 +1,30 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "dee_audio_input_factory_selection_wash_v1",
+    "manifest_sha256": "9fa06b6a89970328b3c9654125a04d9f44193bd1ec4624d46a6a30841c110060",
+    "seal_sha256": "2b4f96b4c5cf648c34769fdbc008639147368e8aab2e91eb57c4ea67a9315d0a",
+    "checker_normal": "PASS; VALID_PARTIAL",
+    "checker_python_optimized": "PASS; VALID_PARTIAL",
+    "source_hash_count": 40
+  },
+  "related_wash_packages": [
+    {
+      "package_id": "F13C-SELECTED-ADM-READER-DDP-BOUNDARY-STATUS-V1",
+      "manifest_sha256": "32c29510750a98e48db57b482428ef9ace4d5cb191412c7d6b5bfc6f50adff47",
+      "relationship": "Earlier selected-reader boundary remains unbound; this package narrows the generic registry path only."
+    },
+    {
+      "package_id": "R138-INPUT-OBJECT-RUN-CALLSITE-BOUNDARY-V1",
+      "manifest_sha256": "69abcfe6b33c85af0e198e34969038ffac3a1cbd1985c2689f5adedd3d95f600",
+      "relationship": "Provides the static pre-Run callsite; it is not a dynamic R138 reader selection."
+    }
+  ],
+  "target_host_image": {
+    "name": "dee.exe",
+    "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "identity_basis": "hash-bound Ghidra source summaries and prior metadata receipts"
+  },
+  "raw_decompilation_copied": false,
+  "audio_or_license_content_copied": false
+}

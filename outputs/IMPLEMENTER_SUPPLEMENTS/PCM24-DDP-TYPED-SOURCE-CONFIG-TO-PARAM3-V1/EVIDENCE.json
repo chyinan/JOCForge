@@ -1,0 +1,57 @@
+{
+  "schema": "washed-pcm24-ddp-typed-source-config-evidence.v1",
+  "status": "TYPED_HOST_CONFIG_KEY_TO_DDP_SOURCE_MAP_STATICALLY_BOUND; DDP_MAP_ENTRY_TO_PARAM3_SAME_ACTIVATION_BOUND; HOST_ADM_OWNER_GENERATION_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_PLUS_PRIOR_POINTER_ONLY_SAME_ACTIVATION_CAPTURE",
+  "images": {
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "config_dispatch": {
+    "filter_vtable": "dee::proc::FilterDDPJocEnc::vftable",
+    "slot": 1,
+    "method": "FUN_18013E9D0",
+    "host_config_argument": "param_2",
+    "entry_decoder": "FUN_18014A060",
+    "property_container": "private+0xEC0",
+    "property_setter_vtable_slot": "+0x28",
+    "source_type_key": "dee_audio_source_type",
+    "source_type_side_effect": "writes source-entry count to private+0xF18",
+    "source_option": {
+      "key": "dee_audio_filter_source",
+      "private_offset": "0xA0",
+      "value_type": "SafeType<std::vector<std::map<std::string,std::string>>>",
+      "property_construction": "FUN_18016D3F0 -> FUN_18016D2C0"
+    },
+    "target_option": {"key": "dee_audio_filter_target:0", "private_offset": "0x198"}
+  },
+  "source_map_to_record": {
+    "source_map_readers": ["FUN_18014CB80", "FUN_18014FD90"],
+    "observed_metadata_keys": ["filename", "sampling_rate", "samples", "channels", "offset", "timecode_frame_rate", "duration"],
+    "per_source_builder": "FUN_180145380",
+    "measurement_selector": "FUN_18014ABA0",
+    "record_writer": "FUN_1801535B0",
+    "record_writer_argument": "param_3 in R8",
+    "runtime_pointer_only_capture": {
+      "package_manifest_sha256": "93bd92a3a6004ea5efbdc54f94c558ab0058573db1b6792fb2c35fa936e22bc4",
+      "same_ddp_owner_token_at_builder_and_writer": true,
+      "same_FUN_18014ABA0_measurement_activation": true,
+      "param_3_entry_token_observed_at_writer": true,
+      "writer_body_executed": false
+    }
+  },
+  "identity_boundary": {
+    "host_framework_writer_of_param_2_to_FUN_18013E9D0": "UNBOUND",
+    "typed_host_adm_object_or_generation_in_source_option": "NOT_OBSERVED",
+    "host_selected_adm_owner_generation_to_ddp_param_3": "UNBOUND/NO",
+    "path_string_equality_as_identity": false,
+    "shared_outer_stage_runner_frame_as_identity": false
+  },
+  "access_boundary": {
+    "new_encoder_run": "NOT_RUN",
+    "prior_probe_stopped_before_record_writer_body": true,
+    "row_contents_or_pcm_read": false,
+    "payload_or_bitstream_read": false,
+    "private_key_auth_or_license_contents_read": false
+  }
+}

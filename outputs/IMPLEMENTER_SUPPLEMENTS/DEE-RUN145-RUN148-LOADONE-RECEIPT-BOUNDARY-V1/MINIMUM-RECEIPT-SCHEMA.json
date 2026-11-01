@@ -1,0 +1,15 @@
+{
+  "schema": "research-only-loadone-receipt-request.v1",
+  "purpose": "Minimum evidence request for computing a historical absolute manager/Runner ordinal; not a product API or implementation schema.",
+  "status": "NOT_CAPTURED_FOR_RUN145_AND_RUN148",
+  "per_run_fields": [
+    "hash-bound run identity and task generation",
+    "effective ordered LoadOne sequence",
+    "module basename and image SHA-256 per sequence entry",
+    "audio_filter getter count per sequence entry",
+    "DDP Atmos entry matched by image SHA-256",
+    "DDP Atmos local factory index"
+  ],
+  "absolute_ordinal_formula": "sum(audio_filter getter counts for entries before the DDP Atmos entry) + DDP Atmos local factory index",
+  "data_policy": "Metadata only: module identity/order/counts. No media, PCM, payload, bitstream, license, or key contents."
+}

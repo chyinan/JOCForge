@@ -1,0 +1,24 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_manifest_sha256": "154587d0f397889896942026f97846a408f4e29965ea60ea08e7e94f0525995a",
+  "source_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "parent_source_manifest_sha256": "7083cc69d8fe895cc585a2c0d1f58cd41127cd5a579dbed254c9d8863d7cb85b",
+  "checks": {
+    "conditional_fallback": true,
+    "ddp_same_owner_map_copy": true,
+    "cross_image_join": "UNBOUND",
+    "audio_algorithm_source": false
+  },
+  "separation": {
+    "source_code": false,
+    "binary_or_decompilation": false,
+    "raw_addresses_or_rvas": false,
+    "pcm_or_ec3": false,
+    "key_or_license": false,
+    "absolute_paths": false
+  }
+}

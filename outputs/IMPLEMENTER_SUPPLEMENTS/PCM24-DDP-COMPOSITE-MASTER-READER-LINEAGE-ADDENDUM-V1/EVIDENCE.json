@@ -1,0 +1,62 @@
+{
+  "schema": "washed-pcm24-ddp-composite-master-lineage.v1",
+  "status": "DDP_RECORD_TO_COMPOSITE_MASTER_GETTER_AND_DESCRIPTOR_PATH_BOUND; HOST_ADM_OWNER_GENERATION_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_PLUS_EXISTING_RUN151_TYPE_AND_DESCRIPTOR_OBSERVATION",
+  "target_images": {
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "per_source_record": {
+    "owner_function": "FUN_18014ABA0",
+    "source_set_builder": "FUN_180145380",
+    "source_fields_read": ["owner+0xA0", "owner+0x198"],
+    "selected_entry_argument": "param_3 to FUN_1801535B0",
+    "record_writer": "FUN_1801535B0",
+    "record_size_bytes": 336,
+    "reader_forwarding": ["FUN_180176980", "FUN_1801769A0", "FUN_1801764E0"]
+  },
+  "owner_plus_0x350": {
+    "classification": "OUTPUT_FILE_LIST_NOT_SOURCE_ARRAY",
+    "checked_against": "encode/source-set count",
+    "additional_rule": "multiple-data-rate restriction check",
+    "source_array_owner_claim": false
+  },
+  "composite_master_path": {
+    "composition_setup": "FUN_1801828C0",
+    "factory": "FUN_180553A60",
+    "factory_output_argument": "composition_state+0x50",
+    "factory_success_stores_object_at": "composition_state+0x50",
+    "getter": "FUN_18032F1D0 returns composition_state+0x50",
+    "descriptor_consumer": "FUN_180186870",
+    "dispatch_slot_byte_offset": "0xC8",
+    "dispatch_receiver": "same getter result from composition_state+0x50",
+    "descriptor_offset_0": "DDP row table pointer",
+    "descriptor_offset_8": "channel count",
+    "descriptor_offset_16": "frame count",
+    "static_typed_ddp_internal_path": "BOUND"
+  },
+  "run151_observation": {
+    "dispatch_target_type": "atmos_storage_composite_master",
+    "descriptor_offset_0_equals_row_table_token": true,
+    "host_selected_adm_master_token": "NOT_CAPTURED"
+  },
+  "run152_run153_provenance": {
+    "run152_job_xml_sha256": "31e642109943bc9a93a1704b8a5c6137eb6a50dfaa4e782f0b5dc2c897a8dd9c",
+    "run153_job_xml_sha256": "c1440b3ab909ec59574fb3bede15bc047e9b61428162e8cbb2c9d63d4c459cf6",
+    "input_payload_identity": "UNBOUND/NO; payload was not rehashed",
+    "address_equality": "NOT_A_TYPED_OWNER_OR_GENERATION_JOIN"
+  },
+  "unbound": {
+    "host_selected_adm_master_to_ddp_composite_master": true,
+    "host_selected_adm_generation_to_ddp_record_generation": true,
+    "selected_audio_adm_factory_to_ddp_record": true
+  },
+  "access_boundary": {
+    "new_encoder_run": "NOT_RUN",
+    "bitstream_read_or_parsed": false,
+    "audio_or_joc_playback": "NOT_RUN",
+    "row_contents_or_pcm_read": false,
+    "private_key_auth_or_license_contents_read": false
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "dee_audio_filter_ordinal_input_provenance_wash_v1",
+    "manifest_sha256": "97184837a407a40e7caa41a22ed2a6d386f59eb503b367061ce99a0c5e78bea3",
+    "detached_seal_sha256": "541a7fa756398398c11f1ae69b54f0ed8e224c9bedcd9cb37d52c5b5b5790cf6",
+    "source_hash_count": 29,
+    "checker_normal": "VALID_PARTIAL",
+    "checker_python_optimized": "VALID_PARTIAL"
+  },
+  "parent_callback_order_package": {
+    "package_id": "dee_audio_filter_callback_order_stability_wash_v1",
+    "manifest_sha256": "8c47327c3b2d37e730cab7066b001bb2aa3d00e68a4b314c15a004b29e706c85",
+    "seal_sha256": "f658f9a432ba0424d8aa9d8eee098f0e1b4d4de2ca6fe6e201138b1781d81dbe"
+  },
+  "parent_selected_route_package": {
+    "package_id": "dee_audio_filter_selected_task_callback_wash_v3",
+    "manifest_sha256": "00856107e8c19c232e7a560dd723e3cce804d6d2da8003144b43bf1f5484f25c"
+  },
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+  ]
+}

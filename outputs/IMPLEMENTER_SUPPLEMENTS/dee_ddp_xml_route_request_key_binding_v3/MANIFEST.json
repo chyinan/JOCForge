@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "dee_ddp_xml_route_request_key_binding_v3",
+  "scope": "Run145/148 XML filter/audio route is statically copied into the StageRunner request-key child vector and exact-matched to DDP Atmos local callback slot 0; factory/stage/config stores bound. Global ordinal, runtime entry, owner/generation and numeric profile loader index remain open.",
+  "status": "XML_CHILD_TO_RUNNER_REQUEST_KEY_STATIC_BOUND; EXACT_ROUTE_TO_LOCAL_CALLBACK_0_AND_STAGE_CONFIG_STORES_BOUND; DIRECT_CALLBACK_ENTRY_NOT_HIT; GLOBAL_ORDINAL_ORDER_DEPENDENT",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2794,
+      "sha256": "221cdda03a098a050c9a17c505ff963ad78e87a8eef3ae6f997d4119ec2792fa"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1055,
+      "sha256": "8c731a87749f0a382d34b38d81051ba4d577cd78cb1f485beb0a977955c883a7"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 886,
+      "sha256": "76e4fe70c7c4f0efe62b77cf0512aa03dc82c430d30602a70ba945c29b8e5e6a"
+    },
+    {
+      "name": "README.md",
+      "bytes": 920,
+      "sha256": "154a6015ff16ccba5a200a5517120da60c29749a1d31f126fba39a165774555d"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1212,
+      "sha256": "c36c5b2b971342d55b92c5250a46c56008f699299cfce2e3cf6feaefe6d59a36"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 242,
+      "sha256": "30bcc019e154ad9f5368b31c85e3562fe3d77263d460cecf0742f3ed7752f904"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1953,
+      "sha256": "b8dcd4f9844a9d0f73a7dd10c934740d9d222c7b962e9c4149195d1225157a43"
+    }
+  ]
+}

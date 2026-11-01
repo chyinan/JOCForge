@@ -1,0 +1,43 @@
+{
+  "schema": "washed-pcm24-reader-ddp-host-dispatch-boundary.v1",
+  "package_id": "pcm24_reader_ddp_host_dispatch_boundary_v1",
+  "status": "STATIC_HOST_AND_READER_DISPATCH_BOUND_CROSS_IMAGE_OWNER_EDGE_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "upstream_package": {
+    "manifest_sha256": "179ff925530dfe5775c1f78a546152f4d16b1ce134c70ebf1321dd079c23728e",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "payload_hashes_recomputed": "ALL_MATCH"
+  },
+  "target_images": [
+    {
+      "role": "DEE host stage runner",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+      "identity_source": "prior washed host identity"
+    },
+    {
+      "role": "DDP Atmos descriptor consumer",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "identity_source": "current hash-bound image"
+    },
+    {
+      "role": "selected PCM24 reader",
+      "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+      "identity_source": "prior washed reader boundary; current binary not present for independent rehash"
+    }
+  ],
+  "static_edges": {
+    "reader_output": "Borrowed F32 row-pointer table; row view derives from caller rows plus sample offset.",
+    "host_dispatch": "StageRunner reaches a configured stage through virtual dispatch; audited host body does not pass a typed reader table or write DDP descriptor offset 0.",
+    "ddp_consumer": "Descriptor offset 0 is consumed as the source-row table; channel and frame counts are separate descriptor fields."
+  },
+  "reader_to_descriptor_offset0": "UNBOUND/NO",
+  "same_owner_generation": "UNBOUND/NO",
+  "execution": {
+    "runtime_capture": "NOT_RUN",
+    "dee_job": "NOT_RUN",
+    "pcm_or_row_payload_read": false,
+    "license_contents_read": false
+  },
+  "next_edge": "Resolve the host stage virtual target, then capture the concrete adapter's descriptor offset-0 store with the same input owner and parent generation."
+}

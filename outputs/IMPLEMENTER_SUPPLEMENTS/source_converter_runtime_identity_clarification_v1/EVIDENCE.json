@@ -1,0 +1,64 @@
+{
+  "schema": "source-converter-runtime-identity-clarification.v1",
+  "purpose": "Clarify the source-converter component role across R139's static copy, R128's hash-bound runtime image, and the R138 process without inferring an unobserved module identity.",
+  "identity_roles": {
+    "r139_static_image": {
+      "sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+      "component_role": "ADM_INPUT_CONVERTER",
+      "role_basis": "The hash-bound static import report identifies this image as the source converter component.",
+      "static_report_sha256": "80f4223bb36e4f4a33736e0b320e388f951cd55a2f78bfe3ab8ed6671703c490"
+    },
+    "r128_runtime_image": {
+      "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+      "component_role": "ADM_INPUT_CONVERTER",
+      "role_basis": "R128's sealed runtime inventory assigns this hash to the ADM input converter.",
+      "runtime_identity_manifest_sha256": "a8bcb8ec6852208bde422aafc6285201d6de7d04325d66d7b41d7dfe5d816105",
+      "exact_image_static_range_branch_sha256": "7fcb327247708f943c6e29007ff3675c51d5e69e09f6dfa303417163ac6a7b5d",
+      "exact_image_static_callers_sha256": "da7465dfc12f602e55cfcc12d81160dd2be1302a485ed69fd174533e959064d5",
+      "verified_import_wrapper_sha256": "5b25626cbf67ec37fc0d7cac616e0c740aabbc2546ec66de6daad06f24590661",
+      "verified_import_process_sha256": "7bf8610da02c67e36b5d32e3f6fdb0c2949b162991ef429804f68444e26ad8fc"
+    },
+    "r128_runtime_storage_support": {
+      "sha256": "8ce9476c2a9d59a3e968912e203a051e7a3501cae7588f3ceb90762710597fd0",
+      "component_role": "ATMOS_STORAGE_SUPPORT",
+      "runtime_identity_manifest_sha256": "a8bcb8ec6852208bde422aafc6285201d6de7d04325d66d7b41d7dfe5d816105",
+      "static_key_scan_sha256": "961d72553a5267e201c2722d9bbe787c11fc91165b247eb948718b104c7311a0",
+      "static_offset_accessor_sha256": "92c263b077d61730b524ec3c64197a27474c68315c9fe36affb3c74c1edb6436",
+      "source_virtual_field_writer": "NOT_RESOLVED_IN_SCOPED_STATIC_SEARCH"
+    },
+    "r138_reference_run": {
+      "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "ddp_atmos_processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "input_converter_image_sha256": "NOT_CAPTURED",
+      "reference_log_sha256": "66b123188d24a4b4414a4edb8e169a8a135696e87ea427531dba9f54beffb7c"
+    }
+  },
+  "role_and_build_disposition": {
+    "r139_and_r128_component_roles_match": true,
+    "r139_and_r128_images_byte_identical": false,
+    "version_or_build_incompatibility_inferred_from_hash_difference": false,
+    "r128_exact_runtime_image_ffoa_auto_rule": "STATICALLY_CONFIRMED_FOR_9972_IMAGE",
+    "r138_runtime_image_join_to_9972": "UNBOUND",
+    "r139_ffoa_auto_contract_for_r138": "BUILD_IDENTITY_UNJOINED_PROVISIONAL"
+  },
+  "range_and_remaining_edges": {
+    "ffoa_auto_policy": "AUTO_SKIPS_EXPLICIT_SETTER_AND_RETAINS_SOURCE_FFOA",
+    "file_position_foa_start_rule": "max(offset_seconds, ffoa_seconds) - offset_seconds",
+    "offset_auto_resolution": "UNBOUND",
+    "source_master_virtual_writer": "UNBOUND",
+    "spatial_fit_first_sample_position_consumer": "NOT_OBSERVED",
+    "model_execution": "NOT_RUN",
+    "gate1_closed": false
+  },
+  "delivery": {
+    "recipient_role": "wash-agent",
+    "implementation_agent_contacted": false,
+    "implementation_delivery": "PROHIBITED",
+    "contains_sample_names_or_paths": false,
+    "contains_raw_addresses": false,
+    "contains_binary_excerpts": false,
+    "contains_audio_or_pcm": false,
+    "contains_private_license_material": false
+  }
+}

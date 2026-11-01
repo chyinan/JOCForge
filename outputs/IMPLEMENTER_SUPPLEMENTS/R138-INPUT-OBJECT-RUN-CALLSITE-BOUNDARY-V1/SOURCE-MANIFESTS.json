@@ -1,0 +1,32 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "R138-INPUT-OBJECT-RUN-STOP-EVIDENCE-V1",
+    "manifest_sha256": "0c79d0e16be7f07a559bfc9a57eee6c821156713c9898844a4258789e16b3352",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "checker_status": "VALID_PARTIAL",
+    "delivery_scope": "Wash-only; static callsite and schema-only non-selection boundary"
+  },
+  "upstream_parent": {
+    "package_id": "READER-METADATA-CAPTURE-FOLLOWUP-V10",
+    "manifest_sha256": "164409eeda49b71e52a9800feaa25c91aae0f45580f258c78054e5533c1de9d9",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "independently_recomputed_source_hashes": [
+    {"path": "work/input_object_reader_field_trace.txt", "bytes": 1086735, "sha256": "2d5f7ace03cb22585d25617f817d0b389de94ef1a51fe757ff90ec25ec49c1af"},
+    {"path": "work/dee_profile_schema_metadata_probe_v1.xsd", "bytes": 281444, "sha256": "74bb4b4c5d6720e142d3cbb4e07a179df569a522dd4a3260bc3f885fdaab526c"}
+  ],
+  "parent_receipts_recomputed_from_included_files": [
+    {"file": "SCHEMA-MODE-CAPTURE.json", "bytes": 7099, "sha256": "161c7960a855865006f3af94e8207f244e2ce192d154bfdcb08799575a204b28"},
+    {"file": "MINIMUM-R138-OBSERVATION.json", "bytes": 2821, "sha256": "e4f4fc136fe5f878034f767e589948f2e169d24b47983877742320fc06714be9"},
+    {"file": "PRIOR-EDGE-STATUS.json", "bytes": 2287, "sha256": "1860b319c00389fbfefea773ff99c71c26f2dc9100f33f47c2284c491ececd6e"}
+  ],
+  "related_wash_package": {
+    "package_id": "F13C-SELECTED-ADM-READER-DDP-BOUNDARY-STATUS-V1",
+    "manifest_sha256": "32c29510750a98e48db57b482428ef9ace4d5cb191412c7d6b5bfc6f50adff47",
+    "relationship": "This addendum narrows the static host Run-call boundary; it does not replace prior reader/row lineage findings."
+  },
+  "hash_scope_note": "Raw source files and target binaries are not copied into this package. The above source hashes were recomputed by Wash; the host image SHA remains bound to the incoming evidence and is not claimed as rehashed locally."
+}

@@ -1,0 +1,29 @@
+{
+  "contract": "Static route-selection cases only; proposed unmatched cases were not executed and no encoded output is asserted.",
+  "vectors": [
+    {
+      "id": "observed_route",
+      "input": {
+        "filter_audio": "encode_to_atmos_ddp"
+      },
+      "static_expected": {
+        "local_config_slot": 0,
+        "stage": "DDP JOC"
+      },
+      "status": "STATIC_BOUND"
+    },
+    {
+      "id": "unmatched_symbolic_route",
+      "input": {
+        "filter_audio": "SYMBOLIC_UNMATCHED_ROUTE"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "PROPOSED_NOT_RUN"
+    }
+  ],
+  "limits": [
+    "No global ordinal claim",
+    "No direct XML-to-Runner member claim",
+    "No output validity claim"
+  ]
+}

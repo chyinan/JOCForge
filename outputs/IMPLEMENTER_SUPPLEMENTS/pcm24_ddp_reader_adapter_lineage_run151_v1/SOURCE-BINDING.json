@@ -1,0 +1,28 @@
+{
+  "schema": "washed-ddp-reader-adapter-source-binding.v1",
+  "package_id": "pcm24_ddp_reader_adapter_lineage_run151_v1",
+  "incoming_research_manifest_sha256": "ae7c3e737eba3fbd1ed5dc70daebc3dff546b4cf8042dbd30883a556c8858389",
+  "incoming_research_payload_sha256": {
+    "REPORT.md": "de60f4569fcf740aa396272842643b531c3648577fcb9dde8ad19419144bc591",
+    "STATIC-ADAPTER-TRACE.json": "b53a5e20771db9b776f9c6513a774dacc0b7a0a1bef55e6c5aedcbc651ebeb73",
+    "RUN151-RUNTIME-CAPTURE.json": "1a0598ffa7504dd1271fac5bf0ee1cd63d17fb505d2194c756fd8b664c5d48cd",
+    "VERIFICATION.json": "a28656de06ab525785f80a794b86c5710e3f90b6a6221ea49c535bdae01719b5",
+    "verify_package.py": "295e3822781565f6e136bb01147d487353f83d7d7184800877d992fcd1114e3c"
+  },
+  "upstream_manifests": [
+    "1dc0ac5ed27b135bdeb050464ecaa072d6dff959357758fded9ef1810f6bce94",
+    "723076d71e3d99945dcdbc3c333a1da11bb39e60df89e6fd16d54cf937ff38a4",
+    "03577bc348ae1002888765347c627be3365c5524a3aec71c2487d5885f0d6646"
+  ],
+  "parent_washed_run150_manifest_sha256": "6fba04d28a98164f6584f8ed42f04af91ab9997ecb86bed0a186ba19b548a636",
+  "dee_host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "input_preflight_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+  "input_rehashed_for_run151": false,
+  "input_identity_status": "UNBOUND/NO",
+  "tool_static": "Ghidra 12.2 PUBLIC",
+  "tool_dynamic": "WinDbg pointer-only observation as recorded by the research package",
+  "raw_pointer_tokens_included": false,
+  "source_or_decompilation_included": false,
+  "private_key_or_license_contents_read": false
+}

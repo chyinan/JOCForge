@@ -1,0 +1,20 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "HOST-ADM-INPUT-OBJECT-DISPATCH-ADDENDUM-V1",
+  "source_manifest_sha256": "2a1e50293ee8afea61a1b7a6207cb1aaddf4f6cc033c4f404be085a361196113",
+  "checks": {
+    "source_manifest_and_sidecar_match": true,
+    "all_payload_hashes_and_sizes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "analysis_tool": "Ghidra",
+    "input_type": "audio.adm",
+    "input_object_lifecycle": "STATIC_BOUND",
+    "concrete_reader_factory": "UNBOUND",
+    "reader_to_first_atmos_codec_consumer": "UNBOUND",
+    "native_run": "NOT_RUN",
+    "authorized_audio_sample_used": "NO_STATIC_ONLY",
+    "payload_reads": 0
+  },
+  "scope_note": "Static reverse-engineering claims are source-package findings. Wash independently checked package identity, hashes, status fields, and scope; no live runtime observation was performed."
+}

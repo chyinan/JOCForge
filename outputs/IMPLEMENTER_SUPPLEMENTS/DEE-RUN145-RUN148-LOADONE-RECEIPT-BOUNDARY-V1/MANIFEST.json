@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 4925,
+      "file": "CHECK.py",
+      "sha256": "81d396845d5da8e42402561eaa640be42b7c9738db4a4ee5d32b5ee229490e33"
+    },
+    {
+      "bytes": 2459,
+      "file": "EVIDENCE.json",
+      "sha256": "81edf4526604b851c75da2f3139d6f09830f837aeeb21c4c968b7f224ca390b6"
+    },
+    {
+      "bytes": 832,
+      "file": "MINIMUM-RECEIPT-SCHEMA.json",
+      "sha256": "5cd4c2734bf15f4530f40e29b70971f9d2b3a6ed848ce37c4076f553c027ad39"
+    },
+    {
+      "bytes": 1920,
+      "file": "REPORT.md",
+      "sha256": "366da6de26ea04ab65c0953689fcaada9280e0cac21eca206056b1997eeb5c32"
+    },
+    {
+      "bytes": 1010,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "79f124aac046d7827ea06bb40d922f56c474a2671e203c18bd6c273d0b221c19"
+    },
+    {
+      "bytes": 1067,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "9e377fa4afd1536eb40ac2be464dc1e095cee576fa389af12186dfd50318aa6e"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "DEE-RUN145-RUN148-LOADONE-RECEIPT-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "6a0fd16292ed75b3e94b9ab945e41999bf1031cc32a40a5c3f9e8a715069ecf1",
+  "status": "HISTORICAL_LOADONE_RECEIPTS_MISSING; RUN145_RUN148_ORDINALS_UNBOUND; LOOSE_LOGS_UNBOUND"
+}

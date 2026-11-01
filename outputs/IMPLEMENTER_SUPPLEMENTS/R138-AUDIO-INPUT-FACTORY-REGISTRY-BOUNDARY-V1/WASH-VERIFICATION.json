@@ -1,0 +1,24 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "9fa06b6a89970328b3c9654125a04d9f44193bd1ec4624d46a6a30841c110060",
+  "incoming_seal_sha256": "2b4f96b4c5cf648c34769fdbc008639147368e8aab2e91eb57c4ea67a9315d0a",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "status": "VALID_PARTIAL"},
+  "independent_review": [
+    "Recomputed the incoming package manifest digest and compared it with package_seal.json.",
+    "Ran the source package verifier normally and under Python optimization; all 40 source hashes and seven candidate scans passed.",
+    "Reviewed the generic host input registry, callback enumeration, and StageRunner candidate path as static evidence only.",
+    "Confirmed the seven-image exact-export scan is a bounded candidate set, not the successful R138 module inventory.",
+    "Kept prior R138 metadata receipts and the schema declaration separate from runtime factory selection.",
+    "Excluded the output-side AtmosMezzPlugin audio.adm string from the input selection path.",
+    "Preserved selected factory, callback slot, selected index, typed reader owner/vtable, and successful module set as UNBOUND/NO."
+  ],
+  "not_promoted": [
+    "a globally absent audio_input factory",
+    "R138 selected factory/provider identity",
+    "R138 local callback slot or StageRunner candidate index",
+    "typed reader owner/vtable",
+    "successful-run plugin inventory",
+    "audio algorithm rule or product implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

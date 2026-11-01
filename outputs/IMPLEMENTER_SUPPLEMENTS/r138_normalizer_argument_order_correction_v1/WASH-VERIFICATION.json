@@ -1,0 +1,17 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "c7d5cb59b769ac311f93af3e78e0d53487dd62f75a9cf92d8f40117967af646c",
+  "checks": {
+    "source_manifest_sidecar_and_artifacts_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "RCX": "host_source_property_map",
+    "RDX": "timecode_frame_rate",
+    "R8": "FFOA",
+    "R9": "offset",
+    "R138_runtime_method": "NOT_CAPTURED",
+    "map_to_setter": "UNBOUND",
+    "native_job": "NOT_RUN"
+  },
+  "scope_note": "Wash verified package hashes and static argument-order boundary; no runtime R138 invocation was observed."
+}

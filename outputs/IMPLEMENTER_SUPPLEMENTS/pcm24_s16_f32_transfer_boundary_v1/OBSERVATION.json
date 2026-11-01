@@ -1,0 +1,40 @@
+{
+  "schema": "washed-pcm24-s16-f32-transfer-boundary.v1",
+  "status": "STATIC_DIRECT_CONSUMER_SLICE_NEGATIVE_F32_JOIN_OPEN",
+  "scope": {
+    "source_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_package_manifest_sha256": "ec431936159b2fdbaf1b39c42e30d1b6c553cdb79232ae2c1c0cb40c5aec621f",
+    "source_package_seal_sha256": "834de899e1546c56802d12fec82358138d413a4b686f4457ecc0ee3d4b428364",
+    "prior_wash_branch_package_manifest_sha256": "65ae5441ab74f64de0f50cf09bf89d7a992e388f15eeff8c50f24cdf57d358ec",
+    "method": "Ghidra static direct-consumer trace only",
+    "native_execution": "NOT_RUN",
+    "pcm_values_read_or_persisted": false
+  },
+  "direct_consumer_trace": {
+    "conditional_pcm24_branch_output": "signed 16-bit intermediate",
+    "observed_next_effects": [
+      "cursor/frame count advancement",
+      "control-event handling",
+      "outer read-result/event handling"
+    ],
+    "numeric_f32_conversion_in_traced_direct_consumers": "NOT_FOUND",
+    "separate_four_byte_float_branch": "not called from the three-byte branch in the traced path",
+    "first_ddp_row_operation": "copies 4-byte row samples; not a numeric DSP transform",
+    "typed_row_join": "UNBOUND"
+  },
+  "non_claims": [
+    "does not prove global absence of an F32 conversion outside the traced direct-consumer slice",
+    "does not prove the selected sample-6 job chose the conditional three-byte branch",
+    "does not establish PCM24-to-F32 scale, precision, rounding, or the first numeric DSP consumer"
+  ],
+  "implementation_disposition": {
+    "production_rule_approved": false,
+    "instruction": "Do not infer an S16-to-F32 conversion from row layout or a 4-byte row copy. Keep the approved PCM24 input contract; the direct consumer-to-F32 join still requires the one-scalar same-generation observation."
+  },
+  "next_minimum_experiment": {
+    "status": "PLAN_ONLY_WAITING_FOR_RUN144",
+    "capture": "one source signed24 scalar and matching first numeric F32 bit pattern for the same channel/row/sample/generation",
+    "retention": "derive relation in memory and discard; no PCM file, buffer dump, or adjacent samples",
+    "gate": "do not start a second DEE process while the single authorized run-144 is active"
+  }
+}

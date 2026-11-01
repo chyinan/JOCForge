@@ -1,0 +1,121 @@
+{
+  "schema": "washed-pcm24-reader-ddp-descriptor-owner-scope.v1",
+  "package_id": "pcm24_reader_ddp_descriptor_owner_scope_v1",
+  "status": "DDP_INTERNAL_TABLE_TO_DESCRIPTOR_OFFSET0_STATICALLY_BOUND; SELECTED_READER_OWNER_GENERATION_UNBOUND; RUN148_SELECTED_READER_NOT_HIT",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "implementation_scope": "Static DDP-internal descriptor contract only: an AtmosReader-owned MultiChannelBuffer row table is passed through a source-read call and stored at descriptor offset 0; dimensions occupy offsets 8 and 16; DDP copies rows by ordinal for frame_count*4 bytes. This does not bind the runtime source receiver to the selected ADM reader, input owner, or generation.",
+  "source_images": [
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728,
+      "current_source_hash": "MATCH"
+    },
+    {
+      "module": "dee_audio_filter_convert_atmos_mezz.dll",
+      "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+      "bytes": 6286336,
+      "current_source_hash": "MATCH"
+    },
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464,
+      "current_source_hash": "MATCH"
+    }
+  ],
+  "source_input": {
+    "sample": "authorized First Love ADM/WAVE",
+    "sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "current_input_file_hash": "MATCH"
+  },
+  "tool": {
+    "name": "Ghidra 12.2 PUBLIC",
+    "static_trace_function_body_receipts": "verified by incoming package checker",
+    "raw_decompilation_copied": false
+  },
+  "parents": [
+    {
+      "package_id": "pcm24_reader_to_ddp_descriptor_owner_gap_v1",
+      "manifest_sha256": "75f5be43d59f5b994c9bb18dfeeccedca81916ccccfe12561441c9fae4a661e1",
+      "status": "MANIFEST_FOUND_AND_REHASHED"
+    },
+    {
+      "package_id": "adm_bwf_ddp_source_row_descriptor_copy_boundary_v1",
+      "manifest_sha256": "113038aa85c69e3d26bcf0b7933e48f7e031038da86bf18ccf8c603139f4b3d6",
+      "status": "MANIFEST_FOUND_AND_REHASHED"
+    },
+    {
+      "package_id": "dee_host_ddp_stage_handoff_boundary_v1",
+      "manifest_sha256": "cbf7d62247dc54da795d2c96ed1ad78b22ead23216cd66619f4e9c5fd2c7665f",
+      "status": "MANIFEST_FOUND_AND_REHASHED"
+    },
+    {
+      "package_id": "reader_host_adapter_registration_wash",
+      "manifest_sha256": "7f19c4dbc040cc3710b016b3a187f878467a42693455f2c945a1354c200cd3e2",
+      "status": "MANIFEST_AND_8_PAYLOAD_HASHES_REHASHED"
+    }
+  ],
+  "static_ddp_reader": {
+    "read_slot_byte_offset": "0x18",
+    "thunk_rva": "0x186520",
+    "implementation_rva": "0x186870",
+    "row_table_owner": "AtmosReaderPrv.this + 0x18 MultiChannelBuffer",
+    "row_table_getter_rva": "0x18d620",
+    "generic_source_read_callsite_rva": "0x18692f",
+    "receiver_virtual_slot_byte_offset": "0xc8",
+    "descriptor_writes": {
+      "offset0": "same DDP internal row-table value after read call",
+      "offset8": "channel_count",
+      "offset16": "actual_or_requested_frame_count"
+    },
+    "binding": "INTERNAL_TABLE_TO_DESCRIPTOR_OFFSET0_BOUND_WITHIN_FUN_180186870"
+  },
+  "worker_and_consumer": {
+    "worker_rva": "0x1769a0",
+    "source_read_callsite_rva": "0x176b8a",
+    "ddp_process_callsite_rva": "0x176b98",
+    "same_local_descriptor_passed_to_source_then_process": true,
+    "process_entry_rva": "0x17a690",
+    "row_copy_rva": "0x18b260",
+    "row_copy_primitive_rva": "0x18d640",
+    "rule": "source_table[i] -> internal_row[i], frame_count * 4 bytes"
+  },
+  "selected_reader_boundary": {
+    "image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "vtable_read_slot_byte_offset": "0xc8",
+    "read_thunk_rva": "0x289100",
+    "read_implementation_rva": "0x280840",
+    "slot_match_to_ddp_source_slot": "MATCH_ONLY",
+    "runtime_breakpoint": "NOT_HIT_IN_RUN148",
+    "receiver_object_identity": "UNBOUND/NO",
+    "selected_reader_owner_and_generation": "UNBOUND/NO"
+  },
+  "run148_context": {
+    "host_and_ddp_same_thread": true,
+    "ddp_descriptor_observed": true,
+    "channels": 36,
+    "frames": 1536,
+    "row_pointer_count": 36,
+    "row_pointer_ordinals_observed": true,
+    "raw_pointer_tokens_copied": false,
+    "authorized_input_hash_matches": true,
+    "dee_encoder_done_log_marker": true,
+    "output_file_present": true,
+    "output_file_bytes": 32964608,
+    "output_bitstream_parsed": false,
+    "playback": "NOT_RUN",
+    "external_dee_license_file_used": true,
+    "license_contents_read": false,
+    "license_path_or_contents_copied": false
+  },
+  "exclusions": {
+    "source_code": false,
+    "raw_decompilation": false,
+    "binaries": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "raw_pointer_tokens_copied": false,
+    "absolute_paths": false
+  }
+}

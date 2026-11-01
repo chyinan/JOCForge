@@ -1,0 +1,79 @@
+{
+  "schema": "washed-ddp-reader-adapter-lineage-evidence.v1",
+  "package_id": "pcm24_ddp_reader_adapter_lineage_run151_v1",
+  "status": "HOST_RUNINPUT_TO_ATMOSMEZZ_SAME_THREAD_OBSERVED; DDP_RECORD_TO_READER_CONFIG_STATIC_PATH_BOUND; DESCRIPTOR_ROW_TABLE_ALIAS_OBSERVED; SELECTED_ADM_OWNER_GENERATION_UNBOUND; OUTPUT_PARSE_PLAYBACK_NOT_RUN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Host RunInput to AtmosMezz Init/Run call path observed on one thread; DDP internal source-record to local AtmosReader configuration statically traced; config forwarding and descriptor offset-zero relation observed. Does not establish selected ADM identity/generation, row contents, codec algorithm, or output validity.",
+  "provenance": {
+    "incoming_research_package": "pcm24_ddp_input_adapter_trace_addendum_v1",
+    "incoming_research_manifest_sha256": "ae7c3e737eba3fbd1ed5dc70daebc3dff546b4cf8042dbd30883a556c8858389",
+    "incoming_checker": "PASS_NORMAL_AND_PYTHON_O"
+  },
+  "host_input_route": {
+    "static_source_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "runinput_function_rva": "0x4b920",
+    "stage_sequence_function_rva": "0x4bdc0",
+    "callback_slot_byte_offset": "0x30",
+    "run151_callback_target_rva": "0xc8580",
+    "input_object_dispatch_slot_byte_offset": "0x58",
+    "input_object_execute_rva": "0xca5f0",
+    "inner_interface_field_offset": "0x1f0",
+    "init_and_run_slots": [
+      "0x28",
+      "0x30"
+    ],
+    "run151_targets": [
+      "0xf05e0",
+      "0xf09d0"
+    ],
+    "runtime_same_thread": true,
+    "runtime_same_inner_interface_at_init_and_run": true
+  },
+  "ddp_source_record_to_reader": {
+    "static_ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis_tool": "Ghidra 12.2 PUBLIC",
+    "measurement_owner_function_rva": "0x14aba0",
+    "opaque_record_local": "local_198",
+    "record_size_bytes": 336,
+    "record_writer_callsite_rva": "0x14afb0",
+    "reader_stub_callsite_rva": "0x14b000",
+    "record_pointer_same_at_writer_and_stub_calls": true,
+    "reader_stub_rva": "0x176980",
+    "measurement_function_rva": "0x1769a0",
+    "source_reader_callsite_rva": "0x176b36",
+    "source_reader_function_rva": "0x1764e0",
+    "record_pointer_to_reader_conversion": "distinct local reader configuration assembled from source-record fields",
+    "reader_config_forwarded_unchanged": [
+      "AtmosReader constructor",
+      "private-state constructor",
+      "composition-state constructor"
+    ],
+    "descriptor_offset_zero_equals_ddp_row_table": true,
+    "row_contents_captured": false
+  },
+  "run_scope": {
+    "capture_label": "Run151",
+    "input_label_in_capture": "Run145 First Love ASCII alias",
+    "input_sha256_from_preflight": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "input_rehashed_in_capture": false,
+    "input_identity_status": "UNBOUND/NO",
+    "job_xml_sha256": "2b20874ced73b748da533564ad438c449e89a9bd9db66aa85181e767d98c6d29"
+  },
+  "output_context": {
+    "encoder_done_marker_observed": true,
+    "pre_cleanup_bytes": 32964608,
+    "bitstream_parse": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "output_removed": true,
+    "temp_files_remaining": 0
+  },
+  "exclusions": {
+    "source_code_included": false,
+    "decompilation_included": false,
+    "binaries_included": false,
+    "raw_pointer_tokens_included": false,
+    "media_pcm_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "absolute_paths_included": false
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "washed-r4-run-module-identity-boundary.v1",
+  "package_id": "r4_run_module_identity_boundary_v1",
+  "status": "RUN145_RUN147_OUTPUT_RUN_INPUT_JOIN_BOUND_TARGET_MODULE_IDENTITY_UNBOUND",
+  "implementation_effect": "NONE_AUDIO_ALGORITHM_RULE",
+  "upstream_package": {
+    "manifest_sha256": "08183dc55172af611789ba6c9bc20bc43dd54ae6ca08adf00238fec9efeb1c8d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "upstream_payload_hashes_recomputed": "PASS"
+  },
+  "target_module": {
+    "role": "R2_PAYLOAD11_STATIC_PROCESSING_IMAGE",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "runs": [
+    {
+      "run_id": "Run145",
+      "input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "preflight_sha256": "32d5a45dae0091cc9ebc11063c9415557dcfdcf0fdf627702c9302a90ba21724",
+      "job_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+      "dee_log_sha256": "bdf9d5b89e234d75c72b5e63b17c9c876531af0ed43118cd7d9f0a9ef8c40590",
+      "openjoc_metadata_sha256": "083b1f36de8bd5d911ebaaaf35cacf2c418c0d9deb60bb12044c5890f8e6c38a",
+      "output_basename_matches_openjoc_input": true,
+      "dee_encoder_completion_logged": true,
+      "loaded_module_receipt_present": false,
+      "target_module_path_or_sha_in_dee_log": false,
+      "target_module_sha_match": "NOT_EVALUATED",
+      "identity": "UNBOUND"
+    },
+    {
+      "run_id": "Run147",
+      "input_sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82",
+      "preflight_sha256": "5fb0eaee479aef465481d77831d6bf199b396e911184b6ee2e7a415c03485f9f",
+      "job_xml_sha256": "6e8e2a8c1975f13de8b336c51f9d7d43c6489b516a702e297ca42b59919a766a",
+      "dee_log_sha256": "8b758a5a4b5b9834a91d3d1deccd2a8571249829c2bcc6c52cba162c2bae2d65",
+      "openjoc_metadata_sha256": "1cf47f96add27ef66ee5fdd723d11994801dda07aab4a488319d80f16ebc35a7",
+      "openjoc_input_validation_metadata_sha256": "81d9b6252b23e0a665eafada4a5fee90aa13bb1adbfc66d6bd3cadd03b31e80b",
+      "output_probe_metadata_sha256": "86d8c2e1ae93044c9fec16d06d08668c44bf48b1b2c75f8efcb450b409ac82ed",
+      "output_basename_matches_openjoc_input": true,
+      "dee_encoder_completion_logged": true,
+      "loaded_module_receipt_present": false,
+      "target_module_path_or_sha_in_dee_log": false,
+      "target_module_sha_match": "NOT_EVALUATED",
+      "identity": "UNBOUND"
+    }
+  ],
+  "minimum_missing_evidence": "Per-run loaded-module path and PE identity plus SHA-256 tied to the exact DEE process/job.",
+  "execution": {
+    "new_dee_job": "NOT_RUN",
+    "debugger_attach": "NOT_RUN",
+    "ec3_or_pcm_read": "NO",
+    "private_key_read": "NO"
+  }
+}

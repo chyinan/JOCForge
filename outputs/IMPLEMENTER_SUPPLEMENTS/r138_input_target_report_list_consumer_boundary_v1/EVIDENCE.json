@@ -1,0 +1,27 @@
+{
+  "schema": "washed-r138-input-target-report-list-consumer.v1",
+  "source_package_manifest_sha256": "88c497b031acdbd42e6a7fe265f30e6cbb39ac1ed2913e0e2c7d6f6d5ceae30a",
+  "host_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "r138_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+  "authorized_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "static_edge": {
+    "normalizer_output": "HOST_KEY_VALUE_RECORD_LIST",
+    "input_run_object_append": "STATICALLY_BOUND",
+    "consumer": "STATICALLY_BOUND_TO_INPUT_TARGET_REPORT_METADATA_FORMATTER",
+    "consumer_output_label": "dee_audio_input_target",
+    "reads_record_entries": true
+  },
+  "audio_effect": {
+    "pcm_sample_selection": "NOT_EVIDENCED",
+    "embedded_range_join": "UNBOUND",
+    "spatial_control_join": "UNBOUND",
+    "R141_setter": "NOT_HIT_FOR_THIS_RUN",
+    "runtime_consumer_hit_r138": "NOT_CAPTURED"
+  },
+  "disposition": {
+    "report_metadata_branch": "NON_GATING_UNLESS_AUDIO_EFFECT_IS_BOUND",
+    "global_absence_inference": false,
+    "gate1_closed": false,
+    "native_job": "NOT_RUN"
+  }
+}

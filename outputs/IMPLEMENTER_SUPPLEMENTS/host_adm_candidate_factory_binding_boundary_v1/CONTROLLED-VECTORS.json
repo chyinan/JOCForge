@@ -1,0 +1,38 @@
+{
+  "schema": "wash-only-host-audio-input-candidate-vectors.v1",
+  "vectors": [
+    {
+      "id": "label_match_without_getter_slot",
+      "input": {
+        "candidate_label": "audio.atmos_mezz",
+        "task_input_type": "audio.adm",
+        "getter_table_pointer": null,
+        "factory_slot_pointer": null,
+        "parent_generation": null
+      },
+      "expected": "CANDIDATE_TO_TASK_OWNER_UNBOUND"
+    },
+    {
+      "id": "pointer_match_without_typed_owner_generation",
+      "input": {
+        "candidate_factory_pointer_equals_slot_pointer": true,
+        "module_identity_token": "present",
+        "typed_audio_adm_owner_token": null,
+        "parent_generation": null
+      },
+      "expected": "SLOT_POINTER_MATCH_ALONE_DOES_NOT_CLOSE_TASK_SELECTION"
+    },
+    {
+      "id": "same_task_full_constructor_registry_join",
+      "input": {
+        "module_identity_token": "same-task",
+        "getter_table_pointer_and_count": "same-task",
+        "slot_pointer_equals_candidate_factory": true,
+        "typed_audio_adm_owner_token": "same-task",
+        "reader_object_vtable_run_target": "same-task",
+        "parent_generation": "same-task"
+      },
+      "expected": "CANDIDATE_TO_REGISTRY_AND_INPUT_OWNER_CLOSED_ONLY"
+    }
+  ]
+}

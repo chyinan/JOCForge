@@ -1,0 +1,38 @@
+{
+  "schema": "washed-dee-host-pcm-to-ddp-registry-xref-boundary.v1",
+  "package_id": "dee_host_pcm_to_ddp_registry_xref_boundary_v1",
+  "status": "PCM_TO_DDP_LITERAL_REFERENCES_CLASSIFIED; REGISTRY_CALLBACK_TARGET_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "593b671e5a371556a05e801c2bc37352213821585c40f0c0fb94233b3f5d5120",
+  "source_package_seal_sha256": "26eb684ec79377a984f3b74be1711b9c843187427b1f4a309da63588abc434d4",
+  "implementation_allowed_for": "HOST_STRING_REFERENCE_SCOPE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 1824,
+      "sha256": "8526644a27e5230bd7daaa2f35440f9c1c192c69c41ee2cdad72f4efd7df9664"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1201,
+      "sha256": "7739beafe50e805326f12e6d2c8b99c6297ea212f019c1c13894a03d8db26924"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 854,
+      "sha256": "264273be22899cd1f4d01dc575f9c116a6da545352ddea02aacc2651f8c24cd0"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2065,
+      "sha256": "76b03bef888d5467e734602e40d4760f9cc4f2399929800bf033f503962058a6"
+    }
+  ]
+}

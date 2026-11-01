@@ -1,0 +1,33 @@
+{
+  "schema": "washed-pcm24-to-f32-consumer-boundary.v2",
+  "status": "CONDITIONAL_PCM24_TO_S16_BRANCH_STATIC_PCM24_TO_F32_CONTRACT_UNBOUND",
+  "source_package_manifest_sha256": "dfc250800c6a3b4d657f2bb537b63d2a6b513630ab92f68426d4f2c80b5eaae5",
+  "source_package_seal_sha256": "999a68cd70f42499469c85255aebc1069d52378407b9f48f8378d6e17073f5d7",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+  "static_chain": "master +0xC8 read thunk -> converter adapter -> AdmFileStorage vtable +0x20 -> BWF data-chunk reader",
+  "conditional_branch": {
+    "condition": "bytes_per_sample==3",
+    "reads": "3 bytes per sample",
+    "destination": "short* via high-word plus bitwise carry",
+    "meaning": "conditional PCM24-to-S16 narrowing only"
+  },
+  "separate_float_branch": "FUN241060 returns float from 4-byte branch; no call edge from the 3-byte branch",
+  "unbound": {
+    "sample6_branch_selected": "NOT_CAPTURED",
+    "F32_scale": "UNBOUND",
+    "F32_precision_rounding": "UNBOUND",
+    "typed_link_to_first_DSP_consumer": "UNBOUND",
+    "reader_to_DDP_row": "UNBOUND"
+  },
+  "minimum_capture": {
+    "kind": "single-sample scalar proposal only",
+    "fields": [
+      "signed PCM24 value",
+      "first-DSP F32 bits",
+      "same channel/sample owner and generation tokens"
+    ],
+    "constraints": "discard immediately; do not persist sample or payload",
+    "tie_rounding": "One sample closes a tie rule only if its low bits exercise the tie boundary; otherwise remains unverified."
+  }
+}

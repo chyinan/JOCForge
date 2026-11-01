@@ -1,0 +1,56 @@
+{
+  "schema": "washed-dee-processing-stage-factory-selection.v1",
+  "package_id": "dee_processing_stage_factory_selection_boundary_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_REGISTRY_AND_FACTORY_LINEAGE",
+  "status": "REGISTRY_CONFIG_AND_STAGE_FACTORY_SLOT_BOUND; PCM_TO_DDP_CONCRETE_OVERRIDE_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_tool": "Ghidra 12.2 PUBLIC headless",
+    "new_dee_job": "NOT_RUN",
+    "runtime_observation": "NOT_RUN"
+  },
+  "registry_to_stage_config": {
+    "plugin_registry_enumerated": true,
+    "registry_factory_returns_config_objects": true,
+    "selected_config_retained_in_runner": true,
+    "config_name_getter_member_offset_bytes_decimal": 16,
+    "names_include_pcm_to_ddp": true,
+    "name_match_is_dynamic_type_proof": false
+  },
+  "config_to_stage_instance": {
+    "factory_virtual_slot_offset_bytes_decimal": 48,
+    "returned_processing_stage_retained_in_runner": true,
+    "selected_config_retained_alongside_stage": true,
+    "source_capability_method_offset_bytes_decimal": 88,
+    "target_capability_method_offset_bytes_decimal": 96,
+    "source_target_capability_matchers_set_type_properties": true,
+    "stage_factory_returns_generic_processing_stage": true
+  },
+  "data_boundary": {
+    "source_row_descriptor_passed_by_host_run_audio_filter_path": false,
+    "descriptor_offset_0_writer_found": false,
+    "ddp_process_call_found": false,
+    "concrete_pcm_to_ddp_config_vtable": "UNBOUND/NO",
+    "concrete_factory_override": "UNBOUND/NO",
+    "returned_stage_dynamic_vtable": "UNBOUND/NO"
+  },
+  "next_minimum_edge": "Resolve the registry callback stored in the specific pcm_to_ddp entry, bind its config object vtable, then identify the concrete +0x30 factory override and returned ProcessingStage vtable before tracing row-data/descriptor creation.",
+  "parent_wash_package": {
+    "package_id": "dee_host_ddp_stage_handoff_boundary_v1",
+    "manifest_sha256": "cbf7d62247dc54da795d2c96ed1ad78b22ead23216cd66619f4e9c5fd2c7665f"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

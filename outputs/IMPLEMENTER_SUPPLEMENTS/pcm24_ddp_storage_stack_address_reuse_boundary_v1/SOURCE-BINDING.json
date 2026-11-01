@@ -1,0 +1,18 @@
+{
+  "package_id": "pcm24_ddp_storage_stack_address_reuse_boundary_v1",
+  "incoming_manifest_sha256": "650d77fa7223583e108478a384c227b83bcf792852dd98b99bbe8ea8936dbef4",
+  "incoming_payload_sha256": {
+    "REPORT.md": "8c5c18b786335af82db577dbac2c41155539754f84bdcad14ddbd071e53f84ba",
+    "RUN152-RUNTIME.json": "ed25320b767b80e74a883ed8becd3b2e9df2597db9f11ce8f4470fc97ca16e4e",
+    "RUN153-RUNTIME.json": "a8bf4be16b99c5588422237affe02eb208b8cb23f434220e4bac1ee969bf8ee4",
+    "STATIC-STORAGE-AND-OWNER.json": "1d44e9724f5c0bfce6d665360896d01e2b9048867138d408a45030d86533d187",
+    "VERIFICATION.json": "a28656de06ab525785f80a794b86c5710e3f90b6a6221ea49c535bdae01719b5",
+    "verify_package.py": "efb2f01d678326915dcdbceee112ba4795d6843f9185ed9faa68c6bb20bedb85"
+  },
+  "input_preflight_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+  "new_input_hash_in_run152_153": false,
+  "raw_paths_or_pointer_tokens_included": false,
+  "source_code_or_decompilation_included": false,
+  "pcm_or_payload_read": false,
+  "private_key_or_license_contents_read": false
+}

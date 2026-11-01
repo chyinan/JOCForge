@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "pcm24_ddp_receiver_run149_owner_boundary_v1",
+  "scope": "Run149 DDP internal receiver type and pointer/descriptor equality; host RunInput object is distinct but selected ADM master/generation remain UNBOUND; converter module hash mismatch preserved.",
+  "status": "DDP_INTERNAL_RECEIVER_TYPED_AND_DESCRIPTOR_BRIDGE_OBSERVED; HOST_RUNINPUT_OBJECT_DISTINCT; SELECTED_ADM_OWNER_UNBOUND; CONVERTER_HASH_JOIN_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1297,
+      "sha256": "14733e6ee46ee9a5cb7c1e5cfec2ea62af275c7a5da54b00385e42513b591db6"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3329,
+      "sha256": "1d71628edf8ebec06df89cd9c720e9ee3ed30daca23dc88f0471730e35ba6760"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 945,
+      "sha256": "425f38da0187632eda532da1eae565a41f265961e23c3c7f1498167ac23c96fb"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 789,
+      "sha256": "e3a9fc61d133486dc5a4b37237ebfb9ab6e9f20bd263916950ec9787d96fc778"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2419,
+      "sha256": "587a9acf02f335f395ac7265b87b582f0b77823114bfde52b69279736deffa09"
+    }
+  ]
+}

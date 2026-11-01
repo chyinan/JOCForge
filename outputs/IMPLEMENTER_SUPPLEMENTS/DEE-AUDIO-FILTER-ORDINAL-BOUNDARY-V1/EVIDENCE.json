@@ -1,0 +1,53 @@
+{
+  "schema": "washed-dee-audio-filter-ordinal-evidence.v1",
+  "status": "LOCAL_CALLBACK_ORDER_BOUND; MANAGER_TO_RUNNER_RELATIVE_ORDER_BOUND; ABSOLUTE_GLOBAL_ORDINAL_UNBOUND",
+  "implementation_ready": "NO",
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_PLUS_EXISTING_RUN_SUMMARIES",
+  "selected_module": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "getter_rva": "0x1547d0",
+    "table_rva": "0x9ca000",
+    "local_callback_count": 3,
+    "local_entries": [
+      {"local_index": 0, "callback_rva": "0x12a440"},
+      {"local_index": 1, "callback_rva": "0x12a4c0"},
+      {"local_index": 2, "callback_rva": "0x12a540"}
+    ],
+    "selected_route_local_index": 0,
+    "selected_route_callback_rva": "0x12a440",
+    "selected_route_identity_binding": "PARENT_WASH_PACKAGE"
+  },
+  "ordering": {
+    "module_path_walk": "LoadAll walks returned module-path records in stored order; record stride 0x20; calls LoadOne per record",
+    "local_table_walk": "LoadOne iterates local indices 0 through getter_count_minus_1 and loads getter_array + local_index * 8",
+    "manager_append": "Each callback pointer is appended at the current audio_filter vector end; traced path has no sort or reorder",
+    "runner_walk": "StageRunner enumerates manager callback ordinals from zero and appends one resulting config per ordinal",
+    "disabled_config_behavior": "Eligibility-disabled config is still appended",
+    "conditional_global_ordinal_formula": "sum(callback_count of modules preceding DDP Atmos in this run's loaded module-path order) + local_factory_index",
+    "global_ordinal_status": "ORDER_DEPENDENT/NOT_BOUND",
+    "runner_absolute_index_status": "SAME_AS_GLOBAL_ORDINAL_IF_COMPLETE_LIST_IS_PRESENT; ACTUAL_VALUE_NOT_BOUND"
+  },
+  "run_crosscheck": {
+    "run145_input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "run148_input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "run145_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "run148_xml_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3",
+    "same_ddp_module_hash": true,
+    "local_slot_order_stability": "STATIC_STABLE_FOR_SAME_HASHED_DLL_IMAGE",
+    "global_ordinal_stability": "NOT_ESTABLISHED; COMPLETE_MODULE_SET_AND_PATH_ORDER_ABSENT"
+  },
+  "unbound": {
+    "complete_ordered_audio_filter_module_set": true,
+    "preceding_callback_count_prefix_per_run": true,
+    "absolute_global_callback_ordinal": true,
+    "absolute_runner_config_list_index": true,
+    "direct_factory_callback_entry_observation": true,
+    "descriptor_owner_generation": true
+  },
+  "access_boundary": {
+    "new_dee_or_windbg_run": "NOT_RUN",
+    "raw_pcm_or_payload_read": false,
+    "private_key_or_license_contents_read": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "washed-ddp-callback-private-context-boundary.v1",
+  "status": "FILTER_CALLBACK_TO_PRIVATE_CONTEXT_STATIC__FULL_FILE_INVOCATION_OWNER_UNBOUND",
+  "source_package_manifest_sha256": "a880dcee09b29e5653035a159350b794db4e10663c4bc2c08da3026f89fe72a6",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "static_facts": {
+    "callback_entry": "function-table entry installed in newly constructed filter object",
+    "factory_descriptor": "exported descriptor references a static three-entry factory array",
+    "filter_construction": "factory allocates filter object; constructor allocates and initializes private context",
+    "context_storage": "initializer return stored on filter receiver +0xb8",
+    "callback_behavior": "callback reads same receiver +0xb8 context pointer and passes it to context initializer",
+    "additional_factory_argument": "+0x138 value passed to constructor; use by initializer NOT_ESTABLISHED"
+  },
+  "unbound": {
+    "factory_array_runtime_reader": "OUTSIDE_IMAGE_OR_NOT_CAPTURED",
+    "filter_instance_to_full_file_job": "UNBOUND",
+    "context_to_input_source_generation": "UNBOUND"
+  },
+  "minimum_observation": {
+    "boundary": "callback entry",
+    "tokens": [
+      "typed host job/source generation",
+      "filter receiver",
+      "context pointer from receiver +0xb8",
+      "dispatch callsite"
+    ],
+    "status": "PLAN_ONLY_NOT_CAPTURED"
+  },
+  "audio_scope": "Object ownership facts only; no audio algorithm, sample mapping, parameter or encoded-field value supplied."
+}

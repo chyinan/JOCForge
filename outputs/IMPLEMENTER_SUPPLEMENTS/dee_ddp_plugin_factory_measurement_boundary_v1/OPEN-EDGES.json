@@ -1,0 +1,21 @@
+{
+  "schema": "washed-ddp-plugin-open-edges.v1",
+  "open": [
+    {
+      "from": "host pcm_to_ddp registry entry",
+      "to": "DLL-local DDP plugin factory",
+      "status": "UNBOUND/NO"
+    },
+    {
+      "from": "context-7 converter row view",
+      "to": "DDP descriptor row table offset 0",
+      "same_owner_generation": "UNBOUND/NO"
+    },
+    {
+      "from": "conditional measurement branch",
+      "to": "live AtmosProcMeasure instance and values",
+      "status": "NOT_OBSERVED"
+    }
+  ],
+  "next_discriminating_static_edge": "Locate the host callback-table writer and bind the selected pcm_to_ddp registry entry to the DDP export; then identify the descriptor offset-0 writer and owner token."
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_manifest_sha256": "dfc250800c6a3b4d657f2bb537b63d2a6b513630ab92f68426d4f2c80b5eaae5",
+  "source_seal_sha256": "999a68cd70f42499469c85255aebc1069d52378407b9f48f8378d6e17073f5d7",
+  "source_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "source_identity": {
+    "authorized_sample6": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "converter_image": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+  },
+  "separation": {
+    "source_code": false,
+    "binary": false,
+    "rva": false,
+    "pcm": false,
+    "key": false,
+    "absolute_path": false,
+    "external_algorithm": false
+  }
+}

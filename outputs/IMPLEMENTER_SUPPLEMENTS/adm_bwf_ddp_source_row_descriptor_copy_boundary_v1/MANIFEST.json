@@ -1,0 +1,38 @@
+{
+  "schema": "washed-adm-bwf-ddp-source-row-descriptor-boundary.v1",
+  "package_id": "adm_bwf_ddp_source_row_descriptor_copy_boundary_v1",
+  "status": "DDP_DESCRIPTOR_FORWARDING_AND_ROW_COPY_STATICALLY_BOUND; PCM24_READER_TO_DDP_TABLE_OWNER_GENERATION_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "31ae006f73ef7e3e034efed55a298fb2af7e07381c4419f59f2d1aae2695227a",
+  "source_package_seal_sha256": "b4a571670e316197fc2fe9038794257fd2f8954ce35c3ce39280fc77dfac0309",
+  "implementation_allowed_for": "DDP_DESCRIPTOR_FORWARDING_AND_STATIC_ROW_COPY_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3391,
+      "sha256": "b650d1a0208741f5068e7e71c46ad70f518b3016d93b78c9bee0a014faff9631"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1596,
+      "sha256": "0987b8685c26fa14ee41da99ef65bbb58401dc98ed36604b6d81ff2f7342a7f0"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1164,
+      "sha256": "88c204c6cb0fa253e25eb58331024e45f40c3249408b0dd8ba68bc49a47f1946"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2320,
+      "sha256": "470e27852b5ff27c2261f9ab1b5f4e144efa75d1d43d6392311b6185969cfed3"
+    }
+  ]
+}

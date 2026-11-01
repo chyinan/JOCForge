@@ -1,0 +1,25 @@
+{
+  "schema": "r138-metadata-only-run-boundary-plan.v1",
+  "execution_status": "NOT_RUN; SPECIFICATION_ONLY",
+  "trigger": "An already-authorized R138 activation is available.",
+  "stop": {
+    "image": "dee.exe",
+    "rva": "0xCA9FC",
+    "timing": "before virtual InputObject::Run call",
+    "metadata_only": true
+  },
+  "capture_if_present": [
+    "wrapper token RSI",
+    "selected reader token RCX",
+    "vtable token RAX",
+    "slot +0x30 target token",
+    "typed audio.adm owner token",
+    "factory table/count/slot tokens",
+    "caller module+RVA and stack token",
+    "explicit parent-generation token"
+  ],
+  "join_rule": "Bind only values observed within the same activation and typed owner. If the generation token is absent, keep generation UNBOUND; do not infer it from event order or equal displacement.",
+  "stop_rule": "Stop before Run if continuing could read audio. Mark later boundaries NOT_REACHED when not safely observable before processing.",
+  "prohibited_reads": ["R138 XML", "row/table bytes", "PCM", "payload", "encoded output", "key/license content"],
+  "encode_authorized_by_this_plan": false
+}

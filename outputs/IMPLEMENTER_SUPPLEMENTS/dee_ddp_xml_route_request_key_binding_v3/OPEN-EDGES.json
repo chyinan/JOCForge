@@ -1,0 +1,17 @@
+{
+  "package_id": "dee_ddp_xml_route_request_key_binding_v3",
+  "closed": [
+    "XML filter/audio route text is copied into the StageRunner child vector at +0x68",
+    "Build reads the first copied child row name at vector begin +0x18 as the requested route",
+    "Exact name/length comparison selects the DDP Atmos callback-created config slot 0",
+    "The selected config factory produces a DDP JOC stage, stored with the matched config at Runner +0x270/+0x278"
+  ],
+  "open": [
+    "Global callback ordinal and full module load set",
+    "Direct callback factory entry was not hit in Run148",
+    "Descriptor owner/generation",
+    "Numeric profile to loader index",
+    "Output parse and playback"
+  ],
+  "guidance": "This closes a static route-key source edge. Do not generalize local callback slot 0 as a global ordinal or infer owner/generation from the exact-name selection."
+}

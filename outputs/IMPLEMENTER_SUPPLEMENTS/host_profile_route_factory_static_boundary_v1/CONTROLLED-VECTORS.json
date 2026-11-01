@@ -1,0 +1,46 @@
+{
+  "schema": "controlled-profile-factory-boundary-vectors.v1",
+  "cases": [
+    {
+      "id": "registered_time_base_without_consumer_join",
+      "input": {
+        "route": "encode_to_atmos_ddp",
+        "time_base": "embedded_timecode",
+        "factory_owner_join": null
+      },
+      "expected": "FIELD_REGISTERED; ROUTE_TO_FACTORY_UNBOUND"
+    },
+    {
+      "id": "generic_category_registration",
+      "input": {
+        "category": "audio_filter",
+        "selected_task_owner": null
+      },
+      "expected": "REGISTRATION_ONLY; NON_GATING_FOR_R138"
+    },
+    {
+      "id": "schema_builder_path",
+      "input": {
+        "consumer_role": "xml_schema_construction"
+      },
+      "expected": "SCHEMA_ONLY; FACTORY_SELECTION_UNBOUND"
+    },
+    {
+      "id": "route_name_equals_factory_descriptor",
+      "input": {
+        "route_key": "encode_to_atmos_ddp",
+        "descriptor": "encode_to_atmos_ddp",
+        "typed_owner_transfer": null
+      },
+      "expected": "VALUE_MATCH_ONLY; UNBOUND"
+    },
+    {
+      "id": "task_generation_missing",
+      "input": {
+        "parent_generation_token": null
+      },
+      "expected": "NOT_OBSERVED"
+    }
+  ],
+  "native_observations": 0
+}

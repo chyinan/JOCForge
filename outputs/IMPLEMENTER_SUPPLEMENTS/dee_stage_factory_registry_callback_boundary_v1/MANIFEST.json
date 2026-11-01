@@ -1,0 +1,38 @@
+{
+  "schema": "washed-dee-stage-factory-registry-callback-boundary.v1",
+  "package_id": "dee_stage_factory_registry_callback_boundary_v1",
+  "status": "REGISTRY_CALLBACK_CALLSITE_BOUND; PCM_TO_DDP_ENTRY_AND_CONCRETE_FACTORY_OVERRIDE_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "2754effb28af31df2ebd455294d254b0cb04b6cf98c24da7ec4b79fe6b301754",
+  "source_package_seal_sha256": "ac57261eb5bf63674608d018c2fd3e4137f672fd395a166eb4699a1b93a1f3d8",
+  "implementation_allowed_for": "HOST_STAGE_REGISTRY_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2447,
+      "sha256": "36bf2e2a6b3f4a32af05c248857b28753767ce2e489db9238539ccf239049ec5"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1326,
+      "sha256": "905cab8d7a4fa70d4a84424c515e3f11e1e8645f251ff63c9e2db02e05499b7b"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1236,
+      "sha256": "788802cdfb8a23ff66f02feda1e0443c99068b912fd608ead0cf2a71bae0249f"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2209,
+      "sha256": "a618819686293387d10dab6764648c11f216159bfa1a017724dc50494803ed8f"
+    }
+  ]
+}

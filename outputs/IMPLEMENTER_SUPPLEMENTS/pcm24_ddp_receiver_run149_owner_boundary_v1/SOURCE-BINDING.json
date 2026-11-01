@@ -1,0 +1,17 @@
+{
+  "schema": "washed-pcm24-ddp-receiver-run149-source-binding.v1",
+  "package_id": "pcm24_ddp_receiver_run149_owner_boundary_v1",
+  "incoming_research_manifest_sha256": "723076d71e3d99945dcdbc3c333a1da11bb39e60df89e6fd16d54cf937ff38a4",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "parent_descriptor_bridge_manifest_sha256": "1dc0ac5ed27b135bdeb050464ecaa072d6dff959357758fded9ef1810f6bce94",
+  "target_hash_rechecks": {
+    "dee_exe": "MATCH",
+    "ddp_atmos": "MATCH",
+    "current_converter_hash": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80"
+  },
+  "run149_input_current_hash": "MATCH",
+  "raw_pointer_tokens_included": false,
+  "raw_decompilation_included": false,
+  "media_or_payload_included": false,
+  "private_key_or_license_contents_read": false
+}

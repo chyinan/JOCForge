@@ -1,0 +1,18 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "HOST-AUDIO-INPUT-CANDIDATE-BINDING-AUDIT-V2",
+  "source_manifest_sha256": "29877efd85e2892f6a9ecd84d67cdc5d41073a097538fa4cf37814161a86d533",
+  "checks": {
+    "source_manifest_sidecar_and_artifacts_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "candidate_label": "audio.atmos_mezz",
+    "R138_input_type": "audio.adm",
+    "candidate_to_registry_slot": "UNBOUND",
+    "candidate_to_R138_owner": "UNBOUND",
+    "audio_algorithm_or_field_value_supplied": false,
+    "DEE_is_audio_behavior_authority": true,
+    "native_run": "NOT_RUN"
+  },
+  "scope_note": "Wash verified package hashes and source-authority boundary; no runtime selection or audio behavior was observed."
+}

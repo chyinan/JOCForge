@@ -1,0 +1,43 @@
+{
+  "schema": "washed-dee-loadall-license-precheck-boundary.v1",
+  "status": "ENTRY_TO_LOADALL_STATICALLY_BOUND; LICENSE_CONTENT_PARSE_PRECONDITION; NO_JOB_REACHABILITY_UNOBSERVED; RUN145_RUN148_ORDINALS_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_ONLY",
+  "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "static_call_chain": {
+    "crt_entry_rva": "0x23f29c",
+    "cli_wrapper_rva": "0x2db00",
+    "config_reader_rva": "0x2a0b0",
+    "config_reader_to_license_parser_callsite_rva": "0x2abb7",
+    "license_parser_rva": "0x2c2f0",
+    "stage_runner_success_branch_condition": "license parser returns success status 0",
+    "config_reader_to_stage_runner_callsite_rva": "0x2ac48",
+    "stage_runner_constructor_rva": "0x39230",
+    "constructor_to_register_plugins_callsite_rva": "0x39cb9",
+    "register_plugins_rva": "0x49690",
+    "register_plugins_to_load_all_callsite_rva": "0x496e1",
+    "load_all_rva": "0x169d10",
+    "job_config_lookup_order": "later in the config-reader function; static order alone does not prove a no-job startup route"
+  },
+  "license_access_scope": {
+    "static_path_opens_and_parses_license_file_content_before_stage_runner": true,
+    "actual_license_contents_read_by_researcher": false,
+    "license_file_opened_by_probe": false,
+    "native_host_started": false,
+    "no_job_runtime_reachability": "NOT_OBSERVED"
+  },
+  "ordinal_boundary": {
+    "global_ordinal_formula": "sum(audio_filter getter counts for modules preceding DDP Atmos in effective LoadOne order) + local factory index",
+    "ddp_local_factory_index": 0,
+    "run145_ordered_loadone_receipt": "NOT_CAPTURED",
+    "run148_ordered_loadone_receipt": "NOT_CAPTURED",
+    "run145_absolute_ordinal": "UNBOUND",
+    "run148_absolute_ordinal": "UNBOUND"
+  },
+  "access_boundary": {
+    "runtime_metadata_probe": "NOT_RUN",
+    "dee_host_or_job_started": false,
+    "license_contents_read_or_retained": false,
+    "media_pcm_payload_key_or_bitstream_read": false
+  }
+}

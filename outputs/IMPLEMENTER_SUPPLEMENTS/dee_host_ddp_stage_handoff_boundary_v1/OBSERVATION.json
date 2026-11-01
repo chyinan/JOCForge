@@ -1,0 +1,64 @@
+{
+  "schema": "washed-dee-host-ddp-stage-handoff-boundary.v1",
+  "package_id": "dee_host_ddp_stage_handoff_boundary_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_HOST_STAGE_BOUNDARY",
+  "status": "HOST_RUNAUDIOFILTER_TO_GENERIC_STAGE_HANDOFF_BOUND; DDP_DESCRIPTOR_OFFSET0_WRITER_AND_HOST_TO_DDP_PROCESS_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis_tool": "Ghidra 12.2 PUBLIC static",
+    "new_dee_job": "NOT_RUN",
+    "runtime_attachment": "NOT_RUN",
+    "pcm_or_row_payload_read": "NOT_RUN"
+  },
+  "host_stage_handoff": {
+    "source_property_set": true,
+    "target_property_set": true,
+    "handoff_target": "generic filter-stage object",
+    "handoff_arguments": "runner, generic stage object, pass flag",
+    "stage_methods_observed": "pass count, set pass index, status/completion, progress/status",
+    "row_descriptor_argument_observed": false,
+    "ddp_process_entry_call_observed": false,
+    "descriptor_offset_0_store_observed": false,
+    "progress_thread_role": "status/progress polling only"
+  },
+  "ddp_endpoint_context": {
+    "descriptor_offset_0_role_from_hash_bound_ddp_consumer": "source-row pointer table",
+    "host_call_or_transfer_into_ddp_process": "NOT_FOUND_IN_SCOPED_HOST_AUDIO_FILTER_PATH",
+    "source_row_table_writer": "UNBOUND"
+  },
+  "path_disposition": {
+    "targeted_host_path": "ENDS_AT_GENERIC_STAGE_INTERFACE",
+    "generic_stage_object_to_ddp_adapter": "UNBOUND",
+    "descriptor_offset_0_writer": "UNBOUND/NO",
+    "same_input_owner": "UNBOUND/NO",
+    "same_parent_generation": "UNBOUND/NO",
+    "claim_limit": "No descriptor transfer was found on the scoped RunAudioFilter/RunStageSequence path; this does not prove no writer exists in the stage implementation or another module."
+  },
+  "parent_wash_packages": [
+    {
+      "package_id": "adm_bwf_ddp_source_row_table_origin_wash_v1",
+      "manifest_sha256": "3af1463c6fa1d918bdbe1eb223c3bc77c83ca74869636bbaebc55531c046b4fe",
+      "seal_sha256": "fdb48be3d40cfef44d65d4d6291f34b41bcf37642dae2a665827721379d9bd01"
+    },
+    {
+      "package_id": "adm_bwf_to_ddp_source_row_lineage_wash_v1",
+      "manifest_sha256": "31ae006f73ef7e3e034efed55a298fb2af7e07381c4419f59f2d1aae2695227a",
+      "seal_sha256": "b4a571670e316197fc2fe9038794257fd2f8954ce35c3ce39280fc77dfac0309"
+    }
+  ],
+  "next_minimum_edge": "Identify the concrete generic stage implementation/adapter that consumes the source and target properties, then trace whether it constructs and passes a DDP descriptor with offset 0 bound to the converter row view for the same owner/generation.",
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

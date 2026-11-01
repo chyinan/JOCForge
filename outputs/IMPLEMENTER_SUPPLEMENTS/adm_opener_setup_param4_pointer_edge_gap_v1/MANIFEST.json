@@ -1,0 +1,37 @@
+{
+  "schema": "washed-adm-opener-setup-pointer-edge.v1",
+  "package_id": "adm_opener_setup_param4_pointer_edge_gap_v1",
+  "status": "CHNA_ROW_SLOT_TYPED; SETUP_PARAM4_POINTER_JOIN_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "63e3abe8aaafbaa24d70c9e09ad5a18c47136f068762f71a1ad095d810e4403e",
+  "implementation_allowed_for": "EVIDENCE_ONLY_POINTER_EDGE_BOUNDARY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3135,
+      "sha256": "7dc750cfa1ad61128d4ed5c8dff3725b0d1f8397d043e70157ae944f9e961392"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1437,
+      "sha256": "3b0eea0d969acaca7e7874a90410b83809558df8aae47016a11a7cf321616d78"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1539,
+      "sha256": "9286270c12ee70acdb7360b83c761dcafd8b62b7b73950f6c83c28a52b9a6eff"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2175,
+      "sha256": "4e065169791a107f8fee289bd70ce213afb71d3b8d70e6797711260c1f76bb17"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "pcm24_reader_ddp_descriptor_owner_scope_v1",
+  "scope": "DDP-internal row-table to descriptor bridge and ordinal row-copy contract; selected ADM reader object and input owner/generation remain UNBOUND.",
+  "status": "DDP_INTERNAL_TABLE_TO_DESCRIPTOR_OFFSET0_STATICALLY_BOUND; SELECTED_READER_OWNER_GENERATION_UNBOUND; RUN148_SELECTED_READER_NOT_HIT",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1351,
+      "sha256": "a44e447534ae341f7b6ce1e376e47dc47a503fe7705c307fbc280ff9f21d569b"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 4968,
+      "sha256": "f92be032bc0d68dbf7f4a422f65785c8b131a9d927bab856aba42399f0c837e5"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 929,
+      "sha256": "bde37c5a7dd5f2fd3599d807c4c683aa705eaacde059fe07b43d264cd2c17afd"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 2271,
+      "sha256": "38210e794580ea20bc4c049438869992c0a7dd8e05d6368e30c7f9ec68f84e90"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2928,
+      "sha256": "eb4681b2523add48fa2db6bf02ab14b7dafd01e8a949c62758b26c59f95dc16f"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "washed-r138-replay-helper-identity-crosscheck.v1",
+  "package_id": "r138_replay_helper_identity_crosscheck_v1",
+  "evidence_class": "SINGLE_R138_EQUIVALENT_RUNTIME_REPLAY_WITH_CHILD_IMAGE_RECEIPT",
+  "status": "R138_EQUIVALENT_REPLAY_HOST_TO_HELPER_IMAGE_BOUND; ORIGINAL_R138_CHILD_RECEIPT_NOT_CAPTURED",
+  "implementation_readiness": "CANDIDATE_HELPER_IDENTITY_CONFIRMED_FOR_R138_EQUIVALENT_REPLAY_ONLY",
+  "scope": {
+    "original_job_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "replay_job_xml_sha256": "5c772c75f42bf23f612b9a4744c07f6bd4dc6a8ee3631f7baa72ba60c69d845d",
+    "business_configuration_projection_unchanged": true,
+    "only_io_paths_changed": true,
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_alias": "ASCII_NAMED_SAMPLE6_COPY_HASH_MATCH",
+    "range_timebase": "embedded_timecode",
+    "range_start": 86640,
+    "range_end": 86664,
+    "native_job_count": 1,
+    "dee_exit_code": 0
+  },
+  "host_process": {
+    "image_sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "matches_r138_host_image": true,
+    "host_pe_identity_matches": true,
+    "helper_callsite_observed": true
+  },
+  "helper_child": {
+    "child_create_observed_same_debug_session": true,
+    "resolved_path_class": "SAME_INSTALLATION_TREE_SIBLING_HELPER",
+    "command_line_input_switch_observed": true,
+    "command_line_input_hash": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "helper_candidate_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+    "sha256_at_resolved_child_path": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+    "loaded_pe_identity_matches_candidate": true,
+    "child_pe": {
+      "machine": 34404,
+      "optional_magic": 523,
+      "timestamp": 1654888258,
+      "size_of_image": 6029312,
+      "checksum": 5794401
+    }
+  },
+  "temporary_output": {
+    "bytes": 135168,
+    "sha256": "7ea9c29780a43b9bd14137f76ee06fb44f9c500fa8bccafda28706a85a2efe83",
+    "parsed_or_played": false,
+    "removed_after_hash": true,
+    "included_in_wash_package": false
+  },
+  "helper_rule_context": {
+    "candidate_helper_manifest_sha256": "387f3a4b650b1c282047b63be2829928c7c1e093d119a24a3ddbc224991d7cca",
+    "sample6_dbmd_vector_manifest_sha256": "2649044ae7225b28acce2c927c843e65421a4cec503e5fa00ad6e87fd0fd651c",
+    "negative_ffoa_sentinel_result": "candidate helper branch yields final FFOA 3610 seconds for StartTime 3610 seconds",
+    "original_r138_child_pid_receipt": "NOT_CAPTURED"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "private_key_or_license_contents": false,
+    "raw_pcm": false,
+    "raw_ec3": false,
+    "absolute_paths": false,
+    "full_command_line": false
+  }
+}

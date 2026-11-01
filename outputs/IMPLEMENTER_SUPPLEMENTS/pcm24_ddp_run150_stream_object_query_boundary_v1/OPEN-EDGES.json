@@ -1,0 +1,24 @@
+{
+  "schema": "washed-pcm24-ddp-run150-open-edges.v1",
+  "package_id": "pcm24_ddp_run150_stream_object_query_boundary_v1",
+  "closed": [
+    "Run150 host RunInput.param2 is distinct from DDP source receiver",
+    "host stream_object query returned false and null",
+    "DDP receiver getter result equals call receiver",
+    "DDP row table equals descriptor offset 0"
+  ],
+  "open": [
+    "actual host stream object for this run (none returned)",
+    "selected ADM master identity and generation",
+    "Run149 mapped converter image hash",
+    "current converter file is not the Run149 mapped-image identity"
+  ],
+  "status": {
+    "stream_object": "NOT_AVAILABLE",
+    "selected_adm_master": "UNBOUND/NO",
+    "converter_mapped_sha": "UNBOUND/NO",
+    "output_parse": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "guidance": "Do not infer selected-reader identity or current converter behavior from the absent stream-object query or the version-mismatched breakpoint."
+}

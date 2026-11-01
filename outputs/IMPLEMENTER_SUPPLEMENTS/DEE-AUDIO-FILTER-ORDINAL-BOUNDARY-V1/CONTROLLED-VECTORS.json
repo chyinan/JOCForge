@@ -1,0 +1,53 @@
+{
+  "schema": "washed-audio-filter-ordinal-model-vectors.v1",
+  "evidence_class": "MODEL_ONLY_NOT_NATIVE_OBSERVATION",
+  "formula": "sum(callback_count of modules preceding selected_module in module_path_order) + selected_local_index",
+  "runner_relation": "runner_config_index_equals_manager_callback_ordinal_when_complete_list_is_present",
+  "cases": [
+    {
+      "id": "selected-module-first",
+      "module_path_order": [
+        {"module": "ddp-atmos", "callback_count": 3},
+        {"module": "other", "callback_count": 2}
+      ],
+      "selected_module": "ddp-atmos",
+      "selected_local_index": 0,
+      "expected_global_ordinal": 0,
+      "expected_runner_ordinal": 0
+    },
+    {
+      "id": "one-prior-callback",
+      "module_path_order": [
+        {"module": "prior", "callback_count": 1},
+        {"module": "ddp-atmos", "callback_count": 3}
+      ],
+      "selected_module": "ddp-atmos",
+      "selected_local_index": 0,
+      "expected_global_ordinal": 1,
+      "expected_runner_ordinal": 1
+    },
+    {
+      "id": "multiple-prior-modules-and-local-two",
+      "module_path_order": [
+        {"module": "prior-a", "callback_count": 2},
+        {"module": "prior-b", "callback_count": 1},
+        {"module": "ddp-atmos", "callback_count": 3}
+      ],
+      "selected_module": "ddp-atmos",
+      "selected_local_index": 2,
+      "expected_global_ordinal": 5,
+      "expected_runner_ordinal": 5
+    },
+    {
+      "id": "different-prefix-changes-absolute-index",
+      "module_path_order": [
+        {"module": "prior", "callback_count": 2},
+        {"module": "ddp-atmos", "callback_count": 3}
+      ],
+      "selected_module": "ddp-atmos",
+      "selected_local_index": 0,
+      "expected_global_ordinal": 2,
+      "expected_runner_ordinal": 2
+    }
+  ]
+}

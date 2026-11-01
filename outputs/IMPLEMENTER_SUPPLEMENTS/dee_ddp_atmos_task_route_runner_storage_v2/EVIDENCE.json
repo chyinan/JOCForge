@@ -1,0 +1,59 @@
+{
+  "package_id": "dee_ddp_atmos_task_route_runner_storage_v2",
+  "status": "EXACT_ROUTE_TO_LOCAL_CALLBACK_0_AND_RUNNER_STAGE_CONFIG_STORES_BOUND; DIRECT_CALLBACK_ENTRY_NOT_HIT; GLOBAL_ORDINAL_ORDER_DEPENDENT; XML_MEMBER_STORE_NOT_ISOLATED",
+  "scope": "Exact task route name to callback-created config selection, DDP Atmos local callback factory path, and StageRunner stage/config stores. No direct XML-to-member store, global ordinal, descriptor owner/generation, or numeric profile-to-loader-index join is claimed.",
+  "incoming": {
+    "package_id": "dee_audio_filter_selected_task_callback_wash_v2",
+    "manifest_sha256": "fea8dd4492a5d24881d4a075157a127021d479ee9d45a000bd9e2eef6434097c",
+    "seal_file_sha256": "ba22c9114314595f38a1abf5caffb8558259a1eedd14aaac9930004a35612c6f",
+    "source_hash_count": 50
+  },
+  "task_route": {
+    "run145_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "run148_xml_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3",
+    "filter_audio": "encode_to_atmos_ddp",
+    "input_sha256_from_existing_receipts": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "new_run_or_rehash": false
+  },
+  "selection": {
+    "rule": "exact string and length compare between parsed route and callback-created config name",
+    "selected_config": "DDP Atmos callback-created config",
+    "local_factory_slot": 0,
+    "factory_vtable_slot_byte_offset": "0x30",
+    "result": "DDP JOC stage"
+  },
+  "runner_storage": {
+    "same_matched_config_used_for_factory_and_stores": true,
+    "stage_destination": "Runner +0x270",
+    "config_destination": "Runner +0x278",
+    "direct_xml_to_member_store": "NOT_ISOLATED/NO"
+  },
+  "run148": {
+    "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "host_ddp_same_thread": true,
+    "direct_factory_callback_entry_hit": false
+  },
+  "remaining": {
+    "global_callback_ordinal": "ORDER_DEPENDENT/NOT_BOUND",
+    "complete_loaded_module_set": "UNBOUND/NOT_CAPTURED",
+    "xml_member_store": "NOT_ISOLATED/NO",
+    "descriptor_owner_generation": "UNBOUND/NO",
+    "numeric_profile_to_loader_index": "UNBOUND",
+    "output_validity": "NOT_EVALUATED"
+  },
+  "seal_anomaly": {
+    "reported_seal_sha256": "ba22c9114314595f38a1abf5caffb8558259a1eedd14aaac9930004a35612c6f",
+    "reported_seal_hash_matches": true,
+    "file_count_claim": 7,
+    "unique_names": 6,
+    "duplicate_manifest_row": true,
+    "integrity_basis": "Primary manifest and its five declared payloads plus the incoming verifier; seal file list was not used as payload inventory."
+  },
+  "not_run": [
+    "new DEE run",
+    "new WinDbg run",
+    "PCM read",
+    "payload or bitstream read",
+    "private key/license read"
+  ]
+}

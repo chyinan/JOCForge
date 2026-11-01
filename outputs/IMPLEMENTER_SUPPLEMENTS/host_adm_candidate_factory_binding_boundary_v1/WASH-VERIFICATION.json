@@ -1,0 +1,16 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "62b706e382b2b10e13a077f21398f00471922adb16985aeb15c0fe8473091830",
+  "checks": {
+    "source_manifest_and_payload_hashes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "candidate_type": "audio.atmos_mezz",
+    "R138_input_type": "audio.adm",
+    "candidate_factory_to_audio_input_slot": "UNBOUND",
+    "candidate_to_R138_owner": "UNBOUND",
+    "native_run": "NOT_RUN",
+    "implementation_delivery": "PROHIBITED"
+  },
+  "scope_note": "Wash verified hashes and the input-type boundary. Static candidate identity is not evidence of R138 selection."
+}

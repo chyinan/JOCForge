@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "pcm24_ddp_storage_stack_address_reuse_boundary_v1",
+  "scope": "Run152/Run153 show AtmosMezz storage key lookup and numeric stack-address alias to a DDP record destination, explicitly classified as reuse across separate stack frames; owner/generation join remains UNBOUND.",
+  "status": "HOST_STORAGE_METADATA_LOOKUP_BOUND; NUMERIC_STACK_ALIAS_NOT_IDENTITY; HOST_TO_DDP_OWNER_GENERATION_UNBOUND; OUTPUT_PARSE_PLAYBACK_NOT_RUN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2995,
+      "sha256": "c7cffccbfc6ccdbc0cb51919d243085f172fc06722bbaa5c968b659a304af6b2"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 996,
+      "sha256": "3d79eee2eb1ac80f3b9cedf602fcfa433c8d97442bdd12e7cfe1bb43223978b4"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1076,
+      "sha256": "156917c8d0132b71a030657362196e38238c36ca2dfdb5e39b19df72159c3c98"
+    },
+    {
+      "name": "README.md",
+      "bytes": 968,
+      "sha256": "965cf9a73586ea614f22b32bef8cdb1e860117eaecc40680c9cc4754273261a8"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1106,
+      "sha256": "52f0ce7fae25f4be60322836ef053704eebb590163301b65a27d6475f1ef5b87"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 218,
+      "sha256": "06e328a29d398cbe2eafdef3fe01cf2d0f2ff62f36b4a07bd0d554352cca3c30"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1860,
+      "sha256": "a334cc124f01790af56b7433b065dedc2a22acf78a47e3fe70e4d856e05fa035"
+    }
+  ]
+}

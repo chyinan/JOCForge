@@ -1,0 +1,29 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "host_adm_reader_selection_lineage_v1",
+  "status": "EVIDENCE_ONLY_INPUT_SELECTION_BOUNDARY",
+  "source_package_manifest_sha256": "6bd11791fe5795d80406f310364e8722560878cbfebb4e146fe1849d70fa9a32",
+  "implementation_allowed_for": "INPUT_SELECTION_OBSERVATION_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "files": [
+    {
+      "name": "READER-BOUNDARY.json",
+      "bytes": 2149,
+      "sha256": "e3e9906e7c3ebf27fa5052223679612f0a33f18e4ec42ccac9632a3591b9862c"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1340,
+      "sha256": "4a27294f7814cd82932cc8cb205e9fcdf06c1183c9fbda88d76cc2ba2a1c9e4d"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 999,
+      "sha256": "e86ac506a903dadb6a6fb582f814be9d6013b5b325c0c57b00a4753fb732f732"
+    }
+  ]
+}

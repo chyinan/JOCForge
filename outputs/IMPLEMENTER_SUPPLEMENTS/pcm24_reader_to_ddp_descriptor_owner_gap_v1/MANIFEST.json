@@ -1,0 +1,38 @@
+{
+  "schema": "washed-pcm24-reader-to-ddp-descriptor-owner-gap.v1",
+  "package_id": "pcm24_reader_to_ddp_descriptor_owner_gap_v1",
+  "status": "CONVERTER_READER_ROW_VIEW_AND_DDP_OFFSET0_CONSUMER_BOUND; CROSS_IMAGE_STORE_OWNER_GENERATION_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "3af1463c6fa1d918bdbe1eb223c3bc77c83ca74869636bbaebc55531c046b4fe",
+  "source_package_seal_sha256": "fdb48be3d40cfef44d65d4d6291f34b41bcf37642dae2a665827721379d9bd01",
+  "implementation_allowed_for": "STATIC_ENDPOINT_AND_OPEN_OWNER_EDGE_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2995,
+      "sha256": "34450c7abd9e040797d550224574418724b9867803b69d054e641c363e3d3a36"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1366,
+      "sha256": "4a9c4de80e0f8b9d75dc9c42dca7ac48f56e8f702413e17fd76d4b43af1a8f67"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1220,
+      "sha256": "8452cb282d279a2105eeec958ee608e205ce49c07a56a92292a8b39bc90937f6"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2139,
+      "sha256": "6e0285696795cafefc116cdaf5cf99a2341ab5e1cf195b51c78afffe8c575d4f"
+    }
+  ]
+}

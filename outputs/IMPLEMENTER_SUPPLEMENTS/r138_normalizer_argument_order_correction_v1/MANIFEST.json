@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "r138-normalizer-argument-order-correction-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "c7d5cb59b769ac311f93af3e78e0d53487dd62f75a9cf92d8f40117967af646c",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "1ef4b781b324c65d4c41874f3d905353f29d381af3bf85de608a8e5ca7fa952c",
+      "bytes": 780
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "c58c540d9e8c6d8521e61695702728694359771b37ebf7f73b2c6ab01caefdd2",
+      "bytes": 1261
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "07b50e5bd2a6cc7c629aca5655c551030afdc365e5200c3e25dab7e727a2ea3f",
+      "bytes": 646
+    }
+  ]
+}

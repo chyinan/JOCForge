@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 5209,
+      "file": "CHECK.py",
+      "sha256": "a420ec75d77cf1f2302c6c50dd30153bb36608ab5cb95d70ca2e0dedfed07bf9"
+    },
+    {
+      "bytes": 2767,
+      "file": "EVIDENCE.json",
+      "sha256": "d7aebc44d857a6b8e95caf6c515af462880a4621deedb3bb9ae5ba0bdc66ba37"
+    },
+    {
+      "bytes": 1786,
+      "file": "REPORT.md",
+      "sha256": "2ecfadc8270df57035d448be6f4594095e2878f75b0dd9367d204c1c76362742"
+    },
+    {
+      "bytes": 840,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "b188dcef48c8b46f5e5896d79c59e4e5bb55e39fb4bfdd1d31998769ba411e8d"
+    },
+    {
+      "bytes": 991,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "64d51310deb8050cb158d54dbb3b240ffa44fcd39212e7fd5f636884734fe2e0"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "PCM24-DDP-COMPOSITE-MASTER-READER-LINEAGE-ADDENDUM-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "4abd471f5d943eec67e2c1d88548d3a3009dd782537af90bc64e416665703472",
+  "status": "DDP_INTERNAL_RECORD_TO_COMPOSITE_MASTER_PATH_BOUND; HOST_ADM_OWNER_GENERATION_UNBOUND"
+}

@@ -1,0 +1,19 @@
+{
+  "package_id": "dee_numeric_profile_stage_properties_after_factory_v1",
+  "incoming_manifest_sha256": "93e67d928a1d882a09b0c9d4cbddc16aa5cde39f9c48076a41523edd050febc1",
+  "incoming_payload_sha256": {
+    "EVIDENCE.json": "6eebbeb85200ecdd72153252df6e354f87beb30145eda60062581b93bdbcac08",
+    "NEXT_EDGE.json": "2d92e3cbe10e7801692999e179fca608b41390d2737362b05253550433dec63f",
+    "README.md": "82252b336d2536653ef0c97f080df22c8ceba8619133cd6e69b46b863b38a42b",
+    "SOURCE_INDEX.json": "4eb5bd063476844ffb837a10733207d3dc561c03a77dc925c6c549d6076dd429",
+    "verify_package.py": "96cfad36749913210e6222e03d566c8ca93e79801d06d398f7c3571a27e0d0c1"
+  },
+  "xml_hashes": [
+    "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3"
+  ],
+  "input_hash": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+  "raw_source_or_decompilation_included": false,
+  "private_key_or_license_contents_read": false,
+  "pcm_or_payload_read": false
+}

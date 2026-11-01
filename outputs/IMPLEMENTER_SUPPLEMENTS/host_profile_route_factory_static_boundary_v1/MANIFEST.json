@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "HOST-PROFILE-ROUTE-FACTORY-STATIC-BOUNDARY-V1",
+  "scope": "Wash-only sanitized hash-bound role graph for R138 profile fields, host setup/schema, and the unbound route-conditioned factory edge.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3391,
+      "sha256": "367b229ab8c69cc951cf2ad908041fda8c490ec14cae1727adb13e90f6f67c6a"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 1200,
+      "sha256": "7d5e97bc8effb9dcc78735ea9b40007350ddc67cfa35d83edfdc872800ec3285"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2205,
+      "sha256": "3c76344917639b74df854d6f3a8dc403e6d936fc939feb2a5e22913d14799b5d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1338,
+      "sha256": "23d5a8e3c6ad5ebb67ac1f5b2540a3fa011b686c407e43b061c44007b6cb3145"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 803,
+      "sha256": "cb5d4f379bde8cdc837b18aceb00cdd49543360d6365f9b89a2b286d40802211"
+    }
+  ]
+}

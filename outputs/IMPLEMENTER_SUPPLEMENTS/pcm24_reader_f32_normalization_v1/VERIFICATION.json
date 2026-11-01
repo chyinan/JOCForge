@@ -1,0 +1,18 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_STATIC_RULE_SCOPE",
+  "source_package_manifest_sha256": "fbe36b291be5dd965a94c55350ce9981ef05250f3aa3dc12b057786adf26f9cd",
+  "source_package_seal_sha256": "f77f2e0fd951d8252635233b320f04138b49120261a17c3070dbb5b76f18d374",
+  "source_checker_normal": "PASS",
+  "source_checker_optimized": "PASS",
+  "implementation_rule_approved": true,
+  "whole_chain_readiness": "NO",
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binary": false,
+    "pcm_payload": false,
+    "private_key": false,
+    "absolute_path": false
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "cef4d7b8e5d143b208bf50ab485b7b4408abcff41501098e9564ff766b38e621",
+  "incoming_seal_sha256": "625dbd82f1ede034d853e4c5fbae430a55773be5df1d9a2ba96679e3859975c5",
+  "incoming_checker": {"normal": "PASS_VALID_PARTIAL", "python_optimized": "PASS_VALID_PARTIAL", "source_hash_count": 43},
+  "independent_review": [
+    "Recomputed incoming manifest and seal hashes and ran its verifier normally and under Python optimization.",
+    "Confirmed a static license-file content parser precedes StageRunner/RegisterPlugins/LoadAll; no license content was read by this analysis.",
+    "Preserved the no-job startup route as unobserved and did not attempt to run a probe through the license gate.",
+    "Confirmed Run145/148 ordered LoadOne receipts are absent; their absolute ordinals remain unbound."
+  ],
+  "not_promoted": [
+    "no-job runtime reachability",
+    "license parser success state in an actual process",
+    "historical Run145 or Run148 effective module order",
+    "absolute manager or Runner ordinal"
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "washed-pcm24-ddp-run150-stream-object-query-boundary.v1",
+  "package_id": "pcm24_ddp_run150_stream_object_query_boundary_v1",
+  "status": "RUN150_STREAM_OBJECT_QUERY_FALSE; DDP_INTERNAL_DESCRIPTOR_BRIDGE_OBSERVED; SELECTED_ADM_OWNER_UNBOUND; CONVERTER_LOADED_IMAGE_HASH_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Run150 same-thread host stream-object query and DDP internal receiver/descriptor boundary, plus correction of Run149 converter-image identity. Does not bind the selected ADM master or input generation.",
+  "input": {
+    "sample": "authorized First Love ADM/WAVE",
+    "sha256_from_preflight": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "current_file_hash": "MATCH",
+    "run150_input_rehash_by_capture_agent": false,
+    "job_xml_sha256": "f5b4a4a0666331baa8ab1adb6957a0b95e0ff11d174129aa1bb1323ec94f9db8"
+  },
+  "run150": {
+    "host_runinput_param2_token_equals_ddp_source_receiver": false,
+    "host_stream_object_callback_returned_true": false,
+    "stream_object_output_pointer_null": true,
+    "stream_object_token": "NOT_AVAILABLE",
+    "ddp_receiver_typed_as": "atmos_storage_composite_master",
+    "ddp_receiver_token_equals_getter_result": true,
+    "ddp_row_table_token_equals_descriptor_offset0": true,
+    "all_stops_same_thread": true,
+    "raw_tokens_included": false
+  },
+  "run149_converter_identity": {
+    "observed_module_name": "dee_audio_filter_convert_atmos_mezz.dll",
+    "size_of_image_bytes": 6549504,
+    "pe_timestamp": 1654888279,
+    "mapped_image_sha256": "UNBOUND/NO",
+    "reader_breakpoints_not_hit": true,
+    "breakpoint_scope": "only the WinDbg module identity observed in Run149"
+  },
+  "converter_disk_versions": {
+    "r4_declared_disk_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "r4_declared_disk_size_bytes": 6286336,
+    "current_e_installed_sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+    "current_e_installed_size_bytes": 6286336,
+    "relation": "current E file hash differs from R4's reported disk hash; neither is the Run149 mapped-image hash",
+    "do_not_extrapolate_not_hit_to_current_e_file": true
+  },
+  "ddp_descriptor": {
+    "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_rva": "0x550920",
+    "descriptor_offset0_equals_ddp_row_table": true,
+    "channel_count": "NOT_CAPTURED",
+    "frame_count": "NOT_CAPTURED"
+  },
+  "output": {
+    "encoder_done_marker": true,
+    "bytes_before_cleanup": 32964608,
+    "bitstream_parse": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "temporary_files_removed": true
+  },
+  "open_edges": {
+    "host_stream_object_to_ddp_internal_receiver": "UNBOUND_NO_STREAM_OBJECT_RETURNED",
+    "selected_adm_master_to_ddp_internal_receiver": "UNBOUND/NO",
+    "same_input_generation": "UNBOUND/NO",
+    "converter_loaded_image_hash": "UNBOUND/NO",
+    "run_output_validity": "NOT_EVALUATED"
+  },
+  "exclusions": {
+    "source_code_included": false,
+    "raw_decompilation_included": false,
+    "binary_included": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "absolute_paths": false
+  }
+}

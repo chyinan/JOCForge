@@ -1,0 +1,42 @@
+{
+  "schema": "washed-adm-bwf-opener-channel-table-producer.v1",
+  "status": "CHNA_TRACK_SLOT_TO_OPENER_TABLE_STATIC_BOUND; OPENER_TO_SETUP_POINTER_JOIN_UNBOUND",
+  "source_package_manifest_sha256": "ba389271c6ee81599ba2b2136e5eb5ae48e445ee7cf54984cc18fd0c77b961a8",
+  "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+  "input": {
+    "label": "authorized 38ch ADM BWF metadata",
+    "full_file_sha256": "NOT_COMPUTED_IN_THIS_STATIC_RECEIPT",
+    "channels": 38,
+    "sample_rate_hz": 48000,
+    "bits_per_sample": 24,
+    "chna_track_indices": "1..38 exactly once",
+    "pcm_read_or_saved": false
+  },
+  "producer": {
+    "uid_to_chna": "AudioTrackUIDRef -> CHNA UID -> one-based TrackIndex",
+    "row_selection": "TrackIndex-1 selects zero-based physical output row",
+    "object_record": {
+      "u16_0": "AudioObjectID-derived source-channel key",
+      "s8_2": "object sentinel 0xff",
+      "u16_4": "object ordinal"
+    },
+    "bed_record": {
+      "u16_0": "bed source-channel key",
+      "s8_2": "bed label/type",
+      "u16_4": "bed ordinal"
+    },
+    "record_stride_bytes": 6,
+    "byte_3": "not assigned by the traced opener writes",
+    "setup_param4_pointer": "separate input table; opener master table alias UNBOUND"
+  },
+  "correction": "record U16 byte 0 carries source-channel identity; CHNA TrackIndex-1 selects the row and is not that U16 payload",
+  "remaining_join": {
+    "pointer_equality": "opener this+0x50 vs setup param4[2]",
+    "same_generation": "UNBOUND",
+    "next_observation": "same current R3 job: capture pointers/counts/setup caller and parent generation; no new DEE job"
+  },
+  "implementation_disposition": {
+    "approved_chna_slot_rule": "TrackIndex-1",
+    "full_reader_to_ddp_row_mapping_approved": false
+  }
+}

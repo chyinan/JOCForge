@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "pcm24_ddp_run150_stream_object_query_boundary_v1",
+  "scope": "Run150 host stream_object false/null and DDP receiver/descriptor bridge; selected ADM input generation and converter mapped-image hash remain UNBOUND.",
+  "status": "RUN150_STREAM_OBJECT_QUERY_FALSE; DDP_INTERNAL_DESCRIPTOR_BRIDGE_OBSERVED; SELECTED_ADM_OWNER_UNBOUND; CONVERTER_LOADED_IMAGE_HASH_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1207,
+      "sha256": "2bbcaa1b6c67b12f8f8dd626603ae0f21261383649c5111ec355c074fe89dace"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3264,
+      "sha256": "51694f9a9c50723bfa52c496b927a50e14edbbe0ea428b8b4e7d60e40de5c5de"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 970,
+      "sha256": "f5e11bf04db4cee3f4e3d9ee57eaf88a867e82b99eb41d63fe1dacf92c1a7542"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 759,
+      "sha256": "8f3786aaa8b26d46b81a206ef19b35a8a5664e0f031ab98726da254c946d3008"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2496,
+      "sha256": "9045a5f1ec2298da572f8cabc003983e8a5b2755388b77781737c6b47571012b"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "washed-adm-bwf-opener-channel-table-producer.v1",
+  "package_id": "adm_bwf_opener_channel_table_producer_v1",
+  "status": "CHNA_TRACK_SLOT_TO_OPENER_TABLE_STATIC_BOUND; OPENER_TO_SETUP_POINTER_JOIN_UNBOUND",
+  "implementation_readiness": "NO_FOR_SETUP_POINTER_JOIN",
+  "source_package_manifest_sha256": "ba389271c6ee81599ba2b2136e5eb5ae48e445ee7cf54984cc18fd0c77b961a8",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1102,
+      "sha256": "6385af5d3e0644944d2c697eff84d3c3490e61202689f134c6119e8167aa5124"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 1794,
+      "sha256": "133a9ce122b98fd992666a8c0873f2d391743b2fd440e33f6607fdf414fc789e"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 334,
+      "sha256": "f0b917e87088c57dec103d0cb5600e4be6c7ec5b106ae6463530a326ba26b389"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1391,
+      "sha256": "743d43d337733117d038b719e5fbc72d5d1b02040888cc03608cfe329f28b819"
+    }
+  ]
+}

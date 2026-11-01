@@ -1,0 +1,18 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "6a0fd16292ed75b3e94b9ab945e41999bf1031cc32a40a5c3f9e8a715069ecf1",
+  "incoming_seal_sha256": "3858ecda109f9a135cfe6d12fa2238b0c144e48606dc3480f711c9087025cd2e",
+  "incoming_checker": {"normal": "PASS_VALID_PARTIAL", "python_optimized": "PASS_VALID_PARTIAL", "source_hash_count": 47},
+  "independent_review": [
+    "Recomputed incoming manifest and seal SHA-256 and ran its checker normally and under Python optimization.",
+    "Confirmed Run145/Run148 sealed receipts do not carry complete ordered LoadOne module/getter-count lists.",
+    "Kept loose logs explicitly unbound from their original run preflight/result manifests; their absent markers do not prove historical absence.",
+    "Preserved license-gate runtime probe as NOT_RUN and actual license contents as unread."
+  ],
+  "not_promoted": [
+    "Run145/Run148 absolute global callback ordinal",
+    "no-job runtime reachability",
+    "absence of loader calls from unbound loose logs",
+    "license parser success in a real process"
+  ]
+}

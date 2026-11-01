@@ -1,0 +1,20 @@
+{
+  "package_id": "dee_ddp_xml_route_request_key_binding_v3",
+  "incoming_manifest_sha256": "00856107e8c19c232e7a560dd723e3cce804d6d2da8003144b43bf1f5484f25c",
+  "incoming_payload_sha256": {
+    "EVIDENCE.json": "fc65571f0f2d24ca44ddf6a6fc326f4244c688daa4f8f6c59b6098b8fb9025a1",
+    "NEXT_EDGE.json": "fc4d5583f650ca48431d407a561942fcbb074b1c2f42bb3af7edad611b6a7592",
+    "README.md": "08e5750efb226870191a6cc4c4a879b586e1e177cc4e64cb75001fd07e62d90c",
+    "SOURCE_INDEX.json": "674b1528177670a682ac4ee8b5549b60dab1e27ff40d2b154779127b2d4e4f22",
+    "verify_package.py": "d04b18fa7471c5321023e895087f7c39f917e2dddc9d84026e295ed69315bffc"
+  },
+  "incoming_source_hash_count": 53,
+  "run145_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+  "run148_xml_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "input_sha_reused": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+  "input_rehashed_in_new_run": false,
+  "raw_source_or_decompilation_included": false,
+  "private_key_or_license_contents_read": false,
+  "pcm_or_payload_read": false
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "washed-dee-pcm-to-ddp-provider-open-edges.v1",
+  "package_id": "dee_pcm_to_ddp_provider_inventory_scope_v1",
+  "closed": [
+    "six-image installed inventory exact-name mapping",
+    "unique local provider for host key pcm_to_ddp",
+    "host loader/getter/callback-store/same-manager static path"
+  ],
+  "open": [
+    "which modules load in a particular run",
+    "cumulative host vector ordinal",
+    "DDP descriptor offset-0 writer",
+    "converter source owner/generation bridge"
+  ],
+  "status": {
+    "runtime_loaded_set": "NOT_RUN/UNBOUND",
+    "host_ordinal": "ORDER_DEPENDENT/NOT_BOUND",
+    "descriptor_writer": "UNBOUND/NO",
+    "owner_generation": "UNBOUND/NO"
+  },
+  "guidance": "Do not infer run-time selection or descriptor lineage from static inventory uniqueness."
+}

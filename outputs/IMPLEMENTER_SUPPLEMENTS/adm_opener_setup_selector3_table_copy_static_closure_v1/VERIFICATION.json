@@ -1,0 +1,29 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; SELECTOR3_COPY_STATIC_BOUND",
+  "source_package_id": "ADM-OPENER-SETUP-DISPATCHER-LINEAGE-V2",
+  "source_package_manifest_sha256": "14ddd02d83f8c6ba20f22c852e5a93607fc38bb67a2b7057f4a4c2cd6497e900",
+  "source_package_payloads_checked": 2,
+  "source_package_payloads_match": true,
+  "source_package_manifest_seal_match": true,
+  "related_wash_manifests_checked": 3,
+  "static_tool": "Ghidra 12.2; IDA not used",
+  "runtime_execution": "NOT_RUN",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The pointer is not aliased; content is copied into a new setup table.",
+    "No runtime parent or job-generation token was captured.",
+    "No specific ADM job execution of this selector route was performed in this static package."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

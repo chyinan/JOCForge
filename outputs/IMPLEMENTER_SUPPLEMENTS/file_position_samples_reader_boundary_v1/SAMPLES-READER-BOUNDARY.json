@@ -1,0 +1,34 @@
+{
+  "schema": "washed-file-position-samples-reader-boundary.v1",
+  "status": "SAMPLES_PROPERTY_CONSUMER_BOUND_PRODUCER_AND_READER_OWNER_UNBOUND",
+  "source_package_manifest_sha256": "7083cc69d8fe895cc585a2c0d1f58cd41127cd5a579dbed254c9d8863d7cb85b",
+  "parent_range_package_manifest_sha256": "f18722e50d2e65ec49beac10e8b0a6f02f7aedb0ce20140ccdf0dbaf12c8f94c",
+  "sample6_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+  "samples_property": {
+    "literal_key_references_in_selected_image": 1,
+    "consumer": "file_position source-range consumer",
+    "value_role": "nonnegative source-sample bound",
+    "local_writer": "NOT_OBSERVED",
+    "other_image_writer": "NOT_ESTABLISHED"
+  },
+  "reader": {
+    "constructor_and_open": "STATICALLY_BOUND",
+    "extent_getter_vtable_offset_bytes": 96,
+    "return_carrier": "U64 stored as binary64",
+    "source_field": "U32 reader metadata tuple",
+    "semantic_type": "UNBOUND",
+    "join_to_samples_property": "UNBOUND",
+    "terminal_eof": "NOT_CAPTURED"
+  },
+  "source_header_crosscheck": {
+    "data_chunk_bytes": 743611284,
+    "block_align_bytes": 114,
+    "quotient_samples": 6522906,
+    "remainder": 0,
+    "source": "user-provided header-only data",
+    "identity_inference_from_numeric_equality": false
+  },
+  "minimum_open_edge": "same-owner samples property -> reader extent and terminal read, one same-generation invocation",
+  "audio_scope": "No audio algorithm, formula, default, or field value supplied. Input adapter may parse its own approved BWF header; do not claim that is DEE's producer."
+}

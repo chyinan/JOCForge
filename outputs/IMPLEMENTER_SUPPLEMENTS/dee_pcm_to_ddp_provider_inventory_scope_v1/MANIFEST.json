@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "dee_pcm_to_ddp_provider_inventory_scope_v1",
+  "scope": "Unique exact pcm_to_ddp provider within the six installed top-level audio_filter DLLs; runtime loaded set, cumulative ordinal, descriptor writer and owner/generation remain open.",
+  "status": "UNIQUE_EXACT_PCM_TO_DDP_PROVIDER_STATICALLY_IDENTIFIED_IN_SIX_INSTALLED_DLLS; RUNTIME_LOADED_SET_AND_ORDINAL_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1422,
+      "sha256": "394d0a4155cb44c63fc13236cf98638bf6930c27d53a80f449e7b7a4ad1161ba"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 4386,
+      "sha256": "5c1e91fd1882613c31849cf4b77277940467d2b006645e1305d5875c65cd85c9"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 798,
+      "sha256": "ec6958d518219690b474f09434e55bba6deb0057a1364a1e8930011f4a0db043"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1718,
+      "sha256": "328b9dc377cf8c0c0894d3cc66587856da3e8e1b4e58ed8a7913a6980e8b86a4"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2359,
+      "sha256": "99d5eb5ccb09957c1bcb3f393047bd730e0afa5efb0bf9a94ddea49b9bba80e8"
+    }
+  ]
+}

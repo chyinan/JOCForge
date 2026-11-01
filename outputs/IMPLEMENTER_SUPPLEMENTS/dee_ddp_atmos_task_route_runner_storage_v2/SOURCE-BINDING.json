@@ -1,0 +1,26 @@
+{
+  "package_id": "dee_ddp_atmos_task_route_runner_storage_v2",
+  "incoming_manifest_sha256": "fea8dd4492a5d24881d4a075157a127021d479ee9d45a000bd9e2eef6434097c",
+  "incoming_payload_sha256": {
+    "EVIDENCE.json": "e9aaf131ea407c108ed1f4342080e0ebefc3ceeb07871e27b2a7d530a6b4fa3a",
+    "NEXT_EDGE.json": "9f60aef6f203e23bb9f114c1d6c3aca53c30dbc7a3ffd92619b1995ae4bb55b1",
+    "README.md": "450a587f0f0ff0e35678a64790276023cf519f9072660dd28513d215740a38b8",
+    "SOURCE_INDEX.json": "80314eb75ae67e4bd93d2ca2cb72852163cc7c762b30cedadd8bbf9cfc9f2d5b",
+    "verify_package.py": "1d86ac533634d2015d9106f129c316c5e52c01ae58bdceac77d0eca873a8b69d"
+  },
+  "incoming_source_hash_count": 50,
+  "incoming_checker_normal": "PASS_VALID_PARTIAL",
+  "incoming_checker_python_o": "PASS_VALID_PARTIAL",
+  "run145_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+  "run148_xml_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3",
+  "reused_input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+  "input_rehashed_in_new_run": false,
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "seal_file_hash_matches_reported": true,
+  "seal_unique_name_count": 6,
+  "seal_file_count_claim": 7,
+  "duplicate_manifest_row": true,
+  "raw_source_or_decompilation_included": false,
+  "private_key_or_license_contents_read": false,
+  "raw_pcm_or_payload_read": false
+}

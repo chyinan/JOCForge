@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "HOST-ATMOSMEZZ-PROVIDER-TO-PROCESS-IDENTITY-FOLLOWUP-V1",
+  "scope": "Sanitized, hash-bound Ghidra value-domain and R138 applicability evidence for the host storage-provider to plugin process packet boundary; native re-observation awaits Wash coordination. No raw analysis output or payload.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 6779,
+      "sha256": "309073246aec5f8adae8b88a7156c419f3bea6142c9f2b5661d21107179de49a"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 1358,
+      "sha256": "82dbbecf2d7c1d60fe3d98f89cf5162905a95b4695bdaa78271735d24ec367e0"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2300,
+      "sha256": "a3df5f987ad21ec084a8a6630863b14ca92e7c70aa41e1adfa658195799a0582"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2161,
+      "sha256": "6e1f59ee66fdba2c07f3798d9831bed37d34f5aef407855dc16a66f566f7b058"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 803,
+      "sha256": "cb5d4f379bde8cdc837b18aceb00cdd49543360d6365f9b89a2b286d40802211"
+    }
+  ]
+}

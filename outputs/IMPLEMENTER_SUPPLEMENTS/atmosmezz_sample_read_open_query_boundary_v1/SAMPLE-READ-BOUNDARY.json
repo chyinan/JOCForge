@@ -1,0 +1,36 @@
+{
+  "schema": "washed-atmos-info-sample-read-open-query-boundary.v1",
+  "status": "OPEN_TIME_READER_QUERY_BOUND_PCM_SAMPLE_READ_TARGET_NOT_JOINED_TO_RUN",
+  "source_package_manifest_sha256": "bdfa844e2c6434f5cab5e7f0243d50f6a93bd5300d94eaac2cd07d0767c5a792",
+  "dee_helper_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+  "sample_read_candidate": {
+    "master_vtable_slot_offset": 200,
+    "thunk_rva": "0x25b220",
+    "implementation_rva": "0x2528a0"
+  },
+  "open_time_query": {
+    "master_open_callsite": "0x25a279",
+    "caller": "helper master-open function",
+    "called_function": "FUN_1400797a0",
+    "indirect_callsite": "0x797d8",
+    "reader_result_fields": [
+      "+0x48",
+      "+0x50"
+    ],
+    "use": "aggregates returned reader extents and writes master +0x4A channel count",
+    "pcm_row_table_or_actual_frame_argument": false,
+    "dynamic_reader_vtable_target": "UNBOUND"
+  },
+  "caller_bound": {
+    "total_indirect_plus_c8_calls": 13,
+    "owner_functions": 11,
+    "master_open_reachable_calls": 1,
+    "other_owners_not_connected_within": "6 levels / 500 functions bounded caller search"
+  },
+  "r3_full_file_run": {
+    "run_receipt_manifest": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f",
+    "helper_pid_master_reader_vtable_row_table": "NOT_CAPTURED"
+  },
+  "remaining_edge": "Actual PCM sample-read vtable target and row table in the R3 sample-6 runtime invocation remain unbound.",
+  "minimum_runtime_capture": "One same-invocation helper sample-read call: parent DEE job generation, helper PID/input hash, master token, requested/returned frames, borrowed row-table token and ownership fields; no row contents."
+}

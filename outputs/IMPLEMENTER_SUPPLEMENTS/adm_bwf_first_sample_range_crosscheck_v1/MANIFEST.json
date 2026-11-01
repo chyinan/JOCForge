@@ -1,0 +1,29 @@
+{
+  "schema": "washed-adm-bwf-first-sample-range-crosscheck.v1",
+  "package_id": "adm_bwf_first_sample_range_crosscheck_v1",
+  "status": "CONDITIONAL_RANGE_FORMULA_STATIC; RESOLVERS_AND_FIRST_READER_UNBOUND",
+  "implementation_readiness": "NO_FOR_SELECTED_PROFILE_READER_START",
+  "source_package_manifest_sha256": "b299d17fcff4f177471d564424a84f61d6efd34bc6c30ec86ec36b41474bae14",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1915,
+      "sha256": "9ffc6559d87a0bc45c1f43c1fba65ecfdf88d47ebeb0a1c9771ca72ca2f6275d"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3118,
+      "sha256": "da7aee0270699525058b848d076ce6ca19b5a5f87061f394e7b7363d183f9793"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 556,
+      "sha256": "00c8932a8f041b06fb21f0481dd090f73e649ee1760c2f3cb77d49d732f85743"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2141,
+      "sha256": "137bd9d0c5282919ecd81a9b2ad2b729ad435ecdbc0beac4abeae23f5e91fed0"
+    }
+  ]
+}

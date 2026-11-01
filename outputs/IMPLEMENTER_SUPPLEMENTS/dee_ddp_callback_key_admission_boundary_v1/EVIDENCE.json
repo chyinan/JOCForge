@@ -1,0 +1,59 @@
+{
+  "schema": "washed-dee-ddp-callback-key-admission.v1",
+  "package_id": "dee_ddp_callback_key_admission_boundary_v1",
+  "status": "HOST_CALLBACK_STORAGE_AND_ENUMERATION_BOUND_DDP_LOCAL_NAMES_DO_NOT_MATCH_PCM_TO_DDP",
+  "implementation_delivery": "PROHIBITED",
+  "source_package": {
+    "manifest_sha256": "8be9fca9183ff62855e4c5b2bb6889ca5c2222321c73bfbe5069a6835745b075",
+    "seal_sha256": "75f7db5532e8e2f093a7a70937767648512ab03b67ac12618a67ba8afc90201a",
+    "checker_normal": "VALID_PARTIAL",
+    "checker_python_optimized": "VALID_PARTIAL",
+    "source_hash_count": 34,
+    "source_hash_mismatches": 0,
+    "payload_hashes_recomputed": "ALL_MATCH"
+  },
+  "images": [
+    {
+      "image": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "current_file_rehash": "MATCH"
+    },
+    {
+      "image": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "current_file_rehash": "MATCH"
+    }
+  ],
+  "host_registry": {
+    "module_loader_to_callback_array": "BOUND",
+    "callback_store_to_audio_filter_registry": "BOUND",
+    "stage_runner_enumerates_same_manager": "BOUND",
+    "absolute_global_callback_index": "LOAD_ORDER_DEPENDENT"
+  },
+  "ddp_local_names": [
+    "encode_to_atmos_ddp",
+    "atmos_mezz_to_atmos_ddp",
+    "pcm_to_atmos_ddp"
+  ],
+  "exact_key_gate": {
+    "key": "pcm_to_ddp",
+    "accepted_legacy_names": [
+      "atmos_mezz_to_atmos_ddp_old",
+      "encode_to_atmos_ddp_old",
+      "pcm_to_atmos_ddp_old"
+    ],
+    "direct_ddp_match": "NO",
+    "near_name_alias_inferred": false
+  },
+  "other_provider": "UNBOUND/NO",
+  "downstream_edges": {
+    "ddp_descriptor_offset0_writer": "UNBOUND/NO",
+    "reader_owner_generation": "UNBOUND/NO"
+  },
+  "execution": {
+    "new_dee_job": "NOT_RUN",
+    "win_dbg_runtime": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_read": false
+  }
+}

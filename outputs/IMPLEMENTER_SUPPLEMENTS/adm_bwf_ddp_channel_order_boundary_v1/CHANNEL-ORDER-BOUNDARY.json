@@ -1,0 +1,31 @@
+{
+  "schema": "washed-adm-bwf-ddp-channel-order-boundary.v1",
+  "status": "CONVERTER_CHNA_MAP_AND_DDP_ORDINAL_COPY_STATIC__READER_TO_DDP_ROW_JOIN_UNBOUND",
+  "source_package_manifest_sha256": "32dbd9da7ec2266f1811ec620dd12317e5f7367781d58d656a52f5f3e4d4cbe6",
+  "source_input": {
+    "sample_id": "authorized_sample6_people_is_cat",
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "channels": 38,
+    "format": "PCM24/48k"
+  },
+  "converter": {
+    "image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "chna_identity_to_track_index": "STATIC_CLOSED_WITHIN_CONVERTER",
+    "chna_required": true,
+    "object_bed_lookup": "CHNA-derived track number; bed path uses one-based to zero-based index"
+  },
+  "ddp": {
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "process_checks_frame_size_and_configured_channel_count": true,
+    "first_row_table_consumer": "copies each input row i to internal row i (ordinal preserved at this copy boundary)",
+    "channel_semantic_identity": "NOT_ESTABLISHED"
+  },
+  "joins": {
+    "physical_bwf_storage_order_to_reader_pcm_row": "UNBOUND",
+    "reader_pcm_row_to_ddp_input_row": "UNBOUND",
+    "chna_or_axml_identity_at_ddp_entry": "UNBOUND",
+    "same_job_generation": "NOT_OBSERVED"
+  },
+  "implication": "No evidence currently chooses identity order or a CHNA-driven row permutation at the DDP input boundary. Do not infer mapping from 38-channel count or equal row indices. Any audio-affecting mapping must come from DEE evidence or approved profile contract.",
+  "minimum_observation": "One same-job/same-generation metadata-only row-slot correspondence from ADM identity to CHNA track number to reader row ordinal to DDP input row ordinal; no PCM sample values."
+}

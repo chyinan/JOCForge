@@ -1,0 +1,63 @@
+{
+  "package_id": "dee_numeric_profile_stage_properties_after_factory_v1",
+  "status": "NUMERIC_OPTIONS_APPLIED_POST_FACTORY; ROUTE_NAME_SELECTS_CONFIG; NO_TYPED_NUMERIC_PROFILE_TO_LOADER_INDEX_TRANSFER_IN_RUN145_RUN148",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Hash-bound Run145/Run148 XML and host static path for route selection, post-factory numeric property application, and callback-loader index source. Other profiles/routes remain unbound.",
+  "source": {
+    "incoming_package_id": "dee_audio_filter_numeric_profile_loader_index_boundary_wash_v1",
+    "manifest_sha256": "93e67d928a1d882a09b0c9d4cbddc16aa5cde39f9c48076a41523edd050febc1",
+    "seal_sha256": "41a23bb8a8f39da7e47d9f69cb332063a35f574cfcf320b6148dbb87149115ac",
+    "source_hash_count": 43,
+    "checker_normal": "PASS_VALID_PARTIAL",
+    "checker_python_o": "PASS_VALID_PARTIAL"
+  },
+  "task": {
+    "run145_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "run148_xml_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3",
+    "input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "route": "encode_to_atmos_ddp",
+    "data_rate": "1024",
+    "speech_threshold": "100",
+    "loro_mix_levels": [
+      "-3",
+      "-3"
+    ],
+    "preferred_downmix_mode": "loro",
+    "runtime_observation": "Existing records only; no new run"
+  },
+  "host_route": {
+    "config_name_getter_offset": "+0x10",
+    "matching": "exact bytes and exact length against parsed route name",
+    "factory_virtual_slot": "+0x30",
+    "numeric_options_applied": "after the factory returns a stage"
+  },
+  "numeric_profile_application": {
+    "method": "SetStageProperties on Runner+0x270 using the copied route property tree",
+    "known_fields": [
+      "data_rate",
+      "speech_threshold",
+      "loro_center_mix_level",
+      "loro_surround_mix_level"
+    ]
+  },
+  "loader_index": {
+    "source": "loop counter over callback array returned by getter",
+    "task_numeric_field_transfer": "NONE_OBSERVED_IN_RUN145_RUN148_PATH",
+    "global_ordinal": "ORDER_DEPENDENT/NOT_BOUND"
+  },
+  "domain_boundary": {
+    "decoded_output_profile_index": 3,
+    "is_task_input_selector": false
+  },
+  "remaining": {
+    "complete_Run148_module_set": "UNBOUND/NOT_CAPTURED",
+    "direct_callback_entry": "NOT_HIT",
+    "descriptor_owner_generation": "UNBOUND/NO",
+    "other_route_profile_paths": "UNBOUND"
+  },
+  "execution": {
+    "new_dee_run": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_contents_read": false
+  }
+}

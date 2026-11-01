@@ -1,0 +1,46 @@
+{
+  "schema": "washed-dee-host-registry-factory-boundary.v1",
+  "package_id": "dee_host_pcm_to_ddp_registry_factory_boundary_v2",
+  "status": "HOST_REGISTRY_TO_FACTORY_CONTRACT_BOUND_SELECTED_CALLBACK_AND_DESCRIPTOR_EDGE_UNBOUND",
+  "implementation_effect": "INTEGRATION_BOUNDARY_ONLY_NO_AUDIO_ALGORITHM_RULE",
+  "upstream_package": {
+    "manifest_sha256": "f0654bf93e59086eb6149091000dab6025aa346419113c3eaa8905f4f9408b77",
+    "seal_sha256": "344c95c7b42ba4607d1789eb0e0ef4fb34eb263f63b3b017a9beb0db816cfadf",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_hashes_recomputed": "PASS",
+    "source_hashes": {
+      "count": 17,
+      "matched": 17,
+      "mismatched": 0
+    }
+  },
+  "host_image": {
+    "sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "analysis": "Ghidra 12.2 static"
+  },
+  "host_flow": {
+    "registry_to_config": "BOUND",
+    "config_to_processing_stage": "BOUND",
+    "factory_contract": "The selected stage config yields a ProcessingStage; the same config is retained while capability methods classify source/target support."
+  },
+  "separate_category_mapping": {
+    "key": "pcm_to_ddp",
+    "value": "filter:audio",
+    "is_registry_callback_identity": false
+  },
+  "unbound_edges": {
+    "per_entry_callback_writer": "UNBOUND/NO",
+    "pcm_to_ddp_callback_target": "UNBOUND/NO",
+    "concrete_factory_override_module": "UNBOUND/NO",
+    "descriptor_offset_0": "UNBOUND/NO",
+    "reader_row_to_ddp_descriptor_transfer": "UNBOUND/NO",
+    "same_owner_and_parent_generation": "UNBOUND/NO"
+  },
+  "minimum_next_evidence": "Locate the constructor/registration store for the registry entry's callback field and bind that entry's name to pcm_to_ddp; then identify its concrete factory override and returned stage adapter.",
+  "execution": {
+    "new_dee_job": "NOT_RUN",
+    "live_debugger": "NOT_RUN",
+    "raw_pcm_read": "NOT_RUN"
+  }
+}

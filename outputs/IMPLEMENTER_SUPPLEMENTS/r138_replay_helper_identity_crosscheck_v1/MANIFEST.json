@@ -1,0 +1,38 @@
+{
+  "schema": "washed-r138-replay-helper-identity-crosscheck.v1",
+  "package_id": "r138_replay_helper_identity_crosscheck_v1",
+  "status": "R138_EQUIVALENT_REPLAY_HOST_TO_HELPER_IMAGE_BOUND; ORIGINAL_R138_CHILD_RECEIPT_NOT_CAPTURED",
+  "implementation_readiness": "CANDIDATE_HELPER_IDENTITY_CONFIRMED_FOR_R138_EQUIVALENT_REPLAY_ONLY",
+  "source_package_manifest_sha256": "bd726d353a53cd201ed973f90ebce0ae7d38f63e15c1be7623c99a5f6965e858",
+  "implementation_allowed_for": "CANDIDATE_HELPER_IDENTITY_FOR_EQUIVALENT_REPLAY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "contains_full_command_line": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2867,
+      "sha256": "993e373a3dbbee708663d9109f257e27495c13509704cb69048dd9452a83f342"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1553,
+      "sha256": "fee4ee44ae0672b4f00ccc3b6ca20595c85dea96c3ebc9b3965029cfab2f3cb7"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1185,
+      "sha256": "0896a6a71171554972b1eecfc823f2b0dc022a33157997aa16599ff5d360266e"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2423,
+      "sha256": "e346aca0b076a2e82183c7251397d5587613da0fbaec6addd66bd55803fff5cb"
+    }
+  ]
+}

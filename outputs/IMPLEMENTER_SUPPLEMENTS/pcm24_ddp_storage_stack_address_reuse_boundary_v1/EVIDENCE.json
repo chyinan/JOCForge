@@ -1,0 +1,60 @@
+{
+  "package_id": "pcm24_ddp_storage_stack_address_reuse_boundary_v1",
+  "status": "HOST_STORAGE_METADATA_LOOKUP_OBSERVED; NUMERIC_STACK_ADDRESS_ALIAS_NOT_IDENTITY; DDP_RECORD_TO_READER_INTERNAL_PATH_BOUND; HOST_SELECTED_ADM_OWNER_GENERATION_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Run152/Run153 host metadata storage lookup and DDP stack record pointer relation, with DDP internal reader/descriptor boundary. No selected ADM owner or generation join is claimed.",
+  "source": {
+    "incoming_package_id": "pcm24_ddp_storage_record_address_alias_audit_v1",
+    "manifest_sha256": "650d77fa7223583e108478a384c227b83bcf792852dd98b99bbe8ea8936dbef4",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "upstream_ddp_reader_manifest_sha256": "ae7c3e737eba3fbd1ed5dc70daebc3dff546b4cf8042dbd30883a556c8858389",
+    "upstream_run150_manifest_sha256": "03577bc348ae1002888765347c627be3365c5524a3aec71c2487d5885f0d6646"
+  },
+  "host_storage_lookup": {
+    "storage_vtable_slot40": "wrapper to slot38",
+    "slot38_behavior": "lookup string by key in internal metadata map",
+    "classification": "METADATA_LOOKUP_NOT_AUDIO_ROW_READ"
+  },
+  "runs": [
+    {
+      "run_id": "run-152",
+      "input_sha256_from_preflight": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "input_rehashed_during_run": false,
+      "same_thread_host_and_ddp_stops": true,
+      "host_stack_key_token_equals_ddp_record_destination_token": true,
+      "host_and_ddp_calls_in_same_stack_frame": false,
+      "host_atmosmezz_frame_in_ddp_writer_backtrace": false,
+      "address_relation": "STACK_ADDRESS_REUSE_CANDIDATE_NOT_IDENTITY",
+      "descriptor_offset0_equals_ddp_row_table": true,
+      "output_size_before_cleanup": 32964608,
+      "bitstream_parse": "NOT_RUN",
+      "playback": "NOT_RUN"
+    },
+    {
+      "run_id": "run-153",
+      "input_sha256_from_preflight": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "input_rehashed_during_run": false,
+      "same_thread_host_and_ddp_stops": true,
+      "host_stack_key_token_equals_ddp_record_destination_token": true,
+      "host_and_ddp_calls_in_same_stack_frame": false,
+      "host_atmosmezz_frame_in_ddp_writer_backtrace": false,
+      "address_relation": "STACK_ADDRESS_REUSE_CANDIDATE_NOT_IDENTITY",
+      "descriptor_offset0_equals_ddp_row_table": true,
+      "output_size_before_cleanup": 32964608,
+      "bitstream_parse": "NOT_RUN",
+      "playback": "NOT_RUN"
+    }
+  ],
+  "ddp_internal_path": {
+    "record_writer_to_reader_conversion": "BOUND_WITHIN_DDP_MEASUREMENT_OWNER",
+    "descriptor_offset0_equals_row_table": true,
+    "selected_host_adm_to_ddp_owner": "UNBOUND"
+  },
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "raw_pointer_tokens_included": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_contents_read": false
+  }
+}

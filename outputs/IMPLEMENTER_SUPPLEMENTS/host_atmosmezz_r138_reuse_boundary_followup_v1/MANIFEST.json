@@ -1,0 +1,32 @@
+{
+  "schema": "wash-only-research-manifest.v1",
+  "package_id": "HOST-ATMOSMEZZ-R138-REUSE-BOUNDARY-FOLLOWUP-V1",
+  "scope": "Sanitized, hash-bound R138 route/input applicability evidence for the AtmosMezz provider-packet observation; no raw debugger output or payload. R4 reuse remains subject to Wash confirmation.",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 6941,
+      "sha256": "108d18c5e6d19ce923f2df7647c90fca8d09c43550a42afc830d677617830728"
+    },
+    {
+      "file": "CONTROLLED-VECTORS.json",
+      "bytes": 1170,
+      "sha256": "df2b4e1fceb26f4809cf49fecbdf437d8f1c785ad3d61032db9f9297fdaa84c8"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1912,
+      "sha256": "1a956889603dc0cf8f0fd3ad3a5a5f4d58d8e58da421b88b3a123400f9d33a00"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1577,
+      "sha256": "c5e1fb7548ce3e2f85e8b5570b24691fefe60afc2815128a62ed63aa07f200c7"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 803,
+      "sha256": "cb5d4f379bde8cdc837b18aceb00cdd49543360d6365f9b89a2b286d40802211"
+    }
+  ]
+}

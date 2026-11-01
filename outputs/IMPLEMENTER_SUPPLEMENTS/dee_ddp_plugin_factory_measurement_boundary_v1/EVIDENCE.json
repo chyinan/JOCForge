@@ -1,0 +1,53 @@
+{
+  "schema": "washed-ddp-plugin-factory-measurement-boundary.v1",
+  "package_id": "dee_ddp_plugin_factory_measurement_boundary_v1",
+  "status": "DLL_LOCAL_FACTORY_TO_CONDITIONAL_MEASUREMENT_PATH_BOUND_HOST_SELECTION_AND_ROW_OWNER_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "source_package": {
+    "manifest_sha256": "c801086a31df9d9d1829f49a7d5742c573ffe4c12c85136e310ea40f33703f0a",
+    "seal_sha256": "d35b46a6a27f020e51e53fb486def5129ea85f2f0ae97b76cf6c5cece0254a48",
+    "checker_normal": "VALID_PARTIAL",
+    "checker_python_optimized": "VALID_PARTIAL",
+    "payload_hashes_recomputed": "ALL_MATCH",
+    "source_hash_count": 27,
+    "source_hash_mismatches": 0
+  },
+  "images": [
+    {
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "current_file_rehash": "MATCH"
+    },
+    {
+      "name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "package_hash_binding": "PRESENT"
+    }
+  ],
+  "ddp_plugin_factory_chain": "STATICALLY_CONFIRMED",
+  "chain_summary": {
+    "plugin_entry": "DDP factory table creates FilterDDPJocEncPlugin.",
+    "stage_factory": "Plugin factory slot constructs FilterDDPJocEnc.",
+    "backend": "FilterDDPJocEnc owns a Priv backend.",
+    "measurement": "A conditional Priv::measure branch builds a measurement input and can instantiate AtmosProcMeasure.",
+    "process": "AtmosProcMeasure process methods forward a frame descriptor into AtmosProcessor::process."
+  },
+  "conditional_measurement_path": "STATICALLY_CONFIRMED_BRANCH_NOT_OBSERVED",
+  "host_callback_join": "UNBOUND/NO",
+  "host_callback_missing": "The host pcm_to_ddp registry entry/callback is not joined to the DDP DLL-local plugin factory table.",
+  "measurement_runtime_values": "NOT_OBSERVED",
+  "descriptor_offset0_owner_generation": "UNBOUND/NO",
+  "unresolved": {
+    "selected_host_callback_to_plugin_factory": "UNBOUND/NO",
+    "live_measurement_branch_and_object": "NOT_OBSERVED",
+    "descriptor_row_writer": "UNBOUND/NO",
+    "converter_row_to_descriptor_same_owner_generation": "UNBOUND/NO"
+  },
+  "execution": {
+    "ghidra_12_2_static_only": true,
+    "new_dee_job": "NOT_RUN",
+    "win_dbg_or_live_attachment": "NOT_RUN",
+    "pcm_or_payload_read": "NO",
+    "private_key_read": "NO"
+  }
+}

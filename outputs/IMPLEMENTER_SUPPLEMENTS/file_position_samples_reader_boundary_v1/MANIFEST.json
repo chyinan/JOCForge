@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "file_position_samples_reader_boundary_v1",
+  "status": "EVIDENCE_ONLY_SOURCE_EXTENT_BOUNDARY",
+  "source_package_manifest_sha256": "7083cc69d8fe895cc585a2c0d1f58cd41127cd5a579dbed254c9d8863d7cb85b",
+  "parent_range_package_manifest_sha256": "f18722e50d2e65ec49beac10e8b0a6f02f7aedb0ce20140ccdf0dbaf12c8f94c",
+  "implementation_allowed_for": "INPUT_HEADER_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "files": [
+    {
+      "name": "SAMPLES-READER-BOUNDARY.json",
+      "bytes": 1690,
+      "sha256": "09da9cb1b8af189505c8d211b2d1f93d2ef299b3f3680cf71f231b9634eeba61"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1155,
+      "sha256": "2a1d1e39cd551e6e16ed091dede7ace19de1a03f65263eee7e77fce45d01b2de"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 664,
+      "sha256": "2540faeab868ec8bdacf0fd01721bd2dc37c94cfa99aae9d25c15ed9625cd049"
+    }
+  ]
+}

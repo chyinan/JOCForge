@@ -1,0 +1,51 @@
+{
+  "schema": "wash-only-atmosmezz-provider-process-identity.v1",
+  "package_id": "HOST-ATMOSMEZZ-PROVIDER-TO-PROCESS-IDENTITY-FOLLOWUP-V1",
+  "result": "RUN_AND_GETTARGETS_RETURN_VALUES_NOT_SAME_AS_PROCESS_PACKET; STORAGE_PROVIDER_TO_PROCESS_PACKET_UNBOUND; SAME_TASK_GENERATION_NOT_OBSERVED",
+  "evidence_tier": "GHIDRA_STATIC_PLUS_HASH_BOUND_CONFIG_APPLICABILITY",
+  "source_modules": [
+    {
+      "role": "host executable",
+      "file_name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728
+    },
+    {
+      "role": "Atmos audio-filter plugin",
+      "file_name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464
+    }
+  ],
+  "existing_run_applicability": {
+    "run_id": "run-138",
+    "execution_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "AtmosMezz_input_used": false,
+    "current_process_or_debugger_session": "NONE",
+    "reuse_for_AtmosMezz_provider_identity": "NOT_COMPATIBLE"
+  },
+  "host_value_domains": {
+    "Run_return": {"role": "completion status scalar", "relation_to_plugin_packet": "NOT_SAME"},
+    "GetTargets_return": {"role": "target-label string vector", "relation_to_plugin_packet": "NOT_SAME"},
+    "nested_provider_callback_result": {"role": "string-like filename/message value", "relation_to_plugin_packet": "NOT_SAME"},
+    "reader_owned_metadata": {"role": "metadata entry list", "relation_to_plugin_packet": "NOT_SAME"},
+    "storage_provider_object": {"relation_to_plugin_packet": "NOT_OBSERVED"}
+  },
+  "plugin_process_packet": {
+    "value_role": "frame packet",
+    "accepted_frame_size_units": [1536, 0],
+    "zero_size_role": "flush",
+    "host_provider_transfer": "NONE_OBSERVED"
+  },
+  "identity_status": {
+    "provider_to_plugin_process_packet": "UNBOUND",
+    "same_task_activation": "NOT_OBSERVED",
+    "same_parent_or_source_generation": "NOT_OBSERVED",
+    "target_boundary_reached_in_existing_runs": "NOT_REACHED",
+    "new_native_run": "AWAITING_WASH_COORDINATION",
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

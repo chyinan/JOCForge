@@ -1,0 +1,45 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "host-adm-audio-input-registration-boundary-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "f7cc3a1fb83386014b220ef0ce0ad9b44abfafb107b6193f531cfc221226fd95",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "35d1bd468792ff5bfe48d78c74a466db03f0645c66bd324863e1cf09d9f6b715",
+      "bytes": 2066
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "418eabd716eadd3d5533f5caa8189caeb6e4037fd94a4efcea8f4c7f19127125",
+      "bytes": 2802
+    },
+    {
+      "name": "CONTROLLED-VECTORS.json",
+      "sha256": "f9a3b2e7900b333b19b72ca12f177f3f0d119e24d35d782e6a10602a76725caf",
+      "bytes": 1270
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "sha256": "5c486d9c7de25180add93168560c8fe526ba293fc7d3dc33bcda025aae96de18",
+      "bytes": 1008
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "6693d369038cbe51689d1edce7612a29d7935530ff05d2568576a71838f74d29",
+      "bytes": 1155
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "94e8b1d7443c18b67eda8ddef8b2eb0dd99e0d766ca9f261b6a91c4e15deebc5",
+      "bytes": 890
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_BOUND_TYPED_PRODUCER",
+  "source_package_manifest_sha256": "ba389271c6ee81599ba2b2136e5eb5ae48e445ee7cf54984cc18fd0c77b961a8",
+  "source_checker_normal": "PASS",
+  "source_checker_optimized": "PASS",
+  "implementation_readiness": "NO_FOR_SETUP_POINTER_JOIN"
+}

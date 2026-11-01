@@ -1,0 +1,38 @@
+{
+  "schema": "washed-dee-host-ddp-stage-handoff-boundary.v1",
+  "package_id": "dee_host_ddp_stage_handoff_boundary_v1",
+  "status": "HOST_RUNAUDIOFILTER_TO_GENERIC_STAGE_HANDOFF_BOUND; DDP_DESCRIPTOR_OFFSET0_WRITER_AND_HOST_TO_DDP_PROCESS_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "ce4dff226896f4c95318f943d0ae973845bce0f5b896f9e4f6bc1bc08ff600f7",
+  "source_package_seal_sha256": "66c7dcfc17843bc24c2804bbaaac8de4b9050a032744a94f65def34a49604bc0",
+  "implementation_allowed_for": "HOST_STAGE_HANDOFF_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3156,
+      "sha256": "290d7a3ccf1812bfe455996ceda347272835e5f915e193b0c7f72c8b1af63010"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1359,
+      "sha256": "d6283acd648a027a8365b89642a7797e5b4457426a9e1dbde1688ac0e0d92d36"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1073,
+      "sha256": "af210b6a65018ec118174558eca5b33f1a3c1e9a6284bb178ca89c5cb082bfd9"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2180,
+      "sha256": "ca7222acd98e06d7e38063a31b8e0469d346e0fe6018af422a82cd83e732b9a5"
+    }
+  ]
+}

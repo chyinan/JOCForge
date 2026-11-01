@@ -1,0 +1,32 @@
+{
+  "schema": "washed-r138-normalizer-container-type-correction.v1",
+  "source_package_manifest_sha256": "12e28af74c7fa1d1ff7570b6177730eda054f30a48431e7d0ab6e33d4ff041d8",
+  "supersedes_wash_supplement_manifest_sha256": "96487b8069c5f77895c247fe20ebb7499b4bd921930b9e3738994e958cc265ee27",
+  "static_argument_order": {
+    "RCX": "linked key/value record-list container",
+    "RDX": "timecode_frame_rate config",
+    "R8": "FFOA config",
+    "R9": "offset config"
+  },
+  "container_behavior": {
+    "input_object_constructs_records": [
+      "sample_rate",
+      "samples",
+      "timecode_frame_rate",
+      "offset",
+      "ffoa"
+    ],
+    "normalizer": "looks up and rewrites key/value records",
+    "internal_run_method": "appends record-list to an input-run object field",
+    "is_typed_source_metadata_map": "NOT_ESTABLISHED",
+    "is_audio_control_map": "NOT_ESTABLISHED"
+  },
+  "remaining": {
+    "R138_internal_run_method_selected": "NOT_CAPTURED",
+    "run141_normalizer_argument_values": "NOT_CAPTURED",
+    "list_to_ddp_range_consumer": "UNBOUND",
+    "list_to_ddp_setter_slots_10_11": "UNBOUND",
+    "setter_r141_status": "NOT_HIT_FOR_THIS_RUN",
+    "owner_generation_join": "NOT_CAPTURED"
+  }
+}

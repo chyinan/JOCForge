@@ -1,0 +1,42 @@
+{
+  "schema": "washed-ddp-samples-alias-cross-image-boundary.v1",
+  "status": "DDP_ALIAS_TO_DDP_MAP_BOUND_CONVERTER_AND_READER_JOIN_UNBOUND",
+  "source_package_manifest_sha256": "154587d0f397889896942026f97846a408f4e29965ea60ea08e7e94f0525995a",
+  "parent_samples_boundary_manifest_sha256": "7083cc69d8fe895cc585a2c0d1f58cd41127cd5a579dbed254c9d8863d7cb85b",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "atmosmezz_converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+  "ddp_alias_chain": {
+    "source_map": "outer DDP context +0xa0",
+    "required_keys": [
+      "channels",
+      "sampling_rate",
+      "samples"
+    ],
+    "complete_preexisting_map": "copied forward; fallback skipped",
+    "missing_key_fallback": {
+      "channels": "Channels",
+      "sampling_rate": "SamplingRate",
+      "samples": "SamplingCount"
+    },
+    "fallback_destination": "caller-provided local metadata map",
+    "same_owner_copy": "local samples value copied to DDP context output map +0xf88",
+    "downstream_use": "later DDP timeline routine reads samples from output map",
+    "formula_from_bwf_data_bytes_block_align": "NOT_OBSERVED",
+    "existing_input_map_samples_writer": "UNBOUND",
+    "media_info_samplingcount_formula": "NOT_ESTABLISHED"
+  },
+  "cross_image_boundary": {
+    "atmosmezz_samples_literal_refs": 1,
+    "consumer": "file-position source-range consumer",
+    "ddp_to_atmosmezz_converter_map": "UNBOUND",
+    "ddp_to_atmosmezz_reader_object": "UNBOUND",
+    "equal_values_or_key_names_as_identity": "PROHIBITED"
+  },
+  "runtime": {
+    "observation_executed": false,
+    "minimum": "single same-job tuple across DDP source/fallback map, AtmosMezz samples map read, and reader extent/cursor/EOF, with context/converter/reader/generation tokens"
+  },
+  "authority": "DEE_GHIDRA_STATIC_ONLY",
+  "external_alias_role": "CONDITIONAL_FIELD_NAME_AND_VALUE_CROSSWALK_ONLY_NOT_AUDIO_ALGORITHM",
+  "audio_algorithm_value_supplied": false
+}

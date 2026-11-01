@@ -1,0 +1,18 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "pcm24_ddp_filter_owner_config_lineage_addendum_v1",
+    "manifest_sha256": "4abd471f5d943eec67e2c1d88548d3a3009dd782537af90bc64e416665703472",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "provenance_parent": {
+    "package_id": "pcm24_ddp_run152_job_receipt_hash_erratum_v1",
+    "manifest_sha256": "f1e303eb14ebf6153c29e11cba4f3ed5cf03df76ca13ec852ad68cbd4a1c5e89",
+    "scope": "Run152 job XML hash correction only; input identity remains UNBOUND/NO"
+  },
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+  ]
+}

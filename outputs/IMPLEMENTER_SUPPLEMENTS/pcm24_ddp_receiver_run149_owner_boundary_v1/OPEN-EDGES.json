@@ -1,0 +1,22 @@
+{
+  "schema": "washed-pcm24-ddp-receiver-run149-open-edges.v1",
+  "package_id": "pcm24_ddp_receiver_run149_owner_boundary_v1",
+  "closed": [
+    "Run149 same-thread host/ DDPA reader/store stops",
+    "host RunInput param2 token differs from DDP source receiver token",
+    "DDP row-table token equals descriptor offset-0 token",
+    "DDP receiver static type is internal AtmosStorageCompositeMaster"
+  ],
+  "open": [
+    "which converter image was loaded in Run149 due SHA discrepancy",
+    "host-selected ADM master to internal DDP master lineage",
+    "same owner/generation join"
+  ],
+  "status": {
+    "selected_reader": "UNBOUND",
+    "converter_hash": "UNBOUND_FOR_RUN149",
+    "run_output_parse": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "guidance": "The current converter DLL hash mismatch invalidates extrapolating the breakpoint NOT_HIT result to the current installed converter image. Keep provider and input-owner joins open."
+}

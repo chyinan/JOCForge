@@ -1,0 +1,45 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "host-adm-candidate-factory-binding-boundary-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "62b706e382b2b10e13a077f21398f00471922adb16985aeb15c0fe8473091830",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "README.md",
+      "sha256": "8c09794a4cda06c469b318cd93292977448c8f84f4d0ebe5c7fa2992563a2f83",
+      "bytes": 1926
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "c4802f490a11587aa4da60960e32e167240130599a5d13a2aec4109f4860161f",
+      "bytes": 2412
+    },
+    {
+      "name": "CONTROLLED-VECTORS.json",
+      "sha256": "0eaec3f6d7460236f91e7cb07f978ed11d8be262d5c8c5b05b04b5c612afb3e5",
+      "bytes": 1250
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "sha256": "04755a168048447045f93e086b0140900a3ad3f50c78e8f1b9486b0392ee885c",
+      "bytes": 1151
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "a47b2e3fb748d71ef710e7d834990ee601cd48a15e373d0ea0484f662993ce55",
+      "bytes": 849
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "7881fafd1b6726351a9c888c555748b65108226cb3080087cd840b2c3e258389",
+      "bytes": 683
+    }
+  ]
+}

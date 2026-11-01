@@ -1,0 +1,53 @@
+{
+  "schema": "washed-r138-fresh-module-identity.v1",
+  "package_id": "r138_fresh_ddp_module_identity_v1",
+  "status": "FRESH_PROCESS_MODULE_SHA_BOUND_HISTORICAL_RUNS_UNBOUND",
+  "implementation_effect": "OPERATIONAL_MODULE_IDENTITY_ONLY",
+  "source_package": {
+    "manifest_sha256": "9554e385745c0b97447873c588bacf2112acb05b7b0e399e57c615eac48023d8",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_hashes_recomputed": "ALL_MATCH"
+  },
+  "input": {
+    "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "task_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "same_bytes": true,
+    "input_alias_path_included": false
+  },
+  "process": {
+    "image_name": "dee.exe",
+    "pid": 2948,
+    "process_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "job_launch_and_module_load_same_process": true,
+    "dee_exit_code": 0
+  },
+  "loaded_module": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "role": "DDP_ATMOS_PROCESSING_MODULE",
+    "expected_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "resolved_file_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "same_process_pid": 2948,
+    "load_observed_by_windbg": true,
+    "runtime_pe_identity_matches_resolved_file": true,
+    "pe_timestamp": "62A39758",
+    "pe_checksum": "00A72939",
+    "pe_image_size": "00AB1000",
+    "resolved_path_included": false
+  },
+  "execution": {
+    "reference_job_started": true,
+    "temporary_ec3_produced": true,
+    "temporary_ec3_size_bytes": 135168,
+    "temporary_ec3_read_or_hashed": false,
+    "temporary_ec3_deleted": true,
+    "pcm_read_or_retained": false,
+    "private_key_or_license_read": false,
+    "playback": "NOT_RUN"
+  },
+  "historical_runs": {
+    "Run145": "UNBOUND / NOT_EVALUATED",
+    "Run147": "UNBOUND / NOT_EVALUATED"
+  },
+  "inference_boundary": "This binds one fresh process and its loaded module; it does not prove output parity and cannot be retroactively joined to older runs."
+}

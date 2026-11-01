@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "r138-adm-time-normalization-static-candidate-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "fd881c4a93f7989029fd11bb8347e8e9d5466090f4bef601da8a6d5ac329ce93",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "3dd7ad70c76f63a57ff678f863b0a975e005da1723ab41049987708fb410934e",
+      "bytes": 1297
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "357445e5b71977e0290635665e4f8842a085bb3f7a485f2aaef7e15732228c97",
+      "bytes": 2119
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "1c52b9a095cd541f7420eac03e1c0b89c4ef371b3badb5daea1b89526a7f7af4",
+      "bytes": 916
+    }
+  ]
+}

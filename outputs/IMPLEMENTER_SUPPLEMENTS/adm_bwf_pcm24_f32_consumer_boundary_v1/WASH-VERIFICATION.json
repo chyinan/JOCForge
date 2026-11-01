@@ -1,0 +1,21 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_manifest_sha256": "f45234280f568aec17a1102587abad00205973e9dcb50a9416bfbc6f99c474a8",
+  "source_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "separation": {
+    "code": false,
+    "binary": false,
+    "decompilation": false,
+    "raw_addresses": false,
+    "pcm": false,
+    "keys": false,
+    "absolute_paths": false,
+    "external_algorithm": false
+  },
+  "no_implementation_rule_given": true
+}

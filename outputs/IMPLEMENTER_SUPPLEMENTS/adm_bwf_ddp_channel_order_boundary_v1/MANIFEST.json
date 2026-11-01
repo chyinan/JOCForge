@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "adm_bwf_ddp_channel_order_boundary_v1",
+  "status": "EVIDENCE_ONLY_AUDIO_MAPPING_BOUNDARY",
+  "source_package_manifest_sha256": "32dbd9da7ec2266f1811ec620dd12317e5f7367781d58d656a52f5f3e4d4cbe6",
+  "implementation_allowed_for": "AUDIO_MAPPING_BOUNDARY_REFERENCE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_addresses_or_rvas": false,
+  "files": [
+    {
+      "name": "CHANNEL-ORDER-BOUNDARY.json",
+      "bytes": 1827,
+      "sha256": "e1aaca50808b9bf3fac7a3ad35acb621f68a9d50c1ae627d7b18b34e22939464"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 841,
+      "sha256": "8176eb556b00af039b455c7ad9585d128518aeb9ed61a18a181e3e40405d28ed"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 778,
+      "sha256": "8154ec58cdc18d7b038735a7b38a04c5640fff1e8219093a07a24e6012ba891e"
+    }
+  ]
+}

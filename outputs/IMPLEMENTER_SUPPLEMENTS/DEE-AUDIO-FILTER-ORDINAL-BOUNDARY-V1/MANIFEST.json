@@ -1,0 +1,39 @@
+{
+  "implementation_ready": "NO",
+  "package_id": "DEE-AUDIO-FILTER-ORDINAL-BOUNDARY-V1",
+  "payloads": [
+    {
+      "bytes": 8398,
+      "file": "CHECK.py",
+      "sha256": "318ec7ce58bdb1f617009d5d3895206d51aa0ee8c9fe1a873482a199668c1bd6"
+    },
+    {
+      "bytes": 1776,
+      "file": "CONTROLLED-VECTORS.json",
+      "sha256": "4201b19a6bf155b21e0898007ee5f39466d91fcbcecc17bba8423ff731ed450d"
+    },
+    {
+      "bytes": 2896,
+      "file": "EVIDENCE.json",
+      "sha256": "fdc043f5f9ac098e6c8a0ceab3c80a68a16a62c40199357e9af19988d20fc4f5"
+    },
+    {
+      "bytes": 2669,
+      "file": "REPORT.md",
+      "sha256": "ec6ca4ca38bb33d3615d800c1ba40dd76d086b70b8a6aa599ea099aec4c8980a"
+    },
+    {
+      "bytes": 1254,
+      "file": "SOURCE-IDENTITIES.json",
+      "sha256": "2e61bae728322ea4b8616fae09a7c62646d68f1017585d8d5d572899816ebbf9"
+    },
+    {
+      "bytes": 1465,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "59aa1e5c6c1f1a6d5dc955d335bfa3a6c4843c6056c73af2e9b3b25f57e06d92"
+    }
+  ],
+  "schema": "wash-only-research-manifest.v1",
+  "scope": "Hash-bound local callback order and manager-to-Runner relative ordinal relation; absolute global ordinal remains unbound.",
+  "status": "SCOPED_RELATIVE_ORDER_BOUND; ABSOLUTE_GLOBAL_ORDINAL_UNBOUND"
+}

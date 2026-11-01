@@ -1,0 +1,93 @@
+{
+  "schema": "washed-adm-bwf-ddp-source-row-descriptor-boundary.v1",
+  "package_id": "adm_bwf_ddp_source_row_descriptor_copy_boundary_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_ARGUMENT_FORWARDING_AND_ROW_COPY",
+  "status": "DDP_DESCRIPTOR_FORWARDING_AND_ROW_COPY_STATICALLY_BOUND; PCM24_READER_TO_DDP_TABLE_OWNER_GENERATION_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_tool": "Ghidra 12.2 PUBLIC headless",
+    "context7_pcm24_reader_formula_prior_wash": "signed_pcm24 / 2^23",
+    "context7_runtime_branch": "NOT_HIT_IN_PARENT_RUN",
+    "new_dee_job": "NOT_RUN",
+    "pcm_or_row_payload_read": "NOT_RUN"
+  },
+  "ddp_descriptor": {
+    "type_name": "NOT_CLAIMED",
+    "offset_0": "pointer to source-row pointer table",
+    "offset_8": "channel count; checked against DDP expected count",
+    "offset_16": "frame count; checked against allocated input capacity",
+    "callback_argument_flow": "second callback argument preserved through wrapper and supplied as DDP process descriptor"
+  },
+  "row_copy": {
+    "path": "full-buffer branch under stated capacity precondition",
+    "row_count_basis": "internal buffer row count",
+    "source": "source_table[row_index]",
+    "destination": "internal_row[row_index]",
+    "bytes_per_row": "frame_count * 4",
+    "copy_primitive": "four bytes per sample",
+    "source_to_internal_copy_static": "BOUND",
+    "copied_rows_use_same_ordinal": true
+  },
+  "input_only_vector": {
+    "vector_kind": "synthetic Float32 copy mechanism only",
+    "channel_count": 2,
+    "frame_count": 2,
+    "source_row_f32_bits": [
+      [
+        "0x3f000000",
+        "0x3f800000"
+      ],
+      [
+        "0xbf000000",
+        "0xbf800000"
+      ]
+    ],
+    "expected_copy": [
+      {
+        "row_index": 0,
+        "destination": "internal_row[0]",
+        "byte_count": 8,
+        "f32_bits": [
+          "0x3f000000",
+          "0x3f800000"
+        ]
+      },
+      {
+        "row_index": 1,
+        "destination": "internal_row[1]",
+        "byte_count": 8,
+        "f32_bits": [
+          "0xbf000000",
+          "0xbf800000"
+        ]
+      }
+    ],
+    "runtime_observation": "NOT_RUN",
+    "pcm_or_bitstream": false
+  },
+  "open_edge": {
+    "edge": "selected converter invocation's borrowed context-7 F32 row table -> DDP descriptor offset_0 source table",
+    "same_owner_and_generation": "UNBOUND/NO",
+    "why_equal_values_or_table_shape_are_insufficient": true,
+    "parent_run_reader_branch_status": "NOT_HIT",
+    "next_minimum_observation": "Typed owner-transfer receipt at the call that installs descriptor offset_0, joined to the same input owner and parent generation."
+  },
+  "parent_wash": {
+    "package_id": "adm_bwf_pcm24_to_f32_boundary_wash_v4",
+    "manifest_sha256": "1c26d90cbe68b227254df83aa13728fa334089de0ea77dd3a72f9ec60c60479d",
+    "seal_sha256": "010928600981edf7d261c226a9a432c99f1a3d8212bace8cb6ea7299b2d8f5fc"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

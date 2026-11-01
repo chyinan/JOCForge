@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 5012,
+      "file": "CHECK.py",
+      "sha256": "9124b16cb27209cb77527f21a51d00caef5a12c084c474fd384c948ff80d036a"
+    },
+    {
+      "bytes": 2049,
+      "file": "EVIDENCE.json",
+      "sha256": "62c8f02e30ec7f7c4732bffc45255acb481b5eeb39aa13f3dc2198767dfab34d"
+    },
+    {
+      "bytes": 1356,
+      "file": "REPORT.md",
+      "sha256": "296f94ac9e4aa3ebdd1892c53a37f3fec977132045f8d090a4a7c00ee9ee9aef"
+    },
+    {
+      "bytes": 781,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "676058e7420099bd71122bc32e01731bebf3ff2228851959fef4fbf7a91fbf00"
+    },
+    {
+      "bytes": 1081,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "ab6a36902426f94794deed3940907b3e8d9b7899cd8f32a60c409a8ca325efbc"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "DEE-LOADALL-LICENSE-PRECHECK-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "cef4d7b8e5d143b208bf50ab485b7b4408abcff41501098e9564ff766b38e621",
+  "status": "ENTRY_TO_LOADALL_STATICALLY_BOUND; LICENSE_CONTENT_PARSE_PRECONDITION; RUN145_RUN148_ORDINALS_UNBOUND"
+}

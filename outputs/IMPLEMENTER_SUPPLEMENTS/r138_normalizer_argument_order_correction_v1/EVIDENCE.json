@@ -1,0 +1,32 @@
+{
+  "schema": "washed-r138-normalizer-argument-order-correction.v1",
+  "source_package_manifest_sha256": "c7d5cb59b769ac311f93af3e78e0d53487dd62f75a9cf92d8f40117967af646c",
+  "host_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "r138_configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+  "authorized_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "static_argument_order": {
+    "RCX": "host source-property map (input/output)",
+    "RDX": "timecode_frame_rate config",
+    "R8": "FFOA config",
+    "R9": "offset config"
+  },
+  "static_role_evidence": {
+    "R8": "helper branches on param_3 for FFOA",
+    "R9": "helper branches on param_4 for offset",
+    "decompiler_fourth_argument": "omitted",
+    "callsite_disassembly": "R9 is offset"
+  },
+  "constructor_defaults": {
+    "timecode_frame_rate": "not_indicated",
+    "ffoa": "auto",
+    "offset": "auto"
+  },
+  "runtime_join": {
+    "R138_internal_run_method": "NOT_CAPTURED",
+    "host_map_to_DDP_setter_record": "UNBOUND",
+    "same_owner_generation": "NOT_CAPTURED",
+    "resolved_R138_FPS": "NOT_CAPTURED",
+    "native_job_this_package": "NOT_RUN",
+    "gate1_closed": false
+  }
+}

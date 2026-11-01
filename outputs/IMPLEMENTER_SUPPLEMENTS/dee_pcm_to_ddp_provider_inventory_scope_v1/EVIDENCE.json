@@ -1,0 +1,114 @@
+{
+  "schema": "washed-dee-pcm-to-ddp-provider-inventory-scope.v1",
+  "package_id": "dee_pcm_to_ddp_provider_inventory_scope_v1",
+  "status": "UNIQUE_EXACT_PCM_TO_DDP_PROVIDER_STATICALLY_IDENTIFIED_IN_SIX_INSTALLED_DLLS; RUNTIME_LOADED_SET_AND_ORDINAL_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Static provider/name-gate identity within the six top-level audio_filter DLLs hashed at seal time; does not establish a run-specific loaded module set, cumulative callback ordinal, descriptor writer, or owner/generation.",
+  "source_inventory": {
+    "top_level_dll_pattern": "dee_audio_filter_*.dll",
+    "dll_count": 6,
+    "exact_pcm_to_ddp_provider_count": 1,
+    "source_reference_count": 123,
+    "source_hash_mismatch_count": 0,
+    "all_source_hashes_checked_by_incoming_package_checker": true
+  },
+  "modules": [
+    {
+      "name": "dee_audio_filter_cod.dll",
+      "sha256": "527dc873b9be7e348698e66195250cbb9382cbec16c590abe547a87e9159abc8",
+      "local_stage_names": [
+        "pcm_channel_order"
+      ]
+    },
+    {
+      "name": "dee_audio_filter_convert_atmos_mezz.dll",
+      "sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+      "local_stage_names": [
+        "convert_atmos_mezz"
+      ]
+    },
+    {
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "local_stage_names": [
+        "encode_to_atmos_ddp",
+        "atmos_mezz_to_atmos_ddp",
+        "pcm_to_atmos_ddp"
+      ]
+    },
+    {
+      "name": "dee_audio_filter_ddp_single_pass.dll",
+      "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+      "local_stage_names": [
+        "ddp_decode",
+        "pcm_loudness_correction_single_pass",
+        "encode_to_dd_single_pass",
+        "measure_loudness"
+      ]
+    },
+    {
+      "name": "dee_audio_filter_ddp_transcode.dll",
+      "sha256": "a5d2dde93a256c4cb1e821bd809fb6aed93f2a346c72210c1bed1b3bd5b35f58",
+      "local_stage_names": [
+        "transcode_to_ddp"
+      ]
+    },
+    {
+      "name": "dee_audio_filter_ddp.dll",
+      "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+      "local_stage_names": [
+        "pcm_to_ddp",
+        "pcm_loudness_correction"
+      ]
+    }
+  ],
+  "selected_provider": {
+    "module": "dee_audio_filter_ddp.dll",
+    "module_sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+    "local_index": 0,
+    "callback_rva": "0x1d1540",
+    "constructor_rva": "0x1deef0",
+    "typed_class": "dee::proc::FilterDDPEncPlugin",
+    "name_writer_rva": "0x11d7b0",
+    "vtable_getter_slot_offset": "0x10",
+    "exact_name": "pcm_to_ddp"
+  },
+  "host_loader": {
+    "host": "dee.exe",
+    "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "load_mechanism": "LoadLibraryW/GetProcAddress",
+    "export": "dlb_phoenix_get_audio_filter_handle",
+    "category": "audio_filter",
+    "callback_store": "getter array appended to singleton-backed manager vector",
+    "same_manager_dispatch": "StageRunner later enumerates and dispatches through same manager"
+  },
+  "host_gate": {
+    "exact_names": [
+      "pcm_to_ddp",
+      "atmos_mezz_to_atmos_ddp_old",
+      "encode_to_atmos_ddp_old",
+      "pcm_to_atmos_ddp_old"
+    ],
+    "comparison": "exact length and byte comparison",
+    "exact_provider_for_pcm_to_ddp": "dee_audio_filter_ddp.dll local slot 0"
+  },
+  "previous_ddp_atmos_scope": {
+    "package_id": "dee_ddp_callback_key_admission_boundary_v1",
+    "manifest_sha256": "0e4c7eb9b29718a96d7758c7b6535849c67ca0953e2494305d386f7c07e189c2",
+    "reconciliation": "The prior negative conclusion was limited to dee_audio_filter_ddp_atmos.dll slots 0-2; this inventory identifies the exact provider in standard dee_audio_filter_ddp.dll slot 0."
+  },
+  "open_edges": {
+    "run_loaded_module_set": "NOT_RUN/UNBOUND",
+    "absolute_host_registry_ordinal": "ORDER_DEPENDENT/NOT_BOUND",
+    "ddp_descriptor_offset0_writer": "UNBOUND/NO",
+    "converter_source_owner_generation": "UNBOUND/NO"
+  },
+  "exclusions": {
+    "source_code_included": false,
+    "raw_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "absolute_paths": false
+  }
+}

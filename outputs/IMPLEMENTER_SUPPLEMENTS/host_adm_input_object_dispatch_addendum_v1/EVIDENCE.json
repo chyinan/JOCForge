@@ -1,0 +1,67 @@
+{
+  "schema": "wash-only-adm-input-object-boundary.v1",
+  "package_id": "HOST-ADM-INPUT-OBJECT-DISPATCH-ADDENDUM-V1",
+  "result": "INPUT_OBJECT_LIFECYCLE_AND_TARGET_MAPPING_STATIC; R138_ADM_READER_FACTORY_AND_ATMOS_HANDOFF_UNBOUND",
+  "profile": {
+    "config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "time_base": "embedded_timecode"
+  },
+  "role_edges": [
+    {
+      "producer_role": "host input wrapper",
+      "consumer_role": "selected reader Init/Run lifecycle interface",
+      "status": "STATIC_LIFECYCLE_CALLS_PRESENT_CONCRETE_R138_CLASS_UNBOUND"
+    },
+    {
+      "producer_role": "host input wrapper target list",
+      "consumer_role": "InputWrapper target arranger",
+      "status": "STATIC_TARGET_MAPPING_ROLE_PRESENT_READER_OUTPUT_IDENTITY_UNBOUND"
+    },
+    {
+      "producer_role": "host WAVE input adapter Run",
+      "consumer_role": "shared source-time metadata normalizer",
+      "status": "STATIC_LOCAL_EDGE_R138_AUDIO_ADM_APPLICABILITY_UNBOUND"
+    },
+    {
+      "producer_role": "R138 audio.adm type value",
+      "consumer_role": "concrete ADM/BWF reader factory/provider",
+      "status": "UNBOUND"
+    },
+    {
+      "producer_role": "reader output descriptor/metadata/frame request",
+      "consumer_role": "first Atmos/codec processing consumer",
+      "status": "UNBOUND"
+    }
+  ],
+  "smallest_dynamic_observation": {
+    "role": "host InputObject executor immediately before selected reader Run virtual call",
+    "purpose": "identify the concrete reader object/vtable used for the current task",
+    "required_tokens": [
+      "input-wrapper owner token",
+      "selected reader object token",
+      "reader vtable and resolved Run target token",
+      "typed input type audio.adm under the same wrapper/task owner",
+      "typed parent task-generation token",
+      "thread and caller stack identity"
+    ],
+    "payload_reads": 0,
+    "interpretation_guard": "This identifies the reader invoked after selection. It does not by itself prove which factory selected it or bind it to audio.adm unless the typed input owner is joined."
+  },
+  "handoff_boundary": {
+    "dact_adm_bwf_components": "STATIC_COMPONENTS_PRESENT_HOST_FACTORY_TRANSFER_UNBOUND",
+    "atmosmezz_path": "NOT_PROVEN_FOR_R138_AUDIO_ADM",
+    "first_3d_atmos_codec_consumer": "UNBOUND",
+    "native_run": "NOT_RUN",
+    "authorized_audio_sample_used": "NO_STATIC_ANALYSIS_ONLY_R4_COORDINATION_PENDING"
+  },
+  "scope": {
+    "raw_function_symbols_in_package": false,
+    "raw_addresses_in_package": false,
+    "decompiler_body_in_package": false,
+    "binary_or_xml_payload_in_package": false,
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

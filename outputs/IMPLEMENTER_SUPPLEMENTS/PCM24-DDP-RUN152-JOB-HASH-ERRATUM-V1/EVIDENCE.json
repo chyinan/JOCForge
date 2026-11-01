@@ -1,0 +1,21 @@
+{
+  "schema": "washed-pcm24-run152-job-hash-erratum.v1",
+  "status": "RUN152_JOB_HASH_CORRECTED; INPUT_IDENTITY_UNBOUND; POINTER_OBSERVATIONS_UNCHANGED",
+  "implementation_ready": false,
+  "correction": {
+    "run152_job_xml_sha256_correct": "31e642109943bc9a93a1704b8a5c6137eb6a50dfaa4e782f0b5dc2c897a8dd9c",
+    "run152_old_misrecorded_hash": "c1440b3ab909ec59574fb3bede15bc047e9b61428162e8cbb2c9d63d4c459cf6",
+    "run153_job_xml_sha256": "c1440b3ab909ec59574fb3bede15bc047e9b61428162e8cbb2c9d63d4c459cf6",
+    "basis": "hash-bound Run152 capture preflight receipt"
+  },
+  "unchanged_observation_scope": {
+    "numeric_stack_address_alias_is_identity": false,
+    "host_slot38_role": "stack-local key argument to metadata string-map lookup",
+    "ddp_local198_role": "stack-local DDP row-record destination",
+    "same_call_frame_or_owner_generation_established": false,
+    "input_payload_rehashed_for_run152_or_run153": false,
+    "sample_identity": "UNBOUND/NO",
+    "bitstream_read_or_parsed": false,
+    "playback": "NOT_RUN"
+  }
+}

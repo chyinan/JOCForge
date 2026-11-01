@@ -1,0 +1,18 @@
+{
+  "schema": "washed-dee-plugin-path-precedence-vectors.v1",
+  "evidence_class": "SYNTHETIC_STATIC_CONTROL_FLOW_ONLY",
+  "cases": [
+    {
+      "id": "nonempty-environment-overrides-config",
+      "input": {"dee_plugin_path": "dir-a;dir-b", "dee_loader_list": "dir-c"},
+      "expected_selected_path_string": "dir-a;dir-b",
+      "expected_loadone_module_order": "NOT_SUPPLIED"
+    },
+    {
+      "id": "empty-environment-falls-back-to-config",
+      "input": {"dee_plugin_path": "", "dee_loader_list": "dir-c;dir-d"},
+      "expected_selected_path_string": "dir-c;dir-d",
+      "expected_loadone_module_order": "NOT_SUPPLIED"
+    }
+  ]
+}

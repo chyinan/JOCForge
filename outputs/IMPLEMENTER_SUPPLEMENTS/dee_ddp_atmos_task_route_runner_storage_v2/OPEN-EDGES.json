@@ -1,0 +1,22 @@
+{
+  "package_id": "dee_ddp_atmos_task_route_runner_storage_v2",
+  "closed": [
+    "Run145/148 XML route equals encode_to_atmos_ddp",
+    "Host exact-name and exact-length config selection",
+    "Selected DDP Atmos callback-created config local slot 0",
+    "Factory path returns the DDP JOC stage",
+    "Same matched config feeds factory and Runner +0x278 store",
+    "Returned stage is stored at Runner +0x270",
+    "Run148 DDP image hash matches the static image and host/DDP entries share a thread"
+  ],
+  "open": [
+    "Run148 complete loaded module set",
+    "Direct callback entry was not hit",
+    "Global callback ordinal is order-dependent",
+    "XML route to Runner member store instruction",
+    "Descriptor owner/generation",
+    "Numeric profile to loader index",
+    "Output validity and playback"
+  ],
+  "guidance": "Do not promote local slot 0 to a stable global ordinal. Do not infer the XML writer to Runner member edge from exact route selection or same-thread evidence."
+}

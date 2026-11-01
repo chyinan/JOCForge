@@ -1,0 +1,25 @@
+{
+  "schema": "washed-source-identities.v1",
+  "incoming_wash_package": {
+    "package_id": "dee_audio_filter_callback_order_stability_wash_v1",
+    "manifest_sha256": "8c47327c3b2d37e730cab7066b001bb2aa3d00e68a4b314c15a004b29e706c85",
+    "detached_seal_sha256": "f658f9a432ba0424d8aa9d8eee098f0e1b4d4de2ca6fe6e201138b1781d81dbe",
+    "indexed_source_file_count": 27,
+    "source_checker_status_normal": "VALID_PARTIAL",
+    "source_checker_status_optimized": "VALID_PARTIAL"
+  },
+  "parent_selected_callback_package": {
+    "package_id": "dee_audio_filter_selected_task_callback_wash_v3",
+    "manifest_sha256": "00856107e8c19c232e7a560dd723e3cce804d6d2da8003144b43bf1f5484f25c"
+  },
+  "target_binary": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "existing_run_identity_only": {
+    "input_sha256_run145": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "input_sha256_run148": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "xml_sha256_run145": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "xml_sha256_run148": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3"
+  }
+}

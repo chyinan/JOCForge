@@ -1,0 +1,20 @@
+{
+  "schema": "washed-ddp-module-run-matrix.v1",
+  "rows": [
+    {
+      "run": "R138-equivalent-fresh-reference",
+      "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "identity": "BOUND_FOR_THIS_PROCESS"
+    },
+    {
+      "run": "R4-Run145",
+      "module_sha256": null,
+      "identity": "UNBOUND / NOT_EVALUATED"
+    },
+    {
+      "run": "R4-Run147",
+      "module_sha256": null,
+      "identity": "UNBOUND / NOT_EVALUATED"
+    }
+  ]
+}

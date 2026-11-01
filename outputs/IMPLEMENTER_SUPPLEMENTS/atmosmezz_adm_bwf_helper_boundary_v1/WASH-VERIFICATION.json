@@ -1,0 +1,21 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_manifest_sha256": "004d18d3791fac5759f973df48f09a93df390cb5dc33957696dc4c2c3e495b76",
+  "source_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "source_links": {
+    "r2_reader_manifest": "6bd11791fe5795d80406f310364e8722560878cbfebb4e146fe1849d70fa9a32",
+    "r3_full_receipt_manifest": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f"
+  },
+  "separation": {
+    "code": false,
+    "binary_or_decompilation": false,
+    "media_payload": false,
+    "keys": false,
+    "absolute_paths": false,
+    "algorithm_inference": false
+  }
+}

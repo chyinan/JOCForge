@@ -1,0 +1,31 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "adm_bwf_pcm24_f32_consumer_boundary_v2",
+  "status": "EVIDENCE_ONLY_PCM24_TO_F32_BEHAVIOR_UNBOUND",
+  "source_package_manifest_sha256": "dfc250800c6a3b4d657f2bb537b63d2a6b513630ab92f68426d4f2c80b5eaae5",
+  "supersedes_source_package_manifest_sha256": "f45234280f568aec17a1102587abad00205973e9dcb50a9416bfbc6f99c474a8",
+  "implementation_allowed_for": "AUDIO_BEHAVIOR_BOUNDARY_REFERENCE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_addresses_or_rvas": false,
+  "files": [
+    {
+      "name": "PCM24-TO-F32-BOUNDARY.json",
+      "bytes": 1627,
+      "sha256": "6e7334c635ada319dfcc99decfe9757b5e2283e89ac323f1e225306be2ae03dc"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1073,
+      "sha256": "18f6490a8d4e1f16261d6e63a20ba5c8d9d5aa6e0502e92ad8cf4d2d6ce12f90"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 745,
+      "sha256": "fa08b9ba03401d8ddd609505de2f51af4c473b60a75a3662f7baf6cc9ceb3200"
+    }
+  ]
+}

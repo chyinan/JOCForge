@@ -1,0 +1,25 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_package_manifest_sha256": "6f5bc7a2509e94f90eba5691dffe0fb2f600a3cea9c028c9ed09ae12e759399c",
+  "source_checkers": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "sample6_receipt_manifest": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f",
+  "source_sha256_recomputed_by_wash": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "limits": [
+    "Capability static only, run selection not captured.",
+    "No audio behavior or field value supplied.",
+    "No helper execution added by this package."
+  ],
+  "separation": {
+    "source_code": false,
+    "binary": false,
+    "decompilation": false,
+    "media_payload": false,
+    "private_key": false,
+    "absolute_paths": false,
+    "raw_addresses": false
+  }
+}

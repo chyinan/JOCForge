@@ -1,0 +1,54 @@
+{
+  "schema": "washed-adm-reader-selection-boundary.v1",
+  "status": "DACT_BWF_STORAGE_PATH_STATIC_R138_READER_SELECTION_UNBOUND",
+  "dee_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "dact_image_sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239",
+  "r138": {
+    "config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_type": "audio.adm",
+    "time_base": "embedded_timecode",
+    "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "typed_input_owner_to_factory": "UNBOUND"
+  },
+  "dact_bwf_storage_path": {
+    "components": [
+      "ADM BWF descriptor parser and validation",
+      "AdmFileStorageDesc construction/load",
+      "AdmFileStorage factory/constructor",
+      "sample-position seek candidate",
+      "storage interface +0x20 input-read candidate"
+    ],
+    "numeric_type_display": {
+      "value": 3,
+      "label": "ITU ADM/BWF",
+      "role": "display-label mapping only"
+    },
+    "r138_selection_join": "UNBOUND"
+  },
+  "atmosmezz_candidate": {
+    "class_role": "dee::input::AtmosMezz",
+    "type_label": "audio.atmos_mezz",
+    "same_as_dact_storage_class": false,
+    "substitution_for_audio_adm": "NOT_SUPPORTED"
+  },
+  "existing_r3_receipts": {
+    "reader_vtable_or_Run_fields_present": false,
+    "interpretation": "Cannot identify selected reader retrospectively."
+  },
+  "minimum_runtime_discriminator": {
+    "capture_point": "Host input executor immediately before selected reader Run.",
+    "same_task_fields": [
+      "typed audio.adm owner",
+      "parent generation",
+      "selected factory/module identity",
+      "factory return pointer",
+      "reader object/vtable/Run target",
+      "nested DACT master/storage token and first storage method if reached"
+    ],
+    "join": "All identities must share the same task-generation and nested-call tokens."
+  },
+  "audio_algorithm_source": "DEE_GHIDRA_AND_DEE_LOGS_ONLY",
+  "external_tools_role": "POSTHOC_OR_PUBLIC_SYNTAX_ONLY; NEVER_AUDIO_ALGORITHM_SOURCE",
+  "native_run": "NOT_RUN",
+  "payload_read": "NO"
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "wash-only-atmosmezz-r138-reuse-boundary.v1",
+  "package_id": "HOST-ATMOSMEZZ-R138-REUSE-BOUNDARY-FOLLOWUP-V1",
+  "result": "R138_ROUTE_MATCHES_BUT_INPUT_IS_ADM_NOT_ATMOSMEZZ; PROVIDER_PACKET_EDGE_NOT_REACHED_IN_R138; NEW_NATIVE_CAPTURE_NOT_RUN",
+  "evidence_tier": "HASH_BOUND_CONFIG_AND_PRIOR_NATIVE_RECORD",
+  "source_modules": [
+    {
+      "role": "host executable",
+      "file_name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728
+    },
+    {
+      "role": "Atmos audio-filter plugin",
+      "file_name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464
+    }
+  ],
+  "r138_existing_run": {
+    "run_id": "run-138",
+    "execution_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "input_file_name": "selected_adm_38ch.wav",
+    "atmosmezz_reader_path_used": false,
+    "completion": "ENCODER_DONE_AND_OUTPUT_100_PERCENT",
+    "live_process_or_windbg_session": "NONE",
+    "reuse_for_atmosmezz_provider_capture": "NOT_COMPATIBLE"
+  },
+  "other_active_run": {
+    "run_label": "R4 run08/09",
+    "task_thread_identity": "DIFFERENT_TASK_THREAD",
+    "route_input_identity": "AWAITING_WASH_VERIFICATION",
+    "reuse_status": "AWAITING_WASH"
+  },
+  "packet_identity_status": {
+    "R138_atmosmezz_provider_boundary": "NOT_REACHED",
+    "R138_storage_provider_to_plugin_process_packet": "NOT_OBSERVED",
+    "host_storage_provider_to_plugin_process_packet": "UNBOUND",
+    "Run_GetTargets_return_to_process_packet": "NOT_SAME",
+    "same_parent_or_source_generation": "NOT_OBSERVED",
+    "new_native_capture": "NOT_RUN",
+    "pcm_or_bitstream_read_or_saved": false,
+    "key_license_or_authentication_accessed": false
+  }
+}

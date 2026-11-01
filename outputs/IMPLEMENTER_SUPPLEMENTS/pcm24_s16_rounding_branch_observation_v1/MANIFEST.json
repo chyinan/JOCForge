@@ -1,0 +1,30 @@
+{
+  "schema": "washed-conditional-pcm24-s16-branch.v1",
+  "package_id": "pcm24_s16_rounding_branch_observation_v1",
+  "status": "CONDITIONAL_STATIC_BRANCH_NOT_RUNTIME_JOINED",
+  "implementation_readiness": "NO_FOR_PCM24_TO_F32",
+  "source_package_manifest_sha256": "d9ae53629c9093a048286d2b64add3936ced350fd488e876029ccb78fe0b3031",
+  "source_package_seal_sha256": "7b066da9a392069c20cbdfc8d07cfa6117c4dced74a62f5abe16c6aabe8b0511",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1393,
+      "sha256": "d4d9562aefe2fd3086d0dcc3dbf45a278f136e6dd658813116c33e6b492ee217"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2498,
+      "sha256": "46501f91167eabcaa1b982a2cc8ca567f0c78399e584b09166436164746e2e8f"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 720,
+      "sha256": "3f0146fe7b856283b0c52d0c1cd898e87f46b2af64961c84ea4bbec6d0c0e493"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2197,
+      "sha256": "0050dfb13e18f015b3b2d40a32daad375c244d26380262ebaad484ad4e717a3a"
+    }
+  ]
+}

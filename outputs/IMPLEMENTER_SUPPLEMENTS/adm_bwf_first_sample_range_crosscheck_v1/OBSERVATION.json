@@ -1,0 +1,78 @@
+{
+  "schema": "washed-adm-bwf-first-sample-range-crosscheck.v1",
+  "status": "CONDITIONAL_RANGE_FORMULA_STATIC; RESOLVERS_AND_FIRST_READER_UNBOUND",
+  "source_package_manifest_sha256": "b299d17fcff4f177471d564424a84f61d6efd34bc6c30ec86ec36b41474bae14",
+  "scope": {
+    "input_label": "authorized First Love ADM BWF",
+    "full_file_sha256": "NOT_COMPUTED",
+    "metadata_chunks_hash_bound": true,
+    "payload_bytes_read": 0,
+    "payload_bytes_seeked": 1334998044,
+    "native_job": "NOT_RUN",
+    "runtime_reader_position": "NOT_CAPTURED"
+  },
+  "metadata_crosscheck": {
+    "container": "RIFF/WAVE ADM BWF",
+    "encoding": "PCM24",
+    "channels": 36,
+    "sample_rate_hz": 48000,
+    "block_align_bytes": 108,
+    "data_chunk_bytes": 1334998044,
+    "source_sample_count": 12361093,
+    "chna_tracks": 36,
+    "chna_uids": 36,
+    "axml_programme_start_seconds": 3610.0,
+    "axml_programme_end_seconds": 3867.52277,
+    "bext": "absent",
+    "explicit_offset_or_ffoa_attributes": false,
+    "dbmd_chunk": "present, 576 bytes, not parsed",
+    "profile_scope": "36-channel metadata crosscheck; not the selected 38-channel output profile"
+  },
+  "conditional_range_rule": {
+    "time_domain": "binary64 seconds after property parse",
+    "start_rule": "delta_seconds = max(source_ffoa_seconds, offset_seconds) - offset_seconds",
+    "sample_rule": "start_sample = round(source_sample_rate_hz * max(0, source_ffoa_seconds - offset_seconds))",
+    "eof_rule": "source_sample_count N is the exclusive end sample",
+    "range_policy": "reject when start >= N or end > N; do not saturate",
+    "rounding_tie_semantics": "not established by this package",
+    "activation": "explicit FFOA-to-EOF file-position range path only"
+  },
+  "auto_resolution_boundary": {
+    "ffoa_auto_schema": "retain source FFOA",
+    "offset_auto_schema": "derive from input file",
+    "host_normalizer_or_metadata_writer": "UNBOUND",
+    "resolved_offset_value": "UNBOUND",
+    "resolved_ffoa_value": "UNBOUND",
+    "file_attempt_generation_join": "UNBOUND"
+  },
+  "full_file_default_boundary": {
+    "explicit_range_arguments": "suppressed on the full-file default path",
+    "actual_first_reader_request": "UNBOUND",
+    "do_not_infer": "the conditional explicit-range formula does not establish the default whole-file reader cursor"
+  },
+  "input_only_vectors": [
+    {
+      "sample_rate_hz": 48000,
+      "offset_seconds": 3610.0,
+      "ffoa_seconds": 3610.0,
+      "expected_start_sample_by_formula": 0
+    },
+    {
+      "sample_rate_hz": 48000,
+      "offset_seconds": 3610.0,
+      "ffoa_seconds": 3610.5,
+      "expected_start_sample_by_formula": 24000
+    },
+    {
+      "sample_rate_hz": 48000,
+      "offset_seconds": 3610.5,
+      "ffoa_seconds": 3610.0,
+      "expected_start_sample_by_formula": 0
+    }
+  ],
+  "implementation_disposition": {
+    "production_rule_approved": false,
+    "instruction": "Do not use this as the selected 38-channel profile runtime start rule until offset/FFOA resolution and first reader request are joined. It is a conditional static range contract only.",
+    "audio_affecting": true
+  }
+}

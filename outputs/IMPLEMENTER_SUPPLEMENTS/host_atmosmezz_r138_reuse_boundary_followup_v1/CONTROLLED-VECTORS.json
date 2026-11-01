@@ -1,0 +1,27 @@
+{
+  "schema": "atmosmezz-r138-reuse-applicability-vectors.v1",
+  "classification": "HASH_BOUND_EXECUTION_CONFIG_APPLICABILITY_NOT_NEW_CAPTURE",
+  "native_execution": "NOT_RUN",
+  "vectors": [
+    {
+      "case_id": "r138_route_matches_input_type_does_not",
+      "input": {"route_key": "encode_to_atmos_ddp", "input_type": "audio.adm"},
+      "expected_static": {"route_match": true, "atmosmezz_reader_used": false, "reuse_for_provider_edge": "NOT_COMPATIBLE"}
+    },
+    {
+      "case_id": "r138_session_not_live",
+      "input": {"run_id": "run-138", "completion": "ENCODER_DONE_AND_OUTPUT_100_PERCENT"},
+      "expected_static": {"live_pid_or_windbg_session": "NONE", "new_capture": "NOT_RUN"}
+    },
+    {
+      "case_id": "r4_reuse_requires_route_input_check",
+      "input": {"run_label": "R4 run08/09"},
+      "expected_static": {"reuse_status": "AWAITING_WASH", "cross_thread_attach": false}
+    },
+    {
+      "case_id": "provider_to_process_packet_edge",
+      "input": {"source_role": "AtmosMezz storage provider", "consumer_role": "plugin process packet"},
+      "expected_static": {"status": "UNBOUND", "same_parent_generation": "NOT_OBSERVED"}
+    }
+  ]
+}

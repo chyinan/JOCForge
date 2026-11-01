@@ -1,0 +1,31 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "atmosmezz_adm_bwf_helper_boundary_v2",
+  "status": "EVIDENCE_ONLY_STATIC_INPUT_CAPABILITY_RUN_JOIN_OPEN",
+  "source_package_manifest_sha256": "6f5bc7a2509e94f90eba5691dffe0fb2f600a3cea9c028c9ed09ae12e759399c",
+  "sample6_receipt_manifest_sha256": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f",
+  "implementation_allowed_for": "INPUT_CAPABILITY_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_addresses_or_rvas": false,
+  "files": [
+    {
+      "name": "READER-OBSERVATION-PLAN.json",
+      "bytes": 2010,
+      "sha256": "0b33c9ee8d86b62dc5191182d64587227d498ef109a81d76a5f56835e417128b"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1117,
+      "sha256": "97fce29bddcbd9927a68cb2fc7aecfb5f0054529a195d500b4bab29ea99952bb"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 855,
+      "sha256": "45ae75188b7b39eb5c7c737d6a7015cbec43651541b560e50ed9e3753608a832"
+    }
+  ]
+}

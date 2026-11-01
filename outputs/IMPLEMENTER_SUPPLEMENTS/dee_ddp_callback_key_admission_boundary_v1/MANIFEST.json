@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "dee_ddp_callback_key_admission_boundary_v1",
+  "scope": "Host callback loader/store and exact name gate to this DDP DLL; other provider and row owner remain open.",
+  "status": "HOST_CALLBACK_STORAGE_AND_ENUMERATION_BOUND_DDP_LOCAL_NAMES_DO_NOT_MATCH_PCM_TO_DDP",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1942,
+      "sha256": "a60fde818b6059dd71782112c4ec92978a4759927509d0230b63827fe512828d"
+    },
+    {
+      "name": "OPEN-EDGE.json",
+      "bytes": 235,
+      "sha256": "1512253b97b88a0cb27caaaf6d1e196a28d2b3dfb9de56052aacd0d7205a11de"
+    },
+    {
+      "name": "README.md",
+      "bytes": 932,
+      "sha256": "3633f8ce93574112091cbc17b186074ee2efef0d266f4d73fae6a107dd8cf387"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1514,
+      "sha256": "a93b839f6693c572f17507eb78f3728ba417435b874e93bf77be717287543a69"
+    }
+  ]
+}

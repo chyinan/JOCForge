@@ -1,0 +1,23 @@
+{
+  "schema": "washed-pcm24-reader-ddp-descriptor-owner-open-edges.v1",
+  "package_id": "pcm24_reader_ddp_descriptor_owner_scope_v1",
+  "closed": [
+    "DDP AtmosReader internal row table to descriptor offset 0",
+    "descriptor dimensions at offsets 8 and 16",
+    "same local descriptor passed source-read then DDP-process within worker",
+    "DDP consumer copies rows by ordinal"
+  ],
+  "open": [
+    "runtime receiver object at DDP source vtable +0xc8",
+    "selected ADM reader to AtmosReader receiver identity",
+    "selected input owner and generation join",
+    "output bitstream conformance and playback"
+  ],
+  "status": {
+    "selected_reader_breakpoint": "NOT_HIT_IN_RUN148",
+    "runtime_owner_generation": "UNBOUND/NO",
+    "output_parse": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "guidance": "A matching virtual slot or observed row count alone does not establish selected input lineage or content identity."
+}

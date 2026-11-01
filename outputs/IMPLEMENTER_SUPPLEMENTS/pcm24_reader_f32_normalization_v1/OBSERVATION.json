@@ -1,0 +1,68 @@
+{
+  "schema": "washed-pcm24-reader-f32-normalization.v1",
+  "status": "STATIC_PCM24_TO_F32_RULE_CLOSED_FOR_CONTEXT7_BRANCH; END_TO_END_ROW_JOIN_OPEN",
+  "source_package_manifest_sha256": "fbe36b291be5dd965a94c55350ce9981ef05250f3aa3dc12b057786adf26f9cd",
+  "source_package_seal_sha256": "f77f2e0fd951d8252635233b320f04138b49120261a17c3070dbb5b76f18d374",
+  "input_scope": {
+    "sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "format": "PCM24 packed little endian",
+    "channels": 38,
+    "sample_rate_hz": 48000
+  },
+  "applicability": {
+    "reader_context_value": 7,
+    "bytes_per_sample": 3,
+    "result_type": "F32 row slot",
+    "static_call_context": true,
+    "native_job_capture": "NOT_RUN"
+  },
+  "algorithm": {
+    "decode": "u24 = b0 | (b1 << 8) | (b2 << 16); s24 = sign_extend_24(u24)",
+    "operation_order": "i32 = s24 << 8; f32_value = binary32(i32) * binary32(2^-31)",
+    "equivalent_formula": "binary32(s24 / 2^23)",
+    "constant_binary32": 4.656612873077393e-10,
+    "result_range": "[-1, 1 - 2^-23]",
+    "rounding": "For this signed PCM24 domain, the shifted integer and normalized binary32 result are exactly representable; no additional F32 rounding changes the result.",
+    "rule_approved_for": "selected PCM24 source reader normalization when context=7 and bytes_per_sample=3"
+  },
+  "input_only_vectors": [
+    {
+      "bytes_le": "000000",
+      "signed_s24": 0,
+      "f32_bits": "00000000"
+    },
+    {
+      "bytes_le": "000040",
+      "signed_s24": 4194304,
+      "f32_bits": "3f000000"
+    },
+    {
+      "bytes_le": "0000c0",
+      "signed_s24": -4194304,
+      "f32_bits": "bf000000"
+    },
+    {
+      "bytes_le": "ffff7f",
+      "signed_s24": 8388607,
+      "f32_bits": "3f7ffffe"
+    },
+    {
+      "bytes_le": "000080",
+      "signed_s24": -8388608,
+      "f32_bits": "bf800000"
+    }
+  ],
+  "still_unbound": [
+    "whether a particular sample-6 native job instantiated this reader object",
+    "first downstream numeric F32 consumer",
+    "reader-row to DDP-row identity/owner/generation"
+  ],
+  "supersession": {
+    "replaces_selected-context_S16_interpretations": [
+      "adm_bwf_pcm24_to_f32_boundary_wash_v1",
+      "adm_bwf_pcm24_to_f32_boundary_wash_v2",
+      "pcm24_s16_rounding_branch_observation_v1"
+    ],
+    "reason": "the S16 branch is context value 4; the selected reader caller supplies context value 7"
+  }
+}

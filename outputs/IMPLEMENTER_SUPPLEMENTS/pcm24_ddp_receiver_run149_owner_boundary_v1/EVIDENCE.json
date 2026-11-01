@@ -1,0 +1,72 @@
+{
+  "schema": "washed-pcm24-ddp-receiver-run149-owner-boundary.v1",
+  "package_id": "pcm24_ddp_receiver_run149_owner_boundary_v1",
+  "status": "DDP_INTERNAL_RECEIVER_TYPED_AND_DESCRIPTOR_BRIDGE_OBSERVED; HOST_RUNINPUT_OBJECT_DISTINCT; SELECTED_ADM_OWNER_UNBOUND; CONVERTER_HASH_JOIN_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Run149 pointer-only evidence plus static DDP internal receiver typing. Establishes DDP receiver is not the host RunInput interface object and its internal row table is descriptor+0; does not bind selected ADM reader/master or generation.",
+  "sources": {
+    "host": {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "current_file_hash": "MATCH"
+    },
+    "ddp": {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "current_file_hash": "MATCH"
+    },
+    "converter": {
+      "r4_declared_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+      "current_six_dll_inventory_sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+      "hash_relation": "MISMATCH; Run149 loaded converter image identity not captured"
+    }
+  },
+  "authorized_input": {
+    "label": "Run145 First Love ASCII alias",
+    "sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "current_authorized_file_hash": "MATCH",
+    "job_xml_sha256": "541e0c17da12a9bfb6924253de74964b0a537e6c4b1e2cec8c1e404698128ba4"
+  },
+  "static_ddp_receiver": {
+    "getter": "FUN_18032f1d0 returns qword at this+0x50",
+    "ddp_read": "FUN_180186870",
+    "receiver_dispatch_slot": "+0xc8",
+    "run149_target_module": "dee_audio_filter_ddp_atmos.dll",
+    "run149_target_rva": "0x550920",
+    "typed_vtable": "atmos_storage_composite_master::vftable",
+    "construction_path": "DDP composition setup",
+    "descriptor_offset0": "same DDP-owned row table returned by internal getter"
+  },
+  "run149_pointer_relations": {
+    "same_thread_host_runinput_ddp_descriptor_stops": true,
+    "host_runinput_param2_equals_ddp_source_receiver": false,
+    "ddp_row_table_equals_descriptor_offset0": true,
+    "converter_master_breakpoint": "NOT_HIT; declared converter hash differs from current installed converter hash",
+    "selected_adm_master_token": "NOT_CAPTURED",
+    "selected_adm_owner_generation": "UNBOUND/NO",
+    "raw_pointer_tokens_copied": false
+  },
+  "run149_output": {
+    "encoder_done_marker": true,
+    "output_size_before_cleanup_bytes": 32964608,
+    "bitstream_read_or_parsed": false,
+    "playback": "NOT_RUN",
+    "output_cleaned": true
+  },
+  "open_edges": {
+    "host_runinput_to_ddp_internal_master_typed_lineage": "UNBOUND",
+    "selected_adm_master_to_ddp_internal_master": "UNBOUND/NO",
+    "same_owner_generation": "UNBOUND/NO",
+    "actual_converter_module_hash_for_run149": "UNBOUND",
+    "descriptor_and_rowtable_identity": "OBSERVED_EQUAL"
+  },
+  "exclusions": {
+    "source_code_copied": false,
+    "raw_decompilation_copied": false,
+    "binaries_included": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "license_path_included": false,
+    "absolute_paths": false
+  }
+}

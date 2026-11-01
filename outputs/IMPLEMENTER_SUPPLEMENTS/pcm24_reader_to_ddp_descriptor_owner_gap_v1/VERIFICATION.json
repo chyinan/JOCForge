@@ -1,0 +1,31 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; CROSS_IMAGE_OWNER_EDGE_UNBOUND",
+  "source_package_id": "adm_bwf_ddp_source_row_table_origin_wash_v1",
+  "source_package_manifest_sha256": "3af1463c6fa1d918bdbe1eb223c3bc77c83ca74869636bbaebc55531c046b4fe",
+  "source_package_seal_sha256": "fdb48be3d40cfef44d65d4d6291f34b41bcf37642dae2a665827721379d9bd01",
+  "source_package_payloads_checked": 5,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "static_evidence_hashes_checked": 10,
+  "static_evidence_hashes_match": true,
+  "parent_package_manifest_sha256": "31ae006f73ef7e3e034efed55a298fb2af7e07381c4419f59f2d1aae2695227a",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The converter and DDP endpoints are located in separate image identities.",
+    "The DDP offset-0 writer and outer virtual callsite are outside the two scoped images.",
+    "No same-owner or parent-generation bridge was observed.",
+    "No runtime observation or PCM access was performed in this addendum."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

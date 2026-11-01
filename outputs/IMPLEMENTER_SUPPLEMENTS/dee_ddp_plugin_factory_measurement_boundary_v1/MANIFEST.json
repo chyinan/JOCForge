@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "dee_ddp_plugin_factory_measurement_boundary_v1",
+  "scope": "Ghidra static DDP DLL-local factory to conditional measurement/process path; host selection and row-owner edges remain open.",
+  "status": "DLL_LOCAL_FACTORY_TO_CONDITIONAL_MEASUREMENT_PATH_BOUND_HOST_SELECTION_AND_ROW_OWNER_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2357,
+      "sha256": "231b254510c2178d4a415a9ce300ad8e2be0ed0e52f419738471aabcc92d7ac3"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 708,
+      "sha256": "b024607789345b8e00b702ea7559493b655a16def457da5bee5b593596edd24d"
+    },
+    {
+      "name": "README.md",
+      "bytes": 945,
+      "sha256": "095e6cf35ed8911db99ce5ff6f40830d1edb685928b4fa0fc3f54bb7419683be"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2071,
+      "sha256": "4f18cb98ec125419599fcbf12d7c22c0f8220d1c0c2be221646f5c32d4d064f7"
+    }
+  ]
+}

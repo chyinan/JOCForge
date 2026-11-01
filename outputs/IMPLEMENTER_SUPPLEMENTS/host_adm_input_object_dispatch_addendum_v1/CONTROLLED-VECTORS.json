@@ -1,0 +1,53 @@
+{
+  "schema": "controlled-adm-input-object-vectors.v1",
+  "cases": [
+    {
+      "id": "input_object_lifecycle",
+      "input": {
+        "reader_init_run_calls": true,
+        "reader_class_token": null
+      },
+      "expected": "LIFECYCLE_STATIC; CONCRETE_R138_READER_UNBOUND"
+    },
+    {
+      "id": "target_arranger",
+      "input": {
+        "target_mapping_role": true,
+        "source_descriptor_join": null
+      },
+      "expected": "TARGET_MAPPING_ONLY; HANDOFF_UNBOUND"
+    },
+    {
+      "id": "wave_local_metadata_edge",
+      "input": {
+        "reader_type": "host_wave_adapter",
+        "r138_audio_adm_owner_join": null
+      },
+      "expected": "STATIC_LOCAL_EDGE; R138_APPLICABILITY_UNBOUND"
+    },
+    {
+      "id": "dact_adm_components",
+      "input": {
+        "host_factory_transfer": null
+      },
+      "expected": "STATIC_COMPONENTS_ONLY; SELECTION_UNBOUND"
+    },
+    {
+      "id": "reader_to_atmos_consumer",
+      "input": {
+        "typed_frame_handoff": null,
+        "generation_token": null
+      },
+      "expected": "UNBOUND; NOT_OBSERVED"
+    },
+    {
+      "id": "dynamic_reader_identity",
+      "input": {
+        "reader_vtable_token": "CAPTURE_REQUIRED",
+        "input_owner_token": "CAPTURE_REQUIRED"
+      },
+      "expected": "ONE_POINT_DISAMBIGUATOR; FACTORY_TRANSFER_REMAINS_OPEN_UNTIL_TYPED_JOIN"
+    }
+  ],
+  "payload_reads": 0
+}

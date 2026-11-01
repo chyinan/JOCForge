@@ -1,0 +1,7 @@
+{
+  "from": "selected ADM PCM24 reader borrowed F32 row table",
+  "via": "host StageRunner virtual dispatch and concrete adapter",
+  "to": "DDP descriptor source-row table at offset 0",
+  "required": "same-process pointer/owner and parent-generation observation",
+  "status": "UNBOUND/NO"
+}

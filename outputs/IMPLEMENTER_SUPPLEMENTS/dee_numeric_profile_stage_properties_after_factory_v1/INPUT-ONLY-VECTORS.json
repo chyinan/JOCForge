@@ -1,0 +1,30 @@
+{
+  "contract": "Route/property input shapes only; no encoded output is predicted.",
+  "vectors": [
+    {
+      "id": "run145_route_properties",
+      "input": {
+        "route": "encode_to_atmos_ddp",
+        "data_rate": "1024",
+        "speech_threshold": "100",
+        "preferred_downmix_mode": "loro"
+      },
+      "static_result": {
+        "route_selects_config": true,
+        "numeric_properties_applied_after_factory": true,
+        "loader_index_from_numeric_property": false
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "STATIC_BOUND"
+    },
+    {
+      "id": "symbolic_profile",
+      "input": {
+        "route": "encode_to_atmos_ddp",
+        "data_rate": "SYMBOLIC_RATE"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "PROPOSED_NOT_RUN"
+    }
+  ]
+}

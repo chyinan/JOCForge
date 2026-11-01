@@ -1,0 +1,49 @@
+{
+  "schema": "washed-adm-bwf-converter-setup-record-boundary.v1",
+  "status": "ADM_SELECTOR3_AND_SETUP_CONSUMER_BOUND; PARAM4_RECORD_PRODUCER_TO_CHNA_UNBOUND",
+  "source_package_manifest_sha256": "cf9e93fcf64b1a3cc89e3a51ebd08b0c0de3bab50a282218ad0ff3bb3d374848",
+  "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+  "method": "Ghidra static analysis only; no DEE run or PCM read",
+  "registration": {
+    "adm_bwf_route_selector": 3,
+    "adm_bwf_callbacks": [
+      "open/factory",
+      "setup"
+    ],
+    "damf_route_selector": 2,
+    "damf_callbacks": [
+      "open/factory",
+      "setup"
+    ],
+    "route_separation": "ADM/BWF and DAMF use distinct registrations and selector values"
+  },
+  "setup_record_consumer": {
+    "input_record_count": "U16",
+    "input_record_table": "pointer to six-byte records",
+    "initial_copy_order": "preserved in order",
+    "record_fields": {
+      "bytes_0_1": "U16 TrackIndex used for duplicate checks and per-track lookup",
+      "byte_2": "signed branch discriminator; object-like vs bed-like path",
+      "byte_3": "copied; no independent semantic use established",
+      "bytes_4_5": "U16 used in bed grouping; destination copy may be overwritten"
+    }
+  },
+  "open": {
+    "param4_record_table_producer": "UNBOUND",
+    "typed_join_to_chna_uid_trackindex_map": "UNBOUND",
+    "R138_audio_adm_task_to_selector3_same_generation_join": "UNBOUND",
+    "end_to_end_row_permutation": "UNBOUND"
+  },
+  "next_minimum_observation": {
+    "existing_job": "R3 authorized sample-6 single run",
+    "capture": "typed audio.adm owner and parent-generation token, selected setup callback/caller, record-table pointer token/count, and the actual constructor/copy source",
+    "join_condition": "trace the exact selected callback caller to the CHNA map; pointer equality and generation evidence required",
+    "no_pcm_values": "true",
+    "no_second_dee_job": "true"
+  },
+  "implementation_disposition": {
+    "approved_chna_trackindex_minus_one_rule": "unchanged",
+    "new_row_permutation_approved": false,
+    "instruction": "Do not infer the producer of setup records from record count, ordering, or the local selector registration alone."
+  }
+}

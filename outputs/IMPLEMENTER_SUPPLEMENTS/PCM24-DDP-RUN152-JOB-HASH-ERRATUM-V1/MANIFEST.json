@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 4852,
+      "file": "CHECK.py",
+      "sha256": "e51b73caceba58def6614920099d89a0862b543767cf2bb947f2be2c1cc4c919"
+    },
+    {
+      "bytes": 1040,
+      "file": "EVIDENCE.json",
+      "sha256": "949d84ab5d3f8d643fadfead5cff176305f2e1f0b1e02f014cc284bf4da1691f"
+    },
+    {
+      "bytes": 867,
+      "file": "REPORT.md",
+      "sha256": "a6311f3c07e5be5de7fce8d8fcce1b389ec5838ed93bc51e8da81abd5a4fcf66"
+    },
+    {
+      "bytes": 669,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "0086d44d9d27f6ca829f5a5691a882b0139010b39e2193cb1e471784ddd06fd1"
+    },
+    {
+      "bytes": 971,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "7fbcdbf948593d2ceaf8307baff49521fe663bea56eeb22ed773841dbd24c3fd"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "PCM24-DDP-RUN152-JOB-HASH-ERRATUM-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "f1e303eb14ebf6153c29e11cba4f3ed5cf03df76ca13ec852ad68cbd4a1c5e89",
+  "status": "RUN152_JOB_HASH_CORRECTED; INPUT_IDENTITY_UNBOUND"
+}

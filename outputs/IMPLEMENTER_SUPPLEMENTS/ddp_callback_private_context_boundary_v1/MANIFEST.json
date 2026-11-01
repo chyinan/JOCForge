@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "ddp_callback_private_context_boundary_v1",
+  "status": "EVIDENCE_ONLY_CALLBACK_OWNER_BOUNDARY",
+  "source_package_manifest_sha256": "a880dcee09b29e5653035a159350b794db4e10663c4bc2c08da3026f89fe72a6",
+  "implementation_allowed_for": "CALLBACK_OBJECT_OWNERSHIP_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_addresses_or_rvas": false,
+  "files": [
+    {
+      "name": "CALLBACK-OWNER-BOUNDARY.json",
+      "bytes": 1568,
+      "sha256": "c7ee324a1cee594c371e708a53b6b13a5337188a7306ef75e2cad37cc6428728"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 962,
+      "sha256": "aa7118f8b42f43ea7e93a7ad91d94fb2f74a22fd01ed9b99e333805d7a5fcbf9"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 573,
+      "sha256": "3dcdc460a4e97894e215a76de0d934b55e519896103c774bbd62d4630396c070"
+    }
+  ]
+}

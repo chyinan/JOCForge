@@ -1,0 +1,47 @@
+{
+  "schema": "washed-dee-host-pcm-to-ddp-registry-xref-boundary.v1",
+  "package_id": "dee_host_pcm_to_ddp_registry_xref_boundary_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_LITERAL_XREF_INVENTORY",
+  "status": "PCM_TO_DDP_LITERAL_REFERENCES_CLASSIFIED; REGISTRY_CALLBACK_TARGET_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "tool": "Ghidra 12.2 PUBLIC static",
+    "literal_reference_count": 9,
+    "new_dee_job": "NOT_RUN",
+    "runtime_execution": "NOT_RUN"
+  },
+  "references_by_role": {
+    "category_registration": {
+      "count": 1,
+      "meaning": "pcm_to_ddp -> filter:audio category map; not the StageRunner factory callback"
+    },
+    "config_name_comparison": {
+      "count": 1,
+      "meaning": "compares the retained config object's name; does not select its registry callback"
+    },
+    "other_host_name_registration_or_lookup": {
+      "count": 7,
+      "meaning": "add or look up the literal in host lists; no StageRunner registry callback identity found"
+    }
+  },
+  "registry_path": {
+    "registry_callback_dispatch": "indirect callback loaded from a registry entry and invoked",
+    "selected_entry_for_pcm_to_ddp": "UNBOUND/NO",
+    "callback_function_pointer": "UNBOUND/NO",
+    "config_object_vtable": "UNBOUND/NO",
+    "factory_override_and_returned_stage_type": "UNBOUND/NO"
+  },
+  "previously_washed_boundary_manifest": "888d9d37fe2e853f9b1c2e9a671168cd13c5d3697ad5303dba5f6d0ad0f50fb1",
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

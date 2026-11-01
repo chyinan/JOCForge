@@ -1,0 +1,52 @@
+{
+  "schema": "washed-r138-adm-time-normalization-static-candidate.v1",
+  "source_package_manifest_sha256": "fd881c4a93f7989029fd11bb8347e8e9d5466090f4bef601da8a6d5ac329ce93",
+  "source_evidence_sha256": "d799f71101fff507eb042699543c57bce6a1d02932aaa1d8561fe4b43fb42129",
+  "host_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "processing_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "authorized_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "r138_profile": {
+    "input_type": "adm",
+    "route": "encode_to_atmos_ddp",
+    "route_key": "encode_to_atmos_ddp",
+    "time_base": "embedded_timecode",
+    "start_token": "86640",
+    "end_token": "86664",
+    "configured_frame_rate": "not_indicated",
+    "resolved_frame_rate": "NOT_CAPTURED",
+    "offset": "auto",
+    "ffoa": "auto"
+  },
+  "static_host_edges": {
+    "adm_factory_to_internal_input_constructor": "STATICALLY_BOUND_IN_HOST_IMAGE",
+    "internal_run_method_to_shared_source_time_normalizer": "STATICALLY_BOUND_IN_HOST_IMAGE",
+    "wave_run_method_to_same_normalizer": "STATICALLY_BOUND_IN_HOST_IMAGE",
+    "r138_selected_internal_run_method": "UNBOUND"
+  },
+  "normalizer": {
+    "source_fields": [
+      "offset",
+      "ffoa"
+    ],
+    "frame_rate_field": "timecode_frame_rate",
+    "timebase_aware": "STATICALLY_PRESENT",
+    "offset_auto": "uses existing source offset value",
+    "explicit_timecode": "uses frame-rate-aware conversion helper",
+    "ffoa_numeric_branch": "value - parsed offset + normalized offset",
+    "helper_parameter_mapping_to_r138": "UNBOUND",
+    "output": "host-side normalized property map",
+    "map_owner_generation": "UNBOUND"
+  },
+  "setter": {
+    "record_slots_10_11_to_binary64_seconds": "STATICALLY_BOUND",
+    "slot10": "later read as offset",
+    "slot11": "later read as ffoa",
+    "host_map_to_setter_record": "UNBOUND",
+    "R138_setter_callsite": "NOT_CAPTURED"
+  },
+  "status": {
+    "native_job_this_package": "NOT_RUN",
+    "model_replay": "NOT_RUN",
+    "gate1_closed": false
+  }
+}

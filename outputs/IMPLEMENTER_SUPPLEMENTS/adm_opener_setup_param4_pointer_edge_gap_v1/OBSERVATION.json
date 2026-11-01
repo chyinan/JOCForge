@@ -1,0 +1,68 @@
+{
+  "schema": "washed-adm-opener-setup-pointer-edge.v1",
+  "package_id": "adm_opener_setup_param4_pointer_edge_gap_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_LINEAGE_PLUS_PRIOR_FAILED_RUNTIME_CAPTURE",
+  "status": "CHNA_ROW_SLOT_TYPED; SETUP_PARAM4_POINTER_JOIN_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "source_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "converter_image_pe_timestamp": 1654888279,
+    "converter_image_size_of_image": 6549504,
+    "static_tool": "Ghidra 12.2 PUBLIC headless",
+    "dynamic_capture_in_this_addendum": "NOT_RUN",
+    "new_dee_job_started": false,
+    "raw_pcm_or_row_payload_read": false
+  },
+  "typed_opener_producer": {
+    "descriptor_type": "AdmFileStorageDesc",
+    "row_table_stride_bytes": 6,
+    "object_row_slot": "zero-based CHNA TrackIndex (one-based TrackIndex minus one)",
+    "object_payload_key": "AudioObjectID-derived source-channel key; not CHNA TrackIndex",
+    "bed_row_slot": "zero-based CHNA TrackIndex (one-based TrackIndex minus one)",
+    "bed_payload_key": "bed-channel descriptor payload key",
+    "bed_label_source": "parsed bed-channel descriptor value",
+    "parent_record_count": "object descriptor count plus nested bed-channel counts",
+    "row_slot_and_payload_are_distinct_domains": true
+  },
+  "setup_pointer_edge": {
+    "opener_table_pointer_member_offset_bytes_decimal": 80,
+    "opener_table_count_member_offset_bytes_decimal": 74,
+    "setup_param4_table_pointer_slot": 2,
+    "setup_param4_pointer_member_offset_bytes_decimal": 16,
+    "setup_param4_count_member_offset_bytes_decimal": 10,
+    "setup_callback_invocation": "registered indirect callback",
+    "direct_code_callers_found": 0,
+    "static_transfer_from_opener_pointer_to_param4_slot": "NOT_FOUND_IN_SCANNED_STATIC_PATH",
+    "prior_runtime_breakpoints_hit": 0,
+    "prior_runtime_breakpoint_failure": "UNQUALIFIED_MODULE_PLUS_RELATIVE_EXPRESSION_DID_NOT_RESOLVE",
+    "pointer_values_captured": false,
+    "owner_generation_identity": "UNBOUND",
+    "pointer_equality": "NOT_EVALUATED",
+    "interpretation": "Instrumentation failure and static non-find do not establish pointer inequality or event absence."
+  },
+  "related_wash_packages": [
+    {
+      "package_id": "adm_bwf_opener_channel_table_producer_v1",
+      "manifest_sha256": "8aa8ef80813c13a0b32d6e9d1286fcba8b2814e35996c5ba926923a6bd44d4cc"
+    },
+    {
+      "package_id": "adm_bwf_converter_setup_record_boundary_v1",
+      "manifest_sha256": "ef24c940da349eda5c8769ee9aac9e2bbef0064a7c3d527926876e2eb5f24eeb"
+    },
+    {
+      "package_id": "sample6_opener_setup_pointer_capture_boundary_v1",
+      "manifest_sha256": "354f6f38668c2331e35b563b96f93abb2532f2477896928194c5cd7b31c09176"
+    }
+  ],
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "97184837a407a40e7caa41a22ed2a6d386f59eb503b367061ce99a0c5e78bea3",
+  "incoming_seal_sha256": "541a7fa756398398c11f1ae69b54f0ed8e224c9bedcd9cb37d52c5b5b5790cf6",
+  "incoming_checker": {"normal": "PASS_VALID_PARTIAL", "python_optimized": "PASS_VALID_PARTIAL", "source_hash_count": 29},
+  "independent_review": [
+    "Recomputed incoming manifest and seal SHA-256 values and ran the incoming verifier normally and under Python optimization.",
+    "Confirmed the path producer and loader-order explanation is static Ghidra evidence; runtime_metadata_capture remains NOT_RUN.",
+    "Confirmed Run145/Run148 absolute ordinals remain UNBOUND because ordered LoadOne records and preceding getter counts are absent.",
+    "Recomputed two synthetic environment/config precedence vectors; neither supplies an actual module enumeration order."
+  ],
+  "not_promoted": [
+    "effective DEE_PLUGIN_PATH or dee_loader.list value in Run145 or Run148",
+    "directory enumeration order for either historical run",
+    "complete per-run ordered LoadOne module list",
+    "absolute manager or Runner ordinal",
+    "audio algorithm behavior or whole-chain readiness"
+  ]
+}

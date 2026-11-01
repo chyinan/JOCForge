@@ -1,0 +1,30 @@
+{
+  "schema": "washed-pcm24-s16-f32-transfer-boundary.v1",
+  "package_id": "pcm24_s16_f32_transfer_boundary_v1",
+  "status": "STATIC_DIRECT_CONSUMER_SLICE_NEGATIVE_F32_JOIN_OPEN",
+  "implementation_readiness": "NO_FOR_PCM24_TO_F32",
+  "source_package_manifest_sha256": "ec431936159b2fdbaf1b39c42e30d1b6c553cdb79232ae2c1c0cb40c5aec621f",
+  "source_package_seal_sha256": "834de899e1546c56802d12fec82358138d413a4b686f4457ecc0ee3d4b428364",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1359,
+      "sha256": "ca0a9870035034225d3fd60c12ff881481833ef232afa834aa28fdb294cd541d"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2273,
+      "sha256": "720c73fe0c0f4e2d95e904d7106c995140c339d0b0f380c30f9fdc50bbc509e6"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 638,
+      "sha256": "1cf1c3c364181dda485853a88493706899e81bf6d8808c1fd7d8bb2f93b24000"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2172,
+      "sha256": "16665808886a5b0de4239dcec23b3c61177a650f701f740932814fd6e8270221"
+    }
+  ]
+}

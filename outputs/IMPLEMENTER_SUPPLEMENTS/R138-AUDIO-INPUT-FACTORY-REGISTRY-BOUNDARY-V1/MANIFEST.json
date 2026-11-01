@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 5663,
+      "file": "CHECK.py",
+      "sha256": "c5455b54d30aeef546c48ac3145d41aa7fb37425975d16c7021a299e3daf7e57"
+    },
+    {
+      "bytes": 3030,
+      "file": "EVIDENCE.json",
+      "sha256": "6c921d758a0db5f7e6866d8f3533c61340cfa44dba1bd427b6b6e2a97b0615ff"
+    },
+    {
+      "bytes": 1975,
+      "file": "REPORT.md",
+      "sha256": "7050c0dca1f118f9039ad1f0b5e87e9f507e090dd0196809481eb74fa2c9d9f4"
+    },
+    {
+      "bytes": 1368,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "4b1049eb64e56addb253e24e7df536f22d9c6d43be005301b480cd00f7bf15de"
+    },
+    {
+      "bytes": 1581,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "6beeb9b1a630367c3d75ea2ae9dd44a9bf1388b8dcb1d690dca07eaf076e747c"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "R138-AUDIO-INPUT-FACTORY-REGISTRY-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "9fa06b6a89970328b3c9654125a04d9f44193bd1ec4624d46a6a30841c110060",
+  "status": "GENERIC_HOST_AUDIO_INPUT_REGISTRY_BOUND; R138_FACTORY_AND_TYPED_READER_UNBOUND"
+}

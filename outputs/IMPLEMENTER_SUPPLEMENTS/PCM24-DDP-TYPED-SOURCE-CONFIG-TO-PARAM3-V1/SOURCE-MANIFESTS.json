@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "pcm24_ddp_source_option_setter_lineage_addendum_v1",
+    "manifest_sha256": "07c85b08a09508d059a620f10c84d24dd5002340977486e62ab9a1ed37109ecc",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "pointer_capture_parent": {
+    "package_id": "pcm24_ddp_source_config_pointer_probe_addendum_v1",
+    "manifest_sha256": "93bd92a3a6004ea5efbdc54f94c558ab0058573db1b6792fb2c35fa936e22bc4"
+  },
+  "composite_master_parent": {
+    "package_id": "PCM24-DDP-COMPOSITE-MASTER-READER-LINEAGE-ADDENDUM-V1",
+    "manifest_sha256": "84e4e7acce386d6724fd81ad95792c35ff161b48b91bebaa303f984b3cdae06c"
+  },
+  "run152_153_erratum_parent": {
+    "package_id": "PCM24-DDP-RUN152-JOB-HASH-ERRATUM-V1",
+    "manifest_sha256": "0e28b6f92d1032573eb0fc1da23655f3288fb90fe479b48ba1700fed4317d701"
+  }
+}

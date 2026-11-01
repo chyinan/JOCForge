@@ -1,0 +1,56 @@
+{
+  "package_id": "dee_ddp_xml_route_request_key_binding_v3",
+  "status": "XML_AUDIO_CHILD_TO_RUNNER_REQUEST_KEY_STATIC_BOUND; EXACT_NAME_SELECTION_TO_LOCAL_CALLBACK_0_AND_RUNNER_STORES_BOUND; DIRECT_CALLBACK_ENTRY_NOT_HIT; GLOBAL_ORDINAL_ORDER_DEPENDENT",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Hash-bound task XML filter/audio child to StageRunner copied route-key field and static exact-name callback/factory/Runner store chain. Does not bind global ordinal, all loaded modules, descriptor owner/generation, or numeric profile to loader index.",
+  "source": {
+    "incoming_package_id": "dee_audio_filter_selected_task_callback_wash_v3",
+    "manifest_sha256": "00856107e8c19c232e7a560dd723e3cce804d6d2da8003144b43bf1f5484f25c",
+    "seal_sha256": "c25ba51d5632e85be275f02a1dcae0737fd31a0a7418d9c3c9619cf52ec33fad",
+    "source_hash_count": 53,
+    "checker_normal": "PASS_VALID_PARTIAL",
+    "checker_python_o": "PASS_VALID_PARTIAL"
+  },
+  "xml": {
+    "run145_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "run148_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3",
+    "route": "encode_to_atmos_ddp",
+    "route_child_count_each": 1,
+    "input_sha_from_existing_receipts": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "new_run_or_input_rehash": false
+  },
+  "request_key_path": {
+    "stage_runner_split_properties": "resolves filter then audio node",
+    "audio_node_copy_target": "StageRunner +0x68",
+    "copied_child_row_size_bytes": 104,
+    "route_key_location": "first copied child row name at vector begin +0x18",
+    "build_comparison": "exact bytes and exact length against callback-created config name"
+  },
+  "callback_and_runner": {
+    "selected_config": "DDP Atmos callback-created config local slot 0",
+    "factory_virtual_slot_byte_offset": "0x30",
+    "stage_constructor": "DDP JOC stage",
+    "runner_stage_store": "Runner +0x270",
+    "runner_matched_config_store": "Runner +0x278",
+    "same_matched_config_used_for_factory_and_store": true
+  },
+  "runtime_boundary": {
+    "run148_ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "host_and_ddp_same_thread": true,
+    "direct_factory_callback_entry_hit": false
+  },
+  "open": {
+    "global_callback_ordinal": "ORDER_DEPENDENT/NOT_BOUND",
+    "run148_loaded_module_set": "UNBOUND/NOT_CAPTURED",
+    "descriptor_owner_generation": "UNBOUND/NO",
+    "numeric_profile_to_loader_index": "UNBOUND",
+    "output_parse": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "private_key_or_license_contents_read": false,
+    "pcm_or_payload_read": false,
+    "new_runtime_run": false
+  }
+}

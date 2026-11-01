@@ -1,0 +1,31 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; HOST_TO_DDP_DESCRIPTOR_EDGE_UNBOUND",
+  "source_package_id": "dee-host-ddp-descriptor-offset0-boundary-wash-v1",
+  "source_package_manifest_sha256": "ce4dff226896f4c95318f943d0ae973845bce0f5b896f9e4f6bc1bc08ff600f7",
+  "source_package_seal_sha256": "66c7dcfc17843bc24c2804bbaaac8de4b9050a032744a94f65def34a49604bc0",
+  "source_package_payloads_checked": 5,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "host_static_evidence_hashes_checked": 5,
+  "host_static_evidence_hashes_match": true,
+  "parent_package_manifests_checked": 2,
+  "runtime_observation": "NOT_RUN",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The traced host route ends at a generic filter-stage object; its concrete implementation was not resolved in this package.",
+    "No descriptor+0 write or call to the DDP process entry was observed on the scoped host path.",
+    "The host stage boundary does not prove that no DDP adapter exists elsewhere."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

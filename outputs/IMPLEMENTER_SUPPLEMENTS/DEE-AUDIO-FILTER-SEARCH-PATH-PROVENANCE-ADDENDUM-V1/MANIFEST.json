@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 5984,
+      "file": "CHECK.py",
+      "sha256": "1934f46b3ace4c5404586ec640a870b235fd64518e1746dfcaec0ef589d55a37"
+    },
+    {
+      "bytes": 2752,
+      "file": "EVIDENCE.json",
+      "sha256": "3e477bf2fc5abfed4ab5bc1385be28f43b7f65b193984ad64345777c165b957d"
+    },
+    {
+      "bytes": 640,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "39f52d22555d82604c38d5c62bbceddc014df965635e0d9862495a4d7a85725d"
+    },
+    {
+      "bytes": 1750,
+      "file": "REPORT.md",
+      "sha256": "5d7f8bd79fc1d5dd8178524a161afdbf81681167d3b67b21c03db4e6ae9d5111"
+    },
+    {
+      "bytes": 1201,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "ed45df92b9d1754e79ea79695e99f1b1f6613536dbdde1225767f3053ba9fbe6"
+    },
+    {
+      "bytes": 1221,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "3c85e41bdc3ea659820ba438e28e3c5f1c6bec2af415d1fa0ef9114606776b1a"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "DEE-AUDIO-FILTER-SEARCH-PATH-PROVENANCE-ADDENDUM-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "97184837a407a40e7caa41a22ed2a6d386f59eb503b367061ce99a0c5e78bea3",
+  "status": "PLUGIN_PATH_PRODUCER_STATICALLY_BOUND; RUN_EFFECTIVE_LOADONE_ORDER_UNBOUND; ABSOLUTE_ORDINAL_UNBOUND"
+}

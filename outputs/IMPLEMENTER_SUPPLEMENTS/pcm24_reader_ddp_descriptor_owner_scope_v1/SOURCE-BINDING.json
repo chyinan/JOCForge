@@ -1,0 +1,61 @@
+{
+  "schema": "washed-pcm24-reader-ddp-descriptor-source-binding.v1",
+  "package_id": "pcm24_reader_ddp_descriptor_owner_scope_v1",
+  "incoming_research_manifest_sha256": "1dc0ac5ed27b135bdeb050464ecaa072d6dff959357758fded9ef1810f6bce94",
+  "incoming_package_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "source_images": [
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728,
+      "current_source_hash": "MATCH"
+    },
+    {
+      "module": "dee_audio_filter_convert_atmos_mezz.dll",
+      "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+      "bytes": 6286336,
+      "current_source_hash": "MATCH"
+    },
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464,
+      "current_source_hash": "MATCH"
+    }
+  ],
+  "source_input": {
+    "sample": "authorized First Love ADM/WAVE",
+    "sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "current_input_file_hash": "MATCH"
+  },
+  "parents": [
+    {
+      "package_id": "pcm24_reader_to_ddp_descriptor_owner_gap_v1",
+      "manifest_sha256": "75f5be43d59f5b994c9bb18dfeeccedca81916ccccfe12561441c9fae4a661e1",
+      "status": "MANIFEST_FOUND_AND_REHASHED"
+    },
+    {
+      "package_id": "adm_bwf_ddp_source_row_descriptor_copy_boundary_v1",
+      "manifest_sha256": "113038aa85c69e3d26bcf0b7933e48f7e031038da86bf18ccf8c603139f4b3d6",
+      "status": "MANIFEST_FOUND_AND_REHASHED"
+    },
+    {
+      "package_id": "dee_host_ddp_stage_handoff_boundary_v1",
+      "manifest_sha256": "cbf7d62247dc54da795d2c96ed1ad78b22ead23216cd66619f4e9c5fd2c7665f",
+      "status": "MANIFEST_FOUND_AND_REHASHED"
+    },
+    {
+      "package_id": "reader_host_adapter_registration_wash",
+      "manifest_sha256": "7f19c4dbc040cc3710b016b3a187f878467a42693455f2c945a1354c200cd3e2",
+      "status": "MANIFEST_AND_8_PAYLOAD_HASHES_REHASHED"
+    }
+  ],
+  "external_dee_license": {
+    "used": true,
+    "contents_read": false,
+    "path_or_contents_included": false
+  },
+  "raw_decompilation_copied": false,
+  "raw_pointer_tokens_copied": false,
+  "media_pcm_payload_or_bitstream_read": false
+}

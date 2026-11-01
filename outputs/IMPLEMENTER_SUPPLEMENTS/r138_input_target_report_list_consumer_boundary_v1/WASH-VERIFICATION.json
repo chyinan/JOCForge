@@ -1,0 +1,17 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "88c497b031acdbd42e6a7fe265f30e6cbb39ac1ed2913e0e2c7d6f6d5ceae30a",
+  "checks": {
+    "source_manifest_sidecar_and_artifacts_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "report_list_consumer": "STATICALLY_BOUND",
+    "PCM_effect": "NOT_EVIDENCED",
+    "range_join": "UNBOUND",
+    "spatial_join": "UNBOUND",
+    "R141_setter": "NOT_HIT_FOR_THIS_RUN",
+    "native_job": false,
+    "payload_read": false
+  },
+  "scope_note": "Wash independently checked source package hashes and status. This static consumer is a report metadata path only unless audio effect is later bound."
+}

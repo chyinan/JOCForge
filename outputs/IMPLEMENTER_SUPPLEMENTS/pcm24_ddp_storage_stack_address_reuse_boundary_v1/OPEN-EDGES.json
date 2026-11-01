@@ -1,0 +1,22 @@
+{
+  "package_id": "pcm24_ddp_storage_stack_address_reuse_boundary_v1",
+  "closed_within_scope": [
+    "AtmosMezz slot+0x40 wraps slot+0x38 metadata map lookup, not audio-row access.",
+    "Run152/Run153 numeric token equality occurred between different stack-local roles and call frames; it is not object identity.",
+    "DDP internal source-record-to-reader path and descriptor[0]/row-table equality are bounded."
+  ],
+  "open": [
+    "Host selected ADM identity to AtmosMezz storage object.",
+    "Typed host storage/selected ADM generation to DDP measurement owner generation.",
+    "Input identity for Run152/Run153 beyond reused preflight SHA.",
+    "Output bitstream validity and playback."
+  ],
+  "status": {
+    "selected_adm_owner": "UNBOUND/NO",
+    "generation": "UNBOUND/NO",
+    "input_identity": "UNBOUND/NO",
+    "output_parse": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "guidance": "Do not join host storage and DDP record from equal token values or same-thread stops. Do not treat encoder completion/file size as output validation."
+}

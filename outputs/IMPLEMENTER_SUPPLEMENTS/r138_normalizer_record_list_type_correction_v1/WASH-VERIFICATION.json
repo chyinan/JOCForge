@@ -1,0 +1,14 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_manifest_sha256": "12e28af74c7fa1d1ff7570b6177730eda054f30a48431e7d0ab6e33d4ff041d8",
+  "checks": {
+    "source_manifest_sidecar_and_artifacts_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "corrected_RCX_type": "LINKED_KEY_VALUE_RECORD_LIST",
+    "register_order": "RCX_LIST; RDX_RATE; R8_FFOA; R9_OFFSET",
+    "list_to_DDP_consumer": "UNBOUND",
+    "R141_setter": "NOT_HIT_FOR_THIS_RUN"
+  },
+  "scope_note": "This corrects only RCX container terminology; it does not change the static register order or establish a runtime consumer join."
+}

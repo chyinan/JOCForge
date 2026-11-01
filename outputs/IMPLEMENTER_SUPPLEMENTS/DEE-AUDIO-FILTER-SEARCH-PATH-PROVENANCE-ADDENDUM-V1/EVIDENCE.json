@@ -1,0 +1,48 @@
+{
+  "schema": "washed-dee-audio-filter-search-path-evidence.v1",
+  "status": "PLUGIN_PATH_PRODUCER_STATICALLY_BOUND; RUN_EFFECTIVE_LOADONE_ORDER_UNBOUND; ABSOLUTE_ORDINAL_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_PLUS_EXISTING_RUN_RECEIPTS",
+  "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "path_producer": {
+    "config_function_rva": "0x2a0b0",
+    "environment_override": "DEE_PLUGIN_PATH",
+    "fallback_config_key": "dee_loader.list",
+    "path_value_writer_function_rva": "0x167960",
+    "path_value_behavior": "Deduplicates the selected path string and appends it to PluginManager singleton member +0x8",
+    "singleton_getter_function_rva": "0x169ca0",
+    "singleton_global_rva": "0x3d4040",
+    "directory_list_builder_function_rva": "0x1697e0",
+    "directory_list_builder_behavior": "Splits member +0x8 on semicolons; walks components in order and appends candidate file rows",
+    "directory_enumerator_function_rva": "0x168e30",
+    "directory_enumerator_behavior": "FindFirstFileW/FindNextFileW results are appended; traced path has no explicit sort step",
+    "load_all_function_rva": "0x169d10",
+    "load_all_behavior": "Walks resulting 0x20-byte path records in order and calls LoadOne",
+    "load_one_function_rva": "0x16a1c0"
+  },
+  "ordinal_relation": {
+    "formula": "sum(audio_filter getter counts of modules preceding DDP Atmos in the effective LoadOne order) + DDP Atmos local factory index",
+    "ddp_atmos_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ddp_atmos_local_factory_index": 0,
+    "runner_order": "manager callback-vector order is preserved in the Runner config list by the parent callback-order package",
+    "run145_absolute_ordinal": "UNBOUND",
+    "run148_absolute_ordinal": "UNBOUND"
+  },
+  "existing_run_records": {
+    "run145_input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "run145_job_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "run145_ddp_module_path_observed": true,
+    "run145_complete_ordered_loadone_list": "NOT_CAPTURED",
+    "run145_preceding_getter_counts": "NOT_CAPTURED",
+    "run148_input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "run148_job_xml_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3",
+    "run148_complete_ordered_audio_filter_set": "UNBOUND/NOT_CAPTURED",
+    "run148_preceding_getter_counts": "NOT_CAPTURED"
+  },
+  "access_boundary": {
+    "runtime_metadata_capture": "NOT_RUN",
+    "host_launch": "NOT_RUN",
+    "encode_run": "NOT_RUN",
+    "media_pcm_payload_bitstream_or_key_read": false
+  }
+}

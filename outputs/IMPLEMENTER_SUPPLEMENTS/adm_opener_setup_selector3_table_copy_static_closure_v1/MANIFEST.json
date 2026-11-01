@@ -1,0 +1,37 @@
+{
+  "schema": "washed-adm-opener-setup-selector3-table-copy.v1",
+  "package_id": "adm_opener_setup_selector3_table_copy_static_closure_v1",
+  "status": "SELECTOR3_SETUP_TABLE_CONTENT_COPY_STATIC_BOUND; POINTER_ALIAS_FALSE; RUNTIME_GENERATION_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "14ddd02d83f8c6ba20f22c852e5a93607fc38bb67a2b7057f4a4c2cd6497e900",
+  "implementation_allowed_for": "STATIC_SELECTOR3_SETUP_TABLE_COPY_BOUNDARY_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3062,
+      "sha256": "61bcf3b92975190e885bed8bd34d11f50e57f01f7d80234252ba45f0435f6fd8"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1116,
+      "sha256": "42f212dd2ac8a985ae44cd284d0517ef1b39072056362e23ef2c0029ec83ac79"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1109,
+      "sha256": "eb6cfaea8b8d9d5b8908a67cda0cc3c3b6d7a589cdd91a03c0afa68598bc81bf"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2239,
+      "sha256": "a020ae15cc71c7514bb4da18b7b391c2b58525315ab967ea7c7613885ba69003"
+    }
+  ]
+}

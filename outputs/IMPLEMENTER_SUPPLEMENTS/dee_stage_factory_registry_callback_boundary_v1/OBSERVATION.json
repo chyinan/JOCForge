@@ -1,0 +1,59 @@
+{
+  "schema": "washed-dee-stage-factory-registry-callback-boundary.v1",
+  "package_id": "dee_stage_factory_registry_callback_boundary_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_REGISTRY_AND_FACTORY_LINEAGE_V3",
+  "status": "REGISTRY_CALLBACK_CALLSITE_BOUND; PCM_TO_DDP_ENTRY_AND_CONCRETE_FACTORY_OVERRIDE_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_tool": "Ghidra 12.2 PUBLIC",
+    "source_index_hashes_checked": 9,
+    "source_index_hashes_match": true,
+    "new_dee_job": "NOT_RUN",
+    "runtime_observation": "NOT_RUN"
+  },
+  "registry": {
+    "stage_runner_enumerates_registry_config_objects": true,
+    "shared_factory_body_calls_indirect_callback": true,
+    "callback_target_selection": "UNBOUND",
+    "callback_return_is_registry_config_object": true,
+    "selection_key_for_pcm_to_ddp": "UNBOUND"
+  },
+  "stage_factory": {
+    "build_calls_config_virtual_factory_slot_offset_bytes_decimal": 48,
+    "retained_config_member_offset_bytes_decimal": 632,
+    "returned_stage_member_offset_bytes_decimal": 624,
+    "config_name_getter_slot_offset_bytes_decimal": 16,
+    "source_capability_slot_offset_bytes_decimal": 96,
+    "target_capability_slot_offset_bytes_decimal": 88,
+    "factory_return_type": "generic ProcessingStage",
+    "concrete_override_or_module": "UNBOUND/NO",
+    "returned_stage_dynamic_vtable": "UNBOUND/NO"
+  },
+  "category_registration": {
+    "key": "pcm_to_ddp",
+    "value": "filter:audio",
+    "proves_stage_registry_callback_identity": false,
+    "meaning": "static filter-category mapping only"
+  },
+  "ddp_edge": {
+    "source_row_descriptor_argument_seen": false,
+    "descriptor_offset_0_writer": "UNBOUND/NO",
+    "ddp_process_call": "UNBOUND/NO",
+    "same_input_owner_or_generation": "UNBOUND/NO"
+  },
+  "prior_wash_context_manifest": "fb7473523d726c13221d913557014a7ab3435071900a1a94d8a4b54dd025470c",
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

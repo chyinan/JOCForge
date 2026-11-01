@@ -1,0 +1,17 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_NEGATIVE_SCOPE",
+  "source_package_manifest_sha256": "ec431936159b2fdbaf1b39c42e30d1b6c553cdb79232ae2c1c0cb40c5aec621f",
+  "source_package_seal_sha256": "834de899e1546c56802d12fec82358138d413a4b686f4457ecc0ee3d4b428364",
+  "parent_checker_normal": "PASS",
+  "parent_checker_optimized": "PASS",
+  "implementation_readiness": "NO_FOR_PCM24_TO_F32",
+  "excluded_materials": {
+    "source_code": false,
+    "decompilation": false,
+    "binary": false,
+    "pcm_payload": false,
+    "private_key_or_license": false,
+    "absolute_input_path": false
+  }
+}

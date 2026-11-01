@@ -1,0 +1,24 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "0c79d0e16be7f07a559bfc9a57eee6c821156713c9898844a4258789e16b3352",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "status": "VALID_PARTIAL"},
+  "independent_review": [
+    "Recomputed the incoming package manifest digest and ran its checker normally and under Python optimization.",
+    "Recomputed the parent package manifest digest and ran its checker normally and under Python optimization.",
+    "Recomputed the raw Ghidra trace and schema artifact hashes referenced by the source index.",
+    "Confirmed the static reader-field load and preserved the stated pre-Run virtual call boundary as static evidence only.",
+    "Confirmed the schema activation had no task profile, audio input, selected route, or full encode; it is not an R138 reader observation.",
+    "Kept reader/factory, writer/constructor, table/count/slot, and parent-generation joins UNBOUND.",
+    "Preserved the metadata-only plan as NOT_RUN and excluded it from implementation rules."
+  ],
+  "not_promoted": [
+    "R138 reader selection or factory identity",
+    "reader field writer/constructor identity",
+    "factory table/count/slot identity",
+    "typed audio.adm owner to selected reader join",
+    "parent-generation identity",
+    "audio or bitstream behavior",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

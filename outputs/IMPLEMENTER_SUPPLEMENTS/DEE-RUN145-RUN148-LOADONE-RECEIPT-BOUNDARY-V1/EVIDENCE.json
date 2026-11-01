@@ -1,0 +1,40 @@
+{
+  "schema": "washed-dee-historical-loadone-receipt-evidence.v1",
+  "status": "SEALED_RUN_RECEIPTS_LACK_COMPLETE_LOADONE_ORDER; LOOSE_LOGS_NOT_RUN_BOUND; ABSOLUTE_ORDINALS_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_RECEIPT_AUDIT_PLUS_STATIC_HOST_LOADALL_PATH",
+  "ddp_atmos_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "run145": {
+    "input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "job_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "results_sha256": "c9b2bd4ba72c4d28a8178082df2ad6bfc4816635ca1468c2bf5afc0bac930696",
+    "result_manifest_sha256": "0525319f597faf70f666ca691fb869ddbc7a49df95fe561f6870de98162d5689",
+    "preflight_sha256": "32d5a45dae0091cc9ebc11063c9415557dcfdcf0fdf627702c9302a90ba21724",
+    "completion_excerpt_sha256": "19c652bc1bf3f4736fb47a3b6ce25067a0ee408a9c2410792f301bf0945ba835",
+    "sealed_receipt_loadone_order": "NOT_PRESENT",
+    "sealed_receipt_per_module_getter_counts": "NOT_PRESENT",
+    "loose_log_sha256": "bdf9d5b89e234d75c72b5e63b17c9c876531af0ed43118cd7d9f0a9ef8c40590",
+    "loose_log_binding": "NOT_REFERENCED_BY_ORIGINAL_PREFLIGHT_OR_RESULT_MANIFEST",
+    "loose_log_loader_markers": [],
+    "absolute_manager_runner_ordinal": "UNBOUND"
+  },
+  "run148": {
+    "input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "job_xml_sha256": "afdba942dfe9f5eb53946f5d894408e8f90df6f9657e6151332ad220bf32b3b3",
+    "capture_preflight_sha256": "00eb8214983def91e29271ec6776861f4bb129bb0fb7739446ff6891e4c8ad66",
+    "complete_ordered_audio_filter_set": "UNBOUND/NOT_CAPTURED",
+    "per_module_getter_counts": "NOT_CAPTURED",
+    "loose_log_sha256": "7904f6177fda409f5924d5a86b6fb247eb0f4412219a668bf669c4ce9ec826eb",
+    "loose_log_binding": "NOT_REFERENCED_BY_ORIGINAL_CAPTURE_PREFLIGHT",
+    "loose_log_loader_markers": [],
+    "absolute_manager_runner_ordinal": "UNBOUND"
+  },
+  "minimum_receipt_fields": ["run identity", "LoadOne order ordinal", "module basename", "module image hash", "audio_filter getter count", "selected DDP Atmos image hash"],
+  "license_boundary": {
+    "static_license_content_precheck_before_stage_runner": true,
+    "native_host_started": false,
+    "license_contents_read_by_researcher": false,
+    "runtime_metadata_probe": "NOT_RUN"
+  },
+  "media_boundary": {"pcm_payload_key_or_bitstream_read": false}
+}

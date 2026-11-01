@@ -1,0 +1,62 @@
+{
+  "schema": "washed-pcm24-reader-to-ddp-descriptor-owner-gap.v1",
+  "package_id": "pcm24_reader_to_ddp_descriptor_owner_gap_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_ENDPOINTS_WITH_OWNER_EDGE_UNBOUND",
+  "status": "CONVERTER_READER_ROW_VIEW_AND_DDP_OFFSET0_CONSUMER_BOUND; CROSS_IMAGE_STORE_OWNER_GENERATION_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_tool": "Ghidra 12.2 PUBLIC headless",
+    "pcm24_context": 7,
+    "static_reader_rule": "signed_pcm24 / 2^23",
+    "runtime_reader_branch": "NOT_HIT_IN_PARENT_JOB",
+    "new_dee_job": "NOT_RUN",
+    "pcm_or_row_payload_read": "NOT_RUN"
+  },
+  "converter_endpoint": {
+    "selected_read_interface_target": "hash-bound selected ADM read entry",
+    "context7_adapter_callsite_argument": "caller-supplied row-pointer table passed as adapter input",
+    "row_view_member_offset_bytes_decimal": 232,
+    "row_view_rule": "row_view[i] = caller_rows[i] + sample_offset * 4",
+    "output_representation": "borrowed F32 row-pointer-table view in reader object",
+    "typed_store_from_row_view_to_ddp_descriptor": "NOT_FOUND_IN_CONVERTER_IMAGE"
+  },
+  "ddp_endpoint": {
+    "callback_descriptor_argument": "callback second argument forwarded as DDP descriptor",
+    "descriptor_offset_0_role": "source-row pointer table",
+    "descriptor_offset_8_role": "channel count",
+    "descriptor_offset_16_role": "frame count",
+    "row_copy": "source_table[i] to internal_row[i], frame_count * 4 bytes",
+    "typed_store_of_offset_0_in_scoped_ddp_image": "NOT_LOCATED",
+    "outer_virtual_callsite_in_scoped_images": "NOT_LOCATED"
+  },
+  "cross_image_edge": {
+    "converter_borrowed_row_view_to_ddp_descriptor_offset_0": "UNBOUND/NO",
+    "same_input_owner": "UNBOUND/NO",
+    "same_parent_generation": "UNBOUND/NO",
+    "reason": "The two static endpoints exist, but the scoped images contain no typed store, direct call argument, or owner-generation receipt joining their pointers.",
+    "minimum_missing_artifact": "Host writer/adapter that assigns descriptor offset 0 and calls the DDP callback, with a same-input owner/generation join to the converter row view."
+  },
+  "related_wash_packages": [
+    {
+      "package_id": "adm_bwf_ddp_source_row_descriptor_copy_boundary_v1",
+      "manifest_sha256": "113038aa85c69e3d26bcf0b7933e48f7e031038da86bf18ccf8c603139f4b3d6"
+    },
+    {
+      "package_id": "pcm24_reader_f32_normalization_v1",
+      "manifest_sha256": "24e3b20e465f2ec820f9f08c361db01e3e1cbd628e92458bc57bb542cf9a72a0"
+    }
+  ],
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

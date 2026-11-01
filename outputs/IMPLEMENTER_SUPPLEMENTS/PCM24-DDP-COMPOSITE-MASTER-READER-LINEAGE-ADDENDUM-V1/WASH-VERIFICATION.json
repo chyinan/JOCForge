@@ -1,0 +1,18 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "4abd471f5d943eec67e2c1d88548d3a3009dd782537af90bc64e416665703472",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed incoming manifest SHA-256 and ran its checker normally and under Python optimization.",
+    "Preserved the correction that owner+0x350 is an output-file list rather than the source-array owner.",
+    "Bound only the DDP-internal record/reader/composite-master/getter/descriptor path and kept the host owner/generation join unbound.",
+    "Kept Run152/153 job-hash correction provenance-only and retained input identity UNBOUND/NO.",
+    "No new run or media/payload/key observation was added."
+  ],
+  "not_promoted": [
+    "host selected ADM master identity in Run151",
+    "host ADM owner generation to DDP record generation",
+    "numeric stack token equality as pointer/object identity",
+    "bitstream parsing or audio/JOC playback"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "washed-ddp-source-samples-prefill-owner-boundary.v1",
+  "status": "DDP_CONTEXT_AND_PREFLIGHT_CHAIN_STATIC_SOURCE_MAP_SAMPLES_WRITER_UNBOUND",
+  "source_package_manifest_sha256": "a7f7f8ff82a68f2a7d990a8b01eeccb0cff16065cfc7285e1f6a8adddf33ab1e",
+  "parent_ddp_alias_manifest_sha256": "f529ff35586b7f6cc98df00f62ad36988bcbadb497b7f9d4b39f54796423d324",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "facts": {
+    "context_source_map": "+0xa0",
+    "metadata_preflight": "reads filename from source map; writes selected metadata to separate output map",
+    "preflight_source_samples_write": false,
+    "context_initializer_source_samples_write": false,
+    "complete_map_branch": "requires samples already present before fallback",
+    "context_initializer_direct_code_caller": "one callback thunk",
+    "callback_thunk_direct_code_callers_in_reviewed_image": 0,
+    "callback_thunk_unclassified_data_address_uses": 1,
+    "mediainfo_or_helper_prefill": "NOT_ESTABLISHED",
+    "upstream_source_samples_writer": "UNBOUND"
+  },
+  "minimum_runtime_token": "DDP context pointer loaded from callback receiver +0xb8 and passed unchanged as initializer receiver; track its identity/generation to first source-map samples write and complete-map check.",
+  "audio_boundary": "Source metadata ownership only; no audio algorithm/value. Do not infer from key name or scalar equality."
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "07c85b08a09508d059a620f10c84d24dd5002340977486e62ab9a1ed37109ecc",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed the incoming manifest SHA-256 and ran its package checker normally and under Python optimization.",
+    "Confirmed the typed config key and source-map schema are static claims, distinct from the runtime pointer-only join.",
+    "Confirmed the pointer-only capture binds DDP owner to per-source param_3 only within one measurement activation and stopped before the writer body.",
+    "Preserved host-selected ADM owner/generation as UNBOUND; the map contains filename/metadata values rather than an observed host object pointer."
+  ],
+  "not_promoted": [
+    "host param_2 writer identity or source-generation field",
+    "path string as host object identity",
+    "outer StageRunner frame as owner identity",
+    "full encode, BSI output, or audio/JOC playback"
+  ]
+}

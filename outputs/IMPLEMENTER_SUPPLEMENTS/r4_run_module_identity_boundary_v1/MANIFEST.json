@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "r4_run_module_identity_boundary_v1",
+  "scope": "Operational reference identity only; records run artifact joins and missing per-run loaded-module receipts; no audio algorithm rule.",
+  "status": "RUN145_RUN147_OUTPUT_RUN_INPUT_JOIN_BOUND_TARGET_MODULE_IDENTITY_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2730,
+      "sha256": "465f2b63cffbb50a028ba4cf6cc19cf21c69856c03c535a527ee5320e17b620e"
+    },
+    {
+      "name": "README.md",
+      "bytes": 776,
+      "sha256": "8dee8244c02818fa8c90b60c0de109d22ec7d22ef11072c10b225e65e321cd7a"
+    },
+    {
+      "name": "RUN-MATRIX.json",
+      "bytes": 291,
+      "sha256": "ee3e854b87249da2ae502412d68040aa3b891a817928f46b67ac59d5835da611"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 6321,
+      "sha256": "2df9ad01574be5520d3e242bc85c9fdf8869ff7cadef25c67c60c85dacc894b7"
+    }
+  ]
+}

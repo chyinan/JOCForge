@@ -1,0 +1,29 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "8c47327c3b2d37e730cab7066b001bb2aa3d00e68a4b314c15a004b29e706c85",
+  "incoming_seal_sha256": "f658f9a432ba0424d8aa9d8eee098f0e1b4d4de2ca6fe6e201138b1781d81dbe",
+  "incoming_checker": {
+    "normal": "PASS_VALID_PARTIAL",
+    "python_optimized": "PASS_VALID_PARTIAL",
+    "indexed_source_hashes_recomputed": 27
+  },
+  "independent_checks": [
+    "Recomputed the incoming MANIFEST.json and package_seal.json SHA-256 values.",
+    "Ran the incoming verify_package.py normally and with Python optimization; both rechecked manifest payloads, seal inventory, all 27 indexed source hashes, target-image identity, selected local slot, and partial-status boundaries.",
+    "Reviewed the sanitized evidence scope against the incoming package's structured evidence and ordering claims; no raw decompilation or source text is included here.",
+    "Recomputed four model-only ordinal examples from the stated conditional formula; these are not native observations."
+  ],
+  "supplement_checker": {
+    "normal": "PASS",
+    "python_optimized": "PASS",
+    "manifest_payload_hashes": "RECOMPUTED",
+    "model_vectors": "RECOMPUTED"
+  },
+  "not_claimed": [
+    "absolute global callback ordinal for Run145 or Run148",
+    "cross-run global ordinal stability",
+    "direct factory callback runtime hit",
+    "descriptor owner or generation identity",
+    "audio algorithm behavior or whole-chain readiness"
+  ]
+}

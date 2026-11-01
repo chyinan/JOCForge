@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "dee_numeric_profile_stage_properties_after_factory_v1",
+  "scope": "Run145/Run148 route exact-match selection, numeric task properties applied after factory, and loader index sourced from callback array loop counter. Other profile routes and global ordinal remain open.",
+  "status": "ROUTE_KEY_SELECTS_CONFIG; NUMERIC_OPTIONS_APPLIED_POST_FACTORY; NO_NUMERIC_PROFILE_TO_LOADER_INDEX_TRANSFER_IN_RUN145_RUN148",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2610,
+      "sha256": "2f59224f5452c50f8d5dc29cf6cb3fe77f4663099764b63da38ed2f3025b6fe5"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 806,
+      "sha256": "29eb00bd7d8eb5e7ded4159d4bf28ba27a280e3444689e84d4578f1f6c533bc6"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 703,
+      "sha256": "a0834dc6f2928d5e2953b4a54cca81be7ec6aaf851a0a85498ad7fd676f2bd79"
+    },
+    {
+      "name": "README.md",
+      "bytes": 727,
+      "sha256": "85f083a83db5dca73d4f56fe0ae9a7c1d179572b4507d03d4c169454fae05c86"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1039,
+      "sha256": "da792aa6bb66a7f064869bd399592f52d52c064cd554ee13663b809ca6d2c23e"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 218,
+      "sha256": "2ffa6e42c3a4425123c0fbe6316178d22c99a006e8ea607420f6ba059031d759"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1673,
+      "sha256": "0d9df919b93e3f5382c2b1911160272e3e659e58ae59e0d45af5bf718843645e"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "schema": "washed-open-edge.v1",
+  "remaining": "Identify the loaded module that supplies the exact host key pcm_to_ddp, then bind its callback index to the selected config and DDP row descriptor path.",
+  "status": "UNBOUND/NO"
+}

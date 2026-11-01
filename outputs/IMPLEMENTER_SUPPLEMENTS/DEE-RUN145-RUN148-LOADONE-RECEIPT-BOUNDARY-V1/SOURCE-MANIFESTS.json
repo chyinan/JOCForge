@@ -1,0 +1,19 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "dee_audio_filter_license_precheck_loadall_boundary_wash_v1",
+    "manifest_sha256": "6a0fd16292ed75b3e94b9ab945e41999bf1031cc32a40a5c3f9e8a715069ecf1",
+    "detached_seal_sha256": "3858ecda109f9a135cfe6d12fa2238b0c144e48606dc3480f711c9087025cd2e",
+    "source_hash_count": 47,
+    "checker_normal": "VALID_PARTIAL",
+    "checker_python_optimized": "VALID_PARTIAL"
+  },
+  "parent_wash_packages": [
+    {"package_id": "DEE-AUDIO-FILTER-ORDINAL-BOUNDARY-V1", "manifest_sha256": "df01e36e3d11a67c1726a98209f250788bc421f54b59899827fb523913016866"},
+    {"package_id": "DEE-AUDIO-FILTER-SEARCH-PATH-PROVENANCE-ADDENDUM-V1", "manifest_sha256": "a7f34ef8cf9d3cf248e2daf90eeec41506cce137dc0e1b1e4858f900db135700"}
+  ],
+  "target_images": {
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

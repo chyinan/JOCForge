@@ -1,0 +1,8 @@
+{
+  "schema": "washed-next-edge.v1",
+  "from": "registry entry selected by the pcm_to_ddp config name",
+  "required": "callback-field writer/registration that binds the entry index to its callback pointer",
+  "then": "concrete config factory override and returned ProcessingStage adapter",
+  "downstream": "any source-row to DDP descriptor+0 store/call",
+  "status": "UNBOUND/NO"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; READER_TO_DDP_OWNER_EDGE_OPEN",
+  "source_package_id": "adm_bwf_to_ddp_source_row_lineage_wash_v1",
+  "source_package_manifest_sha256": "31ae006f73ef7e3e034efed55a298fb2af7e07381c4419f59f2d1aae2695227a",
+  "source_package_seal_sha256": "b4a571670e316197fc2fe9038794257fd2f8954ce35c3ce39280fc77dfac0309",
+  "source_package_payloads_checked": 5,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "static_evidence_hashes_checked": 9,
+  "static_evidence_hashes_match": true,
+  "parent_pcm24_manifest_sha256": "1c26d90cbe68b227254df83aa13728fa334089de0ea77dd3a72f9ec60c60479d",
+  "parent_pcm24_seal_sha256": "010928600981edf7d261c226a9a432c99f1a3d8212bace8cb6ea7299b2d8f5fc",
+  "input_only_vector": "SYNTHETIC_EXPECTATION_ONLY; NOT_RUN",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The static DDP descriptor and row-copy path is closed, but it is not connected to the selected PCM24 reader's borrowed row table under a same-owner/generation receipt.",
+    "The parent's dynamic run did not hit the selected PCM24 reader branch.",
+    "The synthetic vector demonstrates only the static copy mechanism; it does not prove the source table is produced by PCM24 input."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

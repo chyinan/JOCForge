@@ -1,0 +1,31 @@
+{
+  "schema": "washed-atmos-info-helper-metadata-vs-sample-read-boundary.v1",
+  "status": "VALIDATION_CONSUMER_SEPARATE_SAMPLE_READ_INTERFACE_R3_JOB_READER_OWNER_UNBOUND",
+  "source_package_manifest_sha256": "64bbc03cbccf26bd680b2d0e4335e39b14755e52c97b79de48558c7bff098334",
+  "helper_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+  "dee_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "r3_full_file_receipt_manifest_sha256": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f",
+  "validation_branch": {
+    "open_returns": "AdmValidationResult shared object",
+    "first_consumer": "reads one-byte status field",
+    "sample_buffer_or_row_table_argument": false
+  },
+  "sample_read_interface": {
+    "independent_vtable_candidate": true,
+    "wrapper_size_bytes": 40,
+    "row_table": "caller-borrowed pointer",
+    "backing_allocation": null,
+    "owns_storage": false,
+    "returns_actual_frames_via_out_parameter": true,
+    "static_edge_from_validation_branch": "NOT_OBSERVED"
+  },
+  "r3_job": {
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "route": "atmos_mezz / encode_to_atmos_ddp / file_position",
+    "completed": true,
+    "helper_pid_master_vtable_or_row_table": "NOT_CAPTURED"
+  },
+  "remaining_edge": "Same R3 full-file invocation's actual helper sample-read object, row table, and source->DDP lineage are not captured.",
+  "use": "Do not treat validation status consumer as PCM reader; distinguish parser/validation from sample-read interface.",
+  "audio_algorithm_source": "DEE_ONLY; no algorithm/value supplied."
+}

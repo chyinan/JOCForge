@@ -1,0 +1,30 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; CONCRETE_STAGE_OVERRIDE_UNBOUND",
+  "source_package_id": "dee-host-processing-stage-factory-wash-v1",
+  "source_package_manifest_sha256": "02364d310db27b7beffe5478cd0193528a32c206acc0956ce25d926184c8a754",
+  "source_package_seal_sha256": "e464df9d688c045bb4d9afa53df4f5ff76f83695002731bb92bc7e0a8603c37a",
+  "source_package_payloads_checked": 5,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "host_evidence_hashes_checked": 8,
+  "host_evidence_hashes_match": true,
+  "runtime_execution": "NOT_RUN",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The registry entry callback and concrete selected config vtable override were not resolved in the scoped evidence.",
+    "The pcm_to_ddp name and capability match are not dynamic-type or DDP identity proofs.",
+    "No source-row descriptor, DDP process call, or owner/generation join was observed."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

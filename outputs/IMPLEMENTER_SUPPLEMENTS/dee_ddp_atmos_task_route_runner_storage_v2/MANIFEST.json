@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "dee_ddp_atmos_task_route_runner_storage_v2",
+  "scope": "Run145/148 exact route encode_to_atmos_ddp selects DDP Atmos local config slot 0; static StageRunner factory and +0x270/+0x278 stores bound. Direct callback entry, global ordinal, XML member store, owner/generation and output validity remain open.",
+  "status": "EXACT_ROUTE_TO_LOCAL_CALLBACK_0_AND_RUNNER_STAGE_CONFIG_STORES_STATIC_BOUND; RUN148_MODULE_AND_THREAD_BOUND; DIRECT_CALLBACK_ENTRY_NOT_HIT; GLOBAL_ORDINAL_ORDER_DEPENDENT; XML_MEMBER_STORE_NOT_ISOLATED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2782,
+      "sha256": "3d6e7b700b6b44e0108d5ecfd674c8291ffa570d4fe2ad1c61e88c9ebade381e"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 724,
+      "sha256": "2630046e2ceaf0ee77df0efe25a2821a5a09f10c33e7bf10f4e27b7c44812d8c"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 993,
+      "sha256": "1e602fe9d4c229f94cdc8bbd30a14cf739731e95f072a326e763083226ca577c"
+    },
+    {
+      "name": "README.md",
+      "bytes": 919,
+      "sha256": "16d791f1fd8e51037bfeac98d82c3354372ad9a2ff7c93c15d66f0b2d63e9c5d"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1463,
+      "sha256": "785f742b6f72dded8ab9b38ea1f254b1e3129700bd4e5ddc48b8bfa51f47aa73"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 217,
+      "sha256": "a72ceb0aa679c89fd20f8134b679e4178848a45e747746c7cc12d3cc223eea9a"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2047,
+      "sha256": "802f7945f3a86c062c0e441b470f14aa01de7227ea6ddfd116e35ec49f2f9b9f"
+    }
+  ]
+}

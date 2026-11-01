@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "r138_fresh_ddp_module_identity_v1",
+  "scope": "One fresh R138-equivalent process binds an authorized ADM input and loaded module SHA; historical Run145/147 stay unbound.",
+  "status": "FRESH_PROCESS_MODULE_SHA_BOUND_HISTORICAL_RUNS_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2131,
+      "sha256": "fb06a47c672fe97ed6b82d1797fec4593c0849cd6761e771811f0b44155e1a72"
+    },
+    {
+      "name": "MATRIX.json",
+      "bytes": 485,
+      "sha256": "032846a9b96b11f51209295ca3d41e67a31e7304912d9d84e6767565aa5e58db"
+    },
+    {
+      "name": "README.md",
+      "bytes": 771,
+      "sha256": "79044e2514ad4321d389b6e22e39b9b7e7fb46cc383c98ae5f5131a6d47eca25"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2578,
+      "sha256": "61509157a529ac33abae7c69ead9aa70a98d0c7a452865f4d456de2938381018"
+    }
+  ]
+}

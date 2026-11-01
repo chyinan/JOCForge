@@ -1,0 +1,49 @@
+{
+  "schema": "controlled-adm-audio-input-registration-vectors.v1",
+  "cases": [
+    {
+      "id": "generic_category_registration",
+      "input": {
+        "category": "audio_input",
+        "table_count": 3,
+        "selected_input_owner": null
+      },
+      "expected": "REGISTRATION_ONLY; ADM_SELECTION_UNBOUND"
+    },
+    {
+      "id": "dact_parser_components",
+      "input": {
+        "adm_bwf_parser_present": true,
+        "getter_table_join": null
+      },
+      "expected": "STATIC_COMPONENTS_ONLY; REGISTRY_ENTRY_UNBOUND"
+    },
+    {
+      "id": "r138_audio_adm",
+      "input": {
+        "type": "audio.adm",
+        "reader_vtable_token": null,
+        "generation_token": null
+      },
+      "expected": "READER_FACTORY_UNBOUND; GENERATION_NOT_OBSERVED"
+    },
+    {
+      "id": "joined_factory_entry_synthetic",
+      "input": {
+        "registration_slot_token": "same",
+        "reader_run_target_token": "same",
+        "input_type_owner_token": "same",
+        "generation_token": "same"
+      },
+      "expected": "FACTORY_ENTRY_CLOSED_IF_OBSERVED_IN_ONE_TASK"
+    },
+    {
+      "id": "no_authorized_sample_used",
+      "input": {
+        "method": "read_only_ghidra"
+      },
+      "expected": "NO_SAMPLE_USED"
+    }
+  ],
+  "payload_reads": 0
+}

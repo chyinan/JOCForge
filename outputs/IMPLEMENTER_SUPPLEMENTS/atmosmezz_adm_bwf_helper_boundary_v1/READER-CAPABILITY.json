@@ -1,0 +1,47 @@
+{
+  "schema": "washed-atmosmezz-adm-bwf-helper-boundary.v1",
+  "status": "STATIC_ADM_BWF_PARSE_CAPABILITY_PRESENT_R3_SELECTED_HELPER_BRANCH_NOT_CAPTURED",
+  "source_package_manifest_sha256": "004d18d3791fac5759f973df48f09a93df390cb5dc33957696dc4c2c3e495b76",
+  "source_packages": {
+    "r2_reader_selection_manifest_sha256": "6bd11791fe5795d80406f310364e8722560878cbfebb4e146fe1849d70fa9a32",
+    "r3_sample6_full_file_manifest_sha256": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f",
+    "r3_sample6_job_xml_sha256": "e4529fe290814178146cecf1be630bb24f92551807e626b89aba27195b011b75",
+    "r3_sample6_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "dee_host": {
+    "role": "dee::input::AtmosMezz",
+    "run_delegation": "STATIC_CLOSED_TO_atmos_info.exe --input",
+    "helper_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508"
+  },
+  "helper_adm_bwf_path": {
+    "adm_bwf_cli_input_documented": true,
+    "bwf_system_registration": "STATIC_CLOSED",
+    "type_specific_master_factory": "STATIC_CLOSED",
+    "returned_master": "atmos_storage_master_s",
+    "adm_bwf_descriptor_parser": "STATIC_PRESENT",
+    "validation": [
+      "chna",
+      "axml",
+      "ADM XML"
+    ],
+    "conclusion": "Helper can process ADM BWF metadata/validation input; not AtmosMezz-only."
+  },
+  "dact_comparison": {
+    "dact_image_sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239",
+    "adm_file_storage_path": "STATIC_PRESENT",
+    "helper_dact_pointer_or_object_identity": "NOT_OBSERVED"
+  },
+  "r3_full_song_runtime": {
+    "input_type": "atmos_mezz",
+    "time_base": "file_position",
+    "completed": true,
+    "helper_process_or_parser_branch_captured": false,
+    "reader_vtable_or_run_target_captured": false
+  },
+  "remaining_edge": "Selected BWF helper factory/master on the R3 sample-6 activation, joined to parent invocation/generation.",
+  "audio_scope": {
+    "audio_algorithm_or_field_value_supplied": false,
+    "external_tool_algorithm_source": false,
+    "allowed_use": "INPUT_CAPABILITY_AND_ROUTE_BOUNDARY_ONLY"
+  }
+}

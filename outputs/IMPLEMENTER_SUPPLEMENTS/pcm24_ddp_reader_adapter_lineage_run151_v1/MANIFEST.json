@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "pcm24_ddp_reader_adapter_lineage_run151_v1",
+  "scope": "Run151 host RunInput to AtmosMezz Init/Run call path and DDP internal source-record to local AtmosReader configuration conversion; selected ADM identity/generation remains UNBOUND; output parse/playback NOT_RUN.",
+  "status": "HOST_RUNINPUT_TO_ATMOSMEZZ_SAME_THREAD_OBSERVED; DDP_RECORD_TO_READER_CONFIG_STATIC_PATH_BOUND; DESCRIPTOR_ROW_TABLE_ALIAS_OBSERVED; SELECTED_ADM_OWNER_GENERATION_UNBOUND; OUTPUT_PARSE_PLAYBACK_NOT_RUN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3559,
+      "sha256": "199e87aeeed44c150e3b43e1f9e4d025bd45c483fdbb039f47df137ec20f1b17"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1382,
+      "sha256": "3a632247edd5f4b0fae199f402b215c4ab2d0d9445b13a65d126faa06610dd33"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1443,
+      "sha256": "df6ebd32577e66739445ba4109e8ac6d087a6968a4d79274178065c0ab1378f3"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1722,
+      "sha256": "be332dbb5cdc599ea9c5ad90bbbd33aebf839c8d6ae8e4b0c32178e207df2424"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 323,
+      "sha256": "a7133d553df84b813bb2f06348544debb8d59bf139fc8f92d8f0ca7ff8cf5efe"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2742,
+      "sha256": "8dfeba015758fd41c66789a3e17a68293f6b5aa1b4d25499164ba163687fa168"
+    }
+  ]
+}

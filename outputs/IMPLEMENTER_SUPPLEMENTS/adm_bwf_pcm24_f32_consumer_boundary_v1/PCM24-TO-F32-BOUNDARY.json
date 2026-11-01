@@ -1,0 +1,23 @@
+{
+  "schema": "washed-pcm24-to-f32-consumer-boundary.v1",
+  "status": "CONDITIONAL_PCM24_TO_S16_BRANCH_STATIC_PCM24_TO_F32_CONTRACT_UNBOUND",
+  "source_package_manifest_sha256": "f45234280f568aec17a1102587abad00205973e9dcb50a9416bfbc6f99c474a8",
+  "source_package_seal_sha256": "a9b3591f594b9b98af99f738e7d211b2e1798da5bcc6553e2c44a863be82e6ea",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+  "static_chain": {
+    "from_reader_adapter_to_data_chunk": "HASH_BOUND_GHIDRA_STATIC",
+    "three_byte_branch": "if descriptor source bytes-per-sample equals 3, reads three bytes per sample and stores a short via a bitwise carry expression",
+    "relationship_to_first_f32_DSP_consumer": "UNBOUND",
+    "separate_float_branch": "four-byte exponent/mantissa-style input returns float; no call edge from the three-byte branch"
+  },
+  "unestablished": {
+    "sample6_branch_taken": "NOT_CAPTURED",
+    "conversion_scale_to_f32": "UNBOUND",
+    "f32_conversion_site": "UNBOUND",
+    "float_precision_and_rounding_mode": "UNBOUND",
+    "reader_to_DSP_row_mapping": "UNBOUND"
+  },
+  "approved_input_contract": "F01.3 describes 38-channel PCM24 U24LE signed interpretation and byte addressing; it does not grant permission to transplant an unbound native short or float branch.",
+  "minimum_capture": "One same-generation nonzero signed PCM24 sample coordinate, the corresponding first-DSP F32 input bits and owner/row tokens; discard sample immediately. A value without typed call lineage is only a scalar cross-check."
+}

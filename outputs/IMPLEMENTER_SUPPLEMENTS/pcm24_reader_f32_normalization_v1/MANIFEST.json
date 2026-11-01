@@ -1,0 +1,30 @@
+{
+  "schema": "washed-pcm24-reader-f32-normalization.v1",
+  "package_id": "pcm24_reader_f32_normalization_v1",
+  "status": "STATIC_PCM24_TO_F32_RULE_CLOSED_FOR_CONTEXT7_BRANCH; END_TO_END_ROW_JOIN_OPEN",
+  "implementation_readiness": "PCM24_READER_RULE_READY; WHOLE_CHAIN_NO",
+  "source_package_manifest_sha256": "fbe36b291be5dd965a94c55350ce9981ef05250f3aa3dc12b057786adf26f9cd",
+  "source_package_seal_sha256": "f77f2e0fd951d8252635233b320f04138b49120261a17c3070dbb5b76f18d374",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1543,
+      "sha256": "ff3ce710fdb4916519a1f822196377a2659058f04e72426988dfde6046e02d71"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2413,
+      "sha256": "6f38e136f9451e82aee8a50c2235d28ab86bda84e4b674945595df6cfc42afa0"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 615,
+      "sha256": "58dff7460f6334448075434087ab26aca364f6a1f637090e6d8ee1441210901d"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1544,
+      "sha256": "546799b2a33114e6e086da8f737c4a0503de7caf03fd08c60eccc9fe4ed9f90a"
+    }
+  ]
+}

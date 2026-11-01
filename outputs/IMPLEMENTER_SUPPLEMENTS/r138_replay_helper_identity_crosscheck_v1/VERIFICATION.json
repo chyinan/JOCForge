@@ -1,0 +1,34 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_PROCESS_RECEIPT; ORIGINAL_R138_PID_RECEIPT_MISSING",
+  "source_package_id": "r138-replay-helper-image-identity",
+  "source_package_manifest_sha256": "bd726d353a53cd201ed973f90ebce0ae7d38f63e15c1be7623c99a5f6965e858",
+  "source_package_payloads_checked": 4,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "host_hash_matches_r138": true,
+  "helper_child_pe_and_sha_match_candidate": true,
+  "same_debug_session_host_call_and_child_create": true,
+  "input_hash_matches_authorized_sample6": true,
+  "dee_exit_code": 0,
+  "temporary_output_hash_only": true,
+  "temporary_output_removed": true,
+  "implementation_scope": "R138_EQUIVALENT_REPLAY_ONLY",
+  "original_r138_child_receipt": "NOT_CAPTURED",
+  "implementation_ready": "CANDIDATE_HELPER_RULE_SUPPORTED_FOR_EQUIVALENT_REPLAY; ORIGINAL_PID_NOT_CAPTURED",
+  "limitations": [
+    "This is a replay using the same host binary, input, and non-path business configuration; it is not a retroactive process receipt from the original R138 run.",
+    "The temporary EC3 was not parsed or played and is not an output acceptance artifact.",
+    "Do not generalize helper behavior beyond this image/config/input without further evidence."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "private_key_or_license_contents": false,
+    "raw_pcm": false,
+    "raw_ec3": false,
+    "absolute_paths": false,
+    "full_command_line": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "washed-atmosmezz-adm-bwf-helper-runtime-boundary.v2",
+  "status": "STATIC_HELPER_BWF_CAPABILITY_CONFIRMED_RUNTIME_SELECTION_NOT_CAPTURED",
+  "source_package_manifest_sha256": "6f5bc7a2509e94f90eba5691dffe0fb2f600a3cea9c028c9ed09ae12e759399c",
+  "source_packages": {
+    "r2_v1_manifest": "004d18d3791fac5759f973df48f09a93df390cb5dc33957696dc4c2c3e495b76",
+    "sample6_full_dee_receipt_manifest": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f",
+    "sample6_job_xml_sha256": "e4529fe290814178146cecf1be630bb24f92551807e626b89aba27195b011b75"
+  },
+  "static_path": {
+    "dee_input_object": "dee::input::AtmosMezz",
+    "run_delegates_to": "atmos_info.exe --input",
+    "helper_bwf_factory_and_parser": "STATIC_PRESENT",
+    "constructs": "atmos_storage_master_s",
+    "adm_bwf_checks": [
+      "chna",
+      "axml",
+      "ADM XML parser"
+    ],
+    "relation_to_dact_storage": "same functional class family; shared runtime object/code identity not established"
+  },
+  "sample6_actual_run": {
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "host_route": "atmos_mezz / encode_to_atmos_ddp / file_position",
+    "full_file_dee_completed": true,
+    "output_payload_sha256_claim": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "helper_pid_or_child_process": "NOT_CAPTURED",
+    "selected_factory_callback": "NOT_CAPTURED",
+    "master_storage_object_or_vtable": "NOT_CAPTURED"
+  },
+  "minimum_runtime_observation": {
+    "boundary": "After type-specific BWF master open returns inside atmos_info.exe.",
+    "fields": [
+      "helper process and parent DEE job token",
+      "input path identity token",
+      "selected BWF factory callback",
+      "returned master/storage object and vtable token",
+      "parent-generation token"
+    ],
+    "status": "PLAN_ONLY_NOT_EXECUTED"
+  },
+  "audio_boundary": "Input-parser capability only; no audio algorithm, field value, gain/default or DEE policy supplied."
+}

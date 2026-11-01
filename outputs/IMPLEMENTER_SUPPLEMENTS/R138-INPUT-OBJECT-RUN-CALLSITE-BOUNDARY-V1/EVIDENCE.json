@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge-r138-run-callsite-boundary.v1",
+  "package_id": "R138-INPUT-OBJECT-RUN-CALLSITE-BOUNDARY-V1",
+  "status": "STATIC_CALLSITE_BOUND; R138_SELECTION_AND_OWNER_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "host_image": {
+    "name": "dee.exe",
+    "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "identity_basis": "incoming Ghidra/Windbg evidence package; binary hash not recomputed by Wash in this pass"
+  },
+  "static_callsite": {
+    "function": "FUN_1400CA5F0 / dee::InputObject::execute",
+    "sequence": [
+      {"rva": "0xCA9F2", "instruction": "MOV RCX, qword ptr [RSI+0x1F0]", "meaning": "load candidate reader pointer from wrapper field"},
+      {"rva": "0xCA9F9", "instruction": "MOV RAX, qword ptr [RCX]", "meaning": "load candidate reader vtable"},
+      {"rva": "0xCA9FC", "instruction": "CALL qword ptr [RAX+0x30]", "meaning": "virtual Run call; stop before execution"}
+    ],
+    "recommended_stop": "dee.exe+0xCA9FC",
+    "r138_runtime_capture": "NOT_CAPTURED"
+  },
+  "observed_schema_activation": {
+    "command_class": "schema-only",
+    "task_profile_supplied": false,
+    "audio_input_supplied": false,
+    "route_selected": false,
+    "r138_reader_invoked": "NOT_CAPTURED",
+    "full_encode": "NOT_RUN",
+    "metadata_callbacks_are_r138_reader_selection": false
+  },
+  "edges": {
+    "audio_adm_owner_to_selected_reader": "UNBOUND",
+    "reader_factory_table_count_slot": "UNBOUND",
+    "reader_field_writer_or_constructor_identity": "UNBOUND",
+    "parent_generation": "UNBOUND",
+    "static_run_callsite": "BOUND_TO_HOST_IMAGE_AND_FUNCTION"
+  },
+  "scope_limits": {
+    "field_displacement_candidate_count": 256,
+    "candidate_displacement_proves_object_identity": false,
+    "schema_declaration_proves_selected_route": false,
+    "does_not_establish_audio_rule": true
+  },
+  "policy": {
+    "new_encode_started": false,
+    "r138_xml_read": false,
+    "row_or_table_bytes_read": false,
+    "pcm_read": false,
+    "payload_or_encoded_output_read": false,
+    "key_or_license_content_read": false,
+    "implementation_behavior_changed": false
+  }
+}

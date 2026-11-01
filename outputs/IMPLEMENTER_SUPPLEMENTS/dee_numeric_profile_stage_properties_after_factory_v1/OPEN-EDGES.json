@@ -1,0 +1,16 @@
+{
+  "package_id": "dee_numeric_profile_stage_properties_after_factory_v1",
+  "closed": [
+    "Run145/148 route name exact-matches callback-created config",
+    "Numeric XML properties are applied after stage creation via SetStageProperties",
+    "Loader index originates from callback-array iteration, not a typed numeric task field in this route"
+  ],
+  "open": [
+    "Other route/profile combinations",
+    "Global callback ordinal",
+    "Complete Run148 module set",
+    "Direct callback entry hit",
+    "Descriptor owner/generation"
+  ],
+  "guidance": "Do not map decoded output profile_index to an input selector, and do not use a numeric task property as callback ordinal without a typed edge."
+}

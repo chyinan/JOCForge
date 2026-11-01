@@ -1,0 +1,58 @@
+{
+  "schema": "wash-only-adm-audio-input-registration-boundary.v1",
+  "package_id": "HOST-ADM-AUDIO-INPUT-REGISTRATION-BOUNDARY-V1",
+  "result": "HOST_AUDIO_INPUT_REGISTRATION_MECHANISM_CLOSED; ADM_FACTORY_PRODUCER_TO_REGISTRY_ENTRY_UNBOUND",
+  "profile": {
+    "config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "time_base": "embedded_timecode"
+  },
+  "registration_producer": {
+    "host_category": "audio_input",
+    "producer_role": "host plugin manager resolves a category getter and receives an ordered function-pointer list plus count",
+    "registry_consumer_role": "host appends each function pointer to its category-specific registry vector",
+    "enumeration_ordinal": "STATIC_GENERIC_TABLE_ORDER",
+    "generic_registration_status": "STATIC_CLOSED",
+    "module_specific_adm_reader_entry": "UNBOUND"
+  },
+  "module_ownership": {
+    "dactlib_adm_bwf_components": "STATIC_COMPONENTS_PRESENT_IN_HASH_BOUND_CURRENT_RUNTIME_IMAGE",
+    "dactlib_audio_input_getter_transfer": "NOT_OBSERVED",
+    "current_runtime_separate_audio_input_plugin_image": "NOT_IDENTIFIED",
+    "host_builtin_reader_factory_possibility": "OPEN"
+  },
+  "r138_reader_and_handoff": {
+    "audio_adm_to_concrete_reader_factory": "UNBOUND",
+    "reader_provider_to_dact_adm_factory": "UNBOUND",
+    "reader_output_to_first_atmos_codec_consumer": "UNBOUND",
+    "typed_task_generation": "NOT_OBSERVED"
+  },
+  "missing_typed_join": {
+    "required_role_edge": "R138 audio.adm type owner -> concrete ADM/BWF reader factory table entry -> instantiated reader/provider",
+    "missing_evidence": "module getter/returned table identity and same-task input-type/reader-instance owner join"
+  },
+  "smallest_observation": {
+    "registration_boundary_role": "audio_input category getter result before host registry insertion",
+    "reader_selection_boundary_role": "host InputObject executor before selected reader Run virtual call",
+    "process_boundary_role": "first 3D Atmos/codec consumer of a reader-produced source descriptor or frame request",
+    "capture_only": [
+      "module identity token",
+      "category and factory-list count",
+      "factory slot ordinal and function-pointer token",
+      "input-wrapper owner token",
+      "reader instance/vtable/Run-target tokens",
+      "typed audio.adm input token",
+      "parent task-generation token",
+      "first processing consumer owner and descriptor/frame-size scalar tokens"
+    ],
+    "payload_reads": 0,
+    "retries": 0
+  },
+  "sample_use": {
+    "authorized_audio_sample_used": "NO",
+    "reason": "Ghidra-only registration edge work; Wash/R4 consolidated run is pending",
+    "native_run": "NOT_RUN",
+    "pcm_or_bitstream_read_or_saved": false
+  }
+}

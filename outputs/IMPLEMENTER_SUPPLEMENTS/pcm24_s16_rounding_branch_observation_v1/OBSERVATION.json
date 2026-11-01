@@ -1,0 +1,71 @@
+{
+  "schema": "washed-conditional-pcm24-to-s16-branch.v1",
+  "status": "CONDITIONAL_STATIC_BRANCH_NOT_RUNTIME_JOINED",
+  "scope": {
+    "source_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_package_manifest_sha256": "d9ae53629c9093a048286d2b64add3936ced350fd488e876029ccb78fe0b3031",
+    "source_package_seal_sha256": "7b066da9a392069c20cbdfc8d07cfa6117c4dced74a62f5abe16c6aabe8b0511",
+    "method": "Ghidra static analysis only",
+    "runtime_execution": "NOT_RUN",
+    "pcm_samples_read_or_persisted": false
+  },
+  "conditional_branch_fact": {
+    "input_condition": "BWF data read path selected with bytes_per_sample == 3",
+    "input_type": "signed PCM24",
+    "read_width_bytes": 3,
+    "intermediate_type": "signed 16-bit",
+    "static_algebraic_candidate": "round-to-nearest ties-to-even of signed_pcm24 / 256, with a positive-endpoint guard to avoid 32768",
+    "confidence": "STATIC_CONDITIONAL_NOT_RUNTIME_VALIDATED",
+    "vectors_role": "algebra sanity only; not runtime evidence"
+  },
+  "unbound": [
+    "whether the selected 38-channel profile chooses this three-byte branch",
+    "typed transfer from this S16 intermediate to the first F32 DSP consumer",
+    "PCM24-to-F32 normalization scale",
+    "F32 precision and rounding behavior",
+    "reader-row identity at the first numeric DSP consumer"
+  ],
+  "implementation_disposition": {
+    "production_rule_approved": false,
+    "instruction": "Do not use this conditional S16 observation as the JOCForge PCM24-to-F32 conversion rule. Continue using only the already approved PCM24 input contract until a same-generation runtime join is washed.",
+    "no_algorithm_substitution": "No external encoder or decoder algorithm was used."
+  },
+  "input_only_vectors": [
+    {
+      "signed_pcm24": 0,
+      "conditional_s16_candidate": 0
+    },
+    {
+      "signed_pcm24": 256,
+      "conditional_s16_candidate": 1
+    },
+    {
+      "signed_pcm24": 384,
+      "conditional_s16_candidate": 2
+    },
+    {
+      "signed_pcm24": 640,
+      "conditional_s16_candidate": 2
+    },
+    {
+      "signed_pcm24": -128,
+      "conditional_s16_candidate": 0
+    },
+    {
+      "signed_pcm24": -384,
+      "conditional_s16_candidate": -2
+    },
+    {
+      "signed_pcm24": -640,
+      "conditional_s16_candidate": -2
+    },
+    {
+      "signed_pcm24": 8388607,
+      "conditional_s16_candidate": 32767
+    },
+    {
+      "signed_pcm24": -8388608,
+      "conditional_s16_candidate": -32768
+    }
+  ]
+}

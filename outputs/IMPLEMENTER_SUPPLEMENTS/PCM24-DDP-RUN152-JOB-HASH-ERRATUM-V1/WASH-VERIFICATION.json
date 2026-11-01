@@ -1,0 +1,18 @@
+{
+  "schema": "wash-verification.v1",
+  "base_manifest_sha256": "1082dd1460fa133a727ff0daeed99b18bfa2b8e6668bdfc4f3f2a2876153baef",
+  "erratum_manifest_sha256": "f1e303eb14ebf6153c29e11cba4f3ed5cf03df76ca13ec852ad68cbd4a1c5e89",
+  "checker_results": {
+    "base_package_normal": "PASS",
+    "base_package_python_optimized": "PASS",
+    "erratum_package_normal": "PASS",
+    "erratum_package_python_optimized": "PASS"
+  },
+  "independent_review": [
+    "Recomputed both incoming MANIFEST.json hashes and ran both package checkers normally and under Python optimization.",
+    "Confirmed the correction changes only the Run152 job XML hash mapping; Run153 retains its original hash.",
+    "Preserved the unchanged Run145-only input hash scope and Run152/153 sample identity UNBOUND/NO.",
+    "Preserved stack-address reuse rather than object/owner/generation identity and retained output parse/playback NOT_RUN."
+  ],
+  "readiness": "NO_CHANGE; NOT_IMPLEMENTATION_READY"
+}

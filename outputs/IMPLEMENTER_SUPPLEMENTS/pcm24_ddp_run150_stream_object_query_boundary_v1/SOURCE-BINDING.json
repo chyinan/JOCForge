@@ -1,0 +1,13 @@
+{
+  "schema": "washed-pcm24-ddp-run150-source-binding.v1",
+  "package_id": "pcm24_ddp_run150_stream_object_query_boundary_v1",
+  "incoming_research_manifest_sha256": "03577bc348ae1002888765347c627be3365c5524a3aec71c2487d5885f0d6646",
+  "incoming_package_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "parent_run149_package_manifest_sha256": "723076d71e3d99945dcdbc3c333a1da11bb39e60df89e6fd16d54cf937ff38a4",
+  "current_first_love_hash": "MATCH",
+  "current_converter_file_hash": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+  "ddp_image_hash": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "raw_pointer_tokens_included": false,
+  "raw_decompilation_included": false,
+  "private_key_or_license_contents_read": false
+}
