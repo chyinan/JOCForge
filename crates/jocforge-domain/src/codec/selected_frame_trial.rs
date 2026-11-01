@@ -11,7 +11,9 @@ use super::bap::{
     FULLBAND_CHANNEL_COUNT, LFE_BIN_COUNT, MAIN_FAST_GAIN_CODE, allocate_bap_frame_with_parameters,
 };
 use super::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
-use super::exponent_packing::PackedExponentGroup;
+use super::exponent_packing::{
+    PackedExponentGroup, packed_exponent_group_count, span_for_fullband_strategy,
+};
 use super::frame_builder::{
     SelectedBsiMixingInformationWriteError, SelectedEac3PrefixError,
     write_selected_bsi_mixing_information, write_selected_eac3_fixed_prefix,
@@ -734,11 +736,20 @@ fn validate_exponent_and_coefficient_plan(
         .enumerate()
     {
         for (lane_index, lane) in exponent_plan.fullband.iter().enumerate() {
+            let packed_group_count_valid = if lane.strategy == 0 {
+                true
+            } else {
+                span_for_fullband_strategy(lane.strategy).is_some_and(|span| {
+                    lane.packed_groups.len()
+                        == packed_exponent_group_count((FULLBAND_BIN_COUNT - 1) / usize::from(span))
+                })
+            };
             if lane.strategy > 3
                 || lane.bandwidth_code > 63
                 || lane.base_exponent > 15
                 || lane.gain_range > 3
                 || lane.decoded_exponents.iter().any(|exponent| *exponent > 24)
+                || !packed_group_count_valid
                 || (lane.strategy != 0
                     && lane.packed_groups.iter().any(|group| group.value() > 127))
             {
@@ -1349,6 +1360,63 @@ mod tests {
         assert_eq!(plans["pcm_or_audio_samples_included"], false);
         assert_eq!(plans["prototype_expected_outputs_used_as_seed"], false);
         assert_eq!(plans["common_plan_shape"]["frame_bytes"], 4_096);
+    }
+
+    #[test]
+    fn active_fullband_strategy_requires_its_selected_packed_group_count() {
+        let zero_group =
+            super::super::exponent_packing::pack_exponent_difference_group(&[0, 0, 0]).unwrap();
+        let coefficient_blocks = std::array::from_fn(|_| CoefficientBlockInput {
+            fullband_words: [[0_u32; FULLBAND_BIN_COUNT]; FULLBAND_LANE_COUNT],
+            lfe_words: [0_u32; LFE_BIN_COUNT],
+        });
+        let make_exponent_blocks = |strategy: u8, group_count: usize| {
+            std::array::from_fn(|block| BlockExponentPlan {
+                fullband: std::array::from_fn(|lane| {
+                    let active = block == 0 && lane == 0;
+                    FullbandExponentLanePlan {
+                        decoded_exponents: [0; FULLBAND_BIN_COUNT],
+                        strategy: if active { strategy } else { 0 },
+                        bandwidth_code: if active { 48 } else { 0 },
+                        base_exponent: 0,
+                        packed_groups: if active {
+                            vec![zero_group; group_count]
+                        } else {
+                            Vec::new()
+                        },
+                        gain_range: 0,
+                    }
+                }),
+                lfe: LfeExponentPlan {
+                    decoded_exponents: [0; LFE_BIN_COUNT],
+                    strategy: 0,
+                    base_exponent: 0,
+                    packed_groups: [zero_group; 2],
+                },
+            })
+        };
+
+        for (strategy, expected_groups) in [(1, 72), (2, 36), (3, 18)] {
+            let valid = make_exponent_blocks(strategy, expected_groups);
+            assert!(
+                validate_exponent_and_coefficient_plan(
+                    &coefficient_blocks,
+                    &valid,
+                    MainExponentSyntax::BlockStrategies,
+                )
+                .is_ok()
+            );
+        }
+
+        let oversized_strategy_two = make_exponent_blocks(2, 72);
+        assert!(matches!(
+            validate_exponent_and_coefficient_plan(
+                &coefficient_blocks,
+                &oversized_strategy_two,
+                MainExponentSyntax::BlockStrategies,
+            ),
+            Err(SelectedFramePlanError::InvalidExponentInput { block: 0, lane: 0 })
+        ));
     }
 
     #[test]

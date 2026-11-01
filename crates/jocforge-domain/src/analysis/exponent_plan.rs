@@ -10,6 +10,7 @@ use crate::codec::exponent_normalization::{
 };
 use crate::codec::exponent_packing::{
     ExponentPackingError, PackedExponentGroup, pack_exponent_difference_group,
+    packed_exponent_group_count, span_for_fullband_strategy,
 };
 use crate::codec::exponent_refresh_state::refresh_exponent_state;
 use crate::codec::policy_parameters::{PolicyParameters, PolicyProfile};
@@ -24,8 +25,6 @@ const REFRESH_SPECIAL_I16: i16 = 0;
 const REFRESH_BEGIN_I16: i16 = 0;
 const FBW_REFRESH_END_I16: i16 = 128;
 const LFE_REFRESH_END_I16: i16 = 7;
-const FBW_GROUP_COUNT: usize = FULLBAND_EXPONENT_BINS - 1;
-const FBW_PACKED_GROUP_COUNT: usize = FBW_GROUP_COUNT / 3;
 const LFE_PACKED_GROUP_COUNT: usize = (LFE_EXPONENT_BINS - 1) / 3;
 
 /// One block position within the selected six-block analysis frame.
@@ -502,8 +501,10 @@ fn fullband_plan_block(
     if decoded_exponents.iter().any(|value| *value > 24) {
         return Err(AnalysisExponentPlanError::InvalidPrimaryRow);
     }
-    let packed_groups = pack_exponent_row(normalized.expanded_exponents())?;
-    if packed_groups.len() != FBW_PACKED_GROUP_COUNT {
+    let span = span_for_strategy(strategy)?;
+    let packed_groups = pack_exponent_row(normalized.expanded_exponents(), span)?;
+    let difference_count = (FULLBAND_EXPONENT_BINS - 1) / usize::from(span);
+    if packed_groups.len() != packed_exponent_group_count(difference_count) {
         return Err(AnalysisExponentPlanError::Packing(
             ExponentPackingError::ExponentInputError,
         ));
@@ -529,7 +530,7 @@ fn lfe_plan_block(
     if decoded_exponents.iter().any(|value| *value > 24) {
         return Err(AnalysisExponentPlanError::InvalidPrimaryRow);
     }
-    let packed_groups = pack_exponent_row(normalized.expanded_exponents())?
+    let packed_groups = pack_exponent_row(normalized.expanded_exponents(), 1)?
         .try_into()
         .map_err(|_| {
             AnalysisExponentPlanError::Packing(ExponentPackingError::ExponentInputError)
@@ -544,13 +545,15 @@ fn lfe_plan_block(
 
 fn pack_exponent_row<const BINS: usize>(
     row: &[i16; BINS],
+    span: u8,
 ) -> Result<Vec<PackedExponentGroup>, AnalysisExponentPlanError> {
-    if BINS < 2 {
+    let span = usize::from(span);
+    if BINS < 2 || !matches!(span, 1 | 2 | 4) || (BINS - 1) % span != 0 {
         return Err(AnalysisExponentPlanError::InvalidPrimaryRow);
     }
-    let mut differences = Vec::with_capacity(BINS - 1);
+    let mut differences = Vec::with_capacity((BINS - 1) / span);
     let mut previous = row[0];
-    for exponent in row.iter().copied().skip(1) {
+    for exponent in row.iter().copied().skip(1).step_by(span) {
         let difference = exponent.wrapping_sub(previous);
         differences.push(
             i8::try_from(difference).map_err(|_| AnalysisExponentPlanError::InvalidPrimaryRow)?,
@@ -566,17 +569,30 @@ fn pack_exponent_row<const BINS: usize>(
 }
 
 fn span_for_strategy(strategy: u8) -> Result<u8, AnalysisExponentPlanError> {
-    match strategy {
-        1 => Ok(1),
-        2 => Ok(2),
-        3 => Ok(4),
-        _ => Err(AnalysisExponentPlanError::InvalidRefreshOutput),
-    }
+    span_for_fullband_strategy(strategy).ok_or(AnalysisExponentPlanError::InvalidRefreshOutput)
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{AnalysisExponentPlanError, fullband_strategies, span_for_strategy};
+    use super::{
+        AnalysisExponentPlanError, fullband_plan_block, fullband_strategies, span_for_strategy,
+    };
+
+    #[test]
+    fn f10_wire_group_count_follows_fullband_strategy_span() {
+        let raw = [10_i16; crate::codec::exponent_normalization::FULLBAND_EXPONENT_BINS];
+        for (strategy, expected_groups) in [(1, 72), (2, 36), (3, 18)] {
+            let span = span_for_strategy(strategy).unwrap();
+            let normalized = crate::codec::exponent_normalization::normalize_fullband_exponents(
+                &raw, span, 0, 0, None,
+            )
+            .unwrap();
+            let plan = fullband_plan_block(strategy, 0, &normalized).unwrap();
+
+            assert_eq!(plan.packed_groups().len(), expected_groups);
+            assert!(plan.packed_groups().iter().all(|group| group.value() == 62));
+        }
+    }
 
     #[test]
     fn reverse_refresh_scan_applies_short_override_after_marker_strategy() {

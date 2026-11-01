@@ -6,6 +6,21 @@ const MAX_EXPONENT_DIFFERENCE: i8 = 2;
 const MIN_EXPONENT_DIFFERENCE: i8 = -2;
 const DIGIT_BASE: u16 = 5;
 
+/// Returns the selected fullband exponent span for an active wire strategy.
+pub(crate) const fn span_for_fullband_strategy(strategy: u8) -> Option<u8> {
+    match strategy {
+        1 => Some(1),
+        2 => Some(2),
+        3 => Some(4),
+        _ => None,
+    }
+}
+
+/// Returns the number of U7 words needed to pack the supplied difference count.
+pub(crate) const fn packed_exponent_group_count(difference_count: usize) -> usize {
+    difference_count.div_ceil(MAX_GROUP_DIGITS)
+}
+
 /// Error returned when a difference group is empty, too long, or out of range.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ExponentPackingError {

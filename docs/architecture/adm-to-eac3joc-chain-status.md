@@ -2,7 +2,7 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
-> 文档更新：2026-11-02。当前 Rust 实现代码基准为 JOCForge `a4e1a667`（2026-11-02）；之后提交记录了 Wash 证据与链路状态，没有修改生产算法。第三次真实 sample-6 CLI 已完成 Meter prepass（4,247 callbacks / 3 drains；本地模型 `dialnorm=Some(17)`、metadata generation 0），source0/1 suppressed 4,096-byte F12 proposals 与各自 12-owner proposals 均成功。source2 AU0 完成 F13/F14K→F12→Integrity after-root→F15 durable append：285-byte EMDF container、4,096-byte frame、frame SHA-256 `b2c778245d1b578ea98ee89517133a77235aca4cd683bf8719e455bdf14ef087`、CRC16 residual 0；staging 文件为 `.test-tmp/attempt-1793482106508451400.ec3.partial`。staging hash/CRC verification 已通过；bit-level dynamic carrier check 通过，但 numeric bit offset 未记录。CLI 随后按设计 exit 2 并停止；12-owner atomic swap、remaining sources、EOF/finalize/expose 均未运行，final destination 未生成，不能称全链闭合。F06 DialNorm 公式、native U5 producer 与 CHNA/DDP owner-generation/native equivalence 仍 `UNBOUND`。本轮 boundary check 记录 68 scoped checks；supplement catalog 为 529 directories / 527 manifests 且 `--check` 通过。DEE 参考文件不属于 JOCForge 产物。
+> 文档更新：2026-11-02。attempt-10 使用的源码快照为 JOCForge `a4e1a667`（2026-11-02）；当前源码另有 F10 策略组数修正，尚未用它重新编码。第三次真实 sample-6 CLI 已完成 Meter prepass（4,247 callbacks / 3 drains；本地模型 `dialnorm=Some(17)`、metadata generation 0），source0/1 suppressed 4,096-byte F12 proposals 与各自 12-owner proposals 均成功。source2 AU0 完成 F13/F14K→F12→Integrity after-root→F15 durable append：285-byte EMDF container、4,096-byte frame、frame SHA-256 `b2c778245d1b578ea98ee89517133a77235aca4cd683bf8719e455bdf14ef087`、CRC16 residual 0；staging 文件为 `.test-tmp/attempt-1793482106508451400.ec3.partial`。staging hash/CRC verification 已通过；bit-level dynamic carrier check 通过，但 numeric bit offset 未记录。CLI 随后按设计 exit 2 并停止；12-owner atomic swap、remaining sources、EOF/finalize/expose 均未运行，final destination 未生成，不能称全链闭合。F06 DialNorm 公式、native U5 producer 与 CHNA/DDP owner-generation/native equivalence 仍 `UNBOUND`。最新 boundary check 通过：68 scoped checks、104 inventoried IDs、0 个未物化 root、6 个 partial roots。DEE 参考文件不属于 JOCForge 产物。
 
 ## 2026-11-02 范围与证据更新
 
@@ -19,6 +19,14 @@
 三包的 manifest/payload checker 在普通模式与 `python -O` 下均通过；目录索引 `--check` 与 boundary check 通过。attempt-10 仍不作为输入或比较基线。当前 Rust 模板值可用于复现当前选定 Rust profile，不能宣称为 DEE 默认或已达音频 parity；不要求用户补选 downmix。非机密 DEE 规则收到 Wash 的精确合同后逐项接入；当前包标为 `UNBOUND` 的字段继续等待直接证据。
 
 Wash 包 `KEYLESS-REFERENCE-CORE-BED-AUDIO-EQUALITY-V1`（manifest SHA-256 `5782243ba35fb2feed8a9716904a84566e1e0ef6e92eeee641f221fa1cbb4704`）报告：FFmpeg 8.1 对 protected/DEE reference、sample-table-extracted reference 和用户指定 keyless candidate 的 5.1 core/bed decode 都得到 48 kHz、6,523,392 帧；六声道 PCM SHA-256 完全相同，每声道最大/均值/RMS 差均为 0。该结果不包含 JOC spatial/object render，也没有比较 Rust attempt-10。实现侧没有读取或解码这些输出/PCM。它支持 core/bed 一致性判断，不能代替 JOC 元数据和空间渲染验证。
+
+用户已将当前验收方向改为只依据 DEE 音频链；早期 Python 原型与对照组文件停止作为实现或验收输入。HMAC 继续使用 keyless 路径，不读取私钥。上述历史 Wash 比较记录保留为历史信息，不参与当前代码决策。
+
+### F10 策略跨度对应的 exponent wire group
+
+批准的 `10-exponent-normalization.md` 规定全带宽 strategy span 1/2/4 对应 216/108/54 个差分，并写成 72/36/18 个 U7 组。原计划构造器从完整 217-bin 展开行打包全部差分，使 strategy 2/3 也得到 72 组。当前修正按选定 span 采样代表指数，并在 frame candidate preflight 检查组数与策略一致；复用块仍不写 exponent body。
+
+回归用例先复现 strategy 2 的 72 对 36 错误，修正后通过。domain `analysis::exponent_plan` 用例 3/3、`codec::selected_frame_trial` 用例 7/7、domain cargo check、fmt 和 boundary check 均通过。严格 Clippy 仍被其他既有文件中的 9 条 warning 拒绝；本次新增的组数 helper warning 已处理。尚未生成包含此修正的新编码文件；因此它修复了已批准 wire 合同中的具体错误，但尚未证明 attempt-10 的因果关联或 DEE 全链音频一致性。
 
 当前源码按批准的嵌套事务合同分别校验 producer/source token 与父 GTC callback receipt token，并保留 owner/generation 检查。F05/F13 洗白包的九个 source hashes 与当前源码全匹配，普通与 python -O checker 均通过。attempt-02 时间线包（manifest 5b8e020296334e7597bdcd29b64921b9f20341692c2f69813182f1428d93027d）确认：Meter 4,247 callbacks / 3 drains 后，g=0 的 jocforge-main-callback-g0 提交 phase 1→2，g=1 的 jocforge-main-callback-g1 提交 phase 2→3，各有 12 receipts；随后首次 F05/F13 报 Joc(ProducerTransactionMismatch)，inner exit 2、Cargo wrapper exit 1。失败 executable SHA、expected/actual producer token、callback/source/dispatch、JOC owner 和各 generation 仍 UNBOUND；旧运行与当前源码/build 的连接未建立。两个针对性 domain 回归用例、workspace check、fmt 和 boundary check 通过。
 
