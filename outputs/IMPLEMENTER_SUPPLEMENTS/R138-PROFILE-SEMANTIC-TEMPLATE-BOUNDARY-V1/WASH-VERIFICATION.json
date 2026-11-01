@@ -1,0 +1,21 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "d82300912609c9d1579c8ca265264bbfa26ee3f76c655f86fc78743d538e6991",
+  "incoming_seal_sha256": "eb5189349cfc7461125c99ff38814c3c0aa1559b133fe329da57a7b15d787dcb",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "status": "VALID_PARTIAL"},
+  "independent_review": [
+    "Recomputed the incoming manifest digest and confirmed its seal; ran the package checker normally and under Python optimization.",
+    "Kept the normalized XML comparison scoped to all non-path fields; it does not establish input media identity.",
+    "Kept the First Love short-window quiet classification separate from the authorized human-cat sample.",
+    "Kept the +24 Hortus/My Jealousy windows and file-position run100 separate from R138 defaults.",
+    "Did not derive runtime defaults from the unbound local XSD or create a runnable XML."
+  ],
+  "not_promoted": [
+    "First Love input bytes as the human-cat input",
+    "sanitized receipts as sufficient run-instance file paths",
+    "local XSD acceptance as DEE runtime behavior",
+    "a newly created job or DEE launch",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

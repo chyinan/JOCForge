@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 4336,
+      "file": "CHECK.py",
+      "sha256": "dfd5d26bb6b98e06587ed1b4742f54ee1e2878346ff3dc9f3f159809465245dc"
+    },
+    {
+      "bytes": 2572,
+      "file": "EVIDENCE.json",
+      "sha256": "2749e107edcbfed1c1ff674d08e4e9949552788eeb514c8bd4fce00b705e1212"
+    },
+    {
+      "bytes": 1800,
+      "file": "REPORT.md",
+      "sha256": "c84a7de72b51ac89a78b522dd139f26864be02db0a0b10b179493830f0ed2cd3"
+    },
+    {
+      "bytes": 1041,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "fe99304b72ae7c34dedf33eb3f3dac40de2a669bfa62115a330a26d1cfefed9f"
+    },
+    {
+      "bytes": 1269,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "cd0394484b259c370ecb9ec0db9923699ee1b319a37327fde0e828dd9edbda3a"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "R138-PROFILE-SEMANTIC-TEMPLATE-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "d82300912609c9d1579c8ca265264bbfa26ee3f76c655f86fc78743d538e6991",
+  "status": "SEMANTIC_NONPATH_TEMPLATE_MATCH_BOUND; RUN_INSTANCE_PATHS_AND_MEDIA_IDENTITY_SEPARATE"
+}

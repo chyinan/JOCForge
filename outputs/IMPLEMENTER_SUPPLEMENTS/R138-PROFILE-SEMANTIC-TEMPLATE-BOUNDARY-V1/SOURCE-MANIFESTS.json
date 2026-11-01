@@ -1,0 +1,18 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "r138_adm_job_schema_completeness_wash_v1",
+    "manifest_sha256": "d82300912609c9d1579c8ca265264bbfa26ee3f76c655f86fc78743d538e6991",
+    "seal_sha256": "eb5189349cfc7461125c99ff38814c3c0aa1559b133fe329da57a7b15d787dcb",
+    "checker_normal": "PASS; VALID_PARTIAL",
+    "checker_python_optimized": "PASS; VALID_PARTIAL",
+    "workspace_sources_hash_bound": 20,
+    "external_source_hash_only_receipts": 3
+  },
+  "related_wash_packages": [
+    {"package_id": "R138-INPUT-OBJECT-RUN-CALLSITE-BOUNDARY-V1", "manifest_sha256": "69abcfe6b33c85af0e198e34969038ffac3a1cbd1985c2689f5adedd3d95f600"},
+    {"package_id": "R138-AUDIO-INPUT-FACTORY-REGISTRY-BOUNDARY-V1", "manifest_sha256": "44d75abfac4025fb4cd97cea95d452676020b243ac7d0a0ef8c835157d2443ef"},
+    {"package_id": "R138-AUDIO-INPUT-TAG-SELECTION-BOUNDARY-V1", "manifest_sha256": "82cdf2fb12cc395d58dad80ac5cd38c18363c15fe4fd6d2e90e98c9866309619"}
+  ],
+  "raw_job_xml_or_media_copied": false
+}

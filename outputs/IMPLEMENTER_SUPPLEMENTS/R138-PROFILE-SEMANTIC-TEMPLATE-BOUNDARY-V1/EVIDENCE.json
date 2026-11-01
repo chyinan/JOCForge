@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge-r138-profile-template-boundary.v1",
+  "package_id": "R138-PROFILE-SEMANTIC-TEMPLATE-BOUNDARY-V1",
+  "status": "SEMANTIC_NONPATH_TEMPLATE_MATCH_BOUND; RUN_INSTANCE_PATHS_AND_MEDIA_IDENTITY_SEPARATE",
+  "implementation_ready": false,
+  "r138_profile": {
+    "xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "normalized_semantic_sha256_redacting_only_file_name_and_path_text": "0b319d7e27cfaba2fa3fe965234fec828955495e29508b0505ce16e78b8726a4",
+    "input_type": "audio.adm",
+    "output_route": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "time_base": "embedded_timecode",
+    "start": 86640,
+    "end": 86664,
+    "metering_mode": "1770-4",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "line_mode_drc": "none",
+    "rf_mode_drc": "none",
+    "downmix": {"loro_center": "-3", "loro_surround": "-3", "ltrt_center": "-3", "ltrt_surround": "-3", "preferred_mode": "loro"},
+    "surround_trim_5_1": "auto",
+    "height_trim_5_1": "auto"
+  },
+  "first_love_template": {
+    "completed_job_xml_sha256": "a04b7881e9b52f25120feb27b96ce21a3c3481ccf79f54ca6c2343b4de7211cb",
+    "normalized_nonpath_sha256": "0b319d7e27cfaba2fa3fe965234fec828955495e29508b0505ce16e78b8726a4",
+    "r138_normalized_nonpath_sha256": "0b319d7e27cfaba2fa3fe965234fec828955495e29508b0505ce16e78b8726a4",
+    "matches_after_redacting_only_file_name_path": true,
+    "encoder_receipt_status": "ENCODER_COMPLETED_METADATA_CAPTURED",
+    "window_audio_classification": "QUIET",
+    "input_media_identity_equals_authorized_human_cat": "UNBOUND"
+  },
+  "other_profile_limits": {
+    "hortus_and_my_jealousy_active_window": "86664..86688 (+24); per-input, not default",
+    "run100_timebase": "file_position; not equivalent to R138",
+    "local_xsd_sha256": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44",
+    "local_xsd_bound_to_dee_executable": false,
+    "local_xsd_accepts_r138_element_order": false
+  },
+  "run_instance_fields_not_from_sanitized_receipts": ["authorized input alias/path", "unique output path", "isolated temp directory"],
+  "derived_job": {
+    "created": false,
+    "started": false,
+    "semantics_if_derived": "preserve First Love non-path fields and replace only run-specific input/output/temp paths",
+    "would_be_original_r138_xml": false
+  },
+  "policy": {
+    "raw_xml_in_wash_package": false,
+    "media_or_pcm_read": false,
+    "payload_read": false,
+    "license_or_key_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}
