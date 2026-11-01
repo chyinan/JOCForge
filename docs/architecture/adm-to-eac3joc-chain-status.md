@@ -30,6 +30,10 @@ attempt-10（run ID `sample6-keyless-full-20261101-10`）于 2026-11-01T23:58:34
 
 用户指定的 keyless Python comparator `candidate-keyless-compatible-joc.ec3` 长度同为 17,395,712 bytes，流式 SHA-256 为 `383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86`；因此 attempt-10 是 **SHA256_MISMATCH**，单曲 MVP 精确等值验收未通过。用户确认 comparator 与本次授权输入为同一 ADM/input SHA；原 Python run receipt 状态仍为 `USER_ASSERTED_NOT_RESEALED`，作为 provenance caveat 单列，不阻止本次哈希比较。仅做了长度/退出收据/流式 SHA-256 核验；没有打开、解析、解码或播放 comparator/输出码流，也没有运行 OpenJOC、渲染或播放验收。
 
+attempt-10 的 profile 仅完成 source-supported reconstruction：从 run-bound runner 输入路径、输出路径与 `selected_full_file_job_xml` 模板重建 job XML SHA-256 `17ea167465d24f420b5218f8a8bb8acf15f1bdd0eb8c5aa3efe1052e8a86d85c` 和应用等价 prepared-config SHA-256 `78586c903421ce5ea93837cc7bdd8a075d5a548a9698a9d1c6df8f8980639ba5`。当前源模板/准入要求 48 kHz、1,024 kbps、5.1 (`acmod=7`, LFE=1)、1,536 samples、4,096 bytes、6 blocks；实际输入 prepared-input 行记录 48 kHz、38-channel PCM24、6,522,906 samples。job XML/config digest 未由 attempt-10 应用在运行时落盘；`a4e1a667` source snapshot 在 build 后才提交，run receipt 绑定 exe hash 但未绑定 source commit。故 `target_profile` 仍是 source-supported、run-specific binding reconstructed/not captured，待 Wash 复核，不据此开始新编码。
+
+用户报告 Adobe Audition 拒绝导入 attempt-10 文件，并明确称这是 import/interoperability failure，不等于 AU 损坏。实现侧没有解析 attempt-10；R9 的只读 AU 结构审计仍由 Wash 侧负责。若 parser-specific observation 出现，须单独标注，不外推为损坏原因。
+
 ## 目标与边界
 
 目标输入是用户授权的 ADM BWF。目标输出是 48 kHz、1,024 kbps、5.1、E-AC-3 JOC。当前 profile 只接受选定的 ADM BWF、38 通道 PCM24、5.1 六个 carrier、mode 0/phase 1/index 3、单 independent 子流、零 dependent 子流、六个 block、1,536 samples/AU 和 4,096 bytes/AU。EMDF 使用 `deployed_compat` 或 `etsi_emdf`。OpenJOC render target 只属于独立验证配置。
