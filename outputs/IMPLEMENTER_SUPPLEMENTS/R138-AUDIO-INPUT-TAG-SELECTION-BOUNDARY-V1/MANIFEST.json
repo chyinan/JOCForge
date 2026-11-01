@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 4651,
+      "file": "CHECK.py",
+      "sha256": "34f9cb254d3474f773d8b764323f54afd5d8ba24d400ef2fac01fcfe3c5dc22f"
+    },
+    {
+      "bytes": 2351,
+      "file": "EVIDENCE.json",
+      "sha256": "82271c9d4e1c028554d4b9618096621bb4323166b62532469cb30092fd18595e"
+    },
+    {
+      "bytes": 1784,
+      "file": "REPORT.md",
+      "sha256": "7a4e873d81f08cde1deec3144f39e6e063f3ac5e922f0e91ba32ba278eb29b7f"
+    },
+    {
+      "bytes": 968,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "148cb650de0a21c7d775ec98f9ef1e39361ffd433c0543f2c20af225d1ecec1a"
+    },
+    {
+      "bytes": 1342,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "9fb03446b83be612679180fd340d06e161e8954121efa5d8d6700034e51648cd"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "R138-AUDIO-INPUT-TAG-SELECTION-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "80d2e2c64880c0a38483b51cd51094f1092fda52936cfb28b60513184b256836",
+  "status": "EXACT_XML_TAG_MATCH_RULE_STATICALLY_BOUND; R138_SELECTED_INDEX_UNBOUND"
+}

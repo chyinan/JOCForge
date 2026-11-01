@@ -1,0 +1,23 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "80d2e2c64880c0a38483b51cd51094f1092fda52936cfb28b60513184b256836",
+  "incoming_seal_sha256": "5b5e69bf4e9eeb5b30c0e3f6c548d0967dd1d9f717eeeea5745692d85170e34f",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "status": "VALID_PARTIAL"},
+  "independent_review": [
+    "Recomputed the incoming manifest digest and matched its seal file.",
+    "Ran the incoming package verifier normally and under Python optimization; all 41 source hashes passed.",
+    "Separated XML input type `audio.adm` from output profile `encode_to_atmos_ddp`.",
+    "Preserved the exact name comparison, last-match-wins behavior, and disabled-candidate error branch as static host rules.",
+    "Kept selector vector +0xB0 and StageRunner vector +0x2F0 separate because no typed pointer/generation join is present.",
+    "Preserved the selected index/reader owner observation as NOT_RUN/UNBOUND."
+  ],
+  "not_promoted": [
+    "R138 selected factory module or callback slot",
+    "selector vector identity with StageRunner candidate vector",
+    "selected candidate index",
+    "typed reader owner/vtable",
+    "schema membership as runtime selection",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

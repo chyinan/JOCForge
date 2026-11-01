@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge-r138-audio-input-tag-selection.v1",
+  "package_id": "R138-AUDIO-INPUT-TAG-SELECTION-BOUNDARY-V1",
+  "status": "EXACT_XML_TAG_MATCH_RULE_STATICALLY_BOUND; R138_SELECTED_INDEX_UNBOUND",
+  "implementation_ready": false,
+  "host_image": {
+    "name": "dee.exe",
+    "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "identity_basis": "hash-bound Ghidra source package"
+  },
+  "profile_receipt": {
+    "input_path": "/job_config/input/audio/adm",
+    "input_type": "audio.adm",
+    "output_path": "/job_config/filter/audio/encode_to_atmos_ddp",
+    "output_profile": "encode_to_atmos_ddp",
+    "input_and_output_fields_are_distinct": true
+  },
+  "static_paths": {
+    "stage_runner_candidate_enumeration": {
+      "function": "FUN_140049120",
+      "vector_offset": "+0x2F0",
+      "behavior": "enumerates registered audio-input configs as candidates"
+    },
+    "schema_builder": {
+      "function": "FUN_140042610",
+      "getter_slot": "+0x8",
+      "behavior": "builds audio.input.type schema from eligible candidates; not runtime selection"
+    },
+    "xml_selector": {
+      "tag_storage": "StageObjectWithStorage+0x210",
+      "candidate_vector": "+0xB0..+0xB8",
+      "candidate_name_getter_slot": "+0x10",
+      "comparison": "equal byte length and byte-for-byte equality",
+      "selected_pointer_field": "+0x1F8",
+      "duplicate_name_behavior": "last equal-name entry wins",
+      "disabled_candidate_condition": "selected config +0x0C == 0 fails before storing factory result +0x1F0"
+    }
+  },
+  "unbound": {
+    "selector_vector_to_stage_runner_vector_identity": "UNBOUND",
+    "successful_r138_effective_candidate_order": "NOT_CAPTURED",
+    "selected_stage_runner_input_candidate_index": "UNBOUND/NO",
+    "typed_reader_owner_and_vtable": "UNBOUND/NO"
+  },
+  "minimum_next_observation": {
+    "field": "selected_stage_runner_input_candidate_index",
+    "join": "resolve the selected config pointer against the same-run StageRunner +0x2F0 vector",
+    "capture_status": "NOT_RUN",
+    "mismatch_value": "NOT_IN_VECTOR",
+    "media_bytes_read": false,
+    "authorization_from_this_package": false
+  },
+  "policy": {
+    "dee_run_started": false,
+    "media_read": false,
+    "key_or_license_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}

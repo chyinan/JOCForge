@@ -1,0 +1,22 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "dee_audio_input_selection_rule_wash_v1",
+    "manifest_sha256": "80d2e2c64880c0a38483b51cd51094f1092fda52936cfb28b60513184b256836",
+    "seal_sha256": "5b5e69bf4e9eeb5b30c0e3f6c548d0967dd1d9f717eeeea5745692d85170e34f",
+    "checker_normal": "PASS; VALID_PARTIAL",
+    "checker_python_optimized": "PASS; VALID_PARTIAL",
+    "source_hash_count": 41
+  },
+  "related_wash_package": {
+    "package_id": "R138-AUDIO-INPUT-FACTORY-REGISTRY-BOUNDARY-V1",
+    "manifest_sha256": "44d75abfac4025fb4cd97cea95d452676020b243ac7d0a0ef8c835157d2443ef",
+    "relationship": "The registry/candidate path is bound, but its typed identity to the selector vector remains open."
+  },
+  "target_host_image": {
+    "name": "dee.exe",
+    "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "current_install_rehashed": false
+  },
+  "raw_xml_or_media_copied": false
+}
