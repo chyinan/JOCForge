@@ -1,0 +1,19 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "attempt_07_08_transaction_commit_review_wash_v1",
+    "manifest_sha256": "7ae78144409d7836f8dad4da48ed1ef16aa2b2ce570063959689e2f0d0e0f06a",
+    "manifest_seal_matches": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "scope": "attempt receipts/logs and current relevant source only"
+  },
+  "parent_identity_receipt": {
+    "attempt_07_package_id": "SAMPLE6-KEYLESS-FULL-20261101-07-EXECUTABLE-SOURCE-BINDING-WASH-V1",
+    "manifest_sha256": "d3aa206c112b8b7b2941870d3472382d157456d29434b2e2aed8092d15288b25",
+    "source_tree_to_binary": "UNBOUND"
+  },
+  "current_source_tree": "D:\\Programs\\JOCForge-isolated; source file hashes are recorded in incoming EVIDENCE-IDENTITIES.json and are not attested to either run executable",
+  "raw_output_bytes_copied": false,
+  "native_or_proprietary_semantics_used": false
+}

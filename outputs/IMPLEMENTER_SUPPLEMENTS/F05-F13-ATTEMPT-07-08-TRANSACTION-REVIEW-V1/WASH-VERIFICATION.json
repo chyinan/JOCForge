@@ -1,0 +1,21 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "7ae78144409d7836f8dad4da48ed1ef16aa2b2ce570063959689e2f0d0e0f06a",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "seal_matches": true},
+  "independent_review": [
+    "Verified the incoming manifest seal and ran its validator normally and under Python optimization.",
+    "Kept attempt-07 CallbackIndexMismatch separate from attempt-08 F15 ParentFsyncAfterRename.",
+    "Preserved attempt-07 mismatch operands as NOT_CAPTURED rather than inferring them from the last durable append.",
+    "Recorded attempt-08 EOF ledger as pass only within the run log; its exit code is 2 with no final exposure receipt or DONE state.",
+    "Preserved source-tree-to-executable and exact transaction-gate causal attribution gaps.",
+    "Kept the delivery/origin model proposal NOT_APPROVED."
+  ],
+  "not_promoted": [
+    "attempt-08 as successful final output transaction",
+    "attempt-07 mismatch expected/actual values",
+    "attempt-08 source-to-binary attestation",
+    "a new nominal type-level contract",
+    "audio algorithm implementation authorization"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

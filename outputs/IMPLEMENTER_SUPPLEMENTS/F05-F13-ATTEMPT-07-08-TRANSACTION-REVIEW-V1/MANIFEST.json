@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 4443,
+      "file": "CHECK.py",
+      "sha256": "2a577d350dbb356e64118cff2ed4a3904922a73bf65dcbe2e53dcd3de0ef5ed6"
+    },
+    {
+      "bytes": 3034,
+      "file": "EVIDENCE.json",
+      "sha256": "4fd72a48bedecd92be4e564295144f6ac1bcb037ad6eabcd1bd87b76ba75d780"
+    },
+    {
+      "bytes": 1804,
+      "file": "REPORT.md",
+      "sha256": "1579cc3dbd1216a9bd6ce8cb4a2a79f681fc8bceacde99ac95ad6f8f5cadcfb2"
+    },
+    {
+      "bytes": 943,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "dfbd89d7bf7842c62f3718b6adbcefb36ba1e9b670e4bdfe30b6f8f0aab34eab"
+    },
+    {
+      "bytes": 1236,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "e3281d6ba8e255885b0f148ca4b431d0ae3bda563a95a22972fbaf68ea88e9c0"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F05-F13-ATTEMPT-07-08-TRANSACTION-REVIEW-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "7ae78144409d7836f8dad4da48ed1ef16aa2b2ce570063959689e2f0d0e0f06a",
+  "status": "ATTEMPT08_SOURCE_AU_EOF_PASS_F15_POST_FAILURE; ATTEMPT07_MISMATCH_DETAILS_NOT_CAPTURED"
+}

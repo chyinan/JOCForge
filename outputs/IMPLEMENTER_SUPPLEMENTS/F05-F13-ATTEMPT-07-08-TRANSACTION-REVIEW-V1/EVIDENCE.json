@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge-f05-f13-attempt-review.v1",
+  "package_id": "F05-F13-ATTEMPT-07-08-TRANSACTION-REVIEW-V1",
+  "status": "ATTEMPT08_SOURCE_AU_EOF_PASS_F15_POST_FAILURE; ATTEMPT07_MISMATCH_OPERANDS_NOT_CAPTURED",
+  "implementation_ready": false,
+  "model_status": "MODEL_PROPOSAL_NOT_APPROVED",
+  "attempt_07": {
+    "run_id": "sample6-keyless-full-20261101-07",
+    "application_exit_code": 2,
+    "last_progress_callbacks": "4242/4251",
+    "terminal": "cached F01E/F03W/F04 parent proposal: CallbackIndexMismatch",
+    "mismatch_callback_source_ordinals_tokens_generations_operands": "NOT_CAPTURED",
+    "last_logged_durable_append": {"callback_ordinal": 4100, "source_ordinal": 4098, "au_index": 4096, "frame_bytes": 4096, "durable": true, "crc_residual": 0, "phase_generation": [4101, 4102]},
+    "eof_commit": "NOT_CAPTURED",
+    "terminal_status": "CALLBACK_INDEX_MISMATCH_BEFORE_EOF_NOT_DONE"
+  },
+  "attempt_08": {
+    "run_id": "sample6-keyless-full-20261101-08",
+    "application_exit_code": 2,
+    "source_au_path": "PASS_WITHIN_LOGGED_SCOPE",
+    "last_logged_durable_append": {"callback_ordinal": 4250, "source_ordinal": 4248, "au_index": 4246, "frame_bytes": 4096, "durable": true, "crc_residual": 0, "phase_generation": [4251, 4252]},
+    "eof_commit": {"sources": 4249, "published_aus": 4247, "durable_bytes": 17395712, "pending_drop_receipts": 7, "metadata_generation": 4250, "phase_generation": 4253},
+    "f05_f13_per_source_owner_receipts": "NOT_CAPTURED",
+    "source_tree_to_executable_binding": "NOT_CAPTURED",
+    "terminal": "F15 finalize/exposure failed: DURABLE_OUTPUT_ERROR:finalize/parent-sync:ParentFsyncAfterRename",
+    "final_exposure_receipt": "NOT_CAPTURED",
+    "done_status": "NOT_REACHED",
+    "terminal_status": "F15_POST_FAILURE_NOT_DONE"
+  },
+  "current_source_model": {
+    "delivery_transaction_id": "separate field",
+    "source_origin_transaction_id": "separate field",
+    "source_origin_generation": "separate field",
+    "nominal_type_for_both_transaction_ids": "CallbackLineageIdentity",
+    "consumer_clocks": "delivery and retained origin are checked separately",
+    "attempt_08_causal_gate_attribution": "NOT_CAPTURED",
+    "new_type_level_model": "MODEL_PROPOSAL_NOT_APPROVED"
+  },
+  "source_identity": {
+    "attempt_07_run_record_sha256": "008c851050d6c0210cca3e66ee8b2d53acf2debc3b6e36935f73ff7b0555b77f",
+    "attempt_07_stderr_sha256": "47a9c917e49662220ac563612ef57dcdad4c8cbcb380bc15b500ed1bd0d07aef",
+    "attempt_08_run_record_sha256": "8393e3d7d71943b3ececfd49ade74ebca5d7e43f373781e8122187bae2c09dff",
+    "attempt_08_stderr_sha256": "fcde0cf16ba7ac0c058f406e5b1e36d219deb7a356b7143189fee3c4e3cc1ba1",
+    "attempt_08_target_exe_sha256": "8a6741d6b540bcddcf4ddc6b0e9dd5e758f1a0fa5e829a12df43433f8c8d589e"
+  },
+  "handling": {
+    "product_artifact_opened": false,
+    "encode_run_or_restart": false,
+    "native_disassembly_used": false,
+    "derived_openjoc_json_search_result_used": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}
