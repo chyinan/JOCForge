@@ -32,6 +32,8 @@ attempt-10（run ID `sample6-keyless-full-20261101-10`）于 2026-11-01T23:58:34
 
 attempt-10 的 profile 仅完成 source-supported reconstruction：从 run-bound runner 输入路径、输出路径与 `selected_full_file_job_xml` 模板重建 job XML SHA-256 `17ea167465d24f420b5218f8a8bb8acf15f1bdd0eb8c5aa3efe1052e8a86d85c` 和应用等价 prepared-config SHA-256 `78586c903421ce5ea93837cc7bdd8a075d5a548a9698a9d1c6df8f8980639ba5`。当前源模板/准入要求 48 kHz、1,024 kbps、5.1 (`acmod=7`, LFE=1)、1,536 samples、4,096 bytes、6 blocks；实际输入 prepared-input 行记录 48 kHz、38-channel PCM24、6,522,906 samples。job XML/config digest 未由 attempt-10 应用在运行时落盘；`a4e1a667` source snapshot 在 build 后才提交，run receipt 绑定 exe hash 但未绑定 source commit。故 `target_profile` 仍是 source-supported、run-specific binding reconstructed/not captured，待 Wash 复核，不据此开始新编码。
 
+Wash reference `F09-D45-CURRENT-RUST-COVERAGE-BOUNDARY-V1`（manifest SHA-256 `6b5526962c4af6a680eefc3cefb508d43f0d1342c1516dad276ad18ec0b8527f`，normal/-O PASS）确认当前 Rust 中 F12 quantizer/BAP packing 路径存在；限定源目录内未找到 D45 selector cell→4/7-bit accumulator 专属路径。它明确不是 attempt-10 hash mismatch 的原因；D45 字段语义/absolute bit position 与 attempt-10 binary-to-source-tree 仍 `UNBOUND`。
+
 用户报告 Adobe Audition 拒绝导入 attempt-10 文件，并明确称这是 import/interoperability failure，不等于 AU 损坏。实现侧没有解析 attempt-10；R9 的只读 AU 结构审计仍由 Wash 侧负责。若 parser-specific observation 出现，须单独标注，不外推为损坏原因。
 
 ## 目标与边界
