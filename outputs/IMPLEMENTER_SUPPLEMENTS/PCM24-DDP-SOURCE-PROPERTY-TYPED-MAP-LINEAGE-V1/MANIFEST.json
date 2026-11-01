@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "PCM24-DDP-SOURCE-PROPERTY-TYPED-MAP-LINEAGE-V1",
+  "source_reverse_manifest_sha256": "1ab196b4b28c634da1465ce634d30c34766e5cb240f39111ed06f0900fc9f65a",
+  "status": "STATIC_TYPED_PROPERTY_PATH_BOUND; HOST_WRITER_JOIN_AND_RUNTIME_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2596,
+      "sha256": "1f2d6a3272c37ea84cedc90d5a227c7e0c8b64003aebadc2ef2832a2f4fd72a9"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1299,
+      "sha256": "bae1a1aeffbd2abeb25a10156cfad87014156df61fd538983b5626ba8ce157a4"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2084,
+      "sha256": "86c19da15ea9de0fa33369628b0207980e6adad19815ca5ac799167bf69bd72a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1206,
+      "sha256": "4843a13a2f2b8e1ea56d4429547ddbf6c7acf24156018729e425d01496e539e1"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_wash_package": {
+    "package_id": "pcm24_ddp_source_property_typed_map_lineage_v1",
+    "manifest_sha256": "1ab196b4b28c634da1465ce634d30c34766e5cb240f39111ed06f0900fc9f65a",
+    "seal_matches": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "raw_decompilation_and_ghidra_scripts_copied": false
+  },
+  "previous_wash_supplement": {
+    "package_id": "PCM24-DDP-SOURCE-PROPERTY-TO-FILENAME-BOUNDARY-V1",
+    "manifest_sha256": "40f4d205760745942b2f3e4b1959a6c4908c5d311428c866d979f7418bac5e9d"
+  },
+  "linked_capture": {
+    "manifest_sha256": "d30fa0500bc0e1fbd1351ecec125af7c0cf721f1e43fc71319b78ba91c33da14",
+    "setter_record": "NOT_CAPTURED",
+    "audio_consumption": "UNKNOWN",
+    "bitstream": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "images": [
+    {
+      "name": "dee_audio_filter_ddp.dll",
+      "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72"
+    },
+    {
+      "name": "prior host writer image",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "join": "UNBOUND"
+    }
+  ],
+  "raw_decompilation_or_media_copied": false
+}

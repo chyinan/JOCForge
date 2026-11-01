@@ -1,0 +1,67 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "PCM24-DDP-SOURCE-PROPERTY-TYPED-MAP-LINEAGE-V1",
+  "source": {
+    "wash_package_id": "pcm24_ddp_source_property_typed_map_lineage_v1",
+    "manifest_sha256": "1ab196b4b28c634da1465ce634d30c34766e5cb240f39111ed06f0900fc9f65a",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "prior_wash_supplement_id": "PCM24-DDP-SOURCE-PROPERTY-TO-FILENAME-BOUNDARY-V1",
+    "prior_wash_supplement_manifest_sha256": "40f4d205760745942b2f3e4b1959a6c4908c5d311428c866d979f7418bac5e9d",
+    "linked_capture_manifest_sha256": "d30fa0500bc0e1fbd1351ecec125af7c0cf721f1e43fc71319b78ba91c33da14"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp.dll",
+    "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+    "image_base": "0x180000000",
+    "analysis_tier": "GHIDRA_STATIC_ONLY"
+  },
+  "outer_state": {
+    "type": "dee::proc::FilterDDPEnc",
+    "state_size_bytes": 5520,
+    "state_pointer_offset": "0xb8"
+  },
+  "source_property": {
+    "key": "dee_audio_filter_source",
+    "handler": "FUN_1801ed430",
+    "normalized_string_parser": "FUN_18020d820",
+    "parser_lookup_map_offset": "state+0x1530",
+    "parser_result_type": "std::string",
+    "normalized_string_destination": "outer+0xc0",
+    "reader_destination": "input_file setter",
+    "directly_passed_as_map_to_media_metadata_setter": false
+  },
+  "media_metadata": {
+    "state_offset": "0x1f0",
+    "type": "dee::Types::MediaMetadata",
+    "setter_vtable_slot": "0x28",
+    "setter": "FUN_18023ec60",
+    "stored_type": "SafeType<vector<map<string,string>>>",
+    "commit_vtable_slot": "0x50",
+    "commit": "FUN_18023f590",
+    "typed_store": "FUN_1801fa210",
+    "typed_reader": "FUN_1801fdb80",
+    "filename_getter_vtable_slot": "0x30",
+    "filename_getter": "FUN_18023f700",
+    "filename_key": "filename",
+    "runtime_instance_observed": false
+  },
+  "open_joins": {
+    "metadata_map_to_host_source_writer_param3": "UNBOUND",
+    "reason": "The prior writer evidence uses a different image hash; no direct field/call edge is present in the current image.",
+    "host_object_or_generation": "UNBOUND",
+    "adm_reader_identity": "UNBOUND",
+    "runtime_setter_value": "NOT_CAPTURED",
+    "dee_audio_consumption": "UNKNOWN",
+    "bitstream": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "restrictions": {
+    "ghidra_scripts_copied": false,
+    "decompilation_copied": false,
+    "binary_copied": false,
+    "pcm_or_payload_copied": false,
+    "private_key_material_copied": false,
+    "implementation_ready": false
+  }
+}

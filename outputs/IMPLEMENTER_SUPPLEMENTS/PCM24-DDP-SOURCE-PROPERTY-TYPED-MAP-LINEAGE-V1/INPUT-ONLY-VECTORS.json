@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-ddp-source-property-lineage-vectors.v1",
+  "kind": "static structural discriminator; not an executed fixture",
+  "vectors": [
+    {
+      "id": "source-text-and-media-map-are-separate-flows",
+      "input": {
+        "property_key": "dee_audio_filter_source",
+        "handler": "FUN_1801ed430",
+        "source_text_branch": {
+          "parser": "FUN_18020d820",
+          "map_offset": "state+0x1530",
+          "result_type": "std::string",
+          "destination": "outer+0xc0"
+        },
+        "metadata_child_branch": {
+          "state_offset": "0x1f0",
+          "setter_vtable_slot": "0x28",
+          "stored_type": "SafeType<vector<map<string,string>>>"
+        }
+      },
+      "expected": {
+        "normalized_string_directly_passed_as_metadata_map": false,
+        "map_filename_getter": "FUN_18023f700; key=filename",
+        "map_to_prior_host_writer_param3": "UNBOUND",
+        "runtime_value": "NOT_CAPTURED"
+      }
+    }
+  ],
+  "lineage": {
+    "input_package_manifest_sha256": "1ab196b4b28c634da1465ce634d30c34766e5cb240f39111ed06f0900fc9f65a",
+    "previous_writer_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "current_image_sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72"
+  }
+}
