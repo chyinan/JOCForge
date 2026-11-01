@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "attempt10_addendum": {
+    "package_id": "F13C-attempt10-downmix-job-origin-addendum-v22",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\F13C-attempt10-downmix-job-origin-addendum-v22",
+    "manifest_sha256": "46902ddb8b0ef5db60586bccc7405d301daf904ef49e0974af48eec383957a49"
+  },
+  "verified_payload_hashes": [
+    {"file": "ATTEMPT10-RECONSTRUCTED-JOB.xml", "sha256": "17ea167465d24f420b5218f8a8bb8acf15f1bdd0eb8c5aa3efe1052e8a86d85c"},
+    {"file": "ATTEMPT10-PROFILE-BINDING.json", "sha256": "a4648c132cd87351a05ce39cb613c72b840e5f144c517768626ce13d6eb8ef1e"},
+    {"file": "ATTEMPT10-BUILD-RECEIPT.json", "sha256": "f173c95e01adf211e5bf07b73f9ee8f4f4080aae047ee138628dbb3aa109fc31"},
+    {"file": "ATTEMPT10-RECEIPT.json", "sha256": "94dc3549d406e7ea572671498b8663ddb742c08f0cd0793880505837110dcb78"},
+    {"file": "ATTEMPT10-JOB-PROVENANCE.json", "sha256": "4014694fecb584c26a1a6d8e11d5e215ba67f08e4025a448964e0c7f2292b899"}
+  ],
+  "rust_source_hashes": [
+    {"file": "crates/jocforge-cli/src/encode_request.rs", "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"},
+    {"file": "crates/jocforge-application/src/codec_source_bridge.rs", "sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e"},
+    {"file": "crates/jocforge-domain/src/codec/frame_builder.rs", "sha256": "170e3f220a795abfff5d296e8b53a8436b621e547c064e3aa3d4a781217c3829"}
+  ],
+  "dee_frontend_parent": {
+    "package_id": "F13C-dmixmod-omission-default-trace-addendum-v21",
+    "manifest_sha256": "cfaec056f570eec6d2a1d985bd3544df30eac446f89140ace9fa551448703415"
+  },
+  "exclusions": [
+    "No source code, protected media, PCM, HMAC/key or license data copied.",
+    "Runtime XML was not captured by the application; reconstructed XML is source-derived."
+  ]
+}

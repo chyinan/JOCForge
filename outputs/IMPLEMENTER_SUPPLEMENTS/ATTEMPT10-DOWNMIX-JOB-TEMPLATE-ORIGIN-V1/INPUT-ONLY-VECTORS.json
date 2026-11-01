@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "ATTEMPT10-DOWNMIX-JOB-TEMPLATE-ORIGIN-V1",
+  "vectors": [
+    {
+      "id": "rust-attempt10-template",
+      "kind": "SOURCE_TEMPLATE_ONLY",
+      "inputs": {"input_reference": "placeholder path parts", "output_reference": "placeholder path parts"},
+      "derived_fields": {"preferred_downmix_mode": "loro", "mix_levels_db": [-3, -3, -3, -3]},
+      "user_prompted": false,
+      "runtime_xml_captured": false
+    },
+    {
+      "id": "dme-ui-inactive-preference",
+      "kind": "FRONTEND_REQUEST_BUILDER_ONLY",
+      "inputs": {"PreferredStereoDownmix_active": false, "display_value": "Stereo"},
+      "derived_request": {"preferred_downmix_mode": "OMITTED"},
+      "native_runtime_default": "UNBOUND",
+      "not_the_same_path_as_rust_attempt10_template": true
+    }
+  ]
+}

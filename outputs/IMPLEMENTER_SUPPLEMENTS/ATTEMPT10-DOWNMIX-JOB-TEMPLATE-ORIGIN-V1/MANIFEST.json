@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATTEMPT10-DOWNMIX-JOB-TEMPLATE-ORIGIN-V1",
+  "source_reverse_manifest_sha256": "46902ddb8b0ef5db60586bccc7405d301daf904ef49e0974af48eec383957a49",
+  "status": "RUST_TEMPLATE_EXPLICIT_LORO_MINUS3; USER_INPUT_ABSENT; RUN_XML_RECONSTRUCTED",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2683,
+      "sha256": "626e74602faaa204d833e1901ae309716a59c1f29f82125913aafd86491d3afa"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 841,
+      "sha256": "b54c32a03cf53012d36a7adb9827ee98f7b89c05e673de08ee210a790bc3979f"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2016,
+      "sha256": "68e207b5ca1667c2a86fda81f5deaa7b28f3efbbb1ae530fab05debcb1a85ffb"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1907,
+      "sha256": "4072096f3893a789ba891bdd007682e1738a124c859d49345f7d60491899d284"
+    }
+  ]
+}

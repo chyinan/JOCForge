@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ATTEMPT10-DOWNMIX-JOB-TEMPLATE-ORIGIN-V1",
+  "source": {
+    "package_id": "F13C-attempt10-downmix-job-origin-addendum-v22",
+    "manifest_sha256": "46902ddb8b0ef5db60586bccc7405d301daf904ef49e0974af48eec383957a49",
+    "SHA256SUMS_entries_recomputed": 8,
+    "all_entries_match": true,
+    "reconstructed_job_xml_parse": "PASS"
+  },
+  "attempt10_run_identity": {
+    "run_id": "sample6-keyless-full-20261101-10",
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "application_status": "DONE",
+    "runner_exit_code": 0,
+    "executable_sha256": "f7b60dd98ac7475134175fce0405c127615321e39088f60031f1ed2e8b70d278",
+    "runner_script_sha256": "b8c0d9c7a670cc7e92ca341a2869c2554e626a25a18c90438e8ae902a5d523f"
+  },
+  "rust_template_source": {
+    "file": "crates/jocforge-cli/src/encode_request.rs",
+    "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e",
+    "function": "selected_full_file_job_xml",
+    "parameters": ["input_reference", "output_reference"],
+    "downmix_fields_are_literal_template_values": true,
+    "generated_fields": {"preferred_downmix_mode": "loro", "mix_levels_db": [-3, -3, -3, -3]}
+  },
+  "attempt10_xml_reconstruction": {
+    "sha256": "17ea167465d24f420b5218f8a8bb8acf15f1bdd0eb8c5aa3efe1052e8a86d85c",
+    "source_status": "RECONSTRUCTED_FROM_TEMPLATE_AND_RUN_PATHS",
+    "captured_by_application_at_runtime": false,
+    "prepared_config_sha256": "78586c903421ce5ea93837cc7bdd8a075d5a548a9698a9d1c6df8f8980639ba5",
+    "prepared_config_status": "RECONSTRUCTED_NOT_ATTEMPT_CAPTURED"
+  },
+  "rust_config_consumers": {
+    "codec_source_bridge_rs_sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e",
+    "accepts_only": {"preferred_mode": "loro", "mix_levels_db": [-3, -3, -3, -3]},
+    "maps_to_bsi": {"dmixmod": 2, "mix_levels": [4, 4, 4, 4]},
+    "frame_builder_rs_sha256": "170e3f220a795abfff5d296e8b53a8436b621e547c064e3aa3d4a781217c3829",
+    "mixmdate_presence": true
+  },
+  "dee_ui_distinction": {
+    "dee_v21_package_manifest": "cfaec056f570eec6d2a1d985bd3544df30eac446f89140ace9fa551448703415",
+    "preferred_control_active": false,
+    "request_builder_emits_preferred_when_inactive": false,
+    "dme_ui_omission_applies_to_rust_template": false,
+    "native_runtime_default_when_field_absent": "UNBOUND"
+  },
+  "execution_scope": {
+    "encoder_run": false,
+    "audio_or_pcm_read": false,
+    "private_key_hmac_or_license_read": false,
+    "runtime_job_xml_captured": false,
+    "runtime_downmix_effect_verified": false,
+    "implementation_ready_for_dee_default_claim": false
+  }
+}
