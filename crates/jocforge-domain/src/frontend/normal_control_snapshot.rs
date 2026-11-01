@@ -1520,6 +1520,53 @@ pub(crate) struct NormalControlAfterStateParts {
     pub(crate) prepared_identity: Arc<NormalControlPreparedSnapshot>,
 }
 
+impl FrontendControlState {
+    /// Reconstructs the read-only last-normal view needed by a cached MAIN delivery.
+    ///
+    /// This does not create a new F01E state. It copies only the committed state into the same
+    /// immutable view used by normal-control proposals and retains the last-normal source origin.
+    pub fn held_source_view_for_cached_callback(
+        &self,
+        owner_generation: u64,
+        delivery_transaction_id: CallbackLineageIdentity,
+        normal_callbacks: NormalCallbackCount,
+    ) -> Result<NormalControlHeldSourceView, NormalControlSnapshotError> {
+        let objects: [NormalControlObjectState; OBJECT_TRACK_COUNT] = self
+            .objects()
+            .iter()
+            .map(NormalControlObjectState::from_frontend_state)
+            .collect::<Vec<_>>()
+            .try_into()
+            .map_err(|_| NormalControlSnapshotError::StateShapeMismatch)?;
+        let after = NormalControlAfterState {
+            programme_id: self.programme_id().clone(),
+            attempt_id: self.attempt_id(),
+            next_callback_index: self.callback_index(),
+            next_normal_callbacks: self.normal_callbacks(),
+            next_owner_generation: owner_generation,
+            remaining_cached_drains: self.remaining_cached_drains(),
+            phase: self.phase(),
+            objects,
+            control38_snapshot: self
+                .last_control38_snapshot()
+                .cloned()
+                .ok_or(NormalControlSnapshotError::SnapshotShapeMismatch)?,
+            regular37_snapshot: self
+                .last_regular37_snapshot()
+                .cloned()
+                .ok_or(NormalControlSnapshotError::SnapshotShapeMismatch)?,
+            physical_binding_before: self.physical_binding().cloned(),
+            dbmd_binding_before: self.dbmd_binding().cloned(),
+            prepared_identity: Arc::new(
+                self.prepared_identity()
+                    .ok_or(NormalControlSnapshotError::PreparedIdentityMismatch)?
+                    .clone(),
+            ),
+        };
+        after.held_source_view_for_cached_callback(delivery_transaction_id, normal_callbacks)
+    }
+}
+
 /// Immutable main cached-drain view of the last committed normal F01E source snapshot.
 /// Delivery g advances while all source values retain origin Q-1.
 #[derive(Debug, PartialEq)]

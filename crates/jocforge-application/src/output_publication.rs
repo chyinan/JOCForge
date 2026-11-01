@@ -1,7 +1,7 @@
 // pattern: Imperative Shell
 //! Joins the current metadata and complete-frame proposals into one output-owner proposal.
 
-use jocforge_domain::profile::EmdfCarriageProfile;
+pub use jocforge_domain::profile::EmdfCarriageProfile;
 use jocforge_domain::profile::ResolvedEncodingProfile;
 use jocforge_domain::publication::OutputProvider;
 use jocforge_domain::{
@@ -14,18 +14,21 @@ use jocforge_domain::{
     joc::emdf::metadata_owner::{MetadataEofProposal, MetadataSourceProposal},
     publication::OutputSourceIdentity,
     timeline::{
-        ClockError, CodecSourceIndex, PublicationDisposition, PublishedAuIndex,
-        publication_for_source,
+        ClockError, CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition,
+        PublishedAuIndex, publication_for_source,
     },
 };
 use sha2::{Digest, Sha256};
 use std::sync::Arc;
 
 pub use jocforge_domain::publication::OutputConfiguration;
-pub use jocforge_domain::transaction::{AttemptId, ProgrammeId};
+pub use jocforge_domain::transaction::{
+    AttemptId, CallbackTransactionId, GtcOwnerReceipt, GtcOwnerReceiptError, ProgrammeId,
+};
 
 pub use jocforge_domain::publication::{
-    OutputFinalizeProposal, OutputFinalizedProposal, OutputOwner, OutputOwnerError,
+    OutputDurableAppendReceipt, OutputFinalExposureReceipt, OutputFinalizeProposal,
+    OutputFinalizedProposal, OutputOwner, OutputOwnerError, OutputOwnerStateReference,
     OutputSourceAfterProposal, OutputSourceProposal,
 };
 
@@ -76,12 +79,103 @@ const DEPLOYED_COMPAT_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\
 
 const ETSI_EMDF_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"etsi_emdf\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
 
-// This contract scaffold stays private and unwired until role validators and the destination
-// validator produce the required typed values/capability.
-#[allow(dead_code)]
-mod f15_plan_admission;
+// This private plan boundary accepts only owner-validated provider values and parent preflight.
+mod plan_admission;
 
 use super::PreparedJobInput;
+
+/// Retains the four typed owner values and pre-I/O destination capability for one encode request.
+#[must_use]
+pub struct AdmittedProductionPlan {
+    inner: plan_admission::SelectedF15Plan,
+}
+
+/// Read-only source providers retained by the exact F15 admission for this input and profile.
+///
+/// The view cannot create or commit owner state. It lets source callbacks reuse the validated
+/// BAP, JOC fit/retry, metadata, and keyless integrity values without loading a second provider
+/// set outside the admitted plan.
+pub struct AdmittedSourceProviders<'a> {
+    bap: &'a jocforge_domain::codec::bap::BapParameters,
+    fit_score: &'a jocforge_domain::joc::fit_score::FitScoreProvider,
+    representation_retry:
+        &'a jocforge_domain::joc::coefficient_representation::RepresentationRetryProvider,
+    metadata_owner: &'a jocforge_domain::joc::emdf::metadata_owner::ValidatedMetadataOwnerProvider,
+    keyless_integrity: &'a jocforge_domain::integrity::keyless_checksum::KeylessIntegrityProvider,
+}
+
+impl<'a> AdmittedSourceProviders<'a> {
+    pub const fn bap(&self) -> &'a jocforge_domain::codec::bap::BapParameters {
+        self.bap
+    }
+
+    pub const fn fit_score(&self) -> &'a jocforge_domain::joc::fit_score::FitScoreProvider {
+        self.fit_score
+    }
+
+    pub const fn representation_retry(
+        &self,
+    ) -> &'a jocforge_domain::joc::coefficient_representation::RepresentationRetryProvider {
+        self.representation_retry
+    }
+
+    pub const fn metadata_owner(
+        &self,
+    ) -> &'a jocforge_domain::joc::emdf::metadata_owner::ValidatedMetadataOwnerProvider {
+        self.metadata_owner
+    }
+
+    pub const fn keyless_integrity(
+        &self,
+    ) -> &'a jocforge_domain::integrity::keyless_checksum::KeylessIntegrityProvider {
+        self.keyless_integrity
+    }
+}
+
+impl AdmittedProductionPlan {
+    /// Borrows the values validated and retained by this plan for source-stage composition.
+    pub fn source_providers(&self) -> AdmittedSourceProviders<'_> {
+        AdmittedSourceProviders {
+            bap: self.inner.bap_parameters(),
+            fit_score: self.inner.fit_score_provider(),
+            representation_retry: self.inner.representation_retry_provider(),
+            metadata_owner: self.inner.metadata_owner_provider(),
+            keyless_integrity: self.inner.keyless_integrity_provider(),
+        }
+    }
+
+    pub const fn output_binding(&self) -> &ProgrammeOutputBinding {
+        self.inner.output_binding()
+    }
+
+    pub fn final_destination(&self) -> &str {
+        self.inner.final_destination()
+    }
+
+    pub fn staging_namespace(&self) -> &str {
+        self.inner.staging_namespace()
+    }
+
+    pub fn is_bound_to(&self, input: &PreparedJobInput) -> bool {
+        self.inner.is_bound_to(input)
+    }
+}
+
+pub fn admit_selected_f15_plan(
+    input: &PreparedJobInput,
+    attempt_id: AttemptId,
+    staging_owner_id: &OutputStagingOwnerId,
+    final_destination: &str,
+) -> Result<AdmittedProductionPlan, crate::EncodeError> {
+    let inner = plan_admission::admit_selected_f15_plan(
+        input,
+        attempt_id,
+        staging_owner_id,
+        final_destination,
+    )
+    .map_err(|_| crate::EncodeError::F15AdmissionRejected)?;
+    Ok(AdmittedProductionPlan { inner })
+}
 
 #[cfg(test)]
 mod tests;
@@ -219,12 +313,244 @@ impl ProgrammeOutputBinding {
         &self.staging_owner_id
     }
 
+    /// Reconstructs an isolated cold output root for the programme execution coordinator.
+    ///
+    /// This is available only before source zero. It carries the same admitted identifiers and
+    /// configuration as the plan while giving the callback parent its own unique root value.
+    pub fn fresh_cold_execution_binding(&self) -> Result<Self, OutputRootBindingError> {
+        if self.output_owner.generation() != 0 || self.output_owner.next_source_index().value() != 0
+        {
+            return Err(OutputRootBindingError::ProposalBindingMismatch);
+        }
+        let output_owner = OutputOwner::cold(self.output_owner.configuration().clone());
+        if output_owner
+            .state_digest()
+            .map_err(OutputRootBindingError::OutputOwner)?
+            != self
+                .output_owner
+                .state_digest()
+                .map_err(OutputRootBindingError::OutputOwner)?
+        {
+            return Err(OutputRootBindingError::ProposalBindingMismatch);
+        }
+        Ok(Self {
+            programme_id: self.programme_id.clone(),
+            attempt_id: self.attempt_id,
+            staging_owner_id: self.staging_owner_id.clone(),
+            output_owner,
+        })
+    }
+
     pub(super) fn output_owner(&self) -> &OutputOwner {
         &self.output_owner
     }
 
+    /// Returns the next parent-owned output binding after one validated source proposal.
+    ///
+    /// The returned value is still a proposal for the enclosing twelve-owner replacement. The
+    /// caller may use it to stage the next source only after the parent accepts this transition.
+    pub fn with_after_source(
+        self,
+        after: OutputSourceAfterProposal,
+    ) -> Result<Self, OutputRootBindingError> {
+        let next_owner = after.into_after_owner();
+        let expected_generation = self
+            .output_owner
+            .generation()
+            .checked_add(1)
+            .ok_or(OutputRootBindingError::GenerationOverflow)?;
+        let expected_source = self
+            .output_owner
+            .next_source_index()
+            .value()
+            .checked_add(1)
+            .ok_or(OutputRootBindingError::GenerationOverflow)?;
+        if next_owner.configuration() != self.output_owner.configuration()
+            || next_owner.generation() != expected_generation
+            || next_owner.next_source_index().value() != expected_source
+        {
+            return Err(OutputRootBindingError::ProposalBindingMismatch);
+        }
+        Ok(Self {
+            programme_id: self.programme_id,
+            attempt_id: self.attempt_id,
+            staging_owner_id: self.staging_owner_id,
+            output_owner: next_owner,
+        })
+    }
+
+    /// Builds the Output owner receipt for one source proposal without installing its after-root.
+    pub fn gtc_receipt_after_source(
+        &self,
+        after: &OutputSourceAfterProposal,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, OutputRootBindingError> {
+        let before_reference = self
+            .output_owner
+            .state_reference()
+            .map_err(OutputRootBindingError::OutputOwner)?;
+        let after_owner = after.after_owner();
+        let expected_generation = before_reference
+            .generation()
+            .checked_add(1)
+            .ok_or(OutputRootBindingError::GenerationOverflow)?;
+        let expected_source = self
+            .output_owner
+            .next_source_index()
+            .value()
+            .checked_add(1)
+            .ok_or(OutputRootBindingError::GenerationOverflow)?;
+        if after_owner.configuration() != self.output_owner.configuration()
+            || after_owner.generation() != expected_generation
+            || after_owner.next_source_index().value() != expected_source
+        {
+            return Err(OutputRootBindingError::ProposalBindingMismatch);
+        }
+        let after_reference = after_owner
+            .state_reference()
+            .map_err(OutputRootBindingError::OutputOwner)?;
+        GtcOwnerReceipt::from_transition(
+            before_reference
+                .gtc_snapshot()
+                .map_err(OutputRootBindingError::GtcReceipt)?,
+            after_reference
+                .gtc_snapshot()
+                .map_err(OutputRootBindingError::GtcReceipt)?,
+            transaction_id,
+        )
+        .map_err(OutputRootBindingError::GtcReceipt)
+    }
+
+    /// Returns the complete canonical output root for validation by its programme parent.
+    ///
+    /// The returned value is a read-only state reference. It grants no commit authority and does
+    /// not replace the complete output owner held by this binding.
+    pub fn gtc_state_reference(&self) -> Result<OutputOwnerStateReference, OutputRootBindingError> {
+        self.output_owner
+            .state_reference()
+            .map_err(OutputRootBindingError::OutputOwner)
+    }
+
+    /// Projects the unchanged Output owner receipt for a priming MAIN callback.
+    ///
+    /// Callbacks zero and one do not advance the output source clock. This is valid only while
+    /// the actual canonical output root is still cold; the parent remains responsible for
+    /// installing it with the other callback owners.
+    pub fn gtc_unchanged_callback_receipt(
+        &self,
+        callback_index: FrontendCallbackIndex,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, OutputRootBindingError> {
+        if callback_index.value() > 1 {
+            return Err(OutputRootBindingError::PrimingCallbackOutOfRange);
+        }
+        let state = self.output_owner.state_json();
+        if state.get("generation").and_then(serde_json::Value::as_u64) != Some(0)
+            || state
+                .get("next_source_index")
+                .and_then(serde_json::Value::as_u64)
+                != Some(0)
+            || state
+                .get("published_au_count")
+                .and_then(serde_json::Value::as_u64)
+                != Some(0)
+            || state
+                .get("durable_length")
+                .and_then(serde_json::Value::as_u64)
+                != Some(0)
+            || state
+                .get("ledger")
+                .and_then(serde_json::Value::as_array)
+                .is_none_or(|entries| !entries.is_empty())
+            || state.get("finalized") != Some(&serde_json::Value::Bool(false))
+            || state.get("final_product_sha256") != Some(&serde_json::Value::Null)
+        {
+            return Err(OutputRootBindingError::OutputRootNotCold);
+        }
+        let state_reference = self.gtc_state_reference()?;
+        let snapshot = state_reference
+            .gtc_snapshot()
+            .map_err(OutputRootBindingError::GtcReceipt)?;
+        GtcOwnerReceipt::from_transition(snapshot, snapshot, transaction_id)
+            .map_err(OutputRootBindingError::GtcReceipt)
+    }
+
+    /// Installs a finalized output proposal only after its physical exposure receipt matches this
+    /// binding's exact committed output root.
+    ///
+    /// Finalization preserves the output source clock, AU count, durable length and ledger. Its
+    /// terminal evidence is the existing `OutputFinalExposureReceipt`; this method does not
+    /// synthesize another GTC owner receipt.
+    pub fn with_finalized(
+        self,
+        finalized: OutputFinalizedProposal,
+    ) -> Result<Self, OutputRootBindingError> {
+        let before_digest = self
+            .output_owner
+            .state_digest()
+            .map_err(OutputRootBindingError::OutputOwner)?;
+        if finalized.before_state_sha256() != &before_digest
+            || finalized.after_owner().configuration() != self.output_owner.configuration()
+        {
+            return Err(OutputRootBindingError::ProposalBindingMismatch);
+        }
+
+        let before = self.output_owner.state_json();
+        let after = finalized.after_owner().state_json();
+        for field in [
+            "profile_id",
+            "provider_sha256",
+            "attempt_id",
+            "staging_name",
+            "generation",
+            "next_source_index",
+            "published_au_count",
+            "durable_length",
+            "ledger",
+            "product_name",
+        ] {
+            if before.get(field) != after.get(field) {
+                return Err(OutputRootBindingError::ProposalBindingMismatch);
+            }
+        }
+
+        let receipt = finalized.receipt().as_json();
+        if before.get("finalized") != Some(&serde_json::Value::Bool(false))
+            || before.get("final_product_sha256") != Some(&serde_json::Value::Null)
+            || after.get("finalized") != Some(&serde_json::Value::Bool(true))
+            || receipt.get("attempt_id") != after.get("attempt_id")
+            || receipt.get("product_length")
+                != Some(&serde_json::Value::from(
+                    self.output_configuration().expected_product_bytes(),
+                ))
+            || after.get("durable_length") != receipt.get("product_length")
+            || after.get("final_product_sha256") != receipt.get("product_sha256")
+            || receipt.get("atomic_replace") != Some(&serde_json::Value::Bool(true))
+            || receipt.get("parent_fsync") != Some(&serde_json::Value::Bool(true))
+        {
+            return Err(OutputRootBindingError::ProposalBindingMismatch);
+        }
+
+        let _after_reference = finalized
+            .after_owner()
+            .state_reference()
+            .map_err(OutputRootBindingError::OutputOwner)?;
+        let output_owner = finalized.into_after_owner();
+        Ok(Self {
+            programme_id: self.programme_id,
+            attempt_id: self.attempt_id,
+            staging_owner_id: self.staging_owner_id,
+            output_owner,
+        })
+    }
+
     pub fn output_configuration(&self) -> &OutputConfiguration {
         self.output_owner.configuration()
+    }
+
+    /// Read-only source clock for the next admitted F15 proposal.
+    pub const fn next_source_index(&self) -> CodecSourceIndex {
+        self.output_owner.next_source_index()
     }
 
     pub fn validate_source_proposal(
@@ -433,12 +759,16 @@ impl ProgrammeOutputFinalizeProposal {
 pub enum OutputRootBindingError {
     UnsupportedProfile,
     EmptyStagingOwnerId,
+    DestinationMismatch,
     AttemptBindingMismatch,
+    PrimingCallbackOutOfRange,
+    OutputRootNotCold,
     ProgrammeIdentityMismatch,
     AttemptIdentityMismatch,
     StagingOwnerMismatch,
     ProposalBindingMismatch,
     GenerationOverflow,
+    GtcReceipt(GtcOwnerReceiptError),
     OutputOwner(OutputOwnerError),
 }
 
@@ -447,7 +777,12 @@ impl std::fmt::Display for OutputRootBindingError {
         match self {
             Self::UnsupportedProfile => formatter.write_str("OUTPUT_PROFILE_UNSUPPORTED"),
             Self::EmptyStagingOwnerId => formatter.write_str("OUTPUT_STAGING_OWNER_ID"),
+            Self::DestinationMismatch => formatter.write_str("OUTPUT_DESTINATION_MISMATCH"),
             Self::AttemptBindingMismatch => formatter.write_str("OUTPUT_ATTEMPT_BINDING"),
+            Self::PrimingCallbackOutOfRange => {
+                formatter.write_str("OUTPUT_PRIMING_CALLBACK_OUT_OF_RANGE")
+            }
+            Self::OutputRootNotCold => formatter.write_str("OUTPUT_ROOT_NOT_COLD"),
             Self::ProgrammeIdentityMismatch => {
                 formatter.write_str("OUTPUT_PROGRAMME_IDENTITY_MISMATCH")
             }
@@ -459,6 +794,7 @@ impl std::fmt::Display for OutputRootBindingError {
                 formatter.write_str("OUTPUT_PROPOSAL_BINDING_MISMATCH")
             }
             Self::GenerationOverflow => formatter.write_str("OUTPUT_GENERATION_OVERFLOW"),
+            Self::GtcReceipt(error) => write!(formatter, "OUTPUT_GTC_RECEIPT_{error:?}"),
             Self::OutputOwner(error) => write!(formatter, "{}", error.code()),
         }
     }

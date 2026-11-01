@@ -254,15 +254,28 @@ impl SelectedJocAfterProposal {
         before: &SelectedJocState,
         transaction_id: CallbackTransactionId,
     ) -> Result<GtcOwnerReceipt, SelectedJocStateError> {
+        self.gtc_owner_receipt_for_parent(before, &transaction_id, transaction_id.clone())
+    }
+
+    /// Binds the owner receipt to its enclosing callback while retaining the producer token.
+    ///
+    /// The ID14 body is produced in the nested source transaction. The GTC receipt belongs to
+    /// the enclosing callback transaction, so those transaction IDs are validated separately.
+    pub fn gtc_owner_receipt_for_parent(
+        &self,
+        before: &SelectedJocState,
+        producer_transaction_id: &CallbackTransactionId,
+        parent_transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, SelectedJocStateError> {
         if before.generation() != self.before_generation
             || before.state_sha256()? != self.before_sha256
         {
             return Err(SelectedJocStateError::OwnerBeforeMismatch);
         }
-        if self.id14_body.provenance().producer_transaction_id() != Some(&transaction_id) {
+        if self.id14_body.provenance().producer_transaction_id() != Some(producer_transaction_id) {
             return Err(SelectedJocStateError::ProducerTransactionMismatch);
         }
-        before.gtc_owner_receipt_to(&self.after, transaction_id)
+        before.gtc_owner_receipt_to(&self.after, parent_transaction_id)
     }
 
     pub fn into_parts(
@@ -597,6 +610,64 @@ mod tests {
             proposal.gtc_owner_receipt(
                 &before,
                 CallbackTransactionId::new("wrong-callback").unwrap()
+            ),
+            Err(SelectedJocStateError::ProducerTransactionMismatch)
+        );
+    }
+
+    #[test]
+    fn nested_source_producer_and_parent_callback_receipt_keep_distinct_transactions() {
+        let before = SelectedJocState::cold();
+        let after = state_with_generation(1);
+        let producer_transaction = CallbackTransactionId::new("jocforge-source-0").unwrap();
+        let parent_transaction = CallbackTransactionId::new("jocforge-main-callback-g2").unwrap();
+        let (id14_body, lineage) = id14_body_with_transaction(producer_transaction.clone());
+        let proposal = SelectedJocAfterProposal {
+            before_generation: before.generation(),
+            before_sha256: before.state_sha256().unwrap(),
+            after_sha256: after.state_sha256().unwrap(),
+            after,
+            id14_body,
+            lineage,
+        };
+
+        let receipt = proposal
+            .gtc_owner_receipt_for_parent(
+                &before,
+                &producer_transaction,
+                parent_transaction.clone(),
+            )
+            .unwrap();
+
+        assert_eq!(
+            proposal.id14_body().provenance().producer_transaction_id(),
+            Some(&producer_transaction)
+        );
+        assert_eq!(receipt.transaction_id(), &parent_transaction);
+    }
+
+    #[test]
+    fn nested_source_gtc_receipt_rejects_an_unrelated_producer_transaction() {
+        let before = SelectedJocState::cold();
+        let after = state_with_generation(1);
+        let producer_transaction = CallbackTransactionId::new("jocforge-source-0").unwrap();
+        let wrong_producer_transaction = CallbackTransactionId::new("jocforge-source-1").unwrap();
+        let parent_transaction = CallbackTransactionId::new("jocforge-main-callback-g2").unwrap();
+        let (id14_body, lineage) = id14_body_with_transaction(producer_transaction);
+        let proposal = SelectedJocAfterProposal {
+            before_generation: before.generation(),
+            before_sha256: before.state_sha256().unwrap(),
+            after_sha256: after.state_sha256().unwrap(),
+            after,
+            id14_body,
+            lineage,
+        };
+
+        assert_eq!(
+            proposal.gtc_owner_receipt_for_parent(
+                &before,
+                &wrong_producer_transaction,
+                parent_transaction,
             ),
             Err(SelectedJocStateError::ProducerTransactionMismatch)
         );

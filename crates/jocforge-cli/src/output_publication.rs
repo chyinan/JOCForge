@@ -2,14 +2,17 @@
 //! F15P append composition for already prepared source proposals.
 
 use jocforge_application::{
+    PreparedJobInput,
     output_publication::{
-        AttemptId, OutputConfiguration, OutputFinalizedProposal, OutputOwnerError,
-        OutputRootBindingError, OutputSourceAfterProposal, OutputSourceProposal,
+        AdmittedProductionPlan, AttemptId, OutputConfiguration, OutputFinalizedProposal,
+        OutputOwnerError, OutputRootBindingError, OutputSourceAfterProposal, OutputSourceProposal,
         OutputStagingOwnerId, ProgrammeId, ProgrammeOutputBinding, ProgrammeOutputFinalizeProposal,
         ProgrammeOutputSourceProposal,
     },
     source_frame_bridge::{
-        CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError, SelectedSourceFrameCandidate,
+        AnalysisNumericPlanStage, CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError,
+        MetadataSourceProposal, NoneDrcOwnerAfterProposal, SelectedSourceFrameCandidate,
+        SourceFrameBridgeError, prepare_admitted_source_frame,
         stage_codec_owner_after_source_frame,
     },
 };
@@ -43,6 +46,38 @@ impl ProgrammeOutputStaging {
             staging_owner_id: binding.staging_owner_id().clone(),
             configuration,
         }
+    }
+
+    /// Creates the lazy IO staging adapter from the destination admitted by F15.
+    /// No file opens until the first admitted append.
+    pub fn from_admitted_plan(
+        plan: &jocforge_application::output_publication::AdmittedProductionPlan,
+    ) -> Result<Self, OutputPublicationError> {
+        let final_path = std::path::Path::new(plan.final_destination());
+        let parent = final_path
+            .parent()
+            .filter(|parent| parent.is_absolute())
+            .ok_or(OutputPublicationError::Binding(
+                OutputRootBindingError::DestinationMismatch,
+            ))?;
+        let product_name = final_path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .ok_or(OutputPublicationError::Binding(
+                OutputRootBindingError::DestinationMismatch,
+            ))?;
+        let binding = plan.output_binding();
+        if product_name != binding.output_configuration().product_name()
+            || parent
+                .join(binding.output_configuration().staging_name())
+                .to_str()
+                != Some(plan.staging_namespace())
+        {
+            return Err(OutputPublicationError::Binding(
+                OutputRootBindingError::DestinationMismatch,
+            ));
+        }
+        Ok(Self::new(parent, binding))
     }
 
     pub fn validate_binding(
@@ -87,6 +122,13 @@ impl ProgrammeOutputStaging {
         self.inner
             .as_ref()
             .is_some_and(AtomicOutputStaging::is_abandoned)
+    }
+
+    /// Marks the whole attempt unusable after a fatal parent-stage failure.
+    pub fn abandon_attempt(&mut self) {
+        if let Some(staging) = self.inner.as_mut() {
+            staging.abandon();
+        }
     }
 }
 
@@ -143,6 +185,8 @@ pub enum SourceFrameOutputStageError {
     UnexpectedDurableAppend,
     Output(OutputPublicationError),
     CodecOwner(CodecOwnerStageError),
+    SourceFrame(SourceFrameBridgeError),
+    OutputPreparation(jocforge_application::output_publication::OutputPublicationPreparationError),
 }
 
 impl std::fmt::Display for SourceFrameOutputStageError {
@@ -157,6 +201,8 @@ impl std::fmt::Display for SourceFrameOutputStageError {
             }
             Self::Output(error) => write!(formatter, "{error}"),
             Self::CodecOwner(error) => write!(formatter, "{error:?}"),
+            Self::SourceFrame(error) => write!(formatter, "{error:?}"),
+            Self::OutputPreparation(error) => write!(formatter, "{error}"),
         }
     }
 }
@@ -168,8 +214,8 @@ impl std::error::Error for SourceFrameOutputStageError {}
 /// The caller prepares `output_proposal` with
 /// `jocforge_application::output_publication::prepare_output_source_from_candidate`.
 /// This function checks candidate source and bytes before touching the staging file, then
-/// returns both owner after-values without installing either. The CLI output module is
-/// test-support gated until production plan and destination admission are available.
+/// returns both owner after-values without installing either. The enclosing programme callback
+/// remains responsible for replacing the output and codec roots together with its other owners.
 pub fn stage_source_frame_output(
     staging: &mut ProgrammeOutputStaging,
     binding: &ProgrammeOutputBinding,
@@ -216,6 +262,36 @@ pub fn stage_source_frame_output(
         output_after,
         codec_owner_proposal,
     })
+}
+
+/// Builds one F12 candidate from same-source owner proposals and durably stages its F15 result.
+///
+/// The selected BAP value comes from `admitted_plan`. All audio-bearing proposals remain inputs
+/// from the approved callback pipeline; the caller retains every owner replacement decision.
+pub fn stage_admitted_source_frame_output(
+    staging: &mut ProgrammeOutputStaging,
+    binding: &ProgrammeOutputBinding,
+    prepared: &PreparedJobInput,
+    admitted_plan: &AdmittedProductionPlan,
+    codec_owner: &CodecOwnerRoot,
+    analysis_stage: &mut AnalysisNumericPlanStage,
+    drc_after: &NoneDrcOwnerAfterProposal,
+    metadata: &MetadataSourceProposal,
+) -> Result<StagedSourceFrameOutput, SourceFrameOutputStageError> {
+    if !admitted_plan.is_bound_to(prepared) {
+        return Err(SourceFrameOutputStageError::SourceFrame(
+            SourceFrameBridgeError::F15AdmissionRejected,
+        ));
+    }
+    let candidate =
+        prepare_admitted_source_frame(prepared, admitted_plan, analysis_stage, drc_after, metadata)
+            .map_err(SourceFrameOutputStageError::SourceFrame)?;
+    let output_proposal =
+        jocforge_application::output_publication::prepare_output_source_from_candidate(
+            prepared, binding, metadata, &candidate,
+        )
+        .map_err(SourceFrameOutputStageError::OutputPreparation)?;
+    stage_source_frame_output(staging, binding, codec_owner, &candidate, output_proposal)
 }
 
 fn validate_candidate_output_pair<SourceIndex: Eq>(

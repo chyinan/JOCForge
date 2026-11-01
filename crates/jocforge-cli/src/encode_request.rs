@@ -1,0 +1,848 @@
+// pattern: Imperative Shell
+//! Reads one selected ADM BWF, prepares its input identity, and enters the application encode gate.
+
+use std::{
+    path::{Path, PathBuf},
+    sync::Arc,
+    thread,
+    time::{SystemTime, UNIX_EPOCH},
+};
+
+use crate::meter_prepass::{SelectedMeterPrepassError, run_selected_meter_prepass_with_progress};
+use crate::output_publication::{OutputPublicationError, ProgrammeOutputStaging, finalize_output};
+use crate::programme_roots::{ProgrammeOwnerRoots, source_for_callback_clock};
+use crate::progress::ProgressBar;
+use crate::selected_spatial_callback_providers::{
+    SelectedMainSpatialProviderLoadError, load_selected_main_spatial_callback_providers,
+};
+use jocforge_application::drc_source_bridge::CallbackLineageIdentity;
+use jocforge_application::independent_meter_callback::CallbackTransactionId;
+use jocforge_application::{
+    EncodeError, PreparedJobInput, PreparedJobInputError, ProgrammeId, SelectedAdmResourcePayloads,
+    SelectedWaveDescriptor,
+    drc_source_bridge::{NoneDrcOwnerError, cold_drc_owner_after_measurement},
+    independent_meter_callback::generate_selected_spatial_math_geometry,
+    integrity_source_bridge::cold_integrity_owner_for_plan,
+    metadata_source_bridge::{
+        MetadataOwnerPreparationError, SelectedJocState, prepare_metadata_owner_from_measurement,
+    },
+    meter_source_bridge::FrontendControlReplacementCandidate,
+    output_publication::{AttemptId, OutputStagingOwnerId},
+    prepare_selected_job_input,
+    reader_eof_callback::{
+        ReaderEofActualSampleCount, ReaderEofMachine, ReaderEofNormalCallbackClock,
+        ReaderEofPaddingSampleCount, ReaderEofReplacementCandidate, stage_reader_eof_cached_drain,
+        stage_reader_eof_normal_callback,
+    },
+    source_analysis_bridge::{
+        SelectedSourceAnalysisProviders, cold_analysis_root_for_prepared_input,
+    },
+    source_frame_bridge::CodecOwnerRoot,
+    spatial_callback::{
+        MainFrontendSnapshotError, MainSpatialCachedCallbackInput, MainSpatialCallbackCandidate,
+        MainSpatialCallbackError, MainSpatialCallbackInput, MainSpatialColdRoots,
+        MainSpatialColdRootsError, stage_main_frontend_snapshot,
+        stage_main_spatial_cached_callback, stage_main_spatial_callback,
+    },
+};
+use jocforge_io::pcm::{
+    frontend_pcm_source::{
+        CodecSourceIndex, FrontendCallbackIndex, FrontendPcmSourceError, read_frontend_pcm_callback,
+    },
+    riff_pcm24::parse_selected_riff_pcm24,
+    riff_pcm24_file::{RiffPcm24FileReadError, read_resource},
+};
+
+const ENCODE_REQUEST_STACK_BYTES: usize = 32 * 1024 * 1024;
+
+#[derive(Debug)]
+pub enum EncodeRequestError {
+    InvalidPath,
+    OutputAlreadyExists,
+    InputFile(RiffPcm24FileReadError),
+    Riff(jocforge_io::pcm::riff_pcm24::RiffPcm24Error),
+    PreparedInput(PreparedJobInputError),
+    InputExtent,
+    ProgrammeIdentity,
+    ProductGate(EncodeError),
+    OutputStaging(OutputPublicationError),
+    SpatialProviders(SelectedMainSpatialProviderLoadError),
+    SpatialGeometry,
+    SpatialColdRoots(MainSpatialColdRootsError),
+    FrontendPcm(FrontendPcmSourceError),
+    FrontendSnapshot(MainFrontendSnapshotError),
+    SpatialCallback(MainSpatialCallbackError),
+    CallbackTransaction,
+    ClockMismatch,
+    WorkerUnavailable,
+    WorkerPanicked,
+    MeterPrepass(SelectedMeterPrepassError),
+    DrcRoot(NoneDrcOwnerError),
+    MetadataOwner(MetadataOwnerPreparationError),
+    SourcePipeline(String),
+}
+
+impl std::fmt::Display for EncodeRequestError {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::InvalidPath => {
+                formatter.write_str("encode requires absolute input and output file paths")
+            }
+            Self::OutputAlreadyExists => {
+                formatter.write_str("output exists; refusing to replace it")
+            }
+            Self::InputFile(error) => write!(formatter, "{error}"),
+            Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
+            Self::PreparedInput(error) => write!(formatter, "selected ADM input rejected: {error}"),
+            Self::InputExtent => formatter.write_str("RIFF data extent is out of range"),
+            Self::ProgrammeIdentity => {
+                formatter.write_str("could not create a fresh programme identity")
+            }
+            Self::ProductGate(error) => write!(formatter, "{error}"),
+            Self::OutputStaging(error) => write!(formatter, "{error}"),
+            Self::SpatialProviders(error) => write!(formatter, "{error}"),
+            Self::SpatialGeometry => {
+                formatter.write_str("selected P11/P15 geometry construction failed")
+            }
+            Self::SpatialColdRoots(error) => {
+                write!(formatter, "MAIN cold owner construction failed: {error:?}")
+            }
+            Self::FrontendPcm(error) => {
+                write!(formatter, "MAIN PCM callback read failed: {error:?}")
+            }
+            Self::FrontendSnapshot(error) => {
+                write!(formatter, "MAIN F01E callback staging failed: {error:?}")
+            }
+            Self::SpatialCallback(error) => write!(
+                formatter,
+                "MAIN F03W/F04 callback staging failed: {error:?}"
+            ),
+            Self::CallbackTransaction => {
+                formatter.write_str("could not create the MAIN callback transaction identity")
+            }
+            Self::ClockMismatch => formatter
+                .write_str("selected MAIN callback g=0 has an unexpected source index or phase"),
+            Self::WorkerUnavailable => {
+                formatter.write_str("could not start the selected encode worker")
+            }
+            Self::WorkerPanicked => formatter.write_str("selected encode worker panicked"),
+            Self::MeterPrepass(error) => {
+                write!(formatter, "selected Meter prepass failed: {error}")
+            }
+            Self::DrcRoot(error) => write!(formatter, "selected DRC cold root failed: {error:?}"),
+            Self::MetadataOwner(error) => {
+                write!(formatter, "selected Metadata cold owner failed: {error:?}")
+            }
+            Self::SourcePipeline(error) => write!(formatter, "source pipeline stopped: {error}"),
+        }
+    }
+}
+
+impl std::error::Error for EncodeRequestError {}
+
+/// Prepares one full-file request from the actual selected-profile RIFF resource.
+///
+/// The request uses file-position extent with empty start/end, so the parser's actual RIFF data
+/// extent supplies `source_samples`. It adds no timecode conversion or audio algorithm. The output
+/// path is only part of the prepared request; the application gate runs before any output is opened.
+pub fn run(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestError> {
+    thread::scope(|scope| {
+        let worker = thread::Builder::new()
+            .name("jocforge-encode-request".to_owned())
+            .stack_size(ENCODE_REQUEST_STACK_BYTES)
+            .spawn_scoped(scope, move || run_inner(input_path, output_path))
+            .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
+        worker
+            .join()
+            .map_err(|_| EncodeRequestError::WorkerPanicked)?
+    })
+}
+
+fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestError> {
+    eprintln!("Preparing selected ADM input and owner plan...");
+    let input_path = normalize_existing_input(input_path)?;
+    let output_path = normalize_new_output(output_path)?;
+    if output_path.exists() {
+        return Err(EncodeRequestError::OutputAlreadyExists);
+    }
+
+    let input_reference = file_reference_parts(&input_path)?;
+    let output_reference = file_reference_parts(&output_path)?;
+    let run_identity = fresh_run_identity()?;
+    let resource = read_resource(&input_path).map_err(EncodeRequestError::InputFile)?;
+    let parsed = parse_selected_riff_pcm24(&resource, None).map_err(EncodeRequestError::Riff)?;
+    let adm = parsed
+        .selected_adm_payloads()
+        .map_err(EncodeRequestError::Riff)?;
+    let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
+    let job_xml = selected_full_file_job_xml(&input_reference, &output_reference);
+    let prepared = prepare_selected_job_input(
+        run_identity.programme,
+        job_xml.as_bytes(),
+        wave,
+        parsed.total_samples(),
+        Arc::clone(&resource),
+        SelectedAdmResourcePayloads::new(adm.axml(), adm.chna(), adm.dbmd()),
+    )
+    .map_err(EncodeRequestError::PreparedInput)?;
+    let data_bytes =
+        u64::try_from(parsed.data_payload_bytes()).map_err(|_| EncodeRequestError::InputExtent)?;
+    let prepared = prepared
+        .bind_primary_control_rows(data_bytes)
+        .map_err(EncodeRequestError::PreparedInput)?;
+
+    eprintln!(
+        "prepared input: sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits=24 samples_per_channel={} output={}",
+        hex_lower(&parsed.source_sha256()),
+        resource.len(),
+        parsed.sample_rate_hz(),
+        parsed.channels(),
+        parsed.total_samples(),
+        output_path.display(),
+    );
+
+    let final_destination = output_path
+        .to_str()
+        .ok_or(EncodeRequestError::InvalidPath)?;
+    let plan = jocforge_application::output_publication::admit_selected_f15_plan(
+        &prepared,
+        run_identity.attempt,
+        &run_identity.staging_owner,
+        final_destination,
+    )
+    .map_err(EncodeRequestError::ProductGate)?;
+    let mut staging = ProgrammeOutputStaging::from_admitted_plan(&plan)
+        .map_err(EncodeRequestError::OutputStaging)?;
+    let output_binding = plan
+        .output_binding()
+        .fresh_cold_execution_binding()
+        .map_err(|error| {
+            EncodeRequestError::OutputStaging(OutputPublicationError::Binding(error))
+        })?;
+
+    eprintln!("Starting full-file Meter prepass...");
+    let mut meter_progress = ProgressBar::new("Meter prepass");
+    let meter_prepass = run_selected_meter_prepass_with_progress(
+        &prepared,
+        &parsed,
+        run_identity.attempt,
+        |completed, total| meter_progress.update(completed, total),
+    )
+    .map_err(EncodeRequestError::MeterPrepass)?;
+    meter_progress.finish();
+    let measurement = meter_prepass.dependents();
+    let drc_root = cold_drc_owner_after_measurement(&prepared, measurement.receipt())
+        .map_err(EncodeRequestError::DrcRoot)?;
+    let source_providers = plan.source_providers();
+    let metadata_owner = prepare_metadata_owner_from_measurement(
+        &prepared,
+        measurement,
+        source_providers.metadata_owner().provider_file(),
+        source_providers.metadata_owner().wrapper_file(),
+    )
+    .map_err(EncodeRequestError::MetadataOwner)?;
+    eprintln!(
+        "meter prepass complete: callbacks={} zero_drains={} dialnorm={:?} metadata_generation={}",
+        measurement.receipt().normal_callbacks(),
+        measurement.receipt().zero_drains(),
+        drc_root.state().programme_dialnorm(),
+        metadata_owner.state_reference().generation(),
+    );
+
+    let supplements = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../..")
+        .join("outputs/IMPLEMENTER_SUPPLEMENTS");
+    let main_providers = load_selected_main_spatial_callback_providers(
+        &supplements.join("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1"),
+        &supplements.join("F01B-F03W-COLD-STATE-ASSETS-V1"),
+        &supplements.join("METER-APPROVED-PARAMETER-ASSETS-V1"),
+        &supplements.join("F04-RECEIVER-APPROVED-PARAMETERS-V1"),
+        generate_selected_spatial_math_geometry()
+            .map_err(|_| EncodeRequestError::SpatialGeometry)?,
+    )
+    .map_err(EncodeRequestError::SpatialProviders)?;
+    let callback_values = main_providers.callback_values().providers();
+    let cold_roots = MainSpatialColdRoots::from_selected_providers(
+        &prepared,
+        run_identity.attempt,
+        &callback_values.f01e,
+        &callback_values.f03_target,
+    )
+    .map_err(EncodeRequestError::SpatialColdRoots)?;
+    let reader_eof_root = ReaderEofMachine::cold();
+    let source_analysis_providers =
+        SelectedSourceAnalysisProviders::load_approved().map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("F07-F10 providers: {error:?}"))
+        })?;
+    let analysis_root = cold_analysis_root_for_prepared_input(&prepared).map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!("Analysis cold root: {error:?}"))
+    })?;
+    let integrity_root = cold_integrity_owner_for_plan(&prepared, &plan, run_identity.attempt)
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("Integrity cold root: {error:?}"))
+        })?;
+    let joc_state = SelectedJocState::cold();
+    let codec_root = CodecOwnerRoot::cold();
+    let model_dialnorm = drc_root.state().programme_dialnorm();
+    let measurement_receipt = measurement.receipt();
+    let roots = ProgrammeOwnerRoots::ready(
+        &prepared,
+        run_identity.attempt,
+        measurement_receipt,
+        meter_prepass.terminal_meter_root(),
+        cold_roots,
+        reader_eof_root,
+        integrity_root,
+        *analysis_root,
+        drc_root,
+        joc_state,
+        metadata_owner,
+        codec_root,
+        output_binding,
+    )
+    .map_err(EncodeRequestError::SourcePipeline)?;
+
+    let callback_result = (|| {
+        let mut roots = roots;
+        let normal_callbacks = roots.normal_callbacks().value();
+        let total_callbacks = normal_callbacks.checked_add(4).ok_or_else(|| {
+            EncodeRequestError::SourcePipeline("main callback count overflow".to_owned())
+        })?;
+        let mut committed_callbacks = 0_u64;
+        let mut callback_progress = ProgressBar::new("Programme callbacks");
+        callback_progress.update(0, total_callbacks);
+        for callback_value in 0..total_callbacks {
+            let callback_value_u32 =
+                u32::try_from(callback_value).map_err(|_| EncodeRequestError::ClockMismatch)?;
+            let callback_index = FrontendCallbackIndex::new(callback_value_u32);
+            let pending = if callback_value < normal_callbacks {
+                stage_main_callback_candidate(
+                    &prepared,
+                    &parsed,
+                    run_identity.attempt,
+                    callback_index,
+                    roots.main(),
+                    roots.reader_eof(),
+                    &main_providers,
+                )?
+            } else {
+                stage_main_cached_callback_candidate(
+                    &prepared,
+                    run_identity.attempt,
+                    callback_index,
+                    &roots,
+                    &main_providers,
+                )?
+            };
+            if pending.callback_index != callback_index {
+                return Err(EncodeRequestError::ClockMismatch);
+            }
+            let callback_transaction_id = pending.transaction_id.clone();
+
+            if let Some(source_index) = pending.source_index {
+                let advance = crate::source_execution::stage_source_frame(
+                    &prepared,
+                    run_identity.attempt,
+                    callback_index,
+                    source_index,
+                    callback_transaction_id.clone(),
+                    pending.frontend,
+                    pending.spatial,
+                    pending.reader_eof_candidate,
+                    roots.main(),
+                    roots.reader_eof(),
+                    roots.integrity(),
+                    &main_providers,
+                    roots.meter(),
+                    roots.measurement(),
+                    roots.analysis(),
+                    &source_analysis_providers,
+                    roots.drc(),
+                    roots.metadata(),
+                    roots.joc(),
+                    roots.codec(),
+                    roots.output(),
+                    &plan,
+                    &mut staging,
+                )
+                .map_err(EncodeRequestError::SourcePipeline)?;
+                let (next_roots, receipt) = roots
+                    .commit_source_advance(callback_transaction_id, &prepared, advance)
+                    .map_err(EncodeRequestError::SourcePipeline)?;
+                roots = next_roots;
+                committed_callbacks = committed_callbacks.checked_add(1).ok_or_else(|| {
+                    EncodeRequestError::SourcePipeline("callback count overflow".to_owned())
+                })?;
+
+                if source_index.value() < 2 {
+                    eprintln!(
+                        "source committed: g={} callback_tx={} source={} source_tx={} disposition=suppressed frame_sha256={} owner_receipts={} phase_generation={}->{}",
+                        receipt.callback_index.value(),
+                        receipt.callback_transaction_id.as_str(),
+                        receipt.source_index.map_or(u64::MAX, |index| index.value()),
+                        receipt
+                            .source_transaction_id
+                            .as_ref()
+                            .map_or("", |id| id.as_str()),
+                        receipt
+                            .frame_sha256
+                            .map(|hash| hex_lower(&hash))
+                            .unwrap_or_default(),
+                        receipt.owner_receipts.len(),
+                        receipt.phase_generation_before,
+                        receipt.phase_generation_after,
+                    );
+                } else if let Some(append) = receipt.append.as_ref() {
+                    if append.au_index == 0 {
+                        eprintln!(
+                            "first AU durably staged: source={} au={} frame_bytes={} frame_sha256={} emdf_container_bytes={} staging_bytes={}",
+                            source_index.value(),
+                            append.au_index,
+                            append.bytes_written,
+                            receipt
+                                .frame_sha256
+                                .map(|hash| hex_lower(&hash))
+                                .unwrap_or_default(),
+                            receipt.metadata_container_bytes.unwrap_or_default(),
+                            std::fs::metadata(staging.staging_path())
+                                .map_err(|error| EncodeRequestError::SourcePipeline(format!(
+                                    "staged AU metadata: {error}"
+                                )))?
+                                .len(),
+                        );
+                    }
+                    if append.au_index == 0
+                        || append.au_index % 512 == 0
+                        || append.au_index + 1 == roots.expected_published()
+                    {
+                        eprintln!(
+                            "AU append committed: g={} callback_tx={} source={} source_tx={} au={} frame_bytes={} crc_residual={} durable={} published={}/{} phase_generation={}->{}",
+                            receipt.callback_index.value(),
+                            receipt.callback_transaction_id.as_str(),
+                            receipt.source_index.map_or(u64::MAX, |index| index.value()),
+                            receipt
+                                .source_transaction_id
+                                .as_ref()
+                                .map_or("", |id| id.as_str()),
+                            receipt.au_index.unwrap_or(u64::MAX),
+                            append.bytes_written,
+                            append.crc_residual,
+                            append.durable,
+                            roots.published_aus(),
+                            roots.expected_published(),
+                            receipt.phase_generation_before,
+                            receipt.phase_generation_after,
+                        );
+                    }
+                } else {
+                    return Err(EncodeRequestError::SourcePipeline(
+                        "published source committed without a durable append receipt".to_owned(),
+                    ));
+                }
+            } else {
+                let frontend = pending.frontend.ok_or(EncodeRequestError::ClockMismatch)?;
+                let spatial_parent = roots
+                    .main()
+                    .prepare_spatial_after_callback(
+                        &prepared,
+                        frontend,
+                        pending.spatial,
+                        callback_transaction_id.clone(),
+                    )
+                    .map_err(|error| {
+                        EncodeRequestError::SourcePipeline(format!(
+                            "callback-only F01E/F03W/F04 proposal: {error:?}"
+                        ))
+                    })?;
+                let (main_after, parent_transaction_id, parent_callback, spatial_receipts) =
+                    spatial_parent.into_parts();
+                if parent_transaction_id != callback_transaction_id
+                    || parent_callback != callback_index
+                {
+                    return Err(EncodeRequestError::ClockMismatch);
+                }
+                let (reader_after, _, reader_receipt) = pending.reader_eof_candidate.into_parts();
+                let changed_receipts = [
+                    spatial_receipts[0].clone(),
+                    spatial_receipts[1].clone(),
+                    spatial_receipts[2].clone(),
+                    reader_receipt,
+                ];
+                let (next_roots, receipt) = roots
+                    .commit_callback_only(
+                        &prepared,
+                        callback_index,
+                        callback_transaction_id,
+                        main_after,
+                        reader_after,
+                        changed_receipts,
+                    )
+                    .map_err(EncodeRequestError::SourcePipeline)?;
+                roots = next_roots;
+                committed_callbacks = committed_callbacks.checked_add(1).ok_or_else(|| {
+                    EncodeRequestError::SourcePipeline("callback count overflow".to_owned())
+                })?;
+                eprintln!(
+                    "priming callback committed: g={} callback_tx={} owner_receipts={} phase_generation={}->{}",
+                    receipt.callback_index.value(),
+                    receipt.callback_transaction_id.as_str(),
+                    receipt.owner_receipts.len(),
+                    receipt.phase_generation_before,
+                    receipt.phase_generation_after,
+                );
+            }
+            callback_progress.update(callback_value + 1, total_callbacks);
+        }
+        callback_progress.finish();
+
+        if committed_callbacks != total_callbacks || !roots.is_complete_for_eof() {
+            return Err(EncodeRequestError::SourcePipeline(
+                "callback/source/AU clocks did not reach the selected EOF boundary".to_owned(),
+            ));
+        }
+        Ok((roots, committed_callbacks))
+    })();
+    let (mut roots, committed_callbacks) = match callback_result {
+        Ok(value) => value,
+        Err(error) => {
+            staging.abandon_attempt();
+            return Err(error);
+        }
+    };
+    if !roots.is_complete_for_eof() {
+        staging.abandon_attempt();
+        return Err(EncodeRequestError::SourcePipeline(
+            "callback/source/AU clocks did not reach the selected EOF boundary".to_owned(),
+        ));
+    }
+    let eof_transaction_id = CallbackTransactionId::new(&format!(
+        "jocforge-eof-attempt-{}",
+        run_identity.attempt.value()
+    ))
+    .map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!("EOF transaction identity: {error:?}"))
+    })?;
+    let eof_proposal = match roots.prepare_eof_proposal() {
+        Ok(proposal) => proposal,
+        Err(error) => {
+            staging.abandon_attempt();
+            return Err(EncodeRequestError::SourcePipeline(error));
+        }
+    };
+    let (finalizing_roots, metadata_eof_receipt, finalize_proposal) =
+        match roots.begin_finalizing(eof_proposal, eof_transaction_id) {
+            Ok(value) => value,
+            Err(error) => {
+                staging.abandon_attempt();
+                return Err(EncodeRequestError::SourcePipeline(error));
+            }
+        };
+    roots = finalizing_roots;
+    eprintln!(
+        "EOF committed: sources={} published={} bytes={} pending_drop_receipts={} metadata_generation={} phase_generation={}",
+        roots.source_index().value(),
+        roots.published_aus(),
+        roots.durable_bytes(),
+        7,
+        roots.metadata().state_reference().generation(),
+        roots.phase_generation(),
+    );
+    let _metadata_eof_receipt = metadata_eof_receipt;
+
+    eprintln!("Finalizing and exposing output...");
+    let finalized =
+        finalize_output(&mut staging, roots.output(), finalize_proposal).map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("F15 finalize/exposure failed: {error}"))
+        })?;
+    let (done_roots, exposure_receipt) = roots
+        .finish(finalized)
+        .map_err(EncodeRequestError::SourcePipeline)?;
+    roots = done_roots;
+    if !roots.is_done() || exposure_receipt.product_length() != roots.expected_product_bytes() {
+        return Err(EncodeRequestError::SourcePipeline(
+            "DONE root does not match the durable final exposure receipt".to_owned(),
+        ));
+    }
+    let final_length = std::fs::metadata(&output_path)
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("final output metadata: {error}"))
+        })?
+        .len();
+    if final_length != exposure_receipt.product_length() {
+        return Err(EncodeRequestError::SourcePipeline(
+            "final output length differs from FinalExposureReceipt".to_owned(),
+        ));
+    }
+    eprintln!(
+        "programme complete: status=DONE output={} bytes={} sha256={} callbacks={}/{} sources={}/{} published_aus={} phase_generation={} model_dialnorm={:?} native_dialnorm_parity=UNBOUND render=NOT_RUN playback=NOT_RUN",
+        output_path.display(),
+        exposure_receipt.product_length(),
+        hex_lower(exposure_receipt.product_sha256()),
+        committed_callbacks,
+        u64::from(roots.callback_index().value()),
+        roots.source_index().value(),
+        roots.expected_sources(),
+        roots.published_aus(),
+        roots.phase_generation(),
+        model_dialnorm,
+    );
+    Ok(())
+}
+
+struct PendingMainCallback {
+    callback_index: FrontendCallbackIndex,
+    source_index: Option<CodecSourceIndex>,
+    frontend: Option<FrontendControlReplacementCandidate>,
+    spatial: MainSpatialCallbackCandidate,
+    reader_eof_candidate: ReaderEofReplacementCandidate,
+    transaction_id: CallbackTransactionId,
+}
+
+fn stage_main_callback_candidate(
+    prepared: &PreparedJobInput,
+    parsed: &jocforge_io::pcm::riff_pcm24::ParsedRiffPcm24<'_>,
+    attempt: AttemptId,
+    callback_index: FrontendCallbackIndex,
+    roots: &MainSpatialColdRoots,
+    reader_eof_before: &ReaderEofMachine,
+    providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
+) -> Result<PendingMainCallback, EncodeRequestError> {
+    let frame = read_frontend_pcm_callback(
+        parsed,
+        prepared.resource_identity().input_sha256(),
+        callback_index,
+    )
+    .map_err(EncodeRequestError::FrontendPcm)?;
+    let transaction_id = CallbackTransactionId::new(&format!(
+        "jocforge-main-callback-g{}",
+        callback_index.value()
+    ))
+    .map_err(|_| EncodeRequestError::CallbackTransaction)?;
+    let frontend = stage_main_frontend_snapshot(
+        prepared,
+        roots.frontend_control(),
+        attempt,
+        transaction_id.clone(),
+    )
+    .map_err(EncodeRequestError::FrontendSnapshot)?;
+    let (frontend, controls) = frontend.into_parts();
+    let actual_samples = ReaderEofActualSampleCount::new(
+        u32::try_from(frame.actual_samples().value())
+            .map_err(|_| EncodeRequestError::ClockMismatch)?,
+    )
+    .map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!("ReaderEof actual sample count: {error:?}"))
+    })?;
+    let padding_samples = ReaderEofPaddingSampleCount::new(
+        u32::try_from(frame.padding_samples()).map_err(|_| EncodeRequestError::ClockMismatch)?,
+    )
+    .map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!("ReaderEof padding sample count: {error:?}"))
+    })?;
+    let reader_eof_clock = ReaderEofNormalCallbackClock::new(
+        frame.callback_index(),
+        frame.first_sample(),
+        actual_samples,
+        padding_samples,
+        controls.normal_callbacks(),
+    )
+    .map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!("ReaderEof callback clock: {error:?}"))
+    })?;
+    let reader_eof_candidate = stage_reader_eof_normal_callback(
+        reader_eof_before,
+        reader_eof_clock,
+        frame.physical_pcm_rows(),
+        &controls,
+        transaction_id.clone(),
+    )
+    .map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!("ReaderEof callback stage: {error:?}"))
+    })?;
+    let values = providers.callback_values().providers();
+    let spatial = stage_main_spatial_callback(MainSpatialCallbackInput {
+        prepared,
+        controls,
+        physical_pcm_rows: frame.physical_pcm_rows(),
+        spatial_control: roots.spatial_control(),
+        spatial_audio: roots.spatial_audio(),
+        p11_geometry: &values.p11_geometry,
+        p15_geometry: &values.p15_geometry,
+        diffusion_parameters: &values.diffusion,
+        feature_processor: &values.feature_processor,
+        feature_fft: &values.feature_fft,
+        window: &values.window,
+        component_parameters: &values.component_parameters,
+        spatial_audio_providers: Some(providers.spatial_audio()),
+    })
+    .map_err(EncodeRequestError::SpatialCallback)?;
+    if spatial.callback_index() != callback_index {
+        return Err(EncodeRequestError::ClockMismatch);
+    }
+    Ok(PendingMainCallback {
+        callback_index,
+        source_index: frame.source_index(),
+        frontend: Some(frontend),
+        spatial,
+        reader_eof_candidate,
+        transaction_id,
+    })
+}
+
+fn stage_main_cached_callback_candidate(
+    prepared: &PreparedJobInput,
+    attempt: AttemptId,
+    callback_index: FrontendCallbackIndex,
+    roots: &ProgrammeOwnerRoots<'_>,
+    providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
+) -> Result<PendingMainCallback, EncodeRequestError> {
+    let source_index =
+        source_for_callback_clock(callback_index).ok_or(EncodeRequestError::ClockMismatch)?;
+    let transaction_id = CallbackTransactionId::new(&format!(
+        "jocforge-main-callback-g{}",
+        callback_index.value()
+    ))
+    .map_err(|_| EncodeRequestError::CallbackTransaction)?;
+    let callback_lineage =
+        CallbackLineageIdentity::new(prepared.programme_id().clone(), attempt, callback_index);
+    let frontend_control = roots.main().frontend_control();
+    let held_controls = frontend_control
+        .committed()
+        .held_source_view_for_cached_callback(
+            frontend_control.generation(),
+            callback_lineage,
+            roots.normal_callbacks(),
+        )
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("cached F01E held controls: {error:?}"))
+        })?;
+    let reader_eof_candidate = stage_reader_eof_cached_drain(
+        roots.reader_eof(),
+        callback_index,
+        roots.normal_callbacks(),
+        transaction_id.clone(),
+    )
+    .map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!("ReaderEof cached drain: {error:?}"))
+    })?;
+
+    let values = providers.callback_values().providers();
+    let spatial = stage_main_spatial_cached_callback(MainSpatialCachedCallbackInput {
+        prepared,
+        controls: held_controls,
+        spatial_control: roots.main().spatial_control(),
+        spatial_audio: roots.main().spatial_audio(),
+        p11_geometry: &values.p11_geometry,
+        p15_geometry: &values.p15_geometry,
+        diffusion_parameters: &values.diffusion,
+        feature_processor: &values.feature_processor,
+        feature_fft: &values.feature_fft,
+        window: &values.window,
+        component_parameters: &values.component_parameters,
+        spatial_audio_providers: Some(providers.spatial_audio()),
+    })
+    .map_err(EncodeRequestError::SpatialCallback)?;
+    if spatial.callback_index() != callback_index {
+        return Err(EncodeRequestError::ClockMismatch);
+    }
+    Ok(PendingMainCallback {
+        callback_index,
+        source_index: Some(source_index),
+        frontend: None,
+        spatial,
+        reader_eof_candidate,
+        transaction_id,
+    })
+}
+
+struct FileReferenceParts {
+    file_name: String,
+    local_path: String,
+}
+
+fn normalize_existing_input(path: &Path) -> Result<PathBuf, EncodeRequestError> {
+    if !path.is_absolute() {
+        return Err(EncodeRequestError::InvalidPath);
+    }
+    std::fs::canonicalize(path).map_err(|_| EncodeRequestError::InvalidPath)
+}
+
+fn normalize_new_output(path: &Path) -> Result<PathBuf, EncodeRequestError> {
+    if !path.is_absolute() {
+        return Err(EncodeRequestError::InvalidPath);
+    }
+    let file_name = path.file_name().ok_or(EncodeRequestError::InvalidPath)?;
+    let parent = path.parent().ok_or(EncodeRequestError::InvalidPath)?;
+    let normalized_parent =
+        std::fs::canonicalize(parent).map_err(|_| EncodeRequestError::InvalidPath)?;
+    Ok(normalized_parent.join(file_name))
+}
+
+fn file_reference_parts(path: &Path) -> Result<FileReferenceParts, EncodeRequestError> {
+    let file_name = path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .ok_or(EncodeRequestError::InvalidPath)?;
+    let local_path = path
+        .parent()
+        .and_then(Path::to_str)
+        .filter(|value| !value.is_empty())
+        .ok_or(EncodeRequestError::InvalidPath)?;
+    Ok(FileReferenceParts {
+        file_name: xml_escape(file_name),
+        local_path: xml_escape(local_path),
+    })
+}
+
+fn selected_full_file_job_xml(input: &FileReferenceParts, output: &FileReferenceParts) -> String {
+    format!(
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>1770-4</metering_mode><dialogue_intelligence>false</dialogue_intelligence><speech_threshold>100</speech_threshold></measure_only></loudness><data_rate>1024</data_rate><timecode_frame_rate>not_indicated</timecode_frame_rate><start></start><end></end><time_base>file_position</time_base><prepend_silence_duration>0.0</prepend_silence_duration><append_silence_duration>0.0</append_silence_duration><drc><line_mode_drc_profile>none</line_mode_drc_profile><rf_mode_drc_profile>none</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>-3</loro_center_mix_level><loro_surround_mix_level>-3</loro_surround_mix_level><ltrt_center_mix_level>-3</ltrt_center_mix_level><ltrt_surround_mix_level>-3</ltrt_surround_mix_level><preferred_downmix_mode>loro</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>auto</surround_trim_5_1><height_trim_5_1>auto</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
+        input.file_name, input.local_path, output.file_name, output.local_path
+    )
+}
+
+fn xml_escape(value: &str) -> String {
+    value
+        .replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+        .replace('"', "&quot;")
+        .replace('\'', "&apos;")
+}
+
+struct CliRunIdentity {
+    programme: ProgrammeId,
+    attempt: AttemptId,
+    staging_owner: OutputStagingOwnerId,
+}
+
+fn fresh_run_identity() -> Result<CliRunIdentity, EncodeRequestError> {
+    let nonce = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map_err(|_| EncodeRequestError::ProgrammeIdentity)?
+        .as_nanos();
+    let attempt = u64::try_from(nonce).map_err(|_| EncodeRequestError::ProgrammeIdentity)?;
+    let unique_label = format!("jocforge-cli-{}-{nonce}", std::process::id());
+    let programme_id =
+        ProgrammeId::new(&unique_label).map_err(|_| EncodeRequestError::ProgrammeIdentity)?;
+    let staging_owner_id = OutputStagingOwnerId::new(&format!(
+        "jocforge-output-owner-{}-{nonce}",
+        std::process::id()
+    ))
+    .map_err(|_| EncodeRequestError::ProgrammeIdentity)?;
+    Ok(CliRunIdentity {
+        programme: programme_id,
+        attempt: AttemptId::new(attempt),
+        staging_owner: staging_owner_id,
+    })
+}
+
+fn hex_lower(bytes: &[u8]) -> String {
+    const HEX: &[u8; 16] = b"0123456789abcdef";
+    let mut output = String::with_capacity(bytes.len() * 2);
+    for byte in bytes {
+        output.push(char::from(HEX[usize::from(byte >> 4)]));
+        output.push(char::from(HEX[usize::from(byte & 0x0f)]));
+    }
+    output
+}

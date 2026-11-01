@@ -165,6 +165,13 @@ impl AnalysisOwnerRoot {
         Self::cold_with_prepared_identity(Some(prepared_job_input_identity))
     }
 
+    /// Returns the shared persistent generation when all analysis owner leaves agree.
+    ///
+    /// This reads the staged owner clock without reserializing the canonical root bytes.
+    pub fn owner_generation(&self) -> Option<u64> {
+        self.common_generation()
+    }
+
     fn cold_with_prepared_identity(
         prepared_job_input_identity: Option<Arc<PreparedJobInputIdentity>>,
     ) -> Self {
@@ -990,6 +997,90 @@ impl AnalysisNumericPlanStage {
         self.plan.as_ref()
     }
 
+    /// Consumes this source stage into a noncommitting parent handoff for the Analysis owner.
+    ///
+    /// Single-token wrapper for stages where the source and callback identities coincide.
+    pub fn into_parent_proposal(
+        self,
+        before: &AnalysisOwnerRoot,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<AnalysisOwnerParentProposal, AnalysisOwnerParentHandoffError> {
+        self.into_parent_proposal_for_parent_callback(
+            before,
+            &transaction_id,
+            transaction_id.clone(),
+        )
+        .map_err(|error| match error {
+            AnalysisOwnerParentHandoffError::SourceTransactionMismatch => {
+                AnalysisOwnerParentHandoffError::ParentTransactionMismatch
+            }
+            other => other,
+        })
+    }
+
+    /// Binds the staged source identity separately from its enclosing callback receipt.
+    pub fn into_parent_proposal_for_parent_callback(
+        self,
+        before: &AnalysisOwnerRoot,
+        source_transaction_id: &CallbackTransactionId,
+        parent_callback_transaction_id: CallbackTransactionId,
+    ) -> Result<AnalysisOwnerParentProposal, AnalysisOwnerParentHandoffError> {
+        if !before.is_commit_eligible() || !self.after_state.is_commit_eligible() {
+            return Err(AnalysisOwnerParentHandoffError::IncompleteRoot);
+        }
+        let before_identity = before
+            .prepared_job_input_identity()
+            .ok_or(AnalysisOwnerParentHandoffError::PreparedInputIdentityMissing)?;
+        let after_identity = self
+            .after_state
+            .prepared_job_input_identity()
+            .ok_or(AnalysisOwnerParentHandoffError::PreparedInputIdentityMissing)?;
+        if !Arc::ptr_eq(before_identity, after_identity) {
+            return Err(AnalysisOwnerParentHandoffError::PreparedInputIdentityMismatch);
+        }
+
+        let shared = self
+            .source_transaction
+            .shared_analysis()
+            .ok_or(AnalysisOwnerParentHandoffError::SharedAnalysisMissing)?;
+        let source_key = shared.identity().source_stage_key();
+        let shared_identity = shared
+            .identity()
+            .prepared_job_input_identity()
+            .ok_or(AnalysisOwnerParentHandoffError::PreparedInputIdentityMissing)?;
+        if !Arc::ptr_eq(before_identity, shared_identity) {
+            return Err(AnalysisOwnerParentHandoffError::PreparedInputIdentityMismatch);
+        }
+        if source_key.transaction_id() != source_transaction_id {
+            return Err(AnalysisOwnerParentHandoffError::SourceTransactionMismatch);
+        }
+        if source_key.analysis_before_generation().value() != before.input_history_generation()
+            || shared.identity().analysis_after_generation().value()
+                != self.after_state.input_history_generation()
+            || shared.advancement_count() != 1
+        {
+            return Err(AnalysisOwnerParentHandoffError::SourceGenerationMismatch);
+        }
+
+        let owner_receipt = before
+            .gtc_owner_receipt_to(&self.after_state, parent_callback_transaction_id)
+            .map_err(AnalysisOwnerParentHandoffError::OwnerReceipt)?;
+        let Self {
+            after_state,
+            source_transaction,
+            plan: _,
+        } = self;
+        let shared_analysis = source_transaction
+            .into_shared_analysis()
+            .map_err(|_| AnalysisOwnerParentHandoffError::SharedAnalysisMissing)?;
+
+        Ok(AnalysisOwnerParentProposal {
+            after_root: after_state,
+            shared_analysis,
+            owner_receipt,
+        })
+    }
+
     /// Creates the one numeric receipt from the same shared analysis identity/provider set.
     pub fn prepare_numeric_plan(
         &mut self,
@@ -1021,6 +1112,45 @@ impl AnalysisNumericPlanStage {
     }
 }
 
+/// Complete noncommitting Analysis after-root and its same-source parent receipts.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct AnalysisOwnerParentProposal {
+    after_root: AnalysisOwnerRoot,
+    shared_analysis: SharedAnalysisReceipt,
+    owner_receipt: GtcOwnerReceipt,
+}
+
+impl AnalysisOwnerParentProposal {
+    pub const fn after_root(&self) -> &AnalysisOwnerRoot {
+        &self.after_root
+    }
+
+    pub const fn shared_analysis(&self) -> &SharedAnalysisReceipt {
+        &self.shared_analysis
+    }
+
+    pub const fn owner_receipt(&self) -> &GtcOwnerReceipt {
+        &self.owner_receipt
+    }
+
+    pub fn into_parts(self) -> (AnalysisOwnerRoot, SharedAnalysisReceipt, GtcOwnerReceipt) {
+        (self.after_root, self.shared_analysis, self.owner_receipt)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum AnalysisOwnerParentHandoffError {
+    IncompleteRoot,
+    PreparedInputIdentityMissing,
+    PreparedInputIdentityMismatch,
+    SharedAnalysisMissing,
+    ParentTransactionMismatch,
+    SourceTransactionMismatch,
+    SourceGenerationMismatch,
+    OwnerReceipt(AnalysisOwnerGtcReceiptError),
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum AnalysisOwnerStageError {
     InvalidCommittedGeneration,
@@ -1050,8 +1180,9 @@ fn map_transaction_stage_error(_: SourceTransactionStageError) -> AnalysisOwnerS
 #[cfg(test)]
 mod tests {
     use super::{
-        AnalysisOwnerGtcReceiptError, AnalysisOwnerRoot, AnalysisOwnerStageError,
-        AnalysisOwnerStateReferenceError, F07_BLOCKS_PER_FRAME,
+        AnalysisNumericPlanStage, AnalysisOwnerGtcReceiptError, AnalysisOwnerParentHandoffError,
+        AnalysisOwnerRoot, AnalysisOwnerStageError, AnalysisOwnerStateReferenceError,
+        F07_BLOCKS_PER_FRAME,
     };
     use crate::analysis::exponent_plan::{AnalysisBlockIndex, FullbandLaneIndex};
     use crate::analysis::input_history::INPUT_HISTORY_BLOCK_SAMPLES;
@@ -1102,6 +1233,35 @@ mod tests {
             CallbackTransactionId::new("analysis-root-test").unwrap(),
             CodecSourceIndex::new(0),
         )
+    }
+
+    fn complete_numeric_stage(
+        before: &AnalysisOwnerRoot,
+        attempt: AttemptId,
+        transaction_id: CallbackTransactionId,
+        source: CodecSourceIndex,
+    ) -> AnalysisNumericPlanStage {
+        let transient = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let transform =
+            MathGeneratedTransformParameters::from_provider_bytes(F08_PARAMETERS).unwrap();
+        let policy =
+            load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS)).unwrap();
+        before
+            .prepare_f07_source(
+                attempt,
+                transaction_id,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &transient,
+            )
+            .unwrap()
+            .complete_f08(&transform)
+            .unwrap()
+            .complete_gain_db(&policy)
+            .unwrap()
+            .complete_f09_f10(&policy)
+            .unwrap()
     }
 
     fn prepared_job_identity() -> Arc<PreparedJobInputIdentity> {
@@ -1472,6 +1632,162 @@ mod tests {
         assert_eq!(receipt.commit_count(), 1);
         assert_eq!(receipt.transaction_id(), &transaction_id);
         assert_eq!(before, AnalysisOwnerRoot::cold_for_prepared_input(identity));
+    }
+
+    #[test]
+    fn numeric_stage_parent_handoff_transfers_exact_after_root_and_shared_receipt() {
+        let identity = prepared_job_identity();
+        let before = AnalysisOwnerRoot::cold_for_prepared_input(Arc::clone(&identity));
+        let before_bytes = before.state_reference().unwrap().canonical_bytes().to_vec();
+        let (attempt, transaction_id, source) = source_transaction();
+        let stage = complete_numeric_stage(&before, attempt, transaction_id.clone(), source);
+
+        let proposal = stage
+            .into_parent_proposal(&before, transaction_id.clone())
+            .unwrap();
+
+        assert_eq!(proposal.after_root().input_history_generation(), 1);
+        assert!(proposal.after_root().is_commit_eligible());
+        assert!(Arc::ptr_eq(
+            proposal.after_root().prepared_job_input_identity().unwrap(),
+            &identity
+        ));
+        assert_eq!(proposal.shared_analysis().identity().source_index(), source);
+        assert_eq!(
+            proposal
+                .shared_analysis()
+                .identity()
+                .source_stage_key()
+                .transaction_id(),
+            &transaction_id
+        );
+        assert_eq!(proposal.shared_analysis().advancement_count(), 1);
+        assert_eq!(proposal.owner_receipt().owner_id(), GtcOwnerId::Analysis);
+        assert_eq!(proposal.owner_receipt().before_generation(), 0);
+        assert_eq!(proposal.owner_receipt().after_generation(), 1);
+        assert!(proposal.owner_receipt().changed());
+        assert_eq!(proposal.owner_receipt().commit_count(), 1);
+        assert_eq!(proposal.owner_receipt().transaction_id(), &transaction_id);
+
+        assert_eq!(
+            before.state_reference().unwrap().canonical_bytes(),
+            before_bytes
+        );
+        assert_eq!(before.input_history_generation(), 0);
+        assert_eq!(before.transient_generation(), 0);
+        assert_eq!(before.transform_generation(), 0);
+        assert_eq!(before.policy_generation(), 0);
+    }
+
+    #[test]
+    fn numeric_stage_parent_handoff_keeps_source_and_callback_transactions_distinct() {
+        let identity = prepared_job_identity();
+        let before = AnalysisOwnerRoot::cold_for_prepared_input(Arc::clone(&identity));
+        let (attempt, source_transaction, source) = source_transaction();
+        let stage = complete_numeric_stage(&before, attempt, source_transaction.clone(), source);
+        let parent_callback_transaction =
+            CallbackTransactionId::new("jocforge-main-callback-g2").unwrap();
+
+        let proposal = stage
+            .into_parent_proposal_for_parent_callback(
+                &before,
+                &source_transaction,
+                parent_callback_transaction.clone(),
+            )
+            .unwrap();
+
+        assert_eq!(
+            proposal
+                .shared_analysis()
+                .identity()
+                .source_stage_key()
+                .transaction_id(),
+            &source_transaction
+        );
+        assert_eq!(
+            proposal.owner_receipt().transaction_id(),
+            &parent_callback_transaction
+        );
+        assert_eq!(proposal.owner_receipt().before_generation(), 0);
+        assert_eq!(proposal.owner_receipt().after_generation(), 1);
+    }
+
+    #[test]
+    fn numeric_stage_parent_handoff_rejects_wrong_source_and_reports_correct_error() {
+        let identity = prepared_job_identity();
+        let before = AnalysisOwnerRoot::cold_for_prepared_input(identity);
+        let before_bytes = before.state_reference().unwrap().canonical_bytes().to_vec();
+        let (attempt, source_transaction, source) = source_transaction();
+        let stage = complete_numeric_stage(&before, attempt, source_transaction, source);
+
+        assert_eq!(
+            stage.into_parent_proposal_for_parent_callback(
+                &before,
+                &CallbackTransactionId::new("jocforge-source-1").unwrap(),
+                CallbackTransactionId::new("jocforge-main-callback-g2").unwrap(),
+            ),
+            Err(AnalysisOwnerParentHandoffError::SourceTransactionMismatch)
+        );
+        assert_eq!(
+            before.state_reference().unwrap().canonical_bytes(),
+            before_bytes
+        );
+        assert_eq!(before.input_history_generation(), 0);
+    }
+
+    #[test]
+    fn numeric_stage_parent_handoff_rejects_a_different_transaction_without_mutation() {
+        let identity = prepared_job_identity();
+        let before = AnalysisOwnerRoot::cold_for_prepared_input(identity);
+        let before_bytes = before.state_reference().unwrap().canonical_bytes().to_vec();
+        let (attempt, source_transaction, source) = source_transaction();
+        let stage = complete_numeric_stage(&before, attempt, source_transaction, source);
+
+        assert_eq!(
+            stage.into_parent_proposal(
+                &before,
+                CallbackTransactionId::new("different-analysis-parent").unwrap(),
+            ),
+            Err(AnalysisOwnerParentHandoffError::ParentTransactionMismatch)
+        );
+        assert_eq!(
+            before.state_reference().unwrap().canonical_bytes(),
+            before_bytes
+        );
+        assert_eq!(before.input_history_generation(), 0);
+    }
+
+    #[test]
+    fn numeric_stage_handoff_separates_source_and_parent_callback_transactions() {
+        let identity = prepared_job_identity();
+        let before = AnalysisOwnerRoot::cold_for_prepared_input(Arc::clone(&identity));
+        let (attempt, source_transaction, source) = source_transaction();
+        let stage = complete_numeric_stage(&before, attempt, source_transaction.clone(), source);
+        let parent_callback_transaction =
+            CallbackTransactionId::new("jocforge-main-callback-g2").unwrap();
+
+        let proposal = stage
+            .into_parent_proposal_for_parent_callback(
+                &before,
+                &source_transaction,
+                parent_callback_transaction.clone(),
+            )
+            .unwrap();
+
+        assert_eq!(
+            proposal
+                .shared_analysis()
+                .identity()
+                .source_stage_key()
+                .transaction_id(),
+            &source_transaction
+        );
+        assert_eq!(
+            proposal.owner_receipt().transaction_id(),
+            &parent_callback_transaction
+        );
+        assert_eq!(proposal.owner_receipt().before_generation(), 0);
+        assert_eq!(proposal.owner_receipt().after_generation(), 1);
     }
 
     #[test]

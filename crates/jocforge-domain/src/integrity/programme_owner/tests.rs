@@ -291,6 +291,49 @@ fn gtc_callback_identity(
     (programme_id, attempt, transaction_id, callback_identity)
 }
 
+fn completed_frame_with(container_offset: Option<usize>, container: Option<&[u8]>) -> Vec<u8> {
+    let mut frame = vec![0_u8; FRAME_BYTES];
+    if let (Some(offset), Some(container)) = (container_offset, container) {
+        frame[offset..offset + container.len()].copy_from_slice(container);
+    }
+    let crc16 = eac3_crc16(&frame[FRAME_CRC_INPUT_START..FRAME_CRC_INPUT_END]);
+    frame[FRAME_CRC_START..FRAME_BYTES].copy_from_slice(&crc16.to_be_bytes());
+    frame
+}
+
+fn completed_frame_with_bit_cursor(bit_offset: u32, container: &[u8]) -> Vec<u8> {
+    let mut frame = vec![0_u8; FRAME_BYTES];
+    for (byte_index, source_byte) in container.iter().copied().enumerate() {
+        for bit_index in 0..8_u32 {
+            let frame_bit = bit_offset + u32::try_from(byte_index).unwrap() * 8 + bit_index;
+            let frame_byte = usize::try_from(frame_bit / 8).unwrap();
+            let frame_shift = 7 - (frame_bit % 8);
+            let source_shift = 7 - bit_index;
+            if (source_byte >> source_shift) & 1 != 0 {
+                frame[frame_byte] |= 1 << frame_shift;
+            }
+        }
+    }
+    let crc16 = eac3_crc16(&frame[FRAME_CRC_INPUT_START..FRAME_CRC_INPUT_END]);
+    frame[FRAME_CRC_START..FRAME_BYTES].copy_from_slice(&crc16.to_be_bytes());
+    frame
+}
+
+fn f12_identity(source_index: u64) -> IntegrityIdentity {
+    IntegrityIdentity {
+        programme_id: "P0".to_owned(),
+        attempt: 0,
+        transaction_id: format!("f12-source-{source_index}"),
+        source_index: CodecSourceIndex::new(source_index),
+        dispatch: JocDispatchIndex::new(source_index + 1),
+        au_index: if source_index >= 2 {
+            Some(PublishedAuIndex::new(source_index - 2))
+        } else {
+            None
+        },
+    }
+}
+
 #[test]
 fn public_crc_primitives_match_published_checks() {
     assert_eq!(crc32_iso_hdlc(b"123456789"), 0xcbf4_3926);
@@ -309,6 +352,193 @@ fn public_crc_primitives_match_published_checks() {
     );
     assert_eq!(result.receipts[2].details.crc_residual(), Some(0));
     assert_eq!(eac3_crc16(&result.frame[2..]), 0);
+}
+
+#[test]
+fn cold_owner_reuses_the_admitted_typed_provider() {
+    let provider_bytes = provider();
+    let admitted_provider = validate_keyless_provider(&provider_bytes).unwrap();
+    let from_json = IntegrityProgrammeOwner::cold("P0", 0, 5, &provider_bytes).unwrap();
+    let from_admitted =
+        IntegrityProgrammeOwner::cold_from_provider("P0", 0, 5, &admitted_provider).unwrap();
+    assert_eq!(from_json.committed_state(), from_admitted.committed_state());
+}
+
+#[test]
+fn f12_completed_frame_stage_advances_suppressed_sources_without_publishing_aus() {
+    let provider_bytes = provider();
+    let provider_value = validate_keyless_provider(&provider_bytes).unwrap();
+    let mut owner = new_owner(0);
+
+    for source_index in 0..2 {
+        let identity = f12_identity(source_index);
+        let (programme_id, attempt, transaction_id, callback_identity) =
+            gtc_callback_identity(&identity);
+        let frame = completed_frame_with(None, None);
+        let proposal = owner
+            .stage_f12_source_for_callback(
+                IntegrityF12SourceInput {
+                    identity,
+                    payload: F14kPayloadInput::AbsentPublishedPayloadV1,
+                    completed_frame: F12CompletedFrameInput {
+                        frame: &frame,
+                        emdf_container_start: None,
+                    },
+                },
+                &provider_value,
+                &programme_id,
+                attempt,
+                &transaction_id,
+                &callback_identity,
+            )
+            .expect("F12 produces CRC-valid frames for priming sources");
+        let (next_owner, receipts, owner_receipt) = proposal.into_parts();
+        assert_eq!(
+            receipts.source().payload(),
+            IntegrityPayloadEvidence::AbsentPublishedPayloadV1
+        );
+        assert!(!receipts.au().published());
+        assert_eq!(receipts.au().crc_residual(), 0);
+        assert_eq!(
+            next_owner.committed_state().next_source_index().value(),
+            source_index + 1
+        );
+        assert_eq!(next_owner.committed_state().published_au_count(), 0);
+        assert_eq!(owner_receipt.after_generation(), source_index + 1);
+        owner = next_owner;
+    }
+}
+
+#[test]
+fn f12_completed_frame_stage_binds_protected_emdf_at_dynamic_bit_cursor() {
+    let provider_bytes = provider();
+    let provider_value = validate_keyless_provider(&provider_bytes).unwrap();
+    let mut owner = new_owner(0);
+    for source_index in 0..2 {
+        let identity = f12_identity(source_index);
+        let (programme_id, attempt, transaction_id, callback_identity) =
+            gtc_callback_identity(&identity);
+        let frame = completed_frame_with(None, None);
+        let proposal = owner
+            .stage_f12_source_for_callback(
+                IntegrityF12SourceInput {
+                    identity,
+                    payload: F14kPayloadInput::AbsentPublishedPayloadV1,
+                    completed_frame: F12CompletedFrameInput {
+                        frame: &frame,
+                        emdf_container_start: None,
+                    },
+                },
+                &provider_value,
+                &programme_id,
+                attempt,
+                &transaction_id,
+                &callback_identity,
+            )
+            .unwrap();
+        owner = proposal.into_parts().0;
+    }
+
+    let zero_slot_container = [0x58, 0x38, 0x00, 0x07, 0x04, 0x80, 0, 0, 0, 0, 0];
+    let layout = serde_json::json!({
+        "bit_order": "MSB-first",
+        "terminal_id": { "value": 0, "start_bit": 32, "width_bits": 5 },
+        "primary_length_code": { "value": 2, "start_bit": 37, "width_bits": 2, "byte_count": 4 },
+        "secondary_length_code": { "value": 1, "start_bit": 39, "width_bits": 2, "byte_count": 1 },
+        "primary_protection_range_bits": [41, 73],
+        "secondary_protection_range_bits": [73, 81],
+        "terminal_padding_range_bits": [81, 88],
+        "terminal_padding_bits": 7,
+        "wire_bytes": 11,
+        "body_bytes": 7
+    });
+    let protected = super::super::keyless_checksum::protect_emdf_container(
+        &provider_value,
+        &zero_slot_container,
+        &layout,
+    )
+    .unwrap();
+    let carrier_bit_offset = 517;
+    let frame = completed_frame_with_bit_cursor(carrier_bit_offset, protected.bytes());
+    let identity = f12_identity(2);
+    let (programme_id, attempt, transaction_id, callback_identity) =
+        gtc_callback_identity(&identity);
+    let proposal = owner
+        .stage_f12_source_for_callback(
+            IntegrityF12SourceInput {
+                identity,
+                payload: F14kPayloadInput::ProtectedEmdf {
+                    zero_slot_container: &zero_slot_container,
+                    protected_container: &protected,
+                },
+                completed_frame: F12CompletedFrameInput {
+                    frame: &frame,
+                    emdf_container_start: Some(FrameBitCursor::new(carrier_bit_offset)),
+                },
+            },
+            &provider_value,
+            &programme_id,
+            attempt,
+            &transaction_id,
+            &callback_identity,
+        )
+        .expect("F12 frame cursor binds the exact protected bytes");
+    let (next_owner, receipts, owner_receipt) = proposal.into_parts();
+    assert_eq!(receipts.source().identity().source_index.value(), 2);
+    assert_eq!(
+        receipts.dispatch().emdf_container_start(),
+        Some(FrameBitCursor::new(carrier_bit_offset))
+    );
+    assert!(receipts.au().published());
+    assert_eq!(receipts.au().crc_residual(), 0);
+    assert_eq!(next_owner.committed_state().next_source_index().value(), 3);
+    assert_eq!(next_owner.committed_state().published_au_count(), 1);
+    assert_eq!(owner_receipt.after_generation(), 3);
+}
+
+#[test]
+fn f12_completed_frame_stage_rejects_absent_payload_with_unexpected_cursor() {
+    let provider_bytes = provider();
+    let provider_value = validate_keyless_provider(&provider_bytes).unwrap();
+    let owner = new_owner(0);
+    let identity = f12_identity(0);
+    let (programme_id, attempt, transaction_id, callback_identity) =
+        gtc_callback_identity(&identity);
+    let frame = completed_frame_with(None, None);
+    let error = owner
+        .stage_f12_source_for_callback(
+            IntegrityF12SourceInput {
+                identity,
+                payload: F14kPayloadInput::AbsentPublishedPayloadV1,
+                completed_frame: F12CompletedFrameInput {
+                    frame: &frame,
+                    emdf_container_start: Some(FrameBitCursor::new(17)),
+                },
+            },
+            &provider_value,
+            &programme_id,
+            attempt,
+            &transaction_id,
+            &callback_identity,
+        )
+        .unwrap_err();
+    assert_eq!(error.code(), IntegrityErrorCode::AuOrder);
+}
+
+#[test]
+fn frame_payload_bit_comparison_accepts_non_byte_cursor_and_rejects_wrong_cursor() {
+    let payload = [0xa5, 0x69, 0xf0];
+    let frame = completed_frame_with_bit_cursor(21, &payload);
+    assert!(super::frame_contains_payload_at_cursor(
+        &frame,
+        FrameBitCursor::new(21),
+        &payload,
+    ));
+    assert!(!super::frame_contains_payload_at_cursor(
+        &frame,
+        FrameBitCursor::new(22),
+        &payload,
+    ));
 }
 
 #[test]

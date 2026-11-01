@@ -7,9 +7,13 @@ pub use jocforge_domain::codec::{
     owner::{CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError},
     source_frame_writer::SelectedSourceFrameCandidate,
 };
+pub use jocforge_domain::{
+    analysis::owner::AnalysisNumericPlanStage, drc::NoneDrcOwnerAfterProposal,
+    joc::emdf::metadata_owner::MetadataSourceProposal,
+};
 
 use jocforge_domain::{
-    analysis::{owner::AnalysisNumericPlanStage, source_frame::SharedAnalysisReceipt},
+    analysis::source_frame::SharedAnalysisReceipt,
     codec::{
         bap::BapParameters,
         published_emdf_binding::{PublishedEmdfBindingError, emdf_frame_input_for_source},
@@ -17,8 +21,6 @@ use jocforge_domain::{
             SelectedSourceFrameWriterError, prepare_selected_source_frame_candidate,
         },
     },
-    drc::NoneDrcOwnerAfterProposal,
-    joc::emdf::metadata_owner::MetadataSourceProposal,
     publication::OutputSourceAfterProposal,
     timeline::{PublicationDisposition, publication_for_source, source_for_callback},
 };
@@ -31,11 +33,37 @@ use crate::{
 /// Failures while joining the current source's application-owned codec inputs.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum SourceFrameBridgeError {
+    F15AdmissionRejected,
     AnalysisSharedReceiptMissing,
     MetadataSourceLineageMismatch,
+    F12EmdfCursorMissing,
+    F12EmdfCursorUnexpected,
     CodecSource(CodecSourceBridgeError),
     PublishedEmdf(PublishedEmdfBindingError),
     FrameWriter(SelectedSourceFrameWriterError),
+}
+
+/// Prepares a selected F12 frame candidate using the BAP value retained by this request's F15
+/// admission. The caller supplies the same-source Analysis, DRC and Metadata proposals produced
+/// by the approved callback stages; this bridge adds no codec behavior or owner commit.
+pub fn prepare_admitted_source_frame<'a>(
+    prepared: &PreparedJobInput,
+    admitted_plan: &crate::output_publication::AdmittedProductionPlan,
+    analysis_stage: &'a mut AnalysisNumericPlanStage,
+    drc_after: &NoneDrcOwnerAfterProposal,
+    metadata: &'a MetadataSourceProposal,
+) -> Result<SelectedSourceFrameCandidate<'a>, SourceFrameBridgeError> {
+    if !admitted_plan.is_bound_to(prepared) {
+        return Err(SourceFrameBridgeError::F15AdmissionRejected);
+    }
+    let bap_parameters = Arc::new(admitted_plan.source_providers().bap().clone());
+    prepare_source_frame_from_proposals(
+        prepared,
+        analysis_stage,
+        drc_after,
+        metadata,
+        bap_parameters,
+    )
 }
 
 /// Binds real production proposals for one source into a complete, noncommitting F12 candidate.
@@ -68,8 +96,32 @@ pub fn prepare_source_frame_from_proposals<'a>(
     )
     .map_err(SourceFrameBridgeError::PublishedEmdf)?;
 
-    prepare_selected_source_frame_candidate(analysis_stage, &bsi, &emdf, bap_parameters)
-        .map_err(SourceFrameBridgeError::FrameWriter)
+    let candidate =
+        prepare_selected_source_frame_candidate(analysis_stage, &bsi, &emdf, bap_parameters)
+            .map_err(SourceFrameBridgeError::FrameWriter)?;
+    validate_f12_emdf_cursor(&candidate)?;
+    Ok(candidate)
+}
+
+fn validate_f12_emdf_cursor(
+    candidate: &SelectedSourceFrameCandidate<'_>,
+) -> Result<(), SourceFrameBridgeError> {
+    use jocforge_domain::codec::selected_frame_trial::EmdfFrameInput;
+
+    let published = matches!(candidate.emdf_input(), EmdfFrameInput::Published(_));
+    validate_f12_cursor_shape(published, candidate.frame().emdf_container_start())
+}
+
+fn validate_f12_cursor_shape(
+    published: bool,
+    cursor: Option<jocforge_domain::codec::bitio::FrameBitCursor>,
+) -> Result<(), SourceFrameBridgeError> {
+    match (published, cursor) {
+        (false, None) => Ok(()),
+        (false, Some(_)) => Err(SourceFrameBridgeError::F12EmdfCursorUnexpected),
+        (true, None) => Err(SourceFrameBridgeError::F12EmdfCursorMissing),
+        (true, Some(_)) => Ok(()),
+    }
 }
 
 /// Stages the codec-owner proposal from the exact F12 candidate and its output disposition.
@@ -154,4 +206,35 @@ fn validate_metadata_source_lineage(
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod integrity_cursor_tests {
+    use super::*;
+    use jocforge_domain::codec::bitio::FrameBitCursor;
+
+    #[test]
+    fn published_f12_cursor_must_be_present_but_may_be_bit_aligned() {
+        assert_eq!(
+            validate_f12_cursor_shape(true, Some(FrameBitCursor::new(24))),
+            Ok(())
+        );
+        assert_eq!(
+            validate_f12_cursor_shape(true, Some(FrameBitCursor::new(25))),
+            Ok(())
+        );
+        assert_eq!(
+            validate_f12_cursor_shape(true, None),
+            Err(SourceFrameBridgeError::F12EmdfCursorMissing)
+        );
+    }
+
+    #[test]
+    fn absent_f12_payload_has_no_carrier_cursor() {
+        assert_eq!(validate_f12_cursor_shape(false, None), Ok(()));
+        assert_eq!(
+            validate_f12_cursor_shape(false, Some(FrameBitCursor::new(24))),
+            Err(SourceFrameBridgeError::F12EmdfCursorUnexpected)
+        );
+    }
 }

@@ -26,7 +26,7 @@ use jocforge_domain::meter::prepared_job_identity::{
     PreparedAdmGraphProvenance as DomainAdmGraphProvenance, PreparedInputResourceIdentity,
     PreparedJobInputIdentity, PreparedJobInputIdentityError,
 };
-use jocforge_domain::state::EncodeError;
+pub use jocforge_domain::state::EncodeError;
 use jocforge_domain::timeline::{AdmSampleCount, ClockError};
 pub use jocforge_domain::transaction::ProgrammeId;
 use serde_json::{Map, Value, json};
@@ -35,12 +35,15 @@ use std::collections::BTreeMap;
 use std::sync::Arc;
 
 pub mod codec_source_bridge;
+pub mod drc_source_bridge;
 pub mod independent_meter_callback;
+pub mod integrity_source_bridge;
 pub mod metadata_source_bridge;
 pub mod meter_finalization_bridge;
 pub mod meter_source_admission;
 pub mod meter_source_bridge;
 pub mod output_publication;
+pub mod reader_eof_callback;
 pub mod source_analysis_bridge;
 pub mod source_frame_bridge;
 pub mod spatial_callback;
@@ -572,7 +575,16 @@ fn hex_lower(bytes: &[u8]) -> String {
     output
 }
 
-/// Rejects encoding until the architecture and implementation have been reviewed.
-pub const fn encode() -> Result<(), EncodeError> {
-    Err(EncodeError::BackendUnavailable)
+/// Validates selected owner providers and destination authority before source execution.
+///
+/// Provider values and the output capability stay private to the application. Source callbacks
+/// and AU publication still need their complete owner proposals before this call can write output.
+pub fn encode(
+    prepared: &PreparedJobInput,
+    admitted_plan: &output_publication::AdmittedProductionPlan,
+) -> Result<(), EncodeError> {
+    if !admitted_plan.is_bound_to(prepared) {
+        return Err(EncodeError::F15AdmissionRejected);
+    }
+    Err(EncodeError::SourcePipelineUnavailable)
 }

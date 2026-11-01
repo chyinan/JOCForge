@@ -107,6 +107,79 @@ impl std::fmt::Display for MetadataOwnerError {
 
 impl std::error::Error for MetadataOwnerError {}
 
+/// Immutable selected provider values admitted before measurement supplies ID1 fields.
+#[derive(Clone, Debug, PartialEq)]
+pub struct ValidatedMetadataOwnerProvider {
+    provider_file: Vec<u8>,
+    wrapper_file: Vec<u8>,
+    provider_sha256: [u8; 32],
+    wrapper_configuration: Value,
+    wrapper_config_sha256: String,
+}
+
+impl ValidatedMetadataOwnerProvider {
+    /// Validates the exact approved provider and wrapper bytes without creating owner state.
+    pub fn from_approved_bytes(
+        provider_file: &[u8],
+        wrapper_file: &[u8],
+    ) -> Result<Self, MetadataOwnerError> {
+        if sha256_hex(provider_file) != PROVIDER_FILE_SHA256 {
+            return Err(MetadataOwnerError::ProviderIdentity);
+        }
+        if sha256_hex(wrapper_file) != WRAPPER_FILE_SHA256 {
+            return Err(MetadataOwnerError::WrapperIdentity);
+        }
+
+        let provider: Value = serde_json::from_slice(provider_file)
+            .map_err(|_| MetadataOwnerError::ProviderIdentity)?;
+        let wrapper_configuration: Value = serde_json::from_slice(wrapper_file)
+            .map_err(|_| MetadataOwnerError::WrapperIdentity)?;
+        let provider_canonical =
+            serde_json::to_vec(&provider).map_err(|_| MetadataOwnerError::ProviderIdentity)?;
+        let wrapper_canonical = serde_json::to_vec(&wrapper_configuration)
+            .map_err(|_| MetadataOwnerError::WrapperIdentity)?;
+        if sha256_hex(&provider_canonical) != PROVIDER_CANONICAL_SHA256 {
+            return Err(MetadataOwnerError::ProviderIdentity);
+        }
+        let wrapper_config_sha256 = sha256_hex(&wrapper_canonical);
+        if wrapper_config_sha256 != WRAPPER_CANONICAL_SHA256
+            || provider["wrapper_config_sha256"].as_str() != Some(&wrapper_config_sha256)
+        {
+            return Err(MetadataOwnerError::WrapperIdentity);
+        }
+
+        let provider_sha256 =
+            decode_sha256(PROVIDER_CANONICAL_SHA256).ok_or(MetadataOwnerError::ProviderIdentity)?;
+        Ok(Self {
+            provider_file: provider_file.to_vec(),
+            wrapper_file: wrapper_file.to_vec(),
+            provider_sha256,
+            wrapper_configuration,
+            wrapper_config_sha256,
+        })
+    }
+
+    pub fn provider_file(&self) -> &[u8] {
+        &self.provider_file
+    }
+
+    pub fn wrapper_file(&self) -> &[u8] {
+        &self.wrapper_file
+    }
+
+    pub const fn provider_sha256(&self) -> &[u8; 32] {
+        &self.provider_sha256
+    }
+
+    pub fn wrapper_configuration(&self) -> &Value {
+        &self.wrapper_configuration
+    }
+
+    pub fn wrapper_config_sha256(&self) -> &str {
+        &self.wrapper_config_sha256
+    }
+}
+
 fn metadata_body_provenance_for_source(
     identity: &MetadataSourceIdentity,
     writer_generation: CodecSourceIndex,
@@ -312,7 +385,6 @@ struct MetadataSourceCall {
     config: Vec<Value>,
     pub bodies: MetadataBodies,
     pub wrapper_configuration: Value,
-    validate_current_container: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -360,6 +432,80 @@ pub struct MetadataSourceProposal {
     parsed_container: Option<ParsedMetadataSourceContainer>,
     before_snapshot: MetadataOwnerSnapshot,
     after_snapshot: MetadataOwnerSnapshot,
+}
+
+/// Parent-facing transfer of one validated Metadata after-owner and its source/GTC evidence.
+///
+/// This value carries no owner-local commit, reset, or output authority. An enclosing callback
+/// parent may install `after_owner` only with its other owner after-states.
+#[must_use]
+pub struct MetadataSourceParentHandoff {
+    after_owner: MetadataOwner,
+    source_receipt: MetadataSourceReceipt,
+    owner_receipt: GtcOwnerReceipt,
+    before_state: MetadataOwnerStateReference,
+    after_state: MetadataOwnerStateReference,
+    emdf: Option<Vec<u8>>,
+    bodies_lineage: MetadataBodiesLineage,
+    parsed_container: Option<ParsedMetadataSourceContainer>,
+}
+
+impl MetadataSourceParentHandoff {
+    pub const fn after_owner(&self) -> &MetadataOwner {
+        &self.after_owner
+    }
+
+    pub const fn source_receipt(&self) -> &MetadataSourceReceipt {
+        &self.source_receipt
+    }
+
+    pub const fn owner_receipt(&self) -> &GtcOwnerReceipt {
+        &self.owner_receipt
+    }
+
+    pub const fn before_state(&self) -> &MetadataOwnerStateReference {
+        &self.before_state
+    }
+
+    pub const fn after_state(&self) -> &MetadataOwnerStateReference {
+        &self.after_state
+    }
+
+    pub fn emdf(&self) -> Option<&[u8]> {
+        self.emdf.as_deref()
+    }
+
+    pub const fn bodies_lineage(&self) -> &MetadataBodiesLineage {
+        &self.bodies_lineage
+    }
+
+    pub const fn parsed_container(&self) -> Option<&ParsedMetadataSourceContainer> {
+        self.parsed_container.as_ref()
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        MetadataOwner,
+        MetadataSourceReceipt,
+        GtcOwnerReceipt,
+        MetadataOwnerStateReference,
+        MetadataOwnerStateReference,
+        Option<Vec<u8>>,
+        MetadataBodiesLineage,
+        Option<ParsedMetadataSourceContainer>,
+    ) {
+        (
+            self.after_owner,
+            self.source_receipt,
+            self.owner_receipt,
+            self.before_state,
+            self.after_state,
+            self.emdf,
+            self.bodies_lineage,
+            self.parsed_container,
+        )
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -525,6 +671,92 @@ impl MetadataSourceProposal {
         self.parsed_container.as_ref()
     }
 
+    /// Returns F13's serializer-owned terminal bit layout for the zero-slot container.
+    pub fn terminal_layout(&self) -> Option<&Value> {
+        self.receipt.terminal_layout()
+    }
+
+    /// Binds F14K-protected bytes to this exact F13 source proposal.
+    ///
+    /// F13 emits zero checksum slots and cannot parse its own container as protected. This
+    /// adapter is called only after F14K patches the slots using `terminal_layout`; parsing
+    /// then verifies the protected bytes and existing ID14 queue/source receipts. It performs
+    /// no owner commit or replacement.
+    pub fn bind_protected_container(
+        &mut self,
+        protected_bytes: &[u8],
+        carriage_mode: crate::joc::emdf::protected_container::CurrentEmdfCarriageMode,
+        carrier_block: crate::joc::emdf::protected_container::CarrierBlock,
+    ) -> Result<(), MetadataOwnerError> {
+        if self.parsed_container.is_some()
+            || self.receipt.source_index().value() < 2
+            || self.receipt.au_index().is_none()
+            || self
+                .emdf
+                .as_deref()
+                .map_or(true, |zero_slot| zero_slot.len() != protected_bytes.len())
+        {
+            return Err(MetadataOwnerError::CurrentEmdfValidation);
+        }
+        let queue_pop = self
+            .receipt
+            .id14_queue_pop()
+            .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
+        let consumer_transaction_id = self
+            .consumer_transaction_id
+            .as_ref()
+            .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
+        let consumer_au_index = self
+            .receipt
+            .au_index()
+            .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
+        if queue_pop.disposition() != Id14PopDisposition::Published
+            || queue_pop.consumer_transaction_id() != consumer_transaction_id
+            || queue_pop.consumer_source_index() != self.receipt.source_index()
+            || queue_pop.consumer_dispatch() != self.receipt.dispatch()
+            || queue_pop.consumer_au_index() != Some(consumer_au_index)
+        {
+            return Err(MetadataOwnerError::CurrentEmdfValidation);
+        }
+        let parsed_container = crate::joc::emdf::protected_container::parse_current_emdf_container(
+            protected_bytes,
+            carriage_mode,
+            carrier_block,
+            queue_pop.producer(),
+        )
+        .map_err(|_| MetadataOwnerError::CurrentEmdfValidation)?;
+        if parsed_container.id14_provenance() != queue_pop.producer() {
+            return Err(MetadataOwnerError::CurrentEmdfValidation);
+        }
+        let consumer = MetadataSourceIdentity {
+            programme_id: self.receipt.programme_id().clone(),
+            attempt: self.receipt.attempt(),
+            source_lineage: self.receipt.transaction_id().clone(),
+            transaction_id: self.consumer_transaction_id.clone(),
+            source_index: self.receipt.source_index(),
+            dispatch: self.receipt.dispatch(),
+            au_index: Some(consumer_au_index),
+            id14_provenance_present: true,
+        };
+        validate_current_container_pop_bindings(
+            &parsed_container,
+            &self.receipt.queue_pop_receipts,
+            &consumer,
+        )?;
+        self.parsed_container = Some(ParsedMetadataSourceContainer {
+            parsed_container,
+            consumer_programme_id: consumer.programme_id,
+            consumer_attempt: consumer.attempt,
+            consumer_transaction_id: consumer_transaction_id.clone(),
+            consumer_source_index: consumer.source_index,
+            consumer_dispatch: consumer.dispatch,
+            consumer_au_index,
+            id14_queue_pop: queue_pop.clone(),
+            queue_pop_receipts: self.receipt.queue_pop_receipts.clone(),
+        });
+        Ok(())
+    }
+
     /// Projects this noncommitting source proposal into its owner-level GTC receipt.
     ///
     /// The caller supplies the exact committed before-root and parent transaction token. This
@@ -534,6 +766,16 @@ impl MetadataSourceProposal {
         &self,
         before: &MetadataOwner,
         transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, MetadataGtcReceiptError> {
+        self.gtc_owner_receipt_for_parent_callback(before, &transaction_id, transaction_id.clone())
+    }
+
+    /// Validates the source consumer token separately from its parent callback receipt token.
+    pub fn gtc_owner_receipt_for_parent_callback(
+        &self,
+        before: &MetadataOwner,
+        consumer_transaction_id: &CallbackTransactionId,
+        parent_callback_transaction_id: CallbackTransactionId,
     ) -> Result<GtcOwnerReceipt, MetadataGtcReceiptError> {
         let receipt = &self.receipt;
         let source_index = receipt.source_index();
@@ -570,8 +812,8 @@ impl MetadataSourceProposal {
         {
             return Err(MetadataGtcReceiptError::AttemptMismatch);
         }
-        if self.consumer_transaction_id.as_ref() != Some(&transaction_id)
-            || receipt.consumer_transaction_id() != Some(&transaction_id)
+        if self.consumer_transaction_id.as_ref() != Some(consumer_transaction_id)
+            || receipt.consumer_transaction_id() != Some(consumer_transaction_id)
         {
             return Err(MetadataGtcReceiptError::ParentTransactionMismatch);
         }
@@ -621,8 +863,63 @@ impl MetadataSourceProposal {
         let after_snapshot = after_reference
             .gtc_snapshot()
             .map_err(MetadataGtcReceiptError::GtcReceipt)?;
-        GtcOwnerReceipt::from_transition(before_snapshot, after_snapshot, transaction_id)
-            .map_err(MetadataGtcReceiptError::GtcReceipt)
+        GtcOwnerReceipt::from_transition(
+            before_snapshot,
+            after_snapshot,
+            parent_callback_transaction_id,
+        )
+        .map_err(MetadataGtcReceiptError::GtcReceipt)
+    }
+
+    /// Consumes this source proposal into the exact after-owner handoff for a programme parent.
+    ///
+    /// The method first validates the transition against the caller's committed before-owner
+    /// and transaction token, then carries both canonical state references and the owner receipt
+    /// beside the after-value. It does not install the owner or authorize a partial root swap.
+    pub fn into_parent_handoff(
+        self,
+        before: &MetadataOwner,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<MetadataSourceParentHandoff, MetadataGtcReceiptError> {
+        self.into_parent_handoff_for_parent_callback(
+            before,
+            &transaction_id,
+            transaction_id.clone(),
+        )
+    }
+
+    /// Transfers a source consumer proposal with a distinct parent callback receipt token.
+    pub fn into_parent_handoff_for_parent_callback(
+        self,
+        before: &MetadataOwner,
+        consumer_transaction_id: &CallbackTransactionId,
+        parent_callback_transaction_id: CallbackTransactionId,
+    ) -> Result<MetadataSourceParentHandoff, MetadataGtcReceiptError> {
+        let owner_receipt = self.gtc_owner_receipt_for_parent_callback(
+            before,
+            consumer_transaction_id,
+            parent_callback_transaction_id,
+        )?;
+        let before_state = before.state_reference();
+        let after_state = self.after_owner.state_reference();
+        let Self {
+            after_owner,
+            receipt: source_receipt,
+            emdf,
+            bodies_lineage,
+            parsed_container,
+            ..
+        } = self;
+        Ok(MetadataSourceParentHandoff {
+            after_owner,
+            source_receipt,
+            owner_receipt,
+            before_state,
+            after_state,
+            emdf,
+            bodies_lineage,
+            parsed_container,
+        })
     }
 
     pub const fn id14_queue_pop(&self) -> Option<&Id14QueuePopReceipt> {
@@ -805,6 +1102,14 @@ impl MetadataSourceReceipt {
         self.au_index
     }
 
+    pub const fn before_generation(&self) -> u64 {
+        self.before_generation
+    }
+
+    pub const fn proposed_after_generation(&self) -> u64 {
+        self.proposed_after_generation
+    }
+
     pub const fn id14_queue_pop(&self) -> Option<&Id14QueuePopReceipt> {
         self.id14_queue_pop.as_ref()
     }
@@ -819,6 +1124,11 @@ impl MetadataSourceReceipt {
 
     pub fn queue_pop_receipts(&self) -> &[MetadataQueuePopReceipt] {
         &self.queue_pop_receipts
+    }
+
+    /// Dynamic F13 terminal offsets for this source's serialization, when published.
+    pub fn terminal_layout(&self) -> Option<&Value> {
+        self.terminal_layout.as_ref()
     }
 
     pub fn consumer_transaction_id(&self) -> Option<&CallbackTransactionId> {
@@ -1232,44 +1542,19 @@ impl MetadataOwner {
         provider_file: &[u8],
         wrapper_file: &[u8],
     ) -> Result<Self, MetadataOwnerError> {
-        if sha256_hex(provider_file) != PROVIDER_FILE_SHA256 {
-            return Err(MetadataOwnerError::ProviderIdentity);
-        }
-        if sha256_hex(wrapper_file) != WRAPPER_FILE_SHA256 {
-            return Err(MetadataOwnerError::WrapperIdentity);
-        }
-
-        let provider: Value = serde_json::from_slice(provider_file)
-            .map_err(|_| MetadataOwnerError::ProviderIdentity)?;
-        let wrapper_configuration: Value = serde_json::from_slice(wrapper_file)
-            .map_err(|_| MetadataOwnerError::WrapperIdentity)?;
-        let provider_canonical =
-            serde_json::to_vec(&provider).map_err(|_| MetadataOwnerError::ProviderIdentity)?;
-        let wrapper_canonical = serde_json::to_vec(&wrapper_configuration)
-            .map_err(|_| MetadataOwnerError::WrapperIdentity)?;
-        if sha256_hex(&provider_canonical) != PROVIDER_CANONICAL_SHA256 {
-            return Err(MetadataOwnerError::ProviderIdentity);
-        }
-        let wrapper_config_sha256 = sha256_hex(&wrapper_canonical);
-        if wrapper_config_sha256 != WRAPPER_CANONICAL_SHA256
-            || provider["wrapper_config_sha256"].as_str() != Some(&wrapper_config_sha256)
-        {
-            return Err(MetadataOwnerError::WrapperIdentity);
-        }
-
-        let provider_sha256 =
-            decode_sha256(PROVIDER_CANONICAL_SHA256).ok_or(MetadataOwnerError::ProviderIdentity)?;
+        let provider =
+            ValidatedMetadataOwnerProvider::from_approved_bytes(provider_file, wrapper_file)?;
         Ok(Self {
             programme_id: id1_configuration.programme_id().clone(),
             attempt: id1_configuration.attempt(),
             expected_sources,
             id1_configuration,
-            provider_file: provider_file.to_vec(),
-            wrapper_file: wrapper_file.to_vec(),
-            provider_sha256,
-            wrapper_configuration,
-            wrapper_config_sha256,
-            state: MetadataState::cold(provider_sha256),
+            provider_file: provider.provider_file,
+            wrapper_file: provider.wrapper_file,
+            provider_sha256: provider.provider_sha256,
+            wrapper_configuration: provider.wrapper_configuration,
+            wrapper_config_sha256: provider.wrapper_config_sha256,
+            state: MetadataState::cold(provider.provider_sha256),
             retired: false,
         })
     }
@@ -1284,7 +1569,6 @@ impl MetadataOwner {
             return Err(MetadataOwnerError::Retired);
         }
         let (bodies_lineage, bodies) = input.bodies.into_parts();
-        let validate_current_container = bodies.id14_provenance.is_some();
         if self.id1_configuration.programme_id() != bodies_lineage.programme_id()
             || self.id1_configuration.attempt() != bodies_lineage.attempt()
         {
@@ -1306,7 +1590,6 @@ impl MetadataOwner {
             config: self.id1_configuration.json_values(),
             bodies,
             wrapper_configuration: self.wrapper_configuration.clone(),
-            validate_current_container,
         };
         let before_snapshot = self.snapshot();
         let processed = self.process_source_inner(call)?;
@@ -1752,69 +2035,9 @@ impl MetadataOwner {
             .as_ref()
             .map(|output| output.terminal_layout.clone());
         let emdf = emdf_output.map(|output| output.bytes);
-        let parsed_container = if call.validate_current_container && source >= 2 {
-            let bytes = emdf
-                .as_deref()
-                .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
-            let queue_pop = id14_queue_pop
-                .as_ref()
-                .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
-            let consumer_transaction_id = call
-                .consumer_transaction_id
-                .as_ref()
-                .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
-            let consumer_au_index = call
-                .au_index
-                .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
-            if queue_pop.disposition() != Id14PopDisposition::Published
-                || queue_pop.consumer_transaction_id() != consumer_transaction_id
-                || queue_pop.consumer_source_index() != call.source_index
-                || queue_pop.consumer_dispatch() != call.dispatch
-                || queue_pop.consumer_au_index() != Some(consumer_au_index)
-            {
-                return Err(MetadataOwnerError::CurrentEmdfValidation);
-            }
-            let carriage_mode = match CARRIAGE_MODE {
-                "deployed_compat" => {
-                    crate::joc::emdf::protected_container::CurrentEmdfCarriageMode::DeployedCompat
-                }
-                "etsi_emdf" => {
-                    crate::joc::emdf::protected_container::CurrentEmdfCarriageMode::EtsiEmdf
-                }
-                _ => return Err(MetadataOwnerError::CurrentEmdfValidation),
-            };
-            let carrier_block = crate::joc::emdf::protected_container::CarrierBlock::new(2)
-                .map_err(|_| MetadataOwnerError::CurrentEmdfValidation)?;
-            let parsed_container =
-                crate::joc::emdf::protected_container::parse_current_emdf_container(
-                    bytes,
-                    carriage_mode,
-                    carrier_block,
-                    queue_pop.producer(),
-                )
-                .map_err(|_| MetadataOwnerError::CurrentEmdfValidation)?;
-            if parsed_container.id14_provenance() != queue_pop.producer() {
-                return Err(MetadataOwnerError::CurrentEmdfValidation);
-            }
-            validate_current_container_pop_bindings(
-                &parsed_container,
-                &queue_pop_receipts,
-                &source_identity,
-            )?;
-            Some(ParsedMetadataSourceContainer {
-                parsed_container,
-                consumer_programme_id: call.programme_id.clone(),
-                consumer_attempt: call.attempt,
-                consumer_transaction_id: consumer_transaction_id.clone(),
-                consumer_source_index: call.source_index,
-                consumer_dispatch: call.dispatch,
-                consumer_au_index,
-                id14_queue_pop: queue_pop.clone(),
-                queue_pop_receipts: queue_pop_receipts.clone(),
-            })
-        } else {
-            None
-        };
+        // F13 owns zero-slot serialization only. F14K must protect it before parsing can
+        // construct a frame-ready container; the caller binds that result to this proposal.
+        let parsed_container = None;
 
         let receipt = MetadataSourceReceipt {
             programme_id: call.programme_id,
@@ -1865,6 +2088,7 @@ impl MetadataOwner {
         }
 
         let before = self.state.as_json();
+        let before_state = self.state_reference();
         let mut after_state = self.state.clone();
         after_state.generation = after_state
             .generation
@@ -1893,6 +2117,7 @@ impl MetadataOwner {
             attempt: self.attempt,
             expected_sources: actual_sources,
             before,
+            before_state,
             after_state,
         })
     }
@@ -2053,6 +2278,7 @@ pub struct MetadataEofProposal {
     attempt: AttemptId,
     expected_sources: u64,
     before: Value,
+    before_state: MetadataOwnerStateReference,
     after_state: MetadataState,
 }
 
@@ -2117,6 +2343,166 @@ impl MetadataEofProposal {
 
     pub const fn has_source_receipt(&self) -> bool {
         false
+    }
+
+    /// Consumes this EOF candidate into a typed Metadata owner transition for a programme parent.
+    ///
+    /// The caller must supply the exact committed before-root and parent transaction token.
+    /// This method returns the Metadata after-root and its GTC receipt without installing either.
+    pub fn into_parent_handoff(
+        self,
+        before: &MetadataOwner,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<MetadataEofParentHandoff, MetadataEofHandoffError> {
+        if self.programme_id != before.programme_id {
+            return Err(MetadataEofHandoffError::ProgrammeMismatch);
+        }
+        if self.attempt != before.attempt {
+            return Err(MetadataEofHandoffError::AttemptMismatch);
+        }
+        if before.retired || before.state.finalized {
+            return Err(MetadataEofHandoffError::BeforeOwnerUnavailable);
+        }
+
+        let current_before_state = before.state_reference();
+        if current_before_state != self.before_state || before.state.as_json() != self.before {
+            return Err(MetadataEofHandoffError::BeforeStateMismatch);
+        }
+        if self.expected_sources != before.expected_sources
+            || before.state.next_source_index != self.expected_sources
+        {
+            return Err(MetadataEofHandoffError::BeforeSourceCountMismatch);
+        }
+        if self.after_state.next_source_index != self.expected_sources {
+            return Err(MetadataEofHandoffError::AfterSourceCountMismatch);
+        }
+
+        let expected_after_generation = before
+            .state
+            .generation
+            .checked_add(1)
+            .ok_or(MetadataEofHandoffError::AfterGenerationMismatch)?;
+        if self.after_state.generation != expected_after_generation {
+            return Err(MetadataEofHandoffError::AfterGenerationMismatch);
+        }
+        if self.after_state.profile_id != before.state.profile_id
+            || self.after_state.provider_sha256 != before.state.provider_sha256
+            || self.after_state.carriage_mode != before.state.carriage_mode
+            || self.after_state.timer != before.state.timer
+        {
+            return Err(MetadataEofHandoffError::AfterStateMismatch);
+        }
+        if !self.after_state.finalized {
+            return Err(MetadataEofHandoffError::AfterStateNotFinalized);
+        }
+        if self.after_state.queues.len() != CANONICAL_QUEUE_ORDER.len()
+            || CANONICAL_QUEUE_ORDER.iter().any(|queue_id| {
+                self.after_state
+                    .queues
+                    .get(queue_id)
+                    .is_none_or(|queue| queue.slots.iter().any(Option::is_some))
+            })
+        {
+            return Err(MetadataEofHandoffError::AfterQueuesNotEmpty);
+        }
+        if self
+            .after_state
+            .pending
+            .iter()
+            .any(|pending| pending.disposition != "DROP_AT_DONE")
+        {
+            return Err(MetadataEofHandoffError::PendingDispositionMismatch);
+        }
+
+        let Self {
+            programme_id,
+            attempt,
+            expected_sources,
+            after_state,
+            ..
+        } = self;
+        let after_owner = MetadataOwner {
+            programme_id,
+            attempt,
+            expected_sources,
+            id1_configuration: before.id1_configuration.clone(),
+            provider_file: before.provider_file.clone(),
+            wrapper_file: before.wrapper_file.clone(),
+            provider_sha256: before.provider_sha256,
+            wrapper_configuration: before.wrapper_configuration.clone(),
+            wrapper_config_sha256: before.wrapper_config_sha256.clone(),
+            state: after_state,
+            retired: false,
+        };
+
+        let before_state = before.state_reference();
+        let after_state = after_owner.state_reference();
+        let before_snapshot = before_state
+            .gtc_snapshot()
+            .map_err(MetadataEofHandoffError::GtcReceipt)?;
+        let after_snapshot = after_state
+            .gtc_snapshot()
+            .map_err(MetadataEofHandoffError::GtcReceipt)?;
+        let owner_receipt =
+            GtcOwnerReceipt::from_transition(before_snapshot, after_snapshot, transaction_id)
+                .map_err(MetadataEofHandoffError::GtcReceipt)?;
+
+        Ok(MetadataEofParentHandoff {
+            after_owner,
+            owner_receipt,
+            before_state,
+            after_state,
+        })
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum MetadataEofHandoffError {
+    ProgrammeMismatch,
+    AttemptMismatch,
+    BeforeOwnerUnavailable,
+    BeforeStateMismatch,
+    BeforeSourceCountMismatch,
+    AfterSourceCountMismatch,
+    AfterGenerationMismatch,
+    AfterStateMismatch,
+    AfterStateNotFinalized,
+    AfterQueuesNotEmpty,
+    PendingDispositionMismatch,
+    GtcReceipt(GtcOwnerReceiptError),
+}
+
+/// Non-forgeable Metadata EOF after-root plus its complete-state GTC owner receipt.
+///
+/// The parent may install `after_owner` only with the other owner after-states in one programme
+/// replacement. This value itself does not install the Metadata owner.
+#[must_use]
+pub struct MetadataEofParentHandoff {
+    after_owner: MetadataOwner,
+    owner_receipt: GtcOwnerReceipt,
+    before_state: MetadataOwnerStateReference,
+    after_state: MetadataOwnerStateReference,
+}
+
+impl MetadataEofParentHandoff {
+    pub const fn after_owner(&self) -> &MetadataOwner {
+        &self.after_owner
+    }
+
+    pub const fn owner_receipt(&self) -> &GtcOwnerReceipt {
+        &self.owner_receipt
+    }
+
+    pub const fn before_state(&self) -> &MetadataOwnerStateReference {
+        &self.before_state
+    }
+
+    pub const fn after_state(&self) -> &MetadataOwnerStateReference {
+        &self.after_state
+    }
+
+    pub fn into_parts(self) -> (MetadataOwner, GtcOwnerReceipt) {
+        (self.after_owner, self.owner_receipt)
     }
 }
 

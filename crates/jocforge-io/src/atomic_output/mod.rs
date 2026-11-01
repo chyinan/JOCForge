@@ -589,6 +589,14 @@ impl AtomicOutputStaging {
         self.state == SessionState::Abandoned
     }
 
+    /// Retires an open attempt without truncating or exposing its staging artifact.
+    pub fn abandon(&mut self) {
+        if self.state == SessionState::Open {
+            self.state = SessionState::Abandoned;
+            drop(self.file.take());
+        }
+    }
+
     pub fn is_exposure_uncertain(&self) -> bool {
         self.state == SessionState::ExposureUncertain
     }

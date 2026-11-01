@@ -21,7 +21,8 @@ use jocforge_io::{
 use std::{error::Error, fmt, path::Path};
 
 use super::independent_meter_callback::{
-    IndependentMeterPrepassCandidate, IndependentMeterPrepassError, stage_independent_meter_prepass,
+    IndependentMeterPrepassCandidate, IndependentMeterPrepassError,
+    stage_independent_meter_prepass_with_progress,
 };
 
 const METER_PREPASS_STACK_BYTES: usize = 16 * 1024 * 1024;
@@ -153,17 +154,38 @@ impl SelectedIndependentMeterCallbackProviders {
         parsed_source: &ParsedRiffPcm24<'_>,
         meter_before: &StandaloneMeterRoot,
     ) -> Result<IndependentMeterPrepassCandidate, IndependentMeterPrepassError> {
+        self.stage_prepass_with_progress(
+            prepared,
+            source_cursor_before,
+            parsed_source,
+            meter_before,
+            |_, _| {},
+        )
+    }
+
+    pub fn stage_prepass_with_progress<F>(
+        &self,
+        prepared: &PreparedJobInput,
+        source_cursor_before: &MeterPcmSourceCursor,
+        parsed_source: &ParsedRiffPcm24<'_>,
+        meter_before: &StandaloneMeterRoot,
+        mut progress: F,
+    ) -> Result<IndependentMeterPrepassCandidate, IndependentMeterPrepassError>
+    where
+        F: FnMut(u64, u64) + Send,
+    {
         std::thread::scope(|scope| {
             let worker = std::thread::Builder::new()
                 .name("jocforge-independent-meter-prepass".to_owned())
                 .stack_size(METER_PREPASS_STACK_BYTES)
                 .spawn_scoped(scope, || {
-                    stage_independent_meter_prepass(
+                    stage_independent_meter_prepass_with_progress(
                         prepared,
                         source_cursor_before,
                         parsed_source,
                         meter_before,
                         &self.providers,
+                        &mut progress,
                     )
                 })
                 .map_err(|_| IndependentMeterPrepassError::WorkerUnavailable)?;

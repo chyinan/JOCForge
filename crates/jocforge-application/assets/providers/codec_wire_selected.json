@@ -1,0 +1,81 @@
+{
+  "schema": "codec-wire-selected-constants.draft.v1",
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_ONLY",
+  "authorization": "User authorized normal non-secret constants; Dolby private vendor keys remain excluded.",
+  "selected_profile": {
+    "sample_rate_hz": 48000,
+    "bit_rate_bps": 1024000,
+    "frame_samples": 1536,
+    "frame_bytes": 4096,
+    "audio_blocks": 6,
+    "acmod": 7,
+    "lfe_on": 1,
+    "fullband_channels": 5,
+    "fullband_end_bin": 217,
+    "lfe_end_bin": 7,
+    "coupling": false,
+    "spx": false,
+    "delta_bit_allocation": false,
+    "aht": false
+  },
+  "transport_header_fixed_fields_msb_first": [
+    {"name": "syncword", "width": 16, "value": 2935},
+    {"name": "strmtyp", "width": 2, "value": 0},
+    {"name": "substreamid", "width": 3, "value": 0},
+    {"name": "frmsiz", "width": 11, "value": 2047},
+    {"name": "fscod", "width": 2, "value": 0},
+    {"name": "numblkscod", "width": 2, "value": 3},
+    {"name": "acmod", "width": 3, "value": 7},
+    {"name": "lfeon", "width": 1, "value": 1},
+    {"name": "bsid", "width": 5, "value": 16}
+  ],
+  "allocation": {
+    "main_decay_tuple_codes": [2, 1, 1],
+    "floor_code": 7,
+    "main_fast_gain_code": 1,
+    "converter_fast_gain_code": 4,
+    "main_search_low": 16,
+    "main_search_high_exclusive": 784,
+    "main_search_max_midpoint_trials": 10,
+    "converter_search_low": 0,
+    "converter_search_high_exclusive": 1024,
+    "converter_cap": 671,
+    "converter_virtual_frame_bits": 20480,
+    "actual_frame_bits": 32768,
+    "actual_body_reserve_bits": 34
+  },
+  "mantissa": {
+    "width_by_bap": [0, 5, 7, 3, 7, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16],
+    "grouped": {
+      "1": {"levels": 3, "group_size": 3, "group_bits": 5, "fill_code": 1, "scale_f32": 1.5},
+      "2": {"levels": 5, "group_size": 3, "group_bits": 7, "fill_code": 2, "scale_f32": 2.5},
+      "4": {"levels": 11, "group_size": 2, "group_bits": 7, "fill_code": 5, "scale_f32": 5.5}
+    },
+    "symmetric_ungrouped": {
+      "3": {"levels": 7, "width": 3, "scale_f32": 3.5, "invalid_sentinel_code": 7},
+      "5": {"levels": 15, "width": 4, "scale_f32": 7.5, "invalid_sentinel_code": 15}
+    },
+    "fixed_point_baps": [6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  },
+  "frame_tail": {
+    "pad_bit": 0,
+    "tail_word_width": 16,
+    "tail_word_keyless_value": 0,
+    "auxdatae": 0,
+    "encinfo": 0,
+    "crc_width": 16,
+    "crc_polynomial": 32773,
+    "crc_initial": 0,
+    "crc_input_begin_byte": 2,
+    "crc_byte_order": "big-endian"
+  },
+  "source_classification": {
+    "protocol_and_selected_profile_constants": "Normal functional constants; internal delivery authorized. Values are independently organized, not a copied original table file.",
+    "public_bap_provider": {
+      "package_path": "parameters/public-bap-48k-v1.json",
+      "sha256_at_research_check": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+      "classification": "Public ETSI protocol tables already delivered and separately reviewed."
+    },
+    "private_vendor_key": "EXCLUDED_AND_NOT_REQUIRED_BY_KEYLESS_PROFILE"
+  }
+}

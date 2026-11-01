@@ -4,21 +4,94 @@
 use std::{sync::Arc, thread};
 
 use jocforge_domain::{
+    analysis::transient_parameters::{
+        TransientParameterError, TransientParameters, load_transient_parameters,
+    },
     analysis::{
-        owner::{AnalysisNumericPlanStage, AnalysisOwnerRoot},
+        owner::AnalysisNumericPlanStage,
         source_analysis::{
-            SourceAnalysisError, SourceAnalysisProviders, SpatialSourceAnalysisInput,
-            prepare_source_analysis,
+            SourceAnalysisError, SpatialSourceAnalysisInput, prepare_source_analysis,
         },
         structure_refresh::F07_FULLBAND_LANES,
     },
+    codec::policy_parameters::{
+        PolicyParameterError, PolicyParameters, PolicyProfile, load_policy_parameters,
+    },
     spatial::SpatialAudioCallbackOutcome,
     transaction::{AttemptId, CallbackTransactionId},
+    transform::math_generated_parameters::{
+        MathGeneratedTransformParameterError, MathGeneratedTransformParameters,
+    },
+};
+
+pub use jocforge_domain::analysis::{
+    owner::AnalysisOwnerRoot, source_analysis::SourceAnalysisProviders,
 };
 
 use crate::{PreparedJobInput, spatial_callback::MainSpatialCallbackCandidate};
 
 const SOURCE_ANALYSIS_STACK_BYTES: usize = 16 * 1024 * 1024;
+const TRANSIENT_PARAMETERS: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/transient-d05-authorized-v1.json"
+);
+const TRANSFORM_PARAMETERS: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/ordinary-transform-math-v1.json"
+);
+const POLICY_PARAMETERS: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/policy-authorized-v1.json"
+);
+
+/// Hash-validated F07-F10 provider values from the approved source-leaves package.
+pub struct SelectedSourceAnalysisProviders {
+    transient: TransientParameters,
+    transform: MathGeneratedTransformParameters,
+    policy: PolicyParameters,
+}
+
+impl SelectedSourceAnalysisProviders {
+    pub fn load_approved() -> Result<Self, SelectedSourceAnalysisProviderError> {
+        let transient = load_transient_parameters(Some(TRANSIENT_PARAMETERS))
+            .map_err(SelectedSourceAnalysisProviderError::Transient)?;
+        let transform = MathGeneratedTransformParameters::from_provider_bytes(TRANSFORM_PARAMETERS)
+            .map_err(SelectedSourceAnalysisProviderError::Transform)?;
+        let policy = load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS))
+            .map_err(SelectedSourceAnalysisProviderError::Policy)?;
+        Ok(Self {
+            transient,
+            transform,
+            policy,
+        })
+    }
+
+    pub const fn providers(&self) -> SourceAnalysisProviders<'_> {
+        SourceAnalysisProviders {
+            transient: &self.transient,
+            transform: &self.transform,
+            policy: &self.policy,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum SelectedSourceAnalysisProviderError {
+    Transient(TransientParameterError),
+    Transform(MathGeneratedTransformParameterError),
+    Policy(PolicyParameterError),
+}
+
+/// Constructs the selected cold Analysis root on a worker with an explicit stack budget.
+pub fn cold_analysis_root_for_prepared_input(
+    prepared: &PreparedJobInput,
+) -> Result<Box<AnalysisOwnerRoot>, SourceAnalysisBridgeError> {
+    let identity = prepared.domain_identity_capability();
+    thread::Builder::new()
+        .name("jocforge-main-analysis-cold-root".to_owned())
+        .stack_size(SOURCE_ANALYSIS_STACK_BYTES)
+        .spawn(move || Box::new(AnalysisOwnerRoot::cold_for_prepared_input(identity)))
+        .map_err(|_| SourceAnalysisBridgeError::WorkerUnavailable)?
+        .join()
+        .map_err(|_| SourceAnalysisBridgeError::WorkerPanicked)
+}
 
 /// Failures while binding a ready MAIN spatial proposal to its admitted job and analysis owner.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

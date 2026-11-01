@@ -100,6 +100,14 @@ impl SourceTransaction {
         self.shared_analysis.as_ref()
     }
 
+    /// Transfers the exact parent-issued source receipt to the completed Analysis owner proposal.
+    pub(crate) fn into_shared_analysis(
+        self,
+    ) -> Result<SharedAnalysisReceipt, SourceTransactionStageError> {
+        self.shared_analysis
+            .ok_or(SourceTransactionStageError::AnalysisNotPrepared)
+    }
+
     /// Produces exactly one immutable numeric-plan receipt from the same shared result.
     pub(crate) fn prepare_numeric_plan<T>(
         &mut self,

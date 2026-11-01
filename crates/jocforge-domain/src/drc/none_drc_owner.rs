@@ -468,6 +468,42 @@ impl NoneDrcOwnerRoot {
         })
     }
 
+    /// Validates one complete same-source DRC after-root for the enclosing callback parent.
+    ///
+    /// This returns the replacement value and its owner receipt without changing `self`. The
+    /// programme parent must install this root with every other owner after-state in one swap.
+    pub fn prepare_replacement(
+        &self,
+        after: NoneDrcOwnerAfterProposal,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<NoneDrcOwnerReplacementCandidate, NoneDrcOwnerError> {
+        let receipt = after.gtc_owner_receipt(self, transaction_id)?;
+        let next_root = Self {
+            measurement: Some(after.measurement),
+            state: after.state,
+        };
+        Ok(NoneDrcOwnerReplacementCandidate { next_root, receipt })
+    }
+
+    /// Stages a replacement with distinct source-stage and parent-callback tokens.
+    pub fn prepare_replacement_for_parent_callback(
+        &self,
+        after: NoneDrcOwnerAfterProposal,
+        source_transaction_id: &CallbackTransactionId,
+        parent_callback_transaction_id: CallbackTransactionId,
+    ) -> Result<NoneDrcOwnerReplacementCandidate, NoneDrcOwnerError> {
+        let receipt = after.gtc_owner_receipt_for_parent_callback(
+            self,
+            source_transaction_id,
+            parent_callback_transaction_id,
+        )?;
+        let next_root = Self {
+            measurement: Some(after.measurement),
+            state: after.state,
+        };
+        Ok(NoneDrcOwnerReplacementCandidate { next_root, receipt })
+    }
+
     pub(crate) fn matches_prepared_job_input_identity(
         &self,
         shared_analysis: &SharedAnalysisReceipt,
@@ -506,7 +542,7 @@ impl NoneDrcOwnerRoot {
     /// The selected meter receipt must already have constructed this DRC root. Callbacks 0 and
     /// 1 do not advance F06ND/F06NR state; later callbacks require a source proposal instead.
     #[allow(dead_code)] // Consumed by the future 12-owner callback coordinator.
-    pub(crate) fn gtc_unchanged_callback_receipt(
+    pub fn gtc_unchanged_callback_receipt(
         &self,
         callback_index: FrontendCallbackIndex,
         transaction_id: CallbackTransactionId,
@@ -606,6 +642,30 @@ impl NoneDrcOwnerRoot {
             callback_identity: callback_identity.clone(),
             callback_transition,
         })
+    }
+}
+
+/// Parent-facing DRC replacement value and the matching owner transition receipt.
+///
+/// This candidate carries no local commit, reset, or retirement authority.
+#[must_use]
+#[derive(Debug, PartialEq)]
+pub struct NoneDrcOwnerReplacementCandidate {
+    next_root: NoneDrcOwnerRoot,
+    receipt: GtcOwnerReceipt,
+}
+
+impl NoneDrcOwnerReplacementCandidate {
+    pub const fn next_root(&self) -> &NoneDrcOwnerRoot {
+        &self.next_root
+    }
+
+    pub const fn receipt(&self) -> &GtcOwnerReceipt {
+        &self.receipt
+    }
+
+    pub fn into_parts(self) -> (NoneDrcOwnerRoot, GtcOwnerReceipt) {
+        (self.next_root, self.receipt)
     }
 }
 
@@ -740,16 +800,31 @@ impl NoneDrcOwnerAfterProposal {
         &self.state
     }
 
-    /// Projects this noncommitting DRC after-root into one owner-level GTC receipt.
-    ///
-    /// The caller supplies the exact committed before-root and shared callback transaction ID.
-    /// The proposal must carry that same parent token through its shared-analysis source key;
-    /// this method never installs either root or assigns top-level commit authority.
+    /// Single-token wrapper for routes where the source and parent tokens are identical.
     #[allow(dead_code)] // Consumed by the future 12-owner source transaction preflight.
     pub(crate) fn gtc_owner_receipt(
         &self,
         before: &NoneDrcOwnerRoot,
         transaction_id: CallbackTransactionId,
+    ) -> Result<GtcOwnerReceipt, NoneDrcOwnerError> {
+        self.gtc_owner_receipt_for_parent_callback(before, &transaction_id, transaction_id.clone())
+            .map_err(|error| match error {
+                NoneDrcOwnerError::SourceTransactionMismatch => {
+                    NoneDrcOwnerError::ParentTransactionMismatch
+                }
+                other => other,
+            })
+    }
+
+    /// Projects this source after-root into a GTC receipt for its enclosing callback.
+    ///
+    /// The source-stage key is checked against `source_transaction_id`; the owner receipt is
+    /// bound to `parent_callback_transaction_id`. Neither token grants local commit authority.
+    pub(crate) fn gtc_owner_receipt_for_parent_callback(
+        &self,
+        before: &NoneDrcOwnerRoot,
+        source_transaction_id: &CallbackTransactionId,
+        parent_callback_transaction_id: CallbackTransactionId,
     ) -> Result<GtcOwnerReceipt, NoneDrcOwnerError> {
         let Some(before_measurement) = before.measurement.as_ref() else {
             return Err(NoneDrcOwnerError::MeasurementNotFinalized);
@@ -762,8 +837,8 @@ impl NoneDrcOwnerAfterProposal {
         }
 
         let source_key = self.shared_analysis_identity.source_stage_key();
-        if source_key.transaction_id() != &transaction_id {
-            return Err(NoneDrcOwnerError::ParentTransactionMismatch);
+        if source_key.transaction_id() != source_transaction_id {
+            return Err(NoneDrcOwnerError::SourceTransactionMismatch);
         }
         if self.callback_identity.programme_id() != before_measurement.programme_id()
             || self.measurement.programme_id() != before_measurement.programme_id()
@@ -816,8 +891,12 @@ impl NoneDrcOwnerAfterProposal {
         let after_snapshot = after_reference
             .gtc_snapshot()
             .map_err(NoneDrcOwnerError::GtcReceipt)?;
-        GtcOwnerReceipt::from_transition(before_snapshot, after_snapshot, transaction_id)
-            .map_err(NoneDrcOwnerError::GtcReceipt)
+        GtcOwnerReceipt::from_transition(
+            before_snapshot,
+            after_snapshot,
+            parent_callback_transaction_id,
+        )
+        .map_err(NoneDrcOwnerError::GtcReceipt)
     }
 }
 
@@ -841,6 +920,7 @@ pub enum NoneDrcOwnerError {
     BeforeStateMismatch,
     AfterStateMismatch,
     ParentTransactionMismatch,
+    SourceTransactionMismatch,
     GtcReceipt(GtcOwnerReceiptError),
     Callback(NoneDrcCallbackError),
 }
@@ -865,6 +945,7 @@ impl NoneDrcOwnerError {
             | Self::BeforeStateMismatch
             | Self::AfterStateMismatch
             | Self::ParentTransactionMismatch => Some("DRC_INPUT_ERROR"),
+            Self::SourceTransactionMismatch => Some("DRC_INPUT_ERROR"),
             Self::GtcReceipt(_) => Some("DRC_OWNER_RECEIPT_ERROR"),
             Self::GenerationOverflow => Some("NUMERIC_FAILURE"),
             Self::Callback(error) => error.outcome_code(),
@@ -1485,6 +1566,116 @@ mod tests {
         stale_before.state = stale_proposal.state;
         assert_eq!(
             proposal.gtc_owner_receipt(&stale_before, source_transaction),
+            Err(NoneDrcOwnerError::BeforeStateMismatch)
+        );
+        assert_eq!(
+            root.state().source_generation().unwrap(),
+            CodecSourceIndex::new(0)
+        );
+    }
+
+    #[test]
+    fn source_proposal_rejects_wrong_source_token_before_using_parent_receipt_token() {
+        let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&measurement_receipt()).unwrap();
+        let source_transaction = CallbackTransactionId::new("jocforge-source-0").unwrap();
+        let wrong_source_transaction = CallbackTransactionId::new("jocforge-source-1").unwrap();
+        let parent_callback_transaction =
+            CallbackTransactionId::new("jocforge-main-callback-g2").unwrap();
+        let proposal = source_zero_after(&root, source_transaction);
+
+        assert_eq!(
+            proposal.gtc_owner_receipt_for_parent_callback(
+                &root,
+                &wrong_source_transaction,
+                parent_callback_transaction,
+            ),
+            Err(NoneDrcOwnerError::SourceTransactionMismatch)
+        );
+        assert_eq!(
+            root.state().source_generation().unwrap(),
+            CodecSourceIndex::new(0)
+        );
+    }
+
+    #[test]
+    fn parent_replacement_returns_the_exact_same_source_after_root_without_mutating_before() {
+        let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&measurement_receipt()).unwrap();
+        let before_reference = root.state_reference().unwrap();
+        let transaction_id = CallbackTransactionId::new("drc-parent-source-zero").unwrap();
+        let after = source_zero_after(&root, transaction_id.clone());
+
+        let replacement = root
+            .prepare_replacement(after, transaction_id.clone())
+            .unwrap();
+        let (next_root, receipt) = replacement.into_parts();
+        let after_reference = next_root.state_reference().unwrap();
+
+        assert_eq!(
+            root.state().source_generation().unwrap(),
+            CodecSourceIndex::new(0)
+        );
+        assert_eq!(
+            next_root.state().source_generation().unwrap(),
+            CodecSourceIndex::new(1)
+        );
+        assert_eq!(receipt.owner_id(), GtcOwnerId::Drc);
+        assert_eq!(receipt.before_generation(), before_reference.generation());
+        assert_eq!(receipt.after_generation(), after_reference.generation());
+        assert_eq!(receipt.before_sha256(), *before_reference.state_sha256());
+        assert_eq!(receipt.after_sha256(), *after_reference.state_sha256());
+        assert_eq!(receipt.transaction_id(), &transaction_id);
+        assert!(receipt.changed());
+        assert_eq!(receipt.commit_count(), 1);
+        assert_eq!(
+            before_reference.cold_sha256(),
+            after_reference.cold_sha256()
+        );
+    }
+
+    #[test]
+    fn parent_replacement_separates_source_token_from_callback_receipt_token() {
+        let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&measurement_receipt()).unwrap();
+        let source_transaction = CallbackTransactionId::new("jocforge-source-0").unwrap();
+        let parent_callback_transaction =
+            CallbackTransactionId::new("jocforge-main-callback-g2").unwrap();
+        let after = source_zero_after(&root, source_transaction.clone());
+
+        let replacement = root
+            .prepare_replacement_for_parent_callback(
+                after,
+                &source_transaction,
+                parent_callback_transaction.clone(),
+            )
+            .unwrap();
+        let (next_root, receipt) = replacement.into_parts();
+
+        assert_eq!(
+            next_root.state().source_generation().unwrap(),
+            CodecSourceIndex::new(1)
+        );
+        assert_eq!(receipt.transaction_id(), &parent_callback_transaction);
+        assert_eq!(receipt.before_generation(), 0);
+        assert_eq!(receipt.after_generation(), 1);
+    }
+
+    #[test]
+    fn parent_replacement_rejects_foreign_transaction_and_stale_before_root() {
+        let receipt = measurement_receipt();
+        let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&receipt).unwrap();
+        let correct_transaction = CallbackTransactionId::new("drc-parent-source-zero").unwrap();
+        let wrong_transaction = CallbackTransactionId::new("foreign-drc-parent").unwrap();
+        let after = source_zero_after(&root, correct_transaction.clone());
+        assert_eq!(
+            root.prepare_replacement(after, wrong_transaction),
+            Err(NoneDrcOwnerError::ParentTransactionMismatch)
+        );
+
+        let stale_after = source_zero_after(&root, correct_transaction.clone());
+        let mut stale_root = NoneDrcOwnerRoot::cold_after_meter_finalize(&receipt).unwrap();
+        stale_root.state = stale_after.state;
+        let after = source_zero_after(&root, correct_transaction.clone());
+        assert_eq!(
+            stale_root.prepare_replacement(after, correct_transaction),
             Err(NoneDrcOwnerError::BeforeStateMismatch)
         );
         assert_eq!(

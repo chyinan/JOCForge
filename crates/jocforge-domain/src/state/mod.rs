@@ -9,18 +9,30 @@ pub use reader_eof::{
     ReaderEofReceipt, ReaderEofReplacementCandidate, ReaderEofStaged, ReaderEofState,
 };
 
-/// An encoding request cannot run in the migration baseline.
+/// Production encoding cannot begin before private F15 role and destination admission exist.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum EncodeError {
-    /// The reviewed implementation has not been installed.
-    BackendUnavailable,
+    /// The prepared input is valid, but production provider admissions and destination authority are absent.
+    ProductionPlanUnavailable,
+    /// An embedded selected owner provider or destination binding failed admission.
+    F15AdmissionRejected,
+    /// Provider admission succeeded, but the selected source and AU execution path is not connected.
+    SourcePipelineUnavailable,
 }
 
 impl std::fmt::Display for EncodeError {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter.write_str(
-            "encoding backend unavailable: architecture review and implementation required",
-        )
+        match self {
+            Self::ProductionPlanUnavailable => formatter.write_str(
+                "production plan unavailable: F15 owner admissions and parent destination capability are not wired",
+            ),
+            Self::F15AdmissionRejected => formatter.write_str(
+                "production plan rejected: selected F15 owner values or destination identity failed validation",
+            ),
+            Self::SourcePipelineUnavailable => formatter.write_str(
+                "source execution unavailable: selected callback and AU publication path are not wired",
+            ),
+        }
     }
 }
 

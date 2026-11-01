@@ -166,23 +166,55 @@ pub enum ConverterSourcePlanError {
     NumericPlanMissing,
     SharedAnalysisAdvancement,
     IncompleteSourcePlan,
-    F07ShortFlagMismatch { block: u8, lane: u8 },
-    MissingMainPowerRow { block: u8, lane: u8 },
-    InvalidMainPowerRow { block: u8, lane: u8 },
-    InvalidConverterRefresh { block: u8, lane: u8 },
-    ConverterFramePatternMismatch { lane: u8 },
-    MissingF10Anchor { block: u8, lane: u8 },
-    InvalidConverterStrategy { block: u8, lane: u8 },
+    F07ShortFlagMismatch {
+        block: u8,
+        lane: u8,
+    },
+    MissingMainPowerRow {
+        block: u8,
+        lane: u8,
+    },
+    InvalidMainPowerRow {
+        block: u8,
+        lane: u8,
+    },
+    InvalidConverterRefresh {
+        block: u8,
+        lane: u8,
+    },
+    ConverterFramePatternMismatch {
+        lane: u8,
+        strategy_row: [u8; BLOCK_COUNT],
+    },
+    MissingF10Anchor {
+        block: u8,
+        lane: u8,
+    },
+    InvalidConverterStrategy {
+        block: u8,
+        lane: u8,
+    },
     ExponentNormalization(ExponentNormalizationError),
-    DecodedExponentOutOfRange { block: u8, lane: u8 },
-    MissingLfeAnchor { block: u8 },
-    InvalidLfeStrategy { block: u8 },
+    DecodedExponentOutOfRange {
+        block: u8,
+        lane: u8,
+    },
+    MissingLfeAnchor {
+        block: u8,
+    },
+    InvalidLfeStrategy {
+        block: u8,
+    },
     LfeExponentNormalization(ExponentNormalizationError),
-    LfeDecodedExponentOutOfRange { block: u8 },
+    LfeDecodedExponentOutOfRange {
+        block: u8,
+    },
     BsiSourceIdentityMismatch,
     UnsupportedSelectedBsiCosts,
     InvalidSurroundExMode,
-    InvalidDbPerBitCode { block: u8 },
+    InvalidDbPerBitCode {
+        block: u8,
+    },
     BapProvider(BapError),
     ConverterSearch(ConverterFrameSearchError<BapError>),
     NoFeasibleConverterOffset,
@@ -286,6 +318,7 @@ pub fn prepare_converter_source_plan(
         *frame_code = frame_code_for_strategy_row(strategy_row).ok_or(
             ConverterSourcePlanError::ConverterFramePatternMismatch {
                 lane: u8::try_from(lane).unwrap_or(u8::MAX),
+                strategy_row,
             },
         )?;
     }
@@ -675,8 +708,9 @@ fn derive_converter_strategies(
                     lane: u8::try_from(lane).unwrap_or(u8::MAX),
                 });
             }
+            // The approved F09.4 distance counts the current block, including a refresh block.
+            distance += 1;
             let mut strategy = if marker == 0 {
-                distance += 1;
                 0
             } else {
                 let selected = if distance < 2 {
@@ -751,8 +785,9 @@ fn select_main_frame_codes(
 #[cfg(test)]
 mod tests {
     use super::{
-        FramePatternCode, MainFrameCodeSelection, converter_fixed_costs,
-        frame_code_for_strategy_row, select_main_frame_codes, strategy_row_for_code,
+        BLOCK_COUNT, FULLBAND_LANE_COUNT, FramePatternCode, MainFrameCodeSelection,
+        converter_fixed_costs, derive_converter_strategies, frame_code_for_strategy_row,
+        select_main_frame_codes, strategy_row_for_code,
     };
     use crate::codec::exponent_normalization::normalize_lfe_exponents_option0;
     use sha2::{Digest, Sha256};
@@ -774,6 +809,26 @@ mod tests {
             hex_lower(&digest),
             "acfcaf98c12fa9688ef75943537a2f2f0a97a41ab75aa342468bd649b783d6bc"
         );
+    }
+
+    #[test]
+    fn converter_strategy_distance_matches_every_approved_frame_pattern() {
+        for value in 0_u8..32 {
+            let expected = strategy_row_for_code(FramePatternCode::new(value).unwrap());
+            let markers: [[i16; FULLBAND_LANE_COUNT]; BLOCK_COUNT] = std::array::from_fn(|block| {
+                let marker = i16::from(expected[block] != 0);
+                [marker; FULLBAND_LANE_COUNT]
+            });
+            let short_flags = [[false; FULLBAND_LANE_COUNT]; BLOCK_COUNT];
+            let actual = derive_converter_strategies(&markers, &short_flags).unwrap();
+            for lane in 0..FULLBAND_LANE_COUNT {
+                let actual_row = std::array::from_fn(|block| actual[block][lane]);
+                assert_eq!(
+                    actual_row, expected,
+                    "frame pattern code {value}, lane {lane}"
+                );
+            }
+        }
     }
 
     #[test]

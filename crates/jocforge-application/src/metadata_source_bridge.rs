@@ -7,12 +7,10 @@ use jocforge_domain::{
         emdf::metadata_bodies::{
             MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
         },
-        emdf::metadata_owner::{
-            MetadataOwner, MetadataOwnerError, MetadataSourceProposal, MetadataStageInput,
-        },
+        emdf::metadata_owner::{MetadataOwnerError, MetadataSourceProposal, MetadataStageInput},
         fit_score::FitScoreProvider,
         programme_state::{
-            SelectedJocAfterProposal, SelectedJocState, SelectedJocStateError,
+            SelectedJocAfterProposal, SelectedJocStateError,
             stage_selected_joc_source_with_transaction,
         },
     },
@@ -23,6 +21,11 @@ use jocforge_domain::{
         publication_for_source,
     },
     transaction::{CallbackTransactionId, GtcOwnerReceipt},
+};
+
+pub use jocforge_domain::joc::{
+    emdf::metadata_owner::{MetadataEofParentHandoff, MetadataEofProposal, MetadataOwner},
+    programme_state::SelectedJocState,
 };
 
 use crate::{PreparedJobInput, spatial_callback::MainSpatialCallbackCandidate};
@@ -80,6 +83,23 @@ pub enum MetadataSourceBridgeError {
     ProgrammeIdentityMismatch,
     SpatialAudioStillPriming,
     ReaderTargetReceiptMissing,
+    JocProducerTransactionMismatch {
+        run_id: String,
+        input_sha256: String,
+        stage: &'static str,
+        owner_id: &'static str,
+        expected_producer_transaction_id: String,
+        actual_producer_transaction_id: Option<String>,
+        parent_callback_transaction_id: String,
+        callback_index: u64,
+        callback_phase: &'static str,
+        source_index: u64,
+        dispatch: u64,
+        owner_before_generation: u64,
+        proposed_owner_after_generation: u64,
+        producer_generation: u64,
+        writer_generation: u64,
+    },
     Joc(SelectedJocStateError),
     MetadataBodies(MetadataBodiesError),
 }
@@ -206,6 +226,15 @@ pub fn stage_main_metadata_source(
 pub fn prepare_main_metadata_bodies_from_spatial_callback(
     input: MainMetadataBodiesInput<'_>,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
+    let gtc_transaction_id = input.source_transaction_id.clone();
+    prepare_main_metadata_bodies_for_callback(input, gtc_transaction_id)
+}
+
+/// Prepares same-source F05/F13 body values and binds the JOC GTC receipt to its parent CALLBACK.
+pub fn prepare_main_metadata_bodies_for_callback(
+    input: MainMetadataBodiesInput<'_>,
+    gtc_transaction_id: CallbackTransactionId,
+) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
     let MainMetadataBodiesInput {
         prepared,
         spatial_callback,
@@ -241,8 +270,37 @@ pub fn prepare_main_metadata_bodies_from_spatial_callback(
         retry,
     )
     .map_err(MetadataSourceBridgeError::Joc)?;
+    let producer_provenance = joc_after.id14_body().provenance();
+    if producer_provenance.producer_transaction_id() != Some(&source_transaction_id) {
+        let identity = proposal.transaction_id();
+        let attempt = identity.attempt_id();
+        let generation_after = joc_after.after().generation();
+        return Err(MetadataSourceBridgeError::JocProducerTransactionMismatch {
+            run_id: format!(
+                "{}-attempt-{}",
+                prepared.programme_id().as_str(),
+                attempt.value()
+            ),
+            input_sha256: sha256_hex(&prepared.resource_identity().input_sha256()),
+            stage: "F05JOC GTC owner receipt admission",
+            owner_id: "joc",
+            expected_producer_transaction_id: source_transaction_id.as_str().to_owned(),
+            actual_producer_transaction_id: producer_provenance
+                .producer_transaction_id()
+                .map(|value| value.as_str().to_owned()),
+            parent_callback_transaction_id: gtc_transaction_id.as_str().to_owned(),
+            callback_index: u64::from(identity.callback_index().value()),
+            callback_phase: "source",
+            source_index: producer_provenance.producer_generation().value(),
+            dispatch: producer_provenance.dispatch().value(),
+            owner_before_generation: joc_before.generation(),
+            proposed_owner_after_generation: generation_after,
+            producer_generation: producer_provenance.producer_generation().value(),
+            writer_generation: producer_provenance.writer().value(),
+        });
+    }
     let joc_receipt = joc_after
-        .gtc_owner_receipt(joc_before, source_transaction_id)
+        .gtc_owner_receipt_for_parent(joc_before, &source_transaction_id, gtc_transaction_id)
         .map_err(MetadataSourceBridgeError::Joc)?;
     let metadata_bodies = assemble_metadata_bodies(
         prepared.configuration(),
@@ -257,4 +315,14 @@ pub fn prepare_main_metadata_bodies_from_spatial_callback(
         joc_receipt,
         metadata_bodies,
     })
+}
+
+fn sha256_hex(bytes: &[u8; 32]) -> String {
+    const HEX: &[u8; 16] = b"0123456789abcdef";
+    let mut output = String::with_capacity(64);
+    for byte in bytes {
+        output.push(char::from(HEX[usize::from(byte >> 4)]));
+        output.push(char::from(HEX[usize::from(byte & 0x0f)]));
+    }
+    output
 }

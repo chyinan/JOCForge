@@ -2,11 +2,11 @@ use super::{
     OutputOwner, OutputRootBindingError, OutputStagingOwnerId, ProgrammeOutputBinding,
     au_for_source,
 };
-use jocforge_domain::transaction::{AttemptId, ProgrammeId};
+use jocforge_domain::transaction::{AttemptId, CallbackTransactionId, GtcOwnerId, ProgrammeId};
 use jocforge_domain::{
     profile::{EmdfCarriageProfile, EncodingProfile, resolve_selected_profile},
     publication::{OutputProvider, OutputSourceIdentity},
-    timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
+    timeline::{CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, PublishedAuIndex},
 };
 use sha2::{Digest, Sha256};
 
@@ -147,6 +147,80 @@ fn typed_attempts_render_as_canonical_decimal_and_keep_staging_identity_separate
 }
 
 #[test]
+fn output_binding_exposes_its_complete_gtc_state_reference() {
+    let output = binding("programme-A", 0, "opaque-A-0", "A.ec3");
+    let reference = output.gtc_state_reference().unwrap();
+    let snapshot = reference.gtc_snapshot().unwrap();
+
+    assert_eq!(reference.owner_id(), "output");
+    assert_eq!(snapshot.owner_id(), GtcOwnerId::Output);
+    assert_eq!(snapshot.generation(), 0);
+    assert_eq!(
+        snapshot.state_sha256(),
+        jocforge_domain::transaction::GtcOwnerStateSnapshot::from_canonical_bytes(
+            GtcOwnerId::Output,
+            snapshot.generation(),
+            snapshot.cold_sha256(),
+            snapshot.canonical_bytes(),
+        )
+        .unwrap()
+        .state_sha256()
+    );
+}
+
+#[test]
+fn output_owner_priming_receipt_is_unchanged_only_for_callbacks_zero_and_one() {
+    let output = binding("programme-A", 0, "opaque-A-0", "A.ec3");
+    let before = output.output_owner().state_json();
+
+    for callback in [0, 1] {
+        let transaction_id = CallbackTransactionId::new(&format!("callback-{callback}"))
+            .expect("callback transaction id is nonempty");
+        let receipt = output
+            .gtc_unchanged_callback_receipt(
+                FrontendCallbackIndex::new(callback),
+                transaction_id.clone(),
+            )
+            .expect("priming callback keeps the cold output owner unchanged");
+
+        assert_eq!(receipt.owner_id(), GtcOwnerId::Output);
+        assert_eq!(receipt.transaction_id(), &transaction_id);
+        assert_eq!(receipt.before_generation(), 0);
+        assert_eq!(receipt.after_generation(), 0);
+        assert!(!receipt.changed());
+        assert_eq!(receipt.commit_count(), 0);
+        assert_eq!(receipt.before_sha256(), receipt.after_sha256());
+    }
+
+    assert_eq!(output.output_owner().state_json(), before);
+    assert_eq!(
+        output.gtc_unchanged_callback_receipt(
+            FrontendCallbackIndex::new(2),
+            CallbackTransactionId::new("callback-2").unwrap(),
+        ),
+        Err(super::OutputRootBindingError::PrimingCallbackOutOfRange)
+    );
+}
+
+#[test]
+fn output_owner_priming_receipt_rejects_a_root_after_source_zero() {
+    let output = binding("programme-A", 0, "opaque-A-0", "A.ec3");
+    let after_source_zero = match suppressed_source_proposal(&output) {
+        super::OutputSourceProposal::Suppressed(proposal) => proposal.into_after(),
+        super::OutputSourceProposal::Append(_) => panic!("source zero must stay suppressed"),
+    };
+    let output = output.with_after_source(after_source_zero).unwrap();
+
+    assert_eq!(
+        output.gtc_unchanged_callback_receipt(
+            FrontendCallbackIndex::new(0),
+            CallbackTransactionId::new("callback-0").unwrap(),
+        ),
+        Err(super::OutputRootBindingError::OutputRootNotCold)
+    );
+}
+
+#[test]
 fn separate_programmes_may_both_start_at_zero_and_restart_with_new_staging_identity() {
     let first = binding("programme-A", 0, "opaque-A-0", "A.ec3");
     let second = binding("programme-B", 0, "opaque-B-0", "B.ec3");
@@ -158,6 +232,30 @@ fn separate_programmes_may_both_start_at_zero_and_restart_with_new_staging_ident
     assert_eq!(restarted.attempt_id(), AttemptId::new(1));
     assert_eq!(restarted.output_owner().configuration().attempt_id(), "1");
     assert_ne!(first.staging_owner_id(), restarted.staging_owner_id());
+}
+
+#[test]
+fn admitted_cold_output_binding_can_be_reconstructed_once_for_the_execution_parent() {
+    let admitted = binding("programme-A", 0, "opaque-A-0", "A.ec3");
+    let execution = admitted.fresh_cold_execution_binding().unwrap();
+
+    assert_eq!(execution.programme_id(), admitted.programme_id());
+    assert_eq!(execution.attempt_id(), admitted.attempt_id());
+    assert_eq!(execution.staging_owner_id(), admitted.staging_owner_id());
+    assert_eq!(
+        execution.output_configuration(),
+        admitted.output_configuration()
+    );
+    assert_eq!(execution.output_owner().generation(), 0);
+    assert_eq!(execution.output_owner().next_source_index().value(), 0);
+
+    let after_source_zero = match suppressed_source_proposal(&execution) {
+        super::OutputSourceProposal::Suppressed(proposal) => proposal.into_after(),
+        super::OutputSourceProposal::Append(_) => panic!("source zero must stay suppressed"),
+    };
+    let advanced = execution.with_after_source(after_source_zero).unwrap();
+    assert_eq!(advanced.output_owner().next_source_index().value(), 1);
+    assert!(advanced.fresh_cold_execution_binding().is_err());
 }
 
 #[test]
@@ -216,6 +314,28 @@ fn bound_source_proposal_rejects_cross_programme_and_stale_generation_before_io(
             .attempt_id(),
         "0"
     );
+}
+
+#[test]
+fn output_binding_advances_only_from_the_matching_source_after_proposal() {
+    let before = binding("programme-A", 0, "opaque-A-0", "A.ec3");
+    let programme_id = before.programme_id().clone();
+    let attempt_id = before.attempt_id();
+    let staging_owner_id = before.staging_owner_id().clone();
+    let output_configuration = before.output_configuration().clone();
+    let after = match suppressed_source_proposal(&before) {
+        super::OutputSourceProposal::Suppressed(proposal) => proposal.into_after(),
+        super::OutputSourceProposal::Append(_) => panic!("source zero must stay suppressed"),
+    };
+
+    let next = before.with_after_source(after).unwrap();
+
+    assert_eq!(next.output_owner().generation(), 1);
+    assert_eq!(next.output_owner().next_source_index().value(), 1);
+    assert_eq!(next.programme_id(), &programme_id);
+    assert_eq!(next.attempt_id(), attempt_id);
+    assert_eq!(next.staging_owner_id(), &staging_owner_id);
+    assert_eq!(next.output_configuration(), &output_configuration);
 }
 
 #[test]

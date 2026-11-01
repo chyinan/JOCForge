@@ -456,6 +456,7 @@ pub struct SelectedMainFrameCandidate {
     frame_bytes: [u8; FRAME_BYTES],
     pre_tail_body_bits: u32,
     mantissa_bits_by_block: [u64; BLOCK_COUNT],
+    emdf_container_start: Option<FrameBitCursor>,
 }
 
 impl SelectedMainFrameCandidate {
@@ -481,6 +482,14 @@ impl SelectedMainFrameCandidate {
 
     pub const fn mantissa_bits_by_block(&self) -> &[u64; BLOCK_COUNT] {
         &self.mantissa_bits_by_block
+    }
+
+    /// Returns the live F12 bit cursor immediately before the published EMDF container bytes.
+    ///
+    /// The value is absent when this source has no published payload. Callers must not infer a
+    /// carrier position from a selected-profile constant or scan the completed frame.
+    pub const fn emdf_container_start(&self) -> Option<FrameBitCursor> {
+        self.emdf_container_start
     }
 }
 
@@ -567,7 +576,7 @@ pub fn build_selected_frame_trial(
     }
 
     let mut frame_bytes = [0_u8; FRAME_BYTES];
-    let (pre_tail_body_bits, mantissa_bits_by_block) = {
+    let (pre_tail_body_bits, mantissa_bits_by_block, emdf_container_start) = {
         let mut writer = match FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(0)) {
             Ok(writer) => writer,
             Err(error) => {
@@ -581,34 +590,35 @@ pub fn build_selected_frame_trial(
                 CandidateInfeasibleReason::FrameField(error),
             ));
         }
-        let mantissa_bits_by_block = match write_frame_body(&mut writer, plan, q, &bap_frame) {
-            Ok(bits) => bits,
-            Err(BuildError::Writer(error)) => {
-                return Ok(SelectedFrameTrialOutcome::Infeasible(
-                    CandidateInfeasibleReason::FrameField(error),
-                ));
-            }
-            Err(BuildError::Mantissa { block, error }) => {
-                return Ok(SelectedFrameTrialOutcome::Infeasible(
-                    CandidateInfeasibleReason::Mantissa { block, error },
-                ));
-            }
-            Err(BuildError::MantissaBitStream) => {
-                return Ok(SelectedFrameTrialOutcome::Infeasible(
-                    CandidateInfeasibleReason::MantissaBitStream,
-                ));
-            }
-            Err(BuildError::PrefixCursorMismatch) => {
-                return Ok(SelectedFrameTrialOutcome::Infeasible(
-                    CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
-                ));
-            }
-            Err(BuildError::BsiMixingInformation(error)) => {
-                return Ok(SelectedFrameTrialOutcome::Infeasible(
-                    CandidateInfeasibleReason::BsiMixingInformation(error),
-                ));
-            }
-        };
+        let (mantissa_bits_by_block, emdf_container_start) =
+            match write_frame_body(&mut writer, plan, q, &bap_frame) {
+                Ok(bits) => bits,
+                Err(BuildError::Writer(error)) => {
+                    return Ok(SelectedFrameTrialOutcome::Infeasible(
+                        CandidateInfeasibleReason::FrameField(error),
+                    ));
+                }
+                Err(BuildError::Mantissa { block, error }) => {
+                    return Ok(SelectedFrameTrialOutcome::Infeasible(
+                        CandidateInfeasibleReason::Mantissa { block, error },
+                    ));
+                }
+                Err(BuildError::MantissaBitStream) => {
+                    return Ok(SelectedFrameTrialOutcome::Infeasible(
+                        CandidateInfeasibleReason::MantissaBitStream,
+                    ));
+                }
+                Err(BuildError::PrefixCursorMismatch) => {
+                    return Ok(SelectedFrameTrialOutcome::Infeasible(
+                        CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
+                    ));
+                }
+                Err(BuildError::BsiMixingInformation(error)) => {
+                    return Ok(SelectedFrameTrialOutcome::Infeasible(
+                        CandidateInfeasibleReason::BsiMixingInformation(error),
+                    ));
+                }
+            };
 
         let pre_tail_body_bits = writer.cursor().bit_offset();
         if pre_tail_body_bits > PRE_TAIL_BIT_LIMIT {
@@ -640,7 +650,11 @@ pub fn build_selected_frame_trial(
                 CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
             ));
         }
-        (pre_tail_body_bits, mantissa_bits_by_block)
+        (
+            pre_tail_body_bits,
+            mantissa_bits_by_block,
+            emdf_container_start,
+        )
     };
 
     let crc16 = eac3_crc16(&frame_bytes[2..FRAME_BYTES - 2]);
@@ -680,6 +694,7 @@ pub fn build_selected_frame_trial(
             frame_bytes,
             pre_tail_body_bits,
             mantissa_bits_by_block,
+            emdf_container_start,
         },
     )))
 }
@@ -799,7 +814,7 @@ fn write_frame_body(
     plan: &SelectedFrameTrialPlan<'_>,
     q: u16,
     bap_frame: &super::bap::BapFrame,
-) -> Result<[u64; BLOCK_COUNT], BuildError> {
+) -> Result<([u64; BLOCK_COUNT], Option<FrameBitCursor>), BuildError> {
     match write_selected_eac3_fixed_prefix(writer) {
         Ok(_) => {}
         Err(SelectedEac3PrefixError::BitWriter(error)) => return Err(BuildError::Writer(error)),
@@ -811,6 +826,7 @@ fn write_frame_body(
     write_bsi_header(writer, plan)?;
     write_frame_controls(writer, plan, q)?;
     let mut mantissa_bits_by_block = [0_u64; BLOCK_COUNT];
+    let mut emdf_container_start = None;
     let tuples = plan
         .db_per_bit_codes
         .map(|db_per_bit| [2, 1, 1, db_per_bit, 7]);
@@ -824,14 +840,16 @@ fn write_frame_body(
         write_ba_update(writer, plan.ba_syntax, block, &tuples)?;
         write_fast_gain(writer)?;
         write_converter_snr(writer, plan.converter.snr_offset, block)?;
-        write_emdf_skip(writer, &plan.emdf, block)?;
+        if let Some(start) = write_emdf_skip(writer, &plan.emdf, block)? {
+            emdf_container_start = Some(start);
+        }
 
         let mantissas = pack_block_mantissas(&mantissa_items_for_block(plan, bap_frame, block)?)
             .map_err(|error| BuildError::Mantissa { block, error })?;
         *mantissa_bit_count = mantissas.bit_count();
         append_mantissa_bits(writer, &mantissas)?;
     }
-    Ok(mantissa_bits_by_block)
+    Ok((mantissa_bits_by_block, emdf_container_start))
 }
 
 fn write_bsi_header(
@@ -1079,9 +1097,9 @@ fn write_emdf_skip(
     writer: &mut FrameBitWriter<'_>,
     emdf: &EmdfFrameInput<'_>,
     block: usize,
-) -> Result<(), BuildError> {
+) -> Result<Option<FrameBitCursor>, BuildError> {
     let EmdfFrameInput::Published(payload) = emdf else {
-        return Ok(());
+        return Ok(None);
     };
     let carrier = block == CONVERTER_CARRIER_BLOCK;
     writer.write_bit(carrier).map_err(BuildError::Writer)?;
@@ -1091,11 +1109,14 @@ fn write_emdf_skip(
         writer
             .write_unsigned(length, 9)
             .map_err(BuildError::Writer)?;
+        let container_start = writer.cursor();
         writer
             .write_bytes(payload.complete_container)
             .map_err(BuildError::Writer)?;
+        Ok(Some(container_start))
+    } else {
+        Ok(None)
     }
-    Ok(())
 }
 
 fn mantissa_items_for_block(

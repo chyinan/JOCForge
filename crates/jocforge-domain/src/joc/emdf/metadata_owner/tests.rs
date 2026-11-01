@@ -66,6 +66,21 @@ fn owner() -> MetadataOwner {
     owner_for_attempt(0)
 }
 
+fn owner_after_all_sources() -> MetadataOwner {
+    let vectors = vectors();
+    let mut owner = owner();
+    for call in vectors["continuous_calls"].as_array().unwrap() {
+        owner.process_source(source_call(call)).unwrap();
+    }
+    owner
+}
+
+fn prepared_eof() -> (MetadataOwner, MetadataEofProposal) {
+    let mut owner = owner_after_all_sources();
+    let proposal = owner.prepare_eof(5).unwrap();
+    (owner, proposal)
+}
+
 fn hex_bytes(text: &str) -> Vec<u8> {
     assert_eq!(text.len() % 2, 0);
     text.as_bytes()
@@ -119,7 +134,6 @@ fn source_call(case: &Value) -> MetadataSourceCall {
             id14_provenance: None,
         },
         wrapper_configuration: input["wrapper_config"].clone(),
-        validate_current_container: false,
     }
 }
 
@@ -529,6 +543,82 @@ fn local_receipt_projection_binds_source_transaction_and_exact_roots() {
 }
 
 #[test]
+fn source_proposal_transfers_exact_after_owner_and_canonical_receipts_to_parent() {
+    let (before, proposal, transaction_id) = source_zero_proposal();
+    let before_state = before.state_reference();
+    let handoff = proposal
+        .into_parent_handoff(&before, transaction_id.clone())
+        .unwrap();
+
+    assert_eq!(
+        handoff.owner_receipt().owner_id(),
+        crate::transaction::GtcOwnerId::Metadata
+    );
+    assert_eq!(handoff.owner_receipt().transaction_id(), &transaction_id);
+    assert_eq!(handoff.owner_receipt().before_generation(), 0);
+    assert_eq!(handoff.owner_receipt().after_generation(), 1);
+    assert_eq!(handoff.before_state(), &before_state);
+    assert_eq!(handoff.before_state().generation(), 0);
+    assert_eq!(handoff.after_state().generation(), 1);
+    assert_eq!(
+        handoff.after_owner().state_reference(),
+        handoff.after_state().clone()
+    );
+    assert_eq!(before.state_reference(), before_state);
+
+    let (after_owner, source_receipt, owner_receipt, before_state, after_state, _, _, _) =
+        handoff.into_parts();
+    assert_eq!(source_receipt.source_index().value(), 0);
+    assert_eq!(owner_receipt.after_generation(), after_state.generation());
+    assert_eq!(before_state.generation(), 0);
+    assert_eq!(after_owner.state_reference(), after_state);
+}
+
+#[test]
+fn source_proposal_uses_consumer_token_and_parent_callback_receipt_separately() {
+    let (before, proposal, consumer_transaction) = source_zero_proposal();
+    let parent_callback_transaction =
+        CallbackTransactionId::new("jocforge-main-callback-g2").unwrap();
+
+    let handoff = proposal
+        .into_parent_handoff_for_parent_callback(
+            &before,
+            &consumer_transaction,
+            parent_callback_transaction.clone(),
+        )
+        .unwrap();
+
+    assert_eq!(
+        handoff.source_receipt().consumer_transaction_id(),
+        Some(&consumer_transaction)
+    );
+    assert_eq!(
+        handoff.owner_receipt().transaction_id(),
+        &parent_callback_transaction
+    );
+    assert_eq!(handoff.owner_receipt().before_generation(), 0);
+    assert_eq!(handoff.owner_receipt().after_generation(), 1);
+}
+
+#[test]
+fn source_proposal_rejects_wrong_consumer_before_issuing_parent_receipt() {
+    let (before, proposal, _) = source_zero_proposal();
+    let wrong_consumer = CallbackTransactionId::new("jocforge-source-1").unwrap();
+    let parent_callback_transaction =
+        CallbackTransactionId::new("jocforge-main-callback-g2").unwrap();
+
+    assert_eq!(
+        proposal.gtc_owner_receipt_for_parent_callback(
+            &before,
+            &wrong_consumer,
+            parent_callback_transaction,
+        ),
+        Err(MetadataGtcReceiptError::ParentTransactionMismatch)
+    );
+    assert_eq!(before.state_reference().generation(), 0);
+}
+
+#[test]
 fn local_receipt_projection_allows_only_exact_cold_priming_clocks() {
     let cold = owner();
     for callback in 0..=1 {
@@ -870,6 +960,141 @@ fn eof_is_a_leaf_proposal_with_no_source_receipt_or_flush() {
             .last()
             .unwrap()["expected"]["after_sha256"]
     );
+}
+
+#[test]
+fn eof_parent_handoff_returns_an_uninstalled_after_root_and_full_state_receipt() {
+    let mut before = owner_after_all_sources();
+    let before_state = before.state_reference();
+    let before_bytes = before.state.canonical_bytes();
+    let proposal = before.prepare_eof(5).unwrap();
+    let transaction_id =
+        crate::transaction::CallbackTransactionId::new("metadata-eof-source-5").unwrap();
+
+    let handoff = proposal
+        .into_parent_handoff(&before, transaction_id.clone())
+        .unwrap();
+    assert_eq!(handoff.before_state(), &before_state);
+    assert_eq!(handoff.owner_receipt().owner_id(), GtcOwnerId::Metadata);
+    assert_eq!(handoff.owner_receipt().transaction_id(), &transaction_id);
+    assert_eq!(
+        handoff.owner_receipt().before_generation(),
+        before_state.generation()
+    );
+    assert_eq!(
+        handoff.owner_receipt().before_sha256(),
+        *before_state.state_sha256()
+    );
+    assert_eq!(
+        handoff.owner_receipt().after_generation(),
+        before_state.generation() + 1
+    );
+    assert_eq!(
+        handoff.owner_receipt().after_sha256(),
+        *handoff.after_state().state_sha256()
+    );
+    assert_eq!(handoff.after_state().owner_id(), "metadata");
+    assert_eq!(handoff.after_state().state_ref(), "owners.metadata");
+    assert!(handoff.after_owner().state.finalized);
+    assert_eq!(handoff.after_owner().state.next_source_index, 5);
+    assert!(
+        handoff
+            .after_owner()
+            .state
+            .queues
+            .values()
+            .all(|queue| { queue.slots.iter().all(Option::is_none) })
+    );
+    assert!(
+        handoff
+            .after_owner()
+            .state
+            .pending
+            .iter()
+            .all(|pending| pending.disposition == "DROP_AT_DONE")
+    );
+    let expected_receipt = handoff.owner_receipt().clone();
+
+    assert_eq!(before.state.canonical_bytes(), before_bytes);
+    assert_eq!(before.state_reference(), before_state);
+    assert!(!before.state.finalized);
+
+    let (after, receipt) = handoff.into_parts();
+    assert!(after.state.finalized);
+    assert_eq!(receipt, expected_receipt);
+}
+
+#[test]
+fn eof_parent_handoff_rejects_identity_clock_and_terminal_state_mismatches() {
+    let transaction_id =
+        crate::transaction::CallbackTransactionId::new("metadata-eof-invalid").unwrap();
+
+    let (mut before, proposal) = prepared_eof();
+    before.programme_id = crate::transaction::test_programme_id("other-programme");
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id.clone()),
+        Err(MetadataEofHandoffError::ProgrammeMismatch)
+    ));
+
+    let (mut before, proposal) = prepared_eof();
+    before.attempt = crate::transaction::AttemptId::new(1);
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id.clone()),
+        Err(MetadataEofHandoffError::AttemptMismatch)
+    ));
+
+    let (mut before, proposal) = prepared_eof();
+    before.state.generation += 1;
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id.clone()),
+        Err(MetadataEofHandoffError::BeforeStateMismatch)
+    ));
+
+    let (before, mut proposal) = prepared_eof();
+    proposal.expected_sources -= 1;
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id.clone()),
+        Err(MetadataEofHandoffError::BeforeSourceCountMismatch)
+    ));
+
+    let (before, mut proposal) = prepared_eof();
+    proposal.after_state.next_source_index -= 1;
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id.clone()),
+        Err(MetadataEofHandoffError::AfterSourceCountMismatch)
+    ));
+
+    let (before, mut proposal) = prepared_eof();
+    proposal.after_state.generation -= 1;
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id.clone()),
+        Err(MetadataEofHandoffError::AfterGenerationMismatch)
+    ));
+
+    let (before, mut proposal) = prepared_eof();
+    proposal.after_state.finalized = false;
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id.clone()),
+        Err(MetadataEofHandoffError::AfterStateNotFinalized)
+    ));
+
+    let (before, mut proposal) = prepared_eof();
+    proposal.after_state.queues.get_mut(&11).unwrap().slots[0] = Some(QueuedBody {
+        writer_generation: CodecSourceIndex::new(5),
+        payload: vec![0x01],
+        producer_provenance: None,
+    });
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id.clone()),
+        Err(MetadataEofHandoffError::AfterQueuesNotEmpty)
+    ));
+
+    let (before, mut proposal) = prepared_eof();
+    proposal.after_state.pending[0].disposition = "RETAIN";
+    assert!(matches!(
+        proposal.into_parent_handoff(&before, transaction_id),
+        Err(MetadataEofHandoffError::PendingDispositionMismatch)
+    ));
 }
 
 #[test]

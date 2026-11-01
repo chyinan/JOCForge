@@ -1,0 +1,39 @@
+{
+  "schema": "joc-timer-payload-order-functional-parameters.v1",
+  "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+  "private_key_or_authentication_material": false,
+  "joc_complexity": {
+    "type": "U8",
+    "selected_value": 16,
+    "rule": "parse the same validated EMDF; require ID14 downmix_index=3, channel_count=5, object_count=15 and ID11 slot_count=16; emit object_count+1",
+    "persistent_state": "NONE",
+    "clock": "codec source call consuming the assembled EMDF; source s writes the field into AU s-2 when s>=2",
+    "source_classification": "MODEL-DERIVED_NONSECRET_FUNCTIONAL_RULE"
+  },
+  "id1_timer": {
+    "period_samples": [24000, 48000, 48000, 4800, 24000, 48000],
+    "sample_rate": 48000,
+    "hop_samples": 1536,
+    "timer_to_input_field": {"0": 0, "1": 5, "2": 4, "3": 6, "4": 7, "5": 8},
+    "expiry_priority_timer_indices": [1, 2, 5, 0, 4, 3],
+    "expiry_priority_output_fields": [5, 4, 8, 0, 7, 6],
+    "cold_cached": [-1, -1024, -1024, -1024, -1024, -1024],
+    "mode": 1,
+    "counter_low_s16": -513,
+    "source_classification": "VERIFIED_MODEL_NONSECRET_FUNCTIONAL_CONSTANTS"
+  },
+  "payload_timeline": {
+    "producer_readiness_rule": "all four bodies must exist before the first queue mutation",
+    "body_map_order": [11, 14, 2, 1],
+    "push_pop_order": [11, 1, 2, 14],
+    "serialization_order": [11, 14, 2, 1],
+    "queue_parameters": {
+      "11": {"capacity": 160, "delay": 4608, "frame": 1536},
+      "1": {"capacity": 10, "delay": 4608, "frame": 1536},
+      "2": {"capacity": 8, "delay": 4608, "frame": 1536},
+      "14": {"capacity": 543, "delay": 3072, "frame": 1536}
+    },
+    "publication_gate": "source 0 and 1 do not publish; source s>=2 publishes AU s-2 after all four push/pop operations",
+    "upstream_producer_execution_order": "NOT_ESTABLISHED; JOC/OAMD/ID2 are precomputed model inputs, while ID1 timer update is executed in this timeline function"
+  }
+}

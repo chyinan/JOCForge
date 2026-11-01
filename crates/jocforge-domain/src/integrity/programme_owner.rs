@@ -4,11 +4,12 @@
 use super::{
     crc16::eac3_crc16,
     keyless_checksum::{
-        IntegritySha256, KeylessProviderError, crc8_smbus, crc32_iso_hdlc, sha256,
-        validate_keyless_provider,
+        EmdfProtectionBitRange, IntegritySha256, KeylessIntegrityProvider, KeylessProviderError,
+        ProtectedEmdfContainer, crc8_smbus, crc32_iso_hdlc, sha256, validate_keyless_provider,
     },
 };
 use crate::{
+    codec::bitio::FrameBitCursor,
     timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex, source_for_callback},
     transaction::{
         AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId,
@@ -44,6 +45,33 @@ pub struct IntegrityInput<'a> {
     pub secondary_slot_offset: usize,
     pub frame_template: &'a [u8],
     pub container_offset: usize,
+}
+
+/// F14K result bound to the source input before F12 owns the frame write.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum F14kPayloadInput<'a> {
+    /// Sources 0/1 have no published EMDF payload.
+    AbsentPublishedPayloadV1,
+    /// F14K-protected bytes and their exact zero-slot F13 input.
+    ProtectedEmdf {
+        zero_slot_container: &'a [u8],
+        protected_container: &'a ProtectedEmdfContainer,
+    },
+}
+
+/// Complete F12 output offered to the Integrity owner as immutable evidence.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct F12CompletedFrameInput<'a> {
+    pub frame: &'a [u8],
+    /// F12's live cursor immediately before EMDF carrier bytes, absent for source 0/1.
+    pub emdf_container_start: Option<FrameBitCursor>,
+}
+
+/// One same-source F14K payload outcome and F12 completed frame.
+pub struct IntegrityF12SourceInput<'a> {
+    pub identity: IntegrityIdentity,
+    pub payload: F14kPayloadInput<'a>,
+    pub completed_frame: F12CompletedFrameInput<'a>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -368,6 +396,150 @@ impl IntegrityStageReceipt {
     }
 }
 
+/// F14K evidence for an absent or protected source payload.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum IntegrityPayloadEvidence {
+    AbsentPublishedPayloadV1,
+    ProtectedEmdf {
+        zero_slot_sha256: IntegritySha256,
+        protected_sha256: IntegritySha256,
+        message_sha256: IntegritySha256,
+        primary_crc32: u32,
+        secondary_crc8: u8,
+        primary_range: EmdfProtectionBitRange,
+        secondary_range: EmdfProtectionBitRange,
+        container_bytes: usize,
+    },
+}
+
+/// F14 SOURCE-stage receipt paired with the Integrity owner transition.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct IntegrityF12SourceReceipt {
+    identity: IntegrityIdentity,
+    before_generation: u64,
+    proposed_after_generation: u64,
+    before_sha256: IntegritySha256,
+    proposed_after_sha256: IntegritySha256,
+    provider_sha256: IntegritySha256,
+    payload: IntegrityPayloadEvidence,
+}
+
+impl IntegrityF12SourceReceipt {
+    pub const fn identity(&self) -> &IntegrityIdentity {
+        &self.identity
+    }
+
+    pub const fn before_generation(&self) -> u64 {
+        self.before_generation
+    }
+
+    pub const fn proposed_after_generation(&self) -> u64 {
+        self.proposed_after_generation
+    }
+
+    pub const fn before_sha256(&self) -> IntegritySha256 {
+        self.before_sha256
+    }
+
+    pub const fn proposed_after_sha256(&self) -> IntegritySha256 {
+        self.proposed_after_sha256
+    }
+
+    pub const fn provider_sha256(&self) -> IntegritySha256 {
+        self.provider_sha256
+    }
+
+    pub const fn payload(&self) -> IntegrityPayloadEvidence {
+        self.payload
+    }
+}
+
+/// F12 DISPATCH-stage receipt for carrier placement and frame production.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct IntegrityF12DispatchReceipt {
+    identity: IntegrityIdentity,
+    frame_sha256: IntegritySha256,
+    frame_bytes: usize,
+    emdf_container_start: Option<FrameBitCursor>,
+    source_payload_sha256: Option<IntegritySha256>,
+}
+
+impl IntegrityF12DispatchReceipt {
+    pub const fn identity(&self) -> &IntegrityIdentity {
+        &self.identity
+    }
+
+    pub const fn frame_sha256(&self) -> IntegritySha256 {
+        self.frame_sha256
+    }
+
+    pub const fn frame_bytes(&self) -> usize {
+        self.frame_bytes
+    }
+
+    pub const fn emdf_container_start(&self) -> Option<FrameBitCursor> {
+        self.emdf_container_start
+    }
+
+    pub const fn source_payload_sha256(&self) -> Option<IntegritySha256> {
+        self.source_payload_sha256
+    }
+}
+
+/// F12 AU-stage receipt; `published` distinguishes priming CRCs from AU writes.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct IntegrityF12AuReceipt {
+    identity: IntegrityIdentity,
+    frame_sha256: IntegritySha256,
+    crc16: u16,
+    crc_residual: u16,
+    published: bool,
+}
+
+impl IntegrityF12AuReceipt {
+    pub const fn identity(&self) -> &IntegrityIdentity {
+        &self.identity
+    }
+
+    pub const fn frame_sha256(&self) -> IntegritySha256 {
+        self.frame_sha256
+    }
+
+    pub const fn crc16(&self) -> u16 {
+        self.crc16
+    }
+
+    pub const fn crc_residual(&self) -> u16 {
+        self.crc_residual
+    }
+
+    pub const fn published(&self) -> bool {
+        self.published
+    }
+}
+
+/// Typed F14 SOURCE, F12 DISPATCH, and F12 AU evidence for one noncommitting transition.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct IntegrityF12SourceReceipts {
+    source: IntegrityF12SourceReceipt,
+    dispatch: IntegrityF12DispatchReceipt,
+    au: IntegrityF12AuReceipt,
+}
+
+impl IntegrityF12SourceReceipts {
+    pub const fn source(&self) -> &IntegrityF12SourceReceipt {
+        &self.source
+    }
+
+    pub const fn dispatch(&self) -> &IntegrityF12DispatchReceipt {
+        &self.dispatch
+    }
+
+    pub const fn au(&self) -> &IntegrityF12AuReceipt {
+        &self.au
+    }
+}
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct IntegrityCallResult {
     receipts: [IntegrityStageReceipt; 3],
@@ -518,6 +690,57 @@ impl IntegrityGtcSourceProposal {
     }
 }
 
+/// Noncommitting Integrity root and typed F12-owned receipt set for one source.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct IntegrityF12SourceProposal {
+    after_owner: IntegrityProgrammeOwner,
+    receipts: IntegrityF12SourceReceipts,
+}
+
+impl IntegrityF12SourceProposal {
+    pub const fn after_owner(&self) -> &IntegrityProgrammeOwner {
+        &self.after_owner
+    }
+
+    pub const fn receipts(&self) -> &IntegrityF12SourceReceipts {
+        &self.receipts
+    }
+
+    pub fn into_parts(self) -> (IntegrityProgrammeOwner, IntegrityF12SourceReceipts) {
+        (self.after_owner, self.receipts)
+    }
+}
+
+/// F12 source proposal paired with the corresponding prospective GTC owner receipt.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct IntegrityGtcF12SourceProposal {
+    source: IntegrityF12SourceProposal,
+    owner_receipt: IntegrityOwnerReceiptProposal,
+}
+
+impl IntegrityGtcF12SourceProposal {
+    pub const fn source_proposal(&self) -> &IntegrityF12SourceProposal {
+        &self.source
+    }
+
+    pub const fn owner_receipt_proposal(&self) -> &IntegrityOwnerReceiptProposal {
+        &self.owner_receipt
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        IntegrityProgrammeOwner,
+        IntegrityF12SourceReceipts,
+        IntegrityOwnerReceiptProposal,
+    ) {
+        let (after_owner, receipts) = self.source.into_parts();
+        (after_owner, receipts, self.owner_receipt)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct IntegrityProgrammeOwner {
     state: IntegrityState,
@@ -535,10 +758,23 @@ impl IntegrityProgrammeOwner {
         expected_source_count: u64,
         provider_json: &[u8],
     ) -> Result<Self, IntegrityError> {
+        let provider = validate_keyless_provider(provider_json).map_err(map_provider_error)?;
+        Self::cold_from_provider(programme_id, attempt, expected_source_count, &provider)
+    }
+
+    /// Admits a cold owner from the keyless provider already retained by F15 admission.
+    pub fn cold_from_provider(
+        programme_id: &str,
+        attempt: u64,
+        expected_source_count: u64,
+        provider: &KeylessIntegrityProvider,
+    ) -> Result<Self, IntegrityError> {
         if programme_id.is_empty() {
             return Err(IntegrityError::new(IntegrityErrorCode::ProgrammeIdentity));
         }
-        let provider = validate_keyless_provider(provider_json).map_err(map_provider_error)?;
+        if provider.profile_id() != PROFILE_ID {
+            return Err(IntegrityError::new(IntegrityErrorCode::UnsupportedProfile));
+        }
         Ok(Self {
             state: IntegrityState {
                 profile_id: PROFILE_ID,
@@ -657,6 +893,200 @@ impl IntegrityProgrammeOwner {
         };
         Ok(IntegrityGtcSourceProposal {
             source,
+            owner_receipt,
+        })
+    }
+
+    /// Stages source/dispatch/AU receipts from F14K evidence and an already completed F12 frame.
+    ///
+    /// Unlike `stage_source_for_callback`, this adapter does not patch a carrier or write CRC16.
+    /// F12 owns the complete frame; this owner validates its dynamic carrier cursor and CRC
+    /// residual, then proposes the next Integrity root with typed receipts for F15.
+    pub fn stage_f12_source_for_callback(
+        &self,
+        input: IntegrityF12SourceInput<'_>,
+        provider: &KeylessIntegrityProvider,
+        programme_id: &ProgrammeId,
+        attempt: AttemptId,
+        transaction_id: &CallbackTransactionId,
+        callback_identity: &CallbackLineageIdentity,
+    ) -> Result<IntegrityGtcF12SourceProposal, IntegrityError> {
+        if self.retired {
+            return Err(IntegrityError::new(IntegrityErrorCode::AttemptRetired));
+        }
+        if self.state.finalized {
+            return Err(IntegrityError::new(IntegrityErrorCode::AlreadyFinalized));
+        }
+        if provider.profile_id() != PROFILE_ID
+            || provider.provider_sha256() != self.state.provider_sha256
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::ProviderValues));
+        }
+        validate_identity(&input.identity, self)?;
+        if input.identity.programme_id != programme_id.as_str()
+            || callback_identity.programme_id() != programme_id
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::ProgrammeIdentity));
+        }
+        if input.identity.attempt != attempt.value() || callback_identity.attempt_id() != attempt {
+            return Err(IntegrityError::new(IntegrityErrorCode::AttemptIdentity));
+        }
+        if transaction_id.as_str().is_empty()
+            || input.identity.transaction_id != transaction_id.as_str()
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::TransactionIdentity));
+        }
+        if source_for_callback(callback_identity.callback_index())
+            != Some(input.identity.source_index)
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::SourceOrder));
+        }
+
+        let source_payload_sha256;
+        let payload_evidence = match input.payload {
+            F14kPayloadInput::AbsentPublishedPayloadV1 => {
+                if input.identity.source_index.value() >= SUPPRESSED_SOURCE_COUNT
+                    || input.identity.au_index.is_some()
+                    || input.completed_frame.emdf_container_start.is_some()
+                {
+                    return Err(IntegrityError::new(IntegrityErrorCode::AuOrder));
+                }
+                source_payload_sha256 = None;
+                IntegrityPayloadEvidence::AbsentPublishedPayloadV1
+            }
+            F14kPayloadInput::ProtectedEmdf {
+                zero_slot_container,
+                protected_container,
+            } => {
+                if input.identity.source_index.value() < SUPPRESSED_SOURCE_COUNT
+                    || input.identity.au_index.is_none()
+                {
+                    return Err(IntegrityError::new(IntegrityErrorCode::AuOrder));
+                }
+                let protected_bytes = protected_container.bytes();
+                let primary_crc32 = crc32_iso_hdlc(
+                    zero_slot_container
+                        .get(4..)
+                        .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::ChecksumSlots))?,
+                );
+                let secondary_crc8 = crc8_smbus(&primary_crc32.to_be_bytes());
+                if protected_bytes.len() != zero_slot_container.len()
+                    || protected_container.input_sha256() != sha256(zero_slot_container)
+                    || protected_container.output_sha256() != sha256(protected_bytes)
+                    || protected_container.primary_crc32() != primary_crc32
+                    || protected_container.secondary_crc8() != secondary_crc8
+                {
+                    return Err(IntegrityError::new(IntegrityErrorCode::ChecksumSlots));
+                }
+                let cursor = input
+                    .completed_frame
+                    .emdf_container_start
+                    .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::FrameShape))?;
+                if !frame_contains_payload_at_cursor(
+                    input.completed_frame.frame,
+                    cursor,
+                    protected_bytes,
+                ) {
+                    return Err(IntegrityError::new(IntegrityErrorCode::FrameShape));
+                }
+                source_payload_sha256 = Some(protected_container.output_sha256());
+                IntegrityPayloadEvidence::ProtectedEmdf {
+                    zero_slot_sha256: protected_container.input_sha256(),
+                    protected_sha256: protected_container.output_sha256(),
+                    message_sha256: sha256(&zero_slot_container[4..]),
+                    primary_crc32,
+                    secondary_crc8,
+                    primary_range: protected_container.primary_range(),
+                    secondary_range: protected_container.secondary_range(),
+                    container_bytes: protected_bytes.len(),
+                }
+            }
+        };
+
+        let frame = input.completed_frame.frame;
+        if frame.len() != FRAME_BYTES
+            || eac3_crc16(
+                frame
+                    .get(FRAME_CRC_INPUT_START..)
+                    .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::FrameShape))?,
+            ) != 0
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::AuFailed));
+        }
+        let frame_sha256 = sha256(frame);
+        let crc16 = u16::from_be_bytes([frame[FRAME_CRC_START], frame[FRAME_CRC_START + 1]]);
+        let before = IntegrityOwnerStateSnapshot::from_state(&self.state);
+        let generation = self
+            .state
+            .generation
+            .checked_add(1)
+            .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::GenerationOverflow))?;
+        let next_source = input
+            .identity
+            .source_index
+            .value()
+            .checked_add(1)
+            .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::SourceOrder))?;
+        let published_au_count = if input.identity.au_index.is_some() {
+            self.state
+                .published_au_count
+                .checked_add(1)
+                .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::GenerationOverflow))?
+        } else {
+            self.state.published_au_count
+        };
+        let after_state = IntegrityState {
+            generation,
+            next_source_index: CodecSourceIndex::new(next_source),
+            published_au_count,
+            ..self.state.clone()
+        };
+        let after_owner = self.with_state(after_state);
+        let after = after_owner.owner_state_snapshot();
+        let before_sha256 = before.state_sha256();
+        let proposed_after_sha256 = after.state_sha256();
+        let identity = input.identity;
+        let receipts = IntegrityF12SourceReceipts {
+            source: IntegrityF12SourceReceipt {
+                identity: identity.clone(),
+                before_generation: before.generation(),
+                proposed_after_generation: after.generation(),
+                before_sha256,
+                proposed_after_sha256,
+                provider_sha256: provider.provider_sha256(),
+                payload: payload_evidence,
+            },
+            dispatch: IntegrityF12DispatchReceipt {
+                identity: identity.clone(),
+                frame_sha256,
+                frame_bytes: frame.len(),
+                emdf_container_start: input.completed_frame.emdf_container_start,
+                source_payload_sha256,
+            },
+            au: IntegrityF12AuReceipt {
+                identity: identity.clone(),
+                frame_sha256,
+                crc16,
+                crc_residual: 0,
+                published: identity.au_index.is_some(),
+            },
+        };
+        let changed = before.generation() != after.generation()
+            || before.state_sha256() != after.state_sha256();
+        let owner_receipt = IntegrityOwnerReceiptProposal {
+            programme_id: programme_id.clone(),
+            attempt,
+            transaction_id: transaction_id.clone(),
+            callback_identity: callback_identity.clone(),
+            before,
+            after,
+            changed,
+        };
+        Ok(IntegrityGtcF12SourceProposal {
+            source: IntegrityF12SourceProposal {
+                after_owner,
+                receipts,
+            },
             owner_receipt,
         })
     }
@@ -1084,6 +1514,51 @@ fn validate_identity(
 fn checked_range(offset: usize, width: usize, bound: usize) -> Option<std::ops::Range<usize>> {
     let end = offset.checked_add(width)?;
     (end <= bound).then_some(offset..end)
+}
+
+fn frame_contains_payload_at_cursor(frame: &[u8], cursor: FrameBitCursor, payload: &[u8]) -> bool {
+    let Some(payload_bits) = u64::try_from(payload.len())
+        .ok()
+        .and_then(|length| length.checked_mul(8))
+    else {
+        return false;
+    };
+    let start_bit = u64::from(cursor.bit_offset());
+    let Some(end_bit) = start_bit.checked_add(payload_bits) else {
+        return false;
+    };
+    let range_start = (FRAME_CRC_INPUT_START as u64) * 8;
+    let range_end = (FRAME_CRC_INPUT_END as u64) * 8;
+    if frame.len() != FRAME_BYTES || start_bit < range_start || end_bit > range_end {
+        return false;
+    }
+
+    for (byte_index, expected_byte) in payload.iter().copied().enumerate() {
+        let Some(byte_start) = u64::try_from(byte_index)
+            .ok()
+            .and_then(|index| index.checked_mul(8))
+            .and_then(|offset| start_bit.checked_add(offset))
+        else {
+            return false;
+        };
+        for bit_index in 0..8_u64 {
+            let Some(bit_offset) = byte_start.checked_add(bit_index) else {
+                return false;
+            };
+            let Ok(frame_byte_index) = usize::try_from(bit_offset / 8) else {
+                return false;
+            };
+            let frame_shift = 7 - (bit_offset % 8) as u8;
+            let payload_shift = 7 - bit_index as u8;
+            let Some(frame_byte) = frame.get(frame_byte_index) else {
+                return false;
+            };
+            if (frame_byte >> frame_shift) & 1 != (expected_byte >> payload_shift) & 1 {
+                return false;
+            }
+        }
+    }
+    true
 }
 
 fn ranges_overlap(left: &std::ops::Range<usize>, right: &std::ops::Range<usize>) -> bool {

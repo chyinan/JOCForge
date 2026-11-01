@@ -286,6 +286,25 @@ pub fn stage_independent_meter_prepass(
     meter_before: &StandaloneMeterRoot,
     providers: &IndependentMeterG0Providers,
 ) -> Result<IndependentMeterPrepassCandidate, IndependentMeterPrepassError> {
+    stage_independent_meter_prepass_with_progress(
+        prepared,
+        source_cursor_before,
+        parsed_source,
+        meter_before,
+        providers,
+        &mut |_, _| {},
+    )
+}
+
+/// Runs the selected noncommitting Meter schedule and reports completed callbacks to the CLI.
+pub fn stage_independent_meter_prepass_with_progress(
+    prepared: &PreparedJobInput,
+    source_cursor_before: &MeterPcmSourceCursor,
+    parsed_source: &ParsedRiffPcm24<'_>,
+    meter_before: &StandaloneMeterRoot,
+    providers: &IndependentMeterG0Providers,
+    progress: &mut dyn FnMut(u64, u64),
+) -> Result<IndependentMeterPrepassCandidate, IndependentMeterPrepassError> {
     let source_samples = prepared.configuration().source_samples();
     let normal_callbacks = source_samples.div_ceil(1_536);
     if normal_callbacks == 0
@@ -310,12 +329,16 @@ pub fn stage_independent_meter_prepass(
             IndependentMeterG0StageError::PreparedIdentityMismatch,
         ));
     }
-    let capacity = normal_callbacks
-        .checked_add(3)
-        .and_then(|count| usize::try_from(count).ok())
-        .ok_or(IndependentMeterPrepassError::Input(
-            IndependentMeterG0StageError::ScheduleClock,
-        ))?;
+    let callback_total =
+        normal_callbacks
+            .checked_add(3)
+            .ok_or(IndependentMeterPrepassError::Input(
+                IndependentMeterG0StageError::ScheduleClock,
+            ))?;
+    let capacity = usize::try_from(callback_total).map_err(|_| {
+        IndependentMeterPrepassError::Input(IndependentMeterG0StageError::ScheduleClock)
+    })?;
+    progress(0, callback_total);
     let attempt = meter_before.identity().attempt();
     let mut candidate = stage_independent_meter_g0_callback(
         prepared,
@@ -335,6 +358,7 @@ pub fn stage_independent_meter_prepass(
             error,
         }
     })?);
+    progress(1, callback_total);
 
     for callback in 1..normal_callbacks {
         let before = candidate
@@ -366,6 +390,7 @@ pub fn stage_independent_meter_prepass(
                 error,
             }
         })?);
+        progress(callback + 1, callback_total);
     }
 
     let drain_end = normal_callbacks
@@ -403,6 +428,7 @@ pub fn stage_independent_meter_prepass(
                 error,
             }
         })?);
+        progress(callback + 1, callback_total);
     }
 
     let terminal_measurement = candidate

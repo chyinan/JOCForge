@@ -1,0 +1,214 @@
+{
+  "schema": "selected-live-joc-coordinator-parameters.v1",
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_ONLY",
+  "profile": {
+    "sample_rate_hz": 48000,
+    "bit_rate_bps": 1024000,
+    "objects": 15,
+    "carriers": 5,
+    "bands": 12,
+    "fit_cells": 180,
+    "qmf_slots_per_generation": 48,
+    "samples_per_generation": 1536,
+    "capacity_bytes": 372
+  },
+  "clocks": {
+    "first_dispatch": 1,
+    "callback_one_based_offset": 2,
+    "callback_zero_based_offset": 1,
+    "codec_source_offset": -1,
+    "writer_offset": -1,
+    "dispatches": 4249,
+    "published_writers": 4247
+  },
+  "cold": {
+    "next_dispatch": 1,
+    "sequence_counter": -1,
+    "successful_dispatches": 0,
+    "receiver_qmf_generation": 0,
+    "temporal_generation": 0,
+    "geometry_generation": 0,
+    "fit_generation": 0,
+    "committed_writer_count": 0,
+    "retired": false
+  },
+  "receipt_schema": {
+    "stages": [
+      "receiver_qmf",
+      "temporal",
+      "geometry",
+      "fit180",
+      "profile_retry",
+      "huffman_id14"
+    ],
+    "required_fields": [
+      "generation",
+      "status",
+      "executed",
+      "owner_token",
+      "provider",
+      "input",
+      "output"
+    ],
+    "digest_encoding": "SHA-256 of UTF-8 canonical JSON with sorted keys and comma/colon separators; huffman runtime output uses decoded HEX_BYTES",
+    "chain_rule": "each PASS stage input.upstream_output_sha256 equals the prior PASS stage output.sha256",
+    "failure_rule": "failed stage has executed=true/output=null; every later stage is NOT_EXECUTED with null input/output"
+  },
+  "provider_files": [
+    {
+      "file": "specs/04-qmf-analysis-and-synthesis.md",
+      "bytes": 5584,
+      "sha256": "13a2907c8e60bd81f948f33b9ad07f2d7dc0552b0b12f53224d27b80af610edf",
+      "historical_sha256_before_status_reconciliation": "26c94c2f97085d9d5c0b919c24d6d5206e22a17307f4d6eb675582654ac97393",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/04-qmf-mathematical-fft.md",
+      "bytes": 3258,
+      "sha256": "e915152a13098a18c4028ef5f3e72ba417341cdf87b17dc76645e73395319823"
+    },
+    {
+      "file": "specs/04-qmf-receiver-whole-binding.md",
+      "bytes": 13595,
+      "sha256": "104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75",
+      "historical_sha256_before_status_reconciliation": "1ffcaba3863311f4f513af340a91bae04a71bafd668260641fb2cdde0e5d686b",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/04-receiver-state-and-routing.md",
+      "bytes": 8332,
+      "sha256": "74b9b01537eb76a37582535b84426138ee8c8ecdca3486f9f43d0504c7c26306"
+    },
+    {
+      "file": "parameters/qmf-receiver-functional-v1.json",
+      "bytes": 20325,
+      "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c"
+    },
+    {
+      "file": "parameters/qmf-mathematical-fft-v1.json",
+      "bytes": 6983,
+      "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431"
+    },
+    {
+      "file": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json",
+      "bytes": 74454,
+      "sha256": "1d809ed24c805a182e9f2ba668562f1f3c8028e4dfc0ce7cd039e1255e4cda07"
+    },
+    {
+      "file": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-RESULT.json",
+      "bytes": 1468,
+      "sha256": "cb42de15ce4fa787aa03e511b9f2c6da39a72d3927f00eb020295af8a02862c7"
+    },
+    {
+      "file": "test-vectors/JOC-TEMPORAL-WEIGHT-VERIFICATION.json",
+      "bytes": 154529,
+      "sha256": "92f7393c2de0f383f2fcf28e90e3493a47aba8372b06085c60a059bd12c4c999"
+    },
+    {
+      "file": "specs/05-joc-selected-producer-and-commit.md",
+      "bytes": 15276,
+      "sha256": "92d7be8c41adf94056c81d98514b66318b3a38b006db3426bf56919effd9f012"
+    },
+    {
+      "file": "specs/05-joc-score-kernel.md",
+      "bytes": 5270,
+      "sha256": "7c802e8d51b4051ac10c984410c1798eb9179a38e623d904f702858bef9c59b3"
+    },
+    {
+      "file": "specs/05-joc-quantization-and-wire.md",
+      "bytes": 9201,
+      "sha256": "91fde215d0a6d5d1e820a2e29b467afd2b1fc78a5fa8f87300cc42a346152143"
+    },
+    {
+      "file": "specs/05-joc-huffman-codebooks.md",
+      "bytes": 6000,
+      "sha256": "1b593718504078e9fba296a120bd7bc7d180a8c77b4887a060d5ae1f3fa77857"
+    },
+    {
+      "file": "specs/05-joc-dispatch-and-commit.md",
+      "bytes": 4759,
+      "sha256": "fc549d4bdeb598b801987dc153764835b61a2e56bdd6e734b127460527397c9e"
+    },
+    {
+      "file": "parameters/joc-functional-authorized-v1.json",
+      "bytes": 2448,
+      "sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747"
+    },
+    {
+      "file": "parameters/joc-generated-math-v1.json",
+      "bytes": 39081,
+      "sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7"
+    },
+    {
+      "file": "parameters/joc-huffman-v1.json",
+      "bytes": 92323,
+      "sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"
+    },
+    {
+      "file": "test-vectors/JOC-GENERATED-PROVIDER-VERIFICATION.json",
+      "bytes": 2092052,
+      "sha256": "4deb550703206dc72d27416b4c821f2a7f3b6d8991a7ae167cdaaca42876a1eb"
+    },
+    {
+      "file": "test-vectors/JOC-AUTHORIZED-PROVIDER-VERIFICATION.json",
+      "bytes": 2011880,
+      "sha256": "1af211c5b36a347478a00dfcc4d90ba29a1decc3d3decab0ed47f894d20afee4"
+    },
+    {
+      "file": "test-vectors/JOC-HUFFMAN-VERIFICATION-RESULT.json",
+      "bytes": 20746,
+      "sha256": "99d7462acb03d54ae043737f2eb2fb07d16809e0ed512841685bca8e9c2cee11"
+    },
+    {
+      "file": "test-vectors/JOC-HUFFMAN-CONSUMER-CONNECTION-VERIFICATION.json",
+      "bytes": 61912,
+      "sha256": "a444bb9dca33bc921cd0930a0f7bedb0160408247c2ec061adf9dfdb8037f79f"
+    },
+    {
+      "file": "test-vectors/JOC-PROFILE-RETRY-VERIFICATION.json",
+      "bytes": 185275,
+      "sha256": "cadbfff762006e1af010656770ae2cc440d27652fc9077f6297bb90fa71be77f"
+    },
+    {
+      "file": "test-vectors/JOC-ACTUAL-COMMIT-JOIN-RESULT.json",
+      "bytes": 905,
+      "sha256": "55842b4c8256b7b272fa569e8fb7578afc1fc4a15619eea5e9c0fc5d3bc9e994"
+    },
+    {
+      "file": "specs/13-emdf-and-timeline.md",
+      "bytes": 12839,
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+      "historical_sha256_before_status_reconciliation": "1ac4dd8c0f6716f1993283f64f13f63af4ea34f9ac756afff3b55fc6ab5dd91e",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "bytes": 15967,
+      "sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "historical_sha256_before_status_reconciliation": "0a722f1aacfb4dba0834b012c2baedd9a03e12908238677f956e7d64fd73e373",
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately",
+      "current_binding_history": [
+        {
+          "bytes": 15874,
+          "sha256": "45b46a04d5b15230691d5ab6fbfe1efabe8266b35ffa15b02c0d1cb304698063",
+          "superseded_by": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+          "reason": "Current named provider identity refresh; historical identity fields remain unchanged."
+        }
+      ]
+    }
+  ],
+  "provider_file_count": 25,
+  "private_vendor_key_required": false,
+  "source_classification": "Normal audio/spatial functional constants and public protocol codebooks; internal delivery authorized. No source file, original table file, DLL, address, or private authentication key is included.",
+  "whole_state_schema": {
+    "name": "JOC_COORDINATOR_STATE_V1",
+    "component_state_families": 10,
+    "semantic_sha256": "c92779da44460bd0beb86193ab79a032541e8aa62a117c7de18ede8f75910365",
+    "schema_file": "test-vectors/LIVE-JOC-COORDINATOR-STATE-SCHEMA.json",
+    "schema_file_sha256": "87fa8024e045da5d2a95f4ab95ed5fb3e614ea1c103ec0fb25c75ee963bb1623",
+    "vector_file": "test-vectors/LIVE-JOC-COORDINATOR-WHOLE-STATE-VECTORS.json",
+    "vector_file_sha256": "d616189c0ed40cc6e82a7216ae336427657feb047615d7fb516599bd97ae849c",
+    "result_file": "test-vectors/LIVE-JOC-COORDINATOR-WHOLE-STATE-RESULT.json",
+    "result_file_sha256": "0046d800ffc58e1ed459664e0177f7f9741e8347877db0cfff08787acd6b5c39"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "metadata-owner-provider.v1",
+  "profile_id": "selected-48k-1536-four-queue.v1",
+  "sample_rate": 48000,
+  "source_samples": 1536,
+  "timer_period_samples": [24000, 48000, 48000, 4800, 24000, 48000],
+  "queue_order": [11, 1, 2, 14],
+  "serialization_order": [11, 14, 2, 1],
+  "queues": {
+    "11": {"capacity": 160, "delay_samples": 4608, "slots": 3},
+    "1": {"capacity": 10, "delay_samples": 4608, "slots": 3},
+    "2": {"capacity": 8, "delay_samples": 4608, "slots": 3},
+    "14": {"capacity": 543, "delay_samples": 3072, "slots": 2}
+  },
+  "suppressed_sources": 2,
+  "carriage_mode": "deployed_compat",
+  "wrapper_config_profile": "selected-deployed-compat.v1",
+  "wrapper_config_sha256": "e5d4a8f50324b4d1a7af7631b76244ea91da12cf9fa1f1b668c045c2ac6ad352",
+  "wrapper_config_file_sha256": "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56",
+  "primary_zero_bytes": 4,
+  "secondary_zero_bytes": 1
+  ,
+  "emdf_terminal_layout": {
+    "bit_order": "MSB-first",
+    "terminal_id": {"value": 0, "width_bits": 5},
+    "primary_length_code_width_bits": 2,
+    "secondary_length_code_width_bits": 2,
+    "primary_code_to_bytes": {"1": 1, "2": 4, "3": 16},
+    "secondary_code_to_bytes": {"0": 0, "1": 1, "2": 4, "3": 16},
+    "selected_primary_code": 2,
+    "selected_secondary_code": 1,
+    "padding": "zero bits after all protection bytes to next whole body byte"
+  }
+}

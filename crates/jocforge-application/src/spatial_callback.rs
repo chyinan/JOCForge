@@ -5,9 +5,15 @@ use crate::PreparedJobInput;
 use jocforge_domain::meter::prepared_job_identity::PreparedJobInputIdentity;
 use jocforge_domain::{
     frontend::{
-        ValidatedFeatureFft4096MathProvider, ValidatedFeatureProcessorMathProvider,
-        normal_control_snapshot::{NormalControlHeldSourceView, NormalControlSnapshotOutput},
+        FrontendControlMachine, FrontendControlReplacementCandidate, ValidatedF01EColdProvider,
+        ValidatedF03TargetColdProvider, ValidatedFeatureFft4096MathProvider,
+        ValidatedFeatureProcessorMathProvider,
+        normal_control_snapshot::{
+            NormalControlBeforeState, NormalControlHeldSourceView, NormalControlPreparedSnapshot,
+            NormalControlSnapshotOutput, propose_normal_control_snapshot,
+        },
     },
+    profile::EncodingProfile,
     profile::resolve_selected_profile,
     spatial::{
         SpatialAudioMachine, SpatialControlMachine, SpatialProductionCallbackParentParts,
@@ -42,10 +48,147 @@ use jocforge_domain::{
             SpatialControlInstalled48Input, stage_spatial_control_installed48,
         },
     },
+    timeline::FrontendCallbackIndex,
+    transaction::{
+        AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
+    },
 };
 use std::{ops::Deref, sync::Arc};
 
 const MAIN_SPATIAL_CALLBACK_STACK_BYTES: usize = 16 * 1024 * 1024;
+const MAIN_NORMAL_CALLBACK_SAMPLES: u64 = 1_536;
+
+/// Cold owner values for the MAIN callback, constructed from the admitted F01E/F03 providers.
+#[must_use]
+pub struct MainSpatialColdRoots {
+    frontend_control: Arc<FrontendControlMachine>,
+    spatial_control: SpatialControlMachine,
+    spatial_audio: SpatialAudioMachine,
+}
+
+impl MainSpatialColdRoots {
+    pub fn from_selected_providers(
+        prepared: &PreparedJobInput,
+        attempt: AttemptId,
+        f01e: &ValidatedF01EColdProvider,
+        f03_target: &ValidatedF03TargetColdProvider,
+    ) -> Result<Self, MainSpatialColdRootsError> {
+        let profile = EncodingProfile::selected_with_carriage(
+            prepared.configuration().selected_profile().carriage(),
+        );
+        let frontend_control = FrontendControlMachine::from_provider(
+            f01e.clone(),
+            prepared.programme_id().clone(),
+            attempt,
+        )
+        .map_err(MainSpatialColdRootsError::FrontendControl)?;
+        let spatial_control = SpatialControlMachine::new_cold(profile, f01e, f03_target)
+            .map_err(MainSpatialColdRootsError::SpatialControl)?;
+        let spatial_audio = SpatialAudioMachine::new_cold(profile)
+            .map_err(MainSpatialColdRootsError::SpatialAudio)?;
+        Ok(Self {
+            frontend_control: Arc::new(frontend_control),
+            spatial_control,
+            spatial_audio,
+        })
+    }
+
+    pub fn frontend_control(&self) -> &FrontendControlMachine {
+        self.frontend_control.as_ref()
+    }
+
+    pub const fn spatial_control(&self) -> &SpatialControlMachine {
+        &self.spatial_control
+    }
+
+    pub const fn spatial_audio(&self) -> &SpatialAudioMachine {
+        &self.spatial_audio
+    }
+}
+
+#[derive(Debug)]
+pub enum MainSpatialColdRootsError {
+    FrontendControl(jocforge_domain::frontend::FrontendControlError),
+    SpatialControl(jocforge_domain::spatial::SpatialControlError),
+    SpatialAudio(jocforge_domain::spatial::SpatialAudioError),
+}
+
+/// F01E normal controls and their matching noncommitting owner replacement candidate.
+#[must_use]
+pub struct MainFrontendSnapshotCandidate {
+    frontend_control: FrontendControlReplacementCandidate,
+    controls: NormalControlSnapshotOutput,
+}
+
+impl MainFrontendSnapshotCandidate {
+    pub const fn frontend_control(&self) -> &FrontendControlReplacementCandidate {
+        &self.frontend_control
+    }
+
+    pub const fn controls(&self) -> &NormalControlSnapshotOutput {
+        &self.controls
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        FrontendControlReplacementCandidate,
+        NormalControlSnapshotOutput,
+    ) {
+        (self.frontend_control, self.controls)
+    }
+}
+
+#[derive(Debug)]
+pub enum MainFrontendSnapshotError {
+    PreparedInput(crate::PreparedJobInputError),
+    BeforeState(jocforge_domain::frontend::normal_control_snapshot::NormalControlSnapshotError),
+    Proposal(jocforge_domain::frontend::normal_control_snapshot::NormalControlSnapshotError),
+    Stage(jocforge_domain::frontend::FrontendControlError),
+    Candidate(jocforge_domain::frontend::FrontendControlError),
+}
+
+/// Produces one F01E normal snapshot from the current prepared-input-bound frontend root.
+pub fn stage_main_frontend_snapshot(
+    prepared: &PreparedJobInput,
+    frontend_before: &FrontendControlMachine,
+    attempt: AttemptId,
+    transaction_id: CallbackTransactionId,
+) -> Result<MainFrontendSnapshotCandidate, MainFrontendSnapshotError> {
+    if frontend_before.committed().programme_id() != prepared.programme_id()
+        || frontend_before.committed().attempt_id() != attempt
+    {
+        return Err(MainFrontendSnapshotError::Stage(
+            jocforge_domain::frontend::FrontendControlError::CallbackIdentityMismatch,
+        ));
+    }
+    let prepared_snapshot: Arc<NormalControlPreparedSnapshot> = prepared
+        .normal_control_prepared_snapshot(frontend_before.committed())
+        .map_err(MainFrontendSnapshotError::PreparedInput)?;
+    let before = NormalControlBeforeState::from_frontend_state(
+        frontend_before.committed(),
+        frontend_before.generation(),
+    )
+    .map_err(MainFrontendSnapshotError::BeforeState)?;
+    let lineage = CallbackLineageIdentity::new(
+        prepared.programme_id().clone(),
+        frontend_before.committed().attempt_id(),
+        frontend_before.committed().callback_index(),
+    );
+    let normal = propose_normal_control_snapshot(&before, &prepared_snapshot, lineage)
+        .map_err(MainFrontendSnapshotError::Proposal)?;
+    let (staged, controls) = frontend_before
+        .stage_normal_snapshot(normal)
+        .map_err(MainFrontendSnapshotError::Stage)?
+        .into_parts();
+    let frontend_control = frontend_before
+        .replacement_candidate(staged, transaction_id)
+        .map_err(MainFrontendSnapshotError::Candidate)?;
+    Ok(MainFrontendSnapshotCandidate {
+        frontend_control,
+        controls,
+    })
+}
 
 /// Inputs for one normal MAIN callback. PCM has already been read, padded, and identity-bound by IO.
 pub struct MainSpatialCallbackInput<'a> {
@@ -127,6 +270,50 @@ pub struct MainSpatialCallbackCandidate {
     proposal: SpatialProductionCallbackProposal,
 }
 
+/// The validated F01E/F03W/F04 after-roots for one callback. This is a partial owner proposal;
+/// ReaderEof and the remaining programme owners still belong to the enclosing parent.
+#[must_use]
+pub struct MainSpatialCallbackOwnerProposal {
+    next_roots: MainSpatialColdRoots,
+    transaction_id: CallbackTransactionId,
+    callback_index: FrontendCallbackIndex,
+    receipts: [GtcOwnerReceipt; 3],
+}
+
+impl MainSpatialCallbackOwnerProposal {
+    pub const fn next_roots(&self) -> &MainSpatialColdRoots {
+        &self.next_roots
+    }
+
+    pub const fn transaction_id(&self) -> &CallbackTransactionId {
+        &self.transaction_id
+    }
+
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub const fn receipts(&self) -> &[GtcOwnerReceipt; 3] {
+        &self.receipts
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        MainSpatialColdRoots,
+        CallbackTransactionId,
+        FrontendCallbackIndex,
+        [GtcOwnerReceipt; 3],
+    ) {
+        (
+            self.next_roots,
+            self.transaction_id,
+            self.callback_index,
+            self.receipts,
+        )
+    }
+}
+
 /// Parent-facing F03W/F04 values paired with their admitted input identity capability.
 #[must_use]
 pub struct MainSpatialCallbackParentParts {
@@ -170,6 +357,373 @@ impl MainSpatialCallbackCandidate {
             &self.prepared_identity,
             &prepared.domain_identity_capability(),
         )
+    }
+}
+
+impl MainSpatialColdRoots {
+    /// Validates a cached MAIN callback while retaining the committed F01E last-normal root.
+    ///
+    /// Cached delivery advances the spatial owners but does not produce a new F01E snapshot. The
+    /// frontend receipt therefore records an unchanged transition at the current delivery clock.
+    pub fn prepare_spatial_after_cached_callback(
+        &self,
+        prepared: &PreparedJobInput,
+        spatial_callback: MainSpatialCallbackCandidate,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<MainSpatialCallbackOwnerProposal, MainSpatialCallbackParentError> {
+        if !spatial_callback.is_bound_to(prepared) {
+            return Err(MainSpatialCallbackParentError::PreparedInputMismatch);
+        }
+
+        let frontend_callback_index = self.frontend_control.committed().callback_index();
+        let source_transaction = spatial_callback.transaction_id();
+        let delivery_callback = spatial_callback.callback_index();
+        let expected_normal_callbacks = prepared
+            .configuration()
+            .source_samples()
+            .div_ceil(MAIN_NORMAL_CALLBACK_SAMPLES);
+        if self.frontend_control.committed().programme_id() != prepared.programme_id()
+            || source_transaction.programme_id() != prepared.programme_id()
+            || source_transaction.attempt_id() != self.frontend_control.committed().attempt_id()
+        {
+            return Err(MainSpatialCallbackParentError::CallbackIndexMismatch);
+        }
+        let callback_index = validate_cached_delivery_clock(
+            frontend_callback_index,
+            delivery_callback,
+            source_transaction.callback_index(),
+            self.spatial_control.committed().callback_index(),
+            self.spatial_audio.committed().callback_index(),
+            expected_normal_callbacks,
+        )?;
+
+        let (prepared_identity, spatial_parts) = spatial_callback.into_parent_parts().into_parts();
+        if !Arc::ptr_eq(&prepared_identity, &prepared.domain_identity_capability()) {
+            return Err(MainSpatialCallbackParentError::PreparedInputMismatch);
+        }
+        let spatial_control_staged = self
+            .spatial_control
+            .stage(
+                self.spatial_control
+                    .prepare(spatial_parts.spatial_control_after)
+                    .map_err(MainSpatialCallbackParentError::SpatialControl)?,
+            )
+            .map_err(MainSpatialCallbackParentError::SpatialControl)?;
+        let spatial_control = self
+            .spatial_control
+            .replacement_candidate(spatial_control_staged, transaction_id.clone())
+            .map_err(MainSpatialCallbackParentError::SpatialControl)?;
+        let spatial_audio_staged = self
+            .spatial_audio
+            .stage(
+                self.spatial_audio
+                    .prepare(spatial_parts.spatial_audio_after)
+                    .map_err(MainSpatialCallbackParentError::SpatialAudio)?,
+            )
+            .map_err(MainSpatialCallbackParentError::SpatialAudio)?;
+        let spatial_audio = self
+            .spatial_audio
+            .replacement_candidate(spatial_audio_staged, transaction_id.clone())
+            .map_err(MainSpatialCallbackParentError::SpatialAudio)?;
+
+        let frontend_reference = self.frontend_control.state_reference();
+        let frontend_snapshot = frontend_reference
+            .gtc_snapshot()
+            .map_err(|_| MainSpatialCallbackParentError::ReceiptMismatch)?;
+        let frontend_receipt = GtcOwnerReceipt::from_transition(
+            frontend_snapshot,
+            frontend_snapshot,
+            transaction_id.clone(),
+        )
+        .map_err(|_| MainSpatialCallbackParentError::ReceiptMismatch)?;
+
+        let (spatial_control, spatial_control_receipt, _) = spatial_control.into_parts();
+        let (spatial_audio, spatial_audio_receipt) = spatial_audio.into_parts();
+        let expected_callback = FrontendCallbackIndex::new(
+            callback_index
+                .value()
+                .checked_add(1)
+                .ok_or(MainSpatialCallbackParentError::CallbackIndexOverflow)?,
+        );
+        let receipts = [
+            frontend_receipt,
+            spatial_control_receipt,
+            spatial_audio_receipt,
+        ];
+        let owners = [
+            GtcOwnerId::FrontendControl,
+            GtcOwnerId::SpatialControl,
+            GtcOwnerId::SpatialAudio,
+        ];
+        let before_generations = [
+            self.frontend_control.generation(),
+            self.spatial_control.generation(),
+            self.spatial_audio.generation(),
+        ];
+        let after_generations = [
+            self.frontend_control.generation(),
+            spatial_control.generation(),
+            spatial_audio.generation(),
+        ];
+        if receipts[0].owner_id() != owners[0]
+            || receipts[0].transaction_id() != &transaction_id
+            || receipts[0].before_generation() != before_generations[0]
+            || receipts[0].after_generation() != before_generations[0]
+            || receipts[0].before_sha256() != receipts[0].after_sha256()
+            || receipts[0].changed()
+            || receipts[0].commit_count() != 0
+            || receipts[1..]
+                .iter()
+                .zip(owners[1..].iter())
+                .zip(before_generations[1..].iter())
+                .zip(after_generations[1..].iter())
+                .any(|(((receipt, owner), before), after)| {
+                    receipt.owner_id() != *owner
+                        || receipt.transaction_id() != &transaction_id
+                        || receipt.before_generation() != *before
+                        || receipt.after_generation() != *after
+                        || !receipt.changed()
+                        || receipt.commit_count() != 1
+                        || before.checked_add(1) != Some(*after)
+                })
+            || spatial_control.committed().callback_index() != expected_callback
+            || spatial_audio.committed().callback_index() != expected_callback
+        {
+            return Err(MainSpatialCallbackParentError::ReceiptMismatch);
+        }
+
+        Ok(MainSpatialCallbackOwnerProposal {
+            next_roots: MainSpatialColdRoots {
+                frontend_control: Arc::clone(&self.frontend_control),
+                spatial_control,
+                spatial_audio,
+            },
+            transaction_id,
+            callback_index,
+            receipts,
+        })
+    }
+
+    /// Validates the three MAIN spatial owner transitions and returns their shared after-value.
+    ///
+    /// This proposal is intentionally incomplete for programme commit: the caller must join its
+    /// receipts and roots with ReaderEof, Analysis, DRC, JOC, Metadata, Integrity, Codec, Meter,
+    /// and Output before installing a callback root set.
+    pub fn prepare_spatial_after_callback(
+        &self,
+        prepared: &PreparedJobInput,
+        frontend: FrontendControlReplacementCandidate,
+        spatial_callback: MainSpatialCallbackCandidate,
+        transaction_id: CallbackTransactionId,
+    ) -> Result<MainSpatialCallbackOwnerProposal, MainSpatialCallbackParentError> {
+        if !spatial_callback.is_bound_to(prepared) {
+            return Err(MainSpatialCallbackParentError::PreparedInputMismatch);
+        }
+        let callback_index = self.frontend_control.committed().callback_index();
+        if spatial_callback.callback_index() != callback_index
+            || frontend.next_machine().committed().callback_index().value()
+                != callback_index
+                    .value()
+                    .checked_add(1)
+                    .ok_or(MainSpatialCallbackParentError::CallbackIndexOverflow)?
+        {
+            return Err(MainSpatialCallbackParentError::CallbackIndexMismatch);
+        }
+
+        let (prepared_identity, spatial_parts) = spatial_callback.into_parent_parts().into_parts();
+        if !Arc::ptr_eq(&prepared_identity, &prepared.domain_identity_capability()) {
+            return Err(MainSpatialCallbackParentError::PreparedInputMismatch);
+        }
+        let spatial_control_staged = self
+            .spatial_control
+            .stage(
+                self.spatial_control
+                    .prepare(spatial_parts.spatial_control_after)
+                    .map_err(MainSpatialCallbackParentError::SpatialControl)?,
+            )
+            .map_err(MainSpatialCallbackParentError::SpatialControl)?;
+        let spatial_control = self
+            .spatial_control
+            .replacement_candidate(spatial_control_staged, transaction_id.clone())
+            .map_err(MainSpatialCallbackParentError::SpatialControl)?;
+        let spatial_audio_staged = self
+            .spatial_audio
+            .stage(
+                self.spatial_audio
+                    .prepare(spatial_parts.spatial_audio_after)
+                    .map_err(MainSpatialCallbackParentError::SpatialAudio)?,
+            )
+            .map_err(MainSpatialCallbackParentError::SpatialAudio)?;
+        let spatial_audio = self
+            .spatial_audio
+            .replacement_candidate(spatial_audio_staged, transaction_id.clone())
+            .map_err(MainSpatialCallbackParentError::SpatialAudio)?;
+
+        let (frontend_control, frontend_receipt) = frontend.into_parts();
+        let (spatial_control, spatial_control_receipt, _) = spatial_control.into_parts();
+        let (spatial_audio, spatial_audio_receipt) = spatial_audio.into_parts();
+        let expected_callback = FrontendCallbackIndex::new(
+            callback_index
+                .value()
+                .checked_add(1)
+                .ok_or(MainSpatialCallbackParentError::CallbackIndexOverflow)?,
+        );
+        let receipts = [
+            frontend_receipt,
+            spatial_control_receipt,
+            spatial_audio_receipt,
+        ];
+        let owners = [
+            GtcOwnerId::FrontendControl,
+            GtcOwnerId::SpatialControl,
+            GtcOwnerId::SpatialAudio,
+        ];
+        let before_generations = [
+            self.frontend_control.generation(),
+            self.spatial_control.generation(),
+            self.spatial_audio.generation(),
+        ];
+        let after_generations = [
+            frontend_control.generation(),
+            spatial_control.generation(),
+            spatial_audio.generation(),
+        ];
+        if receipts
+            .iter()
+            .zip(owners)
+            .zip(before_generations)
+            .zip(after_generations)
+            .any(|(((receipt, owner), before), after)| {
+                receipt.owner_id() != owner
+                    || receipt.transaction_id() != &transaction_id
+                    || receipt.before_generation() != before
+                    || receipt.after_generation() != after
+                    || !receipt.changed()
+                    || receipt.commit_count() != 1
+                    || before.checked_add(1) != Some(after)
+            })
+            || frontend_control.committed().callback_index() != expected_callback
+            || spatial_control.committed().callback_index() != expected_callback
+            || spatial_audio.committed().callback_index() != expected_callback
+        {
+            return Err(MainSpatialCallbackParentError::ReceiptMismatch);
+        }
+
+        Ok(MainSpatialCallbackOwnerProposal {
+            next_roots: MainSpatialColdRoots {
+                frontend_control: Arc::new(frontend_control),
+                spatial_control,
+                spatial_audio,
+            },
+            transaction_id,
+            callback_index,
+            receipts,
+        })
+    }
+}
+
+fn validate_cached_delivery_clock(
+    frontend_callback_index: FrontendCallbackIndex,
+    delivery_callback: FrontendCallbackIndex,
+    source_lineage_callback_index: FrontendCallbackIndex,
+    spatial_control_callback_index: FrontendCallbackIndex,
+    spatial_audio_callback_index: FrontendCallbackIndex,
+    normal_callbacks: u64,
+) -> Result<FrontendCallbackIndex, MainSpatialCallbackParentError> {
+    let expected_frontend_callback_index = FrontendCallbackIndex::new(
+        u32::try_from(normal_callbacks)
+            .map_err(|_| MainSpatialCallbackParentError::CallbackIndexOverflow)?,
+    );
+    let delivery_index = u64::from(delivery_callback.value());
+    let expected_drain_end = normal_callbacks
+        .checked_add(4)
+        .ok_or(MainSpatialCallbackParentError::CallbackIndexOverflow)?;
+    if normal_callbacks == 0
+        || frontend_callback_index != expected_frontend_callback_index
+        || source_lineage_callback_index != delivery_callback
+        || spatial_control_callback_index != delivery_callback
+        || spatial_audio_callback_index != delivery_callback
+        || delivery_index < normal_callbacks
+        || delivery_index >= expected_drain_end
+    {
+        return Err(MainSpatialCallbackParentError::CallbackIndexMismatch);
+    }
+    Ok(delivery_callback)
+}
+
+#[derive(Debug)]
+pub enum MainSpatialCallbackParentError {
+    PreparedInputMismatch,
+    CallbackIndexMismatch,
+    CallbackIndexOverflow,
+    ReceiptMismatch,
+    SpatialControl(jocforge_domain::spatial::SpatialControlError),
+    SpatialAudio(jocforge_domain::spatial::SpatialAudioError),
+}
+
+#[cfg(test)]
+mod cached_delivery_clock_tests {
+    use super::{MainSpatialCallbackParentError, validate_cached_delivery_clock};
+    use jocforge_domain::timeline::FrontendCallbackIndex;
+
+    #[test]
+    fn cached_drains_keep_frontend_at_normal_boundary_while_delivery_advances() {
+        let normal_callbacks = 4_247_u64;
+        let frontend_index = FrontendCallbackIndex::new(4_247);
+        for value in 4_247..4_251 {
+            let delivery = FrontendCallbackIndex::new(value);
+            assert!(matches!(
+                validate_cached_delivery_clock(
+                    frontend_index,
+                    delivery,
+                    delivery,
+                    delivery,
+                    delivery,
+                    normal_callbacks,
+                ),
+                Ok(index) if index == delivery
+            ));
+        }
+    }
+
+    #[test]
+    fn cached_delivery_clock_rejects_stale_frontend_source_or_spatial_indexes() {
+        let normal_callbacks = 4_247_u64;
+        let frontend_index = FrontendCallbackIndex::new(4_247);
+        let delivery = FrontendCallbackIndex::new(4_248);
+        assert!(matches!(
+            validate_cached_delivery_clock(
+                FrontendCallbackIndex::new(4_246),
+                delivery,
+                delivery,
+                delivery,
+                delivery,
+                normal_callbacks,
+            ),
+            Err(MainSpatialCallbackParentError::CallbackIndexMismatch)
+        ));
+        assert!(matches!(
+            validate_cached_delivery_clock(
+                frontend_index,
+                delivery,
+                FrontendCallbackIndex::new(4_247),
+                delivery,
+                delivery,
+                normal_callbacks,
+            ),
+            Err(MainSpatialCallbackParentError::CallbackIndexMismatch)
+        ));
+        assert!(matches!(
+            validate_cached_delivery_clock(
+                frontend_index,
+                FrontendCallbackIndex::new(4_251),
+                FrontendCallbackIndex::new(4_251),
+                FrontendCallbackIndex::new(4_251),
+                FrontendCallbackIndex::new(4_251),
+                normal_callbacks,
+            ),
+            Err(MainSpatialCallbackParentError::CallbackIndexMismatch)
+        ));
     }
 }
 

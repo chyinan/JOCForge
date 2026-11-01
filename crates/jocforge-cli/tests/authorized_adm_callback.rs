@@ -10,6 +10,7 @@ use jocforge::meter_callback_stage::{
 use jocforge::meter_source_bridge::{prepare_selected_adm_bwf_input, view_for_source_proposal};
 use jocforge_application::{
     PreparedJobInput, ProgrammeId,
+    drc_source_bridge::{DrcSourceBridgeError, validate_drc_source_lineage},
     independent_meter_callback::{IndependentMeterG0Providers, MeterCallbackGtcBinding},
     metadata_source_bridge::{
         MainMetadataBodiesInput, prepare_main_metadata_bodies_from_spatial_callback,
@@ -1207,6 +1208,26 @@ fn stage_authorized_main_g2_receiver_candidate(
             },
         })
         .unwrap();
+    let drc_callback_identity = CallbackLineageIdentity::new(
+        prepared.programme_id().clone(),
+        AttemptId::new(0),
+        FrontendCallbackIndex::new(2),
+    );
+    validate_drc_source_lineage(&prepared, &analysis_stage, &drc_callback_identity).unwrap();
+    let mismatched_drc_callback_identity = CallbackLineageIdentity::new(
+        prepared.programme_id().clone(),
+        AttemptId::new(1),
+        FrontendCallbackIndex::new(2),
+    );
+    assert_eq!(
+        validate_drc_source_lineage(
+            &prepared,
+            &analysis_stage,
+            &mismatched_drc_callback_identity,
+        )
+        .unwrap_err(),
+        DrcSourceBridgeError::AttemptIdentityMismatch
+    );
     let joc_before = SelectedJocState::cold();
     let fit_score =
         FitScoreProvider::from_approved_bytes(JOC_FUNCTIONAL_PARAMETERS, JOC_MATH_PARAMETERS)

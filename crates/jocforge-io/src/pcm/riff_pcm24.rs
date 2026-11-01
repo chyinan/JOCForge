@@ -137,6 +137,11 @@ impl<'a> ParsedRiffPcm24<'a> {
         self.total_samples
     }
 
+    /// Returns the exact PCM data-chunk payload length observed by the RIFF parser.
+    pub const fn data_payload_bytes(&self) -> usize {
+        self.data_payload.len()
+    }
+
     /// Returns the SHA-256 identity of the complete immutable RIFF byte slice.
     pub const fn source_sha256(&self) -> [u8; 32] {
         self.source_sha256

@@ -1,0 +1,108 @@
+{
+  "schema": "joc.selected-authorized-functional-parameters.v1",
+  "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+  "authorization": "User authorized normal nonsecret functional constants for internal delivery; private keys and authentication secrets excluded.",
+  "source_classification": {
+    "near_one4": "Verified frozen audio mathematical model functional coefficients; original compiled location not newly confirmed.",
+    "selected_profile4": "Compiled audio representation profile functional evidence.",
+    "lower_map25": "Compiled audio representation retry mapping functional evidence."
+  },
+  "original_source_or_table_artifacts_delivered": false,
+  "near_one4": {
+    "type": "F64",
+    "order": [
+      "N0",
+      "N1",
+      "N2",
+      "N3"
+    ],
+    "words_u64_hex": [
+      "3f89999999bac6d4",
+      "3fb55555555554e6",
+      "3f3c8034c85dfff0",
+      "3f62492307f1519f"
+    ]
+  },
+  "selected_profile4": {
+    "type": "U32",
+    "order": [
+      "band_enum",
+      "precision_mode",
+      "point_count",
+      "capacity_bytes"
+    ],
+    "values": [
+      5,
+      1,
+      1,
+      372
+    ],
+    "admission": {
+      "sample_rate": 48000,
+      "bit_rate_bps": 1024000,
+      "config_mode": 0,
+      "shared_flag": 0,
+      "phase_flag": 1,
+      "object_count": 15,
+      "carrier_count": 5
+    }
+  },
+  "lower_map25": {
+    "type": "U32",
+    "order": "enum ascending 1..5, entries ascending output band",
+    "values_by_old_enum": {
+      "1": [
+        0
+      ],
+      "2": [
+        0,
+        2,
+        3
+      ],
+      "3": [
+        0,
+        1,
+        2,
+        4,
+        6
+      ],
+      "4": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "5": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ]
+    }
+  },
+  "counts": {
+    "near_one_F64": 4,
+    "selected_profile_U32": 4,
+    "lower_map_U32": 25,
+    "total_functional_values": 33
+  },
+  "dependencies_not_closed_by_this_artifact": [
+    "Public Huffman data identities",
+    "Complete QMF and receiver provider bindings",
+    "Whole package readiness and spatial audio acceptance"
+  ],
+  "functional_serialization": {
+    "order": "near_one4 then selected_profile4 then lower_map25",
+    "byte_order": "little endian",
+    "bytes": 148,
+    "sha256": "c7f1d6d9e7caa722ae7bcf13a90c57055cfb227c279544d2122d9b17086d11c4"
+  }
+}

@@ -252,7 +252,6 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
     )
     .unwrap_err();
     assert!(matches!(error, PreparedJobInputError::GraphAdmission(_)));
-    assert!(jocforge_application::encode().is_err());
 }
 
 #[test]
