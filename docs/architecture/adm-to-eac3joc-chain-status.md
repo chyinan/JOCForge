@@ -34,7 +34,7 @@ attempt-10 的 profile 仅完成 source-supported reconstruction：从 run-bound
 
 Wash reference `F09-D45-CURRENT-RUST-COVERAGE-BOUNDARY-V1`（manifest SHA-256 `6b5526962c4af6a680eefc3cefb508d43f0d1342c1516dad276ad18ec0b8527f`，normal/-O PASS）确认当前 Rust 中 F12 quantizer/BAP packing 路径存在；限定源目录内未找到 D45 selector cell→4/7-bit accumulator 专属路径。它明确不是 attempt-10 hash mismatch 的原因；D45 字段语义/absolute bit position 与 attempt-10 binary-to-source-tree 仍 `UNBOUND`。
 
-用户报告 Adobe Audition 拒绝导入 attempt-10 文件，并明确称这是 import/interoperability failure，不等于 AU 损坏。实现侧没有解析 attempt-10；R9 的只读 AU 结构审计仍由 Wash 侧负责。若 parser-specific observation 出现，须单独标注，不外推为损坏原因。
+用户随后报告 FFmpeg 无法解析 attempt-10，Adobe Audition 也拒绝导入；用户将该输出判为无效/损坏。此处记录为 `USER_REPORTED`，实现侧未解析输出；不得用 OpenJOC compatibility metadata-only pass（来自 attempt-08）抵消本报告，也不得把 strict-parser exponent `-1` 诊断直接当作损坏根因。按用户要求，不再打开/解析/解码/播放 attempt-10 文件，不用于 comparator baseline，也不重新编码，直至有基于源码/Wash证据的最小修复。R9 的只读 AU 结构审计结果待 Wash 侧复核。
 
 ## 目标与边界
 
