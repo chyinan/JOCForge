@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "2755faf187697ef7094357043f8e15b912a4fa01a7dbf33af9c1de4d043c4739",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed the incoming manifest and ran its verifier normally and under Python optimization.",
+    "Confirmed the source property handler reaches its parser through the recorded callsite in the current 2fd503 image.",
+    "Kept the separate filename-map reader distinct because no direct code caller or source-property join was established.",
+    "Preserved the linked runtime setter, audio-consumption, host-owner and generation fields as NOT_CAPTURED/UNKNOWN/UNBOUND."
+  ],
+  "not_promoted": [
+    "source property equals filename map key",
+    "filename map value identifies the ADM input",
+    "host selected reader or owner",
+    "audio consumption or bitstream behavior",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "pcm24_ddp_source_map_filename_static_addendum_v1",
+    "manifest_sha256": "2755faf187697ef7094357043f8e15b912a4fa01a7dbf33af9c1de4d043c4739",
+    "seal_matches_manifest": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "target_image": {
+    "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+    "current_rvas_are_scoped_to_this_image": true
+  },
+  "related_wash_packages": [
+    {"package_id": "PCM24-DDP-TYPED-SOURCE-CONFIG-TO-PARAM3-V1", "manifest_sha256": "30f130c43232c55e119d9efeab53f9c50d209b4b2e41096ea0caafab41576994"},
+    {"package_id": "R138-PRE-RUN-ATMOSMEZZ-READER-OBSERVATION-V1", "manifest_sha256": "aac5be63215ff73ec1297ee3838a2576375598485d54ac44872ad2a64e1bbcf7"}
+  ],
+  "raw_decompilation_or_media_copied": false
+}

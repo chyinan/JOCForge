@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-pcm24-ddp-source-filename-boundary.v1",
+  "package_id": "PCM24-DDP-SOURCE-PROPERTY-TO-FILENAME-BOUNDARY-V1",
+  "status": "SOURCE_PROPERTY_TO_PARSER_STATIC_BOUND; FILENAME_LINK_AND_RUNTIME_OWNER_UNBOUND",
+  "implementation_ready": false,
+  "image": {
+    "name": "dee_audio_filter_ddp.dll",
+    "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72",
+    "ghidra_image_base": "0x180000000",
+    "prior_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "prior_image_rvas_apply": false
+  },
+  "source_property_handler": {
+    "function": "FUN_1801ed430",
+    "rva": "0x1ed430",
+    "property_key": "dee_audio_filter_source",
+    "parser": "FUN_18020d820",
+    "handler_to_parser_callsite": "0x1801ee8e7",
+    "parser_lookup": "FUN_18020c490",
+    "runtime_setter_key_value": "NOT_CAPTURED"
+  },
+  "filename_lookup": {
+    "function": "FUN_18023f700",
+    "rva": "0x23f700",
+    "map_key": "filename",
+    "map_value_conversion": "FUN_1801d1fe0",
+    "output_string_copy": "FUN_1801f2470",
+    "direct_code_reference_count": 0,
+    "relation_to_source_property": "UNBOUND",
+    "runtime_value": "NOT_CAPTURED"
+  },
+  "identity": {
+    "host_input_object_to_filename_map_value": "UNBOUND",
+    "host_generation_to_filename_map_value": "UNBOUND"
+  },
+  "linked_capture_attempt": {
+    "source_package_manifest_sha256": "d30fa0500bc0e1fbd1351ecec125af7c0cf721f1e43fc71319b78ba91c33da14",
+    "setter_record": "NOT_CAPTURED",
+    "dee_audio_consumption": "UNKNOWN",
+    "bitstream_structure": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "policy": {
+    "pcm_read": false,
+    "payload_read": false,
+    "audio_output_created": false,
+    "license_or_key_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}
