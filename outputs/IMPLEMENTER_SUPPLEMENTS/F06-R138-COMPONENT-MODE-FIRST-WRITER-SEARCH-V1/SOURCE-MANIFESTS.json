@@ -1,0 +1,16 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "native-f06-r138-component-mode-direct-write-xref-unbound-addendum",
+    "manifest_sha256": "44cb132c8623693e89cb612c59d42479cf38708a7a81f0f438b231c29ab905df",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "parent_supplements": [
+    {"package_id": "F06-R138-JOB-TO-MODE-FIELD-BOUNDARY-V1", "manifest_sha256": "ba95fbedd155591bddf10eb11a7b21f3dc3c5dab414b52627c3a1e5c8dcbf74c"},
+    {"package_id": "F06-R138-CONTEXT-MODE-OWNER-CONDITION-BOUNDARY-V1", "manifest_sha256": "54ac629045a8d5b348f43f993894bbd9f0a707e6f165ff91d8e946ea41505810"}
+  ],
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "scope_deviation_disclosed": true,
+  "copied_raw_analysis_or_media": false
+}

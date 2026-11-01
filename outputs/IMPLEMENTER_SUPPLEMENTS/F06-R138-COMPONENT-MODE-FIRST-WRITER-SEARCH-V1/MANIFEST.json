@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-COMPONENT-MODE-FIRST-WRITER-SEARCH-V1",
+  "source_reverse_manifest_sha256": "44cb132c8623693e89cb612c59d42479cf38708a7a81f0f438b231c29ab905df",
+  "status": "PLUS_0X54_SCAN_BOUND; COMPONENT_OWNER_AND_R138_TRANSFER_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2240,
+      "sha256": "6601c64e8d63e9fedb81d2f38206b95318bbe486f5f035a44c2eeb47d0f18f6f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1204,
+      "sha256": "32fe4d86972d2ed2d045aef96472e11485929c634e4bb7a3e2823a189d6460a5"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1867,
+      "sha256": "95c7cebc0f04c5353e2f952510b9b3dbe5f7afa06f94981b2d6ec6f59492f60a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 839,
+      "sha256": "af0a13cd4d228ddd8184ea32b364d3d7d58160ed850d3c60893959e6462a0e1f"
+    }
+  ]
+}

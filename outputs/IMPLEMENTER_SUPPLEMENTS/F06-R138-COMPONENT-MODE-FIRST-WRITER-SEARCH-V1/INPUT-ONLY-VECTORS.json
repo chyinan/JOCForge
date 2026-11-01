@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-f06-component-owner-structural-vectors.v1",
+  "kind": "static object-identity discriminator; no media input",
+  "vectors": [
+    {
+      "id": "same-displacement-is-not-same-component-owner",
+      "input": {
+        "target_callback_instance_offset": "+0x54",
+        "target_callback_path_reads": 4,
+        "target_callback_path_writes": 0,
+        "whole_image_explicit_plus_0x54_writes": 243,
+        "one_candidate_writer_owner": "stack-local parser record"
+      },
+      "expected": {
+        "candidate_writer_is_target_component": "NOT_PROVEN",
+        "component_first_writer": "UNBOUND",
+        "r138_value": "UNBOUND"
+      }
+    },
+    {
+      "id": "explicit-operand-scan-scope",
+      "input": {
+        "operand_kind": "constant displacement in one hash-bound image"
+      },
+      "expected": {
+        "excludes_alias_or_block_copy_writes": false,
+        "excludes_other_images": false,
+        "global_no_writer_claim": false
+      }
+    }
+  ],
+  "lineage": {
+    "source_manifest_sha256": "44cb132c8623693e89cb612c59d42479cf38708a7a81f0f438b231c29ab905df",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

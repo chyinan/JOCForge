@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F06-R138-COMPONENT-MODE-FIRST-WRITER-SEARCH-V1",
+  "source": {
+    "package_id": "native-f06-r138-component-mode-direct-write-xref-unbound-addendum",
+    "manifest_sha256": "44cb132c8623693e89cb612c59d42479cf38708a7a81f0f438b231c29ab905df",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "parents": [
+    {
+      "package_id": "F06-R138-JOB-TO-MODE-FIELD-BOUNDARY-V1",
+      "manifest_sha256": "ba95fbedd155591bddf10eb11a7b21f3dc3c5dab414b52627c3a1e5c8dcbf74c"
+    },
+    {
+      "package_id": "F06-R138-CONTEXT-MODE-OWNER-CONDITION-BOUNDARY-V1",
+      "manifest_sha256": "54ac629045a8d5b348f43f993894bbd9f0a707e6f165ff91d8e946ea41505810"
+    }
+  ],
+  "scan": {
+    "tool": "Ghidra 12.2",
+    "analysis_scope": "one hash-bound Atmos image; explicit direct memory operands only",
+    "instruction_count": 1592124,
+    "displacements": ["+0x54", "+0x68", "+0x70", "+0x78", "+0x80", "+0x88"],
+    "plus_0x54_reads": 288,
+    "plus_0x54_writes": 243,
+    "target_component_callback_reads": 4,
+    "target_component_callback_writes": 0,
+    "target_component_joined_to_whole_image_candidate": false,
+    "r138_decoder_transfer": "UNBOUND"
+  },
+  "rejected_candidate": {
+    "same_offset_write_found": true,
+    "writer_destination_owner": "stack-local parser record",
+    "component_instance_identity": "NOT_JOINED",
+    "included_as_target_writer": false
+  },
+  "scope_deviation": {
+    "two_vtable_related_probes_performed": true,
+    "excluded_from_closure_claim": true,
+    "probe_report_sha256": [
+      "1aef4c2f923dbd02e885582f61a2f1191e3ee562aacd289ac41e394b9ff7842b",
+      "0409f2b24a26e767a58b0ae68344db60cffc80d0ae53b18197ccd4eb38a1af62"
+    ],
+    "project_modified": false
+  },
+  "conclusion": {
+    "component_instance_first_writer": "UNBOUND",
+    "r138_xml_to_member_plus_0x54": "UNBOUND",
+    "global_no_writer_claim": false,
+    "implementation_ready": false
+  },
+  "restrictions": {
+    "ghidra_script_or_trace_copied": false,
+    "disassembly_copied": false,
+    "media_or_payload_copied": false,
+    "key_or_license_copied": false
+  }
+}
