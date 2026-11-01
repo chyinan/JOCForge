@@ -1,0 +1,20 @@
+{
+  "package_id": "sample6_attempt05_drc_single_token_error_mapping_v1",
+  "closed": [
+    "Attempt-05 recorded a DRC parent proposal mismatch and no output.",
+    "Current-source legacy wrapper can map a source transaction mismatch to the ParentTransactionMismatch label.",
+    "The two-token API separates source token and parent callback token."
+  ],
+  "open": [
+    "Which executable/source snapshot produced attempt-05.",
+    "Which runtime consumer field differed and its value.",
+    "Whether attempt-05 ran the legacy wrapper or the current two-token API.",
+    "A new run of the corrected binary and its run-scoped diagnostic values."
+  ],
+  "status": {
+    "attempt05_binary_join": "UNBOUND",
+    "runtime_expected_actual": "UNBOUND",
+    "current_source_cause": "STATIC_CONSISTENT_NOT_PROVEN"
+  },
+  "guidance": "Do not treat the static wrapper behavior as the confirmed attempt-05 cause; preserve the binary join boundary."
+}

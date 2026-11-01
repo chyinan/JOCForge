@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "sample6_attempt03_terminal_status_v1",
+  "scope": "Attempt-03 process/input/terminal receipt only; exact failure cause and compare-point transaction values remain UNBOUND.",
+  "status": "ATTEMPT_TERMINATED_EXIT_2; TARGET_ABSENT; COMPARE_POINT_FIELDS_UNBOUND; EXACT_ERROR_TEXT_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "REPORT.md",
+      "bytes": 884,
+      "sha256": "67f5d59a2fdbf3c29f839e209c82244d0ea87a1c3dc9548b935e8ba99e720b6b"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2588,
+      "sha256": "cbc9989caef35b83a8c84869752209c5b8ff9b1df7d5bade987ecaf9f082c690"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 662,
+      "sha256": "37c2c2b9bf5ccc2321ab5210335bc209e938783a9d58652a98bca3305cfa431b"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 749,
+      "sha256": "ea5065fffd0bc4b2814d9d9aefefbe6c6a205daccad02b2488d76a50756af458"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 530,
+      "sha256": "40761a56080e4acfc152adb23e81357387a19997bcae644b8740c66a8ae68695"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2587,
+      "sha256": "d5bdf1e6440b1b1c87895a6ac30f15ecf7929e210db8306f022bdd0d4268d55f"
+    }
+  ]
+}

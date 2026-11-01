@@ -1,0 +1,36 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; SINGLE_SAMPLE_REFERENCE_ONLY",
+  "source_package_id": "potential_ai_adm_eac3_joc_wash",
+  "source_package_manifest_sha256": "5ae74ece2e6f048f7e86495edfac9f6ebd55511eaca2ecfdc80af3c3ec2ec031",
+  "source_package_payloads_checked": 10,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "authorized_input_hash_recomputed": true,
+  "output_hash_recomputed": true,
+  "openjoc_0_20_1_binary_hash_recomputed": true,
+  "openjoc_0_20_1_independent_run_by_wash": true,
+  "strict_status": "FAIL_6448_OF_6448",
+  "compatibility_status": "PASS_6448_OF_6448",
+  "render_or_playback": "NOT_RUN",
+  "output_retained_in_source_workspace": true,
+  "output_copied_into_wash_package": false,
+  "implementation_ready": "NO",
+  "limitations": [
+    "This is a DEE reference output, not a JOCForge output.",
+    "DEE process exit code is not captured; the completion log and hashed output are available.",
+    "OpenJOC compatibility passes while ETSI strict validation fails all 6448 AUs on seven payload-11/14 deviations.",
+    "Decoder admission is not spatial rendering; render, playback, PCM listening, and bit-exact comparison were not run.",
+    "One authorized input only; not a production-wide guarantee."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

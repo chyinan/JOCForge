@@ -1,0 +1,32 @@
+{
+  "schema": "washed-run145-cursor-metadata.v1",
+  "input_sha256": "284fa11e3a5200a2bf6fd0eb3ccba5a11177f2c955cf8ab60ee7576f37339261",
+  "openjoc_sha256": "2e84afcfa5e197332a84f9386ffa4c69f0c12e8ca5cf95c23690af320cfa1a39",
+  "au": {
+    "index": 0,
+    "byte_offset": 0,
+    "frame_count": 1,
+    "frame_bytes": 4096
+  },
+  "payload": {
+    "id": 11,
+    "status": "MATCHED_ID_11"
+  },
+  "config": {
+    "start_bit_offset": 9154,
+    "end_bit_offset": 9163,
+    "group_id_present": {
+      "bit_offset": 9156,
+      "width": 1,
+      "status": "BIT_ONE"
+    },
+    "group_id": 0,
+    "body_read": false,
+    "raw_bitstream_saved": false
+  },
+  "static_target": {
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "default_presence": "BIT_ZERO",
+    "run_module_join": "UNBOUND"
+  }
+}

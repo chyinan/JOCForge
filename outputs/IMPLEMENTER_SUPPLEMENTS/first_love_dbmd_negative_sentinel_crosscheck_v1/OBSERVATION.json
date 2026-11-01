@@ -1,0 +1,78 @@
+{
+  "schema": "washed-first-love-dbmd-negative-sentinel-crosscheck.v1",
+  "package_id": "first_love_dbmd_negative_sentinel_crosscheck_v1",
+  "evidence_class": "INDEPENDENT_BOUNDED_DBMD_INPUT_VECTOR_PLUS_DIRECT_CANDIDATE_HELPER_OBSERVATION",
+  "status": "FIRST_LOVE_NEGATIVE_FFOA_SENTINEL_BRANCH_MATCHES_CANDIDATE_HELPER; POSITIVE_DELTA_BRANCH_UNEXERCISED",
+  "implementation_readiness": "CANDIDATE_HELPER_METADATA_RULE_ONLY; POSITIVE_BRANCH_NOT_TESTED",
+  "scope": {
+    "input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "input_bytes": 1335078774,
+    "sample_rate_hz": 48000,
+    "channels": 36,
+    "bits_per_sample": 24,
+    "dbmd_chunk_bytes": 576,
+    "dbmd_payload_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+    "bounded_wash_read": {
+      "dbmd_payload_bytes": 576,
+      "audio_data_payload_bytes": 0,
+      "raw_dbmd_bytes_persisted": false
+    },
+    "no_dee_job": true,
+    "no_pcm_decode_or_playback": true
+  },
+  "dbmd_time_tuple": {
+    "record_sequence": [
+      7,
+      9,
+      10
+    ],
+    "record_checksum_statuses": [
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "type9_hours_or_sentinel": {
+      "encoding": "signed int8",
+      "value": -1
+    },
+    "type9_minutes": {
+      "encoding": "unsigned int8",
+      "value": 0
+    },
+    "type9_subsecond_ticks": {
+      "encoding": "signed little-endian int32",
+      "value": 0
+    },
+    "parser_decode_fallback": "NOT_TAKEN",
+    "branch": "NEGATIVE_SENTINEL; suppress absolute source FFOA write"
+  },
+  "candidate_helper": {
+    "sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+    "direct_query_exit_code": 0,
+    "start_time_seconds": 3610,
+    "first_frame_of_action_seconds": 3610,
+    "formula": "StartTime + max(relative_ffoa, 0)",
+    "predicted_final_ffoa_seconds": 3610,
+    "observed_final_ffoa_seconds": 3610,
+    "match": true
+  },
+  "cross_sample_context": {
+    "sample6_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "sample6_negative_sentinel_package_manifest": "dd2bc672c93ef75af1fbca8eaca30aace71ced12520ae42bed6ec0608f67a83d",
+    "sample6_and_first_love_tuple_branch_equal": true,
+    "positive_nonnegative_tuple_branch": "NOT_TESTED",
+    "historical_r138_original_child_receipt": "NOT_CAPTURED",
+    "r138_equivalent_replay_helper_identity_package": "e35e62b580f940aabb837c11b111b727c08336706d0f2912822ea64c0a4f4b3c"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "washed-first-love-dee-output-reference.v1",
+  "package_id": "first_love_dee_output_metadata_reference_v1",
+  "status": "SAMPLE_DEE_OUTPUT_METADATA_VERIFIED; STRICT_EAC3_CHECK_FAIL; RENDER_NOT_RUN",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "0525319f597faf70f666ca691fb869ddbc7a49df95fe561f6870de98162d5689",
+  "implementation_allowed_for": "SINGLE_SAMPLE_METADATA_REFERENCE_COMPARISON_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 5258,
+      "sha256": "c966fbf692477c0d3db187285b6c184f82bdb941dd1e2fb9ce8d956814a5ae6c"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1611,
+      "sha256": "6f6ed59fb79c35c54837a5b97deab0edc4c4e26249df0b53203d059660845174"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1621,
+      "sha256": "9bd93a744b160eec54715ac05970057814100925b7c3aeb3f1d19aa4fcef6741"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2775,
+      "sha256": "7757b36fb8d2816dd1c7f7bfa519f7078b457611e7a70e24339837ac53d24063"
+    }
+  ]
+}

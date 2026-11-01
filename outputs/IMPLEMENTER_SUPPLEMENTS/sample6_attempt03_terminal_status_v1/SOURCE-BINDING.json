@@ -1,0 +1,11 @@
+{
+  "schema": "washed-sample6-attempt03-source-binding.v1",
+  "package_id": "sample6_attempt03_terminal_status_v1",
+  "incoming_runtime_package_manifest_sha256": "a6d8f13cfe77397e5127b21bcc319a806c22c964a95579b78bd0e3d4d7ab475a",
+  "current_authorized_input_rehash": "MATCH",
+  "run_attempt": "03",
+  "source_command_capture": "stored implementation thread command execution and run-scoped runner receipts",
+  "raw_stderr_copied": false,
+  "raw_payload_or_media_included": false,
+  "private_key_or_license_contents_read": false
+}

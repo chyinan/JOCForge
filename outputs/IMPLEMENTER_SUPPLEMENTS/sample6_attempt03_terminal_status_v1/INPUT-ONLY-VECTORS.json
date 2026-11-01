@@ -1,0 +1,21 @@
+{
+  "schema": "sample6-attempt03-synthetic-transaction-vectors.v1",
+  "classification": "SYNTHETIC_IDS_ONLY_NOT_A_REPLAY",
+  "audio_or_payload_values": false,
+  "cases": [
+    {
+      "name": "exit_2_without_comparepoint_record",
+      "exit_code": 2,
+      "expected_producer_transaction_id": null,
+      "actual_producer_transaction_id": null,
+      "classification": "ROOT_CAUSE_UNBOUND"
+    },
+    {
+      "name": "attempt_02_is_not_attempt_03",
+      "attempt_02_id": "sample6-keyless-full-20261101-02",
+      "attempt_03_id": "sample6-keyless-full-20261101-03",
+      "values_may_be_shared": false,
+      "classification": "KEEP_RUNS_SEPARATE"
+    }
+  ]
+}

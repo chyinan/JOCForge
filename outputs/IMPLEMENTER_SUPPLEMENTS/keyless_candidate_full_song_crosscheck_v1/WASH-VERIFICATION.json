@@ -1,0 +1,32 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_METADATA_ONLY",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674",
+  "verified_files": [
+    {
+      "path": "IMPLEMENTER_PACKAGE/test-vectors/full-song/input-adm.wav",
+      "bytes": 743696526,
+      "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+    },
+    {
+      "path": "IMPLEMENTER_PACKAGE/test-vectors/full-song/expected.ec3",
+      "bytes": 17395712,
+      "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448"
+    },
+    {
+      "path": "AUDIO_COMPATIBILITY_PROBE/candidate-keyless-compatible-joc.ec3",
+      "bytes": 17395712,
+      "sha256": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86"
+    }
+  ],
+  "report_hashes": {
+    "audio_comparison": "a30668fdfb182dc7dd0ca8e7b67583d1e4947c997259cfef505cb7bb53c12831",
+    "base_decode_comparison": "66b392245bca89bf218f33f5e54420e4e347c0fb1882082ec11829b82d0686fe",
+    "structure_check": "d1133d717f2845490e5db9360f01a54cfcc41443323241c2d5653a5ba291f46f",
+    "openjoc_inspection": "4d8b0f9a8757d1a94ae361bdb10fb515cadaac9d574725bb4aca1eefb70aa43f"
+  },
+  "package_contains_source_code": false,
+  "package_contains_audio_payload": false,
+  "private_key_contents_read": false,
+  "external_tools_used_for_algorithm": false
+}

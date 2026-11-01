@@ -1,0 +1,127 @@
+{
+  "schema": "washed-authorized-adm-seven-input-dbmd-branch-matrix.v1",
+  "package_id": "authorized_adm_seven_input_dbmd_branch_matrix_v1",
+  "evidence_class": "SEVEN_HASH_BOUND_USER_AUTHORIZED_INPUTS_DBMD_BRANCH_MATRIX",
+  "status": "ALL_SEVEN_AUTHORIZED_DBMD_TUPLES_NEGATIVE_SENTINEL; POSITIVE_DELTA_NOT_EXERCISED",
+  "implementation_readiness": "NEGATIVE_SENTINEL_RULE_SUPPORTED_FOR_THE_SEVEN_INPUTS; POSITIVE_BRANCH_UNTESTED",
+  "candidate_helper_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+  "samples": [
+    {
+      "label": "人是猫 - 张卡斯, 洛天依",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "dbmd_sha256": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "branch": "NEGATIVE_SENTINEL",
+      "candidate_helper_direct_observation": true,
+      "ffoa_seconds": 3610,
+      "wash_manifest": "dd2bc672c93ef75af1fbca8eaca30aace71ced12520ae42bed6ec0608f67a83"
+    },
+    {
+      "label": "First Love",
+      "input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "dbmd_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "branch": "NEGATIVE_SENTINEL",
+      "candidate_helper_direct_observation": true,
+      "ffoa_seconds": 3610,
+      "wash_manifest": "ca46c6809e9be4b0928668c25ace0a98e78d70410f232dacd948b53bd8373a97"
+    },
+    {
+      "label": "My jealousy (Original ver.)",
+      "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+      "dbmd_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "branch": "NEGATIVE_SENTINEL",
+      "candidate_helper_direct_observation": true,
+      "ffoa_seconds": 3610,
+      "wash_manifest": "0d98a2763280c703b97da2579c9c04deb4895be4335610a60a65951abeb79066"
+    },
+    {
+      "label": "Hortus Regis Alti",
+      "input_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "dbmd_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "branch": "NEGATIVE_SENTINEL",
+      "candidate_helper_direct_observation": false,
+      "wash_manifest": "b65c9d5107509ac6caf2ba5a36858de0f73003e9f21fbfa86c3f6a8ed8d2ce3a"
+    },
+    {
+      "label": "アルジャーノン",
+      "input_sha256": "809e27c0c44801af93abe24644546e2ed5ffc4bf05cacfaa35b0d127964e32c5",
+      "dbmd_sha256": "565fb81da0fabaf35cf573c53b4014b2fe428ed147a360fc4acbbef865263f8b",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "branch": "NEGATIVE_SENTINEL",
+      "candidate_helper_direct_observation": false,
+      "wash_manifest": "b65c9d5107509ac6caf2ba5a36858de0f73003e9f21fbfa86c3f6a8ed8d2ce3a"
+    },
+    {
+      "label": "潜在的なアイ",
+      "input_sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82",
+      "dbmd_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "branch": "NEGATIVE_SENTINEL",
+      "candidate_helper_direct_observation": false,
+      "run147_output_wash_manifest": "5cc316f9a4124bed8f36dab2debfc06bdca05fe02baa198d5b9a2da70ad99188",
+      "wash_manifest": "5cc316f9a4124bed8f36dab2debfc06bdca05fe02baa198d5b9a2da70ad99188"
+    },
+    {
+      "label": "咲き誇れ - YOASOBI",
+      "input_sha256": "bbe7bd5cd45e764d55317ad5d0142426661d483a5f912fc46f021a419f8a36e2",
+      "dbmd_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "branch": "NEGATIVE_SENTINEL",
+      "candidate_helper_direct_observation": false,
+      "wash_manifest": "b65c9d5107509ac6caf2ba5a36858de0f73003e9f21fbfa86c3f6a8ed8d2ce3a"
+    }
+  ],
+  "sample_count": 7,
+  "negative_sentinel_count": 7,
+  "positive_delta_count": 0,
+  "direct_helper_observation_count": 3,
+  "summary_constraints": {
+    "all_inputs_are_in_user_authorized_list": true,
+    "raw_dbmd_bytes_in_summary": false,
+    "audio_pcm_decoded": false,
+    "positive_dbmd_branch_found": false,
+    "helper_queries_skipped_when_negative_sentinel": true
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

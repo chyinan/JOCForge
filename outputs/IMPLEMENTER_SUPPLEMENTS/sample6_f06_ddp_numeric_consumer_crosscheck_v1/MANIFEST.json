@@ -1,0 +1,38 @@
+{
+  "schema": "washed-sample6-f06-ddp-numeric-consumer.v1",
+  "package_id": "sample6_f06_ddp_numeric_consumer_crosscheck_v1",
+  "status": "EVIDENCE_ONLY; PCM24_SOURCE_AND_DIALNORM_JOINS_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "1c26d90cbe68b227254df83aa13728fa334089de0ea77dd3a72f9ec60c60479d",
+  "source_package_seal_sha256": "010928600981edf7d261c226a9a432c99f1a3d8212bace8cb6ea7299b2d8f5fc",
+  "implementation_allowed_for": "SAMPLE_SPECIFIC_EXECUTION_CONTEXT_AND_COPY_BOUNDARIES_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 5075,
+      "sha256": "b3e1b03351772ccd3ec6bdba00199d53dabbfc0991de73bdb940555bd7410de3"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1631,
+      "sha256": "95cd4db7b417affc164b97beedccace69a8a2b3f9192664a7c472c7b97b2b3e1"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 2306,
+      "sha256": "15008550c340a906b62b6cc6f90d1f42da7316c4452e5b79e9a896092125f2d1"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 3694,
+      "sha256": "4ccb8e51abd1f9686006d0c76db177e7f01611474bc30acf7a3a17cccefbc7c9"
+    }
+  ]
+}

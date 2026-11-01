@@ -1,0 +1,17 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "checks": {
+    "both_source_manifest_and_seal_hashes_match": true,
+    "both_source_package_verifiers_pass_normal_and_optimized": true,
+    "original_FirstLove_SHA256_recomputed_by_Wash": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "original_Hortus_SHA256_recomputed_by_Wash": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+    "source_and_ascii_copy_hashes_match": true,
+    "output_payloads_rehashed_by_Wash": false,
+    "metadata_only_cross_sample_consistency": true,
+    "FirstLove_active_audio": false,
+    "Hortus_active_audio_window": true,
+    "render_or_playback_verified": false
+  },
+  "scope_note": "Wash verified package/payload hashes and independently rehashed both original ADM inputs. Generated EC3 payloads were deleted; their SHA values are receipt claims, not rehashed by Wash."
+}

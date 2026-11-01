@@ -1,0 +1,72 @@
+{
+  "schema": "wash-only-source-identities.v1",
+  "openjoc": {
+    "repo_head": "e3e330a2000f8d0bced3460756473c8774eb16f0",
+    "cli_version": "0.20.1",
+    "cli_binary": {
+      "file_name": "openjoc.exe",
+      "sha256": "875e4c3b0b47cde77776fb714a45bf6a89970420863e9bdc21287fcfb6937a16",
+      "bytes": 62558208
+    },
+    "source_files": [
+      {
+        "role": "E-AC-3 parser",
+        "file_name": "crates/openjoc-eac3/src/lib.rs",
+        "bytes": 103418,
+        "sha256": "6cfec34defba20deedfe359e0f4dcfb8e06aca03d719a54d07272b215a31ba31"
+      },
+      {
+        "role": "metadata aggregation",
+        "file_name": "crates/openjoc-inspect/src/aggregate.rs",
+        "bytes": 46170,
+        "sha256": "5fe4b90e04e4e1d665e89ce4877d36a4aa6f075ac5cadeaf4a9aa4e9f0bf1d5f"
+      },
+      {
+        "role": "metadata JSON model",
+        "file_name": "crates/openjoc-inspect/src/model.rs",
+        "bytes": 8930,
+        "sha256": "39f3dc73e28f8ef21e70815dc2033e9b5d884cd049317f4fe5c2fa2befcdd3e0"
+      },
+      {
+        "role": "container declaration reconciliation",
+        "file_name": "crates/openjoc-inspect/src/container_metadata.rs",
+        "bytes": 5107,
+        "sha256": "fb5cc68e73dc6ec47a64cb3e3a2c38d3c1f1077f0f6993d6c8ee8d2f882a366f"
+      },
+      {
+        "role": "input streaming reader",
+        "file_name": "crates/openjoc-inspect/src/reader.rs",
+        "bytes": 5475,
+        "sha256": "f6bfff36826f14b36023241fca4be7eec03387670acc7b3aa20b508b96a77303"
+      },
+      {
+        "role": "CLI inspect command",
+        "file_name": "crates/openjoc-cli/src/stream_inspect.rs",
+        "bytes": 2282,
+        "sha256": "1de426993d8206fa7bf442e9f1842e57dd2e3403d4a387e2ea9d4e0f125d8078"
+      },
+      {
+        "role": "inspector semantics documentation",
+        "file_name": "docs/stream-inspector.md",
+        "bytes": 13487,
+        "sha256": "0c7ec033a1bdb9d322b39ba8303b1715013a0e91ac89471029633fd3f59e9fed"
+      }
+    ]
+  },
+  "run100": {
+    "package_id": "run100_reference_ec3_metadata_only_wash_v1",
+    "stable_intake_manifest_sha256": "51c4edeacec83a286af689b1575f1e9f1e7710ba2050691931ab0061f624009b",
+    "metadata_payload_sha256": "6b7cd505efc16b7090561a03c39dd959b26becbe8ece7a37dd059e917f492ea8",
+    "sources_payload_sha256": "363cf910460371f703d00d1d9664193462d5f4427d8bff3da6702cc3cbacc965",
+    "run100_metadata_payload_manifest_sha256": "6b7cd505efc16b7090561a03c39dd959b26becbe8ece7a37dd059e917f492ea8",
+    "result_record_reference_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "result_record_bytes": 17395712
+  },
+  "inspected_input": {
+    "role": "run100 reference E-AC-3 output inspected by OpenJOC",
+    "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "bytes": 17395712,
+    "original_output_path_persisted": false,
+    "local_file_used_is_content_hash_match": true
+  }
+}

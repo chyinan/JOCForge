@@ -1,0 +1,27 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_METADATA_ONLY",
+  "source_package_manifest_sha256": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f",
+  "source_package_seal_sha256": "af0929a0359827d0649a0d619343c5d33afd87e19b812bf2f876a6660ca250af",
+  "source_package_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "source_sha256_recomputed_this_turn": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "source_bytes": 743696526,
+  "source_alias_sha256_claim": "equal in R3 receipt",
+  "job_xml_sha256": "e4529fe290814178146cecf1be630bb24f92551807e626b89aba27195b011b75",
+  "output_hash": "R3 receipt value only; Washed output payload absent, not rehashed by Wash.",
+  "package_separation": {
+    "source_code": false,
+    "binary_or_decompilation": false,
+    "raw_logs": false,
+    "pcm_or_eac3_payload": false,
+    "key_or_license": false,
+    "absolute_paths": false
+  },
+  "algorithm_scope": {
+    "DEE_behavior_source_only": true,
+    "external_audio_algorithm_sources": false
+  }
+}

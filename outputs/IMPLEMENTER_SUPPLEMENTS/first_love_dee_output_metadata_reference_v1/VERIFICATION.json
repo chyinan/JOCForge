@@ -1,0 +1,36 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; SINGLE_SAMPLE_REFERENCE_ONLY",
+  "source_package_id": "first_love_adm_eac3_joc_wash",
+  "source_package_manifest_sha256": "0525319f597faf70f666ca691fb869ddbc7a49df95fe561f6870de98162d5689",
+  "source_package_payloads_checked": 10,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "authorized_input_hash_recomputed": true,
+  "output_hash_recomputed": true,
+  "openjoc_binary_hash_recomputed": true,
+  "openjoc_0_20_1_run_by_wash": true,
+  "strict_status": "FAIL_8048_OF_8048",
+  "compatibility_status": "PASS_8048_OF_8048",
+  "render_or_playback": "NOT_RUN",
+  "output_retained_in_source_workspace": true,
+  "output_copied_into_wash_package": false,
+  "implementation_ready": "NO",
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  },
+  "limitations": [
+    "This is a DEE reference output, not a JOCForge output.",
+    "The run's process exit code was not captured; completion log and hashed output are available.",
+    "OpenJOC deployed-compatibility passes, but ETSI strict validation fails all 8048 access units on seven payload-11/14 fields.",
+    "Decoder admission is not spatial rendering; render, playback, PCM listening, and bit-exact comparison were not run.",
+    "One authorized First Love input only; not a universal or production-wide guarantee."
+  ]
+}

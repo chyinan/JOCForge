@@ -1,0 +1,7 @@
+# Wash review: sample-6 full-file DEE reference
+
+This is a full-file DEE reference receipt for the authorized 38-channel sample-6 ADM BWF. Wash rehashed the original this turn; the independent R3 receipt binds an ASCII alias and job XML to that source. The run reports `atmos_mezz` / `encode_to_atmos_ddp` / `file_position`, empty start/end, 24 fps input field, and automatic offset/FFOA. The local XSD rejected the `file_position` and `timecode_frame_rate` extensions, which were retained because they match the explicitly authorized reference conditions. The current DEE log confirms encoder completion and output progress 100%; it does not report resolved offset, FFOA, source timecode rate, or a numeric exit code.
+
+R3 recorded a full-file output of 17,395,712 bytes, SHA-256 `34d18a6f...`, and removed the media after metadata capture. The output hash is the R3 receipt claim and was not rehashed by Wash. Posthoc FFprobe/OpenJOC metadata says 48 kHz, 5.1(side), 1024 kbps, and JOC Addbsi on 4247/4247 AUs, profile 3, 15 coded objects, complexity 16, metadata object count 16. ETSI strict validation failed all 4247 AUs; deployed compatibility passed all 4247. Render and playback were not verified.
+
+Use this only as a reference input/configuration and expected structural comparison point. FFprobe/OpenJOC are posthoc checks only and do not define DEE algorithms, defaults, fields, or product policy. This is a DEE output, not a JOCForge output and not audio-quality acceptance.

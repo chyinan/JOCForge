@@ -1,0 +1,81 @@
+{
+  "schema": "bounded-bwf-timecode-window-measurement.v1",
+  "sample_label": "My jealousy (Original ver.).wav",
+  "source_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+  "source_bytes": 791588070,
+  "measured_at_utc": "2026-10-31T13:34:59.616630+00:00",
+  "status": "DIRECT_PCM_SAMPLE_WINDOW_MEASURED",
+  "coordinate_basis": "Verified by completed active-window DEE log for this input/config: Composite Master start=48000,end=97999; coordinate is scoped to this run.",
+  "identity": {
+    "riff_id": "RIFF",
+    "riff_size_field": 791588062,
+    "chunks": [
+      {
+        "id": "JUNK",
+        "bytes": 64
+      },
+      {
+        "id": "fmt ",
+        "bytes": 16
+      },
+      {
+        "id": "data",
+        "bytes": 791507268
+      },
+      {
+        "id": "axml",
+        "bytes": 78641
+      },
+      {
+        "id": "chna",
+        "bytes": 1444
+      },
+      {
+        "id": "dbmd",
+        "bytes": 576
+      }
+    ],
+    "fmt": {
+      "audio_format_code": 1,
+      "channels": 36,
+      "sample_rate_hz": 48000,
+      "byte_rate": 5184000,
+      "block_align": 108,
+      "bits_per_sample": 24,
+      "extra_format_bytes": "",
+      "data_offset": 116,
+      "data_bytes": 791507268,
+      "sample_frames": 7328771
+    },
+    "bext": null,
+    "ixml_timecode_rate": null,
+    "ixml_first_timecode": null,
+    "explicit_frame_rate": null,
+    "first_timecode_frame_number": null,
+    "metadata_chunk_names": [
+      "axml"
+    ]
+  },
+  "current_window": {
+    "sample_offset": 48000,
+    "sample_frames_per_channel": 50000,
+    "channels": 36,
+    "sample_count_all_channels": 1800000,
+    "pcm_bytes_read_in_memory": 5400000,
+    "peak_linear": 336836,
+    "peak_dbfs": -27.92542797798662,
+    "rms_linear": 19254.103052694176,
+    "rms_dbfs": -52.78333216670676,
+    "nonzero_sample_count": 1190306,
+    "pcm_values_saved": false
+  },
+  "candidate_activity_criteria": null,
+  "first_active_candidate": null,
+  "additional_windows_scanned": 0,
+  "search_window_limit_seconds": 0,
+  "pcm_sample_values_read_in_memory": true,
+  "compressed_audio_decoded": false,
+  "audio_playback": false,
+  "pcm_values_persisted": false,
+  "raw_pcm_saved": false
+}

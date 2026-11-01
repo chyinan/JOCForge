@@ -1,0 +1,68 @@
+{
+  "schema": "washed-native-adm-r141-observation.v1",
+  "source_package_manifest_sha256": "4c1d7dbac78a6057327975dc6ebf525968ec65a1c6ea7b9afc055a2cea1b6556",
+  "source_evidence_sha256": "d2a649a19bea43e4fdef3086d075f383872cb6846b22151bd3612fb19d265bad",
+  "r138": {
+    "source_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "derived_config_sha256": "0716993e19bb94467bccf45dab6f5b1289b97297947aaa6740107467205ac9be",
+    "input_type": "audio.adm",
+    "route": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "time_base": "embedded_timecode",
+    "start_token": "86640",
+    "end_token": "86664",
+    "configured_timecode_rate": "not_indicated"
+  },
+  "input": {
+    "authorized_sample_id": "sample-6",
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_copy_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "identity": "SOURCE_COPY_HASH_AND_SIZE_MATCH"
+  },
+  "images": {
+    "dee_exe_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_filter_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra_version": "12.2_PUBLIC",
+    "ida_used": false
+  },
+  "runtime_observations": {
+    "native_job_count": 1,
+    "constructor_sample_rate_hz": 48000,
+    "frame_rate_property_key": "frame rate",
+    "frame_rate_property_value": 24.0,
+    "frame_rate_join_to_configured_timecode_rate": "UNBOUND",
+    "setter_hit": "NOT_HIT_FOR_THIS_RUN",
+    "source_record_slots_10_11": "NOT_CAPTURED",
+    "post_write_offset_ffoa": "NOT_CAPTURED",
+    "host_normalizer_argument_values": "NOT_CAPTURED",
+    "explicit_job_or_generation_token": "UNBOUND"
+  },
+  "serializer_observation": {
+    "same_parent_record_token": true,
+    "record_member_relative_offset": 8,
+    "u16_value": 16,
+    "element_count": 1,
+    "width_bits": 5,
+    "semantic_tag": "UNBOUND",
+    "dialnorm_identity": "NOT_ESTABLISHED"
+  },
+  "output": {
+    "file_created": true,
+    "bytes_before_removal": 135168,
+    "sha256": "NOT_CAPTURED",
+    "removed_after_size_check": true,
+    "encoder_completion": "NOT_CONFIRMED",
+    "output_metadata_probe": "NOT_RUN",
+    "joc_signaling": "NOT_VERIFIED",
+    "player_playback": "NOT_RUN",
+    "full_e2e": "NOT_VERIFIED"
+  },
+  "limits": {
+    "actual_working_directory": "NOT_CAPTURED",
+    "target_path_environment": "NOT_CAPTURED",
+    "temp_tmp_overridden": false,
+    "license_contents_read": false,
+    "pcm_or_ec3_payload_read_or_retained": false
+  }
+}

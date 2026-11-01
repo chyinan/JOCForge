@@ -1,0 +1,1048 @@
+{
+  "schema_version": 1,
+  "input": {
+    "filename": "native-reference.ec3",
+    "format": "eac3_joc",
+    "classification_authority": "in_band_syntax"
+  },
+  "container": {
+    "kind": "raw_eac3",
+    "sample_entry": null,
+    "ec3_present": null,
+    "dec3_present": null,
+    "track_id": null,
+    "timescale": null,
+    "duration_seconds": null,
+    "sample_count": null,
+    "fragmented": null,
+    "cmaf_status": null,
+    "declared_joc": null,
+    "declared_complexity_index": null
+  },
+  "eac3": {
+    "access_unit_count": 4247,
+    "programme_interval_count": 4247,
+    "frame_count": 4247,
+    "total_samples": 6523392,
+    "duration_seconds": 135.9039999999921,
+    "total_bytes": 17395712,
+    "bitrate_bps": 1024000.0000000596,
+    "sample_rates_hz": [
+      48000
+    ],
+    "topologies": [
+      {
+        "value": [
+          "I0"
+        ],
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ],
+    "block_partitions": [
+      {
+        "value": [
+          6
+        ],
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ],
+    "programme_layouts": [
+      {
+        "value": "5.1",
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ],
+    "frames_per_au": [
+      1
+    ],
+    "components": [
+      {
+        "owner": "I0",
+        "stream_type": "independent",
+        "substream_id": 0,
+        "frame_count": 4247,
+        "bytes": 17395712,
+        "samples": 6523392,
+        "duration_seconds": 135.9039999999921,
+        "bitrate_bps": 1024000.0000000596,
+        "frame_bytes": [
+          4096
+        ],
+        "sample_rates_hz": [
+          48000
+        ],
+        "block_counts": [
+          6
+        ],
+        "numblkscod": [
+          3
+        ],
+        "acmod": [
+          7
+        ],
+        "lfeon": [
+          true
+        ],
+        "chanmap": [
+          null
+        ],
+        "channel_locations": [
+          [
+            "L",
+            "C",
+            "R",
+            "Ls",
+            "Rs",
+            "LFE"
+          ]
+        ]
+      }
+    ],
+    "dependent_ids": [],
+    "dependent_ids_sequential": true,
+    "legacy_core": false,
+    "lfe_ownership": [
+      {
+        "value": "independent_owned:I0",
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ],
+    "channel_conflicts": 0
+  },
+  "joc": {
+    "present": true,
+    "presence_status": "present",
+    "payload_occurrences": 4247,
+    "parsed_payloads": 4247,
+    "profiles": [
+      {
+        "value": {
+          "profile_index": 3,
+          "profile": "five_x_phase",
+          "display_name": "5.X + Phase Signaling (idx3)",
+          "reconstruction_input_count": 5,
+          "carriers": [
+            "L",
+            "R",
+            "C",
+            "Ls",
+            "Rs"
+          ],
+          "phase_signaling": true
+        },
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ],
+    "coded_object_counts": [
+      15
+    ],
+    "reconstruction_rows": [
+      15
+    ],
+    "complexity_indices": [
+      16
+    ],
+    "addbsi_signaled_aus": 4247,
+    "owners": [
+      "I0"
+    ]
+  },
+  "carriage": {
+    "locations": [
+      {
+        "value": {
+          "owner": "I0",
+          "location": "audio_block_skipfld"
+        },
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ],
+    "joc_owners": [
+      "I0"
+    ],
+    "oamd_owners": [
+      "I0"
+    ],
+    "aux_present": 0,
+    "aux_absent": 4247,
+    "aux_parsed": 0,
+    "aux_non_emdf": 0,
+    "aux_malformed": 0,
+    "skip_observed": 4247,
+    "skip_examined": 25482,
+    "skip_unresolved": 0,
+    "skip_parsed": 4247,
+    "skip_non_emdf": 0,
+    "skip_malformed": 0
+  },
+  "emdf": {
+    "containers": 4247,
+    "payloads": [
+      {
+        "id": 1,
+        "name": null,
+        "occurrences": 4247,
+        "affected_aus": 4247,
+        "first_au": 0,
+        "length_min": 2,
+        "length_max": 3,
+        "unique_lengths": 2,
+        "length_counts": {
+          "2": 3850,
+          "3": 397
+        }
+      },
+      {
+        "id": 2,
+        "name": null,
+        "occurrences": 4247,
+        "affected_aus": 4247,
+        "first_au": 0,
+        "length_min": 3,
+        "length_max": 3,
+        "unique_lengths": 1,
+        "length_counts": {
+          "3": 4247
+        }
+      },
+      {
+        "id": 11,
+        "name": "OAMD",
+        "occurrences": 4247,
+        "affected_aus": 4247,
+        "first_au": 0,
+        "length_min": 69,
+        "length_max": 69,
+        "unique_lengths": 1,
+        "length_counts": {
+          "69": 4247
+        }
+      },
+      {
+        "id": 14,
+        "name": "JOC",
+        "occurrences": 4247,
+        "affected_aus": 4247,
+        "first_au": 0,
+        "length_min": 138,
+        "length_max": 278,
+        "unique_lengths": 129,
+        "length_counts": {
+          "138": 10,
+          "139": 2,
+          "140": 1,
+          "141": 1,
+          "142": 1,
+          "143": 2,
+          "144": 6,
+          "145": 11,
+          "146": 11,
+          "147": 10,
+          "148": 14,
+          "149": 9,
+          "150": 14,
+          "151": 15,
+          "152": 15,
+          "153": 11,
+          "154": 17,
+          "155": 20,
+          "156": 12,
+          "157": 17,
+          "158": 9,
+          "159": 11,
+          "160": 22,
+          "161": 17,
+          "162": 14,
+          "163": 13,
+          "164": 22,
+          "165": 12,
+          "166": 19,
+          "167": 26,
+          "168": 33,
+          "169": 19,
+          "170": 28,
+          "171": 21,
+          "172": 36,
+          "173": 35,
+          "174": 35,
+          "175": 45,
+          "176": 45,
+          "177": 43,
+          "178": 54,
+          "179": 64,
+          "180": 66,
+          "181": 60,
+          "182": 61,
+          "183": 64,
+          "184": 61,
+          "185": 62,
+          "186": 89,
+          "187": 74,
+          "188": 87,
+          "189": 93,
+          "190": 107,
+          "191": 87,
+          "192": 79,
+          "193": 87,
+          "194": 72,
+          "195": 96,
+          "196": 92,
+          "197": 100,
+          "198": 88,
+          "199": 87,
+          "200": 70,
+          "201": 71,
+          "202": 84,
+          "203": 94,
+          "204": 75,
+          "205": 83,
+          "206": 76,
+          "207": 77,
+          "208": 64,
+          "209": 61,
+          "210": 60,
+          "211": 48,
+          "212": 59,
+          "213": 44,
+          "214": 49,
+          "215": 39,
+          "216": 52,
+          "217": 36,
+          "218": 33,
+          "219": 37,
+          "220": 36,
+          "221": 34,
+          "222": 29,
+          "223": 41,
+          "224": 31,
+          "225": 23,
+          "226": 32,
+          "227": 26,
+          "228": 25,
+          "229": 19,
+          "230": 23,
+          "231": 21,
+          "232": 22,
+          "233": 19,
+          "234": 16,
+          "235": 16,
+          "236": 17,
+          "237": 17,
+          "238": 13,
+          "239": 15,
+          "240": 5,
+          "241": 13,
+          "242": 4,
+          "243": 5,
+          "244": 8,
+          "245": 8,
+          "246": 7,
+          "247": 6,
+          "248": 9,
+          "249": 7,
+          "250": 9,
+          "251": 7,
+          "252": 5,
+          "253": 6,
+          "254": 3,
+          "255": 6,
+          "257": 1,
+          "258": 3,
+          "259": 4,
+          "260": 1,
+          "261": 1,
+          "262": 1,
+          "263": 3,
+          "268": 1,
+          "271": 1,
+          "273": 1,
+          "278": 1
+        }
+      }
+    ],
+    "payload_orders": [
+      {
+        "value": [
+          11,
+          14,
+          2,
+          1
+        ],
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ],
+    "configurations": [
+      {
+        "value": {
+          "payload_id": 11,
+          "sample_offset": null,
+          "duration": null,
+          "group_id": 0,
+          "codecdatae": false,
+          "discard_unknown_payload": false,
+          "payload_frame_aligned": false,
+          "create_duplicate": null,
+          "remove_duplicate": null,
+          "priority": null,
+          "proc_allowed": null
+        },
+        "occurrences": 4247,
+        "first_au": 0
+      },
+      {
+        "value": {
+          "payload_id": 14,
+          "sample_offset": null,
+          "duration": null,
+          "group_id": 0,
+          "codecdatae": false,
+          "discard_unknown_payload": false,
+          "payload_frame_aligned": true,
+          "create_duplicate": false,
+          "remove_duplicate": false,
+          "priority": 0,
+          "proc_allowed": 0
+        },
+        "occurrences": 4247,
+        "first_au": 0
+      },
+      {
+        "value": {
+          "payload_id": 2,
+          "sample_offset": null,
+          "duration": null,
+          "group_id": null,
+          "codecdatae": false,
+          "discard_unknown_payload": true,
+          "payload_frame_aligned": null,
+          "create_duplicate": null,
+          "remove_duplicate": null,
+          "priority": null,
+          "proc_allowed": null
+        },
+        "occurrences": 4247,
+        "first_au": 0
+      },
+      {
+        "value": {
+          "payload_id": 1,
+          "sample_offset": null,
+          "duration": 1536,
+          "group_id": null,
+          "codecdatae": false,
+          "discard_unknown_payload": false,
+          "payload_frame_aligned": false,
+          "create_duplicate": null,
+          "remove_duplicate": null,
+          "priority": null,
+          "proc_allowed": null
+        },
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ]
+  },
+  "scene": {
+    "metadata_present": true,
+    "parsed_payloads": 4247,
+    "metadata_object_counts": [
+      16
+    ],
+    "object_metadata_present": true,
+    "dynamic_metadata_detected": true,
+    "metadata_update_count": 67952,
+    "first_change": {
+      "au": 17,
+      "sample": 26112,
+      "seconds": 0.5440000000000003
+    },
+    "last_change": {
+      "au": 4242,
+      "sample": 6515712,
+      "seconds": 135.74399999999204
+    },
+    "opaque_trim_present": true,
+    "original_authored_identity_recovered": false,
+    "objects": [
+      {
+        "object_index": 0,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": null,
+        "position_max": null
+      },
+      {
+        "object_index": 1,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 544,
+          "sample": 835584,
+          "seconds": 17.408000000000012
+        },
+        "last_change": {
+          "au": 4084,
+          "sample": 6273024,
+          "seconds": 130.68799999999035
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          0.016129032258064516,
+          0.016129032258064516,
+          0.0
+        ]
+      },
+      {
+        "object_index": 2,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 63,
+          "sample": 96768,
+          "seconds": 2.0160000000000013
+        },
+        "last_change": {
+          "au": 4202,
+          "sample": 6454272,
+          "seconds": 134.46399999999161
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.9193548387096774,
+          1.0
+        ]
+      },
+      {
+        "object_index": 3,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 55,
+          "sample": 84480,
+          "seconds": 1.7600000000000013
+        },
+        "last_change": {
+          "au": 4085,
+          "sample": 6274560,
+          "seconds": 130.71999999999036
+        },
+        "position_min": [
+          0.0,
+          0.9354838709677419,
+          0.0
+        ],
+        "position_max": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "object_index": 4,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 544,
+          "sample": 835584,
+          "seconds": 17.408000000000012
+        },
+        "last_change": {
+          "au": 4117,
+          "sample": 6323712,
+          "seconds": 131.7439999999907
+        },
+        "position_min": [
+          0.9838709677419355,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.016129032258064516,
+          0.0
+        ]
+      },
+      {
+        "object_index": 5,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 3356,
+          "sample": 5154816,
+          "seconds": 107.39199999999173
+        },
+        "last_change": {
+          "au": 4019,
+          "sample": 6173184,
+          "seconds": 128.60799999998966
+        },
+        "position_min": [
+          1.0,
+          0.4838709677419355,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.5,
+          0.0
+        ]
+      },
+      {
+        "object_index": 6,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 55,
+          "sample": 84480,
+          "seconds": 1.7600000000000013
+        },
+        "last_change": {
+          "au": 4083,
+          "sample": 6271488,
+          "seconds": 130.65599999999034
+        },
+        "position_min": [
+          1.0,
+          0.9838709677419355,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "object_index": 7,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 17,
+          "sample": 26112,
+          "seconds": 0.5440000000000003
+        },
+        "last_change": {
+          "au": 4209,
+          "sample": 6465024,
+          "seconds": 134.6879999999917
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          0.5,
+          0.016129032258064516,
+          0.0
+        ]
+      },
+      {
+        "object_index": 8,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 17,
+          "sample": 26112,
+          "seconds": 0.5440000000000003
+        },
+        "last_change": {
+          "au": 4234,
+          "sample": 6503424,
+          "seconds": 135.48799999999196
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          0.0,
+          0.016129032258064516,
+          1.0
+        ]
+      },
+      {
+        "object_index": 9,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 17,
+          "sample": 26112,
+          "seconds": 0.5440000000000003
+        },
+        "last_change": {
+          "au": 4235,
+          "sample": 6504960,
+          "seconds": 135.51999999999197
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.016129032258064516,
+          1.0
+        ]
+      },
+      {
+        "object_index": 10,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 17,
+          "sample": 26112,
+          "seconds": 0.5440000000000003
+        },
+        "last_change": {
+          "au": 4242,
+          "sample": 6515712,
+          "seconds": 135.74399999999204
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "object_index": 11,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 17,
+          "sample": 26112,
+          "seconds": 0.5440000000000003
+        },
+        "last_change": {
+          "au": 4242,
+          "sample": 6515712,
+          "seconds": 135.74399999999204
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "object_index": 12,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 18,
+          "sample": 27648,
+          "seconds": 0.5760000000000003
+        },
+        "last_change": {
+          "au": 4184,
+          "sample": 6426624,
+          "seconds": 133.88799999999142
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.9193548387096774,
+          1.0
+        ]
+      },
+      {
+        "object_index": 13,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 18,
+          "sample": 27648,
+          "seconds": 0.5760000000000003
+        },
+        "last_change": {
+          "au": 4184,
+          "sample": 6426624,
+          "seconds": 133.88799999999142
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.9193548387096774,
+          1.0
+        ]
+      },
+      {
+        "object_index": 14,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 23,
+          "sample": 35328,
+          "seconds": 0.7360000000000004
+        },
+        "last_change": {
+          "au": 4204,
+          "sample": 6457344,
+          "seconds": 134.52799999999164
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.9193548387096774,
+          1.0
+        ]
+      },
+      {
+        "object_index": 15,
+        "first_active_au": 0,
+        "last_active_au": 4246,
+        "metadata_update_count": 4247,
+        "dynamic": true,
+        "first_change": {
+          "au": 23,
+          "sample": 35328,
+          "seconds": 0.7360000000000004
+        },
+        "last_change": {
+          "au": 4071,
+          "sample": 6253056,
+          "seconds": 130.27199999999021
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.9193548387096774,
+          1.0
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "stream_parse": "pass",
+    "etsi_strict": {
+      "status": "fail",
+      "tested_aus": 4247,
+      "failed_aus": 4247,
+      "first_failing_au": 0,
+      "deviations": [
+        {
+          "payload_id": 11,
+          "field": "codecdatae",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "payload_frame_aligned",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "create_duplicate",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "remove_duplicate",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "priority",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "proc_allowed",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 14,
+          "field": "codecdatae",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 4247,
+          "first_au": 0
+        }
+      ]
+    },
+    "deployed_compatibility": {
+      "status": "pass",
+      "tested_aus": 4247,
+      "failed_aus": 0,
+      "first_failing_au": null,
+      "deviations": [
+        {
+          "payload_id": 11,
+          "field": "codecdatae",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "payload_frame_aligned",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "create_duplicate",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "remove_duplicate",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "priority",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "proc_allowed",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 4247,
+          "first_au": 0
+        },
+        {
+          "payload_id": 14,
+          "field": "codecdatae",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 4247,
+          "first_au": 0
+        }
+      ]
+    },
+    "malformed_aus": 0,
+    "decoder_admissible": true,
+    "decoder_checked_aus": 4247,
+    "decoder_admitted_aus": 4247,
+    "render_verified": false,
+    "frame_timing_continuity": "continuous",
+    "metadata_timing_continuity": "continuous",
+    "first_timing_discontinuity": null
+  },
+  "diagnostics": {
+    "complete": true,
+    "first_failure": null,
+    "issues": [],
+    "issue_count": 0,
+    "retained_au_details": 0,
+    "max_au_bytes": 4096,
+    "max_au_frames": 1,
+    "aggregation_truncated": false,
+    "limitations": [
+      "Inspection does not synthesize PCM; decoder admission is not render verification.",
+      "Object indices describe decoded OAMD slots, not original authored identity or a JOC-row binding.",
+      "Unknown container fields are null; raw timestamps are derived from programme samples.",
+      "Distinct summary variants are capped at 256; diagnostic examples at 64."
+    ]
+  },
+  "access_units": []
+}

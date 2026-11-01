@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "native-adm-r141-combined-observation-wash-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "4c1d7dbac78a6057327975dc6ebf525968ec65a1c6ea7b9afc055a2cea1b6556",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "6b136a748872f59de97f3b9ce33c88cf8935c66a115726bf1f0180d7a42b333b",
+      "bytes": 1223
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "10beadcac6db070f962b55c524f1249434d7322950a254bcb6f2329af9a59a4a",
+      "bytes": 2587
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "81924afb757e69c0748f0d67bdf8740a11cd6019d780ed052fd43809460fb39c",
+      "bytes": 888
+    }
+  ]
+}

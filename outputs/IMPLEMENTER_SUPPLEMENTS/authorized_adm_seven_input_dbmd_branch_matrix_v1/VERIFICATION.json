@@ -1,0 +1,32 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_MATRIX_AND_SCOPE_CHECK; SEVEN_INPUTS_NEGATIVE_ONLY",
+  "source_package_manifest_refs_checked": 5,
+  "individual_vector_refs": [
+    "sample6_dbmd_negative_ffoa_sentinel_crosscheck_v1",
+    "first_love_dbmd_negative_sentinel_crosscheck_v1",
+    "my_jealousy_dbmd_negative_sentinel_crosscheck_v1",
+    "authorized_adm_remaining_dbmd_negative_sentinel_screen_v1",
+    "potential_ai_dbmd_negative_sentinel_run147_crosscheck_v1"
+  ],
+  "candidate_helper_direct_outputs_bound_for": 3,
+  "positive_delta_branch": "NOT_TESTED_IN_SEVEN_AUTHORIZED_INPUTS",
+  "implementation_ready": "NO",
+  "limitations": [
+    "Six source input metadata records plus the Run147 input-vector receipt cover all seven authorized file hashes; four independent input families are represented in the individual washed packages.",
+    "Candidate helper direct observations were made only for sample-6, First Love, and My Jealousy; the remaining four use bounded DBMD field parsing and static candidate rules.",
+    "No authorized input exercised the nonnegative DBMD delta branch.",
+    "Historical original R138 child PID receipt remains NOT_CAPTURED; R138-equivalent replay helper identity is separately washed."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

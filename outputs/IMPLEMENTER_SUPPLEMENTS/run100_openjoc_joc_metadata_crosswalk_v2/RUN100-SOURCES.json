@@ -1,0 +1,19 @@
+{
+  "schema": "run100-reference-ec3-metadata-sources.v1",
+  "authorized_input_crosswalk_manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+  "run100_followup_package_manifest_sha256": "c9b00de09eaefdb6ff4956b0b0a4ae137a420fc20d195a862cf40e925d010923",
+  "run100_native_evidence_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+  "run100_job_configuration_sha256": "f5a9f4870eabf146c25442bd705383ce52c01907743eb19751d8a02267c384d1",
+  "run100_dee_log_sha256": "a9be16dd72cf305ce0316b9c815cca5bf90bcf34e6425674bf46d296e010e48b",
+  "run100_result_record_reference_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+  "fixture_source_copy_identity_record_sha256": "47e571166e0fea148827b3cc5eb64bc7ed87c9adc82004d6f25088dd9094b7eb",
+  "run_time_input_sha256_receipt": "NOT_PRESENT",
+  "current_alias_matches_authorized_sample6_sha256": true,
+  "ffprobe_version": "8.1-full_build-www.gyan.dev",
+  "metadata_parser_used": true,
+  "metadata_fields_only": true,
+  "r138_config_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+  "r138_time_base": "embedded_timecode",
+  "run100_time_base": "file_position",
+  "run100_and_r138_config_lineages_merged": false
+}

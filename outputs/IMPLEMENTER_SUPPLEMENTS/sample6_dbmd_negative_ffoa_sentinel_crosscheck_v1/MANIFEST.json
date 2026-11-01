@@ -1,0 +1,38 @@
+{
+  "schema": "washed-sample6-dbmd-negative-ffoa-sentinel.v1",
+  "package_id": "sample6_dbmd_negative_ffoa_sentinel_crosscheck_v1",
+  "status": "SAMPLE_DBMD_NEGATIVE_SENTINEL_BRANCH_CONFIRMED; HISTORICAL_DEE_HELPER_IMAGE_UNBOUND",
+  "implementation_ready": "CANDIDATE_HELPER_METADATA_RULE_ONLY",
+  "source_package_manifest_sha256": "2649044ae7225b28acce2c927c843e65421a4cec503e5fa00ad6e87fd0fd651c",
+  "implementation_allowed_for": "SAMPLE_SPECIFIC_CANDIDATE_HELPER_INPUT_METADATA_RULE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_dbmd_bytes": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3524,
+      "sha256": "b31bf1b07236f33a758d853ce9fdf3806669383a58c003529a145543cd89e58d"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1579,
+      "sha256": "240d686c8557662b5692d86f76ad9883d65d0bcc3db9d6718c617d828cc2bed1"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1293,
+      "sha256": "ce7ffe5876f0f4f7de6fee880626a142c67d4f15c84eddd5d77b10bb7fa0b2ca"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2477,
+      "sha256": "c9f3fa36b4c033bb6e0568a47e8609c494fc1a76380ca4da87b37c7892e85c8e"
+    }
+  ]
+}

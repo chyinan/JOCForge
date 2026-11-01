@@ -1,0 +1,37 @@
+{
+  "schema": "washed-sample6-opener-setup-pointer-capture.v1",
+  "package_id": "sample6_opener_setup_pointer_capture_boundary_v1",
+  "status": "OUTPUT_METADATA_OBSERVED; POINTER_IDENTITY_NOT_CAPTURED; INSTRUMENTATION_UNRESOLVED",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "3037a4c2c4e45e70bf7c6b14f0b84ed7bcabdfc3586af3c8f5cf94253b39186a",
+  "implementation_allowed_for": "SAMPLE_SPECIFIC_CAPTURE_FAILURE_CONTEXT_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2932,
+      "sha256": "3448d4ba18614a46801667d62eb7538eb82624532b5cd5d4124b16850ff5e27a"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1452,
+      "sha256": "1f537dd9575e6b1c7d17268b7626605c9b4e1cf49d3eb87ae932b6fc0212703b"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1323,
+      "sha256": "dab597cbc9353deddc0b074f955abe0f80d35728b63b0256ed6a6f49e6e2227a"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2890,
+      "sha256": "bd4571cc6f869ff3beacb632384354268e1f65316db908d14225aa80dfdc724a"
+    }
+  ]
+}

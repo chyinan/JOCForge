@@ -1,0 +1,31 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_INPUT_MATRIX; NEGATIVE_SENTINEL_ONLY",
+  "source_package_id": "remaining-authorized-dbmd-branch-screen",
+  "source_package_manifest_sha256": "f08b19a0241ff09b171635b6837c342c668d18083aee2a0cae9ff799578cfefd",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_package_payloads_checked": 4,
+  "input_hashes_independently_recomputed": 3,
+  "dbmd_payload_hashes_independently_recomputed": 3,
+  "tuple_field_bytes_independently_rechecked": 3,
+  "audio_data_bytes_read_during_dbmd_scan": 0,
+  "raw_dbmd_bytes_persisted": false,
+  "implementation_ready": "NO",
+  "limitations": [
+    "All three remaining authorized sample tuples in this screen select the negative sentinel branch.",
+    "This screen does not exercise the nonnegative DBMD delta branch.",
+    "The candidate helper time rule remains specific to its hash-identified image and validated scope."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

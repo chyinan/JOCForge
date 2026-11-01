@@ -1,0 +1,37 @@
+{
+  "schema": "washed-authorized-adm-seven-input-dbmd-branch-matrix.v1",
+  "package_id": "authorized_adm_seven_input_dbmd_branch_matrix_v1",
+  "status": "ALL_SEVEN_AUTHORIZED_DBMD_TUPLES_NEGATIVE_SENTINEL; POSITIVE_DELTA_NOT_EXERCISED",
+  "implementation_readiness": "NEGATIVE_SENTINEL_RULE_SUPPORTED_FOR_THE_SEVEN_INPUTS; POSITIVE_BRANCH_UNTESTED",
+  "implementation_allowed_for": "SEVEN_INPUT_SAMPLE_METADATA_BRANCH_COVERAGE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_dbmd_bytes": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 5051,
+      "sha256": "2975d3c131f86dfe052a4c415c730ccb5537218c9e829e607ff6d23085c2db64"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1549,
+      "sha256": "77929992e9617b49d2e284232496a65ab335909f302bfdf6d57b05aa0d73dfe0"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 781,
+      "sha256": "4443ee17601a997f65d4b5b1634fea97e772239983422c269a7f7a834cd4dd6d"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2360,
+      "sha256": "16d347f692f65f7116074d642dbbe507da60aec53baa99bfc781ec133bdb03b4"
+    }
+  ]
+}

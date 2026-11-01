@@ -1,0 +1,97 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "authorized-adm-eac3joc-metadata-comparison-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256s": [
+    "5c4e9b8fadfce26ecb6485ae50ccfd25bf536e6cdff401100caadf93f3eae2a9",
+    "0339972383737162d1f409d4cdaa2d10db4ca80d6c499a71ab99c271520e09d9"
+  ],
+  "source_package_seal_sha256s": [
+    "ea20f9ae789b48638e5a2cf51ece53d3ac8c9c030e774817183956e47a18d415",
+    "96da4027447ca989a807b3371e1f70045954eb7a89d963ca30f317d98ffdedf2"
+  ],
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "samples/first_love/ffprobe-input-metadata.json",
+      "sha256": "b54736693e65e8254baecb000e2726f2c68c8cbaaa8b5685a0e090c40f93f745",
+      "bytes": 347
+    },
+    {
+      "name": "samples/first_love/ffprobe-output-metadata.json",
+      "sha256": "4c2dab952cdfc8ab563aca9863de7bfe9d855d5a1f0ae9c56bf8ceea8909b917",
+      "bytes": 471
+    },
+    {
+      "name": "samples/first_love/metadata_receipt.json",
+      "sha256": "458e91a19fce04e391b9929b1abbd70d9105d4f499112a6cd17f610e744c6f7c",
+      "bytes": 6473
+    },
+    {
+      "name": "samples/first_love/openjoc-metadata.json",
+      "sha256": "69e8afaf2ab951dab14f650854aa6da1e3722df496a6db5bdd5d10fc7ceef695",
+      "bytes": 39650
+    },
+    {
+      "name": "samples/first_love/README.md",
+      "sha256": "039c426f39f7be52686add5a650ec02c826a6b48728a7f0f92f9f300cb0be509",
+      "bytes": 835
+    },
+    {
+      "name": "samples/hortus_regis_alti/bwf-window-active.json",
+      "sha256": "79c8b32af8606d20056d24e7cfbdb99df8c7a626262737b02ca78b0f44651a86",
+      "bytes": 2244
+    },
+    {
+      "name": "samples/hortus_regis_alti/bwf-window-initial.json",
+      "sha256": "3c1940fc653726060e780f0c11f0eab763c637209eb8ca67627dd78892a9bf2f",
+      "bytes": 2264
+    },
+    {
+      "name": "samples/hortus_regis_alti/bwf-window-scan.json",
+      "sha256": "1672252809743775dc6acd152c8a601ff201e1942781b3e1b58d2de291b66c90",
+      "bytes": 2718
+    },
+    {
+      "name": "samples/hortus_regis_alti/ffprobe-active-output-metadata.json",
+      "sha256": "4c2dab952cdfc8ab563aca9863de7bfe9d855d5a1f0ae9c56bf8ceea8909b917",
+      "bytes": 471
+    },
+    {
+      "name": "samples/hortus_regis_alti/ffprobe-input-metadata.json",
+      "sha256": "9c2e10d9c8f598182aa5e7be98061c4f7bb6a79d31dc065021c9a19df1089c0a",
+      "bytes": 347
+    },
+    {
+      "name": "samples/hortus_regis_alti/metadata_receipt.json",
+      "sha256": "e49c41eb90c76621867abd6fa63c9ca7ee32d62676ca6e24935356c2f19b77d2",
+      "bytes": 8352
+    },
+    {
+      "name": "samples/hortus_regis_alti/openjoc-active-metadata.json",
+      "sha256": "56d6a5ecf986b3e0ee594472af484b8fa73898b008b8272a52538924a3a0f55e",
+      "bytes": 40141
+    },
+    {
+      "name": "samples/hortus_regis_alti/README.md",
+      "sha256": "602857b68a99eee936aa362d114df60e5f8873193561ff2f29ff3c4376de6f8a",
+      "bytes": 971
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "03ee3b89c9cdb303dffcbdad36506f87f8a1bb70fc53c47ade6497ef352d7023",
+      "bytes": 1348
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "5649585d9049715bafcd4e5ea2fc6a657312ebef4335f73982dee277cfabcbcf",
+      "bytes": 925
+    }
+  ]
+}

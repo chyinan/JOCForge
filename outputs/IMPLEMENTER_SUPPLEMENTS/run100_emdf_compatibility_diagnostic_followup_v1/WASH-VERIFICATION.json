@@ -1,0 +1,18 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "7260f92a8147625dff5d6c603ea9afbec60c0931ce510e08ce4e3a2306e0532e",
+  "parent_run100_openjoc_wash_manifest_sha256": "24530840c6a26cca5082fa1d018039f6feb1a3062ccdd7ef13c67217dcb64c73",
+  "checks": {
+    "source_manifest_sidecar_payload_hashes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "strict_deviation_set_matches_OpenJOC_JSON": true,
+    "JOC_present": true,
+    "strict": "fail",
+    "deployed_compatibility": "pass",
+    "render_verified": false,
+    "encoder_completion": "NOT_CONFIRMED",
+    "PCM_or_payload_accessed": false
+  },
+  "scope_note": "Wash validated hashes and parsed metadata JSON; no output EC3 payload, PCM, decoder render, or interoperability playback was tested."
+}

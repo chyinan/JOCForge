@@ -1,0 +1,68 @@
+{
+  "schema": "washed-sample6-ddp-dialnorm-runtime-observation.v1",
+  "status": "ONE_RUN_OWNER_VALUE_AND_SERIALIZER_CONSUMPTION_OBSERVED_CAUSAL_F06_SOURCE_UNBOUND",
+  "source_receipt_manifest_sha256": "e393a7756866568a330c38201910e7771be27a5060ca061160e094d7314dd9ec",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "source_bytes": 743696526,
+  "job_xml_sha256": "154750c902bd75c8e2c2306d5480b8422ed6e6a4741f2b81ece76405149d1f27",
+  "route": {
+    "input_type": "atmos_mezz",
+    "operation": "encode_to_atmos_ddp",
+    "time_base": "file_position",
+    "start_end": "empty_full_file",
+    "rate_kbps": 1024,
+    "sample_rate_hz": 48000,
+    "timecode_frame_rate": 24,
+    "offset": "auto",
+    "ffoa": "auto",
+    "measure_only": false,
+    "custom_dialnorm": false
+  },
+  "output": {
+    "bytes": 17395712,
+    "sha256": "f1daaad908c5f86f7be11b3bbdc774bb4acffbfacc7da79d517256af601df147",
+    "sha256_status": "captured before and unchanged after posthoc checks; payload excluded",
+    "sample_rate_hz": 48000,
+    "channels": "5.1(side)",
+    "rate_bps": 1024000,
+    "openjoc": "0.18.0",
+    "access_units": 4247,
+    "joc_signaled": 4247,
+    "profile_index": 3,
+    "coded_objects": 15,
+    "complexity_index": 16,
+    "etsi_strict": "FAIL_4247_OF_4247",
+    "deployed_compatibility": "PASS_4247_OF_4247",
+    "render_verified": false
+  },
+  "owner_observation": {
+    "same_owner_bound": true,
+    "owner_input_member_u16": "0x0019",
+    "post_arm_write_seen": true,
+    "post_arm_store_width_bits": 32,
+    "post_arm_written_u32": "0x00000019",
+    "post_arm_low_u16": "0x0019",
+    "setter_copy_before_post_arm_write_u16": "0x0019",
+    "serializer_after_post_arm_write_u16": "0x0019",
+    "serializer_count": 1,
+    "serializer_width_bits": 5,
+    "serializer_low5_bits": "0x19",
+    "bit_writer_return": "0",
+    "prewrite_value": "NOT_CAPTURED",
+    "postwrite_change": "NOT_ESTABLISHED_VALUE_UNCHANGED; no postwrite setter copy captured"
+  },
+  "dee_measurement": {
+    "logged_integrated_loudness": "-25.022484",
+    "logged_measured_loudness": "-25.02",
+    "units": "NOT_STATED_IN_LOG",
+    "f06_finalize_member": "NOT_IDENTIFIED",
+    "relation_to_owner_value": "UNBOUND",
+    "default_source": "UNBOUND"
+  },
+  "interpretation": {
+    "scope": "One authorized sample-6 full-file DEE run only.",
+    "safe_use": "Runtime comparison fixture for this input/profile; not a general formula/default.",
+    "audio_algorithm_inference_from_openjoc_or_ffprobe": false,
+    "playback_or_render": false
+  }
+}

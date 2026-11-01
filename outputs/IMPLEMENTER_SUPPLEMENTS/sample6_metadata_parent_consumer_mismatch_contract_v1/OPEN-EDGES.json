@@ -1,0 +1,22 @@
+{
+  "package_id": "sample6_metadata_parent_consumer_mismatch_contract_v1",
+  "closed": [
+    "The first typed current-source failure predicate checks proposal and receipt consumer transaction IDs against the expected source token.",
+    "The parent callback token is not compared by that predicate; it is used later for the GTC owner receipt.",
+    "The approved model requires source and parent transaction scopes to be distinct.",
+    "Attempt-06 terminal error and missing output are bound by its run receipt/log."
+  ],
+  "open": [
+    "Which consumer token mismatched at runtime.",
+    "Attempt-06 binary to inspected source snapshot.",
+    "Native measurement owner to model MeasurementReceipt generation.",
+    "Attempt-07 compare-point runtime capture."
+  ],
+  "status": {
+    "runtime_expected_actual": "UNBOUND",
+    "attempt06_binary_source_join": "UNBOUND",
+    "current_source_semantics": "STATICALLY_BOUND_NOT_RUN_JOINED",
+    "native_measurement_model_join": "UNBOUND"
+  },
+  "guidance": "Do not label this a parent callback token mismatch from the enum name alone. Keep source-consumer and parent-owner receipt IDs separate."
+}

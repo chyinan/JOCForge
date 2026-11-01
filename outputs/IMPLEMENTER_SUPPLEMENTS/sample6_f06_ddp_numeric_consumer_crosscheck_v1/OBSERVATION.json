@@ -1,0 +1,122 @@
+{
+  "schema": "washed-sample6-f06-ddp-numeric-consumer-observation.v1",
+  "package_id": "sample6_f06_ddp_numeric_consumer_crosscheck_v1",
+  "evidence_class": "SINGLE_RUN_NATIVE_OBSERVATION_PLUS_HASH_BOUND_STATIC_CONTEXT",
+  "disposition": "F06_FLOAT_COPY_AND_DDP_INTERNAL_NUMERIC_CONSUMER_OBSERVED; PCM24_SOURCE_JOIN_AND_DIALNORM_JOIN_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "ef1cc5060b9048a5eefbedb7299832997a94566fc61be3ab31152913ea96500d",
+    "input_label": "atmos_mezz",
+    "route": "encode_to_atmos_ddp",
+    "time_base": "file_position",
+    "rate_kbps": 1024,
+    "input_range": "full file; one native job",
+    "native_job_count": 1,
+    "job_completed": true,
+    "reported_encoder_progress": "100%",
+    "native_exit_code": "NOT_CAPTURED",
+    "second_native_job_started": false
+  },
+  "runtime_image_sha256": {
+    "dee": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "converter": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_atmos": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "f06_result_copy": {
+    "field_type": "Float32",
+    "bits": "0xc1864780",
+    "value": -16.784912109375,
+    "unit": "NOT_STATED",
+    "same_run_measurement_to_same_owner_cache": true,
+    "cache_member_offset_bytes_decimal": 3948,
+    "cache_bits_after_copy": "0xc1864780",
+    "same_owner_cache_to_encode_parameter_copy": true,
+    "encode_parameter_member_offset_bytes_decimal": 276,
+    "encode_parameter_bits_after_copy": "0xc1864780",
+    "generation_token": "UNBOUND",
+    "custom_dialnorm_xml_node_present": false,
+    "custom_dialnorm_getter_value": 0,
+    "custom_dialnorm_conditional_overwrite_taken": false,
+    "f06_float_to_dialnorm_u16_rule": "UNBOUND"
+  },
+  "ddp_internal_row_numeric_consumer": {
+    "row_copy_extent_rule": "frame_count times 4 bytes per row",
+    "observed_copy_count": 1536,
+    "source_and_internal_row_buffers_distinct": true,
+    "copy_and_first_numeric_consumer_same_call_chain": true,
+    "first_consumer_operation": "four-lane Float32 addition",
+    "one_observed_lane_bits": "0x38158000",
+    "one_observed_lane_value": 0.000035643577575683594,
+    "other_vector_lanes_inspected": false,
+    "pcm24_input_scalar": "NOT_CAPTURED",
+    "reader_to_ddp_source_row_join": "UNBOUND",
+    "generation_token": "UNBOUND"
+  },
+  "not_observed": {
+    "selected_pcm24_reader_branch_and_bulk_store": "NOT_HIT",
+    "ddp_owner_u16_dialnorm_member_writer": "NOT_HIT",
+    "ddp_u16_staging_writer": "NOT_HIT",
+    "five_bit_serializer_consumer": "NOT_HIT",
+    "selector3_setup_callback_and_param4_table": "NOT_CAPTURED",
+    "setup_param4_to_chna_owner_generation_join": "UNBOUND"
+  },
+  "output_observation": {
+    "bytes": 17395712,
+    "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "output_was_present_when_hashed_and_parsed": true,
+    "output_retained_now": false,
+    "output_removed_after_metadata_inspection": true,
+    "parser": "OpenJOC 0.18.0",
+    "parser_role": "posthoc metadata-only; not evidence of DEE algorithm behavior",
+    "parsed_access_units": 4247,
+    "joc_signaled_and_payload_parsed_access_units": 4247,
+    "profile_index": 3,
+    "coded_rows_or_objects": 15,
+    "complexity_index": 16,
+    "strict_validation_status": "FAIL_ALL_4247_ACCESS_UNITS",
+    "deployed_compatibility_status": "PASS_ALL_4247_ACCESS_UNITS",
+    "render_verified": false,
+    "playback": "NOT_RUN"
+  },
+  "source_packages": [
+    {
+      "package_id": "adm_bwf_pcm24_to_f32_boundary_wash_v3",
+      "manifest_sha256": "fbe36b291be5dd965a94c55350ce9981ef05250f3aa3dc12b057786adf26f9cd"
+    },
+    {
+      "package_id": "pcm24_reader_f32_normalization_v1",
+      "manifest_sha256": "24e3b20e465f2ec820f9f08c361db01e3e1cbd628e92458bc57bb542cf9a72a0"
+    },
+    {
+      "package_id": "native_measurement_to_dialnorm_conversion_boundary_v1",
+      "manifest_sha256": "7c5df7a951e473b1857dee113c78fcbc9f05a0d1432aec0cd0f5df350a838550"
+    },
+    {
+      "package_id": "custom_dialnorm_option_boundary_v1",
+      "manifest_sha256": "91e93d317d054b0b319a04f300dcaf04b880d882da0fb274f088f252cf7f8ec1"
+    },
+    {
+      "package_id": "native_dialnorm_owner_cold_default_boundary_v1",
+      "manifest_sha256": "2a6addbce0547df9a1d0797a2a43f3361b59cb0be873b0bf964d9b1c20506752"
+    },
+    {
+      "package_id": "adm_bwf_converter_setup_record_boundary_v1",
+      "manifest_sha256": "ef24c940da349eda5c8769ee9aac9e2bbef0064a7c3d527926876e2eb5f24eeb"
+    },
+    {
+      "package_id": "adm_bwf_opener_channel_table_producer_v1",
+      "manifest_sha256": "8aa8ef80813c13a0b32d6e9d1286fcba8b2814e35996c5ba926923a6bd44d4cc"
+    }
+  ],
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "raw_pcm": false,
+    "bitstream_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_pointers_or_instruction_addresses": false
+  }
+}

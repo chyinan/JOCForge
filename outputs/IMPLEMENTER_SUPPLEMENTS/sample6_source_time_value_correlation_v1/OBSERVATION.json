@@ -1,0 +1,51 @@
+{
+  "schema": "washed-sample6-source-time-value-correlation.v1",
+  "status": "SAME_INPUT_AND_SCALAR_VALUES_BOUND; AXML_TO_PROPERTY_WRITER_UNBOUND",
+  "source_package_manifest_sha256": "4908509e2ce543f6fa0c4ae3b7d279008834c7f52a7dc9ad09c9c6ecc28ac153",
+  "source": {
+    "full_file_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "channels": 38,
+    "bits_per_sample": 24,
+    "sample_rate_hz": 48000,
+    "samples_per_channel": 6522906
+  },
+  "metadata": {
+    "axml_programme_start_seconds": 3610.0,
+    "bext_time_reference": "ABSENT",
+    "explicit_axml_offset": "ABSENT",
+    "explicit_axml_ffoa": "ABSENT",
+    "dbmd_bytes": 580,
+    "dbmd_semantics": "NOT_EVALUATED"
+  },
+  "same_hash_native_reference": {
+    "offset_seconds": 3610.0,
+    "ffoa_seconds": 3610.0,
+    "source_timecode_rate_hz": 24,
+    "evidence_source": "hash-bound prior Wash receipt"
+  },
+  "conditional_range": {
+    "formula": "start_sample = round(sample_rate * max(0, ffoa - offset))",
+    "sample6_result": 0,
+    "end_sample": 6522906,
+    "end_semantics": "exclusive",
+    "activation": "file_position full-file FFOA-to-EOF rule"
+  },
+  "limits": {
+    "axml_start_to_offset_writer": "UNBOUND",
+    "axml_start_to_ffoa_writer": "UNBOUND",
+    "first_reader_request": "NOT_CAPTURED",
+    "causality": "not established from equal values"
+  },
+  "disposition": {
+    "supports_sample6_full_file_start_at_sample0": true,
+    "general_auto_resolver_approved": false,
+    "instruction": "This hash-specific correlation supports the selected sample6 full-file start at sample 0. Do not generalize AXML start as offset/FFOA resolver for other ADMs."
+  },
+  "acquisition": {
+    "metadata_payload_bytes_read": 84597,
+    "pcm_payload_bytes_read_by_scanner": 0,
+    "full_hash_method": "streaming SHA-256 only; no decode or sample retention",
+    "native_job_in_this_addendum": "NOT_RUN"
+  }
+}

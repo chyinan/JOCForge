@@ -1,0 +1,53 @@
+{
+  "package_id": "sample6_attempt05_drc_single_token_error_mapping_v1",
+  "status": "RUN05_DRC_ERROR_OBSERVED; LEGACY_SINGLE_TOKEN_WRAPPER_CAN_MAP_SOURCE_MISMATCH_TO_PARENT_ERROR; RUN_BINARY_IDENTITY_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Attempt-05 terminal error plus current-source DRC API semantics. No runtime expected/actual values, no proof which executable/source ran, and no fix validation are claimed.",
+  "source": {
+    "incoming_package_id": "ATTEMPT05-DRC-PARENT-TRANSACTION-RUNTIME-ANALYSIS-WASH-V1",
+    "manifest_sha256": "b9a3008ecbe8af4a0542f016be6550888bcaa1b6b0a5992c342d9394e0f6fb55",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "run": {
+    "run_id": "sample6-keyless-full-20261101-05",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "candidate_executable_sha256": "a51c251b7a20ac40e60699f5a2e9f6ad0812df2d3b3f535bf431a394a168ec7b",
+    "binary_identity": "UNBOUND_RUNNER_TARGET_AND_PROCESS_IMAGE",
+    "runner_hash_text_length": 63,
+    "runner_launch_path": "UNBOUND",
+    "exit_code": 2,
+    "error": "Metadata parent proposal: ParentTransactionMismatch",
+    "output_present": false,
+    "partial_present": false,
+    "expected_actual_fields": "NOT_LOGGED"
+  },
+  "static_drc_api": {
+    "legacy_api": "prepare_replacement(after, transaction_id)",
+    "legacy_behavior": "passes one token as both source and parent; maps inner SourceTransactionMismatch to ParentTransactionMismatch",
+    "two_token_api": "prepare_replacement_for_parent_callback(after, source_transaction_id, parent_callback_transaction_id)",
+    "current_source_route": "uses two-token API",
+    "source_timestamp": "after attempt-05 launch",
+    "source_to_attempt05_binary_join": "UNBOUND"
+  },
+  "model_contract": {
+    "source_transaction_id": "jocforge-source-0",
+    "parent_callback_transaction_id": "jocforge-main-callback-g2",
+    "same_token_expected": false,
+    "source_f05_f13_consumer_fields": "source transaction",
+    "gtc_parent_owner_receipt": "parent callback transaction"
+  },
+  "conclusion": {
+    "classification": "STATIC_CAUSE_CONSISTENT_WITH_RUNTIME_ERROR_NOT_PROVEN_FOR_ATTEMPT05",
+    "possible_legacy_failure": "a parent token supplied to a source-key comparison could surface as ParentTransactionMismatch",
+    "runtime_mismatching_field_and_value": "UNBOUND"
+  },
+  "exclusions": {
+    "implementation_source_included": false,
+    "binary_or_decompilation_included": false,
+    "raw_pointer_included": false,
+    "pcm_or_ec3_payload_read": false,
+    "private_license_or_hmac_or_key_read": false,
+    "new_dee_run_started": false
+  }
+}

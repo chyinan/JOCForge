@@ -1,0 +1,108 @@
+{
+  "schema": "washed-sample6-dbmd-negative-ffoa-sentinel.v1",
+  "package_id": "sample6_dbmd_negative_ffoa_sentinel_crosscheck_v1",
+  "evidence_class": "INDEPENDENT_BOUNDED_DBMD_INPUT_VECTOR_PLUS_HASH_BOUND_CANDIDATE_HELPER_RULE",
+  "status": "SAMPLE_DBMD_NEGATIVE_SENTINEL_BRANCH_CONFIRMED; HISTORICAL_DEE_HELPER_IMAGE_UNBOUND",
+  "implementation_ready": "CANDIDATE_HELPER_METADATA_RULE_ONLY",
+  "scope": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "file_bytes": 743696526,
+    "dbmd_chunk_bytes": 580,
+    "dbmd_payload_sha256": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9",
+    "bounded_wash_read": {
+      "riff_header_bytes": 12,
+      "chunk_header_bytes": 48,
+      "dbmd_payload_bytes": 580,
+      "audio_data_payload_bytes": 0,
+      "logical_bytes_read": 640
+    },
+    "raw_dbmd_bytes_persisted": false
+  },
+  "decoded_time_tuple": {
+    "record_type": 9,
+    "type9_record_header_offset": 104,
+    "type9_body_offset": 107,
+    "declared_body_bytes": 248,
+    "tuple_field_body_offset_bytes": 112,
+    "fields": [
+      {
+        "name": "hours_or_missing_sentinel",
+        "encoding": "signed int8",
+        "domain_min": -128,
+        "domain_max": 127,
+        "value": -1
+      },
+      {
+        "name": "minutes",
+        "encoding": "unsigned int8",
+        "domain_min": 0,
+        "domain_max": 255,
+        "value": 0
+      },
+      {
+        "name": "subsecond_ticks",
+        "encoding": "signed little-endian int32",
+        "domain_min": -2147483648,
+        "domain_max": 2147483647,
+        "value": 0
+      }
+    ],
+    "record_sequence": [
+      7,
+      9,
+      10
+    ],
+    "record_checksums": [
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "decode_status": "ACCEPTED_TYPED_RECORDS_AND_CHECKSUMS",
+    "decode_fallback": "NOT_TAKEN",
+    "type10_magic_valid": true,
+    "type10_declared_and_consumed_body_bytes": 218,
+    "terminator_offset_in_dbmd_payload": 578,
+    "unconsumed_trailing_bytes": 1
+  },
+  "candidate_helper_branch": {
+    "negative_hours_sentinel_result_seconds": -1,
+    "absolute_source_ffoa_write": "SUPPRESSED; constructor default -1.0 retained",
+    "normalized_master_relative_ffoa_seconds": -1,
+    "start_time_seconds": 3610,
+    "final_helper_ffoa_formula": "StartTime + max(relative_ffoa, 0)",
+    "final_helper_ffoa_seconds": 3610,
+    "direct_helper_start_time_seconds": 3610,
+    "direct_helper_ffoa_seconds": 3610,
+    "resulting_pair_explained_for_this_candidate": "YES"
+  },
+  "historical_identity": {
+    "candidate_helper_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+    "historical_dee_host_loaded_helper_image": "UNBOUND",
+    "candidate_to_historical_host_equivalence": "UNBOUND"
+  },
+  "nonexecution": {
+    "new_dee_encoding_job": "NOT_RUN",
+    "model_run": "NOT_RUN",
+    "codec_execution": "NOT_RUN"
+  },
+  "source_packages": [
+    {
+      "package_id": "dbmd-sample6-input-vector",
+      "manifest_sha256": "2649044ae7225b28acce2c927c843e65421a4cec503e5fa00ad6e87fd0fd651c"
+    },
+    {
+      "package_id": "helper_time_producer_candidate_closure_v1",
+      "manifest_sha256": "d8a1c0c623d4b35d3c60728c17199f1098651b1baa7e45d32318e4aaef3a4205"
+    }
+  ],
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "raw_dbmd_bytes": false,
+    "pcm_or_audio_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

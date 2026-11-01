@@ -1,0 +1,15 @@
+{
+  "schema": "wash-verification.v1",
+  "status": "PASS_HASH_BOUND_BOUNDED_SANITIZED",
+  "source_manifest_sha256": "e393a7756866568a330c38201910e7771be27a5060ca061160e094d7314dd9ec",
+  "source_checker": {
+    "normal": "PASS",
+    "optimized": "PASS"
+  },
+  "source_sha256_recomputed_by_wash": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "output_payload": "Not included; output hash is source receipt claim, not independently rehashed by Wash.",
+  "no_rvas": true,
+  "no_raw_logs": true,
+  "no_payload": true,
+  "audio_algorithm_inference": false
+}

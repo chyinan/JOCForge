@@ -1,0 +1,28 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; POINTER_CAPTURE_FAILED",
+  "source_package_id": "ADM-OPENER-SETUP-POINTER-R2-CAPTURE-V1",
+  "source_package_manifest_sha256": "3037a4c2c4e45e70bf7c6b14f0b84ed7bcabdfc3586af3c8f5cf94253b39186a",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_package_artifacts_checked": 10,
+  "output_hash_matches_r3_same_sample_job": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+  "output_artifact_currently_available": false,
+  "prior_wash_context_manifest": "6a7285dcc6fc3946d900a5926da7743b8171ba98cfb5560196775271946a3de6",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The two WinDbg expressions were unresolved and neither breakpoint hit; this is an instrumentation failure, not evidence the code path is absent.",
+    "No pointer values, caller stack, or owner-generation token were captured, so identity is not evaluated.",
+    "The output file was deleted after metadata-only inspection; it is not a reusable deliverable.",
+    "MediaInfo metadata does not establish strict E-AC-3/JOC conformance, rendering, or listening acceptance."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binary": false,
+    "ec3_or_pcm_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

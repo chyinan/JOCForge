@@ -1,0 +1,74 @@
+{
+  "schema": "washed-sample6-opener-setup-pointer-capture-observation.v1",
+  "package_id": "sample6_opener_setup_pointer_capture_boundary_v1",
+  "evidence_class": "SINGLE_NATIVE_JOB_OUTPUT_PLUS_FAILED_RUNTIME_INSTRUMENTATION_ATTEMPT",
+  "disposition": "SAMPLE_OUTPUT_METADATA_OBSERVED; POINTER_IDENTITY_NOT_CAPTURED; BREAKPOINT_RESOLUTION_FAILED",
+  "implementation_ready": "NO",
+  "scope": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_template_sha256": "ef156c2480a5691d17f0c2d3742f50ded160041fccac0319095c891520fbe8c3",
+    "derived_job_sha256": "05c01af32be46af828bdfad3bab1c62fb3b56245aa45060e06845106f1964798",
+    "input_element": "atmos_mezz",
+    "route": "encode_to_atmos_ddp",
+    "time_base": "file_position",
+    "rate_kbps": 1024,
+    "range": "full file",
+    "native_job_started_once": true,
+    "second_native_job_started": false,
+    "runtime_image_set": {
+      "dee": "65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+      "ddp_atmos": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "converter": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+    }
+  },
+  "instrumentation": {
+    "attempted_site_roles": [
+      "opener table-pointer store",
+      "setup entry receiving param4"
+    ],
+    "expression_form": "unqualified module plus relative address",
+    "resolved_after_module_load": false,
+    "breakpoints_hit": 0,
+    "reported_resolution_failure": "UNQUALIFIED_MODULE_PLUS_RELATIVE_ADDRESS_UNRESOLVED",
+    "pointer_tokens_captured": false,
+    "caller_stack_captured": false,
+    "same_generation_pointer_equality": "NOT_EVALUATED",
+    "instrumentation_result": "INEFFECTIVE; DOES NOT SHOW THAT THE CODE SITES OR EVENTS ARE ABSENT"
+  },
+  "output_observation": {
+    "bytes": 17395712,
+    "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "output_present_when_hashed_and_inspected": true,
+    "output_retained_now": false,
+    "output_removed_after_metadata_inspection": true,
+    "metadata_tool": "MediaInfo CLI 26.05",
+    "metadata_only": true,
+    "format": "E-AC-3",
+    "additional_features": "JOC",
+    "bitrate_bps": 1024000,
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "duration_seconds": 135.904,
+    "dynamic_object_count": 15,
+    "bed_channel_count": 1,
+    "complexity_index": 16,
+    "dialnorm_reported": -17,
+    "render_verified": false,
+    "playback": "NOT_RUN",
+    "process_exit_code": "NOT_CAPTURED"
+  },
+  "open_edges": {
+    "opener_table_pointer_to_setup_param4": "UNBOUND",
+    "same_parent_generation_identity": "UNBOUND",
+    "chna_setup_table_join": "UNBOUND"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binary": false,
+    "ec3_or_pcm_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

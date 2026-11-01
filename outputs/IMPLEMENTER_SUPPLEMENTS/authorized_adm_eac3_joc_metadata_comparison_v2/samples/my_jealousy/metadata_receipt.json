@@ -1,0 +1,165 @@
+{
+  "schema": "authorized-adm-eac3-metadata-receipt.v1",
+  "sample_label": "My jealousy (Original ver.).wav",
+  "status": "ENCODER_COMPLETED_METADATA_CAPTURED",
+  "captured_at_utc": "2026-10-31T13:35:58.531353+00:00",
+  "input": {
+    "authorized_lineage_id": "authorized_adm_bwf_03",
+    "source_bytes": 791588070,
+    "source_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "source_last_write_utc": "2026-09-06T15:18:58.125727+00:00",
+    "ascii_alias_basename": "my_jealousy_original.wav",
+    "alias_bytes": 791588070,
+    "alias_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "source_unchanged_after_run": true,
+    "ffprobe_metadata": {
+      "codec_name": "pcm_s24le",
+      "sample_rate_hz": 48000,
+      "channels": 36,
+      "bits_per_sample": 24,
+      "duration_seconds": 152.682729,
+      "metadata_json_sha256": "7f4fe1e429dee5c2edf0bfdbb68367a2a68d97de562f52e2f50946cfc96fbbee"
+    }
+  },
+  "job": {
+    "xml_sha256": "e46c86711aff8b68216e9b92265ad6f9462b1e67c97d067039580cf999356938",
+    "preflight_job_xml_sha256": "0ae4e79773285dd8afac4ce6e69dc990c62ecc7e0dec6cc8e9515a8836743d39",
+    "source_r138_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_type": "audio.adm",
+    "route": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "time_base": "embedded_timecode",
+    "start": "86664",
+    "end": "86688",
+    "range_delta_from_preflight": {
+      "start": 24,
+      "end": 24
+    },
+    "selection_note": "No BEXT/iXML timecode-rate field was present. A bounded source scan found an active candidate near source frame 50000; shifting the R138 tokens by +24 resulted in this run's DEE normalized range 48000-97999. This is a per-input/per-run observation, not a general timebase rule.",
+    "local_xsd_valid": false,
+    "known_local_xsd_extensions": [
+      "timecode_frame_rate",
+      "time_base"
+    ],
+    "timecode_frame_rate": "not_indicated"
+  },
+  "runtime": {
+    "dee_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_filter_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "launch_method": "WinDbg launch with the R4-matched DEE option set",
+    "license_argument_supplied": true,
+    "license_contents_opened_copied_or_hashed": false,
+    "license_material_in_receipt": false,
+    "numeric_exit_code": "NOT_CAPTURED_BY_DEBUGGER",
+    "target_gone_after_run": true,
+    "encoder_done": true,
+    "encoding_progress_100": true,
+    "output_progress_100": true,
+    "measured_integrated_loudness": "-37.996147.",
+    "audio_content_status": "ACTIVE_WINDOW_CONFIRMED_BY_BOUNDED_SOURCE_PCM_AND_DEE_METER",
+    "sample_peak_zero": false,
+    "true_peak_zero": false,
+    "measurement_interpretation": "No independent audio decode or listening was performed.",
+    "normalized_source_pcm_frame_range": {
+      "start_inclusive": 48000,
+      "end_inclusive": 97999,
+      "evidence": "dee_active.log exact Composite Master line for this run",
+      "scope": "Per-input/per-run only; not a general timebase formula"
+    }
+  },
+  "output": {
+    "bytes": 135168,
+    "sha256": "61e871add50cef735c7c6214cefe6df5929decaaee1b1c5d362b8aa27b92db3c",
+    "ffprobe": {
+      "tool_version": "ffprobe version 8.1-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers",
+      "codec_name": "eac3",
+      "profile": "Dolby Digital Plus + Dolby Atmos",
+      "sample_rate_hz": 48000,
+      "channels": 6,
+      "channel_layout": "5.1(side)",
+      "bit_rate_bps": 1024000,
+      "duration_seconds": 1.056,
+      "format_size": 135168,
+      "packet_or_frame_listing": false,
+      "audio_decode": false
+    },
+    "openjoc": {
+      "tool_version": "OpenJOC 0.20.1",
+      "binary_sha256": "875e4c3b0b47cde77776fb714a45bf6a89970420863e9bdc21287fcfb6937a16",
+      "metadata_json_sha256": "a4ad76e4d724afe91ebcd8482603382149a475e43af16c21c9703d95a0228905",
+      "format": "eac3_joc",
+      "classification_authority": "in_band_syntax",
+      "access_units": 33,
+      "duration_seconds": 1.0560000000000007,
+      "joc_present": true,
+      "addbsi_signaled_aus": 33,
+      "joc_profile_index": 3,
+      "joc_profile": "five_x_phase",
+      "coded_object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "scene_metadata_present": true,
+      "object_metadata_present": true,
+      "object_metadata_slot_count": 16,
+      "dynamic_metadata_detected": true,
+      "stream_parse": "pass",
+      "etsi_strict_status": "fail",
+      "etsi_strict_failed_aus": 33,
+      "deployed_compatibility_status": "pass",
+      "deployed_compatibility_failed_aus": 0,
+      "decoder_admissible": true,
+      "render_verified": false
+    }
+  },
+  "setup_failures": [],
+  "source_window_measurements": [
+    {
+      "file": "bwf-window-scan.json",
+      "sha256": "e4098b3cbb182295e4626e2dd8a91a80110a300413f3a637e96e88507e862154",
+      "status": "DIRECT_PCM_SAMPLE_WINDOW_MEASURED",
+      "coordinate_basis": "Bounded source data-chunk scan; source has no BEXT/iXML timecode rate, so direct sample offsets are not mapped to product timebase.",
+      "sample_offset": 0,
+      "sample_frames_per_channel": 50000,
+      "peak_dbfs": -46.469809954038084,
+      "rms_dbfs": -72.38242782611943,
+      "pcm_values_persisted": false
+    },
+    {
+      "file": "bwf-window-active.json",
+      "sha256": "a03a7ab4536ec8365cc18874f5d5aeb78340fa31839d9949771dc5c41411e1ad",
+      "status": "DIRECT_PCM_SAMPLE_WINDOW_MEASURED",
+      "coordinate_basis": "Verified by completed active-window DEE log for this input/config: Composite Master start=48000,end=97999; coordinate is scoped to this run.",
+      "sample_offset": 48000,
+      "sample_frames_per_channel": 50000,
+      "peak_dbfs": -27.92542797798662,
+      "rms_dbfs": -52.78333216670676,
+      "pcm_values_persisted": false
+    }
+  ],
+  "excluded_window_candidates": [],
+  "evidence_logs": [
+    {
+      "file": "dee_active.log",
+      "sha256": "afd93c22403bb3ef380ee0c329d8e6d5987f344db2c31f23fff460188785b441"
+    }
+  ],
+  "handling": {
+    "pcm_decoded": false,
+    "audio_played": false,
+    "ec3_payload_in_receipt": false,
+    "output_payload_retained": false,
+    "input_alias_retained": false,
+    "media_cleanup": "VERIFIED_OUTPUT_ALIAS_AND_TEMP_DIRECTORIES_REMOVED",
+    "source_original_retained": true,
+    "source_hash_after_cleanup": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "temporary_payload_directories_removed": {
+      "temp": true,
+      "temp_active": true
+    },
+    "sample_disposition": "ACTIVE_WINDOW_CONFIRMED_BY_BOUNDED_SOURCE_PCM_AND_DEE_METER",
+    "source_window_measurement_status": "Bounded in-memory PCM measurement only; source values not persisted"
+  }
+}

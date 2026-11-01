@@ -1,0 +1,38 @@
+{
+  "schema": "wash-only-run100-metadata-manifest.v1",
+  "package_id": "run100_reference_ec3_metadata_only_wash_v1",
+  "status": "RUN100_REFERENCE_BOUND_VIA_HASHED_ALIAS; FFPROBE_METADATA_ONLY_PASS; JOB_TIME_INPUT_SHA_LIMIT_RETAINED",
+  "implementation_ready": "NO",
+  "run_time_input_sha256_recorded": false,
+  "authorized_input_lineage_id": "authorized_adm_bwf_06",
+  "reference_ec3_payload_included": false,
+  "pcm_or_payload_decoded": false,
+  "license_or_key_content_included": false,
+  "payloads": [
+    {
+      "file": "RUN100-METADATA.json",
+      "bytes": 4056,
+      "sha256": "6b7cd505efc16b7090561a03c39dd959b26becbe8ece7a37dd059e917f492ea8"
+    },
+    {
+      "file": "PLAN-IF-REGENERATION-NEEDED.md",
+      "bytes": 1044,
+      "sha256": "69fdde57d36b86f2f44c9edb0674eb8dd7898e99b4058c45e5d34854dc6e3367"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1119,
+      "sha256": "678d25ed69694f6dbb813d4cda6a8a0408dd5ed1f89a635250f79fca0d1e9c3b"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1275,
+      "sha256": "363cf910460371f703d00d1d9664193462d5f4427d8bff3da6702cc3cbacc965"
+    },
+    {
+      "file": "check_run100_metadata_only.py",
+      "bytes": 6903,
+      "sha256": "af272af2f47da9d12085fa122bd0b93ad7237c4eac08764f5842450411f61c06"
+    }
+  ]
+}

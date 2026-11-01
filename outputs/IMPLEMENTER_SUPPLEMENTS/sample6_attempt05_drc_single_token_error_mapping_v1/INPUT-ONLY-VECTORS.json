@@ -1,0 +1,24 @@
+{
+  "contract": "Synthetic transaction identifiers only. No output expectations or runtime values are asserted.",
+  "vectors": [
+    {
+      "id": "distinct_source_parent",
+      "input": {
+        "source_transaction_id": "synthetic.source.s0",
+        "parent_callback_transaction_id": "synthetic.callback.g2",
+        "proposal_consumer_transaction_id": "synthetic.source.s0",
+        "receipt_consumer_transaction_id": "synthetic.source.s0"
+      },
+      "status": "MODEL_SHAPE"
+    },
+    {
+      "id": "legacy_wrapper_source_mismatch",
+      "input": {
+        "source_transaction_id": "synthetic.source.s0",
+        "wrapper_transaction_id": "synthetic.callback.g2"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "SYNTHETIC_ONLY"
+    }
+  ]
+}

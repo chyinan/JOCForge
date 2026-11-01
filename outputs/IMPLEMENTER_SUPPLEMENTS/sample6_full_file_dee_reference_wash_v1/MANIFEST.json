@@ -1,0 +1,31 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "sample6_full_file_dee_reference_wash_v1",
+  "status": "EVIDENCE_ONLY_DEE_FULL_FILE_REFERENCE_METADATA",
+  "source_package_manifest_sha256": "240b321b04c511ac16beb1c75e173ab1fe6ea3d2e7704ead314f9e83a5119e9f",
+  "source_package_seal_sha256": "af0929a0359827d0649a0d619343c5d33afd87e19b812bf2f876a6660ca250af",
+  "implementation_allowed_for": "REFERENCE_METADATA_CROSSCHECK_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_raw_logs": false,
+  "contains_pcm_or_eac3_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "files": [
+    {
+      "name": "FULL-FILE-REFERENCE.json",
+      "bytes": 3307,
+      "sha256": "2f457f38e1e18b8128d6416a41f5f902dafba2162f242963e91643e31cc210c4"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1486,
+      "sha256": "38d94850ec54163bf192a5203842ef81f97950261cd1803b111bd4ca5e739b4b"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 1072,
+      "sha256": "001c80bd755cab4436c709301ae87dc491b306db564a3cf95ad7093ac869248c"
+    }
+  ]
+}

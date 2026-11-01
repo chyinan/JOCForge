@@ -1,0 +1,31 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "run100-emdf-compatibility-diagnostic-followup-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "7260f92a8147625dff5d6c603ea9afbec60c0931ce510e08ce4e3a2306e0532e",
+  "parent_run100_openjoc_wash_manifest_sha256": "24530840c6a26cca5082fa1d018039f6feb1a3062ccdd7ef13c67217dcb64c73",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "c5a8908c7959d36c559907dd09580f1ab20838dcd9bfa8060dca1f075d06cade",
+      "bytes": 2593
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "2f9b728affbf229c4321b0c2580f2a6ba4f9c7068b77f4d4c8f14b4960428431",
+      "bytes": 951
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "8680fb08b6296e1a1df6accc0a3b635e8d42c718b95c9f6a76b781f72ebcb8cd",
+      "bytes": 826
+    }
+  ]
+}

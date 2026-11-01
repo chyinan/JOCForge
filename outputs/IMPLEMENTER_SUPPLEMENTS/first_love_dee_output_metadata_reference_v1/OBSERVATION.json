@@ -1,0 +1,177 @@
+{
+  "schema": "washed-first-love-dee-output-reference.v1",
+  "package_id": "first_love_dee_output_metadata_reference_v1",
+  "evidence_class": "ONE_USER_AUTHORIZED_DEE_REFERENCE_RUN_PLUS_OPENJOC_0_20_1_METADATA_ONLY_PARSE",
+  "disposition": "DEE_EC3_JOC_OUTPUT_OBSERVED; OPENJOC_COMPATIBILITY_PASS; STRICT_FAIL; SPATIAL_RENDER_NOT_RUN",
+  "implementation_ready": "NO",
+  "reference_only": true,
+  "input": {
+    "label": "First Love ADM BWF",
+    "sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "bytes": 1335078774,
+    "sample_rate_hz": 48000,
+    "channels": 36,
+    "bits_per_sample": 24,
+    "duration_seconds": 257.522771,
+    "riff_chunks": [
+      "JUNK",
+      "fmt ",
+      "data",
+      "axml",
+      "chna",
+      "dbmd"
+    ],
+    "adm_structure_validation_exit_code": 0,
+    "chna_tracks": 36,
+    "chna_unique_uids": 36
+  },
+  "job": {
+    "template_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "job_xml_sha256": "53f599df9cf72a04d88a7babc04a6d3f8b2a6ff4330dcbe5bd4440d068d40b80",
+    "input_type": "audio.adm",
+    "route": "encode_to_atmos_ddp",
+    "time_base": "file_position",
+    "full_file": true,
+    "start": "EMPTY",
+    "end": "EMPTY",
+    "data_rate_kbps": 1024,
+    "measure_only": {
+      "metering_mode": "1770-4",
+      "dialogue_intelligence": false,
+      "speech_threshold": 100
+    },
+    "offset": "auto",
+    "ffoa": "auto",
+    "custom_dialnorm": "ABSENT",
+    "unapproved_xml_nodes_semantically_unchanged": true,
+    "xml_version_warnings": "DEE reverted input/output/audio XML version to version 1",
+    "encoder_done_log": true,
+    "audio_stage_100_percent": true,
+    "output_stage_100_percent": true,
+    "job_execution_seconds": 54,
+    "process_exit_code": "NOT_CAPTURED",
+    "license_contents_read": false
+  },
+  "output": {
+    "bytes": 32964608,
+    "sha256": "284fa11e3a5200a2bf6fd0eb3ccba5a11177f2c955cf8ab60ee7576f37339261",
+    "retained_in_source_workspace": true,
+    "included_in_wash_package": false,
+    "ffprobe": {
+      "codec": "eac3",
+      "profile": "Dolby Digital Plus + Dolby Atmos",
+      "sample_rate_hz": 48000,
+      "channels": 6,
+      "layout": "5.1(side)",
+      "bitrate_bps": 1024000,
+      "duration_seconds": 257.536
+    },
+    "parser": {
+      "name": "OpenJOC",
+      "version": "0.20.1",
+      "executable_sha256": "2e84afcfa5e197332a84f9386ffa4c69f0c12e8ca5cf95c23690af320cfa1a39",
+      "mode": "inspect --json --aus --objects",
+      "exit_code": 0,
+      "classification": "eac3_joc",
+      "access_units": 8048,
+      "frames": 8048,
+      "duration_seconds": 257.536,
+      "bitrate_bps": 1023999.9999998754,
+      "sample_rates_hz": [
+        48000
+      ],
+      "programme_layout": "5.1",
+      "joc_present": true,
+      "joc_payload_occurrences": 8048,
+      "joc_parsed_payloads": 8048,
+      "profile_index": 3,
+      "profile": "5.X + Phase Signaling",
+      "coded_objects": 15,
+      "reconstruction_rows": 15,
+      "complexity_index": 16,
+      "malformed_aus": 0,
+      "decoder_admissible": true,
+      "decoder_checked_aus": 8048,
+      "decoder_admitted_aus": 8048,
+      "frame_timing_continuity": "continuous",
+      "metadata_timing_continuity": "continuous",
+      "diagnostics_count": 0,
+      "deployed_compatibility": {
+        "status": "PASS",
+        "tested_aus": 8048,
+        "failed_aus": 0
+      },
+      "etsi_strict": {
+        "status": "FAIL",
+        "tested_aus": 8048,
+        "failed_aus": 8048,
+        "deviations": [
+          {
+            "payload_id": 11,
+            "field": "codecdatae",
+            "observed": "0",
+            "expected": "1"
+          },
+          {
+            "payload_id": 11,
+            "field": "payload_frame_aligned",
+            "observed": "0",
+            "expected": "1"
+          },
+          {
+            "payload_id": 11,
+            "field": "create_duplicate",
+            "observed": "absent",
+            "expected": "0"
+          },
+          {
+            "payload_id": 11,
+            "field": "remove_duplicate",
+            "observed": "absent",
+            "expected": "0"
+          },
+          {
+            "payload_id": 11,
+            "field": "priority",
+            "observed": "absent",
+            "expected": "0"
+          },
+          {
+            "payload_id": 11,
+            "field": "proc_allowed",
+            "observed": "absent",
+            "expected": "0"
+          },
+          {
+            "payload_id": 14,
+            "field": "codecdatae",
+            "observed": "0",
+            "expected": "1"
+          }
+        ]
+      }
+    }
+  },
+  "native_gap": {
+    "constructor_candidate_hit": false,
+    "ddp_owner_member_0x34_runtime_join": "NOT_CAPTURED",
+    "this_is_not_blocking_sample_level_output_metadata": false
+  },
+  "acceptance": {
+    "spatial_render": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "pcm_decode_or_listening": "NOT_RUN",
+    "bit_exact": "NOT_RUN",
+    "production_wide_guarantee": false
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

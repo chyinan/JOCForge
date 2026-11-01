@@ -1,0 +1,23 @@
+{
+    "programs": [
+
+    ],
+    "stream_groups": [
+
+    ],
+    "streams": [
+        {
+            "codec_name": "eac3",
+            "profile": "Dolby Digital Plus + Dolby Atmos",
+            "sample_rate": "48000",
+            "channels": 6,
+            "channel_layout": "5.1(side)",
+            "bit_rate": "1024000"
+        }
+    ],
+    "format": {
+        "duration": "1.056000",
+        "size": "135168",
+        "bit_rate": "1024000"
+    }
+}

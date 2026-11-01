@@ -1,0 +1,108 @@
+{
+  "schema": "wash-only-run100-openjoc-joc-metadata-crosswalk.v2",
+  "package_id": "RUN100-OPENJOC-JOC-METADATA-CROSSWALK-V2",
+  "result": "ATMOS_PROFILE_LABEL_SEPARATE_FROM_INBAND_JOC_FLAG_AND_OAMD_OBJECT_METADATA",
+  "input_identity": {
+    "ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "ec3_bytes": 17395712,
+    "same_hash_as_run100_output_record": true,
+    "same_bytes_as_run100_output_record": true,
+    "run100_output_path_persisted": false,
+    "openjoc_file_input_format": "eac3_joc",
+    "openjoc_classification_authority": "in_band_syntax"
+  },
+  "atmos_profile_label": {
+    "source": "run100 ffprobe stream metadata",
+    "field": "stream_0_profile",
+    "value": "Dolby Digital Plus + Dolby Atmos",
+    "explicit_joc_flag_reported_by_ffprobe": "NOT_REPORTED_BY_FFPROBE",
+    "object_metadata_reported_by_ffprobe": "NOT_REPORTED_BY_FFPROBE",
+    "interpretation": "descriptor text only; not the parser's in-band JOC bit or JOC EMDF profile index"
+  },
+  "inband_joc_signaling": {
+    "explicit_addbsi_extension_flag_bit": "byte_0_bit_0",
+    "explicit_flag_count_field": "joc.addbsi_signaled_aus",
+    "addbsi_signaled_aus": 4247,
+    "joc_present": true,
+    "presence_status": "present",
+    "payload_occurrences": 4247,
+    "parsed_payloads": 4247,
+    "raw_ec3_container_declared_joc": null,
+    "interpretation": "in-band addbsi flag and successfully parsed JOC payload are separate observable facts; raw EC3 has no dec3 declaration"
+  },
+  "joc_emdf_profile": {
+    "source": "OpenJOC JOC profile summary",
+    "values": [
+      {
+        "value": {
+          "profile_index": 3,
+          "profile": "five_x_phase",
+          "display_name": "5.X + Phase Signaling (idx3)",
+          "reconstruction_input_count": 5,
+          "carriers": [
+            "L",
+            "R",
+            "C",
+            "Ls",
+            "Rs"
+          ],
+          "phase_signaling": true
+        },
+        "occurrences": 4247,
+        "first_au": 0
+      }
+    ],
+    "interpretation": "JOC EMDF/reconstruction profile, distinct from the external Atmos stream-profile label"
+  },
+  "object_metadata_and_coded_rows": {
+    "oamd_metadata_present": true,
+    "object_metadata_present": true,
+    "oamd_metadata_object_counts": [
+      16
+    ],
+    "oamd_object_slot_count": 16,
+    "joc_coded_object_counts": [
+      15
+    ],
+    "joc_reconstruction_rows": [
+      15
+    ],
+    "addbsi_complexity_indices": [
+      16
+    ],
+    "complexity_index_validation_rule": "compare addbsi complexity index to OAMD programme object count, not JOC reconstruction-row count",
+    "complexity_validation_observed": "16_equals_OAMD_count_16; coded_rows_15_are_a_separate_domain"
+  },
+  "openjoc_parse_validation": {
+    "stream_parse": "pass",
+    "access_unit_count": 4247,
+    "malformed_aus": 0,
+    "etsi_strict": "fail",
+    "deployed_compatibility": "pass",
+    "decoder_admissible": true,
+    "render_verified": false,
+    "run100_encoder_completion": "PROCESS_EXIT_OBSERVED; ENCODER_COMPLETION_NOT_CONFIRMED",
+    "interpretation": "JOC signaling was observed even though ETSI strict EMDF validation fails; compatibility status is separate and this is not encoder-completion or rendered-audio proof"
+  },
+  "input_lineage": {
+    "authorized_source_lineage_id": "authorized_adm_bwf_06",
+    "authorized_adm_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "run100_configured_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "alias_hash_matches_source": true,
+    "run_manifest_input_sha256_recorded": false,
+    "this_turn_read_adm_source": false,
+    "this_turn_parser_input": "hash-matched EC3 output copy only"
+  },
+  "profile_lineage_separation": {
+    "run100_time_base": "file_position",
+    "r138_time_base": "embedded_timecode",
+    "run100_and_r138_merged": false
+  },
+  "execution": {
+    "openjoc_command_role": "inspect metadata only with JSON, objects, and EMDF summary",
+    "openjoc_cli_exit_code": 0,
+    "pcm_decoded": false,
+    "payload_copied_or_saved": false,
+    "original_ec3_payload_in_package": false
+  }
+}

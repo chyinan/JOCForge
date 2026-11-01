@@ -1,0 +1,38 @@
+{
+  "schema": "washed-first-love-dbmd-negative-sentinel-crosscheck.v1",
+  "package_id": "first_love_dbmd_negative_sentinel_crosscheck_v1",
+  "status": "FIRST_LOVE_NEGATIVE_FFOA_SENTINEL_BRANCH_MATCHES_CANDIDATE_HELPER; POSITIVE_DELTA_BRANCH_UNEXERCISED",
+  "implementation_readiness": "CANDIDATE_HELPER_METADATA_RULE_ONLY; POSITIVE_BRANCH_NOT_TESTED",
+  "source_package_manifest_sha256": "f60e5cfd6bc8ec47db41197d6e224237cf3eef1fdf4651fdfca72579f163f513",
+  "implementation_allowed_for": "SAMPLE_SPECIFIC_CANDIDATE_HELPER_METADATA_RULE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_dbmd_bytes": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2756,
+      "sha256": "5fda9aee2651199e9027bedb28789f99a4158ea20344d9a4875c19b16c975bf1"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1416,
+      "sha256": "0041ebebe784fbf1a55b4b94879b52527dd33d1ba2736efac6478c6642bd7aac"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1081,
+      "sha256": "e4c3e2fddf18717acd698b89a26d8b583fd77f3c52ff898c6df92cfddc13c7f4"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2503,
+      "sha256": "14948faee1a85f9003976cc9268d2ea304443045b55ddd830f5dd64f988b7b27"
+    }
+  ]
+}

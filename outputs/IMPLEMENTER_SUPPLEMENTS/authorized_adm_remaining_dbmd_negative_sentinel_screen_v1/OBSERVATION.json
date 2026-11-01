@@ -1,0 +1,110 @@
+{
+  "schema": "washed-authorized-adm-dbmd-negative-sentinel-screen.v1",
+  "package_id": "authorized_adm_remaining_dbmd_negative_sentinel_screen_v1",
+  "evidence_class": "THREE_HASH_BOUND_AUTHORIZED_INPUT_VECTORS_WITH_BOUNDED_DBMD_READS",
+  "status": "THREE_REMAINING_AUTHORIZED_DBMD_TUPLES_NEGATIVE_SENTINEL; POSITIVE_DELTA_NOT_FOUND_IN_THIS_SCREEN",
+  "implementation_readiness": "NEGATIVE_SENTINEL_CROSS_SAMPLE_SUPPORT; POSITIVE_DELTA_BRANCH_UNTESTED",
+  "samples": [
+    {
+      "label": "Hortus Regis Alti",
+      "index_ordinal": 2,
+      "input_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "input_bytes": 1689440628,
+      "dbmd_payload_bytes": 576,
+      "dbmd_payload_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "record_types": [
+        7,
+        9,
+        10
+      ],
+      "checksums": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "branch": "NEGATIVE_SENTINEL"
+    },
+    {
+      "label": "アルジャーノン",
+      "index_ordinal": 4,
+      "input_sha256": "809e27c0c44801af93abe24644546e2ed5ffc4bf05cacfaa35b0d127964e32c5",
+      "input_bytes": 1350782840,
+      "dbmd_payload_bytes": 576,
+      "dbmd_payload_sha256": "565fb81da0fabaf35cf573c53b4014b2fe428ed147a360fc4acbbef865263f8b",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "record_types": [
+        7,
+        9,
+        10
+      ],
+      "checksums": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "branch": "NEGATIVE_SENTINEL"
+    },
+    {
+      "label": "咲き誇れ - YOASOBI",
+      "index_ordinal": 7,
+      "input_sha256": "bbe7bd5cd45e764d55317ad5d0142426661d483a5f912fc46f021a419f8a36e2",
+      "input_bytes": 1280137260,
+      "dbmd_payload_bytes": 576,
+      "dbmd_payload_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+      "tuple": {
+        "hours_or_sentinel": -1,
+        "minutes": 0,
+        "subsecond_ticks": 0
+      },
+      "record_types": [
+        7,
+        9,
+        10
+      ],
+      "checksums": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "branch": "NEGATIVE_SENTINEL"
+    }
+  ],
+  "read_scope": {
+    "full_files_streamed_for_identity_only": true,
+    "dbmd_payload_bytes_per_sample": 576,
+    "audio_data_payload_bytes_read_during_chunk_walk": 0,
+    "raw_dbmd_bytes_persisted": false,
+    "pcm_decoded_or_saved": false
+  },
+  "candidate_helper": {
+    "sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+    "candidate_rule": "negative signed-hour sentinel yields relative FFOA -1; final helper FFOA is StartTime + max(relative,0)",
+    "direct_helper_queries_on_these_three": 0
+  },
+  "disposition": {
+    "all_three_authorized_tuples_negative": true,
+    "positive_delta_branch": "NOT_FOUND_IN_THIS_SCREEN",
+    "fourth_sample_selected": false,
+    "dee_job": "NOT_RUN"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

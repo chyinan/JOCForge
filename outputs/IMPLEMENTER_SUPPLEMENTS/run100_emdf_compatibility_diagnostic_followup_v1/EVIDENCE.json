@@ -1,0 +1,87 @@
+{
+  "schema": "washed-run100-emdf-compatibility-diagnostic.v1",
+  "source_package_manifest_sha256": "7260f92a8147625dff5d6c603ea9afbec60c0931ce510e08ce4e3a2306e0532e",
+  "parent_run100_openjoc_wash_manifest_sha256": "24530840c6a26cca5082fa1d018039f6feb1a3062ccdd7ef13c67217dcb64c73",
+  "run100_output_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+  "run100_output_bytes": 17395712,
+  "openjoc_inspect_metadata_sha256": "70e99247fd434d624a01b2f0560cb0b011c1e1f86006bbed5746aecfefa9b612",
+  "authorized_input_sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "run_manifest_input_sha256_recorded": false,
+  "joc_presence": {
+    "present": true,
+    "inband_payloads": 4247,
+    "addbsi_signaled_aus": 4247,
+    "stream_parse": "pass",
+    "malformed_aus": 0
+  },
+  "strict_deviations": [
+    {
+      "payload_id": 11,
+      "field": "codecdatae",
+      "observed": "0",
+      "expected": "1",
+      "affected_aus": 4247,
+      "first_au": 0
+    },
+    {
+      "payload_id": 11,
+      "field": "payload_frame_aligned",
+      "observed": "0",
+      "expected": "1",
+      "affected_aus": 4247,
+      "first_au": 0
+    },
+    {
+      "payload_id": 11,
+      "field": "create_duplicate",
+      "observed": "absent",
+      "expected": "0",
+      "affected_aus": 4247,
+      "first_au": 0
+    },
+    {
+      "payload_id": 11,
+      "field": "remove_duplicate",
+      "observed": "absent",
+      "expected": "0",
+      "affected_aus": 4247,
+      "first_au": 0
+    },
+    {
+      "payload_id": 11,
+      "field": "priority",
+      "observed": "absent",
+      "expected": "0",
+      "affected_aus": 4247,
+      "first_au": 0
+    },
+    {
+      "payload_id": 11,
+      "field": "proc_allowed",
+      "observed": "absent",
+      "expected": "0",
+      "affected_aus": 4247,
+      "first_au": 0
+    },
+    {
+      "payload_id": 14,
+      "field": "codecdatae",
+      "observed": "0",
+      "expected": "1",
+      "affected_aus": 4247,
+      "first_au": 0
+    }
+  ],
+  "compatibility": {
+    "deployed_compatibility": "pass",
+    "allowlist_scope": "only the enumerated EMDF field deviations",
+    "general_interoperability": "NOT_ESTABLISHED"
+  },
+  "render_and_completion": {
+    "render_verified": false,
+    "encoder_completion": "NOT_CONFIRMED",
+    "pcm_decoded": false,
+    "payload_saved": false
+  },
+  "interpretation": "ETSI strict validation failure is a real metadata/interoperability risk but does not negate the separately observed in-band JOC presence. No general decoder compatibility or rendered-audio result is proven."
+}

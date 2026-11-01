@@ -1,0 +1,1909 @@
+{
+  "schema_version": 1,
+  "input": {
+    "filename": "reference.ec3",
+    "format": "eac3_joc",
+    "classification_authority": "in_band_syntax"
+  },
+  "container": {
+    "kind": "raw_eac3",
+    "sample_entry": null,
+    "ec3_present": null,
+    "dec3_present": null,
+    "track_id": null,
+    "timescale": null,
+    "duration_seconds": null,
+    "sample_count": null,
+    "fragmented": null,
+    "cmaf_status": null,
+    "declared_joc": null,
+    "declared_complexity_index": null
+  },
+  "eac3": {
+    "access_unit_count": 33,
+    "programme_interval_count": 33,
+    "frame_count": 33,
+    "total_samples": 50688,
+    "duration_seconds": 1.0560000000000007,
+    "total_bytes": 135168,
+    "bitrate_bps": 1023999.9999999993,
+    "sample_rates_hz": [
+      48000
+    ],
+    "topologies": [
+      {
+        "value": [
+          "I0"
+        ],
+        "occurrences": 33,
+        "first_au": 0
+      }
+    ],
+    "block_partitions": [
+      {
+        "value": [
+          6
+        ],
+        "occurrences": 33,
+        "first_au": 0
+      }
+    ],
+    "programme_layouts": [
+      {
+        "value": "5.1",
+        "occurrences": 33,
+        "first_au": 0
+      }
+    ],
+    "frames_per_au": [
+      1
+    ],
+    "components": [
+      {
+        "owner": "I0",
+        "stream_type": "independent",
+        "substream_id": 0,
+        "frame_count": 33,
+        "bytes": 135168,
+        "samples": 50688,
+        "duration_seconds": 1.0560000000000007,
+        "bitrate_bps": 1023999.9999999993,
+        "frame_bytes": [
+          4096
+        ],
+        "sample_rates_hz": [
+          48000
+        ],
+        "block_counts": [
+          6
+        ],
+        "numblkscod": [
+          3
+        ],
+        "acmod": [
+          7
+        ],
+        "lfeon": [
+          true
+        ],
+        "chanmap": [
+          null
+        ],
+        "channel_locations": [
+          [
+            "L",
+            "C",
+            "R",
+            "Ls",
+            "Rs",
+            "LFE"
+          ]
+        ]
+      }
+    ],
+    "dependent_ids": [],
+    "dependent_ids_sequential": true,
+    "legacy_core": false,
+    "lfe_ownership": [
+      {
+        "value": "independent_owned:I0",
+        "occurrences": 33,
+        "first_au": 0
+      }
+    ],
+    "channel_conflicts": 0
+  },
+  "joc": {
+    "present": true,
+    "presence_status": "present",
+    "payload_occurrences": 33,
+    "parsed_payloads": 33,
+    "profiles": [
+      {
+        "value": {
+          "profile_index": 3,
+          "profile": "five_x_phase",
+          "display_name": "5.X + Phase Signaling (idx3)",
+          "reconstruction_input_count": 5,
+          "carriers": [
+            "L",
+            "R",
+            "C",
+            "Ls",
+            "Rs"
+          ],
+          "phase_signaling": true
+        },
+        "occurrences": 33,
+        "first_au": 0
+      }
+    ],
+    "coded_object_counts": [
+      15
+    ],
+    "reconstruction_rows": [
+      15
+    ],
+    "complexity_indices": [
+      16
+    ],
+    "addbsi_signaled_aus": 33,
+    "owners": [
+      "I0"
+    ]
+  },
+  "carriage": {
+    "locations": [
+      {
+        "value": {
+          "owner": "I0",
+          "location": "audio_block_skipfld"
+        },
+        "occurrences": 33,
+        "first_au": 0
+      }
+    ],
+    "joc_owners": [
+      "I0"
+    ],
+    "oamd_owners": [
+      "I0"
+    ],
+    "aux_present": 0,
+    "aux_absent": 33,
+    "aux_parsed": 0,
+    "aux_non_emdf": 0,
+    "aux_malformed": 0,
+    "skip_observed": 33,
+    "skip_examined": 198,
+    "skip_unresolved": 0,
+    "skip_parsed": 33,
+    "skip_non_emdf": 0,
+    "skip_malformed": 0
+  },
+  "emdf": {
+    "containers": 33,
+    "payloads": [
+      {
+        "id": 1,
+        "name": null,
+        "occurrences": 33,
+        "affected_aus": 33,
+        "first_au": 0,
+        "length_min": 2,
+        "length_max": 3,
+        "unique_lengths": 2,
+        "length_counts": {
+          "2": 30,
+          "3": 3
+        }
+      },
+      {
+        "id": 2,
+        "name": null,
+        "occurrences": 33,
+        "affected_aus": 33,
+        "first_au": 0,
+        "length_min": 3,
+        "length_max": 3,
+        "unique_lengths": 1,
+        "length_counts": {
+          "3": 33
+        }
+      },
+      {
+        "id": 11,
+        "name": "OAMD",
+        "occurrences": 33,
+        "affected_aus": 33,
+        "first_au": 0,
+        "length_min": 69,
+        "length_max": 69,
+        "unique_lengths": 1,
+        "length_counts": {
+          "69": 33
+        }
+      },
+      {
+        "id": 14,
+        "name": "JOC",
+        "occurrences": 33,
+        "affected_aus": 33,
+        "first_au": 0,
+        "length_min": 173,
+        "length_max": 244,
+        "unique_lengths": 21,
+        "length_counts": {
+          "173": 1,
+          "174": 2,
+          "178": 2,
+          "181": 2,
+          "182": 2,
+          "185": 3,
+          "186": 1,
+          "188": 3,
+          "191": 2,
+          "192": 2,
+          "193": 1,
+          "194": 1,
+          "195": 2,
+          "196": 1,
+          "198": 2,
+          "201": 1,
+          "208": 1,
+          "212": 1,
+          "216": 1,
+          "224": 1,
+          "244": 1
+        }
+      }
+    ],
+    "payload_orders": [
+      {
+        "value": [
+          11,
+          14,
+          2,
+          1
+        ],
+        "occurrences": 33,
+        "first_au": 0
+      }
+    ],
+    "configurations": [
+      {
+        "value": {
+          "payload_id": 11,
+          "sample_offset": null,
+          "duration": null,
+          "group_id": 0,
+          "codecdatae": false,
+          "discard_unknown_payload": false,
+          "payload_frame_aligned": false,
+          "create_duplicate": null,
+          "remove_duplicate": null,
+          "priority": null,
+          "proc_allowed": null
+        },
+        "occurrences": 33,
+        "first_au": 0
+      },
+      {
+        "value": {
+          "payload_id": 14,
+          "sample_offset": null,
+          "duration": null,
+          "group_id": 0,
+          "codecdatae": false,
+          "discard_unknown_payload": false,
+          "payload_frame_aligned": true,
+          "create_duplicate": false,
+          "remove_duplicate": false,
+          "priority": 0,
+          "proc_allowed": 0
+        },
+        "occurrences": 33,
+        "first_au": 0
+      },
+      {
+        "value": {
+          "payload_id": 2,
+          "sample_offset": null,
+          "duration": null,
+          "group_id": null,
+          "codecdatae": false,
+          "discard_unknown_payload": true,
+          "payload_frame_aligned": null,
+          "create_duplicate": null,
+          "remove_duplicate": null,
+          "priority": null,
+          "proc_allowed": null
+        },
+        "occurrences": 33,
+        "first_au": 0
+      },
+      {
+        "value": {
+          "payload_id": 1,
+          "sample_offset": null,
+          "duration": 1536,
+          "group_id": null,
+          "codecdatae": false,
+          "discard_unknown_payload": false,
+          "payload_frame_aligned": false,
+          "create_duplicate": null,
+          "remove_duplicate": null,
+          "priority": null,
+          "proc_allowed": null
+        },
+        "occurrences": 33,
+        "first_au": 0
+      }
+    ]
+  },
+  "scene": {
+    "metadata_present": true,
+    "parsed_payloads": 33,
+    "metadata_object_counts": [
+      16
+    ],
+    "object_metadata_present": true,
+    "dynamic_metadata_detected": true,
+    "metadata_update_count": 528,
+    "first_change": {
+      "au": 3,
+      "sample": 4608,
+      "seconds": 0.096
+    },
+    "last_change": {
+      "au": 32,
+      "sample": 49152,
+      "seconds": 1.0240000000000007
+    },
+    "opaque_trim_present": true,
+    "original_authored_identity_recovered": false,
+    "objects": [
+      {
+        "object_index": 0,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": null,
+        "position_max": null
+      },
+      {
+        "object_index": 1,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "object_index": 2,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "position_max": [
+          0.0,
+          0.5,
+          0.0
+        ]
+      },
+      {
+        "object_index": 3,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          0.7258064516129032,
+          0.3548387096774194,
+          0.0
+        ],
+        "position_max": [
+          0.7258064516129032,
+          0.3548387096774194,
+          0.0
+        ]
+      },
+      {
+        "object_index": 4,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "position_max": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "object_index": 5,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "position_max": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "object_index": 6,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "object_index": 7,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          1.0,
+          0.5,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.5,
+          0.0
+        ]
+      },
+      {
+        "object_index": 8,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "object_index": 9,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "position_max": [
+          1.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "object_index": 10,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          0.0,
+          1.0,
+          1.0
+        ],
+        "position_max": [
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "object_index": 11,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": false,
+        "first_change": null,
+        "last_change": null,
+        "position_min": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "position_max": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "object_index": 12,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": true,
+        "first_change": {
+          "au": 3,
+          "sample": 4608,
+          "seconds": 0.096
+        },
+        "last_change": {
+          "au": 29,
+          "sample": 44544,
+          "seconds": 0.9280000000000006
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          0.08064516129032258,
+          0.3387096774193548,
+          0.0
+        ]
+      },
+      {
+        "object_index": 13,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": true,
+        "first_change": {
+          "au": 3,
+          "sample": 4608,
+          "seconds": 0.096
+        },
+        "last_change": {
+          "au": 32,
+          "sample": 49152,
+          "seconds": 1.0240000000000007
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          0.9193548387096774,
+          0.3387096774193548,
+          0.0
+        ]
+      },
+      {
+        "object_index": 14,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": true,
+        "first_change": {
+          "au": 4,
+          "sample": 6144,
+          "seconds": 0.128
+        },
+        "last_change": {
+          "au": 26,
+          "sample": 39936,
+          "seconds": 0.8320000000000005
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          0.5,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "object_index": 15,
+        "first_active_au": 0,
+        "last_active_au": 32,
+        "metadata_update_count": 33,
+        "dynamic": true,
+        "first_change": {
+          "au": 26,
+          "sample": 39936,
+          "seconds": 0.8320000000000005
+        },
+        "last_change": {
+          "au": 26,
+          "sample": 39936,
+          "seconds": 0.8320000000000005
+        },
+        "position_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "position_max": [
+          1.0,
+          0.20967741935483872,
+          0.0
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "stream_parse": "pass",
+    "etsi_strict": {
+      "status": "fail",
+      "tested_aus": 33,
+      "failed_aus": 33,
+      "first_failing_au": 0,
+      "deviations": [
+        {
+          "payload_id": 11,
+          "field": "codecdatae",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "payload_frame_aligned",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "create_duplicate",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "remove_duplicate",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "priority",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "proc_allowed",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 14,
+          "field": "codecdatae",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 33,
+          "first_au": 0
+        }
+      ]
+    },
+    "deployed_compatibility": {
+      "status": "pass",
+      "tested_aus": 33,
+      "failed_aus": 0,
+      "first_failing_au": null,
+      "deviations": [
+        {
+          "payload_id": 11,
+          "field": "codecdatae",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "payload_frame_aligned",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "create_duplicate",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "remove_duplicate",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "priority",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 11,
+          "field": "proc_allowed",
+          "observed": "absent",
+          "expected": "0",
+          "affected_aus": 33,
+          "first_au": 0
+        },
+        {
+          "payload_id": 14,
+          "field": "codecdatae",
+          "observed": "0",
+          "expected": "1",
+          "affected_aus": 33,
+          "first_au": 0
+        }
+      ]
+    },
+    "malformed_aus": 0,
+    "decoder_admissible": true,
+    "decoder_checked_aus": 33,
+    "decoder_admitted_aus": 33,
+    "render_verified": false,
+    "frame_timing_continuity": "continuous",
+    "metadata_timing_continuity": "continuous",
+    "first_timing_discontinuity": null
+  },
+  "diagnostics": {
+    "complete": true,
+    "first_failure": null,
+    "issues": [],
+    "issue_count": 0,
+    "retained_au_details": 33,
+    "max_au_bytes": 4096,
+    "max_au_frames": 1,
+    "aggregation_truncated": false,
+    "limitations": [
+      "Inspection does not synthesize PCM; decoder admission is not render verification.",
+      "Object indices describe decoded OAMD slots, not original authored identity or a JOC-row binding.",
+      "Unknown container fields are null; raw timestamps are derived from programme samples.",
+      "Distinct summary variants are capped at 256; diagnostic examples at 64."
+    ]
+  },
+  "access_units": [
+    {
+      "au": 0,
+      "timestamp_seconds": 0.0,
+      "elementary_byte_offset": 0,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 1,
+      "timestamp_seconds": 0.032,
+      "elementary_byte_offset": 4096,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 2,
+      "timestamp_seconds": 0.064,
+      "elementary_byte_offset": 8192,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 3,
+      "timestamp_seconds": 0.096,
+      "elementary_byte_offset": 12288,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 4,
+      "timestamp_seconds": 0.128,
+      "elementary_byte_offset": 16384,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 5,
+      "timestamp_seconds": 0.16,
+      "elementary_byte_offset": 20480,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 6,
+      "timestamp_seconds": 0.192,
+      "elementary_byte_offset": 24576,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 7,
+      "timestamp_seconds": 0.224,
+      "elementary_byte_offset": 28672,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 8,
+      "timestamp_seconds": 0.256,
+      "elementary_byte_offset": 32768,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 9,
+      "timestamp_seconds": 0.28800000000000003,
+      "elementary_byte_offset": 36864,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 10,
+      "timestamp_seconds": 0.32000000000000006,
+      "elementary_byte_offset": 40960,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 11,
+      "timestamp_seconds": 0.3520000000000001,
+      "elementary_byte_offset": 45056,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 12,
+      "timestamp_seconds": 0.3840000000000001,
+      "elementary_byte_offset": 49152,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 13,
+      "timestamp_seconds": 0.41600000000000015,
+      "elementary_byte_offset": 53248,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 14,
+      "timestamp_seconds": 0.4480000000000002,
+      "elementary_byte_offset": 57344,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 15,
+      "timestamp_seconds": 0.4800000000000002,
+      "elementary_byte_offset": 61440,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 16,
+      "timestamp_seconds": 0.5120000000000002,
+      "elementary_byte_offset": 65536,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 17,
+      "timestamp_seconds": 0.5440000000000003,
+      "elementary_byte_offset": 69632,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 18,
+      "timestamp_seconds": 0.5760000000000003,
+      "elementary_byte_offset": 73728,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 19,
+      "timestamp_seconds": 0.6080000000000003,
+      "elementary_byte_offset": 77824,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 20,
+      "timestamp_seconds": 0.6400000000000003,
+      "elementary_byte_offset": 81920,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 21,
+      "timestamp_seconds": 0.6720000000000004,
+      "elementary_byte_offset": 86016,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 22,
+      "timestamp_seconds": 0.7040000000000004,
+      "elementary_byte_offset": 90112,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 23,
+      "timestamp_seconds": 0.7360000000000004,
+      "elementary_byte_offset": 94208,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 24,
+      "timestamp_seconds": 0.7680000000000005,
+      "elementary_byte_offset": 98304,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 25,
+      "timestamp_seconds": 0.8000000000000005,
+      "elementary_byte_offset": 102400,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 26,
+      "timestamp_seconds": 0.8320000000000005,
+      "elementary_byte_offset": 106496,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 27,
+      "timestamp_seconds": 0.8640000000000005,
+      "elementary_byte_offset": 110592,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 28,
+      "timestamp_seconds": 0.8960000000000006,
+      "elementary_byte_offset": 114688,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 29,
+      "timestamp_seconds": 0.9280000000000006,
+      "elementary_byte_offset": 118784,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 30,
+      "timestamp_seconds": 0.9600000000000006,
+      "elementary_byte_offset": 122880,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 31,
+      "timestamp_seconds": 0.9920000000000007,
+      "elementary_byte_offset": 126976,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    },
+    {
+      "au": 32,
+      "timestamp_seconds": 1.0240000000000007,
+      "elementary_byte_offset": 131072,
+      "frames": 1,
+      "samples": 1536,
+      "block_partition": [
+        6
+      ],
+      "topology": [
+        "I0"
+      ],
+      "joc_owner": "I0",
+      "profile_indices": [
+        3
+      ],
+      "object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "payload_ids": [
+        1,
+        2,
+        11,
+        14
+      ],
+      "lfe_ownership": "independent_owned:I0",
+      "programme_layout": "5.1",
+      "status": "pass"
+    }
+  ]
+}

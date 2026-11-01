@@ -1,0 +1,19 @@
+{
+  "schema": "washed-sample6-attempt03-open-edges.v1",
+  "package_id": "sample6_attempt03_terminal_status_v1",
+  "closed": [
+    "attempt-03 input identity",
+    "attempt-03 runner/process identity",
+    "executable path file hash sampled while PID was alive",
+    "exit code 2 and target/partial absence",
+    "stdout/stderr byte counts and zero compare-point filter hits"
+  ],
+  "open": [
+    "exact stderr error message",
+    "expected/actual transaction IDs",
+    "source/parent callback IDs",
+    "GTC/JOC owner and generations",
+    "causal failure class"
+  ],
+  "guidance": "Do not infer the error from attempt-02 or static source. Add a structured run-scoped diagnostic immediately before the transaction comparison on a future attempt."
+}

@@ -1,0 +1,83 @@
+{
+  "schema": "washed-keyless-candidate-full-song-crosscheck.v1",
+  "status": "KEYLESS_CANDIDATE_DECODE_EQUIVALENT_NOT_BYTE_IDENTICAL_TO_DEE_REFERENCE",
+  "source_input": {
+    "sample_id": "authorized_sample6_people_is_cat",
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526
+  },
+  "dee_or_approved_reference": {
+    "file": "IMPLEMENTER_PACKAGE/test-vectors/full-song/expected.ec3",
+    "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "bytes": 17395712,
+    "role": "USER_AUTHORIZED_VALIDATION_ONLY"
+  },
+  "keyless_candidate": {
+    "file": "AUDIO_COMPATIBILITY_PROBE/candidate-keyless-compatible-joc.ec3",
+    "sha256": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+    "bytes": 17395712,
+    "private_hmac_key_used": false,
+    "protection": "primary4 public CRC32; secondary1 public CRC8; E-AC3 CRC recalculated; zero tail filler",
+    "origin_label": "RESEARCH_COMPATIBILITY_CANDIDATE; NOT_RUST_PRODUCT_OUTPUT"
+  },
+  "byte_comparison": {
+    "same_hash": false,
+    "first_different_byte": 1411,
+    "first_different_au": 0,
+    "byte_identity": "DIFFERENT"
+  },
+  "posthoc_decode": {
+    "report_sha256": "66b392245bca89bf218f33f5e54420e4e347c0fb1882082ec11829b82d0686fe",
+    "decoder": "FFmpeg 8.1 decode-only, no encoding",
+    "base_pcm_sha256_equal": "84d298228269be6a44af7346893a93f3de773568d19ec7519bfd9f0562ba4c79",
+    "changed_scalar_samples": 0,
+    "max_abs_error_by_channel": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "rms_error_by_channel": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "role": "POSTHOC_BASE_DECODE_EQUIVALENCE_ONLY"
+  },
+  "joc_metadata": {
+    "inspection_sha256": "4d8b0f9a8757d1a94ae361bdb10fb515cadaac9d574725bb4aca1eefb70aa43f",
+    "openjoc_version": "0.18.0",
+    "stream": "eac3_joc",
+    "access_units": 4247,
+    "joc_signaled_aus": 4247,
+    "profile_index": 3,
+    "coded_objects": 15,
+    "complexity_index": 16,
+    "emdf_strict_body_status": "NOT_PASSED_ORIGINAL_OAMD_WARP3",
+    "mode": "observed-vendor-compat",
+    "renderer_vendor_fidelity": "NOT_CLAIMED",
+    "potplayer": "USER_TEST_PENDING"
+  },
+  "structural_check": {
+    "report_sha256": "d1133d717f2845490e5db9360f01a54cfcc41443323241c2d5653a5ba291f46f",
+    "status": "STRUCTURE_PASS_AUDIO_SPATIAL_NOT_TESTED",
+    "au_count": 4247,
+    "bytes": 17395712,
+    "header_checks": 4247,
+    "crc_residual_checks": 4247,
+    "full_grammar": "NOT_RUN",
+    "joc_compatibility": "NOT_EVALUATED"
+  },
+  "provenance_boundary": {
+    "full_song_python_and_dee_equal_hash_claim": "Historical user/session record says the model EC3 and DEE reference both used SHA-256 34d18...; the approved expected.ec3 fixture matches that hash and the R3 full-file DEE receipt independently records it.",
+    "python_source_or_algorithm_in_this_package": false,
+    "candidate_generated_by_rust": false,
+    "original_prototype_provenance_of_candidate": "NOT_PROVEN_BY_THESE_FILES",
+    "candidate_is_validation_reference_only": true
+  }
+}

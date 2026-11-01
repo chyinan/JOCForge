@@ -1,0 +1,31 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_INPUT_VECTOR; NEGATIVE_SENTINEL_ONLY",
+  "source_package_id": "my-jealousy-dbmd-negative-sentinel-vector",
+  "source_package_manifest_sha256": "4b5526676046cefd0c6e4994c075ee3599315810243f85525e8b103ea2f6c909",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_package_payloads_checked": 4,
+  "input_hash_basis": "R4 Run143 preflight and seven-input metadata index agree; source/alias hash matched",
+  "dbmd_hash_independently_recomputed": true,
+  "tuple_field_bytes_independently_recomputed": true,
+  "dbmd_payload_bytes_read_by_wash": 576,
+  "audio_data_bytes_read": 0,
+  "implementation_ready": "NO",
+  "limitations": [
+    "This sample exercises only the negative sentinel branch.",
+    "The positive DBMD delta branch remains untested.",
+    "The rule is bound to the candidate helper and equivalent replay; the original R138 child PID receipt remains unavailable."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

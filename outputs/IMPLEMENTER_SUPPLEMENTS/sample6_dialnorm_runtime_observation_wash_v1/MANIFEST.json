@@ -1,0 +1,30 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "sample6_dialnorm_runtime_observation_wash_v1",
+  "status": "EVIDENCE_ONLY_SINGLE_RUN_AUDIO_FIELD_REFERENCE",
+  "source_package_manifest_sha256": "e393a7756866568a330c38201910e7771be27a5060ca061160e094d7314dd9ec",
+  "implementation_allowed_for": "SAMPLE_SPECIFIC_RUNTIME_CROSSCHECK_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_addresses_or_rvas": false,
+  "files": [
+    {
+      "name": "OWNER-OBSERVATION.json",
+      "bytes": 2558,
+      "sha256": "a5b97128d7012acf534500d8a72bddd7115b070643e1b78a9e164c0c077aadb2"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1097,
+      "sha256": "949ca17d05de7ae0214b000bf5a4b24ca028b26e51937f9fe3fef57568f2da80"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 575,
+      "sha256": "a62e49a1815b6e8ada51a6af47d205bd46fdddd04708b31b0de0391a029d5065"
+    }
+  ]
+}

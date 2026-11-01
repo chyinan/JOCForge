@@ -1,0 +1,21 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "run100_reference_ec3_metadata_only_wash_v1",
+  "source_manifest_sha256": "51c4edeacec83a286af689b1575f1e9f1e7710ba2050691931ab0061f624009b",
+  "checks": {
+    "source_manifest_sidecar_and_seal_validated_by_source_checker": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "source_payload_hashes_and_sizes_match": true,
+    "authorized_sample6_current_sha256_independently_recomputed": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "run_time_input_sha256_recorded": false,
+    "input_identity_basis": "HASH_BOUND_CONFIG_LOG_ALIAS_AND_PREEXISTING_COPY_RECORD",
+    "run_completion": "PROCESS_EXIT_OBSERVED; ENCODER_COMPLETION_NOT_CONFIRMED",
+    "stream": "E-AC3 48000 Hz 6-channel 5.1(side) 1024000 bps",
+    "explicit_joc_flag": "NOT_REPORTED_BY_FFPROBE",
+    "pcm_decoded": false,
+    "payload_copied_or_saved": false,
+    "r138_config_lineage_merged": false
+  },
+  "scope_note": "Wash independently recomputed the authorized input source hash and verified package integrity/status; output file payload was not present for independent re-hash."
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "4c1d7dbac78a6057327975dc6ebf525968ec65a1c6ea7b9afc055a2cea1b6556",
+  "checks": {
+    "source_package_hashes_and_checker_normal_and_optimized_match": true,
+    "one_authorized_R138_job": true,
+    "input_source_copy_hash_match": true,
+    "runtime_U16_member_same_parent": true,
+    "source_setter_hit": "NOT_HIT_FOR_THIS_RUN",
+    "source_slots": "NOT_CAPTURED",
+    "frame_rate_property": "24.0; R138 timecode-rate join UNBOUND",
+    "output_sha256": "NOT_CAPTURED",
+    "encoder_completion": "NOT_CONFIRMED",
+    "output_metadata": "NOT_RUN",
+    "JOC": "NOT_VERIFIED",
+    "E2E": "NOT_VERIFIED"
+  },
+  "scope_note": "Wash independently verified source package integrity and reported capture boundaries; the output payload was removed before Wash could hash or inspect it."
+}

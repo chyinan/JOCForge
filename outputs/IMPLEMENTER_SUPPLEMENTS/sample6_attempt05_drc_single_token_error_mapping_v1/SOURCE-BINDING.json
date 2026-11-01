@@ -1,0 +1,19 @@
+{
+  "package_id": "sample6_attempt05_drc_single_token_error_mapping_v1",
+  "incoming_manifest_sha256": "b9a3008ecbe8af4a0542f016be6550888bcaa1b6b0a5992c342d9394e0f6fb55",
+  "incoming_payload_sha256": {
+    "REPORT.md": "176d8d4f4243bedf021f385cbd8e1bbf2f5199d667f7f4262739bf7a85483a15",
+    "RUN-05-RECEIPT.json": "93adf7137e25779dffe0ddee34cc46f45cfeb8852e23925d7f1fc51a9b112256",
+    "INPUT-ONLY-VECTORS.json": "256ccd68eaf9c243bd88893f759af605ab3bbe19c8c97fed7941c64758b05afc",
+    "SOURCE-IDENTITIES.json": "d86ba8aff72d7fbbd278d0f5eb4c3d393a60d036df1837b7c6eaacea9350475b",
+    "CHECK.py": "a732d98e6fc63fd05047d1504b86331a0eac8a1b6e4936d64abf61b4ec89b32a"
+  },
+  "run_receipt_sha256": "94840d12768042a2eadd21d191b828dda0617ca201763727f4c716f29bf8e076",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "executable_candidate_sha256": "a51c251b7a20ac40e60699f5a2e9f6ad0812df2d3b3f535bf431a394a168ec7b",
+  "runner_launch_identity": "UNBOUND",
+  "approved_gtc_contract_sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+  "approved_drc_supplement_manifest_sha256": "0ee7491d713000921c5e002710d67771791d64c531ed41a2d55c77c5c559cbb7",
+  "private_key_or_license_read": false,
+  "raw_pcm_or_payload_read": false
+}

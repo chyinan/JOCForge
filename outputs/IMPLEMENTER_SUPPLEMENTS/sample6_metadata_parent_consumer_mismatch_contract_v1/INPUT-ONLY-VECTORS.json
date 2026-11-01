@@ -1,0 +1,40 @@
+{
+  "schema": "washed-metadata-transaction-input-only.v1",
+  "vectors_are_synthetic": true,
+  "contains_output_expectations": false,
+  "cases": [
+    {
+      "id": "valid_distinct_source_parent",
+      "input": {
+        "callback_index": 2,
+        "source_index": 0,
+        "dispatch": 1,
+        "proposal_consumer_id": "synthetic.source.s0",
+        "receipt_consumer_id": "synthetic.source.s0",
+        "expected_consumer_id": "synthetic.source.s0",
+        "parent_callback_id": "synthetic.callback.g2"
+      },
+      "expected_output": "NOT_SUPPLIED"
+    },
+    {
+      "id": "proposal_consumer_mismatch",
+      "input": {
+        "proposal_consumer_id": "synthetic.callback.g2",
+        "receipt_consumer_id": "synthetic.source.s0",
+        "expected_consumer_id": "synthetic.source.s0",
+        "parent_callback_id": "synthetic.callback.g2"
+      },
+      "expected_output": "NOT_SUPPLIED"
+    },
+    {
+      "id": "receipt_consumer_mismatch",
+      "input": {
+        "proposal_consumer_id": "synthetic.source.s0",
+        "receipt_consumer_id": "synthetic.callback.g2",
+        "expected_consumer_id": "synthetic.source.s0",
+        "parent_callback_id": "synthetic.callback.g2"
+      },
+      "expected_output": "NOT_SUPPLIED"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "washed-authorized-adm-dbmd-negative-sentinel-screen.v1",
+  "package_id": "authorized_adm_remaining_dbmd_negative_sentinel_screen_v1",
+  "status": "THREE_REMAINING_AUTHORIZED_DBMD_TUPLES_NEGATIVE_SENTINEL; POSITIVE_DELTA_NOT_FOUND_IN_THIS_SCREEN",
+  "implementation_readiness": "NEGATIVE_SENTINEL_CROSS_SAMPLE_SUPPORT; POSITIVE_DELTA_BRANCH_UNTESTED",
+  "source_package_manifest_sha256": "f08b19a0241ff09b171635b6837c342c668d18083aee2a0cae9ff799578cfefd",
+  "implementation_allowed_for": "SAMPLE_SPECIFIC_CANDIDATE_HELPER_NEGATIVE_SENTINEL_RULE_REFERENCE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_dbmd_bytes": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 3354,
+      "sha256": "815b6518e52ec983b22a29a50a9e6a1cedf1c102e6bda5537956b47118ca6b40"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1277,
+      "sha256": "dcf19d094f040306153d44c1478c80d0e8b0c490dd132d6af683bafd26aed7f4"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 780,
+      "sha256": "bfc3f3d59a50982c41f41632681930ef72580c1009874fa03756f52ccce0340d"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2314,
+      "sha256": "c9b1f06045ee21d18ba00c81c9438f327964b5969983e3d1ca9ac9c8aeed15db"
+    }
+  ]
+}

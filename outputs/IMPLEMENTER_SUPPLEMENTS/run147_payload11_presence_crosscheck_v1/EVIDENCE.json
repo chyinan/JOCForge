@@ -1,0 +1,56 @@
+{
+  "schema": "washed-run147-payload11-presence-crosscheck.v1",
+  "package_id": "run147_payload11_presence_crosscheck_v1",
+  "status": "RUN147_GROUP_ID_PRESENT_BIT_ONE_RUN145_VALUE_MATCH_TARGET_MODULE_UNBOUND",
+  "implementation_effect": "NONE_AUDIO_ALGORITHM_RULE",
+  "upstream_packages": [
+    {
+      "manifest_sha256": "3f662c4a0d64fdc1b3a4ee6b46034d13e0212068212d24646f371f05b0f05a83",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "upstream_payload_hashes_recomputed": "PASS"
+    },
+    {
+      "manifest_sha256": "d31e03a30eef2d3de8fba202a2f4e275e27386f609ea756e7f31ac9a7c261adc",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "upstream_payload_hashes_recomputed": "PASS"
+    }
+  ],
+  "input_output": {
+    "sha256": "3f9a2b8b890e12e6ee9f09de28ce9eb89626da8f2a9900a562006d661cae59c2",
+    "bytes": 26411008,
+    "sha256_recomputed_by_wash": "MATCH"
+  },
+  "parser": {
+    "name": "OpenJOC",
+    "version": "0.20.1",
+    "sha256": "875e4c3b0b47cde77776fb714a45bf6a89970420863e9bdc21287fcfb6937a16"
+  },
+  "observation": {
+    "run_id": "Run147",
+    "au_index": 0,
+    "payload_id": 11,
+    "group_id_present": {
+      "configuration_relative_bit_offset": 2,
+      "status": "BIT_ONE"
+    },
+    "group_id": 0,
+    "absolute_au0_bit_offset": "NOT_CAPTURED",
+    "payload_body_read": false,
+    "payload_body_saved": false,
+    "pcm_read": false
+  },
+  "run145_comparison": {
+    "source_package_manifest_sha256": "d31e03a30eef2d3de8fba202a2f4e275e27386f609ea756e7f31ac9a7c261adc",
+    "run145_input_sha256": "284fa11e3a5200a2bf6fd0eb3ccba5a11177f2c955cf8ab60ee5f",
+    "group_id_present": "BIT_ONE",
+    "run145_reopened": false,
+    "target_module_join": "UNBOUND"
+  },
+  "execution": {
+    "new_dee_job": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "private_key_read": "NO"
+  }
+}

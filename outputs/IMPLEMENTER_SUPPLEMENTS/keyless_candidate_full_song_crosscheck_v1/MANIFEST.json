@@ -1,0 +1,29 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "keyless_candidate_full_song_crosscheck_v1",
+  "status": "EVIDENCE_ONLY_KEYLESS_DECODE_REFERENCE_NOT_RUST_OUTPUT",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "implementation_allowed_for": "POSTHOC_VALIDATION_REFERENCE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "files": [
+    {
+      "name": "CROSSCHECK.json",
+      "bytes": 3087,
+      "sha256": "6cd0f92899272d35697e4ab7dd99a2e492dff7c8a93ca6e49cf863df6277be5b"
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "bytes": 1496,
+      "sha256": "c437cf68fcbaac0e0a2b88cba298686a07525b2762a0a48b505254d85c0202be"
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "bytes": 1374,
+      "sha256": "c2141ffb05b038a6d7979e4be85f7a0025db17579b6902b250ee313607beba4b"
+    }
+  ]
+}

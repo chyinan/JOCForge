@@ -1,0 +1,33 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_INPUT_VECTOR; CANDIDATE_HELPER_SCOPE",
+  "source_package_id": "dbmd-sample6-input-vector",
+  "source_package_manifest_sha256": "2649044ae7225b28acce2c927c843e65421a4cec503e5fa00ad6e87fd0fd651c",
+  "source_package_payloads_checked": 4,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "bounded_input_read_logical_bytes": 640,
+  "dbmd_payload_hash_independently_recomputed": true,
+  "dbmd_payload_hash": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9",
+  "tuple_field_bytes_match_reported_values": true,
+  "audio_data_bytes_read": 0,
+  "raw_dbmd_bytes_persisted": false,
+  "previous_candidate_helper_wash_manifest": "d8a1c0c623d4b35d3c60728c17199f1098651b1baa7e45d32318e4aaef3a4205",
+  "implementation_ready": "NO",
+  "limitations": [
+    "The negative sentinel branch is closed for the analyzed candidate helper and this one sample.",
+    "The candidate helper image is still not joined to the helper image loaded by the historical DEE host.",
+    "This does not establish behavior for other ADM files or approve an E-AC-3/JOC coding rule.",
+    "No DEE encode job, model run, codec run, render, or playback was performed in this bounded input-vector check."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "raw_dbmd_bytes": false,
+    "pcm_or_audio_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

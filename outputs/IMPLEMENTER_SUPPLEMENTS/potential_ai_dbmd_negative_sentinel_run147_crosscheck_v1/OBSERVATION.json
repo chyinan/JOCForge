@@ -1,0 +1,73 @@
+{
+  "schema": "washed-potential-ai-dbmd-negative-sentinel-run147.v1",
+  "package_id": "potential_ai_dbmd_negative_sentinel_run147_crosscheck_v1",
+  "evidence_class": "HASH_BOUND_RUN147_INPUT_METADATA_VECTOR_AND_OUTPUT_METADATA_JOIN",
+  "status": "POTENTIAL_AI_NEGATIVE_FFOA_SENTINEL_JOINED_TO_RUN147_METADATA; POSITIVE_DELTA_UNTESTED",
+  "implementation_readiness": "CANDIDATE_HELPER_METADATA_RULE_ONLY; NO_HELPER_QUERY_NEEDED_FOR_NEGATIVE_SENTINEL",
+  "input": {
+    "sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82",
+    "bytes": 1069656356,
+    "sample_rate_hz": 48000,
+    "channels": 36,
+    "bits_per_sample": 24
+  },
+  "dbmd": {
+    "bytes": 576,
+    "sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+    "riff_header_and_chunk_header_scan_only": true,
+    "audio_data_bytes_read": 0,
+    "raw_bytes_persisted": false,
+    "record_sequence": [
+      7,
+      9,
+      10
+    ],
+    "checksum_statuses": [
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "type10_vector_count": 36,
+    "terminator_offset": 574,
+    "trailing_unconsumed_bytes": 1,
+    "type9_tuple": {
+      "signed_int8_hours_or_sentinel": -1,
+      "uint8_minutes": 0,
+      "signed_int32_le_ticks": 0
+    },
+    "branch": "NEGATIVE_SENTINEL",
+    "decode_fallback": "NOT_TAKEN"
+  },
+  "run147_join": {
+    "preflight_sha256": "5fb0eaee479aef465481d77831d6bf199b396e911184b6ee2e7a415c03485f9f",
+    "job_xml_sha256": "6e8e2a8c1975f13de8b336c51f9d7d43c6489b516a702e297ca42b59919a766a",
+    "output_basename_matches_inspect_input": true,
+    "dee_run_log_sha256": "8b758a5a4b5b9834a91d3d1deccd2a8571249829c2bcc6c52cba162c2bae2d65",
+    "eac3_access_units": 6448,
+    "joc_present": true,
+    "compatibility": "PASS",
+    "strict": "FAIL",
+    "output_payload_read_by_this_tuple_check": false
+  },
+  "candidate_helper_rule": {
+    "helper_sha256": "611d2ce260458e08b7095e0a3e2bf37b3dbdaab98181d408f859e2766dd93508",
+    "query": "NOT_RUN_NEGATIVE_SENTINEL",
+    "static_result": "negative signed sentinel => relative FFOA -1; final helper FFOA=StartTime+max(relative,0)",
+    "historical_original_r138_child_receipt": "NOT_CAPTURED"
+  },
+  "run147_wash_reference": {
+    "package_id": "potential_ai_dee_output_metadata_reference_v1",
+    "manifest_sha256": "56e0900a168faf0eb1a2672971389fe22ac520b84e573dabc68b7e10734d5e80"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

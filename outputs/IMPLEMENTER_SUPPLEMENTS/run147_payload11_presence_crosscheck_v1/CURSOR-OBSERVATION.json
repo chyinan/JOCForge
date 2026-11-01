@@ -1,0 +1,14 @@
+{
+  "schema": "washed-run147-cursor-metadata.v1",
+  "output_sha256": "3f9a2b8b890e12e6ee9f09de28ce9eb89626da8f2a9900a562006d661cae59c2",
+  "openjoc_sha256": "875e4c3b0b47cde77776fb714a45bf6a89970420863e9bdc21287fcfb6937a16",
+  "au_index": 0,
+  "payload_id": 11,
+  "group_id_present": {
+    "configuration_relative_bit_offset": 2,
+    "status": "BIT_ONE"
+  },
+  "absolute_au0_bit_offset": "NOT_CAPTURED",
+  "group_id": 0,
+  "raw_payload_saved": false
+}

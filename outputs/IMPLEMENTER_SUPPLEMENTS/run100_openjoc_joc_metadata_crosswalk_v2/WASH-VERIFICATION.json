@@ -1,0 +1,30 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "RUN100-OPENJOC-JOC-METADATA-CROSSWALK-V2",
+  "source_manifest_sha256": "e0ff575f59207830f71f0146baceab85e2aa03b01c38b65c4c7b648f79521b02",
+  "checks": {
+    "source_manifest_sidecar_payload_hashes_match": true,
+    "source_checker_ran_normal_and_optimized": true,
+    "run100_reference_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "authorized_input_sample6_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "run_time_input_sha_recorded": false,
+    "OpenJOC_version": "0.20.1",
+    "JOC_inband_present": true,
+    "AUs_with_Addbsi_signaling": 4247,
+    "OAMD_object_count": 16,
+    "JOC_reconstruction_rows": 15,
+    "complexity_index": 16,
+    "stream_parse": "pass",
+    "malformed_AUs": 0,
+    "decoder_admitted_AUs": 4247,
+    "ETSI_strict": "fail",
+    "deployed_compatibility": "pass",
+    "render_verified": false,
+    "PCM_decoded": false,
+    "payload_copied_or_saved": false,
+    "R138_timebase_joined": false,
+    "encoder_completion_confirmed": false
+  },
+  "scope_note": "Wash verified the source package hashes and crosswalk; the inspected EC-3 payload itself was absent and was not independently rehashed."
+}

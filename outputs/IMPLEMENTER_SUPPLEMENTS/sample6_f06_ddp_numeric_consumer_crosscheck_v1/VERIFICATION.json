@@ -1,0 +1,34 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; EVIDENCE_ONLY",
+  "source_package_id": "adm_bwf_pcm24_to_f32_boundary_wash_v4",
+  "source_package_manifest_sha256": "1c26d90cbe68b227254df83aa13728fa334089de0ea77dd3a72f9ec60c60479d",
+  "source_package_seal_sha256": "010928600981edf7d261c226a9a432c99f1a3d8212bace8cb6ea7299b2d8f5fc",
+  "source_package_payloads_checked": 8,
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_static_evidence_hashes_checked": 13,
+  "source_static_evidence_hashes_match": true,
+  "parent_supplement_manifests_checked": 6,
+  "native_job_scope": "ONE_SAMPLE6_FULL_FILE_JOB; NO_SECOND_JOB",
+  "output_hash_seen_before_metadata_parse": true,
+  "output_retained_in_this_package": false,
+  "implementation_ready": "NO",
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "raw_pcm": false,
+    "bitstream_payload": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_pointers_or_instruction_addresses": false
+  },
+  "limitations": [
+    "F06 Float32 result unit is unstated; no conversion to DialNorm U16 is approved.",
+    "The selected PCM24 reader branch was not hit in this run.",
+    "The observed DDP internal row scalar is not joined to a source PCM sample.",
+    "The output artifact was deleted after hash and metadata-only inspection; it is not available as a current deliverable.",
+    "OpenJOC 0.18.0 compatibility passed while strict validation failed for all 4247 access units; render and playback were not run."
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "schema": "authorized-adm-eac3-metadata-receipt.v1",
+  "sample_label": "First Love.wav",
+  "status": "ENCODER_COMPLETED_METADATA_CAPTURED",
+  "captured_at_utc": "2026-10-31T12:50:02.722956+00:00",
+  "input": {
+    "authorized_lineage_id": "authorized_adm_bwf_01",
+    "source_bytes": 1335078774,
+    "source_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "source_last_write_utc": "2026-10-11T10:05:34.656118+00:00",
+    "ascii_alias_basename": "first_love.wav",
+    "alias_bytes": 1335078774,
+    "alias_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "source_unchanged_after_run": true,
+    "ffprobe_metadata": {
+      "codec_name": "pcm_s24le",
+      "sample_rate_hz": 48000,
+      "channels": 36,
+      "bits_per_sample": 24,
+      "duration_seconds": 257.522771,
+      "metadata_json_sha256": "b54736693e65e8254baecb000e2726f2c68c8cbaaa8b5685a0e090c40f93f745"
+    }
+  },
+  "job": {
+    "xml_sha256": "a04b7881e9b52f25120feb27b96ce21a3c3481ccf79f54ca6c2343b4de7211cb",
+    "source_r138_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_type": "audio.adm",
+    "route": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "time_base": "embedded_timecode",
+    "start": "86640",
+    "end": "86664",
+    "local_xsd_valid": false,
+    "known_local_xsd_extensions": [
+      "timecode_frame_rate",
+      "time_base"
+    ]
+  },
+  "runtime": {
+    "dee_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_filter_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "launch_method": "WinDbg launch with the R4-matched DEE option set",
+    "license_argument_supplied": true,
+    "license_contents_opened_copied_or_hashed": false,
+    "license_material_in_receipt": false,
+    "numeric_exit_code": "NOT_CAPTURED_BY_DEBUGGER",
+    "target_gone_after_run": true,
+    "encoder_done": true,
+    "encoding_progress_100": true,
+    "output_progress_100": true,
+    "measured_integrated_loudness": "-120.000000.",
+    "sample_peak_zero": true,
+    "true_peak_zero": true,
+    "measurement_interpretation": "DEE measured integrated loudness -120.000000 and zero sample/true peak. No independent PCM decode or listening was performed, so active programme audio is not confirmed.",
+    "audio_content_status": "QUIET_WINDOW_NOT_VALID_AUDIO_SAMPLE",
+    "audio_content_note": "DEE metering was -120 LUFS with zero sample/true peak; selected source PCM was not independently measured. JOC metadata was observed in the generated stream, but this quiet-window output is excluded as an active-audio sample."
+  },
+  "output": {
+    "bytes": 135168,
+    "sha256": "df96294ce1c06db8b8778d92fff94432447c75c51bd2d07e25620f346eb264ec",
+    "ffprobe": {
+      "tool_version": "ffprobe version 8.1-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers",
+      "codec_name": "eac3",
+      "profile": "Dolby Digital Plus + Dolby Atmos",
+      "sample_rate_hz": 48000,
+      "channels": 6,
+      "channel_layout": "5.1(side)",
+      "bit_rate_bps": 1024000,
+      "duration_seconds": 1.056,
+      "format_size": 135168,
+      "packet_or_frame_listing": false,
+      "audio_decode": false
+    },
+    "openjoc": {
+      "tool_version": "OpenJOC 0.20.1",
+      "binary_sha256": "875e4c3b0b47cde77776fb714a45bf6a89970420863e9bdc21287fcfb6937a16",
+      "metadata_json_sha256": "69e8afaf2ab951dab14f650854aa6da1e3722df496a6db5bdd5d10fc7ceef695",
+      "format": "eac3_joc",
+      "classification_authority": "in_band_syntax",
+      "access_units": 33,
+      "duration_seconds": 1.0560000000000007,
+      "joc_present": true,
+      "addbsi_signaled_aus": 33,
+      "joc_profile_index": 3,
+      "joc_profile": "five_x_phase",
+      "coded_object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "scene_metadata_present": true,
+      "object_metadata_present": true,
+      "object_metadata_slot_count": 16,
+      "dynamic_metadata_detected": true,
+      "stream_parse": "pass",
+      "etsi_strict_status": "fail",
+      "etsi_strict_failed_aus": 33,
+      "deployed_compatibility_status": "pass",
+      "deployed_compatibility_failed_aus": 0,
+      "decoder_admissible": true,
+      "render_verified": false
+    }
+  },
+  "setup_attempts": [
+    {
+      "attempt": 1,
+      "result": "SETUP_FAILURE_BEFORE_WORKFLOW",
+      "cause": "The initial direct launch omitted the license argument; plugin initialization failed and no output was created."
+    },
+    {
+      "attempt": 2,
+      "result": "SETUP_FAILURE_BEFORE_WORKFLOW",
+      "cause": "The direct Start-Process launch still failed plugin initialization; no output was created."
+    },
+    {
+      "attempt": 3,
+      "result": "Direct Start-Process run using the explicit license option still failed plugin initialization; no workflow or output was produced."
+    }
+  ],
+  "evidence_logs": [
+    {
+      "file": "dee_attempt3.log",
+      "sha256": "276d15e9e45bbf8bc1239fb195479368ab70f79cb1460e2f68d644af1c288ee0"
+    },
+    {
+      "file": "process.stdout.log",
+      "sha256": "512b682ca902e7d43d34888e7dd660c658d4776f99c3de59ab3c94e895a30b07"
+    },
+    {
+      "file": "process.stderr.log",
+      "sha256": "f23e6304d2e334a2fb82f50afbe349cb2539c6c2dc3320120f1071cb67ab7b6b"
+    },
+    {
+      "file": "attempt2.stdout.log",
+      "sha256": "65cba656ce027943283bdc40387c81b1a51c99d211cf17a9966eca025834eff0"
+    },
+    {
+      "file": "attempt2.stderr.log",
+      "sha256": "f23e6304d2e334a2fb82f50afbe349cb2539c6c2dc3320120f1071cb67ab7b6b"
+    }
+  ],
+  "handling": {
+    "pcm_decoded": false,
+    "audio_played": false,
+    "ec3_payload_in_receipt": false,
+    "output_payload_retained": false,
+    "input_alias_retained": false,
+    "media_cleanup": "VERIFIED_OUTPUT_ALIAS_AND_TEMP_DIRECTORIES_REMOVED",
+    "source_original_retained": true,
+    "source_hash_after_cleanup": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+    "temporary_payload_directories_removed": {
+      "temp": true,
+      "temp_retry": true,
+      "temp_debugger_launch": true
+    },
+    "audio_content_status": "AUDIO_CONTENT_NOT_CONFIRMED",
+    "sample_disposition": "QUIET_WINDOW_NOT_VALID_AUDIO_SAMPLE",
+    "source_window_measurement": "NOT_CAPTURED"
+  }
+}

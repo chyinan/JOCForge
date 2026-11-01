@@ -1,0 +1,31 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_RUN147_JOIN; NEGATIVE_SENTINEL",
+  "source_package_id": "run147-potential-ai-dbmd-time-vector",
+  "source_package_manifest_sha256": "fe1e8128fc359ea97ed954056e2934370ffd8ba9434e30eee2c5daa90bb3ab9a",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_package_payloads_checked": 4,
+  "input_preflight_alias_hash_match": "PASS",
+  "dbmd_payload_hash_recomputed": "PASS",
+  "type9_tuple_bytes_recomputed": "PASS",
+  "run147_output_join": "preflight hash + job XML + OpenJOC input basename + completion log",
+  "direct_helper_query": "NOT_RUN",
+  "implementation_ready": "NO",
+  "limitations": [
+    "This sample takes only the negative DBMD sentinel branch.",
+    "Candidate helper positive-delta branch is not exercised.",
+    "The sample's run147 output metadata reference reports compatibility PASS and strict FAIL; no rendering/playback."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

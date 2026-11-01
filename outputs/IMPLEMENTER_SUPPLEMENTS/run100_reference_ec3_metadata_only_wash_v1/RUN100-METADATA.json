@@ -1,0 +1,84 @@
+{
+  "schema": "run100-reference-ec3-metadata-only.v1",
+  "status": "BOUND_VIA_HASHED_CONFIG_LOG_ALIAS_AND_PREEXISTING_COPY_HASH_RECORD; RUN_MANIFEST_INPUT_SHA_NOT_RECORDED",
+  "run": "run-100",
+  "run_record": {
+    "native_evidence_manifest_sha256": "9fb28974eb536a28b76cfc914832c94679b5c4cb3e8c3d34e9d80cf80c4ea334",
+    "job_configuration_sha256": "f5a9f4870eabf146c25442bd705383ce52c01907743eb19751d8a02267c384d1",
+    "dee_reference_log_sha256": "a9be16dd72cf305ce0316b9c815cca5bf90bcf34e6425674bf46d296e010e48b",
+    "hashes_match_native_evidence_manifest": true,
+    "run_manifest_contains_input_sha256": false,
+    "run_completion_status": "PROCESS_EXIT_OBSERVED; ENCODER_COMPLETION_NOT_CONFIRMED",
+    "config": {
+      "route_key": "encode_to_atmos_ddp",
+      "input_type": "audio.adm",
+      "data_rate_kbps": 1024,
+      "time_base": "file_position"
+    }
+  },
+  "input_identity": {
+    "status": "BOUND_VIA_HASHED_CONFIG_ALIAS_AND_PREEXISTING_COPY_HASH_RECORD",
+    "authorized_lineage_id": "authorized_adm_bwf_06",
+    "authorized_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "authorized_source_bytes": 743696526,
+    "configured_alias_id": "run100_configured_adm_input_alias",
+    "configured_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "configured_alias_bytes": 743696526,
+    "alias_and_source_content_hash_equal": true,
+    "alias_is_separate_file_object_from_original": true,
+    "fixture_source_copy_identity_record_sha256": "47e571166e0fea148827b3cc5eb64bc7ed87c9adc82004d6f25088dd9094b7eb",
+    "fixture_source_copy_identity_record_says_hash_match": true,
+    "fixture_identity_record_created_utc": "2026-10-27T11:19:16.0827911Z",
+    "configured_alias_created_utc": "2026-10-27T10:46:18.1355612Z",
+    "configured_alias_last_write_utc": "2026-10-09T11:36:52.7059295Z",
+    "run_config_created_utc": "2026-10-30T17:15:41.1450601Z",
+    "log_confirms_same_configured_alias": true,
+    "run_time_input_sha256_recorded": false,
+    "alias_path_or_unapproved_alias_name_persisted": false,
+    "identity_basis": "Hash-bound run manifest -> exact job-config hash and DEE-log hash -> configured ADM alias confirmed in log -> current alias SHA-256 equals authorized sample-6 SHA-256; the pre-existing fixture source/copy record asserts a hash match."
+  },
+  "output_identity": {
+    "file_role": "run-100 reference E-AC-3 output",
+    "exists": true,
+    "bytes": 17395712,
+    "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "hash_and_length_match_result_record": true,
+    "output_path_persisted": false
+  },
+  "metadata_parser": {
+    "name": "ffprobe",
+    "version": "8.1-full_build-www.gyan.dev",
+    "operation": "format and stream metadata only; no packet/frame listing and no PCM decode",
+    "parse_status": "PASS",
+    "fields": {
+      "format_name": "eac3",
+      "format_long_name": "raw E-AC-3",
+      "duration_seconds": 135.904,
+      "file_size_bytes": 17395712,
+      "format_bit_rate_bps": 1024000,
+      "stream_count": 1,
+      "stream_0_codec_name": "eac3",
+      "stream_0_codec_long_name": "ATSC A/52B (AC-3, E-AC-3)",
+      "stream_0_profile": "Dolby Digital Plus + Dolby Atmos",
+      "stream_0_codec_type": "audio",
+      "stream_0_sample_rate_hz": 48000,
+      "stream_0_channels": 6,
+      "stream_0_channel_layout": "5.1(side)",
+      "stream_0_bit_rate_bps": 1024000,
+      "explicit_joc_flag": "NOT_REPORTED_BY_FFPROBE",
+      "joc_object_count_or_object_metadata": "NOT_REPORTED_BY_FFPROBE"
+    }
+  },
+  "scope_and_privacy": {
+    "input_file_bytes_streamed_for_sha256": true,
+    "input_pcm_samples_decoded": false,
+    "input_pcm_sample_values_persisted": false,
+    "output_ec3_payload_copied_or_saved": false,
+    "output_payload_decoded": false,
+    "output_file_bytes_streamed_for_sha256": true,
+    "output_metadata_parsed": true,
+    "r138_embedded_timecode_run_joined": false,
+    "selected_profile_acceptance_claimed": false,
+    "license_or_key_content_accessed": false
+  }
+}

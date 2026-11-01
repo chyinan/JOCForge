@@ -1,0 +1,38 @@
+{
+  "schema": "washed-my-jealousy-dbmd-negative-sentinel-crosscheck.v1",
+  "package_id": "my_jealousy_dbmd_negative_sentinel_crosscheck_v1",
+  "status": "MY_JEALOUSY_NEGATIVE_FFOA_SENTINEL_BRANCH_MATCHES_CANDIDATE_HELPER; POSITIVE_DELTA_UNTESTED",
+  "implementation_readiness": "CANDIDATE_HELPER_METADATA_RULE_ONLY; POSITIVE_BRANCH_NOT_TESTED",
+  "source_package_manifest_sha256": "4b5526676046cefd0c6e4994c075ee3599315810243f85525e8b103ea2f6c909",
+  "implementation_allowed_for": "SAMPLE_SPECIFIC_CANDIDATE_HELPER_METADATA_RULE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_dbmd_bytes": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2616,
+      "sha256": "2ccd05128a1444dae8a87af22f2cd01deee4f3cecbb28c60c9f1c41cfe8720e3"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1295,
+      "sha256": "1f53f5c999e336b74f14eec5cb20fb888030af5c5d8213da28956f262422323a"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 917,
+      "sha256": "420e60b71f52d7a58dc48eb14dacabccac89ec95d1deca41c0ae594940457221"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2296,
+      "sha256": "91c8dc0bf704b4903ac30ad56364e396548d40a6fc96119694445ac2ca445494"
+    }
+  ]
+}

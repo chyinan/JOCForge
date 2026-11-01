@@ -1,0 +1,106 @@
+{
+  "schema": "washed-dee-full-song-reference.v1",
+  "status": "FULL_FILE_DEE_REFERENCE_OUTPUT_JOC_METADATA_CAPTURED_RENDER_NOT_VERIFIED",
+  "source": {
+    "sample_id": "authorized_sample6_people_is_cat",
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_bytes": 743696526,
+    "source_sha256_recomputed_by_wash_this_turn": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_alias": "human_is_cat_sample6.wav",
+    "alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_unchanged_after_run": true,
+    "format": {
+      "container": "RIFF/WAVE",
+      "codec": "PCM24",
+      "sample_rate_hz": 48000,
+      "channels": 38,
+      "block_align": 114,
+      "sample_frames": 6522906,
+      "chunks": [
+        "JUNK",
+        "fmt ",
+        "data",
+        "axml",
+        "chna",
+        "dbmd"
+      ],
+      "bext": false,
+      "ixml": false
+    }
+  },
+  "job": {
+    "job_xml_sha256": "e4529fe290814178146cecf1be630bb24f92551807e626b89aba27195b011b75",
+    "input_type": "atmos_mezz",
+    "route": "encode_to_atmos_ddp",
+    "time_base": "file_position",
+    "start_end": "empty_full_file",
+    "data_rate_kbps": 1024,
+    "input_timecode_frame_rate": "24",
+    "input_offset": "auto",
+    "input_ffoa": "auto",
+    "local_xsd_valid": false,
+    "xsd_extensions": [
+      "time_base",
+      "timecode_frame_rate"
+    ],
+    "prior_user_log_values": "offset=ffoa=3610 seconds and resolved rate 24 were USER_REPORTED_UNHASHED; not reported by this run."
+  },
+  "dee_runtime": {
+    "encoder_done": true,
+    "encoding_progress_100": true,
+    "output_progress_100": true,
+    "numeric_exit_code": "NOT_CAPTURED_BY_DEBUGGER",
+    "dee_log_hash_bound_in_source_receipt": true
+  },
+  "output": {
+    "bytes": 17395712,
+    "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "sha256_status": "R3_CAPTURED_BEFORE_OUTPUT_REMOVAL; NOT_REHASHED_BY_WASH",
+    "posthoc_ffprobe": {
+      "codec": "E-AC-3",
+      "profile": "Dolby Digital Plus + Dolby Atmos",
+      "sample_rate_hz": 48000,
+      "channels": 6,
+      "layout": "5.1(side)",
+      "bit_rate_bps": 1024000,
+      "duration_seconds": 135.904,
+      "decode": false
+    },
+    "posthoc_openjoc": {
+      "version": "0.20.1",
+      "authority": "in-band syntax only",
+      "classification": "eac3_joc",
+      "access_units": 4247,
+      "duration_seconds": 135.904,
+      "joc_present": true,
+      "addbsi_signaled_aus": 4247,
+      "profile_index": 3,
+      "profile": "five_x_phase",
+      "coded_object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "metadata_object_counts": [
+        16
+      ],
+      "parse": "pass",
+      "etsi_strict": "fail",
+      "etsi_strict_failed_aus": 4247,
+      "deployed_compatibility": "pass",
+      "deployed_compatibility_failed_aus": 0,
+      "decoder_admissible": true,
+      "render_verified": false
+    }
+  },
+  "limits": {
+    "pcm_decode": false,
+    "playback": false,
+    "render": false,
+    "output_payload_included": false,
+    "output_payload_rehashed_by_wash": false,
+    "external_tools_role": "POSTHOC_FORMAT_AND_IN_BAND_SYNTAX_CHECK_ONLY",
+    "audio_algorithm_inference_from_external_tools": false
+  }
+}

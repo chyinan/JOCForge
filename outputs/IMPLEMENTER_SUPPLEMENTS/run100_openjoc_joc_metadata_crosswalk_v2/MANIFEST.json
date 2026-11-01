@@ -1,0 +1,65 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "run100-openjoc-joc-metadata-crosswalk-v2",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "e0ff575f59207830f71f0146baceab85e2aa03b01c38b65c4c7b648f79521b02",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "0f3d57da71b10877d0c1f451ae47a9baae3eb6d1663bc4953ed88ab9bc617b8b",
+      "bytes": 2407
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "4f238d5dc40037a51c1c850504549df0b7f2fdec39c679497abe09f6745ace10",
+      "bytes": 4154
+    },
+    {
+      "name": "OPENJOC-INSPECT-METADATA.json",
+      "sha256": "70e99247fd434d624a01b2f0560cb0b011c1e1f86006bbed5746aecfefa9b612",
+      "bytes": 23455
+    },
+    {
+      "name": "RUN100-METADATA.json",
+      "sha256": "6b7cd505efc16b7090561a03c39dd959b26becbe8ece7a37dd059e917f492ea8",
+      "bytes": 4056
+    },
+    {
+      "name": "RUN100-PACKAGE-MANIFEST.json",
+      "sha256": "51c4edeacec83a286af689b1575f1e9f1e7710ba2050691931ab0061f624009b",
+      "bytes": 1324
+    },
+    {
+      "name": "RUN100-SOURCES.json",
+      "sha256": "363cf910460371f703d00d1d9664193462d5f4427d8bff3da6702cc3cbacc965",
+      "bytes": 1275
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "sha256": "eda7c50e6cffb4acad11ab68d759a034d3f9a1d956392154cf1070a71e9a1284",
+      "bytes": 2900
+    },
+    {
+      "name": "CONTROLLED-VECTORS.json",
+      "sha256": "39c47ae1beb847f2e8fc53502d180a3be348e91ce4feaa2c5983fca5d2025e6a",
+      "bytes": 900
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "d73c5e6507fa13af24a516d29fc611f5b26bd9837a85328488ec3e8bd6049604",
+      "bytes": 1407
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "115960675825808f3d167270803f4714d4f0f0c6b8ec5d27ae86def27b94eed8",
+      "bytes": 1292
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "sample6_attempt05_drc_single_token_error_mapping_v1",
+  "scope": "Attempt05 terminal failure and current-source DRC wrapper semantics; executable/source identity and runtime consumer values remain UNBOUND.",
+  "status": "RUN05_DRC_ERROR_OBSERVED; LEGACY_WRAPPER_CAUSE_STATIC_PLAUSIBLE_NOT_PROVEN; RUN_BINARY_IDENTITY_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2734,
+      "sha256": "808ef750a89e6403a009550fefd6a3e57f0b779f39ed34ba46714ecd28fad02b"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 793,
+      "sha256": "aaf72c2fc2561bddda73928e2ca2d2b1ab4453541b4e7159d25773c831f6194b"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 958,
+      "sha256": "f6370fbbd9a4b851254ccd1147014a9f636ee61cb22215c991040283a4f3b780"
+    },
+    {
+      "name": "README.md",
+      "bytes": 850,
+      "sha256": "6ff4d3b0af04246e316fbb19a401052f1fec3822391b299030ee9b381316bb66"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1296,
+      "sha256": "eb5c96c4b1eb21826b59b1d539d2e2ad250befb7f3c185492c00267dd2f5ebe2"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 216,
+      "sha256": "b77b0a3b03e214dc22fbb05544e8902ab1fb3e370c02d95e0bc641b27169a793"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1980,
+      "sha256": "d94ac066442ac91be303796ab43b4012cdcec7634afc7a4141f8bca8f15089b3"
+    }
+  ]
+}

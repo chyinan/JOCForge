@@ -1,0 +1,38 @@
+{
+  "schema": "washed-potential-ai-dbmd-negative-sentinel-run147.v1",
+  "package_id": "potential_ai_dbmd_negative_sentinel_run147_crosscheck_v1",
+  "status": "POTENTIAL_AI_NEGATIVE_FFOA_SENTINEL_JOINED_TO_RUN147_METADATA; POSITIVE_DELTA_UNTESTED",
+  "implementation_readiness": "CANDIDATE_HELPER_METADATA_RULE_ONLY; NO_HELPER_QUERY_NEEDED_FOR_NEGATIVE_SENTINEL",
+  "source_package_manifest_sha256": "fe1e8128fc359ea97ed954056e2934370ffd8ba9434e30eee2c5daa90bb3ab9a",
+  "implementation_allowed_for": "SAMPLE_SPECIFIC_CANDIDATE_HELPER_NEGATIVE_SENTINEL_REFERENCE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_dbmd_bytes": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 2653,
+      "sha256": "83b522d5343efd850d895274c58ec3aa9a22d05c4587bce84ad03b5ef16d58ff"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1263,
+      "sha256": "45304328e6cbe7f4e10435ea5baa47a1cdd9c348092016fd0013a2e97ee1da31"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 919,
+      "sha256": "eb93109f69c960172d78f7c75ec5055c5c9f6f14e46bf72b4da922162f7e3c6a"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2422,
+      "sha256": "c54363718d1363bf57213720098bca517a81be4252e08363df51f7e83de87bd4"
+    }
+  ]
+}

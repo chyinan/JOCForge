@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "run145_payload11_group_presence_observation_v1",
+  "scope": "One bounded metadata-prefix observation from Run145 AU0; field names, offsets, and statuses only; no payload body or PCM.",
+  "status": "RUN145_GROUP_ID_PRESENT_BIT_ONE_STATIC_MODULE_JOIN_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "CURSOR-OBSERVATION.json",
+      "bytes": 828,
+      "sha256": "854ede7deaa31d33f7cc013cec72098d890a85d6f6b8e3dc0e3dec8ca13a1b14"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2057,
+      "sha256": "90554125390a2f1d438c77f9c21dd0455f533dc50477959b1eb97ce16054af3d"
+    },
+    {
+      "name": "README.md",
+      "bytes": 889,
+      "sha256": "1cac34b6b7c1a37ea6e9b176a292f57cfa60c72d4427dc0160f39b48c3890dd7"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 6321,
+      "sha256": "2df9ad01574be5520d3e242bc85c9fdf8869ff7cadef25c67c60c85dacc894b7"
+    }
+  ]
+}

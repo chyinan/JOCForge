@@ -1,0 +1,37 @@
+{
+  "schema": "washed-potential-ai-dee-output-reference.v1",
+  "package_id": "potential_ai_dee_output_metadata_reference_v1",
+  "status": "SAMPLE_DEE_OUTPUT_METADATA_VERIFIED; STRICT_EAC3_CHECK_FAIL; RENDER_NOT_RUN",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "5ae74ece2e6f048f7e86495edfac9f6ebd55511eaca2ecfdc80af3c3ec2ec031",
+  "implementation_allowed_for": "SINGLE_SAMPLE_METADATA_REFERENCE_COMPARISON_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 5196,
+      "sha256": "0f84121f0d1b1904cb7001dd656d88bf64d68276e82aca91e6eaf69d871e8eb0"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1590,
+      "sha256": "cf832e27880afb46f9ed07fd8d036b2c9027d7594690e6245fbb302db2584724"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1519,
+      "sha256": "6f90f5f110b4b91fff6cf48d7ad3225b4a979c60d8a7cee528b6f3cee4d8ec65"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2494,
+      "sha256": "69ac81882aef799aa9e2e85a7587c85ac13ab593abbb4ea37fefa765c9691a27"
+    }
+  ]
+}

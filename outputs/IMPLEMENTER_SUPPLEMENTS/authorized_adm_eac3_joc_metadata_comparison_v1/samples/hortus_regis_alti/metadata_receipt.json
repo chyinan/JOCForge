@@ -1,0 +1,194 @@
+{
+  "schema": "authorized-adm-eac3-metadata-receipt.v1",
+  "sample_label": "Hortus Regis Alti.wav",
+  "status": "ENCODER_COMPLETED_METADATA_CAPTURED",
+  "captured_at_utc": "2026-10-31T13:05:01.294207+00:00",
+  "input": {
+    "authorized_lineage_id": "authorized_adm_bwf_02",
+    "source_bytes": 1689440628,
+    "source_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+    "source_last_write_utc": "2026-10-12T16:08:46.423666+00:00",
+    "ascii_alias_basename": "hortus_regis_alti.wav",
+    "alias_bytes": 1689440628,
+    "alias_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+    "source_unchanged_after_run": true,
+    "ffprobe_metadata": {
+      "codec_name": "pcm_s24le",
+      "sample_rate_hz": 48000,
+      "channels": 36,
+      "bits_per_sample": 24,
+      "duration_seconds": 325.879583,
+      "metadata_json_sha256": "9c2e10d9c8f598182aa5e7be98061c4f7bb6a79d31dc065021c9a19df1089c0a"
+    }
+  },
+  "job": {
+    "xml_sha256": "de4b950e608c7f389cb35f9094096c7809cf12efdb13a774c2091282f5bcef02",
+    "preflight_job_xml_sha256": "7f61d3a0b871b3ecf3873405ea0cfabcee8bca0f5f96135d59c00afd8b29b4c8",
+    "source_r138_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_type": "audio.adm",
+    "route": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "time_base": "embedded_timecode",
+    "start": "86664",
+    "end": "86688",
+    "range_delta_from_preflight": {
+      "start": 24,
+      "end": 24
+    },
+    "selection_note": "R138 window 86640-86664 was near-silent. Bounded source scan found an active adjacent window. Derived XML shifts both tokens by +24; this one-run log maps it to PCM sample frames 48000-97999. Mapping is scoped to this input/run and is not a product timebase policy.",
+    "local_xsd_valid": false,
+    "known_local_xsd_extensions": [
+      "timecode_frame_rate",
+      "time_base"
+    ]
+  },
+  "runtime": {
+    "dee_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_filter_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "launch_method": "WinDbg launch with the R4-matched DEE option set",
+    "license_argument_supplied": true,
+    "license_contents_opened_copied_or_hashed": false,
+    "license_material_in_receipt": false,
+    "numeric_exit_code": "NOT_CAPTURED_BY_DEBUGGER",
+    "target_gone_after_run": true,
+    "encoder_done": true,
+    "encoding_progress_100": true,
+    "output_progress_100": true,
+    "measured_integrated_loudness": "-27.774199.",
+    "audio_content_status": "ACTIVE_WINDOW_CONFIRMED_BY_BOUNDED_SOURCE_PCM_AND_DEE_METER",
+    "sample_peak_zero": false,
+    "true_peak_zero": false,
+    "measurement_interpretation": "No independent audio decode or listening was performed.",
+    "normalized_source_pcm_frame_range": {
+      "start_inclusive": 48000,
+      "end_inclusive": 97999,
+      "evidence": "dee_active.log exact Composite Master line for this run",
+      "scope": "Observed for this input/config only; not a general timebase policy"
+    }
+  },
+  "output": {
+    "bytes": 135168,
+    "sha256": "b85a77ac531aae0fe34954de9272a0f92d651f86076944118ca0442188df8e7b",
+    "ffprobe": {
+      "tool_version": "ffprobe version 8.1-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers",
+      "codec_name": "eac3",
+      "profile": "Dolby Digital Plus + Dolby Atmos",
+      "sample_rate_hz": 48000,
+      "channels": 6,
+      "channel_layout": "5.1(side)",
+      "bit_rate_bps": 1024000,
+      "duration_seconds": 1.056,
+      "format_size": 135168,
+      "packet_or_frame_listing": false,
+      "audio_decode": false
+    },
+    "openjoc": {
+      "tool_version": "OpenJOC 0.20.1",
+      "binary_sha256": "875e4c3b0b47cde77776fb714a45bf6a89970420863e9bdc21287fcfb6937a16",
+      "metadata_json_sha256": "56d6a5ecf986b3e0ee594472af484b8fa73898b008b8272a52538924a3a0f55e",
+      "format": "eac3_joc",
+      "classification_authority": "in_band_syntax",
+      "access_units": 33,
+      "duration_seconds": 1.0560000000000007,
+      "joc_present": true,
+      "addbsi_signaled_aus": 33,
+      "joc_profile_index": 3,
+      "joc_profile": "five_x_phase",
+      "coded_object_counts": [
+        15
+      ],
+      "complexity_indices": [
+        16
+      ],
+      "scene_metadata_present": true,
+      "object_metadata_present": true,
+      "object_metadata_slot_count": 16,
+      "dynamic_metadata_detected": true,
+      "stream_parse": "pass",
+      "etsi_strict_status": "fail",
+      "etsi_strict_failed_aus": 33,
+      "deployed_compatibility_status": "pass",
+      "deployed_compatibility_failed_aus": 0,
+      "decoder_admissible": true,
+      "render_verified": false
+    }
+  },
+  "setup_failures": [],
+  "source_window_measurements": [
+    {
+      "file": "bwf-window-initial.json",
+      "sha256": "3c1940fc653726060e780f0c11f0eab763c637209eb8ca67627dd78892a9bf2f",
+      "status": "DIRECT_PCM_SAMPLE_WINDOW_MEASURED",
+      "coordinate_basis": "DEE log for original candidate recorded selected PCM frames 0-49999; direct sample coordinates are per-run only, not product timebase policy.",
+      "sample_offset": 0,
+      "sample_frames_per_channel": 50000,
+      "peak_dbfs": -77.2296818290371,
+      "rms_dbfs": -111.52070820600544,
+      "pcm_values_persisted": false
+    },
+    {
+      "file": "bwf-window-active.json",
+      "sha256": "79c8b32af8606d20056d24e7cfbdb99df8c7a626262737b02ca78b0f44651a86",
+      "status": "DIRECT_PCM_SAMPLE_WINDOW_MEASURED",
+      "coordinate_basis": "DEe log for active candidate records Composite Master start=48000,end=97999; direct coordinates are per-run only.",
+      "sample_offset": 48000,
+      "sample_frames_per_channel": 50000,
+      "peak_dbfs": -25.170511630687955,
+      "rms_dbfs": -50.1627348574629,
+      "pcm_values_persisted": false
+    },
+    {
+      "file": "bwf-window-scan.json",
+      "sha256": "1672252809743775dc6acd152c8a601ff201e1942781b3e1b58d2de291b66c90",
+      "status": "DIRECT_PCM_SAMPLE_WINDOW_MEASURED",
+      "coordinate_basis": "Bounded search based on the original DEE log selected start=0,end=49999; criteria -60 dBFS RMS/-40 dBFS peak are experiment window selection only.",
+      "sample_offset": 0,
+      "sample_frames_per_channel": 50000,
+      "peak_dbfs": -77.2296818290371,
+      "rms_dbfs": -111.52070820600544,
+      "pcm_values_persisted": false
+    }
+  ],
+  "excluded_window_candidates": [
+    {
+      "reason": "SOURCE_WINDOW_NEAR_SILENT; not used as the active-content comparison sample",
+      "output_bytes": 135168,
+      "output_sha256": "c402864299803e78c9ec4acfcbf1c9db76d45b5420eff67889621197714fd40e",
+      "dee_log_sha256": "38be47f1ce0a9d4ed3744fe1d270a13c0f93fbc04401c331e13832b8752eb116",
+      "integrated_loudness": "-120.000000.",
+      "source_window_measurement_file": "bwf-window-initial.json",
+      "source_window_measurement_sha256": "3c1940fc653726060e780f0c11f0eab763c637209eb8ca67627dd78892a9bf2f",
+      "source_window_peak_dbfs": -77.2296818290371,
+      "source_window_rms_dbfs": -111.52070820600544,
+      "normalized_source_pcm_frame_range": {
+        "start_inclusive": 0,
+        "end_inclusive": 49999,
+        "evidence": "dee_attempt1.log exact Composite Master line for the excluded quiet candidate"
+      },
+      "classification": "QUIET_WINDOW_NOT_VALID_AUDIO_SAMPLE"
+    }
+  ],
+  "evidence_logs": [
+    {
+      "file": "dee_active.log",
+      "sha256": "fd3a8a326c16a8373e5283e9b7ff517e3a5bd2db2aae5bea781846fce191f3a3"
+    }
+  ],
+  "handling": {
+    "pcm_decoded": false,
+    "audio_played": false,
+    "ec3_payload_in_receipt": false,
+    "output_payload_retained": false,
+    "input_alias_retained": false,
+    "media_cleanup": "VERIFIED_OUTPUT_ALIAS_AND_TEMP_DIRECTORIES_REMOVED",
+    "source_original_retained": true,
+    "source_hash_after_cleanup": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+    "temporary_payload_directories_removed": {
+      "temp": true,
+      "temp_retry": true,
+      "temp_debugger_launch": true,
+      "temp_active": true
+    },
+    "sample_disposition": "ACTIVE_WINDOW_CONFIRMED_BY_BOUNDED_SOURCE_PCM_AND_DEE_METER"
+  }
+}

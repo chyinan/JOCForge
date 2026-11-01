@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "sample6_metadata_parent_consumer_mismatch_contract_v1",
+  "scope": "Attempt06 terminal mismatch, approved transaction scopes, and current-source compare point; runtime values and attempt binary/source identity remain UNBOUND.",
+  "status": "ATTEMPT06_CONSUMER_TOKEN_FAILURE_BOUNDARY; CURRENT_SOURCE_ROUTE_STATICALLY_CONSISTENT; RUN_BINARY_SOURCE_JOIN_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3693,
+      "sha256": "77d43d7ae508933aa308487469dde81c1c1a10c14afbaf53ba9e3ee797fa2603"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1292,
+      "sha256": "3f415862638cf21aaffb2bc3f4d9b20288efa1a9784fc6fb79956a6d46eadc8d"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1165,
+      "sha256": "d26c4be99b5229ed64d8d1c54bdf10f3a21bb450461540b365deea045c93b228"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1116,
+      "sha256": "41bfc2cf1d416a21608b05da8f0b8b3e68ac53815e338749c227ed9e0a06e704"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1474,
+      "sha256": "aaec21738b44e93703e3f9a62ff18002b5dba163c79a929b5d920a05b937dfd5"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 241,
+      "sha256": "90ba273d3ddac554b95e2eddc03af89fa7e7965e47e7f82741fea5b24888c96a"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2007,
+      "sha256": "af2fa8ac2c7d6c3a4d166cf2568b0243544a6d90cdbf5752355fa0bacd4452e7"
+    }
+  ]
+}

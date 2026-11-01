@@ -1,0 +1,40 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "run100-reference-ec3-metadata-only-wash-v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_manifest_sha256": "51c4edeacec83a286af689b1575f1e9f1e7710ba2050691931ab0061f624009b",
+  "implementation_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "README.md",
+      "sha256": "678d25ed69694f6dbb813d4cda6a8a0408dd5ed1f89a635250f79fca0d1e9c3b",
+      "bytes": 1119
+    },
+    {
+      "name": "RUN100-METADATA.json",
+      "sha256": "6b7cd505efc16b7090561a03c39dd959b26becbe8ece7a37dd059e917f492ea8",
+      "bytes": 4056
+    },
+    {
+      "name": "SOURCES.json",
+      "sha256": "363cf910460371f703d00d1d9664193462d5f4427d8bff3da6702cc3cbacc965",
+      "bytes": 1275
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "fd06fa22841b699c085fceb53c73c8b3736f6765d4106e7f6fe73bfd453ffec6",
+      "bytes": 1239
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "ef682ed3a84baf0077faf513bbb23a93d0be878e4acf1cc077cb850326b61113",
+      "bytes": 1185
+    }
+  ]
+}

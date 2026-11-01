@@ -1,0 +1,31 @@
+{
+  "schema": "controlled-run100-openjoc-metadata-vector.v2",
+  "vectors": [
+    {
+      "id": "run100_reference_ec3_metadata_only",
+      "input": {
+        "ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+        "ec3_bytes": 17395712,
+        "run100_ffprobe_profile_label": "Dolby Digital Plus + Dolby Atmos"
+      },
+      "expected_observations": {
+        "joc_present": true,
+        "addbsi_signaled_aus": 4247,
+        "joc_emdf_profile_index": 3,
+        "joc_emdf_profile_name": "five_x_phase",
+        "oamd_object_count": [
+          16
+        ],
+        "coded_reconstruction_rows": [
+          15
+        ],
+        "complexity_index": [
+          16
+        ]
+      },
+      "distinction": "Atmos_profile_label != inband_JOC_signaling != JOC_EMDF_profile != OAMD_object_metadata",
+      "pcm_decode": false,
+      "payload_saved": false
+    }
+  ]
+}

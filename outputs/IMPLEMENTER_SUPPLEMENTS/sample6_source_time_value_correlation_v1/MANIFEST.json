@@ -1,0 +1,29 @@
+{
+  "schema": "washed-sample6-source-time-value-correlation.v1",
+  "package_id": "sample6_source_time_value_correlation_v1",
+  "status": "SAME_INPUT_AND_SCALAR_VALUES_BOUND; AXML_TO_PROPERTY_WRITER_UNBOUND",
+  "implementation_readiness": "SAMPLE6_START_ZERO_ONLY",
+  "source_package_manifest_sha256": "4908509e2ce543f6fa0c4ae3b7d279008834c7f52a7dc9ad09c9c6ecc28ac153",
+  "payloads": [
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1204,
+      "sha256": "caea7b49c61afea3656efcbe90546709405fdce2600aca8aa2d2ecbe765cd095"
+    },
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 1924,
+      "sha256": "2576c8dad0f608fa25ae06135eb64804c400a2d69c3868e7f790627f66ebf82f"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 503,
+      "sha256": "fa95809fd5a7618daabdd2ae09ee221565453a19c8082a6ee765d201cbba944a"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 1883,
+      "sha256": "79a23fd54846431bb2ed88679223b6ba62cd23c1bf1f2f51ddf9329505c70969"
+    }
+  ]
+}

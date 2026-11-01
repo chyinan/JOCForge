@@ -1,0 +1,61 @@
+{
+  "schema": "washed-run145-payload11-group-presence.v1",
+  "package_id": "run145_payload11_group_presence_observation_v1",
+  "status": "RUN145_GROUP_ID_PRESENT_BIT_ONE_STATIC_MODULE_JOIN_UNBOUND",
+  "implementation_effect": "NONE_AUDIO_ALGORITHM_RULE",
+  "upstream_package": {
+    "manifest_sha256": "d31e03a30eef2d3de8fba202a2f4e275e27386f609ea756e7f31ac9a7c261adc",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "upstream_payload_hashes_recomputed": "PASS"
+  },
+  "input": {
+    "sha256": "284fa11e3a5200a2bf6fd0eb3ccba5a11177f2c955cf8ab60ee7576f37339261"
+  },
+  "parser": {
+    "name": "OpenJOC",
+    "version": "0.20.1",
+    "sha256": "2e84afcfa5e197332a84f9386ffa4c69f0c12e8ca5cf95c23690af320cfa1a39"
+  },
+  "observation": {
+    "scope": "AU0_Type11_configuration_prefix_only",
+    "au_index": 0,
+    "au_byte_offset": 0,
+    "au_frame_count": 1,
+    "frame_bytes": 4096,
+    "payload_id": 11,
+    "payload_id_status": "MATCHED_ID_11",
+    "configuration_start_bit_offset": 9154,
+    "configuration_end_bit_offset": 9163,
+    "group_id_present": {
+      "bit_offset": 9156,
+      "width": 1,
+      "status": "BIT_ONE"
+    },
+    "group_id": 0,
+    "payload_body_read": false,
+    "payload_body_saved": false,
+    "raw_bitstream_saved": false,
+    "pcm_read": false
+  },
+  "static_comparison": {
+    "source_package_manifest_sha256": "f4ca8e1331c9749666a079b90d6d379d553c5efed4313adde65c8ab524c25178",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "default_group_id_present": "BIT_ZERO",
+    "same_loaded_module_run_join": "UNBOUND"
+  },
+  "reference_context": {
+    "compatibility": "PASS_8048_OF_8048",
+    "etsi_strict": "FAIL_8048_OF_8048",
+    "dee_run": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "inference_boundary": "One observed output does not establish the producer path or universal behavior.",
+  "execution": {
+    "payload_body_read": "NO",
+    "payload_body_saved": "NO",
+    "pcm_read": "NO",
+    "new_dee_job": "NOT_RUN",
+    "private_key_read": "NO"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_INPUT_VECTOR; NEGATIVE_SENTINEL_ONLY",
+  "source_package_id": "r4-run145-dbmd-time-branch",
+  "source_package_manifest_sha256": "f60e5cfd6bc8ec47db41197d6e224237cf3eef1fdf4651fdfca72579f163f513",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_package_payloads_checked": 4,
+  "input_file_hash_recomputed": true,
+  "dbmd_payload_hash_recomputed": true,
+  "dbmd_tuple_field_bytes_recomputed": true,
+  "metadata_bytes_read_by_wash": 576,
+  "audio_data_bytes_read": 0,
+  "candidate_helper_result_recomputed_from_candidate_rule": true,
+  "related_wash_manifests_checked": 3,
+  "implementation_ready": "NO",
+  "limitations": [
+    "This authorized First Love sample exercises only the negative FFOA sentinel branch.",
+    "The positive DBMD delta branch remains untested.",
+    "The candidate helper identity is confirmed for an R138-equivalent replay, not the original R138 process instance.",
+    "No audio encoding, rendering, playback, or listening was performed in this input-vector check."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "raw_dbmd_bytes": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

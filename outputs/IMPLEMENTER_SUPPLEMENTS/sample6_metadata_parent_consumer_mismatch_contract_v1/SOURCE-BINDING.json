@@ -1,0 +1,21 @@
+{
+  "package_id": "sample6_metadata_parent_consumer_mismatch_contract_v1",
+  "incoming_manifest_sha256": "a7e7c5d2fdd98102e6d6b3edda2a1a0e217eb75af3b6409427b87f373925c852",
+  "incoming_payload_sha256": {
+    "REPORT.md": "d3f15cba577c8af05d43a89893c2fd17c27aa811a87465710d15d3d4c9a489b1",
+    "SOURCE-IDENTITIES.json": "9c29ac13567b07056752070625e12f481c3e4b9c61f53732a06803907c0ac92e",
+    "EVIDENCE.json": "325448e2f9f8777ccb959542cbbb3f891c0ca085276029845ff207eb60f97631",
+    "INPUT-ONLY-VECTORS.json": "c0f4d644d7174858c89251c15ed292fd32082e20e190b8d9c6318b0439170f3b",
+    "CHECK.py": "e6909b3a7e08511e3cf8e0c6bb586db649fdc61b69c9fa9129ae7a7ddd90b059"
+  },
+  "run_receipt_sha256": "94840d12768042a2eadd21d191b828dda0617ca201763727f4c716f29bf8e076",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "launch_executable_sha256": "a51c251b7a20ac40e60699f5a2e9f6ad0812df2d3b3f535bf431a394a168ec7b",
+  "current_target_path_sha256": "7377df8909a26f1fcccfe4288eab555ef982c6a2a36dfccdd6dd11f72dc57ae3",
+  "runner_script_sha256": "b8c0d9c7a670cc7e92ca341a2869c2554e626a25a18c90438e8ae902a5d523f",
+  "approved_gtc_contract_sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+  "approved_drc_supplement_sha256": "0ee7491d713000921c5e002710d67771791d64c531ed41a2d55c77c5c559cbb7",
+  "raw_source_or_binary_included": false,
+  "private_key_or_license_read": false,
+  "pcm_or_payload_read": false
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "bounded-bwf-timecode-window-measurement.v1",
+  "sample_label": "Hortus Regis Alti.wav",
+  "source_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+  "source_bytes": 1689440628,
+  "measured_at_utc": "2026-10-31T13:04:39.495471+00:00",
+  "status": "DIRECT_PCM_SAMPLE_WINDOW_MEASURED",
+  "coordinate_basis": "DEE log for original candidate recorded selected PCM frames 0-49999; direct sample coordinates are per-run only, not product timebase policy.",
+  "identity": {
+    "riff_id": "RIFF",
+    "riff_size_field": 1689440620,
+    "chunks": [
+      {
+        "id": "JUNK",
+        "bytes": 64
+      },
+      {
+        "id": "fmt ",
+        "bytes": 16
+      },
+      {
+        "id": "data",
+        "bytes": 1689359760
+      },
+      {
+        "id": "axml",
+        "bytes": 78708
+      },
+      {
+        "id": "chna",
+        "bytes": 1444
+      },
+      {
+        "id": "dbmd",
+        "bytes": 576
+      }
+    ],
+    "fmt": {
+      "audio_format_code": 1,
+      "channels": 36,
+      "sample_rate_hz": 48000,
+      "byte_rate": 5184000,
+      "block_align": 108,
+      "bits_per_sample": 24,
+      "extra_format_bytes": "",
+      "data_offset": 116,
+      "data_bytes": 1689359760,
+      "sample_frames": 15642220
+    },
+    "bext": null,
+    "ixml_timecode_rate": null,
+    "ixml_first_timecode": null,
+    "explicit_frame_rate": null,
+    "first_timecode_frame_number": null,
+    "metadata_chunk_names": [
+      "axml"
+    ]
+  },
+  "current_window": {
+    "sample_offset": 0,
+    "sample_frames_per_channel": 50000,
+    "channels": 36,
+    "sample_count_all_channels": 1800000,
+    "pcm_bytes_read_in_memory": 5400000,
+    "peak_linear": 1154,
+    "peak_dbfs": -77.2296818290371,
+    "rms_linear": 22.26662986523905,
+    "rms_dbfs": -111.52070820600544,
+    "nonzero_sample_count": 746847,
+    "pcm_values_saved": false
+  },
+  "candidate_activity_criteria": null,
+  "first_active_candidate": null,
+  "additional_windows_scanned": 0,
+  "search_window_limit_seconds": 0,
+  "pcm_sample_values_read_in_memory": true,
+  "compressed_audio_decoded": false,
+  "audio_playback": false,
+  "pcm_values_persisted": false,
+  "raw_pcm_saved": false
+}

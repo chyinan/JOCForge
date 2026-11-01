@@ -1,0 +1,88 @@
+{
+  "package_id": "sample6_metadata_parent_consumer_mismatch_contract_v1",
+  "status": "ATTEMPT06_CONSUMER_TOKEN_FAILURE_BOUNDARY; CURRENT_SOURCE_ROUTE_STATICALLY_CONSISTENT; RUN_BINARY_SOURCE_JOIN_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Attempt-06 terminal error, approved transaction scopes, and current-source compare point. No runtime consumer field value or executable/source join is claimed.",
+  "attempt06": {
+    "run_id": "sample6-keyless-full-20261101-06",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "launch_executable_sha256": "a51c251b7a20ac40e60699f5a2e9f6ad0812df2d3b3f535bf431a394a168ec7b",
+    "current_target_path_sha256": "7377df8909a26f1fcccfe4288eab555ef982c6a2a36dfccdd6dd11f72dc57ae3",
+    "binary_identity": "UNBOUND_LAUNCH_HASH_DIFFERS_FROM_CURRENT_TARGET_PATH",
+    "exit_code": 2,
+    "error": "Metadata parent proposal: ParentTransactionMismatch",
+    "meter_callbacks": 4247,
+    "zero_drains": 3,
+    "dialnorm": 17,
+    "metadata_generation": 0,
+    "priming_phase_generations": [
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "ec3_output_present": false,
+    "partial_present": false,
+    "runtime_expected_consumer_id": "NOT_LOGGED",
+    "runtime_proposal_consumer_id": "NOT_LOGGED",
+    "runtime_receipt_consumer_id": "NOT_LOGGED",
+    "runtime_parent_callback_id": "NOT_LOGGED"
+  },
+  "approved_model": {
+    "source_clock": {
+      "callback_index": 2,
+      "source_index": 0,
+      "dispatch": 1
+    },
+    "source_transaction_id": "jocforge-source-0",
+    "parent_callback_transaction_id": "jocforge-main-callback-g2",
+    "same_token_expected": false,
+    "f05_id14_consumer_field": "source_transaction_id",
+    "f13_proposal_and_receipt_consumer_fields": "source_transaction_id",
+    "gtc_owner_receipt_field": "parent_callback_transaction_id"
+  },
+  "current_source_compare": {
+    "module_role": "metadata owner proposal handoff",
+    "file": "metadata_owner.rs",
+    "lines": "815-818",
+    "predicate": "proposal.consumer_transaction_id and receipt.consumer_transaction_id must equal expected consumer/source transaction",
+    "failure_variant": "ParentTransactionMismatch",
+    "parent_callback_compared_at_this_predicate": false,
+    "checks_after_compare": [
+      "source lineage",
+      "dispatch",
+      "AU",
+      "owner before/after generation"
+    ],
+    "short_circuit_runtime_values_unobserved": true
+  },
+  "current_source_route": {
+    "source_token_created_and_passed_to_f05_f13_consumers": true,
+    "parent_callback_token_supplied_separately_for_gtc_receipt": true,
+    "static_route_consistent_with_approved_model": true,
+    "run06_executable_bound_to_this_source": false
+  },
+  "native_ghidra_context": {
+    "ddp_atmos_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "measurement_to_bsi_owner_generation": "UNBOUND/NO",
+    "dee_ddpjoc_encoder_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "attempt06_executable_is_either_ghidra_image": false
+  },
+  "open": [
+    "Which of the two consumer fields differed at runtime",
+    "Attempt-06 executable/source build identity",
+    "Native measurement-owner generation to model MeasurementReceipt join",
+    "Attempt-07 runtime comparison values"
+  ],
+  "exclusions": {
+    "implementation_source_or_binary_included": false,
+    "raw_pointer_included": false,
+    "pcm_or_ec3_payload_read": false,
+    "private_key_or_license_read": false,
+    "new_dee_run_started": false
+  }
+}
