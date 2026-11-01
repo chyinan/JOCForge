@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "attempt10_profile_package": {
+    "manifest_sha256": "91d2bfa7facc235c830f3916b784608fc7d45a7438dcf7643b31bf2b0f212054",
+    "profile_binding_sha256": "a4648c132cd87351a05ce39cb613c72b840e5f144c517768626ce13d6eb8ef1e",
+    "build_receipt_sha256": "f173c95e01adf211e5bf07b73f9ee8f4f4080aae047ee138628dbb3aa109fc31"
+  },
+  "run_completion_and_hash_comparison": {
+    "manifest_sha256": "b1915d6de4d0eb7f05c8d2f14fb7f1eddbc368b6de4aeaf201ec37e3728eea91",
+    "receipt_sha256": "94dc3549d406e7ea572671498b8663ddb742c08f0cd0793880505837110dcb78"
+  },
+  "run_config_audit": {"manifest_sha256": "819227d2161c346b6a59d317ba3e98f9c2634e393726af8d4c9e074e7b31fec6"},
+  "current_source_file_hashes_recomputed_by_wash": {
+    "crates/jocforge-cli/src/encode_request.rs": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e",
+    "crates/jocforge-domain/src/frontend/provider.rs": "231f24e33a23bc4e4bce9e5f657b925ed670e16bfb6bfcff2012202ba5156e2f",
+    "crates/jocforge-application/src/output_publication/plan_admission.rs": "edc032f5326361d6d85219f753c9decfd9ca2239511957f8c5ed5ef0560484d6",
+    "crates/jocforge-application/assets/providers/codec_wire_selected.json": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd"
+  },
+  "comparator_identity_manifest_sha256": "0504ef603cbe7008ba80c607d7d03f84c4ab9e7c12bd018716b82a3c954d7d67",
+  "raw_source_or_output_bytes_copied": false
+}

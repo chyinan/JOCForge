@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATTEMPT10-OUTPUT-PROFILE-RECONSTRUCTION-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "91d2bfa7facc235c830f3916b784608fc7d45a7438dcf7643b31bf2b0f212054",
+  "status": "TARGET_PROFILE_SOURCE_SUPPORTED; RUN_CONFIG_RECONSTRUCTED_NOT_CAPTURED; HASH_MISMATCH",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3549,
+      "sha256": "321266397b6fed257e1f956adbb9380ca17b08e45c5fffad9d1a9bc7788515e1"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1426,
+      "sha256": "677b9bc35419a9aa64feda0db81a8409d703b586ee1d83f640074df782c8540e"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1585,
+      "sha256": "8571620a568341fa2222292cef1dd2bf9f53bad455461fb8738c3a2d66cf1dbb"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1454,
+      "sha256": "f77b3c37c72807fe6a25d7b17acf34f6a605ac46552c684eb49e045ce669bc72"
+    }
+  ]
+}

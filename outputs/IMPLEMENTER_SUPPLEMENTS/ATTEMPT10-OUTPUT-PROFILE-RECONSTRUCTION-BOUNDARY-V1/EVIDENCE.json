@@ -1,0 +1,81 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ATTEMPT10-OUTPUT-PROFILE-RECONSTRUCTION-BOUNDARY-V1",
+  "profile_source": {
+    "package_id": "attempt10_profile_binding_package",
+    "manifest_sha256": "91d2bfa7facc235c830f3916b784608fc7d45a7438dcf7643b31bf2b0f212054",
+    "profile_binding_sha256": "a4648c132cd87351a05ce39cb613c72b840e5f144c517768626ce13d6eb8ef1e",
+    "build_receipt_sha256": "f173c95e01adf211e5bf07b73f9ee8f4f4080aae047ee138628dbb3aa109fc31",
+    "generated_job_xml": {
+      "sha256": "17ea167465d24f420b5218f8a8bb8acf15f1bdd0eb8c5aa3efe1052e8a86d85c",
+      "status": "RECONSTRUCTED_FROM_SOURCE_TEMPLATE_AND_RUN_PATHS; NOT_CAPTURED_AT_RUNTIME"
+    },
+    "prepared_config_sha256": "78586c903421ce5ea93837cc7bdd8a075d5a548a9698a9d1c6df8f8980639ba5"
+  },
+  "source_template": {
+    "encode_request_rs_sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e",
+    "codec_wire_selected_json_sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+    "plan_admission_rs_sha256": "edc032f5326361d6d85219f753c9decfd9ca2239511957f8c5ed5ef0560484d6",
+    "frontend_provider_rs_sha256": "231f24e33a23bc4e4bce9e5f657b925ed670e16bfb6bfcff2012202ba5156e2f"
+  },
+  "template_profile": {
+    "job_xml_fields": {
+      "input_type": "ADM BWF",
+      "data_rate_kbps": 1024,
+      "time_base": "file_position",
+      "metering_mode": "1770-4",
+      "loudness_mode": "measure_only",
+      "line_drc": "none",
+      "rf_drc": "none",
+      "preferred_downmix_mode": "loro"
+    },
+    "selected_codec_profile": {
+      "sample_rate_hz": 48000,
+      "bit_rate_bps": 1024000,
+      "frame_samples": 1536,
+      "frame_bytes": 4096,
+      "audio_blocks": 6,
+      "acmod": 7,
+      "lfe_on": 1,
+      "fullband_channels": 5,
+      "spx": false,
+      "coupling": false,
+      "emdf_carriage": "deployed_compat"
+    },
+    "application_run_binding": "RECONSTRUCTED_NOT_CAPTURED"
+  },
+  "build_and_run": {
+    "run_id": "sample6-keyless-full-20261101-10",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "executable_sha256": "f7b60dd98ac7475134175fce0405c127615321e39088f60031f1ed2e8b70d278",
+    "runner_script_sha256": "b8c0d9c7a670cc7e92ca341a2869c2554e626a25a18c90438e8ae9025a4d523f",
+    "build_started_local": "2026-11-01T23:56:36.9180162+08:00",
+    "attempt_launched_local": "2026-11-01T23:58:34+08:00",
+    "source_commit": "a4e1a667be3dedd0031be552a2902feb9c7b6e28",
+    "source_commit_created_local": "2026-11-02T00:00:43+08:00",
+    "source_snapshot_to_build": "NOT_CAPTURED; commit followed build"
+  },
+  "run_result": {
+    "application_status": "DONE",
+    "exit_code": 0,
+    "output_bytes": 17395712,
+    "output_sha256": "593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473",
+    "comparator_bytes": 17395712,
+    "comparator_sha256": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+    "sha256_equal": false
+  },
+  "receipt_limits": {
+    "job_xml_persisted_by_application": false,
+    "output_sample_rate_persisted_in_run_receipt": false,
+    "output_bitrate_persisted_in_run_receipt": false,
+    "output_layout_persisted_in_run_receipt": false,
+    "output_codec_profile_persisted_in_run_receipt": false,
+    "target_profile_binding": "SOURCE_SUPPORTED_RECONSTRUCTION; RUN-SPECIFIC SOURCE LINK UNBOUND"
+  },
+  "content_access": {
+    "output_or_comparator_bytes_copied": false,
+    "decoded_or_rendered": false,
+    "root_cause_inferred_from_hash": false,
+    "implementation_ready": false
+  }
+}

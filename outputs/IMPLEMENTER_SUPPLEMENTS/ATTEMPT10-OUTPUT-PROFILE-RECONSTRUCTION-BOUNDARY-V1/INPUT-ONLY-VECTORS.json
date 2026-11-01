@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge-attempt10-profile-reconstruction-vectors.v1",
+  "kind": "source/config reconstruction; no output content",
+  "vectors": [
+    {
+      "id": "current-source-template-selected-profile",
+      "input": {
+        "encode_request_source_sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e",
+        "codec_wire_provider_sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+        "run_id": "sample6-keyless-full-20261101-10",
+        "job_xml_digest_captured_at_runtime": false
+      },
+      "expected": {
+        "source_template": "48 kHz / 1024 kbps / acmod 7 / LFE 1 / 5 fullband / 6 blocks / 1536 samples / 4096 bytes",
+        "attempt10_uses_this_exact_source_snapshot": "NOT_CAPTURED",
+        "target_profile_status": "SOURCE_SUPPORTED_RECONSTRUCTION"
+      }
+    },
+    {
+      "id": "attempt10-exact-hash-result",
+      "input": {
+        "output_sha256": "593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473",
+        "comparator_sha256": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+        "output_bytes": 17395712,
+        "comparator_bytes": 17395712
+      },
+      "expected": {"length_equal": true, "sha256_equal": false, "mvp_exact_hash": "FAIL"}
+    }
+  ],
+  "limits": ["No conclusion about mismatch cause is derived from these hashes.", "Run profile reconstruction is not a persisted app receipt."]
+}
