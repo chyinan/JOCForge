@@ -2,7 +2,7 @@
 
 > Generated locator only. A catalog row is not evidence. Read the selected package, verify its manifest and payload hashes, then use only its stated scope.
 
-Package directories: 519. Top-level manifests: 517.
+Package directories: 520. Top-level manifests: 518.
 
 Search by function, parameter, status, or package name:
 
@@ -348,6 +348,7 @@ Rebuild with `rtk proxy python -B scripts/build_supplement_catalog.py`.
 | IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1 | 8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991 | NOT_DECLARED | AMENDMENT.json | No hash-verified summary payload declared. |
 | INDEPENDENT-METER-PREPASS-BOUNDARY-V1 | cbf13f9b1600e18cca4302188985b6a54d2526a9d4b51b70a0c4c06b8663089c | NOT_DECLARED | CONTRACT.md, INPUT-ONLY-CASES.json, SOURCE-IDENTITIES.json, VERIFICATION.json | selected profile local model; synthetic count only; real meter not run \| Grade: approved selected-profile model contract and local canonical state crosswalk. It is not a claim that a production implementation, native pointer join or real audio run has completed. Application derives one immutable Domain-owned PreparedJobInputIdentity from the admitted Prepare |
 | JOC-ID14-HEADER-PRODUCER-BINDING-V1 | 7d67ff782ea457e100882914c5254b293e92291146114b6e8d87d205b4176c9d | NOT_DECLARED | CONTRACT.json, INPUT-ONLY-CASES.json, SOURCES.json, WASH-VERIFICATION.json | F04D/F04RB clip and F05JL sequence same-dispatch binding only |
+| KEYLESS-PROTOTYPE-COMPARATOR-SOURCE-CHAIN-BOUNDARY-V1 | fd3474bc504c49ef2b52abc761334f41e9362ced7a63b05fb05968be2bc2c538 | manifest: CANDIDATE_SOURCE_CHAIN_FOUND_RUN_AND_ADM_INPUT_UNBOUND | EVIDENCE.json, INPUT-ONLY-VECTORS.json, REPORT.md, SOURCE-MANIFESTS.json | A candidate-specific Python **file-derivation** chain is declared for the user-designated comparator. This is not a sealed run receipt and does not establish a complete ADM-to-E-AC-3 encoder prototype. The candidate-specific script starts from a pre-encoded model E-AC-3 stream, then declares metadata/frame edits and CRC repair; the record does not bind that |
 | keyless_candidate_full_song_crosscheck_v1 | b6fe2f84a14cd06fb45ae2f22f65bb0b35f9c3976abf0b5a37abaf9a3a35dd07 | manifest: EVIDENCE_ONLY_KEYLESS_DECODE_REFERENCE_NOT_RUST_OUTPUT | CROSSCHECK.json, WASH-REVIEW.md, WASH-VERIFICATION.json | No hash-verified summary payload declared. |
 | MAIN-SIX-AUDIO-PRODUCER-V1 | 009b60b530fe5f2b044f5037bd76195a82f57e82532b607d2235cd070746d3f2 | NOT_DECLARED | CONTRACT.md, INPUT-ONLY-CASES.json, SOURCE-IDENTITIES.json, VERIFICATION.json | selected profile approved model crosswalk; real audio not run \| Status: hash-bound approved-model crosswalk for the selected 48 kHz, 1024 kbps, six-block 5.1 path. This is a compositional specification, not a fresh real-ADM or player run. Exact long QMF/FFT, prefix-gain, descriptor and panner equations/parameter words are incorporated by the hash-bound appro |
 | METADATA-OUTPUT-TYPED-HANDOFF-APPROVAL-V1 | 5d59d710a65005c3c35317726674f228bc7a4e13b340f6eb56b2d4541037e29d | NOT_DECLARED | APPROVAL.md | No hash-verified summary payload declared. |
