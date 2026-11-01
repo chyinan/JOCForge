@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-PROCESS-STATE-FC8-PRODUCER-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "c16759145be9eeb9337cf54373dbe096e1e7415bb2373e020c099a66d23d2a01",
+  "status": "FC8_DWORD_WRITERS_BOUND; R138_DECODER_SOURCE_UNBOUND; PLUS_7E4_RETRACTED",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2656,
+      "sha256": "4cb44b5b42e46355f97753f15e06077af1b7a7d9b8a9a2d77c974f7edf298e22"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1227,
+      "sha256": "d108061d878d51431bc50fdfa9b17caf20cc00d513e5d46d72fd6d581e99aaca"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1612,
+      "sha256": "ea5ce01fae62ab2c1ac5a46f29d2011337abd95e2f82d959f706efa572b31835"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 934,
+      "sha256": "86840615ff54f098226f8ee74d4f537364d7878e035ca69ca3122feb3c9f1f30"
+    }
+  ]
+}

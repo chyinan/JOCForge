@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F06-R138-PROCESS-STATE-FC8-PRODUCER-BOUNDARY-V1",
+  "source": {
+    "package_id": "native-f06-r138-process-state-fc8-source-correction-addendum",
+    "manifest_sha256": "c16759145be9eeb9337cf54373dbe096e1e7415bb2373e020c099a66d23d2a01",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "supersedes": {
+    "wash_supplement_id": "F06-R138-COMPONENT-RECEIVER-FIRST-STORE-BOUNDARY-V1",
+    "wash_manifest_sha256": "21d3b6b4e790e2820bce1ebd5283b24c319d467496dacb4cc3b93ad881f3424e",
+    "incorrect_claim": "process-state +0x7e4 was the source of frame-record +0x12c",
+    "corrected": true
+  },
+  "parents": {
+    "receiver_source_chain_manifest_sha256": "5705697e89bd314346637742db1151ffc84062449e26a78163600d3522f1ac37",
+    "r138_job_component_member_manifest_sha256": "47c0931c8843cbcc2ae664b3d57168597349a5d9921056e9d86dc1a6357fb7fb",
+    "r138_context_condition_producer_manifest_sha256": "34149ece54163b4de2b1e7ff883097db8aa946b7c455da46ebc5647484de0fcb"
+  },
+  "target": {
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "r138_job_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "offset_correction": {
+    "parameter_type": "longlong*",
+    "array_index": "0x1f9",
+    "byte_offset": "+0xfc8",
+    "expression_cast": "int",
+    "actual_memory_access_width": "32-bit DWORD",
+    "prior_plus_0x7e4_exact_scan": {"instructions": 1592124, "reads": 2, "writes": 0, "is_source": false},
+    "plus_0xfc8_exact_scan": {"instructions": 1592124, "reads": 4, "writes": 3, "process_state_writes": 2}
+  },
+  "typed_writers": [
+    {"role": "constructor initializer", "rva": "0x136019", "width": "DWORD", "value": 0, "status": "BOUND_FIRST_INITIALIZER"},
+    {"role": "later process-input channel configuration", "rva": "0x14d4f2", "width": "DWORD", "value_source": "parsed channel-count comparison result", "status": "BOUND_POSSIBLE_OVERWRITE"}
+  ],
+  "remaining_source_join": {
+    "process_state_plus_0xfc8_to_r138_job_decoder": "UNBOUND",
+    "R138_xml_has_channel_named_element": false,
+    "channels_provider_owner_to_job_decoder": "UNBOUND",
+    "final_r138_process_state_value": "UNBOUND",
+    "custom_bsi_zero_applicability": "UNBOUND",
+    "global_no_writer_claim": false
+  },
+  "scope_deviations": {"prior_deviations_carried_forward_and_disclosed": true},
+  "execution_scope": {"dee_run": false, "media_or_payload_read": false, "key_or_license_read": false, "implementation_ready": false}
+}

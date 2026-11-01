@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-r138-process-state-offset-vectors.v1",
+  "kind": "typed pointer arithmetic and writer-status vectors; not runtime values",
+  "vectors": [
+    {
+      "id": "pointer-index-to-process-state-byte-offset",
+      "input": {"parameter_type": "longlong*", "array_index": "0x1f9", "element_size_bytes": 8},
+      "expected": {"byte_offset": "+0xfc8", "access_width": "DWORD", "prior_plus_0x7e4_claim": "REJECTED"}
+    },
+    {
+      "id": "constructor-default-is-overwritable",
+      "input": {"constructor_store": "DWORD zero at +0xfc8", "later_channel_parser_store": "DWORD derived from channels at +0xfc8"},
+      "expected": {"final_r138_value": "UNBOUND", "constructor_zero_proves_final_value": false}
+    },
+    {
+      "id": "frame-record-transfer-does-not-prove-job-source",
+      "input": {"process_state_source": "+0xfc8 low 32 bits", "frame_record_destination": "+0x12c"},
+      "expected": {"process_to_frame_record": "BOUND", "R138_job_decoder_to_process_state": "UNBOUND"}
+    }
+  ],
+  "lineage": {
+    "source_manifest_sha256": "c16759145be9eeb9337cf54373dbe096e1e7415bb2373e020c099a66d23d2a01",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}
