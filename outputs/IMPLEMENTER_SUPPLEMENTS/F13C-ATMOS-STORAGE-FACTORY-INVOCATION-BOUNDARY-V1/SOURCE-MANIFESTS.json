@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "F13C Atmos storage invocation addendum v8",
+    "manifest_sha256": "c9e10f0c97ecc00990dbc5986d3bc1fb3c310a8fc6bbd0cbba768b5dd044007a",
+    "sha256sums_file_sha256": "a1be7bd1920900355e3c463df8b8b3f38731ff0271c5ba8213cf2c840facefc0",
+    "payloads": [
+      {"file": "ADDENDUM.md", "bytes": 2504, "sha256": "329acb8c7bdb95173f574f0f3ae0104c709a499932cf0814085153bd22bd8f35"},
+      {"file": "GHIDRA-ATMOS-INVOCATION-EDGES.json", "bytes": 3372, "sha256": "2b05d62d7851d3f113d9f137c87fea2b4d717ed3398ae8c204e9ba45899a2fb3"}
+    ]
+  },
+  "parent_source_package": {
+    "package_id": "F13C owner and vtable edge addendum v7",
+    "manifest_sha256": "02d8a3bc76d1f25faba8a3ef5564c539f198834e618c6d14577b0f963bccb7b4"
+  },
+  "related_wash_package": {
+    "package_id": "F13C-OWNER-VTABLE-SOURCE-EDGE-BOUNDARY-V1",
+    "manifest_sha256": "4b1b1124180196399afff4dfa79c4416403cdc50ffe4bc84085c13b097dc7b3e"
+  },
+  "source_scope_note": "Source package contains only curated Markdown/JSON summaries and checksums; no native binary or raw code was copied."
+}

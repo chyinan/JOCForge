@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "c9e10f0c97ecc00990dbc5986d3bc1fb3c310a8fc6bbd0cbba768b5dd044007a",
+  "incoming_checker": "NOT_PROVIDED; Wash manually checked package inventory and hashes",
+  "independent_review": [
+    "Recomputed incoming manifest and SHA256SUMS.txt hashes and matched both curated payload digests and sizes.",
+    "Confirmed the v7 parent manifest digest and its corrected owner/vtable slots.",
+    "Confirmed the wrapper's child `+0x30` is dispatched through a thunk into the Factory vtable, not the separate descriptor owner.",
+    "Kept the callback-wrapper path separate from the selected 5.1 stage and F13C writer."
+  ],
+  "not_promoted": [
+    "Factory child as the selected DDP-JOC input or output stage",
+    "audio effect of this callback",
+    "F13C/DDP-JOC frame writer reachability",
+    "current installed binary identity beyond recorded Ghidra metadata",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

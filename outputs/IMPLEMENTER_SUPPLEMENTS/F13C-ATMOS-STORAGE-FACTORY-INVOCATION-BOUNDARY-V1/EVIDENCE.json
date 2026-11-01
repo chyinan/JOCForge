@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge-f13c-atmos-storage-factory-invocation.v1",
+  "package_id": "F13C-ATMOS-STORAGE-FACTORY-INVOCATION-BOUNDARY-V1",
+  "status": "FACTORY_INDIRECT_INVOKER_BOUND; F13C_WRITER_UNBOUND",
+  "implementation_ready": false,
+  "image": {
+    "program": "dee_ddpjoc_encoder.exe",
+    "sha256_from_historical_ghidra_metadata": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_install_rehashed": false
+  },
+  "outer_wrapper": {
+    "function": "FUN_1403fab60",
+    "resolver_callsite": "0x1403fabd7",
+    "resolver": "FUN_140468b20",
+    "constructed_type": "atmos_storage_master_s",
+    "virtual_callsite": "0x1403fac12",
+    "vtable_slot": "+0x8",
+    "target": "FUN_14046bd90"
+  },
+  "child_invocation": {
+    "child_offset": "+0x30",
+    "thunk": "FUN_14040b870",
+    "dispatch_slot": "+0x8",
+    "child_function": "FUN_1403c3980",
+    "child_type": "AtmosMasterFileStorage::Factory",
+    "different_from": "AtmosMasterFileStorageDesc callback descriptor"
+  },
+  "downstream": {
+    "function": "FUN_1403c3980",
+    "callsite": "0x1403c3aae",
+    "callee": "FUN_1403f5270",
+    "role": "Atmos storage callback-wrapper construction",
+    "selected_ddp_joc_5_1_stage": "UNBOUND",
+    "ddp_joc_ec3_writer": "UNBOUND",
+    "f13c_writer": "UNBOUND"
+  },
+  "policy": {
+    "encoder_launched": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "audio_output_created": false,
+    "private_license_hmac_key_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}
