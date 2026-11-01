@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATTEMPT10-FIRST-AU-EXPONENT-SYNTAX-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "6a219a9454316e75b5d92dc77eabf3907f2779a510356558f81a6db134c42902",
+  "status": "SYNTHETIC_EXPONENT_BOUNDARY_BOUND; ATTEMPT10_BIT_LANE_AND_CAUSALITY_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2538,
+      "sha256": "c6aee35ce82eb8e0e6bb87fde275a9bcac0bd8ca11dc83a316268cebed1989a6"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1113,
+      "sha256": "8861367a5230091b718515be2b2879881bd2ef966893cfffaf1f34fc2b5f120d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1935,
+      "sha256": "67ef39b326e2cb256f28a9cc31e7cad2b366a339b57a6160ccc116284ce8ceca"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 2040,
+      "sha256": "2213502e00b710d80e77b12cd44e6a1bded6f1b541ca4296db3d2aa6041a8e04"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "ATTEMPT10-FIRST-AU-EXPONENT-SYNTAX-BOUNDARY-V1",
+  "vectors": [
+    {
+      "id": "lower-bound-valid",
+      "kind": "SYNTHETIC_FUNCTION_INPUT_ONLY",
+      "inputs": {
+        "initial_exponent": 1,
+        "grouped_exponents": [37],
+        "exponent_strategy": 1,
+        "end_mantissa": 4
+      },
+      "derived_digits": [1, 2, 2],
+      "decoded_values": [1, 0, 0, 0],
+      "source_expected_result": "accepted; touches inclusive lower bound 0",
+      "parser_or_encoder_executed": false
+    },
+    {
+      "id": "first-group-underflow",
+      "kind": "SYNTHETIC_FUNCTION_INPUT_ONLY",
+      "inputs": {
+        "initial_exponent": 1,
+        "grouped_exponents": [12],
+        "exponent_strategy": 1,
+        "end_mantissa": 4
+      },
+      "derived_digits": [0, 2, 2],
+      "first_update": "1 + (0 - 2) = -1",
+      "grouped_field_interval": "[C+4,C+11)",
+      "source_expected_result": "ExponentOutOfRange { actual: -1 }",
+      "not_a_full_syncframe": true,
+      "does_not_identify_attempt10_lane_block_or_bit_offset": true
+    }
+  ]
+}

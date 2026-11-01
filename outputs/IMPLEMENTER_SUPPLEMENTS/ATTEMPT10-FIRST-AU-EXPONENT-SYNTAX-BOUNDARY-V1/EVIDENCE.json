@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ATTEMPT10-FIRST-AU-EXPONENT-SYNTAX-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "attempt10-id14-carriage-causality-wash-v1",
+    "manifest_sha256": "6a219a9454316e75b5d92dc77eabf3907f2779a510356558f81a6db134c42902",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "sealed_payloads": 5,
+    "output_bytes_opened": false
+  },
+  "attempt10_diagnostic_from_prior_wash": {
+    "parser": "OpenJOC 0.20.1",
+    "parser_sha256": "2e84afcfa5e197332a84f9386ffa4c69f0c12e8ca5cf95c23690af320cfa1a39",
+    "run_id": "sample6-keyless-full-20261101-10",
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "au": 0,
+    "elementary_byte_offset": 0,
+    "diagnostic_label": "INVALID_JOC_CARRIAGE",
+    "underlying_layer_from_parser_source": "E-AC-3 audio-block exponent legality while scanning skip-field carriers",
+    "reported_decoded_exponent": -1,
+    "allowed_range": [0, 24],
+    "lane_block_and_bit_interval": "UNBOUND",
+    "output_hash": "NOT_COMPUTED_BY_REQUEST"
+  },
+  "source_derived_exponent_boundary": {
+    "classification": "SYNTHETIC_FUNCTION_INPUT_ONLY",
+    "initial_exponent_width_bits": 4,
+    "initial_exponent_range": [0, 15],
+    "grouped_exponent_width_bits": 7,
+    "grouped_code_range": [0, 124],
+    "digit_expansion": ["code / 25", "(code % 25) / 5", "code % 5"],
+    "delta": "digit - 2",
+    "range_checked_after_each_delta": [0, 24],
+    "cursor_anchor": "C is before lane-specific 4-bit initial_exponent read",
+    "grouped_code_interval": "[C+4,C+11)",
+    "decoder_cursor_on_underflow": "C+11; before next 2-bit gain_range read"
+  },
+  "id14_and_complexity_boundary": {
+    "frozen_model_id14_header_count": "len(objects)-1, six bits",
+    "selected_object_count": 15,
+    "derived_complexity": 16,
+    "rust_selected_path_complexity": 16,
+    "both_write_complexity_before_block_syntax": true,
+    "current_rust_encode_entry": "SourcePipelineUnavailable",
+    "attempt10_to_current_source_run_binding": "UNBOUND",
+    "direct_id14_body_causality_for_first_diagnostic": "NOT_SUPPORTED_BY_EVIDENCE",
+    "outer_bsi_or_carrier_cursor_effect": "POSSIBLE_INFERENCE; UNBOUND"
+  },
+  "execution_scope": {
+    "ec3_or_wav_bytes_read": false,
+    "parser_or_encoder_executed_for_synthetic_vector": false,
+    "fresh_ghidra_analysis": false,
+    "ida_used": false,
+    "pcm_read_or_retained": false,
+    "private_key_hmac_or_license_read": false,
+    "implementation_ready": false
+  }
+}

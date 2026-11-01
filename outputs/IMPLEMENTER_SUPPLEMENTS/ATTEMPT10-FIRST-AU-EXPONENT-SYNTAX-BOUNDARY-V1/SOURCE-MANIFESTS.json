@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "attempt10-id14-carriage-causality-wash-v1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-2\\outputs\\attempt10-id14-carriage-causality-wash-v1",
+    "manifest_sha256": "6a219a9454316e75b5d92dc77eabf3907f2779a510356558f81a6db134c42902"
+  },
+  "parser_source_identities": [
+    {"file": "OpenJOC/crates/openjoc-eac3/src/lib.rs", "sha256": "6cfec34defba20deedfe359e0f4dcfb8e06aca03d719a54d07272b215a31ba31"},
+    {"file": "OpenJOC/crates/openjoc-eac3/src/audio_block.rs", "sha256": "969303c175302b6002e13a979d9d466d4dfcc36ae66e9f46a605536747104074"},
+    {"file": "OpenJOC/crates/openjoc-bitio/src/lib.rs", "sha256": "30c4e4921ed65e2b700c5ce3c60719a226c581e0868421972abdb5f3e1fd44b7"}
+  ],
+  "approved_model_and_rust_source_identities": [
+    {"file": "joc_payload_core.py", "sha256": "e15f159cf0da5560519e74029f9eddfeb626ca9f1ac5d2c8777ab812c67017ea"},
+    {"file": "emdf_wire_core.py", "sha256": "3ac9a61ad264625c643110da53e5e7aebf87de574a4a54a4c640306e1706b0d1"},
+    {"file": "codec_core.rs", "sha256": "7f7b7179cac59b510f0b5a0e71f3d97d3cd7e602181ccbe7174e191f6f2c056d"},
+    {"file": "selected_frame_trial.rs", "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"},
+    {"file": "JOCForge lib.rs application encode entry", "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"}
+  ],
+  "native_trace_reused": {
+    "package_id": "id14-parser-complexity-ghidra-wash-v4",
+    "package_manifest_sha256": "1e49a26f3da85abfc397f934230165c3d35cd8fff34359888bb2eec375f06a5b",
+    "native_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "scope": "prior selected path only; no fresh Ghidra analysis"
+  },
+  "exclusions": [
+    "No Python/Rust source code, binaries, raw output, PCM, key, HMAC, or license bytes copied.",
+    "OpenJOC is used only for parser-side syntax and boundary evidence, not as an encoder algorithm source."
+  ]
+}
