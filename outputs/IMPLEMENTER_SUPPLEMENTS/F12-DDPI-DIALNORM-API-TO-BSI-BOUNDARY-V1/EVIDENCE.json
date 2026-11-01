@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge-f12-ddpi-dialnorm-writer-boundary.v1",
+  "package_id": "F12-DDPI-DIALNORM-API-TO-BSI-BOUNDARY-V1",
+  "status": "DDPI_ID_0x12_VALIDATION_BOUND; FINAL_BSI_U5_MAPPING_NOT_PROVEN",
+  "implementation_ready": false,
+  "target": {
+    "binary": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "analysis": "Ghidra 12.2 static analysis",
+    "runtime_or_encode_run": "NOT_RUN"
+  },
+  "api_parameter": {
+    "name": "DDP_ENC_PRO_ddpi_enc_setparams",
+    "parameter_id": "0x12",
+    "dispatch": ["FUN_140316e20", "FUN_140320c60", "FUN_140321760", "FUN_140320ef0"],
+    "type_table_entries_with_id_0x12": [0, 1, 3, 4],
+    "active_type_table_entry": "NOT_OBSERVED",
+    "valid_integer_range": [1, 31],
+    "invalid_value_code": "0x1F",
+    "error_label": "Invalid value for DialNorm"
+  },
+  "stream_field": {
+    "setter": "FUN_14034FF60",
+    "switch_case": "0x12",
+    "destination": "stream+0x9C",
+    "width_bytes": 4,
+    "operation": "direct integer copy",
+    "post_setter_rounding_or_scaling": "NONE_OBSERVED",
+    "validator": "FUN_140318610",
+    "validator_consumer_rule": "reject outside [1,31]"
+  },
+  "downstream": {
+    "frame_path": "FUN_140350D00 -> FUN_140317600",
+    "frame_set": "stream+0xB28",
+    "first_converter": {
+      "function": "FUN_1403471F0",
+      "input_base": "stream+0x0C",
+      "relative_read": "+0x9C",
+      "actual_stream_offset": "+0xA8",
+      "equals_validated_stream_plus_0x9C": false
+    },
+    "stuffer_route": ["FUN_14033B5F0", "FUN_14036AC00", "FUN_14036A100", "FUN_14036A250"],
+    "last_direct_consumer_of_validated_field": "FUN_140318610",
+    "next_function_for_open_edge": "FUN_140317600",
+    "direct_stream_plus_0x9C_to_bsi_write": "NOT_PROVEN",
+    "standard_header_u5_bit_offset": "NOT_PROVEN",
+    "serialized_u5_value": "NOT_PROVEN"
+  },
+  "measurement_join": {
+    "measured_float_to_parameter_id_0x12": "NOT_PROVEN",
+    "native_measurement_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "three_adm_matches_are_conditional_on_selected_lufs": true
+  },
+  "policy": {
+    "other_encoder_or_ffmpeg_used": false,
+    "dee_run": false,
+    "pcm_payload_bitstream_output_or_key_material_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}

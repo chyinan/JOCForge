@@ -1,0 +1,20 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "ee62a344ae5c5e9680aecc6002c37fecbc6efdaae6d1e12a0504c68ac7b5a0ba",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "seal_matches": true},
+  "independent_review": [
+    "Recomputed the incoming package manifest and seal; ran its checker normally and under Python optimization.",
+    "Confirmed the DDPi ID 0x12 parameter descriptors validate values 1..31 and the setter copies the integer to stream+0x9C.",
+    "Confirmed the first converter receives stream+0x0C, so its relative +0x9C read is stream+0xA8, not the validated field.",
+    "Preserved the DDP stuffer route while leaving the final U5 bitfield and writer mapping NOT_PROVEN.",
+    "Kept the native scalar unit and measurement-to-ID0x12 lineage conditional/unbound."
+  ],
+  "not_promoted": [
+    "parameter type-table selection at runtime",
+    "DDPi ID 0x12 to standard E-AC-3 header U5 field",
+    "measured scalar to ID 0x12 runtime join",
+    "native unit, conversion, or rounding before the API",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

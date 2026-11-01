@@ -1,0 +1,18 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "ee62a344ae5c5e9680aecc6002c37fecbc6efdaae6d1e12a0504c68ac7b5a0ba",
+    "manifest_seal_matches": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "status": "THREE_ORIGINAL_VECTORS_PLUS_FIRST_LOVE; DDP_ID_0x12_TO_STREAM_FIELD_TRACED; BSI_BITFIELD_OPEN"
+  },
+  "related_wash_packages": [
+    {"package_id": "F12-SELECTED-PREFIX-DIALNORM-V1", "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2", "scope": "static model formula and prefix; cross-stage identity join not ready"},
+    {"package_id": "F12-MULTI-ADM-DIALNORM-API-BOUNDARY-V1", "manifest_sha256": "e20d665c4089d29d46cdc08771bda9fd03a2916405bd3d30aaace9caead1d0f4", "scope": "conditional multi-input observations and API boundary partial"},
+    {"package_id": "F12-FIRST-LOVE-PERFRAME-OFFSET-ERRATUM-V1", "manifest_sha256": "f519075ad73a6b57811739eaf3ff3ea76a6a15e99144c1efb78c1c610b7b66b3", "scope": "int* +0x3C is byte +0xF0, not scalar byte +0x3C"}
+  ],
+  "writer_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+  "included_raw_source_or_disassembly": false
+}

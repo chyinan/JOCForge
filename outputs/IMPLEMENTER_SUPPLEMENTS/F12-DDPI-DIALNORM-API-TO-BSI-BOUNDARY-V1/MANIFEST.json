@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 4502,
+      "file": "CHECK.py",
+      "sha256": "06aeb9581d438246cf5827c05cd68d37e9fbf4c8ccb90c3bb3d5892e51aa8af2"
+    },
+    {
+      "bytes": 2294,
+      "file": "EVIDENCE.json",
+      "sha256": "c6f7e51df7e5a5d85e3e35b582797ab27ae272bab50fdc3627f6481521cd4fef"
+    },
+    {
+      "bytes": 1567,
+      "file": "REPORT.md",
+      "sha256": "8bf5c9618a320efe95fc3d1d04e16d7cd56ba84a5927dae8812a3ac159eb063c"
+    },
+    {
+      "bytes": 1271,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "2699480aa3f35f8c922fcff331028612a6d84259bf7b13f2bf10cd67c62212b5"
+    },
+    {
+      "bytes": 1182,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "d74b5858997a86a220dab36e1e143216b246639b8c78610cf233a90019be48ad"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F12-DDPI-DIALNORM-API-TO-BSI-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "ee62a344ae5c5e9680aecc6002c37fecbc6efdaae6d1e12a0504c68ac7b5a0ba",
+  "status": "DDPI_ID_0x12_VALIDATION_BOUND; FINAL_BSI_U5_MAPPING_NOT_PROVEN"
+}
