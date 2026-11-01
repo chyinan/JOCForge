@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "NATIVE-EAC3-EXPONENT-WRITER-CALLPATH-BOUNDARY-V1",
+  "vectors": [
+    {
+      "id": "selected-rust-active-fullband-cursor",
+      "kind": "SOURCE_DERIVED_CURSOR_ONLY",
+      "inputs": {"cursor_before_u4": "C", "groups": 72, "group_width_bits": 7, "gain_width_bits": 2},
+      "derived_intervals": {
+        "base_u4": "[C,C+4)",
+        "group_0": "[C+4,C+11)",
+        "group_1": "[C+11,C+18)",
+        "group_71": "[C+501,C+508)",
+        "gain_range_u2": "[C+508,C+510)"
+      },
+      "attempt10_cursor_binding": "UNBOUND",
+      "native_writer_match": "UNBOUND"
+    },
+    {
+      "id": "native-numeric-s12-not-frame-syntax",
+      "kind": "SOURCE_CLASSIFICATION_ONLY",
+      "inputs": {"native_scale_range": [0, 60], "rust_base_width_bits": 4, "rust_group_width_bits": 7},
+      "conclusion": "The observed S12 F32-derived scale cannot be substituted for the E-AC-3 U4/U7 frame syntax without an explicit conversion edge.",
+      "does_not_assert_conversion": true
+    }
+  ]
+}

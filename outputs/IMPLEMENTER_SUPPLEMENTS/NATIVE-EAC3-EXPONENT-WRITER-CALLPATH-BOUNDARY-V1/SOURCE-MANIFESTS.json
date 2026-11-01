@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "native-eac3-writer-calllineage-wash-v1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-2\\outputs\\native-eac3-writer-calllineage-wash-v1",
+    "manifest_sha256": "9cae34b4d7a0cd32908207de1a9cfdc87f433581ecb9319f404b33e93fc8951e"
+  },
+  "native_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity_basis": "original Ghidra file bytes rehashed against prior approved image identity"
+  },
+  "source_files": [
+    {"file": "selected_frame_trial.rs", "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"},
+    {"file": "attempt10-id14-carriage-causality-wash-v1", "manifest_sha256": "6a219a9454316e75b5d92dc77eabf3907f2779a510356558f81a6db134c42902"}
+  ],
+  "exclusions": [
+    "No decompilation, raw source, binary, media payload, PCM, key or license data copied.",
+    "OpenJOC is used only as parser-side syntax boundary, not an E-AC-3 encoder source."
+  ]
+}

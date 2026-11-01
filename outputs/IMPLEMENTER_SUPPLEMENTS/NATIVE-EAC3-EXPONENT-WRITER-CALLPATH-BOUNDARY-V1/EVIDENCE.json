@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "NATIVE-EAC3-EXPONENT-WRITER-CALLPATH-BOUNDARY-V1",
+  "source": {
+    "package_id": "native-eac3-writer-calllineage-wash-v1",
+    "manifest_sha256": "9cae34b4d7a0cd32908207de1a9cfdc87f433581ecb9319f404b33e93fc8951e",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "sealed_payloads": 5,
+    "media_bytes_in_package": false
+  },
+  "rust_selected_frame_static_layout": {
+    "fullband_lane_order": ["L", "C", "R", "Ls", "Rs"],
+    "fullband_bins": 217,
+    "difference_values": 216,
+    "groups_of_three": 72,
+    "nonzero_strategy_policy": "72 groups emitted for strategy 1, 2, or 3",
+    "wire_order": ["first-pass U6 bandwidth code", "U4 base exponent", "72 x U7 grouped exponent", "U2 gain range"],
+    "lfe_wire_order": ["U4 base exponent", "2 x U7 grouped exponent", "BA-update syntax"],
+    "attempt10_frame_plan_branch": "UNBOUND"
+  },
+  "native_path": {
+    "image": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2",
+    "bounded_calls": ["FUN_1801febe0", "FUN_1801bcf40", "FUN_1801f0bd0", "FUN_1801d7020", "FUN_1801d6df0", "FUN_1801d5ed0"],
+    "observed_numeric_scale": "F32 magnitude to clamped 0..60 S12 exponent; not U4 base/U7 grouped frame syntax",
+    "literal_six_argument": "per-item loop count; not a proven field width",
+    "native_u4_u7_frame_syntax_writer": "UNBOUND"
+  },
+  "attempt10_boundary": {
+    "prior_parser_observation": "AU0 decoded exponent -1 out of range 0..24",
+    "lane_block_and_intra_au_cursor": "UNBOUND",
+    "causal_relation_to_rust_writer": "NOT_ESTABLISHED",
+    "one_group_parser_vector_equals_selected_fullband_lane": false
+  },
+  "scope": {
+    "attempt10_ec3_or_wav_opened_or_hashed": false,
+    "dee_or_product_encoder_run": false,
+    "pcm_or_payload_read": false,
+    "private_key_hmac_or_license_read": false,
+    "implementation_ready": false
+  }
+}
