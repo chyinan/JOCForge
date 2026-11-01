@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "NATIVE-EAC3-EXPONENT-WRITER-CALLPATH-BOUNDARY-V2",
+  "source_reverse_manifest_sha256": "6fa7eaaa2f5d963e19de65b80ed94f15eb7a64bf2ad7035ff6d6c80ce17b0650",
+  "status": "RUST_LANE_CURSOR_STATIC; NATIVE_U4_U7_WRITER_AND_AU0_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2003,
+      "sha256": "fae04ccc500fe64ce6dc2475b525f4fe18547179fc30eea0dd6d0e86951f00f2"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 961,
+      "sha256": "09ae3335e8bbaaf3a8f773e00cc7cca23680dca35f35fa924a702c1a5c3ab83c"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1816,
+      "sha256": "45d944258cc8b6b1758d02b8a71cf99e1809cca92f63edf95cb71f414e15ebfa"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 859,
+      "sha256": "204752465d672545ff67466c3a7c579f4f7308e081b18500db3bf05b084463f7"
+    }
+  ]
+}

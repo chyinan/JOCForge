@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "NATIVE-EAC3-EXPONENT-WRITER-CALLPATH-BOUNDARY-V2",
+  "vectors": [
+    {
+      "id": "rust-lane0-strategy1-cursor",
+      "kind": "SOURCE_DERIVED_CURSOR_ONLY",
+      "inputs": {"lane": "L", "strategy": 1, "cursor_before_u4": "C", "fullband_bins": 217},
+      "derived": {
+        "differences": 216,
+        "groups_of_three": 72,
+        "group0_u7": "[C+4,C+11)",
+        "group1_u7": "[C+11,C+18)",
+        "last_group_u7": "[C+501,C+508)",
+        "gain_u2": "[C+508,C+510)"
+      },
+      "not_a_runtime_frame": true,
+      "not_bound_to_attempt10": true
+    },
+    {
+      "id": "native-s12-domain-separation",
+      "kind": "SOURCE_CLASSIFICATION_ONLY",
+      "inputs": {"native_numeric_scale": [0, 60], "frame_base_width": 4, "frame_group_width": 7},
+      "result": "Native S12 scale evidence does not identify U4/U7 frame writer",
+      "no_numeric_identity_inference": true
+    }
+  ]
+}

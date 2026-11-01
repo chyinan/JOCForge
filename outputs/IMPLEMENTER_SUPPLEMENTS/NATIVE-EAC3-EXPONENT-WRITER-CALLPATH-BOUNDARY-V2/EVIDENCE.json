@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "NATIVE-EAC3-EXPONENT-WRITER-CALLPATH-BOUNDARY-V2",
+  "source": {
+    "package_id": "native-eac3-writer-calllineage-wash-v1",
+    "manifest_sha256": "6fa7eaaa2f5d963e19de65b80ed94f15eb7a64bf2ad7035ff6d6c80ce17b0650",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "sealed_payloads": 5
+  },
+  "rust_selected_example": {
+    "lane_index": 0,
+    "lane": "L",
+    "strategy": 1,
+    "attempt10_join": "UNBOUND",
+    "fullband_bins": 217,
+    "difference_count": 216,
+    "group_count": 72,
+    "wire_order": ["first-pass U6 bandwidth", "U4 base", "72 x U7 group", "U2 gain range"],
+    "cursor_anchor": "C immediately before U4 base",
+    "group_0_interval": "[C+4,C+11)",
+    "group_1_interval": "[C+11,C+18)",
+    "group_71_interval": "[C+501,C+508)",
+    "gain_range_interval": "[C+508,C+510)"
+  },
+  "native_ghidra_path": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "image": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bounded_path": ["FUN_1801febe0", "FUN_1801bcf40", "FUN_1801f0bd0", "FUN_1801d7020", "FUN_1801d6df0", "FUN_1801d5ed0"],
+    "observed_work": "F32 coefficient/exponent/quantizer path",
+    "S12_scale": "clamped 0..60 from F32 magnitude; not U4/U7 frame syntax",
+    "literal_six_argument": "loop/item count, not field width",
+    "native_U4_U7_frame_writer": "UNBOUND",
+    "native_strategy_to_rust_lane_join": "UNBOUND"
+  },
+  "parser_boundary": {
+    "source_package_manifest_sha256": "6a219a9454316e75b5d92dc77eabf3907f2779a510356558f81a6db134c42902",
+    "one_group_vector_matches_fullband_plan": false,
+    "attempt10_AU0_lane_block_cursor": "UNBOUND",
+    "root_cause": "NOT_INFERRED"
+  },
+  "scope": {
+    "attempt10_media_opened_or_hashed": false,
+    "DEE_or_product_encoder_run": false,
+    "PCM_or_payload_read": false,
+    "private_key_hmac_or_license_read": false,
+    "implementation_ready": false
+  }
+}

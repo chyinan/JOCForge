@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "native-eac3-writer-calllineage-wash-v1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-2\\outputs\\native-eac3-writer-calllineage-wash-v1",
+    "manifest_sha256": "6fa7eaaa2f5d963e19de65b80ed94f15eb7a64bf2ad7035ff6d6c80ce17b0650"
+  },
+  "native_image": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+  "rust_source": {"file": "crates/jocforge-domain/src/codec/selected_frame_trial.rs", "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"},
+  "exclusions": [
+    "No source code, decompilation, binary, media, PCM, key, HMAC or license copied.",
+    "This is a static comparison boundary, not an implementation specification."
+  ]
+}
