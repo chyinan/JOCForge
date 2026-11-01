@@ -1,0 +1,21 @@
+{
+  "schema": "washed-f05-f13-runtime-timeline-source-binding.v1",
+  "package_id": "f05_f13_failed_attempt_timeline_v1",
+  "incoming_wash_runtime_package_manifest_sha256": "6a73a5b8561bff7545ba612e87d2775d3d94df4ba7b35ee0e400f33b85688139",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "parent_static_supplement_manifest_sha256": "6e330549fa5c1dfada0bc2535500580ab9366ff0fb258658f876378a574f3dea",
+  "source_command_record": {
+    "thread_id": "01a13f66-b1ab-73e3-a489-4d60b3813a03",
+    "turn_id": "01a194f7-0908-7d53-9dd6-3a201faf3809",
+    "item_id": "exec-8aefa83a-34ff-47be-b21e-386fe08e130a"
+  },
+  "authorized_input_hash_rechecked": "MATCH",
+  "failed_run_executable_hash": "UNBOUND",
+  "current_attempt_03_hash": "a080ea176f8e418898973ac87c1e1aad47c2ed9c07435d2093f8f2598299fe6e",
+  "exclusions": {
+    "raw_command_with_absolute_paths_included": false,
+    "source_code_included": false,
+    "private_key_or_license_read": false,
+    "media_payload_included": false
+  }
+}

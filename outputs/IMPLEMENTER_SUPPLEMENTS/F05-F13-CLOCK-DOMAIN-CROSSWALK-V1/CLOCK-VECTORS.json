@@ -1,0 +1,61 @@
+{
+  "schema": "washed-callback-cache-drain-clock-vectors.v1",
+  "evidence_class": "INPUT_ONLY_APPROVED_OR_WASH_APPROVED_CONTRACT_ARITHMETIC",
+  "primary_example": {"N": 6522906, "H": 1536, "Q": 4247, "last_normal_real_samples": 1050, "last_normal_zero_padding": 486},
+  "counts": {"main_callbacks": 4251, "codec_sources": 4249, "joc_dispatches": 4249, "published_aus": 4247, "meter_callbacks": 4250},
+  "owner_clock_domains": {
+    "main_callback": ["reader_eof", "frontend_control", "spatial_control", "spatial_audio"],
+    "codec_source": ["drc", "analysis", "codec", "metadata"],
+    "joc_dispatch": ["joc"],
+    "meter_callback_or_energy_record": ["meter"]
+  },
+  "vectors": [
+    {
+      "id": "new_main_callback_first_source",
+      "g": 2,
+      "s": 0,
+      "d": 1,
+      "payload_origin": {"domain": "main_callback", "ordinal": 2},
+      "main_owner_before_after": [2, 3],
+      "source_owner_before_after": [0, 1],
+      "joc_owner_before_after": [0, 1],
+      "phase_generation_delta": 1
+    },
+    {
+      "id": "first_main_cached_eof_callback",
+      "g": 4247,
+      "s": 4245,
+      "d": 4246,
+      "payload_origin": {"domain": "main_callback", "ordinal": 4246},
+      "normal_callback_count_before_after": [4247, 4247],
+      "cached_callback_count_before_after": [0, 1],
+      "provider_embedded_indices": {"F01E": "UNSPECIFIED", "F03W": "UNSPECIFIED", "F04": "UNSPECIFIED"},
+      "phase_generation_delta": 1
+    },
+    {
+      "id": "last_main_cached_eof_callback",
+      "g": 4250,
+      "s": 4248,
+      "d": 4249,
+      "payload_origin": {"domain": "main_callback", "ordinal": 4246},
+      "normal_callback_count_before_after": [4247, 4247],
+      "cached_callback_count_before_after": [3, 4],
+      "provider_embedded_indices": {"F01E": "UNSPECIFIED", "F03W": "UNSPECIFIED", "F04": "UNSPECIFIED"},
+      "phase_generation_delta": 1
+    },
+    {
+      "id": "first_independent_meter_eof_drain",
+      "m": 4247,
+      "input": "fresh all-positive-zero raw input",
+      "source_cursor_after": 6522906,
+      "retained_f01e_snapshot_origin": 4246,
+      "main_callback": null,
+      "source": null,
+      "joc_dispatch": null,
+      "meter_owner_before_after": [4247, 4248],
+      "global_phase_generation_per_drain": "UNSPECIFIED",
+      "post_prepass_meter_ready_parent_commit_delta": 1
+    }
+  ],
+  "expected_attempt07_compare_values": "NOT_CAPTURED"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "0473987f247572cd78d164afd901e2f7495c60fd8aab765167e18ad710e3c15f",
+  "incoming_checker": "NOT_PROVIDED",
+  "independent_review": [
+    "Recomputed SHA-256 and sizes for ADDENDUM.md and GHIDRA-CONSUMER-FLOW.json and matched the incoming manifest and SHA256SUMS.txt.",
+    "Recomputed the incoming manifest file digest and the two Ghidra log source digests.",
+    "Confirmed the v3 package's stated Wash-v2 parent manifest hash against the actual Wash v2 package in the implementation supplement directory.",
+    "Confirmed the parser lookup and slot assignment to 0x11 in the hash-bound Ghidra range log.",
+    "Confirmed the call from FUN_1404802e0 to FUN_1404807d0 and the two recorded references, including the .pdata data entry.",
+    "Preserved the distinction between parser-to-generic-result reporting and an F13C DDP JOC/EC3 writer consumer.",
+    "Kept omitted-field default, preferred option alias, and all audio consumer effects UNBOUND."
+  ],
+  "not_promoted": [
+    "Stereo display label as native default",
+    "preferred_downmix_mode alias to dmixmod",
+    "slot 0x11 generic record identity",
+    "stereo postmix behavior",
+    "target 5.1 JOC processing or signaling behavior",
+    "absence of any audio consumer",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

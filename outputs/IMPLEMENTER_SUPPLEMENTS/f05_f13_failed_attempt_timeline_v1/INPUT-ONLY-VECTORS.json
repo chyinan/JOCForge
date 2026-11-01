@@ -1,0 +1,26 @@
+{
+  "schema": "f05-f13-failure-timeline-input-only.v1",
+  "classification": "SYNTHETIC_CONTROL_VALUES_ONLY",
+  "audio_or_payload_values": false,
+  "cases": [
+    {
+      "name": "observed_phase_only",
+      "callback_generations": [
+        0,
+        1
+      ],
+      "next_callback_expected": 2,
+      "source_index_expected": 0,
+      "dispatch_expected": 1,
+      "observed_actual_transaction_values": false,
+      "classification": "RUNTIME_TRANSACTION_VALUES_UNBOUND"
+    },
+    {
+      "name": "source_token_and_parent_token_are_distinct",
+      "producer": "synthetic-source-s0",
+      "parent": "synthetic-callback-g2",
+      "same_token": false,
+      "classification": "STATIC_SCOPE_SEPARATION_ONLY"
+    }
+  ]
+}

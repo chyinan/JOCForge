@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 6292,
+      "file": "CHECK.py",
+      "sha256": "133bf80cc09e2f3ada9d2a1bd160164f09d5be03ea781355d729ac8052f34b76"
+    },
+    {
+      "bytes": 2271,
+      "file": "EVIDENCE.json",
+      "sha256": "15f0e11b8b50ccbce98026f1a12446baf0711fdcade05e1a336468c1e24828a6"
+    },
+    {
+      "bytes": 1241,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "2b3de91a1bfc5c31fef597eec3c9e070fc5310f58ce5f8227a1304b2c9e12247"
+    },
+    {
+      "bytes": 1841,
+      "file": "REPORT.md",
+      "sha256": "ce7490b6031419e68a837d84dbc1d83b354da420c33c27fee6a122f755532959"
+    },
+    {
+      "bytes": 2408,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "8a2f62fa787d95a4784e94551d03be74a5a3557034f29b36d773c8be615d7d54"
+    },
+    {
+      "bytes": 1046,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "076a07ced3b89265d9bb9f1e6d0b1d1f450f786ce90e071e8943683541d9c961"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F13C-ADM-SETUP-TABLE-COPY-LINEAGE-ADDENDUM-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "16d65151a76514fe53a3c8ac8ebb2382e77c943d5226a60fea94aa1e23416821",
+  "status": "SELECTOR3_OPENER_TO_SETUP_COPY_CHAIN_STATICALLY_BOUND; ACTUAL_DDP_PACKET_OWNER_GENERATION_UNBOUND"
+}

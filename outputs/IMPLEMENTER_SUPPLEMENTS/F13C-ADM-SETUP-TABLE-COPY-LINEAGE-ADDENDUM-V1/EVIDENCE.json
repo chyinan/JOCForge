@@ -1,0 +1,50 @@
+{
+  "schema": "washed-f13c-adm-setup-table-copy-evidence.v1",
+  "status": "SELECTOR3_OPENER_TO_SETUP_COPY_CHAIN_STATICALLY_BOUND; ACTUAL_DDP_PACKET_OWNER_GENERATION_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_ONLY",
+  "target_images": {
+    "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+  },
+  "selector3_copy_chain": {
+    "opener_owner": "selector-3 ADM/BWF opener master from FUN_180287840",
+    "opener_table_field": "master+0x50",
+    "opener_record_count_type": "U16 at master+0x4A",
+    "record_stride_bytes": 6,
+    "header_clone_function": "FUN_1800A0C20",
+    "source_header": "parent+0x70 (parent[0x0E])",
+    "clone_owner": "parent[0x1E]",
+    "clone_table_allocation": "new count*6-byte allocation",
+    "record_copy_rule": "copies U32 at record+0 then U16 at record+4 for each ordinal",
+    "source_and_clone_pointer_identity": false,
+    "selector3_dispatcher": "FUN_18027EE50",
+    "selector3_callback": "FUN_180215AB0",
+    "setup_vtable_slot": "+0x10",
+    "setup_consumer": "FUN_1802851A0 consumes param4[2] at param4+0x10",
+    "setup_initial_table": "copies six-byte records in ordinal order into setup master+0x50",
+    "bed_rewrite_boundary": "setup may later rewrite final U16 for Bed rows",
+    "static_data_lineage": "PROVEN_FOR_SELECTOR_3",
+    "runtime_owner_generation_identity": "NOT_OBSERVED"
+  },
+  "ddp_boundary": {
+    "packet_consumer": "FUN_180178DC0 inner packet -> FUN_1801AC670 copied-row input",
+    "setup_table_to_ddp_packet_pointer_generation": "UNBOUND",
+    "selected_audio_adm_factory_reader": "UNBOUND",
+    "actual_ddp_row10_semantic_name": "UNBOUND",
+    "normalizer_row_plus_2_classifier_byte": "NOT_CAPTURED",
+    "row10_scalar_observation": {
+      "plus_3": "0xBA",
+      "plus_4_u16": "0x0000",
+      "normalized_u16": "0x800A",
+      "identity_inference": "PROHIBITED"
+    }
+  },
+  "access_boundary": {
+    "runtime_capture": "NOT_RUN",
+    "dee_job_started": false,
+    "pcm_media_payload_key_license_read": false,
+    "bitstream_emission": "NOT_RUN"
+  }
+}

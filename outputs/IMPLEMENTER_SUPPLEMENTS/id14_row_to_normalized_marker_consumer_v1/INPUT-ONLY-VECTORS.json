@@ -1,0 +1,29 @@
+{
+  "schema": "washed-id14-row-consumer-input-only.v1",
+  "contract": "No predicted output values are supplied. The captured row input is a single observed reference case and is not generalized.",
+  "vectors": [
+    {
+      "id": "observed_row10_input_shape",
+      "input": {
+        "row_index": 10,
+        "row_stride_bytes": 6,
+        "byte_plus3": "0xBA",
+        "u16_plus4": "0x0000"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "NATIVE_OBSERVED_REFERENCE_ONLY",
+      "semantic_name": "UNBOUND"
+    },
+    {
+      "id": "proposed_symbolic_row",
+      "input": {
+        "row_index": "SYMBOLIC_INDEX",
+        "row_stride_bytes": 6,
+        "byte_plus3": "SYMBOLIC_U8",
+        "u16_plus4": "SYMBOLIC_U16"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "PROPOSED_NOT_RUN"
+    }
+  ]
+}

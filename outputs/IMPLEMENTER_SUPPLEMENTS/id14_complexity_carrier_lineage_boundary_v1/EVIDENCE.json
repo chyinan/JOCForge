@@ -1,0 +1,107 @@
+{
+  "schema": "washed-id14-complexity-carrier-boundary.v1",
+  "package_id": "id14_complexity_carrier_lineage_boundary_v1",
+  "status": "SELECTED_ID14_MODEL_AND_NATIVE_STORAGE_PATH_BOUND_OWNER_GENERATION_AND_CARRIER_TRANSFER_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "source_package": {
+    "manifest_sha256": "fa38f89922ca8f315ee48cbeba92169444d0c3134a9a8db654ce716b12edd34b",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payloads_recomputed": "ALL_MATCH",
+    "parent_manifests_rehashed": 12,
+    "parent_manifests_declared": 13,
+    "unlocated_parent_manifest_sha256": "e03490d81178f73711e99d796c605909b24395ac12b98cdce1cce8b7ff1f3640b"
+  },
+  "target": {
+    "module": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "current_file_rehash": "MATCH",
+    "analysis": "Ghidra 12.2 static read-only"
+  },
+  "model": {
+    "payload_id": 14,
+    "semantic_role": "JOC object representation body",
+    "downmix_index_width_bits": 3,
+    "selected_downmix_index": 3,
+    "object_count_minus_one_width_bits": 6,
+    "selected_object_count": 15,
+    "selected_oamd_slots": 16,
+    "complexity_type": "Option<U8>",
+    "complexity_rule": "object_count_plus_one",
+    "selected_complexity": 16,
+    "complexity_validation_order": "complete EMDF parse and selected-profile validation before frame loop"
+  },
+  "carrier": {
+    "model_field": "AncillaryPayload.carrier_block",
+    "type": "usize",
+    "domain": "0..5",
+    "selected_value": 2,
+    "semantic_role": "audio-block ordinal for opaque EMDF skip-field placement",
+    "part_of_id14_body": false,
+    "affects_complexity": false,
+    "native_length_policy": [
+      {
+        "request_bytes": "1..2040",
+        "first_block": 2
+      },
+      {
+        "request_bytes": "2041..2551",
+        "first_block": 1
+      },
+      {
+        "request_bytes": "2552+",
+        "first_block": 0
+      },
+      {
+        "request_bytes": 0,
+        "first_block": "NOT_ASSIGNED"
+      }
+    ],
+    "selected_container_compatibility": {
+      "relation": "container_bytes=body_bytes+4",
+      "container_cap_bytes": 511,
+      "maximum_body_bytes": 507,
+      "selected_length_compatible_with_block_2": true
+    },
+    "typed_carrier_block_transfer": "UNBOUND",
+    "third_scalar_first_writer": "UNBOUND"
+  },
+  "native": {
+    "id14_descriptor_and_queue_copy": "STATICALLY_BOUND",
+    "id14_body_storage": "OPAQUE_BYTES",
+    "selected_dispatch_id11": "SEMANTIC_PATH",
+    "selected_dispatch_other_ids_including_14": "GENERIC_QUEUE_PATH",
+    "global_id14_parser_absence_claimed": false,
+    "complexity_source": "imported configuration count into BSI working header",
+    "complexity_wire_field": "additional-BSI U8",
+    "complexity_emit_order": "ordinary BSI before outgoing EMDF serialization",
+    "prior_controlled_count_cases": [
+      {
+        "count": 1,
+        "prefix": "01 01",
+        "id14_storage_present": false
+      },
+      {
+        "count": 16,
+        "prefix": "01 10",
+        "id14_storage_present": false
+      }
+    ],
+    "complexity_to_id14_same_generation": "UNBOUND",
+    "native_semantic_parser_abi_or_owner": "NOT_FOUND_IN_RECOVERED_SELECTED_PATH"
+  },
+  "unresolved": {
+    "natural_id14_semantic_input_to_producer_owner_generation": "UNBOUND",
+    "id14_object_count_to_native_parameter13_same_generation": "UNBOUND",
+    "model_carrier_block_to_native_length_plan_typed_transfer": "UNBOUND",
+    "carrier_or_id14_to_published_AU_source_generation": "UNBOUND",
+    "native_id14_parser_global_absence_claimed": false,
+    "playback_render_consumer": "UNBOUND"
+  },
+  "execution": {
+    "new_dee_job": "NOT_RUN",
+    "full_valid_model_wrapper": "NOT_RUN",
+    "raw_payload_or_pcm_read": "NO",
+    "private_key_read": "NO"
+  }
+}

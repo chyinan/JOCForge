@@ -1,0 +1,6 @@
+{
+  "package_integrity": "PASS_PACKAGE_INTEGRITY_ONLY",
+  "normal_python": "PASS",
+  "optimized_python": "PASS",
+  "scope": "Package hash and bounded parser/handoff facts only; no encoder runtime or output test."
+}

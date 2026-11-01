@@ -1,0 +1,24 @@
+{
+  "schema": "washed-id14-data-rate-count-open-edges.v1",
+  "package_id": "id14_data_rate_count_u6_static_lineage_v1",
+  "closed": [
+    "Priv.data_rate is a typed xs:list:string plugin field",
+    "static rate-string to enum map",
+    "normal selector branch values and code13/code14 formulas",
+    "native count difference and ID14 U6 count-minus-one writer"
+  ],
+  "open": [
+    "host task setting to this Priv instance in a specific run",
+    "host packet identity to native param3",
+    "semantic names for six-byte metadata rows",
+    "join between native packet and frozen model EMDF list/generation",
+    "dynamic capture"
+  ],
+  "status": {
+    "host_run": "UNBOUND",
+    "row_semantics": "UNBOUND",
+    "model_join": "UNBOUND",
+    "native_capture": "NOT_RUN"
+  },
+  "guidance": "The enum value for 1024 is a static mapping; do not claim that a given job selected that Priv value without a typed run/input join."
+}

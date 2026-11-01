@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "a49fbf51ec8f8cf572c5b1eabb1724ee1b348d2d0c1cdd7db48f26acef396d38",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed the incoming manifest SHA-256 and ran its checker normally and under Python optimization.",
+    "Confirmed the source package keeps the native DDP row identity UNBOUND and all candidate DDP expected outputs NOT_SUPPLIED.",
+    "Kept newly read CHNA bytes separate from the previously washed AXML metadata projection.",
+    "Recomputed the candidate slot and record fields in three synthetic input-only vectors; no native DDP row was inferred."
+  ],
+  "not_promoted": [
+    "selected reader or factory identity",
+    "opener table pointer identity to setup param4",
+    "setup table to DDP inner packet pointer/generation",
+    "candidate AudioObjectID as the semantic name of actual DDP row 10",
+    "initial contents of unwritten record byte +3",
+    "bitstream emission or whole-chain readiness"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "washed-native-eac3-joc-payload11-configuration-lineage.v1",
+  "package_id": "native_eac3_joc_payload11_configuration_static_lineage_v1",
+  "status": "TYPE11_STATIC_PRESENCE_RULES_BOUND; SAME_RUN_IMAGE_AND_GROUP_ID_PRESENCE_JOIN_UNBOUND",
+  "implementation_ready": "NO",
+  "source_package_manifest_sha256": "f4ca8e1331c9749666a079b90d6d379d553c5efed4313adde65c8ab524c25178",
+  "implementation_allowed_for": "STATIC_TYPE11_CONFIGURATION_FIELD_RULE_REFERENCE_ONLY",
+  "audio_algorithm_inference_allowed": false,
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_media_payload": false,
+  "contains_private_key_or_license_contents": false,
+  "contains_raw_pcm_or_bitstream": false,
+  "contains_absolute_paths_or_instruction_addresses": false,
+  "payloads": [
+    {
+      "file": "OBSERVATION.json",
+      "bytes": 4142,
+      "sha256": "a0844d9c59f27b94fa9db0e6ed82ecb805183d1f1e166b61d6b98a8f69d03c32"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1332,
+      "sha256": "a12c8525f0f97f63c77f72a46a8ec424942e4928b89c8b4e676947ef2440e9ac"
+    },
+    {
+      "file": "WASH-REVIEW.md",
+      "bytes": 1386,
+      "sha256": "855b45ecbf61881cc851ceb1ee1f2250013c4725d9143a876b0a10e7413f7830"
+    },
+    {
+      "file": "verify_package.py",
+      "bytes": 2401,
+      "sha256": "d85c960b2eb0a9f71430dfbcaf791d87c376a33b8094c8f77453fe97ef936dbe"
+    }
+  ]
+}

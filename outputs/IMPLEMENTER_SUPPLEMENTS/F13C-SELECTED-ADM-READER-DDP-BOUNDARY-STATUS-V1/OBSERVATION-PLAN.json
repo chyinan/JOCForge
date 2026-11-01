@@ -1,0 +1,23 @@
+{
+  "schema": "washed-minimum-metadata-only-reader-ddp-observation-plan.v1",
+  "execution_status": "NOT_RUN; SPECIFICATION_ONLY",
+  "activation_identity": {
+    "process": ["PID", "process start time", "host image hash"],
+    "task": ["job/config SHA-256", "input SHA-256", "route key", "typed input-owner token"],
+    "parent": ["input wrapper/parent object token", "explicit task-generation token if present"],
+    "call_context": ["thread id", "caller module hash/RVA", "two-frame call-stack token at each boundary"],
+    "missing_generation_rule": "If no explicit typed generation token is visible, keep cross-boundary generation UNBOUND."
+  },
+  "capture_points": [
+    {"role": "audio_input selection and InputObject Run dispatch", "fields": ["getter module/hash", "table pointer/count", "selected slot", "factory token", "reader/vtable/Run target", "typed audio.adm owner token", "parent and stack tokens"]},
+    {"role": "selector-3 opener output", "fields": ["master token", "master+0x50 table pointer", "U16 master+0x4A count", "parent/header token", "status and callsite"]},
+    {"role": "header/table clone entry and return", "fields": ["source header token", "source table pointer/count", "clone header token", "clone table pointer/count", "caller stack token"]},
+    {"role": "setup FUN_1802851A0 entry and post-setup", "fields": ["this/vtable", "param4 token", "param4[2] pointer/count", "caller module/RVA and stack", "setup master+0x50 pointer/count", "parent-generation token"]},
+    {"role": "converter read adapter if reached", "fields": ["same master token", "borrowed row table pointer", "request/return frame scalars", "caller stack and parent-generation tokens"]},
+    {"role": "DDP composite reader and map call if reached", "fields": ["DDP state token", "row-table pointer/count", "separate map object token/bounds", "storage object token", "same-activation/call-stack tokens"]},
+    {"role": "DDP metadata packet and row normalizer", "fields": ["inner packet pointer/count", "packet row-table pointer", "normalizer row pointer/count", "normalized-output token", "parent-generation and nested-call tokens"]}
+  ],
+  "join_rule": "Join only by same activation, typed owner pointer, nested call/stack identity, and explicit generation token where available; event order, route name, row index, equal scalars, and matching counts do not close identity.",
+  "payload_policy": "Pointer/count/status and frame-size scalars only; no table bytes, row bytes, PCM, payload, key/license, or encoded output.",
+  "one_attempt_stop": "If any path is not reached or a parent-generation token is unavailable, record NOT_REACHED/UNBOUND and stop."
+}

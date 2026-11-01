@@ -1,0 +1,33 @@
+{
+  "schema": "washed-adm-setup-table-copy-vectors.v1",
+  "evidence_class": "SYNTHETIC_COPY_BEHAVIOR_ONLY_NOT_NATIVE_DDP_ROW_MAPPING",
+  "cases": [
+    {
+      "id": "selector3-header-clone-one-record",
+      "input": {"record_count": 1, "record_stride_bytes": 6, "source_record_hex": "1032547698BA"},
+      "expected_output": {
+        "allocated_bytes": 6,
+        "cloned_record_hex": "1032547698BA",
+        "record_order_preserved": true,
+        "source_and_clone_pointer_alias": false,
+        "actual_ddp_packet_row_identity": "NOT_SUPPLIED"
+      }
+    },
+    {
+      "id": "setup-object-record-initial-copy",
+      "input": {"record_count": 1, "record_stride_bytes": 6, "setup_input_record_hex": "EFBEFF017A00", "branch": "Object"},
+      "expected_output": {
+        "initial_setup_record_hex": "EFBEFF017A00",
+        "record_order_preserved": true,
+        "bed_rewrite_applies": false,
+        "actual_ddp_packet_row_identity": "NOT_SUPPLIED"
+      }
+    },
+    {
+      "id": "setup-table-to-ddp-packet-identity",
+      "input": {"setup_owned_table": "candidate", "ddp_packet": "FUN_180178DC0", "same_activation_generation_token": "NOT_SUPPLIED"},
+      "expected_output": "NOT_SUPPLIED",
+      "status": "UNBOUND"
+    }
+  ]
+}

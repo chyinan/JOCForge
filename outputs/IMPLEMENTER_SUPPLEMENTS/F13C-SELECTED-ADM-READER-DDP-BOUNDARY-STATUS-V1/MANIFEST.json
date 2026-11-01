@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 4883,
+      "file": "CHECK.py",
+      "sha256": "f6ca228c942fd94be3ca86f8d200e1e33de29a0798440a9b2f03ce4570087f8d"
+    },
+    {
+      "bytes": 2486,
+      "file": "EVIDENCE.json",
+      "sha256": "bd72aeb7391718e65442da79495ea5726a3621176b3a28e69ca97f985fd1af78"
+    },
+    {
+      "bytes": 2658,
+      "file": "OBSERVATION-PLAN.json",
+      "sha256": "c002214c0dda073a221c77dbacb6a42ab6a7fac9484de7d42f2a6c4465890a40"
+    },
+    {
+      "bytes": 1811,
+      "file": "REPORT.md",
+      "sha256": "013965e5bc73d9431ae4f1b185d62437dedc2a15a64cc76020f043fd44c02dcf"
+    },
+    {
+      "bytes": 1784,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "ab9a23c595305881cf46fd98b505db2485b2a8821e10b80c998559ed28bf6d3f"
+    },
+    {
+      "bytes": 1086,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "3054b2da64d3da6c411e398c6354e2572e2000c0c7703eca5d00682b13e35caa"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F13C-SELECTED-ADM-READER-DDP-BOUNDARY-STATUS-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "33cc65b97deec34c97990a514b96c89d5880c93e4f3f8a8e9d972014f373a1f5",
+  "status": "SCOPED_STATIC_ROUTE_AUDIT_COMPLETE; SELECTED_ADM_READER_TO_DDP_ROW_UNBOUND"
+}

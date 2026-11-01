@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_data_rate_count_u6_static_lineage_v1",
+  "scope": "Static plugin data_rate selector to normal ID14 count-minus-one U6 path; host task, packet-row semantics and model EMDF generation remain unbound.",
+  "status": "PLUGIN_DATA_RATE_SELECTOR_TO_NORMAL_ID14_U6_STATICALLY_BOUND; HOST_TASK_AND_INPUT_GENERATION_UNBOUND; MODEL_EMDF_JOIN_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1519,
+      "sha256": "e8519e20ea77bbf478fd4ee3aef8e43bc6691e320b2ee8fabc9d62cc0ca549d0"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 5157,
+      "sha256": "c91f7f02777ca881e899a6d7910e02001f3768e48eaf5f1b842336b44b2b1ea8"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 830,
+      "sha256": "16167289ffac357ea2cea4b248991c1ffd1b36e33bf9d0518db943ed4ae1a3ab"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 926,
+      "sha256": "c00cfacc24f9737646b9bbd3ddf6f31150a7deaabc36a69b3ba155ddec6e70a6"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 2108,
+      "sha256": "af24847bd662faded5a86b2d2821ce19fe0fd6ac5ca9a0065889e0b4e455e670"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2574,
+      "sha256": "c522e401e837b4e3473aac0795cc3c0398a713ca50125fb9b28136bf4bcb0a45"
+    }
+  ]
+}

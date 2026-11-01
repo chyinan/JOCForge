@@ -1,0 +1,141 @@
+{
+  "schema": "washed-id14-count-root-population.v1",
+  "package_id": "id14_count_root_population_v1",
+  "status": "STATIC_NORMAL_PATH_CODE13_CODE14_AND_COUNT_SEED_BOUND; HOST_SELECTOR_AND_RUNTIME_PARENT_GENERATION_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "implementation_scope": "Normal selected plugin path only: code13=base+high_bit_record_count and code14=high_bit_record_count, so count_seed=base (11 or 15). Use only when an approved existing model input supplies the corresponding zero/nonzero adapter selector. No new user-facing preferred/parameter13 input is established.",
+  "source_images": [
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464,
+      "current_source_hash": "MATCH"
+    },
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728,
+      "current_source_hash": "MATCH"
+    }
+  ],
+  "tool": {
+    "name": "Ghidra 12.2 PUBLIC",
+    "mode": "HEADLESS_NOANALYSIS_READONLY",
+    "script_sha256": "2be8025507bf804b030eb9b54b4f330d0e3bd52744c065cfb1d8f673e968088a",
+    "raw_report_sha256": "55da723fda7047a3f95c46b3606a888397bbbe85c70fb0bf834b0553b12871d5d",
+    "raw_decompilation_copied": false
+  },
+  "parents": [
+    {
+      "package_id": "ID14-COUNT-ROOT-BUFFER-POPULATION-FOLLOWUP-V1",
+      "manifest_sha256": "587074f6e7c0daa4de2281101bf8229dcb3a1ec6f25cc3c461821df367326ece",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "ID14-COUNT-ROOT-UPSTREAM-FOLLOWUP-V1",
+      "manifest_sha256": "e3532977d0503b6581f5aa6764b0c522533b79d9668ef126dc943de3ad5a5442",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "HOST-ATMOS-CODE13-INPUT-LINEAGE-FOLLOWUP-V2",
+      "manifest_sha256": "48c44e2e2f7e4cef9e37cab03cf7184317df35bebdaf583d4aba20bdb156dff0",
+      "payloads": "29_OF_29_HASH_AND_SIZE_MATCH"
+    }
+  ],
+  "query_buffer": {
+    "allocator": "FUN_1801788a0",
+    "size_query": "FUN_1801a8920",
+    "cleared_allocation_bytes": true,
+    "reserved_extent": "0x2c096",
+    "maximum_prefix_size": "0x287d",
+    "minimum_remaining_at_count_root_cursor": "0x29819",
+    "root_offset_from_aligned_cursor": "0xa8",
+    "both_fields_inside_cleared_allocation": true,
+    "extent_is_static_not_runtime_capture": true
+  },
+  "typed_fields": {
+    "property_parser": "FUN_1801c3150",
+    "caller": "FUN_1801b0750",
+    "config_block_base": "root+0xc100",
+    "code13": {
+      "root_offset": "0xc170",
+      "config_member_offset": "0x70",
+      "width_bits": 32,
+      "default_if_absent": 11,
+      "normal_role": "base plus marked-record count"
+    },
+    "code14": {
+      "root_offset": "0xc174",
+      "config_member_offset": "0x74",
+      "width_bits": 32,
+      "default_if_absent": 0,
+      "normal_role": "marked-record count and separate positivity-gate input"
+    }
+  },
+  "normal_path": {
+    "producer": "FUN_1801a7d50 -> FUN_1801ab520",
+    "selector_rule": {
+      "zero_base": 11,
+      "nonzero_base": 15,
+      "host_task_semantics": "UNBOUND"
+    },
+    "record_count": "high-bit-marked U16 metadata-record count",
+    "formulas": {
+      "code13": "base + record_count",
+      "code14": "record_count",
+      "count_seed": "code13 - code14 = base"
+    },
+    "count_constructor": "FUN_1801bfdb0",
+    "accepted_count_range": "1..15",
+    "vectors": [
+      {
+        "selector_zero": true,
+        "marked_record_count": 0,
+        "code13": 11,
+        "code14": 0,
+        "count_seed": 11
+      },
+      {
+        "selector_zero": true,
+        "marked_record_count": 3,
+        "code13": 14,
+        "code14": 3,
+        "count_seed": 11
+      },
+      {
+        "selector_zero": false,
+        "marked_record_count": 5,
+        "code13": 20,
+        "code14": 5,
+        "count_seed": 15
+      }
+    ]
+  },
+  "other_path": {
+    "kind": "special_mode",
+    "code13": "adjusted source count",
+    "code14": 1,
+    "difference": "adjusted source count - 1",
+    "generalized_to_normal_path": false
+  },
+  "wire_relation": {
+    "relationship_to_joc_body_object_count": "NOT_ESTABLISHED_BY_THIS_PACKAGE",
+    "equal_values_are_not_identity": true
+  },
+  "open_edges": {
+    "host_task_to_selector": "UNBOUND",
+    "run_parent_and_input_generation": "UNBOUND",
+    "selected_adm_or_oamd_to_property_generation": "UNBOUND",
+    "special_mode_trigger": "UNBOUND",
+    "native_capture": "NOT_RUN"
+  },
+  "exclusions": {
+    "source_code": false,
+    "raw_decompilation": false,
+    "binaries": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "raw_ghidra_scripts_or_reports_included": false,
+    "absolute_paths": false
+  }
+}

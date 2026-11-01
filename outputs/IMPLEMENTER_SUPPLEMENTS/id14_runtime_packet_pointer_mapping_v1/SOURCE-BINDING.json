@@ -1,0 +1,18 @@
+{
+  "schema": "washed-id14-runtime-packet-source-binding.v1",
+  "package_id": "id14_runtime_packet_pointer_mapping_v1",
+  "incoming_research_manifest_sha256": "b3d3974053948c7498c17753cfe9509192488c6268a85cfcfb42923122c42048",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "target_images_currently_rehashed": {
+    "dee_exe": "MATCH",
+    "ddp_atmos": "MATCH"
+  },
+  "authorized_input_currently_rehashed": "MATCH",
+  "parent_manifests_rehashed": true,
+  "writer_instruction_executed": false,
+  "temporary_file_bytes": 3704,
+  "temporary_file_contents_read": false,
+  "temporary_file_removed": true,
+  "private_key_or_license_contents_read": false,
+  "absolute_paths_or_raw_pointers_included": false
+}

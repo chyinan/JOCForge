@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 5981,
+      "file": "CHECK.py",
+      "sha256": "7b41c12835c92334a68f4c998e9b2e268a1cd1c4561eb2a9385951fe420dff90"
+    },
+    {
+      "bytes": 2407,
+      "file": "EVIDENCE.json",
+      "sha256": "db96ef2b801d0d26b9e99b26cff333515b1f78881f4cc9fe39f485a285a39046"
+    },
+    {
+      "bytes": 2109,
+      "file": "REPORT.md",
+      "sha256": "f877118a662febd35cef63705e0505e23bb76d8a6ba45ace2596f4c91588da2c"
+    },
+    {
+      "bytes": 1512,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "c47fe228fee95700d79433b874f342d4a1c3e6ff6d8c5870e4cd032638d78d33"
+    },
+    {
+      "bytes": 1429,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "8e0a3017262615c41a950f356f9e126243586299cd9c57685c8eb767517ab0a5"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F13C-DMIXMOD-PARSER-RESULT-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "0473987f247572cd78d164afd901e2f7495c60fd8aab765167e18ad710e3c15f",
+  "status": "PARSER_TO_GENERIC_RESULT_HANDOFF_BOUND; NATIVE_DEFAULT_AND_AUDIO_CONSUMER_UNBOUND"
+}

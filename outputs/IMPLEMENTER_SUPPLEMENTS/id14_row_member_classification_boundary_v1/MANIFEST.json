@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_row_member_classification_boundary_v1",
+  "scope": "One hash-bound run observes row10 member values, the distinct row+3 classification and row+4 comparison roles, and normalized consumer word; semantic ADM/EMDF field identity and general transform remain UNBOUND.",
+  "status": "ROW_MEMBER_READ_ROLES_AND_NORMALIZED_CONSUMER_BOUND; SEMANTIC_FIELD_SOURCE_UNBOUND; U6_WRITER_NOT_EXECUTED; BITSTREAM_NOT_RUN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2203,
+      "sha256": "7f8a86a60cf4686c76e5cc818c2e0f3d3f99cb3903272ef712d2c2bf3d83c797"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 849,
+      "sha256": "b96d799664f4e2edf182d33010bb92205d3652cc373f294d4dfe9f5c53134ceb"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 905,
+      "sha256": "9144576459fdc89e6daf84af2c9d7ff396014b8a22c1d544fc160b90ee2c91d9"
+    },
+    {
+      "name": "README.md",
+      "bytes": 853,
+      "sha256": "cff6488ec0b94ac35435cdca250b7a799e33c2d65d722a99299ba37b81fd7bb9"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1292,
+      "sha256": "a55e9db46ba5484bbb1109c35e82941df7fe7e926e8c1e08cc2d682eece18201"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 223,
+      "sha256": "6efb3d4f3d62f075112a60444862d909143fda6b3ce553ad7126902871d11000"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2984,
+      "sha256": "1a67d9d7bb4f942e41704fa8952b1fa7ad8828b130350d57e46d611760fdcaa1"
+    }
+  ]
+}

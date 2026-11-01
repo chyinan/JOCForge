@@ -1,0 +1,36 @@
+{
+  "schema": "id14-data-rate-input-only-vectors.v1",
+  "input_only": true,
+  "vectors": [
+    {
+      "data_rate_string": "384",
+      "selector_enum": 0,
+      "marked_u16_count": 0,
+      "code13": 11,
+      "code14": 0,
+      "native_count_seed": 11,
+      "id14_u6_value": 10,
+      "classification": "STATIC_MODEL_VECTOR"
+    },
+    {
+      "data_rate_string": "1024",
+      "selector_enum": 5,
+      "marked_u16_count": 0,
+      "code13": 15,
+      "code14": 0,
+      "native_count_seed": 15,
+      "id14_u6_value": 14,
+      "classification": "STATIC_MODEL_VECTOR"
+    },
+    {
+      "data_rate_string": "1024",
+      "selector_enum": 5,
+      "marked_u16_count": 3,
+      "code13": 18,
+      "code14": 3,
+      "native_count_seed": 15,
+      "id14_u6_value": 14,
+      "classification": "STATIC_MODEL_VECTOR"
+    }
+  ]
+}

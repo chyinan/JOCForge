@@ -1,0 +1,6 @@
+{
+  "package_integrity": "PASS_PACKAGE_INTEGRITY_ONLY",
+  "normal_python": "PASS",
+  "optimized_python": "PASS",
+  "scope": "Package hashes and metadata/source-boundary assertions only; no DEE runtime or codec output test."
+}

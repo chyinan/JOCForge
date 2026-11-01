@@ -1,0 +1,38 @@
+{
+  "schema": "washed-f13c-selected-adm-reader-ddp-boundary.v1",
+  "status": "SCOPED_STATIC_ROUTE_AUDIT_COMPLETE; SELECTED_ADM_READER_TO_DDP_ROW_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_AND_PARENT_WASH_PACKAGES; NO_NEW_RUNTIME_CAPTURE",
+  "target_images": {
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "dactlib_sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239"
+  },
+  "static_route_audit": {
+    "route_key": "encode_to_atmos_ddp",
+    "input_type": "audio.adm",
+    "audio_adm_direct_reference_count_in_scoped_host_trace": 1,
+    "direct_reference_function": "FUN_140035700",
+    "direct_reference_role": "output-side AtmosMezzPlugin supported-type list initializer",
+    "selected_r138_audio_input_factory": "UNBOUND",
+    "typed_dact_getter_to_host_audio_input_registry": "NOT_RECOVERED_IN_SCOPED_STATIC_TRACE",
+    "route_profile_to_audio_filter_index_same_owner_transfer": "NOT_RECOVERED_IN_SCOPED_STATIC_TRACE"
+  },
+  "edge_matrix": [
+    {"edge": "R138 audio.adm owner -> selected audio_input factory/reader", "status": "UNBOUND"},
+    {"edge": "typed CHNA candidate -> selector-3 opener table", "status": "STATIC_TYPED_CANDIDATE_PATH_PROVEN"},
+    {"edge": "opener table -> clone -> setup param4[2] -> setup-owned table", "status": "STATIC_DATA_LINEAGE_PROVEN; DISTINCT_POINTERS; RUNTIME_GENERATION_UNBOUND"},
+    {"edge": "setup master class -> vtable slot-25 reader adapter", "status": "SAME_CLASS_VTABLE_MEMBERSHIP_STATIC; INSTANCE_AND_GENERATION_UNBOUND"},
+    {"edge": "converter reader adapter -> DDP FUN_18018B260 row pointer", "status": "UNBOUND; PRIOR RUN-143 ADAPTER BREAKPOINT DID_NOT_HIT"},
+    {"edge": "DDP worker row pointer -> separate six-byte map object", "status": "SEPARATE_ROLES; POINTER_IDENTITY_NOT_ESTABLISHED"},
+    {"edge": "FUN_180178DC0 packet rows -> FUN_1801AC670 input/count", "status": "BOUND_WITHIN_ONE_PRIOR_CAPTURE; NOT_JOINED_TO_SELECTED_READER"},
+    {"edge": "actual DDP row fields -> ADM/OAMD/EMDF semantic fields", "status": "UNBOUND"}
+  ],
+  "runtime_boundary": {
+    "capture_in_incoming_addendum": "NOT_RUN",
+    "dee_job_started": false,
+    "pcm_payload_key_license_or_bitstream_read": false,
+    "bitstream_emission": "NOT_RUN"
+  }
+}

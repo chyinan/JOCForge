@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f13c_preferred_optional_input_boundary_v1",
+  "scope": "Seven authorized ADM AXML scans and DME online-media UI optional preferred-downmix behavior. Native dmixmod default, UI-to-native mapping, image identity of historical analysis, and F13C output branch remain UNBOUND.",
+  "status": "ADM_AXML_TERMS_ABSENT_IN_SEVEN; DME_UI_OPTIONAL_INACTIVE_DEFAULT_OBSERVED; NATIVE_ADAPTER_DEFAULT_AND_F13C_BRANCH_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3198,
+      "sha256": "5bc1da13ab0722b68db15dd4d8f70e2aa8c0f1d5dcebba0999552ac7ca34f196"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1061,
+      "sha256": "b86c925813f681cf43fd23da3104da9807998a3673ea95280a7c6e86d0631f9d"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1508,
+      "sha256": "98d8582b1c3d946ef6534b474553514baf95e3822381e6b81e67fcdeb4551fa5"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1381,
+      "sha256": "8671c75d2ec9adceb29947d3f5d972d69e56c8c4acaa2d52fe74f3d5dcbc9bfa"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1617,
+      "sha256": "eabae83c1123cadb11e7c8871e28bc0e9fe1789a6dfc6a6e4ed9019b03d4baa0"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 232,
+      "sha256": "780bb75d23ec6ab1e4765832234ab1279e477d1d80a593b79f7f057195183dea"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2132,
+      "sha256": "24cdc15bec397cac3c6ac5bb0e9e81147a2da8ab244e1b830f1b9fa489ba8d08"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "f05-f13-diagnostic-review-input-only.v1",
+  "classification": "SYNTHETIC_TYPED_FIELDS_ONLY_NOT_ATTEMPT_VALUES",
+  "audio_or_payload_values": false,
+  "vectors": [
+    {
+      "name": "valid_nested_tokens",
+      "expected": "source-s0",
+      "actual": "source-s0",
+      "parent": "callback-g2",
+      "source_generation": 0,
+      "writer_generation": 0,
+      "dispatch": 1,
+      "result": "ACCEPT"
+    },
+    {
+      "name": "same_generation_label_mismatch",
+      "expected": "source-s0",
+      "actual": "callback-g2",
+      "parent": "callback-g2",
+      "source_generation": 0,
+      "writer_generation": 0,
+      "dispatch": 1,
+      "result": "REJECT_LABEL_MISMATCH"
+    },
+    {
+      "name": "stale_source",
+      "expected": "source-s0",
+      "actual": "source-s1",
+      "parent": "callback-g2",
+      "source_generation": 1,
+      "writer_generation": 1,
+      "dispatch": 2,
+      "result": "REJECT_CROSS_GENERATION"
+    },
+    {
+      "name": "missing_provenance",
+      "expected": "source-s0",
+      "actual": null,
+      "parent": "callback-g2",
+      "source_generation": 0,
+      "writer_generation": 0,
+      "dispatch": 1,
+      "result": "REJECT_MISSING_PROVENANCE"
+    },
+    {
+      "name": "parent_source_collapsed",
+      "expected": "source-s0",
+      "actual": "source-s0",
+      "parent": "source-s0",
+      "source_generation": 0,
+      "writer_generation": 0,
+      "dispatch": 1,
+      "result": "REJECT_PARENT_PRODUCER_COLLAPSE"
+    }
+  ]
+}

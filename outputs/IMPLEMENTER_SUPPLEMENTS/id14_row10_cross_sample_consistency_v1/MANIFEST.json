@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_row10_cross_sample_consistency_v1",
+  "scope": "Two distinct authorized inputs show matching row10 raw values and normalized consumer word; no semantic field identity or general transform is established.",
+  "status": "ROW10_RAW_AND_NORMALIZED_VALUES_CONSISTENT_ACROSS_TWO_INPUTS; SEMANTIC_IDENTITY_UNBOUND; U6_WRITER_NOT_EXECUTED; BITSTREAM_NOT_RUN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2421,
+      "sha256": "c8adcc401ba15f49caf2f095041019e3d2373f31ba87aba4162ce445cefd2271"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1115,
+      "sha256": "706b57dc7cb45e161551bb609f054e02ab1068de09d78f0e9eac6a213c3e6725"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 952,
+      "sha256": "467322a56aa9b94bdcc767015d6affe26bd8b134815e8994514cebb193112104"
+    },
+    {
+      "name": "README.md",
+      "bytes": 669,
+      "sha256": "58dc7908852df98c249c7bce2d7be539711fb09bf856e89bc066c9022d85af39"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1290,
+      "sha256": "27c91327047a362df0c969f104a4b762fef5f0ca22994a36285838c71c9ef440"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 224,
+      "sha256": "3208861ed03e1ca0002d674f62511d8731b3e5e02443f7974199c9725a9cef1f"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2635,
+      "sha256": "53eb8dbf361bff6dfdfafa0a3a2b933f84409614ca41c6e5995128a351f28f86"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "washed-minimum-r138-reader-ddp-observation-plan.v1",
+  "status": "NOT_RUN; SPECIFICATION_ONLY",
+  "host_reader_stop": {
+    "function": "FUN_1400CA5F0 / InputObject::execute",
+    "reader_pointer_load_rva": "0xCA9F2",
+    "vtable_load_rva": "0xCA9F9",
+    "run_callsite_rva": "0xCA9FC",
+    "stop_before_Run": true,
+    "capture": ["wrapper token", "reader object/vtable/Run target", "audio_input factory slot/function", "typed input owner", "thread/caller", "parent generation if available"]
+  },
+  "downstream_if_same_activation_reaches_it": [
+    {"function": "FUN_180287840", "capture": ["opener master token", "this+0x50 pointer", "U16 count +0x4A"]},
+    {"function": "FUN_1800A0C20", "capture": ["source header/table/count", "clone header/table/count"]},
+    {"function": "FUN_1802851A0", "capture": ["param4[2] pointer/count", "this+0x50 before and after allocation", "caller/parent generation"]},
+    {"function": "FUN_180280840", "capture": ["same master token", "borrowed row table pointer/count", "frame scalars"]},
+    {"function": "FUN_180178DC0 and FUN_1801AC670", "capture": ["packet/row pointer/count", "normalizer input/output pointer tokens"]}
+  ],
+  "join_rule": "Same activation and typed owner/pointer/call-stack identity; explicit generation token where available. Otherwise preserve generation UNBOUND.",
+  "stop_rule": "Stop before InputObject::Run if continuing would read audio; if a later boundary is not reached, record NOT_REACHED.",
+  "data_policy": "Pointer/count/status/frame scalars only. No table bytes, row bytes, PCM, payload, key/license, or encoded output."
+}

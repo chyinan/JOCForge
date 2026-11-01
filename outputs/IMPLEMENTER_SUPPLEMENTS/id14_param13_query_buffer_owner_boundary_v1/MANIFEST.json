@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_param13_query_buffer_owner_boundary_v1",
+  "scope": "Ghidra static ID14 query-buffer root ownership and field-use boundary; first writers and semantics remain open.",
+  "status": "PLUGIN_SCRATCH_ROOT_BOUND_FIELD_FIRST_WRITERS_AND_SEMANTICS_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2291,
+      "sha256": "f6b6c876cd77577d24d67e5ac695dc177fa756004ce3c934f0ef8da0bcfa3fa1"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 372,
+      "sha256": "f8384cab1911341b0e45f8d7845fa476caaa9c6ce4b9ceb257ef08846c0497b9"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1045,
+      "sha256": "eb7b279378cf27715584189e2f426a608d5e67f22a2216a09cf86be069512860"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1618,
+      "sha256": "705a21a32a8853119c4628003462810311c58d8bcc3ec2797f84ebe24d553c5d"
+    }
+  ]
+}

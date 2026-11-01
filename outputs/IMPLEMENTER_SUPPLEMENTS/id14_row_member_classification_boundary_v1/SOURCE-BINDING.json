@@ -1,0 +1,19 @@
+{
+  "package_id": "id14_row_member_classification_boundary_v1",
+  "incoming_manifest_sha256": "3d5df8de998d0de67405ecc36b1b31b4c9a7bddc95b4b6bd185ab04eae67a3f4",
+  "incoming_payload_sha256": {
+    "EVIDENCE.json": "f0d8a5122997fb625420aa8444fbdcbee3f96382250debcecd49ce8f1d307026",
+    "README.md": "c3e9a62b0fefcaec8b3795c6012643ca755a5bbc337b3e243e07fc2babb33992",
+    "REPORT.md": "48151b25a62b501f5f202b9f500330e627fc24067940563611d1f6310a77b499",
+    "SOURCE-INVENTORY.json": "32c42679465399f9b2fce6fef460fccfd4c9ca368c9a47d2d696e43cc680eb37",
+    "verify_package.py": "f448c90af26b45d1f53b9659cdeb43034c509495aacb9c9e8f1f01241947b1fb"
+  },
+  "parent_consumer_package_manifest_sha256": "b6b56cfdbcf29a870496d87f04dc34b95d8a7a59db66f801b41cefb6e2dfec7b",
+  "parent_owner_token_package_manifest_sha256": "531335965977e8eef22af9f27ff803b40138db2ae0191bace9723df7ca9d38b8",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "raw_source_or_decompilation_included": false,
+  "private_key_or_license_contents_read": false,
+  "pcm_or_payload_read": false
+}

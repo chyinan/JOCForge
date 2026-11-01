@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "33cc65b97deec34c97990a514b96c89d5880c93e4f3f8a8e9d972014f373a1f5",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "edges_checked": 8, "observation_points_checked": 7},
+  "independent_review": [
+    "Recomputed incoming manifest SHA-256 and ran the package checker normally and under Python optimization.",
+    "Confirmed the output-side audio.adm string reference is not the selected R138 reader edge.",
+    "Preserved selector-3 setup-table copy lineage while keeping runtime owner/generation unbound.",
+    "Kept the prior single-run packet-to-normalizer pointer binding scoped to that run and unjoined to the selected reader.",
+    "Preserved the metadata-only observation plan as NOT_RUN and did not treat it as a capture."
+  ],
+  "not_promoted": [
+    "a globally absent audio.adm reader",
+    "selected R138 reader or factory identity",
+    "reader-to-DDP row owner/generation join",
+    "actual DDP row semantic-field identity",
+    "bitstream emission or implementation readiness"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f05_f13_diagnostic_observability_review_v1",
+  "scope": "Reviewed Rust transaction diagnostic contract at hash-bound snapshot; attempt-03 runtime values remain UNBOUND and current runner changes are outside this review.",
+  "status": "RUST_COMPARE_ERROR_HAS_NO_VALUES; RUN03_VALUES_UNBOUND; RUNNER_REVIEW_SNAPSHOT_CHANGED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1163,
+      "sha256": "542a63a0053e564f8a7ba3a89059d391784e6e6278728156a8fd724b22d3cab9"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3935,
+      "sha256": "b610c9925169f8ffc6a31e571c797c4625d2426573df504e723db1b410723d24"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1494,
+      "sha256": "9ec796d6da713e26c5a8e298f4297377bbf4d123fab4a51e1a4c35eb2d062c33"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1699,
+      "sha256": "479256e65c9b48ee894535f2d5e49d9c2422ae7db2d1c2da0b3d8f333b71dc40"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 832,
+      "sha256": "29e08a40c9e9277998c192c8b99bdd7d5662b372223a45b75642443e5ca8e252"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1949,
+      "sha256": "c2acce792e85d23e5046f8e128911dce9475f9c84e19adafe2767caa6f984819"
+    }
+  ]
+}

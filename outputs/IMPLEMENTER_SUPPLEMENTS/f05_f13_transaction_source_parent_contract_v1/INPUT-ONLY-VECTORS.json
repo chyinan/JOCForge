@@ -1,0 +1,54 @@
+{
+  "schema": "f05-f13-transaction-input-only-vectors.v1",
+  "classification": "SYNTHETIC_CONTROL_VALUES_ONLY",
+  "payload_or_audio_values": false,
+  "clock_projection": {
+    "callback_index": 2,
+    "source_index": 0,
+    "dispatch": 1,
+    "parent_callback_transaction_id": "synthetic-callback-g2",
+    "expected_producer_transaction_id": "synthetic-source-s0"
+  },
+  "vectors": [
+    {
+      "name": "normal_source_parent_separation",
+      "expected_producer_transaction_id": "synthetic-source-s0",
+      "actual_producer_transaction_id": "synthetic-source-s0",
+      "parent_callback_transaction_id": "synthetic-callback-g2",
+      "producer_generation": 0,
+      "writer_generation": 0,
+      "dispatch": 1,
+      "expected_classification": "ACCEPT"
+    },
+    {
+      "name": "actual_parent_label_used_as_producer",
+      "expected_producer_transaction_id": "synthetic-source-s0",
+      "actual_producer_transaction_id": "synthetic-callback-g2",
+      "parent_callback_transaction_id": "synthetic-callback-g2",
+      "producer_generation": 0,
+      "writer_generation": 0,
+      "dispatch": 1,
+      "expected_classification": "REJECT_LABEL_MISMATCH"
+    },
+    {
+      "name": "stale_source_generation",
+      "expected_producer_transaction_id": "synthetic-source-s0",
+      "actual_producer_transaction_id": "synthetic-source-s1",
+      "parent_callback_transaction_id": "synthetic-callback-g2",
+      "producer_generation": 1,
+      "writer_generation": 1,
+      "dispatch": 2,
+      "expected_classification": "REJECT_CROSS_GENERATION"
+    },
+    {
+      "name": "missing_producer_provenance",
+      "expected_producer_transaction_id": "synthetic-source-s0",
+      "actual_producer_transaction_id": null,
+      "parent_callback_transaction_id": "synthetic-callback-g2",
+      "producer_generation": 0,
+      "writer_generation": 0,
+      "dispatch": 1,
+      "expected_classification": "REJECT_MISSING_PROVENANCE"
+    }
+  ]
+}

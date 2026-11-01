@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 1614,
+      "file": "CAPTURE-PLAN.json",
+      "sha256": "f698c277c64dde00be39e210c5a4d80af37fc5ae150a20d3ccd239c0a79782f9"
+    },
+    {
+      "bytes": 5148,
+      "file": "CHECK.py",
+      "sha256": "785b5ac26e5a0d05751d4671d032185fd8d61b36d83728533bc9bd4e0e7e9576"
+    },
+    {
+      "bytes": 2259,
+      "file": "EVIDENCE.json",
+      "sha256": "79efc4da3383c9d956b168126f23dd912b173653c8696f70a9416cf232ad6eb5"
+    },
+    {
+      "bytes": 2118,
+      "file": "REPORT.md",
+      "sha256": "15145578f0706b3a80ff3e75d33c2742d80e42cbc13ef79d9b181a8c7f763382"
+    },
+    {
+      "bytes": 1504,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "532a1cec38f9b40e2a3b1b467216ecea161722967dcbe21f1ba525917654f26d"
+    },
+    {
+      "bytes": 1376,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "dccec87a20156ce70b4bd46fb280dd92fd7df9bc4c8bda5acdc53aa243fe66b1"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F13C-READER-METADATA-AND-SETUP-POINTER-LIFETIME-V2",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "164409eeda49b71e52a9800feaa25c91aae0f45580f258c7804e5533c1de9d9",
+  "status": "SCHEMA_METADATA_CALLBACKS_OBSERVED; R138_SELECTED_READER_UNBOUND; E_SETUP_TRANSIENT_ALIAS_AND_FINAL_COPY_BOUND"
+}

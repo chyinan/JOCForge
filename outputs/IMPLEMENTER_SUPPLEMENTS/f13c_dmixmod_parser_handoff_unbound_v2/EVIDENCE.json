@@ -1,0 +1,70 @@
+{
+  "package_id": "f13c_dmixmod_parser_handoff_unbound_v2",
+  "status": "HASH_BOUND_NATIVE_PARSER_FIELDS_AND_GENERIC_HANDOFF_OBSERVED; PREFERRED_TO_DMXMOD_AND_FINAL_F13C_CONSUMER_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Hash-bound Ghidra static parser field separation and post-parse generic handoff. No DME preferred to native enum conversion, absent-field default, or final F13C writer/consumer is established.",
+  "source": {
+    "incoming_package_id": "F13C native consumer addendum v2",
+    "manifest_sha256": "e20ea874a7f93aa2689093db38f8f247ef6ba43717b212d49fa43214f5bb77c0",
+    "addendum_sha256": "f85a79e9cccebfb335fa2be0953f9953f1f023d03fcbc10e4d75adae234e7c31",
+    "ghidra_json_sha256": "df5f23fec0e5a62ae8e3cbbca8216e1c95d1fe41b391297185508d4b1d38e22b",
+    "parent_wash_manifest_sha256": "39b399c1e518904d2ea8ee7f07fd9989ad8704afaff5c2cc6a64bb2a8825c1c2",
+    "parent_report_sha256": "b62f3ceb8175fb7f21b7e4f186c5e168707b0545a6cc1836a3058e4b4a7dfbc4"
+  },
+  "native_image": {
+    "ghidra_project_recorded_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "wash_current_installed_exe_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "hash_match": true,
+    "basis": "Ghidra program metadata plus Wash-side full-file SHA-256; no path or executable bytes included."
+  },
+  "parser_fields": [
+    {
+      "key": "lorocmixlev",
+      "internal_slot": "0x0f",
+      "kind": "mix-level"
+    },
+    {
+      "key": "lorosurmixlev",
+      "internal_slot": "0x10",
+      "kind": "mix-level"
+    },
+    {
+      "key": "dmixmod",
+      "internal_slot": "0x11",
+      "kind": "enum"
+    },
+    {
+      "key": "ltrtcmixlev",
+      "internal_slot": "0x12",
+      "kind": "mix-level"
+    },
+    {
+      "key": "ltrtsurmixlev",
+      "internal_slot": "0x13",
+      "kind": "mix-level"
+    }
+  ],
+  "post_parse_path": {
+    "branch": "configuration parse status equals zero",
+    "callee_role": "generic configuration handoff",
+    "targeted_handoff_field_specific_reads": "NOT_FOUND"
+  },
+  "optional_field_behavior": {
+    "presence_flag_parameter_offset": "+0x20",
+    "absent_behavior": "skip conversion and cleanup",
+    "native_value_after_absence": "UNBOUND"
+  },
+  "unbound": [
+    "DME preferred_downmix_mode to native dmixmod conversion",
+    "Native default after preferred/dmixmod is omitted",
+    "Final F13C writer/consumer branch",
+    "Lo/Ro versus Lt/Rt branch at output"
+  ],
+  "execution": {
+    "encoder_launched": false,
+    "pcm_read": false,
+    "payload_read": false,
+    "private_key_or_license_contents_read": false,
+    "dynamic_observation": "NOT_RUN"
+  }
+}

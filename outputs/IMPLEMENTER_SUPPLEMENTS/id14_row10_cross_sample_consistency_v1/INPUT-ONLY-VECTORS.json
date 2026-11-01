@@ -1,0 +1,37 @@
+{
+  "contract": "Two observed input cases. No predicted output is supplied.",
+  "vectors": [
+    {
+      "id": "human_cat_row10",
+      "input": {
+        "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+        "job_sha256": "83240654df650a6fbe47aba8480045b0c38d86d696265aa06b20b6534269e842",
+        "row_count": 38,
+        "row_index": 10,
+        "byte_plus3": "0xBA",
+        "u16_plus4": "0x0000"
+      },
+      "observed": {
+        "normalized_u16": "0x800A",
+        "bit15": true
+      },
+      "expected_output": "NOT_SUPPLIED"
+    },
+    {
+      "id": "my_jealousy_row10",
+      "input": {
+        "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+        "job_sha256": "83240654df650a6fbe47aba8480045b0c38d86d696265aa06b20b6534269e842",
+        "row_count": 36,
+        "row_index": 10,
+        "byte_plus3": "0xBA",
+        "u16_plus4": "0x0000"
+      },
+      "observed": {
+        "normalized_u16": "0x800A",
+        "bit15": true
+      },
+      "expected_output": "NOT_SUPPLIED"
+    }
+  ]
+}

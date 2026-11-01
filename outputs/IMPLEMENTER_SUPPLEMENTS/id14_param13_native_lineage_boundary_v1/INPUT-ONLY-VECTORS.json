@@ -1,0 +1,20 @@
+{
+  "schema": "washed-id14-param13-model-vector.v1",
+  "model_selected_profile": {
+    "object_count": 15,
+    "complexity_model_value": 16,
+    "carrier_block": 2
+  },
+  "native_controlled_count_cases": [
+    {
+      "count": 1,
+      "BSI_U8": 1
+    },
+    {
+      "count": 16,
+      "BSI_U8": 16
+    }
+  ],
+  "native_same_generation_join": "UNBOUND",
+  "note": "Controlled cases are prior native observations without ID14 storage; they do not bind the natural ID14 object-count producer."
+}

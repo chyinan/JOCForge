@@ -1,0 +1,21 @@
+{
+  "package_id": "id14_row10_cross_sample_consistency_v1",
+  "closed": [
+    "Two distinct authorized input hashes show the same row10 raw +3/+4 values in their respective row tables.",
+    "Both runs normalize row10 to 0x800A and take the consumer bit15 branch."
+  ],
+  "open": [
+    "Semantic name and type of raw row members.",
+    "Typed assignment from ADM/EMDF source field to row +3/+4.",
+    "Whether the two same values arise from the same semantic source field or generation.",
+    "General normalization rule beyond the two captured rows.",
+    "U6 writer and bitstream emission."
+  ],
+  "status": {
+    "semantic_identity": "UNBOUND",
+    "typed_source_assignment": "UNBOUND",
+    "generation_join": "UNBOUND/NO",
+    "bitstream": "NOT_RUN"
+  },
+  "guidance": "Equal values across two inputs are corroboration of this observed row case only; do not infer shared ownership, field identity, or a universal transform."
+}

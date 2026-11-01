@@ -1,0 +1,95 @@
+{
+  "schema": "washed-f05-f13-diagnostic-observability-review.v1",
+  "package_id": "f05_f13_diagnostic_observability_review_v1",
+  "status": "RUST_COMPARE_ERROR_HAS_NO_VALUES; RUN03_VALUES_UNBOUND; RUNNER_REVIEW_SNAPSHOT_CHANGED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Read-only source review of the F05/F13 error and runner diagnostics at the sealed snapshot; recommends a structured non-payload receipt. Attempt-03 runtime values remain unbound and runner-specific claims are historical because its script changed.",
+  "runtime_parent": {
+    "package_id": "sample6_attempt03_terminal_status_v1",
+    "manifest_sha256": "d067b7173b6a0aca7f650778f216e0d0c6275d62cd3c3d8c2f377b9099c1354f",
+    "status": "EXIT_2; EXPECTED/ACTUAL VALUES UNBOUND"
+  },
+  "rust_error": {
+    "variant": "SelectedJocStateError::ProducerTransactionMismatch",
+    "kind": "unit_variant_no_fields",
+    "comparison_file": "crates/jocforge-domain/src/joc/programme_state.rs",
+    "comparison_line": 275,
+    "error_values_serialized": false,
+    "cli_output": "stage/error formatting only; no structured compare-point fields in reviewed snapshot"
+  },
+  "current_rehashed_sources": [
+    {
+      "path": "crates/jocforge-domain/src/joc/programme_state.rs",
+      "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
+      "sha256": "7f3894b196b6b74764a88c3b9822a3d330326485eb5e8ad5e3eee878db6b157b",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": "crates/jocforge-cli/src/source_execution.rs",
+      "sha256": "0da131ee6bbf86b8b452c61e246388b81ef35e93c1cc638a2ed814a17fc0e878",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": "crates/jocforge-cli/src/encode_request.rs",
+      "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": "crates/jocforge-cli/src/main.rs",
+      "sha256": "b5437c21a3cf038d578464553c4e13301c1c8ff5fe9f08f4a72138b93a566210",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": ".test-tmp/run_authorized_sample6_encode.ps1",
+      "sha256": "ee496730b8296885f6e0722fd3fd01f8188d78116554b90f839f0724f3ebc9e9",
+      "status": "CHANGED_SINCE_REVIEW",
+      "current_sha256": "53bc5e8d3b788826a3398e0252ea03190fee7630c6a21ee971bf709123a080da"
+    }
+  ],
+  "prior_runner_review": {
+    "reviewed_sha256": "ee496730b8296885f6e0722fd3fd01f8188d78116554b90f839f0724f3ebc9e9",
+    "reviewed_finding": "start marker/exit code and stream redirection only; no prelaunch exe/input SHA receipt",
+    "current_runner_sha256": "53bc5e8d3b788826a3398e0252ea03190fee7630c6a21ee971bf709123a080da",
+    "current_runner_claim": "NOT_EVALUATED_BY_THIS_PACKAGE"
+  },
+  "minimal_diagnostic_fields": [
+    "run_id",
+    "input_sha256",
+    "executable_sha256",
+    "stage",
+    "error_kind",
+    "owner_id",
+    "expected_producer_transaction_id",
+    "actual_producer_transaction_id_optional",
+    "parent_callback_transaction_id",
+    "callback_index",
+    "callback_phase",
+    "source_index_optional",
+    "dispatch_optional",
+    "owner_before_generation",
+    "proposed_owner_after_generation",
+    "producer_generation_optional",
+    "writer_generation_optional"
+  ],
+  "source_build_state": {
+    "repository_commit": "UNBOUND",
+    "git_worktree_status": "UNBOUND",
+    "attempt03_executable_sha256": "a080ea176f8e418898973ac87c1e1aad47c2ed9c07435d2093f8f2598299fe6e"
+  },
+  "open_edges": {
+    "attempt03_compare_values": "UNBOUND",
+    "attempt03_error_cause": "UNBOUND",
+    "attempt04_runtime_diagnostic": "NOT_EVALUATED"
+  },
+  "exclusions": {
+    "implementation_files_copied": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_read": false,
+    "encoder_run_by_audit": false,
+    "absolute_paths": false
+  }
+}

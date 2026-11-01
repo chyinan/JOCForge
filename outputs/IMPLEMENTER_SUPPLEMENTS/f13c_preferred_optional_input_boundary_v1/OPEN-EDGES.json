@@ -1,0 +1,26 @@
+{
+  "package_id": "f13c_preferred_optional_input_boundary_v1",
+  "closed_within_scope": [
+    "No target downmix/preferred terms were found in the axml chunks of the seven authorized inputs; Wash independently rescanned the axml chunks and skipped data.",
+    "The DME online-media UI control is inactive initially and omitted from the request until activated.",
+    "An explicit UI choice maps to the documented CLI strings loro, ltrt, or not_indicated.",
+    "Native configuration parser treats dmixmod separately from four mix-level fields and skips parsing an absent field, per the research observation."
+  ],
+  "open": [
+    "Exact DME app.asar identity used for the historical UI extraction",
+    "Exact native executable identity used for the historical Ghidra import",
+    "DME preferred_downmix_mode to native dmixmod conversion",
+    "Native default after the field is omitted",
+    "Final F13C writer/consumer branch",
+    "Whether this option is needed for the selected ADM-to-5.1-JOC output"
+  ],
+  "status": {
+    "adm_axml_field": "ABSENT_IN_SEVEN_SCANNED_INPUTS",
+    "user_input_required_by_dme_profile": "NO",
+    "native_dmixmod_default": "UNBOUND",
+    "adapter_edge": "UNBOUND",
+    "F13C_consumer": "UNBOUND",
+    "dynamic": "NOT_RUN"
+  },
+  "guidance": "Do not add a required user prompt or infer a native default from the UI display value. Keep the control optional and inactive unless the task explicitly selects it; do not claim this maps to a particular native bitstream value."
+}

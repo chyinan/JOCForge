@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_runtime_packet_pointer_mapping_v1",
+  "scope": "Run-scoped correction to outer param3/inner packet path and runtime code13/code14/count inputs; host Priv identity, model EMDF generation, and U6 emission remain open.",
+  "status": "OUTER_DESCRIPTOR_TO_INNER_PACKET_RUNTIME_BOUND; DATA_RATE/COUNT/U6_INPUT_CROSSCHECKED; U6_WRITE_NOT_RUN; HOST_PRIV_OWNER_AND_ROW_SEMANTICS_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1520,
+      "sha256": "dc94c1bd60ab86fc66096654ab3badbcc1231bbc9e244e956f1a3419a0fa4d83"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 4186,
+      "sha256": "4996a69939b690e61ab1aeb4ce374c5f0070f958b4aac8cb8040b7a7c91578e6"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 710,
+      "sha256": "d1881b613a0ca4fc793c933cf40d963a5deb9532e94c509849d8dfcbaf8d8788"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 884,
+      "sha256": "652f16b93027a1b294bed9d8af9c84a5191f21d2cd0275a060fd687625f7e6a5"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 707,
+      "sha256": "52245f9f521e383029dc75b6d7fec927a015dd6336dcea26c5a247a75549ddde"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2698,
+      "sha256": "f2b75d1d31999fe6072019817ba3aa2d965dffab766914b6057a8a9fe5d0d00a"
+    }
+  ]
+}

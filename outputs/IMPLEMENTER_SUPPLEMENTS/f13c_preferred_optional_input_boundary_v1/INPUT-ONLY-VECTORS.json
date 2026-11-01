@@ -1,0 +1,41 @@
+{
+  "schema": "washed-f13c-preferred-input-only.v1",
+  "contract": "Configuration and metadata vectors only. No native bitstream value or output bytes are predicted.",
+  "vectors": [
+    {
+      "id": "authorized_adm_axml_scan",
+      "input": {
+        "sample_index": 0,
+        "axml_target_terms": [
+          "downmix",
+          "LoRo",
+          "LtRt",
+          "preferred"
+        ]
+      },
+      "observed": {
+        "matches": 0
+      },
+      "status": "WASH_RESCANNED_METADATA"
+    },
+    {
+      "id": "dme_default_profile",
+      "input": {
+        "profile": "DDP online media",
+        "preferred_control_active": false,
+        "display_value": "Stereo"
+      },
+      "observed_request_parameter": "OMITTED",
+      "status": "UI_SOURCE_REPORTED; SOURCE_HASH_NOT_BOUND"
+    },
+    {
+      "id": "explicit_ui_selection",
+      "input": {
+        "active_control": "PreferredStereoDownmix",
+        "choice": "Surround"
+      },
+      "observed_request_value": "ltrt",
+      "status": "UI_SOURCE_REPORTED; NATIVE_ADAPTER_UNBOUND"
+    }
+  ]
+}

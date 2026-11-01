@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f13c_generic_config_result_handoff_v3",
+  "scope": "Hash-bound Ghidra dmixmod parser and generic configuration result handoff; field-specific F13C writer/consumer remains UNBOUND.",
+  "status": "DMIXMOD_PARSER_AND_GENERIC_HANDOFF_STATIC_BOUND; FINAL_F13C_CONSUMER_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2584,
+      "sha256": "091672a013f207cddf38e8e90e3d25079df8a00786c31a0bba2a27c4cbcc2545"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 610,
+      "sha256": "e6bbd2312132945a8268b76fc451c3c28d83a597c554defbbeacf3d10db6c24d"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1068,
+      "sha256": "b42dc9c93f25cf695c30b0028fb3a99cd8d9a46fc703a5e3da7bea66d4024a1b"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1034,
+      "sha256": "b3c0676542e2879aaa27b278ffad6103b3863e76e5b317dd59fdfabfb0cfb04a"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 886,
+      "sha256": "48b688765e8869234a5cf5917d7bb8802ce0951207bfe5acb70eaf1f4390e05f"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 243,
+      "sha256": "76d7879c3b5161fc3ac2921b3a94719edb742a21de22ac3dcc96b2cdfb5de5e2"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1847,
+      "sha256": "6af16900847ed422d11eb9e76709e27acdf462dbb6851c5d2b4577aa0d38c616"
+    }
+  ]
+}

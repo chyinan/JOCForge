@@ -1,0 +1,27 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "incoming_package": {
+    "package_id": "ID14-SEMANTIC-CARRIER-CANDIDATE-BOUNDARY-V1",
+    "manifest_sha256": "a49fbf51ec8f8cf572c5b1eabb1724ee1b348d2d0c1cdd7db48f26acef396d38",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "parent_packages": [
+    {"package_id": "id14-row-normalizer-static-formula-followup-v1", "manifest_sha256": "4f4df835bb762faaf1c4d46361dc32c06c58a87149e64a0f4b56105a70fc1159"},
+    {"package_id": "id14-row-semantic-field-boundary-followup-v1", "manifest_sha256": "3d5df8de998d0de67405ecc36b1b31b4c9a7bddc95b4b6bd185ab04eae67a3f4"},
+    {"package_id": "id14-row-cross-sample-contrast-followup-v1", "manifest_sha256": "dd60231ca4e14737cde054b8f5bdc7173d7a0a3a958c49f0580433d80c59dd23"},
+    {"package_id": "adm-opener-channel-table-producer-edge", "manifest_sha256": "ba389271c6ee81599ba2b2136e5eb5ae48e445ee7cf54984cc18fd0c77b961a8"},
+    {"package_id": "F13C-ADM-SEMANTIC-TO-SOURCE-DESCRIPTOR-BINDING-V1", "manifest_sha256": "addaf3bcf7866351380e7c9bd9de40457ae6b5d6e1014462cf232233ff23ee2e"}
+  ],
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"name": "dee_audio_filter_convert_atmos_mezz.dll", "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"}
+  ],
+  "read_scope": {
+    "new_direct_metadata_read": "single CHNA record ordinal 10, 96 bytes",
+    "audio_data_bytes": 0,
+    "axml_read_in_this_addendum": false,
+    "pcm_payload_bitstream_and_keys": "NOT_READ"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "payload11_group_presence_branch_candidates_v1",
+  "scope": "Static branch candidates and one AU0 reference observation; producer identity and universality remain unbound.",
+  "status": "ALTERNATE_BRANCHES_FOUND_RUN145_PRODUCER_JOIN_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3146,
+      "sha256": "63eeef8cf68ff3716a8b4ee421fd24555098e4fc1e5817c3238576d0d2c93428"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1111,
+      "sha256": "20af9c7d43b3d86231d36cc9a6439e089431a3976e59c279cde186b82d5aa9d0"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1965,
+      "sha256": "cd70296e32a9e507053e51d7a677bf6c6ced96b9ce44f0106e9cb5ace4baab17"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "package_id": "id14_row_to_normalized_marker_consumer_v1",
+  "status": "ROW10_SOURCE_COPY_TO_NORMALIZED_CONSUMER_CHAIN_OBSERVED; SEMANTIC_NAME_AND_NATIVE_ROW_GENERATION_UNBOUND; U6_WRITER_NOT_EXECUTED; BITSTREAM_NOT_RUN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One observed row element in the ID14 packet path, copied to state rows, normalized to U16, and read by the marker consumer. No row semantic name, general transform rule, source-model generation join, or output bitstream is claimed.",
+  "source": {
+    "incoming_package_id": "ID14-ROW-FIELD-CONSUMER-LINEAGE-FOLLOWUP-V1",
+    "incoming_manifest_sha256": "b6b56cfdbcf29a870496d87f04dc34b95d8a7a59db66f801b41cefb6e2dfec7b",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "parent_manifest_sha256": "531335965977e8eef22af9f27ff803b40138db2ae0191bace9723df7ca9d38b8"
+  },
+  "run": {
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "job_sha256": "83240654df650a6fbe47aba8480045b0c38d86d696265aa06b20b6534269e842",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "data_rate_kbps": 1024,
+    "same_thread_run": true,
+    "thread_id": 25848,
+    "credential_named_fields": 0,
+    "private_license_contents_read": false
+  },
+  "row_path": {
+    "packet_record_count": 38,
+    "copied_row_count": 38,
+    "row_stride_bytes": 6,
+    "copy_preserves_selected_row_bytes": true,
+    "normalizer_input_is_copied_row_buffer": true,
+    "normalizer_output_type": "U16_ARRAY",
+    "normalizer_count": 38,
+    "consumer_uses_same_normalized_array": true,
+    "consumer_count": 38
+  },
+  "one_observed_row": {
+    "index": 10,
+    "raw_byte_plus3": "0xBA",
+    "copied_byte_plus3": "0xBA",
+    "raw_u16_plus4": "0x0000",
+    "copied_u16_plus4": "0x0000",
+    "normalized_u16_consumed": "0x800A",
+    "bit15_test_taken": true,
+    "semantic_name": "UNBOUND",
+    "causal_claim_about_u16_plus4": "NONE"
+  },
+  "count_context_only": {
+    "marker_count": 1,
+    "base": 15,
+    "code13": 16,
+    "code14": 1,
+    "pending_u6_if_writer_executes": 14,
+    "writer_instruction_executed": false
+  },
+  "limits": {
+    "full_row_table_read": false,
+    "temporary_file_contents": "NOT_READ_AND_DELETED",
+    "pcm_or_ec3_bytes_read": false,
+    "bitstream_emitted_or_parsed": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "model_emdf_generation_join": "UNBOUND/NO"
+  }
+}

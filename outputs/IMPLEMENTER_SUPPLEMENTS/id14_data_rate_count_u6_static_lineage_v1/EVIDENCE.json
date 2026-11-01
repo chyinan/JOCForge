@@ -1,0 +1,183 @@
+{
+  "schema": "washed-id14-data-rate-count-u6-static-lineage.v1",
+  "package_id": "id14_data_rate_count_u6_static_lineage_v1",
+  "status": "PLUGIN_DATA_RATE_SELECTOR_TO_NORMAL_ID14_U6_STATICALLY_BOUND; HOST_TASK_AND_INPUT_GENERATION_UNBOUND; MODEL_EMDF_JOIN_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Static plugin data_rate StringListType -> enum -> normal code13/code14 values -> ID14 count-minus-one U6 path. No dynamic host task, actual ADM/OAMD generation, or frozen-model EMDF identity is established.",
+  "target_images": [
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464,
+      "current_file_hash": "MATCH"
+    },
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728,
+      "current_file_hash": "MATCH"
+    }
+  ],
+  "tool": {
+    "name": "Ghidra 12.2 PUBLIC",
+    "mode": "HEADLESS_NOANALYSIS_READONLY",
+    "script_sha256": "dbf7aa768a00d7b1bc77432c5296e70f4b9afd4f5cdc91f2eb0087ffa2d6542d",
+    "raw_report_sha256": "ba62d18e07bfa7d6819855421681d6ae6db4327c124ee5ae6ef71e43e5d1089f",
+    "raw_decompilation_copied": false
+  },
+  "plugin_selector": {
+    "owner": "dee::proc::Priv",
+    "constructor": "FUN_180135D40",
+    "settings_schema": "FUN_180136220",
+    "setting_name": "data_rate",
+    "setting_type": "xs:list:string",
+    "priv_field_offset": "0x350",
+    "value_reader": "FUN_1801535B0 -> FUN_180153090",
+    "selection": "per-item StringListType element",
+    "string_to_enum_initializer": "FUN_180001740",
+    "rate_map": [
+      [
+        "384",
+        0
+      ],
+      [
+        "448",
+        1
+      ],
+      [
+        "576",
+        2
+      ],
+      [
+        "640",
+        3
+      ],
+      [
+        "768",
+        4
+      ],
+      [
+        "1024",
+        5
+      ],
+      [
+        "1152",
+        6
+      ],
+      [
+        "1280",
+        7
+      ],
+      [
+        "1408",
+        8
+      ],
+      [
+        "1512",
+        9
+      ],
+      [
+        "1536",
+        10
+      ],
+      [
+        "1664",
+        11
+      ]
+    ],
+    "selected_enum_to_query_slot": "FUN_180178DC0 maps first data_rate scalar to query slot 10 and accepts enum 0..5",
+    "mapping_1024": {
+      "enum": 5,
+      "accepted": true,
+      "selector_branch": "nonzero"
+    },
+    "host_task_value_to_selected_priv_instance": "UNBOUND"
+  },
+  "input_packet": {
+    "function": "FUN_180179AB0",
+    "normal_branch": {
+      "record_count_offset": "0x0a",
+      "record_count_width_bits": 16,
+      "row_pointer_offset": "0x10",
+      "row_stride_bytes": 6,
+      "row_member_widths_bits": [
+        32,
+        16
+      ],
+      "row_semantic_names": "UNBOUND"
+    },
+    "plugin_config_consumer": "FUN_180178DC0"
+  },
+  "normal_id14_path": {
+    "data_rate_consumer": "FUN_1801A7D50",
+    "record_chain": [
+      "FUN_1801AC670",
+      "FUN_1801AB210",
+      "FUN_1801AB300",
+      "FUN_1801AC130"
+    ],
+    "marker_rule": "U16 word & 0x8000 != 0",
+    "marker_count_cap": 118,
+    "code13": "base + marker_count",
+    "code14": "marker_count",
+    "base_by_selector": {
+      "enum0": 11,
+      "enum1_through5": 15
+    },
+    "property_list_builder": "FUN_1801AB520",
+    "property_codes": {
+      "code13": "param4+param5",
+      "code14": "param5"
+    },
+    "typed_root_writer": {
+      "function": "FUN_1801C3150",
+      "config_base": "root+0xc100",
+      "code13_offset": "root+0xc170",
+      "code14_offset": "root+0xc174",
+      "width_bits": 32
+    },
+    "count_difference": "code13 - code14 = base",
+    "count_acceptance_range": "1..15",
+    "id14_count_state_copy": "FUN_1801F7840 -> nested JOC state +0x08",
+    "id14_u6_writer": "FUN_180235820 serializes count-1 as U6",
+    "relation_scope": "static same plugin open-config/worker path; actual host task/input generation not joined"
+  },
+  "special_mode": {
+    "separate_from_normal": true,
+    "code13": "adjusted source count",
+    "code14": 1,
+    "count": "adjusted count - 1",
+    "adjustment": "global flag and format_kind==2 adds 2"
+  },
+  "frozen_model_boundary": {
+    "parser_source": "codec_core.rs",
+    "per_frame_input": "complete listed EMDF file",
+    "parser_result": "U8(object_count+1) for selected profile",
+    "model_selected_profile": {
+      "payload_ids": [
+        11,
+        14
+      ],
+      "downmix": 3,
+      "channels": 5,
+      "joc_objects": 15,
+      "oamd_slots": 16,
+      "model_complexity": 16
+    },
+    "relationship_to_native_param3_and_priv": "UNBOUND; no same-file/job token",
+    "equal_or_nearby_values_are_not_identity": true
+  },
+  "open_edges": {
+    "host_task_to_priv_data_rate": "UNBOUND",
+    "host_task_packet_to_native_param3": "UNBOUND",
+    "packet_row_semantic_names": "UNBOUND",
+    "same_generation_to_frozen_model_emdf": "UNBOUND",
+    "dynamic_capture": "NOT_RUN"
+  },
+  "exclusions": {
+    "private_key_or_license_contents_read": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "raw_decompilation_copied": false,
+    "absolute_paths": false
+  }
+}

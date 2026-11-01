@@ -1,0 +1,6 @@
+{
+  "package_integrity": "PASS_PACKAGE_INTEGRITY_ONLY",
+  "normal_python": "PASS",
+  "optimized_python": "PASS",
+  "scope": "Hashes and single-run row-member boundary only; not an output or codec conformance test."
+}

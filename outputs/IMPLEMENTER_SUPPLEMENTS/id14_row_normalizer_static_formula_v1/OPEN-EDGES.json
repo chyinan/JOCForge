@@ -1,0 +1,15 @@
+{
+  "closed": [
+    "Signed byte at row +2 is classifier input.",
+    "Byte +3 is not read by the row-normalizer loop.",
+    "U16 +4 drives ordinary-row run grouping.",
+    "Type1/type2 normalized word, count boundary and padding formulas are statically formulated."
+  ],
+  "open": [
+    "Semantic ADM/EMDF name and producer for row +2.",
+    "Input sample row+2 values not captured in the two row10 runs.",
+    "Typed EMDF-to-native packet generation link.",
+    "U6 writer and bitstream output."
+  ],
+  "guidance": "Do not infer the missing row+2 value from normalized 0x800A, and do not reuse the prior +3-classifier claim."
+}

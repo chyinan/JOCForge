@@ -1,0 +1,23 @@
+{
+  "contract": "Configuration-presence cases only. No native or bitstream output is predicted.",
+  "vectors": [
+    {
+      "id": "dmixmod_present_symbolic",
+      "input": {
+        "dmixmod": "SYMBOLIC_ENUM"
+      },
+      "observed_parser_field": "parsed through separate enum converter",
+      "expected_output": "NOT_SUPPLIED",
+      "status": "STATIC"
+    },
+    {
+      "id": "dmixmod_absent",
+      "input": {
+        "dmixmod": "ABSENT"
+      },
+      "observed_parser_behavior": "skip conversion",
+      "expected_output": "NOT_SUPPLIED",
+      "status": "STATIC"
+    }
+  ]
+}

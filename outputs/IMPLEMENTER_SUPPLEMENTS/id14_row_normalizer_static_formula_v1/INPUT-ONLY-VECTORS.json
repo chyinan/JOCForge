@@ -1,0 +1,2089 @@
+{
+  "schema": "id14-row-normalizer-input-only-vectors.v1",
+  "vector_kind": "synthetic six-byte row fields only",
+  "expected_output_policy": "only formulas mechanically derived from the Ghidra static model are asserted; all other outputs are NOT_SUPPLIED",
+  "formula_ref": "EVIDENCE.json#/ghidra/formula",
+  "vectors": [
+    {
+      "id": "tag_-1_one_hot",
+      "branch": "type2_marker_index_zero",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x8000"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_0_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0101"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_1_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 1,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0201"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_2_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 2,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0301"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_3_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 3,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0401"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_4_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 4,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0b01"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_5_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 5,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0c01"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_6_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 6,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0501"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_7_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 7,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0601"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_8_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 8,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0701"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_9_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 9,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0801"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_12_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 12,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0901"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "tag_13_one_hot",
+      "branch": "type1_classifier_one_hot",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 13,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0a01"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "invalid_tag_-128",
+      "branch": "classifier_error",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": -128,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_7",
+      "expected_output": "NOT_SUPPLIED",
+      "expectation_basis": "NOT_SUPPLIED"
+    },
+    {
+      "id": "invalid_tag_-2",
+      "branch": "classifier_error",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": -2,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_7",
+      "expected_output": "NOT_SUPPLIED",
+      "expectation_basis": "NOT_SUPPLIED"
+    },
+    {
+      "id": "invalid_tag_10",
+      "branch": "classifier_error",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 10,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_7",
+      "expected_output": "NOT_SUPPLIED",
+      "expectation_basis": "NOT_SUPPLIED"
+    },
+    {
+      "id": "invalid_tag_11",
+      "branch": "classifier_error",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 11,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_7",
+      "expected_output": "NOT_SUPPLIED",
+      "expectation_basis": "NOT_SUPPLIED"
+    },
+    {
+      "id": "invalid_tag_14",
+      "branch": "classifier_error",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 14,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_7",
+      "expected_output": "NOT_SUPPLIED",
+      "expectation_basis": "NOT_SUPPLIED"
+    },
+    {
+      "id": "invalid_tag_127",
+      "branch": "classifier_error",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 127,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_7",
+      "expected_output": "NOT_SUPPLIED",
+      "expectation_basis": "NOT_SUPPLIED"
+    },
+    {
+      "id": "byte_plus3_one_hot_00",
+      "branch": "row_plus3_not_read_by_normalizer",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0101"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "byte_plus3_one_hot_80",
+      "branch": "row_plus3_not_read_by_normalizer",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 128,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0101"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "byte_plus3_one_hot_ff",
+      "branch": "row_plus3_not_read_by_normalizer",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 255,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0101"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "normalizer_run_counter_equal_then_change",
+      "branch": "type1_u16_plus4_run_counter",
+      "input_fields": {
+        "row_count": 5,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 4369
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 4369
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 8738
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 8738
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 13107
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0101",
+        "0x0101",
+        "0x0102",
+        "0x0102",
+        "0x0103"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "type2_marker_at_row_index_10",
+      "branch": "type2_uses_current_row_index_and_ignores_u16_plus4",
+      "input_fields": {
+        "row_count": 11,
+        "rows": [
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 7
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 14
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 21
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 28
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 35
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 42
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 49
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 56
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 63
+          },
+          {
+            "byte_plus2_signed": -1,
+            "byte_plus3": 0,
+            "u16_plus4": 70
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x8000",
+        "0x8001",
+        "0x8002",
+        "0x8003",
+        "0x8004",
+        "0x8005",
+        "0x8006",
+        "0x8007",
+        "0x8008",
+        "0x8009",
+        "0x800a"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "row_count_minimum",
+      "branch": "row_count_boundary",
+      "input_fields": {
+        "row_count": 1,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0101"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "row_count_zero",
+      "branch": "row_count_boundary",
+      "input_fields": {
+        "row_count": 0,
+        "rows": [],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_5",
+      "expected_output": "NOT_SUPPLIED",
+      "expectation_basis": "NOT_SUPPLIED"
+    },
+    {
+      "id": "row_count_maximum",
+      "branch": "row_count_boundary",
+      "input_fields": {
+        "row_count": 128,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101",
+        "0x0101"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    },
+    {
+      "id": "row_count_over_maximum",
+      "branch": "row_count_boundary",
+      "input_fields": {
+        "row_count": 129,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 0
+          }
+        ],
+        "prior_state_count": null,
+        "param1_state_is_null": true
+      },
+      "expected_status": "RETURN_5",
+      "expected_output": "NOT_SUPPLIED",
+      "expectation_basis": "NOT_SUPPLIED"
+    },
+    {
+      "id": "initialized_state_pads_shorter_row_list",
+      "branch": "stateful_marker_padding",
+      "input_fields": {
+        "row_count": 2,
+        "rows": [
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 4369
+          },
+          {
+            "byte_plus2_signed": 0,
+            "byte_plus3": 0,
+            "u16_plus4": 8738
+          }
+        ],
+        "prior_state_count": 4,
+        "param1_state_is_null": false
+      },
+      "expected_status": "RETURN_0",
+      "expected_output": [
+        "0x0101",
+        "0x0102",
+        "0x8002",
+        "0x8003"
+      ],
+      "expectation_basis": "GHIDRA_STATIC_FORMULA"
+    }
+  ]
+}

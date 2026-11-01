@@ -1,0 +1,22 @@
+{
+  "schema": "washed-id14-count-root-population-open-edges.v1",
+  "package_id": "id14_count_root_population_v1",
+  "closed": [
+    "typed code13/code14 parser destinations and widths",
+    "normal-path property value formulas",
+    "normal-path code13 minus code14 count seed",
+    "static query-buffer capacity and cleared-cell containment"
+  ],
+  "open": [
+    "host task input to native zero/nonzero selector mapping",
+    "same-run parent and ADM/OAMD generation join",
+    "special-mode trigger semantics",
+    "relationship between native count seed and JOC body object_count"
+  ],
+  "status": {
+    "dynamic_capture": "NOT_RUN",
+    "source_generation": "UNBOUND",
+    "host_selector": "UNBOUND"
+  },
+  "guidance": "Do not promote numeric coincidence or an unobserved host mapping into a user-facing input or general rule."
+}

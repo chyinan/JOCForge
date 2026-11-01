@@ -1,0 +1,15 @@
+{
+  "schema": "washed-open-edges.v1",
+  "edges": [
+    {
+      "from": "native input root dwords +0x0c170/+0x0c174",
+      "to": "ID14 U6 count-minus-one state",
+      "status": "ROOT_WRITER_UNBOUND"
+    },
+    {
+      "from": "ID14 object count",
+      "to": "parameter13 additional-BSI U8",
+      "status": "SAME_PARENT_GENERATION_UNBOUND"
+    }
+  ]
+}

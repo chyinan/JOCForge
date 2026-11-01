@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "READER-METADATA-CAPTURE-FOLLOWUP-V9",
+    "manifest_sha256": "3334a13a18c5ae21c8ea0121a4aaf5f7154b64b205205b7ab847eb23f2620d34",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "source_hash_count": 29
+  },
+  "parent_wash_packages": [
+    {"package_id": "F13C-ADM-SETUP-TABLE-COPY-LINEAGE-ADDENDUM-V1", "manifest_sha256": "ef917c432cd40d8ef4fa335329edace747da282dac0ae669310dcd57f9cd1831"},
+    {"package_id": "F13C-SELECTED-ADM-READER-DDP-BOUNDARY-STATUS-V1", "manifest_sha256": "32c29510750a98e48db57b482428ef9ace4d5cb191412c7d6b5bfc6f50adff47"},
+    {"package_id": "DEE-LOADALL-LICENSE-PRECHECK-BOUNDARY-V1", "manifest_sha256": "6f54f872dc7ad5b11b44bd3a4e63941895657c48b9879f1033afad55c56446e5"}
+  ],
+  "target_images": {
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "current_e_converter_sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+    "dactlib_sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239",
+    "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

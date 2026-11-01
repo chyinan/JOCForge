@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "3334a13a18c5ae21c8ea0121a4aaf5f7154b64b205205b7ab847eb23f2620d34",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "events_checked": 4, "metadata_callbacks_checked": 6},
+  "independent_review": [
+    "Recomputed the incoming manifest SHA-256 and ran the package verifier normally and under Python optimization.",
+    "Confirmed schema-only invocation had no task profile or selected R138 reader; metadata callbacks were registration/schema consumers.",
+    "Kept current E-drive converter hash distinct from the older D-drive converter image.",
+    "Verified the setup branch has a temporary input-pointer assignment followed by a successful new allocation and final pointer replacement.",
+    "Preserved the R138 reader-to-DDP observation plan as NOT_RUN."
+  ],
+  "not_promoted": [
+    "schema declaration as selected R138 route",
+    "local audio.adm type-list candidate as selected host reader",
+    "transient pointer assignment as post-setup pointer identity",
+    "host-selected reader or owner generation",
+    "DDP packet join or bitstream output"
+  ]
+}

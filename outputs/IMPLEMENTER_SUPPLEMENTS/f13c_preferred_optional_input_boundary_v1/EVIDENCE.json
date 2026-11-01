@@ -1,0 +1,78 @@
+{
+  "package_id": "f13c_preferred_optional_input_boundary_v1",
+  "status": "SEVEN_ADM_AXML_TARGET_TERMS_ABSENT; DME_UI_CONTROL_OPTIONAL_AND_INACTIVE_BY_DEFAULT; EXPLICIT_UI_VALUE_MAPPING_OBSERVED; NATIVE_DMXMOD_ADAPTER_DEFAULT_AND_F13C_CONSUMER_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "ADM AXML metadata absence and optional DME UI request behavior only. No native default, final F13C output behavior, or audio algorithm rule is established.",
+  "incoming": {
+    "package_id": "F13C preferred/downmix source evidence",
+    "manifest_sha256": "e20ea874a7f93aa2689093db38f8f247ef6ba43717b212d49fa43214f5bb77c0",
+    "sha256sums_manifest_entry": "MATCH",
+    "source_binary_hashes_in_research_manifest": "NOT_COMPUTED"
+  },
+  "adm_metadata_scan": {
+    "sample_count": 7,
+    "container": "RIFF/WAVE PCM24, 48 kHz",
+    "axml_chunk_present_all": true,
+    "chna_chunk_present_all": true,
+    "data_chunk": "SEEKED_OVER; NOT_READ",
+    "target_terms": [
+      "downmix",
+      "LoRo",
+      "LtRt",
+      "preferred"
+    ],
+    "matched_elements_total": 0,
+    "pcm_read_or_decoded": false,
+    "whole_audio_hash_computed": false,
+    "axml_chunk_sha256": [
+      "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659",
+      "27318f160cdaad8f752524feb3dbd87695e4b4f5505a8fe9b9ebee436d5ecf51",
+      "bdd56e0cef8d10dc3969f0f64000639f7ab74a1b42831ef9458684db38c2c611",
+      "0d6f0999d4e86a7637e52af5132375d570d1b55038186be79a1948b995ab1d63",
+      "6d3dc5594e26234562796858cfc1ac6acc30270906c8a752894b0d37e2d60fc7",
+      "644add5af8dca305510acdd1fa7fcb81b8bedaefd6d826978442fb51d0a77d6e",
+      "cdebd3b6b75ffc28eb7ce6c0cba0f36ea4922c8c71fe166e1394a6366a767bc4"
+    ]
+  },
+  "dme_ui": {
+    "profile": "Dolby Digital Plus online media",
+    "preferred_control_active_initially": false,
+    "initial_display_value": "Stereo",
+    "request_builder_rule": "append only when control active",
+    "mix_level_controls_separate": true,
+    "mix_level_controls_active_initially": false,
+    "explicit_mapping": {
+      "Stereo": "loro",
+      "Surround": "ltrt",
+      "Not Indicated": "not_indicated"
+    },
+    "source_hash_in_original_research": "NOT_COMPUTED"
+  },
+  "native_static_observations": {
+    "field_keys": [
+      "lorocmixlev",
+      "lorosurmixlev",
+      "dmixmod",
+      "ltrtcmixlev",
+      "ltrtsurmixlev"
+    ],
+    "dmixmod_parsed_separately": true,
+    "absent_field_behavior": "skip parsing and cleanup",
+    "native_default_after_absence": "UNBOUND",
+    "dme_preferred_to_native_dmixmod_edge": "UNBOUND",
+    "F13C_writer_consumer_branch": "UNBOUND",
+    "analysis_executable_sha_in_research": "NOT_COMPUTED"
+  },
+  "current_install_hashes_observed_by_wash": {
+    "dme_app_asar_sha256": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+    "dee_native_executable_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "binding_to_historical_analysis": "NOT_ESTABLISHED"
+  },
+  "execution": {
+    "encoder_launched": false,
+    "dynamic_observation": "NOT_RUN",
+    "audio_output_created": false,
+    "pcm_read": false,
+    "private_key_or_license_contents_read": false
+  }
+}

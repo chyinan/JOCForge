@@ -1,0 +1,64 @@
+{
+  "schema": "washed-id14-query-buffer-root-boundary.v1",
+  "package_id": "id14_param13_query_buffer_owner_boundary_v1",
+  "status": "PLUGIN_SCRATCH_ROOT_BOUND_FIELD_FIRST_WRITERS_AND_SEMANTICS_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "effect": "INPUT_COUNT_LINEAGE_ONLY_NO_NEW_NUMERICAL_RULE",
+  "upstream_package": {
+    "manifest_sha256": "e3532977d0503b6581f5aa6764b0c522533b79d9668ef126dc943de3ad5a5442",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_hashes_recomputed": "ALL_MATCH"
+  },
+  "images": [
+    {
+      "name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "current_file_rehash": "MATCH"
+    },
+    {
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "current_file_rehash": "MATCH"
+    }
+  ],
+  "query_buffer_root": {
+    "construction": "plugin query builder allocates/sizes and clears a buffer, then constructs a local scratch root within it",
+    "callee_param3_index1_is_plugin_scratch_root": true,
+    "same_as_host_input_pointer": false,
+    "field_c170": {
+      "width_bits": 32,
+      "use": "U32 minuend and loop/dimension arithmetic",
+      "semantic_role": "UNBOUND",
+      "units": "UNBOUND"
+    },
+    "field_c174": {
+      "width_bits": 32,
+      "use": "U32 subtrahend and positivity gate",
+      "semantic_role": "UNBOUND",
+      "units": "UNBOUND"
+    },
+    "first_writer": "UNBOUND",
+    "bulk_zero_coverage": "NOT_PROVEN",
+    "later_bulk_or_indirect_writes": "NOT_EXCLUDED"
+  },
+  "parameter13_relation": {
+    "source": "independent property-list field",
+    "destination_config_member": "+0x70",
+    "typed_link_to_root_c170_c174": "NOT_FOUND",
+    "same_worker_static": "BOUND",
+    "same_parent_generation": "UNBOUND"
+  },
+  "capture": {
+    "status": "NOT_RUN_KEYLESS_PROFILE_NOT_DEMONSTRATED",
+    "native_run": "NOT_RUN",
+    "private_key_or_license_contents_read": false,
+    "PCM_or_payload_read": false
+  },
+  "unresolved": {
+    "query_buffer_exact_extent_vs_root_field_coverage": "UNBOUND",
+    "source_record_for_root_fields": "UNBOUND",
+    "root_field_first_writer": "UNBOUND",
+    "ID14_count_to_parameter13_same_generation": "UNBOUND"
+  }
+}

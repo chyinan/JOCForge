@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge-f13c-dmixmod-parser-result-boundary.v1",
+  "package_id": "F13C-DMIXMOD-PARSER-RESULT-BOUNDARY-V1",
+  "status": "PARSER_TO_GENERIC_RESULT_HANDOFF_BOUND; NATIVE_DEFAULT_AND_AUDIO_CONSUMER_UNBOUND",
+  "implementation_ready": false,
+  "imported_program": {
+    "name": "dee_ddpjoc_encoder.exe",
+    "sha256_from_historical_ghidra_metadata": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_install_rehashed": false,
+    "analysis_mode": "Ghidra 12.2 public; targeted static decompilation"
+  },
+  "parser": {
+    "function": "FUN_1404ecea0",
+    "fields": ["lorocmixlev", "lorosurmixlev", "dmixmod", "ltrtcmixlev", "ltrtsurmixlev"],
+    "dmixmod_converter": "FUN_1404dddd0",
+    "dmixmod_slot": "0x11",
+    "presence_field_offset": "0x20",
+    "absent_field_behavior": "skip value conversion",
+    "native_value_after_omission": "UNBOUND",
+    "initializing_write_located": false
+  },
+  "call_chain": [
+    {"function": "FUN_1403f4e90", "callsite": "0x1403f50e5", "callee": "FUN_1404802e0"},
+    {"function": "FUN_1404802e0", "callsite": "0x14048054e", "callee": "FUN_1404ecea0"},
+    {"function": "FUN_1404802e0", "callsite": "0x1404805d8", "condition": "cVar3 == 0", "callee": "FUN_1404807d0"}
+  ],
+  "generic_result_handoff": {
+    "function": "FUN_1404807d0",
+    "record_stride": "0x68",
+    "tested_record_offsets": ["0x10", "0x30", "0x50"],
+    "output_keys": ["name:", "value:", "error:"],
+    "explicit_downmix_key_lookup_in_targeted_body": "NOT_FOUND",
+    "direct_code_caller": "FUN_1404802e0",
+    "result_record_identity_to_slot_0x11": "UNBOUND"
+  },
+  "consumer_status": {
+    "slot_0x11_to_ddp_joc_ec3_frame_writer": "UNBOUND",
+    "slot_0x11_to_stereo_postmix": "UNBOUND",
+    "slot_0x11_to_target_5_1_joc_processing_or_signaling": "UNBOUND",
+    "preferred_downmix_mode_to_native_dmixmod": "UNBOUND",
+    "native_value_when_dmixmod_omitted": "UNBOUND",
+    "absence_of_audio_use_proven": false
+  },
+  "front_end_boundary": {
+    "preferred_stereo_downmix_active": false,
+    "display_value": "Stereo",
+    "mix_level_controls_active": false,
+    "ui_value_is_native_default": false
+  },
+  "execution_scope": {
+    "encoder_launched": false,
+    "ascii_alias_probe": "NOT_RUN",
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "audio_output_created": false,
+    "private_license_hmac_key_content_read_or_exported": false
+  }
+}

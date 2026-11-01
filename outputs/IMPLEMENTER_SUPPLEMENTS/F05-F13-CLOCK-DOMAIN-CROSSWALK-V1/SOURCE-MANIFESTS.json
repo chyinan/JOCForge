@@ -1,0 +1,19 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "f05_f13_callback_cache_drain_clock_wash_v1",
+    "manifest_sha256": "02479cf47526b5fd16f3160bc3626631106683c0c212ff75678c79d0357c1a27",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "referenced_source_hashes_checked": 16,
+    "source_hash_mismatches": 0
+  },
+  "contract_sources": [
+    {"package_id": "ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1", "manifest_sha256": "edc15b751a3d9db6d0e59a51e76979b5eb77a07110382906b975a0561f9ba61e"},
+    {"package_id": "CODEC-SOURCE-TRANSACTION-KEYLESS-PUBLICATION-V1", "manifest_sha256": "1a825c5dab7ecd292e53ddd691244c7e4bef2c34d553631c3fe714dd1cf73290"},
+    {"package_id": "GTC-MEASUREMENT-READY-APPROVED-CONTRACTS-V1", "manifest_sha256": "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e"},
+    {"package_id": "FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1", "manifest_sha256": "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23"},
+    {"package_id": "METER-DRAIN-SOURCE-CONTROL-HOLD-V1", "manifest_sha256": "c64eff3db5f596c620c2f8cefb3eeb48aa15a08d1a7c66fb330392b2eaf0ebbc"}
+  ],
+  "catalog_identity": {"sha256": "2a4744e96aed27535d897400ddd2b05a063615d79652df3264ee978687b17edd"}
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-f13c-result-tree-callback-gate.v1",
+  "package_id": "F13C-RESULT-TREE-CALLBACK-GATE-BOUNDARY-V1",
+  "status": "ATMOSMEZZ_RESULT_CALLBACK_GATED_FOR_THIS_DESCRIPTOR; F13C_WRITER_UNBOUND",
+  "implementation_ready": false,
+  "source_image": {
+    "program": "dee_ddpjoc_encoder.exe",
+    "sha256_from_historical_ghidra_metadata": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_install_rehashed": false,
+    "analysis": "Ghidra 12.2 public, targeted static disassembly/decompilation/xrefs"
+  },
+  "owner": {
+    "type": "AtmosMasterFileStorageDesc registration",
+    "factory": "FUN_1403f1dd0",
+    "parent_owner_field": "+0x6370",
+    "context_member": "owner+0x10",
+    "context_address_in_imported_image": "0x141038a80",
+    "context_section": ".rdata",
+    "gate_offset": "+0x1D0",
+    "gate_value": 0,
+    "gate_state_provenance": "static imported-program data; no runtime owner capture"
+  },
+  "result_adapters": [
+    {"function": "FUN_1403f2360", "dispatcher_callsite": "0x1403f24f7", "event_code": 2},
+    {"function": "FUN_1403f25b0", "dispatcher_callsite": "0x1403f2747", "event_code": 3}
+  ],
+  "dispatcher": {
+    "function": "FUN_14045b6a0",
+    "callback_pointer_offset": "+0x1C0",
+    "context_argument_offset": "+0x1C8",
+    "gate_offset": "+0x1D0",
+    "condition": "callback pointer nonzero AND gate nonzero AND event code <= gate",
+    "outcome_for_this_descriptor": "INDIRECT_CALLBACK_SKIPPED_GATE_ZERO",
+    "payload_type": "generic result-record payload; not a typed dmixmod value"
+  },
+  "direct_callers": {
+    "FUN_1403f1dd0": [
+      {"caller": "FUN_1403f2d80", "callsite": "0x1403f2dd9", "upstream": "FUN_1403c0ad0", "upstream_callsite": "0x1403c192e"},
+      {"caller": "FUN_1403f5270", "callsite": "0x1403f52c4", "upstream": "FUN_1403c3980", "upstream_callsite": "0x1403c3aae", "static_code_caller_of_FUN_1403c3980": "NOT_FOUND"}
+    ],
+    "first_owner_input_to_follow": {"function": "FUN_1403c2d50", "callsite": "0x1403c2eee"}
+  },
+  "unbound": {
+    "typed_ddp_dmixmod_edge": "UNBOUND",
+    "selected_ddp_joc_5_1_stage": "UNBOUND",
+    "f13c_frame_writer": "UNBOUND",
+    "preferred_downmix_mode_to_native_dmixmod": "UNBOUND",
+    "global_absence_of_audio_consumer": "NOT_PROVEN"
+  },
+  "execution_scope": {
+    "encoder_launched": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "private_license_hmac_key_content_read_or_exported": false,
+    "audio_output_created": false
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "package_integrity": "PASS_PACKAGE_INTEGRITY_ONLY",
+  "normal_python": "PASS",
+  "optimized_python": "PASS",
+  "scope": "Package hashes and cross-sample row10 observation only; not a transform conformance test."
+}

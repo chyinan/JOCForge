@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_complexity_carrier_lineage_boundary_v1",
+  "scope": "Selected F13C ID14 model/static producer-consumer and carrier length boundary; natural owner/generation and typed carrier transfer remain open.",
+  "status": "SELECTED_ID14_MODEL_AND_NATIVE_STORAGE_PATH_BOUND_OWNER_GENERATION_AND_CARRIER_TRANSFER_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3818,
+      "sha256": "b41480cadf9539fcd60dbad0c25120710fbcf64e3ea77ec534ba4055f5df266b"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 782,
+      "sha256": "b0b1d333b681faaf40cd5ba544f0b9d25a1ae04217b3d7e00341d2dbed3a6964"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1548,
+      "sha256": "255ecd3e56786497e56a12196d2a164e1445f74cabce89297c56c7922c2465aa"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2163,
+      "sha256": "e939a4b53b2606f34f4da6b3bd9ac890b876eff8e46ca8b3bd4ec2c36d85484e"
+    }
+  ]
+}

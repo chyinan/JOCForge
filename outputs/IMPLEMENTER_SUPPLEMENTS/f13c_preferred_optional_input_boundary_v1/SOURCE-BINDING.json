@@ -1,0 +1,26 @@
+{
+  "package_id": "f13c_preferred_optional_input_boundary_v1",
+  "incoming_manifest_sha256": "e20ea874a7f93aa2689093db38f8f247ef6ba43717b212d49fa43214f5bb77c0",
+  "incoming_files_sha256": {
+    "ADM-BWF-METADATA.json": "500c5f912e29b4e73b59810bb1240a3ac8f27b429544950e9b7d35fc15fed752",
+    "DEE-CONFIG-FLOW.json": "fc8d785fc66e81cc008ede253077adf958601a0a638fff0bbbbc422bb4113681",
+    "GHIDRA-STATIC-OBSERVATIONS.json": "10855adf193828b214bb7ecfc5a164cf5bfb917b23ea29b101a673ab60650d63",
+    "INPUT-ONLY-VECTORS.json": "c0390e0ef41018c815315abd2457e00aef8bf5e0fc44a1291d2105783dffa34e",
+    "REPORT.md": "b62f3ceb8175fb7f21b7e4f186c5e168707b0545a6cc1836a3058e4b4a7dfbc4"
+  },
+  "adm_axml_chunk_sha256": [
+    "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659",
+    "27318f160cdaad8f752524feb3dbd87695e4b4f5505a8fe9b9ebee436d5ecf51",
+    "bdd56e0cef8d10dc3969f0f64000639f7ab74a1b42831ef9458684db38c2c611",
+    "0d6f0999d4e86a7637e52af5132375d570d1b55038186be79a1948b995ab1d63",
+    "6d3dc5594e26234562796858cfc1ac6acc30270906c8a752894b0d37e2d60fc7",
+    "644add5af8dca305510acdd1fa7fcb81b8bedaefd6d826978442fb51d0a77d6e",
+    "cdebd3b6b75ffc28eb7ce6c0cba0f36ea4922c8c71fe166e1394a6366a767bc4"
+  ],
+  "input_hashing": "No full-file audio hash; only metadata chunk hashes from read-only scans",
+  "historical_app_bundle_and_dee_binary_hashes": "NOT_COMPUTED_IN_INCOMING_RESEARCH_PACKAGE",
+  "wash_current_file_hashes_not_used_as_historical_analysis_identity": true,
+  "pcm_or_payload_read": false,
+  "private_key_or_license_contents_read": false,
+  "raw_source_code_or_decompilation_included": false
+}

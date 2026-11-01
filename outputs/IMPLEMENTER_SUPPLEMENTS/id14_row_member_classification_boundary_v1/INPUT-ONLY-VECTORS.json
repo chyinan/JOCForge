@@ -1,0 +1,32 @@
+{
+  "schema": "washed-id14-row-member-boundary-input-only.v1",
+  "contract": "One observed row case only; no formula outputs or general expectations are supplied.",
+  "vectors": [
+    {
+      "id": "authorized_row10_capture",
+      "input": {
+        "row_index": 10,
+        "stride_bytes": 6,
+        "byte_plus3": "0xBA",
+        "u16_plus4": "0x0000"
+      },
+      "observed": {
+        "normalized_u16_consumed": "0x800A",
+        "bit15_test_taken": true
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "NATIVE_OBSERVED_ONE_RUN",
+      "semantic_name": "UNBOUND"
+    },
+    {
+      "id": "symbolic_row",
+      "input": {
+        "row_index": "SYMBOLIC",
+        "byte_plus3": "SYMBOLIC_U8",
+        "u16_plus4": "SYMBOLIC_U16"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "PROPOSED_NOT_RUN"
+    }
+  ]
+}

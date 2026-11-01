@@ -1,0 +1,32 @@
+{
+  "schema": "washed-id14-input-only-vectors.v1",
+  "cases": [
+    {
+      "id": "selected_model_profile",
+      "downmix_index": 3,
+      "object_count": 15,
+      "oamd_slots": 16,
+      "expected_complexity": 16
+    },
+    {
+      "id": "native_controlled_count_1",
+      "configuration_count": 1,
+      "expected_bsi_prefix": "01 01",
+      "id14_storage_present": false
+    },
+    {
+      "id": "native_controlled_count_16",
+      "configuration_count": 16,
+      "expected_bsi_prefix": "01 10",
+      "id14_storage_present": false
+    },
+    {
+      "id": "selected_carrier_length_band",
+      "container_cap_bytes": 511,
+      "container_overhead_bytes": 4,
+      "maximum_body_bytes": 507,
+      "native_first_block": 2,
+      "typed_owner_transfer": "UNBOUND"
+    }
+  ]
+}

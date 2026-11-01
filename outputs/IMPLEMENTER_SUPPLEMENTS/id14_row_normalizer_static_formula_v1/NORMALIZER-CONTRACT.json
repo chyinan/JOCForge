@@ -1,0 +1,39 @@
+{
+  "row_stride_bytes": 6,
+  "classifier_input_signed_offset": 2,
+  "classifier_input_type": "SIGNED_INT8",
+  "row_plus3_read": false,
+  "run_u16_offset": 4,
+  "output_word_stride_bytes": 2,
+  "accepted_count_inclusive": [
+    1,
+    128
+  ],
+  "error_returns": {
+    "invalid_count": 5,
+    "unmapped_classifier": 7
+  },
+  "mapping_signed_byte_to_code": {
+    "0": 1,
+    "1": 2,
+    "2": 3,
+    "3": 4,
+    "4": 11,
+    "5": 12,
+    "6": 5,
+    "7": 6,
+    "8": 7,
+    "9": 8,
+    "12": 9,
+    "13": 10,
+    "-1": 0
+  },
+  "unmapped_code": 13,
+  "type1_formula": "((mapped_code & 0x7f)<<8)|(run_count & 0xff)",
+  "type2_condition": "signed row+2 == -1",
+  "type2_formula": "0x8000|(row_index & 0xff)",
+  "type2_updates_run_state": false,
+  "run_count": "starts at 1; increments when consecutive U16+4 values change",
+  "padding": "0x8000|index when prior initialized state count is larger",
+  "status": "STATIC_FORMULA_ONLY; SEMANTIC_ROW_FIELD_UNBOUND"
+}

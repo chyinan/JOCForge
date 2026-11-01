@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f13c_dmixmod_parser_handoff_unbound_v2",
+  "scope": "Hash-bound Ghidra parser field separation and generic configuration handoff; preferred-to-dmixmod adapter, absent-field default and final F13C consumer remain unbound.",
+  "status": "NATIVE_DMXMOD_FIELD_SEPARATED_AND_PARSER_HANDOFF_BOUND; PREFERRED_ADAPTER_DEFAULT_AND_F13C_CONSUMER_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2693,
+      "sha256": "46581221af9ce958653f6f53e8cb5826675c6073f60cf85dd1b6d761425740cc"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 652,
+      "sha256": "36447df600829beeb1d794963e7d65ae510832058134a329ea6c30e37de68a84"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 937,
+      "sha256": "e7033350e2dc8ba2f452806980e6d99ed6c834f45bcfb297974e107bc0b4115d"
+    },
+    {
+      "name": "README.md",
+      "bytes": 867,
+      "sha256": "767b75f480788f8f42895c1ba316497a0e6cb01ec6041744b3fdf096703dca41"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 847,
+      "sha256": "86b8e391554c41dc776d75e886207732daeda5b4ce270c426fb6daff93c885b2"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 221,
+      "sha256": "6d29b56e58415d17525ec3cbb88730241b8cc9a15baa47a93dbca4cd18cb4645"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2060,
+      "sha256": "bfc8092bc0f0f336ce88452820b8f08faa5cb59466e4c1d754d6e2b443f2d010"
+    }
+  ]
+}

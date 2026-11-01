@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_param13_first_writer_addendum_v1",
+  "scope": "Static ID14 and parameter13 producer-to-wire paths; root input owner and same-generation join remain open.",
+  "status": "ID14_COUNT_SOURCE_TO_U6_AND_PARAMETER13_TO_BSI_U8_BOUND_SAME_GENERATION_OPEN",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2541,
+      "sha256": "dfc5f3fefa9b49a1c604627709e6a776c9a71505afdac7f1492656c82433b805"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 354,
+      "sha256": "c0bf142ce5de3735142476ddcb112a60df43d865e7b274eea0f33ca72ed5ec5c"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1162,
+      "sha256": "4eeb863344acfef65717de511b505971080313af2a513194e113a8da6407f942"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1631,
+      "sha256": "13387d602e75ec451df49bded3af69f73074195de1d7aa9ef399fbc2e84a8c8e"
+    }
+  ]
+}

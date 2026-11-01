@@ -1,0 +1,111 @@
+{
+  "schema": "washed-native-eac3-joc-payload11-configuration-lineage.v1",
+  "package_id": "native_eac3_joc_payload11_configuration_static_lineage_v1",
+  "evidence_class": "HASH_BOUND_GHIDRA_STATIC_TYPE11_WRITER_WITH_SEPARATE_OUTPUT_METADATA_CROSSCHECK",
+  "status": "TYPE11_STATIC_PRESENCE_RULES_BOUND; SAME_RUN_IMAGE_AND_GROUP_ID_PRESENCE_JOIN_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": {
+    "static_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_tool": "Ghidra 12.2 PUBLIC",
+    "native_job_in_this_task": "NOT_RUN",
+    "payload_body_or_bitstream_read": "NOT_RUN"
+  },
+  "descriptor_initialization": {
+    "payload_id": 11,
+    "descriptor_size_bytes": 56,
+    "config_slots_seeded_zero": true,
+    "body_length_and_pointer_from_producer_context": true,
+    "body_bytes_included": false
+  },
+  "static_write_rules": {
+    "codecdatae": {
+      "storage_default": 0,
+      "presence_u1_written": true,
+      "reserved_u8_written": false
+    },
+    "payload_frame_aligned": {
+      "storage_default": 0,
+      "presence_u1_written": true,
+      "condition": "discard_unknown_payload is false and sample_offset_present is false"
+    },
+    "create_duplicate": {
+      "storage_default": 0,
+      "serialized": false,
+      "condition": "only serialized when payload_frame_aligned is true"
+    },
+    "remove_duplicate": {
+      "storage_default": 0,
+      "serialized": false,
+      "condition": "only serialized when payload_frame_aligned is true"
+    },
+    "priority_u5": {
+      "storage_default": 0,
+      "serialized": false,
+      "condition": "only serialized when sample_offset_present or payload_frame_aligned is true and discard_unknown_payload is false"
+    },
+    "proc_allowed_u2": {
+      "storage_default": 0,
+      "serialized": false,
+      "condition": "only serialized when sample_offset_present or payload_frame_aligned is true and discard_unknown_payload is false"
+    },
+    "sample_offset_value": {
+      "presence_bit_written": true,
+      "value_serialized": false,
+      "presence_default": 0
+    },
+    "duration_value": {
+      "presence_bit_written": true,
+      "value_serialized": false,
+      "presence_default": 0
+    },
+    "group_id": {
+      "presence_bit_written": true,
+      "presence_value": 0,
+      "value_serialized": false
+    },
+    "payload_id_wire_width_bits": 5,
+    "body_length_and_body_follow_configuration": true
+  },
+  "output_crosschecks": [
+    {
+      "package_id": "first_love_dee_output_metadata_reference_v1",
+      "manifest_sha256": "338cc6e787d359d49cdcdd7a18c3a32675a07554d8ac525576725b27a44e309f",
+      "access_units": 8048,
+      "payload11_strict": "FAIL; codecdatae=0, payload_frame_aligned=0, duplicate/priority/proc_allowed absent",
+      "deployed_compatibility": "PASS"
+    },
+    {
+      "package_id": "potential_ai_dee_output_metadata_reference_v1",
+      "manifest_sha256": "56e0900a168faf0eb1a2672971389fe22ac520b84e573dabc68b7e10734d5e80",
+      "access_units": 6448,
+      "payload11_strict": "FAIL; codecdatae=0, payload_frame_aligned=0, duplicate/priority/proc_allowed absent",
+      "deployed_compatibility": "PASS"
+    }
+  ],
+  "input_only_prefix_vectors": {
+    "native_static_type11": "01011000000",
+    "native_prefix_bits": 11,
+    "approved_compatibility_explicit_group_zero": "01011001000000",
+    "compatibility_prefix_bits": 14,
+    "approved_etsi_strict": "0101100100010000000001000000000",
+    "strict_prefix_bits": 31,
+    "payload_length_and_body_included": false
+  },
+  "remaining_limits": {
+    "payload11_static_module_to_first_love_or_potential_ai_loaded_ddp_module": "UNBOUND",
+    "native_group_id_present_zero_vs_openjoc_group_id_value_zero": "UNBOUND",
+    "same_run_native_output_to_writer_presence_semantics": "NOT_CAPTURED",
+    "payload14_details": "NOT_ANALYZED_IN_THIS_PACKAGE"
+  },
+  "exclusions": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

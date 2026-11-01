@@ -1,0 +1,71 @@
+{
+  "schema": "washed-f13c-adm-opener-table-candidate-evidence.v1",
+  "status": "ADM_TYPED_CANDIDATE_STATICALLY_BOUND; SELECTED_READER_TO_DDP_ROW_IDENTITY_UNBOUND",
+  "implementation_ready": false,
+  "evidence_tier": "HASH_BOUND_GHIDRA_STATIC_PLUS_TARGETED_CHNA_METADATA_READ",
+  "selected_input": {
+    "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "metadata_row_index": 10,
+    "track_uid": "ATU_0000000B",
+    "one_based_track_index": 11,
+    "audio_object_id": "AO_100B",
+    "channel_format_id": "AC_0003100b",
+    "kind": "Objects",
+    "metadata_read_scope": {
+      "chna_record_ordinal_zero_based": 10,
+      "bytes_read": 96,
+      "audio_data_bytes_read": 0,
+      "full_file_hash_recomputed": false,
+      "axml_reread_in_this_addendum": false
+    }
+  },
+  "native_candidate_path": {
+    "ghidra_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "adm_opener_to_master": "FUN_180215c90 -> FUN_180287840",
+    "reader_factory_type": "atmos_storage::AdmFileStorage::Factory",
+    "descriptor_builder": "FUN_18021ecf0 -> FUN_1800b4b30",
+    "chna_lookup_rule": "UID map returns one-based TrackIndex; TrackIndex - 1 selects the zero-based converter slot",
+    "object_descriptor_fields": {
+      "+0x48_u32": "AudioObjectID-derived channel-input key",
+      "+0x4C_u32": "one-based CHNA TrackIndex minus one"
+    },
+    "opener_record": {
+      "stride_bytes": 6,
+      "plus_0_u16": "low 16 bits of descriptor +0x48 channel-input key",
+      "plus_2_u8": "0xFF object sentinel",
+      "plus_3": "not assigned by traced writer; initial value not established",
+      "plus_4_u16": "object enumeration ordinal"
+    },
+    "bed_record_boundary": {
+      "plus_0_u16": "low 16 bits of bed descriptor +0x08; source channel key NOT_SUPPLIED in candidate vector",
+      "plus_2_u8": "low signed byte of bed descriptor +0x0C",
+      "plus_3": "not assigned by traced writer; initial value not established",
+      "plus_4_u16": "bed enumeration ordinal"
+    }
+  },
+  "comparison_only_ddp_observation": {
+    "package_manifest_sha256": "dd60231ca4e14737cde054b8f5bdc7173d7a0a3a958c49f0580433d80c59dd23",
+    "row_index": 10,
+    "raw_plus_3": "0xBA",
+    "raw_u16_plus_4": "0x0000",
+    "normalizer_classifier_plus_2": "NOT_CAPTURED",
+    "normalized_u16": "0x800A",
+    "writer_instruction_executed": false,
+    "join_disposition": "VALUES_AND_ROW_ORDINAL_ARE_NOT_IDENTITY_EVIDENCE"
+  },
+  "unbound": {
+    "selected_audio_adm_reader_factory": true,
+    "opener_this_plus_0x50_to_setup_param4_pointer_identity": true,
+    "setup_param4_to_ddp_fun_180178dc0_pointer_count_same_activation": true,
+    "parent_or_generation_token": true,
+    "actual_ddp_row_semantic_field_assignment": true,
+    "initial_value_of_unwritten_plus_3": true
+  },
+  "access_boundary": {
+    "new_dee_run": "NOT_RUN",
+    "pcm_payload_bitstream_read": false,
+    "private_key_or_license_contents_read": false,
+    "u6_writer_executed": false,
+    "bitstream_emission": "NOT_RUN"
+  }
+}

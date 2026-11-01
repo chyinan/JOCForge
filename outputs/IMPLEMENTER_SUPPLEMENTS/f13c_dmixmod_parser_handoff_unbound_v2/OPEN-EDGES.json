@@ -1,0 +1,24 @@
+{
+  "package_id": "f13c_dmixmod_parser_handoff_unbound_v2",
+  "closed": [
+    "Ghidra imported DEE image hash matched the current installed executable hash at Wash time",
+    "Parser reads dmixmod in a distinct enum slot apart from four mix-level fields",
+    "Absent optional field skips parsing",
+    "Parser success path calls a generic configuration handoff"
+  ],
+  "open": [
+    "Preferred UI/CLI value to native dmixmod adapter",
+    "Native value after absence",
+    "Field-specific consumption in generic handoff",
+    "Final F13C writer and output branch",
+    "Dynamic execution"
+  ],
+  "status": {
+    "preferred_to_dmixmod": "UNBOUND",
+    "native_default": "UNBOUND",
+    "handoff_field_read": "NOT_FOUND_IN_TARGETED_DECOMPILE",
+    "final_f13c_consumer": "UNBOUND",
+    "dynamic": "NOT_RUN"
+  },
+  "guidance": "Do not equate preferred_downmix_mode and dmixmod by name similarity. This package specifies no output value."
+}

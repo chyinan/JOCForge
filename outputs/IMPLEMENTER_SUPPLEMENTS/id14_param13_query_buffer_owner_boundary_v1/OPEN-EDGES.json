@@ -1,0 +1,15 @@
+{
+  "schema": "washed-open-edges.v1",
+  "edges": [
+    {
+      "from": "plugin-created query-buffer scratch root",
+      "to": "root+0xc170/+0xc174 initialization and semantic source",
+      "status": "UNBOUND"
+    },
+    {
+      "from": "ID14 count and parameter13 property-list value",
+      "to": "same parent/generation receipt",
+      "status": "UNBOUND"
+    }
+  ]
+}

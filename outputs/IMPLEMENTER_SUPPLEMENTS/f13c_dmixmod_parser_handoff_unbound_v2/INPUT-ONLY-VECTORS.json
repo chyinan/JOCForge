@@ -1,0 +1,24 @@
+{
+  "contract": "Configuration-presence shapes only. No native or bitstream output is predicted.",
+  "vectors": [
+    {
+      "id": "dmixmod_absent",
+      "input": {
+        "dmixmod": "ABSENT",
+        "preferred_downmix_mode": "NOT_BOUND"
+      },
+      "observed_parser_behavior": "skip value parsing on absent-field branch",
+      "expected_output": "NOT_SUPPLIED",
+      "status": "STATIC"
+    },
+    {
+      "id": "dmixmod_present_symbolic",
+      "input": {
+        "dmixmod": "SYMBOLIC_ENUM",
+        "preferred_downmix_mode": "SYMBOLIC_UNBOUND"
+      },
+      "expected_output": "NOT_SUPPLIED",
+      "status": "PROPOSED_NOT_RUN"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "package_id": "id14_row_normalizer_static_formula_v1",
+  "status": "STATIC_NORMALIZER_FORMULA_BOUND; ROW_PLUS2_CLASSIFIER; ROW_PLUS3_NOT_READ; RAW_FIELD_SEMANTICS_UNBOUND; BITSTREAM_NOT_RUN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Hash-bound Ghidra formula for six-byte row normalization and static synthetic vectors. No raw row semantic name, ADM/EMDF producer edge, or bitstream emission is established.",
+  "source": {
+    "incoming_package_id": "ID14-ROW-NORMALIZER-STATIC-FORMULA-FOLLOWUP-V1",
+    "manifest_sha256": "4f4df835bb762faaf1c4d46361dc32c06c58a87149e64a0f4b56105a70fc1159",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "parent_semantic_boundary_manifest_sha256": "3d5df8de998d0de67405ecc36b1b31b4c9a7bddc95b4b6bd185ab04eae67a3f4",
+    "parent_cross_sample_manifest_sha256": "dd60231ca4e14737cde054b8f5bdc7173d7a0a3a958c49f0580433d80c59dd23"
+  },
+  "ghidra_formula": {
+    "row_stride_bytes": 6,
+    "classifier_input_offset": 2,
+    "classifier_input_signedness": "SIGNED_INT8",
+    "byte_plus3_read_by_normalizer": false,
+    "run_value_offset_bytes": 4,
+    "normalized_word_stride_bytes": 2,
+    "classifier_map_signed_byte_to_code": {
+      "0": 1,
+      "1": 2,
+      "2": 3,
+      "3": 4,
+      "4": 11,
+      "5": 12,
+      "6": 5,
+      "7": 6,
+      "8": 7,
+      "9": 8,
+      "12": 9,
+      "13": 10,
+      "-1": 0
+    },
+    "unmapped_code": 13,
+    "error_return_for_unmapped": 7,
+    "type1_output": "((mapped_code & 0x7f) << 8) | (run_count & 0xff)",
+    "type1_run_count": "starts 1; increments on consecutive U16+4 changes; equal values retain current count",
+    "type2_condition": "signed row+2 == -1",
+    "type2_output": "0x8000 | (row_index & 0xff)",
+    "type2_updates_run_state": false,
+    "accepted_row_count": {
+      "min": 1,
+      "max": 128
+    },
+    "count_error_return": 5,
+    "initialized_state_padding": "0x8000 | index"
+  },
+  "sample_row10": {
+    "two_authorized_inputs_consistent": true,
+    "observed_byte_plus3": "0xBA",
+    "observed_u16_plus4": "0x0000",
+    "observed_normalized_u16": "0x800A",
+    "byte_plus2": "NOT_CAPTURED",
+    "semantic_field": "UNBOUND",
+    "causal_inference": "NOT_MADE"
+  },
+  "writer_boundary": {
+    "u6_writer_instruction_executed": false,
+    "bitstream_emission": "NOT_RUN"
+  }
+}

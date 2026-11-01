@@ -1,0 +1,58 @@
+{
+  "package_id": "id14_row10_cross_sample_consistency_v1",
+  "status": "ROW10_RAW_SCALARS_AND_NORMALIZED_CONSUMER_MATCHED_ACROSS_TWO_INPUTS; SEMANTIC_FIELD_IDENTITY_UNBOUND; U6_WRITER_NOT_EXECUTED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Two authorized inputs with the same job profile show the same row10 raw scalar values and normalized consumer word. Does not bind semantic row names, model generation, or a general row transform.",
+  "sources": {
+    "incoming_package_id": "ID14-ROW-CROSS-SAMPLE-CONTRAST-FOLLOWUP-V1",
+    "incoming_manifest_sha256": "dd60231ca4e14737cde054b8f5bdc7173d7a0a3a958c49f0580433d80c59dd23",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "parent_row_consumer_manifest_sha256": "3d5df8de998d0de67405ecc36b1b31b4c9a7bddc95b4b6bd185ab04eae67a3f4",
+    "parent_owner_manifest_sha256": "531335965977e8eef22af9f27ff803b40138db2ae0191bace9723df7ca9d38b8"
+  },
+  "shared_job": {
+    "sha256": "83240654df650a6fbe47aba8480045b0c38d86d696265aa06b20b6534269e842",
+    "data_rate_kbps": 1024
+  },
+  "samples": [
+    {
+      "label": "Human Cat authorized ADM",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "row_count": 38,
+      "row_index": 10,
+      "byte_plus3": "0xBA",
+      "u16_plus4": "0x0000",
+      "normalized_u16": "0x800A",
+      "bit15": true,
+      "evidence_package": "id14-row-semantic-field-boundary-followup-v1"
+    },
+    {
+      "label": "My jealousy authorized ADM",
+      "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+      "row_count": 36,
+      "row_index": 10,
+      "byte_plus3": "0xBA",
+      "u16_plus4": "0x0000",
+      "normalized_u16": "0x800A",
+      "bit15": true,
+      "ascii_alias_sha_matches_source": true
+    }
+  ],
+  "comparison": {
+    "row10_raw_values": "OBSERVED_EQUAL",
+    "normalized_word_and_bit15": "OBSERVED_EQUAL",
+    "semantic_identity_from_value_equality": "NOT_INFERRED",
+    "typed_adm_or_emdf_assignment": "UNBOUND"
+  },
+  "latest_run": {
+    "writer_entry_reached": true,
+    "writer_instruction_executed": false,
+    "output_target": "NUL",
+    "bitstream": "NOT_RUN",
+    "temporary_file_bytes": 3486,
+    "temporary_contents": "NOT_READ_AND_DELETED",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false
+  }
+}

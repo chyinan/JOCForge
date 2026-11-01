@@ -1,0 +1,19 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "02479cf47526b5fd16f3160bc3626631106683c0c212ff75678c79d0357c1a27",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "source_hashes_checked": 16, "mismatches": 0},
+  "independent_review": [
+    "Recomputed the incoming manifest SHA-256 and ran its checker in normal and optimized modes.",
+    "Independently recomputed Q=ceil(N/H), last-normal real/padded sample counts, and all four cross-domain index examples.",
+    "Kept main cached payload origin separate from advancing callback/source/dispatch clocks.",
+    "Kept meter EOF drains on their independent meter clock and retained the single post-prepass parent commit rule.",
+    "Preserved provider-embedded cached indexes and attempt-07 expected/actual mismatch values as unspecified/not captured."
+  ],
+  "not_promoted": [
+    "F01E/F03W/F04 cached provider embedded index semantics",
+    "F01E normal_callbacks counter transition during main cached callbacks",
+    "per-meter-drain global phase_generation delta",
+    "attempt-07 actual mismatch values",
+    "whole-chain readiness"
+  ]
+}

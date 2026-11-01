@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 6355,
+      "file": "CHECK.py",
+      "sha256": "4fd34cf79a87fe1781516280a600cd5dfb60610a40dc1ae9ff05ca65465c8cf7"
+    },
+    {
+      "bytes": 2487,
+      "file": "EVIDENCE.json",
+      "sha256": "90ba88d136eda892c95eb53c0523b8b5a2fb72a09846534f0e6db7d3e5640267"
+    },
+    {
+      "bytes": 1637,
+      "file": "REPORT.md",
+      "sha256": "634b38083276000dc09f4870c44b6ef551e032e21f3054d6acab8cc4b1997b32"
+    },
+    {
+      "bytes": 2762,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "4dd44057dcef2494299dbc558f6530ffd35332c503d662dded7c78adf2c0055f"
+    },
+    {
+      "bytes": 1218,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "83e593be2d9a9e6cdef2d042341f6597f0a0141fbaac376b0fa6eb4b2352afab"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F13C-RESULT-TREE-CALLBACK-GATE-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "b42be389f86010d6d4d62a7b726c550f0eaef2487ec57966c57fd8da25baa1ab",
+  "status": "ATMOSMEZZ_RESULT_CALLBACK_GATED_FOR_THIS_DESCRIPTOR; F13C_WRITER_UNBOUND"
+}

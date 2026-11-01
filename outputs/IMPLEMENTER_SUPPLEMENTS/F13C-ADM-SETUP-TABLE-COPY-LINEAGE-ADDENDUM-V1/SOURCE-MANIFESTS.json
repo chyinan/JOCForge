@@ -1,0 +1,32 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "ID14-ADM-SETUP-TO-DDP-ROW-BOUNDARY-V3",
+    "manifest_sha256": "16d65151a76514fe53a3c8ac8ebb2382e77c943d5226a60fea94aa1e23416821",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "ghidra_version": "12.2 PUBLIC",
+    "raw_source_files_in_supplement": 0,
+    "source_identity_basis": "incoming package binds its source inventory, target image hashes, and parent manifests"
+  },
+  "parent_packages": [
+    {"package_id": "ID14-SEMANTIC-CARRIER-CANDIDATE-BOUNDARY-V1", "manifest_sha256": "a49fbf51ec8f8cf572c5b1eabb1724ee1b348d2d0c1cdd7db48f26acef396d38"},
+    {"package_id": "ADM-OPENER-SETUP-DISPATCHER-LINEAGE-V2", "manifest_sha256": "14ddd02d83f8c6ba20f22c852e5a93607fc38bb67a2b7057f4a4c2cd6497e900"},
+    {"package_id": "ADM-OPENER-CHANNEL-TABLE-PRODUCER-EDGE-V1", "manifest_sha256": "ba389271c6ee81599ba2b2136e5eb5ae48e445ee7cf54984cc18fd0c77b961a8"},
+    {"package_id": "ID14-ROW-FIELD-CONSUMER-LINEAGE-FOLLOWUP-V1", "manifest_sha256": "b6b56cfdbcf29a870496d87f04dc34b95d8a7a59db66f801b41cefb6e2dfec7b"},
+    {"package_id": "ID14-ROW-CROSS-SAMPLE-CONTRAST-FOLLOWUP-V1", "manifest_sha256": "dd60231ca4e14737cde054b8f5bdc7173d7a0a3a958c49f0580433d80c59dd23"},
+    {"package_id": "ID14-ROW-NORMALIZER-STATIC-FORMULA-FOLLOWUP-V1", "manifest_sha256": "4f4df835bb762faaf1c4d46361dc32c06c58a87149e64a0f4b56105a70fc1159"},
+    {"package_id": "HOST-ADM-AUDIO-INPUT-MODULE-PRODUCER-AUDIT", "manifest_sha256": "f09d2acb39e6eb9f2e0428cb99c60b559bbe9043ce19bd3cd890e8afa224caaf"},
+    {"package_id": "AUDIO-ADM-TYPE-DISPATCH-READER-BOUNDARY", "manifest_sha256": "7745efce439e6397c905691115ef4e1f8405e8e7ab397ca9cbd7efb3738f3317"}
+  ],
+  "previous_wash_candidate_package": {
+    "package_id": "F13C-ADM-OPENER-TABLE-CANDIDATE-ADDENDUM-V1",
+    "manifest_sha256": "57d7e6579e8bb9c5bfd0a05d693e602154ee332c0057fc09a536072e45c4f6fd",
+    "supersession_scope": "refines pointer-identity UNBOUND to distinct allocation plus static copy-lineage PROVEN; actual DDP row identity remains UNBOUND"
+  },
+  "current_query_target_images": {
+    "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "ddp_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+  }
+}

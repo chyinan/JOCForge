@@ -1,0 +1,24 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "F13C native consumer boundary addendum v3",
+    "manifest_sha256": "0473987f247572cd78d164afd901e2f7495c60fd8aab765167e18ad710e3c15f",
+    "payload_checksum_file": "SHA256SUMS.txt",
+    "payload_checksums_recomputed": true,
+    "incoming_checker": "NOT_PROVIDED; Wash performed manual inventory/hash checks"
+  },
+  "recomputed_incoming_payloads": [
+    {"path": "ADDENDUM.md", "bytes": 4319, "sha256": "f71baa111957fefba301ed8243bc9433f1de04a59ba23b470866d849061be11e"},
+    {"path": "GHIDRA-CONSUMER-FLOW.json", "bytes": 5488, "sha256": "c56254a0723a39c9c88767403565a9ad1179d05a5e890b8672cf4644df7bbf52"}
+  ],
+  "recomputed_ghidra_log_sources": [
+    {"path": "work/ghidra_runtime_ranges_r3.log", "sha256": "4042b3a2a4492c5784fed95a39a039b957b3bf1c1a6a8d8a77bde469ca9ccb5"},
+    {"path": "work/ghidra_callgraph_consumer_r2.log", "sha256": "aeb7851cf4efb0cb017f2a25436df7a19852776e5ca375f61d3cf7f851a2226a"}
+  ],
+  "related_wash_v2": {
+    "package_id": "f13c_dmixmod_parser_handoff_unbound_v2",
+    "manifest_sha256": "7dabde419bf0a5e378d94613393686298c2baff4053f015d9d09222e4e9fad4e",
+    "relationship": "Hash-bound earlier parser handoff; this addendum narrows the downstream generic-result versus audio-consumer boundary."
+  },
+  "image_identity_note": "The imported dee_ddpjoc_encoder.exe digest comes from historical Ghidra project metadata. No current installation binary digest was computed by this Wash."
+}

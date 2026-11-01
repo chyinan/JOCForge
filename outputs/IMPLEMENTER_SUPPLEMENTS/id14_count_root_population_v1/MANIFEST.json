@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_count_root_population_v1",
+  "scope": "Static normal-path ID14 code13/code14 property values and count-seed formula; host selector mapping and same-run ADM/OAMD generation remain UNBOUND.",
+  "status": "STATIC_NORMAL_PATH_CODE13_CODE14_AND_COUNT_SEED_BOUND; HOST_SELECTOR_AND_RUNTIME_PARENT_GENERATION_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "README.md",
+      "bytes": 1495,
+      "sha256": "a86be5e7b3c65e57c026f7cdf3c29f62c4efa79b81f292f586fb17a365b43501"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 4818,
+      "sha256": "1c379a74350314043a525db9b5182bf2c27d26122039d3f099cacac7887ff458"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 834,
+      "sha256": "0f94edc73ac4cc4e1d52c1a610f825f76305c44fadc9d28bb5e1193e2ae76f5d"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1848,
+      "sha256": "3c3151386f0e8771c60f6fb5f75d77d833b76a59941074728452716f730897eb"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2671,
+      "sha256": "beddecbee5305f6c606528a6c3157f47e7534b946b330df42dcc837db14b473d"
+    }
+  ]
+}

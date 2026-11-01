@@ -1,0 +1,23 @@
+{
+  "schema": "washed-id14-runtime-packet-open-edges.v1",
+  "package_id": "id14_runtime_packet_pointer_mapping_v1",
+  "closed": [
+    "outer param3 to param3[5] inner packet pointer",
+    "same-thread inner packet count and selector observed",
+    "code13/code14 values and subtraction count input observed",
+    "pending U6 count-minus-one value before writer"
+  ],
+  "open": [
+    "host task config object to this specific Priv owner",
+    "semantic names for six-byte packet rows",
+    "native packet generation to frozen model EMDF item",
+    "actual writer execution and U6 bitstream bytes"
+  ],
+  "status": {
+    "owner_join": "UNBOUND",
+    "row_semantics": "UNBOUND",
+    "model_generation_join": "UNBOUND",
+    "writer": "NOT_RUN"
+  },
+  "guidance": "The observed pending U6 value 14 is not an emitted bitstream value. Keep it separate from the model complexity value 16."
+}

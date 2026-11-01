@@ -1,0 +1,88 @@
+{
+  "schema": "washed-payload11-group-presence-branch-candidates.v1",
+  "package_id": "payload11_group_presence_branch_candidates_v1",
+  "status": "ALTERNATE_BRANCHES_FOUND_RUN145_PRODUCER_JOIN_UNBOUND",
+  "implementation_effect": "CANDIDATE_BRANCH_BOUNDARY_ONLY_NO_UNIVERSAL_RULE",
+  "source_packages": [
+    {
+      "package_id": "RUN145-PAYLOAD11-GROUP-PRESENCE-BRANCH-V1",
+      "manifest_sha256": "df9792e4f137d28ac5ac5fa31cd9c72022bc7ff3447de212f932e673d64a5672",
+      "normal_checker": "PASS",
+      "optimized_checker": "PASS",
+      "payload_hashes_recomputed": "PASS"
+    },
+    {
+      "package_id": "RUN145-PAYLOAD11-BIT-CURSOR-V1",
+      "manifest_sha256": "d31e03a30eef2d3de8fba202a2f4e275e27386f609ea756e7f31ac9a7c261adc",
+      "normal_checker": "PASS",
+      "optimized_checker": "PASS",
+      "payload_hashes_recomputed": "PASS"
+    },
+    {
+      "package_id": "PAYLOAD11-EMDF-FIELD-LINEAGE-V1",
+      "manifest_sha256": "f4ca8e1331c9749666a079b90d6d379d553c5efed4313adde65c8ab524c25178",
+      "manifest_recomputed": "PASS"
+    }
+  ],
+  "target": {
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis": "Ghidra 12.2 static read-only"
+  },
+  "typed_type11_path": {
+    "descriptor_group_presence_field": "entry+0x20",
+    "group_id_present_default": 0,
+    "branch_to_one_in_typed_producer": "NOT_FOUND",
+    "serializer_emits_field": "U1",
+    "conclusion": "The reviewed typed producer serializes the zero-seeded field; no reviewed branch sets it to one."
+  },
+  "alternate_same_layout_path": {
+    "presence_one_condition": {
+      "mode": 0,
+      "selector": 0
+    },
+    "effect": {
+      "group_id_present": 1,
+      "group_id": 0
+    },
+    "callers_supply_selector_as": "input_value_nonzero",
+    "entry_id_written_by_setter": false,
+    "type11_association": "UNBOUND",
+    "scope": "OAMDI/EVO helper path"
+  },
+  "copy_path": {
+    "effect": "Copies source presence and descriptor ID together.",
+    "source_descriptor_identity": "UNBOUND"
+  },
+  "separate_id1_builder": {
+    "descriptor_leading_id": 1,
+    "negative_sentinel_effect": {
+      "group_id_present": 0,
+      "group_id": 0
+    },
+    "nonnegative_effect": {
+      "group_id_present": 1,
+      "group_id": "signed_source_value"
+    },
+    "type11_association": "NO"
+  },
+  "run145": {
+    "cursor_package_manifest_sha256": "d31e03a30eef2d3de8fba202a2f4e275e27386f609ea756e7f31ac9a7c261adc",
+    "input_sha256": "284fa11e3a5200a2bf6fd0eb3ccba5a11177f2c955cf8ab60ee5f",
+    "scope": "AU0 first frame configuration prefix only",
+    "payload_id": 11,
+    "group_id_present_file_bit_offset": 9156,
+    "group_id_present": 1,
+    "producer_join": "UNBOUND",
+    "target_loaded_module_join": "UNBOUND"
+  },
+  "execution": {
+    "new_dee_job": "NOT_RUN",
+    "runtime_module_capture": "NOT_RUN",
+    "payload_body_or_length_read": "NO",
+    "raw_bitstream_saved": "NO",
+    "pcm_read": "NO",
+    "private_key_read": "NO",
+    "playback": "NOT_RUN"
+  },
+  "remaining_edge": "Which hash-identified producer created the Run145 Type-11 field, and whether the alternate helper's descriptor is actually ID 11."
+}

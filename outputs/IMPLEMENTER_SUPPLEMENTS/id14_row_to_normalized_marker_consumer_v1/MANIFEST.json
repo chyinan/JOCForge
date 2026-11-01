@@ -1,0 +1,44 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_row_to_normalized_marker_consumer_v1",
+  "scope": "One observed row index 10 travels through a 38-row, six-byte-stride copy to normalized U16 consumer 0x800A, with bit15 taken. Semantic row name, causal raw-member mapping, model generation and bitstream writer remain open.",
+  "status": "ROW10_COPY_TO_NORMALIZED_MARKER_CONSUMER_OBSERVED; SEMANTIC_ROW_NAME_AND_MODEL_GENERATION_UNBOUND; U6_WRITER_NOT_EXECUTED; BITSTREAM_NOT_RUN",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2546,
+      "sha256": "b3916dcf8c2986ca25f381d496950f1b6fca6833e9cd4589dcbf1266c7427cde"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 833,
+      "sha256": "ab0578b3d8e05b55a6589c71a8c3dfe9dcc3c244ed7aa68caf407fc68cc82531"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 1019,
+      "sha256": "77f074a75bf4a513293e2370e497c185d3e42f5ea29f309198b674ea09273b84"
+    },
+    {
+      "name": "README.md",
+      "bytes": 681,
+      "sha256": "4cd10601336fa196514f499ac7241cff4c1ca2b7b0a5fb02cfc132aa61a7defa"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 1142,
+      "sha256": "dc4edb45a8ba434080389fe62aa0ce0e48deb95af9104964d6b51a90875b2030"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 239,
+      "sha256": "f9b67c84ff233856ea83acbd5daf6ffdc5fb7a24201089cc925776463040aec8"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2322,
+      "sha256": "4e0edd8f2dc80349ed874aea107fb5b5765ef5270e786b7d2d832e93d1797802"
+    }
+  ]
+}

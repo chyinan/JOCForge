@@ -1,0 +1,32 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "F13C event callback owner addendum v6",
+    "manifest_sha256": "b42be389f86010d6d4d62a7b726c550f0eaef2487ec57966c57fd8da25baa1ab",
+    "incoming_checker": "NOT_PROVIDED; Wash manually checked file inventory and hashes",
+    "payloads": [
+      {"path": "ADDENDUM.md", "bytes": 3839, "sha256": "35bc99b3552cca0916ab2de9ff8d6324c4e1bc302fc036648d55b8fe94a331c2"},
+      {"path": "GHIDRA-CALLBACK-OWNER.json", "bytes": 5566, "sha256": "6793a46b1a3304092be6be0fb14c4c26edc9c73b999ad28b715db7d59ca2159e"}
+    ],
+    "sha256sums_file_sha256": "6b604c5146ee7e511d27a945adf9663ad708c7013a6362e0639370c5b41cce84"
+  },
+  "recomputed_ghidra_log_sources": [
+    {"path": "work/ghidra_event_context_assignments_script.log", "bytes": 30570, "sha256": "428ee3eab6d82d7ede32fc3979e65934bdfe506cabe56cbb72a0079e4b3e9538"},
+    {"path": "work/ghidra_event_factory_machine_script.log", "bytes": 89231, "sha256": "3ef688ed9f53d3510a344c18a27272e5f1e432f5635dd7baeadf2d4a57044248"},
+    {"path": "work/ghidra_event_owner_factory_headless.log", "bytes": 588622, "sha256": "52aa31f3002c04ba9e7cd655c24ccb8b339f95d0505bf5f274a54dd537485f7b"},
+    {"path": "work/ghidra_event_context_callers2_script.log", "bytes": 10149, "sha256": "b9dff0657ee4314af3aefb10b91cad0c83601039532f2cecd6b18538ad26751b"},
+    {"path": "work/ghidra_event_parent_constructors_headless.log", "bytes": 44091, "sha256": "902c4639b639363f02fece2db96adfc1427569839185a01a63f2bc7f7f634784"},
+    {"path": "work/ghidra_event_owner_creators_headless.log", "bytes": 34754, "sha256": "ef2bacd3894dab31be77d0ba37fcd8d2deb25b2b8399401176bf90fb88466655"},
+    {"path": "work/ghidra_event_outer_caller_script.log", "bytes": 4446, "sha256": "e33feba4e454de8394dee44dee5cc73e2d44b89efb51de305f4fbffd217ab2cd"},
+    {"path": "work/ghidra_atmos_event_state_script.log", "bytes": 4344, "sha256": "ff4888d49fb050c99ed9b752dedea1d69b250f750f0989d2a995e0a9e42dc25c"}
+  ],
+  "related_wash_packages": [
+    {"package_id": "F13C-DMIXMOD-PARSER-RESULT-BOUNDARY-V1", "manifest_sha256": "d66aedf9a09b0ed79b36132818eca991fb843c750057904bb2599c596d1759c6", "scope": "parser slot to generic result; writer consumer unbound"},
+    {"package_id": "R138-AUDIO-INPUT-FACTORY-REGISTRY-BOUNDARY-V1", "manifest_sha256": "44d75abfac4025fb4cd97cea95d452676020b243ac7d0a0ef8c835157d2443ef", "scope": "generic input registry; R138 selected factory/reader unbound"}
+  ],
+  "parent_source_package": {
+    "package_id": "F13C-downmix-default-consumer-addendum-v5",
+    "manifest_sha256": "03d3355763663e2dd6dc5202c87d1af1c1bcdf4d272670765908c3b07585445f",
+    "relationship": "previous static parser/consumer trace; v6 adds callback owner/gate boundary"
+  }
+}

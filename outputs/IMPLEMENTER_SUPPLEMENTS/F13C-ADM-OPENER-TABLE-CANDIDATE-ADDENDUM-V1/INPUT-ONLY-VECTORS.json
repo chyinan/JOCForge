@@ -1,0 +1,36 @@
+{
+  "schema": "washed-f13c-opener-candidate-input-vectors.v1",
+  "evidence_class": "SYNTHETIC_STATIC_MODEL_ONLY",
+  "cases": [
+    {
+      "id": "chna-one-based-slot-conversion",
+      "input": {"one_based_track_index": 11},
+      "expected_output": {"candidate_slot_zero_based": 10},
+      "expected_ddp_packet_row_identity": "NOT_SUPPLIED"
+    },
+    {
+      "id": "object-opener-record",
+      "input": {"one_based_track_index": 11, "channel_input_key_u32": 48879, "object_ordinal": 0},
+      "expected_output": {
+        "candidate_slot_zero_based": 10,
+        "record_plus_0_u16": 48879,
+        "record_plus_2_u8": 255,
+        "record_plus_3": "NOT_ASSIGNED_INITIAL_VALUE_UNBOUND",
+        "record_plus_4_u16": 0
+      },
+      "expected_ddp_packet_row_identity": "NOT_SUPPLIED"
+    },
+    {
+      "id": "bed-opener-record-with-unknown-source-key",
+      "input": {"one_based_track_index": 1, "bed_label_type_low_byte": 3, "bed_ordinal": 2},
+      "expected_output": {
+        "candidate_slot_zero_based": 0,
+        "record_plus_0_u16": "NOT_SUPPLIED",
+        "record_plus_2_u8": 3,
+        "record_plus_3": "NOT_ASSIGNED_INITIAL_VALUE_UNBOUND",
+        "record_plus_4_u16": 2
+      },
+      "expected_ddp_packet_row_identity": "NOT_SUPPLIED"
+    }
+  ]
+}

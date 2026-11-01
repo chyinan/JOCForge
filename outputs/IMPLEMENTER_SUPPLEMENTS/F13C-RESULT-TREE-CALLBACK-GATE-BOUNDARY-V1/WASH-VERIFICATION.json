@@ -1,0 +1,21 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "b42be389f86010d6d4d62a7b726c550f0eaef2487ec57966c57fd8da25baa1ab",
+  "incoming_checker": "NOT_PROVIDED",
+  "independent_review": [
+    "Recomputed the v6 manifest and both listed payload hashes/sizes; matched SHA256SUMS.txt.",
+    "Recomputed all eight referenced Ghidra log hashes and confirmed the owner field store, descriptor context pointer, event-code callsites, gate state, and upstream callsite tokens in targeted log excerpts.",
+    "Recomputed the v5 parent source manifest hash and verified it matches the v6 binding.",
+    "Confirmed this static context is a specific AtmosMasterFileStorageDesc result callback owner; it is not the selected DDP-JOC 5.1 writer.",
+    "Kept callback-gated result-tree behavior, F13C writer linkage, and preferred-downmix mapping as separate edges."
+  ],
+  "not_promoted": [
+    "global no-use proof for dmixmod",
+    "selected DDP-JOC 5.1 stage identity",
+    "F13C frame writer identity",
+    "preferred_downmix_mode to native dmixmod alias",
+    "any audio algorithm rule",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

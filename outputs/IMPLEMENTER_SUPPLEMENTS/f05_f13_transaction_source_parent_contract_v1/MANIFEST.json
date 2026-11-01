@@ -1,0 +1,40 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f05_f13_transaction_source_parent_contract_v1",
+  "scope": "Current Rust source/approved model transaction contract for F05/F13; failed executable and runtime actual transaction remain UNBOUND.",
+  "status": "CURRENT_RUST_SOURCE_ROUTE_MATCHES_APPROVED_MODEL; FAILED_RUN_ACTUAL_TRANSACTION_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "source_files": [
+    {
+      "path": null,
+      "sha256": null
+    }
+  ],
+  "payloads": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1969,
+      "sha256": "18f560ec2d619c09c94cc3808c7111c3e2aa8e2c3e4300939be62e5bfc9eb858"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 4990,
+      "sha256": "aa4f0a307dfb5b569e6a53ac6ae1c936ea611bdf9397b24676333050675ab3f1"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1938,
+      "sha256": "8e559b2ff045b99388c120c9aec473bfc472a726f0a9dfe50a8fb0ecf5105ea0"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 3058,
+      "sha256": "cef631700a13957aaacdebd20ed24ff15de784ca8d90a7b6abb35be41edfa00b"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2508,
+      "sha256": "54260313084d0c09e76e927172735a3a80760512b7f4f1bf7c5686fdb1a6fc94"
+    }
+  ]
+}

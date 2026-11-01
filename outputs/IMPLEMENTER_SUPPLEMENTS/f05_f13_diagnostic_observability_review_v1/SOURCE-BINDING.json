@@ -1,0 +1,41 @@
+{
+  "schema": "washed-f05-f13-diagnostic-review-source-binding.v1",
+  "package_id": "f05_f13_diagnostic_observability_review_v1",
+  "incoming_research_manifest_sha256": "0468a39518e4d69d0add594215131d0651f33b7789c0155af89e1b056a549d5b",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "run03_receipt_manifest_sha256": "a6d8f13cfe77397e5127b21bcc319a806c22c964a95579b78bd0e3d4d7ab475a",
+  "reviewed_rust_source_hashes": [
+    {
+      "path": "crates/jocforge-domain/src/joc/programme_state.rs",
+      "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
+      "sha256": "7f3894b196b6b74764a88c3b9822a3d330326485eb5e8ad5e3eee878db6b157b",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": "crates/jocforge-cli/src/source_execution.rs",
+      "sha256": "0da131ee6bbf86b8b452c61e246388b81ef35e93c1cc638a2ed814a17fc0e878",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": "crates/jocforge-cli/src/encode_request.rs",
+      "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e",
+      "status": "MATCH_CURRENT"
+    },
+    {
+      "path": "crates/jocforge-cli/src/main.rs",
+      "sha256": "b5437c21a3cf038d578464553c4e13301c1c8ff5fe9f08f4a72138b93a566210",
+      "status": "MATCH_CURRENT"
+    }
+  ],
+  "runner_snapshot": {
+    "reviewed_sha256": "ee496730b8296885f6e0722fd3fd01f8188d78116554b90f839f0724f3ebc9e9",
+    "current_sha256": "53bc5e8d3b788826a3398e0252ea03190fee7630c6a21ee971bf709123a080da",
+    "status": "CHANGED"
+  },
+  "source_code_or_media_copied": false,
+  "private_key_or_license_read": false
+}

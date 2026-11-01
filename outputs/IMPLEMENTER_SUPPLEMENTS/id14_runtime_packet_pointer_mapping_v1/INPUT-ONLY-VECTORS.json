@@ -1,0 +1,23 @@
+{
+  "schema": "id14-runtime-packet-input-only-crosscheck.v1",
+  "classification": "RUNTIME_SCALAR_METADATA_ONLY_NO_AUDIO_BYTES",
+  "vectors": [
+    {
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "profile_rate_kbps": 1024,
+      "static_enum": 5,
+      "runtime_selector_enum": 5,
+      "inner_packet_records": 38,
+      "marker_count": 1,
+      "code13": 16,
+      "code14": 1,
+      "count_seed": 15,
+      "pending_u6": 14,
+      "writer_executed": false
+    }
+  ],
+  "outer_descriptor_frame_size": 1536,
+  "inner_packet_count": 38,
+  "distinction": "outer param3[2] is frame size; inner packet is outer param3[5]",
+  "payload_or_bitstream_values": false
+}

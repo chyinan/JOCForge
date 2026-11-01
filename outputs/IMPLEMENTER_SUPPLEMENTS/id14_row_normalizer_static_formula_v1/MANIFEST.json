@@ -1,0 +1,54 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_row_normalizer_static_formula_v1",
+  "scope": "Hash-bound Ghidra formula for six-byte row normalization; row+2 is the signed classifier input, row+3 is not read, and row+4 controls ordinary run grouping. Semantic row source remains UNBOUND.",
+  "status": "STATIC_NORMALIZER_FORMULA_BOUND; ROW_PLUS2_CLASSIFIER; ROW_PLUS3_NOT_READ; ROW_PLUS4_RUN_COMPARE; SEMANTIC_SOURCE_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "payloads": [
+    {
+      "name": "CORRECTION.md",
+      "bytes": 367,
+      "sha256": "211ee974f1dcadcb7ac1583ec4fa8ee29acde7404a4dd2cdd092198da6698f1d"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2402,
+      "sha256": "eb886402624888ed6822e0f898b218535ada7a77c472f4a84b5a0532776cb94c"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 50997,
+      "sha256": "5729e8ff0cb310ede5fb3c33a1c5624dd265c5bb7a7eb97e217ae32fcf539741"
+    },
+    {
+      "name": "NORMALIZER-CONTRACT.json",
+      "bytes": 996,
+      "sha256": "f902df52e56c80efee59cda9ba636be27651e3ce11370393dcdd6c5601bf3508"
+    },
+    {
+      "name": "OPEN-EDGES.json",
+      "bytes": 645,
+      "sha256": "204a81d99cd148b5c74c75b0ec023ff7b8394e76febf16c9207210651de88b72"
+    },
+    {
+      "name": "README.md",
+      "bytes": 861,
+      "sha256": "9a0396aa03d88c24c9f77fa180a04d7310ae94a74c351563cc941ab6d6bb4379"
+    },
+    {
+      "name": "SOURCE-BINDING.json",
+      "bytes": 801,
+      "sha256": "b0579a036c26601763fc2726838b199d83a81a3da3a5f415da8745e4cf52d007"
+    },
+    {
+      "name": "VERIFICATION.json",
+      "bytes": 265,
+      "sha256": "02da1c51900a69a72925a3b67b9efa4d4d387d9d7eff2dd12588972952cb6485"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 3333,
+      "sha256": "adea2a223a2663e6e96f51dea279158dc56f37fbedcfda152ad218c9c2d3f5d8"
+    }
+  ]
+}

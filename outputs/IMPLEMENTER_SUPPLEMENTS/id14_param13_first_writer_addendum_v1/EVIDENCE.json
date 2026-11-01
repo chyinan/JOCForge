@@ -1,0 +1,68 @@
+{
+  "schema": "washed-id14-param13-first-writer-addendum.v1",
+  "package_id": "id14_param13_first_writer_addendum_v1",
+  "status": "ID14_COUNT_SOURCE_TO_U6_AND_PARAMETER13_TO_BSI_U8_BOUND_SAME_GENERATION_OPEN",
+  "implementation_delivery": "PROHIBITED",
+  "effect": "AUDIO_PARAMETER_LINEAGE_ONLY_NO_NEW_NUMERICAL_RULE",
+  "upstream": {
+    "source_manifest_sha256": "b01e9fd7fba0db70caa61965d08c3f67bb8df42e608ecb9dab4746e58efb8b65",
+    "checker_normal": "PASS",
+    "checker_optimized": "PASS",
+    "payload_hashes_recomputed": "ALL_MATCH",
+    "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_module_current_file_rehash": "MATCH"
+  },
+  "id14_count_path": {
+    "input_root_fields": [
+      "+0x0c170",
+      "+0x0c174"
+    ],
+    "operation": "U32 minuend minus U32 subtrahend",
+    "configuration_member": "param4[2] / config byte +0x08",
+    "accepted_count_range": "1..15",
+    "nested_joc_state_member": "+0x08",
+    "wire": "U6(count-1)",
+    "root_field_first_writer": "UNBOUND",
+    "other_same_offset_store": "UNBOUND_TO_SELECTED_WORKER"
+  },
+  "parameter13_path": {
+    "source": "independent property-list input",
+    "configuration_member": "+0x70",
+    "default_if_absent": 11,
+    "separate_code14_member": "+0x74",
+    "worker_member": "+0x2c9",
+    "imported_record_byte": "+0x269",
+    "working_header_byte": 119,
+    "wire": "additional_BSI_U8"
+  },
+  "same_worker_relation": {
+    "static": true,
+    "same_parent_generation": "UNBOUND",
+    "count_to_parameter13_formula": "NOT_FOUND; input fields are distinct",
+    "identity_from_equal_values": false
+  },
+  "prior_native_cases": {
+    "parameter13_values": [
+      1,
+      16
+    ],
+    "emitted_BSI_prefixes": [
+      "01 01",
+      "01 10"
+    ],
+    "ID14_storage_present": false,
+    "classification": "PRIOR_HASH_BOUND_CAPTURE_NOT_REEXECUTED"
+  },
+  "capture": {
+    "status": "NOT_RUN_KEYLESS_PROFILE_NOT_DEMONSTRATED",
+    "prior_setup_failure_stage": "DDP filter library initialization; workflow not built",
+    "private_key_or_license_contents_read": false,
+    "PCM_or_payload_read": false
+  },
+  "parent_inventory": {
+    "source_package_declares": 13,
+    "parent_manifests_independently_located_and_rehashed": 12,
+    "unlocated_parent_manifest": "e03490d81178f73711e99d796c605909b24395ac12b98cdce1cce8b7ff1f3640b"
+  },
+  "next_edge": "Writer/owner for input root +0x0c170/+0x0c174, followed by a verified keyless same-process parent/generation capture joining the ID14 count and imported U8."
+}

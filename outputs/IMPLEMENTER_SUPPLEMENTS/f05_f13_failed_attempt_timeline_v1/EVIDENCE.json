@@ -1,0 +1,100 @@
+{
+  "schema": "washed-f05-f13-failed-attempt-timeline.v1",
+  "package_id": "f05_f13_failed_attempt_timeline_v1",
+  "status": "RUN_02_FAILURE_AND_G0_G1_TIMELINE_OBSERVED; FAILED_TRANSACTION_VALUES_AND_BINARY_IDENTITY_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Sanitized timeline from the stored Codex command result for attempt -02. It binds the reported input identity and g0/g1 callback commits to the subsequent F05/F13 failure, but not the failing executable or transaction values at the comparison.",
+  "source_record": {
+    "thread_id": "01a13f66-b1ab-73e3-a489-4d60b3813a03",
+    "turn_id": "01a194f7-0908-7d53-9dd6-3a201faf3809",
+    "command_item_id": "exec-8aefa83a-34ff-47be-b21e-386fe08e130a",
+    "record_kind": "Codex stored commandExecution output",
+    "output_truncated": false,
+    "stdout_stderr_split": "UNBOUND"
+  },
+  "input": {
+    "classification": "runtime observed from CLI prepared-input line",
+    "sample": "authorized Human Is Cat ADM/WAVE",
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "sample_rate_hz": 48000,
+    "channels": 38,
+    "pcm_bits": 24,
+    "samples_per_channel": 6522906,
+    "current_authorized_file_hash_rechecked": true,
+    "run_time_hash_source": "CLI prepared-input line; no independent media read by this audit"
+  },
+  "timeline": [
+    {
+      "event": "Meter prepass completed",
+      "callbacks": 4247,
+      "zero_drains": 3,
+      "dialnorm": "Some(17)",
+      "metadata_generation": 0,
+      "metadata_generation_is_joc_generation": false
+    },
+    {
+      "event": "priming callback g=0 committed",
+      "callback_transaction_id": "jocforge-main-callback-g0",
+      "phase_generation_before": 1,
+      "phase_generation_after": 2,
+      "owner_receipts": 12
+    },
+    {
+      "event": "priming callback g=1 committed",
+      "callback_transaction_id": "jocforge-main-callback-g1",
+      "phase_generation_before": 2,
+      "phase_generation_after": 3,
+      "owner_receipts": 12
+    },
+    {
+      "event": "first F05/F13 body stage",
+      "error": "Joc(ProducerTransactionMismatch)",
+      "inner_process_exit_code": 2,
+      "cargo_wrapper_exit_code": 1
+    }
+  ],
+  "missing_fields": {
+    "failing_run_id": "UNBOUND",
+    "failing_executable_sha256": "UNBOUND",
+    "expected_producer_transaction_id": "UNBOUND",
+    "actual_producer_transaction_id": "UNBOUND",
+    "source_transaction_id": "UNBOUND",
+    "failing_callback_transaction_id": "UNBOUND",
+    "source_index": "UNBOUND",
+    "dispatch": "UNBOUND",
+    "gtc_owner_id": "UNBOUND",
+    "joc_owner_generation": "UNBOUND",
+    "producer_generation": "UNBOUND",
+    "writer_generation": "UNBOUND"
+  },
+  "output_state": {
+    "target_ec3_present_at_final_check": false,
+    "same_name_partial_present": false,
+    "unrelated_prior_partial_excluded": true
+  },
+  "current_rebuild_boundary": {
+    "attempt_03_executable_sha256": "a080ea176f8e418898973ac87c1e1aad47c2ed9c07435d2093f8f2598299fe6e",
+    "classification": "CURRENT_REBUILT_FILE_ONLY_NOT_RUN_02_IDENTITY"
+  },
+  "parent_static_supplement_manifest_sha256": "6e330549fa5c1dfada0bc2535500580ab9366ff0fb258658f876378a574f3dea",
+  "next_minimum_observation": [
+    "prelaunch executable SHA-256",
+    "run id and input SHA-256",
+    "expected producer token",
+    "actual optional producer token",
+    "parent callback token",
+    "GTC owner ID",
+    "callback index/phase",
+    "source index and dispatch",
+    "JOC before/after generation",
+    "ID14 producer/writer generation"
+  ],
+  "exclusions": {
+    "raw_source_code_included": false,
+    "raw_audio_or_payload_included": false,
+    "pcm_or_media_read_by_wash": false,
+    "private_key_or_license_read": false,
+    "absolute_paths": false
+  }
+}

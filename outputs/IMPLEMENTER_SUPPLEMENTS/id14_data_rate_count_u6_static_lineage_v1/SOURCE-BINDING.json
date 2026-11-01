@@ -1,0 +1,54 @@
+{
+  "schema": "washed-id14-data-rate-source-binding.v1",
+  "package_id": "id14_data_rate_count_u6_static_lineage_v1",
+  "incoming_research_manifest_sha256": "5d033f0e8558f49a838a94ed38b29726bc5c7b00048f0a6917bbac6dace89f86",
+  "incoming_package_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "current_target_images": [
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464,
+      "current_file_hash": "MATCH"
+    },
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728,
+      "current_file_hash": "MATCH"
+    }
+  ],
+  "parent_manifests": [
+    {
+      "package_id": "ID14-COUNT-ROOT-BUFFER-POPULATION-FOLLOWUP-V1",
+      "sha256": "587074f6e7c0daa4de2281101bf8229dcb3a1ec6f25cc3c461821df367326ece",
+      "payloads": "verified"
+    },
+    {
+      "package_id": "ID14-COUNT-ROOT-UPSTREAM-FOLLOWUP-V1",
+      "sha256": "e3532977d0503b6581f5aa6764b0c522533b79d9668ef126dc943de3ad5a5442",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "HOST-ATMOS-CODE13-INPUT-LINEAGE-FOLLOWUP-V2",
+      "sha256": "48c44e2e2f7e4cef9e37cab03cf7184317df35bebdaf583d4aba20bdb156dff0",
+      "payloads": "29_of_29_hash_and_size_match"
+    },
+    {
+      "package_id": "ID14-PARSER-COMPLEXITY-GHIDRA-WASH-V4",
+      "sha256": "1e49a26f3da85abfc397f934230165c3d35cd8fff34359888bb2eec375f06a5b",
+      "payloads": "8_of_8_hash_and_size_match"
+    },
+    {
+      "package_id": "NATIVE-PARAMETER13-HOST-SETTER-FOLLOWUP-V1",
+      "sha256": "4fb1eac5e5076a11f9d363c9cbd1532a8ca4b7b88d0c673d899c3c5d644a5113",
+      "payloads": "12_of_12_hash_and_size_match"
+    }
+  ],
+  "source_artifacts": {
+    "ghidra_script_sha256": "dbf7aa768a00d7b1bc77432c5296e70f4b9afd4f5cdc91f2eb0087ffa2d6542d",
+    "ghidra_report_sha256": "ba62d18e07bfa7d6819855421681d6ae6db4327c124ee5ae6ef71e43e5d1089f",
+    "frozen_model_sources_rehashed": true
+  },
+  "private_key_or_license_contents_read": false,
+  "raw_media_payload_read": false
+}

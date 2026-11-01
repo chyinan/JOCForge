@@ -1,0 +1,95 @@
+{
+  "schema": "washed-id14-runtime-packet-pointer-mapping.v1",
+  "package_id": "id14_runtime_packet_pointer_mapping_v1",
+  "status": "OUTER_DESCRIPTOR_TO_INNER_PACKET_RUNTIME_BOUND; DATA_RATE/COUNT/U6_INPUT_CROSSCHECKED; U6_WRITE_NOT_RUN; HOST_PRIV_OWNER_AND_ROW_SEMANTICS_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One authorized Human Is Cat 1024 kbps run; outer/inner packet distinction, runtime selector/count values, and the pending ID14 U6 input are observed in one thread. Does not establish the host task object to exact Priv owner, row semantics, model EMDF identity, or bitstream U6 emission.",
+  "sources": {
+    "dee_host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "current_host_image_hash": "MATCH",
+    "current_plugin_image_hash": "MATCH",
+    "module_load_identity": "image file/PE metadata crosschecked; no memory-image dump"
+  },
+  "run": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "current_authorized_input_hash": "MATCH",
+    "profile_data_rate_kbps": 1024,
+    "profile_metering": "1770-4",
+    "target_mode": "keyless job configuration with external license file contents not read",
+    "process_thread": 43692,
+    "output_sink": "NUL",
+    "writer_instruction_executed": false,
+    "session_ended_at_writer_entry": true,
+    "temporary_file_bytes": 3704,
+    "temporary_file_contents": "NOT_READ_AND_DELETED"
+  },
+  "correction": {
+    "outer_function": "FUN_180179AB0",
+    "outer_param3_slot2": "1536 frame size",
+    "outer_param3_slot5": "inner metadata packet pointer",
+    "packet_handoff": "param3[5] -> FUN_1801788A0 second arg -> FUN_180178DC0 param3",
+    "inner_packet_count_offset": "+0x0a U16",
+    "inner_packet_rows_pointer_offset": "+0x10",
+    "outer_param3_is_inner_packet": false
+  },
+  "selector": {
+    "static_data_rate_map": "1024 string -> enum5",
+    "runtime_selector_enum": 5,
+    "job_profile_rate_value": 1024,
+    "value_crosscheck": "same authorized job/profile and selected plugin thread; exact host-task object pointer to Priv identity remains UNBOUND"
+  },
+  "runtime_packet": {
+    "inner_packet_record_count_u16": 38,
+    "row_contents_read": false,
+    "metadata_marker_count": 1,
+    "code13_base": 15,
+    "code13": 16,
+    "code14": 1,
+    "count_difference": 15,
+    "count_accepted_range": "1..15",
+    "id14_u6_value_if_writer_executes": 14,
+    "writer_function": "FUN_180235820",
+    "writer_instruction_executed": false,
+    "actual_u6_bitstream_emission": "NOT_RUN"
+  },
+  "model_comparison": {
+    "frozen_model_parser": "complete per-frame EMDF input -> object_count+1",
+    "selected_model_complexity": 16,
+    "relation_to_native_packet_generation": "UNBOUND; no same-file/job token"
+  },
+  "open_edges": {
+    "host_task_config_object_to_specific_priv_owner": "UNBOUND",
+    "six_byte_row_semantic_names": "UNBOUND",
+    "native_packet_to_model_emdf_generation": "UNBOUND",
+    "actual_u6_emission": "NOT_RUN"
+  },
+  "parents": [
+    {
+      "package_id": "ID14-SELECTOR-OWNER-GENERATION-FOLLOWUP-V1",
+      "manifest_sha256": "5d033f0e8558f49a838a94ed38b29726bc5c7b00048f0a6917bbac6dace89f86"
+    },
+    {
+      "package_id": "ID14-COUNT-ROOT-BUFFER-POPULATION-FOLLOWUP-V1",
+      "manifest_sha256": "587074f6e7c0daa4de2281101bf8229dcb3a1ec6f25cc3c461821df367326ece"
+    },
+    {
+      "package_id": "HOST-ATMOS-CODE13-INPUT-LINEAGE-FOLLOWUP-V2",
+      "manifest_sha256": "48c44e2e2f7e4cef9e37cab03cf7184317df35bebdaf583d4aba20bdb156dff0"
+    },
+    {
+      "package_id": "ID14-PARSER-COMPLEXITY-GHIDRA-WASH-V4",
+      "manifest_sha256": "1e49a26f3da85abfc397f934230165c3d35cd8fff34359888bb2eec375f06a5b"
+    },
+    {
+      "package_id": "NATIVE-PARAMETER13-HOST-SETTER-FOLLOWUP-V1",
+      "manifest_sha256": "4fb1eac5e5076a11f9d363c9cbd1532a8ca4b7b88d0c673d899c3c5d644a5113"
+    }
+  ],
+  "exclusions": {
+    "private_key_or_license_contents_read": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "raw_pointer_values_included": false,
+    "absolute_paths": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "id14_param13_native_lineage_boundary_v1",
+  "scope": "Static natural count and parameter-13 producer/serializer paths; same-parent generation and keyless capture remain open.",
+  "status": "ID14_COUNT_AND_PARAMETER13_STATIC_PATHS_BOUND_SAME_WORKER_GENERATION_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2639,
+      "sha256": "4ecf28c7367a64dbfde4f882ca8cba13e23de058fd28e80c0d38a7899d76e739"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 494,
+      "sha256": "e6c40709b5bd8f904a53222295e9cc2e3ca9a959da2545e9e0b8b948f9053c73"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1032,
+      "sha256": "5b600a891344173c26684bd8ee78991481d6952a7b92d438dfd9361fb793d6ab"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 1926,
+      "sha256": "346a0372251ee03abda1c5573bdc89fff81b0781e79ed214c89ace4da1e7a1d4"
+    }
+  ]
+}

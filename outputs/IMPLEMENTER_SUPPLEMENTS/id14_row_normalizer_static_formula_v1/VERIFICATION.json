@@ -1,0 +1,7 @@
+{
+  "package_integrity": "PENDING_PACKAGE_CHECK",
+  "normal_python": "PENDING",
+  "optimized_python": "PENDING",
+  "formula_vector_check": "PENDING",
+  "scope": "Independent formula evaluator for synthetic static vectors only; no DEE runtime conformance."
+}

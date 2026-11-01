@@ -1,0 +1,16 @@
+{
+  "package_id": "f13c_generic_config_result_handoff_v3",
+  "incoming_manifest_sha256": "0473987f247572cd78d164afd901e2f7495c60fd8aab765167e18ad710e3c15f",
+  "incoming_payload_sha256": {
+    "ADDENDUM.md": "f71baa111957fefba301ed8243bc9433f1de04a59ba23b470866d849061be11e",
+    "GHIDRA-CONSUMER-FLOW.json": "c56254a0723a39c9c88767403565a9ad1179d05a5e890b8672cf4644df7bbf52"
+  },
+  "parent_washed_v2_manifest_sha256": "7dabde419bf0a5e378d94613393686298c2baff4053f015d9d09222e4e9fad4e",
+  "parent_report_sha256": "b62f3ceb8175fb7f21b7e4f186c5e168707b0545a6cc1836a3058e4b4a7dfbc4",
+  "native_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+  "current_image_rehash_match": true,
+  "raw_source_or_decompilation_included": false,
+  "binary_included": false,
+  "pcm_or_payload_read": false,
+  "private_key_or_license_contents_read": false
+}

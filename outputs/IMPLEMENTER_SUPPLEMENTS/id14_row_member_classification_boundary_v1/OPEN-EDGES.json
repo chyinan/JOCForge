@@ -1,0 +1,24 @@
+{
+  "package_id": "id14_row_member_classification_boundary_v1",
+  "closed_within_scope": [
+    "Row index 10 original/copied scalar values match",
+    "Byte +3 is used by a type-classification helper",
+    "U16 +4 is read in a run-comparison branch",
+    "The normalized U16 0x800A is consumed and the bit15 test is taken"
+  ],
+  "open": [
+    "Raw row member semantic name",
+    "Typed producer edge from selected ADM/EMDF field",
+    "Causal source of all bits in normalized 0x800A",
+    "Model EMDF generation to native packet generation",
+    "U6 writer and bitstream emission"
+  ],
+  "status": {
+    "semantic_field": "UNBOUND",
+    "model_generation": "UNBOUND/NO",
+    "plus4_causality": "NOT_CLAIMED",
+    "writer": "NOT_EXECUTED",
+    "bitstream": "NOT_RUN"
+  },
+  "guidance": "Do not name row+3 or row+4 from values alone, and do not treat this single row as a general normalization formula."
+}

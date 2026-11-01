@@ -1,0 +1,18 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "16d65151a76514fe53a3c8ac8ebb2382e77c943d5226a60fea94aa1e23416821",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed incoming manifest SHA-256 and ran the incoming checker normally and under Python optimization.",
+    "Confirmed the package contains no native run, PCM, payload, key, license, or bitstream observation.",
+    "Independently recomputed the three synthetic copy/boundary vectors; actual DDP row identity remains NOT_SUPPLIED.",
+    "Refined the prior candidate addendum's pointer identity boundary: source and destination are distinct allocations, with static copy lineage established for selector 3."
+  ],
+  "not_promoted": [
+    "selected reader/factory identity",
+    "setup table to DDP inner packet same-generation identity",
+    "AO_100B to actual DDP row 10 semantic identity",
+    "row +2 semantic classifier value in the cited run",
+    "bitstream emission or implementation readiness"
+  ]
+}

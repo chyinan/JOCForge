@@ -1,0 +1,55 @@
+{
+  "package_id": "id14_row_member_classification_boundary_v1",
+  "status": "ROW_MEMBER_READ_ROLES_AND_NORMALIZED_CONSUMER_BOUND; SEMANTIC_FIELD_SOURCE_UNBOUND; U6_WRITER_NOT_EXECUTED",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "One native row10 observation plus static roles of row+3 and row+4 reads. No semantic ADM/EMDF field name or causal decomposition of normalized U16 is claimed.",
+  "source": {
+    "incoming_package_id": "ID14-ROW-SEMANTIC-FIELD-BOUNDARY-FOLLOWUP-V1",
+    "manifest_sha256": "3d5df8de998d0de67405ecc36b1b31b4c9a7bddc95b4b6bd185ab04eae67a3f4",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "parent_manifest_sha256": "b6b56cfdbcf29a870496d87f04dc34b95d8a7d?"
+  },
+  "run": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_sha256": "83240654df650a6fbe47aba8480045b0c38d86d696265aa06b20b6534269e842",
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "data_rate_kbps": 1024,
+    "authorized_ascii_alias": true,
+    "thread_scoped_row_capture": true
+  },
+  "row_shape": {
+    "record_count": 38,
+    "stride_bytes": 6,
+    "row_index": 10,
+    "original_and_copied_scalars_match": true
+  },
+  "member_roles": {
+    "byte_plus3": "read by a type-classification helper",
+    "u16_plus4": "read only in a run-comparison branch",
+    "raw_byte_plus3": "0xBA",
+    "raw_u16_plus4": "0x0000",
+    "normalized_u16_observed": "0x800A",
+    "consumer_bit15_taken": true,
+    "plus4_alone_causes_normalized_value": "NOT_CLAIMED",
+    "semantic_name": "UNBOUND"
+  },
+  "count_context": {
+    "marker_count": 1,
+    "code13_base": 15,
+    "code13": 16,
+    "code14": 1,
+    "pending_u6_if_writer_executes": 14,
+    "u6_writer_instruction_executed": false
+  },
+  "limits": {
+    "raw_row_to_adm_or_emdf_typed_field": "UNBOUND",
+    "model_emdf_generation_to_packet": "UNBOUND",
+    "output_target": "NUL",
+    "output_parse": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "payload_contents_read": false,
+    "private_license_or_hmac_read": false
+  }
+}

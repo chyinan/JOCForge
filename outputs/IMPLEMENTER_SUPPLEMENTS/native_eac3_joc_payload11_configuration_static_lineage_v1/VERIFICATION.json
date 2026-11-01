@@ -1,0 +1,29 @@
+{
+  "schema": "washed-supplement-verification.v1",
+  "status": "PASS_HASH_AND_SCOPE_CHECK; TYPE11_STATIC_RULE_ONLY",
+  "source_package_id": "PAYLOAD11-EMDF-FIELD-LINEAGE-V1",
+  "source_package_manifest_sha256": "f4ca8e1331c9749666a079b90d6d379d553c5efed4313adde65c8ab524c25178",
+  "source_package_checker_normal": "PASS",
+  "source_package_checker_optimized": "PASS",
+  "source_package_artifacts_checked": 4,
+  "static_target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "reference_output_wash_manifests_checked": 2,
+  "implementation_ready": "NO",
+  "limitations": [
+    "Static Type 11 field rules are bound to the hash-identified module, but not to the loaded module for the First Love/Potential AI output runs.",
+    "OpenJOC metadata does not expose group_id presence separately from group_id value.",
+    "Compatibility PASS and strict FAIL are reported independently; no conformance or audio-quality conclusion is made.",
+    "No payload body bytes or DEE run were included in this package."
+  ],
+  "excluded": {
+    "source_code": false,
+    "decompilation": false,
+    "binaries": false,
+    "media_payload": false,
+    "raw_pcm": false,
+    "bitstream": false,
+    "private_key_or_license_contents": false,
+    "absolute_paths": false,
+    "raw_instruction_addresses": false
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "washed-id14-param13-native-lineage-boundary.v1",
+  "package_id": "id14_param13_native_lineage_boundary_v1",
+  "status": "ID14_COUNT_AND_PARAMETER13_STATIC_PATHS_BOUND_SAME_WORKER_GENERATION_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "implementation_effect": "NO_NEW_AUDIO_RULE",
+  "source_package": {
+    "manifest_sha256": "1db7a21854713a35c1b60895280d1fc921db644934b2099c44401dfc6fd398f9",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_hashes_recomputed": "ALL_MATCH"
+  },
+  "target": {
+    "module": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "current_file_rehash": "MATCH",
+    "analysis": "Ghidra 12.2 static read-only"
+  },
+  "native_paths": {
+    "id14_count": {
+      "input_root_fields": [
+        "+0x0c170",
+        "+0x0c174"
+      ],
+      "operation": "U32 minuend minus U32 subtrahend",
+      "configuration_count_member": "config block +0x08",
+      "accepted_range": "1..15",
+      "nested_joc_state_member": "+0x08",
+      "wire_encoding": "U6(count-1)",
+      "root_fields_first_writer": "UNBOUND"
+    },
+    "parameter13": {
+      "source": "separate property-list input",
+      "configuration_member": "+0x70",
+      "default_if_absent": 11,
+      "neighboring_code14_member": "+0x74 (separate field)",
+      "worker_copy": "+0x2c9",
+      "imported_source_record_byte": "+0x269",
+      "working_header_byte": 119,
+      "wire_encoding": "additional_BSI_U8"
+    }
+  },
+  "relation": {
+    "same_child_worker_static": true,
+    "same_parent_generation": "UNBOUND",
+    "formula_or_data_transfer_between_inputs": "NOT_FOUND",
+    "value_equality_is_identity": false
+  },
+  "prior_controlled_cases": {
+    "configuration_counts": [
+      1,
+      16
+    ],
+    "observed_BSI_prefixes": [
+      "01 01",
+      "01 10"
+    ],
+    "id14_storage_present": false,
+    "classification": "PRIOR_HASH_BOUND_NATIVE_CAPTURE_NOT_REEXECUTED"
+  },
+  "capture": {
+    "status": "NOT_RUN_KEYLESS_PROFILE_NOT_DEMONSTRATED",
+    "prior_authorized_setup": "stopped at DDP library initialization; native input processing not confirmed",
+    "private_key_or_license_contents_read": false,
+    "raw_payload_or_pcm_read": false
+  },
+  "parent_manifest_rehash": {
+    "declared_count": 13,
+    "located_and_rehashed": 12,
+    "unlocated_manifest_sha256": "e03490d81178f73711e99d796c605909b24395ac12b98cdce1cce8b7ff1f3640b"
+  },
+  "remaining_edges": {
+    "ID14_count_root_field_owner": "UNBOUND",
+    "ID14_count_to_parameter13_same_generation": "UNBOUND",
+    "selected_factory_route": "UNBOUND"
+  }
+}

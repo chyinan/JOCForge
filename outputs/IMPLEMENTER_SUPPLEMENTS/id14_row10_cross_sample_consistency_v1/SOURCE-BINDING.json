@@ -1,0 +1,22 @@
+{
+  "package_id": "id14_row10_cross_sample_consistency_v1",
+  "incoming_manifest_sha256": "dd60231ca4e14737cde054b8f5bdc7173d7a0a3a958c49f0580433d80c59dd23",
+  "incoming_payload_sha256": {
+    "EVIDENCE.json": "217c51908d04e0c7261af772402cfbf94797b48a06d7334f7503801cfc8f91fb",
+    "README.md": "09eaa15ff3f4de8d8ebac6ac351ca04778eee8db3a89a90bd1a0ca24be9d8f00",
+    "REPORT.md": "1a7b5ce95f9381cf4c8482c4c586a132235f8d357c6e30abe49bfc9a10a5da44",
+    "SOURCE-INVENTORY.json": "0aebec7dfad75e35b0d9f3f8ec3e7804a502a585e6179508475a8a12ae99c7db",
+    "verify_package.py": "0bf671eb328fdc90205c4955d710ff8d1a0e32da319dd2d15fb682dd12f69f8c"
+  },
+  "parent_row_consumer_manifest_sha256": "3d5df8de998d0de67405ecc36b1b31b4c9a7bddc95b4b6bd185ab04eae67a3f4",
+  "parent_owner_manifest_sha256": "531335965977e8eef22af9f27ff803b40138db2ae0191bace9723df7ca9d38b8",
+  "input_hashes": [
+    "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d"
+  ],
+  "job_sha256": "83240654df650a6fbe47aba8480045b0c38d86d696265aa06b20b6534269e842",
+  "raw_pointer_tokens_included": false,
+  "source_code_or_decompilation_included": false,
+  "pcm_or_payload_read": false,
+  "private_key_or_license_read": false
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "ID14-SELECTED-ADM-READER-DDP-BOUNDARY-V2",
+    "manifest_sha256": "33cc65b97deec34c97990a514b96c89d5880c93e4f3f8a8e9d972014f373a1f5",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "ghidra_source_file_count": 0,
+    "source_identity_basis": "incoming package binds target images, source inventory hashes, parent manifests, and observation plan"
+  },
+  "parent_wash_packages": [
+    {"package_id": "F13C-ADM-OPENER-TABLE-CANDIDATE-ADDENDUM-V1", "manifest_sha256": "57d7e6579e8bb9c5bfd0a05d693e602154ee332c0057fc09a536072e45c4f6fd"},
+    {"package_id": "F13C-ADM-SETUP-TABLE-COPY-LINEAGE-ADDENDUM-V1", "manifest_sha256": "ef917c432cd40d8ef4fa335329edace747da282dac0ae669310dcd57f9cd1831"},
+    {"package_id": "PCM24-DDP-COMPOSITE-MASTER-READER-LINEAGE-ADDENDUM-V1", "manifest_sha256": "84e4e7acce386d6724fd81ad95792c35ff161b48b91bebaa303f984b3cdae06c"},
+    {"package_id": "DEE-AUDIO-FILTER-ORDINAL-BOUNDARY-V1", "manifest_sha256": "df01e36e3d11a67c1726a98209f250788bc421f54b59899827fb523913016866"},
+    {"package_id": "DEE-AUDIO-FILTER-SEARCH-PATH-PROVENANCE-ADDENDUM-V1", "manifest_sha256": "a7f34ef8cf9d3cf248e2daf90eeec41506cce137dc0e1b1e4858f900db135700"}
+  ],
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name": "dee_audio_filter_convert_atmos_mezz.dll", "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"name": "dactlib.dll", "sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239"}
+  ]
+}

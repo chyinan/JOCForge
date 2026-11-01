@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 6337,
+      "file": "CHECK.py",
+      "sha256": "80e67ada9e120c3b1781239915891ff4824d640cb88a38993cc93cbfa1865a5e"
+    },
+    {
+      "bytes": 3037,
+      "file": "EVIDENCE.json",
+      "sha256": "c5ad065e551b45195e31b288a79d009443ff2e32769e952ba597038dd34ce6f6"
+    },
+    {
+      "bytes": 1265,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "c9ca15ab7333bf22112064a0b78d46166477bf871e07602556c7152af200c82d"
+    },
+    {
+      "bytes": 2114,
+      "file": "REPORT.md",
+      "sha256": "4b086859c2bed617f9b9ad510ffac10a9f9adc908c6298f2841c2a12420b2286"
+    },
+    {
+      "bytes": 1704,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "d8ecd3fb077d8679bb8074f6f1b1110af7bb12cff8422e03ea5b71b11992bc72"
+    },
+    {
+      "bytes": 1052,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "3ba23280bdabc985ae8fb2d01f406d892003c2a99971f15fa0d68a653dfc61bb"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F13C-ADM-OPENER-TABLE-CANDIDATE-ADDENDUM-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "a49fbf51ec8f8cf572c5b1eabb1724ee1b348d2d0c1cdd7db48f26acef396d38",
+  "status": "ADM_TYPED_CANDIDATE_STATICALLY_BOUND; SELECTED_READER_TO_DDP_ROW_IDENTITY_UNBOUND"
+}

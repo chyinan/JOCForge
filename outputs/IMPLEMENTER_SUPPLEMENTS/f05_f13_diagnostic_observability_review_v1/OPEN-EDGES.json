@@ -1,0 +1,21 @@
+{
+  "schema": "washed-f05-f13-diagnostic-review-open-edges.v1",
+  "package_id": "f05_f13_diagnostic_observability_review_v1",
+  "closed": [
+    "unit error variant and comparison point identified in reviewed source snapshot",
+    "current hashes for five Rust files match the reviewed snapshot",
+    "minimum non-payload diagnostic fields enumerated"
+  ],
+  "open": [
+    "attempt-03 expected/actual transaction values",
+    "attempt-03 executable-to-source build join",
+    "current runner's prelaunch hash/receipt behavior",
+    "attempt-04 runtime diagnostic"
+  ],
+  "status": {
+    "run03_values": "UNBOUND",
+    "runner_after_review": "NOT_EVALUATED",
+    "attempt04": "NOT_EVALUATED"
+  },
+  "guidance": "Use the suggested record to capture the next failing/valid run; do not infer runtime values from the model projection."
+}

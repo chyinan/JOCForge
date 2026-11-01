@@ -1,0 +1,113 @@
+{
+  "schema": "washed-f05-f13-transaction-source-parent-contract.v1",
+  "package_id": "f05_f13_transaction_source_parent_contract_v1",
+  "status": "CURRENT_RUST_SOURCE_ROUTE_MATCHES_APPROVED_MODEL; FAILED_RUN_ACTUAL_TRANSACTION_UNBOUND",
+  "implementation_delivery": "ALLOWED_WITHIN_DECLARED_SCOPE_ONLY",
+  "scope": "Static current-snapshot transaction/clock projection and synthetic classification of the F05/F13 producer mismatch; does not identify the failed executable or its runtime actual value.",
+  "observation": {
+    "origin": "user supplied run note; not independently replayed",
+    "meter_prepass_complete": true,
+    "committed_priming_callbacks": [
+      0,
+      1
+    ],
+    "first_body_stage": "F05/F13",
+    "error": "Joc(ProducerTransactionMismatch)",
+    "exit_code": 2,
+    "ec3_or_partial_present": false,
+    "run_id": null,
+    "failing_executable_sha256": null,
+    "expected_producer_transaction_id": null,
+    "actual_producer_transaction_id": null,
+    "parent_callback_transaction_id": null,
+    "runtime_owner_id": null,
+    "runtime_owner_before_generation": null,
+    "runtime_owner_after_generation": null,
+    "runtime_producer_generation": null,
+    "runtime_writer_generation": null,
+    "runtime_callback_index": null,
+    "runtime_source_index": null,
+    "runtime_callback_phase": null
+  },
+  "approved_model": {
+    "gtc_contract_package_manifest_sha256": "8a7410f0d5049d40196c3baf3f4a074d1693e11c65517440cb6f5368632a369e",
+    "gtc_contract_file_sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+    "source_transaction_supplement_manifest_sha256": "1a825c5dab7ecd292e53ddd691244c7e4bef2c34d553631c3fe714dd1cf73290",
+    "source_transaction_contract_sha256": "528478df6cb22ff94e86e275cb769e76f2ffb601a53072bf21f78564aa4a4fbc"
+  },
+  "static_projection": {
+    "classification": "STATIC_AND_APPROVED_MODEL",
+    "callback_index": 2,
+    "callback_phase": "source transaction nested under main callback after g=0/g=1 callback-only priming",
+    "source_index": 0,
+    "dispatch": 1,
+    "parent_callback_transaction_id": "jocforge-main-callback-g2",
+    "expected_producer_transaction_id": "jocforge-source-0",
+    "current_source_route_producer_transaction_id": "jocforge-source-0",
+    "owner_id": "Joc",
+    "owner_state_ref": "owners.joc",
+    "owner_generation_before": 0,
+    "owner_generation_after_proposal": 1,
+    "producer_generation": 0,
+    "writer_generation": 0,
+    "global_phase_generation_before_callback": 2,
+    "global_phase_generation_after_reported_abort": 2,
+    "current_source_route_comparison": "MATCH",
+    "failed_run_actual_comparison": "UNBOUND"
+  },
+  "first_check": {
+    "kind": "Rust",
+    "path": "crates/jocforge-domain/src/joc/programme_state.rs",
+    "line": 275,
+    "condition": "ID14 provenance producer_transaction_id != supplied producer_transaction_id",
+    "meaning": "The reported error establishes inequality at this comparison, but the enum does not serialize expected/actual values. A prior owner/generation check is separate."
+  },
+  "transaction_separation": {
+    "producer_transaction": "jocforge-source-0",
+    "parent_callback_transaction": "jocforge-main-callback-g2",
+    "same_token_expected": false,
+    "source_and_parent_are_distinct_scopes": true,
+    "current_snapshot_passes_source_token_separately": true
+  },
+  "classifications": [
+    {
+      "case": "actual equals parent callback token while producer/writer generation is source 0",
+      "classification": "REJECT_LABEL_MISMATCH",
+      "correct_handling": "Keep source and parent tokens distinct; use parent-bound receipt API."
+    },
+    {
+      "case": "actual source token is stale source 1 or producer/writer generation differs from 0",
+      "classification": "REJECT_CROSS_GENERATION",
+      "correct_handling": "Reject and rebuild current source stage; do not relabel."
+    },
+    {
+      "case": "actual producer token is absent",
+      "classification": "REJECT_MISSING_PROVENANCE",
+      "correct_handling": "Reject; supply approved parent-issued source token at producer boundary."
+    }
+  ],
+  "current_route": {
+    "all_nine_relevant_rust_source_hashes_rehashed": true,
+    "all_nine_match": true,
+    "repository_ref_commit": "70439c8c4961dff3aa27c4dca262577d61994b05",
+    "branch": "experimental/independent-encoder",
+    "git_worktree_status": "UNBOUND_PERMISSION_DENIED",
+    "native_analysis": "NOT_USED",
+    "encoder_run_by_research_agent": false
+  },
+  "open_edges": {
+    "failed_run_binary_identity": "UNBOUND",
+    "failed_run_expected_actual_values": "UNBOUND",
+    "failed_run_to_current_source_snapshot_join": "UNBOUND",
+    "run148_is_failed_attempt": "NO"
+  },
+  "exclusions": {
+    "raw_source_code_included": false,
+    "source_code_snippets_included": false,
+    "native_binaries_or_decompilation_included": false,
+    "media_pcm_payload_or_bitstream_read": false,
+    "private_key_or_license_read": false,
+    "encoder_run": false,
+    "absolute_paths": false
+  }
+}

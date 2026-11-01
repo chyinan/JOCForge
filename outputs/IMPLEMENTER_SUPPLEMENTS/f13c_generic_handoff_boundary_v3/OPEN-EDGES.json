@@ -1,0 +1,23 @@
+{
+  "package_id": "f13c_generic_config_result_handoff_v3",
+  "closed": [
+    "Parser reads dmixmod in a separate enum slot from four mix-level fields.",
+    "On parser-success status the caller passes configuration records to a generic handoff.",
+    "The targeted handoff processes records and emits name/value/error result entries."
+  ],
+  "open": [
+    "Identity of generic result records relative to dmixmod slot 0x11.",
+    "DME preferred_downmix_mode to native dmixmod conversion.",
+    "Native default when field is absent.",
+    "Field-specific consumption by stereo postmix or target 5.1 JOC processing/signaling.",
+    "Final F13C writer/consumer branch."
+  ],
+  "status": {
+    "parser_field": "STATIC_BOUND",
+    "generic_handoff": "STATIC_BOUND",
+    "field_specific_consumer": "UNBOUND",
+    "native_default": "UNBOUND",
+    "final_writer": "UNBOUND"
+  },
+  "guidance": "Do not treat the generic result-tree routine as an audio or bitstream consumer, and do not interpret absence of a targeted field read as proof of no effect."
+}

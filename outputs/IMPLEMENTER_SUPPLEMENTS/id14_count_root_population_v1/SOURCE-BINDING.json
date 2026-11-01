@@ -1,0 +1,45 @@
+{
+  "schema": "washed-id14-count-root-population-source-binding.v1",
+  "package_id": "id14_count_root_population_v1",
+  "incoming_research_manifest_sha256": "587074f6e7c0daa4de2281101bf8229dcb3a1ec6f25cc3c461821df367326ece",
+  "incoming_checker": "PASS_NORMAL_AND_PYTHON_O",
+  "source_images": [
+    {
+      "module": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "bytes": 10942464,
+      "current_source_hash": "MATCH"
+    },
+    {
+      "module": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "bytes": 4233728,
+      "current_source_hash": "MATCH"
+    }
+  ],
+  "parents": [
+    {
+      "package_id": "ID14-COUNT-ROOT-BUFFER-POPULATION-FOLLOWUP-V1",
+      "manifest_sha256": "587074f6e7c0daa4de2281101bf8229dcb3a1ec6f25cc3c461821df367326ece",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "ID14-COUNT-ROOT-UPSTREAM-FOLLOWUP-V1",
+      "manifest_sha256": "e3532977d0503b6581f5aa6764b0c522533b79d9668ef126dc943de3ad5a5442",
+      "checker": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package_id": "HOST-ATMOS-CODE13-INPUT-LINEAGE-FOLLOWUP-V2",
+      "manifest_sha256": "48c44e2e2f7e4cef9e37cab03cf7184317df35bebdaf583d4aba20bdb156dff0",
+      "payloads": "29_OF_29_HASH_AND_SIZE_MATCH"
+    }
+  ],
+  "ghidra_script_sha256": "2be8025507bf804b030eb9b54b4f330d0e3bd52744c065cfb1d8f673e968088a",
+  "raw_report_sha256": "55da723fda7047a3f95c46b3606a888397bbbe85c70fb0bf834b0553b12871d5d",
+  "raw_report_rehashed": true,
+  "raw_decompilation_copied": false,
+  "native_capture": "NOT_RUN",
+  "private_key_or_license_contents_read": false,
+  "media_pcm_payload_or_bitstream_read": false,
+  "note": "Source path strings are omitted. Binary identities use image names, sizes, and SHA-256."
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "washed-f13c-reader-metadata-and-pointer-lifetime.v1",
+  "status": "SCHEMA_METADATA_CALLBACKS_OBSERVED; R138_SELECTED_READER_UNBOUND; E_SETUP_TRANSIENT_ALIAS_AND_FINAL_COPY_BOUND",
+  "implementation_ready": false,
+  "schema_only_host_observation": {
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "command_mode": "--schema",
+    "input_profile_supplied": false,
+    "input_audio_supplied": false,
+    "route_selected": false,
+    "job_xml_opened": false,
+    "audio_filter_load_registration_hit": true,
+    "generic_schema_registry_consumer_hit": true,
+    "metadata_callback_descriptors": ["AC-4 input", "AC-3 output", "other generic descriptors"],
+    "selected_r138_audio_input_reader": "NOT_OBSERVED",
+    "schema_route_declaration_is_selected_route": false,
+    "bitstream_emission": "NOT_RUN"
+  },
+  "converter_image_identity": {
+    "current_e_drive_converter_sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80",
+    "older_d_drive_converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "images_are_same": false,
+    "current_local_type_list_contains_audio_adm": true,
+    "local_type_list_to_host_audio_input_selection": "UNBOUND"
+  },
+  "setup_pointer_lifetime": {
+    "function": "FUN_1802851A0",
+    "branch_condition": "FUN_18028CCF0(param1+0x158) returns 0",
+    "input_table": "param4[2] at param4+0x10; count U16 at param4+0x0A",
+    "temporary_assignment": "this+0x50 temporarily receives param4[2]",
+    "successful_branch_next_steps": ["allocate new count*6 table", "overwrite this+0x50 with new pointer", "copy six-byte records"],
+    "post_allocation_pointer_relation": "setup-owned table is distinct from param4[2] on successful allocation",
+    "runtime_reader_or_generation_identity": "NOT_CAPTURED"
+  },
+  "unbound": {
+    "R138_audio_adm_reader_factory": true,
+    "selected_reader_to_setup_same_activation": true,
+    "setup_to_DDP_worker_generation": true,
+    "DDP_packet_to_selected_reader_generation": true
+  },
+  "access_boundary": {
+    "runtime_r138_observation": "NOT_RUN",
+    "pcm_payload_or_row_table_bytes_read": false,
+    "key_or_license_contents_read": false,
+    "output_contents_read": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "package_id": "id14_row_to_normalized_marker_consumer_v1",
+  "incoming_package_manifest_sha256": "b6b56cfdbcf29a870496d87f04dc34b95d8a7a59db66f801b41cefb6e2dfec7b",
+  "incoming_payload_sha256": {
+    "EVIDENCE.json": "3f4e9256ef23c6b2337c7073c6d17fa0a096111084022327a922b79b3a4fabc0",
+    "README.md": "b2d2c442909955aff39f43476f13deac94384ed96c7dcc80d260c39edc78d459",
+    "REPORT.md": "d8172fe98ddeb5ad79f7a69d65b3342ab4bb67b37987861971b95abb98659cb1",
+    "SOURCE-INVENTORY.json": "79fee847a6387d7a0eeea22ec87c6d06ae14bb54de61c959ff6ddf0f41659411",
+    "verify_package.py": "e7dea9818cdbd27f24046c25729a764ee62e7425cf14fb98235c5b0241cb2189"
+  },
+  "parent_package_manifest_sha256": "531335965977e8eef22af9f27ff803b40138db2ae0191bace9723df7ca9d38b8",
+  "source_hash_count": 5,
+  "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "private_key_or_license_contents_read": false,
+  "raw_pcm_or_ec3_bytes_read": false,
+  "source_code_or_decompilation_included": false,
+  "raw_pointer_tokens_included": false
+}

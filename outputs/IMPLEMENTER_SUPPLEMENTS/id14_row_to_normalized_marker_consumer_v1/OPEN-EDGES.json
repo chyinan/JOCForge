@@ -1,0 +1,24 @@
+{
+  "package_id": "id14_row_to_normalized_marker_consumer_v1",
+  "closed": [
+    "Same run/thread row-table and copied-row count 38 with six-byte stride",
+    "Selected row index 10 original and copied scalar values match",
+    "Normalizer input is the copied rows; normalized U16 array is the consumer input",
+    "Selected normalized U16 0x800A is consumed and the bit-15 predicate is taken"
+  ],
+  "open": [
+    "Raw row semantic field names",
+    "Causal decomposition of 0x800A into raw row members",
+    "Mapping from native row to ADM/model EMDF generation",
+    "U6 writer execution and bitstream emission",
+    "Output parse and playback"
+  ],
+  "status": {
+    "semantic_row_name": "UNBOUND",
+    "model_emdf_generation": "UNBOUND/NO",
+    "writer_instruction": "NOT_EXECUTED",
+    "bitstream": "NOT_RUN",
+    "playback": "NOT_RUN"
+  },
+  "guidance": "Do not infer that raw U16 +4 alone produced the marker. Treat this as a single observed row-consumer lineage, not a general transform or expected output."
+}

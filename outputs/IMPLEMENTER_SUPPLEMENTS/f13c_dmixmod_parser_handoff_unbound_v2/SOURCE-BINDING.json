@@ -1,0 +1,14 @@
+{
+  "package_id": "f13c_dmixmod_parser_handoff_unbound_v2",
+  "incoming_manifest_sha256": "e20ea874a7f93aa2689093db38f8f247ef6ba43717b212d49fa43214f5bb77c0",
+  "ghidra_addendum_sha256": "f85a79e9cccebfb335fa2be0953f9953f1f023d03fcbc10e4d75adae234e7c31",
+  "ghidra_json_sha256": "df5f23fec0e5a62ae8e3cbbca8216e1c95d1fe41b391297185508d4b1d38e22b",
+  "ghidra_project_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+  "wash_current_installed_exe_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+  "image_hash_match": true,
+  "parent_washed_ui_manifest_sha256": "39b399c1e518904d2ea8ee7f07fd9989ad8704afaff5c2cc6a64bb2a8825c1c2",
+  "raw_source_or_decompilation_included": false,
+  "binary_included": false,
+  "private_key_or_license_contents_read": false,
+  "pcm_or_payload_read": false
+}
