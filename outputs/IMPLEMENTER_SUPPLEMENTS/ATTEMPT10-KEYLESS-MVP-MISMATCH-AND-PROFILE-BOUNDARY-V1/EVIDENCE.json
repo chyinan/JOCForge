@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ATTEMPT10-KEYLESS-MVP-MISMATCH-AND-PROFILE-BOUNDARY-V1",
+  "run": {
+    "run_id": "sample6-keyless-full-20261101-10",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_identity": "USER_CONFIRMED",
+    "executable_sha256": "f7b60dd98ac7475134175fce0405c127615321e39088f60031f1ed2e8b70d278",
+    "runner_script_sha256": "b8c0d9c7a670cc7e92ca341a2869c2554e626a25a18c90438e8ae9025a4d523f",
+    "application_status": "DONE",
+    "exit_code": 0,
+    "meter_callbacks": "4250/4250",
+    "programme_callbacks": "4251/4251",
+    "sources": 4249,
+    "published_aus": 4247,
+    "eof_committed": true
+  },
+  "output": {
+    "path": "D:\\Programs\\JOCForge-isolated\\.test-tmp\\sample6-keyless-full-20261101-10.ec3",
+    "bytes": 17395712,
+    "sha256": "593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473"
+  },
+  "comparator": {
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-12\\files-pasted-by-the-user-agent\\outputs\\AUDIO_COMPATIBILITY_PROBE\\candidate-keyless-compatible-joc.ec3",
+    "bytes": 17395712,
+    "sha256": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+    "input_identity": "USER_CONFIRMED_SAME_ADM",
+    "python_run_receipt": "USER_ASSERTED_NOT_RESEALED"
+  },
+  "comparison": {
+    "length_equal": true,
+    "sha256_equal": false,
+    "result": "MISMATCH",
+    "root_cause": "NOT_INFERRED"
+  },
+  "output_profile": {
+    "input_sample_rate_hz": 48000,
+    "input_channels": 38,
+    "input_pcm_bits": 24,
+    "output_sample_rate": "UNBOUND",
+    "output_bitrate": "UNBOUND",
+    "output_layout": "UNBOUND",
+    "output_codec_profile": "UNBOUND",
+    "same_attempt_job_xml": "NOT_PRESENT_IN_RUN_RECEIPT_INVENTORY"
+  },
+  "terminal_receipt": {
+    "application_done_exit0": true,
+    "structured_final_exposure_receipt": "NOT_PRESENT_AS_TYPED_OBJECT_IN_PERSISTED_RESULT",
+    "application_exposure_receipt_marker": "Returned before DONE status",
+    "parent_fsync_field": "NOT_RECORDED_IN_PERSISTED_RESULT"
+  },
+  "content_access": {
+    "streaming_hash_only": true,
+    "payload_opened_or_decoded": false,
+    "rendered_or_played": false
+  }
+}
