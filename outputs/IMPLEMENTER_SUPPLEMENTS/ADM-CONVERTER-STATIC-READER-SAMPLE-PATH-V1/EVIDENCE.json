@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ADM-CONVERTER-STATIC-READER-SAMPLE-PATH-V1",
+  "source": {
+    "source_package_id": "adm_storage_reader_static_trace_wash_v2",
+    "source_manifest_sha256": "273fea3edf9a06b7670a846be254710cbfc923d60d862a7d5f4b02ca26882f2c",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "source_payload_count": 31
+  },
+  "target_image": {
+    "path": "D:\\Programs\\dee71joc\\test_dee\\dee_audio_filter_convert_atmos_mezz.dll",
+    "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "size_bytes": 6286336,
+    "tool": "Ghidra 12.2"
+  },
+  "static_path": {
+    "entry_slot": "+0x20",
+    "entry_rva": "0x223430",
+    "entry_function": "FUN_1802195e0",
+    "row_pointer_adjustment": "existing_row_pointer + sample_offset * 4",
+    "channel_count_field_offset": "+0xc8",
+    "row_offset_table_field_offset": "+0xe8",
+    "format_reader_state_offset": "+0xc0",
+    "sample_callback_field_offset": "+0xf0",
+    "sample_callback_function": "FUN_180241460",
+    "sample_bytes_absolute_offset": "data_payload_offset + relative_byte_offset",
+    "sample_read_callback_slot": "+0x18",
+    "chunk_header_callback_slot": "+0x10",
+    "chunk_header_bytes_requested": 8,
+    "sample_unit_widths_bytes": [1, 2, 3, 4]
+  },
+  "status": {
+    "static_request_bounds_and_cursor_flow": "CLOSED_STATIC",
+    "physical_bwf_row_table_producer_and_order": "UNBOUND",
+    "runtime_sample_callback_target": "UNBOUND",
+    "actual_read_count_and_eof": "NOT_RUN",
+    "measurement_descriptor_identity": "UNBOUND",
+    "playback": "NOT_RUN",
+    "audio_algorithm_or_joc_conformance": "NOT_ESTABLISHED",
+    "attempt10_import_failure_causality": "NOT_ESTABLISHED"
+  },
+  "execution_scope": {
+    "dee_or_converter_run": false,
+    "bwf_data_or_pcm_read": false,
+    "ec3_output_read": false,
+    "private_key_or_hmac_read": false,
+    "ida_used": false,
+    "implementation_ready": false
+  }
+}

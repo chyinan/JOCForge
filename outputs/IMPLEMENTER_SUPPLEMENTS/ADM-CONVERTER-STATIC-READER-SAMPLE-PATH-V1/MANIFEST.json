@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ADM-CONVERTER-STATIC-READER-SAMPLE-PATH-V1",
+  "source_reverse_manifest_sha256": "273fea3edf9a06b7670a846be254710cbfc923d60d862a7d5f4b02ca26882f2c",
+  "status": "STATIC_SAMPLE_READ_PATH_BOUND; ROW_ORDER_AND_RUNTIME_CALLBACK_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1969,
+      "sha256": "8e5b8cc8919a12de21e9698c27518f690339eab79ca258728b8d28095070da72"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1107,
+      "sha256": "91950804f1226fed9a2733d0f92b0d82da8cfd7e42a64cd081028293de7922f8"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 3249,
+      "sha256": "dd9bb921d75fd17c492d660be31f740709f8c6bdc30497bdb49ed50a820a37d2"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 2344,
+      "sha256": "6c3f1d84bbcdb94c69304671209b46bd42da3a0240e10ddfc32c7ab553cd714b"
+    }
+  ]
+}

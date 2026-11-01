@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "ADM-CONVERTER-STATIC-READER-SAMPLE-PATH-V1",
+  "vectors": [
+    {
+      "id": "synthetic-row-pointer-adjustment",
+      "kind": "SYNTHETIC_INPUT_ONLY",
+      "inputs": {
+        "row_pointers": [4096, 8192],
+        "sample_offset": 3,
+        "static_stride_bytes": 4
+      },
+      "derived_arithmetic": {
+        "adjusted_row_pointer_values": [4108, 8204]
+      },
+      "not_a_runtime_observation": true,
+      "does_not_identify_physical_bwf_rows": true
+    },
+    {
+      "id": "synthetic-bounded-sample-read",
+      "kind": "SYNTHETIC_INPUT_ONLY",
+      "inputs": {
+        "data_payload_offset": 4096,
+        "relative_byte_offset": 128,
+        "requested_bytes": 256,
+        "remaining_data_chunk_bytes": 512,
+        "remaining_file_extent_bytes": 1024
+      },
+      "derived_arithmetic": {
+        "absolute_file_offset": 4224,
+        "bounded_request_bytes": 256
+      },
+      "not_a_runtime_observation": true,
+      "does_not_assert_callback_target_or_returned_count": true,
+      "reads_no_file_bytes": true
+    }
+  ]
+}

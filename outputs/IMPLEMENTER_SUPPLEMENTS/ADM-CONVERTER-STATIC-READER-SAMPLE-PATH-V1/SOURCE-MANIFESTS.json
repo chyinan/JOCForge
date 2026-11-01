@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "adm_storage_reader_static_trace_wash_v2",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-25\\jocforge-reverse-agent-4-f06of\\outputs\\adm_storage_reader_static_trace_wash_v2",
+    "manifest_sha256": "273fea3edf9a06b7670a846be254710cbfc923d60d862a7d5f4b02ca26882f2c",
+    "checker_result": "normal and python -O -B verified 31 files"
+  },
+  "source_payloads_used_as_references": [
+    {
+      "file": "STATIC-TRACE.md",
+      "sha256": "bffb5040e29df41192b9d4edc52fb3c0b855e1b3e99426214617b5168ba7fc52"
+    },
+    {
+      "file": "trace_status.json",
+      "sha256": "7a15f574a0f5a343b2d5d2767019d5b3885fa3dcb55e9150b6e17a880a5aac79"
+    },
+    {
+      "file": "adm_file_storage_reader_entry_decomp.txt",
+      "sha256": "b788f19f2c4cbca553870eeeb6809ff5615dcb39ffbe7310318bfbe2e48b01cd"
+    },
+    {
+      "file": "adm_file_storage_read_helper_decomp.txt",
+      "sha256": "737879eddec2ca53ba4861ac8cdcf3449c3e0a5dada64d960b8a9eb2210b67d0"
+    },
+    {
+      "file": "adm_storage_block_read_decomp.txt",
+      "sha256": "9ef78573ae295e9d01379c29b8a5d5b741ead11d2ca8faebda92f24db1c21539"
+    },
+    {
+      "file": "adm_source_block_adapter_decomp.txt",
+      "sha256": "39e7f0627e6d629b712dd64bf9258f78408f8d61e56d8b0cb66864e7765c890a"
+    },
+    {
+      "file": "adm_input_source_factory_decomp.txt",
+      "sha256": "71c181fba9456920b32802993fb751ea8a64f9f2d1fc086e109d0740c4b988ab"
+    },
+    {
+      "file": "adm_sample_read_instruction_excerpt.txt",
+      "sha256": "528cc5c983e22fae39eb03162e14d509b3103cd20e5d7701c572a25cfe8bd1d3"
+    },
+    {
+      "file": "upstream_converter_mapping/static_adm_source_mapping.json",
+      "sha256": "a98bcbb5437dd272a52120d72b8af232128763202f292541ee9cd9e8d2597095"
+    },
+    {
+      "file": "upstream_crosswalk/INPUT-ONLY-MAPPING.json",
+      "sha256": "d4a928f3a4347bf79d88024785ea68691645c03f653e2ee7689f44386dfdeec9"
+    }
+  ],
+  "target_image": {
+    "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "size_bytes": 6286336
+  },
+  "exclusions": [
+    "No raw source/decompilation/disassembly copied into this Wash package.",
+    "No binary, BWF data bytes, PCM, EC3 output, key or HMAC material copied.",
+    "The runtime target is not joined to attempt-10."
+  ]
+}
