@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge-adm-reader-path-boundary-vectors.v1",
+  "kind": "static structural discriminator and metadata-only pre-Run observation",
+  "vectors": [
+    {
+      "id": "adm-plugin-factory-map",
+      "input": {
+        "plugin_type_label": "adm",
+        "plugin_class": "dee::input::AdmPlugin",
+        "factory_slot": 6
+      },
+      "expected": {
+        "concrete_reader": "dee::input::AtmosMezz",
+        "reader_type_is_selected_by_cli_a": false,
+        "static_ordinal_is_runtime_factory_index": false
+      }
+    },
+    {
+      "id": "cli-a-path-list-transfer",
+      "input": {
+        "option": "-a/--input-audio",
+        "cli_list_field": "+0x1a0",
+        "job_config_audio_field": "+0x7d0"
+      },
+      "expected": {
+        "path_list_transfer": "STATIC_BOUND",
+        "reader_type_or_factory_changed_in_traced_edges": false,
+        "selected_reader_setter_owner": "UNBOUND"
+      }
+    },
+    {
+      "id": "derived-first-love-pre-run-boundary",
+      "input": {
+        "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+        "cli_input_audio_override": false,
+        "observation_point": "before reader Run"
+      },
+      "expected": {
+        "reader_class": "dee::input::AtmosMezz",
+        "run_called": false,
+        "output_created": false,
+        "scope": "derived metadata-only pre-Run; not audio acceptance"
+      }
+    }
+  ],
+  "lineage": {
+    "source_manifest_sha256": "abadcde4fbae11a5babf18cf136873d5673b8d7ad9f9c8da3ff843f5fc70e1cd"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ADM-INPUT-PLUGIN-READER-MAP-AND-CLI-PATH-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "abadcde4fbae11a5babf18cf136873d5673b8d7ad9f9c8da3ff843f5fc70e1cd",
+  "status": "STATIC_ADM_FACTORY_MAP_BOUND; CLI_OWNER_AND_RUNTIME_READ_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2480,
+      "sha256": "04d570bb23367f7f5b82d395af205c9c03304155815eb802a2626834fd11a98f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1527,
+      "sha256": "b9e8a04f4d8845a1a66d39727e1438942ab5d1bbdf3c6ee015d69a69aa2cc347"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2260,
+      "sha256": "c2fbc2b17eb8602fbdeb143f16d7b85e2e5aaba7a4dcfaa5841d9d0a2e58599d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 868,
+      "sha256": "3574839a3276ccddba91d0f0e683b25d51e87ca9344d32d7713f49c119a108af"
+    }
+  ]
+}
