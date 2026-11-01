@@ -1,0 +1,70 @@
+{
+  "schema": "washed-f06nd-category5-selected-process-boundary.v1",
+  "package_id": "f06nd_category5_selected_process_boundary_v1",
+  "status": "SELECTED_PROCESS_BYTE_LAYOUT_NOT_APPLICABLE_GENERIC_STORAGE_EVENT_JOIN_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "implementation_readiness": "NO",
+  "source_package": {
+    "manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+    "seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+    "payload_count": 4,
+    "payload_hashes_recomputed": "ALL_MATCH",
+    "native_run": "NOT_RUN"
+  },
+  "target_module": {
+    "filename": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464,
+    "current_file_rehash": "MATCH",
+    "analysis": "Ghidra 12.2 static only"
+  },
+  "logical_contract": {
+    "declared_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "declared_file_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+    "selected_profile": "48 kHz / 1024 kbps / 5.1 / six blocks / uncoupled / no SPX",
+    "category5_submission": {
+      "category": 5,
+      "width_bits": 32,
+      "count": 1
+    },
+    "selected_fifo_rule_claim": {
+      "writes_drc_control_fifo": false,
+      "logical_record_count": 4,
+      "records_after_submission": "all zero",
+      "override": 0
+    },
+    "spec_source_status": "DECLARED_HASH_SOURCE_NOT_REHASHED"
+  },
+  "native_process_observation": {
+    "selected_process_byte_layout": "NOT_APPLICABLE",
+    "observed_inputs": [
+      "frame descriptor",
+      "frame size",
+      "channel count",
+      "per-channel sample pointers"
+    ],
+    "observed_effects": [
+      "validates size and channels",
+      "copies channel samples to internal buffer",
+      "calls backend",
+      "advances sample cursor",
+      "prepares output descriptor"
+    ],
+    "category5_parameter_or_event_vector": false,
+    "category5_fifo_write": false,
+    "source_hash_inventory": "NOT_PRESENT_IN_THIS_PACKAGE"
+  },
+  "separate_generic_storage_surface": {
+    "accepts_input_control_event_vector": true,
+    "selected_category5_join": "UNBOUND",
+    "record_layout": "NOT_INFERRED",
+    "downstream_bsi_or_output_join": "UNBOUND"
+  },
+  "execution": {
+    "native_run": "NOT_RUN",
+    "pcm_or_payload_accessed": "NO",
+    "private_key_accessed": "NO",
+    "implementation_side_accessed": "NO"
+  },
+  "remaining_edge": "Join the selected category-5 submission to a generic storage-event producer and a selected BSI/output consumer."
+}

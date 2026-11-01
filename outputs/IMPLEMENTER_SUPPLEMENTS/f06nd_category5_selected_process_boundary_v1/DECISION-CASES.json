@@ -1,0 +1,28 @@
+{
+  "schema": "washed-f06nd-selected-decision-cases.v1",
+  "cases": [
+    {
+      "case": "selected category-5 logical submission",
+      "input": {
+        "category": 5,
+        "width_bits": 32,
+        "count": 1
+      },
+      "selected_fifo_write": false,
+      "selected_logical_records_after": 4,
+      "status": "STATIC_CLAIM_SPEC_SOURCE_REHASH_PENDING"
+    },
+    {
+      "case": "selected nonzero PCM frame process",
+      "input": "frame descriptor",
+      "category5_parameter": false,
+      "byte_layout": "NOT_APPLICABLE"
+    },
+    {
+      "case": "generic storage event-vector API",
+      "input": "InputControlEvent vector",
+      "selected_category5_join": "UNBOUND",
+      "byte_layout": "NOT_INFERRED"
+    }
+  ]
+}

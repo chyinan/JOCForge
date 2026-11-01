@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "package_id": "f06nd_category5_selected_process_boundary_v1",
+  "scope": "Selected category-5 process absence and generic storage surface; the cross-boundary producer/consumer join is open.",
+  "status": "SELECTED_PROCESS_BYTE_LAYOUT_NOT_APPLICABLE_GENERIC_STORAGE_EVENT_JOIN_UNBOUND",
+  "implementation_delivery": "PROHIBITED",
+  "payloads": [
+    {
+      "name": "DECISION-CASES.json",
+      "bytes": 735,
+      "sha256": "be84e4c2533548c9fbb5781ebae33c735d46b51f1cd6f67f9ab3bfcbd3ce49df"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2623,
+      "sha256": "22678fea69bcf4f9cac01d472615870b680c3840d7b3880ee4a8bac348b6ff6d"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1147,
+      "sha256": "5cdda662fa95ff717d88de5c8ec0b2f5237d4f5fb1b2dc28cb5d32c24eea5461"
+    },
+    {
+      "name": "verify_package.py",
+      "bytes": 2097,
+      "sha256": "09e842963939ae566e4bc71a041e0f2e80f537545315141ad302de0eb6c65e74"
+    }
+  ]
+}

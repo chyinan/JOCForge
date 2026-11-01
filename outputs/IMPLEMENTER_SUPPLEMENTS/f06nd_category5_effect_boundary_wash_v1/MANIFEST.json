@@ -1,0 +1,31 @@
+{
+  "schema": "implementation-supplement-manifest.v1",
+  "package_id": "f06nd-category5-effect-boundary-wash-v1",
+  "status": "EVIDENCE_ONLY",
+  "implementation_allowed": false,
+  "source_package_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+  "source_package_seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+  "contains_source_code": false,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "2261922c2ee2230bcf21825e871cf2563cb5ab533b372c8778316804b7100377",
+      "bytes": 1230
+    },
+    {
+      "name": "WASH-REVIEW.md",
+      "sha256": "bcb4d0eb86098d6ebfeba04c324fb3814d9286d0664cbe9628edeb925e503094",
+      "bytes": 900
+    },
+    {
+      "name": "WASH-VERIFICATION.json",
+      "sha256": "7a7d7b6bb02caa1998ac578f3e910205dee2fac63593a01d6af42b46f3d186a9",
+      "bytes": 932
+    }
+  ]
+}

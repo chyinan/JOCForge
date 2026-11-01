@@ -1,0 +1,18 @@
+{
+  "schema": "wash-independent-review.v1",
+  "status": "EVIDENCE_ONLY",
+  "source_package_id": "f06nd_category5_native_effect_wash_v1",
+  "source_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+  "source_seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+  "checks": {
+    "source_manifest_hash_match": true,
+    "source_seal_and_payload_hashes_match": true,
+    "source_status": "PARTIAL_SELECTED_PROCESS_BYTE_LAYOUT_NOT_APPLICABLE",
+    "selected_category5_fifo_write": false,
+    "selected_category5_byte_layout": "NOT_APPLICABLE_TO_SELECTED_PROCESS_PATH",
+    "generic_storage_event_edge": "UNBOUND",
+    "native_execution": false,
+    "pcm_or_payload_accessed": false
+  },
+  "scope_note": "Wash verified the source package manifest, seal, and payload hashes; the conclusion is restricted to the selected process path and does not prove a global absence."
+}
