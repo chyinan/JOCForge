@@ -22,6 +22,8 @@ OpenJOC 0.20.1 metadata-only `inspect --json` 对该目标 exit=0，分类 `eac3
 
 Wash 补充包 `F06-CUSTOM-BSI-VS-STANDARD-HEADER-PATH-V1`（本地 manifest SHA-256 `42c532661827ac727aee5578a77c7aca1a54125db76689e8ea702c2abfc7ab69`）确认：owner `+0x34` signed U16 经 custom BSI serializer 进入 type `0x0B` metadata item/container；standard syncframe U5 DialNorm 是独立 header field，由另一 per-frame encoder-request 参数供应。当前证据没有 owner U16 到 U5 的 typed transfer，数值映射、转换、clamp、rounding 和范围继续 `UNBOUND/NOT_PROVEN`。本地 CHECK 正常与 `-O` 均通过；该包 reference-only，不改变实现规则。
 
+Wash 已撤回已提交包 `F06-R138-COMPONENT-RECEIVER-FIRST-STORE-BOUNDARY-V1` 中 process-state source `+0x7E4` 的说法：重新按 `longlong*` 解释索引 `+0x1F9` 对应字节偏移 `+0xFC8`。正式 Wash erratum 待交付前，R138 process-state 来源边为 `UNBOUND`，不得消费旧包的 `+0x7E4` 结论。另一个独立观察仍支持 `+0x50` block copy 覆盖 `+0x54`；它不闭合 R138 source applicability。
+
 attempt-09 仅创建了 runner PID 11648，但没有 started marker、输出、stderr 或退出码收据；其 run receipt 标记 `LAUNCH_FAILED_BEFORE_STARTED_MARKER`，没有确认启动任何 encode process。
 
 attempt-10（run ID `sample6-keyless-full-20261101-10`）于 2026-11-01T23:58:34+08:00 启动，run receipt 绑定 input SHA 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1、target-diagnostic/debug/jocforge.exe SHA `f7b60dd98ac7475134175fce0405c127615321e39088f60031f1ed2e8b70d278`、runner script SHA `b8c0d9c7a670cc7e92ca341a2869c2554e626a25a18c90438e8ae9025a4d523f` 和 PID 51180。修复后的 Windows parent sync 由新二进制运行成功：Meter prepass 4,250/4,250（53:50），programme callbacks 4,251/4,251（113:12），sources=4,249，published AU=4,247；EOF committed，7 个 pending-drop receipts，最终 17,395,712 bytes。F15 exposure receipt 被应用层接收，日志报告 `status=DONE`，runner exit=0。输出 `.test-tmp/sample6-keyless-full-20261101-10.ec3` 的 SHA-256 为 `593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473`。
