@@ -1,0 +1,85 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "KEYLESS-PROTOTYPE-COMPARATOR-SOURCE-CHAIN-BOUNDARY-V1",
+  "source": {
+    "source_package_id": "keyless_prototype_comparator_source_matrix_wash_v1",
+    "source_manifest_sha256": "c80f5b3aefd79f990804eb3cf711b42911207e0b24c57bf35415752e6ff97853",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "source_evidence_files_hash_checked": 22,
+    "ec3_or_wav_opened": false
+  },
+  "user_designated_comparator": {
+    "sha256_from_prior_wash": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+    "length_bytes_from_prior_wash": 17395712,
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_identity": "USER_CONFIRMED_SAME_ADM",
+    "python_run_to_input": "UNBOUND",
+    "candidate_source_to_runtime": "UNSEALED"
+  },
+  "source_chain": {
+    "candidate_specific_python_entrypoint": {
+      "name": "isolate_joc_recognition.py",
+      "source_sha256": "7761229c70152b59305b68f8843531582c9ba5cfb682229d9240ae6a0aa5c3e3",
+      "reported_variant": "auth-crc32-and-zero-padding.ec3",
+      "reported_result_sha256": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+      "run_record": "UNSEALED_RESULT_JSON"
+    },
+    "copy_and_hash_assertion": {
+      "name": "verify_compatible_keyless_probe.py",
+      "source_sha256": "54637c1cd8930d7110c1853eb461a795aadc8c14d2fc0e34d1232478370246f3",
+      "declared_source": "auth-crc32-and-zero-padding.ec3",
+      "declared_target": "candidate-keyless-compatible-joc.ec3",
+      "execution_proof": "NOT_SEALED"
+    },
+    "separate_probe": {
+      "name": "keyless_profile_probe.py",
+      "source_sha256": "8ed1fe996714fef234a1181847b9347c39ee1b9f3c2efea62a3b2fdd21350099",
+      "reported_output_sha256": "a24b6a223f27175c7dc282d11168853ea60a8223172efaf20c5ad921a39c9871",
+      "relation": "NOT_THE_DESIGNATED_COMPARATOR_GENERATOR"
+    },
+    "preencoded_model_source_stream": {
+      "basename": "model-ordinary-5p1-1024.ec3",
+      "reported_sha256_in_unsealed_result": "121dd0838113ff47f91e9d1040747204b20c8ddfda7a01c358850bf4c1704f4a",
+      "content_accessed": false,
+      "adm_to_stream_lineage": "UNBOUND"
+    },
+    "external_helpers": {
+      "regenerate_crc2_source_available": false,
+      "emdf_serializer_source_available": false,
+      "helper_equivalence_to_rust": "UNBOUND"
+    }
+  },
+  "source_level_differences": {
+    "emdf_protection": {
+      "python_declared": "CRC32 primary4 + CRC8 secondary1",
+      "rust_source": "CRC32/ISO-HDLC + CRC8/SMBUS",
+      "status": "CONDITIONAL_SOURCE_PROFILE_MATCH"
+    },
+    "frame_crc2": {
+      "python_declared": "external regenerate_crc2 helper",
+      "rust_source": "CRC16 writer and zero-residual check",
+      "status": "HELPER_UNAVAILABLE_AND_RUN_UNBOUND"
+    },
+    "first_published_au": {
+      "python_declared": "published allocation ordinal and frame/carrier metadata",
+      "rust_source": "source 2 -> AU 0, published carrier block 2",
+      "status": "UNBOUND"
+    },
+    "audio_essence_equivalence": "NOT_MEASURED",
+    "whole_file_sha_required": false
+  },
+  "attempt10": {
+    "import_failure": "USER_REPORTED_INVALID_STREAM",
+    "reported_by": ["FFmpeg", "Adobe Audition"],
+    "parser_or_audio_root_cause": "UNBOUND",
+    "output_bytes_inspected": false
+  },
+  "scope": {
+    "source_code_copied": false,
+    "ec3_or_wav_bytes_read_or_hashed": false,
+    "pcm_read_or_retained": false,
+    "private_key_hmac_or_license_read": false,
+    "implementation_ready": false
+  }
+}

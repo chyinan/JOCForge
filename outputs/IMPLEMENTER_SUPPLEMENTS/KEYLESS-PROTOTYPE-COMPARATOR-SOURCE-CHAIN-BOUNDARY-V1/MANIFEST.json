@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "KEYLESS-PROTOTYPE-COMPARATOR-SOURCE-CHAIN-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "c80f5b3aefd79f990804eb3cf711b42911207e0b24c57bf35415752e6ff97853",
+  "status": "CANDIDATE_SOURCE_CHAIN_FOUND_RUN_AND_ADM_INPUT_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3567,
+      "sha256": "3168ba83d20e7638abda7b8bc796c51c82af58a08dc8704a19faf6086607d102"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1449,
+      "sha256": "53f9c40bda24d624fd2b0993b7f30aaa0a47110562685cbcce41cfebe43ef7d7"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 3599,
+      "sha256": "11c322c968ae6017ead71dd5e199c9cd30f1df84fc5bb808724876617c7eae3e"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1732,
+      "sha256": "413f68fc5dab93aa37ee01286456bd598bfbbeb0fc9f9b2d950dafef7b493856"
+    }
+  ]
+}

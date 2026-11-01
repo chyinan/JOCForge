@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "keyless_prototype_comparator_source_matrix_wash_v1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-6-f05-f13-transaction\\outputs\\keyless_prototype_comparator_source_matrix_wash_v1",
+    "manifest_sha256": "c80f5b3aefd79f990804eb3cf711b42911207e0b24c57bf35415752e6ff97853",
+    "checker_result": "PASS normal and optimized; 22 evidence file hashes checked"
+  },
+  "source_and_implementation_snapshots": [
+    {"name": "isolate_joc_recognition.py", "sha256": "7761229c70152b59305b68f8843531582c9ba5cfb682229d9240ae6a0aa5c3e3"},
+    {"name": "verify_compatible_keyless_probe.py", "sha256": "54637c1cd8930d7110c1853eb461a795aadc8c14d2fc0e34d1232478370246f3"},
+    {"name": "keyless_profile_probe.py", "sha256": "8ed1fe996714fef234a1181847b9347c39ee1b9f3c2efea62a3b2fdd21350099"},
+    {"name": "Rust keyless checksum source", "sha256": "8a444a4583b7e1000fa76cd64291260ce78ce46e1cb5ac11194bec8c72279fb2"},
+    {"name": "Rust CRC16 source", "sha256": "c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6"},
+    {"name": "Rust EMDF serializer source", "sha256": "77762fad85048a65b25b66e517cb84248f791369e8fae1f4af539eeccf63c692"},
+    {"name": "Rust selected frame trial source", "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"},
+    {"name": "Rust metadata carrier source", "sha256": "1d5d3bd54f7cbdec2b793bff2df589d66a365e10a1570690ceb53e2f9e1684da"}
+  ],
+  "exclusions": [
+    "No code, helper implementation, binary, .ec3/WAV byte, PCM, key, HMAC or license content copied.",
+    "No historical build or runtime identity inferred from current source hashes."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "KEYLESS-PROTOTYPE-COMPARATOR-SOURCE-CHAIN-BOUNDARY-V1",
+  "vectors": [
+    {
+      "id": "candidate-source-lineage",
+      "kind": "HASH_AND_METADATA_ONLY",
+      "input_records": {
+        "user_confirmed_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+        "candidate_comparator_sha256_from_prior_wash": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+        "candidate_python_source_sha256": "7761229c70152b59305b68f8843531582c9ba5cfb682229d9240ae6a0aa5c3e3",
+        "preencoded_stream_sha256_from_unsealed_record": "121dd0838113ff47f91e9d1040747204b20c8ddfda7a01c358850bf4c1704f4a"
+      },
+      "observed_binding": "source_declared_file_derivation_only",
+      "unbound_edges": ["python_run_to_adm", "preencoded_stream_to_adm", "source_hash_to_runtime", "source2_to_first_published_au"],
+      "media_bytes_opened": false
+    },
+    {
+      "id": "crc-profile-source-declaration",
+      "kind": "SOURCE_ASSERTION_ONLY",
+      "input_records": {
+        "python_declared_emdf_profile": "CRC32 primary4 + CRC8 secondary1",
+        "rust_source_profile": "CRC32/ISO-HDLC + CRC8/SMBUS",
+        "python_crc2_helper": "regenerate_crc2 source unavailable"
+      },
+      "result_status": "conditional profile match; frame CRC2 equivalence unbound",
+      "does_not_assert_output_parseability_or_audio_match": true
+    }
+  ]
+}
