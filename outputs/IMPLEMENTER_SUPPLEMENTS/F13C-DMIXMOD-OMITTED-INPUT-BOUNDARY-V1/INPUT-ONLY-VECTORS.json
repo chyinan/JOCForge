@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "F13C-DMIXMOD-OMITTED-INPUT-BOUNDARY-V1",
+  "vectors": [
+    {
+      "id": "inactive-preferred-downmix",
+      "kind": "CONFIG_INPUT_ONLY",
+      "inputs": {"PreferredStereoDownmix": {"active": false, "display_value": "Stereo"}},
+      "request_output": {"preferred_downmix_mode": "OMITTED"},
+      "native_effective_enum": "UNBOUND",
+      "must_not_prompt_user": true
+    },
+    {
+      "id": "native-optional-dmixmod-absent",
+      "kind": "PARSER_BRANCH_INPUT_ONLY",
+      "inputs": {"dmixmod_presence_flag": false},
+      "native_validator_behavior": "skip map lookup and invalid-value record path; return",
+      "runtime_default_value": "UNBOUND"
+    }
+  ]
+}

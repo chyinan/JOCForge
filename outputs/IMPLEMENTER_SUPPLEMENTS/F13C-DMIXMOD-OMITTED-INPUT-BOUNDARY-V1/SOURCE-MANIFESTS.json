@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "F13C-dmixmod-omission-default-trace-addendum-v21",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\F13C-dmixmod-omission-default-trace-addendum-v21",
+    "manifest_sha256": "cfaec056f570eec6d2a1d985bd3544df30eac446f89140ace9fa551448703415",
+    "native_image_sha256_from_ghidra_project": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_install_rehashed": false
+  },
+  "hash_bound_parent": {
+    "package": "F13C-preferred-input-audit-addendum-v20",
+    "app_asar_sha256": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+    "source_manifest_sha256sums_file": "33ef544cb58b5907640ba689a9052d559d51d13c3b2d1da104647f1a2badcc3b"
+  },
+  "exclusions": [
+    "No source code/decompilation copied into this supplement.",
+    "No PCM, payload, key, HMAC or license contents included."
+  ]
+}

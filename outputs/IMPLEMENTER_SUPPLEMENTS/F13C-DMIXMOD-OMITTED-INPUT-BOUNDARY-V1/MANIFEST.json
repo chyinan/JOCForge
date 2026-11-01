@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-DMIXMOD-OMITTED-INPUT-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "cfaec056f570eec6d2a1d985bd3544df30eac446f89140ace9fa551448703415",
+  "status": "INACTIVE_PREFERENCE_OMITTED; NATIVE_ENUM_DEFAULT_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2104,
+      "sha256": "80728dfd99c305a70b827aca4faad982a623b31dbb35aa5ebb876b7161b6eaec"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 730,
+      "sha256": "338e5a0475b5452e80e0bbc94aed91563a84d65435bb8987b8ddf4e2c237a02a"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2030,
+      "sha256": "79dec16179cc0f130f22d14790c268a49b23438bc858b23f9547ea8d7e521f06"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 995,
+      "sha256": "e3bce58112c5e27ae678e179e3e0b6af9a74c01d5a9cecea631f64849da5663c"
+    }
+  ]
+}

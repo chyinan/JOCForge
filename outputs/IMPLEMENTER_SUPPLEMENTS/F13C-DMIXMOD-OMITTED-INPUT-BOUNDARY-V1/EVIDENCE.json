@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F13C-DMIXMOD-OMITTED-INPUT-BOUNDARY-V1",
+  "source": {
+    "package_id": "F13C-dmixmod-omission-default-trace-addendum-v21",
+    "manifest_sha256": "cfaec056f570eec6d2a1d985bd3544df30eac446f89140ace9fa551448703415",
+    "checksum_file_entries_recomputed": [
+      "ADDENDUM.md",
+      "GHIDRA-OMISSION-TRACE.json",
+      "GHIDRA-OMISSION-TRACE.txt",
+      "InspectDeeDownmixOmissionPath.java",
+      "MANIFEST.json"
+    ],
+    "all_listed_hashes_match": true
+  },
+  "front_end_input": {
+    "source": "DME DDP Online Media model, hash-bound in parent v20 package",
+    "PreferredStereoDownmix_active": false,
+    "inactive_request_behavior": "preferred_downmix_mode entry omitted",
+    "UI_display_value": "Stereo",
+    "ui_value_proves_native_default": false,
+    "mapping_when_active": {"Stereo": "loro", "Surround": "ltrt", "Not Indicated": "not_indicated"}
+  },
+  "native_parser": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "image": "dee_ddpjoc_encoder.exe",
+    "project_recorded_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_install_rehashed": false,
+    "config_parser": "FUN_1404ecea0",
+    "optional_field": "dmixmod",
+    "validator": "FUN_1404dddd0",
+    "presence_false_behavior": "skip choice lookup and invalid-value record path; cleanup and return",
+    "writes_effective_runtime_enum": false,
+    "allowed_strings": ["not_indicated", "pro_logic", "stereo", "pro_logic_ii"],
+    "allowed_value_order_proves_default": false,
+    "preferred_downmix_mode_to_dmixmod": "UNBOUND",
+    "dmixmod_to_final_f13c_consumer": "UNBOUND",
+    "omitted_field_effective_runtime_default": "UNBOUND"
+  },
+  "implementation_disposition": {
+    "do_not_ask_user_when_control_inactive": true,
+    "preserve_absent_input_as_unspecified": true,
+    "do_not_guess_from_ui_label_or_enum_ordinal": true,
+    "implementation_ready_for_concrete_native_default": false
+  },
+  "execution_scope": {
+    "encoder_run": false,
+    "pcm_or_payload_read": false,
+    "private_key_hmac_or_license_read": false
+  }
+}
