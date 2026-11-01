@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_wash_package": {
+    "package_id": "force_d45_native_reachability_wash",
+    "manifest_sha256": "d7942feb8eade85905562a76c5e4afe201dbb7a162094a21b69a02fc5faa6f42",
+    "manifest_seal_matches": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_count": 10
+  },
+  "prior_implementer_supplement": {
+    "package_id": "F09-D45-FORCE-SELECTOR-BOUNDARY-V2",
+    "manifest_sha256": "6c3218735a9da7964cac061611779c61cf997ad011bef6b840a97497922e8933",
+    "scope": "Static force-selector formula and staging geometry; wire mapping remains unbound."
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_single_pass.dll",
+    "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9"
+  },
+  "copied_source_or_media": false
+}

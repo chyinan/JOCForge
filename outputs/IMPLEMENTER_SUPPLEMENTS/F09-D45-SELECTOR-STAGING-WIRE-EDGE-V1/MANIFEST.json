@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F09-D45-SELECTOR-STAGING-WIRE-EDGE-V1",
+  "source_reverse_manifest_sha256": "d7942feb8eade85905562a76c5e4afe201dbb7a162094a21b69a02fc5faa6f42",
+  "status": "STATIC_STAGING_CHAIN_BOUND; WIRE_FIELD_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2159,
+      "sha256": "addbe6bd55b20f5472aa4f83208c446365bd9671ab2d8c6566ee96944e1e6507"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1425,
+      "sha256": "284afafef48ccb30d2631b586f12ea0b14a53575486b76a333e335cfac13001b"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2627,
+      "sha256": "1f430a81d3ce034ab15d4cf0ed49d556174c374168f3447238f2de8d4418fe3c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 841,
+      "sha256": "0f67b6fab6d44561362c4859f57c09611d12031c182be46702676a8795340a97"
+    }
+  ]
+}

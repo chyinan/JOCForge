@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge-f09-d45-wire-boundary-vectors.v1",
+  "kind": "synthetic structural discriminator; not codec input or runtime capture",
+  "vectors": [
+    {
+      "id": "lane0-block0-cell-versus-last-direct-read",
+      "input": {
+        "staging_base": "owner+0x1bae8",
+        "cell_expression": "base + 2*(0x1d + channel + 5*block)",
+        "channel": 0,
+        "block": 0,
+        "cell_type": "U16",
+        "cell_code_domain": [0, 1, 2, 3],
+        "last_direct_read_expression": "param_2+0x12",
+        "param_2_binding": "staging_base"
+      },
+      "expected": {
+        "cell_offset_from_base": "0x3a",
+        "last_read_offset_from_base": "0x12",
+        "byte_distance": "0x28",
+        "same_cell_proven": false,
+        "wire_field": "UNBOUND",
+        "wire_bit_range": "UNBOUND"
+      }
+    },
+    {
+      "id": "candidate-size-result-is-not-a-wire-field",
+      "input": {
+        "function": "FUN_180307d90",
+        "return_type": "short",
+        "consumer_path": "FUN_180306630 -> FUN_180307640 candidate-size/budget path"
+      },
+      "expected": {
+        "named_ddp_ec3_field_produced": false,
+        "selector_cell_serialization_proven": false,
+        "status": "UNBOUND"
+      }
+    }
+  ],
+  "lineage": {
+    "prior_selector_formula_package": "F09-D45-FORCE-SELECTOR-BOUNDARY-V2",
+    "prior_manifest_sha256": "6c3218735a9da7964cac061611779c61cf997ad011bef6b840a97497922e8933"
+  }
+}
