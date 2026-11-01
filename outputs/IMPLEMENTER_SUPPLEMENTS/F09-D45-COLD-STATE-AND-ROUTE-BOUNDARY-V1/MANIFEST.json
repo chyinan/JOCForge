@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 4451,
+      "file": "CHECK.py",
+      "sha256": "14732b45f56ff0d8e0894119142d8438edef092097f7b0cfd9265b885c27d2fe"
+    },
+    {
+      "bytes": 2643,
+      "file": "EVIDENCE.json",
+      "sha256": "473c67a33d787267651f29cb707449810284a2bb5af1a97de08a8970c4b7ff4c"
+    },
+    {
+      "bytes": 1990,
+      "file": "REPORT.md",
+      "sha256": "fd2f5ad225263e1124efdb0b7ba1cb84f6b86f845a81f3373d661cc60df5cb23"
+    },
+    {
+      "bytes": 1482,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "33cc90b4951582915a85a854ef9b891894e503c55ed5ee871c6dbe96af6616f8"
+    },
+    {
+      "bytes": 1323,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "5a969347cce50ac5037756d20a7f1cdb1b0d5da96e99ac08f3231f480da9a747"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F09-D45-COLD-STATE-AND-ROUTE-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "86b76274d1993a1b4cd8afa51ec617aab6af3bbe68773e08d6ab9144001fefd5",
+  "status": "COLD_ZERO_STATICALLY_SUPPORTED; LATER_NONZERO_REACHABILITY_NOT_OBSERVED; R138_OWNER_JOIN_UNBOUND"
+}

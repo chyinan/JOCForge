@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge-f09-d45-cold-state-boundary.v1",
+  "package_id": "F09-D45-COLD-STATE-AND-ROUTE-BOUNDARY-V1",
+  "status": "COLD_ZERO_STATICALLY_SUPPORTED; LATER_NONZERO_REACHABILITY_NOT_OBSERVED; R138_OWNER_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "source_image": {
+    "name": "dee_audio_filter_ddp_single_pass.dll",
+    "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9",
+    "identity_status": "MATCH",
+    "ghidra_version": "12.2",
+    "ida_used": false
+  },
+  "cold_initialization": {
+    "allocator_parent": "FUN_180295d30 uses _calloc_base(*puVar1,1)",
+    "constructor": "FUN_1802e51b0",
+    "source_base": "owner+0x135C0",
+    "matrix_shape": "5 lanes x 4 U16 cells",
+    "initial_value": 0,
+    "static_scope": "typed constructor path only; owner-to-selected-R138-route join not captured"
+  },
+  "history_copy": {
+    "function": "FUN_180316730",
+    "source_field": "owner+0x135C0+8*lane",
+    "destination": "owner+0x15208+2*(block*5+lane)",
+    "matrix_shape": "6 blocks x 5 lanes",
+    "copy_conversion": "none; U16 copied directly",
+    "branch_gate": "param_1 == 0 and lane < owner+0x19130",
+    "later_direct_source_writer": "NOT_FOUND_IN_SEVEN_SCANNED_IMAGES"
+  },
+  "route": {
+    "getter": "dlb_phoenix_get_audio_filter_handle",
+    "callback_count": 3,
+    "entry_2": "FilterDDPEncodePlugin",
+    "workflow": "DDPEncode::Priv::runWorkflow",
+    "comp_branches": ["direct Comp", "cc::Comp queued worker"],
+    "frame_guard": "FUN_180296ad0 accepts 0x600 samples or zero flush",
+    "selected_R138_owner_join": "UNBOUND"
+  },
+  "runtime_attempts": {
+    "attempts_total": 12,
+    "normal_sink_jobs_code_0": 7,
+    "attempt_10_and_11_target_owner_breakpoints": "NOT_HIT",
+    "attempt_12": {
+      "route": "pcm_to_atmos_ddp",
+      "plugin_loaded": true,
+      "failure": "WAVE input stage could not access MediaInfo.exe",
+      "pcm_frame_delivery": "NOT_REACHED",
+      "output_created": false,
+      "exit_code": "NOT_CAPTURED"
+    },
+    "owner_history_force_runtime_capture": "NOT_CAPTURED"
+  },
+  "plugin_root": {
+    "checked_roots": [
+      "C:\\Program Files\\Dolby Media Encoder\\resources\\dee",
+      "C:\\Program Files\\Dolby Media Encoder\\app.asar.unpacked\\resources\\dee",
+      "D:\\Dolby_Encoding_Engine",
+      "D:\\Tools\\Dolby_Encoding_Engine"
+    ],
+    "same_root_with_hash_matched_dee_mediainfo_and_single_pass_plugin": false,
+    "status": "BLOCKED_MISSING_HASH_MATCHED_ROOT"
+  },
+  "policy": {
+    "pcm_or_ec3_payload_read": false,
+    "private_key_license_hmac_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "force_d45_native_reachability_wash",
+    "manifest_sha256": "86b76274d1993a1b4cd8afa51ec617aab6af3bbe68773e08d6ab9144001fefd5",
+    "manifest_seal_matches": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_count": 10
+  },
+  "scanned_images": [
+    {"name": "dee_audio_filter_ddp_single_pass.dll", "sha256": "1767070831dc0d5925a1fc401684ae1447cef2d6bc59659f8a25f53c95f482e9"},
+    {"name": "dee_audio_filter_ddp.dll", "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72"},
+    {"name": "dee_audio_filter_ddp_transcode.dll", "sha256": "a5d2dde93a256c4cb1e821bd809fb6aed93f2a346c72210c1bed1b3bd5b35f58"},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"name": "dee_audio_filter_convert_atmos_mezz.dll", "sha256": "bdb502fe147ad825be717b6b1ac450a103ba937ea6782d931da8ddb2e3cc8d80"},
+    {"name": "dee_audio_filter_cod.dll", "sha256": "527dc873b9be7e348698e66195250cbb9382cbec16c590abe547a87e9159abc8"},
+    {"name": "dactlib.dll", "sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239"}
+  ],
+  "related_run": {
+    "run_id": "sample6-keyless-full-20261101-08",
+    "relationship": "JOCForge output metadata and F15 finalize failure are separate from DEE D45 native route; not used as proof of DEE history runtime."
+  }
+}

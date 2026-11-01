@@ -1,0 +1,23 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "86b76274d1993a1b4cd8afa51ec617aab6af3bbe68773e08d6ab9144001fefd5",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS", "payload_count": 10},
+  "independent_review": [
+    "Recomputed the incoming manifest and ran its verifier normally and under Python optimization.",
+    "Separated static calloc/constructor zero from runtime owner observation and later-history updates.",
+    "Preserved the seven-image scan as bounded; no global absence claim is made.",
+    "Kept attempt 10/11 breakpoint non-hits and attempt 12 pre-PCM MediaInfo failure as NOT_CAPTURED/NOT_REACHED.",
+    "Confirmed the checked C/D roots have no same-root hash-matched DEE, MediaInfo, and single-pass plugin combination per incoming package.",
+    "Kept the attempt-08 JOCForge output and its local F15 failure separate from DEE D45 runtime evidence."
+  ],
+  "not_promoted": [
+    "cold-zero as complete runtime R138 state",
+    "later nonzero force/history behavior",
+    "Force-D45 output correctness or audible effect",
+    "runtime path through the PCM guard",
+    "F09.4 native U5 result",
+    "global absence of nonzero writers",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}
