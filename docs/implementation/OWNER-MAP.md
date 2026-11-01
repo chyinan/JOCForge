@@ -122,6 +122,7 @@
 | F01/native-embedded-timecode-range-field-semantics-v2 | F01 | `spatial_control` |
 | F01/native-endsample-exclusive-r121-reader-boundary | F01 | `spatial_control` |
 | F01/native-timecode-endsample-truncation-pair-r128-r129 | F01 | `spatial_control` |
+| F01/authorized-full-song-file-position-trial-conditions | F01 | `frontend` |
 | F01R/selected-riff-pcm24-reader-and-hop | F01R | `io` |
 | F01G/selected-real-axml-chna-host-identity-and-source-join | F01G | `frontend` |
 | F01B/candidate-normalized-bed-source-points | F01B | `spatial_control` |
@@ -292,6 +293,12 @@
 | F06OF/washed-f06of-selected-pmd-builder-empty-oamdi-event-boundary | F06OF | `meter` |
 | F06OF/washed-adm-object-to-channelinput-static-converter-boundary | F06OF | `meter` |
 | F06OF/washed-f06of-d8-record-writer-queue-separate-path | F06OF | `meter` |
+| F06OF/washed-file-position-samples-reader-owner-boundary | F06OF | `io` |
+| F06OF/washed-atmosmezz-helper-bwf-capability-runtime-selection-boundary | F06OF | `io` |
+| F06OF/washed-helper-metadata-consumer-versus-sample-reader-boundary | F06OF | `io` |
+| F06OF/washed-adm-bwf-to-ddp-channel-order-boundary | F06OF | `meter` |
+| F06OF/washed-ddp-samples-map-conditional-alias-boundary-v2 | F06OF | `io` |
+| F06OF/washed-ddp-source-map-samples-prefill-owner-boundary | F06OF | `io` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |
@@ -432,6 +439,7 @@
 | F13C/user-config-data-rate-to-native-complexity-entry-boundary | F13C | `metadata` |
 | F13C/host-ddp-and-atmos-plugin-data-rate-owner-boundary | F13C | `metadata` |
 | F13C/native-code13-low-byte-to-f12-complexity-field | F13C | `metadata` |
+| F13C/informational-r138-record-list-reporting-branch-non-gating | F13C | `metadata` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |

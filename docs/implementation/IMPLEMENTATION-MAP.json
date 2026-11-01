@@ -825,6 +825,85 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "authorized-full-song-file-position-trial-conditions",
+          "mapping_status": "WASHED_SAMPLE6_FULL_FILE_TRIAL_CONDITIONS__TRANSCRIPT_JOIN_USER_ASSERTED",
+          "implementation_status": "LOCAL_FULL_FILE_INPUT_AND_F01E_BINDING__F15_ADMISSION_PASS__SOURCE_PIPELINE_OPEN",
+          "scope": "The user-authorized sample-6 file has SHA-256 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1 and size 743,696,526 bytes. The JOCForge RIFF parser reads PCM24/38-channel/48 kHz metadata and derives 6,522,906 samples/channel from the actual data payload. `PreparedJobInput` is now bound to the RIFF data byte extent and its F01E primary metadata controls. The actual full-file CLI command passes F15 provider and destination admission, then returns SOURCE_PIPELINE_UNAVAILABLE without creating output. The separate DEE trial transcript remains user-supplied and not hash-bound; it is not a source of audio behavior or a claim that DEE's `samples` property is derived by BWF header division.",
+          "owner": "frontend",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "clock": {
+            "domains": [
+              "BwfRiffExtent",
+              "AdmSampleCount",
+              "FilePositionTrial"
+            ],
+            "covered_clauses": [
+              "The sample count is derived from the actual RIFF data-chunk size divided by block align; no PCM was read.",
+              "The user-supplied DEE transcript is a configuration crosscheck, not a hash-bound execution identity.",
+              "R3 embedded-timecode windows are separate runs and are not substituted for this full-file file_position trial."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_FULL_FILE_TRIAL_CONFIGURATION_ONLY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/TRIAL-CONDITIONS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/MULTI-INPUT-OBSERVATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "e016bbd32f53c32a4a6d8ecec9ed6d7fa50cee6bbc8c0c7959d2a58960620194",
+            "source_manifest_sha256": "12fb4d5695230fb07f2c3f73425fe8974bacba66c07586390412a51ef9030cb9",
+            "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+            "local_riff_header": {
+              "format_tag": 1,
+              "channels": 38,
+              "sample_rate_hz": 48000,
+              "bits_per_sample": 24,
+              "block_align": 114,
+              "data_chunk_bytes": 743611284,
+              "samples_per_channel": 6522906,
+              "pcm_payload_read": true,
+              "pcm_samples_decoded": false,
+              "decoded_source_frames": 0,
+              "f01e_primary_controls_bound": true
+            },
+            "dee_transcript_source_identity": "USER_ASSERTED; NOT_SEPARATELY_HASH_BOUND",
+            "trial_audio_algorithm_changed": false,
+            "validation_boundary": "The user-authorized sample-6 file has SHA-256 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1 and size 743,696,526 bytes. The JOCForge RIFF parser reads PCM24/38-channel/48 kHz metadata and derives 6,522,906 samples/channel from the actual data payload. `PreparedJobInput` is now bound to the RIFF data byte extent and its F01E primary metadata controls. The actual full-file CLI command passes F15 provider and destination admission, then returns SOURCE_PIPELINE_UNAVAILABLE without creating output. The separate DEE trial transcript remains user-supplied and not hash-bound; it is not a source of audio behavior or a claim that DEE's `samples` property is derived by BWF header division."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_TRIAL_CONDITIONS_WITH_LOCAL_RIFF_HEADER_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/TRIAL-CONDITIONS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/MULTI-INPUT-OBSERVATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/timecode_range_reader_window_trial_conditions_v1/WASH-REVIEW.md"
+            ],
+            "case_pointers": [
+              "The full sample-6 CLI request reads the original BWF and binds PreparedJobInput to its F01E primary metadata controls.",
+              "The F15 owner providers and destination path validate; encode exits 2 at SOURCE_PIPELINE_UNAVAILABLE.",
+              "No staging file or final output file is created before a source-frame candidate exists.",
+              "The DEE trial transcript is configuration context only and does not prove its samples-property producer or channel-row mapping."
+            ],
+            "expected_dsp_outputs_included": false,
+            "expected_values_are_assertions_only": true,
+            "source_package_manifest_sha256": "e016bbd32f53c32a4a6d8ecec9ed6d7fa50cee6bbc8c0c7959d2a58960620194"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Product CLI input parsing, full-file source callbacks, F06/F13 owner receipts, F12 frame candidate, F15 production plan/destination, parent swap, and output write.",
+            "Use of the user-supplied 3610-second offset/FFOA transcript as an implementation rule or as a general sample-range equation.",
+            "DEE output-byte rehash, decode, rendering, playback, and full-track JOCForge acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -1736,8 +1815,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 101357,
-              "sha256": "3587e70a81c0790861b61b1a4a5c22341b87034b9c911921a81f1056b5dcb258"
+              "bytes": 103520,
+              "sha256": "e94602651e130d456123e887fb75dab2e07455c4102b7ec28e060a9739b86294"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/adm_object_events.rs",
@@ -1793,8 +1872,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "error_outcomes": [
@@ -2066,8 +2145,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             }
           ],
           "test_inventory": [
@@ -2078,8 +2157,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "parameters.validation_boundary": "One user-authorized real BWF plus the selected-profile XML vector is admitted and identity-checked; this does not verify arbitrary job XML or complete encoding."
@@ -2145,20 +2224,20 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18401,
-              "sha256": "8a629a3e0f65fdbb121c205c32dc576f7cac929bfaf17034671aedead3ae188a"
+              "bytes": 18347,
+              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "parameters.validation_boundary": "Unit mismatch cases plus one real-resource g0 selected-extent snapshot probe pass. The probe is noncommitting and uses the repository selected-profile XML vector."
@@ -4577,8 +4656,8 @@
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
-              "bytes": 18644,
-              "sha256": "e6c3586385b33fff77d510d4973369501055934a313ea2d43aa3e3719fe6bf99"
+              "bytes": 40675,
+              "sha256": "35977912f94634ff40d3b797429169e3920af51584c049690f342872e1c63074"
             }
           ],
           "test_modules": [
@@ -4587,8 +4666,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "clock": {
@@ -6716,8 +6795,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "actual_execution": {
@@ -6873,8 +6952,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ]
         },
@@ -7002,13 +7081,13 @@
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
-              "bytes": 18644,
-              "sha256": "e6c3586385b33fff77d510d4973369501055934a313ea2d43aa3e3719fe6bf99"
+              "bytes": 40675,
+              "sha256": "35977912f94634ff40d3b797429169e3920af51584c049690f342872e1c63074"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             }
           ],
           "test_inventory": [
@@ -7029,8 +7108,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ]
         },
@@ -7129,18 +7208,18 @@
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
-              "bytes": 345,
-              "sha256": "950bbe1b212d442668c0527dc5fba2be4fe380203866b8cb1f560f798e05a071"
+              "bytes": 431,
+              "sha256": "a9ec3a8008e8aae8677d4f1f8c13adc7a6d8baa22698de6c252ae89946a9ff88"
             },
             {
               "path": "crates/jocforge-cli/src/selected_spatial_callback_providers.rs",
-              "bytes": 10882,
-              "sha256": "a249569ab4220681df4dcf09992df604a6c3a93b94c088ee98c9179c21cd6704"
+              "bytes": 11537,
+              "sha256": "8b2fcef472dc172e9529b5f5f598f12b53f2e3a2d42e0a787a755547ba4a7be8"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
-              "bytes": 17597,
-              "sha256": "20766a8fb0dde81aa2045006ee4f3ab3a28ab69076f455d090944e2a639ee4c3"
+              "bytes": 18568,
+              "sha256": "8842a8398744e0f485175826a7e276e5ce7b45cf738f5cf90bb58166a2b3868c"
             },
             {
               "path": "crates/jocforge-application/src/independent_meter_callback.rs",
@@ -9311,8 +9390,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/selected_spatial_callback_providers.rs",
-              "bytes": 10882,
-              "sha256": "a249569ab4220681df4dcf09992df604a6c3a93b94c088ee98c9179c21cd6704"
+              "bytes": 11537,
+              "sha256": "8b2fcef472dc172e9529b5f5f598f12b53f2e3a2d42e0a787a755547ba4a7be8"
             },
             {
               "path": "crates/jocforge-cli/tests/selected_spatial_callback_providers.rs",
@@ -9321,13 +9400,13 @@
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
-              "bytes": 18644,
-              "sha256": "e6c3586385b33fff77d510d4973369501055934a313ea2d43aa3e3719fe6bf99"
+              "bytes": 40675,
+              "sha256": "35977912f94634ff40d3b797429169e3920af51584c049690f342872e1c63074"
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1921966,
-              "sha256": "1c65746513dd5087b3c00a54a8cf6f0741e7e80186f5e066f35a8a48a372af7e"
+              "bytes": 1964386,
+              "sha256": "add02ba469cdaf4e8072b2c6bdb7173fd55cb2240e5afacf72b2a366a1846c16"
             }
           ],
           "test_modules": [
@@ -9366,8 +9445,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "clock": {
@@ -9524,8 +9603,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "clock": {
@@ -10630,13 +10709,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
-              "bytes": 9423,
-              "sha256": "f6585e1ed4f0d1be31f79d85f6dbdc05434a876cd11f1d63a6c27d92ebd38f35"
+              "bytes": 12505,
+              "sha256": "98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132"
             },
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-              "bytes": 20848,
-              "sha256": "d9b72de594f47353838a22290092b233b74803d663bc4a07172705635c4b2c53"
+              "bytes": 23854,
+              "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
             },
             {
               "path": "crates/jocforge-domain/src/joc/source_stage.rs",
@@ -10666,13 +10745,13 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-              "bytes": 20848,
-              "sha256": "d9b72de594f47353838a22290092b233b74803d663bc4a07172705635c4b2c53"
+              "bytes": 23854,
+              "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "clock": {
@@ -12074,8 +12153,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
-              "bytes": 17597,
-              "sha256": "20766a8fb0dde81aa2045006ee4f3ab3a28ab69076f455d090944e2a639ee4c3"
+              "bytes": 18568,
+              "sha256": "8842a8398744e0f485175826a7e276e5ce7b45cf738f5cf90bb58166a2b3868c"
             },
             {
               "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
@@ -12096,8 +12175,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "validation_boundary": "The workspace compiles and the authorized-resource g0-to-g1 candidate test passes with a 3 MiB Rust test thread stack. The schedule loop is compiled but not executed through Q; its terminal MeasurementReceipt is a candidate only and no 12-owner READY or output is claimed."
@@ -12309,8 +12388,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             }
           ],
           "test_inventory": [
@@ -12321,8 +12400,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18401,
-              "sha256": "8a629a3e0f65fdbb121c205c32dc576f7cac929bfaf17034671aedead3ae188a"
+              "bytes": 18347,
+              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
             }
           ]
         },
@@ -12829,23 +12908,23 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_finalization_bridge.rs",
-              "bytes": 2980,
-              "sha256": "552e10b4504621dfe07b04e736f19b85fd664faa6c50643e64969556f0222b71"
+              "bytes": 5444,
+              "sha256": "98bf8251547c0e3444f92d2a22d7aeb9588ca0dc32627a9418e3c15edc844fec"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1921966,
-              "sha256": "1c65746513dd5087b3c00a54a8cf6f0741e7e80186f5e066f35a8a48a372af7e"
+              "bytes": 1964386,
+              "sha256": "add02ba469cdaf4e8072b2c6bdb7173fd55cb2240e5afacf72b2a366a1846c16"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
-              "bytes": 17597,
-              "sha256": "20766a8fb0dde81aa2045006ee4f3ab3a28ab69076f455d090944e2a639ee4c3"
+              "bytes": 18568,
+              "sha256": "8842a8398744e0f485175826a7e276e5ce7b45cf738f5cf90bb58166a2b3868c"
             }
           ],
           "test_modules": [
@@ -12860,8 +12939,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "clock": {
@@ -13077,8 +13156,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
@@ -13094,13 +13173,13 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18401,
-              "sha256": "8a629a3e0f65fdbb121c205c32dc576f7cac929bfaf17034671aedead3ae188a"
+              "bytes": 18347,
+              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "not_run": [
@@ -13551,8 +13630,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
-              "bytes": 345,
-              "sha256": "950bbe1b212d442668c0527dc5fba2be4fe380203866b8cb1f560f798e05a071"
+              "bytes": 431,
+              "sha256": "a9ec3a8008e8aae8677d4f1f8c13adc7a6d8baa22698de6c252ae89946a9ff88"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
@@ -13676,13 +13755,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-cli/src/selected_spatial_callback_providers.rs",
-              "bytes": 10882,
-              "sha256": "a249569ab4220681df4dcf09992df604a6c3a93b94c088ee98c9179c21cd6704"
+              "bytes": 11537,
+              "sha256": "8b2fcef472dc172e9529b5f5f598f12b53f2e3a2d42e0a787a755547ba4a7be8"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
-              "bytes": 17597,
-              "sha256": "20766a8fb0dde81aa2045006ee4f3ab3a28ab69076f455d090944e2a639ee4c3"
+              "bytes": 18568,
+              "sha256": "8842a8398744e0f485175826a7e276e5ce7b45cf738f5cf90bb58166a2b3868c"
             },
             {
               "path": "crates/jocforge-application/src/independent_meter_callback.rs",
@@ -13691,8 +13770,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-              "bytes": 17616,
-              "sha256": "003cf021ea18977cda6c355b5eab4dfa2ed9944012b7a2ccec1534cd62258965"
+              "bytes": 17794,
+              "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
@@ -13721,8 +13800,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "local_mapping_files": [
@@ -13865,8 +13944,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "local_mapping_files": [],
@@ -15409,8 +15488,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
-              "bytes": 345,
-              "sha256": "950bbe1b212d442668c0527dc5fba2be4fe380203866b8cb1f560f798e05a071"
+              "bytes": 431,
+              "sha256": "a9ec3a8008e8aae8677d4f1f8c13adc7a6d8baa22698de6c252ae89946a9ff88"
             },
             {
               "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
@@ -15429,8 +15508,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             },
             {
               "path": "crates/jocforge-domain/src/meter/mod.rs",
@@ -15469,8 +15548,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-              "bytes": 17616,
-              "sha256": "003cf021ea18977cda6c355b5eab4dfa2ed9944012b7a2ccec1534cd62258965"
+              "bytes": 17794,
+              "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
             },
             {
               "path": "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
@@ -15496,8 +15575,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ]
         },
@@ -15795,9 +15874,9 @@
         },
         {
           "slice_id": "washed-f06of-selected-input-reader-static-contract",
-          "mapping_status": "WASHED_STATIC_INPUT_READER_UNITS_AND_SHORT_READ_RULES__SOURCE_JOIN_UNBOUND",
-          "implementation_status": "WASHED_SAMPLE_BYTE_AND_ACTUAL_FRAME_SEMANTICS_CLOSED__SELECTED_RUNTIME_OPEN",
-          "scope": "The reviewed input-reader contract separates per-channel sample positions from byte-counted file reads; PCM24/38-channel blockAlign is 114, relative byte offset is sample_position*blockAlign, and the data descriptor supplies the absolute payload offset. Complete frames are floor(actualBytes/blockAlign); a short chunk stops the read loop and successful return carries actual frame count on the guarded cursor branch. It also records planar row order and PCM24 sign-extension/F32 conversion. A Wash V2 correction confirms the original reader package's F06OF model-spec hash matches the approved source and withdraws the mistaken V1 mismatch claim. These are static reader semantics only: selected invocation, physical row/descriptor owner-generation, numeric selected payload offset, OS EOF boolean and native drain mapping remain unbound.",
+          "mapping_status": "WASHED_PCM24_CONDITIONAL_S16_BRANCH__F32_NORMALIZATION_AND_SELECTED_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_CONDITIONAL_S16_NARROWING__SEPARATE_FLOAT_BRANCH_UNBOUND",
+          "scope": "The reviewed input-reader contract separates per-channel sample positions from byte-counted file reads; PCM24/38-channel blockAlign is 114, relative byte offset is sample_position*blockAlign, and the data descriptor supplies the absolute payload offset. Complete frames are floor(actualBytes/blockAlign); a short chunk stops the read loop and successful return carries actual frame count on the guarded cursor branch. It records planar row order. A Wash V2 boundary correction narrows the reviewed DEE three-byte/sample branch to conditional PCM24-to-S16 conversion; it does not establish the F32 normalization rule. FUN241060 is a separate four-byte float branch with no call edge from the three-byte path. The approved JOCForge F01.3 model independently defines signed U24LE PCM24 to R32(value/2^23), but that model rule is not DEE behavior. A Wash V2 correction confirms the original reader package's F06OF model-spec hash matches the approved source and withdraws the mistaken V1 mismatch claim. These are static reader semantics only: selected invocation, physical row/descriptor owner-generation, numeric selected payload offset, OS EOF boolean and native drain mapping remain unbound. Sample-6 runtime is not joined to either DEE branch; DEE scale, rounding and F32 consumer remain UNBOUND.",
           "owner": "io",
           "implementation_files": [],
           "local_mapping_files": [],
@@ -15808,7 +15887,7 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_F06OF_SELECTED_INPUT_READER_STATIC_CONTRACT_V1",
+            "kind": "HASH_BOUND_F06OF_PCM24_TO_F32_CONSUMER_BOUNDARY_V2",
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
@@ -15816,29 +15895,44 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/PCM24-TO-F32-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b",
             "approved_source_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
             "source_hash_correction_status": "V1_ERRATUM_WITHDRAWN; UPSTREAM_SOURCE_IDENTITY_MATCHES_APPROVED_MODEL",
             "source_hash_correction_manifest_sha256": "417ea5156b56fa31a0174265fbc178aceb3ce4c152f1f7e26ead54c7de1984fe",
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "validation_boundary": "Static conversion/read behavior is hash-bound to the approved F06OF model spec; physical row, selected invocation, descriptor and EOF/drain identity remain unbound."
+            "validation_boundary": "DEE PCM24-to-S16 narrowing is conditional and does not establish the F32 branch or JOCForge conversion. The approved F01.3 rule is local model behavior only. Selected sample-6 runtime identity, scale, rounding, F32 consumer and EOF/drain join remain unbound.",
+            "pcm24_f32_boundary_manifest_sha256": "4fa4ad8535e558099c3513e90613f759fd2a591ed707c86e5dabdeef3ad654bc",
+            "supersedes_source_package_manifest_sha256": "f45234280f568aec17a1102587abad00205973e9dcb50a9416bfbc6f99c474a8"
           },
           "test_modules": [],
           "vectors": {
-            "kind": "HASH_BOUND_INPUT_ONLY_F06OF_SAMPLE_BYTE_AND_ACTUAL_FRAME_ARITHMETIC",
+            "kind": "HASH_BOUND_PCM24_TO_F32_BRANCH_SEPARATION_V2",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/PCM24-TO-F32-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_pcm24_f32_consumer_boundary_v2/WASH-VERIFICATION.json"
             ],
             "case_pointers": [
               "38-channel PCM24 uses blockAlign 114 bytes; per-channel sample position maps to a relative byte offset by multiplying blockAlign.",
               "Actual complete frames are floor(actual byte count/blockAlign); short reads stop the conversion loop and return the actual frame count on the guarded branch.",
               "Input-only arithmetic vectors contain no PCM and do not establish selected native EOF or drain behavior.",
-              "Wash V2 withdraws the false source-hash mismatch claim; the original model-spec SHA matches the approved package and actual file."
+              "Wash V2 withdraws the false source-hash mismatch claim; the original model-spec SHA matches the approved package and actual file.",
+              "The selected DEE three-byte branch reads three bytes and conditionally narrows to S16; this does not supply the F32 normalization rule.",
+              "FUN241060 is a separate four-byte float branch with no call edge from the three-byte branch.",
+              "The approved JOCForge model defines signed U24LE PCM24 to R32(value/2^23); this is not native DEE evidence.",
+              "No sample-6 PCM was read; DEE scale, rounding, F32 consumer and runtime join remain UNBOUND."
             ],
-            "source_supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b"
+            "source_supplement_manifest_sha256": "4fa4ad8535e558099c3513e90613f759fd2a591ed707c86e5dabdeef3ad654bc"
           },
           "native_status": {
             "static_reader_units_and_conversion_rules": "CLOSED_FOR_REVIEWED_PATH",
@@ -15847,7 +15941,11 @@
             "selected_absolute_payload_offset": "UNBOUND",
             "native_eof_boolean_and_drain": "NOT_ESTABLISHED",
             "native_execution": "NOT_RUN",
-            "pcm_read_by_this_evidence": 0
+            "pcm_read_by_this_evidence": 0,
+            "conditional_three_byte_pcm24_branch": "PCM24_TO_S16_NARROWING_ONLY",
+            "four_byte_float_branch": "SEPARATE_BRANCH_NO_CALL_EDGE_FROM_THREE_BYTE_BRANCH",
+            "dee_pcm24_to_f32_scale_rounding_consumer": "UNBOUND",
+            "sample6_runtime_join": "UNBOUND"
           },
           "error_outcomes": [],
           "not_run": [
@@ -16229,8 +16327,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-              "bytes": 17616,
-              "sha256": "003cf021ea18977cda6c355b5eab4dfa2ed9944012b7a2ccec1534cd62258965"
+              "bytes": 17794,
+              "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
             }
           ],
           "historical_implementation_inventory": [
@@ -16322,8 +16420,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 101357,
-              "sha256": "3587e70a81c0790861b61b1a4a5c22341b87034b9c911921a81f1056b5dcb258"
+              "bytes": 103520,
+              "sha256": "e94602651e130d456123e887fb75dab2e07455c4102b7ec28e060a9739b86294"
             },
             {
               "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
@@ -17890,6 +17988,443 @@
             "product_policy_changed": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-file-position-samples-reader-owner-boundary",
+          "mapping_status": "WASHED_SAMPLES_PROPERTY_CONSUMER_AND_READER_EXTENT_SEPARATE__OWNER_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SAMPLE_EXTENT_CROSSCHECK__DEE_WRITER_AND_READER_JOIN_UNBOUND",
+          "scope": "The selected converter consumes a nonnegative samples property but has no observed local writer. A separate reader path exposes a U32 metadata-tuple field as an extent; its semantic type and join to the property remain UNBOUND. The authorized BWF header independently gives 743611284 / 114 = 6522906 frames; JOCForge may parse its own BWF extent without claiming that as DEE's producer formula.",
+          "owner": "io",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "SamplesProperty",
+              "ReaderMetadataTuple",
+              "ReaderExtent",
+              "TerminalEof",
+              "JobGeneration"
+            ],
+            "covered_clauses": [
+              "The samples property has one consumer reference and no observed local writer.",
+              "The reader extent getter reads a U32 tuple field converted to binary64; semantic owner is UNBOUND.",
+              "The sample-6 BWF header quotient matches 6522906, but equality does not establish DEE producer lineage."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_FILE_POSITION_SAMPLES_PROPERTY_AND_READER_EXTENT_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/file_position_samples_reader_boundary_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/file_position_samples_reader_boundary_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/file_position_samples_reader_boundary_v1/SAMPLES-READER-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/file_position_samples_reader_boundary_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/file_position_samples_reader_boundary_v1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "ad77c108c4dee73808e8566b3fe4cf1304d2bb345aeb1b9b0517694a28415066",
+            "validation_boundary": "The selected converter consumes a nonnegative samples property but has no observed local writer. A separate reader path exposes a U32 metadata-tuple field as an extent; its semantic type and join to the property remain UNBOUND. The authorized BWF header independently gives 743611284 / 114 = 6522906 frames; JOCForge may parse its own BWF extent without claiming that as DEE's producer formula."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_FILE_POSITION_SAMPLES_PROPERTY_AND_READER_EXTENT_BOUNDARY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/file_position_samples_reader_boundary_v1/SAMPLES-READER-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/file_position_samples_reader_boundary_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/file_position_samples_reader_boundary_v1/WASH-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Input adapter can derive JOCForge extent from the validated BWF header.",
+              "Do not claim the same arithmetic is DEE's samples-property producer."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "ad77c108c4dee73808e8566b3fe4cf1304d2bb345aeb1b9b0517694a28415066"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Same-owner samples property writer to reader extent and terminal EOF.",
+            "No DEE samples formula or header-division rule is established."
+          ],
+          "validation_boundary": "The selected converter consumes a nonnegative samples property but has no observed local writer. A separate reader path exposes a U32 metadata-tuple field as an extent; its semantic type and join to the property remain UNBOUND. The authorized BWF header independently gives 743611284 / 114 = 6522906 frames; JOCForge may parse its own BWF extent without claiming that as DEE's producer formula.",
+          "native_status": {
+            "samples_property_consumer": "STATIC_BOUND",
+            "samples_property_writer": "NOT_OBSERVED",
+            "reader_extent_getter": "STATIC_BOUND",
+            "reader_tuple_field_semantics": "UNBOUND",
+            "samples_property_to_reader_extent_join": "UNBOUND",
+            "terminal_eof": "NOT_CAPTURED"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-atmosmezz-helper-bwf-capability-runtime-selection-boundary",
+          "mapping_status": "WASHED_STATIC_HELPER_ADM_BWF_CAPABILITY__R3_RUNTIME_SELECTION_NOT_CAPTURED",
+          "implementation_status": "EVIDENCE_ONLY_HELPER_METADATA_CAPABILITY__SAMPLE6_READER_OWNER_UNBOUND",
+          "scope": "Static helper analysis shows AtmosMezz Run delegates metadata handling to atmos_info.exe --input, whose BWF path checks CHNA, AXML and ADM XML and can construct atmos_storage_master_s. The sample-6 receipt does not capture helper PID, selected factory callback, master object or vtable, so runtime helper selection is unbound.",
+          "owner": "io",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "AtmosMezzRun",
+              "HelperProcess",
+              "BwfFactory",
+              "AtmosStorageMaster",
+              "JobGeneration"
+            ],
+            "covered_clauses": [
+              "The helper has a selected ADM BWF metadata capability on the reviewed static path.",
+              "The full-file sample-6 run does not bind that helper/factory/master to the job."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_ATMOSMEZZ_HELPER_ADM_BWF_CAPABILITY_RUNTIME_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_adm_bwf_helper_boundary_v2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_adm_bwf_helper_boundary_v2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_adm_bwf_helper_boundary_v2/READER-OBSERVATION-PLAN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_adm_bwf_helper_boundary_v2/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_adm_bwf_helper_boundary_v2/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "811a434c4f21b7c28837e4b1ba8d99a1c66f4596130692857445efbc2eeea844",
+            "validation_boundary": "Static helper analysis shows AtmosMezz Run delegates metadata handling to atmos_info.exe --input, whose BWF path checks CHNA, AXML and ADM XML and can construct atmos_storage_master_s. The sample-6 receipt does not capture helper PID, selected factory callback, master object or vtable, so runtime helper selection is unbound."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_ATMOSMEZZ_HELPER_ADM_BWF_CAPABILITY_RUNTIME_BOUNDARY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_adm_bwf_helper_boundary_v2/READER-OBSERVATION-PLAN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_adm_bwf_helper_boundary_v2/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_adm_bwf_helper_boundary_v2/WASH-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Metadata parser capability does not prove sample-6 helper selection.",
+              "No PCM row or audio behavior is established."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "811a434c4f21b7c28837e4b1ba8d99a1c66f4596130692857445efbc2eeea844"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Same-job helper process, factory, master/vtable and generation identity.",
+            "No audio algorithm or reader-row mapping is supplied."
+          ],
+          "validation_boundary": "Static helper analysis shows AtmosMezz Run delegates metadata handling to atmos_info.exe --input, whose BWF path checks CHNA, AXML and ADM XML and can construct atmos_storage_master_s. The sample-6 receipt does not capture helper PID, selected factory callback, master object or vtable, so runtime helper selection is unbound.",
+          "native_status": {
+            "helper_bwf_metadata_capability": "STATIC_BOUND",
+            "sample6_helper_pid": "NOT_CAPTURED",
+            "selected_factory_callback": "NOT_CAPTURED",
+            "master_storage_object": "NOT_CAPTURED",
+            "runtime_selection": "UNBOUND"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-helper-metadata-consumer-versus-sample-reader-boundary",
+          "mapping_status": "WASHED_HELPER_VALIDATION_AND_SAMPLE_READ_ARE_SEPARATE__R3_READER_OWNER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_METADATA_VS_SAMPLE_READ_INTERFACE__JOB_OWNER_UNBOUND",
+          "scope": "The helper's first consumer after master open reads a one-byte AdmValidationResult status and has no PCM row-buffer argument. A separate sample-read vtable candidate uses a 40-byte wrapper with borrowed row pointers and an actual-frame-count out parameter. No static edge or R3 job receipt joins the validation consumer to that reader object.",
+          "owner": "io",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "HelperMaster",
+              "AdmValidationResult",
+              "SampleReadVtable",
+              "BorrowedRowTable",
+              "ReaderFrameCount",
+              "JobGeneration"
+            ],
+            "covered_clauses": [
+              "Metadata validation and PCM sample read are separate static interfaces.",
+              "The sample-6 receipt does not identify helper PID/master/vtable/row table."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_HELPER_METADATA_VALIDATION_VS_SAMPLE_READ_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_helper_metadata_vs_sample_reader_boundary_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_helper_metadata_vs_sample_reader_boundary_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_helper_metadata_vs_sample_reader_boundary_v1/HELPER-READ-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_helper_metadata_vs_sample_reader_boundary_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_helper_metadata_vs_sample_reader_boundary_v1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "e9256d2131b232c113546ceca0a84feeb2987d37934b2637d9f98c76a4da3f47",
+            "validation_boundary": "The helper's first consumer after master open reads a one-byte AdmValidationResult status and has no PCM row-buffer argument. A separate sample-read vtable candidate uses a 40-byte wrapper with borrowed row pointers and an actual-frame-count out parameter. No static edge or R3 job receipt joins the validation consumer to that reader object."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_HELPER_METADATA_VALIDATION_VS_SAMPLE_READ_BOUNDARY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_helper_metadata_vs_sample_reader_boundary_v1/HELPER-READ-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_helper_metadata_vs_sample_reader_boundary_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/atmosmezz_helper_metadata_vs_sample_reader_boundary_v1/WASH-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Do not treat AdmValidationResult status read as PCM reader execution.",
+              "The sample read owner and row lineage remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "e9256d2131b232c113546ceca0a84feeb2987d37934b2637d9f98c76a4da3f47"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Same-job sample-6 helper reader object, row table and source-to-DDP lineage.",
+            "No audio algorithm or row mapping is supplied."
+          ],
+          "validation_boundary": "The helper's first consumer after master open reads a one-byte AdmValidationResult status and has no PCM row-buffer argument. A separate sample-read vtable candidate uses a 40-byte wrapper with borrowed row pointers and an actual-frame-count out parameter. No static edge or R3 job receipt joins the validation consumer to that reader object.",
+          "native_status": {
+            "validation_consumer_reads_status_only": true,
+            "validation_consumer_has_pcm_rows": false,
+            "separate_sample_read_vtable_candidate": "STATIC_BOUND",
+            "sample6_reader_owner": "UNBOUND",
+            "sample_row_generation": "UNBOUND"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-adm-bwf-to-ddp-channel-order-boundary",
+          "mapping_status": "WASHED_DDP_FIRST_ROW_COPY_OBSERVED__ADM_READER_DDP_ROW_IDENTITY_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RUNTIME_ORDINAL_COPY__UPSTREAM_AUDIO_MAPPING_UNBOUND",
+          "scope": "V2 supersedes the earlier static-only row-order note. One sample-6 full-file run observed a 38-row, 1536-frame DDP input table and 38 distinct internal destination rows; the pointer sets had no overlap and no same-ordinal pointer equality. Hash-bound DDP code copies frame_count*4 bytes from input row i to internal row i. Converter CHNA lookup and the reader adapter were not hit before the copy/target exit. The JOCForge selected profile separately defines its own BWF PCM slot as track_index-1; this does not join the R3 reader row to the DDP row or prove DEE parity.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "AdmObjectIdentity",
+              "ChnaTrackIndex",
+              "ReaderPcmRowOrdinal",
+              "DdpInputRowOrdinal",
+              "DdpContext",
+              "JobGeneration"
+            ],
+            "covered_clauses": [
+              "Converter CHNA identity-to-track-index lookup is static-bound within its own image.",
+              "The first DDP row-table consumer preserves the ordinal at that copy boundary.",
+              "No edge joins the reader PCM row to the DDP input row."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_ADM_BWF_DDP_RUNTIME_ROW_COPY_WITH_UPSTREAM_IDENTITY_UNBOUND",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_ddp_channel_order_boundary_v2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_ddp_channel_order_boundary_v2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_ddp_channel_order_boundary_v2/RUNTIME-ROW-LINEAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_ddp_channel_order_boundary_v2/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_ddp_channel_order_boundary_v2/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "1c94f01a70d9b58e10aa218838193eb9d0ba3b12571063e04d59baee9b2944ef",
+            "validation_boundary": "V2 supersedes the earlier static-only row-order note. One sample-6 full-file run observed a 38-row, 1536-frame DDP input table and 38 distinct internal destination rows; the pointer sets had no overlap and no same-ordinal pointer equality. Hash-bound DDP code copies frame_count*4 bytes from input row i to internal row i. Converter CHNA lookup and the reader adapter were not hit before the copy/target exit. The JOCForge selected profile separately defines its own BWF PCM slot as track_index-1; this does not join the R3 reader row to the DDP row or prove DEE parity.",
+            "historical_supplements": [
+              {
+                "package_id": "adm_bwf_ddp_channel_order_boundary_v1",
+                "manifest_sha256": "a12c3bcbe7511eb78cd98e854a9a9c531f619d81bfc3619336778833573f4fb4",
+                "status": "SUPERSEDED_BY_V2_RUNTIME_ORDINAL_COPY_OBSERVATION"
+              }
+            ]
+          },
+          "vectors": {
+            "kind": "WASHED_R3_RUNTIME_ROW_COPY_OBSERVATION_WITHOUT_PCM_VALUES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_ddp_channel_order_boundary_v2/RUNTIME-ROW-LINEAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_ddp_channel_order_boundary_v2/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/adm_bwf_ddp_channel_order_boundary_v2/WASH-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "The sample-6 run captured 38 input rows, 38 distinct internal destination rows and frame_count=1536.",
+              "Input/destination pointers have no intersection and zero same-ordinal pointer equality.",
+              "The DDP first consumer copies input row i to internal row i; converter CHNA lookup and reader adapter breakpoints were not hit.",
+              "The ADM identity/CHNA track to reader row to DDP row same-generation join remains UNBOUND."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "1c94f01a70d9b58e10aa218838193eb9d0ba3b12571063e04d59baee9b2944ef",
+            "source_package_manifest_sha256": "1c94f01a70d9b58e10aa218838193eb9d0ba3b12571063e04d59baee9b2944ef"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Same-job/generation correspondence from ADM identity and CHNA track through reader output row into the DDP input row table.",
+            "The sample-6 R3 output media payload was not rehashed by Wash and is not a JOCForge output.",
+            "No channel identity or permutation is inferred from row counts or ordinals."
+          ],
+          "validation_boundary": "V2 supersedes the earlier static-only row-order note. One sample-6 full-file run observed a 38-row, 1536-frame DDP input table and 38 distinct internal destination rows; the pointer sets had no overlap and no same-ordinal pointer equality. Hash-bound DDP code copies frame_count*4 bytes from input row i to internal row i. Converter CHNA lookup and the reader adapter were not hit before the copy/target exit. The JOCForge selected profile separately defines its own BWF PCM slot as track_index-1; this does not join the R3 reader row to the DDP row or prove DEE parity.",
+          "native_status": {
+            "ddp_first_row_copy_observed": true,
+            "input_row_count": 38,
+            "destination_row_count": 38,
+            "frame_count": 1536,
+            "input_unique_pointer_count": 38,
+            "destination_unique_pointer_count": 38,
+            "pointer_intersection_count": 0,
+            "same_ordinal_pointer_equality_count": 0,
+            "converter_chna_lookup": "NOT_HIT_BEFORE_DDP_FIRST_COPY_OR_TARGET_EXIT",
+            "reader_adapter": "NOT_HIT_BEFORE_TARGET_EXIT",
+            "reader_output_rows": "NOT_CAPTURED",
+            "adm_chna_to_reader_row": "UNBOUND",
+            "reader_row_to_ddp_input_row": "UNBOUND",
+            "same_job_generation": "UNBOUND",
+            "raw_pcm_values": "NOT_READ_OR_SAVED",
+            "r3_output_hash_rechecked_by_wash": false,
+            "whole_f06of_readiness": false
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-ddp-samples-map-conditional-alias-boundary-v2",
+          "mapping_status": "WASHED_DDP_CONDITIONAL_SAMPLINGCOUNT_ALIAS__ATMOSMEZZ_READER_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_METADATA_ALIAS__NO_READER_EXTENT_OR_SAMPLE_COUNT_FORMULA",
+          "scope": "In the reviewed DDP image, a complete source map bypasses fallback. If channels, sampling_rate or samples is missing, a conditional fallback copies MediaInfo Channels, SamplingRate and SamplingCount into the local map and then the same DDP context output map; a later DDP timeline consumer reads it. The existing samples writer, MediaInfo count formula and DDP-to-AtmosMezz reader-map join remain unbound.",
+          "owner": "io",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "DdpContext",
+              "DdpSourceMap",
+              "MediaInfoSamplingCount",
+              "DdpOutputMap",
+              "AtmosMezzSamplesMap",
+              "ReaderExtent",
+              "JobGeneration"
+            ],
+            "covered_clauses": [
+              "The fallback is conditional on missing required map keys.",
+              "The same DDP context copies its local samples value to its output map.",
+              "No typed join connects those maps to AtmosMezz reader extent."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_DDP_SAMPLES_CONDITIONAL_ALIAS_CROSS_IMAGE_BOUNDARY_V2",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_alias_cross_image_boundary_v2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_alias_cross_image_boundary_v2/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_alias_cross_image_boundary_v2/BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_alias_cross_image_boundary_v2/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_alias_cross_image_boundary_v2/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "a3e1b7d114e4bc9d591872b93a69b23515a755f3c96b3afa1c38ab746ea14d36",
+            "validation_boundary": "In the reviewed DDP image, a complete source map bypasses fallback. If channels, sampling_rate or samples is missing, a conditional fallback copies MediaInfo Channels, SamplingRate and SamplingCount into the local map and then the same DDP context output map; a later DDP timeline consumer reads it. The existing samples writer, MediaInfo count formula and DDP-to-AtmosMezz reader-map join remain unbound."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_DDP_SAMPLES_CONDITIONAL_ALIAS_CROSS_IMAGE_BOUNDARY_V2",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_alias_cross_image_boundary_v2/BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_alias_cross_image_boundary_v2/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_alias_cross_image_boundary_v2/WASH-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "V2 adds the conditional MediaInfo fallback, but the preexisting map writer is still open.",
+              "No audio algorithm or sample-count formula is supplied."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "a3e1b7d114e4bc9d591872b93a69b23515a755f3c96b3afa1c38ab746ea14d36"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Same-job/generation source-map branch to AtmosMezz samples map, reader extent and EOF.",
+            "Do not infer identity from the common samples key or equal scalar values."
+          ],
+          "validation_boundary": "In the reviewed DDP image, a complete source map bypasses fallback. If channels, sampling_rate or samples is missing, a conditional fallback copies MediaInfo Channels, SamplingRate and SamplingCount into the local map and then the same DDP context output map; a later DDP timeline consumer reads it. The existing samples writer, MediaInfo count formula and DDP-to-AtmosMezz reader-map join remain unbound.",
+          "native_status": {
+            "fallback_on_missing_keys": true,
+            "complete_map_bypasses_fallback": true,
+            "fallback_samples_source": "MediaInfo.SamplingCount",
+            "same_ddp_context_output_map_copy": "STATIC_BOUND",
+            "source_map_samples_writer": "UNBOUND",
+            "sampling_count_formula": "NOT_ESTABLISHED",
+            "ddp_map_to_atmosmezz_reader": "UNBOUND"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-ddp-source-map-samples-prefill-owner-boundary",
+          "mapping_status": "WASHED_DDP_PREFLIGHT_METADATA_COPY__SOURCE_SAMPLES_WRITER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_CONTEXT_OWNER_AND_CALLBACK_WRITER_OPEN",
+          "scope": "The DDP source-map initializer has a static metadata preflight that reads filename and fills a separate output map. Neither preflight nor context initialization writes source samples. The complete-map branch requires samples to be present before fallback. A callback thunk has no direct code caller in the reviewed image; one unresolved data reference remains.",
+          "owner": "io",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "DdpCallbackReceiver",
+              "DdpContext",
+              "DdpSourceMap",
+              "PreflightOutputMap",
+              "SamplesWriter",
+              "JobGeneration"
+            ],
+            "covered_clauses": [
+              "Metadata preflight and context initialization do not write source samples.",
+              "The complete-map branch requires a prior samples value.",
+              "The callback thunk lacks a direct code caller in the reviewed image."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_DDP_SAMPLES_PREFILL_OWNER_BOUNDARY",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_prefill_owner_boundary_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_prefill_owner_boundary_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_prefill_owner_boundary_v1/SOURCE-MAP-OWNER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_prefill_owner_boundary_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_prefill_owner_boundary_v1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "a7080042f04d57c8764a9573f0ec403c1c4234aa5cab1c5bb7ded7a08cfba280",
+            "validation_boundary": "The DDP source-map initializer has a static metadata preflight that reads filename and fills a separate output map. Neither preflight nor context initialization writes source samples. The complete-map branch requires samples to be present before fallback. A callback thunk has no direct code caller in the reviewed image; one unresolved data reference remains."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_DDP_SAMPLES_PREFILL_OWNER_BOUNDARY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_prefill_owner_boundary_v1/SOURCE-MAP-OWNER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_prefill_owner_boundary_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ddp_samples_prefill_owner_boundary_v1/WASH-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "No source-map samples writer or callback owner is bound.",
+              "No samples algorithm/value is supplied."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "a7080042f04d57c8764a9573f0ec403c1c4234aa5cab1c5bb7ded7a08cfba280"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Follow the DDP context pointer from callback receiver +0xb8 to the first samples writer and same-generation read.",
+            "Do not infer MediaInfo prefill ownership from map keys or equal values."
+          ],
+          "validation_boundary": "The DDP source-map initializer has a static metadata preflight that reads filename and fills a separate output map. Neither preflight nor context initialization writes source samples. The complete-map branch requires samples to be present before fallback. A callback thunk has no direct code caller in the reviewed image; one unresolved data reference remains.",
+          "native_status": {
+            "metadata_preflight_samples_write": false,
+            "context_initializer_samples_write": false,
+            "complete_map_requires_samples": true,
+            "callback_thunk_direct_code_callers": 0,
+            "upstream_samples_writer": "UNBOUND"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -18270,8 +18805,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 58315,
-              "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+              "bytes": 66140,
+              "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
@@ -18285,8 +18820,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -18362,8 +18897,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 58315,
-              "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+              "bytes": 66140,
+              "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
             }
           ]
         }
@@ -20276,8 +20811,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 58315,
-              "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+              "bytes": 66140,
+              "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
             },
             {
               "path": "crates/jocforge-domain/src/drc/mod.rs",
@@ -20291,8 +20826,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -20313,8 +20848,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 58315,
-              "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+              "bytes": 66140,
+              "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
             },
             {
               "path": "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs",
@@ -20432,8 +20967,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             },
             {
               "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -20442,8 +20977,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -20452,8 +20987,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 58315,
-              "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+              "bytes": 66140,
+              "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -20462,8 +20997,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-              "bytes": 57582,
-              "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
+              "bytes": 58594,
+              "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"
             }
           ],
           "test_inventory": [
@@ -20474,21 +21009,21 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 58315,
-              "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+              "bytes": 66140,
+              "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
             }
           ]
         },
         {
           "slice_id": "washed-f06nd-measurement-to-f12-dialnorm-candidate-boundary",
-          "mapping_status": "WASHED_RUN100_LOG_AND_OUTPUT_PLUS_RUN11_WIDTH5_CALLER__MEASUREMENT_AND_DIALNORM_JOINS_UNBOUND",
-          "implementation_status": "EVIDENCE_ONLY_LOG_METADATA_AND_UNNAMED_WIDTH5_SERIALIZER_MEMBER__NO_SCALAR_OR_DIALNORM_JOIN",
-          "scope": "V5 binds Run-100 measurement log and output-stage metadata only; those observations still lack units, a typed MeasurementReceipt, runtime-loaded image identity, and measurement/F06ND/F12 joins. Separate V2 ABI correction and V3 static tracing bind a Run-11 helper call on the Atmos DDP codec-loop metadata serializer path: the helper receives field_pointer, element_count=1, width=5, and the input member is at relative +8. The captured 1 is the element count; the field scalar is NOT_CAPTURED. V3 reports the same-context member later read as a short and copied to a downstream record slot, but its semantic tag, builder/first writer, typed producer, and owner/generation remain UNBOUND. The Run-11 callsite does not match the existing static candidate and is not joined to the separate Run-100 candidate. The earlier V1 U16=1 scalar interpretation is superseded as invalid. V4 places the Run-11 width-five helper hit on an E-AC-3 bitstream metadata serializer path, but the member is unnamed and its scalar is NOT_CAPTURED; it is not established as DialNorm or as a specific decoded-audio effect. V1 closes one static same-parent setter-to-serializer path at owner-relative +102848 / serializer base +102840+8, with static U16=16. It does not capture the Run-11 runtime scalar, establish semantic/DialNorm identity, bind lifetime first writer or owner generation, or authorize writing 16 into audio metadata.",
+          "mapping_status": "WASHED_RUN100_RECEIPT_GAP__SAMPLE6_RUNTIME_VALUE_OBSERVED__SOURCE_JOIN_OPEN",
+          "implementation_status": "EVIDENCE_ONLY_SAMPLE6_RUNTIME_CROSSCHECK__NO_GENERAL_DIALNORM_RULE_OR_TYPED_JOIN",
+          "scope": "V5 binds Run-100 measurement log and output-stage metadata only; those observations still lack units, a typed MeasurementReceipt, runtime-loaded image identity, and measurement/F06ND/F12 joins. Separate V2 ABI correction and V3 static tracing bind a Run-11 helper call on the Atmos DDP codec-loop metadata serializer path: the helper receives field_pointer, element_count=1, width=5, and the input member is at relative +8. The captured 1 is the element count; the field scalar is NOT_CAPTURED. V3 reports the same-context member later read as a short and copied to a downstream record slot, but its semantic tag, builder/first writer, typed producer, and owner/generation remain UNBOUND. The Run-11 callsite does not match the existing static candidate and is not joined to the separate Run-100 candidate. The earlier V1 U16=1 scalar interpretation is superseded as invalid. V4 places the Run-11 width-five helper hit on an E-AC-3 bitstream metadata serializer path, but the member is unnamed and its scalar is NOT_CAPTURED; V4 itself did not identify the member semantic. A later DEE writer-order crosswalk maps this serializer's +8 field to BSID and the next +0x20 U5 to DialNorm; the runtime scalar, producer, owner/generation and measurement join remain UNBOUND. No DEE playback or gain behavior is established. V1 closes one static same-parent setter-to-serializer path at owner-relative +102848 / serializer base +102840+8, with static U16=16. V1 does not capture the Run-11 runtime scalar or bind lifetime first writer/owner generation; its static setter path is not generation-joined to R141, and U16 16 is not a DialNorm input. R141 observed U16=16 at +8, which is consistent with BSID16; its output bytes were not read or hashed. A separate static setter copies an owner-relative +0x34 U16 to +0x20, but the +0x34 upstream writer, meaning and generation remain UNBOUND. A separate sample-6 run observes same-owner U16 0x0019 and later serializer consumption at +0x20; the prewrite value was already 0x0019, so causal update is unproven. FFmpeg is only a public field/syntax crosscheck, not a source for DEE gain behavior or DialNorm values. This crosswalk does not join the static V1 path, Run-11, R141 and F06ND into one runtime generation.",
           "owner": "drc",
           "implementation_requirement": false,
           "dependencies": [],
@@ -20554,6 +21089,23 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/WASH-REVIEW.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_writer_field_classification_wash_v4/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_bsid_field_mapping_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_bsid_field_mapping_wash_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_bsid_field_mapping_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_bsid_field_mapping_wash_v1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_dialnorm_gain_reference_correction_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_dialnorm_gain_reference_correction_wash_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_dialnorm_gain_reference_correction_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_dialnorm_gain_reference_correction_wash_v1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/eac3_dialnorm_external_reference_scope_correction_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/eac3_dialnorm_external_reference_scope_correction_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/eac3_dialnorm_external_reference_scope_correction_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/eac3_dialnorm_external_reference_scope_correction_v1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/OWNER-OBSERVATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/WASH-VERIFICATION.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/REPORT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/EVIDENCE.json",
@@ -20564,7 +21116,7 @@
             "meter_finalize_domain_boundary_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
             "drc_owner_option_dialnorm_erratum_manifest_sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
             "first_access_unit_numeric_model_contract_sha256": "f5c689a9cfdead35470321d3513f1e32b8a834bca931eebc7c6fe6ba15e9f08a",
-            "validation_boundary": "V5 establishes hash-bound Run-100 log and output-stage metadata only. V2/V3 bind a separate Run-11 serializer caller/member path: the observed 1 is the element count, the field scalar is NOT_CAPTURED, and the +8 member has no semantic tag, producer, or owner/generation join. It is not joined to the separate Run-100 candidate or to measurement, F06ND DRC, or F12 DialNorm. V4 classifies the corrected Run-11 hit as an E-AC-3 bitstream metadata serializer call on the codec loop and confirms syncword serialization; it still supplies no field scalar, semantic tag, typed producer, owner/generation, DialNorm identity, measurement join, or audible-effect conclusion. V1 closes one static same-parent owner setter-to-serializer field path: U16 16 is written at owner-relative 102848 and the serializer reads the same owner-relative member at base 102840 plus 8. This is a static-path value only; the runtime scalar remains NOT_CAPTURED, semantic/DialNorm tag and lifetime first writer remain UNBOUND, and static 16 is not an implementation input.",
+            "validation_boundary": "Run-100 logs still lack units and a typed measurement receipt; Run-11 captures only element_count=1 and width=5. The DEE writer-order crosswalk maps +8 to BSID and the next +0x20 U5 to DialNorm; R141 U16=16 at +8 is consistent with BSID16 but no output byte was read or hashed. A static +0x34 to +0x20 setter edge does not capture the upstream writer, meaning, runtime value or generation. FFmpeg is a public field/syntax crosscheck only; it does not establish DEE gain behavior. The static 16 is not an implementation input for DialNorm. Measurement receipts and programme/generation joins remain unbound.",
             "analysis_update": {
               "limit_seconds": 600,
               "status": "COMPLETED_WITH_GHIDRA_DATA_CREATION_WARNINGS",
@@ -20703,10 +21255,68 @@
               "measurement_or_drc_relationship": "UNBOUND",
               "playback_impact": "NOT_EVALUATED",
               "implementation_rule_provided": false
+            },
+            "bsid_dialnorm_crosswalk": {
+              "record_plus_8": "EAC3_BSID_BY_DEE_WRITER_ORDER",
+              "record_plus_0x20": "EAC3_DIALNORM_BY_DEE_WRITER_ORDER",
+              "r141_plus_8_u16": "16_CONSISTENT_WITH_BSID16; OUTPUT_BYTES_NOT_READ_OR_HASHED",
+              "plus_0x20_runtime_value": "NOT_CAPTURED",
+              "owner_plus_0x34_upstream_writer_and_semantics": "UNBOUND",
+              "measurement_finalize_to_f06nd": "UNBOUND",
+              "f06nd_to_f12_programme_measurement_lineage": "UNBOUND",
+              "public_ffmpeg_reference": "FIELD_OR_SYNTAX_CROSSCHECK_ONLY; NOT_DEE_IMPLEMENTATION",
+              "dee_gain_behavior": "NOT_CAPTURED",
+              "sample6_plus_0x20_runtime_value": "SAMPLE_SPECIFIC_U16_0x0019_CONSUMED; CAUSAL_WRITE_UNPROVEN",
+              "sample6_measurement_value": "-25.02; UNITS_NOT_STATED; JOIN_UNBOUND",
+              "sample6_default_source": "UNBOUND",
+              "sample6_owner_generation": "UNBOUND"
+            },
+            "bsid_dialnorm_crosswalk_supplements": [
+              {
+                "package_id": "native_eac3_bsid_field_mapping_wash_v1",
+                "manifest_sha256": "0cb7cf1ce05b509cffc82605f319deb733c465e3d7578c3fea4748ffec3d9335",
+                "source_manifest_sha256": "75503650988a4deafd73c1f46025062482a70dc0d484805b9307447864f10881"
+              },
+              {
+                "package_id": "native_eac3_dialnorm_gain_reference_correction_wash_v1",
+                "manifest_sha256": "9c59b9d8e92c996f75dee14143131817dad5ef969a41eeb452094627ec602754",
+                "source_manifest_sha256": "927c0ab97318472e71767ad033bb0517f275e21ec1014aa5a1f3a4096b7b1d8c"
+              },
+              {
+                "package_id": "eac3_dialnorm_external_reference_scope_correction_v1",
+                "manifest_sha256": "c4498343ffff10a1efcd278241fd569e6b17dd454edc3e47090a764c4dbfcc5b",
+                "source_manifest_sha256": "927c0ab97318472e71767ad033bb0517f275e21ec1014aa5a1f3a4096b7b1d8c"
+              },
+              {
+                "package_id": "sample6_dialnorm_runtime_observation_wash_v1",
+                "manifest_sha256": "0dd0e750c2dbbbaae497cc7627f85cb11db484e97412d98240020d42a1789572",
+                "source_manifest_sha256": "e393a7756866568a330c38201910e7771be27a5060ca061160e094d7314dd9ec"
+              }
+            ],
+            "sample6_runtime_observation_manifest_sha256": "0dd0e750c2dbbbaae497cc7627f85cb11db484e97412d98240020d42a1789572",
+            "sample6_runtime_observation": {
+              "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+              "owner_input_member_offset_bytes": 52,
+              "same_owner_u16": "0x0019",
+              "post_arm_store_width_bits": 32,
+              "post_arm_store_u32": "0x00000019",
+              "serializer_u16": "0x0019",
+              "serializer_count": 1,
+              "serializer_width_bits": 5,
+              "prewrite_value": "NOT_CAPTURED",
+              "causal_write": "UNPROVEN_VALUE_UNCHANGED_NO_POSTWRITE_SETTER_COPY",
+              "logged_measured_loudness": "-25.02",
+              "measurement_units": "NOT_STATED_IN_LOG",
+              "measurement_join": "UNBOUND",
+              "f06_finalize_member": "NOT_IDENTIFIED",
+              "default_source": "UNBOUND",
+              "owner_generation": "UNBOUND",
+              "output_payload_included": false,
+              "render_verified": false
             }
           },
           "vectors": {
-            "kind": "F06ND_RUN100_LOG_OUTPUT_METADATA_AND_RUN11_WIDTH5_ABI_CORRECTION_V3",
+            "kind": "F06ND_SAMPLE6_RUNTIME_DIALNORM_CROSSCHECK_AND_EXISTING_TYPED_JOIN_GAPS",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/CHECK.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-MEASUREMENT-DIALNORM-CANDIDATE-BOUNDARY-WASHED-V5/SOURCE-IDENTITIES.json",
@@ -20728,7 +21338,15 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/REPORT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_metadata_field_producer_wash_v1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_bsid_field_mapping_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_bsid_field_mapping_wash_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_eac3_dialnorm_gain_reference_correction_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/eac3_dialnorm_external_reference_scope_correction_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/OWNER-OBSERVATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/sample6_dialnorm_runtime_observation_wash_v1/WASH-VERIFICATION.json"
             ],
             "case_pointers": [
               "Run-100 measurement scalars are present in the hash-bound log; units are not stated and no typed MeasurementReceipt was observed.",
@@ -20743,7 +21361,11 @@
               "The helper's 1 is element_count; the unnamed +8 member scalar remains NOT_CAPTURED and its semantic tag remains UNBOUND.",
               "A bitstream serializer path does not establish that the member is DialNorm or prove a specific audible effect.",
               "One static same-owner path writes U16=16 at +102848 and the serializer reads the same member at base +102840 plus 8.",
-              "The static value does not establish the Run-11 runtime scalar, semantic tag, DialNorm identity, or an implementation rule."
+              "The static value does not establish the Run-11 runtime scalar, semantic tag, DialNorm identity, or an implementation rule.",
+              "DEE writer order maps record +8 to BSID and the following +0x20 U5 to DialNorm; R141 +8 U16=16 is consistent with BSID16, with no emitted-byte validation.",
+              "The approved F06ND source value is written by F12 at wire bit 45 after fixed BSID16 bits 40-44; native memory offsets are not wire bit offsets.",
+              "FFmpeg/OpenJOC remain public syntax or post-output validation references, not DEE algorithm, gain, formula, default or value sources.",
+              "One same-owner sample-6 observation reads U16 0x0019 before and at the later +0x20 serializer; the post-arm write does not establish a value change or a default."
             ],
             "expected_outputs_included": false,
             "native_execution": "RUN100_LOG_AND_OUTPUT_STAGE_OBSERVED; OUTPUT_PAYLOAD_UNVALIDATED",
@@ -20780,7 +21402,9 @@
             "Run-11 unnamed E-AC-3 serializer member semantic tag, typed producer/first writer, owner/generation, and specific audible effect.",
             "DialNorm identity and measurement-to-F06ND-to-F12 joins; playback and full E2E remain NOT_RUN.",
             "Runtime scalar value, semantic/DialNorm tag, lifetime first writer, object type, owner/generation join, and measurement/DRC relation for the +8 member.",
-            "The static U16=16 value is not an implementation input; playback effect and E2E remain NOT_EVALUATED/NOT_RUN."
+            "The static U16=16 value is not an implementation input; playback effect and E2E remain NOT_EVALUATED/NOT_RUN.",
+            "R141 DialNorm value/first writer, owner +0x34 upstream meaning, DEE gain response and playback.",
+            "Native output-byte hashing/parsing and typed measurement-generation joins for the +0x20 field."
           ],
           "validation_boundary": "V5 establishes hash-bound log and output-stage metadata observations only. Output payload validation, typed measurement receipt, loaded-image identity, and measurement/DRC/DialNorm joins remain open.",
           "native_status": {
@@ -20792,7 +21416,7 @@
             "zero_disables_override": true,
             "default_or_selected_branch_when_absent": "UNBOUND",
             "adm_dialnorm_metadata_to_measurement_finalize": "UNBOUND",
-            "candidate_static_status": "UNTYPED_5BIT_WRITER_CANDIDATE",
+            "candidate_static_status": "PLUS8_BSID_CROSSWALKED_BY_DEE_WRITER_ORDER; DIALNORM_VALUE_UNBOUND",
             "candidate_writer_width_bits": 5,
             "candidate_semantic_tag": "UNBOUND",
             "candidate_owner_generation": "UNBOUND",
@@ -20904,7 +21528,24 @@
               "playback_impact": "NOT_EVALUATED",
               "implementation_rule_provided": false
             },
-            "static_value_u16_is_implementation_input": false
+            "static_value_u16_is_implementation_input": false,
+            "bsid_dialnorm_crosswalk_v1": {
+              "record_plus_8": "EAC3_BSID_BY_DEE_WRITER_ORDER",
+              "record_plus_0x20": "EAC3_DIALNORM_BY_DEE_WRITER_ORDER",
+              "r141_plus_8_u16": "16_CONSISTENT_WITH_BSID16; OUTPUT_BYTES_NOT_READ_OR_HASHED",
+              "plus_0x20_runtime_value": "NOT_CAPTURED",
+              "owner_plus_0x34_upstream_writer_and_semantics": "UNBOUND",
+              "measurement_finalize_to_f06nd": "UNBOUND",
+              "f06nd_to_f12_programme_measurement_lineage": "UNBOUND",
+              "public_ffmpeg_reference": "FIELD_OR_SYNTAX_CROSSCHECK_ONLY; NOT_DEE_IMPLEMENTATION",
+              "dee_gain_behavior": "NOT_CAPTURED",
+              "static_u16_16_dialnorm_implementation_input": false
+            },
+            "sample6_runtime_observation_manifest_sha256": "0dd0e750c2dbbbaae497cc7627f85cb11db484e97412d98240020d42a1789572",
+            "sample6_plus_0x20_value": "0x0019_SAME_OWNER_SERIALIZER_CONSUMED; CAUSAL_WRITE_UNPROVEN",
+            "sample6_measurement_units": "NOT_STATED",
+            "sample6_measurement_join": "UNBOUND",
+            "sample6_default_source": "UNBOUND"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -21309,8 +21950,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/timeline/clock.rs",
@@ -21324,13 +21965,13 @@
             },
             {
               "path": "crates/jocforge-application/src/source_analysis_bridge.rs",
-              "bytes": 4464,
-              "sha256": "49f219b85dde171f4bbae86394a553459687fa0eb4edbb3aa5a8910dc2b83a78"
+              "bytes": 7525,
+              "sha256": "87ae5099b149ea439e121e3b66dc4ae5de819e1e30904c941090957c6e0bef4a"
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
-              "bytes": 18644,
-              "sha256": "e6c3586385b33fff77d510d4973369501055934a313ea2d43aa3e3719fe6bf99"
+              "bytes": 40675,
+              "sha256": "35977912f94634ff40d3b797429169e3920af51584c049690f342872e1c63074"
             }
           ],
           "test_inventory": [
@@ -21341,8 +21982,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs",
@@ -21351,8 +21992,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ]
         },
@@ -21664,8 +22305,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -21691,8 +22332,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -22187,8 +22828,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -22224,8 +22865,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             }
           ]
         }
@@ -23329,8 +23970,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/gain_history.rs",
@@ -23356,8 +23997,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             }
           ]
         }
@@ -23829,8 +24470,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -23866,8 +24507,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/tests/exponent_normalization.rs",
@@ -24212,8 +24853,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/converter_source_plan.rs",
-              "bytes": 33008,
-              "sha256": "0b10b9d56a5a847d7d313769a80eaee98ed85c107a15649cdadc3a8b1a9778c2"
+              "bytes": 34362,
+              "sha256": "b25399993e47e02314505166ea6bda7042f8e1f9b542780bf90a3ef6f248ccff"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
@@ -24227,8 +24868,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/codec/exponent_normalization.rs",
@@ -24247,15 +24888,15 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-              "bytes": 57582,
-              "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
+              "bytes": 58594,
+              "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/converter_source_plan.rs",
-              "bytes": 33008,
-              "sha256": "0b10b9d56a5a847d7d313769a80eaee98ed85c107a15649cdadc3a8b1a9778c2"
+              "bytes": 34362,
+              "sha256": "b25399993e47e02314505166ea6bda7042f8e1f9b542780bf90a3ef6f248ccff"
             }
           ]
         }
@@ -24417,7 +25058,7 @@
           "slice_id": "selected-fixed-profile-header-prefix",
           "mapping_status": "MATERIALIZED_HASH_BOUND_F12_FIXED_PREFIX_45_BITS__WHOLE_F12_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_SELECTED_FIXED_PREFIX_MSB_45_BITS__BSI_AND_FRAME_OPEN",
-          "scope": "Writes the nine unconditional fixed selected-profile E-AC-3 fields MSB-first at frame bits 0..44, after requiring cursor 0 and preflighting all 45 bits. It stops at bit 45 without writing display padding; the caller then writes dialnorm and later conditional BSI fields. It does not decide the programme dialnorm source, measurement receipt, other BSI/block syntax, candidate search, CRC, frame size allocation, codec state or parent commit.",
+          "scope": "Writes the nine unconditional fixed selected-profile E-AC-3 fields MSB-first at frame bits 0..44, after requiring cursor 0 and preflighting all 45 bits. It stops at bit 45 without writing display padding; the caller then writes dialnorm and later conditional BSI fields. It does not decide the programme dialnorm source, measurement receipt, other BSI/block syntax, candidate search, CRC, frame size allocation, codec state or parent commit. The final fixed-prefix field is BSID=16 at frame bits 40-44; the same-source F06ND DialNorm field begins at bit 45. The fixture field-position test reads both values. Native record offsets +8/+0x20 are a different address domain from frame bit offsets.",
           "implementation_files": [
             "crates/jocforge-domain/src/codec/frame_builder.rs",
             "crates/jocforge-domain/src/codec/bitio.rs"
@@ -24456,7 +25097,8 @@
             "case_pointers": [
               "The input-only vector recomputes the exact 45-bit prefix and keeps the three display-pad bits outside the prefix.",
               "The selected codec fixture field-offset table independently checks the fixed prefix and the adjacent dialnorm/compre/compr fields after the writer advances to bit 45.",
-              "Cursor mismatch and short-capacity failures leave the caller scratch and cursor unchanged."
+              "Cursor mismatch and short-capacity failures leave the caller scratch and cursor unchanged.",
+              "The selected fixed prefix writes BSID16 at bits 40-44; the following F06ND-owned DialNorm starts at bit 45."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/selected_frame_prefix/input-only-vectors.json",
@@ -24920,8 +25562,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-              "bytes": 57582,
-              "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
+              "bytes": 58594,
+              "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
@@ -25044,8 +25686,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 86690,
-              "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+              "bytes": 99211,
+              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -25054,8 +25696,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-              "bytes": 57582,
-              "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
+              "bytes": 58594,
+              "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_source_plan.rs",
@@ -25073,9 +25715,9 @@
         },
         {
           "slice_id": "same-source-frame-candidate-writer",
-          "mapping_status": "MATERIALIZED_DIRECT_F11_F12_FRAME_CANDIDATE__TEST_SUPPORT_F15_STAGE__PARENT_INSTALL_OPEN",
-          "implementation_status": "LOCALLY_COMPILED_TEST_SUPPORT_F12_F15_STAGE_AND_CODEC_PROPOSAL__PARENT_INSTALL_NOT_RUN",
-          "scope": "Consumes one existing AnalysisNumericPlanStage and same-source BSI/EMDF inputs, derives the F11 converter result and F12 selected numeric plan, runs the bounded main-q search, and returns a complete 4096-byte CRC-checked SelectedSourceFrameCandidate. The candidate now retains the actual NumericPlanReceipt, same-source BSI/EMDF-or-ABSENT inputs, accepted q/search trace, owned frame and AcceptedCodecFrame CRC proof. The local domain test uses a synthetic all-zero analysis frame and test-supplied BSI values. The application source_frame_bridge connects PreparedJobInput, F06ND after proposal and F13 MetadataSourceProposal—including suppressed-source receipts—with typed lineage checks. It returns only a noncommitting candidate. There is no direct positive-path test for the composite bridge; this path has not been run on real source callbacks or installed by a parent. The application bridge binds F13 parsed-container queue-pop lineage through published_emdf_binding::emdf_frame_input_for_source. The source-frame preflight now also requires the exact PreparedJobInput Arc in the DRC after-root and SharedAnalysis receipt, then matches F13 ID1 input/config/terminal-meter hashes to that same receipt before frame assembly. The application bridge now stages CodecOwnerProposal from the exact F12 candidate: it reads the six-block short flags retained in the same numeric plan, passes the candidate's accepted frame and optional OutputSourceAfterProposal through CodecOwnerRoot.stage_source, and returns a proposal only. Published sources still require the matching durable output after-receipt; installation remains parent-owned. The CLI test-support stage_source_frame_output composes a prebuilt F15 proposal with the exact F12 candidate: attempt, source, and append bytes are checked before staging; it then obtains the durable F15 after-proposal and stages the same candidate short flags/frame into CodecOwnerProposal. Both after-values remain parent-owned proposals. The helper is test-support gated; default production output remains blocked on validated-plan and destination admission.",
+          "mapping_status": "MATERIALIZED_F11_F12_FRAME_CANDIDATE_AND_PRODUCTION_F15_STAGING_API__SOURCE_PARENT_OPEN",
+          "implementation_status": "LOCALLY_COMPILED_F12_CANDIDATE_AND_PRODUCTION_F15_STAGING__REAL_SOURCE_CANDIDATE_NOT_RUN",
+          "scope": "Consumes one existing AnalysisNumericPlanStage and same-source BSI/EMDF inputs, derives the F11 converter result and F12 selected numeric plan, runs the bounded main-q search, and returns a complete 4096-byte CRC-checked SelectedSourceFrameCandidate. The candidate retains its NumericPlanReceipt, same-source BSI/EMDF-or-ABSENT inputs, accepted q/search trace, frame bytes and AcceptedCodecFrame CRC proof. The application bridge joins PreparedJobInput, same-source F06ND and F13 proposals, then stages a noncommitting CodecOwner proposal. F15 now validates real selected owner provider values and a parent destination capability. The CLI exposes the output staging module in default production builds and constructs its lazy staging adapter from the admitted plan. No source callback supplies a real analysis, DRC, JOC or metadata proposal yet; the channel-row-to-DDP mapping and 12-owner parent replacement remain open. No JOCForge frame candidate or output file has been produced.",
           "owner": "codec",
           "dependencies": [
             "same-source-converter-pattern-and-offset-plan",
@@ -25095,7 +25737,10 @@
             "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
             "crates/jocforge-domain/src/codec/source_frame_writer.rs",
             "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-            "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs"
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+            "crates/jocforge-application/src/output_publication/plan_admission.rs",
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-cli/src/lib.rs"
           ],
           "clock": {
             "domains": [
@@ -25129,7 +25774,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/METADATA-OUTPUT-TYPED-HANDOFF-APPROVAL-V1/MANIFEST.json"
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "validation_boundary": "F12 domain candidate construction and F15 output staging have constituent tests. A focused preflight test verifies source/append-byte identity for the new CLI test-support composition; the composite has not been exercised with a production PreparedJobInput/MetadataSourceProposal, actual F12 candidate, or parent installation.",
+            "validation_boundary": "Consumes one existing AnalysisNumericPlanStage and same-source BSI/EMDF inputs, derives the F11 converter result and F12 selected numeric plan, runs the bounded main-q search, and returns a complete 4096-byte CRC-checked SelectedSourceFrameCandidate. The candidate retains its NumericPlanReceipt, same-source BSI/EMDF-or-ABSENT inputs, accepted q/search trace, frame bytes and AcceptedCodecFrame CRC proof. The application bridge joins PreparedJobInput, same-source F06ND and F13 proposals, then stages a noncommitting CodecOwner proposal. F15 now validates real selected owner provider values and a parent destination capability. The CLI exposes the output staging module in default production builds and constructs its lazy staging adapter from the admitted plan. No source callback supplies a real analysis, DRC, JOC or metadata proposal yet; the channel-row-to-DDP mapping and 12-owner parent replacement remain open. No JOCForge frame candidate or output file has been produced.",
             "codec_owner_proposal_bridge": {
               "application_function": "stage_codec_owner_after_source_frame",
               "candidate_acceptance": "AcceptedCodecFrame from the same selected frame candidate",
@@ -25142,7 +25787,7 @@
             },
             "candidate_output_stage": {
               "cli_function": "stage_source_frame_output",
-              "gate": "jocforge-cli output_publication is test-support gated",
+              "gate": "PRODUCTION_API_AVAILABLE_AFTER_F15_ADMISSION",
               "preflight": [
                 "candidate attempt equals output binding attempt",
                 "candidate source equals F15 proposal source",
@@ -25151,7 +25796,8 @@
               ],
               "append": "uses stage_output_source; append receipt requires atomic staging exact readback and file fsync",
               "result": "F15 OutputSourceAfterProposal plus noncommitting CodecOwnerProposal",
-              "parent_install": "NOT_RUN"
+              "parent_install": "NOT_RUN",
+              "cli_callsite": "NOT_CONNECTED_TO_A_REAL_SOURCE_CANDIDATE"
             }
           },
           "test_modules": [
@@ -25167,14 +25813,10 @@
               "crates/jocforge-domain/src/codec/source_frame_writer.rs"
             ],
             "case_pointers": [
-              "Synthetic source 0 candidate has 4096 bytes, E-AC-3 syncword 0x0b77, source generation identity preserved, candidate q is in the attempted search, at most ten midpoint trials, and CRC residual zero.",
-              "Synthetic source 2 with AbsentPublishedPayloadV1 is rejected as PublishedPayloadRequired.",
-              "The test assertions are not an independent golden frame or a real ADM result.",
-              "Application source_frame_bridge composes typed production proposal APIs but has no direct positive-path assertion; its constituent app/domain tests are not an end-to-end source result.",
-              "The F12 candidate exposes the six short-flag blocks from the same numeric plan that built its frame.",
-              "The application bridge uses the candidate's AcceptedCodecFrame and plan short flags to stage CodecOwnerRoot; it does not install the root.",
-              "A published source requires its validated OutputSourceAfterProposal durable receipt; suppressed sources require no output after-proposal.",
-              "The CLI test-support preflight rejects a source mismatch and append-byte mismatch before staging; matching append bytes and suppressed-source shape are accepted by the pure preflight."
+              "Synthetic all-zero source inputs exercise the local frame trial; these values are not a real ADM source result.",
+              "The application bridge validates exact same-source F06ND/F13 lineage and returns a complete frame candidate without installing owners.",
+              "F15 validates the selected owner assets and destination before the CLI creates its lazy staging adapter.",
+              "The actual CLI still lacks the source callback candidate and parent root replacement needed to append or publish an AU."
             ],
             "expected_dsp_outputs_included": false,
             "expected_values_are_assertions_only": true,
@@ -25211,18 +25853,18 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
-              "bytes": 7247,
-              "sha256": "a78e4e32190d9762ac9f8f163f6e6fb58b5483ad4c2e2071133221ab19ae9cdd"
+              "bytes": 10153,
+              "sha256": "52b3720afe1a6bcf60f1fe9fff7697430a6a0c10c40a0df56a5d712e290cd12f"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 10861,
-              "sha256": "1b48c2afd5084262260b6cd49dd182ceb22caca7fbb6f6107d7ce5760b456e7e"
+              "bytes": 14339,
+              "sha256": "70137c3fddf6d7292ad2ceb37e783d96c4ecf4ea52608a147298bd1699ca5c5a"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -25241,13 +25883,28 @@
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 58315,
-              "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+              "bytes": 66140,
+              "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 80524,
-              "sha256": "19e999ee310669ea01594aa1aa34dc13d60e133fad2d94c1715cac5a0f37e182"
+              "bytes": 93806,
+              "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
+            },
+            {
+              "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
+              "bytes": 60434,
+              "sha256": "edc032f5326361d6d85219f753c9decfd9ca2239511957f8c5ed5ef0560484d6"
+            },
+            {
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 37264,
+              "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"
+            },
+            {
+              "path": "crates/jocforge-cli/src/lib.rs",
+              "bytes": 431,
+              "sha256": "a9ec3a8008e8aae8677d4f1f8c13adc7a6d8baa22698de6c252ae89946a9ff88"
             }
           ],
           "test_inventory": [
@@ -25662,7 +26319,7 @@
           "slice_id": "washed-reader-origin-to-codec-writer-single-call-boundary",
           "mapping_status": "WASHED_R138_EMBEDDED_TIMECODE_RANGE_CONTRACT__FPS_ENDPOINT_OFFSET_AND_SPATIAL_JOINS_OPEN",
           "implementation_status": "EVIDENCE_ONLY_SINGLE_CALL_CHAIN__NO_SOURCE_OR_SPATIAL_GENERATION_JOIN",
-          "scope": "Wash R138 records one bounded native call. The package reports the authorized ADM BWF and ASCII path alias with the same SHA-256; the source was not changed. For this call only, configured absolute start boundary 173,280,000 samples, relative start 0, and reader-relative cursor 6,144 derive sample position 173,286,144; no native absolute-position field was captured. In the same parent activation, provider descriptor and codec input share pointer identity; codec output buffer/length match writer input and the writer returns normally. The writer ordinal is statically an output-stream routing value, not a generation. This does not bind the source offset owner, native position, host frame, spatial callback, fit/U04/consumer generation, per-channel values, plane/model semantics, or Type10/six-plane composition. Model replay is NOT_RUN and Gate 1 remains OPEN. Wash V1 binds the hash-identified R138 config to time_base=embedded_timecode and retracts the old file_position profile field only for this config. The implementation-safe R138 contract binds start/end tokens 86640/86664 and the embedded-timecode conversion sequence; resolved FPS, endpoint convention, offset=auto resolution, range owner/generation, and spatial same-time-domain use remain unbound. A separate R138 profile-bound handoff review finds a static WAVE adapter Run-to-shared-normalizer edge, but does not bind that adapter to audio.adm; DACT parser presence does not establish R138 factory selection or reader handoff.",
+          "scope": "Wash R138 records one bounded native call. The package reports the authorized ADM BWF and ASCII path alias with the same SHA-256; the source was not changed. For this call only, configured absolute start boundary 173,280,000 samples, relative start 0, and reader-relative cursor 6,144 derive sample position 173,286,144; no native absolute-position field was captured. In the same parent activation, provider descriptor and codec input share pointer identity; codec output buffer/length match writer input and the writer returns normally. The writer ordinal is statically an output-stream routing value, not a generation. This does not bind the source offset owner, native position, host frame, spatial callback, fit/U04/consumer generation, per-channel values, plane/model semantics, or Type10/six-plane composition. Model replay is NOT_RUN and Gate 1 remains OPEN. Wash V1 binds the hash-identified R138 config to time_base=embedded_timecode and retracts the old file_position profile field only for this config. The implementation-safe R138 contract binds start/end tokens 86640/86664 and the embedded-timecode conversion sequence; resolved FPS, endpoint convention, offset=auto resolution, range owner/generation, and spatial same-time-domain use remain unbound. A separate R138 profile-bound handoff review finds a static WAVE adapter Run-to-shared-normalizer edge, but does not bind that adapter to audio.adm; DACT parser presence does not establish R138 factory selection or reader handoff. Separate R141 and host record-list corrections bound a 48 kHz timecode constructor, an unjoined 24.0 frame-rate property, and a record-list reporting branch; they do not join the source-time setter, audio.adm reader factory, sample range or spatial consumer.",
           "owner": "codec",
           "implementation_requirement": false,
           "dependencies": [],
@@ -25759,7 +26416,19 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/CONTROLLED-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/SOURCE-IDENTITIES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/WASH-REVIEW.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/host_adm_reader_factory_handoff_boundary_v1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_normalizer_record_list_type_correction_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_normalizer_record_list_type_correction_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_normalizer_record_list_type_correction_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_normalizer_record_list_type_correction_v1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_adm_r141_combined_observation_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_adm_r141_combined_observation_wash_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_adm_r141_combined_observation_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/native_adm_r141_combined_observation_wash_v1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "2b071bb4de00d0f90c9d960051a435281a91e565695f1eb34531f4ec7b8ed7fb",
             "package_id": "reader-origin-cursor-spatial-commit-wash-v1",
@@ -25877,6 +26546,15 @@
               "atmosmezz_reader_selected_for_r138_audio_adm": "NOT_PROVEN; NON_GATING_FOR_THIS_PROFILE",
               "audio_sample_used": "NO",
               "native_run": "NOT_RUN"
+            },
+            "r138_record_list_and_r141_observation": {
+              "record_list_type_manifest_sha256": "fb82c4147c6ea0ba8dab742c0f1c68d645b29f14df9d57aa392d3af3dfad0992",
+              "report_consumer_manifest_sha256": "a13d4b802428e4383bc3b4b499d66b7af11741440a02497377c2b3eab2522a74",
+              "r141_manifest_sha256": "d93cb4d82cee0e8ba9a64d8d829f7975350d15ce41211aed036a46650fd2fb23",
+              "rcx": "LINKED_KEY_VALUE_RECORD_LIST; REPORTING_CONSUMER_NON_GATING",
+              "frame_rate_property_24": "JOIN_TO_CONFIGURED_R138_FPS_UNBOUND",
+              "source_time_setter": "NOT_HIT_THIS_RUN",
+              "output_payload": "REMOVED; NOT_HASHED_OR_PARSED"
             }
           },
           "vectors": {
@@ -26008,7 +26686,7 @@
             "R138 audio.adm to concrete host reader factory, provider-to-DACT parser, parsed descriptor to Atmos/codec, and reader output to first processing consumer.",
             "R138 reader owner/generation and runtime input dispatch; no authorized audio sample or native run was used in this static package."
           ],
-          "validation_boundary": "R138 is one selected-call observation; it does not establish the general offset rule, AU/source identity, spatial lineage, product conformance, or end-to-end chain.",
+          "validation_boundary": "R138 is one selected-call observation; it does not establish the general offset rule, AU/source identity, spatial lineage, product conformance, or end-to-end chain. RCX is a linked key/value record-list and a separate report consumer is non-gating; neither is established as a typed source map or audio-control map. R141's 24.0 property is not joined to configured FPS, the setter was not hit, and its removed output is unverified.",
           "native_status": {
             "run_id": "run-138",
             "native_job_completion_markers": "ENCODER_DONE_AND_OUTPUT_100_PERCENT",
@@ -26796,8 +27474,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 80524,
-              "sha256": "19e999ee310669ea01594aa1aa34dc13d60e133fad2d94c1715cac5a0f37e182"
+              "bytes": 93806,
+              "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/timer.rs",
@@ -26833,8 +27511,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 37810,
-              "sha256": "fddca046639ca3874f253923cb29bd4e3687548c403b2f8ba3844d0b43ab2c5c"
+              "bytes": 45889,
+              "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
             },
             {
               "path": "crates/jocforge-domain/src/joc/id14_body.rs",
@@ -27438,8 +28116,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
-              "bytes": 9423,
-              "sha256": "f6585e1ed4f0d1be31f79d85f6dbdc05434a876cd11f1d63a6c27d92ebd38f35"
+              "bytes": 12505,
+              "sha256": "98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
@@ -27458,8 +28136,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-              "bytes": 20848,
-              "sha256": "d9b72de594f47353838a22290092b233b74803d663bc4a07172705635c4b2c53"
+              "bytes": 23854,
+              "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
             }
           ],
           "test_modules": [
@@ -27469,13 +28147,13 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 37810,
-              "sha256": "fddca046639ca3874f253923cb29bd4e3687548c403b2f8ba3844d0b43ab2c5c"
+              "bytes": 45889,
+              "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
           "clock": {
@@ -27550,8 +28228,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
-              "bytes": 9423,
-              "sha256": "f6585e1ed4f0d1be31f79d85f6dbdc05434a876cd11f1d63a6c27d92ebd38f35"
+              "bytes": 12505,
+              "sha256": "98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132"
             },
             {
               "path": "crates/jocforge-io/src/provider/metadata_owner.rs",
@@ -27571,8 +28249,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 66098,
-              "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+              "bytes": 66877,
+              "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             },
             {
               "path": "crates/jocforge-io/src/provider/metadata_owner.rs",
@@ -30035,28 +30713,28 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 27906,
-              "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
+              "bytes": 41631,
+              "sha256": "0431f6d87a743f7c7f05aa7b5643bcd6bde3a0e91177626340af781cc51dad69"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/tests.rs",
-              "bytes": 8908,
-              "sha256": "21da54780e7d3f82e55860bde885ee6175b4597540946f48a1175bbc6d50cceb"
+              "bytes": 13968,
+              "sha256": "14476076ce7099a6da218e3278482a32984b1f277e226888949dff2f54d864e8"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 20834,
-              "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18401,
-              "sha256": "8a629a3e0f65fdbb121c205c32dc576f7cac929bfaf17034671aedead3ae188a"
+              "bytes": 18347,
+              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 10861,
-              "sha256": "1b48c2afd5084262260b6cd49dd182ceb22caca7fbb6f6107d7ce5760b456e7e"
+              "bytes": 14339,
+              "sha256": "70137c3fddf6d7292ad2ceb37e783d96c4ecf4ea52608a147298bd1699ca5c5a"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -30070,25 +30748,25 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 80524,
-              "sha256": "19e999ee310669ea01594aa1aa34dc13d60e133fad2d94c1715cac5a0f37e182"
+              "bytes": 93806,
+              "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 37810,
-              "sha256": "fddca046639ca3874f253923cb29bd4e3687548c403b2f8ba3844d0b43ab2c5c"
+              "bytes": 45889,
+              "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication/tests.rs",
-              "bytes": 8908,
-              "sha256": "21da54780e7d3f82e55860bde885ee6175b4597540946f48a1175bbc6d50cceb"
+              "bytes": 13968,
+              "sha256": "14476076ce7099a6da218e3278482a32984b1f277e226888949dff2f54d864e8"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18401,
-              "sha256": "8a629a3e0f65fdbb121c205c32dc576f7cac929bfaf17034671aedead3ae188a"
+              "bytes": 18347,
+              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -30097,8 +30775,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 37810,
-              "sha256": "fddca046639ca3874f253923cb29bd4e3687548c403b2f8ba3844d0b43ab2c5c"
+              "bytes": 45889,
+              "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
             }
           ],
           "error_outcomes": [
@@ -31757,6 +32435,74 @@
             "native_observation": "NOT_RUN"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "informational-r138-record-list-reporting-branch-non-gating",
+          "mapping_status": "WASHED_STATIC_RECORD_LIST_REPORT_CONSUMER__AUDIO_EFFECT_NOT_EVIDENCED",
+          "implementation_status": "EVIDENCE_ONLY_NON_GATING_REPORTING_BRANCH",
+          "scope": "The reviewed R138 host normalizer accepts a linked key/value record-list in RCX, rewrites entries by key, and appends the list to an input-run object. A separate static consumer formats the list as dee_audio_input_target report/metadata. This is a reporting branch. It does not establish PCM sample selection, embedded-range consumption, spatial-control input, or an audio effect. It does not establish a same-generation audio-control map or any audio effect.",
+          "owner": "metadata",
+          "implementation_requirement": false,
+          "dependencies": [],
+          "implementation_files": [],
+          "implementation_inventory": [],
+          "test_modules": [],
+          "test_inventory": [],
+          "clock": {
+            "domains": [
+              "HostInputRecordList",
+              "InputRunReportConsumer",
+              "CallbackGeneration"
+            ],
+            "covered_clauses": [
+              "RCX is a linked record-list container, not a typed source-metadata or audio-control map.",
+              "The static report consumer has no evidenced sample/range/spatial audio effect and is non-gating.",
+              "R141 source-time setter was NOT_HIT and no owner/generation join was captured."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_STATIC_RECORD_LIST_REPORT_CONSUMER_NO_AUDIO_EFFECT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_normalizer_record_list_type_correction_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_normalizer_record_list_type_correction_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_normalizer_record_list_type_correction_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_normalizer_record_list_type_correction_v1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "a13d4b802428e4383bc3b4b499d66b7af11741440a02497377c2b3eab2522a74",
+            "record_list_type_correction_manifest_sha256": "fb82c4147c6ea0ba8dab742c0f1c68d645b29f14df9d57aa392d3af3dfad0992",
+            "audio_effect_status": "NOT_EVIDENCED",
+            "gating": "NON_GATING_UNLESS_SAME_OWNER_GENERATION_AUDIO_EFFECT_IS_LATER_PROVEN",
+            "validation_boundary": "The reviewed R138 host normalizer accepts a linked key/value record-list in RCX, rewrites entries by key, and appends the list to an input-run object. A separate static consumer formats the list as dee_audio_input_target report/metadata. This is a reporting branch. It does not establish PCM sample selection, embedded-range consumption, spatial-control input, or an audio effect."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_STATIC_REPORTING_CONSUMER_NO_AUDIO_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/r138_input_target_report_list_consumer_boundary_v1/REPORT.md"
+            ],
+            "case_pointers": [
+              "A static consumer formats the linked key/value list as dee_audio_input_target report/metadata.",
+              "No evidence shows this branch selects PCM samples, consumes embedded range, or drives spatial controls.",
+              "Treat this branch as non-gating unless same-owner/generation evidence proves an audio effect."
+            ],
+            "expected_dsp_outputs_included": false,
+            "expected_values_are_assertions_only": true,
+            "source_package_manifest_sha256": "88c497b031acdbd42e6a7fe265f30e6cbb39ac1ed2913e0e2c7d6f6d5ceae30a"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Record-list to DDP range/setter/slot 10/11 joins, PCM selection, spatial effect, same-owner/generation, and native R141 setter values.",
+            "Audio decode, playback, output verification, and whole-chain acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "native_status": {
+            "audio_effect": "NOT_EVIDENCED",
+            "gating": "NON_GATING_UNLESS_SAME_OWNER_GENERATION_AUDIO_EFFECT_IS_LATER_PROVEN"
+          }
         }
       ]
     },
@@ -32029,17 +32775,21 @@
       "direct_slices": [
         {
           "slice_id": "public-keyless-integrity-owner",
-          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F14_AUTH_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_OWNER_STATE_REF_AND_RECEIPT_PROJECTION__PARENT_COMMIT_AND_PRIVATE_AUTH_DEFERRED",
-          "scope": "Public keyless CRC profile and its programme-local integrity owner. stage_source_for_callback validates typed programme/attempt/transaction/callback-to-source identity, then returns the staged source, complete frame, three specialized receipts, full canonical owner snapshot and a noncommitting GTC receipt projection. It does not mutate or retire the committed owner and does not assign a parent commit count. The fixture process API retains its local commit behavior. Private authentication and parent installation are excluded.",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_TYPED_ABSENT_AND_F12_FRAME_RECEIPTS__WHOLE_F14_AUTH_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_ABSENT_AND_PROTECTED_F12_OWNER_PROPOSALS__PARENT_COMMIT_AND_PRIVATE_AUTH_DEFERRED",
+          "scope": "The public keyless Integrity owner consumes either source 0/1 typed AbsentPublishedPayload with a complete F12 frame CRC16 receipt, or source>=2 same-source F13 dynamic zero-slot container protected by F14K and embedded by F12 at its dynamic MSB bit cursor, including non-byte-aligned positions; the protected bytes are checked at bit level. It validates the completed F12 frame and proposes after-root plus SOURCE/DISPATCH/AU typed receipts and a noncommitting owner projection; it does not write frame bytes or CRC16. The fixture process API remains a legacy test seam. Private authentication and parent installation are excluded.",
           "implementation_files": [
             "crates/jocforge-domain/src/integrity/mod.rs",
             "crates/jocforge-domain/src/integrity/crc16.rs",
             "crates/jocforge-domain/src/integrity/keyless_checksum.rs",
-            "crates/jocforge-domain/src/integrity/programme_owner.rs"
+            "crates/jocforge-domain/src/integrity/programme_owner.rs",
+            "crates/jocforge-application/src/integrity_source_bridge.rs"
           ],
           "test_modules": [
-            "crates/jocforge-domain/src/integrity/programme_owner/tests.rs"
+            "crates/jocforge-domain/src/integrity/keyless_checksum.rs",
+            "crates/jocforge-domain/src/integrity/programme_owner/tests.rs",
+            "crates/jocforge-application/src/integrity_source_bridge.rs",
+            "crates/jocforge-application/src/source_frame_bridge.rs"
           ],
           "implementation_file_identities": [
             {
@@ -32054,13 +32804,18 @@
             },
             {
               "file": "crates/jocforge-domain/src/integrity/keyless_checksum.rs",
-              "bytes": 7188,
-              "sha256": "c927ecf0c91190d349c9f1eef48717f1d92ba186ac0bd3277f76cb18c8ddaa0d"
+              "bytes": 19380,
+              "sha256": "8a444a4583b7e1000fa76cd64291260ce78ce46e1cb5ac11194bec8c72279fb2"
             },
             {
               "file": "crates/jocforge-domain/src/integrity/programme_owner.rs",
-              "bytes": 34769,
-              "sha256": "df866d16766875aac59cea648ebe00167f054f6e77de72c09e2ecf4e99a7848c"
+              "bytes": 51942,
+              "sha256": "bf7387e852d2a78fe1885c24502491688f98d4bc67604bb1ceb6445d01db1ded"
+            },
+            {
+              "file": "crates/jocforge-application/src/integrity_source_bridge.rs",
+              "bytes": 16534,
+              "sha256": "a3dea0d4fe68fd722a0cd84aa455b525bcd0b5a0ceed41bbd60d953f5e5b8ec3"
             }
           ],
           "clock": {
@@ -32073,7 +32828,8 @@
               "source_index is the next committed CodecSourceIndex",
               "dispatch = source_index + 1",
               "au_index is null for source 0 and 1, then source_index - 2",
-              "the first two source calls execute all three integrity stages with published=false",
+              "source 0/1 use typed AbsentPublishedPayload and an F12 completed-frame CRC16 receipt; no container, slot offset, or carrier cursor exists",
+              "source indices >=2 use the source-matched F13 zero-slot container, dynamic F14K slots, and the dynamic F12 carrier bit cursor, which may be non-byte-aligned",
               "source indices >=2 produce published=true and increment published_au_count once",
               "EOF requires the exact expected source count and publishes max(0, expected_source_count - 2) AUs"
             ]
@@ -32084,7 +32840,7 @@
               "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
             ],
             "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
-            "validation_boundary": "The domain validates the selected provider fields and canonical JSON SHA-256 from caller-supplied bytes. It performs no file/environment access and rejects every profile except keyless-crc32-crc8-crc16.v1."
+            "validation_boundary": "The domain validates selected provider fields and canonical JSON SHA-256 from caller-supplied bytes; production may reuse the F15-admitted typed provider. It performs no file/environment access and rejects every profile except keyless-crc32-crc8-crc16.v1."
           },
           "vectors": {
             "kind": "INPUT_ONLY_MATERIALIZED_SUCCESS_FAILURE_RESET_RETRY_AND_FINALIZE_VECTORS",
@@ -32107,7 +32863,20 @@
             "supplement": {
               "identity": "integrity-owner-root.keyless-crc32-crc8-crc16.v2",
               "manifest_sha256": "aff36a4ac3d5afdf2a29859cc6406c5568a468bc2be0a1987d3e333c3d3db7dd"
-            }
+            },
+            "typed_f12_frame_stage_cases": [
+              "protects_dynamic_non_byte_aligned_terminal_slots",
+              "rejects_out_of_range_dynamic_slots_and_nonzero_slots",
+              "cold_owner_reuses_the_admitted_typed_provider",
+              "f12_completed_frame_stage_advances_suppressed_sources_without_publishing_aus",
+              "f12_completed_frame_stage_binds_protected_emdf_at_dynamic_bit_cursor",
+              "f12_completed_frame_stage_rejects_absent_payload_with_unexpected_cursor",
+              "frame_payload_bit_comparison_accepts_non_byte_cursor_and_rejects_wrong_cursor",
+              "published_f12_cursor_must_be_present_but_may_be_bit_aligned",
+              "suppressed_sources_keep_absent_payload_and_no_au_receipt",
+              "published_candidate_carries_f14k_checksums_and_dynamic_ranges",
+              "published_candidate_rejects_wrong_dynamic_range_and_missing_au"
+            ]
           },
           "error_outcomes": [
             {
@@ -32141,14 +32910,14 @@
             {
               "error_code": "INTEGRITY_CHECKSUM_SLOTS",
               "category": "container slot shape",
-              "trigger": "primary/secondary slots are out of range, overlap, or contain a nonzero byte",
+              "trigger": "F13 protection ranges are outside the current dynamically serialized container, overlap, or identify nonzero slots",
               "programme_state_after": "RETIRED; committed state unchanged",
               "caller_action": "Discard all provisional work and receipts; retry only after cold reset under a distinct attempt."
             },
             {
               "error_code": "INTEGRITY_FRAME_SHAPE",
               "category": "frame/carrier shape",
-              "trigger": "frame is not 4096 bytes or the zero carrier range is not contained in frame[2:4094]",
+              "trigger": "completed F12 frame is not 4096 bytes, its CRC16 residual is nonzero, the dynamic carrier cursor is missing/unexpected, or its bit range does not select the protected container bytes",
               "programme_state_after": "RETIRED; committed state unchanged",
               "caller_action": "Discard all provisional work and receipts; retry only after cold reset under a distinct attempt."
             },
@@ -32186,9 +32955,54 @@
             "Native receipt object or wire format; the receipt schema is a clean-room internal contract.",
             "CallbackTransaction integration and all other unmaterialized owner roots.",
             "Frame construction outside the selected integrity carrier and metadata selection policy.",
-            "End-to-end codec, product, and W04 acceptance."
+            "End-to-end codec, product, and W04 acceptance.",
+            "The Integrity owner does not write or recalculate F12 frame bytes; F12 is the sole carrier and CRC16 writer."
           ],
-          "validation_claim": "Five materialized continuous calls and all ten exact failure cases pass; reset/retry/finalize behavior and the 20-check independent result are verified. Keyless public slice only; native receipt, product, and W04 execution remain NOT_RUN."
+          "validation_claim": "Legacy keyless fixture success/failure/reset/finalize cases and typed F12 absent/protected after-root proposals are locally tested. Dynamic F14K slot protection, source 0/1 absent receipts, source>=2 protected-container/cursor binding, and F12 CRC16 validation are covered by focused domain/application tests. Parent 12-owner swap, real sample6 frame execution, native receipt, product, and W04 execution remain NOT_RUN.",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/integrity/mod.rs",
+              "bytes": 274,
+              "sha256": "4b680a85b6b183675093268a17769159847b239581e48761c4a715c0ba49c382"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/crc16.rs",
+              "bytes": 478,
+              "sha256": "c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/keyless_checksum.rs",
+              "bytes": 19380,
+              "sha256": "8a444a4583b7e1000fa76cd64291260ce78ce46e1cb5ac11194bec8c72279fb2"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
+              "bytes": 51942,
+              "sha256": "bf7387e852d2a78fe1885c24502491688f98d4bc67604bb1ceb6445d01db1ded"
+            },
+            {
+              "path": "crates/jocforge-application/src/integrity_source_bridge.rs",
+              "bytes": 16534,
+              "sha256": "a3dea0d4fe68fd722a0cd84aa455b525bcd0b5a0ceed41bbd60d953f5e5b8ec3"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/integrity/keyless_checksum.rs",
+              "bytes": 19380,
+              "sha256": "8a444a4583b7e1000fa76cd64291260ce78ce46e1cb5ac11194bec8c72279fb2"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/programme_owner/tests.rs",
+              "bytes": 36680,
+              "sha256": "ce5b54c7331a5cc05d756fd8f9ed6ea16a2a65ce15cd23ad590552ba7580c9f5"
+            },
+            {
+              "path": "crates/jocforge-application/src/integrity_source_bridge.rs",
+              "bytes": 16534,
+              "sha256": "a3dea0d4fe68fd722a0cd84aa455b525bcd0b5a0ceed41bbd60d953f5e5b8ec3"
+            }
+          ]
         }
       ]
     },
@@ -32582,15 +33396,15 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 27906,
-              "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
+              "bytes": 41631,
+              "sha256": "0431f6d87a743f7c7f05aa7b5643bcd6bde3a0e91177626340af781cc51dad69"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication/tests.rs",
-              "bytes": 8908,
-              "sha256": "21da54780e7d3f82e55860bde885ee6175b4597540946f48a1175bbc6d50cceb"
+              "bytes": 13968,
+              "sha256": "14476076ce7099a6da218e3278482a32984b1f277e226888949dff2f54d864e8"
             }
           ]
         },
@@ -32681,13 +33495,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-io/src/atomic_output/mod.rs",
-              "bytes": 25034,
-              "sha256": "cc5e6508594628c37c568885f17fa0dd4bf51b1c5340cafda23ef16bd6465302"
+              "bytes": 25435,
+              "sha256": "792ead02d337fd78e45de4f5e376fc4e29a3abbdbc6822d31b4f1b719af24458"
             },
             {
               "path": "crates/jocforge-io/src/atomic_output/windows_rename.rs",
-              "bytes": 6852,
-              "sha256": "7cb237d4a32374c70a3bbdf0cce8a6787369481db77b0f2f457767f7f93d4bbf"
+              "bytes": 6898,
+              "sha256": "676c4deeecdaea6ec3c48b9054d2264306ad0ac198ce867fd33ec187ca44751d"
             },
             {
               "path": "crates/jocforge-io/src/atomic_output/tests.rs",
@@ -32731,8 +33545,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1921966,
-              "sha256": "1c65746513dd5087b3c00a54a8cf6f0741e7e80186f5e066f35a8a48a372af7e"
+              "bytes": 1964386,
+              "sha256": "add02ba469cdaf4e8072b2c6bdb7173fd55cb2240e5afacf72b2a366a1846c16"
             }
           ],
           "test_inventory": [
@@ -32877,9 +33691,9 @@
         },
         {
           "slice_id": "plan-bound-output-owner-admission-crosswalk",
-          "mapping_status": "WASHED_FOUR_ROLE_SOURCE_MAPPING__UNIFIED_ADMISSION_AND_DESTINATION_PRODUCER_OPEN",
+          "mapping_status": "WASHED_PRIVATE_PLAN_AND_DESTINATION_CONTRACT_APPROVED__ROLE_VALIDATORS_AND_DESTINATION_ISSUER_OPEN",
           "implementation_status": "EVIDENCE_ONLY_TYPED_PLAN_AND_OUTPUT_AUTHORITY__PRODUCTION_BINDING_NOT_RUN",
-          "scope": "Wash maps the four approved F15 top-level plan roles to their source assets, existing validator ownership, and later execution-receipt timing: codec/F12, JOC/F05, F13 metadata, and F14 public integrity. Six approved manifest hashes match repository packages. The 25-entry provider manifest is a mixed specification/asset/index/fixture/review/context inventory, not 25 runtime receipts. Actual values loading and role validation remain NOT_RUN. The approved contract has no unified provider-admission receipt schema and no exact destination-capability producer/result type. The reverse package's role-aggregation and destination-capability shapes are local proposals, not approved Rust APIs; no runtime schema is added. Destination validation, plan/OutputOwner construction, filesystem durability, and final exposure remain NOT_RUN.",
+          "scope": "Wash maps the four approved F15 top-level roles to their source assets, validator owners and runtime receipt timing. The later F15 admission decision approves a private parent-owned ValidatedEncodingPlan and opaque pre-I/O destination capability contract. The repository has a private type scaffold and rejection tests. The four production owner value loaders/validators and trusted destination issuer are not integrated. The older generic role-receipt proposal remains unapproved as a public/runtime schema; the private contract does not enable production OutputOwner construction, READY, filesystem I/O or full-chain execution.",
           "owner": "programme_root",
           "implementation_requirement": true,
           "dependencies": [
@@ -32928,7 +33742,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PRODUCTION-OUTPUT-API-GATE-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/MANIFEST.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/WASH-DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/ROLE-MATRIX.json"
             ],
             "supplement_manifest_sha256": "d3bd531af2bce9dae043e2309b9a558085cecdc97435b309f1a454f61c2edb1d",
             "profile_dimensions_path": "docs/architecture/PROFILE-DIMENSIONS.md",
@@ -32949,7 +33767,17 @@
               "joc",
               "f13",
               "f14"
-            ]
+            ],
+            "private_plan_admission_decision": {
+              "package_id": "F15-VALIDATED-PLAN-ADMISSION-DECISION-V1",
+              "manifest_sha256": "524d14c69f27f4b1b56a38c166423bd56bc308fe23209f28b1a3bc1a3355b145",
+              "decision": "APPROVE_MINIMAL_PRIVATE_PLAN_AND_DESTINATION_CAPABILITY_CONTRACT",
+              "production_allowed": false,
+              "remaining": [
+                "owner-issued role value loaders/validators",
+                "trusted destination capability issuer"
+              ]
+            }
           },
           "vectors": {
             "kind": "INPUT_ONLY_PLAN_AND_BINDING_GUARDS",
@@ -32967,7 +33795,9 @@
               "The package maps approved source assets, validator ownership and execution-time receipt boundaries; source hashes alone do not mean values were loaded or validated.",
               "Six approved manifest hashes are matched individually to repository manifest files.",
               "No unified admission receipt schema or exact destination-capability producer/result type is defined by the approved contract.",
-              "Role aggregation and destination-capability shapes from the reverse package are local proposals and are not approved as runtime schemas."
+              "Role aggregation and destination-capability shapes from the reverse package are local proposals and are not approved as runtime schemas.",
+              "The later decision approves only the private aggregate and opaque pre-I/O capability contract; each of the four role handles must come from its owning validator.",
+              "The production output gate remains closed until owner loaders/validators and the trusted destination issuer return actual typed values."
             ],
             "expected_outputs_included": false,
             "supplement_manifest_sha256": "d3bd531af2bce9dae043e2309b9a558085cecdc97435b309f1a454f61c2edb1d",
@@ -32999,7 +33829,11 @@
             "destination_capability_producer_and_schema": "NOT_RUN",
             "role_aggregation_proposal": "NOT_APPROVED_AS_RUNTIME_SCHEMA",
             "filesystem_durability_and_final_exposure": "NOT_RUN",
-            "whole_chain_ready": false
+            "whole_chain_ready": false,
+            "private_plan_contract_status": "APPROVED_PRIVATE_CONTRACT; TYPE_SCAFFOLD_ONLY",
+            "owner_role_validators": "NOT_RUN",
+            "destination_capability_issuer": "NOT_RUN",
+            "production_output_api_gate": "CLOSED"
           }
         },
         {
@@ -33413,36 +34247,150 @@
         },
         {
           "slice_id": "private-plan-admission-and-destination-capability",
-          "mapping_status": "MATERIALIZED_PRIVATE_F15_PLAN_AND_PRE_IO_DESTINATION_GATE__ROLE_VALIDATORS_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_PRIVATE_PLAN_TYPE_AND_REJECTION_BOUNDARIES__PRODUCTION_PLAN_NOT_RUN",
-          "scope": "Adds a private parent-owned ValidatedEncodingPlan aggregate with four distinct role-typed handles that retain Arc-backed actual typed values, bind the same PreparedJobInputIdentity, all six selected EncodingProfile dimensions, resolved profile/carriage and approved F15 dependency-manifest identity, and derive checked callback/source/AU/output-byte extents plus the selected OutputProvider projection internally. A private parent-issued destination capability binds programme, typed AttemptId, distinct staging owner, exact normalized final destination identity, distinct staging namespace and NoOverwrite policy. Pre-I/O admission rejects missing roles/capability and identity/profile/carriage/manifest/count mismatches. Concrete owner validator handle issuers and destination validation are not integrated; no production plan, OutputOwner, READY transition, or filesystem operation occurs.",
+          "mapping_status": "MATERIALIZED_F15_OWNER_VALUES_AND_DESTINATION_CAPABILITY__SOURCE_EXECUTION_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_F12_F05_F13_F14_PROVIDER_ADMISSION_AND_OUTPUT_STAGING__SOURCE_CALLBACK_AU_PARENT_COMMIT_NOT_RUN",
+          "scope": "The private F15 plan now loads the approved codec wire/BAP values, F05 coordinator/functional/math/Huffman values, F13 metadata/timer values, and F14 keyless provider through their owner validators. It binds all four immutable values to the same ProgrammeId, PreparedJobInputIdentity Arc, selected six-dimension profile/carriage, and dependency manifest. The parent also binds the normalized final path, unique staging owner, attempt and distinct no-overwrite staging namespace, then constructs the selected OutputOwner configuration without opening a file. The CLI now builds the lazy production staging adapter from that admitted plan. The real sample-6 CLI reaches this gate and then returns SOURCE_PIPELINE_UNAVAILABLE; no source callback, AU append, 12-owner replacement or output file is produced.",
           "owner": "output",
           "implementation_requirement": true,
           "dependencies": [],
           "implementation_files": [
+            "crates/jocforge-application/src/lib.rs",
             "crates/jocforge-application/src/output_publication.rs",
-            "crates/jocforge-application/src/output_publication/f15_plan_admission.rs"
+            "crates/jocforge-application/src/output_publication/plan_admission.rs",
+            "crates/jocforge-application/tests/prepared_job_input.rs",
+            "crates/jocforge-domain/src/state/mod.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+            "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+            "crates/jocforge-io/src/pcm/riff_pcm24_file.rs",
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-cli/src/output_publication.rs",
+            "crates/jocforge-cli/src/lib.rs",
+            "crates/jocforge-application/assets/providers/codec_wire_selected.json",
+            "crates/jocforge-application/assets/providers/public_bap_48k.json",
+            "crates/jocforge-application/assets/providers/live_joc_coordinator.json",
+            "crates/jocforge-application/assets/providers/joc_functional_authorized.json",
+            "crates/jocforge-application/assets/providers/joc_generated_math.json",
+            "crates/jocforge-application/assets/providers/joc_timer_order.json",
+            "crates/jocforge-application/assets/providers/metadata_public_provider.json",
+            "crates/jocforge-application/assets/providers/metadata_wrapper_config.json",
+            "crates/jocforge-application/assets/providers/integrity_public_provider.json",
+            "crates/jocforge-domain/src/joc/huffman/codebooks.json"
           ],
           "implementation_inventory": [
             {
-              "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 27906,
-              "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 21340,
+              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
             },
             {
-              "path": "crates/jocforge-application/src/output_publication/f15_plan_admission.rs",
-              "bytes": 31184,
-              "sha256": "859f978c30eab2a367e794bacd727e692236e645c061a39fdae1c5752d466d6b"
+              "path": "crates/jocforge-application/src/output_publication.rs",
+              "bytes": 41631,
+              "sha256": "0431f6d87a743f7c7f05aa7b5643bcd6bde3a0e91177626340af781cc51dad69"
+            },
+            {
+              "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
+              "bytes": 60434,
+              "sha256": "edc032f5326361d6d85219f753c9decfd9ca2239511957f8c5ed5ef0560484d6"
+            },
+            {
+              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+              "bytes": 18347,
+              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+            },
+            {
+              "path": "crates/jocforge-domain/src/state/mod.rs",
+              "bytes": 1692,
+              "sha256": "765531931f7df6f4ed274c1b0fb950cc0c2b29c0a501e98f841709d6c77055bd"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+              "bytes": 93806,
+              "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+              "bytes": 17794,
+              "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/riff_pcm24_file.rs",
+              "bytes": 918,
+              "sha256": "57e2ea27f166a870f89890406bf6739453e2b7ed7acb929726a3558ead1d65ee"
+            },
+            {
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 37264,
+              "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"
+            },
+            {
+              "path": "crates/jocforge-cli/src/output_publication.rs",
+              "bytes": 14339,
+              "sha256": "70137c3fddf6d7292ad2ceb37e783d96c4ecf4ea52608a147298bd1699ca5c5a"
+            },
+            {
+              "path": "crates/jocforge-cli/src/lib.rs",
+              "bytes": 431,
+              "sha256": "a9ec3a8008e8aae8677d4f1f8c13adc7a6d8baa22698de6c252ae89946a9ff88"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/codec_wire_selected.json",
+              "bytes": 3081,
+              "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/public_bap_48k.json",
+              "bytes": 8509,
+              "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/live_joc_coordinator.json",
+              "bytes": 8538,
+              "sha256": "d66eca446693535cf3a9fc1177a0e31a41dc9f3b6cffaaa42e79672fb0862e3b"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/joc_functional_authorized.json",
+              "bytes": 2448,
+              "sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/joc_generated_math.json",
+              "bytes": 39081,
+              "sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/joc_timer_order.json",
+              "bytes": 1940,
+              "sha256": "b425f8dffc0d914d660c46bcce5226c80d5fc680ab7c7f02e590fd6f889cb50b"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/metadata_public_provider.json",
+              "bytes": 1399,
+              "sha256": "6d94c55c8c011fd4762e60ec92ed491f19b17540c72ba82094a36f6e666f2ef7"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/metadata_wrapper_config.json",
+              "bytes": 1754,
+              "sha256": "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56"
+            },
+            {
+              "path": "crates/jocforge-application/assets/providers/integrity_public_provider.json",
+              "bytes": 687,
+              "sha256": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/huffman/codebooks.json",
+              "bytes": 92323,
+              "sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"
             }
           ],
           "test_modules": [
-            "crates/jocforge-application/src/output_publication/f15_plan_admission.rs"
+            "crates/jocforge-application/src/output_publication/plan_admission.rs"
           ],
           "test_inventory": [
             {
-              "path": "crates/jocforge-application/src/output_publication/f15_plan_admission.rs",
-              "bytes": 31184,
-              "sha256": "859f978c30eab2a367e794bacd727e692236e645c061a39fdae1c5752d466d6b"
+              "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
+              "bytes": 60434,
+              "sha256": "edc032f5326361d6d85219f753c9decfd9ca2239511957f8c5ed5ef0560484d6"
             }
           ],
           "local_mapping_files": [],
@@ -33487,20 +34435,51 @@
               "f14/integrity"
             ],
             "runtime_loader_receipts": 0,
-            "validation_boundary": "Typed private scaffold only; concrete owner value admissions and normalized destination capability issuer are not integrated."
+            "validation_boundary": "Typed private scaffold only; concrete owner value admissions and normalized destination capability issuer are not integrated.",
+            "runtime_owner_values": {
+              "codec_f12": [
+                "crates/jocforge-application/assets/providers/codec_wire_selected.json",
+                "crates/jocforge-application/assets/providers/public_bap_48k.json"
+              ],
+              "joc_f05jl": [
+                "crates/jocforge-application/assets/providers/live_joc_coordinator.json",
+                "crates/jocforge-application/assets/providers/joc_functional_authorized.json",
+                "crates/jocforge-application/assets/providers/joc_generated_math.json",
+                "crates/jocforge-domain/src/joc/huffman/codebooks.json"
+              ],
+              "f13_metadata": [
+                "crates/jocforge-application/assets/providers/joc_timer_order.json",
+                "crates/jocforge-application/assets/providers/metadata_public_provider.json",
+                "crates/jocforge-application/assets/providers/metadata_wrapper_config.json"
+              ],
+              "f14_integrity": [
+                "crates/jocforge-application/assets/providers/integrity_public_provider.json"
+              ]
+            },
+            "destination_preflight": "normalized final path, unique attempt/staging owner, distinct same-directory staging namespace, no-overwrite; no file opened during admission"
           },
           "vectors": {
-            "kind": "WASH_INPUT_ONLY_PLAN_AND_DESTINATION_ADMISSION_CASES_PLUS_LOCAL_GATE_TESTS",
+            "kind": "APPROVED_OWNER_PROVIDER_ADMISSION_AND_DESTINATION_IDENTITY",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-ADMISSION-DECISION-V1/INPUT-ONLY.json",
-              "crates/jocforge-application/src/output_publication/f15_plan_admission.rs"
+              "crates/jocforge-application/assets/providers/codec_wire_selected.json",
+              "crates/jocforge-application/assets/providers/public_bap_48k.json",
+              "crates/jocforge-application/assets/providers/live_joc_coordinator.json",
+              "crates/jocforge-application/assets/providers/joc_functional_authorized.json",
+              "crates/jocforge-application/assets/providers/joc_generated_math.json",
+              "crates/jocforge-application/assets/providers/joc_timer_order.json",
+              "crates/jocforge-application/assets/providers/metadata_public_provider.json",
+              "crates/jocforge-application/assets/providers/metadata_wrapper_config.json",
+              "crates/jocforge-application/assets/providers/integrity_public_provider.json",
+              "crates/jocforge-domain/src/joc/huffman/codebooks.json",
+              "crates/jocforge-application/src/output_publication/plan_admission.rs"
             ],
             "case_pointers": [
-              "Local tests reject each missing role, prepared-input mismatch, profile/carriage/dependency mismatch, destination absence/attempt/staging mismatch and checked count overflow.",
-              "The private plan derives the selected output projection and checked counts in synthetic test scope only.",
-              "Wash input-only cases are not reported as executed provider loaders, destination validation, OutputOwner construction, or filesystem I/O."
+              "All four production role values are parsed by owner validators and retained in the private plan.",
+              "The same PreparedJobInputIdentity Arc, programme, resolved profile, carriage and dependency identity bind every role.",
+              "Destination admission rejects missing, aliased, mismatched or non-normalized path identities before staging opens.",
+              "The actual full-file CLI attempt passes F15 admission and stops because source callback/AU publication is not wired."
             ],
-            "expected_outputs_included": true,
+            "expected_outputs_included": false,
             "supplement_manifest_sha256": "524d14c69f27f4b1b56a38c166423bd56bc308fe23209f28b1a3bc1a3355b145"
           },
           "error_outcomes": [
@@ -33534,12 +34513,12 @@
             }
           ],
           "not_run": [
-            "Codec/F12, JOC/F05JL, F13/metadata and F14/integrity runtime value loaders and owner-issued production handle creation.",
-            "Destination normalization/validation execution and production destination-capability issuance.",
-            "Production ValidatedEncodingPlan construction from actual loaded values.",
-            "OutputOwner construction, GTC READY swap, filesystem operations, durable/exposure receipts, product encode and whole-chain acceptance."
+            "Actual sample-6 source callback and selected PCM channel-row mapping.",
+            "F06 measurement prepass, finalized ProgrammeMeasurementReceipt and same-source F06ND/F12 join.",
+            "F07-F14 source proposals, 12-owner callback root replacement and AU append/finalization.",
+            "A nonzero JOCForge output file and independent decode/render acceptance."
           ],
-          "validation_boundary": "This slice creates only private type/rejection scaffolding with synthetic unit tests. Production readiness remains disabled until real owner validators and destination validation issue typed values.",
+          "validation_boundary": "F15 provider admission and output-path binding pass locally; this does not produce audio, establish channel order or commit any source owner.",
           "native_status": {
             "status": "LOCAL_PRIVATE_PLAN_TYPES_AND_PRE_IO_REJECTION_TESTED_PRODUCTION_ADMISSIONS_NOT_RUN",
             "production_role_handle_issuers": "NOT_INTEGRATED",
@@ -33548,7 +34527,16 @@
             "output_owner_construction": "NOT_RUN",
             "filesystem_io": "NOT_RUN",
             "production_allowed": false,
-            "whole_chain_ready": false
+            "whole_chain_ready": false,
+            "provider_values_loaded_and_owner_validated": true,
+            "programme_input_profile_carriage_binding": "SAME_PREPARED_INPUT_IDENTITY_ARC",
+            "destination_capability": "VALIDATED_NO_OVERWRITE_AND_DISTINCT_STAGING_NAMESPACE",
+            "output_staging_adapter": "PRODUCTION_API_AVAILABLE_LAZY_OPEN",
+            "source_callbacks": "NOT_WIRED",
+            "pcm_row_to_ddp_input_channel_order": "UNBOUND",
+            "measurement_receipt": "NOT_RUN",
+            "source_au_publication_and_parent_commit": "NOT_RUN",
+            "output_file": "NOT_CREATED"
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
@@ -33784,8 +34772,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/state/mod.rs",
-          "bytes": 881,
-          "sha256": "744a43ac590eb08d75a2fc0253f8f4cadf2a47f8f8c7f9b02a495c898d456ab4"
+          "bytes": 1692,
+          "sha256": "765531931f7df6f4ed274c1b0fb950cc0c2b29c0a501e98f841709d6c77055bd"
         }
       ],
       "test_inventory": [
@@ -34384,8 +35372,8 @@
         },
         {
           "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-          "bytes": 66098,
-          "sha256": "74ab4dd44c54c6836101ef79bd4a62e07715c40b45760f5e726f933906271548"
+          "bytes": 66877,
+          "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
         },
         {
           "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
@@ -35277,8 +36265,8 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-          "bytes": 20848,
-          "sha256": "d9b72de594f47353838a22290092b233b74803d663bc4a07172705635c4b2c53"
+          "bytes": 23854,
+          "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
         },
         {
           "path": "crates/jocforge-domain/src/transaction/mod.rs",
@@ -35289,8 +36277,8 @@
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-          "bytes": 20848,
-          "sha256": "d9b72de594f47353838a22290092b233b74803d663bc4a07172705635c4b2c53"
+          "bytes": 23854,
+          "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
         }
       ]
     },
@@ -35580,8 +36568,8 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-          "bytes": 58315,
-          "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+          "bytes": 66140,
+          "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
         },
         {
           "path": "crates/jocforge-domain/src/drc/mod.rs",
@@ -35610,15 +36598,15 @@
         },
         {
           "path": "crates/jocforge-domain/src/analysis/owner.rs",
-          "bytes": 86690,
-          "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+          "bytes": 99211,
+          "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
         }
       ],
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-          "bytes": 58315,
-          "sha256": "e6aac42abb02a2cc98b29b3ed585aafb64e40d2279cdf07781d7c43db2e19c5b"
+          "bytes": 66140,
+          "sha256": "0b327271f75712d68eabf58751ad741e4faf5eb9102e143af62a9a573bdbf794"
         },
         {
           "path": "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs",
@@ -35736,8 +36724,8 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/analysis/owner.rs",
-          "bytes": 86690,
-          "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+          "bytes": 99211,
+          "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
         },
         {
           "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
@@ -35768,8 +36756,8 @@
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/analysis/owner.rs",
-          "bytes": 86690,
-          "sha256": "3622810a8b607d69c788e3bd95d0c083f9340d6731f52a9a61339eb908d9c79e"
+          "bytes": 99211,
+          "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
         },
         {
           "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
@@ -35827,8 +36815,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
-          "bytes": 57582,
-          "sha256": "eff8e98c4b7b5cc0d988df16ab0bf98d6a186e39d6727b1337b526bcc81a3500"
+          "bytes": 58594,
+          "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"
         },
         {
           "path": "crates/jocforge-domain/src/publication/output_owner.rs",
@@ -35899,15 +36887,15 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-          "bytes": 80524,
-          "sha256": "19e999ee310669ea01594aa1aa34dc13d60e133fad2d94c1715cac5a0f37e182"
+          "bytes": 93806,
+          "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
         }
       ],
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 37810,
-          "sha256": "fddca046639ca3874f253923cb29bd4e3687548c403b2f8ba3844d0b43ab2c5c"
+          "bytes": 45889,
+          "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
         }
       ],
       "selected_profile_id": "selected-48k-1536-four-queue.v1",
@@ -35977,7 +36965,7 @@
     {
       "root_id": "integrity",
       "materialization_status": "LOCALLY_VERIFIED_KEYLESS_PUBLIC_PROFILE_ONLY__PRIVATE_AUTH_BLOCKED",
-      "implementation_status": "LOCALLY_VERIFIED_KEYLESS_OWNER_STATE_REF_AND_RECEIPT_PROJECTION__PARENT_COMMIT_PRIVATE_AUTH_BLOCKED",
+      "implementation_status": "LOCALLY_VERIFIED_TYPED_ABSENT_AND_PROTECTED_F12_OWNER_PROPOSALS__PARENT_COMMIT_PRIVATE_AUTH_BLOCKED",
       "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_INTEGRITY_STATE_REFERENCE",
       "gtc_owner_receipt_status": "NONCOMMITTING_PROJECTION_LOCALLY_VERIFIED__NOT_ADMITTED_BY_PARENT",
       "gtc_single_root_swap_status": "NOT_RUN",
@@ -36175,7 +37163,7 @@
     {
       "root_id": "output",
       "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-      "implementation_status": "TEST_SUPPORT_ONLY_OUTPUT_BINDING_HARNESS__PRODUCTION_VALIDATED_PLAN_BINDING_NOT_RUN",
+      "implementation_status": "LOCALLY_VERIFIED_F15_OWNER_PROVIDER_ADMISSION_AND_DESTINATION_BINDING__SOURCE_CALLBACK_AU_COMMIT_OPEN",
       "canonical_state_reference": {
         "state_ref": "owners.output",
         "snapshot_api": "OutputOwner::state_reference",
@@ -36195,40 +37183,47 @@
         "crates/jocforge-domain/src/publication/output_owner.rs",
         "crates/jocforge-domain/src/publication/mod.rs",
         "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-        "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+        "crates/jocforge-application/src/output_publication/plan_admission.rs",
+        "crates/jocforge-cli/src/encode_request.rs",
+        "crates/jocforge-cli/src/lib.rs",
+        "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+        "crates/jocforge-io/src/pcm/riff_pcm24_file.rs",
+        "crates/jocforge-domain/src/state/mod.rs"
       ],
       "test_modules": [
+        "crates/jocforge-application/src/output_publication/plan_admission.rs",
         "crates/jocforge-application/src/output_publication/tests.rs",
         "crates/jocforge-application/tests/prepared_job_input.rs",
         "crates/jocforge-cli/src/output_publication/tests.rs",
-        "crates/jocforge-domain/src/publication/tests.rs",
-        "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+        "crates/jocforge-domain/src/publication/tests.rs"
       ],
       "implementation_inventory": [
         {
           "path": "crates/jocforge-application/src/output_publication.rs",
-          "bytes": 27906,
-          "sha256": "ff19b16d4db5a641551136cee5d3cf4ee48980e698ad1ff28970423fd24ae438"
+          "bytes": 41631,
+          "sha256": "0431f6d87a743f7c7f05aa7b5643bcd6bde3a0e91177626340af781cc51dad69"
         },
         {
           "path": "crates/jocforge-application/src/output_publication/tests.rs",
-          "bytes": 8908,
-          "sha256": "21da54780e7d3f82e55860bde885ee6175b4597540946f48a1175bbc6d50cceb"
+          "bytes": 13968,
+          "sha256": "14476076ce7099a6da218e3278482a32984b1f277e226888949dff2f54d864e8"
         },
         {
           "path": "crates/jocforge-application/src/lib.rs",
-          "bytes": 20834,
-          "sha256": "5d2959e1d02d27711684d3ae6a80048a362763ce059a8b5e7c45d42d309aee35"
+          "bytes": 21340,
+          "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 18401,
-          "sha256": "8a629a3e0f65fdbb121c205c32dc576f7cac929bfaf17034671aedead3ae188a"
+          "bytes": 18347,
+          "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
-          "bytes": 10861,
-          "sha256": "1b48c2afd5084262260b6cd49dd182ceb22caca7fbb6f6107d7ce5760b456e7e"
+          "bytes": 14339,
+          "sha256": "70137c3fddf6d7292ad2ceb37e783d96c4ecf4ea52608a147298bd1699ca5c5a"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -36247,30 +37242,60 @@
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-          "bytes": 80524,
-          "sha256": "19e999ee310669ea01594aa1aa34dc13d60e133fad2d94c1715cac5a0f37e182"
+          "bytes": 93806,
+          "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 37810,
-          "sha256": "fddca046639ca3874f253923cb29bd4e3687548c403b2f8ba3844d0b43ab2c5c"
+          "bytes": 45889,
+          "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+        },
+        {
+          "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
+          "bytes": 60434,
+          "sha256": "edc032f5326361d6d85219f753c9decfd9ca2239511957f8c5ed5ef0560484d6"
+        },
+        {
+          "path": "crates/jocforge-cli/src/encode_request.rs",
+          "bytes": 37264,
+          "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"
+        },
+        {
+          "path": "crates/jocforge-cli/src/lib.rs",
+          "bytes": 431,
+          "sha256": "a9ec3a8008e8aae8677d4f1f8c13adc7a6d8baa22698de6c252ae89946a9ff88"
+        },
+        {
+          "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+          "bytes": 17794,
+          "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
+        },
+        {
+          "path": "crates/jocforge-io/src/pcm/riff_pcm24_file.rs",
+          "bytes": 918,
+          "sha256": "57e2ea27f166a870f89890406bf6739453e2b7ed7acb929726a3558ead1d65ee"
+        },
+        {
+          "path": "crates/jocforge-domain/src/state/mod.rs",
+          "bytes": 1692,
+          "sha256": "765531931f7df6f4ed274c1b0fb950cc0c2b29c0a501e98f841709d6c77055bd"
         }
       ],
       "test_inventory": [
         {
-          "path": "crates/jocforge-domain/src/publication/tests.rs",
-          "bytes": 8472,
-          "sha256": "b17614d6ce6d19e8419ae9ed28c617b29b6a33279487a69fdfe001a52ab8bbd2"
+          "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
+          "bytes": 60434,
+          "sha256": "edc032f5326361d6d85219f753c9decfd9ca2239511957f8c5ed5ef0560484d6"
         },
         {
           "path": "crates/jocforge-application/src/output_publication/tests.rs",
-          "bytes": 8908,
-          "sha256": "21da54780e7d3f82e55860bde885ee6175b4597540946f48a1175bbc6d50cceb"
+          "bytes": 13968,
+          "sha256": "14476076ce7099a6da218e3278482a32984b1f277e226888949dff2f54d864e8"
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 18401,
-          "sha256": "8a629a3e0f65fdbb121c205c32dc576f7cac929bfaf17034671aedead3ae188a"
+          "bytes": 18347,
+          "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -36279,8 +37304,13 @@
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 37810,
-          "sha256": "fddca046639ca3874f253923cb29bd4e3687548c403b2f8ba3844d0b43ab2c5c"
+          "bytes": 45889,
+          "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+        },
+        {
+          "path": "crates/jocforge-domain/src/publication/tests.rs",
+          "bytes": 8472,
+          "sha256": "b17614d6ce6d19e8419ae9ed28c617b29b6a33279487a69fdfe001a52ab8bbd2"
         }
       ],
       "local_scope": "Private F15 carriage-to-provider projection and synthetic binding harness are gated to tests or the non-default test-support feature; a complete OutputStateV1 state reference is locally verified, but no ValidatedEncodingPlan-backed production binding constructor exists.",
@@ -36289,13 +37319,14 @@
       "gtc_single_root_swap_status": "NOT_RUN",
       "encode_status": "NOT_RUN",
       "remaining_gates": [
-        "ValidatedEncodingPlan-backed production output binding and provider-plan identity join.",
-        "GTC OwnerReceipt admission for the output state reference.",
-        "GTC single root swap, durable finalize/DONE integration, encode, native execution, W04, and product acceptance."
+        "Source callback providers and actual physical PCM row to selected audio owner mapping.",
+        "Final measurement receipt and same-source F06ND/F13/F12 binding.",
+        "Twelve-owner callback/source parent replacement and production AU append caller.",
+        "Durable finalize/exposure, complete sample-6 output and independent decode/render acceptance."
       ],
       "provider_plan_lineage_status": "NOT_RUN",
-      "production_output_api_gate_status": "NOT_RUN",
-      "validated_plan_output_binding_status": "NOT_RUN",
+      "production_output_api_gate_status": "F15_PROVIDER_AND_DESTINATION_ADMISSION_VERIFIED; LAZY_STAGING_API_AVAILABLE; SOURCE_CALLSITE_NOT_RUN",
+      "validated_plan_output_binding_status": "LOCALLY_VERIFIED_SAME_INPUT_PROFILE_ATTEMPT_OWNER_AND_PATH_BINDING; SOURCE_PLAN_LINEAGE_NOT_RUN",
       "latest_f15_provider_plan_manifest_sha256": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2"
     }
   ],
