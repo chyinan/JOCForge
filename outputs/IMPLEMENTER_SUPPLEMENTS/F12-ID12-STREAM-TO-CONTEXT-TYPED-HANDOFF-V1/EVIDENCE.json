@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F12-ID12-STREAM-TO-CONTEXT-TYPED-HANDOFF-V1",
+  "source": {
+    "source_package_id": "multi-adm-dialnorm-cross-input",
+    "source_manifest_sha256": "59dd26bea5a4bed89544e06d62d365cc2f9d58b4241c3c1f1b060d08d730faa7",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "source_payloads": 74,
+    "raw_decompilation_copied": false
+  },
+  "target_images": [
+    {"name": "dee_ddp_encoder.exe", "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+  ],
+  "typed_handoff": {
+    "dispatch_function": "FUN_140315db0@0x315db0",
+    "setter_slot": "+0x10",
+    "frame_output_slot": "+0x28",
+    "same_stream_receiver": true,
+    "stream_pointer_table_offset": "+0x10a6",
+    "setter_count_field": "+0x10a4",
+    "frame_count_field": "+0x10a5",
+    "common_index_range_static": true,
+    "runtime_generation_token": "NOT_CAPTURED",
+    "api_parameter_id": "0x12",
+    "api_field_offset": "+0x9c",
+    "api_field_width_bits": 32,
+    "source_declared_legal_range": [1, 31],
+    "corrected_pointer_arithmetic": "param_2 is longlong*; param_2+0x0c = stream+0x60",
+    "source_read": "FUN_1403471f0 reads [RCX+0x3c] = stream+0x9c",
+    "typed_copy_destination": "nested_context+0x34",
+    "internal_low_word_destination": "context+0x19140",
+    "alternate_initializer": "FUN_1403479c0 copies the same source field into context+0x19140",
+    "typed_serializer_consumers": [
+      {"function": "FUN_140343530", "reads": ["0x3439b4", "0x343a4f"], "frame_record": "frame_set + RBX*0x38 + 0xd0"},
+      {"function": "FUN_1403448d0", "reads": ["0x345ef3", "0x345fa7"], "frame_record": "frame_set + RBX*0x38 + 0xd0"}
+    ]
+  },
+  "status": {
+    "id12_to_nested_context": "CLOSED_STATIC",
+    "nested_context_to_frame_serializer_input": "CLOSED_STATIC",
+    "context_0x19140_to_final_u5_bsi_write": "UNBOUND_TO_R5_SELECTOR",
+    "same_runtime_generation": "UNBOUND",
+    "encoder_execution": "NOT_RUN",
+    "media_payload_read": false,
+    "private_key_hmac_or_license_read": false,
+    "implementation_ready": false
+  }
+}

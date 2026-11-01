@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "F12-ID12-STREAM-TO-CONTEXT-TYPED-HANDOFF-V1",
+  "vectors": [
+    {
+      "id": "pointer-width-correction",
+      "kind": "SYNTHETIC_ADDRESS_ARITHMETIC_ONLY",
+      "inputs": {
+        "stream_base": "0x100000",
+        "param_2_type": "longlong*",
+        "param_2_element_index": 12,
+        "source_member_offset": "0x3c"
+      },
+      "derived_addresses": {
+        "param_2_plus_index_byte_offset": "0x100060",
+        "typed_read_address": "0x10009c"
+      },
+      "expected_fact": "param_2+0x0c advances 0x60 bytes; subsequent +0x3c resolves to stream+0x9c",
+      "not_a_runtime_pointer": true
+    },
+    {
+      "id": "id12-value-domain",
+      "kind": "SYNTHETIC_INPUT_ONLY",
+      "inputs": {"id12_dword": 18, "declared_domain": [1, 31]},
+      "expected_fact": "18 is inside the stated source domain; no U5 mapping is inferred",
+      "does_not_assert_wire_value": true
+    }
+  ]
+}

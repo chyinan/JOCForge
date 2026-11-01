@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-7-multi-adm-dialnorm\\outputs\\multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "59dd26bea5a4bed89544e06d62d365cc2f9d58b4241c3c1f1b060d08d730faa7",
+    "checker_result": "PASS normal and python -O; 74 payloads"
+  },
+  "hash_bound_evidence_payloads": [
+    {"file": "DDPI-STREAM-TO-CONTEXT-TYPED-COPY-TRACE.txt", "sha256": "dc4ba446ae287a352fd036e3e086edd0926133b3e9ce876a64f60bda21b52c33"},
+    {"file": "DDPI-ID12-CONSUMER-LINEAGE-TRACE.txt", "sha256": "469f007e17238b4a446b77108cda4dbf4f0d2c17e08809efbdfa97c7a4c7fc15"},
+    {"file": "DIALNORM-MISMATCH-FIELD-LINEAGE-ADDENDUM.json", "sha256": "1e75b459316abbe37a2aa15b3eb1d58b417a20536fb8a8df1474134fa5479c05"},
+    {"file": "UPSTREAM-F12-CONSUMER-CLOSURE.json", "sha256": "not independently recorded in this Wash derivative"}
+  ],
+  "exclusions": [
+    "No binary, Ghidra decompilation/disassembly, source code, PCM, EC3 payload, key, HMAC or license material copied.",
+    "No same-generation native observation was made."
+  ]
+}

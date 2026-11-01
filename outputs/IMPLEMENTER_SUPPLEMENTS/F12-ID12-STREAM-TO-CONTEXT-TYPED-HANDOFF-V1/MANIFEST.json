@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F12-ID12-STREAM-TO-CONTEXT-TYPED-HANDOFF-V1",
+  "source_reverse_manifest_sha256": "59dd26bea5a4bed89544e06d62d365cc2f9d58b4241c3c1f1b060d08d730faa7",
+  "status": "ID12_TYPED_STREAM_TO_CONTEXT_HANDOFF_BOUND; FINAL_BSI_U5_AND_GENERATION_JOIN_OPEN",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2239,
+      "sha256": "b8bb48e96f10cd323f4ece068e9e6dbd6cd7820485c51ac9d67905059c8c76c5"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 960,
+      "sha256": "3ddfedd95acbe63102737052b8f7ab585d73503128c8f2dc1b5dfd81dbf44e57"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2978,
+      "sha256": "fd2c354cc213476f4ce4c6a8b1b67157703a469caed1778fc7fda0f60c760ccd"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1196,
+      "sha256": "0e84644fb26a3f6e4d2e9141655b4811398469efdd158f8da7b648b1bfaaad79"
+    }
+  ]
+}
