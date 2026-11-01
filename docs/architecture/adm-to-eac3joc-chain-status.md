@@ -2,7 +2,20 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
-> 文档更新：2026-11-01。已提交代码基准为 JOCForge `70439c8`（2026-10-31）；下述接线仍在未提交工作树中。第三次真实 sample-6 CLI 已完成 Meter prepass（4,247 callbacks / 3 drains；本地模型 `dialnorm=Some(17)`、metadata generation 0），source0/1 suppressed 4,096-byte F12 proposals 与各自 12-owner proposals 均成功。source2 AU0 完成 F13/F14K→F12→Integrity after-root→F15 durable append：285-byte EMDF container、4,096-byte frame、frame SHA-256 `b2c778245d1b578ea98ee89517133a77235aca4cd683bf8719e455bdf14ef087`、CRC16 residual 0；staging 文件为 `.test-tmp/attempt-1793482106508451400.ec3.partial`。staging hash/CRC verification 已通过；bit-level dynamic carrier check 通过，但 numeric bit offset 未记录。CLI 随后按设计 exit 2 并停止；12-owner atomic swap、remaining sources、EOF/finalize/expose 均未运行，final destination 未生成，不能称全链闭合。F06 DialNorm 公式、native U5 producer 与 CHNA/DDP owner-generation/native equivalence 仍 `UNBOUND`。此前 boundary check 记录 68 scoped checks；当前 workspace boundary/catalog/fmt/workspace-check 均通过。DEE 参考文件不属于 JOCForge 产物。
+> 文档更新：2026-11-02。当前 Rust 实现代码基准为 JOCForge `a4e1a667`（2026-11-02）；当前分支 HEAD 为 `7ee1a0a1`，最近两项提交只增加 Wash 证据包与目录索引，没有修改生产算法。第三次真实 sample-6 CLI 已完成 Meter prepass（4,247 callbacks / 3 drains；本地模型 `dialnorm=Some(17)`、metadata generation 0），source0/1 suppressed 4,096-byte F12 proposals 与各自 12-owner proposals 均成功。source2 AU0 完成 F13/F14K→F12→Integrity after-root→F15 durable append：285-byte EMDF container、4,096-byte frame、frame SHA-256 `b2c778245d1b578ea98ee89517133a77235aca4cd683bf8719e455bdf14ef087`、CRC16 residual 0；staging 文件为 `.test-tmp/attempt-1793482106508451400.ec3.partial`。staging hash/CRC verification 已通过；bit-level dynamic carrier check 通过，但 numeric bit offset 未记录。CLI 随后按设计 exit 2 并停止；12-owner atomic swap、remaining sources、EOF/finalize/expose 均未运行，final destination 未生成，不能称全链闭合。F06 DialNorm 公式、native U5 producer 与 CHNA/DDP owner-generation/native equivalence 仍 `UNBOUND`。本轮 boundary check 记录 68 scoped checks；supplement catalog 为 527 directories / 525 manifests 且 `--check` 通过。DEE 参考文件不属于 JOCForge 产物。
+
+## 2026-11-02 范围与证据更新
+
+用户确认：所有不涉及厂商机密的非音频行为均按 DEE 规则对齐，包含容器 CRC、ID11/ID14 与 downmix profile；私有 HMAC 采用 keyless 路径，不读取或使用私钥。验收比较常规解析结果和剥离私有 HMAC 后的音频 essence，非机密容器字段仍按 DEE 规则核对。当前 `hmac_sha256` 仅有定义与测试调用；生产完整编码链没有该函数调用。F14 选定 provider 使用 keyless CRC32/CRC8/CRC16。
+
+本轮收到并提交了两份 Wash 边界包：
+
+| 提交 | Wash 包 | 已绑定 | 仍未绑定 |
+|---|---|---|---|
+| `9f3301d7` | `F13C-DMIXMOD-OMITTED-INPUT-BOUNDARY-V1`，manifest SHA-256 `d7a0c1f03153310207473a7c6a82fde9524c12d04988d98bb285e48f9a577043` | DME 的 preferred downmix 控件未激活时省略该输入；native parser 对缺失的 `dmixmod` 跳过 enum lookup/invalid-value 路径。 | 运行时 enum default、用户任务配置到 native field 的映射、最终 F13C consumer 与输出分支。该证据不提供可猜测的默认值。 |
+| `7ee1a0a1` | `NATIVE-EAC3-EXPONENT-WRITER-CALLPATH-BOUNDARY-V1`，manifest SHA-256 `b57ae86196c9aee0207d9fb6c9a1d3e66aed317adbaad260fa8db8be4b65019a` | 当前 Rust selected-frame source 的 U6 bandwidth、U4 base exponent、U7 grouped exponent 与 U2 gain-range 写入次序；DEE native F32 quantization 到 per-item packing 的有界调用路径。 | DEE native U4/U7 frame-syntax writer、attempt-10 AU/lane/block join 与 exponent `-1` 诊断的因果关系。不得据此单独归因或修改算法。 |
+
+两包的 manifest/payload checker 在普通模式与 `python -O` 下均通过；目录索引 `--check` 与 boundary check 通过。attempt-10 仍不作为输入或比较基线。非机密 DEE 规则收到 Wash 的精确合同后逐项接入；当前包标为 `UNBOUND` 的字段继续等待直接证据。
 
 当前源码按批准的嵌套事务合同分别校验 producer/source token 与父 GTC callback receipt token，并保留 owner/generation 检查。F05/F13 洗白包的九个 source hashes 与当前源码全匹配，普通与 python -O checker 均通过。attempt-02 时间线包（manifest 5b8e020296334e7597bdcd29b64921b9f20341692c2f69813182f1428d93027d）确认：Meter 4,247 callbacks / 3 drains 后，g=0 的 jocforge-main-callback-g0 提交 phase 1→2，g=1 的 jocforge-main-callback-g1 提交 phase 2→3，各有 12 receipts；随后首次 F05/F13 报 Joc(ProducerTransactionMismatch)，inner exit 2、Cargo wrapper exit 1。失败 executable SHA、expected/actual producer token、callback/source/dispatch、JOC owner 和各 generation 仍 UNBOUND；旧运行与当前源码/build 的连接未建立。两个针对性 domain 回归用例、workspace check、fmt 和 boundary check 通过。
 
