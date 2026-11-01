@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge-f12-native-normalizer-vectors.v1",
+  "kind": "pure scalar arithmetic examples; not audio or runtime captures",
+  "vectors": [
+    {
+      "id": "ordinary-negative-scalar",
+      "input": {"x_f32": -20.665958, "branch": "ordinary"},
+      "steps": {"subtract_f32": "F32(x-0.5)", "convert": "CVTTSS2SI truncate toward zero", "clamp": "[-31,-1]"},
+      "expected": {"helper_signed_result": -21, "caller_comparison_value": 21, "ddpi_id12_write_proven": false}
+    },
+    {
+      "id": "native-near-sentinel",
+      "input": {"x_f32": -120.0, "branch": "abs(F32(x-(-120))) < 1e-6"},
+      "expected": {"helper_signed_result": -120, "caller_comparison_value": 120, "model_u5_31_implemented": false}
+    },
+    {
+      "id": "ordinary-positive-clamp",
+      "input": {"x_f32": 100.0, "branch": "ordinary"},
+      "expected": {"helper_signed_result": -1, "caller_comparison_value": 1, "ddpi_id12_write_proven": false}
+    }
+  ],
+  "limits": [
+    "These examples test only the washed helper formula.",
+    "The scalar measurement unit and identity as selected_lufs are not established by these vectors.",
+    "No vector assigns a result to DDPi ID 0x12 or the F12 BSI U5."
+  ],
+  "lineage": {
+    "source_manifest_sha256": "d7deb53845cf3c484e222e069a819c33f82d383510fc0529ee8efc412505150d",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

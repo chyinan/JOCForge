@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F12-DEE-SCALAR-TO-DDPI-BOUNDARY-V1",
+  "source": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "d7deb53845cf3c484e222e069a819c33f82d383510fc0529ee8efc412505150d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_count": 56
+  },
+  "approved_model": {
+    "package_id": "F12-SELECTED-PREFIX-DIALNORM-V1",
+    "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+    "contract_sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61",
+    "classification": "MODEL_SPEC_STATIC_CLOSED; NOT_A_NATIVE_RULE",
+    "input": "F32 selected_lufs from finalized full-programme measurement",
+    "output": "integer DialNorm [1,31], U5 at selected-profile bits 45..49",
+    "special_case": "abs(R32(selected_lufs - (-120.0))) < 0.000001 -> 31",
+    "ordinary_case": "t=trunc_toward_zero(R32(selected_lufs-0.5)); dialnorm=-clamp(t,-31,-1)"
+  },
+  "native_target": {
+    "image": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 static analysis"
+  },
+  "native_scalar_path": {
+    "source": "EmpireEnc state+0x3c, F32",
+    "copy": "open-config qword+0x58 high dword; low dword -120.0f",
+    "consumer": "FUN_1801a7d50 -> FUN_1800fdc60(F32)",
+    "normalizer": "near -120 sentinel returns -120; otherwise CVTTSS2SI(F32(x-0.5)) and clamp [-31,-1]",
+    "caller_use": "negates helper result only for comparison with internal byte+0x10a; mismatch sets flag 0x04",
+    "native_unit": "NOT_STATED"
+  },
+  "ddpi_and_wire_boundary": {
+    "id_0x12_field": "integer at stream+0x9c; validator range 1..31",
+    "native_scalar_to_id_0x12": "UNBOUND",
+    "same_owner_generation": "UNBOUND",
+    "id_0x12_to_f12_bsi_u5_bits_45_49": "UNBOUND",
+    "native_minus_120_is_model_u5_31": false
+  },
+  "existing_sample_comparisons": {
+    "count": 3,
+    "status": "CONDITIONAL_MATCHES_ONLY_IF_NATIVE_SCALAR_IS_SELECTED_LUFS",
+    "native_units_recorded": false,
+    "proves_native_formula": false
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "keyless_profile_established": false,
+    "pcm_payload_bitstream_or_output_read": false,
+    "private_key_or_license_read": false,
+    "implementation_ready": false
+  }
+}

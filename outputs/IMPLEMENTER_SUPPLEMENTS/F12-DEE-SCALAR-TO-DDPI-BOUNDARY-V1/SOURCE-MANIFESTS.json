@@ -1,0 +1,23 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "d7deb53845cf3c484e222e069a819c33f82d383510fc0529ee8efc412505150d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_count": 56
+  },
+  "approved_model_source": {
+    "package_id": "F12-SELECTED-PREFIX-DIALNORM-V1",
+    "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+    "contract_sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61"
+  },
+  "prior_wash_ddpi_boundary": {
+    "package_id": "F12-DDPI-DIALNORM-API-TO-BSI-BOUNDARY-V1",
+    "manifest_sha256": "da53268b8f92c4b84a0684a7d4f9e7e73c3fce268c4bd4e2c1519326a9c7a5c4",
+    "scope": "DDPi ID0x12 validator and stream+0x9c field; no native scalar or typed BSI-owner join."
+  },
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "raw_ghidra_trace_or_script_copied": false,
+  "raw_audio_or_key_copied": false
+}

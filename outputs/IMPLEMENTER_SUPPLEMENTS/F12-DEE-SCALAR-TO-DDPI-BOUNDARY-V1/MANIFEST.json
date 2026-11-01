@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F12-DEE-SCALAR-TO-DDPI-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "d7deb53845cf3c484e222e069a819c33f82d383510fc0529ee8efc412505150d",
+  "status": "STATIC_NORMALIZER_BOUND; ID12_AND_BSI_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2359,
+      "sha256": "202c0c58c2ef36f0b7d2521c987a27599a839660325d342825e2514a70436d98"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1408,
+      "sha256": "67dd276bb330eea8d509763093a0994cdb9e6bb29129bff1d6423282b791084d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1895,
+      "sha256": "6d9760dc9f4ae5c717f923c4dcfabc5b5a574b260ea2695b88cb3448d778819d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1054,
+      "sha256": "a4284b45c95b2decdf7cf426390e998fdc425e3a737ffb76845bd8bea9ca1555"
+    }
+  ]
+}
