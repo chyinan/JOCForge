@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "bytes": 4682,
+      "file": "CHECK.py",
+      "sha256": "39cf6c670f8cb98da9b68c5d4bbcc561aba713684b139224d400f3bbc4971527"
+    },
+    {
+      "bytes": 1940,
+      "file": "EVIDENCE.json",
+      "sha256": "b3e2eaaece6bb1050d37d89d8a5580c1bc122e23a6c08ca5b36cbeed0d478329"
+    },
+    {
+      "bytes": 843,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "f7f5299dd4efa47b732b0da528b9f55355256a42a4cbd7b8386fda47a7ce9927"
+    },
+    {
+      "bytes": 1582,
+      "file": "REPORT.md",
+      "sha256": "a121249623b18c33d11fc8748c54145eae9bf4e7a02c9a0a594f05115c944f9e"
+    },
+    {
+      "bytes": 877,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "2ac86e1353b192da422796f10a40dbaedb6722c5f6ffd17aa35421de5e0eb423"
+    },
+    {
+      "bytes": 1118,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "d59e169b598fca7df18aadb712c27a1dcdcec6e7e9a9b950e9c62e24c4841045"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F12-DDPI-STREAM-A8-TO-CORE-STATE-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "312cc1cddb20d8d27d492a66ebf030204ef0bce5853a2f8dabdf5557660cff25",
+  "status": "STREAM_PLUS_A8_TO_CORE_PLUS_94_TRACED; SEMANTIC_AND_BSI_EDGE_UNBOUND"
+}

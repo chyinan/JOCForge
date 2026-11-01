@@ -1,0 +1,20 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "312cc1cddb20d8d27d492a66ebf030204ef0bce5853a2f8dabdf5557660cff25",
+  "incoming_checker": {"normal":"PASS","python_optimized":"PASS","seal_matches":true},
+  "independent_review": [
+    "Recomputed the incoming manifest and seal; ran its package verifier in normal and optimized modes.",
+    "Confirmed ID 0x15 copies to stream+0xA8 and the helper reads that location from input base stream+0x0C plus 0x9C.",
+    "Kept codec_state+0x94 separate from FUN_140318610's per-stream object+0x94 because the base pointers differ.",
+    "Preserved the -1 to 0x33 substitution and direct copy rule as a local handoff only.",
+    "Kept the BSI U5 writer mapping and semantic name of ID 0x15 UNBOUND."
+  ],
+  "not_promoted": [
+    "ID 0x15 semantic API name",
+    "child codec-state field semantic identity",
+    "Audio Coding Mode validation as proof of child field meaning",
+    "standard U5 bitfield mapping",
+    "output acceptance or implementation readiness"
+  ],
+  "implementation_delivery":"REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

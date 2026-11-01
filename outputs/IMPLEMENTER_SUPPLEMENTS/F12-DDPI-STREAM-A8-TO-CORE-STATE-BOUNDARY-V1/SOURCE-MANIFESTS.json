@@ -1,0 +1,18 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "multi-adm-dialnorm-cross-input",
+    "manifest_sha256": "312cc1cddb20d8d27d492a66ebf030204ef0bce5853a2f8dabdf5557660cff25",
+    "manifest_seal_matches": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "status": "STREAM_PLUS_A8_TO_CORE_PLUS_94_TRACED; SEMANTIC_AND_BSI_EDGE_UNBOUND"
+  },
+  "related_wash_package": {
+    "package_id": "F12-DDPI-DIALNORM-API-TO-BSI-BOUNDARY-V1",
+    "manifest_sha256": "da53268b8f92c4b84a0684a7d4f9e7e73c3fce268c4bd4e2c1519326a9c7a5c4",
+    "relationship": "ID 0x12 validation field at stream+0x9C is distinct from ID 0x15 stream+0xA8 source and child codec state +0x94."
+  },
+  "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+  "raw_decompilation_or_payload_copied": false
+}

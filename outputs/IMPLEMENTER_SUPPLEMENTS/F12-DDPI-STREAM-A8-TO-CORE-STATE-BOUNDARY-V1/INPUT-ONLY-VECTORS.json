@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-f12-ddpi-stream-a8-input-only.v1",
+  "contains_pcm": false,
+  "contains_payload": false,
+  "vectors": [
+    {"id":"DDPI_ID15_COPY_ONE","input":{"stream_plus_a8_u32":"0x00000001"},"expected":{"codec_state_plus_94_u32":"0x00000001","rule":"COPY"}},
+    {"id":"DDPI_ID15_COPY_ZERO","input":{"stream_plus_a8_u32":"0x00000000"},"expected":{"codec_state_plus_94_u32":"0x00000000","rule":"COPY"}},
+    {"id":"DDPI_ID15_SENTINEL_MINUS_ONE","input":{"stream_plus_a8_u32":"0xFFFFFFFF"},"expected":{"codec_state_plus_94_u32":"0x00000033","rule":"SENTINEL_SUBSTITUTION"}}
+  ],
+  "limits": [
+    "These exercise only the traced helper copy/default behavior, not DDP frame serialization.",
+    "The field semantic name and standard U5 mapping remain UNBOUND.",
+    "No vector is a DEE output observation or acceptance result."
+  ]
+}

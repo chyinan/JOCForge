@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge-f12-ddpi-stream-a8-state.v1",
+  "package_id": "F12-DDPI-STREAM-A8-TO-CORE-STATE-BOUNDARY-V1",
+  "status": "STREAM_PLUS_A8_TO_CORE_PLUS_94_TRACED; SEMANTIC_AND_BSI_EDGE_UNBOUND",
+  "implementation_ready": false,
+  "target": {
+    "binary": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "analysis": "Ghidra 12.2 static analysis",
+    "runtime_or_encode_run": "NOT_RUN"
+  },
+  "source_field": {
+    "owner": "per-stream object from encoder context stream pointer array",
+    "offset": "+0xA8",
+    "producer": "FUN_14034FF60 setparams case 0x15",
+    "width_bytes": 4,
+    "operation": "direct copy of key/value entry",
+    "parameter_descriptor_for_type_indices_0_to_13": "NOT_FOUND",
+    "semantic_name": "UNBOUND"
+  },
+  "handoff": {
+    "caller": "FUN_140350D00",
+    "frame_core": "FUN_140317600",
+    "helper": "FUN_1403471F0",
+    "helper_input_base": "stream+0x0C",
+    "helper_relative_read": "+0x9C",
+    "actual_source": "stream+0xA8",
+    "destination": "codec_state+0x94",
+    "value_rule": "source -1 => 0x33; otherwise direct 32-bit copy",
+    "rounding_or_scaling": "NONE_OBSERVED"
+  },
+  "separate_validation_field": {
+    "function": "FUN_140318610",
+    "owner": "per-stream object, distinct base from child codec_state",
+    "offset": "+0x94",
+    "error_label": "Audio Coding Mode",
+    "typed_identity_join_to_codec_state_plus_0x94": "NOT_PROVEN"
+  },
+  "bsi_writer": {
+    "path_reaches_ddp_stuffer": true,
+    "standard_header_field_or_bit_offset": "UNBOUND",
+    "standard_header_u5_relationship": "UNBOUND",
+    "last_direct_source_consumer": "FUN_1403471F0",
+    "next_function_for_open_edge": "FUN_140317600"
+  },
+  "policy": {
+    "dee_run": false,
+    "pcm_payload_bitstream_output_or_key_material_read": false,
+    "other_encoder_or_ffmpeg_used": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}
