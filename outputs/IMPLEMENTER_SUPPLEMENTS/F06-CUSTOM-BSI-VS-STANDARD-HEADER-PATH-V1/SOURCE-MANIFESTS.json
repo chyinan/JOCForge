@@ -1,0 +1,29 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "native-f06-bsi-owner-custom-container-versus-header-path-addendum",
+    "manifest_sha256": "9681e89b9c9a36a65eb3fac7fb46ada75f26a2cf951ca0ef3e7a8d6671512caf",
+    "seal_matches_manifest": true,
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "seal_file_sha256": "41a2ed332c267811d33e1aff7b16613d56e90d3666a1729ce3f17a82505c013c",
+    "payloads": [
+      {"file": "README.md", "bytes": 2388, "sha256": "8620e850ddbb1404a3cd55177a4cb165327b89be7a40be90afbf50ebe2c7b022"},
+      {"file": "EVIDENCE.json", "bytes": 4159, "sha256": "78625b90e8241cb68385b5c67c7f40ccf299b5ea29bbbad7d670ef991dc275d6"},
+      {"file": "MATRIX.json", "bytes": 1916, "sha256": "f736de5c1fe71290d43cbe6edb2a62753c43f7231baf12315bfd90a0c0c7d834"},
+      {"file": "verify_bsi_custom_container_header_path.py", "bytes": 5971, "sha256": "408b2bf4444d03d34d048dc59f4e0e75c2b7364b8a8190bcbedfb6cda8d06880"}
+    ]
+  },
+  "parent_wash_packages": [
+    {
+      "package_id": "F06-BSI-OWNER-TO-FINAL-AU-BOUNDARY-V1",
+      "manifest_sha256": "6a3e74f2d7ac1763968e7c12228a56e8cd66e47ed97e34d279626e33900da9b5",
+      "relationship": "Same-generation owner-to-writer frame path; U16 was not reread in that full run."
+    }
+  ],
+  "parent_source_package": {
+    "package_id": "native-f06-bsi-final-au-writer-generation-addendum",
+    "manifest_sha256": "5d8af71b76ae1b0d56affbdbaa0679c143c31ff5e939727df657656507017647"
+  },
+  "raw_decompilation_or_audio_payload_copied": false
+}

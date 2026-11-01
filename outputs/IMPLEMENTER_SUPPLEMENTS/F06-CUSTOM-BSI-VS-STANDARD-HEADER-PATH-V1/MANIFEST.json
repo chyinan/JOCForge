@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 5506,
+      "file": "CHECK.py",
+      "sha256": "424daf9aa38e8355f0a3c11004d717c369690375ee30ed55e62fd6de8b905e5a"
+    },
+    {
+      "bytes": 1745,
+      "file": "EVIDENCE.json",
+      "sha256": "ee39deae4a8a7d8b9cd7acd0af88f5ea5608dd08e0ee39c84d1025ef910162c6"
+    },
+    {
+      "bytes": 1790,
+      "file": "REPORT.md",
+      "sha256": "63f8500995e1706e25d524c82f3785b4a105a0fc3cd46ac407869e221ed1d7a3"
+    },
+    {
+      "bytes": 1561,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "cfbba9738b5015c21db4f3edcbcd7c09dadfb9eaa667f291d0e180106e8b3959"
+    },
+    {
+      "bytes": 1162,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "e2d76d35d130b20cc7d8fa7a23cc2ef59c341bcf10d8abc76ed082fe2196aac2"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F06-CUSTOM-BSI-VS-STANDARD-HEADER-PATH-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "9681e89b9c9a36a65eb3fac7fb46ada75f26a2cf951ca0ef3e7a8d6671512caf",
+  "status": "CUSTOM_BSI_METADATA_VS_STANDARD_HEADER_DISTINCT; U16_TO_U5_MAPPING_UNBOUND"
+}

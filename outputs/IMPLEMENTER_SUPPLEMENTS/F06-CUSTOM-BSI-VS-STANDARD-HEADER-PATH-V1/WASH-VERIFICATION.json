@@ -1,0 +1,20 @@
+{
+  "schema": "wash-verification.v1",
+  "incoming_manifest_sha256": "9681e89b9c9a36a65eb3fac7fb46ada75f26a2cf951ca0ef3e7a8d6671512caf",
+  "incoming_checker": {"normal": "PASS", "python_optimized": "PASS"},
+  "independent_review": [
+    "Recomputed the incoming package manifest and seal and ran its verifier normally and under Python optimization.",
+    "Confirmed the custom serializer path writes a type-0x0B metadata item and a two-entry container consumed by frame composition.",
+    "Confirmed standard header U5 is a separate five-bit field at bit offset 45 supplied through a per-frame encoder-request parameter.",
+    "Confirmed the trace does not show a typed owner-U16-to-U5 transfer or backend conversion rule.",
+    "Cross-referenced the prior same-generation writer package without inventing an owner U16 value for that full-run frame."
+  ],
+  "not_promoted": [
+    "numeric U16-to-U5 mapping",
+    "backend parameter-to-U5 conversion",
+    "clamp, rounding, or valid range",
+    "a same-run owner U16/U5 numeric pair",
+    "implementation readiness"
+  ],
+  "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

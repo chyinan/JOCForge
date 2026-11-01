@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge-f06-custom-bsi-vs-standard-header.v1",
+  "package_id": "F06-CUSTOM-BSI-VS-STANDARD-HEADER-PATH-V1",
+  "status": "CUSTOM_BSI_METADATA_VS_STANDARD_HEADER_DISTINCT; U16_TO_U5_MAPPING_UNBOUND",
+  "implementation_ready": false,
+  "custom_bsi_path": {
+    "owner_field": {"offset": "+0x34", "type": "signed 16-bit"},
+    "descriptor": {"length_offset": "+0x18", "pointer_offset": "+0x20"},
+    "metadata_item": {"type": "0x0B", "type_offset": "+0x58", "length_offset": "+0x84", "pointer_offset": "+0x88"},
+    "container_entries": 2,
+    "consumer": "frame composition path",
+    "typed_transfer_status": "BOUND_BY_GHIDRA_STATIC_TRACE"
+  },
+  "standard_header_path": {
+    "field": "EC3 syncframe header DialNorm U5",
+    "bit_offset": 45,
+    "width_bits": 5,
+    "producer": "separate per-frame dialnorm parameter in encoder request",
+    "backend_parameter_to_u5_conversion": "UNBOUND"
+  },
+  "relation": {
+    "same_structure": false,
+    "same_serializer": false,
+    "converges_in_final_au": true,
+    "typed_owner_u16_to_perframe_parameter_transfer": "NOT_OBSERVED",
+    "numeric_u16_to_u5_mapping": "UNBOUND/NOT_PROVEN",
+    "clamp_rounding_and_valid_range": "UNBOUND"
+  },
+  "parent_generation_observation": {
+    "source_package_id": "native-f06-bsi-final-au-writer-generation-addendum",
+    "manifest_sha256": "5d8af71b76ae1b0d56affbdbaa0679c143c31ff5e939727df657656507017647",
+    "frame_index": 3481,
+    "frame_bytes": 4096,
+    "header_probe_bytes": 7,
+    "u5": 17,
+    "owner_u16_reread_in_that_full_run": false
+  },
+  "policy": {
+    "new_dee_run": false,
+    "pcm_or_codec_payload_read": false,
+    "license_or_key_content_read": false,
+    "implementation_delivery": "REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}
