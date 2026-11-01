@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F15-FINAL-EXPOSURE-TERMINAL-CONTRACT-V1",
+  "source_reverse_manifest_sha256": "d96bf37326e454e6d4726276a00f72dd99a1c2b2148eb81070c1d02439c2f0ce",
+  "status": "F15_TERMINAL_CONTRACT_BOUND; SERIALIZED_RECEIPT_SCHEMA_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2024,
+      "sha256": "2a862b6efc77448e9059d29fc8c2a31f8d981a670b762a69d7b732a0b503951e"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1242,
+      "sha256": "7f9faf946de23d438fcb042bdf2acdc091654481e8ec2e23aa38a34e813d69a6"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1759,
+      "sha256": "719c3243769d5bbae0f29b266b08a1c597a27cd94db887028cf3a6071b966412"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 930,
+      "sha256": "8142e79322de8090b8243695f067297994ab366caf92fbea04e16c0d9131cf5e"
+    }
+  ]
+}

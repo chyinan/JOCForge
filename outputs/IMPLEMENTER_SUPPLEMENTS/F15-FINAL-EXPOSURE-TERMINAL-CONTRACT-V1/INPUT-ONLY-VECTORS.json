@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-f15-terminal-decision-vectors.v1",
+  "kind": "transaction-decision vectors; no audio data",
+  "vectors": [
+    {
+      "id": "eof-ledger-pass-parent-fsync-fail",
+      "input": {"eof_ledger": "PASS_WITHIN_LOGGED_SCOPE", "parent_directory_fsync": "FAIL", "app_exit_code": 2},
+      "expected": {"FinalExposureReceipt": "NOT_CAPTURED", "DONE": "NOT_REACHED", "exact_hash_comparison_eligible": false}
+    },
+    {
+      "id": "complete-publication-contract-order",
+      "input": {"eof_ledger": "VALIDATED", "staging_fsync": "PASS", "atomic_no_overwrite": "PASS", "parent_directory_fsync": "PASS"},
+      "expected": {"final_exposure_receipt": "REQUIRED_AFTER_ALL_IO_STEPS", "parent_done_commit": "REQUIRED_AFTER_RECEIPT", "exact_hash_comparison_eligible": "ONLY_AFTER_APP_EXIT_0_AND_DURABLE_RECEIPT"}
+    }
+  ],
+  "limits": [
+    "This package does not define the missing serialized receipt schema.",
+    "This package specifies output transaction acceptance only; it does not specify audio encoding behavior.",
+    "Hash acceptance must not inspect payload bytes beyond streaming SHA-256 after success."
+  ],
+  "lineage": {"source_manifest_sha256": "d96bf37326e454e6d4726276a00f72dd99a1c2b2148eb81070c1d02439c2f0ce"}
+}

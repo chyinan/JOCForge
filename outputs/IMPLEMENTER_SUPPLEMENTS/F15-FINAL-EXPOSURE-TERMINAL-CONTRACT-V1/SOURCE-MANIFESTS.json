@@ -1,0 +1,22 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "f15_finalize_success_receipt_audit_wash_v1",
+    "manifest_sha256": "d96bf37326e454e6d4726276a00f72dd99a1c2b2148eb81070c1d02439c2f0ce",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "attempt_08_receipt_source": {
+    "package_id": "F05-F13-ATTEMPT-07-08-TRANSACTION-REVIEW-V1",
+    "manifest_sha256": "c4f855a6c4830c8f3f1dba472def2e62ea710b73b122670ffd644ca9ceaa5c56",
+    "evidence_payload_sha256": "4fd72a48bedecd92be4e564295144f6ac1bcb037ad6eabcd1bd87b76ba75d780",
+    "output_payload_accessed": false
+  },
+  "referenced_unavailable_receipt_schema": {
+    "package_id": "OUTPUT-OWNER-ROOT-V1",
+    "manifest_sha256": "d8d97f07d82d07dfa05772bb60bc90c6cab46e908f04366f24cc1398a16d169f",
+    "catalog_entry_found": false,
+    "exact_fields": "UNBOUND"
+  },
+  "raw_audio_or_codec_material_copied": false
+}

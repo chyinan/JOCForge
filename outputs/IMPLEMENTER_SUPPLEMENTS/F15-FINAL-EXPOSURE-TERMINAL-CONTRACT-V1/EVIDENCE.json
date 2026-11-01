@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F15-FINAL-EXPOSURE-TERMINAL-CONTRACT-V1",
+  "source": {
+    "package_id": "f15_finalize_success_receipt_audit_wash_v1",
+    "manifest_sha256": "d96bf37326e454e6d4726276a00f72dd99a1c2b2148eb81070c1d02439c2f0ce",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "source_identity_rehashes": {"packages": 7, "payload_files": 17, "mismatches": 0}
+  },
+  "attempt_08": {
+    "source_eof_ledger": "PASS_WITHIN_LOGGED_SCOPE",
+    "sources": 4249,
+    "published_aus": 4247,
+    "durable_bytes": 17395712,
+    "metadata_generation": 4250,
+    "phase_generation": 4253,
+    "f15_status": "POST_FAILURE",
+    "error": "DURABLE_OUTPUT_ERROR:finalize/parent-sync:ParentFsyncAfterRename",
+    "application_exit_code": 2,
+    "final_exposure_receipt": "NOT_CAPTURED",
+    "done_status": "NOT_REACHED",
+    "exact_hash_comparison_eligible": false
+  },
+  "success_contract": {
+    "au_size_bytes": 4096,
+    "expected_offset": "au_index * 4096",
+    "append_checks": ["contiguous AU index", "proposal/readback bytes and hash match", "CRC residual 0", "flush and file fsync succeed"],
+    "append_receipt": "DurableAppendReceipt bound to attempt/output owner/source proposal",
+    "finalization_order": ["validate EOF ledger and pending state", "staging data fsync", "no-overwrite atomic namespace operation", "parent-directory fsync", "bound FinalExposureReceipt", "parent commit final identity and DONE"]
+  },
+  "missing_schema_and_repair": {
+    "receipt_schema_package": "OUTPUT-OWNER-ROOT-V1",
+    "referenced_manifest_sha256": "d8d97f07d82d07dfa05772bb60bc90c6cab46e908f04366f24cc1398a16d169f",
+    "catalog_entry_found": false,
+    "serialized_field_names": "UNBOUND",
+    "unapproved_same_named_fixtures_read": false,
+    "repair_commit": "ab8770f",
+    "repair_effect_hash_bound": false
+  },
+  "execution_scope": {
+    "audio_algorithm_specification": false,
+    "output_payload_opened_or_decoded": false,
+    "implementation_ready": false
+  }
+}
