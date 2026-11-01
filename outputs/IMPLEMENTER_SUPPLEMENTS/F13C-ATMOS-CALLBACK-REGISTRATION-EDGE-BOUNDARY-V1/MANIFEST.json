@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "bytes": 3934,
+      "file": "CHECK.py",
+      "sha256": "64395336046e78ea830f66320ac30af0d7e04be16582b9150744442de5a7730f"
+    },
+    {
+      "bytes": 1960,
+      "file": "EVIDENCE.json",
+      "sha256": "3c33ce6d8fb38ad2ab34d51e22cde413435da85763e5f9457119cc560d11d211"
+    },
+    {
+      "bytes": 1301,
+      "file": "REPORT.md",
+      "sha256": "abce4166d2f5b4bbad7ffdd8fd2ffed86c3fdb9bbb42416412539f8b35ae627b"
+    },
+    {
+      "bytes": 1169,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "1dbe77d7797f08ece243c9c19c8869710a6382a946950c7c26f95cfb292fb5d4"
+    },
+    {
+      "bytes": 980,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "2917da0f156b61095cf4836a153d4e189189a385b85dacc12293aca901cf8bb8"
+    }
+  ],
+  "implementation_ready": false,
+  "package_id": "F13C-ATMOS-CALLBACK-REGISTRATION-EDGE-BOUNDARY-V1",
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "source_reverse_manifest_sha256": "b62e4aece92a5ec21459b529c5655551ca6eb318a09b2a987b965e58f00e5e8c",
+  "status": "CALLBACK_REGISTRATION_EDGE_BOUND; BRANCH_CONTINUATION_AND_WRITER_UNBOUND"
+}

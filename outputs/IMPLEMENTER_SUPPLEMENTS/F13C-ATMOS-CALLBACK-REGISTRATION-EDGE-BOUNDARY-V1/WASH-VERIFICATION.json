@@ -1,0 +1,20 @@
+{
+  "schema":"wash-verification.v1",
+  "incoming_manifest_sha256":"b62e4aece92a5ec21459b529c5655551ca6eb318a09b2a987b965e58f00e5e8c",
+  "incoming_checker":"PASS; verify_manifest.ps1",
+  "independent_review":[
+    "Ran the incoming PowerShell manifest verifier; it validated the two payload hashes and the v8 parent manifest binding.",
+    "Recomputed the incoming manifest and SHA256SUMS.txt digests and both curated payload hashes.",
+    "Confirmed the returned wrapper value is forwarded into a registration helper and preserved the unresolved decompiler return type.",
+    "Kept branch target/fallthrough uninspected and no writer reachability claim."
+  ],
+  "not_promoted":[
+    "helper branch continuation",
+    "callback payload semantics as audio control",
+    "selected DDP-JOC 5.1 stage",
+    "F13C writer",
+    "global absence-of-use proof",
+    "implementation readiness"
+  ],
+  "implementation_delivery":"REFERENCE_ONLY; NO_PRODUCT_RULE; implementation_ready=false"
+}

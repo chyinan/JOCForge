@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge-f13c-atmos-callback-registration-edge.v1",
+  "package_id": "F13C-ATMOS-CALLBACK-REGISTRATION-EDGE-BOUNDARY-V1",
+  "status": "CALLBACK_REGISTRATION_EDGE_BOUND; BRANCH_CONTINUATION_AND_WRITER_UNBOUND",
+  "implementation_ready": false,
+  "target_image": {
+    "name": "dee_ddpjoc_encoder.exe",
+    "sha256_from_ghidra_metadata": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_install_rehashed": false
+  },
+  "wrapper_path": [
+    {"function":"FUN_1403fab60","callsite":"0x1403fac12","callee":"FUN_14046bd90","receiver":"atmos_storage_master_s"},
+    {"function":"FUN_14046bd90","child_offset":"+0x30","thunk":"FUN_14040b870","child_vtable_slot":"+0x8","target":"FUN_1403c3980 / AtmosMasterFileStorage::Factory"},
+    {"function":"FUN_1403c3980","callsite":"0x1403c3aae","callee":"FUN_1403f5270"}
+  ],
+  "registration_path": {
+    "function":"FUN_1403f5270",
+    "allocation":"0x6380 bytes via FUN_140a3f1f8",
+    "wrapper_factory_call":"FUN_1403f1dd0 at 0x1403f52c4",
+    "post_call_value_forwarded":true,
+    "return_type_assignment":"UNRESOLVED; decompiler says void but caller forwards RAX",
+    "handoff":"FUN_1403f1a50 receives post-call value and passes holder to FUN_1403a6960"
+  },
+  "registration_helper": {
+    "function":"FUN_1403a6960",
+    "tested_owner_field":"[RCX+0x8]",
+    "test_site":"0x1403a6981",
+    "branch_site":"0x1403a6984",
+    "branch_target":"0x1403a69e3",
+    "fallthrough":"0x1403a6986",
+    "continuation_inspected":false
+  },
+  "writer_reachability": {
+    "selected_ddp_joc_5_1_stage":"UNBOUND",
+    "ddp_joc_ec3_frame_writer":"UNBOUND",
+    "f13c_writer":"UNBOUND",
+    "global_absence_of_writer_proven":false
+  },
+  "policy": {
+    "encoder_launched":false,
+    "pcm_read":false,
+    "encoded_payload_read":false,
+    "audio_output_created":false,
+    "private_license_hmac_key_content_read":false,
+    "implementation_delivery":"REFERENCE_ONLY; NO_PRODUCT_RULE"
+  }
+}

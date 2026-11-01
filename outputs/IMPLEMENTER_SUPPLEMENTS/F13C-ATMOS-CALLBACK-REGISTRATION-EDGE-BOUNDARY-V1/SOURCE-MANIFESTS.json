@@ -1,0 +1,22 @@
+{
+  "schema":"washed-source-manifest-bindings.v1",
+  "incoming_package":{
+    "package_id":"F13C Atmos callback registration edge addendum v9",
+    "manifest_sha256":"b62e4aece92a5ec21459b529c5655551ca6eb318a09b2a987b965e58f00e5e8c",
+    "sha256sums_file_sha256":"5532f7b01ea35b55b0f7fc819696fff2ff978a006f92ba760a2881f20666904f",
+    "payloads":[
+      {"file":"ADDENDUM.md","bytes":2323,"sha256":"8244a692e1dc944b08f422d39265a459500aabd8f4d957012b41696574313075"},
+      {"file":"GHIDRA-CALLBACK-REGISTRATION-EDGE.json","bytes":3454,"sha256":"dc04feabfcb1ed0344dbb9c638d0736c065f4e61ed838b98ca0a0b5f60bd4c3c"},
+      {"file":"verify_manifest.ps1","bytes":2384,"sha256":"e90f6b184474045c862fb1b4505e56b8e25c5dad8cd812c2330e9c58543bb29b"}
+    ]
+  },
+  "parent_source_package":{
+    "package_id":"F13C Atmos storage invocation addendum v8",
+    "manifest_sha256":"c9e10f0c97ecc00990dbc5986d3bc1fb3c310a8fc6bbd0cbba768b5dd044007a"
+  },
+  "related_wash_package":{
+    "package_id":"F13C-ATMOS-STORAGE-FACTORY-INVOCATION-BOUNDARY-V1",
+    "manifest_sha256":"b682b7a4bf7f6cc101fa4018852cbc1386bf84d63cfa80fb64a802e96fa63578"
+  },
+  "raw_disassembly_or_media_copied":false
+}
