@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "KEYLESS-PROFILE-PROBE-RUST-CONTAINER-PROFILE-DIFF-V1",
+  "vectors": [
+    {
+      "id": "emdf-profile-difference",
+      "kind": "SOURCE_ASSERTION_ONLY",
+      "python_declared": {"primary_crc_bytes": 4, "secondary_crc_bytes": 0, "crc": "CRC32"},
+      "rust_source": {"primary_crc_bytes": 4, "secondary_crc_bytes": 1, "primary_crc": "CRC32", "secondary_crc": "CRC8"},
+      "status": "DIFFERENCE; NO OUTPUT OR ROOT CAUSE INFERRED"
+    },
+    {
+      "id": "eac3-crc2-contract",
+      "kind": "SOURCE_ASSERTION_ONLY",
+      "python_declared": {"initial": 0, "polynomial": "0x8005", "bit_order": "MSB_FIRST", "coverage": "frame[2:-2]", "append": "big_endian_crc16"},
+      "rust_source": {"initial": 0, "polynomial": "0x8005", "bit_order": "MSB_FIRST", "coverage": "frame[2..4094]", "append": "final_two_bytes"},
+      "status": "MATCHING_ALGORITHM_SOURCE; NOT OUTPUT VERIFIED"
+    },
+    {
+      "id": "profile-reference-identity",
+      "kind": "METADATA_IDENTITY_ONLY",
+      "python_probe_reported_hash": "a24b6a223f27175c7dc282d11168853ea60a8223172efaf20c5ad921a39c9871",
+      "user_designated_comparator_hash": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+      "same_file": false,
+      "media_bytes_opened": false
+    }
+  ]
+}

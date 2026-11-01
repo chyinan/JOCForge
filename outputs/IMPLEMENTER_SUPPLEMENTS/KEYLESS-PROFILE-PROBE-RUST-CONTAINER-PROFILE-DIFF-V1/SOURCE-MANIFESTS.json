@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "keyless_crc32_probe_rust_audio_matrix_wash_v1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-6-f05-f13-transaction\\outputs\\keyless_crc32_probe_rust_audio_matrix_wash_v1",
+    "manifest_sha256": "a2e687ad59e311151a4d6dc4c4febbd8d1a2e8e2e85fce2c0466e79ea7eca498",
+    "checker_result": "PASS normal and optimized; 14 source/metadata files hash-checked"
+  },
+  "source_hashes": [
+    {"name": "keyless_profile_probe.py", "sha256": "8ed1fe996714fef234a1181847b9347c39ee1b9f3c2efea62a3b2fdd21350099"},
+    {"name": "emdf_wire_core.py", "sha256": "3ac9a61ad264625c643110da53e5e7aebf87de574a4a54a4c640306e1706b0d1"},
+    {"name": "encoded_frame_patch_core.py", "sha256": "cb469665ca2da6266d787eaba2e7b7a9aa966e74e3508c4515f3789a8eb2e177"},
+    {"name": "Rust keyless_checksum.rs", "sha256": "8a444a4583b7e1000fa76cd64291260ce78ce46e1cb5ac11194bec8c72279fb2"},
+    {"name": "Rust crc16.rs", "sha256": "c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6"},
+    {"name": "Rust emdf_serializer.rs", "sha256": "77762fad85048a65b25b66e517cb84248f791369e8fae1f4af539eeccf63c692"},
+    {"name": "Rust selected_frame_trial.rs", "sha256": "a8b04bb4e77b382a2f8cab0bfa9a1b64cdedbd4809f78fc0d9d35ec7fe3b1841"},
+    {"name": "Rust protected_container.rs", "sha256": "7837e33b9ad274e191741ae32e11b4de006e6aa4352da74366df9f9d13d88a9c"}
+  ],
+  "exclusions": [
+    "No code, media bytes, PCM, private key, HMAC, or license content copied.",
+    "The third expected copy path was not identified or inspected."
+  ]
+}

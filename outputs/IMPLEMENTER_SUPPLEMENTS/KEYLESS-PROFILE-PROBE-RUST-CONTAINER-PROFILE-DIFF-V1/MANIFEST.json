@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "KEYLESS-PROFILE-PROBE-RUST-CONTAINER-PROFILE-DIFF-V1",
+  "source_reverse_manifest_sha256": "a2e687ad59e311151a4d6dc4c4febbd8d1a2e8e2e85fce2c0466e79ea7eca498",
+  "status": "SOURCE_PROFILE_DIFFERENCES_BOUND; CAUSALITY_AND_AUDIO_MATCH_UNVERIFIED",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 4066,
+      "sha256": "06bb8c9b8ae5344130f6f28bc5e23350efb21c6ebd0eb7e2f2d092a8e2836de3"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1322,
+      "sha256": "82dab639e103fe7ca3d2d8152bc20628f18eee5e704b62a6ccc4d8c4e7f707fd"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2445,
+      "sha256": "e48a0d601262d3f346d6accc87320be5c34134e28fa885c6941de9a3d02f2aae"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1634,
+      "sha256": "97b107006c1d617f96c3455adb01d8dce1c6c4d63014f4c6ad7d7e5b7319f244"
+    }
+  ]
+}

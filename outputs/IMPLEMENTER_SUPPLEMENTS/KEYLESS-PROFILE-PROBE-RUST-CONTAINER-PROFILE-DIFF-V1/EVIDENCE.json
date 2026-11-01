@@ -1,0 +1,83 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "KEYLESS-PROFILE-PROBE-RUST-CONTAINER-PROFILE-DIFF-V1",
+  "source": {
+    "source_package_id": "keyless_crc32_probe_rust_audio_matrix_wash_v1",
+    "source_manifest_sha256": "a2e687ad59e311151a4d6dc4c4febbd8d1a2e8e2e85fce2c0466e79ea7eca498",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "source_and_metadata_files_hash_checked": 14,
+    "ec3_or_wav_opened_or_hashed": false
+  },
+  "python_probe": {
+    "entrypoint": "keyless_profile_probe.py",
+    "source_sha256": "8ed1fe996714fef234a1181847b9347c39ee1b9f3c2efea62a3b2fdd21350099",
+    "candidate_basename": "candidate-keyless-crc32-joc.ec3",
+    "reported_sha256_from_generation_metadata": "a24b6a223f27175c7dc282d11168853ea60a8223172efaf20c5ad921a39c9871",
+    "reported_bytes": 17395712,
+    "candidate_hash_recomputed": false,
+    "user_reported_audio": "CORRECT_AND_AUDITION_RECOGNIZES",
+    "independent_audio_verification": false,
+    "input_model": "cached model F32 and EMDF payloads; not a cold ADM computation",
+    "external_codec_executed_in_this_review": false,
+    "full_adm_to_joc_encoder": false
+  },
+  "current_rust_source": {
+    "selected_source_snapshot": "Hash-bound by source matrix; files listed in SOURCE-MANIFESTS.json",
+    "audition_result": "USER_REPORTED_DAMAGED_UNREADABLE",
+    "output_artifact_hash": "NOT_CAPTURED_IN_SOURCE_MATRIX",
+    "independent_audio_verification": false
+  },
+  "profile_matrix": {
+    "emdf_protection": {
+      "python": "CRC32 primary4, secondary0",
+      "rust": "CRC32 primary4 plus CRC8 secondary1",
+      "status": "SOURCE_PROFILE_DIFFERENCE"
+    },
+    "id11_oamd_config": {
+      "python": "codec_data_present=true; frame_aligned=true; duplicate flags=false; priority/processing=0",
+      "rust_deployed_compat": "frame_aligned=false; duplicate/priority fields absent",
+      "status": "SOURCE_PROFILE_DIFFERENCE; FIELD EQUIVALENCE NOT ASSUMED"
+    },
+    "id14_joc_config": {
+      "python": "codec_data_present=true; frame_aligned=true; duplicate flags=false; priority/processing=0",
+      "rust_deployed_compat": "frame_aligned=true with explicit fields",
+      "status": "SOURCE_PROFILE_MATCH_ON_DECLARED_FIELDS; NOT RUN BOUND"
+    },
+    "eac3_crc2": {
+      "python": "init 0; polynomial 0x8005; MSB-first; CRC over frame[2:-2]; append big-endian; zero residual over frame[2:]",
+      "rust": "CRC16 polynomial 0x8005 over [2..4094]; append final two bytes; zero residual over [2..4096]",
+      "status": "SOURCE_ALGORITHM_MATCH"
+    },
+    "first_published_au_and_carrier": {
+      "python": "source entries 0/1 absent, source 2 is first published; carrier block 2",
+      "rust": "sources 0/1 suppressed; source 2 maps to AU 0; carrier block 2",
+      "status": "COARSE_SOURCE_MAPPING_MATCH; RUN NOT BOUND"
+    },
+    "joc_matrix_and_coefficient_generation": {
+      "python_probe": "not performed; cached metadata/model inputs and external codec are used",
+      "rust": "separate coefficient quantization, Huffman body and ID14 writer paths",
+      "status": "DIFFERENT_LAYER"
+    }
+  },
+  "distinct_user_references": {
+    "compatible_keyless_comparator_sha256_from_prior_wash": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+    "crc32_probe_reported_sha256": "a24b6a223f27175c7dc282d11168853ea60a8223172efaf20c5ad921a39c9871",
+    "same_artifact": false,
+    "protected_python_vs_dee_reference_hash_from_streaming_wash": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "protected_hash_recomputed_for_this_matrix": false
+  },
+  "interpretation": {
+    "container_profile_difference_is_causal_root": "NOT_ESTABLISHED",
+    "private_hmac_key_needed_for_source_comparison": false,
+    "whole_file_sha_equality_required_for_keyless_output": false,
+    "implementation_ready": false
+  },
+  "scope": {
+    "ec3_or_wav_bytes_opened_or_hashed": false,
+    "audio_decoded_or_played": false,
+    "pcm_read_or_retained": false,
+    "private_key_hmac_or_license_read": false,
+    "source_code_copied": false
+  }
+}
