@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-f06-receiver-first-store-vectors.v1",
+  "kind": "static offset and owner-identity vectors; not runtime values",
+  "vectors": [
+    {
+      "id": "unaligned-block-copy-covers-component-member",
+      "input": {
+        "source_block_offset": "0x50",
+        "receiver_block_offset": "0x50",
+        "copy_width_bytes": 16,
+        "member_of_interest_offset": "0x54"
+      },
+      "expected": {
+        "member_byte_range_in_copy": "4..7",
+        "receiver_first_write_to_member": "BOUND_BY_TYPED_BLOCK_COPY",
+        "direct_plus_0x54_store_required": false
+      }
+    },
+    {
+      "id": "process-state-to-r138-origin-boundary",
+      "input": {
+        "process_state_offset": "0x7e4",
+        "frame_record_offset": "0x12c",
+        "transfer": "explicit dword store"
+      },
+      "expected": {
+        "process_state_to_frame_record": "BOUND",
+        "process_state_to_r138_job_decoder": "UNBOUND"
+      }
+    }
+  ],
+  "lineage": {
+    "source_manifest_sha256": "5705697e89bd314346637742db1151ffc84062449e26a78163600d3522f1ac37",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

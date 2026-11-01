@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-COMPONENT-RECEIVER-FIRST-STORE-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "5705697e89bd314346637742db1151ffc84062449e26a78163600d3522f1ac37",
+  "status": "RECEIVER_FIRST_STORE_BOUND; R138_STATE_SOURCE_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2420,
+      "sha256": "940a498f06b22ff48a03c4b6e3e5d3e8d43ecc5bfa018a128b6a44e6c8ba31fd"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1165,
+      "sha256": "bafe18f72dc097a0dd740e0b99322c94b7a9e60d6af5a885e903d87739dadc7f"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2209,
+      "sha256": "deb156c72d061eaa36787987b205daa317f662162ae86eefcb31dc574732e134"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 990,
+      "sha256": "3084f7e8265fb42e177ae9bc4d077f2a015868ce96cb41a24382be96dc57d5b8"
+    }
+  ]
+}

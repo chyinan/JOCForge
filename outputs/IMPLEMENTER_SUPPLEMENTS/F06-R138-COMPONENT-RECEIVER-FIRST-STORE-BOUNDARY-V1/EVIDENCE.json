@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F06-R138-COMPONENT-RECEIVER-FIRST-STORE-BOUNDARY-V1",
+  "source": {
+    "package_id": "native-f06-r138-component-receiver-source-chain-addendum",
+    "manifest_sha256": "5705697e89bd314346637742db1151ffc84062449e26a78163600d3522f1ac37",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "parent_plus0x54_scan_manifest_sha256": "44cb132c8623693e89cb612c59d42479cf38708a7a81f0f438b231c29ab905df"
+  },
+  "parents": [
+    {
+      "package_id": "F06-R138-COMPONENT-MODE-FIRST-WRITER-SEARCH-V1",
+      "manifest_sha256": "345d0b434b0170d18fcd1046a414fed6dc973256af8144eb33f976ec76182a0b",
+      "superseded_claim": "no joined receiver writer found by exact displacement scan"
+    },
+    {
+      "package_id": "F06-R138-JOB-TO-MODE-FIELD-BOUNDARY-V1",
+      "manifest_sha256": "ba95fbedd155591bddf10eb11a7b21f3dc3c5dab414b52627c3a1e5c8dcbf74c"
+    }
+  ],
+  "target": {
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "r138_job_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "typed_chain": {
+    "process_state_source_offset": "+0x7e4",
+    "frame_record_destination_offset": "+0x12c",
+    "frame_record_embedded_source_object_offset": "+0xd8",
+    "source_block_offset": "+0x50",
+    "receiver_allocation_bytes": 568,
+    "receiver_constructor_rva": "0x177eb0",
+    "source_load_rva": "0x177ef1",
+    "receiver_store_rva": "0x177ef5",
+    "copy_width_bytes": 16,
+    "receiver_plus_0x54_covered_copy_bytes": "4..7",
+    "receiver_first_store_plus_0x54": "BOUND_BY_TYPED_BLOCK_COPY",
+    "receiver_callback_owner_transfer": "BOUND_BY_RECEIVER_POINTER_RETAINED_AT_WRAPPER+0x08_AND_RELOADED"
+  },
+  "remaining_origin": {
+    "process_state_plus_0x7e4_to_r138_job_decoder": "UNBOUND",
+    "r138_component_mode_value": "UNBOUND",
+    "custom_bsi_zero_applicability": "UNBOUND",
+    "global_no_writer_claim": false
+  },
+  "scope_deviations": {
+    "prior_full_image_direct_offset_scans": "DISCLOSED_AND_EXCLUDED_FROM_TYPED_CHAIN",
+    "prior_repeated_vtable_probes": "DISCLOSED_AND_EXCLUDED_FROM_TYPED_CHAIN"
+  },
+  "execution_scope": {
+    "new_dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_ready": false
+  }
+}

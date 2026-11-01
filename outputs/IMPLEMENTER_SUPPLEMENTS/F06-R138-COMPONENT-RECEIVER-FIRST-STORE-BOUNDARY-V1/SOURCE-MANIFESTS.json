@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "native-f06-r138-component-receiver-source-chain-addendum",
+    "manifest_sha256": "5705697e89bd314346637742db1151ffc84062449e26a78163600d3522f1ac37",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "previous_scan": {
+    "package_id": "native-f06-r138-component-mode-direct-write-xref-unbound-addendum",
+    "manifest_sha256": "44cb132c8623693e89cb612c59d42479cf38708a7a81f0f438b231c29ab905df",
+    "superseded_negative_scope": "exact direct displacement operands only; did not detect a +0x50 block copy overlapping +0x54"
+  },
+  "target": {
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "r138_job_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "raw_trace_script_or_media_copied": false
+}
