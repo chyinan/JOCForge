@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ADM-AUDIO-INPUT-CALLBACK-REGISTRATION-OWNER-BOUNDARY-V1",
+  "source": {
+    "package_id": "DEE-AUDIO-INPUT-READER-SELECTION-OWNER-V1",
+    "manifest_sha256": "146e871a8a6ffa9abfd7b41910a6cedf2ddd646dbb2110923a1a759fccc39142",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "upstream_reader_map_manifest_sha256": "abadcde4fbae11a5babf18cf136873d5673b8d7ad9f9c8da3ff843f5fc70e1cd"
+  },
+  "target_host": {
+    "image": "dee.exe",
+    "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+  },
+  "getter": {
+    "category": "audio_input",
+    "category_map": "FUN_14016AF20 -> dlb_phoenix_get_audio_input_handle",
+    "resolver_and_call": "FUN_14016A1C0 at RVA 0x16aa72",
+    "return_record": {"table_pointer_offset": "+0", "signed_count_offset": "+8", "entry_stride_bytes": 8}
+  },
+  "registration": {
+    "callsite_rva": "0x16aa9e",
+    "helper": "FUN_1401677F0",
+    "arguments": {"callback": "R8", "category": "RDX", "plugin_manager_owner": "RCX"},
+    "shared_vector_offset": "+0x18",
+    "append_helper": "FUN_14016ADA0",
+    "stored_element": "raw 8-byte callback pointer",
+    "typed_input_owner_retained": false,
+    "video_input_uses_same_vector": true
+  },
+  "index_domains": {
+    "stage_runner_initializer_position": 6,
+    "descriptor_stride_bytes": 16,
+    "adm_plugin_vtable_factory_slot": 6,
+    "dynamic_getter_index": "NOT_OBSERVED",
+    "numeric_equality_is_identity": false
+  },
+  "open_joins": {
+    "callback_entry_to_adm_plugin_owner": "UNBOUND",
+    "dynamic_factory_index_to_static_initializer_position": "UNBOUND",
+    "selected_callback_to_atmosmezz_reader": "UNBOUND",
+    "same_task_generation": "UNBOUND",
+    "pre_run_observation_is_full_audio_run": false
+  },
+  "execution_scope": {
+    "new_dee_process_launched": false,
+    "pcm_or_payload_read": false,
+    "implementation_ready": false
+  }
+}

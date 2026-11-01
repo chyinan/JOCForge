@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ADM-AUDIO-INPUT-CALLBACK-REGISTRATION-OWNER-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "146e871a8a6ffa9abfd7b41910a6cedf2ddd646dbb2110923a1a759fccc39142",
+  "status": "STATIC_GETTER_REGISTRY_BOUND; SELECTED_CALLBACK_OWNER_AND_READER_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1937,
+      "sha256": "f2380d0caed993235ad24710cc79f8ff7a4fdf5fbe0ecd8f2216d54f11280a37"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1190,
+      "sha256": "3412a87dcc987586ed25b85d0c101b39819999f30c70327f639cd276d26c0232"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2070,
+      "sha256": "c74b0d7b36ff9f60093735786bf5b10c4a1dee85d11b892d91084a28f3e92f8a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 930,
+      "sha256": "cf90c7c58d33ab27486d6b521aa97a6a7c7f4ff218660b0126c4bd832bde5535"
+    }
+  ]
+}

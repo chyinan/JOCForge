@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-audio-input-callback-vectors.v1",
+  "kind": "static registry and index-domain vectors; not runtime captures",
+  "vectors": [
+    {
+      "id": "audio-input-getter-table-record",
+      "input": {"category": "audio_input", "getter": "dlb_phoenix_get_audio_input_handle"},
+      "expected": {"table_pointer_offset": "+0", "signed_entry_count_offset": "+8", "entry_stride_bytes": 8, "selected_index": "NOT_OBSERVED"}
+    },
+    {
+      "id": "callback-registration-vector",
+      "input": {"registration_helper": "FUN_1401677F0", "category": "audio_input", "vector_offset": "+0x18"},
+      "expected": {"stored_value": "raw callback pointer", "adm_plugin_typed_owner": "UNBOUND"}
+    },
+    {
+      "id": "ordinal-six-is-not-dynamic-getter-index",
+      "input": {"stage_runner_descriptor_position": 6, "adm_plugin_vtable_factory_slot": 6},
+      "expected": {"dynamic_getter_index": "NOT_OBSERVED", "domains_proven_same": false}
+    }
+  ],
+  "lineage": {
+    "source_manifest_sha256": "146e871a8a6ffa9abfd7b41910a6cedf2ddd646dbb2110923a1a759fccc39142",
+    "upstream_reader_map_manifest_sha256": "abadcde4fbae11a5babf18cf136873d5673b8d7ad9f9c8da3ff843f5fc70e1cd"
+  }
+}

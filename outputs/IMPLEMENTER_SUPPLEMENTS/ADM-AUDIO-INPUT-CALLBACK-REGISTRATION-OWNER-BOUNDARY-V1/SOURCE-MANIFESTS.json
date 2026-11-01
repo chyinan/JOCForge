@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-bindings.v1",
+  "incoming_package": {
+    "package_id": "DEE-AUDIO-INPUT-READER-SELECTION-OWNER-V1",
+    "manifest_sha256": "146e871a8a6ffa9abfd7b41910a6cedf2ddd646dbb2110923a1a759fccc39142",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "raw_ghidra_trace_or_script_copied": false
+  },
+  "upstream_reader_map": {
+    "package_id": "DEE-AUDIO-INPUT-PATH-READER-MAP-V1",
+    "manifest_sha256": "abadcde4fbae11a5babf18cf136873d5673b8d7ad9f9c8da3ff843f5fc70e1cd",
+    "selected_static_mapping": "AdmPlugin type adm -> AtmosMezz reader",
+    "runtime_owner_join": "UNBOUND"
+  },
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name": "dee_audio_filter_ddp.dll", "sha256": "2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72"}
+  ],
+  "copied_raw_analysis_or_media": false
+}
