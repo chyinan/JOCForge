@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "KEYLESS-REFERENCE-CORE-BED-AUDIO-EQUALITY-V1",
+  "vectors": [
+    {
+      "id": "protected-vs-extracted-core-bed",
+      "kind": "DECODED_PCM_STREAM_COMPARISON",
+      "inputs": {"left_role": "protected_python_dee_stream", "right_role": "reference_extracted", "ffmpeg_version": "8.1"},
+      "derived": {"frames_each": 6523392, "pcm_sha256_each": "84d298228269be6a44af7346893a93f3de773568d19ec7519bfd9f0562ba4c79", "exact_f32le_pcm_equal": true},
+      "spatial_scope": "EAC3 core/bed only"
+    },
+    {
+      "id": "protected-vs-keyless-candidate-core-bed",
+      "kind": "DECODED_PCM_STREAM_COMPARISON",
+      "inputs": {"left_role": "protected_python_dee_stream", "right_role": "keyless_candidate", "ffmpeg_version": "8.1"},
+      "derived": {"frames_each": 6523392, "pcm_sha256_each": "84d298228269be6a44af7346893a93f3de773568d19ec7519bfd9f0562ba4c79", "exact_f32le_pcm_equal": true},
+      "spatial_scope": "EAC3 core/bed only; no JOC render claim"
+    }
+  ]
+}

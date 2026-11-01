@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "KEYLESS-REFERENCE-CORE-BED-AUDIO-EQUALITY-V1",
+  "source_reverse_manifest_sha256": "074133493d7c81fd78536962f17200fdf754f4028582a275f9c1aee1e0d0fbee",
+  "status": "FFMPEG_CORE_BED_PCM_EXACT_EQUAL; JOC_SPATIAL_RENDER_UNTESTED",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2882,
+      "sha256": "48b9bb7fd7382a68d6f95f792b4f7ca5f6ba804750bd0875cfb5da68321345e1"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1031,
+      "sha256": "d51d9d90c9dcf3d6c5f89246a73bcff880f437648a892ce0786c79bddc5c9ad7"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1755,
+      "sha256": "99840a0afc567080330738258ef3dcee1f5bc998c2aae013d22b9846b6cb944a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1108,
+      "sha256": "0798132b415f81ffb25e271104b210a808ff617ba474b08eb130a2186cd2e65c"
+    }
+  ]
+}

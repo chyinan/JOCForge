@@ -1,0 +1,67 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "KEYLESS-REFERENCE-CORE-BED-AUDIO-EQUALITY-V1",
+  "source_package": {
+    "package_id": "dee-audio-reference-decoder-comparison",
+    "manifest_sha256_file_sha256": "074133493d7c81fd78536962f17200fdf754f4028582a275f9c1aee1e0d0fbee",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "pcm_payload_written": false
+  },
+  "decode": {
+    "tool": "FFmpeg",
+    "version": "8.1-full_build-www.gyan.dev",
+    "binary_sha256": "865b4a599b589982cbfa875c32eec92abbe0d6e78120ab3d28701b59e95d8265",
+    "ffprobe_sha256": "d1c3740b2c2a23e3b8990afdf08492a9879fe1845ccdbc43e5cb2404ac01b2f1",
+    "input_parse_and_decode_exit_code": 0,
+    "output_format": "f32le",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "channel_order": ["FL", "FR", "FC", "LFE", "SL", "SR"],
+    "frames": 6523392,
+    "duration_seconds": 135.904,
+    "pcm_bytes_streamed": 156561408,
+    "pcm_written_to_disk": false
+  },
+  "inputs": {
+    "protected_python_dee_stream": {
+      "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+      "length_bytes": 17395712,
+      "identity_basis": "independent Wash streaming-hash receipt"
+    },
+    "reference_extracted": {
+      "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+      "length_bytes": 17395712,
+      "identity_basis": "independent Wash streaming-hash receipt"
+    },
+    "keyless_candidate": {
+      "sha256_from_prior_wash": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+      "length_bytes_from_prior_wash": 17395712,
+      "rehash_in_comparison_package": false
+    }
+  },
+  "results": {
+    "pcm_sha256_by_input": {
+      "protected_python_dee_stream": "84d298228269be6a44af7346893a93f3de773568d19ec7519bfd9f0562ba4c79",
+      "reference_extracted": "84d298228269be6a44af7346893a93f3de773568d19ec7519bfd9f0562ba4c79",
+      "keyless_candidate": "84d298228269be6a44af7346893a93f3de773568d19ec7519bfd9f0562ba4c79"
+    },
+    "exact_pcm_equal": true,
+    "per_channel_errors": [
+      {"channel": "FL", "max_abs": 0.0, "mean_abs": 0.0, "rms": 0.0},
+      {"channel": "FR", "max_abs": 0.0, "mean_abs": 0.0, "rms": 0.0},
+      {"channel": "FC", "max_abs": 0.0, "mean_abs": 0.0, "rms": 0.0},
+      {"channel": "LFE", "max_abs": 0.0, "mean_abs": 0.0, "rms": 0.0},
+      {"channel": "SL", "max_abs": 0.0, "mean_abs": 0.0, "rms": 0.0},
+      {"channel": "SR", "max_abs": 0.0, "mean_abs": 0.0, "rms": 0.0}
+    ]
+  },
+  "scope": {
+    "eac3_core_bed_audio_equivalence": "VERIFIED_BY_SAME_DECODER_PCM_COMPARISON",
+    "joc_emdf_object_or_atmos_spatial_render_equivalence": "NOT_TESTED",
+    "rust_attempt10_comparison": "NOT_RUN; user reports candidate rejected by FFmpeg/Audition",
+    "private_key_hmac_or_license_read": false,
+    "source_code_copied": false
+  }
+}

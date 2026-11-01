@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "dee-audio-reference-decoder-comparison",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-7-multi-adm-dialnorm\\outputs\\dee-audio-reference-decoder-comparison",
+    "manifest_sha256_file_sha256": "074133493d7c81fd78536962f17200fdf754f4028582a275f9c1aee1e0d0fbee",
+    "payloads": [
+      {"file": "README.md", "sha256": "c10ecfd5e1b3d5f6dbdd7f772fcd708475cced8e70a2be0464eeed0fcac596b6"},
+      {"file": "comparison.json", "sha256": "baca316ae5ce7ae709a3b7638b8093b25ac86875d3d611a00baf99d35f5d16bf"},
+      {"file": "verify_package.py", "sha256": "b190dda4839be5ce3f0e7744e2a922253f1f1c0e4b6d81257247e772a1a64c69"}
+    ]
+  },
+  "decoder": {
+    "ffmpeg_sha256": "865b4a599b589982cbfa875c32eec92abbe0d6e78120ab3d28701b59e95d8265",
+    "ffprobe_sha256": "d1c3740b2c2a23e3b8990afdf08492a9879fe1845ccdbc43e5cb2404ac01b2f1"
+  },
+  "exclusions": [
+    "No PCM buffer or media bytes copied into this supplement.",
+    "No encoder code or private key/HMAC/license material included."
+  ]
+}
