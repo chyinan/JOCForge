@@ -7,6 +7,11 @@ use std::fmt::Write as _;
 use std::sync::Arc;
 
 use super::selected_provider_manifests::ValidatedF01bColdAssetManifest;
+use super::{
+    job_configuration::{SelectedInputKind, SelectedJobConfiguration},
+    selected_adm_graph::SelectedAdmGraph,
+};
+use crate::timeline::AdmSampleCount;
 
 const PROVIDER_BYTES: u64 = 20_138;
 const PROVIDER_SHA: [u8; 32] = [
@@ -167,7 +172,7 @@ impl ProviderFileEvidence {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum F01EProviderError {
     ObservedManifestEvidenceMismatch,
     PackageManifestIdentityMismatch,
@@ -181,6 +186,7 @@ pub enum F01EProviderError {
     Shape,
     CanonicalPreimage,
     CanonicalDigest,
+    DynamicInputShape,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -216,6 +222,7 @@ pub(super) struct NormalizedConfig {
 }
 #[derive(Clone, Debug)]
 pub(super) struct F01ECold {
+    pub(super) schema: &'static str,
     pub(super) callback_index: u64,
     pub(super) normal_callbacks: u64,
     pub(super) remaining_cached_drains: u32,
@@ -353,6 +360,103 @@ impl ValidatedF01EColdProvider {
     pub const fn receipt(&self) -> &F01EProviderReceipt {
         &self.receipt
     }
+
+    /// Projects the verified cold defaults onto an admitted ADM row/object cardinality.
+    ///
+    /// The static provider remains the source of all selected output/profile values. Only the
+    /// per-job input extent, callback count, bed/object counts and zero-initialized object slots
+    /// are projected from the same admitted job/graph. This does not create a normal callback
+    /// after-state or bind any row count to a DDP frame-view descriptor. Production callers must
+    /// use `PreparedJobInput::f01e_cold_owner` so the configuration and graph come from one admission.
+    pub fn for_admitted_adm_input(
+        &self,
+        configuration: &SelectedJobConfiguration,
+        graph: &SelectedAdmGraph,
+    ) -> Result<Self, F01EProviderError> {
+        let base = &self.value;
+        let wave = configuration.wave();
+        let physical_track_count = graph.receipt().physical_track_count();
+        let bed_track_count = graph.receipt().bed_track_count();
+        let object_track_count = graph.receipt().object_track_count();
+        let object_bindings = graph.object_sampler_owner_bindings();
+        if configuration.input_kind() != SelectedInputKind::Adm
+            || wave.channels() == 0
+            || wave.channels() > u8::MAX as u16 + 1
+            || usize::from(wave.channels()) != usize::from(physical_track_count)
+            || bed_track_count != base.config.bed_count as u16
+            || u32::from(object_track_count) != object_bindings.len() as u32
+            || u32::from(physical_track_count)
+                != u32::from(bed_track_count) + u32::from(object_track_count)
+            || configuration.source_samples() == 0
+            || base.callback_index != 0
+            || base.remaining_cached_drains != 4
+            || object_bindings
+                .iter()
+                .enumerate()
+                .any(|(index, binding)| usize::from(binding.local_owner_ordinal().value()) != index)
+        {
+            return Err(F01EProviderError::DynamicInputShape);
+        }
+
+        let config = &base.config;
+        if wave.sample_rate_hz() != config.sample_rate_hz
+            || wave.pcm_bits() != config.pcm_bits as u16
+            || configuration.bit_rate_kbps() != config.bit_rate_kbps
+            || u32::from(configuration.bit_rate_enum()) != config.bit_rate_enum
+            || u32::from(configuration.layout_enum()) != config.layout_enum
+            || u32::from(configuration.target_capacity()) != config.target_capacity
+            || u32::from(configuration.frame_samples()) != config.frame_samples
+            || u32::from(configuration.spatial_config_mode()) != config.spatial_config_mode
+            || u32::from(configuration.dispatch_mode()) != config.dispatch_mode
+            || u32::from(configuration.route_virtual_prefix_count()) != config.virtual_prefix_count
+            || configuration.time_base() != config.time_base
+        {
+            return Err(F01EProviderError::DynamicInputShape);
+        }
+        if !matches!(
+            (
+                configuration.line_drc_profile(),
+                configuration.rf_drc_profile()
+            ),
+            ("none", "none") | ("film_light", "film_light")
+        ) {
+            return Err(F01EProviderError::DynamicInputShape);
+        }
+        let sample_count = AdmSampleCount::new(configuration.source_samples())
+            .map_err(|_| F01EProviderError::DynamicInputShape)?;
+        graph
+            .admit_object_events(sample_count)
+            .map_err(|_| F01EProviderError::DynamicInputShape)?;
+
+        let mut value = base.clone();
+        value.schema = "F01E_ADM_INPUT_COLD_PROJECTION_V1";
+        value.callback_index = 0;
+        value.normal_callbacks = configuration
+            .source_samples()
+            .div_ceil(u64::from(config.frame_samples));
+        value.config.channels = u32::from(wave.channels());
+        value.config.source_samples = configuration.source_samples();
+        value.config.bed_count = u32::from(bed_track_count);
+        value.config.object_count = u32::from(object_track_count);
+        value.config.line_drc = configuration.line_drc_profile().to_owned();
+        value.config.rf_drc = configuration.rf_drc_profile().to_owned();
+        value.objects = object_bindings
+            .iter()
+            .map(|binding| ObjectCold {
+                ordinal: u32::from(binding.local_owner_ordinal().value()),
+            })
+            .collect();
+        let canonical = canonical_value(&value);
+        let mut receipt = self.receipt.clone();
+        receipt.canonical_sha256 = ProviderSha256::digest(&canonical);
+        receipt.canonical_bytes = u64::try_from(canonical.len()).unwrap_or(u64::MAX);
+        Ok(Self {
+            value,
+            canonical: canonical.into(),
+            receipt,
+        })
+    }
+
     pub(super) fn into_parts(self) -> (F01ECold, Arc<[u8]>, F01EProviderReceipt) {
         (self.value, self.canonical, self.receipt)
     }
@@ -527,6 +631,7 @@ fn parse_value(v: &Value) -> Result<F01ECold, F01EProviderError> {
     }
     let config = parse_config(m.get("normalized_config").ok_or(F01EProviderError::Shape)?)?;
     Ok(F01ECold {
+        schema: "F01E_SELECTED_COLD_V1",
         callback_index: u64v(m, "callback_index")?,
         normal_callbacks: u64v(m, "normal_callbacks")?,
         remaining_cached_drains: u64v(m, "remaining_cached_drains")?
@@ -663,7 +768,9 @@ fn canonical_value(v: &F01ECold) -> Vec<u8> {
         "],\"phase\":\"BEFORE_FIRST_NORMAL\",\"physical_binding\":null,\"remaining_cached_drains\":"
     );
     raw!(&v.remaining_cached_drains.to_string());
-    raw!(",\"schema\":\"F01E_SELECTED_COLD_V1\"}");
+    raw!(",\"schema\":\"");
+    raw!(v.schema);
+    raw!("\"}");
     o
 }
 fn canonical_config(o: &mut Vec<u8>, c: &NormalizedConfig) {

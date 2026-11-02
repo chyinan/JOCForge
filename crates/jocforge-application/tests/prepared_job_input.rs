@@ -436,6 +436,88 @@ fn meter_source_admission_carries_dynamic_adm_physical_row_count() {
     );
 }
 
+#[test]
+fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let provider = validated_f01e_provider();
+    let original_canonical = provider.canonical_bytes().to_vec();
+
+    for (channels, expected_objects) in [(36_u16, 26_u64), (38, 28)] {
+        let (resource, spans) = selected_resource_with_channels(channels);
+        let prepared = prepare_selected_job_input(
+            test_programme_id(),
+            case["input_xml"].as_str().unwrap().as_bytes(),
+            SelectedWaveDescriptor::new(48_000, channels, 24),
+            1,
+            Arc::clone(&resource),
+            metadata_payloads(&resource, &spans),
+        )
+        .unwrap();
+
+        let projected = provider
+            .for_admitted_adm_input(prepared.configuration(), prepared.graph().graph())
+            .unwrap();
+        let cold: Value = serde_json::from_slice(projected.canonical_bytes()).unwrap();
+
+        assert_eq!(projected.callback_index(), 0);
+        assert_eq!(
+            projected.object_count(),
+            u32::try_from(expected_objects).unwrap()
+        );
+        assert_eq!(cold["schema"], "F01E_ADM_INPUT_COLD_PROJECTION_V1");
+        assert_eq!(cold["phase"], "BEFORE_FIRST_NORMAL");
+        assert_eq!(cold["remaining_cached_drains"], 4);
+        assert_eq!(cold["normal_callbacks"], 1);
+        assert_eq!(cold["normalized_config"]["channels"], channels);
+        assert_eq!(cold["normalized_config"]["bed_count"], 10);
+        assert_eq!(cold["normalized_config"]["object_count"], expected_objects);
+        assert_eq!(cold["normalized_config"]["frame_samples"], 1_536);
+        assert_eq!(
+            cold["objects"].as_array().unwrap().len(),
+            expected_objects as usize
+        );
+        assert!(!cold.as_object().unwrap().contains_key("ddp_frame_view"));
+        for (ordinal, object) in cold["objects"].as_array().unwrap().iter().enumerate() {
+            assert_eq!(object["object_ordinal"].as_u64(), Some(ordinal as u64));
+            assert_eq!(object["event_cache"], Value::Null);
+            assert_eq!(object["host_channel_index"], Value::Null);
+            assert_eq!(object["sampler_previous_present"], false);
+            assert_eq!(
+                object["sampler_previous_xyz_u32"],
+                serde_json::json!([0, 0, 0])
+            );
+        }
+
+        let attempt = AttemptId::new(0);
+        let machine = prepared.f01e_cold_owner(&provider, attempt).unwrap();
+        let state = machine.committed();
+        assert_eq!(machine.generation(), 0);
+        assert_eq!(state.schema(), "F01E_ADM_INPUT_COLD_PROJECTION_V1");
+        assert_eq!(state.programme_id(), prepared.programme_id());
+        assert_eq!(state.attempt_id(), attempt);
+        assert_eq!(state.callback_index().value(), 0);
+        assert_eq!(state.remaining_cached_drains(), 4);
+        assert_eq!(state.objects().len(), expected_objects as usize);
+        assert_eq!(state.normalized_config().channels(), u32::from(channels));
+        assert!(state.dbmd_binding().is_none());
+        assert!(state.physical_binding().is_none());
+        assert_eq!(provider.canonical_bytes(), original_canonical);
+    }
+
+    assert_eq!(provider.object_count(), 28);
+}
+
 fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
     selected_resource_with_channels(38)
 }

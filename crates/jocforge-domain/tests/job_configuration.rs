@@ -184,7 +184,7 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
 }
 
 #[test]
-fn adm_job_configuration_accepts_actual_pcm_channel_count_without_widening_atmos_mezz() {
+fn adm_job_configuration_accepts_actual_pcm_channel_count() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let cases = vectors["config_cases"].as_array().unwrap();
     let adm_case = cases
@@ -222,6 +222,22 @@ fn adm_job_configuration_accepts_actual_pcm_channel_count_without_widening_atmos
     .unwrap();
     assert_eq!(binding.wave().channels(), 36);
     assert_eq!(binding.data_bytes(), data_bytes);
+}
+
+#[test]
+fn atmos_mezz_configuration_accepts_authorized_36_and_38_row_metadata_dimensions() {
+    let dimensions = fixture_json("authorized-adm-input-dimensions.json");
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let cases = vectors["config_cases"].as_array().unwrap();
+    assert_eq!(
+        dimensions["source_package_id"],
+        "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V2"
+    );
+    assert_eq!(
+        dimensions["source_package_manifest_sha256"],
+        "2e238835a0edd84a90764a2c74778f50b2c12e760d7ad051446a772f2efc8113"
+    );
+    assert_eq!(dimensions["metadata_only"], true);
 
     let atmos_mezz_case = cases
         .iter()
@@ -229,20 +245,83 @@ fn adm_job_configuration_accepts_actual_pcm_channel_count_without_widening_atmos
             case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "atmos_mezz"
         })
         .expect("approved Atmos mezzanine configuration vector");
-    let descriptor = &atmos_mezz_case["pcm_descriptor"];
-    let rejected = parse_selected_job_configuration(
-        atmos_mezz_case["input_xml"].as_str().unwrap().as_bytes(),
-        SelectedWaveDescriptor::new(
-            descriptor["sample_rate"].as_u64().unwrap() as u32,
-            36,
-            descriptor["pcm_bits"].as_u64().unwrap() as u16,
-        ),
-        descriptor["source_samples"].as_u64().unwrap(),
-    );
-    assert_eq!(
-        rejected,
-        Err(jocforge_domain::frontend::job_configuration::JobConfigurationError::PcmProfile)
-    );
+    for sample in dimensions["samples"].as_array().unwrap() {
+        let channels = sample["wave_channels"].as_u64().unwrap() as u16;
+        assert_eq!(
+            sample["chna_track_count"].as_u64().unwrap(),
+            u64::from(channels)
+        );
+        assert_eq!(sample["chna_records_size_valid"], true);
+        assert_eq!(
+            sample["chna_record_area_bytes"].as_u64().unwrap(),
+            sample["chna_track_count"].as_u64().unwrap()
+                * sample["chna_record_bytes"].as_u64().unwrap()
+        );
+        assert_eq!(
+            sample["block_align_bytes"].as_u64().unwrap(),
+            u64::from(channels) * 3
+        );
+        assert!(sample["data_frames"].as_u64().unwrap() > 0);
+        assert_eq!(
+            sample["axml_track_uid_count"].as_u64().unwrap(),
+            u64::from(channels)
+        );
+        assert_ne!(
+            sample["axml_audio_object_elements"].as_u64().unwrap(),
+            u64::from(channels),
+            "AXML object elements are not physical WAVE rows"
+        );
+
+        let parsed = parse_selected_job_configuration(
+            atmos_mezz_case["input_xml"].as_str().unwrap().as_bytes(),
+            SelectedWaveDescriptor::new(
+                sample["sample_rate_hz"].as_u64().unwrap() as u32,
+                channels,
+                sample["pcm_bits"].as_u64().unwrap() as u16,
+            ),
+            sample["data_frames"].as_u64().unwrap(),
+        )
+        .unwrap_or_else(|error| panic!("{}: {error:?}", sample["id"]));
+
+        assert_eq!(parsed.input_kind(), SelectedInputKind::AtmosMezz);
+        assert_eq!(parsed.wave().channels(), channels);
+        assert_eq!(parsed.wave().sample_rate_hz(), 48_000);
+        assert_eq!(parsed.wave().pcm_bits(), 24);
+        assert_eq!(parsed.layout_enum(), 8);
+        assert_eq!(parsed.frame_samples(), 1_536);
+        let identity = parsed.normalized_identity_value();
+        assert_eq!(
+            identity["profile_dimensions"]["authored_input"],
+            "selected_adm_bwf_pcm24_48khz"
+        );
+        assert_eq!(
+            identity["wave"]["channels"].as_u64(),
+            Some(u64::from(channels))
+        );
+        assert_eq!(
+            identity["profile_dimensions"]["core_carrier"],
+            "selected_5_1_six_carriers"
+        );
+    }
+
+    for (sample_rate, channels, pcm_bits) in [
+        (48_000, 0, 24),
+        (48_000, 257, 24),
+        (44_100, 36, 24),
+        (48_000, 36, 16),
+    ] {
+        let descriptor = &atmos_mezz_case["pcm_descriptor"];
+        let result = parse_selected_job_configuration(
+            atmos_mezz_case["input_xml"].as_str().unwrap().as_bytes(),
+            SelectedWaveDescriptor::new(sample_rate, channels, pcm_bits),
+            descriptor["source_samples"].as_u64().unwrap(),
+        );
+        assert_eq!(
+            result.unwrap_err().code(),
+            "CONFIG_PCM_PROFILE",
+            "sample_rate={sample_rate} channels={channels} pcm_bits={pcm_bits}"
+        );
+    }
 }
 
 #[test]

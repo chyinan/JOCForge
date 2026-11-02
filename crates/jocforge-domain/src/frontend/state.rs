@@ -215,7 +215,7 @@ impl FrontendControlState {
             .map(FrontendCallbackIndex::new)
             .map_err(|_| FrontendControlError::CallbackIndexOutOfRange)?;
         Ok(Self {
-            schema: "F01E_SELECTED_COLD_V1",
+            schema: cold.schema,
             programme_id,
             attempt_id,
             owner_generation: 0,
@@ -382,7 +382,7 @@ impl FrontendControlOwnerStateReference<'_> {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum FrontendControlError {
     CallbackIdentityMismatch,
     CallbackIndexMismatch,

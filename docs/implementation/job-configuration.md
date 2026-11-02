@@ -1,8 +1,10 @@
 # Selected F01E job configuration and DBMD fields
 
-`frontend::job_configuration::parse_selected_job_configuration` parses the selected F01E job XML, validates the 48 kHz/38-channel/PCM24 descriptor and positive source length, normalizes the fixed 1024 kbps configuration, and passes the selected row through the existing production profile resolver. Input/output paths remain references; the parser does not open files.
+`frontend::job_configuration::parse_selected_job_configuration` parses the selected F01E job XML, validates a 48 kHz/PCM24 descriptor with 1–256 physical input rows and a positive source length, normalizes the fixed 1024 kbps configuration, and passes the selected row through the existing production profile resolver. The input row count follows the host-index structural capacity; it does not change the selected runtime audio/control or DDP frame-view dimensions. Input/output paths remain references; the parser does not open files.
 
-The parser rejects DTD/entity declarations before XML parsing. It accepts only an unnamespaced `job_config` root and the specified direct-child paths. Duplicate recognized fields reject. The selected input prefers `input/audio/adm` over `atmos_mezz`. The output node must be `output/ec3`.
+The parser rejects DTD/entity declarations before XML parsing. It accepts only an unnamespaced `job_config` root and the specified direct-child paths. Duplicate recognized fields reject. The selected input prefers `input/audio/adm` over `atmos_mezz`. The output node must be `output/ec3`. The RIFF reader and `PreparedJobInput` separately require WAVE channel count to equal CHNA physical-track count.
+
+The normalized identity names the authored PCM24/48 kHz profile without embedding a fixed 38-row claim; it stores the actual WAVE channel count as its own input field. Output carrier/layout and frame dimensions remain selected-profile values.
 
 Time fields follow F01E.1 exactly: optional `offset`/`ffoa` default to `auto`; `start`/`end` default to empty and accept only their selected aliases; `time_base` is `file_position`; prepend/append silence use the specified zero forms. Loudness, DRC, downmix and trim values are admitted only for the selected fixed row. Field deviations return local `CONFIG_*` errors; the resulting fixed dimensions are then checked by the existing profile resolver.
 

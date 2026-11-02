@@ -14,7 +14,7 @@ use sha2::{Digest, Sha256};
 
 const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
 const SELECTED_RUNTIME_CHANNELS: u16 = 38;
-const MAX_SELECTED_ADM_CHANNELS: u16 = u8::MAX as u16 + 1;
+const MAX_SELECTED_INPUT_CHANNELS: u16 = u8::MAX as u16 + 1;
 const SELECTED_PCM_BITS: u16 = 24;
 const SELECTED_BIT_RATE_KBPS: u32 = 1_024;
 const SELECTED_BIT_RATE_ENUM: u8 = 5;
@@ -180,7 +180,7 @@ impl SelectedJobConfiguration {
         let downmix = self.downmix;
         json!({
             "profile_dimensions": {
-                "authored_input": "selected_adm_bwf_38ch_pcm24_48khz",
+                "authored_input": "selected_adm_bwf_pcm24_48khz",
                 "core_carrier": "selected_5_1_six_carriers",
                 "joc_downmix": "mode0_phase1_index3",
                 "substream_topology": "single_independent_zero_dependent",
@@ -717,7 +717,7 @@ pub fn bind_admitted_selected_input(
     }
     if wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
         || wave.channels() == 0
-        || wave.channels() > MAX_SELECTED_ADM_CHANNELS
+        || wave.channels() > MAX_SELECTED_INPUT_CHANNELS
         || wave.pcm_bits() != SELECTED_PCM_BITS
         || identity.source_file_bytes == 0
         || identity.data_bytes != expected_data_bytes
@@ -890,10 +890,7 @@ pub fn parse_selected_job_configuration(
     } else {
         return Err(JobConfigurationError::MissingField);
     };
-    let channel_count_supported = match input_kind {
-        SelectedInputKind::Adm => wave.channels > 0,
-        SelectedInputKind::AtmosMezz => wave.channels == SELECTED_RUNTIME_CHANNELS,
-    };
+    let channel_count_supported = (1..=MAX_SELECTED_INPUT_CHANNELS).contains(&wave.channels);
     if wave.sample_rate_hz != SELECTED_SAMPLE_RATE_HZ
         || !channel_count_supported
         || wave.pcm_bits != SELECTED_PCM_BITS

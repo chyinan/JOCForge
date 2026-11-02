@@ -1,0 +1,36 @@
+{
+  "schema": "authorized-adm-input-dimensions.v1",
+  "source_package_id": "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V2",
+  "source_package_manifest_sha256": "2e238835a0edd84a90764a2c74778f50b2c12e760d7ad051446a772f2efc8113",
+  "metadata_only": true,
+  "samples": [
+    {
+      "id": "authorized_36_row_sample",
+      "wave_channels": 36,
+      "sample_rate_hz": 48000,
+      "pcm_bits": 24,
+      "block_align_bytes": 108,
+      "data_frames": 9903478,
+      "chna_track_count": 36,
+      "chna_record_bytes": 40,
+      "chna_record_area_bytes": 1440,
+      "chna_records_size_valid": true,
+      "axml_track_uid_count": 36,
+      "axml_audio_object_elements": 27
+    },
+    {
+      "id": "authorized_38_row_sample",
+      "wave_channels": 38,
+      "sample_rate_hz": 48000,
+      "pcm_bits": 24,
+      "block_align_bytes": 114,
+      "data_frames": 6522906,
+      "chna_track_count": 38,
+      "chna_record_bytes": 40,
+      "chna_record_area_bytes": 1520,
+      "chna_records_size_valid": true,
+      "axml_track_uid_count": 38,
+      "axml_audio_object_elements": 29
+    }
+  ]
+}
