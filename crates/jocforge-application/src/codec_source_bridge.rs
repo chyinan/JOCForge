@@ -141,10 +141,16 @@ fn selected_bsi_profile_inputs(
     let resolved_profile = resolve_selected_profile(&selected_profile_definition)
         .map_err(|_| CodecSourceBridgeError::UnsupportedSelectedProfile)?;
     let wave = configuration.wave();
+    // This joins input-side WAVE channels to admitted CHNA rows only; it does not
+    // populate a DDP per-call frame-view channel count.
+    let physical_channel_count = usize::from(wave.channels());
+    let admitted_track_count = prepared.graph().graph().tracks().len();
     if resolved_profile != selected_profile
         || configuration.input_kind() != SelectedInputKind::Adm
         || wave.sample_rate_hz() != 48_000
-        || wave.channels() != 38
+        || physical_channel_count == 0
+        || physical_channel_count > usize::from(u8::MAX) + 1
+        || physical_channel_count != admitted_track_count
         || wave.pcm_bits() != 24
         || configuration.bit_rate_kbps() != 1_024
         // F01E's selected layout enum is 8; the resolved E-AC-3 profile carries acmod=7.
@@ -224,15 +230,21 @@ mod tests {
     const DBMD: &[u8] = include_bytes!(
         "../../jocforge-domain/tests/fixtures/selected_adm_graph/source_metadata.dbmd"
     );
+    const CHNA_ROWS: usize = 38;
+    const CHNA_RECORD_BYTES: usize = 40;
 
     fn selected_prepared_input() -> PreparedJobInput {
+        selected_prepared_input_with_channels(38)
+    }
+
+    fn selected_prepared_input_with_channels(channels: u16) -> PreparedJobInput {
         let vectors: Value = serde_json::from_slice(include_bytes!(
             "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
         ))
         .unwrap();
         let case = &vectors["config_cases"][0];
         let descriptor = &case["pcm_descriptor"];
-        let (resource, spans) = selected_resource();
+        let (resource, spans) = selected_resource(channels);
         let metadata = SelectedAdmResourcePayloads::new(
             &resource[spans[0].clone()],
             &resource[spans[1].clone()],
@@ -243,7 +255,7 @@ mod tests {
             case["input_xml"].as_str().unwrap().as_bytes(),
             SelectedWaveDescriptor::new(
                 u32::try_from(descriptor["sample_rate"].as_u64().unwrap()).unwrap(),
-                u16::try_from(descriptor["channels"].as_u64().unwrap()).unwrap(),
+                channels,
                 u16::try_from(descriptor["pcm_bits"].as_u64().unwrap()).unwrap(),
             ),
             1,
@@ -253,25 +265,36 @@ mod tests {
         .unwrap()
     }
 
-    fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
+    fn selected_resource(channels: u16) -> (Arc<[u8]>, [Range<usize>; 3]) {
+        assert!(usize::from(channels) <= CHNA_ROWS);
         let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
-        append_chunk(&mut bytes, *b"fmt ", &selected_format_payload());
-        append_chunk(&mut bytes, *b"data", &[0_u8; 114]);
+        append_chunk(&mut bytes, *b"fmt ", &selected_format_payload(channels));
+        append_chunk(&mut bytes, *b"data", &vec![0_u8; usize::from(channels) * 3]);
         let axml = append_chunk(&mut bytes, *b"axml", AXML);
-        let chna = append_chunk(&mut bytes, *b"chna", CHNA);
+        let selected_chna = if usize::from(channels) == CHNA_ROWS {
+            CHNA.to_vec()
+        } else {
+            let chna_length = 4 + usize::from(channels) * CHNA_RECORD_BYTES;
+            let mut truncated = CHNA[..chna_length].to_vec();
+            truncated[..2].copy_from_slice(&channels.to_le_bytes());
+            truncated[2..4].copy_from_slice(&channels.to_le_bytes());
+            truncated
+        };
+        let chna = append_chunk(&mut bytes, *b"chna", &selected_chna);
         let dbmd = append_chunk(&mut bytes, *b"dbmd", DBMD);
         let riff_size = u32::try_from(bytes.len() - 8).unwrap();
         bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
         (Arc::from(bytes.into_boxed_slice()), [axml, chna, dbmd])
     }
 
-    fn selected_format_payload() -> Vec<u8> {
+    fn selected_format_payload(channels: u16) -> Vec<u8> {
+        let block_align = channels * 3;
         let mut format = Vec::with_capacity(16);
         format.extend_from_slice(&1_u16.to_le_bytes());
-        format.extend_from_slice(&38_u16.to_le_bytes());
+        format.extend_from_slice(&channels.to_le_bytes());
         format.extend_from_slice(&48_000_u32.to_le_bytes());
-        format.extend_from_slice(&5_472_000_u32.to_le_bytes());
-        format.extend_from_slice(&114_u16.to_le_bytes());
+        format.extend_from_slice(&(48_000_u32 * u32::from(block_align)).to_le_bytes());
+        format.extend_from_slice(&block_align.to_le_bytes());
         format.extend_from_slice(&24_u16.to_le_bytes());
         format
     }
@@ -331,6 +354,20 @@ mod tests {
         assert_eq!(information.surround_ex_mode, expected_surround_ex);
         assert_eq!(dbmd.surround_ex_mode(), expected_surround_ex);
         assert_eq!(information.source_sample_rate_code, 0);
+    }
+
+    #[test]
+    fn selected_bsi_profile_fields_accept_variable_adm_rows_without_frame_view_join() {
+        let prepared = selected_prepared_input_with_channels(36);
+        assert_eq!(prepared.graph().graph().tracks().len(), 36);
+        let (mixing, information) = selected_bsi_profile_inputs(&prepared).unwrap();
+        assert_eq!(mixing.preferred_downmix_mode, 2);
+        assert_eq!(mixing.loro_center_mix_level, 4);
+        assert_eq!(information.source_sample_rate_code, 0);
+        assert_eq!(
+            information.surround_ex_mode,
+            prepared.dbmd().surround_ex_mode()
+        );
     }
 
     #[test]
