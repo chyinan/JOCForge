@@ -34,7 +34,7 @@ Run `sample6-dee-audio-full-20261102` 使用本地提交 `216326f622e66f1f7b255d
 
 FFprobe/FFmpeg 8.1 对新文件的结果：AU0 位于 byte 0，packet size 4,096 bytes、duration 32 ms；全流识别为 48 kHz、E-AC-3 Dolby Digital Plus + Dolby Atmos、5.1(side)、1,024,000 bit/s、135.904 s。FFmpeg 全流 decode-to-null exit 0 且无报告错误。容器/核心解码可接受；JOC spatial render 和同输入 fresh DEE 音频等价仍 `NOT_RUN`，不以历史 Python/DEE 对照组作当前基线。
 
-本次 run 记录 Rust model DialNorm=17；同一授权输入的 Wash same-run DEE 观察记录 U5=21（bit offset 45，5 bits），两值不一致。当前 U5 公式按候选 `selected_lufs` 已在代码中实现，DEE 标量单位和 Rust measurement scalar/owner join仍未绑定；该 BSI 差异需继续按同输入直接 DEE 音频链核对。三次同输入 run 中最高进度的输出已完成；其余两次重复 run 已发停止请求、exec session 返回 1，但 encoder 终态未证实，partial/log保留且从未作为成品检查。当前可交付文件只指上述 `sample6-dee-audio-full-20261102.ec3`。
+本次 run 记录 Rust model DialNorm=17；同一授权输入的 Wash same-run DEE 观察记录 U5=21（bit offset 45，5 bits），两值不一致。当前 U5 公式按候选 `selected_lufs` 已在代码中实现，DEE 标量单位和 Rust measurement scalar/owner join仍未绑定；该 BSI 差异需继续按同输入直接 DEE 音频链核对。FFprobe 还报告 `dmix_mode=0` 且四个 Lo/Ro、Lt/Rt mix-level 字段均为 0；当前 Rust job template 明确生成 `loro/-3`，bridge 输入映射为 BSI code 2/4。此处目前只是新文件的解析观察，是否与新鲜同输入 DEE writer 输出不符仍待核对。三次同输入 run 中最高进度的输出已完成；其余两次重复 run 已发停止请求、exec session 返回 1，但 encoder 终态未证实，partial/log保留且从未作为成品检查。当前可交付文件只指上述 `sample6-dee-audio-full-20261102.ec3`。
 
 本文档开头的 supplement catalog 计数来自本次运行前的检查点；此后有新的 Wash 补充包进入 D 盘，目录索引尚未完成重建。
 
