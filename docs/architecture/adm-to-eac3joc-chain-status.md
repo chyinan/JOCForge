@@ -48,7 +48,7 @@ DRC scale 1 的 aggregate RMSE 为 0.002320472；DRC scale 0 为 0.002258564。�
 | 4 | 0.0009005045 | 0.0004268775 | 0.99996840 | 0.99996932 |
 | 5 | 0.0008348392 | 0.0003796039 | 0.99997487 | 0.99997783 |
 
-decoder channel index 3 主导残差。匹配窗口中，DRC scale 0 RMSE 为 0.005454089、相关系数为 0.941817、gain 为 1.000121、lag 为 0。整曲对照中，该声道 RMSE 为 0.006199551、相关系数为 0.817673；它在 34 个四秒块中的 30 块都是最大 RMSE 声道，RMSE 是次高声道的 4.275 倍。channel index 4 有最高单点 peak error。
+decoder channel index 3 主导残差。用户试听已确认 DEE 解码输出 channel index 3 是低频/LFE 声道；这是输出声道的听音确认，不是输入 row 或 core lane 的指针 lineage。匹配窗口中，DRC scale 0 RMSE 为 0.005454089、相关系数为 0.941817、gain 为 1.000121、lag 为 0。整曲对照中，该声道 RMSE 为 0.006199551、相关系数为 0.817673；它在 34 个四秒块中的 30 块都是最大 RMSE 声道，RMSE 是次高声道的 4.275 倍。channel index 4 有最高单点 peak error。
 
 Wash 包 `SAMPLE6-DEE-MATCHED-LFE-POINTER-EDGE-V1`（manifest SHA-256 `3280306b0cc45f457f142af098a9b88ecba88ec82dfa0f604894c7c63527a340`，seal SHA-256 `20c94ce57ecddc865fcd58b5aa2581bde99d27a909db5502ca487109d3fa3632`）已通过普通模式和 `python -O` 校验。授权 ADM 的 metadata 将 physical row 3 标为 UID `ATU_00000004` / `RoomCentricLFE`。审查的 DEE 静态路径将六声道 request pointer slot 3 传到 core API pointer slot 3；同次运行的 ADM UID 到 pointer table 的 owner/generation join 未捕获。静态 category 3 分支的首个样本操作是 unity accumulation，后续 staging 按 32-bit sample word 复制；加权分支只处理 category 4–7。该静态路径没有显示 core 前增益或重映射。
 
