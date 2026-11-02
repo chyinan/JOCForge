@@ -66,6 +66,8 @@ F01E cold-owner input projection is a distinct root-construction adapter: `Prepa
 
 The versioned `NormalControlAdmInputSnapshot` is only an input/route preflight. Its 36-row test uses a synthetic one-frame zero-PCM resource with a metadata subset, and it does not run a normal control calculation, callback after-state or FreshZero transition. The exact 36-row reference attempt with an XML placeholder was later invalidated; there is no successful full-input runtime receipt.
 
+For cold state semantics, `normal_callbacks` remains the processed-callback counter at zero. `NormalControlAdmInputSnapshot.expected_normal_callback_count` is a separate derived extent; it does not pre-advance owner state.
+
 F06ND's zero-only logical FIFO follows the washed model transition in memory. Its logical record field layout and byte serialization remain `UNBOUND`; no nonzero category-5 payload is produced in the selected profile. This does not create a native DEE parity claim or a separate commit owner.
 
 F06ND persistent statistics, scheduler and logical FIFO state types, plus their frame/callback transition values, do not implement `Clone` or `Copy`. The callback proposal exposes borrowed views and a consuming `into_parts` operation; the FIFO proposal likewise moves its next state out. This prevents copying a staged next-state through these public values, but does not prevent a caller from staging twice against the same borrowed before-state. The F06WH parent remains the only commit authority and is not implemented here.

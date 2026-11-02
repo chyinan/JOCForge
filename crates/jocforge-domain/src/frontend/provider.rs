@@ -389,6 +389,7 @@ impl ValidatedF01EColdProvider {
                 != u32::from(bed_track_count) + u32::from(object_track_count)
             || configuration.source_samples() == 0
             || base.callback_index != 0
+            || base.normal_callbacks != 0
             || base.remaining_cached_drains != 4
             || object_bindings
                 .iter()
@@ -431,9 +432,6 @@ impl ValidatedF01EColdProvider {
         let mut value = base.clone();
         value.schema = "F01E_ADM_INPUT_COLD_PROJECTION_V1";
         value.callback_index = 0;
-        value.normal_callbacks = configuration
-            .source_samples()
-            .div_ceil(u64::from(config.frame_samples));
         value.config.channels = u32::from(wave.channels());
         value.config.source_samples = configuration.source_samples();
         value.config.bed_count = u32::from(bed_track_count);

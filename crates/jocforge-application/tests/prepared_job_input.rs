@@ -479,7 +479,7 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         assert_eq!(cold["schema"], "F01E_ADM_INPUT_COLD_PROJECTION_V1");
         assert_eq!(cold["phase"], "BEFORE_FIRST_NORMAL");
         assert_eq!(cold["remaining_cached_drains"], 4);
-        assert_eq!(cold["normal_callbacks"], 1);
+        assert_eq!(cold["normal_callbacks"], 0);
         assert_eq!(cold["normalized_config"]["channels"], channels);
         assert_eq!(cold["normalized_config"]["bed_count"], 10);
         assert_eq!(cold["normalized_config"]["object_count"], expected_objects);
@@ -508,6 +508,7 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         assert_eq!(state.programme_id(), prepared.programme_id());
         assert_eq!(state.attempt_id(), attempt);
         assert_eq!(state.callback_index().value(), 0);
+        assert_eq!(state.normal_callbacks().value(), 0);
         assert_eq!(state.remaining_cached_drains(), 4);
         assert_eq!(state.objects().len(), expected_objects as usize);
         assert_eq!(state.normalized_config().channels(), u32::from(channels));
@@ -526,6 +527,7 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         );
         assert_eq!(normal_input.attempt_id(), attempt);
         assert_eq!(normal_input.owner_generation(), 0);
+        assert_eq!(normal_input.expected_normal_callback_count(), 1);
         assert_eq!(normal_input.input_physical_rows(), channels);
         assert_eq!(normal_input.bed_track_count(), 10);
         assert_eq!(normal_input.object_track_count(), expected_objects as u16);

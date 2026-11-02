@@ -456,6 +456,7 @@ pub struct NormalControlAdmInputSnapshot {
     programme_id: ProgrammeId,
     attempt_id: AttemptId,
     owner_generation: u64,
+    expected_normal_callback_count: u64,
     profile: NormalControlProfileIdentity,
     source_identity: NormalControlSourceIdentity,
     graph_identity: NormalControlGraphIdentity,
@@ -491,12 +492,16 @@ impl NormalControlAdmInputSnapshot {
         let source_identity = NormalControlSourceIdentity::from_binding(source_binding);
         let profile = NormalControlProfileIdentity::from_config(frontend_state.normalized_config());
         let wave = source_identity.wave;
+        let expected_normal_callback_count = source_identity
+            .source_samples
+            .div_ceil(NORMAL_CALLBACK_SAMPLES);
 
         if frontend_state.schema() != "F01E_ADM_INPUT_COLD_PROJECTION_V1"
             || owner_generation != 0
             || frontend_state.callback_index().value() != 0
             || frontend_state.phase() != FrontendControlPhase::BeforeFirstNormal
             || frontend_state.remaining_cached_drains() != MAIN_CACHED_DRAIN_CALLBACKS
+            || frontend_state.normal_callbacks().value() != 0
             || frontend_state.last_control38_snapshot().is_some()
             || frontend_state.last_regular37_snapshot().is_some()
             || frontend_state.physical_binding().is_some()
@@ -522,10 +527,6 @@ impl NormalControlAdmInputSnapshot {
             || bed_track_count != BED_TRACK_COUNT
             || physical_track_count != bed_track_count + object_track_count
             || frontend_state.objects().len() != object_track_count
-            || frontend_state.normal_callbacks().value()
-                != source_identity
-                    .source_samples
-                    .div_ceil(NORMAL_CALLBACK_SAMPLES)
         {
             return Err(NormalControlSnapshotError::SourceConfigurationMismatch);
         }
@@ -625,6 +626,7 @@ impl NormalControlAdmInputSnapshot {
             "programme_id": frontend_state.programme_id().as_str(),
             "attempt_id": frontend_state.attempt_id().value(),
             "owner_generation": owner_generation,
+            "expected_normal_callback_count": expected_normal_callback_count,
             "frontend_state_digest": frontend_state_digest.to_hex(),
             "source_receipt_sha256": hex_sha256(&source_identity.source_receipt_sha256),
             "job_projection_sha256": hex_sha256(&source_identity.job_projection_sha256),
@@ -673,6 +675,7 @@ impl NormalControlAdmInputSnapshot {
             programme_id: frontend_state.programme_id().clone(),
             attempt_id: frontend_state.attempt_id(),
             owner_generation,
+            expected_normal_callback_count,
             profile,
             source_identity,
             graph_identity,
@@ -704,6 +707,10 @@ impl NormalControlAdmInputSnapshot {
 
     pub const fn owner_generation(&self) -> u64 {
         self.owner_generation
+    }
+
+    pub const fn expected_normal_callback_count(&self) -> u64 {
+        self.expected_normal_callback_count
     }
 
     pub fn physical_tracks(&self) -> &[NormalControlPhysicalTrack] {
