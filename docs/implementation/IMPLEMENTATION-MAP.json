@@ -2251,8 +2251,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 37445,
-              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+              "bytes": 39527,
+              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -2465,7 +2465,7 @@
               "Three FreshZero receipts bind for each synthetic 36/26 and 38/28 input; each receipt covers 1,536 zero samples for every physical input row.",
               "Both synthetic 36-row and 38-row MeterSourceCallbackView values bind to their matching prepared-input and DBMD row shapes.",
               "The 36-row DBMD shape uses Wash manifest fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374; per-track fields are synthetic zeros, not actual sample metadata.",
-              "ADM physical rows, normal-control rows, regular-route rows and initialized object-owner slots use separate typed counts."
+              "One-hot synthetic 36/38 source rows prove graph-selected direct-LFE host resolves through the physical-row map to its BWF PCM row; this does not establish native DEE lane or DSP parity."
             ],
             "expected_outputs_included": false,
             "metadata_dimensions_fixture": {
@@ -2499,8 +2499,7 @@
             "Dynamic normal callback progression beyond the first proposal for source extents greater than 1,536 samples; the synthetic test has one normal callback.",
             "Installation of dynamic F01E after-state into the parent owner, Meter/Spatial callback execution, and DDP frame-view transfer.",
             "Dynamic normal callback progression beyond the first proposal for source extents greater than 1,536 samples; the synthetic tests use a one-sample source and one normal callback.",
-            "Actual 36-row sample per-track DBMD values and PCM through FreshZero, Meter, or Spatial callbacks; the 36-row test DBMD values are synthetic zeros.",
-            "Installation of dynamic F01E after-state into the parent owner, Meter/Spatial callback execution, and DDP frame-view transfer."
+            "Actual 36-row sample per-track DBMD values and PCM through FreshZero, Meter, or Spatial callbacks; the 36-row test DBMD values are synthetic zeros."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
@@ -2613,8 +2612,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 37445,
-              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+              "bytes": 39527,
+              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
             },
             {
               "path": "crates/jocforge-domain/tests/primary_metadata_control.rs",
@@ -12720,8 +12719,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 37445,
-              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+              "bytes": 39527,
+              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
             }
           ]
         },
@@ -13496,8 +13495,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 37445,
-              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+              "bytes": 39527,
+              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -31121,8 +31120,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 37445,
-              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+              "bytes": 39527,
+              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -31158,8 +31157,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 37445,
-              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+              "bytes": 39527,
+              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -34806,8 +34805,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 37445,
-              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+              "bytes": 39527,
+              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
             },
             {
               "path": "crates/jocforge-domain/src/state/mod.rs",
@@ -37729,8 +37728,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 37445,
-          "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+          "bytes": 39527,
+          "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -37806,8 +37805,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 37445,
-          "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
+          "bytes": 39527,
+          "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",

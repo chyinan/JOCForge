@@ -635,6 +635,50 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
             normal_input.regular_control_hosts()
         );
 
+        let direct_lfe_probe_rows = (0..channels)
+            .map(|physical_row| {
+                let mut row = vec![0_u32; 1_536];
+                row[0] = u32::from(physical_row) + 1;
+                row
+            })
+            .collect::<Vec<_>>();
+        let direct_lfe_probe_frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+            callback_index: MeterCallbackIndex::new(0),
+            upstream_generation: MeterUpstreamGeneration::new(1),
+            phase: MeterCallbackPhase::NormalSource,
+            source_identity: MeterSourceIdentity::from_sha256(
+                prepared_with_controls.resource_identity().input_sha256(),
+            ),
+            source_samples: MeterSourceSampleCount::new(1).unwrap(),
+            normal_callbacks: MeterCallbackCount::new(1),
+            source_cursor_before: MeterSourcePosition::new(0),
+            source_cursor_after: MeterSourcePosition::new(1),
+            source_read_index_before: MeterSourceReadIndex::new(0),
+            source_read_index_after: MeterSourceReadIndex::new(1),
+            host_input_count: MeterSampleCount::new(1),
+            source_padding_count: MeterSampleCount::new(1_535),
+            rows: &direct_lfe_probe_rows,
+        });
+        let direct_lfe_probe =
+            MeterSourceCallbackView::new(&prepared_with_controls, direct_lfe_probe_frame).unwrap();
+        let direct_lfe_binding = direct_lfe_probe
+            .physical_row_map()
+            .binding_for_physical_host(direct_lfe_probe.direct_lfe_host())
+            .unwrap();
+        assert_eq!(
+            direct_lfe_binding.track_index().value() - 1,
+            u16::from(direct_lfe_binding.pcm_row().value())
+        );
+        let direct_lfe_pcm_row = usize::from(direct_lfe_binding.pcm_row().value());
+        assert_eq!(
+            direct_lfe_probe.direct_lfe_words(),
+            direct_lfe_probe_rows[direct_lfe_pcm_row].as_slice()
+        );
+        assert_eq!(
+            direct_lfe_probe.direct_lfe_words()[0],
+            u32::from(direct_lfe_binding.pcm_row().value()) + 1
+        );
+
         let zero_rows = vec![vec![0_u32; 1_536]; usize::from(channels)];
         for delivery in 1_u32..=3 {
             let transaction = CallbackLineageIdentity::new(
