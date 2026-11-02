@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {"package_id":"native-f06-authorized-adm-job-control-whitelist-addendum","manifest_sha256":"9ac30a30cba967a0c4dd264c1ac74eba62c46a84379ac9261fa581fbcfbef668","job_sha256":"edd0e5b173d763e63db5405ea85aa9783bbd0477060233726843ec6f1f2eda2f"},
+    {"package_id":"SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4","manifest_sha256":"6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4","package_seal_sha256":"d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18"}
+  ],
+  "rust_source_revision": {"commit":"216326f622e66f1f7b255dbe7a8bcfb8ca473ce2","encode_request_source_sha256":"bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"}
+}

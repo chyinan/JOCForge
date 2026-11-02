@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-job-control-comparison-vector.v1",
+  "vector_id": "sample6-explicit-audio-controls",
+  "fixed": {"input_sha256":"7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"},
+  "matched_controls": {
+    "data_rate_bps": 1024000,
+    "line_rf_drc": "none",
+    "preferred_downmix": "loro",
+    "mix_levels_db": [-3, -3, -3, -3],
+    "surround_height_trims": "auto"
+  },
+  "range_difference": {"dee_reference":"file_position [2112,2207] inclusive","rust_run":"full file"},
+  "remaining_fields": {"sample_rate":"NOT_IN_XML","acmod":"NOT_IN_XML","lfe":"NOT_IN_XML","channel_map":"NOT_IN_XML","rust_runtime_job_xml_digest":"NOT_CAPTURED"},
+  "audio_effect": "NOT_EVALUATED"
+}

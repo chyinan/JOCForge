@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-AU-ALIGNED-JOB-CONTROL-COMPARISON-V2",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3544,
+      "sha256": "08014520999ec98b1ad6b4ead86cf3c96bd12d50d9a8ecfd92d2b87a94bbc17b"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3282,
+      "sha256": "2162ae0e8ad47ee53f363f15a9acf623ac4be7b16e149cc6f436ff5f17cae9ea"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 701,
+      "sha256": "aa8bb0d9c89b1401a305bed494ec0dd8806003e67819d9b96f2a770ab0d29558"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2242,
+      "sha256": "63072b57d0269853a7abbb47cd67c9e01a44d77fda1a6687de3699307b4017fc"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 728,
+      "sha256": "0ca65d701f46dbd0361dcb76e6ec8da212b909e0f9f598c3c252d07590be091d"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1849,
+      "sha256": "9f8ec0de2775fcb8475efb19f1f1fc3e4952011308f6e51067547b6cd1a15b5d"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "e35599f2c60ddab9a8c3ef096fcdd4e8548f59ba54e99f813ab17b9c31df7354"
+    }
+  ]
+}

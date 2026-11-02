@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-AU-ALIGNED-JOB-CONTROL-COMPARISON-V2",
+  "supersedes": "SAMPLE6-AU-ALIGNED-JOB-CONTROL-COMPARISON-V1",
+  "source_packages": [
+    {
+      "package_id": "native-f06-authorized-adm-job-control-whitelist-addendum",
+      "manifest_sha256": "9ac30a30cba967a0c4dd264c1ac74eba62c46a84379ac9261fa581fbcfbef668",
+      "job_sha256": "edd0e5b173d763e63db5405ea85aa9783bbd0477060233726843ec6f1f2eda2f"
+    },
+    {
+      "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+      "manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+      "package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18"
+    }
+  ],
+  "status": "RATE_DRC_DOWNMIX_TRIMS_MATCH_AT_TEMPLATE_LEVEL; OTHER_CONTROLS_PARTIAL",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3544,
+      "sha256": "08014520999ec98b1ad6b4ead86cf3c96bd12d50d9a8ecfd92d2b87a94bbc17b"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3282,
+      "sha256": "2162ae0e8ad47ee53f363f15a9acf623ac4be7b16e149cc6f436ff5f17cae9ea"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 701,
+      "sha256": "aa8bb0d9c89b1401a305bed494ec0dd8806003e67819d9b96f2a770ab0d29558"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2242,
+      "sha256": "63072b57d0269853a7abbb47cd67c9e01a44d77fda1a6687de3699307b4017fc"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 728,
+      "sha256": "0ca65d701f46dbd0361dcb76e6ec8da212b909e0f9f598c3c252d07590be091d"
+    }
+  ],
+  "exclusions": {
+    "job_xml_included": false,
+    "private_key_or_license_material_included": false,
+    "media_pcm_or_encoded_payload_included": false
+  }
+}
