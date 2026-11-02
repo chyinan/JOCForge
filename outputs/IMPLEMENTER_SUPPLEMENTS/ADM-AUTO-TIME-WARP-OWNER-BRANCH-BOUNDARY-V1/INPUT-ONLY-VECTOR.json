@@ -1,0 +1,10 @@
+{
+  "schema":"jocforge.auto_time_branch_static_vector.v1",
+  "vector_id":"PRIVCONTEXT-DONT-CHANGE-BRANCH",
+  "input_context":"one shared PrivContext read at FilterConvertAtmosMezz+0xb8",
+  "branch_zero":"setRange reads offset and first_frame_of_action maps",
+  "branch_nonzero":"runWarpModeChange/master-open; opens per-open owner, but does not write those map keys or pass that owner to setRange",
+  "sample6_branch_value":"NOT_RECORDED",
+  "reader_seek_join":"UNBOUND",
+  "default_file_position_mvp_blocked":false
+}

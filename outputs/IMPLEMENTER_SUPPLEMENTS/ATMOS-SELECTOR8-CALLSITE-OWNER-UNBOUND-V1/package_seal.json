@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1439,
+      "name": "REPORT.md",
+      "sha256": "08206def4fa482370fda08ad2a528b82d8bd29496217c69c5de247e7e8a9472a"
+    },
+    {
+      "bytes": 1570,
+      "name": "EVIDENCE.json",
+      "sha256": "c653fc9a70cffab64cf01960e279f9f2e43160ecb0207ca8d92a15286dab9d77"
+    },
+    {
+      "bytes": 457,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "f83e512ccbf140930e6188eaaf95360e0a520e7752e4b2f8172027cf784573ce"
+    },
+    {
+      "bytes": 442,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "40d8fa8a632c80a72221cf27a6df15fe6b167e970911a577fb5d30a2d7191072"
+    },
+    {
+      "bytes": 2055,
+      "name": "verify_package.py",
+      "sha256": "25b3c0a6b0d81332d5b758dbbec2b5100a391301fd5a2f95e6add82dcf792ce7"
+    },
+    {
+      "bytes": 1473,
+      "name": "seal_package.py",
+      "sha256": "9c1d057b06170d45dbe58e5e5fcc0559af31fbb2ca89e0910b9dda13f5f0fa3c"
+    }
+  ],
+  "manifest_sha256": "ee53dcc7ba4685ff6619f7de90499cc12be9394eb67092a5c8ff7d6e944535f0",
+  "package_id": "ATMOS-SELECTOR8-CALLSITE-OWNER-UNBOUND-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

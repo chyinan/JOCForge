@@ -1,0 +1,16 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"adm_bwf_auto_time_writer_join_wash_v1",
+      "manifest_sha256":"a0b30f4783e3c85cbaf30ee2f65877fdafec092be1059b12bca61efe2fd5ac69",
+      "package_seal_sha256":"680f16688e72c1ad373e6f3c809419153faaa2b27e185b9b6e00a1731ea56cb7",
+      "payload_count":5,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "ghidra_version":"12.2 PUBLIC",
+      "raw_trace_scripts_or_decompiled_code_in_this_supplement":false
+    }
+  ]
+}

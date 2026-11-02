@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1385,
+      "name": "REPORT.md",
+      "sha256": "d7a73cd408fd3ea5d86c5045a359101a1d74939b9670219e576a7c5689268df8"
+    },
+    {
+      "bytes": 1749,
+      "name": "EVIDENCE.json",
+      "sha256": "4afdc237bb89addf84f6b50eaf43d48130acbf895b7ce899d83e6cc3e5631289"
+    },
+    {
+      "bytes": 518,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "bcf1daef006f40284cc37e69e58650304f11a90c34037c6a66ad16aa21825b71"
+    },
+    {
+      "bytes": 564,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "90d3d599d7b919b101a70b81ab22330216948dd1ba5279314dc737a4be064a43"
+    },
+    {
+      "bytes": 2119,
+      "name": "verify_package.py",
+      "sha256": "f20f364c32f2f76a17debbf2b5cf5c8a76c3946ba60220accaabd38849c9a136"
+    },
+    {
+      "bytes": 1468,
+      "name": "seal_package.py",
+      "sha256": "a6a681e39d0fc94896084a565321662ddf16865895eb4261a70730f34440db0e"
+    }
+  ],
+  "manifest_sha256": "06f2d71a656221cb07d0bd5c4d9eff14876da9f66afcc1ec8bfb9552047b9711",
+  "package_id": "ADM-AUTO-TIME-WARP-OWNER-BRANCH-BOUNDARY-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

@@ -1,0 +1,14 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"selector8_owner_callsite_boundary_wash_supplement_v1",
+      "manifest_sha256":"4ab6cfff50ba260d4ae89de003420e42077632406ab1ab6865531bd907e449f5",
+      "payload_count":6,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_source_code_or_trace_excerpts_in_this_supplement":false
+    }
+  ]
+}

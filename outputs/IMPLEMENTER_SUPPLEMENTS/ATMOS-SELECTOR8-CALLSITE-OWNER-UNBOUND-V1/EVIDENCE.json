@@ -1,0 +1,34 @@
+{
+  "schema":"jocforge.selector8_callsite_boundary.v1",
+  "status":"ONE_CANDIDATE_CALLSITE_REJECTED; SELECTED_WRITER_AND_OWNER_STILL_UNBOUND",
+  "upstream_package": {
+    "package_id":"selector8_owner_callsite_boundary_wash_supplement_v1",
+    "manifest_sha256":"4ab6cfff50ba260d4ae89de003420e42077632406ab1ab6865531bd907e449f5",
+    "package_seal_sha256":"NOT_SEPARATELY_ASSERTED_BY_THIS_SUPPLEMENT",
+    "payload_count_verified":6,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "candidate_callsite": {
+    "function":"FUN_1804d43c0",
+    "call_address":"0x1804d47c9",
+    "receiver_expression":"[R12]",
+    "r12_expression":"R14+0x10",
+    "return_use":"iteration upper bound",
+    "typed_identity_to_selected_atmos_storage_master_s":"NOT_ESTABLISHED"
+  },
+  "one_level_helper": {
+    "function":"FUN_180281740",
+    "behavior":"calls param_1 vtable +0x8 and returns param_2 unchanged",
+    "concrete_inner_class":"NOT_IDENTIFIED"
+  },
+  "remaining_missing_edge": {
+    "target":"actual selected atmos_storage_master_s vtable +0xa8 caller for selector key 8",
+    "writer_param3_identity":"UNBOUND",
+    "param3_qword0_pointee_class":"UNBOUND",
+    "pointee_plus_0x18_constructor_or_first_writer":"UNBOUND",
+    "selected_job_value":"NOT_OBSERVED"
+  },
+  "minimum_observation_plan": ["writer caller", "this", "selector", "param_3", "qword-0 pointee vtable", "pointee +0x18", "optional one-byte construction write watch"],
+  "execution_scope": {"dee_run":false,"media_or_pcm_access":false,"key_or_license_access":false,"production_allowed":false}
+}

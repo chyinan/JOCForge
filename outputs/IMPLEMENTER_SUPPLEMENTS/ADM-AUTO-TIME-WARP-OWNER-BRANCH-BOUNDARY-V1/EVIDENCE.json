@@ -1,0 +1,42 @@
+{
+  "schema":"jocforge.auto_time_branch_owner_boundary.v1",
+  "status":"PRIVCONTEXT_BRANCH_BOUND; AUTO_VALUE_SOURCE_AND_SEEK_JOIN_UNBOUND",
+  "upstream_package":{
+    "package_id":"adm_bwf_auto_time_writer_join_wash_v1",
+    "manifest_sha256":"a0b30f4783e3c85cbaf30ee2f65877fdafec092be1059b12bca61efe2fd5ac69",
+    "package_seal_sha256":"680f16688e72c1ad373e6f3c809419153faaa2b27e185b9b6e00a1731ea56cb7",
+    "payload_count_verified":5,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "images":{
+    "converter_sha256":"9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "dee_exe_sha256":"65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_ddp_plugin_sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "control_flow":{
+    "dispatcher":"FUN_180075a90",
+    "context_source":"FilterConvertAtmosMezz+0xb8 PrivContext*",
+    "selector":"dont_change comparison result",
+    "dont_change_zero_branch":"FUN_18007dc20 / setRange; reads offset and first_frame_of_action map keys",
+    "dont_change_nonzero_branch":"FUN_18007eba0 / runWarpModeChange and master-open",
+    "selected_sample6_selector_value":"NOT_RECORDED"
+  },
+  "master_open_branch":{
+    "creates_opens_closes_per_open_owner":true,
+    "writes_offset_or_ffoa_map":false,
+    "passes_owner_to_setRange":false
+  },
+  "remaining_boundaries":{
+    "auto_metadata_to_effective_offset":"UNBOUND",
+    "ffoa_metadata_to_effective_value":"UNBOUND",
+    "setRange_to_same_reader_seek_sample":"UNBOUND",
+    "default_file_position_mvp_blocked":false
+  },
+  "execution_scope":{
+    "dee_run":false,
+    "pcm_or_payload_access":false,
+    "key_or_license_access":false,
+    "production_allowed":false
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schema":"jocforge.static_candidate_callsite_vector.v1",
+  "vector_id":"SELECTOR8-PLUS-A8-NEARBY-CANDIDATE",
+  "candidate":{"function":"FUN_1804d43c0","call":"0x1804d47c9","receiver":"[R12]","R12":"R14+0x10","return_role":"iteration upper bound"},
+  "expected_disposition":"REJECT_AS_SELECTED_MASTER_WRITER_WITHOUT_TYPED_IDENTITY",
+  "selected_master_selector8_writer":"UNBOUND",
+  "selected_job_value":"NOT_OBSERVED",
+  "runtime_execution":"NOT_RUN"
+}

@@ -9722,8 +9722,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969292,
-              "sha256": "b4aa52fe0d8ee9496c16a26382becee510a4f83a240d0d7c6e7ea1767a2b9ef5"
+              "bytes": 1969295,
+              "sha256": "24e9ba7f59c9d3abb08b3e6babd7e08e901979c8f717877b01b96e7884173c84"
             }
           ],
           "test_modules": [
@@ -13238,8 +13238,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969292,
-              "sha256": "b4aa52fe0d8ee9496c16a26382becee510a4f83a240d0d7c6e7ea1767a2b9ef5"
+              "bytes": 1969295,
+              "sha256": "24e9ba7f59c9d3abb08b3e6babd7e08e901979c8f717877b01b96e7884173c84"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -34057,8 +34057,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969292,
-              "sha256": "b4aa52fe0d8ee9496c16a26382becee510a4f83a240d0d7c6e7ea1767a2b9ef5"
+              "bytes": 1969295,
+              "sha256": "24e9ba7f59c9d3abb08b3e6babd7e08e901979c8f717877b01b96e7884173c84"
             }
           ],
           "test_inventory": [
@@ -46092,6 +46092,44 @@
       "not_run": [
         "Actual per-track DBMD fields and owner-generation joins.",
         "Audio callback, encode, or output acceptance."
+      ]
+    },
+    {
+      "package_id": "ATMOS-SELECTOR8-CALLSITE-OWNER-UNBOUND-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-SELECTOR8-CALLSITE-OWNER-UNBOUND-V1",
+      "manifest_sha256": "ee53dcc7ba4685ff6619f7de90499cc12be9394eb67092a5c8ff7d6e944535f0",
+      "functional_ids": [
+        "F01",
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SELECTOR8_CALLSITE_CANDIDATE_REJECTED_WITHOUT_TYPED_IDENTITY; OWNER_NOT_OBSERVED",
+      "not_run": [
+        "Selected-job selector8 callsite/owner binding.",
+        "Production selected route and profile join."
+      ]
+    },
+    {
+      "package_id": "ADM-AUTO-TIME-WARP-OWNER-BRANCH-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-AUTO-TIME-WARP-OWNER-BRANCH-BOUNDARY-V1",
+      "manifest_sha256": "06f2d71a656221cb07d0bd5c4d9eff14876da9f66afcc1ec8bfb9552047b9711",
+      "functional_ids": [
+        "F01",
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "AUTO_WARP_BRANCHES_SEPARATE; DEFAULT_FILE_POSITION_MVP_NOT_BLOCKED; SEEK_SOURCE_JOIN_UNBOUND",
+      "not_run": [
+        "Sampled branch value and auto owner identity at setRange.",
+        "Seek/sample source join and FFOA final-start value."
       ]
     }
   ]
