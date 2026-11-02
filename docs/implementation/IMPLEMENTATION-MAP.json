@@ -32555,8 +32555,8 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/REPORT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-AU-BYTE-PUBLISH-BOUNDARY-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-AU-BYTE-PUBLISH-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V1/REPORT.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V2/REPORT.md"
             ],
             "supplement_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
             "supplement_manifest_sha256s": {
@@ -32565,9 +32565,9 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json": "84c40d1d677eb22481140d7ef487255a1db25bbdbced27e68c674458d2b8d5e3",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/MANIFEST.json": "96bb2eb1f5f120e1b8a204dd7e00f50d2a1204b3931942c0e0d28c1191927005",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-AU-BYTE-PUBLISH-BOUNDARY-V1/MANIFEST.json": "4a06663791857bb8be715bb0deedef124ad87ae7bc47c74a8e9ec926932d828e",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V1/MANIFEST.json": "e542a82afe6d94236cda40cc6c6c95b0bf43e668a1db7d95d25efe24da258a9a"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V2/MANIFEST.json": "8908d7691c1b0c783dc1bc420624d419b98b54501cee929de036840ce12af14c"
             },
-            "validation_boundary": "The transform and writer are implemented for an explicit selector. The selected-profile source for rows 2 through 5 and production payload join remain unbound; no bitrate or channel-layout inference is made. Signed-16 wrapping on overflow is a model assumption because native overflow behavior is not established. The washed DEE JOC byte-publish path reaches a caller-supplied per-unit memory buffer; application file/container append remains outside that static slice. The selected-profile per-block selector producer values for rows 2 through 5 remain unbound; rows 0 and 1 alone are washed as zero defaults. The RenderBus ID-0 branch selector is a distinct input."
+            "validation_boundary": "The transform and writer are implemented for an explicit selector. The selected-profile source for rows 2 through 5 and production payload join remain unbound; no bitrate or channel-layout inference is made. Signed-16 wrapping on overflow is a model assumption because native overflow behavior is not established. The washed DEE JOC byte-publish path reaches a caller-supplied per-unit memory buffer; application file/container append remains outside that static slice. The selected-profile per-block selector producer values for rows 2 through 5 remain unbound; rows 0 and 1 alone are washed as zero defaults. The RenderBus ID-0 branch selector is a distinct input. V2 confirms the profile-copy slab and auxiliary vector are separate from inline selector rows; rows 2 through 5 remain unbound."
           },
           "test_modules": [
             "crates/jocforge-domain/src/joc/coefficient_delta.rs"
@@ -32579,7 +32579,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/INPUT-ONLY-VECTOR.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/INPUT-ONLY-VECTOR.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/INPUT-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V1/INPUT-ONLY-VECTOR.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V2/PROFILE-ONLY-VECTOR.json"
             ],
             "case_pointers": [
               "selector 0 skips the branch",
@@ -32590,7 +32590,8 @@
               "The synthetic writer vector [85,127,1] yields completed U16 0xABFC in little-endian bytes FC AB and residual U16 0x0800 in final bytes 00 08.",
               "EmulatorHelper delta/tail vector previous=5, current=[7,6,0], stride=1, total_slots=2 yields [4,1,-4,2,2,2].",
               "DEE per-unit writer residual U16, valid-span repack, ordered dispatch, and caller-buffer publication are statically connected; the traced chain stops before file/container I/O.",
-              "Selector 0 skips the JOC difference branch; lookup values 1/2/3 select strides 1/2/4; constructor evidence clears rows 0/1 only."
+              "Selector 0 skips the JOC difference branch; lookup values 1/2/3 select strides 1/2/4; constructor evidence clears rows 0/1 only.",
+              "V2 profile bulk-copy installs a separate slab and does not write inline row 2; auxiliary state+0x13608 is not type-joined to selector rows."
             ],
             "expected_values_are_assertions_only": true,
             "supplement_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
@@ -32600,7 +32601,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json": "84c40d1d677eb22481140d7ef487255a1db25bbdbced27e68c674458d2b8d5e3",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/MANIFEST.json": "96bb2eb1f5f120e1b8a204dd7e00f50d2a1204b3931942c0e0d28c1191927005",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-AU-BYTE-PUBLISH-BOUNDARY-V1/MANIFEST.json": "4a06663791857bb8be715bb0deedef124ad87ae7bc47c74a8e9ec926932d828e",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V1/MANIFEST.json": "e542a82afe6d94236cda40cc6c6c95b0bf43e668a1db7d95d25efe24da258a9a"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V2/MANIFEST.json": "8908d7691c1b0c783dc1bc420624d419b98b54501cee929de036840ce12af14c"
             }
           },
           "not_run": [
@@ -32629,7 +32630,8 @@
             "domain_check": "PASS",
             "format_check": "PASS",
             "boundary_check": "BLOCKED_BY_EXISTING_encode_request.rs_HASH_INVENTORY_MISMATCH",
-            "washed_byte_publish_checker": "PASS_NORMAL_AND_PYTHON_O"
+            "washed_byte_publish_checker": "PASS_NORMAL_AND_PYTHON_O",
+            "washed_selector_profile_v2_checker": "PASS_NORMAL_AND_PYTHON_O"
           }
         }
       ]

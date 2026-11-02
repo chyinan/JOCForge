@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-dee-joc-u7-selector-vector.v2",
+  "profile_label": "1024 kbps / 5.1 / E-AC-3 JOC",
+  "selector_rows": [0,0,null,null,null,null],
+  "constructor_default_rows": [0,1],
+  "unbound_rows": [2,3,4,5],
+  "test_only_one_hot": [0,0,1,0,0,0],
+  "test_vector_status": "INPUT_ONLY_NOT_NATIVE",
+  "separate_state_plus_0x13608_vector": {"possible_values":[2,3,4],"joined_to_selector_rows":false},
+  "infer_from_bitrate_or_layout": false,
+  "execution": "STATIC_ONLY"
+}

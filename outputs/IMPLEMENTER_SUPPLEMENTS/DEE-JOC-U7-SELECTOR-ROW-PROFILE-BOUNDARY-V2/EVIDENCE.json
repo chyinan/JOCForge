@@ -1,0 +1,62 @@
+{
+  "schema": "jocforge-dee-joc-u7-selector-row-profile-boundary.v2",
+  "package_id": "DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V2",
+  "supersedes": "DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V1",
+  "status": "PROFILE_SLAB_COPY_BOUND_SEPARATE; INLINE_ROWS_2_TO_5_UNBOUND",
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 static"
+  },
+  "inline_selector_consumer": {
+    "function": "FUN_1800a3710",
+    "selector_base": "state+0x140e8",
+    "row_expression": "state+0x140e8+block_index*0x0a+0xd8",
+    "selector_width_bits": 16,
+    "lookup": [0,1,2,4],
+    "meaning": {"0":"disabled","1":"stride 1","2":"stride 2","3":"stride 4"},
+    "callers": ["FUN_1800942d0", "FUN_180098080 blocks 0..5"]
+  },
+  "constructor_defaults": {
+    "initializer": "FUN_1800a19e0",
+    "zeroed_selector_rows": {"0":0,"1":0},
+    "unbound_rows": [2,3,4,5],
+    "row_offsets": ["0xd8","0xe2","0xec","0xf6","0x100","0x10a"],
+    "state_offsets": ["0x141c0","0x141ca","0x141d4","0x141de","0x141e8","0x141f2"]
+  },
+  "profile_copy_boundary": {
+    "caller": "FUN_180074980",
+    "helper": "FUN_1800a1d00",
+    "source_profile": "*(state+0x298c8)+0xf5b8",
+    "descriptor_table": "state+0x298d0",
+    "slab_pointer": "descriptor_base + iVar16*0x400",
+    "component_argument": "state+0x140e8",
+    "written_component_pointer_offsets": ["0x1e0","0x2d0","0x508"],
+    "writes_inline_selector_row_2": false,
+    "selected_slab_index": "UNBOUND"
+  },
+  "alternate_slab_caller": {
+    "function": "FUN_1801bc4d0",
+    "callsite": "0x1bc6f4",
+    "writes_inline_selector_row_2": false
+  },
+  "separate_vector": {
+    "base": "state+0x13608",
+    "producer": "FUN_180098080",
+    "consumer": "FUN_18009f550",
+    "possible_values": [2,3,4],
+    "typed_join_to_inline_selector_rows": "UNBOUND/NO",
+    "usable_as_U7_selector_replacement": false
+  },
+  "remaining": {
+    "row_2_writer_or_copy_to_state_0x141d4": "UNBOUND",
+    "selected_profile_rows_2_to_5": "UNBOUND",
+    "DEE_runtime": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "DEE-JOC-U7-STRIDE-SELECTOR-PROFILE-TRACE-R9-WASH-V1",
+    "manifest_sha256": "01fa78503c9fb3cb16685e01f90e577b20b24838750a54b02a696b1726c5310d",
+    "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+  },
+  "exclusions": {"binary_or_raw_disassembly":false,"decompilation_source":false,"media_pcm_or_payload":false,"private_key_or_license_material":false}
+}
