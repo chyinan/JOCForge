@@ -32509,7 +32509,7 @@
           "planned_phase": "Phase 7",
           "mapping_status": "MATERIALIZED_DIRECT_DEE_JOC_DELTA_CANDIDATE__SELECTED_PROFILE_SELECTOR_UNBOUND",
           "implementation_status": "LOCALLY_VERIFIED_DELTA_AND_WORD_WRITER__PRODUCTION_PAYLOAD_INTEGRATION_NOT_RUN",
-          "scope": "Implements the washed DEE JOC block selector table, stride differences, +2 bias, tail fill with 2, MSB-first seven-bit packing, and final 16-bit word alignment as an explicit candidate. It does not infer a profile selector or replace the selected production coefficient-payload writer.",
+          "scope": "Implements the washed DEE JOC block selector table, stride differences, +2 bias, tail fill with 2, MSB-first seven-bit packing, and final 16-bit word alignment as an explicit candidate. It does not infer a profile selector or replace the selected production coefficient-payload writer. The low-level EmulatorHelper vector also binds completed/residual U16 memory byte order.",
           "owner": "joc",
           "dependencies": [],
           "implementation_files": [
@@ -32524,7 +32524,8 @@
               "Selector 0 skips the difference branch.",
               "Selectors 1, 2, and 3 select strides 1, 2, and 4.",
               "Candidate values use current - previous + 2 and fill remaining 3*total_slots capacity with 2.",
-              "Seven-bit values are MSB-first and the final output word is zero-padded to 16 bits."
+              "Seven-bit values are MSB-first and the final output word is zero-padded to 16 bits.",
+              "Completed U16 accumulator words are stored little-endian in memory; the residual U16 is written by finalization."
             ]
           },
           "parameters": {
@@ -32535,13 +32536,16 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2/REPORT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/REPORT.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/REPORT.md"
             ],
             "supplement_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
             "supplement_manifest_sha256s": {
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2/MANIFEST.json": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/MANIFEST.json": "897cb24709839dd5002979fd1fbaf5dd1086901d661864371d899707d4533ba8",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json": "84c40d1d677eb22481140d7ef487255a1db25bbdbced27e68c674458d2b8d5e3"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json": "84c40d1d677eb22481140d7ef487255a1db25bbdbced27e68c674458d2b8d5e3",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/MANIFEST.json": "96bb2eb1f5f120e1b8a204dd7e00f50d2a1204b3931942c0e0d28c1191927005"
             },
             "validation_boundary": "The transform and writer are implemented for an explicit selector. The selected-profile source for rows 2 through 5 and production payload join remain unbound; no bitrate or channel-layout inference is made. Signed-16 wrapping on overflow is a model assumption because native overflow behavior is not established."
           },
@@ -32553,17 +32557,25 @@
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2/INPUT-ONLY-VECTOR.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/INPUT-ONLY-VECTOR.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/INPUT-ONLY-VECTOR.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/INPUT-VECTORS.json"
             ],
             "case_pointers": [
               "selector 0 skips the branch",
               "selectors 1/2/3 use strides 1/2/4",
               "each delta is current - previous + 2",
               "the remaining output capacity is filled with 2",
-              "the writer emits seven bits MSB-first and pads the final word to 16 bits"
+              "the writer emits seven bits MSB-first and pads the final word to 16 bits",
+              "The synthetic writer vector [85,127,1] yields completed U16 0xABFC in little-endian bytes FC AB and residual U16 0x0800 in final bytes 00 08."
             ],
             "expected_values_are_assertions_only": true,
-            "supplement_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04"
+            "supplement_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
+            "supplement_manifest_sha256s": {
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2/MANIFEST.json": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/MANIFEST.json": "897cb24709839dd5002979fd1fbaf5dd1086901d661864371d899707d4533ba8",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json": "84c40d1d677eb22481140d7ef487255a1db25bbdbced27e68c674458d2b8d5e3",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1/MANIFEST.json": "96bb2eb1f5f120e1b8a204dd7e00f50d2a1204b3931942c0e0d28c1191927005"
+            }
           },
           "not_run": [
             "Selected-profile per-block selector source and values remain unbound.",
@@ -32575,19 +32587,19 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_delta.rs",
-              "bytes": 6321,
-              "sha256": "0a0793960c24f3697c882cf6e21f8fc2acec601e33761e05b33858b0e40510d4"
+              "bytes": 6950,
+              "sha256": "14a3022b959381522a6d197f14947862a93bda80f883f6e6b131bd8c9244708d"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_delta.rs",
-              "bytes": 6321,
-              "sha256": "0a0793960c24f3697c882cf6e21f8fc2acec601e33761e05b33858b0e40510d4"
+              "bytes": 6950,
+              "sha256": "14a3022b959381522a6d197f14947862a93bda80f883f6e6b131bd8c9244708d"
             }
           ],
           "verification": {
-            "focused_tests": "4 passed",
+            "focused_tests": "5 passed",
             "domain_check": "PASS",
             "format_check": "PASS",
             "boundary_check": "BLOCKED_BY_EXISTING_encode_request.rs_HASH_INVENTORY_MISMATCH"

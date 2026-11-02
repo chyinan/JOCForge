@@ -76,11 +76,12 @@ impl CoefficientDeltaPayloadCandidate {
 /// Selector zero skips the difference branch. Nonzero selectors map to strides
 /// 1, 2, and 4; differences are `current - previous + 2`, missing values are
 /// filled with 2, and each value is written MSB-first at seven bits. The final
-/// partial word is zero-padded to a 16-bit boundary. This candidate is not yet
-/// connected to the selected production coefficient-payload path because its
-/// selected-profile selector source has not been delivered. The current model
-/// uses signed-16 wrapping for the short difference; native overflow behavior
-/// is not established by the washed evidence.
+/// partial word is zero-padded to a 16-bit boundary. Completed accumulator
+/// words are stored little-endian in the output byte slice. This candidate is
+/// not yet connected to the selected production coefficient-payload path
+/// because its selected-profile selector source has not been delivered. The
+/// current model uses signed-16 wrapping for the short difference; native
+/// overflow behavior is not established by the washed evidence.
 pub fn build_coefficient_delta_candidate(
     short_coefficients: &[i16],
     total_slots: u16,
@@ -135,6 +136,9 @@ pub fn build_coefficient_delta_candidate(
         }
     }
     bytes.resize(byte_count, 0);
+    for word_bytes in bytes.chunks_exact_mut(2) {
+        word_bytes.swap(0, 1);
+    }
 
     Ok(Some(CoefficientDeltaPayloadCandidate {
         values,
@@ -193,6 +197,18 @@ mod tests {
         assert_eq!(candidate.values(), &[0, 1, 2]);
         assert_eq!(candidate.valid_bit_count(), 21);
         assert_eq!(candidate.word_padding_bits(), 11);
-        assert_eq!(candidate.bytes(), &[0x00, 0x04, 0x10, 0x00]);
+        assert_eq!(candidate.bytes(), &[0x04, 0x00, 0x00, 0x10]);
+    }
+
+    #[test]
+    fn synthetic_dee_words_match_little_endian_completed_and_residual_stores() {
+        let candidate = build_coefficient_delta_candidate(&[0, 83, 208, 207], 1, 1)
+            .unwrap()
+            .unwrap();
+
+        assert_eq!(candidate.values(), &[85, 127, 1]);
+        assert_eq!(candidate.valid_bit_count(), 21);
+        assert_eq!(candidate.word_padding_bits(), 11);
+        assert_eq!(candidate.bytes(), &[0xfc, 0xab, 0x00, 0x08]);
     }
 }
