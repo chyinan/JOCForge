@@ -42,7 +42,13 @@ DRC scale 1 的 aggregate RMSE 为 0.002320472；DRC scale 0 为 0.002258564。�
 | 4 | 0.0009005045 | 0.0004268775 | 0.99996840 | 0.99996932 |
 | 5 | 0.0008348392 | 0.0003796039 | 0.99997487 | 0.99997783 |
 
-decoder channel index 3 主导残差。匹配窗口中，DRC scale 0 RMSE 为 0.005454089、相关系数为 0.941817、gain 为 1.000121、lag 为 0。整曲对照中，该声道 RMSE 为 0.006199551、相关系数为 0.817673；它在 34 个四秒块中的 30 块都是最大 RMSE 声道，RMSE 是次高声道的 4.275 倍。channel index 4 有最高单点 peak error。Wash 包没有把 channel index 3 映射到 DEE native input row。Rust 本地路径把 F07 LFE lane 映射到 external row 3；DEE 同代 source row 和 consumer 仍待 R4/R6 证据。当前没有 channel 3 根因结论。
+decoder channel index 3 主导残差。匹配窗口中，DRC scale 0 RMSE 为 0.005454089、相关系数为 0.941817、gain 为 1.000121、lag 为 0。整曲对照中，该声道 RMSE 为 0.006199551、相关系数为 0.817673；它在 34 个四秒块中的 30 块都是最大 RMSE 声道，RMSE 是次高声道的 4.275 倍。channel index 4 有最高单点 peak error。
+
+Wash 包 `SAMPLE6-DEE-MATCHED-LFE-POINTER-EDGE-V1`（manifest SHA-256 `3280306b0cc45f457f142af098a9b88ecba88ec82dfa0f604894c7c63527a340`，seal SHA-256 `20c94ce57ecddc865fcd58b5aa2581bde99d27a909db5502ca487109d3fa3632`）已通过普通模式和 `python -O` 校验。授权 ADM 的 metadata 将 physical row 3 标为 UID `ATU_00000004` / `RoomCentricLFE`。审查的 DEE 静态路径将六声道 request pointer slot 3 传到 core API pointer slot 3；同次运行的 ADM UID 到 pointer table 的 owner/generation join 未捕获。静态 category 3 分支的首个样本操作是 unity accumulation，后续 staging 按 32-bit sample word 复制；加权分支只处理 category 4–7。该静态路径没有显示 core 前增益或重映射。
+
+该包也没有绑定 DEE encoder 内部 LFE transform。Rust 将 external row 3 送入独立 F08 七 bin LFE transform。Wash 给出的 62.5 Hz、1536-sample vector 没有样本值或期望输出，尚未运行，不能用于 parity 比较。当前 channel 3 根因仍未确定。
+
+Wash 包 `SAMPLE6-CROSS-ADM-DEE-HEADER-REPEATABILITY-V1`（manifest SHA-256 `8592b9237de297f64cc703da495116ecd7bb01d6f2bc9ac0faaa648406e2775c`，seal SHA-256 `593cf6137e418e785d4e250be500c9e55e86183b99b7ddb2d0ddefd1aff73099`）通过普通模式和 `python -O` 校验。三份授权 ADM 的 CHNA/AXML 都把 5.1 bed 的 row 3 标为 LFE；另外两次 DEE 输出的首个 syncframe 也报告 48 kHz、6 blocks、5.1、LFE present。该包未测 PCM，也未证明运行时 row selection 或跨输入的 LFE 残差重复性。
 
 本地 Rust none-DRC baseline 与 film_light DRC candidate 的该窗 F32 PCM hash 相同；job DRC profile 改变了码流字节，没有改变此窗 PCM。 matched-control 配置与 candidate 一致，用户提供的 DEE matched-control 已成为当前有效 PCM 参考。
 
@@ -412,9 +418,9 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 | FFmpeg external-reference scope correction | `c4498343ffff10a1efcd278241fd569e6b17dd454edc3e47090a764c4dbfcc5b` | FFmpeg 只允许作公开字段名称、语法和事后验证的旁证；不能作为 DEE 音频行为、算法、增益、公式、默认值或参数来源。 |
 ## 当前音频待验证项
 
-1. 结合 R4/R6 fresh-run evidence，找出 decoder channel index 3 的 DEE source row、LFE path 和首个 core consumer；不从通道号推断 native row。
-2. 检查 Rust F07 LFE row 3 到当前 E-AC-3 core path，定位与 matched DEE 的实测差异。
-3. 如需改动 LFE path，只按新的 hash-bound typed edge 和 matched PCM 结果实现，再重算同窗六通道指标。
+1. 追踪 DEE encoder 内部 LFE transform 的首个数值处理点，记录输入、输出和 stride，并提供可区分 Rust F08 七 bin transform 的向量。
+2. 收到 DEE transform 的实测期望值后，再对同一 LFE 输入运行 Rust F08 并比较结果。
+3. 只有新证据支持具体算子差异时，才修改 LFE transform；不改已确认的 row 3 映射或 unity 输入处理。
 4. 当前有 matched 4 秒窗口和整曲分块指标；整曲 PCM equality、OpenJOC object render、听感和 W04 仍未验证。
 
 channel 3 根因、整曲 PCM parity 和空间渲染通过前，不宣称 audio parity 或感知一致性。
