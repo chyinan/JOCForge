@@ -4,7 +4,7 @@
   "parameter_binding": {
     "file": "parameters/ordinary-transform-math-v1.json",
     "bytes": 16538,
-    "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+    "sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c"
   },
   "fbw_continuous": {
     "bank_order": ["primary", "companion"],

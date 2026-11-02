@@ -6,7 +6,7 @@ use serde_json::Value;
 use sha2::{Digest, Sha256};
 
 const VERIFICATION: &[u8] = include_bytes!("fixtures/secondary_overlap/overlap-verification.json");
-const WINDOW_SHA256: &str = "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23";
+const WINDOW_SHA256: &str = "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2";
 
 fn document() -> Value {
     serde_json::from_slice(VERIFICATION).expect("approved overlap vectors parse")

@@ -7,9 +7,9 @@ use sha2::{Digest, Sha256};
 use crate::numeric::{FiniteF32, r32_add, r32_mul, r32_sub};
 
 const PARAMETERS: &[u8] = include_bytes!("ordinary_transform_math_parameters.json");
-const PARAMETERS_SHA256: &str = "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1";
+const PARAMETERS_SHA256: &str = "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c";
 const WINDOW_WORDS_SHA256: &str =
-    "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23";
+    "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2";
 const WINDOW_WORDS: usize = 256;
 const CARRY_WORDS: usize = 128;
 const SIGN_BIT: u32 = 0x8000_0000;

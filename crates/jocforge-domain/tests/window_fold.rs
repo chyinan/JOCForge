@@ -6,9 +6,9 @@ use serde_json::Value;
 use sha2::{Digest, Sha256};
 
 const INPUT_VECTORS_SHA256: &str =
-    "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c";
-const RESULT_SHA256: &str = "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906";
-const PARAMETER_SHA256: &str = "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1";
+    "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4";
+const RESULT_SHA256: &str = "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab";
+const PARAMETER_SHA256: &str = "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c";
 const INPUT_VECTORS: &str = include_str!("fixtures/window_fold/INPUT-ONLY-VECTORS.json");
 const RESULT: &str = include_str!("fixtures/window_fold/RESULT.json");
 const PARAMETERS: &[u8] =
@@ -82,6 +82,19 @@ fn selected_math_generated_provider_is_identity_gated() {
         MathGeneratedTransformParameters::from_provider_bytes(&changed_identity),
         Err(MathGeneratedTransformParameterError::ParameterIdentityError)
     );
+}
+
+#[test]
+fn selected_window_table_matches_dee_one_hot_fold_vector() {
+    let parameters = MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
+    let mut input = [0_u32; 256];
+    input[234] = 1.0_f32.to_bits();
+    let cold_history = [0_u32; 128];
+
+    let output = f08_window_fold_block(&input, &cold_history, &cold_history, &parameters).unwrap();
+
+    assert_eq!(output.primary_fold_bits()[107], 0x3c0e_a5aa);
+    assert_eq!(output.companion_fold_bits()[106], 0xbc0e_a5aa);
 }
 
 #[test]

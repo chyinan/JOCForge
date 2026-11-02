@@ -1887,7 +1887,7 @@ mod tests {
         );
         assert_eq!(
             provider_lineage.transform_sha256(),
-            "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+            "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c"
         );
         assert_eq!(
             provider_lineage.policy_sha256(),

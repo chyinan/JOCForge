@@ -9,8 +9,8 @@ use serde_json::Value;
 use sha2::{Digest, Sha256};
 
 const INPUT_VECTORS_SHA256: &str =
-    "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c";
-const RESULT_SHA256: &str = "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906";
+    "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4";
+const RESULT_SHA256: &str = "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab";
 const INPUT_VECTORS: &str = include_str!("fixtures/window_fold/INPUT-ONLY-VECTORS.json");
 const RESULT: &str = include_str!("fixtures/window_fold/RESULT.json");
 

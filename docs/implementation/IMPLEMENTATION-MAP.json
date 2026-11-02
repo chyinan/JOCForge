@@ -9405,8 +9405,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1964386,
-              "sha256": "add02ba469cdaf4e8072b2c6bdb7173fd55cb2240e5afacf72b2a366a1846c16"
+              "bytes": 1965683,
+              "sha256": "814c545c73eb3e1987ba1fb520cdee8c0931ed58c6fa3f1df52fca81e27b6c31"
             }
           ],
           "test_modules": [
@@ -12918,8 +12918,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1964386,
-              "sha256": "add02ba469cdaf4e8072b2c6bdb7173fd55cb2240e5afacf72b2a366a1846c16"
+              "bytes": 1965683,
+              "sha256": "814c545c73eb3e1987ba1fb520cdee8c0931ed58c6fa3f1df52fca81e27b6c31"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -18460,8 +18460,8 @@
             "provider_files": [
               "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
             ],
-            "source_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
-            "window_words_sha256": "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23",
+            "source_provider_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+            "window_words_sha256": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
             "validation_boundary": "Consumes the approved math-generated KBD window words and rejects provider identity or finite-field errors; it does not claim equality with the original static window table."
           },
           "test_modules": [
@@ -18480,13 +18480,14 @@
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/secondary_overlap/overlap-verification.json",
               "bytes": 45751,
-              "sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+              "sha256": "dd6b6ce29f185787647722eeffad14d7ed38193171f16a2ead31aef3ac4c9454"
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a",
             "source_parameter_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
             "source_window_words_sha256": "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23",
-            "source_vector_sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+            "source_vector_sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -18564,11 +18565,12 @@
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/secondary_overlap/overlap-verification.json",
               "bytes": 45751,
-              "sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+              "sha256": "dd6b6ce29f185787647722eeffad14d7ed38193171f16a2ead31aef3ac4c9454"
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a",
-            "source_vector_sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+            "source_vector_sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -18821,12 +18823,12 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             },
             {
               "path": "crates/jocforge-domain/src/timeline/clock.rs",
@@ -18861,7 +18863,7 @@
             {
               "path": "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
               "bytes": 9346,
-              "sha256": "7e8b23147ce9be9b9a19a518ec07d7b1d73bb5b2c60cdd04fe02fc8ff33e20a8"
+              "sha256": "373ec2fc5530dcb46a6fa0b984b55ee3e090f813b556497a3550546026d5fef3"
             },
             {
               "path": "crates/jocforge-domain/src/transform/secondary_carrier.rs",
@@ -18881,7 +18883,7 @@
             {
               "path": "crates/jocforge-domain/src/transform/secondary_overlap.rs",
               "bytes": 9455,
-              "sha256": "98be885981f5db91a648f46f96e37841cea097617989c3060edbd4d683701377"
+              "sha256": "c6c27fdcd28bbae1a778cd5ea12678311c91da07f5e395af03aa1051718f3c20"
             },
             {
               "path": "crates/jocforge-domain/src/transform/window_fold.rs",
@@ -20827,12 +20829,12 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             },
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
@@ -20978,12 +20980,12 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
@@ -21010,7 +21012,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
@@ -21936,7 +21938,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_analysis.rs",
@@ -21951,7 +21953,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/timeline/clock.rs",
@@ -21978,12 +21980,12 @@
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs",
@@ -22306,12 +22308,12 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/transient_channel.rs",
@@ -22333,12 +22335,12 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             }
           ]
         }
@@ -22403,8 +22405,13 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "approved_model_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
             "nonzero_composition_contract_sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d",
-            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
-            "validation_boundary": "Parses only the approved math-generated-v1 file identity and exact F08 dimensions/finite/permutation requirements. Historical D01-D04 identity is not claimed or required by this selected route."
+            "math_generated_provider_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+            "validation_boundary": "Parses only the approved math-generated-v1 file identity and exact F08 dimensions/finite/permutation requirements. Historical D01-D04 identity is not claimed or required by this selected route.",
+            "dee_window_table_candidate": {
+              "package_id": "SAMPLE6-EAC3-WINDOW-TABLE-CANDIDATE-V1",
+              "manifest_sha256": "6018113ec1c946272ac83ce74ce064a8685671803ba259c41c63487af8f09ba4",
+              "status": "STATIC_TABLE_MATCH_PCM_CAUSALITY_UNBOUND"
+            }
           },
           "test_modules": [
             "crates/jocforge-domain/tests/window_fold.rs"
@@ -22426,13 +22433,13 @@
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
               "bytes": 3771,
-              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+              "sha256": "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4"
             },
             "additional_fixtures": [
               {
                 "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 19159,
-                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
@@ -22514,7 +22521,7 @@
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "approved_model_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
-            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "math_generated_provider_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
             "validation_boundary": "Uses the separately validated math-generated-v1 provider; this is not historical D01-D04 table identity or native equivalence."
           },
           "test_modules": [
@@ -22536,13 +22543,13 @@
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
               "bytes": 3771,
-              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+              "sha256": "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4"
             },
             "additional_fixtures": [
               {
                 "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 19159,
-                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
@@ -22604,7 +22611,7 @@
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "approved_model_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
-            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "math_generated_provider_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
             "validation_boundary": "Uses only the selected math-generated-v1 tables. The historical D01-D04 identity is neither substituted nor claimed."
           },
           "test_modules": [
@@ -22627,13 +22634,13 @@
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
               "bytes": 3771,
-              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+              "sha256": "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4"
             },
             "additional_fixtures": [
               {
                 "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 19159,
-                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
@@ -22703,7 +22710,7 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "approved_model_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
             "approved_composition_spec_sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d",
-            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "math_generated_provider_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
             "validation_boundary": "Uses only the selected math-generated-v1 provider; historical D01-D04 identity and native equivalence are not claimed."
           },
           "test_modules": [
@@ -22725,13 +22732,13 @@
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
               "bytes": 3771,
-              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+              "sha256": "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4"
             },
             "additional_fixtures": [
               {
                 "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 19159,
-                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
@@ -22829,12 +22836,12 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             },
             {
               "path": "crates/jocforge-domain/src/transform/window_fold.rs",
@@ -22866,7 +22873,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             }
           ]
         }
@@ -23444,7 +23451,7 @@
             "transform_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
             "composition_spec_sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d",
             "exponent_spec_sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
-            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "math_generated_provider_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
             "validation_boundary": "Uses selected math-generated-v1 F08 spectra and F09 POWER bias 0/cap 48. It does not claim native coefficient identity or full F09/F10 completion."
           },
           "test_modules": [
@@ -23466,13 +23473,13 @@
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
               "bytes": 3771,
-              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+              "sha256": "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4"
             },
             "additional_fixtures": [
               {
                 "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 19159,
-                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
@@ -23971,7 +23978,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/gain_history.rs",
@@ -23998,7 +24005,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             }
           ]
         }
@@ -24300,7 +24307,7 @@
             "composition_spec_sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d",
             "exponent_spec_sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
             "normalization_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
-            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "math_generated_provider_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
             "policy_provider_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
             "validation_boundary": "Uses the identity-validated selected F09PA policy provider when requested; F09 controls remain explicit caller inputs."
           },
@@ -24324,13 +24331,13 @@
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
               "bytes": 3771,
-              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+              "sha256": "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4"
             },
             "additional_fixtures": [
               {
                 "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 19159,
-                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               },
               {
                 "file": "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json",
@@ -24485,12 +24492,12 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
               "bytes": 24724,
-              "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+              "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
             },
             {
               "path": "crates/jocforge-domain/src/codec/exponent_normalization.rs",
@@ -24522,7 +24529,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/tests/exponent_normalization.rs",
@@ -24883,7 +24890,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/codec/exponent_normalization.rs",
@@ -25701,7 +25708,7 @@
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
               "bytes": 99211,
-              "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+              "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -33675,8 +33682,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1964386,
-              "sha256": "add02ba469cdaf4e8072b2c6bdb7173fd55cb2240e5afacf72b2a366a1846c16"
+              "bytes": 1965683,
+              "sha256": "814c545c73eb3e1987ba1fb520cdee8c0931ed58c6fa3f1df52fca81e27b6c31"
             }
           ],
           "test_inventory": [

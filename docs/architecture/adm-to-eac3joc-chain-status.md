@@ -6,6 +6,12 @@
 
 ## 2026-11-02 范围与证据更新
 
+### DEE core PCM 差异：窗口表短向量试验
+
+sample-6 源提交 `216326f622e66f1f7b255dbe7a8bcfb8ca473ce2` 的 selected F32 window 与 R2 候选绑定的旧表一致：window words SHA-256 为 `45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23`。该提交的 CRLF provider SHA-256 为 `f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1`。Wash 候选 `SAMPLE6-EAC3-WINDOW-TABLE-CANDIDATE-V1` 的 manifest SHA-256 为 `6018113ec1c946272ac83ce74ce064a8685671803ba259c41c63487af8f09ba4`；它发现 256 项中有 12 项各相差 1 ULP。实现侧将这 12 项应用到当前 selected provider，当前 provider SHA-256 为 `963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c`，window words SHA-256 为 `097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2`。
+
+单点 `input[234]=1.0` fold 回归与重算后的 F08/F09、secondary-overlap 定向向量共 11 项通过。结果向量由当前 Rust 实现重算，仅验证本地路径和新参数身份。**还没有用新参数生成 DEE PCM 对照，也没有听感结果；这组 1 ULP 修正不能称为已改善或闭合 PCM 差异。**下一步只做同一 AU 区间的当前 Rust core PCM 与可安全取得的 DEE 4 秒参考对照，记录 run/source/input hash 及六通道 RMSE、peak；没有新参考时保留 PCM 因果性为未验证。
+
 用户确认：所有不涉及厂商机密的非音频行为均按 DEE 规则对齐，包含容器 CRC、ID11/ID14 与 downmix profile；私有 HMAC 采用 keyless 路径，不读取或使用私钥。验收比较常规解析结果和剥离私有 HMAC 后的音频 essence，非机密容器字段仍按 DEE 规则核对。当前 `hmac_sha256` 仅有定义与测试调用；生产完整编码链没有该函数调用。F14 选定 provider 使用 keyless CRC32/CRC8/CRC16。
 
 本轮收到并提交了两份 Wash 边界包：

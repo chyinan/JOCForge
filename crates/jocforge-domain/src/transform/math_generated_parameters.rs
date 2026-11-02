@@ -4,7 +4,7 @@
 use serde_json::{Map, Value};
 use sha2::{Digest, Sha256};
 
-const PROVIDER_SHA256: &str = "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1";
+const PROVIDER_SHA256: &str = "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c";
 const REQUIRED_FIELDS: [&str; 11] = [
     "window",
     "long_cosine",
