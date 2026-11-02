@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1903,
+      "name": "REPORT.md",
+      "sha256": "bce8478fbc187fca3b7575a5d9b0d18a426cd8186e12fff46721a1655da0e9da"
+    },
+    {
+      "bytes": 2267,
+      "name": "EVIDENCE.json",
+      "sha256": "24c72ccc9815353fa1c05e8f7095cf73142356da985a556f9fcf34f917734d70"
+    },
+    {
+      "bytes": 478,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "fe7cd0972470d31f6be0944c4350f3d611f82f7c08ce99c515da64e29e4e6324"
+    },
+    {
+      "bytes": 795,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "75371f0b4285cf013d5d613b253f8fff0f1ae47f35297c2ea6ed85f00fbd1802"
+    },
+    {
+      "bytes": 2127,
+      "name": "verify_package.py",
+      "sha256": "c53799355d5c77f4be9f14a692457bbed872c4b1b713620051db463d5f356b12"
+    },
+    {
+      "bytes": 1496,
+      "name": "seal_package.py",
+      "sha256": "22c22e2c8355a2d044dd3789f6f226ee3cbe13e08097374c1e924509fa453fdd"
+    }
+  ],
+  "package_id": "DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "LFE_STRIDE_SELECTOR_AND_TEMP_INPUT_STAGE_BOUND; SELECTED_BRANCH_AND_RUST_INPUT_JOIN_UNBOUND"
+}

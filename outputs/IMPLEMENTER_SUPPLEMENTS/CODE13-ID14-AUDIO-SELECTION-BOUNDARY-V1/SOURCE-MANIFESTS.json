@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "sources": [
+    {
+      "package_id": "code13_id14_control_row_consumption_wash_v1",
+      "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-2\\outputs\\code13_id14_control_row_consumption_wash_v1",
+      "manifest_sha256": "c1f01272c2ceb3dfd2be295b03065a1c9fa8ee043291be7b9b2bdd2dc043fa8a",
+      "package_seal_sha256": "7a40de622191a945c079faedfe29457b305edfdfb26f7eacb2996282d6b930e3",
+      "report_sha256": "98d1c3784034ee88f5779e7328c5e8d72759e2193e82df4523db3a12e9b0d510",
+      "evidence_sha256": "c4e22fbe4d00e80198eeb623c40f5a5b21a4e40e3c018f879c4d28a6e205740f",
+      "rule_vectors_sha256": "b135b81bdd093b6e28543edcd8707813d1f9bacd852f337dd500ebe5425e5314",
+      "source_manifests_sha256": "59815dcb6f1054ae576dbfdc0a213d915f42a1e3491fffd47692f0ec815a36f3",
+      "checker_sha256": "9d44539cf2699c25b14da51f4a623f7b9f11cbd1514eecdb2f510782f712452a",
+      "verification": "source package checker passed normally and with python -O; hashes independently recomputed; formulas and limits reviewed"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema":"jocforge.dee_lfe_stride_input_boundary.v1",
+  "status":"STRIDE_SELECTOR_AND_TEMP_INPUT_STAGE_BOUND; SELECTED_BRANCH_AND_RUST_INPUT_JOIN_UNBOUND",
+  "upstream_packages":[
+    {
+      "package_id":"DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+      "manifest_sha256":"eada50e01fca2cdefcd2b1b67a9f053f00b260ec7db2b637be6cb80df2abd1fa",
+      "sha256summaries":"verified in local implementation mirror"
+    },
+    {
+      "package_id":"dee_lfe_selected_stride_input_edge_wash_v1",
+      "manifest_sha256":"3666de856565a58014519f2c042838a653122707e0fdf9bfc803984647c584d9",
+      "sha256sums_sha256":"2e8d1ea5269063063fd509727e87162dbad9a7a12646354e8205e64e12dcdade",
+      "payload_count_verified":4,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS"
+    }
+  ],
+  "dee_native_input_path":{
+    "descriptor_array_writer":"FUN_140317600",
+    "descriptor_pointer_array_state_offset":"+0x12F0",
+    "descriptor_u16_stride_array_state_offset":"+0x1320",
+    "descriptor_stride_field_offset":"+0x0C U16",
+    "selected_descriptor_index":"layout_id*6 + internal_lane",
+    "lfe_internal_lane_when_present":"FBW_count",
+    "selected_stride_argument_to_lfe_transform":"arg1",
+    "zero_stride_branch":"cosine/sine recurrence",
+    "nonzero_stride_branch":"two 64-entry F32 tables",
+    "temporary_gather_function":"FUN_14036e350",
+    "temporary_state_offset":"+0x262E8",
+    "temporary_shape":"256 strided F32 values",
+    "same_temporary_passed_to_transform":true,
+    "temporary_is_original_bwf_row_pointer":false
+  },
+  "target_job_context":{
+    "route":"atmos_mezz -> encode_to_atmos_ddp",
+    "data_rate_kbps":1024,
+    "core_layout_id":"NOT_CAPTURED",
+    "descriptor_stride_value":"NOT_CAPTURED",
+    "sample_rate_in_matched_job_xml":"NOT_SPECIFIED",
+    "selected_native_stride_branch":"UNBOUND"
+  },
+  "rust_crosswalk":{
+    "zero_stride_formula_to_long_pre_rotation":"MATCH_CANDIDATE",
+    "nonzero_stride_to_rust_pre_rotation":"NO_DIRECT_MATCH_FOUND",
+    "native_temp_to_rust_folded_lfe_input":"UNBOUND",
+    "row3_to_native_core_lfe_lane":"UNBOUND",
+    "numeric_parity":"NOT_RUN"
+  },
+  "execution_scope":{
+    "dee_run":false,
+    "pcm_or_media_payload_access":false,
+    "key_or_license_access":false,
+    "production_allowed":false
+  }
+}

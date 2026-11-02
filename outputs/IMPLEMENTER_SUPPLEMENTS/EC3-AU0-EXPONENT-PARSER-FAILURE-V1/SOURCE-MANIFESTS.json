@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-washed-ec3-parser-source-manifests.v1",
+  "incoming_package_id": "ec3_first_au_parse_failure_wash",
+  "incoming_manifest_sha256": "fdf37f4459b3572f2925dff3e8f95f9f03d95be53cb839ed0ca8b0b89a93fb73",
+  "failed_rust_artifact": {
+    "name": "sample6-keyless-full-20261101-10.ec3",
+    "sha256": "593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473",
+    "bytes": 17395712,
+    "file_copied": false
+  },
+  "dee_static_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "source_code_or_binary_copied": false,
+  "decompilation_copied": false,
+  "pcm_or_audio_payload_copied": false,
+  "private_key_or_license_material_copied": false
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-washed-atmos-joc-row-handoff-sources.v1",
+  "incoming_package_id": "atmos_joc_multichannel_row_handoff_wash_v1",
+  "incoming_manifest_sha256": "d926de87e639bb9e9201ece1f5f7ec70e943e7f03e2167b5c582aad9bc7cfffe",
+  "incoming_package_seal_sha256": "8c5358856f2d95e391cb7f19d7e504819f45981f4f03751f9764d60157fb4430",
+  "target_image": {
+    "source_id": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "referenced_source_hashes_checked": 23,
+  "referenced_source_hash_mismatches": 0,
+  "authorized_input_receipts": [
+    {"sample_id":"First Love","sha256":"db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335","channels":36,"disposition":"quiet window; excluded from active-audio behavior count"},
+    {"sample_id":"Hortus Regis Alti","sha256":"591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e","channels":36,"disposition":"one prior active source window"}
+  ],
+  "source_files_copied": false,
+  "binary_or_decompilation_copied": false,
+  "audio_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "AUTHORIZED-ADM-36-38-OBJECT-BED-CROSSWALK-V1",
+  "manifest_sha256": "8dd3769836cbad7df2048fba3dc274dc0345a72a4fc762aeb0de72254d5dcb73",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "6fb5a3dbf45f721ce32f804d1c013580fd2ae7346355c99e402b783e03d0e78f",
+      "bytes": 1786
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "d4b8c8332261698ec9466eba92c0a459153b695c6b616cdb7206ea4ecf6a80eb",
+      "bytes": 3442
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "30b61f866e95ffd1e38898af707903f465b027d37c8a009dcb83a158d5f9835b",
+      "bytes": 1038
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "e4387630cb91661ea3c71828b485a87ad54670b1c5da179be52272a82118f349",
+      "bytes": 2602
+    }
+  ],
+  "scope": "Metadata-only ADM bed/object row type crosswalk; PreparedJobInput identity and end-to-end encoding remain unbound"
+}

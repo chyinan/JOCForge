@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge-washed-f13c-dmixmod-input-contract.v1",
+  "scope": "ATTEMPT10 JOC JOB INPUT AND SOURCE-LEVEL BSI MAPPING; NO NATIVE DSP EFFECT CLAIM",
+  "status": "BEST_SUPPORTED_NO_PROMPT_LORO_TEMPLATE; NATIVE_ENUM_TO_DSP_EFFECT_UNBOUND_NONBLOCKING_FOR_INPUT_CONTRACT",
+  "implementation_trial_ready": true,
+  "production_frame_observation_established": false,
+  "source_package": {
+    "package_name": "F13C-dmixmod-first-dsp-consumer-addendum-v29",
+    "manifest_json_sha256": "f0c42ba60d2de6105e2662c10b14dc4b22cdd4cd9b9069068010233159916cfa",
+    "sha256sums_file_sha256": "19500740c93a8f1680a2aeddd43d15b6aed9926ac3ae0a4be428e6921ea45406",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "input_contract": {
+    "authorized_adm_metadata_samples": 7,
+    "adm_axml_preferred_downmix_matches": 0,
+    "dme_optional_preference_control": "inactive and omitted by the DME request builder",
+    "selected_attempt10_template_preference": "loro",
+    "selected_attempt10_template_levels_db": [-3,-3,-3,-3],
+    "user_prompt_required": false,
+    "template_values_source_supported": true
+  },
+  "source_level_bsi_mapping": {
+    "source_bridge_sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e",
+    "source_frame_bridge_sha256": "52b3720afe1a6bcf60f1fe9fff7697430a6a0c10c40a0df56a5d712e290cd12f",
+    "selected_frame_trial_sha256": "86becc93089f7bfe4d33b2462e2846c52b2bfc21e694055a264589fafa07fd85",
+    "frame_builder_sha256": "170e3f220a795abfff5d296e8b53a8436b621e547c064e3aa3d4a781217c3829",
+    "job_config_parser_sha256": "e9dc17cc36e5398a7863ec66cd681f31b2a8cc6f67f6485857e9b7874578121c",
+    "source_mapping": {"dmixmod":2,"level_codes":[4,4,4,4]},
+    "attempt10_runtime_frame_bits_observed": false
+  },
+  "native_static_boundary": {
+    "ghidra_project_recorded_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_installed_image_rehashed": false,
+    "parser_function": "FUN_1404ecea0",
+    "validator_function": "FUN_1404dddd0",
+    "first_reached_consumer": "FUN_1404807d0",
+    "first_reached_consumer_kind": "generic name/value/error result tree; no downmix field read in traced body",
+    "native_preferred_downmix_literal_direct_xrefs": 0,
+    "native_enum_tokens": ["not_indicated","pro_logic","stereo","pro_logic_ii"],
+    "loro_to_native_ddp_dmixmod": "UNBOUND",
+    "native_enum_audio_effect": "UNBOUND",
+    "omission_default": "UNBOUND",
+    "native_dsp_consumer_found": false
+  },
+  "impact_and_limits": {
+    "input_contract_mvp_gate": false,
+    "encoder_launched": false,
+    "media_or_pcm_read": false,
+    "private_key_read": false,
+    "official_attempt10_output_opened": false,
+    "native_dsp_or_postmix_audio_equivalence": "UNBOUND"
+  },
+  "payload_policy": {
+    "implementation_source_included": false,
+    "binary_or_decompilation_included": false,
+    "media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-DEE-OMITTED-DOWNMIX-VS-RUST-CONFIG-V1",
+  "source_reverse_manifest_sha256": "cfaec056f570eec6d2a1d985bd3544df30eac446f89140ace9fa551448703415",
+  "status": "DEE_INACTIVE_INPUT_OMITTED; RUST_SELECTED_INPUT_EXPLICIT; NATIVE_EFFECTIVE_DEFAULT_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2325,
+      "sha256": "d216d0c2b74a0553419f4e5fc5308cc931c0a726a7cfae21ed30adaa3c5fb3d3"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 866,
+      "sha256": "7a05f05a6233e6e1c9197d0103eca978cecb561733e2973c01c8adca32e6fd53"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2430,
+      "sha256": "1555c37ac8ad138ecd508fed3bd6c5844ba03a6a42c6dcc0063a4a1bf1bef050"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1211,
+      "sha256": "cdce355d623f306024999cffa9c7ee5193e159977749fe3a0ac068f86a3852bf"
+    }
+  ]
+}

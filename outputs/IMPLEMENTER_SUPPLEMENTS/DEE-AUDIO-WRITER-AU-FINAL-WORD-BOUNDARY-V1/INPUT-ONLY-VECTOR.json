@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-dee-word-boundary-symbolic-vector.v1",
+  "scenario": "one output unit with pending MSB-aligned accumulator bits",
+  "cases": [
+    {"cursor_bits": 0, "finalizer_success": true, "expected_residual_word_store": false},
+    {"cursor_bits": "1..15", "finalizer_success": true, "expected_residual_word_store": true, "store_width_bits": 16, "low_padding_bits": "zero-filled"},
+    {"cursor_bits": "1..15", "finalizer_success": false, "expected_residual_word_store": false}
+  ],
+  "execution": "NOT_RUN",
+  "product_au_or_audio": false
+}

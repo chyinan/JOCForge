@@ -1,0 +1,21 @@
+{
+  "schema": "rust-window-fold-current-provider-vector.v1",
+  "vector_id": "one-hot-window-fold-current-provider",
+  "input": {
+    "word_count": 256,
+    "default_f32_bits": "00000000",
+    "nonzero": [{"index": 234, "f32_bits": "3f800000"}],
+    "primary_history": {"word_count": 128, "f32_bits": "00000000"},
+    "companion_history": {"word_count": 128, "f32_bits": "00000000"}
+  },
+  "provider": {
+    "file_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+    "window_words_sha256": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+    "index_21_f32_bits": "3c0ea5aa"
+  },
+  "expected_current_rust_output": {
+    "primary_index_107_f32_bits": "3c0ea5aa",
+    "companion_index_106_f32_bits": "bc0ea5aa"
+  },
+  "classification": "INPUT_ONLY; CURRENT_RUST_TARGETED_TEST_PASS; NOT_A_MATCHED_DEE_PCM_COMPARISON"
+}

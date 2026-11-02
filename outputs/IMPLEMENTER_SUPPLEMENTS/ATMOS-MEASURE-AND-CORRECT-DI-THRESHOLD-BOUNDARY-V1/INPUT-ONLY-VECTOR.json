@@ -1,0 +1,9 @@
+{
+  "schema":"jocforge.measure_and_correct_di_boundary_vector.v1",
+  "vector_id":"MEASURE-AND-CORRECT-THRESHOLD-VS-PCM-SCALE",
+  "mode":"measure_and_correct",
+  "meter_parameter_handler_invoked":true,
+  "pcm_scale_and_md_update_branches_exist":true,
+  "threshold_to_pcm_scale_or_md_update":"UNBOUND",
+  "execution":"NOT_RUN"
+}

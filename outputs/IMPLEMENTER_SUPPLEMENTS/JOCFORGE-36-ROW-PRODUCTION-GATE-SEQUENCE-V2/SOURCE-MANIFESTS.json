@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "ADM-36-PRODUCTION-CLI-BOUNDARY-AUDIT-WASH-V1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-03\\jocforge-reverse-agent-5\\outputs\\ADM-36-PRODUCTION-CLI-BOUNDARY-AUDIT-WASH-V1",
+    "manifest_sidecar_sha256": "a00d3e90a286c79b4d6de6cbf01f284b59a1acfb77723784fd2980c3e6f3b592",
+    "package_seal_sha256": "f770a0e7b6f9e8d859969c8d62f9d808c9a36a20ee79724edbafa57c370aed0a",
+    "report_sha256": "f542b84956f133cfaf49482517ff0c6c2d492da90c5cc153a02161d825db1f2e",
+    "post_g0_inventory_sha256": "bbd7044ac3154f8aa524efe693fa0dd72f55f3045b4e7cded666b628ce4a1e08",
+    "source_manifest_sha256": "8098695dccc7dd63c7395fefed6308bba231e6ed36630bfef61e82fbd132b3d7",
+    "verified_current_head": "2f23885008cd789a5b17b639a1a3737b2ad87273",
+    "current_source_recheck": "50 listed files match the audited source manifest; only docs/architecture/adm-to-eac3joc-chain-status.md differs",
+    "eight_referenced_manifests": "independently rehashed and matched"
+  },
+  "excluded": [
+    "source code contents",
+    "WAV/PCM chunks",
+    "EC-3 payload",
+    "private keys",
+    "licenses"
+  ]
+}

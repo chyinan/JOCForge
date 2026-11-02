@@ -1,0 +1,90 @@
+{
+  "schema": "jocforge.di_threshold_matched_control_result.v1",
+  "status": "MATCHED_CONTROL_MEASUREMENT_DIFF; ENCODED_BYTES_DIFFER; PCM_AUDIO_DIFF_NOT_RUN",
+  "scope": "DEE matched-control measurement result only; encoded bytes hashed but not decoded; no PCM/audio parity claim.",
+  "source_package": {
+    "manifest_sha256": "af72ee51a85eb1d1db1f6c09f9e66e4304c929f106d64d5afe45312f6b16869f",
+    "report_sha256": "456c4d41e6385690f078613ab3f946448309e1375eb8c33822c8f6800ac8be10",
+    "results_sha256": "78953690a6e44a0b831ab28b80325d3aed801e444b6a65bd53611ddd62c88a05",
+    "source_manifests_sha256": "2b202dd8602a98adf83e364a32a20339386a2e60a31cf70e2b7f7501d59615c8",
+    "checker_sha256": "bf8950b3232e97d2789464df335e95b099874b1928fa59864c9e0d5930d5c81d",
+    "checker_result": "passed normally and with python -O"
+  },
+  "input": {
+    "authorized_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_bytes": 743696526,
+    "dialogue_intelligence": true,
+    "job_xml_only_difference": "measure_only/speech_threshold",
+    "job_xml_sha256": {
+      "threshold_15": "1e5b5723e812b787b4db9059a596c559bedd5e6559e1782aed0e4bb64ae294b0",
+      "threshold_100": "3fb676ca63e4c987038a1206e641f3f071eedcc2e653c214093ead3da63ef7aa"
+    }
+  },
+  "measurement_results": {
+    "threshold_15": {
+      "exit_code": 0,
+      "measurement_done": true,
+      "final_integrated_loudness": -25.022484,
+      "measured_loudness": -25.02,
+      "gating": "dialogue",
+      "speech_percentage": 61.16,
+      "dialogue_loudness": -25.02,
+      "itu_loudness": -16.78,
+      "loudness_range": 5.73,
+      "sample_peak": -4.13,
+      "true_peak": -3.95,
+      "eac3_bytes": 17395712,
+      "eac3_sha256": "315c6a4bdc9b0d1317466d06c39b1809ce992c6d6b17997d82ca08aeebecf8a2"
+    },
+    "threshold_100": {
+      "exit_code": 0,
+      "measurement_done": true,
+      "final_integrated_loudness": -16.784912,
+      "measured_loudness": -16.78,
+      "gating": "level",
+      "speech_percentage": 61.16,
+      "dialogue_loudness": -25.02,
+      "itu_loudness": -16.78,
+      "loudness_range": 5.73,
+      "sample_peak": -4.13,
+      "true_peak": -3.95,
+      "eac3_bytes": 17395712,
+      "eac3_sha256": "d0ae11e6da06b73ef5cb0320da56f8093a6998b6ca5f2b24ddc8b01335a877fe"
+    }
+  },
+  "comparison": {
+    "measurement_values_differ": [
+      "final_integrated_loudness",
+      "measured_loudness",
+      "gating"
+    ],
+    "other_reported_scalars_equal": [
+      "speech_percentage",
+      "dialogue_loudness",
+      "itu_loudness",
+      "loudness_range",
+      "sample_peak",
+      "true_peak"
+    ],
+    "eac3_byte_hashes_differ": true,
+    "pcm_extracted_or_compared": false,
+    "audio_effect_of_threshold": "NOT_ESTABLISHED_BY_THIS_TEST"
+  },
+  "attempt_scope": {
+    "sandbox_original_path_exit_codes": [
+      3221225477,
+      3221225477
+    ],
+    "sandbox_ascii_alias_exit_codes": [
+      3221225477,
+      3221225477
+    ],
+    "escalated_ascii_alias_exit_codes": [
+      0,
+      0
+    ],
+    "private_key_or_license_read_or_exported": false,
+    "raw_dee_logs_retained": false,
+    "raw_pcm_or_eac3_bytes_in_this_supplement": false
+  }
+}

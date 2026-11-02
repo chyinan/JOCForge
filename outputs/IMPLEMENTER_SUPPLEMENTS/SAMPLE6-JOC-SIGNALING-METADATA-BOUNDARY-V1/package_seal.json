@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-JOC-SIGNALING-METADATA-BOUNDARY-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2996,
+      "sha256": "ff641f431c56a63aeeebe73241d3c1b8102e97cfb6cdc0351791a68d6b04efb9"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2131,
+      "sha256": "ad9c986e4e26fd6bbd49d18876c948ec28c30e53e392d035b0c41a5ccb51e050"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 422,
+      "sha256": "fd863f3539ab0cb51f4c610437ac477b3ca2205619a163c3768aea5ba726bff8"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 796,
+      "sha256": "04f65bc6d52b411df47c6921546574b0d8a3c448acb44ba73e4ce3e2cd4781e7"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1239,
+      "sha256": "dde8bab477b31f78553686db9c94937c7874fe5aa0b8d8818d6edac2854cf21f"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "b21e1dd6aee6584162b4df7f3ce338586d069212f29da9d5bf5706402d881843"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-JOC-HOST-TO-PLUGIN-SELECTOR-BOUNDARY-V1",
+  "source_reverse_package_id": "atmos_joc_host_renderbus_producer_boundary_wash_v1",
+  "source_reverse_manifest_sha256": "7c4cc1e54fcb81cbce5281d57934ce9b4daa2c5d8cbd1867752e164f3490089c",
+  "source_reverse_package_seal_sha256": "244d8b98540b90ef1d471819c72ce73fc6d32a97820ca1f8a6830fbc62853b53",
+  "status": "HOST_ATMOS_PLUGIN_EDGE_BOUND; ID0_RENDERBUS_PRODUCER_BEYOND_HOST_EDGE_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3237,
+      "sha256": "f63e87fe54f1df2778e2b4a65ab97bd4770e47cfd0fc8dff603c03843f4164a6"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2902,
+      "sha256": "1274ec5177248749592212a835e02908475fb4213ab204037ecc114c8270ef04"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 488,
+      "sha256": "b78fd5ba054eb18e0ab394ec0ced3d850087acd358757b18537213ef46bb3432"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1364,
+      "sha256": "39d2a1ed2bc4dc3a9e057d3899b6e83878c7463f53e02a54323a1b3a26a7f605"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

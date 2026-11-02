@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-BAP3-RAW7-CAPTURE-PLAN-V2",
+  "manifest_sha256": "0a8594b8d57f30432efaac8e67aec91dfd7f4eb2436d92e352e376f5b6352c2c",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "1bc33de222c562fdc463a794e74c18a799ce668b0d0cbc1f9044611528b33cec",
+      "bytes": 2643
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "03beacd547d54fa42813d5826c894f39bb2cf17ee375f682935c448e5dfbb1c0",
+      "bytes": 3459
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "5c375c38831f4ff34966297fffbdf4969aad8f978f160a2934cf474e3d98b783",
+      "bytes": 311
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "7bf800c1b83dee07897aa0a7e4d0eec658558686bbcefe40151c00774e674fb2",
+      "bytes": 989
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "a2d656b2ec611af257ae9c517b973b9a5b2756ffe092cac98b9bcd7a9b904d62",
+      "bytes": 2182
+    }
+  ],
+  "scope": "Static capture plan only, all three confirmed BAP3 routes; no native hit result or algorithm change"
+}

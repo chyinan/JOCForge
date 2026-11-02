@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-CORE-DISPATCH-CONSUMER-BOUNDARY-V1",
+  "manifest_sha256": "decd17aeaddc36423c8fa4aad6cf1562ee3eee2dc2c990075ce8a3cbc9cd67bc",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "085d0dd5fe1dcc05bbfb5fa79a8842f0be8df9820609d3479734ceef2f4f9824",
+      "bytes": 2229
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "d97a042be207d509d84f6186278b1bfc6db0e6e9adc612cdb20362d9325e7d92",
+      "bytes": 3736
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "f978022d32fee25e71fe89b4dc603744f0eba37454d45998712db1e8a1635580",
+      "bytes": 906
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "7ce71db3577ba3173e2a7c6eb69362fdea3c73b4c05cf32bae2807d10464c123",
+      "bytes": 1057
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "456b9abb0f56b9cfe3b5b9d2124e1d3067b02e93939df194c3170100366d9d0d",
+      "bytes": 2055
+    }
+  ],
+  "scope": "Sanitized static dispatch/owner boundary; no runtime row values or algorithm rule"
+}

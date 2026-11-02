@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-JOC-ROW-TO-RENDERER-HANDOFF-V1",
+  "source_reverse_package_id": "atmos_joc_multichannel_row_handoff_wash_v1",
+  "source_reverse_manifest_sha256": "d926de87e639bb9e9201ece1f5f7ec70e943e7f03e2167b5c582aad9bc7cfffe",
+  "status": "BEST_SUPPORTED_PLANAR_ROW_HANDOFF_BOUND; RENDERER_PROCESS_BOUND; INNER_TRANSFORM_TARGET_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2824,
+      "sha256": "d450e89a2accf9400861c132e0da96c17bce3dd0ea7d1cd4a8b01a40a191db3a"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2799,
+      "sha256": "b359dfa5711d481ba6aba65d057f4045e40d9b44b2babae2dc7e4203168f95bc"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 744,
+      "sha256": "38e00f416d392024aee40d41d64115857dc7432fbaa36f618094a7de4d16dd51"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2519,
+      "sha256": "1765d1b18e4392ee1f20a9f5fd0f4073f99d1334b6f9ebcc70372207f42b358e"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1144,
+      "sha256": "e3b9da58b78395e19921a45db1f198eb89c2acfdc91745ff7fbaf6f9b8f20f5c"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1235,
+      "name": "REPORT.md",
+      "sha256": "547069d6e61bae197edd26ed202d78355db3b2240f8d7a5a34c296d586ea3dcb"
+    },
+    {
+      "bytes": 1621,
+      "name": "EVIDENCE.json",
+      "sha256": "feeb50051658c3d8461a20e95c5f194b4f86ba63f7b743301e2cc364af14ce34"
+    },
+    {
+      "bytes": 346,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "147cac94d76744c8c711dfa5331666ecc01f409f4f0af82a6bb4d0a861cd486d"
+    },
+    {
+      "bytes": 592,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "9e925482d1ffd227fcf4bc7bce93c5e03ea0c2bfa4590264abc9c6670574c2e4"
+    },
+    {
+      "bytes": 2001,
+      "name": "verify_package.py",
+      "sha256": "f76c8400523fe71b1f45911ed3b228e7386a94b2bbfc6c365d6b8ebad9a274bc"
+    },
+    {
+      "bytes": 1462,
+      "name": "seal_package.py",
+      "sha256": "9e15b752de4ecb91c0eea31fba05b76a86579210b6b9cef88b4dbed5b70d1eab"
+    }
+  ],
+  "package_id": "ATMOS-LINE-DRC-FILM-LIGHT-U32-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "FILM_LIGHT_TREE_U32_BOUND_ZERO; DOWNSTREAM_LINE_DDP_COMPR_JOIN_UNBOUND"
+}

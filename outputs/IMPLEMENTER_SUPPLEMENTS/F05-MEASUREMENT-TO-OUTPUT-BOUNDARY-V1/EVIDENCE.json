@@ -1,0 +1,88 @@
+{
+  "schema": "jocforge.f05_measurement_and_pcm_boundary.v1",
+  "status": "STATIC_F06_F13_PATHS_BOUND; MATCHED_PCM_WINDOW_NONIDENTICAL; FULL_TRACK_AUDIO_PARITY_UNBOUND; USER_REPORTED_ARTIFACT_UNJOINED",
+  "scope": "Verified static source lineage and prior in-memory PCM-window metrics only; no new encode, decode, PCM capture, or listening test.",
+  "source_packages": [
+    {
+      "package_id": "f05_f06_f13_measurement_lineage_closure_wash_v1",
+      "manifest_sha256": "0a7bdfaf902c40e8ee0095f9fdd021d69fdb451c8a9cfcc97dd740279547823b",
+      "source_head": "6369e49ff518d478913c113b53140b1cade07e1d",
+      "current_implementation_head_observed": "2f23885008cd789a5b17b639a1a3737b2ad87273",
+      "current_source_relation": "Wash rehashed all 17 listed Rust source files against current HEAD 2f23885008cd789a5b17b639a1a3737b2ad87273; all 17 match",
+      "report_sha256": "78d24a193a7869c4aa2535cda685d03717cf9a3617551fbe3e551bf6d093f679",
+      "evidence_sha256": "370682b9a094ce6102f55c8dcaaa44475d32f50e8f8ead48f719ca51a15a4109",
+      "source_manifests_sha256": "12589e00072bd7cf658aa091615a936dc566602f3a94215e83d41762c3af5680",
+      "verification": "Wash recomputed 17 selected Rust file hashes at HEAD 6369e49ff518d478913c113b53140b1cade07e1d"
+    },
+    {
+      "package_id": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1",
+      "manifest_sha256": "6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750",
+      "evidence_sha256": "7302e7e101bc114a54eacbead0ef537cd3f4a0332a2899b06428f3b6bedff813",
+      "comparison_metrics_sha256": "d9d4dd304508c448344ed89a7725f07287b112a45fa7861cd98f99380b411221",
+      "drc_scale_control_sha256": "53cbf76bfca55a41a62d84cac80df6f539722087f15b9bbb9cbabc1866ac7466",
+      "verification": "parent package checker passed normally and with python -O; no raw PCM/payload included"
+    }
+  ],
+  "static_measurement_consumers": {
+    "f06": {
+      "input": "ProgrammeMeasurementReceipt.selected_lufs_word",
+      "path": "dialnorm_from_selected_lufs -> same-source DRC bind -> SelectedBsiDrcWriter",
+      "destination": "standard EC3 BSI DialNorm U5, bit offset 45",
+      "evidence_tier": "STATIC_TYPED_SOURCE_PATH"
+    },
+    "f13": {
+      "inputs": [
+        "public_result_kind",
+        "ITU loudness",
+        "dialogue loudness",
+        "true peak"
+      ],
+      "path": "ID1 projection -> MetadataOwner timer -> ID1 queue -> validated pop -> EMDF serialization",
+      "evidence_tier": "STATIC_TYPED_SOURCE_PATH"
+    },
+    "same_run_receipt_to_output_bytes": "NOT_CAPTURED",
+    "measurement_receipt_has_common_callback_transaction_id": false
+  },
+  "matched_full_file_pcm_window": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_ec3_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_ec3_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "output_shape": {
+      "sample_rate_hz": 48000,
+      "channels": 6,
+      "bitrate_kbps": 1024,
+      "au_count": 4247,
+      "bytes": 17395712
+    },
+    "window": {
+      "au_interval_half_open": [
+        2750,
+        2875
+      ],
+      "sample_interval_half_open": [
+        4224000,
+        4416000
+      ],
+      "frames_per_channel": 192000
+    },
+    "decoder_channel_3_rmse_drc_scale_1": 0.0054772282019257545,
+    "decoder_channel_3_rmse_drc_scale_0": 0.005454088662868509,
+    "other_channels": "reported below 0.0005 at DRC scale 0",
+    "status": "CLOSE_BUT_NOT_IDENTICAL; channel 3 dominates; cause unbound"
+  },
+  "separate_outputs": {
+    "later_rust_ec3_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "later_rust_source_commit": "216326f622e66f1f7b255dbe7a8bcfb8ca473ce2",
+    "later_full_decode_only": "PASS",
+    "fresh_same_input_dee_audio_comparison": "NOT_RUN",
+    "user_reported_unreadable_rust_artifact_sha_input_job": "NOT_CAPTURED; not joined to either output above"
+  },
+  "limits": {
+    "not_full_track_pcm_equality": true,
+    "not_atmos_renderer_or_listening_parity": true,
+    "no_pcm_or_payload_in_supplement": true,
+    "no_private_key_or_license": true
+  },
+  "next_minimal_step": "Use the currently generated candidate with the same input/XML only after its exact hashes are recorded; join one same-run F06/F13 receipt to output, then compare full decoded audio or a longer identified window. Keep channel-3 mismatch as the leading audio candidate, not a proven cause."
+}

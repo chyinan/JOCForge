@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge-sample6-keyless-dee-reference-gate.v1",
+  "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V1",
+  "status": "DEE_REFERENCE_AND_COMPARISON_NOT_RUN; KEYLESS_LAUNCH_NOT_DEMONSTRABLY_SAFE",
+  "source_package": {
+    "package_id": "sample6-dee-keyless-reference-20261102",
+    "manifest_sha256": "3070124494fcbfdf8d5da3e0578535005266c512892ce2b39b1bf198891c8722",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "keyless_dee_run": "NOT_RUN"
+  },
+  "license_gate": {
+    "document": "Dolby Encoding Engine 2.3 User's Guide",
+    "document_sha256": "0825112c5b956a9e3d6a6c81ba06cb762181e51295c178fdddba362acd22661e",
+    "pages": [15, 17],
+    "documented_behavior": "DEE requires a product license and automatically searches the application folder or DEE_PLUGIN_PATH; --license-file selects a non-default path.",
+    "decision": "No dee.exe invocation without proof it cannot open installed license/key material; no license path or key was passed or read."
+  },
+  "current_jocforge_output": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "output_bytes": 17395712,
+    "profile": {"codec": "E-AC-3 JOC", "sample_rate_hz": 48000, "bit_rate_bps": 1024000, "channels": 6, "layout": "5.1(side)", "duration_seconds": 135.904},
+    "ffprobe_whole_stream_parse": "PASS",
+    "ffmpeg_decode_only_exit_code": 0,
+    "ffmpeg_decode_errors": "NONE",
+    "pcm_persisted": false
+  },
+  "audio_difference_status": {
+    "fresh_dee_output": "NOT_RUN",
+    "pcm_comparison": "NOT_RUN",
+    "bsi_comparison": "NOT_RUN",
+    "old_python_or_control_group_used": false,
+    "audio_equivalence": "NOT_ESTABLISHED"
+  },
+  "observed_rust_fields": {
+    "u5_dialnorm": 17,
+    "same_input_dee_receipt_u5": 21,
+    "rust_selected_lufs_input_present": false,
+    "measurement_unit": "UNBOUND",
+    "bsi_fields_as_reported_by_wash": {"dmix_mode": 0, "ltrt_cmixlev": 0, "ltrt_surmixlev": 0, "loro_cmixlev": 0, "loro_surmixlev": 0},
+    "local_ffprobe_numeric_bsi_fields_exposed": false
+  },
+  "constraints": {
+    "dee_invoked": false,
+    "license_or_private_key_read": false,
+    "license_or_private_key_passed": false,
+    "pcm_persisted": false,
+    "implementation_contacted_by_research": false
+  }
+}

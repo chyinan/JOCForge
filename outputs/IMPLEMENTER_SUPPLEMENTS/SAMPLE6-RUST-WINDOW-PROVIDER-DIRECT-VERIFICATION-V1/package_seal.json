@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-RUST-WINDOW-PROVIDER-DIRECT-VERIFICATION-V1",
+  "manifest_sha256": "8fba13724421e217aa6c4144c74fb037cf3b5fcd134e89f2a42652c019ae2339",
+  "sha256sums_sha256": "adff95a597f1c18a8f8820fa6d11e7a1bae497d6aedc307eff555b2cdefb934c",
+  "payload_count": 5,
+  "status": "CURRENT_PROVIDER_DIRECTLY_REHASHED_MATCHES_NATIVE; HISTORICAL_BASELINE_SUPERSEDED; MATCHED_LFE_LINEAGE_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-washed-atmos-processor-38ch-admission.v1",
+  "scope": "ATMOSPROCESSOR DESCRIPTOR CHANNEL-COUNT AND FRAME-CAPACITY GUARD",
+  "status": "GUARD_RULE_BOUND; HANMAO_RUNTIME_DESCRIPTOR_VALUE_NOT_OBSERVED",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "atmos_processor_38ch_guard_wash_v1",
+    "manifest_sha256": "a5c7cfa973fccdcbbd38bd4a85ad5e3132acd585628257ca2bb34d315b0fe5ae",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "sealed_file_count": 16
+  },
+  "native_image": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464,
+    "tool": "Ghidra 12.2"
+  },
+  "channel_guard": {
+    "process_function_rva": "0x18ae20",
+    "descriptor_channel_count_offset": "0x08",
+    "configured_count_state_slot": 4,
+    "expected_count_source_function": "FUN_18018a750",
+    "expected_count_source": "u16(master_descriptor+0x0A)",
+    "master_descriptor_channel_write_function": "FUN_180186870",
+    "master_descriptor_channel_field_offset": "0x0A",
+    "guard_rule": "descriptor.channel_count == configured_count",
+    "hard_coded_36_channel_maximum": false
+  },
+  "frame_guard": {
+    "descriptor_frame_count_offset": "0x10",
+    "processor_capacity_state_slot": 0,
+    "frame_count_must_not_exceed_capacity": true,
+    "accepted_initialized_sizes": [512,1536],
+    "flush_size": 0,
+    "selected_profile_frame_samples": 1536
+  },
+  "hanmao_metadata": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "channels": 38,
+    "chna_rows": 38,
+    "sample_rate_hz": 48000,
+    "valid_bits": 24,
+    "metadata_only": true,
+    "runtime_descriptor_channel_count_observed": false,
+    "runtime_frame_capacity_observed": false
+  },
+  "sample_metadata_coverage": {"authorized_inputs":7,"rows_36ch":6,"rows_38ch":1,"chna_rows_total":254},
+  "payload_policy": {"source_code_included":false,"binary_or_decompilation_included":false,"audio_or_pcm_included":false,"private_key_or_license_material_included":false}
+}

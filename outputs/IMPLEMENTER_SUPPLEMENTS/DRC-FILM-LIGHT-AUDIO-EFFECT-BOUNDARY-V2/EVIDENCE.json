@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.line_drc_audio_effect_boundary.v1",
+  "status": "FILM_LIGHT_PROFILE_SNAPSHOT_U32_BOUND; ENCODER_LINE_ENUM_PATH_BOUND; PROFILE_TO_ENCODER_AUDIO_EFFECT_UNBOUND; CONTROLLED_PCM_COMPARISON_NOT_RUN",
+  "scope": "Static Ghidra 12.2 plugin/property/encoder path; no DEE property submission or PCM comparison.",
+  "source_package": {
+    "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256": "ce3c2a1dfcca08986e6eaaed1c6f115cbc68fb8c1a887931230ab67c45415af3",
+    "package_seal_sha256": "895811a3b60e80d736fb05e44c7633db039d0c95734e1e4ae3ad55fdb29966f7",
+    "audio_effect_boundary_sha256": "add2e80b001f6a58d1bb1a8e77c9633dabed0654914a9ea21487b8c8b0808e05",
+    "value_path_sha256": "135e6992225c3d090b5a4636e6ab0b89664e87df91b7c4feba1785a4d5debcff",
+    "u32_join_sha256": "e7c1bb5acdaa6203228bcde5d7fb8c5202e34ef37c5b7b1630dfa552d7bf1df9",
+    "tree_initializer_sha256": "e0a26ae42812d54fa9918bd44c2ac2026e2388ffa5a553702311b130e8bc2d61",
+    "report_sha256": "7261ebc59188a33234e844b97955f7cb4d0a870b0205aede6e4025ea03ab9ab2",
+    "evidence_sha256": "10784c50fde2ca61c7e0adcca0b5f8db5b81fcf5c02641f8ee1ebe0de631a02b",
+    "source_manifests_sha256": "7276bbad4cb87ae5128560150bedb0492c6eb7734cc03be53bbef8c55012c092",
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "observed_paths": {
+    "line_profile_input": "authorized XML requests line_mode_drc_profile=film_light; its one-time derivation is marked NOT_STARTED",
+    "profile_tree_value": "DLL CRT initializer maps film_light to U32 0",
+    "snapshot_consumer": "FUN_1801535b0 writes the looked-up U32 to a property/status result at param_2+0xa0; resolved direct callers route through formatting/status handlers",
+    "encoder_input": "separate encoder setup calls FUN_180178dc0, which reads raw Line enum param_1[1]",
+    "encoder_destination": "FUN_1801aa730 writes param_1[5] U32 to param_3+0x28",
+    "missing_join": "no field/argument edge binds snapshot param_2+0xa0 to encoder FUN_180178dc0 param_1[1]"
+  },
+  "best_supported_rule": "film_light -> profile snapshot U32 0 is statically supported; its effect on the final E-AC-3 DRC word is not established.",
+  "limits": {
+    "dee_run": false,
+    "matched_drc_a_b_run": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "decoded_audio_effect": "NOT_ESTABLISHED"
+  },
+  "next_minimal_experiment": "Run same ADM and same XML twice with only line_mode_drc_profile changed from film_light to none; capture outputs and compare decode-only PCM in memory using OpenJOC, without storing PCM. Treat byte-hash differences alone as non-audio proof."
+}

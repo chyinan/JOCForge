@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-eac3-exponent-producer-input-only-v1",
+  "grade": "SYNTHETIC_ARITHMETIC_ONLY",
+  "native_dee_observation": false,
+  "native_adm_lane_binding": false,
+  "vectors": [
+    {"id":"zero_differences","sampled_exponents":[5],"D":0,"N":0,"u4_seed":5,"expected_biased_differences":[],"expected_u7_codes":[],"cursor_bits":4},
+    {"id":"one_group","sampled_exponents":[4,4,5,4],"D":3,"N":1,"u4_seed":4,"expected_biased_differences":[2,3,1],"expected_u7_codes":[66],"cursor_bits":11},
+    {"id":"two_groups_and_tail","sampled_exponents":[10,11,10,12,11],"D":4,"N":2,"u4_seed":10,"expected_biased_differences":[3,1,4,1],"expected_padded_differences":[3,1,4,1,2,2],"expected_u7_codes":[84,37],"cursor_bits":18}
+  ],
+  "expected_output_bytes_included": false,
+  "execution": "NOT_RUN",
+  "N_is_explicit_input_not_inferred": true
+}

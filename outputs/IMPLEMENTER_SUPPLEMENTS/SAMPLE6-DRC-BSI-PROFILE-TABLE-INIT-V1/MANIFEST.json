@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-BSI-PROFILE-TABLE-INIT-V1",
+  "scope": "matched DRC profile-table initialization and one input-only vector; selector labels and positive per-block producer remain unresolved",
+  "status": "TABLE_LAYOUT_AND_ZERO_INIT_BOUND; BUILTIN_SELECTOR_ROWS_BOUND; XML_SELECTOR_AND_POSITIVE_STORE_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 2101,
+      "sha256": "fdd8dafebbf948cd41b0526c9d24c0516e4cb9be7bdc408e55f2e55e385e1eee"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2619,
+      "sha256": "f7bcba947c88c2eb7acd376230f871800997afcd1db38c8d0a3d50e38a2c6103"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 554,
+      "sha256": "55317904ecb21c3e4e752f04218e6d1b73d8be63f6dea4f72b643c7eed1296d7"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 610,
+      "sha256": "f86665ccb679d75fb8f84e99c43629f915b62a08a78e43d0b08e5a239bffd30a"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3688,
+      "sha256": "7703a56208d326eca21c1b48de8a145a5f94461df8f08a7330e2fd5e9684f57c"
+    }
+  ]
+}

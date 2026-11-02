@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "source_package": {
+    "package_id": "adm_child_count_seven_sample_vectors_wash_v1",
+    "manifest_sha256": "38f49cb279c2a2e68c4adac89d42ddb0da1133ff7c177ecd397c43ec8a3918b7",
+    "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+    "parent_guard_manifest_sha256": "0403c0a19f6dcc918361d12e68b83d4e04179626d3fdfd213d3a83ab424c1eaf",
+    "metadata_manifest_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9",
+    "metadata_json_sha256": "187badfacc8f14927e17f00b7d9a2c1a8dc58f9722fb9c8e4dad8a21fac39e75",
+    "child_count_formula_manifest_sha256": "c65ff6716eaa61ee5679717362677c721712a46f80342dbe51255c1b718a5e46",
+    "bed_channel_vector_manifest_sha256": "bc0460ba82a4211010881becd3a5e3744aedede7b97042c7998919242b5c9dee"
+  }
+}

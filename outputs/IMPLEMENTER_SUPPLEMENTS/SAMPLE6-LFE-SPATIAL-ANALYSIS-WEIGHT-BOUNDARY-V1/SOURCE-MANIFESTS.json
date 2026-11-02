@@ -1,0 +1,19 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "dee_matched_run_lfe_transform_capture_wash_v1",
+      "manifest_sha256": "609d1ea41babaac5c79c93022de91b868accecdc31ac5d18c1a17df23d4adc5f"
+    },
+    {
+      "package_id": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1",
+      "manifest_sha256": "6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750",
+      "package_seal_sha256": "593eee033f677b7e84e0de5367b005b95cf3d43defc0854b6eb0137070000e74b"
+    },
+    {
+      "package_id": "SAMPLE6-CHANNEL3-FREQUENCY-RESIDUAL-V1",
+      "manifest_sha256": "a556b5499d57a40ce54df4a4166c4beb798ab3cda3334d1ffa577addd4fbda6a",
+      "package_seal_sha256": "d2606a34a3fdd2e63c64caaf704566766872c62cb81a21ea8b163c911b327c30"
+    }
+  ]
+}

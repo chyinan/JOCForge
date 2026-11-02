@@ -1,0 +1,16 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "row_count_field_producer_static_wash_v1",
+      "manifest_sha256": "569a1c870494b4697c3343daed4e6fcdc4c2b81e120273d76c93e1c076db24cb",
+      "package_seal_sha256": "544259910c756bc2e48c32b05388ba67ad36602abf9c20448773c8a30dd3b5b6",
+      "sha256sums_sha256": "7882a948eadc6f635a24162cda8c2becf2d97397e40c092e0839d2648f14c715"
+    },
+    {
+      "package_id": "SAMPLE6-DEE-CORE-FBW-LFE-ROWMAP-COUNT-BOUNDARY-V1",
+      "manifest_sha256": "c24767d2130f56c7fa77909edabc2460fdc3afa5d9b60cda1d56a5e1eea797fc",
+      "package_seal_sha256": "2e91861a2f9d3dff3f46a6b515a6d35ad7aaf497c7ddecd0712340b8af064d32"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "sample6-selected-lufs-producer-lineage",
+      "manifest_sha256": "fd6b8b3e5ee1301787288c53962e1d45afdaaeba582d59dad6a121c44941691c",
+      "manifest_file": "MANIFEST.sha256",
+      "separate_package_seal": "NOT_PROVIDED",
+      "manifest_payloads": [
+        {"file": "README.md", "sha256": "70643b5a21653432baffb3fa334c8f06c623a87b4ef5b4f2cf31a2d8df2d69c8"},
+        {"file": "evidence.json", "sha256": "2452a35d0fc4761325fe2d28022ac62b423a567402f5b5ecbdaceb1440baab87"},
+        {"file": "verify_package.py", "sha256": "8b9fb8db5e8fec29ab65e05549eda34eec25ad6346e103fae77e442638ceb294"}
+      ]
+    }
+  ],
+  "implementation_source_review": {
+    "head_at_read": "f6d9fe2136e96b0dae7f30e9acde6de2bf1b2ec5",
+    "programme_measurement_rs_sha256": "edbebbcb654c945fd05288754548ee7a351dc006d9524d05b6a6dcd98fe474d8",
+    "dialnorm_rs_sha256": "55e21ed4ad4cf19193842f0293f313add00e97a6d29053ca02c792e78b34299f",
+    "measurement_receipt_rs_sha256": "2fff890d6d3e6a1672e13b22f8481b5a14ce2e18c06a1ffb29ee0531081c52aa",
+    "implementation_source_copied": false
+  }
+}

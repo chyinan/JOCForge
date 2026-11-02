@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-r138-mediametadata-host-row-input-only.v2",
+  "source_vector": "ordered rows row[0] through row[n-1]",
+  "candidate_row_transform": "for each row r, emit metadata index r+1 and copy filename/nested string fields",
+  "typed_channel_identity": {
+    "AO_%04x": "parsed suffix - 0x1001",
+    "ATU_%08x": "parsed suffix - 1"
+  },
+  "input_metadata_channel_counts": [36,38],
+  "expected_output_included": false,
+  "executed": false,
+  "host_vcall_target": "UNBOUND",
+  "host_source_vector_identity": "UNBOUND",
+  "note": "This vector does not join row ordinal, ADM identity, converter ID, and selected process-state owner by numeric coincidence."
+}

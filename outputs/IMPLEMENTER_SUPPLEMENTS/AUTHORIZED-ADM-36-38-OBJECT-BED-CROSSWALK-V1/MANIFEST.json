@@ -1,0 +1,31 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "AUTHORIZED-ADM-36-38-OBJECT-BED-CROSSWALK-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "supersedes_manifest_sha256": "2e238835a0edd84a90764a2c74778f50b2c12e760d7ad051446a772f2efc8113",
+  "source_receipt_manifest_sha256": "d318321ff05f2db745f94fc1851140ad1e07b6e5aab417167f279fd5d307aba3",
+  "data_chunk_read_bytes": 0,
+  "scope": "Metadata-only ADM bed/object row type crosswalk; PreparedJobInput identity and end-to-end encoding remain unbound",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "6fb5a3dbf45f721ce32f804d1c013580fd2ae7346355c99e402b783e03d0e78f",
+      "bytes": 1786
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "d4b8c8332261698ec9466eba92c0a459153b695c6b616cdb7206ea4ecf6a80eb",
+      "bytes": 3442
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "30b61f866e95ffd1e38898af707903f465b027d37c8a009dcb83a158d5f9835b",
+      "bytes": 1038
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "e4387630cb91661ea3c71828b485a87ad54670b1c5da179be52272a82118f349",
+      "bytes": 2602
+    }
+  ]
+}

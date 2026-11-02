@@ -1,0 +1,37 @@
+{
+  "schema":"jocforge.atmos_info_master_time_writer_boundary.v1",
+  "status":"MASTER_TIME_FIELD_WRITER_BOUND_TO_READER_INTERFACE; READER_IMPLEMENTATION_AND_CHUNK_SOURCE_UNBOUND",
+  "upstream_package":{
+    "package_id":"DEE-ATMOS-INFO-MASTER-WRITER-TRACE-WASH-V1",
+    "manifest_sha256":"1a7a39f992a544bf193d2afaac971025cd9ab21452bc45ee7d21789f206b459d",
+    "sha256sums_sha256":"3848ff96de0cd5334c3973848ed2d333ff0a98b53468d95df78e26b9199e954d",
+    "payload_count_verified":14,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "master":{
+    "type":"atmos_storage_master_s",
+    "factory_registration":"bwf_sys_reg / AdmFileStorage factory callback",
+    "writer":"FUN_1402598d0",
+    "master_open_reader_source":"master param_1[6] -> FUN_140206de0 factory dispatch",
+    "reader_getter_slot_0x38":"value copied to master+0xA8 (Start time)",
+    "reader_getter_slot_0x28":"FFOA candidate",
+    "ffoa_output":"master+0xB0 derived from getter +0x28/+0x38 through validity branch",
+    "report_accessor":"FUN_14006c840 then FUN_14006dbf0"
+  },
+  "unbound":{
+    "factory_vtable_slot_0x08_concrete_target":"UNBOUND",
+    "reader_getter_0x28_implementation":"UNBOUND",
+    "reader_getter_0x38_implementation":"UNBOUND",
+    "reader_interface_to_generic_riff_reader_join":"UNBOUND",
+    "reader_output_to_bext_ixml_axml_dbmd_chna_field":"UNBOUND",
+    "audio_programme_start_to_master_start_mapping":"NOT_ESTABLISHED",
+    "offset_auto_input_rule":"UNBOUND"
+  },
+  "execution_scope":{
+    "dee_or_atmos_info_run":false,
+    "pcm_or_payload_access":false,
+    "key_or_license_access":false,
+    "production_allowed":false
+  }
+}

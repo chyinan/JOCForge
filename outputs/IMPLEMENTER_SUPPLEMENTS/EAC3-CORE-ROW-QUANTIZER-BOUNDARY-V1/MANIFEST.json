@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EAC3-CORE-ROW-QUANTIZER-BOUNDARY-V1",
+  "source_reverse_package_id": "EAC3-CORE-ROW-QUANTIZER-WASH-V1",
+  "source_reverse_manifest_sha256": "aff6340a983d0e47645df8d6fc0c74b4410425d7287df642f0abc0683cb933d8",
+  "source_reverse_package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT",
+  "status": "STATIC_ROW_POINTER_PATH_BOUND; SYNTHETIC_FORMULA_MATCH; SAMPLE_CAUSE_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3166,
+      "sha256": "eb6c9ef12c3b8322e73f47a273a62ae11ba41b78f696ab3f6a122b1791891779"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2251,
+      "sha256": "a725da5bc0b9819358147edb3bf30ba5c601ef669e8099a993acc1f6cdee0819"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 675,
+      "sha256": "50337777821252d2dca3366efc26773fa104d793f1e621be861c951392a6fe8f"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1566,
+      "sha256": "04018cda0a0ddb78b24008118a1bdb2fdccd70c2dc75cbacf4897a8089ffb22f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1762,
+      "sha256": "a730af40388593c2ad8f8fb290a430f001ba8dcbad227ef01efb00076c3f272c"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

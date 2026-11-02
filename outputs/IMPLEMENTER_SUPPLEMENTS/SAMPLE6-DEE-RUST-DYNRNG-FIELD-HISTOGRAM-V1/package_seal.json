@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-RUST-DYNRNG-FIELD-HISTOGRAM-V1",
+  "manifest_sha256": "0d1ad1ce9e71a0205da38b22f908c60c3055610dc1553d8c3b2cdc27386be223",
+  "sha256sums_sha256": "37abadeb221250dcf19ff067ddb0a4b2de6e3fec2d802f88c326f54bf03fbcea",
+  "payload_count": 4,
+  "status": "ALL_SIX_BLOCKS_PARSED; U8_FIELD_DELTAS_MEASURED; PRODUCER_AND_RENDERED_EFFECT_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

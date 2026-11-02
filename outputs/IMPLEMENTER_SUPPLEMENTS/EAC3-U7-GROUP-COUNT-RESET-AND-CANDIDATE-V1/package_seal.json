@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "EAC3-U7-GROUP-COUNT-RESET-AND-CANDIDATE-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3284,
+      "sha256": "2b31ef8618b9ce07aab332144cd71f73aa9255ed364adee2c3768122c4e6befe"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2917,
+      "sha256": "326ebbf3730e0aa7bb1f725efd6d0c00464465bce4ccacdd124cb30abdf3e0d7"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 480,
+      "sha256": "1ee398542c37eba87b7a2fbfdf486de6905a3a8ab0113892b8047109be610a62"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1173,
+      "sha256": "b7b3c5ac7da68256787c0097ecfb79d731e0534627915a43238d71b1c5316700"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1282,
+      "sha256": "65633747e6e99801329446500fd37c3827858a6e6e3dd2f117d38fd4d8872e4c"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "57d16b97e7e2760fa34fb0ca1385499ffba5436140b62306db104d3835245843"
+    }
+  ]
+}

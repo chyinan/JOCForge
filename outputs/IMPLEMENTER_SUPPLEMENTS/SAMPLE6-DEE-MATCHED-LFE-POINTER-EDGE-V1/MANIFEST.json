@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-MATCHED-LFE-POINTER-EDGE-V1",
+  "scope": "matched DEE 5.1 LFE input-slot to core API slot and first sample-valued operation",
+  "status": "STATIC_SLOT3_LFE_PATH_BOUND; SAME_RUN_OWNER_JOIN_AND_ENCODER_TRANSFORM_UNBOUND",
+  "source_manifest_sha256": "fd8a3c4c726835fba2c55cff07dc7c6d482e12c868c2a82b82df65fc1d2c1bdc",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "452da00fad92e391b2794a7ffdf8352fc88f565322cbade1c6210158ff17fbb3",
+      "bytes": 2628
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "7ff9bf792a74080791eec5485aabcc2c2cd23615ea6c40c9d1caa7f32762aecd",
+      "bytes": 4133
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "1c90e9c94cd2dce27d3b524b46af0dcef4867ca9814e453bae10edb82ee898c7",
+      "bytes": 368
+    },
+    {
+      "name": "README.md",
+      "sha256": "3edd02d473f2baf0edd7b67950ccf343bbfef3c1d4a13a49781234e3dda95a7b",
+      "bytes": 1258
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "38981ca33fb31eba6f4c87e76d92e90fd81918647e90aa8d204905958a70a100",
+      "bytes": 725
+    }
+  ]
+}

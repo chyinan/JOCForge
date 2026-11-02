@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-PLUGIN-CORE-ROW-OWNER-SEPARATION-V1",
+  "manifest_sha256": "c91c147ceb79b417be81c91e7892e8d4229a984a1cf9a825c0d12901f6720c5c",
+  "sha256sums_sha256": "244b7c900edc3a522dbe06df35e019bacf9bbfac538c47ad8805923faff90698",
+  "payload_count": 5,
+  "status": "PLUGIN_LOCAL_ROW_BOUND; CORE_PLUGIN_OWNER_JOIN_UNBOUND; CORE_NONZERO_WRITER_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "dee-rust-dynrng-field-comparison-wash-v1",
+      "evidence_manifest_sha256": "72278f40371d7e95871c954cd111599e38dc34f7522c5e930a2035efa0979396",
+      "package_seal_sha256": "22b911dff80b036a2d804470870c87209d0122d5771e49953a6c528a166b3617"
+    },
+    {
+      "package_id": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1",
+      "manifest_sha256": "6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750",
+      "package_seal_sha256": "593eee033f677b7e84e0de5367b005b95cf3d43defc0854b6eb0137070000e74b"
+    },
+    {
+      "package_id": "SAMPLE6-MATCHED-DRC-BSI-BLOCK-PRODUCER-V1",
+      "manifest_sha256": "0e1802e700a4ed0e574c514a3d71a43f8ffe226eec63fb6d21f2b1c477745555",
+      "package_seal_sha256": "d38fdaabee9344f38d82fd7d278471ac3359a0e51793308676bbadb5e717a5d6"
+    }
+  ]
+}

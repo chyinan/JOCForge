@@ -1,0 +1,10 @@
+{
+  "schema":"jocforge.dee_lfe_stride_branch_vector.v1",
+  "vector_id":"SELECTED-LFE-DESCRIPTOR-STRIDE-BRANCH",
+  "descriptor_stride_field":"selected_descriptor+0x0C U16",
+  "selection_index":"layout_id*6 + internal_lane; internal_lane=FBW_count when LFE present",
+  "branch_conditions":{"zero":"cosine/sine recurrence","nonzero":"two 64-entry F32 tables"},
+  "same_run_selected_stride":"NOT_CAPTURED",
+  "256_f32_temp_token_available":"NOT_CAPTURED",
+  "execution":"NOT_RUN"
+}

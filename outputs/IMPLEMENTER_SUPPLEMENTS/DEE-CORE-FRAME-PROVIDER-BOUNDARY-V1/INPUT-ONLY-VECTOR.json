@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-dee-core-frame-provider-boundary-vector.v1",
+  "input": {
+    "request_sample_count": 1536,
+    "frame_descriptor": "opaque typed descriptor",
+    "sample_buffer_contents": "OMITTED",
+    "backend_selector_value": "UNBOUND"
+  },
+  "expected_static": {
+    "core_branch_provider_type_if_selector_zero": "EmpireEnc",
+    "normal_request_accepted": true,
+    "flush_request_sample_count": 0,
+    "provider_is_prebuilt_frame_passthrough": false,
+    "encoded_span_bytes": "actual encoder-reported count",
+    "format_fields": "UNBOUND"
+  },
+  "execution": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

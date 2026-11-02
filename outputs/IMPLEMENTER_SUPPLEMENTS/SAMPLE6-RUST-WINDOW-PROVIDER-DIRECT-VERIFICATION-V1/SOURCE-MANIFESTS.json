@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "SAMPLE6-RUST-WINDOW-PROVIDER-SUPERSESSION-V1 implementation receipt",
+      "manifest_sha256": "a0b3f5da065a7a014ab02957567739ecadb76af49860e7e8b52c1641ead5b1f7",
+      "package_seal_file_sha256": "1a011305db0e38ca7a481de0edb54756a2f48abc8471408bb13ed463046100ce"
+    },
+    {
+      "package_id": "SAMPLE6-DEE-CORE-WINDOW-COEFFICIENT-SPLIT-V1",
+      "manifest_sha256": "74973e18ac6001b34ec1225ae179e17c8cd78aef1cc7b6b1bdd89a305f2d0f34",
+      "package_seal_sha256": "755bc3741457420f09a25e5213e6aacdb840c54ac099f9a8bfd0b3fd4f4dba4b"
+    },
+    {
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1 current erratum",
+      "manifest_sha256": "1322fbacdc48fdedacabdf9de105ee7233d157e4d8517120c3b627796aa4dd84",
+      "package_seal_sha256": "fbff118bba1abdf146dd2aaedbadd38dc379b26abccd4c1f6479fb3dfe56b5a6"
+    }
+  ]
+}

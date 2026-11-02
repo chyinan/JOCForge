@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "DEE-STAGERUNNER-ATMOSMEZZ-ROUTE-V2",
+  "manifest_sha256": "dcf316fa5779f5cb879c0e11b9c9fe9f2e822c5d9275d55294b11cfb743bbd2d",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "b4e10f177500269f33b45aa0303e4a87e4471f4f2b7b98e1e5045416e6afade7",
+      "bytes": 1808
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "438f2b4841484e4e7c3ff59cfbd72a2a59d6c8c9a1d8e18561c9d4830b34ab49",
+      "bytes": 2567
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "6c86bb87374d54f8d77b643c790ea719bc364590222a83e0a24d70de3fe45acf",
+      "bytes": 880
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "c0dd78a7cec73b28eb0769cce405f0ed736a80ee51bc90cdb2394a79807f73e0",
+      "bytes": 2425
+    }
+  ],
+  "scope": "Selected StageRunner module/factory is bound; ADM count and reader-to-process transfer remain unbound"
+}

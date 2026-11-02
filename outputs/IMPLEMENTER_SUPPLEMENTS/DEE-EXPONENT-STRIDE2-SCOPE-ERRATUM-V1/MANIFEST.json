@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-EXPONENT-STRIDE2-SCOPE-ERRATUM-V1",
+  "source_packages": [
+    {
+      "package_id": "dee-ddp-exponent-producer-emulator-wash-v7",
+      "manifest_sha256": "6a832b29dc13e629cae3811223ba69e75562d781399b2acc03559b33b172ab73",
+      "package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+    },
+    {
+      "package_id": "EAC3-EXPONENT-CODE-PRODUCER-U4-U7-V1",
+      "manifest_sha256": "1ead416c45cac51589738123219f0f2901e90c45ef4bba7e15592672054dc7b1"
+    },
+    {
+      "package_id": "DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2",
+      "manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04"
+    },
+    {
+      "package_id": "DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1",
+      "manifest_sha256": "96bb2eb1f5f120e1b8a204dd7e00f50d2a1204b3931942c0e0d28c1191927005",
+      "package_seal_sha256": "b4876a1c408b4e59d740f67e908158b7d98efb872c1bcb926f29cdfc0e0e3b4e"
+    },
+    {
+      "package_id": "DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1",
+      "manifest_sha256": "c2dfb9336d20bc000d1610ee6bc5850dae950f834531f3da618fb62db7359485",
+      "package_seal_sha256": "559e9cc9b59014c034d94aedf422b446ff187ea5971eab9a233290467845a029"
+    }
+  ],
+  "status": "EAC3_CORE_VECTOR_VALID; JOC_CROSS_SCOPE_COMPARISON_WITHDRAWN; JOC_SELECTOR2_NOT_EVALUATED",
+  "implementation_trial_ready": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3802,
+      "sha256": "2b286c051ebd6bbe664cbe81cc017ad8a961e1968574affbc6d0c43b80b46574"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2730,
+      "sha256": "d527a8eb6720225f1ed418bbe82f5ab834f364c942f82c8d67dff59a8cf658b7"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 681,
+      "sha256": "7b6d17d37235a41d1aae10f73a072a70f18ea93a61a34d1ee3d1dc1d5bd253b3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1894,
+      "sha256": "781a94f375d726c1f61715a797aa6e2b1d395adf33529fa88af34bb2707e2830"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1367,
+      "sha256": "53d88bea8874ae1b66cefe975ad936b7b26040fa53d0bfcb047154bd0ae68e46"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

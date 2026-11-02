@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V1",
+  "source_reverse_package_id": "atmos_joc_inner_preprocessor_dispatch_wash_v1",
+  "source_reverse_manifest_sha256": "d926de87e639bb9e9201ece1f5f7ec70e943e7f03e2167b5c582aad9bc7cfffe",
+  "status": "VTABLE_0X28_TARGETS_CLASSIFIED_BY_SELECTOR; SPATIAL_CODER_PROCESS_BOUND; PER_RUN_SELECTOR_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2528,
+      "sha256": "1d83591bbcfe478a6550b6c8c063daef89f3f58a98bb7d1291ccd02c4e548ce3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2388,
+      "sha256": "6c8f5ba97d92299456b23a86fecf33e80a286095e476813ec60c15cd33de3a1b"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 576,
+      "sha256": "6be445a1bec21265974a0327aaab16a160534656cec9a3e18679a7a0a4a24a98"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1962,
+      "sha256": "b471fa525fb19ec4a6af735e0a3f8826b1e6f73488eeee9deef5d96cde1f1b75"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 670,
+      "sha256": "456a270cfb9b5c316ad3a84044341a6a513dfa565f5a4d46a441b8a46d342d80"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

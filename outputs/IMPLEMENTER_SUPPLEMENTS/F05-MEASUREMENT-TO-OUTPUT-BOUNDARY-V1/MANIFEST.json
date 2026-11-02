@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "F05-MEASUREMENT-TO-OUTPUT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_F06_F13_PATHS_BOUND; MATCHED_PCM_WINDOW_NONIDENTICAL; FULL_TRACK_AUDIO_PARITY_UNBOUND; USER_REPORTED_ARTIFACT_UNJOINED",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_encoded_payload_bytes": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 2378,
+      "sha256": "c145a61029382d371ed2c92e2c89e72abd4cbf504daa5fc84e3e395b4dc8af6f"
+    },
+    "EVIDENCE.json": {
+      "bytes": 4656,
+      "sha256": "0bc9154d6e6c3f67fc3bd93939ade4b6d076b5cfcac330b61d724e19b7610cf7"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1136,
+      "sha256": "a61f7d9aee1249883512750d6bb9aa371a86312d15e57014a4e460196c84958d"
+    }
+  }
+}

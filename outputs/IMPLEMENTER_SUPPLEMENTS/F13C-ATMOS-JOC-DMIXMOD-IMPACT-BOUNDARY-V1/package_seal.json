@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "F13C-ATMOS-JOC-DMIXMOD-IMPACT-BOUNDARY-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2986,
+      "sha256": "9dff8492c3e28b05e12b2b26e8bb80cd193196f99b7983115a44726c2e72409d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2913,
+      "sha256": "4cc7a8a4ba70691b036afff2e9b2312f6f49a0cc6dba31684f24aa389c06e133"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 354,
+      "sha256": "4d36134d39f7f046a31d4d89ae9db930fe920e82beb467969e87570a6100021e"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1182,
+      "sha256": "8fb0c506784ac60b5b237942a088f1dcd9eeb8f84e7e875c599a1c0464d55d24"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1288,
+      "sha256": "aeda9a16ea8994eed0c126d1cc8ed6988eaee337e018e9163e5509fa67ef45ab"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "ca81d9c3cfc64ff455b1c5ab4a3ca601e857b666487899e5d3d233e84700f507"
+    }
+  ]
+}

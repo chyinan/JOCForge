@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge-sample6-selected-lufs-receipt-serialization-boundary.v1",
+  "package_id": "SAMPLE6-MEASUREMENT-RECEIPT-SELECTED-LUFS-BOUNDARY-V1",
+  "status": "SELECTED_LUFS_WORD_PRESENT_IN_TYPED_RECEIPT; OMITTED_FROM_MANAGED_RUN_JSON",
+  "run": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "status": "PROCESS_EXITED_ZERO",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_commit": "216326f622e66f1f7b255dbe7a8bcfb8ca473ce2",
+    "executable_sha256": "d5e378f8478100c0e16dc805ec39639f01cd37a9987b2f12407824b58efc1ae7",
+    "run_receipt_sha256": "99129a8dc0feb9e6bb4a5e4422c13ba663b67c15104343a5a323e8fce30c9b3b",
+    "rust_logged_meter_dialnorm": 17,
+    "selected_lufs_word_in_run_json": null,
+    "meter_terminal_sha256_in_run_json": null
+  },
+  "typed_receipt": {
+    "type": "ProgrammeMeasurementReceipt",
+    "selected_lufs_word_exists": true,
+    "representation": "u32 containing F32 bits",
+    "source": "ProgrammeMeasurementValue::to_receipt -> ProgrammeMeasurementReceipt::from_verified_prepass using measurement.selected_word",
+    "meter_terminal_sha256_exists": true,
+    "identity_fields": ["programme_id", "attempt", "input_sha256", "config_sha256", "meter_terminal_sha256"],
+    "serde_serialize_derive": false,
+    "retained_through": ["ProgrammeOwnerRoots", "SourceExecution"]
+  },
+  "serialization_boundary": {
+    "managed_runner_writes": ["started marker", "exit-code file"],
+    "managed_runner_writes_run_json": false,
+    "run_json_producer": "managed receipt adapter",
+    "run_json_selected_lufs_word": false,
+    "current_encode_request_source_reads_and_logs_word": true,
+    "run_source_commit_logged_word": false
+  },
+  "minimum_non_sensitive_receipt_change": {
+    "json_field": "measurement_receipt.selected_lufs_word_hex",
+    "value_source": "ProgrammeMeasurementReceipt.selected_lufs_word()",
+    "bind_same_receipt_meter_terminal_hash": true,
+    "reuse_existing_programme_attempt_input_config_identity": true,
+    "derive_from_U5_or_digest": false
+  },
+  "previous_dee_scalar": {
+    "value": -20.665958,
+    "unit": "UNBOUND",
+    "scope": "file_position 2160..2208 bounded reference, not the missing Rust scalar"
+  },
+  "execution_boundaries": {
+    "new_dee_run": false,
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_contact_in_research_slice": false
+  },
+  "source_package": {
+    "package_id": "sample6-measurement-receipt-serialization-boundary",
+    "manifest_sha256": "779264b7c2fc3baabcaf7bc7d88bd46da1cc3c66a9b089a09b3f915eed1e5a2b",
+    "manifest_file": "MANIFEST.sha256",
+    "separate_package_seal": "NOT_PROVIDED"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "status": "PROPOSED_NOT_RUN",
+  "purpose": "A synthetic discriminator for a future matched selector/lane observation; not a native runtime result",
+  "sample_rate_hz": 48000,
+  "shape": "six F32 channels by 1536 samples",
+  "channels": {
+    "0": "all +0",
+    "1": "all +0",
+    "2": "all +0",
+    "3": "x3[n] = 0.25 sin(2*pi*31.25*n/48000) + 0.125 sin(2*pi*93.75*n/48000), n=0..1535",
+    "4": "all +0",
+    "5": "all +0"
+  },
+  "notes": [
+    "The vector is synthetic and does not contain the user ADM or any media bytes.",
+    "The channel index in this proposed input is not a proven ADM-row or native descriptor identity.",
+    "No expected output values are asserted; the vector has not been executed."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge-washed-f06-r138-mediametadata-row-writer.v1",
+  "scope": "R138 PROCESS-STATE MEDIAMETADATA ROW WRITER AND CONVERTER-INTERNAL ADM ID CROSSWALK",
+  "status": "BEST_SUPPORTED_ROW_PRESERVING_MODEL_RULE; SELECTED_SETTER_AND_CROSS_MODULE_OWNER_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "native-f06-r138-media-metadata-row-writer-addendum",
+    "manifest_sha256": "3a3bf13ff538a7f5c90e8700ec2a0b9d31d16c31182716b3b5813d42602420ad",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "media_metadata_type": {
+    "process_state_member_offset": "+0xA0",
+    "type": "dee::Types::MediaMetadata",
+    "safe_payload_type": "vector<map<string,string>>",
+    "separate_context_vector_member": "+0x08",
+    "type_specific_setter_status": "BOUND_STATIC",
+    "input_order_preserved": true,
+    "metadata_index_formula": "one_based_index = zero_based_source_row_ordinal + 1",
+    "filename_copied": true,
+    "nested_string_fields_copied": true,
+    "commit": "constructed vector committed through MediaMetadata SafeType value interface"
+  },
+  "converter_typed_crosswalk": {
+    "audio_object_id_form": "AO_%04x",
+    "converter_channel_input_id": "parsed suffix - 0x1001; zero-based",
+    "audio_track_uid_form": "ATU_%08x",
+    "chna_uid_table_ordinal": "parsed suffix - 1; zero-based",
+    "same_ordinal_validation": "converter compares decoded typed IDs against companion source-vector row at the same loop ordinal after row-count equality check",
+    "converter_internal_crosswalk": "BOUND_STATIC_TYPED_FIELD_COMPARISONS"
+  },
+  "cross_sample_metadata": {
+    "authorized_files": 7,
+    "sample_rate_hz": 48000,
+    "chna_rows_36_channel_files": 6,
+    "chna_rows_38_channel_files": 1,
+    "hanmao_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "scan_order_equals_runtime_source_vector_order": "UNBOUND"
+  },
+  "unbound_or_not_run": {
+    "selected_r138_setter_invocation": "UNBOUND",
+    "converter_source_vector_to_mediametadata_set_parameter": "UNBOUND",
+    "converter_channel_input_id_to_process_state_row_owner": "UNBOUND",
+    "selected_process_state_object_and_generation": "UNBOUND/NOT_CAPTURED",
+    "pcm_or_payload_read": false,
+    "dee_runtime": "NOT_RUN",
+    "output_bitstream_effect": "NOT_EVALUATED"
+  },
+  "confidence": {
+    "media_metadata_row_transform": "HIGH",
+    "converter_internal_typed_crosswalk": "HIGH",
+    "composed_model_rule": "MEDIUM"
+  },
+  "payload_policy": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

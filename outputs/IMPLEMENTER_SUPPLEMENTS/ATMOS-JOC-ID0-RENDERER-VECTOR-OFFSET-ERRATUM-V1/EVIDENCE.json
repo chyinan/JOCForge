@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge-atmos-id0-renderer-vector-offset-erratum.v1",
+  "package_id": "ATMOS-JOC-ID0-RENDERER-VECTOR-OFFSET-ERRATUM-V1",
+  "status": "ID0_LOOKUP_VECTOR_OFFSET_RECONCILED; TWO_VECTORS_ONE_RENDERER",
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "renderer_layout": {
+    "type": "Dolby::Atmos::Home::SymphonyRenderer",
+    "constructor_rva": "0x421400",
+    "outer_record_vector": {
+      "header_offsets": ["+0x60", "+0x68", "+0x70"],
+      "element_stride_bytes": 88
+    },
+    "nested_object_vector": {
+      "source_header": "typed param6+0x18/+0x20/+0x28",
+      "destination_header": ["+0x78", "+0x80", "+0x88"]
+    }
+  },
+  "id0_lookup": {
+    "caller_rva": "0x422a50",
+    "receiver_expression": "renderer+0x60",
+    "wrapper_rva": "0x420340",
+    "scan_rva": "0x41f1e0",
+    "requested_type_id": 0,
+    "scan_uses_same_receiver": true,
+    "begin_read": "receiver+0x18 = renderer+0x78",
+    "end_read": "receiver+0x20 = renderer+0x80",
+    "capacity_read": "receiver+0x28 = renderer+0x88 is not read by this scan",
+    "entry_type_id_getter": "vtable+0x08"
+  },
+  "correction": {
+    "prior_renderer_plus_0x60_interpretation": "outer vector / lookup receiver base, not nested lookup begin pointer",
+    "actual_lookup_range": "[renderer+0x78, renderer+0x80)",
+    "same_renderer_object": true,
+    "two_vector_members": true,
+    "selected_id0_concrete_type": "UNBOUND/NO",
+    "selected_id0_plus_0x58_writer": "UNBOUND/NO",
+    "per_run_selector": "UNBOUND/NO"
+  },
+  "execution": {
+    "tool": "Ghidra 12.2 public static only",
+    "dee_run": "NOT_RUN",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_contact_in_reverse_slice": false
+  },
+  "source_packages": [
+    {
+      "package_id": "atmos_joc_id0_renderer_constructor_edge_wash_v1",
+      "manifest_sha256": "c43917dcfcfc797eade20671602c9a7b246620fe2f3754bc5e6c0c16371ffb9e",
+      "package_seal_sha256": "1fe1d5598cdeb97b8d1000c80497a7f1216b0eae12b478d9eaa9b18cce23b11f"
+    },
+    {
+      "package_id": "atmos_joc_selector_id0_config_wash_v1",
+      "manifest_sha256": "bcd366ee63916707421278c34ba430b8b35bede053e65f6f8de13963b35ce8bc",
+      "package_seal_sha256": "960fafcb65249bb846a7dbd46e7dd0aad966a04b848f9078cdf4fb361ee94645",
+      "correction_target": "renderer_config_vector_member offset wording"
+    }
+  ],
+  "exclusions": {
+    "binary_or_raw_disassembly": false,
+    "decompilation_source": false,
+    "media_pcm_or_encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

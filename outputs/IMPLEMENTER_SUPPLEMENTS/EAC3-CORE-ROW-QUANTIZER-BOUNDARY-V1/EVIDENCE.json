@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge-eac3-core-row-quantizer-boundary.v1",
+  "package_id": "EAC3-CORE-ROW-QUANTIZER-BOUNDARY-V1",
+  "status": "STATIC_ROW_POINTER_PATH_BOUND; SYNTHETIC_FORMULA_MATCH; SAMPLE_CAUSE_UNBOUND",
+  "source_package": {
+    "package_id": "EAC3-CORE-ROW-QUANTIZER-WASH-V1",
+    "manifest_sha256": "aff6340a983d0e47645df8d6fc0c74b4410425d7287df642f0abc0683cb933d8",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT"
+  },
+  "current_provider_state": {
+    "ordinary_json_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+    "provider_pin_matches_json": true,
+    "current_window_word_count": 256,
+    "current_window_words_match_dee": true,
+    "historical_sample6_run_source": "UNBOUND"
+  },
+  "native_row_path": {
+    "transform_outputs": ["primary row table state+0x13eb0+8*j", "companion row table state+0x13fa0+8*j"],
+    "bap_power_rule": "min(f32(primary*primary + companion*companion), 1.0)",
+    "mantissa_quantizer_input": "same primary row pointer is passed to scalar quantizer; BAP row is a separate argument",
+    "row_pointer_identity": "STATIC_TYPED_POINTER_BASE_AND_INDEX_MATCH",
+    "runtime_pointer_or_generation": "NOT_RUN",
+    "physical_source_to_lane_mapping": "UNBOUND",
+    "BAP_value_producer": "UNBOUND"
+  },
+  "one_row_vector": {
+    "primary_f32_bits": "3e800000",
+    "companion_f32_bits": "3f000000",
+    "decoded_exponent": 0,
+    "bap": 1,
+    "native_and_rust_power_f32_bits": "3ea00000",
+    "bap1_offset": 1.0,
+    "bap1_scale": 1.5,
+    "bap1_levels": 3,
+    "native_and_rust_scalar_code": 1,
+    "width_bits": 5,
+    "grouped_mantissa_bits": "NOT_EVALUATED",
+    "native_runtime_execution": "NOT_RUN"
+  },
+  "pcm_causality": {
+    "formula_split_found_in_this_vector": false,
+    "sample6_pcm_residual_explained": false,
+    "cause": "UNBOUND",
+    "next_edge": "Native coefficient row pointer param3 versus BAP row param2 and row index at first scalar quantizer; relate to transform row writers."
+  },
+  "scope": {
+    "dee_run": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_auth_material_read": false,
+    "source_changed": false,
+    "implementation_contact_before_wash": false
+  }
+}

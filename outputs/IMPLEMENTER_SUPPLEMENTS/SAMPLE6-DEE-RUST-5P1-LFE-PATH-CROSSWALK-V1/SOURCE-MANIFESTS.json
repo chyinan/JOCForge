@@ -1,0 +1,22 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dee_adm_5p1_core_bed_lfe_scale_wash_v1",
+      "manifest_sha256": "a281573b3df322f4b29b612354a3f3af99a91b874dc86403dc4c1df9d2bdb95c",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "package_id": "SAMPLE6-FULL-FILE-PCM-BLOCK-RESIDUAL-V1",
+      "manifest_sha256": "41a9952b8e8342296d1c5114878ce51119ae80f93252b0fa3444c46621a2f198",
+      "package_seal_sha256": "458efc611799fc3341c83b472b2d1081771e4493daabb6de895b0ea5e5623443"
+    }
+  ],
+  "payload_policy": {
+    "raw_pcm": false,
+    "encoded_payload": false,
+    "private_key_or_license_material": false,
+    "source_code_or_disassembly": false
+  }
+}

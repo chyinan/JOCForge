@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "CODE13-ID14-AUDIO-SELECTION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CODE13_CODE14_RULE_BOUND; CONDITIONAL_AUDIO_SOURCE_FILTER_BOUND; ADM_ROW_IDENTITY_UNBOUND; RUNTIME_FILTER_NOT_OBSERVED; AUDIO_PARITY_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 2005,
+      "sha256": "8374acf98c54bf90cc3743f17e61137aa0bb02e728c39ca6e77d069fec5c6358"
+    },
+    "EVIDENCE.json": {
+      "bytes": 3755,
+      "sha256": "83b5b164779521fb95a3a28df4b289a11a8611a084a2c096788b147825b09026"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 1886,
+      "sha256": "55782e3cb836b858ea410a2218f536ad17091c6b5f04bb0b73185b7469b761ca"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1122,
+      "sha256": "32b255b6eb721039d8b9c0e3be4d1807370a6a8c208729be589d53b6e0ed7870"
+    }
+  }
+}

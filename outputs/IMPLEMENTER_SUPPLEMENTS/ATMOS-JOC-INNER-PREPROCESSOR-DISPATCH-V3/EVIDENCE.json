@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge-washed-atmos-renderbus-selector-contract.v1",
+  "package_id": "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V3",
+  "supersedes": "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V2",
+  "scope": "RENDERBUS TYPE-ID-0 CONFIG SELECTION AND PREPROCESSOR SELECTOR SOURCE",
+  "status": "SELECTED_CONFIG_LOOKUP_BOUND; SELECTED_ID0_CONCRETE_TYPE_AND_RUN_VALUE_UNBOUND",
+  "source_package": {
+    "package_id": "atmos_joc_selector_config_contract_wash_v1",
+    "manifest_sha256": "5f124268aa037f34c1d13af7b519de41f9beb3a70cc99330e2081907faa17590",
+    "package_seal_sha256": "20aba5a4fa9a373209ac0d08540ed43027ad5efef8ccc1648ef163c1d5dbc965",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "referenced_sources_checked": 12,
+    "missing_references": 0,
+    "mismatched_references": 0,
+    "tool": "Ghidra 12.2 Public static only",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "selected_config_source_chain": [
+    {"rva": "0x41a170", "role": "copies RenderBusConfig list"},
+    {"rva": "0x420340", "role": "requests type ID 0, Speaker Monitoring"},
+    {"rva": "0x41f1e0", "role": "scans entries by vtable+0x08 type ID and returns matching object"},
+    {"rva": "0x422a50", "role": "forwards selected config through FUN_180422ba0"},
+    {"rva": "0x422ba0", "role": "passes selected object as argument 5 to FUN_180421240"},
+    {"rva": "0x435120", "role": "reads selected config vtable+0x38 and passes result as processor selector"},
+    {"rva": "0x435290", "role": "selector 0 constructs SpatialCoderPlatform; nonzero constructs PreProcessorBypass"}
+  ],
+  "nonmatching_rerenderbus_candidate": {
+    "constructor_rva": "0x42bbf0",
+    "type": "Dolby::Atmos::RerenderBusConfig",
+    "type_id_getter_rva": "0x33dc30",
+    "selector_getter_rva": "0x42bf90",
+    "selector_rules": {"tag_0x11": 1, "tag_0x10_or_0x12": 2, "fallback": "object+0x58"},
+    "fallback_values_visible": [3, 4, 5],
+    "type_ids_visible": [3, 4, 5],
+    "selected_by_type_id_0_lookup": false,
+    "use_limit": "Do not transfer this candidate's nonzero fallback to the selected Speaker Monitoring type-ID-0 object."
+  },
+  "best_supported_contract": {
+    "rule": "Use the selected type-ID-0 RenderBusConfig object's typed vtable+0x38 result; zero routes to SpatialCoderPlatform and nonzero to PreProcessorBypass. Preserve the conditional dispatch and do not hardcode a default.",
+    "confidence": 0.92,
+    "mvp_blocked": false,
+    "per_run_selector_value": "UNBOUND/NOT_RECORDED",
+    "selected_id0_concrete_type": "UNBOUND",
+    "exact_audio_equivalence": "OPEN_IF_REQUIRED"
+  },
+  "sample_scope": {
+    "authorized_adm_receipts": 2,
+    "route": "audio.adm -> encode_to_atmos_ddp",
+    "channels": 36,
+    "sample_rate_hz": 48000,
+    "prior_dee_observations": 2,
+    "active_samples": 1,
+    "quiet_samples_excluded": 1,
+    "new_dee_run": false,
+    "selector_recorded": false
+  },
+  "input_only_vector": {
+    "shared_rows_and_frame_count_across_selector_values": true,
+    "selector_values": [0, 2],
+    "execution": "NOT_RUN",
+    "pcm_values_included": false,
+    "native_default_asserted": false
+  },
+  "exclusions": {
+    "binary_or_raw_decompilation_included": false,
+    "pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

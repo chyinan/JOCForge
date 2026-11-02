@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1142,
+      "name": "REPORT.md",
+      "sha256": "d175c4083115387c2871702b6ace7731a69d198f4dbd116efd2f7533b9274d52"
+    },
+    {
+      "bytes": 1261,
+      "name": "EVIDENCE.json",
+      "sha256": "a3a4db0679188713e0f619c41d2c9c8e6bc21d1f73d1061226fa2ce8e39c8fe9"
+    },
+    {
+      "bytes": 327,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "939be87a9ac95535cd93733c644f02be495b463cac4a5bf1e1546fde0ef68bf9"
+    },
+    {
+      "bytes": 424,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "3ae76ba7ed71a65dce7191527ee4f2a604a5e122e12e4b3100275213c5dabffb"
+    },
+    {
+      "bytes": 2114,
+      "name": "verify_package.py",
+      "sha256": "cdd616a5a3283b73fcb7146f88b015e928e2e5ad07975b141e6ee2c2493e0d40"
+    },
+    {
+      "bytes": 1475,
+      "name": "seal_package.py",
+      "sha256": "38ca90d234e061916fb490d8d07b94dd1b49502def56f0c9f84d34f0f0e701cb"
+    }
+  ],
+  "package_id": "ATMOS-MEASURE-AND-CORRECT-DI-THRESHOLD-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "SIBLING_MODE_BRANCH_BOUND; THRESHOLD_TO_CORRECTION_EFFECT_UNBOUND"
+}

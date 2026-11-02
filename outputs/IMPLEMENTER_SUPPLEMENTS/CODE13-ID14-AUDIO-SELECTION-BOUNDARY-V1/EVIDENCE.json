@@ -1,0 +1,80 @@
+{
+  "schema": "jocforge.code13_id14_audio_selection_boundary.v1",
+  "status": "CODE13_CODE14_RULE_BOUND; CONDITIONAL_AUDIO_SOURCE_FILTER_BOUND; ADM_ROW_IDENTITY_UNBOUND; RUNTIME_FILTER_NOT_OBSERVED; AUDIO_PARITY_NOT_RUN",
+  "scope": "Hash-bound Ghidra 12.2 static producer/consumer trace plus prior metadata-only scalar observations; no DEE run or audio parity claim.",
+  "source_package": {
+    "package_id": "code13_id14_control_row_consumption_wash_v1",
+    "manifest_sha256": "c1f01272c2ceb3dfd2be295b03065a1c9fa8ee043291be7b9b2bdd2dc043fa8a",
+    "package_seal_sha256": "7a40de622191a945c079faedfe29457b305edfdfb26f7eacb2996282d6b930e3",
+    "report_sha256": "98d1c3784034ee88f5779e7328c5e8d72759e2193e82df4523db3a12e9b0d510",
+    "evidence_sha256": "c4e22fbe4d00e80198eeb623c40f5a5b21a4e40e3c018f879c4d28a6e205740f",
+    "rule_vectors_sha256": "b135b81bdd093b6e28543edcd8707813d1f9bacd852f337dd500ebe5425e5314",
+    "source_manifests_sha256": "59815dcb6f1054ae576dbfdc0a213d915f42a1e3491fffd47692f0ec815a36f3",
+    "source_checker_sha256": "9d44539cf2699c25b14da51f4a623f7b9f11cbd1514eecdb2f510782f712452a",
+    "source_checker": "normal and python -O passed"
+  },
+  "native_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis": "Ghidra 12.2, existing hash-bound project, -noanalysis -readOnly"
+  },
+  "normal_branch_rule": {
+    "selector_domain": [
+      0,
+      5
+    ],
+    "base": "selector == 0 ? 11 : 15",
+    "marker_count_m": "count(normalized_u16 & 0x8000 != 0)",
+    "code13": "base + m",
+    "code14": "m",
+    "id14_object_count": "code13 - code14 = base",
+    "id14_header_u6": "id14_object_count - 1",
+    "complexity_bsi_u8": "code13"
+  },
+  "audio_relevant_consumers": {
+    "conditional_source_selection": {
+      "gate": "code14 > 0 AND at least one selected skip index unset AND worker+0x182f0 non-null",
+      "consumer": "FUN_1801c0770",
+      "worker_record": "16-byte records from FUN_180126450(arg+0x60)",
+      "predicate": "record+8 == 0 AND record+0x0c in {3, 0x10}",
+      "effect": "matching source-pointer indices omitted before per-object processing",
+      "runtime_branch_taken": "NOT_OBSERVED",
+      "worker_table_owner_and_generation": "UNBOUND"
+    },
+    "per_object_processing": {
+      "count_source": "ID14 object_count = code13 - code14",
+      "consumer": "FUN_1802321a0",
+      "record_shape": "28-byte per-object records with float-buffer operations",
+      "ID14_writer": "FUN_180235820 -> FUN_180235460 writes count-minus-one into six-bit ID14 field"
+    }
+  },
+  "row_identity_boundary": {
+    "six_byte_packet_fields": "row+2 signed byte and row+4 normalized U16 participate in native rule",
+    "packet_to_adm_object_channelformat_or_chna": "UNBOUND",
+    "worker_16_byte_table_to_adm_or_generation": "UNBOUND",
+    "native_id14_count_to_model_object_count_plus_one": "UNBOUND"
+  },
+  "observations": {
+    "38_row_human_is_cat": {
+      "selector": 5,
+      "m": 1,
+      "code13": 16,
+      "code14": 1,
+      "id14_object_count": 15,
+      "emitted_u6": "NOT_RUN"
+    },
+    "36_row_my_jealousy": {
+      "row10_normalized_u16": "0x800a",
+      "total_m": "NOT_CAPTURED",
+      "code13": "NOT_DERIVED",
+      "code14": "NOT_DERIVED"
+    }
+  },
+  "limits": {
+    "dee_execution_this_slice": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "audio_parity": "NOT_RUN"
+  },
+  "next_minimal_observation": "Bind one run's six-byte packet fields to ADM row semantics and capture worker+0x182f0 selection; then compare the 36/38 authorized ADM cases where row10 marker observation exists."
+}

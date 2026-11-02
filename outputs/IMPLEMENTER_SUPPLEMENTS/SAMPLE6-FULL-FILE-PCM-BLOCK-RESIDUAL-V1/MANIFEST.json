@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-FULL-FILE-PCM-BLOCK-RESIDUAL-V1",
+  "scope": "same-input matched-control full-file PCM comparison with 4-second block metrics",
+  "status": "FULL_FILE_PCM_DIFFERENCE_CONFIRMED; CHANNEL_3_DOMINANT_RMS_RESIDUAL; CAUSE_UNBOUND",
+  "source_manifest_sha256": "e0cefd91e69b51320481d80710b57c03ad1f5efc978dec15a84a1f6e2f6d7fe2",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "e65fcf597bf5a74a1fa5d907b58bbc9cadae18d73d1ef2285d44e50510252224",
+      "bytes": 2304
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "509d1dc53d74380ff1b820f6125ff7173b04b754240a7e41344b8d62fc78ebd2",
+      "bytes": 3584
+    },
+    {
+      "name": "FULL-FILE-BLOCK-METRICS.json",
+      "sha256": "ea9060304a74c957134454961fd92240a953390a2cfe92d99e1b3ad59418b584",
+      "bytes": 60518
+    },
+    {
+      "name": "README.md",
+      "sha256": "0a568f7d697d614465011b6d99da2ce320d32c90eb3d36939439191151f66095",
+      "bytes": 1049
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "42d45beadd2a728f14113400972f216944249b0bafef048f1dfd2566a01f2de9",
+      "bytes": 905
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-RUST-U5-RECEIPT-SCALAR-GAP-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3011,
+      "sha256": "b3658b2499502e5b232a41f7d847b8b350959d9e037fec9213aaaf6e86cdb46c"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2438,
+      "sha256": "653007605f55100b768240f248a56d3940dd044c4cbbccabe05c32b1036fb15d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 371,
+      "sha256": "d0a8675c245c4f5be44ce555f5ad129a39b0b5b8049ecb8e1ccb21311d782f62"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1048,
+      "sha256": "552394c97d665cefd75b551326144a5d5a81c06f9c2f87b0bd1352e9eea4c648"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1286,
+      "sha256": "26acc2b44f75bf657850d1ec96bcafad9ed693eada082564c68e46141da3eaa8"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "bcd69c1bbbb7a25d8c4bf45e97fce98b943bdd6471b91b65d98100de1e068517"
+    }
+  ]
+}

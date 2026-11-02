@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "F06-R138-INPUT-MAP-OWNER-BOUNDARY-V2",
+  "vectors": [
+    {
+      "id": "descriptor-context-vector-is-not-input-map",
+      "kind": "STATIC_TYPED_PATH_ONLY",
+      "inputs": {"descriptor_context": "+0x138", "process_state_vector": "+0x08", "input_map": "+0xA0"},
+      "derived": {"context_to_vector": "BOUND_STATIC", "vector_to_input_map": "UNBOUND"},
+      "does_not_imply_channel_count_zero": true
+    },
+    {
+      "id": "input-output-map-domain-separation",
+      "kind": "STATIC_FIELD_DOMAIN_ONLY",
+      "inputs": {"input_map": "+0xA0", "output_map": "+0xF88", "channel_write": "+0xFC8"},
+      "derived": {"input_map_domain": "WAV parseWav", "output_map_is_distinct": true, "same_state_owner": true},
+      "r138_input_map_origin": "UNBOUND"
+    }
+  ]
+}

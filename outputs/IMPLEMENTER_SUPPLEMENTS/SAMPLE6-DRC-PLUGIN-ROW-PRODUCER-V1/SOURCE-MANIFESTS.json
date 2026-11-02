@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "sample6-matched-drc-plugin-row-producer-wash-v1",
+      "manifest_sha256": "aedf9188c8991a31c54b06e9729279cabd2ce646cd01d1b752d7aeff5787c319",
+      "package_seal_sha256": "0d34ba08286c2ee23711887a29da63c68b8a5a0081a3c1f15ea43c2aaeacdbb4"
+    },
+    {
+      "package_id": "sample6-matched-drc-plugin-row-owner-wash-v1",
+      "manifest_sha256": "fa4ec116e85420039997cc9b11274478c4b4991fc735527270081038e888ac42",
+      "package_seal_sha256": "7691d728d671c7351f81fadf0310a1aba96f3a1baf293b391a9291beb7891ffb"
+    },
+    {
+      "package_id": "sample6-matched-drc-f32-source-initializer-wash-v1",
+      "manifest_sha256": "1d66907778c5b53a47a09c0831432281b15e8be164a3e923f43c16dd8862db05",
+      "package_seal_sha256": "0487537023fb9c97431af1ec54cc7c58123d1e0182059813493bcbfef292dc5e"
+    }
+  ]
+}

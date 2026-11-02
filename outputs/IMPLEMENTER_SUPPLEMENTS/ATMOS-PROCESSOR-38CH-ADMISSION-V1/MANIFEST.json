@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-PROCESSOR-38CH-ADMISSION-V1",
+  "source_reverse_package_id": "atmos_processor_38ch_guard_wash_v1",
+  "source_reverse_manifest_sha256": "a5c7cfa973fccdcbbd38bd4a85ad5e3132acd585628257ca2bb34d315b0fe5ae",
+  "status": "GUARD_RULE_BOUND; HANMAO_RUNTIME_DESCRIPTOR_VALUE_NOT_OBSERVED",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2499,
+      "sha256": "10ab18135e91bda52384cccf2e226207b7ac7e6f1c0a703ceb66e5a82732f40b"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2159,
+      "sha256": "987b85fbe3d90cf08a2cd66280cd4a58f8e229760d6301deac2a736edc7e08c7"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 729,
+      "sha256": "34a32831d22ea1996846964704c1ddb5c28236aa4d8cb9a9c5acaff22f2317c2"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2261,
+      "sha256": "54f388813a217b85ea93e732ecb82f2a0d5798a836614553c012a2e054b7239d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 828,
+      "sha256": "6c16221a79a62bc4459cf2dabdeb27578ccf31624ab6c04613bf8e2709943239"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

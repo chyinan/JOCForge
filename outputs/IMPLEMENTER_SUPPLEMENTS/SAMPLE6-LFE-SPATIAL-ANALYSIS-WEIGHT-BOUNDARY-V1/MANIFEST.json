@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-LFE-SPATIAL-ANALYSIS-WEIGHT-BOUNDARY-V1",
+  "scope": "matched LFE path boundary; spatial analysis weight is not a decoded-core sample gain",
+  "status": "SPATIAL_ANALYSIS_WEIGHT_BOUND; DECODED_CORE_LFE_GAIN_UNBOUND; SAMPLE_READ_INCIDENT_DISCLOSED",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1856,
+      "sha256": "c5ab5570c8ee6dc409bd1286a7cbf0c5e8fd09f9a9aa0bccc5f27463e90f9504"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2632,
+      "sha256": "6849ee0fadd563287179a81e2abd76fedddd81d0bc698aa1898cb223243f515a"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 633,
+      "sha256": "52132abc71c00b988691213c337e879496d82c79f6480b2fa282ff41927bcedf"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 786,
+      "sha256": "72f52838e45fdcaf4e34b341bbec6a142af1990670257b6b462cb993e8c4da90"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3974,
+      "sha256": "8f5cab75b3631d87bdcbfc93421dd99f367aff1700e90f9837cb8244b1f4a23b"
+    }
+  ]
+}

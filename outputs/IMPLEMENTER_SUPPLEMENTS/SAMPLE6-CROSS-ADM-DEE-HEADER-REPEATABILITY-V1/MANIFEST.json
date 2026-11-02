@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-CROSS-ADM-DEE-HEADER-REPEATABILITY-V1",
+  "scope": "three authorized ADM metadata signatures and two matched DEE syncframe-header receipts",
+  "status": "CROSS_ADM_METADATA_REPEATABLE; PCM_RESIDUAL_REPEATABILITY_NOT_RUN",
+  "source_manifest_sha256": "2faa45c97ec06373a1d2a45e44e74c46fb8e5672aa4fe0882c5e0ff915ecb15b",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "33d50222edfa1e3422972b188fcea338df6c0fcee354f3721c606163f9d9f768",
+      "bytes": 2279
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "5e7c7e7fcb5b40482e6a6b681b8f1caa3f42eb1bec622c9f4972747e6e9ebcfe",
+      "bytes": 3384
+    },
+    {
+      "name": "README.md",
+      "sha256": "3e661a73df04fa09e2b2b8fe40e656e72bcebd39cc5df419676e202d646215e3",
+      "bytes": 903
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "b2c773459e429338e29d9f256cba78790b62a2c1e46f61ab9e914aee9e0e616a",
+      "bytes": 695
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "KEYLESS-JOC-SEMANTIC-AU-EQUIVALENCE-V1",
+  "vectors": [
+    {
+      "id": "protected-vs-keyless-joc-semantic-summary",
+      "kind": "PARSER_SEMANTIC_SUMMARY_ONLY",
+      "inputs": {
+        "left": "protected_dee_reference (hash from prior Wash)",
+        "right": "keyless_candidate (hash from prior Wash)",
+        "parser_version": "OpenJOC 0.20.1",
+        "full_stream": true,
+        "per_access_unit": true
+      },
+      "derived": {
+        "aus_each": 4247,
+        "per_au_semantic_digest_equal": true,
+        "mismatches": 0,
+        "joc_payloads_each": 4247,
+        "coded_objects_each": 15,
+        "complexity_each": 16
+      },
+      "renderer_called": false,
+      "spatial_equivalence_claimed": false
+    }
+  ]
+}

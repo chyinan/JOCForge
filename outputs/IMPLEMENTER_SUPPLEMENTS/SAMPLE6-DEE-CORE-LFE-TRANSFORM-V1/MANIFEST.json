@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-TRANSFORM-V1",
+  "scope": "static core LFE branch, first F32 sample transform, and symbolic vector; no matched runtime values",
+  "status": "CORE_LFE_BRANCH_AND_FIRST_SAMPLE_TRANSFORM_BOUND_STATIC; MATCHED_INPUT_TO_CORE_LANE_UNBOUND; SCRATCH_HISTORY_SOURCE_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 2341,
+      "sha256": "92a08d4c23b513cd2e61b699a9221c11b97db6e56ff1785434a0647d9a91d5e2"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3362,
+      "sha256": "e33e77f3a0e7afbab6df9cb13e1d784091f55745a9ca0c178645c582de4e4094"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 690,
+      "sha256": "ec7c7d4a330568ee80dfead542f82ec58f40f13ac4ea06eb1a5ac9a276814fd4"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 887,
+      "sha256": "eba6707a6de94e5dedc4840e2af98c46a5ca2bafc92b5a6b341ac5c0d252adb6"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3969,
+      "sha256": "14ac298ac4b5d9248bfb07bbc2447f75ee3fc830c9d7a0c45131273db4ec5db4"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "jocforge-sample6-au-aligned-dee-core-pcm-per-channel.v1",
+  "package_id": "SAMPLE6-AU-ALIGNED-DEE-CORE-PCM-COMPARISON-V2",
+  "status": "AU_ALIGNED_4S_CORE_PCM_MISMATCH; PER_CHANNEL_RESIDUALS_BOUND; CAUSE_UNBOUND",
+  "source_reverse_package": {
+    "package_id": "native-f06-authorized-adm-au-aligned-core-pcm-comparison-addendum",
+    "manifest_sha256": "ade02cf02c9e0d7f1947148a9b188accad24900e649a4e67999c9c120fb96a49",
+    "package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS"
+  },
+  "input": {
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "sample_rate_hz": 48000,
+    "channels": 38,
+    "bits_per_sample": 24
+  },
+  "window": {
+    "dee_file_position_inclusive": [2112, 2207],
+    "source_sample_frames_per_channel": [4224000, 4416000],
+    "sample_frames_per_channel": 192000,
+    "access_unit_interval": [2750, 2875],
+    "access_unit_count": 125,
+    "channel_layout": "5.1(side)",
+    "decoder": "FFmpeg 8.1-full_build-www.gyan.dev",
+    "format": "pcm_f32le"
+  },
+  "dee_reference": {
+    "job_sha256": "edd0e5b173d763e63db5405ea85aa9783bbd0477060233726843ec6f1f2eda2f",
+    "output_sha256": "6bc8dd27b030858f4495562d59152bb71d15a6fbc928abfc10f36070ee35233a",
+    "output_retained": false,
+    "pcm_sha256": "fcd37d2218c98229a48cff1e25644315ecf62267acdd27da82d6d8524daf8025",
+    "pcm_hash_provenance": "SOURCE_PACKAGE_ATTESTED_NOT_RECOMPUTED_BY_WASH",
+    "per_channel_statistics_provenance": "SOURCE_PACKAGE_ATTESTED"
+  },
+  "rust_reference": {
+    "full_output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "pcm_sha256": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7",
+    "pcm_hash_provenance": "INDEPENDENTLY_RECOMPUTED_BY_WASH",
+    "pcm_persisted": false
+  },
+  "comparison": {
+    "all_six_channels_nonzero_error": true,
+    "scalar_samples_compared": 1152000,
+    "exact_scalar_samples": 17,
+    "mean_abs_error_f32": 0.0012589326532441106,
+    "rmse_f32": 0.0063942473561041544,
+    "max_abs_error_f32": 0.30480920523405075,
+    "per_channel": [
+      {"channel_index":0,"mean_abs_error_f32":0.0009079803907528591,"rmse_f32":0.009047797791627243,"max_abs_error_f32":0.30480920523405075},
+      {"channel_index":1,"mean_abs_error_f32":0.0008499757858610802,"rmse_f32":0.008921435265031322,"max_abs_error_f32":0.30366067588329315},
+      {"channel_index":2,"mean_abs_error_f32":0.00041541492581204103,"rmse_f32":0.0037042021226497755,"max_abs_error_f32":0.1799558358361537},
+      {"channel_index":3,"mean_abs_error_f32":0.004220327010109068,"rmse_f32":0.005479858820295154,"max_abs_error_f32":0.018465762957930565},
+      {"channel_index":4,"mean_abs_error_f32":0.0006096387851025907,"rmse_f32":0.004608154658242228,"max_abs_error_f32":0.2434435160830617},
+      {"channel_index":5,"mean_abs_error_f32":0.0005502590218270345,"rmse_f32":0.004344961223019292,"max_abs_error_f32":0.21280011942144483}
+    ],
+    "per_channel_correlation": "NOT_CAPTURED",
+    "per_channel_best_gain": "NOT_CAPTURED",
+    "per_channel_best_lag": "NOT_CAPTURED",
+    "channel_labels": "NOT_CAPTURED",
+    "cause": "UNBOUND"
+  },
+  "scope": {
+    "core_bed_only": true,
+    "atmos_spatial_comparison": "NOT_RUN",
+    "full_track_parity": "NOT_ESTABLISHED",
+    "pcm_persisted": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

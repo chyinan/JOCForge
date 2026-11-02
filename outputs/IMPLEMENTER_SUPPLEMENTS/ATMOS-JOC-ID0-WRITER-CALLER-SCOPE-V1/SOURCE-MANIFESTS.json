@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "atmos_joc_id0_selector_source_wash_v1",
+      "manifest_sha256": "c922dc158862f8a6861aff64d6703b10e96cee59010eb3aed30c7c1ae4fafa00",
+      "package_seal_sha256": "39fe1c285aea209710907ed42efa59e1dd224ab6b3eca8a7517039fdb73ff9c0",
+      "scope": "ID-0 lookup/getter chain and the in-image direct-caller scope of the base +0x58 constructor write."
+    }
+  ],
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

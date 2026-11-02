@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "fbw_lfe_row_map_static_wash_v1",
+      "manifest_sha256": "0d15b97f9af94ea77b032635fe6f4ef0db645b112dde71b8841b9b1047858121",
+      "package_seal_file_sha256": "02b4ee998484a8dc0194996ceede0a25b4c7db0257d24701cd0d9306d823249a",
+      "sha256sums_sha256": "a64b95592d8f3e4ce55dd412d02ff3c636ef3e99693a762276273bc4ce82ae30"
+    },
+    {
+      "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V3",
+      "manifest_sha256": "c6367e0abb5a6c1697931f4cafc52eb8826a03762ed896d943ed497bf615a4e5",
+      "package_seal_sha256": "8bfc70b65acf7204c73033e1af7adcab673fb3cbcc82f252b34fffbaa55e6e3a"
+    },
+    {
+      "package_id": "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V2",
+      "manifest_sha256": "2e238835a0edd84a90764a2c74778f50b2c12e760d7ad051446a772f2efc8113",
+      "package_seal_sha256": "20e208ca564871deb78e7fd9ad610ba84eca7f90309eea399a0b2a81e7e9a235"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge-washed-atmos-processor-38ch-admission.v2",
+  "package_id": "ATMOS-PROCESSOR-38CH-ADMISSION-V2",
+  "supersedes": "ATMOS-PROCESSOR-38CH-ADMISSION-V1",
+  "scope": "STATIC CHANNEL-COUNT SOURCE, PROCESSOR GUARD, AND FRAME CAPACITY",
+  "status": "38CH_STATICALLY_ADMISSIBLE_IF_SELECTED_MASTER_U16_IS_38; INSTANCE_VALUE_UNBOUND",
+  "source_package": {
+    "package_id": "atmos_processor_38ch_guard_wash_v1",
+    "manifest_sha256": "7fe318d5570ca672c21e9b9965c76e979c9e510be9943a2b24b7a8ab8c9e0fc8",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "actual_target_image_hash_rechecked": true,
+    "package_checker_normal": "PASS",
+    "package_checker_optimized": "PASS",
+    "sealed_file_count": 16,
+    "tool": "Ghidra 12.2 read-only static"
+  },
+  "channel_count_chain": {
+    "reader_constructor_path": ["FUN_180175c80", "FUN_1801844c0", "FUN_180173e70", "FUN_180185240(frame_size=1536)", "FUN_1801828c0"],
+    "composite_master_path": ["FUN_1801828c0", "FUN_180553a60", "FUN_180550800", "FUN_1805506b0", "FUN_18054fa70"],
+    "master_count_write": "FUN_18054fa70 writes U16 at CompositeMaster+0x1A",
+    "reader_config_pointer": "CompositeMaster+0x10 is returned through reader this+0x58 and FUN_180338d30",
+    "master_descriptor_field": "reader_config_pointer+0x0A aliases CompositeMaster+0x1A",
+    "descriptor_count": "FUN_180186870 writes U64 descriptor+0x08 by zero-extending config U16+0x0A",
+    "descriptor_master_pointer": "same config pointer written to descriptor+0x28",
+    "processor_expected_count": "FUN_18018a750 reads descriptor.master_pointer+0x0A into state slot 4",
+    "process_guard": "FUN_18018ae20 requires nonzero-frame descriptor.channel_count == state[4]",
+    "zero_count_guard": "FUN_1801852e0 rejects zero channels",
+    "fixed_channel_cap": "NONE_IN_TRACED_GUARD"
+  },
+  "master_count_sources": {
+    "ordinary_branch": "copy first child source vtable slot +0x80 U16 channel count",
+    "special_branch": "10 + maximum child count of records whose byte at record+2 equals 0xFF",
+    "branch_selector": "FUN_1805506b0 uses mode flags and parent/child count or six-byte map comparison",
+    "sample_shape": {"directspeaker_bed_tracks": 10, "object_tracks": 28, "metadata_channels": 38},
+    "38_possible_if": ["ordinary child count is 38", "special branch sees 28 marked objects and computes 10+28"],
+    "fmt_chunk_direct_edge": "UNBOUND; this path consumes child/master channel records, not a direct BWF fmt read"
+  },
+  "frame_capacity": {
+    "outer_accepted_frame_sizes": [0, 512, 1536],
+    "zero_semantics": "flush only after valid initialization",
+    "initializer_accepts": [512, 1536],
+    "selected_profile_frame_samples": 1536,
+    "state_capacity": "FUN_180189e40 stores configured frame size in state slot 0",
+    "process_guard": "frame_count <= state slot 0"
+  },
+  "best_supported_rule": {
+    "rule": "Use the selected master descriptor U16 at +0x0A as the configured count; 38 passes this guard when the same selected instance contains 38. Preserve matching descriptor/master values and selected profile capacity.",
+    "confidence": "HIGH_FOR_STATIC_FIELD_ALIAS_AND_GUARD",
+    "runtime_38ch_value_observed": false,
+    "sample_to_runtime_instance_join": "UNBOUND",
+    "full_38ch_encode_claim": false
+  },
+  "execution_boundary": {
+    "runtime_observations": 0,
+    "converter_or_encoder_run": "NOT_RUN",
+    "bwf_opened": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_auth_read": false,
+    "raw_decompilation_or_binary_in_supplement": false
+  }
+}

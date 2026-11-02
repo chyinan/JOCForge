@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-AUTO-TIME-INPUT-PROPERTY-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_INPUT_MAP_CONSUMER_BOUND; CONVERTER_PRIVCONTEXT_HANDOFF_UNBOUND; FILE_POSITION_MVP_NOT_BLOCKED; AUTO_TIME_UNBOUND",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1347,
+      "sha256": "ff538803dae65aa6f5642116e5b6a8d39e9e14a3d07ca02dda6a99f05f876789"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2734,
+      "sha256": "9b4679b9e40ac7a930364812b2b12f6f9f451216fb4666620ff544625c33b394"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1070,
+      "sha256": "23f5aa94b959154f6b83ebe0732ad5a59edb43427a33d9dcf57c7608c7d56643"
+    }
+  }
+}

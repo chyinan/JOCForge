@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "sample6-matched-drc-plugin-host-edge-wash-v1",
+      "manifest_sha256": "4b3feed0506bd21747a35b7cf03c38358dccb367c975a7960f5177713ad41eb7",
+      "package_seal_sha256": "c998ccc500538621f0e6c387d7bc6bb8a333448d6f3bf6065dbd9edcfb94c93d"
+    },
+    {
+      "package_id": "sample6-matched-drc-plugin-core-boundary-wash-v1",
+      "manifest_sha256": "361205baaa38c818845d335dfdd24466723497ff01738099eaa32922d67f4ec8",
+      "package_seal_sha256": "e82bb54fddc43b0b51986fb41d88fffeeaec2ed995deb881aa556f7f5e0924f8"
+    },
+    {
+      "package_id": "sample6-matched-drc-plugin-row-producer-wash-v1",
+      "manifest_sha256": "aedf9188c8991a31c54b06e9729279cabd2ce646cd01d1b752d7aeff5787c319",
+      "package_seal_sha256": "0d34ba08286c2ee23711887a29da63c68b8a5a0081a3c1f15ea43c2aaeacdbb4"
+    }
+  ]
+}

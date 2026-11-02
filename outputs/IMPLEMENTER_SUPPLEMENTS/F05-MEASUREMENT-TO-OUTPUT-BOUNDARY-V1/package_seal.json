@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "F05-MEASUREMENT-TO-OUTPUT-BOUNDARY-V1",
+  "manifest_sha256": "57b6cb0c18ddfe52bdda88b8042c06b9291387358e649b0f07808dcefbe8e107",
+  "sha256sums_sha256": "6027365bd866b762d74052d5a83a6fdd2efb28e4ab4535fa41a317ecdbb65692",
+  "payload_count": 3,
+  "status": "STATIC_F06_F13_PATHS_BOUND; MATCHED_PCM_WINDOW_NONIDENTICAL; FULL_TRACK_AUDIO_PARITY_UNBOUND; USER_REPORTED_ARTIFACT_UNJOINED"
+}

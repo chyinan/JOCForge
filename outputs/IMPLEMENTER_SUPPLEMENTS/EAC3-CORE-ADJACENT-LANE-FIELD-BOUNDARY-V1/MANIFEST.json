@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EAC3-CORE-ADJACENT-LANE-FIELD-BOUNDARY-V1",
+  "source_reverse_package_id": "dee-ddp-lane-control-field-lineage-wash-v9",
+  "source_reverse_manifest_sha256": "0f0641569f62afd89815052a6038c5b5d7071c99ac50b267a5757dee9442117e",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "ADJACENT_CORE_FIELD_WRITE_BOUND; SEMANTIC_CONSUMER_UNBOUND",
+  "implementation_trial_ready": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2512,
+      "sha256": "70e1e62e82794d3e5bcad2b5c1ea7a46a8b78d186295480d54ab5fba4b0cd9c1"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1676,
+      "sha256": "dff0f12ddc22d2ba3099790d372b164b4c432f97b6a253bbe2b7ab8115a85391"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 530,
+      "sha256": "cd48d0d1244fda842ea9b652eff0adb065280409b3b1d8528d2e9cabb85e978e"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1049,
+      "sha256": "730fe153562324b021a5c3730c4ae1e12439e185a32cccedaa77fbcf713cedb1"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 437,
+      "sha256": "b0e48f1b6cdefa1156097f1d03fc403eb078d9314e449b58773e735ba76ddbcd"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.data_rate_enum_core_values.v1",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "code": 0,
+      "core_value": 384
+    },
+    {
+      "code": 1,
+      "core_value": 448
+    },
+    {
+      "code": 2,
+      "core_value": 576
+    },
+    {
+      "code": 3,
+      "core_value": 640
+    },
+    {
+      "code": 4,
+      "core_value": 768
+    },
+    {
+      "code": 5,
+      "core_value": 1024
+    }
+  ]
+}

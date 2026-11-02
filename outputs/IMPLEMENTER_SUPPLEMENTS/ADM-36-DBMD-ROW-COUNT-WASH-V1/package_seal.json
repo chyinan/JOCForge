@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1669,
+      "name": "REPORT.md",
+      "sha256": "b7fcdc067b87aceebe61a8f5eff85978fbddf967b7d980fb50dff8372851d753"
+    },
+    {
+      "bytes": 1880,
+      "name": "EVIDENCE.json",
+      "sha256": "b7d72ee0aed674b12360c8e543e5542a632f85bf7eef37c213c5f9e239ad9e2b"
+    },
+    {
+      "bytes": 768,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "d33f30a31242cedd9786b3ba716886af56549793d29fbf00c6cc58666c6dabfd"
+    },
+    {
+      "bytes": 1273,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "2746353356c945e354f869ed1aed2d66a5abc3d3b84d69aca037b3ff218f82e5"
+    },
+    {
+      "bytes": 2581,
+      "name": "verify_package.py",
+      "sha256": "3b377047d6c80ec5be57094c9e58140579b167653c334881838ee604f126ab4b"
+    },
+    {
+      "bytes": 1696,
+      "name": "seal_package.py",
+      "sha256": "e112dc42f8414e1205d4ac9f6404d1d6a013843db4fe501ce7e63bd2fe8d57c4"
+    }
+  ],
+  "manifest_sha256": "fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374",
+  "package_id": "ADM-36-DBMD-ROW-COUNT-WASH-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

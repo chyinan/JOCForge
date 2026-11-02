@@ -1,0 +1,231 @@
+{
+  "window": {
+    "timebase": "file_position",
+    "frame_interval_inclusive": [
+      2112,
+      2207
+    ],
+    "sample_interval_half_open": [
+      4224000,
+      4416000
+    ],
+    "au_interval_half_open": [
+      2750,
+      2875
+    ],
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "sample_frames": 192000,
+    "pcm_format_in_memory": "pcm_f32le"
+  },
+  "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+  "input_ascii_copy_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "dee_output": {
+    "sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "bytes": 17395712,
+    "parsed_format": "E-AC-3",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "duration_seconds": 135.904,
+    "au_count_ffprobe": 4247,
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "eac3",
+          "sample_rate": "48000",
+          "channels": 6,
+          "channel_layout": "5.1(side)",
+          "duration": "135.904000"
+        }
+      ],
+      "format": {
+        "format_name": "eac3",
+        "duration": "135.904000",
+        "size": "17395712"
+      }
+    }
+  },
+  "rust_candidate": {
+    "sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "bytes": 17395712,
+    "parsed_format": "E-AC-3",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "duration_seconds": 135.904,
+    "au_count_ffprobe": 4247,
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "eac3",
+          "sample_rate": "48000",
+          "channels": 6,
+          "channel_layout": "5.1(side)",
+          "duration": "135.904000"
+        }
+      ],
+      "format": {
+        "format_name": "eac3",
+        "duration": "135.904000",
+        "size": "17395712"
+      }
+    },
+    "window_pcm_sha256": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7"
+  },
+  "metrics": {
+    "direct_alignment_aggregate": {
+      "mae": 0.001034088102945437,
+      "rmse": 0.0023204719644973207,
+      "peak_error": 0.018465762957930565
+    },
+    "best_lag_search": "maximize absolute Pearson correlation within +/- 2400 sample frames; lag positive means candidate is later than DEE",
+    "gain_definition": "zero-intercept least-squares candidate-to-DEE scalar at the selected per-channel lag",
+    "per_channel": [
+      {
+        "channel_index": 0,
+        "direct": {
+          "mae": 0.00040348328184336424,
+          "rmse": 0.0006013405509293079,
+          "peak_error": 0.008125506341457367,
+          "correlation": 0.9999595364514453,
+          "zero_intercept_gain_candidate_to_dee": 1.001120924949646
+        },
+        "best_lag": {
+          "lag_sample_frames_candidate_relative_to_dee": 0,
+          "search_limit_sample_frames": 2400,
+          "correlation": 0.9999595464062219,
+          "gain_candidate_to_dee_zero_intercept": 1.0011209244478634,
+          "overlap_sample_frames": 192000,
+          "mae": 0.0004034832908263558,
+          "rmse": 0.0006013405341139688,
+          "peak_error": 0.008125506341457367,
+          "gain_adjusted_mae": 0.00040483311565775714,
+          "gain_adjusted_rmse": 0.0005967365170726123,
+          "gain_adjusted_peak_error": 0.008037995945403428
+        }
+      },
+      {
+        "channel_index": 1,
+        "direct": {
+          "mae": 0.00034681454417295754,
+          "rmse": 0.0005369518185034394,
+          "peak_error": 0.007997572422027588,
+          "correlation": 0.9999668382825616,
+          "zero_intercept_gain_candidate_to_dee": 1.000675916671753
+        },
+        "best_lag": {
+          "lag_sample_frames_candidate_relative_to_dee": 0,
+          "search_limit_sample_frames": 2400,
+          "correlation": 0.9999668675910064,
+          "gain_candidate_to_dee_zero_intercept": 1.0006759040384767,
+          "overlap_sample_frames": 192000,
+          "mae": 0.0003468145459518001,
+          "rmse": 0.0005369517903583466,
+          "peak_error": 0.007997572422027588,
+          "gain_adjusted_mae": 0.0003474380449018352,
+          "gain_adjusted_rmse": 0.0005351149841034667,
+          "gain_adjusted_peak_error": 0.008048442983332196
+        }
+      },
+      {
+        "channel_index": 2,
+        "direct": {
+          "mae": 0.00018767450819723308,
+          "rmse": 0.0003869360079988837,
+          "peak_error": 0.004147298634052277,
+          "correlation": 0.9999068493778299,
+          "zero_intercept_gain_candidate_to_dee": 1.000136137008667
+        },
+        "best_lag": {
+          "lag_sample_frames_candidate_relative_to_dee": 0,
+          "search_limit_sample_frames": 2400,
+          "correlation": 0.9999068988788512,
+          "gain_candidate_to_dee_zero_intercept": 1.000136237863083,
+          "overlap_sample_frames": 192000,
+          "mae": 0.00018767448996458738,
+          "rmse": 0.00038693602044386513,
+          "peak_error": 0.004147298634052277,
+          "gain_adjusted_mae": 0.0001876720873558425,
+          "gain_adjusted_rmse": 0.00038691675506802206,
+          "gain_adjusted_peak_error": 0.0041646913309684175
+        }
+      },
+      {
+        "channel_index": 3,
+        "direct": {
+          "mae": 0.004222571849822998,
+          "rmse": 0.0054772282019257545,
+          "peak_error": 0.018465762957930565,
+          "correlation": 0.9418639506181433,
+          "zero_intercept_gain_candidate_to_dee": 1.0047166347503662
+        },
+        "best_lag": {
+          "lag_sample_frames_candidate_relative_to_dee": 0,
+          "search_limit_sample_frames": 2400,
+          "correlation": 0.9418639135355237,
+          "gain_candidate_to_dee_zero_intercept": 1.0047166623424095,
+          "overlap_sample_frames": 192000,
+          "mae": 0.004222572000177926,
+          "rmse": 0.005477228334429668,
+          "peak_error": 0.018465762957930565,
+          "gain_adjusted_mae": 0.00422355819210264,
+          "gain_adjusted_rmse": 0.005476754126112161,
+          "gain_adjusted_peak_error": 0.018404815889364403
+        }
+      },
+      {
+        "channel_index": 4,
+        "direct": {
+          "mae": 0.0005459367530420423,
+          "rmse": 0.0009005044703371823,
+          "peak_error": 0.008773058652877808,
+          "correlation": 0.9998850810050733,
+          "zero_intercept_gain_candidate_to_dee": 1.0069447755813599
+        },
+        "best_lag": {
+          "lag_sample_frames_candidate_relative_to_dee": 0,
+          "search_limit_sample_frames": 2400,
+          "correlation": 0.9998850883089607,
+          "gain_candidate_to_dee_zero_intercept": 1.0069447062854708,
+          "overlap_sample_frames": 192000,
+          "mae": 0.0005459367374073523,
+          "rmse": 0.0009005044746107529,
+          "peak_error": 0.008773058652877808,
+          "gain_adjusted_mae": 0.0005860616076730495,
+          "gain_adjusted_rmse": 0.0008196866877391942,
+          "gain_adjusted_peak_error": 0.007171356576205129
+        }
+      },
+      {
+        "channel_index": 5,
+        "direct": {
+          "mae": 0.000498047680594027,
+          "rmse": 0.0008348392439074814,
+          "peak_error": 0.006531670689582825,
+          "correlation": 0.9998985009126082,
+          "zero_intercept_gain_candidate_to_dee": 1.0061300992965698
+        },
+        "best_lag": {
+          "lag_sample_frames_candidate_relative_to_dee": 0,
+          "search_limit_sample_frames": 2400,
+          "correlation": 0.9998984177316033,
+          "gain_candidate_to_dee_zero_intercept": 1.0061300183950064,
+          "overlap_sample_frames": 192000,
+          "mae": 0.0004980476402063694,
+          "rmse": 0.0008348392401210479,
+          "peak_error": 0.006531670689582825,
+          "gain_adjusted_mae": 0.0005388283634038963,
+          "gain_adjusted_rmse": 0.000767611065090791,
+          "gain_adjusted_peak_error": 0.005210356061199434
+        }
+      }
+    ]
+  },
+  "pcm_retention": "NONE; both decoded PCM windows existed only in process memory"
+}

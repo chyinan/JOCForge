@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-f06-outputwrapper-registry-static-vector.v1",
+  "runtime_vector": "NOT_PROVIDED",
+  "runtime_execution": "NOT_RUN",
+  "static_state": {"OutputWrapper+0x178": "EMPTY_SENTINEL_CONTAINER"},
+  "downstream_rule": "The +0x1A0 source range is the post-filter traversal-order subset of +0x178.",
+  "job_or_adm_order_join": "UNBOUND",
+  "payload_included": false
+}

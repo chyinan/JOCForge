@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-F32-SOURCE-INITIALIZER-V1",
+  "manifest_sha256": "94e8539f1640df9e2a49150f8ef70aaf13457e18093c3267ee3ca31c598405c5",
+  "sha256sums_sha256": "ea693cf97388fa0ec2e26e17621193553497c4a462ae10fcac1a716d6f581cf1",
+  "payload_count": 5,
+  "status": "F32_SOURCE_CONTEXT_AND_ZERO_INITIALIZER_BOUND; LATER_NONZERO_WRITER_UNBOUND; XML_SELECTOR_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

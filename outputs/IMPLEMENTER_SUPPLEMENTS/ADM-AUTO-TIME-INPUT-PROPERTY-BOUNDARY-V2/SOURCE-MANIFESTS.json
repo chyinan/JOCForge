@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "sources": [
+    {
+      "package_id": "adm_bwf_atmosmezz_privcontext_handoff_wash_v1",
+      "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-3\\outputs\\adm_bwf_atmosmezz_privcontext_handoff_wash_v1",
+      "manifest_sha256": "9f78fb9769545f56a1003dcb0508c92262c3e63f9adb5071bf6fa8c88b6bd16f",
+      "package_seal_sha256": "de810cba2fc5cb857c1f0316705353d2e98e39763609adaa0f813f74dc88ed5d",
+      "payloads": {
+        "CHECK.py": "d30e826f5e383357325b20dce5c1999b8dea1492512a265e3ae519071a3a3250",
+        "HOST-PRIVCONTEXT-HANDOFF.json": "c0b871bf671d3546eb183f7dff7735e87e2f85b5346f66ae6553eb7009377ae2",
+        "README.md": "7771928fc22cc9258d42e4ad492b17defaf0350c2e507c1b203e5f3e0413f3be",
+        "SOURCE-IDENTITIES.json": "5d9006f4b6d88d0577441fda32e937b92dc9f6cd86431e3d7955155a5420ee26"
+      },
+      "verification": "manifest and seal recomputed independently; source checker passed normally and with python -O; findings manually reviewed"
+    }
+  ]
+}

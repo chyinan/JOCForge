@@ -1,0 +1,24 @@
+{
+  "schema": "washed-eac3-quantizer-input-only.v1",
+  "vector_id": "single-bin-bap3-positive-endpoint",
+  "quantizer_call_boundary": {
+    "bin_start": 0,
+    "bin_end_exclusive": 1,
+    "bap_row": [3],
+    "coefficient_row_f32_bits": ["0x3f800000"],
+    "decoded_exponent": [0]
+  },
+  "expected_native": {
+    "raw_truncated_code": 7,
+    "clamped_code": 6,
+    "packed_code_bits": "110",
+    "outcome": "success"
+  },
+  "expected_current_washed_rule": {
+    "raw_code_7": "reserved sentinel; candidate infeasible"
+  },
+  "input_only": true,
+  "native_runtime_execution": "NOT_RUN",
+  "rust_runtime_execution": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-STAGERUNNER-AUDIO-PROPERTY-BOUNDARY-V1",
+  "source_reverse_package_id": "native-f06-r138-stagerunner-property-callsite-retry-addendum",
+  "source_reverse_manifest_sha256": "986e4138a39e83e35a3f0622a743206f5b1288d4b2d290e2947ac083aa8e9cf9",
+  "status": "AUDIO_INPUT_PROPERTY_EDGE_BOUND; DEE_AUDIO_SOURCE_TYPE_WRITER_NOT_IN_SCOPED_WINDOW",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2996,
+      "sha256": "42c214da8652781b90978b38d2ce484ce931584911384d9654b662a7a7af6f0c"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2037,
+      "sha256": "bc86c87e3b9e799d5a5ab8d29123fdbb6f227ea33ea262869f966a6c1f62ecb1"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 461,
+      "sha256": "742706e7bb37728184454a309a1ceb65697912f2e703ebb8a177c251fa5392d8"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1076,
+      "sha256": "5f028e9574554d0727537653152905fb1684e684d1de15cdfd2ef6c65f1de8c1"
+    }
+  ],
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

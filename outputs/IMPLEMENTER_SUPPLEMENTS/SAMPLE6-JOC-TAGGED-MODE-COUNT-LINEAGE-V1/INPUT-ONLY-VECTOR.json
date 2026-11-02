@@ -1,0 +1,15 @@
+{
+  "schema": "washed-joc-mode-count-input-only.v1",
+  "vector_id": "matched-tag4-mode-to-count-single-field",
+  "fixed_inputs": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "all_other_tagged_records": "unchanged"
+  },
+  "changed_input": {"record_tag": 4, "mode_value_i32": "M"},
+  "expected_mapping": {"lookup_result_u16": "N"},
+  "runtime_values": {"M": "UNBOUND", "N": "UNBOUND"},
+  "native_runtime_execution": "NOT_RUN",
+  "audio_effect": "UNMEASURED",
+  "pcm_or_payload_included": false
+}

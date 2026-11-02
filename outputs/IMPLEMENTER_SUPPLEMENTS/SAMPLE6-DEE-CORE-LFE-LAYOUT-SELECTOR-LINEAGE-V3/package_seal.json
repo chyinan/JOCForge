@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V3",
+  "manifest_sha256": "c6367e0abb5a6c1697931f4cafc52eb8826a03762ed896d943ed497bf615a4e5",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "9f37ab491151e3610f96a6aea5e312adb59fb9e9696e2d81e0b34ec44be5ac11",
+      "bytes": 2814
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "91dec9dac4df2083a53570410958c5439aad68989531ea938e8095ab7f207cc6",
+      "bytes": 3022
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "3b7e8b910f286fa7992c1e8da81ae09912f3e82dc7290d29fda4555b79404392",
+      "bytes": 1636
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "324edba98faafbb234210205f760c03f691f7e22483b1a43f75065121947cd2d",
+      "bytes": 545
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "3caae001359a8337079eef463bfac1b5957f27edc5facdf425a88d40bb7afb12",
+      "bytes": 2384
+    }
+  ],
+  "scope": "Updated static physical-slot and local DDP row-order facts; matched BWF-row to core-LFE lane remains unbound"
+}

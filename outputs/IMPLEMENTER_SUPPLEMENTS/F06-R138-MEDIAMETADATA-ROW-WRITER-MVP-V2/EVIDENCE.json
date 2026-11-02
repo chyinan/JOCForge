@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge-washed-f06-r138-host-mediametadata-dispatch.v2",
+  "scope": "R138 MEDIAMETADATA HOST PROPERTY DISPATCH AND ROW TRANSFORM",
+  "status": "BEST_SUPPORTED_ROW_PRESERVING_MODEL_RULE; GENERIC_VCALL_AND_CROSS_MODULE_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "native-f06-r138-host-media-metadata-set-dispatch-addendum",
+    "manifest_sha256": "49fac997e42b61aa2a98af32c7698e2f3baf129b6d4ae96138dc96e4f7fcc8bd",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "host_and_type_facts": {
+    "host_method": "OutputWrapper::SetProperty",
+    "host_branch": "dee_audio_source_type",
+    "host_operation": "iterate ordered source-list and metadata entries; construct typed string-property values; invoke generic virtual setter slot",
+    "selected_process_state_member": "+0xA0",
+    "selected_member_type": "dee::Types::MediaMetadata",
+    "typed_payload": "vector<map<string,string>>",
+    "type_specific_setter_slot_offset": "0x28",
+    "slot_offsets_match": true,
+    "generic_vcall_target_bound": false,
+    "receiver_pointer_to_selected_r138_plus_0xa0_bound": false
+  },
+  "row_transform": {
+    "input_order_preserved": true,
+    "output_index_rule": "one_based index = zero_based input ordinal + 1",
+    "filename_copied": true,
+    "nested_string_fields_copied": true,
+    "safe_type_value_commit": true
+  },
+  "converter_typed_crosswalk": {
+    "AO_%04x_to_converter_channel_input_id": "parse suffix - 0x1001; zero-based",
+    "ATU_%08x_to_chna_uid_table_ordinal": "parse suffix - 1; zero-based",
+    "row_count_equality_check": true,
+    "same_ordinal_typed_field_comparison": true,
+    "cross_module_join_to_mediametadata_index": "UNBOUND"
+  },
+  "metadata_constraint": {
+    "authorized_files": 7,
+    "sample_rate_hz": 48000,
+    "chna_rows_36_channel_files": 6,
+    "chna_rows_38_channel_files": 1,
+    "hanmao_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "metadata_scan_order_is_runtime_source_order": "UNBOUND",
+    "pcm_or_payload_read": false
+  },
+  "unbound_runtime_facts": {
+    "selected_r138_setter_invocation": "UNBOUND",
+    "generic_vcall_target": "UNBOUND",
+    "receiver_pointer_identity": "UNBOUND",
+    "host_source_vector_to_converter_source_vector": "UNBOUND",
+    "native_generation": "NOT_CAPTURED",
+    "dee_run": "NOT_RUN",
+    "output_bitstream_effect": "NOT_EVALUATED"
+  },
+  "payload_policy": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "ADM-BWF-36-ROW-GATES-CURRENT-SNAPSHOT-V1",
+  "upstream": [
+    {
+      "package_id": "METER-PROFILE-IDENTITY-AUDIT-WASH-V1",
+      "manifest_sha256": "13b01166a9227983f32c3f9e20f2285322f5e5562a1e1c0eaee0418cc76c9858",
+      "manifest_sha256_file_sha256": "95d8495ae21d5346d42ad1d85f351958bb3d50a45a8d9e627e1e0526ef13be2c",
+      "powershell_checker": "PASS",
+      "audited_commit": "daba3d8c39c93004049201aad57a9b6ada64265d",
+      "source_file_match_current": {
+        "encode_request.rs": true,
+        "lib.rs": true,
+        "job_configuration.rs": false,
+        "meter_source_bridge.rs": true,
+        "meter_source_admission.rs": true,
+        "meter_prepass.rs": true,
+        "provider_set_identity.rs": true,
+        "prepared_job_identity.rs": true,
+        "independent_meter_callback.rs": true,
+        "cli_independent_meter_callback.rs": true,
+        "prepared_job_input_test.rs": true
+      },
+      "job_configuration_current_sha256": "a22a78e30a0c149f1eda42f76cdf86ba0dc7f0a33f674b59a3f2c8c18be22b40"
+    },
+    {
+      "package_id": "r7-seven-adm-dimensions",
+      "manifest_sha256": "c7cb52147b1207e03897ffef3fa20de1491de1dc25336c640e1ddc287e049a00",
+      "manifest_sha256_file_sha256": "a12220aa7d277d3f71d22f601851e2706c42415aeda954f9c9243eebc8adbe73",
+      "checker": ["PASS_NORMAL", "PASS_PYTHON_O"],
+      "inherited_input_identity_manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b"
+    }
+  ]
+}

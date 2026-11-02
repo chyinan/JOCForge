@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ADM-CHNA-PHYSICAL-ROW-ORDER-MVP-V1",
+  "source_reverse_package_id": "adm_storage_row_table_producer_wash_v1",
+  "source_reverse_manifest_sha256": "7fcc5d6b2486c2c882c618843e19ca259e447f2c3ca502eb0688eaec3b5528b0",
+  "status": "BEST_SUPPORTED_MVP_RULE; EXACT_RUNTIME_OWNER_GENERATION_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3230,
+      "sha256": "ed64f90d6ae1bd34b2c292e9b837f3a08a9499985fd7f968bd6956baf7190887"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3072,
+      "sha256": "d3fbffc8945cd759a3e1dbb260f55148badc98c2dfce1d3eb1420350d2b4c806"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1415,
+      "sha256": "09b3833ff79510c9aeb108625cb67cfb35ca37b22061f0396c2693cda77e86f9"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 3768,
+      "sha256": "8e576ab5d9056740c002388e72351d1d7e850a1d76e1ecee516350c5371e3478"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1162,
+      "sha256": "2b03c0936489746ca830cc5b69691e6333f5a4da25ca2619f7fac65110a61383"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

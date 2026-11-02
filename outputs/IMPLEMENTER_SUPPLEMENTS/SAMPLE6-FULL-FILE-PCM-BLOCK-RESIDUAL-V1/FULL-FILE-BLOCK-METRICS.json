@@ -1,0 +1,1836 @@
+{
+  "schema": "full-file-decoded-core-pcm-block-comparison.v1",
+  "input_hashes": {
+    "dee_eac3_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_eac3_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b"
+  },
+  "decoder": {
+    "version": "ffmpeg version 8.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "mode": "decode to raw f32le pipe only; no encoded output"
+  },
+  "streams": {
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "au_count_each": 4247,
+    "sample_frames_each": 6523392,
+    "duration_seconds_each": 135.904
+  },
+  "whole_file_per_channel": [
+    {
+      "channel_index": 0,
+      "mae": 0.0006361436713292325,
+      "rmse": 0.0013171080282131668,
+      "peak_error": 0.02657446265220642,
+      "correlation": 0.9998391779356928
+    },
+    {
+      "channel_index": 1,
+      "mae": 0.0006057719473674436,
+      "rmse": 0.0012415335214198651,
+      "peak_error": 0.024161159992218018,
+      "correlation": 0.999840706227478
+    },
+    {
+      "channel_index": 2,
+      "mae": 0.000430974795868066,
+      "rmse": 0.0010496345455572981,
+      "peak_error": 0.03017526865005493,
+      "correlation": 0.9997739986374354
+    },
+    {
+      "channel_index": 3,
+      "mae": 0.0034420790939971935,
+      "rmse": 0.006199550803140426,
+      "peak_error": 0.04227170627564192,
+      "correlation": 0.8176729265921662
+    },
+    {
+      "channel_index": 4,
+      "mae": 0.0006956716421766083,
+      "rmse": 0.0014500951197247392,
+      "peak_error": 0.0491291880607605,
+      "correlation": 0.9997904278768309
+    },
+    {
+      "channel_index": 5,
+      "mae": 0.0006819817151126834,
+      "rmse": 0.001407015102970416,
+      "peak_error": 0.0396389365196228,
+      "correlation": 0.9997927787963371
+    }
+  ],
+  "whole_file_rmse_rank_descending": [
+    3,
+    4,
+    5,
+    0,
+    1,
+    2
+  ],
+  "channel_3_global_rmse_rank": 1,
+  "four_second_blocks": {
+    "target_block_frames": 192000,
+    "block_count": 34,
+    "last_block_frames": 187392,
+    "per_channel_summary": [
+      {
+        "channel_index": 0,
+        "rmse_median": 0.0012305246245709511,
+        "rmse_p95": 0.0018554573704387262,
+        "rmse_max": 0.0022329321591710596,
+        "peak_error_max": 0.02657446265220642,
+        "blocks_with_highest_rmse": 0,
+        "blocks_with_highest_peak": 0
+      },
+      {
+        "channel_index": 1,
+        "rmse_median": 0.0011560938355199702,
+        "rmse_p95": 0.0017855631667964434,
+        "rmse_max": 0.002190448561720541,
+        "peak_error_max": 0.024161159992218018,
+        "blocks_with_highest_rmse": 0,
+        "blocks_with_highest_peak": 0
+      },
+      {
+        "channel_index": 2,
+        "rmse_median": 0.0009873939240108219,
+        "rmse_p95": 0.0017770544261631323,
+        "rmse_max": 0.002165497522793979,
+        "peak_error_max": 0.03017526865005493,
+        "blocks_with_highest_rmse": 0,
+        "blocks_with_highest_peak": 0
+      },
+      {
+        "channel_index": 3,
+        "rmse_median": 0.006393145901238198,
+        "rmse_p95": 0.007958379859088769,
+        "rmse_max": 0.008077530733450237,
+        "peak_error_max": 0.04227170627564192,
+        "blocks_with_highest_rmse": 30,
+        "blocks_with_highest_peak": 26
+      },
+      {
+        "channel_index": 4,
+        "rmse_median": 0.0013317929337049565,
+        "rmse_p95": 0.0023329367950109324,
+        "rmse_max": 0.002970099445238842,
+        "peak_error_max": 0.0491291880607605,
+        "blocks_with_highest_rmse": 4,
+        "blocks_with_highest_peak": 4
+      },
+      {
+        "channel_index": 5,
+        "rmse_median": 0.0013407240144539625,
+        "rmse_p95": 0.002173650637582823,
+        "rmse_max": 0.002898886891049949,
+        "peak_error_max": 0.0396389365196228,
+        "blocks_with_highest_rmse": 0,
+        "blocks_with_highest_peak": 4
+      }
+    ],
+    "blocks": [
+      {
+        "block_index": 0,
+        "start_sample_frame": 0,
+        "end_sample_frame_exclusive": 192000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0004386789907075883,
+            "rmse": 0.0009501300696539591,
+            "peak_error": 0.01545003056526184,
+            "correlation": 0.9998695202962257
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.00044175848479766566,
+            "rmse": 0.0009650452519297407,
+            "peak_error": 0.019671618938446045,
+            "correlation": 0.9998487664911946
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00039374387607746307,
+            "rmse": 0.0010028510387403114,
+            "peak_error": 0.02290669083595276,
+            "correlation": 0.9998860289752679
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0020579776155904583,
+            "rmse": 0.004256997899397468,
+            "peak_error": 0.023706212639808655,
+            "correlation": 0.826169622664183
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0005193386275524048,
+            "rmse": 0.0011958620857634018,
+            "peak_error": 0.03760409355163574,
+            "correlation": 0.9998792695373626
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0005106730123774901,
+            "rmse": 0.0011098933255299797,
+            "peak_error": 0.030296146869659424,
+            "correlation": 0.9998397488829787
+          }
+        ]
+      },
+      {
+        "block_index": 1,
+        "start_sample_frame": 192000,
+        "end_sample_frame_exclusive": 384000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0009375827796019738,
+            "rmse": 0.0017551315837585613,
+            "peak_error": 0.018455922603607178,
+            "correlation": 0.9997927992674407
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0008688053359630624,
+            "rmse": 0.0016057237887981972,
+            "peak_error": 0.018144816160202026,
+            "correlation": 0.9998057131370289
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0006223701628315276,
+            "rmse": 0.0013996760028906162,
+            "peak_error": 0.023342818021774292,
+            "correlation": 0.9998272067660124
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004959640344904757,
+            "rmse": 0.007846444844748099,
+            "peak_error": 0.034058861958328635,
+            "correlation": 0.76382541805101
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0011156889631849171,
+            "rmse": 0.002112819101282985,
+            "peak_error": 0.02166426181793213,
+            "correlation": 0.9997730746328781
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0009310679180163171,
+            "rmse": 0.0016883127632845306,
+            "peak_error": 0.022602975368499756,
+            "correlation": 0.9997788633957083
+          }
+        ]
+      },
+      {
+        "block_index": 2,
+        "start_sample_frame": 384000,
+        "end_sample_frame_exclusive": 576000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0006330398536246069,
+            "rmse": 0.001184649998988702,
+            "peak_error": 0.014844894409179688,
+            "correlation": 0.9998814873408846
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0006141915403356712,
+            "rmse": 0.0011464039626292006,
+            "peak_error": 0.012210428714752197,
+            "correlation": 0.999879260221465
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0005953953267207836,
+            "rmse": 0.0012375460818247138,
+            "peak_error": 0.015750527381896973,
+            "correlation": 0.9998560421198056
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0032914187649211884,
+            "rmse": 0.0053461107152097806,
+            "peak_error": 0.02168682450428605,
+            "correlation": 0.8270431332785579
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0008054500575112478,
+            "rmse": 0.001515037782012553,
+            "peak_error": 0.015037894248962402,
+            "correlation": 0.9998641415805284
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0007536506452598122,
+            "rmse": 0.0014308212856868332,
+            "peak_error": 0.01670047640800476,
+            "correlation": 0.9998573814705595
+          }
+        ]
+      },
+      {
+        "block_index": 3,
+        "start_sample_frame": 576000,
+        "end_sample_frame_exclusive": 768000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0010720030480954133,
+            "rmse": 0.0018130284399322804,
+            "peak_error": 0.018293946981430054,
+            "correlation": 0.9998703157679079
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0010246948477288598,
+            "rmse": 0.0017389789707852599,
+            "peak_error": 0.01482507586479187,
+            "correlation": 0.9998749833902187
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0004534506004914429,
+            "rmse": 0.0010185044886669638,
+            "peak_error": 0.012645930051803589,
+            "correlation": 0.9998517303489728
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004643594638786744,
+            "rmse": 0.007733573225293229,
+            "peak_error": 0.0371517545718234,
+            "correlation": 0.7675730430614192
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0009576329721795229,
+            "rmse": 0.0015100013208564594,
+            "peak_error": 0.01505538821220398,
+            "correlation": 0.9998734211586621
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0009590262035746979,
+            "rmse": 0.0014683879895997845,
+            "peak_error": 0.014228343963623047,
+            "correlation": 0.999873397129369
+          }
+        ]
+      },
+      {
+        "block_index": 4,
+        "start_sample_frame": 768000,
+        "end_sample_frame_exclusive": 960000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0013886260564861211,
+            "rmse": 0.0022329321591710596,
+            "peak_error": 0.01847052574157715,
+            "correlation": 0.9999113841846461
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0013386294508417956,
+            "rmse": 0.002190448561720541,
+            "peak_error": 0.019220858812332153,
+            "correlation": 0.9999093862946434
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0009484626531701627,
+            "rmse": 0.001578217622365024,
+            "peak_error": 0.014771372079849243,
+            "correlation": 0.9996783294742551
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0037984674791976063,
+            "rmse": 0.007249866078701126,
+            "peak_error": 0.04227170627564192,
+            "correlation": 0.75129439549165
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0008730812344621154,
+            "rmse": 0.0012824491720273429,
+            "peak_error": 0.009378895163536072,
+            "correlation": 0.9999075397694115
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0008981331750528206,
+            "rmse": 0.0013383339723892825,
+            "peak_error": 0.009286224842071533,
+            "correlation": 0.9998964469348376
+          }
+        ]
+      },
+      {
+        "block_index": 5,
+        "start_sample_frame": 960000,
+        "end_sample_frame_exclusive": 1152000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0006195527773175928,
+            "rmse": 0.001576854576771336,
+            "peak_error": 0.017713993787765503,
+            "correlation": 0.999750255337069
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0006150107993021344,
+            "rmse": 0.0015579958472566604,
+            "peak_error": 0.018115580081939697,
+            "correlation": 0.9997478233235336
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00032810521453665995,
+            "rmse": 0.0006296744201310417,
+            "peak_error": 0.008517146110534668,
+            "correlation": 0.9998442495107098
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.002500694375086927,
+            "rmse": 0.004964432445389802,
+            "peak_error": 0.02619642042554915,
+            "correlation": 0.8084786679232029
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0004692322578487742,
+            "rmse": 0.0008711481616150455,
+            "peak_error": 0.009885206818580627,
+            "correlation": 0.9997896023454133
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0005300792963656846,
+            "rmse": 0.000980665754339344,
+            "peak_error": 0.010586261749267578,
+            "correlation": 0.9997914125161381
+          }
+        ]
+      },
+      {
+        "block_index": 6,
+        "start_sample_frame": 1152000,
+        "end_sample_frame_exclusive": 1344000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0009934230647433324,
+            "rmse": 0.0019113473387857452,
+            "peak_error": 0.017679691314697266,
+            "correlation": 0.9997949955765232
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0009661952767256778,
+            "rmse": 0.0018720766736743564,
+            "peak_error": 0.018056035041809082,
+            "correlation": 0.9997874207012347
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0006133492202165179,
+            "rmse": 0.0010688830945037582,
+            "peak_error": 0.011659502983093262,
+            "correlation": 0.9997660224790834
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004073252747822701,
+            "rmse": 0.007284773160736391,
+            "peak_error": 0.03816969972103834,
+            "correlation": 0.7525925418251873
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0007133283715994487,
+            "rmse": 0.0011881174437629437,
+            "peak_error": 0.00933799147605896,
+            "correlation": 0.9998370629456158
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0006989622978897,
+            "rmse": 0.0011564052183613014,
+            "peak_error": 0.011616036295890808,
+            "correlation": 0.9998341044471638
+          }
+        ]
+      },
+      {
+        "block_index": 7,
+        "start_sample_frame": 1344000,
+        "end_sample_frame_exclusive": 1536000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0002162951870812956,
+            "rmse": 0.00039619693485031817,
+            "peak_error": 0.006957359611988068,
+            "correlation": 0.999977928675781
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.00021555663926547434,
+            "rmse": 0.00043753652751425784,
+            "peak_error": 0.00820218026638031,
+            "correlation": 0.9999746021781507
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0002603180563065924,
+            "rmse": 0.0004346534597183322,
+            "peak_error": 0.005528286099433899,
+            "correlation": 0.9999751654064724
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.002031612003630177,
+            "rmse": 0.00403964924538255,
+            "peak_error": 0.01993824541568756,
+            "correlation": 0.8195808354594001
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0002049939427625631,
+            "rmse": 0.00033295466504218587,
+            "peak_error": 0.0038083717226982117,
+            "correlation": 0.9999809214350239
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0001975322720906334,
+            "rmse": 0.0003362190743657434,
+            "peak_error": 0.004973031580448151,
+            "correlation": 0.9999870687082084
+          }
+        ]
+      },
+      {
+        "block_index": 8,
+        "start_sample_frame": 1536000,
+        "end_sample_frame_exclusive": 1728000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.00027678147410193434,
+            "rmse": 0.0004810213740675971,
+            "peak_error": 0.006850734353065491,
+            "correlation": 0.999970685276465
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0002671233507874889,
+            "rmse": 0.0004728242432084125,
+            "peak_error": 0.00783655047416687,
+            "correlation": 0.9999722680731606
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00028692445910495206,
+            "rmse": 0.0004943701315620328,
+            "peak_error": 0.006366361863911152,
+            "correlation": 0.9999562219496168
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0040038699211066625,
+            "rmse": 0.007122363855038589,
+            "peak_error": 0.03800213379145134,
+            "correlation": 0.7739982205509657
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0002676898470004024,
+            "rmse": 0.0004385676875806878,
+            "peak_error": 0.006929687224328518,
+            "correlation": 0.9999718170412032
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0002606908198776073,
+            "rmse": 0.00043282520108118086,
+            "peak_error": 0.005801789462566376,
+            "correlation": 0.9999800775613161
+          }
+        ]
+      },
+      {
+        "block_index": 9,
+        "start_sample_frame": 1728000,
+        "end_sample_frame_exclusive": 1920000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.00031178276311603583,
+            "rmse": 0.0005866003448662345,
+            "peak_error": 0.010751448571681976,
+            "correlation": 0.9999448805084359
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0003018513274352731,
+            "rmse": 0.0005695240369654401,
+            "peak_error": 0.009326823055744171,
+            "correlation": 0.9999513670606077
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0003398728295846088,
+            "rmse": 0.0007808387905067723,
+            "peak_error": 0.01912689208984375,
+            "correlation": 0.9998286706451902
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.002173948235054762,
+            "rmse": 0.004264119113199258,
+            "peak_error": 0.02278529293835163,
+            "correlation": 0.8460684752727559
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.00032796527206577865,
+            "rmse": 0.0007152248556922369,
+            "peak_error": 0.020958304405212402,
+            "correlation": 0.9998853883224497
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.00028720056106038667,
+            "rmse": 0.0005985618184614438,
+            "peak_error": 0.015628978610038757,
+            "correlation": 0.9999384308497083
+          }
+        ]
+      },
+      {
+        "block_index": 10,
+        "start_sample_frame": 1920000,
+        "end_sample_frame_exclusive": 2112000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0006027236509467476,
+            "rmse": 0.0012108647598662403,
+            "peak_error": 0.01829458773136139,
+            "correlation": 0.9998658490109468
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0005734251837022425,
+            "rmse": 0.0011362028562272725,
+            "peak_error": 0.01433570683002472,
+            "correlation": 0.9998708968716029
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.000647954109047381,
+            "rmse": 0.001452647231870946,
+            "peak_error": 0.018576592206954956,
+            "correlation": 0.999852332843387
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0029666079044498033,
+            "rmse": 0.005024496070078916,
+            "peak_error": 0.020014541689306498,
+            "correlation": 0.8247646452442409
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0007742991754403062,
+            "rmse": 0.0015532113508128366,
+            "peak_error": 0.029559671878814697,
+            "correlation": 0.9998585184938009
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0006813230938677913,
+            "rmse": 0.0013996871456403513,
+            "peak_error": 0.03305774927139282,
+            "correlation": 0.9998456838226797
+          }
+        ]
+      },
+      {
+        "block_index": 11,
+        "start_sample_frame": 2112000,
+        "end_sample_frame_exclusive": 2304000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0009594016532768317,
+            "rmse": 0.0018253627720980238,
+            "peak_error": 0.02657446265220642,
+            "correlation": 0.9997713285745018
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0009386266592153234,
+            "rmse": 0.0017069904920361944,
+            "peak_error": 0.024161159992218018,
+            "correlation": 0.9997810364629028
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0006476141070195745,
+            "rmse": 0.001373923479635781,
+            "peak_error": 0.02680492401123047,
+            "correlation": 0.9998341434755321
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004673713856153799,
+            "rmse": 0.007722497899437904,
+            "peak_error": 0.03752430813619867,
+            "correlation": 0.7721580627768989
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0011999106302155193,
+            "rmse": 0.002163364185975423,
+            "peak_error": 0.019191622734069824,
+            "correlation": 0.9997923739287133
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.001155420232438498,
+            "rmse": 0.0020411175782645745,
+            "peak_error": 0.021970421075820923,
+            "correlation": 0.9997770876695461
+          }
+        ]
+      },
+      {
+        "block_index": 12,
+        "start_sample_frame": 2304000,
+        "end_sample_frame_exclusive": 2496000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0005772976532186197,
+            "rmse": 0.0011314629642782828,
+            "peak_error": 0.010690823197364807,
+            "correlation": 0.9998917998231854
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0005859109518408059,
+            "rmse": 0.0011269750927269024,
+            "peak_error": 0.009848296642303467,
+            "correlation": 0.9998879275798043
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.000567166044268386,
+            "rmse": 0.0012436588217433731,
+            "peak_error": 0.01501724123954773,
+            "correlation": 0.9998551235608799
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0043627325721464,
+            "rmse": 0.007068767959104091,
+            "peak_error": 0.0394024180714041,
+            "correlation": 0.7770310189559734
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.000737313833894343,
+            "rmse": 0.0014794249610586981,
+            "peak_error": 0.016669154167175293,
+            "correlation": 0.999865885368612
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0007584779819726653,
+            "rmse": 0.0014910097776043877,
+            "peak_error": 0.0157490074634552,
+            "correlation": 0.9998604954546382
+          }
+        ]
+      },
+      {
+        "block_index": 13,
+        "start_sample_frame": 2496000,
+        "end_sample_frame_exclusive": 2688000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0005222255236055216,
+            "rmse": 0.0011178767737747327,
+            "peak_error": 0.01589822769165039,
+            "correlation": 0.9998889665262356
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0004950325746238207,
+            "rmse": 0.001051049962072083,
+            "peak_error": 0.012728482484817505,
+            "correlation": 0.9998891054662019
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00014553511246108176,
+            "rmse": 0.00029688435657808946,
+            "peak_error": 0.003323726763483137,
+            "correlation": 0.9998123561653363
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004350332405314531,
+            "rmse": 0.006944771633167955,
+            "peak_error": 0.028133524116128683,
+            "correlation": 0.7890124763304966
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0005325578267899426,
+            "rmse": 0.001026189138766243,
+            "peak_error": 0.010950088500976562,
+            "correlation": 0.9998961803706607
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.000524031942804849,
+            "rmse": 0.0010200351652904262,
+            "peak_error": 0.009631648659706116,
+            "correlation": 0.9998866271032266
+          }
+        ]
+      },
+      {
+        "block_index": 14,
+        "start_sample_frame": 2688000,
+        "end_sample_frame_exclusive": 2880000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0007996239156056528,
+            "rmse": 0.0016149552612219431,
+            "peak_error": 0.015348702669143677,
+            "correlation": 0.9998320180395779
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0007776798522968822,
+            "rmse": 0.0015321435017880047,
+            "peak_error": 0.016044527292251587,
+            "correlation": 0.9998336296108818
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00012137872576557534,
+            "rmse": 0.0003161805710148553,
+            "peak_error": 0.0054808109998703,
+            "correlation": 0.9997303205988318
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004966312725836494,
+            "rmse": 0.008036597395548,
+            "peak_error": 0.0363732548430562,
+            "correlation": 0.7490614954081214
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0008455160863102087,
+            "rmse": 0.0016640078922516778,
+            "peak_error": 0.01635909080505371,
+            "correlation": 0.9997862122952271
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0008139288171539801,
+            "rmse": 0.0016066803436592034,
+            "peak_error": 0.01837250590324402,
+            "correlation": 0.9997897380801504
+          }
+        ]
+      },
+      {
+        "block_index": 15,
+        "start_sample_frame": 2880000,
+        "end_sample_frame_exclusive": 3072000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0009097109497274604,
+            "rmse": 0.0016176811453022567,
+            "peak_error": 0.01762908697128296,
+            "correlation": 0.9998287676765841
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0009379855403803866,
+            "rmse": 0.0016273641636148184,
+            "peak_error": 0.013416051864624023,
+            "correlation": 0.9998272494161129
+          },
+          {
+            "channel_index": 2,
+            "mae": 7.102427319605998e-05,
+            "rmse": 0.00015057302334775508,
+            "peak_error": 0.00289993267506361,
+            "correlation": 0.9998922005202424
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0036755844541531022,
+            "rmse": 0.005783911490877102,
+            "peak_error": 0.024835757678374648,
+            "correlation": 0.8240056089423513
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0009648595203994752,
+            "rmse": 0.001680276037155684,
+            "peak_error": 0.01979777216911316,
+            "correlation": 0.9997562517960469
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0010703521718640648,
+            "rmse": 0.001852192887118983,
+            "peak_error": 0.017881035804748535,
+            "correlation": 0.9997689191022506
+          }
+        ]
+      },
+      {
+        "block_index": 16,
+        "start_sample_frame": 3072000,
+        "end_sample_frame_exclusive": 3264000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0003909331022960241,
+            "rmse": 0.0006963908195713252,
+            "peak_error": 0.012311846017837524,
+            "correlation": 0.9999331976481313
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.00042148915538262375,
+            "rmse": 0.0007724534395559737,
+            "peak_error": 0.008775219321250916,
+            "correlation": 0.999915281165276
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0005234599556979278,
+            "rmse": 0.001121847867867324,
+            "peak_error": 0.013872221112251282,
+            "correlation": 0.9998461962684202
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004697145524323379,
+            "rmse": 0.007916262724072259,
+            "peak_error": 0.03658928372897208,
+            "correlation": 0.7669065139334015
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.00045351724388453124,
+            "rmse": 0.0008196205721712458,
+            "peak_error": 0.009987220168113708,
+            "correlation": 0.9998981542675008
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0005267875153415069,
+            "rmse": 0.0010674286139546714,
+            "peak_error": 0.013436377048492432,
+            "correlation": 0.9998465659306943
+          }
+        ]
+      },
+      {
+        "block_index": 17,
+        "start_sample_frame": 3264000,
+        "end_sample_frame_exclusive": 3456000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.001018976724383793,
+            "rmse": 0.001611957465371993,
+            "peak_error": 0.018090009689331055,
+            "correlation": 0.9998655932393539
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0009664091705250873,
+            "rmse": 0.0015490251036430354,
+            "peak_error": 0.018018782138824463,
+            "correlation": 0.9998733403351908
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0013220986373245524,
+            "rmse": 0.002165497522793979,
+            "peak_error": 0.023008570075035095,
+            "correlation": 0.9996732528949357
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004409079011521026,
+            "rmse": 0.007905214651527886,
+            "peak_error": 0.04161937307799235,
+            "correlation": 0.7722750618327713
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0009401103893770628,
+            "rmse": 0.0015184892456112018,
+            "peak_error": 0.012320518493652344,
+            "correlation": 0.9998074097774945
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0009506295847945374,
+            "rmse": 0.0015366275964044007,
+            "peak_error": 0.013635963201522827,
+            "correlation": 0.9997956118098101
+          }
+        ]
+      },
+      {
+        "block_index": 18,
+        "start_sample_frame": 3456000,
+        "end_sample_frame_exclusive": 3648000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0006529079290296427,
+            "rmse": 0.0013357518165550216,
+            "peak_error": 0.01889413595199585,
+            "correlation": 0.999853557139167
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0006384172459745828,
+            "rmse": 0.0013159820362240481,
+            "peak_error": 0.018925011157989502,
+            "correlation": 0.999847338786962
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0005975707695735686,
+            "rmse": 0.0010413511069398058,
+            "peak_error": 0.016638651490211487,
+            "correlation": 0.999848210235136
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0027304874451515968,
+            "rmse": 0.0050445624451164826,
+            "peak_error": 0.027076370897702873,
+            "correlation": 0.7896570338808552
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0004200948899630781,
+            "rmse": 0.0007515701013969802,
+            "peak_error": 0.010645732283592224,
+            "correlation": 0.9998597944611037
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.00041948318370209136,
+            "rmse": 0.0007424411009165315,
+            "peak_error": 0.00988730788230896,
+            "correlation": 0.9998613073419466
+          }
+        ]
+      },
+      {
+        "block_index": 19,
+        "start_sample_frame": 3648000,
+        "end_sample_frame_exclusive": 3840000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0007906090955145331,
+            "rmse": 0.001545156333359134,
+            "peak_error": 0.015128344297409058,
+            "correlation": 0.9998503256807628
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0007535300749633365,
+            "rmse": 0.001497537216404102,
+            "peak_error": 0.01617082953453064,
+            "correlation": 0.999850240984545
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0005915769886095615,
+            "rmse": 0.0010911424668611938,
+            "peak_error": 0.01907038688659668,
+            "correlation": 0.9998608288750263
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0036472879015467066,
+            "rmse": 0.0067271302798214624,
+            "peak_error": 0.0373743282398209,
+            "correlation": 0.7580912822791778
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0005054878361152752,
+            "rmse": 0.000925429504811315,
+            "peak_error": 0.00949019193649292,
+            "correlation": 0.9998653005408892
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0004950722915252689,
+            "rmse": 0.0009049960204379974,
+            "peak_error": 0.007801041007041931,
+            "correlation": 0.9998678084263297
+          }
+        ]
+      },
+      {
+        "block_index": 20,
+        "start_sample_frame": 3840000,
+        "end_sample_frame_exclusive": 4032000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0002516338766977668,
+            "rmse": 0.0004502272100284623,
+            "peak_error": 0.008644279092550278,
+            "correlation": 0.9999823753595118
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.00024154606269477578,
+            "rmse": 0.00040723527732659223,
+            "peak_error": 0.007155567407608032,
+            "correlation": 0.9999857555480242
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00024403484361558013,
+            "rmse": 0.00040585684241674456,
+            "peak_error": 0.005309022963047028,
+            "correlation": 0.9999749642460096
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004398209742505454,
+            "rmse": 0.005707245988267402,
+            "peak_error": 0.0188885685056448,
+            "correlation": 0.9412526800145495
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.00025681909877302663,
+            "rmse": 0.0003937178649654467,
+            "peak_error": 0.005892273038625717,
+            "correlation": 0.9999779192348047
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.00023078951835211114,
+            "rmse": 0.0003603378045305071,
+            "peak_error": 0.003953535109758377,
+            "correlation": 0.9999848093207383
+          }
+        ]
+      },
+      {
+        "block_index": 21,
+        "start_sample_frame": 4032000,
+        "end_sample_frame_exclusive": 4224000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0002703568898672349,
+            "rmse": 0.00044752155777927756,
+            "peak_error": 0.007091071456670761,
+            "correlation": 0.9999826397894727
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0002652214852794827,
+            "rmse": 0.0004735373798871759,
+            "peak_error": 0.007893353700637817,
+            "correlation": 0.9999803869917487
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0002786567937908716,
+            "rmse": 0.00045812703056613503,
+            "peak_error": 0.005205981433391571,
+            "correlation": 0.9999479469928861
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004931908130154727,
+            "rmse": 0.0060591615226549345,
+            "peak_error": 0.01800592616200447,
+            "correlation": 0.9370383242493343
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0002701161087150486,
+            "rmse": 0.0004132025599717938,
+            "peak_error": 0.004858353175222874,
+            "correlation": 0.9999771361519268
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0002620707311983447,
+            "rmse": 0.00041466768522885,
+            "peak_error": 0.00637364387512207,
+            "correlation": 0.9999781964124156
+          }
+        ]
+      },
+      {
+        "block_index": 22,
+        "start_sample_frame": 4224000,
+        "end_sample_frame_exclusive": 4416000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0004034832908263558,
+            "rmse": 0.0006013405341139688,
+            "peak_error": 0.008125506341457367,
+            "correlation": 0.9999595364514453
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0003468145459518001,
+            "rmse": 0.0005369517903583466,
+            "peak_error": 0.007997572422027588,
+            "correlation": 0.9999668382825614
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00018767448996458738,
+            "rmse": 0.00038693602044386513,
+            "peak_error": 0.004147298634052277,
+            "correlation": 0.9999068493778299
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004222572000177926,
+            "rmse": 0.005477228334429668,
+            "peak_error": 0.018465762957930565,
+            "correlation": 0.9418639506181425
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0005459367374073523,
+            "rmse": 0.0009005044746107529,
+            "peak_error": 0.008773058652877808,
+            "correlation": 0.9998850810050736
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0004980476402063694,
+            "rmse": 0.0008348392401210479,
+            "peak_error": 0.006531670689582825,
+            "correlation": 0.9998985009126089
+          }
+        ]
+      },
+      {
+        "block_index": 23,
+        "start_sample_frame": 4416000,
+        "end_sample_frame_exclusive": 4608000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0005611329620320003,
+            "rmse": 0.0010868745380448947,
+            "peak_error": 0.0134497731924057,
+            "correlation": 0.9992000653591371
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.000506869489275615,
+            "rmse": 0.0009712620430039885,
+            "peak_error": 0.011732101440429688,
+            "correlation": 0.9993271566333406
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0008548306834677685,
+            "rmse": 0.0020239017717524656,
+            "peak_error": 0.03017526865005493,
+            "correlation": 0.9991218583064116
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.00011295883139431465,
+            "rmse": 0.00027892813592772,
+            "peak_error": 0.002250146586447954,
+            "correlation": 0.9550875627058523
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.00123374247547357,
+            "rmse": 0.0025114347279934467,
+            "peak_error": 0.03386223316192627,
+            "correlation": 0.9993852810480179
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0011631611741706898,
+            "rmse": 0.002269887317868741,
+            "peak_error": 0.03517785668373108,
+            "correlation": 0.999518100887058
+          }
+        ]
+      },
+      {
+        "block_index": 24,
+        "start_sample_frame": 4608000,
+        "end_sample_frame_exclusive": 4800000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.000582527753379985,
+            "rmse": 0.0010080856140862553,
+            "peak_error": 0.013804882764816284,
+            "correlation": 0.9995647407746441
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0005016214845298792,
+            "rmse": 0.0008709036838260093,
+            "peak_error": 0.01155439019203186,
+            "correlation": 0.9997111060590449
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.000569574621656587,
+            "rmse": 0.0013560701612362952,
+            "peak_error": 0.024653226137161255,
+            "correlation": 0.9994577760842906
+          },
+          {
+            "channel_index": 3,
+            "mae": 3.8920904751314215e-07,
+            "rmse": 3.43743214114911e-06,
+            "peak_error": 7.311316403502133e-05,
+            "correlation": 0.8313267280774016
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.001150548280744519,
+            "rmse": 0.0022368225234049638,
+            "peak_error": 0.0491291880607605,
+            "correlation": 0.9994268891090505
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.001143961766742132,
+            "rmse": 0.002121830886659637,
+            "peak_error": 0.033192574977874756,
+            "correlation": 0.9997135088390232
+          }
+        ]
+      },
+      {
+        "block_index": 25,
+        "start_sample_frame": 4800000,
+        "end_sample_frame_exclusive": 4992000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0007011571607941984,
+            "rmse": 0.0012501844892756622,
+            "peak_error": 0.02126428484916687,
+            "correlation": 0.9997556936642199
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0006533717162783473,
+            "rmse": 0.0011657837084107399,
+            "peak_error": 0.02081558108329773,
+            "correlation": 0.9997664720747599
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00031543241730066184,
+            "rmse": 0.0007032103030930699,
+            "peak_error": 0.00802554190158844,
+            "correlation": 0.9996890932921518
+          },
+          {
+            "channel_index": 3,
+            "mae": 9.651598458122432e-07,
+            "rmse": 3.9122826525653e-06,
+            "peak_error": 5.7730809203349054e-05,
+            "correlation": 0.9109478114907221
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.000984912247311258,
+            "rmse": 0.001656145508622952,
+            "peak_error": 0.017534196376800537,
+            "correlation": 0.9997725870700268
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0009286593926025274,
+            "rmse": 0.0015761847807354284,
+            "peak_error": 0.023942649364471436,
+            "correlation": 0.99981740583534
+          }
+        ]
+      },
+      {
+        "block_index": 26,
+        "start_sample_frame": 4992000,
+        "end_sample_frame_exclusive": 5184000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0006995637216265091,
+            "rmse": 0.0013929151148729534,
+            "peak_error": 0.020263422280550003,
+            "correlation": 0.9995032512789258
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0006756027297013104,
+            "rmse": 0.0013139372700768607,
+            "peak_error": 0.020047232508659363,
+            "correlation": 0.9993651769235747
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0005118782405265284,
+            "rmse": 0.001644136624691954,
+            "peak_error": 0.026018276810646057,
+            "correlation": 0.9993187291960998
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0007615830145363963,
+            "rmse": 0.002555751169386739,
+            "peak_error": 0.022332701366394758,
+            "correlation": 0.8436211396323898
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.00137193082511253,
+            "rmse": 0.002970099445238842,
+            "peak_error": 0.04041025787591934,
+            "correlation": 0.9988900995219004
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0012960883876931824,
+            "rmse": 0.002898886891049949,
+            "peak_error": 0.0396389365196228,
+            "correlation": 0.9985851389369136
+          }
+        ]
+      },
+      {
+        "block_index": 27,
+        "start_sample_frame": 5184000,
+        "end_sample_frame_exclusive": 5376000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0006715510592794474,
+            "rmse": 0.001361427621559749,
+            "peak_error": 0.017034053802490234,
+            "correlation": 0.9998871452143916
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0006528967240888903,
+            "rmse": 0.001284301146853512,
+            "peak_error": 0.01477167010307312,
+            "correlation": 0.9998812552051172
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00048531750633275814,
+            "rmse": 0.001126715997954645,
+            "peak_error": 0.015729576349258423,
+            "correlation": 0.9998262827731018
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004361677257375532,
+            "rmse": 0.007062766853933208,
+            "peak_error": 0.03940519446041435,
+            "correlation": 0.7792341485442066
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.000810962452910785,
+            "rmse": 0.0017294253821254118,
+            "peak_error": 0.04020589590072632,
+            "correlation": 0.9998476214878628
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0008498227865253322,
+            "rmse": 0.0017274649694367086,
+            "peak_error": 0.02628093957901001,
+            "correlation": 0.9998556937209452
+          }
+        ]
+      },
+      {
+        "block_index": 28,
+        "start_sample_frame": 5376000,
+        "end_sample_frame_exclusive": 5568000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0009475828466263033,
+            "rmse": 0.001816992583145789,
+            "peak_error": 0.017832309007644653,
+            "correlation": 0.9998387342863314
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0008111427347402605,
+            "rmse": 0.0015011327140273668,
+            "peak_error": 0.01388654112815857,
+            "correlation": 0.9998399496607971
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.0004589596553989513,
+            "rmse": 0.0009719368092813326,
+            "peak_error": 0.018904849886894226,
+            "correlation": 0.9998357690960415
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004241435560436779,
+            "rmse": 0.006833533371447876,
+            "peak_error": 0.02898703468963504,
+            "correlation": 0.7915283515951501
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0010005359240674435,
+            "rmse": 0.0018368871934500717,
+            "peak_error": 0.028091251850128174,
+            "correlation": 0.9998269086906897
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0010148546844332138,
+            "rmse": 0.0018956323888594186,
+            "peak_error": 0.030298978090286255,
+            "correlation": 0.9998131169624295
+          }
+        ]
+      },
+      {
+        "block_index": 29,
+        "start_sample_frame": 5568000,
+        "end_sample_frame_exclusive": 5760000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0008380119516752782,
+            "rmse": 0.001619405253257884,
+            "peak_error": 0.01728653907775879,
+            "correlation": 0.9998664196223063
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0007595492491244021,
+            "rmse": 0.0014180141319746543,
+            "peak_error": 0.015395671129226685,
+            "correlation": 0.9998703019217111
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00038765416326828363,
+            "rmse": 0.0009450788059064755,
+            "peak_error": 0.012947320938110352,
+            "correlation": 0.9998447735575352
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004931361300502916,
+            "rmse": 0.007903461461876038,
+            "peak_error": 0.03380474037840031,
+            "correlation": 0.7524983780644126
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0007904559120127909,
+            "rmse": 0.0014230774282976658,
+            "peak_error": 0.01905900239944458,
+            "correlation": 0.9998628233761888
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0008183860937943569,
+            "rmse": 0.0015164402067632087,
+            "peak_error": 0.020932823419570923,
+            "correlation": 0.9998592548790433
+          }
+        ]
+      },
+      {
+        "block_index": 30,
+        "start_sample_frame": 5760000,
+        "end_sample_frame_exclusive": 5952000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0002854188114950264,
+            "rmse": 0.0005034190205666889,
+            "peak_error": 0.007726328447461128,
+            "correlation": 0.9999820569891061
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.00027693142924036586,
+            "rmse": 0.0005237581582903532,
+            "peak_error": 0.008633196353912354,
+            "correlation": 0.9999722708334569
+          },
+          {
+            "channel_index": 2,
+            "mae": 0.00010709873916613747,
+            "rmse": 0.00020266395596108902,
+            "peak_error": 0.0037475861608982086,
+            "correlation": 0.9999267152979605
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.003547474698025891,
+            "rmse": 0.005546966394052416,
+            "peak_error": 0.0225349310785532,
+            "correlation": 0.8252783464213295
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0003106063022587051,
+            "rmse": 0.000516932395937558,
+            "peak_error": 0.008004941046237946,
+            "correlation": 0.9999867728019238
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.00030632804481050613,
+            "rmse": 0.0005083738138491263,
+            "peak_error": 0.006516985595226288,
+            "correlation": 0.9999845888899999
+          }
+        ]
+      },
+      {
+        "block_index": 31,
+        "start_sample_frame": 5952000,
+        "end_sample_frame_exclusive": 6144000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0006817938024008091,
+            "rmse": 0.0016883592483700664,
+            "peak_error": 0.019511759281158447,
+            "correlation": 0.9998330057365007
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0006065316149462351,
+            "rmse": 0.0013657998240558205,
+            "peak_error": 0.016815543174743652,
+            "correlation": 0.999860563662113
+          },
+          {
+            "channel_index": 2,
+            "mae": 8.350391110494201e-05,
+            "rmse": 0.00015706710825310783,
+            "peak_error": 0.002457447350025177,
+            "correlation": 0.999894062540685
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.005076265199639197,
+            "rmse": 0.008077530733450237,
+            "peak_error": 0.0365202960674651,
+            "correlation": 0.7670702323758756
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0006274478711517712,
+            "rmse": 0.0013811366953825701,
+            "peak_error": 0.017931371927261353,
+            "correlation": 0.9998798812259291
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0006135119582647152,
+            "rmse": 0.0013431140565186427,
+            "peak_error": 0.020224839448928833,
+            "correlation": 0.9998677371267863
+          }
+        ]
+      },
+      {
+        "block_index": 32,
+        "start_sample_frame": 6144000,
+        "end_sample_frame_exclusive": 6336000,
+        "duration_seconds": 4.0,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.0002728697818197029,
+            "rmse": 0.0006107582973947229,
+            "peak_error": 0.012701541185379028,
+            "correlation": 0.9999643164464004
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0002703561300720144,
+            "rmse": 0.0006413250653994597,
+            "peak_error": 0.020402327179908752,
+            "correlation": 0.9999521910801891
+          },
+          {
+            "channel_index": 2,
+            "mae": 5.70502823917326e-05,
+            "rmse": 0.00010668546042150307,
+            "peak_error": 0.0016226083971560001,
+            "correlation": 0.9999306351895548
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.004751561357458645,
+            "rmse": 0.007802638160018754,
+            "peak_error": 0.03937929205130786,
+            "correlation": 0.7747035078523475
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.00030525361246629736,
+            "rmse": 0.0007150024077044509,
+            "peak_error": 0.017206192016601562,
+            "correlation": 0.999952837167412
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.0003061865386177113,
+            "rmse": 0.000811716539555539,
+            "peak_error": 0.03063112497329712,
+            "correlation": 0.9999357000856542
+          }
+        ]
+      },
+      {
+        "block_index": 33,
+        "start_sample_frame": 6336000,
+        "end_sample_frame_exclusive": 6523392,
+        "duration_seconds": 3.904,
+        "per_channel": [
+          {
+            "channel_index": 0,
+            "mae": 0.00034257917631215615,
+            "rmse": 0.0009500832987702947,
+            "peak_error": 0.01266913115978241,
+            "correlation": 0.9998378395910249
+          },
+          {
+            "channel_index": 1,
+            "mae": 0.0002775910099843135,
+            "rmse": 0.0007689893134912232,
+            "peak_error": 0.011235907673835754,
+            "correlation": 0.9998306961523964
+          },
+          {
+            "channel_index": 2,
+            "mae": 2.4346510679961962e-05,
+            "rmse": 7.957038163700767e-05,
+            "peak_error": 0.0010985126718878746,
+            "correlation": 0.9993811161162326
+          },
+          {
+            "channel_index": 3,
+            "mae": 0.0016352027764842787,
+            "rmse": 0.004901489037200864,
+            "peak_error": 0.02862858772277832,
+            "correlation": 0.748353541499079
+          },
+          {
+            "channel_index": 4,
+            "mae": 0.0003573800078180578,
+            "rmse": 0.0009767257944067478,
+            "peak_error": 0.014138594269752502,
+            "correlation": 0.9998250524626492
+          },
+          {
+            "channel_index": 5,
+            "mae": 0.00032440473178989326,
+            "rmse": 0.0009144436045475956,
+            "peak_error": 0.017309874296188354,
+            "correlation": 0.9998128244165039
+          }
+        ]
+      }
+    ]
+  },
+  "pcm_retention": "NONE; only per-block scalar accumulators and metrics were retained"
+}

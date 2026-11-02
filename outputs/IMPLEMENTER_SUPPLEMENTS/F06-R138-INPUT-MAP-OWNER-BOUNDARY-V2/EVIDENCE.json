@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F06-R138-INPUT-MAP-OWNER-BOUNDARY-V2",
+  "source": {
+    "package_id": "native-f06-r138-process-state-input-map-source-addendum",
+    "manifest_sha256": "5d1f924b5b141b75061ff82aeb6296dd3562f24dd54dfdc10f1b405b5a61957d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "r138_job": {
+    "job_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_plugin_type": "atmos_mezz",
+    "filter_type": "encode_to_atmos_ddp",
+    "channel_named_xml_elements": 0,
+    "absence_implies_runtime_zero": false
+  },
+  "stage_runner": {
+    "selected_descriptor_name": "encode_to_atmos_ddp",
+    "selected_descriptor_to_factory": "BOUND_STATIC_SAME_POINTER",
+    "product_and_descriptor_saved_on_same_runner_expression": true,
+    "native_runner_address_generation": "NOT_CAPTURED"
+  },
+  "process_state": {
+    "filter_product_plus_0xb8": "process-state pointer; same static pointer reaches init/read/write routines",
+    "descriptor_context_plus_0x138_to_state_plus_0x08_vector": "BOUND_STATIC_REGISTER_FLOW",
+    "input_metadata_map_plus_0xa0": {"domain": "WAV parseWav", "keys": ["filename", "sampling_rate", "samples", "channels", "offset"]},
+    "context_vector_plus_0x08_to_input_map_plus_0xa0": "UNBOUND",
+    "r138_adm_input_to_input_map_writer": "UNBOUND",
+    "output_normalized_map_plus_0xf88": "separate map; same process-state owner",
+    "channel_value_to_plus_0xfc8_writer": "BOUND_STATIC_SAME_PROCESS_STATE",
+    "final_plus_0xfc8_value": "UNBOUND",
+    "custom_bsi_applicability": "UNBOUND"
+  },
+  "analysis_scope": {
+    "tool": "Ghidra 12.2",
+    "dee_run": false,
+    "media_or_pcm_read": false,
+    "key_or_license_read": false,
+    "implementation_ready": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge-washed-atmos-selector-config-writer-boundary.v1",
+  "package_id": "ATMOS-JOC-SELECTOR-CONFIG-WRITER-BOUNDARY-V1",
+  "scope": "ID-0 RENDERBUS SELECTOR FIELD WRITER SEARCH WITHIN ATMOS DLL",
+  "status": "BASE_FIELD_WRITE_CONTRACT_BOUND; ID0_WRITER_AND_RUNTIME_VALUE_UNBOUND",
+  "source_package": {
+    "package_id": "atmos_joc_id0_selector_source_wash_v1",
+    "manifest_sha256": "c922dc158862f8a6861aff64d6703b10e96cee59010eb3aed30c7c1ae4fafa00",
+    "package_seal_sha256": "39fe1c285aea209710907ed42efa59e1dd224ab6b3eca8a7517039fdb73ff9c0",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "referenced_sources_checked": 14,
+    "missing_references": 0,
+    "mismatched_references": 0,
+    "tool": "Ghidra 12.2 Public static only",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "selected_object_flow": {
+    "lookup": "FUN_180420340 requests RenderBus type ID 0 (Speaker Monitoring); FUN_18041f1e0 returns the matching object from the caller-provided RenderBus config vector.",
+    "forwarding": "Selected object flows through FUN_180422ba0/R14 to FUN_180421240 argument 5, then FUN_180435120 uses receiver vtable+0x38 as selector.",
+    "selected_id0_concrete_class": "UNBOUND"
+  },
+  "base_field_write": {
+    "constructor": "FUN_180439f00",
+    "field": "object+0x58",
+    "write_source": "constructor parameter param7",
+    "literal_default_in_base_constructor": false,
+    "direct_callers_found_in_this_image": ["0x42bbf0 -> FUN_180439f00"],
+    "only_direct_caller_type": "Dolby::Atmos::RerenderBusConfig",
+    "only_direct_caller_type_ids": [3, 4, 5],
+    "caller_applies_to_selected_id0_object": false
+  },
+  "best_supported_rule": {
+    "rule": "Preserve the selected ID-0 object's typed vtable+0x38 result as an explicit internal configuration value; apply zero -> SpatialCoderPlatform and nonzero -> PreProcessorBypass. Do not hardcode a default.",
+    "mvp_blocked": false,
+    "id0_field_writer": "UNBOUND/NO",
+    "per_run_value": "UNBOUND/NOT_RECORDED",
+    "user_prompt_requirement": "NOT_ESTABLISHED_BY_THIS_EVIDENCE"
+  },
+  "execution_boundary": {
+    "dee_run": "NOT_RUN",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_contact_by_researcher": false,
+    "input_only_selector_vector_execution": "NOT_RUN"
+  },
+  "exclusions": {
+    "binary_or_raw_decompilation_included": false,
+    "pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

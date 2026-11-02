@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "atmos_joc_id0_renderer_constructor_edge_wash_v1",
+      "manifest_sha256": "c43917dcfcfc797eade20671602c9a7b246620fe2f3754bc5e6c0c16371ffb9e",
+      "package_seal_sha256": "1fe1d5598cdeb97b8d1000c80497a7f1216b0eae12b478d9eaa9b18cce23b11f"
+    },
+    {
+      "package_id": "atmos_joc_selector_id0_config_wash_v1",
+      "manifest_sha256": "bcd366ee63916707421278c34ba430b8b35bede053e65f6f8de13963b35ce8bc",
+      "package_seal_sha256": "960fafcb65249bb846a7dbd46e7dd0aad966a04b848f9078cdf4fb361ee94645"
+    }
+  ],
+  "target_image": {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge-dee-atmos-preferred-downmix-consumer-boundary.v1",
+  "package_id": "DEE-ATMOS-PREFERRED-DOWNMIX-CONSUMER-BOUNDARY-V1",
+  "status": "PARSER_FIELD_READ; GENERIC_RESULT_BRANCH; FINAL_F13C_CONSUMER_UNBOUND",
+  "source_package": {
+    "package_id": "F13C-native-consumer-addendum-v2",
+    "manifest_sha256": "4de3c1af1b49eb8a70c9fa8a574bbfb5dbbb9882d3cc020455b6624208b65577",
+    "sha256sums_file_sha256": "5dbd67ba1fcb7d5fafd5b7b2a2fe8b5936505d03be4b8167278aeb50269518b1",
+    "manifest_members_recomputed": true,
+    "package_seal": "NOT_PRESENT"
+  },
+  "native_parser": {
+    "tool": "Ghidra 12.2 public static",
+    "parsed_fields": ["lorocmixlev", "lorosurmixlev", "dmixmod", "ltrtcmixlev", "ltrtsurmixlev"],
+    "field_paths_are_separate": true,
+    "preferred_downmix_mode_to_dmixmod_alias": "UNBOUND",
+    "omitted_field_default": "UNBOUND",
+    "ui_display_default_is_native_default": false
+  },
+  "branch_boundary": {
+    "conditional_branch": "cVar3 == 0",
+    "target_behavior": "generic name/value/error result-tree assembly",
+    "targeted_body_reads_downmix_fields": false,
+    "final_f13c_writer_call_in_targeted_body": false,
+    "downstream_audio_consumer": "UNBOUND"
+  },
+  "image_identity": {
+    "name": "dee_ddpjoc_encoder.exe",
+    "sha256_as_recorded_in_existing_ghidra_project": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_installation_rehash": "NOT_PERFORMED"
+  },
+  "effect_on_pcm_goal": {
+    "explains_current_core_pcm_residual": false,
+    "proves_downmix_has_no_audio_effect": false,
+    "should_block_window_table_trial": false
+  },
+  "scope": {
+    "encoder_run": "NOT_RUN",
+    "pcm_or_media_read": false,
+    "payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact_before_wash": false,
+    "source_code_or_decompilation_included": false
+  }
+}

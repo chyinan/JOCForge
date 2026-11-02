@@ -1,0 +1,29 @@
+{
+  "schema":"jocforge.current_f08_lfe_crosswalk_recheck.v1",
+  "status":"CURRENT_HEAD_F08_CALLSITE_AND_ARRAYS_CONFIRMED; AUDIO_PARITY_NOT_RUN",
+  "upstream_crosswalk":{"manifest_sha256":"000f5a6fa8c0fa27be6d61a583309c49bbc9c8ab891aef11a75bef5a9dd8b43a","sha256sums_sha256":"babe81a657ef409c5a29d4e8d6ca3467a02e93cb8a03c4e41eb7cd9c8c982e81"},
+  "previous_head_addendum":{"manifest_sha256":"5dd819b01aa7e4b37aa4cd2cf990d8e0067d6642427850e60fba7900e7c40aba","sha256sums_sha256":"a64bdea4572a2c23084361e45264ec323d55b3a0c88c810c23ed54691a3fc783"},
+  "current_checkout":{
+    "head":"2155ea31d6c78b5f91b7ba256ce0a506581d1618",
+    "owner_rs_sha256":"46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab",
+    "lfe_transform_rs_sha256":"37b20dd989897290c30668e4e48ac79a69679c4f82b9066720157a91b24f3052",
+    "production_owner_call":"owner.rs calls f08_lfe_transform_block after folded_lfe",
+    "production_transform_uses":["lfe_recurrence_f32_bits", "lfe_cosine_f32_bits", "lfe_sine_f32_bits"]
+  },
+  "parameter_files":{
+    "path":"crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
+    "committed_head_blob_sha256":"38e9b8c797a32cf196d3823627d2b7db63d2f8466f6abd5b4d9ede53abf386f4",
+    "current_worktree_sha256":"963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+    "whole_files_equal":false,
+    "lfe_recurrence_cosine_sine_f32_words_equal_across_head_and_worktree":true,
+    "lfe_arrays_equal_to_r4_crosswalk_rust_words":true
+  },
+  "remaining":{
+    "adm_row3_to_dee_core_lfe_lane":"UNBOUND",
+    "selected_native_stride_branch":"UNBOUND",
+    "native_input_to_rust_folded_input":"UNBOUND",
+    "numeric_parity":"NOT_RUN",
+    "audio_playback":"NOT_RUN"
+  },
+  "execution_scope":{"read_only_source_and_git_object_hashes":true,"dee_run":false,"pcm_or_payload_access":false,"key_or_license_access":false,"production_allowed":false}
+}

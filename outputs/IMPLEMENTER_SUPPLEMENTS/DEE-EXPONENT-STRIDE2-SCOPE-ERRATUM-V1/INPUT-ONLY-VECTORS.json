@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-scope-separated-vector-set.v1",
+  "vectors": [
+    {
+      "id": "eac3-core-emulator-selector2",
+      "function": "FUN_14032d580",
+      "selector": 2,
+      "stride": 2,
+      "row": [10, 11, 99, 9, 99, 8, 99, 6],
+      "expected_core_deltas_tails": [3, 0, 1, 0, 2, 2],
+      "expected_core_U7": [76, 12],
+      "JOC_oracle": false
+    },
+    {
+      "id": "joc-atmos-selector2-needed",
+      "transform": "FUN_1800a4d70",
+      "selector": 2,
+      "raw_row": "UNBOUND_FOR_A_HASH-BOUND_JOC_EMULATOR_VECTOR",
+      "expected_JOC_values": "NOT_EVALUATED",
+      "next_writer": "FUN_18008aea0"
+    }
+  ],
+  "execution": "INPUT-ONLY; NO_PRODUCT_AUDIO_RUN"
+}

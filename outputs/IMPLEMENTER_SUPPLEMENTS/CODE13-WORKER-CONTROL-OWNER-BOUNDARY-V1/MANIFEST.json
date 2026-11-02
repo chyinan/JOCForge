@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "CODE13-WORKER-CONTROL-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "WORKER_CONTROL_OWNER_TO_CONSUMER_BOUND; CONTROL_STREAM_AND_ADM_ROW_JOIN_UNBOUND; HOST_ROUTE_UNBOUND; RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1893,
+      "sha256": "3cbcbeead48452949b7ece5ae55c40a6986c5abf5e2b4d13d46015d1302b27e8"
+    },
+    "EVIDENCE.json": {
+      "bytes": 3494,
+      "sha256": "1023eb6a5ca9ccc54727d4debd637153864f25bdf9efcc72edefe91babf6fd47"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1007,
+      "sha256": "27f1301601277035abf06ea22434703b604893df29f4d0a62b0504b411268121"
+    }
+  }
+}

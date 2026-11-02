@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-CORE-FRAME-PROVIDER-BOUNDARY-V1",
+  "source_reverse_package_id": "dee_frame_provider_type_wash_v1",
+  "source_reverse_manifest_sha256": "51ce0964d527147a2fe52db1cc9b82976a12ef1a8bd4086f84760ccde46506c1",
+  "source_reverse_package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT",
+  "status": "CORE_BRANCH_PROVIDER_TYPE_BOUND; SELECTED_BACKEND_VALUE_UNBOUND; FORMAT_CONTROLS_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3128,
+      "sha256": "f133df21ad317a1aa35c8001c306bfb47b86751b22e0437ab3d358c087d12de3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1927,
+      "sha256": "97003bb8d6d87a6f2a8f2acc0572a1f64b8dc9dfed2b5da959af39793e3d3115"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 624,
+      "sha256": "e163b6e579f6f3c87f19af56aefffbc3a2aac24c190859fe3b48b822f96576a6"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1371,
+      "sha256": "0e68af526afd798af3c1b74e25e1ea98638bfd17438605be41606cb2123b82e7"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 871,
+      "sha256": "53556eb1e0b701a2d6e848f8873700df788d456cafd9c6a7d2e26a2e66b3c6eb"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

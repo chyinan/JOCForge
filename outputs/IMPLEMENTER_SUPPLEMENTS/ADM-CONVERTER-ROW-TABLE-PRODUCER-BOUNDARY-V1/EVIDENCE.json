@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "ADM-CONVERTER-ROW-TABLE-PRODUCER-BOUNDARY-V1",
+  "source": {
+    "source_package_id": "adm_storage_row_table_producer_wash_v1",
+    "source_manifest_sha256": "b48ef19d5fdd7528aa40e429a050ff013803f7733a711d9167132ba8dbe017f8",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "sealed_payloads": 32
+  },
+  "target_image": {
+    "path": "D:\\Programs\\dee71joc\\test_dee\\dee_audio_filter_convert_atmos_mezz.dll",
+    "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "size_bytes": 6286336,
+    "analysis_tool": "Ghidra 12.2"
+  },
+  "input_identity": {
+    "authorized_sample_role": "人是猫 38-row BWF",
+    "source_sha256_inherited": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_alias_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "copy_and_alias_hash_read_ranges": "full file bytes; values not decoded or interpreted",
+    "pcm_values_decoded_or_exported": false
+  },
+  "static_rows": {
+    "adm_file_storage_member_plus_0x98": "DlbWavFile pointer",
+    "dlb_wav_channel_count_plus_0xc8": "parsed fmt channel count",
+    "row_pointer_table_plus_0xe8": "allocated channel_count * 8 bytes",
+    "sample_read_path": "FUN_1802195e0 -> FUN_18022d1e0 at RVA 0x2196f1",
+    "sample_read_row_formula": "internal_row[i] = caller_row[i] + sample_offset * 4",
+    "typed_multi_channel_buffer_rows": "MultiChannelBuffer<int> +0x18 -> FUN_18022de30/FUN_18022dee0; ordinal copy plus sample_offset*4",
+    "caller_row_order_preserved": true
+  },
+  "row_identity": {
+    "chna_key_formula": "CHNA track_index - 1",
+    "logical_descriptor": "ConverterChannelInputId",
+    "descriptor_to_physical_row_pointer": "UNBOUND",
+    "physical_bwf_slot_order": "UNBOUND",
+    "equal_numeric_id_used_as_identity": false
+  },
+  "status": {
+    "static_reader_row_table_behavior": "CLOSED_STATIC",
+    "runtime_row_pointer_values": "NOT_RUN",
+    "actual_eof_or_playback": "NOT_RUN",
+    "dee_or_converter_run": "NOT_RUN_SAFETY_GATE_UNPROVEN",
+    "implementation_ready_for_channel_identity": false
+  },
+  "scope": {
+    "data_values_decoded": false,
+    "pcm_exported": false,
+    "private_key_hmac_or_license_read": false,
+    "decompilation_or_binary_included": false
+  }
+}

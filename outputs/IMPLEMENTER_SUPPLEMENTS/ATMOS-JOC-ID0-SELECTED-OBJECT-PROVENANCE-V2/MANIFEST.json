@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-JOC-ID0-SELECTED-OBJECT-PROVENANCE-V2",
+  "source_packages": [
+    {
+      "package_id": "atmos_joc_selector_id0_config_wash_v1",
+      "manifest_sha256": "bcd366ee63916707421278c34ba430b8b35bede053e65f6f8de13963b35ce8bc",
+      "package_seal_sha256": "960fafcb65249bb846a7dbd46e7dd0aad966a04b848f9078cdf4fb361ee94645"
+    },
+    {
+      "package_id": "atmos_joc_id0_selector_source_wash_v1",
+      "manifest_sha256": "c922dc158862f8a6861aff64d6703b10e96cee59010eb3aed30c7c1ae4fafa00",
+      "package_seal_sha256": "39fe1c285aea209710907ed42efa59e1dd224ab6b3eca8a7517039fdb73ff9c0"
+    },
+    {
+      "package_id": "atmos_joc_id0_local_factory_origin_wash_v1",
+      "manifest_sha256": "a40ce4c4669aa9b2a16ec60f32996ad45350586ac266b82f2fd178aebb7779be4",
+      "package_seal_sha256": "a857dbe13ab2ed6a7f7ee692fb45e8e97bdbf9d3770df7695a1c639b563dcf30"
+    }
+  ],
+  "status": "ID0_LOOKUP_AND_SELECTOR_CONTRACT_BOUND; LOCAL_OPAQUE_VECTOR_NOT_JOINED; ID0_PRODUCER_AND_RUN_VALUE_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 5153,
+      "sha256": "a78704203ab2b4104fafdd9dd9338553ca47f2d521c259be4e43db0257831634"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 4203,
+      "sha256": "5f8da1b04d03fb6d0ef165a138fc18f8a96fb39a9d2a76fd208921c68fcb234f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 930,
+      "sha256": "d9d4046d486b0bc35d66c1ac7330b94bd1d39550791baf164dcc332b5e7c3598"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2437,
+      "sha256": "db002853ed99647fa1d8d5f98f2cc48ffe6232ce2ac56518445fe752d4f54773"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1017,
+      "sha256": "e82c93c0da3fe1fe0bbaf62cca688e321aaabe46660aefa7adc6d31f5069ba38"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

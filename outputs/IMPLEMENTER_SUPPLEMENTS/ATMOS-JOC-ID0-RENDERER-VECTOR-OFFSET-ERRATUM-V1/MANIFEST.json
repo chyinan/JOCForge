@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-JOC-ID0-RENDERER-VECTOR-OFFSET-ERRATUM-V1",
+  "source_packages": [
+    {
+      "package_id": "atmos_joc_id0_renderer_constructor_edge_wash_v1",
+      "manifest_sha256": "c43917dcfcfc797eade20671602c9a7b246620fe2f3754bc5e6c0c16371ffb9e",
+      "package_seal_sha256": "1fe1d5598cdeb97b8d1000c80497a7f1216b0eae12b478d9eaa9b18cce23b11f"
+    },
+    {
+      "package_id": "atmos_joc_selector_id0_config_wash_v1",
+      "manifest_sha256": "bcd366ee63916707421278c34ba430b8b35bede053e65f6f8de13963b35ce8bc",
+      "package_seal_sha256": "960fafcb65249bb846a7dbd46e7dd0aad966a04b848f9078cdf4fb361ee94645"
+    }
+  ],
+  "status": "ID0_LOOKUP_VECTOR_OFFSET_RECONCILED; TWO_VECTORS_ONE_RENDERER",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3675,
+      "sha256": "aa0f587119a2ea04804d5e4747bce8e492bbb6c2cc72e1decb608d341c53dd82"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2652,
+      "sha256": "e05e7621e5dc906987697a3cc85874607a1ddd18671b33addcec409b561015f2"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 644,
+      "sha256": "77a399f56f3f1eb1d0cfec9851e2e0a22105f02683daea025cd82651fff497e2"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 974,
+      "sha256": "9f93eda70205a344bca22ba267457f8d3db33e8de1d95d133be82cd3f09010d0"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 744,
+      "sha256": "907ca9d5b89c42a47da9cc9947ae23cce6d2755534219e942eb1541d3b056558"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-eac3-u7-group-count-candidate-vector.v1",
+  "grade": "INPUT_ONLY_ARITHMETIC",
+  "difference_count_d": 4,
+  "candidate_formula": "N=(D+2)//3",
+  "candidate_group_count_n": 2,
+  "candidate_tail_values": 2,
+  "tail_value": 2,
+  "native_n_assignment_observed": false,
+  "runtime_execution": "NOT_RUN"
+}

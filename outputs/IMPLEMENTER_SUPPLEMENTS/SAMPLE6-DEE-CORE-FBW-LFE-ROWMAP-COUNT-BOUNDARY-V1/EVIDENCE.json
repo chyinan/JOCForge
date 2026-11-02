@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-CORE-FBW-LFE-ROWMAP-COUNT-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Static six-descriptor / six-wide layout / five-slot row-map shape; no 36/38 admission or runtime behavior",
+  "upstream": {
+    "package_id": "fbw_lfe_row_map_static_wash_v1",
+    "manifest_sha256": "0d15b97f9af94ea77b032635fe6f4ef0db645b112dde71b8841b9b1047858121",
+    "package_seal_file_sha256": "02b4ee998484a8dc0194996ceede0a25b4c7db0257d24701cd0d9306d823249a",
+    "sha256sums_sha256": "a64b95592d8f3e4ce55dd412d02ff3c636ef3e99693a762276273bc4ce82ae30",
+    "payload_count": 4,
+    "wash_independent_payload_check": "all manifest payload hashes/sizes, sidecar, SUMS and seal linkage match",
+    "upstream_checker": "NOT_PROVIDED"
+  },
+  "source_identity": {"tool": "Ghidra 12.2_PUBLIC", "mode": "read-only; noanalysis", "program": "dee_ddp_encoder.exe", "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"},
+  "static_shape": {
+    "input_descriptors": {"count": 6, "record_bytes": 16, "pointer_offset": 0, "source_slot_offset": 12, "source_slot_type": "S16"},
+    "layout_table": {"entries_per_selector": 6, "selector_position_count": "S16 context+0x19132", "local_upper_clamp_to_6": "NOT_FOUND_IN_CHECKED_SCOPE"},
+    "row_map": {"function": "FUN_140329a10", "outer_rows_at_callsite": 6, "slot_stride": 5, "dynamic_slot_count": "context+0x19130", "local_upper_clamp_to_5": "NOT_FOUND_IN_CHECKED_SCOPE"},
+    "sentinel": {"layout_value": "0xffff", "consumer_interpretation": "S16 -1", "guard_before_descriptor_array_index": "NOT_FOUND_IN_CHECKED_SCOPE"}
+  },
+  "36_38_relation": {
+    "fixed_36_or_38_gate_in_checked_scope": "NOT_FOUND",
+    "source_slot_physical_row_identity": "UNBOUND",
+    "dynamic_slot_count_semantics": "UNBOUND",
+    "all_adm_rows_consumed": "UNBOUND",
+    "runtime_out_of_range_effect": "NOT_RUN"
+  },
+  "user_confirmed_output": {"zero_based_channel_index": 3, "identity": "LFE", "status": "USER_CONFIRMED_LFE", "input_row_to_core_lane_join": "UNBOUND"},
+  "execution": {"dee_run": false, "debugger_attached": false, "pcm_payload_or_key_read": false},
+  "prohibited_inferences": ["Do not equate six descriptors, six layout width, six outer rows and five slot stride.", "Do not use numeric coincidence to bind source-slot to ADM physical row.", "Do not treat a conditional 36/38 vector as native acceptance."]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-reader-config-u16-producer-vector.v1",
+  "input_context": {
+    "human_cat_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "chna_tracks": 38,
+    "bed_tracks": 10,
+    "object_tracks": 28
+  },
+  "static_rule": {
+    "producer_count_destination": "CompositeMaster+0x1A U16",
+    "reader_config_count": "config+0x0A U16",
+    "descriptor_count": "descriptor+0x08 U64 zero-extended",
+    "row_width_bytes": 6,
+    "candidate_core_map_bytes_if_u16_is_38": 228,
+    "runtime_u16": "UNBOUND"
+  },
+  "expected_disposition": {
+    "hardcoded_36_clamp_in_traced_writer": false,
+    "same_run_value_asserted": false,
+    "pcm_or_payload_included": false,
+    "execution": "NOT_RUN"
+  }
+}

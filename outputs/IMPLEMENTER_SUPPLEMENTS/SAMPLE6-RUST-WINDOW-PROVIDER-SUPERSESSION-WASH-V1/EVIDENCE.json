@@ -1,0 +1,46 @@
+{
+  "schema": "washed-rust-window-provider-supersession.v1",
+  "package_id": "SAMPLE6-RUST-WINDOW-PROVIDER-SUPERSESSION-WASH-V1",
+  "status": "CURRENT_PROVIDER_MATCHES_NATIVE; OLD_BASELINE_SUPERSEDED; MATCHED_LFE_LINEAGE_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "current_provider": {
+    "file_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+    "window_word_count": 256,
+    "current_rust_window_words_sha256": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+    "native_window_words_sha256": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+    "index_21": {"native_f32_bits": "3c0ea5aa", "current_rust_f32_bits": "3c0ea5aa", "matches": true}
+  },
+  "historical_provider": {
+    "source_commit": "216326f622e66f1f7b255dbe7a8bcfb8ca473ce2",
+    "window_words_sha256": "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23",
+    "index_21_f32_bits": "3c0ea5a9",
+    "status": "SUPERSEDED_BY_CURRENT_PROVIDER"
+  },
+  "current_input_only_vector": {
+    "word_count": 256,
+    "nonzero_input": {"index": 234, "f32_bits": "3f800000"},
+    "primary_history_words": 128,
+    "companion_history_words": 128,
+    "history_bits": "00000000",
+    "current_rust_output": {"primary_index_107": "3c0ea5aa", "companion_index_106": "bc0ea5aa"},
+    "native_static_derived_output": {"primary_index_107": "3c0ea5aa", "companion_index_106": "bc0ea5aa"},
+    "rust_targeted_test": "PASS: 1 passed, 3 filtered out",
+    "dee_runtime_execution": "NOT_RUN",
+    "matched_pcm_comparison": "NOT_RUN"
+  },
+  "superseded_wash_package": {
+    "package_id": "SAMPLE6-DEE-CORE-WINDOW-COEFFICIENT-SPLIT-V1",
+    "manifest_sha256": "74973e18ac6001b34ec1225ae179e17c8cd78aef1cc7b6b1bdd89a305f2d0f34",
+    "comparison_baseline": "historical provider only"
+  },
+  "matched_lfe_boundary": {
+    "adm_row_3_to_core_lfe_lane": "UNBOUND",
+    "scratch_history_words_256_to_381_owner": "UNBOUND",
+    "effect_on_channel3_pcm_residual": "UNBOUND"
+  },
+  "privacy": {
+    "pcm_included": false,
+    "encoded_payload_included": false,
+    "native_code_or_disassembly_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

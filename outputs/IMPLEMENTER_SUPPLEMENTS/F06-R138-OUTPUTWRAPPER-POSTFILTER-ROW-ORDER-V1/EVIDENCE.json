@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge-washed-f06-outputwrapper-postfilter-row-order.v1",
+  "scope": "HOST dee_audio_source_type SOURCE-RANGE AND NESTED PROPERTY ROW ORDER",
+  "status": "POSTFILTER_WRAPPER_ORDER_AND_SAME_RECORD_FIELDS_BOUND; UPSTREAM_AND_SELECTED_R138_JOINS_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "native-f06-r138-outputwrapper-source-row-order-addendum",
+    "manifest_sha256": "8b35e3671e2e7abd1e143944b8f77875f2b800f7bb29ca03b8b468f0f6be8cd6",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "host_local_facts": {
+    "source_range_view": "begin/end",
+    "outer_iteration": "advance source entry in received range order",
+    "nested_property_iteration": "advance nested entries in range order",
+    "match_used_prepass": "BOUND_STATIC; can filter/omit entries",
+    "explicit_sort_or_unique": "NOT_OBSERVED_IN_SCOPED_METHODS",
+    "same_current_record_source_label_and_nested_property_view": "BOUND_STATIC_FROM_PLUS_0x20_SUBOBJECT",
+    "postfilter_wrapper_order_preserved": true
+  },
+  "identity_boundaries": {
+    "postfilter_wrapper_order_equals_original_adm_order": "UNBOUND",
+    "wrapper_source_row_equals_converter_source_vector_row": "UNBOUND",
+    "wrapper_row_equals_target_media_metadata_row": "UNBOUND",
+    "selected_r138_setter_and_generation": "UNBOUND"
+  },
+  "recommended_model_rule": "preserve post-filter wrapper source-range order; copy filename/source label and nested strings from each same local row; apply one-based ordinal only to the vector actually received",
+  "payload_policy": {"source_code_included":false,"binary_or_decompilation_included":false,"audio_or_pcm_included":false,"private_key_or_license_material_included":false}
+}

@@ -1,0 +1,36 @@
+{
+  "schema":"jocforge.selector8_writer_xref_exclusion.v1",
+  "status":"BOUNDED_STATIC_CALLSITE_CANDIDATES_EXCLUDED; SELECTED_WRITER_CALLER_UNBOUND",
+  "upstream_package":{
+    "package_id":"selector8_owner_writer_xref_audit_wash_v1",
+    "manifest_sha256":"f0dce9690b3969a7795fd7ecb034bf87b25f06f6b20aa208d61c3c8238c4a00c",
+    "package_seal_sha256":"1b92855abd4828ef030de9dfe56f5b889eceea3f89a80470fb807f79debab993",
+    "payload_count_verified":7,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "native_image":{"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2","ghidra":"12.2 PUBLIC","processing":"-noanalysis -readOnly"},
+  "writer_xrefs":{
+    "function":"FUN_1804d6980",
+    "provider_vtable_slot":"0x1807f9c70",
+    "additional_data_references":3,
+    "code_callers_established":false
+  },
+  "bounded_candidate_scan":{
+    "functions":["FUN_1803ec660", "FUN_1804d43c0", "FUN_18054a900", "FUN_18054fa70", "FUN_1801828c0", "FUN_1805364f0", "FUN_1804cbbc0"],
+    "inner_receiver_callsites":["0x1804d47c9", "0x1804d4842"],
+    "inner_receiver_identity":"rejected; [R12] object and return used as iteration upper bound",
+    "MasterSourceImpl_and_BlankMasterSource_slot_target":"FUN_1803ae440",
+    "slot_target_behavior":"*(this+8)=param_2",
+    "slot_target_is_FUN_1804d6980":false,
+    "address_0x180823430":"BlankMasterSource slot; not FUN_1804d6980"
+  },
+  "remaining_unbound":{
+    "selected_atmos_storage_master_s_selector8_callsite":"UNBOUND",
+    "writer_param3_identity":"UNBOUND",
+    "param3_qword0_pointee_type":"UNBOUND",
+    "pointee_plus_0x18_first_writer":"UNBOUND",
+    "selected_job_value":"NOT_OBSERVED"
+  },
+  "execution_scope":{"dee_run":false,"media_pcm_or_payload_access":false,"key_or_license_access":false,"production_allowed":false}
+}

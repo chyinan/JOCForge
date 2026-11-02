@@ -1,0 +1,11 @@
+{
+  "schema": "dee-lfe-first-sample-input-only.v1",
+  "vector_id": "row3-lfe-bin2-single-frame",
+  "sample_rate_hz": 48000,
+  "frame_samples": 1536,
+  "active_row": {"physical_slot": 3, "channel": "LFE"},
+  "single_active_frequency_bin": {"index": 2, "frequency_hz": 62.5},
+  "other_rows": "zero",
+  "output_expectations": "OMITTED",
+  "execution_status": "NOT_RUN"
+}

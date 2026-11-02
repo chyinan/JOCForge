@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "JOC-COEFFICIENT-COUNT-STATE-PROJECTION-V1",
+  "scope": "one static profile-derived JOC coefficient-count producer and two consumers",
+  "status": "STATIC_EDGE_CONFIRMED; RUN_VALUE_AUDIO_EFFECT_AND_PUBLIC_MAPPING_UNBOUND",
+  "source_manifest_sha256": "06fc46a4b650aedb4d72ea160e09921adc7cc6dd5d47a7cf206746ad6f69d3fa",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "30f06289f63e216746b697390f589d4ebae571a04f9cbc90f4df13db69ca6936",
+      "bytes": 2277
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "b149f5a8ee263e8a9c65a9629c285de830d93d3185d0de8e0ad69ebdb6fcb998",
+      "bytes": 2426
+    },
+    {
+      "name": "README.md",
+      "sha256": "0b6af12854f33e6243a5056c9e19818b2877032f57ab6bce4ecb5f2305c40fb3",
+      "bytes": 928
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "49dc233a7204517c50b1f4aa692f280958dfe1b7ccc04f056fad150e3219602d",
+      "bytes": 511
+    }
+  ]
+}

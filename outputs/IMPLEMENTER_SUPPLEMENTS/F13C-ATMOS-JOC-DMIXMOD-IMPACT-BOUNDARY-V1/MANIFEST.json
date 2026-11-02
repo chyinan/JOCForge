@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-ATMOS-JOC-DMIXMOD-IMPACT-BOUNDARY-V1",
+  "source_reverse_package_id": "F13C-atmos-joc-dmixmod-audio-impact-addendum-v31",
+  "source_reverse_manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd",
+  "status": "NO_AUDIO_DSP_CONSUMER_OBSERVED_IN_SCOPED_PATH; NATIVE_ENUM_EFFECT_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2986,
+      "sha256": "9dff8492c3e28b05e12b2b26e8bb80cd193196f99b7983115a44726c2e72409d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2913,
+      "sha256": "4cc7a8a4ba70691b036afff2e9b2312f6f49a0cc6dba31684f24aa389c06e133"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 354,
+      "sha256": "4d36134d39f7f046a31d4d89ae9db930fe920e82beb467969e87570a6100021e"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1182,
+      "sha256": "8fb0c506784ac60b5b237942a088f1dcd9eeb8f84e7e875c599a1c0464d55d24"
+    }
+  ],
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "sample6-channel3-frequency-residual.v1",
+  "package_id": "SAMPLE6-CHANNEL3-FREQUENCY-RESIDUAL-V1",
+  "status": "LOW_FREQUENCY_WEIGHTED_CHANNEL_LOCAL_RESIDUAL; NATIVE_LFE_IDENTITY_AND_CAUSE_UNBOUND",
+  "scope": {
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "matched_job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "stream": "48 kHz, 6 channel, 5.1(side), 4,247 AUs, 135.904 seconds",
+    "decoder": "FFmpeg 8.1; decode-only scalar measurement",
+    "pcm_retained": false,
+    "encoded_output_created": false
+  },
+  "analysis": {
+    "block_size_seconds": 4,
+    "excluded_zero_based_blocks": [23, 24, 25],
+    "excluded_blocks_were_silent": false,
+    "active_blocks_analyzed": 31,
+    "frequency_bands_hz": {
+      "low": "0 <= f < 120",
+      "higher": "120 <= f <= 24000"
+    },
+    "channel_3_low_band_residual_energy_fraction": 0.781248877532067,
+    "channel_3_higher_band_residual_energy_fraction": 0.21875112246793305,
+    "other_channels_low_band_fraction_range": [0.01699777263711294, 0.3670287341870775],
+    "channel_3_residual_low_band_correlation_with_other_channels": {
+      "channel_0": 0.23246701180903917,
+      "channel_1": 0.22277855507225375,
+      "channel_2": 0.007702155136292995,
+      "channel_4": 0.15328922091935188,
+      "channel_5": 0.17796040752419293
+    },
+    "channel_3_residual_higher_band_correlation_with_other_channels": {
+      "channel_0": -0.03135693939597156,
+      "channel_1": -0.03347785486979774,
+      "channel_2": -0.0010224692824103035,
+      "channel_4": -0.014002379229688632,
+      "channel_5": -0.01554884995311003
+    }
+  },
+  "limits": {
+    "channel_index_3_is_native_lfe": "NOT_ESTABLISHED",
+    "adm_source_row_mapping": "UNBOUND",
+    "processing_or_filter_cause": "NOT_ESTABLISHED",
+    "corrective_gain_or_remap_supported": false,
+    "full_track_pcm_equality": false
+  },
+  "source_package": {
+    "package_id": "native-f06-channel3-frequency-residual-diagnostic-v1",
+    "manifest_sha256": "38762d7e7b3cf558ffb07986f19fddaa96b2d17e8649e4a66677f15dd52e0095",
+    "source_checker": "verify_channel3_band_diagnostic.py",
+    "source_checker_normal": "PASS",
+    "source_checker_python_O": "PASS"
+  },
+  "privacy": {
+    "raw_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material": false,
+    "source_code_or_disassembly_included": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema":"jocforge.current_36_row_gate_order_vector.v1",
+  "vector_id":"36-ROW-METER-G0-INSTALLED48-AND-F01E",
+  "input":{"physical_rows":36,"pcm24_block_align":108,"bed_rows":10,"object_rows":26},
+  "expected_order":[
+    {"stage":"Meter IO cursor shape","status":"ACCEPTED_BY_CURRENT_SOURCE"},
+    {"stage":"Meter G0 Installed48 source map","status":"REJECTS_36_SOURCE_EXTENT_BEFORE_F01E"},
+    {"stage":"Meter G0 legacy F01E normal snapshot","status":"NEXT_FIXED_38_28_GATE"},
+    {"stage":"Meter FreshZero identity","status":"LATER_FIXED_38_GATE"},
+    {"stage":"Main Spatial F01E","status":"NOT_REACHED_FOR_36"}
+  ],
+  "fixed_output_source_axis_width":48,
+  "missing_regular_global_source_ids":[46,47],
+  "zero_fill_audio_rows":"NOT_AUTHORIZED_BY_EVIDENCE",
+  "execution":"SOURCE_AUDIT_ONLY"
+}

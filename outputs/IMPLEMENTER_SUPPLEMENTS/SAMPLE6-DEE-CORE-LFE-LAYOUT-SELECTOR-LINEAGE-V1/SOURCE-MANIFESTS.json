@@ -1,0 +1,26 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1 final selector producer",
+      "manifest_sha256": "d4043721c4e4a00ad3013259ba23430f751f0245924f437333578c4c2ee718eb",
+      "package_seal_sha256": "44e2e7f7242025c8c022650f8e17936e74263286822dc3ff2b9b5669388c7973",
+      "supersedes_manifest_sha256": "65b23330001c50b69b84344bc262c6e687789f94a376cf7f872a7335738741b5"
+    },
+    {
+      "package_id": "ADM-CHNA-PHYSICAL-ROW-ORDER-MVP-V1",
+      "manifest_sha256": "17f8d2fc3f7525a8edacfad07db6ff7668df7b71ce9082489aa6b8c9524d1e7a",
+      "evidence_sha256": "d3fbffc8945cd759a3e1dbb260f55148badc98c2dfce1d3eb1420350d2b4c806"
+    },
+    {
+      "package_id": "ADM-CONVERTER-CHANNEL-ID-TO-BWF-SLOT-CROSSWALK-V1",
+      "manifest_sha256": "30121f27bbb226faf38de18159614586679b107e70e7d0529a7bd21650d836b7",
+      "evidence_sha256": "991c2bb3957afe542f6b8932f02e968d6c6fb3faaa457d889c8c80769f231c43"
+    },
+    {
+      "package_id": "spatial-selector-identity-wash-v9",
+      "manifest_sha256": "4fbb097f00ee01a2559eb45747d81b761677801b0951c5a4d7fdc7402919d6b5",
+      "evidence_sha256": "5cfa77a40f51c27e9ac5a906d6cdfd0226a45926d9e9c33fc4b968f9236ba529"
+    }
+  ]
+}

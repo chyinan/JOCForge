@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-PLUGIN-ROW-PRODUCER-V1",
+  "manifest_sha256": "0eab2a5fed8758c7cac3e95c9de32d3c732332fc8300352feea975772bdbc353",
+  "sha256sums_sha256": "45e3fa609ecc2514dad0f2e2b40d39925dc0d542ebf1444534956f9cdfb5282d",
+  "payload_count": 5,
+  "status": "PLUGIN_LOCAL_SIX_BY_FIVE_F32_PRODUCER_BOUND; CORE_OWNER_JOIN_AND_CORE_WRITER_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

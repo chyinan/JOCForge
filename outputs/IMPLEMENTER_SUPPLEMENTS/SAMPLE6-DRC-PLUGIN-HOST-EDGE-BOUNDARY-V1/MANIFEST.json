@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-PLUGIN-HOST-EDGE-BOUNDARY-V1",
+  "scope": "plugin callback output-record and next buffer consumer; no typed core row transfer observed in scoped path",
+  "status": "PLUGIN_CALLBACK_OUTPUT_RECORD_AND_BUFFER_CONSUMER_BOUND; HOST_TO_CORE_TRANSFER_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1066,
+      "sha256": "d2f90459a80b0f31554207c7c35fc1f5eac2cb3294aa0f64a7edd51e8a26ce61"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2037,
+      "sha256": "1d2be7a4276f56a1634745e0b1a8f37c19cc9729efa3534b11ac91e8a0de335a"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 530,
+      "sha256": "826a6f6135949f109f8c166381a006349a8ed33aa10bd02e58731cbf04978faa"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 891,
+      "sha256": "9b9d18c9b9ad07834a206de85780c9855d53bf7c16a60d9c61c73ec9fb8cd8b5"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3268,
+      "sha256": "28ff222b0715c829450d52364011bff090a72888a34b4d79510ba5ce5211b6e5"
+    }
+  ]
+}

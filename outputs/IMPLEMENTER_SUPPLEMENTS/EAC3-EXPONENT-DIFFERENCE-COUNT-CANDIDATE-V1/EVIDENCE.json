@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-washed-eac3-exponent-difference-count.v1",
+  "package_id": "EAC3-EXPONENT-DIFFERENCE-COUNT-CANDIDATE-V1",
+  "scope": "SELECTED-STRIDE EXPONENT SAMPLE COUNT TO SIGNED D CANDIDATE",
+  "status": "D_CONSUMER_SEMANTICS_BOUND; POSITIVE_D_WRITER_UNBOUND; D_RULE_INFERENCE",
+  "source_package": {
+    "package_id": "dee-ddp-signed-difference-producer-wash-v6",
+    "manifest_sha256": "d76ea8381fc3d799bfea3b770641d0104a5297681de664debd6d10721ece6304",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "tool": "Ghidra 12.2 read-only/no-analysis"
+  },
+  "field_contract": {
+    "d_type": "signed i16",
+    "d_expression": "state+0x1418c+10*block+2*lane",
+    "consumer": "FUN_14032d580 reads D and performs D exponent-difference iterations",
+    "selected_stride_effect": "changes which exponent samples are differenced; D counts selected differences, not raw row bins",
+    "reset_candidate": "FUN_14032d9b0 writes D=0 in six-by-five grid; same instance/generation to frame writer UNBOUND"
+  },
+  "producer_search": {
+    "full_image_literal_0x1418c_occurrences": 0,
+    "full_image_state_base_0x140f0_references": 21,
+    "references_outside_prior_range": 0,
+    "new_positive_d_writer": "UNBOUND",
+    "near_candidate_FUN_14032b520": "writes state+0x14150+2*j, not D at state+0x1418c+10*block+2*lane"
+  },
+  "best_supported_model_candidate": {
+    "definition": "K = selected exponent sample count after applying lane stride, including initial seed",
+    "formula": "D=max(0,K-1)",
+    "grade": "INFERENCE_ONLY",
+    "native_assignment_proven": false
+  },
+  "related_u7_group_count_candidate": {
+    "package_id": "EAC3-U7-POSITIVE-GROUP-COUNT-WRITER-SEARCH-V2",
+    "manifest_sha256": "1c237677e24b757d6ba3d5b047bc321ffce2da95262c7f35810f7ca5b9ce881b",
+    "rule": "N=(D+2)//3; tail=3*N-D values of 2",
+    "grade": "INFERENCE_ONLY"
+  },
+  "combined_input_only_vector": {
+    "row_values": [10, 11, 99, 9, 99, 8, 99, 6],
+    "stride_in_short_entries": 2,
+    "selected_indices": [0, 1, 3, 5, 7],
+    "selected_exponents": [10, 11, 9, 8, 6],
+    "K": 5,
+    "D_candidate": 4,
+    "N_candidate": 2,
+    "tail_values_candidate": 2,
+    "native_observation": false
+  },
+  "execution_boundary": {
+    "native_runtime": "NOT_RUN",
+    "dee_encode": "NOT_RUN",
+    "media_pcm_payload_or_key_read": false,
+    "binary_or_decompilation_in_supplement": false
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "jocforge.code13_id14_input_only_vectors.v1",
+  "classification": "static formula vectors; no payload or decoded audio",
+  "vectors": [
+    {
+      "id": "selector0_m0",
+      "input": {
+        "selector": 0,
+        "m": 0
+      },
+      "output": {
+        "base": 11,
+        "code13": 11,
+        "code14": 0,
+        "id14_count": 11,
+        "u6": 10
+      }
+    },
+    {
+      "id": "selector0_m2",
+      "input": {
+        "selector": 0,
+        "m": 2
+      },
+      "output": {
+        "base": 11,
+        "code13": 13,
+        "code14": 2,
+        "id14_count": 11,
+        "u6": 10
+      }
+    },
+    {
+      "id": "selector5_m0",
+      "input": {
+        "selector": 5,
+        "m": 0
+      },
+      "output": {
+        "base": 15,
+        "code13": 15,
+        "code14": 0,
+        "id14_count": 15,
+        "u6": 14
+      }
+    },
+    {
+      "id": "selector5_m2",
+      "input": {
+        "selector": 5,
+        "m": 2
+      },
+      "output": {
+        "base": 15,
+        "code13": 17,
+        "code14": 2,
+        "id14_count": 15,
+        "u6": 14
+      }
+    },
+    {
+      "id": "observed_38_row_human_is_cat",
+      "classification": "prior scalar observation plus static subtraction",
+      "input": {
+        "selector": 5,
+        "m": 1
+      },
+      "output": {
+        "code13": 16,
+        "code14": 1,
+        "id14_count": 15,
+        "u6_emission": "NOT_RUN"
+      }
+    },
+    {
+      "id": "observed_36_row_my_jealousy_row10",
+      "classification": "row scalar only",
+      "input": {
+        "row10_raw_byte3": "0xba",
+        "row10_raw_u16_plus4": "0x0000"
+      },
+      "output": {
+        "normalized_u16": "0x800a",
+        "total_m": "NOT_CAPTURED",
+        "code13": "NOT_DERIVED",
+        "code14": "NOT_DERIVED"
+      }
+    }
+  ]
+}

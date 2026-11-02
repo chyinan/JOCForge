@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-atmos-renderbus-selector-input-only.v1",
+  "vector_id": "speaker-monitoring-selector-split",
+  "shared_input": {"row_tokens": "row[0]..row[35]", "row_count": 36, "channel_count": 36, "frame_count": "N"},
+  "variants": [
+    {"selected_config_type_id": 0, "selector_result": 0, "expected_component": "SpatialCoderPlatform"},
+    {"selected_config_type_id": 0, "selector_result": 2, "expected_component": "PreProcessorBypass"}
+  ],
+  "only_changed_value": "selected ID-0 config vtable+0x38 getter result",
+  "execution": "NOT_RUN",
+  "native_default_asserted": false,
+  "sample_values_included": false
+}

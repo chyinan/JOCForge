@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V2",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3288,
+      "sha256": "58838376496c4ed3092e870a84ba10e7348384824188fc5bc63813985378a7c0"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2400,
+      "sha256": "7e85fa2aff1edb3e9a9261371f523e62ceaf9fe529074fb92b04c877291d0ea0"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 822,
+      "sha256": "790f836ae9d4b0760e0db07b0358253310faf4b77344f4d25077ca9e18a87e16"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1204,
+      "sha256": "0c21241dd79e006d8bf040f8ec53b7f1ac84746505cf1f05424e7f721a351994"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1266,
+      "sha256": "462fa56e3dccbf22fed352d7dda79a39aee151a31c379a1ffcb1ff6101957d31"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "fe0aba21ddb0c5c3dc971c227ae9e07c072214703c741e299d75f504ff85ddf0"
+    }
+  ]
+}

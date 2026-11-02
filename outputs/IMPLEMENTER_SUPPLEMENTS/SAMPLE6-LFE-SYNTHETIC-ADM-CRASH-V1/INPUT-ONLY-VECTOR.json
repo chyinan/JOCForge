@@ -1,0 +1,15 @@
+{
+  "schema": "washed-synthetic-lfe-crash-input.v1",
+  "vector_id": "human-cat-row3-tone-plus-zero-control",
+  "format": {"channels": 38, "sample_rate_hz": 48000, "bits_per_sample": 24},
+  "segments": [
+    {"kind": "zero-control", "frames": 1536},
+    {"kind": "row3-sine", "frames": 1536, "frequency_hz": 62.5, "amplitude_fraction_full_scale": 0.25, "other_rows_zero": true},
+    {"kind": "zero-padding", "frames": 46080}
+  ],
+  "chunks": ["JUNK", "fmt ", "data", "axml", "chna", "dbmd"],
+  "source_data_chunk_bytes_read": 0,
+  "dee_result": "0xC0000005; no output",
+  "audio_comparison": "NOT_RUN",
+  "sample_values_in_package": false
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "SYMBOLIC_PROCESS_FRAME_AND_OWNER_VECTOR; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "api": "FUN_140213470 / DDP_ENC_PRO_ddpi_enc_process",
+  "frame_view_fields": {
+    "sample_count_u64": "param3+0x28; accepted values 0x600 or 0 flush",
+    "channel_count_u64": "param3+0x20",
+    "channel_pointer_list_u64": "param3+0x08",
+    "frame_flag_u8": "param3+0x38",
+    "dialnorm_u32": "param3+0x60"
+  },
+  "dispatch_owner": {
+    "method_slot": "0x140610538 -> FUN_140350d00",
+    "state_pointer": "channel_instance+0xdf8",
+    "row": "[state+0x23e34,state+0x23eac)",
+    "runtime_values": "UNBOUND"
+  },
+  "prohibited_inference": "The symbolic frame fields and dispatch target do not establish runtime row contents or prove a typed writer."
+}

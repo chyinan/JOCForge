@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "ATMOS-DDP-BITRATE-SINK-WASH-V2",
+    "manifest_sha256": "1bb0aef189b37770b2bdd9a0803f5a618ca5c6aa5d3d56a1c6ca14236ddf01c9",
+    "followup_sha256": "398b49f70ff9374030c32d7c1c0ef28633d3f2cb5f6b869d0e4e71c8b4ee5bfd",
+    "addendum_sha256": "98289bd11443e0a82b2199fa49a9f13d62683c1058811eade3cd81a5f3cea1e9",
+    "mapping_trace_sha256": "ade9be1e85bf36fb31c432b7212fa918909f3a8ff486b5bfab5945456f7d1345",
+    "registry_refs_sha256": "8f514a9d755f10103141bc6bcf615bc116c3a55aca557e500eac7d279f573f68",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "verification_scope": "manifest and all 11 listed evidence hashes rechecked; no package seal or checker receipt"
+  },
+  "excluded": [
+    "Ghidra scripts",
+    "raw logs/decompilation",
+    "binary",
+    "EC-3 payload",
+    "PCM",
+    "private key",
+    "license"
+  ]
+}

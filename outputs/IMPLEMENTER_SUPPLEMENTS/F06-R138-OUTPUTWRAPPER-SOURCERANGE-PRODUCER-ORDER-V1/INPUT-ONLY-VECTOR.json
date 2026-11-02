@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-f06-static-no-runtime-vector.v1",
+  "vector_status": "NOT_PROVIDED",
+  "reason": "This slice is a static builder/order trace and contains no runtime source rows or audio values.",
+  "sample_values_included": false,
+  "media_or_pcm_included": false,
+  "runtime_execution": "NOT_RUN"
+}

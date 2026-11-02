@@ -1,0 +1,562 @@
+{
+  "schema": "channel3-residual-band-diagnostic.v1",
+  "input_hashes": {
+    "dee": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b"
+  },
+  "decoder": {
+    "version": "ffmpeg version 8.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "mode": "decode-only f32le pipes"
+  },
+  "stream": {
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "au_count": 4247,
+    "sample_frames": 6523392,
+    "duration_seconds": 135.904
+  },
+  "blocks": {
+    "size_seconds": 4,
+    "excluded_zero_based_block_indices": [
+      23,
+      24,
+      25
+    ],
+    "excluded_block_activity_check": [
+      {
+        "block_index_zero_based": 23,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.03140593554488477,
+        "rust_all_channel_rms": 0.030099114628062463,
+        "residual_all_channel_rms": 0.001720383597396151,
+        "excluded_from_spectral_aggregate": true
+      },
+      {
+        "block_index_zero_based": 24,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.02775162683277018,
+        "rust_all_channel_rms": 0.026504183909874007,
+        "residual_all_channel_rms": 0.0014786925104496372,
+        "excluded_from_spectral_aggregate": true
+      },
+      {
+        "block_index_zero_based": 25,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.030631475005018956,
+        "rust_all_channel_rms": 0.029616061840034156,
+        "residual_all_channel_rms": 0.0012002575666016518,
+        "excluded_from_spectral_aggregate": true
+      }
+    ],
+    "active_dee_rms_median": 0.05525313151194903,
+    "active_dee_rms_p10": 0.04315200772758799,
+    "excluded_to_active_median_dee_rms_ratio": [
+      {
+        "block_index_zero_based": 23,
+        "ratio": 0.5684010061600387
+      },
+      {
+        "block_index_zero_based": 24,
+        "ratio": 0.5022634206129768
+      },
+      {
+        "block_index_zero_based": 25,
+        "ratio": 0.5543844152687455
+      }
+    ],
+    "all_block_activity_scalar_records": [
+      {
+        "block_index_zero_based": 0,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.05525313151194903,
+        "rust_all_channel_rms": 0.054888572150534866,
+        "residual_all_channel_rms": 0.0019842609930455276,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 1,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.060270532081745,
+        "rust_all_channel_rms": 0.05917890646768855,
+        "residual_all_channel_rms": 0.0035706915744333715,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 2,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.06278043552473433,
+        "rust_all_channel_rms": 0.06211792740357676,
+        "residual_all_channel_rms": 0.0024890643081975083,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 3,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.053976149074897596,
+        "rust_all_channel_rms": 0.05277057763299781,
+        "residual_all_channel_rms": 0.003454294271536828,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 4,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.04489206615122259,
+        "rust_all_channel_rms": 0.04333068748942666,
+        "residual_all_channel_rms": 0.0033732080095000955,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 5,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.040717255246324836,
+        "rust_all_channel_rms": 0.04002113543654795,
+        "residual_all_channel_rms": 0.0022976983134497613,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 6,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.04819284953090203,
+        "rust_all_channel_rms": 0.04713527994362696,
+        "residual_all_channel_rms": 0.00326897656981323,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 7,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.055456133103885585,
+        "rust_all_channel_rms": 0.05543200841346118,
+        "residual_all_channel_rms": 0.0016872068611959261,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 8,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.05628558112702522,
+        "rust_all_channel_rms": 0.056210296860115354,
+        "residual_all_channel_rms": 0.0029384545912519255,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 9,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.04700537529920061,
+        "rust_all_channel_rms": 0.04690335781141558,
+        "residual_all_channel_rms": 0.0018407743599868395,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 10,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.06463386460202648,
+        "rust_all_channel_rms": 0.06399843539857665,
+        "residual_all_channel_rms": 0.0023973765085210123,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 11,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.0626731641394078,
+        "rust_all_channel_rms": 0.06149424984068066,
+        "residual_all_channel_rms": 0.00357343697518795,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 12,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.06340919680645768,
+        "rust_all_channel_rms": 0.06271939387437214,
+        "residual_all_channel_rms": 0.003121865291670787,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 13,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.05272295377034416,
+        "rust_all_channel_rms": 0.05226001418380422,
+        "residual_all_channel_rms": 0.002965520857823088,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 14,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.05422069116928203,
+        "rust_all_channel_rms": 0.053314890070291415,
+        "residual_all_channel_rms": 0.003535363160261677,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 15,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.051071476101369966,
+        "rust_all_channel_rms": 0.050071337299520735,
+        "residual_all_channel_rms": 0.0027384745397963876,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 16,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.04950410700650629,
+        "rust_all_channel_rms": 0.04908769276108299,
+        "residual_all_channel_rms": 0.0033371291148044956,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 17,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.04315200772758799,
+        "rust_all_channel_rms": 0.04173534632621409,
+        "residual_all_channel_rms": 0.0035787967672788043,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 18,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.050985335874987575,
+        "rust_all_channel_rms": 0.05050463808387179,
+        "residual_all_channel_rms": 0.002279040018346277,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 19,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.05308015176838079,
+        "rust_all_channel_rms": 0.052345333218342845,
+        "residual_all_channel_rms": 0.0029650867626175195,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 20,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.06181977917174182,
+        "rust_all_channel_rms": 0.061775190043279075,
+        "residual_all_channel_rms": 0.0023590527318342186,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 21,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.05982943604891733,
+        "rust_all_channel_rms": 0.05977864036740505,
+        "residual_all_channel_rms": 0.0025063425402142366,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 22,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.051010077462940874,
+        "rust_all_channel_rms": 0.05080450319600709,
+        "residual_all_channel_rms": 0.002320472015207736,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 23,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.03140593554488477,
+        "rust_all_channel_rms": 0.030099114628062463,
+        "residual_all_channel_rms": 0.001720383597396151,
+        "excluded_from_spectral_aggregate": true
+      },
+      {
+        "block_index_zero_based": 24,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.02775162683277018,
+        "rust_all_channel_rms": 0.026504183909874007,
+        "residual_all_channel_rms": 0.0014786925104496372,
+        "excluded_from_spectral_aggregate": true
+      },
+      {
+        "block_index_zero_based": 25,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.030631475005018956,
+        "rust_all_channel_rms": 0.029616061840034156,
+        "residual_all_channel_rms": 0.0012002575666016518,
+        "excluded_from_spectral_aggregate": true
+      },
+      {
+        "block_index_zero_based": 26,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.042977108385660476,
+        "rust_all_channel_rms": 0.042345577813642836,
+        "residual_all_channel_rms": 0.0022407859063701668,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 27,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.06837785539719009,
+        "rust_all_channel_rms": 0.06760168965041814,
+        "residual_all_channel_rms": 0.0031788395825780563,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 28,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.06709506225143633,
+        "rust_all_channel_rms": 0.0661802180535868,
+        "residual_all_channel_rms": 0.0031666037981674597,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 29,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.06468698637520759,
+        "rust_all_channel_rms": 0.06389079579190887,
+        "residual_all_channel_rms": 0.0034716915845427747,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 30,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.07172632274928128,
+        "rust_all_channel_rms": 0.07168837351298388,
+        "residual_all_channel_rms": 0.002304463972778845,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 31,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.06441138155346675,
+        "rust_all_channel_rms": 0.0638202179393598,
+        "residual_all_channel_rms": 0.0035047261632788094,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 32,
+        "frames": 192000,
+        "dee_all_channel_rms": 0.05802630239874685,
+        "rust_all_channel_rms": 0.05789618728399461,
+        "residual_all_channel_rms": 0.003236432700896763,
+        "excluded_from_spectral_aggregate": false
+      },
+      {
+        "block_index_zero_based": 33,
+        "frames": 187392,
+        "dee_all_channel_rms": 0.027860241844018835,
+        "rust_all_channel_rms": 0.02725210031837399,
+        "residual_all_channel_rms": 0.002133663885185041,
+        "excluded_from_spectral_aggregate": false
+      }
+    ],
+    "active_block_count": 31
+  },
+  "band_definition": {
+    "low": "0 <= f < 120 Hz",
+    "higher": "120 Hz <= f <= 24 kHz",
+    "split_is_diagnostic_only_not_channel_identity": true,
+    "spectral_method": "4-second Hann-windowed real FFT per block; window-energy corrected band energies",
+    "cross_correlation": "band-limited, zero-lag normalized cross-power accumulated over active blocks"
+  },
+  "active_block_residual_energy_by_channel": [
+    {
+      "channel_index": 0,
+      "low_band_energy_relative": 3.6969615002413705,
+      "high_band_energy_relative": 7.028673212587672,
+      "low_band_fraction": 0.34468463631521934,
+      "high_band_fraction": 0.6553153636847806
+    },
+    {
+      "channel_index": 1,
+      "low_band_energy_relative": 3.4928075787478865,
+      "high_band_energy_relative": 6.023634196537135,
+      "low_band_fraction": 0.3670287341870775,
+      "high_band_fraction": 0.6329712658129224
+    },
+    {
+      "channel_index": 2,
+      "low_band_energy_relative": 0.09574642774683265,
+      "high_band_energy_relative": 5.537134408521084,
+      "low_band_fraction": 0.01699777263711294,
+      "high_band_fraction": 0.983002227362887
+    },
+    {
+      "channel_index": 3,
+      "low_band_energy_relative": 194.21326197440857,
+      "high_band_energy_relative": 54.38007052153085,
+      "low_band_fraction": 0.781248877532067,
+      "high_band_fraction": 0.21875112246793305
+    },
+    {
+      "channel_index": 4,
+      "low_band_energy_relative": 1.5889397980683937,
+      "high_band_energy_relative": 10.382331971429933,
+      "low_band_fraction": 0.13272940658793353,
+      "high_band_fraction": 0.8672705934120665
+    },
+    {
+      "channel_index": 5,
+      "low_band_energy_relative": 1.6596933305622708,
+      "high_band_energy_relative": 10.095704428940216,
+      "low_band_fraction": 0.1411856378250286,
+      "high_band_fraction": 0.8588143621749714
+    }
+  ],
+  "aggregate_residual_energy_band_fraction": {
+    "low_lt_120_hz": 0.6866226412966384,
+    "high_ge_120_hz": 0.31337735870336164
+  },
+  "channel3_zero_lag_cross_correlation": {
+    "low_lt_120_hz": {
+      "residual_vs_residual": [
+        {
+          "channel_index": 0,
+          "zero_lag_correlation": 0.23246701180903917
+        },
+        {
+          "channel_index": 1,
+          "zero_lag_correlation": 0.22277855507225375
+        },
+        {
+          "channel_index": 2,
+          "zero_lag_correlation": 0.007702155136292995
+        },
+        {
+          "channel_index": 3,
+          "zero_lag_correlation": 1.0
+        },
+        {
+          "channel_index": 4,
+          "zero_lag_correlation": 0.15328922091935188
+        },
+        {
+          "channel_index": 5,
+          "zero_lag_correlation": 0.17796040752419293
+        }
+      ],
+      "residual_vs_dee_output": [
+        {
+          "channel_index": 0,
+          "zero_lag_correlation": -0.3064474575192604
+        },
+        {
+          "channel_index": 1,
+          "zero_lag_correlation": -0.29559622757913084
+        },
+        {
+          "channel_index": 2,
+          "zero_lag_correlation": -0.03897377678296854
+        },
+        {
+          "channel_index": 3,
+          "zero_lag_correlation": -0.6473082097699182
+        },
+        {
+          "channel_index": 4,
+          "zero_lag_correlation": -0.22447208423164172
+        },
+        {
+          "channel_index": 5,
+          "zero_lag_correlation": -0.24677241429488397
+        }
+      ],
+      "residual_vs_rust_output": [
+        {
+          "channel_index": 0,
+          "zero_lag_correlation": -0.30515462570722174
+        },
+        {
+          "channel_index": 1,
+          "zero_lag_correlation": -0.29438470059788086
+        },
+        {
+          "channel_index": 2,
+          "zero_lag_correlation": -0.03916012032175625
+        },
+        {
+          "channel_index": 3,
+          "zero_lag_correlation": -0.17881201293087606
+        },
+        {
+          "channel_index": 4,
+          "zero_lag_correlation": -0.22370117637857923
+        },
+        {
+          "channel_index": 5,
+          "zero_lag_correlation": -0.24581306264631544
+        }
+      ]
+    },
+    "high_ge_120_hz": {
+      "residual_vs_residual": [
+        {
+          "channel_index": 0,
+          "zero_lag_correlation": -0.03135693939597156
+        },
+        {
+          "channel_index": 1,
+          "zero_lag_correlation": -0.03347785486979774
+        },
+        {
+          "channel_index": 2,
+          "zero_lag_correlation": -0.0010224692824103035
+        },
+        {
+          "channel_index": 3,
+          "zero_lag_correlation": 1.0000000000001918
+        },
+        {
+          "channel_index": 4,
+          "zero_lag_correlation": -0.014002379229688632
+        },
+        {
+          "channel_index": 5,
+          "zero_lag_correlation": -0.01554884995311003
+        }
+      ],
+      "residual_vs_dee_output": [
+        {
+          "channel_index": 0,
+          "zero_lag_correlation": 0.042555028721615464
+        },
+        {
+          "channel_index": 1,
+          "zero_lag_correlation": 0.04648333611887674
+        },
+        {
+          "channel_index": 2,
+          "zero_lag_correlation": 3.454898170040734e-05
+        },
+        {
+          "channel_index": 3,
+          "zero_lag_correlation": -0.2772834608549456
+        },
+        {
+          "channel_index": 4,
+          "zero_lag_correlation": 0.01186501490711885
+        },
+        {
+          "channel_index": 5,
+          "zero_lag_correlation": 0.012539309412348366
+        }
+      ],
+      "residual_vs_rust_output": [
+        {
+          "channel_index": 0,
+          "zero_lag_correlation": 0.04229224469668841
+        },
+        {
+          "channel_index": 1,
+          "zero_lag_correlation": 0.0462025685344688
+        },
+        {
+          "channel_index": 2,
+          "zero_lag_correlation": 1.1664384925154067e-05
+        },
+        {
+          "channel_index": 3,
+          "zero_lag_correlation": 0.9197312706842952
+        },
+        {
+          "channel_index": 4,
+          "zero_lag_correlation": 0.011651244003317615
+        },
+        {
+          "channel_index": 5,
+          "zero_lag_correlation": 0.012292164262463821
+        }
+      ]
+    }
+  },
+  "pcm_retention": "NONE; only scalar band energies, correlations, and excluded-block activity were retained"
+}

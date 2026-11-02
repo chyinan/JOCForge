@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "ADM-CONVERTER-ROW-TABLE-PRODUCER-BOUNDARY-V1",
+  "vectors": [
+    {
+      "id": "ordinal-row-pointer-copy",
+      "kind": "SYNTHETIC_POINTER_ARITHMETIC_ONLY",
+      "inputs": {"caller_rows": [4096, 8192], "sample_offset": 3, "static_stride_bytes": 4},
+      "derived_rows": [4108, 8204],
+      "row_order_preserved": true,
+      "not_runtime_pointers": true,
+      "does_not_map_chna_key_to_physical_row": true
+    },
+    {
+      "id": "chna-key-vs-row-index",
+      "kind": "INPUT_IDENTITY_BOUNDARY_ONLY",
+      "inputs": {"chna_track_index": 11, "crosswalk_slot": 10},
+      "chna_slot_formula": "track_index-1",
+      "physical_row_identity": "UNBOUND",
+      "equal_numbers_do_not_prove_identity": true
+    }
+  ]
+}

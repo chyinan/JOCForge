@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V1",
+  "scope": "static selector producer/layout mapping plus separate user-confirmed decoded output channel identity",
+  "status": "STATIC_SELECTOR_PRODUCER_AND_LFE_BRANCH_BOUND; OUTPUT_CHANNEL3_USER_CONFIRMED_LFE; MATCHED_INPUT_ROW3_TO_CORE_LANE_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 2238,
+      "sha256": "4f4f8a6f2e13b387ef6ebf24f2fcf76aa8645fb85b6645a85de57fa9bd092319"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3016,
+      "sha256": "b3ef5a28a55dea8e5d6db2525018c0888692337978fe1d265964b396fc00d36a"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 1059,
+      "sha256": "b8077cda1782093c430db7fcea9abc1e83b1d0679571cf420df2e659b2b1ef3f"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1247,
+      "sha256": "be7b683e6d63885b6ba512d7ecab8b9e348ee6a49ca0f9ac235024d114e0c4cc"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 4055,
+      "sha256": "c844602236569e2e1ddfa738845686fdaccedfe965990c8157d28b660225f3d0"
+    }
+  ]
+}

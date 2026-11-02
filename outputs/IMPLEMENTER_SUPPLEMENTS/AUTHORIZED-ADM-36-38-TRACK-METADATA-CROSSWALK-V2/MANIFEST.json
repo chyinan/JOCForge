@@ -1,0 +1,31 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V2",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "supersedes_manifest_sha256": "3c8512f969c03754044c98723773fca43cdf9ed0dc91433f02f444a940a0ad99",
+  "whole_file_hashes_recomputed": false,
+  "data_chunk_read_bytes": 0,
+  "scope": "Metadata-only 36/38 ADM BWF comparison with inherited whole-file identities; no PCM read or codec acceptance claim",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "95578a209a10ab5ea013633194c6909f764398f82bc851ccbd8c3b5c9b47cbc0",
+      "bytes": 2367
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "2ef6ac94c82ddca1ca95b40e2b4a1cfd1af79f59d3ecf8caf96c649f2d56bb04",
+      "bytes": 3534
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "5ec668951499568a256f10530220b9739e5653d3929a5ff2e4e3abb65a6e8edb",
+      "bytes": 1037
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "152c4b64425b752c6ab25385eaa139d1f99baffdb656c650a2e389a2b99424ca",
+      "bytes": 2576
+    }
+  ]
+}

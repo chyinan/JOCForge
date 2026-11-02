@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-f13c-atmos-dmixmod-input-only.v1",
+  "selected_job": {"route": "encode_to_atmos_ddp", "preferred": "loro", "levels_db": [-3, -3, -3, -3]},
+  "source_mapping_candidate": {"dmixmod": 2, "level_codes": [4, 4, 4, 4]},
+  "native_audio_effect": "UNBOUND",
+  "encoder_execution": "NOT_RUN",
+  "user_prompt_required_by_evidence": false
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "AUTHORIZED-ADM-36-38-OBJECT-BED-CROSSWALK-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Metadata-only AXML/CHNA partition with source identities inherited from a sealed receipt; no JOC admission claim",
+  "upstream": {
+    "package_id": "r7-adm-object-count-crosswalk",
+    "manifest_sha256": "d318321ff05f2db745f94fc1851140ad1e07b6e5aab417167f279fd5d307aba3",
+    "manifest_sidecar_sha256": "bb1fe09d1ff5090d5cb55efa8b0ea16a8173378c901656e525f3c1bd19d07447",
+    "payload_sha256": {
+      "build_adm_metadata_object_count_crosswalk.py": "f468de92a87d9bf3a90aa82d2f43a90e697b64327d66ea7ed5a80b810041b573",
+      "CHECK.py": "29c1c375508270eb512473073f822f131c4ea2a8abe8eb3bd4ac85263940a397",
+      "EVIDENCE.json": "e8813aa9124a74dac5d2b281bc3b346054bc1f3bf9911b785ffd3f3b196cf747",
+      "METADATA-PARSE-RESULT.json": "e9c3e973b51f948168d7d7d034554fbc27ee3a0e4837993e99cb61cfdd51ced1",
+      "REPORT.md": "95ac1092a6a242647c36f3a99dc6968be609d9a0e1ef7a55c8581b88770505f9",
+      "SOURCE-MANIFESTS.json": "c358bc4d2b7a245680a7a33088bc969f006d86a679fde0de55659a8fcaef67ef"
+    },
+    "wash_independent_verification": "manifest, sidecar, member sizes, and hashes matched",
+    "upstream_checkers": {"normal": "PASS", "python_optimized": "PASS"}
+  },
+  "inherited_identity_receipt": {
+    "package_id": "carrier_block_authorized_input_scope_wash_v2",
+    "manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+    "package_seal_file_sha256": "f9842904d54ad2ae7d15e0bb978212c9933632a5f2cae461f5d35c3df43e6e09",
+    "identity_payload_sha256": "19b134d2d3409d48429bdbf9d0779452fd26099c2ebb64ae39a47bb11a6f4e11",
+    "receipt_package_files_rechecked": true,
+    "WAV_hashes_recomputed_in_R7_parse": false
+  },
+  "input_counts": [
+    {
+      "sample_id": "potential_ai",
+      "source_sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82",
+      "pcm_channels": 36,
+      "chna_track_rows": 36,
+      "audioObject_xml_elements": 27,
+      "DirectSpeakers_audioObject_elements": 1,
+      "Objects_audioObject_elements": 26,
+      "DirectSpeakers_bed_rows": 10,
+      "Objects_Objects_track_rows": 26,
+      "prior_PreparedJobInput_object_events": 26,
+      "prepared_job_identity_join": "UNBOUND"
+    },
+    {
+      "sample_id": "human_cat",
+      "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "pcm_channels": 38,
+      "chna_track_rows": 38,
+      "audioObject_xml_elements": 29,
+      "DirectSpeakers_audioObject_elements": 1,
+      "Objects_audioObject_elements": 28,
+      "DirectSpeakers_bed_rows": 10,
+      "Objects_Objects_track_rows": 28,
+      "PreparedJobInput_object_events": "EXPECTED_FROM_SAME_FILTER_NOT_REEXECUTED"
+    }
+  ],
+  "partition_rule": "one object event per CHNA row with resolved channel_type=Objects AND pack_type=Objects; DirectSpeakers rows become bed-track records",
+  "data_handling": {"data_chunk_bytes_read": 0, "whole_file_hash_recomputed": false, "dee_run": false, "pcm_or_payload_persisted": false, "key_accessed": false},
+  "prohibited_inferences": [
+    "Do not equate audioObject XML elements with PreparedJobInput object-event count.",
+    "Do not infer the 38-track PreparedJobInput runtime count from a type-filtered expectation alone.",
+    "Do not claim 36-track codec/JOC acceptance from metadata parsing."
+  ]
+}

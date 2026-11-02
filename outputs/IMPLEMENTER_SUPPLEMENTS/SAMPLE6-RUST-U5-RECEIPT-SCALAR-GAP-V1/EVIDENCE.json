@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-sample6-rust-u5-receipt-scalar-gap.v1",
+  "package_id": "SAMPLE6-RUST-U5-RECEIPT-SCALAR-GAP-V1",
+  "status": "CURRENT_RUN_U5_BOUND; SELECTED_LUFS_INPUT_NOT_RECORDED; DEE_REFERENCE_BOUNDED_WINDOW_ONLY",
+  "source_package": {
+    "package_id": "sample6-rust-u5-scalar-input-audit",
+    "manifest_sha256": "f867629d04c3eb684ea6599bb9efa90cdb14334b422ed6b1e229c02658d6941b",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "current_run": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "run_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766",
+    "source_commit": "216326f622e66f1f7b255dbe7a8bcfb8ca473ce2",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "rust_logged_meter_dialnorm": 17,
+    "output_u5": {"value": 17, "bit_offset": 45, "width_bits": 5},
+    "selected_lufs_f32_word_in_receipt_or_logs": false
+  },
+  "current_rust_formula_source": {
+    "production_path": "getter.selected_host_word() -> dialnorm_from_selected_lufs(selected_word)",
+    "input_type": "F32 word",
+    "operations": ["sentinel -120.0 tolerance 1e-6", "F32 subtract 0.5", "truncate toward zero", "clamp [-31,-1]", "negate to U5"],
+    "source_contains_rule": true
+  },
+  "dee_reference_scope": {
+    "source_package_manifest_sha256": "e20d665c4089d29d46cdc08771bda9fd03a2916405bd3d30aaace9caead1d0f4",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "file_position_window": {"start": 2160, "end": 2208, "full_file": false},
+    "u5_observed": 21,
+    "scalar": -20.665958,
+    "unit": "UNBOUND",
+    "selected_lufs_assumption_predicts_u5": 21,
+    "comparison_disposition": "NOT_SAME_SCOPE_AS_FULL_FILE_RUST_U5; FULL_FILE_DEE_U5_NOT_RUN"
+  },
+  "future_receipt_requirement": {
+    "field": "rust_selected_lufs_f32_word",
+    "type": "u32 hex encoding the exact F32 argument",
+    "capture_point": "after getter.selected_host_word() and before dialnorm_from_selected_lufs(selected_word)",
+    "bindings": ["run_id", "input_sha256", "executable_sha256", "source_commit"],
+    "sensitive": false
+  },
+  "execution_boundary": {
+    "new_dee_run": false,
+    "payload_body_read": false,
+    "private_key_or_license_read": false,
+    "old_comparison_group_used": false,
+    "pcm_persisted": false
+  }
+}

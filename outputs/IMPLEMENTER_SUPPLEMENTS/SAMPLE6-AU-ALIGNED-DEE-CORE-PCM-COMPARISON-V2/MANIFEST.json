@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-AU-ALIGNED-DEE-CORE-PCM-COMPARISON-V2",
+  "source_reverse_package_id": "native-f06-authorized-adm-au-aligned-core-pcm-comparison-addendum",
+  "source_reverse_manifest_sha256": "ade02cf02c9e0d7f1947148a9b188accad24900e649a4e67999c9c120fb96a49",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "AU_ALIGNED_4S_CORE_PCM_MISMATCH; PER_CHANNEL_RESIDUALS_BOUND; CAUSE_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4345,
+      "sha256": "c6a745e9ddbcd8fb6f2197d7b5148faf7e778275e9665e0b6a979d40d790ac37"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3460,
+      "sha256": "59853d561e8de1e55ce7069a06c5dcd8eb2bec3d139425e4311a51568d86d98b"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1882,
+      "sha256": "a166390468d4faf9f3bd5725d23c7959a47fd328bcf97212fc40762cc1b17477"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 872,
+      "sha256": "1e2f1b84dfa144af6a9e1471190977f24db7a21739ce844df5060fcf620d1884"
+    },
+    {
+      "file": "WINDOW-COMPARISON.json",
+      "bytes": 1237,
+      "sha256": "77fea4ef4b99d8ebeade53d3655937a119cf835c971819c3e736e6cc4129958f"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

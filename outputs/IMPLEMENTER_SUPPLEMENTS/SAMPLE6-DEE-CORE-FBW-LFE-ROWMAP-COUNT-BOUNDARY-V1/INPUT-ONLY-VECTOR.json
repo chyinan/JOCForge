@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "SYMBOLIC_ROWMAP_BOUNDARY; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "case": {"selector_row": 0, "valid_layout_entries": 3, "layout_position_count": 4, "fourth_layout_value": "0xffff", "signed_index": -1},
+  "conditional_track_case": {"source_slot": 36, "meaning": "physical row index only if a typed mapping is separately established", "source_slot_identity": "UNBOUND"},
+  "expected_output": "NOT_ASSERTED",
+  "warning": "This vector describes a static boundary only and does not show the selected runtime count or behavior."
+}

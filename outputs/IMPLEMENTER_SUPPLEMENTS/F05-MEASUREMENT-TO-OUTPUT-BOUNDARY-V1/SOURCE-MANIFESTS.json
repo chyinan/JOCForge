@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_packages": [
+    {
+      "package_id": "f05_f06_f13_measurement_lineage_closure_wash_v1",
+      "manifest_sha256": "0a7bdfaf902c40e8ee0095f9fdd021d69fdb451c8a9cfcc97dd740279547823b",
+      "report_sha256": "78d24a193a7869c4aa2535cda685d03717cf9a3617551fbe3e551bf6d093f679",
+      "evidence_sha256": "370682b9a094ce6102f55c8dcaaa44475d32f50e8f8ead48f719ca51a15a4109",
+      "source_manifest_sha256": "12589e00072bd7cf658aa091615a936dc566602f3a94215e83d41762c3af5680"
+    },
+    {
+      "package_id": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1",
+      "manifest_sha256": "6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750",
+      "evidence_sha256": "7302e7e101bc114a54eacbead0ef537cd3f4a0332a2899b06428f3b6bedff813",
+      "metrics_sha256": "d9d4dd304508c448344ed89a7725f07287b112a45fa7861cd98f99380b411221",
+      "drc_control_sha256": "53cbf76bfca55a41a62d84cac80df6f539722087f15b9bbb9cbabc1866ac7466"
+    }
+  ],
+  "excluded": [
+    "EC-3 payload bytes",
+    "PCM samples",
+    "raw logs",
+    "private key",
+    "license"
+  ]
+}

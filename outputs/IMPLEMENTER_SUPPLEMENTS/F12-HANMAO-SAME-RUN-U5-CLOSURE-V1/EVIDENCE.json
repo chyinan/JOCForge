@@ -1,0 +1,65 @@
+{
+  "schema": "jocforge-washed-hanmao-same-run-u5.v1",
+  "scope": "F12S FIVE-BIT U5 RECEIPT FOR ONE AUTHORIZED ADM RUN",
+  "status": "SAME_RUN_INPUT_SCALAR_U5_RECEIPT_CLOSED; SCALAR_UNIT_AND_NATIVE_OWNER_JOIN_OPEN",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "incoming_package": {
+    "package_id": "hanmao-u5-same-run-closure",
+    "manifest_sha256": "cafc228c3ede087cc7727d8b0684c89f562a600ae19ed178607ba4967d996bf7",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "same_run_observation": {
+    "sample_id": "authorized_adm_a",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_sha_recomputed_in_addendum": false,
+    "attempt_id": "a-fresh-reference",
+    "dee_pid": 35004,
+    "dee_exit_code": 0,
+    "measured_aggregate_scalar": -20.665958,
+    "measurement_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "u5_observed": 21,
+    "u5_db": -21,
+    "u5_bit_offset": 45,
+    "u5_width_bits": 5,
+    "sample_rate_hz": 48000,
+    "audio_blocks": 6,
+    "frame_size_bytes": 4096,
+    "substream_id": 0,
+    "bitstream_id": 16,
+    "prefix_bytes_read": 7,
+    "payload_body_bytes_read": 0,
+    "raw_prefix_retained": false
+  },
+  "candidate_rule_check": {
+    "assumption": "measured scalar is selected_lufs",
+    "source_rule_package_manifest_sha256": "511fb7c6a1e1033e7487532fafc4ad73e11ed2c16aab9ea8afd67ce6e9450c9f",
+    "predicted_u5": 21,
+    "observed_u5": 21,
+    "same_run_match": true,
+    "scoped_confidence": 0.82
+  },
+  "closure": {
+    "same_attempt_binds_input_scalar_and_u5": true,
+    "receipt_level_closure": true,
+    "measurement_to_bsi_owner_generation_join": "NOT_CLOSED",
+    "native_scalar_unit": "UNBOUND",
+    "official_full_file_cli_crosscheck": false,
+    "new_dee_run": false,
+    "raw_prefix_or_payload_saved": false,
+    "private_key_or_license_read": false
+  },
+  "provenance_audit": {
+    "incoming_claimed_parent_cross_input_manifest_sha256": "833823ee48a1380be746673da8c555397dd97e7b8fe2068257f7fe43dfa06134",
+    "currently_available_parent_cross_input_manifest_sha256": "439df32fce6b2dfe8f20026225536ef1e954784d1e99fd50d94e1a0b27b2ed33",
+    "parent_evidence_json_sha256_claimed_and_verified": "a92830655edf978c2ac90d9d6e7ef8ae589d513b3a41cbc71ea422ec3d005c94",
+    "input_vector_1_sha256_claimed_and_verified": "cd98443bb7585d98762de32b9d59b945697598048543a4618bc0c41d63ee9ecd",
+    "parent_manifest_reference_matches_current_manifest": false
+  },
+  "payload_policy": {
+    "source_code_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

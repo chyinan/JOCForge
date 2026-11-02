@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge.adm_36_row_current_gate_snapshot.v1",
+  "package_id": "ADM-BWF-36-ROW-GATES-CURRENT-SNAPSHOT-V1",
+  "status": "JOB_XML_PARSE_RANGE_DYNAMIC; PRIMARY_CONTROL_AND_FRESH_ZERO_STILL_38; FULL_PATH_NOT_RUN",
+  "source_checkout": {
+    "path": "D:\\Programs\\JOCForge-isolated",
+    "branch": "experimental/independent-encoder",
+    "head_at_prior_audit": "daba3d8c39c93004049201aad57a9b6ada64265d",
+    "working_tree_has_uncommitted_changes": true
+  },
+  "authorized_samples": {
+    "count": 7,
+    "pcm24_48khz_riff": 7,
+    "36_channels": 6,
+    "38_channels": 1,
+    "other_dimensions": 0,
+    "bed_rows_each": 10,
+    "object_rows": {"36_channels": 26, "38_channels": 28},
+    "pcm_data_bytes_read": 0,
+    "dee_run": false
+  },
+  "current_job_configuration_source": {
+    "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
+    "sha256": "a22a78e30a0c149f1eda42f76cdf86ba0dc7f0a33f674b59a3f2c8c18be22b40",
+    "xml_adm_channels": "1..256",
+    "xml_atmos_mezz_channels": "1..256",
+    "selected_cli_xml_element": "adm",
+    "primary_control_source_extent_check": "channels == SELECTED_RUNTIME_CHANNELS (38)",
+    "normalized_identity_label": "selected_adm_bwf_38ch_pcm24_48khz",
+    "change_state": "UNCOMMITTED_WORKING_TREE"
+  },
+  "remaining_fixed_38_source_hashes": {
+    "normal_control_snapshot.rs": "89b56c3d8f011ac01d45d38ab25e0eb81d6cc5fbd340de5412582751d3d68273",
+    "independent_meter_callback.rs": "cf73426977a0f4bc65a94a8747e560e958faff8b9816187bd204d2da1ace7bd4"
+  },
+  "runtime_status": {
+    "prepared_job_input_36_row_test": "EXISTS_NOT_RUN_IN_THIS_AUDIT",
+    "meter_36_row": "NOT_RUN",
+    "full_joc_36_row": "NOT_RUN",
+    "ec3_output_36_row": "NOT_RUN"
+  },
+  "scope": {
+    "pcm_or_payload_saved": false,
+    "private_key_or_license_access": false,
+    "implementation_contacted": false
+  }
+}

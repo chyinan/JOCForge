@@ -1,0 +1,19 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "sample6-matched-drc-track-count-admission-boundary-wash-v1",
+      "manifest_sha256": "613d934c86bb9a3bf21049fed7a5bc92f6650d11fadddcf79167533adef9b066",
+      "package_seal_sha256": "d76e3cf9015f6d6aeedb80b998d8d97084c64cdc880c7e5fbe41e6fe8fd705cd",
+      "source_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+    },
+    {
+      "package_id": "sample6-matched-drc-api-registration-caller-boundary-wash-v1",
+      "manifest_sha256": "7a173f7fc442d7ab1885767b3011bbe80e658ea835600408119ef47dd0d7337a"
+    },
+    {
+      "package_id": "sample6-matched-drc-frame-input-row-writer-boundary-wash-v1",
+      "manifest_sha256": "c29cf85d37e545b706fa101102080607dbf7440c2ec61f822b1bc5847128b25a"
+    }
+  ]
+}

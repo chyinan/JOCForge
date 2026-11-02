@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "r6_f13_joc_count_crosswalk_wash_v1",
+      "manifest_sha256": "3135b65e1113b013f6bc4a364c9483bb9c7bde353bc819bb07bc1bbce6c79b43",
+      "manifest_sha256_sidecar_sha256": "b01572fab7bc19e7177c1ab2ecc247369b4dd8c66c4e93bacfb8fcd4b8ee426a"
+    },
+    {
+      "package_id": "R9-mode-input-to-slot-count",
+      "manifest_sha256": "8ee2760048f5c2c54a7af3b390236fe6f43fe97756f8c5428ab67508eb358859",
+      "evidence_sha256": "5b06fb900f803ea616cda8d735b6df53b15f95a38640da35c3f733a7d8bec468"
+    },
+    {
+      "package_id": "R6-native-joc-block-writer-boundary",
+      "manifest_sha256": "69b09249f0981849f03e16258c331667ee018f01b2555411195c025baf7139ae",
+      "evidence_sha256": "bdd7a2202fc66cc62008a134cc37140318f258686909ce051eccae4050aebdf6"
+    }
+  ]
+}

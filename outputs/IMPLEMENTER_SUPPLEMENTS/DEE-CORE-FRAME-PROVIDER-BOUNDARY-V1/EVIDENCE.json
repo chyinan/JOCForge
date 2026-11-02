@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge-dee-core-frame-provider-boundary.v1",
+  "package_id": "DEE-CORE-FRAME-PROVIDER-BOUNDARY-V1",
+  "status": "CORE_BRANCH_PROVIDER_TYPE_BOUND; SELECTED_BACKEND_VALUE_UNBOUND; FORMAT_CONTROLS_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "source_package": {
+    "package_id": "dee_frame_provider_type_wash_v1",
+    "manifest_sha256": "51ce0964d527147a2fe52db1cc9b82976a12ef1a8bd4086f84760ccde46506c1",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT"
+  },
+  "native_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256_as_source_bound": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 headless read-only"
+  },
+  "provider_selection": {
+    "caller_slot": "+0x08",
+    "backend_selector_offset": "+0x138",
+    "zero_branch_type": "ddpjoc::EmpireEnc",
+    "nonzero_branch_type": "ddpjoc::DDPJocEnc / AtmosProcessor",
+    "selected_value_for_authorized_job": "UNBOUND"
+  },
+  "core_provider_contract": {
+    "normal_request_samples": 1536,
+    "flush_request_samples": 0,
+    "request_context_preparation": "BOUND_TO_TYPED_HELPER; FIELDS_OPAQUE",
+    "input_sample_staging": "BOUND_TO_1536_SAMPLE_BLOCK; CHANNEL_COUNT/ORDER_SEMANTICS_UNBOUND",
+    "encoder_process": "ddp_joc_pro_encode_process",
+    "output": "actual encoded span from scratch buffer; exact complete-frame boundary UNBOUND",
+    "sample_rate_acmod_lfeon_wire_order_fields": "UNBOUND"
+  },
+  "pcm_effect": {
+    "provider_consumes_audio_input": true,
+    "same_run_input_sample_identity": "UNBOUND",
+    "pcm_mismatch_explained": false,
+    "next_static_edge": "encoder-open request/config input"
+  },
+  "scope": {
+    "dee_run": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact_before_wash": false,
+    "source_code_or_decompilation_included": false
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-washed-f12-scalar-to-u5.v1",
+  "scope": "MEASURE_ONLY / 1770-4 / DI-OFF / DRC-NONE / 5.1 / 1024 KBPS; FILE POSITION WINDOW 2160-2208",
+  "status": "BEST_SUPPORTED_SCOPED_RULE; MEASUREMENT_TO_BSI_NATIVE_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "f12-scalar-to-u5-lineage",
+    "manifest_sha256": "2f9936de80f09cca10f3c0763f0a615e495fc88508f72554a4e1fcaefc20013a",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "candidate_rule": {
+    "input_interpretation": "F32 selected_lufs; explicit assumption, not native unit proof",
+    "sentinel": {"condition":"abs(F32(x - (-120.0))) < 0.000001","u5":31},
+    "ordinary": "t=clamp(trunc_toward_zero(F32(x-0.5)),-31,-1); U5=-t",
+    "output_range": [1,31],
+    "width_bits": 5,
+    "f12s_bit_range": "45-49",
+    "confidence": 0.82,
+    "mvp_blocking": false
+  },
+  "same_run_observations": [
+    {"input_sha256":"7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1","scalar":-20.665958,"u5_observed":21,"u5_predicted":21,"same_run_bound":true},
+    {"input_sha256":"591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e","scalar":-14.418104,"u5_observed":14,"u5_predicted":14,"same_run_bound":true},
+    {"input_sha256":"479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d","scalar":-17.093924,"u5_observed":17,"u5_predicted":17,"same_run_bound":true}
+  ],
+  "scalar_only": {"input_sha256":"db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335","scalar":-21.010569,"prediction":21,"u5_observed":null,"counted_as_observation":false},
+  "ghidra_facts": {
+    "version": "12.2",
+    "target_image": "dee_audio_filter_ddp_atmos.dll",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "aggregate_function": "FUN_1801769a0",
+    "aggregate_entry_stride_bytes": 32,
+    "aggregate_scalar_offset_bytes": 20,
+    "aggregate_scalar_type": "F32",
+    "aggregate_rule": "initialize -120.0; retain max per-source scalar",
+    "normalizer_function": "FUN_1800fdc60",
+    "normalizer_input_type": "F32",
+    "normalizer_subtract": "F32 x - 0.5",
+    "normalizer_conversion": "CVTTSS2SI truncate toward zero",
+    "normalizer_clamp": [-31,-1],
+    "normalizer_direct_bsi_write": false,
+    "independent_ddpi_stream_field": "stream+0x9c",
+    "measurement_to_ddpi_id_0x12_join": "UNBOUND",
+    "final_bsi_u5_write": "UNBOUND"
+  },
+  "provenance": {
+    "hanmao_same_run_closure_manifest_sha256": "2e1ab8c3336469a0d9d7a8c532d7e59da910b479a8ecb3d8d751a47f8f2fbf73",
+    "parent_cross_input_manifest_json_sha256": "439df32fce6b2dfe8f20026225536ef1e954784d1e99fd50d94e1a0b27b2ed33",
+    "parent_cross_input_manifest_sidecar_file_sha256": "833823ee48a1380be746673da8c555397dd97e7b8fe2068257f7fe43dfa06134",
+    "parent_evidence_json_sha256": "a92830655edf978c2ac90d9d6e7ef8ae589d513b3a41cbc71ea422ec3d005c94",
+    "input_vector_1_sha256": "cd98443bb7585d98762de32b9d59b945697598048543a4618bc0c41d63ee9ecd"
+  },
+  "observed_header_limit": {"bytes_read_per_prefix":7,"payload_body_bytes_read":0,"raw_prefix_retained":false,"official_full_file_cli_run":false},
+  "payload_policy": {"source_code_included":false,"audio_or_pcm_included":false,"private_key_or_license_material_included":false}
+}

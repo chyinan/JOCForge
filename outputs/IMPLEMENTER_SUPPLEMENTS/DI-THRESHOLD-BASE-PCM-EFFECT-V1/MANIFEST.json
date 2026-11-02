@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DI-THRESHOLD-BASE-PCM-EFFECT-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "DEE_THRESHOLD_PAIR_BASE_PCM_DIFF_CONFIRMED_BY_OPENJOC; ATMOS_RENDERER_PARITY_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_encoded_payload_bytes": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1628,
+      "sha256": "0b61f0ce6eded902cbd2f8802659107f943de043ba8be1a5e03f6554fa66ef1a"
+    },
+    "EVIDENCE.json": {
+      "bytes": 3788,
+      "sha256": "d7f7330ff84a18afd4b402f4555629902c7848525fe1cae29a646154ba6f5903"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 904,
+      "sha256": "d45e5d2028b932c8224014ce67036a9ce1d358991531ee789e5b33e1483b0898"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-DOWNMIX-SUCCESS-BRANCH-CONSUMER-BOUNDARY-V1",
+  "source_reverse_package_id": "F13C-first-nonparser-consumer-addendum-v1",
+  "source_reverse_manifest_sha256": "68f8e000a1d74786da60ceedb2e73925355c05aa712ed679eba1432ba964e6a5",
+  "source_reverse_package_seal": "NOT_PRESENT; SHA256SUMS.txt_PRESENT",
+  "status": "DOWNMIX_PARSER_SLOTS_BOUND; FIRST_TYPED_AUDIO_CONSUMER_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2724,
+      "sha256": "a471f718d37fdb3288e6b3db744358d93e3965799c964175406072349ea51580"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1366,
+      "sha256": "1cb14ff2cdd0e380c10e97d88394a57fe767c4c77788e62619579beb6bf1372e"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 595,
+      "sha256": "4b56fb742849f27c930423e076301e978827b3e20cab9bb91a50932a011d5b7f"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 993,
+      "sha256": "08ea6de70860fa2ac9d230a91ada93c550d6f7a1363bfce2bc9abbbcce24c42a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 881,
+      "sha256": "4b9017c540ea539c1b3122326aaa2a8e86382249232a50e5bafbcb57807964fd"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

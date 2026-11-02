@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "EAC3-CORE-ROW-QUANTIZER-BOUNDARY-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3166,
+      "sha256": "eb6c9ef12c3b8322e73f47a273a62ae11ba41b78f696ab3f6a122b1791891779"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2251,
+      "sha256": "a725da5bc0b9819358147edb3bf30ba5c601ef669e8099a993acc1f6cdee0819"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 675,
+      "sha256": "50337777821252d2dca3366efc26773fa104d793f1e621be861c951392a6fe8f"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1566,
+      "sha256": "04018cda0a0ddb78b24008118a1bdb2fdccd70c2dc75cbacf4897a8089ffb22f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1762,
+      "sha256": "a730af40388593c2ad8f8fb290a430f001ba8dcbad227ef01efb00076c3f272c"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1469,
+      "sha256": "38a8933609a5a8c10c13aabdf7125b8f6e5f99ee41df39c40a50c6d70944dd66"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "878cf5b29baf70747216499bbd303699394df982dde1cbb0d2b87b1eb2fcee63"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-TRACK-COUNT-STAGING-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Static process-frame count and capacity gate; no ADM-to-frame count join or runtime result",
+  "upstream": {
+    "package_id": "sample6-matched-drc-track-count-admission-boundary-wash-v1",
+    "manifest_sha256": "613d934c86bb9a3bf21049fed7a5bc92f6650d11fadddcf79167533adef9b066",
+    "package_seal_sha256": "d76e3cf9015f6d6aeedb80b998d8d97084c64cdc880c7e5fbe41e6fe8fd705cd",
+    "payload_sha256": {
+      "CHECK.py": "ffae1b765898f9b77f67f8dc27b93ad2d8a1226c806030f6a26a8408ac4953b2",
+      "EVIDENCE.json": "1a48a017957cce7552b27867c9faf934556cadd8ef25f21dd264e5fe01025b65",
+      "INPUT-ONLY-VECTOR.json": "fed565e843941481cd8a29675a4ee3864409979900ae443787c3d8d3ea55d32f",
+      "REPORT.md": "78ac5d60f3564b138e1a8a6f0a9dc0e03923bdb1c831836777e059f97d425f99",
+      "SOURCE-IDENTITIES.json": "ed4a560954695ffbf1537117e5912131bef8dd5119d7763df8b7dbd7f589c795"
+    },
+    "wash_independent_verification": "all five payload hashes and sizes match manifest and seal",
+    "upstream_checker": {"normal": "PASS", "python_optimized": "PASS"}
+  },
+  "source_identity": {
+    "tool": "Ghidra 12.2_PUBLIC",
+    "mode": "read-only; noanalysis",
+    "program": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "frame_view": {
+    "process_api": "FUN_140213470",
+    "count": {"offset": "param3+0x20", "type": "U64", "meaning": "number of channel pointer entries in the frame view"},
+    "pointer_list": {"offset": "param3+0x08", "type": "U64 pointer", "entry_width": "U64"},
+    "sample_count": {"offset": "param3+0x28", "type": "U64", "accepted_values_in_wrapper": [1536, 0]},
+    "staging": {"object": "local_d8", "entries": 16, "bytes": 128, "multi_entry_copy_guard": "no count<=16 guard found before the copy in checked scope"},
+    "narrowing": "count converted to U32 after staging and placed into a one-group descriptor"
+  },
+  "downstream_capacity_gate": {
+    "function": "FUN_140315db0",
+    "capacity_field": "root+0xc140",
+    "type": "U32",
+    "accept_condition": "count <= configured capacity",
+    "reject_condition": "count > configured capacity",
+    "reject_code": "0x1d",
+    "producer": "FUN_140314f50 -> FUN_14031fae0 -> FUN_140321500(key=2)",
+    "source": "custom i32 key/value pair or selected-profile fallback table",
+    "active_capacity": "UNBOUND",
+    "ordering": "this gate occurs after wrapper pointer-list staging"
+  },
+  "36_38_disposition": {
+    "fixed_36_or_38_check_in_checked_scope": "NOT_FOUND",
+    "conditional_capacity_vectors": "see INPUT-ONLY-VECTOR.json; symbolic only",
+    "adm_declared_track_count_to_param3_count": "UNBOUND",
+    "runtime_staging_effect_for_36_or_38": "NOT_OBSERVED",
+    "conditional_static_risk": "if N=36 or 38 reaches the multi-entry loop, it exceeds local_d8[16] extent"
+  },
+  "runtime_and_media": {
+    "dee_run": false,
+    "runtime_capture": "NOT_RUN",
+    "pcm_or_payload_accessed": false,
+    "private_key_or_license_accessed": false
+  },
+  "implementation_guidance": [
+    "Keep ADM track count distinct from native frame-view count until a typed mapping is established.",
+    "Use dynamically sized owned storage for variable ADM rows.",
+    "Check count against storage capacity before copying."
+  ],
+  "prohibited_inferences": [
+    "Do not claim that the 36-track ADM reaches this frame-view count.",
+    "Do not claim the static staging risk was observed as a runtime overwrite.",
+    "Do not treat the downstream key-2 capacity gate as proof that earlier staging is safe."
+  ]
+}

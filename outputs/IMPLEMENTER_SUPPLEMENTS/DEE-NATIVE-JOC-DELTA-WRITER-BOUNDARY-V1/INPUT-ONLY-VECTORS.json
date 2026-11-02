@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-washed-native-joc-input-only-vector.v1",
+  "expected_outputs_included": false,
+  "executed": false,
+  "source_vector_sha256": "2ac47bf62bb90622a25ceffa6ddce881a876e32a8c017505cedd41c6cfb26b67",
+  "native_delta_transform": {
+    "function_rva": "0xa4d70",
+    "stride": 1,
+    "valid_count": 2,
+    "total_slots": 1,
+    "input_short_sequence": [5, 7, 6, 0],
+    "expected_output_included": false,
+    "executed": false,
+    "stride_selection_in_active_encoder": "UNBOUND"
+  },
+  "native_bit_writer_interface": {
+    "function_rva": "0x8aea0",
+    "synthetic_values": [4, 1],
+    "value_count": 2,
+    "bit_width": 7,
+    "writer_bytes_included": false,
+    "executed": false,
+    "same_buffer_as_native_delta_input": "UNBOUND"
+  },
+  "trial_note": "Do not infer expected bytes or a producer/consumer buffer join from this input-only vector."
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-JOC-TAGGED-MODE-COUNT-LINEAGE-V1",
+  "manifest_sha256": "d3cdd7d4ac874b939613fef6280587a9ea6e8ed5eea1509c647ad6fbb68c83c2",
+  "sha256sums_sha256": "1da2dc2a3df07987c92f1cd9cc2d80bbf2a8fc9d35b396176f9d657c6b1449cd",
+  "payload_count": 5,
+  "status": "DLL_LOCAL_TAGGED_RECORD_TO_COUNT_PATH_BOUND; PUBLIC_INPUT_AND_RUNTIME_VALUES_UNBOUND; AUDIO_EFFECT_UNMEASURED",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

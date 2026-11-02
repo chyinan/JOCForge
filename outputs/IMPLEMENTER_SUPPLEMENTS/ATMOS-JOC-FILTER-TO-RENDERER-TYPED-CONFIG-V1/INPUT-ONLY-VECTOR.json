@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "typed-renderer-param6-nested-object-vector",
+  "outer_vector": {"header":["renderer+0x60","renderer+0x68","renderer+0x70"],"record_stride_bytes":88},
+  "nested_lookup_vector": {"source":["param6+0x18","param6+0x20","param6+0x28"],"destination":["renderer+0x78","renderer+0x80","renderer+0x88"],"element_count":1,"type_id":0,"contents":"OMITTED"},
+  "lookup": {"receiver":"renderer+0x60","begin_read":"receiver+0x18","end_read":"receiver+0x20","capacity_read":false},
+  "selector_value":"UNOBSERVED",
+  "execution":"NOT_RUN"
+}

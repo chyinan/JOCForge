@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "dee-audio-reference-decoder-comparison",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-7-multi-adm-dialnorm\\outputs\\openjoc-joc-semantic-comparison",
+    "manifest_sha256_file_sha256": "074133493d7c81fd78536962f17200fdf754f4028582a275f9c1aee1e0d0fbee"
+  },
+  "parser_binary": {"name": "OpenJOC 0.20.1", "sha256": "e5c044c29a34079c460f4f419cc08c4f484d139cb18c7590431a03c8298ab419"},
+  "reference_hashes_from_prior_wash": {
+    "protected_dee_reference": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "keyless_candidate": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86"
+  },
+  "exclusions": [
+    "No source implementation, output byte, payload, raw parser JSON, PCM, key, HMAC or license data copied.",
+    "Parser used only to read format semantics; no encoder algorithm derived from it."
+  ]
+}

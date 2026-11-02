@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DRC-FILM-LIGHT-AUDIO-EFFECT-BOUNDARY-V2",
+  "manifest_sha256": "284fd0807dfdb648f8ae95da0ce7636f450e6b08442e24776cd5d8298207d357",
+  "sha256sums_sha256": "3bb62691f5cc2000964fc1c2cb8d9f14ddaa7f8a9b68dda26d47f3bfb6fcb0a4",
+  "payload_count": 3,
+  "status": "FILM_LIGHT_PROFILE_SNAPSHOT_U32_BOUND; ENCODER_LINE_ENUM_PATH_BOUND; PROFILE_TO_ENCODER_AUDIO_EFFECT_UNBOUND; CONTROLLED_PCM_COMPARISON_NOT_RUN"
+}

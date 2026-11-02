@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-washed-f06-stagerunner-stream-queue-separation.v1",
+  "package_id": "F06-R138-STAGERUNNER-STREAM-QUEUE-SEPARATION-V1",
+  "scope": "STAGERUNNER STREAM-OBJECT QUEUE TO SELECTED PRODUCT PROPERTY HANDLER",
+  "status": "QUEUE_DISPATCH_BOUND; OUTPUTWRAPPER_PLUS_0X178_JOIN_UNBOUND",
+  "source_package": {
+    "package_id": "native-f06-r138-stream-object-queue-separation-addendum",
+    "manifest_sha256": "20bef0863b57d29a073f702d91120b425f3cf9392452b7a7cd056fa3eb613099",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "hash_bound_reports": [
+      "e399277f7bfc360baafc0993bd1ccaadeec7e5f7498e254cf2f269842aee25e3",
+      "0e1c2141412f1c9e8c7df46750bbfb7fe66fd569e29914916cd31e62458cf818",
+      "ae9bd1c93ab91b87c395badac96e645d41e7a616914ec4702e4fccba68c7700d",
+      "aa495cefe94452d4ac79990021cdd9431818ee14650a9c3276c7cbfd37fd0abc"
+    ],
+    "tool": "Ghidra 12.2 read-only",
+    "dee_run": false,
+    "media_pcm_or_key_read": false
+  },
+  "bound_queue_path": {
+    "stage_runner_initoutput": "reads dee_audio_input_source and numbered dee_audio_output_source:n properties in increasing ordinal order",
+    "typed_value": ".stream_object",
+    "queue_member": "StageRunner+0x1158",
+    "consumer": "RunAudioFilter iterates +0x1158 and dispatches each key/value pair to selected product vtable+0x18",
+    "setter_properties": ["dee_misc_container", "dee_logger"],
+    "setter_state_fields": ["+0xF20", "+0xF28"],
+    "writes_media_metadata_plus_0xa0": false,
+    "writes_outputwrapper_plus_0x178": false
+  },
+  "identity_and_order_boundaries": {
+    "stage_runner_queue_to_outputwrapper_plus_0x178": "UNBOUND",
+    "stage_runner_queue_to_media_metadata_plus_0xa0": "UNBOUND",
+    "first_writer_to_outputwrapper_plus_0x178": "UNBOUND",
+    "queue_ordinal_equals_registry_ordinal": "UNBOUND",
+    "queue_ordinal_equals_adm_converter_row": "UNBOUND",
+    "preserve_each_container_own_order": true
+  },
+  "best_supported_rule": {
+    "rule": "Treat StageRunner stream-object queue order and OutputWrapper registry order as separate domains. Preserve the OutputWrapper registry's own insertion order and downstream matched-subset order.",
+    "audio_algorithm_change_established": false,
+    "next_smallest_edge": "the typed dee_audio_source_type producer that first populates OutputWrapper+0x178"
+  },
+  "execution_boundary": {
+    "implementation_contacted_by_research": false,
+    "runtime_execution": "NOT_RUN",
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "binary_or_decompilation_included": false
+  }
+}

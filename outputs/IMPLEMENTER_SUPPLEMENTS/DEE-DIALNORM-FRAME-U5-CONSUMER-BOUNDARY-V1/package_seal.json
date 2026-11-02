@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "DEE-DIALNORM-FRAME-U5-CONSUMER-BOUNDARY-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2945,
+      "sha256": "1ad33af8b60b605662aeed2f60a2f41dd83a88e4be0907343e53cb638fe2e3f7"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1590,
+      "sha256": "b0fc4015448ac1845a3855c15d3d4bf6167dd4c058ea63017b4016305a19a44d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 546,
+      "sha256": "c5e6c88492a57bc6234be12e4c0ee90cb0d16d01366bf16febc985d0adc353f5"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1250,
+      "sha256": "cd5d06783579e73228b60e7201e50e90b02a10d186d76857bf5880b2469cb935"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 763,
+      "sha256": "6bcebe6a2661ed518f9b351c8538ac21724ee851d8849e71188f4820056184ba"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1499,
+      "sha256": "31ab0f08b1e5840ce3eca7f1e6deefb898ee1a4614d1229915471b02fbe807d9"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "e3ae7ad5eace59a449b5f80a0c5e43f004ca203baf88bee030d88bbe962e8863"
+    }
+  ]
+}

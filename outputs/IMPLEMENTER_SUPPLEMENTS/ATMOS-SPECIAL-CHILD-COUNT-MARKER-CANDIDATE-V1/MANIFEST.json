@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-SPECIAL-CHILD-COUNT-MARKER-CANDIDATE-V1",
+  "source_reverse_package_id": "adm_special_marker_source_wash_v1",
+  "source_reverse_manifest_sha256": "e8e1b6fea8bc7cd69dbedcd51b0e6eb6701ed61e7561ba2084a5c9b1e62d2ed6",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "source_manifests": [
+    {
+      "package_id": "adm_special_marker_source_wash_v1",
+      "manifest_sha256": "e8e1b6fea8bc7cd69dbedcd51b0e6eb6701ed61e7561ba2084a5c9b1e62d2ed6",
+      "package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+    },
+    {
+      "package_id": "atmos_composite_mode_source_wash_v1",
+      "manifest_sha256": "595b8b28202881eb2217c75047b1f812b3a9cb8e13679d14a5f3e025f46eecb1"
+    },
+    {
+      "package_id": "atmos_processor_child_count_source_wash_v1",
+      "manifest_sha256": "8b5e657eed11fcb6646251e8bea81c12fcacaf749f0c01aac0ec2f52da5bf19f"
+    },
+    {
+      "package_id": "adm_child_count_seven_sample_vectors_wash_v1",
+      "manifest_sha256": "38f49cb279c2a2e68c4adac89d42ddb0da1133ff7c177ecd397c43ec8a3918b7"
+    },
+    {
+      "package_id": "adm_input_metadata_wash",
+      "manifest_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9"
+    },
+    {
+      "package_id": "atmos_processor_38ch_guard_wash_v1",
+      "manifest_sha256": "0403c0a19f6dcc918361d12e68b83d4e04179626d3fdfd213d3a83ab424c1eaf"
+    }
+  ],
+  "status": "SPECIAL_MARKER_PREDICATE_AND_WRITER_BOUND; SEVEN_SAMPLE_METADATA_CANDIDATE_SUPPORTED; RUNTIME_CHILD_PARTITION_AND_U16_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3504,
+      "sha256": "9fba48bd6dedc4153fc5c465d0dc38ae9c8ee7902af22d5b5f3952fcb60189a3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2241,
+      "sha256": "7c2385ca4cf493f4f51973a0da9885f3446ef8753330b0f56beeb94582de81af"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 1995,
+      "sha256": "6e1866f705dc1db955076be94c799b5d097f265de2fbd261e04bcd3ffb1137b3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1526,
+      "sha256": "e5297b0dc027770aeed4c333e3c3f080cff230c782d647d039decd70d85bb1c6"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1562,
+      "sha256": "7a98c47bff95fd2706855e603ca6e414d7d5d97d319dd383177b28d111a4d5af"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"DEE-ATMOS-INFO-MASTER-WRITER-TRACE-WASH-V1",
+      "manifest_sha256":"1a7a39f992a544bf193d2afaac971025cd9ab21452bc45ee7d21789f206b459d",
+      "sha256sums_sha256":"3848ff96de0cd5334c3973848ed2d333ff0a98b53468d95df78e26b9199e954d",
+      "payload_count":14,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_trace_scripts_or_decompiled_code_in_this_supplement":false
+    },
+    {
+      "kind":"companion_metadata_survey",
+      "package_id":"DEE-ATMOS-MEZZ-AUTO-METADATA-WASH-V1",
+      "manifest_sha256":"5e091e7bbac5b6017d5e1687215707c0417df449db66143e0b9f032a4f484774",
+      "scope":"seven authorized inputs; metadata chunks only; PCM zero"
+    }
+  ]
+}

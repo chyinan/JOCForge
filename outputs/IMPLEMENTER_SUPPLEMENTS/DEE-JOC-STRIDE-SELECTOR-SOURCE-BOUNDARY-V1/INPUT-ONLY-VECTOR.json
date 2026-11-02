@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-dee-joc-stride-selector-input-only.v1",
+  "block_selectors": [0,1,2,3],
+  "observed_table_values": [0,1,2,4],
+  "expected_lookup": ["disabled","stride 1","stride 2","stride 4"],
+  "current_profile_selector": "UNBOUND",
+  "expected_payload_bytes_included": false,
+  "executed": false
+}

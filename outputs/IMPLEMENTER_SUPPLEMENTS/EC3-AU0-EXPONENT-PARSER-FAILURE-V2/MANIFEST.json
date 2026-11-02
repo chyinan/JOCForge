@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EC3-AU0-EXPONENT-PARSER-FAILURE-V2",
+  "source_reverse_package_id": "ec3_first_au_parse_failure_wash",
+  "source_reverse_manifest_sha256": "fa55517ec872c0160b95c8ff66b75f47e5ad8e408dc92a8cdb1c2d6e39a4a52e",
+  "status": "SYNCWORD_AND_AU0_EXPONENT_FAILURE_CONFIRMED; BIT_CURSOR_AND_BUILD_INPUT_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2447,
+      "sha256": "fd74e85d9019fac7c9580e9fc207dd8d4283ee60cc3f922151da6cee977388ae"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2844,
+      "sha256": "9e0e959ea0e3e6a3ca66b77056087b4dc3a81d447b1f3a1fe8dba643fbbbaa49"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 446,
+      "sha256": "2c9163c69982d887b1ca3b5a811c9a08ccb90650c23c775744dd89ec9ec00b9d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1885,
+      "sha256": "1b69b864e612b8c1ede336ccbf77e90694d7613bf70517b4ed66de24dd84d423"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 646,
+      "sha256": "665fabece30336c939d4a94cd5f1a6e4837a940b6c319747474e0d3184fc9b41"
+    }
+  ],
+  "exclusions": {
+    "raw_ec3_included": false,
+    "pcm_included": false,
+    "source_code_or_binary_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-eac3-exponent-cursor-input-only.v1",
+  "grade": "INPUT_ONLY_CURSOR_ARITHMETIC",
+  "native_dee_observation": false,
+  "native_adm_lane_binding": false,
+  "expected_output_bytes_included": false,
+  "vectors": [
+    {"id":"inactive_strategy_omits_exponents","strategy":0,"group_count":72,"u4_interval":null,"u7_intervals":[],"cursor_start_bits":0,"cursor_end_bits":0},
+    {"id":"active_strategy_zero_groups","strategy":1,"group_count":0,"u4_interval":[0,4],"u7_intervals":[],"cursor_start_bits":0,"cursor_end_bits":4},
+    {"id":"active_strategy_one_group","strategy":1,"group_count":1,"u4_interval":[0,4],"u7_intervals":[[4,11]],"cursor_start_bits":0,"cursor_end_bits":11},
+    {"id":"217_bin_model_row","internal_lane_example":0,"strategy":1,"exponent_bins":217,"difference_count":216,"differences_per_u7":3,"group_count":72,"u4_interval":[0,4],"first_u7_intervals":[[4,11],[11,18]],"last_u7_interval":[501,508],"cursor_start_bits":0,"cursor_end_bits":508,"status":"MODEL_EXAMPLE_ONLY"}
+  ]
+}

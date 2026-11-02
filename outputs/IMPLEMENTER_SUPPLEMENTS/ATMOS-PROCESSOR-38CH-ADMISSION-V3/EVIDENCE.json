@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge-washed-atmos-processor-38ch-admission.v3",
+  "package_id": "ATMOS-PROCESSOR-38CH-ADMISSION-V3",
+  "supersedes": "ATMOS-PROCESSOR-38CH-ADMISSION-V2",
+  "scope": "STATIC COUNT WRITER PLUS EXISTING HUMAN-CAT RECEIPT AUDIT",
+  "status": "38CH_STATICALLY_ADMISSIBLE_IF_SELECTED_MASTER_U16_IS_38; RUNTIME_VALUE_NOT_CAPTURED",
+  "source_package": {
+    "package_id": "atmos_processor_38ch_guard_wash_v1",
+    "manifest_sha256": "0403c0a19f6dcc918361d12e68b83d4e04179626d3fdfd213d3a83ab424c1eaf",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "actual_target_image_hash_rechecked": true,
+    "package_checker_normal": "PASS",
+    "package_checker_optimized": "PASS",
+    "sealed_file_count": 18,
+    "tool": "Ghidra 12.2 read-only static"
+  },
+  "static_field_chain": {
+    "reader_and_master_path": ["FUN_180175c80", "FUN_1801844c0", "FUN_180173e70", "FUN_180185240", "FUN_1801828c0", "FUN_180553a60", "FUN_180550800", "FUN_1805506b0", "FUN_18054fa70"],
+    "composite_master_count_write": "U16 CompositeMaster+0x1A",
+    "master_descriptor_alias": "reader config pointer+0x0A aliases CompositeMaster+0x1A",
+    "descriptor_count": "U64 descriptor+0x08 zero-extended from config U16+0x0A",
+    "same_master_pointer": "descriptor+0x28",
+    "processor_expected_count": "FUN_18018a750 reads master+0x0A into processor state slot 4",
+    "nonzero_frame_guard": "FUN_18018ae20 compares descriptor count with state slot 4",
+    "fixed_channel_limit": "NONE_IN_TRACED_GUARD",
+    "zero_count": "rejected by FUN_1801852e0"
+  },
+  "count_sources": {
+    "ordinary": "copy child source vtable+0x80 U16 count",
+    "special": "10 + maximum per-child count of records with byte at record+2 equal to 0xFF",
+    "branch_choice": "flags and child/master count or six-byte channel-map comparison",
+    "human_cat_metadata": {"bed_tracks": 10, "object_tracks": 28, "total_channels": 38},
+    "38_can_be_written_if": ["ordinary child count is 38", "special branch sees 28 marked object records"],
+    "BWF_fmt_direct_edge": "UNBOUND"
+  },
+  "existing_receipt_audit": {
+    "sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "R141_same_sample_1024_atmos_receipt": "U16 not captured; external license argument present; license contents not read",
+    "two_pointer_probes": "stop before DDP source-record writer; no count scalar",
+    "metadata_setter_attempt": "no conditional source marker or setter value captured",
+    "open_debugger_session": "First Love, unrelated to 人是猫, external license argument present, untouched",
+    "new_runtime_attempt": "NOT_RUN; no safe existing license-free human-cat pre-encode session or documented harness"
+  },
+  "best_supported_rule": {
+    "rule": "Use the selected master descriptor U16 at +0x0A as configured channel count; 38 is statically admissible when that selected field is 38 and the descriptor matches it.",
+    "confidence": "HIGH_FOR_STATIC_FIELD_ALIAS_AND_GUARD",
+    "runtime_human_cat_value": "NOT_CAPTURED",
+    "full_38ch_encode_claim": false,
+    "implementation_trial_ready": true
+  },
+  "frame_capacity": {
+    "selected_profile_samples": 1536,
+    "initialization_sizes": [512, 1536],
+    "zero_frame": "flush after initialization only",
+    "process_guard": "frame_count <= configured state capacity"
+  },
+  "exclusions": {
+    "bwf_opened": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_contents_read": false,
+    "raw_decompilation_or_binary_included": false
+  }
+}

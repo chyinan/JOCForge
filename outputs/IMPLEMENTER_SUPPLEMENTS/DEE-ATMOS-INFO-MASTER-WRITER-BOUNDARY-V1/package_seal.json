@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1581,
+      "name": "REPORT.md",
+      "sha256": "5632ff38c86e3c6f18761335ca6664b6f389fd580f2cd44cfa6ea315bcfb3910"
+    },
+    {
+      "bytes": 1641,
+      "name": "EVIDENCE.json",
+      "sha256": "cafa308d989645cf27f331a061f523070cb415d54357b1154cb171a9b03fea03"
+    },
+    {
+      "bytes": 367,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "8d851bbbca337ddf9d167e50f79f531db19539d0d420b620f97ac3867e3285f1"
+    },
+    {
+      "bytes": 808,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "5f1564a67cead0dc40df9ff1cbdbc22242cc5e474006064f2785eae24c39fb3b"
+    },
+    {
+      "bytes": 2037,
+      "name": "verify_package.py",
+      "sha256": "2d2a316d5ed054847aa73357973e91d309516ae2e4bf363c145647e8c7910eaf"
+    },
+    {
+      "bytes": 1472,
+      "name": "seal_package.py",
+      "sha256": "fb6537a14df2ee6d45a1365615845aa2149f9ab957794688e4c0d67910fa197c"
+    }
+  ],
+  "manifest_sha256": "f73c3bcc8ca7a01775a2fe2713a40a9eae29fdb1095671748868559ed495e4a8",
+  "package_id": "DEE-ATMOS-INFO-MASTER-WRITER-BOUNDARY-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

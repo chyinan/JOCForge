@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-EAC3-WINDOW-TABLE-CANDIDATE-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4029,
+      "sha256": "3f7905b5f4c8363484ed60f44753f6da403467ddd8e2dfa2b1c20d8cb0ef3003"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3695,
+      "sha256": "7d8a01d39012fd10998c35995bf53a054659f8340e09c510868514bebbdb6de7"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 988,
+      "sha256": "c8ea99a5b472767393dcaf01eed74b0e4e2ce6407c7d597841d74aa4924ee14c"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1880,
+      "sha256": "a56699bb5f89b90c3143bef3cb0d7b8127f4cd376af5416fafcca12ffc2facdc"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1660,
+      "sha256": "d382b0ec1a153ff181cafd1bb1d003fe9fff52e86a23c1618e736358e4181550"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1475,
+      "sha256": "6018113ec1c946272ac83ce74ce064a8685671803ba259c41c63487af8f09ba4"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "7ac773745876da18c8add82ac3e26af361344ee1ffc31a74a40acdd14d1c2768"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "eac3-bap3-endpoint-input-only.v1",
+  "vector_id": "single-bin-bap3-positive-endpoint",
+  "quantizer_call_boundary": {
+    "bin_start": 0,
+    "bin_end_exclusive": 1,
+    "bap_row": [3],
+    "coefficient_row_f32_bits": ["0x3f800000"],
+    "decoded_exponent": [0],
+    "coefficient_at_clip_equality": true
+  },
+  "expected_native": {
+    "scale_f32": 3.5,
+    "level_count": 7,
+    "width_bits": 3,
+    "raw_truncated_code": 7,
+    "clamped_code": 6,
+    "packed_bits": "110",
+    "outcome": "success"
+  },
+  "expected_current_model": {
+    "raw_code": 7,
+    "disposition": "reserved sentinel; candidate infeasible"
+  },
+  "input_only": true,
+  "execution": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

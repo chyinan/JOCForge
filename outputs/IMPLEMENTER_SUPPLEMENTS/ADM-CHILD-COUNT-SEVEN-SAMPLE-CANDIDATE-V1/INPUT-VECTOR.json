@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "seven-adm-child-count-candidates",
+  "per_sample_inputs": "See EVIDENCE.json; every sample has ten DirectSpeakers rows of vector length 1.",
+  "derived_candidates": [
+    {"objects":26,"bed_vector_sum":10,"candidate":36,"chna_tracks":36,"sample_count":6},
+    {"objects":28,"bed_vector_sum":10,"candidate":38,"chna_tracks":38,"sample_count":1}
+  ],
+  "execution": "METADATA_ONLY_REPLAY",
+  "runtime_child_u16": "UNBOUND"
+}

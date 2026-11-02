@@ -1,0 +1,10 @@
+{
+  "schema":"jocforge.current_f08_lfe_identity_vector.v1",
+  "vector_id":"HEAD-WORKTREE-F08-LFE-PARAMETER-ARRAY-IDENTITY",
+  "head":"2155ea31d6c78b5f91b7ba256ce0a506581d1618",
+  "owner_calls_f08_lfe_transform_block":true,
+  "parameter_files_differ_whole_file":true,
+  "lfe_recurrence_cosine_sine_arrays_match_across_head_worktree":true,
+  "arrays_match_r4_crosswalk_rust_words":true,
+  "runtime_or_audio_parity":"NOT_RUN"
+}

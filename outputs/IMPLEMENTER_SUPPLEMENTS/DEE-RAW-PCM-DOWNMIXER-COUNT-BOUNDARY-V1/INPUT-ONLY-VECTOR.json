@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "SYMBOLIC_RAW_PCM_GATE_ONLY; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "gate": {"condition": "frame_channel_count > 8", "reject": true, "downstream_supported_counts": [1, 2, 6, 8]},
+  "cases": [
+    {"count": 36, "conditional_result_if_raw_pcm_frame_reaches_gate": "REJECT", "ADM_BWF_path_join": "UNBOUND"},
+    {"count": 38, "conditional_result_if_raw_pcm_frame_reaches_gate": "REJECT", "ADM_BWF_path_join": "UNBOUND"}
+  ],
+  "warning": "These cases do not establish the first gate for a selected atmos_mezz ADM BWF job."
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-washed-f12-u5-source-manifests.v1",
+  "incoming_package_id": "f12-scalar-to-u5-lineage",
+  "incoming_manifest_file_sha256": "2f9936de80f09cca10f3c0763f0a615e495fc88508f72554a4e1fcaefc20013a",
+  "multi_adm_support_rule_manifest_sha256": "511fb7c6a1e1033e7487532fafc4ad73e11ed2c16aab9ea8afd67ce6e9450c9f",
+  "hanmao_same_run_closure_manifest_sha256": "2e1ab8c3336469a0d9d7a8c532d7e59da910b479a8ecb3d8d751a47f8f2fbf73",
+  "cross_input_parent_manifest_json_sha256": "439df32fce6b2dfe8f20026225536ef1e954784d1e99fd50d94e1a0b27b2ed33",
+  "cross_input_parent_manifest_sidecar_file_sha256": "833823ee48a1380be746673da8c555397dd97e7b8fe2068257f7fe43dfa06134",
+  "support_rule_package_checker_normal": "PASS",
+  "support_rule_package_checker_optimized": "PASS",
+  "source_files_copied": false,
+  "audio_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

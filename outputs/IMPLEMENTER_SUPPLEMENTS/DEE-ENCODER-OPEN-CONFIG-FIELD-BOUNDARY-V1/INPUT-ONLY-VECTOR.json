@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-dee-encoder-open-config-input-vector.v1",
+  "cases": [
+    {"request_data_rate_enum_i32":4,"mode_selector":0,"request_row_count_u16":5,"expected_config_word10_u32":4,"expected_config_word2_u32":5},
+    {"request_data_rate_enum_i32":5,"mode_selector":0,"request_row_count_u16":5,"expected_config_word10_u32":5,"expected_config_word2_u32":5}
+  ],
+  "purpose": "distinguish the observed data-rate enum to config-word transfer only",
+  "job_1024_kbps_to_enum_code": "UNBOUND",
+  "sample_rate_acmod_lfeon_or_channel_order": "UNBOUND",
+  "frame_bytes_or_audio_expected": "NONE",
+  "execution": "NOT_RUN"
+}

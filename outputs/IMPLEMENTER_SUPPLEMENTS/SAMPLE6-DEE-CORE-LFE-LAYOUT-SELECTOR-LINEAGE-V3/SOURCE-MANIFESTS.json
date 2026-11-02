@@ -1,0 +1,32 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1 latest bridge revision",
+      "manifest_sha256": "86e655128b711faa43db8f2bd5bdceca57a14ab5ad86ef4fa992f12bad935106",
+      "package_seal_sha256": "e66339e607ed6d21bec228fb8963adbef726a672ae2dc3884170611eb6613310",
+      "sha256sums_sha256": "2c369043c60c0d43f45d3ee5572e62d8751dcbc17cbf11ec8691620d44c0d0bd"
+    },
+    {
+      "package_id": "ADM-CHNA-PHYSICAL-ROW-ORDER-MVP-V1",
+      "manifest_sha256": "17f8d2fc3f7525a8edacfad07db6ff7668df7b71ce9082489aa6b8c9524d1e7a",
+      "evidence_sha256": "d3fbffc8945cd759a3e1dbb260f55148badc98c2dfce1d3eb1420350d2b4c806"
+    },
+    {
+      "package_id": "ADM-CONVERTER-CHANNEL-ID-TO-BWF-SLOT-CROSSWALK-V1",
+      "manifest_sha256": "30121f27bbb226faf38de18159614586679b107e70e7d0529a7bd21650d836b7",
+      "evidence_sha256": "991c2bb3957afe542f6b8932f02e968d6c6fb3faaa457d889c8c80769f231c43"
+    },
+    {
+      "package_id": "spatial-selector-identity-wash-v9",
+      "manifest_sha256": "4fbb097f00ee01a2559eb45747d81b761677801b0951c5a4d7fdc7402919d6b5",
+      "evidence_sha256": "5cfa77a40f51c27e9ac5a906d6cdfd0226a45926d9e9c33fc4b968f9236ba529"
+    },
+    {
+      "package_id": "adm_bwf_to_ddp_channel_order_lineage_wash_v1",
+      "manifest_sha256": "4c70127325076ed0950f8e340f52aea68580f7e293f3cfbd5d6987b03a5697d3",
+      "package_seal_file_sha256": "2cd3ca24dd00b92e3fb84cf7d8cad85437017aeeade70c9f3772c09b5e4271ef",
+      "scope": "physical slot metadata rule and DDP local ordinal copy; no same-run BWF reader row to DDP input slot join"
+    }
+  ]
+}

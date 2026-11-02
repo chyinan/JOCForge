@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "SYMBOLIC_DOMAIN_SEPARATION; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "source_dimensions": [
+    {"label": "potential_ai", "adm_pcm_channels": 36, "chna_track_rows": 36, "ddp_frame_channels": "UNBOUND"},
+    {"label": "human_cat", "adm_pcm_channels": 38, "chna_track_rows": 38, "ddp_frame_channels": "UNBOUND"}
+  ],
+  "known_core_frame_view": {"param3_plus_0x20": "U64 count", "param3_plus_0x08": "U64 pointer-list address"},
+  "prohibited_inference": "Numerically equal ADM/CHNA counts do not establish a typed transfer into the core frame view."
+}

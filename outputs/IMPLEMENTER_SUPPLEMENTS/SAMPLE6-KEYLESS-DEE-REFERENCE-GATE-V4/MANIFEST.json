@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+  "source_reverse_package_id": "sample6-dee-keyless-reference-20261102",
+  "source_reverse_manifest_sha256": "3070124494fcbfdf8d5da3e0578535005266c512892ce2b39b1bf198891c8722",
+  "status": "FULL_OUTPUT_PARSED_AND_DECODED; FULL_FILE_DEE_PARITY_NOT_RUN; BSI_INTERPRETATION_OPEN",
+  "implementation_trial_ready": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3040,
+      "sha256": "9d228f4d97d96d8846d5dc19717c9596da1d6956abfaebe24ce27769314f3b63"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 4033,
+      "sha256": "b7e8966973458d2d09917f0cebb45d8016677d32e9c97df4d2e74279158879e1"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1336,
+      "sha256": "31d3511c6f4ecfd6c2fa1e2abde511ea7a7c7366d5ce4f07ec2b8e61dfbb7062"
+    }
+  ],
+  "exclusions": {
+    "encoded_output_included": false,
+    "pcm_included": false,
+    "license_key_or_private_auth_material_included": false,
+    "historical_comparator_payload_included": false
+  }
+}

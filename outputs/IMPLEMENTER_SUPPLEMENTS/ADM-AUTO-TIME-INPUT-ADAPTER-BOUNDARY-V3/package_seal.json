@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-AUTO-TIME-INPUT-ADAPTER-BOUNDARY-V3",
+  "manifest_sha256": "5ef7671609a2d6135c8774f4043fb1edc747decda57e38d4d02bff35d2a6d3d5",
+  "sha256sums_sha256": "130893b74f3f32211ea3209530057cbe00b6a3dda9b6457fc7f1cd6ce3f96c24",
+  "payload_count": 3,
+  "status": "HOST_TARGET_MAP_RESPONSE_BOUND; SOURCE_PATH_VECTOR_DISTINCT; CONVERTER_PRIVCONTEXT_ADAPTER_UNBOUND"
+}

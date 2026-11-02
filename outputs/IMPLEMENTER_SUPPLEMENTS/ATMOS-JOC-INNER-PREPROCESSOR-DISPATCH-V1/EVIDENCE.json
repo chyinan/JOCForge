@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge-washed-atmos-joc-inner-preprocessor.v1",
+  "scope": "ATMOS JOC INNER PREPROCESSOR SELECTOR DISPATCH",
+  "status": "VTABLE_0X28_TARGETS_CLASSIFIED_BY_SELECTOR; SPATIAL_CODER_PROCESS_BOUND; PER_RUN_SELECTOR_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "atmos_joc_inner_preprocessor_dispatch_wash_v1",
+    "manifest_sha256": "6445cd3a5ef2bf9719fb2714c02d5dc9e6e49da1f9314a304ba8d67fdb1b8b21",
+    "package_seal_sha256": "7d4b92b114ff196a73fd926c692968159e229c592ecd8a159450ca8d8aeadb71",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "referenced_sources_checked": 22,
+    "hash_mismatches": 0
+  },
+  "image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 static"
+  },
+  "dispatch": {
+    "outer_helper_rva": "0x423ce0",
+    "indirect_wrapper_rva": "0x435770",
+    "selector_getter": "param5.vtable+0x38 in FUN_180435120",
+    "selector_per_run_value": "UNBOUND"
+  },
+  "selector_zero_branch": {
+    "type": "Dolby::Atmos::SpatialCoderPlatform",
+    "vtable_plus_0x28_target": "0x443920",
+    "plus_0x28_role": "state/control update, not sample transform",
+    "sample_process_slot": "+0x08",
+    "sample_process_target": "0x4437d0 -> 0x4497c0",
+    "sample_process_evidence": "sc_process path and float-backed work buffers"
+  },
+  "selector_nonzero_branch": {
+    "type": "Dolby::Atmos::Home::PreProcessorBypass",
+    "plus_0x28_entry": "CFG-guarded indirect",
+    "actual_indirect_target": "UNBOUND/NO"
+  },
+  "best_supported_rule": "preserve the typed config selector; selector 0 uses SpatialCoderPlatform +0x08 sample processing; nonzero constructs PreProcessorBypass and retains its guarded unresolved callback",
+  "confidence": 0.90,
+  "sample_scope": {
+    "prior_authorized_adm_receipts": 2,
+    "channels_observed": 36,
+    "sample_rate_hz": 48000,
+    "route": "encode_to_atmos_ddp",
+    "active_audio_samples": 1,
+    "quiet_samples_excluded": 1,
+    "new_dee_run": false,
+    "hanmao_38_channel_runtime_branch_observed": false
+  },
+  "payload_policy": {
+    "source_code_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "washed-drc-profile-input-only.v1",
+  "vector_id": "matched-drc-zero-initialized-mode0-block0",
+  "custom_profile_enabled_i32": 0,
+  "preset_selector_u8": 1,
+  "custom_profile_record": null,
+  "mode": 0,
+  "block": 0,
+  "initial_presence_u16": 0,
+  "initial_code_u16": 0,
+  "expected_fields": {
+    "dynrnge_u1": 0,
+    "dynrng_u8": "OMITTED"
+  },
+  "selector_1_label": "UNBOUND; raw selector only",
+  "classification": "INPUT_ONLY_STATIC_STATE_REPLAY",
+  "native_runtime_execution": "NOT_RUN",
+  "pcm_or_encoded_payload_included": false
+}

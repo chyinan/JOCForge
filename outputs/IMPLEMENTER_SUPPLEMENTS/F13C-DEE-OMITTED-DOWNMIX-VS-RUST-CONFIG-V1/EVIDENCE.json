@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "F13C-DEE-OMITTED-DOWNMIX-VS-RUST-CONFIG-V1",
+  "dee_source": {
+    "package_id": "F13C-dmixmod-omission-default-trace-addendum-v21",
+    "manifest_sha256": "cfaec056f570eec6d2a1d985bd3544df30eac446f89140ace9fa551448703415",
+    "ghidra_image_sha256_project_recorded": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_install_rehashed": false,
+    "checker_normal_and_optimized": "PASS"
+  },
+  "rust_snapshot": {
+    "commit": "8e558b868085c6b2c9a37a3cf1413c2bb8551dbb",
+    "encode_request_rs_sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e",
+    "codec_source_bridge_rs_sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e",
+    "frame_builder_rs_sha256": "170e3f220a795abfff5d296e8b53a8436b621e547c064e3aa3d4a781217c3829",
+    "job_configuration_test_rs_sha256": "3918e8ec4047682b56f670d68a463ae6008a55f04d9565430f05141f136d71a3"
+  },
+  "observed_rust_behavior": {
+    "generated_job_xml": {"preferred_downmix_mode": "loro", "mix_levels_db": [-3, -3, -3, -3], "source": "unconditional format string in selected_full_file_job_xml"},
+    "bridge_acceptance": {"preferred_mode": "loro", "mix_levels_db": [-3, -3, -3, -3]},
+    "bsI_values": {"dmixmod": 2, "mix_levels": [4, 4, 4, 4]},
+    "writer_presence": {"mixmdate": 1, "conditional_mix_payload_written": true}
+  },
+  "observed_dee_dme_behavior": {
+    "preferred_control_active": false,
+    "ui_display_value": "Stereo",
+    "preferred_downmix_mode_emitted": false,
+    "four_mix_level_controls_active": false,
+    "inactive_controls_emitted": false,
+    "native_validator_when_field_absent": "skips lookup and validation; does not assign effective enum in traced function",
+    "effective_runtime_default": "UNBOUND",
+    "preferred_to_dmixmod_edge": "UNBOUND",
+    "dmixmod_to_final_writer_edge": "UNBOUND"
+  },
+  "comparison": {
+    "source_level_configuration_mismatch": true,
+    "native_effective_value_mismatch_proven": false,
+    "output_audio_difference_proven": false,
+    "run_or_binary_identity_join": false,
+    "implementation_ready_for_fixed_default": false
+  },
+  "scope": {
+    "encoder_run": false,
+    "media_or_pcm_read": false,
+    "payload_read": false,
+    "private_key_hmac_or_license_read": false
+  }
+}

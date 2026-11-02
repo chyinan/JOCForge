@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-f13c-dmixmod-input-contract-vector.v1",
+  "authorized_adm_metadata_samples": 7,
+  "preferred_downmix_axml_matches": 0,
+  "dme_optional_control_active": false,
+  "selected_job_template": {
+    "preferred_downmix_mode": "loro",
+    "mix_levels_db": [-3,-3,-3,-3]
+  },
+  "source_level_bsi_candidate": {"dmixmod":2,"level_codes":[4,4,4,4]},
+  "expected_runtime_frame_bits_included": false,
+  "executed": false,
+  "note": "Input-contract/source-path vector only; it does not assign native enum semantics or claim attempt-10 output observation."
+}

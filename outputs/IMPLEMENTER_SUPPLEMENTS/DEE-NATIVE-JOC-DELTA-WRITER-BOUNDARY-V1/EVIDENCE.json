@@ -1,0 +1,71 @@
+{
+  "schema": "jocforge-washed-dee-native-joc-delta-writer.v1",
+  "scope": "NATIVE ATMOS DDP JOC COEFFICIENT PAYLOAD ONLY",
+  "status": "CANDIDATE_RULE_READY_FOR_FOCUSED_IMPLEMENTATION_TRIAL; ROOT_CAUSE_NOT_ESTABLISHED",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "dee_native_joc_writer_boundary_wash_v1",
+    "manifest_sha256": "f4971adde8991da614db1abb21bbed661ad536d794e836c7f1eac8622d4a3998",
+    "manifest_sha256_sidecar_verified": true,
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "native_image": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464,
+    "analysis": "Ghidra 12.2 static"
+  },
+  "native_facts": {
+    "block_assembler_rva": "0x942d0",
+    "per_block_call_order": ["0xa3710", "0xcb0d0", "0xa5810"],
+    "delta_producer_rva": "0xa4d70",
+    "delta_rule": "For each selected short, emit current - previous + 2; advance input by table-selected stride; fill 3 * total_slots - valid_count remaining entries with 2.",
+    "candidate_packer_rva": "0xcb0d0",
+    "candidate_field": {
+      "pointer_table_expression": "param_11 + 0x3b8 + block * 8",
+      "value_offset_bytes": 2,
+      "value_count": 2,
+      "bit_width": 7,
+      "sink_rva": "0x8aea0"
+    },
+    "fixed_width_writer_rva": "0x8aea0",
+    "bit_order_and_accumulator": "MSB-first into a 16-bit accumulator; flush full words after the cursor exceeds 15; retain residual bits."
+  },
+  "rust_comparison": {
+    "source_manifest_sha256": "f4971adde8991da614db1abb21bbed661ad536d794e836c7f1eac8622d4a3998",
+    "path_summary": "F32 coefficient rows -> coarse/fine quantization -> modular delta -> F05Q variable-length Huffman -> ID14 body append.",
+    "representation_mismatch_candidate": true
+  },
+  "confidence": {
+    "local_native_delta_and_writer": "HIGH",
+    "width7_field_is_serialized_producer_output": "MEDIUM",
+    "candidate_caused_user_reported_output_failure": "LOW",
+    "authorized_adm_sample_count_in_source_package": 0,
+    "native_runtime_observation_count": 0
+  },
+  "unbound": {
+    "producer_packer_pointer_alias": true,
+    "selected_route_to_frame_assembler": true,
+    "candidate_file_to_native_or_rust_run": true,
+    "active_job_profile_runtime_membership": true
+  },
+  "audio_core_boundary": {
+    "eac3_core_exponent_path_covered": false,
+    "explains_exponent_minus_one_error": false,
+    "joc_payload_effect_candidate": true
+  },
+  "source_package_access_boundary": {
+    "media_bytes_opened_or_hashed": false,
+    "external_codec_binary_read_or_executed": false,
+    "dee_runtime_executed": false,
+    "key_or_license_material_read": false
+  },
+  "payload_policy": {
+    "source_code_included": false,
+    "binary_or_decompilation_included": false,
+    "protected_media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

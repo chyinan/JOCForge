@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-dee-dialnorm-frame-u5-consumer-boundary.v1",
+  "package_id": "DEE-DIALNORM-FRAME-U5-CONSUMER-BOUNDARY-V1",
+  "status": "ID12_FRAME_RECORD_NOT_CONSUMED_IN_SELECTED_BRANCH; CONVEXPSTR_WRITER_DISTINCT; FINAL_U5_JOIN_UNBOUND",
+  "source_package": {
+    "package_id": "dialnorm-frame-record-u5-writer",
+    "manifest_sha256": "f3b7064e86b97c7a06353553066038d9b1c782424e986cc735cf7b63975d6b7c",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT"
+  },
+  "selected_branch": {
+    "record_expression": "frame_set + frame_index*0x38 + 0xd0",
+    "record_pointer_use_after_save": "NONE_OBSERVED_IN_BOUNDED_BODY",
+    "downstream_stuffer_arguments": "context-owned pointers; frame record not forwarded",
+    "runtime_branch_selection": "NOT_OBSERVED"
+  },
+  "first_bitfield_writer": {
+    "fields_written": ["convsnroffst", "convexpstr"],
+    "five_bit_field": "convexpstr",
+    "dialnorm_u5_join": "NOT_FOUND"
+  },
+  "alternate_branch": {
+    "dialnorm_context_word": "+0x19140",
+    "float_helper_use": "OBSERVED_STATICALLY",
+    "other_record_fields_examined": ["context+0x19128", "context+0x19144"],
+    "join_to_core_pcm_or_final_bsi_u5": "NOT_ESTABLISHED"
+  },
+  "pcm_mismatch_relation": {
+    "dialnorm_cause_established": false,
+    "pcm_invariance_established": false,
+    "status": "UNBOUND"
+  },
+  "scope": {
+    "ghidra_static_only": true,
+    "dee_run": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact_before_wash": false
+  }
+}

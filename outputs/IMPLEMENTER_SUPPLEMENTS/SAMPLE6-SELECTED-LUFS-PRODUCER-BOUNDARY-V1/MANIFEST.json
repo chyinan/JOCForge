@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-SELECTED-LUFS-PRODUCER-BOUNDARY-V1",
+  "source_reverse_package_id": "sample6-selected-lufs-producer-lineage",
+  "source_reverse_manifest_sha256": "fd6b8b3e5ee1301787288c53962e1d45afdaaeba582d59dad6a121c44941691c",
+  "source_reverse_manifest_file": "MANIFEST.sha256",
+  "source_reverse_package_seal": "NOT_PROVIDED",
+  "status": "RUST_MEASUREMENT_AND_DIALNORM_RULE_BOUND; RUN_SCALAR_AND_UNIT_UNBOUND; DEE_U5_BOUNDED_WINDOW_ONLY",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3243,
+      "sha256": "faa5254a878e85fdcfcd188c38e8dd50e0c163f09d5b1f2ebdfc88df052fa7ad"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3369,
+      "sha256": "2dbb0ab43d3d57313ce271f525da77b088a38cb29be2f009f16d4590f7eb7b88"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 831,
+      "sha256": "e7626f2c7e7b24d72d2af855dc01e8499b73cc19105edc8700c6253884599edf"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2186,
+      "sha256": "56b4f79559f1a7d969702887053a3fbdf5c8c813fd36d1a338f23aa2d141e309"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1156,
+      "sha256": "06c79e596367019364773a3ac4f66e4ca27b15cfa5b354bdc8b9cc8aab6d639b"
+    }
+  ],
+  "exclusions": {
+    "source_code_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

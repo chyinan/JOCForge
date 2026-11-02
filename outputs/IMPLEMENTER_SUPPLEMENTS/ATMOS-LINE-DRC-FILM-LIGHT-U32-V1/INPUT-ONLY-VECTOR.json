@@ -1,0 +1,10 @@
+{
+  "schema":"jocforge.static_line_profile_tree_vector.v1",
+  "vector_id":"LINE-FILM-LIGHT-CRT-INITIALIZED-NODE",
+  "initializer":"FUN_180001510 via CRT initializer array entry 25",
+  "key":"film_light",
+  "profile_tree_u32":0,
+  "first_consumer_output_slot":"param_2+0xa0",
+  "join_to_encoder_ddp_compr":"UNBOUND",
+  "execution":"STATIC_ONLY"
+}

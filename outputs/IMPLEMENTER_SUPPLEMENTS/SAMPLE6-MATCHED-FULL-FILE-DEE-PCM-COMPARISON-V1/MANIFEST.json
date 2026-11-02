@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1",
+  "scope": "one matched full-file ADM-to-5.1 E-AC-3 PCM window comparison",
+  "status": "PCM_WINDOW_CLOSE_BUT_NOT_IDENTICAL; CHANNEL_3_DOMINATES; CAUSE_UNBOUND",
+  "source_manifest_sha256": "5b4e23b25e459f80ae26267f792080d472cd5deda69ea35129e546b7f0a6066d",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "35c384e6c8332bbb52febdaab756884e8094dee66c88e95739ca93d9fa7bba3b",
+      "bytes": 3694
+    },
+    {
+      "name": "COMPARISON-METRICS.json",
+      "sha256": "d9d4dd304508c448344ed89a7725f07287b112a45fa7861cd98f99380b411221",
+      "bytes": 8315
+    },
+    {
+      "name": "DRC-SCALE-CONTROL.json",
+      "sha256": "53cbf76bfca55a41a62d84cac80df6f539722087f15b9bbb9cbabc1866ac7466",
+      "bytes": 3644
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "7302e7e101bc114a54eacbead0ef537cd3f4a0332a2899b06428f3b6bedff813",
+      "bytes": 4960
+    },
+    {
+      "name": "README.md",
+      "sha256": "4982647b75e578d0918de0fa40a2279415b91c1ade9958abdf97a230aac0b402",
+      "bytes": 1260
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "5bafe05d0b53d0b3fbf7eeff78a9b53f0bdd0563507c263bb0af870b4a3ffe41",
+      "bytes": 691
+    }
+  ]
+}

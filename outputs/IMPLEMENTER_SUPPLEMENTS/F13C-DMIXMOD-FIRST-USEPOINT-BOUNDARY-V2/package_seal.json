@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "F13C-DMIXMOD-FIRST-USEPOINT-BOUNDARY-V2",
+  "manifest_sha256": "98af2082b51ea4f5af841f5070d33f647cc2eaf2d99a537728ec443f309201f9",
+  "sha256sums_sha256": "9841836150bb8d4dc428f2df55198d98bcddc61e374680bb764ef88098914470",
+  "payload_count": 4,
+  "status": "DMIXMOD_ALLOWLIST_USEPOINT_BOUND; PREFERRED_ALIAS_UNBOUND; AUDIO_BSI_JOC_EFFECT_UNBOUND; TEST_NOT_RUN"
+}

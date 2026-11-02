@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-OUTPUTWRAPPER-REGISTRY-INITIALIZATION-V1",
+  "source_reverse_package_id": "native-f06-r138-outputwrapper-source-registry-origin-addendum",
+  "source_reverse_manifest_sha256": "4a26e83c1d7145d3e881edaa1576cb7dbed2237de83762e4aeb02f9fc8444dcf",
+  "status": "EMPTY_INITIALIZATION_BOUND; SCOPED_VTABLE_WRITER_NOT_FOUND; FIRST_POPULATOR_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2854,
+      "sha256": "cebda8c3dc9cec9fb3c5f7f34d9c9a5a6a2547608396fb41bbf207f4b107b623"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2152,
+      "sha256": "d75d41f0242be94c9c01f6761c415e9bf4a031670966fbd59a7e84492c558f3f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 380,
+      "sha256": "1cfc42050626a8e26ae8c04e48dd6df94c4f4b56c2c3f0dc1a812aca07f802b3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 994,
+      "sha256": "93a4de081611be6d8160c2f6f10e74c176bcfd7c1f124c7c0d2e3a345f18ccc9"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

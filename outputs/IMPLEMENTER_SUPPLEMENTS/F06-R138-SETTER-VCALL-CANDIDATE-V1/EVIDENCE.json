@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-f06-r138-setter-vcall-candidate.v1",
+  "scope": "HOST OutputWrapper::SetProperty VIRTUAL SETTER ARGUMENT/RECEIVER DISTINCTION",
+  "status": "STRINGTYPE_ARGUMENT_AND_SLOT_BOUND; GENERIC_VCALL_TARGET_UNBOUND",
+  "implementation_trial_ready": true,
+  "source_package": {
+    "package_id": "native-f06-r138-setter-vcall-target-discriminant",
+    "manifest_sha256": "7864cbefbc4eec08ca8da03707a998d14f9aae5323bda5935fa9bb21cf617f91",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "host_call": {
+    "method": "OutputWrapper::SetProperty",
+    "branch": "dee_audio_source_type",
+    "argument_type": "dee::Types::StringType",
+    "virtual_receiver": "separate pointer plVar3",
+    "slot_offset": "+0x28",
+    "argument_object_is_receiver": false
+  },
+  "target_candidate": {
+    "selected_process_state_member": "+0xA0 MediaMetadata",
+    "candidate_method": "MediaMetadata::set",
+    "candidate_vtable_slot": 5,
+    "candidate_slot_offset": "+0x28",
+    "most_likely_candidate": true,
+    "generic_vcall_target": "UNBOUND",
+    "plVar3_equals_selected_r138_plus_0xa0": "NOT_CAPTURED"
+  },
+  "parent_row_transform_rule": {
+    "preserve_source_vector_order": true,
+    "index_rule": "zero-based ordinal + 1",
+    "copy_filename_and_nested_strings": true,
+    "AO_ATU_crosswalk_typed_and_separate": true,
+    "row_writer_parent_manifest_sha256": "dd9ff5489e89a1c2ca96763f7f6797cdd4b970db66cbfa55aa4aba8c54529bbc"
+  },
+  "scope": {"dee_run":"NOT_RUN","media_or_pcm_read":false,"key_or_license_read":false,"implementation_contacted":false},
+  "payload_policy": {"source_code_included":false,"binary_or_decompilation_included":false,"private_key_or_license_material_included":false}
+}

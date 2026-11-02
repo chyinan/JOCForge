@@ -1,0 +1,23 @@
+{
+  "schema": "washed-current-window-provider-one-hot.v1",
+  "vector_id": "current-provider-index234-one-hot-fold",
+  "classification": "RUST_TARGETED_TEST_AND_STATIC_NATIVE_DERIVATION; NO_DEE_RUNTIME",
+  "input": {
+    "word_count": 256,
+    "default_f32_bits": "00000000",
+    "nonzero": [{"index": 234, "f32_bits": "3f800000"}],
+    "primary_history_words": 128,
+    "companion_history_words": 128,
+    "history_f32_bits": "00000000"
+  },
+  "provider": {
+    "current_file_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+    "current_and_native_window_words_sha256": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+    "index_21_f32_bits": "3c0ea5aa"
+  },
+  "expected_and_observed_current_output": {
+    "primary_index_107_f32_bits": "3c0ea5aa",
+    "companion_index_106_f32_bits": "bc0ea5aa"
+  },
+  "matched_pcm_output": "NOT_RUN"
+}

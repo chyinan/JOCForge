@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-JOC-SIGNALING-METADATA-BOUNDARY-V1",
+  "source_reverse_package_id": "sample6_joc_signaling_audit_wash_v1",
+  "source_reverse_manifest_sha256": "42194079cf43f558e251e53e545731c056e7fd1d3c284073fe2cb8ed5be992b1",
+  "status": "STREAM_PROFILE_ATMOS_RECOGNIZED; PER_AU_JOC_EMDF_FLAG_NOT_EXPOSED",
+  "implementation_trial_ready": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2996,
+      "sha256": "ff641f431c56a63aeeebe73241d3c1b8102e97cfb6cdc0351791a68d6b04efb9"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2131,
+      "sha256": "ad9c986e4e26fd6bbd49d18876c948ec28c30e53e392d035b0c41a5ccb51e050"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 422,
+      "sha256": "fd863f3539ab0cb51f4c610437ac477b3ca2205619a163c3768aea5ba726bff8"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 796,
+      "sha256": "04f65bc6d52b411df47c6921546574b0d8a3c448acb44ba73e4ce3e2cd4781e7"
+    }
+  ],
+  "exclusions": {
+    "encoded_output_included": false,
+    "pcm_included": false,
+    "private_key_or_license_material_included": false,
+    "raw_packet_data_included": false
+  }
+}

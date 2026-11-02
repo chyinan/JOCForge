@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "DEE-AUDIO-WRITER-AU-FINAL-WORD-BOUNDARY-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3111,
+      "sha256": "22f2fc6125d88a2954a0abcb2f72bb9ac1356e7ab970e27371bded88aa728214"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3236,
+      "sha256": "489714f517cc49dfa540ec24953cfc87e5310dff8025b087188b017c0e0f3f1f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 555,
+      "sha256": "dc4754991434ba8d8ac45601cebbd96bb35e7f46cde1ad2c2290a0f438113bbf"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1361,
+      "sha256": "72cfaa9c8e05d42028fe6468a2bfb787a99f6ce1a547b490b01d2d0ba7c8a49a"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1298,
+      "sha256": "94c85e2c57414509f13809b9cf314f272107dc818a6e83a77aeafc97cfb36b2f"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "42fcc4fde5b050b4ad550be6ae62fcdd515259ee8c36db51fa7b90f32846564d"
+    }
+  ]
+}

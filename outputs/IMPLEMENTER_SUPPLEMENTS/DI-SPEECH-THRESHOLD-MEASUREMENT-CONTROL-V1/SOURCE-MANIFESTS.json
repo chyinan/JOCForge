@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-03\\dee-di-true-threshold-pair-evidence",
+    "manifest_sha256": "af72ee51a85eb1d1db1f6c09f9e66e4304c929f106d64d5afe45312f6b16869f",
+    "report_sha256": "456c4d41e6385690f078613ab3f946448309e1375eb8c33822c8f6800ac8be10",
+    "results_sha256": "78953690a6e44a0b831ab28b80325d3aed801e444b6a65bd53611ddd62c88a05",
+    "source_manifests_sha256": "2b202dd8602a98adf83e364a32a20339386a2e60a31cf70e2b7f7501d59615c8",
+    "checker_sha256": "bf8950b3232e97d2789464df335e95b099874b1928fa59864c9e0d5930d5c81d",
+    "independent_verification": "manifest hash recomputed; source checker passed normally and with python -O; only scalar results and hashes are forwarded"
+  },
+  "excluded_from_supplement": [
+    "EC-3 artifact bytes",
+    "raw logs",
+    "PCM",
+    "private key",
+    "license"
+  ]
+}

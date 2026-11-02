@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge.line_drc_film_light_mode1_transfer.v1",
+  "status": "FILM_LIGHT_TO_RAW_LINE_ENUM_0_TO_DDP_COMPR_2_BOUND_CONDITIONAL_MODE1; JOB_MODE_UNOBSERVED; AUDIO_OUTPUT_NOT_RUN",
+  "scope": "Ghidra 12.2 static typed transfer; mode selection/job property submission and audible output remain unobserved.",
+  "source_packages": {
+    "raw_enum_transfer": {
+      "manifest_sha256": "d05d12b73aa0bf66a8e884671f29f54335f2dee2688347def0b70d86b2b61231",
+      "package_seal_sha256": "4e4add4b2fe8af7cbd37c0327456cb8e05b1b707a44148e2f754fe24e5a1834a",
+      "transfer_sha256": "a7bce3aaeade71ea4a1b6aef4aad8cdde6097983bf84077ca0db63bf32b6c4c7",
+      "audio_boundary_sha256": "04eeffe0786b16eb40d7480cab06707a4676e88d51eadcb10d4e285695282527",
+      "report_sha256": "13e363447ef133d3ee2aa534d514596e303da2d0abb68692c54f53580f219347",
+      "source_manifest_sha256": "e9f614ff2dc1e629782cde71f7aca8dac394911eed8faba5c8dd09ab652779f7"
+    },
+    "ddp_compr_mapping": {
+      "manifest_sha256": "e4318aa984b26e3851459ef25471c9d282f9689c4a24859b16e872d3eec77401",
+      "value_map_sha256": "c4d7c71ae5234612d918ef3d55a67489e793bf5c1636d08f27082d93f1fa4a96"
+    },
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "wash_rechecks": "R5 package manifest/seal and unique payload hashes rechecked; target image and five cited Ghidra logs rehashed; prior DDP_COMPR map manifest/value map rehashed"
+  },
+  "conditional_path": {
+    "job_line_profile": "film_light",
+    "profile_tree_u32": 0,
+    "snapshot_write_offset": "+0xdc",
+    "mode_branch_function": "FUN_1801475f0",
+    "condition": "param_1+0xfc8 == 1",
+    "mode1_wrapper": "FUN_1801754f0",
+    "raw_enum_copy": "FUN_180177e50 -> FUN_180177eb0; snapshot+0xd8 qword copied so U32 snapshot+0xdc reaches raw param_1[1]",
+    "encoder_drc_word": "raw U32 0 -> DDP_COMPR code 2 -> encoder config+0x28, via FUN_1801787e0/FUN_1801aa730",
+    "mode_selection_for_authorized_job": "UNOBSERVED",
+    "xml_property_submission_to_plugin": "UNOBSERVED"
+  },
+  "prior_mapping_reconciliation": {
+    "previous_string_order_candidate": "film_light ordinal 1 -> code 1 (inferred, not directly joined)",
+    "direct_conditional_transfer": "film_light profile-tree U32 0 reaches raw enum 0 and code 2 on the mode-1 path",
+    "disposition": "For the statically bound mode-1 path, use the direct typed U32 transfer; do not substitute the prior declaration-order inference. Do not claim the job takes mode 1 without observation."
+  },
+  "audio_scope": {
+    "ddp_compr_is_encoder_configuration": true,
+    "dsp_curve_or_audible_effect": "NOT_EVALUATED",
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false
+  },
+  "input_only_vectors": [
+    {
+      "profile": "film_light",
+      "profile_tree_u32": 0,
+      "mode_selector": 1,
+      "raw_line_enum": 0,
+      "ddp_compr": 2,
+      "status": "STATIC_CONDITIONAL_RULE"
+    },
+    {
+      "profile": "film_light",
+      "profile_tree_u32": 0,
+      "mode_selector": "not 1",
+      "raw_line_enum": "NOT_DERIVED_BY_THIS_PATH",
+      "ddp_compr": "NOT_DERIVED"
+    }
+  ],
+  "next_minimal_observation": "Capture whether the authorized job reaches FUN_1801475f0 mode 1 after the film_light value is submitted; only then compare the emitted DDP_COMPR word or decoded audio on the same ADM."
+}

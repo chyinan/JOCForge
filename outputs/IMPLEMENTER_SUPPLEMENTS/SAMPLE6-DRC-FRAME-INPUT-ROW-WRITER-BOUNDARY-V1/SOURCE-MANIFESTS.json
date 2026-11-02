@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "sample6-matched-drc-frame-input-row-writer-boundary-wash-v1",
+      "manifest_sha256": "c29cf85d37e545b706fa101102080607dbf7440c2ec61f822b1bc5847128b25a",
+      "package_seal_sha256": "d84b30136756b47af71ec620171958908e4140539f4e012361729397e1e172d7",
+      "program_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+    },
+    {
+      "package_id": "sample6-matched-drc-core-dispatch-consumer-wash-v1",
+      "manifest_sha256": "5d3c14fcaa9691b991154a3b5f4eafb79a70c95815c35ee4e413f7a69ca3cdbc",
+      "package_seal_sha256": "8abdf32b1c647e5dab90bbac171ff3f0d215b3d4c43cb01e29390f3430c61ef9"
+    },
+    {
+      "package_id": "sample6-matched-drc-f32-core-row-writer-boundary-wash-v1",
+      "manifest_sha256": "e33a3254d5877b6cce046cb39447e30c47dc88807663e5c716548e1d4e3665f9",
+      "package_seal_sha256": "fe57a3e738250a3e406ded705e8cd141aa261d14d9e51d118466c2d782b3b6c1"
+    }
+  ]
+}

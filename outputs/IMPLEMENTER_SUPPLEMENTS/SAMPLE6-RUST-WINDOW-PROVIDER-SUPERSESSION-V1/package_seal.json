@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-RUST-WINDOW-PROVIDER-SUPERSESSION-V1",
+  "manifest_sha256": "a0b3f5da065a7a014ab02957567739ecadb76af49860e7e8b52c1641ead5b1f7",
+  "sha256sums_sha256": "83aaa055c7b62864b7c5ac982cfd16c42123d78a548a8bef261c93e0afac3f6f",
+  "payload_count": 5,
+  "status": "CURRENT_PROVIDER_MATCHES_NATIVE; OLD_BASELINE_SUPERSEDED; MATCHED_LFE_LINEAGE_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

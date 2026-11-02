@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "sample6-matched-drc-block-code-producer-wash-v1",
+      "manifest_sha256": "084097031852758217f929edbd4fe4953f72eb2d5abbcd13abfb4d4fdb410428",
+      "package_seal_sha256": "261e6fe0225852da41ddea72782642aeb52af254e15eac0c4c2a7e934d642a05"
+    },
+    {
+      "package_id": "sample6-matched-drc-profile-table-init-wash-v1",
+      "manifest_sha256": "e545f2f4765b50726e20826a9f70eeba08233036b039996f2e64b53cc8459de7",
+      "package_seal_sha256": "2834bb23e6bff7db7a08aec9ddfdedab5ceba0ac26fb79b98d16d21dba58bda8"
+    },
+    {
+      "package_id": "SAMPLE6-MATCHED-DRC-BSI-FIELD-DELTA-V1",
+      "manifest_sha256": "476f4f6cf3fe3ae56d071e956252db469f5ccb5bcc63f7356ffe1d889e93f1c0",
+      "package_seal_sha256": "9760a99473423480bf29fe14419fb78e6c5ef20dc7146859fd30564ab29ac7b9"
+    }
+  ]
+}

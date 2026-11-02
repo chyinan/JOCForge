@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-ENCODER-OPEN-CONFIG-FIELD-BOUNDARY-V1",
+  "source_reverse_package_id": "dee_encoder_open_config_fields_wash_v1",
+  "source_reverse_manifest_sha256": "7b30ee2e340f03a354fbc8ff5f22c39d434511326cf18366bbd16a0b10bfd551",
+  "source_reverse_package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT",
+  "status": "ENCODER_OPEN_CONFIG_BUILDER_BOUND; REQUEST_FIELD_SEMANTICS_PARTLY_OPAQUE",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3146,
+      "sha256": "f97c51839c349f8f339964e23a25d7766dcaf28fb0ffe5aef946e130e3a8ecf5"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1697,
+      "sha256": "d8e8ca251c76104337f478cd696227054698e79325bb8d7a57bb64dfe87e8539"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 624,
+      "sha256": "fbba90c3db6958374f243331b4c9f57d6c7a0245f0442e1afe2945a82315dcd3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1255,
+      "sha256": "6c14e485866657e3bc6546dbf937451862e7a4681fb50cf87369dd87372b9e9e"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 770,
+      "sha256": "eab26a7fa00f769516c6cf51917a24d5436afa414c71d5648689cdc1bb1de05d"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

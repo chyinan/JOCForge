@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "SYMBOLIC_CAPACITY_GATE_ONLY; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "gate": {"count_type": "U32", "capacity_type": "U32", "accept": "count <= capacity", "reject": "count > capacity", "reject_code": "0x1d"},
+  "vectors": [
+    {"count": 36, "capacity": 36, "gate_result": "ACCEPT_CONDITIONAL", "staging_extent": "EXCEEDS_16_ENTRIES"},
+    {"count": 38, "capacity": 36, "gate_result": "REJECT_0x1d_CONDITIONAL", "staging_extent": "EXCEEDS_16_ENTRIES"},
+    {"count": 36, "capacity": 38, "gate_result": "ACCEPT_CONDITIONAL", "staging_extent": "EXCEEDS_16_ENTRIES"},
+    {"count": 38, "capacity": 38, "gate_result": "ACCEPT_CONDITIONAL", "staging_extent": "EXCEEDS_16_ENTRIES"}
+  ],
+  "unbound": ["active capacity", "ADM track count to frame-view count", "runtime write effect"],
+  "warning": "These symbolic comparisons do not establish native 36/38 admission or safe execution."
+}

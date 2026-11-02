@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-atmos-selected-id0-selector-input-only.v2",
+  "source": "selected RenderBusConfig type ID 0 (Speaker Monitoring)",
+  "shared_descriptor": {"rows": "row[0]..row[35]", "channel_count": 36, "frame_count": "N"},
+  "variants": [
+    {"getter_value": 0, "expected_branch": "SpatialCoderPlatform"},
+    {"getter_value": 2, "expected_branch": "PreProcessorBypass"}
+  ],
+  "execution": "NOT_RUN",
+  "default_inferred": false,
+  "pcm_values_included": false
+}

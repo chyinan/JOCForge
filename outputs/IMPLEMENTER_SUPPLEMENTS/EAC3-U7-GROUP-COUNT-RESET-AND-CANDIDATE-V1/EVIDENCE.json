@@ -1,0 +1,66 @@
+{
+  "schema": "jocforge-washed-eac3-u7-group-count-boundary.v1",
+  "package_id": "EAC3-U7-GROUP-COUNT-RESET-AND-CANDIDATE-V1",
+  "scope": "DEE DDP ENCODER D/N FIELD RESET AND POSITIVE-N PRODUCER SEARCH",
+  "status": "ZERO_RESET_CANDIDATE_BOUND; POSITIVE_N_WRITER_UNBOUND; CEIL_RULE_INFERENCE",
+  "source_package": {
+    "package_id": "dee-ddp-group-count-initializer-wash-v3",
+    "manifest_sha256": "14249841078f59b3d51c964121d9c11177d0eb3d81d59791c3fd57a7b0c676b5",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "static_tool": "Ghidra 12.2 read-only; analysis disabled"
+  },
+  "field_contract": {
+    "state_base": "state + 0x140f0",
+    "j": "5*block + lane",
+    "n_type_and_expression": "u16(state + 0x141c8 + 2*j)",
+    "d_type_and_expression": "i16(state + 0x1418c + 10*block + 2*lane)",
+    "code_row_pointer": "u64(state + 0x143b8 + 8*j)",
+    "consumer_semantics": "N U7 values; syntax writer consumes N; bit-budget path charges N*7 bits"
+  },
+  "typed_reset_candidate": {
+    "function": "FUN_14032d9b0",
+    "function_bytes_sha256": "6575eef3c6d05c1e541fc9e7142362e3d06872f51644cf04c08a516a9f0226f3",
+    "caller_function": "FUN_140317fd0",
+    "callsite": "0x14031836f",
+    "argument": "RCX = RBX + 0x140f0",
+    "loop": "6 blocks x 5 lanes",
+    "stores": "zero N at param_1+0xd8+10*block+2*lane and zero D at param_1+0x9c+10*block+2*lane",
+    "role": "zero initialization candidate; not a positive runtime N producer",
+    "same_instance_as_frame_writer": "UNBOUND"
+  },
+  "bounded_scan": {
+    "code_range": ["0x140300000", "0x140390000"],
+    "direct_mov_displacement_stores_examined": 19,
+    "positive_n_writer": "UNBOUND",
+    "coverage_limit": "dynamic-index stores, vector operations, and bulk-copy helpers were not covered"
+  },
+  "model_candidate": {
+    "rule": "N = ceil(D/3) = (D+2)//3",
+    "scope": "active fullband lane after selected-stride exponent differences are known",
+    "tail_fill": "3*N-D values of 2",
+    "grade": "INFERENCE_ONLY",
+    "native_positive_assignment_observed": false,
+    "confidence_for_ceil_relation": 0.78,
+    "model_use": "Usable explicit model candidate; keep N as a model input if another profile provides a different count rule."
+  },
+  "input_only_vectors": {
+    "native_observation": false,
+    "native_field_assignment": false,
+    "vectors": [
+      {"D": 0, "N_candidate": 0, "tail_count": 0},
+      {"D": 1, "N_candidate": 1, "tail_count": 2},
+      {"D": 3, "N_candidate": 1, "tail_count": 0},
+      {"D": 4, "N_candidate": 2, "tail_count": 2},
+      {"D": 6, "N_candidate": 2, "tail_count": 0}
+    ]
+  },
+  "execution_boundary": {
+    "native_runtime": "NOT_RUN",
+    "dee_run": "NOT_RUN",
+    "media_pcm_payload_read": false,
+    "key_or_auth_material_read": false,
+    "source_binary_or_decompilation_included": false
+  }
+}

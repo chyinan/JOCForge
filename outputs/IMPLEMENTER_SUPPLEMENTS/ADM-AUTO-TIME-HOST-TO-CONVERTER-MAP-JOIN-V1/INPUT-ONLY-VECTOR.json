@@ -1,0 +1,10 @@
+{
+  "schema":"jocforge.host_converter_time_map_join_vector.v1",
+  "vector_id":"ATMOSMEZZ-NORMALIZER-OUTPUT-TO-PRIVCONTEXT",
+  "host_write_target":"dee::input::AtmosMezz+0x130",
+  "converter_read_target":"PrivContext+0xa8",
+  "same_owner_generation_join":"UNBOUND",
+  "default_file_position_mvp_blocked":false,
+  "auto_time_extension":"UNBOUND",
+  "runtime_execution":"NOT_RUN"
+}

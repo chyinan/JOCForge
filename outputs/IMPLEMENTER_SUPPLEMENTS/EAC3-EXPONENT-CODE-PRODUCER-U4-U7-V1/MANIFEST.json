@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EAC3-EXPONENT-CODE-PRODUCER-U4-U7-V1",
+  "source_reverse_package_id": "dee-ddp-exponent-producer-typed-edge-wash-v2",
+  "source_reverse_manifest_sha256": "ad95d8576957c0ed20d8339c322c01c9669ab48ea8bd545e28b3ab7400c32ec6",
+  "status": "PRODUCER_WRITER_TYPED_ROW_JOIN_BOUND; N_WRITER_AND_U4_SEED_PRODUCERS_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2688,
+      "sha256": "43a1b5f3f3459a871aaca6c77760ffa5a99d7d80e7104a36712db2dc6d8ab450"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2775,
+      "sha256": "7a50ef2cf95964a3227b501c837334edc005608fb7c9c82c4d697d8c28416321"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 841,
+      "sha256": "e8e41ae2b39a287c019a0f5777ddc9bd40145f93d46cdf0dc9cbf6d61dc8c94e"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2454,
+      "sha256": "fc5d727c5392823bd60ffe66846cf58eb33ea7ebb9995495dee81aed4aa40c49"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 900,
+      "sha256": "9f1c5518c7b4ac0c415cf9bd82f966e80642b12b1b3e27cd05db7e56a4814255"
+    }
+  ],
+  "exclusions": {
+    "source_code_included": false,
+    "binary_or_decompilation_included": false,
+    "media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

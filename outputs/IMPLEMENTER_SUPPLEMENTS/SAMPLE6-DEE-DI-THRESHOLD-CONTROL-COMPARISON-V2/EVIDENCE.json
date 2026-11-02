@@ -1,0 +1,84 @@
+{
+  "schema": "sample6-dee-di-threshold-control-comparison.v2",
+  "package_id": "SAMPLE6-DEE-DI-THRESHOLD-CONTROL-COMPARISON-V2",
+  "status": "HASH_BOUND_COMBINED_CONTROL_PAIR_AUDIO_EFFECT_MEASURED; INDIVIDUAL_PARAMETER_CAUSALITY_UNBOUND",
+  "true_15_reference": {
+    "source_package": "native-f06-dee-di-true15-full-file-control-v1",
+    "source_manifest_sha256": "f305634df0fbd381b873f40b052dbfe56d49d0faa1679bf0a00a4f40ed4675a7",
+    "job_xml_sha256": "5a27b268cee1fb70e1e0a1c7c1aadbf17d5942972787d833f97a4127068c08f0",
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "output_sha256": "315c6a4bdc9b0d1317466d06c39b1809ce992c6d6b17997d82ca08aeebecf8a2",
+    "same_sha256_as_user_supplied_true15_dee_file": true,
+    "dialogue_intelligence": true,
+    "speech_threshold": 15
+  },
+  "false_100_reference": {
+    "source_package": "native-f06-film-light-full-file-dee-rust-comparison-v1",
+    "source_manifest_sha256": "5b4e23b25e459f80ae26267f792080d472cd5deda69ea35129e546b7f0a6066d",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100
+  },
+  "shared_controls": {
+    "input": "same authorized ADM via atmos_mezz",
+    "data_rate_kbps": 1024,
+    "line_mode_drc_profile": "film_light",
+    "rf_mode_drc_profile": "film_light",
+    "loudness_mode": "measure_only",
+    "metering_mode": "1770-4",
+    "time_base": "file_position",
+    "range": "full_file",
+    "silence_seconds": [0.0, 0.0],
+    "preferred_downmix_mode": "loro",
+    "mix_levels_db": [-3, -3, -3, -3],
+    "trims": ["auto", "auto"],
+    "output_geometry_each": {
+      "format": "E-AC-3 Atmos",
+      "bytes": 17395712,
+      "sample_rate_hz": 48000,
+      "channels": 6,
+      "channel_layout": "5.1(side)",
+      "duration_seconds": 135.904,
+      "access_units": 4247,
+      "packet_size_mismatch_count": 0,
+      "packet_timing_mismatch_count": 0
+    },
+    "same_adm_and_common_controls": "hash-bound for the ADM and controls recorded in both source receipts; true/15 XML comes from a fresh Wash-generated run"
+  },
+  "comparison_window": {
+    "au_interval_half_open": [2750, 2875],
+    "sample_frames_per_channel": 192000,
+    "sample_interval_half_open": [4224000, 4416000],
+    "alignment": "same absolute decoded sample indices; no lag search or trim",
+    "decoder": "FFmpeg 8.1 decode-only",
+    "pcm_written_or_retained": false
+  },
+  "decoder_drc_scale_0": {
+    "aggregate_mae": 0.00010764606973193327,
+    "aggregate_rmse": 0.0001801499752089459,
+    "aggregate_peak": 0.002117399126291275,
+    "per_channel_rmse": [0.00018933004900662773, 0.00018339601593727806, 0.00015583040364268306, 0.0, 0.0002267084570696039, 0.00022263035750288548],
+    "channel_3_equal": true
+  },
+  "decoder_drc_scale_1": {
+    "aggregate_mae": 0.004981007468891313,
+    "aggregate_rmse": 0.007322684086768786,
+    "aggregate_peak": 0.07769182324409485,
+    "per_channel_rmse": [0.009572352237114813, 0.009487048396725628, 0.003870708473153118, 0.0023817354625220934, 0.007721119727717979, 0.0077346920447526]
+  },
+  "causal_limits": {
+    "dialogue_intelligence_individual_effect": "NOT_ISOLATED",
+    "speech_threshold_individual_effect": "NOT_ISOLATED",
+    "channel_index_3_rust_vs_dee_residual_cause": "NOT_EXPLAINED_BY_THIS_PAIR_AT_DECODER_DRC_SCALE_0",
+    "full_track_pcm_equality": false,
+    "atmos_render_or_listening_parity": "NOT_RUN"
+  },
+  "privacy": {
+    "pcm_written_or_included": false,
+    "input_media_written_or_included": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_contents": false
+  }
+}

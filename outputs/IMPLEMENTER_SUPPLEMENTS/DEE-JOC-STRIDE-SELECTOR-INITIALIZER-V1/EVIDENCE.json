@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-dee-joc-stride-selector-initializer.v1",
+  "scope": "ATMOS DDP JOC PER-BLOCK STRIDE SELECTOR CONSTRUCTOR INITIALIZATION",
+  "status": "ROW0_ROW1_ZERO_INITIALIZED; ROW2_TO_ROW5_AND_LATER_WRITER_UNBOUND",
+  "implementation_trial_ready": true,
+  "source_package": {
+    "package_id": "dee_native_joc_writer_boundary_wash_v1",
+    "manifest_sha256": "2e28a33cc6f9930e54ad9b99922d08a681d67d30b43aa95e48bfec36ba74d214",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "native_image": {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+  "constructor": {
+    "caller": "FUN_1800729a0",
+    "callsite": "0x180072d80",
+    "callee": "FUN_1800a19e0",
+    "destination_base": "RBX+0x140e8",
+    "second_argument": "*(RBX+0x298c8)+0xf5b8",
+    "copies_selector_from_second_argument": false,
+    "zeroed_short_offsets": ["+0xd8","+0xda","+0xdc","+0xde","+0xe0","+0xe2"],
+    "separate_arena_clear_bytes": 392928,
+    "arena_clear_proves_inline_rows_2_to_5_zero": false
+  },
+  "selector_mapping": {
+    "block_record_stride_bytes": 10,
+    "row0_field_offset": "+0xd8",
+    "row1_field_offset": "+0xe2",
+    "known_default_rows": {"0":0,"1":0},
+    "table_values": [0,1,2,4],
+    "selector_semantics": {"0":"disabled","1":"stride 1","2":"stride 2","3":"stride 4"},
+    "rows_2_to_5_initial_values": "UNBOUND",
+    "later_writer_or_update_clock": "UNBOUND",
+    "current_1024kbps_51_values": "UNBOUND"
+  },
+  "payload_policy": {"source_code_included":false,"binary_or_decompilation_included":false,"media_or_pcm_included":false,"private_key_or_license_material_included":false}
+}

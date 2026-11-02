@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-SETTER-RECEIVER-VTABLE-V2",
+  "source_reverse_package_id": "native-f06-r138-outputwrapper-plvar3-vtable-identity-discriminant",
+  "source_reverse_manifest_sha256": "40c4a413f09b31b4b21a5d1fbc992128f8e1396d68ab0c271c1f38ed50b53208",
+  "status": "OUTER_OUTPUTWRAPPER_BOUND; NESTED_PLVAR3_VTABLE_AND_SELECTED_R138_POINTER_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2364,
+      "sha256": "ac2ef50196705f92d482ad677fb3e2fe8593db033607cc6c55b26ffe6b329a1d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1868,
+      "sha256": "764d5c8d31dedf779ab56ad1740f92374a25432e943b1062f0d0585aeedecb5c"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 363,
+      "sha256": "8bfc94feb677b2295a076f9c8d9d3a0629c996a74196e91641759211bb27d5a2"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1518,
+      "sha256": "a1f34cc90dd10a158563369f29f8323311bd0770887f4b1a7eea95df8404ad2d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 698,
+      "sha256": "c1f7f863c043151b58cdbcd05007925491fbfb8498489264154b538f8b2ef16d"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

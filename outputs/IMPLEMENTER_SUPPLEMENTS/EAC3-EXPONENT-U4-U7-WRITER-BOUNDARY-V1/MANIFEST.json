@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1",
+  "source_reverse_package_id": "dee-ddp-exponent-u4-u7-lineage-wash-v1",
+  "source_reverse_manifest_sha256": "60dd1b42814edd97c44ad827c2a06b7cd1fd9f39b3ca4303422f6de5650898cf",
+  "status": "STATIC_WRITER_CONTRACT_READY_FOR_IMPLEMENTATION; REAL_FRAME_GROUP_COUNT_AND_ADM_LANE_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2782,
+      "sha256": "7dc4893b5601569bdd11ca34292ecf488c64382370d295229a77cbfd31d767c8"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2944,
+      "sha256": "138ab1c27d6d2914001ee58ff2d095e5ad63eb23145603c1abb61722d8e95301"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1017,
+      "sha256": "b081d55b220a9b971c3ec8a1475f53f6f8aac854d5d781f3b6a0d3ca51dd42e1"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2848,
+      "sha256": "3ac1597aae15cd0a68b63abaf9ec1a4aefba5117677bcc28833cda87a99ed1e1"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1605,
+      "sha256": "ab92480f9d2e88050fba8c1830d318108ff561af9314dd9e7ffcf8e22ac543f7"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

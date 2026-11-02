@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-BSI-PROFILE-TABLE-INIT-V1",
+  "manifest_sha256": "c7640e04add5f025f9f5c30f97855ccc5e0c42db7bdc83ba44584a2d285587bc",
+  "sha256sums_sha256": "d917a25b0a1ba3c81a98fa66d1a1763dd402a6389e8e101ab62b6697bcab544c",
+  "payload_count": 5,
+  "status": "TABLE_LAYOUT_AND_ZERO_INIT_BOUND; BUILTIN_SELECTOR_ROWS_BOUND; XML_SELECTOR_AND_POSITIVE_STORE_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

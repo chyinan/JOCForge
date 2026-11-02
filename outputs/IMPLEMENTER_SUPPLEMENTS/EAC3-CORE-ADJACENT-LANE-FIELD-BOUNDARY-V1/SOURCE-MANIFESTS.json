@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dee-ddp-lane-control-field-lineage-wash-v9",
+      "manifest_sha256": "0f0641569f62afd89815052a6038c5b5d7071c99ac50b267a5757dee9442117e",
+      "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+    }
+  ],
+  "target_image": {"name":"dee_ddp_encoder.exe","sha256":"0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"}
+}

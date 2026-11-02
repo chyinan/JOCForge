@@ -1,0 +1,35 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "ADM-BWF-EXPECTED-COUNT-GATE-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "upstream_evidence_manifest_sha256": "0cff903a0014abcb572ed6fa405de23d2357df9826f15dbe1b4863e9c18a8869",
+  "runtime_observation": "NOT_RUN",
+  "scope": "Static expected-count equality gate; Factory +8 origin and actual 36/38 selected value remain unbound",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "c4d9c7fb4dd11cf36f5effa05f91bf022b2dd213fada0708d619fbfee24e8bd3",
+      "bytes": 2073
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "a59c966db92855ac57b5d5e006a6d7a20d9408ce45c74842eee8aa43a0703261",
+      "bytes": 3140
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "1f684f4abae1e7fc74a47e6e74b47459936d32487ef0fb4c1c7e6b1cfad21bd1",
+      "bytes": 724
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "f86af760d16e730c4050c10b21c07e703e04e75ce757d8ff214b30b60f2481ed",
+      "bytes": 1045
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "77ff96db18d29aa3533e67ebc5677f10a48b384ffc61dd6c1aacbac38f3c6202",
+      "bytes": 2394
+    }
+  ]
+}

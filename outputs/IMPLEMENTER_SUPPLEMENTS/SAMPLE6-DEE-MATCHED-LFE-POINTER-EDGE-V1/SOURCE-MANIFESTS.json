@@ -1,0 +1,23 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dee_matched_run_lfe_pointer_join_wash_v1",
+      "manifest_sha256": "fd8a3c4c726835fba2c55cff07dc7c6d482e12c868c2a82b82df65fc1d2c1bdc",
+      "source_checker_normal": "PASS",
+      "source_checker_python_O": "PASS"
+    },
+    {
+      "package_id": "dee_adm_5p1_core_bed_lfe_scale_wash_v1",
+      "manifest_sha256": "a281573b3df322f4b29b612354a3f3af99a91b874dc86403dc4c1df9d2bdb95c",
+      "source_checker_normal": "PASS",
+      "source_checker_python_O": "PASS"
+    }
+  ],
+  "payload_policy": {
+    "raw_pcm": false,
+    "encoded_payload": false,
+    "private_key_or_license_material": false,
+    "source_code_or_disassembly": false
+  }
+}

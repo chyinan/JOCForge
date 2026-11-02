@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge.adm_auto_time_host_adapter_boundary.v1",
+  "status": "HOST_INPUT_MAP_CONSUMER_BOUND; CONVERTER_PRIVCONTEXT_HANDOFF_UNBOUND; FILE_POSITION_MVP_NOT_BLOCKED; AUTO_TIME_UNBOUND",
+  "scope": "Ghidra 12.2 static boundary only; no job runtime or audio effect claim.",
+  "source_package": {
+    "package_id": "adm_bwf_atmosmezz_privcontext_handoff_wash_v1",
+    "manifest_sha256": "9f78fb9769545f56a1003dcb0508c92262c3e63f9adb5071bf6fa8c88b6bd16f",
+    "package_seal_sha256": "de810cba2fc5cb857c1f0316705353d2e98e39763609adaa0f813f74dc88ed5d",
+    "handoff_payload_sha256": "c0b871bf671d3546eb183f7dff7735e87e2f85b5346f66ae6553eb7009377ae2",
+    "README_sha256": "7771928fc22cc9258d42e4ad492b17defaf0350c2e507c1b203e5f3e0413f3be",
+    "source_identities_sha256": "5d9006f4b6d88d0577441fda32e937b92dc9f6cd86431e3d7955155a5420ee26"
+  },
+  "native_images": {
+    "host": {
+      "name": "dee.exe",
+      "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+    },
+    "converter": {
+      "name": "dee_audio_filter_convert_atmos_mezz.dll",
+      "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+    }
+  },
+  "host_path": {
+    "writer": "AtmosMezz::Run FUN_1400f09d0 -> normalizer FUN_14012ff20 -> property-vector store FUN_1400f1cc0",
+    "stored_map": "host AtmosMezz object +0x130",
+    "consumer": "FUN_1400efd60, dee::input::AtmosMezz vtable slot +0x10",
+    "request_key": "dee_audio_input_target",
+    "consumer_effect": "serializes per-target host property rows into the input-property response",
+    "converter_object_argument": false
+  },
+  "converter_path": {
+    "consumer": "FUN_18007fba0 (PrivContext::setRange)",
+    "context_owner": "FilterConvertAtmosMezz+0xb8 -> separately allocated PrivContext",
+    "map": "PrivContext+0xa8",
+    "keys": [
+      "offset",
+      "first_frame_of_action"
+    ]
+  },
+  "handoff": {
+    "host_plus_0x130_to_converter_privcontext_plus_0xa8": "NO_TYPED_COPY_OR_CALL_ARGUMENT_FOUND_ON_SELECTED_PATH",
+    "dee_audio_input_target_response_to_converter_privcontext_plus_0xa8": "NO_TYPED_COPY_OR_CALL_ARGUMENT_FOUND_ON_SELECTED_PATH",
+    "same_input_owner_or_generation": "UNBOUND",
+    "remaining_edge": "typed host adapter consuming the dee_audio_input_target response and writing/copying offset/ffoa into this converter PrivContext for the same input owner/generation"
+  },
+  "mvp": {
+    "default_file_position_blocked": false,
+    "offset_auto_ffoa_auto_rule": "UNBOUND",
+    "audio_parity": "NOT_RUN"
+  },
+  "limits": {
+    "dee_execution": "NOT_RUN",
+    "pcm_media_payload_key_license_read": false,
+    "raw_native_source_or_disassembly_included": false
+  }
+}

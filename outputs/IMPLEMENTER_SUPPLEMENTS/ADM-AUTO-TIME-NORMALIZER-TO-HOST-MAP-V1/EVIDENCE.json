@@ -1,0 +1,31 @@
+{
+  "schema":"jocforge.atmosmezz_auto_normalizer_host_map.v1",
+  "status":"AUTO_NORMALIZER_TYPED_RULE_AND_HOST_STORE_BOUND; SOURCE_MAP_ORIGIN_AND_CONVERTER_TRANSFER_UNBOUND",
+  "upstream_package":{
+    "package_id":"adm_bwf_auto_input_normalizer_edge_wash_v1",
+    "evidence_manifest_sha256":"3e65f19e751014cd1eb414ea58f1ff663b74b85ac24d0a7d7c1cb3455a6aeb51",
+    "package_seal_sha256":"e8bf4a705b745c7f63ea06896cfb8dc1cfaf7b29709895554fb161db186785ac",
+    "payload_count_verified":5,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "host_call":{
+    "caller":"FUN_1400f09d0 / AtmosMezz::Run",
+    "callsite_rva":"0xf10da",
+    "normalizer":"FUN_14012ff20",
+    "input_fields":{"RCX":"host-local metadata property list","RDX":"AtmosMezz+0x188 timecode_frame_rate","R8":"AtmosMezz+0x148 ffoa policy","R9":"AtmosMezz+0x168 offset policy"}
+  },
+  "auto_rules":{
+    "offset_auto":{"source":"existing metadata map key offset","parser":"FUN_140054460 to numeric double"},
+    "ffoa_auto":{"source":["existing metadata key ffoa","existing metadata key offset"],"formula":"metadata_ffoa - metadata_offset + normalized_offset"},
+    "explicit_values":"timecode string converted using configured timecode_frame_rate"
+  },
+  "host_store":{"function":"FUN_1400f1cc0","callsite_rva":"0xf10eb","destination":"dee::input::AtmosMezz+0x130"},
+  "converter_consumer":{"image_sha256":"9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8","function":"FUN_18007fba0 / PrivContext::setRange","map":"PrivContext+0xa8","keys":["offset","first_frame_of_action"]},
+  "remaining_unbound":{
+    "origin_of_metadata_map_offset_ffoa_values":"UNBOUND",
+    "host_plus_0x130_to_converter_privcontext_plus_0xa8":"UNBOUND",
+    "same_owner_generation":"UNBOUND"
+  },
+  "execution_scope":{"dee_run":false,"pcm_or_payload_access":false,"key_or_license_access":false,"production_allowed":false}
+}

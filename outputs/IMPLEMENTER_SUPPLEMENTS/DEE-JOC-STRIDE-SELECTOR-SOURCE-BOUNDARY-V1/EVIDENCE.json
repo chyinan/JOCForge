@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge-washed-dee-joc-stride-selector-source.v1",
+  "scope": "ATMOS DDP JOC BLOCK-LOCAL STRIDE SELECTOR",
+  "status": "SELECTOR_READ_AND_TABLE_BOUND; WRITER_SOURCE_AND_CURRENT_PROFILE_VALUE_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "dee_native_joc_writer_boundary_wash_v1",
+    "manifest_sha256": "ddce8bd663b4dd28323a2f6e1624c7fc83f5997361843c6f18534816a244deef",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2"
+  },
+  "selector": {
+    "consumer_function_rva": "0xa3710",
+    "field_expression": "state+0x140e8+block*10+0xd8",
+    "table_rva": "0x846698",
+    "first_four_values": [0,1,2,4],
+    "mapping": {"0":"disabled","1":"stride 1","2":"stride 2","3":"stride 4"},
+    "consumption": "per block",
+    "api_block_size_samples": [1536,0],
+    "current_1024kbps_51_value": "UNBOUND"
+  },
+  "narrow_write_scan": {
+    "functions_checked": ["FUN_1800942d0","FUN_180073ef0","FUN_1800b7930","FUN_1800a3710"],
+    "write_to_selector_field_found": false,
+    "different_offset_observation": "FUN_180073ef0 reads RSI+0xd8 and writes to RSI+0x192d4; no dataflow link to selector field established",
+    "best_supported_producer_candidate": "upstream block/lane-plan input",
+    "confidence": "UNBOUND"
+  },
+  "boundaries": {
+    "producer_write_edge": "UNBOUND",
+    "profile_to_selector_join": "UNBOUND",
+    "producer_packer_buffer_alias": "UNBOUND",
+    "eac3_core_exponent_path_covered": false,
+    "dee_runtime": "NOT_RUN",
+    "media_or_pcm_read": false,
+    "private_key_or_license_read": false
+  },
+  "payload_policy": {
+    "source_code_included": false,
+    "binary_or_decompilation_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

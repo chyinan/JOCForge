@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-BSI-BLOCK-PRODUCER-V1",
+  "manifest_sha256": "0e1802e700a4ed0e574c514a3d71a43f8ffe226eec63fb6d21f2b1c477745555",
+  "sha256sums_sha256": "b8384a3fbf25e36f4440c63e6f3851607a4379b19cd4d5bda3933078f317f235",
+  "payload_count": 5,
+  "status": "MODE0_CODE_AND_PRESENCE_PRODUCER_BOUND; MATCHED_SELECTOR_AND_FLOAT_INPUTS_UNBOUND; PCM_ROOT_CAUSE_NOT_ESTABLISHED",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

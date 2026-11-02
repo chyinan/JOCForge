@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge-washed-eac3-exponent-producer-writer.v1",
+  "scope": "DEE DDP ENCODER E-AC-3 FULLBAND U4/U7 EXPONENT-CODE PRODUCER AND WRITER",
+  "status": "PRODUCER_WRITER_TYPED_ROW_JOIN_BOUND; N_WRITER_AND_U4_SEED_PRODUCERS_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "dee-ddp-exponent-producer-typed-edge-wash-v2",
+    "manifest_sha256": "ad95d8576957c0ed20d8339c322c01c9669ab48ea8bd545e28b3ab7400c32ec6",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "native_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "bytes": 7923712,
+    "analysis": "Ghidra 12.2 read-only"
+  },
+  "typed_callsite_join": {
+    "caller": "FUN_1403448d0",
+    "producer": {"function":"FUN_14032d580","callsite":"0x1403467d7","parameter":"param_10","pointer_base":"state+0x140f0"},
+    "writer": {"function":"FUN_14036f8f0","callsite":"0x1403468d5","parameter":"param_11","pointer_base":"state+0x140f0"},
+    "identity_grade": "STATIC_TYPED_POINTER_BASE_MATCH",
+    "runtime_pointer_observation": "NOT_RUN"
+  },
+  "fullband_lane_fields": {
+    "index": "j=5*block+lane",
+    "group_count_N": "i16(state+0x141c8+2*j)",
+    "difference_count_D": "i16(state+0x1418c+10*block+2*lane)",
+    "code_row_pointer": "*(u64 *)(state+0x143b8+8*j)",
+    "u4_seed": "u16(code_row_pointer+0)",
+    "u7_code_array": "u16 values packed in place beginning at code_row_pointer+2"
+  },
+  "producer_rule": {
+    "difference_formula": "next_exponent - previous_exponent + 2",
+    "selected_stride": "per-lane strategy lookup; actual row-to-profile selector mapping not observed",
+    "positive_tail_length": "3*N-D",
+    "tail_fill_value": 2,
+    "pack_three_values": "25*d0+5*d1+d2"
+  },
+  "writer_rule": {
+    "u4_count": 1,
+    "u4_width_bits": 4,
+    "u7_count": "N",
+    "u7_width_bits": 7,
+    "same_cursor": true,
+    "advance_bits": "4+7*N"
+  },
+  "remaining_boundaries": {
+    "upstream_N_assignment": "UNBOUND",
+    "minimum_padding_N_equals_ceil_D_over_3": "INFERENCE_ONLY_IF_UPSTREAM_USES_MINIMAL_ZERO_TO_TWO_PADDING",
+    "u4_seed_upstream_producer": "UNBOUND",
+    "physical_adm_row_to_internal_lane": "UNBOUND",
+    "native_runtime_observation_count": 0,
+    "authorized_adm_exponent_observation_count": 0
+  },
+  "parser_relevance": {
+    "reported_error": "exponent -1 is out-of-range at AU0 of an older Rust output",
+    "contract_directly_covers_eac3_core_exponent_syntax": true,
+    "sole_root_cause_established": false
+  },
+  "payload_policy": {"source_code_included":false,"binary_or_decompilation_included":false,"media_or_pcm_included":false,"private_key_or_license_material_included":false}
+}

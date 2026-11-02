@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-RENDERER-CORE-EDGE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RENDERER_FRAME_CALLBACK_TARGET_BOUND; SELECTED_CORE_TRANSFORM_UNBOUND; LFE_PAYLOAD_CONSUMER_NOT_CAPTURED",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1547,
+      "sha256": "ab677f6c605b9c33673678f0bb4ae4d2662dfaddca26cd94b6711e3b27b138ad"
+    },
+    "EVIDENCE.json": {
+      "bytes": 3189,
+      "sha256": "a50bdcd4af69556b720127bbc3083219e943c6ebf2baf83c0bd3cdeae33a64af"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 814,
+      "sha256": "5372c596f970ec7a1661c40aea9cefe1945cc0f3d1d3868925ed67eb3d4d00f4"
+    }
+  }
+}

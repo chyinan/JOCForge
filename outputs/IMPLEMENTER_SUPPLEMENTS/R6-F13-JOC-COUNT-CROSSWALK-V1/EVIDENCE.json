@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "R6-F13-JOC-COUNT-CROSSWALK-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Hash-bound input metadata dimensions plus static JOC coefficient-slot count chain; source and serializer joins remain unbound",
+  "upstream": {
+    "package_id": "r6_f13_joc_count_crosswalk_wash_v1",
+    "manifest_sha256": "3135b65e1113b013f6bc4a364c9483bb9c7bde353bc819bb07bc1bbce6c79b43",
+    "manifest_sha256_sidecar_sha256": "b01572fab7bc19e7177c1ab2ecc247369b4dd8c66c4e93bacfb8fcd4b8ee426a",
+    "payload_sha256": {
+      "REPORT.md": "6dd856f33c1b961dab36105c256778f95e1427499a5a5a4865a8072b4fe3782f",
+      "EVIDENCE.json": "0c5f09f929aa43224f0bf562844df6832601c8f9edd5105ec40a4a11901f46a0",
+      "INPUT-ONLY-DISCRIMINATOR.json": "c414ad8154ca335129d2ad3f7ef9ecaf2183077bd8b33bf0aac51402e49a27ef",
+      "SOURCE-MANIFESTS.json": "4c427e5d048911e8c9e0964870bf617b65b3b2a0777ad6d75cb339c40c020b08",
+      "CHECK.py": "a510358ae42ab180bf6d53fe73bdd0907f95136202afb6904bd6168d6178f76c"
+    },
+    "wash_independent_payload_check": "all five files match manifest sizes and hashes",
+    "upstream_checker": {"normal": "PASS", "python_optimized": "PASS"}
+  },
+  "source_metadata": [
+    {"label": "potential_ai", "source_sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82", "pcm_channels": 36, "chna_rows": 36, "chna_uids": 36, "bed_rows": "NOT_RECORDED", "object_associated_tracks": "NOT_RECORDED"},
+    {"label": "human_cat", "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1", "pcm_channels": 38, "chna_rows": 38, "chna_uids": 38, "direct_speaker_beds": 10, "object_associated_tracks": 28}
+  ],
+  "native_count_chain": {
+    "image": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    "source_field": {"location": "record+0x34", "type": "U32", "semantic": "INFERRED_MODE_CODE"},
+    "state_copy": {"destination": "state+0x2c", "type": "U32", "status": "STATIC_BOUND"},
+    "lookup_table_rva": "0x83fa60",
+    "slot_extent": {"location": "state+0x191c8", "type": "U16", "producer": "FUN_180099830", "consumer": "FUN_1800942d0"},
+    "candidate_writer": "FUN_1800cb0d0 -> FUN_18008aea0, two candidate 7-bit values",
+    "producer_output_to_packer_input_alias": "UNBOUND",
+    "exact_F13_EMDF_count": "UNBOUND",
+    "matched_mode_and_slot_value": "UNBOUND"
+  },
+  "execution": {"dee_run": false, "pcm_or_data_chunk_read": false, "encoded_payload_read": false, "key_or_license_accessed": false},
+  "prohibited_inferences": [
+    "Do not equate PCM channels, CHNA tracks, bed rows, object-associated tracks, DDP frame channels, coefficient slots, and EMDF count.",
+    "Do not treat 10+28=38 as proof of a native serialized object-count source.",
+    "Do not infer arbitrary track admission or audio parity from this package."
+  ]
+}

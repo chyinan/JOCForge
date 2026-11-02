@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-dee-encoder-open-config-field-boundary.v1",
+  "package_id": "DEE-ENCODER-OPEN-CONFIG-FIELD-BOUNDARY-V1",
+  "status": "ENCODER_OPEN_CONFIG_BUILDER_BOUND; REQUEST_FIELD_SEMANTICS_PARTLY_OPAQUE",
+  "source_package": {
+    "package_id": "dee_encoder_open_config_fields_wash_v1",
+    "manifest_sha256": "7b30ee2e340f03a354fbc8ff5f22c39d434511326cf18366bbd16a0b10bfd551",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT"
+  },
+  "encoder_open_config": {
+    "buffer_size_bytes": 120,
+    "input_data_rate": "I32 enum param1+0x00, values 0..5",
+    "destination_data_rate": "U32 config word 10 at +0x28",
+    "job_1024_kbps_to_enum_mapping": "UNBOUND",
+    "mode_dependent_u16": {
+      "input": "U16(param3+0x0A)",
+      "param1_0x15_equals_1": "values 10/12/16 map to internal codes 2/1/0",
+      "other_mode": "copied to config word 2 and used as row count for 6-byte rows at param3+0x10"
+    },
+    "opaque_profile_vector": "param4 fields copied into provider state; names UNBOUND",
+    "trim_records": "param5 span; nine records of 0x1c bytes; semantic link to requested format fields UNBOUND",
+    "sample_rate_acmod_lfeon_wire_order": "UNBOUND"
+  },
+  "effect_on_pcm_goal": {
+    "field_transfer_path_bound": true,
+    "missing_audio_format_value_identified": false,
+    "pcm_mismatch_explained": false,
+    "do_not_guess_enum_from_kbps": true
+  },
+  "scope": {
+    "ghidra_static_only": true,
+    "dee_run": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact_before_wash": false,
+    "source_code_or_decompilation_included": false
+  }
+}

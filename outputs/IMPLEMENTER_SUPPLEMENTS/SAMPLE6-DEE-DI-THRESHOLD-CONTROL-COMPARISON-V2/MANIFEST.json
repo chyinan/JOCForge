@@ -1,0 +1,30 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-DI-THRESHOLD-CONTROL-COMPARISON-V2",
+  "scope": "fresh hash-bound DEE true15 vs false100 full-file pair, same ADM, matched audio controls",
+  "status": "COMBINED_DI_THRESHOLD_AUDIO_EFFECT_MEASURED; INDIVIDUAL_PARAMETER_CAUSALITY_UNBOUND",
+  "source_true15_manifest_sha256": "f305634df0fbd381b873f40b052dbfe56d49d0faa1679bf0a00a4f40ed4675a7",
+  "source_comparison_evidence_manifest_sha256": "7401ba3e47aa3b0b0edcbc831af8ec781aa4e887409db57e688627af82b6cfa3",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "7aa0fbe246e83d5705aca53eec8807a93d83853d2e5a8391b96425b4020d683b",
+      "bytes": 2466
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "9c897de72ad8e6be2b25ae3514e68e2a430f165fed57758020a18484f341fd1e",
+      "bytes": 3834
+    },
+    {
+      "name": "README.md",
+      "sha256": "28b5695f309d32b48d302f0038e533794f982c6eda2379c865c309c4880583fc",
+      "bytes": 1212
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "37da3763f7d872327d078705cdaef01a25821b55586db7128b45727dc48626b9",
+      "bytes": 847
+    }
+  ]
+}

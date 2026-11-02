@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "ATMOS-JOC-SELECTOR-CONFIG-WRITER-BOUNDARY-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3240,
+      "sha256": "29fbfacf79fbd19e207a5199cf1c23d47cb5a4fd85b962bf4124046d2155fdcd"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2548,
+      "sha256": "96ffd0c665e9bdfcdb3c3af4047fc10b96675e35693406a886ccdd51f6f283d0"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 473,
+      "sha256": "16653d7f629fdb7f7233969599188cb051492022c4cb441e522c8e0ab059e201"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1066,
+      "sha256": "77c713898d9eccfc69765492d8464f47e7f7b9e0df4dfbd9684240721a9a730f"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1350,
+      "sha256": "c1a9a9da9bf8df495efa07f3a753a3ea9bfb4b5bfdb11205c7e40474452c4c3d"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "f11ea9e9cc47f25d24d4db5fa46b61c36eb57a7e2dd751375a7d63c9eae94241"
+    }
+  ]
+}

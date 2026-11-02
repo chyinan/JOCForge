@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-DIALNORM-FRAME-U5-CONSUMER-BOUNDARY-V1",
+  "source_reverse_package_id": "dialnorm-frame-record-u5-writer",
+  "source_reverse_manifest_sha256": "f3b7064e86b97c7a06353553066038d9b1c782424e986cc735cf7b63975d6b7c",
+  "source_reverse_package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT",
+  "status": "ID12_FRAME_RECORD_NOT_CONSUMED_IN_SELECTED_BRANCH; CONVEXPSTR_WRITER_DISTINCT; FINAL_U5_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2945,
+      "sha256": "1ad33af8b60b605662aeed2f60a2f41dd83a88e4be0907343e53cb638fe2e3f7"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1590,
+      "sha256": "b0fc4015448ac1845a3855c15d3d4bf6167dd4c058ea63017b4016305a19a44d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 546,
+      "sha256": "c5e6c88492a57bc6234be12e4c0ee90cb0d16d01366bf16febc985d0adc353f5"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1250,
+      "sha256": "cd5d06783579e73228b60e7201e50e90b02a10d186d76857bf5880b2469cb935"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 763,
+      "sha256": "6bcebe6a2661ed518f9b351c8538ac21724ee851d8849e71188f4820056184ba"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

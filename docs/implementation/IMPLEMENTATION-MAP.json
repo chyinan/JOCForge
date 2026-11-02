@@ -9721,8 +9721,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969297,
-              "sha256": "394115ab55a2d07fd7d11fe0c3b91a2f784f2c5711a6533af68e7b5e52b120f4"
+              "bytes": 1969300,
+              "sha256": "d06eadb9a1b0be69e05e8ddcc79776e1310ee17ee422db1fd164f503baf078f5"
             }
           ],
           "test_modules": [
@@ -13240,8 +13240,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969297,
-              "sha256": "394115ab55a2d07fd7d11fe0c3b91a2f784f2c5711a6533af68e7b5e52b120f4"
+              "bytes": 1969300,
+              "sha256": "d06eadb9a1b0be69e05e8ddcc79776e1310ee17ee422db1fd164f503baf078f5"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -22792,9 +22792,9 @@
             },
             "additional_fixtures": [
               {
-                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
-                "bytes": 19159,
-                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
+                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 18663,
+                "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
@@ -22903,9 +22903,9 @@
             },
             "additional_fixtures": [
               {
-                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
-                "bytes": 19159,
-                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
+                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 18663,
+                "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
@@ -22995,9 +22995,9 @@
             },
             "additional_fixtures": [
               {
-                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
-                "bytes": 19159,
-                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
+                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 18663,
+                "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
@@ -23094,9 +23094,9 @@
             },
             "additional_fixtures": [
               {
-                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
-                "bytes": 19159,
-                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
+                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 18663,
+                "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
@@ -23836,9 +23836,9 @@
             },
             "additional_fixtures": [
               {
-                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
-                "bytes": 19159,
-                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
+                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 18663,
+                "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
@@ -24700,9 +24700,9 @@
             },
             "additional_fixtures": [
               {
-                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
-                "bytes": 19159,
-                "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
+                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 18663,
+                "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               },
               {
                 "file": "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json",
@@ -34059,8 +34059,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969297,
-              "sha256": "394115ab55a2d07fd7d11fe0c3b91a2f784f2c5711a6533af68e7b5e52b120f4"
+              "bytes": 1969300,
+              "sha256": "d06eadb9a1b0be69e05e8ddcc79776e1310ee17ee422db1fd164f503baf078f5"
             }
           ],
           "test_inventory": [
@@ -46269,6 +46269,124 @@
       "not_run": [
         "Selected native stride branch and row3-to-core-LFE lane.",
         "Same input/generation and numeric/audio parity."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-LFE-F08-CURRENT-HEAD-RECHECK-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-LFE-F08-CURRENT-HEAD-RECHECK-V1",
+      "manifest_sha256": "6145c06997b499825dad83d70211f75f39c7eccabe6307c58d9fd82e63d1e3a4",
+      "functional_ids": [
+        "F04",
+        "F08",
+        "F09"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "CURRENT_HEAD_F08_CALLSITE_AND_ARRAY_IDENTITY_RECHECKED; NUMERIC_PARITY_NOT_RUN",
+      "not_run": [
+        "Selected native stride branch and row3-to-core-LFE lane.",
+        "Same input/generation numeric or audio parity."
+      ]
+    },
+    {
+      "package_id": "DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V1",
+      "manifest_sha256": "fdfeff2f26f93ccf830762ae06c059f3c4041be44373eee690aaaeee27862436",
+      "functional_ids": [
+        "F01E",
+        "F04",
+        "F08"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "NATIVE_DESCRIPTOR_STRIDE_AND_256_F32_GATHER_BOUND; SELECTED_BRANCH_AND_RUST_INPUT_JOIN_UNBOUND",
+      "not_run": [
+        "Selected target job stride value.",
+        "Native temporary input to Rust F08 same-generation row join."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-36-ROW-METER-AND-F01E-GATES-V2",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-36-ROW-METER-AND-F01E-GATES-V2",
+      "manifest_sha256": "d9214781aa5189d10681ca70f23898ba002c1020363efb6ceb53c200be5cb1b8",
+      "functional_ids": [
+        "F01E",
+        "F06",
+        "F03W",
+        "F04"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "CURSOR_DYNAMIC_36_38; NEXT_METER_G0_INSTALLED48_AND_F01E_FIXED_SHAPE_GATES",
+      "not_run": [
+        "Meter G0 36-row Installed48 source-map admission.",
+        "36-row F01E normal/FreshZero parent transaction and playable output."
+      ]
+    },
+    {
+      "package_id": "ADM-AUTO-TIME-HOST-TO-CONVERTER-MAP-JOIN-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-AUTO-TIME-HOST-TO-CONVERTER-MAP-JOIN-V1",
+      "manifest_sha256": "a1a8c7177bf13c63dfc436b06a732226f55e70eaf4a04cdb6b382e10880bfdd0",
+      "functional_ids": [
+        "F01",
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "HOST_OFFSET_FFOA_WRITER_BOUND; CONVERTER_PRIVCONTEXT_MAP_TRANSFER_UNBOUND",
+      "not_run": [
+        "Same-owner/generation AtmosMezz+0x130 to converter+0xa8 map transfer.",
+        "Auto/seek source join."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS-INFO-MASTER-WRITER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-INFO-MASTER-WRITER-BOUNDARY-V1",
+      "manifest_sha256": "f73c3bcc8ca7a01775a2fe2713a40a9eae29fdb1095671748868559ed495e4a8",
+      "functional_ids": [
+        "F01",
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ATMOS_INFO_MASTER_START_FFOA_WRITER_TO_READER_INTERFACE_BOUND; CONCRETE_READER_SOURCE_UNBOUND",
+      "not_run": [
+        "Specific WAVE/ADM chunk writer into master record fields.",
+        "AudioProgramme start to DEE Start/FFOA identity."
+      ]
+    },
+    {
+      "package_id": "ATMOS-LINE-DRC-FILM-LIGHT-U32-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-LINE-DRC-FILM-LIGHT-U32-V1",
+      "manifest_sha256": "7c4bc2b816862dc3e809e20fb70d26788ce20cc5695761306f6be76aa61f6062",
+      "functional_ids": [
+        "F01E",
+        "F06NR"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "FILM_LIGHT_PROFILE_TREE_U32_ZERO; LINE_DDP_COMPR_SAME_VALUE_JOIN_UNBOUND",
+      "not_run": [
+        "Selected encoder-consumer same-value bridge.",
+        "DRC audio behavior."
       ]
     }
   ]

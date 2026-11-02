@@ -1,0 +1,10 @@
+{
+  "schema": "washed-drc-plugin-host-edge-symbolic-vector.v1",
+  "classification": "STATIC_CALLBACK_EDGE_ONLY; NOT_RUNTIME_EXECUTION",
+  "plugin_row": {"owner": "plugin_root+0x21e9c", "type": "F32[6][5]"},
+  "callback": {"output_record": "plugin_instance+0xb20", "return_type": "integer status"},
+  "success_output": {"buffer": "plugin_instance+0xb90", "byte_length": "2*U16(plugin_instance+0xb9a)"},
+  "encoder_core_row": "encoder state+0x21cc4",
+  "typed_plugin_to_core_transfer": "UNBOUND",
+  "runtime_execution": "NOT_RUN"
+}

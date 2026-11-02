@@ -1,0 +1,18 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "r9-joc-tag4-mode-producer-wash",
+      "manifest_sha256": "d7f872d9f899d33aa20636637e15516b6b27d806a78f070b7b0c4d76060e4f59"
+    },
+    {
+      "package_id": "r9-joc-coefficient-count-audio-wash",
+      "manifest_sha256": "06fc46a4b650aedb4d72ea160e09921adc7cc6dd5d47a7cf206746ad6f69d3fa"
+    },
+    {
+      "package_id": "JOC-COEFFICIENT-COUNT-STATE-PROJECTION-V1",
+      "manifest_sha256": "26a25b26f735e8d37861468e1cb3dac8ed9a8513a829061226e14a3974c6d4ed",
+      "package_seal_sha256": "7e5cf7a6ba040b659887b01d4c930da70122c3e69ba8dbd0a13a181c72b101d7"
+    }
+  ]
+}

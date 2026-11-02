@@ -1,0 +1,9 @@
+# Sample 6 E-AC-3 core window-table candidate
+
+R2's hash-bound Ghidra 12.2 slice finds one early numeric difference among the compared transform inputs: 12 of 256 F32 window words in the Rust `MathGeneratedTransformParameters` provider differ from the DEE table by one ULP. The first mismatch is index 21 (`DEE 0x3c0ea5aa`, selected Rust provider `0x3c0ea5a9`). The selected provider is `ordinary_transform_math_parameters.json`; Wash independently rehashed its current file and the associated Rust owner/fold/math-provider files, matching the hashes in the research package.
+
+At the fold boundary, the compared native and Rust paths use the same index mapping and separate F32 multiply/add/subtract operations; no fused multiply-add was found in the inspected routines. A sparse input-only vector with `input[234]=1.0` and other words zero makes the table difference appear directly at primary row 107 and companion side 106 as a one-ULP output difference.
+
+This is the strongest early static audio-algorithm candidate found so far and is suitable for a small implementation trial: patch only the 12 selected-provider words to the DEE F32 bit patterns, preserve the existing arithmetic order, and rerun the same AU window. Do not switch to the legacy Rust table solely because its values match; its route to the active sample-6 owner is not bound. The prior sample-6 PCM comparison does not bind the Rust source snapshot used for that run, so this table split is not yet a proven cause of the measured residual.
+
+Other compared tables (long cosine, long sine, permutation, active butterfly prefix) matched in the static package. BAP/mantissa, positive D/N producers, selected span mapping, native transform-input owner, and run-to-source identity remain open. No DEE execution, PCM/payload read, or key/license access occurred; no raw binary, code, or decompilation is included.

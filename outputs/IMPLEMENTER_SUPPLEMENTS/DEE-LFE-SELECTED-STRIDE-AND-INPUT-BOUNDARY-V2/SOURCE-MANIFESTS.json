@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-LFE-SELECTED-STRIDE-INPUT-EDGE-WASH-V1",
+      "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-25\\jocforge-reverse-agent-4-f06of\\outputs\\dee_lfe_selected_stride_input_edge_wash_v1",
+      "manifest_sha256": "fd6ec172d610ff94867cec38d937396cdd9444f6d05c0921d0392d34e454f2bd",
+      "package_seal_sha256": "de81a8d51dc7bba9ae755add13a11a5c1858384be0f298bb1e32153d8abc8a98",
+      "evidence_sha256": "23d242556e9a73d68af72ff34906e4592e6247dc274123eefb3fb0a827c93385",
+      "report_sha256": "a7ec1220599ca13ddc92449d79ec499fa04c0002bdaad9e45023628ac49a9961",
+      "sha256sums_sha256": "dbc8090e1662f7ebd5fe34c3cebb35b38694bf08b2c683c728c11b6d2efd397a",
+      "independent_check": "manifest and seal hashes recomputed; package verifier passed normally and with python -O; report/evidence manually reviewed"
+    }
+  ]
+}

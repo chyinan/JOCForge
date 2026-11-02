@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge-washed-dee-audio-writer-output-handoff.v2",
+  "package_id": "DEE-AUDIO-WRITER-DESTINATION-REPACK-CONTRACT-V2",
+  "supersedes": "DEE-AUDIO-WRITER-DESTINATION-REPACK-CONTRACT-V1",
+  "scope": "BIT SPAN SOURCE TO REPACK DESTINATION TO PER-UNIT STREAM OBJECT",
+  "status": "SOURCE_REPACK_SIZE_AND_ORDERED_CONSUMER_HANDOFF_BOUND; FILE_WRITER_NOT_REACHED",
+  "source_package": {
+    "package_id": "dee_audio_writer_au_boundary_wash_v1",
+    "manifest_sha256": "a5a8d0246f1e7bda7d897db3609b884f6c185055f6357d66cbc83a1b8bbbe2fb",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "actual_target_image_hash_rechecked": true,
+    "tool": "Ghidra 12.2 static"
+  },
+  "writer_to_repack_contract": {
+    "unit_initializer": "FUN_180073ef0 resets cursor/accumulator and selects uVar28 source word pointer",
+    "field_close": "FUN_180093310 records inclusive bit-span end at bit_position-1; it does not flush",
+    "final_residual_word": "On successful FUN_1800942d0 finalization, cursor!=0 writes one 16-bit accumulator to uVar28; padding low bits are outside the recorded span",
+    "repack_callsite": "FUN_180073ef0 callsite 0x1800747c6 to FUN_18008d260",
+    "repack_source": "uVar28 at outer+0xb30+0x10*k",
+    "repack_destination": "outer+0xb90+0x10*k",
+    "word_count_u16": "outer+0xb9a+0x10*k",
+    "repack_rule": "copy recorded bit spans; write ceil(output_bits/16) U16 words; byte-swap when mode flag is zero",
+    "consumer_byte_length": "word_count*2"
+  },
+  "ordered_consumer_handoff": {
+    "producer_loop": "FUN_1800b7930 iterates per-unit records in increasing ordinal and calls FUN_180077ac0",
+    "stream_selection": "FUN_180077ac0 selects a per-index stream object",
+    "handoff_function": "FUN_1800b53b0 receives the selected object and descriptor containing repacked pointer/byte count",
+    "next_calls": ["FUN_1800b4fc0", "FUN_1800dff40"],
+    "observed_internal_path": "FUN_1800dff40 reaches FUN_1800efb50/FUN_1800efba0 and FUN_1800f5e00; FUN_1800f5e00 updates an internal SHA-256 state via FUN_1800f3cd0",
+    "file_or_container_write_reached": false,
+    "application_output_join": "UNBOUND_AFTER_FUN_1800b53b0_HANDOFF"
+  },
+  "confidence": {
+    "bit_writer_state_and_residual_flush": "HIGH_STATIC",
+    "source_repack_destination_and_word_count": "HIGH_STATIC",
+    "per_unit_ordered_stream_handoff": "HIGH_STATIC",
+    "file_or_container_output": "NOT_TRACED"
+  },
+  "execution_boundary": {
+    "dee_runtime_executed": false,
+    "media_pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "ghidra_scripts_or_target_binary_included": false,
+    "synthetic_vector_rerun": false
+  }
+}

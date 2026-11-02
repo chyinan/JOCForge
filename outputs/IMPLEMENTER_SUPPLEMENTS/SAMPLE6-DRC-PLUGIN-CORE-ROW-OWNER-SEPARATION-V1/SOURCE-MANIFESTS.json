@@ -1,0 +1,25 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "sample6-matched-drc-plugin-row-owner-wash-v1",
+      "manifest_sha256": "fa4ec116e85420039997cc9b11274478c4b4991fc735527270081038e888ac42",
+      "package_seal_sha256": "7691d728d671c7351f81fadf0310a1aba96f3a1baf293b391a9291beb7891ffb"
+    },
+    {
+      "package_id": "sample6-matched-drc-f32-analysis-role-wash-v1",
+      "manifest_sha256": "be5091ac9fe79de2999d1afc994363580ce6f353e346d52761e8eb49db88ae01",
+      "package_seal_sha256": "f874facf13e95c456e03a4519c8295bb526635752830eff4bf1251e80e788058"
+    },
+    {
+      "package_id": "sample6-matched-drc-f32-source-initializer-wash-v1",
+      "manifest_sha256": "1d66907778c5b53a47a09c0831432281b15e8be164a3e923f43c16dd8862db05",
+      "package_seal_sha256": "0487537023fb9c97431af1ec54cc7c58123d1e0182059813493bcbfef292dc5e"
+    },
+    {
+      "package_id": "sample6-matched-drc-f32-producer-wash-v1",
+      "manifest_sha256": "c6249d6315a10c836c3a7e657ff854efbc634ca22d84d46ef2b2216915c0e49e",
+      "package_seal_sha256": "7284e86986bc2f150b770fd1194f783c2495f41264d6d77e6020fc9a70d5eadc"
+    }
+  ]
+}

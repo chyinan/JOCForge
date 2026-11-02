@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-atmos-joc-row-handoff-input-only.v1",
+  "vector_id": "adm36_rowwise_renderer_entry_candidate",
+  "source_receipt_count": 2,
+  "channels": 36,
+  "sample_rate_hz": 48000,
+  "source_bits_per_sample": 24,
+  "row_pointer_count": 36,
+  "channel_count": 36,
+  "frame_count": 512,
+  "allocated_frame_capacity": 512,
+  "pointer_alignment_bytes": 16,
+  "copy_sample_width_bytes": 4,
+  "expected_bytes_per_row": 2048,
+  "expected_output_samples_included": false,
+  "executed": false,
+  "negative_controls": [
+    {"case":"channel_count_mismatch","channel_count":35,"expected":"reject before renderer dispatch"},
+    {"case":"frame_count_exceeds_capacity","frame_count":513,"capacity":512,"expected":"reject before row copy"}
+  ]
+}

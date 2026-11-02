@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge-washed-atmos-joc-row-handoff.v1",
+  "scope": "PLANAR ADM ROW DESCRIPTOR AND ATMOSPROCESSOR HANDOFF",
+  "status": "BEST_SUPPORTED_PLANAR_ROW_HANDOFF_BOUND; RENDERER_PROCESS_BOUND; INNER_TRANSFORM_TARGET_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "atmos_joc_multichannel_row_handoff_wash_v1",
+    "manifest_sha256": "d926de87e639bb9e9201ece1f5f7ec70e943e7f03e2167b5c582aad9bc7cfffe",
+    "package_seal_sha256": "8c5358856f2d95e391cb7f19d7e504819f45981f4f03751f9764d60157fb4430",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "referenced_source_hashes_checked": 23,
+    "referenced_source_hash_mismatches": 0
+  },
+  "native_image": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis": "Ghidra 12.2 static"
+  },
+  "route": {
+    "selected_route": "encode_to_atmos_ddp",
+    "selected_stage": "dee::proc::FilterDDPJocEnc",
+    "best_supported_chain": ["0x1475f0", "0x175c70", "0x175c80", "0x174190", "0x17bb40", "0x17b310", "0x18adf0", "0x18ae20"],
+    "confidence": 0.82,
+    "same_instance_owner_generation_runtime_join": "UNBOUND"
+  },
+  "descriptor_and_copy_contract": {
+    "descriptor_function_rva": "0x18ae20",
+    "row_table_pointer_offset": "0x00",
+    "channel_count_offset": "0x08",
+    "frame_count_offset": "0x10",
+    "channel_count_check": "must equal configured expected count",
+    "frame_count_check": "must not exceed configured input capacity",
+    "copy_function_rva": "0x18d640",
+    "copy_loop": "for each channel i, copy frame_count * 4 bytes from source_row[i] to MultiChannelBuffer row[i]",
+    "order_preserved": true,
+    "element_width_bytes": 4
+  },
+  "renderer_dispatch": {
+    "renderer_type": "Dolby::Atmos::Home::SinglethreadSymphonyRenderer",
+    "process_vtable_slot_offset": "+0x08",
+    "process_target_rva": "0x423e90",
+    "dispatch_attempt_after_row_copy": true,
+    "confidence": 0.92
+  },
+  "sample_boundary": {
+    "prior_authorized_adm_receipts": 2,
+    "observed_channel_count": 36,
+    "sample_rate_hz": 48000,
+    "source_bits_per_sample": 24,
+    "active_audio_receipts": 1,
+    "quiet_window_receipts_excluded_from_active_behavior": 1,
+    "new_dee_run": false,
+    "38_channel_hanmao_runtime_render_observed": false
+  },
+  "unbound_audio_boundary": {
+    "nested_renderer_helper_slot": "+0x28",
+    "nested_analysis_or_qmf_target": "UNBOUND/NO",
+    "exact_downstream_audio_equivalence": "UNBOUND"
+  },
+  "payload_policy": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

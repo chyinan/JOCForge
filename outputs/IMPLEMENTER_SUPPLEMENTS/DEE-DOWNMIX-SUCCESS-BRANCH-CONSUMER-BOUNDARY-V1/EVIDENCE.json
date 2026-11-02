@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge-dee-downmix-success-branch-consumer-boundary.v1",
+  "package_id": "DEE-DOWNMIX-SUCCESS-BRANCH-CONSUMER-BOUNDARY-V1",
+  "status": "DOWNMIX_PARSER_SLOTS_BOUND; FIRST_TYPED_AUDIO_CONSUMER_UNBOUND",
+  "source_package": {
+    "package_id": "F13C-first-nonparser-consumer-addendum-v1",
+    "manifest_sha256": "68f8e000a1d74786da60ceedb2e73925355c05aa712ed679eba1432ba964e6a5",
+    "sha256sums_file_sha256": "5dbd67ba1fcb7d5fafd5b7b2a2fe8b5936505d03be4b8167278aeb50269518b1",
+    "source_members_recomputed": true,
+    "package_seal": "NOT_PRESENT"
+  },
+  "parser_output_slots": {
+    "lorosurmixlev": "+0x1ac",
+    "dmixmod": "+0x1b0",
+    "other_scanned_slots": ["+0x13c", "+0x140"]
+  },
+  "bounded_candidates": [
+    {"offsets":["+0x1ac","+0x1b0"],"observed_types":["byte count","pointer"],"matches_parser_output_object":false},
+    {"offsets":["+0x1a8","+0x1b0"],"observed_type":"begin/end pointer pair for 8-byte elements","matches_parser_output_object":false}
+  ],
+  "result": {
+    "dmixmod_to_audio_matrix":"UNBOUND",
+    "dmixmod_to_5p1_frame_input":"UNBOUND",
+    "fields_ignored_downstream":"NOT_ESTABLISHED",
+    "pcm_mismatch_explained":false
+  },
+  "scope": {
+    "ghidra_static_only":true,
+    "dee_run":"NOT_RUN",
+    "pcm_or_payload_read":false,
+    "key_or_license_read":false,
+    "implementation_contact_before_wash":false
+  }
+}

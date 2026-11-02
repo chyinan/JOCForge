@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-hanmao-u5-input-only-vector.v1",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "attempt_id": "a-fresh-reference",
+  "aggregate_scalar_input": -20.665958,
+  "measurement_unit": "NOT_STATED_IN_NATIVE_LOG",
+  "configuration": {
+    "sample_rate_hz": 48000,
+    "audio_blocks": 6,
+    "frame_size_bytes": 4096,
+    "substream_id": 0,
+    "bitstream_id": 16
+  },
+  "expected_output_included": false,
+  "executed_by_this_vector": false,
+  "note": "The observed same-run U5=21 is recorded separately in EVIDENCE.json; this vector is input/config only."
+}

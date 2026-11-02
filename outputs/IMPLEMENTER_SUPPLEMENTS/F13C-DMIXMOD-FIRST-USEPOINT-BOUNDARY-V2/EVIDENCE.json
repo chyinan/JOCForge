@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.dmixmod_usepoint_boundary.v1",
+  "status": "DMIXMOD_ALLOWLIST_USEPOINT_BOUND; PREFERRED_ALIAS_UNBOUND; AUDIO_BSI_JOC_EFFECT_UNBOUND; TEST_NOT_RUN",
+  "scope": "Ghidra 12.2 static-only parser/usepoint boundary; no encoder run or audio-effect claim.",
+  "source_package": {
+    "package_id": "F13C-dmixmod-joc-usepoint-addendum-v1",
+    "manifest_sha256": "537890557453666ca74fbe42f7d0598d74d5906725b6f548b504a5e14ad62350",
+    "addendum_sha256": "86ce8f66810fdc31f3c74aec0161972b935de18a298332d5f2cd8d1eb67d1b9c",
+    "field_usepoint_sha256": "d52a28d7ddc4810cdfb301495f27ae5832ac17035b86ee14bf14034ccab63ea7",
+    "trace_sha256": "f5c605a584b9fdfd3cd32060a55ec00402a8b3119d13c3b332a071165715b29e",
+    "single_field_plan_sha256": "72877abb14ee8a717eef67486bbdaafcd7c3160e48672f5c5692677606ff0e5f",
+    "source_package_checker": "normal and python -O passed; payloads/checksums verified"
+  },
+  "target_image": {
+    "program": "dee_ddpjoc_encoder.exe",
+    "project_recorded_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "installed_image_rehashed": false
+  },
+  "field_identity": {
+    "jocforge_frontend_key": "preferred_downmix_mode",
+    "native_xml_key": "dmixmod",
+    "direct_alias": "UNBOUND",
+    "preferred_literal_code_xrefs_in_native_image": 0,
+    "do_not_infer_alias_by_name_or_equal_value": true
+  },
+  "native_parser_path": {
+    "lookup": "FUN_1404ecea0",
+    "first_consumer": "FUN_1404dddd0",
+    "first_consumer_kind": "string allowlist validation only",
+    "allowlist_tokens": [
+      "not_indicated",
+      "pro_logic",
+      "stereo",
+      "pro_logic_ii"
+    ],
+    "typed_enum_conversion_or_value_store": "UNBOUND",
+    "parser_result_slot_semantic_type": "UNBOUND",
+    "error_branch": "FUN_1404802e0 -> FUN_1404807d0 builds a generic result/error tree; no downmix field read",
+    "post_parser_audio_or_joc_consumer": "UNBOUND"
+  },
+  "effect_boundary": {
+    "audio_matrix_or_postmix": "UNBOUND",
+    "BSI_or_metadata_writer": "UNBOUND",
+    "F13C_JOC_frame_or_payload_writer": "UNBOUND",
+    "native_effect_classification": "UNBOUND",
+    "loro_vs_ltrt_test": "NOT_RUN"
+  },
+  "limits": {
+    "encoder_launched": false,
+    "media_or_pcm_read": false,
+    "payload_read": false,
+    "private_key_read": false
+  }
+}

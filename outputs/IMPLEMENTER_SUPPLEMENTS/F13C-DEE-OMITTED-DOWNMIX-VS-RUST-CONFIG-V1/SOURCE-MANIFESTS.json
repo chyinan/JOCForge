@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "dee_package": {
+    "package_id": "F13C-dmixmod-omission-default-trace-addendum-v21",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\F13C-dmixmod-omission-default-trace-addendum-v21",
+    "manifest_sha256": "cfaec056f570eec6d2a1d985bd3544df30eac446f89140ace9fa551448703415"
+  },
+  "rust_source_files": [
+    {"file": "crates/jocforge-cli/src/encode_request.rs", "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"},
+    {"file": "crates/jocforge-application/src/codec_source_bridge.rs", "sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e"},
+    {"file": "crates/jocforge-domain/src/codec/frame_builder.rs", "sha256": "170e3f220a795abfff5d296e8b53a8436b621e547c064e3aa3d4a781217c3829"},
+    {"file": "crates/jocforge-domain/tests/job_configuration.rs", "sha256": "3918e8ec4047682b56f670d68a463ae6008a55f04d9565430f05141f136d71a3"}
+  ],
+  "exclusions": [
+    "No Rust source code, DEE decompilation, binary, media, key, HMAC or license content copied.",
+    "Native effective default, runtime owner, and output impact remain unbound."
+  ]
+}

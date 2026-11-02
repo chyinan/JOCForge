@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-JOCFORGE-FULL-DECODE-VALIDATION-V1",
+  "status": "FULL_OUTPUT_CREATED_AND_DECODED; SAME_INPUT_DEE_AUDIO_PARITY_NOT_RUN; BSI_MISMATCHES_OPEN",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3251,
+      "sha256": "50f537d1843a6f93a13a83a2c6c10139ec3e798419cdd1c169b254d142248090"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2824,
+      "sha256": "24381c97aff3c4463ed3320fa3963f2e5d25ee9fd8dd84ca457fe462a175ac9d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1342,
+      "sha256": "a72904e9271485872a49f21b7c6323a6746e1b8a1b05ef55c0d6580c3298477d"
+    }
+  ],
+  "exclusions": {
+    "encoded_output_included": false,
+    "pcm_included": false,
+    "private_key_or_license_material_included": false,
+    "old_comparator_payload_included": false
+  }
+}

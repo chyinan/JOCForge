@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-LFE-SPATIAL-ANALYSIS-WEIGHT-BOUNDARY-V1",
+  "manifest_sha256": "748f7657ae414ebb841e8a418b6475abf3ee4edd1b38ca2c901147205b204275",
+  "sha256sums_sha256": "26da94f8f1125cbbcf35948104ea4dee9c1fdcc41102bc6935d6ed93eb0aa2e9",
+  "payload_count": 5,
+  "status": "SPATIAL_ANALYSIS_WEIGHT_BOUND; DECODED_CORE_LFE_GAIN_UNBOUND; SAMPLE_READ_INCIDENT_DISCLOSED",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

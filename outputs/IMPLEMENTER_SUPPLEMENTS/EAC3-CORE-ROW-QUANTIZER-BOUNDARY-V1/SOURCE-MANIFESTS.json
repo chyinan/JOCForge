@@ -1,0 +1,21 @@
+{
+  "source_packages": [
+    {"package_id":"EAC3-CORE-ROW-QUANTIZER-WASH-V1","manifest_sha256":"aff6340a983d0e47645df8d6fc0c74b4410425d7287df642f0abc0683cb933d8","source_seal":"MANIFEST.sha256_PRESENT"},
+    {"package_id":"EAC3-CORE-WINDOW-TABLE-CANDIDATE-V1","manifest_sha256":"6018113ec1c946272ac83ce74ce064a8685671803ba259c41c63487af8f09ba4","package_seal_sha256":"e3c40c69dc509c823e28f655715f681955a4f179ad7e397715c8a96c5e482a3a"},
+    {"package_id":"EAC3-CORE-WINDOW-TABLE-RUN-COMMIT-AUDIT-V1","manifest_sha256":"f4ce04dee7f5d856ff4164e260f8e00a3f8e54ce5c994e4c419ea91c21d3c0c8","role":"historical run-source UNBOUND boundary"}
+  ],
+  "current_rust_source_hashes_recomputed": [
+    {"path":"crates/jocforge-domain/src/analysis/owner.rs","sha256":"46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"},
+    {"path":"crates/jocforge-domain/src/transform/window_fold.rs","sha256":"9295d6d0cc18d796c55bdc4d61542a19d0b43886778ad41f8cf24cb34f734c9e"},
+    {"path":"crates/jocforge-domain/src/transform/fbw_transform.rs","sha256":"4254c8245769beb887f556bf04d4685e8e61ecdf80dafe316e2080a60fb9214a"},
+    {"path":"crates/jocforge-domain/src/codec/bap.rs","sha256":"bb377739f7fe85e64d1f88f832684a83049b7a2e9bbe0a14805db9d15eb2c62a"},
+    {"path":"crates/jocforge-domain/src/codec/mantissa.rs","sha256":"77a0bcc00b0d5ee68e7e0c6e53528fff9d8738218484b5b3861ad11de86c6367"},
+    {"path":"crates/jocforge-domain/src/codec/grouped_quantizer.rs","sha256":"f4840fefdb7bb10f2afd85c63e88dc62c96c76962abb514e51c65a523f342c40"}
+  ],
+  "source_validation": {
+    "incoming_manifest_and_payload_hashes_checked": true,
+    "incoming_normal_and_optimized_checkers":"PASS",
+    "current_rust_source_hashes_recomputed":"PASS",
+    "sample6_old_run_source":"UNBOUND"
+  }
+}

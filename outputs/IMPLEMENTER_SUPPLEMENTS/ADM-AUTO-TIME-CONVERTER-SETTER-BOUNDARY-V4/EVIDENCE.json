@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge.adm_auto_time_converter_setter_boundary.v1",
+  "status": "HOST_TARGET_RESPONSE_BOUND; CONVERTER_FACTORY_KEYS_SEPARATE; PRIVCONTEXT_SETTERRANGE_JOIN_UNBOUND; FILE_POSITION_MVP_NOT_BLOCKED",
+  "scope": "Ghidra 12.2 static host-response and converter-factory/key boundary; no runtime property transfer observed.",
+  "source_package": {
+    "package_id": "adm_bwf_property_response_converter_setter_edge_wash_v1",
+    "manifest_sha256": "3e58ecce98022c5c54055d9cabced6f9b887cc0d8c06cf35dc2c1d00ece7e026",
+    "package_seal_sha256": "ed99f4164a07b914837f274eee98028107d94a911f8e3c1b88405c93828f4067",
+    "boundary_payload_sha256": "ccd2369274d40ba51bf7e9c3b104e32321cd6e0c45d117c512be05ead0eb9dd8",
+    "source_identities_sha256": "b08cdcdffab02dec07563a273ce347ca7f97effbb3ec4a0e6b8dc8411a81b975",
+    "checker_sha256": "0e39817ea27ab13680c2f4f2654e9ec801058a1f2653abef33349a35fba633c7",
+    "checker_result": "normal and python -O passed"
+  },
+  "host_response": {
+    "image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "request": "dee_audio_input_target",
+    "source": "AtmosMezz+0x130 per-target rows",
+    "consumer": "AtmosMezz vtable+0x10 / FUN_1400efd60",
+    "result": "serialized host property-response string"
+  },
+  "converter_surface": {
+    "image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "factory_callback_candidate": "FUN_1800691c0",
+    "plugin_config_constructor": "FUN_18006e1f0",
+    "context_initializer": "FUN_18006f910",
+    "literal_keys_found": [
+      "dee_audio_filter_source",
+      "dee_audio_filter_target:0"
+    ],
+    "input_target_or_source_literals_found": [],
+    "PrivContext_setRange": {
+      "function": "FUN_18007fba0",
+      "map": "+0xa8",
+      "keys": [
+        "offset",
+        "first_frame_of_action"
+      ]
+    }
+  },
+  "remaining_edge": {
+    "serialized_target_response_to_PrivContext_plus_0xa8": "UNBOUND",
+    "typed_copy_call_constructor_transfer_found": false,
+    "same_owner_generation": "UNBOUND",
+    "scope_warning": "No literal string in a bounded scan is not proof of global absence or impossibility of a dynamic adapter."
+  },
+  "mvp": {
+    "default_file_position_blocked": false,
+    "auto_time_extension": "UNBOUND",
+    "audio_parity": "NOT_RUN"
+  },
+  "limits": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false
+  }
+}

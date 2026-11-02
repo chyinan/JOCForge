@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-CORE-FBW-LFE-ROWMAP-COUNT-BOUNDARY-V2",
+  "manifest_sha256": "c55c5bf23502a819a96e359fad3669c4b1a16bb219cbe070e18d028fc5d8631a",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "63f201a86f78aa4679f73075171603255ba83d57629055e2feda8f825f000d59",
+      "bytes": 2541
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "3fa2cf8f3b34061436fde8496b0e618c087f13f1fe069e415a61165540978cca",
+      "bytes": 3023
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "3b2f22498a1792dcb3c5d706d81ae17fc222b90a1c773a9a438410db7f8d5b5e",
+      "bytes": 1428
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "74e217edf97627612fed9abe746b06aa28d7a99d1beeff224416e0a0337cb346",
+      "bytes": 709
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "ec435d0f2dc5a3aa8ee31783b9b7ee2012a85e0690fa8f7f3085f55c1178e322",
+      "bytes": 2425
+    }
+  ],
+  "scope": "Table-derived row-map counts for selectors 0..7; ADM source and live selector remain UNBOUND"
+}

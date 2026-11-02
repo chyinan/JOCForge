@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "sample6-dialnorm-scope-and-replay",
+  "source": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "rust_u5_scope": "full_file",
+    "rust_selected_lufs_word": "NOT_RECORDED"
+  },
+  "dee_reference": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "scalar": -20.665958,
+    "scalar_unit": "UNBOUND",
+    "file_position": [2160, 2208],
+    "u5": 21,
+    "scope": "bounded window, not full file"
+  },
+  "candidate_replay": {
+    "assumption": "scalar is selected_lufs F32 input",
+    "predicted_u5": 21,
+    "execution": "MODEL_ASSUMPTION_ONLY; NOT A RUST RUN INPUT"
+  },
+  "comparison": "Do not compare full-file Rust U5 17 with bounded-window DEE U5 21 as same-scope evidence."
+}

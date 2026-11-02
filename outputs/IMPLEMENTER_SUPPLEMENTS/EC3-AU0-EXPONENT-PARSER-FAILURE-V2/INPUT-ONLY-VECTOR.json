@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-ec3-au0-parser-observation-vector.v2",
+  "artifact_sha256": "593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473",
+  "bounded_prefix_bytes_read": 4096,
+  "syncword_u16_be": "0x0b77",
+  "syncword_offset_bytes": 0,
+  "first_packet_size_bytes": 4096,
+  "parser_error": "exponent -1 is out-of-range",
+  "raw_prefix_included": false,
+  "expected_output_bytes_included": false,
+  "executed_by_this_vector": false
+}

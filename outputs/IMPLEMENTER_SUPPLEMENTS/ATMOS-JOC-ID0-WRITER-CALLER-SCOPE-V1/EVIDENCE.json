@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge-atmos-joc-id0-writer-caller-scope.v1",
+  "package_id": "ATMOS-JOC-ID0-WRITER-CALLER-SCOPE-V1",
+  "status": "IN_IMAGE_BASE_WRITER_CALLER_SCOPE_BOUND; ID0_WRITER_AND_RUN_VALUE_UNBOUND",
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "selected_id0_lookup": {
+    "renderer_vector_member": "Renderer+0x60",
+    "lookup_requests_type_id": 0,
+    "list_scan": "FUN_41f1e0 calls entry vtable+0x08 type-ID getter",
+    "selected_object_forwarding": "FUN_422ba0/R14 -> FUN_421240 argument 5",
+    "selector_getter": "FUN_435120 receiver vtable+0x38"
+  },
+  "base_selector_field": {
+    "getter_target": "FUN_596670",
+    "getter_effect": "returns object+0x58",
+    "constructor": "FUN_439f00",
+    "field_write": "object+0x58 receives caller parameter param7",
+    "literal_default_assigned": false
+  },
+  "in_image_direct_constructor_callers": [
+    {
+      "caller": "FUN_42bbf0",
+      "type": "RerenderBusConfig",
+      "visible_type_ids": [3, 4, 5],
+      "selected_by_id0_lookup": false
+    }
+  ],
+  "scope_limit": {
+    "direct_callers_found_in_scoped_atmos_image": 1,
+    "id0_concrete_writer_established": false,
+    "external_module_construction_excluded": false,
+    "job_supplied_value_established": false,
+    "per_run_selector_value": "UNBOUND/NO"
+  },
+  "runtime_contract": {
+    "zero_branch": "SpatialCoderPlatform",
+    "nonzero_branch": "PreProcessorBypass",
+    "preserve_conditional": true,
+    "invent_default": false,
+    "user_prompt_required": "NOT_ESTABLISHED"
+  },
+  "observation_scope": {
+    "tool": "Ghidra 12.2 Public static only",
+    "dee_run": "NOT_RUN",
+    "media_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "source_package": {
+    "package_id": "atmos_joc_id0_selector_source_wash_v1",
+    "manifest_sha256": "c922dc158862f8a6861aff64d6703b10e96cee59010eb3aed30c7c1ae4fafa00",
+    "package_seal_sha256": "39fe1c285aea209710907ed42efa59e1dd224ab6b3eca8a7517039fdb73ff9c0"
+  },
+  "exclusions": {
+    "binary_or_raw_disassembly": false,
+    "decompilation_source": false,
+    "media_pcm_or_encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

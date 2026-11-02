@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F12-HANMAO-SAME-RUN-U5-CLOSURE-V1",
+  "source_reverse_package_id": "hanmao-u5-same-run-closure",
+  "source_reverse_manifest_sha256": "cafc228c3ede087cc7727d8b0684c89f562a600ae19ed178607ba4967d996bf7",
+  "status": "SAME_RUN_INPUT_SCALAR_U5_RECEIPT_CLOSED; SCALAR_UNIT_AND_NATIVE_OWNER_JOIN_OPEN",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3266,
+      "sha256": "4a102ca03aad818704cd1b0d0b9c30346bb5ac0d7efd0ebfb7df77bb752cb336"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2643,
+      "sha256": "972de08fc06aa008a58da7f815511b52c2d0c18558f0550179d4ce7b612591d8"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 614,
+      "sha256": "b63ea2ad61188d08f5cd7f3a315d954481ca50b6d42e516baecbbba8533484d6"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2442,
+      "sha256": "c8843c2b59b19cd5dbff9dff07916faa6cbe21e48b2cbfd96ef69292c58f84ca"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1304,
+      "sha256": "32a3e139b1454f0ca94f21a802a3af66925e91ab0455421281c2e32e2a87e907"
+    }
+  ],
+  "exclusions": {
+    "source_code_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

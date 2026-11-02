@@ -1,0 +1,19 @@
+{
+  "schema": "washed-core-lfe-layout-selector-input-only.v1",
+  "vector_id": "hypothetical-core-descriptor-slot3-layout-table",
+  "classification": "STATIC_TABLE_LOOKUP; NOT_A_MATCHED_RUN_OR_EXECUTION",
+  "input": {"hypothetical_core_descriptor_slot": 3},
+  "mapping_rows": [
+    {"layout_id": 0, "row": [0,2,5,-1,-1,-1], "fbw_count": 2, "slot3_lane": "ABSENT"},
+    {"layout_id": 1, "row": [1,5,-1,-1,-1,-1], "fbw_count": 1, "slot3_lane": "ABSENT"},
+    {"layout_id": 2, "row": [0,2,5,-1,-1,-1], "fbw_count": 2, "slot3_lane": "ABSENT"},
+    {"layout_id": 3, "row": [0,1,2,5,-1,-1], "fbw_count": 3, "slot3_lane": "ABSENT"},
+    {"layout_id": 4, "row": [0,2,3,5,-1,-1], "fbw_count": 3, "slot3_lane": 2},
+    {"layout_id": 5, "row": [0,1,2,3,5,-1], "fbw_count": 4, "slot3_lane": 3},
+    {"layout_id": 6, "row": [0,2,3,4,5,-1], "fbw_count": 4, "slot3_lane": 2},
+    {"layout_id": 7, "row": [0,1,2,3,4,5], "fbw_count": 5, "slot3_lane": 3}
+  ],
+  "matched_layout_id": "UNBOUND",
+  "matched_adm_row3_to_core_descriptor_slot": "UNBOUND",
+  "execution": "NOT_RUN"
+}

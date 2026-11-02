@@ -1,0 +1,25 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "eac3_core_bap3_quantizer_candidate_wash",
+      "manifest_sha256": "d332c67172dde17635aec3c4dca52440f4a118cfa0469f0861145984dd7cd788",
+      "package_seal_sha256": "cfcb0e270d1a4928a88ca651e055f7a9fe0045ca2b2dfe0f371ca64c98edd91c",
+      "sha256sums_sha256": "23595676bbbb20897b356dd1cf874ba60f28edbd8fcbd99fab42dc00bf589ef6"
+    },
+    {
+      "package_id": "EAC3-BAP3-ENDPOINT-CANDIDATE-V1",
+      "manifest_sha256": "1368b32a908591351c99ad81f5f1e0de2539ff43eb1e5655bf46754b3e23220f",
+      "package_seal_sha256": "32dfe9c3b1b06c9dc8df717e64f1cfd23b0dd7af40fdecc5efea4b9b11112955"
+    },
+    {
+      "package_id": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1",
+      "manifest_sha256": "6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750",
+      "package_seal_sha256": "593eee033f677b7e84e0de5367b005b95cf3d43defc0854b6eb0137070000e74b"
+    },
+    {
+      "package_id": "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1",
+      "manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f"
+    }
+  ]
+}

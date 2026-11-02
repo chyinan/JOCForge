@@ -1,0 +1,93 @@
+{
+  "schema": "sample6-dee-matched-lfe-pointer-edge.v1",
+  "package_id": "SAMPLE6-DEE-MATCHED-LFE-POINTER-EDGE-V1",
+  "status": "STATIC_ROW_IDENTITY_AND_ADAPTER_SLOT3_EDGE_BOUND; SAME_RUN_OWNER_JOIN_AND_NATIVE_CORE_LFE_TRANSFORM_UNBOUND",
+  "matched_run": {
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "controls": {
+      "data_rate_kbps": 1024,
+      "line_mode_drc_profile": "film_light",
+      "rf_mode_drc_profile": "film_light",
+      "dialogue_intelligence": false,
+      "speech_threshold": 100,
+      "input_schema": "atmos_mezz ADM"
+    },
+    "stream": {
+      "sample_rate_hz": 48000,
+      "channels": 6,
+      "channel_layout": "5.1(side)",
+      "access_units": 4247
+    }
+  },
+  "user_listening_observation": {
+    "output_channel_index": 3,
+    "observation": "user confirmed this is the low-frequency track",
+    "measurement_type": "user listening; not a native pointer capture"
+  },
+  "authorized_adm_metadata": {
+    "source_row": 3,
+    "track_index_1based": 4,
+    "uid": "ATU_00000004",
+    "channel_label": "RoomCentricLFE",
+    "internal_category_id": 3,
+    "metadata_source_hashes": {
+      "fmt": "f5c3ad7fe9d719260f7e56a62755244fb3cc77f697589b19fe8130d99216039e",
+      "chna": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6",
+      "axml": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659"
+    },
+    "wave_data_chunk_read": false
+  },
+  "dee_static_typed_path": {
+    "tool": "Ghidra 12.2 read-only static",
+    "images": [
+      {"name": "dactlib.dll", "sha256": "cf626ea7a9e034ee306e05f06ee8e028258b84287e0010d84c26e552999b4239"},
+      {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+    ],
+    "adm_row_identity": "physical slot 3 / LFE / internal category 3",
+    "request_input": "six-channel channel-pointer table; slot 3 is a 32-bit sample pointer at table offset +0x18",
+    "core_api_mapping": "for a six-channel request, pointer-table slot 3 is preserved as core slot 3 and points to the sample-major buffer at state+0x80+12; six 32-bit words per sample frame",
+    "first_sample_operation": "internal category 3 uses unity accumulation (destination += source)",
+    "weighted_sample_branch": "only target categories 4..7; it does not execute for category 3",
+    "later_copy": "32-bit sample words copied without multiplication",
+    "same_run_join": "not captured; request pointer table contains no ADM UID or owner/generation token",
+    "selected_channel_count_at_callsite": "not captured"
+  },
+  "rust_static_path": {
+    "external_lfe_row": 3,
+    "transform": "dedicated F08 LFE transform",
+    "output_bins": 7,
+    "exponent_path": "dedicated LFE exponent inputs and frame syntax lfeon"
+  },
+  "input_only_vector": {
+    "sample_rate_hz": 48000,
+    "frame_samples": 1536,
+    "active_physical_row": 3,
+    "frequency_bin": 2,
+    "frequency_hz": 62.5,
+    "other_rows": "zero",
+    "sample_values_or_expected_outputs": "OMITTED",
+    "execution": "NOT_RUN"
+  },
+  "limits": {
+    "dynamic_same_run_pointer_capture": "NOT_CAPTURED",
+    "DEE_encoder_internal_LFE_transform": "UNBOUND",
+    "Rust_vs_DEE_single-vector_audio_comparison": "NOT_RUN",
+    "corrective_gain_or_remap_supported": false,
+    "pcm_or_payload_included": false,
+    "private_key_or_license_material": false
+  },
+  "source_packages": [
+    {
+      "package_id": "dee_adm_5p1_core_bed_lfe_scale_wash_v1",
+      "manifest_sha256": "a281573b3df322f4b29b612354a3f3af99a91b874dc86403dc4c1df9d2bdb95c"
+    },
+    {
+      "package_id": "SAMPLE6-FULL-FILE-PCM-BLOCK-RESIDUAL-V1",
+      "manifest_sha256": "41a9952b8e8342296d1c5114878ce51119ae80f93252b0fa3444c46621a2f198",
+      "package_seal_sha256": "458efc611799fc3341c83b472b2d1081771e4493daabb6de895b0ea5e5623443"
+    }
+  ]
+}

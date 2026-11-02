@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V2",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Metadata-only 36/38 ADM BWF comparison with inherited file identities; no codec admission claim",
+  "inherited_identity_receipt": {
+    "package_id": "carrier_block_authorized_input_scope_wash_v2",
+    "manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+    "package_seal_file_sha256": "f9842904d54ad2ae7d15e0bb978212c9933632a5f2cae461f5d35c3df43e6e09",
+    "identity_payload_sha256": "19b134d2d3409d48429bdbf9d0779452fd26099c2ebb64ae39a47bb11a6f4e11",
+    "receipt_package_payload_check": "all seven seal-listed files verified without running its audio-reading checker",
+    "hash_method_in_receipt": "SHA-256 streamed in 1 MiB reads; data was not decoded",
+    "full_file_hashes_recomputed_this_pass": false
+  },
+  "metadata_scan": {
+    "container": "RIFF/WAVE",
+    "chunks_read": ["RIFF header", "fmt ", "chna", "axml"],
+    "data_chunk_policy": "read only declared length/offset metadata and seek over payload; zero sample bytes read"
+  },
+  "inputs": [
+    {
+      "authorized_path": "D:\\潜在的なアイ.wav",
+      "inherited_file_bytes": 1069656356,
+      "inherited_file_sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82",
+      "fmt": {"format_tag": 1, "channels": 36, "sample_rate_hz": 48000, "byte_rate": 5184000, "block_align": 108, "bits_per_sample": 24},
+      "data_chunk_metadata": {"offset": 116, "bytes": 1069575624, "whole_sample_frames": 9903478},
+      "chna": {"track_count": 36, "uid_count": 36, "chunk_bytes": 1444, "record_bytes": 1440, "expected_record_bytes": 1440, "records_size_valid": true, "chunk_sha256": "621f761e76bf603741e965d224c55aa0f948a13f4fa603e207085d1a112ac379"},
+      "axml": {"chunk_bytes": 78572, "chunk_sha256": "644add5af8dca305510acdd1fa7fcb81b8bedaefd6d826978442fb51d0a77d6e", "element_counts": {"audioObject": 27, "audioPackFormat": 27, "audioChannelFormat": 36, "audioTrackFormat": 36, "audioTrackUID": 36}}
+    },
+    {
+      "authorized_path": "D:\\人是猫 - 张卡斯, 洛天依.wav",
+      "inherited_file_bytes": 743696526,
+      "inherited_file_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "fmt": {"format_tag": 1, "channels": 38, "sample_rate_hz": 48000, "byte_rate": 5472000, "block_align": 114, "bits_per_sample": 24},
+      "data_chunk_metadata": {"offset": 116, "bytes": 743611284, "whole_sample_frames": 6522906},
+      "chna": {"track_count": 38, "uid_count": 38, "chunk_bytes": 1524, "record_bytes": 1520, "expected_record_bytes": 1520, "records_size_valid": true, "chunk_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"},
+      "axml": {"chunk_bytes": 82997, "chunk_sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659", "element_counts": {"audioObject": 29, "audioPackFormat": 29, "audioChannelFormat": 38, "audioTrackFormat": 38, "audioTrackUID": 38}}
+    }
+  ],
+  "implementation_status_from_current_branch_report": {
+    "selected_profile": "38-channel PCM24 / 48 kHz / 5.1 output",
+    "36_channel_prepared_job_input": "reported PASS, not end-to-end encoding",
+    "36_channel_jocforge_output": "NOT_RUN"
+  },
+  "no_pcm_or_codec_claim": {
+    "dee_run": false,
+    "pcm_bytes_read": 0,
+    "encoded_payload_read": false,
+    "private_key_or_license_accessed": false,
+    "36_track_codec_admission": "NOT_ESTABLISHED"
+  }
+}

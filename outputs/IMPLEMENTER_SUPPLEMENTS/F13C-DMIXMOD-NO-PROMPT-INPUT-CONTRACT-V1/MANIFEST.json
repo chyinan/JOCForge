@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-DMIXMOD-NO-PROMPT-INPUT-CONTRACT-V1",
+  "source_reverse_package_id": "F13C-dmixmod-first-dsp-consumer-addendum-v29",
+  "source_reverse_manifest_sha256": "f0c42ba60d2de6105e2662c10b14dc4b22cdd4cd9b9069068010233159916cfa",
+  "status": "BEST_SUPPORTED_NO_PROMPT_LORO_TEMPLATE; NATIVE_ENUM_TO_DSP_EFFECT_UNBOUND_NONBLOCKING_FOR_INPUT_CONTRACT",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2857,
+      "sha256": "530742f257ebf94042446cfc4a2ad3fefa1845a65ff1e835bdb7e5be2df4d872"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2977,
+      "sha256": "a3d02e4eafd12337aee4b76411438b80cf11bb4a803f417c4c969f841a618558"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 566,
+      "sha256": "c2ae05286e3b2302063ff4a23dd79c2d3f3544de30ae1720cd5f7070e0e9b8f9"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2062,
+      "sha256": "285bff06aa7c28e394a3bc74523dfa262787dcc2046bd18af42f1dafc238e1ae"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1195,
+      "sha256": "149551d7320f8109806b8165cd2a026ddd2fb3908104263c90273c0159d27582"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

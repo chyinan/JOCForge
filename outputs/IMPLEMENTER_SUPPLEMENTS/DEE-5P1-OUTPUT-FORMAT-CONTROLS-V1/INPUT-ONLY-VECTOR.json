@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-dee-rust-5p1-format-input-vector.v1",
+  "job_xml_sha256":"8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+  "dee_explicit":{"container":"mp4","data_rate_kbps":1024,"preferred_downmix_mode":"loro","drc":"none"},
+  "dee_xml_omitted":{"sample_rate_hz":"UNBOUND","acmod":"UNBOUND","lfeon":"UNBOUND","channels":"UNBOUND","channel_order":"UNBOUND"},
+  "observed_stream_metadata":{"sample_rate_hz":48000,"channels":6,"layout":"5.1(side)","bit_rate_bps":1024000},
+  "rust_profile":{"sample_rate_hz":48000,"acmod":7,"lfeon":1,"mantissa_lane_order":"internal order only"},
+  "expected_disposition":{"container_difference":"packaging only","frame_control_equivalence":"NOT_EVALUATED","pcm_or_frame_bytes":"NONE"}
+}

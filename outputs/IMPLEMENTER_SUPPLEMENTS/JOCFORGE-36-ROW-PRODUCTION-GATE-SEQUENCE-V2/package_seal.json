@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "JOCFORGE-36-ROW-PRODUCTION-GATE-SEQUENCE-V2",
+  "manifest_sha256": "3aa67555e39035049718cf485004dac19edeb8498ddb0d510b7779d03601bbff",
+  "sha256sums_sha256": "4cc76ccf2010da34c7f0d3bc2ae67394b9b73a173bd8e449d9c5c50301d29a40",
+  "payload_count": 3,
+  "status": "FIRST_METER_G0_36_ROW_GATE_BOUND; DOWNSTREAM_FIXED_38_GATES_INVENTORIED; REAL_36_INPUT_NOT_RUN"
+}

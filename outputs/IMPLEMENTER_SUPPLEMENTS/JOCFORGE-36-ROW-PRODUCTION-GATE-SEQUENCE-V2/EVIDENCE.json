@@ -1,0 +1,112 @@
+{
+  "schema": "jocforge.adm_36_track_production_gate_sequence.v1",
+  "status": "FIRST_METER_G0_36_ROW_GATE_BOUND; DOWNSTREAM_FIXED_38_GATES_INVENTORIED; REAL_36_INPUT_NOT_RUN",
+  "scope": "Read-only Rust production call-path audit and existing metadata evidence; no CLI/DEE/native run or PCM read.",
+  "source_package": {
+    "package_id": "ADM-36-PRODUCTION-CLI-BOUNDARY-AUDIT-WASH-V1",
+    "manifest_sidecar_sha256": "a00d3e90a286c79b4d6de6cbf01f284b59a1acfb77723784fd2980c3e6f3b592",
+    "package_seal_sha256": "f770a0e7b6f9e8d859969c8d62f9d808c9a36a20ee79724edbafa57c370aed0a",
+    "report_sha256": "f542b84956f133cfaf49482517ff0c6c2d492da90c5cc153a02161d825db1f2e",
+    "post_g0_inventory_sha256": "bbd7044ac3154f8aa524efe693fa0dd72f55f3045b4e7cded666b628ce4a1e08",
+    "source_manifest_sha256": "8098695dccc7dd63c7395fefed6308bba231e6ed36630bfef61e82fbd132b3d7",
+    "verifier_sha256": "c5e8bcfdd4bba3a1053b3179126e025fb90f5a69c722d35b213eb4363c85bf17",
+    "recorded_head": "6369e49ff518d478913c113b53140b1cade07e1d",
+    "current_implementation_head": "2f23885008cd789a5b17b639a1a3737b2ad87273",
+    "source_recheck": {
+      "listed_files_verified": 50,
+      "listed_files_changed": [
+        "docs/architecture/adm-to-eac3joc-chain-status.md"
+      ],
+      "all_other_listed_source_hashes_match": true
+    },
+    "existing_reference_manifests_reverified": 8
+  },
+  "input_support_boundary": {
+    "riff_parser_actual_channel_count": "DYNAMIC_1_TO_256",
+    "job_binder_channel_count": "DYNAMIC_1_TO_256",
+    "meter_pcm_source_cursor": "DYNAMIC_36_AND_38",
+    "primary_control_binding": "graph-sized, but actual per-row DBMD fields and same-job generation are not bound",
+    "real_36_row_prepared_job_input": "NOT_RUN"
+  },
+  "first_static_meter_gate_after_successful_preparation": {
+    "stage": "Meter prepass callback 0 / G0",
+    "function": "build_meter_installed48_source_map -> validate_selected_source_binding",
+    "fixed_conditions": {
+      "channels": 38,
+      "block_align_bytes": 114,
+      "sample_frames": 6522906,
+      "physical_rows": 38,
+      "regular_rows": 37,
+      "global_source_map_rows": 48
+    },
+    "36_pcm24_block_align_bytes": 108,
+    "static_disposition": "36/10/26 is predicted to fail before Meter/Spatial callback completion if preparation succeeds; no runtime rejection observed"
+  },
+  "ordered_downstream_36_row_gates": [
+    {
+      "order": 1,
+      "gate": "F01E normal snapshot",
+      "fixed": "38 physical / 10 bed / 28 object / 37 regular"
+    },
+    {
+      "order": 2,
+      "gate": "global source geometry/projection",
+      "fixed": "48 source map / 11 prefix / 37 regular; 36 physical with direct LFE leaves 35 regular"
+    },
+    {
+      "order": 3,
+      "gate": "Installed48 activity/source flags/renderer",
+      "fixed": "38/114 physical rows, 37 regular histories, 48 global rows"
+    },
+    {
+      "order": 4,
+      "gate": "later Meter normal callbacks",
+      "fixed": "rebuild map and use legacy fixed38 F01E snapshot"
+    },
+    {
+      "order": 5,
+      "gate": "three Meter FreshZero drains",
+      "fixed": "source view 38 rows and 38x1536 zero rows"
+    },
+    {
+      "order": 6,
+      "gate": "MAIN spatial roots",
+      "fixed_or_bypass": "production path still builds roots directly from F01E provider; dynamic cold-owner API is a bypass projection"
+    },
+    {
+      "order": 7,
+      "gate": "MAIN normal callbacks / Reader EOF",
+      "fixed": "38-row Host38Frame and 38x13 Control38Snapshot"
+    },
+    {
+      "order": 8,
+      "gate": "four MAIN cached drains",
+      "fixed": "same 38-row cached PCM/control carriers and 48/37 spatial map"
+    },
+    {
+      "order": 9,
+      "gate": "DDP frame-view count",
+      "fixed_or_unbound": "Rust BSI input binder is dynamic, but native expected-count -> host -> DDP process descriptor same-job/generation join remains UNBOUND"
+    }
+  ],
+  "row_mapping_limit": {
+    "36_track_shape": "36 physical / 10 bed / 26 objects; one direct LFE leaves 35 non-LFE regular rows",
+    "48_source_axis": "11 prefix + 37 regular",
+    "candidate_regular_ids": "11..45 only as a candidate under current formula",
+    "source_ids_46_47": "UNBOUND; no zero-fill/alias semantics supported"
+  },
+  "minimum_implementation_sequence": [
+    "Make the input source map use actual channels, block align, sample count, DBMD/CHNA physical-row identity, and direct-LFE row while preserving one typed PreparedJobInput identity.",
+    "Connect the existing dynamic F01E cold owner/proposal/after-state into the real G0 and later Meter callback path.",
+    "Replace fixed 38/114/37/48 dimensions in geometry, activity, source flags and Meter Installed48 consumers with a consistent dynamic row-map contract.",
+    "Propagate that same row identity through all three Meter FreshZero drains and four MAIN cached drains/Reader EOF carriers.",
+    "Define explicit presence semantics for IDs46/47; do not silently zero-fill or alias.",
+    "Bind converter expected-count to DDP frame-view count in the same job/generation before claiming final 36-row CLI output."
+  ],
+  "limits": {
+    "actual_36_row_cli_run": "NOT_RUN",
+    "meter_spatial_callback": "NOT_RUN",
+    "full_eac3_joc_output": "NOT_RUN",
+    "pcm_payload_or_private_key_read": false
+  }
+}

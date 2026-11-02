@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge-washed-eac3-u7-full-image-writer-inventory.v1",
+  "package_id": "EAC3-U7-POSITIVE-GROUP-COUNT-WRITER-SEARCH-V2",
+  "supersedes": "EAC3-U7-POSITIVE-GROUP-COUNT-WRITER-SEARCH-V1",
+  "scope": "FULL-IMAGE EXACT-DISPLACEMENT AND BASE-REFERENCE INVENTORY",
+  "status": "NO_NEW_POSITIVE_N_WRITER_SURFACED; MODEL_RULE_REMAINS_INFERENCE",
+  "source_package": {
+    "package_id": "dee-ddp-group-count-full-image-xref-wash-v5",
+    "manifest_sha256": "eea5ab0697decd3536cf35330f7bf0bf7036d1888a2471a8300518734ea5db0f",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "target_image_size": 7923712,
+    "tool": "Ghidra 12.2 read-only; analysis disabled"
+  },
+  "inventory": {
+    "loaded_instruction_count": 1276863,
+    "literal_field_displacement_0x141c8_occurrences": 0,
+    "state_subobject_base_0x140f0_lea_occurrences": 21,
+    "base_leas_outside_prior_scanned_range": 0,
+    "field_displacement_refs_outside_prior_scanned_range": 0,
+    "resolved_base_argument_forwardings": 10,
+    "forwarded_callees_outside_prior_range": 0,
+    "forwarded_pointer_at_state_base_plus_0xd8": 0,
+    "unresolved_indirect_calls_carrying_base": 0,
+    "new_writer_functions": [],
+    "scope_limit": "A pointer loaded indirectly without either literal displacement can evade this expression-based inventory."
+  },
+  "field_and_candidate_rule": {
+    "n_field": "u16(state+0x141c8+2*j)",
+    "d_field": "i16(state+0x1418c+10*block+2*lane)",
+    "positive_native_n_writer": "UNBOUND",
+    "reset_to_frame_writer_owner_generation": "UNBOUND",
+    "best_model_candidate": "N=(D+2)//3; fill 3*N-D tail values with 2",
+    "candidate_grade": "INFERENCE_ONLY",
+    "confidence": 0.78,
+    "native_assignment_proven": false
+  },
+  "input_only_vector": {"D": 4, "N_candidate": 2, "tail_values": 2, "native_observation": false},
+  "execution_boundary": {
+    "native_runtime": "NOT_RUN",
+    "dee_encode": "NOT_RUN",
+    "media_pcm_payload_or_key_read": false,
+    "raw_source_or_decompilation_included": false
+  }
+}

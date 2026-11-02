@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-RUST-WINDOW-PROVIDER-SUPERSESSION-WASH-V1",
+  "scope": "current provider/hash correction to historical window-table split",
+  "status": "CURRENT_PROVIDER_MATCHES_NATIVE; OLD_BASELINE_SUPERSEDED; MATCHED_LFE_LINEAGE_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1052,
+      "sha256": "ea0ac448e9de302e265bdc35dc96c1900035bf66627654cb1d7005e8bb161cb4"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2177,
+      "sha256": "c0f1abc799eb87df4c5157ffb49eeb7029fa43697fa77572e1e51399b30d336e"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 886,
+      "sha256": "2e2358c3461a5e83fb17ca6e77eb721de06a57db9d1aba727b1349995479dce3"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 882,
+      "sha256": "3f67f389e754e9eefdc85356c6fb1abd775937dd1ac26926a5786500d18dbc78"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3524,
+      "sha256": "2bea3674b2b537c11cf27897dc7e4e7ba92f10cdf7a1f2d91dd21d3392ac8012"
+    }
+  ]
+}

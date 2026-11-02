@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "DEE-STAGERUNNER-ATMOSMEZZ-ROUTE-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Static DEE StageRunner input/filter/output type route; no track-count admission result",
+  "upstream": {
+    "package_id": "DEE-STAGERUNNER-ATMOSMEZZ-ROUTE-V1",
+    "manifest_sha256": "c4698113b15fa1524e7161c79ce8ffd841e73db6eb268c627fb66bbd2e6be2e2",
+    "payload_sha256": {
+      "DEE-STAGERUNNER-ATMOSMEZZ-ROUTE.json": "b85f83b8332d79757274ed7ddd19ddbb1942452c2b2c2176f32e144cf31999a2",
+      "CHECK.json": "1c74df16115ed839fc5fc96ac7740664a31c41b3a9bb75a5d50b5acc6838b94b"
+    },
+    "wash_independent_payload_check": "both payload sizes and hashes match",
+    "checker_disposition": "PASS_STAGE_ROUTE_BOUND_COUNT_GATE_UNBOUND"
+  },
+  "target_image": {
+    "name": "dee.exe",
+    "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "tool": "Ghidra 12.2",
+    "mode": "static"
+  },
+  "selected_job_types": {
+    "input_class": "dee::input::AtmosMezz",
+    "input_type": "atmos_mezz",
+    "filter_key": "encode_to_atmos_ddp",
+    "output_class": "dee::output::Ec3Plugin",
+    "output_route_tokens": ["atmos_mezz_to_atmos_ddp", "encode_to_atmos_ddp"],
+    "output_types": ["audio.ec3", "audio.ec3.atmos"]
+  },
+  "stage_runner": {
+    "register_plugins_rva": "0x49690",
+    "build_rva": "0x3f690",
+    "input_filter_match_rva": "0x461c0",
+    "filter_output_match_rva": "0x45920",
+    "run_input_rva": "0x4b920",
+    "run_audio_filter_rva": "0x4ab50",
+    "behavior": "Build resolves factory and checks stage types; runtime executes constructed input and filter stage objects"
+  },
+  "non_equivalent_raw_pcm_route": {
+    "image": "dee_ddp_encoder.exe",
+    "route_token": "pcm_to_ddp",
+    "raw_pcm_max_8_applies_to_selected_atmos_mezz_job": "NOT_BOUND"
+  },
+  "unbound_edges": [
+    "selected StageRunner filter factory to external DLL filename",
+    "AtmosMezz reader count to selected filter/DDP frame count",
+    "first 36/38 count gate in selected AtmosMezz/converter path"
+  ],
+  "execution": {"dee_run": false, "adm_or_pcm_payload_read": false, "key_read": false},
+  "input_only_vector": "NOT_PROVIDED_STATIC_STAGE_ROUTE_ONLY",
+  "prohibited_inferences": [
+    "Do not claim 36-track end-to-end support from stage type compatibility.",
+    "Do not apply the raw-PCM >8 gate to ADM/AtmosMezz without a typed route edge.",
+    "Do not treat sibling DLL hash inventory as selected module identity."
+  ]
+}

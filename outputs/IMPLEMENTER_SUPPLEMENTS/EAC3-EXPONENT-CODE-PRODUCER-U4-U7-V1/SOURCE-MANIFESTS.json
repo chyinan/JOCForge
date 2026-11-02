@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-washed-eac3-exponent-producer-sources.v1",
+  "incoming_package_id": "dee-ddp-exponent-producer-typed-edge-wash-v2",
+  "incoming_manifest_sha256": "ad95d8576957c0ed20d8339c322c01c9669ab48ea8bd545e28b3ab7400c32ec6",
+  "target_image": {"name":"dee_ddp_encoder.exe","sha256":"0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532","bytes":7923712},
+  "function_code_hashes": [
+    {"function":"FUN_14032d580","sha256":"2a2b82c8e5cb3af653b05346c84f3b7e220039915f55dbef0e92ab26a351577c"},
+    {"function":"FUN_14036f8f0","sha256":"93128de4bbf1a6901ad07cf42b99bde16b27f979ce15409a8178f3e2d3505f5c"},
+    {"function":"FUN_140362640","sha256":"e6c2338355849e53a102c793cef2316dd9ff3bc31c0481052ce5bcc02d9cc642"}
+  ],
+  "source_code_copied": false,
+  "binary_or_decompilation_copied": false,
+  "media_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

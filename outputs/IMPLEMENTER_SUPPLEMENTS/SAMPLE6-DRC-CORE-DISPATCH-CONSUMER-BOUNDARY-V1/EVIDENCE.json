@@ -1,0 +1,80 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-CORE-DISPATCH-CONSUMER-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Sanitized Ghidra static dispatch/owner boundary; no runtime row values or algorithm change authorized",
+  "upstream": {
+    "package_id": "sample6-matched-drc-core-dispatch-consumer-wash-v1",
+    "manifest_sha256": "5d3c14fcaa9691b991154a3b5f4eafb79a70c95815c35ee4e413f7a69ca3cdbc",
+    "package_seal_sha256": "8abdf32b1c647e5dab90bbac171ff3f0d215b3d4c43cb01e29390f3430c61ef9",
+    "manifest_sidecar_text": "5d3c14fcaa9691b991154a3b5f4eafb79a70c95815c35ee4e413f7a69ca3cdbc  MANIFEST.json",
+    "payload_sha256": {
+      "CHECK.py": "052dc7f48dc77b01efad4e0095ea2363f6ee97bee4a7eacd21f9fe1c1eefac4d",
+      "EVIDENCE.json": "91bd1d1cb7d66acead42e927256c2b4888f4da09b2bf491072bbadb440a8f5b1",
+      "INPUT-ONLY-VECTOR.json": "42220e7b9d1761e75253ac4e5475f2d57fbc40dcc9894b4b534cefc05b375079",
+      "REPORT.md": "a7110debc7d15eaed57ee4d858bc8c28dd969bd49e9141be872839db46dd023e",
+      "SOURCE-IDENTITIES.json": "c555793066b2a95f83cd63c70c90430a7e7dac39092a7b1733b64198ea268a57"
+    },
+    "checker_reported_and_reproduced": {
+      "normal": "PASS",
+      "python_optimized": "PASS"
+    },
+    "wash_independent_payload_verification": "all five payload lengths and hashes match the manifest"
+  },
+  "source_identity": {
+    "tool": "Ghidra 12.2_PUBLIC",
+    "mode": "read-only; noanalysis",
+    "program": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "dispatch": {
+    "method_table_pointer_array": "PTR_PTR_1405ede38",
+    "observed_type_indices": [0, 1],
+    "vtable_base": "0x140610510",
+    "method_slot": "+0x28 at 0x140610538 -> FUN_140350d00",
+    "process_api": "FUN_140213470 / DDP_ENC_PRO_ddpi_enc_process",
+    "dispatcher": "FUN_140315db0 at 0x1403160dc",
+    "dispatcher_arguments": [
+      "selected channel instance",
+      "per-frame record/work pointer",
+      "process frame descriptor",
+      "frame count/config fields",
+      "root-owned input/sample pointer"
+    ],
+    "consumer_state_load": "FUN_140350d00 reads channel_instance+0xdf8 and calls FUN_140317600"
+  },
+  "row_boundary": {
+    "row_range": "[state+0x23e34,state+0x23eac)",
+    "shape": "120 bytes; six blocks * five F32 values; block stride 0x14",
+    "typed_row_pointer_passed_to_method_dispatch": false,
+    "typed_store_or_copy_in_checked_dispatch_path": "NOT_FOUND",
+    "runtime_row_values": "UNBOUND",
+    "external_or_unresolved_writer": "NOT_EXCLUDED"
+  },
+  "next_missing_edge": {
+    "source_chain": "FUN_140214e80/FUN_140214ef0 -> FUN_140215070 -> FUN_140213470",
+    "target": "typed writer or copy to the same inline row before FUN_140317600",
+    "status": "UNBOUND"
+  },
+  "input_only_vector": {
+    "classification": "SYMBOLIC_METHOD_DISPATCH_AND_OWNER_VECTOR; NOT_NATIVE_EXECUTION",
+    "execution": "NOT_RUN",
+    "purpose": "check target slot and owner path only",
+    "runtime_f32_values": "NOT_ASSERTED"
+  },
+  "exclusions": {
+    "new_dee_run": false,
+    "raw_pcm_syncframe_or_payload_accessed": false,
+    "private_key_hmac_or_license_accessed": false,
+    "ghidra_source_or_decompilation_included": false
+  },
+  "permitted_inferences": [
+    "The type-indexed method table slot and its in-image consumer are identified.",
+    "The checked pre-dispatch path does not provide a typed row pointer or typed row store."
+  ],
+  "prohibited_inferences": [
+    "Do not infer runtime F32 row contents from constructor initialization.",
+    "Do not claim global absence of a writer outside the checked path.",
+    "Do not attribute a PCM/LFE mismatch to this boundary alone."
+  ]
+}

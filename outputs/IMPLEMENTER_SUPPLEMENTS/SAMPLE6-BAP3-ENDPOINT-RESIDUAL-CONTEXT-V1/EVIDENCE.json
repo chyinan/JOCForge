@@ -1,0 +1,69 @@
+{
+  "schema": "washed-bap3-residual-context.v1",
+  "package_id": "SAMPLE6-BAP3-ENDPOINT-RESIDUAL-CONTEXT-V1",
+  "status": "NATIVE_RULE_SPLIT_CONFIRMED; SAMPLE_RAW7_UNOBSERVED; PCM_CAUSALITY_UNBOUND",
+  "scope": {
+    "codec": "E-AC-3 core BAP-3 scalar mantissa quantizer",
+    "window": "matched Human Cat AU interval [2750, 2875), decoder DRC scale 0",
+    "purpose": "Connect a known static endpoint-rule split to the measured residual context without attributing causality"
+  },
+  "matched_identity": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_ec3_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_ec3_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "rate_bps": 1024000,
+    "encoder_drc_profiles": {
+      "line": "film_light",
+      "rf": "film_light"
+    },
+    "decoder_drc_scale": 0,
+    "au_interval_half_open": [2750, 2875],
+    "frames_per_channel": 192000,
+    "sample_rate_hz": 48000,
+    "channel_layout": "5.1(side)",
+    "index_to_lfe_mapping": "INFERRED_FROM_DECODER_LAYOUT_ONLY"
+  },
+  "residual_context": {
+    "metrics_source": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1 DRC-SCALE-CONTROL.json, referenced by source package manifest",
+    "recomputed_here": false,
+    "channel_index_3_rmse_f32": 0.005454088662868509,
+    "other_channel_indices": [0, 1, 2, 4, 5],
+    "other_channel_max_rmse_f32": 0.0004557198609140598,
+    "raw_pcm_retained": false
+  },
+  "native_rule": {
+    "evidence_class": "Ghidra 12.2 targeted static analysis, image hash-bound in source package",
+    "bap3_scale_f32": 3.5,
+    "bap3_level_count": 7,
+    "width_bits": 3,
+    "formula": "truncate((coefficient + 1) * 3.5), clamp to [0, 6], pack 3 bits",
+    "positive_endpoint": {
+      "coefficient_f32_bits": "0x3f800000",
+      "exponent": 0,
+      "raw_truncated_code": 7,
+      "clamped_code": 6,
+      "packed_bits": "110",
+      "outcome": "success"
+    }
+  },
+  "current_washed_rule": {
+    "source_package": "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1",
+    "source_manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f",
+    "raw_bap3_code_7": "reserved sentinel; candidate infeasible"
+  },
+  "observation_status": {
+    "sample_bap3_coefficient_rows": "NOT_CAPTURED",
+    "raw7_occurrence_in_window": "UNOBSERVED",
+    "pcm_residual_causality": "UNBOUND",
+    "native_runtime_vector": "NOT_RUN",
+    "rust_runtime_vector": "NOT_RUN"
+  },
+  "next_action": "Run the single-bin input-only vector at the existing Rust quantizer seam; if it rejects raw BAP-3 code 7, apply native clamp-to-6 semantics and compare one matched output window with all other controls fixed.",
+  "privacy": {
+    "private_key_or_license_material_included": false,
+    "raw_pcm_included": false,
+    "encoded_payload_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

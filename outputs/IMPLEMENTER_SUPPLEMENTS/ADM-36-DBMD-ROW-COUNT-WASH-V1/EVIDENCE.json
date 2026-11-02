@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge.adm_dbmd_row_count_evidence.v1",
+  "status": "ONE_AUTHORIZED_SAMPLE_DBMD_COUNT_MATCHES_FMT_AND_CHNA",
+  "source": {
+    "path": "D:\\First Love.wav",
+    "bytes": 1335078774,
+    "full_file_sha256": "NOT_RECOMPUTED",
+    "prior_metadata_receipt": {
+      "reported_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "same_byte_length_observed_now": true,
+      "prior_hash_revalidated_now": false
+    }
+  },
+  "container": {
+    "kind": "RIFF/WAVE",
+    "format_tag": 1,
+    "channels": 36,
+    "sample_rate_hz": 48000,
+    "bits_per_sample": 24,
+    "fmt_sha256": "e261a4850cc7ba2ae123de4dbbc085fa8f7dfb5597fe3aa70efb753b1fd91dbf"
+  },
+  "data_chunk": {
+    "header_offset": 108,
+    "payload_offset": 116,
+    "bytes": 1334998044,
+    "read": false
+  },
+  "chna": {
+    "header_offset": 1335076738,
+    "payload_offset": 1335076746,
+    "bytes": 1444,
+    "track_count": 36,
+    "uid_count": 36,
+    "sha256": "621f761e76bf603741e965d224c55aa0f948a13f4fa603e207085d1a112ac379"
+  },
+  "dbmd": {
+    "header_offset": 1335078190,
+    "payload_offset": 1335078198,
+    "bytes": 576,
+    "sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e",
+    "section_ids": [7, 9, 10],
+    "track_count_field": "section 10 body offset +4, little-endian U16",
+    "track_record_count": 36,
+    "section_lengths_and_checksums_valid": true
+  },
+  "other_metadata": {
+    "axml_bytes": 78570,
+    "axml_sha256": "27318f160cdaad8f752524feb3dbd87695e4b4f5505a8fe9b9ebee436d5ecf51"
+  },
+  "execution_scope": {
+    "metadata_chunks_read": ["fmt ", "axml", "chna", "dbmd"],
+    "pcm_bytes_read": 0,
+    "pcm_decoded": false,
+    "dee_run": false,
+    "key_or_license_access": false,
+    "field_level_dbmd_to_chna_mapping_proven": false,
+    "same_prepared_job_input_join_proven": false,
+    "production_allowed": false
+  }
+}

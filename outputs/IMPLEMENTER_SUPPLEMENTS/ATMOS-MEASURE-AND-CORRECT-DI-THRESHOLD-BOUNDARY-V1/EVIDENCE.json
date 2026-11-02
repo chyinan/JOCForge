@@ -1,0 +1,38 @@
+{
+  "schema":"jocforge.measure_and_correct_di_threshold_boundary.v1",
+  "status":"SIBLING_MODE_BRANCH_BOUND; THRESHOLD_TO_CORRECTION_EFFECT_UNBOUND",
+  "upstream_package":{
+    "package":"dee-measure-and-correct-di-threshold-wash",
+    "manifest_sha256":"35eb2d51e8e90a7986d0ff1b58d677294579d4d4834133b95433866c9b7200c8",
+    "payload_count_verified":4,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "mode_dispatch":{
+    "function":"FUN_180210fe0",
+    "measure_and_correct_mode_output":0,
+    "calls_meter_parameter_handler":true,
+    "di_and_threshold_slots":"separate"
+  },
+  "correction_workflow":{
+    "single_pass":true,
+    "pcm_scale_mode_present":true,
+    "md_update_option_present":true,
+    "threshold_slot_to_pcm_scale_join":"UNBOUND",
+    "threshold_slot_to_md_update_join":"UNBOUND"
+  },
+  "unbound":{
+    "threshold_slot":"lVar16+0xd48",
+    "threshold_to_speech_score_comparison":"UNBOUND",
+    "threshold_to_pcm_gain_effect":"UNBOUND",
+    "threshold_to_dialnorm_effect":"UNBOUND",
+    "same_offset_same_owner_identity":"NOT_ESTABLISHED"
+  },
+  "execution_scope":{
+    "dee_run":false,
+    "dsp_or_test_run":false,
+    "pcm_or_payload_access":false,
+    "key_or_license_access":false,
+    "production_allowed":false
+  }
+}

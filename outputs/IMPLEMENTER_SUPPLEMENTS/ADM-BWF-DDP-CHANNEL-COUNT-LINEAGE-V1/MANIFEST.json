@@ -1,0 +1,30 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "ADM-BWF-DDP-CHANNEL-COUNT-LINEAGE-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "upstream_manifest_sha256": "851a03dca222f40c7b9eb102a33d1bad7d7b942151314941a84c396a0c140402",
+  "runtime_observation": "NOT_RUN",
+  "scope": "Sanitized static local count paths; reader-to-DDP typed count transfer remains UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "88fda5804ba059159ef9bda2738010fc5fb16b84031551d2b6efc011a5591641",
+      "bytes": 2838
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "1eb02c15bc5bf5a4d9e0a39961b2ece8b3b6779de73c6ec3a2e027fbac7bd38c",
+      "bytes": 3902
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "7178b2a65890cd309afe438a72e938a636871629ab3af0fd463080d870e91d18",
+      "bytes": 619
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "f126802f3abc9bc608156d185715e75fd7567b919a70d3e4d546cff203555fd7",
+      "bytes": 2332
+    }
+  ]
+}

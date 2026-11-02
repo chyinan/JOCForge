@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-RUST-5P1-LFE-PATH-CROSSWALK-V1",
+  "scope": "static six-channel speaker identity and pre-core LFE sample path crosswalk",
+  "status": "STATIC_IDENTITY_AND_PRECORE_LFE_UNITY_BOUND; RUNTIME_JOIN_AND_CORE_TRANSFORM_UNBOUND",
+  "source_manifest_sha256": "a281573b3df322f4b29b612354a3f3af99a91b874dc86403dc4c1df9d2bdb95c",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "ca6f7a389d5ad999c4c92f50a216c460b51ec4355ed7ba2b8db6cd60d42a86bb",
+      "bytes": 2408
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "d6bc3501eadad04e0d01a9af473d30aee2e2dfd1ec6ff7cb3217da909c1bffdc",
+      "bytes": 3660
+    },
+    {
+      "name": "README.md",
+      "sha256": "e40746038ea11b06fe2fe76958f76c5bb48a0dc0e2f52e09d4d11f358952c75b",
+      "bytes": 1338
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "f0de64692304caf96fbe00fb7a25b95285ef8c530bdaf01fbf1c6997ac3c6547",
+      "bytes": 727
+    }
+  ]
+}

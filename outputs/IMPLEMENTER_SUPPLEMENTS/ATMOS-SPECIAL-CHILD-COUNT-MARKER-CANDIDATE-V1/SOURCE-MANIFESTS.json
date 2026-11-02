@@ -1,0 +1,16 @@
+{
+  "source_manifests": [
+    {"package_id":"adm_special_marker_source_wash_v1","role":"marker producer/predicate and seven-sample conditional candidate","manifest_sha256":"e8e1b6fea8bc7cd69dbedcd51b0e6eb6701ed61e7561ba2084a5c9b1e62d2ed6","seal":"NOT_PRESENT_IN_DELIVERED_DIRECTORY"},
+    {"package_id":"atmos_composite_mode_source_wash_v1","role":"selected static special-mode path","manifest_sha256":"595b8b28202881eb2217c75047b1f812b3a9cb8e13679d14a5f3e025f46eecb1"},
+    {"package_id":"atmos_processor_child_count_source_wash_v1","role":"native child-count formula and getter boundary","manifest_sha256":"8b5e657eed11fcb6646251e8bea81c12fcacaf749f0c01aac0ec2f52da5bf19f"},
+    {"package_id":"adm_child_count_seven_sample_vectors_wash_v1","role":"seven-sample CHNA/AXML input-only vectors","manifest_sha256":"38f49cb279c2a2e68c4adac89d42ddb0da1133ff7c177ecd397c43ec8a3918b7"},
+    {"package_id":"adm_input_metadata_wash","role":"washed metadata source","manifest_sha256":"4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9"},
+    {"package_id":"atmos_processor_38ch_guard_wash_v1","role":"static BWF/AtmosReader special-mode selection context","manifest_sha256":"0403c0a19f6dcc918361d12e68b83d4e04179626d3fdfd213d3a83ab424c1eaf"}
+  ],
+  "source_validation": {
+    "incoming_manifest_sha256": "e8e1b6fea8bc7cd69dbedcd51b0e6eb6701ed61e7561ba2084a5c9b1e62d2ed6",
+    "incoming_manifest_members_hash_checked": true,
+    "upstream_manifest_hashes_checked_against_available_source_packages": true,
+    "upstream_runtime_join": "NOT_ESTABLISHED"
+  }
+}

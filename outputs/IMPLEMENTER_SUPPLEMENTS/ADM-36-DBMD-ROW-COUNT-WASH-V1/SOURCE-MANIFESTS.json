@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "sources": [
+    {
+      "kind": "user_authorized_adm_bwf",
+      "path": "D:\\First Love.wav",
+      "bytes": 1335078774,
+      "full_sha256": "NOT_RECOMPUTED",
+      "source_sha256_reported_by_prior_receipt": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "prior_hash_revalidated": false,
+      "metadata_chunks": [
+        {"id":"fmt ","bytes":16,"sha256":"e261a4850cc7ba2ae123de4dbbc085fa8f7dfb5597fe3aa70efb753b1fd91dbf"},
+        {"id":"axml","bytes":78570,"sha256":"27318f160cdaad8f752524feb3dbd87695e4b4f5505a8fe9b9ebee436d5ecf51"},
+        {"id":"chna","bytes":1444,"sha256":"621f761e76bf603741e965d224c55aa0f948a13f4fa603e207085d1a112ac379"},
+        {"id":"dbmd","bytes":576,"sha256":"f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e"}
+      ],
+      "data_chunk_bytes": 1334998044,
+      "data_chunk_read": false
+    },
+    {
+      "kind": "inspection_method",
+      "method": "RIFF chunk scan seeks over data and reads only fmt/axml/chna/dbmd; DBMD section 10 track count is U16 at body offset +4 after section length/checksum validation.",
+      "tool_script": "outputs/inspect_adm_dbmd_metadata.py",
+      "tool_script_sha256": "NOT_BOUND_IN_PACKAGE"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.atmos_ddp_bitrate_registry_boundary.v1",
+  "status": "RATE_FIELD_TO_TYPE1_WRITER_SLOT_BOUND; STATIC_REGISTRY_INIT_SOURCE_NOT_FOUND; NAMED_BSI_FIELD_UNBOUND; OUTPUT_NOT_RUN",
+  "scope": "Static Ghidra type-indexed writer and bounded CRT initializer audit; no DEE runtime output.",
+  "source_package": {
+    "package_id": "ATMOS-DDP-BITRATE-SINK-WASH-V2",
+    "manifest_sha256": "a234f33d415b85b0450c6705c2a993cd049837c720551ca9a2c1ef0a1bc7e206",
+    "type1_writer_addendum_sha256": "ff1b56d863b7f512daf9141b71d5a8911aae2a62aeb53caf5ce8af965956e342",
+    "writer_registry_trace_sha256": "190982e85777a5ef549bbfee370833aee3fefcf9e02c98840638d5b95727213b",
+    "type_init_trace_sha256": "81f56f50a3122a3e7962f36c3c3ace7f82ef28561fecb1b5a4826765a145a66d",
+    "evidence_hashes_rechecked": 18,
+    "normal_and_python_o_checker": "NOT_RUN; no checker/seal in source package"
+  },
+  "image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "execution": "NOT_RUN"
+  },
+  "rate_mapping": {
+    "codes_to_core_values": {
+      "0": 384,
+      "1": 448,
+      "2": 576,
+      "3": 640,
+      "4": 768,
+      "5": 1024
+    },
+    "units": "kbps inferred from a 448-kbps diagnostic; no typed unit",
+    "field_id": 3,
+    "table_type_index": 1,
+    "core_table_context_offset": "+0x810",
+    "serializer": "FUN_1801b1590",
+    "writer_dispatch": "vtable slot +0x28 at DAT_1806521e8 + type_index*0x30"
+  },
+  "registry_initialization": {
+    "type1_row_rva": "0x652218",
+    "on_disk_static_pointer": "zero; not treated as runtime-null proof",
+    "crt_initterm_range": [
+      "0x63a540",
+      "0x63d098"
+    ],
+    "slots_scanned": 1387,
+    "slots_resolving_to_functions": 1292,
+    "initializer_targets_with_direct_registry_xref": 0,
+    "type1_callback_target": "UNBOUND"
+  },
+  "remaining_edges": {
+    "type1_vtable_plus_0x28_callback_target": "UNBOUND",
+    "field_id_3_to_named_eac3_bsi_or_frame_field": "UNBOUND",
+    "runtime_bitrate_frame_size": "NOT_RUN"
+  },
+  "limits": {
+    "dee_run": false,
+    "payload_or_pcm_read": false,
+    "private_key_or_license_read": false
+  },
+  "next_minimal_observation": "Resolve the initialized type-1 +0x28 callback target through another concrete registration/constructor path; then trace its read of field ID 3 to a named BSI or frame-size field. Do not infer runtime null from the on-disk zero pointer."
+}

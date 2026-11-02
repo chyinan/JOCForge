@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-SELECTED-LUFS-PRODUCER-BOUNDARY-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3243,
+      "sha256": "faa5254a878e85fdcfcd188c38e8dd50e0c163f09d5b1f2ebdfc88df052fa7ad"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3369,
+      "sha256": "2dbb0ab43d3d57313ce271f525da77b088a38cb29be2f009f16d4590f7eb7b88"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 831,
+      "sha256": "e7626f2c7e7b24d72d2af855dc01e8499b73cc19105edc8700c6253884599edf"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2186,
+      "sha256": "56b4f79559f1a7d969702887053a3fbdf5c8c813fd36d1a338f23aa2d141e309"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1156,
+      "sha256": "06c79e596367019364773a3ac4f66e4ca27b15cfa5b354bdc8b9cc8aab6d639b"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1522,
+      "sha256": "8cdc2d2b822b540c4fe0eef587a15cb12ea35442a8922a23db6911a8da75a233"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "cb36443e102a6f0a7fe4349b84e0302139d7183180795d935ef861afb5514c3e"
+    }
+  ]
+}

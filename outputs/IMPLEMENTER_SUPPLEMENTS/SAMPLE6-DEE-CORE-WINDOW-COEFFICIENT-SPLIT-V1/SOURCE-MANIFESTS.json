@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1",
+      "manifest_sha256": "b216e195595dc2a5a67ec78d65ae7224c83dd6156cab5e6191b04b39a5a639d0",
+      "package_seal_sha256": "ac8fd8088d596daccbe596a8ff6f19d05cfda646c97def323353b04659c2e969"
+    },
+    {
+      "package_id": "EAC3-CORE-WINDOW-TABLE-WASH-V1",
+      "manifest_sha256": "f568d4f1990dbc5e6ea2e41a2eddf750b7a24f87cf62cdec53d1b2fce41c9e75",
+      "evidence_sha256": "2d890985ddd088c67869898cb963b59dd8660ee32d73a9cd72625181ea92714a"
+    },
+    {
+      "package_id": "SAMPLE6-DEE-CORE-LFE-TRANSFORM-V1",
+      "manifest_sha256": "eaf981c9436b5779df50e375aae6619bd652699e16f030cfca4945d42284b942",
+      "package_seal_sha256": "80bcd7ef018ddd2d99b8381ca03a7e9fbe7d0de04b83bc39c2d354e46c525da3"
+    }
+  ]
+}

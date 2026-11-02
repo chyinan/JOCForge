@@ -1,0 +1,42 @@
+{
+  "schema":"jocforge.line_drc_profile_u32_join_boundary.v1",
+  "status":"FILM_LIGHT_TREE_U32_UNBOUND; LINE_DDP_COMPR_JOIN_UNBOUND; NOT_RUN",
+  "upstream_package":{
+    "package_id":"atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256":"a92fb2f54cadd335a46ab42f0d8d6b6523fa939bff14ddff898c1dd4acc7c189",
+    "sha256sums_sha256":"1f00a90bea7307fa3366b8e2ccea81189b05dab9d633431bb780d8d7f5f93ead",
+    "payload_count_verified":7,
+    "hash_audit_normal":"PASS",
+    "hash_audit_python_O":"PASS"
+  },
+  "source_image":{
+    "name":"dee_audio_filter_ddp_atmos.dll",
+    "sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra":"12.2 PUBLIC",
+    "processing":"-noanalysis -readOnly"
+  },
+  "profile_tree":{
+    "global_address":"0x180a17cb0",
+    "static_image_bytes":"zero-filled in inspected range",
+    "film_light_string_literal_is_tree_node":false,
+    "film_light_u32":"UNBOUND"
+  },
+  "first_consumer":{
+    "function":"FUN_1801535b0",
+    "write_condition":"non-sentinel tree node and exact string match",
+    "write":"node+0x40 U32 -> param_2+0xa0",
+    "miss":"skips U32 assignment"
+  },
+  "separate_downstream_fields":{
+    "line_converter":"FUN_180178dc0 reads param_1[1] raw enum",
+    "encoder_config_writer":"FUN_1801aa730 writes param_1[5] U32 to param_3+0x28",
+    "lookup_result_to_line_converter_input":"UNBOUND",
+    "film_light_u32_to_encoder_config":"UNBOUND"
+  },
+  "execution_scope":{
+    "dee_run":false,
+    "pcm_or_payload_read":false,
+    "key_or_license_access":false,
+    "production_allowed":false
+  }
+}

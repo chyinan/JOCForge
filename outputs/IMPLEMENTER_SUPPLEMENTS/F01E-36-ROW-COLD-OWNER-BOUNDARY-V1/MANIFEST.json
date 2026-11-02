@@ -1,0 +1,33 @@
+{
+  "files": [
+    {
+      "bytes": 1993,
+      "name": "REPORT.md",
+      "sha256": "440fa3f9f78a8b8c7def76a35c69abc5f33e1541cb7ec884746c3665a971cff5"
+    },
+    {
+      "bytes": 2161,
+      "name": "EVIDENCE.json",
+      "sha256": "0c6faad922f87976384f42493273e3a22e8abca982639c227d9730884c15bd38"
+    },
+    {
+      "bytes": 895,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "d35f8d33966e9b1fa618f16e4217d1f443d94cc960a9712ef672acd32c535a61"
+    },
+    {
+      "bytes": 2463,
+      "name": "verify_package.py",
+      "sha256": "68aca1bf72ee391b84fbda3c836d0d8c9018824fc3a96449d08db50425f34187"
+    },
+    {
+      "bytes": 1675,
+      "name": "seal_package.py",
+      "sha256": "066c97dafa405dd27e32bc9db4fb3117ed92c6b978d6e07f379eace8e7c867aa"
+    }
+  ],
+  "package_id": "F01E-36-ROW-COLD-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "APPROVED_COLD_V1_FIXED_28; WIP_DYNAMIC_PROJECTION_PRESENT; NORMAL_CONTROL_AND_ZERO_DRAIN_STILL_38"
+}

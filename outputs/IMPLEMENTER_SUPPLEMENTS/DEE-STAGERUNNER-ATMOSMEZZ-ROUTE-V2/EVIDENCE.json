@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "DEE-STAGERUNNER-ATMOSMEZZ-ROUTE-V2",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Static StageRunner factory binding for atmos_mezz to DDP Atmos plugin; count transfer remains unbound",
+  "upstream": {
+    "package_id": "DEE-STAGE-FACTORY-BINDING-V1",
+    "manifest_sha256": "49ca286cf86d221d42413bd5dced050e2413651c88dcef1d453f85e3b028d8b8",
+    "payload_sha256": {
+      "DEE-STAGE-FACTORY-BINDING.json": "b85f83b8332d79757274ed7ddd19ddbb1942452c2b2c2176f32e144cf31999a2",
+      "CHECK.json": "36f9c70bc7e89bc4b110b629da6d8c002bd36ff409024e1076f279b9ac99ed8d"
+    },
+    "wash_independent_payload_check": "both payload hashes and sizes match",
+    "checker_disposition": "PASS_FACTORY_KEY_TO_DDP_ATMOS_MODULE_WITH_COUNT_GATE_UNBOUND"
+  },
+  "images": {
+    "host": {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    "selected_filter": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    "separate_converter_component": {"name": "dee_audio_filter_convert_atmos_mezz.dll", "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"}
+  },
+  "selected_job_types": {
+    "input_class": "dee::input::AtmosMezz",
+    "input_type": "atmos_mezz",
+    "configured_filter_key": "encode_to_atmos_ddp",
+    "selected_factory_module": "dee_audio_filter_ddp_atmos.dll",
+    "selected_factory_class": "FilterDDPJocEncPlugin",
+    "source_type_handoff": "audio.atmos_mezz -> plugin source-type interface",
+    "output_type": "audio.ec3.atmos"
+  },
+  "non_selected_route": {
+    "class": "FilterConvertAtmosMezz",
+    "module": "dee_audio_filter_convert_atmos_mezz.dll",
+    "separate_stage_selection_by_configured_key": "NOT_OBSERVED"
+  },
+  "count_boundary": {
+    "numeric_count_field_at_stage_type_match": "NONE",
+    "first_count_bearing_field_in_selected_implementation": "UNBOUND_R3_NOT_EVALUATED",
+    "reader_to_process_count_transfer": "UNBOUND_R2_NOT_EVALUATED",
+    "raw_pcm_pcm_to_ddp_max8_gate_applies": "NOT_BOUND"
+  },
+  "execution": {"dee_run": false, "payload_read": false, "key_read": false},
+  "input_only_vector": "NOT_PROVIDED_STATIC_STAGE_ROUTE_ONLY",
+  "prohibited_inferences": [
+    "Do not apply the separate raw-PCM max-eight gate to ADM without a typed route edge.",
+    "Do not infer 36/38 channel admission from type compatibility alone.",
+    "Do not treat sibling module identity as proof of selected stage use."
+  ]
+}

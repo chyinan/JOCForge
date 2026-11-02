@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1453,
+      "name": "REPORT.md",
+      "sha256": "cee927a8d43912577946a2a49767c733211bbb2378f4c10e7f0526a3c2e09253"
+    },
+    {
+      "bytes": 1849,
+      "name": "EVIDENCE.json",
+      "sha256": "75fc07ade8cc3153c5f1e519292dc072bf7446b1fcb14e7f4689f53325e7842c"
+    },
+    {
+      "bytes": 441,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "30ca31847e717867e113f22e3f7a038354bd514ae8ef5656b5254b01d609719a"
+    },
+    {
+      "bytes": 614,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "f0f9acc86d4e68799c6a7ae11f2ea1633decae468336d76bf4c0c99c1f1fbf46"
+    },
+    {
+      "bytes": 2120,
+      "name": "verify_package.py",
+      "sha256": "d3623ee5cbcf7b2579319f75aa1178a90ca3c1b5b9dbbd622e7a24dc8a823f0c"
+    },
+    {
+      "bytes": 1475,
+      "name": "seal_package.py",
+      "sha256": "9c25bd072716e5e97c01b036b291c263001925658bcde3e8e5ad2d420c40a974"
+    }
+  ],
+  "manifest_sha256": "a84c58e48e969b794a73afea39d95f4b506e9c729f51d6e7055791659a85ca81",
+  "package_id": "ATMOS-SELECTOR8-WRITER-XREF-EXCLUSION-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

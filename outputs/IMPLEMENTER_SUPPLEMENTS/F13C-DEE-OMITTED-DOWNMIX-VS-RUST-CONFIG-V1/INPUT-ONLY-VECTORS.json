@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "package_id": "F13C-DEE-OMITTED-DOWNMIX-VS-RUST-CONFIG-V1",
+  "vectors": [
+    {
+      "id": "dee-inactive-preference",
+      "kind": "CONFIG_INPUT_ONLY",
+      "inputs": {"preferred_control_active": false, "display_value": "Stereo", "mix_level_controls_active": false},
+      "derived_request": {"preferred_downmix_mode": "OMITTED", "mix_level_fields": "OMITTED"},
+      "native_effective_enum": "UNBOUND"
+    },
+    {
+      "id": "current-rust-selected-config",
+      "kind": "SOURCE_CONFIGURATION_ONLY",
+      "inputs": {"selected_profile": "48kHz/1024kbps/5.1 JOC"},
+      "derived_job_fields": {"preferred_downmix_mode": "loro", "mix_levels_db": [-3, -3, -3, -3]},
+      "derived_bsi_fields": {"dmixmod": 2, "mix_levels": [4, 4, 4, 4], "mixmdate": 1},
+      "does_not_assert_audio_difference": true
+    }
+  ]
+}

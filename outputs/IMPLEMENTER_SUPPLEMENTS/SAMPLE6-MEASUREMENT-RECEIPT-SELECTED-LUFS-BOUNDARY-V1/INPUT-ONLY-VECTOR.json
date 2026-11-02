@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "selected-lufs-word-receipt-serialization",
+  "fixed": {
+    "ProgrammeMeasurementReceipt.selected_lufs_word": "u32 F32 bits",
+    "receipt_identity": ["programme_id", "attempt", "input_sha256", "config_sha256", "meter_terminal_sha256"],
+    "managed_run_json_field_present": false
+  },
+  "observed_full_run": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "rust_u5": 17,
+    "selected_lufs_word": "NOT_RECORDED"
+  },
+  "bounded_dee_observation": {
+    "scalar": -20.665958,
+    "unit": "UNBOUND",
+    "file_position": [2160, 2208],
+    "scope": "not same-scope to Rust full-file run"
+  },
+  "minimal_receipt_projection": {
+    "field": "measurement_receipt.selected_lufs_word_hex",
+    "value_source": "existing typed receipt",
+    "execution": "NOT_RUN"
+  }
+}

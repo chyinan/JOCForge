@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "native-f06-film-light-full-file-dee-rust-comparison-v1",
+      "manifest_sha256": "5b4e23b25e459f80ae26267f792080d472cd5deda69ea35129e546b7f0a6066d",
+      "manifest_sha256_verified": true,
+      "package_seal": "not supplied by source package",
+      "source_checker": "verify_full_file_comparison.py",
+      "source_checker_normal": "PASS",
+      "source_checker_python_O": "PASS"
+    }
+  ],
+  "washed_payload_policy": {
+    "source_code_or_disassembly": false,
+    "raw_pcm": false,
+    "encoded_payload": false,
+    "private_key_or_license_material": false,
+    "absolute_research_paths": false
+  }
+}

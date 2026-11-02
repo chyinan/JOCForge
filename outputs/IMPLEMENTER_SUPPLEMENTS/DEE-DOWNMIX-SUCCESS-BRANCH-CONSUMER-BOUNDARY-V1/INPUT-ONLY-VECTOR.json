@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-dee-downmix-success-branch-input-vector.v1",
+  "input": {
+    "caller_owned_lorosurmixlev_slot": "+0x1ac",
+    "caller_owned_dmixmod_slot": "+0x1b0",
+    "candidate_reads": [
+      {"offsets":["+0x1ac","+0x1b0"],"shape":"byte-count/pointer"},
+      {"offsets":["+0x1a8","+0x1b0"],"shape":"begin/end pointers to 8-byte elements"}
+    ]
+  },
+  "expected_static_disposition": {
+    "same_typed_consumer_joined":false,
+    "audio_matrix_or_frame_consumer":"UNBOUND",
+    "audio_output_or_pcm_expected":"NONE"
+  },
+  "execution":"NOT_RUN",
+  "pcm_or_payload_included":false
+}

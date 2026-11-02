@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DRC-FILM-LIGHT-MODE1-ENCODER-CONFIG-BOUNDARY-V3",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FILM_LIGHT_TO_RAW_LINE_ENUM_0_TO_DDP_COMPR_2_BOUND_CONDITIONAL_MODE1; JOB_MODE_UNOBSERVED; AUDIO_OUTPUT_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1539,
+      "sha256": "a1f2551c6ea39013a0de7565e467c15ed2cfde9a3ba087a1c77b573d0e315cd6"
+    },
+    "EVIDENCE.json": {
+      "bytes": 3431,
+      "sha256": "82fa3bb25e314f66634243c6ee81c6a02d0d4b0ab5a854cb5dc38a8affaa2c1d"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 504,
+      "sha256": "1afa7cd2b0db221b4bc218bf910d59baee9e15fcfa556619e50a2e1de98aaf6a"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1233,
+      "sha256": "1c74c900a615e8b153c7636d3b6733ab51ca732c6e86e7e4fe8aa5e0bd96683b"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "washed-drc-block-producer-input-only.v1",
+  "vector_id": "mode0-one-block-nonzero-code-presence",
+  "classification": "POST_QUANTIZATION_TABLE_WRITER_REPLAY; NOT_A_DEE_RUN",
+  "profile_custom_flag_i32": 0,
+  "profile_selector_u8": 1,
+  "profile_selector_label": "UNBOUND; raw numeric test input",
+  "block_count": 1,
+  "param2_i16": 0,
+  "branch_flag_i16": 1,
+  "reference_code_u16": 1,
+  "candidate_code_u16": 1,
+  "expected_mode0_code_u16_block0": 1,
+  "expected_mode0_presence_u16_block0": 1,
+  "expected_wire": {"dynrnge_u1": 1, "dynrng_u8": 1, "bits": "100000001"},
+  "native_runtime_execution": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

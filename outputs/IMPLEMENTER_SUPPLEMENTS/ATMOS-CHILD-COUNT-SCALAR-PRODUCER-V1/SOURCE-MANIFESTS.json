@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "atmos_child_count_scalar_source_wash_v1",
+      "manifest_sha256": "c65ff6716eaa61ee5679717362677c721712a46f80342dbe51255c1b718a5e46",
+      "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+      "parent_child_count_source_manifest_sha256": "8b5e657eed11fcb6646251e8bea81c12fcacaf749f0c01aac0ec2f52da5bf19f",
+      "bed_channel_vector_manifest_sha256": "bc0460ba82a4211010881becd3a5e3744aedede7b97042c7998919242b5c9dee",
+      "metadata_json_sha256": "187badfacc8f14927e17f00b7d9a2c1a8dc58f9722fb9c8e4dad8a21fac39e75"
+    }
+  ],
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

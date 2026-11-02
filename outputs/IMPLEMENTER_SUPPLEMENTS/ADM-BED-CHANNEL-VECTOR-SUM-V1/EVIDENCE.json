@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge-washed-adm-bed-channel-vector-sum.v1",
+  "package_id": "ADM-BED-CHANNEL-VECTOR-SUM-V1",
+  "scope": "AUTHORIZED HUMAN-CAT AXML/CHNA BED ROW VECTOR LENGTHS",
+  "status": "METADATA_BED_VECTOR_SUM_BOUND; NATIVE_ROW_IDENTITY_UNBOUND",
+  "source_package": {
+    "package_id": "adm_bed_channel_vectors_wash_v1",
+    "manifest_sha256": "bc0460ba82a4211010881becd3a5e3744aedede7b97042c7998919242b5c9dee",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "parent_guard_manifest_sha256": "0403c0a19f6dcc918361d12e68b83d4e04179626d3fdfd213d3a83ab424c1eaf",
+    "metadata_manifest_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9",
+    "metadata_json_sha256": "187badfacc8f14927e17f00b7d9a2c1a8dc58f9722fb9c8e4dad8a21fac39e75"
+  },
+  "authorized_sample": {
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "metadata_channels": 38,
+    "chna_tracks": 38,
+    "directspeaker_bed_rows": 10,
+    "object_rows": 28
+  },
+  "bed_channel_vectors": [
+    {"track": 1, "uid": "ATU_00000001", "channel": "AC_00011001", "speaker": "RC_L", "vector_length": 1},
+    {"track": 2, "uid": "ATU_00000002", "channel": "AC_00011002", "speaker": "RC_R", "vector_length": 1},
+    {"track": 3, "uid": "ATU_00000003", "channel": "AC_00011003", "speaker": "RC_C", "vector_length": 1},
+    {"track": 4, "uid": "ATU_00000004", "channel": "AC_00011004", "speaker": "RC_LFE", "vector_length": 1},
+    {"track": 5, "uid": "ATU_00000005", "channel": "AC_00011005", "speaker": "RC_Lss", "vector_length": 1},
+    {"track": 6, "uid": "ATU_00000006", "channel": "AC_00011006", "speaker": "RC_Rss", "vector_length": 1},
+    {"track": 7, "uid": "ATU_00000007", "channel": "AC_00011007", "speaker": "RC_Lrs", "vector_length": 1},
+    {"track": 8, "uid": "ATU_00000008", "channel": "AC_00011008", "speaker": "RC_Rrs", "vector_length": 1},
+    {"track": 9, "uid": "ATU_00000009", "channel": "AC_00011009", "speaker": "RC_Lts", "vector_length": 1},
+    {"track": 10, "uid": "ATU_0000000A", "channel": "AC_0001100a", "speaker": "RC_Rts", "vector_length": 1}
+  ],
+  "derived_candidate": {
+    "object_source_count": 28,
+    "sum_of_metadata_bed_channel_vectors": 10,
+    "candidate_master_channel_count": 38,
+    "formula": "object_source_count + sum(bed row channel-vector lengths)",
+    "grade": "AUTHORIZED_METADATA_DERIVATION; NATIVE_RUNTIME_VALUE_NOT_OBSERVED",
+    "native_storage_vector_identity": "UNBOUND",
+    "runtime_master_descriptor_u16_plus_0x0a": "NOT_CAPTURED"
+  },
+  "execution_boundary": {
+    "wav_or_bwf_opened_in_this_task": false,
+    "pcm_or_payload_read": false,
+    "dee_run": "NOT_RUN",
+    "private_key_or_license_material_accessed": false
+  }
+}

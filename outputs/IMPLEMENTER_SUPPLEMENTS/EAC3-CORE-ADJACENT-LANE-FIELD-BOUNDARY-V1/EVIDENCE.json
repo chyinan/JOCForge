@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-eac3-core-adjacent-lane-field-boundary.v1",
+  "package_id": "EAC3-CORE-ADJACENT-LANE-FIELD-BOUNDARY-V1",
+  "status": "ADJACENT_CORE_FIELD_WRITE_BOUND; SEMANTIC_CONSUMER_UNBOUND",
+  "scope": "E-AC-3 core only; no JOC FUN_180 relation",
+  "target_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "function": "FUN_14032b520",
+    "function_code_sha256": "2ca2576ead4d71e0cf5e92caf28296e141129e67ee328a1963e3e98b1339c6ed"
+  },
+  "writer": {
+    "caller": "FUN_140343530",
+    "callsite": "0x140343706",
+    "base": "state+0x140f0",
+    "destination": "state+0x14150+2*j",
+    "index": "j=5*block+lane",
+    "width_bits": 16,
+    "stored_expression": "max(0, min(clamp(-iVar2, 0, 60), 4)-1)",
+    "value_range": [0,3]
+  },
+  "nearby_core_fields": {
+    "D": "i16(state+0x1418c+10*block+2*lane)",
+    "N": "u16(state+0x141c8+2*j)",
+    "consumer": "FUN_14032d580",
+    "same_base_passed_later": true,
+    "consumer_reads_param_10_plus_0x60": false,
+    "copy_from_adjacent_field_to_D_or_N_found": false,
+    "same_offset_decoy": {"function":"FUN_14036f8f0","base":"state+0x20540","same_field":false}
+  },
+  "reset": {"function":"FUN_14032d9b0","clears_adjacent_field":true},
+  "semantic_role": "UNBOUND",
+  "stride_selector_identity": "NOT_ESTABLISHED",
+  "execution": {"dee_run":"NOT_RUN","media_pcm_payload_key_read":false},
+  "source_package": {
+    "package_id": "dee-ddp-lane-control-field-lineage-wash-v9",
+    "manifest_sha256": "0f0641569f62afd89815052a6038c5b5d7071c99ac50b267a5757dee9442117e",
+    "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+  }
+}

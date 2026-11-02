@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-washed-f06-r138-source-manifests.v2",
+  "incoming_package_id": "native-f06-r138-host-media-metadata-set-dispatch-addendum",
+  "incoming_manifest_sha256": "49fac997e42b61aa2a98af32c7698e2f3baf129b6d4ae96138dc96e4f7fcc8bd",
+  "parent_row_writer_package_manifest_sha256": "3a3bf13ff538a7f5c90e8700ec2a0b9d31d16c31182716b3b5813d42602420ad",
+  "target_images": {
+    "dee.exe":"65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "dee_audio_filter_convert_atmos_mezz.dll":"9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "dee_audio_filter_ddp_atmos.dll":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "hash_bound_ghidra_reports": 7,
+  "authorized_hanmao_identity": {"sha256":"7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1","channels":38,"sample_rate_hz":48000,"metadata_only":true},
+  "source_code_copied": false,
+  "binary_or_decompilation_copied": false,
+  "audio_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

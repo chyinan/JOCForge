@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-RENDERER-TO-DDP-CORE-EDGE-V1",
+      "path": "D:\\Tools\\Dolby_Encoding_Engine\\work\\research-audit\\lfe-host-routing-v1\\wash-package-renderer-core-edge-v1",
+      "manifest_sha256": "b012e270fda5cf51d127e3c32e3d9cff16fb33b1f2ac1e5f9c1df24dddf47605",
+      "package_seal_sha256": "b89fe90bbd101961738cf6a7bdaf19065b6bb3b2a94061a4da4722ee9e8833cb",
+      "renderer_core_boundary_sha256": "b5b78af57ea700026340c349d10063ba7395e53854699baa9b71760654389c7e",
+      "check_json_sha256": "df2d0b0172c2142a5ddd413544143ddcc1da6dbf207d13899084d733bc822d7f",
+      "verification": "manifest/seal and payload hashes recomputed by checker; normal and python -O checks passed; boundary reviewed"
+    }
+  ]
+}

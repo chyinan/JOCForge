@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-HOST-FRAME-ABI-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Sanitized Ghidra static core/host ABI boundary; selected ADM reader-to-core frame transfer remains unbound",
+  "upstream": {
+    "package_id": "sample6-matched-drc-host-frame-abi-boundary-wash-v1",
+    "manifest_sha256": "e4481a1659dd602b450a39cde861b225ebfe594b2007565ee1fca3890b527732",
+    "package_seal_sha256": "8b8b80548aa76165d4fd9e5d422b64ada5c4ee8f393f4daf2bc30370817d2112",
+    "payload_sha256": {
+      "CHECK.py": "94ae0661b7e140d5093ec69061f60f12faa2e4ec26b67f6ac729cfc2a66536f8",
+      "EVIDENCE.json": "5a26af490f6c0cd13bef5dace48755fad5214f52c87d6fdc49c428d89e7c2d37",
+      "INPUT-ONLY-VECTOR.json": "47e9b7a5fb94e246739e350785a80be77c423eb494f21b7677628b443bab2be4",
+      "REPORT.md": "28d374f0580c2bf3dce9083fcb721ece5597d149a682d863ef1aa91acf2564cd",
+      "SOURCE-IDENTITIES.json": "79065afcc8383fee8503fbbe9bd3c78e7555880890e1b2d0d10b306357c958d6"
+    },
+    "wash_independent_verification": "all five payload sizes/hashes matched; upstream normal and python -O checkers passed"
+  },
+  "images": {
+    "core": {"name": "dee_ddp_encoder.exe", "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"},
+    "host": {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    "atmos_filter": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    "analysis": "Ghidra 12.2 PUBLIC; read-only/noanalysis"
+  },
+  "core_frame_view": {
+    "process_api": "FUN_140213470",
+    "count": {"offset": "param3+0x20", "type": "U64", "local_descriptor_transfer": "narrowed to U32"},
+    "pointer_list": {"offset": "param3+0x08", "type": "U64 pointer"},
+    "local_process_chain": "FUN_140214ef0/FUN_140214e80 -> FUN_140215070 -> FUN_140213470 -> Comp vtable slots",
+    "in_image_code_caller_for_comp_slots": "NOT_FOUND_IN_CHECKED_SCOPE",
+    "external_this_and_frame_view_constructor": "UNBOUND"
+  },
+  "host_atmos_mezz_path": {
+    "reader_run_slot": "FUN_1400F09D0 at host vtable slot 0x1402e7d10 (+0x30)",
+    "reader_metadata_slot": "FUN_1400F0130 at host vtable slot 0x1402e7d40 (+0x60)",
+    "audio_filter_loader": "FUN_14016A1C0 dynamically resolves dlb_phoenix_get_audio_filter_handle",
+    "typed_code_edge_to_core_comp": "NOT_FOUND_IN_CHECKED_SCOPE",
+    "selected_reader_count_to_core_frame_count": "UNBOUND"
+  },
+  "separate_atmos_packet": {
+    "process_wrapper": "FUN_180179A80 -> FUN_180179AB0 -> FUN_1801A8840",
+    "sample_count_check": "param3[2] is 0x600 or zero/flush",
+    "typed_join_to_core_frame_view": "UNBOUND"
+  },
+  "status": {
+    "adm_36_or_38_to_core_count": "UNBOUND",
+    "runtime_observation": "NOT_RUN",
+    "algorithm_change_supported": false,
+    "raw_pcm_payload_or_key_accessed": false
+  },
+  "prohibited_inferences": [
+    "Do not equate ADM tracks, PCM channels, Atmos process packet channels, and DDP core frame count.",
+    "Do not infer a cross-module call from static export presence or equal counts.",
+    "Do not infer audio parity or a row-to-LFE lane mapping from this boundary."
+  ]
+}

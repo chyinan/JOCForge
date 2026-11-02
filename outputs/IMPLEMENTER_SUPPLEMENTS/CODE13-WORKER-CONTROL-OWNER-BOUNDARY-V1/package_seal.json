@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "CODE13-WORKER-CONTROL-OWNER-BOUNDARY-V1",
+  "manifest_sha256": "863ea87d1b8f9624951ac121a5f8653d8ea87ac9a5bad97fd24098caae9c664b",
+  "sha256sums_sha256": "b02827b2512ca2d3cd6952370ed6351d18027177257f0a4c9466b118d8af3ba8",
+  "payload_count": 3,
+  "status": "WORKER_CONTROL_OWNER_TO_CONSUMER_BOUND; CONTROL_STREAM_AND_ADM_ROW_JOIN_UNBOUND; HOST_ROUTE_UNBOUND; RUNTIME_NOT_RUN"
+}

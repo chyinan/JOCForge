@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-MEASUREMENT-RECEIPT-SELECTED-LUFS-BOUNDARY-V1",
+  "source_reverse_package_id": "sample6-measurement-receipt-serialization-boundary",
+  "source_reverse_manifest_sha256": "779264b7c2fc3baabcaf7bc7d88bd46da1cc3c66a9b089a09b3f915eed1e5a2b",
+  "source_reverse_manifest_file": "MANIFEST.sha256",
+  "source_reverse_package_seal": "NOT_PROVIDED",
+  "status": "SELECTED_LUFS_WORD_PRESENT_IN_TYPED_RECEIPT; OMITTED_FROM_MANAGED_RUN_JSON",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3065,
+      "sha256": "7168bffeda9451a601ce4a35843bc8a6862f985645535460fcd8cb812576464d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2695,
+      "sha256": "fd30496c48d88e76cef5ac64cfa5e6f280a7c4b7596084687d6d50642779ad8d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 871,
+      "sha256": "381998472d5a4c9870d246d4dc15cde059b69d1f82d5310b2b5cd958aab57bb9"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1517,
+      "sha256": "38ed364299c353baa4e056002f959c1f13842824be5bf5ed4c19e9ffa7dca080"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1049,
+      "sha256": "e40a1ad1be099dafae2b8c09e4be3ddfcce057e0430dbc743fe9216e79b47ed8"
+    }
+  ],
+  "exclusions": {
+    "source_code_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema":"jocforge.atmosmezz_auto_normalizer_vector.v1",
+  "vector_id":"OFFSET-FFOA-AUTO-NORMALIZATION",
+  "policies":{"offset":"auto","ffoa":"auto"},
+  "existing_metadata_map_required_keys":["offset","ffoa"],
+  "normalized_ffoa_formula":"metadata_ffoa - metadata_offset + normalized_offset",
+  "host_output_map":"dee::input::AtmosMezz+0x130",
+  "converter_privcontext_transfer":"UNBOUND",
+  "metadata_value_run_observed":"NOT_CAPTURED",
+  "execution":"STATIC_ONLY"
+}

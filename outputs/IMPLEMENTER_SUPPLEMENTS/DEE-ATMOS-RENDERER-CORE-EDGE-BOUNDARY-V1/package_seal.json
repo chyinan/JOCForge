@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ATMOS-RENDERER-CORE-EDGE-BOUNDARY-V1",
+  "manifest_sha256": "27dcdee06c2215638ad40c33e9a20e169e06557e9581b47858ecf891d3726592",
+  "sha256sums_sha256": "4115ddc45ff9f6bd72db9bdb099fef4113b45acdabda878ec4bfd859a3e8b245",
+  "payload_count": 3,
+  "status": "RENDERER_FRAME_CALLBACK_TARGET_BOUND; SELECTED_CORE_TRANSFORM_UNBOUND; LFE_PAYLOAD_CONSUMER_NOT_CAPTURED"
+}

@@ -1,0 +1,94 @@
+{
+  "schema": "sample6-cross-adm-dee-header-repeatability.v1",
+  "package_id": "SAMPLE6-CROSS-ADM-DEE-HEADER-REPEATABILITY-V1",
+  "status": "THREE_ADM_METADATA_SIGNATURES_MATCH; TWO_ADDITIONAL_DEE_JOBS_SUCCEEDED; PCM_PARITY_NOT_RUN",
+  "source_package": {
+    "package_id": "r7-cross-adm-matched-controls",
+    "manifest_sha256": "2faa45c97ec06373a1d2a45e44e74c46fb8e5672aa4fe0882c5e0ff915ecb15b",
+    "source_checker": "verify_package.py",
+    "source_checker_normal": "PASS",
+    "source_checker_python_O": "PASS",
+    "source_package_seal": "NOT_PRESENT; MANIFEST.sha256 verified"
+  },
+  "adm_inputs": [
+    {
+      "name": "人是猫 - 张卡斯, 洛天依.wav",
+      "bytes": 743696526,
+      "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "hash_recomputed_by_wash": true
+    },
+    {
+      "name": "First Love.wav",
+      "bytes": 1335078774,
+      "sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "hash_recomputed_by_wash": true
+    },
+    {
+      "name": "Hortus Regis Alti.wav",
+      "bytes": 1689440628,
+      "sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e",
+      "hash_recomputed_by_wash": true
+    }
+  ],
+  "matched_controls_reported": {
+    "input_schema": "atmos_mezz ADM BWF",
+    "data_rate_kbps": 1024,
+    "line_mode_drc_profile": "film_light",
+    "rf_mode_drc_profile": "film_light",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "preferred_downmix_mode": "loro",
+    "loro_mix_levels_db": [-3, -3],
+    "surround_trim_5_1": "auto",
+    "height_trim_5_1": "auto"
+  },
+  "additional_dee_run_receipts": [
+    {
+      "sample": "First Love.wav",
+      "job_xml_sha256": "7206e9840017e95f947c3314d5926f75a66d387b203151be1d7cb1e937651446",
+      "exit_code": 0,
+      "runtime_seconds": 51.535,
+      "output_sha256_run_receipt": "8ee9bf1414fd6fc82a19c8754926b7a3a22ba15b8dfd82b40dce62df57bfad52",
+      "output_hash_rechecked_after_removal": false,
+      "output_bytes_run_receipt": 32964608,
+      "first_syncframe_header_only": {
+        "sample_rate_hz": 48000,
+        "blocks_per_syncframe": 6,
+        "acmod": 7,
+        "lfe_present": true
+      }
+    },
+    {
+      "sample": "Hortus Regis Alti.wav",
+      "job_xml_sha256": "8e118f3261ed6c17c39725d4a36330b54f8d40ebf2d0ef863fa22ff3194c76ab",
+      "exit_code": 0,
+      "runtime_seconds": 56.556,
+      "output_sha256_run_receipt": "7062ecd3a36bf55a5f2729c2631e049f5ceba738acc20a0db8199f60726d8f55",
+      "output_hash_rechecked_after_removal": false,
+      "output_bytes_run_receipt": 41713664,
+      "first_syncframe_header_only": {
+        "sample_rate_hz": 48000,
+        "blocks_per_syncframe": 6,
+        "acmod": 7,
+        "lfe_present": true
+      }
+    }
+  ],
+  "repeated_adm_metadata": {
+    "source": "CHNA/AXML metadata scan",
+    "direct_speakers_bed_rows": 10,
+    "six_channel_subset_rows": [0, 1, 2, 3, 4, 5],
+    "speaker_labels": ["RC_L", "RC_R", "RC_C", "RC_LFE", "RC_Lss", "RC_Rss"],
+    "lfe_row": 3,
+    "three_signatures_equal": true,
+    "runtime_selected_row_order_proven": false
+  },
+  "limits": {
+    "pcm_read_or_decoded": false,
+    "per_channel_pcm_metrics": "NOT_RUN",
+    "runtime_row_selection": "NOT_PROVEN",
+    "lfe_residual_reproducibility": "NOT_MEASURED",
+    "key_or_license_contents": false,
+    "raw_output_payload_included": false
+  }
+}

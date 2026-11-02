@@ -1,0 +1,17 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "r9-joc-coefficient-count-audio-wash",
+      "manifest_sha256": "06fc46a4b650aedb4d72ea160e09921adc7cc6dd5d47a7cf206746ad6f69d3fa",
+      "manifest_sha256_verified": true,
+      "source_package_seal": "not supplied"
+    }
+  ],
+  "washed_payload_policy": {
+    "function_addresses_or_disassembly": false,
+    "raw_pcm_or_payload": false,
+    "private_key_or_license_material": false,
+    "absolute_research_paths": false
+  }
+}

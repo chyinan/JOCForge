@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-dee-au-repack-handoff-symbolic-vector.v2",
+  "unit_index": "k",
+  "source_pointer": "outer+0xb30+0x10*k",
+  "destination_pointer": "outer+0xb90+0x10*k",
+  "word_count_u16": "outer+0xb9a+0x10*k",
+  "consumer_order": "increasing k",
+  "consumer_byte_length": "word_count_u16*2",
+  "consumer_stream_object": "per-index",
+  "file_writer_reached": false,
+  "runtime_execution": "NOT_RUN",
+  "product_audio_validation": "NOT_RUN"
+}

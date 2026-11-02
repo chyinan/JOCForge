@@ -1,0 +1,77 @@
+{
+  "schema": "jocforge-washed-eac3-exponent-u4-u7-writer.v1",
+  "scope": "DEE E-AC-3 FULLBAND EXPONENT SYNTAX WRITER",
+  "status": "STATIC_WRITER_CONTRACT_READY_FOR_IMPLEMENTATION; REAL_FRAME_GROUP_COUNT_AND_ADM_LANE_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "dee-ddp-exponent-u4-u7-lineage-wash-v1",
+    "manifest_sha256": "60dd1b42814edd97c44ad827c2a06b7cd1fd9f39b3ca4303422f6de5650898cf",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "native_image": {
+    "image_name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "bytes": 7923712,
+    "analysis": "Ghidra 12.2 read-only static"
+  },
+  "strategy": {
+    "producer_function": "FUN_14032f440",
+    "selector_function": "FUN_1403305a0",
+    "table_base": "state+0x1bae8",
+    "per_block_lane_selector": "u16(state + 0x1bae8 + 0x3a + 10*block + 2*lane)",
+    "selector_outputs": [0, 1, 2, 3],
+    "writer_gate": "emit exponent payload when selected lane strategy is nonzero"
+  },
+  "exponent_fields": {
+    "internal_index": "j=5*block+lane",
+    "lane_code_pointer": "*(u64 *)(state+0x143b8+8*j)",
+    "u4": {
+      "source": "u16(lane_code_pointer+0)",
+      "count": 1,
+      "width_bits": 4,
+      "writer_function": "FUN_140362640",
+      "callsite": "0x14037073c"
+    },
+    "u7": {
+      "source": "u16 array at lane_code_pointer+2",
+      "count_field": "u16(state+0x141c8+2*j)",
+      "width_bits": 7,
+      "writer_function": "FUN_140362640",
+      "callsite": "0x140370760"
+    },
+    "shared_cursor": {
+      "cursor_parameter": "FUN_14036f8f0 param_20",
+      "same_register_across_u4_u7_calls": true,
+      "intervening_cursor_writes": 0,
+      "advance_bits": "4+7*N"
+    }
+  },
+  "call_path": {
+    "outer_block_loop": "FUN_140317600 -> FUN_1403448d0 -> FUN_14036f8f0",
+    "frameset_boundary": "FUN_14033b5f0 -> FUN_14036ac00 after six accumulated blocks; outer DDP stuffer, not the per-block exponent emitter"
+  },
+  "confidence_and_unbound": {
+    "static_field_order_width_count_and_cursor_confidence": 0.97,
+    "real_adm_frame_group_count": "UNBOUND",
+    "u4_u7_code_value_producer": "UNBOUND",
+    "physical_adm_row_to_internal_lane": "UNBOUND",
+    "current_1024kbps_51_selector_value": "UNBOUND",
+    "authorized_adm_count_in_codec_observations": 0,
+    "dee_runtime_observations": 0,
+    "metadata_preflight_authorized_inputs": 7,
+    "exponent_observations_from_metadata_preflight": 0
+  },
+  "parser_error_relation": {
+    "reported_error": "exponent -1 is out-of-range",
+    "writer_contract_is_relevant_to_eac3_core_syntax": true,
+    "sole_root_cause_established": false
+  },
+  "payload_policy": {
+    "source_code_included": false,
+    "binary_or_decompilation_included": false,
+    "media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

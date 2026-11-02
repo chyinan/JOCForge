@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-TRANSFORM-CORRECTED-V1",
+  "scope": "corrected core LFE scratch/transform ownership and matched XML config boundary",
+  "status": "INPUT_SCRATCH_OWNER_AND_EXTENT_BOUND; PRIOR_INDEX381_CLAIM_RETRACTED; MATCHED_LAYOUT_LANE_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 2757,
+      "sha256": "d9fbcb7fbc80ffabd5c00c0d8d9c41cd914c213ebaeaa789f621680ac825bac8"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3629,
+      "sha256": "95a274a262be6e98e9fb68bfecc8b84d67c542603f4ed3929a2c6d40cc312111"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 737,
+      "sha256": "3b5d2ecb89ce920938efa29ca9da2d2dd1d5031386a7fe20748004ad313ca2a2"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 932,
+      "sha256": "615f324acd42f0d03b7e9061fea3c36596620917fe25890ff8d03e5fba0e51f7"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 4183,
+      "sha256": "d55d65a718ad69612b1ce238093803471596513788e33c60720106a329f40724"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "matched-pcm-drc-scale-control.v1",
+  "decoder": "ffmpeg version 8.1-full_build.www.gyan.dev",
+  "purpose": "decoder-control measurement only; not an encoder algorithm source",
+  "pcm_retention": "NONE",
+  "results": [
+    {
+      "drc_scale": 1,
+      "dee_window_pcm_sha256": "91dd21ff97ea20bdc9b3ff9df7b5257c09307019f687556ab782b4957a2e0733",
+      "rust_window_pcm_sha256": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7",
+      "aggregate_mae": 0.0010340880835428834,
+      "aggregate_rmse": 0.002320472151041031,
+      "aggregate_peak_error": 0.018465762957930565,
+      "per_channel": [
+        {"index": 0, "mae": 0.0004034832908263558, "rmse": 0.0006013405341139688, "peak_error": 0.008125506341457367, "correlation": 0.9999595364514453, "candidate_to_dee_gain": 1.0011209244478634, "lag_frames": 0},
+        {"index": 1, "mae": 0.0003468145459518001, "rmse": 0.0005369517903583466, "peak_error": 0.007997572422027588, "correlation": 0.9999668382825616, "candidate_to_dee_gain": 1.0006759040384767, "lag_frames": 0},
+        {"index": 2, "mae": 0.00018767448996458738, "rmse": 0.00038693602044386513, "peak_error": 0.004147298634052277, "correlation": 0.9999068493778299, "candidate_to_dee_gain": 1.000136237863083, "lag_frames": 0},
+        {"index": 3, "mae": 0.004222572000177926, "rmse": 0.005477228334429668, "peak_error": 0.018465762957930565, "correlation": 0.9418639506181433, "candidate_to_dee_gain": 1.0047166623424095, "lag_frames": 0},
+        {"index": 4, "mae": 0.0005459367374073523, "rmse": 0.0009005044703371823, "peak_error": 0.008773058652877808, "correlation": 0.9998850810050733, "candidate_to_dee_gain": 1.0069447062854708, "lag_frames": 0},
+        {"index": 5, "mae": 0.0004980476402063694, "rmse": 0.0008348392401210479, "peak_error": 0.006531670689582825, "correlation": 0.9998985009126082, "candidate_to_dee_gain": 1.0061300183950064, "lag_frames": 0}
+      ]
+    },
+    {
+      "drc_scale": 0,
+      "dee_window_pcm_sha256": "7899c63912f3086ebcfb63cc7815fe9b9293d12178d9328b1c8373720cf2e2f9",
+      "rust_window_pcm_sha256": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7",
+      "aggregate_mae": 0.0008934139623306692,
+      "aggregate_rmse": 0.002258564345538616,
+      "aggregate_peak_error": 0.018465762957930565,
+      "per_channel": [
+        {"index": 0, "mae": 0.00024985672639306957, "rmse": 0.0004557198609140598, "peak_error": 0.008125506341457367, "correlation": 0.9999763478636364, "candidate_to_dee_gain": 1.0000039426532144, "lag_frames": 0},
+        {"index": 1, "mae": 0.00022288367928618533, "rmse": 0.000426132628960479, "peak_error": 0.007997572422027588, "correlation": 0.9999789467462611, "candidate_to_dee_gain": 0.9998855156802625, "lag_frames": 0},
+        {"index": 2, "mae": 0.00018333839198647292, "rmse": 0.0003794719301291025, "peak_error": 0.004147298634052277, "correlation": 0.9999103622537099, "candidate_to_dee_gain": 0.999905882180638, "lag_frames": 0},
+        {"index": 3, "mae": 0.00419660876507528, "rmse": 0.005454088662868509, "peak_error": 0.018465762957930565, "correlation": 0.9418173777830592, "candidate_to_dee_gain": 1.0001206063506904, "lag_frames": 0},
+        {"index": 4, "mae": 0.00026629606877346865, "rmse": 0.00042687754577053303, "peak_error": 0.004743717610836029, "correlation": 0.9999683953108617, "candidate_to_dee_gain": 0.9999693196189929, "lag_frames": 0},
+        {"index": 5, "mae": 0.00024150065800288565, "rmse": 0.0003796038631370937, "peak_error": 0.00420147180557251, "correlation": 0.9999748694825074, "candidate_to_dee_gain": 0.999977834037523, "lag_frames": 0}
+      ]
+    }
+  ]
+}

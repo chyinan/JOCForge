@@ -1,0 +1,89 @@
+{
+  "schema": "jocforge-sample6-keyless-reference-and-bsi-audit.v4",
+  "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+  "supersedes": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V3",
+  "status": "FULL_OUTPUT_PARSED_AND_DECODED; FULL_FILE_DEE_PARITY_NOT_RUN; BSI_INTERPRETATION_OPEN",
+  "source_gates": {
+    "keyless_dee_gate_package": {
+      "package_id": "sample6-dee-keyless-reference-20261102",
+      "manifest_sha256": "3070124494fcbfdf8d5da3e0578535005266c512892ce2b39b1bf198891c8722",
+      "fresh_dee_run": "NOT_RUN",
+      "reason": "DEE auto-discovers product license from application folder or DEE_PLUGIN_PATH; a no-argument launch is not demonstrably license-free."
+    },
+    "bounded_dee_dialnorm_package": {
+      "package_id": "F12-MULTI-ADM-DIALNORM-API-BOUNDARY-V1",
+      "manifest_sha256": "e20d665c4089d29d46cdc08771bda9fd03a2916405bd3d30aaace9caead1d0f4",
+      "time_window": {"time_base": "file_position", "start": "2160", "end": "2208"},
+      "native_unit": "UNBOUND",
+      "final_bsi_writer": "NOT_PROVEN"
+    }
+  },
+  "authorized_input": {
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "hash_identity_verified": true
+  },
+  "current_jocforge_output": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "run_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766",
+    "source_commit": "216326f622e66f1f7b255dbe7a8bcfb8ca473ce2",
+    "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "output_bytes": 17395712,
+    "profile": {"codec": "E-AC-3 JOC", "sample_rate_hz": 48000, "bit_rate_bps": 1024000, "channels": 6, "layout": "5.1(side)", "duration_seconds": 135.904, "access_units": 4247}
+  },
+  "parser_and_decode": {
+    "ffprobe_version": "8.1-full_build-www.gyan.dev",
+    "whole_stream_parse": "PASS",
+    "first_access_unit": {"position": 0, "size_bytes": 4096, "duration_seconds": 0.032},
+    "ffprobe_downmix_fields_exposed": true,
+    "ffprobe_fields": {"dmix_mode": 0, "ltrt_cmixlev": 0.0, "ltrt_surmixlev": 0.0, "loro_cmixlev": 0.0, "loro_surmixlev": 0.0},
+    "ffprobe_frame_downmix_side_data_count": 4247,
+    "ffmpeg_version": "8.1-full_build-www.gyan.dev",
+    "full_stream_decode_only_exit_code": 0,
+    "decoder_errors": "NONE",
+    "decoded_pcm_bytes_streamed_in_memory": 156561408,
+    "decoded_sample_frames_per_channel": 6523392,
+    "pcm_saved": false
+  },
+  "bounded_raw_header_check": {
+    "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "bytes_read": 10,
+    "raw_bytes_emitted_or_retained": false,
+    "field_bit_ranges": {
+      "mixmdate": {"start_bit": 59, "width": 1, "value": 1},
+      "dmixmod": {"start_bit": 60, "width": 2, "value": 2},
+      "ltrt_cmixlev": {"start_bit": 62, "width": 3, "value": 4},
+      "loro_cmixlev": {"start_bit": 65, "width": 3, "value": 4},
+      "ltrt_surmixlev": {"start_bit": 68, "width": 3, "value": 4},
+      "loro_surmixlev": {"start_bit": 71, "width": 3, "value": 4}
+    },
+    "semantic_reconciliation_with_ffprobe": "OPEN"
+  },
+  "dialnorm_scope": {
+    "rust_full_file_u5": 17,
+    "rust_u5_bit_offset": 45,
+    "rust_u5_width": 5,
+    "rust_logged_meter_value": 17,
+    "dee_bounded_file_position_window_u5": 21,
+    "dee_window_start": "2160",
+    "dee_window_end": "2208",
+    "same_full_file_scope": false,
+    "full_file_dee_u5": "NOT_RUN",
+    "selected_lufs_input_receipt": "NOT_CAPTURED",
+    "measurement_unit": "UNBOUND",
+    "mismatch_claim_disposition": "DO_NOT_LABEL AS A FULL-FILE SAME-SCOPE U5 MISMATCH"
+  },
+  "fresh_dee_comparison": {
+    "dee_invoked": false,
+    "full_file_audio_essence_comparison": "NOT_RUN",
+    "fresh_dee_bsi_values": "NOT_RUN",
+    "old_python_or_control_group_used": false,
+    "audio_equivalence": "NOT_ESTABLISHED"
+  },
+  "constraints": {
+    "private_key_or_license_accessed": false,
+    "private_key_or_license_passed": false,
+    "pcm_persisted": false,
+    "implementation_contacted_by_research": false
+  }
+}

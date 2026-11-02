@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "DEE-RAW-PCM-DOWNMIXER-COUNT-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Static raw-PCM parser/reader/resampler/downmixer boundary; ADM-BWF path join remains unbound",
+  "upstream": {
+    "package_id": "DEE-DDP-CHANNEL-CAPACITY-STATIC-V1",
+    "manifest_sha256": "153b5825bf74c485ec0c8ab9f370b726fedc37aac68a6e59afc8c9408e67dbb3",
+    "payload_sha256": {
+      "DEE-DDP-CHANNEL-CAPACITY.json": "2053503c7fac4e96967ae978e4d20f553ee90bafdb4c2140a2fc54d18c90f6ee",
+      "CHECK.json": "8c3eae49a3b73dad97f6ff5bbdadd930a1de8db135d6ea39a98389ab272f4a0b"
+    },
+    "wash_independent_payload_verification": "both payload sizes and hashes match the upstream manifest",
+    "upstream_checker": {
+      "static_hash_bound": "PASS as recorded in CHECK.json",
+      "dynamic_observation": "NOT_RUN",
+      "native_36_channel_result": "NOT_RUN",
+      "native_38_channel_result": "NOT_RUN"
+    }
+  },
+  "source_identity": {
+    "tool": "Ghidra 12.2",
+    "program": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "raw_pcm_path": {
+    "channel_config_parser": "32-bit channels field; no numeric maximum observed in checked parser",
+    "reader_channel_field": "PcmStreamReaderPriv+0x0c, 32-bit, from constructor descriptor element 1",
+    "reader_and_resampler_sizing": "scales with channel count; no fixed ceiling observed in checked constructors/wrappers",
+    "first_explicit_downmixer_gate": {
+      "wrapper_function_rva": "0x00201310",
+      "capacity_function_rva": "0x00200f50",
+      "frame_count_source": "FUN_1402712d0, U64 at frame+0x20",
+      "reject_condition": "frame channel count > 8",
+      "failure": "throws max-8-channel downmixer error",
+      "downstream_accepted_counts": [1, 2, 6, 8]
+    }
+  },
+  "adm_bwf_relation": {
+    "raw_pcm_reader_frame_to_downmixer": "STATIC within this branch",
+    "ADM_BWF_to_PCM_reader_frame": "UNBOUND",
+    "selected_approved_ADM_profile_to_this_branch": "UNBOUND",
+    "first_gate_for_ADM_36_or_38": "UNBOUND"
+  },
+  "symbolic_input_only_cases": [
+    {"raw_pcm_frame_channels": 36, "if_reaches_downmixer": "REJECTED_BY_GT_8_GATE", "ADM_BWF_applicability": "UNBOUND"},
+    {"raw_pcm_frame_channels": 38, "if_reaches_downmixer": "REJECTED_BY_GT_8_GATE", "ADM_BWF_applicability": "UNBOUND"}
+  ],
+  "execution_status": {"dee_run": false, "dynamic_observation": "NOT_RUN", "pcm_or_adm_payload_read": false, "key_or_license_accessed": false},
+  "prohibited_inferences": [
+    "Do not claim this raw-PCM branch is the selected ADM-BWF route.",
+    "Do not claim 36/38-channel ADM is rejected by this conditional branch without a typed input-path join.",
+    "Do not infer runtime overwrite or audio behavior from static code alone."
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "jocforge.code13_worker_control_owner_boundary.v1",
+  "status": "WORKER_CONTROL_OWNER_TO_CONSUMER_BOUND; CONTROL_STREAM_AND_ADM_ROW_JOIN_UNBOUND; HOST_ROUTE_UNBOUND; RUNTIME_NOT_RUN",
+  "scope": "Ghidra 12.2 static normal DLL setup/consumer path; no DEE runtime or audio parity result.",
+  "source_package": {
+    "package_id": "worker_control_table_owner_wash_v1",
+    "manifest_sha256": "886bc30b038aa4a5ff3876c99dfd9a2852cb5727bc91e087e90db5a8b7147bff",
+    "package_seal_sha256": "9626735c1542fae1b1bf5d0a47219b70fd807f867ef2cfc5e581f190902b1c61",
+    "report_sha256": "f7312e568c567509cad2449ca188e6ee0ded588fc0eaf96bc8e092f983925f79",
+    "evidence_sha256": "5f69b3e88c9b5a853b5dfbdc8f705709258856512a86307e0874f1a0ac33bd2a",
+    "observation_plan_sha256": "9fdfd00dd24dac3dd0052c74b3818d6c6b8ebf1c8f3a4e9403e9ed6e32c919f9",
+    "source_manifests_sha256": "097ffdb9dae4a6eb6aaf5673fe98097725e0ef6f2a87822bfd38bfe40cc29b4f",
+    "checker_sha256": "5c112ec6e38e97903caa59ba1d104414e4fb0ef5397b45d2bfff4b2b761036bd",
+    "checker": "normal and python -O passed"
+  },
+  "native_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis": "Ghidra 12.2, noanalysis, readOnly"
+  },
+  "normal_setup": {
+    "setup": "FUN_1801b0750 local descriptor {16,8} -> FUN_1801c22d0 -> FUN_180077ef0",
+    "owner_layout": {
+      "bytes": 184,
+      "table_offset": "+0x60",
+      "slot_count": 16,
+      "slot_stride_bytes": 16,
+      "slot_fields": {
+        "data_pointer": "+0x00",
+        "status_u32": "+0x08",
+        "type_u32": "+0x0C"
+      },
+      "subrows_per_slot": 8,
+      "subrow_bytes": 30,
+      "initially_zeroed": true
+    },
+    "pointer_identity": "FUN_1801c22d0 returns owner in outer+0x42f8 and header+8; FUN_1801bfd90 writes outer+0x42f8 to worker+0x182f0; paired header stored at worker+0x182f8",
+    "same_worker_consumer": "FUN_1801c3490 passes the worker to FUN_1801c0770, which reads worker+0x182f0",
+    "non_null_capability": "owner can be non-null on this normal DLL setup path after successful construction"
+  },
+  "record_population_and_filter": {
+    "record_writer": "FUN_180078360 materializes status/type entries from a decoded control stream",
+    "record_types": [
+      3,
+      "bit_index 0..16"
+    ],
+    "source_selection_gate": "code14>0 AND at least one skip index unset AND owner present",
+    "consumer_scan_bound": "code13",
+    "predicate": "record status +0x08 == 0 and type +0x0C in {3,0x10}",
+    "effect": "matching source-pointer indices omitted before per-object processing",
+    "record_writer_header_to_worker_owner": "UNBOUND"
+  },
+  "semantic_and_host_boundaries": {
+    "control_stream_to_ADM_row_identity": "UNBOUND",
+    "worker_table_to_named_ADM_AudioObject_ChannelFormat_or_CHNA": "UNBOUND",
+    "host_task_encode_to_atmos_ddp_to_factory_index": "UNBOUND",
+    "runtime_task_generation_token": "NOT_OBSERVED"
+  },
+  "limits": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "audio_parity": "NOT_RUN"
+  },
+  "next_minimal_observation": "For authorized 38-row 人是猫 and 36-row My Jealousy, bind the StageRunner route/factory and one run token to worker/header/owner pointers, control-stream parser owner, slot status/type, consumer skip indices, and reader source generation; read no 0x1E-byte subrow payloads."
+}

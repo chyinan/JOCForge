@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "worker_control_table_owner_wash_v1",
+    "manifest_sha256": "886bc30b038aa4a5ff3876c99dfd9a2852cb5727bc91e087e90db5a8b7147bff",
+    "package_seal_sha256": "9626735c1542fae1b1bf5d0a47219b70fd807f867ef2cfc5e581f190902b1c61",
+    "report_sha256": "f7312e568c567509cad2449ca188e6ee0ded588fc0eaf96bc8e092f983925f79",
+    "evidence_sha256": "5f69b3e88c9b5a853b5dfbdc8f705709258856512a86307e0874f1a0ac33bd2a",
+    "observation_plan_sha256": "9fdfd00dd24dac3dd0052c74b3818d6c6b8ebf1c8f3a4e9403e9ed6e32c919f9",
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "verification": "source package checker normal/python -O passed; Wash independently recomputed manifest/seal hashes"
+  },
+  "excluded": [
+    "raw decompilation",
+    "Ghidra scripts",
+    "binary",
+    "subrow payloads",
+    "PCM",
+    "EC-3 payload",
+    "private key",
+    "license"
+  ]
+}

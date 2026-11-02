@@ -1,0 +1,77 @@
+{
+  "schema": "washed-dee-core-lfe-transform.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-TRANSFORM-V1",
+  "status": "CORE_LFE_BRANCH_AND_FIRST_SAMPLE_TRANSFORM_BOUND_STATIC; MATCHED_INPUT_TO_CORE_LANE_UNBOUND; SCRATCH_HISTORY_SOURCE_UNBOUND",
+  "matched_identity": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "locally_rehashed_in_this_package": false
+  },
+  "native_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "bytes": 7923712,
+    "analysis": "Ghidra 12.2 read-only/noanalysis"
+  },
+  "core_input_api": {
+    "channel_descriptor_count": 6,
+    "descriptor_stride_bytes": 16,
+    "pointer_field_offset_bytes": 0,
+    "sample_stride_field_type": "U16",
+    "sample_stride_field_offset_bytes": 12,
+    "internal_pointer_table_entries": 6,
+    "internal_sample_stride_entries": 6,
+    "layout_rule": "layout_id selects a six-entry input mapping row; lanes below FBW_count are full-bandwidth, lanes >= FBW_count take the LFE main/companion path",
+    "matched_layout_id": "UNBOUND",
+    "matched_fbw_count": "UNBOUND",
+    "adm_row3_to_internal_lfe_lane": "UNBOUND"
+  },
+  "first_sample_transform": {
+    "precision": "F32",
+    "fresh_words_copied_per_lane": 256,
+    "input_stride": "per-channel U16 from descriptor",
+    "operation": "64 symmetric pair steps using coefficient table C/S values",
+    "even_pair": [
+      "x[2i]*S[i] + x[255+2i]*C[i]",
+      "x[255+2i]*S[i] - C[i]*x[2i]"
+    ],
+    "odd_pair": [
+      "x[2i+1]*S'[i] + x[254+2i]*C'[i]",
+      "x[254+2i]*S'[i] - C'[i]*x[2i+1]"
+    ],
+    "writes": "transform work/history rows; exact destination indices not asserted",
+    "scratch_pointer_field": "core state scratch pointer",
+    "maximum_relative_f32_index_read": 381,
+    "read_extent_f32_words": 382,
+    "fresh_input_words": 256,
+    "history_words_beyond_fresh_copy": 126,
+    "scratch_owner_capacity_and_history_generation": "UNBOUND",
+    "numeric_output_values": "NOT_RUN"
+  },
+  "lfe_main_companion": {
+    "main_bank_f32_values_per_block": 7,
+    "companion_bank_f32_values_per_block": 7,
+    "stride_behavior": "nonzero stride uses alternate helper; zero stride uses inline recurrence",
+    "precursor_f32_count": 16,
+    "main_even_output_rule": "out[0,2,4,6] = C[k]*x[2k+1] - S[k]*x[2k]",
+    "main_odd_output_rule": "paired coefficient sums from precursor pairs (10,11), (12,13), (14,15)",
+    "companion_even_output_rule": "out[0,2,4,6] = S[k]*x[2k] - C[k]*x[2k+1]",
+    "companion_odd_output_rule": "paired coefficient sums from the same precursor pairs",
+    "matched_lane_and_stride": "UNBOUND"
+  },
+  "execution": {
+    "native_runtime_capture": "NOT_RUN",
+    "numeric_comparison": "NOT_RUN",
+    "input_only_vector_executed": false,
+    "pcm_included": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  },
+  "comparison_boundary": {
+    "spatial_analysis_weight_package": "SEPARATE_PATH; NOT AN LFE PCM GAIN",
+    "rust_numeric_equivalence": "NOT_COMPARED",
+    "lfe_residual_causality": "UNBOUND"
+  }
+}

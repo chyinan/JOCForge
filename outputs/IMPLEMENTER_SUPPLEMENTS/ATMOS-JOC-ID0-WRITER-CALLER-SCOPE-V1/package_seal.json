@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "ATMOS-JOC-ID0-WRITER-CALLER-SCOPE-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4111,
+      "sha256": "ca37cd5f7a2df37188b53b6478cf2ec3a94e596abfc89cdb9cf94d8718c67dd5"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2288,
+      "sha256": "7f8768cadadc65908ce456523acbf42bcbaa9f96ec983d86a317e88aaf272719"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 647,
+      "sha256": "8d62538e96a82dfe769306694824c2cb037e9ab73b843dddd38dae4209050c5e"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1445,
+      "sha256": "72750335d6ec4bced626a5d61a51b4709fce24bef902a2d24fd4a06e121a3187"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 603,
+      "sha256": "60914685785ffc47f930b300e21897e49e5db6e379190d0816e2f669bfdf67e9"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1507,
+      "sha256": "799224b611c5c919b92ebe2e94c212f15a22257500c9ab5400becc47303cf505"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "840ebd4f40ce947ef45cf7486c795b923e845799cf5f00d658c57c8b73003763"
+    }
+  ]
+}

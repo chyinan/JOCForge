@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "ATMOS-PROCESSOR-38CH-ADMISSION-V3",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3067,
+      "sha256": "3b53a748ec9fb3b9bed213beb3eb954c6bfc21878694d04c1b5aececc5bd4890"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3546,
+      "sha256": "1c3f35bebefc01e444de0cadb76d741036f40da5864559e3ddf9ed687499a5c5"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 567,
+      "sha256": "464a59f08ddfdd2e0df7a670a5f27c92b957c76e5ecfdc19c13633ccc47acda4"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1427,
+      "sha256": "341fb49b660b2c4ad7a2cc7b57dea89efb9d85efd1bcde8e8e8cf41fa27d3b89"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1237,
+      "sha256": "c5efdb8bae1de1dd33ba58338046de0cfc15db8965b3de5a1195041f0d4c44c2"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "b802affecfcda37bbd3d6bee3aba80f7583a373c05b075582da96dac20b96255"
+    }
+  ]
+}

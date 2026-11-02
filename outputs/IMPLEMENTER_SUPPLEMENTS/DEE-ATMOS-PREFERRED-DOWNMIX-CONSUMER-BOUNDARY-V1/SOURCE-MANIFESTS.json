@@ -1,0 +1,19 @@
+{
+  "source_package": {
+    "package_id": "F13C-native-consumer-addendum-v2",
+    "manifest_sha256": "4de3c1af1b49eb8a70c9fa8a574bbfb5dbbb9882d3cc020455b6624208b65577",
+    "sha256sums_file_sha256": "5dbd67ba1fcb7d5fafd5b7b2a2fe8b5936505d03be4b8167278aeb50269518b1",
+    "member_hashes_recomputed": {
+      "ADDENDUM.md": "78a815aa1ae450b03fae8d2bff45391c208f45d062f003303351ee88c7d37e68",
+      "GHIDRA-CONSUMER-FLOW.json": "cf5464f663814b4b109f011bc8910f0e5b8344465d93469d8910f5e2366eb48a"
+    },
+    "parent_report_sha256_as_reported": "b62f3ceb8175fb7f21b7e4f186c5e168707b0545a6cc1836a3058e4b4a7dfbc4",
+    "ghidra_program_image_sha256_as_reported": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_installation_binary_hash_recomputed": false
+  },
+  "exclusions": {
+    "ghidra_script_or_decompilation_copied": false,
+    "binary_copied": false,
+    "pcm_payload_or_key_copied": false
+  }
+}

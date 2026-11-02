@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "SYMBOLIC_METADATA_COUNT_DISCRIMINATOR; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "cases": [
+    {"input": "potential_ai", "pcm_channels": 36, "chna_rows": 36, "slot_extent": "UNBOUND", "emdf_count": "UNBOUND"},
+    {"input": "human_cat", "pcm_channels": 38, "chna_rows": 38, "beds": 10, "object_associated_tracks": 28, "slot_extent": "UNBOUND", "emdf_count": "UNBOUND"}
+  ],
+  "warning": "Equal source counts do not bind to native mode input, coefficient-slot extent, BSI layout, or an EMDF count."
+}

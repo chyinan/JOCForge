@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-JOC-ID0-SELECTED-OBJECT-PROVENANCE-V1",
+  "source_reverse_package_id": "atmos_joc_selector_id0_config_wash_v1",
+  "source_reverse_manifest_sha256": "bcd366ee63916707421278c34ba430b8b35bede053e65f6f8de13963b35ce8bc",
+  "source_reverse_package_seal_sha256": "960fafcb65249bb846a7dbd46e7dd0aad966a04b848f9078cdf4fb361ee94645",
+  "status": "ID0_LOOKUP_AND_GETTER_EDGE_BOUND; ID0_CONCRETE_TYPE_AND_RUN_VALUE_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4572,
+      "sha256": "9d946b32e6f6a6d69643b6018f757acb5e5398179e3f57bb0384a46bee6c64a6"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2939,
+      "sha256": "335518f564a508503964e1bc9abe8e71007e706a0948c22854082e800b237f2b"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 808,
+      "sha256": "035521c6fc91b9d596bf07539f4d211d1c6cbbdb5e68adb7d8bc6700a8a9c20b"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2253,
+      "sha256": "bed4b260a02c6491cab79194c041823d070e9d6cdc62295f315df9b8804f744a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 703,
+      "sha256": "c16f32500e0bbb1e71b34cab71737d641b1c2749d040a1e9fc2e94b19f4d8c34"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

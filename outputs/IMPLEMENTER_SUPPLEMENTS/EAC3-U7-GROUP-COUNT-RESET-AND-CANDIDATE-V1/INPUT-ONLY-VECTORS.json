@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-eac3-u7-group-count-arithmetic-vectors.v1",
+  "vector_grade": "INPUT_ONLY_ARITHMETIC",
+  "native_assignment_observed": false,
+  "rule_under_test": "N=(D+2)//3; tail_count=3*N-D; each tail value is 2",
+  "vectors": [
+    {"D": 0, "N": 0, "tail_count": 0},
+    {"D": 1, "N": 1, "tail_count": 2},
+    {"D": 3, "N": 1, "tail_count": 0},
+    {"D": 4, "N": 2, "tail_count": 2},
+    {"D": 6, "N": 2, "tail_count": 0}
+  ],
+  "product_codec_execution": "NOT_RUN"
+}

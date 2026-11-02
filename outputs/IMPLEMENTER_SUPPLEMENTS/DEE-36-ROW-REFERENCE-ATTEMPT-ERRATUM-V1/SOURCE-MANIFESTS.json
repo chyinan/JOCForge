@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "DEE-36-ROW-REFERENCE-ATTEMPT-ERRATUM-V1",
+  "upstream": [
+    {
+      "package_id": "dee_36track_matchedcontrol_exact_run_wash_v1",
+      "manifest_sha256": "8bbead58e701baa917ef7acc6770cedc1f5e9d3c21d5e9e6ca3daaa3360620ae",
+      "package_seal_file_sha256": "6feb9225f136b21fd8ef8692516f16a5c9737b0493d09d97b41cfd699fc95f67",
+      "checker": ["PASS_NORMAL", "PASS_PYTHON_O"],
+      "correction_source": "dee_38track_matchedcontrol_exact_run_wash_v1 PRIOR-36-ATTEMPT-CORRECTION.json"
+    },
+    {
+      "package_id": "dee_36track_reference_run_wash_v1",
+      "manifest_sha256": "1001680f7c159bb4604dee66ce3ff1c5b51dfdfab1b08b568e88997e7c49f4fe",
+      "package_seal_file_sha256": "660bc84eee3decb14f8d45917ec0341a263a2bc41223dcb0060f3822e054efec",
+      "checker": ["PASS_NORMAL", "PASS_PYTHON_O"]
+    },
+    {
+      "package_id": "dee_38track_matchedcontrol_exact_run_wash_v1",
+      "manifest_sha256": "5436b72178a7a22202913f29e6b4cd91d3225675939d015e18bf716ae58e43c7",
+      "package_seal_file_sha256": "7eb320beab1c0c8d06bbd6c5f7a04bb8fe0de073056f9ef5a9d562f858ecdc6e",
+      "checker": ["PASS_NORMAL", "PASS_PYTHON_O"]
+    },
+    {
+      "package_id": "dee_output_80c3_process_context_audit_wash_v1",
+      "manifest_sha256": "d1af5eb48eed65eb77f312cf952c1ab43b914144ad73999dcdc0473a8ca6efc5",
+      "package_seal_file_sha256": "4fcf724dd40b3c2bb5ff359ca1f33f775450c0bae17c8cc1805888b200d28df3",
+      "checker": ["PASS_NORMAL", "PASS_PYTHON_O"]
+    }
+  ]
+}

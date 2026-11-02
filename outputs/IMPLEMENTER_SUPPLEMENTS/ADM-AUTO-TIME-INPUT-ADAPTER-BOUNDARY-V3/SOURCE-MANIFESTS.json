@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "sources": [
+    {
+      "package_id": "adm_bwf_atmosmezz_input_property_adapter_boundary_wash_v1",
+      "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-3\\outputs\\adm_bwf_atmosmezz_input_property_adapter_boundary_wash_v1",
+      "manifest_sha256": "8a4f50a71ea37e9049311dffa5c419d0ae9b817397524e2c5ba4980eb3b168ac",
+      "package_seal_sha256": "011bdca1868fc92c27d1bfaaa476676d0b7e6035fe6a091ddb4c92e5630a4396",
+      "boundary_payload_sha256": "9db9008f27b5f498efd3b4473a38b8ba313d70756f77192daa5b1f18a697f0a4",
+      "source_identities_sha256": "4bc8df73c0188e90838b8e75198a5d1605d91daa3f0d3f92dbe58bc10aff68a6",
+      "checker_sha256": "49373a3cd9cf9447f0a3afb124044ef992d2d15674bbe1f223e8a9b6f598e10f",
+      "verification": "manifest and seal hashes independently recomputed; checker passed normal and python -O; source scope reviewed"
+    }
+  ]
+}

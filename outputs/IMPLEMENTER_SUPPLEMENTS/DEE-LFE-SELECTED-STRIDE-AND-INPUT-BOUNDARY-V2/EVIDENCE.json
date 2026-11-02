@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge.lfe_stride_boundary_supplement.v1",
+  "status": "STRIDE_FIELD_AND_TEMP_STAGE_BOUND; SAMPLE_BRANCH_UNBOUND; NATIVE_RUST_OWNER_JOIN_UNBOUND; NUMERIC_PARITY_NOT_RUN",
+  "scope": "Static Ghidra 12.2 evidence only; no selected sample branch or audio parity claim.",
+  "source_package": {
+    "package_id": "DEE-LFE-SELECTED-STRIDE-INPUT-EDGE-WASH-V1",
+    "manifest_sha256": "fd6ec172d610ff94867cec38d937396cdd9444f6d05c0921d0392d34e454f2bd",
+    "package_seal_sha256": "de81a8d51dc7bba9ae755add13a11a5c1858384be0f298bb1e32153d8abc8a98",
+    "evidence_sha256": "23d242556e9a73d68af72ff34906e4592e6247dc274123eefb3fb0a827c93385",
+    "report_sha256": "a7ec1220599ca13ddc92449d79ec499fa04c0002bdaad9e45023628ac49a9961",
+    "sha256sums_sha256": "dbc8090e1662f7ebd5fe34c3cebb35b38694bf08b2c683c728c11b6d2efd397a"
+  },
+  "native_identity": {
+    "image": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "analysis": "Ghidra 12.2 PUBLIC, existing read-only project, noanalysis"
+  },
+  "typed_edge": {
+    "input_descriptor": "six 16-byte core channel descriptors",
+    "stride_field": "U16 descriptor[i] +0x0C",
+    "copied_stride_table": "U16 state+0x1320",
+    "lfe_descriptor_selection": "layout_id*6 + lane; LFE internal lane is FBW_count when LFE is present",
+    "sample_specific_stride": "UNBOUND"
+  },
+  "audio_stage": {
+    "gather": "256 F32 samples from the selected descriptor pointer, advancing by its U16 stride, into state+0x262E8",
+    "shared_transform_writer": "FUN_14036e350 writes a separate 256-F32 temporary at state+0x296F0+0x420",
+    "lfe_wrapper_consumer": "FUN_14036d5e0/FUN_14036d630 receive selected stride and the temporary; FUN_14036d9e0 mutates that temporary before FUN_14036dec0 consumes it",
+    "raw_adm_row_directly_enters_lfe_core": false
+  },
+  "conditional_rule": {
+    "consumer": "FUN_14036d9e0",
+    "zero_stride": "inline cosine/sine recurrence; candidate formula match to Rust long_pre_rotation, conditional on input-stage join",
+    "nonzero_stride": "FUN_14036d7c0 separate stride-table branch; no direct Rust long_pre_rotation match in the existing crosswalk",
+    "selected_for_authorized_5p1_sample": "UNBOUND"
+  },
+  "rust_comparison": {
+    "source_recorded_head": "613112b7fe158052500244d1af202817bcf9f216",
+    "recorded_callsite": "analysis/owner.rs:662 -> f08_lfe_transform_block(&folded_lfe, parameters)",
+    "native_temporary_and_rust_folded_input": "same 256-F32 shape; owner/generation identity UNBOUND",
+    "numeric_parity": "NOT_RUN",
+    "audio_difference": "NOT_ESTABLISHED"
+  },
+  "experiment_limits": {
+    "dee_execution": false,
+    "pcm_or_media_read": false,
+    "payload_read": false,
+    "private_key_or_license_read": false,
+    "playback": "NOT_RUN"
+  },
+  "next_minimal_observation": [
+    "Capture one run token plus the six descriptor pointer tokens and U16 +0x0C strides at FUN_140350d00 -> FUN_140317600.",
+    "Record outer +0x40/+0x44, normalized +0x1912C/+0x1912E, selected layout row, FBW_count, LFE lane, descriptor slot, and copied stride.",
+    "Compare the 256-F32 temporary pointer token from FUN_14036e350 with the subsequent LFE wrapper argument token; buffer contents need not be read."
+  ]
+}

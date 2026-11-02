@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-STAGE-FACTORY-BINDING-V1",
+      "manifest_sha256": "49ca286cf86d221d42413bd5dced050e2413651c88dcef1d453f85e3b028d8b8",
+      "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "selected_filter_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    },
+    {
+      "package_id": "DEE-RAW-PCM-DOWNMIXER-COUNT-BOUNDARY-V1",
+      "manifest_sha256": "c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1",
+      "scope": "separate raw-PCM route only"
+    },
+    {
+      "package_id": "ADM-BWF-DDP-CHANNEL-COUNT-LINEAGE-V1",
+      "manifest_sha256": "10e47c5266f02caef327b31890a3719521ab4a86c8f687ef0b10ca92edadc437",
+      "scope": "converter-local count path; no host selection join"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.dmixmod_stored_field_test_plan.v1",
+  "status": "PREPARED_NOT_RUN",
+  "planned_control": "same authorized ADM/XML; change preferred_downmix_mode only; keep all mix-level controls fixed",
+  "cases": [
+    "loro",
+    "ltrt"
+  ],
+  "execution": "NOT_RUN; no native or PCM operation"
+}

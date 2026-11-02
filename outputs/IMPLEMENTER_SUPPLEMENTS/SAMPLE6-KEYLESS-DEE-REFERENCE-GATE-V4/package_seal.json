@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+  "file_count": 5,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3040,
+      "sha256": "9d228f4d97d96d8846d5dc19717c9596da1d6956abfaebe24ce27769314f3b63"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 4033,
+      "sha256": "b7e8966973458d2d09917f0cebb45d8016677d32e9c97df4d2e74279158879e1"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1336,
+      "sha256": "31d3511c6f4ecfd6c2fa1e2abde511ea7a7c7366d5ce4f07ec2b8e61dfbb7062"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1116,
+      "sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "5992bc0b138e002900f1d9389e631f2e383c0bbed30119a202f94e10ee873b2e"
+    }
+  ]
+}

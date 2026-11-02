@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-INPUT-MAP-OWNER-BOUNDARY-V2",
+  "source_reverse_manifest_sha256": "5d1f924b5b141b75061ff82aeb6296dd3562f24dd54dfdc10f1b405b5a61957d",
+  "status": "STAGERUNNER_CONTEXT_BOUND_TO_VECTOR; INPUT_MAP_WRITER_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1802,
+      "sha256": "bab0ab1bf7a642580e2a157c92b0b5d22e722b1e88971ec99ab844444fac1f57"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 828,
+      "sha256": "f2e48d0cea8476009f88dd668b5b065f5080293abb08d64996ed4335c15c7575"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1657,
+      "sha256": "835005b3c67e5bdd25f3264f32ba23998ab143e01ae6166ba1d31803c044e4d7"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 924,
+      "sha256": "73a59dd88f01636be2416e2fc99eec15a1b489205957a714d9cb38907125af09"
+    }
+  ]
+}

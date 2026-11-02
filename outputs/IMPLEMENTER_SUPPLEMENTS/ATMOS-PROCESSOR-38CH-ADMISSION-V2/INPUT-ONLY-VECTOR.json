@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-atmos-processor-channel-admission-input-only.v2",
+  "sample": {"channels_from_metadata": 38, "bed_tracks": 10, "object_tracks": 28},
+  "descriptor_cases": [
+    {"configured_master_u16_plus_0x0a": 38, "descriptor_channel_count": 38, "frame_count": 1536, "expected_guard": "channel and frame checks pass statically"},
+    {"configured_master_u16_plus_0x0a": 36, "descriptor_channel_count": 38, "frame_count": 1536, "expected_guard": "reject channel mismatch statically"}
+  ],
+  "runtime_execution": "NOT_RUN",
+  "pcm_or_sample_values_included": false,
+  "specific_master_value_observed": false
+}

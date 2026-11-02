@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "DEE-AUDIO-WRITER-DESTINATION-REPACK-CONTRACT-V2",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2884,
+      "sha256": "c6bd4184660eba368e66ab8091ce7c3121be371dfd2310f6fb6b0e132f2dfb57"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2749,
+      "sha256": "6eab264e8142dfe0d1900081253e3eaa39c509b2b7fcb56a063658f87d2a8cbc"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 450,
+      "sha256": "f0c0de78f3bcc7a2d5b47fed7d7b084ac7255bebb5521f2e3a87de19902b1dd9"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 982,
+      "sha256": "3c7c35b3cc6d3e2add91ce11ad5d60e7996e6b3b3004f8d14215ad5f572247e4"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1303,
+      "sha256": "6cf4c008d7b4368e210433035f663a6936990c669533bec5cf837923770af3f8"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "69dfe6fbb2f103cca3b3538ff53a5f731ea13cf2005bfcb830458b2160a68744"
+    }
+  ]
+}

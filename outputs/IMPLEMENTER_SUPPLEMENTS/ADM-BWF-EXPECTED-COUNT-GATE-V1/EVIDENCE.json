@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "ADM-BWF-EXPECTED-COUNT-GATE-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Static ADM BWF converter expected-count field; factory-instance source and selected 36/38 value remain unbound",
+  "upstream": {
+    "package_id": "adm_bwf_ddp_expected_count_gate_wash_v1",
+    "evidence_manifest_sha256": "0cff903a0014abcb572ed6fa405de23d2357df9826f15dbe1b4863e9c18a8869",
+    "package_seal_sha256": "9fba18bb45b68b18df1eaaf6b4dee4fedb5a934fd8b87aa4e0d790ec98664778",
+    "payload_sha256": {
+      "CHECK.py": "ea5ca04e8f22496092700cc5a537ba8e50e537784e8160d0c20fa27362555327",
+      "EXPECTED-COUNT-GATE.json": "f4c0da19c372c94a5e003c8cee9f38f4b3a15c8ee4eeb6de88b254bc7a41fe44",
+      "README.md": "7e05ca6b80486b433221aea95eb1ad6863fb86c68262b218e287bcc542fc44a8",
+      "SOURCE-IDENTITIES.json": "023815e3d7f70b59d7e78620de80993922e286bf1ad26349729b1704df49958c",
+      "evidence_manifest.json": "0cff903a0014abcb572ed6fa405de23d2357df9826f15dbe1b4863e9c18a8869"
+    },
+    "wash_independent_verification": "all five seal-listed files matched size/hash",
+    "checker": {"normal": "PASS", "python_optimized": "PASS"}
+  },
+  "source_identity": {
+    "tool": "Ghidra 12.2_PUBLIC",
+    "mode": "read-only; existing hash-matched project",
+    "module": "dee_audio_filter_convert_atmos_mezz.dll",
+    "image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+  },
+  "expected_count_path": {
+    "factory_vtable_rva": "0x476a98",
+    "selected_methods": [
+      {"slot_offset": "0x20", "function": "FUN_180246540", "relay": "Factory+8 -> FUN_180244b90 -> FUN_180216360 -> FUN_180277700 -> FUN_1802769a0"},
+      {"slot_offset": "0x08", "function": "FUN_180247040", "relay": "Factory+8 -> FUN_1802798e0 -> FUN_1802769a0"}
+    ],
+    "factory_instance_source": {"offset": "0x8", "type": "U64", "writer": "UNBOUND"},
+    "expected_count_owner": {"type": "AtmosMasterFileStorageDesc", "offset": "0x6368", "width": "U64", "writer": "FUN_1802769a0"},
+    "origin_classification": "UNBOUND_NO: cannot distinguish profile override from upstream fmt/CHNA preparse"
+  },
+  "equality_gates": {
+    "reader_fmt_count": {"getter": "FUN_1800dab00 via AdmFileStorage vtable+0x70", "field": "reader/storage+0x18", "width": "U64"},
+    "expected_gate": "reader fmt count == owner+0x6368",
+    "chna_gate": "CHNA declared track count U16 == reader fmt count U64",
+    "conditional_limit": {"condition": "owner+0x63b0 != 0", "predicate": "count < 129", "max": 128},
+    "fixed_36_or_38_literal_check": "NOT_FOUND_IN_SCOPED_FUNCTIONS"
+  },
+  "36_38_disposition": {
+    "both_below_conditional_128_max": true,
+    "actual_selected_expected_value": "UNBOUND",
+    "36_track_end_to_end": "NOT_RUN",
+    "admission": "CONDITIONAL_ON_EXPECTED_COUNT_AND_CHNA_EQUALITY; NOT_OBSERVED"
+  },
+  "exclusions": {"dee_run": false, "pcm_or_payload_read": false, "key_or_license_accessed": false},
+  "prohibited_inferences": ["Do not claim 36/38 admission from the 128 maximum alone.", "Do not equate the factory+8 expected count with fmt or CHNA without its writer."]
+}

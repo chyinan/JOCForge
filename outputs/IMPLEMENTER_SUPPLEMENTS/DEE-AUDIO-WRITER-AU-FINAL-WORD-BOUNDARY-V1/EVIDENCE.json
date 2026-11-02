@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge-washed-dee-audio-writer-au-boundary.v1",
+  "package_id": "DEE-AUDIO-WRITER-AU-FINAL-WORD-BOUNDARY-V1",
+  "scope": "BIT-WRITER CONTEXT, PER-UNIT FINAL WORD, AND DOWNSTREAM AU ALIAS BOUNDARY",
+  "status": "WRITER_CONTEXT_AND_RESIDUAL_WORD_FLUSH_BOUND; DOWNSTREAM_BUFFER_ALIAS_UNBOUND",
+  "source_package": {
+    "package_id": "dee_audio_writer_au_boundary_wash_v1",
+    "manifest_sha256": "2c4c61f399d3139ccf07e7fa781b5c59e94fe33f748f0e8412ec7b653888a9d7",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "actual_target_image_hash_rechecked": true,
+    "tool": "Ghidra 12.2 static"
+  },
+  "per_unit_writer_context": {
+    "initializer": "FUN_180073ef0",
+    "selected_output_pointer": "uVar28",
+    "context": "state+0x20648",
+    "word_pointer_field": "+0x00",
+    "cursor_bits_field": "+0x08",
+    "accumulator_u16_field": "+0x0A",
+    "bit_position_base_field": "+0x10",
+    "per_unit_reset": "state+0x20648=uVar28; state+0x20658=uVar28; clear 4 bytes at state+0x20650"
+  },
+  "same_writer_state": {
+    "field_writer": "FUN_1800cb0d0 receives context at param_20; its field calls use FUN_18008aea0",
+    "field_end_writer": "FUN_180093360 receives same R15=R14+0x20648 context at param_12",
+    "same_instance_confidence": "HIGH"
+  },
+  "field_close_and_au_unit_flush": {
+    "field_close": "FUN_180093360 may append a conditional bit and calls FUN_180093310",
+    "bit_position": "((write_ptr-base_ptr)/2)*16 + cursor_bits",
+    "span_end": "bit_position-1",
+    "span_recorder": "FUN_18008d1e0",
+    "span_close_flushes_accumulator": false,
+    "final_flush_function": "FUN_1800942d0",
+    "flush_condition": "after successful FUN_180093360, cursor at state+0x20650 is nonzero",
+    "flush_store": "write accumulator U16 at state+0x20652 to current U16* at state+0x20648",
+    "padding": "MSB-aligned valid bits; unused low bits zero-fill to next 16-bit word boundary",
+    "flush_advances_pointer_or_clears_cursor": false,
+    "next_output_unit_resets_state": true,
+    "confidence": "HIGH"
+  },
+  "first_per_unit_record": {
+    "producer": "FUN_1800942d0 called by FUN_180073ef0",
+    "record_expression": "param_3 + unit_index*0x1c + 0x68",
+    "record_size_bytes": 56,
+    "complete_au_descriptor_interpretation": "MEDIUM"
+  },
+  "downstream_open_edge": {
+    "consumer": "FUN_180077ac0 called from FUN_1800b7930",
+    "buffer_expression": "*plVar14+0xb90",
+    "byte_length_expression": "u16(*plVar14+0xb9a)*2",
+    "alias_to_uVar28_writer_pointer": "UNBOUND",
+    "implication": "Final word alignment is established; complete AU-to-downstream-buffer identity is not."
+  },
+  "input_only_boundary_vector": {
+    "cursor_zero": "no residual-word flush branch",
+    "cursor_nonzero_after_success": "one U16 accumulator store to current word pointer",
+    "execution": "NOT_RUN",
+    "synthetic_vector_rerun": false,
+    "product_audio_validation": "NOT_RUN"
+  },
+  "exclusions": {
+    "ghidra_harness_or_raw_source_included": false,
+    "target_binary_or_decompilation_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

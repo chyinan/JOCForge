@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dee-ddp-exponent-producer-emulator-wash-v7",
+      "manifest_sha256": "6a832b29dc13e629cae3811223ba69e75562d781399b2acc03559b33b172ab73",
+      "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+      "scope": "Ghidra EmulatorHelper synthetic E-AC-3 core exponent/U7 path only."
+    },
+    {
+      "package_id": "EAC3-EXPONENT-CODE-PRODUCER-U4-U7-V1",
+      "manifest_sha256": "1ead416c45cac51589738123219f0f2901e90c45ef4bba7e15592672054dc7b1"
+    },
+    {
+      "package_id": "DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2",
+      "manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04"
+    },
+    {
+      "package_id": "DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1",
+      "manifest_sha256": "96bb2eb1f5f120e1b8a204dd7e00f50d2a1204b3931942c0e0d28c1191927005",
+      "package_seal_sha256": "b4876a1c408b4e59d740f67e908158b7d98efb872c1bcb926f29cdfc0e0e3b4e"
+    },
+    {
+      "package_id": "DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1",
+      "manifest_sha256": "c2dfb9336d20bc000d1610ee6bc5850dae950f834531f3da618fb62db7359485",
+      "package_seal_sha256": "559e9cc9b59014c034d94aedf422b446ff187ea5971eab9a233290467845a029",
+      "disposition": "Superseded for JOC comparison; retained as E-AC-3 core-only evidence."
+    }
+  ]
+}

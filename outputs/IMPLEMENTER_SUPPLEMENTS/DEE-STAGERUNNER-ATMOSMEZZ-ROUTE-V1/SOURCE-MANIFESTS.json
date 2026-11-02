@@ -1,0 +1,15 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-STAGERUNNER-ATMOSMEZZ-ROUTE-V1",
+      "manifest_sha256": "c4698113b15fa1524e7161c79ce8ffd841e73db6eb268c627fb66bbd2e6be2e2",
+      "target_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+    },
+    {
+      "package_id": "DEE-RAW-PCM-DOWNMIXER-COUNT-BOUNDARY-V1",
+      "manifest_sha256": "c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1",
+      "scope": "raw PCM route only; not joined to selected AtmosMezz path"
+    }
+  ]
+}

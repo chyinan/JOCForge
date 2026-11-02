@@ -1,0 +1,11 @@
+{
+  "schema":"jocforge.static_selector8_xref_vector.v1",
+  "vector_id":"SELECTED-CHAIN-PLUS-A8-CANDIDATE-EXCLUSION",
+  "writer_function":"FUN_1804d6980",
+  "provider_slot":"0x1807f9c70",
+  "bounded_functions_scanned":7,
+  "wrong_this_candidates":["FUN_1804d43c0 [R12] inner object", "MasterSourceImpl", "BlankMasterSource"],
+  "selected_writer_callsite":"UNBOUND",
+  "selected_job_value":"NOT_OBSERVED",
+  "static_scan_status":"COMPLETED"
+}

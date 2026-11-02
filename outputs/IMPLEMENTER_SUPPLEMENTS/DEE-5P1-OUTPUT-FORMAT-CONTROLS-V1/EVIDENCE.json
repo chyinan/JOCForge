@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-dee-5p1-output-format-controls.v1",
+  "package_id": "DEE-5P1-OUTPUT-FORMAT-CONTROLS-V1",
+  "status": "HIGH_LEVEL_STREAM_METADATA_MATCHED; FRAME_CONTROL_TO_NATIVE_PROVIDER_UNBOUND",
+  "source_package": {
+    "package_id": "dee_5p1_output_format_controls_wash_v1",
+    "manifest_sha256": "05d1bc3ef9c8a0e43d8ff83d605f4fc7dc56708e3a71e208e2dcfc81ccb6f686",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT"
+  },
+  "selected_dee_job": {
+    "job_xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+    "explicit_fields": {"output_container":"mp4","data_rate_kbps":1024,"preferred_downmix_mode":"loro","line_mode_drc_profile":"none","rf_mode_drc_profile":"none"},
+    "xml_absent_fields": ["sample_rate_hz","acmod","lfeon","channels","channel_order"]
+  },
+  "existing_stream_metadata": {
+    "dee": {"container":"MP4/M4A","codec":"eac3","sample_rate_hz":48000,"channels":6,"channel_layout":"5.1(side)","bit_rate_bps":1024000},
+    "rust": {"container":"raw EC-3","codec":"eac3","sample_rate_hz":48000,"channels":6,"channel_layout":"5.1(side)","bit_rate_bps":1024000},
+    "container_difference":"PACKAGING_ONLY; NOT AN AUDIO PARITY CLAIM"
+  },
+  "native_frame_writer_boundary": {
+    "selected_writer_route_bound": true,
+    "job_xml_to_native_config_object":"UNBOUND",
+    "frame_provider_format_control_producer":"UNBOUND",
+    "dee_acmod":"UNBOUND",
+    "dee_lfeon":"UNBOUND",
+    "dee_wire_channel_order":"UNBOUND"
+  },
+  "rust_profile": {
+    "sample_rate_hz":48000,
+    "data_rate_kbps":1024,
+    "acmod":7,
+    "lfeon":1,
+    "mantissa_lane_order_scope":"INTERNAL_ONLY; NOT WIRE ORDER"
+  },
+  "pcm_mismatch_relation": {
+    "explained_by_this_package": false,
+    "audio_control_mismatch_proven": false,
+    "next_test_if_needed":"Same-window frame/PCM comparison; no inference from absent XML fields"
+  },
+  "scope": {
+    "ghidra_static_only": true,
+    "dee_run":"NOT_RUN",
+    "pcm_or_payload_read":false,
+    "key_or_license_read":false,
+    "implementation_contact_before_wash":false,
+    "source_code_or_decompilation_included":false
+  }
+}

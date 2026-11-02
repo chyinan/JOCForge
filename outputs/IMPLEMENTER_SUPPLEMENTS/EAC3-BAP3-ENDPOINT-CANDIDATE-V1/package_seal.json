@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "EAC3-BAP3-ENDPOINT-CANDIDATE-V1",
+  "manifest_sha256": "1368b32a908591351c99ad81f5f1e0de2539ff43eb1e5655bf46754b3e23220f",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "b4f2426436cf0c163b4558360c1fd7af4c2d89b49e458b696c2773277e02e99e",
+      "bytes": 2505
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "c4fa8f3b06eb26fd9a39ce3b91bfe149710e1cb13fd64e658f3ad53301446139",
+      "bytes": 2670
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "8dd9b9df849f658e9181d67d94851c6a931614e033c0227581cfc706b8bad047",
+      "bytes": 720
+    },
+    {
+      "name": "REPORT.md",
+      "sha256": "006c06bb681a3bd451750daf95aff847360ece4007925d37165e2cea461a0458",
+      "bytes": 1091
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "0c31f9aed01cc162ad6da38f85f4912397807457661d2243545ccded9407b983",
+      "bytes": 912
+    }
+  ],
+  "scope": "sanitized algorithm rule and input-only vector; no sample occurrence or PCM claim"
+}

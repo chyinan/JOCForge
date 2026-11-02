@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-f12-u5-input-only-vector.v1",
+  "profile_scope": "measure_only / 1770-4 / DI-off / DRC-none / 5.1 / 1024 kbps",
+  "scalar_inputs": [-20.665958, -14.418104, -17.093924, -21.010569],
+  "scalar_interpretation": "candidate F32 selected_lufs; native unit UNBOUND",
+  "formula_source": "F12-SELECTED-PREFIX-DIALNORM-V1",
+  "expected_outputs_included": false,
+  "executed_by_this_vector": false,
+  "note": "Same-run U5 observations and the scalar-only First Love boundary are separately recorded in EVIDENCE.json."
+}

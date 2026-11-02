@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-washed-f06-setter-vcall-sources.v1",
+  "incoming_package_id": "native-f06-r138-setter-vcall-target-discriminant",
+  "incoming_manifest_sha256": "7864cbefbc4eec08ca8da03707a998d14f9aae5323bda5935fa9bb21cf617f91",
+  "target_images": {
+    "dee.exe":"65485b6d35fa534b25109ab6f238971aaaded73fc99c7f7fb119d1a5d5299234e",
+    "dee_audio_filter_ddp_atmos.dll":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "parent_row_writer_supplement_manifest_sha256": "dd9ff5489e89a1c2ca96763f7f6797cdd4b970db66cbfa55aa4aba8c54529bbc",
+  "source_code_copied": false,
+  "binary_or_decompilation_copied": false,
+  "media_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

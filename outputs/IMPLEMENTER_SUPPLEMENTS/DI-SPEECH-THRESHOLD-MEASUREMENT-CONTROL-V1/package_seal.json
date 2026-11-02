@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DI-SPEECH-THRESHOLD-MEASUREMENT-CONTROL-V1",
+  "manifest_sha256": "5d7c24bf311d640d4401e98013c96b4ca8f4e34bbcf8e1adca29c71d558d09aa",
+  "sha256sums_sha256": "551e887371e0c513e484cb4ffb9de25dbf4db703e6a642c909470017a3305a76",
+  "payload_count": 3,
+  "status": "MATCHED_CONTROL_MEASUREMENT_DIFF; ENCODED_BYTES_DIFFER; PCM_AUDIO_DIFF_NOT_RUN"
+}

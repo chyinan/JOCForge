@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-BAP3-ENDPOINT-RESIDUAL-CONTEXT-V1",
+  "manifest_sha256": "f4db89cdc559cd6e5167ed045f64f91e34feb4d9669945c4c73788799b424136",
+  "sha256sums_sha256": "79de483be4bff5d14b67cdfade01cad8cd35774c80cace091cd6a7391b97de62",
+  "payload_count": 5,
+  "status": "NATIVE_RULE_SPLIT_CONFIRMED; SAMPLE_RAW7_UNOBSERVED; PCM_CAUSALITY_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

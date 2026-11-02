@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1221,
+      "name": "REPORT.md",
+      "sha256": "72a9a919c4078dfcd3df697388777cebdb3b040908fa3aaa3f17e2a865b79619"
+    },
+    {
+      "bytes": 1649,
+      "name": "EVIDENCE.json",
+      "sha256": "0a083d30aa9fb258a6737d6cd936862d2b879b7708ed111ff74c4535873299e2"
+    },
+    {
+      "bytes": 379,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "758bd2e1d16d52b925c23a340b3f9b349e06ae22de4796e91e0722fc0a287366"
+    },
+    {
+      "bytes": 530,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "e728c97998c046b2b135e6d696c22749b020a257345cce1ecaf76fb1f7c2774b"
+    },
+    {
+      "bytes": 2202,
+      "name": "verify_package.py",
+      "sha256": "e2a5a616edc8d392dca1e129a0f9359fa93efa2edae984e3058524d3016ef970"
+    },
+    {
+      "bytes": 1474,
+      "name": "seal_package.py",
+      "sha256": "7581b79bc69d6a243ea1e51c6b9ef0c3e90d453a423b7300d937e35b607b70e9"
+    }
+  ],
+  "manifest_sha256": "a1a8c7177bf13c63dfc436b06a732226f55e70eaf4a04cdb6b382e10880bfdd0",
+  "package_id": "ADM-AUTO-TIME-HOST-TO-CONVERTER-MAP-JOIN-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

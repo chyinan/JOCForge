@@ -1,0 +1,35 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "SAMPLE6-DRC-FRAME-INPUT-ROW-WRITER-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "upstream_manifest_sha256": "c29cf85d37e545b706fa101102080607dbf7440c2ec61f822b1bc5847128b25a",
+  "runtime_row_values": "UNBOUND",
+  "scope": "Sanitized static process-frame/setdata boundary; no runtime values or algorithm rule",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "489e385059900baddfb4d98525ea5fda4ab12ebebee99c987d53c317879dd79c",
+      "bytes": 2468
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "3b76a312a9d0bee3cea275d5c80aa88894a3f8749e752e21e5920bef69710e50",
+      "bytes": 3449
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "f3425e5a1c9b0833be56c14f1a7954fa7ba45f4ad251db2b176e16a02ceb78ea",
+      "bytes": 1009
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "6f747d8d2a766cc9e35376e5ca692fa20b0c5adab664bedbc1c4f204819d380e",
+      "bytes": 815
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "02cbc6d3981659bb75ac82fb864f7ae1bb466a83de161ade9e198d453483bf9e",
+      "bytes": 2058
+    }
+  ]
+}

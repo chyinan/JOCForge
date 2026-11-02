@@ -1,0 +1,28 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-RUST-DYNRNG-FIELD-HISTOGRAM-V1",
+  "scope": "matched full-file and AU-window per-block dynrng field counts; no media retained",
+  "status": "ALL_SIX_BLOCKS_PARSED; U8_FIELD_DELTAS_MEASURED; PRODUCER_AND_RENDERED_EFFECT_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1190,
+      "sha256": "8d153e12b252868859fdbd762b1befd550077981bf37c455cae25b115542d3eb"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2160,
+      "sha256": "5e70d4b5f1a5efdf8d6958800fd277dd0c3746e95ca9c4b8ece87973511845ab"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 890,
+      "sha256": "337d82692c8ace0b232cb252c397c0344f0acc71b72f5f9036107fa9fd5907e0"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3554,
+      "sha256": "e614be4abbf1f9c3f6cf3781486335a2b5d203a8eef0884f844ab8825467cc2d"
+    }
+  ]
+}

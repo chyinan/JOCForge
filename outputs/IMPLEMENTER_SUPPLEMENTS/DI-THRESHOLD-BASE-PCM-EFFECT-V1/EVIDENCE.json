@@ -1,0 +1,108 @@
+{
+  "schema": "jocforge.di_threshold_base_pcm_effect.v1",
+  "status": "DEE_THRESHOLD_PAIR_BASE_PCM_DIFF_CONFIRMED_BY_OPENJOC; ATMOS_RENDERER_PARITY_NOT_RUN",
+  "scope": "Matched DEE threshold outputs decoded by the OpenJOC v0.20.1 base compatibility decoder; no Atmos renderer or listening claim.",
+  "source_packages": {
+    "openjoc_pcm_ab": {
+      "manifest_sha256": "ed04b8e15db28a3ab3e36781e25fe10fecb3ce659ce42b0b63d8f0c47d41b706",
+      "report_sha256": "e5e5280d2bae2adf57666095f054a5459cafa8d8d0d47eb3183bf01efb83f67f",
+      "results_sha256": "a4a9874a2716a60333fc69f147593ef0cfbf6f0886cf4319ac532cd8a4091069",
+      "source_manifests_sha256": "a49b4e5edf45d2a1c4a221ff92c189a1d9a28cc78bfb5f48ca92a7435f3c5885",
+      "checker_sha256": "186da73802f17f117a3b503942b15406a39edfa9fb901ac2903c189f9e357b33",
+      "checker_result": "normal and python -O passed"
+    },
+    "dee_threshold_pair": {
+      "manifest_sha256": "af72ee51a85eb1d1db1f6c09f9e66e4304c929f106d64d5afe45312f6b16869f",
+      "results_sha256": "78953690a6e44a0b831ab28b80325d3aed801e444b6a65bd53611ddd62c88a05"
+    }
+  },
+  "input_and_controls": {
+    "authorized_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "dialogue_intelligence": true,
+    "only_job_field_changed": "measure_only/speech_threshold",
+    "thresholds": [
+      15,
+      100
+    ],
+    "dee_ec3_hashes": {
+      "15": "315c6a4bdc9b0d1317466d06c39b1809ce992c6d6b17997d82ca08aeebecf8a2",
+      "100": "d0ae11e6da06b73ef5cb0320da56f8093a6998b6ca5f2b24ddc8b01335a877fe"
+    }
+  },
+  "decoder": {
+    "name": "OpenJOC",
+    "tag": "v0.20.1",
+    "tag_commit": "eb5cdd5562017b7ec4d54bb243dd3a626310ecb9",
+    "base_decoder_source_sha256_unchanged": "de89df6012e9d9929c7e100a5e133e5643934e2fc1d1b3436a098793682941a6",
+    "temporary_cli_comparator_used": true,
+    "temporary_comparator_was_removed": true,
+    "ffmpeg_or_ffprobe_used": false,
+    "speaker_renderer_invoked": false
+  },
+  "pcm_comparison": {
+    "pcm_kind": "I0 compatibility/base PCM",
+    "sample_rate_hz": 48000,
+    "channel_order": [
+      "FL",
+      "FR",
+      "FC",
+      "LFE",
+      "Ls",
+      "Rs"
+    ],
+    "access_units_compared": 4247,
+    "unpaired_access_units": [
+      0,
+      0
+    ],
+    "samples_per_channel": 6523392,
+    "metrics": [
+      {
+        "channel": "FL",
+        "rmse": 0.012239480180256595,
+        "max_abs_error": 0.14866951342725582,
+        "sample_count": 6523392
+      },
+      {
+        "channel": "FR",
+        "rmse": 0.011552440317351866,
+        "max_abs_error": 0.12311653736317413,
+        "sample_count": 6523392
+      },
+      {
+        "channel": "FC",
+        "rmse": 0.008540770572685813,
+        "max_abs_error": 0.14979265729392216,
+        "sample_count": 6523392
+      },
+      {
+        "channel": "LFE",
+        "rmse": 0.0019321789327927709,
+        "max_abs_error": 0.009876217200020469,
+        "sample_count": 6523392
+      },
+      {
+        "channel": "Ls",
+        "rmse": 0.012409271003539703,
+        "max_abs_error": 0.19266313749049735,
+        "sample_count": 6523392
+      },
+      {
+        "channel": "Rs",
+        "rmse": 0.01184813703232803,
+        "max_abs_error": 0.17006766711198318,
+        "sample_count": 6523392
+      }
+    ],
+    "pcm_saved_to_disk": false,
+    "full_pcm_stream_retained": false
+  },
+  "conclusion_limit": "For this one matched DEE pair, threshold 15 versus 100 changes OpenJOC base 5.1 decoded PCM. This does not prove Dolby Atmos rendering/listening parity or the same effect in JOCForge output.",
+  "excluded": [
+    "EC-3 bytes",
+    "PCM samples",
+    "temporary comparator source",
+    "private key",
+    "license"
+  ]
+}

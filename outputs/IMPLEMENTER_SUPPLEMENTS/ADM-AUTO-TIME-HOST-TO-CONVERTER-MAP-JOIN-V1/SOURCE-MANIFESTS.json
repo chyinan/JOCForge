@@ -1,0 +1,15 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"adm_bwf_host_converter_map_join_wash_v1",
+      "evidence_manifest_sha256":"faabcbabf7b83a71361444d73251a202d4d3e0b2dffdc104ee12e056a1ce1f7d",
+      "package_seal_sha256":"41a958196034d34e9bc5c76d78abd3f33dc6bdd755682647a38e23b7672fa124",
+      "payload_count":5,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "source_code_or_trace_excerpts_in_this_supplement":false
+    }
+  ]
+}

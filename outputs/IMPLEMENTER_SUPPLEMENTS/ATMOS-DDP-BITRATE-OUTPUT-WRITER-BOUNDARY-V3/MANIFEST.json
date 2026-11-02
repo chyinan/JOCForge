@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ATMOS-DDP-BITRATE-OUTPUT-WRITER-BOUNDARY-V3",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RATE_ENUM_TO_TYPE1_WRITER_SLOT_BOUND; TYPE1_WRITER_TARGET_UNBOUND; NAMED_BSI_FIELD_UNBOUND; OUTPUT_RATE_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1187,
+      "sha256": "cb7a177cde52b9072bcb868874be24247489bbd1dad8302c7d2f69181d55a646"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2915,
+      "sha256": "b5a97128a718fc878858b86b186c20c271aef58597851c601b768bbdef5ce19b"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 501,
+      "sha256": "756cb3a0f6f7f4c5f1643b9b47f2d23141e6870510b6596b6e56b2e3ac26ab12"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 980,
+      "sha256": "979995f70795bdf3b66b2d1fa7b4d4afa21b8e136be026ba96ef4745d6934342"
+    }
+  }
+}

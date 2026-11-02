@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-atmos-special-child-count-marker-evidence.v1",
+  "status": "SPECIAL_MARKER_PREDICATE_AND_WRITER_BOUND; SEVEN_SAMPLE_METADATA_CANDIDATE_SUPPORTED; RUNTIME_CHILD_PARTITION_AND_U16_UNBOUND",
+  "source_package": {
+    "package_id": "adm_special_marker_source_wash_v1",
+    "manifest_sha256": "e8e1b6fea8bc7cd69dbedcd51b0e6eb6701ed61e7561ba2084a5c9b1e62d2ed6",
+    "manifest_sha256_file_matches": true,
+    "package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS"
+  },
+  "native_rule": {
+    "tool": "Ghidra 12.2 static analysis",
+    "consumer_predicate": "child six-byte channel-map record byte at +2 equals 0xFF",
+    "counting_domain": "count matching records per child, take the maximum across children",
+    "output_formula": "10 + max(marked_records_per_child)",
+    "producer": "FUN_1804d43c0 writes 0xFF at record byte +2 for each opened object-source row",
+    "map_slot_source": "opened object-source row field +0x4C; deeper semantic identity UNBOUND",
+    "record_offset_plus_4": "separate object-row ordinal; not the marker predicate",
+    "selected_path_mode": "static AtmosReader path selects special mode via generated key-2 flag",
+    "runtime_mode_byte": "NOT_CAPTURED",
+    "runtime_child_u16": "UNBOUND"
+  },
+  "implementation_trial": {
+    "ready": true,
+    "candidate_rule": "Use the native per-child marker formula where generated child records are available. For these seven metadata profiles only, 10 + CHNA Objects-track count is a single-child candidate if one marker is produced per Object track and those markers occupy one child.",
+    "must_not_claim": [
+      "metadata candidate is a captured native child U16",
+      "CHNA Object rows are already joined one-to-one to native marker records",
+      "all marker records are in one native child",
+      "AXML object-node count is the native predicate input",
+      "DEE runtime mode or child U16 was observed"
+    ]
+  },
+  "scope": {
+    "wav_or_bwf_opened": false,
+    "pcm_or_payload_read": false,
+    "dee_run": "NOT_RUN",
+    "key_or_license_material_accessed": false,
+    "implementation_contact_before_wash": false,
+    "runtime_marked_max_per_child": "UNBOUND"
+  }
+}

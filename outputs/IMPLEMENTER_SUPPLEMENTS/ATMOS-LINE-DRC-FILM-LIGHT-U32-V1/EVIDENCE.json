@@ -1,0 +1,33 @@
+{
+  "schema":"jocforge.line_drc_film_light_profile_u32.v1",
+  "status":"FILM_LIGHT_TREE_U32_BOUND_ZERO; DOWNSTREAM_LINE_DDP_COMPR_JOIN_UNBOUND",
+  "upstream_package":{
+    "package_id":"atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256":"d27c593a254c80024d4fbf3beb9f93b66b666e9d8f37a63dc7139d51a65e266f",
+    "sha256sums_sha256":"3a7f006dd7fb5945fe3cdb57c8b71f781dc9cf792185425fa2eb429037bd35f9",
+    "payload_count_verified":9,
+    "checker_normal":"INDEPENDENT_HASH_AUDIT_PASS",
+    "checker_python_O":"INDEPENDENT_HASH_AUDIT_PASS"
+  },
+  "source_image":{"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2","ghidra":"12.2 PUBLIC","processing":"-noanalysis -readOnly"},
+  "tree_initializer":{
+    "global_address":"0x180a17cb0",
+    "crt_attach_dispatcher":"FUN_180579db0 -> FUN_1805bef0c",
+    "initializer_array_slot":"0x18063a608 / entry 25",
+    "initializer":"FUN_180001510",
+    "tree_sentinel_initializer":"FUN_18013eed0",
+    "embedded_key_u32_pair_count":6,
+    "record_stride_bytes":"0x28",
+    "film_light_key":"film_light",
+    "film_light_u32":0,
+    "node_key_field":"node+0x20",
+    "node_u32_field":"node+0x40"
+  },
+  "consumer_and_sink":{
+    "first_consumer":"FUN_1801535b0 exact string match copies node+0x40 to param_2+0xa0",
+    "lookup_result_to_FUN_180178dc0_param1_slot1":"UNBOUND",
+    "line_ddp_compr_writer":"FUN_1801aa730 param3+0x28",
+    "profile_value_to_line_ddp_compr":"UNBOUND"
+  },
+  "execution_scope":{"dee_run":false,"pcm_or_payload_read":false,"key_or_license_access":false,"production_allowed":false}
+}

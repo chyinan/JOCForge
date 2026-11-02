@@ -1,0 +1,71 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V3",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Hash-bound static metadata/row-order lineage plus separate user-confirmed output identity; no matched-run LFE lane or audio cause",
+  "supersedes_supplement": {
+    "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V2",
+    "manifest_sha256": "a7b7bcb7f410c7875f5a3057ed6fd4e29a1e0f770855aaddc22a9a2419f8440a",
+    "package_seal_sha256": "9840159b81b777a7e530f3332e716eaeb3326dab8cf5e7e490f9a8718251312c"
+  },
+  "upstream": {
+    "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1",
+    "manifest_sha256": "86e655128b711faa43db8f2bd5bdceca57a14ab5ad86ef4fa992f12bad935106",
+    "package_seal_sha256": "e66339e607ed6d21bec228fb8963adbef726a672ae2dc3884170611eb6613310",
+    "sha256sums_sha256": "2c369043c60c0d43f45d3ee5572e62d8751dcbc17cbf11ec8691620d44c0d0bd",
+    "payload_count": 19,
+    "wash_independent_verification": {
+      "manifest_and_seal_linkage": true,
+      "sums_hash_matches_seal": true,
+      "all_payload_hashes_and_sizes_match": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    }
+  },
+  "user_confirmed_output": {
+    "decoded_output_channel_index_zero_based": 3,
+    "identity": "LFE/low-frequency",
+    "status": "USER_CONFIRMED_LFE",
+    "basis": "user audition",
+    "input_row_identity_inferred": false
+  },
+  "authorized_input_metadata": {
+    "input_count": 7,
+    "channel_count_distribution": {"36": 6, "38": 1},
+    "chna_records_checked": 254,
+    "rule": "track_index_1based - 1 -> interleaved physical BWF slot",
+    "mismatches": 0,
+    "scope": "metadata receipt only; not native reader selection"
+  },
+  "typed_local_row_rules": {
+    "converter_local_chna_identity": "bound within converter-local records; not a PCM row writer",
+    "ddp_copy_function": "FUN_18018d640",
+    "ddp_copy_callsite_rva": "0x18b29c",
+    "ddp_row_copy": "input_row_table[i] -> internal_buffer_rows[i]",
+    "same_run_bwf_physical_row_to_ddp_input_ordinal": "UNBOUND"
+  },
+  "core_lfe_boundary": {
+    "core_function": "FUN_140350d00@0x140350f8b -> FUN_140317600",
+    "matched_layout_id": "UNBOUND",
+    "adm_row3_to_core_descriptor_slot": "UNBOUND",
+    "internal_lfe_lane": "UNBOUND",
+    "same_run_owner_generation_join": "UNBOUND",
+    "numeric_pcm_comparison": "NOT_RUN",
+    "new_dee_run": false
+  },
+  "input_only_vector": {
+    "status": "PROPOSED_NOT_RUN",
+    "expected_output_values": "NOT_ASSERTED",
+    "audio_or_pcm_included": false
+  },
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "raw_pcm_or_payload_accessed": false,
+    "private_key_or_license_accessed": false
+  },
+  "prohibited_inferences": [
+    "Do not infer DDP row identity from the CHNA metadata ordering alone.",
+    "Do not infer the matched LFE branch from conditional layout tables.",
+    "Do not attribute the PCM residual to a DSP algorithm from this package."
+  ]
+}

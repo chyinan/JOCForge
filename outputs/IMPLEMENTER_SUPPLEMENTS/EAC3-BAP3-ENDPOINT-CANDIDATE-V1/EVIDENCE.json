@@ -1,0 +1,59 @@
+{
+  "schema": "eac3-bap3-endpoint-washed-candidate.v1",
+  "package_id": "EAC3-BAP3-ENDPOINT-CANDIDATE-V1",
+  "status": "STATIC_NATIVE_RUST_RULE_SPLIT; SAMPLE_OCCURRENCE_UNOBSERVED; PCM_CAUSALITY_NOT_ESTABLISHED",
+  "scope": {
+    "format": "E-AC-3 core mantissa quantizer",
+    "bap": 3,
+    "scalar_endpoint": "positive clip equality at coefficient +1.0, exponent 0",
+    "vector_id": "single-bin-bap3-positive-endpoint",
+    "native_runtime_execution": "NOT_RUN",
+    "rust_model_execution": "NOT_RUN",
+    "occurrence_in_matched_human_cat_window": "UNOBSERVED",
+    "pcm_residual_cause": "UNBOUND"
+  },
+  "native_behavior": {
+    "image_name": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "image_file_hash_status": "MATCH",
+    "analysis": "Ghidra 12.2 public static targeted analysis",
+    "bap3_scale_f32": 3.5,
+    "bap3_level_count": 7,
+    "bap3_width_bits": 3,
+    "quantization": "truncate((coefficient+1)*3.5), clamp to [0,6], pack three bits",
+    "positive_endpoint": {
+      "coefficient_f32_bits": "0x3f800000",
+      "exponent": 0,
+      "raw_truncated_code": 7,
+      "clamped_code": 6,
+      "packed_code_bits": "110",
+      "outcome": "success"
+    }
+  },
+  "current_wash_approved_rule": {
+    "source_package": "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1",
+    "manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f",
+    "raw_bap3_code_7": "reserved sentinel; candidate infeasible"
+  },
+  "difference": "Native clamps the positive BAP-3 endpoint to code 6; current Wash-approved rule rejects raw code 7.",
+  "matched_sample_context": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "dee_job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_film_light_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "sample_window_au_half_open": [2750, 2875],
+    "sample_window_frames_per_channel": 192000
+  },
+  "candidate_experiment": {
+    "first_step": "execute the one-bin vector against the approved Rust quantizer seam",
+    "second_step": "if the split reproduces, run one matched full-file candidate and compare the same AU window",
+    "hold_constant": ["same ADM", "matched DEE controls", "window table", "DRC profile"],
+    "pcm_or_encoded_payload_included": false
+  },
+  "privacy": {
+    "private_key_or_license_material": false,
+    "raw_pcm": false,
+    "encoded_payload": false,
+    "source_code_or_disassembly": false
+  }
+}

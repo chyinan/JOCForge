@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "two-renderer-vectors-id0-lookup",
+  "fixed": {
+    "same_renderer_object": true,
+    "outer_record_vector": {"begin":"+0x60","end":"+0x68","capacity":"+0x70","element_stride_bytes":88},
+    "nested_object_vector": {"begin":"+0x78","end":"+0x80","capacity":"+0x88"},
+    "lookup_receiver": "+0x60",
+    "lookup_reads_begin_end": ["receiver+0x18", "receiver+0x20"],
+    "resolved_lookup_range": ["renderer+0x78", "renderer+0x80"],
+    "capacity_read": false
+  },
+  "lookup": {"type_id":0,"type_id_getter":"vtable+0x08","selected_id0_value":"UNBOUND"},
+  "execution": "STATIC_ONLY"
+}

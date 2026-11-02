@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "EAC3-U7-POSITIVE-GROUP-COUNT-WRITER-SEARCH-V2",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3262,
+      "sha256": "6fa1688b1a70b21956a99db6a6a1aaeb511f55b7a8b364110d3fa9490b629f15"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2119,
+      "sha256": "b39f8de6f0cfcd0ce2051aa58804a0e2cd96b3e8605e0fbcf75e3baf984e5186"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 296,
+      "sha256": "14dc2fbf58fc55badd67d7c0b5676c096ad78d8afbc4bbea06810ef5fae202f5"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1154,
+      "sha256": "9964a34adfac9e135dc0d6930071ecd244e3d3153a254701360d92a1b2af2aa1"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1277,
+      "sha256": "1c237677e24b757d6ba3d5b047bc321ffce2da95262c7f35810f7ca5b9ce881b"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "adc6001b0a98e0b683f61d42cede17d83ec5d3c0822aec7b40fab4bc1be316e0"
+    }
+  ]
+}

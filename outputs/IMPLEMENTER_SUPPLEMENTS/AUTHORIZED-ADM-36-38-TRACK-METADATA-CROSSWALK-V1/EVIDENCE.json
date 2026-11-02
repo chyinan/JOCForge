@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Metadata-only RIFF/BWF comparison; no PCM, DEE run, or codec acceptance claim",
+  "inspection_method": {
+    "read": ["RIFF header", "fmt chunk", "chna chunk", "axml chunk"],
+    "data_chunk": "seeked over using declared length; sample bytes not read",
+    "whole_file_hash": "NOT_COMPUTED_DATA_SKIPPED",
+    "input_only_numeric_vector": "NOT_APPLICABLE_METADATA_ONLY"
+  },
+  "inputs": [
+    {
+      "authorized_path": "D:\\潜在的なアイ.wav",
+      "container": "RIFF/WAVE",
+      "file_bytes_from_filesystem": 1069656356,
+      "riff_size_32": 1069656348,
+      "fmt": {"format_tag": 1, "channels": 36, "sample_rate_hz": 48000, "byte_rate": 5184000, "block_align": 108, "bits_per_sample": 24},
+      "data_chunk": {"offset": 116, "bytes": 1069575624, "whole_sample_frames": 9903478},
+      "chna": {"track_count": 36, "uid_count": 36, "chunk_bytes": 1444, "record_bytes": 1440, "expected_record_bytes": 1440, "records_size_valid": true, "chunk_sha256": "621f761e76bf603741e965d224c55aa0f948a13f4fa603e207085d1a112ac379"},
+      "axml": {"chunk_bytes": 78572, "chunk_sha256": "644add5af8dca305510acdd1fa7fcb81b8bedaefd6d826978442fb51d0a77d6e", "element_counts": {"audioObject": 27, "audioPackFormat": 27, "audioChannelFormat": 36, "audioTrackFormat": 36, "audioTrackUID": 36}}
+    },
+    {
+      "authorized_path": "D:\\人是猫 - 张卡斯, 洛天依.wav",
+      "container": "RIFF/WAVE",
+      "file_bytes_from_filesystem": 743696526,
+      "riff_size_32": 743696518,
+      "fmt": {"format_tag": 1, "channels": 38, "sample_rate_hz": 48000, "byte_rate": 5472000, "block_align": 114, "bits_per_sample": 24},
+      "data_chunk": {"offset": 116, "bytes": 743611284, "whole_sample_frames": 6522906},
+      "chna": {"track_count": 38, "uid_count": 38, "chunk_bytes": 1524, "record_bytes": 1520, "expected_record_bytes": 1520, "records_size_valid": true, "chunk_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"},
+      "axml": {"chunk_bytes": 82997, "chunk_sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659", "element_counts": {"audioObject": 29, "audioPackFormat": 29, "audioChannelFormat": 38, "audioTrackFormat": 38, "audioTrackUID": 38}}
+    }
+  ],
+  "current_implementation_status": {
+    "selected_profile": "38-channel PCM24 / 48 kHz / 5.1 output",
+    "36_channel_reader_status": "REJECTED_BEFORE_CODEC_PER_CURRENT_IMPLEMENTATION_REPORT",
+    "36_channel_jocforge_end_to_end_run": "NOT_RUN",
+    "36_channel_dee_reference_metadata": "EXISTS_BUT_NOT_REUSED_AS_JOCFORGE_ACCEPTANCE"
+  },
+  "prohibited_inferences": [
+    "Do not infer JOCForge acceptance from structurally consistent RIFF/CHNA/AXML counts.",
+    "Do not treat object count as PCM channel count or CHNA UID count.",
+    "Do not infer row-to-descriptor mapping from equal counts or order alone.",
+    "Do not infer audio parity or renderability from this metadata check."
+  ],
+  "exclusions": {"pcm_read": false, "encoded_payload_read": false, "dee_run": false, "private_key_or_license_access": false}
+}

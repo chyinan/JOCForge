@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "DEE-RAW-PCM-DOWNMIXER-COUNT-BOUNDARY-V1",
+  "manifest_sha256": "c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "35b140eef7563235a53177968904721a542b3bcef8f7eecba3521578fe146f42",
+      "bytes": 1562
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "7fe91cfa038a8fe1b51f382800ab1f79194cff0bd458f652e0cf1be37a188b61",
+      "bytes": 2852
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "5558cfd581ede6990b019ea580f82c0284070971fe4edab31c502031019ebde6",
+      "bytes": 601
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "b69745402ba693cf0e414a193a105f6eb7e9c817558dc150fc2b82180d4287f5",
+      "bytes": 335
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "ae7472ce081ce549abda7ffd7b040d2fb6c77524342689f21c402e4f57494ea7",
+      "bytes": 2269
+    }
+  ],
+  "scope": "Raw-PCM DDP downmixer branch only; ADM BWF join unbound"
+}

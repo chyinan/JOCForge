@@ -1,0 +1,21 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"dee_lfe_selected_stride_input_edge_wash_v1",
+      "manifest_sha256":"3666de856565a58014519f2c042838a653122707e0fdf9bfc803984647c584d9",
+      "sha256sums_sha256":"2e8d1ea5269063063fd509727e87162dbad9a7a12646354e8205e64e12dcdade",
+      "payload_count":4,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_disassembly_or_script_in_this_supplement":false
+    },
+    {
+      "kind":"upstream_rust_dee_crosswalk",
+      "package_id":"DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+      "manifest_sha256":"eada50e01fca2cdefcd2b1b67a9f053f00b260ec7db2b637be6cb80df2abd1fa",
+      "current_rust_head":"613112b7fe158052500244d1af202817bcf9f216"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "adm_bwf_property_response_converter_setter_edge_wash_v1",
+    "manifest_sha256": "3e58ecce98022c5c54055d9cabced6f9b887cc0d8c06cf35dc2c1d00ece7e026",
+    "package_seal_sha256": "ed99f4164a07b914837f274eee98028107d94a911f8e3c1b88405c93828f4067",
+    "boundary_payload_sha256": "ccd2369274d40ba51bf7e9c3b104e32321cd6e0c45d117c512be05ead0eb9dd8",
+    "source_identities_sha256": "b08cdcdffab02dec07563a273ce347ca7f97effbb3ec4a0e6b8dc8411a81b975",
+    "checker_sha256": "0e39817ea27ab13680c2f4f2654e9ec801058a1f2653abef33349a35fba633c7",
+    "verification": "source package checker passed normally and under python -O"
+  },
+  "excluded": [
+    "Ghidra scripts",
+    "raw trace/decompilation",
+    "binary",
+    "PCM",
+    "payload",
+    "key",
+    "license"
+  ]
+}

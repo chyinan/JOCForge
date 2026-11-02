@@ -1,0 +1,25 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "eac3_core_bap3_quantizer_candidate_wash",
+      "manifest_sha256": "92d2a86338b34548859d74a6e02a28a731b013d2fcc4afb5c68f6e6e760ce117",
+      "package_seal_sha256": "6f921397b4ea3d377714e7f2776e2d2f483c70b5a3f93a7bb422a41677285f61",
+      "source_checker": "CHECK.py",
+      "source_checker_normal": "PASS",
+      "source_checker_python_O": "PASS",
+      "source_sha256sums_status": "PASS"
+    },
+    {
+      "package_id": "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1",
+      "manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f",
+      "role": "current Wash-approved comparison rule"
+    }
+  ],
+  "washed_payload_policy": {
+    "function_addresses_or_disassembly": false,
+    "source_code": false,
+    "raw_pcm_or_encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

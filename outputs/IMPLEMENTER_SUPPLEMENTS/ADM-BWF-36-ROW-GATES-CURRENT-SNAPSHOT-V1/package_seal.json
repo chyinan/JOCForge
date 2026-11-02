@@ -1,0 +1,33 @@
+{
+  "files": [
+    {
+      "bytes": 1570,
+      "name": "REPORT.md",
+      "sha256": "7851f1b3f0ebc984a049aabf5dc8f9c64843e8f41cd3be9a4d0b82b4b348c097"
+    },
+    {
+      "bytes": 1853,
+      "name": "EVIDENCE.json",
+      "sha256": "9eed9c73cff6374417a0fddb735555b719159949c5b6d7f83126557cf66261a4"
+    },
+    {
+      "bytes": 1527,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "021d8b0a45b51a742058f579c20217a6ef8a47537fbf80865085c2c45e836dbb"
+    },
+    {
+      "bytes": 2676,
+      "name": "verify_package.py",
+      "sha256": "71980f0e1166fe28b44419d298cfc011f6dd76b29f7e9988bac73ad8e67a4ae1"
+    },
+    {
+      "bytes": 1671,
+      "name": "seal_package.py",
+      "sha256": "cfe94248a79ff2c46a76b8cedd861d2cbaba679fd4f7cc5f01bd0a7c3998213c"
+    }
+  ],
+  "manifest_sha256": "c2ebfcd7919c924bd26f0ca649b9b6e09c7d1295adf33b289861a89dd1e050b4",
+  "package_id": "ADM-BWF-36-ROW-GATES-CURRENT-SNAPSHOT-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

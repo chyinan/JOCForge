@@ -1,0 +1,64 @@
+{
+  "schema": "washed-drc-bsi-block-producer.v1",
+  "package_id": "SAMPLE6-DRC-BSI-BLOCK-PRODUCER-V1",
+  "status": "MODE0_CODE_AND_PRESENCE_PRODUCER_BOUND; MATCHED_SELECTOR_AND_FLOAT_INPUTS_UNBOUND; PCM_ROOT_CAUSE_NOT_ESTABLISHED",
+  "matched_identity": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "au_window_half_open": [2750, 2875],
+    "matched_au": 2843
+  },
+  "profile_input_types": {
+    "custom_profile_enabled": "I32",
+    "preset_selector": "U8",
+    "custom_profile_record": "four U8 selectors when custom mode enabled",
+    "builtin_selector_map": {"1_to_5": "rows 0_to_4", "0": "no built-in row"},
+    "xml_string_to_u8_selector": "UNBOUND",
+    "numeric_mode_to_line_or_rf": "UNBOUND"
+  },
+  "block_producer": {
+    "profile_curve_input": "selected curve pointer plus per-block F32 control state",
+    "candidate_code_type": "U16",
+    "reference_code_type": "U16",
+    "output_code_type": "U16",
+    "output_presence_type": "U16",
+    "mode0_code_destination": "mode-0 per-block code row",
+    "mode0_presence_destination": "mode-0 per-block presence row",
+    "param2_zero_presence_rule": {
+      "block0": "code[0] != 0",
+      "later_blocks": "code[i] != code[i-1]"
+    }
+  },
+  "matched_output_delta": {
+    "source_package": "SAMPLE6-MATCHED-DRC-BSI-FIELD-DELTA-V1",
+    "source_manifest_sha256": "476f4f6cf3fe3ae56d071e956252db469f5ccb5bcc63f7356ffe1d889e93f1c0",
+    "dee": {"dynrnge": 1, "dynrng_u8": 1},
+    "rust": {"dynrnge": 1, "dynrng_u8": 0},
+    "positive_store_input_values": "UNBOUND",
+    "decoder_scale0_channel3_residual_causality": "UNBOUND"
+  },
+  "input_only_vector": {
+    "classification": "POST_QUANTIZATION_TABLE_WRITER_REPLAY; NOT_A_DEE_RUN",
+    "custom_profile_enabled_i32": 0,
+    "preset_selector_u8": 1,
+    "selector_label": "UNBOUND",
+    "block_count": 1,
+    "param2_i16": 0,
+    "branch_flag_i16": 1,
+    "reference_code_u16": 1,
+    "candidate_code_u16": 1,
+    "expected_mode0_code_u16": 1,
+    "expected_mode0_presence_u16": 1,
+    "expected_wire": {"dynrnge_u1": 1, "dynrng_u8": 1, "bits": "100000001"},
+    "native_runtime_execution": "NOT_RUN"
+  },
+  "execution": {
+    "new_dee_run": false,
+    "raw_pcm_included": false,
+    "syncframe_or_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

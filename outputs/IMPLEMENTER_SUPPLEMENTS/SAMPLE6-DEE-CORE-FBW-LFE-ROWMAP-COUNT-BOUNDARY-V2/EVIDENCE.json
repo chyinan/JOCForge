@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-CORE-FBW-LFE-ROWMAP-COUNT-BOUNDARY-V2",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Static table-derived internal FBW/LFE row-map counts for selector 0..7; ADM input source and runtime selector remain UNBOUND",
+  "upstream": {
+    "package_id": "row_count_field_producer_static_wash_v1",
+    "manifest_sha256": "569a1c870494b4697c3343daed4e6fcdc4c2b81e120273d76c93e1c076db24cb",
+    "package_seal_sha256": "544259910c756bc2e48c32b05388ba67ad36602abf9c20448773c8a30dd3b5b6",
+    "sha256sums_sha256": "7882a948eadc6f635a24162cda8c2becf2d97397e40c092e0839d2648f14c715",
+    "payload_sha256": {
+      "COUNT-MAP.json": "b3ae221774250a1313d528a14cbb4ac37cd0f465a3079e07a8b4c8d3e3dd07e0",
+      "EVIDENCE.json": "199113aedc0b58648e7537d42313a2208fdb66561025acbda79011cd48372694",
+      "REPORT.md": "d76e4c7e6baa8f436faf30edf458a29743f22aa12c3e449b4da0646115f4542f",
+      "SOURCE-MANIFESTS.json": "fffe4341105fb37c66530ccccfba1720e4d670d9bf82991f23a781c6cb30d58c"
+    },
+    "wash_independent_payload_check": "four payload sizes/hashes plus sidecar/seal/SHA256SUMS matched",
+    "upstream_checker": "NOT_PROVIDED"
+  },
+  "source_identity": {"tool": "Ghidra 12.2_PUBLIC", "mode": "read-only; noanalysis", "program": "dee_ddp_encoder.exe", "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"},
+  "writer": {
+    "main": {"function": "FUN_1403479c0", "callsite": "FUN_140343530 at 0x140343556", "context_pointer_source": "RCX"},
+    "alternate": {"function": "FUN_140348000", "caller": "UNBOUND"},
+    "source_fields": {"layout_selector": "S16(context+0x2c)", "lfe_present": "S16(context+0x30)"},
+    "normalized_fields": {"layout_selector": "S16 context+0x1912c", "lfe_present": "S16 context+0x1912e"},
+    "count_fields": {"slot_count": "S16 context+0x19130 = S16[0x1405f4ba0 + 2*layout_selector]", "layout_position_count": "S16 context+0x19132 = base_count + (lfe_present != 0 ? 1 : 0)"}
+  },
+  "table_domain": {
+    "selectors_with_read_values": [0, 1, 2, 3, 4, 5, 6, 7],
+    "base_count_values": [2, 1, 2, 3, 3, 4, 4, 5],
+    "valid_prefix_lengths": [3, 2, 3, 4, 4, 5, 5, 6],
+    "derived_slot_count_range": "1..5",
+    "derived_layout_position_count_range": "1..6",
+    "explicit_local_clamp": false,
+    "sentinel_guard": false,
+    "selector_range_guard": "UNBOUND_NO_LOCAL_CHECK"
+  },
+  "domain_separation": {
+    "adm_fmt_or_chna_count_to_layout_selector": "UNBOUND",
+    "adm_track_count_to_slot_count": "UNBOUND",
+    "source_physical_slot_identity": "UNBOUND",
+    "ddp_frame_count_join": "UNBOUND",
+    "runtime_values": "NOT_RUN"
+  },
+  "execution": {"dee_run": false, "debugger_attached": false, "pcm_or_payload_read": false, "key_or_license_accessed": false},
+  "prohibited_inferences": ["Do not equate internal map count with ADM track count.", "Do not claim selector is always 0..7 without source/range evidence.", "Do not claim sentinel-safe behavior outside selectors 0..7."]
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "ADM-BWF-DDP-CHANNEL-COUNT-LINEAGE-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Typed local count paths across converter and DDP images; cross-component transfer remains unbound",
+  "upstream": {
+    "package_id": "adm_bwf_ddp_channel_count_lineage_wash_v1",
+    "evidence_manifest_sha256": "851a03dca222f40c7b9eb102a33d1bad7d7b942151314941a84c396a0c140402",
+    "package_seal_sha256": "4a13d78cfbe2ed3adb698ada8a97c0963afa1615afbf4b788af83d774dfdfc0b",
+    "payload_sha256": {
+      "CHECK.py": "3fb4bfb0971a406f725bfa1dc42f338cc85315f4ee625301becaeb7a67a48351",
+      "COUNT-LINEAGE.json": "763a921bab01bb6b1bebac784f500877c59d6ae8362f30f231766e1413d3cbf6",
+      "README.md": "74e43f03dbd79c5fe0898fe074aa86bda9227b58d3fe7c3683899303f7e37bcd",
+      "SOURCE-IDENTITIES.json": "5ef682ed55aa18c56422a35a3637fa131cf6e10c873d8e1ad0c46fda85d81581",
+      "evidence_manifest.json": "851a03dca222f40c7b9eb102a33d1bad7d7b942151314941a84c396a0c140402"
+    },
+    "wash_independent_payload_check": "all five file sizes and hashes match package seal",
+    "upstream_checker": {"normal": "PASS", "python_optimized": "PASS"}
+  },
+  "source_images": {
+    "converter": {"name": "dee_audio_filter_convert_atmos_mezz.dll", "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"},
+    "ddp_atmos": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    "tool": "Ghidra 12.2 PUBLIC; read-only/noanalysis"
+  },
+  "converter_reader_count": {
+    "getter": "FUN_1800dab00 via AdmFileStorage vtable+0x70",
+    "reader_field": "reader/storage object+0x18, U64",
+    "semantic_use": "fmt channel count in selected ADM BWF load path",
+    "chna_declared_track_count": "U16 CHNA header compared to getter U64",
+    "expected_count_field": "converter owner+0x6368, U64 caller-supplied",
+    "conditional_maximum": "when owner+0x63b0 != 0, reject count >= 129; scoped functions have no fixed 36/38 check"
+  },
+  "ddp_configured_count": {
+    "nested_config_value": "U16 at (*(qword *)(param3+0x28))+0xA",
+    "processor_destination": "processor+0x20, U64 zero-extended",
+    "allocator": "MultiChannelBuffer uses channel_count*8 pointer-table bytes and channel_count*frame_capacity*4 float bytes",
+    "descriptor": {"row_pointer_table": "U64 at +0x00", "channel_count": "U64 at +0x08", "frame_count": "U64 at +0x10"},
+    "nonzero_frame_gate": "descriptor.channel_count must equal processor+0x20",
+    "explicit_count_upper_bound_in_scoped_allocator": "NOT_FOUND"
+  },
+  "lineage_status": {
+    "converter_reader_count_to_ddp_nested_config": "UNBOUND",
+    "converter_reader_count_to_ddp_descriptor_channel_count": "UNBOUND",
+    "same_owner_job_generation_join": "UNBOUND",
+    "36_channel_end_to_end": "NOT_RUN",
+    "38_channel_policy": "NOT_ESTABLISHED"
+  },
+  "adjacent_core_staging_boundary": {
+    "separate_package_manifest_sha256": "613d934c86bb9a3bf21049fed7a5bc92f6650d11fadddcf79167533adef9b066",
+    "separate_boundary": "dee_ddp_encoder.exe local_d8[16] staging before later root+0xc140 capacity gate",
+    "typed_join_to_dynamic_DDP_allocator": "NOT_ESTABLISHED"
+  },
+  "exclusions": {
+    "new_dee_run": false,
+    "runtime_capture": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_accessed": false,
+    "source_code_or_decompilation_included": false,
+    "upstream_input_only_numeric_vector": "NOT_PROVIDED"
+  },
+  "implementation_guidance": [
+    "Keep ADM track count distinct from DDP process-frame channel count until a typed transfer is proven.",
+    "Use dynamically sized owned storage for user ADM rows and check capacity before any copy.",
+    "Do not infer safe 36/38 admission from the DDP allocator alone because the adjacent core wrapper staging is a separate unjoined boundary."
+  ]
+}

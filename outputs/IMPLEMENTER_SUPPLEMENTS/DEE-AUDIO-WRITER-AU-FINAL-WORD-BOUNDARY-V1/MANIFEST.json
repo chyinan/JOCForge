@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-AUDIO-WRITER-AU-FINAL-WORD-BOUNDARY-V1",
+  "source_reverse_package_id": "dee_audio_writer_au_boundary_wash_v1",
+  "source_reverse_manifest_sha256": "2c4c61f399d3139ccf07e7fa781b5c59e94fe33f748f0e8412ec7b653888a9d7",
+  "status": "WRITER_CONTEXT_AND_RESIDUAL_WORD_FLUSH_BOUND; DOWNSTREAM_BUFFER_ALIAS_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3111,
+      "sha256": "22f2fc6125d88a2954a0abcb2f72bb9ac1356e7ab970e27371bded88aa728214"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3236,
+      "sha256": "489714f517cc49dfa540ec24953cfc87e5310dff8025b087188b017c0e0f3f1f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 555,
+      "sha256": "dc4754991434ba8d8ac45601cebbd96bb35e7f46cde1ad2c2290a0f438113bbf"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1361,
+      "sha256": "72cfaa9c8e05d42028fe6468a2bfb787a99f6ce1a547b490b01d2d0ba7c8a49a"
+    }
+  ],
+  "exclusions": {
+    "ghidra_harness_or_raw_source_included": false,
+    "target_binary_or_decompilation_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

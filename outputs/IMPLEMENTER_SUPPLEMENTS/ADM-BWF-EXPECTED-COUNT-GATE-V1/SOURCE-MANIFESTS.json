@@ -1,0 +1,16 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "adm_bwf_ddp_expected_count_gate_wash_v1",
+      "evidence_manifest_sha256": "0cff903a0014abcb572ed6fa405de23d2357df9826f15dbe1b4863e9c18a8869",
+      "package_seal_sha256": "9fba18bb45b68b18df1eaaf6b4dee4fedb5a934fd8b87aa4e0d790ec98664778",
+      "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+    },
+    {
+      "package_id": "adm_bwf_ddp_channel_count_lineage_wash_v1",
+      "evidence_manifest_sha256": "851a03dca222f40c7b9eb102a33d1bad7d7b942151314941a84c396a0c140402",
+      "package_seal_sha256": "4a13d78cfbe2ed3adb698ada8a97c0963afa1615afbf4b788af83d774dfdfc0b"
+    }
+  ]
+}

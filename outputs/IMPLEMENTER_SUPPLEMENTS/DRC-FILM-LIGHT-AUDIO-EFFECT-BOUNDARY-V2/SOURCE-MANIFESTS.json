@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256": "ce3c2a1dfcca08986e6eaaed1c6f115cbc68fb8c1a887931230ab67c45415af3",
+    "package_seal_sha256": "895811a3b60e80d736fb05e44c7633db039d0c95734e1e4ae3ad55fdb29966f7",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "selected_ghidra_log_sha256s": {
+      "profile_u32_link": "19b19b2e4b70a27934e61534872ecb5834dd1e3c307052a9b273f7a70de4e4c5",
+      "tree_writer_scan": "99386c8d96a5051d610413e3feab8f11b4b4314c5933978536603cf48f48b404",
+      "profile_consumer_callers": "bef2b46ad11eb35174564efac88d1803b1274e558ae000be23d2be1fc6d3f27a",
+      "profile_consumer_continuation": "ac13fcdb8e7c5307124d0b505e0f01199de6cf4363cdee423d4f8a075ca88ebe",
+      "encoder_config_source": "45947ef43d14cf883de915b34b86283184a65e218b70b321d72b1cf7c7050926"
+    },
+    "checker": "no package CHECK.py was present; manifest/seal/SHA256SUMS and every unique payload hash independently recomputed"
+  },
+  "excluded": [
+    "raw Ghidra logs",
+    "scripts",
+    "binary",
+    "EC-3 payload",
+    "PCM",
+    "private key",
+    "license"
+  ]
+}

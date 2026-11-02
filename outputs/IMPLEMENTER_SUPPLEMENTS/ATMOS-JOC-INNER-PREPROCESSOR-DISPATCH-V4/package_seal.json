@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V4",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3487,
+      "sha256": "b3822423fe0439b407d9bea993f2eb11afb61a3321877cee82d542c78fcdb5f5"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3039,
+      "sha256": "b124523acda7075ed49fa6352f7c65304f321a408cb0bd169d91627283b6f556"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 474,
+      "sha256": "0fff909ab3d086529ec9e2b6277fd45b229c32cfce6cc52d23b37ecee1e3778e"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1218,
+      "sha256": "67b2e209f06ee50ad7bf683dabd4a3ddf2746f57d266db5c9de93aaed5e2bed9"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1360,
+      "sha256": "69712795d4300be348cb2aa5eddab7578443e44f81b587b640d41b98acd72348"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "c2bb1dd919d7dea80d880aa382a4560e4079f1a5868ef132064c6113ad028dd1"
+    }
+  ]
+}

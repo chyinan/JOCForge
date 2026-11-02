@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "bap3_raw7_capture_plan_wash_v1 revised all-callsite plan",
+      "manifest_sha256": "6d543ebdd3cd7f075c32c16232bb3d34901b5f2a5fbf5885faaf645b72a8b077",
+      "package_seal_sha256": "80f2d23d9ab644983253bb44672305d6627c32bbb313011a7d4e1d260744d04f",
+      "sha256sums_sha256": "bbdfb629c040fbe348f241a090d96ce4f8fddadac1dc54904d7b276a4b8194e4"
+    },
+    {
+      "package_id": "eac3_core_bap3_quantizer_candidate_wash",
+      "manifest_sha256": "d332c67172dde17635aec3c4dca52440f4a118cfa0469f0861145984dd7cd788",
+      "package_seal_sha256": "cfcb0e270d1a4928a88ca651e055f7a9fe0045ca2b2dfe0f371ca64c98edd91c"
+    },
+    {
+      "package_id": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1",
+      "manifest_sha256": "6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750",
+      "package_seal_sha256": "593ee033f677b7e84e0de5367b005b95cf3d43defc0854b6eb0137070000e74b"
+    }
+  ]
+}

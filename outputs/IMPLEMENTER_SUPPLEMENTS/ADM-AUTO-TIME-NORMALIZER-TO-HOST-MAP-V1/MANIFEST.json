@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1566,
+      "name": "REPORT.md",
+      "sha256": "d0fdd8f1d858f979e5180ad2c349f41e62b9841f6c617e62d1d3818874fee52f"
+    },
+    {
+      "bytes": 1893,
+      "name": "EVIDENCE.json",
+      "sha256": "761aa602de34e8a7b5b31a899ac315a52cfa48ad519e3efccc38df49941b3f28"
+    },
+    {
+      "bytes": 472,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "7ec922ad8e66750ee60396828775890308929dbba346e24d5bfbfab0391f47ec"
+    },
+    {
+      "bytes": 523,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "78b775693bd0824c7390bbee1a4f3b69629e805455158b0ea32972e77036c833"
+    },
+    {
+      "bytes": 2032,
+      "name": "verify_package.py",
+      "sha256": "e84950c772916d502d31ff62c1f7a2435ab01435a23d8d7d7eade88ad79b5109"
+    },
+    {
+      "bytes": 1496,
+      "name": "seal_package.py",
+      "sha256": "dda6959ccbf557d589e73b79c2a2c28947044a66b88a77a071b402c04b3a0396"
+    }
+  ],
+  "package_id": "ADM-AUTO-TIME-NORMALIZER-TO-HOST-MAP-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "AUTO_NORMALIZER_TYPED_RULE_AND_HOST_STORE_BOUND; SOURCE_MAP_ORIGIN_AND_CONVERTER_TRANSFER_UNBOUND"
+}

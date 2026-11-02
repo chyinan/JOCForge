@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "JOCFORGE-36-ROW-PRODUCTION-GATE-SEQUENCE-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FIRST_METER_G0_36_ROW_GATE_BOUND; DOWNSTREAM_FIXED_38_GATES_INVENTORIED; REAL_36_INPUT_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_source_code": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 2314,
+      "sha256": "ef529f1d27c452c206316b83112502dc5cdbc3e49e94efc3b811ccda05023364"
+    },
+    "EVIDENCE.json": {
+      "bytes": 5374,
+      "sha256": "2df980dce85e9a69a510917658aeba69c5eba48250aa9306da5481d01c6c165e"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1208,
+      "sha256": "6b032fefe974ecdaf3bc02fd9e1584a11eea3aa984d10b291d2b0af96c2a7428"
+    }
+  }
+}

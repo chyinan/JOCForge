@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "packages": {
+    "R5_raw_enum_transfer": {
+      "manifest_sha256": "d05d12b73aa0bf66a8e884671f29f54335f2dee2688347def0b70d86b2b61231",
+      "package_seal_sha256": "4e4add4b2fe8af7cbd37c0327456cb8e05b1b707a44148e2f754fe24e5a1834a",
+      "payload_sha256s": {
+        "LINE-DRC-RAW-ENUM-TRANSFER.json": "a7bce3aaeade71ea4a1b6aef4aad8cdde6097983bf84077ca0db63bf32b6c4c7",
+        "LINE-DRC-AUDIO-EFFECT-BOUNDARY.json": "04eeffe0786b16eb40d7480cab06707a4676e88d51eadcb10d4e285695282527",
+        "REPORT.md": "13e363447ef133d3ee2aa534d514596e303da2d0abb68692c54f53580f219347",
+        "SOURCE-MANIFESTS.json": "e9f614ff2dc1e629782cde71f7aca8dac394911eed8faba5c8dd09ab652779f7"
+      }
+    },
+    "DDP_COMPR_parent_map": {
+      "manifest_sha256": "e4318aa984b26e3851459ef25471c9d282f9689c4a24859b16e872d3eec77401",
+      "DRC-VALUE-MAP.json_sha256": "c4d7c71ae5234612d918ef3d55a67489e793bf5c1636d08f27082d93f1fa4a96"
+    },
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "excluded": [
+    "raw Ghidra scripts/logs",
+    "binary",
+    "EC-3 payload",
+    "PCM",
+    "private key",
+    "license"
+  ]
+}

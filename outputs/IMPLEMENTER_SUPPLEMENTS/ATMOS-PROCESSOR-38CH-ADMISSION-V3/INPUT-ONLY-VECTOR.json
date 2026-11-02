@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-atmos-processor-38ch-admission-input-only.v3",
+  "sample_metadata": {"channels": 38, "bed_tracks": 10, "object_tracks": 28},
+  "cases": [
+    {"master_u16_plus_0x0a": 38, "descriptor_channel_count": 38, "frame_count": 1536, "static_expected": "count equality and capacity checks accept"},
+    {"master_u16_plus_0x0a": 36, "descriptor_channel_count": 38, "frame_count": 1536, "static_expected": "reject channel mismatch"}
+  ],
+  "runtime_execution": "NOT_RUN",
+  "specific_human_cat_value_captured": false,
+  "pcm_or_payload_included": false
+}

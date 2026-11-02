@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.f01e_36_row_cold_owner_boundary.v1",
+  "package_id": "F01E-36-ROW-COLD-OWNER-BOUNDARY-V1",
+  "status": "APPROVED_COLD_V1_FIXED_28; WIP_DYNAMIC_PROJECTION_PRESENT; NORMAL_CONTROL_AND_ZERO_DRAIN_STILL_38",
+  "approved_contract": {
+    "cold_schema": "F01E_SELECTED_COLD_V1",
+    "cold_object_owners": 28,
+    "normal_control_dimensions": {"physical": 38, "bed": 10, "object": 28, "regular": 37},
+    "graph_36_dimensions": {"physical": 36, "bed": 10, "object": 26},
+    "reset": "discard prior event/sampler/binding/snapshot/counter state and reconstruct fresh selected owners for a new programme/attempt",
+    "in_place_resize_defined": false
+  },
+  "current_wip": {
+    "function": "ValidatedF01EColdProvider::for_admitted_adm_input",
+    "source_file": "crates/jocforge-domain/src/frontend/provider.rs",
+    "provider_schema_version_changed": false,
+    "derives_input_dimensions_from": "SelectedJobConfiguration + SelectedAdmGraph",
+    "object_owner_records_from": "SelectedAdmGraph object sampler-owner bindings",
+    "callback_index_reset_to": 0,
+    "normal_callback_count": "ceil(source_samples / frame_samples)",
+    "new_native_or_dee_observation": "NONE",
+    "line_rf_drc_acceptance": ["none", "film_light"],
+    "effective_xml_drc_default": "UNBOUND"
+  },
+  "remaining_gates": {
+    "normal_control_snapshot": "requires 38 channels / 28 objects and builds [38]/[28]/[10]/[37] arrays",
+    "fresh_zero_callback": "requires physical_rows.len() == 38",
+    "full_36_row_joc": "NOT_RUN"
+  },
+  "source_files": {
+    "provider.rs": "1d2f4e60987315458c8509b242de435435153ad2c202a3b347517513ba1e3a32",
+    "normal_control_snapshot.rs": "89b56c3d8f011ac01d45d38ab25e0eb81d6cc5fbd340de5412582751d3d68273",
+    "job_configuration.rs": "5047b4224572b1937e579d040faaadbbfbeeafc52aac56da2319c6ab49ff9c84",
+    "state.rs": "1743651e4c78e9e5bcc8484be84f4e325f5358ee4ec97ab7f7af5651a028761e",
+    "independent_meter_callback.rs": "cf73426977a0f4bc65a94a8747e560e958faff8b9816187bd204d2da1ace7bd4"
+  },
+  "scope": {
+    "native_execution": false,
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "dsp_formula_changed": false
+  }
+}

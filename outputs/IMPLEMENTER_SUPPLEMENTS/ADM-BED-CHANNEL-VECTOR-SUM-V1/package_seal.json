@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "ADM-BED-CHANNEL-VECTOR-SUM-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3073,
+      "sha256": "ec3a5d9115205d24648d4f1ea1451477fd1f5714dce8492a627c885478c0d5c0"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2723,
+      "sha256": "d689cad38da38ba7d3b6b38e4d7c8612e41872a4cc80c6a3ba07d767400d0f1d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 318,
+      "sha256": "a701b97b84c8593f8d928c6fb7f9befef8507777ac78cf9ed6a8a2b4aa708231"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 765,
+      "sha256": "9ff3d14cb7fb952e037fa4abf5e9a6288db74f6a7ec9b87a551c40e86a5496c6"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1243,
+      "sha256": "3eba36046e240dffe969dc218f32fb91c15b4f540f4c474b7045ee3ea9dd8751"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "c7afa890bf55f6c17abc4aa27e75b676eb361ee3f672ec9d63c1e927ddedde76"
+    }
+  ]
+}

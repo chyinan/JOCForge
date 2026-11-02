@@ -1,0 +1,79 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-BAP3-RAW7-CAPTURE-PLAN-V2",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Hash-bound static BAP3 raw-7 capture plan; no native observation or algorithm change",
+  "upstream": {
+    "package_id": "bap3_raw7_capture_plan_wash_v1",
+    "manifest_sha256": "6d543ebdd3cd7f075c32c16232bb3d34901b5f2a5fbf5885faaf645b72a8b077",
+    "package_seal_sha256": "80f2d23d9ab644983253bb44672305d6627c32bbb313011a7d4e1d260744d04f",
+    "sha256sums_sha256": "bbdfb629c040fbe348f241a090d96ce4f8fddadac1dc54904d7b276a4b8194e4",
+    "payload_count": 3,
+    "wash_independent_checks": {
+      "manifest_sha256_matches_seal": true,
+      "manifest_sidecar_matches": true,
+      "sha256sums_sha256_matches_seal": true,
+      "payload_lengths_and_hashes_match": true,
+      "upstream_checker_included": false
+    },
+    "supersedes": {
+      "manifest_sha256": "e121d91fa4cdbe5020276632dfd4ffa655b8ca96d9f9d4ad511e68a55345de04",
+      "package_seal_sha256": "b6857d98cbd2f214bd53e68dba629c56d509926b31fb0bce9b0a2918ad85d274"
+    }
+  },
+  "source_identity": {
+    "tool": "Ghidra 12.2_PUBLIC",
+    "analysis_mode": "read-only; noanalysis",
+    "program": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "raw_code_candidate": {
+    "function": "FUN_1403264d0",
+    "conversion_rva": "0x326601",
+    "capture_stop_rva": "0x326606",
+    "stop_semantics": "CVTTSS2SI has executed; saturation has not",
+    "raw_register": "R10D",
+    "bap_register": "ECX",
+    "bin_register": "EDI",
+    "hit_predicate": "ECX == 3 && R10D == 7",
+    "bap3_native_upper_clamp": "raw 7 maps to code 6"
+  },
+  "capture_routes": [
+    {"caller": "FUN_140326700", "callsite_rva": "0x32680f", "route": "primary row", "row_assignment": "BP is row index; DI is channel slot"},
+    {"caller": "FUN_140326700", "callsite_rva": "0x326872", "route": "conditional row", "row_assignment": "BP is row index; DI is channel slot"},
+    {"caller": "FUN_140326700", "callsite_rva": "0x326929", "route": "special tail", "row_assignment": "UNASSIGNED; do not infer row from BP"}
+  ],
+  "target_window": {
+    "au_start_inclusive": 2750,
+    "au_end_exclusive": 2875,
+    "au_count": 125,
+    "capture_only_when": "pending AU ordinal in range AND ECX == 3",
+    "raw7_count_status": "UNOBSERVED",
+    "per_au_summary_required": true,
+    "boundary_markers": [2749, 2750, 2874, 2875]
+  },
+  "alignment_guards": {
+    "initial_block_count_must_be_zero": true,
+    "successful_frame_commit_is_eax_zero": true,
+    "one_commit_per_output_au_must_be_confirmed": true,
+    "abort_if_any_guard_fails": true,
+    "persistent_pointer_values_allowed": false
+  },
+  "record_fields": [
+    "AU ordinal", "block index or span", "frame-set entry index", "quantizer route",
+    "channel slot", "row index only where assigned", "bin", "BAP",
+    "scaled coefficient F32 bits", "raw and used exponent", "pre-clamp raw code", "HIT_RAW7"
+  ],
+  "execution_status": {
+    "windbg_attached": false,
+    "dee_started": false,
+    "native_capture": "NOT_RUN",
+    "raw7_hits": "UNOBSERVED",
+    "input_only_vector": "NOT_PROVIDED_CAPTURE_PLAN_ONLY"
+  },
+  "prohibited_inferences": [
+    "Do not treat no observation as a zero hit count.",
+    "Do not infer the LFE PCM mismatch cause from this plan.",
+    "Do not persist PCM, payload, keys, license data, or transient pointers."
+  ]
+}

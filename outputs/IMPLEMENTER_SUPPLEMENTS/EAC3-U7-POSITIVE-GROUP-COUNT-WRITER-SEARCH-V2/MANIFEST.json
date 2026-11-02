@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EAC3-U7-POSITIVE-GROUP-COUNT-WRITER-SEARCH-V2",
+  "source_reverse_package_id": "dee-ddp-group-count-full-image-xref-wash-v5",
+  "source_reverse_manifest_sha256": "eea5ab0697decd3536cf35330f7bf0bf7036d1888a2471a8300518734ea5db0f",
+  "status": "NO_NEW_POSITIVE_N_WRITER_SURFACED; MODEL_RULE_REMAINS_INFERENCE",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3262,
+      "sha256": "6fa1688b1a70b21956a99db6a6a1aaeb511f55b7a8b364110d3fa9490b629f15"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2119,
+      "sha256": "b39f8de6f0cfcd0ce2051aa58804a0e2cd96b3e8605e0fbcf75e3baf984e5186"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 296,
+      "sha256": "14dc2fbf58fc55badd67d7c0b5676c096ad78d8afbc4bbea06810ef5fae202f5"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1154,
+      "sha256": "9964a34adfac9e135dc0d6930071ecd244e3d3153a254701360d92a1b2af2aa1"
+    }
+  ],
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

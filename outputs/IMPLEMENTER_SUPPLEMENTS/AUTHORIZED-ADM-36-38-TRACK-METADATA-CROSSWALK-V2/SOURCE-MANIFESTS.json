@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "metadata-only ADM BWF comparison (Wash direct read)",
+      "input_paths": ["D:\\潜在的なアイ.wav", "D:\\人是猫 - 张卡斯, 洛天依.wav"],
+      "metadata_fields_recomputed": ["RIFF header", "fmt ", "chna", "axml"],
+      "data_chunk_read_bytes": 0,
+      "whole_file_sha256_recomputed": false
+    },
+    {
+      "package_id": "carrier_block_authorized_input_scope_wash_v2",
+      "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-12\\files-pasted-by-the-user-agent\\outputs\\carrier_block_authorized_input_scope_wash_v2",
+      "manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+      "package_seal_file_sha256": "f9842904d54ad2ae7d15e0bb978212c9933632a5f2cae461f5d35c3df43e6e09",
+      "identity_payload_sha256": "19b134d2d3409d48429bdbf9d0779452fd26099c2ebb64ae39a47bb11a6f4e11",
+      "use": "Inherited full-file path/size/hash identities only; audio data was not reread"
+    }
+  ]
+}

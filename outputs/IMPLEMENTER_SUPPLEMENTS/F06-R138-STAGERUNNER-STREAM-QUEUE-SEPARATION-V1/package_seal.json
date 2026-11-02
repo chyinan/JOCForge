@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "F06-R138-STAGERUNNER-STREAM-QUEUE-SEPARATION-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2869,
+      "sha256": "f4d6333a918ee69415048d2107769569f05ceea08c50499836b9e0039a9f7377"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2606,
+      "sha256": "046fde84099c6312e71d4686695acac3be9e05b6c80c83bf895057b4df5ec27c"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 423,
+      "sha256": "a12f5182652ba73a64431c0654c337d3c2db8111061fdf619df01067f171c7a3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1016,
+      "sha256": "5466ba031fc3d9c3c3a7d702d2ee384e6a0d2871834858c439f09c10d495f148"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1252,
+      "sha256": "4efcbb088d6f95cec41dd510cf18f563094559e0ada42d68621d7285fc0ade68"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "96438eee56c8c9d9d118dc2e28cb21c458898fc1135508936e6f3d6684f87f86"
+    }
+  ]
+}

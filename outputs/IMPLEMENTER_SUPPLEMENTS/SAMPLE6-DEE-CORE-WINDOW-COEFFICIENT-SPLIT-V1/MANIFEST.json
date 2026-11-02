@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-CORE-WINDOW-COEFFICIENT-SPLIT-V1",
+  "scope": "static native/Rust core transform table comparison and one input-only arithmetic vector",
+  "status": "STATIC_WINDOW_COEFFICIENT_SPLIT_CONFIRMED; MATCHED_LFE_USE_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1492,
+      "sha256": "b13c925c017e00b5bdd8417690ca3eae7afc9b2f6f543d21ec03824bc59ef990"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2036,
+      "sha256": "91fcbbb72f6465a48269a612be5428c46b040e49ecbaec0ac97caa3220e1de4a"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 776,
+      "sha256": "7e584d8c905b0725f761550c7808a50b3bfd2736268b0e8954eac6962e9e3432"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 848,
+      "sha256": "8dbc6e009d4a955b4a2fc85a991f6d3d4e7bbf2542bf12173d69d49ec1129cad"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3786,
+      "sha256": "aeb7ba52b818972719840b7cee26d36bf0182cdefda4536c2fe3047c5611490d"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "source_packages": [
+    {
+      "package_id": "native-f06-authorized-adm-au-aligned-core-pcm-comparison-addendum",
+      "manifest_sha256": "ade02cf02c9e0d7f1947148a9b188accad24900e649a4e67999c9c120fb96a49",
+      "package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+    },
+    {
+      "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+      "manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+      "package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18"
+    }
+  ],
+  "run_receipt_sha256": "99129a8dc0feb9e6bb4a5e4422c13ba663b67c15104343a5a323e8fce30c9b3b",
+  "source_validation": {
+    "incoming_manifest_sha256_recomputed": true,
+    "incoming_payload_hashes_and_sizes_recomputed": true,
+    "incoming_checker_normal_and_optimized": "PASS",
+    "pcm_or_encoded_payload_copied": false
+  }
+}

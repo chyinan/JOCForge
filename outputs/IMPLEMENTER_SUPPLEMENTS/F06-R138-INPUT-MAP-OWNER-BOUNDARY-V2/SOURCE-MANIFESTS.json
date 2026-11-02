@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "native-f06-r138-process-state-input-map-source-addendum",
+    "path": "D:\\Tools\\Dolby_Encoding_Engine\\DIRTY_U04_HISTORY_CONTROL_COMPOSITION_R33\\file-position-full-file-reader-extent-reconciliation\\f06-measurement-dialnorm-closure\\wash-package\\native-f06-r138-process-state-input-map-source-addendum",
+    "manifest_sha256": "5d1f924b5b141b75061ff82aeb6296dd3562f24dd54dfdc10f1b405b5a61957d"
+  },
+  "source_images": [
+    {"role": "host executable", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"role": "Atmos DDP filter", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+  ],
+  "exclusions": [
+    "No Ghidra decompilation/source, binary, media, PCM, key or license copied.",
+    "Unowned offset matches were not used to infer the +0xa0 input-map writer."
+  ]
+}

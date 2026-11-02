@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-implementer-erratum-seal.v1",
+  "package_id": "ATMOS-ROW-HANDOFF-SOURCE-INDEX-ERRATUM-V1",
+  "file_count": 5,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3090,
+      "sha256": "0776c1e2e73c9624c204f7c5428d08e9619a0ce950ec0fe521273ee88ca24af3"
+    },
+    {
+      "file": "ERRATUM.json",
+      "bytes": 1600,
+      "sha256": "2e3bfbc6c483aef8187ef9ffe77a18e43f758c99d3d636d5a3b18d2e2fb1511c"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1032,
+      "sha256": "10f03a9636c8475973f195d4801f30cf70800477e7004a697bfee88d5dfe39e7"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 957,
+      "sha256": "ea707803818f4c6833adb22e0388ea2f35d2b1e1260488464188b18a072263a0"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "eeed15fb852896d600a62fa9043838c3e1ab51cb2a274f67650f5cd36042400e"
+    }
+  ]
+}

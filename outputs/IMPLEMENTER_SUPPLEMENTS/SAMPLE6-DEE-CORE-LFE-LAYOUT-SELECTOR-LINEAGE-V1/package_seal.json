@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V1",
+  "manifest_sha256": "b4af51070e7f52242e04535c4abefc95d0bfc31086e264692af7645c600897f2",
+  "sha256sums_sha256": "3c9ff411fe6296f4efa813a07d3c5eca6aca79758a7268fcc657303233888c39",
+  "payload_count": 5,
+  "status": "STATIC_SELECTOR_PRODUCER_AND_LFE_BRANCH_BOUND; OUTPUT_CHANNEL3_USER_CONFIRMED_LFE; MATCHED_INPUT_ROW3_TO_CORE_LANE_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

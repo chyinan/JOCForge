@@ -1,0 +1,59 @@
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+
+
+def require(condition: bool, label: str) -> None:
+    if not condition:
+        raise SystemExit(f"FAIL {label}")
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+manifest_path = ROOT / "MANIFEST.json"
+manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+require(sha256(manifest_path) == (ROOT / "MANIFEST.sha256").read_text(encoding="ascii").split()[0], "manifest hash")
+require(manifest.get("package_id") == "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V3", "package id")
+payload = manifest.get("files")
+require(isinstance(payload, list) and len(payload) == 4, "payload inventory")
+actual_names = {path.name for path in ROOT.iterdir() if path.is_file() and path.name not in {"MANIFEST.json", "MANIFEST.sha256", "package_seal.json"}}
+require(actual_names == {entry.get("file") for entry in payload}, "payload file set")
+for entry in payload:
+    path = ROOT / entry["file"]
+    require(path.stat().st_size == entry["bytes"], f"size {entry['file']}")
+    require(sha256(path) == entry["sha256"], f"hash {entry['file']}")
+
+seal = json.loads((ROOT / "package_seal.json").read_text(encoding="utf-8"))
+sealed = seal.get("files")
+require(isinstance(sealed, list) and seal.get("file_count") == len(sealed), "seal inventory")
+require({entry.get("file") for entry in sealed} == actual_names | {"MANIFEST.json", "MANIFEST.sha256"}, "sealed file set")
+for entry in sealed:
+    path = ROOT / entry["file"]
+    require(path.stat().st_size == entry["bytes"], f"sealed size {entry['file']}")
+    require(sha256(path) == entry["sha256"], f"sealed hash {entry['file']}")
+
+evidence = json.loads((ROOT / "EVIDENCE.json").read_text(encoding="utf-8"))
+vector = json.loads((ROOT / "INPUT-ONLY-VECTOR.json").read_text(encoding="utf-8"))
+require(evidence["source_package"]["manifest_sha256"] == "5f124268aa037f34c1d13af7b519de41f9beb3a70cc99330e2081907faa17590", "source manifest binding")
+require(evidence["source_package"]["package_seal_sha256"] == "20aba5a4fa9a373209ac0d08540ed43027ad5efef8ccc1648ef163c1d5dbc965", "source seal binding")
+require(evidence["selected_config_source_chain"][1]["role"].startswith("requests type ID 0"), "type ID 0 lookup")
+require(evidence["selected_config_source_chain"][5]["role"].startswith("reads selected config vtable+0x38"), "typed selector source")
+candidate = evidence["nonmatching_rerenderbus_candidate"]
+require(candidate["selected_by_type_id_0_lookup"] is False, "candidate excluded from ID-0 object")
+require(candidate["fallback_values_visible"] == [3, 4, 5], "nonzero candidate defaults")
+require(evidence["best_supported_contract"]["per_run_selector_value"] == "UNBOUND/NOT_RECORDED", "per-run value remains unknown")
+require(evidence["best_supported_contract"]["mvp_blocked"] is False, "conditional MVP not blocked")
+require(vector["execution"] == "NOT_RUN" and vector["native_default_asserted"] is False, "input vector boundary")
+require(evidence["exclusions"]["private_key_or_license_material_included"] is False, "private material exclusion")
+
+print("PASS: selected ID-0 selector source, nonmatching constructor exclusion, and no-default boundary")

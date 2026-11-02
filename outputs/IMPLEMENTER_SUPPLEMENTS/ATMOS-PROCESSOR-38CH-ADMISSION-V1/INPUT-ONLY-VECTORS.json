@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-atmos-processor-admission-input-only.v1",
+  "execution": "NOT_RUN",
+  "expected_output_audio_included": false,
+  "positive_candidate": {
+    "input_channels": 38,
+    "master_descriptor_u16_plus_0x0a": 38,
+    "descriptor_channel_count_u64_plus_0x08": 38,
+    "descriptor_frame_count": 1536,
+    "processor_capacity": 1536,
+    "expected_guard": "pass if supplied pointers/counts obey descriptor alignment and configured capacity"
+  },
+  "negative_controls": [
+    {"case":"channel_count_mismatch","descriptor_count":38,"configured_count":36,"expected":"reject before renderer dispatch"},
+    {"case":"frame_capacity_exceeded","frame_count":1537,"capacity":1536,"expected":"reject before row copy"}
+  ]
+}

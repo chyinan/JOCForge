@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-washed-atmos-inner-selector-sources.v1",
+  "incoming_package_id": "atmos_joc_inner_preprocessor_dispatch_wash_v1",
+  "incoming_manifest_sha256": "d926de87e639bb9e9201ece1f5f7ec70e943e7f03e2167b5c582aad9bc7cfffe",
+  "incoming_package_seal_sha256": "8c5358856f2d95e391cb7f19d7e504819f45981f4f03751f9764d60157fb4430",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "referenced_ghidra_and_receipt_files_checked": 22,
+  "hash_mismatches": 0,
+  "source_files_copied": false,
+  "binary_or_decompilation_copied": false,
+  "pcm_or_payload_copied": false,
+  "private_key_or_license_material_copied": false
+}

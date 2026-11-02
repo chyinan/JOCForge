@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-joc-stream-metadata-observation.v1",
+  "run_id": "sample6-dee-audio-full-20261102",
+  "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+  "ffprobe_stream_profile": "Dolby Digital Plus + Dolby Atmos",
+  "packet_count": 4247,
+  "per_au_joc_emdf_flag": "NOT_EXPOSED_BY_FFPROBE_METADATA",
+  "execution": "METADATA_QUERY_ONLY",
+  "raw_packet_or_pcm_included": false
+}

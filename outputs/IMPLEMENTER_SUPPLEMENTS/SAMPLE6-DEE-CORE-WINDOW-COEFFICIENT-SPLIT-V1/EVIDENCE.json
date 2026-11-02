@@ -1,0 +1,49 @@
+{
+  "schema": "washed-core-window-coefficient-split.v1",
+  "package_id": "SAMPLE6-DEE-CORE-WINDOW-COEFFICIENT-SPLIT-V1",
+  "status": "STATIC_WINDOW_COEFFICIENT_SPLIT_CONFIRMED; MATCHED_LFE_USE_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "native_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "window_table": {
+    "entry_count": 256,
+    "native_words_sha256": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+    "rust_selected_provider_words_sha256": "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23",
+    "mismatch_count": 12,
+    "mismatch_ulps": "one ULP per mismatching entry",
+    "first_mismatch": {"index": 21, "native_f32_bits": "3c0ea5aa", "rust_f32_bits": "3c0ea5a9"},
+    "long_cosine_word_mismatches": 0,
+    "long_sine_word_mismatches": 0,
+    "spectrum_permutation_mismatches": 0
+  },
+  "input_only_vector": {
+    "f32_word_count": 256,
+    "default_f32_bits": "00000000",
+    "nonzero_word": {"index": 234, "f32_bits": "3f800000"},
+    "primary_formula": "f32(f32(input[21]*window[234]) + f32(input[234]*window[21]))",
+    "companion_formula": "f32(f32(input[21]*window[234]) - f32(input[234]*window[21]))",
+    "derived_bits": {
+      "native_primary": "3c0ea5aa",
+      "rust_primary": "3c0ea5a9",
+      "native_companion": "bc0ea5aa",
+      "rust_companion": "bc0ea5a9"
+    },
+    "native_runtime_execution": "NOT_RUN",
+    "pcm_or_payload_included": false
+  },
+  "matched_lfe_boundary": {
+    "layout_selector_and_selected_row": "UNBOUND",
+    "adm_row3_to_input_descriptor_slot": "UNBOUND",
+    "input_descriptor_to_internal_lfe_lane": "UNBOUND",
+    "scratch_history_256_to_381_owner": "UNBOUND",
+    "effect_on_channel3_pcm_residual": "UNBOUND",
+    "lfe_filter_table_to_rust_lfe_parameters": "UNBOUND"
+  },
+  "privacy": {
+    "pcm_included": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

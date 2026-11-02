@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-adm-bed-count-input-only.v1",
+  "bed_vector_lengths": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  "bed_vector_sum": 10,
+  "object_source_count": 28,
+  "candidate_master_channel_count": 38,
+  "native_storage_row_identity": "UNBOUND",
+  "runtime_execution": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

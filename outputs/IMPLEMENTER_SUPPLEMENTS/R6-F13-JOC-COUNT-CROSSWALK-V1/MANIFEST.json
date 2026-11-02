@@ -1,0 +1,35 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "R6-F13-JOC-COUNT-CROSSWALK-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "upstream_manifest_sha256": "3135b65e1113b013f6bc4a364c9483bb9c7bde353bc819bb07bc1bbce6c79b43",
+  "runtime_observation": "NOT_RUN",
+  "scope": "Static JOC slot-extent count chain plus separate input metadata dimensions; source and serializer joins remain UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "d172cb9f82d2ca92f9b9229c832b7220d7a8646c4920fda89a66717cb9bb404c",
+      "bytes": 2393
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "b8258ea62e6aa21f4ddc6e2ae72c3e10437cd1645509b85ce88f7b630d233f77",
+      "bytes": 2929
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "78b4e6bfb94e8be77cdedafb8ca7fa439492e0c188dd644bf76eb0d57eb61929",
+      "bytes": 578
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "e79b8f2eebc9437313388c9f7f07c6cee405f7ac2977ac112f440a938fa45f2e",
+      "bytes": 851
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "dd36806197ab074c519ac5e9c2bcbebd678efd059655d1d771e925cef79c26cf",
+      "bytes": 2339
+    }
+  ]
+}

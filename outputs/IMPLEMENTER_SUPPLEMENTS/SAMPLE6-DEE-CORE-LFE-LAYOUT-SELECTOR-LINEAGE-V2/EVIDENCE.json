@@ -1,0 +1,106 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V2",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Hash-bound sanitized static LFE selector and mapping boundary; no runtime values or algorithm change authorized",
+  "supersedes_supplement": {
+    "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V1",
+    "manifest_sha256": "b4af51070e7f52242e04535c4abefc95d0bfc31086e264692af7645c600897f2",
+    "package_seal_sha256": "1e62aeaa0dc9eef1ef47679557b8c8c5d0acf37711233702a6c01016f3abf4f3"
+  },
+  "upstream": {
+    "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1",
+    "manifest_sha256": "883dfbf0bee6e0bcc52fa232109b3723d83a841b97551b48abacd20b335bdc2e",
+    "package_seal_sha256": "5b54d7a1c43aa8c022415141fe0064f9f7c2fb970c84f70e2401b340cdb310c8",
+    "sha256sums_sha256": "2adaf949d6bb0341a0c21de57e6ae345642431a05358e63d43b8be4c3480fbc2",
+    "payload_count": 18,
+    "wash_independent_check": {
+      "manifest_hash_matches_seal": true,
+      "sha256sums_hash_matches_seal": true,
+      "all_payload_sizes_and_hashes_match": true,
+      "r4_checker_normal": "REPORTED_PASS",
+      "r4_checker_python_optimized": "REPORTED_PASS"
+    },
+    "supersedes_source": {
+      "manifest_sha256": "d4043721c4e4a00ad3013259ba23430f751f0245924f437333578c4c2ee718eb",
+      "package_seal_sha256": "44e2e7f7242025c8c022650f8e17936e74263286822dc3ff2b9b5669388c7973"
+    }
+  },
+  "source_identity": {
+    "tool": "Ghidra 12.2_PUBLIC",
+    "mode": "read-only; noanalysis",
+    "program": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "matched_sample": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "adm_locally_rehashed_in_upstream": false,
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "job_xml_locally_rehashed_in_upstream": true,
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "dee_output_locally_rehashed_in_upstream": false,
+    "xml_bound_fields": ["encode_to_atmos_ddp", "1024 kbps", "input filename"],
+    "xml_absent_fields": ["core mode", "layout selector", "sample rate", "channel layout"]
+  },
+  "user_confirmed_output": {
+    "zero_based_decoded_output_channel_index": 3,
+    "identity": "LFE/low-frequency track",
+    "status": "USER_CONFIRMED_LFE",
+    "basis": "user listened to the extracted DEE output",
+    "reconfirmation_needed": false
+  },
+  "static_input_path": {
+    "descriptor_count": 6,
+    "descriptor_bytes": 16,
+    "input_pointer_offset": 0,
+    "sample_stride_type": "U16",
+    "sample_stride_offset": 12,
+    "processing_call": "FUN_140350d00@0x140350f8b -> FUN_140317600",
+    "outer_context_fields": {
+      "layout_selector": "lVar9+0x40 -> core state+0x2c -> normalized state+0x1912c",
+      "lfe_present": "lVar9+0x44 -> core state+0x30 -> normalized state+0x1912e"
+    },
+    "layout_count": "FBW_count = DAT_1405f4ba0[layout_id]",
+    "lfe_lane_rule": "internal lane >= FBW_count uses LFE main/companion branch"
+  },
+  "conditional_slot3_mapping": {
+    "layout_ids_4_to_7_internal_lane": {"4": 2, "5": 3, "6": 2, "7": 3},
+    "condition": "only if ADM physical row 3 is first proven to be core descriptor slot 3",
+    "matched_layout_id": "UNBOUND",
+    "adm_row3_to_core_descriptor_slot": "UNBOUND",
+    "lfe_present": "UNBOUND",
+    "matched_internal_lfe_lane": "UNBOUND"
+  },
+  "static_algorithm_scope": {
+    "first_sample_transform": "FUN_14036e350",
+    "max_input_index": 255,
+    "traversal": "64 outer symmetric-pair iterations",
+    "lfe_main_output_values_per_block": 7,
+    "lfe_companion_output_values_per_block": 7,
+    "matched_branch_execution": "NOT_OBSERVED",
+    "matched_runtime_values": "UNBOUND",
+    "pcm_difference_cause": "NOT_ESTABLISHED"
+  },
+  "minimum_existing_run_observation": {
+    "call": "FUN_140350d00@0x140350f8b -> FUN_140317600",
+    "fields": ["six descriptor owner/source-slot/stride values", "lVar9+0x40/+0x44", "normalized selector/count fields"],
+    "present_in_current_receipts": false
+  },
+  "proposed_input_only_vector": {
+    "status": "PROPOSED_NOT_RUN",
+    "description_file": "INPUT-ONLY-VECTOR.json",
+    "pcm_or_media_data": false,
+    "expected_output_asserted": false
+  },
+  "exclusions": {
+    "new_dee_run": false,
+    "raw_pcm_or_audio_payload_read_or_included": false,
+    "private_key_or_license_material_read_or_included": false,
+    "ghidra_source_or_decompilation_included": false
+  },
+  "decisions": {
+    "use_output_index3_identity": "USER_CONFIRMED_LFE",
+    "infer_input_row3_or_internal_lane_from_output_identity": false,
+    "implement_algorithm_change_from_this_package": false
+  }
+}

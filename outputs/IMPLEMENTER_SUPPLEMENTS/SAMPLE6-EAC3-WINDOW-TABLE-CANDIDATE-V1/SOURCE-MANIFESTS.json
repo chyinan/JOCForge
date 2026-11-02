@@ -1,0 +1,29 @@
+{
+  "source_packages": [
+    {
+      "package_id":"EAC3-CORE-WINDOW-TABLE-WASH-V1",
+      "manifest_sha256":"f568d4f1990dbc5e6ea2e41a2eddf750b7a24f87cf62cdec53d1b2fce41c9e75",
+      "source_seal":"MANIFEST.sha256_PRESENT"
+    },
+    {
+      "package_id":"dee-ddp-exponent-producer-typed-edge-wash-v2",
+      "manifest_sha256":"ad95d8576957c0ed20d8339c322c01c9669ab48ea8bd545e28b3ab7400c32ec6",
+      "role":"reused DEE image identity and separate exponent-stage boundary"
+    }
+  ],
+  "current_rust_source_hashes_recomputed": [
+    {"path":"crates/jocforge-domain/src/analysis/owner.rs","sha256":"bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"},
+    {"path":"crates/jocforge-domain/src/transform/window_fold.rs","sha256":"9295d6d0cc18d796c55bdc4d61542a19d0b43886778ad41f8cf24cb34f734c9e"},
+    {"path":"crates/jocforge-domain/src/transform/math_generated_parameters.rs","sha256":"7e8b23147ce9be9b9a19a518ec07d7b1d73bb5b2c60cdd04fe02fc8ff33e20a8"},
+    {"path":"crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json","sha256":"f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"},
+    {"path":"crates/jocforge-domain/src/transform/parameters.rs","sha256":"8f4e412b266384be2723c6b9f4035e12968942afe8ae3396da7337154d93f4a5"}
+  ],
+  "source_validation": {
+    "incoming_manifest_sha256_recomputed":"f568d4f1990dbc5e6ea2e41a2eddf750b7a24f87cf62cdec53d1b2fce41c9e75",
+    "incoming_normal_and_optimized_checker":"PASS",
+    "current_rust_source_hashes_match":"PASS",
+    "sample6_run_source_commit":"NOT_BOUND",
+    "dee_binary_rehash_by_wash":"NOT_PERFORMED",
+    "binary_or_decompilation_copied":false
+  }
+}

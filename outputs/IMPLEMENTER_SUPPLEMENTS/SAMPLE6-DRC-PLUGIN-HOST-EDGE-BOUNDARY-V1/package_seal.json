@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-PLUGIN-HOST-EDGE-BOUNDARY-V1",
+  "manifest_sha256": "0bbec6389ea12051df67f2ec24b92b6bdf9fd2511abcf39ba62ec951a5df1bca",
+  "sha256sums_sha256": "501721425661136814fc56c1f36fec9ef9f886ec09ea10eebe82df5b1b0c9124",
+  "payload_count": 5,
+  "status": "PLUGIN_CALLBACK_OUTPUT_RECORD_AND_BUFFER_CONSUMER_BOUND; HOST_TO_CORE_TRANSFER_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.data_rate_mapping_vectors.v1",
+  "vectors": [
+    {
+      "data_rate_enum": 0,
+      "core_integer": 384
+    },
+    {
+      "data_rate_enum": 1,
+      "core_integer": 448
+    },
+    {
+      "data_rate_enum": 2,
+      "core_integer": 576
+    },
+    {
+      "data_rate_enum": 3,
+      "core_integer": 640
+    },
+    {
+      "data_rate_enum": 4,
+      "core_integer": 768
+    },
+    {
+      "data_rate_enum": 5,
+      "core_integer": 1024
+    }
+  ]
+}

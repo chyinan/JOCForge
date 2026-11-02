@@ -1,0 +1,23 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-F32-CORE-ROW-WRITER-BOUNDARY-V1",
+  "manifest_sha256": "79ab60d34114efc212369c0d84496f3882ae52ab8d770bfbc1383cf1e82c1939",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "e4deecc9d3d77d2946fb46bd9ca85ac386298f15eb1839b225cb5faa6864b9f3",
+      "bytes": 2630
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "62283d57dd9ba4a5ea3a1377900c390ba0b0e1cf4ae9195c16b02315dd6f049b",
+      "bytes": 3167
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "d8093f5e8a081b3da9c4d2d32a90668caee559eee1b174ac6c94f9af313dd0e2",
+      "bytes": 1972
+    }
+  ],
+  "scope": "Hash-bound sanitized static boundary summary; no DEE source/decompilation, PCM/payload, key/license, runtime values, or algorithm rule"
+}

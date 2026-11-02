@@ -1,0 +1,70 @@
+{
+  "schema": "sample6-matched-drc-bsi-field-delta.v1",
+  "package_id": "SAMPLE6-MATCHED-DRC-BSI-FIELD-DELTA-V1",
+  "status": "HEADER_RF_FIELDS_MATCH; FIRST_BLOCK_DYNRNG_CODE_DIFFS_32_OF_125; CHANNEL3_RESIDUAL_PERSISTS_AT_SCALE0; PRODUCER_UNBOUND",
+  "matched_run": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "controls": {
+      "data_rate_kbps": 1024,
+      "line_drc": "film_light",
+      "rf_drc": "film_light",
+      "dialogue_intelligence": false,
+      "speech_threshold": 100,
+      "preferred_downmix_mode": "loro",
+      "mix_levels_db": [-3, -3, -3, -3]
+    }
+  },
+  "window": {
+    "au_interval_half_open": [2750, 2875],
+    "au_count": 125,
+    "sample_frames_per_channel": 192000,
+    "bit_offsets": "zero-based from each syncframe start, MSB-first"
+  },
+  "header_rf_fields": {
+    "compre_bit_offset": 50,
+    "compr_bit_interval_half_open": [51, 59],
+    "dee_values_all_aus": {"compre": 1, "compr": 255},
+    "rust_values_all_aus": {"compre": 1, "compr": 255},
+    "presence_difference_count": 0,
+    "code_difference_count": 0
+  },
+  "first_block_line_drc": {
+    "dynrnge_presence_difference_count": 0,
+    "dynrng_u8_difference_count": 32,
+    "first_difference": {
+      "au_index": 2843,
+      "au_bytes": 4096,
+      "dee_au_sha256": "a7f236018c292f98fe30e63cfb89a90e3b5ca1f50e9dc8ee37704875569c8602",
+      "rust_au_sha256": "7858424c76f6ebd86edad40a389649e7890115a1db782dea1c8e5209e6814bc3",
+      "dee": {"dynrnge_bit_offset": 198, "dynrnge": 1, "dynrng_bit_interval_half_open": [199, 207], "dynrng_u8": 1, "frame_exp_strategy": 0},
+      "rust": {"dynrnge_bit_offset": 233, "dynrnge": 1, "dynrng_bit_interval_half_open": [234, 242], "dynrng_u8": 0, "frame_exp_strategy": 1},
+      "xor": "0x01",
+      "cursor_delta_bits": 35,
+      "offset_reason": "Different exponent-strategy syntax branches; field was parsed by syntax, not a fixed offset."
+    }
+  },
+  "pcm_control": {
+    "decoder": "FFmpeg 8.1; decoder comparison only",
+    "channel_index_3_rmse_drc_scale_1": 0.0054772282019257545,
+    "channel_index_3_rmse_drc_scale_0": 0.005454088662868509,
+    "channel_index_3_rmse_delta": 0.0000231395390572455,
+    "interpretation": "The large channel-index-3 residual persists with decoder DRC disabled; this DRC field mismatch cannot explain that scale-zero residual. Its contribution to the smaller scale-dependent delta is not isolated."
+  },
+  "native_writer_boundary": {
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "tool": "Ghidra 12.2 read-only static",
+    "rule": "separate per-mode/per-block presence and U8 code tables feed the first audio-block DRC writer",
+    "table_producer": "UNBOUND",
+    "numeric_mode_to_profile_mapping": "UNBOUND",
+    "six_block_dynrng_parity": "NOT_RUN"
+  },
+  "privacy": {
+    "raw_syncframe_bytes_included": false,
+    "pcm_included": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material": false
+  }
+}

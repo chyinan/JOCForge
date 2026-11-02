@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-MEDIAMETADATA-ROW-WRITER-MVP-V2",
+  "source_reverse_package_id": "native-f06-r138-host-media-metadata-set-dispatch-addendum",
+  "source_reverse_manifest_sha256": "49fac997e42b61aa2a98af32c7698e2f3baf129b6d4ae96138dc96e4f7fcc8bd",
+  "status": "BEST_SUPPORTED_ROW_PRESERVING_MODEL_RULE; GENERIC_VCALL_AND_CROSS_MODULE_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2660,
+      "sha256": "fb4cfc8105a7ed02330e7a5b9126d8c920d44514e944b85c37316fde0c93b55f"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2690,
+      "sha256": "c65a4ed8974cbffdfc22b520d0c2fcaf7716f5fdcdfb379c7796357d40bab236"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 668,
+      "sha256": "3be60c41132c2165960525527a84d087cb490dbb4abb052d67093b0597886d23"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2729,
+      "sha256": "ff8438c96206c0fd9a1bafc19e4b02b5e0bc431a36f6911f755aa1c43946a71f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1049,
+      "sha256": "ab5d79b02181e6efc99a08f329f7d02371901840c4db54d16791622e972aab1c"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

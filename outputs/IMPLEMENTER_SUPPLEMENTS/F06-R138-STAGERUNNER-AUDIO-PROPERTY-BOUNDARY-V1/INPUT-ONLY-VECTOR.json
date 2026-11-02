@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-f06-initoutput-property-boundary-input.v1",
+  "calls": [
+    {"property": "dee_audio_input_source", "value_source": "StageRunner+0x428", "calls_outputwrapper_setproperty": true},
+    {"property": "dee_video_input_source", "value_source": "StageRunner+0x5E8", "calls_outputwrapper_setproperty": true}
+  ],
+  "dee_audio_source_type_in_window": false,
+  "outputwrapper_plus_0x178_write_in_window": false,
+  "runtime_execution": "NOT_RUN"
+}

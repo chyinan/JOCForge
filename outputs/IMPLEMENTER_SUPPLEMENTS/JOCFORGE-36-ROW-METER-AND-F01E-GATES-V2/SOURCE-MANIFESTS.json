@@ -1,0 +1,24 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_source_audit",
+      "package_id":"jocforge_meter_cursor_36_f01e_followup_wash_v1",
+      "manifest_sha256":"29f18450f64d8aa91210c2e154116264112c0e84613feee678265a6614b0283f",
+      "source_head":"2155ea31d6c78b5f91b7ba256ce0a506581d1618",
+      "manifest_and_payload_hashes_independently_checked":true,
+      "source_code_copied_into_this_supplement":false
+    },
+    {
+      "kind":"approved_native_row_map_wash",
+      "package_id":"ADM-36-38-NATIVE-CHANNEL-MAP-F03W-CROSSWALK-WASH-V1",
+      "manifest_sha256":"32cc2a957bca7f1e8a206109c13ca37319fb84ca8944d081e09fc2fde3f6e28f",
+      "sha256sums_sha256":"7fdf2e480bad2495bc41def8c4146611865288ed1a32685a89002f66613ad826"
+    },
+    {
+      "kind":"approved_sanitized_native_map_crosswalk",
+      "package_id":"DEE-36-38-DYNAMIC-NATIVE-ROW-MAP-V1",
+      "manifest_sha256":"11bef3de6d48b32b02f05440756185b9d26311fd87a0cfebbf89d6838b432b85"
+    }
+  ]
+}

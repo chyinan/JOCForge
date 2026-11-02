@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ADM-CHILD-COUNT-SEVEN-SAMPLE-CANDIDATE-V1",
+  "source_reverse_package_id": "adm_child_count_seven_sample_vectors_wash_v1",
+  "source_reverse_manifest_sha256": "38f49cb279c2a2e68c4adac89d42ddb0da1133ff7c177ecd397c43ec8a3918b7",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "METADATA_CANDIDATE_MATCHES_CHNA_7_OF_7; NATIVE_RUNTIME_CHILD_U16_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3161,
+      "sha256": "10d377d78d88a1c8b339f5292403c69ddc3976d8af970430c86503cb43551ce6"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2646,
+      "sha256": "dbdca6c6b37341a6837a0269d2fe350391a30df3e64645dd1802c6e7dd7034e8"
+    },
+    {
+      "file": "INPUT-VECTOR.json",
+      "bytes": 486,
+      "sha256": "fa198bab2912017f0dfdea29427b026b89bff83ae7be21eecdbc4e0f7dbe9731"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1997,
+      "sha256": "d2b0229ec6149f48848f7b257fb379fac0c71ba717c624ca18e6ef789d0905db"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 823,
+      "sha256": "6fecbe76517a22c335f04b894457e5e86fc06177882d828a46ba8c341a9d3518"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-STAGERUNNER-STREAM-QUEUE-SEPARATION-V1",
+  "source_reverse_package_id": "native-f06-r138-stream-object-queue-separation-addendum",
+  "source_reverse_manifest_sha256": "20bef0863b57d29a073f702d91120b425f3cf9392452b7a7cd056fa3eb613099",
+  "status": "QUEUE_DISPATCH_BOUND; OUTPUTWRAPPER_PLUS_0X178_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2869,
+      "sha256": "f4d6333a918ee69415048d2107769569f05ceea08c50499836b9e0039a9f7377"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2606,
+      "sha256": "046fde84099c6312e71d4686695acac3be9e05b6c80c83bf895057b4df5ec27c"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 423,
+      "sha256": "a12f5182652ba73a64431c0654c337d3c2db8111061fdf619df01067f171c7a3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1016,
+      "sha256": "5466ba031fc3d9c3c3a7d702d2ee384e6a0d2871834858c439f09c10d495f148"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

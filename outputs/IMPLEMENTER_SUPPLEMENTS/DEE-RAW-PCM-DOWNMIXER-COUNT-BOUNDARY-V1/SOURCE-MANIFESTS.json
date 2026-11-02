@@ -1,0 +1,10 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-DDP-CHANNEL-CAPACITY-STATIC-V1",
+      "manifest_sha256": "153b5825bf74c485ec0c8ab9f370b726fedc37aac68a6e59afc8c9408e67dbb3",
+      "source_binary_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+    }
+  ]
+}

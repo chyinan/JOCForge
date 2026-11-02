@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "F13C-dmixmod-joc-usepoint-addendum-v1",
+    "manifest_sha256": "537890557453666ca74fbe42f7d0598d74d5906725b6f548b504a5e14ad62350",
+    "source_hashes_verified_by_wash": {
+      "ADDENDUM.md": "86ce8f66810fdc31f3c74aec0161972b935de18a298332d5f2cd8d1eb67d1b9c",
+      "FIELD-USEPOINT.json": "d52a28d7ddc4810cdfb301495f27ae5832ac17035b86ee14bf14034ccab63ea7",
+      "GHIDRA-TRACE.txt": "f5c605a584b9fdfd3cd32060a55ec00402a8b3119d13c3b332a071165715b29e",
+      "SINGLE-FIELD-VALIDATION.md": "72877abb14ee8a717eef67486bbdaafcd7c3160e48672f5c5692677606ff0e5f"
+    },
+    "source_package_checker": "normal and python -O passed",
+    "native_image": "project-recorded hash only; installed image not rehashed"
+  },
+  "excluded": [
+    "Ghidra scripts",
+    "raw decompilation/disassembly",
+    "binary",
+    "PCM",
+    "payload",
+    "private key",
+    "license"
+  ]
+}

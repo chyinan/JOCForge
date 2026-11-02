@@ -1,0 +1,16 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"selector8_owner_writer_xref_audit_wash_v1",
+      "manifest_sha256":"f0dce9690b3969a7795fd7ecb034bf87b25f06f6b20aa208d61c3c8238c4a00c",
+      "package_seal_sha256":"1b92855abd4828ef030de9dfe56f5b889eceea3f89a80470fb807f79debab993",
+      "payload_count":7,
+      "native_image_sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_xref_logs_or_scripts_in_this_supplement":false
+    }
+  ]
+}

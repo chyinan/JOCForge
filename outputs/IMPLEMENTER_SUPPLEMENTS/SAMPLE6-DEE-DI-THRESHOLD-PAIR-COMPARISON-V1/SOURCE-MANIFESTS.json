@@ -1,0 +1,18 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dee_dialogue_intelligence_control_comparison_wash_v1",
+      "evidence_manifest_sha256": "7401ba3e47aa3b0b0edcbc831af8ec781aa4e887409db57e688627af82b6cfa3",
+      "package_seal_sha256": "7a624e0a90bdaf62251ea9ecda64cddd2b181b3165ecabcb60b9b0a91b8bd90",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    }
+  ],
+  "wash_payload_policy": {
+    "raw_pcm": false,
+    "encoded_payload": false,
+    "private_key_or_license_material": false,
+    "absolute_research_paths": false
+  }
+}

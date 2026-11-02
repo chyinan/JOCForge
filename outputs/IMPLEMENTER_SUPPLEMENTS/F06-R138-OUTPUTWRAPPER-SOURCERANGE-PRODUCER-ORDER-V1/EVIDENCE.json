@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge-washed-f06-outputwrapper-source-range-producer.v1",
+  "package_id": "F06-R138-OUTPUTWRAPPER-SOURCERANGE-PRODUCER-ORDER-V1",
+  "scope": "R138 OUTPUTWRAPPER +0x178 REGISTRY TO +0x1A0 FILTERED RANGE",
+  "status": "LOCAL_POST_FILTER_ORDER_BOUND; UPSTREAM_REGISTRY_OWNER_UNBOUND",
+  "source_package": {
+    "package_id": "native-f06-r138-outputwrapper-source-range-producer-addendum",
+    "manifest_sha256": "b4f4f3c7b1af253430564bfda44e6fd62d7619606ead9d096adf8ac24c7c15b8",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "tool": "Ghidra 12.2 read-only",
+    "host_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "bounded_report_sha256": "e0df9a60fcf6630bf3d92ffbc19eaba9211400c7e7c649f0ea1b92058c251f6f",
+    "parent_manifest_sha256": "8b35e3671e2e7abd1e143944b8f77875f2b800f7bb29ca03b8b468f0f6be8cd6"
+  },
+  "bound_static_facts": {
+    "outputwrapper_member": "+0x1A0",
+    "constructor_state": "initialized empty",
+    "population_branch": "OutputWrapper::SetProperty dee_audio_source_type branch",
+    "builder_input": "matched property value",
+    "source_registry_member": "+0x178",
+    "destination_range_member": "+0x1A0",
+    "selection": "iterate source registry in its existing sequence; append entries matching the property value",
+    "side_effect": "matched source properties marked --used--; append helper increments destination count",
+    "post_filter_order": "same as registry traversal order for matched rows",
+    "explicit_sort_observed": false,
+    "explicit_dedup_observed": false
+  },
+  "best_supported_rule": {
+    "rule": "Preserve the OutputWrapper +0x178 registry order when emitting matching entries into +0x1A0; do not sort or deduplicate without new evidence.",
+    "confidence": "HIGH_FOR_LOCAL_BUILDER_AND_ORDER",
+    "audio_algorithm_change_established": false
+  },
+  "unbound_edges": {
+    "producer_of_plus_0x178_registry": "UNBOUND",
+    "registry_equals_job_file_list": "UNBOUND",
+    "registry_equals_adm_converter_channel_vector": "UNBOUND",
+    "registry_equals_seven_file_scan_order": "UNBOUND",
+    "duplicate_disposition": "UNBOUND"
+  },
+  "execution_boundary": {
+    "dee_run": false,
+    "media_or_pcm_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false,
+    "broad_host_graph_search": false,
+    "raw_source_or_decompilation_included": false
+  }
+}

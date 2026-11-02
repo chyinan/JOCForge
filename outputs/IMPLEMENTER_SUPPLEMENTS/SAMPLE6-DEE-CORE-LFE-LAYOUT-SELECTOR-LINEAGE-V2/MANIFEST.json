@@ -1,0 +1,37 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V2",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "upstream_manifest_sha256": "883dfbf0bee6e0bcc52fa232109b3723d83a841b97551b48abacd20b335bdc2e",
+  "supersedes_manifest_sha256": "b4af51070e7f52242e04535c4abefc95d0bfc31086e264692af7645c600897f2",
+  "confirmed_output_identity": "USER_CONFIRMED_LFE",
+  "input_row3_to_core_lane": "UNBOUND",
+  "scope": "Sanitized static selector/LFE branch evidence plus separately user-confirmed decoded output identity; no runtime row mapping or algorithm change",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "636daceb4fea17805f0e9ff4789816e8261202e0cf61aa3c342c190398ec85b4",
+      "bytes": 4098
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "6ca3d714bd7977955dec3ec478b53117c7088941b9044da2ab66813e37c472bf",
+      "bytes": 4796
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "0fb093e93f3b69b8e5602b945f45b3fa13c5d43c7046888d78a4c5e9b8460f37",
+      "bytes": 1671
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "495862b7c2f0d5ac6740afe5ef63f85f117fce63778d27f40d96b22276660ad0",
+      "bytes": 765
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "6873f685763b95c8bc0de65f37838941812342b454033ad7ffb9b0dcfe3c8b80",
+      "bytes": 2288
+    }
+  ]
+}

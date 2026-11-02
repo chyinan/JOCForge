@@ -1,0 +1,31 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "DEE-STAGERUNNER-ATMOSMEZZ-ROUTE-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "upstream_manifest_sha256": "c4698113b15fa1524e7161c79ce8ffd841e73db6eb268c627fb66bbd2e6be2e2",
+  "selected_input_type": "atmos_mezz",
+  "adm_36_38_first_count_gate": "UNBOUND",
+  "scope": "Selected ADM atmos_mezz StageRunner route bound; count gate within that route remains UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "2c426af6c1ec6f631c6543fc563211e875bcf65c8c2b0610a6fbd7375924b5e7",
+      "bytes": 1949
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "52f0b222771ba1ccfd8f4ea401f5c3ca802a5406445d4cea09fccb0185d641bc",
+      "bytes": 2510
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "c251c08db4d590f3d136daabba1877ecaaf44ff7631d31a1da2918ad32659632",
+      "bytes": 578
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "3ef627ec3075457a0c050de8969156c4cb20f72c264d107e2481cbb0391099af",
+      "bytes": 2427
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "jocforge.atmos_ddp_bitrate_writer_boundary.v1",
+  "status": "RATE_ENUM_TO_TYPE1_WRITER_SLOT_BOUND; TYPE1_WRITER_TARGET_UNBOUND; NAMED_BSI_FIELD_UNBOUND; OUTPUT_RATE_NOT_RUN",
+  "scope": "Ghidra 12.2 static-only mapping to typed core output-writer slot; no emitted bitrate or frame-size observation.",
+  "source_package": {
+    "package_id": "ATMOS-DDP-BITRATE-SINK-WASH-V2",
+    "manifest_sha256": "1bb0aef189b37770b2bdd9a0803f5a618ca5c6aa5d3d56a1c6ca14236ddf01c9",
+    "followup_sha256": "398b49f70ff9374030c32d7c1c0ef28633d3f2cb5f6b869d0e4e71c8b4ee5bfd",
+    "addendum_sha256": "98289bd11443e0a82b2199fa49a9f13d62683c1058811eade3cd81a5f3cea1e9",
+    "mapping_trace_sha256": "ade9be1e85bf36fb31c432b7212fa918909f3a8ff486b5bfab5945456f7d1345",
+    "registry_refs_sha256": "8f514a9d755f10103141bc6bcf615bc116c3a55aca557e500eac7d279f573f68",
+    "independent_checker": "Wash rehashed all 11 manifest-listed evidence files; package has no separate seal or checker receipt"
+  },
+  "target": {
+    "image": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "execution": "NOT_RUN"
+  },
+  "rate_mapping": {
+    "source_enum_to_core_integer": {
+      "0": 384,
+      "1": 448,
+      "2": 576,
+      "3": 640,
+      "4": 768,
+      "5": 1024
+    },
+    "unit": "kbps is inferred from the DLL's 448kbps diagnostic; no typed unit annotation was recovered",
+    "codes_0_through_5_share_field_and_writer_path": true
+  },
+  "typed_output_path": {
+    "producer": "FUN_1801ab520 reads the rate code and creates descriptor field ID 3 with the mapped integer",
+    "setter": "FUN_1801b2100",
+    "table_type_index": 1,
+    "same_core_root_stored_at_encoder_context_plus_0x810": true,
+    "serializer": "FUN_1801b1590 iterates the same core table",
+    "writer_dispatch": "type-indexed output writer vtable slot +0x28 from DAT_1806521e8 + type_index*0x30",
+    "field_id_3_to_named_bsi_bit_or_framing_field": "UNBOUND",
+    "type1_writer_callback_target": "UNBOUND"
+  },
+  "input_only_vectors": [
+    {
+      "data_rate_enum": 0,
+      "core_integer": 384
+    },
+    {
+      "data_rate_enum": 1,
+      "core_integer": 448
+    },
+    {
+      "data_rate_enum": 2,
+      "core_integer": 576
+    },
+    {
+      "data_rate_enum": 3,
+      "core_integer": 640
+    },
+    {
+      "data_rate_enum": 4,
+      "core_integer": 768
+    },
+    {
+      "data_rate_enum": 5,
+      "core_integer": 1024
+    }
+  ],
+  "limits": {
+    "dee_run": false,
+    "payload_or_key_read": false,
+    "actual_bitrate": "NOT_RUN",
+    "frame_size": "NOT_RUN"
+  },
+  "next_minimal_observation": "Resolve the type-1 table vtable +0x28 callback target through its table initializer, then trace only field ID 3 into the named BSI or framing field; keep actual output NOT_RUN until an output is observed."
+}

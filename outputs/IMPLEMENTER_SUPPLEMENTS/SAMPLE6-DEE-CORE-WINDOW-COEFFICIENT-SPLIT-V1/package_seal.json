@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-CORE-WINDOW-COEFFICIENT-SPLIT-V1",
+  "manifest_sha256": "74973e18ac6001b34ec1225ae179e17c8cd78aef1cc7b6b1bdd89a305f2d0f34",
+  "sha256sums_sha256": "a2c4cab252dfab94bcb25610fedeb2971aa65111f54a878d52fdc4c7c8419901",
+  "payload_count": 5,
+  "status": "STATIC_WINDOW_COEFFICIENT_SPLIT_CONFIRMED; MATCHED_LFE_USE_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

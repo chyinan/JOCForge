@@ -1,0 +1,14 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "r7-lfe-tone-discriminator-dbmd-followup",
+      "manifest_sha256": "048bb96982bf43c3fb4d48a151a324a783ed4f09dbeecbb2df5b41995dad4e10",
+      "manifest_sidecar_sha256": "02eaf15699c995136973695be5f4cc6609940692d8ae453597b8c084b9c7788e"
+    },
+    {
+      "package_id": "r7-lfe-tone-discriminator",
+      "manifest_sha256": "72abd664ff8e72d1c41c97b33750213666a051316ef237f5e366fbf9cc7deba0"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "schema": "jocforge-washed-atmos-inner-preprocessor-dispatch.v2",
+  "package_id": "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V2",
+  "supersedes": "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V1",
+  "scope": "SELECTOR-CONDITIONAL INNER COMPONENT CALLBACK CLASSIFICATION",
+  "status": "STATIC_BRANCH_TARGETS_BOUND; PER_RUN_SELECTOR_UNBOUND; EXACT_AUDIO_EQUIVALENCE_OPEN",
+  "source_package": {
+    "package_id": "atmos_joc_inner_preprocessor_dispatch_wash_v1",
+    "manifest_sha256": "6445cd3a5ef2bf9719fb2714c02d5dc9e6e49da1f9314a304ba8d67fdb1b8b21",
+    "package_seal_sha256": "7d4b92b114ff196a73fd926c692968159e229c592ecd8a159450ca8d8aeadb71",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "source_references_checked": 22,
+    "source_reference_missing": 0,
+    "source_reference_mismatch": 0,
+    "tool": "Ghidra 12.2 Public static only",
+    "target_image": {
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    }
+  },
+  "dispatch_chain": [
+    {"rva": "0x423ce0", "role": "SinglethreadSymphonyRenderer helper; calls FUN_180435770 on nested component at renderer+0xe0"},
+    {"rva": "0x435770", "role": "indirect callback through nested component vtable+0x28"},
+    {"rva": "0x435120", "role": "reads typed selector from config_object vtable+0x38 and constructs the selected component"},
+    {"rva": "0x435290", "role": "selector zero constructs SpatialCoderPlatform; nonzero constructs PreProcessorBypass"}
+  ],
+  "selector_zero": {
+    "component": "Dolby::Atmos::SpatialCoderPlatform",
+    "plus_0x28": {
+      "target_rva": "0x443920",
+      "next_rva": "0x4493d0",
+      "callee_rva": "0x3bc720",
+      "classification": "state/control update; no sample-buffer arguments or sample loop"
+    },
+    "sample_process": {
+      "slot": "+0x08",
+      "target_rva": "0x4437d0",
+      "downstream_rva": "0x4497c0",
+      "classification": "sc_process spatial-coding work with float-backed buffers and repeated block processing"
+    }
+  },
+  "selector_nonzero": {
+    "component": "Dolby::Atmos::Home::PreProcessorBypass",
+    "plus_0x28_static_target": "CFG guard thunk at RVA 0x3f8e70",
+    "actual_indirect_target": "UNBOUND/NO"
+  },
+  "best_supported_rule": {
+    "rule": "Treat nested +0x28 as a branch-specific state/control callback. Use the config object's typed selector; zero routes sample processing through SpatialCoderPlatform +0x08, while nonzero selects PreProcessorBypass and preserves its unresolved guarded +0x28 callback.",
+    "confidence": 0.90,
+    "confidence_scope": "static branch semantics; not a measured selector default or per-run selection",
+    "best_effort_conditional_dispatch_mvp_blocked": false
+  },
+  "sample_scope": {
+    "authorized_adm_receipts": 2,
+    "channels": 36,
+    "sample_rate_hz": 48000,
+    "route": "audio.adm -> encode_to_atmos_ddp",
+    "prior_dee_observations": 2,
+    "active_samples": 1,
+    "quiet_samples_excluded": 1,
+    "selector_recorded_in_receipts": false,
+    "new_dee_run": false
+  },
+  "input_only_vector": {
+    "execution": "NOT_RUN",
+    "same_row_tokens_and_frame_count_across_selector_0_and_2": true,
+    "pcm_values_included": false,
+    "product_default_inferred": false
+  },
+  "unbound_or_open": {
+    "per_run_selector": "UNBOUND/NO",
+    "nonzero_bypass_indirect_target": "UNBOUND/NO",
+    "exact_audio_equivalence": "OPEN_IF_REQUIRED",
+    "qmf_specific_kernel_name": "NOT_ESTABLISHED"
+  },
+  "exclusions": {
+    "binary_or_raw_decompilation_included": false,
+    "pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

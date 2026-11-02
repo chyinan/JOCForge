@@ -1,0 +1,16 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"atmos_ddp_plugin_property_setter_wash_v1",
+      "manifest_sha256":"a92fb2f54cadd335a46ab42f0d8d6b6523fa939bff14ddff898c1dd4acc7c189",
+      "sha256sums_sha256":"1f00a90bea7307fa3366b8e2ccea81189b05dab9d633431bb780d8d7f5f93ead",
+      "binary_image_sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "payload_count":7,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_Ghidra_trace_or_script_in_this_supplement":false
+    }
+  ]
+}

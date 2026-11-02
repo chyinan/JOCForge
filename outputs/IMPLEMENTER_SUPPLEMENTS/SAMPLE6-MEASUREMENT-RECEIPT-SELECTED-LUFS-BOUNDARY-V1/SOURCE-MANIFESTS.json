@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "sample6-measurement-receipt-serialization-boundary",
+      "manifest_sha256": "779264b7c2fc3baabcaf7bc7d88bd46da1cc3c66a9b089a09b3f915eed1e5a2b",
+      "manifest_file": "MANIFEST.sha256",
+      "separate_package_seal": "NOT_PROVIDED",
+      "manifest_payloads": [
+        {"file": "README.md", "sha256": "fdf659225fb93aa4bbe89627bfc5a71973590498e4f678332daf734f8dcdb721"},
+        {"file": "evidence.json", "sha256": "ae9c5a28c4692afe7f5147f5a942299afae7f9a3857ae0e4da08607274efb4ee"},
+        {"file": "verify_package.py", "sha256": "8b9fb8db5e8fec29ab65e05549eda34eec25ad6346e103fae77e442638ceb294"}
+      ]
+    }
+  ],
+  "implementation_source_hashes_reviewed": {
+    "programme_measurement.rs": "edbebbcb654c945fd05288754548ee7a351dc006d9524d05b6a6dcd98fe474d8",
+    "dialnorm.rs": "55e21ed4ad4cf19193842f0293f313add00e97a6d29053ca02c792e78b34299f",
+    "measurement_receipt.rs": "2fff890d6d3e6a1672e13b22f8481b5a14ce2e18c06a1ffb29ee0531081c52aa"
+  }
+}

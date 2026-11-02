@@ -1,0 +1,73 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-F32-CORE-ROW-WRITER-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "approval_scope": "static boundary facts only; no runtime values or algorithm change authorized",
+  "upstream": {
+    "package_id": "sample6-matched-drc-f32-core-row-writer-boundary-wash-v1",
+    "manifest_sha256": "e33a3254d5877b6cce046cb39447e30c47dc88807663e5c716548e1d4e3665f9",
+    "package_seal_sha256": "fe57a3e738250a3e406ded705e8cd141aa261d14d9e51d118466c2d782b3b6c1",
+    "payload_sha256": {
+      "MANIFEST.sha256": "e8b88f641eec7f92e815c84003aea0a0bfba8eda2a518bd1150a8214a9f1d370",
+      "REPORT.md": "8d72aa50b29d30eb7d41133e9a57cc15e47653c2ccda30f7e6ed6ab687bb68b5",
+      "EVIDENCE.json": "b5b065c9c394c12c2b694756d603605b6f882897ed0f121cc3960e077384f005",
+      "INPUT-ONLY-VECTOR.json": "dfc14251f872d3dd026281fff4674dcd174733646ae929739bede9899ced16dd",
+      "SOURCE-IDENTITIES.json": "552827309465962a1d147763e86ef7bccd34ff566d09ed03753dee8088bca8a7",
+      "CHECK.py": "da2c5b9090b2041b95532ef4404ead1227345c490e81dabcc1772337eddb7c27"
+    },
+    "checker": {
+      "normal": "PASS",
+      "python_optimized": "PASS"
+    }
+  },
+  "source_identity": {
+    "tool": "Ghidra 12.2_PUBLIC",
+    "analysis_mode": "read-only; noanalysis",
+    "program": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "row": {
+    "owner_field": "channel_instance+0xdf8",
+    "state_context": "state+0x21cc4",
+    "range": "[state+0x23e34,state+0x23eac)",
+    "bytes": 120,
+    "shape": "6 blocks * 5 F32 values; block stride 0x14",
+    "open_time_initialization": "30 zero U32 words",
+    "generation_time_writer_in_checked_scope": "NOT_FOUND",
+    "runtime_values": "UNBOUND"
+  },
+  "checked_path": {
+    "state_creator": "FUN_140314f50",
+    "state_initializer": "FUN_140317fd0",
+    "row_initializer": "FUN_14033ed80",
+    "processing_entry": "FUN_140350d00",
+    "typed_reader": "FUN_14033ef30",
+    "checked_bulk_clear_candidates": [
+      "state+0x13464, length 0x7c; ends before row",
+      "state+0x252c8, length 0x4428; starts after row",
+      "querymem_base+querymem_size-0x5fee0, length 0x5fee0; reserved querymem tail, not inline row"
+    ]
+  },
+  "next_edge": {
+    "data_pointer_slot": "0x140610538",
+    "target": "FUN_140350d00",
+    "host_api_consumer": "UNBOUND",
+    "possible_pre_process_row_write": "UNBOUND"
+  },
+  "runtime_and_media": {
+    "new_dee_run": false,
+    "runtime_capture": "NOT_RUN",
+    "pcm_or_syncframe_or_payload_accessed": false,
+    "private_key_or_license_material_accessed": false
+  },
+  "permitted_inferences": [
+    "Do not substitute open-time zero initialization for runtime row values.",
+    "The checked static scope did not find a generation-time row writer.",
+    "The host/API dispatch consumer is the next boundary to inspect."
+  ],
+  "prohibited_inferences": [
+    "Do not claim no writer exists outside the checked scope.",
+    "Do not infer that this row is the cause of the PCM/LFE mismatch.",
+    "Do not invent or implement runtime F32 values from this package."
+  ]
+}

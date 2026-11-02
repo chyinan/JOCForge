@@ -1,0 +1,50 @@
+{
+  "schema": "washed-joc-tagged-mode-count-lineage.v1",
+  "package_id": "SAMPLE6-JOC-TAGGED-MODE-COUNT-LINEAGE-V1",
+  "status": "DLL_LOCAL_TAGGED_RECORD_TO_COUNT_PATH_BOUND; PUBLIC_INPUT_AND_RUNTIME_VALUES_UNBOUND; AUDIO_EFFECT_UNMEASURED",
+  "matched_identity": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "au_window_half_open": [2750, 2875],
+    "frames_per_channel": 192000
+  },
+  "typed_path": {
+    "tagged_record_stride_ints": 3,
+    "selected_record_tag": 4,
+    "record_value_type": "I32",
+    "per_source_mode_field_type": "I32",
+    "encoder_state_mode_field_type": "I32",
+    "count_lookup_result_type": "U16",
+    "count_destination": "encoder coefficient-slot count state",
+    "downstream_uses": ["JOC coefficient-delta processing", "serializer bit-writer length"]
+  },
+  "origin_boundary": {
+    "record_list_creator": "UNBOUND",
+    "public_dee_job_field": "UNBOUND",
+    "adm_derived_origin": "UNBOUND",
+    "new_user_setting_authorized": false
+  },
+  "runtime_boundary": {
+    "matched_mode_value": "UNBOUND",
+    "matched_slot_count": "UNBOUND",
+    "matched_atmos_audio_effect": "UNMEASURED",
+    "causality_for_channel3_pcm_residual": "UNBOUND",
+    "native_runtime_execution": "NOT_RUN"
+  },
+  "input_only_vector": {
+    "single_changed_field": "tag-4 record value M",
+    "fixed_inputs": ["matched ADM identity", "matched job XML identity", "all other callback-record fields"],
+    "mapping": "M:I32 -> lookup -> N:U16",
+    "M_value": "UNBOUND",
+    "N_value": "UNBOUND",
+    "classification": "INPUT_ONLY_PROPOSAL_NOT_RUN"
+  },
+  "privacy": {
+    "pcm_included": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

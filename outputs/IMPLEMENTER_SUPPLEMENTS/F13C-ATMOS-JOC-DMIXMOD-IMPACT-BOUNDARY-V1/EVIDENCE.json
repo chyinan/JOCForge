@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge-washed-f13c-atmos-joc-dmixmod-impact.v1",
+  "package_id": "F13C-ATMOS-JOC-DMIXMOD-IMPACT-BOUNDARY-V1",
+  "scope": "SELECTED ATMOS JOC DMIXMOD PARSER-TO-FIRST-CONSUMER BOUNDARY",
+  "status": "NO_AUDIO_DSP_CONSUMER_OBSERVED_IN_SCOPED_PATH; NATIVE_ENUM_EFFECT_UNBOUND",
+  "source_package": {
+    "package_id": "F13C-atmos-joc-dmixmod-audio-impact-addendum-v31",
+    "manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "sha256sum_files_verified": 16,
+    "ghidra_project_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "installed_image_rehashed": false,
+    "tool": "Ghidra 12.2 static targeted trace"
+  },
+  "selected_job_source_values": {
+    "route": "audio.adm -> encode_to_atmos_ddp",
+    "preferred_downmix_mode": "loro",
+    "mix_levels_db": [-3, -3, -3, -3],
+    "origin": "selected attempt-10 JOCForge job template; no user prompt or DME-active preference",
+    "runtime_job_xml_capture": false,
+    "rust_source_mapping": {"dmixmod": 2, "level_codes": [4, 4, 4, 4]},
+    "mapping_scope": "source-path behavior only; no attempt-10 execution observed in this slice"
+  },
+  "native_path_boundary": {
+    "parser": "FUN_1404ecea0 reads dmixmod and four mix-level fields",
+    "validator": "FUN_1404dddd0 accepts text tokens not_indicated/pro_logic/stereo/pro_logic_ii; typed enum binding and audio effect remain UNBOUND",
+    "first_reached_consumer": "FUN_1404807d0 generic name/value/error result-tree builder",
+    "direct_downmix_reads_in_first_consumer": 0,
+    "audio_dsp_or_postmix_consumer_in_scoped_path": "NOT_OBSERVED",
+    "attempt10_actual_bsi_bits": "NOT_OBSERVED_IN_THIS_PACKAGE",
+    "selected_route_literal_search": {"encode_to_atmos_ddp": 0, "audio.adm": 0},
+    "search_limit": "targeted executable .rdata literal scan only; does not exclude dynamic/nonliteral routes or another module"
+  },
+  "best_supported_rule": {
+    "rule": "Do not prompt the user. Preserve the selected job template's explicit loro/-3x4 fields in the JOCForge source path; keep native enum audio effect and omission default unbound.",
+    "confidence": "HIGH_FOR_NO_PROMPT_AND_TEMPLATE_SOURCE; UNBOUND_FOR_NATIVE_AUDIO_EFFECT",
+    "mvp_blocked": false
+  },
+  "input_only_test": {
+    "kind": "no-encoder parser/source vector",
+    "present_template": {"preferred": "loro", "mix_levels_db": [-3, -3, -3, -3], "expected_bsi": {"mixmdate": 1, "dmixmod": 2, "level_codes": [4, 4, 4, 4]}},
+    "removed_downmix_fields": "selected parser should reject as MissingField",
+    "execution": "NOT_RUN"
+  },
+  "execution_boundary": {
+    "encoder_launched": false,
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_material_read": false,
+    "raw_source_or_decompilation_included": false,
+    "implementation_contacted_by_research": false
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-CORE-FBW-LFE-ROWMAP-COUNT-BOUNDARY-V1",
+  "manifest_sha256": "c24767d2130f56c7fa77909edabc2460fdc3afa5d9b60cda1d56a5e1eea797fc",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "eb8be9ab5277b9d46d325914e9c8f0640022233a7f1214dc4ea5e87c45547f7d",
+      "bytes": 2060
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "e3e884ba2b0db130384d38ba881e0d45c03c5d453e35b5b855c6781b417cb895",
+      "bytes": 2459
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "bcc50af292da06b83218d3b442d629bb485e39260152a1644ac8818d1ae21d85",
+      "bytes": 606
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "bbbff93a00ebb696a807aecb60b85e1f251f6c97350b7ef3a6fdc3f3e1540dcb",
+      "bytes": 977
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "08fc16328c4caa42df9d1d1884d4169b9b8c25087192cff1239a1354a6cb7096",
+      "bytes": 2256
+    }
+  ],
+  "scope": "Static six-descriptor/six-wide selector/five-slot row-map shape; variable count semantics and 36/38 admission unbound"
+}

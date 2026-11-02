@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-eac3-core-row-quantizer-one-row-vector.v1",
+  "input": {
+    "primary": 0.25,
+    "primary_f32_bits": "3e800000",
+    "companion": 0.5,
+    "companion_f32_bits": "3f000000",
+    "decoded_exponent": 0,
+    "bap": 1
+  },
+  "expected": {
+    "row_power_f32_bits_native_and_rust": "3ea00000",
+    "scaled_primary_f32_bits_native_and_rust": "3e800000",
+    "offset_sum_f32_bits": "3fa00000",
+    "scaled_bap_value_f32_bits": "3ff00000",
+    "scalar_code_native_and_rust": 1,
+    "width_bits": 5,
+    "grouped_mantissa_bits": "NOT_EVALUATED"
+  },
+  "execution": "SYNTHETIC_MODEL_BOUNDARY_ONLY; NATIVE_EMULATOR_NOT_RUN",
+  "pcm_or_payload_included": false
+}

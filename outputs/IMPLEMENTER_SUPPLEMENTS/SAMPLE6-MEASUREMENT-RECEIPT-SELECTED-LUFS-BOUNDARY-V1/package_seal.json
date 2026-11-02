@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-MEASUREMENT-RECEIPT-SELECTED-LUFS-BOUNDARY-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3065,
+      "sha256": "7168bffeda9451a601ce4a35843bc8a6862f985645535460fcd8cb812576464d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2695,
+      "sha256": "fd30496c48d88e76cef5ac64cfa5e6f280a7c4b7596084687d6d50642779ad8d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 871,
+      "sha256": "381998472d5a4c9870d246d4dc15cde059b69d1f82d5310b2b5cd958aab57bb9"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1517,
+      "sha256": "38ed364299c353baa4e056002f959c1f13842824be5bf5ed4c19e9ffa7dca080"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1049,
+      "sha256": "e40a1ad1be099dafae2b8c09e4be3ddfcce057e0430dbc743fe9216e79b47ed8"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1522,
+      "sha256": "4b12939d5238e337003c9f5c9a0991d7f774ba1645ede87dc11e081e2aa6c65d"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "6d856b608c50379c47e004ce1dc49d169b8725fa34555ccd5f0336982b6b66e9"
+    }
+  ]
+}

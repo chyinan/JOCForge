@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "SYMBOLIC_EQUALITY_AND_LIMIT_GATES; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "rule": "reader_fmt_count == Factory+8 expected_count == CHNA declared_track_count; when the guarded max branch is active, count must be <129",
+  "cases": [
+    {"label": "potential_ai", "reader_fmt_count": 36, "chna_declared_count": 36, "factory_expected_count": "UNBOUND", "conditional_result_if_expected_is_36": "PASSES_THESE_GATES", "conditional_result_if_expected_differs": "COUNT_MISMATCH"},
+    {"label": "human_cat", "reader_fmt_count": 38, "chna_declared_count": 38, "factory_expected_count": "UNBOUND", "conditional_result_if_expected_is_38": "PASSES_THESE_GATES", "conditional_result_if_expected_differs": "COUNT_MISMATCH"}
+  ],
+  "scope": "Input-only arithmetic for reader equality and guarded maximum only; no factory value or selected job is observed.",
+  "prohibited_inference": "These conditional vectors do not prove either ADM is accepted by the selected DEE/JOC route."
+}

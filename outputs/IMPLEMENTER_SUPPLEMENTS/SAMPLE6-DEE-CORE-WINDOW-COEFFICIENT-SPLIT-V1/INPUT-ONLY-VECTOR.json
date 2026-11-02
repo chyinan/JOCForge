@@ -1,0 +1,21 @@
+{
+  "schema": "washed-core-window-table-input-only.v1",
+  "vector_id": "single-nonzero-word-at-window-mismatch",
+  "classification": "STATIC_F32_ARITHMETIC_DERIVATION; NOT_RUNTIME_EXECUTION",
+  "input": {
+    "f32_word_count": 256,
+    "default_bits": "00000000",
+    "nonzero": [{"index": 234, "f32_bits": "3f800000", "value": 1.0}],
+    "synthetic_primary_history_bits": "00000000",
+    "synthetic_companion_history_bits": "00000000"
+  },
+  "coefficient": {"index": 21, "native_bits": "3c0ea5aa", "rust_bits": "3c0ea5a9"},
+  "derived_outputs": {
+    "native_primary_bits": "3c0ea5aa",
+    "rust_primary_bits": "3c0ea5a9",
+    "native_companion_bits": "bc0ea5aa",
+    "rust_companion_bits": "bc0ea5a9"
+  },
+  "execution": "NOT_RUN",
+  "expected_pcm_output": "NOT_PROVIDED"
+}

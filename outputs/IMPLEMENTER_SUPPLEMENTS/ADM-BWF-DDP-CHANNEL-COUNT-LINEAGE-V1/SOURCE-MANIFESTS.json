@@ -1,0 +1,15 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "adm_bwf_ddp_channel_count_lineage_wash_v1",
+      "evidence_manifest_sha256": "851a03dca222f40c7b9eb102a33d1bad7d7b942151314941a84c396a0c140402",
+      "package_seal_sha256": "4a13d78cfbe2ed3adb698ada8a97c0963afa1615afbf4b788af83d774dfdfc0b"
+    },
+    {
+      "package_id": "SAMPLE6-DRC-TRACK-COUNT-STAGING-BOUNDARY-V1",
+      "manifest_sha256": "6b26fa584c5fb6e6432a811d922d2babd133936079001862bdb31a80e2bb8e81",
+      "package_seal_sha256": "48230dff56e0024e534eeeaf501f1e31470626b9d268b7f42447b75f211a10ee"
+    }
+  ]
+}

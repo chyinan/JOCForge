@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-source-manifests.v1",
+  "source_package": {
+    "package_id": "adm_storage_row_table_producer_wash_v1",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-25\\jocforge-reverse-agent-4-f06of\\outputs\\adm_storage_row_table_producer_wash_v1",
+    "manifest_sha256": "b48ef19d5fdd7528aa40e429a050ff013803f7733a711d9167132ba8dbe017f8"
+  },
+  "referenced_payloads": [
+    {"file": "ROW-TABLE-TRACE.md", "sha256": "39dd6f95e9f73871ffcd3d861a15effd18f644425553765c6ed1ec32b2a2f4fa"},
+    {"file": "row_table_status.json", "sha256": "5aee3dee1bfaf2c16ba395967b4b125cafdc69cca3c22baafe2e28ba7df7ed77"},
+    {"file": "dlb_wav_row_buffer_adapters.txt", "sha256": "23ffc4139a62d54d8833955d3571c194eebeedef6e09290c64f58544ec5f09b0"},
+    {"file": "adm_wav_source_member_and_row_fill_evidence.txt", "sha256": "f7cc36a64aea20dc46ede53dec1a9f2557dd3c20ab6877b4fed45a5d26204305"}
+  ],
+  "exclusions": [
+    "No raw BWF data, PCM, EC3, source code, decompilation, or binary copied.",
+    "No physical-row owner conclusion is derived from numeric equality."
+  ]
+}

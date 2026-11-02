@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DEE-DI-PAIR-FULLFILE-CHANNEL3-V1",
+  "scope": "full-file decoder-scale comparison of channel 3 for hash-bound DEE true15 and false100 outputs",
+  "status": "DRC0_CHANNEL3_NEARLY_EQUAL; DRC1_CHANNEL3_DIFFERS_ALL_BLOCKS",
+  "source_manifest_sha256": "8f40517e401a80cbc8c8c256bd5bf02f4026f382404302104c77864036e7c2db",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "8e2048e50d914f152e1de5f2001b21746ded691b73a1865caeb9ab47ba995fac",
+      "bytes": 2315
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "38bffbe592200ef20456e5b39833f85d7026e1205d938c5046dfde4850260c24",
+      "bytes": 2789
+    },
+    {
+      "name": "README.md",
+      "sha256": "20fef86c1b6c33e600a3ca6104d67dc42ba3a41d30ac83fecd64735e5f2174b0",
+      "bytes": 904
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "8ff1d3eb88bbbfc21087e2601b0602ba0ddc23180dedc06d67683ce8252ff64a",
+      "bytes": 821
+    }
+  ]
+}

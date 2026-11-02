@@ -1,0 +1,15 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"adm_bwf_auto_input_normalizer_edge_wash_v1",
+      "evidence_manifest_sha256":"3e65f19e751014cd1eb414ea58f1ff663b74b85ac24d0a7d7c1cb3455a6aeb51",
+      "package_seal_sha256":"e8bf4a705b745c7f63ea06896cfb8dc1cfaf7b29709895554fb161db186785ac",
+      "payload_count":5,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_trace_or_script_in_this_supplement":false
+    }
+  ]
+}

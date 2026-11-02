@@ -1,0 +1,32 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-RUST-WINDOW-PROVIDER-SUPERSESSION-V1",
+  "status": "CURRENT_PROVIDER_MATCHES_NATIVE; OLD_BASELINE_SUPERSEDED; MATCHED_LFE_LINEAGE_UNBOUND; PCM_CAUSALITY_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1355,
+      "sha256": "ec02ed263dbc2e17e45c8c1aaf68202009e7a2effa8d53dd0b2ced8eb89506af"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2738,
+      "sha256": "5270429d94a47ac1f1fa9570175829b4bfaed318e3ac0a4e62e969ac12858ed2"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 862,
+      "sha256": "76be266b0801f41743925a2d09950354c5209e9e30f3a4e3d36b58111db0339d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 641,
+      "sha256": "1ec83525c67e9c07f31ad78fe8065e1f58cf57bc8ba91b38f725fd75ef179901"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 5465,
+      "sha256": "8fff4ca5359907b2c7fc3a3a20db37d507f18ebb82cfc6ffcfbaa0823d1d188d"
+    }
+  ]
+}

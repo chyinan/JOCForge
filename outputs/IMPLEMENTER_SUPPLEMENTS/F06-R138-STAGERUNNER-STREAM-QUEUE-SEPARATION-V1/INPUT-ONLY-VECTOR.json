@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-f06-stagerunner-queue-boundary-input-only.v1",
+  "queue_source_properties": ["dee_audio_input_source", "dee_audio_output_source:n"],
+  "queue_value": ".stream_object",
+  "queue_destination": "StageRunner+0x1158",
+  "selected_product_setter_properties": ["dee_misc_container", "dee_logger"],
+  "outputwrapper_registry_join": "UNBOUND",
+  "runtime_execution": "NOT_RUN",
+  "payload_included": false
+}

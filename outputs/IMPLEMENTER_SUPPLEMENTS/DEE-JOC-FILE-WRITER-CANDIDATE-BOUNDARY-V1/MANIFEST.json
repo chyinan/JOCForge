@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-JOC-FILE-WRITER-CANDIDATE-BOUNDARY-V1",
+  "source_reverse_package_id": "dee_per_unit_output_handoff_wash_v1",
+  "source_reverse_manifest_sha256": "24fbae9b8d0f16c490ca0f7cdd6943bbed38dd444cde6d0384638488f825619c",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "PER_UNIT_MEMORY_PUBLISH_BOUND; FILE_WRITER_CANDIDATE_NOT_JOINED",
+  "implementation_trial_ready": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2866,
+      "sha256": "f668c7e9a5b78fb747f9939761bf14e48a1786c931d4e4a8194655aeef383532"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1959,
+      "sha256": "ef2ded8c4f56b3c5ef23e72de4cf1468a64bddf6a9d0b21e6d15c118c9f62f68"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 647,
+      "sha256": "c4161ba68a16d75259e744d88e638cd35d766d15af4e015bb747c1625506c2f9"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1655,
+      "sha256": "468f4857656f632e6d96246184c47a96cb2a6025e6810cfd40e4b9d9bf782701"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 564,
+      "sha256": "f99b1ee8dc74a7d47c7928405036504fd5d4ac03d4810ec520c48da05f24ae3e"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

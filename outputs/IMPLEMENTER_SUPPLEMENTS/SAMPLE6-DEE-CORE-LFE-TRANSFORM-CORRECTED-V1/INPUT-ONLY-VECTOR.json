@@ -1,0 +1,18 @@
+{
+  "schema": "washed-symbolic-core-lfe-vector.v1",
+  "vector_id": "human-cat-row3-low-frequency-two-tone-symbolic",
+  "classification": "INPUT_ONLY; PROPOSED_NOT_RUN",
+  "sample_rate_hz": 48000,
+  "input_shape_f32": [6, 1536],
+  "zero_channels": [0, 1, 2, 4, 5],
+  "nonzero_source": {
+    "adm_input_row": 3,
+    "core_lfe_lane": "UNBOUND",
+    "formula": "x[n]=0.25*sin(2*pi*31.25*n/48000)+0.125*sin(2*pi*93.75*n/48000)",
+    "n_range_inclusive": [0, 1535]
+  },
+  "native_input_transform": "64 symmetric F32 pair steps over input indices 0..255; no input read beyond 255",
+  "persistent_state": "separate per-slot F32[256] object; matched slot/history UNBOUND",
+  "expected_output": "NOT_PROVIDED",
+  "numeric_comparison": "NOT_RUN"
+}

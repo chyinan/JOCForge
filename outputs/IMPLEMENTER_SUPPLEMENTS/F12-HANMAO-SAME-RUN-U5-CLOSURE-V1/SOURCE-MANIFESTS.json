@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-washed-hanmao-u5-source-manifests.v1",
+  "incoming_package": {
+    "package_id": "hanmao-u5-same-run-closure",
+    "manifest_sha256": "cafc228c3ede087cc7727d8b0684c89f562a600ae19ed178607ba4967d996bf7",
+    "payload_hashes": {
+      "README.md": "f328ad67326d6fd122c4a13eb05cda870cb4f3f6efcf532b76f6a7bb8eebb4d1",
+      "evidence.json": "5ff8b74e7f80733c67b576515f18e4f8de195361b8bd889de3f2ae3f1af11c43",
+      "verify_package.py": "649e17215b8e817f0f8ff23c2e5bc0eeb502315d49352acabb0acbb7761d8429"
+    }
+  },
+  "parent_cross_input_package": {
+    "incoming_claimed_manifest_sha256": "833823ee48a1380be746673da8c555397dd97e7b8fe2068257f7fe43dfa06134",
+    "current_manifest_sha256": "439df32fce6b2dfe8f20026225536ef1e954784d1e99fd50d94e1a0b27b2ed33",
+    "current_manifest_sidecar_sha256": "439df32fce6b2dfe8f20026225536ef1e954784d1e99fd50d94e1a0b27b2ed33",
+    "evidence_json_sha256": "a92830655edf978c2ac90d9d6e7ef8ae589d513b3a41cbc71ea422ec3d005c94",
+    "input_vector_1_sha256": "cd98443bb7585d98762de32b9d59b945697598048543a4618bc0c41d63ee9ecd"
+  },
+  "support_rule_package_manifest_sha256": "511fb7c6a1e1033e7487532fafc4ad73e11ed2c16aab9ea8afd67ce6e9450c9f",
+  "source_files_copied": false,
+  "audio_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

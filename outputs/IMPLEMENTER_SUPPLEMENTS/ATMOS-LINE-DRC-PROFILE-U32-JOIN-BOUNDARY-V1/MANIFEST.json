@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1381,
+      "name": "REPORT.md",
+      "sha256": "ab7762185a07361c253e2a00f97a477c4e15e845ea0d278d40cf9802a3d07bf4"
+    },
+    {
+      "bytes": 1577,
+      "name": "EVIDENCE.json",
+      "sha256": "bb6883d9acbe23c2242748f7fda14c016e94d1cda0e12de981a114518aaf195e"
+    },
+    {
+      "bytes": 431,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "1f40d8e0908862bf3044a5e0240c80fe8dc116c14a6fcb83b47c743b7874f5d0"
+    },
+    {
+      "bytes": 613,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "187a9a3b9930f5e7a37ebd1001d98993ba26336feff96c4db9219ac25d7fae4c"
+    },
+    {
+      "bytes": 2097,
+      "name": "verify_package.py",
+      "sha256": "492b9b45cbcbd4894486fa9dafe17ea2ff44250bd6162919bbdcbb7be5bf32a5"
+    },
+    {
+      "bytes": 1468,
+      "name": "seal_package.py",
+      "sha256": "8e0025e98e127028d87de36502a133060a0f848ea26efccc4b8bbec3ef441e69"
+    }
+  ],
+  "package_id": "ATMOS-LINE-DRC-PROFILE-U32-JOIN-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "FILM_LIGHT_TREE_U32_UNBOUND; LINE_DDP_COMPR_JOIN_UNBOUND; NOT_RUN"
+}

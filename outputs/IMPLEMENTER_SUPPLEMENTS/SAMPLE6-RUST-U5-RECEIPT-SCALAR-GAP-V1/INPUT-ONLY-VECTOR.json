@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-sample6-u5-receipt-scalar-input.v1",
+  "current_full_file_rust_u5": 17,
+  "current_selected_lufs_f32_word": "NOT_RECORDED",
+  "bounded_dee_window": {"time_base": "file_position", "start": 2160, "end": 2208, "full_file": false, "u5": 21},
+  "valid_same_scope_mismatch_claim": false,
+  "new_dee_run": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

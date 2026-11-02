@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-sample6-keyless-reference-source-identities.v1",
+  "authorized_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "current_jocforge_output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+  "current_jocforge_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766",
+  "current_jocforge_source_commit": "216326f622e66f1f7b255dbe7a8bcfb8ca473ce2",
+  "dee_executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "dee_manual_sha256": "0825112c5b956a9e3d6a6c81ba06cb762181e51295c178fdddba362acd22661e",
+  "dee_manual_license_search_behavior": "automatic application-folder/DEE_PLUGIN_PATH discovery documented; no-key argument omission is not sufficient to prove no key access"
+}

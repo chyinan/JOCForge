@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge.atmos_renderer_core_boundary.v1",
+  "status": "RENDERER_FRAME_CALLBACK_TARGET_BOUND; SELECTED_CORE_TRANSFORM_UNBOUND; LFE_PAYLOAD_CONSUMER_NOT_CAPTURED",
+  "scope": "Ghidra 12.2 static-only route boundary; no runtime sample or audio claim.",
+  "source_package": {
+    "package_id": "DEE-ATMOS-RENDERER-TO-DDP-CORE-EDGE-V1",
+    "manifest_sha256": "b012e270fda5cf51d127e3c32e3d9cff16fb33b1f2ac1e5f9c1df24dddf47605",
+    "package_seal_sha256": "b89fe90bbd101961738cf6a7bdaf19065b6bb3b2a94061a4da4722ee9e8833cb",
+    "boundary_payload_sha256": "b5b78af57ea700026340c349d10063ba7395e53854699baa9b71760654389c7e",
+    "checker_receipt_sha256": "df2d0b0172c2142a5ddd413544143ddcc1da6dbf207d13899084d733bc822d7f",
+    "checker": "passed normally and under python -O"
+  },
+  "image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity_binding": "Ghidra Program image identity equals on-disk file hash"
+  },
+  "callback_identity": {
+    "inner_context_plus_0x80": "SinglethreadSymphonyRenderer object pointer",
+    "renderer_vtable": "0x1807a7808",
+    "slot_plus_0x08": "FUN_180423e90 per-frame callback",
+    "slot_plus_0x20": "FUN_18040d320 separate getter",
+    "small_setup_value": "FUN_180419660 return is stored separately at inner_context+0; it is not the callback pointer",
+    "separate_setup_table": "PTR_LAB_1809f6630 slot +0x08 is FUN_18041c9d0 and is not this renderer vtable"
+  },
+  "frame_path": {
+    "callback_helper": "FUN_180423e90 -> FUN_180423ce0",
+    "child_list": "renderer+0x1d0..+0x1d8; targets depend on renderer graph configuration",
+    "descriptor_calls": [
+      "child vtable+0x30 receives renderer+0xb8 row-table descriptor",
+      "child vtable+0x38 receives frame position"
+    ],
+    "selected_ddp_core_transform": "UNBOUND",
+    "static_call_from_callback_to_dee_ddp_encoder_exe": "NOT_OBSERVED"
+  },
+  "lfe_payload_boundary": {
+    "descriptor_adapter_third_argument": "inner_context+0x68 selected layout-descriptor array; FUN_180423e90 body does not reference argument 3",
+    "row_binding_helper": "FUN_18041bac0 stores/rebinds row pointer and extent and maintains reference bookkeeping",
+    "actual_256_f32_payload_read_or_consumer": "NOT_CAPTURED",
+    "prior_standalone_candidate": "FUN_140350d00 -> FUN_140317600 remains UNBOUND to this renderer instance/generation"
+  },
+  "limits": {
+    "dee_run": false,
+    "pcm_or_media_payload_read": false,
+    "key_or_license_read": false,
+    "runtime_row_to_core_join": "UNBOUND",
+    "selected_layout_id": "UNBOUND",
+    "audio_parity": "NOT_RUN"
+  },
+  "next_minimal_observation": [
+    "On one selected Atmos JOC run, record the renderer child instance token and same frame/owner generation through child vtable+0x30/+0x38.",
+    "At the actual downstream consumer, record image/function identity, row count, extent, stride, and pointer token only; do not read sample values.",
+    "Repeat on a second authorized ADM if needed to show the selected path is stable; do not assume the standalone DDP candidate is the live route."
+  ]
+}

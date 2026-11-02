@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-washed-f13c-source-manifests.v1",
+  "incoming_package_manifest_json_sha256": "f0c42ba60d2de6105e2662c10b14dc4b22cdd4cd9b9069068010233159916cfa",
+  "incoming_package_sha256sums_file_sha256": "19500740c93a8f1680a2aeddd43d15b6aed9926ac3ae0a4be428e6921ea45406",
+  "current_rust_source_hashes": {
+    "codec_source_bridge.rs":"b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e",
+    "source_frame_bridge.rs":"52b3720afe1a6bcf60f1fe9fff7697430a6a0c10c40a0df56a5d712e290cd12f",
+    "selected_frame_trial.rs":"86becc93089f7bfe4d33b2462e2846c52b2bfc21e694055a264589fafa07fd85",
+    "frame_builder.rs":"170e3f220a795abfff5d296e8b53a8436b621e547c064e3aa3d4a781217c3829",
+    "job_configuration.rs":"e9dc17cc36e5398a7863ec66cd681f31b2a8cc6f67f6485857e9b7874578121c"
+  },
+  "implementation_source_hashes_recomputed_in_wash": true,
+  "dee_project_image_identity": {"sha256":"4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7","identity_grade":"PROJECT_RECORDED_NOT_CURRENT_INSTALL_REHASHED"},
+  "source_code_copied": false,
+  "dee_binary_or_decompilation_copied": false,
+  "media_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

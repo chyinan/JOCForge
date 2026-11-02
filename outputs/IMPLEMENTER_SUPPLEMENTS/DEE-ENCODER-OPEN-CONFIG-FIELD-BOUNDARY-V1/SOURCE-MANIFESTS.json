@@ -1,0 +1,14 @@
+{
+  "source_packages": [
+    {"package_id":"dee_encoder_open_config_fields_wash_v1","manifest_sha256":"7b30ee2e340f03a354fbc8ff5f22c39d434511326cf18366bbd16a0b10bfd551"},
+    {"package_id":"dee_frame_provider_type_wash_v1","manifest_sha256":"51ce0964d527147a2fe52db1cc9b82976a12ef1a8bd4086f84760ccde46506c1"},
+    {"package_id":"dee_5p1_output_format_controls_wash_v1","manifest_sha256":"05d1bc3ef9c8a0e43d8ff83d605f4fc7dc56708e3a71e208e2dcfc81ccb6f686"}
+  ],
+  "target_image_sha256_as_source_bound":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "source_validation": {
+    "incoming_manifest_and_members_checked": true,
+    "normal_and_optimized_checker":"PASS",
+    "ghidra_script_or_trace_copied":false,
+    "payload_or_key_copied":false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 2583,
+      "name": "REPORT.md",
+      "sha256": "53969cb4f063ba3a9156add4d8826c1918ed126d6f234f04efa3ab3ad2b9c629"
+    },
+    {
+      "bytes": 2461,
+      "name": "EVIDENCE.json",
+      "sha256": "09894662d15e2f2f33b88ea07dc74836f2077073ccf7fd1fc2a7893b85fab6eb"
+    },
+    {
+      "bytes": 803,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "9cf93d21cbd7b16c5047ae57de542c1b9c5121450cde7d6656e650a95d45b5a4"
+    },
+    {
+      "bytes": 997,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "82064f3835b4ce4dfca0e29b6ebea8bd81a75b787004cf40b58af8cd886eb0da"
+    },
+    {
+      "bytes": 2239,
+      "name": "verify_package.py",
+      "sha256": "548cbd5816df65bcf69a5ff0a4531f46f2c8933675f75f633fa755acc713746d"
+    },
+    {
+      "bytes": 1485,
+      "name": "seal_package.py",
+      "sha256": "c0b75f117383347beb6e44ac9d4cf8766b80bb9476e8bf585ccc39310f0b4ade"
+    }
+  ],
+  "manifest_sha256": "d9214781aa5189d10681ca70f23898ba002c1020363efb6ceb53c200be5cb1b8",
+  "package_id": "JOCFORGE-36-ROW-METER-AND-F01E-GATES-V2",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DI-THRESHOLD-BASE-PCM-EFFECT-V1",
+  "manifest_sha256": "d5a0842b31c86177a7a4f16d8c6900ac036f744cfc6bc2a0ce61201915bad9b8",
+  "sha256sums_sha256": "9ede90944c877cc90b7d405ea135a6cd1e6be0a28240e60332b11b290d371ef3",
+  "payload_count": 3,
+  "status": "DEE_THRESHOLD_PAIR_BASE_PCM_DIFF_CONFIRMED_BY_OPENJOC; ATMOS_RENDERER_PARITY_NOT_RUN"
+}

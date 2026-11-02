@@ -1,0 +1,13 @@
+{
+  "source_package": {
+    "package_id": "dialnorm-frame-record-u5-writer",
+    "manifest_sha256": "f3b7064e86b97c7a06353553066038d9b1c782424e986cc735cf7b63975d6b7c",
+    "source_seal": "MANIFEST.sha256_PRESENT"
+  },
+  "target_image_sha256_as_source_bound": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+  "prior_wash_sources": [
+    {"package_id":"dialnorm-drc-core-pcm-boundary","manifest_sha256":"21e28adfd28873ada29a035096c6493d30df76ff9db76203110fa06d840a7cee"},
+    {"package_id":"SAMPLE6-AU-ALIGNED-DEE-CORE-PCM-COMPARISON-V2","manifest_sha256":"6a8c0641f16503e7e1b80d078b8d007f326ef3cb2632db7e592db6c200794b2f"}
+  ],
+  "exclusions": {"raw_trace_or_script_copied":false,"pcm_or_payload_copied":false,"key_or_license_copied":false}
+}

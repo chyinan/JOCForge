@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-dee-joc-stride-selector-initializer-input-only.v1",
+  "block_record_stride_bytes": 10,
+  "selector_rows": [
+    {"row":0,"field_offset":"+0xd8","constructor_value":0,"status":"STATIC_INITIALIZER_BOUND"},
+    {"row":1,"field_offset":"+0xe2","constructor_value":0,"status":"STATIC_INITIALIZER_BOUND"},
+    {"row":2,"field_offset":"+0xec","constructor_value":"UNBOUND"},
+    {"row":3,"field_offset":"+0xf6","constructor_value":"UNBOUND"},
+    {"row":4,"field_offset":"+0x100","constructor_value":"UNBOUND"},
+    {"row":5,"field_offset":"+0x10a","constructor_value":"UNBOUND"}
+  ],
+  "table_values": [0,1,2,4],
+  "expected_audio_or_payload_bytes_included": false,
+  "executed": false
+}

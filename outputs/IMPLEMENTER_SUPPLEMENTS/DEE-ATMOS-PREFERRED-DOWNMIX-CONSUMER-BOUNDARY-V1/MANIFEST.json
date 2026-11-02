@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-ATMOS-PREFERRED-DOWNMIX-CONSUMER-BOUNDARY-V1",
+  "source_reverse_package_id": "F13C-native-consumer-addendum-v2",
+  "source_reverse_manifest_sha256": "4de3c1af1b49eb8a70c9fa8a574bbfb5dbbb9882d3cc020455b6624208b65577",
+  "source_reverse_package_seal": "NOT_PRESENT; SHA256SUMS.txt_PRESENT",
+  "status": "PARSER_FIELD_READ; GENERIC_RESULT_BRANCH; FINAL_F13C_CONSUMER_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2990,
+      "sha256": "4571bcbe4bffc596aa685ff9462051c8581e63e112870155d426d8f50cc46e13"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1863,
+      "sha256": "bc096172ff5453553227d1baa3765eedcf5c579f1e371b3e321ff7a4e29364c4"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 601,
+      "sha256": "2f3994bc9de909b23635db616a7c26dfe30127b80fdabdbd8dec140f4be85c97"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1359,
+      "sha256": "dd8538204eb2fad3826788f43fe8877e970f6537ff39328b5eee97502728f47c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 927,
+      "sha256": "f67a96ab73e3729165193e095ae4985c46d939e731c22801f18d8b9cf9ce029c"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

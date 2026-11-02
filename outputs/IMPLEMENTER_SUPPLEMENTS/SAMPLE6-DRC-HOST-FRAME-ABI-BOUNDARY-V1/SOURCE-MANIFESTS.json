@@ -1,0 +1,23 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "sample6-matched-drc-host-frame-abi-boundary-wash-v1",
+      "manifest_sha256": "e4481a1659dd602b450a39cde861b225ebfe594b2007565ee1fca3890b527732",
+      "package_seal_sha256": "8b8b80548aa76165d4fd9e5d422b64ada5c4ee8f393f4daf2bc30370817d2112",
+      "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+      "core_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+      "atmos_filter_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd3ce1cce8b7e95d2"
+    },
+    {
+      "package_id": "sample6-matched-drc-frame-input-row-writer-boundary-wash-v1",
+      "manifest_sha256": "c29cf85d37e545b706fa101102080607dbf7440c2ec61f822b1bc5847128b25a",
+      "package_seal_sha256": "d84b30136756b47af71ec620171958908e4140539f4e012361729397e1e172d7"
+    },
+    {
+      "package_id": "sample6-matched-drc-track-count-admission-boundary-wash-v1",
+      "manifest_sha256": "613d934c86bb9a3bf21049fed7a5bc92f6650d11fadddcf79167533adef9b066",
+      "package_seal_sha256": "d76e3cf9015f6d6aeedb80b998d8d97084c64cdc880c7e5fbe41e6fe8fd705cd"
+    }
+  ]
+}

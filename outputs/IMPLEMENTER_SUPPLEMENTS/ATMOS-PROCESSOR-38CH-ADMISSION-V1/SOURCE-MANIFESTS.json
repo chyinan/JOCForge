@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-washed-atmos-processor-38ch-sources.v1",
+  "incoming_package_id": "atmos_processor_38ch_guard_wash_v1",
+  "incoming_manifest_sha256": "a5c7cfa973fccdcbbd38bd4a85ad5e3132acd585628257ca2bb34d315b0fe5ae",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "upstream_ddp_descriptor_bridge_manifest_sha256": "1dc0ac5ed27b135bdeb050464ecaa072d6dff959357758fded9ef1810f6bce94",
+  "upstream_ddp_static_adapter_trace_sha256": "fdee8321e77b3817d52b08ecd04dded9168d7bce45146e699b21dfe22f8d0b31",
+  "upstream_input_metadata_manifest_sha256": "4ef5495b80167803d1c45247b659d0644464b447894c10501c4e6d924c82d6c9",
+  "source_code_copied": false,
+  "dee_binary_or_decompilation_copied": false,
+  "audio_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

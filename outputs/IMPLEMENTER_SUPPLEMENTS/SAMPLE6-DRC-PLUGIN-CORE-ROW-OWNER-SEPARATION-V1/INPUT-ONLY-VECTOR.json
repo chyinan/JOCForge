@@ -1,0 +1,17 @@
+{
+  "schema": "washed-plugin-core-row-owner-vector.v1",
+  "classification": "SYMBOLIC_OWNER_SEPARATION; NOT_NATIVE_EXECUTION",
+  "plugin_context": {
+    "root": "P+0x21e9c",
+    "zero_row": "P+0x21e9c+[0x2170,0x21e8)",
+    "reader_row": "P+0x21e9c+0x2170+0x14*block"
+  },
+  "core_context": {
+    "root": "E+0x21cc4",
+    "zero_row": "E+0x21cc4+[0x2170,0x21e8)",
+    "reader_row": "E+0x21cc4+0x2170+0x14*block"
+  },
+  "typed_join": "UNBOUND; P and E are separate image-local owners",
+  "runtime_values": "NOT_OBSERVED",
+  "pcm_or_payload_included": false
+}

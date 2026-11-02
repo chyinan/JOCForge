@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "status": "PROPOSED_NOT_RUN",
+  "purpose": "Optional synthetic low-frequency discriminator after a same-run ADM-row-to-core-lane mapping is available",
+  "sample_rate_hz": 48000,
+  "shape": "six F32 channels by 1536 samples",
+  "active_input_formula": "x[n]=0.25*sin(2*pi*31.25*n/48000)+0.125*sin(2*pi*93.75*n/48000), n=0..1535",
+  "candidate_input_index": 3,
+  "input_index_to_adm_row_or_core_slot": "UNBOUND",
+  "expected_output_values": "NOT_ASSERTED",
+  "pcm_or_user_media_included": false
+}

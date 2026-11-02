@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-BSI-BLOCK-PRODUCER-V1",
+  "scope": "matched DEE mode-0 DRC code/presence producer and one post-quantization input-only vector",
+  "status": "MODE0_CODE_AND_PRESENCE_PRODUCER_BOUND; MATCHED_SELECTOR_AND_FLOAT_INPUTS_UNBOUND; PCM_ROOT_CAUSE_NOT_ESTABLISHED",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1816,
+      "sha256": "ac814d938a56094c74249316a363901d9dba7da3c76dd6969ac63adbcf2a6a1c"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2660,
+      "sha256": "1ac0b043f20d6e5af78137d34944335c8c52190f136ad493a9173b26185ba0b0"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 664,
+      "sha256": "3f907f03ff1d3f3126aa08613f1ea33227a010326496f3ff4626e0859611eed5"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 883,
+      "sha256": "0a715eeee9c383fa94d7aa4c83d83c21320d1395a82ad0d46132eddebad1f829"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3721,
+      "sha256": "6338951d475c1ba188e8224aab5da49468fecff5c66ecdfc04fe130624ab08c3"
+    }
+  ]
+}

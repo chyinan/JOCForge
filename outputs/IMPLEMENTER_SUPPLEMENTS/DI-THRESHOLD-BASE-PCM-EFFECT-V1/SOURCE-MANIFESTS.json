@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_packages": [
+    {
+      "package_id": "openjoc-v0201-threshold-pcm-ab-evidence",
+      "manifest_sha256": "ed04b8e15db28a3ab3e36781e25fe10fecb3ce659ce42b0b63d8f0c47d41b706",
+      "results_sha256": "a4a9874a2716a60333fc69f147593ef0cfbf6f0886cf4319ac532cd8a4091069",
+      "checker_sha256": "186da73802f17f117a3b503942b15406a39edfa9fb901ac2903c189f9e357b33"
+    },
+    {
+      "package_id": "dee-di-true-threshold-pair-evidence",
+      "manifest_sha256": "af72ee51a85eb1d1db1f6c09f9e66e4304c929f106d64d5afe45312f6b16869f",
+      "results_sha256": "78953690a6e44a0b831ab28b80325d3aed801e444b6a65bd53611ddd62c88a05"
+    }
+  ],
+  "wash_verification": "package manifests/results rehashed; CHECK.py passed normally and under python -O; PCM comparison metrics are source-package measurements, not independently recomputed by Wash"
+}

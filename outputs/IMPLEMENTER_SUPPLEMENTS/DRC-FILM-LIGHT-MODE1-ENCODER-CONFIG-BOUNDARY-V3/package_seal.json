@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DRC-FILM-LIGHT-MODE1-ENCODER-CONFIG-BOUNDARY-V3",
+  "manifest_sha256": "2e4e0c8979930becf3ee96c073276c40f3bcd5360bb2cf9218ef6bb6847f3af1",
+  "sha256sums_sha256": "fe33113dd2fc4b2bb02fb033685987f5b60a5731b3551b3343f0b6138dbbc6c9",
+  "payload_count": 4,
+  "status": "FILM_LIGHT_TO_RAW_LINE_ENUM_0_TO_DDP_COMPR_2_BOUND_CONDITIONAL_MODE1; JOB_MODE_UNOBSERVED; AUDIO_OUTPUT_NOT_RUN"
+}

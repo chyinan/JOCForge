@@ -1,0 +1,29 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Metadata-only observations on two authorized ADM BWFs; no PCM read or JOC acceptance claim",
+  "whole_file_hashes": "NOT_COMPUTED_DATA_SKIPPED",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "01ce28dfe6a6e59fd7059ab9a8039201078c4e1a92bb377b94614bc58a31da45",
+      "bytes": 1809
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "b3b1c44d6fb95982d0b1e22aa474a01429636cfe41615935f941a301e9fa62e1",
+      "bytes": 3212
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "e1fc29472bca8f16f879a2cd4c98ee24c80e5b177d4bc5ab0c98a103f52c8e81",
+      "bytes": 848
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "4fb86a5b3de70b21715492724f8d0b1a7dcbd6bac245ffc88fd3ab2c85e7b999",
+      "bytes": 2735
+    }
+  ]
+}

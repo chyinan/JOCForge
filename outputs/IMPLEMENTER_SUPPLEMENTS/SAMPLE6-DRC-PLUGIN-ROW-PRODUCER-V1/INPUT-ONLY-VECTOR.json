@@ -1,0 +1,17 @@
+{
+  "schema": "washed-drc-plugin-row-input-only.v1",
+  "vector_id": "plugin-local-filtered-block-to-six-by-five-row",
+  "classification": "SYMBOLIC_STATIC_DATAFLOW; NOT_NATIVE_EXECUTION",
+  "symbols": {"P": "plugin root", "b": "block index 0..5", "s": "row slot index"},
+  "input": {
+    "source": "mapped strided F32 row at block offset",
+    "sample_count": 256,
+    "sample_type": "F32",
+    "runtime_values": "UNBOUND"
+  },
+  "calculation": "F32 scale * sum(clamp(filtered[i],lo,hi)^2 for i=0..255)",
+  "output": {"type": "F32", "address": "P+0x21e9c+0x2170+0x14*b+4*s"},
+  "same_plugin_reader": "BOUND_WITHIN_STATIC_INVOCATION",
+  "plugin_to_core_join": "UNBOUND",
+  "execution": "NOT_RUN"
+}

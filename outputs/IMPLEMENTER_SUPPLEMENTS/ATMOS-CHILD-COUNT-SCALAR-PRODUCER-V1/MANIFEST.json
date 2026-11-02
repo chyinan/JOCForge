@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-CHILD-COUNT-SCALAR-PRODUCER-V1",
+  "source_reverse_package_id": "atmos_child_count_scalar_source_wash_v1",
+  "source_reverse_manifest_sha256": "c65ff6716eaa61ee5679717362677c721712a46f80342dbe51255c1b718a5e46",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "NATIVE_CHILD_COUNT_PRODUCER_FORMULA_BOUND; SAMPLE_RUNTIME_VECTOR_AND_U16_UNBOUND",
+  "implementation_trial_ready": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3246,
+      "sha256": "3e356f8370a5ae44794877ed1a6bfe9eea174a88efe49f2dfb87cbecdfe7adb3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2802,
+      "sha256": "9293199bfe2869e2209b5b858a834c1fbdae41fb004601357f4df8b2e3c6d364"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 655,
+      "sha256": "248eb5cc24a3d95f67d5f8722d3ffc8911d89138da263ee55761fab02d20bbae"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1783,
+      "sha256": "43eeea4959c6b8dd672ebe0edd0445ac8f99b61ce7ef79767c804de9808056c6"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 789,
+      "sha256": "e4c378b1e53e2c43885b4c03b92f420a5e8d328992668e3f220ed04990302511"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

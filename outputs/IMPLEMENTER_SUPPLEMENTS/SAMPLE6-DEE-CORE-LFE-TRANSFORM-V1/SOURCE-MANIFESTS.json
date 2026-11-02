@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1",
+      "manifest_sha256": "fa19b484a30134a8e52cbd632fce82d833f7412315d956a89d758696c883d086",
+      "package_seal_sha256": "95dc3418b832ad4e5d3701486b4b8a3550860d69e677914aa1915b9c5f001c6c"
+    },
+    {
+      "package_id": "SAMPLE6-LFE-SPATIAL-ANALYSIS-WEIGHT-BOUNDARY-V1",
+      "manifest_sha256": "748f7657ae414ebb841e8a418b6475abf3ee4edd1b38ca2c901147205b204275",
+      "package_seal_sha256": "b439aff5c653e24879cd9161cd5a5a2da11362177e58f180f5dafa50b018d0b0"
+    },
+    {
+      "package_id": "IMPLEMENTER_PACKAGE",
+      "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+      "path": "specs/08-transforms.md",
+      "file_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"
+    }
+  ]
+}

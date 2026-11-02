@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-CROSS-ADM-DEE-HEADER-REPEATABILITY-V1",
+  "manifest_sha256": "8592b9237de297f64cc703da495116ecd7bb01d6f2bc9ac0faaa648406e2775c",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "33d50222edfa1e3422972b188fcea338df6c0fcee354f3721c606163f9d9f768",
+      "bytes": 2279
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "5e7c7e7fcb5b40482e6a6b681b8f1caa3f42eb1bec622c9f4972747e6e9ebcfe",
+      "bytes": 3384
+    },
+    {
+      "name": "README.md",
+      "sha256": "3e661a73df04fa09e2b2b8fe40e656e72bcebd39cc5df419676e202d646215e3",
+      "bytes": 903
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "b2c773459e429338e29d9f256cba78790b62a2c1e46f61ab9e914aee9e0e616a",
+      "bytes": 695
+    }
+  ],
+  "scope": "source hashes, controls and first syncframe metadata only; no PCM/payload"
+}

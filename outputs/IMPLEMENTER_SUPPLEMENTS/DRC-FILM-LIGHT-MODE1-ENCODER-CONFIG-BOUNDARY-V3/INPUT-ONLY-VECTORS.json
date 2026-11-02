@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.line_drc_mode1_static_vectors.v1",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "profile": "film_light",
+      "profile_tree_u32": 0,
+      "mode_selector": 1,
+      "raw_line_enum": 0,
+      "ddp_compr": 2,
+      "status": "STATIC_CONDITIONAL_RULE"
+    },
+    {
+      "profile": "film_light",
+      "profile_tree_u32": 0,
+      "mode_selector": "not 1",
+      "raw_line_enum": "NOT_DERIVED_BY_THIS_PATH",
+      "ddp_compr": "NOT_DERIVED"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "jocforge-atmos-child-count-scalar-producer.v1",
+  "package_id": "ATMOS-CHILD-COUNT-SCALAR-PRODUCER-V1",
+  "status": "NATIVE_CHILD_COUNT_PRODUCER_FORMULA_BOUND; SAMPLE_RUNTIME_VECTOR_AND_U16_UNBOUND",
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 static"
+  },
+  "ordinary_getter_path": {
+    "composite_count_caller": "FUN_18054fa70",
+    "child_type": "atmos_storage::MasterSourceImpl",
+    "child_getter_slot": "+0x80",
+    "child_getter": "FUN_180536320",
+    "constructor": "FUN_180536180",
+    "child_config_pointer_field": "child+0x28",
+    "getter_returns": "U16 at config+0x0A",
+    "getter_reads_vector_directly": false
+  },
+  "scalar_producer_path": {
+    "adm_bwf_open_method": "FUN_1804d43c0",
+    "config_pointer": "object+0x40",
+    "config_u16_write": "object+0x4A / config+0x0A",
+    "producer": "FUN_1802816c0(opened Atmos storage interface)",
+    "object_count_source": "storage vtable +0xC0",
+    "bed_row_count_source": "storage vtable +0xB8",
+    "bed_row_accessor": "storage vtable +0xC8",
+    "bed_vector_length": "(end@row+0x50 - begin@row+0x48)/16",
+    "formula": "Object source count + sum of per-bed-row channel-vector lengths",
+    "consumer_allocation": "six-byte channel-map records allocated by FUN_1804d43c0 from the scalar"
+  },
+  "alternative_count_mode": {
+    "formula": "10 + max(marked object records)",
+    "selector": "flag or mismatch",
+    "selected_for_authorized_run": "UNBOUND/NO"
+  },
+  "authorized_sample_metadata_candidate": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bed_row_lengths": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    "bed_vector_sum": 10,
+    "object_track_count": 28,
+    "candidate_scalar": 38,
+    "native_row_identity": "UNBOUND/NO",
+    "runtime_child_u16": "UNBOUND/NO"
+  },
+  "execution_scope": {
+    "dee_run": "NOT_RUN",
+    "wav_or_bwf_opened": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_contact_in_reverse_slice": false
+  },
+  "source_package": {
+    "package_id": "atmos_child_count_scalar_source_wash_v1",
+    "manifest_sha256": "c65ff6716eaa61ee5679717362677c721712a46f80342dbe51255c1b718a5e46",
+    "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+    "parent_child_count_source_manifest_sha256": "8b5e657eed11fcb6646251e8bea81c12fcacaf749f0c01aac0ec2f52da5bf19f",
+    "bed_channel_vector_manifest_sha256": "bc0460ba82a4211010881becd3a5e3744aedede7b97042c7998919242b5c9dee"
+  },
+  "exclusions": {
+    "binary_or_raw_disassembly": false,
+    "decompilation_source": false,
+    "media_pcm_or_encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

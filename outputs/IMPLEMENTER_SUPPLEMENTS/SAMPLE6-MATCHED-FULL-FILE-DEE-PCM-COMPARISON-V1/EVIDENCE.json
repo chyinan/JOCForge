@@ -1,0 +1,117 @@
+{
+  "schema": "sample6-matched-full-file-dee-pcm-comparison.v1",
+  "package_id": "SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1",
+  "status": "PCM_WINDOW_CLOSE_BUT_NOT_IDENTICAL; CHANNEL_3_DOMINATES; DRC_SCALE_DOES_NOT_REMOVE_CHANNEL_3_RESIDUAL; CAUSE_UNBOUND",
+  "scope": {
+    "input": "one authorized 人是猫 ADM BWF, verified byte-identical ASCII copy",
+    "output": "one full-file 1024 kbps 5.1(side) E-AC-3 JOC output comparison",
+    "window": "AU [2750,2875), sample frames [4224000,4416000)",
+    "pcm_retention": "NONE; decoder samples existed only in memory",
+    "not_covered": [
+      "full-track PCM equality",
+      "Atmos renderer/listening parity",
+      "algorithmic cause of the remaining channel-3 residual",
+      "BIT_EXACT"
+    ]
+  },
+  "source_wash_package": {
+    "package_id": "native-f06-film-light-full-file-dee-rust-comparison-v1",
+    "manifest_sha256": "5b4e23b25e459f80ae26267f792080d472cd5deda69ea35129e546b7f0a6066d",
+    "source_checker": "verify_full_file_comparison.py",
+    "normal_mode": "PASS",
+    "python_optimized_mode": "PASS",
+    "source_package_seal": "NOT_PRESENT; source MANIFEST.sha256 verified"
+  },
+  "input": {
+    "kind": "ADM BWF via DEE atmos_mezz",
+    "original_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "ascii_copy_sha256_after_run": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "matched_job_controls": {
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "data_rate_kbps": 1024,
+    "line_mode_drc_profile": "film_light",
+    "rf_mode_drc_profile": "film_light",
+    "loudness_mode": "measure_only",
+    "metering_mode": "1770-4",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "time_base": "file_position",
+    "range": "full_file",
+    "prepend_silence_seconds": 0.0,
+    "append_silence_seconds": 0.0,
+    "preferred_downmix_mode": "loro",
+    "loro_center_mix_level_db": -3,
+    "loro_surround_mix_level_db": -3,
+    "ltrt_center_mix_level_db": -3,
+    "ltrt_surround_mix_level_db": -3,
+    "surround_trim_5_1": "auto",
+    "height_trim_5_1": "auto",
+    "cli_output_and_temp_paths_redirected": true,
+    "audio_settings_changed_by_cli": false
+  },
+  "dee_output": {
+    "sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "bytes": 17395712,
+    "format": "E-AC-3",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "duration_seconds": 135.904,
+    "au_count": 4247,
+    "run_status": "SUCCEEDED",
+    "exit_code": 0
+  },
+  "rust_output": {
+    "artifact_name": "jocforge-film-light-drc-42925e78.ec3",
+    "sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "bytes": 17395712,
+    "format": "E-AC-3",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "duration_seconds": 135.904,
+    "au_count": 4247,
+    "window_pcm_sha256_drc_scale_1": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7"
+  },
+  "comparison_window": {
+    "au_interval_half_open": [2750, 2875],
+    "sample_interval_half_open": [4224000, 4416000],
+    "frames_per_channel": 192000,
+    "channels": 6,
+    "pcm_format_in_memory": "pcm_f32le",
+    "decoder": "FFmpeg 8.1; decode/measurement only"
+  },
+  "result": {
+    "drc_scale_1": {
+      "aggregate_mae": 0.0010340880835428834,
+      "aggregate_rmse": 0.002320472151041031,
+      "aggregate_peak_error": 0.018465762957930565
+    },
+    "drc_scale_0": {
+      "aggregate_mae": 0.0008934139623306692,
+      "aggregate_rmse": 0.002258564345538616,
+      "aggregate_peak_error": 0.018465762957930565
+    },
+    "best_lag_for_all_channels_sample_frames": 0,
+    "channel_3": {
+      "identity": "decoder channel index only; native row identity not asserted by this package",
+      "rmse_drc_scale_1": 0.0054772282019257545,
+      "rmse_drc_scale_0": 0.005454088662868509,
+      "correlation_drc_scale_1": 0.9418639506181433,
+      "correlation_drc_scale_0": 0.9418173777830592,
+      "candidate_to_dee_gain_drc_scale_1": 1.0047166623424095,
+      "candidate_to_dee_gain_drc_scale_0": 1.0001206063506904
+    }
+  },
+  "privacy_and_method": {
+    "license_validation": "DEE performed normal installed-environment validation internally",
+    "license_file_opened_or_inspected": false,
+    "license_or_key_path_passed": false,
+    "license_or_key_contents_retained": false,
+    "raw_pcm_or_encoded_payload_included": false,
+    "implementation_contact_before_wash": false,
+    "external_encoder_algorithm_used": false
+  },
+  "causal_conclusion": "The matched full-file controls materially reduce the prior short-window discrepancy, but that earlier comparison differed in both DRC profile and range scope. DRC causality is not isolated. Under the matched run, channel 3 remains the dominant residual and is nearly unchanged when decoder DRC scale is disabled; investigate that audio path next."
+}

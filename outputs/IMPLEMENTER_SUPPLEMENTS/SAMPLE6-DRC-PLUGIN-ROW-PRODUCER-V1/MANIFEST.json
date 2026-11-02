@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-PLUGIN-ROW-PRODUCER-V1",
+  "scope": "plugin-local filtered F32 six-by-five row producer and separate core-owner boundary",
+  "status": "PLUGIN_LOCAL_SIX_BY_FIVE_F32_PRODUCER_BOUND; CORE_OWNER_JOIN_AND_CORE_WRITER_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1440,
+      "sha256": "04014c76b35765c0a4ee62227a85e2632193cb271762c2b0e4db9e90ebafddf2"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1615,
+      "sha256": "c32b9f4583de4afb2e03739ce48c3b0e77d43a76470bc629c283927d14fe9e3d"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 697,
+      "sha256": "ada44da13313ebc145a8a63b7df10f89d2e1f2f4995eddfe6fc4c4de0f2bdee5"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 893,
+      "sha256": "d69b0560c73c3b6d7797492cbaef9558f5d48fd5349829946bd5339e2747762b"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3683,
+      "sha256": "c8a7b4526b27b431399dc5b31d7a184f76be14bafa87a4c04640fbed11cb37bc"
+    }
+  ]
+}

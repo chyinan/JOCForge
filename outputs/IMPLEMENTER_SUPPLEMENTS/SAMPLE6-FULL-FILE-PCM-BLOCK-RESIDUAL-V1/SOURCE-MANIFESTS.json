@@ -1,0 +1,24 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "native-f06-full-file-block-pcm-comparison-v1",
+      "manifest_sha256": "e0cefd91e69b51320481d80710b57c03ad1f5efc978dec15a84a1f6e2f6d7fe2",
+      "manifest_sha256_verified": true,
+      "source_checker": "verify_full_file_block_metrics.py",
+      "source_checker_normal": "PASS",
+      "source_checker_python_O": "PASS"
+    },
+    {
+      "package_id": "native-f06-film-light-full-file-dee-rust-comparison-v1",
+      "manifest_sha256": "5b4e23b25e459f80ae26267f792080d472cd5deda69ea35129e546b7f0a6066d",
+      "manifest_sha256_verified": true
+    }
+  ],
+  "wash_independent_recompute": {
+    "script": "compare_matched_full_file_pcm_blocks.py",
+    "decoder": "FFmpeg 8.1 decode-only",
+    "result": "whole-file per-channel metrics and 34-block summaries reproduced exactly",
+    "pcm_written_or_retained": false
+  }
+}

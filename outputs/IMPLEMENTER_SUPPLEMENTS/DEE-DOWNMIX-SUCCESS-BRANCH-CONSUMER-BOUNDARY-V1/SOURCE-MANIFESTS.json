@@ -1,0 +1,15 @@
+{
+  "source_package": {
+    "package_id":"F13C-first-nonparser-consumer-addendum-v1",
+    "manifest_sha256":"68f8e000a1d74786da60ceedb2e73925355c05aa712ed679eba1432ba964e6a5",
+    "sha256sums_file_sha256":"5dbd67ba1fcb7d5fafd5b7b2a2fe8b5936505d03be4b8167278aeb50269518b1",
+    "recomputed_member_hashes":{
+      "ADDENDUM.md":"56a2fc51a647516db08573e2b842641fa6faaa1a59e5bd8ab0b9b289f25a3f39",
+      "CONSUMER-TRACE.json":"a20de2f2f74b6f2c53b9b99d2a6812001b14a26536b9ca5265b490133c4d944d",
+      "GHIDRA-CONSUMER-TRACE.txt":"becc55f84728548e2c27bf6a2f4d908f75aba5e92d2fd8e6514041f32719c845"
+    },
+    "ghidra_program_image_sha256_as_reported":"4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_installation_binary_rehash":false
+  },
+  "exclusions":{"ghidra_script_or_trace_copied":false,"pcm_or_payload_copied":false,"key_or_license_copied":false}
+}

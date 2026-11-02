@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.f13c_dmixmod_stored_field_boundary.v1",
+  "status": "PARSER_OWNER_AND_SEPARATE_FIELDS_BOUND; DMIXMOD_RESULT_TYPE_AND_DOWNSTREAM_EFFECT_UNBOUND; A_B_NOT_RUN",
+  "scope": "Ghidra 12.2 static parser-owner/getter path only; no DEE run or downmix effect claim.",
+  "source_package": {
+    "package_id": "F13C-dmixmod-stored-field-chain-addendum-v1",
+    "manifest_sha256": "06cff5e99590055ee4704e48fe0d19cb371746d5b4a9540f0f4a38180e65827d",
+    "addendum_sha256": "d910d845c9fa81d89b6ec247c46bcae7a674ede4c838f050d98983f744884f2b",
+    "field_lineage_sha256": "7ed8259c8fb0bb432f6c47cc83b3f769b4be616d9370ef965b01fd306abaf133",
+    "checker_sha256": "df59d85dcf67e327ae8669ef31186edc990aa37c99df204994d8c7564e506233",
+    "checker_result": "normal and python -O passed",
+    "installed_image_hash_matches_project": true
+  },
+  "callback_object": {
+    "constructor": "FUN_1403f1dd0",
+    "vtable": "0x140bcf690",
+    "parser_slot": "+0xa8 -> FUN_1403f4e90",
+    "configuration_subobject": "+0x70",
+    "parser_result_slot": "+0x1b0; semantic type UNBOUND"
+  },
+  "separate_stored_fields": {
+    "slot_plus_0x28": "getter FUN_140377110 reads double at object+0x58",
+    "slot_plus_0x38": "getter FUN_1403f8f60 reads double at object+0x60",
+    "slot_plus_0xb0": "getter FUN_140377100 returns object+0x70",
+    "consumer": "FUN_1404813f0 writes object+0xf0/+0xf4/+0xf8 from those two doubles and the subobject",
+    "parser_result_plus_0x1b0_read": false
+  },
+  "per_item_child": {
+    "parent_collection": "FUN_1403c0ad0 -> FUN_1403c2d50",
+    "child_initializer": "FUN_1403c2300",
+    "child_source": "separate per-item pointer offsets +0x08/+0x28/+0x48/+0x4c",
+    "callback_plus_0x1b0_read": false
+  },
+  "unbound": {
+    "parser_result_semantic_type": "UNBOUND",
+    "typed_dmixmod_enum_or_store": "UNBOUND",
+    "bsI_or_joc_side_info_consumer": "UNBOUND",
+    "separate_downmix_renderer_consumer": "UNBOUND",
+    "loro_ltrt_audio_effect": "UNBOUND",
+    "matched_ab_test": "NOT_RUN_WAITING_FOR_R4_GATE"
+  },
+  "limits": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false
+  },
+  "next_minimal_edge": "Trace who reads callback object+0x1b0 as a typed value and whether that value enters the DDP JOC BSI/side-info or an independent downmix renderer; do not substitute adjacent double fields."
+}

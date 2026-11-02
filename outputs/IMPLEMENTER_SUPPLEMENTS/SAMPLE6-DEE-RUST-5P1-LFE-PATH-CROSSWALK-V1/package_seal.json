@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-RUST-5P1-LFE-PATH-CROSSWALK-V1",
+  "manifest_sha256": "da16069f7b0ff41e0b24cae8766e7b74860ab7f92472390b9dc8470108216956",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "ca6f7a389d5ad999c4c92f50a216c460b51ec4355ed7ba2b8db6cd60d42a86bb",
+      "bytes": 2408
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "d6bc3501eadad04e0d01a9af473d30aee2e2dfd1ec6ff7cb3217da909c1bffdc",
+      "bytes": 3660
+    },
+    {
+      "name": "README.md",
+      "sha256": "e40746038ea11b06fe2fe76958f76c5bb48a0dc0e2f52e09d4d11f358952c75b",
+      "bytes": 1338
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "f0de64692304caf96fbe00fb7a25b95285ef8c530bdaf01fbf1c6997ac3c6547",
+      "bytes": 727
+    }
+  ],
+  "scope": "sanitized identity/copy-path facts and exact runtime limits; no PCM/payload/key"
+}

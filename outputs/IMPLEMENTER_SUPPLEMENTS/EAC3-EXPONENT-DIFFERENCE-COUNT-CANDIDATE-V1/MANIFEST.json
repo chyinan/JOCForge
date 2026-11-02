@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EAC3-EXPONENT-DIFFERENCE-COUNT-CANDIDATE-V1",
+  "source_reverse_package_id": "dee-ddp-signed-difference-producer-wash-v6",
+  "source_reverse_manifest_sha256": "d76ea8381fc3d799bfea3b770641d0104a5297681de664debd6d10721ece6304",
+  "status": "D_CONSUMER_SEMANTICS_BOUND; POSITIVE_D_WRITER_UNBOUND; D_RULE_INFERENCE",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3566,
+      "sha256": "2d6713b5fcc205305c484f6a87d64a5fcf37589a05cf280eb8040b527d4cb3bd"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2486,
+      "sha256": "79e173a61e63b6b367ddc8dab4291d26afeb951f3ff7dae0c94e6957a22c99fa"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 404,
+      "sha256": "891e242a5685853eb5c32fc65b8c1e7f087bbdc639338aaccedcc6f3dcead127"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1065,
+      "sha256": "bd942b62cad746cb4fdc9703b425440597f81fca3cb31afe48ce5a34a071a45c"
+    }
+  ],
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

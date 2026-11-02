@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-washed-ec3-au0-parser-source-manifests.v2",
+  "incoming_package_id": "ec3_first_au_parse_failure_wash",
+  "incoming_manifest_sha256": "fa55517ec872c0160b95c8ff66b75f47e5ad8e408dc92a8cdb1c2d6e39a4a52e",
+  "failed_artifact_sha256": "593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473",
+  "dee_encoder_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+  "u4_u7_contract_manifest_sha256": "60dd1b42814edd97c44ad827c2a06b7cd1fd9f39b3ca4303422f6de5650898cf",
+  "raw_ec3_copied": false,
+  "binary_or_decompilation_copied": false,
+  "private_key_or_license_material_copied": false
+}

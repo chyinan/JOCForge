@@ -1,0 +1,48 @@
+{
+  "schema":"jocforge.current_36_row_meter_f01e_gate_order.v2",
+  "status":"METER_CURSOR_DYNAMIC; METER_INSTALLED48_FIRST_REMAINING_GATE; F01E_AND_FRESHZERO_FIXED",
+  "upstream_r6_package":{
+    "package_id":"jocforge_meter_cursor_36_f01e_followup_wash_v1",
+    "manifest_sha256":"29f18450f64d8aa91210c2e154116264112c0e84613feee678265a6614b0283f",
+    "source_head":"2155ea31d6c78b5f91b7ba256ce0a506581d1618",
+    "payload_count_verified":3,
+    "manifest_and_payload_hashes_independently_checked":true
+  },
+  "meter_cursor":{
+    "accepted_channels":[36,38],
+    "block_align_formula":"channels*3",
+    "normal_rows_use_stored_source_channel_count":true,
+    "fresh_zero_rows_use_stored_source_channel_count":true,
+    "prepared_input_meter_view_uses_graph_physical_row_count":true
+  },
+  "first_remaining_gate":{
+    "stage":"Meter G0 prepass before MainSpatialColdRoots",
+    "builder":"build_meter_installed48_source_map",
+    "selected_binding_required_channels":38,
+    "selected_binding_required_block_align":114,
+    "36_row_block_align":108,
+    "failure":"Installed48SourceMapError::SourceExtent -> IndependentMeterG0Error::SourceMap",
+    "next_map_gate":"controls.row_count()==38"
+  },
+  "next_gates":{
+    "meter_g0_f01e":"fixed providers.f01e + legacy normal_control_prepared_snapshot; selected profile 38ch/28 objects rejects 36/26",
+    "dynamic_prepared_input_f01e_owner":"available separately but unused in live Meter G0 path",
+    "meter_fresh_zero":"validate_fresh_zero_callback_identity still requires 38 physical rows",
+    "main_spatial_f01e":"fixed provider and legacy normal snapshot; not reached for 36"
+  },
+  "native_and_model_dimension_crosswalk":{
+    "r4_native_dynamic_map_package_manifest":"32cc2a957bca7f1e8a206109c13ca37319fb84ca8944d081e09fc2fde3f6e28f",
+    "native_map_rows_for_conditional_count36":36,
+    "native_map_rows_for_conditional_count38":38,
+    "f03w_global_source_axis_width":48,
+    "f03w_prefix_ids":"0..10",
+    "f03w_regular_ids_for_36_input_model":"11..45",
+    "f03w_ids_unassigned_for_36_input_model":[46,47],
+    "zero_padding_audio_claim":"NONE",
+    "native_channel_map_rows36_37_to_f03w_ids46_47":"UNBOUND"
+  },
+  "reusable_after_gates":["existing spatial/F07-F15 candidate path", "source-advance transaction", "durable AU append", "F15 finalize/expose"],
+  "not_run":["36-row encoding", "DSP", "tests", "decoder", "playback"],
+  "playable_output":"NOT_ESTABLISHED",
+  "production_allowed":false
+}

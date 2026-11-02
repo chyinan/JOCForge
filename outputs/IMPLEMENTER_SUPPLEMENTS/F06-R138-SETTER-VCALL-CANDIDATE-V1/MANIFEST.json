@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-SETTER-VCALL-CANDIDATE-V1",
+  "source_reverse_package_id": "native-f06-r138-setter-vcall-target-discriminant",
+  "source_reverse_manifest_sha256": "7864cbefbc4eec08ca8da03707a998d14f9aae5323bda5935fa9bb21cf617f91",
+  "status": "STRINGTYPE_ARGUMENT_AND_SLOT_BOUND; GENERIC_VCALL_TARGET_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2526,
+      "sha256": "cd27fcb1607df444c807e1d481c6263c00564dcdad0bb4bbaa738dcde8e2a332"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1729,
+      "sha256": "2115655cc1397f1366feb31b3f4e9fec2af5394410f9dd2eadbeeb0f1b7eb2f6"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 338,
+      "sha256": "f2682288879e35a7f5c3bcd07f72d709d77c6346287d6f2a7d070a4ec95bcaca"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1388,
+      "sha256": "671386888c077e8d1eb62220ac91c83a650663d54f91b3c099485e141ef7108a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 725,
+      "sha256": "88031cf47ef175e914fba81133721b032c5798125b7e80552e83bdab44a18b82"
+    }
+  ],
+  "exclusions": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

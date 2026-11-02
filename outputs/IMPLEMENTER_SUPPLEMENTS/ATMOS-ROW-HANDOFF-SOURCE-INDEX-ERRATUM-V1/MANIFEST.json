@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-washed-implementer-erratum.v1",
+  "package_id": "ATMOS-ROW-HANDOFF-SOURCE-INDEX-ERRATUM-V1",
+  "source_reverse_package_id": "atmos_joc_multichannel_row_handoff_wash_v1",
+  "source_reverse_manifest_sha256": "d926de87e639bb9e9201ece1f5f7ec70e943e7f03e2167b5c582aad9bc7cfffe",
+  "source_reverse_package_seal_sha256": "8c5358856f2d95e391cb7f19d7e504819f45981f4f03751f9764d60157fb4430",
+  "status": "SOURCE_INDEX_REFERENCE_TYPO_CORRECTED; AUDIO_RULE_UNCHANGED",
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3090,
+      "sha256": "0776c1e2e73c9624c204f7c5428d08e9619a0ce950ec0fe521273ee88ca24af3"
+    },
+    {
+      "file": "ERRATUM.json",
+      "bytes": 1600,
+      "sha256": "2e3bfbc6c483aef8187ef9ffe77a18e43f758c99d3d636d5a3b18d2e2fb1511c"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1032,
+      "sha256": "10f03a9636c8475973f195d4801f30cf70800477e7004a697bfee88d5dfe39e7"
+    }
+  ]
+}

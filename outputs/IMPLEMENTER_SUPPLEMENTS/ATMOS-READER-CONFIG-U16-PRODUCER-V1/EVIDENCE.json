@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge-atmos-reader-config-u16-producer.v1",
+  "package_id": "ATMOS-READER-CONFIG-U16-PRODUCER-V1",
+  "status": "READER_CONFIG_U16_PRODUCER_BOUND; HUMAN_CAT_RUNTIME_U16_UNBOUND",
+  "source_package": {
+    "package_id": "adm_reader_config_count_wash_v1",
+    "manifest_sha256": "c8451947f82cae591b9112adb6b9e7f562b332772aeaf6c401dca614b2e3223d",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "source_receipt_hashes_recomputed": "PASS",
+    "package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT"
+  },
+  "typed_owner_and_descriptor": {
+    "reader_config_pointer_field": "AtmosReaderPrv+0x58",
+    "descriptor_count_source": "U16 reader config+0x0A",
+    "descriptor_count_destination": "U64 descriptor+0x08, zero-extended",
+    "descriptor_map_pointer_destination": "same reader config pointer at descriptor+0x28",
+    "writer_clamp_or_default": "NONE_IN_TRACED_WRITER"
+  },
+  "config_producer": {
+    "count_source_write": "U16 at CompositeMaster+0x1A",
+    "map_pointer_write": "CompositeMaster+0x20",
+    "returned_reader_config": "CompositeMaster+0x10",
+    "reader_config_count_alias": "config+0x0A",
+    "reader_config_map_alias": "config+0x10",
+    "formula_mode": "ordinary_or_special path; runtime selected mode/value not captured",
+    "fixed_36_limit_or_default_in_traced_writer": "NONE_OBSERVED"
+  },
+  "human_cat_context": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "chna_tracks": 38,
+    "bed_tracks": 10,
+    "object_tracks": 28,
+    "candidate_reader_u16": 38,
+    "same_run_reader_u16": "UNBOUND"
+  },
+  "implementation_trial": {
+    "ready": true,
+    "rule": "Preserve the generated dynamic U16 and its ordered row map; do not clamp to 36. Treat 38 as the Human Cat metadata-backed candidate, not a captured runtime value.",
+    "pcm_mismatch_cause": "NOT_ESTABLISHED"
+  },
+  "scope": {
+    "ghidra_static_only": true,
+    "wav_or_bwf_opened": false,
+    "pcm_or_payload_read": false,
+    "dee_run": "NOT_RUN",
+    "key_or_license_material_accessed": false
+  }
+}

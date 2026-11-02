@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-DI-PAIR-FULLFILE-CHANNEL3-V1",
+  "manifest_sha256": "79dde0fda1f6faa3ed3809d6485c8ce46e60bd43aeb08f6e98360ce365a41d76",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "8e2048e50d914f152e1de5f2001b21746ded691b73a1865caeb9ab47ba995fac",
+      "bytes": 2315
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "38bffbe592200ef20456e5b39833f85d7026e1205d938c5046dfde4850260c24",
+      "bytes": 2789
+    },
+    {
+      "name": "README.md",
+      "sha256": "20fef86c1b6c33e600a3ca6104d67dc42ba3a41d30ac83fecd64735e5f2174b0",
+      "bytes": 904
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "8ff1d3eb88bbbfc21087e2601b0602ba0ddc23180dedc06d67683ce8252ff64a",
+      "bytes": 821
+    }
+  ],
+  "scope": "scalar per-channel decode metrics only; no PCM/payload/key"
+}

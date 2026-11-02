@@ -1,0 +1,57 @@
+{
+  "schema": "washed-dee-core-layout-selector-lineage.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V1",
+  "status": "STATIC_SELECTOR_PRODUCER_AND_LFE_BRANCH_BOUND; MATCHED_SELECTOR_AND_ROW3_CORE_SLOT_UNBOUND",
+  "native_image": {"name": "dee_ddp_encoder.exe", "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"},
+  "matched_job_xml": {
+    "sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "locally_rehashed_by_source_package": true,
+    "filter": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "sample_rate_or_channel_layout_fields": "NOT_PRESENT_IN_XML",
+    "core_mode_or_layout_selector": "NOT_PRESENT_IN_XML"
+  },
+  "input_descriptors": {"count": 6, "descriptor_stride_bytes": 16, "pointer_offset": 0, "sample_stride_type": "U16", "sample_stride_offset": 12},
+  "selector_producer": {
+    "caller_context": "per-stream context selected by the core dispatcher",
+    "outer_layout_field": "lVar9+0x40, copied as U32 to core state+0x2c",
+    "outer_lfe_present_field": "lVar9+0x44, copied as U32 to core state+0x30",
+    "semantic_field_names": "UNBOUND",
+    "normalization": {"layout_id": "state+0x1912c", "lfe_present": "state+0x1912e"},
+    "branch_condition": "((mode-1) & 0xfffffff9)==0 and mode != 5 selects the normal path; otherwise alternate path",
+    "both_paths_normalize_selector": true
+  },
+  "layout_mapping": {
+    "layout_rows": [
+      {"layout_id": 0, "fbw_count": 2, "row": [0,2,5,-1,-1,-1], "slot3_lane": "ABSENT"},
+      {"layout_id": 1, "fbw_count": 1, "row": [1,5,-1,-1,-1,-1], "slot3_lane": "ABSENT"},
+      {"layout_id": 2, "fbw_count": 2, "row": [0,2,5,-1,-1,-1], "slot3_lane": "ABSENT"},
+      {"layout_id": 3, "fbw_count": 3, "row": [0,1,2,5,-1,-1], "slot3_lane": "ABSENT"},
+      {"layout_id": 4, "fbw_count": 3, "row": [0,2,3,5,-1,-1], "slot3_lane": 2},
+      {"layout_id": 5, "fbw_count": 4, "row": [0,1,2,3,5,-1], "slot3_lane": 3},
+      {"layout_id": 6, "fbw_count": 4, "row": [0,2,3,4,5,-1], "slot3_lane": 2},
+      {"layout_id": 7, "fbw_count": 5, "row": [0,1,2,3,4,5], "slot3_lane": 3}
+    ],
+    "fbw_count_rule": "DAT_1405f4ba0[layout_id]",
+    "total_lanes_rule": "FBW_count + (LFE_present != 0)",
+    "lfe_branch_rule": "internal_lane >= FBW_count",
+    "slot3_values_are_hypothetical_until_core_descriptor_join": true
+  },
+  "matched_run_boundary": {
+    "decoded_output_channel_index_3": {"identity": "LFE/low-frequency track", "status": "USER_CONFIRMED_BY_LISTENING"},
+    "adm_row3_to_core_descriptor_slot": "UNBOUND",
+    "layout_id": "UNBOUND",
+    "lfe_present": "UNBOUND",
+    "fbw_count": "UNBOUND",
+    "internal_lfe_lane": "UNBOUND",
+    "row3_to_lfe_main_companion_branch": "UNBOUND",
+    "runtime_generation": "NOT_OBSERVED"
+  },
+  "execution": {
+    "new_dee_run": false,
+    "raw_sample_bytes_read_or_persisted": false,
+    "pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

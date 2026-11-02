@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-eac3-window-fold-one-hot-vector.v1",
+  "purpose": "distinguish the first selected F32 window-table mismatch at the fold boundary",
+  "stage_boundary": "window-fold input/output model only; not PCM or native runtime",
+  "input": {
+    "f32_word_count": 256,
+    "default_word_hex": "00000000",
+    "nonzero_words": [{"index":234,"f32_bits_hex":"3f800000","value":1.0}]
+  },
+  "selected_pair": {
+    "index":21,
+    "parity":"odd",
+    "primary_fold_row":107,
+    "companion_fold_side":106,
+    "history_slot":53
+  },
+  "expected_fold_bits": {
+    "native_primary_row_107":"3c0ea5aa",
+    "rust_primary_row_107":"3c0ea5a9",
+    "native_companion_side_106":"bc0ea5aa",
+    "rust_companion_side_106":"bc0ea5a9"
+  },
+  "derivation": {
+    "primary":"f32(f32(input[21]*window[234]) + f32(input[234]*window[21]))",
+    "companion":"f32(f32(input[21]*window[234]) - f32(input[234]*window[21]))",
+    "native_execution":"NOT_RUN",
+    "pcm_or_payload_included":false
+  }
+}

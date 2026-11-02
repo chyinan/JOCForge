@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.adm_metadata_input_vector.v1",
+  "vector_id": "FIRST-LOVE-36-DBMD-DIMENSION",
+  "source_path": "D:\\First Love.wav",
+  "metadata_identity": {
+    "fmt_sha256": "e261a4850cc7ba2ae123de4dbbc085fa8f7dfb5597fe3aa70efb753b1fd91dbf",
+    "chna_sha256": "621f761e76bf603741e965d224c55aa0f948a13f4fa603e207085d1a112ac379",
+    "dbmd_sha256": "f490e0d73d5d572a0915609e518db5088158612b3b6fbf478f43c9859fa9145e"
+  },
+  "expected_metadata_dimensions": {
+    "fmt_physical_channels": 36,
+    "chna_track_count": 36,
+    "chna_uid_count": 36,
+    "dbmd_section10_track_records": 36
+  },
+  "input_payload_included": false,
+  "pcm_bytes_read": 0,
+  "scope_note": "Metadata dimensions for one authorized sample only; not an arbitrary-ADM conformance vector."
+}

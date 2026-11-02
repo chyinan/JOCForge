@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-JOCFORGE-FULL-DECODE-VALIDATION-V1",
+  "file_count": 5,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3251,
+      "sha256": "50f537d1843a6f93a13a83a2c6c10139ec3e798419cdd1c169b254d142248090"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2824,
+      "sha256": "24381c97aff3c4463ed3320fa3963f2e5d25ee9fd8dd84ca457fe462a175ac9d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1342,
+      "sha256": "a72904e9271485872a49f21b7c6323a6746e1b8a1b05ef55c0d6580c3298477d"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 933,
+      "sha256": "7d3c89196a78fb439a4dde2bc36a8d51c76109aa2cef8c2b26c0bc9014596f2b"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "c2c4c989485246fc449bac42307f083077daeb39c26285e23e4b0f66f114e6a8"
+    }
+  ]
+}

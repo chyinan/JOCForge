@@ -1,0 +1,7 @@
+{
+  "schema": "jocforge-input-only-vector-status.v1",
+  "status": "NOT_PROVIDED_CAPTURE_PLAN_ONLY",
+  "reason": "The upstream package defines observation sites and guards but includes no synthetic numeric vector and no executed native values.",
+  "native_capture": "NOT_RUN",
+  "raw7_hit_count": "UNOBSERVED"
+}

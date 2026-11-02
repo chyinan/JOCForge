@@ -1,0 +1,44 @@
+{
+  "schema": "washed-drc-plugin-core-row-owner-boundary.v1",
+  "package_id": "SAMPLE6-DRC-PLUGIN-CORE-ROW-OWNER-SEPARATION-V1",
+  "status": "PLUGIN_LOCAL_ROW_CONSTRUCTOR_AND_READERS_BOUND; CORE_PLUGIN_JOIN_UNBOUND; CORE_NONZERO_WRITER_UNBOUND",
+  "plugin_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd3ce1cce8b7e95d2",
+    "analysis": "Ghidra 12.2 read-only/noanalysis"
+  },
+  "plugin_local_row": {
+    "local_context_root": "plugin state +0x21e9c",
+    "constructor_zero_words": 30,
+    "constructor_word_type": "U32 zero bits; positive-zero F32 interpretation",
+    "constructor_row_range": "context+[0x2170,0x21e8)",
+    "shape": "6 blocks x 5 F32; block stride 0x14",
+    "reader_offsets": ["context+0x2170+block*0x14", "context+0x2174+block*0x14"],
+    "other_reader": "same plugin-local +0x2170/+0x85f layout",
+    "later_direct_nonzero_store_found": false,
+    "alias_or_bulk_copy_writer_excluded": false
+  },
+  "separate_plugin_history": {
+    "source_window": "plugin context+0x168+0x400*k, six 256-F32 segments",
+    "history_field": "plugin context+0x2168",
+    "writes_plugin_six_by_five_row": false
+  },
+  "core_inline_row": {
+    "image": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "context": "core state+0x21cc4",
+    "shape": "6 blocks x 5 F32",
+    "constructor_zero_init": "previously hash-bound; initialization does not establish generation-time values",
+    "typed_plugin_to_core_copy_or_owner_edge": "UNBOUND",
+    "generation_time_nonzero_writer": "UNBOUND"
+  },
+  "identity_rule": "Equal relative offsets, row shapes, or reader patterns across different images do not establish pointer identity, copy provenance, owner, or generation.",
+  "execution": {
+    "native_runtime": "NOT_RUN",
+    "new_dee_run": false,
+    "pcm_included": false,
+    "payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

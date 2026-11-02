@@ -1,0 +1,71 @@
+{
+  "schema": "jocforge-washed-sample6-full-output-validation.v1",
+  "package_id": "SAMPLE6-JOCFORGE-FULL-DECODE-VALIDATION-V1",
+  "status": "FULL_OUTPUT_CREATED_AND_DECODED; SAME_INPUT_DEE_AUDIO_PARITY_NOT_RUN; BSI_MISMATCHES_OPEN",
+  "input": {
+    "sample": "人是猫 - 张卡斯, 洛天依 ADM BWF",
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "identity": "REHASHED_AND_MATCHED_USER_AUTHORIZED_ADM"
+  },
+  "run": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "run_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766",
+    "exit_status": "PROCESS_EXITED_ZERO",
+    "exit_code": 0,
+    "source_commit": "216326f622e66f1f7b255dbe7a8bcfb8ca473ce2",
+    "executable_sha256": "d5e378f8478100c0e16dc805ec39639f01cd37a9987b2f12407824b58efc1ae7",
+    "integrity_policy": "KEYLESS; NO PRIVATE HMAC KEY READ"
+  },
+  "output": {
+    "filename": "sample6-dee-audio-full-20261102.ec3",
+    "sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "bytes": 17395712,
+    "published_access_units": 4247,
+    "profile": {
+      "codec": "E-AC-3 JOC",
+      "sample_rate_hz": 48000,
+      "bit_rate_bps": 1024000,
+      "channels": 6,
+      "channel_layout": "5.1(side)",
+      "duration_seconds": 135.904
+    }
+  },
+  "independent_validation": {
+    "parser": "FFprobe 8.1 full build",
+    "whole_stream_parse": "PASS",
+    "first_access_unit": {"position_bytes": 0, "packet_size_bytes": 4096, "duration_seconds": 0.032},
+    "decoder": "FFmpeg 8.1 full build; decode only to null sink",
+    "full_stream_decode_exit_code": 0,
+    "decoder_errors": "NONE",
+    "pcm_saved": false
+  },
+  "audio_affecting_fields": {
+    "rust_logged_meter_dialnorm": 17,
+    "output_u5": {"value": 17, "bit_offset": 45, "width_bits": 5},
+    "same_input_dee_reference": {"u5": 21, "measurement_scalar": -20.665958, "unit": "UNBOUND"},
+    "rust_selected_lufs_input_in_receipt": null,
+    "u5_disposition": "SAME_INPUT_MISMATCH; ROOT CAUSE NOT ATTRIBUTED",
+    "output_bsi_downmix": {
+      "dmix_mode": 0,
+      "ltrt_cmixlev": 0,
+      "ltrt_surmixlev": 0,
+      "loro_cmixlev": 0,
+      "loro_surmixlev": 0
+    },
+    "rust_job_template_candidate": {"downmix_mode": "LoRo", "surround_mix_level_db": -3, "bridge_level_code": 4},
+    "fresh_same_input_dee_bsi_comparison": "NOT_RUN"
+  },
+  "comparison_boundary": {
+    "fresh_same_input_dee_audio_render": "NOT_RUN",
+    "old_python_prototype_or_control_group_used": false,
+    "audio_essence_equivalence": "NOT_ESTABLISHED",
+    "joc_spatial_render_or_playback": "NOT_RUN"
+  },
+  "exclusions": {
+    "encoded_output_copied_into_this_package": false,
+    "pcm_saved": false,
+    "private_key_or_license_material_read": false,
+    "old_comparator_payload_read": false
+  }
+}

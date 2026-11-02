@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-washed-f06-outputwrapper-registry-init.v1",
+  "package_id": "F06-R138-OUTPUTWRAPPER-REGISTRY-INITIALIZATION-V1",
+  "scope": "OUTPUTWRAPPER +0x178 CONSTRUCTION AND SCOPED WRITER SEARCH",
+  "status": "EMPTY_INITIALIZATION_BOUND; SCOPED_VTABLE_WRITER_NOT_FOUND; FIRST_POPULATOR_UNBOUND",
+  "source_package": {
+    "package_id": "native-f06-r138-outputwrapper-source-registry-origin-addendum",
+    "manifest_sha256": "4a26e83c1d7145d3e881edaa1576cb7dbed2237de83762e4aeb02f9fc8444dcf",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "bounded_report_hashes": [
+      "aa495cefe94452d4ac79990021cdd9431818ee14650a9c3276c7cbfd37fd0abc",
+      "f480f920759ac8513653ff5a503d44066f39ac46b3d8bb59ed9f7f03927390ab"
+    ],
+    "tool": "Ghidra 12.2 read-only",
+    "dee_run": false,
+    "media_pcm_or_key_read": false
+  },
+  "bound_facts": {
+    "owner_class": "dee::OutputWrapper",
+    "registry_member": "+0x178",
+    "constructor_state": "EMPTY_SENTINEL_CONTAINER",
+    "scoped_vtable_methods": "reader found; no member store or write-through found",
+    "dee_audio_source_type_setproperty_branch": "reads +0x178 to build the filtered +0x1A0 subset; does not populate +0x178",
+    "direct_construction_caller": "establishes the OutputWrapper instance but not the first nonempty registry producer",
+    "downstream_order": "preserve current +0x178 insertion/range order; +0x1A0 is its matching ordered subset"
+  },
+  "open_edges": {
+    "first_post_constructor_writer": "UNBOUND",
+    "registry_origin_job_file_list": "UNBOUND",
+    "registry_origin_upstream_stage_container": "UNBOUND",
+    "registry_origin_adm_converter_channel_vector": "UNBOUND"
+  },
+  "next_minimal_action": "Trace the first typed source-registration call from the direct construction owner that makes +0x178 nonempty; do not repeat the +0x1A0 builder or converter-row scans.",
+  "execution_boundary": {
+    "implementation_contacted_by_research": false,
+    "host_graph_search_broad": false,
+    "binary_or_decompilation_in_supplement": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

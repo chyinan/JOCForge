@@ -1,0 +1,66 @@
+{
+  "schema": "washed-drc-profile-table-init.v1",
+  "package_id": "SAMPLE6-DRC-BSI-PROFILE-TABLE-INIT-V1",
+  "status": "TABLE_LAYOUT_AND_ZERO_INIT_BOUND; BUILTIN_SELECTOR_ROWS_BOUND; XML_SELECTOR_AND_POSITIVE_STORE_UNBOUND",
+  "scope": "Matched Human Cat DRC profile/table initialization and one input-only vector",
+  "matched_identity": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "encoder_drc_profiles": {"line": "film_light", "rf": "film_light"}
+  },
+  "drc_state": {
+    "mode_count": 2,
+    "blocks_per_mode": 6,
+    "mode_stride_bytes": 200,
+    "row_element_type": "U16",
+    "per_mode_fields": ["presence", "code"],
+    "initial_presence": 0,
+    "initial_code": 0,
+    "presence_semantics": "dynrnge presence bit",
+    "code_semantics": "optional dynrng U8 when presence is set"
+  },
+  "profile_inputs": {
+    "custom_profile_enabled": {"type": "I32"},
+    "preset_selector": {"type": "U8"},
+    "custom_profile_record": {"type": "four U8 selectors", "optional": true},
+    "builtin_mapping_when_custom_disabled": {
+      "selectors": [1, 2, 3, 4, 5],
+      "row_indices": [0, 1, 2, 3, 4],
+      "selector_zero": "no built-in curve row"
+    },
+    "custom_mapping": "four U8 fields select four rows independently",
+    "xml_string_to_selector": "UNBOUND",
+    "mode_to_line_or_rf": "UNBOUND"
+  },
+  "matched_drc_field_delta": {
+    "source_package": "SAMPLE6-MATCHED-DRC-BSI-FIELD-DELTA-V1",
+    "source_manifest_sha256": "476f4f6cf3fe3ae56d071e956252db469f5ccb5bcc63f7356ffe1d889e93f1c0",
+    "au_index": 2843,
+    "mode": "UNBOUND_TO_LINE_OR_RF",
+    "presence": {"dee": 1, "rust": 1},
+    "dynrng_u8": {"dee": 1, "rust": 0},
+    "positive_store_producer": "UNBOUND",
+    "scale_zero_channel3_pcm_residual_explained": false
+  },
+  "input_only_vector": {
+    "custom_profile_enabled_i32": 0,
+    "preset_selector_u8": 1,
+    "custom_profile_record": null,
+    "mode": 0,
+    "block": 0,
+    "initialized_presence_u16": 0,
+    "initialized_code_u16": 0,
+    "expected_dynrnge": 0,
+    "expected_dynrng_u8": "OMITTED",
+    "selector_one_label": "UNBOUND"
+  },
+  "execution": {
+    "native_runtime": "NOT_RUN",
+    "pcm_retained": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

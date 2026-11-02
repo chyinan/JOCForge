@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-LFE-SYNTHETIC-ADM-CRASH-V1",
+  "scope": "five synthetic-input DEE attempts; no output or audio comparison",
+  "status": "DEE_CRASHED_NO_OUTPUT; FAILURE_CAUSE_UNOBSERVED; AUDIO_COMPARISON_NOT_RUN",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1045,
+      "sha256": "4807dc3aa875bb041da9c91d649b861bc2be701557d4d39c2bcadc7abf1308b4"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2034,
+      "sha256": "4b9502c1f445c338c7702a0ff1d6c6db8faf19c871198ac163aeaa1752659186"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 640,
+      "sha256": "491f841b31060b672303c5488096c91d681c612ee2b53b0e3fb3c082a4387ab0"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 497,
+      "sha256": "f76f07db42145a6b59295e156fea426ddd0dc90950ec54dcad3f695e5b6e503a"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3613,
+      "sha256": "f73305854d7ed730732ab9cc435a71591941acfa17f3b6c63ebdee1267a148d1"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2",
+  "manifest_sha256": "dcdcead2a00e0ea922506cba7c6d2ea90a1656c4aeb501f7d30a11d9b4f2a7d2",
+  "sha256sums_sha256": "c9437b4007811f42aaddb6dd5c6994be9f62ededf95e77813627cf318d621d08",
+  "payload_count": 3,
+  "status": "STRIDE_FIELD_AND_TEMP_STAGE_BOUND; SAMPLE_BRANCH_UNBOUND; NATIVE_RUST_OWNER_JOIN_UNBOUND; NUMERIC_PARITY_NOT_RUN"
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-r138-generic-setter-input-only.v1",
+  "host_argument_dynamic_type": "dee::Types::StringType",
+  "virtual_receiver": "plVar3; exact type UNBOUND",
+  "virtual_slot_offset": "+0x28",
+  "target_type_candidate": "MediaMetadata::set at slot 5 / +0x28",
+  "expected_runtime_target_included": false,
+  "executed": false
+}

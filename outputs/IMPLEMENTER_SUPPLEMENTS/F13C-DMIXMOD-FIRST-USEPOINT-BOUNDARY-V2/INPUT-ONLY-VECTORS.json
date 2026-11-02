@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.preferred_downmix_input_only_cases.v1",
+  "classification": "proposed single-field validation cases; execution NOT_RUN",
+  "fixed_controls": {
+    "dialogue_intelligence": true,
+    "data_rate_kbps": 1024,
+    "center_mix_db": -3,
+    "surround_mix_db": -3
+  },
+  "cases": [
+    {
+      "preferred_downmix_mode": "loro",
+      "native_dmixmod_alias": "UNBOUND",
+      "expected_audio_effect": "NOT_RUN"
+    },
+    {
+      "preferred_downmix_mode": "ltrt",
+      "native_dmixmod_alias": "UNBOUND",
+      "expected_audio_effect": "NOT_RUN"
+    }
+  ]
+}

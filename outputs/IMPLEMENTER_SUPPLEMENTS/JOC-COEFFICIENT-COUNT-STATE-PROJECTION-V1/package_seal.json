@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "JOC-COEFFICIENT-COUNT-STATE-PROJECTION-V1",
+  "manifest_sha256": "26a25b26f735e8d37861468e1cb3dac8ed9a8513a829061226e14a3974c6d4ed",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "30f06289f63e216746b697390f589d4ebae571a04f9cbc90f4df13db69ca6936",
+      "bytes": 2277
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "b149f5a8ee263e8a9c65a9629c285de830d93d3185d0de8e0ad69ebdb6fcb998",
+      "bytes": 2426
+    },
+    {
+      "name": "README.md",
+      "sha256": "0b6af12854f33e6243a5056c9e19818b2877032f57ab6bce4ecb5f2305c40fb3",
+      "bytes": 928
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "49dc233a7204517c50b1f4aa692f280958dfe1b7ccc04f056fad150e3219602d",
+      "bytes": 511
+    }
+  ],
+  "scope": "washed static semantics and experiment plan only; no source/disassembly/media/key"
+}

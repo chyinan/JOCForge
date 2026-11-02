@@ -1,0 +1,16 @@
+{
+  "schema": "implementer-source-receipt.v1",
+  "sources": [
+    {
+      "source": "current Rust selected transform parameter provider",
+      "path": "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
+      "sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c"
+    },
+    {
+      "source": "historical static window split package",
+      "package_id": "SAMPLE6-DEE-CORE-WINDOW-COEFFICIENT-SPLIT-V1",
+      "manifest_sha256": "74973e18ac6001b34ec1225ae179e17c8cd78aef1cc7b6b1bdd89a305f2d0f34",
+      "scope": "its Rust comparison baseline is the superseded 45e8 window table"
+    }
+  ]
+}

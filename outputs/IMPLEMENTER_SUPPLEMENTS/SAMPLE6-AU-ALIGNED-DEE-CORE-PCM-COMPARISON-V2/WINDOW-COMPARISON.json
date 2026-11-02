@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-core-pcm-window-measurement.v1",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "source_sample_range_per_channel": [4224000, 4416000],
+  "frame_count_per_channel": 192000,
+  "decoded_channel_indices": [0, 1, 2, 3, 4, 5],
+  "per_channel_error_metrics": [
+    {"index":0,"mean_abs_error_f32":0.0009079803907528591,"rmse_f32":0.009047797791627243,"max_abs_error_f32":0.30480920523405075},
+    {"index":1,"mean_abs_error_f32":0.0008499757858610802,"rmse_f32":0.008921435265031322,"max_abs_error_f32":0.30366067588329315},
+    {"index":2,"mean_abs_error_f32":0.00041541492581204103,"rmse_f32":0.0037042021226497755,"max_abs_error_f32":0.1799558358361537},
+    {"index":3,"mean_abs_error_f32":0.004220327010109068,"rmse_f32":0.005479858820295154,"max_abs_error_f32":0.018465762957930565},
+    {"index":4,"mean_abs_error_f32":0.0006096387851025907,"rmse_f32":0.004608154658242228,"max_abs_error_f32":0.2434435160830617},
+    {"index":5,"mean_abs_error_f32":0.0005502590218270345,"rmse_f32":0.004344961223019292,"max_abs_error_f32":0.21280011942144483}
+  ],
+  "pcm_samples_included": false,
+  "correlation_gain_and_lag_included": false,
+  "channel_name_mapping_included": false
+}

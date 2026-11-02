@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DRC-HOST-FRAME-ABI-BOUNDARY-V1",
+  "manifest_sha256": "9299500b6ee4931bd0104f34791ef88abf90e139fa4982f1de3df8a53dd732f3",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "99a33cb1c12a4a38676a036d2b55a3bc393c146c2786b59d4f88c055656bd552",
+      "bytes": 1991
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "a45dcac5fd6d2ab26bfae8b45f63fe8a49956ade870428bcc5bb589adeb397d9",
+      "bytes": 3250
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "6fda1b112dac8443d3acd4185c415b3c82570edeb3bb4316bfc965f577644a88",
+      "bytes": 1208
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "5ffa07f5389c862f7d0e23941e3b2ae5ec7ebbb85a26bcb57d26cb5576167c99",
+      "bytes": 627
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "149678610da45de46f72117699c8fd3fa1fd85c5ecc85616958780f97fc2a727",
+      "bytes": 2104
+    }
+  ],
+  "scope": "Sanitized host/core frame ABI boundary; selected ADM count transfer remains UNBOUND"
+}

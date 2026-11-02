@@ -1,0 +1,52 @@
+{
+  "schema": "joc-coefficient-count-state-projection.v1",
+  "package_id": "JOC-COEFFICIENT-COUNT-STATE-PROJECTION-V1",
+  "status": "STATIC_PROFILE_TO_COEFFICIENT_COUNT_AND_SERIALIZER_LENGTH_CONFIRMED; RUN_VALUE_AND_AUDIO_EFFECT_NOT_RUN; PUBLIC_INPUT_AND_RUST_MAPPING_UNBOUND",
+  "scope": {
+    "source_image": {
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "analysis_tool": "Ghidra 12.2 public static analysis"
+    },
+    "state_value": {
+      "width_bits": 16,
+      "role": "profile-derived coefficient-slot count for JOC blocks",
+      "source": "per-encoder profile/mode index; exact selected runtime profile value not observed"
+    },
+    "observed_consumers": [
+      "per-block coefficient-delta processing uses the same count",
+      "JOC bit-writer iteration length uses the same count"
+    ],
+    "static_evidence": "The profile-derived count is written once in the traced setup branch and the same typed value is supplied to both consumers."
+  },
+  "input_and_job_binding": {
+    "authorized_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "matched_control_job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "selected_profile_runtime_value": "UNOBSERVED",
+    "public_job_field_mapping": "UNBOUND",
+    "rust_model_counterpart": "UNBOUND"
+  },
+  "minimum_experiment": {
+    "kind": "input-only one-parameter A/B",
+    "hold_constant": ["same authorized ADM", "48 kHz", "1024 kbps", "5.1 core", "all other profile controls"],
+    "vary": "profile-derived coefficient-slot count N versus one adjacent legal count",
+    "execution": "NOT_RUN",
+    "rendered_audio_delta": "NOT_RUN",
+    "encoded_payload_or_pcm_included": false
+  },
+  "source_package": {
+    "package_id": "r9-joc-coefficient-count-audio-wash",
+    "manifest_sha256": "06fc46a4b650aedb4d72ea160e09921adc7cc6dd5d47a7cf206746ad6f69d3fa",
+    "manifest_sha256_verified": true,
+    "source_checker": "check_r9_joc_count_wash.py",
+    "source_checker_normal": "PASS",
+    "source_checker_python_O": "PASS",
+    "source_package_seal": "NOT_PRESENT; MANIFEST.sha256 verified"
+  },
+  "exclusions": {
+    "source_code_or_disassembly_in_washed_package": false,
+    "private_key_or_license_material": false,
+    "raw_pcm_or_encoded_payload": false,
+    "python_prototype_search": false
+  }
+}

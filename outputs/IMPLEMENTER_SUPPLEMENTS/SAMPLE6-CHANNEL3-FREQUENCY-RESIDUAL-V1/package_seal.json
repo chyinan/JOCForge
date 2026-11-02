@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-CHANNEL3-FREQUENCY-RESIDUAL-V1",
+  "manifest_sha256": "a556b5499d57a40ce54df4a4166c4beb798ab3cda3334d1ffa577addd4fbda6a",
+  "files": [
+    {
+      "name": "CHANNEL3-RESIDUAL-BAND-METRICS.json",
+      "sha256": "dd04145e94b89943b9aa610faae6d56a6612becb4f805199192e991effb18379",
+      "bytes": 18982
+    },
+    {
+      "name": "CHECK.py",
+      "sha256": "1810ec3ae150b908dcb8d81cad5482825f4433c749677e98aa7d3e2d808a3343",
+      "bytes": 2252
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "f5610c9b94ab6283cc4abd53ddaf9f7d54e295cdb82beb93796e58b8f5d86cd9",
+      "bytes": 2624
+    },
+    {
+      "name": "README.md",
+      "sha256": "2c30c82ed4af723765362204570a427917f07121a9ea2827e7a19f03f9a72bad",
+      "bytes": 769
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "97f0b1f8241ad5cc96859b97c4331412715b521e7d7f3d788818e882eef43391",
+      "bytes": 589
+    }
+  ],
+  "scope": "scalar band metrics only; no raw PCM/payload/key"
+}

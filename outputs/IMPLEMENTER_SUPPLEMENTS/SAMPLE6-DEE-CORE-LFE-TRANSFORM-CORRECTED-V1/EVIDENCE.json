@@ -1,0 +1,89 @@
+{
+  "schema": "washed-corrected-dee-core-lfe-transform.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-TRANSFORM-CORRECTED-V1",
+  "status": "INPUT_SCRATCH_OWNER_AND_EXTENT_BOUND; PERSISTENT_HISTORY_SEPARATE; MATCHED_LFE_LANE_UNBOUND",
+  "native_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "size_bytes": 7923712,
+    "analysis": "Ghidra 12.2 read-only/noanalysis"
+  },
+  "matched_job_xml": {
+    "sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "filter": "encode_to_atmos_ddp",
+    "data_rate_kbps": 1024,
+    "input_file_identity": "bound by the XML hash",
+    "sample_rate_or_channel_layout_fields": "NOT_PRESENT_IN_XML",
+    "core_mode_or_layout_selector_value": "UNBOUND"
+  },
+  "core_input_api": {
+    "descriptor_count": 6,
+    "descriptor_stride_bytes": 16,
+    "pointer_field_offset_bytes": 0,
+    "sample_stride_field_type": "U16",
+    "sample_stride_field_offset_bytes": 12,
+    "layout_map": "layout_id selects six input slots; internal lane >= FBW_count enters LFE branch",
+    "matched_layout_id": "UNBOUND",
+    "adm_row3_to_internal_lfe_lane": "UNBOUND"
+  },
+  "input_scratch": {
+    "pointer_field": "state+0x262e8",
+    "fresh_copy_f32_words": 256,
+    "sample_stride_bytes": 4,
+    "input_read_index_range_inclusive": [0, 255],
+    "heap_allocator_field": "state+0x296f8",
+    "allocation_request_bytes": 1056,
+    "arena_unit_bytes": 1024,
+    "reserved_units": 2,
+    "usable_pointer_alignment_bytes": 32,
+    "raw_pointer_field": "state+0x29758",
+    "inline_fallback": "state+0x25ee0",
+    "inline_capacity_bytes": 1024,
+    "previous_256_to_381_input_scratch_claim": "RETRACTED; PARAM_1 DOES NOT READ BEYOND INDEX 255"
+  },
+  "separate_transform_state": {
+    "persistent_per_slot_state": "state+0x266f0 + selected_map_slot*0x400",
+    "capacity_bytes_per_slot": 1024,
+    "capacity_f32_words_per_slot": 256,
+    "matched_map_slot": "UNBOUND",
+    "runtime_history_values": "UNBOUND"
+  },
+  "separate_temporary": {
+    "pointer_expression": "*(state+0x296f0+0x420)",
+    "raw_pointer_field": "state+0x29750",
+    "allocation_request_bytes": 1056,
+    "arena_unit_bytes": 1024,
+    "reserved_units": 2,
+    "role": "transform param_3 temporary; distinct from input scratch and persistent per-slot state"
+  },
+  "first_sample_transform": {
+    "input_type": "F32[256]",
+    "iterations": 64,
+    "even_pair": ["x[2i]*S[i] + x[255-2i]*C[i]", "x[255-2i]*S[i] - C[i]*x[2i]"],
+    "odd_pair": ["x[2i+1]*S'[i] + x[254-2i]*C'[i]", "x[254-2i]*S'[i] - C'[i]*x[2i+1]"],
+    "paired_indices_in_bounds": "0..255",
+    "old_index_381_claim": "RETRACTED"
+  },
+  "lfe_continuation": {
+    "main_bank_outputs_f32_per_block": 7,
+    "companion_bank_outputs_f32_per_block": 7,
+    "matched_lfe_lane_and_stride": "UNBOUND",
+    "numeric_comparison": "NOT_RUN"
+  },
+  "window_coefficient_status": {
+    "historical_12_ulp_split": "SUPERSEDED_BY_CURRENT_PROVIDER",
+    "current_provider_direct_wash_manifest_sha256": "8fba13724421e217aa6c4144c74fb037cf3b5fcd134e89f2a42652c019ae2339",
+    "current_provider_words_hash": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+    "native_words_hash": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2"
+  },
+  "execution": {
+    "runtime_capture": "NOT_RUN",
+    "new_dee_run": false,
+    "raw_sample_bytes_read_or_persisted": false,
+    "pcm_included": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  },
+  "root_cause": "UNBOUND"
+}

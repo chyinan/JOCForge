@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EC3-AU0-EXPONENT-PARSER-FAILURE-V1",
+  "source_reverse_package_id": "ec3_first_au_parse_failure_wash",
+  "source_reverse_manifest_sha256": "fdf37f4459b3572f2925dff3e8f95f9f03d95be53cb839ed0ca8b0b89a93fb73",
+  "status": "AU0_EXPONENT_FAILURE_CONFIRMED; INPUT_ADM_AND_RUST_RUN_IDENTITY_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2335,
+      "sha256": "45fb43c23d6b5fee8b77a28edbdcc9dbf6a3f6f610dcb1530eb2a4184067d783"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2671,
+      "sha256": "01bc87e6079b5e14fdb06a206a28d8b2cbdc28e068093debcfdc6927a293bc90"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1870,
+      "sha256": "2504ed23116da9ab84ad93f5a44b653dbf72772904955f57b0a6ae656938702c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 748,
+      "sha256": "7aea148180299905c0092a9808f2a68fb34392ab00ebb19a0eef5b58c9f01e21"
+    }
+  ],
+  "exclusions": {
+    "raw_ec3_included": false,
+    "pcm_included": false,
+    "source_code_or_binary_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

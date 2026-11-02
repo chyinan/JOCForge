@@ -1,0 +1,10 @@
+{
+  "schema": "washed-rust-window-provider-direct-vector.v1",
+  "vector_id": "current-provider-window-index21-identity",
+  "classification": "SOURCE_PARAMETER_REHASH; NO_DEE_RUNTIME",
+  "input": {"window_word_count": 256, "selected_index": 21},
+  "observed_bits": {"current_rust": "3c0ea5aa", "native_dee": "3c0ea5aa"},
+  "historical_bits": {"old_rust_provider": "3c0ea5a9", "status": "SUPERSEDED"},
+  "matched_lfe_lane": "UNBOUND",
+  "pcm_output": "NOT_RUN"
+}

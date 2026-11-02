@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-washed-adm-row-order-source-manifests.v1",
+  "incoming_package_id": "adm_storage_row_table_producer_wash_v1",
+  "incoming_manifest_sha256": "7fcc5d6b2486c2c882c618843e19ca259e447f2c3ca502eb0688eaec3b5528b0",
+  "target_image": {
+    "source_id": "dee_audio_filter_convert_atmos_mezz.dll",
+    "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "bytes": 6286336
+  },
+  "authorized_input_crosswalk": {
+    "source_id": "upstream hash-bound ADM metadata crosswalk",
+    "manifest_sha256": "70eb0c02891fb3963d575f3783e809d3c7840b3ee0aa7e78cef0d7191bbc0c48",
+    "summary_sha256": "a332a3d16965fbde331bec6466373aacc28a1654cc3af7e656dbf80922878198",
+    "input_count": 7,
+    "record_count": 254,
+    "mismatches": 0
+  },
+  "human_cat_input": {
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "role": "authorized 38-channel ADM identity; no audio payload included"
+  },
+  "implementation_source_or_binary_copied": false,
+  "dee_binary_or_decompilation_copied": false,
+  "audio_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

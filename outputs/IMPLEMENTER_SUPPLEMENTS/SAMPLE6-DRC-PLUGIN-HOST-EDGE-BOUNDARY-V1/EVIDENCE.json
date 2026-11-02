@@ -1,0 +1,47 @@
+{
+  "schema": "washed-drc-plugin-host-edge-boundary.v1",
+  "package_id": "SAMPLE6-DRC-PLUGIN-HOST-EDGE-BOUNDARY-V1",
+  "status": "PLUGIN_CALLBACK_AND_PLUGIN_BUFFER_CONSUMER_BOUND; HOST_TO_CORE_TRANSFER_UNBOUND",
+  "plugin_image": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd3ce1cce8b7e95d2"},
+  "core_image": {"name": "dee_ddp_encoder.exe", "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"},
+  "plugin_row_path": {
+    "row_owner": "plugin_root+0x21e9c",
+    "row_type": "F32[6][5]",
+    "producer": "plugin callback internal path",
+    "reader": "same plugin callback path",
+    "transfer_to_core": "NOT_PRESENT_IN_THIS_TRACED_PLUGIN_CALL_PATH"
+  },
+  "callback_boundary": {
+    "plugin_state": "plugin processing-state pointer",
+    "plugin_instance": "plugin instance pointer",
+    "output_record": "plugin_instance+0xb20",
+    "return_type": "integer status",
+    "nonzero_status": "wrapper returns error 0xd6",
+    "success_next_consumer": "plugin-owned writer and buffer"
+  },
+  "plugin_output_buffer": {
+    "source": "plugin_instance+0xb90",
+    "length_bytes": "2 * U16(plugin_instance+0xb9a)",
+    "consumer_receives_plugin_f32_row_pointer": false,
+    "typed_core_row_copy_observed": false
+  },
+  "unresolved_external_references": {
+    "dispatcher": ["0x180a5c6fc", "0x1808db5a8", "0x1808db5c4", "0x180843b18"],
+    "callback": ["0x180a5a3ec", "0x1808d8104", "0x1808d8114", "0x1808d812c"],
+    "host_function_body_inspected": false
+  },
+  "core_owner_boundary": {
+    "core_inline_row": "encoder state+0x21cc4",
+    "typed_plugin_to_core_edge": "UNBOUND",
+    "global_absence_claim": false,
+    "next_edge": "host-side callback/output consumer to encoder core row typed copy/owner edge"
+  },
+  "execution": {
+    "runtime_capture": "NOT_RUN",
+    "new_dee_run": false,
+    "pcm_included": false,
+    "payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

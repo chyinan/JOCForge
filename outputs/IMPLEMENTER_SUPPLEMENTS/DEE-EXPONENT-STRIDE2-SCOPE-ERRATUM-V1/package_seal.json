@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "DEE-EXPONENT-STRIDE2-SCOPE-ERRATUM-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3802,
+      "sha256": "2b286c051ebd6bbe664cbe81cc017ad8a961e1968574affbc6d0c43b80b46574"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2730,
+      "sha256": "d527a8eb6720225f1ed418bbe82f5ab834f364c942f82c8d67dff59a8cf658b7"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 681,
+      "sha256": "7b6d17d37235a41d1aae10f73a072a70f18ea93a61a34d1ee3d1dc1d5bd253b3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1894,
+      "sha256": "781a94f375d726c1f61715a797aa6e2b1d395adf33529fa88af34bb2707e2830"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1367,
+      "sha256": "53d88bea8874ae1b66cefe975ad936b7b26040fa53d0bfcb047154bd0ae68e46"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 2400,
+      "sha256": "87c3fe1542fb108e3e3cc10acd28d338ce90c8f72d3e63904c7c25a33b59f321"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "f5bb3c1d0837f50ea8ddc9e70f02ccfb733fcc69ca4932dbd915b4c6217d71e7"
+    }
+  ]
+}

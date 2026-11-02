@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "atmos-id0-vs-plugin-opaque-vector-boundary",
+  "fixed": {
+    "renderer_selected_type_id": 0,
+    "renderer_selector_getter": "selected_renderbus_object.vtable+0x38",
+    "plugin_vector_source": "plugin_config_input+0x18",
+    "plugin_vector_destination": "plugin_object+0x138",
+    "plugin_vector_stride_bytes": 32,
+    "vector_identity_join": "UNBOUND/NO",
+    "frame_count": "N",
+    "sample_values": "OMITTED"
+  },
+  "selector_cases": [
+    {"getter_result": 0, "expected_existing_branch": "SpatialCoderPlatform"},
+    {"getter_result": 2, "expected_existing_branch": "PreProcessorBypass"}
+  ],
+  "only_variable": "selected renderer ID-0 getter result; plugin vector remains opaque and is not substituted",
+  "execution": "NOT_RUN",
+  "purpose": "Keep the renderer selector contract separate from the untyped plugin-local vector and avoid inventing a default."
+}

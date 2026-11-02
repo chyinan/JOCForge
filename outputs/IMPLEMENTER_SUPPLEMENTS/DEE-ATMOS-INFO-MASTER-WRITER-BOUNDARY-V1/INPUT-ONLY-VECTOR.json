@@ -1,0 +1,8 @@
+{
+  "schema":"jocforge.atmos_info_master_writer_vector.v1",
+  "vector_id":"ATMOSINFO-MASTER-READER-SLOT-WRITER",
+  "reader_interface_getters": {"+0x28":"FFOA candidate", "+0x38":"Start time"},
+  "master_fields_written": {"+0xA8":"Start time", "+0xB0":"FFOA derived from both inputs"},
+  "concrete_reader_and_chunk_source":"UNBOUND",
+  "runtime_execution":"NOT_RUN"
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-MATCHED-DRC-BSI-FIELD-DELTA-V1",
+  "scope": "matched AU window header RF and first-block dynamic-range BSI field comparison",
+  "status": "DYNRNG_U8_DIFF_32_OF_125; CHANNEL3_SCALE0_RESIDUAL_UNEXPLAINED",
+  "source_manifest_sha256": "f83b04f3b3503b6e13428c48d969eb8ca5cde27822199dc1473ec1278aaadd67",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "90329d652ede62fc3431caf687800023fde9edc5852fc682d142d6271edf1156",
+      "bytes": 2400
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "f03d908d9fc3c70812070f20cda29de31d5146f4aba9435e199db8c29b5194fb",
+      "bytes": 3275
+    },
+    {
+      "name": "README.md",
+      "sha256": "2c4b04f68a071521318c98c754184c0c27a30c4c0602c139dec86896b2e38810",
+      "bytes": 1068
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "a3f6f5718e9efa7b6cc619db3253d3c9e0f0b7682c7c684ca8e16c998ac0b023",
+      "bytes": 862
+    }
+  ]
+}

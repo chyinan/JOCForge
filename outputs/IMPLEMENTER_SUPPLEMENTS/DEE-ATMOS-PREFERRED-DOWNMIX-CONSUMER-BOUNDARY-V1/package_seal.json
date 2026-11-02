@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "DEE-ATMOS-PREFERRED-DOWNMIX-CONSUMER-BOUNDARY-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2990,
+      "sha256": "4571bcbe4bffc596aa685ff9462051c8581e63e112870155d426d8f50cc46e13"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1863,
+      "sha256": "bc096172ff5453553227d1baa3765eedcf5c579f1e371b3e321ff7a4e29364c4"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 601,
+      "sha256": "2f3994bc9de909b23635db616a7c26dfe30127b80fdabdbd8dec140f4be85c97"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1359,
+      "sha256": "dd8538204eb2fad3826788f43fe8877e970f6537ff39328b5eee97502728f47c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 927,
+      "sha256": "f67a96ab73e3729165193e095ae4985c46d939e731c22801f18d8b9cf9ce029c"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1474,
+      "sha256": "76a3f339a1d88d7c958d8d5a74a28842464f94eef4fd17e7e9e5ff6d4bf20231"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "098e4ba0d89630040c86d96ec84a19dc1f747b1b787c87c7dded81f6587fc87c"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F12-SCALAR-TO-U5-LINEAGE-V1",
+  "source_reverse_package_id": "f12-scalar-to-u5-lineage",
+  "source_reverse_manifest_sha256": "2f9936de80f09cca10f3c0763f0a615e495fc88508f72554a4e1fcaefc20013a",
+  "status": "BEST_SUPPORTED_SCOPED_RULE; MEASUREMENT_TO_BSI_NATIVE_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2452,
+      "sha256": "dd722d02ae82bfa306d010e353be0c0ac5133b41e1a931ee671d0f0d6b825b7e"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3352,
+      "sha256": "978250f3043edb0d5df96c2b9382dffd4d6705945acda047b880efd2a759c426"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 534,
+      "sha256": "89fba89b4e9be5f553c37d9ade110f0627e2be5707fb7f9adc2a9a45d59dbb59"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2447,
+      "sha256": "1b7db042e882e04eb6e93e89bd4a9acd3344b161ae71d23b53bf33de094c4401"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 892,
+      "sha256": "fa0d3a51bfca6defbfff2dad7b7e865425d5b5f85f828ed5da9645ec70d81ab4"
+    }
+  ],
+  "exclusions": {
+    "source_code_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge-washed-atmos-host-to-plugin-selector-boundary.v1",
+  "package_id": "ATMOS-JOC-HOST-TO-PLUGIN-SELECTOR-BOUNDARY-V1",
+  "scope": "HOST STAGERUNNER FACTORY TO ATMOS PLUGIN CONFIG INTERFACE",
+  "status": "HOST_ATMOS_PLUGIN_EDGE_BOUND; ID0_RENDERBUS_PRODUCER_BEYOND_HOST_EDGE_UNBOUND",
+  "source_package": {
+    "package_id": "atmos_joc_host_renderbus_producer_boundary_wash_v1",
+    "manifest_sha256": "7c4cc1e54fcb81cbce5281d57934ce9b4daa2c5d8cbd1867752e164f3490089c",
+    "package_seal_sha256": "244d8b98540b90ef1d471819c72ce73fc6d32a97820ca1f8a6830fbc62853b53",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "referenced_sources_checked": 20,
+    "missing_references": 0,
+    "mismatched_references": 0,
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 static only"
+  },
+  "host_factory_edge": {
+    "stage_runner_build_rva": "0x3f690",
+    "config_list_member": "Runner+0x2c0..+0x2c8",
+    "factory_helper_rva": "0x41be0",
+    "callsite_rva": "0x3fa07",
+    "operation": "selected_config_object.vtable+0x30(this)",
+    "result_stage_store": "Runner+0x270",
+    "config_retained_at": "Runner+0x278",
+    "explicit_renderbus_vector_or_selector_argument": false,
+    "targeted_host_rdata_string_matches": 0,
+    "string_scan_limit": "literal-string absence does not prove absence of dynamically supplied fields"
+  },
+  "atmos_plugin_edge": {
+    "route": "encode_to_atmos_ddp",
+    "plugin_type": "dee::proc::FilterDDPJocEncPlugin",
+    "stage_type": "dee::proc::FilterDDPJocEnc",
+    "renderbus_input": "Atmos renderer consumes a caller-provided RenderBus config vector; selected ID-0 Speaker Monitoring object supplies selector vtable+0x38"
+  },
+  "remaining_boundary": {
+    "producer_or_adapter_supplying_renderbus_vector": "UNBOUND",
+    "writer_of_selected_id0_plus_0x58": "UNBOUND",
+    "selector_source_is_job_xml": "UNBOUND/NO",
+    "selector_source_is_user_prompt": "UNBOUND/NO",
+    "per_run_selector_value": "UNBOUND/NO"
+  },
+  "best_supported_rule": {
+    "rule": "Keep the selected ID-0 RenderBus config's typed vtable+0x38 value as an explicit selector and preserve zero -> SpatialCoderPlatform, nonzero -> PreProcessorBypass.",
+    "confidence": 0.94,
+    "conditional_mvp_blocked": false,
+    "hardcoded_default_recommended": false,
+    "audio_effect_note": "The selector may change downstream audio; exact per-run mode remains unknown."
+  },
+  "input_only_vector": {
+    "shared_rows": 36,
+    "fixed_type_id": 0,
+    "selector_values": [0, 2],
+    "execution": "NOT_RUN",
+    "pcm_included": false
+  },
+  "exclusions": {
+    "binary_or_raw_decompilation_included": false,
+    "pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

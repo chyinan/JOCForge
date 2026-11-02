@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "SYMBOLIC_METHOD_DISPATCH_AND_OWNER_VECTOR; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "dispatch": {
+    "type_index": "*channel_instance",
+    "method_table": "PTR_PTR_1405ede38",
+    "observed_vtable_base": "0x140610510",
+    "target_slot": "vtable+0x28 at 0x140610538 -> FUN_140350d00",
+    "callsite": "FUN_140315db0 at 0x1403160dc"
+  },
+  "owner": {
+    "method_argument_1": "channel_instance",
+    "state_pointer": "*(u64 *)(channel_instance+0xdf8)",
+    "row_range": "state+0x23e34..state+0x23eac",
+    "runtime_row_values": "UNBOUND"
+  },
+  "api_frame": {
+    "entry": "FUN_140213470 / DDP_ENC_PRO_ddpi_enc_process",
+    "dispatcher": "FUN_140315db0",
+    "row_writer_in_checked_scope": "NOT_FOUND"
+  },
+  "prohibited_inference": "Target/owner identity does not establish runtime F32 values or exclude external writers."
+}

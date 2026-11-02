@@ -1,0 +1,21 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1 final corrected",
+      "manifest_sha256": "8390bcfec006826d3e28d13cd0158b1f326d21ff922b8e289ad63babe44a4598",
+      "package_seal_sha256": "0c56f4d95a1def842ff3f38d54bacc91b4421a11aea8a7bb6d009d656e620456"
+    },
+    {
+      "package_id": "SAMPLE6-RUST-WINDOW-PROVIDER-DIRECT-VERIFICATION-V1",
+      "manifest_sha256": "8fba13724421e217aa6c4144c74fb037cf3b5fcd134e89f2a42652c019ae2339",
+      "package_seal_sha256": "6bbcfed9adc67343dbc4606eb075c5b113b79af867c965b70e95a44c7197d557"
+    },
+    {
+      "package_id": "IMPLEMENTER_PACKAGE",
+      "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+      "transform_spec_path": "specs/08-transforms.md",
+      "transform_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"
+    }
+  ]
+}

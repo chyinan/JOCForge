@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06-R138-OUTPUTWRAPPER-SOURCERANGE-PRODUCER-ORDER-V1",
+  "source_reverse_package_id": "native-f06-r138-outputwrapper-source-range-producer-addendum",
+  "source_reverse_manifest_sha256": "b4f4f3c7b1af253430564bfda44e6fd62d7619606ead9d096adf8ac24c7c15b8",
+  "status": "LOCAL_POST_FILTER_ORDER_BOUND; UPSTREAM_REGISTRY_OWNER_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3045,
+      "sha256": "5ec657aa1f97e8e330610cd979ab80924e515c8930377e4606b3bcb3d8b2ff37"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2411,
+      "sha256": "e747e084fed0d56e027b37685452ccb6119b0f1a00ac0b3398b8233fe6f8cb16"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 308,
+      "sha256": "54e18446fcf49a07dffaa3f4ea3ef275a649cf9d3645a9f86df36f1c321efac0"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1171,
+      "sha256": "81c1efbd2d589a92ae05d8c4613e72c84ac10f48e35b918121112997bb9d2af6"
+    }
+  ],
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

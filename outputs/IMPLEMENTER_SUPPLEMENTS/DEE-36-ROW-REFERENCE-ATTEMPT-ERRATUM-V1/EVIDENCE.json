@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.dee_36row_reference_attempt_erratum.v1",
+  "package_id": "DEE-36-ROW-REFERENCE-ATTEMPT-ERRATUM-V1",
+  "status": "36_CLEAN_TEMP_FALSE_ATTEMPT_INVALID_CONFIG; CLEAN_TEMP_TRUE_PATH_UNVERIFIED; DEE_REFERENCE_NOT_READY",
+  "attempts": [
+    {
+      "id": "36_clean_temp_false",
+      "source_package_manifest": "8bbead58e701baa917ef7acc6770cedc1f5e9d3c21d5e9e6ca3daaa3360620ae",
+      "adapted_xml_sha256": "4ef66b34b32877076d5607cd4624d8bb6fc50ab1e7cb9557c64c6daf72da6fa7",
+      "path_readback": "placeholder paths reproduced; input/output/temp paths invalid",
+      "result": "INVALID_CONFIG; ACCEPTANCE_NOT_EVALUATED"
+    },
+    {
+      "id": "36_clean_temp_true",
+      "source_package_manifest": "1001680f7c159bb4604dee66ce3ff1c5b51dfdfab1b08b568e88997e7c49f4fe",
+      "adapted_xml_sha256": "23f9bf564560c1a243ba1736c530085626757c5dc5368b0d1ecda31346964a7f",
+      "path_readback": "NOT_AVAILABLE",
+      "result": "PROCESS_CRASH; PATH_BINDING_NOT_ESTABLISHED; ACCEPTANCE_NOT_EVALUATED"
+    },
+    {
+      "id": "38_clean_temp_false",
+      "source_package_manifest": "5436b72178a7a22202913f29e6b4cd91d3225675939d015e18bf716ae58e43c7",
+      "template_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+      "path_normalized_xml_equal": true,
+      "exit_code": "0xC0000005",
+      "output_exists": false,
+      "result": "PROCESS_CRASH; ACCEPTANCE_NOT_EVALUATED"
+    },
+    {
+      "id": "80c3_success_receipt",
+      "source_package_manifest": "475c27615cd538f093a043a754251cedd40384451d81efe435d87c38d787992d",
+      "input_rows": 38,
+      "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+      "dee_host_image_sha256": "NOT_RECORDED",
+      "output_locally_rehashed": false,
+      "result": "RECEIPT_LEVEL_ONLY"
+    }
+  ],
+  "overall": {
+    "36_row_acceptance": "NOT_ESTABLISHED",
+    "38_row_acceptance_from_current_exact_run": "NOT_EVALUATED_PROCESS_CRASH",
+    "previous_36_38_pair_valid": false,
+    "raw_payload_or_key_access": false
+  }
+}

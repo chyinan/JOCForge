@@ -1,0 +1,22 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "r7-cross-adm-matched-controls",
+      "manifest_sha256": "2faa45c97ec06373a1d2a45e44e74c46fb8e5672aa4fe0882c5e0ff915ecb15b",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    }
+  ],
+  "wash_verification": {
+    "First Love input SHA-256 recomputed": true,
+    "Hortus Regis Alti input SHA-256 recomputed": true,
+    "output hashes": "run-receipt values only; output files were deleted after hash/header capture"
+  },
+  "payload_policy": {
+    "raw_pcm": false,
+    "encoded_output_payload": false,
+    "private_key_or_license_material": false,
+    "source_code_or_disassembly": false
+  }
+}

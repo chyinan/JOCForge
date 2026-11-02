@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "F13C-dmixmod-stored-field-chain-addendum-v1",
+    "manifest_sha256": "06cff5e99590055ee4704e48fe0d19cb371746d5b4a9540f0f4a38180e65827d",
+    "addendum_sha256": "d910d845c9fa81d89b6ec247c46bcae7a674ede4c838f050d98983f744884f2b",
+    "field_lineage_sha256": "7ed8259c8fb0bb432f6c47cc83b3f769b4be616d9370ef965b01fd306abaf133",
+    "checker_sha256": "df59d85dcf67e327ae8669ef31186edc990aa37c99df204994d8c7564e506233",
+    "verified": "normal and python -O package checks; installed image hash matches project record"
+  },
+  "excluded": [
+    "Ghidra scripts",
+    "raw trace/decompilation",
+    "binary",
+    "PCM",
+    "payload",
+    "private key",
+    "license"
+  ]
+}

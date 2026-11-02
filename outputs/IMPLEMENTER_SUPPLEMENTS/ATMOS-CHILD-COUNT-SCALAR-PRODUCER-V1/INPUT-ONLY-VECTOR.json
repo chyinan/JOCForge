@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "adm-child-count-metadata-candidate",
+  "metadata_input": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bed_row_lengths": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    "object_count": 28
+  },
+  "model_candidate": {
+    "formula": "object_count + sum(bed_row_lengths)",
+    "result": 38
+  },
+  "native_runtime": {
+    "row_vector_identity": "UNBOUND/NO",
+    "selected_count_mode": "UNBOUND/NO",
+    "getter_u16": "UNBOUND/NO",
+    "execution": "NOT_RUN"
+  },
+  "purpose": "Separate the static native producer formula from the metadata-only candidate."
+}

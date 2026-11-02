@@ -1,0 +1,77 @@
+{
+  "schema": "jocforge-atmos-joc-id0-selected-object-provenance.v1",
+  "package_id": "ATMOS-JOC-ID0-SELECTED-OBJECT-PROVENANCE-V1",
+  "status": "ID0_LOOKUP_AND_GETTER_EDGE_BOUND; ID0_CONCRETE_TYPE_AND_RUN_VALUE_UNBOUND",
+  "evidence_class": "Ghidra 12.2 static analysis, sanitized",
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "selected_id0_edge": {
+    "vector_member": "Renderer+0x60",
+    "vector_copy_constructor_rva": "0x41a170",
+    "lookup_wrapper_rva": "0x420340",
+    "lookup_requests_type_id": 0,
+    "list_scan_rva": "0x41f1e0",
+    "entry_type_id_getter_slot": "+0x08",
+    "selected_object_forwarder_rva": "0x422ba0",
+    "factory_rva": "0x421240",
+    "factory_argument": 5,
+    "selector_getter_caller_rva": "0x435120",
+    "selector_getter_slot": "+0x38",
+    "selector_object_identity_edge": "selected lookup result forwarded to argument 5 and used as getter receiver"
+  },
+  "adjacent_plugin_config_path": {
+    "plugin_constructor_rva": "0x133b10",
+    "source_field": "+0x18",
+    "destination_field": "+0x138",
+    "entry_stride_bytes": 32,
+    "stage_factory_rva": "0x13d880",
+    "filter_constructor_rva": "0x133a30",
+    "nested_priv_initializer_rva": "0x135d40",
+    "initializer_reads_forwarded_vector_argument": false,
+    "typed_renderbus_vector_identity_established": false,
+    "constructs_selected_id0_object": false,
+    "writes_selected_id0_plus_0x58": false
+  },
+  "excluded_rerender_candidate": {
+    "constructor_rva": "0x42bbf0",
+    "getter_rva": "0x42bf90",
+    "visible_type_ids": [3, 4, 5],
+    "selected_lookup_type_id": 0,
+    "selector_rules": [
+      {"tag": "0x10", "value": 2},
+      {"tag": "0x11", "value": 1},
+      {"tag": "0x12", "value": 2},
+      {"tag": "other", "value_source": "caller-supplied object+0x58"}
+    ],
+    "applicable_to_selected_id0": false
+  },
+  "best_supported_runtime_contract": {
+    "getter": "selected ID-0 object vtable+0x38",
+    "zero_branch": "SpatialCoderPlatform",
+    "nonzero_branch": "PreProcessorBypass",
+    "hardcoded_default_allowed": false,
+    "per_run_id0_class": "UNBOUND/NO",
+    "per_run_selector_value": "UNBOUND/NO",
+    "audio_equivalence": "NOT_ESTABLISHED"
+  },
+  "run_scope": {
+    "authorized_adm_receipts": 2,
+    "new_dee_run": "NOT_RUN",
+    "implementation_contact": "NOT_PERFORMED",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false
+  },
+  "source_package": {
+    "package_id": "atmos_joc_selector_id0_config_wash_v1",
+    "manifest_sha256": "bcd366ee63916707421278c34ba430b8b35bede053e65f6f8de13963b35ce8bc",
+    "package_seal_sha256": "960fafcb65249bb846a7dbd46e7dd0aad966a04b848f9078cdf4fb361ee94645"
+  },
+  "exclusions": {
+    "binaries_or_raw_disassembly": false,
+    "decompilation_source": false,
+    "audio_or_encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

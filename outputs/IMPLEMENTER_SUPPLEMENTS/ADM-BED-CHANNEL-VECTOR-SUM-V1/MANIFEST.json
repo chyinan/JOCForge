@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ADM-BED-CHANNEL-VECTOR-SUM-V1",
+  "source_reverse_package_id": "adm_bed_channel_vectors_wash_v1",
+  "source_reverse_manifest_sha256": "bc0460ba82a4211010881becd3a5e3744aedede7b97042c7998919242b5c9dee",
+  "status": "METADATA_BED_VECTOR_SUM_BOUND; NATIVE_ROW_IDENTITY_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3073,
+      "sha256": "ec3a5d9115205d24648d4f1ea1451477fd1f5714dce8492a627c885478c0d5c0"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2723,
+      "sha256": "d689cad38da38ba7d3b6b38e4d7c8612e41872a4cc80c6a3ba07d767400d0f1d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 318,
+      "sha256": "a701b97b84c8593f8d928c6fb7f9befef8507777ac78cf9ed6a8a2b4aa708231"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 765,
+      "sha256": "9ff3d14cb7fb952e037fa4abf5e9a6288db74f6a7ec9b87a551c40e86a5496c6"
+    }
+  ],
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

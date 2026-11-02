@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge-dialnorm-frame-record-boundary-vector.v1",
+  "input": {
+    "frame_record_dialnorm_word": "SYMBOLIC_DISTINCT_VALUE",
+    "context_convsnroffst": "SYMBOLIC_VALUE_A",
+    "context_convexpstr": "SYMBOLIC_VALUE_B"
+  },
+  "expected_static_disposition": {
+    "selected_branch_frame_record_forwarded_to_stuffer": false,
+    "five_bit_writer_field": "convexpstr",
+    "five_bit_writer_is_dialnorm_u5": false,
+    "active_branch_or_output_bytes": "NOT_OBSERVED"
+  },
+  "execution": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

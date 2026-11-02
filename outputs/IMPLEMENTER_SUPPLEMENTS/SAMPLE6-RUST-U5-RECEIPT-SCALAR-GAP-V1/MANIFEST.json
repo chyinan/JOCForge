@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-RUST-U5-RECEIPT-SCALAR-GAP-V1",
+  "source_reverse_package_id": "sample6-rust-u5-scalar-input-audit",
+  "source_reverse_manifest_sha256": "f867629d04c3eb684ea6599bb9efa90cdb14334b422ed6b1e229c02658d6941b",
+  "status": "CURRENT_RUN_U5_BOUND; SELECTED_LUFS_INPUT_NOT_RECORDED; DEE_REFERENCE_BOUNDED_WINDOW_ONLY",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3011,
+      "sha256": "b3658b2499502e5b232a41f7d847b8b350959d9e037fec9213aaaf6e86cdb46c"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2438,
+      "sha256": "653007605f55100b768240f248a56d3940dd044c4cbbccabe05c32b1036fb15d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 371,
+      "sha256": "d0a8675c245c4f5be44ce555f5ad129a39b0b5b8049ecb8e1ccb21311d782f62"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1048,
+      "sha256": "552394c97d665cefd75b551326144a5d5a81c06f9c2f87b0bd1352e9eea4c648"
+    }
+  ],
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

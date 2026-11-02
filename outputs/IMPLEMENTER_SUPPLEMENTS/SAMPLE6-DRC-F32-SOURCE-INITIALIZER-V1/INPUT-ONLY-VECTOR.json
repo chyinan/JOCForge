@@ -1,0 +1,22 @@
+{
+  "schema": "washed-drc-f32-source-initializer-vector.v1",
+  "vector_id": "six-by-five-f32-source-zero-init-and-typed-reads",
+  "classification": "SYMBOLIC_STATIC_LINEAGE; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "symbols": {"S": "core state base", "b": "block index 0..5", "j": "F32 row element index 0..4"},
+  "initializer": {
+    "base": "S+0x21cc4",
+    "word_address": "S+0x21cc4+0x2170+4*(5*b+j)",
+    "word_type": "U32",
+    "word_value": "0x00000000",
+    "typed_value": "positive-zero F32"
+  },
+  "typed_reads": [
+    "S+0x21cc4+0x2170+0x14*b",
+    "S+0x21cc4+0x2174+0x14*b"
+  ],
+  "output_row": "S+0x21aa8+0xbc+4*b",
+  "runtime_values": "UNOBSERVED",
+  "later_nonzero_writer": "UNBOUND",
+  "pcm_or_payload_included": false
+}

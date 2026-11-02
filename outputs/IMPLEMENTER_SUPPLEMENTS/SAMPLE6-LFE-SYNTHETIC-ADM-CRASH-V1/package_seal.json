@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-LFE-SYNTHETIC-ADM-CRASH-V1",
+  "manifest_sha256": "79cc983cf9ca9cb6029fa3539ba2e467c7d543b6beb5844a4688226acfec2bde",
+  "sha256sums_sha256": "afa37126bc5eb6d690c895bc4040d7a7fcbc2f0795a1b227fffc0de524d95478",
+  "payload_count": 5,
+  "status": "DEE_CRASHED_NO_OUTPUT; FAILURE_CAUSE_UNOBSERVED; AUDIO_COMPARISON_NOT_RUN",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

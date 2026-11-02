@@ -1,0 +1,37 @@
+{
+  "schema":"jocforge.atmosmezz_host_converter_time_map_join.v1",
+  "status":"HOST_NORMALIZED_MAP_WRITE_BOUND; CONVERTER_PRIVCONTEXT_TRANSFER_UNBOUND",
+  "upstream_package":{
+    "package_id":"adm_bwf_host_converter_map_join_wash_v1",
+    "evidence_manifest_sha256":"faabcbabf7b83a71361444d73251a202d4d3e0b2dffdc104ee12e056a1ce1f7d",
+    "package_seal_sha256":"41a958196034d34e9bc5c76d78abd3f33dc6bdd755682647a38e23b7672fa124",
+    "payload_count_verified":5,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "host_edge":{
+    "image":"dee.exe",
+    "image_sha256":"65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "normalizer":"FUN_14012ff20",
+    "normalizer_inputs":["host metadata property list", "AtmosMezz+0x188 timecode_frame_rate", "AtmosMezz+0x148 ffoa policy", "AtmosMezz+0x168 offset policy"],
+    "store_helper":"FUN_1400f1cc0",
+    "host_map":"dee::input::AtmosMezz+0x130"
+  },
+  "converter_edge":{
+    "image":"dee_audio_filter_convert_atmos_mezz.dll",
+    "image_sha256":"9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "consumer":"FUN_18007fba0 / PrivContext::setRange",
+    "map":"PrivContext+0xa8",
+    "keys":["offset", "first_frame_of_action"]
+  },
+  "join":{
+    "typed_transfer_found":false,
+    "same_owner_or_generation":"UNBOUND",
+    "exact_first_missing_edge":"dee::input::AtmosMezz+0x130 -> converter PrivContext+0xa8"
+  },
+  "mvp_boundary":{
+    "default_file_position_mvp_blocked":false,
+    "auto_time_extension":"UNBOUND"
+  },
+  "execution_scope":{"dee_run":false,"pcm_or_payload_access":false,"key_or_license_access":false,"production_allowed":false}
+}

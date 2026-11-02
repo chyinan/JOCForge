@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-outputwrapper-postfilter-row-input-only.v1",
+  "source_range": "received begin/end view",
+  "selection": "match/used-marking prepass may omit entries",
+  "postfilter_order": "preserved as iterated",
+  "row_fields": "source label/filename and nested string map from same current +0x20 record",
+  "expected_output_included": false,
+  "executed": false,
+  "join_to_adm_or_converter_vector": "UNBOUND"
+}

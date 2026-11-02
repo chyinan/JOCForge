@@ -1,0 +1,32 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-BAP3-ENDPOINT-RESIDUAL-CONTEXT-V1",
+  "status": "NATIVE_RULE_SPLIT_CONFIRMED; SAMPLE_RAW7_UNOBSERVED; PCM_CAUSALITY_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1469,
+      "sha256": "a3f705e0eff5f20f7c83285fc0b901b3d91b8d31a6d6dde67cfcf956d6516efc"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3025,
+      "sha256": "9777cf29e56be78713bad1e2309e9ff6348a3bcd9776c9631358aff75d492b98"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 661,
+      "sha256": "1174f9d1ae93445e8e8efb61a614355c95ae7bae36e014dd1e5dca6938fe4151"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1141,
+      "sha256": "06150f4c4e46ac6565d3c6666e98ab699f55be3bd9b1d7a82b4fc3a64cc4791f"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 4182,
+      "sha256": "c59799f8ef2d1aac907a9728f730282f1088d15ec41f77ccc52d00f1afa80c0b"
+    }
+  ]
+}

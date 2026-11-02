@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V2",
+  "manifest_sha256": "2e238835a0edd84a90764a2c74778f50b2c12e760d7ad051446a772f2efc8113",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "95578a209a10ab5ea013633194c6909f764398f82bc851ccbd8c3b5c9b47cbc0",
+      "bytes": 2367
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "2ef6ac94c82ddca1ca95b40e2b4a1cfd1af79f59d3ecf8caf96c649f2d56bb04",
+      "bytes": 3534
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "5ec668951499568a256f10530220b9739e5653d3929a5ff2e4e3abb65a6e8edb",
+      "bytes": 1037
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "152c4b64425b752c6ab25385eaa139d1f99baffdb656c650a2e389a2b99424ca",
+      "bytes": 2576
+    }
+  ],
+  "scope": "Metadata-only 36/38 ADM BWF comparison with inherited whole-file identities; no PCM read or codec acceptance claim"
+}

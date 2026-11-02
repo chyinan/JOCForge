@@ -1,0 +1,74 @@
+{
+  "schema": "jocforge-sample6-selected-lufs-producer-boundary.v1",
+  "package_id": "SAMPLE6-SELECTED-LUFS-PRODUCER-BOUNDARY-V1",
+  "status": "RUST_MEASUREMENT_AND_DIALNORM_RULE_BOUND; RUN_SCALAR_AND_UNIT_UNBOUND; DEE_U5_BOUNDED_WINDOW_ONLY",
+  "rust_run": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "source_commit": "216326f622e66f1f7b255dbe7a8bcfb8ca473ce2",
+    "executable_sha256": "d5e378f8478100c0e16dc805ec39639f01cd37a9987b2f12407824b58efc1ae7",
+    "logged_meter_dialnorm": 17,
+    "bounded_header_u5": 17,
+    "selected_lufs_word_in_run_receipt": null,
+    "getter_branch_in_run_receipt": null
+  },
+  "rust_measurement_path": {
+    "adm_row_mapping": "CHNA.track_index_1based - 1 -> zero-based interleaved BWF row",
+    "producer_chain": "CompleteSampleBlock F32 words -> stage_energy_window_block -> EnergyRecord mantissa_word/exponent -> integrated and ungated meter states -> compute_programme_measurement_values -> di_off_getter",
+    "getter_selection": "select ITU internal word when above LOUDNESS_FLOOR_WORD; otherwise ungated internal word",
+    "host_scale_f32_word": "0x43000000",
+    "host_scale_numeric_value": 128.0,
+    "physical_unit": "UNBOUND",
+    "selected_host_word_storage": "u32 containing F32 bits"
+  },
+  "current_rust_dialnorm_rule": {
+    "function": "dialnorm_from_selected_lufs",
+    "input": "u32 F32 word -> FiniteF32",
+    "sentinel": "abs(R32(selected_lufs - (-120.0f))) < 1e-6 -> U5 31",
+    "ordinary_operations": [
+      "F32 subtraction by 0.5f",
+      "truncate toward zero to I32 (first integer quantization)",
+      "clamp to [-31,-1]",
+      "negate into U5 [1,31]"
+    ],
+    "f64_arithmetic_in_production_conversion": false,
+    "source_files": {
+      "programme_measurement.rs": "edbebbcb654c945fd05288754548ee7a351dc006d9524d05b6a6dcd98fe474d8",
+      "dialnorm.rs": "55e21ed4ad4cf19193842f0293f313add00e97a6d29053ca02c792e78b34299f",
+      "measurement_receipt.rs": "2fff890d6d3e6a1672e13b22f8481b5a14ce2e18c06a1ffb29ee0531081c52aa"
+    },
+    "existing_non_sensitive_receipt_field": "ProgrammeMeasurementReceipt.selected_lufs_word"
+  },
+  "dee_bounded_reference": {
+    "same_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "scalar": -20.665958,
+    "unit": "UNBOUND",
+    "time_base": "file_position",
+    "start": 2160,
+    "end": 2208,
+    "full_file": false,
+    "reported_u5": 21,
+    "candidate_u5_if_interpreted_as_selected_lufs": 21,
+    "rust_selected_word_fabricated": false
+  },
+  "scope_comparison": {
+    "rust_full_file_u5": 17,
+    "dee_bounded_window_u5": 21,
+    "same_scope_comparable": false,
+    "reason": "Rust is full-file; DEE scalar/U5 are from a bounded file-position window."
+  },
+  "run_boundaries": {
+    "new_dee_run": false,
+    "pcm_or_payload_read": false,
+    "private_key_read": false,
+    "old_comparison_group_used": false,
+    "implementation_contact_in_research_slice": false
+  },
+  "source_package": {
+    "package_id": "sample6-selected-lufs-producer-lineage",
+    "manifest_digest": "fd6b8b3e5ee1301787288c53962e1d45afdaaeba582d59dad6a121c44941691c",
+    "manifest_file": "MANIFEST.sha256",
+    "separate_package_seal": "NOT_PROVIDED"
+  }
+}

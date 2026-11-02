@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EAC3-U7-GROUP-COUNT-RESET-AND-CANDIDATE-V1",
+  "source_reverse_package_id": "dee-ddp-group-count-initializer-wash-v3",
+  "source_reverse_manifest_sha256": "14249841078f59b3d51c964121d9c11177d0eb3d81d59791c3fd57a7b0c676b5",
+  "status": "ZERO_RESET_CANDIDATE_BOUND; POSITIVE_N_WRITER_UNBOUND; CEIL_RULE_INFERENCE",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3284,
+      "sha256": "2b31ef8618b9ce07aab332144cd71f73aa9255ed364adee2c3768122c4e6befe"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2917,
+      "sha256": "326ebbf3730e0aa7bb1f725efd6d0c00464465bce4ccacdd124cb30abdf3e0d7"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 480,
+      "sha256": "1ee398542c37eba87b7a2fbfdf486de6905a3a8ab0113892b8047109be610a62"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1173,
+      "sha256": "b7b3c5ac7da68256787c0097ecfb79d731e0534627915a43238d71b1c5316700"
+    }
+  ],
+  "exclusions": {
+    "source_code_or_decompilation_included": false,
+    "native_binary_included": false,
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

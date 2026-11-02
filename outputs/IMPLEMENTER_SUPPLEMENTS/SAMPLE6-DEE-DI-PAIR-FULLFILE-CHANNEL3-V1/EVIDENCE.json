@@ -1,0 +1,69 @@
+{
+  "schema": "sample6-dee-di-pair-fullfile-channel3.v1",
+  "package_id": "SAMPLE6-DEE-DI-PAIR-FULLFILE-CHANNEL3-V1",
+  "status": "SCALE0_CHANNEL3_NEARLY_EQUAL_NOT_EXACT; SCALE1_CHANNEL3_DIFFERS_ALL_BLOCKS; INDIVIDUAL_CONTROL_CAUSALITY_UNBOUND",
+  "source_package": {
+    "package_id": "native-f06-dee-dialogue-controls-decoder-scale-comparison-v1",
+    "manifest_sha256": "8f40517e401a80cbc8c8c256bd5bf02f4026f382404302104c77864036e7c2db",
+    "source_checker": "verify_decoder_scale_comparison.py",
+    "source_checker_normal": "PASS",
+    "source_checker_python_O": "PASS",
+    "source_package_seal": "NOT_PRESENT; MANIFEST.sha256 verified"
+  },
+  "control_pair": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "true15_output_sha256": "315c6a4bdc9b0d1317466d06c39b1809ce992c6d6b17997d82ca08aeebecf8a2",
+    "true15_job_xml_sha256": "5a27b268cee1fb70e1e0a1c7c1aadbf17d5942972787d833f97a4127068c08f0",
+    "false100_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "false100_job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "changed_controls": {
+      "dialogue_intelligence": ["true", "false"],
+      "speech_threshold": [15, 100]
+    },
+    "all_other_audio_controls": "verified equal by the Wash factorial XML identity check"
+  },
+  "stream": {
+    "format": "E-AC-3 Atmos",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "access_units": 4247,
+    "duration_seconds": 135.904,
+    "bytes_each": 17395712
+  },
+  "decoder_measurement": {
+    "decoder": "FFmpeg 8.1; decode-only",
+    "pcm_written_or_retained": false,
+    "block_duration_seconds": 4,
+    "block_count": 34,
+    "channel_index": 3
+  },
+  "drc_scale_0": {
+    "exact_sample_frames": 6521344,
+    "total_sample_frames": 6523392,
+    "exact_fraction": 0.9996860529000864,
+    "nonexact_blocks_zero_based": [18, 21],
+    "rmse": 0.00000054072849439888,
+    "peak_error": 0.00006103329360485077
+  },
+  "drc_scale_1": {
+    "exact_sample_frames": 672768,
+    "total_sample_frames": 6523392,
+    "exact_fraction": 0.1031316223216388,
+    "nonexact_blocks": 34,
+    "rmse": 0.001932178681732186,
+    "peak_error": 0.009876176714897156
+  },
+  "limits": {
+    "individual_dialogue_intelligence_effect": "NOT_ISOLATED",
+    "individual_speech_threshold_effect": "NOT_ISOLATED",
+    "channel_index_3_native_lfe_identity": "SUPPORTED_BY_SEPARATE_WASH/USER-LISTENING EVIDENCE; NOT THIS DECODER-PAIR MEASUREMENT",
+    "rust_vs_dee_channel3_core_residual_at_drc_scale_0": "NOT_EXPLAINED_BY_THIS_CONTROL_PAIR",
+    "atmos_rendering_parity": "NOT_RUN"
+  },
+  "privacy": {
+    "raw_pcm": false,
+    "encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

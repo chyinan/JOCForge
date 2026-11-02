@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-atmos-selector-config-writer-boundary-input.v1",
+  "fixed_lookup": {"renderbus_type_id": 0, "selected_component": "Speaker Monitoring config"},
+  "variants": [
+    {"internal_getter_result": 0, "expected_branch": "SpatialCoderPlatform"},
+    {"internal_getter_result": 2, "expected_branch": "PreProcessorBypass"}
+  ],
+  "execution": "NOT_RUN",
+  "runtime_value_observed": false,
+  "user_prompt_inferred": false,
+  "pcm_or_payload_included": false
+}

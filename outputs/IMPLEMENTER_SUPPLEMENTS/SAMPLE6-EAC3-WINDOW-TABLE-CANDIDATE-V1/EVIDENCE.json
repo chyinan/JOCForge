@@ -1,0 +1,80 @@
+{
+  "schema": "jocforge-sample6-eac3-window-table-candidate.v1",
+  "package_id": "SAMPLE6-EAC3-WINDOW-TABLE-CANDIDATE-V1",
+  "status": "STATIC_TRANSFORM_TABLE_SPLIT_FOUND; TRIAL_CANDIDATE_READY; PCM_CAUSALITY_UNBOUND",
+  "source_package": {
+    "package_id": "EAC3-CORE-WINDOW-TABLE-WASH-V1",
+    "manifest_sha256": "f568d4f1990dbc5e6ea2e41a2eddf750b7a24f87cf62cdec53d1b2fce41c9e75",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "package_seal": "NOT_PRESENT; MANIFEST.sha256_PRESENT"
+  },
+  "native_window_table": {
+    "element_type": "little-endian F32 bits",
+    "count": 256,
+    "sha256": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+    "target_image_sha256_as_source_bound": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "selected_rust_window_table": {
+    "provider": "MathGeneratedTransformParameters.window_f32_bits",
+    "source_file": "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
+    "sha256": "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23",
+    "current_source_file_matches_research_identity": true,
+    "sample6_run_source_identity": "UNBOUND"
+  },
+  "window_difference": {
+    "word_count": 256,
+    "one_ulp_mismatch_count": 12,
+    "first_mismatch_index": 21,
+    "mismatches": [
+      {"index":21,"native_f32_bits":"3c0ea5aa","rust_f32_bits":"3c0ea5a9"},
+      {"index":24,"native_f32_bits":"3c3f1258","rust_f32_bits":"3c3f1257"},
+      {"index":27,"native_f32_bits":"3c7a15c9","rust_f32_bits":"3c7a15c8"},
+      {"index":34,"native_f32_bits":"3cda168e","rust_f32_bits":"3cda168d"},
+      {"index":57,"native_f32_bits":"3dd3d29b","rust_f32_bits":"3dd3d29c"},
+      {"index":74,"native_f32_bits":"3e55acf8","rust_f32_bits":"3e55acf9"},
+      {"index":76,"native_f32_bits":"3e653241","rust_f32_bits":"3e653242"},
+      {"index":80,"native_f32_bits":"3e82f0b5","rust_f32_bits":"3e82f0b6"},
+      {"index":89,"native_f32_bits":"3eab43c5","rust_f32_bits":"3eab43c6"},
+      {"index":93,"native_f32_bits":"3ebe7ba1","rust_f32_bits":"3ebe7ba2"},
+      {"index":105,"native_f32_bits":"3efafe35","rust_f32_bits":"3efafe36"},
+      {"index":194,"native_f32_bits":"3f7e03d4","rust_f32_bits":"3f7e03d3"}
+    ],
+    "mapping_and_f32_operation_order_match": true,
+    "fused_multiply_add_observed": false
+  },
+  "minimum_vector": {
+    "input_word_count": 256,
+    "nonzero_input": {"index":234,"f32_bits":"3f800000"},
+    "selected_pair_index": 21,
+    "primary_fold_row": 107,
+    "companion_fold_side": 106,
+    "native_primary_f32_bits": "3c0ea5aa",
+    "rust_primary_f32_bits": "3c0ea5a9",
+    "native_companion_f32_bits": "bc0ea5aa",
+    "rust_companion_f32_bits": "bc0ea5a9",
+    "execution": "MODEL_BOUNDARY_ONLY; NATIVE_EMULATOR_AND_PCM_NOT_RUN"
+  },
+  "candidate_trial": {
+    "ready": true,
+    "change_scope": "Replace the 12 selected-provider F32 words with the hash-bound DEE bit patterns; leave fold arithmetic/order unchanged.",
+    "must_not_do": [
+      "switch to the legacy table whose active owner route is unbound",
+      "claim this is the proven cause of the previous PCM residual",
+      "claim bit-exact or full-track parity without a new run"
+    ]
+  },
+  "pcm_context": {
+    "same_adm_au_aligned_residual_package_manifest": "83436f42e1bff437829c66e9a4dcfc604c371a3e872f8e9e784c558d538d9c39",
+    "rmse_f32": 0.0063942473561041544,
+    "max_abs_error_f32": 0.30480920523405075,
+    "causal_link_to_window_table_split": "UNBOUND"
+  },
+  "execution_scope": {
+    "dee_run": "NOT_RUN",
+    "encode": "NOT_RUN",
+    "pcm_or_media_read": false,
+    "encoded_payload_read": false,
+    "private_key_or_auth_material_read": false
+  }
+}

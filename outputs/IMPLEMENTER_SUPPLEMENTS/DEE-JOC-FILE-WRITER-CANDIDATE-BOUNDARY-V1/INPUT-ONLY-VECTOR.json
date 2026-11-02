@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-static-buffer-flow-vector.v1",
+  "vector_id": "per-unit-buffer-to-fwrite-candidate-distinction",
+  "fixed": {
+    "per_unit_repacked_input": "record+0xb90",
+    "per_unit_repacked_input_bytes": "U16(record+0xb9a)*2",
+    "per_unit_caller_destination": "plVar14[-0x282]",
+    "first_memory_writer": "FUN_1800e01e0",
+    "separate_fwrite_candidate": "FUN_180189c80 param_2 with length *param_3"
+  },
+  "identity_joins": {
+    "caller_buffer_to_fwrite_param2": "UNBOUND/NO",
+    "output_count_to_fwrite_length": "UNBOUND/NO",
+    "fwrite_FILE_to_final_ec3": "UNBOUND/NO"
+  },
+  "execution": "STATIC_ONLY; NO_FILE_WRITE_RUN"
+}

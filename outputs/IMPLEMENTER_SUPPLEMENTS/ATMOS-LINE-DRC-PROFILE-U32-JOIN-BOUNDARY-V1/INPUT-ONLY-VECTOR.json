@@ -1,0 +1,11 @@
+{
+  "schema":"jocforge.static_line_drc_profile_tree_vector.v1",
+  "vector_id":"LINE-FILM-LIGHT-PROFILE-U32-LOOKUP",
+  "default_string":"film_light",
+  "static_profile_tree_node":"NOT_PRESENT_IN_INSPECTED_ZERO_FILLED_IMAGE",
+  "first_consumer_write_condition":"tree hit and exact string match",
+  "miss_writes_profile_u32":false,
+  "film_light_u32":"UNBOUND",
+  "downstream_line_ddp_compr_join":"UNBOUND",
+  "execution":"NOT_RUN"
+}

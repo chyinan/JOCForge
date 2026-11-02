@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "F13C-DMIXMOD-FIRST-USEPOINT-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "DMIXMOD_ALLOWLIST_USEPOINT_BOUND; PREFERRED_ALIAS_UNBOUND; AUDIO_BSI_JOC_EFFECT_UNBOUND; TEST_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1474,
+      "sha256": "87c714581e3f067eaa31b4902e7dbcfbc669c1b1e1979d93acfd40b211a96725"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2357,
+      "sha256": "d933e4670b8c3ade260f74aa1f045b62060008728dbfdfa31b825bf949b051df"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 596,
+      "sha256": "d31798990c9d6abb82f00d92430f18db656272f8cc5a209ed4326ff266dc263b"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 975,
+      "sha256": "8593841135cdc49d8aebeebd0fd0d2f4cd1f4082e7952bcd323e9cad9897f366"
+    }
+  }
+}

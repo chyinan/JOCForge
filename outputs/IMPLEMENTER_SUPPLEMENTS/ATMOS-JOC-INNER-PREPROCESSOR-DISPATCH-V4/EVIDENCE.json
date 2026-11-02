@@ -1,0 +1,73 @@
+{
+  "schema": "jocforge-washed-atmos-selected-id0-config-field.v1",
+  "package_id": "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V4",
+  "supersedes": "ATMOS-JOC-INNER-PREPROCESSOR-DISPATCH-V3",
+  "scope": "SELECTED RENDERBUS TYPE-ID-0 CONFIG FIELD SOURCE",
+  "status": "ID0_LOOKUP_AND_SELECTOR_FIELD_SOURCE_BOUND; ID0_CONCRETE_TYPE_AND_RUN_VALUE_UNBOUND",
+  "source_package": {
+    "package_id": "atmos_joc_selector_id0_config_wash_v1",
+    "manifest_sha256": "bcd366ee63916707421278c34ba430b8b35bede053e65f6f8de13963b35ce8bc",
+    "package_seal_sha256": "960fafcb65249bb846a7dbd46e7dd0aad966a04b848f9078cdf4fb361ee94645",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "referenced_sources_checked": 14,
+    "missing_references": 0,
+    "mismatched_references": 0,
+    "tool": "Ghidra 12.2 Public static only",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "selected_id0_lookup": {
+    "renderbus_list_copy_rva": "0x41a170",
+    "speaker_monitoring_lookup_rva": "0x420340",
+    "lookup_type_id": 0,
+    "scan_rva": "0x41f1e0",
+    "type_id_slot": "+0x08",
+    "selected_object_forwarded_as": "FUN_180421240 arg5",
+    "selector_getter": "selected_object.vtable+0x38 in FUN_180435120",
+    "concrete_id0_class": "UNBOUND"
+  },
+  "base_getter_candidate": {
+    "type": "Dolby::Atmos::RenderBusConfigBase",
+    "slot": "+0x38",
+    "target_rva": "0x596670",
+    "returned_field": "object+0x58",
+    "field_source": "caller-supplied to FUN_180439f00; no literal default assigned in the examined base constructor",
+    "selected_id0_class_join": "UNBOUND"
+  },
+  "rerenderbus_config_candidate": {
+    "type_id_values": [3, 4, 5],
+    "selector_tag_values": {"0x10": 2, "0x11": 1, "0x12": 2},
+    "fallback_values": [3, 4, 5],
+    "selected_by_type_id_0_lookup": false,
+    "use_limit": "Do not transfer these values or defaults to the selected ID-0 Speaker Monitoring object."
+  },
+  "best_supported_contract": {
+    "rule": "Read and preserve the selected ID-0 RenderBusConfig object's typed vtable+0x38 result. Use the established conditional branch: zero -> SpatialCoderPlatform; nonzero -> PreProcessorBypass. Do not hardcode a value.",
+    "mvp_blocked": false,
+    "per_run_selector_value": "UNBOUND/NOT_RECORDED",
+    "ui_or_prompt_requirement": "NOT_ESTABLISHED_BY_THIS_EVIDENCE",
+    "exact_audio_equivalence": "OPEN_IF_REQUIRED"
+  },
+  "sample_scope": {
+    "authorized_adm_receipts": 2,
+    "route": "audio.adm -> encode_to_atmos_ddp",
+    "channels": 36,
+    "sample_rate_hz": 48000,
+    "prior_dee_observations": 2,
+    "active_samples": 1,
+    "quiet_samples_excluded": 1,
+    "selector_recorded": false,
+    "new_dee_run": false
+  },
+  "input_only_vector": {
+    "selector_results": [0, 2],
+    "execution": "NOT_RUN",
+    "pcm_or_payload_included": false,
+    "default_inferred": false
+  },
+  "exclusions": {
+    "binary_or_raw_decompilation_included": false,
+    "pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

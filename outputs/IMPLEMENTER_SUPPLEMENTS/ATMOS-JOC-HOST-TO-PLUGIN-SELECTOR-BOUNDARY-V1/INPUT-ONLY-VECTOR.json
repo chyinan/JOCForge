@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-host-atmos-selector-boundary-input.v1",
+  "host_selected_config": "generic plugin config passed to vtable+0x30 factory",
+  "downstream_renderbus_object": {"type_id": 0, "selector_getter": "vtable+0x38"},
+  "selector_cases": [
+    {"value": 0, "expected_branch": "SpatialCoderPlatform"},
+    {"value": 2, "expected_branch": "PreProcessorBypass"}
+  ],
+  "execution": "NOT_RUN",
+  "job_xml_or_user_prompt_source_asserted": false,
+  "pcm_or_payload_included": false
+}

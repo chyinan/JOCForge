@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-r138-vcall-receiver-input-only-v2",
+  "outer_receiver": "dee::OutputWrapper",
+  "argument_type": "dee::Types::StringType",
+  "nested_receiver": "plVar3; vtable type UNBOUND",
+  "generic_vcall_slot": "+0x28",
+  "most_likely_target": "MediaMetadata::set at slot 5 / +0x28",
+  "expected_runtime_target_included": false,
+  "executed": false
+}

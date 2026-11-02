@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge-sample6-joc-signaling-metadata-boundary.v1",
+  "package_id": "SAMPLE6-JOC-SIGNALING-METADATA-BOUNDARY-V1",
+  "scope": "FFPROBE STREAM AND FRAME METADATA ONLY",
+  "status": "STREAM_PROFILE_ATMOS_RECOGNIZED; PER_AU_JOC_EMDF_FLAG_NOT_EXPOSED",
+  "source_package": {
+    "package_id": "sample6_joc_signaling_audit_wash_v1",
+    "manifest_sha256": "42194079cf43f558e251e53e545731c056e7fd1d3c284073fe2cb8ed5be992b1",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "parser": "FFprobe 8.1 metadata-only queries",
+    "source_input_file_hash_computed_by_source_task": false
+  },
+  "independently_bound_output": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "output_bytes": 17395712
+  },
+  "stream_metadata": {
+    "stream_count": 1,
+    "codec": "E-AC-3",
+    "profile": "Dolby Digital Plus + Dolby Atmos",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "bit_rate_bps": 1024000
+  },
+  "per_unit_metadata": {
+    "packet_count": 4247,
+    "packets_with_any_side_data": 0,
+    "frame_metadata_count": 4247,
+    "frame_samples_each": 1536,
+    "first_pts": 0,
+    "last_pts": 12228480,
+    "frame_side_data_counts": {"Metadata relevant to a downmix procedure": 4247},
+    "frames_with_joc_side_data": 0,
+    "frames_with_atmos_side_data": 0,
+    "frames_with_emdf_side_data": 0,
+    "explicit_per_au_joc_emdf_flag": "NOT_EXPOSED_BY_FFPROBE_METADATA"
+  },
+  "interpretation": {
+    "stream_profile_atmos_recognized": true,
+    "stream_profile_proves_every_au_has_joc": false,
+    "downmix_side_data_is_joc_emdf": false,
+    "claim_all_4247_aus_have_joc": false,
+    "claim_no_joc_in_file": false,
+    "additional_validation_needed": "A parser that exposes E-AC-3 EMDF/JOC flags per access unit, or a native render, is needed to prove per-AU signaling coverage."
+  },
+  "access_boundary": {
+    "raw_packet_data_saved": false,
+    "payload_saved": false,
+    "pcm_saved": false,
+    "encoding_performed": false,
+    "private_key_or_license_accessed": false
+  }
+}

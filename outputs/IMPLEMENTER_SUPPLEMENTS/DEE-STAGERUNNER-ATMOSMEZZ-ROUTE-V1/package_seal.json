@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "DEE-STAGERUNNER-ATMOSMEZZ-ROUTE-V1",
+  "manifest_sha256": "88989640018d9b01264229cd0956ad53680755077adad40a643399ea2789a9dd",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "2c426af6c1ec6f631c6543fc563211e875bcf65c8c2b0610a6fbd7375924b5e7",
+      "bytes": 1949
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "52f0b222771ba1ccfd8f4ea401f5c3ca802a5406445d4cea09fccb0185d641bc",
+      "bytes": 2510
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "c251c08db4d590f3d136daabba1877ecaaf44ff7631d31a1da2918ad32659632",
+      "bytes": 578
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "3ef627ec3075457a0c050de8969156c4cb20f72c264d107e2481cbb0391099af",
+      "bytes": 2427
+    }
+  ],
+  "scope": "Selected ADM atmos_mezz StageRunner route bound; count gate within that route remains UNBOUND"
+}

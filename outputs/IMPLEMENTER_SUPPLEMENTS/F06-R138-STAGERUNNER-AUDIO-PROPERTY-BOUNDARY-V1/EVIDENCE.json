@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-f06-stagerunner-audio-property-boundary.v1",
+  "package_id": "F06-R138-STAGERUNNER-AUDIO-PROPERTY-BOUNDARY-V1",
+  "scope": "TWO INITOUTPUT PROPERTY CALLS AND OUTPUTWRAPPER REGISTRY NON-WRITE",
+  "status": "AUDIO_INPUT_PROPERTY_EDGE_BOUND; DEE_AUDIO_SOURCE_TYPE_WRITER_NOT_IN_SCOPED_WINDOW",
+  "source_package": {
+    "package_id": "native-f06-r138-stagerunner-property-callsite-retry-addendum",
+    "manifest_sha256": "986e4138a39e83e35a3f0622a743206f5b1288d4b2d290e2947ac083aa8e9cf9",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "hash_bound_direct_callsite_report": "24aaa682a119072a9a8ac36be24f246d754602d0f0269a1409441b41ee3f18d3",
+    "hash_bound_process_log": "d1d307865274f76219e1d52a6ef10c6fe0efac199693965529492f155dbc93cf",
+    "tool": "Ghidra 12.2 read-only",
+    "dee_run": false,
+    "media_pcm_or_key_read": false
+  },
+  "bound_callsites": {
+    "initoutput_audio_property": "dee_audio_input_source from StageRunner+0x428",
+    "initoutput_video_property": "dee_video_input_source from StageRunner+0x5E8",
+    "setter_path": "StageRunner::SetProperty builds typed key/value record and calls OutputWrapper::SetProperty",
+    "dee_audio_source_type_in_this_window": false,
+    "writes_outputwrapper_plus_0x178": false
+  },
+  "remaining_edge": {
+    "caller_supplying_dee_audio_source_type": "UNBOUND",
+    "typed_source_container_to_outputwrapper_plus_0x178": "UNBOUND",
+    "job_or_upstream_origin": "UNBOUND"
+  },
+  "best_supported_model_rule": {
+    "rule": "Preserve OutputWrapper+0x178's own insertion order and downstream filtered-subset order; these two InitOutput audio/video property calls do not establish that registry order.",
+    "audio_algorithm_change_established": false,
+    "mvp_blocked": false
+  },
+  "execution_boundary": {
+    "implementation_contacted_by_research": false,
+    "dee_run": "NOT_RUN",
+    "media_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "binary_or_decompilation_included": false
+  }
+}

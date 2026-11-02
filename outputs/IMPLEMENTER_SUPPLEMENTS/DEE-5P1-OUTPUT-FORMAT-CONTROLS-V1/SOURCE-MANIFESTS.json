@@ -1,0 +1,14 @@
+{
+  "source_packages": [
+    {"package_id":"dee_5p1_output_format_controls_wash_v1","manifest_sha256":"05d1bc3ef9c8a0e43d8ff83d605f4fc7dc56708e3a71e208e2dcfc81ccb6f686","source_seal":"MANIFEST.sha256_PRESENT"},
+    {"package_id":"DEE-AUTHORIZED-ADM-RUNTIME-SOURCE-BOUNDARY-V1","manifest_sha256":"1c5e5c13bd7ebb1fcc37356c47b649f7982cac4acd7250071a57219d1d9d1131"},
+    {"package_id":"OUTPUT-ADMISSION-METADATA-SOURCE-V1","manifest_sha256":"627606edd5b3cfa86b742e93f4a17332d100a69d8bf034810ab30408f6c8857b"},
+    {"package_id":"dee_filewriter_selected_caller_wash_v1","manifest_sha256":"425fe10862b35509ebceb8c2d5aaf403d291988195b917f9cd084fa95b7f0157"}
+  ],
+  "source_validation": {
+    "incoming_manifest_sha256_recomputed":"05d1bc3ef9c8a0e43d8ff83d605f4fc7dc56708e3a71e208e2dcfc81ccb6f686",
+    "incoming_normal_and_optimized_checker":"PASS",
+    "current_rust_profile_source_hashes_recomputed":"PASS",
+    "ghidra_script_or_decompilation_copied":false
+  }
+}

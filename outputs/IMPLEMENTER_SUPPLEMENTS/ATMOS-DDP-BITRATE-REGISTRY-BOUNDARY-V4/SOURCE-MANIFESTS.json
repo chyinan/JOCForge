@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "ATMOS-DDP-BITRATE-SINK-WASH-V2",
+    "path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-9-f05-f13-static-lineage\\outputs\\ATMOS-DDP-BITRATE-SINK-WASH-V2",
+    "manifest_sha256": "a234f33d415b85b0450c6705c2a993cd049837c720551ca9a2c1ef0a1bc7e206",
+    "type1_writer_addendum_sha256": "ff1b56d863b7f512daf9141b71d5a8911aae2a62aeb53caf5ce8af965956e342",
+    "writer_registry_trace_sha256": "190982e85777a5ef549bbfee370833aee3fefcf9e02c98840638d5b95727213b",
+    "type_init_trace_sha256": "81f56f50a3122a3e7962f36c3c3ace7f82ef28561fecb1b5a4826765a145a66d",
+    "verification": "18 manifest-listed evidence files rehashed; no seal/checker receipt in source package"
+  },
+  "excluded": [
+    "Ghidra scripts",
+    "raw trace/decompilation",
+    "binary",
+    "E-AC-3 payload",
+    "PCM",
+    "private key",
+    "license"
+  ]
+}

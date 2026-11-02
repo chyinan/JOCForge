@@ -1,0 +1,33 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1 final",
+      "manifest_sha256": "883dfbf0bee6e0bcc52fa232109b3723d83a841b97551b48abacd20b335bdc2e",
+      "package_seal_sha256": "5b54d7a1c43aa8c022415141fe0064f9f7c2fb970c84f70e2401b340cdb310c8",
+      "sha256sums_sha256": "2adaf949d6bb0341a0c21de57e6ae345642431a05358e63d43b8be4c3480fbc2",
+      "supersedes_manifest_sha256": "d4043721c4e4a00ad3013259ba23430f751f0245924f437333578c4c2ee718eb"
+    },
+    {
+      "package_id": "ADM-CHNA-PHYSICAL-ROW-ORDER-MVP-V1",
+      "manifest_sha256": "17f8d2fc3f7525a8edacfad07db6ff7668df7b71ce9082489aa6b8c9524d1e7a",
+      "evidence_sha256": "d3fbffc8945cd759a3e1dbb260f55148badc98c2dfce1d3eb1420350d2b4c806"
+    },
+    {
+      "package_id": "ADM-CONVERTER-CHANNEL-ID-TO-BWF-SLOT-CROSSWALK-V1",
+      "manifest_sha256": "30121f27bbb226faf38de18159614586679b107e70e7d0529a7bd21650d836b7",
+      "evidence_sha256": "991c2bb3957afe542f6b8932f02e968d6c6fb3faaa457d889c8c80769f231c43"
+    },
+    {
+      "package_id": "spatial-selector-identity-wash-v9",
+      "manifest_sha256": "4fbb097f00ee01a2559eb45747d81b761677801b0951c5a4d7fdc7402919d6b5",
+      "evidence_sha256": "5cfa77a40f51c27e9ac5a906d6cdfd0226a45926d9e9c33fc4b968f9236ba529"
+    },
+    {
+      "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V1",
+      "manifest_sha256": "b4af51070e7f52242e04535c4abefc95d0bfc31086e264692af7645c600897f2",
+      "package_seal_sha256": "1e62aeaa0dc9eef1ef47679557b8c8c5d0acf37711233702a6c01016f3abf4f3",
+      "superseded_by": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V2"
+    }
+  ]
+}

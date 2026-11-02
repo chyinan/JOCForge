@@ -1,0 +1,13 @@
+{
+  "schema": "washed-symbolic-lfe-analysis-vector.v1",
+  "vector_id": "symbolic-lfe-bin2-analysis-only",
+  "sample_rate_hz": 48000,
+  "transform_length": 4096,
+  "source_row": {"physical_bwf_slot": 3, "uid": "ATU_00000004", "role": "LFE"},
+  "symbolic_input_rule": "x[n] = A * sin(2*pi*2*n/4096), n=0..4095; other channel tags are zero",
+  "sample_values_materialized": false,
+  "expected_output_present": false,
+  "captured_analysis_relation": "power[2] = (real[2]^2 + imag[2]^2) * 0.042385533452034",
+  "interpretation_boundary": "analysis weighting only; not a decoded-core LFE amplitude gain",
+  "execution_status": "NOT_RUN"
+}

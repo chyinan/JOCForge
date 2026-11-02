@@ -1,0 +1,74 @@
+{
+  "schema": "jocforge-washed-adm-physical-row-order.v1",
+  "scope": "AUTHORIZED ADM BWF METADATA TO DLBWAVFILE ROW ORDER FOR 1024 KBPS / 5.1 JOC INPUT",
+  "status": "BEST_SUPPORTED_MVP_RULE; EXACT_RUNTIME_OWNER_GENERATION_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "source_package": {
+    "package_id": "adm_storage_row_table_producer_wash_v1",
+    "manifest_sha256": "7fcc5d6b2486c2c882c618843e19ca259e447f2c3ca502eb0688eaec3b5528b0",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "sealed_file_count": 46
+  },
+  "dee_image": {
+    "image_name": "dee_audio_filter_convert_atmos_mezz.dll",
+    "sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "bytes": 6286336,
+    "analysis": "Ghidra 12.2 static"
+  },
+  "best_supported_mvp_rule": {
+    "caller_row_order": "physical interleaved BWF slot order",
+    "chna_track_index_mapping": "zero_based_physical_slot = track_index_1based - 1",
+    "row_copy": "internal_row[i] = caller_row[i] + sample_offset * 4",
+    "channels": "take parsed fmt channel count; do not pad 36-channel input to 38",
+    "confidence": "MEDIUM_HIGH combined MVP assumption"
+  },
+  "cross_sample_evidence": {
+    "distinct_authorized_inputs": 7,
+    "inputs_36_channels": 6,
+    "inputs_38_channels": 1,
+    "chna_records_checked": 254,
+    "track_index_minus_one_to_interleaved_slot_mismatches": 0,
+    "track_indices_unique_and_complete": true,
+    "interleaved_slots_unique_and_complete": true,
+    "uid_and_axml_references_resolved": true,
+    "runtime_reader_observed": false,
+    "dee_runtime_observations": 0
+  },
+  "human_cat_input": {
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "channels": 38,
+    "data_payload_decoded_or_sample_interpreted": false,
+    "incoming_alias_copy_and_full_file_hash_performed": true,
+    "incoming_metadata_summary_data_payload_bytes_read": 0
+  },
+  "native_static_facts": {
+    "AdmFileStorage_source_member_offset": "0x98",
+    "DlbWavFile_fmt_channel_count_offset": "0xc8",
+    "DlbWavFile_internal_row_pointer_table_offset": "0xe8",
+    "row_pointer_allocation": "channel_count * 8 bytes",
+    "read_adapter_rva": "0x2195e0",
+    "row_copy_helper_rva": "0x22d1e0",
+    "write_adapters": ["0x22de30", "0x22dee0"],
+    "CHNA_key_passed_to_row_writers": false
+  },
+  "unbound_or_not_run": {
+    "exact_runtime_owner_generation_row_pointer_join": "UNBOUND",
+    "actual_first_fill_call_order": "NOT_RUN",
+    "runtime_pointer_values_and_PCM": "NOT_RUN",
+    "playback": "NOT_RUN",
+    "dee_or_converter_runtime": "NOT_RUN_SAFETY_GATE_UNPROVEN"
+  },
+  "impact_boundary": {
+    "wrong_rule_risk": "channel/sample content routed to wrong rows",
+    "container_parseability_affected_by_row_mapping": false,
+    "private_key_or_auth_content_read_or_copied": false
+  },
+  "payload_policy": {
+    "implementation_source_included": false,
+    "dee_binary_or_decompilation_included": false,
+    "audio_or_pcm_payload_included": false,
+    "private_key_or_license_data_included": false
+  }
+}

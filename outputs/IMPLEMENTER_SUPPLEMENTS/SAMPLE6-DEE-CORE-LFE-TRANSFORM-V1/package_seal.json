@@ -1,0 +1,9 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-CORE-LFE-TRANSFORM-V1",
+  "manifest_sha256": "eaf981c9436b5779df50e375aae6619bd652699e16f030cfca4945d42284b942",
+  "sha256sums_sha256": "fd96cfac83fb818ee344bde6843851f358dac773582ff29caec09bd57221854e",
+  "payload_count": 5,
+  "status": "CORE_LFE_BRANCH_AND_FIRST_SAMPLE_TRANSFORM_BOUND_STATIC; MATCHED_INPUT_TO_CORE_LANE_UNBOUND; SCRATCH_HISTORY_SOURCE_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

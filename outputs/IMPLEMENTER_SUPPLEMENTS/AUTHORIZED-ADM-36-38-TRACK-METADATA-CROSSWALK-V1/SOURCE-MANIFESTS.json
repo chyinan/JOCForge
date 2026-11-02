@@ -1,0 +1,20 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "source_kind": "user-authorized local inputs; metadata chunks only",
+  "sources": [
+    {
+      "path": "D:\\潜在的なアイ.wav",
+      "whole_file_sha256": "NOT_COMPUTED_DATA_SKIPPED",
+      "chna_chunk_sha256": "621f761e76bf603741e965d224c55aa0f948a13f4fa603e207085d1a112ac379",
+      "axml_chunk_sha256": "644add5af8dca305510acdd1fa7fcb81b8bedaefd6d826978442fb51d0a77d6e",
+      "declared_sample_bytes": 1069575624
+    },
+    {
+      "path": "D:\\人是猫 - 张卡斯, 洛天依.wav",
+      "whole_file_sha256": "NOT_COMPUTED_DATA_SKIPPED",
+      "chna_chunk_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6",
+      "axml_chunk_sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659",
+      "declared_sample_bytes": 743611284
+    }
+  ]
+}

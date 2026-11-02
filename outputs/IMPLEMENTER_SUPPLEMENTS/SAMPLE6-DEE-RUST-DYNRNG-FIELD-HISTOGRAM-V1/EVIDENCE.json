@@ -1,0 +1,52 @@
+{
+  "schema": "washed-eac3-dynrng-field-histogram.v1",
+  "package_id": "SAMPLE6-DEE-RUST-DYNRNG-FIELD-HISTOGRAM-V1",
+  "status": "ALL_SIX_BLOCKS_PARSED; U8_FIELD_DELTAS_MEASURED; PRODUCER_AND_RENDERED_EFFECT_UNBOUND",
+  "matched_outputs": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "dee_ec3_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_ec3_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "access_units": 4247,
+    "audio_blocks_per_au": 6,
+    "parsed_fields_per_stream": 25482,
+    "layout": "5.1(side)"
+  },
+  "full_file": {
+    "dynrnge_presence_mismatches": 0,
+    "dynrng_u8_differences": 10284,
+    "per_block_u8_difference_counts": [1716, 1716, 1712, 1713, 1716, 1711],
+    "presence_matches_all_fields": true
+  },
+  "target_window": {
+    "au_interval_half_open": [2750, 2875],
+    "au_count": 125,
+    "fields_per_stream": 750,
+    "dynrnge_presence_mismatches": 0,
+    "dynrng_u8_differences": 194,
+    "per_block_u8_difference_counts": [32, 32, 32, 32, 33, 33],
+    "all_differences": {"dee_u8": 1, "rust_u8": 0},
+    "alignment_anchor": {
+      "au_number_as_reported": 2843,
+      "block_zero_based": 0,
+      "dee": {"presence": true, "dynrng_u8": 1},
+      "rust": {"presence": true, "dynrng_u8": 0},
+      "basis": "matches prior washed first-block bit-offset observation"
+    }
+  },
+  "parser_scope": {
+    "kind": "parse-only E-AC-3 side-information pass",
+    "frames_buffered_in_memory_at_once": 1,
+    "parsed_fields": ["dynrnge presence", "conditional dynrng U8"],
+    "mantissa_values_read": false,
+    "raw_syncframe_persisted": false,
+    "pcm_generated_or_persisted": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_accessed": false
+  },
+  "causality": {
+    "native_block_producer_source": "see SAMPLE6-DRC-BSI-BLOCK-PRODUCER-V1; runtime inputs still UNBOUND",
+    "effect_on_decoder_scale0_channel3_residual": "NOT_CAUSAL_TO_LARGE_RESIDUAL; RESIDUAL PERSISTS AT SCALE 0",
+    "effect_when_decoder_drc_enabled": "UNMEASURED",
+    "audiovisual_or_listener_effect": "UNMEASURED"
+  }
+}

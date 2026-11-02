@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-F32-SOURCE-INITIALIZER-V1",
+  "scope": "matched DRC F32 source zero initialization and typed producer read boundary",
+  "status": "F32_SOURCE_CONTEXT_AND_ZERO_INITIALIZER_BOUND; LATER_NONZERO_WRITER_UNBOUND; XML_SELECTOR_UNBOUND",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1400,
+      "sha256": "6dd0eab08d52b77ed94ba4914328f76192dde29e603dde1565cb77be2a2784d0"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2709,
+      "sha256": "2d86a8bf860f9c8b0b843e421238bbed11b3d0a76c8928fd3ef2272c54e64c05"
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "bytes": 747,
+      "sha256": "554c3307e81883fbbfeceeb4b1176e025a9143c4ad2290d785670b14abd00efa"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 875,
+      "sha256": "9df2a22ca6cc57befae5afb428b9392d60a50b45f4e18bd795ec173aa9d0f88d"
+    },
+    {
+      "name": "CHECK.py",
+      "bytes": 3816,
+      "sha256": "4fa381ae0644c8c96c1555318bfa79a162a5143e41a3eb53469ee22c58908daa"
+    }
+  ]
+}

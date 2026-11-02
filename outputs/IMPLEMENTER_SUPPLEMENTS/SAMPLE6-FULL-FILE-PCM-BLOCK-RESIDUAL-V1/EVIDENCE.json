@@ -1,0 +1,75 @@
+{
+  "schema": "sample6-full-file-pcm-block-residual.v1",
+  "package_id": "SAMPLE6-FULL-FILE-PCM-BLOCK-RESIDUAL-V1",
+  "status": "FULL_FILE_PCM_DIFFERENCE_CONFIRMED; CHANNEL_3_DOMINANT_RMS_RESIDUAL; NATIVE_ROW_IDENTITY_AND_CAUSE_UNBOUND",
+  "source_package": {
+    "package_id": "native-f06-full-file-block-pcm-comparison-v1",
+    "manifest_sha256": "e0cefd91e69b51320481d80710b57c03ad1f5efc978dec15a84a1f6e2f6d7fe2",
+    "source_verifier": "verify_full_file_block_metrics.py",
+    "source_verifier_normal": "PASS",
+    "source_verifier_python_O": "PASS"
+  },
+  "outputs": {
+    "input_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "matched_job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_film_light_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "job_audio_controls": {
+      "data_rate_kbps": 1024,
+      "drc_line": "film_light",
+      "drc_rf": "film_light",
+      "dialogue_intelligence": false,
+      "speech_threshold": 100,
+      "preferred_downmix_mode": "loro",
+      "mix_levels_db": [-3, -3, -3, -3],
+      "trims": ["auto", "auto"]
+    }
+  },
+  "stream_geometry": {
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "access_units": 4247,
+    "sample_frames_per_channel": 6523392,
+    "duration_seconds": 135.904
+  },
+  "decoder_measurement": {
+    "decoder": "FFmpeg 8.1",
+    "use": "decode-only scalar comparison",
+    "pcm_persisted": false,
+    "pcm_retained_after_process": false,
+    "encoded_output_created": false
+  },
+  "whole_file_channel_metrics": [
+    {"channel_index": 0, "mae": 0.0006361436713292325, "rmse": 0.0013171080282131668, "peak_error": 0.02657446265220642, "correlation": 0.9998391779356928},
+    {"channel_index": 1, "mae": 0.0006057719473674436, "rmse": 0.0012415335214198651, "peak_error": 0.024161159992218018, "correlation": 0.999840706227478},
+    {"channel_index": 2, "mae": 0.000430974795868066, "rmse": 0.0010496345455572981, "peak_error": 0.03017526865005493, "correlation": 0.9997739986374354},
+    {"channel_index": 3, "mae": 0.0034420790939971935, "rmse": 0.006199550803140426, "peak_error": 0.04227170627564192, "correlation": 0.8176729265921662},
+    {"channel_index": 4, "mae": 0.0006956716421766083, "rmse": 0.0014500951197247392, "peak_error": 0.0491291880607605, "correlation": 0.9997904278768309},
+    {"channel_index": 5, "mae": 0.0006819817151126834, "rmse": 0.001407015102970416, "peak_error": 0.0396389365196228, "correlation": 0.9997927787963371}
+  ],
+  "four_second_block_summary": {
+    "block_count": 34,
+    "last_block_seconds": 3.904,
+    "channel_3_rmse_rank_first_blocks": 30,
+    "channel_3_peak_rank_first_blocks": 26,
+    "channel_4_peak_rank_first_blocks": 4,
+    "channel_3_rmse_ratio_to_next_channel": 4.275271821008018,
+    "channel_3_rmse_median": 0.006393145901238198,
+    "channel_3_rmse_p95": 0.007958379859088769,
+    "channel_3_rmse_max": 0.008077530733450237,
+    "channel_4_peak_error_max": 0.0491291880607605
+  },
+  "identity_limits": {
+    "channel_index_3_native_bed_row": "UNBOUND",
+    "channel_3_algorithmic_cause": "UNBOUND",
+    "corrective_gain_or_remap_supported": false,
+    "full_track_pcm_equality": false,
+    "atmos_render_or_listening_parity": "NOT_RUN"
+  },
+  "privacy": {
+    "raw_pcm_or_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "source_code_or_disassembly_included": false
+  }
+}

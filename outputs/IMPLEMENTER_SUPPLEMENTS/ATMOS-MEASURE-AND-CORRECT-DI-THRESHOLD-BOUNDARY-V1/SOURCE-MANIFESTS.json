@@ -1,0 +1,14 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_addendum",
+      "package":"dee-measure-and-correct-di-threshold-wash",
+      "manifest_sha256":"35eb2d51e8e90a7986d0ff1b58d677294579d4d4834133b95433866c9b7200c8",
+      "payload_count":4,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_trace_or_decompiled_code_in_this_supplement":false
+    }
+  ]
+}

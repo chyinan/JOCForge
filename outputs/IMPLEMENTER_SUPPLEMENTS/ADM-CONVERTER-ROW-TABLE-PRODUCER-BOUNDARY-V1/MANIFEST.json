@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ADM-CONVERTER-ROW-TABLE-PRODUCER-BOUNDARY-V1",
+  "source_reverse_manifest_sha256": "b48ef19d5fdd7528aa40e429a050ff013803f7733a711d9167132ba8dbe017f8",
+  "status": "CALLER_ROW_ORDER_COPY_STATIC; CHNA_PHYSICAL_ROW_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "files": [
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2339,
+      "sha256": "a7c0129ab0e951f11bca6262ec3fc99844023e96607687e3525fc5025b12a25f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 784,
+      "sha256": "a2a3f3826bc115285dd6266f858e1b39cb7d71c9303e3705ab63fafdef3f4b7d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1959,
+      "sha256": "1764b8e55627e4d08a3c1f9ca93738c3254d96c85b77ce2d94545e5eadb2edd4"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1077,
+      "sha256": "d29b522cf24eb99f15f334a56c575fc8c8142f27c5b44e2685d6259255abcebe"
+    }
+  ]
+}

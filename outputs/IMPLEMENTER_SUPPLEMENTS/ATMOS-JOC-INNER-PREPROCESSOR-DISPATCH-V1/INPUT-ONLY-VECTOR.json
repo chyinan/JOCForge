@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-atmos-inner-selector-input-only.v1",
+  "shared_descriptor": {"row_pointer_count":36,"channel_count":36,"frame_count":"N","row_tokens":"row[0]..row[35]"},
+  "selector_variants": [
+    {"selector":0,"expected_nested_type":"SpatialCoderPlatform","expected_state_slot_0x28":"state update","expected_sample_process":"vtable+0x08 -> sc_process"},
+    {"selector":2,"expected_nested_type":"PreProcessorBypass","expected_plus_0x28":"CFG-guarded target UNBOUND"}
+  ],
+  "execution":"NOT_RUN",
+  "pcm_values_included":false,
+  "product_default_inferred":false
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "classification": "TABLE_DERIVED_SYMBOLIC_COUNTS; NOT_NATIVE_EXECUTION",
+  "execution": "NOT_RUN",
+  "selectors": [
+    {"layout_selector": 0, "base_count": 2, "lfe_present_0_layout_count": 2, "lfe_present_nonzero_layout_count": 3, "valid_prefix_length": 3},
+    {"layout_selector": 1, "base_count": 1, "lfe_present_0_layout_count": 1, "lfe_present_nonzero_layout_count": 2, "valid_prefix_length": 2},
+    {"layout_selector": 2, "base_count": 2, "lfe_present_0_layout_count": 2, "lfe_present_nonzero_layout_count": 3, "valid_prefix_length": 3},
+    {"layout_selector": 3, "base_count": 3, "lfe_present_0_layout_count": 3, "lfe_present_nonzero_layout_count": 4, "valid_prefix_length": 4},
+    {"layout_selector": 4, "base_count": 3, "lfe_present_0_layout_count": 3, "lfe_present_nonzero_layout_count": 4, "valid_prefix_length": 5},
+    {"layout_selector": 5, "base_count": 4, "lfe_present_0_layout_count": 4, "lfe_present_nonzero_layout_count": 5, "valid_prefix_length": 5},
+    {"layout_selector": 6, "base_count": 4, "lfe_present_0_layout_count": 4, "lfe_present_nonzero_layout_count": 5, "valid_prefix_length": 5},
+    {"layout_selector": 7, "base_count": 5, "lfe_present_0_layout_count": 5, "lfe_present_nonzero_layout_count": 6, "valid_prefix_length": 6}
+  ],
+  "warning": "These values are table-derived static cases; no runtime selector or ADM-row relation is asserted."
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "F01E-36-ROW-COLD-OWNER-BOUNDARY-V1",
+  "upstream": [
+    {
+      "package_id": "r7-f01e-owner-sizing-boundary",
+      "manifest_sha256": "738414d00db6ae55f7ebdaa552a9df343b8f76946b3486dc01d3034cc0ef262f",
+      "manifest_sha256_file_sha256": "313508800f414f0caac41a04400354eb14eebb10cb91554f00d5cf0521467c1c",
+      "checker": ["PASS_NORMAL", "PASS_PYTHON_O"],
+      "approved_f01e_manifest_sha256": "d15672b723f8091b576c2228ed7685744f522706d89078050b6486a72a068372",
+      "source_hashes_recomputed_current": {
+        "provider.rs": "1d2f4e60987315458c8509b242de435435153ad2c202a3b347517513ba1e3a32",
+        "normal_control_snapshot.rs": "89b56c3d8f011ac01d45d38ab25e0eb81d6cc5fbd340de5412582751d3d68273",
+        "job_configuration.rs": "5047b4224572b1937e579d040faaadbbfbeeafc52aac56da2319c6ab49ff9c84"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-r138-mediametadata-input-only-vector.v1",
+  "expected_output_rows_included": false,
+  "executed": false,
+  "source_vector": "ordered rows row[0] through row[n-1]",
+  "candidate_metadata_rule": "for each row ordinal r, emit index r+1 and copy filename/nested string fields",
+  "typed_identity_rules": {
+    "AO_%04x_to_ConverterChannelInputId": "parse suffix - 0x1001",
+    "ATU_%08x_to_CHNA_UID_table_ordinal": "parse suffix - 1"
+  },
+  "test_channel_counts_from_authorized_metadata": [36,38],
+  "runtime_source_vector_identity": "UNBOUND",
+  "runtime_owner_generation": "UNBOUND"
+}

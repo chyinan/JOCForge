@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge-eac3-core-vs-joc-scope-erratum.v1",
+  "package_id": "DEE-EXPONENT-STRIDE2-SCOPE-ERRATUM-V1",
+  "status": "EAC3_CORE_VECTOR_VALID; JOC_CROSS_SCOPE_COMPARISON_WITHDRAWN; JOC_SELECTOR2_NOT_EVALUATED",
+  "eac3_core_emulator": {
+    "image_name": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "function": "FUN_14032d580",
+    "function_code_sha256": "2a2b82c8e5cb3af653b05346c84f3b7e220039915f55dbef0e92ab26a351577c",
+    "synthetic_selector": 2,
+    "stride": 2,
+    "D": 4,
+    "N": 2,
+    "row": [10, 11, 99, 9, 99, 8, 99, 6],
+    "selected_exponents": [10, 11, 9, 8, 6],
+    "observed_core_deltas_and_tails": [3, 0, 1, 0, 2, 2],
+    "observed_core_U7_codes": [76, 12],
+    "scope": "E-AC-3 core only"
+  },
+  "core_static_join": {
+    "washed_package_id": "EAC3-EXPONENT-CODE-PRODUCER-U4-U7-V1",
+    "manifest_sha256": "1ead416c45cac51589738123219f0f2901e90c45ef4bba7e15592672054dc7b1",
+    "producer_writer_join": "FUN_14032d580 -> FUN_14036f8f0 through shared state+0x140f0 base"
+  },
+  "joc_atmos_path": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "transform": "FUN_1800a4d70",
+    "U7_writer": "FUN_18008aea0",
+    "washed_static_package_id": "DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2",
+    "washed_static_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
+    "washed_joc_emulator_package_id": "DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1",
+    "washed_joc_emulator_manifest_sha256": "96bb2eb1f5f120e1b8a204dd7e00f50d2a1204b3931942c0e0d28c1191927005",
+    "washed_joc_emulator_package_seal_sha256": "b4876a1c408b4e59d740f67e908158b7d98efb872c1bcb926f29cdfc0e0e3b4e",
+    "existing_joc_emulator_selector_coverage": [1],
+    "joc_selector2_input_output_vector": "NOT_EVALUATED"
+  },
+  "withdrawn_cross_scope_comparison": {
+    "previous_wash_package_id": "DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1",
+    "previous_wash_manifest_sha256": "c2dfb9336d20bc000d1610ee6bc5850dae950f834531f3da618fb62db7359485",
+    "eac3_core_vector_used_as_joc_oracle": true,
+    "valid_joc_mismatch_claim": false,
+    "core_observation_retained": true
+  },
+  "next_joc_vector_contract": {
+    "function": "FUN_1800a4d70",
+    "inputs_required": ["raw JOC short row/seed", "block-local selector", "total_slots"],
+    "next_consumer": "FUN_18008aea0",
+    "execution": "NOT_RUN",
+    "must_not_import_e3_core_values": true
+  },
+  "exclusions": {
+    "binary_or_raw_disassembly": false,
+    "decompilation_source": false,
+    "media_pcm_or_encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

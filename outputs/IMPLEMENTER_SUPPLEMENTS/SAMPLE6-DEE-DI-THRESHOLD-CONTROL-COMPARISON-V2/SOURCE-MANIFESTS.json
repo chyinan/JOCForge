@@ -1,0 +1,25 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "native-f06-dee-di-true15-full-file-control-v1",
+      "manifest_sha256": "f305634df0fbd381b873f40b052dbfe56d49d0faa1679bf0a00a4f40ed4675a7",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "package_id": "dee_dialogue_intelligence_control_comparison_wash_v1",
+      "evidence_manifest_sha256": "7401ba3e47aa3b0b0edcbc831af8ec781aa4e887409db57e688627af82b6cfa3",
+      "package_seal_sha256": "7a624e0a90bdaf62251ea9ecda64cddd2b181b3165ecabcb60b9b0a91b8bd90",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    }
+  ],
+  "payload_policy": {
+    "raw_pcm": false,
+    "input_media": false,
+    "encoded_payload": false,
+    "private_key_or_license_material": false,
+    "source_code_or_disassembly": false
+  }
+}

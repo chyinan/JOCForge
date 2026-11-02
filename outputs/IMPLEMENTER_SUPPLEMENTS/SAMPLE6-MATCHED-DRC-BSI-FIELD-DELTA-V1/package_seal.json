@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-MATCHED-DRC-BSI-FIELD-DELTA-V1",
+  "manifest_sha256": "476f4f6cf3fe3ae56d071e956252db469f5ccb5bcc63f7356ffe1d889e93f1c0",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "90329d652ede62fc3431caf687800023fde9edc5852fc682d142d6271edf1156",
+      "bytes": 2400
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "f03d908d9fc3c70812070f20cda29de31d5146f4aba9435e199db8c29b5194fb",
+      "bytes": 3275
+    },
+    {
+      "name": "README.md",
+      "sha256": "2c4b04f68a071521318c98c754184c0c27a30c4c0602c139dec86896b2e38810",
+      "bytes": 1068
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "a3f6f5718e9efa7b6cc619db3253d3c9e0f0b7682c7c684ca8e16c998ac0b023",
+      "bytes": 862
+    }
+  ],
+  "scope": "sanitized AU field values and scalar metrics only; no syncframe bytes/PCM/key"
+}

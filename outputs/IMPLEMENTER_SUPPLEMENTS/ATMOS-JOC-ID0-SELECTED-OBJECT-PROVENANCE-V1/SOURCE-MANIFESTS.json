@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "atmos_joc_selector_id0_config_wash_v1",
+      "manifest_sha256": "bcd366ee63916707421278c34ba430b8b35bede053e65f6f8de13963b35ce8bc",
+      "package_seal_sha256": "960fafcb65249bb846a7dbd46e7dd0aad966a04b848f9078cdf4fb361ee94645",
+      "scope": "Selected type-ID-0 lookup, forwarding to factory argument 5 and vtable+0x38 getter; exclusion of the examined type-ID-3/4/5 RerenderBusConfig candidate; concrete selected class/value remain unbound."
+    }
+  ],
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

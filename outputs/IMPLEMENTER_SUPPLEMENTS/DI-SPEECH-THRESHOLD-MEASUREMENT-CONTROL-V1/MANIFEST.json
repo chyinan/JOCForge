@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DI-SPEECH-THRESHOLD-MEASUREMENT-CONTROL-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "MATCHED_CONTROL_MEASUREMENT_DIFF; ENCODED_BYTES_DIFFER; PCM_AUDIO_DIFF_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_encoded_payload_bytes": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1458,
+      "sha256": "3c95ff17be154443080cc205e04c651bdb5c0b146788acdbf99d89a01150abc2"
+    },
+    "EVIDENCE.json": {
+      "bytes": 3259,
+      "sha256": "00499ce9d90b3dd82b743dc0589f12c2c40f39134d7f0cb242d5af74352a9e70"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 937,
+      "sha256": "02a508a368791e31a02668bd5ac36fbc21fcc329b0e568e79eb3a761022bb96d"
+    }
+  }
+}

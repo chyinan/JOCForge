@@ -1,0 +1,76 @@
+{
+  "schema": "jocforge-wash-implementation-supplement.v1",
+  "package_id": "SAMPLE6-DRC-FRAME-INPUT-ROW-WRITER-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "scope": "Sanitized static process-frame/setdata boundary; no runtime row values or algorithm rule",
+  "upstream": {
+    "package_id": "sample6-matched-drc-frame-input-row-writer-boundary-wash-v1",
+    "manifest_sha256": "c29cf85d37e545b706fa101102080607dbf7440c2ec61f822b1bc5847128b25a",
+    "package_seal_sha256": "d84b30136756b47af71ec620171958908e4140539f4e012361729397e1e172d7",
+    "payload_sha256": {
+      "CHECK.py": "2ee7d1a2a249b025119955c9a2f196d7a34d970b58f1b21d2261da7628010c8e",
+      "EVIDENCE.json": "3dcb86f8204ea9fc7b2a8580af3ce0f323ebe492fe035f8f205b7debc4fb31d3",
+      "INPUT-ONLY-VECTOR.json": "7ce39f0f12a3d4a50111346d14706cee0bf908d402385c1351a472c41fc5e5c7",
+      "REPORT.md": "2c7ea415e58856e5abb8f6dd3f2f781df101dbb1481edfebeaa2e2c007543834",
+      "SOURCE-IDENTITIES.json": "4d39f80741ab6c99e6d93464f031f996c50b1f6221ba67cf0d7f82a114ef7ce0"
+    },
+    "checker": {"normal": "PASS", "python_optimized": "PASS"},
+    "wash_independent_payload_verification": "all five sizes and hashes match"
+  },
+  "source_identity": {
+    "tool": "Ghidra 12.2_PUBLIC",
+    "mode": "read-only; noanalysis",
+    "program": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "target_row": {
+    "owner": "aligned state pointer at channel_instance+0xdf8",
+    "range": "[state+0x23e34,state+0x23eac)",
+    "shape": "120 bytes; 6 blocks * 5 F32; 0x14-byte block stride",
+    "runtime_values": "UNBOUND"
+  },
+  "process_frame_view": {
+    "api": "FUN_140213470 / DDP_ENC_PRO_ddpi_enc_process",
+    "fields": {
+      "sample_count": "U64 at param3+0x28; 0x600 samples or 0 for flush",
+      "channel_count": "U64 at param3+0x20",
+      "channel_pointer_list": "U64 at param3+0x08",
+      "flag": "U8 at param3+0x38",
+      "dialnorm": "U32 at param3+0x60"
+    },
+    "sample_work_buffer_writer": "FUN_14031ef60 writes a separate frame/work buffer"
+  },
+  "dispatch": {
+    "dispatcher": "FUN_140315db0",
+    "method_slot_callsite": "0x1403160dc, table +0x28 -> FUN_140350d00",
+    "core_state_load": "FUN_140350d00 reads channel_instance+0xdf8 and enters FUN_140317600",
+    "typed_copy_to_inline_row_in_checked_scope": "NOT_FOUND"
+  },
+  "separate_setdata_path": {
+    "api": "FUN_140215dd0 -> FUN_140316750",
+    "descriptor_owner": "channel_instance+0x4280",
+    "other_fields": "channel_instance+0x2f28/+0x2f38",
+    "typed_copy_to_inline_row_in_checked_scope": "NOT_FOUND"
+  },
+  "next_missing_edge": {
+    "incoming_refs": ["0x14076febc", "0x1405537f8", "0x14076fec8", "0x140703210", "0x1405537f0"],
+    "target": "typed producer/copy into channel_instance+0xdf8 state row before FUN_140317600",
+    "status": "UNBOUND"
+  },
+  "input_only_vector": {
+    "classification": "symbolic; NOT_NATIVE_EXECUTION",
+    "execution": "NOT_RUN",
+    "media_or_pcm": false
+  },
+  "exclusions": {
+    "new_dee_run": false,
+    "raw_pcm_or_payload_accessed": false,
+    "private_key_or_license_accessed": false,
+    "ghidra_source_or_decompilation_included": false
+  },
+  "prohibited_inferences": [
+    "Do not substitute constructor zero bits for runtime row values.",
+    "Do not claim no writer exists outside the checked image path.",
+    "Do not attribute an audio/LFE mismatch to this boundary alone."
+  ]
+}

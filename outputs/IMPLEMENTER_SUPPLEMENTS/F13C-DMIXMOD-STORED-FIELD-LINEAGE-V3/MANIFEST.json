@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "F13C-DMIXMOD-STORED-FIELD-LINEAGE-V3",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PARSER_OWNER_AND_SEPARATE_FIELDS_BOUND; DMIXMOD_RESULT_TYPE_AND_DOWNSTREAM_EFFECT_UNBOUND; A_B_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1354,
+      "sha256": "27ce93f028e6e3a98dafec6aa925fd2e9a6072f892c3fc64cb48c60a8dc6c4cb"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2411,
+      "sha256": "3347e8390e230ed6fb334406e5933ccfbe6b9583fe03aabf0c63797469a6a4ed"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 317,
+      "sha256": "139e111a84e3a6b49cae8fe5fa913b6d6c087c12c73dc020ea18619866037271"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 777,
+      "sha256": "809d14bac0618166c35c01799aed2d734bb5134071f4b824bb68045f0d9cad24"
+    }
+  }
+}

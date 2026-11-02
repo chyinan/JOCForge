@@ -1,0 +1,69 @@
+{
+  "schema": "jocforge-washed-evidence.v1",
+  "package_id": "KEYLESS-JOC-SEMANTIC-AU-EQUIVALENCE-V1",
+  "source_package": {
+    "package_id": "dee-audio-reference-decoder-comparison",
+    "manifest_sha256_file_sha256": "074133493d7c81fd78536962f17200fdf754f4028582a275f9c1aee1e0d0fbee",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "raw_cli_json_saved": false,
+    "payload_bytes_included": false
+  },
+  "parser": {
+    "name": "OpenJOC",
+    "version": "0.20.1",
+    "binary_sha256": "e5c044c29a34079c460f4f419cc08c4f484d139cb18c7590431a03c8298ab419",
+    "command": ["inspect", "<input.ec3>", "--json", "--aus", "--objects"],
+    "source_tree_clean_at_build": true
+  },
+  "inputs": {
+    "protected_dee_reference": {
+      "sha256_from_prior_wash": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+      "hash_recomputed_in_parser_comparison": false
+    },
+    "keyless_candidate": {
+      "sha256_from_prior_wash": "383d7de4a57fd9bb32b8f871af1d2b5b0ad686a4b25e5fc6e51cd1be3adf6e86",
+      "hash_recomputed_in_parser_comparison": false
+    }
+  },
+  "comparison": {
+    "return_code_both": 0,
+    "access_units_each": 4247,
+    "per_au_semantic_digest_equal": true,
+    "semantic_sha256_each": "8c249f5b62d7151e9607c94116102ea41e564d02d619a1a0f60ef475968fc8f1",
+    "per_au_mismatch_count": 0,
+    "id14_joc_payloads_each": 4247,
+    "payload_order_each": [11, 14, 2, 1],
+    "carrier_location_each": "I0 / audio_block_skipfld",
+    "skip_fields_examined_each": 25482,
+    "skip_fields_unresolved_each": 0,
+    "joc_profile_each": "3 (5.X + Phase Signaling)",
+    "coded_objects_each": 15,
+    "reconstruction_rows_each": 15,
+    "complexity_index_each": 16,
+    "oamd_slots_each": 16,
+    "oamd_dynamic_slots_each": 15,
+    "metadata_updates_each": 67952,
+    "parser_diagnostics_each": 0,
+    "malformed_aus_each": 0,
+    "stream_parse_each": "pass",
+    "timing_each": "continuous",
+    "etsi_strict_each": "fail",
+    "deployed_compatibility_each": "pass",
+    "same_seven_signaling_deviations": true
+  },
+  "spatial_limits": {
+    "coefficient_value_vectors_available": false,
+    "renderer_invoked": false,
+    "spatial_render_equivalence": "NOT_TESTED",
+    "rust_output_comparison": "NOT_RUN"
+  },
+  "scope": {
+    "media_hashes_recomputed_in_this_parse": false,
+    "raw_parser_json_saved": false,
+    "bitstream_or_payload_snippets_saved": false,
+    "pcm_saved": false,
+    "key_hmac_or_license_read": false,
+    "encoding_algorithm_source": "NOT_USED"
+  }
+}

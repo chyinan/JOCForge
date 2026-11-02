@@ -1,0 +1,40 @@
+{
+  "schema": "washed-drc-plugin-row-producer.v1",
+  "package_id": "SAMPLE6-DRC-PLUGIN-ROW-PRODUCER-V1",
+  "status": "PLUGIN_LOCAL_SIX_BY_FIVE_F32_PRODUCER_AND_READER_BOUND; CORE_OWNER_JOIN_UNBOUND",
+  "plugin_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd3ce1cce8b7e95d2",
+    "analysis": "Ghidra 12.2 read-only/noanalysis"
+  },
+  "producer_call": {
+    "caller_role": "plugin per-block processing loop",
+    "block_index_type": "I16",
+    "row_slot_type": "I16",
+    "scratch_type": "F32[256]",
+    "scratch_source": "mapped source pointer plus per-source stride and block offset",
+    "filtered_vector_type": "F32[256]",
+    "value_rule": "F32 constant * sum(clamp(filtered[i], lower_f32, upper_f32)^2 for i=0..255)",
+    "row_store_type": "F32",
+    "row_address": "plugin_root+0x21e9c+0x2170+0x14*block+4*row_slot",
+    "same_invocation_reader": true,
+    "reader_context": "same plugin_root+0x21e9c and same block index",
+    "semantic_metric_name": "UNBOUND"
+  },
+  "ownership": {
+    "plugin_row_owner": "plugin_root+0x21e9c",
+    "core_row_owner": "dee_ddp_encoder.exe inline state+0x21cc4",
+    "typed_host_api_copy_or_owner_edge": "UNBOUND",
+    "core_generation_time_writer": "UNBOUND",
+    "numeric_identity_inferred": false
+  },
+  "execution": {
+    "native_runtime_capture": "NOT_RUN",
+    "new_dee_run": false,
+    "runtime_row_values": "UNBOUND",
+    "pcm_included": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

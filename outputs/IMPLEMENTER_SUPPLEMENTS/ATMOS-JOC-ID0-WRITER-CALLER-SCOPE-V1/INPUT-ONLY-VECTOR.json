@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "atmos-id0-selector-caller-scope",
+  "fixed": {
+    "selected_type_id": 0,
+    "getter": "selected_object.vtable+0x38",
+    "frame_count": "N",
+    "channel_count": 36,
+    "sample_values": "OMITTED"
+  },
+  "cases": [
+    {"getter_result": 0, "expected_branch": "SpatialCoderPlatform"},
+    {"getter_result": 2, "expected_branch": "PreProcessorBypass"}
+  ],
+  "only_variable": "selector getter result; actual ID-0 type/value is not observed",
+  "execution": "NOT_RUN",
+  "purpose": "Keep the conditional explicit; do not substitute RerenderBusConfig IDs 3/4/5 or a guessed default."
+}

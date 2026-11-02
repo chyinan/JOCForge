@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-AUTO-TIME-CONVERTER-SETTER-BOUNDARY-V4",
+  "manifest_sha256": "5d458c8be2114376d1b0136d070a61e21868aff5498c6abdcde58ba3bdb1290f",
+  "sha256sums_sha256": "9e65f64837a6b381cfd9470bbaaf861e871b70290aefe6ac2170d0c6dccdfaef",
+  "payload_count": 3,
+  "status": "HOST_TARGET_RESPONSE_BOUND; CONVERTER_FACTORY_KEYS_SEPARATE; PRIVCONTEXT_SETTERRANGE_JOIN_UNBOUND; FILE_POSITION_MVP_NOT_BLOCKED"
+}

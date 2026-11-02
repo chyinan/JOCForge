@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "F13C-DMIXMOD-STORED-FIELD-LINEAGE-V3",
+  "manifest_sha256": "61b826f80fe00a9c7415e1c275f714b9d3d22a6a7c6f12e2cafa51ee9c8b842b",
+  "sha256sums_sha256": "5e4927e8ac2a027aa4002214ad1645f5957144376ad92097c3823b4306d24842",
+  "payload_count": 4,
+  "status": "PARSER_OWNER_AND_SEPARATE_FIELDS_BOUND; DMIXMOD_RESULT_TYPE_AND_DOWNSTREAM_EFFECT_UNBOUND; A_B_NOT_RUN"
+}

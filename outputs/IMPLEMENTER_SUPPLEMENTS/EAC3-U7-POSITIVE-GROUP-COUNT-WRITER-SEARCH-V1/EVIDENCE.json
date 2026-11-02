@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-washed-eac3-u7-positive-writer-search.v1",
+  "package_id": "EAC3-U7-POSITIVE-GROUP-COUNT-WRITER-SEARCH-V1",
+  "scope": "FOCUSED DYNAMIC-INDEX, VECTOR, AND BULK-HELPER N WRITER SEARCH",
+  "status": "NO_POSITIVE_N_WRITE_FOUND_IN_SCOPED_PATHS; MODEL_RULE_REMAINS_INFERENCE",
+  "source_package": {
+    "package_id": "dee-ddp-group-count-indirect-writer-scan-wash-v4",
+    "manifest_sha256": "d279a5cba1dda44b0265dec0eebe0bae4b6c25ec95135fba72a54fcc28ca131c",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "target_image_size": 7923712,
+    "tool": "Ghidra 12.2 read-only, analysis disabled"
+  },
+  "field_contract": {
+    "state_base": "state+0x140f0",
+    "n_field": "u16(state+0x141c8+2*j)",
+    "d_field": "i16(state+0x1418c+10*block+2*lane)",
+    "consumer": "N U7 values; bit budget uses 7*N bits"
+  },
+  "focused_paths": [
+    {"function": "FUN_140337ad0", "input": "param_3=state+0x140f0", "observed": "reads neighboring +0xd4 for a 7-bit budget calculation; no positive store to N at +0xd8 found"},
+    {"function": "FUN_14032f970/FUN_14032d940", "observed": "writes pointer rows at +0x2c8/+0x4d8; no 16-bit N assignment on the typed path"},
+    {"function": "FUN_14032e230/FUN_14032e380", "observed": "operates through intermediate state+0x13610; vector stores are float-row writes/register spills, not N-table stores"},
+    {"function": "FUN_140317fd0/FUN_1403448d0/FUN_140325fd0/FUN_14032d580/FUN_14036f8f0/FUN_1403370b0/FUN_14032d9b0", "observed": "no positive N assignment in these focused paths; reset candidate remains zero-only"}
+  ],
+  "search_boundary": {
+    "prior_direct_mov_census_repeated": false,
+    "dynamic_vector_bulk_helper_paths_added": true,
+    "named_copy_move_fill_helper_in_fixed_typed_paths": "NOT_FOUND",
+    "positive_n_writer": "UNBOUND",
+    "unnamed_helpers_outside_fixed_paths": "NOT_SCANNED",
+    "reset_to_frame_writer_owner_generation": "UNBOUND"
+  },
+  "best_supported_model_candidate": {
+    "formula": "N=(D+2)//3",
+    "tail_fill": "3*N-D values of 2",
+    "grade": "INFERENCE_ONLY",
+    "confidence": 0.78,
+    "native_positive_assignment_proven": false,
+    "use": "Model-owned candidate for focused vectors; keep N explicit where a profile provides another producer rule."
+  },
+  "input_only_vector": {"D": 4, "N_candidate": 2, "tail_values": 2, "native_observation": false},
+  "execution_boundary": {
+    "native_runtime": "NOT_RUN",
+    "dee_encode": "NOT_RUN",
+    "media_pcm_payload_or_key_read": false,
+    "source_or_decompilation_in_supplement": false
+  }
+}

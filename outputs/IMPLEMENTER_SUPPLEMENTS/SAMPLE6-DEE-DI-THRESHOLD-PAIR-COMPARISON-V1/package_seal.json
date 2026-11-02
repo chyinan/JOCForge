@@ -1,0 +1,28 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "SAMPLE6-DEE-DI-THRESHOLD-PAIR-COMPARISON-V1",
+  "manifest_sha256": "ae2cd01a63266cc439067c2b84df0ca7d0cf54d95cefc5ab0b0e1d1f5d22f349",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "80a4e950c0b5ce0ee6451f5062ec4fd8d8ac04a57424127bf8822513bef2450b",
+      "bytes": 2364
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "8f2d53693de618f6a92dc375c41d1ffc492d811705b9223c7250188111005471",
+      "bytes": 3595
+    },
+    {
+      "name": "REPORT.md",
+      "sha256": "e8d92110a0245fd8d2630b023da21bcde0650219fd94cd704f85ffd19d23797b",
+      "bytes": 1472
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "7239bd2b87c1c0c5b408e0630faa556725c0c6da994c8943aaf7edfca4e06c35",
+      "bytes": 583
+    }
+  ],
+  "scope": "scalar metrics and bounded control provenance; no PCM/media/key"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "atmos-id0-selector-branch-preservation",
+  "fixed": {
+    "selected_config_type_id": 0,
+    "renderer_config_vector_member": "Renderer+0x60",
+    "selected_object_getter": "vtable+0x38",
+    "channel_count": 36,
+    "row_pointer_count": 36,
+    "frame_count": "N",
+    "row_tokens": "row[0]..row[35]",
+    "sample_values": "OMITTED"
+  },
+  "cases": [
+    {"getter_result": 0, "expected_existing_branch": "SpatialCoderPlatform"},
+    {"getter_result": 2, "expected_existing_branch": "PreProcessorBypass"}
+  ],
+  "only_variable": "value returned by the selected type-ID-0 config getter at vtable+0x38",
+  "execution": "NOT_RUN",
+  "purpose": "Preserve the existing typed conditional without inventing the ID-0 class, per-run value, or default."
+}

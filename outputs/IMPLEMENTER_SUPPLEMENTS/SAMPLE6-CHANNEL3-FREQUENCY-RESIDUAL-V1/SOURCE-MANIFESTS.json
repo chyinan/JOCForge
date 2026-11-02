@@ -1,0 +1,19 @@
+{
+  "schema": "washed-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "native-f06-channel3-frequency-residual-diagnostic-v1",
+      "manifest_sha256": "38762d7e7b3cf558ffb07986f19fddaa96b2d17e8649e4a66677f15dd52e0095",
+      "manifest_sha256_verified": true,
+      "source_checker": "verify_channel3_band_diagnostic.py",
+      "source_checker_normal": "PASS",
+      "source_checker_python_O": "PASS"
+    }
+  ],
+  "payload_policy": {
+    "raw_pcm": false,
+    "encoded_payload": false,
+    "private_key_or_license_material": false,
+    "absolute_research_paths": false
+  }
+}

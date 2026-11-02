@@ -1,0 +1,22 @@
+{
+  "schema": "washed-source-manifest-references.v1",
+  "sources": [
+    {
+      "package_id": "r7-adm-object-count-crosswalk",
+      "manifest_sha256": "d318321ff05f2db745f94fc1851140ad1e07b6e5aab417167f279fd5d307aba3",
+      "manifest_sidecar_sha256": "bb1fe09d1ff5090d5cb55efa8b0ea16a8173378c901656e525f3c1bd19d07447"
+    },
+    {
+      "package_id": "carrier_block_authorized_input_scope_wash_v2",
+      "manifest_sha256": "c98042d10bece4eb3b8b8d148d8c76d16bf0f2a54a83cc58212cd984ecb7330b",
+      "package_seal_file_sha256": "f9842904d54ad2ae7d15e0bb978212c9933632a5f2cae461f5d35c3df43e6e09",
+      "identity_payload_sha256": "19b134d2d3409d48429bdbf9d0779452fd26099c2ebb64ae39a47bb11a6f4e11",
+      "whole_file_hashes_recomputed_this_task": false
+    },
+    {
+      "package_id": "AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V2",
+      "manifest_sha256": "2e238835a0edd84a90764a2c74778f50b2c12e760d7ad051446a772f2efc8113",
+      "package_seal_sha256": "20e208ca564871deb78e7fd9ad610ba84eca7f90309eea399a0b2a81e7e9a235"
+    }
+  ]
+}

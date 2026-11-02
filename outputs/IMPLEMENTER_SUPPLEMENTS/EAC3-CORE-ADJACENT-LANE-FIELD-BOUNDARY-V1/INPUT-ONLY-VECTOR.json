@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "eac3-core-adjacent-lane-field-separation",
+  "fixed": {"block":0,"lane":0,"j":0,"base":"state+0x140f0"},
+  "fields": {
+    "adjacent_lane_field": {"address":"state+0x14150","width_bits":16,"example_synthetic_value":2},
+    "D_field":"state+0x1418c",
+    "N_field":"state+0x141c8"
+  },
+  "relation": "No direct read/copy from the adjacent field into D or N was found in the bounded call path.",
+  "execution": "INPUT_ONLY_STATIC_ADDRESS_VECTOR; NOT_A_RUNTIME_VALUE"
+}

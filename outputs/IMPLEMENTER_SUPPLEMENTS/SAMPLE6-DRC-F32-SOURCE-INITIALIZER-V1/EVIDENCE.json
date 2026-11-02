@@ -1,0 +1,67 @@
+{
+  "schema": "washed-drc-f32-source-initializer.v1",
+  "package_id": "SAMPLE6-DRC-F32-SOURCE-INITIALIZER-V1",
+  "status": "F32_SOURCE_CONTEXT_AND_ZERO_INITIALIZER_BOUND; LATER_NONZERO_WRITER_UNBOUND; XML_SELECTOR_UNBOUND",
+  "matched_identity": {
+    "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dee_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "rust_output_sha256": "d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b",
+    "au2843_serialized_drc": {"dynrnge": 1, "dynrng_u8": 1},
+    "join_from_serialized_drc_to_runtime_f32_or_u16": "UNBOUND"
+  },
+  "native_image": {
+    "program": "DEE E-AC-3 core encoder",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "analysis": "Ghidra 12.2 read-only/noanalysis"
+  },
+  "source_context": {
+    "type": "source context",
+    "relative_base": "state+0x21cc4",
+    "constructor_initialization": {
+      "start_offset": "0x2170",
+      "word_count": 30,
+      "word_type": "U32",
+      "word_bits": "0x00000000",
+      "typed_interpretation": "positive-zero F32",
+      "half_open_byte_range": "[+0x2170,+0x21e8)",
+      "row_shape": "6 blocks x 5 F32",
+      "block_stride_bytes": 20
+    },
+    "typed_reader_fields": [
+      {"type": "F32", "address": "state+0x21cc4+0x2170+block*0x14"},
+      {"type": "F32", "address": "state+0x21cc4+0x2174+block*0x14"}
+    ],
+    "conditional_window": {
+      "type": "F32[5] per block",
+      "address": "state+0x21cc4+4*(0x85d+block*5+sample_index)",
+      "loop_bound_type": "I16",
+      "loop_bound_source": "mode context +6"
+    },
+    "later_nonzero_writer": "UNBOUND"
+  },
+  "same_static_call_context": {
+    "caller": "same core setup invocation",
+    "source_context": "state+0x21cc4",
+    "f32_output_context": "state+0x21aa8",
+    "f32_output_row": "state+0x21aa8+0xbc+block*4",
+    "u16_consumer": "reads the same F32 output row and passes it with the profile pointer into DRC curve processing",
+    "static_state_base_relation": "BOUND",
+    "runtime_frame_or_generation": "NOT_OBSERVED"
+  },
+  "profile_boundary": {
+    "xml_line_value": "film_light",
+    "xml_rf_value": "film_light",
+    "core_selector_type": "U8",
+    "xml_string_to_selector": "UNBOUND",
+    "mode0_or_mode1_to_line_or_rf": "UNBOUND"
+  },
+  "execution": {
+    "native_runtime_execution": "NOT_RUN",
+    "new_dee_run": false,
+    "raw_pcm_included": false,
+    "syncframe_or_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "native_code_or_disassembly_included": false
+  }
+}

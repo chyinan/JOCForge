@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "F06-R138-OUTPUTWRAPPER-REGISTRY-INITIALIZATION-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2854,
+      "sha256": "cebda8c3dc9cec9fb3c5f7f34d9c9a5a6a2547608396fb41bbf207f4b107b623"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2152,
+      "sha256": "d75d41f0242be94c9c01f6761c415e9bf4a031670966fbd59a7e84492c558f3f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 380,
+      "sha256": "1cfc42050626a8e26ae8c04e48dd6df94c4f4b56c2c3f0dc1a812aca07f802b3"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 994,
+      "sha256": "93a4de081611be6d8160c2f6f10e74c176bcfd7c1f124c7c0d2e3a345f18ccc9"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1283,
+      "sha256": "8c188c9b0cec74f2654c1ca73b5706e635cb27b1eb018750b16fbdcf598b6445"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "d15776566978089b959b4ae0ff8f0ac2fa11df0a6f684775008f054d9faf4abb"
+    }
+  ]
+}

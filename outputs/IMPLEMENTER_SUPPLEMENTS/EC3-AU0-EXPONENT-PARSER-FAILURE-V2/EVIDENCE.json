@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge-washed-ec3-au0-exponent-parser-failure.v2",
+  "scope": "ONE USER-DESIGNATED OLD RUST OUTPUT; BOUNDED PARSER READ AND HASH-BOUND DEE STATIC WRITER CONTEXT",
+  "status": "SYNCWORD_AND_AU0_EXPONENT_FAILURE_CONFIRMED; BIT_CURSOR_AND_BUILD_INPUT_JOIN_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "ec3_first_au_parse_failure_wash",
+    "manifest_sha256": "fa55517ec872c0160b95c8ff66b75f47e5ad8e408dc92a8cdb1c2d6e39a4a52e",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "artifact_identity": {
+    "artifact_name": "sample6-keyless-full-20261101-10.ec3",
+    "bytes": 17395712,
+    "sha256": "593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473",
+    "adm_input_identity": "NOT_BOUND_IN_SOURCE_PACKAGE",
+    "rust_build_or_source_hash": "NOT_BOUND_IN_SOURCE_PACKAGE"
+  },
+  "first_packet_observation": {
+    "first_4096_bytes_read_in_memory": true,
+    "raw_bytes_saved_or_included": false,
+    "syncword_u16_big_endian": "0x0b77",
+    "syncword_byte_offset": 0,
+    "ffprobe_format": "eac3",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "first_access_unit": 0,
+    "packet_position_bytes": 0,
+    "packet_size_bytes": 4096,
+    "packet_duration_ms": 32,
+    "ffprobe_first_error": "exponent -1 is out-of-range; error decoding the audio block",
+    "ffmpeg_exit_code": 1,
+    "ffmpeg_pcm_saved": false,
+    "intra_packet_error_bit_offset": "NOT_REPORTED"
+  },
+  "dee_writer_context": {
+    "image_name": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "frame_set_blocks": 6,
+    "stuffer_checks_bse_frmsiz_against_buffer_data_words": true,
+    "washed_u4_u7_contract": {
+      "package_manifest_sha256": "60dd1b42814edd97c44ad827c2a06b7cd1fd9f39b3ca4303422f6de5650898cf",
+      "u4_then_u7_same_cursor": true,
+      "cursor_advance": "4 + 7*N",
+      "confidence": 0.97
+    },
+    "bit_cursor_before_first_u4_for_rust_artifact": "UNBOUND",
+    "first_lane_strategy_and_count_for_rust_artifact": "UNBOUND",
+    "raw_u4_u7_codes_for_rust_artifact": "NOT_DETERMINED"
+  },
+  "best_supported_fix_direction": {
+    "target": "AU0 strategy/lane cursor and exponent code before the first U4",
+    "syncword_detection_is_first_failure": false,
+    "frame_size_invariant": "preserve frame size and buffer-word consistency",
+    "parser_failure_confidence": "HIGH for this exact artifact",
+    "specific_rust_root_cause_confidence": "MEDIUM_LOW"
+  },
+  "scope_exclusions": {
+    "dee_process_started": false,
+    "python_prototype_searched": false,
+    "private_key_or_license_read": false,
+    "raw_ec3_included": false,
+    "pcm_included": false,
+    "adobe_audition_independently_tested": false
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "washed-synthetic-adm-dee-crash.v1",
+  "package_id": "SAMPLE6-LFE-SYNTHETIC-ADM-CRASH-V1",
+  "status": "DEE_CRASHED_NO_OUTPUT; FAILURE_CAUSE_UNOBSERVED; AUDIO_COMPARISON_NOT_RUN",
+  "source_adm": {
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "data_bytes_read_or_copied": 0,
+    "dbmd_metadata_chunk_bytes_copied_without_parsing": 580
+  },
+  "synthetic_input": {
+    "sha256": "157c21a23ebe182e1c3f278d4b05600f9e1585440a5a6dd2b92c0cdb29b6fed2",
+    "bytes": 5688570,
+    "format": {"channels": 38, "sample_rate_hz": 48000, "bits_per_sample": 24, "sample_frames_per_channel": 49152},
+    "chunk_ids": ["JUNK", "fmt ", "data", "axml", "chna", "dbmd"],
+    "row3_test": {"role": "LFE", "frequency_hz": 62.5, "amplitude_fraction_full_scale": 0.25},
+    "all_other_rows_zero": true,
+    "raw_synthetic_audio_in_package": false
+  },
+  "matched_job": {
+    "sha256": "5191dd3a3d2c6594f75054d8780efa683e174b31e84ce902ea9b3b729dda7359",
+    "atmos_mezz": true,
+    "data_rate_kbps": 1024,
+    "line_drc": "film_light",
+    "rf_drc": "film_light"
+  },
+  "dee_attempts": {
+    "executable_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "count": 5,
+    "all_exit_codes": ["0xC0000005", "0xC0000005", "0xC0000005", "0xC0000005", "0xC0000005"],
+    "all_created_output": false,
+    "final_dbmd_complete_input": true,
+    "final_duration_seconds": 5.236,
+    "final_faulting_module": "UNOBSERVED",
+    "final_faulting_rva": "UNOBSERVED",
+    "wer_event": "NOT_FOUND"
+  },
+  "observations": {
+    "eac3_output": "NONE",
+    "au_geometry": "NOT_RUN",
+    "control_vs_tone_output_metrics": "NOT_RUN",
+    "lfe_transform": "UNOBSERVED",
+    "cause_of_crash": "UNOBSERVED",
+    "relation_to_pcm_residual": "UNBOUND"
+  },
+  "privacy": {
+    "source_pcm_included": false,
+    "synthetic_audio_included": false,
+    "dbmd_payload_included": false,
+    "eac3_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

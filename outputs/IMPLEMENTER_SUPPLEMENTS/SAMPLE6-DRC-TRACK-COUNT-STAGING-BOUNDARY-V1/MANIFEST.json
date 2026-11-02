@@ -1,0 +1,35 @@
+{
+  "schema": "wash-implementation-supplement-manifest.v1",
+  "package_id": "SAMPLE6-DRC-TRACK-COUNT-STAGING-BOUNDARY-V1",
+  "recipient": "IMPLEMENTER_EVIDENCE_ONLY",
+  "upstream_manifest_sha256": "613d934c86bb9a3bf21049fed7a5bc92f6650d11fadddcf79167533adef9b066",
+  "runtime_observation": "NOT_RUN",
+  "scope": "Sanitized static frame-count staging and downstream capacity boundary; ADM count join/runtime effect unbound",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "0bdb3a61e88a4b374d246449a31b508d2e531f5ab33933b2d4ed215501808a48",
+      "bytes": 2773
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "19c0bb7e62b9a7ff7d9ac32aef2e5dac77ef171f9fcd6f6a4c16d0af2e8764d1",
+      "bytes": 3702
+    },
+    {
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "a77e1fc482f34927051b3e26e58cea112f665cdf7abd082f6b00f86a748d2979",
+      "bytes": 959
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "84e7c9632bf377c37d723b86a714965948c7805dbd33863bf5aaead5add97194",
+      "bytes": 832
+    },
+    {
+      "name": "verify_package.py",
+      "sha256": "8a27ef255264960ca5b33f7a1eb287a28c0e70451163cc9e503a784773d9d6a3",
+      "bytes": 2341
+    }
+  ]
+}
