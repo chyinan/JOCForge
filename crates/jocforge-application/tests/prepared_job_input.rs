@@ -452,6 +452,7 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         .unwrap();
     let provider = validated_f01e_provider();
     let original_canonical = provider.canonical_bytes().to_vec();
+    let mut input_snapshot_hashes = Vec::new();
 
     for (channels, expected_objects) in [(36_u16, 26_u64), (38, 28)] {
         let (resource, spans) = selected_resource_with_channels(channels);
@@ -500,9 +501,9 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         }
 
         let attempt = AttemptId::new(0);
-        let machine = prepared.f01e_cold_owner(&provider, attempt).unwrap();
-        let state = machine.committed();
-        assert_eq!(machine.generation(), 0);
+        let owner = prepared.f01e_cold_owner(&provider, attempt).unwrap();
+        let state = owner.committed();
+        assert_eq!(owner.generation(), 0);
         assert_eq!(state.schema(), "F01E_ADM_INPUT_COLD_PROJECTION_V1");
         assert_eq!(state.programme_id(), prepared.programme_id());
         assert_eq!(state.attempt_id(), attempt);
@@ -512,10 +513,65 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         assert_eq!(state.normalized_config().channels(), u32::from(channels));
         assert!(state.dbmd_binding().is_none());
         assert!(state.physical_binding().is_none());
+        let prepared_with_controls = prepared
+            .bind_primary_control_rows(u64::from(channels) * 3)
+            .unwrap();
+        let normal_input = prepared_with_controls
+            .normal_control_adm_input_snapshot(&owner)
+            .unwrap();
+        assert_eq!(normal_input.schema(), "F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1");
+        assert_eq!(
+            normal_input.programme_id(),
+            prepared_with_controls.programme_id()
+        );
+        assert_eq!(normal_input.attempt_id(), attempt);
+        assert_eq!(normal_input.owner_generation(), 0);
+        assert_eq!(normal_input.input_physical_rows(), channels);
+        assert_eq!(normal_input.bed_track_count(), 10);
+        assert_eq!(normal_input.object_track_count(), expected_objects as u16);
+        assert_eq!(normal_input.physical_tracks().len(), usize::from(channels));
+        assert_eq!(
+            normal_input.object_owner_bindings().len(),
+            expected_objects as usize
+        );
+        assert_eq!(
+            normal_input.object_events().len(),
+            expected_objects as usize
+        );
+        assert_eq!(
+            normal_input.lfe_host(),
+            prepared_with_controls
+                .graph()
+                .graph()
+                .bed_channel_join()
+                .lfe_host()
+        );
+        assert_eq!(
+            normal_input.regular_control_hosts(),
+            prepared_with_controls
+                .graph()
+                .graph()
+                .bed_channel_join()
+                .regular_control_order()
+        );
+        assert_ne!(normal_input.identity_sha256(), &[0_u8; 32]);
+        input_snapshot_hashes.push(*normal_input.identity_sha256());
         if channels == 36 {
-            let prepared_with_controls = prepared
-                .bind_primary_control_rows(u64::from(channels) * 3)
-                .unwrap();
+            let (same_content_resource, same_content_spans) =
+                selected_resource_with_channels(channels);
+            let same_content_prepared = prepare_selected_job_input(
+                test_programme_id(),
+                case["input_xml"].as_str().unwrap().as_bytes(),
+                SelectedWaveDescriptor::new(48_000, channels, 24),
+                1,
+                Arc::clone(&same_content_resource),
+                metadata_payloads(&same_content_resource, &same_content_spans),
+            )
+            .unwrap();
+            assert_eq!(
+                same_content_prepared.normal_control_adm_input_snapshot(&owner),
+                Err(PreparedJobInputError::PreparedIdentityMismatch)
+            );
             assert_eq!(
                 prepared_with_controls
                     .normal_control_prepared_snapshot(state)
@@ -524,10 +580,17 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
                     NormalControlSnapshotError::StateShapeMismatch
                 )
             );
+        } else {
+            assert!(
+                prepared_with_controls
+                    .normal_control_prepared_snapshot(state)
+                    .is_ok()
+            );
         }
         assert_eq!(provider.canonical_bytes(), original_canonical);
     }
 
+    assert_ne!(input_snapshot_hashes[0], input_snapshot_hashes[1]);
     assert_eq!(provider.object_count(), 28);
 }
 

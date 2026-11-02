@@ -15,7 +15,9 @@ use jocforge_domain::frontend::{
     },
     adm_object_events::AdmittedSelectedObjectEvents,
     dbmd_sections::{DbmdSectionError, SelectedDbmdSections, parse_selected_dbmd_sections},
-    normal_control_snapshot::{NormalControlPreparedSnapshot, NormalControlSnapshotError},
+    normal_control_snapshot::{
+        NormalControlAdmInputSnapshot, NormalControlPreparedSnapshot, NormalControlSnapshotError,
+    },
     primary_metadata_control::{
         PrimaryMetadataControlError, PrimaryMetadataControlRows,
         produce_primary_metadata_control_rows,
@@ -69,6 +71,26 @@ pub struct PreparedJobInput {
     domain_identity: Arc<PreparedJobInputIdentity>,
     primary_control_binding: Option<SelectedPrimaryControlBinding>,
     primary_metadata_controls: Option<PrimaryMetadataControlRows>,
+}
+
+/// Cold F01E owner paired with the exact immutable input admission that created it.
+pub struct PreparedF01EColdOwner {
+    machine: FrontendControlMachine,
+    prepared_identity: Arc<PreparedJobInputIdentity>,
+}
+
+impl PreparedF01EColdOwner {
+    pub const fn committed(&self) -> &FrontendControlState {
+        self.machine.committed()
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.machine.generation()
+    }
+
+    pub const fn attempt_id(&self) -> AttemptId {
+        self.machine.committed().attempt_id()
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -281,12 +303,56 @@ impl PreparedJobInput {
         &self,
         provider: &ValidatedF01EColdProvider,
         attempt_id: AttemptId,
-    ) -> Result<FrontendControlMachine, PreparedJobInputError> {
+    ) -> Result<PreparedF01EColdOwner, PreparedJobInputError> {
         let projected = provider
             .for_admitted_adm_input(&self.configuration, self.graph.graph())
             .map_err(PreparedJobInputError::F01EProviderProjection)?;
-        FrontendControlMachine::from_provider(projected, self.programme_id.clone(), attempt_id)
-            .map_err(PreparedJobInputError::F01EColdOwner)
+        let machine =
+            FrontendControlMachine::from_provider(projected, self.programme_id.clone(), attempt_id)
+                .map_err(PreparedJobInputError::F01EColdOwner)?;
+        Ok(PreparedF01EColdOwner {
+            machine,
+            prepared_identity: Arc::clone(&self.domain_identity),
+        })
+    }
+
+    fn validate_f01e_cold_owner(
+        &self,
+        owner: &PreparedF01EColdOwner,
+    ) -> Result<(), PreparedJobInputError> {
+        if !Arc::ptr_eq(&self.domain_identity, &owner.prepared_identity)
+            || owner.committed().programme_id() != &self.programme_id
+            || owner.committed().schema() != "F01E_ADM_INPUT_COLD_PROJECTION_V1"
+            || owner.committed().normalized_config().channels()
+                != u32::from(self.configuration.wave().channels())
+            || owner.committed().normalized_config().source_samples()
+                != self.configuration.source_samples()
+        {
+            return Err(PreparedJobInputError::PreparedIdentityMismatch);
+        }
+        Ok(())
+    }
+
+    /// Binds one dynamic normal-control input view to this prepared input and its F01E owner.
+    pub fn normal_control_adm_input_snapshot(
+        &self,
+        owner: &PreparedF01EColdOwner,
+    ) -> Result<Arc<NormalControlAdmInputSnapshot>, PreparedJobInputError> {
+        self.validate_f01e_cold_owner(owner)?;
+        let binding = self
+            .primary_control_binding
+            .as_ref()
+            .ok_or(PreparedJobInputError::PrimaryControlBindingUnavailable)?;
+        NormalControlAdmInputSnapshot::from_admitted_adm_input(
+            owner.committed(),
+            owner.generation(),
+            binding,
+            self.graph.graph(),
+            &self.admitted_object_events,
+            &self.dbmd,
+        )
+        .map(Arc::new)
+        .map_err(PreparedJobInputError::NormalControlSnapshot)
     }
 
     /// Builds the reusable F01E callback snapshot from this admitted input and one cold owner.
@@ -357,6 +423,7 @@ pub enum PreparedJobInputError {
     PrimaryMetadataControls(PrimaryMetadataControlError),
     PrimaryControlBindingUnavailable,
     ProgrammeIdentityMismatch,
+    PreparedIdentityMismatch,
     F01EProviderProjection(F01EProviderError),
     F01EColdOwner(FrontendControlError),
     NormalControlSnapshot(NormalControlSnapshotError),
@@ -397,6 +464,8 @@ impl std::fmt::Display for PreparedJobInputError {
             Self::ProgrammeIdentityMismatch => {
                 formatter.write_str("prepared input and F01E owner have different programme IDs")
             }
+            Self::PreparedIdentityMismatch => formatter
+                .write_str("F01E cold owner is bound to a different prepared input identity"),
             Self::F01EProviderProjection(error) => {
                 write!(formatter, "F01E dynamic cold projection: {error:?}")
             }

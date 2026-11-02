@@ -4,6 +4,7 @@
 use std::sync::Arc;
 
 use serde_json::{Number, Value, json};
+use sha2::{Digest, Sha256};
 
 use crate::numeric::FiniteF32;
 use crate::timeline::{AdmSampleCount, FrontendCallbackIndex, NormalCallbackCount};
@@ -443,6 +444,311 @@ pub struct NormalControlPreparedSnapshot {
     regular_source_bindings: [NormalControlRegularSourceBinding; REGULAR_TRACK_COUNT],
     lfe_host: u8,
     regular37_hosts: [u8; REGULAR_TRACK_COUNT],
+}
+
+/// Versioned per-input preflight view for a dynamic ADM physical-row count.
+///
+/// The fixed `NormalControlPreparedSnapshot` remains the original 38/10/28 view. This value
+/// carries input rows and route-owned regular/LFE identities without changing any per-row rule.
+#[derive(Clone, Debug, PartialEq)]
+pub struct NormalControlAdmInputSnapshot {
+    schema: &'static str,
+    programme_id: ProgrammeId,
+    attempt_id: AttemptId,
+    owner_generation: u64,
+    profile: NormalControlProfileIdentity,
+    source_identity: NormalControlSourceIdentity,
+    graph_identity: NormalControlGraphIdentity,
+    frontend_state_digest: FrontendControlDigest,
+    dbmd_payload_sha256: [u8; 32],
+    physical_tracks: Vec<NormalControlPhysicalTrack>,
+    owner_bindings: Vec<NormalControlObjectOwnerBinding>,
+    object_events: Vec<NormalControlObjectEvent>,
+    bed_pack_channel_format_ids: [String; BED_TRACK_COUNT],
+    bed_pack_hosts: [u8; BED_TRACK_COUNT],
+    regular_source_bindings: Vec<NormalControlRegularSourceBinding>,
+    lfe_host: u8,
+    regular_control_hosts: Vec<u8>,
+    identity_sha256: [u8; 32],
+}
+
+impl NormalControlAdmInputSnapshot {
+    /// Prepares a dynamic ADM snapshot without resizing the original 38-row control view.
+    /// Cross-crate callers should use `PreparedJobInput::normal_control_adm_input_snapshot` so
+    /// resource, configuration, graph, cold owner and programme/attempt identity stay paired.
+    pub fn from_admitted_adm_input(
+        frontend_state: &FrontendControlState,
+        owner_generation: u64,
+        source_binding: &SelectedPrimaryControlBinding,
+        graph: &SelectedAdmGraph,
+        admitted_events: &AdmittedSelectedObjectEvents,
+        dbmd: &SelectedDbmdSections,
+    ) -> Result<Self, NormalControlSnapshotError> {
+        let graph_receipt = graph.receipt();
+        let physical_track_count = usize::from(graph_receipt.physical_track_count());
+        let bed_track_count = usize::from(graph_receipt.bed_track_count());
+        let object_track_count = usize::from(graph_receipt.object_track_count());
+        let source_identity = NormalControlSourceIdentity::from_binding(source_binding);
+        let profile = NormalControlProfileIdentity::from_config(frontend_state.normalized_config());
+        let wave = source_identity.wave;
+
+        if frontend_state.schema() != "F01E_ADM_INPUT_COLD_PROJECTION_V1"
+            || owner_generation != 0
+            || frontend_state.callback_index().value() != 0
+            || frontend_state.phase() != FrontendControlPhase::BeforeFirstNormal
+            || frontend_state.remaining_cached_drains() != MAIN_CACHED_DRAIN_CALLBACKS
+            || frontend_state.last_control38_snapshot().is_some()
+            || frontend_state.last_regular37_snapshot().is_some()
+            || frontend_state.physical_binding().is_some()
+            || frontend_state.dbmd_binding().is_some()
+        {
+            return Err(NormalControlSnapshotError::ColdStateRequired);
+        }
+        if source_identity.input_kind != SelectedInputKind::Adm
+            || source_identity.source_samples == 0
+            || wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
+            || wave.pcm_bits() != SELECTED_PCM_BITS as u16
+            || wave.channels() == 0
+            || usize::from(wave.channels()) > usize::from(u8::MAX) + 1
+            || usize::from(wave.channels()) != physical_track_count
+            || profile.sample_rate_hz != SELECTED_SAMPLE_RATE_HZ
+            || profile.channels != u32::from(wave.channels())
+            || profile.pcm_bits != SELECTED_PCM_BITS
+            || profile.source_samples != source_identity.source_samples
+            || profile.frame_samples != u32::try_from(NORMAL_CALLBACK_SAMPLES).unwrap_or(u32::MAX)
+            || profile.bed_count != u32::try_from(BED_TRACK_COUNT).unwrap_or(u32::MAX)
+            || profile.object_count != u32::try_from(object_track_count).unwrap_or(u32::MAX)
+            || profile.event_start_samples != 0
+            || bed_track_count != BED_TRACK_COUNT
+            || physical_track_count != bed_track_count + object_track_count
+            || frontend_state.objects().len() != object_track_count
+            || frontend_state.normal_callbacks().value()
+                != source_identity
+                    .source_samples
+                    .div_ceil(NORMAL_CALLBACK_SAMPLES)
+        {
+            return Err(NormalControlSnapshotError::SourceConfigurationMismatch);
+        }
+
+        if graph_receipt.axml_sha256() != &source_identity.metadata_hashes.axml()
+            || graph_receipt.chna_sha256() != &source_identity.metadata_hashes.chna()
+            || dbmd.payload_sha256() != &source_identity.metadata_hashes.dbmd()
+        {
+            return Err(NormalControlSnapshotError::MetadataIdentityMismatch);
+        }
+        let source_samples = source_binding.source_samples();
+        let reparsed_events = graph
+            .admit_object_events(source_samples)
+            .map_err(|_| NormalControlSnapshotError::ObjectEventMismatch)?;
+        if &reparsed_events != admitted_events {
+            return Err(NormalControlSnapshotError::ObjectEventMismatch);
+        }
+        for (ordinal, object) in frontend_state.objects().iter().enumerate() {
+            if object.object_ordinal() != u32::try_from(ordinal).unwrap_or(u32::MAX) {
+                return Err(NormalControlSnapshotError::StateShapeMismatch);
+            }
+        }
+
+        let mut tracks_by_host = graph.tracks().to_vec();
+        tracks_by_host.sort_by_key(|track| track.physical_host().value());
+        if tracks_by_host.len() != physical_track_count {
+            return Err(NormalControlSnapshotError::GraphDomain);
+        }
+        let mut physical_tracks = Vec::with_capacity(physical_track_count);
+        for (host, track) in tracks_by_host.iter().enumerate() {
+            if usize::from(track.physical_host().value()) != host {
+                return Err(NormalControlSnapshotError::PhysicalHostDomain);
+            }
+            let dbmd_fields = dbmd
+                .fields_for_physical_host(u16::try_from(host).unwrap_or(u16::MAX))
+                .ok_or(NormalControlSnapshotError::DbmdIdentityMismatch)?;
+            physical_tracks.push(normal_control_track(track, dbmd_fields, graph)?);
+        }
+
+        let owner_bindings: Vec<NormalControlObjectOwnerBinding> = graph
+            .object_sampler_owner_bindings()
+            .iter()
+            .map(|binding| NormalControlObjectOwnerBinding {
+                track_uid: binding.track_uid().to_owned(),
+                local_owner_ordinal: binding.local_owner_ordinal().value(),
+                semantic_key: binding.semantic_key(),
+                physical_host: binding.physical_host().value(),
+                channel_format_id: binding.channel_format_id().to_owned(),
+            })
+            .collect();
+        if owner_bindings.len() != object_track_count
+            || owner_bindings
+                .iter()
+                .enumerate()
+                .any(|(ordinal, binding)| usize::from(binding.local_owner_ordinal) != ordinal)
+        {
+            return Err(NormalControlSnapshotError::ObjectOwnerBindingMismatch);
+        }
+
+        let mut object_events: Vec<NormalControlObjectEvent> = admitted_events
+            .events()
+            .iter()
+            .map(NormalControlObjectEvent::from_admitted)
+            .collect();
+        object_events
+            .sort_by(|left, right| left.track_uid.as_bytes().cmp(right.track_uid.as_bytes()));
+        if object_events.len() != object_track_count {
+            return Err(NormalControlSnapshotError::ObjectEventMismatch);
+        }
+
+        let bed_pack_channel_format_ids = graph.bed_pack_channel_format_ids().to_owned();
+        let bed_pack_hosts = *graph.bed_channel_join().slots_by_pack();
+        let lfe_host = graph.bed_channel_join().lfe_host();
+        let regular_control_hosts = graph.bed_channel_join().regular_control_order().to_vec();
+        let mut regular_hosts_seen = std::collections::BTreeSet::new();
+        for host in &regular_control_hosts {
+            if usize::from(*host) >= physical_track_count
+                || *host == lfe_host
+                || !regular_hosts_seen.insert(*host)
+            {
+                return Err(NormalControlSnapshotError::BedJoinMismatch);
+            }
+        }
+        let regular_source_bindings: Vec<NormalControlRegularSourceBinding> = graph
+            .regular_source_bindings()
+            .iter()
+            .map(|binding| NormalControlRegularSourceBinding {
+                physical_host: binding.physical_host().value(),
+                global_source: binding.global_source().value(),
+            })
+            .collect();
+
+        let graph_identity = NormalControlGraphIdentity::from_receipt(graph_receipt);
+        let frontend_state_digest = frontend_state.digest();
+        let identity_value = json!({
+            "schema": "F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1",
+            "programme_id": frontend_state.programme_id().as_str(),
+            "attempt_id": frontend_state.attempt_id().value(),
+            "owner_generation": owner_generation,
+            "frontend_state_digest": frontend_state_digest.to_hex(),
+            "source_receipt_sha256": hex_sha256(&source_identity.source_receipt_sha256),
+            "job_projection_sha256": hex_sha256(&source_identity.job_projection_sha256),
+            "wave": {
+                "sample_rate_hz": wave.sample_rate_hz(),
+                "channels": wave.channels(),
+                "pcm_bits": wave.pcm_bits(),
+                "source_samples": source_identity.source_samples,
+            },
+            "metadata_sha256": {
+                "axml": hex_sha256(&source_identity.metadata_hashes.axml()),
+                "chna": hex_sha256(&source_identity.metadata_hashes.chna()),
+                "dbmd": hex_sha256(&source_identity.metadata_hashes.dbmd()),
+            },
+            "graph": {
+                "physical_track_count": graph_identity.physical_track_count,
+                "bed_track_count": graph_identity.bed_track_count,
+                "object_track_count": graph_identity.object_track_count,
+                "direct_lfe_host": graph_identity.direct_lfe_host,
+                "virtual_prefix_source_count": graph_identity.virtual_prefix_source_count,
+                "total_source_count": graph_identity.total_source_count,
+                "regular_control_hosts": &regular_control_hosts,
+                "bed_pack_hosts": bed_pack_hosts,
+                "regular_source_bindings": regular_source_bindings.iter().map(|binding| {
+                    json!({
+                        "physical_host": binding.physical_host,
+                        "global_source": binding.global_source,
+                    })
+                }).collect::<Vec<_>>(),
+            },
+            "profile": {
+                "bit_rate_kbps": profile.bit_rate_kbps,
+                "layout_enum": profile.layout_enum,
+                "frame_samples": profile.frame_samples,
+                "spatial_config_mode": profile.spatial_config_mode,
+                "dispatch_mode": profile.dispatch_mode,
+                "virtual_prefix_count": profile.virtual_prefix_count,
+            },
+        });
+        let identity_bytes = serde_json::to_vec(&identity_value)
+            .map_err(|_| NormalControlSnapshotError::CanonicalSerialization)?;
+        let identity_sha256 = Sha256::digest(identity_bytes).into();
+
+        Ok(Self {
+            schema: "F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1",
+            programme_id: frontend_state.programme_id().clone(),
+            attempt_id: frontend_state.attempt_id(),
+            owner_generation,
+            profile,
+            source_identity,
+            graph_identity,
+            frontend_state_digest,
+            dbmd_payload_sha256: *dbmd.payload_sha256(),
+            physical_tracks,
+            owner_bindings,
+            object_events,
+            bed_pack_channel_format_ids,
+            bed_pack_hosts,
+            regular_source_bindings,
+            lfe_host,
+            regular_control_hosts,
+            identity_sha256,
+        })
+    }
+
+    pub const fn schema(&self) -> &'static str {
+        self.schema
+    }
+
+    pub fn programme_id(&self) -> &ProgrammeId {
+        &self.programme_id
+    }
+
+    pub const fn attempt_id(&self) -> AttemptId {
+        self.attempt_id
+    }
+
+    pub const fn owner_generation(&self) -> u64 {
+        self.owner_generation
+    }
+
+    pub fn physical_tracks(&self) -> &[NormalControlPhysicalTrack] {
+        &self.physical_tracks
+    }
+
+    pub fn object_owner_bindings(&self) -> &[NormalControlObjectOwnerBinding] {
+        &self.owner_bindings
+    }
+
+    pub fn object_events(&self) -> &[NormalControlObjectEvent] {
+        &self.object_events
+    }
+
+    pub fn bed_pack_hosts(&self) -> &[u8; BED_TRACK_COUNT] {
+        &self.bed_pack_hosts
+    }
+
+    pub const fn lfe_host(&self) -> u8 {
+        self.lfe_host
+    }
+
+    pub fn regular_control_hosts(&self) -> &[u8] {
+        &self.regular_control_hosts
+    }
+
+    pub fn regular_source_bindings(&self) -> &[NormalControlRegularSourceBinding] {
+        &self.regular_source_bindings
+    }
+
+    pub const fn identity_sha256(&self) -> &[u8; 32] {
+        &self.identity_sha256
+    }
+
+    pub const fn input_physical_rows(&self) -> u16 {
+        self.source_identity.wave.channels()
+    }
+
+    pub const fn bed_track_count(&self) -> u16 {
+        self.graph_identity.bed_track_count
+    }
+
+    pub const fn object_track_count(&self) -> u16 {
+        self.graph_identity.object_track_count
+    }
 }
 
 impl NormalControlPreparedSnapshot {
