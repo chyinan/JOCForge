@@ -2,7 +2,8 @@
 use jocforge_domain::frontend::bed_channel_join::{PhysicalBedTrack, join_selected_bed_channels};
 use jocforge_domain::frontend::dbmd_sections::parse_selected_dbmd_sections;
 use jocforge_domain::frontend::job_configuration::{
-    SelectedInputKind, SelectedWaveDescriptor, parse_selected_job_configuration,
+    PrimaryMetadataChunkHashes, SelectedInputKind, SelectedPrimaryRuntimeIdentity,
+    SelectedWaveDescriptor, bind_admitted_selected_input, parse_selected_job_configuration,
 };
 use jocforge_domain::profile::EmdfCarriageProfile;
 use serde_json::Value;
@@ -205,6 +206,22 @@ fn adm_job_configuration_accepts_actual_pcm_channel_count_without_widening_atmos
     .unwrap();
     assert_eq!(parsed.wave().channels(), 36);
     assert_eq!(parsed.input_kind(), SelectedInputKind::Adm);
+    let data_bytes = parsed.source_samples() * 36 * 3;
+    let binding = bind_admitted_selected_input(
+        &parsed,
+        SelectedPrimaryRuntimeIdentity {
+            source_file_bytes: data_bytes + 44,
+            data_bytes,
+            metadata_hashes: PrimaryMetadataChunkHashes::new([1; 32], [2; 32], [3; 32]),
+            resource_sha256: [4; 32],
+            config_sha256: [5; 32],
+            job_xml_sha256: [6; 32],
+            job_xml_bytes: 1,
+        },
+    )
+    .unwrap();
+    assert_eq!(binding.wave().channels(), 36);
+    assert_eq!(binding.data_bytes(), data_bytes);
 
     let atmos_mezz_case = cases
         .iter()

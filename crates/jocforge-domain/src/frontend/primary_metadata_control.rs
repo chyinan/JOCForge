@@ -14,10 +14,6 @@ use crate::frontend::selected_adm_graph::{
     SelectedAdmGraph, SelectedAdmGraphError, SelectedPhysicalTrack, SelectedTrackKind,
 };
 
-const CONTROL38_ROW_COUNT: usize = 38;
-const OBJECT_ROW_COUNT: usize = 28;
-const BED_ROW_COUNT: usize = 10;
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct UnproducedControlBytes {
     offset: u8,
@@ -36,7 +32,7 @@ impl UnproducedControlBytes {
 
 /// Defined control fields only. Bed bytes 24..51 remain explicitly unproduced.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum PrimaryControl38Fields {
+pub enum PrimaryControlFields {
     Bed {
         words: [u32; 6],
         unproduced_tail: UnproducedControlBytes,
@@ -46,11 +42,14 @@ pub enum PrimaryControl38Fields {
     },
 }
 
+/// The 38-channel name is retained as an API alias for existing callers.
+pub type PrimaryControl38Fields = PrimaryControlFields;
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct PrimaryMetadataControlRow {
     track: SelectedPhysicalTrack,
     dbmd: DbmdTrackFields,
-    fields: PrimaryControl38Fields,
+    fields: PrimaryControlFields,
 }
 
 impl PrimaryMetadataControlRow {
@@ -62,7 +61,7 @@ impl PrimaryMetadataControlRow {
         self.dbmd
     }
 
-    pub const fn fields(&self) -> PrimaryControl38Fields {
+    pub const fn fields(&self) -> PrimaryControlFields {
         self.fields
     }
 }
@@ -71,7 +70,8 @@ impl PrimaryMetadataControlRow {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct PrimaryMetadataControlRows {
     source_binding: SelectedPrimaryControlBinding,
-    rows: [PrimaryMetadataControlRow; CONTROL38_ROW_COUNT],
+    rows: Vec<PrimaryMetadataControlRow>,
+    row_count: usize,
 }
 
 impl PrimaryMetadataControlRows {
@@ -79,20 +79,35 @@ impl PrimaryMetadataControlRows {
         &self.source_binding
     }
 
-    pub fn rows(&self) -> &[PrimaryMetadataControlRow; CONTROL38_ROW_COUNT] {
+    pub fn rows(&self) -> &[PrimaryMetadataControlRow] {
         &self.rows
     }
 
     pub const fn row_count(&self) -> usize {
-        CONTROL38_ROW_COUNT
+        self.row_count
     }
 
-    pub const fn object_control_word_count(&self) -> usize {
-        OBJECT_ROW_COUNT * 13
+    pub fn object_control_word_count(&self) -> u16 {
+        u16::try_from(
+            self.rows
+                .iter()
+                .filter(|row| matches!(row.fields, PrimaryControlFields::Object { .. }))
+                .count()
+                * 13,
+        )
+        .unwrap_or(u16::MAX)
     }
 
-    pub const fn defined_control_word_count(&self) -> usize {
-        OBJECT_ROW_COUNT * 13 + BED_ROW_COUNT * 6
+    pub fn defined_control_word_count(&self) -> u16 {
+        let word_count: usize = self
+            .rows
+            .iter()
+            .map(|row| match row.fields {
+                PrimaryControlFields::Bed { .. } => 6,
+                PrimaryControlFields::Object { .. } => 13,
+            })
+            .sum();
+        u16::try_from(word_count).unwrap_or(u16::MAX)
     }
 }
 
@@ -133,7 +148,7 @@ pub fn produce_primary_metadata_control_rows(
         .map_err(PrimaryMetadataControlError::Graph)?;
     let object_by_host = object_rows_by_host(graph, &object_controls)?;
 
-    let mut rows = Vec::with_capacity(CONTROL38_ROW_COUNT);
+    let mut rows = Vec::with_capacity(graph.tracks().len());
     for track in graph.tracks() {
         let host = track.physical_host().value();
         let dbmd_track = dbmd
@@ -141,7 +156,7 @@ pub fn produce_primary_metadata_control_rows(
             .ok_or(PrimaryMetadataControlError::DbmdTrackMissing)?;
         let fields = match track.kind() {
             SelectedTrackKind::DirectSpeakersBed { bed_input_id, .. } => {
-                PrimaryControl38Fields::Bed {
+                PrimaryControlFields::Bed {
                     words: [0, 0, 3, 2, 1, bed_input_id],
                     unproduced_tail: UnproducedControlBytes {
                         offset: 24,
@@ -149,7 +164,7 @@ pub fn produce_primary_metadata_control_rows(
                     },
                 }
             }
-            SelectedTrackKind::Object { .. } => PrimaryControl38Fields::Object {
+            SelectedTrackKind::Object { .. } => PrimaryControlFields::Object {
                 control52: object_by_host
                     .get(&host)
                     .copied()
@@ -162,12 +177,11 @@ pub fn produce_primary_metadata_control_rows(
             fields,
         });
     }
-    let rows = rows
-        .try_into()
-        .map_err(|_| PrimaryMetadataControlError::ObjectIdentity)?;
+    let row_count = rows.len();
     Ok(PrimaryMetadataControlRows {
         source_binding: source_binding.clone(),
         rows,
+        row_count,
     })
 }
 
@@ -190,7 +204,7 @@ fn object_rows_by_host(
     controls: &SelectedObjectControlSet,
 ) -> Result<BTreeMap<u8, ObjectControl52>, PrimaryMetadataControlError> {
     let hosts = graph.bed_channel_join().object_hosts();
-    if hosts.len() != OBJECT_ROW_COUNT || controls.rows().len() != OBJECT_ROW_COUNT {
+    if hosts.len() != controls.rows().len() {
         return Err(PrimaryMetadataControlError::ObjectIdentity);
     }
     Ok(hosts

@@ -14,6 +14,7 @@ use sha2::{Digest, Sha256};
 
 const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
 const SELECTED_RUNTIME_CHANNELS: u16 = 38;
+const MAX_SELECTED_ADM_CHANNELS: u16 = u8::MAX as u16 + 1;
 const SELECTED_PCM_BITS: u16 = 24;
 const SELECTED_BIT_RATE_KBPS: u32 = 1_024;
 const SELECTED_BIT_RATE_ENUM: u8 = 5;
@@ -715,7 +716,8 @@ pub fn bind_admitted_selected_input(
         return Err(PrimaryControlBindingError::SelectedJobMismatch);
     }
     if wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
-        || wave.channels() != SELECTED_RUNTIME_CHANNELS
+        || wave.channels() == 0
+        || wave.channels() > MAX_SELECTED_ADM_CHANNELS
         || wave.pcm_bits() != SELECTED_PCM_BITS
         || identity.source_file_bytes == 0
         || identity.data_bytes != expected_data_bytes
@@ -777,7 +779,13 @@ fn validate_primary_job_fields(job: &Value) -> Result<(), PrimaryControlBindingE
     }
     let dialogue_intelligence = job
         .pointer("/encode/loudness/dialogue_intelligence")
-        .and_then(Value::as_bool)
+        .and_then(|value| {
+            value.as_bool().or_else(|| match value.as_str() {
+                Some("false") => Some(false),
+                Some("true") => Some(true),
+                _ => None,
+            })
+        })
         .ok_or(PrimaryControlBindingError::SelectedFieldValue)?;
     let speech_threshold = value_u32(&job["encode"]["loudness"]["speech_threshold"])?;
     let line_drc_profile = job
