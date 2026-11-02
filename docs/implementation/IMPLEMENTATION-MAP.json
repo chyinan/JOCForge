@@ -1232,8 +1232,8 @@
         {
           "slice_id": "selected-job-xml-profile-normalization",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F01E_AND_F01_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_11_JOB_XML_CASES__PROFILE_GATE_CONSUMED__GRAPH_AND_EVENTS_OPEN",
-          "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode.",
+          "implementation_status": "LOCALLY_VERIFIED_11_JOB_XML_CASES_PLUS_FILM_LIGHT_DRC_TRIAL__DI_SEMANTICS_OPEN",
+          "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode. It also accepts a film_light/film_light DRC candidate paired with the existing false/100 meter inputs; DI true/15 remains unsupported by the selected meter model.",
           "owner": "frontend",
           "implementation_files": [
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
@@ -1252,7 +1252,23 @@
           "parameters": {
             "kind": "HASH_BOUND_SELECTED_JOB_XML_WITH_FIXED_PROFILE_LITERALS",
             "provider_files": [],
-            "validation_boundary": "Admits only the selected 48 kHz/38-channel/PCM24 descriptor, 1024 kbps XML values and selected optional defaults. The returned profile is consumed by resolve_selected_profile. Other profile values reject without fallback."
+            "validation_boundary": "Admits only the selected 48 kHz/38-channel/PCM24 descriptor, 1024 kbps XML values and selected optional defaults. The returned profile is consumed by resolve_selected_profile. Other profile values reject without fallback.",
+            "audio_control_profiles": [
+              {
+                "dialogue_intelligence": false,
+                "speech_threshold": 100,
+                "line_mode_drc_profile": "none",
+                "rf_mode_drc_profile": "none",
+                "status": "BASELINE_RUST_RUN"
+              },
+              {
+                "dialogue_intelligence": false,
+                "speech_threshold": 100,
+                "line_mode_drc_profile": "film_light",
+                "rf_mode_drc_profile": "film_light",
+                "status": "DEE_DRC_ONLY_A_B_CANDIDATE; DI_TRUE_15_NOT_IMPLEMENTED"
+              }
+            ]
           },
           "test_modules": [
             "crates/jocforge-domain/tests/job_configuration.rs"
@@ -1265,7 +1281,8 @@
             "case_pointers": [
               "Eleven complete job XML cases: ADM and atmos_mezz selection/defaults, ADM precedence, duplicate field, malformed XML, DOCTYPE, namespaced root, missing DRC, nonzero start, alternate rate, and wrong PCM profile.",
               "Three accepted cases match the fixed normalized profile and reference values; eight rejected cases match their local CONFIG_* error category with no state commit.",
-              "The parser input is a real hash-bound selected job XML vector. It is not paired with a synthetic ADM graph and is not claimed as whole F01E or end-to-end execution."
+              "The parser input is a real hash-bound selected job XML vector. It is not paired with a synthetic ADM graph and is not claimed as whole F01E or end-to-end execution.",
+              "A local derived case changes only line/RF DRC to film_light; DI=false and speech_threshold=100 stay fixed to isolate DRC metadata playback effects."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
@@ -20964,8 +20981,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 18285,
-              "sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e"
+              "bytes": 18397,
+              "sha256": "db8f5ae25585528061aca4f0475ac325d4fb8838fd5a0a3f3d66603f76582cc9"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -21006,8 +21023,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 18285,
-              "sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e"
+              "bytes": 18397,
+              "sha256": "db8f5ae25585528061aca4f0475ac325d4fb8838fd5a0a3f3d66603f76582cc9"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
@@ -25924,8 +25941,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 37264,
-              "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"
+              "bytes": 37632,
+              "sha256": "8715555af6c1255be0e41323107fecc7386613d81052fd2be408ee61d8415a5c"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -25936,8 +25953,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 18285,
-              "sha256": "b3a5a8e1be761bb7dab62bfd4d3cc75cd3780f0d50f771d620e6189271c4b12e"
+              "bytes": 18397,
+              "sha256": "db8f5ae25585528061aca4f0475ac325d4fb8838fd5a0a3f3d66603f76582cc9"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -34461,8 +34478,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 37264,
-              "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"
+              "bytes": 37632,
+              "sha256": "8715555af6c1255be0e41323107fecc7386613d81052fd2be408ee61d8415a5c"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -36731,7 +36748,7 @@
         {
           "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
           "bytes": 24724,
-          "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+          "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
         },
         {
           "path": "crates/jocforge-domain/src/transaction/mod.rs",
@@ -36741,7 +36758,7 @@
         {
           "path": "crates/jocforge-domain/src/analysis/owner.rs",
           "bytes": 99211,
-          "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+          "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
         }
       ],
       "test_inventory": [
@@ -36867,7 +36884,7 @@
         {
           "path": "crates/jocforge-domain/src/analysis/owner.rs",
           "bytes": 99211,
-          "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+          "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
         },
         {
           "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
@@ -36877,7 +36894,7 @@
         {
           "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
           "bytes": 24724,
-          "sha256": "085379f312378a4f4ef5a09af7e8f91c9faa56ebae1348f404b56231c963e027"
+          "sha256": "8f0b6d24c6a547f6fd15da70f0f562ce8b9d6dab623504457f8856aa890c820d"
         },
         {
           "path": "crates/jocforge-domain/src/analysis/transient_channel.rs",
@@ -36899,7 +36916,7 @@
         {
           "path": "crates/jocforge-domain/src/analysis/owner.rs",
           "bytes": 99211,
-          "sha256": "bc6ee513ae9b54b2d657c5cea3bb50d4a2361ae0603e6d7856f4d526d0243c07"
+          "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
         },
         {
           "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
@@ -37399,8 +37416,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/encode_request.rs",
-          "bytes": 37264,
-          "sha256": "bf3f550899f12dbec2cc71c56ceeebc5d92659b53aba1d887afd5ccc74bb463e"
+          "bytes": 37632,
+          "sha256": "8715555af6c1255be0e41323107fecc7386613d81052fd2be408ee61d8415a5c"
         },
         {
           "path": "crates/jocforge-cli/src/lib.rs",

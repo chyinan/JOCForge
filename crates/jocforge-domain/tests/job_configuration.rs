@@ -173,6 +173,59 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
 }
 
 #[test]
+fn accepts_dee_film_light_drc_variant_with_selected_meter_controls() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["expected"]["status"] == "ACCEPT")
+        .unwrap();
+    let input_xml = case["input_xml"]
+        .as_str()
+        .unwrap()
+        .replace(
+            "<line_mode_drc_profile>none</line_mode_drc_profile><rf_mode_drc_profile>none</rf_mode_drc_profile>",
+            "<line_mode_drc_profile>film_light</line_mode_drc_profile><rf_mode_drc_profile>film_light</rf_mode_drc_profile>",
+        );
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+
+    let config = parse_selected_job_configuration(
+        input_xml.as_bytes(),
+        wave,
+        descriptor["source_samples"].as_u64().unwrap(),
+    )
+    .unwrap();
+
+    assert!(!config.loudness().dialogue_intelligence());
+    assert_eq!(config.loudness().speech_threshold(), 100);
+    assert_eq!(config.line_drc_profile(), "film_light");
+    assert_eq!(config.rf_drc_profile(), "film_light");
+
+    let unsupported_dialogue_intelligence = input_xml
+        .replace(
+            "<dialogue_intelligence>false</dialogue_intelligence>",
+            "<dialogue_intelligence>true</dialogue_intelligence>",
+        )
+        .replace(
+            "<speech_threshold>100</speech_threshold>",
+            "<speech_threshold>15</speech_threshold>",
+        );
+    let error = parse_selected_job_configuration(
+        unsupported_dialogue_intelligence.as_bytes(),
+        wave,
+        descriptor["source_samples"].as_u64().unwrap(),
+    )
+    .unwrap_err();
+    assert_eq!(error.code(), "CONFIG_FIELD_VALUE");
+}
+
+#[test]
 fn selected_dbmd_sections_decode_authored_mode_and_physical_track_fields() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let mode_cases = vectors["dbmd_mode_cases"].as_array().unwrap();

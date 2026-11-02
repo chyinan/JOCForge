@@ -156,8 +156,13 @@ fn selected_bsi_profile_inputs(
         || configuration.dispatch_mode() != 2
         || configuration.route_virtual_prefix_count() != 11
         || configuration.source_samples() == 0
-        || configuration.line_drc_profile() != "none"
-        || configuration.rf_drc_profile() != "none"
+        || !matches!(
+            (
+                configuration.line_drc_profile(),
+                configuration.rf_drc_profile()
+            ),
+            ("none", "none") | ("film_light", "film_light")
+        )
     {
         return Err(CodecSourceBridgeError::UnsupportedSelectedProfile);
     }

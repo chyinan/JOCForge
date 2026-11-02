@@ -754,15 +754,12 @@ fn validate_primary_job_fields(job: &Value) -> Result<(), PrimaryControlBindingE
         ("/encode/version", "1"),
         ("/encode/loudness/mode", "measure_only"),
         ("/encode/loudness/metering_mode", "1770-4"),
-        ("/encode/loudness/dialogue_intelligence", "false"),
         ("/encode/timecode_frame_rate", "not_indicated"),
         ("/encode/time_controls/start", ""),
         ("/encode/time_controls/end", ""),
         ("/encode/time_controls/time_base", "file_position"),
         ("/encode/time_controls/prepend_silence_duration", "0.0"),
         ("/encode/time_controls/append_silence_duration", "0.0"),
-        ("/encode/drc/line_mode_drc_profile", "none"),
-        ("/encode/drc/rf_mode_drc_profile", "none"),
         ("/encode/downmix/loro_center_mix_level", "-3"),
         ("/encode/downmix/loro_surround_mix_level", "-3"),
         ("/encode/downmix/ltrt_center_mix_level", "-3"),
@@ -778,8 +775,26 @@ fn validate_primary_job_fields(job: &Value) -> Result<(), PrimaryControlBindingE
             return Err(PrimaryControlBindingError::SelectedFieldValue);
         }
     }
+    let dialogue_intelligence = job
+        .pointer("/encode/loudness/dialogue_intelligence")
+        .and_then(Value::as_bool)
+        .ok_or(PrimaryControlBindingError::SelectedFieldValue)?;
+    let speech_threshold = value_u32(&job["encode"]["loudness"]["speech_threshold"])?;
+    let line_drc_profile = job
+        .pointer("/encode/drc/line_mode_drc_profile")
+        .and_then(Value::as_str)
+        .ok_or(PrimaryControlBindingError::SelectedFieldValue)?;
+    let rf_drc_profile = job
+        .pointer("/encode/drc/rf_mode_drc_profile")
+        .and_then(Value::as_str)
+        .ok_or(PrimaryControlBindingError::SelectedFieldValue)?;
     if value_u32(&job["encode"]["data_rate_kbps"])? != SELECTED_BIT_RATE_KBPS
-        || job["encode"]["loudness"]["speech_threshold"].as_u64() != Some(100)
+        || !supported_audio_control_set(
+            dialogue_intelligence,
+            speech_threshold,
+            line_drc_profile,
+            rf_drc_profile,
+        )
     {
         return Err(PrimaryControlBindingError::SelectedFieldValue);
     }
@@ -793,6 +808,23 @@ fn value_u32(value: &Value) -> Result<u32, PrimaryControlBindingError> {
             .ok_or(PrimaryControlBindingError::SelectedFieldValue)?,
     )
     .map_err(|_| PrimaryControlBindingError::SelectedFieldValue)
+}
+
+fn supported_audio_control_set(
+    dialogue_intelligence: bool,
+    speech_threshold: u32,
+    line_drc_profile: &str,
+    rf_drc_profile: &str,
+) -> bool {
+    matches!(
+        (
+            dialogue_intelligence,
+            speech_threshold,
+            line_drc_profile,
+            rf_drc_profile
+        ),
+        (false, 100, "none", "none") | (false, 100, "film_light", "film_light")
+    )
 }
 
 fn sha256(bytes: &[u8]) -> [u8; 32] {
@@ -878,19 +910,31 @@ pub fn parse_selected_job_configuration(
 
     let loudness_node = path_node(encoder, &["loudness", "measure_only"])?
         .ok_or(JobConfigurationError::MissingField)?;
-    require_exact(loudness_node, &["dialogue_intelligence"], "false")?;
+    let dialogue_intelligence_text = required_text(loudness_node, &["dialogue_intelligence"])?;
+    let dialogue_intelligence = match dialogue_intelligence_text.as_str() {
+        "false" => false,
+        "true" => true,
+        _ => return Err(JobConfigurationError::UnsupportedFieldValue),
+    };
+    let speech_threshold =
+        parse_decimal_u32(&required_text(loudness_node, &["speech_threshold"])?)?;
     let loudness = SelectedLoudnessConfiguration {
         metering_mode: require_exact(loudness_node, &["metering_mode"], "1770-4")?,
-        dialogue_intelligence: false,
-        speech_threshold: parse_decimal_u32(&required_text(loudness_node, &["speech_threshold"])?)?,
+        dialogue_intelligence,
+        speech_threshold,
     };
-    if loudness.speech_threshold != 100 {
-        return Err(JobConfigurationError::UnsupportedFieldValue);
-    }
 
     let data_rate = path_node(encoder, &["drc"])?.ok_or(JobConfigurationError::MissingField)?;
-    let line_drc_profile = require_exact(data_rate, &["line_mode_drc_profile"], "none")?;
-    let rf_drc_profile = require_exact(data_rate, &["rf_mode_drc_profile"], "none")?;
+    let line_drc_profile = required_text(data_rate, &["line_mode_drc_profile"])?;
+    let rf_drc_profile = required_text(data_rate, &["rf_mode_drc_profile"])?;
+    if !supported_audio_control_set(
+        loudness.dialogue_intelligence,
+        loudness.speech_threshold,
+        &line_drc_profile,
+        &rf_drc_profile,
+    ) {
+        return Err(JobConfigurationError::UnsupportedFieldValue);
+    }
 
     let downmix_node =
         path_node(encoder, &["downmix"])?.ok_or(JobConfigurationError::MissingField)?;
