@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.adm_lfe_route_model_boundary.v1",
+  "status": "ADM_UID_LABEL_TO_PHYSICAL_ROW_BOUND; MODEL_DIRECT_LFE_ROUTE_BOUNDED; NATIVE_FRAME_JOIN_UNBOUND",
+  "upstream_package": {
+    "package_id": "DEE-ADM-LFE-TO-ATMOS-JOC-ROUTE-V1",
+    "manifest_sha256": "295d55f90cc145d7a4541b1f631af1ba86509f0e67977c689367bc442cddae23",
+    "payload_count_verified": 3,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "adm_identity": {
+    "track_uid": "ATU_00000004",
+    "chna_track_index_one_based": 4,
+    "physical_bwf_row_zero_based": 3,
+    "channel_format_id": "AC_00011004",
+    "speaker_label": "RC_LFE",
+    "label_suffix": "LFE",
+    "identity_basis": "UID/AXML/CHNA association and explicit speaker label",
+    "numeric_aliases_not_identity": ["compact_bed_id=3", "pack_channel_ordinal=3"]
+  },
+  "static_metadata_path": {
+    "converter_and_ddp_atmos_recognize": ["RC_LFE", "RC_LFE2"],
+    "branch_effect": "descriptive label metadata construction",
+    "pcm_row_routing_established_by_this_branch": false
+  },
+  "approved_model_contract": {
+    "route": ["UID-resolved physical row", "separate direct-LFE lane", "independent three-slot delay", "allocated16 row 0"],
+    "component_rows": "1..15",
+    "scope": "MODEL_CONTRACT_ONLY"
+  },
+  "native_unbound": {
+    "input_row_to_dee_core_lfe_lane": "UNBOUND",
+    "allocated16_owner_generation": "NOT_CAPTURED",
+    "native_audio_values": "NOT_CAPTURED"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_protected_media_access": false,
+    "key_or_license_access": false,
+    "production_allowed": false
+  }
+}

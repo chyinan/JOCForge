@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.static_conditional_vector.v1",
+  "vector_id": "SELECTOR8-WAV-NORMAL-BRANCH",
+  "conditions": {
+    "selected_master_open_extension": "wav",
+    "writer_selector_key": 8,
+    "writer_param3_byte0": 0
+  },
+  "static_expected_effect": {
+    "provider_type_if_extension_branch_selected": "atmos_storage_master_s",
+    "map_record_copies_three_qwords": true,
+    "returned_record_qword0_origin": "param_3 qword0"
+  },
+  "execution_status": "NOT_RUN",
+  "selected_job_extension": "NOT_OBSERVED",
+  "returned_owner_type": "UNBOUND",
+  "profile_selection_join": "UNBOUND"
+}

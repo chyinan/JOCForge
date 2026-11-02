@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.static_plugin_property_vector.v1",
+  "vector_id": "ATMOS-DDP-DRC-PLUGIN-KEYS",
+  "static_candidates": [
+    {"xml_leaf":"line_mode_drc_profile","qualified_registry_alias":"drc:line_mode_drc_profile","type":"xs:string with enum constraint","owner_offset":"0x6d0"},
+    {"xml_leaf":"rf_mode_drc_profile","qualified_registry_alias":"drc:rf_mode_drc_profile","type":"xs:string with enum constraint","owner_offset":"0x750"}
+  ],
+  "host_xml_execution": "NOT_RUN",
+  "host_prefix_behavior": "NOT_ESTABLISHED",
+  "enum_mapping": "NOT_REVISITED",
+  "audio_effect": "NOT_ESTABLISHED"
+}

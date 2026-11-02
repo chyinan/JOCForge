@@ -6459,6 +6459,17 @@ def check_supplement_catalog(root):
  checked=subprocess.run([sys.executable,'-B',str(builder),'--check'],cwd=root,capture_output=True,text=True,encoding='utf-8');ck(checked.returncode==0 and '"index_is_locator_only": true' in checked.stdout and '"catalog_is_current": true' in checked.stdout,'washed supplement catalog is fresh against package directories')
  text=catalog.read_text(encoding='utf-8');ck('Generated locator only. A catalog row is not evidence.' in text and 'Package directories:' in text and 'Top-level manifests:' in text and 'NO_TOP_LEVEL_MANIFEST' in text and not re.search(r'(?i)\b[A-Z]:\\',text),'supplement catalog is clearly a sanitized locator, not evidence or an absolute-path index')
 
+def check_wash_supplement_registry(root,d):
+ registry=d.get('wash_supplement_registry',[]);functional_ids={entry['functional_id']for entry in d.get('functional_entries',[])};ck(len(registry)==10,'ten locally verified Wash supplements are mapped');package_ids=[item.get('package_id')for item in registry];ck(len(set(package_ids))==10,'Wash supplement package IDs are unique')
+ for item in registry:
+  relative=item.get('relative_path','');package=(root/relative).resolve();manifest=package/'MANIFEST.json';contained=True
+  try:package.relative_to(root.resolve())
+  except ValueError:contained=False
+  expected=item.get('manifest_sha256','');actual=hashlib.sha256(manifest.read_bytes()).hexdigest()if manifest.is_file()else ''
+  ck(contained and package.is_dir()and manifest.is_file()and actual==expected,item.get('package_id','Wash supplement')+' manifest is hash-bound in implementation map')
+  ck((package/'verify_package.py').is_file()and item.get('local_verification')=={'python':'PASS','python_optimized':'PASS'}and item.get('evidence_class')=='WASHED_SUPPLEMENT_EVIDENCE_ONLY'and item.get('not_run'),'Wash supplement preserves both checker modes and evidence-only disposition '+item.get('package_id',''))
+  ck(set(item.get('functional_ids',[]))<=functional_ids,'Wash supplement maps only inventoried functional IDs '+item.get('package_id',''))
+
 
 def run(root=ROOT):
  check_unsafe_boundary(root)
@@ -6533,6 +6544,7 @@ def run(root=ROOT):
  check_f14_bit_compaction_slice(root,d)
  check_f14_hmac_primitive_slice(root,d)
  check_supplement_catalog(root)
+ check_wash_supplement_registry(root,d)
  for e in future:
   if e['functional_id']=='F04D':
    audit=d['phase_one'].get('DESCRIPTOR_CONTROL_AUDIT',{});ck(e['implementation_status']==audit.get('status')=='LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN'and all(key in e for key in('parameters','vectors','error_outcomes','clock'))and e.get('implementation_files')==audit.get('implementation_files')and e.get('test_modules')==audit.get('test_files'),'F04D traceability maps the exact local stage contract and inventory')

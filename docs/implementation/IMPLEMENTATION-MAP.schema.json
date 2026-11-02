@@ -40,7 +40,7 @@
       }
     }
   },
-  "required": ["schema", "status", "functional_entries", "programme_roots", "selected_overlap_projection", "phase_one"],
+  "required": ["schema", "status", "functional_entries", "programme_roots", "selected_overlap_projection", "phase_one", "wash_supplement_registry"],
   "properties": {
     "schema": {"const": "jocforge-implementation-map.v1"},
     "public_distribution_authorization": {"type": "object"},
@@ -71,8 +71,36 @@
       "items": {"$ref": "#/$defs/programme_root"}
     },
     "selected_overlap_projection": {"type": "object"},
-    "phase_one": {"type": "object"}
-    ,"approved_dependencies": {"type": "object"}
+    "phase_one": {"type": "object"},
+    "approved_dependencies": {"type": "object"},
+    "wash_supplement_registry": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["package_id", "relative_path", "manifest_sha256", "functional_ids", "local_verification", "evidence_class", "disposition", "not_run"],
+        "properties": {
+          "package_id": {"type": "string", "minLength": 1},
+          "relative_path": {"type": "string", "minLength": 1},
+          "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "functional_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "local_verification": {
+            "type": "object",
+            "required": ["python", "python_optimized"],
+            "properties": {
+              "python": {"const": "PASS"},
+              "python_optimized": {"const": "PASS"}
+            },
+            "additionalProperties": false
+          },
+          "evidence_class": {"const": "WASHED_SUPPLEMENT_EVIDENCE_ONLY"},
+          "disposition": {"type": "string", "minLength": 1},
+          "not_run": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    }
   },
   "additionalProperties": false
 }

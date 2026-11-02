@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.dee_atmosinfo_chunk_reader_boundary.v1",
+  "status": "ATMOSINFO_OUTPUT_FIELDS_BOUND_TO_MASTER_RECORD; MASTER_FIELD_WRITER_TO_WAVE_CHUNK_UNBOUND",
+  "upstream_reader_package": {
+    "package_id":"DEE-ATMOS-INFO-CHUNK-READER-TRACE-WASH-V1",
+    "manifest_sha256":"545749605a6ab9a43f2a0e65d3848e3e6d67e0ef81aadf4708a014ca1d702af7",
+    "sha256sums_sha256":"06c1d2a27dd4e9c863be477e3cd9ed0dddb8ee5c13d1cbac97ee0476a423501c",
+    "payload_count_verified":8,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "output_fields": {
+    "reader_or_formatter":"FUN_14006dbf0",
+    "master_record_reader":"FUN_14006c840",
+    "start_time_offset":"+0x50",
+    "ffoa_offset":"+0x58"
+  },
+  "generic_wave_reader": {
+    "function":"FUN_140214430",
+    "recognized_container_fields":["RIFF", "RF64", "WAVE", "ds64", "fmt ", "data"],
+    "special_case":"JUNK"
+  },
+  "unbound": {
+    "master_record_plus_0x50_writer":"UNBOUND",
+    "master_record_plus_0x58_writer":"UNBOUND",
+    "writer_to_specific_chunk_reader_join":"UNBOUND",
+    "offset_auto_source":"UNBOUND",
+    "ffoa_auto_source":"UNBOUND"
+  },
+  "companion_metadata_survey": {
+    "package_id":"DEE-ATMOS-MEZZ-AUTO-METADATA-WASH-V1",
+    "manifest_sha256":"5e091e7bbac5b6017d5e1687215707c0417df449db66143e0b9f032a4f484774",
+    "named_offset_ffoa_or_time_reference_in_scanned_metadata":"NOT_FOUND_IN_SEVEN_INPUTS",
+    "audio_programme_start_to_start_time_mapping":"NOT_BOUND"
+  },
+  "execution_scope": {
+    "dee_or_atmos_info_run":false,
+    "pcm_or_payload_read":false,
+    "key_or_license_access":false,
+    "default_file_position_mvp_blocked":false,
+    "production_allowed":false
+  }
+}

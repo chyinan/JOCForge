@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1301,
+      "name": "REPORT.md",
+      "sha256": "a14d36e4a4aafdb1b8fb9949b49fb22d53b6ae642bd4e661e02a5601955db83c"
+    },
+    {
+      "bytes": 1674,
+      "name": "EVIDENCE.json",
+      "sha256": "889ea62985995606da4422fe3ae2765a2160b13849b33b8395e6d1bffeea5fdd"
+    },
+    {
+      "bytes": 477,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "17eaea16da0248df2b8e45734f176fee2348370f6535fd8979d9961fd671ed8d"
+    },
+    {
+      "bytes": 738,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "8270df8b0f359077271acfcfd2650207294ce0ba483350104cf2b44b4ccfbd99"
+    },
+    {
+      "bytes": 2124,
+      "name": "verify_package.py",
+      "sha256": "826795d332e5b6194b8e37873b3c957e43b0d1863e29fb618d55388f71b4418b"
+    },
+    {
+      "bytes": 1488,
+      "name": "seal_package.py",
+      "sha256": "db15722a2dab3fdbde858e19c718cfb1ecf3a6fca4da483c53e4478ae6e9da82"
+    }
+  ],
+  "manifest_sha256": "b2cc45fcf56b10810e427dbf83a55e46373a20b0eb36acccf57d47010524db9b",
+  "package_id": "DEE-ATMOS-INFO-CHUNK-READER-BOUNDARY-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

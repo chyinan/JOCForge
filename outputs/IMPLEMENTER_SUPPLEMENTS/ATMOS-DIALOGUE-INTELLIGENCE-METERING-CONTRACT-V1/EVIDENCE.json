@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.atmos_dialogue_metering_contract.v1",
+  "status": "MEASURE_ONLY_METERING_FIELDS_BOUND; FORMULA_AND_RUNTIME_OWNER_UNBOUND",
+  "upstream_package": {
+    "package": "dee-dialogue-intelligence-speech-threshold-wash",
+    "manifest_sha256": "68c1ada5f34e6ac350e2388274a60d5a4504b799f4d5b93913b3e3169338f614",
+    "payload_count_verified": 4,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "source_images": [
+    {"name":"dee.exe","sha256":"65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e","role":"configuration loader"},
+    {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2","role":"Atmos schema/path owner"},
+    {"name":"dee_audio_filter_ddp.dll","sha256":"2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72","role":"metering parameter handler; cross-module join unbound"}
+  ],
+  "target_branch": "encode_to_atmos_ddp/loudness/measure_only",
+  "properties": [
+    {"name":"dialogue_intelligence","xml_path":"loudness:measure_only:dialogue_intelligence","type":"xs:boolean","default":false,"mode_scope":"manual preset; schema says ignored for 1770-1 and LeqA"},
+    {"name":"speech_threshold","xml_path":"loudness:measure_only:speech_threshold","type":"xs:integer","minimum":0,"maximum":100,"default":100,"mode_scope":"manual preset"}
+  ],
+  "typed_static_chain": {
+    "config_builder": "FUN_180136220 writes bool and integer slots",
+    "measure_only_dispatch": "FUN_180210fe0 selects mode 2 and calls FUN_18020eaf0",
+    "handler": "dee::proc::handleMeteringParams reads DI bool and speech_threshold integer; stores threshold when parsed value < 101",
+    "measure_and_correct_is_separate": true
+  },
+  "effect_boundary": {
+    "direct_pcm_or_spatial_field_use": "NOT_FOUND_IN_SCOPED_REPORTS",
+    "measurement_result_to_dialnorm": "MAY_AFFECT_OUTPUT_METADATA_THROUGH_PRIOR_F06_RESULT_PATH",
+    "speech_score_threshold_formula": "UNBOUND",
+    "cross_module_runtime_owner_join": "UNBOUND",
+    "nonmanual_mode_value_discard": "PARTIAL_SCHEMA_AND_WARNING_EVIDENCE"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "test_run": false,
+    "pcm_or_payload_access": false,
+    "key_or_license_access": false,
+    "production_allowed": false
+  }
+}

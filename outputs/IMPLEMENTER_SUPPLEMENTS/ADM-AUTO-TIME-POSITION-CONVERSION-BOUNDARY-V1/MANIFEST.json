@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1658,
+      "name": "REPORT.md",
+      "sha256": "9f0f0494c3b7e5b0d7bd6d550a829cb3b392407f030e5f2d0b5a38ada2172da2"
+    },
+    {
+      "bytes": 2567,
+      "name": "EVIDENCE.json",
+      "sha256": "a7eb927caf0f7ae1d54e9361f7147eed75be1680f645df7e8e7a489376cde971"
+    },
+    {
+      "bytes": 530,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "91c8f91617b745e9c5e2e4e5aab3c0fa43f01450d923df0cbf22c447853fb3cf"
+    },
+    {
+      "bytes": 753,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "12e21447c1b9004a7291e036f49fa712657a3750bd49de739800d969b865bc17"
+    },
+    {
+      "bytes": 2208,
+      "name": "verify_package.py",
+      "sha256": "fe0182f060e84a48fe119a65376c8035550d0316c8bcb49810ede8711598160e"
+    },
+    {
+      "bytes": 1512,
+      "name": "seal_package.py",
+      "sha256": "3b82d72d4f528bce93e380a709afb045ee102f432e985727cde1e6961fc68630"
+    }
+  ],
+  "package_id": "ADM-AUTO-TIME-POSITION-CONVERSION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "FILE_POSITION_CONVERSION_CONDITIONAL_RULE_BOUND; AUTO_SOURCE_UNBOUND; DEFAULT_FILE_POSITION_MVP_NOT_BLOCKED"
+}

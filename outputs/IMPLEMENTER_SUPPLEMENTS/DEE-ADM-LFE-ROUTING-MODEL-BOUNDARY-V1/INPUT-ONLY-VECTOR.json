@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.adm_lfe_identity_vector.v1",
+  "vector_id": "PRIMARY-ADM-EXPLICIT-LFE-IDENTITY",
+  "expected_identity": {
+    "track_uid":"ATU_00000004",
+    "chna_track_index_one_based":4,
+    "physical_bwf_row_zero_based":3,
+    "channel_format_id":"AC_00011004",
+    "speaker_label":"RC_LFE"
+  },
+  "numeric_fields_are_distinct_domains": true,
+  "model_route_scope":"UID row -> direct LFE lane -> independent three-slot delay -> allocated16 row0",
+  "native_frame_join":"UNBOUND",
+  "runtime_execution":"NOT_RUN"
+}

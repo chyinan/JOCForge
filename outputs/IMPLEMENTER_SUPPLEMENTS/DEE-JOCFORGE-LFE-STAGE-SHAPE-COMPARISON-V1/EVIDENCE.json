@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.lfe_stage_shape_comparison.v1",
+  "status": "STATIC_STAGE_SHAPE_DIFFERENCE_CANDIDATE; INPUT_TO_CORE_LFE_OWNER_UNBOUND; NUMERIC_PARITY_NOT_RUN",
+  "upstream_dee_package": {
+    "package_id": "dee_lfe_algorithm_wash_v1",
+    "manifest_sha256": "e8d4a9760789f858fc20933b56d2375d31b261fe7a21aac093116f40a271e266",
+    "sha256sums_sha256": "805d70b933817466f0a1dc301d86b4792acf638f24d3042710f16c2456ec6063",
+    "payload_count_verified": 7,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "dee_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "ghidra": "12.2 PUBLIC",
+    "processing": "read-only, noanalysis"
+  },
+  "dee_static_lfe_branch": {
+    "shared_transform_block_words": 256,
+    "symmetric_pair_iterations": 64,
+    "shared_window_table_sha256_matches_rust_provider": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+    "lfe_main_and_companion_wrappers_are_separate": true,
+    "stride_nonzero_branch": "two 64-entry F32 tables",
+    "stride_zero_branch": "64-step cosine/sine recurrence",
+    "precursor": {"kind":"16-point butterfly-style", "index_map":[0,4,2,6,1,5,3,7]},
+    "main_and_companion_mixers": {"values_each":7,"type":"F32","scale":0.0625},
+    "operations": ["separate F32 SSE multiply", "separate F32 SSE add", "separate F32 SSE subtract"],
+    "fma_observed": false,
+    "float_to_integer_conversion_observed": false,
+    "clamp_or_saturation_observed": false,
+    "active_mxcsr_rounding_mode": "NOT_CAPTURED"
+  },
+  "rust_current_source": {
+    "upstream_package_id":"JOCFORGE-LFE-CURRENT-SOURCE-PATH-V1",
+    "manifest_sha256":"8f9120e8431b58a3e757342e743b49b9ac5ccc7a704dddb0fd64542e9b292a50",
+    "head":"1b4a34170bc7981f2c330308a1f1b4c642258c24",
+    "lfe_spatial_lane":3,
+    "lfe_post_filter_sections":4,
+    "f08_lfe_bins":7,
+    "f09_f10_lfe_exponents":7,
+    "candidate_frame_lfeon":1,
+    "public_encode_result":"SourcePipelineUnavailable before source audio pipeline"
+  },
+  "comparison": {
+    "native_window_table_hash_match": true,
+    "native_lfe_tables_to_rust_filter_or_f08_coefficients": "UNBOUND",
+    "native_state_owner_to_rust_state_owner": "UNBOUND",
+    "adm_physical_row3_to_dee_core_lfe_lane": "UNBOUND",
+    "matched_layout_lfe_flag_fbw_count_stride_branch": "UNBOUND",
+    "cutoff_or_resampling_ratio": "NOT_IDENTIFIED",
+    "numeric_parity": "NOT_RUN",
+    "user_reported_damaged_ec3_run_bound_to_source_head": false
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "dsp_execution": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_access": false,
+    "production_allowed": false
+  }
+}

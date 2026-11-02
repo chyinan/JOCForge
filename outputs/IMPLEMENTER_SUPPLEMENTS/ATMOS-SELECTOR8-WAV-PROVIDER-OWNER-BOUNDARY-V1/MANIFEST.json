@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1667,
+      "name": "REPORT.md",
+      "sha256": "4f95e4ca33fe6543b96f9291e0bfb7e6a1d11ca166c8924f5e34e9622c1c2d1a"
+    },
+    {
+      "bytes": 1947,
+      "name": "EVIDENCE.json",
+      "sha256": "1436c1c223f6b26ff0d539cc304c2dfbf52a9798b2a1f52699fb9c9329bac09d"
+    },
+    {
+      "bytes": 590,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "79dd5e18a3d0e61a64e852c8398bec60b100ca738186244edb48474125c6aa42"
+    },
+    {
+      "bytes": 595,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "c30e99c11ceacae0b7ffda1a8cf92ca23147543503c6b47f5fe26fa1df9ac2d6"
+    },
+    {
+      "bytes": 2157,
+      "name": "verify_package.py",
+      "sha256": "24845f32e679f32be9472167a177d0cd2978380d9b096d6204523a13a1cb0d6c"
+    },
+    {
+      "bytes": 1507,
+      "name": "seal_package.py",
+      "sha256": "8a45193887370baa056968cbb3a5dad1b03720ed11a075b46bbcd78743e0d04d"
+    }
+  ],
+  "package_id": "ATMOS-SELECTOR8-WAV-PROVIDER-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "CONDITIONAL_WAV_PROVIDER_TYPE3; SELECTED_JOB_EXTENSION_NOT_OBSERVED; SELECTOR8_RETURNED_OWNER_UNBOUND"
+}

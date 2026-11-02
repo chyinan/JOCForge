@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 2446,
+      "name": "REPORT.md",
+      "sha256": "eb2169705bab991b075a11f35cf78997541761a43bb34c0483442dc57370d339"
+    },
+    {
+      "bytes": 2460,
+      "name": "EVIDENCE.json",
+      "sha256": "ca49a1104d53ae2222c1c3e48b295f69e26458342b2edf2c6cc7f62ec68a66de"
+    },
+    {
+      "bytes": 903,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "87cc0fbdbcd20a47bd6eff3e1787cbbca4865d0c7480da383824584a7538af70"
+    },
+    {
+      "bytes": 649,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "c922e38c988cb194b71340a0f9f9098843b89ecd2e424cb225ec4d7eafa8f7ac"
+    },
+    {
+      "bytes": 2131,
+      "name": "verify_package.py",
+      "sha256": "ad6891fd427f539e85b620fc10745792e4df6bf185fb776793e5da2eec1fd7c2"
+    },
+    {
+      "bytes": 1495,
+      "name": "seal_package.py",
+      "sha256": "84b68110033e8f26c4704b145e05a373b11c3e00f9c376cf153b0dda8515bca3"
+    }
+  ],
+  "manifest_sha256": "8f9120e8431b58a3e757342e743b49b9ac5ccc7a704dddb0fd64542e9b292a50",
+  "package_id": "JOCFORGE-LFE-CURRENT-SOURCE-PATH-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

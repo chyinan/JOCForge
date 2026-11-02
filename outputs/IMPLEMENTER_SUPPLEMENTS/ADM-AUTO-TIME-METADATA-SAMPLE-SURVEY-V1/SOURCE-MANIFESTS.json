@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "sources": [
+    {
+      "kind": "upstream_wash_package",
+      "package": "DEE-ATMOS-MEZZ-AUTO-METADATA-WASH-V1",
+      "manifest_sha256": "5e091e7bbac5b6017d5e1687215707c0417df449db66143e0b9f032a4f484774",
+      "sha256sums_sha256": "95e0fc78eab15c5586728b1ca32a1b4957fdea941c114ee2a13049c6addf60b5",
+      "payload_count": 14,
+      "checksums_count": 15,
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS",
+      "ghidra_version": "12.2 PUBLIC",
+      "raw_trace_scripts_in_this_supplement": false
+    }
+  ]
+}

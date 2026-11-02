@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.atmos_selector8_owner_boundary.v1",
+  "status": "CONDITIONAL_WAV_PROVIDER_TYPE3; SELECTED_JOB_EXTENSION_NOT_OBSERVED; SELECTOR8_RETURNED_OWNER_UNBOUND",
+  "upstream_package": {
+    "package_id": "composite_selector_owner_type_wash_supplement_v1",
+    "manifest_sha256": "a7a646cca1c40c29ee85f66598355f53eff5f98849544edfa6bf64eead6d26a6",
+    "package_seal_sha256": "12835afc0cc3397af35bacce347a8d4cdb8679abd7f113d4946e9384474f960b",
+    "payload_count_verified": 7,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra": "12.2 PUBLIC",
+    "processing": "-noanalysis -readOnly"
+  },
+  "conditional_provider": {
+    "extension": "wav",
+    "mapped_type_id": 3,
+    "master_open_callback": "FUN_1803ec660",
+    "provider_class": "atmos_storage_master_s",
+    "actual_selected_job_extension": "NOT_OBSERVED"
+  },
+  "selector_map": {
+    "getter_slot": "+0xa0",
+    "getter_target": "FUN_1804d4170",
+    "writer_slot": "+0xa8",
+    "writer_target": "FUN_1804d6980",
+    "selector_key": 8,
+    "record_bytes": 24,
+    "normal_branch_condition": "param_3[0] == 0",
+    "normal_branch_copy": ["qword0", "qword1", "qword2"],
+    "returned_qword0_origin_on_normal_branch": "writer param_3 qword0",
+    "sentinel_branch_condition": "param_3[0] != 0",
+    "sentinel_branch_copies_qword0": false
+  },
+  "unbound": {
+    "selected_provider_instance": true,
+    "selector8_writer_callsite_for_selected_instance": true,
+    "param3_qword0_pointee_type": true,
+    "pointee_plus_0x18_constructor_or_first_writer": true,
+    "selector8_owner_profile_selection_link": true
+  },
+  "execution": {
+    "input_only_vector_status": "NOT_RUN",
+    "dee_run": false,
+    "media_or_pcm_access": false,
+    "key_or_license_access": false,
+    "production_allowed": false
+  }
+}

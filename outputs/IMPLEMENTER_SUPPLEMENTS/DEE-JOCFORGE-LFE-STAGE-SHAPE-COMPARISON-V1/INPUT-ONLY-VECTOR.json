@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.static_lfe_stage_shape_vector.v1",
+  "vector_id": "DEE-CORE-LFE-BRANCH-VS-RUST-LFE-CANDIDATE",
+  "native_condition": "Static LFE branch only; input ADM row selection and active stride are not observed.",
+  "native_expected_shape": ["shared 256-word F32 transform", "stride-conditioned LFE main/companion path", "16-point precursor", "two 7-value mixers scaled by 1/16"],
+  "rust_expected_shape": ["lane3 four-section LFE post-filter", "F08 dedicated 7-bin transform", "F09/F10 7 exponent plan", "candidate-frame BAP quantization with lfeon"],
+  "shared_window_hash_match": "097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2",
+  "runtime_execution": "NOT_RUN",
+  "numeric_parity": "NOT_RUN",
+  "audio_delta": "NOT_ESTABLISHED"
+}

@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1631,
+      "name": "REPORT.md",
+      "sha256": "5398203599a850e729b9dbe34b9f8e21504b3621cf2abe7e4f21b9b53feb64bb"
+    },
+    {
+      "bytes": 2241,
+      "name": "EVIDENCE.json",
+      "sha256": "9e56c8174109356f98bbbe35ecec2044fb99f3b35c4fba9b3fa92c8619d160c2"
+    },
+    {
+      "bytes": 601,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "b56b891edafe870e7ca01a5941e89dd99b81dd4343b78780ff856e806e3e3daf"
+    },
+    {
+      "bytes": 676,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "5d837944d1da235e76be324c6b5600c1e3f7028822304594c3a190c99b27f764"
+    },
+    {
+      "bytes": 2185,
+      "name": "verify_package.py",
+      "sha256": "0c8fbc1b12da5b2e4ecfd1b8d3c505e3dcef55f139b771e0493c8ae003ab5174"
+    },
+    {
+      "bytes": 1504,
+      "name": "seal_package.py",
+      "sha256": "384a936fb97723dff50821beffd6fc18c2d8ccb98dbdcc256b2b63ee8861867a"
+    }
+  ],
+  "manifest_sha256": "045424b8f0c92d39d1e029c5daa681358f94d6207116f8f4e08c39fe2d9b3407",
+  "package_id": "ATMOS-ATMOS-DDP-DRC-PROPERTY-REGISTRY-BOUNDARY-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

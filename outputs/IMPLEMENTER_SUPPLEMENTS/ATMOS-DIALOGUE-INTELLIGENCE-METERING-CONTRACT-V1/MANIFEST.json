@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1795,
+      "name": "REPORT.md",
+      "sha256": "426a0358aaf83e69bd784c39fa1b3e3edb8eadb02d5ca67a34a58c1da049b23d"
+    },
+    {
+      "bytes": 2290,
+      "name": "EVIDENCE.json",
+      "sha256": "2059523940848dbc68136527e3882bd56d2bb35cfefa3b1b10965ce40865aa52"
+    },
+    {
+      "bytes": 523,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "71d8b4aa8fa66578cdf4a01a682f68dba5f00902452e7a0f695a700c3133c7af"
+    },
+    {
+      "bytes": 868,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "8c85794f3c95c5ab6a7387bb872c4a8eb7470113ca948d61edf2c48c80211302"
+    },
+    {
+      "bytes": 2227,
+      "name": "verify_package.py",
+      "sha256": "b5f05d321df33ea2b43e031c3e5bc72ad512ebec2f04fd7d18c35614692521b3"
+    },
+    {
+      "bytes": 1477,
+      "name": "seal_package.py",
+      "sha256": "2f6a77cf55bf7b454a4bab623947836f359391e94dc0b10b19b80cd3772c946c"
+    }
+  ],
+  "package_id": "ATMOS-DIALOGUE-INTELLIGENCE-METERING-CONTRACT-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "MEASURE_ONLY_METERING_FIELDS_BOUND; FORMULA_AND_RUNTIME_OWNER_UNBOUND"
+}

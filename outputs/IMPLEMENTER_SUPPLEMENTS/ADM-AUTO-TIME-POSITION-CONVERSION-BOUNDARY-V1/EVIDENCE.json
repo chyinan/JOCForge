@@ -1,0 +1,64 @@
+{
+  "schema": "jocforge.adm_auto_time_position_boundary.v1",
+  "status": "FILE_POSITION_CONVERSION_CONDITIONAL_RULE_BOUND; AUTO_SOURCE_UNBOUND; DEFAULT_FILE_POSITION_MVP_NOT_BLOCKED",
+  "upstream_package": {
+    "package_id": "adm_bwf_auto_time_position_wash_v1",
+    "evidence_manifest_sha256": "d1e1ce52c070ed2e2a92b314f53c83d0a3ca5b704a5c96601097ebe598b7c95d",
+    "package_seal_sha256": "03e3a03cfd1278193f87e449b503fbbad407aa9ccd05e8f1d07ef61a6c77d914",
+    "payload_count_verified": 5,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "source_images": [
+    {"name":"dee.exe","sha256":"65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"name":"converter image","sha256":"9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"}
+  ],
+  "sample6_metadata_context": {
+    "input_type":"atmos_mezz",
+    "offset_string":"auto",
+    "ffoa_string":"auto",
+    "time_base":"file_position",
+    "timecode_frame_rate":24,
+    "sample_rate_hz":48000,
+    "source_sample_frames":6522906,
+    "effective_offset_value":"NOT_CAPTURED",
+    "effective_ffoa_value":"NOT_CAPTURED",
+    "reader_seek_sample":"NOT_CAPTURED"
+  },
+  "typed_rules": {
+    "consumer":"FUN_18007fba0 / PrivContext::setRange",
+    "offset_parse":"map offset string -> FUN_1800787c0 -> FUN_180080e80 (std::stod)",
+    "literal_auto_directly_accepted":false,
+    "upstream_auto_resolution":"UNBOUND",
+    "embedded_timecode": {
+      "formula":"effective_offset_seconds * input_sample_rate_hz",
+      "sample_rate_domain_hz":[48000,96000],
+      "integer_conversion":"CVTTSD2SI signed integer; truncates toward zero"
+    },
+    "file_position": {
+      "sample_rate_multiplication":"skipped",
+      "consumer_domain":"effective offset already in file-position/sample domain",
+      "sample6_branch_selected":true
+    }
+  },
+  "ffoa": {
+    "sentinel":-1.0,
+    "invalid_condition":"-1.0 < FFOA < offset",
+    "invalid_effect":"log invalid FFOA and write -1.0 sentinel",
+    "before_master_start":"warning says discarded",
+    "post_discard_value":"UNBOUND",
+    "metadata_to_final_start_join":"UNBOUND"
+  },
+  "remaining_join": {
+    "calculated_start_to_same_reader_seek":"UNBOUND",
+    "leading_silence_decision":"NOT_BOUND",
+    "default_file_position_mvp_blocked":false
+  },
+  "execution_scope": {
+    "dee_run":false,
+    "pcm_or_payload_access":false,
+    "key_or_license_access":false,
+    "production_allowed":false
+  }
+}

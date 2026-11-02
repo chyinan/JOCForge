@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "sources": [
+    {
+      "kind": "upstream_wash_source_audit",
+      "package_id": "jocforge_lfe_signal_path_audit_wash_v1",
+      "manifest_sha256": "6912c6f7e3ed4f2f79939f03943336a8ca83c05e80077d15a1f661bbd944da0c",
+      "source_head": "1b4a34170bc7981f2c330308a1f1b4c642258c24",
+      "hashed_current_source_files": 24,
+      "hashed_tracked_dirty_files": 13,
+      "approved_wash_material_hashes": 7,
+      "untracked_files": "PRESENT_NOT_ENUMERATED_OR_HASHED",
+      "upstream_payload_hashes_independently_checked": true,
+      "source_code_or_raw_pcm_in_this_supplement": false
+    }
+  ]
+}

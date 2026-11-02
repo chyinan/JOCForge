@@ -1,0 +1,9 @@
+{
+  "schema":"jocforge.dee_atmosinfo_reader_boundary_vector.v1",
+  "vector_id":"ATMOSINFO-MASTER-FIELDS-VS-RIFF-READER",
+  "static_output_fields": {"start_time":"master+0x50", "ffoa":"master+0x58"},
+  "reader_scope":["RIFF", "RF64", "WAVE", "ds64", "fmt ", "data", "JUNK"],
+  "master_field_writer_to_chunk_reader":"UNBOUND",
+  "metadata_candidate_scan":"seven inputs contained no named offset/FFOA/time_reference field in inspected metadata",
+  "runtime_execution":"NOT_RUN"
+}

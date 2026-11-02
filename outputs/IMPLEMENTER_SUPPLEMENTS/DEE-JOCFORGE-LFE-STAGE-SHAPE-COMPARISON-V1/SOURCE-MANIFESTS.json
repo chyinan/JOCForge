@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "sources": [
+    {
+      "kind":"upstream_dee_static_wash",
+      "package_id":"dee_lfe_algorithm_wash_v1",
+      "manifest_sha256":"e8d4a9760789f858fc20933b56d2375d31b261fe7a21aac093116f40a271e266",
+      "sha256sums_sha256":"805d70b933817466f0a1dc301d86b4792acf638f24d3042710f16c2456ec6063",
+      "binary_sha256":"0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+      "ghidra_version":"12.2 PUBLIC",
+      "raw_disassembly_decompilation_or_scripts_in_this_supplement":false
+    },
+    {
+      "kind":"upstream_rust_source_audit",
+      "package_id":"jocforge_lfe_signal_path_audit_wash_v1",
+      "manifest_sha256":"6912c6f7e3ed4f2f79939f03943336a8ca83c05e80077d15a1f661bbd944da0c",
+      "source_head":"1b4a34170bc7981f2c330308a1f1b4c642258c24",
+      "untracked_files":"PRESENT_NOT_ENUMERATED_OR_HASHED"
+    }
+  ]
+}

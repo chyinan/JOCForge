@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "sources": [
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"DEE-ADM-LFE-TO-ATMOS-JOC-ROUTE-V1",
+      "manifest_sha256":"295d55f90cc145d7a4541b1f631af1ba86509f0e67977c689367bc442cddae23",
+      "payload_count":3,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "upstream_raw_trace_or_analysis_script_in_this_supplement":false
+    }
+  ]
+}

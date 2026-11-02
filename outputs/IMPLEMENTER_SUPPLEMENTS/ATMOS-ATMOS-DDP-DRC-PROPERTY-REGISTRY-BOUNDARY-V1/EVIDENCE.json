@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.atmos_ddp_drc_registry_boundary.v1",
+  "status": "PLUGIN_LOCAL_DRC_DESCRIPTORS_AND_QUALIFIED_ALIASES_BOUND; HOST_VALUE_AND_AUDIO_BEHAVIOR_NOT_RUN",
+  "upstream_package": {
+    "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256": "42e4b6a2a5950ff3f683199fb2351f8d8d715826ef6d54ef6cf2eae2644f92d3",
+    "package_seal_sha256": "f15ed9c56005a49735cc57510ce6048cd3f0d2ffd6eba45112496cba102f24d3",
+    "sha256sums_sha256": "0f7f08e1ff62b991e0646d415c1dd753b6517ca9f068520b043076d3072340f0",
+    "payload_count_verified": 5,
+    "checker_normal": "WASH_SHA256_AUDIT_PASS",
+    "checker_python_O": "WASH_SHA256_AUDIT_PASS"
+  },
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra": "12.2 PUBLIC",
+    "processing": "-noanalysis -readOnly"
+  },
+  "setter": {
+    "plugin_vtable_slot": "+0x8",
+    "target": "FUN_18013e9d0",
+    "ordinary_key_resolution": "(object+0xb8)+0xec0 registry; vtable +0x38 lookup",
+    "descriptor_setter_call": "returned_descriptor vtable +0x28(value_string)"
+  },
+  "properties": [
+    {"xml_leaf": "line_mode_drc_profile", "type": "xs:string with enum constraint", "registry_alias": "drc:line_mode_drc_profile", "owner_offset": "0x6d0"},
+    {"xml_leaf": "rf_mode_drc_profile", "type": "xs:string with enum constraint", "registry_alias": "drc:rf_mode_drc_profile", "owner_offset": "0x750"}
+  ],
+  "lookup": {
+    "compares_complete_qualified_alias": true,
+    "host_prefix_normalization": "NOT_ESTABLISHED",
+    "unknown_key_static_error_path": "ParametersContainer error context then RaiseException",
+    "multiple_match_static_error_path": "ParametersContainer error context then RaiseException"
+  },
+  "unbound_or_not_run": {
+    "enum_value_or_ordinal_mapping": "NOT_REVISITED",
+    "xml_defaults": "NOT_RUN",
+    "host_stage_runner_handoff": "NOT_RUN",
+    "descriptor_value_setter_semantics": "NOT_RUN",
+    "effective_selected_job_values": "NOT_RUN",
+    "drc_audio_processing_behavior": "NOT_RUN"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "production_allowed": false
+  }
+}

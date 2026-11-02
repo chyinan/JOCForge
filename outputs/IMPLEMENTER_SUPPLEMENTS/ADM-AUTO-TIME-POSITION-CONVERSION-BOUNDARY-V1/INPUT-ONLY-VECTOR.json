@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.static_time_position_vector.v1",
+  "vector_id": "ADM-FILE-POSITION-AUTO-BOUNDARY",
+  "conditions": {
+    "input_type":"atmos_mezz",
+    "offset":"auto",
+    "ffoa":"auto",
+    "time_base":"file_position",
+    "sample_rate_hz":48000
+  },
+  "static_expectation": {
+    "literal_auto_passes_stod":false,
+    "upstream_auto_resolution":"UNBOUND",
+    "file_position_conversion_skips_rate_multiply":true,
+    "default_file_position_mvp_blocked":false
+  },
+  "effective_offset_and_reader_seek": "NOT_CAPTURED"
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "sources": [
+    {
+      "kind": "upstream_wash_package",
+      "package_id": "composite_selector_owner_type_wash_supplement_v1",
+      "manifest_sha256": "a7a646cca1c40c29ee85f66598355f53eff5f98849544edfa6bf64eead6d26a6",
+      "package_seal_sha256": "12835afc0cc3397af35bacce347a8d4cdb8679abd7f113d4946e9384474f960b",
+      "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "ghidra_version": "12.2 PUBLIC",
+      "source_package_scripts_or_trace_excerpts_in_this_supplement": false
+    }
+  ]
+}

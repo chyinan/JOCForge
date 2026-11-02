@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "sources": [
+    {
+      "kind": "upstream_wash_package",
+      "package": "dee-dialogue-intelligence-speech-threshold-wash",
+      "manifest_sha256": "68c1ada5f34e6ac350e2388274a60d5a4504b799f4d5b93913b3e3169338f614",
+      "payload_count": 4,
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS",
+      "binary_images": [
+        {"name":"dee.exe","sha256":"65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+        {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+        {"name":"dee_audio_filter_ddp.dll","sha256":"2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72"}
+      ],
+      "ghidra_version": "12.2 PUBLIC",
+      "upstream_raw_traces_or_source_code_in_this_supplement": false
+    }
+  ]
+}

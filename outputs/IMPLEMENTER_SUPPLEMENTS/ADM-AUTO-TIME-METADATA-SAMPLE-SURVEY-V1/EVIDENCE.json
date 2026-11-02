@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.adm_auto_time_metadata_survey.v1",
+  "status": "SEVEN_SAMPLE_NAMED_FIELD_SCAN_NEGATIVE; ATMOS_INFO_SOURCE_JOIN_UNBOUND",
+  "upstream_package": {
+    "package": "DEE-ATMOS-MEZZ-AUTO-METADATA-WASH-V1",
+    "manifest_sha256": "5e091e7bbac5b6017d5e1687215707c0417df449db66143e0b9f032a4f484774",
+    "sha256sums_sha256": "95e0fc78eab15c5586728b1ca32a1b4957fdea941c114ee2a13049c6addf60b5",
+    "payload_count_verified": 14,
+    "checksums_verified": 15,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "survey": {
+    "authorized_input_count": 7,
+    "metadata_chunks_read": ["fmt ", "axml", "dbmd", "chna"],
+    "data_chunks_read": false,
+    "pcm_bytes_read": 0,
+    "bext_present": false,
+    "ixml_present": false
+  },
+  "axml": {
+    "audio_programme_start_present": true,
+    "audio_programme_start_all_samples": "01:00:10.00000",
+    "audio_programme_end_present": true,
+    "named_offset_field_found": false,
+    "named_ffoa_field_found": false,
+    "named_time_reference_field_found": false,
+    "audio_programme_start_bound_to_atmos_info_start_time": false
+  },
+  "dbmd_chna_scan": {
+    "ascii_utf16_offset_token_found": false,
+    "ascii_utf16_ffoa_token_found": false,
+    "ascii_utf16_first_frame_of_action_token_found": false,
+    "ascii_utf16_start_time_token_found": false,
+    "ascii_utf16_time_reference_token_found": false
+  },
+  "remaining_boundary": {
+    "auto_metadata_to_effective_offset": "UNBOUND",
+    "ffoa_metadata_to_final_position": "UNBOUND",
+    "generalization_beyond_seven_inputs": "NOT_ESTABLISHED",
+    "default_file_position_mvp_blocked": false
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_access": false,
+    "production_allowed": false
+  }
+}

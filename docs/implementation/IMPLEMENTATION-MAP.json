@@ -9722,8 +9722,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967902,
-              "sha256": "d5cf1f4ae3c058eab673c41f7512133f3598bba4f2a1f4e99b5ca7acad320876"
+              "bytes": 1969292,
+              "sha256": "b4aa52fe0d8ee9496c16a26382becee510a4f83a240d0d7c6e7ea1767a2b9ef5"
             }
           ],
           "test_modules": [
@@ -13238,8 +13238,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967902,
-              "sha256": "d5cf1f4ae3c058eab673c41f7512133f3598bba4f2a1f4e99b5ca7acad320876"
+              "bytes": 1969292,
+              "sha256": "b4aa52fe0d8ee9496c16a26382becee510a4f83a240d0d7c6e7ea1767a2b9ef5"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -34057,8 +34057,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967902,
-              "sha256": "d5cf1f4ae3c058eab673c41f7512133f3598bba4f2a1f4e99b5ca7acad320876"
+              "bytes": 1969292,
+              "sha256": "b4aa52fe0d8ee9496c16a26382becee510a4f83a240d0d7c6e7ea1767a2b9ef5"
             }
           ],
           "test_inventory": [
@@ -45898,5 +45898,201 @@
       "license_choice": "Apache-2.0",
       "scope": "F01E.1 selected UTF-8 job XML input parsing only; read-only tree over caller-provided bytes, after rejecting DOCTYPE/ENTITY; no file/network I/O or general ADM graph parsing"
     }
-  }
+  },
+  "wash_supplement_registry": [
+    {
+      "package_id": "DEE-ADM-LFE-ROUTING-MODEL-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-LFE-ROUTING-MODEL-BOUNDARY-V1",
+      "manifest_sha256": "1e5f0dcfa714a0b0569c60f3c4f93572f5fd8e3c0bbe72be7f993031c4a2bafa",
+      "functional_ids": [
+        "F01E",
+        "F04",
+        "F08",
+        "F09"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "EXPLICIT_ADM_UID_TO_MODEL_PHYSICAL_LFE_ROW_AND_ROUTE; NATIVE_FRAME_LANE_UNBOUND",
+      "not_run": [
+        "Native physical-row-to-core-LFE-lane join.",
+        "Owner/generation join and numeric parity."
+      ]
+    },
+    {
+      "package_id": "ATMOS-SELECTOR8-WAV-PROVIDER-OWNER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-SELECTOR8-WAV-PROVIDER-OWNER-BOUNDARY-V1",
+      "manifest_sha256": "fab1a777f9db2a967742408544c412dde32b45ab2a2e9c31e08ff09544bcf331",
+      "functional_ids": [
+        "F01",
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "CONDITIONAL_WAV_TYPE3_PROVIDER_EDGE; SELECTED_JOB_EXTENSION_NOT_OBSERVED",
+      "not_run": [
+        "Selected-job extension and selector8 returned-owner binding.",
+        "Profile join and production default."
+      ]
+    },
+    {
+      "package_id": "ADM-AUTO-TIME-POSITION-CONVERSION-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-AUTO-TIME-POSITION-CONVERSION-BOUNDARY-V1",
+      "manifest_sha256": "9385643c861a797c0ba17a03e147a2940eb971af732684ca75dc0b62a1e38617",
+      "functional_ids": [
+        "F01",
+        "F01E",
+        "F15"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "FILE_POSITION_CONDITIONAL_RULE_BOUND; DEFAULT_MVP_NOT_BLOCKED; AUTO_SOURCE_UNBOUND",
+      "not_run": [
+        "Auto source and FFOA producer identity.",
+        "Master-start post-discard value and general embedded-timecode integration."
+      ]
+    },
+    {
+      "package_id": "DEE-JOCFORGE-LFE-STAGE-SHAPE-COMPARISON-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOCFORGE-LFE-STAGE-SHAPE-COMPARISON-V1",
+      "manifest_sha256": "c42f5e79f6b64f7b11fb31927a049a7b3ed2188d80a7ab935160094e392ea8c3",
+      "functional_ids": [
+        "F04",
+        "F08",
+        "F09"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_LFE_STAGE_SHAPE_DIFFERENCE_CANDIDATE; NUMERIC_PARITY_NOT_RUN",
+      "not_run": [
+        "Physical input row to DEE core LFE lane.",
+        "Matched layout/stride and numeric/audio parity."
+      ]
+    },
+    {
+      "package_id": "ATMOS-ATMOS-DDP-DRC-PROPERTY-REGISTRY-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-ATMOS-DDP-DRC-PROPERTY-REGISTRY-BOUNDARY-V1",
+      "manifest_sha256": "045424b8f0c92d39d1e029c5daa681358f94d6207116f8f4e08c39fe2d9b3407",
+      "functional_ids": [
+        "F01E",
+        "F06NR"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "PLUGIN_LOCAL_PROPERTY_DESCRIPTORS_AND_ALIASES; DRC_AUDIO_BEHAVIOR_NOT_RUN",
+      "not_run": [
+        "Host/XML value handoff and enum semantics.",
+        "DRC audio processing."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-LFE-CURRENT-SOURCE-PATH-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-LFE-CURRENT-SOURCE-PATH-V1",
+      "manifest_sha256": "8f9120e8431b58a3e757342e743b49b9ac5ccc7a704dddb0fd64542e9b292a50",
+      "functional_ids": [
+        "F08",
+        "F09",
+        "F10"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "RUST_LFE_SOURCE_PATH_PRESENT; DEE_PARITY_NOT_ESTABLISHED; PRODUCT_OUTPUT_NOT_BOUND",
+      "not_run": [
+        "Public encode output.",
+        "Matched Rust/DEE LFE numeric or listening comparison."
+      ]
+    },
+    {
+      "package_id": "ATMOS-DIALOGUE-INTELLIGENCE-METERING-CONTRACT-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-DIALOGUE-INTELLIGENCE-METERING-CONTRACT-V1",
+      "manifest_sha256": "316c58238d7761890135d8f6e5a8ab55d4e65a7f1f83704ea11ae113674701d1",
+      "functional_ids": [
+        "F06",
+        "F06NR"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MEASURE_ONLY_METERING_FIELDS_BOUND; FORMULA_AND_RUNTIME_OWNER_UNBOUND",
+      "not_run": [
+        "Speech-threshold formula and cross-module runtime owner join.",
+        "PCM/spatial DSP behavior."
+      ]
+    },
+    {
+      "package_id": "ADM-AUTO-TIME-METADATA-SAMPLE-SURVEY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-AUTO-TIME-METADATA-SAMPLE-SURVEY-V1",
+      "manifest_sha256": "3c876bfed98e49faf586a96ed05d1ab9d513c9349ab117a31701fa82480b2255",
+      "functional_ids": [
+        "F01",
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SEVEN_SAMPLE_METADATA_SCAN_NEGATIVE; ATMOS_TIME_SOURCE_JOIN_UNBOUND",
+      "not_run": [
+        "AudioProgramme start to DEE Start/FFOA getter lineage.",
+        "Auto source and time-reference producer."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS-INFO-CHUNK-READER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-INFO-CHUNK-READER-BOUNDARY-V1",
+      "manifest_sha256": "b2cc45fcf56b10810e427dbf83a55e46373a20b0eb36acccf57d47010524db9b",
+      "functional_ids": [
+        "F01",
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ATMOS_INFO_MASTER_FIELDS_READ_FROM_MASTER_RECORD; CHUNK_READER_WRITER_UNBOUND",
+      "not_run": [
+        "Writer for master-record Start time/FFOA fields.",
+        "AudioProgramme start to DEE Start/FFOA getter lineage."
+      ]
+    },
+    {
+      "package_id": "ADM-36-DBMD-ROW-COUNT-WASH-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-36-DBMD-ROW-COUNT-WASH-V1",
+      "manifest_sha256": "fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "REAL_SAMPLE_FMT36_CHNA36_DBMD_SECTION10_COUNT36; PCM_BYTES_READ_ZERO",
+      "not_run": [
+        "Actual per-track DBMD fields and owner-generation joins.",
+        "Audio callback, encode, or output acceptance."
+      ]
+    }
+  ]
 }

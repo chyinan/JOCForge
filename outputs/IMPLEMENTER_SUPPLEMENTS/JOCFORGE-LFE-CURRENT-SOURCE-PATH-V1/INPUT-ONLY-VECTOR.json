@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.static_lfe_path_vector.v1",
+  "vector_id": "CURRENT-RUST-LFE-HOST-TO-CANDIDATE-FRAME",
+  "input_identity": "current source HEAD 1b4a34170bc7981f2c330308a1f1b4c642258c24 plus 24 current / 13 tracked-dirty file hashes in upstream source receipt",
+  "expected_static_path": [
+    "ADM graph selects unique LFE host by semantic role and bed id",
+    "Type10 row0 carries source callback g-2",
+    "spatial receiver lane3 uses four-section LFE post-filter",
+    "F07 history includes LFE and F07A transient excludes it",
+    "F08 dedicated LFE transform emits seven bins",
+    "F09/F10 plan seven LFE exponents",
+    "candidate frame BAP-quantizes seven LFE coefficients and sets lfeon"
+  ],
+  "runtime_execution": "NOT_RUN",
+  "playable_output_result": "NOT_ESTABLISHED",
+  "dee_comparison_result": "NOT_ESTABLISHED",
+  "untracked_source_state": "PRESENT_NOT_ENUMERATED_OR_HASHED"
+}

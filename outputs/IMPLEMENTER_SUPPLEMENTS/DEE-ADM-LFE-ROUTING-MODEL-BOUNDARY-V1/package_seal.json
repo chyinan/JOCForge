@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1378,
+      "name": "REPORT.md",
+      "sha256": "973664d55823b46d3503bb1091d5ad18cafffa898ef8ff61b58a4ec53f431d2b"
+    },
+    {
+      "bytes": 1606,
+      "name": "EVIDENCE.json",
+      "sha256": "3507ce1cf86eab78bc1a7518a46f2b3254e2f1ce835b9fdfa908a2e630360951"
+    },
+    {
+      "bytes": 526,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "73c2c6865975615fa5a0bba6bbbd62a2ca0c2a4e88bb8a3c37cf1696f78ae58c"
+    },
+    {
+      "bytes": 429,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "91c5be2fb925df2f6b660176f05d084ee733eb60516e139d619227187a9d0733"
+    },
+    {
+      "bytes": 2163,
+      "name": "verify_package.py",
+      "sha256": "72ad248d050ca85bf9be24c35202dc137c918690443cef84b15b56380d1e6813"
+    },
+    {
+      "bytes": 1491,
+      "name": "seal_package.py",
+      "sha256": "9b7d7dc608edc9d4bccad1ce5e2851d9f736471675449399b977027e3991d3ec"
+    }
+  ],
+  "manifest_sha256": "1e5f0dcfa714a0b0569c60f3c4f93572f5fd8e3c0bbe72be7f993031c4a2bafa",
+  "package_id": "DEE-ADM-LFE-ROUTING-MODEL-BOUNDARY-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

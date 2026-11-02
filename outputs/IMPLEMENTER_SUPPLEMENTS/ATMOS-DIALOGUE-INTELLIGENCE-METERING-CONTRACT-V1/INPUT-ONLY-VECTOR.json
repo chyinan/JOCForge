@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.measure_only_metering_vector.v1",
+  "vector_id": "ATMOS-MEASURE-ONLY-DI-THRESHOLD-DEFAULTS",
+  "target": "encode_to_atmos_ddp/loudness/measure_only",
+  "properties": {
+    "dialogue_intelligence": {"type":"bool","default":false},
+    "speech_threshold": {"type":"integer","min":0,"max":100,"default":100}
+  },
+  "branch": {"measure_only_mode":2,"measure_and_correct_included":false},
+  "runtime_execution": "NOT_RUN",
+  "threshold_formula": "UNBOUND",
+  "pcm_or_spatial_effect": "NOT_ESTABLISHED"
+}

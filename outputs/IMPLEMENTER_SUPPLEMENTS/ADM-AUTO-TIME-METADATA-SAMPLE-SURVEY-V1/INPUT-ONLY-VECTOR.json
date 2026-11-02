@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.adm_time_metadata_scan_vector.v1",
+  "vector_id": "SEVEN-AUTHORIZED-ADM-TIME-FIELD-SURVEY",
+  "sample_count": 7,
+  "metadata_chunks_only": ["fmt ", "axml", "dbmd", "chna"],
+  "expected_observations": {
+    "audio_programme_start": "01:00:10.00000 in each sample",
+    "named_offset_ffoa_time_reference": "not found in inspected metadata",
+    "bext_or_ixml": "not present",
+    "pcm_bytes_read": 0
+  },
+  "execution_status": "COMPLETED_METADATA_ONLY",
+  "scope_note": "Does not bind AXML programme start to DEE output getters and does not generalize to all ADM."
+}

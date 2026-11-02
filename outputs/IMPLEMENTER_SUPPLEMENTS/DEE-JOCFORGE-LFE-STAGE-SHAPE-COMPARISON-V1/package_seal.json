@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 2845,
+      "name": "REPORT.md",
+      "sha256": "d2430f90d8db44d10e4b24bb60a1f6c504906438f4ea8b4cc36751e853c74274"
+    },
+    {
+      "bytes": 2701,
+      "name": "EVIDENCE.json",
+      "sha256": "d45c08d025f7e47e89b298f24f05dac8d64297e729eab1136543d46130ec2bd1"
+    },
+    {
+      "bytes": 767,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "3e15d2d2f04fc4f831e1d52790d369d0828a9206fa1dd46f1c5cbaae083f6001"
+    },
+    {
+      "bytes": 892,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "59e15b718f5ff6bbeb96092514ea27a9e38f8d3f991d62f9d1b3f4cba93a1e4e"
+    },
+    {
+      "bytes": 2135,
+      "name": "verify_package.py",
+      "sha256": "0d5d1c501861d14d25eba1caac9948f271e8bc78f371794c3254c687cad3077c"
+    },
+    {
+      "bytes": 1498,
+      "name": "seal_package.py",
+      "sha256": "0b2e9467caf4613573fc59de8e67c8ff8099e6225dd7788b0454bd8c28833626"
+    }
+  ],
+  "manifest_sha256": "c42f5e79f6b64f7b11fb31927a049a7b3ed2188d80a7ab935160094e392ea8c3",
+  "package_id": "DEE-JOCFORGE-LFE-STAGE-SHAPE-COMPARISON-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

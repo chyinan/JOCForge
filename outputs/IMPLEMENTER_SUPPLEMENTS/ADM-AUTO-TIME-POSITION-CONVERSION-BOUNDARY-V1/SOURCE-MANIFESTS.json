@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "sources": [
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"adm_bwf_auto_time_position_wash_v1",
+      "evidence_manifest_sha256":"d1e1ce52c070ed2e2a92b314f53c83d0a3ca5b704a5c96601097ebe598b7c95d",
+      "package_seal_sha256":"03e3a03cfd1278193f87e449b503fbbad407aa9ccd05e8f1d07ef61a6c77d914",
+      "binary_images_sha256": [
+        "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+        "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+        "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+      ],
+      "ghidra_version":"12.2 PUBLIC",
+      "upstream_scripts_or_decompiled_excerpt_in_this_supplement":false
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_static_wash",
+      "package_id":"DEE-ATMOS-INFO-CHUNK-READER-TRACE-WASH-V1",
+      "manifest_sha256":"545749605a6ab9a43f2a0e65d3848e3e6d67e0ef81aadf4708a014ca1d702af7",
+      "sha256sums_sha256":"06c1d2a27dd4e9c863be477e3cd9ed0dddb8ee5c13d1cbac97ee0476a423501c",
+      "payload_count":8,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_trace_scripts_in_this_supplement":false
+    },
+    {
+      "kind":"upstream_metadata_survey",
+      "package_id":"DEE-ATMOS-MEZZ-AUTO-METADATA-WASH-V1",
+      "manifest_sha256":"5e091e7bbac5b6017d5e1687215707c0417df449db66143e0b9f032a4f484774",
+      "payload_count":14
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge.current_lfe_source_path.v1",
+  "status": "LFE_SPECIFIC_SOURCE_PATH_PRESENT; DEE_ALGORITHM_COMPARISON_NOT_ESTABLISHED; PRODUCT_OUTPUT_NOT_BOUND",
+  "upstream_package": {
+    "package_id": "jocforge_lfe_signal_path_audit_wash_v1",
+    "manifest_sha256": "6912c6f7e3ed4f2f79939f03943336a8ca83c05e80077d15a1f661bbd944da0c",
+    "payload_count_verified": 4,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS"
+  },
+  "source_state": {
+    "repository": "D:\\Programs\\JOCForge-isolated",
+    "head": "1b4a34170bc7981f2c330308a1f1b4c642258c24",
+    "hashed_current_source_files": 24,
+    "hashed_tracked_dirty_files": 13,
+    "approved_wash_material_hashes": 7,
+    "untracked_files": "PRESENT_NOT_ENUMERATED_OR_HASHED"
+  },
+  "adm_lfe_selection": {
+    "identity_rule": ["CHNA UID/format references", "channelFormatID", "semantic_role == lfe", "bed_id == 3"],
+    "unique_lfe_host_required": true,
+    "excluded_from_regular_bed_object_controls": true
+  },
+  "direct_type10_route": {
+    "source_row": "source_pcm_rows[lfe_host]",
+    "conversion": "finite F32 to little-endian bytes",
+    "callback_ring_slots": 3,
+    "selected_source_callback": "g-2",
+    "type10_lfe_row": 0,
+    "transform_at_this_boundary": false
+  },
+  "spatial_receiver": {
+    "lfe_lane": 3,
+    "lfe_specific_post_filter_sections": 4,
+    "shared_stages": ["preconditioning", "accumulation", "descriptor gain", "post-S09 delay/scale"]
+  },
+  "analysis_and_frame_path": {
+    "main_channel_order": ["L", "R", "C", "LFE", "Ls", "Rs"],
+    "f07_history_includes_lfe": true,
+    "f07a_transient_includes_lfe": false,
+    "f08_dedicated_lfe_bins": 7,
+    "f09_f10_lfe_exponent_bins": 7,
+    "candidate_frame_lfe_coefficients": 7,
+    "candidate_frame_lfe_bap_quantization": true,
+    "candidate_header": {"acmod": 7, "lfeon": 1}
+  },
+  "product_and_parity": {
+    "public_encode_result": "SourcePipelineUnavailable before source audio pipeline",
+    "current_product_output_bound": false,
+    "user_reported_damaged_file_run_receipt_bound": false,
+    "dee_lfe_algorithm_comparison": "NOT_ESTABLISHED",
+    "python_comparator_algorithm_transparency": "OPAQUE_EXTERNAL_CODEC_WRAPPER",
+    "same_length_different_hash_cause": "NOT_ESTABLISHED"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "dsp_or_encoding_execution": false,
+    "pcm_read": false,
+    "ec3_payload_read": false,
+    "key_or_license_access": false,
+    "production_allowed": false
+  }
+}

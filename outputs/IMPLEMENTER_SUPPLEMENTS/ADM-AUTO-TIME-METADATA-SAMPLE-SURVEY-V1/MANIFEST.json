@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1312,
+      "name": "REPORT.md",
+      "sha256": "cce9c41f674f8882a9008e2b613d87b14cbc0fbdcf4fbdd526212bcbc920ce89"
+    },
+    {
+      "bytes": 1780,
+      "name": "EVIDENCE.json",
+      "sha256": "3cd771e8b2f27e4954bbae6fb474fa1dfd101b38f312519aa31c544c31a1e4a2"
+    },
+    {
+      "bytes": 589,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "0dc7d20473aa29d7d35fa8dc1c90ec5ec906eaf0c5d94ed0e84cddde464c8925"
+    },
+    {
+      "bytes": 580,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "60bf11fe761828c0e1c333aab1eef89e2c1aad276a3f5dca845001389af2e90f"
+    },
+    {
+      "bytes": 2160,
+      "name": "verify_package.py",
+      "sha256": "39fe0bb593811678bfc117c71e007a6e6c6df655b594d57b1a14895a61ebff6b"
+    },
+    {
+      "bytes": 1469,
+      "name": "seal_package.py",
+      "sha256": "f9d6bcbda446c307963c6250f53660321ff1abbf091756e3804ccbebdd5baa37"
+    }
+  ],
+  "package_id": "ADM-AUTO-TIME-METADATA-SAMPLE-SURVEY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "SEVEN_SAMPLE_NAMED_FIELD_SCAN_NEGATIVE; ATMOS_INFO_SOURCE_JOIN_UNBOUND"
+}
