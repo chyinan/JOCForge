@@ -2,17 +2,25 @@
 use jocforge_application::{
     PreparedJobInputError, SelectedAdmResourcePayloads,
     meter_source_admission::{MeterSourceAdmissionError, admit_meter_source_owner},
+    meter_source_bridge::{
+        MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase, MeterSampleCount,
+        MeterSourceCallbackFrame, MeterSourceCallbackFrameParts, MeterSourceCallbackView,
+        MeterSourceIdentity, MeterSourcePosition, MeterSourceReadIndex, MeterSourceSampleCount,
+        MeterUpstreamGeneration,
+    },
     prepare_selected_job_input,
 };
 use jocforge_domain::frontend::adm_file_storage_map::AdmFileStorageTrackSlot;
+use jocforge_domain::frontend::dbmd_sections::parse_selected_dbmd_sections;
 use jocforge_domain::frontend::selected_adm_graph::SelectedTrackKind;
 use jocforge_domain::frontend::{
     FrontendControlMachine, PackageManifestEvidence, ProviderFileEvidence,
-    job_configuration::SelectedWaveDescriptor, normal_control_snapshot::NormalControlSnapshotError,
+    job_configuration::SelectedWaveDescriptor,
+    normal_control_snapshot::{NormalControlRow, NormalControlSnapshotError},
     validate_f01e_package_manifest, validate_f01e_provider,
 };
-use jocforge_domain::meter::sample_block_queue::MeterSourceSampleCount;
-use jocforge_domain::transaction::{AttemptId, ProgrammeId};
+use jocforge_domain::timeline::FrontendCallbackIndex;
+use jocforge_domain::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::{ops::Range, sync::Arc};
@@ -29,6 +37,10 @@ const F01E_MANIFEST: &[u8] =
 const F01E_PROVIDER: &[u8] = include_bytes!(
     "../../jocforge-domain/tests/fixtures/f01e_provider/f01e-selected-constructor-v1.json"
 );
+const DBMD_PREFIX_BYTES: usize = 4;
+const DBMD_SECTION_HEADER_BYTES: usize = 3;
+const DBMD_SECTION_10_ID: u8 = 10;
+const DBMD_SECTION_10_FIXED_BYTES: usize = 142;
 
 fn test_programme_id() -> ProgrammeId {
     ProgrammeId::new("JOCForgeTestID01").unwrap()
@@ -558,6 +570,150 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         );
         assert_ne!(normal_input.identity_sha256(), &[0_u8; 32]);
         input_snapshot_hashes.push(*normal_input.identity_sha256());
+        let normal_proposal = prepared_with_controls
+            .propose_f01e_adm_normal_callback(&owner)
+            .unwrap();
+        assert_eq!(normal_proposal.transaction_id().callback_index().value(), 0);
+        assert_eq!(normal_proposal.before_generation(), 0);
+        assert_eq!(normal_proposal.actual_samples(), 1);
+        assert_eq!(
+            normal_proposal.invocation_hosts().len(),
+            expected_objects as usize
+        );
+        assert_eq!(
+            normal_proposal.sampler_before().len(),
+            expected_objects as usize
+        );
+        let after = normal_proposal.after_state();
+        assert_eq!(after.schema(), "F01E_ADM_INPUT_NORMAL_STATE_V1");
+        assert_eq!(after.source_origin_generation().value(), 0);
+        assert_eq!(after.next_callback_index().value(), 1);
+        assert_eq!(after.owner_generation(), 1);
+        assert_eq!(after.processed_normal_callbacks().value(), 1);
+        assert_eq!(after.expected_normal_callback_count(), 1);
+        assert_eq!(after.remaining_cached_drains(), 4);
+        assert_eq!(after.input_physical_rows().value(), channels);
+        assert_eq!(after.normal_control_rows().value(), channels);
+        assert_eq!(
+            after.regular_control_rows().value(),
+            u16::try_from(
+                prepared_with_controls
+                    .graph()
+                    .graph()
+                    .bed_channel_join()
+                    .regular_control_order()
+                    .len()
+            )
+            .unwrap()
+        );
+        assert_eq!(after.physical_rows().len(), usize::from(channels));
+        assert_eq!(after.control_words().len(), usize::from(channels) * 13);
+        assert_eq!(
+            after
+                .physical_rows()
+                .iter()
+                .filter(|row| matches!(row, NormalControlRow::Bed6 { .. }))
+                .count(),
+            10
+        );
+        assert_eq!(
+            after
+                .physical_rows()
+                .iter()
+                .filter(|row| matches!(row, NormalControlRow::Object13 { .. }))
+                .count(),
+            expected_objects as usize
+        );
+        assert_eq!(
+            after.regular_control_words().len(),
+            after.regular_rows().len() * 13
+        );
+        assert_eq!(after.object_owner_count().value(), expected_objects as u16);
+        assert_eq!(after.lfe_host(), normal_input.lfe_host());
+        assert_eq!(
+            after.regular_control_hosts(),
+            normal_input.regular_control_hosts()
+        );
+
+        let zero_rows = vec![vec![0_u32; 1_536]; usize::from(channels)];
+        for delivery in 1_u32..=3 {
+            let transaction = CallbackLineageIdentity::new(
+                prepared_with_controls.programme_id().clone(),
+                attempt,
+                FrontendCallbackIndex::new(delivery),
+            );
+            let view = after.fresh_zero_view(transaction.clone()).unwrap();
+            let local_receipt = view.validate_zero_physical_input_rows(&zero_rows).unwrap();
+            assert_eq!(
+                local_receipt
+                    .delivery_transaction_id()
+                    .callback_index()
+                    .value(),
+                delivery
+            );
+            assert_eq!(
+                local_receipt
+                    .source_origin_transaction_id()
+                    .callback_index()
+                    .value(),
+                0
+            );
+            assert_eq!(local_receipt.input_physical_rows().value(), channels);
+            assert_eq!(local_receipt.normal_control_rows().value(), channels);
+            assert_eq!(local_receipt.zero_samples_per_physical_row(), 1_536);
+            let source_identity = MeterSourceIdentity::from_sha256(
+                prepared_with_controls.resource_identity().input_sha256(),
+            );
+            let frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+                callback_index: MeterCallbackIndex::new(u64::from(delivery)),
+                upstream_generation: MeterUpstreamGeneration::new(u64::from(delivery) + 1),
+                phase: MeterCallbackPhase::ZeroInputDrain,
+                source_identity,
+                source_samples: MeterSourceSampleCount::new(1).unwrap(),
+                normal_callbacks: MeterCallbackCount::new(1),
+                source_cursor_before: MeterSourcePosition::new(1),
+                source_cursor_after: MeterSourcePosition::new(1),
+                source_read_index_before: MeterSourceReadIndex::new(1),
+                source_read_index_after: MeterSourceReadIndex::new(1),
+                host_input_count: MeterSampleCount::new(0),
+                source_padding_count: MeterSampleCount::new(1_536),
+                rows: &zero_rows,
+            });
+            let source_view = MeterSourceCallbackView::new(&prepared_with_controls, frame).unwrap();
+            let bound_receipt = prepared_with_controls
+                .bind_f01e_adm_fresh_zero_rows(&owner, &normal_proposal, &source_view)
+                .unwrap();
+            assert_eq!(bound_receipt.delivery_transaction_id(), &transaction);
+            assert_eq!(bound_receipt.input_physical_rows().value(), channels);
+            assert_eq!(bound_receipt.zero_samples_per_physical_row(), 1_536);
+        }
+        let invalid_zero = after
+            .fresh_zero_view(CallbackLineageIdentity::new(
+                prepared_with_controls.programme_id().clone(),
+                attempt,
+                FrontendCallbackIndex::new(1),
+            ))
+            .unwrap();
+        assert!(matches!(
+            after.fresh_zero_view(CallbackLineageIdentity::new(
+                prepared_with_controls.programme_id().clone(),
+                attempt,
+                FrontendCallbackIndex::new(4),
+            )),
+            Err(NormalControlSnapshotError::FreshZeroWindowMismatch)
+        ));
+        let mut short_zero_rows = zero_rows.clone();
+        short_zero_rows.pop();
+        assert_eq!(
+            invalid_zero.validate_zero_physical_input_rows(&short_zero_rows),
+            Err(NormalControlSnapshotError::FreshZeroInputShape)
+        );
+        let mut nonzero_rows = zero_rows.clone();
+        nonzero_rows[0][0] = 1;
+        assert_eq!(
+            invalid_zero.validate_zero_physical_input_rows(&nonzero_rows),
+            Err(NormalControlSnapshotError::FreshZeroInputNotZero)
+        );
         if channels == 36 {
             let (same_content_resource, same_content_spans) =
                 selected_resource_with_channels(channels);
@@ -616,10 +772,93 @@ fn selected_resource_with_channels(channels: u16) -> (Arc<[u8]>, [Range<usize>; 
     append_chunk(&mut bytes, *b"data", &vec![0_u8; track_count * 3]);
     let axml = append_chunk(&mut bytes, *b"axml", AXML);
     let chna = append_chunk(&mut bytes, *b"chna", &chna);
-    let dbmd = append_chunk(&mut bytes, *b"dbmd", DBMD);
+    let dbmd_payload = synthetic_dbmd_payload_for_physical_rows(channels);
+    let dbmd = append_chunk(&mut bytes, *b"dbmd", &dbmd_payload);
     let riff_size = u32::try_from(bytes.len() - 8).unwrap();
     bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
     (Arc::from(bytes.into_boxed_slice()), [axml, chna, dbmd])
+}
+
+fn synthetic_dbmd_payload_for_physical_rows(channels: u16) -> Vec<u8> {
+    if channels == 38 {
+        return DBMD.to_vec();
+    }
+    assert_eq!(channels, 36);
+    let washed_dimensions: Value = serde_json::from_slice(include_bytes!(
+        "fixtures/authorized-adm-dbmd-row-count.json"
+    ))
+    .unwrap();
+    assert_eq!(
+        washed_dimensions["wave_channels"].as_u64(),
+        Some(u64::from(channels))
+    );
+    assert_eq!(
+        washed_dimensions["chna_track_count"].as_u64(),
+        Some(u64::from(channels))
+    );
+    assert_eq!(
+        washed_dimensions["dbmd_section10_track_count"].as_u64(),
+        Some(u64::from(channels))
+    );
+    assert_eq!(washed_dimensions["pcm_bytes_read"], 0);
+    assert_eq!(
+        washed_dimensions["source_package_manifest_sha256"],
+        "fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374"
+    );
+
+    let original = parse_selected_dbmd_sections(DBMD).unwrap();
+    assert_eq!(original.track_fields().len(), 38);
+    let mut output = DBMD[..DBMD_PREFIX_BYTES].to_vec();
+    let mut offset = DBMD_PREFIX_BYTES;
+    let mut found_section10 = false;
+    while offset < DBMD.len() {
+        let id = DBMD[offset];
+        if id == 0 {
+            output.extend_from_slice(&DBMD[offset..]);
+            break;
+        }
+        let header_end = offset + DBMD_SECTION_HEADER_BYTES;
+        let old_length = usize::from(u16::from_le_bytes([DBMD[offset + 1], DBMD[offset + 2]]));
+        let body_end = header_end + old_length;
+        let section_end = body_end + 1;
+        let old_body = &DBMD[header_end..body_end];
+        if id == DBMD_SECTION_10_ID {
+            found_section10 = true;
+            let old_track_count = usize::from(u16::from_le_bytes([old_body[4], old_body[5]]));
+            assert_eq!(old_track_count, 38);
+            let old_arrays_end = DBMD_SECTION_10_FIXED_BYTES + old_track_count * 2;
+            assert!(old_body.len() >= old_arrays_end);
+            let mut body = old_body[..DBMD_SECTION_10_FIXED_BYTES].to_vec();
+            body[4..6].copy_from_slice(&channels.to_le_bytes());
+            // Zero synthetic per-track values: this tests shape and physical index mapping only.
+            body.resize(DBMD_SECTION_10_FIXED_BYTES + usize::from(channels) * 2, 0);
+            body.extend_from_slice(&old_body[old_arrays_end..]);
+            let length = u16::try_from(body.len()).unwrap();
+            output.push(id);
+            output.extend_from_slice(&length.to_le_bytes());
+            output.extend_from_slice(&body);
+            output.push(dbmd_section_checksum_for_test(length, &body));
+        } else {
+            output.extend_from_slice(&DBMD[offset..section_end]);
+        }
+        offset = section_end;
+    }
+    assert!(found_section10);
+    let parsed = parse_selected_dbmd_sections(&output).unwrap();
+    assert_eq!(parsed.track_fields().len(), usize::from(channels));
+    for (index, fields) in parsed.track_fields().iter().enumerate() {
+        assert_eq!(fields.track_index(), u16::try_from(index).unwrap());
+        assert_eq!(fields.enum48(), 0);
+        assert_eq!(fields.enum52(), 0);
+    }
+    output
+}
+
+fn dbmd_section_checksum_for_test(length: u16, body: &[u8]) -> u8 {
+    body.iter()
+        .copied()
+        .fold(length as u8, u8::wrapping_add)
+        .wrapping_neg()
 }
 
 fn selected_format_payload(channels: u16) -> Vec<u8> {

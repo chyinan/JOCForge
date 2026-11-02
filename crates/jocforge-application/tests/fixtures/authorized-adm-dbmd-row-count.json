@@ -1,0 +1,11 @@
+{
+  "schema": "authorized-adm-dbmd-row-count.v1",
+  "source_package_id": "ADM-36-DBMD-ROW-COUNT-WASH-V1",
+  "source_package_manifest_sha256": "fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374",
+  "metadata_only": true,
+  "wave_channels": 36,
+  "chna_track_count": 36,
+  "dbmd_section10_track_count": 36,
+  "pcm_bytes_read": 0,
+  "local_test_track_values": "synthetic_zero_fields; not a sample-value receipt"
+}

@@ -16,6 +16,7 @@ use jocforge_domain::frontend::{
     adm_object_events::AdmittedSelectedObjectEvents,
     dbmd_sections::{DbmdSectionError, SelectedDbmdSections, parse_selected_dbmd_sections},
     normal_control_snapshot::{
+        NormalControlAdmFreshZeroReceipt, NormalControlAdmInputProposal,
         NormalControlAdmInputSnapshot, NormalControlPreparedSnapshot, NormalControlSnapshotError,
     },
     primary_metadata_control::{
@@ -30,9 +31,9 @@ use jocforge_domain::meter::prepared_job_identity::{
     PreparedJobInputIdentity, PreparedJobInputIdentityError,
 };
 pub use jocforge_domain::state::EncodeError;
-use jocforge_domain::timeline::{AdmSampleCount, ClockError};
-use jocforge_domain::transaction::AttemptId;
+use jocforge_domain::timeline::{AdmSampleCount, ClockError, FrontendCallbackIndex};
 pub use jocforge_domain::transaction::ProgrammeId;
+use jocforge_domain::transaction::{AttemptId, CallbackLineageIdentity};
 use serde_json::{Map, Value, json};
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
@@ -350,9 +351,74 @@ impl PreparedJobInput {
             self.graph.graph(),
             &self.admitted_object_events,
             &self.dbmd,
+            Arc::clone(&self.domain_identity),
         )
         .map(Arc::new)
         .map_err(PreparedJobInputError::NormalControlSnapshot)
+    }
+
+    /// Proposes the first per-input NORMAL callback without installing owner after-state.
+    pub fn propose_f01e_adm_normal_callback(
+        &self,
+        owner: &PreparedF01EColdOwner,
+    ) -> Result<NormalControlAdmInputProposal, PreparedJobInputError> {
+        let snapshot = self.normal_control_adm_input_snapshot(owner)?;
+        let transaction_id = CallbackLineageIdentity::new(
+            self.programme_id.clone(),
+            owner.attempt_id(),
+            owner.committed().callback_index(),
+        );
+        snapshot
+            .propose_first_normal_callback(owner.committed(), owner.generation(), transaction_id)
+            .map_err(PreparedJobInputError::NormalControlSnapshot)
+    }
+
+    /// Binds one Meter zero-input frame to this prepared input and its completed normal proposal.
+    pub fn bind_f01e_adm_fresh_zero_rows(
+        &self,
+        owner: &PreparedF01EColdOwner,
+        proposal: &NormalControlAdmInputProposal,
+        source_view: &meter_source_bridge::MeterSourceCallbackView<'_>,
+    ) -> Result<NormalControlAdmFreshZeroReceipt, PreparedJobInputError> {
+        self.validate_f01e_cold_owner(owner)?;
+        let after = proposal.after_state();
+        if !Arc::ptr_eq(&self.domain_identity, after.prepared_input_identity())
+            || !Arc::ptr_eq(&self.domain_identity, &owner.prepared_identity)
+            || proposal.before_generation() != owner.generation()
+            || proposal.before_digest() != owner.committed().digest()
+            || proposal.transaction_id().programme_id() != self.programme_id()
+            || proposal.transaction_id().attempt_id() != owner.attempt_id()
+            || proposal.transaction_id().callback_index() != owner.committed().callback_index()
+            || !std::ptr::eq(self.graph.graph(), source_view.selected_graph())
+            || source_view.source_identity().sha256() != self.resource_identity.input_sha256()
+            || source_view.source_samples().value() != self.configuration.source_samples()
+            || source_view.normal_callbacks().value() != after.expected_normal_callback_count()
+            || source_view.phase() != meter_source_bridge::MeterCallbackPhase::ZeroInputDrain
+            || source_view.source_cursor_before().value() != self.configuration.source_samples()
+            || source_view.source_cursor_after().value() != self.configuration.source_samples()
+            || source_view.source_read_index_before().value()
+                != after.expected_normal_callback_count()
+            || source_view.source_read_index_after().value()
+                != after.expected_normal_callback_count()
+            || source_view.host_input_count().value() != 0
+            || source_view.source_padding_count().value() != 1_536
+        {
+            return Err(PreparedJobInputError::PreparedIdentityMismatch);
+        }
+        let callback_index = u32::try_from(source_view.callback_index().value()).map_err(|_| {
+            PreparedJobInputError::NormalControlSnapshot(
+                NormalControlSnapshotError::FreshZeroWindowMismatch,
+            )
+        })?;
+        let delivery = CallbackLineageIdentity::new(
+            self.programme_id.clone(),
+            owner.attempt_id(),
+            FrontendCallbackIndex::new(callback_index),
+        );
+        after
+            .fresh_zero_view(delivery)
+            .and_then(|view| view.validate_zero_physical_input_rows(source_view.physical_rows()))
+            .map_err(PreparedJobInputError::NormalControlSnapshot)
     }
 
     /// Builds the reusable F01E callback snapshot from this admitted input and one cold owner.

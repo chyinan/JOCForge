@@ -6,6 +6,7 @@ use std::sync::Arc;
 use serde_json::{Number, Value, json};
 use sha2::{Digest, Sha256};
 
+use crate::meter::prepared_job_identity::PreparedJobInputIdentity;
 use crate::numeric::FiniteF32;
 use crate::timeline::{AdmSampleCount, FrontendCallbackIndex, NormalCallbackCount};
 use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
@@ -92,6 +93,9 @@ pub enum NormalControlSnapshotError {
     StateOwnerMismatch,
     StateSamplerInvalid,
     SnapshotShapeMismatch,
+    FreshZeroWindowMismatch,
+    FreshZeroInputShape,
+    FreshZeroInputNotZero,
     IndexOverflow,
     ObjectControl(ObjectControlError),
     CanonicalSerialization,
@@ -119,6 +123,9 @@ impl NormalControlSnapshotError {
             Self::StateOwnerMismatch => "NORMAL_CONTROL_STATE_OWNER",
             Self::StateSamplerInvalid => "NORMAL_CONTROL_SAMPLER_STATE",
             Self::SnapshotShapeMismatch => "NORMAL_CONTROL_SNAPSHOT_SHAPE",
+            Self::FreshZeroWindowMismatch => "NORMAL_CONTROL_FRESH_ZERO_WINDOW",
+            Self::FreshZeroInputShape => "NORMAL_CONTROL_FRESH_ZERO_INPUT_SHAPE",
+            Self::FreshZeroInputNotZero => "NORMAL_CONTROL_FRESH_ZERO_INPUT_NOT_ZERO",
             Self::IndexOverflow => "NORMAL_CONTROL_INDEX_OVERFLOW",
             Self::ObjectControl(error) => error.code(),
             Self::CanonicalSerialization => "NORMAL_CONTROL_CANONICAL_SERIALIZATION",
@@ -460,6 +467,7 @@ pub struct NormalControlAdmInputSnapshot {
     profile: NormalControlProfileIdentity,
     source_identity: NormalControlSourceIdentity,
     graph_identity: NormalControlGraphIdentity,
+    prepared_input_identity: Arc<PreparedJobInputIdentity>,
     frontend_state_digest: FrontendControlDigest,
     dbmd_payload_sha256: [u8; 32],
     physical_tracks: Vec<NormalControlPhysicalTrack>,
@@ -484,6 +492,7 @@ impl NormalControlAdmInputSnapshot {
         graph: &SelectedAdmGraph,
         admitted_events: &AdmittedSelectedObjectEvents,
         dbmd: &SelectedDbmdSections,
+        prepared_input_identity: Arc<PreparedJobInputIdentity>,
     ) -> Result<Self, NormalControlSnapshotError> {
         let graph_receipt = graph.receipt();
         let physical_track_count = usize::from(graph_receipt.physical_track_count());
@@ -495,6 +504,9 @@ impl NormalControlAdmInputSnapshot {
         let expected_normal_callback_count = source_identity
             .source_samples
             .div_ceil(NORMAL_CALLBACK_SAMPLES);
+        let normalized_identity = prepared_input_identity.normalized_configuration();
+        let resource_identity = prepared_input_identity.resource();
+        let graph_provenance = prepared_input_identity.graph_provenance();
 
         if frontend_state.schema() != "F01E_ADM_INPUT_COLD_PROJECTION_V1"
             || owner_generation != 0
@@ -534,8 +546,18 @@ impl NormalControlAdmInputSnapshot {
         if graph_receipt.axml_sha256() != &source_identity.metadata_hashes.axml()
             || graph_receipt.chna_sha256() != &source_identity.metadata_hashes.chna()
             || dbmd.payload_sha256() != &source_identity.metadata_hashes.dbmd()
+            || resource_identity.input_sha256() != source_identity.source_receipt_sha256
+            || resource_identity.resource_bytes() != source_identity.source_file_bytes
+            || normalized_identity.config_sha256() != source_identity.job_projection_sha256
+            || normalized_identity.job_xml_sha256()
+                != source_identity.original_job_sha256_declaration
+            || normalized_identity.selected_input_kind() != SelectedInputKind::Adm
+            || graph_provenance.parent_resource() != resource_identity
+            || graph_provenance.axml().payload_sha256() != *graph_receipt.axml_sha256()
+            || graph_provenance.chna().payload_sha256() != *graph_receipt.chna_sha256()
+            || graph_provenance.dbmd().payload_sha256() != *dbmd.payload_sha256()
         {
-            return Err(NormalControlSnapshotError::MetadataIdentityMismatch);
+            return Err(NormalControlSnapshotError::PreparedIdentityMismatch);
         }
         let source_samples = source_binding.source_samples();
         let reparsed_events = graph
@@ -679,6 +701,7 @@ impl NormalControlAdmInputSnapshot {
             profile,
             source_identity,
             graph_identity,
+            prepared_input_identity,
             frontend_state_digest,
             dbmd_payload_sha256: *dbmd.payload_sha256(),
             physical_tracks,
@@ -755,6 +778,525 @@ impl NormalControlAdmInputSnapshot {
 
     pub const fn object_track_count(&self) -> u16 {
         self.graph_identity.object_track_count
+    }
+}
+
+/// Number of physical PCM rows admitted from the ADM/WAVE input.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct AdmPhysicalRowCount(u16);
+
+impl AdmPhysicalRowCount {
+    pub const fn new(value: u16) -> Self {
+        Self(value)
+    }
+
+    pub const fn value(self) -> u16 {
+        self.0
+    }
+}
+
+/// Number of rows in the versioned F01E per-input normal-control value domain.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct NormalControlRowCount(u16);
+
+impl NormalControlRowCount {
+    pub const fn new(value: u16) -> Self {
+        Self(value)
+    }
+
+    pub const fn value(self) -> u16 {
+        self.0
+    }
+}
+
+/// Number of rows in the graph-provided regular-control route.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct NormalControlRegularRowCount(u16);
+
+impl NormalControlRegularRowCount {
+    pub const fn new(value: u16) -> Self {
+        Self(value)
+    }
+
+    pub const fn value(self) -> u16 {
+        self.0
+    }
+}
+
+/// Number of initialized object-owner slots in the per-input F01E state.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct NormalControlObjectOwnerCount(u16);
+
+impl NormalControlObjectOwnerCount {
+    pub const fn value(self) -> u16 {
+        self.0
+    }
+}
+
+/// Noncommitting per-input F01E state after one normal callback.
+#[derive(Debug)]
+pub struct NormalControlAdmInputAfterState {
+    schema: &'static str,
+    programme_id: ProgrammeId,
+    attempt_id: AttemptId,
+    source_origin_generation: FrontendCallbackIndex,
+    next_callback_index: FrontendCallbackIndex,
+    owner_generation: u64,
+    processed_normal_callbacks: NormalCallbackCount,
+    expected_normal_callback_count: u64,
+    remaining_cached_drains: u32,
+    input_physical_rows: AdmPhysicalRowCount,
+    normal_control_rows: NormalControlRowCount,
+    regular_control_rows: NormalControlRegularRowCount,
+    lfe_host: u8,
+    regular_control_hosts: Arc<[u8]>,
+    physical_rows: Arc<[NormalControlRow]>,
+    regular_rows: Arc<[NormalControlRow]>,
+    control_words: Arc<[u32]>,
+    regular_control_words: Arc<[u32]>,
+    objects: Arc<[NormalControlObjectState]>,
+    prepared_input_identity: Arc<PreparedJobInputIdentity>,
+    prepared_input_identity_sha256: [u8; 32],
+}
+
+impl NormalControlAdmInputAfterState {
+    pub const fn schema(&self) -> &'static str {
+        self.schema
+    }
+
+    pub fn programme_id(&self) -> &ProgrammeId {
+        &self.programme_id
+    }
+
+    pub const fn attempt_id(&self) -> AttemptId {
+        self.attempt_id
+    }
+
+    pub const fn source_origin_generation(&self) -> FrontendCallbackIndex {
+        self.source_origin_generation
+    }
+
+    pub const fn next_callback_index(&self) -> FrontendCallbackIndex {
+        self.next_callback_index
+    }
+
+    pub const fn owner_generation(&self) -> u64 {
+        self.owner_generation
+    }
+
+    pub const fn processed_normal_callbacks(&self) -> NormalCallbackCount {
+        self.processed_normal_callbacks
+    }
+
+    pub const fn remaining_cached_drains(&self) -> u32 {
+        self.remaining_cached_drains
+    }
+
+    pub const fn expected_normal_callback_count(&self) -> u64 {
+        self.expected_normal_callback_count
+    }
+
+    pub const fn input_physical_rows(&self) -> AdmPhysicalRowCount {
+        self.input_physical_rows
+    }
+
+    pub const fn normal_control_rows(&self) -> NormalControlRowCount {
+        self.normal_control_rows
+    }
+
+    pub const fn regular_control_rows(&self) -> NormalControlRegularRowCount {
+        self.regular_control_rows
+    }
+
+    pub const fn lfe_host(&self) -> u8 {
+        self.lfe_host
+    }
+
+    pub fn regular_control_hosts(&self) -> &[u8] {
+        &self.regular_control_hosts
+    }
+
+    pub fn physical_rows(&self) -> &[NormalControlRow] {
+        &self.physical_rows
+    }
+
+    pub fn regular_rows(&self) -> &[NormalControlRow] {
+        &self.regular_rows
+    }
+
+    pub fn control_words(&self) -> &[u32] {
+        &self.control_words
+    }
+
+    pub fn regular_control_words(&self) -> &[u32] {
+        &self.regular_control_words
+    }
+
+    pub fn object_owner_count(&self) -> NormalControlObjectOwnerCount {
+        NormalControlObjectOwnerCount(u16::try_from(self.objects.len()).unwrap_or(u16::MAX))
+    }
+
+    pub const fn prepared_input_identity_sha256(&self) -> &[u8; 32] {
+        &self.prepared_input_identity_sha256
+    }
+
+    pub fn prepared_input_identity(&self) -> &Arc<PreparedJobInputIdentity> {
+        &self.prepared_input_identity
+    }
+
+    /// Rebinds this completed normal source to one of its three fresh-zero deliveries.
+    pub fn fresh_zero_view(
+        &self,
+        delivery_transaction_id: CallbackLineageIdentity,
+    ) -> Result<NormalControlAdmFreshZeroView, NormalControlSnapshotError> {
+        let normal_count = self.expected_normal_callback_count;
+        let delivery_end = normal_count
+            .checked_add(3)
+            .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+        let source_origin_value = normal_count
+            .checked_sub(1)
+            .and_then(|value| u32::try_from(value).ok())
+            .ok_or(NormalControlSnapshotError::FreshZeroWindowMismatch)?;
+        let source_origin_callback = FrontendCallbackIndex::new(source_origin_value);
+        if normal_count == 0
+            || self.processed_normal_callbacks.value() != normal_count
+            || u64::from(self.next_callback_index.value()) != normal_count
+            || u64::from(delivery_transaction_id.callback_index().value()) < normal_count
+            || u64::from(delivery_transaction_id.callback_index().value()) >= delivery_end
+            || delivery_transaction_id.programme_id() != &self.programme_id
+            || delivery_transaction_id.attempt_id() != self.attempt_id
+        {
+            return Err(NormalControlSnapshotError::FreshZeroWindowMismatch);
+        }
+        let source_origin_transaction_id = CallbackLineageIdentity::new(
+            self.programme_id.clone(),
+            self.attempt_id,
+            source_origin_callback,
+        );
+        Ok(NormalControlAdmFreshZeroView {
+            delivery_transaction_id,
+            source_origin_transaction_id,
+            expected_normal_callback_count: normal_count,
+            source_origin_generation: source_origin_callback,
+            owner_generation: self.owner_generation,
+            input_physical_rows: self.input_physical_rows,
+            normal_control_rows: self.normal_control_rows,
+            regular_control_rows: self.regular_control_rows,
+            physical_control_rows: Arc::clone(&self.physical_rows),
+            regular_control_rows_data: Arc::clone(&self.regular_rows),
+            prepared_input_identity: Arc::clone(&self.prepared_input_identity),
+            prepared_input_identity_sha256: self.prepared_input_identity_sha256,
+        })
+    }
+}
+
+/// A fresh-zero delivery view keeps physical-input rows separate from normal-control rows.
+#[derive(Debug)]
+pub struct NormalControlAdmFreshZeroView {
+    delivery_transaction_id: CallbackLineageIdentity,
+    source_origin_transaction_id: CallbackLineageIdentity,
+    expected_normal_callback_count: u64,
+    source_origin_generation: FrontendCallbackIndex,
+    owner_generation: u64,
+    input_physical_rows: AdmPhysicalRowCount,
+    normal_control_rows: NormalControlRowCount,
+    regular_control_rows: NormalControlRegularRowCount,
+    physical_control_rows: Arc<[NormalControlRow]>,
+    regular_control_rows_data: Arc<[NormalControlRow]>,
+    prepared_input_identity: Arc<PreparedJobInputIdentity>,
+    prepared_input_identity_sha256: [u8; 32],
+}
+
+impl NormalControlAdmFreshZeroView {
+    pub const fn delivery_transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.delivery_transaction_id
+    }
+
+    pub const fn source_origin_transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.source_origin_transaction_id
+    }
+
+    pub const fn expected_normal_callback_count(&self) -> u64 {
+        self.expected_normal_callback_count
+    }
+
+    pub const fn source_origin_generation(&self) -> FrontendCallbackIndex {
+        self.source_origin_generation
+    }
+
+    pub const fn owner_generation(&self) -> u64 {
+        self.owner_generation
+    }
+
+    pub const fn input_physical_rows(&self) -> AdmPhysicalRowCount {
+        self.input_physical_rows
+    }
+
+    pub const fn normal_control_rows(&self) -> NormalControlRowCount {
+        self.normal_control_rows
+    }
+
+    pub const fn regular_control_rows(&self) -> NormalControlRegularRowCount {
+        self.regular_control_rows
+    }
+
+    pub fn physical_control_rows(&self) -> &[NormalControlRow] {
+        &self.physical_control_rows
+    }
+
+    pub fn regular_control_rows_data(&self) -> &[NormalControlRow] {
+        &self.regular_control_rows_data
+    }
+
+    pub const fn prepared_input_identity_sha256(&self) -> &[u8; 32] {
+        &self.prepared_input_identity_sha256
+    }
+
+    pub fn prepared_input_identity(&self) -> &Arc<PreparedJobInputIdentity> {
+        &self.prepared_input_identity
+    }
+
+    /// Validates a separate physical-source zero view, without conflating it with control rows.
+    pub fn validate_zero_physical_input_rows(
+        &self,
+        rows: &[Vec<u32>],
+    ) -> Result<NormalControlAdmFreshZeroReceipt, NormalControlSnapshotError> {
+        if rows.len() != usize::from(self.input_physical_rows.value())
+            || rows
+                .iter()
+                .any(|row| row.len() != NORMAL_CALLBACK_SAMPLES as usize)
+        {
+            return Err(NormalControlSnapshotError::FreshZeroInputShape);
+        }
+        if rows.iter().any(|row| row.iter().any(|word| *word != 0)) {
+            return Err(NormalControlSnapshotError::FreshZeroInputNotZero);
+        }
+        Ok(NormalControlAdmFreshZeroReceipt {
+            delivery_transaction_id: self.delivery_transaction_id.clone(),
+            source_origin_transaction_id: self.source_origin_transaction_id.clone(),
+            input_physical_rows: self.input_physical_rows,
+            normal_control_rows: self.normal_control_rows,
+            zero_samples_per_physical_row: NORMAL_CALLBACK_SAMPLES as u32,
+            owner_generation: self.owner_generation,
+            prepared_input_identity: Arc::clone(&self.prepared_input_identity),
+            prepared_input_identity_sha256: self.prepared_input_identity_sha256,
+        })
+    }
+}
+
+/// Noncommitting receipt for one validated fresh-zero input delivery.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct NormalControlAdmFreshZeroReceipt {
+    delivery_transaction_id: CallbackLineageIdentity,
+    source_origin_transaction_id: CallbackLineageIdentity,
+    input_physical_rows: AdmPhysicalRowCount,
+    normal_control_rows: NormalControlRowCount,
+    zero_samples_per_physical_row: u32,
+    owner_generation: u64,
+    prepared_input_identity: Arc<PreparedJobInputIdentity>,
+    prepared_input_identity_sha256: [u8; 32],
+}
+
+impl NormalControlAdmFreshZeroReceipt {
+    pub const fn delivery_transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.delivery_transaction_id
+    }
+
+    pub const fn source_origin_transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.source_origin_transaction_id
+    }
+
+    pub const fn input_physical_rows(&self) -> AdmPhysicalRowCount {
+        self.input_physical_rows
+    }
+
+    pub const fn normal_control_rows(&self) -> NormalControlRowCount {
+        self.normal_control_rows
+    }
+
+    pub const fn zero_samples_per_physical_row(&self) -> u32 {
+        self.zero_samples_per_physical_row
+    }
+
+    pub const fn owner_generation(&self) -> u64 {
+        self.owner_generation
+    }
+
+    pub const fn prepared_input_identity_sha256(&self) -> &[u8; 32] {
+        &self.prepared_input_identity_sha256
+    }
+
+    pub fn prepared_input_identity(&self) -> &Arc<PreparedJobInputIdentity> {
+        &self.prepared_input_identity
+    }
+}
+
+/// Noncommitting NORMAL callback proposal for the versioned dynamic ADM input owner.
+#[derive(Debug)]
+pub struct NormalControlAdmInputProposal {
+    transaction_id: CallbackLineageIdentity,
+    before_generation: u64,
+    before_digest: FrontendControlDigest,
+    query_sample: u64,
+    actual_samples: u32,
+    invocation_hosts: Arc<[u8]>,
+    sampler_before: Arc<[NormalControlSamplerBefore]>,
+    after_state: NormalControlAdmInputAfterState,
+}
+
+impl NormalControlAdmInputProposal {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub const fn before_generation(&self) -> u64 {
+        self.before_generation
+    }
+
+    pub const fn before_digest(&self) -> FrontendControlDigest {
+        self.before_digest
+    }
+
+    pub const fn query_sample(&self) -> u64 {
+        self.query_sample
+    }
+
+    pub const fn actual_samples(&self) -> u32 {
+        self.actual_samples
+    }
+
+    pub fn invocation_hosts(&self) -> &[u8] {
+        &self.invocation_hosts
+    }
+
+    pub fn sampler_before(&self) -> &[NormalControlSamplerBefore] {
+        &self.sampler_before
+    }
+
+    pub const fn after_state(&self) -> &NormalControlAdmInputAfterState {
+        &self.after_state
+    }
+}
+
+/// Creates the first NORMAL proposal for a cold dynamic ADM owner using the shared per-row rule.
+pub fn propose_normal_control_adm_input(
+    before: &FrontendControlState,
+    owner_generation: u64,
+    prepared: &NormalControlAdmInputSnapshot,
+    transaction_id: CallbackLineageIdentity,
+) -> Result<NormalControlAdmInputProposal, NormalControlSnapshotError> {
+    if before.schema() != "F01E_ADM_INPUT_COLD_PROJECTION_V1"
+        || prepared.schema() != "F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1"
+        || before.digest() != prepared.frontend_state_digest
+        || before.programme_id() != prepared.programme_id()
+        || before.attempt_id() != prepared.attempt_id()
+        || owner_generation != prepared.owner_generation()
+        || before.callback_index().value() != 0
+        || before.normal_callbacks().value() != 0
+        || transaction_id.programme_id() != before.programme_id()
+        || transaction_id.attempt_id() != before.attempt_id()
+        || transaction_id.callback_index() != before.callback_index()
+    {
+        return Err(NormalControlSnapshotError::CallbackIdentityMismatch);
+    }
+    let query_sample = u64::from(before.callback_index().value())
+        .checked_mul(NORMAL_CALLBACK_SAMPLES)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    if query_sample >= prepared.profile.source_samples {
+        return Err(NormalControlSnapshotError::CallbackClockMismatch);
+    }
+    let actual_samples = u32::try_from(
+        (prepared.profile.source_samples - query_sample).min(NORMAL_CALLBACK_SAMPLES),
+    )
+    .map_err(|_| NormalControlSnapshotError::IndexOverflow)?;
+    let before_objects = before
+        .objects()
+        .iter()
+        .map(NormalControlObjectState::from_frontend_state)
+        .collect::<Vec<_>>();
+    let rows = calculate_normal_control_rows(
+        &prepared.physical_tracks,
+        &prepared.owner_bindings,
+        &prepared.object_events,
+        &prepared.regular_control_hosts,
+        &before_objects,
+    )?;
+    let next_callback_value = before
+        .callback_index()
+        .value()
+        .checked_add(1)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    let next_owner_generation = owner_generation
+        .checked_add(1)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    let processed_normal_callbacks = before
+        .normal_callbacks()
+        .value()
+        .checked_add(1)
+        .map(NormalCallbackCount::new)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    let physical_row_count = u16::try_from(rows.physical_rows.len())
+        .map_err(|_| NormalControlSnapshotError::GraphDomain)?;
+    let regular_row_count = u16::try_from(rows.regular_rows.len())
+        .map_err(|_| NormalControlSnapshotError::BedJoinMismatch)?;
+    let expected_total = prepared.expected_normal_callback_count();
+    let after_state = NormalControlAdmInputAfterState {
+        schema: "F01E_ADM_INPUT_NORMAL_STATE_V1",
+        programme_id: before.programme_id().clone(),
+        attempt_id: before.attempt_id(),
+        source_origin_generation: before.callback_index(),
+        next_callback_index: FrontendCallbackIndex::new(next_callback_value),
+        owner_generation: next_owner_generation,
+        processed_normal_callbacks,
+        expected_normal_callback_count: expected_total,
+        remaining_cached_drains: before.remaining_cached_drains(),
+        input_physical_rows: AdmPhysicalRowCount::new(prepared.input_physical_rows()),
+        normal_control_rows: NormalControlRowCount::new(physical_row_count),
+        regular_control_rows: NormalControlRegularRowCount::new(regular_row_count),
+        lfe_host: prepared.lfe_host,
+        regular_control_hosts: Arc::from(prepared.regular_control_hosts.clone().into_boxed_slice()),
+        physical_rows: Arc::from(rows.physical_rows.into_boxed_slice()),
+        regular_rows: Arc::from(rows.regular_rows.into_boxed_slice()),
+        control_words: Arc::from(rows.physical_words.into_boxed_slice()),
+        regular_control_words: Arc::from(rows.regular_words.into_boxed_slice()),
+        objects: Arc::from(rows.next_objects.into_boxed_slice()),
+        prepared_input_identity: Arc::clone(&prepared.prepared_input_identity),
+        prepared_input_identity_sha256: *prepared.identity_sha256(),
+    };
+    Ok(NormalControlAdmInputProposal {
+        transaction_id,
+        before_generation: owner_generation,
+        before_digest: before.digest(),
+        query_sample,
+        actual_samples,
+        invocation_hosts: Arc::from(rows.invocation_hosts.into_boxed_slice()),
+        sampler_before: Arc::from(rows.sampler_before.into_boxed_slice()),
+        after_state,
+    })
+}
+
+impl NormalControlAdmInputSnapshot {
+    pub const fn physical_input_row_count(&self) -> AdmPhysicalRowCount {
+        AdmPhysicalRowCount(self.source_identity.wave.channels())
+    }
+    pub const fn normal_control_row_count(&self) -> NormalControlRowCount {
+        NormalControlRowCount(self.graph_identity.physical_track_count)
+    }
+    pub fn regular_control_row_count(&self) -> NormalControlRegularRowCount {
+        NormalControlRegularRowCount(
+            u16::try_from(self.regular_control_hosts.len()).unwrap_or(u16::MAX),
+        )
+    }
+}
+
+impl NormalControlAdmInputSnapshot {
+    pub fn propose_first_normal_callback(
+        &self,
+        before: &FrontendControlState,
+        owner_generation: u64,
+        transaction_id: CallbackLineageIdentity,
+    ) -> Result<NormalControlAdmInputProposal, NormalControlSnapshotError> {
+        propose_normal_control_adm_input(before, owner_generation, self, transaction_id)
     }
 }
 
@@ -2684,166 +3226,38 @@ pub fn propose_normal_control_snapshot(
     validate_prepared_snapshot(prepared)?;
     let (_generation, query_sample, actual_samples) =
         validate_before_state(before, prepared, &transaction_id)?;
-    let owners_by_ordinal = owner_bindings_by_ordinal(&prepared.owner_bindings)?;
-
-    let mut normalized_by_owner = vec![None; OBJECT_TRACK_COUNT];
-    for (binding, event) in prepared.owner_bindings.iter().zip(&prepared.object_events) {
-        if binding.track_uid != event.track_uid {
-            return Err(NormalControlSnapshotError::ObjectEventMismatch);
-        }
-        let ordinal = usize::from(binding.local_owner_ordinal);
-        let normalized = NormalizedObjectControl {
-            writer_xyz: writer_coordinates(&event.control_event)
-                .map_err(NormalControlSnapshotError::ObjectControl)?,
-            uniform_width: writer_uniform_width(&event.control_event)
-                .map_err(NormalControlSnapshotError::ObjectControl)?,
-            diffuse: event.control_event.diffuse(),
-        };
-        if normalized_by_owner[ordinal].replace(normalized).is_some() {
-            return Err(NormalControlSnapshotError::ObjectOwnerBindingMismatch);
-        }
-    }
-    let normalized_by_owner: [Option<NormalizedObjectControl>; OBJECT_TRACK_COUNT] =
-        normalized_by_owner
-            .try_into()
-            .map_err(|_| NormalControlSnapshotError::ObjectEventMismatch)?;
-    let normalized_by_owner: [NormalizedObjectControl; OBJECT_TRACK_COUNT] = normalized_by_owner
-        .into_iter()
-        .collect::<Option<Vec<_>>>()
-        .ok_or(NormalControlSnapshotError::ObjectEventMismatch)?
-        .try_into()
-        .map_err(|_| NormalControlSnapshotError::ObjectEventMismatch)?;
-
-    let mut sampler_before = Vec::with_capacity(OBJECT_TRACK_COUNT);
-    for (ordinal, binding) in owners_by_ordinal.iter().enumerate() {
-        let object = &before.objects[ordinal];
-        sampler_before.push(NormalControlSamplerBefore {
-            local_owner_ordinal: binding.local_owner_ordinal,
-            physical_host: binding.physical_host,
-            sampler_previous_present: object.sampler_previous_present,
-            sampler_previous_xyz_u32: object.sampler_previous_xyz_u32,
-        });
-    }
-    let sampler_before: [NormalControlSamplerBefore; OBJECT_TRACK_COUNT] = sampler_before
-        .try_into()
-        .map_err(|_| NormalControlSnapshotError::StateShapeMismatch)?;
-
-    let mut next_objects = vec![None; OBJECT_TRACK_COUNT];
-    let mut invocation_hosts = Vec::with_capacity(OBJECT_TRACK_COUNT);
-    let mut control38_rows = Vec::with_capacity(PHYSICAL_TRACK_COUNT);
-    let mut control38_words = vec![0_u32; CONTROL38_WORD_COUNT];
-    for track in &prepared.physical_tracks {
-        let host = track.physical_host;
-        let row_offset = usize::from(host)
-            .checked_mul(CONTROL_WORDS_PER_TRACK)
-            .ok_or(NormalControlSnapshotError::IndexOverflow)?;
-        match &track.kind {
-            NormalControlTrackKind::Bed { bed_id, .. } => {
-                let words = [0, 0, 3, 2, 1, u32::from(*bed_id)];
-                control38_words[row_offset..row_offset + words.len()].copy_from_slice(&words);
-                control38_rows.push(NormalControlRow::Bed6 {
-                    physical_host: host,
-                    track_uid: track.track_uid.clone(),
-                    channel_format_id: track.channel_format_id.clone(),
-                    dbmd: track.dbmd,
-                    words,
-                    unproduced_tail: UnproducedBedTail {
-                        offset_bytes: 24,
-                        byte_count: 28,
-                    },
-                });
-            }
-            NormalControlTrackKind::Object {
-                semantic_key,
-                local_owner_ordinal: track_ordinal,
-            } => {
-                invocation_hosts.push(host);
-                let binding = find_owner_binding(&prepared.owner_bindings, &track.track_uid)
-                    .ok_or(NormalControlSnapshotError::ObjectOwnerBindingMismatch)?;
-                let ordinal = usize::from(binding.local_owner_ordinal);
-                if binding.local_owner_ordinal != *track_ordinal
-                    || binding.physical_host != host
-                    || binding.semantic_key != *semantic_key
-                    || binding.channel_format_id != track.channel_format_id
-                {
-                    return Err(NormalControlSnapshotError::ObjectOwnerBindingMismatch);
-                }
-                let event = find_object_event(&prepared.object_events, &track.track_uid)
-                    .ok_or(NormalControlSnapshotError::ObjectEventMismatch)?;
-                if event.physical_host != host || event.object_id != track.object_id {
-                    return Err(NormalControlSnapshotError::ObjectEventMismatch);
-                }
-                let normalized = normalized_by_owner[ordinal];
-                let before_object = &before.objects[ordinal];
-                let previous_xyz = if before_object.sampler_previous_present {
-                    before_object.sampler_previous_xyz_u32
-                } else {
-                    normalized.writer_xyz
-                };
-                let sampled_xyz = sample_event_from_previous(normalized.writer_xyz, previous_xyz)
-                    .map_err(NormalControlSnapshotError::ObjectControl)?;
-                let control = ObjectControl52::from_normal_sample(
-                    sampled_xyz,
-                    normalized.uniform_width,
-                    normalized.diffuse,
-                );
-                let words = control.words();
-                control38_words[row_offset..row_offset + CONTROL_WORDS_PER_TRACK]
-                    .copy_from_slice(&words);
-                if next_objects[ordinal]
-                    .replace(before_object.after_normal_callback(host, sampled_xyz))
-                    .is_some()
-                {
-                    return Err(NormalControlSnapshotError::ObjectOwnerBindingMismatch);
-                }
-                control38_rows.push(NormalControlRow::Object13 {
-                    physical_host: host,
-                    track_uid: track.track_uid.clone(),
-                    channel_format_id: track.channel_format_id.clone(),
-                    semantic_key: *semantic_key,
-                    local_owner_ordinal: binding.local_owner_ordinal,
-                    dbmd: track.dbmd,
-                    control,
-                });
-            }
-        }
-    }
-
-    if invocation_hosts.len() != OBJECT_TRACK_COUNT {
-        return Err(NormalControlSnapshotError::GraphDomain);
-    }
+    let NormalControlRowsResult {
+        invocation_hosts,
+        sampler_before,
+        physical_rows,
+        regular_rows,
+        physical_words,
+        regular_words,
+        next_objects,
+    } = calculate_normal_control_rows(
+        &prepared.physical_tracks,
+        &prepared.owner_bindings,
+        &prepared.object_events,
+        &prepared.regular37_hosts,
+        &before.objects,
+    )?;
     let invocation_hosts: [u8; OBJECT_TRACK_COUNT] = invocation_hosts
         .try_into()
         .map_err(|_| NormalControlSnapshotError::GraphDomain)?;
-    let control38_rows: [NormalControlRow; PHYSICAL_TRACK_COUNT] = control38_rows
+    let sampler_before: [NormalControlSamplerBefore; OBJECT_TRACK_COUNT] = sampler_before
+        .try_into()
+        .map_err(|_| NormalControlSnapshotError::StateShapeMismatch)?;
+    let control38_rows: [NormalControlRow; PHYSICAL_TRACK_COUNT] = physical_rows
         .try_into()
         .map_err(|_| NormalControlSnapshotError::GraphDomain)?;
-    let next_objects: [NormalControlObjectState; OBJECT_TRACK_COUNT] = next_objects
-        .into_iter()
-        .collect::<Option<Vec<_>>>()
-        .ok_or(NormalControlSnapshotError::ObjectOwnerBindingMismatch)?
-        .try_into()
-        .map_err(|_| NormalControlSnapshotError::ObjectOwnerBindingMismatch)?;
-
-    let regular37_rows: [NormalControlRow; REGULAR_TRACK_COUNT] = prepared
-        .regular37_hosts
-        .iter()
-        .map(|host| control38_rows[usize::from(*host)].clone())
-        .collect::<Vec<_>>()
+    let regular37_rows: [NormalControlRow; REGULAR_TRACK_COUNT] = regular_rows
         .try_into()
         .map_err(|_| NormalControlSnapshotError::BedJoinMismatch)?;
-    let mut regular37_words = Vec::with_capacity(REGULAR37_WORD_COUNT);
-    for row in &regular37_rows {
-        match row {
-            NormalControlRow::Bed6 { words, .. } => {
-                regular37_words.extend_from_slice(words);
-                regular37_words.resize(regular37_words.len() + CONTROL_WORDS_PER_TRACK - 6, 0);
-            }
-            NormalControlRow::Object13 { control, .. } => {
-                regular37_words.extend_from_slice(&control.words());
-            }
-        }
-    }
+    let next_objects: [NormalControlObjectState; OBJECT_TRACK_COUNT] = next_objects
+        .try_into()
+        .map_err(|_| NormalControlSnapshotError::ObjectOwnerBindingMismatch)?;
+    let control38_words = physical_words;
+    let regular37_words = regular_words;
     if control38_words.len() != CONTROL38_WORD_COUNT
         || regular37_words.len() != REGULAR37_WORD_COUNT
     {
@@ -2905,6 +3319,214 @@ struct NormalizedObjectControl {
     diffuse: Option<i32>,
 }
 
+struct NormalControlRowsResult {
+    invocation_hosts: Vec<u8>,
+    sampler_before: Vec<NormalControlSamplerBefore>,
+    physical_rows: Vec<NormalControlRow>,
+    regular_rows: Vec<NormalControlRow>,
+    physical_words: Vec<u32>,
+    regular_words: Vec<u32>,
+    next_objects: Vec<NormalControlObjectState>,
+}
+
+/// Shared per-row NORMAL calculation used by the fixed38 view and the dynamic ADM view.
+/// The formulas and row encodings stay identical; callers supply their versioned row/route shape.
+fn calculate_normal_control_rows(
+    physical_tracks: &[NormalControlPhysicalTrack],
+    owner_bindings: &[NormalControlObjectOwnerBinding],
+    object_events: &[NormalControlObjectEvent],
+    regular_hosts: &[u8],
+    objects_before: &[NormalControlObjectState],
+) -> Result<NormalControlRowsResult, NormalControlSnapshotError> {
+    if owner_bindings.len() != objects_before.len() {
+        return Err(NormalControlSnapshotError::StateShapeMismatch);
+    }
+    let mut bindings_by_ordinal: Vec<Option<&NormalControlObjectOwnerBinding>> =
+        vec![None; owner_bindings.len()];
+    let mut normalized_by_owner = vec![None; owner_bindings.len()];
+    for binding in owner_bindings {
+        let ordinal = usize::from(binding.local_owner_ordinal);
+        if ordinal >= owner_bindings.len()
+            || bindings_by_ordinal[ordinal].replace(binding).is_some()
+        {
+            return Err(NormalControlSnapshotError::ObjectOwnerBindingMismatch);
+        }
+        let event = find_object_event(object_events, &binding.track_uid)
+            .ok_or(NormalControlSnapshotError::ObjectEventMismatch)?;
+        if event.physical_host != binding.physical_host {
+            return Err(NormalControlSnapshotError::ObjectEventMismatch);
+        }
+        let normalized = NormalizedObjectControl {
+            writer_xyz: writer_coordinates(&event.control_event)
+                .map_err(NormalControlSnapshotError::ObjectControl)?,
+            uniform_width: writer_uniform_width(&event.control_event)
+                .map_err(NormalControlSnapshotError::ObjectControl)?,
+            diffuse: event.control_event.diffuse(),
+        };
+        normalized_by_owner[ordinal] = Some(normalized);
+    }
+    let mut sampler_before = Vec::with_capacity(owner_bindings.len());
+    for (ordinal, binding) in bindings_by_ordinal.iter().enumerate() {
+        let binding = binding.ok_or(NormalControlSnapshotError::ObjectOwnerBindingMismatch)?;
+        let object = objects_before
+            .get(ordinal)
+            .ok_or(NormalControlSnapshotError::StateShapeMismatch)?;
+        if object.object_ordinal != u32::try_from(ordinal).unwrap_or(u32::MAX) {
+            return Err(NormalControlSnapshotError::StateShapeMismatch);
+        }
+        sampler_before.push(NormalControlSamplerBefore {
+            local_owner_ordinal: binding.local_owner_ordinal,
+            physical_host: binding.physical_host,
+            sampler_previous_present: object.sampler_previous_present,
+            sampler_previous_xyz_u32: object.sampler_previous_xyz_u32,
+        });
+    }
+    if object_events.len() != owner_bindings.len()
+        || normalized_by_owner.iter().any(Option::is_none)
+    {
+        return Err(NormalControlSnapshotError::ObjectEventMismatch);
+    }
+
+    let physical_word_count = physical_tracks
+        .len()
+        .checked_mul(CONTROL_WORDS_PER_TRACK)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    let mut physical_words = vec![0_u32; physical_word_count];
+    let mut physical_rows = Vec::with_capacity(physical_tracks.len());
+    let mut invocation_hosts = Vec::with_capacity(owner_bindings.len());
+    let mut next_objects = vec![None; owner_bindings.len()];
+    for track in physical_tracks {
+        let host = track.physical_host;
+        let host_index = usize::from(host);
+        if host_index >= physical_tracks.len() {
+            return Err(NormalControlSnapshotError::PhysicalHostDomain);
+        }
+        let row_offset = host_index
+            .checked_mul(CONTROL_WORDS_PER_TRACK)
+            .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+        match &track.kind {
+            NormalControlTrackKind::Bed { bed_id, .. } => {
+                let words = [0, 0, 3, 2, 1, u32::from(*bed_id)];
+                physical_words[row_offset..row_offset + words.len()].copy_from_slice(&words);
+                physical_rows.push(NormalControlRow::Bed6 {
+                    physical_host: host,
+                    track_uid: track.track_uid.clone(),
+                    channel_format_id: track.channel_format_id.clone(),
+                    dbmd: track.dbmd,
+                    words,
+                    unproduced_tail: UnproducedBedTail {
+                        offset_bytes: 24,
+                        byte_count: 28,
+                    },
+                });
+            }
+            NormalControlTrackKind::Object {
+                semantic_key,
+                local_owner_ordinal,
+            } => {
+                invocation_hosts.push(host);
+                let binding = find_owner_binding(owner_bindings, &track.track_uid)
+                    .ok_or(NormalControlSnapshotError::ObjectOwnerBindingMismatch)?;
+                let ordinal = usize::from(binding.local_owner_ordinal);
+                if binding.local_owner_ordinal != *local_owner_ordinal
+                    || binding.physical_host != host
+                    || binding.semantic_key != *semantic_key
+                    || binding.channel_format_id != track.channel_format_id
+                {
+                    return Err(NormalControlSnapshotError::ObjectOwnerBindingMismatch);
+                }
+                let event = find_object_event(object_events, &track.track_uid)
+                    .ok_or(NormalControlSnapshotError::ObjectEventMismatch)?;
+                if event.physical_host != host || event.object_id != track.object_id {
+                    return Err(NormalControlSnapshotError::ObjectEventMismatch);
+                }
+                let normalized = normalized_by_owner[ordinal]
+                    .ok_or(NormalControlSnapshotError::ObjectEventMismatch)?;
+                let before_object = objects_before
+                    .get(ordinal)
+                    .ok_or(NormalControlSnapshotError::StateShapeMismatch)?;
+                let previous_xyz = if before_object.sampler_previous_present {
+                    before_object.sampler_previous_xyz_u32
+                } else {
+                    normalized.writer_xyz
+                };
+                let sampled_xyz = sample_event_from_previous(normalized.writer_xyz, previous_xyz)
+                    .map_err(NormalControlSnapshotError::ObjectControl)?;
+                let control = ObjectControl52::from_normal_sample(
+                    sampled_xyz,
+                    normalized.uniform_width,
+                    normalized.diffuse,
+                );
+                let words = control.words();
+                physical_words[row_offset..row_offset + CONTROL_WORDS_PER_TRACK]
+                    .copy_from_slice(&words);
+                if next_objects[ordinal]
+                    .replace(before_object.after_normal_callback(host, sampled_xyz))
+                    .is_some()
+                {
+                    return Err(NormalControlSnapshotError::ObjectOwnerBindingMismatch);
+                }
+                physical_rows.push(NormalControlRow::Object13 {
+                    physical_host: host,
+                    track_uid: track.track_uid.clone(),
+                    channel_format_id: track.channel_format_id.clone(),
+                    semantic_key: *semantic_key,
+                    local_owner_ordinal: binding.local_owner_ordinal,
+                    dbmd: track.dbmd,
+                    control,
+                });
+            }
+        }
+    }
+    if physical_rows.len() != physical_tracks.len()
+        || invocation_hosts.len() != owner_bindings.len()
+    {
+        return Err(NormalControlSnapshotError::GraphDomain);
+    }
+    let next_objects = next_objects
+        .into_iter()
+        .collect::<Option<Vec<_>>>()
+        .ok_or(NormalControlSnapshotError::ObjectOwnerBindingMismatch)?;
+    let mut regular_hosts_seen = std::collections::BTreeSet::new();
+    let mut regular_rows = Vec::with_capacity(regular_hosts.len());
+    let mut regular_words = Vec::with_capacity(
+        regular_hosts
+            .len()
+            .checked_mul(CONTROL_WORDS_PER_TRACK)
+            .ok_or(NormalControlSnapshotError::IndexOverflow)?,
+    );
+    for host in regular_hosts {
+        let host_index = usize::from(*host);
+        if host_index >= physical_rows.len() || !regular_hosts_seen.insert(*host) {
+            return Err(NormalControlSnapshotError::BedJoinMismatch);
+        }
+        let row = physical_rows[host_index].clone();
+        match &row {
+            NormalControlRow::Bed6 { words, .. } => {
+                regular_words.extend_from_slice(words);
+                regular_words.resize(
+                    regular_words.len() + CONTROL_WORDS_PER_TRACK - words.len(),
+                    0,
+                );
+            }
+            NormalControlRow::Object13 { control, .. } => {
+                regular_words.extend_from_slice(&control.words());
+            }
+        }
+        regular_rows.push(row);
+    }
+
+    Ok(NormalControlRowsResult {
+        invocation_hosts,
+        sampler_before,
+        physical_rows,
+        regular_rows,
+        physical_words,
+        regular_words,
+        next_objects,
+    })
+}
+
 fn owner_bindings_by_ordinal(
     bindings: &[NormalControlObjectOwnerBinding; OBJECT_TRACK_COUNT],
 ) -> Result<[&NormalControlObjectOwnerBinding; OBJECT_TRACK_COUNT], NormalControlSnapshotError> {
@@ -2924,7 +3546,7 @@ fn owner_bindings_by_ordinal(
 }
 
 fn find_owner_binding<'a>(
-    bindings: &'a [NormalControlObjectOwnerBinding; OBJECT_TRACK_COUNT],
+    bindings: &'a [NormalControlObjectOwnerBinding],
     track_uid: &str,
 ) -> Option<&'a NormalControlObjectOwnerBinding> {
     let index = bindings
@@ -2934,7 +3556,7 @@ fn find_owner_binding<'a>(
 }
 
 fn find_object_event<'a>(
-    events: &'a [NormalControlObjectEvent; OBJECT_TRACK_COUNT],
+    events: &'a [NormalControlObjectEvent],
     track_uid: &str,
 ) -> Option<&'a NormalControlObjectEvent> {
     let index = events

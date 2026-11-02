@@ -1835,8 +1835,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 117552,
-              "sha256": "01a9a785cc7b40837b7bdfd5410c87b4495b48cdedf66fcee4ecfe5562befbad"
+              "bytes": 140704,
+              "sha256": "8bd823f06b991b5ed2e71b8f6367c64880a3c972574f303797816ab208cdcdcb"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/adm_object_events.rs",
@@ -2165,8 +2165,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             }
           ],
           "test_inventory": [
@@ -2244,15 +2244,15 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 27030,
-              "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+              "bytes": 37445,
+              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -2350,9 +2350,9 @@
         },
         {
           "slice_id": "dynamic-adm-input-row-admission",
-          "mapping_status": "MATERIALIZED_DYNAMIC_ADM_INPUT_COLD_OWNER_AND_NORMAL_PREFLIGHT__FRESH_ZERO_CALLBACK_AND_DDP_FRAME_VIEW_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_DYNAMIC_36_ROW_PREPARATION_F01E_COLD_OWNER_AND_36_38_VERSIONED_NORMAL_PREFLIGHT__LEGACY_NORMAL_STAGE_AND_FRESH_ZERO_OPEN",
-          "scope": "ADM BWF PCM24/48 kHz input rows are carried at their actual count through RIFF parsing, graph/event admission, converter storage mapping, F01E primary metadata/control values, selected BSI profile-field projection, MeterSourceAdmission identity creation, and the typed CHNA-to-BWF-physical-row map. The job parser admits ADM and AtmosMezz WAVE descriptors with 1..=256 physical rows and checks PCM24/48 kHz; PreparedJobInput requires WAVE rows to equal CHNA rows. Canonical authored-input identity has no fixed 38-row label; exact input rows remain a separate WAVE field. The application `PreparedJobInput::f01e_cold_owner` uses one paired configuration/graph and programme/attempt key to construct generation-zero `F01E_ADM_INPUT_COLD_PROJECTION_V1` from the validated provider defaults. The approved `F01E_SELECTED_COLD_V1` remains fixed at 28 object owners. The dynamic cold root preserves callback index zero, four drains and zero object sampler values. It does not resize or stage the 38-row normal-control snapshot, execute a callback, or set a DDP frame-view count. The 36-row/26-object cold owner reaches the normal-control preparation boundary when paired with its PreparedJobInput, then is rejected by the current 28-object owner-shape precondition with NORMAL_CONTROL_STATE_SHAPE before the later 38/10/28 profile check. The 36-row/26-object cold owner reaches the normal-control preparation boundary when paired with its PreparedJobInput, then is rejected by the current 28-object owner-shape precondition with NORMAL_CONTROL_STATE_SHAPE before the later 38/10/28 profile check. A second versioned application preflight, `F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1`, accepts 36/10/26 and 38/10/28 cold roots from the same PreparedJobInput owner; its identity digest includes resource/config/metadata hashes, owner generation, graph counts, LFE host, bed hosts and graph-provided regular-control order. The regular-control count is not inferred as physical rows minus one. The legacy fixed NormalControlPreparedSnapshot still rejects the 36/26 owner at its 28-object shape precondition. This preflight carries no normal callback after-state and does not run a per-row formula. The cold `normal_callbacks` counter remains the processed-callback count at zero; expected total normal callback count is stored only in the per-input preflight snapshot.",
+          "mapping_status": "MATERIALIZED_DYNAMIC_NORMAL_PROPOSAL_AND_SYNTHETIC_FRESH_ZERO_SOURCE_RECEIPTS__METER_SPATIAL_COMMIT_AND_DDP_TRANSFER_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_36_38_DYNAMIC_NORMAL_PROPOSAL_AND_SYNTHETIC_SOURCE_VIEW_RECEIPTS__MULTICALLBACK_AND_OWNER_INSTALL_OPEN",
+          "scope": "ADM BWF PCM24/48 kHz input rows are carried at their actual count through RIFF parsing, graph/event admission, converter storage mapping, F01E primary metadata/control values, selected BSI profile-field projection, MeterSourceAdmission identity creation, and the typed CHNA-to-BWF-physical-row map. The job parser admits ADM and AtmosMezz WAVE descriptors with 1..=256 physical rows and checks PCM24/48 kHz; PreparedJobInput requires WAVE rows to equal CHNA rows. Canonical authored-input identity has no fixed 38-row label; exact input rows remain a separate WAVE field. PreparedJobInput::f01e_cold_owner constructs generation-zero F01E_ADM_INPUT_COLD_PROJECTION_V1 from one paired configuration/graph and programme/attempt key, using validated provider defaults. The approved F01E_SELECTED_COLD_V1 remains fixed at 28 object owners. A separate F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1 accepts 36/10/26 and 38/10/28 and binds graph-provided LFE and regular routes; it does not infer regular-control rows as physical rows minus one. The legacy fixed NormalControlPreparedSnapshot still rejects a 36/26 cold owner at its 28-object shape precondition with NORMAL_CONTROL_STATE_SHAPE. The dynamic first-NORMAL proposal shares the fixed38 per-row calculation and returns a noncommitting F01E_ADM_INPUT_NORMAL_STATE_V1 with separate typed physical-input, normal-control, regular-route, and object-owner counts. One-frame synthetic 36/26 and 38/28 tests each create three callback-indexed FreshZero row receipts, validating 1,536 all-zero samples per physical input row. Both synthetic source views bind through MeterSourceCallbackView with matching DBMD row shape. The 36-row DBMD fixture uses only the Wash-confirmed row count from manifest fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374; its per-track values are synthetic zeros, not values read from the authorized sample. These tests establish typed shape/value lineage only: no after-state is installed, no real sample PCM or per-track DBMD values enter the callback, and Meter/Spatial processing, multi-callback progression, and DDP frame-view transfer remain open.",
           "owner": "frontend",
           "implementation_requirement": true,
           "dependencies": [
@@ -2410,10 +2410,11 @@
               "c55c5bf23502a819a96e359fad3669c4b1a16bb219cbe070e18d028fc5d8631a",
               "8dd3769836cbad7df2048fba3dc274dc0345a72a4fc762aeb0de72254d5dcb73",
               "6b26fa584c5fb6e6432a811d922d2babd133936079001862bdb31a80e2bb8e81",
-              "c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1"
+              "c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1",
+              "fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374"
             ],
             "max_physical_rows": 256,
-            "validation_boundary": "Admits 48 kHz/PCM24 input WAVE descriptors with 1..=256 physical rows for ADM and AtmosMezz. PreparedJobInput pairs WAVE rows and CHNA rows from one resource. The app cold-owner adapter uses one prepared configuration/graph plus programme/attempt key. The derived cold schema is distinct from the approved fixed-28-owner F01E_SELECTED_COLD_V1. Normal-control, fresh-zero callback and DDP frame-view dimensions remain unchanged and closed to dynamic rows. `F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1` derives regular/LFE host mapping from the admitted graph and binds a per-input identity digest; it does not advance callback state or convert input rows to a DDP frame-view. `F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1` derives regular/LFE host mapping from the admitted graph and binds a per-input identity digest; it does not advance callback state or convert input rows to a DDP frame-view."
+            "validation_boundary": "ADM/AtmosMezz WAVE descriptors accept 1..=256 physical rows at 48 kHz PCM24 and PreparedJobInput binds WAVE rows to CHNA rows. The versioned normal preflight/proposal preserves the selected 5.1 output profile and uses graph-derived LFE/regular routes. Synthetic 36/26 and 38/28 FreshZero source views bind with three callback-indexed 1,536-sample zero-row receipts per input row. The 36-row DBMD shape is Wash-count-backed but uses synthetic zero per-track fields. No real-source callback, owner installation, Meter/Spatial execution, multi-callback progression, or DDP frame-view mapping is covered."
           },
           "test_modules": [
             "crates/jocforge-domain/tests/job_configuration.rs",
@@ -2426,61 +2427,23 @@
             "crates/jocforge-application/src/meter_source_bridge.rs"
           ],
           "vectors": {
-            "kind": "DYNAMIC_ADM_INPUT_VERSIONED_COLD_OWNER_AND_NORMAL_PREFLIGHT_TESTS",
+            "kind": "DYNAMIC_ADM_NORMAL_PROPOSAL_AND_SYNTHETIC_FRESH_ZERO_SOURCE_VIEW_RECEIPTS",
             "authoritative_vectors": [
               "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
               "crates/jocforge-domain/tests/fixtures/selected_adm_graph/REAL-GRAPH-TRACK-IDENTITIES.json",
               "crates/jocforge-io/tests/fixtures/riff_pcm24/unit-vectors.json",
-              "crates/jocforge-domain/tests/fixtures/job_configuration/authorized-adm-input-dimensions.json"
+              "crates/jocforge-domain/tests/fixtures/job_configuration/authorized-adm-input-dimensions.json",
+              "crates/jocforge-application/tests/fixtures/authorized-adm-dbmd-row-count.json"
             ],
             "case_pointers": [
               "36-channel PCM24 RIFF decoding returns exactly 36 physical rows.",
               "Existing 38-track graph and reader tests remain unchanged and pass.",
               "The actual 36-channel file's CHNA and AXML graph passed a one-off metadata-only PreparedJobInput check.",
               "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
               "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
               "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
               "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
-              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
-              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
               "MeterSourceAdmission validates the prepared ADM row extent and mints an input/config/resource-bound source owner identity without executing the Meter callback.",
-              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
-              "MeterSourceAdmission validates the prepared ADM row extent and mints an input/config/resource-bound source owner identity without executing the Meter callback.",
-              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
-              "MeterSourceAdmission validates the prepared ADM row extent and mints an input/config/resource-bound source owner identity without executing the Meter callback.",
-              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
-              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
-              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
-              "MeterSourceAdmission validates the prepared ADM row extent and mints an input/config/resource-bound source owner identity without executing the Meter callback.",
-              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
               "AtmosMezz job configuration accepts the Wash-authorized 36-row and 38-row metadata dimensions (fmt channel count equals CHNA track count and record area).",
               "Input descriptor row counts 0 and 257 reject; 48 kHz PCM24, selected output profile and 1,536-sample frame configuration remain fixed.",
               "F01E cold projection constructs 36-row/26-object and 38-row/28-object cold roots from validated provider defaults, retaining callback index zero, four cached drains and zero object sampler state; normal-control/callback and DDP frame-view remain open.",
@@ -2494,7 +2457,15 @@
               "A 36/26 cold owner paired to its PreparedJobInput reaches normal-control preparation and is rejected at the current 28-slot owner-shape precondition before profile validation.",
               "F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1 accepts 36/10/26 and 38/10/28 using graph-provided LFE and regular-control hosts; regular-control count is not inferred as physical rows minus one; identity SHA includes the prepared resource/config/graph and owner generation.",
               "A 36/26 cold owner paired to its PreparedJobInput reaches the legacy normal-control preparation and is rejected at the current 28-object owner-shape precondition with NORMAL_CONTROL_STATE_SHAPE before profile validation.",
-              "Cold F01E normal_callbacks remains the processed-callback count zero; expected total callback count is carried separately by F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1."
+              "Cold F01E normal_callbacks remains the processed-callback count zero; expected total callback count is carried separately by F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1.",
+              "The shared normal row calculator produces 36/10/26 and 38/10/28 per-input proposals without changing per-row formulas or the fixed5.1 output profile.",
+              "One-frame synthetic 36/26 and 38/28 proposals each produce three FreshZero row receipts with 1,536 zero samples per physical input row.",
+              "ADM physical rows, normal-control rows, regular-route rows and initialized object-owner slots use separate typed counts.",
+              "The first NORMAL callback produces noncommitting 36/10/26 and 38/10/28 per-input proposals using the shared fixed38 per-row calculator.",
+              "Three FreshZero receipts bind for each synthetic 36/26 and 38/28 input; each receipt covers 1,536 zero samples for every physical input row.",
+              "Both synthetic 36-row and 38-row MeterSourceCallbackView values bind to their matching prepared-input and DBMD row shapes.",
+              "The 36-row DBMD shape uses Wash manifest fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374; per-track fields are synthetic zeros, not actual sample metadata.",
+              "ADM physical rows, normal-control rows, regular-route rows and initialized object-owner slots use separate typed counts."
             ],
             "expected_outputs_included": false,
             "metadata_dimensions_fixture": {
@@ -2524,7 +2495,12 @@
           "not_run": [
             "36-row normal-control snapshot, IndependentMeterCallback/meter prepass owner, or programme callback.",
             "ADM reader row to DDP process frame-view channel count same-owner/generation transfer.",
-            "36-row end-to-end E-AC-3 JOC encode, external decode, render, W04, and audio comparison."
+            "36-row end-to-end E-AC-3 JOC encode, external decode, render, W04, and audio comparison.",
+            "Dynamic normal callback progression beyond the first proposal for source extents greater than 1,536 samples; the synthetic test has one normal callback.",
+            "Installation of dynamic F01E after-state into the parent owner, Meter/Spatial callback execution, and DDP frame-view transfer.",
+            "Dynamic normal callback progression beyond the first proposal for source extents greater than 1,536 samples; the synthetic tests use a one-sample source and one normal callback.",
+            "Actual 36-row sample per-track DBMD values and PCM through FreshZero, Meter, or Spatial callbacks; the 36-row test DBMD values are synthetic zeros.",
+            "Installation of dynamic F01E after-state into the parent owner, Meter/Spatial callback execution, and DDP frame-view transfer."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
@@ -2575,13 +2551,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 117552,
-              "sha256": "01a9a785cc7b40837b7bdfd5410c87b4495b48cdedf66fcee4ecfe5562befbad"
+              "bytes": 140704,
+              "sha256": "8bd823f06b991b5ed2e71b8f6367c64880a3c972574f303797816ab208cdcdcb"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -2637,8 +2613,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 27030,
-              "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+              "bytes": 37445,
+              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
             },
             {
               "path": "crates/jocforge-domain/tests/primary_metadata_control.rs",
@@ -7427,8 +7403,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             }
           ],
           "test_inventory": [
@@ -9746,8 +9722,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967549,
-              "sha256": "6f5d139192c052eb5cfeac232434f3645f9936538d370438c3fbad863d95598e"
+              "bytes": 1967902,
+              "sha256": "d5cf1f4ae3c058eab673c41f7512133f3598bba4f2a1f4e99b5ca7acad320876"
             }
           ],
           "test_modules": [
@@ -12732,8 +12708,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             }
           ],
           "test_inventory": [
@@ -12744,8 +12720,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 27030,
-              "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+              "bytes": 37445,
+              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
             }
           ]
         },
@@ -13257,13 +13233,13 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967549,
-              "sha256": "6f5d139192c052eb5cfeac232434f3645f9936538d370438c3fbad863d95598e"
+              "bytes": 1967902,
+              "sha256": "d5cf1f4ae3c058eab673c41f7512133f3598bba4f2a1f4e99b5ca7acad320876"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -13503,8 +13479,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
@@ -13520,8 +13496,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 27030,
-              "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+              "bytes": 37445,
+              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -15862,8 +15838,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             },
             {
               "path": "crates/jocforge-domain/src/meter/mod.rs",
@@ -16774,8 +16750,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 117552,
-              "sha256": "01a9a785cc7b40837b7bdfd5410c87b4495b48cdedf66fcee4ecfe5562befbad"
+              "bytes": 140704,
+              "sha256": "8bd823f06b991b5ed2e71b8f6367c64880a3c972574f303797816ab208cdcdcb"
             },
             {
               "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
@@ -21335,8 +21311,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             },
             {
               "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -26265,8 +26241,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
@@ -31140,13 +31116,13 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 27030,
-              "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+              "bytes": 37445,
+              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -31182,8 +31158,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 27030,
-              "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+              "bytes": 37445,
+              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -34081,8 +34057,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967549,
-              "sha256": "6f5d139192c052eb5cfeac232434f3645f9936538d370438c3fbad863d95598e"
+              "bytes": 1967902,
+              "sha256": "d5cf1f4ae3c058eab673c41f7512133f3598bba4f2a1f4e99b5ca7acad320876"
             }
           ],
           "test_inventory": [
@@ -34815,8 +34791,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 25555,
-              "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+              "bytes": 29234,
+              "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
             },
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
@@ -34830,8 +34806,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 27030,
-              "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+              "bytes": 37445,
+              "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
             },
             {
               "path": "crates/jocforge-domain/src/state/mod.rs",
@@ -37748,13 +37724,13 @@
         },
         {
           "path": "crates/jocforge-application/src/lib.rs",
-          "bytes": 25555,
-          "sha256": "543c0d478c57dc18cd0cd3f71e7611e2330426f25f8354d7634d94cdde78835f"
+          "bytes": 29234,
+          "sha256": "bed1bb3d642af7dc8e29ffec5cf24bac2ce97ce2619956ae520d63d1ab4f8435"
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 27030,
-          "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+          "bytes": 37445,
+          "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -37830,8 +37806,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 27030,
-          "sha256": "14475a295b7ff5ed2d11a83a96a34a60dc45eaad7a0a22228506e472965a15b8"
+          "bytes": 37445,
+          "sha256": "09dca87f337912d3e591fa61003b40ec8e245fc6e2a3dfaeeae9c53ebceedb8c"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",
