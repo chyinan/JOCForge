@@ -512,6 +512,19 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         assert_eq!(state.normalized_config().channels(), u32::from(channels));
         assert!(state.dbmd_binding().is_none());
         assert!(state.physical_binding().is_none());
+        if channels == 36 {
+            let prepared_with_controls = prepared
+                .bind_primary_control_rows(u64::from(channels) * 3)
+                .unwrap();
+            assert_eq!(
+                prepared_with_controls
+                    .normal_control_prepared_snapshot(state)
+                    .unwrap_err(),
+                PreparedJobInputError::NormalControlSnapshot(
+                    NormalControlSnapshotError::StateShapeMismatch
+                )
+            );
+        }
         assert_eq!(provider.canonical_bytes(), original_canonical);
     }
 

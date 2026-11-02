@@ -2251,8 +2251,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 23823,
-              "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+              "bytes": 24327,
+              "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -2352,7 +2352,7 @@
           "slice_id": "dynamic-adm-input-row-admission",
           "mapping_status": "MATERIALIZED_DYNAMIC_ADM_INPUT_AND_VERSIONED_F01E_COLD_OWNER__NORMAL_CONTROL_AND_DDP_FRAME_VIEW_OPEN",
           "implementation_status": "LOCALLY_VERIFIED_DYNAMIC_36_ROW_PREPARATION_F01E_COLD_OWNER_AND_36_38_CONFIG_ADMISSION__NORMAL_CONTROL_CALLBACK_OPEN",
-          "scope": "ADM BWF PCM24/48 kHz input rows are carried at their actual count through RIFF parsing, graph/event admission, converter storage mapping, F01E primary metadata/control values, selected BSI profile-field projection, MeterSourceAdmission identity creation, and the typed CHNA-to-BWF-physical-row map. The job parser admits ADM and AtmosMezz WAVE descriptors with 1..=256 physical rows and checks PCM24/48 kHz; PreparedJobInput requires WAVE rows to equal CHNA rows. Canonical authored-input identity has no fixed 38-row label; exact input rows remain a separate WAVE field. The application `PreparedJobInput::f01e_cold_owner` uses one paired configuration/graph and programme/attempt key to construct generation-zero `F01E_ADM_INPUT_COLD_PROJECTION_V1` from the validated provider defaults. The approved `F01E_SELECTED_COLD_V1` remains fixed at 28 object owners. The dynamic cold root preserves callback index zero, four drains and zero object sampler values. It does not resize or stage the 38-row normal-control snapshot, execute a callback, or set a DDP frame-view count.",
+          "scope": "ADM BWF PCM24/48 kHz input rows are carried at their actual count through RIFF parsing, graph/event admission, converter storage mapping, F01E primary metadata/control values, selected BSI profile-field projection, MeterSourceAdmission identity creation, and the typed CHNA-to-BWF-physical-row map. The job parser admits ADM and AtmosMezz WAVE descriptors with 1..=256 physical rows and checks PCM24/48 kHz; PreparedJobInput requires WAVE rows to equal CHNA rows. Canonical authored-input identity has no fixed 38-row label; exact input rows remain a separate WAVE field. The application `PreparedJobInput::f01e_cold_owner` uses one paired configuration/graph and programme/attempt key to construct generation-zero `F01E_ADM_INPUT_COLD_PROJECTION_V1` from the validated provider defaults. The approved `F01E_SELECTED_COLD_V1` remains fixed at 28 object owners. The dynamic cold root preserves callback index zero, four drains and zero object sampler values. It does not resize or stage the 38-row normal-control snapshot, execute a callback, or set a DDP frame-view count. The 36-row/26-object cold owner reaches the normal-control preparation boundary when paired with its PreparedJobInput, then is rejected by the current 28-object owner-shape precondition with NORMAL_CONTROL_STATE_SHAPE before the later 38/10/28 profile check. The 36-row/26-object cold owner reaches the normal-control preparation boundary when paired with its PreparedJobInput, then is rejected by the current 28-object owner-shape precondition with NORMAL_CONTROL_STATE_SHAPE before the later 38/10/28 profile check.",
           "owner": "frontend",
           "implementation_requirement": true,
           "dependencies": [
@@ -2490,7 +2490,8 @@
               "AtmosMezz job configuration accepts Wash-authorized 36-row and 38-row metadata dimensions; WAVE and CHNA row counts and record-area extent agree.",
               "Zero rows, rows above 256, non-48-kHz input and non-PCM24 input reject without fallback; selected output profile remains fixed.",
               "F01E_ADM_INPUT_COLD_PROJECTION_V1 creates 36/26 and 38/28 cold roots through one PreparedJobInput configuration/graph and programme/attempt key; original F01E_SELECTED_COLD_V1 remains fixed28.",
-              "Cold projection preserves callback index zero, four drains and zero object sampler state; normal-control, callback and DDP frame-view remain open."
+              "Cold projection preserves callback index zero, four drains and zero object sampler state; normal-control, callback and DDP frame-view remain open.",
+              "A 36/26 cold owner paired to its PreparedJobInput reaches normal-control preparation and is rejected at the current 28-slot owner-shape precondition before profile validation."
             ],
             "expected_outputs_included": false,
             "metadata_dimensions_fixture": {
@@ -2633,8 +2634,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 23823,
-              "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+              "bytes": 24327,
+              "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
             },
             {
               "path": "crates/jocforge-domain/tests/primary_metadata_control.rs",
@@ -12740,8 +12741,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 23823,
-              "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+              "bytes": 24327,
+              "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
             }
           ]
         },
@@ -13516,8 +13517,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 23823,
-              "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+              "bytes": 24327,
+              "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -31141,8 +31142,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 23823,
-              "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+              "bytes": 24327,
+              "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -31178,8 +31179,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 23823,
-              "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+              "bytes": 24327,
+              "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -34826,8 +34827,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 23823,
-              "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+              "bytes": 24327,
+              "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
             },
             {
               "path": "crates/jocforge-domain/src/state/mod.rs",
@@ -37749,8 +37750,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 23823,
-          "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+          "bytes": 24327,
+          "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -37826,8 +37827,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 23823,
-          "sha256": "c0a5cb01c9bd1dce7db7df9d277930f4a4738b87f931add3f921c82765543f4e"
+          "bytes": 24327,
+          "sha256": "ade7484568a56351b57d0d524da9ef13557330e97ce2fd723a4e3e3e1296803c"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",
