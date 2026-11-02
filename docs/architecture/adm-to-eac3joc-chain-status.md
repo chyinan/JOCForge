@@ -36,7 +36,9 @@ Run `sample6-dee-audio-full-20261102` 使用本地提交 `216326f622e66f1f7b255d
 
 FFprobe/FFmpeg 8.1 对新文件的结果：AU0 位于 byte 0，packet size 4,096 bytes、duration 32 ms；全流识别为 48 kHz、E-AC-3 Dolby Digital Plus + Dolby Atmos、5.1(side)、1,024,000 bit/s、135.904 s。FFmpeg 全流 decode-to-null exit 0 且无报告错误。容器/核心解码可接受；JOC spatial render 和同输入 fresh DEE 音频等价仍 `NOT_RUN`，不以历史 Python/DEE 对照组作当前基线。
 
-Wash 包 `DEE-AUTHORIZED-ADM-RUNTIME-SOURCE-BOUNDARY-V1`（manifest SHA-256 `1c5e5c13bd7ebb1fcc37356c47b649f7982cac4acd7250071a57219d1d9d1131`）确认新鲜 DEE run 使用与 Rust full run 相同的授权 ADM SHA-256 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`，并记录一个 2.048 秒 5.1/48 kHz/1,024 kbps M4A 参考，SHA-256 `99e901e7ca836692ef3168a121a19c69fd67c49b3c1d1108efac185a1b50e671`。参考的 `file_position 2160..2208` 到源时间/样本范围及 Rust 输出帧范围尚未映射；该窗口的 PCM parity 仍 `NOT_RUN`。此参考不代表整曲或 JOC spatial render 等价。
+Wash 包 `DEE-AUTHORIZED-ADM-RUNTIME-SOURCE-BOUNDARY-V1`（manifest SHA-256 `1c5e5c13bd7ebb1fcc37356c47b649f7982cac4acd7250071a57219d1d9d1131`）确认新鲜 DEE run 使用与 Rust full run 相同的授权 ADM SHA-256 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`，并记录一个 2.048 秒 5.1/48 kHz/1,024 kbps M4A 参考，SHA-256 `99e901e7ca836692ef3168a121a19c69fd67c49b3c1d1108efac185a1b50e671`。该边界包当时未提供 `file_position 2160..2208` 的源样本位置，也未运行 PCM 对照；后续更正与短段比较见下文。此参考不代表整曲或 JOC spatial render 等价。
+
+随后 Wash 对该 bounded reference 做了 decode-only core/bed 比较，包 `SAMPLE6-DEE-REFERENCE-CORE-PCM-COMPARISON-V1`（manifest SHA-256 `c2dfb9336d20bc000d1610ee6bc5850dae950f834531f3da618fb62db7359485`）现已通过普通及 `python -O` 检查。DEE receipt 将其映射到源样本 `[4,320,000,4,418,000)`；M4A 有 98,304 个编码样本，源窗有 98,000 个样本，额外 304 个样本的位置仍未明。按 Rust sample zero 对齐的候选区间 `[4,320,000,4,418,000)` 得到不同 PCM SHA-256，相关系数 0.987903，RMS 差约为 Rust 窗口 RMS 的 15.5%；±1,536 样本搜索的最好候选仍有差异。`-drc_scale 0` 不改变任一文件的 FFmpeg PCM 哈希，六声道拟合增益也不是单一共同值。该结果是同一授权 ADM 的短段 core mismatch 候选；Rust 输入样本零点到解码 PCM、两次 job controls 与尾部 trim 仍未闭合，因此不作为整曲音频不等价或 JOC spatial mismatch 结论。没有保存 PCM。
 
 ### DEE JOC block-delta candidate
 

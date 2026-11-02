@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "native-f06-authorized-adm-window-range-and-fullrun-slice-addendum",
+      "manifest_sha256": "cce9188fe6e17a39d940861131202d74a3114a7aa70a26107fc987fb4fd39e32",
+      "separate_package_seal": "NOT_PROVIDED",
+      "scope": "Exact file-position to ADM source sample interval and bounded reference coded-sample counts."
+    },
+    {
+      "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+      "manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+      "package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18",
+      "run_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766",
+      "scope": "Current JOCForge full-run input/output identities and absence of a subwindow origin map."
+    }
+  ],
+  "analysis_script_sha256": "14f455e8e70bd656de0d9e78ebc52f238b756871c146edfc41deeb3756872421",
+  "m4a_timing_box_inspector_sha256": "c51b3d72975a1cdd0da01daca21f7ab425098a9f4bb5e8e0bfc33afc9b2d06f6",
+  "decoder": "FFmpeg 8.1-full_build.www.gyan.dev"
+}

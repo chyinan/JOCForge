@@ -1,0 +1,119 @@
+{
+  "schema": "jocforge-sample6-dee-reference-core-pcm-comparison.v1",
+  "package_id": "SAMPLE6-DEE-REFERENCE-CORE-PCM-COMPARISON-V1",
+  "status": "PROVISIONAL_SAME_INPUT_CORE_PCM_HASH_MISMATCH; RUST_SAMPLE_ORIGIN_UNBOUND; SPATIAL_RENDER_NOT_COMPARED",
+  "authorized_input": {
+    "fixture_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "channels": 38,
+    "sample_rate_hz": 48000,
+    "bits_per_sample": 24
+  },
+  "dee_reference": {
+    "job_xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+    "output_sha256": "99e901e7ca836692ef3168a121a19c69fd67c49b3c1d1108efac185a1b50e671",
+    "output_bytes": 262997,
+    "container": "MP4/M4A",
+    "codec": "E-AC-3",
+    "profile": "Dolby Digital Plus + Dolby Atmos",
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "bit_rate_bps": 1024000,
+    "access_units": 64,
+    "coded_sample_frames": 98304,
+    "mp4_edit_list_media_time": 0,
+    "initial_padding_reported_by_ffprobe": 0,
+    "source_window_sample_frames": [4320000, 4418000],
+    "source_window_frames_inclusive_file_position": [2160, 2208],
+    "source_window_count": 98000,
+    "extra_coded_samples_location": "UNBOUND"
+  },
+  "jocforge_full_run": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "output_bytes": 17395712,
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "channel_layout": "5.1(side)",
+    "bit_rate_bps": 1024000,
+    "access_units": 4247,
+    "duration_seconds": 135.904,
+    "decoded_sample_frames": 6523392,
+    "source_sample_zero_to_decoded_sample_zero": "UNBOUND"
+  },
+  "decode_method": {
+    "decoder": "FFmpeg 8.1-full_build.www.gyan.dev; libavcodec 62.28.100",
+    "operation": "decode-only; identical invocation for both files",
+    "output_format": "48kHz 6-channel pcm_f32le via stdout pipe",
+    "pcm_persisted": false,
+    "analysis_script_sha256": "14f455e8e70bd656de0d9e78ebc52f238b756871c146edfc41deeb3756872421",
+    "m4a_timing_box_inspector_sha256": "c51b3d72975a1cdd0da01daca21f7ab425098a9f4bb5e8e0bfc33afc9b2d06f6",
+    "channel_layout": "5.1(side)"
+  },
+  "candidate_same_window_comparison": {
+    "alignment_assumption": "JOCForge decoded sample index equals ADM source sample index; not proven by run receipt",
+    "reference_window": [0, 98000],
+    "jocforge_window": [4320000, 4418000],
+    "reference_pcm_sha256": "6c11dac2b2edfa0b5f5fe653b5d5df7f780b4243ba66423d78b7dbefd5148dfa",
+    "jocforge_pcm_sha256": "77f5fc12a515484ece90534104ac0cf17dd88ac80c31394ca889dd5e087884c9",
+    "exact_pcm_hash_match": false,
+    "interleaved_sample_values_compared": 588000,
+    "exact_sample_fraction": 0.0000034013605442176872,
+    "max_abs_diff_f32": 0.36690443754196167,
+    "mean_abs_diff_f32": 0.001293275296101302,
+    "rms_diff_f32": 0.006563190892033948,
+    "rms_reference_f32": 0.041589408446150104,
+    "rms_jocforge_f32": 0.04230236151176084,
+    "rms_diff_relative_to_jocforge": 0.15514951547585018,
+    "correlation": 0.9879033177385163,
+    "global_least_squares_rust_to_reference_gain": 0.9712525967284126,
+    "global_gain_normalized_residual_rms_f32": 0.006449543914972159,
+    "global_gain_normalized_residual_max_f32": 0.35496315951155555,
+    "per_channel_gain_fits": [0.9593523755238491, 0.9571657598267652, 1.0488823134715708, 0.9844245495608652, 0.9883220690153005, 0.9879545808243988],
+    "per_channel_gain_normalized_residual_rms_f32": [0.009463255228647363, 0.009527829945623898, 0.0015203239802523995, 0.004938220896393292, 0.004583360387675794, 0.004371592332745325]
+  },
+  "best_lag_sensitivity": {
+    "search_range_samples": [-1536, 1536],
+    "reference_start_frame": 304,
+    "rust_offset_from_source_start": 304,
+    "reference_pcm_sha256": "2a26bafc2727fdc93fbb63d3fb8cce99edb25a0a5e561aae06f3a562d377d20c",
+    "rust_pcm_sha256": "d62470f6de9a14e35c9366695ead58438c00d656fadd7ebe4054b50f1503ffc2",
+    "exact_pcm_hash_match": false,
+    "rms_diff_relative_to_jocforge": 0.15203903102357974,
+    "correlation": 0.9883857499347642,
+    "interpretation": "both windows move by +304 samples; sensitivity check only, not a proven trim rule"
+  },
+  "ffmpeg_drc_scale_control": {
+    "option": "eac3 decoder -drc_scale 0",
+    "dee_default_vs_zero_exact_hash": true,
+    "jocforge_default_vs_zero_exact_hash": true,
+    "dee_zero_vs_jocforge_zero_exact_hash": false,
+    "interpretation": "This FFmpeg decoder option did not change either decoded window; not evidence about DEE's encoder-side DRC."
+  },
+  "scope_limits": {
+    "job_configuration_equivalence": "NOT_ESTABLISHED",
+    "exact_source_to_rust_sample_map": "UNBOUND",
+    "same_window_pcm_comparison": "CANDIDATE_MISMATCH_NOT_FINAL_PARITY_VERDICT",
+    "atmos_object_or_spatial_render_comparison": "NOT_PERFORMED",
+    "private_hmac_or_license_behavior": "NOT_ASSESSED"
+  },
+  "source_packages": [
+    {
+      "package_id": "native-f06-authorized-adm-window-range-and-fullrun-slice-addendum",
+      "manifest_sha256": "cce9188fe6e17a39d940861131202d74a3114a7aa70a26107fc987fb4fd39e32",
+      "source_package_seal": "NOT_PROVIDED"
+    },
+    {
+      "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+      "manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+      "package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18",
+      "run_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766"
+    }
+  ],
+  "exclusions": {
+    "pcm_payload_included": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

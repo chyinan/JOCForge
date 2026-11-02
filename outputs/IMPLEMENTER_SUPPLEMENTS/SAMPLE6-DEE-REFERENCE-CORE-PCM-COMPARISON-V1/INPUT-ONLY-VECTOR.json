@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-core-pcm-comparison-vector.v1",
+  "vector_id": "sample6-file-position-2160-2208-core-pcm",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "source_range_from_dee_receipt": {
+    "time_base": "file_position",
+    "start_inclusive": 2160,
+    "end_inclusive": 2208,
+    "source_sample_start": 4320000,
+    "source_sample_end_exclusive": 4418000,
+    "sample_frames": 98000
+  },
+  "candidate_pcm_windows": {
+    "dee_m4a_decoded": [0, 98000],
+    "jocforge_full_decoded": [4320000, 4418000],
+    "jocforge_origin_assumption": "decoded sample zero aligns with ADM source sample zero; UNBOUND"
+  },
+  "observed_pcm_hashes": {
+    "dee_m4a_candidate": "6c11dac2b2edfa0b5f5fe653b5d5df7f780b4243ba66423d78b7dbefd5148dfa",
+    "jocforge_full_candidate": "77f5fc12a515484ece90534104ac0cf17dd88ac80c31394ca889dd5e087884c9",
+    "equal": false
+  },
+  "pcm_persisted": false,
+  "decoder": "FFmpeg 8.1 decode-only, pcm_f32le, 48kHz, 6-channel"
+}
