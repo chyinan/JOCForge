@@ -116,6 +116,8 @@ Wash 包 `DEE-AUTHORIZED-ADM-RUNTIME-SOURCE-BOUNDARY-V1`（manifest SHA-256 `1c5
 
 `DEE-JOC-AU-BYTE-PUBLISH-BOUNDARY-V1`（manifest SHA-256 `4a06663791857bb8be715bb0deedef124ad87ae7bc47c74a8e9ec926932d828e`）将 DEE per-unit writer residual U16、valid-span repack、按序 dispatcher 和 caller-supplied AU buffer 写入连接起来。该链停在内存 buffer，不包含应用层 file/container append；它补强了 JOC writer 到 AU-buffer 的静态边界，不提供 selector 值或音频等价结论。
 
+Wash 包 `SAMPLE6-JOC-TAGGED-MODE-COUNT-LINEAGE-V1`（manifest SHA-256 `d3cdd7d4ac874b939613fef6280587a9ea6e8ed5eea1509c647ad6fbb68c83c2`，seal SHA-256 `a14b249288f8da10714c73f8b1a3e422497842147b6b565b780f0abedc2097bd`）通过普通模式和 `python -O` 校验。DEE 静态路径把 per-source tagged record 的 tag 4 I32 值传入 mode 字段，再经 lookup 得到 U16 coefficient-slot count，并用于 coefficient-delta processing 和 bit-writer 长度。record-list creator、tag 4 的公开输入来源、匹配 run 的 M/N 值和 Atmos 音频影响均未绑定；它不授权新增用户设置，也不解释 channel 3 PCM 残差。
+
 本次 full-file Rust run 记录 model DialNorm=17。Wash 的同输入 U5=21 观察来自 `file_position [2160,2208)` 的 48-frame bounded window；它不是 full-file U5 baseline，故不能据此声称 full-track U5 mismatch。当前 U5 公式按候选 `selected_lufs` 已在代码中实现，native scalar 单位与 Rust measurement scalar/owner join仍 `UNBOUND`；为便于下一次 trial 归因，CLI 现在会记录 `ProgrammeMeasurementReceipt.selected_lufs_word` 的 F32 值、原始 word、来源和单位边界。FFprobe 报告 `dmix_mode=0` 和四个 mix-level 字段均为0；对新 AU0 bit59–73 的只读检查却读到 `mixmdate=1`、`dmixmod=2`、四个 level code=4，与 bridge 输入一致。新鲜同输入 DEE BSI writer 比对仍 `NOT_RUN`，故不据 FFprobe 字段解释单独改 writer。三次同输入 run 中最高进度的输出已完成；其余两次重复 run 的 wrapper 已停止，encoder终态未证实，partial/log保留且从未作为成品检查。当前可交付文件只指上述 `sample6-dee-audio-full-20261102.ec3`。
 
 本文档开头的 supplement catalog 计数来自本次运行前的检查点；此后有新的 Wash 补充包进入 D 盘，目录索引尚未完成重建。
