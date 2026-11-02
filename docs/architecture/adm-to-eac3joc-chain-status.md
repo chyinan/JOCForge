@@ -60,6 +60,8 @@ R4 更正包 `SAMPLE6-DEE-CORE-LFE-TRANSFORM-CORRECTED-V1`（manifest SHA-256 `2
 
 更正包把 persistent per-slot history 识别为独立对象 `state+0x266f0 + selected_map_slot*0x400`，并把 param3 temporary 识别为另一分配区。matched layout、selected map slot、ADM row 3 到 internal LFE lane 和运行时 history 值仍未绑定。Rust F08 的 folded banks 尚未与这个 native history owner 建立 typed lineage，因此当前不能据旧 index 381 公式判断两者的 LFE 数值差异或改写算子。
 
+该更正包的 payload checker 已通过，但 Wash 后续发现其 `SOURCE-MANIFESTS.json` 引用的上游 manifest `8390bc…e44a4598` 与另一 R4 delivery 的 `403527…ac205b` 不同。R4 正在核对版本链；在 superseding receipt 完成前，source-manifest lineage 保持待确认。
+
 Wash 包 `SAMPLE6-CROSS-ADM-DEE-HEADER-REPEATABILITY-V1`（manifest SHA-256 `8592b9237de297f64cc703da495116ecd7bb01d6f2bc9ac0faaa648406e2775c`，seal SHA-256 `593cf6137e418e785d4e250be500c9e55e86183b99b7ddb2d0ddefd1aff73099`）通过普通模式和 `python -O` 校验。三份授权 ADM 的 CHNA/AXML 都把 5.1 bed 的 row 3 标为 LFE；另外两次 DEE 输出的首个 syncframe 也报告 48 kHz、6 blocks、5.1、LFE present。该包未测 PCM，也未证明运行时 row selection 或跨输入的 LFE 残差重复性。
 
 Wash 包 `SAMPLE6-LFE-SYNTHETIC-ADM-CRASH-V1`（manifest SHA-256 `79cc983cf9ca9cb6029fa3539ba2e467c7d543b6beb5844a4688226acfec2bde`，seal SHA-256 `cebeef34c292a50ecec19c22049992c88348a21b15ff16c21d5abea39651debb`）通过普通模式和 `python -O` 校验。五次 DEE synthetic ADM 启动全部以 `0xC0000005` 退出，没有生成 E-AC-3。最终输入补齐了 `JUNK` 和 `dbmd`；源 ADM `data` chunk 未读，`dbmd` 仅复制、未解析。AU/PCM/LFE transform 均 `NOT_RUN`，故此包只记录输入 harness 失败，不提供 codec 行为或 LFE 根因证据；故障模块和 RVA 未观察到。
