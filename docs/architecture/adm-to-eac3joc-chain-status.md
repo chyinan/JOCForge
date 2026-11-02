@@ -41,6 +41,17 @@
 >
 > Wash 比较包 `SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1` manifest SHA-256 为 `6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750`，package seal SHA-256 为 `593eee033f677b7e84e0de5367b005b95cf3d43defc0854b6eb0137070000e74b`。普通模式和 `python -O` 校验均通过。该包不含 PCM、encoded payload、key 或 license。 Full-file block package `SAMPLE6-FULL-FILE-PCM-BLOCK-RESIDUAL-V1` 的 manifest SHA-256 为 `41a9952b8e8342296d1c5114878ce51119ae80f93252b0fa3444c46621a2f198`，seal SHA-256 为 `458efc611799fc3341c83b472b2d1081771e4493daabb6de895b0ea5e5623443`；普通模式和 `python -O` 校验通过。
 
+## 2026-11-03：Wash 新交付待同步
+
+以下是 Wash 主线程报告的封存补充包摘要。此刻它们尚未出现在本隔离仓库的 `outputs/IMPLEMENTER_SUPPLEMENTS/`，因此实现侧尚未独立复算 manifest/payload hashes；这里仅登记 Wash-reported 状态，不据此授权生产实现。已有逆向调查继续运行。
+
+- R2 `ATMOS-SELECTOR8-WAV-PROVIDER-OWNER-BOUNDARY-V1`，manifest `fab1a777f9db2a967742408544c412dde32b45ab2a2e9c31e08ff09544bcf331`：Wash 报告仅在 `extension=wav/type3` 条件下 getter/writer 与 selector8 记录存在静态关系。实际所选 job extension、返回 owner 类型和 profile join 仍未绑定，不能据此设置生产默认。
+- R5 `ATMOS-ATMOS-DDP-DRC-PROPERTY-REGISTRY-BOUNDARY-V1`，manifest `045424b8f0c92d39d1e029c5daa681358f94d6207116f8f4e08c39fe2d9b3407`：Wash 报告只覆盖 plugin-local DRC property descriptor/alias/registry lookup；XML handoff、枚举语义和 DRC 音频处理仍未闭合，不作为 DRC 算法依据。
+- R6 `JOCFORGE-LFE-CURRENT-SOURCE-PATH-V1`，manifest `8f9120e8431b58a3e757342e743b49b9ac5ccc7a704dddb0fd64542e9b292a50`：Wash 报告当前 Rust 路径含 LFE row0、后滤波、七 bin 变换、指数规划及 candidate quantization；public `encode()` 仍在 `SourcePipelineUnavailable` 提前返回。该包未建立 DEE parity，且不能替代 R4 的 DEE LFE 算法证据。
+- R7 `ATMOS-DIALOGUE-INTELLIGENCE-METERING-CONTRACT-V1`，manifest `316c58238d7761890135d8f6e5a8ab55d4e65a7f1f83704ea11ae113674701d1`：Wash 报告 `measure_only` 下 DI 默认 false、speech_threshold 默认100且范围0..100，两者进入 metering handler。threshold 公式、跨 DLL owner join及其他 mode 行为仍未闭合，不接 PCM/spatial DSP。
+- R3 `ADM-AUTO-TIME-POSITION-CONVERSION-BOUNDARY-V1`，manifest `9385643c861a797c0ba17a03e147a2940eb971af732684ca75dc0b62a1e38617`：Wash 报告 `file_position` 分支跳过 sample-rate multiply，因此 selected file-position MVP 不被 auto-source 缺口阻塞；`embedded_timecode` 条件分支按 offset seconds × sample rate 并向零截断。字面 `auto` 不被 `std::stod` 接受；auto source、FFOA source、master-start 丢弃后的值仍 `UNBOUND`，且 `(-1, offset)` 有独立 invalid guard。
+- R8 `ADM-AUTO-TIME-METADATA-SAMPLE-SURVEY-V1`，manifest `3c876bfed98e49faf586a96ed05d1ab9d513c9349ab117a31701fa82480b2255`：Wash 报告七份授权输入只检查 fmt/AXML/DBMD/CHNA、PCM data 均 seek 跳过；七份 AXML 的 audioProgramme start 均为 `01:00:10.00000`，未发现 offset/FFOA/time_reference token。该观察不把 programme start 归因到 DEE Start time/FFOA getter，auto source 保持 `UNBOUND`。
+
 ## 2026-11-02 范围与证据更新
 
 ### DEE core PCM 差异：窗口表短向量试验
