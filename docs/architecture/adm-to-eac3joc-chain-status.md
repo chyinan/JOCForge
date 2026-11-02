@@ -60,6 +60,8 @@ R4 更正包 `SAMPLE6-DEE-CORE-LFE-TRANSFORM-CORRECTED-V1`（manifest SHA-256 `2
 
 更正包把 persistent per-slot history 识别为独立对象 `state+0x266f0 + selected_map_slot*0x400`，并把 param3 temporary 识别为另一分配区。matched layout、selected map slot、ADM row 3 到 internal LFE lane 和运行时 history 值仍未绑定。Rust F08 的 folded banks 尚未与这个 native history owner 建立 typed lineage，因此当前不能据旧 index 381 公式判断两者的 LFE 数值差异或改写算子。
 
+Wash 包 `SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V1`（manifest SHA-256 `db152f68b8d53f4b103013718d20113f8d083dabfa7db66878e06b6f57c366fc`，seal SHA-256 `18fc155a9eeb6af11a9c64381fd2db4eba97d2483c3f3fccf9de7b27dec7a77f`）通过普通模式和 `python -O` 校验。它静态闭合 per-stream context 的 U32 layout/LFE fields 到 core selector、normalization、layout-row/FBW-count 查表和 `internal_lane >= FBW_count` LFE 分支。若假设 descriptor slot 3，layout ID 4–7 的表行都把 slot 3 放在 FBW lane 内；这只是条件表，不是 matched run 结论。matched core mode、layout ID、ADM row 3 到 descriptor slot、LFE lane 和 generation 均未绑定。
+
 R4 后续核实了 source-manifest 版本链：`403527…ac205b` / seal `a467…` 是 owner/extent 中间修订；`8390bc…e44a4598` / seal `0c56…` 是加入 matched XML 边界后的最终 source 包。corrected package 的 `SOURCE-MANIFESTS.json` 引用该最终包，版本链冲突已解除。matched layout/map slot/ADM row 3 lane 和运行时 history 仍未绑定。
 
 Wash 包 `SAMPLE6-CROSS-ADM-DEE-HEADER-REPEATABILITY-V1`（manifest SHA-256 `8592b9237de297f64cc703da495116ecd7bb01d6f2bc9ac0faaa648406e2775c`，seal SHA-256 `593cf6137e418e785d4e250be500c9e55e86183b99b7ddb2d0ddefd1aff73099`）通过普通模式和 `python -O` 校验。三份授权 ADM 的 CHNA/AXML 都把 5.1 bed 的 row 3 标为 LFE；另外两次 DEE 输出的首个 syncframe 也报告 48 kHz、6 blocks、5.1、LFE present。该包未测 PCM，也未证明运行时 row selection 或跨输入的 LFE 残差重复性。
@@ -454,7 +456,7 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 | FFmpeg external-reference scope correction | `c4498343ffff10a1efcd278241fd569e6b17dd454edc3e47090a764c4dbfcc5b` | FFmpeg 只允许作公开字段名称、语法和事后验证的旁证；不能作为 DEE 音频行为、算法、增益、公式、默认值或参数来源。 |
 ## 当前音频待验证项
 
-1. 补齐 DEE LFE 的 matched layout/map slot、row 3 lane 和运行时 persistent-history 值，再把已更正的 native pre-rotation 与 Rust F08 folded banks 作数值比较。
+1. 补齐 matched core mode/layout selector、ADM row 3 到 descriptor slot/LFE lane、stride 和 per-slot history generation，再把更正后的 native pre-rotation 与 Rust F08 folded banks 作数值比较。
 2. 收到 DEE transform 的实测期望值后，再对同一 LFE 输入运行 Rust F08 并比较结果。
 3. 只有新证据支持具体算子差异时，才修改 LFE transform；不改已确认的 row 3 映射或 unity 输入处理。
 4. 为已绑定的 `dynrng` producer 捕获匹配 run 的 U8 selector、F32 state、U16 reference、mode→Line/RF 对应关系及 host output-record 到 core row 的 typed edge，并解释整曲已测得的 10,284/25,482 个 U8 差异。它不能解释 decoder DRC scale 0 下的主要低频残差。
