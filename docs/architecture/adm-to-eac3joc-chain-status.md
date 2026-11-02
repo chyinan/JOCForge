@@ -18,6 +18,8 @@ sample-6 源提交 `216326f622e66f1f7b255dbe7a8bcfb8ca473ce2` 的 selected F32 w
 
 Wash supersession receipt `SAMPLE6-RUST-WINDOW-PROVIDER-SUPERSESSION-WASH-V1`（manifest SHA-256 `f2344e498f7101e82af212e9072bf1e72bbaf31533b5c061d8665bfe89e8cf93`，seal SHA-256 `3164e418594c160157222992b2450a73d5abd91603e468af53db5fa0dafaaa27`）通过普通模式和 `python -O` 校验。它把当前 provider 与 native 256-word table 匹配、并将旧 45e8 baseline 明确标为 superseded；matched LFE lane/history 和 PCM 因果仍未绑定。
 
+Wash 后续直接重算 provider 文件的包 `SAMPLE6-RUST-WINDOW-PROVIDER-DIRECT-VERIFICATION-V1`（manifest SHA-256 `8fba13724421e217aa6c4144c74fb037cf3b5fcd134e89f2a42652c019ae2339`，seal SHA-256 `a7c36098269228ab59b8cfc7c8073c97b345ccb59f280e13e166a598fea8c38d`）也通过普通模式和 `python -O` 校验。它重算 provider SHA `963a…e7da5c`、256-word SHA `097ea…a099a2`，确认 index 21 在 Rust 和 DEE 都是 `3c0ea5aa`。当前窗口参数差异已关闭；matched LFE lane/history 和 PCM 因果仍未绑定。
+
 单点 `input[234]=1.0` fold 回归与重算后的 F08/F09、secondary-overlap 向量通过。source-analysis bridge 现在从 domain selected-provider identity gate 载入 transform 表；定向测试通过。
 
 Rust none-DRC baseline run 使用提交 `fb7dcae909e3c8c9e25707bc345dfb7a934a898b` 和 Release exe SHA-256 `a584780b0aa7abbee8e9e811e573f7f7d6e8d9835784ff286579989c9504a2cd`。输入 SHA-256 为 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`。CLI 完成 4,251 callbacks、4,249 sources 和 4,247 AUs，状态为 `DONE`。输出为 17,395,712 bytes，SHA-256 `9d5a8c3c93b086855243de229db086781efeb1cd9689be67651f92ac445c4784`。FFmpeg 解码为 48 kHz、6 声道 `5.1(side)`。
