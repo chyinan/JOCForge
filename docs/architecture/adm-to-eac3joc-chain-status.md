@@ -36,6 +36,8 @@ Run `sample6-dee-audio-full-20261102` 使用本地提交 `216326f622e66f1f7b255d
 
 FFprobe/FFmpeg 8.1 对新文件的结果：AU0 位于 byte 0，packet size 4,096 bytes、duration 32 ms；全流识别为 48 kHz、E-AC-3 Dolby Digital Plus + Dolby Atmos、5.1(side)、1,024,000 bit/s、135.904 s。FFmpeg 全流 decode-to-null exit 0 且无报告错误。容器/核心解码可接受；JOC spatial render 和同输入 fresh DEE 音频等价仍 `NOT_RUN`，不以历史 Python/DEE 对照组作当前基线。
 
+Wash 包 `DEE-AUTHORIZED-ADM-RUNTIME-SOURCE-BOUNDARY-V1`（manifest SHA-256 `1c5e5c13bd7ebb1fcc37356c47b649f7982cac4acd7250071a57219d1d9d1131`）确认新鲜 DEE run 使用与 Rust full run 相同的授权 ADM SHA-256 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`，并记录一个 2.048 秒 5.1/48 kHz/1,024 kbps M4A 参考，SHA-256 `99e901e7ca836692ef3168a121a19c69fd67c49b3c1d1108efac185a1b50e671`。参考的 `file_position 2160..2208` 到源时间/样本范围及 Rust 输出帧范围尚未映射；该窗口的 PCM parity 仍 `NOT_RUN`。此参考不代表整曲或 JOC spatial render 等价。
+
 ### DEE JOC block-delta candidate
 
 `DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2`（manifest SHA-256 `d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04`）与 selector source/initializer V2 包给出可执行的 JOC 音频候选：selector 0 跳过差分分支，1/2/3 对应 stride 1/2/4；每个值为 `current - previous + 2`，尾部补 2，以 MSB-first U7 写入，末尾补零到 16-bit word。EmulatorHelper 合成向量确认 `previous=5`、`current=[7,6,0]` 产生 `[4,1,-4,2,2,2]`；另一个 writer 向量确认 `[85,127,1]` 形成 U16 `0xABFC`，内存字节为 `FC AB`，残余 U16 `0x0800` 收尾后为 `00 08`。Rust 已在 `joc/coefficient_delta.rs` 实现独立纯候选及显式 selector 输入，未推导 profile selector，也未替换当前 ID14 production writer。当前模型对短差值使用 `i16` wrapping；洗白资料未界定溢出时的原生行为，因此该边界仍是候选假设。定向测试 6 项、domain check、格式检查通过；Clippy 无本文件警告，domain 仍有 8 条其他文件既有 warning。边界检查当前被既有 `crates/jocforge-cli/src/encode_request.rs` 映射哈希不匹配挡住。所选 profile rows 2–5 的 selector 来源、生产 payload/AU 接线与 JOC spatial render 仍未验证。

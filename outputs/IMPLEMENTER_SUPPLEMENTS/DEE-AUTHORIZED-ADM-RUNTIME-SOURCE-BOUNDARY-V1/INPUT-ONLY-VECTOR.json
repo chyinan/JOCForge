@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-runtime-reference-identity-vector.v1",
+  "vector_id": "authorized-adm-same-source-bounded-reference",
+  "fixed": {
+    "authorized_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "dee_input_alias": "input_adm.wav",
+    "jocforge_full_run_id": "sample6-dee-audio-full-20261102",
+    "jocforge_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "dee_window": {
+    "time_base": "file_position",
+    "start": 2160,
+    "end": 2208,
+    "output_duration_seconds": 2.048,
+    "mapped_to_source_time": "UNBOUND"
+  },
+  "comparison": {
+    "same_source_file_identity": true,
+    "same_segment_identity": "UNBOUND",
+    "decoded_audio_comparison": "NOT_RUN"
+  },
+  "execution": "METADATA_AND_RUNTIME_EDGE_RECEIPT_ONLY; NO_PCM_COMPARISON"
+}

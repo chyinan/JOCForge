@@ -1,0 +1,93 @@
+{
+  "schema": "jocforge-dee-authorized-adm-runtime-source-boundary.v1",
+  "package_id": "DEE-AUTHORIZED-ADM-RUNTIME-SOURCE-BOUNDARY-V1",
+  "status": "AUTHORIZED_ADM_RUNTIME_INPUT_EDGE_BOUND; PARTIAL_DEE_REFERENCE_BOUND; SEGMENT_ALIGNMENT_AND_AUDIO_PARITY_UNBOUND",
+  "authorized_fixture": {
+    "fixture_id": "USER_AUTHORIZED_ADM_01",
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "working_alias": "input_adm.wav",
+    "source_and_alias_sha256_match": true,
+    "format": {
+      "codec": "pcm_s24le",
+      "channels": 38,
+      "sample_rate_hz": 48000,
+      "bits_per_sample": 24,
+      "duration_seconds": 135.893875
+    },
+    "media_in_supplement": false
+  },
+  "dee_reference": {
+    "job_xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+    "input_alias": "input_adm.wav",
+    "input_kind": "atmos_mezz ADM BWF route",
+    "time_base": "file_position",
+    "start": 2160,
+    "end": 2208,
+    "output_sha256": "99e901e7ca836692ef3168a121a19c69fd67c49b3c1d1108efac185a1b50e671",
+    "output_probe": {
+      "container": "MP4/M4A",
+      "codec": "eac3",
+      "duration_seconds": 2.048,
+      "channels": 6,
+      "channel_layout": "5.1(side)",
+      "sample_rate_hz": 48000,
+      "bit_rate_bps": 1024000
+    },
+    "is_model_output": false,
+    "audio_parity_evaluated": false
+  },
+  "jocforge_full_run_identity": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "run_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_hash_matches_dee_fixture": true,
+    "output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "output_bytes": 17395712,
+    "full_output_match_to_bounded_dee_reference": "NOT_EVALUATED"
+  },
+  "runtime_input_edge": {
+    "instrumentation": "read-only WinDbg observation during normal DEE execution",
+    "same_output_wrapper_identity_joined": true,
+    "combine_sources_observed": true,
+    "input_property_registration_observed": true,
+    "combine_sources_precedes_input_property_registration": true,
+    "property_key": "dee_audio_input_source",
+    "property_value": "input_adm.wav",
+    "path_handler_builds_source_registry": false,
+    "source_registry_writer": "OutputWrapper::combineSources",
+    "source_registry_inputs": "two source-category containers projected through an intermediate container",
+    "typed_origin_of_source_containers": "UNBOUND",
+    "job_metadata_vs_upstream_stage_container": "UNBOUND"
+  },
+  "wash_observation": {
+    "decoded_pcm_persisted": false,
+    "decoded_pcm_compared": false,
+    "segment_alignment": "UNBOUND",
+    "dee_private_key_or_license_read": false,
+    "implementation_contact_in_dee_run": false
+  },
+  "source_packages": [
+    {
+      "package_id": "native-f06-authorized-adm-runtime-source-binding-addendum",
+      "manifest_sha256": "4ef1fe0034d5f6a3f6efdc98be43261d86abbdd60d6a899c6fad504a431cf655",
+      "manifest_sha256_file_content": "4ef1fe0034d5f6a3f6efdc98be43261d86abbdd60d6a899c6fad504a431cf655",
+      "package_seal": "NOT_PROVIDED",
+      "parent_package_id": "native-f06-r138-stagerunner-source-registration-edge-addendum",
+      "parent_manifest_sha256": "03737e361370b7a2a0f512799913b0e3ee105781dedf259ba41466145c751e85"
+    },
+    {
+      "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+      "manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+      "package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18",
+      "jocforge_run_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766",
+      "scope": "Same-input JOCForge full-run identity and output receipt; not a parity comparison."
+    }
+  ],
+  "exclusions": {
+    "audio_or_encoded_payload_included": false,
+    "pcm_included": false,
+    "native_binary_or_decompilation_included": false,
+    "raw_addresses_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

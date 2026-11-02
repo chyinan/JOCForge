@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-AUTHORIZED-ADM-RUNTIME-SOURCE-BOUNDARY-V1",
+  "source_reverse_package_id": "native-f06-authorized-adm-runtime-source-binding-addendum",
+  "source_reverse_manifest_sha256": "4ef1fe0034d5f6a3f6efdc98be43261d86abbdd60d6a899c6fad504a431cf655",
+  "source_reverse_package_seal": "NOT_PROVIDED",
+  "jocforge_gate_package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+  "jocforge_gate_manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+  "jocforge_gate_package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18",
+  "status": "AUTHORIZED_ADM_RUNTIME_INPUT_EDGE_BOUND; PARTIAL_DEE_REFERENCE_BOUND; SEGMENT_ALIGNMENT_AND_AUDIO_PARITY_UNBOUND",
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4575,
+      "sha256": "8e6ab6d2e43a872f0bf80a1cf098c77d174b891aec5e8a9e7be90382df81be2a"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 4086,
+      "sha256": "ab0c8f14de77728110e486c978f0bf27694a0761cd8c2b62dd30b3100d86977c"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 831,
+      "sha256": "db67854ac47245333fd38cdb7d0df624d5acb254475178a40841f1e0bb080be8"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2323,
+      "sha256": "7a1738cfa3cbf7d3ca7fbddf7071ae6aa3449302df4c9428a742f44cf42b027b"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1173,
+      "sha256": "c02b44b9ab869054b592527ca4db18042d6b51a849e145eae0ec85a1b9ecce91"
+    }
+  ],
+  "exclusions": {
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false,
+    "binary_or_decompilation_included": false
+  }
+}

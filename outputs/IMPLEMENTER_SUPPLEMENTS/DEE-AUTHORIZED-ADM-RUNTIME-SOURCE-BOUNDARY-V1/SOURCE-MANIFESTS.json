@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "native-f06-authorized-adm-runtime-source-binding-addendum",
+      "manifest_sha256": "4ef1fe0034d5f6a3f6efdc98be43261d86abbdd60d6a899c6fad504a431cf655",
+      "package_seal": "NOT_PROVIDED",
+      "manifest_payloads": [
+        {"name": "EVIDENCE.json", "sha256": "ada7d1e6826299dca0e84af3df6c2eb0968baef617fa56cfbd3cebc198e3a570"},
+        {"name": "CHECK.json", "sha256": "74616dcd28d9495b749cbca8b2137013a728f4b245511a323badf69bc578e3b8"},
+        {"name": "README.md", "sha256": "7daf19f01d685a21b562b7e5fca142c051e18328cb0cb833ff7775b84dbd46bb"},
+        {"name": "verify_authorized_adm_runtime_evidence.py", "sha256": "f43c87dbc0d0425585c646b1b235b445dcb6bfb9fa8a88e5dc19bf7aa58784ef"}
+      ]
+    },
+    {
+      "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+      "manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+      "package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18",
+      "jocforge_run_receipt_sha256": "ecc5a1c01d8d14b2f7a43bfd6cb2dfd03269254a98699669f9c519e9c670d766"
+    }
+  ]
+}
