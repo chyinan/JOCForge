@@ -6449,6 +6449,8 @@ def check_main_spatial_identity_binding(root, data):
     test_source = (root / test_path).read_text(encoding='utf-8')
     ck('pub struct MainSpatialCallbackCandidate' in spatial_source and 'prepared_identity: Arc<PreparedJobInputIdentity>' in spatial_source and 'Arc::ptr_eq' in spatial_source and 'pub struct MainSpatialCallbackParentParts' in spatial_source and 'prepared_identity: Arc<PreparedJobInputIdentity>' in spatial_source[spatial_source.index('pub struct MainSpatialCallbackParentParts'):], 'MAIN callback proposal retains its admitted PreparedJobInput identity')
     ck('spatial_callback: &\'a MainSpatialCallbackCandidate' in bridge_source and 'spatial_callback.is_bound_to(prepared)' in bridge_source, 'F07 source-analysis bridge requires the matching MAIN callback identity')
+    ck('MathGeneratedTransformParameters::selected_math_generated_v1()' in bridge_source and 'TRANSFORM_PARAMETERS' not in bridge_source and 'source_analysis_loads_selected_dee_window_from_domain_provider' in bridge_source, 'F07-F10 transform table uses the domain selected-provider identity gate')
+    ck('MathGeneratedTransformParameters::selected_math_generated_v1()' in bridge_source and 'TRANSFORM_PARAMETERS' not in bridge_source and 'source_analysis_loads_selected_dee_window_from_domain_provider' in bridge_source, 'F07-F10 bridge uses the domain-validated selected DEE window candidate')
     ck('alternate_job_xml' in test_source and 'different-output.ec3' in test_source and 'SourceAnalysisBridgeError::SpatialCallbackIdentityMismatch' in test_source, 'same-programme callback from a different normalized job identity is rejected')
 
 def check_supplement_catalog(root):

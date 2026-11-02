@@ -9405,8 +9405,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1965683,
-              "sha256": "814c545c73eb3e1987ba1fb520cdee8c0931ed58c6fa3f1df52fca81e27b6c31"
+              "bytes": 1966280,
+              "sha256": "422810084cd48149ac2136a05e360d84a4dc2e2c88faf9fc8d17cfd0f1138fe7"
             }
           ],
           "test_modules": [
@@ -12918,8 +12918,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1965683,
-              "sha256": "814c545c73eb3e1987ba1fb520cdee8c0931ed58c6fa3f1df52fca81e27b6c31"
+              "bytes": 1966280,
+              "sha256": "422810084cd48149ac2136a05e360d84a4dc2e2c88faf9fc8d17cfd0f1138fe7"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -21854,11 +21854,16 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/MAIN-SIX-AUDIO-PRODUCER-V1/VERIFICATION.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/transient-d05-authorized-v1.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/ordinary-transform-math-v1.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/policy-authorized-v1.json"
             ],
             "supplement_manifest_sha256": "009b60b530fe5f2b044f5037bd76195a82f57e82532b607d2235cd070746d3f2",
-            "validation_boundary": "This adapter copies already finite F04 final-six words and checks the typed source clock; the Wash package's full audio contract and exact upstream DSP are broader. The input vector set contains no PCM or expected audio outputs."
+            "validation_boundary": "Copies already finite F04 final-six words and checks the typed source clock; transient and policy values remain from the approved source-leaves package, while the transform table is loaded by the domain selected-provider identity gate. The DEE window candidate is static-only and PCM causality remains unbound.",
+            "dee_window_table_candidate": {
+              "package_id": "SAMPLE6-EAC3-WINDOW-TABLE-CANDIDATE-V1",
+              "manifest_sha256": "6018113ec1c946272ac83ce74ce064a8685671803ba259c41c63487af8f09ba4",
+              "status": "STATIC_TABLE_MATCH_PCM_CAUSALITY_UNBOUND"
+            }
           },
           "test_modules": [
             "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -21967,8 +21972,8 @@
             },
             {
               "path": "crates/jocforge-application/src/source_analysis_bridge.rs",
-              "bytes": 7525,
-              "sha256": "87ae5099b149ea439e121e3b66dc4ae5de819e1e30904c941090957c6e0bef4a"
+              "bytes": 7755,
+              "sha256": "4f4bd604e4f88236a90c4f5c8b448365eb4a4a2c3a612eb5750e0202bf422614"
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
@@ -33682,8 +33687,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1965683,
-              "sha256": "814c545c73eb3e1987ba1fb520cdee8c0931ed58c6fa3f1df52fca81e27b6c31"
+              "bytes": 1966280,
+              "sha256": "422810084cd48149ac2136a05e360d84a4dc2e2c88faf9fc8d17cfd0f1138fe7"
             }
           ],
           "test_inventory": [

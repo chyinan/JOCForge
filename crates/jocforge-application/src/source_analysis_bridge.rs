@@ -34,14 +34,12 @@ const SOURCE_ANALYSIS_STACK_BYTES: usize = 16 * 1024 * 1024;
 const TRANSIENT_PARAMETERS: &[u8] = include_bytes!(
     "../../../outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/transient-d05-authorized-v1.json"
 );
-const TRANSFORM_PARAMETERS: &[u8] = include_bytes!(
-    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/ordinary-transform-math-v1.json"
-);
 const POLICY_PARAMETERS: &[u8] = include_bytes!(
     "../../../outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/policy-authorized-v1.json"
 );
 
-/// Hash-validated F07-F10 provider values from the approved source-leaves package.
+/// Hash-validated F07-F10 values: transient and policy rows from the approved source-leaves package,
+/// with the transform table loaded through the domain's selected provider identity gate.
 pub struct SelectedSourceAnalysisProviders {
     transient: TransientParameters,
     transform: MathGeneratedTransformParameters,
@@ -52,7 +50,7 @@ impl SelectedSourceAnalysisProviders {
     pub fn load_approved() -> Result<Self, SelectedSourceAnalysisProviderError> {
         let transient = load_transient_parameters(Some(TRANSIENT_PARAMETERS))
             .map_err(SelectedSourceAnalysisProviderError::Transient)?;
-        let transform = MathGeneratedTransformParameters::from_provider_bytes(TRANSFORM_PARAMETERS)
+        let transform = MathGeneratedTransformParameters::selected_math_generated_v1()
             .map_err(SelectedSourceAnalysisProviderError::Transform)?;
         let policy = load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS))
             .map_err(SelectedSourceAnalysisProviderError::Policy)?;
@@ -185,4 +183,16 @@ fn prepare_source_analysis_inner(
     })
     .map_err(SourceAnalysisBridgeError::SourceAnalysis)?;
     Ok(Box::new(analysis_stage))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::SelectedSourceAnalysisProviders;
+
+    #[test]
+    fn source_analysis_loads_selected_dee_window_from_domain_provider() {
+        let providers = SelectedSourceAnalysisProviders::load_approved().unwrap();
+
+        assert_eq!(providers.transform.window_f32_bits()[21], 0x3c0e_a5aa);
+    }
 }
