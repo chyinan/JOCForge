@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-DESCRIPTOR-RECURRENCE-BRANCH-OBSERVATION-V1",
+  "manifest_sha256": "6b66f8a9343646879a8bae9ff18ca5822e89bfa3d3fe9e4fb9373ca67d59d535",
+  "sha256sums_sha256": "e9670d4502033d34420360f8d2bd681fd43ac5762676130f81fa321db9d8442b",
+  "payload_count": 4,
+  "status": "36_38_SAMPLE_SCOPED_LFE_LANE5_BOUND; DESCRIPTOR_STRIDE_1_DISTINCT_FROM_RECURRENCE_ARG_0; OUTPUT_PLAYBACK_LIMITED"
+}

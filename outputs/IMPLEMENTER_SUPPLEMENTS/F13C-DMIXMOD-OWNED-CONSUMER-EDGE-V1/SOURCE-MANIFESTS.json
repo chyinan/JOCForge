@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "F13C-dmixmod-owned-consumer-edge-addendum-v1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-dmixmod-owned-consumer-edge-addendum-v1",
+    "manifest_sha256": "d70d4d9e7948c5f78efbb486bf16a1aa6b223fff9e1e487e9e344dd877ad02ea",
+    "payload_hashes_verified": {
+      "ADDENDUM.md": "f84be1367df1f805360d1e0b02b1e019ad7cc8ba32f3ba24225f7284fd62504f",
+      "DEE-AB-PLAN.md": "634c185ac695345616a02f8b6e25692949747eade5118ed1fc9161d9fa20d093",
+      "DisassembleDeeDownmixAccessors.java": "5ec37c0ffe1228cddbc83de92d66f579896134d5a3c811997e14c69a48b9419a",
+      "FIELD-LINEAGE.json": "a1b5eaa5e7bb2d31225b95a3d0ab6330477441d192219b33ad5c9dcbf3930936",
+      "GHIDRA-PROJECT-RECORDS.json": "ca435eae2c2b060f7d9a21fd85b64a3e926b0daeee0e99c902bde880584ee169",
+      "GHIDRA-TRACE.txt": "d15ce345c7475697c05aa1ea18cc83c42fccb263a655b5d654accd8033bffce6",
+      "seal_package.py": "b9d96a3dfbe7becd0ee7daa496d07d421bd86b60bed49ed3539f7d647079fe62",
+      "TraceDeeDownmixStoredFieldUse.java": "970f09efdecc5035cdb69fbc0998b0ba2bb6fb8a0ebf9421ae245f1e72068057",
+      "verify_package.py": "809687f89daa36c828b04cde2cacbda08f28a021cf1f9f3bfd3a9b108c3c35f5"
+    },
+    "manifest_sidecar_sha256": "d70d4d9e7948c5f78efbb486bf16a1aa6b223fff9e1e487e9e344dd877ad02ea",
+    "source_package_verifier": "normal and python -O passed during Wash review; 9 payloads and 10 checksum entries",
+    "separate_package_seal_file_present": false,
+    "native_image": "project and installed hashes are reported equal in the source package; Wash did not independently rehash the binary",
+    "parent_manifest_references": [
+      "06cff5e99590055ee4704e48fe0d19cb371746d5b4a9540f0f4a38180e65827d",
+      "537890557453666ca74fbe42f7d0598d74d5906725b6f548b504a5e14ad62350",
+      "fb11f7230ee890cbc17409278c4daebcbc30ee7797825d661de7f51572a236ea"
+    ],
+    "parent_manifest_scope": "carried as source-package references; this addendum was verified on its own payload and does not assert independent parent-payload revalidation"
+  },
+  "excluded_from_supplement": [
+    "Java/Ghidra source scripts",
+    "raw disassembly/decompilation logs",
+    "native binary",
+    "PCM or encoded media payload",
+    "private key or license content"
+  ]
+}

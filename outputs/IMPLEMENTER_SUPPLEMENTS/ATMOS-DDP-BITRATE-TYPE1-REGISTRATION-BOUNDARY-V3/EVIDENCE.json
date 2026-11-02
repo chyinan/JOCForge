@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "ATMOS-DDP-BITRATE-SINK-WASH-V4",
+  "source_manifest_sha256": "d995a77b44af587b9ad512900b9776e3f502fda3b5742c0de7b5c776a89aabf5",
+  "target": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "reported_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "binary_rehashed_by_wash": false,
+    "tool": "Ghidra 12.2 static read-only"
+  },
+  "rate_configuration": {
+    "enum_code_to_integer": { "4": 768, "5": 1024 },
+    "field_id": 3,
+    "serializer": "FUN_1801b1590",
+    "type_index": 1,
+    "writer_slot": "+0x28"
+  },
+  "type1_registry": {
+    "registry_base_rva": "0x6521c0",
+    "row_stride": "0x30",
+    "pointer_cell_rva": "0x652218",
+    "static_value": "0",
+    "storage": ".rdata initialized=true writable=false",
+    "direct_registry_base_xrefs": 9,
+    "direct_store_pcode_at_xrefs": 0,
+    "runtime_value": "UNBOUND"
+  },
+  "bounded_module_init_audit": {
+    "entrypoint_rva": "0x57a0fc",
+    "tls_callback_count": 0,
+    "dllmain_callback_cell_rva": "0x811460",
+    "dllmain_callback_static_value": "0",
+    "inspected_init_functions": 30,
+    "type1_cell_direct_references_or_stores": 0,
+    "named_exports": [
+      "dlb_phoenix_get_audio_filter_handle",
+      "dlb_phoenix_get_version_handle"
+    ],
+    "delay_imports": "absent",
+    "type1_cell_relocation": "not found",
+    "registration_writer": "NOT_FOUND_IN_INSPECTED_STATIC_PATHS"
+  },
+  "unbound": [
+    "external/runtime type-1 callback registration and target",
+    "field ID 3 to named E-AC-3 BSI/frame field",
+    "actual output bitrate/frame size",
+    "decoded audio versus BSI/frame-packaging effect"
+  ],
+  "source_package_verification": {
+    "manifest_sha256": "d995a77b44af587b9ad512900b9776e3f502fda3b5742c0de7b5c776a89aabf5",
+    "payload_hashes_verified": 29,
+    "unlisted_files": 0,
+    "separate_package_seal_file_present": false
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "output_bitrate_and_frame_size": "NOT_RUN",
+    "audio_comparison": "NOT_RUN",
+    "media_or_key_read": "NOT_RUN"
+  }
+}

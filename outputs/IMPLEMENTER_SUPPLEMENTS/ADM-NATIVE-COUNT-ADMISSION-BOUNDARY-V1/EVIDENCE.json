@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "adm_native_count_admission_boundary_wash_v1",
+  "source_manifest_sha256": "8a2a9157d87a237d54ab632c35a59ae4eeca22a283c7e537a9b3d4482de856de",
+  "source_package_seal_sha256": "034b046dd77d9558d2b1d46cd50137ee640ad9bf274af083ba8ef024717cef30",
+  "metadata_receipts": {
+    "receipt_set": { "authorized_input_count": 7, "36_channel_inputs": 6, "38_channel_inputs": 1 },
+    "my_jealousy_36": {
+      "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+      "channels": 36,
+      "block_align": 108,
+      "chna_tracks": 36,
+      "dbmd_tracks": 36,
+      "beds": 10,
+      "objects": 26
+    },
+    "human_cat_38": {
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "channels": 38,
+      "block_align": 114,
+      "chna_tracks": 38,
+      "dbmd_tracks": 38,
+      "beds": 10,
+      "objects": 28
+    }
+  },
+  "native_count_domains": {
+    "atmos_reader_format_u16": {
+      "source_offset": "+0x0A",
+      "packet_channel_count_offset": "+0x08",
+      "gate": "rejects zero",
+      "packet_sample_count_offset": "+0x10",
+      "sample_gate": "1536 or zero/flush"
+    },
+    "plugin_inner_packet_rows": {
+      "copy_stride_bytes": 6,
+      "gate_function": "FUN_1801AC670",
+      "accepted_count_domain": [1, 128],
+      "36_rows": "observed; ID14 writer entry reached; writer instruction not executed",
+      "38_rows": "observed; writer input words [3,15,0]; writer instruction not executed"
+    },
+    "id14_object_count": "code13-code14; separate from physical ADM tracks",
+    "core_frame_view": {
+      "count": "U64 frame+0x20",
+      "pointer_list": "frame+0x08",
+      "stage": "FUN_140213470 copies N pointers into 16-qword local array before later capacity check",
+      "later_capacity": "root+0xC140; active value NOT_OBSERVED",
+      "failure": "N>C returns 0x1D",
+      "adm_track_count_to_core_frame_count": "UNBOUND"
+    }
+  },
+  "disposition": {
+    "36_row_plugin_metadata_path": "OBSERVED_THROUGH_ID14_WRITER_ENTRY_IN_ONE_AUTHORIZED_RUN",
+    "36_row_writer_instruction": "NOT_EXECUTED",
+    "36_track_complete_native_encode": "NOT_ESTABLISHED",
+    "38_row_output_receipt": "BOUND_TO_INPUT_AND_JOB_XML; OUTPUT_PAYLOAD_NOT_LOCALLY_REHASHED",
+    "code13_minus_code14_equals_physical_tracks": "NOT_INFERRED",
+    "core_frame_count_source": "UNBOUND",
+    "active_core_capacity": "NOT_OBSERVED"
+  },
+  "provisional_implementation_scope": "Dynamic 1..128 plugin packet-row materialization may replace a fixed 38-row assumption at that boundary; do not equate this count with core frame channels or use it as core buffer capacity.",
+  "execution": {
+    "dee_run_this_slice": "NOT_RUN",
+    "pcm_or_payload_read": "NOT_RUN",
+    "key_or_license_read": "NOT_RUN",
+    "paired_pointer_count_observation": "PROPOSED_NOT_RUN"
+  }
+}

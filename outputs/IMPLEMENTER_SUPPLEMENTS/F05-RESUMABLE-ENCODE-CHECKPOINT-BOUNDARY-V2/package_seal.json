@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "F05-RESUMABLE-ENCODE-CHECKPOINT-BOUNDARY-V2",
+  "manifest_sha256": "304e915a8a30a77a8ade16f2f555dfe5c9fdd9c550825329ca476167bda2b4c6",
+  "sha256sums_sha256": "eaa891145ef7ed7609c6411313efbc4f237078a88ad6301070ee591ec0640f89",
+  "payload_count": 5,
+  "status": "CURRENT_HEAD_B93_SOURCE_PATH_BOUND; NO_RESUME_CHECKPOINT; FAULT_VECTOR_NOT_RUN"
+}

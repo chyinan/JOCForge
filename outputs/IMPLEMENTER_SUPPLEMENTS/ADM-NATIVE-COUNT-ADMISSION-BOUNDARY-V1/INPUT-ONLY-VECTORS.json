@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "AUTHORIZED-36-ROW-PLUGIN-ADMISSION",
+      "input": { "label": "My Jealousy 36-track", "sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d" },
+      "observed": {
+        "metadata_channels": 36,
+        "metadata_block_align": 108,
+        "plugin_inner_packet_rows": 36,
+        "static_1_to_128_gate": "PASS",
+        "id14_writer_entry": "REACHED",
+        "id14_writer_instruction": "NOT_EXECUTED",
+        "complete_eac3_joc_output": "NOT_ESTABLISHED"
+      },
+      "evidence_status": "prior hash-bound receipt; reused, no new run in this slice"
+    },
+    {
+      "id": "AUTHORIZED-38-ROW-PLUGIN-ADMISSION",
+      "input": { "label": "人是猫 38-track", "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1" },
+      "observed": {
+        "metadata_channels": 38,
+        "metadata_block_align": 114,
+        "plugin_inner_packet_rows": 38,
+        "static_1_to_128_gate": "PASS",
+        "id14_writer_instruction": "NOT_EXECUTED",
+        "complete_output": "existing receipt bound to input/XML; output not locally rehashed"
+      },
+      "evidence_status": "prior hash-bound receipt; reused, no new run in this slice"
+    },
+    {
+      "id": "PAIRED-36-38-CORE-COUNT-POINTER-OBSERVATION",
+      "status": "PROPOSED_NOT_RUN",
+      "inputs": [
+        "AUTHORIZED-36-ROW-PLUGIN-ADMISSION",
+        "AUTHORIZED-38-ROW-PLUGIN-ADMISSION"
+      ],
+      "hold_constant": "same normal encode_to_atmos_ddp fields and selected profile across the two inputs",
+      "capture_only": [
+        "StageRunner route/factory entry and task token",
+        "reader owner and inner packet pointer/count",
+        "core frame-view pointer, U64 count and pointer-list token",
+        "selected root+0xC140 capacity and gate result",
+        "same parent/task generation token at each edge"
+      ],
+      "read_boundary": "metadata and pointer/count scalars only; stop before PCM processing",
+      "forbidden": "no PCM, payload, key, license, or inference from equal counts",
+      "expected_result": "none; observation plan has not been run"
+    }
+  ]
+}

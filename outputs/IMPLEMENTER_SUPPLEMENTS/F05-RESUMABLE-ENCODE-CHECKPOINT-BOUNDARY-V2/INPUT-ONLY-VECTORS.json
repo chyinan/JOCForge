@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "execution": "NOT_RUN",
+  "synthetic_values_only": true,
+  "fault": "process termination after AU1 staging-file fsync and durable append receipt, before atomic replacement of checkpoint sequence 9 by sequence 10",
+  "pre_state": {
+    "checkpoint_sequence": 9,
+    "last_committed_callback_index": 4,
+    "next_callback_index": 5,
+    "last_committed_source_index": 2,
+    "next_source_index": 3,
+    "next_dispatch": 4,
+    "next_au_index": 1,
+    "phase_generation": 6,
+    "source_transaction_id": "jocforge-source-2",
+    "parent_callback_transaction_id": "jocforge-main-callback-g4",
+    "committed_staging_length": 4096,
+    "committed_prefix_sha256": "SYNTHETIC_PREFIX_HASH_A",
+    "last_committed_au": 0
+  },
+  "durable_uncheckpointed_tail": {
+    "offset": 4096,
+    "bytes": 4096,
+    "source_index": 3,
+    "au_index": 1,
+    "append_fsync": true,
+    "frame_sha256": "SYNTHETIC_FRAME_HASH_1"
+  },
+  "expected_current_disposition": "NO_RESUME_API; retire attempt and start a fresh attempt; do not append after tail or claim AU1 owner commit",
+  "expected_future_disposition": [
+    "validate run/input/config/executable identity and restore checkpoint-9 owner state",
+    "verify exactly the 4096-byte committed prefix hash",
+    "truncate the uncheckpointed tail to 4096 bytes and fsync",
+    "replay callback 5/source 3/AU 1 with matching source and parent tokens",
+    "write checkpoint 10 only after the owner commit and durable append receipt validate"
+  ],
+  "reject_and_restart_if": [
+    "committed prefix hash mismatch",
+    "staging shorter than 4096 bytes",
+    "attempt/input/config/executable identity mismatch",
+    "owner roots cannot be restored",
+    "replayed frame or append receipt validation fails"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "PREFERRED-DOWNMIX-LORO-VS-LTRT",
+      "status": "PREPARED_NOT_RUN",
+      "adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "job_template_sha256": "17ea167465d24f420b5218f8a8bb8acf15f1bdd0eb8c5aa3efe1052e8a86d85c",
+      "job_template_identity": "reconstructed_from_source; not a runtime-captured XML",
+      "variant_a": { "preferred_downmix_mode": "loro" },
+      "variant_b": { "preferred_downmix_mode": "ltrt" },
+      "held_constant": [
+        "same ADM bytes and job template",
+        "all four center/surround mix-level keys, presence, and values",
+        "all other XML controls and encoder image"
+      ],
+      "pre_run_requirement": "canonical serialized XML diff contains only the preferred_downmix_mode leaf change",
+      "planned_observations": [
+        "process status and accepted/rejected configuration",
+        "output frame counts",
+        "per-frame EC-3 BSI/side-info differences after masking only changed preference bits and dependent CRCs",
+        "same-decoder forced-mode per-channel hashes and lengths; PCM remains in memory only"
+      ],
+      "gate": "do not run until the current R4 DEE/WinDbg observation is complete",
+      "expected_result": "none; no A/B result exists"
+    }
+  ]
+}

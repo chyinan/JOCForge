@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "core_count_gate_sources_wash_v1",
+  "source_manifest_sha256": "6a1c191c1a1f57d20a31bc2ada7bf76f7550a72dd7600e88afe8e05c28122ab8",
+  "source_package_seal_sha256": "e224451bff861b02590979a25b0e735e7c518eae049236fc44addac2b47e618d",
+  "analysis": { "tool": "Ghidra 12.2 PUBLIC", "mode": "-noanalysis -readOnly", "target": "dee_ddp_encoder.exe", "dee_run": "NOT_RUN" },
+  "open_configuration": {
+    "wrapper": "FUN_1402142d0",
+    "supported_encoder_modes": [0, 1, 3, 4],
+    "descriptor_group_count": 1,
+    "per_group_key_value": { "key": 2, "value": 11 },
+    "root_c138": 1,
+    "root_c140": 11,
+    "profile_fallback_used": false
+  },
+  "gate": {
+    "function": "FUN_140315db0",
+    "group_count_greater_than_1": "REJECT_0x14",
+    "per_group_count_greater_than_11": "REJECT_0x1D"
+  },
+  "conditional_vectors": [
+    { "descriptor_groups": 1, "per_group_count": 11, "expected": "PASS_EXPLICIT_GATES" },
+    { "descriptor_groups": 2, "per_group_count": 1, "expected": "REJECT_0x14" },
+    { "descriptor_groups": 1, "per_group_count": 12, "expected": "REJECT_0x1D" },
+    { "descriptor_groups": 1, "per_group_count": 36, "expected": "CONDITIONAL_REJECT_IF_THIS_IS_THE_SELECTED_CORE_FRAME_COUNT" },
+    { "descriptor_groups": 1, "per_group_count": 38, "expected": "CONDITIONAL_REJECT_IF_THIS_IS_THE_SELECTED_CORE_FRAME_COUNT" }
+  ],
+  "typed_edges": {
+    "ADM_tracks_to_core_frame_count": "UNBOUND",
+    "selected_Atmos_route_to_this_open_wrapper": "UNBOUND",
+    "plugin_packet_rows_to_core_frame_count": "UNBOUND"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "media_pcm_payload_key_read": "NOT_RUN"
+  }
+}

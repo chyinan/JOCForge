@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "LINE-DRC-FILM-LIGHT-VS-NONE",
+      "status": "PROPOSED_NOT_RUN",
+      "input": "same authorized ADM bytes and same complete Atmos JOC job template",
+      "variant_a": { "line_mode_drc_profile": "film_light" },
+      "variant_b": { "line_mode_drc_profile": "none" },
+      "held_constant": [
+        "rf_mode_drc_profile and all other XML fields",
+        "encoder image, bitrate, timebase, downmix, trims, silence, and output setup"
+      ],
+      "record": [
+        "serialized XML one-leaf diff and config acceptance",
+        "Line descriptor U32, config+0x28, per-stream+0x100",
+        "presence flag and emitted 3-bit DRC control fields",
+        "output metadata and hash",
+        "same-decoder, DRC-disabled per-channel hashes and difference summary; do not persist PCM"
+      ],
+      "result": "none; this experiment has not been run"
+    }
+  ]
+}

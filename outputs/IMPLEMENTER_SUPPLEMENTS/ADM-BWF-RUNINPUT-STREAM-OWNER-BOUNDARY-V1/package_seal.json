@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-BWF-RUNINPUT-STREAM-OWNER-BOUNDARY-V1",
+  "manifest_sha256": "84719de1fcd6cc3b10f2c92c2e1067b401edab168de715cbef3b26a5614d993a",
+  "sha256sums_sha256": "8c0896f2d217fd0c6a4762033ccd553468f0b0cb590facd13980fa12d4688e5c",
+  "payload_count": 4,
+  "status": "HOST_STREAM_OBJECT_TO_DDP_AUX_BOUND; ATMOSMEZZ_CONVERTER_OWNER_JOIN_UNBOUND; MATCHED_CONTROL_NOT_RUN"
+}

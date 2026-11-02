@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.pointer_only_observation_plan.v1",
+  "status": "PLAN_ONLY_NOT_RUN",
+  "target_module": "dee_audio_filter_ddp_atmos.dll",
+  "cell_rva": "0x652218",
+  "capture_window": "earliest module-load event through attach/registration and first type-1 dispatch",
+  "capture_only": [
+    "module base and cell pointer value at load",
+    "writes/changes to module_base+0x652218 before first use",
+    "R10 table pointer at FUN_1801b1590 RVA 0x1b18bd",
+    "[R10+0x28] callback pointer immediately before RVA 0x1b18d9",
+    "field ID 3 arguments and output configuration fields if the callback is entered"
+  ],
+  "do_not_infer": [
+    "static zero means runtime null",
+    "type-10/11 callback target is the type-1 target",
+    "field ID 3's numeric value names a BSI field without tracing its consumer"
+  ],
+  "output_or_audio_result": "none; no runtime observation is included"
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-ARBITRARY-TRACK-PRODUCTION-BOUNDS-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CURRENT_HEAD_36_ROW_FIRST_METER_GATE_BOUND; DOWNSTREAM_DYNAMIC_SHAPES_AND_NATIVE_COUNT_JOIN_OPEN; VALIDATION_NOT_RUN",
+  "implementation_ready": "PARTIAL_36_ROW_IMPLEMENTATION_PLAN",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 3623,
+      "sha256": "c4e6afef55a9edb3a2fe6e522a5a779a1cf96a8cddb8194e53c5d295485be61f"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2161,
+      "sha256": "24d870839c33af6abc8df5b12161232c2a65d5f36ca753a74326cff5f948ed2e"
+    },
+    "NEXT-VALIDATION-VECTOR.json": {
+      "bytes": 1084,
+      "sha256": "726471209365f739fb3e4bc4ffe4eaed5b05a811504619b1b4215f863cebd729"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1007,
+      "sha256": "fa573433779583e7f089fe6c7010ec78d63ec9b00fa07f06ff4c7ea13b4fe3ec"
+    }
+  }
+}

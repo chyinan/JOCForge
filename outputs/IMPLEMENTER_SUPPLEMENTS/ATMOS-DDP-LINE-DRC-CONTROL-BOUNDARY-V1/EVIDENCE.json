@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+  "source_manifest_sha256": "cd16dd983b978842ccbd586bb043035d7d592fabfb65cc5ea2bbe8265f8c6b9c",
+  "source_package_seal_sha256": "2a57f9879ab1913b378d00a4ec894a509617f1dbf9a9343f7f3d9eac698f9aa5",
+  "target": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "reported_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "-noanalysis -readOnly",
+    "dee_run": false
+  },
+  "conditional_static_path": [
+    "film_light property input -> tree U32 0",
+    "mode-1 branch -> raw Line DDP_COMPR code 2 at config+0x28",
+    "FUN_1801ab520 -> parameter ID 0x0d",
+    "type-specific setup -> per-stream state+0x100",
+    "guarded control path -> presence-tagged control record",
+    "serializer writes the present record's two 3-bit fields"
+  ],
+  "sample_path": {
+    "entry": "FUN_1801a8840 receives PCM/sample buffer and reaches FUN_1801b1590 through a separate path",
+    "direct_drc_write_to_sample_arrays": "NOT_FOUND_IN_BOUNDED_TRACE",
+    "base_decoded_pcm_effect": "NOT_DETERMINED_STATICALLY",
+    "decoder_drc_application": "NOT_TRACED"
+  },
+  "unbound": [
+    "whether selected job submits the mode-1/film_light path",
+    "decoded base PCM effect",
+    "Atmos renderer/listening effect"
+  ],
+  "source_package_verification": {
+    "manifest_sha256": "cd16dd983b978842ccbd586bb043035d7d592fabfb65cc5ea2bbe8265f8c6b9c",
+    "payloads_verified": 11,
+    "package_seal_verified": true,
+    "external_source_entries_listed": 100,
+    "external_source_entries_rehashed_by_wash": 0
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "pcm_or_payload_read": "NOT_RUN",
+    "private_key_or_license_read": "NOT_RUN",
+    "film_light_vs_none_ab": "PROPOSED_NOT_RUN"
+  }
+}

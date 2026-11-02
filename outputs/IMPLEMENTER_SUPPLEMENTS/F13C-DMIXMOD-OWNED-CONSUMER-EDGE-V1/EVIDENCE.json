@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "F13C-dmixmod-owned-consumer-edge-addendum-v1",
+  "source_manifest_sha256": "d70d4d9e7948c5f78efbb486bf16a1aa6b223fff9e1e487e9e344dd877ad02ea",
+  "analysis": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "kind": "static_only",
+    "target_program": "dee_ddpjoc_encoder.exe",
+    "project_recorded_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "installed_image_hash_match": "reported_by_source_package; not independently rehashed by Wash"
+  },
+  "bound_facts": [
+    {
+      "fact": "FUN_1403f1dd0 installs vptr 0x140bcf690; slot +0xa8 is parser method FUN_1403f4e90",
+      "tier": "source_package_static_ghidra_trace"
+    },
+    {
+      "fact": "parser helper-result is carried at callback object +0x1b0; its semantic type is unbound",
+      "tier": "source_package_static_ghidra_trace"
+    },
+    {
+      "fact": "slots +0x28 and +0x38 read doubles at +0x58/+0x60; slot +0xb0 returns +0x70; FUN_1404813f0 writes derived values at +0xf0/+0xf4/+0xf8 and does not read +0x1b0",
+      "tier": "source_package_static_ghidra_trace"
+    },
+    {
+      "fact": "per-item child path receives a separate item pointer and does not read callback object +0x1b0",
+      "tier": "source_package_static_ghidra_trace"
+    }
+  ],
+  "remaining_edge": {
+    "from": "callback object +0x1b0 helper-result",
+    "to": "typed dMixMod owner/usepoint and BSI/side-info writer or separate renderer",
+    "status": "UNBOUND",
+    "native_effect_classification": "UNBOUND"
+  },
+  "source_package_verification": {
+    "normal_python": "PASS",
+    "python_optimized": "PASS",
+    "payloads_verified": 9,
+    "checksums_verified": 10,
+    "separate_package_seal_file_present": false,
+    "scope": "source package manifest, listed payloads, and SHA256SUMS sidecar"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "windbg_attach": "NOT_RUN",
+    "media_read": "NOT_RUN",
+    "pcm_read": "NOT_RUN",
+    "encoded_payload_read": "NOT_RUN",
+    "private_key_or_license_read": "NOT_RUN",
+    "loro_ltrt_ab": "PREPARED_NOT_RUN",
+    "ab_gate": "wait for current R4 observation to finish"
+  }
+}

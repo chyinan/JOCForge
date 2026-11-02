@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "adm_bwf_ddp_aux_atmosmezz_reader_boundary_wash_v1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/adm_bwf_ddp_aux_atmosmezz_reader_boundary_wash_v1",
+    "manifest_sha256": "3eeded6f09ea35d822cedb85111c18cdffdefb27bbeee4c9fe3526c2abe63a1c",
+    "package_seal_sha256": "6014486f78b7bd929c181d1e7028d247f5dc0dcea9b43fe3b8325856673f8c69",
+    "checker": "normal and python -O passed; package and source-identity checks",
+    "raw_ghidra_artifacts_in_package": false,
+    "source_identities_recorded": 13,
+    "source_identity_files_rehashed_by_wash": 0
+  },
+  "excluded_from_supplement": [
+    "Python checker source",
+    "Ghidra scripts and raw disassembly",
+    "native binaries",
+    "PCM and encoded media payloads",
+    "private key or license content"
+  ]
+}

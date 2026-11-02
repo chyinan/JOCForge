@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-NATIVE-COUNT-ADMISSION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PLUGIN_ROW_GATE_36_38_BOUND; PARTIAL_DYNAMIC_ROW_IMPLEMENTATION_SUPPORTED; CORE_FRAME_COUNT_SOURCE_UNBOUND; TEST_NOT_RUN",
+  "implementation_ready": "PARTIAL_PLUGIN_ROW_GATE_ONLY",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 3189,
+      "sha256": "b8386fd33b3af0478901ae63672c4227bd8f04f46da6d2b6e3f3a0049d8b0837"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2887,
+      "sha256": "560a4f6011dbe05de36536ecf493ab75b614c2ba1b37d1915189a083aa03aef9"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 2180,
+      "sha256": "70559cd53e640f96c283054ebf9256225c05e5f29129337197050d0b408bae78"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 931,
+      "sha256": "70b1d70e92b899f9b3681080a7c8ce41797012b12d347beb0e56b04d7703ed4a"
+    }
+  }
+}

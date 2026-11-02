@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-BWF-DDP-AUX-ATMOSMEZZ-READER-BOUNDARY-V1",
+  "manifest_sha256": "f36a70797698547922e2d03f0c3a7ddbd2e92b57d7d3b647a8034b264c5adbaf",
+  "sha256sums_sha256": "088ef0add7e99bb7bcc8da536fd70d223f1b5aee4e24abe32c146bdcfd452044",
+  "payload_count": 3,
+  "status": "ATMOSMEZZ_INTERNAL_READER_CHAIN_BOUND; DDP_AUX_AND_CONVERTER_JOIN_UNBOUND; STATIC_ONLY"
+}

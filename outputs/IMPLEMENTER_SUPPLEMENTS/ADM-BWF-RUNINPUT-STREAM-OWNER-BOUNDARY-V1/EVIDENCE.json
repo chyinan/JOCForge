@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "adm_bwf_host_runinput_stream_owner_wash_v1",
+  "source_manifest_sha256": "b90e67339a54da0f7d6462e2818d28561fe3eee41c85c7bb9e16d0a4a3464ddb",
+  "source_package_seal_sha256": "69d3d2c82e1abfe2ff1ef2503743a191f4fc30ead633502988c7dfd0a4c3522f",
+  "analysis": {
+    "tool": "Ghidra 12.2 PUBLIC static",
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "raw_ghidra_evidence_in_source_package": false,
+    "image_rehashed_by_wash": false
+  },
+  "bound_host_edges": [
+    {
+      "caller": "FUN_14004b040 StageRunner::RunAudioTask",
+      "callsite_rva": "0x4b24c",
+      "helper": "FUN_14004b920 StageRunner::RunInput",
+      "receiver": "Runner+0x270 stage pointer",
+      "property": "dee_audio_input_target",
+      "target_list_getter": "receiver vtable +0x10",
+      "stream_object_getter": "same receiver vtable +0x20",
+      "host_store": "StageRunner+0x1158"
+    },
+    {
+      "first_host_consumer": "FUN_14004ab50 StageRunner::RunAudioFilter",
+      "callsite_rva": "0x4af6e",
+      "call": "same stage receiver vtable +0x18(target key, stream_object pointer)"
+    },
+    {
+      "ddp_candidate": "FilterDDPJocEnc",
+      "slot_0x18": "FUN_18013e9b0 stores dee_misc_container and dee_logger in backend +0xf20/+0xf28",
+      "slot_0x20": "FUN_18013d940 looks up stream_object in DDP stage-local map +0xa8"
+    }
+  ],
+  "distinct_owner_boundary": {
+    "host_atmosmezz": "dee::input::AtmosMezz+0x130 normalized property rows",
+    "converter_privcontext": "FilterConvertAtmosMezz+0xb8 allocation; setRange reads +0xa8 map",
+    "ddp_stage_map": "FilterDDPJocEnc+0xa8, a different object/image",
+    "stream_object_to_atmosmezz_or_converter_join": "UNBOUND_NO",
+    "runinput_receiver_selected_stage_instance": "NOT_CAPTURED"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "matched_control": "PLAN_ONLY_NOT_RUN",
+    "pcm_payload_key_read": "NOT_RUN"
+  }
+}

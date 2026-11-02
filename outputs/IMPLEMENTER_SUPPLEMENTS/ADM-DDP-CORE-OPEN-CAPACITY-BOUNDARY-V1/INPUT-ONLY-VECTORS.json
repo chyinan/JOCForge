@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "classification": "STATIC_CONDITIONALS_ONLY_NOT_EXECUTED",
+  "vectors": [
+    { "id": "AT-CAPACITY", "descriptor_groups": 1, "per_group_count": 11, "expected": "PASS_EXPLICIT_GATES" },
+    { "id": "GROUP-OVERFLOW", "descriptor_groups": 2, "per_group_count": 1, "expected": "REJECT_0x14" },
+    { "id": "PER-GROUP-OVERFLOW", "descriptor_groups": 1, "per_group_count": 12, "expected": "REJECT_0x1D" },
+    { "id": "36-IF-CORE-N", "descriptor_groups": 1, "per_group_count": 36, "expected": "CONDITIONAL_REJECT_0x1D_ONLY_IF_TYPED_AS_THIS_CORE_COUNT" },
+    { "id": "38-IF-CORE-N", "descriptor_groups": 1, "per_group_count": 38, "expected": "CONDITIONAL_REJECT_0x1D_ONLY_IF_TYPED_AS_THIS_CORE_COUNT" }
+  ],
+  "execution": "NOT_RUN",
+  "warning": "Do not substitute ADM physical track count for the core frame-view count without a same-run typed identity edge."
+}

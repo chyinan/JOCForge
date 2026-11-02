@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-BWF-RUNINPUT-STREAM-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_STREAM_OBJECT_TO_DDP_AUX_BOUND; ATMOSMEZZ_CONVERTER_OWNER_JOIN_UNBOUND; MATCHED_CONTROL_NOT_RUN",
+  "implementation_ready": "NO_OWNER_JOIN_RULE_TO_INFER",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 2616,
+      "sha256": "8612fb7da3de1625f9356e7cf17d178742055fdbe01a1934d3a1798d0ab04f15"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2166,
+      "sha256": "4c9f871cab27c09d38e56a593976ee278d655c2c1213ea0a95c129bd42cc770a"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 1361,
+      "sha256": "e7f8b3c528b3d4c2a0ab80e9c78143c432ae966bd91583cea6c7bf54144d9e73"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 935,
+      "sha256": "aed058dac184d7ab77f80ce8252384caf60a954b5ed9053a0e76d8535600a2ef"
+    }
+  }
+}

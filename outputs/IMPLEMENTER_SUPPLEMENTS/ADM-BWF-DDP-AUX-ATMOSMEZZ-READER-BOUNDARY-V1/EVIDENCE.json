@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "adm_bwf_ddp_aux_atmosmezz_reader_boundary_wash_v1",
+  "source_manifest_sha256": "3eeded6f09ea35d822cedb85111c18cdffdefb27bbeee4c9fe3526c2abe63a1c",
+  "source_package_seal_sha256": "6014486f78b7bd929c181d1e7028d247f5dc0dcea9b43fe3b8325856673f8c69",
+  "analysis": {
+    "tool": "Ghidra 12.2 PUBLIC headless",
+    "mode": "existing projects, -readOnly -noanalysis",
+    "runtime_observation": "NOT_RUN",
+    "dee_run": "NOT_RUN"
+  },
+  "images": {
+    "dee.exe": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "dee_audio_filter_ddp_atmos.dll": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "dee_audio_filter_convert_atmos_mezz.dll": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+  },
+  "bound_paths": {
+    "host_atmosmezz": "constructor FUN_1400edfa0; property setter FUN_1400f13e0; Run writer FUN_1400f09d0 stores normalized rows at this+0x130; input-target consumer FUN_1400efd60 serializes this+0x130",
+    "ddp_stage": "FilterDDPJocEnc stage-local map at +0xa8; aux setter stores dee_misc_container/logger at backend +0xf20/+0xf28",
+    "ddp_aux_consumers": "+0xf20 reaches a MediaInfo/WAV metadata probe; +0xf28 reaches debug logging",
+    "converter": "plugin-owned PrivContext at +0xb8; FUN_18007fba0 reads offset/first_frame_of_action from PrivContext+0xa8"
+  },
+  "unbound": [
+    "DDP stage stream-object map value writer in the scoped export",
+    "same-run identity/generation join between DDP stream object and AtmosMezz owner",
+    "host AtmosMezz response to converter PrivContext+0xa8 setter",
+    "runtime selected stage instance identity"
+  ],
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "pcm_payload_key_read": "NOT_RUN"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "current_head_f05_failure_recovery_receipt_wash",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/current_head_f05_failure_recovery_receipt_wash",
+    "manifest_sha256": "e7526ec9fdb9773dad926f08a3d06826c2a7333054ca1454e11133a56b9b60de",
+    "payload_hashes_verified": 4,
+    "manifest_sidecar_verified": true,
+    "separate_package_seal_file_present": false
+  },
+  "repository": {
+    "source_audit_head": "a18b4292cdbb7874e4d0b73bd287261cbd89832f",
+    "current_head": "b93b9a34016c0cd669de1e82a3f2ee5466518b02",
+    "selected_paths": 15,
+    "git_content_diff": "none",
+    "raw_worktree_byte_identity": "not claimed"
+  },
+  "excluded_from_supplement": [
+    "source code",
+    "raw logs and implementation artifacts",
+    "media and PCM",
+    "encoded payload",
+    "private key or license content"
+  ]
+}

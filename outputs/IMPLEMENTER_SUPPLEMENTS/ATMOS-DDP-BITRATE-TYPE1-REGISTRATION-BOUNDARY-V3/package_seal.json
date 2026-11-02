@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ATMOS-DDP-BITRATE-TYPE1-REGISTRATION-BOUNDARY-V3",
+  "manifest_sha256": "06d6a4d1cf706abd4551e5cfbfb9b3da8e2c4dec56bc595eae00978e039e9431",
+  "sha256sums_sha256": "be4316303bb85abcdcb067b84f937973bd2b81d9aa36766e7dfca12444cd2df8",
+  "payload_count": 4,
+  "status": "RATE_TO_TYPE1_WRITER_SLOT_BOUND; NO_STATIC_REGISTRATION_WRITER_FOUND; RUNTIME_TARGET_AND_BSI_UNBOUND; OUTPUT_NOT_RUN"
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "AUTOMATIC-OFFSET-FFOA-VS-EXPLICIT-OUTPUT",
+      "status": "PLAN_ONLY_NOT_RUN",
+      "conditions": [
+        {
+          "id": "automatic",
+          "input_offset": "auto",
+          "input_ffoa": "auto"
+        },
+        {
+          "id": "explicit_control",
+          "input_offset": "exact numeric offset emitted by the paired automatic run",
+          "input_ffoa": "exact numeric FFOA emitted by the paired automatic run"
+        }
+      ],
+      "held_constant": [
+        "same authorized AtmosMezz BWF and verified ASCII alias",
+        "time_base=file_position and timecode_frame_rate",
+        "warp_mode, route, output and temporary paths",
+        "all remaining XML fields byte-equivalent"
+      ],
+      "capture_only": [
+        "Runner+0x270 receiver identity and vtable image",
+        "target key and .stream_object pointer token from receiver vtable+0x20",
+        "StageRunner+0x1158 map owner/generation and vtable+0x18 first consumer token",
+        "AtmosMezz+0x130 owner/generation token",
+        "converter PrivContext+0xb8 token and +0xa8 map owner/generation"
+      ],
+      "payload_policy": "Do not read or persist PCM, encoded payload, key, or license content",
+      "expected_result": "none; no runtime capture has been performed"
+    }
+  ]
+}

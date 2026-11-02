@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "DEE-LFE-RUNTIME-STRIDE-OBSERVATION-WASH-V1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_lfe_runtime_stride_observation_wash_v1",
+    "manifest_sha256": "e3e2ef0beaa0a5daa59fe76674badd068b35ecbfa63c04ee591799107b83985e",
+    "package_seal_sha256": "79227fc1812c5db56aefe7b86937f2f52f2b80943e23722143ccfe0997b09f60",
+    "source_package_verifier": "normal and python -O both passed; five payloads verified"
+  },
+  "parent_source_images": {
+    "dee_exe_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_ddp_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "excluded_from_supplement": [
+    "Ghidra scripts and raw disassembly",
+    "native binaries",
+    "process IDs and runtime pointer tokens",
+    "PCM and temporary audio buffers",
+    "encoded EC-3 payloads",
+    "license and private key content"
+  ]
+}

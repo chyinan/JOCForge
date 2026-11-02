@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ATMOS-DDP-LINE-DRC-CONTROL-BOUNDARY-V1",
+  "manifest_sha256": "68db28b5398514c1cdfc8a41d1d1f85deed0cd7cabad8c3bb29428f90c03179c",
+  "sha256sums_sha256": "5e0ed6d4288c7d13151aee7874518cb03f751c90ac1cb81f638b249322121649",
+  "payload_count": 4,
+  "status": "LINE_DRC_CONTROL_BITS_BOUND_CONDITIONAL; BASE_PCM_EFFECT_UNBOUND; JOB_MODE_NOT_OBSERVED; AB_NOT_RUN"
+}

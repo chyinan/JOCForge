@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "F13C-DMIXMOD-OWNED-CONSUMER-EDGE-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PARSER_OWNER_BOUND; HELPER_RESULT_TYPE_UNBOUND; AUDIO_BSI_JOC_EFFECT_UNBOUND; TEST_NOT_RUN",
+  "implementation_ready": "NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 2624,
+      "sha256": "8a04e7d5bc2bfcac8558b488df05688781a5bee5d7e5e8d5edd6cbb29509e1fa"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2162,
+      "sha256": "90e42b1f440f74682bede4db51d48f09d98d50c886f7c2d7bcafe5a3589f3ae0"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 1346,
+      "sha256": "806b26f66786ebfa878ce6e500a399bcf64e7aa504e93cd6dec96d15d838edb7"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 2372,
+      "sha256": "ec55e36bba7d7d168f6047675fa1f7f81c8f8de8d58351ab3c44e53af7fcc562"
+    }
+  }
+}

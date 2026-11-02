@@ -1,0 +1,83 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "DEE-LFE-RUNTIME-STRIDE-OBSERVATION-WASH-V1",
+  "source_manifest_sha256": "e3e2ef0beaa0a5daa59fe76674badd068b35ecbfa63c04ee591799107b83985e",
+  "source_package_seal_sha256": "79227fc1812c5db56aefe7b86937f2f52f2b80943e23722143ccfe0997b09f60",
+  "source_package_verification": {
+    "normal_python": "PASS",
+    "python_optimized": "PASS",
+    "payloads": 5,
+    "manifest_and_seal_hash_checked": true
+  },
+  "build_identity": {
+    "dee_version": "5.2.1-5994839",
+    "dee_exe_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_ddp_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra": "12.2 PUBLIC"
+  },
+  "static_function_relation": {
+    "plugin_function": "dee_audio_filter_ddp_atmos.dll+0x229e30",
+    "standalone_candidate": "dee_ddp_encoder.exe+0x36d9e0",
+    "basis": "same short selector, nonzero helper call, 64-iteration float recurrence, and 184-byte function body in Ghidra decompilation",
+    "claim_limit": "code-shape match only; no cross-image owner join or exact parity claim"
+  },
+  "lfe_branch_rule_observed": {
+    "parent_callsite_rva": "0x1f1272",
+    "layout_id": 7,
+    "layout_map_row": [0, 1, 2, 3, 4, 5],
+    "fbw_count": 5,
+    "total_lanes": 6,
+    "lfe_lane": 5,
+    "selected_descriptor_slot": 5,
+    "selected_descriptor_stride_u16": 1,
+    "recurrence_argument_u16": 0,
+    "recurrence_selector_effect": "zero branch"
+  },
+  "samples": [
+    {
+      "label": "36-row BWF",
+      "input_sha256": "96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82",
+      "job_config_sha256": "3080d651f6c45019bc380837e3dc3090869698542513427dd0e4126a8f53a68b",
+      "job_completed": true,
+      "output_metadata": {
+        "codec": "E-AC-3 JOC",
+        "sample_rate_hz": 48000,
+        "bitrate_bps": 1024000,
+        "channels": 6,
+        "layout": "5.1",
+        "duration_seconds": 206.336,
+        "dynamic_objects": 15,
+        "lfe_present": true
+      },
+      "runtime_capture": "lane5 to slot5; stride 1; recurrence argument 0",
+      "playback": "user-confirmed playback in Dolby Reference Player 3.2.0 to a two-channel endpoint; full duration and physical 5.1 not evaluated"
+    },
+    {
+      "label": "38-row BWF",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "job_config_sha256": "2f4ffb5c457d6c1a990e76c91aada1cb3e4e22ca6b908dd1f138a5c292878a02",
+      "job_completed": true,
+      "output_metadata": {
+        "codec": "E-AC-3 JOC",
+        "sample_rate_hz": 48000,
+        "bitrate_bps": 1024000,
+        "channels": 6,
+        "layout": "5.1",
+        "duration_seconds": 135.904,
+        "dynamic_objects": 15,
+        "lfe_present": true
+      },
+      "runtime_capture": "lane5 to slot5; stride 1; recurrence argument 0",
+      "playback": "NOT_RUN"
+    }
+  ],
+  "run_boundaries": {
+    "different_sample_and_process_identities": true,
+    "pointer_tokens_in_supplement": false,
+    "raw_pcm_or_buffer_contents_read_or_saved": false,
+    "encoded_payload_included": false,
+    "private_key_or_license_content_read": false,
+    "general_adm_layout_or_rate_support": "NOT_EVALUATED",
+    "physical_multichannel_playback": "NOT_RUN"
+  }
+}

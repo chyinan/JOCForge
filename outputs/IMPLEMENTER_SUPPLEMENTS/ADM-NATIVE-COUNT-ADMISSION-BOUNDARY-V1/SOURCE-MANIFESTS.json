@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "adm_native_count_admission_boundary_wash_v1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/adm_native_count_admission_boundary_wash_v1",
+    "manifest_sha256": "8a2a9157d87a237d54ab632c35a59ae4eeca22a283c7e537a9b3d4482de856de",
+    "package_seal_sha256": "034b046dd77d9558d2b1d46cd50137ee640ad9bf274af083ba8ef024717cef30",
+    "payloads_verified_by_wash": 6,
+    "source_package_verifier": "normal and python -O passed; independent Wash hash/size/inventory check also passed",
+    "upstream_manifest_references": "listed in source package; not re-audited individually in this addendum"
+  },
+  "excluded_from_supplement": [
+    "Python verifier source",
+    "raw Ghidra source/decompilation",
+    "native binaries",
+    "PCM and encoded media payload",
+    "private key or license content"
+  ]
+}

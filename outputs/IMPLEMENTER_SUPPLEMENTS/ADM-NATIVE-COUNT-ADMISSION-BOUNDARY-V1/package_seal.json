@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-NATIVE-COUNT-ADMISSION-BOUNDARY-V1",
+  "manifest_sha256": "d1cb8f6f0064d4dc2cd31d9ce4c650543dd3fa4e1752f17d5078552e22445e68",
+  "sha256sums_sha256": "249f44cfc4e9d0ee8eaa831231da22aa7f027ef624acbcd2f7322b2053e7d377",
+  "payload_count": 4,
+  "status": "PLUGIN_ROW_GATE_36_38_BOUND; PARTIAL_DYNAMIC_ROW_IMPLEMENTATION_SUPPORTED; CORE_FRAME_COUNT_SOURCE_UNBOUND; TEST_NOT_RUN"
+}

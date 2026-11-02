@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-DDP-CORE-OPEN-CAPACITY-BOUNDARY-V1",
+  "manifest_sha256": "be72ee9ac5d774e44416940dad3096f85fe83175ab55399bd441a1af7b43a493",
+  "sha256sums_sha256": "786852465fa57260a9d667cfd69fabcbc1160126dcfd4f3b60978ec531d71cc1",
+  "payload_count": 4,
+  "status": "CORE_OPEN_CONFIG_GROUP_1_CAPACITY_11_BOUND; ADM_FRAME_COUNT_JOIN_UNBOUND; NO_36_38_REJECTION_OBSERVATION"
+}

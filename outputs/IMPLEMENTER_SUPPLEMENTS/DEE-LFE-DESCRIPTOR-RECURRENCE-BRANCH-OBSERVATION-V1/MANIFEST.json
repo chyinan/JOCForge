@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-DESCRIPTOR-RECURRENCE-BRANCH-OBSERVATION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "36_38_SAMPLE_SCOPED_LFE_LANE5_BOUND; DESCRIPTOR_STRIDE_1_DISTINCT_FROM_RECURRENCE_ARG_0; OUTPUT_PLAYBACK_LIMITED",
+  "implementation_ready": "PARTIAL_SAMPLE_SCOPED_NATIVE_RULE_BOUND",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 2322,
+      "sha256": "1d5fb1ab06ce8a537d3b7af789e1638adba0d5ec18ca8f023ff1cdc65584d340"
+    },
+    "EVIDENCE.json": {
+      "bytes": 3289,
+      "sha256": "8f6edbf95a7ec6672e8c1d3ea8e1231bcf933815d25fbc6aaa1d5feeea33e181"
+    },
+    "RUN-OBSERVATIONS.json": {
+      "bytes": 1317,
+      "sha256": "307c60226f0b805f6cb413cdb34ec8cb9a79e33985fc9ef7e15b45e1ac3abe6c"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1034,
+      "sha256": "e7919adbc3f8f58812083400dd2de0f442fe13f91d45b398d166fa488eb066d1"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "current_head_f05_failure_recovery_receipt_wash",
+  "source_manifest_sha256": "e7526ec9fdb9773dad926f08a3d06826c2a7333054ca1454e11133a56b9b60de",
+  "source_audit_head": "a18b4292cdbb7874e4d0b73bd287261cbd89832f",
+  "current_head_at_refresh": "b93b9a34016c0cd669de1e82a3f2ee5466518b02",
+  "selected_source_paths": {
+    "count": 15,
+    "git_content_diff_a18_to_b93": "none",
+    "current_token_compare": "ID14 producer Option<CallbackTransactionId> == Some(source_transaction_id)",
+    "source_and_parent_tokens": "generated and passed separately in the selected CLI path",
+    "historical_attempt_operands": "UNBOUND"
+  },
+  "recovery_boundary": {
+    "owner_roots": "ProgrammeOwnerRoots is process-local; committed after append receipt validation",
+    "append": "readback/CRC/flush/file-fsync before durable append receipt",
+    "discard": "abandon closes and marks; retained staging file is not resumable",
+    "eof_finalize_intent": "terminal publication only; ExposureUncertain requires separate restart resolution",
+    "persistent_source_checkpoint_restore_replay": "NOT_FOUND_IN_SELECTED_PATH",
+    "proposal_status": "NOT_IMPLEMENTED"
+  },
+  "source_package_verification": {
+    "manifest_sha256": "e7526ec9fdb9773dad926f08a3d06826c2a7333054ca1454e11133a56b9b60de",
+    "payloads_verified": 4,
+    "manifest_sidecar_verified": true,
+    "separate_package_seal_file_present": false
+  },
+  "execution": {
+    "fault_vector": "NOT_RUN",
+    "code_modified": "false",
+    "encoder_or_tests": "NOT_RUN",
+    "media_or_pcm_read": "NOT_RUN",
+    "payload_or_key_read": "NOT_RUN"
+  }
+}

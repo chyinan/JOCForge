@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "adm_bwf_host_runinput_stream_owner_wash_v1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/adm_bwf_host_runinput_stream_owner_wash_v1",
+    "manifest_sha256": "b90e67339a54da0f7d6462e2818d28561fe3eee41c85c7bb9e16d0a4a3464ddb",
+    "package_seal_sha256": "69d3d2c82e1abfe2ff1ef2503743a191f4fc30ead633502988c7dfd0a4c3522f",
+    "checker": "normal and python -O passed; five package payloads verified",
+    "source_evidence_scope": "13 Ghidra artifact hashes and three image hashes are recorded; raw Ghidra artifacts and binaries are not included and were not independently rehashed by Wash"
+  },
+  "excluded_from_supplement": [
+    "Python checker source",
+    "raw Ghidra project and disassembly",
+    "native binaries",
+    "PCM and encoded media payload",
+    "private key or license content"
+  ]
+}

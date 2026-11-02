@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "ADM-ARBITRARY-TRACK-PRODUCTION-BOUNDS-WASH-V1",
+  "repository": "D:/Programs/JOCForge-isolated",
+  "branch": "experimental/independent-encoder",
+  "head": "b93b9a34016c0cd669de1e82a3f2ee5466518b02",
+  "source_package": {
+    "manifest_sidecar_sha256": "05ff4e7940b29d9d7c48c3e62e04849529de5ec6835b4bb4635442380584de92",
+    "package_seal_sha256": "b7688aea184ed5869903d63bd77e42928f8a89655ad67c9ec88e02c646dd94c2",
+    "normal_verifier": "PASS: 4 package-file hashes, seal, 31 current source-file hashes, 7 existing text-evidence hashes",
+    "python_optimized_verifier": "PASS: same coverage"
+  },
+  "metadata_receipt": {
+    "input_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "channels": 36,
+    "samples_per_channel": 7328771,
+    "block_align": 108,
+    "beds": 10,
+    "objects": 26,
+    "data_payload_read_by_source_audit": 0
+  },
+  "meter_root": {
+    "fixed_source_samples": 6522906,
+    "fixed_normal_callbacks": 4247,
+    "fresh_zero_drains": 3,
+    "current_36_row_gate": "sample extent cannot equal the 36-row receipt's 7,328,771 samples",
+    "static_36_row_expectation": {
+      "normal_callbacks": 4772,
+      "final_frame_padding_samples": 1021,
+      "meter_total_with_three_drains": 4775,
+      "status": "CALCULATED_NOT_RUN"
+    }
+  },
+  "output_expectation": {
+    "published_access_units": 4772,
+    "frame_bytes": 4096,
+    "expected_output_bytes": 19546112,
+    "status": "STATIC_EXPECTATION_NOT_OBSERVED"
+  },
+  "open_shapes": [
+    "F01E production legacy 38/10/28/37 snapshot despite graph-sized proposal API",
+    "internal spatial axis 48 with 11 prefix, 38 physical, 37 regular; no pad/alias rule for IDs 46-47",
+    "Meter activity/EOF/drain carriers retain 38/37 shapes",
+    "F15 selected provider still validates 4249 dispatch and 4247 published counts",
+    "Rust-to-DDP per-call frame-view count and active native capacity remain UNBOUND"
+  ],
+  "execution": {
+    "JOCForge_36_row_encode": "NOT_RUN",
+    "DEE_run": "NOT_RUN",
+    "tests": "NOT_RUN",
+    "PCM_or_payload_read": "NOT_RUN",
+    "playback": "NOT_RUN"
+  }
+}

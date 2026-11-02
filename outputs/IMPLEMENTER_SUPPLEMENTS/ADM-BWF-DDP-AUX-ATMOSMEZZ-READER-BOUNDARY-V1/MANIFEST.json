@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-BWF-DDP-AUX-ATMOSMEZZ-READER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ATMOSMEZZ_INTERNAL_READER_CHAIN_BOUND; DDP_AUX_AND_CONVERTER_JOIN_UNBOUND; STATIC_ONLY",
+  "implementation_ready": "NO_OWNER_JOIN_RULE_TO_INFER",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 2277,
+      "sha256": "76487fa473844b8c077cfb2231847ad065166d1c74c19be8cf7d64e5631a14f7"
+    },
+    "EVIDENCE.json": {
+      "bytes": 1786,
+      "sha256": "31672d2efc8934a054173834eabf18059a1396df9bbe5a14cd1bfdd862f6694d"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 897,
+      "sha256": "92353b9fec777a69cef1eabd74631f499b11d78ec1634b80f22979190cefeb51"
+    }
+  }
+}

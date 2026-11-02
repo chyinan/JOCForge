@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-ARBITRARY-TRACK-PRODUCTION-BOUNDS-V1",
+  "manifest_sha256": "40de788acd13b4de55d512c8e7d11698eb7d15f31fa77432406e4e15a94fb56a",
+  "sha256sums_sha256": "8f9a76b94e5ad5b773f1b16c0c70df54e7cf76dca5cd5788877489a1d6452ee8",
+  "payload_count": 4,
+  "status": "CURRENT_HEAD_36_ROW_FIRST_METER_GATE_BOUND; DOWNSTREAM_DYNAMIC_SHAPES_AND_NATIVE_COUNT_JOIN_OPEN; VALIDATION_NOT_RUN"
+}

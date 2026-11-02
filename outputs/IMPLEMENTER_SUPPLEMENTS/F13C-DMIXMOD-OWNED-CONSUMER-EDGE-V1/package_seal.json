@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "F13C-DMIXMOD-OWNED-CONSUMER-EDGE-V1",
+  "manifest_sha256": "0dd3c8a60db523cc5ee2f5150fcc404dae097ddeed60a13b6762ea4cf683e1c5",
+  "sha256sums_sha256": "c4bcc510d558439a5f82ad7c558c4cbc3c798a7229c568aa5988a1f0fc663007",
+  "payload_count": 4,
+  "status": "PARSER_OWNER_BOUND; HELPER_RESULT_TYPE_UNBOUND; AUDIO_BSI_JOC_EFFECT_UNBOUND; TEST_NOT_RUN"
+}

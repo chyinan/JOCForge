@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.source_commit_checkpoint_contract.v1",
+  "status": "PROPOSAL_ONLY_NOT_IMPLEMENTED_OR_RUN",
+  "commit_unit": "one successful ProgrammeOwnerRoots.commit_source_advance plus its matching durable AU append, or a suppressed source advance with no append",
+  "required_identity": [
+    "checkpoint schema version",
+    "run and attempt ids",
+    "repository HEAD/dirty-source identity and executable SHA-256",
+    "programme, input and normalized-config identities",
+    "meter terminal identity",
+    "output binding and attempt staging name"
+  ],
+  "required_position": [
+    "checkpoint sequence",
+    "last/next callback and source indices",
+    "dispatch and next AU index",
+    "phase generation",
+    "last source transaction id and parent callback transaction id"
+  ],
+  "required_owner_state": [
+    "restorable state for all 12 owner ids and generations",
+    "canonical after-state bytes or exact reconstruction recipe",
+    "validated GTC receipt batch identity"
+  ],
+  "required_append_binding": [
+    "attempt staging namespace/id",
+    "committed file length and next append offset",
+    "committed-prefix SHA-256",
+    "last durable append receipt with AU bytes/CRC/fsync status",
+    "last frame SHA-256",
+    "suppressed source keeps the same append length"
+  ],
+  "write_order": [
+    "stage source owner proposals without replacing committed roots",
+    "append exact AU bytes, verify offset/readback/SHA/CRC, flush and fsync",
+    "validate source/callback clocks, receipts, owner generations and append receipt",
+    "write and fsync a checkpoint temp containing restorable after-roots and append position",
+    "atomically replace prior checkpoint and fsync parent directory",
+    "only then expose the new in-process roots and progress receipt"
+  ],
+  "resume_conditions": [
+    "run/attempt/source/executable/input/config identities match",
+    "owner hashes/generations and receipt batch validate",
+    "staging namespace and committed prefix length/hash match",
+    "extra tail is verified as uncheckpointed, then truncated to checkpoint offset and fsynced before replay",
+    "short/mismatched staging, identity mismatch or unrestorable state retires attempt and restarts"
+  ],
+  "missing_current_interfaces": [
+    "serialize or reconstruct full ProgrammeOwnerRoots after-state",
+    "persist monotonic per-source checkpoint after append/root validation",
+    "reopen staging, verify prefix, truncate uncheckpointed tail, fsync and replay",
+    "resolve EOF finalize-intent/ExposureUncertain after process restart"
+  ]
+}
