@@ -6,7 +6,7 @@ use sha2::{Digest, Sha256};
 
 const INPUT_VECTORS_SHA256: &str =
     "84edda91578286ce3a4ca82fef0ea5cd3af9a7117f60c07f693f7eb5e15934d4";
-const RESULT_SHA256: &str = "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab";
+const RESULT_SHA256: &str = "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f";
 const INPUT_VECTORS: &str = include_str!("fixtures/window_fold/INPUT-ONLY-VECTORS.json");
 const RESULT: &str = include_str!("fixtures/window_fold/RESULT.json");
 
