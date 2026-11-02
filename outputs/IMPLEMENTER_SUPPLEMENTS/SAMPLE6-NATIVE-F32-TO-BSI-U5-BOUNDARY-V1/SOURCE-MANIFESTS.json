@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "sample6-native-f32-to-bsi-u5-comparability",
+      "manifest_sha256": "7ca61364dae1601e090bc78f18d40ea075c23cacbc9eadf6fe469c9cf135424b",
+      "manifest_file": "MANIFEST.sha256",
+      "separate_package_seal": "NOT_PROVIDED",
+      "report_payload_sha256": "8c8a84104da0684e10ffe070e13643b810c9eeceba694979e5ba72bfaf6035d0",
+      "evidence_payload_sha256": "b375445b70e0a1c0c254277e145257769c70808d1c15748da2434e2a798a4079"
+    }
+  ],
+  "target_images": [
+    {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"name":"dee_ddp_encoder.exe","sha256":"0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"}
+  ]
+}

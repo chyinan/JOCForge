@@ -1,0 +1,62 @@
+{
+  "schema": "jocforge-sample6-native-f32-to-bsi-u5-boundary.v1",
+  "package_id": "SAMPLE6-NATIVE-F32-TO-BSI-U5-BOUNDARY-V1",
+  "status": "RUST_DIALNORM_RULE_BOUND; DEE_F32_PRODUCER_AND_U5_WRITER_UNJOINED",
+  "rust_run": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "run_scope": "full file",
+    "meter_callbacks": 4250,
+    "published_aus": 4247,
+    "selected_lufs_word_in_receipt": null,
+    "gating_branch_in_receipt": null,
+    "getter": {
+      "function": "di_off_getter",
+      "selection": "ITU internal word if above LOUDNESS_FLOOR_WORD; otherwise ungated internal word",
+      "host_scale_f32_word": "0x43000000",
+      "host_scale_value_f32": 128.0,
+      "physical_unit": "UNBOUND"
+    },
+    "dialnorm_rule": "F32 sentinel; F32 subtract 0.5; trunc toward zero; clamp [-31,-1]; negate to U5"
+  },
+  "dee_measurement_path": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "aggregate_function": "FUN_1801769a0",
+    "aggregate_records_stride_bytes": 32,
+    "aggregate_scalar_offset_bytes": 20,
+    "aggregate_type": "F32",
+    "aggregate_selection": "maximum per-source F32, initialized to -120.0",
+    "aggregate_join_to_EmpireEnc_open_config": "UNBOUND",
+    "open_config_field": "EmpireEnc+0x3c F32",
+    "open_config_f32_word": "EmpireEnc+0x58 high word; low F32 default -120.0",
+    "normalizer": "FUN_1800fdc60",
+    "operations": ["F32 sentinel check", "F32 subtract 0.5", "CVTTSS2SI truncate toward zero", "clamp [-31,-1]"],
+    "consumer": "FUN_1801a7d50 compares negated result with byte +0x10a and sets mismatch flag 0x04",
+    "result_written_to_BSI": "NOT_FOUND_IN_APPROVED_TRACE"
+  },
+  "separate_ddpi_path": {
+    "image_name": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "DDPi_ID": "0x12",
+    "API_input_type": "integer",
+    "validated_range": [1, 31],
+    "first_frame_preparation_readers": ["FUN_140343530", "FUN_1403448d0"],
+    "join_to_DEE_F32_path": "UNBOUND"
+  },
+  "bounded_reference": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "DEE_scalar": -20.665958,
+    "unit": "UNBOUND",
+    "file_position": [2160, 2208],
+    "DEE_U5": 21,
+    "scope": "bounded reference window, not Rust full-file"
+  },
+  "source_package": {
+    "package_id": "sample6-native-f32-to-bsi-u5-comparability",
+    "manifest_sha256": "7ca61364dae1601e090bc78f18d40ea075c23cacbc9eadf6fe469c9cf135424b",
+    "manifest_file": "MANIFEST.sha256",
+    "separate_package_seal": "NOT_PROVIDED"
+  },
+  "execution": {"dee_run":"NOT_RUN","pcm_or_payload_read":false,"private_key_or_license_read":false}
+}

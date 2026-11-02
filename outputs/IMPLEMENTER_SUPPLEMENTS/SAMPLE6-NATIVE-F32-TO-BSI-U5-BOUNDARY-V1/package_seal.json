@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "SAMPLE6-NATIVE-F32-TO-BSI-U5-BOUNDARY-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3046,
+      "sha256": "58878da2a99d7c6d3b0e6aefd1c0a4931d5843bf5f887d823cd0ab1d00894c66"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2822,
+      "sha256": "a12699a69568fc768f0b10dd46638b1ffa9e59bbd8fed3fc7a9420ac9a44dcaf"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 609,
+      "sha256": "914aaf3d70a3d10872abb403eaf44b3305f92e6e6ee70280c9221b15de446e65"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2079,
+      "sha256": "654e2d5061fe6aea31baa1c732d4d03b97494e79ddf3d8013ccff1b0af2b50eb"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 791,
+      "sha256": "f8069e62fefcd480a78c416703a41846ffbe794e487776adb0aa6cb43b5797d9"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1540,
+      "sha256": "17ea85228b6fa43b2bffe4dd89e252e74ff2329cea17dcbd2a00958cda878403"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "4aba51d9a2f760d6e4a4941b658bca2bd8b3e5e5702bd15e3c822c9df13fbae6"
+    }
+  ]
+}

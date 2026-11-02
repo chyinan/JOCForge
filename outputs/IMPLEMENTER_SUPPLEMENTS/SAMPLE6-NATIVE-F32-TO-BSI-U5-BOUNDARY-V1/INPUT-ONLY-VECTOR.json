@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "native-f32-bsi-u5-path-separation",
+  "rust_path": {"input":"u32 F32 selected_lufs_word","u5_output":"17 full-file; actual F32 word not recorded"},
+  "dee_f32_path": {"input":"EmpireEnc+0x3c F32","normalizer":"FUN_1800fdc60","observed_bsi_u5_write":"NOT_FOUND"},
+  "dee_ddpi_path": {"input":"integer DDPi ID 0x12","range":[1,31],"U5_write_join":"UNBOUND"},
+  "bounded_dee_receipt": {"scalar":-20.665958,"unit":"UNBOUND","file_position":[2160,2208],"u5":21,"scope":"not same-scope with Rust full file"},
+  "execution": "STATIC_AND_RECEIPT_ONLY"
+}
