@@ -5,6 +5,8 @@ use serde_json::{Map, Value};
 use sha2::{Digest, Sha256};
 
 const PROVIDER_SHA256: &str = "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c";
+const F08_CANDIDATE_PROVIDER_SHA256: &str =
+    "df4bb6bdd7f0d776bf4b0e85ebff735df2427769333d286a5043dc0958dc8006";
 const REQUIRED_FIELDS: [&str; 11] = [
     "window",
     "long_cosine",
@@ -57,6 +59,31 @@ impl MathGeneratedTransformParameters {
     /// dimensions, finite-value, and permutation mismatches return
     /// `PARAMETER_IDENTITY_ERROR`.
     pub fn from_provider_bytes(bytes: &[u8]) -> Result<Self, MathGeneratedTransformParameterError> {
+        Self::from_provider_bytes_with_identity(
+            bytes,
+            "math-generated-v1",
+            "MATHEMATICAL_FORMULAS_GENERATED_IN_THIS_TASK",
+            PROVIDER_SHA256,
+        )
+    }
+
+    pub fn from_f08_lfe_candidate_provider_bytes(
+        bytes: &[u8],
+    ) -> Result<Self, MathGeneratedTransformParameterError> {
+        Self::from_provider_bytes_with_identity(
+            bytes,
+            "f08-lfe-dee-coefficient-candidate-v2",
+            "WASHED_DEE_REFERENCE_F08_LFE_COEFFICIENT_CANDIDATE",
+            F08_CANDIDATE_PROVIDER_SHA256,
+        )
+    }
+
+    fn from_provider_bytes_with_identity(
+        bytes: &[u8],
+        expected_profile_id: &str,
+        expected_origin: &str,
+        expected_sha256: &str,
+    ) -> Result<Self, MathGeneratedTransformParameterError> {
         if bytes.is_empty() {
             return Err(MathGeneratedTransformParameterError::ParameterUnavailable);
         }
@@ -74,16 +101,15 @@ impl MathGeneratedTransformParameters {
 
         if document.get("schema").and_then(Value::as_str)
             != Some("mathematical-transform-parameters.v1")
-            || document.get("profile_id").and_then(Value::as_str) != Some("math-generated-v1")
+            || document.get("profile_id").and_then(Value::as_str) != Some(expected_profile_id)
             || document.get("data_role").and_then(Value::as_str)
                 != Some("ALGORITHM_PARAMETERS_NOT_TEST_OR_SONG_LOOKUP")
-            || document.get("origin").and_then(Value::as_str)
-                != Some("MATHEMATICAL_FORMULAS_GENERATED_IN_THIS_TASK")
+            || document.get("origin").and_then(Value::as_str) != Some(expected_origin)
             || document
                 .get("private_vendor_key_included")
                 .and_then(Value::as_bool)
                 != Some(false)
-            || sha256_hex(bytes) != PROVIDER_SHA256
+            || sha256_hex(bytes) != expected_sha256
         {
             return Err(MathGeneratedTransformParameterError::ParameterIdentityError);
         }
@@ -125,6 +151,12 @@ impl MathGeneratedTransformParameters {
 
     pub fn selected_math_generated_v1() -> Result<Self, MathGeneratedTransformParameterError> {
         Self::from_provider_bytes(include_bytes!("ordinary_transform_math_parameters.json"))
+    }
+
+    pub fn selected_f08_lfe_candidate_v2() -> Result<Self, MathGeneratedTransformParameterError> {
+        Self::from_f08_lfe_candidate_provider_bytes(include_bytes!(
+            "lfe_candidate_transform_parameters.json"
+        ))
     }
 
     pub const fn window_f32_bits(&self) -> &[u32; 256] {

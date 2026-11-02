@@ -38,7 +38,7 @@ const POLICY_PARAMETERS: &[u8] = include_bytes!(
     "../../../outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1/approved/parameters/policy-authorized-v1.json"
 );
 
-/// Hash-validated F07-F10 values: transient and policy rows from the approved source-leaves package,
+/// Hash-validated F07-F10 values with the isolated Wash-identified F08 LFE candidate provider,
 /// with the transform table loaded through the domain's selected provider identity gate.
 pub struct SelectedSourceAnalysisProviders {
     transient: TransientParameters,
@@ -50,7 +50,7 @@ impl SelectedSourceAnalysisProviders {
     pub fn load_approved() -> Result<Self, SelectedSourceAnalysisProviderError> {
         let transient = load_transient_parameters(Some(TRANSIENT_PARAMETERS))
             .map_err(SelectedSourceAnalysisProviderError::Transient)?;
-        let transform = MathGeneratedTransformParameters::selected_math_generated_v1()
+        let transform = MathGeneratedTransformParameters::selected_f08_lfe_candidate_v2()
             .map_err(SelectedSourceAnalysisProviderError::Transform)?;
         let policy = load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS))
             .map_err(SelectedSourceAnalysisProviderError::Policy)?;
