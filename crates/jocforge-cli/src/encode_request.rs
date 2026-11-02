@@ -231,6 +231,8 @@ fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestE
     .map_err(EncodeRequestError::MeterPrepass)?;
     meter_progress.finish();
     let measurement = meter_prepass.dependents();
+    let selected_lufs_word = measurement.receipt().selected_lufs_word();
+    let selected_lufs = f32::from_bits(selected_lufs_word);
     let drc_root = cold_drc_owner_after_measurement(&prepared, measurement.receipt())
         .map_err(EncodeRequestError::DrcRoot)?;
     let source_providers = plan.source_providers();
@@ -242,9 +244,10 @@ fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestE
     )
     .map_err(EncodeRequestError::MetadataOwner)?;
     eprintln!(
-        "meter prepass complete: callbacks={} zero_drains={} dialnorm={:?} metadata_generation={}",
+        "meter prepass complete: callbacks={} zero_drains={} selected_lufs_f32={:.6} selected_lufs_bits=0x{selected_lufs_word:08x} selected_lufs_source=ProgrammeMeasurementReceipt.selected_lufs_word selected_lufs_unit=RUST_SELECTED_LUFS_DEE_NATIVE_UNIT_UNBOUND dialnorm={:?} metadata_generation={}",
         measurement.receipt().normal_callbacks(),
         measurement.receipt().zero_drains(),
+        selected_lufs,
         drc_root.state().programme_dialnorm(),
         metadata_owner.state_reference().generation(),
     );
