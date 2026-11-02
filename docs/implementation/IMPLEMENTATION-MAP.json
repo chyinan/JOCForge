@@ -962,7 +962,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a",
             "source_adapter_contract_sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae",
-            "source_unit_readme_sha256": "a455c6b33e582b0d359face09667e91622404fd203d376e446d615f9a52bbcce"
+            "source_unit_readme_sha256": "a455c6b33e582b0d359face09667e91622404fd203d376e446d615f9a52bbcce",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -1513,7 +1514,8 @@
               "sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "selected_xml_vector_sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
+            "selected_xml_vector_sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -1592,7 +1594,8 @@
               "sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "source_vector_sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
+            "source_vector_sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -1832,23 +1835,23 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 103520,
-              "sha256": "e94602651e130d456123e887fb75dab2e07455c4102b7ec28e060a9739b86294"
+              "bytes": 103673,
+              "sha256": "89b56c3d8f011ac01d45d38ab25e0eb81d6cc5fbd340de5412582751d3d68273"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/adm_object_events.rs",
-              "bytes": 16760,
-              "sha256": "88f9265cdbcef1c6c6c179e20945ba73aa7569b0238a289d655c71b093b2d5fb"
+              "bytes": 16721,
+              "sha256": "0a3021b0f4fa2070381211563d9b0b31c59d527fd350c823f71a800fe59457e0"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/object_control.rs",
-              "bytes": 12043,
-              "sha256": "990b614b1649d0e0d63350162630eec96b03411e65efc629a4535427491c9c91"
+              "bytes": 11704,
+              "sha256": "a5ce3d918fbf69a24f35a7e1a7245904c7f3c5f6cc4101a752497292ae649baf"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
-              "bytes": 43855,
-              "sha256": "4a2bf8029e7f2f7f1ed4ca6c992e6305ebee5bd46ff47745648ba5806b549920"
+              "bytes": 43444,
+              "sha256": "5f7a643ed5734d4a2f31816fb8090901c991db795b0d57f72829675432d256b0"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/mod.rs",
@@ -1874,13 +1877,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
-              "bytes": 43855,
-              "sha256": "4a2bf8029e7f2f7f1ed4ca6c992e6305ebee5bd46ff47745648ba5806b549920"
+              "bytes": 43444,
+              "sha256": "5f7a643ed5734d4a2f31816fb8090901c991db795b0d57f72829675432d256b0"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/adm_object_events.rs",
-              "bytes": 16760,
-              "sha256": "88f9265cdbcef1c6c6c179e20945ba73aa7569b0238a289d655c71b093b2d5fb"
+              "bytes": 16721,
+              "sha256": "0a3021b0f4fa2070381211563d9b0b31c59d527fd350c823f71a800fe59457e0"
             },
             {
               "path": "crates/jocforge-domain/tests/object_control.rs",
@@ -2162,15 +2165,15 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
               "bytes": 21575,
-              "sha256": "06c4c017a46660d9673a33f1ed08256342a93de06b3351a7a6dc6589980a22be"
+              "sha256": "a5fd2e01b81932cebeb3f9085def3facae73c62fe134c183081c5ac08ca61cbb"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -2241,15 +2244,15 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18347,
-              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+              "bytes": 18330,
+              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -2344,6 +2347,188 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "PUBLIC_CLEANROOM_EVIDENCE_ONLY"
+        },
+        {
+          "slice_id": "dynamic-adm-input-row-admission",
+          "mapping_status": "MATERIALIZED_DYNAMIC_ADM_INPUT_ROWS_TO_PREPARED_JOB_INPUT__DDP_FRAME_VIEW_JOIN_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_36_ROW_PREPARED_INPUT__RUNTIME_38_ROW_GATE_OPEN",
+          "scope": "ADM BWF PCM24/48 kHz input rows are carried at their actual count through RIFF parsing, graph/event admission and converter storage mapping. The WAVE channel count must equal the CHNA physical-track count; the selected graph has ten bed rows and the remaining rows are object rows. No row is padded, truncated or reordered. The current host-index representation supports at most 256 physical rows. The authorized 36-channel sample's metadata parsed as 36 rows (ten bed, 26 object); a one-off local preparation check used those metadata with a synthetic one-frame zero PCM resource. This slice ends at PreparedJobInput and does not bind ADM/PCM row count to DDP per-call frame-view channels or core rows.",
+          "owner": "frontend",
+          "implementation_requirement": true,
+          "dependencies": [
+            "selected-adm-riff-to-prepared-job-input"
+          ],
+          "implementation_files": [
+            "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+            "crates/jocforge-io/src/pcm/frontend_pcm_source.rs",
+            "crates/jocforge-domain/src/profile/production.rs",
+            "crates/jocforge-domain/src/frontend/job_configuration.rs",
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+            "crates/jocforge-domain/src/frontend/bed_channel_join.rs",
+            "crates/jocforge-domain/src/frontend/adm_object_events.rs",
+            "crates/jocforge-domain/src/frontend/object_control.rs",
+            "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
+            "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+            "crates/jocforge-application/src/lib.rs"
+          ],
+          "local_mapping_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md"
+          ],
+          "clock": {
+            "domains": [
+              "AdmSampleIndex",
+              "AdmSampleCount",
+              "ChnaTrackIndex",
+              "PhysicalHostIndex"
+            ],
+            "covered_clauses": [
+              "PCM sample ranges use the RIFF descriptor's channel count and computed block align.",
+              "CHNA track indices remain one-based identities; converter slots remain zero-based values.",
+              "ADM/PCM row counts are not the per-call DDP frame-view channel count."
+            ]
+          },
+          "parameters": {
+            "kind": "SELECTED_ADM_BWF_PCM24_48KHZ_DYNAMIC_PHYSICAL_ROW_COUNT",
+            "provider_files": [],
+            "wash_evidence_manifest_sha256s": [
+              "2e238835a0edd84a90764a2c74778f50b2c12e760d7ad051446a772f2efc8113",
+              "10e47c5266f02caef327b31890a3719521ab4a86c8f687ef0b10ca92edadc437",
+              "9299500b6ee4931bd0104f34791ef88abf90e139fa4982f1de3df8a53dd732f3",
+              "6b26fa584c5fb6e6432a811d922d2babd133936079001862bdb31a80e2bb8e81",
+              "c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1"
+            ],
+            "max_physical_rows": 256,
+            "validation_boundary": "The Wash manifest identities are recorded for the separately delivered metadata/count-boundary evidence. Actual 36-row metadata and PreparedJobInput were locally exercised without reading the original PCM data. No 36-row normal-control callback, meter path, DDP frame-view, end-to-end encode, or audio-equivalence result is claimed. AtmosMezz and existing selected runtime control/meter paths retain their 38-row gates."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/job_configuration.rs",
+            "crates/jocforge-domain/tests/adm_graph.rs",
+            "crates/jocforge-domain/tests/adm_file_storage_map.rs",
+            "crates/jocforge-io/tests/riff_pcm24.rs",
+            "crates/jocforge-application/tests/prepared_job_input.rs"
+          ],
+          "vectors": {
+            "kind": "DYNAMIC_PCM24_ROW_READER_AND_ADM_METADATA_ADMISSION_TESTS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
+              "crates/jocforge-domain/tests/fixtures/selected_adm_graph/REAL-GRAPH-TRACK-IDENTITIES.json",
+              "crates/jocforge-io/tests/fixtures/riff_pcm24/unit-vectors.json"
+            ],
+            "case_pointers": [
+              "36-channel ADM job configuration is accepted while 36-channel AtmosMezz remains rejected.",
+              "36-channel PCM24 RIFF decoding returns exactly 36 physical rows.",
+              "Existing 38-track graph and reader tests remain unchanged and pass.",
+              "The actual 36-channel file's CHNA and AXML graph passed a one-off metadata-only PreparedJobInput check."
+            ],
+            "expected_outputs_included": false
+          },
+          "error_outcomes": [
+            {
+              "error_code": "RiffPcm24Error::InvalidInput",
+              "category": "input format rejection",
+              "trigger": "PCM24 descriptor, block align, byte rate or data extent is malformed.",
+              "programme_state_after": "No parsed PCM source or PreparedJobInput is returned.",
+              "caller_action": "Reject the source before job preparation."
+            },
+            {
+              "error_code": "PreparedJobInputError::WaveTrackCountMismatch",
+              "category": "metadata identity mismatch",
+              "trigger": "RIFF PCM channel count differs from the admitted CHNA physical-track count.",
+              "programme_state_after": "No PreparedJobInput is returned; no callback owner is staged.",
+              "caller_action": "Reject the input without padding, truncating or reordering rows."
+            }
+          ],
+          "not_run": [
+            "36-row normal-control snapshot, meter source bridge, or programme callback.",
+            "ADM reader row to DDP process frame-view channel count same-owner/generation transfer.",
+            "36-row end-to-end E-AC-3 JOC encode, external decode, render, W04, and audio comparison."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+              "bytes": 19158,
+              "sha256": "338f851cbfb855fa14f6119ff0fa6854821ad75f8e62ef7052cb80c13802d28b"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/frontend_pcm_source.rs",
+              "bytes": 8416,
+              "sha256": "e8ac0a48a27ff91890ccacb4cc1f366a6b672611b106611e472d5e535c96cbb7"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/production.rs",
+              "bytes": 4065,
+              "sha256": "c3521112c4ef5d4abe6a0cc647a0303856ff457db0674633407871f731c097e1"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
+              "bytes": 40979,
+              "sha256": "e5310439639b05a563574a32606b2e9ecc953286ac223ffeb147363e42d599ea"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+              "bytes": 43444,
+              "sha256": "5f7a643ed5734d4a2f31816fb8090901c991db795b0d57f72829675432d256b0"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/bed_channel_join.rs",
+              "bytes": 6141,
+              "sha256": "b60eadb6d11906d660be8b4ff8a1a85008ca1b508a320a9c562610125ef3b1ce"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/adm_object_events.rs",
+              "bytes": 16721,
+              "sha256": "0a3021b0f4fa2070381211563d9b0b31c59d527fd350c823f71a800fe59457e0"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/object_control.rs",
+              "bytes": 11704,
+              "sha256": "a5ce3d918fbf69a24f35a7e1a7245904c7f3c5f6cc4101a752497292ae649baf"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
+              "bytes": 4141,
+              "sha256": "09a4618f0fdf424c0288dce8af80ebc24cc2f0bf84966f83d6c733be1136967c"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+              "bytes": 103673,
+              "sha256": "89b56c3d8f011ac01d45d38ab25e0eb81d6cc5fbd340de5412582751d3d68273"
+            },
+            {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/job_configuration.rs",
+              "bytes": 16862,
+              "sha256": "80c88d5b67daf5c60b0a9d3e33e8887f9b41a40d3898000f77a021ab76536dea"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/adm_graph.rs",
+              "bytes": 20813,
+              "sha256": "35dc9a245a5c44f387557ca688dc795e6bdc69c87ff643e48018fbc90e74afbc"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/adm_file_storage_map.rs",
+              "bytes": 4244,
+              "sha256": "a02134d3a4c58ca82da03081a006d1144f71d7cc8cd410c12b9e8a3a9d6b1965"
+            },
+            {
+              "path": "crates/jocforge-io/tests/riff_pcm24.rs",
+              "bytes": 15934,
+              "sha256": "0884aa6a596c41fee7f6a5b26e98fd3fb60fb1be883d3075b4135f2094bd36fb"
+            },
+            {
+              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+              "bytes": 18330,
+              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+            }
+          ]
         }
       ]
     },
@@ -2569,7 +2754,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -2674,7 +2860,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -2738,7 +2925,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -2798,7 +2986,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -2878,7 +3067,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -2939,7 +3129,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -5268,7 +5459,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -5351,7 +5543,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -5420,7 +5613,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -5486,7 +5680,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -5552,7 +5747,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -5624,7 +5820,8 @@
               "bytes": 1503142,
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -7103,8 +7300,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             }
           ],
           "test_inventory": [
@@ -9422,8 +9619,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1966280,
-              "sha256": "422810084cd48149ac2136a05e360d84a4dc2e2c88faf9fc8d17cfd0f1138fe7"
+              "bytes": 1966996,
+              "sha256": "ad116986924e4076cea2171b8d8c674244660be00cb061a21e73ed9db8811cae"
             }
           ],
           "test_modules": [
@@ -10546,7 +10743,8 @@
               "bytes": 2805177,
               "sha256": "de22607f2c2d7c957ee201a16a4d9fd6a47ec8c7f718432c0324a4c888153c50",
               "case": "continuous_success[0]"
-            }
+            },
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -11946,7 +12144,8 @@
             "wash_status_supplement_manifest_sha256": "9f47ee930332adf026958d338c5d968cf095833d54edc4556036492bee2f4a22",
             "meter_terminal_digest_hold_manifest_sha256": "3e5b0a337d5dce5bc3668346fcdbb98540593458f302f802b2f1d088005d8a19",
             "drain_semantics_erratum_manifest_sha256": "f4c660a632c0b3649b1496095f37f2c164f1537bbb495086180394cb00429b96",
-            "reducer_pair_join_supplement_manifest_sha256": "cbd6842938b11c93183b66986c55cd93709f3cd4671968264c37cb373a2d15a6"
+            "reducer_pair_join_supplement_manifest_sha256": "cbd6842938b11c93183b66986c55cd93709f3cd4671968264c37cb373a2d15a6",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -12021,7 +12220,8 @@
               "sha256": "865ad85dbef724b6896257baa9454db23d0bd82020297330ada4c8a65b816088"
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "supplement_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2"
+            "supplement_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -12165,8 +12365,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35490,
-              "sha256": "9dac7d79383e18beafbae2175611d0a6935bb961169c202fc6d9d6416ad9b1de"
+              "bytes": 35561,
+              "sha256": "e276d1f1189f0dcd74033a40339fe24b7b349fd478c00b1233660ed1af24d62b"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -12405,8 +12605,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             }
           ],
           "test_inventory": [
@@ -12417,8 +12617,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18347,
-              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+              "bytes": 18330,
+              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
             }
           ]
         },
@@ -12930,13 +13130,13 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1966280,
-              "sha256": "422810084cd48149ac2136a05e360d84a4dc2e2c88faf9fc8d17cfd0f1138fe7"
+              "bytes": 1966996,
+              "sha256": "ad116986924e4076cea2171b8d8c674244660be00cb061a21e73ed9db8811cae"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -13173,8 +13373,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
@@ -13190,8 +13390,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18347,
-              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+              "bytes": 18330,
+              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -13657,8 +13857,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35490,
-              "sha256": "9dac7d79383e18beafbae2175611d0a6935bb961169c202fc6d9d6416ad9b1de"
+              "bytes": 35561,
+              "sha256": "e276d1f1189f0dcd74033a40339fe24b7b349fd478c00b1233660ed1af24d62b"
             }
           ],
           "test_modules": [
@@ -13787,8 +13987,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-              "bytes": 17794,
-              "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
+              "bytes": 19158,
+              "sha256": "338f851cbfb855fa14f6119ff0fa6854821ad75f8e62ef7052cb80c13802d28b"
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
@@ -14165,7 +14365,8 @@
                 "sha256": "66d5d1cffac1f60066747ba8dbd4647e7403958c8002c04ae488095bf527d1b0"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -14384,7 +14585,8 @@
                 "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -14578,7 +14780,8 @@
                 "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -14662,7 +14865,8 @@
               "bytes": 1798,
               "sha256": "f114a8ab4ca8c5a6045195daddf5fe26b0e24da0beb6680f2de72a1455ee6eaf"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -14984,7 +15188,8 @@
               "bytes": 3985,
               "sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -15084,7 +15289,8 @@
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "truepeak_parameter_sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
-            "log_parameter_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+            "log_parameter_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -15180,7 +15386,8 @@
               "bytes": 922,
               "sha256": "8e940cef901862086fb858e940cd74faf6f091693bfb7917037584b861bea2f7"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -15520,13 +15727,13 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35490,
-              "sha256": "9dac7d79383e18beafbae2175611d0a6935bb961169c202fc6d9d6416ad9b1de"
+              "bytes": 35561,
+              "sha256": "e276d1f1189f0dcd74033a40339fe24b7b349fd478c00b1233660ed1af24d62b"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             },
             {
               "path": "crates/jocforge-domain/src/meter/mod.rs",
@@ -15565,8 +15772,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-              "bytes": 17794,
-              "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
+              "bytes": 19158,
+              "sha256": "338f851cbfb855fa14f6119ff0fa6854821ad75f8e62ef7052cb80c13802d28b"
             },
             {
               "path": "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
@@ -15578,7 +15785,7 @@
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
               "bytes": 21575,
-              "sha256": "06c4c017a46660d9673a33f1ed08256342a93de06b3351a7a6dc6589980a22be"
+              "sha256": "a5fd2e01b81932cebeb3f9085def3facae73c62fe134c183081c5ac08ca61cbb"
             },
             {
               "path": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
@@ -16314,8 +16521,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35490,
-              "sha256": "9dac7d79383e18beafbae2175611d0a6935bb961169c202fc6d9d6416ad9b1de"
+              "bytes": 35561,
+              "sha256": "e276d1f1189f0dcd74033a40339fe24b7b349fd478c00b1233660ed1af24d62b"
             },
             {
               "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
@@ -16324,8 +16531,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
-              "bytes": 4151,
-              "sha256": "576abafaacf38801f054cbc53c104207ea7b87f6d726d274ca9f48ee48e9534d"
+              "bytes": 4141,
+              "sha256": "09a4618f0fdf424c0288dce8af80ebc24cc2f0bf84966f83d6c733be1136967c"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/dbmd_sections.rs",
@@ -16334,8 +16541,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
-              "bytes": 43855,
-              "sha256": "4a2bf8029e7f2f7f1ed4ca6c992e6305ebee5bd46ff47745648ba5806b549920"
+              "bytes": 43444,
+              "sha256": "5f7a643ed5734d4a2f31816fb8090901c991db795b0d57f72829675432d256b0"
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
@@ -16344,8 +16551,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-              "bytes": 17794,
-              "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
+              "bytes": 19158,
+              "sha256": "338f851cbfb855fa14f6119ff0fa6854821ad75f8e62ef7052cb80c13802d28b"
             }
           ],
           "historical_implementation_inventory": [
@@ -16363,13 +16570,13 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35490,
-              "sha256": "9dac7d79383e18beafbae2175611d0a6935bb961169c202fc6d9d6416ad9b1de"
+              "bytes": 35561,
+              "sha256": "e276d1f1189f0dcd74033a40339fe24b7b349fd478c00b1233660ed1af24d62b"
             },
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
               "bytes": 21575,
-              "sha256": "06c4c017a46660d9673a33f1ed08256342a93de06b3351a7a6dc6589980a22be"
+              "sha256": "a5fd2e01b81932cebeb3f9085def3facae73c62fe134c183081c5ac08ca61cbb"
             }
           ],
           "verification": {
@@ -16437,8 +16644,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 103520,
-              "sha256": "e94602651e130d456123e887fb75dab2e07455c4102b7ec28e060a9739b86294"
+              "bytes": 103673,
+              "sha256": "89b56c3d8f011ac01d45d38ab25e0eb81d6cc5fbd340de5412582751d3d68273"
             },
             {
               "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
@@ -18981,7 +19188,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "5d811a74d6ae22bd50be1e74656ae81a43e84582100e5cbddd908d394295805d",
             "source_parameter_sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1",
-            "source_vector_sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261"
+            "source_vector_sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -19073,7 +19281,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "a899c158eeed9485090d4307ef3629eadeca9359ac0d5085612c5f632390ad66",
             "source_parameter_sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1",
-            "source_vector_sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261"
+            "source_vector_sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -19322,7 +19531,8 @@
                 "sha256": "78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -19538,7 +19748,8 @@
               "bytes": 2942,
               "sha256": "a857a18fdbc6a820edd07fe4105feb82ebf8cd87528122879a4d9d847064bd64"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -19792,7 +20003,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
             "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
-            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -19875,7 +20087,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
             "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
-            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -19960,7 +20173,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
             "source_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
-            "source_vector_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166"
+            "source_vector_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -20037,7 +20251,8 @@
             "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
             "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
             "source_math_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
-            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -20126,7 +20341,8 @@
             "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
             "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
             "source_math_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
-            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -20242,7 +20458,8 @@
             "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
             "source_math_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
             "fifo_clarification_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7",
-            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -20331,7 +20548,8 @@
             },
             "source_supplement_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7",
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -20672,7 +20890,8 @@
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "codec_fixture_manifest_sha256": "077070af8cfbe9a2451f768cfdbefe05ffa44c07b6551330bf5d95ee44d34c44",
-            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -20986,8 +21205,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             },
             {
               "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -21653,7 +21872,8 @@
             "source_unit_vectors_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
             "source_input_sha256": "489c73405f5fdc1e078901fc555650d4d46cc5c7beb9e9e2a7159f3eb83e0124",
             "source_delayed_output_sha256": "e81243dc815fa9f324bf10ccb37723251c171036f00b5e08c5469e1f4e447371",
-            "source_terminal_state_sha256": "2d6fb9249269bca846da5d32f82cbec3ffaed04032886bcc489b437a07eac1eb"
+            "source_terminal_state_sha256": "2d6fb9249269bca846da5d32f82cbec3ffaed04032886bcc489b437a07eac1eb",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": []
         },
@@ -21701,7 +21921,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
             "source_verification_sha256": "7aa92b4c0dee80910c8b9c52100bc2ca933903e33efde081e568aafc8ed854d7",
-            "source_review_sha256": "68e25c9805e03b39c22e76b3b39c84327721d3f8282418b3e818385838a751f2"
+            "source_review_sha256": "68e25c9805e03b39c22e76b3b39c84327721d3f8282418b3e818385838a751f2",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": []
         },
@@ -21749,7 +21970,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
             "source_verification_sha256": "7aa92b4c0dee80910c8b9c52100bc2ca933903e33efde081e568aafc8ed854d7",
-            "source_review_sha256": "68e25c9805e03b39c22e76b3b39c84327721d3f8282418b3e818385838a751f2"
+            "source_review_sha256": "68e25c9805e03b39c22e76b3b39c84327721d3f8282418b3e818385838a751f2",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": []
         },
@@ -21810,7 +22032,8 @@
             "source_f07a_spec_sha256": "7d3e85c1281653dfa8228b3162f6df95f0b53b367ce85d9333b4c0151d9dbe1f",
             "source_parameters_sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
             "source_results_sha256": "0c6f3350631c0f54770e75f1a16a8d77cb46042f7f87cbfcf6002e89eb38ff64",
-            "source_actual_review_sha256": "db32255a7b66f7b96f61fdc3989a7f9c6153557efeddff301c886b0674bf1fe2"
+            "source_actual_review_sha256": "db32255a7b66f7b96f61fdc3989a7f9c6153557efeddff301c886b0674bf1fe2",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -22140,7 +22363,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_f07a_spec_sha256": "7d3e85c1281653dfa8228b3162f6df95f0b53b367ce85d9333b4c0151d9dbe1f",
             "source_parameter_sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
-            "source_actual_review_sha256": "db32255a7b66f7b96f61fdc3989a7f9c6153557efeddff301c886b0674bf1fe2"
+            "source_actual_review_sha256": "db32255a7b66f7b96f61fdc3989a7f9c6153557efeddff301c886b0674bf1fe2",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -22221,7 +22445,8 @@
               "sha256": "59f7e83438bd1e7bd955cb4a9fe9c6dd7717939a651eb150d190edb2d91432d5"
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "source_frame_supplement_manifest_sha256": "cf6d7fe12cb30c457a5507c5de35cf614254f84a73adcb2b0428320e75e5dccf"
+            "source_frame_supplement_manifest_sha256": "cf6d7fe12cb30c457a5507c5de35cf614254f84a73adcb2b0428320e75e5dccf",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "five_fbw_six_block_transient_composition": "LOCALLY_VERIFIED_FOR_SYNTHETIC_SOURCE_RECIPE",
@@ -22464,7 +22689,8 @@
                 "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "provider_profile": "math-generated-v1",
@@ -22574,7 +22800,8 @@
                 "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "provider_profile": "math-generated-v1",
@@ -22665,7 +22892,8 @@
                 "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "provider_profile": "math-generated-v1",
@@ -22763,7 +22991,8 @@
                 "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "provider_profile": "math-generated-v1",
@@ -23504,7 +23733,8 @@
                 "sha256": "ec5c872012e73c78743b6e90b7783b4eb62d86bee9147c6a31ff0eff264b24ab"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "provider_profile": "math-generated-v1",
@@ -23681,7 +23911,8 @@
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_input_vectors_sha256": "afed7b0fdd7b80374a63cfb0b5922d6c988ea0c4a4417f09d2f28af5de462bc5",
-            "source_result_sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849"
+            "source_result_sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -23774,7 +24005,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12",
             "source_parameter_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
-            "source_result_sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849"
+            "source_result_sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -24093,7 +24325,8 @@
               "bytes": 4979,
               "sha256": "70d63104353ff6f721ae521be4469a9dda15e48d27e22030b3c46f0220c9b6be"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -24210,7 +24443,8 @@
             "recipe_expected_sha256": "a93d4c68181f6cf5a16cdcaff74a06dd2fa27152ae2351ced4de9fb61f008179",
             "recipe_contract_sha256": "a70789d492fabc2a2b6f0ea086c5141e00f9ed6f05457b6aa0b4a2ebfd5b8d4a",
             "recipe_current_spec_review_sha256": "c2f3a6c318abf705b041c99f151947facc355dc6724d3966369ebb7b8f775572",
-            "recipe_wash_independent_check_sha256": "ce8c21da4ad08b857a94b274a3e44fa73ebb7d7e6bcc0316ced4837853e64b15"
+            "recipe_wash_independent_check_sha256": "ce8c21da4ad08b857a94b274a3e44fa73ebb7d7e6bcc0316ced4837853e64b15",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -24277,7 +24511,8 @@
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
-            "reviewed_spec_sha256": "eea5ed9833a6ca19d859df21f68f3b08e34407ace846f94e64ac5416957c59fb"
+            "reviewed_spec_sha256": "eea5ed9833a6ca19d859df21f68f3b08e34407ace846f94e64ac5416957c59fb",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -24367,7 +24602,8 @@
                 "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "provider_profile": "math-generated-v1",
@@ -24655,7 +24891,8 @@
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_unit_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
-            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f"
+            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "u_cost_0_and_2_header_bits": "LOCALLY_VERIFIED",
@@ -24750,7 +24987,8 @@
                 "sha256": "abf7bb5e8f23a3ce0a90c25e8c859660ad16c0d8fdefd0cb54cb8a6a0766a7f7"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "u_search_01_zero_bap_candidate_order": "LOCALLY_VERIFIED",
@@ -25155,7 +25393,8 @@
               "manifest_sha256": "077070af8cfbe9a2451f768cfdbefe05ffa44c07b6551330bf5d95ee44d34c44",
               "role": "manual wire-layout oracle only; not production codec input or source identity"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -25896,8 +26135,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
@@ -27196,7 +27435,8 @@
               "bytes": 8509,
               "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
             },
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -27725,7 +27965,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
             "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56",
-            "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac"
+            "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "model_public_result_kind_to_id1_preferred": "LOCALLY_VERIFIED",
@@ -28744,7 +28985,8 @@
             "base_complexity_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
             "id14_r2_handoff_manifest_sha256": "9985e8f321741d596a1675499d8764765fc9ecc864dc9824e979da4559b5d684",
             "id14_r2_handoff_check_sha256": "16abeaa22363cb4726d1a1220843fe50db64a713056fabd5fb9e9dd7efb7e0f8",
-            "id14_r2_report_sha256": "366179ec8e1669657f213b695b1b2ff2c5713109c6b7fec68cb01bb1807ac683"
+            "id14_r2_report_sha256": "366179ec8e1669657f213b695b1b2ff2c5713109c6b7fec68cb01bb1807ac683",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": []
         },
@@ -28931,7 +29173,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "carrier_source_package_manifest_sha256": "8edaa695dc53fd9f7de96693b16259b08b7399141f266bded7e4115029f9794e",
             "carrier_handoff_manifest_sha256": "9c136d43219ccd8fc5623066864d27959f079c9cfe9dfcd10a5726e7fb20f049",
-            "carrier_handoff_check_sha256": "8a0343f13fe811e5de8a64cb20ddb7fe72f7190905ef1686590240ac32cf6ff9"
+            "carrier_handoff_check_sha256": "8a0343f13fe811e5de8a64cb20ddb7fe72f7190905ef1686590240ac32cf6ff9",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -29113,7 +29356,8 @@
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "padding_source_manifest_sha256": "47dd26dc64d91de60a8735ee8cc9885da386a58b0c56a9cabc23d97e1303f0d9",
             "padding_handoff_manifest_sha256": "7e839dd2c4ff414651754056c40075360b1cb896422b926a64f4619b8af314f2",
-            "padding_handoff_check_sha256": "d15b4f168cbb16d4041a8190a3898cf287f003aff2bcaf4bfc5c093c1313c768"
+            "padding_handoff_check_sha256": "d15b4f168cbb16d4041a8190a3898cf287f003aff2bcaf4bfc5c093c1313c768",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -30766,13 +31010,13 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18347,
-              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+              "bytes": 18330,
+              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -30808,8 +31052,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18347,
-              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+              "bytes": 18330,
+              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -32723,7 +32967,8 @@
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_vector_bytes": 1503142,
-            "source_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+            "source_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "error_outcomes": [
             {
@@ -32828,7 +33073,8 @@
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_unit_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
-            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f"
+            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "u_compact_four_synthetic_cases": "LOCALLY_VERIFIED",
@@ -32904,7 +33150,8 @@
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_unit_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
-            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f"
+            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f",
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
           },
           "native_status": {
             "u_hmac_rfc4231_case_1": "LOCALLY_VERIFIED",
@@ -33704,8 +33951,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1966280,
-              "sha256": "422810084cd48149ac2136a05e360d84a4dc2e2c88faf9fc8d17cfd0f1138fe7"
+              "bytes": 1966996,
+              "sha256": "ad116986924e4076cea2171b8d8c674244660be00cb061a21e73ed9db8811cae"
             }
           ],
           "test_inventory": [
@@ -34438,8 +34685,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 21340,
-              "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+              "bytes": 21679,
+              "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
             },
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
@@ -34453,8 +34700,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18347,
-              "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+              "bytes": 18330,
+              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
             },
             {
               "path": "crates/jocforge-domain/src/state/mod.rs",
@@ -34468,8 +34715,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-              "bytes": 17794,
-              "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
+              "bytes": 19158,
+              "sha256": "338f851cbfb855fa14f6119ff0fa6854821ad75f8e62ef7052cb80c13802d28b"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24_file.rs",
@@ -37371,13 +37618,13 @@
         },
         {
           "path": "crates/jocforge-application/src/lib.rs",
-          "bytes": 21340,
-          "sha256": "ff950ebab702bf611d0f5984f6c30adbf601752e65694c911c4be62141a573a7"
+          "bytes": 21679,
+          "sha256": "7b9b943bd74e371b986a923a114657de76693c95ca1c4bf47feee7758b217959"
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 18347,
-          "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+          "bytes": 18330,
+          "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -37426,8 +37673,8 @@
         },
         {
           "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-          "bytes": 17794,
-          "sha256": "83a2d4d7024fb83b34c9b4bbb8b655fc8c56cf218f5ca54963162b60695e5cb1"
+          "bytes": 19158,
+          "sha256": "338f851cbfb855fa14f6119ff0fa6854821ad75f8e62ef7052cb80c13802d28b"
         },
         {
           "path": "crates/jocforge-io/src/pcm/riff_pcm24_file.rs",
@@ -37453,8 +37700,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 18347,
-          "sha256": "2b0000a957d16abcbaf3605631edd85eb95eca7c7671ad3a2cb2a300548c747f"
+          "bytes": 18330,
+          "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",

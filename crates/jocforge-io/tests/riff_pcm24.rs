@@ -1,7 +1,8 @@
 // pattern: Functional Core
 use jocforge_domain::timeline::AdmSampleIndex;
 use jocforge_io::pcm::riff_pcm24::{
-    ParsedRiffPcm24, RiffPcm24Error, decode_selected_pcm24_read_chunk, parse_selected_riff_pcm24,
+    ParsedRiffPcm24, RiffPcm24Error, decode_pcm24_read_chunk, decode_selected_pcm24_read_chunk,
+    parse_selected_riff_pcm24,
 };
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -265,6 +266,23 @@ fn selected_adm_payloads_are_unique_borrowed_spans_from_one_riff() {
 }
 
 #[test]
+fn pcm24_riff_reader_preserves_a_36_channel_input_without_padding() {
+    let bytes = riff_pcm24_with_channels(36, 1);
+    let parsed = parse_selected_riff_pcm24(&bytes, None).unwrap();
+    assert_eq!(parsed.channels(), 36);
+    assert_eq!(parsed.block_align(), 108);
+    assert_eq!(parsed.total_samples(), 1);
+
+    let rows = parsed.read_pcm24_hop(AdmSampleIndex::new(0), 1).unwrap();
+    assert_eq!(rows.len(), 36);
+    assert!(rows.iter().all(|row| row.len() == 1));
+
+    let decoded = decode_pcm24_read_chunk(&[0; 36 * 3], (36 * 3) as u32, 36).unwrap();
+    assert_eq!(decoded.planar_f32_bits().len(), 36);
+    assert!(decode_pcm24_read_chunk(&[0; 3], 3, 0).is_err());
+}
+
+#[test]
 fn pcm24_read_chunks_return_complete_frames_from_washed_input_vectors() {
     let vector_bytes = std::fs::read(crate_root().join(F06OF_INPUT_ONLY_VECTORS_PATH)).unwrap();
     assert_eq!(sha256(&vector_bytes), F06OF_INPUT_ONLY_VECTORS_SHA256);
@@ -365,12 +383,28 @@ fn selected_riff_with_metadata(include_dbmd: bool, duplicate_axml: bool) -> Vec<
 }
 
 fn selected_format_payload() -> Vec<u8> {
+    format_payload(38)
+}
+
+fn riff_pcm24_with_channels(channels: u16, frames: usize) -> Vec<u8> {
+    let block_align = usize::from(channels) * 3;
+    let data = vec![0; frames * block_align];
+    let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
+    append_chunk(&mut bytes, *b"fmt ", &format_payload(channels));
+    append_chunk(&mut bytes, *b"data", &data);
+    let riff_size = u32::try_from(bytes.len() - 8).unwrap();
+    bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
+    bytes
+}
+
+fn format_payload(channels: u16) -> Vec<u8> {
+    let block_align = channels * 3;
     let mut format = Vec::with_capacity(16);
     format.extend_from_slice(&1_u16.to_le_bytes());
-    format.extend_from_slice(&38_u16.to_le_bytes());
+    format.extend_from_slice(&channels.to_le_bytes());
     format.extend_from_slice(&48_000_u32.to_le_bytes());
-    format.extend_from_slice(&5_472_000_u32.to_le_bytes());
-    format.extend_from_slice(&114_u16.to_le_bytes());
+    format.extend_from_slice(&(48_000_u32 * u32::from(block_align)).to_le_bytes());
+    format.extend_from_slice(&block_align.to_le_bytes());
     format.extend_from_slice(&24_u16.to_le_bytes());
     format
 }

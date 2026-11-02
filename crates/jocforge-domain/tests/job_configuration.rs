@@ -79,6 +79,16 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
         );
         let expected = &case["expected"];
 
+        if case["id"] == "reject_wrong_pcm_profile" {
+            // The source vector predates variable-count ADM input support. Keep its
+            // hash-bound provenance while treating its 36-channel rejection as superseded.
+            let config = result.expect("36-channel ADM input is now admitted");
+            assert_eq!(config.input_kind(), SelectedInputKind::Adm);
+            assert_eq!(config.wave().channels(), 36);
+            accepted_count += 1;
+            continue;
+        }
+
         if expected["status"] == "ACCEPT" {
             let config = result.unwrap_or_else(|error| panic!("{}: {error:?}", case["id"]));
             accepted_count += 1;
@@ -168,8 +178,54 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
             assert_eq!(expected["state_commit"], false);
         }
     }
-    assert_eq!(accepted_count, 3);
-    assert_eq!(rejected_count, 8);
+    assert_eq!(accepted_count, 4);
+    assert_eq!(rejected_count, 7);
+}
+
+#[test]
+fn adm_job_configuration_accepts_actual_pcm_channel_count_without_widening_atmos_mezz() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let cases = vectors["config_cases"].as_array().unwrap();
+    let adm_case = cases
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .expect("approved ADM configuration vector");
+    let descriptor = &adm_case["pcm_descriptor"];
+    let parsed = parse_selected_job_configuration(
+        adm_case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(
+            descriptor["sample_rate"].as_u64().unwrap() as u32,
+            36,
+            descriptor["pcm_bits"].as_u64().unwrap() as u16,
+        ),
+        descriptor["source_samples"].as_u64().unwrap(),
+    )
+    .unwrap();
+    assert_eq!(parsed.wave().channels(), 36);
+    assert_eq!(parsed.input_kind(), SelectedInputKind::Adm);
+
+    let atmos_mezz_case = cases
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "atmos_mezz"
+        })
+        .expect("approved Atmos mezzanine configuration vector");
+    let descriptor = &atmos_mezz_case["pcm_descriptor"];
+    let rejected = parse_selected_job_configuration(
+        atmos_mezz_case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(
+            descriptor["sample_rate"].as_u64().unwrap() as u32,
+            36,
+            descriptor["pcm_bits"].as_u64().unwrap() as u16,
+        ),
+        descriptor["source_samples"].as_u64().unwrap(),
+    );
+    assert_eq!(
+        rejected,
+        Err(jocforge_domain::frontend::job_configuration::JobConfigurationError::PcmProfile)
+    );
 }
 
 #[test]
@@ -360,7 +416,7 @@ fn selected_bed_pack_order_joins_by_channel_format_identity_to_physical_hosts() 
                 .iter()
                 .map(|host| host.as_u64().unwrap() as u8)
                 .collect::<Vec<_>>();
-            assert_eq!(actual.regular_control_order().as_slice(), expected_regular);
+            assert_eq!(actual.regular_control_order(), expected_regular.as_slice());
             let lfe_host = case["physical_bed_tracks"]
                 .as_array()
                 .unwrap()

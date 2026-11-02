@@ -331,6 +331,7 @@ pub enum PreparedJobInputError {
     ConverterStorageMap(AdmFileStorageMapError),
     DbmdParse(DbmdSectionError),
     MetadataPayloadBinding,
+    WaveTrackCountMismatch,
     IdentityEnvelope,
     IdentityProjection(PreparedJobInputIdentityError),
     PrimaryControlBinding(PrimaryControlBindingError),
@@ -353,6 +354,9 @@ impl std::fmt::Display for PreparedJobInputError {
             Self::DbmdParse(error) => write!(formatter, "DBMD parse: {error:?}"),
             Self::MetadataPayloadBinding => formatter.write_str(
                 "ADM metadata payload is not a unique subslice of the selected resource",
+            ),
+            Self::WaveTrackCountMismatch => formatter.write_str(
+                "RIFF PCM channel count does not match the admitted CHNA physical-track count",
             ),
             Self::IdentityEnvelope => {
                 formatter.write_str("failed to serialize selected job identity envelope")
@@ -412,6 +416,9 @@ pub fn prepare_selected_job_input(
     let dbmd_span = bind_resource_payload(&resource, *b"dbmd", metadata_payloads.dbmd)?;
     let graph = parse_selected_adm_graph(metadata_payloads.axml, metadata_payloads.chna)
         .map_err(PreparedJobInputError::GraphParse)?;
+    if usize::from(wave.channels()) != graph.tracks().len() {
+        return Err(PreparedJobInputError::WaveTrackCountMismatch);
+    }
     if graph.receipt().axml_sha256() != &axml_span.payload_sha256()
         || graph.receipt().chna_sha256() != &chna_span.payload_sha256()
     {

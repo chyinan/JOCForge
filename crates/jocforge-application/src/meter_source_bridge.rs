@@ -254,9 +254,10 @@ fn build_meter_source_physical_row_bindings(
     for track in tracks {
         let pcm_row = pcm_row_for_track_index(track.track_index())?;
         let pcm_row_value = pcm_row.value();
-        let slot = AdmFileStorageTrackSlot::new(pcm_row_value)
-            .map_err(MeterSourceBridgeError::ConverterStorageMap)?;
-        let entry = channels.entry_for_slot(slot);
+        let slot = AdmFileStorageTrackSlot::new(pcm_row_value);
+        let entry = channels
+            .entry_for_slot(slot)
+            .ok_or(MeterSourceBridgeError::PhysicalRowBindingMismatch)?;
         let dbmd_track = dbmd
             .fields_for_physical_host(u16::from(track.physical_host().value()))
             .ok_or(MeterSourceBridgeError::DbmdRowBindingMismatch)?;
@@ -303,8 +304,7 @@ fn bind_selected_physical_track(
     let pcm_row = pcm_row_for_track_index(track.track_index())?;
     let pcm_row_value = pcm_row.value();
     let physical_host = track.physical_host();
-    let slot = AdmFileStorageTrackSlot::new(pcm_row_value)
-        .map_err(MeterSourceBridgeError::ConverterStorageMap)?;
+    let slot = AdmFileStorageTrackSlot::new(pcm_row_value);
     let expected_channel_input_id = match track.kind() {
         SelectedTrackKind::DirectSpeakersBed { bed_input_id, .. } => bed_input_id,
         SelectedTrackKind::Object { semantic_key } => semantic_key,
@@ -798,8 +798,8 @@ mod tests {
         assert_eq!(forward.as_ref(), reversed.as_ref());
         for (row, binding) in forward.iter().enumerate() {
             let row = u8::try_from(row).unwrap();
-            let slot = AdmFileStorageTrackSlot::new(row).unwrap();
-            let channel_entry = channels.entry_for_slot(slot);
+            let slot = AdmFileStorageTrackSlot::new(row);
+            let channel_entry = channels.entry_for_slot(slot).unwrap();
             assert_eq!(binding.pcm_row().value(), row);
             assert_eq!(binding.track_index().value(), u16::from(row) + 1);
             assert_eq!(binding.physical_host().value(), row);
@@ -814,19 +814,27 @@ mod tests {
         let (graph, dbmd) = graph_and_dbmd();
         let channels = build_adm_file_storage_channel_map(&graph).unwrap();
         let first_track = &graph.tracks()[0];
-        let row_zero = AdmFileStorageTrackSlot::new(0).unwrap();
-        let row_one = AdmFileStorageTrackSlot::new(1).unwrap();
+        let row_zero = AdmFileStorageTrackSlot::new(0);
+        let row_one = AdmFileStorageTrackSlot::new(1);
         let dbmd_zero = dbmd.fields_for_physical_host(0).unwrap();
         let dbmd_one = dbmd.fields_for_physical_host(1).unwrap();
 
         assert_eq!(
-            bind_selected_physical_track(first_track, channels.entry_for_slot(row_one), dbmd_zero)
-                .err(),
+            bind_selected_physical_track(
+                first_track,
+                channels.entry_for_slot(row_one).unwrap(),
+                dbmd_zero
+            )
+            .err(),
             Some(MeterSourceBridgeError::PhysicalRowBindingMismatch)
         );
         assert_eq!(
-            bind_selected_physical_track(first_track, channels.entry_for_slot(row_zero), dbmd_one)
-                .err(),
+            bind_selected_physical_track(
+                first_track,
+                channels.entry_for_slot(row_zero).unwrap(),
+                dbmd_one
+            )
+            .err(),
             Some(MeterSourceBridgeError::DbmdRowBindingMismatch)
         );
     }
@@ -870,8 +878,8 @@ mod tests {
         assert_eq!(forward.as_ref(), reversed.as_ref());
         for (physical_row, binding) in forward.iter().enumerate() {
             let row_value = u8::try_from(physical_row).unwrap();
-            let slot = AdmFileStorageTrackSlot::new(row_value).unwrap();
-            let entry = channel_map.entry_for_slot(slot);
+            let slot = AdmFileStorageTrackSlot::new(row_value);
+            let entry = channel_map.entry_for_slot(slot).unwrap();
 
             assert_eq!(binding.pcm_row().value(), row_value);
             assert_eq!(binding.track_index().value(), u16::from(row_value) + 1);
@@ -887,8 +895,8 @@ mod tests {
         let (graph, dbmd) = graph_and_dbmd();
         let channel_map = build_adm_file_storage_channel_map(&graph).unwrap();
         let first_track = &graph.tracks()[0];
-        let wrong_slot = AdmFileStorageTrackSlot::new(1).unwrap();
-        let wrong_entry = channel_map.entry_for_slot(wrong_slot);
+        let wrong_slot = AdmFileStorageTrackSlot::new(1);
+        let wrong_entry = channel_map.entry_for_slot(wrong_slot).unwrap();
         let dbmd_track = dbmd.fields_for_physical_host(0).unwrap();
 
         assert_eq!(
@@ -902,8 +910,8 @@ mod tests {
         let (graph, dbmd) = graph_and_dbmd();
         let channel_map = build_adm_file_storage_channel_map(&graph).unwrap();
         let first_track = &graph.tracks()[0];
-        let slot = AdmFileStorageTrackSlot::new(0).unwrap();
-        let entry = channel_map.entry_for_slot(slot);
+        let slot = AdmFileStorageTrackSlot::new(0);
+        let entry = channel_map.entry_for_slot(slot).unwrap();
         let wrong_dbmd_track = dbmd.fields_for_physical_host(1).unwrap();
 
         assert_eq!(

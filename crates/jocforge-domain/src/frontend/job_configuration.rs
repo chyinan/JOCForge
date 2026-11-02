@@ -13,7 +13,7 @@ use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
 const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
-const SELECTED_CHANNELS: u16 = 38;
+const SELECTED_RUNTIME_CHANNELS: u16 = 38;
 const SELECTED_PCM_BITS: u16 = 24;
 const SELECTED_BIT_RATE_KBPS: u32 = 1_024;
 const SELECTED_BIT_RATE_ENUM: u8 = 5;
@@ -636,7 +636,7 @@ pub fn bind_selected_primary_control_projection(
         .as_u64()
         .ok_or(PrimaryControlBindingError::SourceExtent)?;
     if sample_rate != SELECTED_SAMPLE_RATE_HZ
-        || channels != SELECTED_CHANNELS
+        || channels != SELECTED_RUNTIME_CHANNELS
         || pcm_bits != SELECTED_PCM_BITS
         || block_align != u32::from(channels) * u32::from(pcm_bits) / 8
         || data_bytes % u64::from(block_align) != 0
@@ -715,7 +715,7 @@ pub fn bind_admitted_selected_input(
         return Err(PrimaryControlBindingError::SelectedJobMismatch);
     }
     if wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
-        || wave.channels() != SELECTED_CHANNELS
+        || wave.channels() != SELECTED_RUNTIME_CHANNELS
         || wave.pcm_bits() != SELECTED_PCM_BITS
         || identity.source_file_bytes == 0
         || identity.data_bytes != expected_data_bytes
@@ -873,13 +873,6 @@ pub fn parse_selected_job_configuration(
     if source_samples == 0 {
         return Err(JobConfigurationError::SourceSampleCount);
     }
-    if wave.sample_rate_hz != SELECTED_SAMPLE_RATE_HZ
-        || wave.channels != SELECTED_CHANNELS
-        || wave.pcm_bits != SELECTED_PCM_BITS
-    {
-        return Err(JobConfigurationError::PcmProfile);
-    }
-
     let input_root =
         path_node(root, &["input", "audio"])?.ok_or(JobConfigurationError::MissingField)?;
     let (input_kind, input_node) = if let Some(adm) = single_child(input_root, "adm")? {
@@ -889,6 +882,16 @@ pub fn parse_selected_job_configuration(
     } else {
         return Err(JobConfigurationError::MissingField);
     };
+    let channel_count_supported = match input_kind {
+        SelectedInputKind::Adm => wave.channels > 0,
+        SelectedInputKind::AtmosMezz => wave.channels == SELECTED_RUNTIME_CHANNELS,
+    };
+    if wave.sample_rate_hz != SELECTED_SAMPLE_RATE_HZ
+        || !channel_count_supported
+        || wave.pcm_bits != SELECTED_PCM_BITS
+    {
+        return Err(JobConfigurationError::PcmProfile);
+    }
     let input_reference =
         parse_file_reference(input_node, JobConfigurationError::InvalidInputReference)?;
     let input_timecode = required_text(input_node, &["timecode_frame_rate"])?;

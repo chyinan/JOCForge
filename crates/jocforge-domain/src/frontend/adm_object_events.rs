@@ -156,22 +156,23 @@ impl AdmittedSelectedObjectEvent {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct AdmittedSelectedObjectEvents([AdmittedSelectedObjectEvent; 28]);
+pub struct AdmittedSelectedObjectEvents(Vec<AdmittedSelectedObjectEvent>);
 
 impl AdmittedSelectedObjectEvents {
-    pub const fn events(&self) -> &[AdmittedSelectedObjectEvent; 28] {
+    pub fn events(&self) -> &[AdmittedSelectedObjectEvent] {
         &self.0
     }
 
-    pub fn control_events(&self) -> [SelectedObjectEvent; 28] {
+    pub fn control_events(&self) -> Vec<SelectedObjectEvent> {
         self.0
-            .each_ref()
+            .iter()
             .map(|event| event.control_event().to_owned())
+            .collect()
     }
 }
 
 pub(crate) fn admit_selected_object_events(
-    raw_events: [RawAdmObjectEvent; 28],
+    raw_events: Vec<RawAdmObjectEvent>,
     source_samples: AdmSampleCount,
 ) -> Result<AdmittedSelectedObjectEvents, SelectedAdmObjectEventError> {
     let mut admitted = Vec::with_capacity(28);
@@ -239,10 +240,7 @@ pub(crate) fn admit_selected_object_events(
             event,
         });
     }
-    admitted
-        .try_into()
-        .map(AdmittedSelectedObjectEvents)
-        .map_err(|_| SelectedAdmObjectEventError::DurationMismatch)
+    Ok(AdmittedSelectedObjectEvents(admitted))
 }
 
 /// Implements F01G.4's binary64 operation sequence and returns an ADM sample index.
@@ -447,13 +445,15 @@ mod tests {
             height: Some(-0.0),
             diffuse: Some(0.0),
         };
-        let raw_events = std::array::from_fn(|index| {
-            let mut event = raw.clone();
-            if index == 1 {
-                event.diffuse = None;
-            }
-            event
-        });
+        let raw_events = (0..28)
+            .map(|index| {
+                let mut event = raw.clone();
+                if index == 1 {
+                    event.diffuse = None;
+                }
+                event
+            })
+            .collect();
         let admitted =
             admit_selected_object_events(raw_events, AdmSampleCount::new(1_537).unwrap()).unwrap();
         let event = &admitted.events()[0];

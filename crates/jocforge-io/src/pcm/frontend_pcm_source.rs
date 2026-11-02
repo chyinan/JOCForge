@@ -7,8 +7,7 @@ pub use jocforge_domain::timeline::{
 };
 
 use super::riff_pcm24::{
-    ParsedRiffPcm24, Pcm24FrameCount, RiffPcm24Error, SELECTED_BLOCK_ALIGN, SELECTED_CHANNELS,
-    SELECTED_SAMPLE_RATE_HZ,
+    ParsedRiffPcm24, Pcm24FrameCount, RiffPcm24Error, SELECTED_SAMPLE_RATE_HZ,
 };
 
 const FRAME_SAMPLES: u64 = 1_536;
@@ -82,9 +81,10 @@ pub fn read_frontend_pcm_callback(
     if parsed_source.source_sha256() != selected_input_sha256 {
         return Err(FrontendPcmSourceError::InputIdentityMismatch);
     }
+    let physical_channel_count = usize::from(parsed_source.channels());
     if parsed_source.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
-        || usize::from(parsed_source.channels()) != SELECTED_CHANNELS
-        || usize::from(parsed_source.block_align()) != SELECTED_BLOCK_ALIGN
+        || physical_channel_count == 0
+        || usize::from(parsed_source.block_align()) != physical_channel_count * 3
     {
         return Err(FrontendPcmSourceError::SelectedProfileMismatch);
     }
@@ -114,7 +114,7 @@ pub fn read_frontend_pcm_callback(
     for row in &mut physical_pcm_rows {
         row.resize(FRAME_SAMPLES as usize, 0);
     }
-    if physical_pcm_rows.len() != SELECTED_CHANNELS
+    if physical_pcm_rows.len() != physical_channel_count
         || physical_pcm_rows
             .iter()
             .any(|row| row.len() != FRAME_SAMPLES as usize)
@@ -137,7 +137,9 @@ pub fn read_frontend_pcm_callback(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::pcm::riff_pcm24::parse_selected_riff_pcm24;
+    use crate::pcm::riff_pcm24::{
+        SELECTED_BLOCK_ALIGN, SELECTED_CHANNELS, parse_selected_riff_pcm24,
+    };
 
     fn put_u16(bytes: &mut Vec<u8>, value: u16) {
         bytes.extend_from_slice(&value.to_le_bytes());

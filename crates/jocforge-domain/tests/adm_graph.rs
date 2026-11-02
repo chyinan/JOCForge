@@ -162,7 +162,7 @@ fn selected_actual_axml_chna_produce_the_38_track_identity_graph() {
         .map(|row| u8::try_from(row["physical_host"].as_u64().unwrap()).unwrap())
         .collect::<Vec<_>>();
     assert_eq!(
-        graph.bed_channel_join().object_hosts().as_slice(),
+        graph.bed_channel_join().object_hosts(),
         expected_object_hosts.as_slice()
     );
 

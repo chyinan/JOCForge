@@ -211,9 +211,8 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
             for track in prepared.graph().graph().tracks() {
                 let slot = AdmFileStorageTrackSlot::new(
                     u8::try_from(track.track_index().value() - 1).unwrap(),
-                )
-                .unwrap();
-                let entry = converter_map.channels().entry_for_slot(slot);
+                );
+                let entry = converter_map.channels().entry_for_slot(slot).unwrap();
                 let expected_channel_input = match track.kind() {
                     SelectedTrackKind::DirectSpeakersBed { bed_input_id, .. } => bed_input_id,
                     SelectedTrackKind::Object { semantic_key } => semantic_key,

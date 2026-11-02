@@ -5,7 +5,6 @@ use crate::frontend::bed_channel_join::SelectedBedChannelJoin;
 use crate::frontend::dbmd_sections::DbmdTrackFields;
 use crate::numeric::{FiniteF32, r32_add, r32_mul};
 
-const HOST_CHANNEL_COUNT: u8 = 38;
 const SAMPLE_RATE: f32 = 48_000.0;
 const SAMPLER_PERIOD: f32 = 512.0;
 const SAMPLER_TAU: f32 = f32::from_bits(0x3ccc_cccd);
@@ -176,16 +175,16 @@ impl ObjectControl52 {
 /// selected bed/host join. No row is returned when any event fails validation.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SelectedObjectControlSet {
-    rows: [ObjectControl52; 28],
-    dbmd_tracks: [DbmdTrackFields; 28],
+    rows: Vec<ObjectControl52>,
+    dbmd_tracks: Vec<DbmdTrackFields>,
 }
 
 impl SelectedObjectControlSet {
-    pub const fn rows(&self) -> &[ObjectControl52; 28] {
+    pub fn rows(&self) -> &[ObjectControl52] {
         &self.rows
     }
 
-    pub const fn dbmd_tracks(&self) -> &[DbmdTrackFields; 28] {
+    pub fn dbmd_tracks(&self) -> &[DbmdTrackFields] {
         &self.dbmd_tracks
     }
 }
@@ -195,9 +194,6 @@ impl SelectedObjectControlSet {
 pub fn build_selected_object_control52(
     event: SelectedObjectEvent,
 ) -> Result<ObjectControl52, ObjectControlError> {
-    if event.host_channel_index >= HOST_CHANNEL_COUNT {
-        return Err(ObjectControlError::HostDomain);
-    }
     if event.start_sample != 0 {
         return Err(ObjectControlError::EventStart);
     }
@@ -215,14 +211,14 @@ pub fn build_selected_object_control52(
     ))
 }
 
-/// Builds the complete selected 28-object control set in ascending physical-host
+/// Builds the complete selected object control set in ascending physical-host
 /// order. The caller must supply the previously validated bed/host identity join.
 pub fn build_selected_object_control_set(
     events: &[SelectedObjectEvent],
     dbmd_tracks: &[DbmdTrackFields],
     bed_join: &SelectedBedChannelJoin,
 ) -> Result<SelectedObjectControlSet, ObjectControlError> {
-    if events.len() != 28 || dbmd_tracks.len() != 28 {
+    if events.len() != dbmd_tracks.len() || events.len() != bed_join.object_hosts().len() {
         return Err(ObjectControlError::EventCount);
     }
     let mut rows = Vec::with_capacity(events.len());
@@ -237,14 +233,10 @@ pub fn build_selected_object_control_set(
         }
         rows.push(build_selected_object_control52(*event)?);
     }
-    let rows = rows
-        .try_into()
-        .map_err(|_| ObjectControlError::EventCount)?;
-    let dbmd_tracks: [DbmdTrackFields; 28] = dbmd_tracks
-        .to_vec()
-        .try_into()
-        .map_err(|_| ObjectControlError::EventCount)?;
-    Ok(SelectedObjectControlSet { rows, dbmd_tracks })
+    Ok(SelectedObjectControlSet {
+        rows,
+        dbmd_tracks: dbmd_tracks.to_vec(),
+    })
 }
 
 pub(crate) fn writer_coordinates(

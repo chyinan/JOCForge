@@ -25,11 +25,8 @@ const CHNA_TRACK_INDEX_BYTES: usize = 2;
 const CHNA_UID_BYTES: usize = 12;
 const CHNA_TRACK_FORMAT_BYTES: usize = 14;
 const CHNA_PACK_FORMAT_BYTES: usize = 11;
-const SELECTED_TRACK_COUNT: usize = 38;
 const SELECTED_BED_COUNT: usize = 10;
-const SELECTED_OBJECT_COUNT: usize = 28;
 const VIRTUAL_PREFIX_SOURCE_COUNT: u64 = 11;
-const SELECTED_TOTAL_SOURCE_COUNT: u64 = 48;
 
 /// One-based CHNA track index, distinct from its zero-based physical host.
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
@@ -202,12 +199,12 @@ impl RegularSourceBinding {
 pub struct SelectedAdmGraphReceipt {
     axml_sha256: [u8; 32],
     chna_sha256: [u8; 32],
-    physical_track_count: u8,
-    bed_track_count: u8,
-    object_track_count: u8,
+    physical_track_count: u16,
+    bed_track_count: u16,
+    object_track_count: u16,
     direct_lfe_host: PhysicalHostIndex,
     virtual_prefix_source_count: u8,
-    total_source_count: u8,
+    total_source_count: u16,
 }
 
 impl SelectedAdmGraphReceipt {
@@ -219,15 +216,15 @@ impl SelectedAdmGraphReceipt {
         &self.chna_sha256
     }
 
-    pub const fn physical_track_count(&self) -> u8 {
+    pub const fn physical_track_count(&self) -> u16 {
         self.physical_track_count
     }
 
-    pub const fn bed_track_count(&self) -> u8 {
+    pub const fn bed_track_count(&self) -> u16 {
         self.bed_track_count
     }
 
-    pub const fn object_track_count(&self) -> u8 {
+    pub const fn object_track_count(&self) -> u16 {
         self.object_track_count
     }
 
@@ -239,7 +236,7 @@ impl SelectedAdmGraphReceipt {
         self.virtual_prefix_source_count
     }
 
-    pub const fn total_source_count(&self) -> u8 {
+    pub const fn total_source_count(&self) -> u16 {
         self.total_source_count
     }
 }
@@ -247,18 +244,18 @@ impl SelectedAdmGraphReceipt {
 /// Selected valid-input graph projection. It does not parse event numerics or install control38.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SelectedAdmGraph {
-    tracks: [SelectedPhysicalTrack; SELECTED_TRACK_COUNT],
-    object_events: [RawAdmObjectEvent; SELECTED_OBJECT_COUNT],
-    object_sampler_owner_bindings: [ObjectSamplerOwnerBinding; SELECTED_OBJECT_COUNT],
+    tracks: Vec<SelectedPhysicalTrack>,
+    object_events: Vec<RawAdmObjectEvent>,
+    object_sampler_owner_bindings: Vec<ObjectSamplerOwnerBinding>,
     bed_pack_channel_format_ids: [String; SELECTED_BED_COUNT],
     bed_join: SelectedBedChannelJoin,
-    regular_source_bindings: [RegularSourceBinding; SELECTED_TRACK_COUNT - 1],
+    regular_source_bindings: Vec<RegularSourceBinding>,
     uid_to_track_index: BTreeMap<String, ChnaTrackIndex>,
     receipt: SelectedAdmGraphReceipt,
 }
 
 impl SelectedAdmGraph {
-    pub fn tracks(&self) -> &[SelectedPhysicalTrack; SELECTED_TRACK_COUNT] {
+    pub fn tracks(&self) -> &[SelectedPhysicalTrack] {
         &self.tracks
     }
 
@@ -274,9 +271,7 @@ impl SelectedAdmGraph {
     ///
     /// Runtime invocation remains a separate physical-host-ordered traversal;
     /// callers join each track to this table by TrackUID.
-    pub const fn object_sampler_owner_bindings(
-        &self,
-    ) -> &[ObjectSamplerOwnerBinding; SELECTED_OBJECT_COUNT] {
+    pub fn object_sampler_owner_bindings(&self) -> &[ObjectSamplerOwnerBinding] {
         &self.object_sampler_owner_bindings
     }
 
@@ -287,9 +282,7 @@ impl SelectedAdmGraph {
         find_object_sampler_owner_binding(&self.object_sampler_owner_bindings, track_uid)
     }
 
-    pub const fn regular_source_bindings(
-        &self,
-    ) -> &[RegularSourceBinding; SELECTED_TRACK_COUNT - 1] {
+    pub fn regular_source_bindings(&self) -> &[RegularSourceBinding] {
         &self.regular_source_bindings
     }
 
@@ -335,11 +328,7 @@ impl SelectedAdmGraph {
 
 fn build_object_sampler_owner_bindings(
     object_tracks: &[&SelectedPhysicalTrack],
-) -> Result<[ObjectSamplerOwnerBinding; SELECTED_OBJECT_COUNT], SelectedAdmGraphError> {
-    if object_tracks.len() != SELECTED_OBJECT_COUNT {
-        return Err(SelectedAdmGraphError::SelectedTrackDomain);
-    }
-
+) -> Result<Vec<ObjectSamplerOwnerBinding>, SelectedAdmGraphError> {
     let mut ordered_tracks = object_tracks.to_vec();
     ordered_tracks.sort_by(|left, right| left.uid.as_bytes().cmp(right.uid.as_bytes()));
     if ordered_tracks
@@ -369,13 +358,11 @@ fn build_object_sampler_owner_bindings(
         })
         .collect::<Result<Vec<_>, _>>()?;
 
-    bindings
-        .try_into()
-        .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)
+    Ok(bindings)
 }
 
 fn find_object_sampler_owner_binding<'a>(
-    bindings: &'a [ObjectSamplerOwnerBinding; SELECTED_OBJECT_COUNT],
+    bindings: &'a [ObjectSamplerOwnerBinding],
     track_uid: &str,
 ) -> Option<&'a ObjectSamplerOwnerBinding> {
     let index = bindings
@@ -422,7 +409,8 @@ pub fn parse_selected_adm_graph(
     let pack_format_nodes =
         index_nodes(&document, namespace, "audioPackFormat", "audioPackFormatID");
 
-    if records.len() != SELECTED_TRACK_COUNT
+    if records.is_empty()
+        || records.len() > usize::from(u8::MAX) + 1
         || records
             .iter()
             .enumerate()
@@ -431,8 +419,8 @@ pub fn parse_selected_adm_graph(
         return Err(SelectedAdmGraphError::SelectedTrackDomain);
     }
 
-    let mut rows = Vec::with_capacity(SELECTED_TRACK_COUNT);
-    let mut object_events = Vec::with_capacity(SELECTED_OBJECT_COUNT);
+    let mut rows = Vec::with_capacity(records.len());
+    let mut object_events = Vec::with_capacity(records.len().saturating_sub(SELECTED_BED_COUNT));
     for record in &records {
         let uid_node = lookup(&track_uid_nodes, &record.uid)?;
         let direct_track_format = first_child_text(uid_node, "audioTrackFormatIDRef", namespace)?;
@@ -536,7 +524,7 @@ pub fn parse_selected_adm_graph(
         .iter()
         .filter(|row| matches!(row.kind, SelectedTrackKind::Object { .. }))
         .collect::<Vec<_>>();
-    if bed_rows.len() != SELECTED_BED_COUNT || object_rows.len() != SELECTED_OBJECT_COUNT {
+    if bed_rows.len() != SELECTED_BED_COUNT || bed_rows.len() + object_rows.len() != records.len() {
         return Err(SelectedAdmGraphError::SelectedTrackDomain);
     }
 
@@ -588,44 +576,48 @@ pub fn parse_selected_adm_graph(
 
     let direct_lfe_host = bed_join.lfe_host();
     let regular_hosts = bed_join.regular_control_order();
-    if regular_hosts.len() != SELECTED_TRACK_COUNT - 1 {
+    if regular_hosts.len() != records.len() - 1 {
         return Err(SelectedAdmGraphError::SourceBindingDomain);
     }
-    let regular_source_bindings: [RegularSourceBinding; SELECTED_TRACK_COUNT - 1] =
-        std::array::from_fn(|rank| RegularSourceBinding {
-            physical_host: PhysicalHostIndex(regular_hosts[rank]),
+    let regular_source_bindings = regular_hosts
+        .iter()
+        .enumerate()
+        .map(|(rank, physical_host)| RegularSourceBinding {
+            physical_host: PhysicalHostIndex(*physical_host),
             global_source: CodecSourceIndex::new(
                 VIRTUAL_PREFIX_SOURCE_COUNT + u64::try_from(rank).unwrap_or(u64::MAX),
             ),
-        });
+        })
+        .collect::<Vec<_>>();
 
     let uid_to_track_index = rows
         .iter()
         .map(|row| (row.uid.clone(), row.track_index))
         .collect::<BTreeMap<_, _>>();
-    if uid_to_track_index.len() != SELECTED_TRACK_COUNT {
+    if uid_to_track_index.len() != records.len() {
         return Err(SelectedAdmGraphError::DuplicateUid);
     }
     let object_sampler_owner_bindings = build_object_sampler_owner_bindings(&object_rows)?;
-    let tracks: [SelectedPhysicalTrack; SELECTED_TRACK_COUNT] = rows
-        .try_into()
-        .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
-    let object_events: [RawAdmObjectEvent; SELECTED_OBJECT_COUNT] = object_events
-        .try_into()
-        .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
+    let total_source_count = VIRTUAL_PREFIX_SOURCE_COUNT
+        .checked_add(u64::try_from(regular_source_bindings.len()).unwrap_or(u64::MAX))
+        .ok_or(SelectedAdmGraphError::SelectedTrackDomain)?;
     let receipt = SelectedAdmGraphReceipt {
         axml_sha256: Sha256::digest(axml).into(),
         chna_sha256: Sha256::digest(chna).into(),
-        physical_track_count: u8::try_from(SELECTED_TRACK_COUNT).unwrap_or(u8::MAX),
-        bed_track_count: u8::try_from(SELECTED_BED_COUNT).unwrap_or(u8::MAX),
-        object_track_count: u8::try_from(SELECTED_OBJECT_COUNT).unwrap_or(u8::MAX),
+        physical_track_count: u16::try_from(records.len())
+            .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?,
+        bed_track_count: u16::try_from(bed_rows.len())
+            .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?,
+        object_track_count: u16::try_from(object_rows.len())
+            .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?,
         direct_lfe_host: PhysicalHostIndex(direct_lfe_host),
         virtual_prefix_source_count: u8::try_from(VIRTUAL_PREFIX_SOURCE_COUNT).unwrap_or(u8::MAX),
-        total_source_count: u8::try_from(SELECTED_TOTAL_SOURCE_COUNT).unwrap_or(u8::MAX),
+        total_source_count: u16::try_from(total_source_count)
+            .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?,
     };
 
     Ok(SelectedAdmGraph {
-        tracks,
+        tracks: rows,
         object_events,
         object_sampler_owner_bindings,
         bed_pack_channel_format_ids: pack_channel_format_ids,
@@ -717,12 +709,13 @@ fn parse_chna(bytes: &[u8]) -> Result<Vec<ChnaRecord>, SelectedAdmGraphError> {
         )
         .ok_or(SelectedAdmGraphError::ChnaExtent)?;
     if bytes.len() != expected_length
-        || usize::from(track_count) != SELECTED_TRACK_COUNT
-        || usize::from(uid_count) != SELECTED_TRACK_COUNT
+        || track_count == 0
+        || track_count != uid_count
+        || usize::from(track_count) > usize::from(u8::MAX) + 1
     {
         return Err(SelectedAdmGraphError::ChnaExtent);
     }
-    let mut records = Vec::with_capacity(SELECTED_TRACK_COUNT);
+    let mut records = Vec::with_capacity(usize::from(uid_count));
     let mut seen_indices = BTreeSet::new();
     let mut seen_uids = BTreeSet::new();
     for ordinal in 0..usize::from(uid_count) {
@@ -1179,14 +1172,14 @@ mod object_sampler_owner_binding_tests {
             .collect()
     }
 
-    fn owner_bindings(tracks: &[SelectedPhysicalTrack]) -> [ObjectSamplerOwnerBinding; 28] {
+    fn owner_bindings(tracks: &[SelectedPhysicalTrack]) -> Vec<ObjectSamplerOwnerBinding> {
         let object_tracks = tracks.iter().collect::<Vec<_>>();
         build_object_sampler_owner_bindings(&object_tracks).unwrap()
     }
 
     fn assert_associations(
         tracks: &[SelectedPhysicalTrack],
-        bindings: &[ObjectSamplerOwnerBinding; 28],
+        bindings: &[ObjectSamplerOwnerBinding],
     ) {
         assert_eq!(bindings.len(), 28);
         for (index, binding) in bindings.iter().enumerate() {

@@ -1,5 +1,5 @@
 use jocforge_domain::frontend::adm_file_storage_map::{
-    AdmFileStorageMapError, AdmFileStorageTrackSlot, build_adm_file_storage_channel_map,
+    AdmFileStorageTrackSlot, build_adm_file_storage_channel_map,
 };
 use jocforge_domain::frontend::selected_adm_graph::{SelectedTrackKind, parse_selected_adm_graph};
 use serde_json::Value;
@@ -36,8 +36,8 @@ fn selected_graph_projects_chna_slots_and_converter_channel_values_separately() 
             .find(|row| row["track_index"].as_u64() == Some(u64::from(track.track_index().value())))
             .unwrap();
         let track_slot_value = track.track_index().value() - 1;
-        let slot = AdmFileStorageTrackSlot::new(u8::try_from(track_slot_value).unwrap()).unwrap();
-        let entry = map.entry_for_slot(slot);
+        let slot = AdmFileStorageTrackSlot::new(u8::try_from(track_slot_value).unwrap());
+        let entry = map.entry_for_slot(slot).unwrap();
         assert_eq!(entry.track_slot(), slot);
         assert_eq!(
             u64::from(entry.track_slot().value()),
@@ -81,11 +81,12 @@ fn selected_graph_projects_chna_slots_and_converter_channel_values_separately() 
 }
 
 #[test]
-fn converter_storage_slots_reject_values_outside_the_selected_track_domain() {
-    assert_eq!(
-        AdmFileStorageTrackSlot::new(38),
-        Err(AdmFileStorageMapError::TrackSlotOutOfRange(38)),
-    );
+fn converter_storage_slots_preserve_zero_based_values_independently_of_map_extent() {
+    let slot = AdmFileStorageTrackSlot::new(38);
+    assert_eq!(slot.value(), 38);
+    let graph = parse_selected_adm_graph(AXML, CHNA).unwrap();
+    let map = build_adm_file_storage_channel_map(&graph).unwrap();
+    assert_eq!(map.entry_for_slot(slot), None);
 }
 
 fn hex(bytes: &[u8]) -> String {

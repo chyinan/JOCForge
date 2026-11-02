@@ -2,7 +2,23 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
-> 文档更新：2026-11-02。当前 Rust film_light DRC candidate 使用 JOCForge commit `42925e78da48d942d51a4f8e82efb7860aa024eb`，Release exe SHA-256 为 `e61dd4de59804ee42b7193e5bda06718ef4da5b33ec6d2673fcd54d646b024df`。输入 SHA-256 为 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`。
+## 2026-11-03：ADM 输入行数扩展
+
+本轮将输入准备层从固定 38 行扩展为按实际 RIFF PCM/CHNA 数量携带行，不代表 36 行音频编码链路已闭合。
+
+- `crates/jocforge-io/src/pcm/riff_pcm24.rs` 按 `fmt ` 中的实际 channel count、block align 和 byte rate 解析 PCM24；PCM 解码产生相同行数，保持 interleave 顺序。
+- `parse_selected_job_configuration` 对 ADM 输入接受非零实际 channel count；AtmosMezz 分支仍要求 38 行。`prepare_selected_job_input` 要求 RIFF channel count 与 CHNA physical-track count 相等。
+- ADM graph、object events 和 converter storage map 使用实际数量，不创建补位行。当前 `PhysicalHostIndex(u8)` 限制输入图最多 256 个 physical rows；选定 graph 还要求 10 个 bed rows，其余行按 object rows 处理。
+- 对授权的 `D:\\潜在的なアイ.wav` 做了 metadata-only 检查：fmt=36 channel / PCM24 / 48 kHz，CHNA=36/36，AXML 有 36 个 TrackUID 和 27 个 AudioObject。图解析得到 36 rows、10 bed、26 object。另用这些元数据构造一帧合成零值 PCM 的内存资源，`PreparedJobInput` 与 36-slot converter map 均通过；原件的 PCM data chunk 只 seek 跳过，没有读取 PCM 样本。
+- `AUTHORIZED-ADM-36-38-TRACK-METADATA-CROSSWALK-V2` supersedes V1; manifest `2e238835a0edd84a90764a2c74778f50b2c12e760d7ad051446a772f2efc8113` 已由实现侧 normal/`python -O` 独立核验。V2 rehashes `fmt `/CHNA/AXML metadata, while inherited whole-file identities come from an earlier sealed receipt; it did not reread either WAV `data` chunk. This evidence does not establish JOCForge codec acceptance.
+- `ADM-BWF-DDP-CHANNEL-COUNT-LINEAGE-V1` manifest `10e47c5266f02caef327b31890a3719521ab4a86c8f687ef0b10ca92edadc437` 已由实现侧 normal/`python -O` 独立核验。它分别证实 converter reader count 和 DDP configured count/descriptor count 可动态分配，但 host writer/argument 的 same-job transfer 仍 `UNBOUND`，36-channel end-to-end 为 `NOT_RUN`。
+- `SAMPLE6-DRC-HOST-FRAME-ABI-BOUNDARY-V1` manifest `9299500b6ee4931bd0104f34791ef88abf90e139fa4982f1de3df8a53dd732f3` 已由实现侧 normal/`python -O` 独立核验。它闭合 core 本地 Comp frame-view adapter，但未发现 selected host reader 到该接口的 typed call/count/pointer transfer；`external this`、owner 和 generation 仍 `UNBOUND`。
+- `DEE-RAW-PCM-DOWNMIXER-COUNT-BOUNDARY-V1` manifest `c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1` normal/`python -O` 均通过。它的 `>8` gate 只适用于 raw-PCM CLI→DDP downmixer branch；ADM BWF gate `UNBOUND`，不可拿来否定 ADM 输入支持。
+- R2 `SAMPLE6-DRC-TRACK-COUNT-STAGING-BOUNDARY-V1` 显示另一 core wrapper 在 `local_d8[16]` 中先拷贝 process frame-view pointer entries、后做 count/capacity 检查；ADM row count 到此 frame-view count 没有 typed join。不得把输入 graph count 接进该字段。
+
+F01E normal-control snapshot、primary-control binding、meter source bridge 和 programme callback 仍是 38 行。当前 36 行切片在 `PreparedJobInput` / converter storage map 结束，未进入这些 runtime owners；DDP frame-view count、core rows 和实际音频映射仍 `UNBOUND`。未运行新的 DEE 编码。
+
+> 历史 run 记录（2026-11-02）：Rust film_light DRC candidate 使用 JOCForge commit `42925e78da48d942d51a4f8e82efb7860aa024eb`，Release exe SHA-256 为 `e61dd4de59804ee42b7193e5bda06718ef4da5b33ec6d2673fcd54d646b024df`。输入 SHA-256 为 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`。
 >
 > Rust 输出 SHA-256 为 `d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b`。DEE matched-control 输出 SHA-256 为 `80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662`，job XML SHA-256 为 `c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7`。两者使用同一 ADM 和 matched audio controls。
 >
@@ -190,7 +206,7 @@ Wash reference `F09-D45-CURRENT-RUST-COVERAGE-BOUNDARY-V1`（manifest SHA-256 `6
 
 ## 目标与边界
 
-目标输入是用户授权的 ADM BWF。目标输出是 48 kHz、1,024 kbps、5.1、E-AC-3 JOC。当前 profile 只接受选定的 ADM BWF、38 通道 PCM24、5.1 六个 carrier、mode 0/phase 1/index 3、单 independent 子流、零 dependent 子流、六个 block、1,536 samples/AU 和 4,096 bytes/AU。EMDF 使用 `deployed_compat` 或 `etsi_emdf`。OpenJOC render target 只属于独立验证配置。
+目标输入是用户授权的 ADM BWF。输入准备层当前接受 48 kHz PCM24、10–256 个实际 physical rows，并要求 WAVE channels 与 CHNA rows 一致；36-row 已通过到 `PreparedJobInput`。目标输出仍是 48 kHz、1,024 kbps、5.1、E-AC-3 JOC，downmix mode 0/phase 1/index 3、单 independent 子流、零 dependent 子流、六个 block、1,536 samples/AU 和 4,096 bytes/AU。EMDF 使用 `deployed_compat` 或 `etsi_emdf`。OpenJOC render target 只属于独立验证配置。36-row 输入尚未进入 runtime callback、meter bridge 或 native DDP frame-view。
 
 profile 细节见 [PROFILE-DIMENSIONS.md](PROFILE-DIMENSIONS.md)。模块边界见 [ARCHITECTURE.md](ARCHITECTURE.md)、[DATAFLOW.md](DATAFLOW.md) 和 [STATE-OWNERSHIP.md](STATE-OWNERSHIP.md)。
 
@@ -203,9 +219,9 @@ profile 细节见 [PROFILE-DIMENSIONS.md](PROFILE-DIMENSIONS.md)。模块边界�
 flowchart TB
   INPUT["授权 ADM BWF<br/>任务 XML 与显式选项"]
   ADMIT["F01E 输入准入<br/>局部解析已验证"]
-  PROFILE["PreparedJobInputIdentity + selected EncodingProfile<br/>38-channel PCM24 · 48 kHz · 5.1"]
-  PCM["38-channel PCM blocks"]
-  METER["F06 metering / OAMDI<br/>Release run 完成 4,247 callbacks / 3 drains<br/>local-model dialnorm=Some(17)"]
+  PROFILE["PreparedJobInputIdentity + selected EncodingProfile<br/>48 kHz PCM24 · N rows preserved<br/>36-row preparation verified"]
+  PCM["N physical PCM rows<br/>DDP frame-view transfer UNBOUND"]
+  METER["F06 metering / OAMDI<br/>existing runtime bridge remains 38-row<br/>local-model dialnorm=Some(17) on prior 38-row run"]
   MEASUREMENT["ProgrammeMeasurementReceipt<br/>本次 run 已接入；metadata generation=0"]
   READY["GTC READY<br/>本次 run 构造 12 个 owner roots"]
   PRODUCERS["Callback / AU producer group<br/>4,249 sources → 4,247 AUs<br/>本次 run 全部完成"]

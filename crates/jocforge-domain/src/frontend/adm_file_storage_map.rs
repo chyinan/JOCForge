@@ -3,19 +3,14 @@
 
 use crate::frontend::selected_adm_graph::{SelectedAdmGraph, SelectedTrackKind};
 
-const SELECTED_TRACK_COUNT: usize = 38;
+const MAX_ADM_TRACK_COUNT: usize = u8::MAX as usize + 1;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct AdmFileStorageTrackSlot(u8);
 
 impl AdmFileStorageTrackSlot {
-    pub fn new(value: u8) -> Result<Self, AdmFileStorageMapError> {
-        if usize::from(value) >= SELECTED_TRACK_COUNT {
-            return Err(AdmFileStorageMapError::TrackSlotOutOfRange(u16::from(
-                value,
-            )));
-        }
-        Ok(Self(value))
+    pub const fn new(value: u8) -> Self {
+        Self(value)
     }
 
     pub const fn value(self) -> u8 {
@@ -58,18 +53,21 @@ pub enum AdmFileStorageMapError {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AdmFileStorageChannelMap {
-    entries_by_track_slot: [AdmFileStorageChannelEntry; SELECTED_TRACK_COUNT],
+    entries_by_track_slot: Vec<AdmFileStorageChannelEntry>,
 }
 
 impl AdmFileStorageChannelMap {
-    pub const fn entries_by_track_slot(
-        &self,
-    ) -> &[AdmFileStorageChannelEntry; SELECTED_TRACK_COUNT] {
+    pub fn entries_by_track_slot(&self) -> &[AdmFileStorageChannelEntry] {
         &self.entries_by_track_slot
     }
 
-    pub fn entry_for_slot(&self, slot: AdmFileStorageTrackSlot) -> AdmFileStorageChannelEntry {
-        self.entries_by_track_slot[usize::from(slot.value())]
+    pub fn entry_for_slot(
+        &self,
+        slot: AdmFileStorageTrackSlot,
+    ) -> Option<AdmFileStorageChannelEntry> {
+        self.entries_by_track_slot
+            .get(usize::from(slot.value()))
+            .copied()
     }
 }
 
@@ -82,8 +80,13 @@ impl AdmFileStorageChannelMap {
 pub fn build_adm_file_storage_channel_map(
     graph: &SelectedAdmGraph,
 ) -> Result<AdmFileStorageChannelMap, AdmFileStorageMapError> {
-    let mut entries_by_slot: [Option<AdmFileStorageChannelEntry>; SELECTED_TRACK_COUNT] =
-        [None; SELECTED_TRACK_COUNT];
+    let track_count = graph.tracks().len();
+    if track_count == 0 || track_count > MAX_ADM_TRACK_COUNT {
+        return Err(AdmFileStorageMapError::TrackSlotOutOfRange(
+            u16::try_from(track_count).unwrap_or(u16::MAX),
+        ));
+    }
+    let mut entries_by_slot = vec![None; track_count];
 
     for track in graph.tracks() {
         let track_index = track.track_index().value();
@@ -92,8 +95,11 @@ pub fn build_adm_file_storage_channel_map(
             .ok_or(AdmFileStorageMapError::ChnaTrackIndexZero)?;
         let slot_value = u8::try_from(zero_based_slot)
             .map_err(|_| AdmFileStorageMapError::TrackSlotOutOfRange(zero_based_slot))?;
-        let slot = AdmFileStorageTrackSlot::new(slot_value)?;
+        let slot = AdmFileStorageTrackSlot::new(slot_value);
         let index = usize::from(slot.value());
+        if index >= track_count {
+            return Err(AdmFileStorageMapError::TrackSlotOutOfRange(zero_based_slot));
+        }
         let channel_input_id = match track.kind() {
             SelectedTrackKind::DirectSpeakersBed { bed_input_id, .. } => bed_input_id,
             SelectedTrackKind::Object { semantic_key } => semantic_key,
@@ -116,11 +122,7 @@ pub fn build_adm_file_storage_channel_map(
             })
         })
         .collect::<Result<Vec<_>, _>>()?;
-    let entries_by_track_slot = ordered_entries
-        .try_into()
-        .map_err(|_| AdmFileStorageMapError::MissingTrackSlot(u8::MAX))?;
-
     Ok(AdmFileStorageChannelMap {
-        entries_by_track_slot,
+        entries_by_track_slot: ordered_entries,
     })
 }

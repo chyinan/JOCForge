@@ -3,6 +3,8 @@
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum AuthoredInputProfile {
+    SelectedAdmBwfPcm24At48Khz,
+    /// 38-channel spelling retained for callers that name that specific subset.
     SelectedAdmBwf38ChannelPcm24At48Khz,
     Unsupported,
 }
@@ -49,7 +51,7 @@ impl EncodingProfile {
 
     pub const fn selected_with_carriage(emdf_carriage: EmdfCarriageProfile) -> Self {
         Self {
-            authored_input: AuthoredInputProfile::SelectedAdmBwf38ChannelPcm24At48Khz,
+            authored_input: AuthoredInputProfile::SelectedAdmBwfPcm24At48Khz,
             core_carrier: CoreCarrierProfile::SelectedFivePointOneSixCarrier,
             joc_downmix: JocDownmixProfile::SelectedMode0Phase1Index3,
             substream_topology: SubstreamTopology::SelectedSingleIndependentZeroDependent,
@@ -98,7 +100,8 @@ pub const fn resolve_selected_profile(
 ) -> Result<ResolvedEncodingProfile, ProfileError> {
     if !matches!(
         profile.authored_input,
-        AuthoredInputProfile::SelectedAdmBwf38ChannelPcm24At48Khz
+        AuthoredInputProfile::SelectedAdmBwfPcm24At48Khz
+            | AuthoredInputProfile::SelectedAdmBwf38ChannelPcm24At48Khz
     ) || !matches!(
         profile.core_carrier,
         CoreCarrierProfile::SelectedFivePointOneSixCarrier

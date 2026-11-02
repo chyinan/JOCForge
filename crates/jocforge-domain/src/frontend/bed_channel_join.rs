@@ -4,9 +4,7 @@
 //! The caller supplies graph-derived physical rows. This module joins by exact
 //! `channel_format_id`; it does not parse AXML/CHNA or infer host order.
 
-const SELECTED_HOST_COUNT: usize = 38;
 const SELECTED_BED_COUNT: usize = 10;
-const SELECTED_OBJECT_COUNT: usize = SELECTED_HOST_COUNT - SELECTED_BED_COUNT;
 
 /// One F01G graph-produced physical bed track row.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -58,8 +56,8 @@ impl BedChannelJoinError {
 pub struct SelectedBedChannelJoin {
     slots_by_pack: [u8; SELECTED_BED_COUNT],
     lfe_host: u8,
-    object_hosts: [u8; SELECTED_OBJECT_COUNT],
-    regular_control_order: [u8; SELECTED_OBJECT_COUNT + SELECTED_BED_COUNT - 1],
+    object_hosts: Vec<u8>,
+    regular_control_order: Vec<u8>,
 }
 
 impl SelectedBedChannelJoin {
@@ -71,11 +69,11 @@ impl SelectedBedChannelJoin {
         self.lfe_host
     }
 
-    pub const fn object_hosts(&self) -> &[u8; SELECTED_OBJECT_COUNT] {
+    pub fn object_hosts(&self) -> &[u8] {
         &self.object_hosts
     }
 
-    pub const fn regular_control_order(&self) -> &[u8; SELECTED_HOST_COUNT - 1] {
+    pub fn regular_control_order(&self) -> &[u8] {
         &self.regular_control_order
     }
 }
@@ -92,9 +90,15 @@ pub fn join_selected_bed_channels(
 ) -> Result<SelectedBedChannelJoin, BedChannelJoinError> {
     if pack_channel_format_ids.len() != SELECTED_BED_COUNT
         || physical_bed_tracks.len() != SELECTED_BED_COUNT
-        || object_host_slots.len() != SELECTED_OBJECT_COUNT
     {
         return Err(BedChannelJoinError::PackDomain);
+    }
+    let physical_host_count = physical_bed_tracks
+        .len()
+        .checked_add(object_host_slots.len())
+        .ok_or(BedChannelJoinError::HostDomain)?;
+    if physical_host_count == 0 || physical_host_count > usize::from(u8::MAX) + 1 {
+        return Err(BedChannelJoinError::HostDomain);
     }
 
     let mut pack_ids = std::collections::BTreeSet::new();
@@ -106,7 +110,7 @@ pub fn join_selected_bed_channels(
     }
 
     let mut physical_by_id = std::collections::BTreeMap::new();
-    let mut occupied_hosts = [false; SELECTED_HOST_COUNT];
+    let mut occupied_hosts = vec![false; physical_host_count];
     let mut lfe_host = None;
     for physical in physical_bed_tracks {
         if physical.channel_format_id.is_empty()
@@ -119,7 +123,7 @@ pub fn join_selected_bed_channels(
             physical.host_channel_index,
         );
         let host_index = usize::from(physical.host_channel_index);
-        if host_index >= SELECTED_HOST_COUNT
+        if host_index >= physical_host_count
             || std::mem::replace(&mut occupied_hosts[host_index], true)
         {
             return Err(BedChannelJoinError::HostDomain);
@@ -139,17 +143,17 @@ pub fn join_selected_bed_channels(
         return Err(BedChannelJoinError::PhysicalIdentity);
     }
 
-    let object_hosts = (0..SELECTED_HOST_COUNT)
+    let object_hosts = (0..physical_host_count)
         .filter(|host| !occupied_hosts[*host])
         .map(|host| u8::try_from(host).map_err(|_| BedChannelJoinError::HostDomain))
         .collect::<Result<Vec<_>, _>>()?;
-    let object_hosts: [u8; SELECTED_OBJECT_COUNT] = object_hosts
-        .try_into()
-        .map_err(|_| BedChannelJoinError::HostDomain)?;
+    if object_hosts.len() != object_host_slots.len() {
+        return Err(BedChannelJoinError::HostDomain);
+    }
 
     for host in object_host_slots {
         let host_index = usize::from(*host);
-        if host_index >= SELECTED_HOST_COUNT
+        if host_index >= physical_host_count
             || std::mem::replace(&mut occupied_hosts[host_index], true)
         {
             return Err(BedChannelJoinError::HostDomain);
@@ -171,12 +175,10 @@ pub fn join_selected_bed_channels(
         .collect::<Result<Vec<_>, _>>()?
         .try_into()
         .map_err(|_| BedChannelJoinError::PackDomain)?;
-    let regular_control_order = (0..SELECTED_HOST_COUNT)
+    let regular_control_order = (0..physical_host_count)
         .filter(|host| u8::try_from(*host).ok() != Some(lfe_host))
         .map(|host| u8::try_from(host).map_err(|_| BedChannelJoinError::HostDomain))
-        .collect::<Result<Vec<_>, _>>()?
-        .try_into()
-        .map_err(|_| BedChannelJoinError::HostDomain)?;
+        .collect::<Result<Vec<_>, _>>()?;
 
     Ok(SelectedBedChannelJoin {
         slots_by_pack,

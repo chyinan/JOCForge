@@ -217,12 +217,12 @@ impl NormalControlSourceIdentity {
 pub struct NormalControlGraphIdentity {
     axml_sha256: [u8; 32],
     chna_sha256: [u8; 32],
-    physical_track_count: u8,
-    bed_track_count: u8,
-    object_track_count: u8,
+    physical_track_count: u16,
+    bed_track_count: u16,
+    object_track_count: u16,
     direct_lfe_host: u8,
     virtual_prefix_source_count: u8,
-    total_source_count: u8,
+    total_source_count: u16,
 }
 
 impl NormalControlGraphIdentity {
@@ -534,7 +534,11 @@ impl NormalControlPreparedSnapshot {
                 .collect::<Vec<_>>()
                 .try_into()
                 .map_err(|_| NormalControlSnapshotError::BedJoinMismatch)?;
-        let regular37_hosts = *graph.bed_channel_join().regular_control_order();
+        let regular37_hosts: [u8; REGULAR_TRACK_COUNT] = graph
+            .bed_channel_join()
+            .regular_control_order()
+            .try_into()
+            .map_err(|_| NormalControlSnapshotError::GraphDomain)?;
         let prepared = Self {
             programme_id: frontend_state.programme_id().clone(),
             attempt_id: frontend_state.attempt_id(),
@@ -2085,11 +2089,11 @@ fn validate_prepared_snapshot(
 ) -> Result<(), NormalControlSnapshotError> {
     validate_selected_profile(&prepared.profile, &prepared.source_identity)?;
     if prepared.graph_identity.physical_track_count
-        != u8::try_from(PHYSICAL_TRACK_COUNT).unwrap_or(u8::MAX)
+        != u16::try_from(PHYSICAL_TRACK_COUNT).unwrap_or(u16::MAX)
         || prepared.graph_identity.bed_track_count
-            != u8::try_from(BED_TRACK_COUNT).unwrap_or(u8::MAX)
+            != u16::try_from(BED_TRACK_COUNT).unwrap_or(u16::MAX)
         || prepared.graph_identity.object_track_count
-            != u8::try_from(OBJECT_TRACK_COUNT).unwrap_or(u8::MAX)
+            != u16::try_from(OBJECT_TRACK_COUNT).unwrap_or(u16::MAX)
         || prepared.graph_identity.direct_lfe_host != prepared.lfe_host
         || prepared.source_identity.metadata_hashes.axml() != prepared.graph_identity.axml_sha256
         || prepared.source_identity.metadata_hashes.chna() != prepared.graph_identity.chna_sha256

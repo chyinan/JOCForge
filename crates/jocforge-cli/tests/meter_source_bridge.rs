@@ -284,8 +284,8 @@ fn pcm_rows_bind_to_chna_track_and_slot_map_in_physical_order() {
     for binding in row_map.entries_by_pcm_row() {
         let row = usize::from(binding.pcm_row().value());
         let row_value = u8::try_from(row).unwrap();
-        let slot = AdmFileStorageTrackSlot::new(row_value).unwrap();
-        let converter_entry = converter_map.channels().entry_for_slot(slot);
+        let slot = AdmFileStorageTrackSlot::new(row_value);
+        let converter_entry = converter_map.channels().entry_for_slot(slot).unwrap();
         let graph_track = graph
             .tracks()
             .iter()

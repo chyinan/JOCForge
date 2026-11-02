@@ -139,6 +139,7 @@
 | F01E/selected-adm-riff-to-prepared-job-input | F01E | `frontend` |
 | F01E/prepared-input-to-f01e-snapshot-binding | F01E | `frontend` |
 | F01E/embedded-timecode-explicit-offset-precedence | F01E | `frontend` |
+| F01E/dynamic-adm-input-row-admission | F01E | `frontend` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |
@@ -440,6 +441,7 @@
 | F13C/host-ddp-and-atmos-plugin-data-rate-owner-boundary | F13C | `metadata` |
 | F13C/native-code13-low-byte-to-f12-complexity-field | F13C | `metadata` |
 | F13C/informational-r138-record-list-reporting-branch-non-gating | F13C | `metadata` |
+| F13C/native-joc-coefficient-delta-candidate | F13C | `joc` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |
