@@ -60,7 +60,7 @@ pub use jocforge_domain::{
 
 use crate::{PreparedJobInput, PreparedJobInputError, ResourceIdentity};
 
-const PHYSICAL_CHANNEL_COUNT: usize = 38;
+const MAX_PHYSICAL_CHANNEL_COUNT: usize = u8::MAX as usize + 1;
 const CALLBACK_SAMPLES: u64 = 1_536;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -151,7 +151,7 @@ pub struct MeterSourcePhysicalRowMap {
     axml_sha256: [u8; 32],
     chna_sha256: [u8; 32],
     dbmd_sha256: [u8; 32],
-    entries_by_pcm_row: Box<[MeterSourcePhysicalRowBinding; PHYSICAL_CHANNEL_COUNT]>,
+    entries_by_pcm_row: Vec<MeterSourcePhysicalRowBinding>,
 }
 
 impl MeterSourcePhysicalRowMap {
@@ -171,17 +171,15 @@ impl MeterSourcePhysicalRowMap {
         &self.dbmd_sha256
     }
 
-    pub const fn entries_by_pcm_row(
-        &self,
-    ) -> &[MeterSourcePhysicalRowBinding; PHYSICAL_CHANNEL_COUNT] {
+    pub fn entries_by_pcm_row(&self) -> &[MeterSourcePhysicalRowBinding] {
         &self.entries_by_pcm_row
     }
 
     pub fn binding_for_pcm_row(
         &self,
         pcm_row: PcmPhysicalRowIndex,
-    ) -> &MeterSourcePhysicalRowBinding {
-        &self.entries_by_pcm_row[usize::from(pcm_row.value())]
+    ) -> Option<&MeterSourcePhysicalRowBinding> {
+        self.entries_by_pcm_row.get(usize::from(pcm_row.value()))
     }
 
     pub fn binding_for_physical_host(
@@ -243,17 +241,24 @@ fn build_meter_source_physical_row_bindings(
     tracks: &[SelectedPhysicalTrack],
     channels: &AdmFileStorageChannelMap,
     dbmd: &SelectedDbmdSections,
-) -> Result<Box<[MeterSourcePhysicalRowBinding; PHYSICAL_CHANNEL_COUNT]>, MeterSourceBridgeError> {
-    if tracks.len() != PHYSICAL_CHANNEL_COUNT || dbmd.track_fields().len() != PHYSICAL_CHANNEL_COUNT
+) -> Result<Vec<MeterSourcePhysicalRowBinding>, MeterSourceBridgeError> {
+    let physical_channel_count = tracks.len();
+    if physical_channel_count == 0
+        || physical_channel_count > MAX_PHYSICAL_CHANNEL_COUNT
+        || channels.entries_by_track_slot().len() != physical_channel_count
+        || dbmd.track_fields().len() != physical_channel_count
     {
         return Err(MeterSourceBridgeError::PhysicalRowBindingMismatch);
     }
 
-    let mut entries_by_pcm_row: [Option<MeterSourcePhysicalRowBinding>; PHYSICAL_CHANNEL_COUNT] =
-        [None; PHYSICAL_CHANNEL_COUNT];
+    let mut entries_by_pcm_row = vec![None; physical_channel_count];
     for track in tracks {
         let pcm_row = pcm_row_for_track_index(track.track_index())?;
         let pcm_row_value = pcm_row.value();
+        let row_index = usize::from(pcm_row_value);
+        if row_index >= physical_channel_count {
+            return Err(MeterSourceBridgeError::PhysicalRowBindingMismatch);
+        }
         let slot = AdmFileStorageTrackSlot::new(pcm_row_value);
         let entry = channels
             .entry_for_slot(slot)
@@ -272,28 +277,20 @@ fn build_meter_source_physical_row_bindings(
         .into_iter()
         .map(|entry| entry.ok_or(MeterSourceBridgeError::PhysicalRowBindingMismatch))
         .collect::<Result<Vec<_>, _>>()?;
-    let entries_by_pcm_row: Box<[MeterSourcePhysicalRowBinding; PHYSICAL_CHANNEL_COUNT]> = entries
-        .into_boxed_slice()
-        .try_into()
-        .map_err(|_| MeterSourceBridgeError::PhysicalRowBindingMismatch)?;
-
     for dbmd_track in dbmd.track_fields() {
         let physical_host = u8::try_from(dbmd_track.track_index())
             .map_err(|_| MeterSourceBridgeError::DbmdRowBindingMismatch)?;
-        if usize::from(physical_host) >= PHYSICAL_CHANNEL_COUNT
-            || entries_by_pcm_row[usize::from(physical_host)]
+        if usize::from(physical_host) >= physical_channel_count
+            || entries[usize::from(physical_host)]
                 .dbmd_track_index()
                 .value()
                 != dbmd_track.track_index()
-            || entries_by_pcm_row[usize::from(physical_host)]
-                .physical_host()
-                .value()
-                != physical_host
+            || entries[usize::from(physical_host)].physical_host().value() != physical_host
         {
             return Err(MeterSourceBridgeError::DbmdRowBindingMismatch);
         }
     }
-    Ok(entries_by_pcm_row)
+    Ok(entries)
 }
 
 fn bind_selected_physical_track(
@@ -334,7 +331,6 @@ fn pcm_row_for_track_index(
         .value()
         .checked_sub(1)
         .and_then(|value| u8::try_from(value).ok())
-        .filter(|value| usize::from(*value) < PHYSICAL_CHANNEL_COUNT)
         .ok_or(MeterSourceBridgeError::PhysicalRowBindingMismatch)?;
     Ok(PcmPhysicalRowIndex::from_validated_track_slot(row))
 }
@@ -374,13 +370,13 @@ impl<'a> MeterSourceCallbackView<'a> {
         {
             return Err(MeterSourceBridgeError::SourceExtentMismatch);
         }
-        if frame.rows().len() != PHYSICAL_CHANNEL_COUNT
-            || frame.rows().len() != physical_row_map.entries_by_pcm_row().len()
+        let physical_channel_count = physical_row_map.entries_by_pcm_row().len();
+        if frame.rows().len() != physical_channel_count
             || frame
                 .rows()
                 .iter()
                 .any(|row| row.len() != CALLBACK_SAMPLES as usize)
-            || usize::from(direct_lfe_host.value()) >= PHYSICAL_CHANNEL_COUNT
+            || usize::from(direct_lfe_host.value()) >= physical_channel_count
         {
             return Err(MeterSourceBridgeError::SourceShape);
         }
@@ -795,7 +791,7 @@ mod tests {
         let reversed =
             build_meter_source_physical_row_bindings(&reversed_tracks, &channels, &dbmd).unwrap();
 
-        assert_eq!(forward.as_ref(), reversed.as_ref());
+        assert_eq!(forward.as_slice(), reversed.as_slice());
         for (row, binding) in forward.iter().enumerate() {
             let row = u8::try_from(row).unwrap();
             let slot = AdmFileStorageTrackSlot::new(row);
@@ -846,7 +842,7 @@ mod tests {
             Some(MeterSourceBridgeError::PhysicalRowBindingMismatch)
         );
         assert_eq!(
-            pcm_row_for_track_index(ChnaTrackIndex::new(39)).err(),
+            pcm_row_for_track_index(ChnaTrackIndex::new(257)).err(),
             Some(MeterSourceBridgeError::PhysicalRowBindingMismatch)
         );
 
@@ -875,7 +871,7 @@ mod tests {
             build_meter_source_physical_row_bindings(&reversed_tracks, &channel_map, &dbmd)
                 .unwrap();
 
-        assert_eq!(forward.as_ref(), reversed.as_ref());
+        assert_eq!(forward.as_slice(), reversed.as_slice());
         for (physical_row, binding) in forward.iter().enumerate() {
             let row_value = u8::try_from(physical_row).unwrap();
             let slot = AdmFileStorageTrackSlot::new(row_value);
