@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-washed-dee-joc-stride-selector-sources.v2",
+  "incoming_package_id": "dee_native_joc_writer_boundary_wash_v1",
+  "incoming_manifest_sha256": "bd4284314b12586aa9cce3e927d897a647ee9ccb8acaaac141ddc0df75b77f1b",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "package_checkers": {"normal":"PASS","python_optimized":"PASS"},
+  "source_files_copied": false,
+  "binary_or_decompilation_copied": false,
+  "media_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

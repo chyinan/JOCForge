@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-dee-joc-stride-selector-row-default-input-only.v2",
+  "block_record_stride_bytes": 10,
+  "rows": [
+    {"row":0,"offset":"+0xd8","selector":"0","status":"CONSTRUCTOR_CLEAR_BOUND"},
+    {"row":1,"offset":"+0xe2","selector":"0","status":"CONSTRUCTOR_CLEAR_BOUND"},
+    {"row":2,"offset":"+0xec","selector":"UNBOUND","status":"NO_MATCHING_WRITE_IN_THIS_CONSTRUCTOR"},
+    {"row":3,"offset":"+0xf6","selector":"UNBOUND","status":"NO_MATCHING_WRITE_IN_THIS_CONSTRUCTOR"},
+    {"row":4,"offset":"+0x100","selector":"UNBOUND","status":"NO_MATCHING_WRITE_IN_THIS_CONSTRUCTOR"},
+    {"row":5,"offset":"+0x10a","selector":"UNBOUND","status":"NO_MATCHING_WRITE_IN_THIS_CONSTRUCTOR"}
+  ],
+  "lookup_values": [0,1,2,4],
+  "execution": "NOT_RUN",
+  "expected_audio_bytes_included": false
+}

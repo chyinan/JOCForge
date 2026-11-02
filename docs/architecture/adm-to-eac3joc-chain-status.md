@@ -34,6 +34,10 @@ Run `sample6-dee-audio-full-20261102` 使用本地提交 `216326f622e66f1f7b255d
 
 FFprobe/FFmpeg 8.1 对新文件的结果：AU0 位于 byte 0，packet size 4,096 bytes、duration 32 ms；全流识别为 48 kHz、E-AC-3 Dolby Digital Plus + Dolby Atmos、5.1(side)、1,024,000 bit/s、135.904 s。FFmpeg 全流 decode-to-null exit 0 且无报告错误。容器/核心解码可接受；JOC spatial render 和同输入 fresh DEE 音频等价仍 `NOT_RUN`，不以历史 Python/DEE 对照组作当前基线。
 
+### DEE JOC block-delta candidate
+
+`DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2`（manifest SHA-256 `d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04`）与 selector source/initializer V2 包给出可执行的 JOC 音频候选：selector 0 跳过差分分支，1/2/3 对应 stride 1/2/4；每个值为 `current - previous + 2`，尾部补 2，以 MSB-first U7 写入，末尾补零到 16-bit word。Rust 已在 `joc/coefficient_delta.rs` 实现独立纯候选及显式 selector 输入，未推导 profile selector，也未替换当前 ID14 production writer。定向测试 4 项、domain check、格式检查通过；Clippy 无本文件警告，domain 仍有 8 条其他文件既有 warning。边界检查当前被既有 `crates/jocforge-cli/src/encode_request.rs` 映射哈希不匹配挡住。所选 profile rows 2–5 的 selector 来源、生产 payload/AU 接线与 JOC spatial render 仍未验证。
+
 本次 full-file Rust run 记录 model DialNorm=17。Wash 的同输入 U5=21 观察来自 `file_position [2160,2208)` 的 48-frame bounded window；它不是 full-file U5 baseline，故不能据此声称 full-track U5 mismatch。当前 U5 公式按候选 `selected_lufs` 已在代码中实现，native scalar 单位与 Rust measurement scalar/owner join仍 `UNBOUND`；为便于下一次 trial 归因，CLI 现在会记录 `ProgrammeMeasurementReceipt.selected_lufs_word` 的 F32 值、原始 word、来源和单位边界。FFprobe 报告 `dmix_mode=0` 和四个 mix-level 字段均为0；对新 AU0 bit59–73 的只读检查却读到 `mixmdate=1`、`dmixmod=2`、四个 level code=4，与 bridge 输入一致。新鲜同输入 DEE BSI writer 比对仍 `NOT_RUN`，故不据 FFprobe 字段解释单独改 writer。三次同输入 run 中最高进度的输出已完成；其余两次重复 run 的 wrapper 已停止，encoder终态未证实，partial/log保留且从未作为成品检查。当前可交付文件只指上述 `sample6-dee-audio-full-20261102.ec3`。
 
 本文档开头的 supplement catalog 计数来自本次运行前的检查点；此后有新的 Wash 补充包进入 D 盘，目录索引尚未完成重建。

@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge-washed-native-joc-stride-input-only-v2",
+  "expected_outputs_included": false,
+  "executed": false,
+  "stride_selector": {
+    "first_four_table_values": [0, 1, 2, 4],
+    "input_selectors": [0, 1, 2, 3],
+    "selected_profile_value": "UNBOUND"
+  },
+  "native_delta_transform": {
+    "function_rva": "0xa4d70",
+    "input_short_sequence": [5, 7, 6, 0],
+    "selector": 1,
+    "stride": 1,
+    "valid_count": 2,
+    "total_slots": 1,
+    "expected_output_included": false,
+    "executed": false
+  },
+  "native_bit_writer_interface": {
+    "function_rva": "0x8aea0",
+    "synthetic_values": [4, 1],
+    "value_count": 2,
+    "bit_width": 7,
+    "writer_bytes_included": false,
+    "executed": false,
+    "same_buffer_as_delta_input": "UNBOUND"
+  },
+  "note": "Input-only records for a focused candidate trial; no output bytes, expected values, or profile selector claim are supplied."
+}

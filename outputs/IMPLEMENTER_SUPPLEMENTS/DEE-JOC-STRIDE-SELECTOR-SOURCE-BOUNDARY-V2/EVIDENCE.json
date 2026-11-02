@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge-washed-dee-joc-stride-selector-source.v2",
+  "scope": "ATMOS DDP JOC BLOCK-LOCAL STRIDE SELECTOR",
+  "status": "SELECTOR_READ_AND_TABLE_BOUND; NO_DIRECT_SCALAR_WRITER_FOUND; BULK_COPY_INITIALIZATION_NOT_SCANNED",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "dee_native_joc_writer_boundary_wash_v1",
+    "manifest_sha256": "bd4284314b12586aa9cce3e927d897a647ee9ccb8acaaac141ddc0df75b77f1b",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "image": {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+  "selector_consumer": {
+    "function": "FUN_1800a3710",
+    "field_expression": "state+0x140e8+block*10+0xd8",
+    "table_rva": "0x846698",
+    "first_four_values": [0,1,2,4],
+    "mapping": {"0":"disabled","1":"stride 1","2":"stride 2","3":"stride 4"},
+    "consumption_clock": "once per block",
+    "current_profile_selector": "UNBOUND"
+  },
+  "direct_scalar_store_scan": {
+    "scope": "all executable functions; direct 16-bit +0xd8 stores only",
+    "candidate_store_count": 5,
+    "stack_slot_candidates": 2,
+    "other_object_member_candidates": 3,
+    "target_selector_store_joined": false,
+    "closest_candidate": {
+      "caller": "FUN_1800729a0",
+      "callee": "FUN_1800a19e0",
+      "caller_rcx_base": "state+0x140e8",
+      "callee_rdi_base": "RCX+0x48",
+      "store_target": "state+0x140e8+0x120",
+      "stored_register": "R9W",
+      "prior_register_state": "R9D cleared to zero",
+      "is_selector_field": false
+    },
+    "other_nearby_field": {"source":"RSI+0xd8","destination":"RSI+0x192d4","is_selector_field":false},
+    "bulk_copy_initialization_scanned": false
+  },
+  "best_supported_rule": "preserve explicit per-block selector and apply lookup [0,1,2,4]; do not derive it from bitrate or channel layout",
+  "candidate_selector_source": "upstream per-block/lane-plan result, possibly configuration-derived",
+  "update_timing": "UNBOUND: prepass initialization versus per-frame update",
+  "scope_boundary": {"joc_payload_path":true,"eac3_core_exponent_path":false,"dee_runtime":"NOT_RUN","media_or_pcm_read":false,"private_key_or_license_read":false},
+  "payload_policy": {"source_code_included":false,"binary_or_decompilation_included":false,"private_key_or_license_material_included":false}
+}

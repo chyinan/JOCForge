@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-washed-native-joc-source-manifests.v2",
+  "incoming_package_id": "dee_native_joc_writer_boundary_wash_v1",
+  "incoming_manifest_sha256": "49b64ec5541beeecb472ac33beb617e5f0a03dc4ed103ab470c17153e052a459",
+  "source_image": {
+    "source_id": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "implementation_comparison_source_hashes": [
+    {"source_id":"coefficient_payload.rs","sha256":"34497b4c130a874410d6469141e9b4cb9a9ba68c43a9589587050b0c608e0dc3"},
+    {"source_id":"coefficient_quantization.rs","sha256":"af6e917f95cb169216299bf58a100a2ed737b3804d53025f27d45ae40e66af0f"},
+    {"source_id":"huffman.rs","sha256":"9886e2cfffe5974fa555d75c4a8bd79e6026233ea173a9bc65b84acc90b9b210"},
+    {"source_id":"id14_header.rs","sha256":"f4c75a331a1a0f9225187a84fd02cc49772c5512a71e921d34c666c11d6d6aa5"},
+    {"source_id":"codebooks.json","sha256":"515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"}
+  ],
+  "source_files_copied": false,
+  "source_code_included": false,
+  "source_binary_or_decompilation_included": false,
+  "protected_media_or_pcm_included": false,
+  "source_binaries_copied": false,
+  "decompilation_copied": false,
+  "media_or_pcm_copied": false,
+  "private_key_or_license_material_copied": false
+}

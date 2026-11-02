@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2",
+  "source_reverse_package_id": "dee_native_joc_writer_boundary_wash_v1",
+  "source_reverse_manifest_sha256": "bd4284314b12586aa9cce3e927d897a647ee9ccb8acaaac141ddc0df75b77f1b",
+  "status": "SELECTOR_READ_AND_TABLE_BOUND; NO_DIRECT_SCALAR_WRITER_FOUND; BULK_COPY_INITIALIZATION_NOT_SCANNED",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2293,
+      "sha256": "4b2795c35fd028b84b96b833f9d446bb04a33dac58051d3c7b7bd36ee7aad948"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2417,
+      "sha256": "d969253fb28a223d723d761b515d0e28f7865b99982fda1f2cdac8ec380760a6"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 385,
+      "sha256": "cc9158a2d493538efbf4e8002e123df7dcaea8798791623894a0ab0f05d3cb09"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1924,
+      "sha256": "5ca834cb024db35a210e72053bce21a83b3cc5a15168291dd1a2adfa79fa0401"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 552,
+      "sha256": "61c405f03f054de3eb170e6c4e297f783044e86441765f3b4b20b2e4c8897b4b"
+    }
+  ],
+  "exclusions": {
+    "source_code_included": false,
+    "binary_or_decompilation_included": false,
+    "media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

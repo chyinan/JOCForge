@@ -1,0 +1,85 @@
+{
+  "schema": "jocforge-washed-dee-native-joc-delta-writer.v2",
+  "scope": "NATIVE ATMOS DDP JOC COEFFICIENT PAYLOAD ONLY",
+  "status": "CANDIDATE_RULE_READY_FOR_FOCUSED_IMPLEMENTATION_TRIAL; CURRENT_PROFILE_SELECTOR_AND_ROOT_CAUSE_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "dee_native_joc_writer_boundary_wash_v1",
+    "manifest_sha256": "49b64ec5541beeecb472ac33beb617e5f0a03dc4ed103ab470c17153e052a459",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "native_image": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464,
+    "analysis": "Ghidra 12.2 static"
+  },
+  "block_path": {
+    "assembler_rva": "0x942d0",
+    "per_block_call_order": ["0xa3710", "0xcb0d0", "0xa5810"],
+    "producer_rva": "0xa3710",
+    "packer_rva": "0xcb0d0",
+    "shared_state_base": "state+0x140e8",
+    "same_block_ordinal": true,
+    "process_block_size_samples": 1536,
+    "flush_block_size_samples": 0
+  },
+  "stride_selector": {
+    "selector_field_expression": "state+0x140e8+block*10+0xd8",
+    "table_rva": "0x846698",
+    "first_four_table_values": [0, 1, 2, 4],
+    "mapping": {"0": "disabled", "1": "stride 1", "2": "stride 2", "3": "stride 4"},
+    "selector_range_checked_at_use_site": false,
+    "indices_above_3": "UNBOUND / unsupported by this evidence",
+    "current_1024kbps_51_selector_value": "UNBOUND",
+    "best_supported_rule": "preserve the block-local selector and apply the table lookup per block; do not derive it directly from bitrate or channel layout."
+  },
+  "native_audio_rules": {
+    "delta_function_rva": "0xa4d70",
+    "short_delta": "current - previous + 2",
+    "tail_fill": "3 * total_slots - valid_count entries set to 2",
+    "candidate_packer_pointer_expression": "param_11 + 0x3b8 + block * 8",
+    "candidate_value_offset_bytes": 2,
+    "candidate_value_count": 2,
+    "candidate_bit_width": 7,
+    "writer_function_rva": "0x8aea0",
+    "writer_rule": "MSB-first into a 16-bit accumulator; flush a full word when cursor exceeds 15; retain residual bits."
+  },
+  "rust_comparison": {
+    "source_manifest_sha256": "49b64ec5541beeecb472ac33beb617e5f0a03dc4ed103ab470c17153e052a459",
+    "path_summary": "F32 coefficient rows -> coarse/fine quantization -> modular delta -> F05Q variable-length Huffman -> ID14 body append.",
+    "representation_mismatch_candidate": true
+  },
+  "confidence": {
+    "selector_lookup_and_local_transform": "HIGH",
+    "producer_to_width7_field": "MEDIUM",
+    "producer_packer_pointer_alias": "LOW_TO_MEDIUM_ABOUT_0.45",
+    "candidate_caused_reported_rust_output_failure": "LOW_ABOUT_0.3",
+    "authorized_adm_sample_count": 0,
+    "native_runtime_observation_count": 0
+  },
+  "unbound": {
+    "current_1024kbps_51_selector_value": true,
+    "selected_route_to_frame_assembler": true,
+    "producer_packer_pointer_alias": true,
+    "candidate_file_to_native_or_rust_run": true
+  },
+  "core_audio_boundary": {
+    "covers_eac3_core_exponent_syntax": false,
+    "explains_exponent_minus_one_error": false,
+    "effect_candidate": "JOC payload representation only"
+  },
+  "input_only_vector": {
+    "included": true,
+    "executed": false,
+    "expected_output_included": false
+  },
+  "payload_policy": {
+    "source_code_included": false,
+    "binary_or_decompilation_included": false,
+    "media_or_pcm_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

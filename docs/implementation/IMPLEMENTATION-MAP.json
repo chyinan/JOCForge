@@ -32503,6 +32503,94 @@
             "audio_effect": "NOT_EVIDENCED",
             "gating": "NON_GATING_UNLESS_SAME_OWNER_GENERATION_AUDIO_EFFECT_IS_LATER_PROVEN"
           }
+        },
+        {
+          "slice_id": "native-joc-coefficient-delta-candidate",
+          "planned_phase": "Phase 7",
+          "mapping_status": "MATERIALIZED_DIRECT_DEE_JOC_DELTA_CANDIDATE__SELECTED_PROFILE_SELECTOR_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_DELTA_AND_WORD_WRITER__PRODUCTION_PAYLOAD_INTEGRATION_NOT_RUN",
+          "scope": "Implements the washed DEE JOC block selector table, stride differences, +2 bias, tail fill with 2, MSB-first seven-bit packing, and final 16-bit word alignment as an explicit candidate. It does not infer a profile selector or replace the selected production coefficient-payload writer.",
+          "owner": "joc",
+          "dependencies": [],
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/coefficient_delta.rs"
+          ],
+          "clock": {
+            "domains": [
+              "Explicit per-block selector input",
+              "Coefficient slot capacity"
+            ],
+            "covered_clauses": [
+              "Selector 0 skips the difference branch.",
+              "Selectors 1, 2, and 3 select strides 1, 2, and 4.",
+              "Candidate values use current - previous + 2 and fill remaining 3*total_slots capacity with 2.",
+              "Seven-bit values are MSB-first and the final output word is zero-padded to 16 bits."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_DEE_NATIVE_JOC_DELTA_WRITER_CANDIDATE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/REPORT.md"
+            ],
+            "supplement_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
+            "supplement_manifest_sha256s": {
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2/MANIFEST.json": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/MANIFEST.json": "897cb24709839dd5002979fd1fbaf5dd1086901d661864371d899707d4533ba8",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json": "84c40d1d677eb22481140d7ef487255a1db25bbdbced27e68c674458d2b8d5e3"
+            },
+            "validation_boundary": "The transform and writer are implemented for an explicit selector. The selected-profile source for rows 2 through 5 and production payload join remain unbound; no bitrate or channel-layout inference is made."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/joc/coefficient_delta.rs"
+          ],
+          "vectors": {
+            "kind": "WASHED_INPUT_ONLY_DEE_JOC_DELTA_WRITER_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-NATIVE-JOC-DELTA-WRITER-BOUNDARY-V2/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/INPUT-ONLY-VECTOR.json"
+            ],
+            "case_pointers": [
+              "selector 0 skips the branch",
+              "selectors 1/2/3 use strides 1/2/4",
+              "each delta is current - previous + 2",
+              "the remaining output capacity is filled with 2",
+              "the writer emits seven bits MSB-first and pads the final word to 16 bits"
+            ],
+            "expected_values_are_assertions_only": true,
+            "supplement_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04"
+          },
+          "not_run": [
+            "Selected-profile per-block selector source and values remain unbound.",
+            "Production coefficient-payload integration and same-source AU join are not run.",
+            "Fresh DEE spatial render comparison and product acceptance are not run."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_delta.rs",
+              "bytes": 6177,
+              "sha256": "f0a445794891be543157f71ee2b2b252f7d62a2def40e49a2fe809cc8ece1c88"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_delta.rs",
+              "bytes": 6177,
+              "sha256": "f0a445794891be543157f71ee2b2b252f7d62a2def40e49a2fe809cc8ece1c88"
+            }
+          ],
+          "verification": {
+            "focused_tests": "4 passed",
+            "domain_check": "PASS",
+            "format_check": "PASS",
+            "boundary_check": "BLOCKED_BY_EXISTING_encode_request.rs_HASH_INVENTORY_MISMATCH"
+          }
         }
       ]
     },

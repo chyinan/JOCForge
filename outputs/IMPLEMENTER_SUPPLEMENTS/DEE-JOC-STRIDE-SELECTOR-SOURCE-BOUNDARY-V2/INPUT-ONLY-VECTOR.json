@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-dee-joc-stride-selector-input-only.v2",
+  "block_selectors": [0,1,2,3],
+  "observed_table_values": [0,1,2,4],
+  "expected_lookup": ["disabled","stride 1","stride 2","stride 4"],
+  "per_block_field_expression": "state+0x140e8+block*10+0xd8",
+  "current_1024kbps_51_selector": "UNBOUND",
+  "executed": false,
+  "expected_audio_or_payload_bytes_included": false
+}

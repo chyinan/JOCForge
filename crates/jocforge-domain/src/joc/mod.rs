@@ -3,6 +3,7 @@
 
 pub mod additional_bsi;
 pub mod clip_producer;
+pub mod coefficient_delta;
 pub mod coefficient_fitting;
 pub mod coefficient_geometry;
 pub mod coefficient_normal_equations;

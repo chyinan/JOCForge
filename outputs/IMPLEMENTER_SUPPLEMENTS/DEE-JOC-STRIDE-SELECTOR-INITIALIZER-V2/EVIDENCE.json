@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge-washed-dee-joc-stride-selector-initializer.v2",
+  "scope": "ATMOS DDP JOC PER-BLOCK STRIDE SELECTOR INITIALIZATION",
+  "status": "ROWS_0_1_ZERO_INITIALIZED; ROWS_2_5_AND_LATER_WRITER_UNBOUND",
+  "implementation_trial_ready": true,
+  "production_conformance_established": false,
+  "source_package": {
+    "package_id": "dee_native_joc_writer_boundary_wash_v1",
+    "manifest_sha256": "69b09249f0981849f03e16258c331667ee018f01b2555411195c025baf7139ae",
+    "normal_checker": "PASS",
+    "optimized_checker": "PASS"
+  },
+  "constructor": {
+    "caller": "FUN_1800729a0",
+    "callsite": "0x180072d80",
+    "callee": "FUN_1800a19e0",
+    "param1_destination": "RBX+0x140e8",
+    "param2_source": "*(RBX+0x298c8)+0xf5b8",
+    "param2_derived_pointer_targets": ["+0x7698","+0x76d4","+0xb220","+0xb274"],
+    "selector_bulk_copy_or_store_from_param2": false,
+    "memcpy_or_bulk_copy_call_in_callee": false,
+    "zeroed_short_offsets": ["+0xd8","+0xda","+0xdc","+0xde","+0xe0","+0xe2"]
+  },
+  "selector_table": {
+    "field_expression": "state+0x140e8+block*10+0xd8",
+    "record_stride_bytes": 10,
+    "row0_initial_value": 0,
+    "row1_initial_value": 0,
+    "rows2_to_5_initial_values": "UNBOUND",
+    "separate_0x5fee0_arena_clear_proves_inline_selector_rows_zero": false,
+    "first_four_lookup_values": [0,1,2,4],
+    "mapping": {"0":"disabled","1":"stride 1","2":"stride 2","3":"stride 4"},
+    "current_1024kbps_51_nonzero_values": "UNBOUND"
+  },
+  "recommended_rule": "row0/row1 default to zero; rows2-5 preserve explicit per-block selector values, otherwise remain UNBOUND; never infer selector from bitrate or channel layout",
+  "payload_policy": {"source_code_included":false,"binary_or_decompilation_included":false,"media_or_pcm_included":false,"private_key_or_license_material_included":false}
+}
