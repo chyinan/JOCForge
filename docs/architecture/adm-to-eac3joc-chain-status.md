@@ -25,6 +25,7 @@
 | Rs | 0.000278062 / 0.008009626 | 0.000277920 / 0.008009626 | 0.000011914 / 0.000740498 |
 
 Candidate 将该 matched-control I0 base PCM 的 LFE RMSE 降低约 28.8 倍（0.001236973 → 0.000043014）；其他声道变化小得多。结果支持“候选系数对本输入的 base LFE 有显著影响”，不代表 JOC speaker/Atmos renderer parity、听感等价、native stride branch 已闭合或 W04 通过。`315c6a4bdc9b0d1317466d06c39b1809ce992c6d6b17997d82ca08aeebecf8a2` 是不同 DI=true / threshold=15 的文件，不用于本次匹配比较；`.test-tmp/sample6-dee-audio-full-20261102.ec3` 的 hash `d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da` 是后续 Rust 输出，不是 DEE reference。另一项 OpenJOC 0.20.1 streaming capture 仅产出语义未绑定的 15 条 reconstruction rows，未用于上述指标，临时文件已删除。
+- 2026-11-03 user acceptance: user accepts the measured same-decoder base PCM differences for this authorized ADM as sufficiently small. This acceptance is limited to the reported I0 compatibility/base PCM comparison; it is not speaker/Atmos renderer, listening, or W04 acceptance.
 - 工程门禁：candidate `cargo fmt --all -- --check` 与 `cargo check --workspace --locked` 通过；5 个 F15/F08/Meter 定向测试通过。`cargo test --workspace --locked` 仍有既有 `migration_boundary::encode_cannot_modify_an_existing_destination` 断言失败（期待旧提示 `encoding backend unavailable`）；同一测试在主 worktree 也失败。严格 Clippy 因其他文件 12 项 `-D warnings` 失败，变更文件未出现在错误列表。candidate boundary check 因 direct-slice inventory 缺少 `crates/jocforge-domain/src/meter/standalone_root.rs` 登记而失败；主 worktree boundary check 则因 Wash supplement catalog 未覆盖最新包目录而失败。
 
 ## 2026-11-03：ADM 输入行数扩展
