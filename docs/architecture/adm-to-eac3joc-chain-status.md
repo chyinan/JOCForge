@@ -14,6 +14,8 @@
 
 sample-6 源提交 `216326f622e66f1f7b255dbe7a8bcfb8ca473ce2` 的 selected F32 window 与 R2 候选绑定的旧表一致：window words SHA-256 为 `45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23`。该提交的 CRLF provider SHA-256 为 `f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1`。Wash 候选 `SAMPLE6-EAC3-WINDOW-TABLE-CANDIDATE-V1` 的 manifest SHA-256 为 `6018113ec1c946272ac83ce74ce064a8685671803ba259c41c63487af8f09ba4`；它发现 256 项中有 12 项各相差 1 ULP。实现侧将这 12 项应用到当前 selected provider，当前 provider SHA-256 为 `963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c`，window words SHA-256 为 `097ea95140024fd143ed18a78299fa72d69bce1c8e0d356aed2efff2a6a099a2`。
 
+后续 Wash 包 `SAMPLE6-DEE-CORE-WINDOW-COEFFICIENT-SPLIT-V1`（manifest SHA-256 `74973e18ac6001b34ec1225ae179e17c8cd78aef1cc7b6b1bdd89a305f2d0f34`，seal SHA-256 `755bc3741457420f09a25e5213e6aacdb840c54ac099f9a8bfd0b3fd4f4dba4b`）以旧 Rust words hash `45e8…` 比较，并报告 index 21 `3c0ea5a9`。当前 Rust provider words hash `097ea…`，index 21 为 `3c0ea5aa`，与该包的 native 值相同。因此该包记录了已修正前的差异，不表示当前参数仍有 1 ULP 偏差；不要再次改窗口表。
+
 单点 `input[234]=1.0` fold 回归与重算后的 F08/F09、secondary-overlap 向量通过。source-analysis bridge 现在从 domain selected-provider identity gate 载入 transform 表；定向测试通过。
 
 Rust none-DRC baseline run 使用提交 `fb7dcae909e3c8c9e25707bc345dfb7a934a898b` 和 Release exe SHA-256 `a584780b0aa7abbee8e9e811e573f7f7d6e8d9835784ff286579989c9504a2cd`。输入 SHA-256 为 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`。CLI 完成 4,251 callbacks、4,249 sources 和 4,247 AUs，状态为 `DONE`。输出为 17,395,712 bytes，SHA-256 `9d5a8c3c93b086855243de229db086781efeb1cd9689be67651f92ac445c4784`。FFmpeg 解码为 48 kHz、6 声道 `5.1(side)`。
