@@ -48,6 +48,8 @@ Wash 包 `SAMPLE6-DEE-MATCHED-LFE-POINTER-EDGE-V1`（manifest SHA-256 `3280306b0
 
 该包也没有绑定 DEE encoder 内部 LFE transform。Rust 将 external row 3 送入独立 F08 七 bin LFE transform。Wash 给出的 62.5 Hz、1536-sample vector 没有样本值或期望输出，尚未运行，不能用于 parity 比较。当前 channel 3 根因仍未确定。
 
+Wash 包 `SAMPLE6-LFE-SPATIAL-ANALYSIS-WEIGHT-BOUNDARY-V1`（manifest SHA-256 `748f7657ae414ebb841e8a418b6475abf3ee4edd1b38ca2c901147205b204275`，seal SHA-256 `b439aff5c653e24879cd9161cd5a5a2da11362177e58f180f5dafa50b018d0b0`）通过普通模式和 `python -O` 校验。它在另一进程中观察到 4096 点空间编码功率计算使用 bin 权重 `0.042385533452034`；这不是 E-AC-3 LFE 样本增益。输入 lane 3、unity add 和分析权重来自分开的捕获，未绑定到同一 owner/generation，也未连接到最终 core PCM slot 3。不要把该权重接入 LFE 输出。Wash 披露了一次 8-byte sample-buffer read request；读值未保留或使用，包中不含样本。
+
 Wash 包 `SAMPLE6-CROSS-ADM-DEE-HEADER-REPEATABILITY-V1`（manifest SHA-256 `8592b9237de297f64cc703da495116ecd7bb01d6f2bc9ac0faaa648406e2775c`，seal SHA-256 `593cf6137e418e785d4e250be500c9e55e86183b99b7ddb2d0ddefd1aff73099`）通过普通模式和 `python -O` 校验。三份授权 ADM 的 CHNA/AXML 都把 5.1 bed 的 row 3 标为 LFE；另外两次 DEE 输出的首个 syncframe 也报告 48 kHz、6 blocks、5.1、LFE present。该包未测 PCM，也未证明运行时 row selection 或跨输入的 LFE 残差重复性。
 
 Wash 包 `SAMPLE6-CHANNEL3-FREQUENCY-RESIDUAL-V1`（manifest SHA-256 `a556b5499d57a40ce54df4a4166c4beb798ab3cda3334d1ffa577addd4fbda6a`，seal SHA-256 `d2606a34a3fdd2e63c64caaf704566766872c62cb81a21ea8b163c911b327c30`）通过普通模式和 `python -O` 校验。对当前同一组 DEE/Rust 文件解码后，在纳入分析的 31 个 4 秒块中，channel index 3 residual energy 的 78.1% 位于 120 Hz 以下；其它五路为 1.7%–36.7%。另有 3 个非静音块未纳入分析。该结果支持优先检查低频处理路径，但不能单独证明 native LFE 身份或变换原因；包未保留 PCM。
