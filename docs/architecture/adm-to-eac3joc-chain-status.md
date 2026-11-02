@@ -64,6 +64,8 @@ Rust 当前只存储 `line_drc_profile` / `rf_drc_profile` 字符串。源码没
 
 Wash 包 `SAMPLE6-DRC-BSI-BLOCK-PRODUCER-V1`（manifest SHA-256 `0e1802e700a4ed0e574c514a3d71a43f8ffe226eec63fb6d21f2b1c477745555`，seal SHA-256 `d38fdaabee9344f38d82fd7d278471ac3359a0e51793308676bbadb5e717a5d6`）通过普通模式和 `python -O` 校验。DEE 静态规则由曲线和逐 block F32 state 生成 U16 candidate，再与 U16 reference 组合写入 mode-0 code row；`param2=0` 时，block 0 presence 为 `code[0] != 0`，后续 presence 表示相邻 code 变化。Rust scheduler 从 peaks / dialnorm 生成 U16 code，但 `line_flags_u16` 固定为 `[1; 6]`；F12 BSI 直接投影 scheduler flags 和 words。mode 0 与 Rust Line/RF 的对应关系未绑定，因此不能断言 presence 规则已经错配。AU 2843 首块 presence 都为 1，但 DEE `dynrng=1`、Rust `dynrng=0`；selector、F32 state、U16 reference 和正向写入 lineage 仍未捕获。
 
+Wash 包 `SAMPLE6-DEE-RUST-DYNRNG-FIELD-HISTOGRAM-V1`（manifest SHA-256 `0d1ad1ce9e71a0205da38b22f908c60c3055610dc1553d8c3b2cdc27386be223`，seal SHA-256 `5414210a17d894bee65460f522009c73d95b9359b0f1d28dbc57dfb6de13dc2a`）通过普通模式和 `python -O` 校验。parse-only 检查了 4,247 AU × 6 blocks；25,482 个 `dynrnge` presence 全部一致，10,284 个 U8 `dynrng` 不同。目标窗口 `[2750,2875)` 中 194/750 个 U8 不同，六个 block 各有 32、32、32、32、33、33 个差异，且 DEE 均为 `0x01`、Rust 均为 `0x00`。该字段差异不能解释 decoder DRC scale 0 下的主要 channel index 3 残差；decoder DRC 开启时的影响仍未测量。包没有生成 PCM，也没有保存 syncframe 或 encoded payload。
+
 本地 Rust none-DRC baseline 与 film_light DRC candidate 的该窗 F32 PCM hash 相同；job DRC profile 改变了码流字节，没有改变此窗 PCM。 matched-control 配置与 candidate 一致，用户提供的 DEE matched-control 已成为当前有效 PCM 参考。
 
 用户确认：所有不涉及厂商机密的非音频行为均按 DEE 规则对齐，包含容器 CRC、ID11/ID14 与 downmix profile；私有 HMAC 采用 keyless 路径，不读取或使用私钥。验收比较常规解析结果和剥离私有 HMAC 后的音频 essence，非机密容器字段仍按 DEE 规则核对。当前 `hmac_sha256` 仅有定义与测试调用；生产完整编码链没有该函数调用。F14 选定 provider 使用 keyless CRC32/CRC8/CRC16。
@@ -437,7 +439,7 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 1. 追踪 DEE encoder 内部 LFE transform 的首个数值处理点，记录输入、输出和 stride，并提供可区分 Rust F08 七 bin transform 的向量。
 2. 收到 DEE transform 的实测期望值后，再对同一 LFE 输入运行 Rust F08 并比较结果。
 3. 只有新证据支持具体算子差异时，才修改 LFE transform；不改已确认的 row 3 映射或 unity 输入处理。
-4. 为已绑定的 `dynrng` producer 捕获匹配 run 的 U8 selector、F32 state、U16 reference 和 mode→Line/RF 对应关系，再核验六个 block 的 DEE/Rust 值。它不能解释 decoder DRC scale 0 下的主要低频残差。
+4. 为已绑定的 `dynrng` producer 捕获匹配 run 的 U8 selector、F32 state、U16 reference 和 mode→Line/RF 对应关系，并解释整曲已测得的 10,284/25,482 个 U8 差异。它不能解释 decoder DRC scale 0 下的主要低频残差。
 5. 当前有 matched 4 秒窗口和整曲分块指标；整曲 PCM equality、OpenJOC object render、听感和 W04 仍未验证。
 
 channel 3 根因、整曲 PCM parity 和空间渲染通过前，不宣称 audio parity 或感知一致性。
