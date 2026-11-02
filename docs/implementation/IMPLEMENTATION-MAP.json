@@ -32543,7 +32543,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2/MANIFEST.json": "897cb24709839dd5002979fd1fbaf5dd1086901d661864371d899707d4533ba8",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2/MANIFEST.json": "84c40d1d677eb22481140d7ef487255a1db25bbdbced27e68c674458d2b8d5e3"
             },
-            "validation_boundary": "The transform and writer are implemented for an explicit selector. The selected-profile source for rows 2 through 5 and production payload join remain unbound; no bitrate or channel-layout inference is made."
+            "validation_boundary": "The transform and writer are implemented for an explicit selector. The selected-profile source for rows 2 through 5 and production payload join remain unbound; no bitrate or channel-layout inference is made. Signed-16 wrapping on overflow is a model assumption because native overflow behavior is not established."
           },
           "test_modules": [
             "crates/jocforge-domain/src/joc/coefficient_delta.rs"
@@ -32568,21 +32568,22 @@
           "not_run": [
             "Selected-profile per-block selector source and values remain unbound.",
             "Production coefficient-payload integration and same-source AU join are not run.",
-            "Fresh DEE spatial render comparison and product acceptance are not run."
+            "Fresh DEE spatial render comparison and product acceptance are not run.",
+            "Signed-16 overflow behavior remains unbound; the candidate uses wrapping arithmetic."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_delta.rs",
-              "bytes": 6177,
-              "sha256": "f0a445794891be543157f71ee2b2b252f7d62a2def40e49a2fe809cc8ece1c88"
+              "bytes": 6321,
+              "sha256": "0a0793960c24f3697c882cf6e21f8fc2acec601e33761e05b33858b0e40510d4"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_delta.rs",
-              "bytes": 6177,
-              "sha256": "f0a445794891be543157f71ee2b2b252f7d62a2def40e49a2fe809cc8ece1c88"
+              "bytes": 6321,
+              "sha256": "0a0793960c24f3697c882cf6e21f8fc2acec601e33761e05b33858b0e40510d4"
             }
           ],
           "verification": {

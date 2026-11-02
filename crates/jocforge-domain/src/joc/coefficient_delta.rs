@@ -78,7 +78,9 @@ impl CoefficientDeltaPayloadCandidate {
 /// filled with 2, and each value is written MSB-first at seven bits. The final
 /// partial word is zero-padded to a 16-bit boundary. This candidate is not yet
 /// connected to the selected production coefficient-payload path because its
-/// selected-profile selector source has not been delivered.
+/// selected-profile selector source has not been delivered. The current model
+/// uses signed-16 wrapping for the short difference; native overflow behavior
+/// is not established by the washed evidence.
 pub fn build_coefficient_delta_candidate(
     short_coefficients: &[i16],
     total_slots: u16,
