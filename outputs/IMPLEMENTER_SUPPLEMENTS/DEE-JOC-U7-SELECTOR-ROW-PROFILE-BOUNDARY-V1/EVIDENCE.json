@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge-dee-joc-u7-selector-row-profile-boundary.v1",
+  "package_id": "DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V1",
+  "status": "CONSUMER_LOOKUP_BOUND; ROWS_0_1_ZERO_DEFAULT; ROWS_2_5_PROFILE_SOURCE_UNBOUND",
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 static"
+  },
+  "selector_consumer": {
+    "function": "FUN_1800a3710",
+    "selector_base": "state+0x140e8",
+    "field_expression": "state+0x140e8+block_index*0x0a+0xd8",
+    "field_width_bits": 16,
+    "lookup_table": [0, 1, 2, 4],
+    "lookup_meaning": {"0":"disabled","1":"stride 1","2":"stride 2","3":"stride 4"},
+    "callers": ["FUN_1800942d0", "FUN_180098080 blocks 0..5"]
+  },
+  "constructor_defaults": {
+    "initializer": "FUN_1800a19e0",
+    "cleared_component_short_offsets": ["0xd8", "0xda", "0xdc", "0xde", "0xe0", "0xe2"],
+    "bound_selector_rows": {"0":0,"1":0},
+    "unbound_selector_rows": [2,3,4,5],
+    "row_stride_bytes": 10,
+    "state_relative_fields": ["0x141c0","0x141ca","0x141d4","0x141de","0x141e8","0x141f2"]
+  },
+  "profile_copy_boundary": {
+    "preprocessor": "FUN_180074980",
+    "bulk_copy": "FUN_1800a1d00",
+    "destination_component": "state+0x140e8",
+    "profile_source": "*(state+0x298c8)+0xf5b8",
+    "descriptor_table": "state+0x298d0",
+    "separate_slab_pointer": "descriptor_base + slab_index*0x400",
+    "installed_component_pointer_offsets": ["0x1e0","0x2d0","0x508"],
+    "writes_inline_selector_rows": false,
+    "selected_1024_5_1_profile_descriptor_index": "UNBOUND/NO"
+  },
+  "selected_profile_disposition": {
+    "label": "1024 kbps / 5.1 / E-AC-3 JOC",
+    "rows_2_to_5_values": "UNBOUND/NO",
+    "infer_from_bitrate_or_layout": false,
+    "infer_from_renderbus_id0_selector": false,
+    "infer_from_eac3_core_table": false
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "media_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_contact_in_reverse_slice": false
+  },
+  "source_packages": [
+    {"package_id":"DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2","manifest_sha256":"bd4284314b12586aa9cce3e927d897a647ee9ccb8acaaac141ddc0df75b77f1b"},
+    {"package_id":"DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2","manifest_sha256":"69b09249f0981849f03e16258c331667ee018f01b2555411195c025baf7139ae"}
+  ],
+  "exclusions": {
+    "binary_or_raw_disassembly": false,
+    "decompilation_source": false,
+    "media_pcm_or_encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {"package_id":"dee-joc-stride-selector-profile-trace-wash","manifest_sha256":"dc19b6b53cee996264be40ee2ae751f33b521b5790a26d631d19d9f2f1df9229"},
+    {"package_id":"DEE-JOC-STRIDE-SELECTOR-SOURCE-BOUNDARY-V2","manifest_sha256":"bd4284314b12586aa9cce3e927d897a647ee9ccb8acaaac141ddc0df75b77f1b"},
+    {"package_id":"DEE-JOC-STRIDE-SELECTOR-INITIALIZER-V2","manifest_sha256":"69b09249f0981849f03e16258c331667ee018f01b2555411195c025baf7139ae"}
+  ],
+  "source_image": {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+}

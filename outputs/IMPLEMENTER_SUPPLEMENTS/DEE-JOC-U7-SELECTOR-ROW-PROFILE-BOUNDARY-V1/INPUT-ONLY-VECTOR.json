@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "joc-six-block-selector-one-hot",
+  "fixed": {
+    "block_count": 6,
+    "row_stride_bytes": 10,
+    "selector_table": [0, 1, 2, 4]
+  },
+  "cases": [
+    {"block_selectors": [0,0,1,0,0,0], "isolated_block": 2, "expected_stride_if_executed": 1},
+    {"block_selectors": [0,0,2,0,0,0], "isolated_block": 2, "expected_stride_if_executed": 2},
+    {"block_selectors": [0,0,3,0,0,0], "isolated_block": 2, "expected_stride_if_executed": 4}
+  ],
+  "selected_profile_values": "UNBOUND",
+  "execution": "INPUT_ONLY_NOT_NATIVE",
+  "purpose": "Discriminate the per-block JOC selector contract; does not infer the selected profile value."
+}

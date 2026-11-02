@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-JOC-U7-SELECTOR-ROW-PROFILE-BOUNDARY-V1",
+  "source_reverse_package_id": "dee-joc-stride-selector-profile-trace-wash",
+  "source_reverse_manifest_sha256": "dc19b6b53cee996264be40ee2ae751f33b521b5790a26d631d19d9f2f1df9229",
+  "source_reverse_manifest_file": "MANIFEST.json",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "CONSUMER_LOOKUP_BOUND; ROWS_0_1_ZERO_DEFAULT; ROWS_2_5_PROFILE_SOURCE_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3130,
+      "sha256": "57b2be376825731c9c3dfe7b50eb4a4cdad60cad27d3e724ff5d6ad80f010dff"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2573,
+      "sha256": "ca21a90fb75013ebe2d527b579ecd3d774d906255239c9463647e39046069cb2"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 691,
+      "sha256": "f0c722cd4f24360efa009db009d1c9e5bee83a4fe9b78e7ad7898e1f7055dc5c"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1748,
+      "sha256": "6a15314aec8ce847cc76a1b17857fb81eb3fdcfc65dfd9490c9c3e0917a96ee8"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 654,
+      "sha256": "9ba8fe29768a6f74102b387db9436c6b0ac404d2dc1d08f2770f357ce5aa53a1"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}
