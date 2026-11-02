@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge-atmos-core-input-row-capacity.v1",
+  "package_id": "ATMOS-CORE-INPUT-ROW-CAPACITY-V1",
+  "status": "READER_TO_CORE_DYNAMIC_ROW_CAPACITY_BOUND; HUMAN_CAT_RUNTIME_COUNT_UNBOUND",
+  "source_package": {
+    "package_id": "adm_core_input_capacity_wash_v1",
+    "manifest_sha256": "f8df33ceb4eecf306b3e2356ad00ba12f2f103efab1375d822b6c336f4e4320a",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "source_manifest_identities_recomputed": "PASS",
+    "package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+  },
+  "reader_to_core_rule": {
+    "reader_row_count_type": "U16",
+    "reader_row_count_offset": "config+0x0A",
+    "reader_row_map_pointer_offset": "config+0x10",
+    "row_width_bytes": 6,
+    "core_owned_copy": "allocate 6*count bytes; copy rows index 0..count-1 in original order",
+    "first_process_guard": "frame size must fit capacity and descriptor count must equal expected processor count",
+    "fixed_36_channel_cap_in_traced_path": "NONE_OBSERVED",
+    "sort_or_truncation_in_core_copy": "NONE_OBSERVED"
+  },
+  "human_cat_metadata_candidate": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "chna_tracks": 38,
+    "bed_tracks": 10,
+    "object_tracks": 28,
+    "candidate_core_map_rows": 38,
+    "candidate_allocation_bytes": 228,
+    "runtime_reader_u16": "UNBOUND",
+    "runtime_row_map": "UNBOUND"
+  },
+  "implementation_trial": {
+    "ready": true,
+    "candidate_rule": "Preserve the provided U16 count and row order; do not clamp to 36 in this bounded path. For the target ADM, 38 rows / 228 bytes is the metadata-backed candidate.",
+    "runtime_38_row_claim": false,
+    "full_audio_parity_claim": false
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 static only",
+    "wav_or_bwf_opened": false,
+    "pcm_or_payload_read": false,
+    "dee_run": "NOT_RUN",
+    "key_or_license_material_accessed": false,
+    "implementation_contact_before_wash": false
+  }
+}

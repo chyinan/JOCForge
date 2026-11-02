@@ -1,0 +1,27 @@
+{
+  "source_packages": [
+    {
+      "package_id": "adm_core_input_capacity_wash_v1",
+      "manifest_sha256": "f8df33ceb4eecf306b3e2356ad00ba12f2f103efab1375d822b6c336f4e4320a",
+      "source_seal": "MANIFEST.sha256_PRESENT"
+    },
+    {
+      "package_id": "atmos_processor_38ch_guard_wash_v1",
+      "manifest_sha256": "0403c0a19f6dcc918361d12e68b83d4e04179626d3fdfd213d3a83ab424c1eaf"
+    },
+    {
+      "package_id": "atmos_processor_child_count_source_wash_v1",
+      "manifest_sha256": "8b5e657eed11fcb6646251e8bea81c12fcacaf749f0c01aac0ec2f52da5bf19f"
+    },
+    {
+      "package_id": "adm_child_count_seven_sample_vectors_wash_v1",
+      "manifest_sha256": "38f49cb279c2a2e68c4adac89d42ddb0da1133ff7c177ecd397c43ec8a3918b7"
+    }
+  ],
+  "source_validation": {
+    "incoming_manifest_members_checked": true,
+    "incoming_normal_and_optimized_checkers": "PASS",
+    "upstream_guard_child_count_and_seven_sample_manifest_hashes_recomputed": "PASS",
+    "runtime_row_count_or_audio_parity_inferred": false
+  }
+}

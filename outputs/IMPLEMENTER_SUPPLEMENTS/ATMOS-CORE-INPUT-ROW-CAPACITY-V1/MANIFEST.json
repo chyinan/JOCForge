@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "ATMOS-CORE-INPUT-ROW-CAPACITY-V1",
+  "source_reverse_package_id": "adm_core_input_capacity_wash_v1",
+  "source_reverse_manifest_sha256": "f8df33ceb4eecf306b3e2356ad00ba12f2f103efab1375d822b6c336f4e4320a",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "READER_TO_CORE_DYNAMIC_ROW_CAPACITY_BOUND; HUMAN_CAT_RUNTIME_COUNT_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3313,
+      "sha256": "9028ef4d89b0a1bf179acf23cc68448b7df4a39d17ff1a0b49d179d1fe85ce0a"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1969,
+      "sha256": "0cd7d1db36c015f200e7e8ac024db499cb558fd73c23d6f47fe2a0cd8726484e"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 645,
+      "sha256": "9267b73f11c935363e4ea9e2bb0190f3f061f3ae2344a543a38db968d68b7da9"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1399,
+      "sha256": "fa88d21a37bc07b5a386db281a367baea5aa2dad13f8e26de2713e72c99601f6"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1018,
+      "sha256": "0eaf4a6f43b1014e72c149fd07a0b45fac557c95b5f38499bd28b83a0043857b"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

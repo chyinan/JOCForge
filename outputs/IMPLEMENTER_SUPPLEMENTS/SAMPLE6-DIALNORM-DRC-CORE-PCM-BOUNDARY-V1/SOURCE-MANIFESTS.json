@@ -1,0 +1,23 @@
+{
+  "source_packages": [
+    {
+      "package_id": "dialnorm-drc-core-pcm-boundary",
+      "manifest_sha256": "21e28adfd28873ada29a035096c6493d30df76ff9db76203110fa06d840a7cee",
+      "package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+    }
+  ],
+  "hash_checked_source_artifacts": [
+    {"name":"DIALNORM-MISMATCH-FIELD-LINEAGE-ADDENDUM.md","sha256":"986c24edcbe2d19d3f5be660e4d59067c43d075d61dc7964e044596a115dd6c5"},
+    {"name":"DIALNORM-MISMATCH-FIELD-LINEAGE-ADDENDUM.json","sha256":"1e75b459316abbe37a2aa15b3eb1d58b417a20536fb8a8df1474134fa5479c05"},
+    {"name":"DDP-DIALNORM-BSI-TRACE.md","sha256":"b758c0d65d13c0195f2188acf183f023198bb16ad98da08c77823c4f7d575e2f"},
+    {"name":"DDP-STREAM-A8-TRACE.md","sha256":"3cb0ab9330514d98c2fa39a7b13447f0b8f8fc4edb37a6a1a67f3220eb456c8a"},
+    {"name":"DDP-DIALNORM-PARAMETER-DISPATCH.txt","sha256":"a42df8979033ca86c1edc98d9ce370fed06f1e8b354bfe919ee92218de562040"}
+  ],
+  "source_validation": {
+    "incoming_manifest_sha256_recomputed": true,
+    "incoming_normal_and_optimized_checker": "PASS",
+    "source_artifact_hashes_recomputed_by_wash": true,
+    "source_executable_rehash": "NOT_PERFORMED",
+    "pcm_or_payload_copied": false
+  }
+}

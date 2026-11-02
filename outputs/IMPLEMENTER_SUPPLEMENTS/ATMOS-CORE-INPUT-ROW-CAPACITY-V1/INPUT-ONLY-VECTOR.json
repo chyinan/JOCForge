@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-reader-core-row-capacity-vector.v1",
+  "input": {
+    "reader_config_u16_count": 38,
+    "row_width_bytes": 6,
+    "ordered_row_indices": "0..37"
+  },
+  "expected_static_representation": {
+    "allocation_bytes": 228,
+    "copy_order": "increasing index; preserve input order",
+    "fixed_36_limit_in_traced_boundary": false,
+    "sort_or_truncation_observed": false
+  },
+  "target_sample_context": {
+    "human_cat_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "chna_tracks": 38,
+    "runtime_u16": "UNBOUND",
+    "execution": "NOT_RUN"
+  },
+  "pcm_or_payload_included": false
+}

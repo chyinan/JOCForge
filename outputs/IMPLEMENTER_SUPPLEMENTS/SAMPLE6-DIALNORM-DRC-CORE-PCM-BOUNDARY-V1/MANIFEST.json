@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-DIALNORM-DRC-CORE-PCM-BOUNDARY-V1",
+  "source_reverse_package_id": "dialnorm-drc-core-pcm-boundary",
+  "source_reverse_manifest_sha256": "21e28adfd28873ada29a035096c6493d30df76ff9db76203110fa06d840a7cee",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "DIALNORM_TYPED_FRAME_PREP_CLOSED; FINAL_BSI_AND_CORE_PCM_EFFECT_OPEN; DRC_PATH_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3426,
+      "sha256": "467330c00232810473037f074aea45c758ea78d15242ad24f14330b822b4b50a"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1966,
+      "sha256": "bce23bde41f84d6feeabdc2b38a76acdbe57d93c9efe93b954db911fb78cdab2"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 695,
+      "sha256": "162d26baca0ebda6b863b4d931161fc67a23af385c876074b9caf604e633230d"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1454,
+      "sha256": "e04f4765982ecbe75a95c114c820e3482d11527d1e5aa5dbf364de05348247a2"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1196,
+      "sha256": "d5f4c5d9a1e08573cbeced00dae23b912cc24ffbd4cc89988c185fe04cd932a9"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-dialnorm-drc-distinguishing-vector.v1",
+  "kind": "illustrative_not_measured",
+  "six_channel_input": [0.25, -0.125, 0.5, -0.5, 0.125, 0.0],
+  "signaling_only_hypothesis": {
+    "variant_a_dialnorm_u5": 21,
+    "variant_a_core_pcm": [0.25, -0.125, 0.5, -0.5, 0.125, 0.0],
+    "variant_b_dialnorm_u5": 14,
+    "variant_b_core_pcm": [0.25, -0.125, 0.5, -0.5, 0.125, 0.0]
+  },
+  "hypothetical_preencode_gain": {
+    "gain": 0.5,
+    "result": [0.125, -0.0625, 0.25, -0.25, 0.0625, 0.0],
+    "not_a_dee_drc_claim": true
+  },
+  "execution": "NOT_RUN",
+  "vector_scope": "distinguishes candidate semantic outcomes only; no native output values or codec conformance asserted"
+}

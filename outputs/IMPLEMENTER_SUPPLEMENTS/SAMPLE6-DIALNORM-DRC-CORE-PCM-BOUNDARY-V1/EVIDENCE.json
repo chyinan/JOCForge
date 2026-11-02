@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-sample6-dialnorm-drc-core-pcm-boundary.v1",
+  "package_id": "SAMPLE6-DIALNORM-DRC-CORE-PCM-BOUNDARY-V1",
+  "status": "DIALNORM_TYPED_FRAME_PREP_CLOSED; FINAL_BSI_AND_CORE_PCM_EFFECT_OPEN; DRC_PATH_UNBOUND",
+  "source_package": {
+    "package_id": "dialnorm-drc-core-pcm-boundary",
+    "manifest_sha256": "21e28adfd28873ada29a035096c6493d30df76ff9db76203110fa06d840a7cee",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "source_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+  },
+  "target_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256_as_reported_by_source_package": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "wash_independent_binary_rehash": "NOT_PERFORMED"
+  },
+  "dialnorm": {
+    "parameter_id": "0x12",
+    "typed_path": [
+      "per_stream+0x9c dword",
+      "nested_context+0x34 dword",
+      "nested_context+0x19140 word",
+      "frame-preparation branch",
+      "per-frame record at frame_set+index*0x38+0xd0"
+    ],
+    "internal_range": [1, 31],
+    "final_bsi_u5_writer_join": "OPEN",
+    "core_pcm_or_coefficient_consumer_join": "NOT_FOUND_IN_BOUNDED_TRACE",
+    "classification": "metadata/control-shaped path; signaling-only and PCM-invariant behavior are not proven"
+  },
+  "drc": {
+    "scoped_job_profile": "none",
+    "profile_evidence_scope": "Job-template layer",
+    "drc_specific_field_to_pcm_or_bsi_path": "UNBOUND",
+    "adjacent_stream_plus_a8_field": "UNBOUND_SEMANTICS; DO_NOT_LABEL_AS_DRC",
+    "non_none_profile_behavior": "NOT_ESTABLISHED"
+  },
+  "audio_effect_relation": {
+    "effect_on_4s_core_pcm_mismatch": "NOT_ESTABLISHED",
+    "static_trace_does_not_blame_dialnorm_or_drc": true,
+    "illustrative_gain_vector_is_dee_behavior": false
+  },
+  "scope": {
+    "dee_reruns": 0,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "output_comparison": false,
+    "source_code_or_decompilation_included": false
+  }
+}
