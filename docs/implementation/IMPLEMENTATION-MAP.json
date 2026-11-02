@@ -24424,11 +24424,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/POLICY-ROOT-AMENDMENT.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/INPUT-ONLY-VECTORS.json",
               "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
-              "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json"
+              "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1/REPORT.md"
             ],
-            "validation_boundary": "The adapter specifies field and control joins; the available input vectors do not supply a complete native expected-output oracle for integrated F09/F10 parity.",
+            "validation_boundary": "The adapter specifies field and control joins; the available input vectors do not supply a complete native expected-output oracle for integrated F09/F10 parity. A hash-bound synthetic stride-2 row now checks selected samples and U7 grouping; integrated full-frame and DEE runtime parity remain unclaimed.",
             "f09_adapter_manifest_sha256": "edce469334d871edba0c5bb634b8e74f0d938b610f19ad5df005f0dfd55ec0fb",
-            "policy_root_manifest_sha256": "35c8252198a189e3cf0fd2649e02569486b4abdb22a124a528a47cca184ffa9a"
+            "policy_root_manifest_sha256": "35c8252198a189e3cf0fd2649e02569486b4abdb22a124a528a47cca184ffa9a",
+            "stride2_emulator_manifest_sha256": "390c7c816ca84ebb13c5c47f263a9bc7da52b0a9001d56df4d61b6ea136f3aa8"
           },
           "test_modules": [
             "crates/jocforge-domain/src/analysis/exponent_plan.rs",
@@ -24440,20 +24443,24 @@
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F09-F10-STAGE-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/INPUT-ONLY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json"
+              "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
               "FBW active mode is one, special/mode_a2 is zero, and refresh-marker-before comes from F07 structure flags.",
               "The F09.4 strategy uses one whole-anchor reuse mode and three span modes; invalid mode-to-span joins reject.",
               "F10 consumes PRIMARY raw rows, not POWER working rows, and uses exactly 217 selected bins.",
               "LFE uses its own fixed marker-before sequence, mode zero, and seven-bin PRIMARY row.",
-              "Control and shape assertions are input-only; integrated numerical parity is not claimed."
+              "Control and shape assertions are input-only; integrated numerical parity is not claimed.",
+              "Synthetic E-AC-3 core row [10,11,99,9,99,8,99,6], stride 2: selected [10,11,9,8,6], differences [1,-2,-1,-2], U7 codes [76,12]."
             ],
-            "expected_values_are_assertions_only": true
+            "expected_values_are_assertions_only": true,
+            "stride2_emulator_manifest_sha256": "390c7c816ca84ebb13c5c47f263a9bc7da52b0a9001d56df4d61b6ea136f3aa8"
           },
           "verification": {
             "focused_analysis_tests_reported_passed": 16,
-            "report_source": "implementation agent report; not independently rerun in the mapping task"
+            "report_source": "implementation agent report; not independently rerun in the mapping task",
+            "local_stride2_emulator_vector_test": "PASS: 4 analysis exponent-plan tests and 7 selected-frame trial tests."
           },
           "not_run": [
             "Full integrated F09/F10 numerical parity against a native expected-output oracle is NOT_RUN.",
@@ -24465,8 +24472,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-              "bytes": 23437,
-              "sha256": "0f4feb203c0a1266061eb37daf3444563ab642b3099adf8c51dfb6c0aa036c70"
+              "bytes": 23767,
+              "sha256": "0ee4899cdf18b55b6ebd253c00723abc00efd0019ce465563f26f90bc566b161"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
@@ -24502,8 +24509,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-              "bytes": 23437,
-              "sha256": "0f4feb203c0a1266061eb37daf3444563ab642b3099adf8c51dfb6c0aa036c70"
+              "bytes": 23767,
+              "sha256": "0ee4899cdf18b55b6ebd253c00723abc00efd0019ce465563f26f90bc566b161"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
@@ -24858,8 +24865,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-              "bytes": 23437,
-              "sha256": "0f4feb203c0a1266061eb37daf3444563ab642b3099adf8c51dfb6c0aa036c70"
+              "bytes": 23767,
+              "sha256": "0ee4899cdf18b55b6ebd253c00723abc00efd0019ce465563f26f90bc566b161"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/mod.rs",
@@ -36831,8 +36838,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-          "bytes": 23437,
-          "sha256": "0f4feb203c0a1266061eb37daf3444563ab642b3099adf8c51dfb6c0aa036c70"
+          "bytes": 23767,
+          "sha256": "0ee4899cdf18b55b6ebd253c00723abc00efd0019ce465563f26f90bc566b161"
         },
         {
           "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -36863,8 +36870,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-          "bytes": 23437,
-          "sha256": "0f4feb203c0a1266061eb37daf3444563ab642b3099adf8c51dfb6c0aa036c70"
+          "bytes": 23767,
+          "sha256": "0ee4899cdf18b55b6ebd253c00723abc00efd0019ce465563f26f90bc566b161"
         },
         {
           "path": "crates/jocforge-domain/tests/exponent_normalization.rs",

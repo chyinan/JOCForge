@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge-dee-emulator-rust-selector-comparison.v1",
+  "package_id": "DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1",
+  "status": "R2_SYNTHETIC_SELECTOR2_VECTOR_WASHED; RUST_SELECTOR2_MATCH_NOT_DEMONSTRATED",
+  "source_emulation": {
+    "source_package_id": "dee-ddp-exponent-producer-emulator-wash-v7",
+    "source_manifest_sha256": "6a832b29dc13e629cae3811223ba69e75562d781399b2acc03559b33b172ab73",
+    "source_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "function": "FUN_14032d580",
+    "function_code_sha256": "2a2b82c8e5cb3af653b05346c84f3b7e220039915f55dbef0e92ab26a351577c",
+    "tool": "Ghidra 12.2 EmulatorHelper",
+    "execution_grade": "COMPLETED_SYNTHETIC_RAM",
+    "dee_process_run": "NOT_RUN"
+  },
+  "synthetic_input": {
+    "selector_code": 2,
+    "selected_stride": 2,
+    "D_i16": 4,
+    "N_i16": 2,
+    "fullband_lane_count": 1,
+    "coupling_count": 0,
+    "block_gate": 0,
+    "raw_row": [10, 11, 99, 9, 99, 8, 99, 6],
+    "selected_exponents": [10, 11, 9, 8, 6]
+  },
+  "observed_native_emulator_result": {
+    "prepack_row": [10, 3, 0, 1, 0, 2, 2, 6],
+    "unchanged_initial_U4": 10,
+    "biased_differences": [3, 0, 1, 0],
+    "tail_slots": [2, 2],
+    "U7_codes": [76, 12],
+    "row_write_byte_offsets": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    "row_pointer_table_changed": false
+  },
+  "rust_comparison": {
+    "implementation_head": "798b7667ca39f89aba1ec2cad9e5425d886aa990",
+    "loop_contract": "current indices stride, 2*stride, ...; previous index current-stride; value=current-previous+2",
+    "comparison_method": "read-only calculation from the committed source; Rust function NOT_RUN by Wash",
+    "raw_row_selector2_values": [91, 2, 2, 2, 2, 2],
+    "compact_selected_sequence_selector2_values": [1, -1, 2, 2, 2, 2],
+    "compact_selected_sequence_selector1_values": [3, 0, 1, 0, 2, 2],
+    "matches_R2_selector2_native_delta_tail": false,
+    "HEAD_added_regression_selector": 1,
+    "HEAD_added_regression_is_R2_selector2_vector": false
+  },
+  "unresolved": {
+    "candidate_input_semantics": "NOT_ESTABLISHED_FOR_R2_SELECTOR2",
+    "positive_D_producer": "UNBOUND",
+    "positive_N_producer": "UNBOUND",
+    "runtime_owner_generation_join": "UNBOUND",
+    "native_output_parity": "NOT_RUN"
+  },
+  "exclusions": {
+    "source_executable_or_binary_included": false,
+    "raw_disassembly_or_decompilation_included": false,
+    "media_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

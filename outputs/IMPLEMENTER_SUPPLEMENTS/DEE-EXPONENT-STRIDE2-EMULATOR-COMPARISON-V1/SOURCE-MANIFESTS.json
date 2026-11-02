@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dee-ddp-exponent-producer-emulator-wash-v7",
+      "manifest_sha256": "6a832b29dc13e629cae3811223ba69e75562d781399b2acc03559b33b172ab73",
+      "package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+      "source_manifest_files": [
+        {"path": "EVIDENCE.json", "sha256": "25402d9490a4d81a282308994f3fe7600fdf8583faf3cbd14eb1dea6758a7048"},
+        {"path": "INPUT-ONLY-VECTOR.json", "sha256": "7b2652356467f0f869826c2a96427f8dca5913893a677ea84c2e62c63eebb1e9"},
+        {"path": "REPORT.md", "sha256": "9623dfeca261ea69df4efd34626439b9bc5bbd23fc15221976605f917f94d2fa"},
+        {"path": "SOURCE-IDENTITIES.json", "sha256": "7bc97abe848d36d52652b20cfeb5b03739a007b5dd0bdfb6d7a228c6588bc4fd"},
+        {"path": "seal_package.py", "sha256": "62de37daf56e885a5b6f98c7cef3a942e26f5204580fa34b22fd0c83d765794e"},
+        {"path": "verify_package.py", "sha256": "1a4106be30873908ee90268e6bb85ebbca3ef07299f20a6b006f18a34a5f8a50"}
+      ],
+      "scope": "Synthetic local function emulation only; not a DEE process run or runtime producer/owner proof."
+    }
+  ],
+  "implementation_source_review": {
+    "head": "798b7667ca39f89aba1ec2cad9e5425d886aa990",
+    "review_scope": "coefficient_delta candidate loop and newly added regression test only",
+    "implementation_binary_or_source_copied": false
+  }
+}

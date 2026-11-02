@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-input-only-vector-set.v1",
+  "vectors": [
+    {
+      "id": "r2-native-emulator-selector2",
+      "selector": 2,
+      "stride": 2,
+      "D": 4,
+      "N": 2,
+      "raw_row": [10, 11, 99, 9, 99, 8, 99, 6],
+      "observed_selected_exponents": [10, 11, 9, 8, 6],
+      "expected_delta_and_tail_values": [3, 0, 1, 0, 2, 2],
+      "expected_U7_codes": [76, 12],
+      "evidence_grade": "Ghidra EmulatorHelper synthetic RAM; not native DEE"
+    },
+    {
+      "id": "rust-current-loop-on-raw-row",
+      "selector": 2,
+      "input": [10, 11, 99, 9, 99, 8, 99, 6],
+      "calculated_values_from_committed_loop": [91, 2, 2, 2, 2, 2],
+      "execution": "CALCULATED_FROM_SOURCE; RUST_FUNCTION_NOT_RUN"
+    },
+    {
+      "id": "rust-current-loop-on-compact-sequence",
+      "selector": 2,
+      "input": [10, 11, 9, 8, 6],
+      "calculated_values_from_committed_loop": [1, -1, 2, 2, 2, 2],
+      "execution": "CALCULATED_FROM_SOURCE; RUST_FUNCTION_NOT_RUN"
+    },
+    {
+      "id": "adjacent-delta-after-selection",
+      "selector": 1,
+      "input": [10, 11, 9, 8, 6],
+      "calculated_values_from_committed_loop": [3, 0, 1, 0, 2, 2],
+      "execution": "CALCULATED_FROM_SOURCE; RUST_FUNCTION_NOT_RUN"
+    }
+  ]
+}

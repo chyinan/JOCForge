@@ -28,6 +28,8 @@ Wash 包 `KEYLESS-REFERENCE-CORE-BED-AUDIO-EQUALITY-V1`（manifest SHA-256 `5782
 
 回归用例先复现 strategy 2 的 72 对 36 错误，修正后通过。domain `analysis::exponent_plan` 用例 3/3、`codec::selected_frame_trial` 用例 7/7、domain cargo check、fmt 和 boundary check 均通过。严格 Clippy 仍被其他既有文件中的 9 条 warning 拒绝；本次新增的组数 helper warning 已处理。尚未生成包含此修正的新编码文件；因此它修复了已批准 wire 合同中的具体错误，但尚未证明 attempt-10 的因果关联或 DEE 全链音频一致性。
 
+另一个独立的 E-AC-3 core 向量包 `DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1`（manifest SHA-256 `390c7c816ca84ebb13c5c47f263a9bc7da52b0a9001d56df4d61b6ea136f3aa8`）以合成 row `[10,11,99,9,99,8,99,6]`、stride 2 得到四个差分 `[1,-2,-1,-2]`，按现有 F10.5 分组输出 U7 `[76,12]`。当前 `pack_exponent_row` 的 `skip(1).step_by(span)` 已按该起点取样；其原先整除检查拒绝了这个尾部未满 span 的合成行，本轮已移除该限制并加入对应回归。该包目标为 `FUN_14032d580` 的 E-AC-3 core exponent 路径；它不验证 JOC `FUN_180...` coefficient-delta candidate。
+
 ### 新的人是猫完整输出
 
 Run `sample6-dee-audio-full-20261102` 使用本地提交 `216326f622e66f1f7b255dbe7a8bcfb8ca473ce2`、隔离 debug binary SHA-256 `d5e378f8478100c0e16dc805ec39639f01cd37a9987b2f12407824b58efc1ae7` 和已重哈希匹配的授权输入 SHA-256 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`。CLI 终态 `DONE`/exit 0，完成 4,251 callbacks、4,249 sources、4,247 AU、EOF commit 和 F15 exposure；文件 `.test-tmp/sample6-dee-audio-full-20261102.ec3` 为 17,395,712 bytes，CLI SHA-256 `d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da`，实现侧独立 streaming SHA-256 相同。

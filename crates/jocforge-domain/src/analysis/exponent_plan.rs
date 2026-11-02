@@ -548,10 +548,10 @@ fn pack_exponent_row<const BINS: usize>(
     span: u8,
 ) -> Result<Vec<PackedExponentGroup>, AnalysisExponentPlanError> {
     let span = usize::from(span);
-    if BINS < 2 || !matches!(span, 1 | 2 | 4) || (BINS - 1) % span != 0 {
+    if BINS < 2 || !matches!(span, 1 | 2 | 4) {
         return Err(AnalysisExponentPlanError::InvalidPrimaryRow);
     }
-    let mut differences = Vec::with_capacity((BINS - 1) / span);
+    let mut differences = Vec::with_capacity((BINS - 1).div_ceil(span));
     let mut previous = row[0];
     for exponent in row.iter().copied().skip(1).step_by(span) {
         let difference = exponent.wrapping_sub(previous);
@@ -575,7 +575,8 @@ fn span_for_strategy(strategy: u8) -> Result<u8, AnalysisExponentPlanError> {
 #[cfg(test)]
 mod tests {
     use super::{
-        AnalysisExponentPlanError, fullband_plan_block, fullband_strategies, span_for_strategy,
+        AnalysisExponentPlanError, fullband_plan_block, fullband_strategies, pack_exponent_row,
+        span_for_strategy,
     };
 
     #[test]
@@ -592,6 +593,17 @@ mod tests {
             assert_eq!(plan.packed_groups().len(), expected_groups);
             assert!(plan.packed_groups().iter().all(|group| group.value() == 62));
         }
+    }
+
+    #[test]
+    fn washed_eac3_stride_two_row_matches_expected_u7_codes() {
+        let row = [10_i16, 11, 99, 9, 99, 8, 99, 6];
+        let packed = pack_exponent_row(&row, 2).unwrap();
+
+        assert_eq!(
+            packed.iter().map(|group| group.value()).collect::<Vec<_>>(),
+            [76, 12]
+        );
     }
 
     #[test]
