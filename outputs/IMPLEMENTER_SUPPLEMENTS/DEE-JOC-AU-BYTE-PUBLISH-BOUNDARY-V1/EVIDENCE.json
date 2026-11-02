@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge-dee-joc-au-byte-publish-boundary.v1",
+  "package_id": "DEE-JOC-AU-BYTE-PUBLISH-BOUNDARY-V1",
+  "status": "JOC_BITWRITER_REPACK_AND_MEMORY_PUBLISH_BOUND; APPLICATION_FILE_WRITER_OUTSIDE_SLICE",
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis": "Ghidra 12.2 static"
+  },
+  "writer_context": {
+    "initializer": "FUN_180073ef0",
+    "word_pointer_field": "state+0x20648",
+    "cursor_accumulator_field": "state+0x20650",
+    "bit_base_field": "state+0x20658",
+    "same_context_field_writer": "FUN_1800cb0d0 via FUN_18008aea0",
+    "same_context_finalizer": "FUN_180093360",
+    "residual_word_flush": "FUN_1800942d0 stores pending accumulator as U16 when cursor nonzero",
+    "next_unit_resets_cursor_accumulator": true
+  },
+  "repack_and_dispatch": {
+    "per_unit_source_slot": "outer+0xb30+0x10*k",
+    "per_unit_destination_slot": "outer+0xb90+0x10*k",
+    "per_unit_word_count_slot": "outer+0xb9a+0x10*k",
+    "repack_function": "FUN_18008d260",
+    "repack_byte_length": "word_count * 2",
+    "dispatch_order": "increasing unit ordinal",
+    "dispatcher": "FUN_180077ac0 -> FUN_1800b53b0"
+  },
+  "first_byte_publish_boundary": {
+    "callback_pair": ["FUN_1800b4eb0", "context 0"],
+    "thunk": "FUN_1800b4eb0",
+    "memory_writer": "FUN_1800e01e0",
+    "destination": "caller-supplied per-unit memory buffer",
+    "pointer_advances_when_byte_fills": true,
+    "remaining_capacity_tracked": true,
+    "file_or_container_writer_reached_in_direct_chain": false,
+    "os_io_reached_in_direct_chain": false
+  },
+  "scope_limits": {
+    "transform_or_audio_equivalence_established": false,
+    "application_file_append_stage": "OUTSIDE_THIS_SLICE",
+    "native_runtime_observation": "NOT_RUN",
+    "existing_full_length_jocforge_file_parseability": "SEPARATE_VERIFIED_EVIDENCE"
+  },
+  "source_package": {
+    "package_id": "dee_audio_writer_au_boundary_wash_v1",
+    "manifest_sha256": "cef605a777a29e7739619917b7a1f8628deaafe0475318e65d408354f96bf486",
+    "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+  },
+  "exclusions": {
+    "binary_or_raw_disassembly": false,
+    "decompilation_source": false,
+    "media_pcm_or_encoded_payload": false,
+    "private_key_or_license_material": false
+  }
+}

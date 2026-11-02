@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "DEE-JOC-AU-BYTE-PUBLISH-BOUNDARY-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4245,
+      "sha256": "7e1664ded0f659cf71e745872b9ff1845059b7dc4faf917829debaac487cb310"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2350,
+      "sha256": "67b01344405235ddc79a960df993c3d4a1154962eb6a20ed2df7349af40bede3"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 734,
+      "sha256": "d2e9fdd094978e1f5d90c127b1870d6da9184097c77bec860726e9eed6cb842b"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2181,
+      "sha256": "0683e45feab69bda341436a5f9e710a7c43839481e3ccf42a28a055a8a3e206c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1384,
+      "sha256": "167b2975ae00cc5a5f0d2c2ac91fca098a2ec2cb932477c0cc93b38a2805949d"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1480,
+      "sha256": "4a06663791857bb8be715bb0deedef124ad87ae7bc47c74a8e9ec926932d828e"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "153531a3ebca173139790aa1add6cb7c49ee36d30c91e2ce10fefe35d2dc9bb5"
+    }
+  ]
+}

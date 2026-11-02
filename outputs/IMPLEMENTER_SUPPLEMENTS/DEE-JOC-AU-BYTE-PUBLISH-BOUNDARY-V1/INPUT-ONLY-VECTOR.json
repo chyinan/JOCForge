@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-static-buffer-boundary-vector.v1",
+  "vector_id": "one-per-unit-repack-to-callback-buffer",
+  "fixed": {
+    "unit_ordinal": "k",
+    "source_slot": "outer+0xb30+0x10*k",
+    "destination_slot": "outer+0xb90+0x10*k",
+    "word_count_slot": "outer+0xb9a+0x10*k",
+    "destination_byte_length": "word_count*2",
+    "dispatch_order": "increasing k",
+    "callback_target": "FUN_1800e01e0 caller-supplied memory buffer"
+  },
+  "unchanged_distinctions": [
+    "bit-writer source is not repacked destination",
+    "selected stream object is metadata rather than byte-emission callback target",
+    "callback memory buffer is not by itself a file/container writer"
+  ],
+  "execution": "STATIC_ONLY; NO_NEW_DEE_RUN"
+}

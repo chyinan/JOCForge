@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-JOC-AU-BYTE-PUBLISH-BOUNDARY-V1",
+  "source_reverse_package_id": "dee_audio_writer_au_boundary_wash_v1",
+  "source_reverse_manifest_sha256": "cef605a777a29e7739619917b7a1f8628deaafe0475318e65d408354f96bf486",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "JOC_BITWRITER_REPACK_AND_MEMORY_PUBLISH_BOUND; APPLICATION_FILE_WRITER_OUTSIDE_SLICE",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4245,
+      "sha256": "7e1664ded0f659cf71e745872b9ff1845059b7dc4faf917829debaac487cb310"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2350,
+      "sha256": "67b01344405235ddc79a960df993c3d4a1154962eb6a20ed2df7349af40bede3"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 734,
+      "sha256": "d2e9fdd094978e1f5d90c127b1870d6da9184097c77bec860726e9eed6cb842b"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2181,
+      "sha256": "0683e45feab69bda341436a5f9e710a7c43839481e3ccf42a28a055a8a3e206c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1384,
+      "sha256": "167b2975ae00cc5a5f0d2c2ac91fca098a2ec2cb932477c0cc93b38a2805949d"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

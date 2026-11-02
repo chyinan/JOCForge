@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dee_audio_writer_au_boundary_wash_v1",
+      "manifest_sha256": "cef605a777a29e7739619917b7a1f8628deaafe0475318e65d408354f96bf486",
+      "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+      "manifest_artifacts": [
+        {"path": "REPORT.md", "sha256": "69c358ae42274c485c1326b5dce4c88be6f29420367378addea758927e6c457a"},
+        {"path": "EVIDENCE.json", "sha256": "35a08f4e64a299e7f5d9e15c3602ecba2b17ea63ec9229ee0feab94ee5964955"},
+        {"path": "TraceAudioWriterFlushBoundary.java", "sha256": "cf02e7eab44b136c2b7708e9937a3f76887b9178e4e072c732524f52c17d52c2"},
+        {"path": "InspectAudioWriterFlushCallsites.java", "sha256": "dc7084e1f1f82603d033c0bf46f7ba58fe6f39ff32ab4328193fb04db1ad6236"},
+        {"path": "TraceSelectedOutputBufferEdge.java", "sha256": "08aac09b8971342dae7ce35cfd340b2988d97f4732a68dfdaad757dcc95d39cc"},
+        {"path": "TraceAudioStreamDispatch.java", "sha256": "18f010c1387ecfbe9381ff38a47c70ad4b184b6877d954611b0508d71512fd99"},
+        {"path": "check_audio_writer_au_boundary.py", "sha256": "88fceab588d4d3e95ab75304fcec456940fb50e4464444b2f5f720329f2568f5"}
+      ]
+    }
+  ],
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}
