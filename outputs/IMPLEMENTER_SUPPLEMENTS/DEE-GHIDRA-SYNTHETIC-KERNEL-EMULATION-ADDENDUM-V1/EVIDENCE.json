@@ -1,0 +1,81 @@
+{
+  "schema": "jocforge-washed-synthetic-kernel-emulation.v1",
+  "package_id": "DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1",
+  "scope": "TWO ISOLATED SYNTHETIC FUNCTION CALLS",
+  "status": "LOCAL_KERNEL_VECTORS_CONFIRMED; PRODUCT_AUDIO_UNOBSERVED",
+  "source_package": {
+    "package_id": "dee_audio_kernel_emulation_wash_v1",
+    "manifest_sha256": "f3b19c63792632306bdd161dea639df6c7e21e890ba209f0c0f15ff3caf518e9",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_image_bytes": 10942464,
+    "tool": "Ghidra 12.2 EmulatorHelper",
+    "execution_mode": "instruction_emulation",
+    "harness_source_sha256": "ec5907155957a995179c85f7535f78136be032ca5d890f4ec9d31a791428d89d",
+    "inspection_script_sha256": "afb53982b8e898e1aa67bcff6560516cc5c8b757d0c19c625fdf4d3b1bf3eaa3",
+    "source_package_checker_normal": "PASS",
+    "source_package_checker_optimized": "PASS"
+  },
+  "isolated_calls": [
+    {
+      "function": "FUN_1800a4d70",
+      "rva": "0xa4d70",
+      "function_bytes": 128,
+      "direct_call_instructions": 0,
+      "input": {
+        "previous_s16": 5,
+        "current_s16": [7, 6, 0],
+        "stride": 1,
+        "valid_count": 3,
+        "total_slots": 2
+      },
+      "observed": {
+        "result_s16": [5, 4, 1, -4, 2, 2, 2],
+        "tail_fill_count": 3,
+        "tail_fill_s16": 2,
+        "written_span_bytes": 12,
+        "output_le_hex": "04000100fcff020002000200",
+        "output_sha256": "c29c8ec2876bc78119730e793c1b1ba7968b6832b69e29cc6dab8ad726f3df7f"
+      },
+      "bounded_inference": "For these inputs, each valid short output is current - previous + 2; the remaining 3 slots are filled with 2. This is a local vector confirmation, not a complete codec-frame rule."
+    },
+    {
+      "function": "FUN_18008aea0",
+      "rva": "0x8aea0",
+      "function_bytes": 196,
+      "direct_call_instructions": 0,
+      "input": {
+        "unsigned_values": [85, 127, 1],
+        "count": 3,
+        "width_bits": 7,
+        "bit_order": "MSB_FIRST"
+      },
+      "observed": {
+        "completed_word": "0xabfc",
+        "output_memory_le_hex": "fcab",
+        "output_bytes": 2,
+        "remaining_cursor_bits": 5,
+        "remaining_accumulator": "0x0800",
+        "next_output_pointer_delta": 2,
+        "output_sha256": "208ac5d0deecbe63b3c0551723f84f6128c7b5ddb681ebb9acad66316b4f5051"
+      },
+      "bounded_inference": "This vector confirms one completed 16-bit MSB-first word plus retained residual cursor/accumulator state for this local call. It does not establish the caller's field order or frame-level write schedule."
+    }
+  ],
+  "execution_boundaries": {
+    "dll_loaded_by_windows": false,
+    "full_encoder_called": false,
+    "adm_or_media_read": false,
+    "pcm_or_encoded_payload_read": false,
+    "product_audio_generated": false,
+    "key_or_license_read": false,
+    "synthetic_bytes_are_product_audio": false,
+    "harness_or_inspection_source_copied": false,
+    "target_binary_or_decompilation_copied": false
+  },
+  "integration_status": {
+    "joc_frame_membership": "UNBOUND",
+    "selected_producer_consumer_join": "UNBOUND",
+    "complete_frame_or_au_validation": "NOT_RUN",
+    "audio_equivalence": "NOT_ESTABLISHED"
+  }
+}

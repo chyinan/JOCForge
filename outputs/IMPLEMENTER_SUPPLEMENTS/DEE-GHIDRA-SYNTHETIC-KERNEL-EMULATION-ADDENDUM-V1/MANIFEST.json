@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1",
+  "source_reverse_package_id": "dee_audio_kernel_emulation_wash_v1",
+  "source_reverse_manifest_sha256": "f3b19c63792632306bdd161dea639df6c7e21e890ba209f0c0f15ff3caf518e9",
+  "status": "LOCAL_KERNEL_VECTORS_CONFIRMED; PRODUCT_AUDIO_UNOBSERVED",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4718,
+      "sha256": "5484f2edd96da80fa2859fef948580d4728b6a9ffab670c4a5a2db9715cb5a0e"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3254,
+      "sha256": "055020b57bb908cf75a10ba9999014d40c9ee55fc676a855d1db95ca8e7021db"
+    },
+    {
+      "file": "INPUT-VECTORS.json",
+      "bytes": 1130,
+      "sha256": "78168a83906b04da5d45f432b05f849d2ee4ebc419e87102aa97412470d32ee1"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1345,
+      "sha256": "94eeb92ff7bf5be7d5a5f0db821a03127e080a874c29f7dc0adf430d53ec700e"
+    }
+  ],
+  "exclusions": {
+    "harness_or_inspection_source_included": false,
+    "target_binary_or_decompilation_included": false,
+    "media_pcm_or_product_output_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

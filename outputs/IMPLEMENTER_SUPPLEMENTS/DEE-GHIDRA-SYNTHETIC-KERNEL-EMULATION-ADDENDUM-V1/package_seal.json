@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "DEE-GHIDRA-SYNTHETIC-KERNEL-EMULATION-ADDENDUM-V1",
+  "file_count": 6,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 4718,
+      "sha256": "5484f2edd96da80fa2859fef948580d4728b6a9ffab670c4a5a2db9715cb5a0e"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3254,
+      "sha256": "055020b57bb908cf75a10ba9999014d40c9ee55fc676a855d1db95ca8e7021db"
+    },
+    {
+      "file": "INPUT-VECTORS.json",
+      "bytes": 1130,
+      "sha256": "78168a83906b04da5d45f432b05f849d2ee4ebc419e87102aa97412470d32ee1"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1345,
+      "sha256": "94eeb92ff7bf5be7d5a5f0db821a03127e080a874c29f7dc0adf430d53ec700e"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1286,
+      "sha256": "96bb2eb1f5f120e1b8a204dd7e00f50d2a1204b3931942c0e0d28c1191927005"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 80,
+      "sha256": "95a9f253f09c2d5b4c222a4ce0303d4bb07e905206ad79864af9532c0a58afc5"
+    }
+  ]
+}

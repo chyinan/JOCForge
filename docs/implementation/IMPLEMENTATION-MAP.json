@@ -32566,7 +32566,8 @@
               "each delta is current - previous + 2",
               "the remaining output capacity is filled with 2",
               "the writer emits seven bits MSB-first and pads the final word to 16 bits",
-              "The synthetic writer vector [85,127,1] yields completed U16 0xABFC in little-endian bytes FC AB and residual U16 0x0800 in final bytes 00 08."
+              "The synthetic writer vector [85,127,1] yields completed U16 0xABFC in little-endian bytes FC AB and residual U16 0x0800 in final bytes 00 08.",
+              "EmulatorHelper delta/tail vector previous=5, current=[7,6,0], stride=1, total_slots=2 yields [4,1,-4,2,2,2]."
             ],
             "expected_values_are_assertions_only": true,
             "supplement_manifest_sha256": "d5a1e5b458ca00c092212b4027ef4bc0ebbc46d79cd37b13c359242f04df0c04",
@@ -32587,19 +32588,19 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_delta.rs",
-              "bytes": 6950,
-              "sha256": "14a3022b959381522a6d197f14947862a93bda80f883f6e6b131bd8c9244708d"
+              "bytes": 7227,
+              "sha256": "b7e8c6ba3b499f3f374b470448b4ec077a96ddfcfb2f07999f850c1ffe5c9a96"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_delta.rs",
-              "bytes": 6950,
-              "sha256": "14a3022b959381522a6d197f14947862a93bda80f883f6e6b131bd8c9244708d"
+              "bytes": 7227,
+              "sha256": "b7e8c6ba3b499f3f374b470448b4ec077a96ddfcfb2f07999f850c1ffe5c9a96"
             }
           ],
           "verification": {
-            "focused_tests": "5 passed",
+            "focused_tests": "6 passed",
             "domain_check": "PASS",
             "format_check": "PASS",
             "boundary_check": "BLOCKED_BY_EXISTING_encode_request.rs_HASH_INVENTORY_MISMATCH"

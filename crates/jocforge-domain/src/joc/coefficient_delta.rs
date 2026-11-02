@@ -173,6 +173,15 @@ mod tests {
     }
 
     #[test]
+    fn synthetic_dee_delta_and_tail_vector_matches_emulator_helper() {
+        let candidate = build_coefficient_delta_candidate(&[5, 7, 6, 0], 2, 1)
+            .unwrap()
+            .unwrap();
+
+        assert_eq!(candidate.values(), &[4, 1, -4, 2, 2, 2]);
+    }
+
+    #[test]
     fn disabled_selector_skips_the_delta_branch() {
         assert_eq!(
             build_coefficient_delta_candidate(&[1, 2, 3], 1, 0),
