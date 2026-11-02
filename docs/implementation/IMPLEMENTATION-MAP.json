@@ -2251,8 +2251,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18330,
-              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+              "bytes": 20203,
+              "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -2351,8 +2351,8 @@
         {
           "slice_id": "dynamic-adm-input-row-admission",
           "mapping_status": "MATERIALIZED_DYNAMIC_ADM_INPUT_ROWS_TO_PREPARED_JOB_INPUT__DDP_FRAME_VIEW_JOIN_UNBOUND",
-          "implementation_status": "LOCALLY_VERIFIED_DYNAMIC_36_ROW_PCM_MAP_BSI_AND_PRIMARY_CONTROLS__METER_CALLBACK_GATE_OPEN",
-          "scope": "ADM BWF PCM24/48 kHz input rows are carried at their actual count through RIFF parsing, graph/event admission, converter storage mapping, F01E primary metadata/control values, selected BSI profile-field projection, and the typed CHNA-to-BWF-physical-row map. The WAVE channel count must equal the CHNA physical-track count; the selected graph has ten bed rows and the remaining rows are object rows. No row is padded, truncated or reordered. The current host-index representation supports at most 256 physical rows. For the authorized 36-channel sample, one-off local checks with a synthetic one-frame zero PCM resource produced 36 primary control rows and a 36-entry physical-row map; CHNA track_index 1..36 remained bound to physical PCM slots 0..35 and DBMD hosts. No original PCM samples were read. Neither these input-side value stages nor the row map sets a DDP per-call frame-view count or executes the 38-row meter callback owner.",
+          "implementation_status": "LOCALLY_VERIFIED_DYNAMIC_36_ROW_PREPARATION_PRIMARY_CONTROLS_BSI_METER_ADMISSION_AND_PCM_MAP__CALLBACK_GATE_OPEN",
+          "scope": "ADM BWF PCM24/48 kHz input rows are carried at their actual count through RIFF parsing, graph/event admission, converter storage mapping, F01E primary metadata/control values, selected BSI profile-field projection, MeterSourceAdmission identity creation, and the typed CHNA-to-BWF-physical-row map. The WAVE channel count must equal the CHNA physical-track count; the selected graph has ten bed rows and the remaining rows are object rows. No row is padded, truncated or reordered. The current host-index representation supports at most 256 physical rows. For the authorized 36-channel sample, one-off local checks with a synthetic one-frame zero PCM resource produced 36 primary control rows, a 36-entry physical-row map and a dynamic MeterSourceAdmission receipt; CHNA track_index 1..36 remained bound to physical PCM slots 0..35 and DBMD hosts. No original PCM samples were read. Neither these input-side value stages nor the row map sets a DDP per-call frame-view count or executes the 38-row meter callback owner.",
           "owner": "frontend",
           "implementation_requirement": true,
           "dependencies": [
@@ -2372,7 +2372,8 @@
             "crates/jocforge-application/src/lib.rs",
             "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
             "crates/jocforge-application/src/codec_source_bridge.rs",
-            "crates/jocforge-application/src/meter_source_bridge.rs"
+            "crates/jocforge-application/src/meter_source_bridge.rs",
+            "crates/jocforge-application/src/meter_source_admission.rs"
           ],
           "local_mapping_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
@@ -2401,13 +2402,13 @@
               "099ec589dd3a5bebc280950d1d04ec6ec9db9db02ff9db0a078c4473ca230321",
               "37f20833b54062b34e728116aac93180cce1ab3cf8f90fa1b78a653dc3211d23",
               "17f8d2fc3f7525a8edacfad07db6ff7668df7b71ce9082489aa6b8c9524d1e7a",
-              "c24767d2130f56c7fa77909edabc2460fdc3afa5d9b60cda1d56a5e1eea797fc",
+              "c55c5bf23502a819a96e359fad3669c4b1a16bb219cbe070e18d028fc5d8631a",
               "8dd3769836cbad7df2048fba3dc274dc0345a72a4fc762aeb0de72254d5dcb73",
               "6b26fa584c5fb6e6432a811d922d2babd133936079001862bdb31a80e2bb8e81",
               "c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1"
             ],
             "max_physical_rows": 256,
-            "validation_boundary": "Wash manifest identities are recorded for the separately delivered metadata/count-boundary evidence. Actual 36-row metadata, PreparedJobInput, primary binding, primary metadata/control rows, selected BSI profile-field projection, and CHNA-to-PCM physical row map were locally exercised without reading original PCM data. The row map is input-side identity only. BSI projection does not produce an F12 frame candidate; neither stage sets a native frame-view count. Meter callbacks, normal-control snapshots, DDP frame-view, end-to-end encode, and audio-equivalence remain NOT_RUN."
+            "validation_boundary": "Wash manifest identities are recorded for the separately delivered metadata/count-boundary evidence. Actual 36-row metadata, PreparedJobInput, primary binding, primary metadata/control rows, selected BSI profile-field projection, CHNA-to-PCM physical row map, and MeterSourceAdmission identity receipt were locally exercised without reading original PCM data. Meter provider-set identity pairing, callbacks, normal-control snapshots, DDP frame-view, end-to-end encode, and audio-equivalence remain NOT_RUN."
           },
           "test_modules": [
             "crates/jocforge-domain/tests/job_configuration.rs",
@@ -2450,6 +2451,30 @@
               "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
               "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
               "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
+              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
+              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
+              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
+              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
+              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
+              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "MeterSourceAdmission validates the prepared ADM row extent and mints an input/config/resource-bound source owner identity without executing the Meter callback.",
+              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
+              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
+              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
+              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "MeterSourceAdmission validates the prepared ADM row extent and mints an input/config/resource-bound source owner identity without executing the Meter callback.",
+              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
+              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
+              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
+              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "MeterSourceAdmission validates the prepared ADM row extent and mints an input/config/resource-bound source owner identity without executing the Meter callback.",
+              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
+              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
+              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
+              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "MeterSourceAdmission validates the prepared ADM row extent and mints an input/config/resource-bound source owner identity without executing the Meter callback.",
               "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain."
             ],
             "expected_outputs_included": false
@@ -2546,6 +2571,11 @@
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
               "bytes": 35432,
               "sha256": "1237faac5ecafdf8c5a85670b7e41389560e49e0783c870294ca5ccfefe20bca"
+            },
+            {
+              "path": "crates/jocforge-application/src/meter_source_admission.rs",
+              "bytes": 10321,
+              "sha256": "35b2f835776efba968378f317c7b1dc3836d7f93a7a1a6bf0e3ba6789679e531"
             }
           ],
           "test_inventory": [
@@ -2571,8 +2601,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18330,
-              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+              "bytes": 20203,
+              "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
             },
             {
               "path": "crates/jocforge-domain/tests/primary_metadata_control.rs",
@@ -9680,8 +9710,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967072,
-              "sha256": "4cb9b94a6dc05f8f43d1efd1885f141302715304070d793fe48645880dafe1ce"
+              "bytes": 1967285,
+              "sha256": "fd0db6931dcf9b34db526c1890eec819e397f925896f1d687ffc7b4c1a6262df"
             }
           ],
           "test_modules": [
@@ -12678,8 +12708,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18330,
-              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+              "bytes": 20203,
+              "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
             }
           ]
         },
@@ -13196,8 +13226,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967072,
-              "sha256": "4cb9b94a6dc05f8f43d1efd1885f141302715304070d793fe48645880dafe1ce"
+              "bytes": 1967285,
+              "sha256": "fd0db6931dcf9b34db526c1890eec819e397f925896f1d687ffc7b4c1a6262df"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -13355,7 +13385,7 @@
           "slice_id": "parent-meter-source-admission-receipt",
           "mapping_status": "MATERIALIZED_PARENT_METER_SOURCE_ADMISSION_RECEIPT__D11_RUNTIME_BINDING_OPEN",
           "implementation_status": "LOCALLY_VERIFIED_TYPED_ADMISSION_AND_ATTEMPT_SCOPING__D11_DYNAMIC_RUNTIME_CLOSURE_NOT_RUN",
-          "scope": "Mints a local MeterSourceOwnerId only from an admitted PreparedJobInput, attempt and typed source extent. The receipt binds ProgrammeId, complete PreparedJobInputIdentity, resource/config/XML identities, selected profile, selected wave format and extent. The owner ID includes the programme, attempt, input/config identity and extent. It does not load providers, construct a Meter root, run callbacks or drains, finalize a MeasurementReceipt, or commit GTC roots.",
+          "scope": "Mints a local MeterSourceOwnerId from one admitted PreparedJobInput, attempt and typed source extent. The receipt binds programme/attempt, complete PreparedJobInputIdentity, resource/config/XML identities, dynamic selected ADM WAVE/CHNA physical-row count, output profile and sample extent. The Meter profile identity string names ADM BWF PCM24/48 kHz with dynamic rows; the actual wave count remains in the receipt. It does not load providers, construct a Meter root, run callbacks/drains, finalize a MeasurementReceipt, or commit GTC roots.",
           "owner": "meter-source-admission",
           "implementation_requirement": true,
           "dependencies": [
@@ -13381,14 +13411,14 @@
             ]
           },
           "parameters": {
-            "kind": "WASHED_LOCAL_METER_SOURCE_OWNER_ID_AND_PROVIDER_COVERAGE_BOUNDARY",
+            "kind": "WASHED_LOCAL_METER_SOURCE_OWNER_ID_WITH_DYNAMIC_ADM_ROW_EXTENT",
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-PREPASS-PROVIDER-AND-OWNER-ID-BOUNDARY-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-PREPASS-PROVIDER-AND-OWNER-ID-BOUNDARY-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-PREPASS-PROVIDER-AND-OWNER-ID-BOUNDARY-V1/OWNER-PROVIDER-LEDGER.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-PREPASS-PROVIDER-AND-OWNER-ID-BOUNDARY-V1/SOURCE-BINDING.json"
             ],
-            "validation_boundary": "The parent-issued local typed identity binds programme/attempt and prepared input identity/config/profile/extent. The selected-profile D11 static consumer set is now exhaustively enumerated; selected-input owner validators and the same-input runtime graph remain NOT_RUN, so this receipt does not authorize a Meter root, Q+3 prepass, terminal receipt or READY."
+            "validation_boundary": "The parent-issued local typed identity binds programme/attempt and prepared input identity/config/profile/extent, with wave channel count matched to the admitted graph. The selected-profile D11 static consumer set is now exhaustively enumerated. The output Meter provider-set identity remains profile-level; a 36-row provider-set pairing and same-input runtime graph are NOT_RUN, so this receipt does not authorize a Meter root, Q+3 prepass, terminal receipt or READY."
           },
           "test_modules": [
             "crates/jocforge-application/tests/prepared_job_input.rs",
@@ -13404,7 +13434,10 @@
               "The prepared-input integration test checks one selected ADM configuration and exact typed sample extent.",
               "A repeated admission for the same tuple retains the local ID; an incremented attempt receives a different ID.",
               "A source extent differing from the prepared configuration is rejected before an admission receipt is returned.",
-              "All package ledger rows remain evidence of missing runtime/provider coverage, not expected prepass outputs."
+              "All package ledger rows remain evidence of missing runtime/provider coverage, not expected prepass outputs.",
+              "The dynamic ADM meter-admission test accepts 36 WAVE/CHNA rows and produces an owner ID bound to the exact PreparedJobInput and source extent.",
+              "The dynamic ADM meter-admission test accepts 36 WAVE/CHNA rows and produces an owner ID bound to the exact PreparedJobInput and source extent.",
+              "The dynamic ADM meter-admission test accepts 36 WAVE/CHNA rows and produces an owner ID bound to the exact PreparedJobInput and source extent."
             ],
             "expected_outputs_included": false
           },
@@ -13439,8 +13472,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 9903,
-              "sha256": "d388ef88dec35e5b339f5025f0cf3b1aad79b7cf5a08505e38667152664c0fe3"
+              "bytes": 10321,
+              "sha256": "35b2f835776efba968378f317c7b1dc3836d7f93a7a1a6bf0e3ba6789679e531"
             },
             {
               "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -13451,8 +13484,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18330,
-              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+              "bytes": 20203,
+              "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -13913,8 +13946,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 9903,
-              "sha256": "d388ef88dec35e5b339f5025f0cf3b1aad79b7cf5a08505e38667152664c0fe3"
+              "bytes": 10321,
+              "sha256": "35b2f835776efba968378f317c7b1dc3836d7f93a7a1a6bf0e3ba6789679e531"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
@@ -31076,8 +31109,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18330,
-              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+              "bytes": 20203,
+              "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -31113,8 +31146,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18330,
-              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+              "bytes": 20203,
+              "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -34012,8 +34045,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1967072,
-              "sha256": "4cb9b94a6dc05f8f43d1efd1885f141302715304070d793fe48645880dafe1ce"
+              "bytes": 1967285,
+              "sha256": "fd0db6931dcf9b34db526c1890eec819e397f925896f1d687ffc7b4c1a6262df"
             }
           ],
           "test_inventory": [
@@ -34761,8 +34794,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 18330,
-              "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+              "bytes": 20203,
+              "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
             },
             {
               "path": "crates/jocforge-domain/src/state/mod.rs",
@@ -37684,8 +37717,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 18330,
-          "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+          "bytes": 20203,
+          "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -37761,8 +37794,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 18330,
-          "sha256": "388c7a6d3790d7c3926beef0bb236d3b8413e0c5bbc7494d5c0ef5fa87537639"
+          "bytes": 20203,
+          "sha256": "16089397722b91b5e5d1a2ed933c2e4e4a2e32ee98227fcddd0ea9ec30ea1892"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",

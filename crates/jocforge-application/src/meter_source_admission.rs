@@ -17,7 +17,10 @@ use jocforge_domain::{
 
 use crate::{PreparedJobInput, ResourceIdentity};
 
-const SELECTED_WAVE: SelectedWaveDescriptor = SelectedWaveDescriptor::new(48_000, 38, 24);
+const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
+const SELECTED_PCM_BITS: u16 = 24;
+const MAX_ADM_PHYSICAL_ROWS: usize = u8::MAX as usize + 1;
+const MIN_ADM_PHYSICAL_ROWS: usize = 10;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterSourceAdmissionError {
@@ -161,10 +164,10 @@ pub fn selected_meter_profile_identity(
 ) -> Result<&'static str, MeterSourceAdmissionError> {
     match carriage {
         EmdfCarriageProfile::DeployedCompat => Ok(
-            "selected-meter-profile-v1/adm-bwf38-pcm24-48khz/5p1-six-carrier/joc-mode0-phase1-index3/single-independent-zero-dependent/48khz-1024kbps-6blocks-1536samples-4096bytes/deployed_compat",
+            "selected-meter-profile-v2/adm-bwf-pcm24-48khz-dynamic-rows/5p1-six-carrier/joc-mode0-phase1-index3/single-independent-zero-dependent/48khz-1024kbps-6blocks-1536samples-4096bytes/deployed_compat",
         ),
         EmdfCarriageProfile::EtsiEmdf => Ok(
-            "selected-meter-profile-v1/adm-bwf38-pcm24-48khz/5p1-six-carrier/joc-mode0-phase1-index3/single-independent-zero-dependent/48khz-1024kbps-6blocks-1536samples-4096bytes/etsi_emdf",
+            "selected-meter-profile-v2/adm-bwf-pcm24-48khz-dynamic-rows/5p1-six-carrier/joc-mode0-phase1-index3/single-independent-zero-dependent/48khz-1024kbps-6blocks-1536samples-4096bytes/etsi_emdf",
         ),
         EmdfCarriageProfile::Unsupported => {
             Err(MeterSourceAdmissionError::UnsupportedCarriageProfile)
@@ -209,7 +212,13 @@ pub fn admit_meter_source_owner(
     if configuration.input_kind() != SelectedInputKind::Adm {
         return Err(MeterSourceAdmissionError::SelectedInputKind);
     }
-    if configuration.wave() != SELECTED_WAVE {
+    let wave = configuration.wave();
+    let physical_rows = usize::from(wave.channels());
+    if wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
+        || wave.pcm_bits() != SELECTED_PCM_BITS
+        || !(MIN_ADM_PHYSICAL_ROWS..=MAX_ADM_PHYSICAL_ROWS).contains(&physical_rows)
+        || physical_rows != prepared.graph().graph().tracks().len()
+    {
         return Err(MeterSourceAdmissionError::UnsupportedWaveProfile);
     }
     if !matches!(

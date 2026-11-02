@@ -399,25 +399,77 @@ fn meter_source_admission_rejects_a_mismatched_typed_extent() {
     );
 }
 
+#[test]
+fn meter_source_admission_carries_dynamic_adm_physical_row_count() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let (resource, spans) = selected_resource_with_channels(36);
+    let prepared = prepare_selected_job_input(
+        test_programme_id(),
+        case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(48_000, 36, 24),
+        1,
+        Arc::clone(&resource),
+        metadata_payloads(&resource, &spans),
+    )
+    .unwrap();
+    let samples = MeterSourceSampleCount::new(1).unwrap();
+    let admission = admit_meter_source_owner(&prepared, AttemptId::new(0), samples).unwrap();
+
+    assert_eq!(admission.wave().channels(), 36);
+    assert_eq!(prepared.graph().graph().tracks().len(), 36);
+    assert!(
+        admission
+            .selected_profile_identity()
+            .unwrap()
+            .contains("dynamic-rows")
+    );
+}
+
 fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
+    selected_resource_with_channels(38)
+}
+
+fn selected_resource_with_channels(channels: u16) -> (Arc<[u8]>, [Range<usize>; 3]) {
+    let track_count = usize::from(channels);
+    assert!((10..=38).contains(&track_count));
+    let chna = if track_count == 38 {
+        CHNA.to_vec()
+    } else {
+        let mut subset = CHNA[..4 + track_count * 40].to_vec();
+        subset[..2].copy_from_slice(&channels.to_le_bytes());
+        subset[2..4].copy_from_slice(&channels.to_le_bytes());
+        subset
+    };
     let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
-    append_chunk(&mut bytes, *b"fmt ", &selected_format_payload());
-    append_chunk(&mut bytes, *b"data", &[0_u8; 114]);
+    append_chunk(&mut bytes, *b"fmt ", &selected_format_payload(channels));
+    append_chunk(&mut bytes, *b"data", &vec![0_u8; track_count * 3]);
     let axml = append_chunk(&mut bytes, *b"axml", AXML);
-    let chna = append_chunk(&mut bytes, *b"chna", CHNA);
+    let chna = append_chunk(&mut bytes, *b"chna", &chna);
     let dbmd = append_chunk(&mut bytes, *b"dbmd", DBMD);
     let riff_size = u32::try_from(bytes.len() - 8).unwrap();
     bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
     (Arc::from(bytes.into_boxed_slice()), [axml, chna, dbmd])
 }
 
-fn selected_format_payload() -> Vec<u8> {
+fn selected_format_payload(channels: u16) -> Vec<u8> {
+    let block_align = channels * 3;
     let mut format = Vec::with_capacity(16);
     format.extend_from_slice(&1_u16.to_le_bytes());
-    format.extend_from_slice(&38_u16.to_le_bytes());
+    format.extend_from_slice(&channels.to_le_bytes());
     format.extend_from_slice(&48_000_u32.to_le_bytes());
-    format.extend_from_slice(&5_472_000_u32.to_le_bytes());
-    format.extend_from_slice(&114_u16.to_le_bytes());
+    format.extend_from_slice(&(48_000_u32 * u32::from(block_align)).to_le_bytes());
+    format.extend_from_slice(&block_align.to_le_bytes());
     format.extend_from_slice(&24_u16.to_le_bytes());
     format
 }
