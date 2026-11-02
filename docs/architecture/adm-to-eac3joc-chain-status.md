@@ -78,6 +78,8 @@ Wash 包 `SAMPLE6-DRC-F32-SOURCE-INITIALIZER-V1`（manifest SHA-256 `94e8539f164
 
 Wash 包 `SAMPLE6-DRC-PLUGIN-ROW-PRODUCER-V1`（manifest SHA-256 `0eab2a5fed8758c7cac3e95c9de32d3c732332fc8300352feea975772bdbc353`，seal SHA-256 `d9cff7b9f7f50b5609d986af3b8a4a23c24b00142bbb234f936508055417df57`）通过普通模式和 `python -O` 校验。它绑定了 Atmos plugin 内 mapped/strided F32 输入经 filter、clamp 和平方和后，写入 plugin-local 6×5 F32 row，并由同一 plugin 调用读取。该 owner `plugin_root+0x21e9c` 与 encoder core `state+0x21cc4` 是不同对象；没有 typed host/API copy 或 owner edge。row 的 metric 语义和 core row 的非零 writer 仍未绑定。不要按相对 offset 或相同布局把 plugin row 接到 Rust core scheduler。
 
+Wash 包 `SAMPLE6-DRC-PLUGIN-HOST-EDGE-BOUNDARY-V1`（manifest SHA-256 `0bbec6389ea12051df67f2ec24b92b6bdf9fd2511abcf39ba62ec951a5df1bca`，seal SHA-256 `7c6852105ef05c33673951d802a1d280e32c9ef2732ebe872bc82641d6165278`）通过普通模式和 `python -O` 校验。已检查的 plugin callback 成功路径把 output record 交给 plugin-owned writer/buffer；该调用路径不传递 plugin F32 row pointer。host 函数体和外部引用仍未解析，因此只能说“此 plugin 路径未观察到 typed core copy”，不能推断全局不存在 host transfer。core `state+0x21cc4` 的 writer 或 host-side typed edge 仍未绑定。
+
 Wash 包 `SAMPLE6-DEE-RUST-DYNRNG-FIELD-HISTOGRAM-V1`（manifest SHA-256 `0d1ad1ce9e71a0205da38b22f908c60c3055610dc1553d8c3b2cdc27386be223`，seal SHA-256 `5414210a17d894bee65460f522009c73d95b9359b0f1d28dbc57dfb6de13dc2a`）通过普通模式和 `python -O` 校验。parse-only 检查了 4,247 AU × 6 blocks；25,482 个 `dynrnge` presence 全部一致，10,284 个 U8 `dynrng` 不同。目标窗口 `[2750,2875)` 中 194/750 个 U8 不同，六个 block 各有 32、32、32、32、33、33 个差异，且 DEE 均为 `0x01`、Rust 均为 `0x00`。该字段差异不能解释 decoder DRC scale 0 下的主要 channel index 3 残差；decoder DRC 开启时的影响仍未测量。包没有生成 PCM，也没有保存 syncframe 或 encoded payload。
 
 本地 Rust none-DRC baseline 与 film_light DRC candidate 的该窗 F32 PCM hash 相同；job DRC profile 改变了码流字节，没有改变此窗 PCM。 matched-control 配置与 candidate 一致，用户提供的 DEE matched-control 已成为当前有效 PCM 参考。
@@ -453,7 +455,7 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 1. 补齐 DEE LFE 的 matched layout/map slot、row 3 lane 和运行时 persistent-history 值，再把已更正的 native pre-rotation 与 Rust F08 folded banks 作数值比较。
 2. 收到 DEE transform 的实测期望值后，再对同一 LFE 输入运行 Rust F08 并比较结果。
 3. 只有新证据支持具体算子差异时，才修改 LFE transform；不改已确认的 row 3 映射或 unity 输入处理。
-4. 为已绑定的 `dynrng` producer 捕获匹配 run 的 U8 selector、F32 state、U16 reference 和 mode→Line/RF 对应关系，并解释整曲已测得的 10,284/25,482 个 U8 差异。它不能解释 decoder DRC scale 0 下的主要低频残差。
+4. 为已绑定的 `dynrng` producer 捕获匹配 run 的 U8 selector、F32 state、U16 reference、mode→Line/RF 对应关系及 host output-record 到 core row 的 typed edge，并解释整曲已测得的 10,284/25,482 个 U8 差异。它不能解释 decoder DRC scale 0 下的主要低频残差。
 5. 当前有 matched 4 秒窗口和整曲分块指标；整曲 PCM equality、OpenJOC object render、听感和 W04 仍未验证。
 
 channel 3 根因、整曲 PCM parity 和空间渲染通过前，不宣称 audio parity 或感知一致性。
