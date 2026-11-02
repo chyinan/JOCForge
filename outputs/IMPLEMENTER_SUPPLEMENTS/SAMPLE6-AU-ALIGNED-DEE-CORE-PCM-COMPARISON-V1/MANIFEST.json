@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SAMPLE6-AU-ALIGNED-DEE-CORE-PCM-COMPARISON-V1",
+  "dee_window_source_package_id": "native-f06-authorized-adm-au-aligned-core-pcm-comparison-addendum",
+  "dee_window_manifest_sha256": "ade02cf02c9e0d7f1947148a9b188accad24900e649a4e67999c9c120fb96a49",
+  "dee_window_source_package_seal": "NOT_PROVIDED",
+  "jocforge_gate_source_package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+  "jocforge_gate_manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+  "jocforge_gate_package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18",
+  "status": "AU_ALIGNED_4S_CORE_PCM_HASH_MISMATCH; JOB_CONTROL_AND_SPATIAL_PARITY_OPEN",
+  "implementation_trial_ready": false,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 3875,
+      "sha256": "80aeae43e341ce9a47951d477d39972ac9f1b00fb2bd2f55edbac1b247380150"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3650,
+      "sha256": "f497cc282a91afdf9dbaa0cfda2fd6f8018b2855b7e2b16ac8b29480c85556e9"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 910,
+      "sha256": "57052aaed860e393e2fb9905d5e501471d41dbc998fb590efaf6227dc2c7ba66"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 2258,
+      "sha256": "502dbefc668b9f63c3c48c68b672668291d7c1d009205c7f650e7329ab8fd282"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 905,
+      "sha256": "2dc9e96df39a93ef0074fecf753c0d25fce4a2898b5b85ddabd4aa27c655a0af"
+    }
+  ],
+  "exclusions": {
+    "pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

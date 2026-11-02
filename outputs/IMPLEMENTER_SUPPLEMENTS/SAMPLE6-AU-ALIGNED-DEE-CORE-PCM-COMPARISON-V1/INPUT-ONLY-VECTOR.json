@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "sample6-file-position-2112-2207-au-aligned-core-window",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "source_window": {
+    "file_position_start": 2112,
+    "file_position_end_inclusive": 2207,
+    "timecode_fps": 24,
+    "samples_per_frame": 2000,
+    "sample_start_inclusive": 4224000,
+    "sample_end_exclusive": 4416000,
+    "sample_count": 192000
+  },
+  "AU_mapping": {
+    "samples_per_AU": 1536,
+    "AU_start": 2750,
+    "AU_end_exclusive": 2875,
+    "AU_count": 125
+  },
+  "expected_core_window_bytes": 4608000,
+  "comparison": {
+    "DEE_PCM_SHA256_source_attested": "fcd37d2218c98229a48cff1e25644315ecf62267acdd27da82d6d8524daf8025",
+    "Rust_PCM_SHA256_Wash_recomputed": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7",
+    "equal": false
+  },
+  "pcm_persisted": false
+}

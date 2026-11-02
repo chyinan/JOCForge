@@ -1,0 +1,88 @@
+{
+  "schema": "jocforge-sample6-au-aligned-dee-core-pcm-comparison.v1",
+  "package_id": "SAMPLE6-AU-ALIGNED-DEE-CORE-PCM-COMPARISON-V1",
+  "status": "AU_ALIGNED_4S_CORE_PCM_HASH_MISMATCH; JOB_CONTROL_AND_SPATIAL_PARITY_OPEN",
+  "authorized_input": {
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "channels": 38,
+    "sample_rate_hz": 48000,
+    "bits_per_sample": 24
+  },
+  "dee_reference": {
+    "job_sha256": "edd0e5b173d763e63db5405ea85aa9783bbd0477060233726843ec6f1f2eda2f",
+    "exit_code": 0,
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "output_sha256": "6bc8dd27b030858f4495562d59152bb71d15a6fbc928abfc10f36070ee35233a",
+    "output_bytes": 513093,
+    "output_retained": false,
+    "access_units": 125,
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "layout": "5.1(side)",
+    "bit_rate_bps": 1024000,
+    "duration_seconds": 4.0,
+    "mp4_edit_media_time": 0,
+    "effective_skip_samples": 0,
+    "decoded_sample_frames": 192000,
+    "decoded_pcm_bytes": 4608000,
+    "decoded_pcm_sha256_source_attested": "fcd37d2218c98229a48cff1e25644315ecf62267acdd27da82d6d8524daf8025",
+    "pcm_recomputed_by_wash": false,
+    "pcm_recomputed_by_wash": false
+  },
+  "jocforge_full_run_crop": {
+    "run_id": "sample6-dee-audio-full-20261102",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "full_output_sha256": "d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da",
+    "full_output_bytes": 17395712,
+    "AU_interval": [2750, 2875],
+    "access_units": 125,
+    "sample_rate_hz": 48000,
+    "channels": 6,
+    "layout": "5.1(side)",
+    "sample_format": "pcm_f32le",
+    "sample_frames": 192000,
+    "pcm_bytes": 4608000,
+    "pcm_sha256_recomputed_by_wash": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7",
+    "pcm_persisted": false
+  },
+  "comparison": {
+    "same_input_identity": true,
+    "same_sample_count": true,
+    "same_AU_interval": true,
+    "same_decoder": "FFmpeg 8.1-full_build.www.gyan.dev",
+    "format": "48kHz 6-channel pcm_f32le",
+    "dee_pcm_sha256": "fcd37d2218c98229a48cff1e25644315ecf62267acdd27da82d6d8524daf8025",
+    "jocforge_pcm_sha256": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7",
+    "exact_hash_match": false,
+    "scalar_samples_compared": 1152000,
+    "exact_scalar_samples": 17,
+    "mean_abs_error_f32": 0.0012589326532441106,
+    "rmse_f32": 0.0063942473561041544,
+    "max_abs_error_f32": 0.30480920523405075,
+    "scope": "E-AC-3 5.1 core/bed only; no Atmos object or spatial render"
+  },
+  "interpretation_limits": {
+    "job_configuration_equivalence": "NOT_ESTABLISHED",
+    "cause_of_core_pcm_difference": "UNBOUND",
+    "full_song_audio_parity": "NOT_ESTABLISHED",
+    "atmos_spatial_parity": "NOT_RUN",
+    "private_hmac_or_license_behavior": "NOT_ASSESSED"
+  },
+  "source_packages": [
+    {
+      "package_id": "native-f06-authorized-adm-au-aligned-core-pcm-comparison-addendum",
+      "manifest_sha256": "ade02cf02c9e0d7f1947148a9b188accad24900e649a4e67999c9c120fb96a49",
+      "source_seal": "NOT_PROVIDED"
+    },
+    {
+      "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+      "manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+      "package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18",
+      "full_run_receipt_sha256": "99129a8dc0feb9e6bb4a5e4422c13ba663b67c15104343a5a323e8fce30c9b3b"
+    }
+  ],
+  "exclusions": {
+    "pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

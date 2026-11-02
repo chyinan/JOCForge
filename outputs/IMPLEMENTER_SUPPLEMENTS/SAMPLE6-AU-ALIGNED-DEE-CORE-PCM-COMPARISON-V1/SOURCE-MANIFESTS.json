@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "native-f06-authorized-adm-au-aligned-core-pcm-comparison-addendum",
+      "manifest_sha256": "ade02cf02c9e0d7f1947148a9b188accad24900e649a4e67999c9c120fb96a49",
+      "separate_package_seal": "NOT_PROVIDED"
+    },
+    {
+      "package_id": "SAMPLE6-KEYLESS-DEE-REFERENCE-GATE-V4",
+      "manifest_sha256": "6d5e9a96a90a940bb9d6b7969489b7b71888988d8cc048e62125690f141943a4",
+      "package_seal_sha256": "d79d6f1311702876023c0c4525d5ea63940de6758656c6b3ffde2ae49a9dda18",
+      "run_receipt_sha256": "99129a8dc0feb9e6bb4a5e4422c13ba663b67c15104343a5a323e8fce30c9b3b"
+    }
+  ],
+  "wash_recomputed_rust_pcm_window": {
+    "analysis_script_sha256": "ffbc57e17ffd2141722b9324ab8cd0dd66520a9ac5dbfc8b1da5702e009c2b74",
+    "window_pcm_sha256": "6d9a5de71c530e65d87aa7ef203b3900ff50beec336018c7b269ed061747f2f7"
+  }
+}
