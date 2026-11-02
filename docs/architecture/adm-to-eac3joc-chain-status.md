@@ -56,9 +56,9 @@ Wash 包 `SAMPLE6-DEE-MATCHED-LFE-POINTER-EDGE-V1`（manifest SHA-256 `3280306b0
 
 Wash 包 `SAMPLE6-LFE-SPATIAL-ANALYSIS-WEIGHT-BOUNDARY-V1`（manifest SHA-256 `748f7657ae414ebb841e8a418b6475abf3ee4edd1b38ca2c901147205b204275`，seal SHA-256 `b439aff5c653e24879cd9161cd5a5a2da11362177e58f180f5dafa50b018d0b0`）通过普通模式和 `python -O` 校验。它在另一进程中观察到 4096 点空间编码功率计算使用 bin 权重 `0.042385533452034`；这不是 E-AC-3 LFE 样本增益。输入 lane 3、unity add 和分析权重来自分开的捕获，未绑定到同一 owner/generation，也未连接到最终 core PCM slot 3。不要把该权重接入 LFE 输出。Wash 披露了一次 8-byte sample-buffer read request；读值未保留或使用，包中不含样本。
 
-Wash 包 `SAMPLE6-DEE-CORE-LFE-TRANSFORM-V1`（manifest SHA-256 `eaf981c9436b5779df50e375aae6619bd652699e16f030cfca4945d42284b942`，seal SHA-256 `80bcd7ef018ddd2d99b8381ca03a7e9fbe7d0de04b83bc39c2d354e46c525da3`）通过普通模式和 `python -O` 校验。DEE 静态 core path 每 lane 复制 256 个带 stride 的 F32 word，随后做 64 步对称 pre-rotation，使用 C/S/C′/S′，并读到 scratch 相对 index 381。之后 LFE main/companion 各输出 7 个 F32。matched layout、ADM row 3 到 internal LFE lane、额外 126 个 scratch word 的 owner/generation 与系数值仍未绑定，向量和数值输出也未运行。
+Wash 包 `SAMPLE6-DEE-CORE-LFE-TRANSFORM-V1`（manifest SHA-256 `eaf981c9436b5779df50e375aae6619bd652699e16f030cfca4945d42284b942`，seal SHA-256 `80bcd7ef018ddd2d99b8381ca03a7e9fbe7d0de04b83bc39c2d354e46c525da3`）最初通过普通模式和 `python -O` 校验。R4 随后报告参数归属错误：`FUN_14036e350` 的 param1 scratch 只读相对 F32 index 0..255；旧分析把 param2/param3 的访问误归到 param1。故该包“param1 读到 index 381”和“其后 126 个 word 属于同一 scratch history”的结论已撤回，等待 superseding addendum。旧包所述 pre-rotation 输入归属与 Rust F08 形状对比也暂不作为当前结论。
 
-Rust F08 LFE 调用共享 `long_pre_rotation`，处理 128 对相邻 folded words，使用一组 long C/S，之后走 16×FFT8、recurrence 和 main/companion 7-bin 后旋转。它与 DEE 静态路径的输入跨度和 pre-rotation 形状不同；Rust folded input 是否等价包含 DEE 的 scratch history 尚未证明。因此当前只能记录模型路径差异，不能判定 matched audio mismatch 或改写 LFE 算子。
+R4 报告的待复核更正把 `state+0x262e8` 识别为 256-F32 input scratch，把 `state+0x266f0 + map_slot*0x400` 识别为 persistent lane history，并将 param3 temporary 列为另一 allocator block。上述新边界尚未由 Wash superseding package 独立封存。当前不据旧包改 Rust LFE 算子，也不把旧 scratch 差异用于解释 matched audio residual。
 
 Wash 包 `SAMPLE6-CROSS-ADM-DEE-HEADER-REPEATABILITY-V1`（manifest SHA-256 `8592b9237de297f64cc703da495116ecd7bb01d6f2bc9ac0faaa648406e2775c`，seal SHA-256 `593cf6137e418e785d4e250be500c9e55e86183b99b7ddb2d0ddefd1aff73099`）通过普通模式和 `python -O` 校验。三份授权 ADM 的 CHNA/AXML 都把 5.1 bed 的 row 3 标为 LFE；另外两次 DEE 输出的首个 syncframe 也报告 48 kHz、6 blocks、5.1、LFE present。该包未测 PCM，也未证明运行时 row selection 或跨输入的 LFE 残差重复性。
 
@@ -450,7 +450,7 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 | FFmpeg external-reference scope correction | `c4498343ffff10a1efcd278241fd569e6b17dd454edc3e47090a764c4dbfcc5b` | FFmpeg 只允许作公开字段名称、语法和事后验证的旁证；不能作为 DEE 音频行为、算法、增益、公式、默认值或参数来源。 |
 ## 当前音频待验证项
 
-1. 追踪 DEE encoder 内部 LFE transform 的 matched lane、stride、C/S/C′/S′ 表，以及 scratch words 256–381 的 owner/history；再给出可区分 Rust F08 七 bin transform 的数值向量。
+1. 由 superseding Wash 包核验 DEE LFE 的 matched lane/stride、`state+0x262e8` input scratch、`state+0x266f0 + map_slot*0x400` persistent history 与 param3 temporary 的对象边界，再给出可区分 Rust F08 七 bin transform 的数值向量。
 2. 收到 DEE transform 的实测期望值后，再对同一 LFE 输入运行 Rust F08 并比较结果。
 3. 只有新证据支持具体算子差异时，才修改 LFE transform；不改已确认的 row 3 映射或 unity 输入处理。
 4. 为已绑定的 `dynrng` producer 捕获匹配 run 的 U8 selector、F32 state、U16 reference 和 mode→Line/RF 对应关系，并解释整曲已测得的 10,284/25,482 个 U8 差异。它不能解释 decoder DRC scale 0 下的主要低频残差。
