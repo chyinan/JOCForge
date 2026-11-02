@@ -2402,6 +2402,7 @@
               "37f20833b54062b34e728116aac93180cce1ab3cf8f90fa1b78a653dc3211d23",
               "17f8d2fc3f7525a8edacfad07db6ff7668df7b71ce9082489aa6b8c9524d1e7a",
               "c24767d2130f56c7fa77909edabc2460fdc3afa5d9b60cda1d56a5e1eea797fc",
+              "8dd3769836cbad7df2048fba3dc274dc0345a72a4fc762aeb0de72254d5dcb73",
               "6b26fa584c5fb6e6432a811d922d2babd133936079001862bdb31a80e2bb8e81",
               "c6f9c8439fb3c408ddb2cd1ae071ee926f310bf46ff099fedb204d5a63b927a1"
             ],
@@ -2441,7 +2442,15 @@
               "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
               "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
               "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
-              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host."
+              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
+              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
+              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain.",
+              "One-off metadata-only sample preparation generated 36 primary control rows: 26 object rows (338 words) and ten bed rows (60 defined words).",
+              "The selected BSI profile-field test accepts the 36-row ADM configuration while keeping BSI values and output profile unchanged; it creates no frame-view descriptor.",
+              "The one-off 36-row physical-row map binds one-based CHNA track indices to zero-based BWF slots and joins DBMD by physical host.",
+              "The 36-row AXML count of 27 audioObject elements includes one bed AO plus 26 Objects objects; the selected graph's 26 object events are a separate count domain."
             ],
             "expected_outputs_included": false
           },
