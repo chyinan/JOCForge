@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-input-only-vector.v1",
+  "vector_id": "eac3-core-minimum-triplet-tail-candidate",
+  "scope": "E-AC-3 core only",
+  "input": {"D": 4},
+  "candidate_rule": "N=(D+2)//3",
+  "candidate_result": {"N": 2, "tail_values": 2},
+  "execution": "ARITHMETIC_ONLY; N_PRODUCER_NOT_OBSERVED",
+  "not_a_JOC_FUN_180_vector": true
+}

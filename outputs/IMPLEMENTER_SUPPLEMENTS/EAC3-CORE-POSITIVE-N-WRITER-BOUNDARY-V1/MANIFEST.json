@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "EAC3-CORE-POSITIVE-N-WRITER-BOUNDARY-V1",
+  "source_reverse_package_id": "dee-ddp-positive-count-writer-unbound-wash-v8",
+  "source_reverse_manifest_sha256": "15278b6103e7f4b2abe9018d6cb406f4f881383ca36641d7ef1b4c4cc980ac68",
+  "source_reverse_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+  "status": "N_CONSUMER_AND_ZERO_RESET_BOUND; POSITIVE_N_WRITER_UNBOUND",
+  "implementation_trial_ready": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2984,
+      "sha256": "d010158bbd712d6a72a6dfe3011ef857510c946bf28bfce832391f1ea31f192a"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2356,
+      "sha256": "1226079bb86ccc70d6063bdc55397c6ef8b63a326449e4c6c6fbbb812a36e0a8"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 338,
+      "sha256": "35932ff2281f2ba7b0b37576f1caa40edb1161c7709ac08d9877fe6b88969c8f"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1426,
+      "sha256": "587e08eab591f925523ab0accb32853b25bab0bb8a55363606afa37e95036d1c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 551,
+      "sha256": "9933a6518c4caa128d07869b552a96ebd7cf4f6be9d15d39085705ec0237add6"
+    }
+  ],
+  "exclusions": {
+    "binary_or_decompilation_included": false,
+    "audio_pcm_or_encoded_payload_included": false,
+    "private_key_or_license_material_included": false
+  }
+}

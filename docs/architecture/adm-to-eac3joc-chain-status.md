@@ -30,6 +30,8 @@ Wash 包 `KEYLESS-REFERENCE-CORE-BED-AUDIO-EQUALITY-V1`（manifest SHA-256 `5782
 
 另一个独立的 E-AC-3 core 向量包 `DEE-EXPONENT-STRIDE2-EMULATOR-COMPARISON-V1`（manifest SHA-256 `390c7c816ca84ebb13c5c47f263a9bc7da52b0a9001d56df4d61b6ea136f3aa8`）以合成 row `[10,11,99,9,99,8,99,6]`、stride 2 得到四个差分 `[1,-2,-1,-2]`，按现有 F10.5 分组输出 U7 `[76,12]`。当前 `pack_exponent_row` 的 `skip(1).step_by(span)` 已按该起点取样；其原先整除检查拒绝了这个尾部未满 span 的合成行，本轮已移除该限制并加入对应回归。该包目标为 `FUN_14032d580` 的 E-AC-3 core exponent 路径；它不验证 JOC `FUN_180...` coefficient-delta candidate。
 
+配套 `EAC3-CORE-POSITIVE-N-WRITER-BOUNDARY-V1`（manifest SHA-256 `e848480e9a3da564e6cc81606d7c90ce7c97f7b48bd6310c67c6fa1c2f8ae8a3`）确认 `FUN_14032d580` 读取同一 D/N 字段，但这条有界调用链只找到 N 的清零写入，没有找到正向 N producer。当前 `ceil(D/3)`（例如 D=4→N=2、tail=2）继续作为 confidence 0.78 的 core 模型候选；所选全带宽 D=216 时组数为72，原选定 profile 结果不变。此 inference 不转用到 JOC `FUN_180...` 路径。
+
 ### 新的人是猫完整输出
 
 Run `sample6-dee-audio-full-20261102` 使用本地提交 `216326f622e66f1f7b255dbe7a8bcfb8ca473ce2`、隔离 debug binary SHA-256 `d5e378f8478100c0e16dc805ec39639f01cd37a9987b2f12407824b58efc1ae7` 和已重哈希匹配的授权输入 SHA-256 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`。CLI 终态 `DONE`/exit 0，完成 4,251 callbacks、4,249 sources、4,247 AU、EOF commit 和 F15 exposure；文件 `.test-tmp/sample6-dee-audio-full-20261102.ec3` 为 17,395,712 bytes，CLI SHA-256 `d9680298ac1d913f408b77a72b45171fc379dabb71de80e44c24d27cbf1de6da`，实现侧独立 streaming SHA-256 相同。

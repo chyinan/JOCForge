@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge-eac3-core-positive-n-writer-boundary.v1",
+  "package_id": "EAC3-CORE-POSITIVE-N-WRITER-BOUNDARY-V1",
+  "status": "N_CONSUMER_AND_ZERO_RESET_BOUND; POSITIVE_N_WRITER_UNBOUND",
+  "scope": "E-AC-3 core only; not Atmos JOC",
+  "target_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "tool": "Ghidra 12.2 static"
+  },
+  "fields": {
+    "j": "5*block + lane",
+    "state_base": "state+0x140f0",
+    "N": "u16(state+0x141c8+2*j)",
+    "D": "i16(state+0x1418c+10*block+2*lane)"
+  },
+  "typed_consumer_chain": [
+    {"caller": "FUN_1403448d0", "callsite": "0x1403467d7", "callee": "FUN_14032d580", "parameter": "param_10", "base": "state+0x140f0"},
+    {"caller": "FUN_1403448d0", "callsite": "0x1403468d5", "callee": "FUN_14036f8f0", "parameter": "param_11", "base": "state+0x140f0"},
+    {"callee": "FUN_1403370b0", "role": "reads N and accounts for N*7 bits"}
+  ],
+  "candidate_callees_checked": [
+    "FUN_14032ae30", "FUN_14032d2f0", "FUN_14032b520", "FUN_140366310",
+    "FUN_14032bf30", "FUN_1403362d0", "FUN_1403329d0", "FUN_140337ad0"
+  ],
+  "positive_write_disposition": {
+    "positive_N_write_found": false,
+    "zero_reset_candidate": "FUN_14032d9b0 clears the D/N grid",
+    "adjacent_positive_write": {
+      "function": "FUN_14032b520",
+      "function_code_sha256": "2ca2576ead4d71e0cf5e92caf28296e141129e67ee328a1963e3e98b1339c6ed",
+      "target": "state+0x14150+2*j",
+      "distance_before_D": "0x3c bytes",
+      "distance_before_N": "0x78 bytes",
+      "copy_into_D_or_N_found": false
+    }
+  },
+  "best_supported_candidate": {
+    "formula": "N=(D+2)//3",
+    "confidence": 0.78,
+    "classification": "implementation inference only",
+    "vector": {"D": 4, "candidate_N": 2, "tail_values": 2}
+  },
+  "open_edges": {
+    "positive_N_producer": "UNBOUND",
+    "runtime_owner_generation": "UNBOUND",
+    "JOC_FUN_180_path_relation": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "dee-ddp-positive-count-writer-unbound-wash-v8",
+    "manifest_sha256": "15278b6103e7f4b2abe9018d6cb406f4f881383ca36641d7ef1b4c4cc980ac68",
+    "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "media_payload_pcm_or_key_read": false,
+    "implementation_contact": false
+  }
+}

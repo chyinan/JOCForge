@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-implementer-package-seal.v1",
+  "package_id": "EAC3-CORE-POSITIVE-N-WRITER-BOUNDARY-V1",
+  "file_count": 7,
+  "seal_file_excluded_from_own_hash_list": true,
+  "files": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2984,
+      "sha256": "d010158bbd712d6a72a6dfe3011ef857510c946bf28bfce832391f1ea31f192a"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2356,
+      "sha256": "1226079bb86ccc70d6063bdc55397c6ef8b63a326449e4c6c6fbbb812a36e0a8"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 338,
+      "sha256": "35932ff2281f2ba7b0b37576f1caa40edb1161c7709ac08d9877fe6b88969c8f"
+    },
+    {
+      "file": "REPORT.md",
+      "bytes": 1426,
+      "sha256": "587e08eab591f925523ab0accb32853b25bab0bb8a55363606afa37e95036d1c"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 551,
+      "sha256": "9933a6518c4caa128d07869b552a96ebd7cf4f6be9d15d39085705ec0237add6"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1466,
+      "sha256": "e848480e9a3da564e6cc81606d7c90ce7c97f7b48bd6310c67c6fa1c2f8ae8a3"
+    },
+    {
+      "file": "MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "794e1f2f512cf5d003670f587a3cfb12910ee41f6e94e8ab1cc27c8bdee84c2d"
+    }
+  ]
+}

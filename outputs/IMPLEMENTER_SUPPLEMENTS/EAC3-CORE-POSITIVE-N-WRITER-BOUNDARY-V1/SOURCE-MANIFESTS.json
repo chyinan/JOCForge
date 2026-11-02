@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dee-ddp-positive-count-writer-unbound-wash-v8",
+      "manifest_sha256": "15278b6103e7f4b2abe9018d6cb406f4f881383ca36641d7ef1b4c4cc980ac68",
+      "separate_package_seal": "NOT_PRESENT_IN_DELIVERED_DIRECTORY",
+      "scope": "Bounded Ghidra scan of positive N writer candidates in the E-AC-3 core image."
+    }
+  ],
+  "target_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  }
+}
