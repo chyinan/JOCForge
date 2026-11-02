@@ -1,0 +1,48 @@
+{
+  "schema":"jocforge.dee_native_36_38_row_map_crosswalk.v1",
+  "status":"NATIVE_CONFIG_MAP_DYNAMIC_36_OR_38; F03W_GLOBAL_IDS_46_47_UNASSIGNED_IN_36_MODEL; NATIVE_TO_GLOBAL_JOIN_UNBOUND",
+  "upstream_package":{
+    "package_id":"ADM-36-38-NATIVE-CHANNEL-MAP-F03W-CROSSWALK-WASH-V1",
+    "manifest_sha256":"32cc2a957bca7f1e8a206109c13ca37319fb84ca8944d081e09fc2fde3f6e28f",
+    "sha256sums_sha256":"7fdf2e480bad2495bc41def8c4146611865288ed1a32685a89002f66613ad826",
+    "payload_count_verified":4,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "source_image":{"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2","ghidra":"12.2 PUBLIC","processing":"READ_ONLY; NO_ANALYSIS"},
+  "native_map":{
+    "object_record_iterator":"FUN_1804d43c0",
+    "object_count_getter_slot":"+0xC0",
+    "object_row_getter_slot":"+0xE0",
+    "map_slot_field_record_offset":"+0x4C U32",
+    "marker_write":"map[slot]+2 = 0xFF",
+    "map_row_u16_source":"object_source_record+0x48",
+    "map_row_ordinal":"object ordinal i at map row+4",
+    "row_bytes":6,
+    "config_count_type":"U16",
+    "normal_count_formula":"object_source_count + sum(bed_vector_length/16)",
+    "special_mode_formula":"10 + max(per-child 0xFF object marker count)",
+    "core_copy":"FUN_180419720 copies row i to core row i after 6*count allocation",
+    "fixed_48_row_map":false
+  },
+  "conditional_candidates":{
+    "all_26_markers_in_selected_child":{"input_rows":36,"native_map_rows":36,"map_object_rows":"10..35","rows_36_37_present":false},
+    "all_28_markers_in_selected_child":{"input_rows":38,"native_map_rows":38,"map_object_rows":"10..37","rows_36_37_present":true}
+  },
+  "f03w_separate_domain":{
+    "global_source_axis_width":48,
+    "prefix_ids":"0..10",
+    "regular_ids":"11..47",
+    "36_input_model_regular_assignments":"11..45",
+    "unassigned_ids_for_36_input_model":[46,47],
+    "zero_padding_claim":"NONE"
+  },
+  "unbound": [
+    "selected native config U16 for any user sample",
+    "actual selected child partition and marker maximum",
+    "CHNA physical slot to object_source_record",
+    "object_source_record map slot to F03R global source ID",
+    "native rows 36/37 to F03W IDs 46/47"
+  ],
+  "execution_scope":{"dee_run":false,"media_pcm_or_payload_access":false,"key_or_license_access":false,"production_allowed":false}
+}

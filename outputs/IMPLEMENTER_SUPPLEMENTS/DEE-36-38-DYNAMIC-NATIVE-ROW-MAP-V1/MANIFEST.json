@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 2241,
+      "name": "REPORT.md",
+      "sha256": "cd33fa29e3c2407535e7b85941704739c21048153d7ad28713ade908f8d4ff75"
+    },
+    {
+      "bytes": 2390,
+      "name": "EVIDENCE.json",
+      "sha256": "948f31fe35364f9f3b475446d4a3dadb5fd343d89ebc50358a6f876f877da6e0"
+    },
+    {
+      "bytes": 619,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "b1168073e46e199a84489d596d41f1c0f6474db8675946141c31b1b57a5ea787"
+    },
+    {
+      "bytes": 624,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "62c092e6ead89826cebed090db25475fa8fb7aa841d1bbbed7f5e68b9cccaf36"
+    },
+    {
+      "bytes": 2217,
+      "name": "verify_package.py",
+      "sha256": "32d5c6a86627656aea33025300d5bbd07be1870248d12dd19eacc95f4d353807"
+    },
+    {
+      "bytes": 1506,
+      "name": "seal_package.py",
+      "sha256": "75701926e935d5368d62522ae5f0f765e6a24532d5a0456c10931af913fd0ed5"
+    }
+  ],
+  "package_id": "DEE-36-38-DYNAMIC-NATIVE-ROW-MAP-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "NATIVE_CONFIG_MAP_DYNAMIC_36_OR_38; F03W_GLOBAL_IDS_46_47_UNASSIGNED_IN_36_MODEL; NATIVE_TO_GLOBAL_JOIN_UNBOUND"
+}

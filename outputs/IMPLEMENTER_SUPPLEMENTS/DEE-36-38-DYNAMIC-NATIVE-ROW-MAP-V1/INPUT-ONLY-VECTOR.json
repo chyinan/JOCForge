@@ -1,0 +1,12 @@
+{
+  "schema":"jocforge.native_dynamic_channel_map_vector.v1",
+  "vector_id":"36-VS-38-CONDITIONAL-OBJECT-MARKER-MAP",
+  "conditional_input_shapes":[
+    {"bed_rows":10,"object_markers":26,"native_config_rows":36,"native_map_rows_36_37":"ABSENT"},
+    {"bed_rows":10,"object_markers":28,"native_config_rows":38,"native_map_rows_36_37":"PRESENT_AS_OBJECT_ORDINALS_26_27"}
+  ],
+  "condition":"selected child supplies all object markers; actual partition UNBOUND",
+  "F03W_source_ids_46_47_for_36_input":"UNASSIGNED_IN_APPROVED_MODEL; native row join UNBOUND",
+  "zero_padding":"NOT_CLAIMED",
+  "execution":"STATIC_ONLY"
+}

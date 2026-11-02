@@ -75,8 +75,8 @@
     "approved_dependencies": {"type": "object"},
     "wash_supplement_registry": {
       "type": "array",
-      "minItems": 15,
-      "maxItems": 15,
+      "minItems": 19,
+      "maxItems": 19,
       "items": {
         "type": "object",
         "required": ["package_id", "relative_path", "manifest_sha256", "functional_ids", "local_verification", "evidence_class", "disposition", "not_run"],

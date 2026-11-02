@@ -1,0 +1,21 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_dee_rust_crosswalk",
+      "package_id":"DEE-RUST-LFE-F08-COEFFICIENT-CROSSWALK-WASH-V1",
+      "manifest_sha256":"000f5a6fa8c0fa27be6d61a583309c49bbc9c8ab891aef11a75bef5a9dd8b43a",
+      "sha256sums_sha256":"babe81a657ef409c5a29d4e8d6ca3467a02e93cb8a03c4e41eb7cd9c8c982e81",
+      "raw_trace_or_source_code_in_this_supplement":false
+    },
+    {
+      "kind":"upstream_current_head_addendum",
+      "package_id":"DEE-RUST-LFE-F08-CURRENT-HEAD-ADDENDUM-WASH-V1",
+      "manifest_sha256":"5dd819b01aa7e4b37aa4cd2cf990d8e0067d6642427850e60fba7900e7c40aba",
+      "sha256sums_sha256":"a64bdea4572a2c23084361e45264ec323d55b3a0c88c810c23ed54691a3fc783",
+      "current_rust_source_head":"613112b7fe158052500244d1af202817bcf9f216",
+      "dee_image_sha256":"0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+      "ghidra_version":"12.2 PUBLIC"
+    }
+  ]
+}

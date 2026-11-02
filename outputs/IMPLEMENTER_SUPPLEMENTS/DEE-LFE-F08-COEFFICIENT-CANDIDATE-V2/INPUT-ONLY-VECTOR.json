@@ -1,0 +1,11 @@
+{
+  "schema":"jocforge.lfe_f08_coefficient_crosswalk_vector.v2",
+  "vector_id":"CURRENT-PRODUCTION-F08-ARRAYS-VS-DEE-NATIVE-FINALIZERS",
+  "rust_head":"613112b7fe158052500244d1af202817bcf9f216",
+  "current_parameter_json_sha256":"963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+  "production_callsite":"owner.rs -> f08_lfe_transform_block after f08_window_fold_block",
+  "coefficient_match_summary":{"recurrence_diff_indices":[5,6,7],"cosine_diff_indices":[5,6,7],"sine_diff_indices":[4,5,6,7]},
+  "dee_stride_branch":"UNBOUND",
+  "row3_to_core_lfe_lane":"UNBOUND",
+  "numeric_or_audio_execution":"NOT_RUN"
+}

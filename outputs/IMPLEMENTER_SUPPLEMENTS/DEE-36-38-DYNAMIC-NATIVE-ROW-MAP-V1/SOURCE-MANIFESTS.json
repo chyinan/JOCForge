@@ -1,0 +1,16 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_package",
+      "package_id":"ADM-36-38-NATIVE-CHANNEL-MAP-F03W-CROSSWALK-WASH-V1",
+      "manifest_sha256":"32cc2a957bca7f1e8a206109c13ca37319fb84ca8944d081e09fc2fde3f6e28f",
+      "sha256sums_sha256":"7fdf2e480bad2495bc41def8c4146611865288ed1a32685a89002f66613ad826",
+      "native_image_sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "payload_count":4,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_Ghidra_trace_or_script_in_this_supplement":false
+    }
+  ]
+}

@@ -6460,7 +6460,7 @@ def check_supplement_catalog(root):
  text=catalog.read_text(encoding='utf-8');ck('Generated locator only. A catalog row is not evidence.' in text and 'Package directories:' in text and 'Top-level manifests:' in text and 'NO_TOP_LEVEL_MANIFEST' in text and not re.search(r'(?i)\b[A-Z]:\\',text),'supplement catalog is clearly a sanitized locator, not evidence or an absolute-path index')
 
 def check_wash_supplement_registry(root,d):
- registry=d.get('wash_supplement_registry',[]);functional_ids={entry['functional_id']for entry in d.get('functional_entries',[])};ck(len(registry)==15,'fifteen locally verified Wash supplements are mapped');package_ids=[item.get('package_id')for item in registry];ck(len(set(package_ids))==15,'Wash supplement package IDs are unique')
+ registry=d.get('wash_supplement_registry',[]);functional_ids={entry['functional_id']for entry in d.get('functional_entries',[])};ck(len(registry)==19,'nineteen locally verified Wash supplements are mapped');package_ids=[item.get('package_id')for item in registry];ck(len(set(package_ids))==19,'Wash supplement package IDs are unique')
  for item in registry:
   relative=item.get('relative_path','');package=(root/relative).resolve();manifest=package/'MANIFEST.json';contained=True
   try:package.relative_to(root.resolve())

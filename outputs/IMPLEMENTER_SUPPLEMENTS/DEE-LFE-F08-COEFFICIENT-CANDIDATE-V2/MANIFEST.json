@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 2819,
+      "name": "REPORT.md",
+      "sha256": "179e97d1b6cf1e3a86e4c60317db6eb472ce5f225d1ddd67e51b8e71bddb24b8"
+    },
+    {
+      "bytes": 3671,
+      "name": "EVIDENCE.json",
+      "sha256": "a4f5bee86c07a86cfdd9df246420f3d7a5819e1a3e387d2920b88a9eac9de6f4"
+    },
+    {
+      "bytes": 628,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "8714d7040986112ea92e29e3a53b062768fc391637a2b45b32a5fb6ee0362555"
+    },
+    {
+      "bytes": 960,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "92c483847b6c9200f5c841e9d1f65f4e458fdf2c426a29faf6c9475a1e26f1f5"
+    },
+    {
+      "bytes": 2355,
+      "name": "verify_package.py",
+      "sha256": "ae334f1ede6e721dcd958d22a88bad93fd6695fa5dd1bf0096360527b7c5012f"
+    },
+    {
+      "bytes": 1496,
+      "name": "seal_package.py",
+      "sha256": "2556d572427bf3fd410e48dcf0e81113b90d32f68242bbe5f4f86ec48d01ffe4"
+    }
+  ],
+  "package_id": "DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "status": "CURRENT_PRODUCTION_F08_PARAMETER_DELTA_BOUND; INPUT_TO_CORE_LFE_JOIN_UNBOUND; NUMERIC_PARITY_NOT_RUN"
+}

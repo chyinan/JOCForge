@@ -1,0 +1,70 @@
+{
+  "schema":"jocforge.dee_rust_lfe_f08_current_coefficient_candidate.v2",
+  "status":"CURRENT_PRODUCTION_F08_PARAMETER_DELTA_BOUND; INPUT_TO_CORE_LFE_JOIN_UNBOUND; NUMERIC_PARITY_NOT_RUN",
+  "upstream_packages":[
+    {
+      "package_id":"DEE-RUST-LFE-F08-COEFFICIENT-CROSSWALK-WASH-V1",
+      "manifest_sha256":"000f5a6fa8c0fa27be6d61a583309c49bbc9c8ab891aef11a75bef5a9dd8b43a",
+      "sha256sums_sha256":"babe81a657ef409c5a29d4e8d6ca3467a02e93cb8a03c4e41eb7cd9c8c982e81",
+      "payload_count_verified":4,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS"
+    },
+    {
+      "package_id":"DEE-RUST-LFE-F08-CURRENT-HEAD-ADDENDUM-WASH-V1",
+      "manifest_sha256":"5dd819b01aa7e4b37aa4cd2cf990d8e0067d6642427850e60fba7900e7c40aba",
+      "sha256sums_sha256":"a64bdea4572a2c23084361e45264ec323d55b3a0c88c810c23ed54691a3fc783",
+      "payload_count_verified":4,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS"
+    }
+  ],
+  "current_rust_state":{
+    "head":"613112b7fe158052500244d1af202817bcf9f216",
+    "owner_rs_sha256":"46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab",
+    "lfe_transform_rs_sha256":"37b20dd989897290c30668e4e48ac79a69679c4f82b9066720157a91b24f3052",
+    "parameter_json_path":"crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
+    "parameter_json_sha256":"963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+    "owner_calls_f08_lfe_transform_block_after_window_fold":true,
+    "selected_lfe_parameter_arrays_are_word_identical_to_crosswalk_receipt":true,
+    "separate_lfe_transform_to_raw_helper_selected_in_owner":false
+  },
+  "dee_source":{
+    "image":"dee_ddp_encoder.exe",
+    "image_sha256":"0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "ghidra":"12.2 PUBLIC",
+    "read_only_noanalysis":true
+  },
+  "coefficient_vectors_f32_bits":{
+    "dee_native_recurrence_precursor":["40000000","3fffb10f","3ffec46d","3ffd3aac","3ffb14be","3ffd3aac","3ffec46d","3fffb10f"],
+    "rust_production_lfe_recurrence":["40000000","3fffb10f","3ffec46d","3ffd3aac","3ffb14be","3ff853f8","3ff4fa0b","3ff10908"],
+    "recurrence_equal_indices":[0,1,2,3,4],
+    "recurrence_different_indices":[5,6,7],
+    "dee_native_main_finalizer":["3f800000","3f7fb10f","3f7ec46d","3f7d3aac","3f7b14be","3f7d3aac","3f7ec46d","3f7fb10f"],
+    "rust_production_lfe_cosine":["3f800000","3f7fb10f","3f7ec46d","3f7d3aac","3f7b14be","3f7853f8","3f74fa0b","3f710908"],
+    "cosine_equal_indices":[0,1,2,3,4],
+    "cosine_different_indices":[5,6,7],
+    "dee_native_companion_finalizer":["00000000","3d48fb30","3dc8bd36","3e164083","be47c5c2","be164083","bdc8bd36","bd48fb30"],
+    "rust_production_lfe_sine":["00000000","3d48fb30","3dc8bd36","3e164083","3e47c5c2","3e78cfcc","3e94a031","3eac7cd4"],
+    "sine_equal_indices":[0,1,2,3],
+    "sine_different_indices":[4,5,6,7],
+    "dee_recurrence_scale_before_terminal_rotation":"3d800000",
+    "rust_f08_recurrence_scale":"3d800000"
+  },
+  "pathway_comparison":{
+    "zero_stride_pre_rotation_formula_and_long_tables":"MATCH",
+    "gather_permutation_and_fft8_operation_shape":"MATCH",
+    "terminal_seven_bin_formulas":"MATCH",
+    "selected_dee_stride_branch":"UNBOUND",
+    "dee_nonzero_stride_tables":"two 64-word F32 tables",
+    "rust_lane3_filter":"20 coefficient words; four stateful sections",
+    "dee_stride_tables_to_rust_lane3_filter_identity":"NOT_FOUND"
+  },
+  "remaining_limits":{
+    "adm_physical_row3_to_dee_core_lfe_lane":"UNBOUND",
+    "same_input_buffer_and_generation":"UNBOUND",
+    "numeric_parity":"NOT_RUN",
+    "audio_playback":"NOT_RUN",
+    "product_output_causality":"NOT_ESTABLISHED"
+  }
+}

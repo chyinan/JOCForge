@@ -9721,8 +9721,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969296,
-              "sha256": "ef82e9dee103a8ba47df812cf43dd4babad85e7182ed3efacdc0f59ee67dd0cc"
+              "bytes": 1969297,
+              "sha256": "394115ab55a2d07fd7d11fe0c3b91a2f784f2c5711a6533af68e7b5e52b120f4"
             }
           ],
           "test_modules": [
@@ -13240,8 +13240,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969296,
-              "sha256": "ef82e9dee103a8ba47df812cf43dd4babad85e7182ed3efacdc0f59ee67dd0cc"
+              "bytes": 1969297,
+              "sha256": "394115ab55a2d07fd7d11fe0c3b91a2f784f2c5711a6533af68e7b5e52b120f4"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -34059,8 +34059,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969296,
-              "sha256": "ef82e9dee103a8ba47df812cf43dd4babad85e7182ed3efacdc0f59ee67dd0cc"
+              "bytes": 1969297,
+              "sha256": "394115ab55a2d07fd7d11fe0c3b91a2f784f2c5711a6533af68e7b5e52b120f4"
             }
           ],
           "test_inventory": [
@@ -46190,6 +46190,85 @@
       "not_run": [
         "Speech-score threshold formula.",
         "Unselected mode behavior and audio effect."
+      ]
+    },
+    {
+      "package_id": "ATMOS-LINE-DRC-PROFILE-U32-JOIN-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-LINE-DRC-PROFILE-U32-JOIN-BOUNDARY-V1",
+      "manifest_sha256": "e87878e28e661c8ef14de793c4613d3bab3ce42719acf229639318b63ea7edfb",
+      "functional_ids": [
+        "F01E",
+        "F06NR"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "PROFILE_STRING_ONLY; MATCH_GATED_NODE_TO_PARAM2_A0; NUMERIC_DRC_SINK_UNBOUND",
+      "not_run": [
+        "Selected profile string to U32 value.",
+        "Line DDP_COMPR param3+0x28 join and DRC audio behavior."
+      ]
+    },
+    {
+      "package_id": "ATMOS-MEASURE-AND-CORRECT-DI-THRESHOLD-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-MEASURE-AND-CORRECT-DI-THRESHOLD-BOUNDARY-V1",
+      "manifest_sha256": "13dae119d3bf3baf6994d6fd51eb647755d115bcb091dfd5da9dc20a7f642d8f",
+      "functional_ids": [
+        "F06",
+        "F06NR"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MEASURE_AND_CORRECT_INPUT_BRANCH_BOUND; DSP_AND_DIALNORM_EFFECT_UNBOUND",
+      "not_run": [
+        "PCM scale, metadata update, or DialNorm effect.",
+        "Comparison formula and selected-user output."
+      ]
+    },
+    {
+      "package_id": "DEE-36-38-DYNAMIC-NATIVE-ROW-MAP-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-36-38-DYNAMIC-NATIVE-ROW-MAP-V1",
+      "manifest_sha256": "11bef3de6d48b32b02f05440756185b9d26311fd87a0cfebbf89d6838b432b85",
+      "functional_ids": [
+        "F01E",
+        "F03W",
+        "F04",
+        "F06OF"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "NATIVE_PCM_ROW_MAP_DYNAMIC_36_38; MODEL_GLOBAL_IDS_46_47_UNALLOCATED; NATIVE_ROW_TO_GLOBAL_SOURCE_UNBOUND",
+      "not_run": [
+        "Actual native U16 count and child-marker partition.",
+        "CHNA slot to record/source ID same-generation join."
+      ]
+    },
+    {
+      "package_id": "DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+      "manifest_sha256": "eada50e01fca2cdefcd2b1b67a9f053f00b260ec7db2b637be6cb80df2abd1fa",
+      "functional_ids": [
+        "F04",
+        "F08",
+        "F09"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "PRODUCTION_F08_RECURRENCE_COSINE_SINE_BIT_DIFFERENCE_CANDIDATE; BRANCH_AND_NUMERIC_PARITY_OPEN",
+      "not_run": [
+        "Selected native stride branch and row3-to-core-LFE lane.",
+        "Same input/generation and numeric/audio parity."
       ]
     }
   ]
