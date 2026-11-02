@@ -1,0 +1,14 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_wash_addendum",
+      "package":"dee-speech-threshold-consumer-edge-addendum",
+      "manifest_sha256":"9f9965283209558bde2333237d5beb06ef2a6d5e8eebf77ef35fb719daae9cad",
+      "payload_count":4,
+      "checker_normal":"PASS",
+      "checker_python_O":"PASS",
+      "raw_trace_or_decompiled_code_in_this_supplement":false
+    }
+  ]
+}

@@ -9721,8 +9721,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969295,
-              "sha256": "24e9ba7f59c9d3abb08b3e6babd7e08e901979c8f717877b01b96e7884173c84"
+              "bytes": 1969296,
+              "sha256": "ef82e9dee103a8ba47df812cf43dd4babad85e7182ed3efacdc0f59ee67dd0cc"
             }
           ],
           "test_modules": [
@@ -12344,7 +12344,7 @@
           "slice_id": "standalone-meter-selected-root-and-schedule-stage",
           "mapping_status": "MATERIALIZED_SELECTED_METER_Q_PLUS_THREE_NONCOMMITTING_SCHEDULE_CANDIDATE__FULL_RUN_NOT_RUN",
           "implementation_status": "LOCALLY_COMPILED_G0_G1_REAL_SOURCE_STAGE_AND_FULL_SCHEDULE_DRIVER__Q_TERMINAL_RECEIPT_AND_READY_NOT_RUN",
-          "scope": "The domain owner provides the complete V4 Meter cold root, typed source/read clocks, full selected schedule gate, and a noncommitting terminal ProgrammeMeasurementReceipt proposal. The CLI stage_independent_meter_prepass composes the existing F01E/F03W/F04A/F05R56/OAR Meter callbacks across Q normal source reads and exactly three FreshZero drains, retains one noncommitting Meter GTC receipt per callback, and returns the final callback candidate plus terminal measurement proposal. A real authorized BWF g0-to-g1 candidate stage has been exercised; the full selected Q=4247 schedule, terminal receipt from a real programme, 12-owner READY root swap and publication remain NOT_RUN. No owner or cursor is installed by this candidate driver.",
+          "scope": "The domain owner provides the complete V4 Meter cold root, typed source/read clocks, full selected schedule gate, and a noncommitting terminal ProgrammeMeasurementReceipt proposal. The CLI stage_independent_meter_prepass composes the existing F01E/F03W/F04A/F05R56/OAR Meter callbacks across Q normal source reads and exactly three FreshZero drains, retains one noncommitting Meter GTC receipt per callback, and returns the final callback candidate plus terminal measurement proposal. A real authorized BWF g0-to-g1 candidate stage has been exercised; the full selected Q=4247 schedule, terminal receipt from a real programme, 12-owner READY root swap and publication remain NOT_RUN. No owner or cursor is installed by this candidate driver. A local MeterPcmSourceCursor follow-up now carries typed physical-row count for the admitted 36/38 channel inputs, validates corresponding 108/114-byte PCM24 block-align, and emits that row count on NORMAL and FreshZero frames. A synthetic 1,050-sample 36-row test proves 36 normal rows and 36 zero-drain rows; 37 rows still reject. This removes only the first reader gate: F01E dynamic after-state is not installed, the Installed48/F03W source map remains fixed at 38 physical/37 regular rows, and no real 36-row callback or playable output has run.",
           "owner": "meter",
           "dependencies": [
             "independent-meter-prepass-callback-commit",
@@ -12413,7 +12413,8 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/INDEPENDENT-METER-PREPASS-BOUNDARY-V1/INPUT-ONLY-CASES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/INPUT-ONLY-ROOT-RECIPES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/input-only-cold-roots/N6522906_pre_callback0_cold_root.json",
-              "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json"
+              "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json",
+              "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json"
             ],
             "case_pointers": [
               "N6522906_pre_callback0_cold_root: canonical bytes match the approved synthetic V4 cold root exactly.",
@@ -12421,7 +12422,8 @@
               "terminal_after_three_drains: full synthetic zero-input run matches approved Q+3 queue/window counts and emits only a noncommitting receipt proposal.",
               "No terminal canonical root digest or real measurement value is supplied by V4; expected values assert structure/lifecycle only.",
               "authorized_adm_bwf_stages_independent_meter_g0_and_g1_oar_candidates executes only the real-resource g0-to-g1 candidate path.",
-              "stage_independent_meter_prepass contains the selected Q-normal plus three-FreshZero loop; full Q execution and terminal measurement are NOT_RUN."
+              "stage_independent_meter_prepass contains the selected Q-normal plus three-FreshZero loop; full Q execution and terminal measurement are NOT_RUN.",
+              "Synthetic 36-channel PCM24/48 kHz source with 1,050 samples emits 36 rows on the normal frame and 36 all-zero rows on the drain; 37 channels reject."
             ],
             "expected_values_are_assertions_only": true
           },
@@ -12431,7 +12433,8 @@
             "GTC owners.meter OwnerReceipt, single programme root swap, READY, and DRC installation.",
             "Native ABI equivalence, end-to-end output, external decode, and product acceptance.",
             "The CLI full-Q driver has not run all 4,247 normal callbacks and three FreshZero drains on the authorized BWF.",
-            "A real-source terminal MeasurementReceipt/READY, atomic 12-owner parent swap, AU output, durable publication and external validation remain NOT_RUN."
+            "A real-source terminal MeasurementReceipt/READY, atomic 12-owner parent swap, AU output, durable publication and external validation remain NOT_RUN.",
+            "36-row source has not passed F01E parent staging or the fixed 38/37 Installed48 map; two absent regular source slots and the 48-source placement remain UNBOUND."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
@@ -12482,8 +12485,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 23039,
-              "sha256": "ddbd7ef47664ac7ff86dd4ad220e486d349606327b11968b11a0905e5e18ab84"
+              "bytes": 26474,
+              "sha256": "03896100e4fe36f9530a520feae4ce525a6f47a41761a6094b42c435bc475cba"
             }
           ],
           "test_inventory": [
@@ -13237,8 +13240,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969295,
-              "sha256": "24e9ba7f59c9d3abb08b3e6babd7e08e901979c8f717877b01b96e7884173c84"
+              "bytes": 1969296,
+              "sha256": "ef82e9dee103a8ba47df812cf43dd4babad85e7182ed3efacdc0f59ee67dd0cc"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -14097,8 +14100,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 23039,
-              "sha256": "ddbd7ef47664ac7ff86dd4ad220e486d349606327b11968b11a0905e5e18ab84"
+              "bytes": 26474,
+              "sha256": "03896100e4fe36f9530a520feae4ce525a6f47a41761a6094b42c435bc475cba"
             },
             {
               "path": "crates/jocforge-domain/src/meter/meter_prepass.rs",
@@ -15872,8 +15875,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 23039,
-              "sha256": "ddbd7ef47664ac7ff86dd4ad220e486d349606327b11968b11a0905e5e18ab84"
+              "bytes": 26474,
+              "sha256": "03896100e4fe36f9530a520feae4ce525a6f47a41761a6094b42c435bc475cba"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -16651,8 +16654,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 23039,
-              "sha256": "ddbd7ef47664ac7ff86dd4ad220e486d349606327b11968b11a0905e5e18ab84"
+              "bytes": 26474,
+              "sha256": "03896100e4fe36f9530a520feae4ce525a6f47a41761a6094b42c435bc475cba"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -34056,8 +34059,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969295,
-              "sha256": "24e9ba7f59c9d3abb08b3e6babd7e08e901979c8f717877b01b96e7884173c84"
+              "bytes": 1969296,
+              "sha256": "ef82e9dee103a8ba47df812cf43dd4babad85e7182ed3efacdc0f59ee67dd0cc"
             }
           ],
           "test_inventory": [
@@ -46129,6 +46132,64 @@
       "not_run": [
         "Sampled branch value and auto owner identity at setRange.",
         "Seek/sample source join and FFOA final-start value."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-36-ROW-FIRST-PLAYABLE-BLOCKER-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-36-ROW-FIRST-PLAYABLE-BLOCKER-V1",
+      "manifest_sha256": "b85afd3f03560a5647303624aa8c14275bc4e21e9dfba1aff9f52b5a1be52003",
+      "functional_ids": [
+        "F01E",
+        "F06"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "INITIAL_38_ROW_CURSOR_GATE_FIXED_LOCALLY; F01E_PARENT_AND_F03W_SOURCE_MAP_BLOCKERS_REMAIN",
+      "not_run": [
+        "Real 36-row Meter callback and full prepass.",
+        "F01E dynamic after-state installation/parent transaction and fixed 38/37 F03W map.",
+        "Playable E-AC-3 JOC output."
+      ]
+    },
+    {
+      "package_id": "ATMOS-LINE-DRC-PROFILE-FIRST-CONSUMER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-LINE-DRC-PROFILE-FIRST-CONSUMER-BOUNDARY-V1",
+      "manifest_sha256": "08746f785a27946c6f869adf52815cb35a18f22b1124e3a7dd4bc6d8a32364ab",
+      "functional_ids": [
+        "F01E",
+        "F06NR"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "LINE_DRC_STRING_DEFAULT_AND_FIRST_CONSUMER_BOUND; NUMERIC_DRC_SINK_UNBOUND",
+      "not_run": [
+        "Resolved U32 consumer value and selected-profile parity.",
+        "DRC audio behavior."
+      ]
+    },
+    {
+      "package_id": "ATMOS-SPEECH-THRESHOLD-METER-CONSUMER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS-SPEECH-THRESHOLD-METER-CONSUMER-BOUNDARY-V1",
+      "manifest_sha256": "bd331a7082ed855916fcf3279b71271d46d1c7276ff73c50e163721bdfe11d13",
+      "functional_ids": [
+        "F06",
+        "F06NR"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "METER_THRESHOLD_SLOT_BOUND; COMPARISON_FORMULA_UNBOUND",
+      "not_run": [
+        "Speech-score threshold formula.",
+        "Unselected mode behavior and audio effect."
       ]
     }
   ]

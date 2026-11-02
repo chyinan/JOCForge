@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1476,
+      "name": "REPORT.md",
+      "sha256": "7a43045c7aa1b1afa2e4c3bc007fc7076ab1c0f7441ba7876bdf98f9ab565935"
+    },
+    {
+      "bytes": 2011,
+      "name": "EVIDENCE.json",
+      "sha256": "7283add0768052e78d66041288d035f1675d4296ad89f5b09e6d7b27427ff7b9"
+    },
+    {
+      "bytes": 399,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "55db561548cc981ce36cbfeb7c5d3a3bb94a4dfd28d96f018c2ac4b1b93fccc5"
+    },
+    {
+      "bytes": 756,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "09b129243f3e1a3864e5a35bec805fbc3d753ca3d0c2311c815683afb9ba994e"
+    },
+    {
+      "bytes": 2126,
+      "name": "verify_package.py",
+      "sha256": "ae23e1cc123678f2d2f232776ef69542cd02e43748e1925edeac64f47d572188"
+    },
+    {
+      "bytes": 1500,
+      "name": "seal_package.py",
+      "sha256": "27b72ba188e01c1071f1313194a52e2b0987150bcacd539b618366223b842099"
+    }
+  ],
+  "manifest_sha256": "08746f785a27946c6f869adf52815cb35a18f22b1124e3a7dd4bc6d8a32364ab",
+  "package_id": "ATMOS-LINE-DRC-PROFILE-FIRST-CONSUMER-BOUNDARY-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

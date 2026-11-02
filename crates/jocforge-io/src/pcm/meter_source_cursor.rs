@@ -15,6 +15,7 @@ use super::{riff_pcm24::ParsedRiffPcm24, riff_pcm24::RiffPcm24Error};
 pub const METER_SOURCE_CHANNELS: usize = 38;
 pub const METER_SOURCE_FRAME_SAMPLES: usize = 1_536;
 const METER_FRAME_SAMPLES_U64: u64 = 1_536;
+const SELECTED_METER_SOURCE_CHANNEL_COUNTS: [u16; 2] = [36, 38];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterSourceCursorError {
@@ -63,9 +64,32 @@ impl MeterPcmSourceIdentity {
     }
 }
 
+/// Physical PCM row count carried by one admitted Meter source cursor.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct MeterSourceChannelCount(u16);
+
+impl MeterSourceChannelCount {
+    pub const fn value(self) -> u16 {
+        self.0
+    }
+
+    fn from_selected_source(source: &ParsedRiffPcm24<'_>) -> Result<Self, MeterSourceCursorError> {
+        let channels = source.channels();
+        let selected_block_align = channels.checked_mul(3);
+        if source.sample_rate_hz() != 48_000
+            || !SELECTED_METER_SOURCE_CHANNEL_COUNTS.contains(&channels)
+            || selected_block_align != Some(source.block_align())
+        {
+            return Err(MeterSourceCursorError::SourceProfileMismatch);
+        }
+        Ok(Self(channels))
+    }
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MeterPcmSourceCursor {
     source_identity: MeterPcmSourceIdentity,
+    source_channels: MeterSourceChannelCount,
     source_samples: MeterSourceSampleCount,
     normal_callbacks: MeterCallbackCount,
     callback_index: MeterCallbackIndex,
@@ -79,7 +103,7 @@ impl MeterPcmSourceCursor {
         selected_resource_identity: MeterPcmSourceIdentity,
         selected_source_samples: MeterSourceSampleCount,
     ) -> Result<Self, MeterSourceCursorError> {
-        validate_selected_source(parsed_source)?;
+        let source_channels = MeterSourceChannelCount::from_selected_source(parsed_source)?;
         if parsed_source.source_sha256() != selected_resource_identity.sha256() {
             return Err(MeterSourceCursorError::SourceIdentityMismatch);
         }
@@ -97,6 +121,7 @@ impl MeterPcmSourceCursor {
             / METER_FRAME_SAMPLES_U64;
         Ok(Self {
             source_identity: selected_resource_identity,
+            source_channels,
             source_samples,
             normal_callbacks: MeterCallbackCount::new(normal_callbacks),
             callback_index: MeterCallbackIndex::new(0),
@@ -111,6 +136,10 @@ impl MeterPcmSourceCursor {
 
     pub const fn source_identity(&self) -> MeterPcmSourceIdentity {
         self.source_identity
+    }
+
+    pub const fn source_channels(&self) -> MeterSourceChannelCount {
+        self.source_channels
     }
 
     pub const fn normal_callbacks(&self) -> MeterCallbackCount {
@@ -214,7 +243,10 @@ pub fn stage_meter_pcm_source_frame(
     callback_index: MeterCallbackIndex,
     parsed_source: &ParsedRiffPcm24<'_>,
 ) -> Result<MeterPcmSourceProposal, MeterSourceCursorError> {
-    validate_selected_source(parsed_source)?;
+    let source_channels = MeterSourceChannelCount::from_selected_source(parsed_source)?;
+    if source_channels != before.source_channels {
+        return Err(MeterSourceCursorError::SourceProfileMismatch);
+    }
     if parsed_source.total_samples() != before.source_samples.value() {
         return Err(MeterSourceCursorError::SourceExtentMismatch);
     }
@@ -264,7 +296,11 @@ pub fn stage_meter_pcm_source_frame(
             .ok_or(MeterSourceCursorError::ArithmeticOverflow)?;
         (read_count, next_cursor, rows)
     } else {
-        (0, cursor_before, vec![Vec::new(); METER_SOURCE_CHANNELS])
+        (
+            0,
+            cursor_before,
+            vec![Vec::new(); usize::from(before.source_channels.value())],
+        )
     };
 
     for row in &mut rows {
@@ -277,7 +313,7 @@ pub fn stage_meter_pcm_source_frame(
         }
         row.resize(METER_SOURCE_FRAME_SAMPLES, 0);
     }
-    if rows.len() != METER_SOURCE_CHANNELS
+    if rows.len() != usize::from(before.source_channels.value())
         || rows
             .iter()
             .any(|row| row.len() != METER_SOURCE_FRAME_SAMPLES)
@@ -303,6 +339,7 @@ pub fn stage_meter_pcm_source_frame(
     let next_generation = next_index;
     let after = MeterPcmSourceCursor {
         source_identity: before.source_identity,
+        source_channels: before.source_channels,
         source_samples: before.source_samples,
         normal_callbacks: before.normal_callbacks,
         callback_index: MeterCallbackIndex::new(next_index),
@@ -322,16 +359,6 @@ pub fn stage_meter_pcm_source_frame(
         raw_input_rows: rows,
     };
     Ok(MeterPcmSourceProposal { after, frame })
-}
-
-fn validate_selected_source(source: &ParsedRiffPcm24<'_>) -> Result<(), MeterSourceCursorError> {
-    if source.sample_rate_hz() != 48_000
-        || usize::from(source.channels()) != METER_SOURCE_CHANNELS
-        || source.block_align() != 114
-    {
-        return Err(MeterSourceCursorError::SourceProfileMismatch);
-    }
-    Ok(())
 }
 
 #[cfg(test)]
@@ -561,6 +588,59 @@ mod tests {
             Some(MeterSourceCursorError::SourceIdentityMismatch)
         );
         assert_eq!(state.callback_index().value(), 0);
+    }
+
+    #[test]
+    fn selected_36_channel_source_stages_36_normal_and_drain_rows() {
+        let mut recipe = input_recipe();
+        recipe["channels"] = Value::from(36_u64);
+        recipe["source_samples"] = Value::from(1_050_u64);
+        let source_bytes = in_memory_pcm24_wave(&recipe);
+        let parsed = parse_selected_riff_pcm24(&source_bytes, None).unwrap();
+        assert_eq!(parsed.channels(), 36);
+        assert_eq!(parsed.block_align(), 108);
+        let source_samples = MeterSourceSampleCount::new(1_050).unwrap();
+        let source_identity =
+            MeterPcmSourceIdentity::from_selected_resource_sha256(parsed.source_sha256());
+        let state = MeterPcmSourceCursor::cold(&parsed, source_identity, source_samples).unwrap();
+        assert_eq!(state.source_channels().value(), 36);
+
+        let (after_normal, normal_frame) =
+            stage_meter_pcm_source_frame(&state, MeterCallbackIndex::new(0), &parsed)
+                .unwrap()
+                .into_parts();
+        assert_eq!(normal_frame.host_input_count().value(), 1_050);
+        assert_eq!(normal_frame.source_padding_count().value(), 486);
+        assert_eq!(normal_frame.rows().len(), 36);
+        assert!(normal_frame.rows().iter().all(|row| row.len() == 1_536));
+
+        let drain =
+            stage_meter_pcm_source_frame(&after_normal, MeterCallbackIndex::new(1), &parsed)
+                .unwrap();
+        assert_eq!(drain.frame().rows().len(), 36);
+        assert_eq!(drain.frame().host_input_count().value(), 0);
+        assert_eq!(drain.frame().source_padding_count().value(), 1_536);
+        assert!(
+            drain
+                .frame()
+                .rows()
+                .iter()
+                .all(|row| row.iter().all(|word| *word == 0))
+        );
+
+        let mut unsupported_recipe = input_recipe();
+        unsupported_recipe["channels"] = Value::from(37_u64);
+        let unsupported_bytes = in_memory_pcm24_wave(&unsupported_recipe);
+        let unsupported = parse_selected_riff_pcm24(&unsupported_bytes, None).unwrap();
+        assert_eq!(
+            MeterPcmSourceCursor::cold(
+                &unsupported,
+                MeterPcmSourceIdentity::from_selected_resource_sha256(unsupported.source_sha256(),),
+                MeterSourceSampleCount::new(1).unwrap(),
+            )
+            .err(),
+            Some(MeterSourceCursorError::SourceProfileMismatch)
+        );
     }
 
     #[test]

@@ -1,0 +1,39 @@
+{
+  "schema":"jocforge.first_playable_36_row_blocker.v1",
+  "status":"FIRST_36_ROW_CLI_BLOCKER_METER_FIXED38; NEXT_F01E_ROOT_FIXED38; PLAYABLE_OUTPUT_NOT_ESTABLISHED",
+  "upstream_package":{
+    "package_id":"jocforge_first_playable_output_blocker_wash_v1",
+    "manifest_sha256":"67cf449e08592871d7218051b8715fc0f2d8173e0f1997cc7f8c7a975400649a",
+    "source_head":"19608dcf3fcabbc5079c8f25b922ac6b98978e07",
+    "payload_count_verified":3,
+    "manifest_and_payload_hashes_independently_checked":true
+  },
+  "cli_path": {
+    "entry":"jocforge encode -> encode_request::run",
+    "uses_application_encode_stub":false,
+    "application_encode_stub_status":"separate path returns SourcePipelineUnavailable"
+  },
+  "first_36_row_gate": {
+    "component":"MeterPcmSourceCursor::cold / validate_selected_source",
+    "required_channels":38,
+    "required_block_align":114,
+    "36_row_pcm24_block_align":108,
+    "failure":"SourceProfileMismatch",
+    "occurs_before_main_spatial_callback":true,
+    "ec3_frame_created":false
+  },
+  "downstream_gate": {
+    "live_root":"fixed MainSpatialColdRoots",
+    "live_normal_path":"legacy NormalControlPreparedSnapshot / proposal",
+    "fixed_shape":"38 physical / 10 bed / 28 object / 37 regular",
+    "dynamic_proposal_available":"36 physical / 10 bed / 26 object, but not installed/committed in live callback"
+  },
+  "already_dynamic": {
+    "input_admission_by_actual_graph_rows":true,
+    "meter_source_owner_admission_by_actual_graph_rows":true,
+    "f15_parent_context_38_channel_gate":false
+  },
+  "reusable_after_gates": ["spatial/F07-F15 candidate path", "ProgrammeOwnerRoots source transaction", "durable AU append", "F15 finalize/expose"],
+  "not_established": ["real 36-row CLI run", "publishable AU", "final playable output exposure", "independent full-stream E-AC-3/JOC parse", "decoder/Audition playback"],
+  "execution_scope": {"encoding_or_DSP_run":false,"pcm_or_payload_read":false,"key_or_license_access":false,"production_allowed":false}
+}

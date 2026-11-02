@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 1234,
+      "name": "REPORT.md",
+      "sha256": "b9e32cf80495626327c323c3daa7f71b8321dd44dbbbeff96b095fcaa4c2386e"
+    },
+    {
+      "bytes": 1574,
+      "name": "EVIDENCE.json",
+      "sha256": "67bd740b07158faae37164fa3a34bb82c2c3d3fa820cf69e96a805428664bf5e"
+    },
+    {
+      "bytes": 401,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "c9b665b09401329c1a945b0a5d0be5da6dd9eb96b7614d4e87602dbc1cead801"
+    },
+    {
+      "bytes": 426,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "dd70c82faeb819cb2ead1296723fb10f063a270fae9e56596691708630675cb7"
+    },
+    {
+      "bytes": 2089,
+      "name": "verify_package.py",
+      "sha256": "3f64d41e63e8bbb8a3fa59a22f444eebc40faa3b24e72e7e90a3d4cfbdc9fa55"
+    },
+    {
+      "bytes": 1483,
+      "name": "seal_package.py",
+      "sha256": "8acc63e393ed51b342ccc92c2f9bfef993246f7785820a2a95d5ff5ad0aa8b5b"
+    }
+  ],
+  "manifest_sha256": "bd331a7082ed855916fcf3279b71271d46d1c7276ff73c50e163721bdfe11d13",
+  "package_id": "ATMOS-SPEECH-THRESHOLD-METER-CONSUMER-BOUNDARY-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

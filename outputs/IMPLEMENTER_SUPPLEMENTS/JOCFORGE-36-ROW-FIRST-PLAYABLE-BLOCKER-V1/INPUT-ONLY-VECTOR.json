@@ -1,0 +1,9 @@
+{
+  "schema":"jocforge.first_playable_36_row_static_vector.v1",
+  "vector_id":"36-ROW-PCM24-48K-CLI-METER-PREPASS",
+  "input_shape":{"physical_rows":36,"sample_rate_hz":48000,"pcm_bits":24,"expected_block_align":108},
+  "current_meter_gate":{"required_rows":38,"required_block_align":114,"expected_result":"SourceProfileMismatch before spatial callback"},
+  "next_f01e_shape":{"physical_rows":36,"bed_rows":10,"object_rows":26,"regular_rows":35},
+  "execution":"SOURCE_AUDIT_ONLY; NO_ENCODING",
+  "note":"Do not map 36 input rows to codec/F13 source-slot counts."
+}

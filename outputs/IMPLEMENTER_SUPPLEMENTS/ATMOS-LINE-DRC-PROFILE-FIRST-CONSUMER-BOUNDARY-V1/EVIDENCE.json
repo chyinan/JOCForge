@@ -1,0 +1,44 @@
+{
+  "schema":"jocforge.atmos_line_drc_value_boundary.v1",
+  "status":"LINE_STRING_VALIDATION_DEFAULT_AND_FIRST_CONSUMER_BOUND; PROFILE_U32_AND_ENCODER_JOIN_UNBOUND; NOT_RUN",
+  "upstream_package":{
+    "package_id":"atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256":"66c2d2c89dd281c562dcb6d55df01f3f00c48f261b7ce0a62fe77987da228739",
+    "sha256sums_sha256":"de0d2b183bd1da40ea051813293b74c55ae71ea9482c5d37802b9334d3e777a2",
+    "payload_count_verified":6,
+    "checker_normal":"WASH_SHA256_AUDIT_PASS",
+    "checker_python_O":"WASH_SHA256_AUDIT_PASS"
+  },
+  "source_images": [
+    {"name":"dee.exe","sha256":"65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"name":"dee_audio_filter_ddp.dll","sha256":"2fd503793f68dfa13037adf4082b8e5327e5046abfb6183ee84d7ae5839ecd72"}
+  ],
+  "line_profile_descriptor": {
+    "owner_offset":"0x6d0",
+    "qualified_alias":"drc:line_mode_drc_profile",
+    "setter":"FUN_18014f820 via descriptor vtable +0x28",
+    "enum_validation":"FUN_180144410 validates against registered enum strings",
+    "storage":"validated string copied to descriptor +0x08; descriptor +0x68 set flag",
+    "getter":"FUN_180152490 at descriptor vtable +0x30",
+    "default_string":"film_light",
+    "default_applied_via":"FUN_180138690 calls the same setter"
+  },
+  "first_consumer": {
+    "function":"FUN_1801535b0",
+    "operation":"look up stored Line string in profile tree",
+    "successful_output":"matched tree-node U32 copied to param_2+0xa0",
+    "film_light_tree_u32":"UNBOUND"
+  },
+  "downstream_boundary": {
+    "prior_line_ddp_compr_candidate":"FUN_1801aa730 param3+0x28",
+    "selected_tree_value_to_ddp_compr_join":"UNBOUND",
+    "drC_audio_or_pcm_behavior":"NOT_RUN"
+  },
+  "execution_scope": {
+    "dee_run":false,
+    "pcm_or_payload_access":false,
+    "key_or_license_access":false,
+    "production_allowed":false
+  }
+}

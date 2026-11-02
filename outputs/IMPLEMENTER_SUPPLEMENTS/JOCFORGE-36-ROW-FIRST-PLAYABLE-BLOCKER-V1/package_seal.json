@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 2234,
+      "name": "REPORT.md",
+      "sha256": "26a13054e988b8cfd906e3c76284f3f5707bd8fd1e066a00e6157946ea9aed5f"
+    },
+    {
+      "bytes": 2000,
+      "name": "EVIDENCE.json",
+      "sha256": "0ba5996ac3db514668c3727fccf236f76d03dff7cb8b629f9219656ce6e81742"
+    },
+    {
+      "bytes": 566,
+      "name": "INPUT-ONLY-VECTOR.json",
+      "sha256": "152f82c3424cc43f2ca48e0fc4199f7a9cba8957a04368ea5a31118e25661253"
+    },
+    {
+      "bytes": 469,
+      "name": "SOURCE-MANIFESTS.json",
+      "sha256": "0accd67cc276cc8ee02db58abe5d48c4bf346b1d77174565e9223a879ffbdf49"
+    },
+    {
+      "bytes": 2175,
+      "name": "verify_package.py",
+      "sha256": "d2e22d59e311bae425549dab54ecdd99fe17dc16222ae87d03e6bf0ad611d7a6"
+    },
+    {
+      "bytes": 1496,
+      "name": "seal_package.py",
+      "sha256": "f31ff8c73255a0f3abdecfdfd9bfccb0673ffc22b8f7177ce6103a8fa8da174b"
+    }
+  ],
+  "manifest_sha256": "b85afd3f03560a5647303624aa8c14275bc4e21e9dfba1aff9f52b5a1be52003",
+  "package_id": "JOCFORGE-36-ROW-FIRST-PLAYABLE-BLOCKER-V1",
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "seal_excluded_from_own_hash_list": true
+}

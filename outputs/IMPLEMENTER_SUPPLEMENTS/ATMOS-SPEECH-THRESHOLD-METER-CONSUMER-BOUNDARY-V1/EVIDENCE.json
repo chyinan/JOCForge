@@ -1,0 +1,49 @@
+{
+  "schema":"jocforge.speech_threshold_meter_consumer_boundary.v1",
+  "status":"MEASURE_ONLY_THRESHOLD_SLOT_BOUND; METER_READ_AND_SCORE_COMPARISON_UNBOUND",
+  "upstream_package":{
+    "package":"dee-speech-threshold-consumer-edge-addendum",
+    "manifest_sha256":"9f9965283209558bde2333237d5beb06ef2a6d5e8eebf77ef35fb719daae9cad",
+    "payload_count_verified":4,
+    "checker_normal":"PASS",
+    "checker_python_O":"PASS"
+  },
+  "threshold_slot":{
+    "xml_path":"loudness:measure_only:speech_threshold",
+    "validated_domain":[0,100],
+    "handler":"FUN_18020eaf0",
+    "parameter_index":2,
+    "caller":"FUN_1801ed430 passes lVar16+0xd40 as param_1",
+    "resolved_address":"lVar16+0xd48"
+  },
+  "dialogue_intelligence_slot":{
+    "handler_parameter_index":1,
+    "gates_threshold_assignment_in_handler":false
+  },
+  "meter_path":{
+    "mode":"measure_only mode 2",
+    "dispatcher":"FUN_1801ec120",
+    "run_meter":"FUN_1801ec690",
+    "meter_call":"FUN_18021a150",
+    "threshold_slot_read_or_copy_into_meter_object":"UNBOUND"
+  },
+  "formula":{
+    "speech_score_comparator":"UNBOUND",
+    "operator":"UNBOUND",
+    "equality_boundary":"UNBOUND",
+    "rounding":"UNBOUND",
+    "formula":"UNBOUND"
+  },
+  "separate_correction_candidate":{
+    "function":"FUN_180245e50",
+    "reads_other_owner_offset":"+0x590",
+    "typed_identity_to_measure_only_owner":"UNBOUND",
+    "inference_from_equal_offset_allowed":false
+  },
+  "execution_scope":{
+    "dee_run":false,
+    "tests_or_dsp_run":false,
+    "pcm_payload_or_key_access":false,
+    "production_allowed":false
+  }
+}

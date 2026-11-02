@@ -1,0 +1,13 @@
+{
+  "schema":"jocforge.wash_source_manifest.v1",
+  "sources":[
+    {
+      "kind":"upstream_source_audit",
+      "package_id":"jocforge_first_playable_output_blocker_wash_v1",
+      "manifest_sha256":"67cf449e08592871d7218051b8715fc0f2d8173e0f1997cc7f8c7a975400649a",
+      "source_head":"19608dcf3fcabbc5079c8f25b922ac6b98978e07",
+      "manifest_and_payload_hashes_independently_checked":true,
+      "source_code_or_pcm_copied_into_this_supplement":false
+    }
+  ]
+}

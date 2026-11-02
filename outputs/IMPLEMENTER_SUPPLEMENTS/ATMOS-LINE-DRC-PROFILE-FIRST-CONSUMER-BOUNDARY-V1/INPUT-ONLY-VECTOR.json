@@ -1,0 +1,10 @@
+{
+  "schema":"jocforge.static_line_drc_value_vector.v1",
+  "vector_id":"LINE-DRC-FILM-LIGHT-DEFAULT",
+  "input_property":"line_mode_drc_profile",
+  "default_string":"film_light",
+  "expected_static_path":["enum string validation", "store string", "profile tree lookup", "copy matched U32 to param_2+0xa0"],
+  "expected_tree_u32":"UNBOUND",
+  "encoder_sink_join":"UNBOUND",
+  "execution":"NOT_RUN"
+}

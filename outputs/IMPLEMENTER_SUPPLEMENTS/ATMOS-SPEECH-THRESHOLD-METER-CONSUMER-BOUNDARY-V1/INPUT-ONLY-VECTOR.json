@@ -1,0 +1,13 @@
+{
+  "schema":"jocforge.measure_only_threshold_slot_vector.v1",
+  "vector_id":"MEASURE-ONLY-THRESHOLD-CALLER-SLOT",
+  "input_field":"speech_threshold",
+  "domain":[0,100],
+  "handler_slot":"param_1[2]",
+  "caller_base":"lVar16+0xd40",
+  "resolved_slot":"lVar16+0xd48",
+  "first_named_meter_stage":"RunMeter",
+  "threshold_slot_to_meter_read":"UNBOUND",
+  "formula":"UNBOUND",
+  "execution":"NOT_RUN"
+}
