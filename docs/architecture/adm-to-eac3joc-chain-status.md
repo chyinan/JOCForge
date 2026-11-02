@@ -6,7 +6,7 @@
 >
 > Rust 输出 SHA-256 为 `d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b`。DEE matched-control 输出 SHA-256 为 `80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662`，job XML SHA-256 为 `c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7`。两者使用同一 ADM 和 matched audio controls。
 >
-> Wash 比较包 `SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1` manifest SHA-256 为 `6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750`，package seal SHA-256 为 `593eee033f677b7e84e0de5367b005b95cf3d43defc0854b6eb0137070000e74b`。普通模式和 `python -O` 校验均通过。该包不含 PCM、encoded payload、key 或 license。
+> Wash 比较包 `SAMPLE6-MATCHED-FULL-FILE-DEE-PCM-COMPARISON-V1` manifest SHA-256 为 `6a59d4eb1f8c1a0689fcc53878d52ff0c4d8b3fd8cf8f99c4dbaa93011981750`，package seal SHA-256 为 `593eee033f677b7e84e0de5367b005b95cf3d43defc0854b6eb0137070000e74b`。普通模式和 `python -O` 校验均通过。该包不含 PCM、encoded payload、key 或 license。 Full-file block package `SAMPLE6-FULL-FILE-PCM-BLOCK-RESIDUAL-V1` 的 manifest SHA-256 为 `41a9952b8e8342296d1c5114878ce51119ae80f93252b0fa3444c46621a2f198`，seal SHA-256 为 `458efc611799fc3341c83b472b2d1081771e4493daabb6de895b0ea5e5623443`；普通模式和 `python -O` 校验通过。
 
 ## 2026-11-02 范围与证据更新
 
@@ -42,7 +42,7 @@ DRC scale 1 的 aggregate RMSE 为 0.002320472；DRC scale 0 为 0.002258564。�
 | 4 | 0.0009005045 | 0.0004268775 | 0.99996840 | 0.99996932 |
 | 5 | 0.0008348392 | 0.0003796039 | 0.99997487 | 0.99997783 |
 
-decoder channel index 3 主导残差；该包未把它映射到 DEE native input row。Rust 的本地路径把 F07 LFE lane 映射到 external row 3。Wash 正在结合 R4/R6 的 fresh-run 证据追踪 DEE 的同代输入行和 consumer。当前没有 channel 3 根因结论。
+decoder channel index 3 主导残差。匹配窗口中，DRC scale 0 RMSE 为 0.005454089、相关系数为 0.941817、gain 为 1.000121、lag 为 0。整曲对照中，该声道 RMSE 为 0.006199551、相关系数为 0.817673；它在 34 个四秒块中的 30 块都是最大 RMSE 声道，RMSE 是次高声道的 4.275 倍。channel index 4 有最高单点 peak error。Wash 包没有把 channel index 3 映射到 DEE native input row。Rust 本地路径把 F07 LFE lane 映射到 external row 3；DEE 同代 source row 和 consumer 仍待 R4/R6 证据。当前没有 channel 3 根因结论。
 
 本地 Rust none-DRC baseline 与 film_light DRC candidate 的该窗 F32 PCM hash 相同；job DRC profile 改变了码流字节，没有改变此窗 PCM。 matched-control 配置与 candidate 一致，用户提供的 DEE matched-control 已成为当前有效 PCM 参考。
 
@@ -415,6 +415,6 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 1. 结合 R4/R6 fresh-run evidence，找出 decoder channel index 3 的 DEE source row、LFE path 和首个 core consumer；不从通道号推断 native row。
 2. 检查 Rust F07 LFE row 3 到当前 E-AC-3 core path，定位与 matched DEE 的实测差异。
 3. 如需改动 LFE path，只按新的 hash-bound typed edge 和 matched PCM 结果实现，再重算同窗六通道指标。
-4. 当前证据只覆盖 4 秒 core PCM；整曲 PCM 一致性、OpenJOC object render、听感和 W04 仍未验证。
+4. 当前有 matched 4 秒窗口和整曲分块指标；整曲 PCM equality、OpenJOC object render、听感和 W04 仍未验证。
 
 channel 3 根因、整曲 PCM parity 和空间渲染通过前，不宣称 audio parity 或感知一致性。
