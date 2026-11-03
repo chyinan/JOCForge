@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+  "source_manifest_sha256": "cd505322da4554e145e9be5c51634a6344155caa87a44fedcdf147ce4ea19b4e",
+  "source_package_seal_sha256": "4f510d6c089075fa1fbebf871996b0172727b2200e5517279d90abcdb45c64fd",
+  "target": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "reported_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC static",
+    "dee_run": false
+  },
+  "profile_to_drc_values": {
+    "film_light": { "tree_u32": 0, "ddp_compr_code": 2, "config_offset": "+0x28", "parameter_id": "0x0d", "per_stream_field": "+0x100" },
+    "none": { "tree_u32": 5, "ddp_compr_code": 0, "config_offset": "+0x28", "parameter_id": "0x0d", "per_stream_field": "+0x100", "record_present": true }
+  },
+  "control_record": {
+    "outer_guard": "separate flag at param_1+0x4320; selected job state unobserved",
+    "presence_if_entered": 1,
+    "film_light_line_bits": "010",
+    "none_line_bits": "000"
+  },
+  "audio_boundary": {
+    "direct_drc_write_to_sample_arrays": "NOT_FOUND_IN_BOUNDED_TRACE",
+    "decoded_base_pcm_effect": "NOT_DETERMINED_STATICALLY",
+    "decoder_drc_application": "NOT_TRACED",
+    "atmos_render_or_listening_effect": "NOT_RUN"
+  },
+  "source_package_verification": {
+    "manifest_sha256": "cd505322da4554e145e9be5c51634a6344155caa87a44fedcdf147ce4ea19b4e",
+    "payloads_verified": 11,
+    "package_seal_verified": true,
+    "external_source_entries_listed": 100,
+    "external_source_entries_rehashed_by_wash": 0
+  },
+  "execution": {
+    "film_light_vs_none_ab": "PROPOSED_NOT_RUN",
+    "dee_run": "NOT_RUN",
+    "pcm_or_payload_read": "NOT_RUN",
+    "private_key_or_license_read": "NOT_RUN"
+  }
+}

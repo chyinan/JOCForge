@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256": "cd505322da4554e145e9be5c51634a6344155caa87a44fedcdf147ce4ea19b4e",
+    "package_seal_sha256": "4f510d6c089075fa1fbebf871996b0172727b2200e5517279d90abcdb45c64fd",
+    "payload_hashes_verified_by_wash": 11,
+    "external_source_entries": 100,
+    "external_source_entries_rehashed_by_wash": 0,
+    "target_image": "dee_audio_filter_ddp_atmos.dll hash 3d66bcec…8b7e95d2; matches existing Wash identity; not rehashed in this pass"
+  },
+  "excluded_from_supplement": [
+    "Ghidra scripts and raw disassembly",
+    "native binary",
+    "PCM and encoded media payload",
+    "private key or license content"
+  ]
+}

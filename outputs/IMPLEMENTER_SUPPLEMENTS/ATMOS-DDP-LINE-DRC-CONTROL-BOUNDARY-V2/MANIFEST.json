@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ATMOS-DDP-LINE-DRC-CONTROL-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FILM_LIGHT_AND_NONE_VALUES_BOUND; CONTROL_RECORD_EXPLICIT_ZERO_PRESENT; JOB_GUARD_AND_PCM_EFFECT_UNBOUND; AB_NOT_RUN",
+  "implementation_ready": "PARTIAL_DRC_CONTROL_VALUES_ONLY",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 1952,
+      "sha256": "098fdc6a2587a016f256aabd62951c91992b328e29f496eeb4f04e31306941ef"
+    },
+    "EVIDENCE.json": {
+      "bytes": 1781,
+      "sha256": "bcc77a483e82ca075df51a356c14cce117cd64be07dfffc4f48a64810ee7bbbc"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 1156,
+      "sha256": "15431664e9dda74623a3cd7075cb8484170638cda59936b55998f74ff977c2fe"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 907,
+      "sha256": "186065894b419b8665363f7a14dc79a00ea3445bca78401ab05bf2b2f3d20959"
+    }
+  }
+}
