@@ -1104,6 +1104,13 @@ fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
 }
 
 fn selected_resource_with_channels(channels: u16) -> (Arc<[u8]>, [Range<usize>; 3]) {
+    selected_resource_with_channel_samples(channels, 1)
+}
+
+fn selected_resource_with_channel_samples(
+    channels: u16,
+    source_samples: u64,
+) -> (Arc<[u8]>, [Range<usize>; 3]) {
     let track_count = usize::from(channels);
     assert!((10..=38).contains(&track_count));
     let chna = if track_count == 38 {
@@ -1116,7 +1123,8 @@ fn selected_resource_with_channels(channels: u16) -> (Arc<[u8]>, [Range<usize>; 
     };
     let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
     append_chunk(&mut bytes, *b"fmt ", &selected_format_payload(channels));
-    append_chunk(&mut bytes, *b"data", &vec![0_u8; track_count * 3]);
+    let data_bytes = usize::try_from(source_samples).unwrap() * track_count * 3;
+    append_chunk(&mut bytes, *b"data", &vec![0_u8; data_bytes]);
     let axml = append_chunk(&mut bytes, *b"axml", AXML);
     let chna = append_chunk(&mut bytes, *b"chna", &chna);
     let dbmd_payload = synthetic_dbmd_payload_for_physical_rows(channels);
@@ -1206,6 +1214,154 @@ fn dbmd_section_checksum_for_test(length: u16, body: &[u8]) -> u8 {
         .copied()
         .fold(length as u8, u8::wrapping_add)
         .wrapping_neg()
+}
+
+#[test]
+fn dynamic_f01e_normal_continuation_binds_36_and_38_row_callback_clocks() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let provider = validated_f01e_provider();
+
+    for channels in [36_u16, 38] {
+        let (resource, spans) = selected_resource_with_channel_samples(channels, 1_537);
+        let prepared = prepare_selected_job_input(
+            test_programme_id(),
+            case["input_xml"].as_str().unwrap().as_bytes(),
+            SelectedWaveDescriptor::new(48_000, channels, 24),
+            1_537,
+            Arc::clone(&resource),
+            metadata_payloads(&resource, &spans),
+        )
+        .unwrap()
+        .bind_primary_control_rows(1_537 * u64::from(channels) * 3)
+        .unwrap();
+        let attempt = AttemptId::new(0);
+        let owner = prepared.f01e_cold_owner(&provider, attempt).unwrap();
+        let normal_input = prepared.normal_control_adm_input_snapshot(&owner).unwrap();
+        assert_eq!(normal_input.expected_normal_callback_count(), 2);
+
+        let first = prepared.propose_f01e_adm_normal_callback(&owner).unwrap();
+        assert_eq!(first.transaction_id().callback_index().value(), 0);
+        assert_eq!(first.query_sample(), 0);
+        assert_eq!(first.actual_samples(), 1_536);
+        assert!(
+            first
+                .sampler_before()
+                .iter()
+                .all(|sampler| !sampler.sampler_previous_present())
+        );
+
+        let rows = vec![vec![0_u32; 1_536]; usize::from(channels)];
+        let first_frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+            callback_index: MeterCallbackIndex::new(0),
+            upstream_generation: MeterUpstreamGeneration::new(1),
+            phase: MeterCallbackPhase::NormalSource,
+            source_identity: MeterSourceIdentity::from_sha256(
+                prepared.resource_identity().input_sha256(),
+            ),
+            source_samples: MeterSourceSampleCount::new(1_537).unwrap(),
+            normal_callbacks: MeterCallbackCount::new(2),
+            source_cursor_before: MeterSourcePosition::new(0),
+            source_cursor_after: MeterSourcePosition::new(1_536),
+            source_read_index_before: MeterSourceReadIndex::new(0),
+            source_read_index_after: MeterSourceReadIndex::new(1),
+            host_input_count: MeterSampleCount::new(1_536),
+            source_padding_count: MeterSampleCount::new(0),
+            rows: &rows,
+        });
+        let first_view = MeterSourceCallbackView::new(&prepared, first_frame).unwrap();
+        let source_geometry = prepared
+            .propose_f01e_adm_normal_source_geometry(
+                &owner,
+                &first,
+                &first_view,
+                &generate_selected_p11_geometry(0x111b, true).unwrap(),
+            )
+            .unwrap();
+        assert_eq!(source_geometry.source_origin_generation().value(), 0);
+        assert_eq!(source_geometry.rows().len(), usize::from(channels) + 10);
+
+        let second_frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+            callback_index: MeterCallbackIndex::new(1),
+            upstream_generation: MeterUpstreamGeneration::new(2),
+            phase: MeterCallbackPhase::NormalSource,
+            source_identity: MeterSourceIdentity::from_sha256(
+                prepared.resource_identity().input_sha256(),
+            ),
+            source_samples: MeterSourceSampleCount::new(1_537).unwrap(),
+            normal_callbacks: MeterCallbackCount::new(2),
+            source_cursor_before: MeterSourcePosition::new(1_536),
+            source_cursor_after: MeterSourcePosition::new(1_537),
+            source_read_index_before: MeterSourceReadIndex::new(1),
+            source_read_index_after: MeterSourceReadIndex::new(2),
+            host_input_count: MeterSampleCount::new(1),
+            source_padding_count: MeterSampleCount::new(1_535),
+            rows: &rows,
+        });
+        let second_view = MeterSourceCallbackView::new(&prepared, second_frame).unwrap();
+        let second = prepared
+            .propose_f01e_adm_normal_continuation(&normal_input, first.after_state(), &second_view)
+            .unwrap();
+
+        assert!(std::ptr::eq(second.before_state(), first.after_state()));
+        assert_eq!(second.transaction_id().callback_index().value(), 1);
+        assert_eq!(second.query_sample(), 1_536);
+        assert_eq!(second.actual_samples(), 1);
+        assert_eq!(second.sampler_before().len(), usize::from(channels) - 10);
+        assert!(
+            second
+                .sampler_before()
+                .iter()
+                .all(|sampler| sampler.sampler_previous_present())
+        );
+
+        let after = second.after_state();
+        assert_eq!(after.source_origin_generation().value(), 1);
+        assert_eq!(after.next_callback_index().value(), 2);
+        assert_eq!(after.owner_generation(), 2);
+        assert_eq!(after.processed_normal_callbacks().value(), 2);
+        assert_eq!(after.expected_normal_callback_count(), 2);
+        assert_eq!(after.input_physical_rows().value(), channels);
+        assert_eq!(after.normal_control_rows().value(), channels);
+        assert_eq!(after.regular_control_rows().value(), channels - 1);
+        assert_eq!(after.physical_rows().len(), usize::from(channels));
+        assert_eq!(after.regular_rows().len(), usize::from(channels) - 1);
+
+        let zero_rows = vec![vec![0_u32; 1_536]; usize::from(channels)];
+        for delivery in 2_u32..=4 {
+            let transaction = CallbackLineageIdentity::new(
+                prepared.programme_id().clone(),
+                attempt,
+                FrontendCallbackIndex::new(delivery),
+            );
+            let receipt = after
+                .fresh_zero_view(transaction)
+                .unwrap()
+                .validate_zero_physical_input_rows(&zero_rows)
+                .unwrap();
+            assert_eq!(
+                receipt
+                    .source_origin_transaction_id()
+                    .callback_index()
+                    .value(),
+                1
+            );
+            assert_eq!(
+                receipt.delivery_transaction_id().callback_index().value(),
+                delivery
+            );
+        }
+    }
 }
 
 fn selected_format_payload(channels: u16) -> Vec<u8> {

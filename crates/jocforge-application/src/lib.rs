@@ -16,8 +16,10 @@ use jocforge_domain::frontend::{
     adm_object_events::AdmittedSelectedObjectEvents,
     dbmd_sections::{DbmdSectionError, SelectedDbmdSections, parse_selected_dbmd_sections},
     normal_control_snapshot::{
-        NormalControlAdmFreshZeroReceipt, NormalControlAdmInputProposal,
+        NormalControlAdmFreshZeroReceipt, NormalControlAdmInputAfterState,
+        NormalControlAdmInputContinuationProposal, NormalControlAdmInputProposal,
         NormalControlAdmInputSnapshot, NormalControlPreparedSnapshot, NormalControlSnapshotError,
+        propose_next_normal_control_adm_input,
     },
     primary_metadata_control::{
         PrimaryMetadataControlError, PrimaryMetadataControlRows,
@@ -381,6 +383,68 @@ impl PreparedJobInput {
             .map_err(PreparedJobInputError::NormalControlSnapshot)
     }
 
+    /// Proposes the next selected 36/38-row NORMAL callback from the previous typed after-state.
+    ///
+    /// This binds the same prepared input and callback clock to a Meter source frame. The
+    /// returned value is a borrowed, noncommitting continuation proposal; it has no canonical
+    /// digest, parent installation, or GTC receipt authority.
+    pub fn propose_f01e_adm_normal_continuation<'a>(
+        &self,
+        prepared_normal_input: &NormalControlAdmInputSnapshot,
+        before: &'a NormalControlAdmInputAfterState,
+        source_view: &meter_source_bridge::MeterSourceCallbackView<'_>,
+    ) -> Result<NormalControlAdmInputContinuationProposal<'a>, PreparedJobInputError> {
+        if !Arc::ptr_eq(
+            &self.domain_identity,
+            prepared_normal_input.prepared_input_identity(),
+        ) || !Arc::ptr_eq(&self.domain_identity, before.prepared_input_identity())
+            || prepared_normal_input.identity_sha256() != before.prepared_input_identity_sha256()
+            || prepared_normal_input.programme_id() != self.programme_id()
+            || prepared_normal_input.attempt_id() != before.attempt_id()
+        {
+            return Err(PreparedJobInputError::PreparedIdentityMismatch);
+        }
+        let transaction_id = CallbackLineageIdentity::new(
+            self.programme_id.clone(),
+            before.attempt_id(),
+            before.next_callback_index(),
+        );
+        let proposal =
+            propose_next_normal_control_adm_input(before, prepared_normal_input, transaction_id)
+                .map_err(PreparedJobInputError::NormalControlSnapshot)?;
+        let callback_value = proposal.transaction_id().callback_index().value();
+        let callback_u64 = u64::from(callback_value);
+        if !std::ptr::eq(self.graph.graph(), source_view.selected_graph())
+            || source_view.physical_row_map().resource_identity() != self.resource_identity
+            || source_view.physical_row_map().axml_sha256()
+                != self.graph.graph().receipt().axml_sha256()
+            || source_view.physical_row_map().chna_sha256()
+                != self.graph.graph().receipt().chna_sha256()
+            || source_view.physical_row_map().dbmd_sha256() != self.dbmd.payload_sha256()
+            || source_view.source_identity().sha256() != self.resource_identity.input_sha256()
+            || source_view.source_samples().value() != self.configuration.source_samples()
+            || source_view.normal_callbacks().value()
+                != proposal.after_state().expected_normal_callback_count()
+            || source_view.phase() != meter_source_bridge::MeterCallbackPhase::NormalSource
+            || source_view.callback_index().value() != callback_u64
+            || source_view.source_cursor_before().value() != proposal.query_sample()
+            || source_view.host_input_count().value() != u64::from(proposal.actual_samples())
+            || source_view
+                .source_cursor_before()
+                .value()
+                .checked_add(u64::from(proposal.actual_samples()))
+                != Some(source_view.source_cursor_after().value())
+            || source_view.source_read_index_before().value() != callback_u64
+            || callback_u64.checked_add(1) != Some(source_view.source_read_index_after().value())
+            || source_view.physical_rows().len()
+                != usize::from(self.configuration.wave().channels())
+            || before.input_physical_rows().value() != self.configuration.wave().channels()
+        {
+            return Err(PreparedJobInputError::NormalCallbackContinuityMismatch);
+        }
+        Ok(proposal)
+    }
+
     /// Binds one dynamic F01E proposal and Meter source frame to the same input before
     /// projecting N+10 primary source geometry. This value stage cannot install either owner.
     pub fn propose_f01e_adm_normal_source_geometry(
@@ -564,6 +628,7 @@ pub enum PreparedJobInputError {
     ProgrammeIdentityMismatch,
     PreparedIdentityMismatch,
     NormalSourceGeometryMismatch,
+    NormalCallbackContinuityMismatch,
     SourceMapProjection,
     SourceGeometry(GlobalSourceGeometryError),
     F01EProviderProjection(F01EProviderError),
@@ -610,6 +675,9 @@ impl std::fmt::Display for PreparedJobInputError {
                 .write_str("F01E cold owner is bound to a different prepared input identity"),
             Self::NormalSourceGeometryMismatch => formatter.write_str(
                 "dynamic F01E proposal and Meter normal source frame do not share one input and callback",
+            ),
+            Self::NormalCallbackContinuityMismatch => formatter.write_str(
+                "dynamic F01E continuation and Meter normal source frame do not share one input and callback",
             ),
             Self::SourceMapProjection => {
                 formatter.write_str("failed to build the admitted dynamic primary source map")

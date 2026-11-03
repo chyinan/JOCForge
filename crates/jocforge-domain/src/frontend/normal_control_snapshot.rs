@@ -760,6 +760,10 @@ impl NormalControlAdmInputSnapshot {
         &self.regular_control_hosts
     }
 
+    pub fn prepared_input_identity(&self) -> &Arc<PreparedJobInputIdentity> {
+        &self.prepared_input_identity
+    }
+
     pub fn regular_source_bindings(&self) -> &[NormalControlRegularSourceBinding] {
         &self.regular_source_bindings
     }
@@ -1144,6 +1148,51 @@ pub struct NormalControlAdmInputProposal {
     after_state: NormalControlAdmInputAfterState,
 }
 
+/// In-memory continuation proposal tied to the exact preceding dynamic after-state.
+///
+/// This value advances the selected 36/38-row model through another NORMAL callback. It is
+/// deliberately noncommitting and carries no canonical digest or parent-install authority.
+#[derive(Debug)]
+pub struct NormalControlAdmInputContinuationProposal<'a> {
+    before_state: &'a NormalControlAdmInputAfterState,
+    transaction_id: CallbackLineageIdentity,
+    query_sample: u64,
+    actual_samples: u32,
+    invocation_hosts: Arc<[u8]>,
+    sampler_before: Arc<[NormalControlSamplerBefore]>,
+    after_state: NormalControlAdmInputAfterState,
+}
+
+impl NormalControlAdmInputContinuationProposal<'_> {
+    pub const fn before_state(&self) -> &NormalControlAdmInputAfterState {
+        self.before_state
+    }
+
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub const fn query_sample(&self) -> u64 {
+        self.query_sample
+    }
+
+    pub const fn actual_samples(&self) -> u32 {
+        self.actual_samples
+    }
+
+    pub fn invocation_hosts(&self) -> &[u8] {
+        &self.invocation_hosts
+    }
+
+    pub fn sampler_before(&self) -> &[NormalControlSamplerBefore] {
+        &self.sampler_before
+    }
+
+    pub const fn after_state(&self) -> &NormalControlAdmInputAfterState {
+        &self.after_state
+    }
+}
+
 impl NormalControlAdmInputProposal {
     pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
@@ -1287,6 +1336,142 @@ impl NormalControlAdmInputSnapshot {
             u16::try_from(self.regular_control_hosts.len()).unwrap_or(u16::MAX),
         )
     }
+}
+
+/// Proposes a contiguous NORMAL callback from the previous dynamic after-state.
+///
+/// This is limited to the washed 36/38-row profile and the same admitted input snapshot. The
+/// borrowed `before` value establishes in-memory lineage; this function creates neither a
+/// canonical serialization nor an installable owner replacement.
+pub fn propose_next_normal_control_adm_input<'a>(
+    before: &'a NormalControlAdmInputAfterState,
+    prepared: &NormalControlAdmInputSnapshot,
+    transaction_id: CallbackLineageIdentity,
+) -> Result<NormalControlAdmInputContinuationProposal<'a>, NormalControlSnapshotError> {
+    let channels = before.input_physical_rows.value();
+    let callback_value = before.next_callback_index.value();
+    let callback_u64 = u64::from(callback_value);
+    if before.schema != "F01E_ADM_INPUT_NORMAL_STATE_V1"
+        || prepared.schema != "F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1"
+        || !Arc::ptr_eq(
+            &before.prepared_input_identity,
+            &prepared.prepared_input_identity,
+        )
+        || before.prepared_input_identity_sha256 != prepared.identity_sha256
+        || before.programme_id != prepared.programme_id
+        || before.attempt_id != prepared.attempt_id
+        || transaction_id.programme_id() != &before.programme_id
+        || transaction_id.attempt_id() != before.attempt_id
+        || transaction_id.callback_index().value() != callback_value
+    {
+        return Err(NormalControlSnapshotError::PreparedIdentityMismatch);
+    }
+    if !matches!(channels, 36 | 38)
+        || prepared.source_identity.wave.channels() != channels
+        || before.normal_control_rows.value() != channels
+        || usize::from(before.regular_control_rows.value()) != prepared.regular_control_hosts.len()
+        || before.regular_control_hosts.as_ref() != prepared.regular_control_hosts.as_slice()
+        || before.lfe_host != prepared.lfe_host
+        || before.expected_normal_callback_count != prepared.expected_normal_callback_count
+        || before.expected_normal_callback_count
+            != prepared
+                .source_identity
+                .source_samples
+                .div_ceil(NORMAL_CALLBACK_SAMPLES)
+        || before.physical_rows.len() != prepared.physical_tracks.len()
+        || before.regular_rows.len() != prepared.regular_control_hosts.len()
+        || before.objects.len() != prepared.owner_bindings.len()
+        || before.control_words.len()
+            != prepared
+                .physical_tracks
+                .len()
+                .checked_mul(CONTROL_WORDS_PER_TRACK)
+                .ok_or(NormalControlSnapshotError::IndexOverflow)?
+        || before.regular_control_words.len()
+            != prepared
+                .regular_control_hosts
+                .len()
+                .checked_mul(CONTROL_WORDS_PER_TRACK)
+                .ok_or(NormalControlSnapshotError::IndexOverflow)?
+    {
+        return Err(NormalControlSnapshotError::SourceConfigurationMismatch);
+    }
+    if callback_u64 == 0
+        || callback_u64 >= before.expected_normal_callback_count
+        || before.processed_normal_callbacks.value() != callback_u64
+        || before.owner_generation != callback_u64
+        || before.source_origin_generation.value().checked_add(1) != Some(callback_value)
+        || before.remaining_cached_drains != MAIN_CACHED_DRAIN_CALLBACKS
+    {
+        return Err(NormalControlSnapshotError::GenerationMismatch);
+    }
+
+    let query_sample = callback_u64
+        .checked_mul(NORMAL_CALLBACK_SAMPLES)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    let source_samples = prepared.source_identity.source_samples;
+    if query_sample >= source_samples {
+        return Err(NormalControlSnapshotError::CallbackClockMismatch);
+    }
+    let actual_samples =
+        u32::try_from((source_samples - query_sample).min(NORMAL_CALLBACK_SAMPLES))
+            .map_err(|_| NormalControlSnapshotError::IndexOverflow)?;
+    let rows = calculate_normal_control_rows(
+        &prepared.physical_tracks,
+        &prepared.owner_bindings,
+        &prepared.object_events,
+        &prepared.regular_control_hosts,
+        &before.objects,
+    )?;
+    let next_callback_value = callback_value
+        .checked_add(1)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    let next_owner_generation = before
+        .owner_generation
+        .checked_add(1)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    let processed_normal_callbacks = before
+        .processed_normal_callbacks
+        .value()
+        .checked_add(1)
+        .map(NormalCallbackCount::new)
+        .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+    let physical_row_count = u16::try_from(rows.physical_rows.len())
+        .map_err(|_| NormalControlSnapshotError::GraphDomain)?;
+    let regular_row_count = u16::try_from(rows.regular_rows.len())
+        .map_err(|_| NormalControlSnapshotError::BedJoinMismatch)?;
+    let after_state = NormalControlAdmInputAfterState {
+        schema: "F01E_ADM_INPUT_NORMAL_STATE_V1",
+        programme_id: before.programme_id.clone(),
+        attempt_id: before.attempt_id,
+        source_origin_generation: before.next_callback_index,
+        next_callback_index: FrontendCallbackIndex::new(next_callback_value),
+        owner_generation: next_owner_generation,
+        processed_normal_callbacks,
+        expected_normal_callback_count: before.expected_normal_callback_count,
+        remaining_cached_drains: before.remaining_cached_drains,
+        input_physical_rows: before.input_physical_rows,
+        normal_control_rows: NormalControlRowCount::new(physical_row_count),
+        regular_control_rows: NormalControlRegularRowCount::new(regular_row_count),
+        lfe_host: prepared.lfe_host,
+        regular_control_hosts: Arc::from(prepared.regular_control_hosts.clone().into_boxed_slice()),
+        physical_rows: Arc::from(rows.physical_rows.into_boxed_slice()),
+        regular_rows: Arc::from(rows.regular_rows.into_boxed_slice()),
+        control_words: Arc::from(rows.physical_words.into_boxed_slice()),
+        regular_control_words: Arc::from(rows.regular_words.into_boxed_slice()),
+        objects: Arc::from(rows.next_objects.into_boxed_slice()),
+        prepared_input_identity: Arc::clone(&prepared.prepared_input_identity),
+        prepared_input_identity_sha256: *prepared.identity_sha256(),
+    };
+    Ok(NormalControlAdmInputContinuationProposal {
+        before_state: before,
+        transaction_id,
+        query_sample,
+        actual_samples,
+        invocation_hosts: Arc::from(rows.invocation_hosts.into_boxed_slice()),
+        sampler_before: Arc::from(rows.sampler_before.into_boxed_slice()),
+        after_state,
+    })
 }
 
 impl NormalControlAdmInputSnapshot {
