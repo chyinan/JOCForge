@@ -379,7 +379,9 @@ mod tests {
     use crate::meter::{
         k_matrix::{KMatrixMode, KMatrixProfile, generate_k_matrix},
         object_renderer::ObjectRenderCallbackGeneration,
-        sample_block_queue::{MeterCallbackPhase, MeterSampleCount, MeterSourceSampleCount},
+        sample_block_queue::{
+            MeterCallbackPhase, MeterSampleCount, MeterSourceChannelCount, MeterSourceSampleCount,
+        },
         shared_gain_delay::SharedGainDelayParameters,
         source_frame::MeterSourcePosition,
         standalone_root::{
@@ -424,6 +426,7 @@ mod tests {
             AttemptId::new(0),
             [0x11; 32],
             [0x22; 32],
+            MeterSourceChannelCount::new(38),
         );
         let first = MeterProviderIdentity::new("selected-provider", [0x33; 32]).unwrap();
         let provider_set = MeterProviderSet::new([0x44; 32], vec![first]).unwrap();

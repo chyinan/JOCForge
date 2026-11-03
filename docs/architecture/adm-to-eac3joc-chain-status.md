@@ -63,6 +63,14 @@ Candidate 将该 matched-control I0 base PCM 的 LFE RMSE 降低约 28.8 倍（0
 
 旧 `NormalControlPreparedSnapshot`、`NormalControlFreshZeroMeterView`、IndependentMeterCallback、meter prepass owner 与 programme callback仍固定38行。版本化 per-input proposal与FreshZero value receipts只运行单帧合成输入，且没有安装after-state或进入Meter/Spatial callback；36行 synthetic MeterSourceCallbackView使用Wash核验的DBMD行数与zero per-track字段，不能代替真实样本。12-owner commit、真实多callback source loop、DDP frame-view count、native row transfer和实际音频映射均未闭合。未运行新的DEE编码或完整36-row可播放输出。
 
+## 2026-11-03：Meter 按实际 source extent 派生 schedule
+
+- `StandaloneMeterRoot` 从每声道实际 sample count 推导现有 Meter schedule：normal callback 数为 `ceil(samples / 1,536)`，保留三个 zero drains；published samples、1,024-sample blocks、960-sample energy windows及 remainder继续按既有截断边界计算。当前 Meter source/root 仅准入36或38物理行。
+- 选定38-row输入仍为6,522,906 samples/channel、4,247 normal callbacks；合成36-row extent 7,328,771 推导4,772 normal callbacks、3 drains、7,329,792 published samples、7,158 complete blocks和7,635 energy windows。Meter identity与canonical binding携带实际channel count。
+- 局部36-row schedule/root断言与既有36-row source-cursor边界验证的是结构值，不是真实 PCM callback回放；未运行36-row全Q Meter schedule、terminal receipt、F01E parent安装或Spatial callback。
+- Wash Agent报告 R10 `ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1` 已验证：其 48-wide source axis 对 `N>38` 不足；本轮实现尚未在隔离仓库物化该包。按其待核验实现交付继续处理前，`N>38` 保持未支持；更广行数、graph-sized owners、48-wide consumers/presence和U8字段扩展均未完成。本切片不标记为 arbitrary-N 支持。
+- 本次无全量整曲或 Dee 编码；36-row可播放输出、12-owner READY/root swap、AU发布及W04仍 `NOT_RUN`。
+
 > 历史 run 记录（2026-11-02）：Rust film_light DRC candidate 使用 JOCForge commit `42925e78da48d942d51a4f8e82efb7860aa024eb`，Release exe SHA-256 为 `e61dd4de59804ee42b7193e5bda06718ef4da5b33ec6d2673fcd54d646b024df`。输入 SHA-256 为 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`。
 >
 > Rust 输出 SHA-256 为 `d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b`。DEE matched-control 输出 SHA-256 为 `80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662`，job XML SHA-256 为 `c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7`。两者使用同一 ADM 和 matched audio controls。

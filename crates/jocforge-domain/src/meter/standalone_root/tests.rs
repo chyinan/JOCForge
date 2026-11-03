@@ -3,7 +3,7 @@ use crate::meter::{
     k_matrix::{KMatrixMode, KMatrixProfile, generate_k_matrix},
     lfe_delay_ring::MeterFrontendCallbackInput,
     object_renderer::ObjectRenderCallbackGeneration,
-    sample_block_queue::{MeterCallbackPhase, MeterSourceSampleCount},
+    sample_block_queue::{MeterCallbackPhase, MeterSourceChannelCount, MeterSourceSampleCount},
     shared_gain_delay::SharedGainDelayParameters,
     source_frame::MeterSourcePosition,
 };
@@ -78,16 +78,25 @@ fn vector_identity() -> StandaloneMeterIdentity {
         AttemptId::new(binding["attempt"].as_u64().unwrap()),
         sha256_from_hex(binding["input_sha256"].as_str().unwrap()),
         sha256_from_hex(binding["config_sha256"].as_str().unwrap()),
+        MeterSourceChannelCount::new(38),
     )
 }
 
-fn identity(attempt: u64) -> StandaloneMeterIdentity {
+fn identity_with_channels(
+    attempt: u64,
+    source_channels: MeterSourceChannelCount,
+) -> StandaloneMeterIdentity {
     StandaloneMeterIdentity::new(
         ProgrammeId::new("standalone-meter-root-test").unwrap(),
         AttemptId::new(attempt),
         [0x11; 32],
         [0x22; 32],
+        source_channels,
     )
+}
+
+fn identity(attempt: u64) -> StandaloneMeterIdentity {
+    identity_with_channels(attempt, MeterSourceChannelCount::new(38))
 }
 
 fn providers() -> (SharedGainDelayParameters, KMatrixProvider) {
@@ -139,10 +148,22 @@ fn callback_input(callback: u64, phase: MeterCallbackPhase) -> MeterFrontendCall
 }
 
 fn cold_root(attempt: u64) -> StandaloneMeterRoot {
+    cold_root_with_extent(
+        attempt,
+        selected_source_samples(),
+        MeterSourceChannelCount::new(38),
+    )
+}
+
+fn cold_root_with_extent(
+    attempt: u64,
+    source_samples: MeterSourceSampleCount,
+    source_channels: MeterSourceChannelCount,
+) -> StandaloneMeterRoot {
     let (gain_parameters, k_matrix) = providers();
     StandaloneMeterRoot::cold_selected(
-        identity(attempt),
-        selected_source_samples(),
+        identity_with_channels(attempt, source_channels),
+        source_samples,
         MeterSourceOwnerId::new(format!("test-parent-meter-source-attempt-{attempt}")).unwrap(),
         provider_set_from_v4(),
         MeterKFilterExponentState::new([0; METER_CHANNEL_COUNT]),
@@ -611,4 +632,48 @@ fn terminal_receipt_proposal_requires_q_normal_reads_and_exactly_three_drains() 
         expected["energy_complete_windows"].as_u64().unwrap()
     );
     assert_eq!(root.canonical_sha256().unwrap(), root_hash_before);
+}
+
+#[test]
+fn standalone_meter_schedule_and_cold_root_bind_the_36_row_extent() {
+    let source_samples = MeterSourceSampleCount::new(7_328_771).unwrap();
+    let schedule = StandaloneMeterSchedule::for_source_samples(source_samples).unwrap();
+    assert_eq!(schedule.normal_callbacks(), MeterCallbackCount::new(4_772));
+    assert_eq!(schedule.zero_drains(), MeterCallbackCount::new(3));
+    assert_eq!(schedule.meter_callbacks(), MeterCallbackCount::new(4_775));
+    assert_eq!(
+        schedule.published_samples(),
+        MeterSampleCount::new(7_329_792)
+    );
+    assert_eq!(
+        schedule.source_padding_samples(),
+        MeterSampleCount::new(1_021)
+    );
+    assert_eq!(schedule.complete_blocks(), MeterBlockCount::new(7_158));
+    assert_eq!(
+        schedule.complete_prefix_samples(),
+        MeterSampleCount::new(7_329_792)
+    );
+    assert_eq!(
+        schedule.unused_block_tail_samples(),
+        MeterSampleCount::new(0)
+    );
+    assert_eq!(schedule.energy_windows(), 7_635);
+    assert_eq!(schedule.energy_samples(), MeterSampleCount::new(7_329_600));
+    assert_eq!(
+        schedule.energy_window_remainder(),
+        MeterSampleCount::new(192)
+    );
+
+    let root = cold_root_with_extent(0, source_samples, MeterSourceChannelCount::new(36));
+    assert_eq!(root.source_samples(), source_samples);
+    assert_eq!(root.identity().source_channels().value(), 36);
+    assert_eq!(root.schedule(), schedule);
+    let canonical: Value = serde_json::from_slice(&root.canonical_preimage().unwrap()).unwrap();
+    assert_eq!(canonical["binding"]["channels"], 36);
+    assert_eq!(canonical["binding"]["normal_callbacks"], 4_772);
+    assert_eq!(
+        canonical["binding"]["expected_published_samples"],
+        7_329_792
+    );
 }

@@ -10,12 +10,26 @@ use jocforge_domain::{
     timeline::AdmSampleIndex,
 };
 
+pub use jocforge_domain::meter::sample_block_queue::MeterSourceChannelCount;
+
 use super::{riff_pcm24::ParsedRiffPcm24, riff_pcm24::RiffPcm24Error};
 
 pub const METER_SOURCE_CHANNELS: usize = 38;
 pub const METER_SOURCE_FRAME_SAMPLES: usize = 1_536;
 const METER_FRAME_SAMPLES_U64: u64 = 1_536;
-const SELECTED_METER_SOURCE_CHANNEL_COUNTS: [u16; 2] = [36, 38];
+
+fn source_channel_count_from_selected_source(
+    source: &ParsedRiffPcm24<'_>,
+) -> Result<MeterSourceChannelCount, MeterSourceCursorError> {
+    let channels = source.channels();
+    if source.sample_rate_hz() != 48_000
+        || !MeterSourceChannelCount::new(channels).is_selected_profile_supported()
+        || channels.checked_mul(3) != Some(source.block_align())
+    {
+        return Err(MeterSourceCursorError::SourceProfileMismatch);
+    }
+    Ok(MeterSourceChannelCount::new(channels))
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterSourceCursorError {
@@ -64,28 +78,6 @@ impl MeterPcmSourceIdentity {
     }
 }
 
-/// Physical PCM row count carried by one admitted Meter source cursor.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct MeterSourceChannelCount(u16);
-
-impl MeterSourceChannelCount {
-    pub const fn value(self) -> u16 {
-        self.0
-    }
-
-    fn from_selected_source(source: &ParsedRiffPcm24<'_>) -> Result<Self, MeterSourceCursorError> {
-        let channels = source.channels();
-        let selected_block_align = channels.checked_mul(3);
-        if source.sample_rate_hz() != 48_000
-            || !SELECTED_METER_SOURCE_CHANNEL_COUNTS.contains(&channels)
-            || selected_block_align != Some(source.block_align())
-        {
-            return Err(MeterSourceCursorError::SourceProfileMismatch);
-        }
-        Ok(Self(channels))
-    }
-}
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MeterPcmSourceCursor {
     source_identity: MeterPcmSourceIdentity,
@@ -103,7 +95,7 @@ impl MeterPcmSourceCursor {
         selected_resource_identity: MeterPcmSourceIdentity,
         selected_source_samples: MeterSourceSampleCount,
     ) -> Result<Self, MeterSourceCursorError> {
-        let source_channels = MeterSourceChannelCount::from_selected_source(parsed_source)?;
+        let source_channels = source_channel_count_from_selected_source(parsed_source)?;
         if parsed_source.source_sha256() != selected_resource_identity.sha256() {
             return Err(MeterSourceCursorError::SourceIdentityMismatch);
         }
@@ -243,7 +235,7 @@ pub fn stage_meter_pcm_source_frame(
     callback_index: MeterCallbackIndex,
     parsed_source: &ParsedRiffPcm24<'_>,
 ) -> Result<MeterPcmSourceProposal, MeterSourceCursorError> {
-    let source_channels = MeterSourceChannelCount::from_selected_source(parsed_source)?;
+    let source_channels = source_channel_count_from_selected_source(parsed_source)?;
     if source_channels != before.source_channels {
         return Err(MeterSourceCursorError::SourceProfileMismatch);
     }

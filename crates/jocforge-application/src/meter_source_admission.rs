@@ -6,7 +6,7 @@ use jocforge_domain::{
     meter::{
         prepared_job_identity::PreparedJobInputIdentity,
         provider_set_identity::{MeterProviderSetIdentityError, SelectedMeterProviderSetIdentity},
-        sample_block_queue::MeterSourceSampleCount,
+        sample_block_queue::{MeterSourceChannelCount, MeterSourceSampleCount},
         standalone_root::{
             MeterProviderSet, MeterSourceOwnerId, StandaloneMeterIdentity, StandaloneMeterRootError,
         },
@@ -106,6 +106,7 @@ impl MeterSourceAdmissionReceipt {
             self.attempt,
             self.resource_identity.input_sha256(),
             self.config_sha256,
+            MeterSourceChannelCount::new(self.wave.channels()),
         )
     }
 

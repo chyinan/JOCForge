@@ -4,9 +4,7 @@
 
 use crate::transaction::{AttemptId, ProgrammeId};
 
-const SELECTED_NORMAL_CALLBACKS: u64 = 4_247;
 const SELECTED_ZERO_DRAINS: u64 = 3;
-const SELECTED_ENERGY_WINDOWS: u64 = 6_794;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeasurementReceiptError {
@@ -124,9 +122,9 @@ impl ProgrammeMeasurementReceipt {
         {
             return Err(MeasurementReceiptError::NonfiniteMeasurement);
         }
-        if input.normal_callbacks != SELECTED_NORMAL_CALLBACKS
+        if input.normal_callbacks == 0
             || input.zero_drains != SELECTED_ZERO_DRAINS
-            || input.energy_windows != SELECTED_ENERGY_WINDOWS
+            || input.energy_windows == 0
         {
             return Err(MeasurementReceiptError::Counts);
         }
@@ -246,5 +244,40 @@ mod tests {
                 Err(MeasurementReceiptError::GatingKind)
             );
         }
+    }
+
+    #[test]
+    fn verified_prepass_receipt_accepts_the_admitted_dynamic_schedule() {
+        let mut input = input("LEVEL");
+        input.normal_callbacks = 4_772;
+        input.energy_windows = 7_635;
+        let receipt = ProgrammeMeasurementReceipt::from_verified_prepass(input).unwrap();
+        assert_eq!(receipt.normal_callbacks(), 4_772);
+        assert_eq!(receipt.zero_drains(), 3);
+        assert_eq!(receipt.energy_windows(), 7_635);
+    }
+
+    #[test]
+    fn verified_prepass_receipt_rejects_empty_schedule_counts() {
+        let mut receipt_input = input("LEVEL");
+        receipt_input.normal_callbacks = 0;
+        assert_eq!(
+            ProgrammeMeasurementReceipt::from_verified_prepass(receipt_input),
+            Err(MeasurementReceiptError::Counts)
+        );
+
+        let mut receipt_input = input("LEVEL");
+        receipt_input.zero_drains = 2;
+        assert_eq!(
+            ProgrammeMeasurementReceipt::from_verified_prepass(receipt_input),
+            Err(MeasurementReceiptError::Counts)
+        );
+
+        let mut receipt_input = input("LEVEL");
+        receipt_input.energy_windows = 0;
+        assert_eq!(
+            ProgrammeMeasurementReceipt::from_verified_prepass(receipt_input),
+            Err(MeasurementReceiptError::Counts)
+        );
     }
 }

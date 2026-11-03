@@ -75,6 +75,25 @@ impl MeterSourceSampleCount {
     }
 }
 
+/// Physical PCM row count carried by one admitted Meter source and owner root.
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub struct MeterSourceChannelCount(u16);
+
+impl MeterSourceChannelCount {
+    pub const fn new(value: u16) -> Self {
+        Self(value)
+    }
+
+    pub const fn value(self) -> u16 {
+        self.0
+    }
+
+    /// The selected Meter input profiles currently admit both verified row shapes.
+    pub const fn is_selected_profile_supported(self) -> bool {
+        matches!(self.0, 36 | 38)
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterCallbackPhase {
     NormalSource,

@@ -2575,8 +2575,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 10321,
-              "sha256": "35b2f835776efba968378f317c7b1dc3836d7f93a7a1a6bf0e3ba6789679e531"
+              "bytes": 10412,
+              "sha256": "45ed6b198cc1ed68efc4be29a3f1044574eb297b454abadd0f37fc97190bbb22"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
@@ -9721,8 +9721,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969300,
-              "sha256": "d06eadb9a1b0be69e05e8ddcc79776e1310ee17ee422db1fd164f503baf078f5"
+              "bytes": 1976849,
+              "sha256": "05d777bb5fcb0a4a829de0a193e461c11e075249728453af29c8ef4093d7c44a"
             }
           ],
           "test_modules": [
@@ -12344,7 +12344,7 @@
           "slice_id": "standalone-meter-selected-root-and-schedule-stage",
           "mapping_status": "MATERIALIZED_SELECTED_METER_Q_PLUS_THREE_NONCOMMITTING_SCHEDULE_CANDIDATE__FULL_RUN_NOT_RUN",
           "implementation_status": "LOCALLY_COMPILED_G0_G1_REAL_SOURCE_STAGE_AND_FULL_SCHEDULE_DRIVER__Q_TERMINAL_RECEIPT_AND_READY_NOT_RUN",
-          "scope": "The domain owner provides the complete V4 Meter cold root, typed source/read clocks, full selected schedule gate, and a noncommitting terminal ProgrammeMeasurementReceipt proposal. The CLI stage_independent_meter_prepass composes the existing F01E/F03W/F04A/F05R56/OAR Meter callbacks across Q normal source reads and exactly three FreshZero drains, retains one noncommitting Meter GTC receipt per callback, and returns the final callback candidate plus terminal measurement proposal. A real authorized BWF g0-to-g1 candidate stage has been exercised; the full selected Q=4247 schedule, terminal receipt from a real programme, 12-owner READY root swap and publication remain NOT_RUN. No owner or cursor is installed by this candidate driver. A local MeterPcmSourceCursor follow-up now carries typed physical-row count for the admitted 36/38 channel inputs, validates corresponding 108/114-byte PCM24 block-align, and emits that row count on NORMAL and FreshZero frames. A synthetic 1,050-sample 36-row test proves 36 normal rows and 36 zero-drain rows; 37 rows still reject. This removes only the first reader gate: F01E dynamic after-state is not installed, the Installed48/F03W source map remains fixed at 38 physical/37 regular rows, and no real 36-row callback or playable output has run.",
+          "scope": "The domain owner derives its existing callback, block, and energy-window schedule from the admitted per-channel source sample extent and carries the admitted 36/38 physical-row count in Meter identity. The selected 38-row schedule remains unchanged; the 36-row synthetic extent 7,328,771 derives 4,772 normal callbacks, three zero drains, 7,329,792 published samples, 7,158 complete blocks, and 7,635 energy windows. The sample cursor preserves the same supported 36/38 input set and PCM24 block-align validation. This is a Meter extent/root slice only: no full 36-row callback run, dynamic F01E/Spatial connection, wider-than-38 source axis, parent READY swap, or product output is claimed.",
           "owner": "meter",
           "dependencies": [
             "independent-meter-prepass-callback-commit",
@@ -12374,14 +12374,16 @@
               "MeterSourceReadIndex",
               "MeterSourcePosition",
               "CallbackTransactionId",
-              "ProgrammeId"
+              "ProgrammeId",
+              "MeterSourceChannelCount"
             ],
             "covered_clauses": [
-              "The selected source extent is fixed at 6,522,906 samples; unsupported extents reject.",
-              "The schedule is 4,247 normal callbacks, three fresh-zero drains, and 4,250 meter callbacks.",
+              "Per-channel source samples determine ceil(samples/1,536) normal callbacks; exactly three zero drains remain selected.",
+              "The selected 38-row input keeps 4,247 normal callbacks; the admitted 36-row example derives 4,772 normal callbacks.",
+              "Published sample extent, complete 1,024-sample blocks, 960-sample energy windows, and their remainders are derived from the normal callback extent using the existing truncation boundaries.",
+              "Meter source channel count is a typed identity field; the current selected cursor/root support remains 36 or 38 rows.",
               "Each accepted callback returns a staged after-root; the committed root remains unchanged until a parent adopts the proposal.",
-              "Finalization validates the selected complete-block, energy-window, and remainder counts and returns values without minting a terminal receipt.",
-              "The CLI candidate driver stages Q normal reads followed by three FreshZero drains and yields Q+3 Meter owner receipts, but does not commit them or claim the programme READY root."
+              "The CLI candidate driver stages the derived Q normal reads followed by exactly three FreshZero drains and yields noncommitting Meter receipts."
             ]
           },
           "parameters": {
@@ -12408,7 +12410,7 @@
             "crates/jocforge-cli/tests/authorized_adm_callback.rs"
           ],
           "vectors": {
-            "kind": "SYNTHETIC_TERMINAL_RECEIPT_AND_REAL_AUTHORIZED_G0_G1_METER_CANDIDATE__FULL_Q_NOT_RUN",
+            "kind": "SYNTHETIC_DYNAMIC_METER_SCHEDULE_AND_36_ROW_ROOT__FULL_Q_NOT_RUN",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/INDEPENDENT-METER-PREPASS-BOUNDARY-V1/INPUT-ONLY-CASES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/INPUT-ONLY-ROOT-RECIPES.json",
@@ -12417,31 +12419,25 @@
               "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json"
             ],
             "case_pointers": [
-              "N6522906_pre_callback0_cold_root: canonical bytes match the approved synthetic V4 cold root exactly.",
-              "after_g2_first_publish: approved queue counters and all 480 pending lane words are retained.",
-              "terminal_after_three_drains: full synthetic zero-input run matches approved Q+3 queue/window counts and emits only a noncommitting receipt proposal.",
-              "No terminal canonical root digest or real measurement value is supplied by V4; expected values assert structure/lifecycle only.",
-              "authorized_adm_bwf_stages_independent_meter_g0_and_g1_oar_candidates executes only the real-resource g0-to-g1 candidate path.",
-              "stage_independent_meter_prepass contains the selected Q-normal plus three-FreshZero loop; full Q execution and terminal measurement are NOT_RUN.",
-              "Synthetic 36-channel PCM24/48 kHz source with 1,050 samples emits 36 rows on the normal frame and 36 all-zero rows on the drain; 37 channels reject."
+              "Selected 38-row source extent 6,522,906 retains the existing 4,247-normal-callback schedule and canonical root reference.",
+              "Synthetic 36-row extent 7,328,771 derives 4,772 normal callbacks, 3 drains, 7,329,792 published samples, 7,158 complete blocks, and 7,635 energy windows.",
+              "The 36-row cold root carries channel count 36 in its canonical binding and retains the derived schedule.",
+              "Synthetic 1,050-sample PCM24 source cursor emits 36 physical rows on normal and zero-drain frames; 37 rows reject.",
+              "These local assertions verify structural schedule derivation only; full real-source Q+3 Meter execution and product acceptance are NOT_RUN."
             ],
             "expected_values_are_assertions_only": true
           },
           "not_run": [
-            "Production parent supply/wiring of MeterSourceOwnerId, provider-set digest and rows, source read/cursor progress, and K-filter exponent state.",
-            "Independent real PCM/F04 producers and a real-programme meter prepass/terminal root.",
-            "GTC owners.meter OwnerReceipt, single programme root swap, READY, and DRC installation.",
-            "Native ABI equivalence, end-to-end output, external decode, and product acceptance.",
-            "The CLI full-Q driver has not run all 4,247 normal callbacks and three FreshZero drains on the authorized BWF.",
-            "A real-source terminal MeasurementReceipt/READY, atomic 12-owner parent swap, AU output, durable publication and external validation remain NOT_RUN.",
-            "36-row source has not passed F01E parent staging or the fixed 38/37 Installed48 map; two absent regular source slots and the 48-source placement remain UNBOUND."
+            "The selected 38-row 4,247 normal callbacks and three FreshZero drains and the derived 36-row full callback schedule remain NOT_RUN on real PCM; no real terminal MeasurementReceipt has been created.",
+            "Connect 36-row F01E after-state, graph-sized spatial owners, and source-axis consumers; the current 48-wide consumer boundary and any N>38 extension remain open.",
+            "A 12-owner parent swap, READY, AU output, durable publication, and W04/product acceptance remain NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-              "bytes": 44305,
-              "sha256": "69648eab8ecf5371d33cbd0fd07226add378ba3e4eb25fbd9b8cbe25a10c66a5"
+              "bytes": 48077,
+              "sha256": "dfd05e48ebc6d9a0fd16c47c4bb4b3f2ab7fae1c581f7294d4b4b5ac1633c636"
             },
             {
               "path": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
@@ -12455,8 +12451,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/measurement_receipt.rs",
-              "bytes": 7885,
-              "sha256": "2fff890d6d3e6a1672e13b22f8481b5a14ce2e18c06a1ffb29ee0531081c52aa"
+              "bytes": 9037,
+              "sha256": "447d625590d37d216f4a30a25dba808f3cd0cffe1f5e99675d5a15fab62d6e39"
             },
             {
               "path": "crates/jocforge-domain/src/meter/mod.rs",
@@ -12485,15 +12481,15 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 26474,
-              "sha256": "03896100e4fe36f9530a520feae4ce525a6f47a41761a6094b42c435bc475cba"
+              "bytes": 26215,
+              "sha256": "0fc498d51f9c35daa6e26f7fcd0837426192a945b4e787fb21dd6020f752253a"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
-              "bytes": 21783,
-              "sha256": "f8ac01895429eb990be81b9e32601393327bd184c272daffe783abb4cfaf7e3b"
+              "bytes": 24133,
+              "sha256": "981799eadb11ad41f357f39da4d1f354b2a6709ba7d06399987a4027257ed24c"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -12501,7 +12497,7 @@
               "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
-          "validation_boundary": "The workspace compiles and the authorized-resource g0-to-g1 candidate test passes with a 3 MiB Rust test thread stack. The schedule loop is compiled but not executed through Q; its terminal MeasurementReceipt is a candidate only and no 12-owner READY or output is claimed."
+          "validation_boundary": "Focused local tests assert dynamic schedule derivation and 36-row Meter identity. They do not execute the full normal-plus-drain schedule on the real source, establish wider-than-38 channel support, connect spatial owners, or claim a terminal production receipt, READY root, AU output, or product acceptance."
         },
         {
           "slice_id": "prepared-job-input-domain-identity-projection",
@@ -13240,8 +13236,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969300,
-              "sha256": "d06eadb9a1b0be69e05e8ddcc79776e1310ee17ee422db1fd164f503baf078f5"
+              "bytes": 1976849,
+              "sha256": "05d777bb5fcb0a4a829de0a193e461c11e075249728453af29c8ef4093d7c44a"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -13486,8 +13482,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 10321,
-              "sha256": "35b2f835776efba968378f317c7b1dc3836d7f93a7a1a6bf0e3ba6789679e531"
+              "bytes": 10412,
+              "sha256": "45ed6b198cc1ed68efc4be29a3f1044574eb297b454abadd0f37fc97190bbb22"
             },
             {
               "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -13692,8 +13688,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-              "bytes": 44305,
-              "sha256": "69648eab8ecf5371d33cbd0fd07226add378ba3e4eb25fbd9b8cbe25a10c66a5"
+              "bytes": 48077,
+              "sha256": "dfd05e48ebc6d9a0fd16c47c4bb4b3f2ab7fae1c581f7294d4b4b5ac1633c636"
             },
             {
               "path": "crates/jocforge-domain/src/meter/object_render_metadata.rs",
@@ -13960,8 +13956,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 10321,
-              "sha256": "35b2f835776efba968378f317c7b1dc3836d7f93a7a1a6bf0e3ba6789679e531"
+              "bytes": 10412,
+              "sha256": "45ed6b198cc1ed68efc4be29a3f1044574eb297b454abadd0f37fc97190bbb22"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
@@ -14100,8 +14096,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 26474,
-              "sha256": "03896100e4fe36f9530a520feae4ce525a6f47a41761a6094b42c435bc475cba"
+              "bytes": 26215,
+              "sha256": "0fc498d51f9c35daa6e26f7fcd0837426192a945b4e787fb21dd6020f752253a"
             },
             {
               "path": "crates/jocforge-domain/src/meter/meter_prepass.rs",
@@ -15126,8 +15122,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-              "bytes": 34921,
-              "sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"
+              "bytes": 35456,
+              "sha256": "ee866ded5ae6ea38996cafcb2b7e370e5b988736ae5cfa4c229a618c2034a487"
             },
             {
               "path": "crates/jocforge-domain/src/meter/window_clock.rs",
@@ -15141,8 +15137,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-              "bytes": 44305,
-              "sha256": "69648eab8ecf5371d33cbd0fd07226add378ba3e4eb25fbd9b8cbe25a10c66a5"
+              "bytes": 48077,
+              "sha256": "dfd05e48ebc6d9a0fd16c47c4bb4b3f2ab7fae1c581f7294d4b4b5ac1633c636"
             },
             {
               "path": "crates/jocforge-domain/src/meter/mod.rs",
@@ -15153,8 +15149,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-              "bytes": 34921,
-              "sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"
+              "bytes": 35456,
+              "sha256": "ee866ded5ae6ea38996cafcb2b7e370e5b988736ae5cfa4c229a618c2034a487"
             },
             {
               "path": "crates/jocforge-domain/src/meter/window_clock.rs",
@@ -15870,13 +15866,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-              "bytes": 44305,
-              "sha256": "69648eab8ecf5371d33cbd0fd07226add378ba3e4eb25fbd9b8cbe25a10c66a5"
+              "bytes": 48077,
+              "sha256": "dfd05e48ebc6d9a0fd16c47c4bb4b3f2ab7fae1c581f7294d4b4b5ac1633c636"
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 26474,
-              "sha256": "03896100e4fe36f9530a520feae4ce525a6f47a41761a6094b42c435bc475cba"
+              "bytes": 26215,
+              "sha256": "0fc498d51f9c35daa6e26f7fcd0837426192a945b4e787fb21dd6020f752253a"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -16654,8 +16650,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 26474,
-              "sha256": "03896100e4fe36f9530a520feae4ce525a6f47a41761a6094b42c435bc475cba"
+              "bytes": 26215,
+              "sha256": "0fc498d51f9c35daa6e26f7fcd0837426192a945b4e787fb21dd6020f752253a"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -22792,7 +22788,7 @@
             },
             "additional_fixtures": [
               {
-                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 18663,
                 "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
@@ -22903,7 +22899,7 @@
             },
             "additional_fixtures": [
               {
-                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 18663,
                 "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
@@ -22995,7 +22991,7 @@
             },
             "additional_fixtures": [
               {
-                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 18663,
                 "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
@@ -23094,7 +23090,7 @@
             },
             "additional_fixtures": [
               {
-                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 18663,
                 "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
@@ -23836,7 +23832,7 @@
             },
             "additional_fixtures": [
               {
-                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 18663,
                 "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               }
@@ -24700,7 +24696,7 @@
             },
             "additional_fixtures": [
               {
-                                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
                 "bytes": 18663,
                 "sha256": "8f0e0564cbc3a1c94966481ed5d1b6fd2f6e98756c91d8a022e87af78c866e6f"
               },
@@ -34059,8 +34055,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1969300,
-              "sha256": "d06eadb9a1b0be69e05e8ddcc79776e1310ee17ee422db1fd164f503baf078f5"
+              "bytes": 1976849,
+              "sha256": "05d777bb5fcb0a4a829de0a193e461c11e075249728453af29c8ef4093d7c44a"
             }
           ],
           "test_inventory": [
@@ -36826,13 +36822,13 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/meter/owner.rs",
-          "bytes": 24961,
-          "sha256": "85dadd66a92c241ebe1c4d3b223b8dbe8f9e5b68969eb61a54275225bbb99cf4"
+          "bytes": 25055,
+          "sha256": "531c2c2a63e2756e02733569895727f23561a312a545bd05d1169d067c320ed6"
         },
         {
           "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-          "bytes": 44305,
-          "sha256": "69648eab8ecf5371d33cbd0fd07226add378ba3e4eb25fbd9b8cbe25a10c66a5"
+          "bytes": 48077,
+          "sha256": "dfd05e48ebc6d9a0fd16c47c4bb4b3f2ab7fae1c581f7294d4b4b5ac1633c636"
         },
         {
           "path": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
@@ -36846,8 +36842,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-          "bytes": 34921,
-          "sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"
+          "bytes": 35456,
+          "sha256": "ee866ded5ae6ea38996cafcb2b7e370e5b988736ae5cfa4c229a618c2034a487"
         },
         {
           "path": "crates/jocforge-domain/src/meter/window_clock.rs",
@@ -36863,18 +36859,18 @@
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
-          "bytes": 21783,
-          "sha256": "f8ac01895429eb990be81b9e32601393327bd184c272daffe783abb4cfaf7e3b"
+          "bytes": 24133,
+          "sha256": "981799eadb11ad41f357f39da4d1f354b2a6709ba7d06399987a4027257ed24c"
         },
         {
           "path": "crates/jocforge-domain/src/meter/owner.rs",
-          "bytes": 24961,
-          "sha256": "85dadd66a92c241ebe1c4d3b223b8dbe8f9e5b68969eb61a54275225bbb99cf4"
+          "bytes": 25055,
+          "sha256": "531c2c2a63e2756e02733569895727f23561a312a545bd05d1169d067c320ed6"
         },
         {
           "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-          "bytes": 34921,
-          "sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"
+          "bytes": 35456,
+          "sha256": "ee866ded5ae6ea38996cafcb2b7e370e5b988736ae5cfa4c229a618c2034a487"
         },
         {
           "path": "crates/jocforge-domain/src/meter/window_clock.rs",

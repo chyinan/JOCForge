@@ -21,7 +21,7 @@ use super::{
     },
     sample_block_queue::{
         MeterBlockCount, MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase,
-        MeterSampleCount, MeterSourceSampleCount, MeterUpstreamGeneration,
+        MeterSampleCount, MeterSourceChannelCount, MeterSourceSampleCount, MeterUpstreamGeneration,
     },
     shared_gain_delay::SharedGainDelayParameters,
     source_frame::MeterSourcePosition,
@@ -41,10 +41,8 @@ const SELECTED_ENERGY_SAMPLES: u64 = 6_522_240;
 const SELECTED_ENERGY_WINDOW_REMAINDER: u64 = 640;
 const METER_BLOCK_SAMPLES: u64 = 1_024;
 const METER_ENERGY_WINDOW_SAMPLES: u64 = 960;
-const SELECTED_CHANNELS: u64 = 38;
 const SELECTED_PCM_BITS: u64 = 24;
 const SELECTED_SAMPLE_RATE_HZ: u64 = 48_000;
-const SELECTED_PCM_FRAME_BYTES: u64 = SELECTED_CHANNELS * (SELECTED_PCM_BITS / 8);
 const SELECTED_CALLBACK_SAMPLES: u64 = 1_536;
 const ROOT_SCHEMA: &str = "standalone-meter-root-materialization.v3";
 const METER_CHANNEL_COUNT: usize = 6;
@@ -57,6 +55,7 @@ const UNGATED_STATE_LAYOUT: &str = "MEAN_STATE_V1";
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum StandaloneMeterRootError {
     UnsupportedSourceExtent,
+    UnsupportedSourceChannels,
     AttemptOverflow,
     AttemptSequence,
     CallbackClock,
@@ -223,6 +222,7 @@ pub struct StandaloneMeterIdentity {
     attempt: AttemptId,
     input_sha256: [u8; 32],
     config_sha256: [u8; 32],
+    source_channels: MeterSourceChannelCount,
 }
 
 impl StandaloneMeterIdentity {
@@ -231,12 +231,14 @@ impl StandaloneMeterIdentity {
         attempt: AttemptId,
         input_sha256: [u8; 32],
         config_sha256: [u8; 32],
+        source_channels: MeterSourceChannelCount,
     ) -> Self {
         Self {
             programme_id,
             attempt,
             input_sha256,
             config_sha256,
+            source_channels,
         }
     }
 
@@ -254,6 +256,10 @@ impl StandaloneMeterIdentity {
 
     pub const fn config_sha256(&self) -> &[u8; 32] {
         &self.config_sha256
+    }
+
+    pub const fn source_channels(&self) -> MeterSourceChannelCount {
+        self.source_channels
     }
 }
 
@@ -290,6 +296,57 @@ impl StandaloneMeterSchedule {
             energy_samples: MeterSampleCount::new(SELECTED_ENERGY_SAMPLES),
             energy_window_remainder: MeterSampleCount::new(SELECTED_ENERGY_WINDOW_REMAINDER),
         }
+    }
+
+    /// Derives the existing Meter callback/block/window schedule for one admitted source extent.
+    /// The final normal callback is padded to the established 1,536-sample window; complete
+    /// 1,024-sample blocks and 960-sample energy windows retain the existing truncation rules.
+    pub fn for_source_samples(
+        source_samples: MeterSourceSampleCount,
+    ) -> Result<Self, StandaloneMeterRootError> {
+        let samples = source_samples.value();
+        let normal_callbacks = samples
+            .checked_sub(1)
+            .and_then(|samples| samples.checked_div(SELECTED_CALLBACK_SAMPLES))
+            .and_then(|callbacks| callbacks.checked_add(1))
+            .ok_or(StandaloneMeterRootError::UnsupportedSourceExtent)?;
+        let meter_callbacks = normal_callbacks
+            .checked_add(SELECTED_ZERO_DRAINS)
+            .ok_or(StandaloneMeterRootError::UnsupportedSourceExtent)?;
+        let published_samples = normal_callbacks
+            .checked_mul(SELECTED_CALLBACK_SAMPLES)
+            .ok_or(StandaloneMeterRootError::UnsupportedSourceExtent)?;
+        let source_padding_samples = published_samples
+            .checked_sub(samples)
+            .ok_or(StandaloneMeterRootError::UnsupportedSourceExtent)?;
+        let complete_blocks = published_samples / METER_BLOCK_SAMPLES;
+        let complete_prefix_samples = complete_blocks
+            .checked_mul(METER_BLOCK_SAMPLES)
+            .ok_or(StandaloneMeterRootError::UnsupportedSourceExtent)?;
+        let unused_block_tail_samples = published_samples
+            .checked_sub(complete_prefix_samples)
+            .ok_or(StandaloneMeterRootError::UnsupportedSourceExtent)?;
+        let energy_windows = complete_prefix_samples / METER_ENERGY_WINDOW_SAMPLES;
+        let energy_samples = energy_windows
+            .checked_mul(METER_ENERGY_WINDOW_SAMPLES)
+            .ok_or(StandaloneMeterRootError::UnsupportedSourceExtent)?;
+        let energy_window_remainder = complete_prefix_samples
+            .checked_sub(energy_samples)
+            .ok_or(StandaloneMeterRootError::UnsupportedSourceExtent)?;
+
+        Ok(Self {
+            normal_callbacks: MeterCallbackCount::new(normal_callbacks),
+            zero_drains: MeterCallbackCount::new(SELECTED_ZERO_DRAINS),
+            meter_callbacks: MeterCallbackCount::new(meter_callbacks),
+            published_samples: MeterSampleCount::new(published_samples),
+            source_padding_samples: MeterSampleCount::new(source_padding_samples),
+            complete_blocks: MeterBlockCount::new(complete_blocks),
+            complete_prefix_samples: MeterSampleCount::new(complete_prefix_samples),
+            unused_block_tail_samples: MeterSampleCount::new(unused_block_tail_samples),
+            energy_windows,
+            energy_samples: MeterSampleCount::new(energy_samples),
+            energy_window_remainder: MeterSampleCount::new(energy_window_remainder),
+        })
     }
 
     pub const fn normal_callbacks(self) -> MeterCallbackCount {
@@ -342,6 +399,7 @@ impl StandaloneMeterSchedule {
 pub struct StandaloneMeterRoot {
     identity: StandaloneMeterIdentity,
     source_samples: MeterSourceSampleCount,
+    schedule: StandaloneMeterSchedule,
     /// Stable digest of the complete canonical root as supplied to `cold_selected`.
     /// This identity is deliberately excluded from canonical state bytes.
     cold_state_sha256: [u8; 32],
@@ -426,12 +484,19 @@ impl StandaloneMeterRoot {
         k_matrix: KMatrixProvider,
         prepass: IndependentMeterPrepass,
     ) -> Result<Self, StandaloneMeterRootError> {
-        if source_samples.value() != SELECTED_SOURCE_SAMPLES {
+        if !identity.source_channels().is_selected_profile_supported() {
+            return Err(StandaloneMeterRootError::UnsupportedSourceChannels);
+        }
+        let schedule = StandaloneMeterSchedule::for_source_samples(source_samples)?;
+        if prepass.source_samples() != source_samples
+            || prepass.normal_callback_count() != schedule.normal_callbacks()
+        {
             return Err(StandaloneMeterRootError::UnsupportedSourceExtent);
         }
         let mut root = Self {
             identity,
             source_samples,
+            schedule,
             cold_state_sha256: [0; 32],
             source_owner_id,
             provider_set,
@@ -455,6 +520,10 @@ impl StandaloneMeterRoot {
 
     pub const fn source_samples(&self) -> MeterSourceSampleCount {
         self.source_samples
+    }
+
+    pub const fn schedule(&self) -> StandaloneMeterSchedule {
+        self.schedule
     }
 
     pub const fn meter_callback_index(&self) -> MeterCallbackIndex {
@@ -485,22 +554,22 @@ impl StandaloneMeterRoot {
     /// UTF-8 JSON. This projects a value only; it does not commit the root or
     /// mint a GTC owner receipt or `MeasurementReceipt`.
     pub fn canonical_preimage(&self) -> Result<Vec<u8>, StandaloneMeterRootError> {
+        let source_channels = u64::from(self.identity.source_channels().value());
+        let pcm_frame_bytes = source_channels
+            .checked_mul(SELECTED_PCM_BITS / 8)
+            .ok_or(StandaloneMeterRootError::CanonicalState)?;
         let data_length_bytes = self
             .source_samples
             .value()
-            .checked_mul(SELECTED_PCM_FRAME_BYTES)
+            .checked_mul(pcm_frame_bytes)
             .ok_or(StandaloneMeterRootError::CanonicalState)?;
-        let expected_published_samples = SELECTED_NORMAL_CALLBACKS
-            .checked_mul(SELECTED_CALLBACK_SAMPLES)
-            .ok_or(StandaloneMeterRootError::CanonicalState)?;
-        let total_callbacks = SELECTED_NORMAL_CALLBACKS
-            .checked_add(SELECTED_ZERO_DRAINS)
-            .ok_or(StandaloneMeterRootError::CanonicalState)?;
+        let expected_published_samples = self.schedule.published_samples().value();
+        let total_callbacks = self.schedule.meter_callbacks().value();
         let callback_index = self.meter_callback_index().value();
         if self.source_cursor.source_cursor.value() > self.source_samples.value()
-            || self.source_cursor.read_index.value() > SELECTED_NORMAL_CALLBACKS
+            || self.source_cursor.read_index.value() > self.schedule.normal_callbacks().value()
             || callback_index > total_callbacks
-            || self.completed_energy_windows.value() > SELECTED_ENERGY_WINDOWS
+            || self.completed_energy_windows.value() > self.schedule.energy_windows()
         {
             return Err(StandaloneMeterRootError::CanonicalState);
         }
@@ -534,7 +603,7 @@ impl StandaloneMeterRoot {
             || lfe_state.callback_index().value() != callback_index
             || queue.source_samples() != self.source_samples
             || window_clock.source_samples() != self.source_samples
-            || queue.normal_callback_count().value() != SELECTED_NORMAL_CALLBACKS
+            || queue.normal_callback_count() != self.schedule.normal_callbacks()
             || queue.expected_published_samples().value() != expected_published_samples
             || window_clock.processed_samples().value() != queue.published_samples().value()
         {
@@ -596,13 +665,13 @@ impl StandaloneMeterRoot {
                 "config_sha256": lowercase_hex(self.identity.config_sha256()),
                 "source_samples": self.source_samples.value(),
                 "data_length_bytes": data_length_bytes,
-                "channels": SELECTED_CHANNELS,
+                "channels": source_channels,
                 "pcm_bits": SELECTED_PCM_BITS,
                 "sample_rate_hz": SELECTED_SAMPLE_RATE_HZ,
                 "callback_samples": SELECTED_CALLBACK_SAMPLES,
-                "normal_callbacks": SELECTED_NORMAL_CALLBACKS,
+                "normal_callbacks": self.schedule.normal_callbacks().value(),
                 "expected_published_samples": expected_published_samples,
-                "zero_input_drains": SELECTED_ZERO_DRAINS,
+                "zero_input_drains": self.schedule.zero_drains().value(),
                 "provider_set_sha256": lowercase_hex(self.provider_set.sha256()),
                 "provider_ids_hash_sorted": provider_rows,
             },
@@ -612,15 +681,15 @@ impl StandaloneMeterRoot {
                 "source_cursor": self.source_cursor.source_cursor.value(),
                 "read_index": self.source_cursor.read_index.value(),
                 "data_length_bytes": data_length_bytes,
-                "channels": SELECTED_CHANNELS,
+                "channels": source_channels,
                 "pcm_bits": SELECTED_PCM_BITS,
                 "source_identity_sha256": lowercase_hex(self.identity.input_sha256()),
             },
             "callback_clock": {
                 "committed_meter_callbacks": callback_index,
                 "next_meter_callback_index": callback_index,
-                "normal_callbacks": SELECTED_NORMAL_CALLBACKS,
-                "zero_input_drains": SELECTED_ZERO_DRAINS,
+                "normal_callbacks": self.schedule.normal_callbacks().value(),
+                "zero_input_drains": self.schedule.zero_drains().value(),
                 "total_meter_callbacks": total_callbacks,
             },
             "leaves": {
@@ -635,8 +704,8 @@ impl StandaloneMeterRoot {
                 "window_k_energy": {
                     "schedule": {
                         "source_samples": self.source_samples.value(),
-                        "normal_callbacks": SELECTED_NORMAL_CALLBACKS,
-                        "drain_callbacks": SELECTED_ZERO_DRAINS,
+                        "normal_callbacks": self.schedule.normal_callbacks().value(),
+                        "drain_callbacks": self.schedule.zero_drains().value(),
                         "total_callbacks": total_callbacks,
                     },
                     "window_clock": {
@@ -717,7 +786,7 @@ impl StandaloneMeterRoot {
         progress: MeterRootCallbackProgress,
     ) -> Result<StandaloneMeterCallbackProposal, StandaloneMeterRootError> {
         let before_callback = self.prepass.next_callback_index();
-        if before_callback.value() >= SELECTED_METER_CALLBACKS {
+        if before_callback.value() >= self.schedule.meter_callbacks().value() {
             return Err(StandaloneMeterRootError::CallbackClock);
         }
         let source_cursor = self.validate_callback_progress(&input, progress)?;
@@ -740,6 +809,7 @@ impl StandaloneMeterRoot {
         let after = Self {
             identity: self.identity.clone(),
             source_samples: self.source_samples,
+            schedule: self.schedule,
             cold_state_sha256: self.cold_state_sha256,
             source_owner_id: self.source_owner_id.clone(),
             provider_set: self.provider_set.clone(),
@@ -817,7 +887,7 @@ impl StandaloneMeterRoot {
             return Err(StandaloneMeterRootError::SourceCursorProgress);
         }
 
-        let expected_phase = if callback < SELECTED_NORMAL_CALLBACKS {
+        let expected_phase = if callback < self.schedule.normal_callbacks().value() {
             MeterCallbackPhase::NormalSource
         } else {
             MeterCallbackPhase::ZeroInputDrain
@@ -851,7 +921,7 @@ impl StandaloneMeterRoot {
             expected_host_input_count = sample_count;
         } else {
             expected_cursor_after = self.source_samples.value();
-            expected_read_index_after = SELECTED_NORMAL_CALLBACKS;
+            expected_read_index_after = self.schedule.normal_callbacks().value();
             expected_host_input_count = 0;
         }
 
@@ -931,7 +1001,7 @@ impl StandaloneMeterRoot {
     }
 
     fn finalization_schedule(&self) -> Result<StandaloneMeterSchedule, StandaloneMeterRootError> {
-        let expected = StandaloneMeterSchedule::selected();
+        let expected = self.schedule;
         if !self.prepass.ready_to_finalize()
             || self.prepass.normal_callback_count() != expected.normal_callbacks()
             || self.prepass.next_callback_index().value() != expected.meter_callbacks().value()
