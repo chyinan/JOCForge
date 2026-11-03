@@ -12,8 +12,9 @@ use crate::{
     transaction::CallbackLineageIdentity,
 };
 
-const SOURCE_COUNT: usize = 48;
-const SOURCE_COUNT_U32: u32 = 48;
+const MIN_PROFILE_SOURCE_COUNT: usize = 20;
+const MAX_PROFILE_SOURCE_COUNT: usize = 266;
+const MAX_PROFILE_SOURCE_ID: u32 = MAX_PROFILE_SOURCE_COUNT as u32;
 const SELECTED_BASIS_COUNT: usize = 15;
 const SELECTED_LOWER_BASIS_COUNT: usize = 9;
 const SELECTED_UPPER_BASIS_COUNT: usize = 6;
@@ -130,7 +131,7 @@ pub struct PointResponseSourceSnapshot {
     callback_index: FrontendCallbackIndex,
     transaction_id: CallbackLineageIdentity,
     source_control_clock: SourceControlSnapshotClock,
-    rows: [PointResponseSourceInput; SOURCE_COUNT],
+    rows: Vec<PointResponseSourceInput>,
 }
 
 impl PointResponseSourceSnapshot {
@@ -145,32 +146,23 @@ impl PointResponseSourceSnapshot {
         {
             return Err(PointResponseError::SourceGateIdentityMismatch);
         }
-        if source_rows.len() != SOURCE_COUNT {
+        if !(MIN_PROFILE_SOURCE_COUNT..=MAX_PROFILE_SOURCE_COUNT).contains(&source_rows.len()) {
             return Err(PointResponseError::SourceCount);
         }
-        let mut by_source: [Option<PointResponseSourceInput>; SOURCE_COUNT] = [None; SOURCE_COUNT];
-        for source in source_rows {
-            let ordinal = usize::try_from(source.source_index().value())
-                .map_err(|_| PointResponseError::SourceIdentity)?;
-            let slot = by_source
-                .get_mut(ordinal)
-                .ok_or(PointResponseError::SourceIdentity)?;
-            if slot.replace(source).is_some() {
+        let mut sorted_rows = source_rows;
+        sorted_rows.sort_by_key(|source| source.source_index().value());
+        for (expected, source) in sorted_rows.iter().enumerate() {
+            if source.source_index().value()
+                != u64::try_from(expected).map_err(|_| PointResponseError::SourceIdentity)?
+            {
                 return Err(PointResponseError::SourceIdentity);
             }
         }
-        let mut sorted_rows = Vec::with_capacity(SOURCE_COUNT);
-        for source in by_source {
-            sorted_rows.push(source.ok_or(PointResponseError::SourceIdentity)?);
-        }
-        let rows = sorted_rows
-            .try_into()
-            .map_err(|_| PointResponseError::SourceCount)?;
         Ok(Self {
             callback_index,
             transaction_id,
             source_control_clock,
-            rows,
+            rows: sorted_rows,
         })
     }
 
@@ -186,7 +178,7 @@ impl PointResponseSourceSnapshot {
         self.source_control_clock
     }
 
-    pub const fn rows(&self) -> &[PointResponseSourceInput; SOURCE_COUNT] {
+    pub fn rows(&self) -> &[PointResponseSourceInput] {
         &self.rows
     }
 }
@@ -411,6 +403,16 @@ pub fn prepare_point_response_sources(
         || source_snapshot.transaction_id != gate_transaction_id
     {
         return Err(PointResponseError::SourceGateIdentityMismatch);
+    }
+
+    let source_count =
+        u32::try_from(source_snapshot.rows.len()).map_err(|_| PointResponseError::SourceCount)?;
+    if candidate_ids
+        .iter()
+        .chain(processing_ids.iter())
+        .any(|source| *source >= source_count)
+    {
+        return Err(PointResponseError::SourceIdentity);
     }
 
     for source in &source_snapshot.rows {
@@ -913,7 +915,7 @@ fn map_numeric_error(_: R32Error) -> PointResponseError {
 mod tests;
 
 fn validate_source_ids(ids: &[u32]) -> Result<(), PointResponseError> {
-    if ids.iter().any(|source| *source >= SOURCE_COUNT_U32)
+    if ids.iter().any(|source| *source >= MAX_PROFILE_SOURCE_ID)
         || ids.windows(2).any(|pair| pair[0] >= pair[1])
     {
         Err(PointResponseError::SourceIdentity)

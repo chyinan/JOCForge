@@ -21,9 +21,10 @@ use crate::{
     frontend::{
         dbmd_sections::DbmdTrackFields,
         normal_control_snapshot::{
-            NormalControlDbmdFields, NormalControlFreshZeroMeterView, NormalControlHeldSourceView,
-            NormalControlPreparedSnapshot, NormalControlRow, NormalControlSnapshotOutput,
-            NormalControlSnapshotProposal,
+            NormalControlAdmInputProposal, NormalControlDbmdFields,
+            NormalControlFreshZeroMeterView, NormalControlHeldSourceView,
+            NormalControlPreparedSnapshot, NormalControlRegularSourceBinding, NormalControlRow,
+            NormalControlSnapshotOutput, NormalControlSnapshotProposal,
         },
         selected_adm_graph::{PhysicalHostIndex, SelectedAdmGraph, SelectedTrackKind},
     },
@@ -36,7 +37,6 @@ const GLOBAL_SOURCE_COUNT: usize = 48;
 const VIRTUAL_PREFIX_SOURCE_COUNT: usize = 11;
 const REGULAR_SOURCE_COUNT: usize = GLOBAL_SOURCE_COUNT - VIRTUAL_PREFIX_SOURCE_COUNT;
 const PHYSICAL_TRACK_COUNT: usize = 38;
-const TOTAL_SOURCE_COUNT_U64: u64 = 48;
 const TARGET_SLOT_COUNT: usize = 15;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -81,7 +81,8 @@ pub struct CompactOuterMatrix {
     target_context_identity: super::selected_p15_geometry::SelectedP15GeometryIdentity,
     destinations: Box<[TargetDestination]>,
     processing_source_order: Box<[CodecSourceIndex]>,
-    c_rows_u32: Box<[[u32; GLOBAL_SOURCE_COUNT]]>,
+    active_source_count: u16,
+    c_rows_u32: Box<[Vec<u32>]>,
     source_results: Box<[OuterSourceResult]>,
 }
 
@@ -116,7 +117,11 @@ impl CompactOuterMatrix {
         &self.processing_source_order
     }
 
-    pub fn c_rows_u32(&self) -> &[[u32; GLOBAL_SOURCE_COUNT]] {
+    pub const fn active_source_count(&self) -> u16 {
+        self.active_source_count
+    }
+
+    pub fn c_rows_u32(&self) -> &[Vec<u32>] {
         &self.c_rows_u32
     }
 
@@ -225,7 +230,7 @@ pub struct GlobalSourceGeometrySnapshot {
     value_generation: FrontendCallbackIndex,
     source_origin_generation: FrontendCallbackIndex,
     source_receipt_sha256: [u8; 32],
-    rows: [GlobalSourceGeometryRow; GLOBAL_SOURCE_COUNT],
+    rows: Vec<GlobalSourceGeometryRow>,
 }
 
 impl GlobalSourceGeometrySnapshot {
@@ -245,8 +250,12 @@ impl GlobalSourceGeometrySnapshot {
         &self.source_receipt_sha256
     }
 
-    pub const fn rows(&self) -> &[GlobalSourceGeometryRow; GLOBAL_SOURCE_COUNT] {
+    pub fn rows(&self) -> &[GlobalSourceGeometryRow] {
         &self.rows
+    }
+
+    pub fn active_source_count(&self) -> u16 {
+        u16::try_from(self.rows.len()).unwrap_or(u16::MAX)
     }
 
     pub fn row_for_source(
@@ -403,6 +412,130 @@ pub fn build_global_source_geometry_snapshot_from_output(
         prepared,
         output.control38_rows(),
     )
+}
+
+/// Builds same-callback source geometry from the versioned dynamic ADM F01E proposal.
+/// The input rows remain a noncommitting proposal; this function only projects source values.
+pub fn build_global_source_geometry_snapshot_from_adm_input(
+    graph: &SelectedAdmGraph,
+    source_map: &Installed48SourceMap,
+    proposal: &NormalControlAdmInputProposal,
+) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
+    let after = proposal.after_state();
+    let transaction_id = proposal.transaction_id();
+    let callback_index = transaction_id.callback_index();
+    let expected_next_callback = callback_index
+        .value()
+        .checked_add(1)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    let expected_owner_generation = proposal
+        .before_generation()
+        .checked_add(1)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    let physical_count = usize::from(after.input_physical_rows().value());
+    let regular_count = source_map.physical_to_global_source().len();
+    let source_binding = source_map.source_binding();
+    let metadata_hashes = source_binding.metadata_hashes();
+    if after.schema() != "F01E_ADM_INPUT_NORMAL_STATE_V1"
+        || transaction_id.programme_id() != after.programme_id()
+        || transaction_id.attempt_id() != after.attempt_id()
+        || after.source_origin_generation() != callback_index
+        || after.next_callback_index().value() != expected_next_callback
+        || after.owner_generation() != expected_owner_generation
+        || after.processed_normal_callbacks().value() != 1
+        || usize::from(after.normal_control_rows().value()) != physical_count
+        || usize::from(after.regular_control_rows().value()) != regular_count
+        || after.physical_rows().len() != physical_count
+        || graph.tracks().len() != physical_count
+        || after.regular_rows().len() != regular_count
+        || after.regular_control_hosts().len() != regular_count
+        || after.lfe_host() != source_map.direct_lfe_host().value()
+        || usize::from(source_map.physical_host_count()) != physical_count
+        || source_map.rows().len() != usize::from(source_map.source_count())
+        || source_binding.input_kind() != crate::frontend::job_configuration::SelectedInputKind::Adm
+        || source_binding.wave().channels() != after.input_physical_rows().value()
+        || metadata_hashes.axml() != *graph.receipt().axml_sha256()
+        || metadata_hashes.chna() != *graph.receipt().chna_sha256()
+    {
+        return Err(GlobalSourceGeometryError::CallbackIdentityMismatch);
+    }
+
+    for (regular_host, regular_row) in after
+        .regular_control_hosts()
+        .iter()
+        .zip(after.regular_rows())
+    {
+        if after.physical_rows().get(usize::from(*regular_host)) != Some(regular_row) {
+            return Err(GlobalSourceGeometryError::RegularSourceBindingMismatch);
+        }
+    }
+    for (physical_host, control_row) in after.physical_rows().iter().enumerate() {
+        let host = u8::try_from(physical_host)
+            .map_err(|_| GlobalSourceGeometryError::PhysicalRowIdentityMismatch)?;
+        let graph_track = graph
+            .tracks()
+            .iter()
+            .find(|track| track.physical_host().value() == host)
+            .ok_or(GlobalSourceGeometryError::PhysicalRowIdentityMismatch)?;
+        if usize::from(control_row.physical_host()) != physical_host
+            || control_row.track_uid() != graph_track.uid()
+            || control_row.channel_format_id() != graph_track.channel_format()
+        {
+            return Err(GlobalSourceGeometryError::PhysicalRowIdentityMismatch);
+        }
+    }
+    let lfe_host = graph.receipt().direct_lfe_host();
+    let lfe_track = graph
+        .tracks()
+        .iter()
+        .find(|track| track.physical_host() == lfe_host)
+        .ok_or(GlobalSourceGeometryError::DirectLfeIdentityMismatch)?;
+    let lfe_row = after
+        .physical_rows()
+        .get(usize::from(lfe_host.value()))
+        .ok_or(GlobalSourceGeometryError::DirectLfeIdentityMismatch)?;
+    if source_map.source_for_physical_host(lfe_host).is_some()
+        || after.lfe_host() != lfe_host.value()
+        || !matches!(
+            lfe_track.kind(),
+            SelectedTrackKind::DirectSpeakersBed { bed_id: 3, .. }
+        )
+        || !matches!(lfe_row, NormalControlRow::Bed6 { words, .. } if words == &[0, 0, 3, 2, 1, 3])
+    {
+        return Err(GlobalSourceGeometryError::DirectLfeIdentityMismatch);
+    }
+
+    let prefix_rows = build_prefix_source_geometry_rows(source_map)?;
+    let regular_rows = build_regular_source_geometry_rows(
+        graph,
+        source_map,
+        after.physical_rows(),
+        after.regular_control_hosts(),
+        None,
+    )?;
+    let rows = prefix_rows
+        .into_iter()
+        .chain(regular_rows)
+        .enumerate()
+        .map(|(expected, row)| {
+            if row.source_index.value() == u64::try_from(expected).unwrap_or(u64::MAX) {
+                Ok(row)
+            } else {
+                Err(GlobalSourceGeometryError::SourceIndexDomain)
+            }
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if rows.len() != usize::from(source_map.source_count()) {
+        return Err(GlobalSourceGeometryError::SourceIndexDomain);
+    }
+
+    Ok(GlobalSourceGeometrySnapshot {
+        transaction_id: transaction_id.clone(),
+        value_generation: callback_index,
+        source_origin_generation: after.source_origin_generation(),
+        source_receipt_sha256: *source_binding.source_receipt_sha256(),
+        rows,
+    })
 }
 
 /// Stages F01E normal controls and their 48-source geometry under the same callback identity.
@@ -582,8 +715,13 @@ fn build_global_source_geometry_from_rows(
     }
 
     let prefix_rows = build_prefix_source_geometry_rows(source_map)?;
-    let regular_rows =
-        build_regular_source_geometry_rows(graph, source_map, prepared, control38_rows)?;
+    let regular_rows = build_regular_source_geometry_rows(
+        graph,
+        source_map,
+        control38_rows,
+        prepared.regular37_hosts(),
+        Some(prepared.regular_source_bindings()),
+    )?;
     let rows = prefix_rows
         .into_iter()
         .chain(regular_rows)
@@ -595,9 +733,10 @@ fn build_global_source_geometry_from_rows(
                 Err(GlobalSourceGeometryError::SourceIndexDomain)
             }
         })
-        .collect::<Result<Vec<_>, _>>()?
-        .try_into()
-        .map_err(|_| GlobalSourceGeometryError::SourceIndexDomain)?;
+        .collect::<Result<Vec<_>, _>>()?;
+    if rows.len() != GLOBAL_SOURCE_COUNT {
+        return Err(GlobalSourceGeometryError::SourceIndexDomain);
+    }
 
     Ok(GlobalSourceGeometrySnapshot {
         transaction_id: transaction_id.clone(),
@@ -677,27 +816,35 @@ fn build_prefix_source_geometry_rows(
 fn build_regular_source_geometry_rows(
     graph: &SelectedAdmGraph,
     source_map: &Installed48SourceMap,
-    prepared: &NormalControlPreparedSnapshot,
-    control38_rows: &[NormalControlRow; PHYSICAL_TRACK_COUNT],
+    control_rows: &[NormalControlRow],
+    regular_control_hosts: &[u8],
+    prepared_bindings: Option<&[NormalControlRegularSourceBinding]>,
 ) -> Result<Vec<GlobalSourceGeometryRow>, GlobalSourceGeometryError> {
+    let expected_regular_count = graph.regular_source_bindings().len();
+    if control_rows.len() != graph.tracks().len()
+        || regular_control_hosts.len() != expected_regular_count
+        || prepared_bindings.is_some_and(|bindings| bindings.len() != expected_regular_count)
+        || source_map.physical_to_global_source().len() != expected_regular_count
+    {
+        return Err(GlobalSourceGeometryError::RegularSourceBindingMismatch);
+    }
     let mut rows_by_regular_ordinal: Vec<Option<GlobalSourceGeometryRow>> =
-        (0..REGULAR_SOURCE_COUNT).map(|_| None).collect();
-    for graph_binding in graph.regular_source_bindings() {
+        (0..expected_regular_count).map(|_| None).collect();
+    for (expected_regular_ordinal, graph_binding) in
+        graph.regular_source_bindings().iter().enumerate()
+    {
         let host = graph_binding.physical_host();
         let source_index = graph_binding.global_source();
-        let mut prepared_bindings = prepared
-            .regular_source_bindings()
-            .iter()
-            .filter(|binding| binding.physical_host() == host.value());
-        let prepared_binding = prepared_bindings
-            .next()
-            .ok_or(GlobalSourceGeometryError::RegularSourceBindingMismatch)?;
-        if prepared_binding.physical_host() != host.value()
-            || prepared_binding.global_source() != source_index.value()
-            || prepared_bindings.next().is_some()
+        if regular_control_hosts.get(expected_regular_ordinal) != Some(&host.value())
             || host == graph.receipt().direct_lfe_host()
             || source_map.source_for_physical_host(host) != Some(source_index)
         {
+            return Err(GlobalSourceGeometryError::RegularSourceBindingMismatch);
+        }
+        if prepared_bindings.is_some_and(|bindings| {
+            bindings[expected_regular_ordinal].physical_host() != host.value()
+                || bindings[expected_regular_ordinal].global_source() != source_index.value()
+        }) {
             return Err(GlobalSourceGeometryError::RegularSourceBindingMismatch);
         }
         let regular_ordinal = usize::try_from(
@@ -707,6 +854,9 @@ fn build_regular_source_geometry_rows(
                 .ok_or(GlobalSourceGeometryError::SourceIndexDomain)?,
         )
         .map_err(|_| GlobalSourceGeometryError::SourceIndexDomain)?;
+        if regular_ordinal != expected_regular_ordinal {
+            return Err(GlobalSourceGeometryError::SourceIndexDomain);
+        }
         let destination = rows_by_regular_ordinal
             .get_mut(regular_ordinal)
             .ok_or(GlobalSourceGeometryError::SourceIndexDomain)?;
@@ -720,7 +870,7 @@ fn build_regular_source_geometry_rows(
             .iter()
             .find(|track| track.physical_host() == host)
             .ok_or(GlobalSourceGeometryError::PhysicalRowIdentityMismatch)?;
-        let control_row = control38_rows
+        let control_row = control_rows
             .get(physical_host)
             .ok_or(GlobalSourceGeometryError::PhysicalRowIdentityMismatch)?;
         let source_map_row = source_map
@@ -871,13 +1021,17 @@ pub fn produce_compact_outer_matrix(
     {
         return Err(CompactOuterMatrixError::SourceGeometryIdentityMismatch);
     }
+    let active_source_count = source_geometry.rows.len();
+    if !(20..=266).contains(&active_source_count) {
+        return Err(CompactOuterMatrixError::SourceGeometryMissing);
+    }
     validate_target_context_shape(target_context)?;
-    validate_response_columns(response)?;
+    validate_response_columns(response, active_source_count)?;
 
     let mut processing_source_order = Vec::with_capacity(response.processing_ids().len());
     let mut previous_source = None;
     for value in response.processing_ids().iter().copied() {
-        if u64::from(value) >= TOTAL_SOURCE_COUNT_U64
+        if usize::try_from(value).unwrap_or(usize::MAX) >= active_source_count
             || previous_source.is_some_and(|previous| previous >= value)
         {
             return Err(CompactOuterMatrixError::ResponseSourceOrderInvalid);
@@ -896,7 +1050,7 @@ pub fn produce_compact_outer_matrix(
     }
 
     let destination_count = usize::from(target_context.compact_target_count());
-    let mut c_rows_u32 = vec![[0_u32; GLOBAL_SOURCE_COUNT]; destination_count];
+    let mut c_rows_u32 = vec![vec![0_u32; active_source_count]; destination_count];
     let mut source_results = Vec::with_capacity(processing_source_order.len());
     if destination_count > 0 && !processing_source_order.is_empty() {
         let context_rows = target_context
@@ -960,6 +1114,9 @@ pub fn produce_compact_outer_matrix(
 
             let source_column = usize::try_from(source_index.value())
                 .map_err(|_| CompactOuterMatrixError::OutputShapeMismatch)?;
+            if source_column >= active_source_count {
+                return Err(CompactOuterMatrixError::OutputShapeMismatch);
+            }
             for (destination_row, coefficient) in final_u32.iter().copied().enumerate() {
                 c_rows_u32[destination_row][source_column] = coefficient;
             }
@@ -979,6 +1136,8 @@ pub fn produce_compact_outer_matrix(
         source_origin_generation: source_geometry.source_origin_generation,
         source_receipt_sha256: source_geometry.source_receipt_sha256,
         target_context_identity: target_context.geometry_identity(),
+        active_source_count: u16::try_from(active_source_count)
+            .map_err(|_| CompactOuterMatrixError::OutputShapeMismatch)?,
         destinations: target_context.destinations().to_vec().into_boxed_slice(),
         processing_source_order: processing_source_order.into_boxed_slice(),
         c_rows_u32: c_rows_u32.into_boxed_slice(),
@@ -1011,6 +1170,7 @@ fn validate_target_context_shape(
 
 fn validate_response_columns(
     response: &PointResponseProduction,
+    active_source_count: usize,
 ) -> Result<(), CompactOuterMatrixError> {
     if response.response_source_ids().len() != response.columns().len()
         || response
@@ -1026,7 +1186,11 @@ fn validate_response_columns(
         .copied()
         .zip(response.columns())
     {
-        if source_index != column.source_index() || source_index.value() >= TOTAL_SOURCE_COUNT_U64 {
+        let source_in_range = match usize::try_from(source_index.value()) {
+            Ok(source) => source < active_source_count,
+            Err(_) => false,
+        };
+        if source_index != column.source_index() || !source_in_range {
             return Err(CompactOuterMatrixError::ResponseColumnMissing);
         }
     }

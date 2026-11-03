@@ -22,10 +22,20 @@ use jocforge_domain::frontend::{
 use jocforge_domain::spatial::{
     installed48_activity::{PrimaryActivityInput, PrimaryInstalled48ActivityProducer},
     installed48_source_map::{build_meter_installed48_source_map, field_masks_hex},
+    point_response::{
+        PointResponseGateInput, prepare_point_response_sources, produce_point_response_columns,
+    },
     prefix_membership::PrefixMembershipProducer,
     selected_p11_geometry::generate_selected_p11_geometry,
+    selected_p15_geometry::generate_selected_p15_geometry,
+    source_flags::SourceControlSnapshotClock,
+    source_geometry_outer::produce_compact_outer_matrix,
+    target_context::build_target_context_projection,
+    target_slot_install::{SelectedTargetSlots, TargetSlotState, install_target_slots},
 };
-use jocforge_domain::timeline::{AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex};
+use jocforge_domain::timeline::{
+    AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount,
+};
 use jocforge_domain::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -830,6 +840,100 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         });
         let direct_lfe_probe =
             MeterSourceCallbackView::new(&prepared_with_controls, direct_lfe_probe_frame).unwrap();
+        let source_geometry = prepared_with_controls
+            .propose_f01e_adm_normal_source_geometry(
+                &owner,
+                &normal_proposal,
+                &direct_lfe_probe,
+                &generate_selected_p11_geometry(0x111b, true).unwrap(),
+            )
+            .unwrap();
+        assert_eq!(source_geometry.rows().len(), usize::from(channels) + 10);
+        assert_eq!(source_geometry.source_origin_generation().value(), 0);
+        let point_response_sources = source_geometry
+            .point_response_snapshot(
+                SourceControlSnapshotClock::for_normal_callback(
+                    FrontendCallbackIndex::new(0),
+                    NormalCallbackCount::new(1),
+                )
+                .unwrap(),
+            )
+            .unwrap();
+        assert_eq!(
+            point_response_sources.rows().len(),
+            usize::from(channels) + 10
+        );
+        let point_response_gate = PointResponseGateInput::new(
+            FrontendCallbackIndex::new(0),
+            source_geometry.transaction_id().clone(),
+            vec![0],
+            vec![0],
+        )
+        .unwrap();
+        let p15_geometry = generate_selected_p15_geometry(0x159b, true).unwrap();
+        let point_response_batch =
+            prepare_point_response_sources(point_response_sources, point_response_gate).unwrap();
+        let point_response =
+            produce_point_response_columns(&p15_geometry, point_response_batch).unwrap();
+        assert_eq!(point_response.columns().len(), 1);
+        assert_eq!(
+            point_response.columns()[0].source_index(),
+            CodecSourceIndex::new(0)
+        );
+        let mut active_flags = [0_u8; 15];
+        active_flags[0] = 1;
+        let target_state = TargetSlotState {
+            xyz_words: std::array::from_fn(|slot| p15_geometry.points()[slot].xyz_f32_bits()),
+            ids_u32: std::array::from_fn(|slot| 200 + u32::try_from(slot).unwrap()),
+            attributes_u32: std::array::from_fn(|slot| u32::try_from(slot).unwrap() << 4),
+            previous_xyz_words: std::array::from_fn(|slot| {
+                p15_geometry.points()[slot].xyz_f32_bits()
+            }),
+            previous_ids_u32: std::array::from_fn(|slot| 200 + u32::try_from(slot).unwrap()),
+            previous_attributes_u32: std::array::from_fn(|slot| u32::try_from(slot).unwrap() << 4),
+            active_flags,
+        };
+        let installation = install_target_slots(
+            &target_state,
+            &SelectedTargetSlots {
+                xyz_words: Vec::new(),
+                ids_u32: Vec::new(),
+                attributes_u32: Vec::new(),
+            },
+        )
+        .unwrap();
+        let target_context = build_target_context_projection(
+            &p15_geometry,
+            &installation,
+            source_geometry.transaction_id().clone(),
+            FrontendCallbackIndex::new(0),
+        )
+        .unwrap();
+        let compact_outer =
+            produce_compact_outer_matrix(&target_context, &source_geometry, &point_response)
+                .unwrap();
+        let active_sources = usize::from(channels) + 10;
+        assert_eq!(compact_outer.active_source_count(), active_sources as u16);
+        assert_eq!(
+            compact_outer.c_rows_u32().len(),
+            usize::from(target_context.compact_target_count())
+        );
+        assert!(
+            compact_outer
+                .c_rows_u32()
+                .iter()
+                .all(|row| row.len() == active_sources)
+        );
+        if channels == 36 {
+            assert_eq!(
+                source_geometry.row_for_source(CodecSourceIndex::new(46)),
+                None
+            );
+            assert_eq!(
+                source_geometry.row_for_source(CodecSourceIndex::new(47)),
+                None
+            );
+        }
         let direct_lfe_binding = direct_lfe_probe
             .physical_row_map()
             .binding_for_physical_host(direct_lfe_probe.direct_lfe_host())
@@ -938,10 +1042,40 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
                 Arc::clone(&same_content_resource),
                 metadata_payloads(&same_content_resource, &same_content_spans),
             )
+            .unwrap()
+            .bind_primary_control_rows(u64::from(channels) * 3)
             .unwrap();
             assert_eq!(
                 same_content_prepared.normal_control_adm_input_snapshot(&owner),
                 Err(PreparedJobInputError::PreparedIdentityMismatch)
+            );
+            let same_content_frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+                callback_index: MeterCallbackIndex::new(0),
+                upstream_generation: MeterUpstreamGeneration::new(1),
+                phase: MeterCallbackPhase::NormalSource,
+                source_identity: MeterSourceIdentity::from_sha256(
+                    same_content_prepared.resource_identity().input_sha256(),
+                ),
+                source_samples: MeterSourceSampleCount::new(1).unwrap(),
+                normal_callbacks: MeterCallbackCount::new(1),
+                source_cursor_before: MeterSourcePosition::new(0),
+                source_cursor_after: MeterSourcePosition::new(1),
+                source_read_index_before: MeterSourceReadIndex::new(0),
+                source_read_index_after: MeterSourceReadIndex::new(1),
+                host_input_count: MeterSampleCount::new(1),
+                source_padding_count: MeterSampleCount::new(1_535),
+                rows: &direct_lfe_probe_rows,
+            });
+            let same_content_view =
+                MeterSourceCallbackView::new(&same_content_prepared, same_content_frame).unwrap();
+            assert_eq!(
+                prepared_with_controls.propose_f01e_adm_normal_source_geometry(
+                    &owner,
+                    &normal_proposal,
+                    &same_content_view,
+                    &generate_selected_p11_geometry(0x111b, true).unwrap(),
+                ),
+                Err(PreparedJobInputError::NormalSourceGeometryMismatch)
             );
             assert_eq!(
                 prepared_with_controls

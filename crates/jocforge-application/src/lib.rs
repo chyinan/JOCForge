@@ -30,6 +30,14 @@ use jocforge_domain::meter::prepared_job_identity::{
     PreparedAdmGraphProvenance as DomainAdmGraphProvenance, PreparedInputResourceIdentity,
     PreparedJobInputIdentity, PreparedJobInputIdentityError,
 };
+use jocforge_domain::spatial::{
+    installed48_source_map::build_meter_installed48_source_map,
+    selected_p11_geometry::SelectedP11Geometry,
+    source_geometry_outer::{
+        GlobalSourceGeometryError, GlobalSourceGeometrySnapshot,
+        build_global_source_geometry_snapshot_from_adm_input,
+    },
+};
 pub use jocforge_domain::state::EncodeError;
 use jocforge_domain::timeline::{AdmSampleCount, ClockError, FrontendCallbackIndex};
 pub use jocforge_domain::transaction::ProgrammeId;
@@ -373,6 +381,71 @@ impl PreparedJobInput {
             .map_err(PreparedJobInputError::NormalControlSnapshot)
     }
 
+    /// Binds one dynamic F01E proposal and Meter source frame to the same input before
+    /// projecting N+10 primary source geometry. This value stage cannot install either owner.
+    pub fn propose_f01e_adm_normal_source_geometry(
+        &self,
+        owner: &PreparedF01EColdOwner,
+        proposal: &NormalControlAdmInputProposal,
+        source_view: &meter_source_bridge::MeterSourceCallbackView<'_>,
+        geometry: &SelectedP11Geometry,
+    ) -> Result<GlobalSourceGeometrySnapshot, PreparedJobInputError> {
+        self.validate_f01e_cold_owner(owner)?;
+        let normal_input = self.normal_control_adm_input_snapshot(owner)?;
+        let transaction_id = proposal.transaction_id();
+        let after = proposal.after_state();
+        let callback_value = transaction_id.callback_index().value();
+        let callback_u64 = u64::from(callback_value);
+        if !Arc::ptr_eq(&self.domain_identity, after.prepared_input_identity())
+            || proposal.before_generation() != owner.generation()
+            || proposal.before_digest() != owner.committed().digest()
+            || transaction_id.programme_id() != self.programme_id()
+            || transaction_id.attempt_id() != owner.attempt_id()
+            || callback_value != owner.committed().callback_index().value()
+            || callback_value != 0
+            || after.prepared_input_identity_sha256() != normal_input.identity_sha256()
+            || after.processed_normal_callbacks().value() != 1
+            || !std::ptr::eq(source_view.selected_graph(), self.graph.graph())
+            || source_view.physical_row_map().resource_identity() != self.resource_identity
+            || source_view.physical_row_map().axml_sha256()
+                != self.graph.graph().receipt().axml_sha256()
+            || source_view.physical_row_map().chna_sha256()
+                != self.graph.graph().receipt().chna_sha256()
+            || source_view.physical_row_map().dbmd_sha256() != self.dbmd.payload_sha256()
+            || source_view.source_identity().sha256() != self.resource_identity.input_sha256()
+            || source_view.source_samples().value() != self.configuration.source_samples()
+            || source_view.normal_callbacks().value() != after.expected_normal_callback_count()
+            || source_view.phase() != meter_source_bridge::MeterCallbackPhase::NormalSource
+            || source_view.callback_index().value() != callback_u64
+            || source_view.source_cursor_before().value() != proposal.query_sample()
+            || source_view.host_input_count().value() != u64::from(proposal.actual_samples())
+            || source_view
+                .source_cursor_before()
+                .value()
+                .checked_add(u64::from(proposal.actual_samples()))
+                != Some(source_view.source_cursor_after().value())
+            || source_view.source_read_index_before().value() != callback_u64
+            || callback_u64.checked_add(1) != Some(source_view.source_read_index_after().value())
+            || source_view.physical_rows().len()
+                != usize::from(self.configuration.wave().channels())
+            || after.input_physical_rows().value() != self.configuration.wave().channels()
+        {
+            return Err(PreparedJobInputError::NormalSourceGeometryMismatch);
+        }
+        let controls = self
+            .primary_metadata_controls
+            .as_ref()
+            .ok_or(PreparedJobInputError::PrimaryControlBindingUnavailable)?;
+        let source_map = build_meter_installed48_source_map(controls, geometry)
+            .map_err(|_| PreparedJobInputError::SourceMapProjection)?;
+        build_global_source_geometry_snapshot_from_adm_input(
+            self.graph.graph(),
+            &source_map,
+            proposal,
+        )
+        .map_err(PreparedJobInputError::SourceGeometry)
+    }
+
     /// Binds one Meter zero-input frame to this prepared input and its completed normal proposal.
     pub fn bind_f01e_adm_fresh_zero_rows(
         &self,
@@ -490,6 +563,9 @@ pub enum PreparedJobInputError {
     PrimaryControlBindingUnavailable,
     ProgrammeIdentityMismatch,
     PreparedIdentityMismatch,
+    NormalSourceGeometryMismatch,
+    SourceMapProjection,
+    SourceGeometry(GlobalSourceGeometryError),
     F01EProviderProjection(F01EProviderError),
     F01EColdOwner(FrontendControlError),
     NormalControlSnapshot(NormalControlSnapshotError),
@@ -532,6 +608,15 @@ impl std::fmt::Display for PreparedJobInputError {
             }
             Self::PreparedIdentityMismatch => formatter
                 .write_str("F01E cold owner is bound to a different prepared input identity"),
+            Self::NormalSourceGeometryMismatch => formatter.write_str(
+                "dynamic F01E proposal and Meter normal source frame do not share one input and callback",
+            ),
+            Self::SourceMapProjection => {
+                formatter.write_str("failed to build the admitted dynamic primary source map")
+            }
+            Self::SourceGeometry(error) => {
+                write!(formatter, "dynamic primary source geometry: {error:?}")
+            }
             Self::F01EProviderProjection(error) => {
                 write!(formatter, "F01E dynamic cold projection: {error:?}")
             }
