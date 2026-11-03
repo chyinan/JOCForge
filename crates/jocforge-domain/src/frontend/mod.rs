@@ -6,6 +6,7 @@ pub mod adm_object_events;
 pub mod bed_channel_join;
 mod current_features_provider;
 pub mod dbmd_sections;
+pub mod frame_channel_count;
 pub mod job_configuration;
 pub mod normal_control_snapshot;
 pub mod object_control;
