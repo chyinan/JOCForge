@@ -1415,7 +1415,8 @@ fn validate_fresh_zero_callback_identity(
         || source_view.source_padding_count().value() != 1_536
         || source_view.source_samples().value() != prepared.configuration().source_samples()
         || source_view.source_identity().sha256() != prepared.resource_identity().input_sha256()
-        || source_view.physical_rows().len() != 38
+        || source_view.physical_rows().len()
+            != usize::from(prepared.configuration().wave().channels())
         || source_view
             .physical_rows()
             .iter()
