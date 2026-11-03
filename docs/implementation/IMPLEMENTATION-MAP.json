@@ -3130,8 +3130,8 @@
         {
           "slice_id": "u04-membership-projection",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03U_AND_PRODUCT_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_TWO_LAYER_U04_PROJECTION__GEOMETRY_AND_INSTALL_DEFERRED",
-          "scope": "Stateless F03U.4/.5 projection from explicit source XYZ/weights, target XYZ/attributes and gain[N][T]; two reciprocal normalization layers, F32 projection, and exact protected-anchor preservation. Gain/weights/geometry are caller-supplied.",
+          "implementation_status": "LOCALLY_VERIFIED_TWO_LAYER_U04_PROJECTION_FOR_SOURCE_AXES_UP_TO_266__WHOLE_F03U_DEFERRED",
+          "scope": "Stateless F03U.4/.5 projection from explicit source XYZ/weights, target XYZ/attributes and gain[N][T]; two reciprocal normalization layers, F32 projection, and exact protected-anchor preservation. Source-axis arrays are admitted through the R10 internal extent of 266. This is array-width support only; it does not establish source-ID encoding or N+10 source identity.",
           "implementation_files": [
             "crates/jocforge-domain/src/spatial/mod.rs",
             "crates/jocforge-domain/src/spatial/u04_projection.rs"
@@ -3147,9 +3147,14 @@
             ]
           },
           "parameters": {
-            "kind": "CALLER_SUPPLIED_U04_GAIN_WEIGHT_AND_TARGET_VALUES",
-            "provider_files": [],
-            "validation_boundary": "Consumes explicit synthetic or caller-owned finite XYZ, gain, weight and attribute values; it does not produce or admit geometry or target membership."
+            "kind": "R10_INTERNAL_SOURCE_AXIS_CAPACITY_FOR_STATELESS_PROJECTION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/AXIS-SIZE-VECTORS.json"
+            ],
+            "validation_boundary": "R10 report and axis vectors bound only stateless array capacity through 266; this implementation does not infer N+10 row identity, source-ID encoding, geometry admission, selector identity, whole F03U or product support.",
+            "r10_source_axis_manifest_sha256": "7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8",
+            "r10_machine_evidence_json_status": "INVALID_JSON_EXCLUDED_PENDING_WASH_CORRECTION"
           },
           "test_modules": [
             "crates/jocforge-domain/tests/u04_projection.rs"
@@ -3170,7 +3175,8 @@
               "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE"
+            "local_fixture_origin": "REGENERATED_FROM_SELECTED_PROVIDER_AFTER_DEE_WINDOW_TABLE_CANDIDATE",
+            "r10_source_axis_manifest_sha256": "7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8"
           },
           "error_outcomes": [
             {
@@ -3191,7 +3197,27 @@
           "not_run": [
             "F03U.1 refinement solver/admission integration and F03U.2 duplicate processing",
             "F03U.3 geometry solve, F03G producer, target installation and owner state",
-            "selector producer, parent transaction, real ADM/spatial acceptance and whole product"
+            "selector producer, parent transaction, real ADM/spatial acceptance and whole product",
+            "Source-count identity, source-ID encoding, whole F03U and product integration."
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/spatial/mod.rs",
+              "bytes": 3884,
+              "sha256": "a3b3a73ffc0ada871bdb3aac82aac439a8f559f2723cb0c960ea0c58193abb07"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/u04_projection.rs",
+              "bytes": 6053,
+              "sha256": "600d109bc5e873975d5a54c9641e6e88171186eecf9b423a2f9c0807042d8ad7"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/u04_projection.rs",
+              "bytes": 7219,
+              "sha256": "b26b2af1d14a6b69465af83bc212e99753ee22fadf076ffa0eb6650ecfbbe1fd"
+            }
           ]
         },
         {
@@ -7178,8 +7204,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/u04_projection.rs",
-              "bytes": 5984,
-              "sha256": "6ece9e3c51dbf5373fe32f227332322abac007dcf976143f383ade5f0c79aafe"
+              "bytes": 6053,
+              "sha256": "600d109bc5e873975d5a54c9641e6e88171186eecf9b423a2f9c0807042d8ad7"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/target_slot_install.rs",
@@ -7220,8 +7246,8 @@
             },
             {
               "path": "crates/jocforge-domain/tests/u04_projection.rs",
-              "bytes": 6388,
-              "sha256": "9d011fd15b537adacc556a65b21895f6e4d9079b00acfa98b63fb7489ed0d30f"
+              "bytes": 7219,
+              "sha256": "b26b2af1d14a6b69465af83bc212e99753ee22fadf076ffa0eb6650ecfbbe1fd"
             }
           ]
         },
@@ -9905,8 +9931,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1984949,
-              "sha256": "b7ebfcf3106029e0f5f8d210e263a74d917114d8308d9034573e2de8e3910e98"
+              "bytes": 1994607,
+              "sha256": "5da7bad15ca67fcaaa13ed16fb303c5317dc7f8c14dafb5facbd32253377d903"
             }
           ],
           "test_modules": [
@@ -13432,8 +13458,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1984949,
-              "sha256": "b7ebfcf3106029e0f5f8d210e263a74d917114d8308d9034573e2de8e3910e98"
+              "bytes": 1994607,
+              "sha256": "5da7bad15ca67fcaaa13ed16fb303c5317dc7f8c14dafb5facbd32253377d903"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -34257,8 +34283,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1984949,
-              "sha256": "b7ebfcf3106029e0f5f8d210e263a74d917114d8308d9034573e2de8e3910e98"
+              "bytes": 1994607,
+              "sha256": "5da7bad15ca67fcaaa13ed16fb303c5317dc7f8c14dafb5facbd32253377d903"
             }
           ],
           "test_inventory": [

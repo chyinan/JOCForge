@@ -6525,6 +6525,20 @@ def check_dynamic_source_axis_map_slice(root,d):
  test=(root/'crates/jocforge-application/tests/prepared_job_input.rs').read_text(encoding='utf-8');ck('meter_source_map_materializes_n_plus_ten_active_rows_without_padding'in test and 'let active_sources = usize::from(channels) + 10'in test and 'CodecSourceIndex::new(46)'in test and 'CodecSourceIndex::new(47)'in test and 'activity.output().postroute_rows().len(), active_sources'in test and re.search(r'activity\.output\(\)\.active_source_count\(\),\s*active_sources as u16',test)is not None,'synthetic 36/38 row source-map/activity vectors preserve absent IDs and explicit active extent')
  ck(any('dynamic f01e normal after-state' in value.lower() for value in row['not_run'])and any('48-wide renderer' in value and 'N>38' in value for value in row['not_run'])and any('parent root swap' in value.lower() for value in row['not_run']),'F03W parent, renderer, and N>38 consumer integration remain explicitly open')
 
+def check_u04_dynamic_source_axis_capacity(root,d):
+ entry=next(item for item in d['functional_entries']if item['functional_id']=='F03U');matches=[item for item in entry.get('direct_slices',[])if item.get('slice_id')=='u04-membership-projection'];ck(len(matches)==1,'one F03U U04 projection slice')
+ if not matches:return
+ row=matches[0];files=['crates/jocforge-domain/src/spatial/mod.rs','crates/jocforge-domain/src/spatial/u04_projection.rs'];tests=['crates/jocforge-domain/tests/u04_projection.rs'];sha='7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8'
+ ck(row['implementation_status']=='LOCALLY_VERIFIED_TWO_LAYER_U04_PROJECTION_FOR_SOURCE_AXES_UP_TO_266__WHOLE_F03U_DEFERRED'and row['implementation_files']==files and row['test_modules']==tests and all((root/path).is_file()for path in files+tests),'F03U maps the stateless source-axis width extension')
+ for key,paths in (('implementation_inventory',files),('test_inventory',tests)):
+  inventory=row.get(key,[]);ck([record.get('path')for record in inventory]==paths,'F03U U04 '+key+' order')
+  for record in inventory:
+   payload=(root/record['path']).read_bytes();ck(len(payload)==record['bytes']and hashlib.sha256(payload).hexdigest()==record['sha256'],'F03U U04 inventory '+record['path'])
+ code=rust_code_without_comments((root/files[1]).read_text(encoding='utf-8'));test=(root/tests[0]).read_text(encoding='utf-8');ck('MAX_ADMITTED_SOURCE_COUNT: usize = 266'in code and '1..=MAX_ADMITTED_SOURCE_COUNT'in code and 'let source_count = source_xyz_u32.len()'in code,'F03U projection consumes a variable source vector through the R10 maximum extent')
+ ck('u04_projection_accepts_wide_selected_source_axes_through_266'in test and 'for source_count in [49_usize, 266]'in test and 'let source_count = 267' in test,'F03U wide-axis tests cover N=39, N=256 and rejection above capacity')
+ ck(row['parameters']['r10_source_axis_manifest_sha256']==sha and row['vectors']['r10_source_axis_manifest_sha256']==sha and row['parameters']['r10_machine_evidence_json_status']=='INVALID_JSON_EXCLUDED_PENDING_WASH_CORRECTION'and 'does not infer N+10 row identity' in row['parameters']['validation_boundary'],'F03U keeps R10 capacity evidence separate from row-identity/product admission')
+ ck(any('source-count identity' in item.lower() or 'whole f03u' in item.lower()for item in row['not_run']),'F03U U04 width support is not reported as whole-chain completion')
+
 def check_wash_supplement_registry(root,d):
  registry=d.get('wash_supplement_registry',[]);functional_ids={entry['functional_id']for entry in d.get('functional_entries',[])};ck(len(registry)==25,'twenty-five locally verified Wash supplements are mapped');package_ids=[item.get('package_id')for item in registry];ck(len(set(package_ids))==25,'Wash supplement package IDs are unique')
  for item in registry:
@@ -6612,6 +6626,7 @@ def run(root=ROOT):
  check_supplement_catalog(root)
  check_arbitrary_track_axis_supplement(root,d)
  check_dynamic_source_axis_map_slice(root,d)
+ check_u04_dynamic_source_axis_capacity(root,d)
  check_wash_supplement_registry(root,d)
  for e in future:
   if e['functional_id']=='F04D':

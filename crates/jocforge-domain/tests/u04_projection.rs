@@ -200,3 +200,28 @@ fn malformed_projection_shapes_and_nonfinite_inputs_reject() {
         Err(U04AdmissionError::SelectedCountOutOfRange)
     );
 }
+
+#[test]
+fn u04_projection_accepts_wide_selected_source_axes_through_266() {
+    let one = 1.0_f32.to_bits();
+    for source_count in [49_usize, 266] {
+        let sources = vec![[0_u32; 3]; source_count];
+        let weights = vec![one; source_count];
+        let gains = vec![vec![one]; source_count];
+        let result = project_targets(&sources, &[[0; 3]], &[0], &weights, &gains).unwrap();
+        assert_eq!(result.normalized_m_u32().len(), 1);
+        assert_eq!(result.normalized_m_u32()[0].len(), source_count);
+    }
+
+    let source_count = 267;
+    assert_eq!(
+        project_targets(
+            &vec![[0_u32; 3]; source_count],
+            &[[0; 3]],
+            &[0],
+            &vec![one; source_count],
+            &vec![vec![one]; source_count]
+        ),
+        Err(U04ProjectionError::InvalidInput)
+    );
+}

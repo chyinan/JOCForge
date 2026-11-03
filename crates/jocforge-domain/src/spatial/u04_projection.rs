@@ -5,6 +5,7 @@ use super::candidate_selector::SelectorStatus;
 use crate::numeric::{FiniteF32, r32_add, r32_mul};
 
 const U04_EPSILON_WORD: u32 = 0x257f_f2d6;
+const MAX_ADMITTED_SOURCE_COUNT: usize = 266;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum U04ProjectionError {
@@ -80,7 +81,7 @@ pub fn project_targets(
 ) -> Result<U04ProjectionResult, U04ProjectionError> {
     let source_count = source_xyz_u32.len();
     let target_count = target_xyz_u32.len();
-    if !(1..=48).contains(&source_count)
+    if !(1..=MAX_ADMITTED_SOURCE_COUNT).contains(&source_count)
         || !(1..=15).contains(&target_count)
         || target_attributes_u32.len() != target_count
         || source_weight_u32.len() != source_count
