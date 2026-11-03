@@ -7576,8 +7576,8 @@
             },
             {
               "path": "crates/jocforge-application/src/independent_meter_callback.rs",
-              "bytes": 62223,
-              "sha256": "31d9ed49218b06dbb42a63206656a52bc53d24b8efd2f895cc3fef91e926655e"
+              "bytes": 62450,
+              "sha256": "8c8388a4c32446ee2fa5e6e2ee95c0d248699fb96e783c2d76d9483def48fb24"
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
@@ -7723,8 +7723,8 @@
             },
             {
               "path": "crates/jocforge-application/src/independent_meter_callback.rs",
-              "bytes": 62223,
-              "sha256": "31d9ed49218b06dbb42a63206656a52bc53d24b8efd2f895cc3fef91e926655e"
+              "bytes": 62450,
+              "sha256": "8c8388a4c32446ee2fa5e6e2ee95c0d248699fb96e783c2d76d9483def48fb24"
             },
             {
               "path": "crates/jocforge-io/src/provider/mod.rs",
@@ -9905,8 +9905,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1991893,
-              "sha256": "c853e3cc4f1031d0637892d66c9d26c2fb6dfa9f36fa63b4ea63e37ec65e8acd"
+              "bytes": 1984949,
+              "sha256": "b7ebfcf3106029e0f5f8d210e263a74d917114d8308d9034573e2de8e3910e98"
             }
           ],
           "test_modules": [
@@ -12657,8 +12657,8 @@
             },
             {
               "path": "crates/jocforge-application/src/independent_meter_callback.rs",
-              "bytes": 62223,
-              "sha256": "31d9ed49218b06dbb42a63206656a52bc53d24b8efd2f895cc3fef91e926655e"
+              "bytes": 62450,
+              "sha256": "8c8388a4c32446ee2fa5e6e2ee95c0d248699fb96e783c2d76d9483def48fb24"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
@@ -13432,8 +13432,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1991893,
-              "sha256": "c853e3cc4f1031d0637892d66c9d26c2fb6dfa9f36fa63b4ea63e37ec65e8acd"
+              "bytes": 1984949,
+              "sha256": "b7ebfcf3106029e0f5f8d210e263a74d917114d8308d9034573e2de8e3910e98"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -14282,8 +14282,8 @@
             },
             {
               "path": "crates/jocforge-application/src/independent_meter_callback.rs",
-              "bytes": 62223,
-              "sha256": "31d9ed49218b06dbb42a63206656a52bc53d24b8efd2f895cc3fef91e926655e"
+              "bytes": 62450,
+              "sha256": "8c8388a4c32446ee2fa5e6e2ee95c0d248699fb96e783c2d76d9483def48fb24"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -16925,7 +16925,7 @@
         {
           "slice_id": "fresh-zero-meter-drain-frontend-stage",
           "mapping_status": "MATERIALIZED_WASHED_LOCAL_F06OF_FRESH_ZERO_FRONTEND_PACKET_RULE__NATIVE_JOIN_OPEN",
-          "implementation_status": "LOCAL_FRESH_ZERO_CALLBACK_STAGE_PRESENT_WITH_WAVE_ROW_GATE__DOWNSTREAM_FIXED__SELECTED_Q_PLUS_3_NOT_RUN",
+          "implementation_status": "LOCAL_FRESH_ZERO_CALLBACK_STAGE_PRESENT_WITH_THREE_WAY_ROW_COUNT_GUARD__DOWNSTREAM_FIXED__SELECTED_Q_PLUS_3_NOT_RUN",
           "scope": "The local F06OF contract requires each of the three Meter DRAIN deliveries g=Q..Q+2 to keep source cursor N, form a fresh positive-zero 38x1536 raw frame, run the full frontend/spatial/OAR proposal chain and produce fresh same-generation feature and target-control values. The implementation creates the held source-control view on the final normal callback, rebinds it to each drain delivery, computes fresh Installed48/features from the zero frame, then passes the new rendered proposal through the Meter spatial/OAR stage. The held F01E source snapshot is provenance/input control only; per METER-DRAIN-SOURCE-CONTROL-HOLD-V1, derived target controls and spatial/output state are recomputed. This row records a local model path, not a native drain join or a full selected Q+3 execution. The fresh-zero callback's PCM-row gate now follows the selected PreparedJobInput WAVE channel count; the downstream frontend/Installed48/spatial owners remain fixed-shape and Q+3 execution remains NOT_RUN.",
           "owner": "application",
           "implementation_requirement": true,
@@ -16945,8 +16945,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/independent_meter_callback.rs",
-              "bytes": 62223,
-              "sha256": "31d9ed49218b06dbb42a63206656a52bc53d24b8efd2f895cc3fef91e926655e"
+              "bytes": 62450,
+              "sha256": "8c8388a4c32446ee2fa5e6e2ee95c0d248699fb96e783c2d76d9483def48fb24"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
@@ -34257,8 +34257,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1991893,
-              "sha256": "c853e3cc4f1031d0637892d66c9d26c2fb6dfa9f36fa63b4ea63e37ec65e8acd"
+              "bytes": 1984949,
+              "sha256": "b7ebfcf3106029e0f5f8d210e263a74d917114d8308d9034573e2de8e3910e98"
             }
           ],
           "test_inventory": [

@@ -1388,6 +1388,7 @@ fn validate_fresh_zero_callback_identity(
 ) -> Result<(), IndependentMeterG0Error> {
     let meter_before = previous.meter_proposal().after_root();
     let identity = meter_before.identity();
+    let source_channel_count = identity.source_channels().value();
     let callback = source_view.callback_index().value();
     let normal_callbacks = source_view.normal_callbacks().value();
     let callback_end = normal_callbacks
@@ -1415,6 +1416,8 @@ fn validate_fresh_zero_callback_identity(
         || source_view.source_padding_count().value() != 1_536
         || source_view.source_samples().value() != prepared.configuration().source_samples()
         || source_view.source_identity().sha256() != prepared.resource_identity().input_sha256()
+        || source_channel_count != prepared.configuration().wave().channels()
+        || source_view.physical_rows().len() != usize::from(source_channel_count)
         || source_view.physical_rows().len()
             != usize::from(prepared.configuration().wave().channels())
         || source_view
