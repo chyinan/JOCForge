@@ -230,8 +230,13 @@ pub fn stage_meter_installed48(
         .collect::<Vec<_>>();
     let diffusion_before =
         std::array::from_fn(|tail| before.diffusion_states.get(&regular_rows[tail]));
+    let quiet_regular_rows: [u8; METER_INSTALLED48_REGULAR_ROWS] = input
+        .activity
+        .quiet_regular_rows()
+        .try_into()
+        .map_err(|_| MeterInstalled48Error::InputShape)?;
     let activity = Installed48Activity {
-        quiet: *input.activity.quiet37(),
+        quiet: quiet_regular_rows,
         mute_reset: [false; METER_INSTALLED48_REGULAR_ROWS],
     };
     let rendered = render_installed48(Installed48RenderInput {
@@ -374,7 +379,7 @@ fn validate_input(
             row.len() != METER_INSTALLED48_FRAME_SAMPLES
                 || row.iter().any(|word| !f32::from_bits(*word).is_finite())
         })
-        || input.activity.quiet37().len() != METER_INSTALLED48_REGULAR_ROWS
+        || input.activity.quiet_regular_rows().len() != METER_INSTALLED48_REGULAR_ROWS
         || before.previous_pcm_rows.len() != METER_INSTALLED48_HOST_ROWS
         || before.previous_current_rows.len() != METER_INSTALLED48_ROWS
     {

@@ -23,10 +23,11 @@ use crate::spatial::prefix_membership::{
 use crate::spatial::selected_p11_geometry::{P11PrefixOrdinal, SelectedP11Geometry};
 use crate::timeline::CodecSourceIndex;
 
-const SOURCE_COUNT: usize = 48;
 const PREFIX_COUNT: usize = 11;
 const REGULAR_COUNT: usize = 37;
 const PHYSICAL_HOST_COUNT: usize = 38;
+const MIN_PROFILE_PHYSICAL_HOST_COUNT: usize = 10;
+const MAX_PROFILE_PHYSICAL_HOST_COUNT: usize = u8::MAX as usize + 1;
 const SELECTED_SAMPLE_COUNT: u64 = 6_522_906;
 const SELECTED_SOURCE_BYTES: u64 = 743_696_526;
 const SELECTED_DATA_BYTES: u64 = 743_611_284;
@@ -270,14 +271,15 @@ impl PhysicalSourceBinding {
     }
 }
 
-/// Immutable source map built from the bound primary metadata/control rows and P11 geometry.
+/// Immutable N+10 source map built from bound primary metadata/control rows and P11 geometry.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Installed48SourceMap {
     source_binding: SelectedPrimaryControlBinding,
     p11_geometry: SelectedP11Geometry,
     direct_lfe_track: SelectedPhysicalTrack,
-    rows: [Installed48SourceRow; SOURCE_COUNT],
-    physical_to_global_source: [PhysicalSourceBinding; REGULAR_COUNT],
+    physical_host_count: u16,
+    rows: Vec<Installed48SourceRow>,
+    physical_to_global_source: Vec<PhysicalSourceBinding>,
 }
 
 impl Installed48SourceMap {
@@ -293,7 +295,7 @@ impl Installed48SourceMap {
         self.direct_lfe_track.physical_host()
     }
 
-    pub fn rows(&self) -> &[Installed48SourceRow; SOURCE_COUNT] {
+    pub fn rows(&self) -> &[Installed48SourceRow] {
         &self.rows
     }
 
@@ -301,11 +303,19 @@ impl Installed48SourceMap {
         11
     }
 
-    pub const fn regular_count(&self) -> u8 {
-        37
+    pub fn regular_count(&self) -> u8 {
+        u8::try_from(self.physical_to_global_source.len()).unwrap_or(u8::MAX)
     }
 
-    pub fn physical_to_global_source(&self) -> &[PhysicalSourceBinding; REGULAR_COUNT] {
+    pub const fn physical_host_count(&self) -> u16 {
+        self.physical_host_count
+    }
+
+    pub fn source_count(&self) -> u16 {
+        u16::try_from(self.rows.len()).unwrap_or(u16::MAX)
+    }
+
+    pub fn physical_to_global_source(&self) -> &[PhysicalSourceBinding] {
         &self.physical_to_global_source
     }
 
@@ -328,7 +338,7 @@ impl Installed48SourceMap {
     /// Recomputes full gains for each active positive-width object in physical-host order.
     pub fn produce_primary_prefix_route(
         &self,
-        quiet37: &[u8; REGULAR_COUNT],
+        quiet_regular_rows: &[u8],
         producer: &PrefixMembershipProducer,
     ) -> Result<PrimaryPrefixRoute, Installed48SourceMapError> {
         if producer.basis_f32le_sha256() != self.p11_geometry.f32le_sha256() {
@@ -336,7 +346,9 @@ impl Installed48SourceMap {
                 PrefixMembershipError::ParameterDomain,
             ));
         }
-        if quiet37.iter().any(|quiet| *quiet > 1) {
+        if quiet_regular_rows.len() != self.physical_to_global_source.len()
+            || quiet_regular_rows.iter().any(|quiet| *quiet > 1)
+        {
             return Err(Installed48SourceMapError::ControlFieldDomain);
         }
         let mut writers = PrimaryPrefixWriterSet::empty();
@@ -346,9 +358,9 @@ impl Installed48SourceMap {
                 .map_err(|_| Installed48SourceMapError::SourceIndexDomain)?;
             let regular_ordinal = source_value
                 .checked_sub(PREFIX_COUNT)
-                .filter(|ordinal| *ordinal < REGULAR_COUNT)
+                .filter(|ordinal| *ordinal < self.physical_to_global_source.len())
                 .ok_or(Installed48SourceMapError::SourceIndexDomain)?;
-            if quiet37[regular_ordinal] != 0 || row.kind() != "object" {
+            if quiet_regular_rows[regular_ordinal] != 0 || row.kind() != "object" {
                 continue;
             }
             if row.input_mute() != Some(0) {
@@ -537,13 +549,15 @@ impl Installed48SourceMap {
     /// prefix-writer set. This does not generate membership gains or publish state.
     pub fn postroute_rows(
         &self,
-        quiet37: &[u8; REGULAR_COUNT],
+        quiet_regular_rows: &[u8],
         prefix_writers: PrimaryPrefixWriterSet,
-    ) -> Result<[Installed48PostRouteRow; SOURCE_COUNT], Installed48SourceMapError> {
-        if quiet37.iter().any(|quiet| *quiet > 1) {
+    ) -> Result<Vec<Installed48PostRouteRow>, Installed48SourceMapError> {
+        if quiet_regular_rows.len() != self.physical_to_global_source.len()
+            || quiet_regular_rows.iter().any(|quiet| *quiet > 1)
+        {
             return Err(Installed48SourceMapError::ControlFieldDomain);
         }
-        let mut output = Vec::with_capacity(SOURCE_COUNT);
+        let mut output = Vec::with_capacity(self.rows.len());
         for row in &self.rows {
             match row.owner() {
                 Installed48SourceOwner::P11 { layout_ordinal, .. } => {
@@ -561,9 +575,9 @@ impl Installed48SourceMap {
                         .map_err(|_| Installed48SourceMapError::SourceIndexDomain)?;
                     let regular_ordinal = source
                         .checked_sub(PREFIX_COUNT)
-                        .filter(|ordinal| *ordinal < REGULAR_COUNT)
+                        .filter(|ordinal| *ordinal < self.physical_to_global_source.len())
                         .ok_or(Installed48SourceMapError::SourceIndexDomain)?;
-                    let quiet = quiet37[regular_ordinal];
+                    let quiet = quiet_regular_rows[regular_ordinal];
                     let mute = row
                         .input_mute()
                         .ok_or(Installed48SourceMapError::ControlFieldDomain)?;
@@ -601,30 +615,57 @@ impl Installed48SourceMap {
                 }
             }
         }
-        output
-            .try_into()
-            .map_err(|_| Installed48SourceMapError::RowCount)
+        if output.len() != self.rows.len() {
+            return Err(Installed48SourceMapError::RowCount);
+        }
+        Ok(output)
     }
 }
 
+/// Encodes bit position = source ID. The row count is the active extent; unused high bits in the
+/// final hexadecimal nibble are storage only and do not identify zero-filled source rows.
 pub fn field_masks_hex(
-    rows: &[Installed48PostRouteRow; SOURCE_COUNT],
+    rows: &[Installed48PostRouteRow],
 ) -> Result<(String, String), Installed48SourceMapError> {
-    let mut field0_mask = 0_u64;
-    let mut field4_mask = 0_u64;
-    for row in rows {
-        let source_index = row.source_index().value();
-        if source_index >= SOURCE_COUNT as u64 || row.field0() > 1 || row.field4() > 1 {
+    let mut field0_mask = vec![0_u8; rows.len().div_ceil(8)];
+    let mut field4_mask = vec![0_u8; rows.len().div_ceil(8)];
+    for (expected_source_index, row) in rows.iter().enumerate() {
+        let source_index = usize::try_from(row.source_index().value())
+            .map_err(|_| Installed48SourceMapError::SourceIndexDomain)?;
+        if source_index != expected_source_index
+            || row.field0() > 1
+            || row.field4() > 1
+            || row.source_index().value() != u64::try_from(source_index).unwrap_or(u64::MAX)
+        {
             return Err(Installed48SourceMapError::SourceIndexDomain);
         }
-        let bit = 1_u64 << source_index;
-        field0_mask |= bit * u64::from(row.field0());
-        field4_mask |= bit * u64::from(row.field4());
+        let byte_index = source_index / 8;
+        let bit_index = source_index % 8;
+        field0_mask[byte_index] |= (row.field0() as u8) << bit_index;
+        field4_mask[byte_index] |= (row.field4() as u8) << bit_index;
     }
-    Ok((format!("{field0_mask:012x}"), format!("{field4_mask:012x}")))
+    Ok((
+        mask_bytes_to_hex(&field0_mask, rows.len()),
+        mask_bytes_to_hex(&field4_mask, rows.len()),
+    ))
 }
 
-/// Builds the selected 48-source map. The direct LFE remains outside regular sources.
+fn mask_bytes_to_hex(bytes: &[u8], bit_count: usize) -> String {
+    let nibble_count = bit_count.div_ceil(4);
+    let mut output = String::with_capacity(nibble_count);
+    for nibble_index in (0..nibble_count).rev() {
+        let byte = bytes[nibble_index / 2];
+        let nibble = if nibble_index % 2 == 0 {
+            byte & 0x0f
+        } else {
+            byte >> 4
+        };
+        output.push(char::from_digit(u32::from(nibble), 16).unwrap_or('0'));
+    }
+    output
+}
+
+/// Builds the selected primary source map. The direct LFE remains outside regular sources.
 pub fn build_primary_installed48_source_map(
     controls: &PrimaryMetadataControlRows,
     geometry: &SelectedP11Geometry,
@@ -633,7 +674,7 @@ pub fn build_primary_installed48_source_map(
     build_installed48_source_map(controls, geometry)
 }
 
-/// Builds the same installed48 value map from an admitted runtime-selected input.
+/// Builds the same dynamic source map from an admitted runtime-selected input.
 /// Static P11/bed/object mapping is shared with the detached projection path.
 pub fn build_meter_installed48_source_map(
     controls: &PrimaryMetadataControlRows,
@@ -657,11 +698,22 @@ fn build_installed48_source_map(
     controls: &PrimaryMetadataControlRows,
     geometry: &SelectedP11Geometry,
 ) -> Result<Installed48SourceMap, Installed48SourceMapError> {
-    if controls.row_count() != PHYSICAL_HOST_COUNT {
+    let physical_host_count = controls.row_count();
+    if !(MIN_PROFILE_PHYSICAL_HOST_COUNT..=MAX_PROFILE_PHYSICAL_HOST_COUNT)
+        .contains(&physical_host_count)
+        || controls.rows().len() != physical_host_count
+        || usize::from(controls.source_binding().wave().channels()) != physical_host_count
+    {
         return Err(Installed48SourceMapError::RowCount);
     }
+    let regular_host_count = physical_host_count
+        .checked_sub(1)
+        .ok_or(Installed48SourceMapError::RowCount)?;
+    let active_source_count = PREFIX_COUNT
+        .checked_add(regular_host_count)
+        .ok_or(Installed48SourceMapError::RowCount)?;
 
-    let mut rows = Vec::with_capacity(SOURCE_COUNT);
+    let mut rows = Vec::with_capacity(active_source_count);
     for point in geometry.points() {
         let metadata = prefix_metadata(point.xyz_words());
         rows.push(Installed48SourceRow {
@@ -682,7 +734,7 @@ fn build_installed48_source_map(
     let bed_points = selected_bed_source_points();
     let mut physical_rows = controls.rows().iter().collect::<Vec<_>>();
     physical_rows.sort_by_key(|row| row.track().physical_host().value());
-    if physical_rows.len() != PHYSICAL_HOST_COUNT
+    if physical_rows.len() != physical_host_count
         || physical_rows
             .iter()
             .enumerate()
@@ -692,8 +744,8 @@ fn build_installed48_source_map(
     }
     let mut lfe_count = 0;
     let mut direct_lfe_track = None;
-    let mut regular_ordinal = 0_u8;
-    let mut physical_bindings = Vec::with_capacity(REGULAR_COUNT);
+    let mut regular_ordinal = 0_usize;
+    let mut physical_bindings = Vec::with_capacity(regular_host_count);
     for row in physical_rows {
         let host = row.track().physical_host();
         let is_lfe = matches!(
@@ -707,7 +759,7 @@ fn build_installed48_source_map(
         }
 
         let source_value = PREFIX_COUNT
-            .checked_add(usize::from(regular_ordinal))
+            .checked_add(regular_ordinal)
             .ok_or(Installed48SourceMapError::SourceIndexDomain)?;
         let source_index = CodecSourceIndex::new(
             u64::try_from(source_value)
@@ -759,25 +811,21 @@ fn build_installed48_source_map(
             .checked_add(1)
             .ok_or(Installed48SourceMapError::SourceIndexDomain)?;
     }
-    if lfe_count != 1 || usize::from(regular_ordinal) != REGULAR_COUNT {
+    if lfe_count != 1 || regular_ordinal != regular_host_count {
         return Err(Installed48SourceMapError::DirectLfeIdentity);
     }
-    if rows.len() != SOURCE_COUNT {
+    if rows.len() != active_source_count {
         return Err(Installed48SourceMapError::RowCount);
     }
-    let rows = rows
-        .try_into()
-        .map_err(|_| Installed48SourceMapError::RowCount)?;
-    let physical_to_global_source = physical_bindings
-        .try_into()
-        .map_err(|_| Installed48SourceMapError::RowCount)?;
     let direct_lfe_track = direct_lfe_track.ok_or(Installed48SourceMapError::DirectLfeIdentity)?;
     Ok(Installed48SourceMap {
         source_binding: controls.source_binding().clone(),
         p11_geometry: geometry.clone(),
         direct_lfe_track,
+        physical_host_count: u16::try_from(physical_host_count)
+            .map_err(|_| Installed48SourceMapError::RowCount)?,
         rows,
-        physical_to_global_source,
+        physical_to_global_source: physical_bindings,
     })
 }
 
@@ -787,12 +835,20 @@ fn validate_selected_source_binding(
     if !binding.runtime_resource_bound() || binding.input_kind() != SelectedInputKind::Adm {
         return Err(Installed48SourceMapError::SourceBinding);
     }
-    let sample_count = binding.data_bytes() / SELECTED_BLOCK_ALIGN;
-    if binding.data_bytes() % SELECTED_BLOCK_ALIGN != 0
+    let channels = usize::from(binding.wave().channels());
+    if !(MIN_PROFILE_PHYSICAL_HOST_COUNT..=MAX_PROFILE_PHYSICAL_HOST_COUNT).contains(&channels) {
+        return Err(Installed48SourceMapError::SourceExtent);
+    }
+    let block_align = u64::try_from(
+        channels
+            .checked_mul(3)
+            .ok_or(Installed48SourceMapError::SourceExtent)?,
+    )
+    .map_err(|_| Installed48SourceMapError::SourceExtent)?;
+    let sample_count = binding.data_bytes() / block_align;
+    if binding.data_bytes() % block_align != 0
         || binding.data_bytes() > binding.source_file_bytes()
-        || sample_count != SELECTED_SAMPLE_COUNT
-        || binding.source_samples().value() != SELECTED_SAMPLE_COUNT
-        || binding.wave().channels() != 38
+        || sample_count != binding.source_samples().value()
         || binding.wave().sample_rate_hz() != 48_000
         || binding.wave().pcm_bits() != 24
     {

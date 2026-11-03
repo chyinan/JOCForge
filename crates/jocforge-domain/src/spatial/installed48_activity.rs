@@ -95,15 +95,16 @@ pub enum PrimaryActivityInput {
 pub struct PrimaryActivityOutput {
     callback_index: FrontendCallbackIndex,
     phase: PrimaryActivityPhase,
+    active_source_count: u16,
     host_frame: Option<FrontendCallbackIndex>,
     reader_relative_sample: AdmSampleIndex,
     actual_source_samples: u16,
     advertised_frame_samples: u16,
-    quiet37: [u8; 37],
+    quiet_regular_rows: Vec<u8>,
     prefix_writer_indices: Vec<u8>,
     field0_mask_hex: String,
     field4_mask_hex: String,
-    postroute_rows: [Installed48PostRouteRow; 48],
+    postroute_rows: Vec<Installed48PostRouteRow>,
 }
 
 impl PrimaryActivityOutput {
@@ -113,6 +114,10 @@ impl PrimaryActivityOutput {
 
     pub const fn phase(&self) -> PrimaryActivityPhase {
         self.phase
+    }
+
+    pub const fn active_source_count(&self) -> u16 {
+        self.active_source_count
     }
 
     pub const fn host_frame(&self) -> Option<FrontendCallbackIndex> {
@@ -131,8 +136,8 @@ impl PrimaryActivityOutput {
         self.advertised_frame_samples
     }
 
-    pub const fn quiet37(&self) -> &[u8; 37] {
-        &self.quiet37
+    pub fn quiet_regular_rows(&self) -> &[u8] {
+        &self.quiet_regular_rows
     }
 
     pub fn prefix_writer_indices(&self) -> &[u8] {
@@ -147,7 +152,7 @@ impl PrimaryActivityOutput {
         &self.field4_mask_hex
     }
 
-    pub fn postroute_rows(&self) -> &[Installed48PostRouteRow; 48] {
+    pub fn postroute_rows(&self) -> &[Installed48PostRouteRow] {
         &self.postroute_rows
     }
 }
@@ -217,6 +222,8 @@ pub struct PrimaryInstalled48ActivityProducer {
     source_samples: u64,
     normal_callback_count: u64,
     total_callback_count: u64,
+    physical_host_count: usize,
+    regular_source_count: usize,
     drain_policy: ActivityDrainPolicy,
     activity_window: Box<[FiniteF32]>,
     membership: PrefixMembershipProducer,
@@ -248,6 +255,8 @@ impl PrimaryInstalled48ActivityProducer {
             source_samples,
             normal_callback_count,
             total_callback_count,
+            physical_host_count: usize::from(source_map.physical_host_count()),
+            regular_source_count: source_map.physical_to_global_source().len(),
             drain_policy: ActivityDrainPolicy::ReplayCachedFrame,
             activity_window,
             membership,
@@ -258,7 +267,16 @@ impl PrimaryInstalled48ActivityProducer {
     pub fn new_meter(source_map: &Installed48SourceMap) -> Result<Self, PrimaryActivityError> {
         let binding = source_map.source_binding();
         let source_samples = binding.source_samples().value();
-        if source_samples == 0 || binding.data_bytes() / 114 != source_samples {
+        let block_align = u64::from(binding.wave().channels())
+            .checked_mul(3)
+            .ok_or(PrimaryActivityError::SourceExtent)?;
+        if source_samples == 0
+            || block_align == 0
+            || binding.data_bytes() % block_align != 0
+            || binding.data_bytes() / block_align != source_samples
+            || usize::from(source_map.physical_host_count())
+                != usize::from(binding.wave().channels())
+        {
             return Err(PrimaryActivityError::SourceExtent);
         }
         let normal_callback_count = source_samples.div_ceil(FRAME_SAMPLES as u64);
@@ -278,6 +296,8 @@ impl PrimaryInstalled48ActivityProducer {
             source_samples,
             normal_callback_count,
             total_callback_count,
+            physical_host_count: usize::from(source_map.physical_host_count()),
+            regular_source_count: source_map.physical_to_global_source().len(),
             drain_policy: ActivityDrainPolicy::FreshZeroInput,
             activity_window,
             membership,
@@ -285,7 +305,7 @@ impl PrimaryInstalled48ActivityProducer {
     }
 
     pub fn cold_state(&self) -> Result<PrimaryActivityState, PrimaryActivityError> {
-        let regular_history = fresh_history()?;
+        let regular_history = fresh_history(self.regular_source_count)?;
         Ok(PrimaryActivityState {
             source_receipt_sha256: self.source_receipt_sha256,
             source_samples: self.source_samples,
@@ -310,11 +330,13 @@ impl PrimaryInstalled48ActivityProducer {
             || before.source_samples != self.source_samples
             || before.normal_callback_count != self.normal_callback_count
             || before.total_callback_count != self.total_callback_count
+            || source_map.physical_host_count() as usize != self.physical_host_count
+            || source_map.physical_to_global_source().len() != self.regular_source_count
             || source_map.source_binding().source_receipt_sha256() != &self.source_receipt_sha256
         {
             return Err(PrimaryActivityError::SourceBinding);
         }
-        if before.regular_history.len() != 37
+        if before.regular_history.len() != self.regular_source_count
             || before
                 .regular_history
                 .iter()
@@ -357,7 +379,11 @@ impl PrimaryInstalled48ActivityProducer {
                 }
                 let remaining = self.source_samples - before.reader_cursor.value();
                 let expected_samples = remaining.min(FRAME_SAMPLES as u64) as usize;
-                let frame = PrimaryAudioFrame::from_normal_read(pcm_word_rows, expected_samples)?;
+                let frame = PrimaryAudioFrame::from_normal_read(
+                    pcm_word_rows,
+                    expected_samples,
+                    self.physical_host_count,
+                )?;
                 let after_cursor = AdmSampleIndex::new(
                     before
                         .reader_cursor
@@ -411,7 +437,10 @@ impl PrimaryInstalled48ActivityProducer {
                 let last_start = before
                     .last_reader_start
                     .ok_or(PrimaryActivityError::CachedFrameMissing)?;
-                let frame = PrimaryAudioFrame::from_fresh_zero_drain(pcm_word_rows)?;
+                let frame = PrimaryAudioFrame::from_fresh_zero_drain(
+                    pcm_word_rows,
+                    self.physical_host_count,
+                )?;
                 (
                     frame,
                     None,
@@ -425,17 +454,17 @@ impl PrimaryInstalled48ActivityProducer {
             _ => return Err(PrimaryActivityError::CallbackPhase),
         };
 
-        let quiet37 = produce_quiet37(
+        let quiet_regular_rows = produce_quiet_regular_rows(
             source_map,
             &before.regular_history,
             &frame,
             &self.activity_window,
         )?;
         let membership_route = source_map
-            .produce_primary_prefix_route(&quiet37, &self.membership)
+            .produce_primary_prefix_route(&quiet_regular_rows, &self.membership)
             .map_err(|_| PrimaryActivityError::MembershipProducer)?;
         let postroute_rows = source_map
-            .postroute_rows(&quiet37, membership_route.writers())
+            .postroute_rows(&quiet_regular_rows, membership_route.writers())
             .map_err(|_| PrimaryActivityError::PostRoute)?;
         let (field0_mask_hex, field4_mask_hex) =
             field_masks_hex(&postroute_rows).map_err(|_| PrimaryActivityError::PostRoute)?;
@@ -468,12 +497,13 @@ impl PrimaryInstalled48ActivityProducer {
         let output = PrimaryActivityOutput {
             callback_index: before.next_callback,
             phase: expected_phase,
+            active_source_count: source_map.source_count(),
             host_frame,
             reader_relative_sample,
             actual_source_samples: u16::try_from(actual_samples)
                 .map_err(|_| PrimaryActivityError::ReaderFrameShape)?,
             advertised_frame_samples: FRAME_SAMPLES as u16,
-            quiet37,
+            quiet_regular_rows,
             prefix_writer_indices: membership_route.writer_indices(),
             field0_mask_hex,
             field4_mask_hex,
@@ -487,16 +517,16 @@ impl PrimaryInstalled48ActivityProducer {
     }
 }
 
-fn produce_quiet37(
+fn produce_quiet_regular_rows(
     source_map: &Installed48SourceMap,
     history: &[Box<[FiniteF32]>],
     frame: &PrimaryAudioFrame,
     activity_window: &[FiniteF32],
-) -> Result<[u8; 37], PrimaryActivityError> {
-    if history.len() != 37 || source_map.physical_to_global_source().len() != 37 {
+) -> Result<Vec<u8>, PrimaryActivityError> {
+    if history.len() != source_map.physical_to_global_source().len() {
         return Err(PrimaryActivityError::HistoryShape);
     }
-    let mut quiet37 = [1_u8; 37];
+    let mut quiet_regular_rows = vec![1_u8; history.len()];
     for (regular_ordinal, binding) in source_map.physical_to_global_source().iter().enumerate() {
         let row = source_map
             .row_for_source(binding.source_index())
@@ -511,9 +541,9 @@ fn produce_quiet37(
         let witness =
             triangle_activity_witness(&history[regular_ordinal], current, activity_window)
                 .map_err(|_| PrimaryActivityError::NumericFailure)?;
-        quiet37[regular_ordinal] = u8::from(!(witness && mute == 0));
+        quiet_regular_rows[regular_ordinal] = u8::from(!(witness && mute == 0));
     }
-    Ok(quiet37)
+    Ok(quiet_regular_rows)
 }
 
 #[derive(Debug, PartialEq)]
@@ -535,21 +565,27 @@ impl Clone for PrimaryAudioFrame {
 }
 
 impl PrimaryAudioFrame {
-    fn from_fresh_zero_drain(pcm_word_rows: Vec<Vec<u32>>) -> Result<Self, PrimaryActivityError> {
-        if pcm_word_rows.len() != 38 || pcm_word_rows.iter().any(|row| row.len() != FRAME_SAMPLES) {
+    fn from_fresh_zero_drain(
+        pcm_word_rows: Vec<Vec<u32>>,
+        expected_channels: usize,
+    ) -> Result<Self, PrimaryActivityError> {
+        if pcm_word_rows.len() != expected_channels
+            || pcm_word_rows.iter().any(|row| row.len() != FRAME_SAMPLES)
+        {
             return Err(PrimaryActivityError::ReaderFrameShape);
         }
         if pcm_word_rows.iter().flatten().any(|word| *word != 0) {
             return Err(PrimaryActivityError::FreshDrainInputNonZero);
         }
-        Self::from_normal_read(pcm_word_rows, FRAME_SAMPLES)
+        Self::from_normal_read(pcm_word_rows, FRAME_SAMPLES, expected_channels)
     }
 
     fn from_normal_read(
         pcm_word_rows: Vec<Vec<u32>>,
         actual_samples: usize,
+        expected_channels: usize,
     ) -> Result<Self, PrimaryActivityError> {
-        if pcm_word_rows.len() != 38
+        if pcm_word_rows.len() != expected_channels
             || actual_samples == 0
             || actual_samples > FRAME_SAMPLES
             || pcm_word_rows.iter().any(|row| row.len() != actual_samples)
@@ -558,7 +594,7 @@ impl PrimaryAudioFrame {
         }
         let positive_zero =
             FiniteF32::new(0.0).map_err(|_| PrimaryActivityError::NumericFailure)?;
-        let mut channels = Vec::with_capacity(38);
+        let mut channels = Vec::with_capacity(expected_channels);
         for row in pcm_word_rows {
             let mut values = Vec::with_capacity(FRAME_SAMPLES);
             for word in row {
@@ -583,9 +619,11 @@ impl PrimaryAudioFrame {
     }
 }
 
-fn fresh_history() -> Result<Box<[Box<[FiniteF32]>]>, PrimaryActivityError> {
+fn fresh_history(
+    regular_source_count: usize,
+) -> Result<Box<[Box<[FiniteF32]>]>, PrimaryActivityError> {
     let zero = FiniteF32::new(0.0).map_err(|_| PrimaryActivityError::NumericFailure)?;
-    Ok((0..37)
+    Ok((0..regular_source_count)
         .map(|_| vec![zero; FRAME_SAMPLES].into_boxed_slice())
         .collect::<Vec<_>>()
         .into_boxed_slice())
@@ -650,7 +688,8 @@ mod meter_zero_drain_tests {
         state.last_reader_start = Some(AdmSampleIndex::new(
             (producer.normal_callback_count - 1) * FRAME_SAMPLES as u64,
         ));
-        state.regular_history = fresh_history().unwrap();
+        let regular_source_count = state.regular_history.len();
+        state.regular_history = fresh_history(regular_source_count).unwrap();
         state.cached_frame = None;
         state
     }

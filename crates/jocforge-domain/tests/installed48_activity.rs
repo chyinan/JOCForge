@@ -33,7 +33,7 @@ fn activity_uses_history_updates_and_excludes_the_direct_lfe() {
         .produce_next(&source_map, &state, normal_read(0, zero_frame()))
         .unwrap();
     let (cold_output, next_state, _) = cold.into_parts();
-    assert_eq!(cold_output.quiet37(), &[1; 37]);
+    assert_eq!(cold_output.quiet_regular_rows(), &[1; 37]);
     assert_eq!(cold_output.callback_index().value(), 0);
     assert_eq!(cold_output.actual_source_samples(), 1_536);
     state = next_state;
@@ -44,7 +44,7 @@ fn activity_uses_history_updates_and_excludes_the_direct_lfe() {
         .produce_next(&source_map, &state, normal_read(1_536, prior))
         .unwrap();
     let (lfe_output, next_state, _) = lfe_only.into_parts();
-    assert_eq!(lfe_output.quiet37(), &[1; 37]);
+    assert_eq!(lfe_output.quiet_regular_rows(), &[1; 37]);
     state = next_state;
 
     let mut regular_impulse = zero_frame();
@@ -53,15 +53,15 @@ fn activity_uses_history_updates_and_excludes_the_direct_lfe() {
         .produce_next(&source_map, &state, normal_read(3_072, regular_impulse))
         .unwrap();
     let (impulse_output, next_state, _) = impulse.into_parts();
-    assert_eq!(impulse_output.quiet37()[0], 1);
+    assert_eq!(impulse_output.quiet_regular_rows()[0], 1);
     state = next_state;
 
     let following = producer
         .produce_next(&source_map, &state, normal_read(4_608, zero_frame()))
         .unwrap();
     let (following_output, _, _) = following.into_parts();
-    assert_eq!(following_output.quiet37()[0], 0);
-    assert_eq!(following_output.quiet37()[1..], [1; 36]);
+    assert_eq!(following_output.quiet_regular_rows()[0], 0);
+    assert_eq!(following_output.quiet_regular_rows()[1..], [1; 36]);
 }
 
 fn primary_source_map() -> jocforge_domain::spatial::installed48_source_map::Installed48SourceMap {

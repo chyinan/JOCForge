@@ -2251,8 +2251,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 39527,
-              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+              "bytes": 46357,
+              "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -2612,8 +2612,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 39527,
-              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+              "bytes": 46357,
+              "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
             },
             {
               "path": "crates/jocforge-domain/tests/primary_metadata_control.rs",
@@ -6370,9 +6370,9 @@
       "direct_slices": [
         {
           "slice_id": "selected-primary-installed48-source-map-and-activity",
-          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_G2_F03R_VALUE_PROPOSALS__PACKET_AND_ROOT_COMMIT_DEFERRED",
-          "scope": "Keeps the detached static projection path and dynamic selected-ADM resource identity binding over the same 48-source row mapping. The authorized full WAVE was read in memory and produced source/activity plus F03R value-only results for g0-g2 under Wash V2's selected-profile typed adapter. Host10 authored Control52 word10=1 remains separate from feature diffuse=0. The nonnormative pre-F04 Source56 candidate remains rejected. No SourceFlagsPacket or callback root is committed.",
+          "mapping_status": "MATERIALIZED_N_PLUS_TEN_SOURCE_MAP_AND_METER_ACTIVITY__DOWNSTREAM_CONSUMERS_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_DYNAMIC_SOURCE_MAP_AND_ACTIVITY_FOR_36_38__F01E_RENDERER_AND_PARENT_OPEN",
+          "scope": "Builds exactly S=N+10 source-map rows from the selected P11 prefix and N-1 regular rows, preserving absent IDs without padding. The dynamic Meter activity producer now accepts the map's actual N PCM rows, tracks N-1 quiet/history rows, and emits variable-length postroute rows and source-ID masks with an explicit active-source count that bounds unused final mask bits. A synthetic PreparedJobInput one-sample fixture validates 36-row S=46 and 38-row S=48 maps plus one callback of activity; for N=36, IDs 46 and 47 are absent. This path consumes PrimaryMetadataControlRows and P11 geometry only; it does not bind a dynamic F01E normal after-state, run actual PCM, reach the fixed 48-wide renderer or source-geometry consumers, install parent roots, or produce product output.",
           "implementation_files": [
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
             "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -6380,6 +6380,7 @@
             "crates/jocforge-domain/src/spatial/installed48_activity.rs",
             "crates/jocforge-domain/src/spatial/selected_p11_geometry.rs",
             "crates/jocforge-domain/src/spatial/source_flags.rs",
+            "crates/jocforge-domain/src/meter/installed48_renderer.rs",
             "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
             "crates/jocforge-io/src/pcm/riff_pcm24.rs",
             "crates/jocforge-io/examples/meter_input_probe.rs"
@@ -6387,16 +6388,18 @@
           "test_modules": [
             "crates/jocforge-domain/tests/installed48_source_map.rs",
             "crates/jocforge-domain/tests/installed48_activity.rs",
+            "crates/jocforge-domain/src/spatial/installed48_activity.rs",
             "crates/jocforge-domain/tests/selected_p11_geometry.rs",
-            "crates/jocforge-application/tests/prepared_job_input.rs",
-            "crates/jocforge-domain/tests/meter_installed48_renderer.rs"
+            "crates/jocforge-domain/tests/meter_installed48_renderer.rs",
+            "crates/jocforge-application/tests/prepared_job_input.rs"
           ],
           "clock": {
             "domains": [
               "FrontendCallbackIndex",
               "AdmSampleIndex",
               "CodecSourceIndex",
-              "PhysicalHostIndex"
+              "PhysicalHostIndex",
+              "MeterSourceChannelCount"
             ],
             "covered_clauses": [
               "Normal input callbacks g=0..4246; cached drain callbacks g=4247..4250",
@@ -6412,9 +6415,14 @@
               "crates/jocforge-domain/tests/fixtures/primary_installed48/INSTALLED48-SOURCE-MAP.json",
               "crates/jocforge-domain/tests/fixtures/primary_installed48/ACTIVITY-AND-ROUTING-RULES.json",
               "crates/jocforge-domain/tests/fixtures/primary_installed48/SELECTED-GEOMETRY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/P11-SOURCE-BINDING.json"
+              "crates/jocforge-domain/tests/fixtures/primary_installed48/P11-SOURCE-BINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/AXIS-SIZE-VECTORS.json"
             ],
-            "validation_boundary": "R2 package payloads remain test-only expected evidence; runtime source maps are recomputed from the admitted F01E graph/control rows and whole-resource identity. The authorized WAVE g0-g2 F03R value-only probe used the separate selected-profile typed adapter and sequential raw-history proposals; no packet, callback state, or main encode path was committed."
+            "validation_boundary": "R2 package payloads remain test-only expected evidence; runtime source maps are recomputed from the admitted F01E graph/control rows and whole-resource identity. The authorized WAVE g0-g2 F03R value-only probe used the separate selected-profile typed adapter and sequential raw-history proposals; no packet, callback state, or main encode path was committed.",
+            "r10_source_axis_manifest_sha256": "7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8",
+            "r10_machine_evidence_json_status": "INVALID_JSON_EXCLUDED_PENDING_WASH_CORRECTION"
           },
           "vectors": {
             "kind": "SEALED_MODEL_REPLAY_AND_POSTCOMPUTATION_RECEIPTS",
@@ -6424,7 +6432,11 @@
               "crates/jocforge-domain/tests/fixtures/primary_installed48/POSTROUTE-VARIANTS.json",
               "crates/jocforge-domain/tests/fixtures/primary_installed48/route_semantics_v2/CLARIFICATIONS.md",
               "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-INPUT-ONLY.json",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-EXPECTED.json"
+              "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-EXPECTED.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/AXIS-SIZE-VECTORS.json",
+              "crates/jocforge-application/tests/prepared_job_input.rs"
             ],
             "case_pointers": [
               "4,251 callback rows: phase, host-frame, source sample cursor, actual/advertised counts, quiet flags, writer indices and field0/field4 masks",
@@ -6453,7 +6465,16 @@
               "meter_frontend_producer_chain_v1": "9de1440ebb9bc1d1e119b1f2bbb80577a0ae885f722264a52d837c28f9c8e95f",
               "f03r_diffuse_field_boundary_v1": "d57ba77c725ba0a54be624854b069cf96cc27f4daa9811a990c60c50b4b55efa",
               "f03r_diffuse_candidate_probe_scope_v1": "e5f51f3763df70d0f830102214d862cc530e43a7cdeb43b2c637a3c9dfe9f0ff"
-            }
+            },
+            "r10_source_axis_manifest_sha256": "7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8",
+            "dynamic_source_axis_cases": [
+              "36 physical rows map to 46 active source rows; IDs 46 and 47 remain absent and are not zero-padded.",
+              "38 physical rows map to all 48 active source rows.",
+              "A synthetic one-sample callback emits N-1 regular activity rows and N+10 postroute rows for N=36 and N=38.",
+              "Field masks require contiguous source IDs and PrimaryActivityOutput carries active_source_count; unused storage bits are not source rows.",
+              "R10 valid REPORT and AXIS-SIZE-VECTORS provide N=39 -> S=49 capacity arithmetic; no N=39 source-map fixture or full callback is claimed.",
+              "R10 EVIDENCE.json is hash-pinned but invalid JSON and is not consumed pending corrected Wash delivery."
+            ]
           },
           "error_outcomes": [
             {
@@ -6475,8 +6496,98 @@
             "native primary activity acceptance and consumer-field lineage",
             "F03R SourceFlagsPacket production, CurrentFeatures, selector/U04/outer, and F03W root commit",
             "F03F/selector/U04/outer, F04A render integration, SCP/control packet, and callback commit",
-            "application/CLI production connection, end-to-end encode, and W04 acceptance"
-          ]
+            "application/CLI production connection, end-to-end encode, and W04 acceptance",
+            "Dynamic F01E normal after-state and same-generation control-to-source-map join; current test uses PrimaryMetadataControlRows directly.",
+            "The 48-wide renderer, source_geometry_outer, flags/presence, point response, and SpatialControl consumers; N>38 full consumer support.",
+            "A real 36-row normal-plus-drain callback sequence, twelve-owner parent root swap, READY, AU output, durable publication, and W04.",
+            "The R10 machine-readable EVIDENCE.json until Wash supplies a corrected sealed package."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
+              "bytes": 41164,
+              "sha256": "5047b4224572b1937e579d040faaadbbfbeeafc52aac56da2319c6ab49ff9c84"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
+              "bytes": 6792,
+              "sha256": "01e32548bdd9ced70856d54fcd3751bac5325de4743a0751660895d1f874e84a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
+              "bytes": 39931,
+              "sha256": "232462446b4a650187d113eaf0e0ac5e4c6d63454b5a6c09e5ff412c935c8283"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/installed48_activity.rs",
+              "bytes": 29143,
+              "sha256": "e532e88be70ee32ad8a8986e40e43683895ea321063aea690aca0e4b79fc95dd"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/selected_p11_geometry.rs",
+              "bytes": 4511,
+              "sha256": "83347a5ff5adbfd319659be93a11cbaf5c74956b38cbed10c0329e713cc4d082"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
+              "bytes": 66664,
+              "sha256": "8f1f7cde44a23417f10cce1b3d739dc4643cfa4483679a6f5aad08dbf35c4441"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
+              "bytes": 24238,
+              "sha256": "5b249a4bd26a6a149658ac11343e4b4b2e36bd7fb41843f6c1d79eaaf6bde5e7"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
+              "bytes": 27200,
+              "sha256": "eca4768284186db920b8c37b14edf316f153ccaf57e03f9cac5e149f27bbc914"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+              "bytes": 19158,
+              "sha256": "338f851cbfb855fa14f6119ff0fa6854821ad75f8e62ef7052cb80c13802d28b"
+            },
+            {
+              "path": "crates/jocforge-io/examples/meter_input_probe.rs",
+              "bytes": 28513,
+              "sha256": "5c82e3aae20c476f2131af6025865345b4b62c2873e6bac933e93445a494492e"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/installed48_source_map.rs",
+              "bytes": 10337,
+              "sha256": "76cd6ddee7c8c4e0acb0758f12991b2cfa7b01f0c0a2401cb8b0195d74c3e0c0"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/installed48_activity.rs",
+              "bytes": 4085,
+              "sha256": "ddd7285d86c106578408cf5d3811fcdd9826b50959af23851876a03d57b58b7b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/installed48_activity.rs",
+              "bytes": 29143,
+              "sha256": "e532e88be70ee32ad8a8986e40e43683895ea321063aea690aca0e4b79fc95dd"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/selected_p11_geometry.rs",
+              "bytes": 2873,
+              "sha256": "00e80f92ccc6382d2255c02d57d1c503ecff81f5b5574b5c065dfb55712fe557"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/meter_installed48_renderer.rs",
+              "bytes": 10183,
+              "sha256": "a2ba43d2804b2fdfaed4b73761543ca2a0b6e625e251d40329bebf34a76cd766"
+            },
+            {
+              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+              "bytes": 46357,
+              "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
+            }
+          ],
+          "owner": "spatial_control"
         },
         {
           "slice_id": "source-flags-current-features-and-source-gate",
@@ -7014,8 +7125,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
-              "bytes": 37454,
-              "sha256": "d816124e2c4c7b2cd95122f89fe01e1984ea4d2efe2a7251b3d849edc5e12682"
+              "bytes": 39931,
+              "sha256": "232462446b4a650187d113eaf0e0ac5e4c6d63454b5a6c09e5ff412c935c8283"
             }
           ],
           "test_inventory": [
@@ -7236,8 +7347,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
-              "bytes": 24035,
-              "sha256": "4c4c383554e97826e48f68e0bdde30652c3f2cacadd1233e7ca27adb8e7d7b79"
+              "bytes": 24238,
+              "sha256": "5b249a4bd26a6a149658ac11343e4b4b2e36bd7fb41843f6c1d79eaaf6bde5e7"
             },
             {
               "path": "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
@@ -7362,8 +7473,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
-              "bytes": 37454,
-              "sha256": "d816124e2c4c7b2cd95122f89fe01e1984ea4d2efe2a7251b3d849edc5e12682"
+              "bytes": 39931,
+              "sha256": "232462446b4a650187d113eaf0e0ac5e4c6d63454b5a6c09e5ff412c935c8283"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
@@ -7382,8 +7493,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
-              "bytes": 24035,
-              "sha256": "4c4c383554e97826e48f68e0bdde30652c3f2cacadd1233e7ca27adb8e7d7b79"
+              "bytes": 24238,
+              "sha256": "5b249a4bd26a6a149658ac11343e4b4b2e36bd7fb41843f6c1d79eaaf6bde5e7"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/production_callback.rs",
@@ -7414,8 +7525,8 @@
             },
             {
               "path": "crates/jocforge-domain/tests/meter_installed48_renderer.rs",
-              "bytes": 10161,
-              "sha256": "6a5f837f82dce38c7ea5eec0264e1b406a9d54a291df7c2db0c7f47f64cce180"
+              "bytes": 10183,
+              "sha256": "a2ba43d2804b2fdfaed4b73761543ca2a0b6e625e251d40329bebf34a76cd766"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
@@ -7847,8 +7958,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
-              "bytes": 24035,
-              "sha256": "4c4c383554e97826e48f68e0bdde30652c3f2cacadd1233e7ca27adb8e7d7b79"
+              "bytes": 24238,
+              "sha256": "5b249a4bd26a6a149658ac11343e4b4b2e36bd7fb41843f6c1d79eaaf6bde5e7"
             }
           ],
           "test_inventory": [
@@ -9721,8 +9832,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1982625,
-              "sha256": "7436c71fe935adc1cd733f91dae07883cc719b4676759a7ea8a7d502ab635f32"
+              "bytes": 1988305,
+              "sha256": "0b1877165c5fe7de83ef62173e85c771eefb55cfe350b2afb10ac018f807fc93"
             }
           ],
           "test_modules": [
@@ -12730,8 +12841,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 39527,
-              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+              "bytes": 46357,
+              "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
             }
           ]
         },
@@ -13248,8 +13359,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1982625,
-              "sha256": "7436c71fe935adc1cd733f91dae07883cc719b4676759a7ea8a7d502ab635f32"
+              "bytes": 1988305,
+              "sha256": "0b1877165c5fe7de83ef62173e85c771eefb55cfe350b2afb10ac018f807fc93"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -13506,8 +13617,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 39527,
-              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+              "bytes": 46357,
+              "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -16771,8 +16882,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
-              "bytes": 24035,
-              "sha256": "4c4c383554e97826e48f68e0bdde30652c3f2cacadd1233e7ca27adb8e7d7b79"
+              "bytes": 24238,
+              "sha256": "5b249a4bd26a6a149658ac11343e4b4b2e36bd7fb41843f6c1d79eaaf6bde5e7"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/frontend_stages.rs",
@@ -31137,8 +31248,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 39527,
-              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+              "bytes": 46357,
+              "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -31174,8 +31285,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 39527,
-              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+              "bytes": 46357,
+              "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -34073,8 +34184,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1982625,
-              "sha256": "7436c71fe935adc1cd733f91dae07883cc719b4676759a7ea8a7d502ab635f32"
+              "bytes": 1988305,
+              "sha256": "0b1877165c5fe7de83ef62173e85c771eefb55cfe350b2afb10ac018f807fc93"
             }
           ],
           "test_inventory": [
@@ -34822,8 +34933,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 39527,
-              "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+              "bytes": 46357,
+              "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
             },
             {
               "path": "crates/jocforge-domain/src/state/mod.rs",
@@ -35873,8 +35984,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/meter/installed48_renderer.rs",
-          "bytes": 24035,
-          "sha256": "4c4c383554e97826e48f68e0bdde30652c3f2cacadd1233e7ca27adb8e7d7b79"
+          "bytes": 24238,
+          "sha256": "5b249a4bd26a6a149658ac11343e4b4b2e36bd7fb41843f6c1d79eaaf6bde5e7"
         },
         {
           "path": "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
@@ -37745,8 +37856,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 39527,
-          "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+          "bytes": 46357,
+          "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -37822,8 +37933,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 39527,
-          "sha256": "2c6e7f533f5d2b6ca33c12fc0ce898a661aeb0eac31ca7f0114cc1bdc74377b1"
+          "bytes": 46357,
+          "sha256": "cc02d25c3198e418b5946ed47f4800a3e75ac8f73c171f3ac1c95466dff2f88c"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",

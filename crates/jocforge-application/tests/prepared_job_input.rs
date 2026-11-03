@@ -19,7 +19,13 @@ use jocforge_domain::frontend::{
     normal_control_snapshot::{NormalControlRow, NormalControlSnapshotError},
     validate_f01e_package_manifest, validate_f01e_provider,
 };
-use jocforge_domain::timeline::FrontendCallbackIndex;
+use jocforge_domain::spatial::{
+    installed48_activity::{PrimaryActivityInput, PrimaryInstalled48ActivityProducer},
+    installed48_source_map::{build_meter_installed48_source_map, field_masks_hex},
+    prefix_membership::PrefixMembershipProducer,
+    selected_p11_geometry::generate_selected_p11_geometry,
+};
+use jocforge_domain::timeline::{AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex};
 use jocforge_domain::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -446,6 +452,169 @@ fn meter_source_admission_carries_dynamic_adm_physical_row_count() {
             .unwrap()
             .contains("dynamic-rows")
     );
+}
+
+#[test]
+fn meter_source_map_materializes_the_n_plus_ten_active_axis_without_padding() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let geometry = generate_selected_p11_geometry(0x111b, true).unwrap();
+    let membership = PrefixMembershipProducer::for_selected_primary_p11(&geometry).unwrap();
+
+    for channels in [36_u16, 38] {
+        let (resource, spans) = selected_resource_with_channels(channels);
+        let prepared = prepare_selected_job_input(
+            test_programme_id(),
+            case["input_xml"].as_str().unwrap().as_bytes(),
+            SelectedWaveDescriptor::new(48_000, channels, 24),
+            1,
+            Arc::clone(&resource),
+            metadata_payloads(&resource, &spans),
+        )
+        .unwrap()
+        .bind_primary_control_rows(u64::from(channels) * 3)
+        .unwrap();
+        let controls = prepared.primary_metadata_controls().unwrap();
+        let source_map = build_meter_installed48_source_map(controls, &geometry).unwrap();
+        let active_sources = usize::from(channels) + 10;
+
+        assert_eq!(source_map.physical_host_count(), channels);
+        assert_eq!(
+            usize::from(source_map.regular_count()),
+            usize::from(channels) - 1
+        );
+        assert_eq!(usize::from(source_map.source_count()), active_sources);
+        assert_eq!(source_map.rows().len(), active_sources);
+        assert_eq!(
+            source_map
+                .rows()
+                .iter()
+                .map(|row| row.source_index().value())
+                .collect::<Vec<_>>(),
+            (0..active_sources as u64).collect::<Vec<_>>()
+        );
+
+        let quiet_rows = vec![1_u8; usize::from(channels) - 1];
+        let route = source_map
+            .produce_primary_prefix_route(&quiet_rows, &membership)
+            .unwrap();
+        let postroute_rows = source_map
+            .postroute_rows(&quiet_rows, route.writers())
+            .unwrap();
+        assert_eq!(postroute_rows.len(), active_sources);
+        let (field0_mask, field4_mask) = field_masks_hex(&postroute_rows).unwrap();
+        assert_eq!(field0_mask.len(), active_sources.div_ceil(4));
+        assert_eq!(field4_mask.len(), active_sources.div_ceil(4));
+
+        if channels == 36 {
+            assert_eq!(source_map.row_for_source(CodecSourceIndex::new(46)), None);
+            assert_eq!(source_map.row_for_source(CodecSourceIndex::new(47)), None);
+        }
+    }
+}
+
+#[test]
+fn meter_source_map_materializes_n_plus_ten_active_rows_without_padding() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let geometry = generate_selected_p11_geometry(0x111b, true).unwrap();
+    let membership = PrefixMembershipProducer::for_selected_primary_p11(&geometry).unwrap();
+
+    for channels in [36_u16, 38] {
+        let (resource, spans) = selected_resource_with_channels(channels);
+        let prepared = prepare_selected_job_input(
+            test_programme_id(),
+            case["input_xml"].as_str().unwrap().as_bytes(),
+            SelectedWaveDescriptor::new(48_000, channels, 24),
+            1,
+            Arc::clone(&resource),
+            metadata_payloads(&resource, &spans),
+        )
+        .unwrap()
+        .bind_primary_control_rows(u64::from(channels) * 3)
+        .unwrap();
+        let source_map = build_meter_installed48_source_map(
+            prepared.primary_metadata_controls().unwrap(),
+            &geometry,
+        )
+        .unwrap();
+        let active_sources = usize::from(channels) + 10;
+
+        assert_eq!(source_map.physical_host_count(), channels);
+        assert_eq!(
+            usize::from(source_map.regular_count()),
+            usize::from(channels) - 1
+        );
+        assert_eq!(usize::from(source_map.source_count()), active_sources);
+        assert_eq!(source_map.rows().len(), active_sources);
+        assert_eq!(
+            source_map
+                .rows()
+                .iter()
+                .map(|row| row.source_index().value())
+                .collect::<Vec<_>>(),
+            (0..active_sources as u64).collect::<Vec<_>>()
+        );
+
+        let quiet_rows = vec![1_u8; usize::from(channels) - 1];
+        let route = source_map
+            .produce_primary_prefix_route(&quiet_rows, &membership)
+            .unwrap();
+        let postroute_rows = source_map
+            .postroute_rows(&quiet_rows, route.writers())
+            .unwrap();
+        assert_eq!(postroute_rows.len(), active_sources);
+        let (field0_mask, field4_mask) = field_masks_hex(&postroute_rows).unwrap();
+        assert_eq!(field0_mask.len(), active_sources.div_ceil(4));
+        assert_eq!(field4_mask.len(), active_sources.div_ceil(4));
+
+        let activity_producer = PrimaryInstalled48ActivityProducer::new_meter(&source_map).unwrap();
+        let activity_before = activity_producer.cold_state().unwrap();
+        let activity = activity_producer
+            .produce_next(
+                &source_map,
+                &activity_before,
+                PrimaryActivityInput::NormalRead {
+                    reader_relative_sample: AdmSampleIndex::new(0),
+                    pcm_word_rows: vec![vec![0_u32]; usize::from(channels)],
+                },
+            )
+            .unwrap();
+        assert_eq!(
+            activity.output().active_source_count(),
+            active_sources as u16
+        );
+        assert_eq!(
+            activity.output().quiet_regular_rows().len(),
+            usize::from(channels) - 1
+        );
+        assert_eq!(activity.output().postroute_rows().len(), active_sources);
+
+        if channels == 36 {
+            assert_eq!(source_map.row_for_source(CodecSourceIndex::new(46)), None);
+            assert_eq!(source_map.row_for_source(CodecSourceIndex::new(47)), None);
+        }
+    }
 }
 
 #[test]

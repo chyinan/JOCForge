@@ -66,7 +66,7 @@ fn cold_zero_input_produces_one_noncommitting_postwindow_frame() {
         )
         .unwrap();
     let (activity_output, next_activity_state, membership_route) = activity_proposal.into_parts();
-    assert_eq!(activity_output.quiet37(), &[1; 37]);
+    assert_eq!(activity_output.quiet_regular_rows(), &[1; 37]);
     assert!(membership_route.contributions().is_empty());
 
     let source_sha256 = *source_map.source_binding().source_receipt_sha256();
@@ -197,7 +197,7 @@ fn authored_audio_diffuse_and_selected_feature_diffuse_reach_distinct_consumers(
         .unwrap();
     let (activity_output, _, membership_route) = activity_proposal.into_parts();
     assert_eq!(activity_output.callback_index(), callback_index);
-    assert_eq!(activity_output.quiet37()[host10_ordinal], 0);
+    assert_eq!(activity_output.quiet_regular_rows()[host10_ordinal], 0);
 
     let source_sha256 = *source_map.source_binding().source_receipt_sha256();
     let source_samples = MeterSourceSampleCount::new(binding.data_bytes() / 114).unwrap();

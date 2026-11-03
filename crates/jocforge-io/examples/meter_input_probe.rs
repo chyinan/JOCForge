@@ -353,7 +353,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
         println!(
-            "callback={} phase={:?} generation={} cursor_before={} cursor_after={} host_samples={} padded_samples={} rows=38x1536 f32_words_sha256={} quiet37_sha256={} prefix_writers={:?} membership_rows={} f03r_payload=48x2 sha256={} pair_counts_00_01_10_11={:?} host10_feature_host={} host10_feature_callback={} host10_feature_component_enum={} host10_feature_diffuse={} f04a_leaf=48x3072 generation={} sha256={}",
+            "callback={} phase={:?} generation={} cursor_before={} cursor_after={} host_samples={} padded_samples={} rows=Nx1536 f32_words_sha256={} quiet_regular_sha256={} prefix_writers={:?} membership_rows={} f03r_payload=48x2 sha256={} pair_counts_00_01_10_11={:?} host10_feature_host={} host10_feature_callback={} host10_feature_component_enum={} host10_feature_diffuse={} f04a_leaf=48x3072 generation={} sha256={}",
             frame.callback_index().value(),
             frame.phase(),
             frame.upstream_generation().value(),
@@ -362,7 +362,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             frame.host_input_count().value(),
             frame.source_padding_count().value(),
             hex_lower(&frame_digest.finalize()),
-            hex_lower(&Sha256::digest(activity_output.quiet37())),
+            hex_lower(&Sha256::digest(activity_output.quiet_regular_rows())),
             prefix_writer_sources,
             membership_route.contributions().len(),
             hex_lower(&flags_digest.finalize()),
@@ -421,7 +421,7 @@ fn f04g_actual_callback_record(
             .row_for_source(binding.source_index())
             .ok_or_else(|| io::Error::other("F04G actual input source row is missing"))?;
         let quiet = *activity
-            .quiet37()
+            .quiet_regular_rows()
             .get(regular_ordinal)
             .ok_or_else(|| io::Error::other("F04G actual quiet flag is missing"))?;
         let input_mute = row
@@ -460,7 +460,7 @@ fn f04g_actual_callback_record(
         "upstream_generation": frame.upstream_generation().value(),
         "source_interval": [frame.source_cursor_before().value(), frame.source_cursor_after().value()],
         "actual_source_samples": frame.host_input_count().value(),
-        "quiet37_u8": activity.quiet37().to_vec(),
+        "quiet_regular_rows_u8": activity.quiet_regular_rows().to_vec(),
         "prefix_writer_sources": membership_route.writer_indices(),
         "membership_contribution_count": membership_route.contributions().len(),
         "physical_source_rows": physical_source_rows
