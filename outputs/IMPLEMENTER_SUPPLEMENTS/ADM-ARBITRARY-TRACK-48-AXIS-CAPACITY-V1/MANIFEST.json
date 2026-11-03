@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "48_WIDE_INTERNAL_AXIS_BOUND; N_GT_38_REQUIRES_WIDER_DYNAMIC_CONSUMERS; NATIVE_ABI_LIMIT_UNBOUND",
+  "implementation_ready": "PARTIAL_INTERNAL_AXIS_CONTRACT_ONLY",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_disassembly": false,
+  "payloads": {
+    "REPORT.md": {
+      "bytes": 2725,
+      "sha256": "a35ed5aa971587fa190af16880dc9d127802efb9283cb99ffc964a323f04b45c"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2050,
+      "sha256": "b7f0ba8f180fc9ee8c2210fe75c5809a37321f72437c21883fc357a00ece958e"
+    },
+    "AXIS-SIZE-VECTORS.json": {
+      "bytes": 772,
+      "sha256": "7eeeea350d6d89be18cb9625228914e9bdc0f8aaad4dd36e9dc6e37971e42f1f"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 744,
+      "sha256": "705ef2aab8621a7f22029f4a5141b66489d425acb73a813f89585730b85ee062"
+    }
+  }
+}

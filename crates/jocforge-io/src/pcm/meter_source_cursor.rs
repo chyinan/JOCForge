@@ -620,19 +620,43 @@ mod tests {
                 .all(|row| row.iter().all(|word| *word == 0))
         );
 
-        let mut unsupported_recipe = input_recipe();
-        unsupported_recipe["channels"] = Value::from(37_u64);
-        let unsupported_bytes = in_memory_pcm24_wave(&unsupported_recipe);
-        let unsupported = parse_selected_riff_pcm24(&unsupported_bytes, None).unwrap();
-        assert_eq!(
-            MeterPcmSourceCursor::cold(
-                &unsupported,
-                MeterPcmSourceIdentity::from_selected_resource_sha256(unsupported.source_sha256(),),
+        for channels in [9_u64, 257] {
+            let mut unsupported_recipe = input_recipe();
+            unsupported_recipe["channels"] = Value::from(channels);
+            let unsupported_bytes = in_memory_pcm24_wave(&unsupported_recipe);
+            let unsupported = parse_selected_riff_pcm24(&unsupported_bytes, None).unwrap();
+            assert_eq!(
+                MeterPcmSourceCursor::cold(
+                    &unsupported,
+                    MeterPcmSourceIdentity::from_selected_resource_sha256(
+                        unsupported.source_sha256(),
+                    ),
+                    MeterSourceSampleCount::new(1).unwrap(),
+                )
+                .err(),
+                Some(MeterSourceCursorError::SourceProfileMismatch)
+            );
+        }
+    }
+
+    #[test]
+    fn meter_cursor_admits_ten_through_256_profile_rows() {
+        for channels in [10_u64, 36, 38, 256] {
+            let mut recipe = input_recipe();
+            recipe["channels"] = Value::from(channels);
+            recipe["source_samples"] = Value::from(1_u64);
+            let source_bytes = in_memory_pcm24_wave(&recipe);
+            let parsed = parse_selected_riff_pcm24(&source_bytes, None).unwrap();
+            let identity =
+                MeterPcmSourceIdentity::from_selected_resource_sha256(parsed.source_sha256());
+            let cursor = MeterPcmSourceCursor::cold(
+                &parsed,
+                identity,
                 MeterSourceSampleCount::new(1).unwrap(),
             )
-            .err(),
-            Some(MeterSourceCursorError::SourceProfileMismatch)
-        );
+            .unwrap();
+            assert_eq!(cursor.source_channels().value(), channels as u16);
+        }
     }
 
     #[test]

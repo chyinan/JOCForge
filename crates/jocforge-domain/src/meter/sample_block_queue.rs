@@ -79,6 +79,9 @@ impl MeterSourceSampleCount {
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct MeterSourceChannelCount(u16);
 
+const MIN_SELECTED_ADM_PHYSICAL_ROWS: u16 = 10;
+const MAX_SELECTED_ADM_PHYSICAL_ROWS: u16 = u8::MAX as u16 + 1;
+
 impl MeterSourceChannelCount {
     pub const fn new(value: u16) -> Self {
         Self(value)
@@ -88,9 +91,9 @@ impl MeterSourceChannelCount {
         self.0
     }
 
-    /// The selected Meter input profiles currently admit both verified row shapes.
+    /// The selected ADM graph has ten bed rows and an eight-bit physical host index.
     pub const fn is_selected_profile_supported(self) -> bool {
-        matches!(self.0, 36 | 38)
+        self.0 >= MIN_SELECTED_ADM_PHYSICAL_ROWS && self.0 <= MAX_SELECTED_ADM_PHYSICAL_ROWS
     }
 }
 

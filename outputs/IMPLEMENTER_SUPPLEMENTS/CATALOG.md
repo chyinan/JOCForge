@@ -2,7 +2,7 @@
 
 > Generated locator only. A catalog row is not evidence. Read the selected package, verify its manifest and payload hashes, then use only its stated scope.
 
-Package directories: 726. Top-level manifests: 724.
+Package directories: 727. Top-level manifests: 725.
 
 Search by function, parameter, status, or package name:
 
@@ -16,6 +16,7 @@ Rebuild with `rtk proxy python -B scripts/build_supplement_catalog.py`.
 | Package | Manifest SHA-256 | Declared status | Payloads | Scope summary |
 |---|---|---|---|---|
 | ADM-36-DBMD-ROW-COUNT-WASH-V1 | fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374 | manifest: ONE_SAMPLE_DBMD36_CHNA36_FMT36; FIELD_JOIN_AND_RUNTIME_UNBOUND | REPORT.md, EVIDENCE.json, INPUT-ONLY-VECTOR.json, SOURCE-MANIFESTS.json, verify_package.py, seal_package.py | For the user-authorized [local path] Love.wav, the current metadata-only read found: - RIFF/WAVE fmt : PCM, 36 channels, 48 kHz, 24-bit. - CHNA: 36 tracks and 36 UIDs. - DBMD: 576-byte payload, sections 7, 9, and 10; section 10 declares 36 track records. - The DBMD record count equals both the WAVE physical channel count and CHNA track/UID counts for this sa |
+| ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1 | 7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8 | manifest: 48_WIDE_INTERNAL_AXIS_BOUND; N_GT_38_REQUIRES_WIDER_DYNAMIC_CONSUMERS; NATIVE_ABI_LIMIT_UNBOUND |  | No hash-verified summary payload declared. |
 | ADM-ARBITRARY-TRACK-PRODUCTION-BOUNDS-V1 | 40de788acd13b4de55d512c8e7d11698eb7d15f31fa77432406e4e15a94fb56a | manifest: CURRENT_HEAD_36_ROW_FIRST_METER_GATE_BOUND; DOWNSTREAM_DYNAMIC_SHAPES_AND_NATIVE_COUNT_JOIN_OPEN; VALIDATION_NOT_RUN |  | No hash-verified summary payload declared. |
 | ADM-AUDIO-INPUT-CALLBACK-REGISTRATION-OWNER-BOUNDARY-V1 | cebe176a16e99f319ddb13c7d7c3aebb08e40c2016fe1bc9d0d4b65619434faa | manifest: STATIC_GETTER_REGISTRY_BOUND; SELECTED_CALLBACK_OWNER_AND_READER_JOIN_UNBOUND | EVIDENCE.json, INPUT-ONLY-VECTORS.json, REPORT.md, SOURCE-MANIFESTS.json | Static Ghidra evidence binds the host's audio_input getter result to a raw callback-pointer vector. It does not bind a callback entry to an AdmPlugin typed owner, a selected runtime factory index, or the already observed AtmosMezz reader instance. FUN_14016AF20 maps the category string audio_input to export dlb_phoenix_get_audio_input_handle. FUN_14016A1C0 r |
 | ADM-AUTO-TIME-CONVERTER-SETTER-BOUNDARY-V4 | 5d458c8be2114376d1b0136d070a61e21868aff5498c6abdcde58ba3bdb1290f | manifest: HOST_TARGET_RESPONSE_BOUND; CONVERTER_FACTORY_KEYS_SEPARATE; PRIVCONTEXT_SETTERRANGE_JOIN_UNBOUND; FILE_POSITION_MVP_NOT_BLOCKED |  | No hash-verified summary payload declared. |

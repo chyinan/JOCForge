@@ -677,3 +677,28 @@ fn standalone_meter_schedule_and_cold_root_bind_the_36_row_extent() {
         7_329_792
     );
 }
+
+#[test]
+fn standalone_meter_root_accepts_the_selected_graph_row_domain() {
+    let source_samples = MeterSourceSampleCount::new(1).unwrap();
+    for channels in [10_u16, 36, 38, 256] {
+        let root = cold_root_with_extent(0, source_samples, MeterSourceChannelCount::new(channels));
+        assert_eq!(root.identity().source_channels().value(), channels);
+    }
+
+    let (gain_parameters, k_matrix) = providers();
+    for channels in [9_u16, 257] {
+        assert!(matches!(
+            StandaloneMeterRoot::cold_selected(
+                identity_with_channels(0, MeterSourceChannelCount::new(channels)),
+                source_samples,
+                MeterSourceOwnerId::new("test-parent-meter-source-row-boundary").unwrap(),
+                provider_set_from_v4(),
+                MeterKFilterExponentState::new([0; METER_CHANNEL_COUNT]),
+                gain_parameters.clone(),
+                k_matrix.clone(),
+            ),
+            Err(StandaloneMeterRootError::UnsupportedSourceChannels)
+        ));
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package": {
+    "package_id": "ADM-ARBITRARY-TRACK-PRODUCTION-BOUNDS-WASH-V1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-WASH-V1",
+    "manifest_sidecar_sha256": "05ff4e7940b29d9d7c48c3e62e04849529de5ec6835b4bb4635442380584de92",
+    "package_seal_sha256": "b7688aea184ed5869903d63bd77e42928f8a89655ad67c9ec88e02c646dd94c2",
+    "verifier": "normal and python -O passed; 29 source and 21 reference evidence hashes"
+  },
+  "excluded_from_supplement": [
+    "source code",
+    "Ghidra scripts or disassembly",
+    "native binaries",
+    "media/PCM payload",
+    "private key or license content"
+  ]
+}

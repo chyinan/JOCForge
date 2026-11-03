@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1",
+  "manifest_sha256": "7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8",
+  "sha256sums_sha256": "1cceec16c3d7a010d97710e324db48cc22a84a7beb1e3c171b050dc89a016909",
+  "payload_count": 4,
+  "status": "48_WIDE_INTERNAL_AXIS_BOUND; N_GT_38_REQUIRES_WIDER_DYNAMIC_CONSUMERS; NATIVE_ABI_LIMIT_UNBOUND"
+}

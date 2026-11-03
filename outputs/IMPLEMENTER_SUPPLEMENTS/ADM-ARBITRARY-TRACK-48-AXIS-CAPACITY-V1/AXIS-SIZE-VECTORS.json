@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.source_axis_size_vectors.v1",
+  "classification": "STATIC_TYPE_AND_CAPACITY_CALCULATIONS_NOT_RUNTIME_RUNS",
+  "profile": { "beds": 10, "direct_lfe_rows": 1, "prefix_sources": 11 },
+  "formula": { "regular_rows": "R=N-1", "active_sources": "S=11+R=N+10", "maximum_global_id": "N+9" },
+  "vectors": [
+    { "N": 36, "R": 35, "S": 46, "ids_46_47": "ABSENT_NOT_ZERO_FILLED" },
+    { "N": 38, "R": 37, "S": 48, "ids": "0..47" },
+    { "N": 39, "R": 38, "S": 49, "new_id": 48 },
+    { "N": 246, "S": 256, "u8_count": "OVERFLOW" },
+    { "N": 247, "S": 257, "max_id": 256, "u8_id": "OVERFLOW" },
+    { "N": 256, "R": 255, "S": 266, "max_id": 265 }
+  ],
+  "warning": "These calculations do not prove any N>38 end-to-end output or native ABI acceptance."
+}

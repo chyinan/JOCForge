@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "source_package_id": "ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-WASH-V1",
+  "source_manifest_sidecar_sha256": "05ff4e7940b29d9d7c48c3e62e04849529de5ec6835b4bb4635442380584de92",
+  "source_package_seal_sha256": "b7688aea184ed5869903d63bd77e42928f8a89655ad67c9ec88e02c646dd94c2",
+  "repository": {
+    "path": "D:/Programs/JOCForge-isolated",
+    "branch": "experimental/independent-encoder",
+    "head": "74682d529a6aaf6ec2f6b50d06aad0fb5ab32f7f"
+  },
+  "source_package_verification": {
+    "normal_python": "PASS",
+    "python_optimized": "PASS",
+    "package_file_hashes": 4,
+    "current_rust_source_hashes": 29,
+    "existing_text_evidence_hashes": 21
+  },
+  "row_count_contract": {
+    "binder_physical_rows": [1, 256],
+    "physical_host_index": "U8, 0..255",
+    "total_source_count": "U16",
+    "codec_source_id": "U64",
+    "profile": "10 bed rows plus one graph-identified direct LFE",
+    "regular_rows": "R=N-1",
+    "source_prefix": 11,
+    "total_active_sources": "S=11+R=N+10",
+    "largest_global_id": "N+9"
+  },
+  "vectors": [
+    { "N": 36, "R": 35, "S": 46, "regular_ids": "11..45", "ids_46_47": "ABSENT_UNBOUND_NOT_PADDED" },
+    { "N": 38, "R": 37, "S": 48, "regular_ids": "11..47", "status": "CURRENT_AXIS_CAPACITY" },
+    { "N": 39, "R": 38, "S": 49, "first_new_global_id": 48, "status": "CURRENT_AXIS_EXCEEDED" },
+    { "N": 246, "R": 245, "S": 256, "u8_source_count": "OVERFLOW" },
+    { "N": 247, "R": 246, "S": 257, "maximum_global_id": 256, "u8_destination": "OVERFLOW" },
+    { "N": 256, "R": 255, "S": 266, "maximum_global_id": 265, "status": "REQUIRES_DYNAMIC_WIDE_CONSUMERS" }
+  ],
+  "native_count_domains": {
+    "plugin_packet_row_gate": "1..128 in one helper, not typed to physical ADM rows",
+    "DDP_open_per_group_capacity": 11 for one scoped open wrapper, not typed to ADM rows",
+    "native_abi_physical_row_limit": "UNBOUND_NOT_PROVEN"
+  },
+  "execution": {
+    "CLI_or_DEE": "NOT_RUN",
+    "test_or_decode": "NOT_RUN",
+    "media_pcm_payload_key_read": "NOT_RUN"
+  }
+}

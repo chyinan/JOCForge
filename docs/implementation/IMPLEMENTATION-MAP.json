@@ -2575,8 +2575,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 10412,
-              "sha256": "45ed6b198cc1ed68efc4be29a3f1044574eb297b454abadd0f37fc97190bbb22"
+              "bytes": 10360,
+              "sha256": "835f460a3e638aa72bf7cc9ad231418288be86744bab0d2a25555c9485d9b6f2"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
@@ -9721,8 +9721,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1976849,
-              "sha256": "05d777bb5fcb0a4a829de0a193e461c11e075249728453af29c8ef4093d7c44a"
+              "bytes": 1982625,
+              "sha256": "7436c71fe935adc1cd733f91dae07883cc719b4676759a7ea8a7d502ab635f32"
             }
           ],
           "test_modules": [
@@ -12344,7 +12344,7 @@
           "slice_id": "standalone-meter-selected-root-and-schedule-stage",
           "mapping_status": "MATERIALIZED_SELECTED_METER_Q_PLUS_THREE_NONCOMMITTING_SCHEDULE_CANDIDATE__FULL_RUN_NOT_RUN",
           "implementation_status": "LOCALLY_COMPILED_G0_G1_REAL_SOURCE_STAGE_AND_FULL_SCHEDULE_DRIVER__Q_TERMINAL_RECEIPT_AND_READY_NOT_RUN",
-          "scope": "The domain owner derives its existing callback, block, and energy-window schedule from the admitted per-channel source sample extent and carries the admitted 36/38 physical-row count in Meter identity. The selected 38-row schedule remains unchanged; the 36-row synthetic extent 7,328,771 derives 4,772 normal callbacks, three zero drains, 7,329,792 published samples, 7,158 complete blocks, and 7,635 energy windows. The sample cursor preserves the same supported 36/38 input set and PCM24 block-align validation. This is a Meter extent/root slice only: no full 36-row callback run, dynamic F01E/Spatial connection, wider-than-38 source axis, parent READY swap, or product output is claimed.",
+          "scope": "The domain owner derives its existing callback, block, and energy-window schedule from the admitted per-channel source sample extent and carries the admitted physical-row count in Meter identity. The Meter source boundary uses the selected graph row domain 10..=256: ten profile bed rows at minimum and the U8 physical-host index through 255 at maximum. The selected 38-row schedule remains unchanged; the 36-row synthetic extent 7,328,771 derives 4,772 normal callbacks, three zero drains, 7,329,792 published samples, 7,158 complete blocks, and 7,635 energy windows. The sample cursor preserves the same supported 36/38 input set and PCM24 block-align validation. Wash supplement ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1 REPORT and valid axis-size vector bind the selected model relation S=N+10 and confirms 38 rows exactly fill the 48-wide internal source axis; N>38 requires wider consumers. N=246 also exceeds the current U8 active-count representation and N=247 exceeds the U8 source-ID representation. The package EVIDENCE.json is malformed JSON and is not consumed pending Wash correction. This is a Meter extent/root slice only: no dynamic F01E/Spatial connection, wider source axis, parent READY swap, full 36-row callback run, or product output is claimed.",
           "owner": "meter",
           "dependencies": [
             "independent-meter-prepass-callback-commit",
@@ -12416,21 +12416,33 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/INPUT-ONLY-ROOT-RECIPES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/input-only-cold-roots/N6522906_pre_callback0_cold_root.json",
               "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json",
-              "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json"
+              "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/AXIS-SIZE-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Selected 38-row source extent 6,522,906 retains the existing 4,247-normal-callback schedule and canonical root reference.",
               "Synthetic 36-row extent 7,328,771 derives 4,772 normal callbacks, 3 drains, 7,329,792 published samples, 7,158 complete blocks, and 7,635 energy windows.",
+              "Meter source cursor and cold root accept synthetic profile row counts 10, 36, 38, and 256; 9 and 257 reject.",
               "The 36-row cold root carries channel count 36 in its canonical binding and retains the derived schedule.",
-              "Synthetic 1,050-sample PCM24 source cursor emits 36 physical rows on normal and zero-drain frames; 37 rows reject.",
+              "Synthetic 1,050-sample PCM24 source cursor emits 36 physical rows on normal and zero-drain frames; 9 and 257 rows reject at the selected graph row-domain boundary.",
+              "Washed source-axis relation is S=N+10: N=36 gives S=46/max ID45; N=38 gives S=48/max ID47; N=39 needs S=49/max ID48.",
+              "N=246 gives S=256 and exceeds U8 source_count; N=247 has max ID256 and exceeds U8 source-ID range. These are current model type-width limits, not external ABI limits.",
+              "The 36-row source-axis IDs 46 and 47 remain absent; do not synthesize or zero-pad them. N>38 consumer implementation remains NOT_RUN.",
+              "R10 EVIDENCE.json is hash-bound but malformed JSON at line 39; do not consume its fields until Wash supplies a corrected sealed package.",
               "These local assertions verify structural schedule derivation only; full real-source Q+3 Meter execution and product acceptance are NOT_RUN."
             ],
-            "expected_values_are_assertions_only": true
+            "expected_values_are_assertions_only": true,
+            "supplement_manifest_sha256": "7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8"
           },
           "not_run": [
             "The selected 38-row 4,247 normal callbacks and three FreshZero drains and the derived 36-row full callback schedule remain NOT_RUN on real PCM; no real terminal MeasurementReceipt has been created.",
-            "Connect 36-row F01E after-state, graph-sized spatial owners, and source-axis consumers; the current 48-wide consumer boundary and any N>38 extension remain open.",
-            "A 12-owner parent swap, READY, AU output, durable publication, and W04/product acceptance remain NOT_RUN."
+            "Connect 36-row F01E after-state, graph-sized spatial owners, and dynamic source-axis consumers; N>38 requires widening all 48-wide consumers and U8 count/ID fields. The Wash package establishes capacity bounds only, not implementation.",
+            "A 12-owner parent swap, READY, AU output, durable publication, and W04/product acceptance remain NOT_RUN.",
+            "Wash R10 REPORT/vector payloads are hash-pinned, but EVIDENCE.json is invalid JSON and excluded until Wash issues a corrected sealed package."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
@@ -12481,15 +12493,15 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 26215,
-              "sha256": "0fc498d51f9c35daa6e26f7fcd0837426192a945b4e787fb21dd6020f752253a"
+              "bytes": 27200,
+              "sha256": "eca4768284186db920b8c37b14edf316f153ccaf57e03f9cac5e149f27bbc914"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
-              "bytes": 24133,
-              "sha256": "981799eadb11ad41f357f39da4d1f354b2a6709ba7d06399987a4027257ed24c"
+              "bytes": 25159,
+              "sha256": "55ba20284e52852e26d6113b11a5ac5ece117c10a06c61eb2f36bbad1a3a9e14"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -12497,7 +12509,7 @@
               "sha256": "863eed1b00412144a8a1f21d02182b9bcd3fbaf6341dbf3b21f5d3ada8428310"
             }
           ],
-          "validation_boundary": "Focused local tests assert dynamic schedule derivation and 36-row Meter identity. They do not execute the full normal-plus-drain schedule on the real source, establish wider-than-38 channel support, connect spatial owners, or claim a terminal production receipt, READY root, AU output, or product acceptance."
+          "validation_boundary": "Focused local tests assert dynamic schedule derivation and 36-row Meter identity. They do not execute the full normal-plus-drain schedule on the real source, connect graph-sized F01E/Spatial owners or wider-than-38 source axis consumers, or claim a terminal production receipt, READY root, AU output, or product acceptance."
         },
         {
           "slice_id": "prepared-job-input-domain-identity-projection",
@@ -13236,8 +13248,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1976849,
-              "sha256": "05d777bb5fcb0a4a829de0a193e461c11e075249728453af29c8ef4093d7c44a"
+              "bytes": 1982625,
+              "sha256": "7436c71fe935adc1cd733f91dae07883cc719b4676759a7ea8a7d502ab635f32"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -13482,8 +13494,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 10412,
-              "sha256": "45ed6b198cc1ed68efc4be29a3f1044574eb297b454abadd0f37fc97190bbb22"
+              "bytes": 10360,
+              "sha256": "835f460a3e638aa72bf7cc9ad231418288be86744bab0d2a25555c9485d9b6f2"
             },
             {
               "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -13956,8 +13968,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 10412,
-              "sha256": "45ed6b198cc1ed68efc4be29a3f1044574eb297b454abadd0f37fc97190bbb22"
+              "bytes": 10360,
+              "sha256": "835f460a3e638aa72bf7cc9ad231418288be86744bab0d2a25555c9485d9b6f2"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
@@ -14096,8 +14108,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 26215,
-              "sha256": "0fc498d51f9c35daa6e26f7fcd0837426192a945b4e787fb21dd6020f752253a"
+              "bytes": 27200,
+              "sha256": "eca4768284186db920b8c37b14edf316f153ccaf57e03f9cac5e149f27bbc914"
             },
             {
               "path": "crates/jocforge-domain/src/meter/meter_prepass.rs",
@@ -15122,8 +15134,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-              "bytes": 35456,
-              "sha256": "ee866ded5ae6ea38996cafcb2b7e370e5b988736ae5cfa4c229a618c2034a487"
+              "bytes": 35630,
+              "sha256": "cb862f60658b718d2cf28cb13f4a8029506ec1391c3887a71996d0d2f93d2039"
             },
             {
               "path": "crates/jocforge-domain/src/meter/window_clock.rs",
@@ -15149,8 +15161,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-              "bytes": 35456,
-              "sha256": "ee866ded5ae6ea38996cafcb2b7e370e5b988736ae5cfa4c229a618c2034a487"
+              "bytes": 35630,
+              "sha256": "cb862f60658b718d2cf28cb13f4a8029506ec1391c3887a71996d0d2f93d2039"
             },
             {
               "path": "crates/jocforge-domain/src/meter/window_clock.rs",
@@ -15871,8 +15883,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 26215,
-              "sha256": "0fc498d51f9c35daa6e26f7fcd0837426192a945b4e787fb21dd6020f752253a"
+              "bytes": 27200,
+              "sha256": "eca4768284186db920b8c37b14edf316f153ccaf57e03f9cac5e149f27bbc914"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -16552,8 +16564,8 @@
         {
           "slice_id": "prepared-adm-physical-pcm-row-cursor-binding",
           "mapping_status": "MATERIALIZED_DIRECT_F06OF_PHYSICAL_PCM_ROW_AND_CURSOR_SUBSLICE__METER_ROOT_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_CHNA_DBMD_TO_PCM_ROW_AND_TYPED_METER_CURSOR_BINDING__TERMINAL_METER_ROOT_DEFERRED",
-          "scope": "Binds the same PreparedJobInput's validated CHNA/DBMD physical-track map to the selected 38-channel planar PCM rows and the MeterPcmSourceCursor proposal. For each CHNA track_index 1..38, PCM row is track_index-1; physical_host and zero-based DBMD track index must match that row. ConverterChannelInputId is retrieved only through the slot-keyed AdmFileStorageChannelMap and is carried as semantic route data, never used as a row index. The prepared full-resource identity and AXML/CHNA/DBMD chunk identities are retained, and the cursor frame must match the same resource SHA, sample extent, callback, generation, phase, cursor positions, actual complete-frame count and padding. This meter cursor has exactly three zero-input drains; it does not infer native EOF from short reads or reuse the main encoder's four cached drains. Cursor advancement remains the existing CLI meter/OAR stage's commit-only action.",
+          "implementation_status": "LOCALLY_VERIFIED_PROFILE_ROW_DOMAIN_10_TO_256_AND_TYPED_PCM_CURSOR__DOWNSTREAM_AXIS_DEFERRED",
+          "scope": "Binds the same PreparedJobInput's validated CHNA/DBMD physical-track map to its actual planar PCM row count N in the selected 10..=256 host domain and the MeterPcmSourceCursor proposal. For each CHNA track index 1..=N, PCM row is track_index-1; physical_host and zero-based DBMD track index must match that row. ConverterChannelInputId is retrieved only through the slot-keyed AdmFileStorageChannelMap and is carried as semantic route data, never used as a row index. The prepared full-resource identity and AXML/CHNA/DBMD chunk identities are retained, and the cursor frame must match the same resource SHA, sample extent, callback, phase, cursor positions, actual complete-frame count and padding. The cursor remains a source-input boundary: this does not connect dynamic F01E/Spatial owners, N+10 installed48 consumers, a terminal Meter receipt, parent READY swap, or arbitrary-N product output.",
           "owner": "application",
           "dependencies": [
             "selected-adm-graph-to-converter-storage-map",
@@ -16602,7 +16614,8 @@
           },
           "test_modules": [
             "crates/jocforge-application/src/meter_source_bridge.rs",
-            "crates/jocforge-cli/tests/meter_source_bridge.rs"
+            "crates/jocforge-cli/tests/meter_source_bridge.rs",
+            "crates/jocforge-io/src/pcm/meter_source_cursor.rs"
           ],
           "vectors": {
             "kind": "WASHED_PHYSICAL_ROW_BINDING_WITH_SYNTHETIC_CHANNEL_MARKERS",
@@ -16650,8 +16663,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 26215,
-              "sha256": "0fc498d51f9c35daa6e26f7fcd0837426192a945b4e787fb21dd6020f752253a"
+              "bytes": 27200,
+              "sha256": "eca4768284186db920b8c37b14edf316f153ccaf57e03f9cac5e149f27bbc914"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -16681,6 +16694,11 @@
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
               "bytes": 21575,
               "sha256": "a5fd2e01b81932cebeb3f9085def3facae73c62fe134c183081c5ac08ca61cbb"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
+              "bytes": 27200,
+              "sha256": "eca4768284186db920b8c37b14edf316f153ccaf57e03f9cac5e149f27bbc914"
             }
           ],
           "verification": {
@@ -34055,8 +34073,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 1976849,
-              "sha256": "05d777bb5fcb0a4a829de0a193e461c11e075249728453af29c8ef4093d7c44a"
+              "bytes": 1982625,
+              "sha256": "7436c71fe935adc1cd733f91dae07883cc719b4676759a7ea8a7d502ab635f32"
             }
           ],
           "test_inventory": [
@@ -36842,8 +36860,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-          "bytes": 35456,
-          "sha256": "ee866ded5ae6ea38996cafcb2b7e370e5b988736ae5cfa4c229a618c2034a487"
+          "bytes": 35630,
+          "sha256": "cb862f60658b718d2cf28cb13f4a8029506ec1391c3887a71996d0d2f93d2039"
         },
         {
           "path": "crates/jocforge-domain/src/meter/window_clock.rs",
@@ -36859,8 +36877,8 @@
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
-          "bytes": 24133,
-          "sha256": "981799eadb11ad41f357f39da4d1f354b2a6709ba7d06399987a4027257ed24c"
+          "bytes": 25159,
+          "sha256": "55ba20284e52852e26d6113b11a5ac5ece117c10a06c61eb2f36bbad1a3a9e14"
         },
         {
           "path": "crates/jocforge-domain/src/meter/owner.rs",
@@ -36869,8 +36887,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/meter/sample_block_queue.rs",
-          "bytes": 35456,
-          "sha256": "ee866ded5ae6ea38996cafcb2b7e370e5b988736ae5cfa4c229a618c2034a487"
+          "bytes": 35630,
+          "sha256": "cb862f60658b718d2cf28cb13f4a8029506ec1391c3887a71996d0d2f93d2039"
         },
         {
           "path": "crates/jocforge-domain/src/meter/window_clock.rs",

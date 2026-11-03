@@ -6466,6 +6466,32 @@ def check_supplement_catalog(root):
  checked=subprocess.run([sys.executable,'-B',str(builder),'--check'],cwd=root,capture_output=True,text=True,encoding='utf-8');ck(checked.returncode==0 and '"index_is_locator_only": true' in checked.stdout and '"catalog_is_current": true' in checked.stdout,'washed supplement catalog is fresh against package directories')
  text=catalog.read_text(encoding='utf-8');ck('Generated locator only. A catalog row is not evidence.' in text and 'Package directories:' in text and 'Top-level manifests:' in text and 'NO_TOP_LEVEL_MANIFEST' in text and not re.search(r'(?i)\b[A-Z]:\\',text),'supplement catalog is clearly a sanitized locator, not evidence or an absolute-path index')
 
+def check_arbitrary_track_axis_supplement(root,d):
+ package=root/'outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1';manifest_path=package/'MANIFEST.json';manifest_bytes=manifest_path.read_bytes();expected_sha='7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8';manifest=json.loads(manifest_bytes)
+ ck(hashlib.sha256(manifest_bytes).hexdigest()==expected_sha and (package/'MANIFEST.sha256').read_text(encoding='ascii').strip()==expected_sha+'  MANIFEST.json'and manifest['package_id']=='ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1'and manifest['status']=='48_WIDE_INTERNAL_AXIS_BOUND; N_GT_38_REQUIRES_WIDER_DYNAMIC_CONSUMERS; NATIVE_ABI_LIMIT_UNBOUND'and manifest['contains_private_key_or_license']is False and manifest['contains_pcm_or_media']is False and manifest['contains_native_source_or_disassembly']is False,'R10 source-axis supplement manifest and distribution boundary')
+ expected_payloads={'REPORT.md':(2725,'a35ed5aa971587fa190af16880dc9d127802efb9283cb99ffc964a323f04b45c'),'EVIDENCE.json':(2050,'b7f0ba8f180fc9ee8c2210fe75c5809a37321f72437c21883fc357a00ece958e'),'AXIS-SIZE-VECTORS.json':(772,'7eeeea350d6d89be18cb9625228914e9bdc0f8aaad4dd36e9dc6e37971e42f1f'),'SOURCE-MANIFESTS.json':(744,'705ef2aab8621a7f22029f4a5141b66489d425acb73a813f89585730b85ee062')}
+ ck(set(manifest['payloads'])==set(expected_payloads),'R10 exact payload roster')
+ for name,(size,digest) in expected_payloads.items():
+  payload=(package/name).read_bytes();ck(manifest['payloads'][name]=={'bytes':size,'sha256':digest}and len(payload)==size and hashlib.sha256(payload).hexdigest()==digest,'R10 payload identity '+name)
+ sums_bytes=(package/'SHA256SUMS.txt').read_bytes();seal=json.loads((package/'package_seal.json').read_text(encoding='utf-8'));ck(hashlib.sha256(sums_bytes).hexdigest()==seal['sha256sums_sha256']and seal['manifest_sha256']==expected_sha and seal['payload_count']==4,'R10 package seal identity')
+ checksums={}
+ for line in sums_bytes.decode('ascii').splitlines():
+  digest,name=line.split('  ',1);ck(name not in checksums,'R10 unique checksum path '+name);checksums[name]=digest
+ ck(len(checksums)==6 and all(hashlib.sha256((package/name).read_bytes()).hexdigest()==digest for name,digest in checksums.items()),'R10 complete SHA256SUMS verification')
+ axis=json.loads((package/'AXIS-SIZE-VECTORS.json').read_text(encoding='utf-8'));report=(package/'REPORT.md').read_text(encoding='utf-8');evidence_bytes=(package/'EVIDENCE.json').read_bytes()
+ try:json.loads(evidence_bytes)
+ except json.JSONDecodeError as error:ck(error.lineno==39 and error.colno==39 and "Expecting ',' delimiter" in error.msg,'R10 malformed EVIDENCE.json is explicitly excluded from machine-readable use')
+ else:raise BoundaryError('R10 EVIDENCE.json changed; require the corrected Wash package before changing this boundary check')
+ ck(axis['formula']=={'regular_rows':'R=N-1','active_sources':'S=11+R=N+10','maximum_global_id':'N+9'}and axis['classification']=='STATIC_TYPE_AND_CAPACITY_CALCULATIONS_NOT_RUNTIME_RUNS'and axis['warning'].startswith('These calculations do not prove any N>38'),'R10 source-axis formula is evidence-only')
+ expected_vectors=[{'N':36,'R':35,'S':46,'ids_46_47':'ABSENT_NOT_ZERO_FILLED'},{'N':38,'R':37,'S':48,'ids':'0..47'},{'N':39,'R':38,'S':49,'new_id':48},{'N':246,'S':256,'u8_count':'OVERFLOW'},{'N':247,'S':257,'max_id':256,'u8_id':'OVERFLOW'},{'N':256,'R':255,'S':266,'max_id':265}]
+ ck(axis['vectors']==expected_vectors and 'not a demonstrated external/native adm abi limit' in report.lower() and 'unbound' in report.lower() and 'do not synthesize, alias, or zero-pad' in report,'R10 valid report and axis vectors bound internal capacity while native ABI and missing IDs remain unbound')
+ row=next(item for item in next(entry for entry in d['functional_entries']if entry['functional_id']=='F06')['direct_slices']if item['slice_id']=='standalone-meter-selected-root-and-schedule-stage')
+ ck(row['vectors']['supplement_manifest_sha256']==expected_sha and all('outputs/IMPLEMENTER_SUPPLEMENTS/ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1/'+name in row['vectors']['authoritative_vectors']for name in ('MANIFEST.json','REPORT.md','AXIS-SIZE-VECTORS.json','SOURCE-MANIFESTS.json'))and any('EVIDENCE.json is invalid JSON' in item for item in row['not_run']),'F06 Meter slice maps only valid R10 source-axis payloads and records malformed evidence JSON')
+ domain=rust_code_without_comments((root/'crates/jocforge-domain/src/meter/sample_block_queue.rs').read_text(encoding='utf-8'));application=rust_code_without_comments((root/'crates/jocforge-application/src/meter_source_admission.rs').read_text(encoding='utf-8'));cursor=rust_code_without_comments((root/'crates/jocforge-io/src/pcm/meter_source_cursor.rs').read_text(encoding='utf-8'));meter=rust_code_without_comments((root/'crates/jocforge-domain/src/meter/standalone_root.rs').read_text(encoding='utf-8'))
+ ck('MIN_SELECTED_ADM_PHYSICAL_ROWS: u16 = 10'in domain and 'MAX_SELECTED_ADM_PHYSICAL_ROWS: u16 = u8::MAX as u16 + 1'in domain and 'self.0 >= MIN_SELECTED_ADM_PHYSICAL_ROWS && self.0 <= MAX_SELECTED_ADM_PHYSICAL_ROWS'in domain and 'matches!(self.0, 36 | 38)'not in domain,'Meter source row count has no terminal 36/38 allowlist')
+ ck('source_channels.is_selected_profile_supported()'in application and 'MeterSourceChannelCount::new(channels).is_selected_profile_supported()'in cursor and 'identity.source_channels().is_selected_profile_supported()'in meter,'Meter admission, cursor, and root use the same 10..=256 typed row boundary')
+ ck(any('dynamic source-axis consumers' in value and 'N>38' in value for value in row['not_run']),'R10 capacity is not misreported as arbitrary-N end-to-end support')
+
 def check_wash_supplement_registry(root,d):
  registry=d.get('wash_supplement_registry',[]);functional_ids={entry['functional_id']for entry in d.get('functional_entries',[])};ck(len(registry)==25,'twenty-five locally verified Wash supplements are mapped');package_ids=[item.get('package_id')for item in registry];ck(len(set(package_ids))==25,'Wash supplement package IDs are unique')
  for item in registry:
@@ -6551,6 +6577,7 @@ def run(root=ROOT):
  check_f14_bit_compaction_slice(root,d)
  check_f14_hmac_primitive_slice(root,d)
  check_supplement_catalog(root)
+ check_arbitrary_track_axis_supplement(root,d)
  check_wash_supplement_registry(root,d)
  for e in future:
   if e['functional_id']=='F04D':

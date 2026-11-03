@@ -19,8 +19,6 @@ use crate::{PreparedJobInput, ResourceIdentity};
 
 const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
 const SELECTED_PCM_BITS: u16 = 24;
-const MAX_ADM_PHYSICAL_ROWS: usize = u8::MAX as usize + 1;
-const MIN_ADM_PHYSICAL_ROWS: usize = 10;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterSourceAdmissionError {
@@ -215,9 +213,10 @@ pub fn admit_meter_source_owner(
     }
     let wave = configuration.wave();
     let physical_rows = usize::from(wave.channels());
+    let source_channels = MeterSourceChannelCount::new(wave.channels());
     if wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
         || wave.pcm_bits() != SELECTED_PCM_BITS
-        || !(MIN_ADM_PHYSICAL_ROWS..=MAX_ADM_PHYSICAL_ROWS).contains(&physical_rows)
+        || !source_channels.is_selected_profile_supported()
         || physical_rows != prepared.graph().graph().tracks().len()
     {
         return Err(MeterSourceAdmissionError::UnsupportedWaveProfile);
