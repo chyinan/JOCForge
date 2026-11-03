@@ -11,6 +11,8 @@ pub(crate) mod none_drc_owner;
 pub use none_drc_owner::{
     NoneDrcOwnerAfterProposal, NoneDrcOwnerError, NoneDrcOwnerRoot, NoneDrcOwnerState,
 };
+pub mod drc_control_buffer;
+pub mod drc_profile_code;
 pub mod none_drc_quantizer;
 pub mod none_drc_scheduler;
 pub mod none_drc_statistics;
