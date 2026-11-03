@@ -1,5 +1,5 @@
 // pattern: Functional Core
-//! Selected 5.1 long-block LFE transform, dedicated FFT8 recurrence, and raw wrapper.
+//! Selected long-block LFE transforms, dedicated recurrence paths, and terminal projections.
 
 use super::fbw_transform::{F08FbwTransformError, long_pre_rotation};
 use super::long_transform::{
@@ -628,4 +628,86 @@ fn f08_lfe_subtract(left: f32, right: f32) -> Result<f32, F08LfeTransformError> 
 
 fn f08_lfe_negate(value: f32) -> f32 {
     f32::from_bits(value.to_bits() ^ 0x8000_0000)
+}
+
+const TERMINAL_A_0_BITS: u32 = 0xbf7f_ffec;
+const TERMINAL_A_1_BITS: u32 = 0xbf7f_f9c1;
+const TERMINAL_A_2_BITS: u32 = 0xbf7f_e9b8;
+const TERMINAL_A_3_BITS: u32 = 0xbf7f_cfd1;
+const TERMINAL_A_125_BITS: u32 = 0xbd10_7bb8;
+const TERMINAL_A_126_BITS: u32 = 0xbcbc_7a9b;
+const TERMINAL_A_127_BITS: u32 = 0xbc2f_ed02;
+const TERMINAL_B_0_BITS: u32 = 0xbac9_0fd5;
+const TERMINAL_B_1_BITS: u32 = 0xbc62_2fff;
+const TERMINAL_B_2_BITS: u32 = 0xbcd5_9aa6;
+const TERMINAL_B_3_BITS: u32 = 0xbd1d_0a88;
+const TERMINAL_B_125_BITS: u32 = 0xbf7f_d737;
+const TERMINAL_B_126_BITS: u32 = 0xbf7f_eea7;
+const TERMINAL_B_127_BITS: u32 = 0xbf7f_fc39;
+
+/// Static destination order reported for both terminal seven-value bodies.
+pub const LFE_TERMINAL_WRITE_ORDER: [u8; 7] = [0, 2, 4, 6, 5, 3, 1];
+
+/// Applies the hash-bound main terminal projection to one 16-value F32 window.
+///
+/// This standalone value function does not run the preceding recurrence, wrapper gates, or
+/// conditional matrix branch, and it does not write an LFE frame record. F32 rounding/FMA policy
+/// remains unclaimed.
+#[must_use]
+pub fn project_main_lfe_terminal_window(source: &[f32; 16]) -> [f32; 7] {
+    let a0 = f32::from_bits(TERMINAL_A_0_BITS);
+    let a1 = f32::from_bits(TERMINAL_A_1_BITS);
+    let a2 = f32::from_bits(TERMINAL_A_2_BITS);
+    let a3 = f32::from_bits(TERMINAL_A_3_BITS);
+    let a125 = f32::from_bits(TERMINAL_A_125_BITS);
+    let a126 = f32::from_bits(TERMINAL_A_126_BITS);
+    let a127 = f32::from_bits(TERMINAL_A_127_BITS);
+    let b0 = f32::from_bits(TERMINAL_B_0_BITS);
+    let b1 = f32::from_bits(TERMINAL_B_1_BITS);
+    let b2 = f32::from_bits(TERMINAL_B_2_BITS);
+    let b3 = f32::from_bits(TERMINAL_B_3_BITS);
+    let b125 = f32::from_bits(TERMINAL_B_125_BITS);
+    let b126 = f32::from_bits(TERMINAL_B_126_BITS);
+    let b127 = f32::from_bits(TERMINAL_B_127_BITS);
+    let mut output = [0.0_f32; 7];
+
+    output[0] = a0 * source[1] - b0 * source[0];
+    output[2] = a1 * source[3] - b1 * source[2];
+    output[4] = a2 * source[5] - b2 * source[4];
+    output[6] = a3 * source[7] - b3 * source[6];
+    output[5] = a125 * source[10] + b125 * source[11];
+    output[3] = a126 * source[12] + b126 * source[13];
+    output[1] = a127 * source[14] + b127 * source[15];
+
+    output
+}
+
+/// Applies the hash-bound companion terminal projection to one 16-value F32 window.
+#[must_use]
+pub fn project_companion_lfe_terminal_window(source: &[f32; 16]) -> [f32; 7] {
+    let a0 = f32::from_bits(TERMINAL_A_0_BITS);
+    let a1 = f32::from_bits(TERMINAL_A_1_BITS);
+    let a2 = f32::from_bits(TERMINAL_A_2_BITS);
+    let a3 = f32::from_bits(TERMINAL_A_3_BITS);
+    let a125 = f32::from_bits(TERMINAL_A_125_BITS);
+    let a126 = f32::from_bits(TERMINAL_A_126_BITS);
+    let a127 = f32::from_bits(TERMINAL_A_127_BITS);
+    let b0 = f32::from_bits(TERMINAL_B_0_BITS);
+    let b1 = f32::from_bits(TERMINAL_B_1_BITS);
+    let b2 = f32::from_bits(TERMINAL_B_2_BITS);
+    let b3 = f32::from_bits(TERMINAL_B_3_BITS);
+    let b125 = f32::from_bits(TERMINAL_B_125_BITS);
+    let b126 = f32::from_bits(TERMINAL_B_126_BITS);
+    let b127 = f32::from_bits(TERMINAL_B_127_BITS);
+    let mut output = [0.0_f32; 7];
+
+    output[0] = b0 * source[0] - a0 * source[1];
+    output[2] = b1 * source[2] - a1 * source[3];
+    output[4] = b2 * source[4] - a2 * source[5];
+    output[6] = b3 * source[6] - a3 * source[7];
+    output[5] = a125 * source[10] + b125 * source[11];
+    output[3] = a126 * source[12] + b126 * source[13];
+    output[1] = a127 * source[14] + b127 * source[15];
+
+    output
 }
