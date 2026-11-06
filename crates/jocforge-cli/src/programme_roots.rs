@@ -579,7 +579,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             }
             (Some(expected_au_index), Some(append)) => {
                 if append.au_index != expected_au_index
-                    || append.bytes_written != 4_096
+                    || append.bytes_written != self.output.output_configuration().frame_bytes()
                     || append.crc_residual != 0
                     || !append.file_fsync
                     || !append.durable
