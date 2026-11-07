@@ -227,8 +227,8 @@ pub fn assemble_metadata_bodies(
     }
     let id11 = reader_receipt.id11_metadata_body(source_index);
     let id2 = build_id2_body(
-        configuration.line_drc_profile(),
-        configuration.rf_drc_profile(),
+        configuration.line_drc_profile().xml_value(),
+        configuration.rf_drc_profile().xml_value(),
         id11_bytes,
     )
     .map_err(MetadataBodiesError::Id2)?
