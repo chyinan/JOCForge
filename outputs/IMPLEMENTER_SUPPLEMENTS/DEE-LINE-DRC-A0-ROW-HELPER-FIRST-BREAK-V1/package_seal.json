@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-A0-ROW-HELPER-FIRST-BREAK-V1",
+  "manifest_sha256": "f78cb37b60e9f37367bd46f57d5e9a777448103da8d04cd92830e8f71e0d3ecc",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "A0_NOT_EXPLICIT_ROW_HELPER_INPUT; SELECTED_ROW_OWNER_JOIN_UNBOUND; FIRST_BREAK_FUN_180182850; CODEC_BSI_UNBOUND; RUNTIME_NOT_CAPTURED; IMPLEMENTATION_READY=NO"
+}

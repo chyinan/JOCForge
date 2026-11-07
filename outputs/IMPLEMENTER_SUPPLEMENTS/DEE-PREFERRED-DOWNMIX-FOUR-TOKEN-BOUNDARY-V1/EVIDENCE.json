@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.preferred_downmix_mode_boundary.v1",
+  "status": "STATIC_XML_TOKEN_MAP_BOUND; MIXMODE_STORED_VALUE_AND_SELECTED_CONSUMER_UNBOUND; EFFECT_NOT_RUN",
+  "source_program": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+  "ddp_xml_tokens": [
+    {"token": "loro", "static_parser_code": 0, "stored_mixmode_value": "UNBOUND", "render_effect": "UNBOUND"},
+    {"token": "ltrt", "static_parser_code": 1, "stored_mixmode_value": "UNBOUND", "render_effect": "UNBOUND"},
+    {"token": "ltrt-pl2", "static_parser_code": 2, "stored_mixmode_value": "UNBOUND", "render_effect": "UNBOUND"},
+    {"token": "not_indicated", "static_parser_code": 3, "stored_mixmode_value": "UNBOUND", "render_effect": "UNBOUND"}
+  ],
+  "setter_boundary": {"function": "FUN_18014f6e0", "helper": "FUN_180143cf0", "result_written_to": "MixMode+0x50", "optional_callback": "NULL", "parser_code_to_stored_value": "UNBOUND"},
+  "consumer_boundary": {"first_typed_reader": "FUN_180171f50", "sole_bounded_direct_caller": "FUN_180171ce0 formatter", "selected_encode_pass_call_join": "UNBOUND", "selected_pass_function_scope": "FUN_1801475f0 had no direct Priv+0x980 read in the reviewed body", "audio_bsi_effect": "NOT_RUN"},
+  "dme_ui": {"map": {"Stereo": "loro", "Surround": "ltrt", "Not Indicated": "not_indicated"}, "has_ltrt_pl2_enum": false, "job_model_output": "clientJob/client_model JSON", "ui_to_ddp_xml_writer": "UNBOUND"},
+  "unbound": ["effective omitted/empty XML value", "parser code to MixMode+0x50 stored value", "selected processing consumer", "audio/BSI effect", "DME UI/job-model to DDP XML field"],
+  "execution": {"dee_run": false, "dme_run": false, "xml_job_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false}
+}

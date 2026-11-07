@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CALL_ARGUMENTS_BOUND; FIRST_POSTCALL_USE_IS_DIAGNOSTIC; ROW_FIELD_READ_AND_AUDIO_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1038,
+      "sha256": "cb781a22a3c91aa3c2c29ed8f01b1789df957f72a7a4228195ee05c1c5e29ac9"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1819,
+      "sha256": "acf9523d3f60af5c01fbea7f7b7781d80601025e533bd2c256cba060ca08b1d7"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 542,
+      "sha256": "05ae8fca9b2943f6bae5df84c274fcfb86dcd8019bf7217aedb1f1b40f33474e"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 173,
+      "sha256": "742c8b45e08df484a178cf7f5ff2fcb90b98833cdd50c6a33d3b1ed01deae52a"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1233,
+      "sha256": "cb2ef92918ccaadc99b3d72f0247aef30269ffd8d603da9871d68a62a22257f1"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "line_mode_drc_snapshot_a0_mode1_next_edge_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-2\\outputs\\line_mode_drc_snapshot_a0_mode1_next_edge_wash_v1",
+    "manifest_sha256": "7b630a67b59e15effb8eace5223d71e2e50b05004f38a3550eb0a34e702be8bf",
+    "manifest_sidecar_sha256": "5004cd1d80f840f59d67cfb933a964444b7eb3bf0e84635f29e15c7ea3dd17d1",
+    "package_seal_sha256": "3c3f9536c79306b874dcedbc601c0736edee282155131248d531369d6e21ffd7",
+    "payload_count": 5,
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

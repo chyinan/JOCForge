@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"field": "drc:rf_mode_drc_profile", "token": "film_standard", "expected_static_raw_u32": 1},
+    {"field": "drc:rf_mode_drc_profile", "token": "film_light", "expected_static_raw_u32": 0},
+    {"field": "drc:rf_mode_drc_profile", "token": "music_standard", "expected_static_raw_u32": 3},
+    {"field": "drc:rf_mode_drc_profile", "token": "music_light", "expected_static_raw_u32": 2},
+    {"field": "drc:rf_mode_drc_profile", "token": "speech", "expected_static_raw_u32": 4},
+    {"field": "drc:rf_mode_drc_profile", "token": "none", "expected_static_raw_u32": 5}
+  ],
+  "note": "Static table expectations only; not runtime value/effect vectors."
+}

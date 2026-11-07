@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_TOKEN_MAP_AND_TYPED_PROJECTION_CANDIDATE_BOUND; RUNTIME_OWNER_PROVIDER_BSI_EFFECT_UNBOUND; DEE_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1038,
+      "sha256": "c1c9cd3c61770175c8657359ca717d303bb29b18d77e7acfd3c4f313f0c4800d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1372,
+      "sha256": "1db9d80eb23ff6aaecb00c99b51fb8b2af38c46debb1cca9d495f860ffd6aa5b"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 671,
+      "sha256": "4010df0c3ca3e8a8841959fffa6bc2d9c3613e4b3252f161e60ec6888138d5b0"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 714,
+      "sha256": "bf2164678293a91236ec0e89fe167a73c397a3eb1f413cb48510c9f7b1c46d10"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1335,
+      "sha256": "ef87df52d3978240b67812317cd7f55cad73db0bce0fa17bc193ebaaeef4c5e0"
+    }
+  ]
+}

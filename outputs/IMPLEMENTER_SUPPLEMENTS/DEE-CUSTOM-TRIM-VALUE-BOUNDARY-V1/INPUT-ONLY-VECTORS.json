@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"field": "custom_trims:surround_trim_5_1", "token": "0", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:surround_trim_5_1", "token": "-3", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:surround_trim_5_1", "token": "-6", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:surround_trim_5_1", "token": "-9", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:height_trim_5_1", "token": "-3", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:height_trim_5_1", "token": "-6", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:height_trim_5_1", "token": "-9", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:height_trim_5_1", "token": "-12", "status": "DECLARED_ONLY", "expected_effect": null}
+  ],
+  "note": "Declared string choices only; no units or effect expectations inferred."
+}

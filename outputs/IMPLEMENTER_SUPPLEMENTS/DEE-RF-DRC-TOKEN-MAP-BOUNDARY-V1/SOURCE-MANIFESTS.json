@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package": "rf_mode_drc_profile_token_map_first_consumer_wash_v1",
+      "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-2\\outputs\\rf_mode_drc_profile_token_map_first_consumer_wash_v1",
+      "manifest_sha256": "876592442cd78bb32dd562dda6b8c340bdf1ec11fe26d166bb40e8ec7a97c837",
+      "package_seal_sha256": "212a4cfc7a9edd0320d50b7ed613cbde5523b500aee413abb59a043983e7f804",
+      "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "normal_checker": "PASS",
+      "python_o_checker": "PASS"
+    }
+  ]
+}

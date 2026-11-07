@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"field": "encode_to_atmos_ddp/time_base", "token": "file_position", "status": "PROPOSED_NOT_RUN", "expected_runtime_value": null, "expected_output": null},
+    {"field": "encode_to_atmos_ddp/time_base", "token": "embedded_timecode", "status": "PROPOSED_NOT_RUN", "expected_runtime_value": null, "expected_output": null}
+  ],
+  "note": "Schema-only input vectors; no runtime or output expectations asserted."
+}

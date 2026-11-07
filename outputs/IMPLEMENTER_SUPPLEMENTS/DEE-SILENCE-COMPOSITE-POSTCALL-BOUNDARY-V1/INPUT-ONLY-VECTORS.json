@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "No duration/media vector or expected audio output was included in the static callsite receipt."
+}

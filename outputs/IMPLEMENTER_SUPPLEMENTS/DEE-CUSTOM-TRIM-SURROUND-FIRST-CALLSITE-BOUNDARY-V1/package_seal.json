@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-CUSTOM-TRIM-SURROUND-FIRST-CALLSITE-BOUNDARY-V1",
+  "manifest_sha256": "7be3ef1b0f4e9d033204e5029e5d10cbb734b375093d14c56e136ff8e25ae21c",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SLOT_TO_CALLSITE_UNBOUND; RDI_OWNER_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

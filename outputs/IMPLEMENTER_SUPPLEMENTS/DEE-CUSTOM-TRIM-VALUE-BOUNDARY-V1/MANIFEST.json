@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "DECLARED_ENUMS_AND_STRINGTYPE_INITIALIZERS_BOUND; VALUE_OWNERS_CONSUMERS_AND_EFFECT_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1050,
+      "sha256": "ea142ba3e65cbfa5d3a6e06ff7eec36d6f69d4cad2bb774759b521c797dd30ce"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1841,
+      "sha256": "9a7a62cf9b3bb0310b0fe5adf524bf913565f9fffe3001ca593f263ba1605881"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 669,
+      "sha256": "904400b0390fb1d49c2aa551dfe9372ec672b9796439e2da8624f1e190779f80"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1072,
+      "sha256": "0bef99912936d2baa413386421d35a2ea990e579978ab5a48c0cbfc5a634df1d"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1309,
+      "sha256": "dd64f4236b6668e49bfc07bf57eb7f0268be36e4eb4264714ac80913e2748442"
+    }
+  ]
+}

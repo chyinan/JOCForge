@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1",
+  "manifest_sha256": "6bc06d2d0111fb70c3ec89abcb355a842052dd19e1fc85f6aa1f57389f75ac08",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STATIC_SCHEMA_AND_TYPED_RANGE_CONSUMER_BOUND; XML_RUNTIME_WRITE_UNBOUND; RANGE_RESULT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

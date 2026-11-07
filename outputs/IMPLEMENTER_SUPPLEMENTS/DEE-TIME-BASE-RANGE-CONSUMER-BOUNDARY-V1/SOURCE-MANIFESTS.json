@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "dee_encode_to_atmos_ddp_time_base_range_boundary_wash_v1",
+    "root": "D:\\Tools\\Dolby_Encoding_Engine\\work\\research-audit\\adm-processor-frame-shape-dynamic-v1\\attempt-14\\analysis\\timebase-reader-range-boundary-wash-v1",
+    "manifest_sha256": "773f4403a4233e2015e3bc6dd0e4d8dd706c5e26c6830134e0d5f348ec548c3d",
+    "seal_sha256": "6de236461571d7d93cca5ad3ca2cd6d504817a2c6caab65f5fb47a76a6af806d",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

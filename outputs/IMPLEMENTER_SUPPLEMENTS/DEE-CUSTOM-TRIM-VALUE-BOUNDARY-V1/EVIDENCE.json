@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.custom_trim_value_boundary.v1",
+  "status": "DECLARED_ENUMS_AND_STRINGTYPE_INITIALIZERS_BOUND; VALUE_OWNERS_CONSUMERS_AND_EFFECT_UNBOUND; RUNTIME_NOT_RUN",
+  "source_image": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+  "fields": [
+    {
+      "xml_field": "custom_trims:surround_trim_5_1",
+      "declared_tokens": ["auto", "0", "-3", "-6", "-9"],
+      "member": "Priv+0x968 StringType",
+      "static_initial_value": "auto",
+      "candidate": {"function": "FUN_1800b5c60", "read": "U16 [RDI+0x968]", "store": "U16 [RCX+0x240]", "RDI_to_keyed_StringType_owner": "UNBOUND", "selected_provider": "UNBOUND"},
+      "unit": "NOT_SPECIFIED",
+      "numeric_scale_precision": "UNBOUND",
+      "non_auto_value_to_effect": "UNBOUND_NOT_RUN"
+    },
+    {
+      "xml_field": "custom_trims:height_trim_5_1",
+      "declared_tokens": ["auto", "-3", "-6", "-9", "-12"],
+      "member": "Priv+0x9e8 StringType",
+      "static_initial_value": "auto",
+      "bounded_query": "No value reader identified by exact +0x9e8 operand query; initialization/cleanup path only; no global absence claim",
+      "unit": "NOT_SPECIFIED",
+      "numeric_scale_precision": "UNBOUND",
+      "non_auto_value_to_effect": "UNBOUND_NOT_RUN"
+    }
+  ],
+  "unbound": ["XML omission materialization", "runtime StringType writer and owner/generation", "selected provider", "numeric conversion/scale", "units and precision", "BSI/audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

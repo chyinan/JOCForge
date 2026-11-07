@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.time_base_range_consumer_boundary.v1",
+  "status": "STATIC_SCHEMA_AND_TYPED_RANGE_CONSUMER_BOUND; XML_RUNTIME_WRITE_UNBOUND; RANGE_RESULT_NOT_RUN",
+  "selected_plugin": {"name": "FilterDDPJocEncPlugin", "module": "dee_audio_filter_ddp_atmos.dll"},
+  "static_property": {"xml_field": "encode_to_atmos_ddp/time_base", "type": "xs:string", "enum": ["file_position", "embedded_timecode"], "constructor_default": "file_position", "default_is_runtime_value": false},
+  "typed_location": {"owner": "DDP Priv", "offset": "0x550", "consumer": "FUN_18014fd90", "comparison": "exact string equality with embedded_timecode"},
+  "conditional_expression": {"condition": "comparison result == 0", "expression": "lVar17 += (longlong)((double)iVar4 * (double)CONCAT44(uVar21,uVar6))", "accumulator": "signed 64-bit", "iVar4_default": 48000, "sampling_rate_override": "present in inspected expression path", "offset_interpretation": "parsed 64-bit value reinterpreted as double"},
+  "first_unbound_edge": "host XML value object owner/generation -> selected plugin Priv+0x550 value writer and particular FUN_18014fd90 invocation",
+  "unbound": ["runtime time_base value", "runtime Priv generation", "complete offset lexical parser", "rounding/overflow contract", "subsequent Reader seek and output timing", "ADM U/K/J/T/B/D generation join"],
+  "execution": {"dee_run": false, "input_vectors": "PROPOSED_NOT_RUN", "runtime_value": "NOT_CAPTURED", "range_seek_result": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

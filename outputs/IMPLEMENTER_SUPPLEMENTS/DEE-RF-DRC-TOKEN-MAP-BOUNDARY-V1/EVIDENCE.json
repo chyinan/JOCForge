@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.rf_drc_static_boundary.v1",
+  "status": "STATIC_TOKEN_MAP_AND_TYPED_PROJECTION_CANDIDATE_BOUND; RUNTIME_OWNER_PROVIDER_BSI_EFFECT_UNBOUND; DEE_NOT_RUN",
+  "source_image": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+  "xml_field": "drc:rf_mode_drc_profile",
+  "static_member_candidate": {"priv_root_offset": "0x750", "map_initializer": "FUN_180001510", "per_frame_reader": "FUN_1801535b0", "output_record_offset": "0xa4", "output_type": "raw U32"},
+  "token_map": [
+    {"token": "film_standard", "raw_u32": 1},
+    {"token": "film_light", "raw_u32": 0},
+    {"token": "music_standard", "raw_u32": 3},
+    {"token": "music_light", "raw_u32": 2},
+    {"token": "speech", "raw_u32": 4},
+    {"token": "none", "raw_u32": 5}
+  ],
+  "unbound": ["XML/runtime StringType writer", "runtime Priv owner and generation", "selected runtime provider", "downstream consumer of per-frame +0xa4", "semantic DRC branch/BSI mapping", "audio or PCM effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

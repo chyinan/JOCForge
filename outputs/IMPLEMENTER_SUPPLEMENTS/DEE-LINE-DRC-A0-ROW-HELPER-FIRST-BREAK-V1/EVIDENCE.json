@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.line_drc_a0_row_helper_boundary.v1",
+  "status": "A0_NOT_EXPLICIT_ROW_HELPER_INPUT; SELECTED_ROW_OWNER_JOIN_UNBOUND; FIRST_BREAK_FUN_180182850; CODEC_BSI_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "source_package": "line_mode_drc_snapshot_a0_row_helper_first_break_wash_v1",
+  "source_manifest_sha256": "7fdb3c6b7a177e5fd4ed325246a337a162ba2f51e35f1559073cac32fdbfcfb5",
+  "source_manifest_sidecar_sha256": "10c4e75a3b4a07a0d11e6d8c9dc28cd065926f85d269544ba21ad7cefaeb34a4",
+  "source_seal_sha256": "45408259fae5efc4e376fd74ac8fb316a8b5775dda109ac18d7ca1ef420f87e0",
+  "source_sha256sums_sha256": "efa5d2f01d527a6a3e61af056a83fe7d22a5041c285d7feedad41551fd71d53b",
+  "target_image": {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+  "branch": "snapshot+0x9C == 0",
+  "call": {"caller": "FUN_1801764e0", "callee": "FUN_180182850", "arguments": ["local_88 output aggregate", "param_4*0x20 + *param_3 selected row pointer", "&local_170 local vector", "&local_e8 local vector"]},
+  "snapshot_a0_value_or_address_explicit": false,
+  "unbound": ["selected row pointer typed owner/alias join to snapshot+0xA0", "FUN_180182850 helper body and nested converter", "later row consumers", "codec/BSI input", "runtime branch/generation", "audio effect"],
+  "execution": {"dee_run": false, "runtime_branch": "NOT_CAPTURED", "audio_effect": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "parent_receipts": [
+    {"package": "line_mode_drc_snapshot_a0_consumer_boundary_wash_v1", "manifest_sha256": "681e6740913768b25c03d0df91b8a3771a5104b31e155459bfc1f699e15cc355", "payload_audit": "PASS_5"},
+    {"package": "line_mode_a0_fun182850_row_pack_first_break_wash_v1", "manifest_sha256": "1d719ccf1137fe33fc12446144eda3ed02f5e2caa41e294c077c78b2956c7c19", "payload_audit": "PASS_7"}
+  ],
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

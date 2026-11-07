@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "No user-media bytes or PCM vectors are included in this static-boundary supplement."
+}

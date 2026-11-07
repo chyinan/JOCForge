@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1",
+  "manifest_sha256": "a0685d312ee07b7b726811ac15325c7d98587a78ed9ee12ca2da003ce8e28e3c",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STATIC_TOKEN_MAP_AND_TYPED_PROJECTION_CANDIDATE_BOUND; RUNTIME_OWNER_PROVIDER_BSI_EFFECT_UNBOUND; DEE_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1",
+  "manifest_sha256": "6be0aa4a4b7b6f4a37616defe7df233a6050da2b118d4f36320eb31516cb90e3",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STATIC_PARTIAL_BOUNDARIES_ONLY; OWNER_EFFECTS_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO"
+}

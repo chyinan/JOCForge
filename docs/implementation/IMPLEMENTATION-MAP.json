@@ -5080,6 +5080,485 @@
           ],
           "validation_boundary": "Reference-only; the current CLI continues to require explicit 1770-4.",
           "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-preferred-downmix-four-token-boundary",
+          "mapping_status": "STATIC_FOUR_TOKEN_MAP__MIXMODE_VALUE_AND_SELECTED_CONSUMER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_TOKEN_MAP__NO_SELECTED_AUDIO_OR_BSI_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only static DDP token map: loro/ltrt/ltrt-pl2/not_indicated map to raw codes 0/1/2/3. The candidate MixMode +0x50 stored value is not joined to selected XML input; the inspected typed getter caller is a formatter. Selected encode/audio/BSI consumption remains unbound.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The four DDP tokens map to raw codes 0, 1, 2, and 3 in this static path.",
+              "MixMode +0x50 effective value, selected provider, encode consumer, and audio/BSI effect remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "bc7c0a8a09e3abd3df9c8e0c40d97e0328cffdb6cdd461a043f074c0e42ec855",
+            "supplement_seal_sha256": "fc7fe61adb783dca80912306d4de772b93f051651af4e778fc8ebca0a3fa8c65",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "token_codes": {
+                "loro": 0,
+                "ltrt": 1,
+                "ltrt-pl2": 2,
+                "not_indicated": 3
+              },
+              "mixmode_value_and_selected_consumer": "UNBOUND",
+              "audio_bsi_effect": "NOT_RUN"
+            },
+            "validation_boundary": "Reference-only static DDP token map: loro/ltrt/ltrt-pl2/not_indicated map to raw codes 0/1/2/3. The candidate MixMode +0x50 stored value is not joined to selected XML input; the inspected typed getter caller is a formatter. Selected encode/audio/BSI consumption remains unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only static DDP token map: loro/ltrt/ltrt-pl2/not_indicated map to raw codes 0/1/2/3. The candidate MixMode +0x50 stored value is not joined to selected XML input; the inspected typed getter caller is a formatter. Selected encode/audio/BSI consumption remains unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Selected XML token to effective MixMode value and owner/generation join.",
+            "Selected encode/render consumer, BSI serialization, and audio effect."
+          ],
+          "validation_boundary": "Reference-only static DDP token map: loro/ltrt/ltrt-pl2/not_indicated map to raw codes 0/1/2/3. The candidate MixMode +0x50 stored value is not joined to selected XML input; the inspected typed getter caller is a formatter. Selected encode/audio/BSI consumption remains unbound.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-rf-drc-token-map-boundary",
+          "mapping_status": "STATIC_RF_TOKEN_TO_RAW_U32_CANDIDATES__RUNTIME_OWNER_AND_EFFECT_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RF_RAW_VALUE_CANDIDATES__NO_RUNTIME_OR_AUDIO_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only RF DRC token map to raw U32 candidates [1,0,3,2,4,5] projected to a per-frame +0xa4 candidate. These are not semantic ordinals; runtime writer, owner/provider, downstream consumer, BSI mapping, and audio effect are unbound.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Six RF token values map to raw U32 candidates [1,0,3,2,4,5] on the inspected static path.",
+              "The per-frame +0xa4 candidate does not bind a runtime owner/provider or downstream effect."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "a0685d312ee07b7b726811ac15325c7d98587a78ed9ee12ca2da003ce8e28e3c",
+            "supplement_seal_sha256": "92e17a745f54b3b9abb55da78b5723a041a964c10589762fd09d5f4e5ab20157",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "raw_u32_candidates": [
+                1,
+                0,
+                3,
+                2,
+                4,
+                5
+              ],
+              "semantic_ordinals": false,
+              "per_frame_field_candidate": "+0xa4",
+              "runtime_owner_consumer_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "validation_boundary": "Reference-only RF DRC token map to raw U32 candidates [1,0,3,2,4,5] projected to a per-frame +0xa4 candidate. These are not semantic ordinals; runtime writer, owner/provider, downstream consumer, BSI mapping, and audio effect are unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only RF DRC token map to raw U32 candidates [1,0,3,2,4,5] projected to a per-frame +0xa4 candidate. These are not semantic ordinals; runtime writer, owner/provider, downstream consumer, BSI mapping, and audio effect are unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Runtime writer, selected provider, owner/generation, and downstream read.",
+            "BSI mapping and decoded-PCM/audio effect."
+          ],
+          "validation_boundary": "Reference-only RF DRC token map to raw U32 candidates [1,0,3,2,4,5] projected to a per-frame +0xa4 candidate. These are not semantic ordinals; runtime writer, owner/provider, downstream consumer, BSI mapping, and audio effect are unbound.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-xml-reader-di-silence-partial-boundaries",
+          "mapping_status": "PARTIAL_DI_RANGE_AND_SILENCE_CALLER_BOUNDARIES__EFFECT_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_PARTIAL_XML_PATHS__NO_AUDIO_OR_READER_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only partial paths: the DI Bool reaches conditional measurement setup/per-record handling without a query-key or record owner/generation join; start/end show only a pointer handoff and duration-object pointer store; one of three silence-builder references is classified. No runtime semantics or global no-consumer conclusion follows.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "DI Bool path and per-record boundary are conditional; query key and record owner/generation remain UNBOUND.",
+              "start/end pointer handoff does not bind object contents, typed range owner, or Reader cursor.",
+              "Only one of three silence-builder references is classified by this package."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "6be0aa4a4b7b6f4a37616defe7df233a6050da2b118d4f36320eb31516cb90e3",
+            "supplement_seal_sha256": "d9ab94b5616fc95807293e87aeab0340186427893bb884b6142e6d9b7d4d4599",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "di_setup_field_candidate": "+0x94",
+              "start_end_reader_join": "UNBOUND",
+              "silence_builder_reference_scope": "one classified reference among three"
+            },
+            "validation_boundary": "Reference-only partial paths: the DI Bool reaches conditional measurement setup/per-record handling without a query-key or record owner/generation join; start/end show only a pointer handoff and duration-object pointer store; one of three silence-builder references is classified. No runtime semantics or global no-consumer conclusion follows."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only partial paths: the DI Bool reaches conditional measurement setup/per-record handling without a query-key or record owner/generation join; start/end show only a pointer handoff and duration-object pointer store; one of three silence-builder references is classified. No runtime semantics or global no-consumer conclusion follows."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "DI query key, record owner/generation, numeric result, Meter/audio effect.",
+            "start/end object contents, Reader range/seek behavior, and timeline effect.",
+            "Unclassified silence-builder references and global consumer absence."
+          ],
+          "validation_boundary": "Reference-only partial paths: the DI Bool reaches conditional measurement setup/per-record handling without a query-key or record owner/generation join; start/end show only a pointer handoff and duration-object pointer store; one of three silence-builder references is classified. No runtime semantics or global no-consumer conclusion follows.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-time-base-range-consumer-boundary",
+          "mapping_status": "STATIC_TIME_BASE_CONSUMER_BOUND__XML_RUNTIME_AND_SEEK_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_STATIC_CONSUMER_PATH__NO_RUNTIME_RANGE_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only static time_base path: schema enum/default, a Priv+0x550 StringType typed consumer at FUN_18014fd90, and the conditional embedded_timecode comparison/sample-rate-times-offset expression are bound. Runtime XML owner/generation, full offset syntax/rounding, and downstream seek remain unbound.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static time_base enum is file_position/embedded_timecode with file_position default on the inspected schema path.",
+              "Priv+0x550 StringType reaches the inspected typed consumer FUN_18014fd90.",
+              "Runtime XML value owner/generation, offset conversion, and Reader seek/sample effect remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "6bc06d2d0111fb70c3ec89abcb355a842052dd19e1fc85f6aa1f57389f75ac08",
+            "supplement_seal_sha256": "936564901f5c703ea3421dc2fce833b9501c412f7be2419e25d88520e74b6e12",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "static_default": "file_position",
+              "static_tokens": [
+                "file_position",
+                "embedded_timecode"
+              ],
+              "typed_consumer": "FUN_18014fd90",
+              "runtime_value_and_seek": "UNBOUND/NOT_RUN"
+            },
+            "validation_boundary": "Reference-only static time_base path: schema enum/default, a Priv+0x550 StringType typed consumer at FUN_18014fd90, and the conditional embedded_timecode comparison/sample-rate-times-offset expression are bound. Runtime XML owner/generation, full offset syntax/rounding, and downstream seek remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only static time_base path: schema enum/default, a Priv+0x550 StringType typed consumer at FUN_18014fd90, and the conditional embedded_timecode comparison/sample-rate-times-offset expression are bound. Runtime XML owner/generation, full offset syntax/rounding, and downstream seek remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Runtime XML value owner/generation join and runtime value capture.",
+            "Complete offset lexical grammar, rounding, Reader seek/sample position, and audio effect."
+          ],
+          "validation_boundary": "Reference-only static time_base path: schema enum/default, a Priv+0x550 StringType typed consumer at FUN_18014fd90, and the conditional embedded_timecode comparison/sample-rate-times-offset expression are bound. Runtime XML owner/generation, full offset syntax/rounding, and downstream seek remain unbound.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-custom-trim-value-boundary",
+          "mapping_status": "TRIM_VALUE_FIELD_CANDIDATES__STRING_OWNER_UNITS_AND_EFFECT_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_TRIM_FIELD_CANDIDATES__NO_NONAUTO_SUPPORT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only trim boundary: surround +0x968 has a U16 candidate not joined to the keyed StringType owner or selected provider; height +0x9e8 has a bounded query with no identified value reader. Tokens remain strings; units, precision, BSI mapping, and audio effects are unbound.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Surround trim +0x968 U16 candidate is not joined to keyed StringType owner/provider.",
+              "Height trim +0x9e8 bounded query does not identify a value reader.",
+              "No unit, numeric conversion, BSI write, or audio effect is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "44b4886b49d3f1f1f6869f7c3a79de51ff94387c5b4d40d5d0d47f4506e4d1d4",
+            "supplement_seal_sha256": "67900bbec7462b6925da8889063892abb610c2994282268571abada7dd054aaf",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "surround_trim_candidate": "+0x968 U16; owner/provider UNBOUND",
+              "height_trim_candidate": "+0x9e8 bounded query; value reader UNBOUND",
+              "token_units_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "validation_boundary": "Reference-only trim boundary: surround +0x968 has a U16 candidate not joined to the keyed StringType owner or selected provider; height +0x9e8 has a bounded query with no identified value reader. Tokens remain strings; units, precision, BSI mapping, and audio effects are unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only trim boundary: surround +0x968 has a U16 candidate not joined to the keyed StringType owner or selected provider; height +0x9e8 has a bounded query with no identified value reader. Tokens remain strings; units, precision, BSI mapping, and audio effects are unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Selected StringType/provider owner and runtime values.",
+            "Units, precision, BSI serialization, and decoded-PCM/audio effect."
+          ],
+          "validation_boundary": "Reference-only trim boundary: surround +0x968 has a U16 candidate not joined to the keyed StringType owner or selected provider; height +0x9e8 has a bounded query with no identified value reader. Tokens remain strings; units, precision, BSI mapping, and audio effects are unbound.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-line-drc-mode1-snapshot-a0-boundary",
+          "mapping_status": "MODE1_SNAPSHOT_POINTER_FLOW_BOUND__A0_VALUE_AND_EFFECT_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_MODE1_POINTER_PATH__NO_LINE_DRC_ENABLEMENT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only mode-1 edge: the same snapshot base reaches validator and packer; the scoped path does not read/copy the +0xa0 candidate, while +0x130 is a distinct field. XML runtime owner, mode-1 generation, indirect packer relation, and audio effect remain unbound.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The selected static mode-1 path forwards one snapshot base to validator and packer.",
+              "No direct +0xa0 value read/copy is observed on this scoped edge; +0x130 is a distinct field.",
+              "XML runtime owner, selected mode-1 generation, codec/BSI consumer, and audio effect remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "3e481b71454373f36e1b03462a303d1f9b22ca9d104f6fe6b3ee6f1b9bc9cf82",
+            "supplement_seal_sha256": "277dbea1973ea98049f3195429cb974069d6eb255f56b6d1aa98280a2eabda8d",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "snapshot_base_forwarding": "FUN_1801475f0 -> FUN_180175500 -> validator/packer",
+              "snapshot_plus_0xa0_read_on_scoped_edge": "NOT_OBSERVED",
+              "snapshot_plus_0x130": "distinct field"
+            },
+            "validation_boundary": "Reference-only mode-1 edge: the same snapshot base reaches validator and packer; the scoped path does not read/copy the +0xa0 candidate, while +0x130 is a distinct field. XML runtime owner, mode-1 generation, indirect packer relation, and audio effect remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only mode-1 edge: the same snapshot base reaches validator and packer; the scoped path does not read/copy the +0xa0 candidate, while +0x130 is a distinct field. XML runtime owner, mode-1 generation, indirect packer relation, and audio effect remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "XML runtime owner/value and selected mode-1 generation.",
+            "Indirect packer/helper relation, +0xa0 codec/BSI consumer, and audio effect."
+          ],
+          "validation_boundary": "Reference-only mode-1 edge: the same snapshot base reaches validator and packer; the scoped path does not read/copy the +0xa0 candidate, while +0x130 is a distinct field. XML runtime owner, mode-1 generation, indirect packer relation, and audio effect remain unbound.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-silence-composite-postcall-boundary",
+          "mapping_status": "SILENCE_CALL_ARGUMENTS_AND_DIAGNOSTIC_USE_BOUND__SAMPLE_EFFECT_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_CALL_AND_LOG_BOUNDARY__NO_SILENCE_INSERTION",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only callsite boundary: prepend vector context+0x18 and append vector context+0x60 reach FUN_1801844c0; the output vector's first observed post-call use is FUN_1801849c0 for a Composite Master diagnostic log. Helper row reads, sample insertion, Reader/range/PTS behavior, and audio effect remain unbound.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Prepend and append vectors reach the inspected silence-builder call in R8 and stack arg6.",
+              "The first observed post-call output-vector use formats a diagnostic log.",
+              "Helper row fields, sample insertion, Reader/range/PTS, and audio effect remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "dc617ae8c8bf05793ac79a4a11d09dd396a4b4ecb74fd4409aa1f6b1db6844c9",
+            "supplement_seal_sha256": "0372b8228412d4972e03f4563ff036923174c82657a695225c7858e31aa6fb74",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "callsite": "FUN_180175c80 -> FUN_1801844c0",
+              "prepend_vector": "context+0x18 -> R8",
+              "append_vector": "context+0x60 -> stack arg6",
+              "first_postcall_use": "FUN_1801849c0 diagnostic logger path"
+            },
+            "validation_boundary": "Reference-only callsite boundary: prepend vector context+0x18 and append vector context+0x60 reach FUN_1801844c0; the output vector's first observed post-call use is FUN_1801849c0 for a Composite Master diagnostic log. Helper row reads, sample insertion, Reader/range/PTS behavior, and audio effect remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only callsite boundary: prepend vector context+0x18 and append vector context+0x60 reach FUN_1801844c0; the output vector's first observed post-call use is FUN_1801849c0 for a Composite Master diagnostic log. Helper row reads, sample insertion, Reader/range/PTS behavior, and audio effect remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "FUN_1801849c0 row-field reads and silence-count sample insertion.",
+            "Reader/range/PTS behavior, cleanup owner/generation, and audio effect."
+          ],
+          "validation_boundary": "Reference-only callsite boundary: prepend vector context+0x18 and append vector context+0x60 reach FUN_1801844c0; the output vector's first observed post-call use is FUN_1801849c0 for a Composite Master diagnostic log. Helper row reads, sample insertion, Reader/range/PTS behavior, and audio effect remain unbound.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
         }
       ]
     },
@@ -64674,6 +65153,180 @@
       "not_run": [
         "XML StringType owner/generation join to selected provider.",
         "Runtime metering mode, Meter/audio effect, and selected output."
+      ]
+    },
+    {
+      "package_id": "DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1",
+      "manifest_sha256": "bc7c0a8a09e3abd3df9c8e0c40d97e0328cffdb6cdd461a043f074c0e42ec855",
+      "supplement_seal_sha256": "fc7fe61adb783dca80912306d4de772b93f051651af4e778fc8ebca0a3fa8c65",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_FOUR_TOKEN_MAP__MIXMODE_VALUE_AND_SELECTED_CONSUMER_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Selected XML token to effective MixMode value and owner/generation join.",
+        "Selected encode/render consumer, BSI serialization, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1",
+      "manifest_sha256": "a0685d312ee07b7b726811ac15325c7d98587a78ed9ee12ca2da003ce8e28e3c",
+      "supplement_seal_sha256": "92e17a745f54b3b9abb55da78b5723a041a964c10589762fd09d5f4e5ab20157",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_RF_TOKEN_TO_RAW_U32_CANDIDATES__RUNTIME_OWNER_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Runtime writer, selected provider, owner/generation, and downstream read.",
+        "BSI mapping and decoded-PCM/audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1",
+      "manifest_sha256": "6be0aa4a4b7b6f4a37616defe7df233a6050da2b118d4f36320eb31516cb90e3",
+      "supplement_seal_sha256": "d9ab94b5616fc95807293e87aeab0340186427893bb884b6142e6d9b7d4d4599",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "PARTIAL_DI_RANGE_AND_SILENCE_CALLER_BOUNDARIES__EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "DI query key, record owner/generation, numeric result, Meter/audio effect.",
+        "start/end object contents, Reader range/seek behavior, and timeline effect.",
+        "Unclassified silence-builder references and global consumer absence."
+      ]
+    },
+    {
+      "package_id": "DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1",
+      "manifest_sha256": "6bc06d2d0111fb70c3ec89abcb355a842052dd19e1fc85f6aa1f57389f75ac08",
+      "supplement_seal_sha256": "936564901f5c703ea3421dc2fce833b9501c412f7be2419e25d88520e74b6e12",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_TIME_BASE_CONSUMER_BOUND__XML_RUNTIME_AND_SEEK_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Runtime XML value owner/generation join and runtime value capture.",
+        "Complete offset lexical grammar, rounding, Reader seek/sample position, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1",
+      "manifest_sha256": "44b4886b49d3f1f1f6869f7c3a79de51ff94387c5b4d40d5d0d47f4506e4d1d4",
+      "supplement_seal_sha256": "67900bbec7462b6925da8889063892abb610c2994282268571abada7dd054aaf",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "TRIM_VALUE_FIELD_CANDIDATES__STRING_OWNER_UNITS_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Selected StringType/provider owner and runtime values.",
+        "Units, precision, BSI serialization, and decoded-PCM/audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1",
+      "manifest_sha256": "3e481b71454373f36e1b03462a303d1f9b22ca9d104f6fe6b3ee6f1b9bc9cf82",
+      "supplement_seal_sha256": "277dbea1973ea98049f3195429cb974069d6eb255f56b6d1aa98280a2eabda8d",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MODE1_SNAPSHOT_POINTER_FLOW_BOUND__A0_VALUE_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "XML runtime owner/value and selected mode-1 generation.",
+        "Indirect packer/helper relation, +0xa0 codec/BSI consumer, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1",
+      "manifest_sha256": "dc617ae8c8bf05793ac79a4a11d09dd396a4b4ecb74fd4409aa1f6b1db6844c9",
+      "supplement_seal_sha256": "0372b8228412d4972e03f4563ff036923174c82657a695225c7858e31aa6fb74",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SILENCE_CALL_ARGUMENTS_AND_DIAGNOSTIC_USE_BOUND__SAMPLE_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "FUN_1801849c0 row-field reads and silence-count sample insertion.",
+        "Reader/range/PTS behavior, cleanup owner/generation, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-LINE-DRC-A0-ROW-HELPER-FIRST-BREAK-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-FIRST-BREAK-V1",
+      "manifest_sha256": "f78cb37b60e9f37367bd46f57d5e9a777448103da8d04cd92830e8f71e0d3ecc",
+      "supplement_seal_sha256": "8bce5be5f499e65d0546fe0a18c675ac89b3efff3e57efc36915387ad13b8b35",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MODE1_ROW_HELPER_BOUNDARY_ONLY; SNAPSHOT_A0_TO_ROW_OWNER_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Snapshot +0xa0 typed-owner/selected-row join.",
+        "Row helper body and later consumer path.",
+        "Codec/BSI input, runtime mode-1 selection, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-CUSTOM-TRIM-SURROUND-FIRST-CALLSITE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-SURROUND-FIRST-CALLSITE-BOUNDARY-V1",
+      "manifest_sha256": "7be3ef1b0f4e9d033204e5029e5d10cbb734b375093d14c56e136ff8e25ae21c",
+      "supplement_seal_sha256": "42a601a039a69cc1f4ba1edf3ed28307708b087984ae981f7d680ba6508a08cc",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SCOPED_XREF_MODEL_HAS_NO_CALLSITE_OR_ARGS; KEYED_STRINGTYPE_OWNER_JOIN_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Candidate vtable slot to keyed StringType +0x968 owner/value join.",
+        "Runtime owner/generation and effective surround trim consumer.",
+        "Units, numeric mapping, BSI serialization, and audio effect."
       ]
     }
   ]

@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "custom_trim_5_1_atmos_ddp_consumer_boundary_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-6-f05-f13-transaction\\outputs\\custom_trim_5_1_atmos_ddp_consumer_boundary_wash_v1",
+    "manifest_sha256": "7d18e45edc67ccedff014253851c61c17edb7f174f20c27b3a212f45e9ca8ce9",
+    "manifest_sha256_sidecar_sha256": "01121ec0366cf8b6a6f15ceea4a184409692513685da633aa1d9530b7a7959fe",
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

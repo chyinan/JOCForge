@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.line_drc_mode1_snapshot_boundary.v1",
+  "status": "SNAPSHOT_POINTER_TO_MODE1_PACKER_BOUND; SNAPSHOT_A0_VALUE_CODEC_BSI_EFFECT_UNBOUND; XML_RUNTIME_OWNER_MODE1_UNBOUND",
+  "source_package": "LINE-DRC-SNAPSHOT-A0-MODE1-NEXT-EDGE-WASH-V1",
+  "source_manifest_sha256": "7b630a67b59e15effb8eace5223d71e2e50b05004f38a3550eb0a34e702be8bf",
+  "source_manifest_sidecar_sha256": "5004cd1d80f840f59d67cfb933a964444b7eb3bf0e84635f29e15c7ea3dd17d1",
+  "source_seal_sha256": "3c3f9536c79306b874dcedbc601c0736edee282155131248d531369d6e21ffd7",
+  "bound_edges": ["FUN_1801475f0 mode-1 path forwards snapshot base to FUN_180175500", "FUN_180175500 forwards the base to FUN_180177230 validator and FUN_1801764e0 packer"],
+  "distinct_field": "FUN_180175500 reads snapshot+0x130 for FUN_1801774c0; this is not snapshot+0xA0",
+  "unbound": ["typed U32 snapshot+0xA0 read/copy on scoped validator/packer edge", "snapshot+0xA0 to codec/BSI", "XML runtime owner/value", "runtime mode-1 selection/generation", "packer indirect row/helper relation"],
+  "execution": {"dee_run": false, "audio_effect": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

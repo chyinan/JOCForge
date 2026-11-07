@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_PARTIAL_BOUNDARIES_ONLY; OWNER_EFFECTS_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 2138,
+      "sha256": "f3981adda6a1cef92028678727ed581182850f811ddc12d16b4cc399a3e9163a"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2248,
+      "sha256": "bd0897c9570fb6891c0e939c62e343e38a44faab27976f9c4a5bb5321478bfe9"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1640,
+      "sha256": "262dafa79aa282861bec3a3e579d95e275087e602236dd6010b643863c77c396"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 162,
+      "sha256": "7cfc0a1bf73257b066fd9aa2c4717b325baa5d6aa68e7550659e5fb22bd894d7"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1049,
+      "sha256": "9446947ea587dc00fa79bebb16cc73983968ac15fd6475ad332e0a70509d96b1"
+    }
+  ]
+}

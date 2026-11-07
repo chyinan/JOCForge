@@ -159,6 +159,13 @@
 | F01E/washed-custom-trim-xml-boundary | F01E | `UNBOUND` |
 | F01E/washed-xml-time-control-reader-boundary | F01E | `UNBOUND` |
 | F01E/washed-metering-mode-static-caller-boundary | F01E | `UNBOUND` |
+| F01E/washed-preferred-downmix-four-token-boundary | F01E | `UNBOUND` |
+| F01E/washed-rf-drc-token-map-boundary | F01E | `UNBOUND` |
+| F01E/washed-xml-reader-di-silence-partial-boundaries | F01E | `UNBOUND` |
+| F01E/washed-time-base-range-consumer-boundary | F01E | `UNBOUND` |
+| F01E/washed-custom-trim-value-boundary | F01E | `UNBOUND` |
+| F01E/washed-line-drc-mode1-snapshot-a0-boundary | F01E | `UNBOUND` |
+| F01E/washed-silence-composite-postcall-boundary | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

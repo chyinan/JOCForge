@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.silence_builder_postcall_boundary.v1",
+  "status": "CALL_ARGUMENTS_BOUND; FIRST_POSTCALL_USE_IS_DIAGNOSTIC; ROW_FIELD_READ_AND_AUDIO_EFFECT_UNBOUND",
+  "source_package": "dee_atmos_ddp_silence_builder_postcall_edge_wash_v1",
+  "source_manifest_sha256": "10849c3cfe06563ae9512f3800b797afecc8958bfde18cf5653f4a54a3609485",
+  "source_seal_sha256": "4ee779a1ca296a5c0cc07d09cdbc0fc5439a42849af8dcf64414eec28aecace3",
+  "callsite": {"caller": "FUN_180175c80", "callee": "FUN_1801844c0", "address": "0x175e10", "return_value_assigned": false},
+  "arguments": [
+    {"location": "RCX", "role": "composite-row output vector local_1a8"},
+    {"location": "RDX", "role": "uVar10 from per-source context through FUN_180132ff0"},
+    {"location": "R8", "role": "uVar9 from context+0x18 prepend-count vector"},
+    {"location": "R9", "role": "uVar8 from context+0x30"},
+    {"location": "stack arg5 [RSP+0x20]", "role": "RSI from context+0x48"},
+    {"location": "stack arg6 [RSP+0x28]", "role": "R14 from context+0x60 append-count vector"}
+  ],
+  "post_call": {"first_statement": "local_180=*param_1 logger-state snapshot", "first_output_vector_use": "FUN_1801849c0(local_1a8,local_98) at RVA 0x175ea6", "use": "format Composite Master diagnostic and send to logger callback", "callee_body_inspected": false},
+  "unbound": ["FUN_1801849c0 row-field reads", "silence counts to sample insertion", "Reader/range/PTS effect", "cleanup owner/generation join", "audio/PCM effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

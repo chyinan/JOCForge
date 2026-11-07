@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_XML_TOKEN_MAP_BOUND; MIXMODE_STORED_VALUE_AND_SELECTED_CONSUMER_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1300,
+      "sha256": "2bab96db9a9df6357a1e1ab6c3a1179a2fd2b2d501f0ab81eb0acebb28ecb90d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1876,
+      "sha256": "81e0f2733a8e2e1bce1d130cc9376c9c20635d9c9a4e5db335e203a8e3402921"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1175,
+      "sha256": "769365c04065febae9e74525b57c390096f35dffd77fcb90688eeff8112fb5a3"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 756,
+      "sha256": "db15db46892fe461d1c44834ecea622518efff1a398bf4a8975ae852da4d517a"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1354,
+      "sha256": "062318804dfce58a89d93f42b7cfc03fa8c591012c8db60b759d4febd9968491"
+    }
+  ]
+}

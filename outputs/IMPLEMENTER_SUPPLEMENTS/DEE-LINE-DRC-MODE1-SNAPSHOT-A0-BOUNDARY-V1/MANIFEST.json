@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SNAPSHOT_POINTER_TO_MODE1_PACKER_BOUND; SNAPSHOT_A0_VALUE_CODEC_BSI_EFFECT_UNBOUND; XML_RUNTIME_OWNER_MODE1_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 860,
+      "sha256": "fa38264f6c3a9988d05e2d056c1481300d8c0c4e0a4dc99f61db2d78a7f7e1b1"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1386,
+      "sha256": "2da81f6d13a8cc0b71834c8afe55fd581a8f0ffa0043449809a3809b33838cc4"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 662,
+      "sha256": "2c5b34182b4ed226c8b5db0bf06a549aff35d72b8aba86dfcc1bd7cfe7780dc4"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 148,
+      "sha256": "df888ed50be8da0b920f5723d13d16350ba3fed887c0ccaef1cdb5fa3f792f67"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1184,
+      "sha256": "f7cf9a4b5a54d6e99fde3d2fc077fe99c24097f94cae25edff836d3e1558b950"
+    }
+  ]
+}

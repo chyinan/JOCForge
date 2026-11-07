@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "custom_trim_surround_slot_dispatch_first_break_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-6-f05-f13-transaction\\outputs\\custom_trim_surround_slot_dispatch_first_break_wash_v1",
+    "manifest_sha256": "8bfa1459f2211968f584d50e73d95d0fbbffadc5e93a5f27f17de82c1ff5f5d1",
+    "manifest_sha256_sidecar_sha256": "1fd51f26809b5d06083f5239061fbc3830a329e8b92226ad415fdab697382ed1",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

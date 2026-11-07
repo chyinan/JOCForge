@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-CUSTOM-TRIM-SURROUND-FIRST-CALLSITE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SLOT_TO_CALLSITE_UNBOUND; RDI_OWNER_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 861,
+      "sha256": "14f6902202c25b0769c4185dfea794d90955e4732a2462fc1d8e8b101495100b"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1308,
+      "sha256": "b87a091ac4dc1173ea0da2286beb96ea89f2b5ed33ab54b1cab7e5fefc22babc"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 580,
+      "sha256": "8f67deaf67ad80b5ef018f6e041a78e2b4b6a8163e472a7fe79c3cb6df0d8746"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 143,
+      "sha256": "21ae4d44d2bbe87f38f55306cbea4874877b4f9fe2ed32b6d3c5b394fc9d79f8"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1232,
+      "sha256": "6eccdae51c6ec3788764bd39b590a311cbfd7146dedd29945d6d65040031f830"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "dee_atmos_ddp_silence_builder_postcall_edge_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_builder_postcall_edge_wash_v1",
+    "manifest_sha256": "10849c3cfe06563ae9512f3800b797afecc8958bfde18cf5653f4a54a3609485",
+    "seal_sha256": "4ee779a1ca296a5c0cc07d09cdbc0fc5439a42849af8dcf64414eec28aecace3",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

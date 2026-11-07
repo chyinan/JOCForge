@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1",
+  "manifest_sha256": "44b4886b49d3f1f1f6869f7c3a79de51ff94387c5b4d40d5d0d47f4506e4d1d4",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "DECLARED_ENUMS_AND_STRINGTYPE_INITIALIZERS_BOUND; VALUE_OWNERS_CONSUMERS_AND_EFFECT_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

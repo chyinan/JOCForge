@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FOUR-TOKEN-MODE-CONSUMER-WASH-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FOUR-TOKEN-MODE-CONSUMER-WASH-V1",
+    "manifest_sha256": "cff5229a849a4ce265d45e34c2ced0be063cf054cbb80779fca6b7d621893b8b",
+    "checksums_file_sha256": "6d15e53f2868bdce8305a3ad2374385d08ab1793a7d3ffcadeaa2a14a0e3b2a2",
+    "payload_count": 7,
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+    "reused_receipt_manifests": [
+      "d3495410ffacd0c942ba04731e87fc4ae8ba76046d9f83cb700ed10395bd9b49",
+      "6be2353eba98fc3d79247f1f61d2c5777f6c913c13ab08235b098fe208ba1125",
+      "70b680374a68e72184c6a3e3753d00533cebe4221c3b3d4b98a3180365554a76",
+      "a6e1aa6c1f2cd4cce6fa80fc9cc8ee408b29f0a2ddeccd8a91f08ff782392e78",
+      "110b873c702b0c233653f94b996939347ad2456b03df85fd841c370f9cfca4e1",
+      "c30e7eb3c4577ff81d25105e0e1011379d15431068e01e918ba96e759a359eb5",
+      "39ea1c33c6fe00b8b0232b5b791c8c8f201c16892d7ad9fecf018fb40a53d9b9"
+    ]
+  }
+}

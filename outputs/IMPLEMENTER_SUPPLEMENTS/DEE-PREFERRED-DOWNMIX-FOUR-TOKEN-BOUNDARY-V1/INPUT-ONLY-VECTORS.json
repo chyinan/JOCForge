@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"field": "encode_to_atmos_ddp/downmix/preferred_downmix_mode", "token": "loro", "expected_static_parser_code": 0, "runtime_effect": "UNBOUND"},
+    {"field": "encode_to_atmos_ddp/downmix/preferred_downmix_mode", "token": "ltrt", "expected_static_parser_code": 1, "runtime_effect": "UNBOUND"},
+    {"field": "encode_to_atmos_ddp/downmix/preferred_downmix_mode", "token": "ltrt-pl2", "expected_static_parser_code": 2, "runtime_effect": "UNBOUND"},
+    {"field": "encode_to_atmos_ddp/downmix/preferred_downmix_mode", "token": "not_indicated", "expected_static_parser_code": 3, "runtime_effect": "UNBOUND"}
+  ],
+  "note": "Static parser codes only; no rendered audio vector or sound claim."
+}

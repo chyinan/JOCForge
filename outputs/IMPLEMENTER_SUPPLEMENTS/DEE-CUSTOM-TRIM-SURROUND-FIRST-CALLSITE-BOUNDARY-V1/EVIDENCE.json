@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.custom_trim_first_callsite_boundary.v1",
+  "status": "SLOT_TO_CALLSITE_UNBOUND; RDI_OWNER_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "custom_trim_surround_slot_dispatch_first_break_wash_v1",
+  "source_manifest_sha256": "8bfa1459f2211968f584d50e73d95d0fbbffadc5e93a5f27f17de82c1ff5f5d1",
+  "source_manifest_sidecar_sha256": "1fd51f26809b5d06083f5239061fbc3830a329e8b92226ad415fdab697382ed1",
+  "bounded_observations": {"slot_address": "0x180843b00", "slot_value": "0x1800b5c60", "slot_refs_to_code": 0, "slot_refs_to_data": 0, "function_code_refs": 0, "function_data_refs": 2, "data_refs_disposition": ["runtime-function metadata", "candidate slot"]},
+  "first_break": "untyped slot -> indirect use/callsite absent from xref model -> typed RDI owner",
+  "unbound": ["indirect callsite and actual arguments", "RDI to keyed StringType +0x968 join", "runtime owner/generation", "selected Atmos DDP trim consumer", "numeric units and audio/BSI effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

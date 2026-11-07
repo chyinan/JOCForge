@@ -1381,3 +1381,20 @@ Wash 包 `DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1` 已物化并独立核验：ma
 Wash 包 DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2 已物化并独立核验：manifest SHA-256 d2e31f4b10565c8d21c008c80f90fee7030f1607160144c3fad9d202482126d6、seal SHA-256 42f75a5b0ba8be2498d24042d9deb6eb4cd007d66b0a8b43ba0ef2ace9fafc38；普通 Python 与 python -O checker 均 PASS。它是 reference-only，IMPLEMENTATION_READY=NO。
 
 DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处理对象在 guard 分支到候选 string-to-code consumer 的 caller edge 静态绑定。schema StringType +0x1f0 到 processing this/getter receiver +0x210 仍 UNBOUND；候选输出的 signedness/语义、selected provider、Meter/audio effect 均 UNBOUND/NOT_RUN。CLI 仍要求显式 1770-4；1770-3 不因候选码映射而开放。
+
+
+## 2026-11-08: Additional washed job_config reference boundaries
+
+The following seven packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
+
+| Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
+|---|---|---|---|
+| DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1 | bc7c0a8a09e3abd3df9c8e0c40d97e0328cffdb6cdd461a043f074c0e42ec855 / fc7fe61adb783dca80912306d4de772b93f051651af4e778fc8ebca0a3fa8c65 | Static token map loro/ltrt/ltrt-pl2/not_indicated to raw codes 0/1/2/3. | Effective selected MixMode, encode/audio/BSI consumer, and render effect. |
+| DEE-RF-DRC-TOKEN-MAP-BOUNDARY-V1 | a0685d312ee07b7b726811ac15325c7d98587a78ed9ee12ca2da003ce8e28e3c / 92e17a745f54b3b9abb55da78b5723a041a964c10589762fd09d5f4e5ab20157 | Six RF tokens to raw U32 candidates [1,0,3,2,4,5] and a per-frame +0xa4 candidate. | Semantic ordinal, runtime writer/provider, downstream read, BSI map, and audio effect. |
+| DEE-XML-READER-DI-SILENCE-PARTIAL-BOUNDARIES-V1 | 6be0aa4a4b7b6f4a37616defe7df233a6050da2b118d4f36320eb31516cb90e3 / d9ab94b5616fc95807293e87aeab0340186427893bb884b6142e6d9b7d4d4599 | Partial DI setup, start/end pointer handoff, and one classified silence-builder reference. | Query key/owner generation, Reader range, timeline behavior, and audio effect. |
+| DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1 | 6bc06d2d0111fb70c3ec89abcb355a842052dd19e1fc85f6aa1f57389f75ac08 / 936564901f5c703ea3421dc2fce833b9501c412f7be2419e25d88520e74b6e12 | Static schema enum/default, Priv+0x550 typed consumer, and conditional embedded_timecode expression. | Runtime XML owner/generation, complete offset conversion, Reader seek/sample effect. |
+| DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1 | 44b4886b49d3f1f1f6869f7c3a79de51ff94387c5b4d40d5d0d47f4506e4d1d4 / 67900bbec7462b6925da8889063892abb610c2994282268571abada7dd054aaf | Surround +0x968 U16 candidate and bounded height +0x9e8 query. | StringType/provider join, units/precision, BSI mapping, and audio effect. |
+| DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1 | 3e481b71454373f36e1b03462a303d1f9b22ca9d104f6fe6b3ee6f1b9bc9cf82 / 277dbea1973ea98049f3195429cb974069d6eb255f56b6d1aa98280a2eabda8d | Same snapshot base reaches the mode-1 validator/packer; +0xa0 is not read on the scoped edge and +0x130 is distinct. | XML runtime owner, selected mode-1 generation, codec/BSI consumer, and audio effect. |
+| DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1 | dc617ae8c8bf05793ac79a4a11d09dd396a4b4ecb74fd4409aa1f6b1db6844c9 / 0372b8228412d4972e03f4563ff036923174c82657a695225c7858e31aa6fb74 | Prepend/append vector call arguments and first observed output-vector use in diagnostic logging. | Helper row reads, sample insertion, Reader/range/PTS, cleanup owner generation, and audio effect. |
+
+These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.

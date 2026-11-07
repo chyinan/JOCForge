@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package": "di_dialogue_intelligence_property_measurement_boundary_wash_v1",
+      "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-3\\outputs\\di_dialogue_intelligence_property_measurement_boundary_wash_v1",
+      "manifest_sha256": "60402a7ea7cf3d816ba219c9f4bb84131c47abaf57e284d59b33872957cb990f",
+      "seal_sha256": "25b6b924b4cfe2cb18badac457763c17375353c092ec76d2d05988b5778c6999",
+      "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "checks": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package": "DEE-ATMOS-DDP-COMPOSITE-OPEN-DURATION-HANDOFF-WASH-V1",
+      "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-DDP-COMPOSITE-OPEN-DURATION-HANDOFF-WASH-V1",
+      "manifest_sha256": "8439a09023ba7f8ab352c7bcf29a571baa6b8be6a519204439c25bd9ba92049e",
+      "checksums_file_sha256": "0082c4a710a0f3fdeb869fabb5c845b3403450158b7dd2d359680dfe515c30b1",
+      "payload_count": 6,
+      "checks": "PASS_NORMAL_AND_PYTHON_O"
+    },
+    {
+      "package": "dee_atmos_ddp_silence_builder_xref_wash_v1",
+      "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_builder_xref_wash_v1",
+      "manifest_sha256": "1c34d8d52dff39da0c902e3cd641324a93376fdcb178bb65791723bda27c3844",
+      "seal_sha256": "92299aa445e7c2beb4ee94a4cd7995bb81c31f57abcaff2ecddf5c2655c20359",
+      "checks": "PASS_NORMAL_AND_PYTHON_O"
+    }
+  ]
+}

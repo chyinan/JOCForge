@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.xml_partial_boundary_evidence.v1",
+  "status": "THREE_STATIC_PARTIAL_BOUNDARIES; IMPLEMENTATION_READY=NO",
+  "evidence": [
+    {
+      "id": "di_dialogue_intelligence",
+      "source_package": "di_dialogue_intelligence_property_measurement_boundary_wash_v1",
+      "source_manifest_sha256": "60402a7ea7cf3d816ba219c9f4bb84131c47abaf57e284d59b33872957cb990f",
+      "source_seal_sha256": "25b6b924b4cfe2cb18badac457763c17375353c092ec76d2d05988b5778c6999",
+      "bound": ["conditional Bool candidate to measurement setup byte +0x94", "setup pointer passed to per-record boundary"],
+      "unbound": ["runtime query key/record owner/generation", "setup byte dependency on numeric result", "final audio-control effect"],
+      "runtime": "NOT_RUN"
+    },
+    {
+      "id": "start_end_composite_duration_handoff",
+      "source_package": "DEE-ATMOS-DDP-COMPOSITE-OPEN-DURATION-HANDOFF-WASH-V1",
+      "source_manifest_sha256": "8439a09023ba7f8ab352c7bcf29a571baa6b8be6a519204439c25bd9ba92049e",
+      "source_checksums_sha256": "0082c4a710a0f3fdeb869fabb5c845b3403450158b7dd2d359680dfe515c30b1",
+      "bound": ["startSample/endSample item-list pointer forwarded as RDX to FUN_180550800", "new duration object pointer stored at CompositeMaster+0x50"],
+      "unbound": ["FUN_180550800 item-list consumption", "duration object contents", "concrete +0x60 duration method and returned unit"],
+      "runtime": "NOT_RUN"
+    },
+    {
+      "id": "silence_builder_reference_count",
+      "source_package": "dee_atmos_ddp_silence_builder_xref_wash_v1",
+      "source_manifest_sha256": "1c34d8d52dff39da0c902e3cd641324a93376fdcb178bb65791723bda27c3844",
+      "source_seal_sha256": "92299aa445e7c2beb4ee94a4cd7995bb81c31f57abcaff2ecddf5c2655c20359",
+      "bound": ["current Ghidra DB reports 3 references to FUN_1801844c0; 1 direct call at 0x175e10 in FUN_180175c80"],
+      "unbound": ["two unclassified reference records", "silence-duration semantics and effect", "global consumer absence"],
+      "runtime": "NOT_RUN"
+    }
+  ],
+  "policy": {
+    "contains_private_key_or_license": false,
+    "contains_pcm_or_media": false,
+    "contains_native_source_or_decompilation": false,
+    "audio_algorithm_change_authorized": false
+  }
+}
