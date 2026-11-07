@@ -5929,6 +5929,74 @@
           ],
           "validation_boundary": "Reference-only Integer transfer boundary: schema registers base-10 Integer default 15 and inclusive 0..100 bounds; static setup transfers U32 unchanged to Meter config +0x48. The engine copy precedes a branch that may rewrite config to 15 without writing the engine field; final engine state after fallback, XML query owner, first algorithm read, Meter result, and effects remain unbound/not run.",
           "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-timecode-frame-rate-field-consumer-boundary",
+          "mapping_status": "HOST_TYPED_SETTER_AND_DDP_CONSUMER_CANDIDATE_BOUND__XML_OWNER_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_TIMECODE_FIELD_BOUNDARY__NO_FRAME_RATE_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only timecode_frame_rate boundary: the host exact-key setter stores a typed value at input object +0x31 without identifying its adm/atmos_mezz owner or first consumer. The DDP plugin has a numeric property-map consumer at +0xa0 in FUN_18014fd90, but XML output-node owner/generation is not joined. Input/output fields may not be merged; template not_indicated does not prove omission defaults.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Host exact-key setter stores a typed timecode_frame_rate value at input object +0x31.",
+              "DDP numeric property map +0xa0 is consumed by FUN_18014fd90 for range/timecode normalization.",
+              "Host/input owner, DDP XML output owner/generation, omission behavior and runtime effect remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_TIMECODE_FRAME_RATE_BOUNDARY",
+            "package_id": "DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "5e74aef07b179668ab263f07642209a223dbaa1bcedeadd5f2fd1929a0a63f90",
+            "supplement_seal_sha256": "1100d0026618279ebdd35ecd36c2a132d03b841c7a926965ead4ff1278549ffd",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "template_value": "not_indicated",
+              "host_setter": "FUN_1400f13e0 -> typed FUN_1400705c0 -> input object +0x31",
+              "ddp_consumer_candidate": "FUN_18014fd90 reads numeric timecode_frame_rate from property map +0xa0",
+              "owner_generation_joins": "UNBOUND"
+            },
+            "validation_boundary": "Reference-only timecode_frame_rate boundary: the host exact-key setter stores a typed value at input object +0x31 without identifying its adm/atmos_mezz owner or first consumer. The DDP plugin has a numeric property-map consumer at +0xa0 in FUN_18014fd90, but XML output-node owner/generation is not joined. Input/output fields may not be merged; template not_indicated does not prove omission defaults."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only timecode_frame_rate boundary: the host exact-key setter stores a typed value at input object +0x31 without identifying its adm/atmos_mezz owner or first consumer. The DDP plugin has a numeric property-map consumer at +0xa0 in FUN_18014fd90, but XML output-node owner/generation is not joined. Input/output fields may not be merged; template not_indicated does not prove omission defaults."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Input host owner variant and first frame-rate consumer.",
+            "DDP output-node to numeric property-map owner/generation join and input/output consumer relationship.",
+            "Omitted-field runtime default, frame-rate conversion, and audio effect."
+          ],
+          "validation_boundary": "Reference-only timecode_frame_rate boundary: the host exact-key setter stores a typed value at input object +0x31 without identifying its adm/atmos_mezz owner or first consumer. The DDP plugin has a numeric property-map consumer at +0xa0 in FUN_18014fd90, but XML output-node owner/generation is not joined. Input/output fields may not be merged; template not_indicated does not prove omission defaults.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
         }
       ]
     },
@@ -65834,6 +65902,46 @@
         "Threshold query key/owner selection and runtime owner/generation.",
         "Engine state after fallback, first post-open algorithm read, and Meter result dependency.",
         "Audio/control effect and support for non-default values."
+      ]
+    },
+    {
+      "package_id": "DEE-TIME-BASE-ATTEMPT13-XML-TO-NATIVE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-ATTEMPT13-XML-TO-NATIVE-BOUNDARY-V1",
+      "manifest_sha256": "7f96445d1c86cbd59c76f04edb83130a5c5c5a75a38a295814ad50dabee99c16",
+      "supplement_seal_sha256": "97bcbb2e059fe7905f4483963f3e7c9b818e5b433ce5541c762a5ac33fde4bb1",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ATTEMPT13_XML_FILE_POSITION_AND_EXIT0_ONLY; NATIVE_VALUE_NOT_CAPTURED; WRITER_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Host XML value to selected DDP Priv+0x550 current-value writer/owner-generation join.",
+        "Native time_base capture and range/seek behavior.",
+        "Audio/PCM effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1",
+      "manifest_sha256": "5e74aef07b179668ab263f07642209a223dbaa1bcedeadd5f2fd1929a0a63f90",
+      "supplement_seal_sha256": "1100d0026618279ebdd35ecd36c2a132d03b841c7a926965ead4ff1278549ffd",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "HOST_TYPED_SETTER_AND_DDP_CONSUMER_CANDIDATE_BOUND; XML_OWNER_GENERATION_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Input host owner variant and first frame-rate consumer.",
+        "DDP output-node to numeric property-map owner/generation join and input/output consumer relationship.",
+        "Omitted-field runtime default, frame-rate conversion, and audio effect."
       ]
     }
   ]

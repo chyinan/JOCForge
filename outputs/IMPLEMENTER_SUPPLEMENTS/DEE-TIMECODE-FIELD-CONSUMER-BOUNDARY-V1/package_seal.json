@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1",
+  "manifest_sha256": "5e74aef07b179668ab263f07642209a223dbaa1bcedeadd5f2fd1929a0a63f90",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "HOST_TYPED_SETTER_BOUND; INPUT_OWNER_UNBOUND; DDP_CONSUMER_CANDIDATE_BOUND_BY_TRACE; XML_TO_DDP_OWNER_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

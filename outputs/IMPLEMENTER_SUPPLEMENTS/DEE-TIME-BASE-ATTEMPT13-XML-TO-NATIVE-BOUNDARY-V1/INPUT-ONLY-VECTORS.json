@@ -1,0 +1,7 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"attempt": "attempt-13", "field": "filter.audio.encode_to_atmos_ddp.time_base", "value_in_job_xml": "file_position", "dee_exit_code": 0, "native_value": "NOT_CAPTURED", "range_or_seek": "NOT_RUN"}
+  ],
+  "note": "Reused historical job input/run metadata; not a native-field or output observation."
+}

@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following fourteen packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
+The following fifteen packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1403,5 +1403,6 @@ The following fourteen packages were independently hash-checked and passed their
 | DEE-SILENCE-COMPOSITE-ROW-FIELD-IDENTITY-V1 | fa0bacf790c97031136f354f9bf2fdcfb41e7c2ac7259b570596e8bd1cd02645 / d13acf8577d89ad31c28ce56b5a3f01124500edb213679268e0509500a7d34da | Diagnostic labels for row +0x20/+0x28/+0x30/+0x38 and unsigned 64-bit formatting. | Storage type/units, sample insertion, Reader/PTS, output length and audio effect. |
 | DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1 | e31e6e2c77f21d3d5e413d3148493bb9b708fdffaa6699e976aaec99bc06b56d / 32912be91a72d84893f22a941c01bd0c32a92c2f7171e57100fcdaf01fbfbfd8 | Selected-row pointer forwarded to the row helper's first callee. | Snapshot +0xa0 owner/generation join, callee body, codec/BSI input and audio effect. |
 | DEE-SPEECH-THRESHOLD-INTEGER-BOUNDARY-V1 | 1b59ecb4b781516580d223e14d03591330f815f3ab56921e8e0b1d55ff8583d7 / b3700eb78adf83bede7789f0b96132bc352d8a9a9bf3bf6c1a268a24f161fc97 | Integer descriptor and static U32 transfer to Meter config +0x48. | Query owner, final engine state after fallback, first algorithm read, Meter dependency, and effect. |
+| DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1 | 5e74aef07b179668ab263f07642209a223dbaa1bcedeadd5f2fd1929a0a63f90 / 1100d0026618279ebdd35ecd36c2a132d03b841c7a926965ead4ff1278549ffd | Host typed setter and DDP numeric consumer candidate. | Input/output node owner joins, omitted default, consumer relationship, and frame-rate effect. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.

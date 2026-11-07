@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.time_base_attempt13_value_boundary.v1",
+  "status": "ATTEMPT13_XML_VALUE_PRESENT_AND_DEE_EXIT0; NATIVE_VALUE_NOT_CAPTURED; WRITER_UNBOUND; RANGE_SEEK_NOT_RUN",
+  "source_package": "dee_encode_to_atmos_ddp_time_base_priv_writer_gap_wash_v1",
+  "source_manifest_sha256": "062a863388282ac5a218f75d58af3a414132cab70a3e62d6d3adf0cdb82f97ab",
+  "source_seal_sha256": "4e885936758484a1a28b27bac4657cbb2fa3205f103ab34403245ed6c2581dca",
+  "attempt13_job_xml_sha256": "33eccadf746f3d664e861550887e87b853ccf925f7bcd62260d325b7db789aab",
+  "configured_value": "file_position",
+  "dee_exit_code": 0,
+  "what_this_proves": ["the job XML contained file_position", "the referenced DEE attempt exited with code 0"],
+  "what_this_does_not_prove": ["XML value reached selected DDP Priv+0x550", "native runtime time_base value", "Priv instance/generation", "Reader range or seek result", "audio or PCM effect"],
+  "same_priv_static_consumer": {"field": "Priv+0x550 StringType", "consumer": "FUN_18014fd90", "status": "BOUND_STATIC"},
+  "execution_this_turn": {"dee_run": false, "old_attempt_reused": true, "native_value_capture": "NOT_CAPTURED", "range_or_seek": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

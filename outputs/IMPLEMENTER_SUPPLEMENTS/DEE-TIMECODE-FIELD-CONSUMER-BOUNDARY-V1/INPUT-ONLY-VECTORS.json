@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"path": "input/audio/adm/timecode_frame_rate", "template_value": "not_indicated", "status": "TEMPLATE_ONLY", "runtime_default": "UNBOUND"},
+    {"path": "input/audio/atmos_mezz/timecode_frame_rate", "template_value": "not_indicated", "status": "TEMPLATE_ONLY", "runtime_default": "UNBOUND"},
+    {"path": "filter/audio/encode_to_atmos_ddp/timecode_frame_rate", "template_value": "not_indicated", "status": "TEMPLATE_ONLY", "runtime_default": "UNBOUND"}
+  ],
+  "allowed_token_text": ["not_indicated", "23.976", "24", "25", "29.97", "30", "48", "50", "59.94", "60"],
+  "note": "No runtime or output expectations are asserted."
+}

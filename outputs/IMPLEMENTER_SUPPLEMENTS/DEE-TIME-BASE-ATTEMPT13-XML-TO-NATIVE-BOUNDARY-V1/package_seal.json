@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIME-BASE-ATTEMPT13-XML-TO-NATIVE-BOUNDARY-V1",
+  "manifest_sha256": "7f96445d1c86cbd59c76f04edb83130a5c5c5a75a38a295814ad50dabee99c16",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ATTEMPT13_XML_VALUE_PRESENT_AND_DEE_EXIT0; NATIVE_VALUE_NOT_CAPTURED; WRITER_UNBOUND; RANGE_SEEK_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

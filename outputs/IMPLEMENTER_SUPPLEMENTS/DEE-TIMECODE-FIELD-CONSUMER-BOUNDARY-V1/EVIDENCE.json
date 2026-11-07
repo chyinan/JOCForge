@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.timecode_frame_rate_field_boundary.v1",
+  "status": "HOST_TYPED_SETTER_BOUND; INPUT_OWNER_UNBOUND; DDP_CONSUMER_CANDIDATE_BOUND_BY_TRACE; XML_TO_DDP_OWNER_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "timecode-job-config-field-consumer-boundary-wash-v1",
+  "source_manifest_sha256": "fa7b551c497ae92ce9ef49d15347cb237080fe5204fee0dace205c615701d765",
+  "source_seal_sha256": "e996e294d4dd0adb893d31fe1d8be3bd04d41adc58ad1fc50d0aea1001bf4e11",
+  "template_tokens": ["not_indicated", "23.976", "24", "25", "29.97", "30", "48", "50", "59.94", "60"],
+  "template_value": "not_indicated",
+  "input_host_edge": {"function": "FUN_1400f13e0", "exact_key_length": 19, "typed_helper": "FUN_1400705c0", "stored_member": "param_1+0x31", "owner_and_first_consumer": "UNBOUND"},
+  "output_ddp_edge": {"consumer_candidate": "FUN_18014fd90", "property_map": "param_1+0xa0", "use": "numeric value participates in range/timecode normalization", "XML_node_to_map_owner_generation": "UNBOUND"},
+  "unbound": ["input host object is adm vs atmos_mezz vs both", "input stored member to actual consumer", "DDP XML output value to property-map owner/generation", "input/output fields reaching same or distinct consumers", "omitted-field runtime behavior"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}
