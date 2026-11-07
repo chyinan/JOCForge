@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.loro_center_mixlevel_owner_boundary.v1",
+  "status": "STATIC_TYPED_MEMBER_BOUND; RUNTIME_OWNER_GENERATION_UNBOUND; FIRST_BSI_SINK_NOT_TRACED",
+  "source_package": "loro-center-runtime-owner-generation-boundary-wash-v1",
+  "source_manifest_sha256": "172f3ad007f9382453532f265744a14ce66556bf542b306a8d01a228efbb9a86",
+  "source_manifest_sidecar_sha256": "c52a95f27575ebaa62fac7333801e82a7dea7ae166ec7dfa1f5b937b3142e79c",
+  "typed_member": {"xml_key": "downmix:loro_center_mix_level", "object_type": "MixLevel", "priv_offset": "0x7D0", "value_member": "+0x50 U32 (Priv+0x820)"},
+  "first_break": "selected same-owner/generation read or serialization edge",
+  "unbound": ["runtime Priv instance and generation", "value-read/serialization path", "BSI/DDP sink", "rendered downmix/audio effect"],
+  "execution": {"dee_run": false, "dme_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

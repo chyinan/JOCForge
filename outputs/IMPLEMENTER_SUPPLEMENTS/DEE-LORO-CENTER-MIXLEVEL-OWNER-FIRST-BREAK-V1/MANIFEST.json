@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_TYPED_MEMBER_BOUND; RUNTIME_OWNER_GENERATION_UNBOUND; FIRST_BSI_SINK_NOT_TRACED; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 761,
+      "sha256": "42ba2c26505fa66c8c8e26c0e1c33fe2e717de0aa7fcb3ad4bf52356f0eac590"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1165,
+      "sha256": "bfa151a98c9875b11e5619e2441849ea1c43609bae553d9f4ff25097e722fc89"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 568,
+      "sha256": "52e1d9275d2eb328feeea7b8e28ef615a18f96d26160925d59e70c6fc4b63055"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 152,
+      "sha256": "1bf1f972d1bc9a78964ec3751596dc06376f0510ab01acef03153c13f3918377"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 773,
+      "sha256": "0bfe2523434ba1ec321f7b6d6acd7075bd7e420b82506544ff7f6f9f0112f3a7"
+    }
+  ]
+}

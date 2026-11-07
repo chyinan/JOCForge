@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following twenty-eight packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
+The following twenty-nine packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1416,5 +1416,16 @@ The following twenty-eight packages were independently hash-checked and passed t
 | DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1 | a3c5b4e1816471e3d4459cee1133a291194c1c2f553b1c10051141254066c7b3 / b1285e4d865a1f9595540be1c7615c835e3984a5f77ce5620a9210ebb8243205 | AssignTempFile path arguments delegated to FUN_140066230. | Callee file operation, cleanup consumer and runtime job/provider identity. |
 | DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1 | 10d0ff327ab98b1318a0ca5f9e96bdf6d3c98c5bcf8e5cb2de7912b22836b74c / cb56c20de1499e3939756b17988b17927a18e0d74a90102b3c8f479d31492dc5 | Selected-source J-vector handoff and candidate row/MasterSourceImpl fields. | Typed join to Reader startSample/endSample, duration/PCM/PTS effects. |
 | DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1 | b80551101abe6d2ef1cf8efc75be33ff8ad7644fc228c07f9a2db42e27601713 / 497263917403796717b1652f9bc5f8c2c0f6c3e07199730fa7550c655bdeba85 | Height key registration and generic exact-key query mechanism. | Key-to-record and query-result-to-field instance/provider joins, units and effects. |
+| DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1 | c8d1c30461625978279c2033b04a737a2542cde61c6371280615e6e3106a2c1f / fd7995bb4ed87328f0a61e50023455242303e702e90e859d150cd1a992f9778e | Static Lo/Ro center MixLevel object/value member at Priv+0x7d0/+0x50. | Selected runtime owner/generation, read/serialization, first BSI sink and render effect. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.
+
+## 2026-11-08: Local test-support clip-gain experiment status
+
+This is a snapshot of the isolated worktree at baseline HEAD `d78b8c0af4a0b5d1c5ad72777561402347844bc9`. Seven Rust files are modified and remain uncommitted: `crates/jocforge-application/Cargo.toml`, `crates/jocforge-application/src/metadata_source_bridge.rs`, `crates/jocforge-cli/src/source_execution.rs`, `crates/jocforge-domain/Cargo.toml`, `crates/jocforge-domain/src/joc/dispatch_state.rs`, `crates/jocforge-domain/src/joc/programme_state.rs`, and `crates/jocforge-domain/src/joc/source_stage.rs`. They add a `test-support`-gated seam that can replace only the raw ID14 clip-gain X/Y fields after coefficient fitting. X is constrained to 3 bits (0..=7), Y to 5 bits (0..=31), and the writer combines them as `(x << 5) | y`. The CLI reads both `JOCFORGE_TEST_CLIP_GAIN_X_BITS` and `JOCFORGE_TEST_CLIP_GAIN_Y_BITS` only inside that gated path.
+
+The authorized experiment target recorded here is an isolated reference-decoder experiment that varies only those raw ID14 header clip-gain fields, to observe their behavior after coefficient fitting. It is a test-support experiment, not a production input or an audio-parity result. The repository does not record a specific reference-decoder fixture, expected output, or acceptance threshold; those remain unspecified. `jocforge-cli` has `default = []`, its normal `jocforge-application` dependency does not enable `test-support`, and the application feature is enabled in the CLI dev-dependency. An explicit feature-enabled build is required for the CLI override path.
+
+The boundary failure is an exact stale `implementation_inventory` entry for `crates/jocforge-application/src/metadata_source_bridge.rs`. Three mapped slices—`F05JL/authorized-main-g2-joc-id14-candidate`, `F13/authorized-main-g2-metadata-body-proposal`, and `F13/meter-receipt-to-metadata-owner-cold-candidate`—each expect 12,505 bytes with SHA-256 `98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132`. The current modified file is 14,463 bytes with SHA-256 `8e69c6872acfc885cca5409e47e157973ee847e580f50838ae4d2b488f706f08`, a 1,958-byte increase. The checker fails at `scripts/check-boundaries.py`'s direct-slice file inventory comparison (line 12489); the mapped records are unchanged and have not been rewritten to bless the dirty file.
+
+No cleanup/reset/overwrite was performed. No Cargo tests, JOCForge encoding, or DEE execution were performed for this status note. The Wash-side worktree review has not accepted the local tree as clean or the boundary gate as passing. No XML/audio capability or production completion is claimed.

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "loro-center-runtime-owner-generation-boundary-wash",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-9-f05-f13-static-lineage\\outputs\\loro-center-runtime-owner-generation-boundary-wash",
+    "manifest_sha256": "172f3ad007f9382453532f265744a14ce66556bf542b306a8d01a228efbb9a86",
+    "manifest_sidecar_sha256": "c52a95f27575ebaa62fac7333801e82a7dea7ae166ec7dfa1f5b937b3142e79c",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

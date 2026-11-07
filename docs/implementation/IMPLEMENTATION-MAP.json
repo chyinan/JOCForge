@@ -6302,7 +6302,8 @@
           "scope": "Reference-only typed configuration boundary for four independent downmix mix-level fields. Lexical tokens map to internal MixLevelValue U32 candidates with per-field storage/default and accepted-code differences; these are not proven BSI/DDP levels. Runtime owner/event, DME host bridge, downstream consumer, and rendered/audio effect remain unbound/not run.",
           "dependencies": [],
           "spec_files": [
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -6324,7 +6325,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "9774184942c196b259fa3c9bc60e2b37f9e1456fa6a7763e0f287c51abc19cc4",
             "supplement_seal_sha256": "28006864017b0379d33e4939c2b64e968139f68af36d8bffebfcd307852d3b0a",
@@ -6366,7 +6374,17 @@
               "typed_conversion_and_storage": "FUN_1801700d0 -> FUN_18014f6c0 stores U32 at MixLevel +0x50 and flag +0x08",
               "raw_codes_are_bsi_levels": false
             },
-            "validation_boundary": "Reference-only typed configuration boundary for four independent downmix mix-level fields. Lexical tokens map to internal MixLevelValue U32 candidates with per-field storage/default and accepted-code differences; these are not proven BSI/DDP levels. Runtime owner/event, DME host bridge, downstream consumer, and rendered/audio effect remain unbound/not run."
+            "validation_boundary": "Reference-only typed configuration boundary for four independent downmix mix-level fields. Lexical tokens map to internal MixLevelValue U32 candidates with per-field storage/default and accepted-code differences; these are not proven BSI/DDP levels. Runtime owner/event, DME host bridge, downstream consumer, and rendered/audio effect remain unbound/not run.",
+            "loro_center_owner_addendum": {
+              "package_id": "DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1",
+              "manifest_sha256": "c8d1c30461625978279c2033b04a737a2542cde61c6371280615e6e3106a2c1f",
+              "seal_sha256": "fd7995bb4ed87328f0a61e50023455242303e702e90e859d150cd1a992f9778e",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "typed_member": "MixLevel object Priv+0x7D0, U32 value +0x50 / Priv+0x820",
+              "same_owner_generation_read_or_serialization": "UNBOUND",
+              "first_bsi_sink_and_rendered_effect": "UNBOUND/NOT_RUN"
+            }
           },
           "vectors": {
             "kind": "WASHED_STATIC_CONFIGURATION_BOUNDARY_NO_RUNTIME_EFFECT",
@@ -6374,7 +6392,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only typed configuration boundary for four independent downmix mix-level fields. Lexical tokens map to internal MixLevelValue U32 candidates with per-field storage/default and accepted-code differences; these are not proven BSI/DDP levels. Runtime owner/event, DME host bridge, downstream consumer, and rendered/audio effect remain unbound/not run."
@@ -66594,6 +66616,25 @@
         "Run caller/factory and constructed receiver owner/generation.",
         "Setter receiver output_format +0x3b to Run/InitPlugin same-object join.",
         "Selected muxer, output writer, runtime output, and container effect."
+      ]
+    },
+    {
+      "package_id": "DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1",
+      "manifest_sha256": "c8d1c30461625978279c2033b04a737a2542cde61c6371280615e6e3106a2c1f",
+      "supplement_seal_sha256": "fd7995bb4ed87328f0a61e50023455242303e702e90e859d150cd1a992f9778e",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "LORO_CENTER_TYPED_MEMBER_BOUND; SELECTED_RUNTIME_OWNER_AND_BSI_SINK_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Selected Priv instance/generation and value-read/serialization path.",
+        "First BSI/DDP sink and rendered downmix effect."
       ]
     }
   ]
