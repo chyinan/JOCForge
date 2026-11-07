@@ -13,6 +13,7 @@ use jocforge_domain::{
         sample_block_queue::{MeterCallbackIndex, MeterSourceSampleCount},
     },
     profile::{EncodingProfile, resolve_selected_profile},
+    source_axis::{SourceAxisBinding, SourceAxisOwnerGeneration},
     spatial::{
         installed48_activity::{PrimaryActivityInput, PrimaryInstalled48ActivityProducer},
         installed48_source_map::build_primary_installed48_source_map,
@@ -23,7 +24,9 @@ use jocforge_domain::{
         },
     },
     timeline::{AdmSampleIndex, FrontendCallbackIndex},
+    transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
+use std::sync::Arc;
 
 const AXML: &[u8] = include_bytes!("fixtures/primary_metadata_control/source_metadata.xml");
 const CHNA: &[u8] =
@@ -37,6 +40,35 @@ const FROZEN_JOB_BINDING: &[u8] =
     include_bytes!("fixtures/primary_metadata_control/FROZEN-JOB-BINDING.json");
 const PRIMARY_SOURCE_RECEIPT: &[u8] =
     include_bytes!("fixtures/primary_metadata_control/PRIMARY-SOURCE-RECEIPT.json");
+
+fn source_axis(
+    source_map: &jocforge_domain::spatial::installed48_source_map::Installed48SourceMap,
+    source_sha256: [u8; 32],
+    callback_index: MeterCallbackIndex,
+) -> Arc<SourceAxisBinding> {
+    let frontend_callback =
+        FrontendCallbackIndex::new(u32::try_from(callback_index.value()).unwrap());
+    let transaction_id = CallbackLineageIdentity::new(
+        ProgrammeId::new("meter-installed48-renderer-test").unwrap(),
+        AttemptId::new(0),
+        frontend_callback,
+    );
+    let ids = source_map
+        .rows()
+        .iter()
+        .map(|row| row.source_index())
+        .collect::<Vec<_>>();
+    Arc::new(
+        SourceAxisBinding::new(
+            ids,
+            SourceAxisOwnerGeneration::new(1),
+            source_sha256,
+            transaction_id,
+            frontend_callback,
+        )
+        .unwrap(),
+    )
+}
 
 #[test]
 fn cold_zero_input_produces_one_noncommitting_postwindow_frame() {
@@ -70,6 +102,7 @@ fn cold_zero_input_produces_one_noncommitting_postwindow_frame() {
     assert!(membership_route.contributions().is_empty());
 
     let source_sha256 = *source_map.source_binding().source_receipt_sha256();
+    let axis = source_axis(&source_map, source_sha256, MeterCallbackIndex::new(0));
     let source_samples = MeterSourceSampleCount::new(binding.data_bytes() / 114).unwrap();
     let before = MeterInstalled48State::cold(source_sha256, source_samples);
     let proposal = stage_meter_installed48(
@@ -84,6 +117,7 @@ fn cold_zero_input_produces_one_noncommitting_postwindow_frame() {
             activity: &activity_output,
             membership_route: &membership_route,
             source_map: &source_map,
+            source_axis: &axis,
             controls: &controls,
             diffusion_parameters: None,
         },
@@ -200,6 +234,7 @@ fn authored_audio_diffuse_and_selected_feature_diffuse_reach_distinct_consumers(
     assert_eq!(activity_output.quiet_regular_rows()[host10_ordinal], 0);
 
     let source_sha256 = *source_map.source_binding().source_receipt_sha256();
+    let axis = source_axis(&source_map, source_sha256, MeterCallbackIndex::new(0));
     let source_samples = MeterSourceSampleCount::new(binding.data_bytes() / 114).unwrap();
     let renderer_state = MeterInstalled48State::cold(source_sha256, source_samples);
     let f04_result = stage_meter_installed48(
@@ -214,6 +249,7 @@ fn authored_audio_diffuse_and_selected_feature_diffuse_reach_distinct_consumers(
             activity: &activity_output,
             membership_route: &membership_route,
             source_map: &source_map,
+            source_axis: &axis,
             controls: &controls,
             diffusion_parameters: None,
         },
