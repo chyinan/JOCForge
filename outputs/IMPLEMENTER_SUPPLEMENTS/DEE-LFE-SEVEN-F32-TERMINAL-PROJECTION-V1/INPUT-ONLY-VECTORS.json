@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "scope": "Terminal projection arithmetic only; synthetic F32 inputs; no native run or signal claim.",
+  "vectors": [
+    {"id":"main-x0-one-hot","input":{"x0":1},"expected":{"main_y0":"-B[0]=+0x1.921faap-10","companion_y0":"B[0]=-0x1.921faap-10","other_outputs":0}},
+    {"id":"main-x1-one-hot","input":{"x1":1},"expected":{"main_y0":"A[0]=-0x1.ffffd8p-1","companion_y0":"-A[0]=+0x1.ffffd8p-1","other_outputs":0}},
+    {"id":"shared-odd-x14-one-hot","input":{"x14":1},"expected":{"main_y1":"A[127]=-0x1.5fda04p-7","companion_y1":"A[127]=-0x1.5fda04p-7","other_outputs":0}},
+    {"id":"unused-terminal-input-x8","input":{"x8":1},"expected":{"all_terminal_outputs":0}}
+  ],
+  "warning": "These vectors validate the sanitized terminal equations only. Upstream recurrence, wrapper gating, matrix-transform branch, actual LFE table inputs, and bitstream output remain separate."
+}

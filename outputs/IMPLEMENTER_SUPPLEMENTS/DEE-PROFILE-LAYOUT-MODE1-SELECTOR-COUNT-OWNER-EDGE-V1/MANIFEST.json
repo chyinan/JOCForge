@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-PROFILE-LAYOUT-MODE1-SELECTOR-COUNT-OWNER-EDGE-V1",
+  "source_package_manifest_sha256": "cc80478610bca57d63e0edf09ef7fea72b3d16ea1e7da14f998eb9dcd8d8d7a5",
+  "source_package_formal_seal_status": "NOT_CLAIMED",
+  "source_package_provenance_status_sha256": "94f4b095bb4672fae9b5f19a46dd01a81abf937a8a09bb079faf4a0564e76459",
+  "files": {
+    "REPORT.md": "b7644bab40e05f5a3f70c65e50b6a8ce9c786c4cef03dc0407335903d9057d80",
+    "BOUNDARY.json": "eb2a0aa855b6e3e5ed34a4d9abb2cc108dc6a8d0cdeb19c63f29adc25868a45f",
+    "SOURCE-LINKS.json": "17caf72d850d877e0451207daaac9a68aa0b77285eb876c1491cb15a874a76f8",
+    "INPUT-ONLY-VECTORS.json": "b7bc891a017955c42086e0c2f283a1a9fbb409fe01b94e04a59857a76730a991"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-wash-dee-profile-c-consumer-source-identities.v1",
+  "source_package_id": "PROFILE-RENDERER-INDEX-RECORD-CONSUMER-V1",
+  "source_manifest_sha256": "f70af11810da47d3a77ef297f43c25e7274aa8a82c3f4905ad9ae0865aee5707",
+  "downstream_count_parent_manifest_sha256": "b514065f2f91c35ff87bf2c74a6f481e34607e46bd7a9e71ebdb2faf1b2064be",
+  "profile_c_origin_parent_manifest_sha256": "1e6b01fb91ae9ea1092ac61c56fe878a1cba630d8bf66a311ca0c6d9fabd6c6d",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "source_payloads_verified": "12/12",
+  "raw_source_code_or_trace_copied": false
+}

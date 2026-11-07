@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "dee_lfe_reduction_scalar_first_use_wash_v1",
+      "evidence_manifest_sha256": "df13b0e319af4aca755a01d5d50505e23ff4c7afa37ea9af5cb542a19be5499c",
+      "package_seal_sha256": "5a1aea71baf92d6835f4342631474d113bf8aa5caa4441c879545126767d4066"
+    },
+    {
+      "package_id": "dee_lfe_filter_stack_output_aligned_helper_path_wash_v1",
+      "manifest_sha256": "c74c838bc2467338dc2e4a5547b1a2056f1bb921d06b9d4e7c61098b501edb99",
+      "package_seal_sha256": "f05b8a0f4f9fc95d295b45e3eaf5c399623f7dbca603c61cd0877a7f5f609139"
+    },
+    {
+      "package_id": "dee_lfe_intermediate_callee_boundary_wash_v1",
+      "manifest_sha256": "5a5854ae6ac7576879046b3bb04aa667512944eaf57498d97f152f939b588658",
+      "package_seal_sha256": "174cb7f872b8233094990af167ab6325392409e19c3d764c7fa5739cd428a4a4"
+    },
+    {
+      "package_id": "dee_lfe_buffer_input_extent_boundary_wash_v1",
+      "manifest_sha256": "c13bad284c9b330e1fb70823a51a91ddc4ee4af874f9432a09dea4d2c723f751",
+      "package_seal_sha256": "e290d1befc669075da4460af1204fd011c834a1bda832a27f8eaf3c88e04c86e"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.dee_lfe_recurrence_arithmetic_rounding_boundary.v1",
+  "package_id": "DEE-LFE-RECURRENCE-ARITHMETIC-ROUNDING-BOUNDARY-V1",
+  "status": {
+    "inline_recurrence_arithmetic": "SEPARATE_PACKED_MULPS_AND_ADDPS",
+    "nonzero_low_bank_arithmetic": "SEPARATE_PACKED_MULPS_AND_ADDPS",
+    "nonzero_high_bank_arithmetic": "SEPARATE_PACKED_MULPS_AND_ADDPS",
+    "fma_in_two_target_bodies": "NOT_PRESENT_IN_INSPECTED_ARITHMETIC",
+    "mxcsr_read_or_write_in_two_target_bodies": "NOT_OBSERVED",
+    "entry_mxcsr_rounding_control": "UNBOUND",
+    "runtime_parity": "NOT_RUN",
+    "sample_layout_generation": "UNBOUND",
+    "lfe_correlation_cause": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "dee_lfe_recurrence_instruction_arithmetic_wash_v1",
+    "evidence_manifest_sha256": "01617db22f7759937904489dc6f2087fcc9ee0330043270673b850bbb0b33624",
+    "package_seal_sha256": "149f5e8bd2cb806f6221f39dccf7fa9ce54099e36452c0ae7ed0edff950d7de2",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "instruction_encoding_crosscheck": "105_OF_105_MATCHED_TO_TARGET_IMAGE",
+    "historical_exporter_hash_note": "current exporter file hash differs from historical export metadata; pinned Listing plus target-byte crosscheck is the evidence basis"
+  },
+  "arithmetic_sequences": {
+    "FUN_14036d9e0_inline": ["MULPS XMM3,XMM2", "MULPS XMM3,XMM4", "MULPS XMM1,XMM2", "ADDPS XMM3,XMM1"],
+    "FUN_14036d7c0_low_bank": ["MULPS XMM0,XMM2", "MULPS XMM1,XMM4", "MULPS XMM1,XMM6", "ADDPS XMM0,XMM1"],
+    "FUN_14036d7c0_high_bank": ["MULPS XMM5,XMM4", "MULPS XMM0,XMM2", "MULPS XMM5,XMM6", "ADDPS XMM0,XMM5"],
+    "operation_semantics": "separate packed binary32 multiply and add instructions; separate rounding points"
+  },
+  "limits": {
+    "dee_executed": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Use only as the function-local instruction arithmetic rule. Do not infer caller MXCSR, sample LFE parity, or a global no-FMA/rounding rule."
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_PCM_OR_RUNTIME_VECTOR",
+  "vectors": [],
+  "note": "Static instruction evidence only; no audio samples or computed parity values are included."
+}

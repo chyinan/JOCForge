@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package": {
+    "path": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/profile-layout-count-mode1-global-state-v1/wash-package",
+    "manifest_sha256": "117c2bd64ebe9240901f05165821939a1014cc8704132fd9301bef319ab48b27",
+    "payloads_verified": "8/8",
+    "formal_package_seal_present": false,
+    "target_hash_status": "source package inherited image hash; not rehashed in that pass"
+  },
+  "parent_package": {
+    "package_id": "PROFILE-LAYOUT-COUNT-C-ORIGIN-V1",
+    "manifest_sha256": "325dda4ae84d92b72bd971c381d06a8c86dd7ca05f739fb7dd68bf988945cb56",
+    "report_sha256": "74b7ce6e3723d68113aa257a88503d2fb045e28ca2a744a3202449cb1b56050d"
+  },
+  "target_image": {
+    "path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll",
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "rehash_by_wash_this_turn": true
+  },
+  "wash_actions": {
+    "source_manifest_and_payload_hashes_recomputed": true,
+    "parent_package_recomputed": true,
+    "target_image_rehashed": true,
+    "raw_ghidra_scripts_or_decompilation_copied": false,
+    "private_key_or_license_material_copied": false
+  }
+}

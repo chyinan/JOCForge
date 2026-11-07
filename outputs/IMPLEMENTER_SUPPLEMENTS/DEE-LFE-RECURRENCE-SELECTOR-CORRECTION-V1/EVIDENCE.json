@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.dee_lfe_recurrence_selector_correction.v1",
+  "package_id": "DEE-LFE-RECURRENCE-SELECTOR-CORRECTION-V1",
+  "status": {
+    "zero_inline_branch": "STATICALLY_BOUND",
+    "nonzero_table_branch": "STATICALLY_BOUND",
+    "descriptor_stride_to_recurrence_selector_in_two_lfe_dispatchers": "RETRACTED_NOT_A_JOIN",
+    "lfe_lane_selector_in_FUN_140343530": "ZERO_STATIC",
+    "lfe_lane_selector_in_FUN_1403448d0": "ZERO_STATIC",
+    "sample_specific_layout_generation": "UNBOUND",
+    "instruction_level_fma_mxcsr": "UNBOUND",
+    "numeric_parity": "NOT_RUN",
+    "correlation_root_cause": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/dee_lfe_base_layer_recurrence_branch_wash_v1",
+    "package_id": "dee_lfe_base_layer_recurrence_branch_wash_v1",
+    "evidence_manifest_sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d",
+    "package_seal_sha256": "0efe3846f472ae11bf27b874ab69f4ec78fa79569a41551b1088e709534f656b",
+    "seal_status": "SEALED_PARTIAL",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "tool": "Ghidra 12.2 PUBLIC"
+  },
+  "branch_mapping": {
+    "selector_function": "FUN_14036d9e0; zero selects inline recurrence, nonzero calls FUN_14036d7c0",
+    "gather_stride": "U16 descriptor+0x0c copied to state+0x1320 and used before recurrence selector assignment",
+    "local_reuse": "gather local is overwritten before recurrence call; equal variable name is not a dataflow join",
+    "dispatcher_lfe_lane_zero_assignments": ["FUN_140343530", "FUN_1403448d0"],
+    "fbw_nonzero_selector_source_in_these_dispatchers": "separate per-lane state+0x15208 field"
+  },
+  "numeric_operation_shape": {
+    "inline": "64 iterations over a 256-F32 in-place block; two 128-F32 coefficient regions; four-value recurrence",
+    "table": "32 iterations over two 128-F32 banks; two separate 64-word coefficient tables",
+    "scalar_type": "F32 by decompiled signatures",
+    "persistent_state_mutated_in_these_functions": false,
+    "fma_or_rounding_instruction_semantics": "UNBOUND",
+    "coefficient_contents_included": false
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  },
+  "disposition": "Supersede only the prior descriptor-stride-to-LFE-recurrence-selector inference for the two named dispatchers. Do not claim LFE parity or root cause."
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-LFE-OUTPUT-STACK-CLAMP-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_post_return_stack_buffer_consumer",
+      "package_id": "dee_lfe_filter_output_stack_consumer_boundary_wash_v1",
+      "manifest_sha256": "08564bc7c55924ad0d169a8fe9f6e27ca510e6c325af5d24c26abdea572454d6",
+      "package_seal_sha256": "6c1db4c41f6e75b4101bfb6d9731d33b3500f8a30bc52065c2d69d03e5e63820",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "prior_input_extent",
+      "package_id": "DEE-LFE-FILTER-READ-WRITE-EXTENT-V1",
+      "manifest_sha256": "e40e0deb54f58ff83459b24f25fb9d370a300e224a4554d9f2625d18a6ccc356",
+      "package_seal_sha256": "d8e6988e84074e469ce1078c9901b226bc3b569dab82aa61f7b9e4376c778bc9"
+    }
+  ],
+  "omitted_material": {
+    "raw_listing_or_decompilation": true,
+    "native_binary": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

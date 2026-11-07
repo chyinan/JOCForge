@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge.dee_lfe_recurrence_instruction_order.v1",
+  "package_id": "DEE-LFE-RECURRENCE-INSTRUCTION-ORDER-V1",
+  "status": {
+    "inline_function_instruction_order": "MULPS_X3_THEN_ADDPS_STATIC",
+    "nonzero_table_function_instruction_order": "SEPARATE_MULPS_AND_ADDPS_STATIC",
+    "fma_in_six_inspected_functions": "NOT_PRESENT",
+    "mxcsr_read_write_in_six_inspected_functions": "NOT_PRESENT",
+    "explicit_round_cvt_rcp_rsqrt_in_six_inspected_functions": "NOT_PRESENT",
+    "active_mxcsr_value": "NOT_CAPTURED",
+    "selected_sample_layout_and_generation": "UNBOUND",
+    "numeric_parity": "NOT_RUN",
+    "lfe_residual_root_cause": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/dee_lfe_recurrence_instruction_order_wash_v1",
+    "package_id": "dee_lfe_recurrence_instruction_order_wash_v1",
+    "evidence_manifest_sha256": "64b337cedbea20e23e871541e9473a0f5509e41a2cf9027b6326f293967b8087",
+    "package_seal_sha256": "2a1d93772ac38bb4c8096567fbb701b0d3dfb91c8c745ad96e8b9d9f1194b1cb",
+    "seal_status": "SEALED_PARTIAL",
+    "verifier_normal": "PASS",
+    "verifier_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC Listing"
+  },
+  "inspected_functions": [
+    "FUN_14036d9e0",
+    "FUN_14036d7c0",
+    "FUN_14036d4e0",
+    "FUN_14036d560",
+    "FUN_14036d5e0",
+    "FUN_14036d630"
+  ],
+  "branch_scope": {
+    "lfe_lane_in_FUN_140343530_and_FUN_1403448d0": "selector=0; inline recurrence",
+    "descriptor_stride": "gather input only in inspected dispatchers; not recurrence selector",
+    "nonzero_table_path": "separate FBW lane selector path in inspected dispatchers"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "raw_listing_or_scripts_in_supplement": false
+  },
+  "disposition": "Function-scoped instruction order only. Do not infer sample parity or global absence of FMA/MXCSR use."
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-MATCHED-LAYOUT-BRANCH-RECEIPT-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_LAYOUT_TO_STRIDE_BRANCH_BOUND; MATCHED_RUN_SELECTOR_STRIDE_NOT_CAPTURED; LFE_ROOT_CAUSE_UNBOUND",
+  "implementation_disposition": "Do not claim a selected LFE branch or root cause from this static receipt",
+  "source_manifest_sha256": "56d4dfa6a0acdd9a0115667de5738393e588b2c137ba0c39e366635cefa8c34d",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3017,
+      "sha256": "edefcb0a2eb52f10eb1dba344684f3cc0e72d14fd71eb7f38d6707b5304db021"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3703,
+      "sha256": "f3df9dc0d2fae2ecd1a009bc5b26484aea3ee0824a10f7fcdee3cebb7cf5e6f0"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1008,
+      "sha256": "12a1c0b66f8d938c2ca7ca5bc286447a36573217770756c80aa47bf83c4f7530"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2357,
+      "sha256": "ae0b64c53d685506fabed419b1d9e26c472ebd39ad75b0e2fb1a6ffb79895fff"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 3783,
+      "sha256": "747148f4c0de8dde52f8fa62fc468b78cea9e676e192e043bcc32fe0712d069b"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 1057,
+      "sha256": "56d4dfa6a0acdd9a0115667de5738393e588b2c137ba0c39e366635cefa8c34d"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "4a28f20cb84e2603faa81e356828bd47b6742bdf7845d71c0c1a170c9f5194ec"
+    }
+  ]
+}

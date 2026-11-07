@@ -1,0 +1,65 @@
+{
+  "schema": "jocforge.dee-lfe-seven-f32-terminal-projection.v1",
+  "package_id": "DEE-LFE-SEVEN-F32-TERMINAL-PROJECTION-V1",
+  "status": "MAIN_AND_COMPANION_TERMINAL_F32_FORMULAS_BOUND_STATIC; UPSTREAM_RECURRENCE_AND_MATRIX_TRANSFORM_SEPARATE; FRAME_WIRE_JOIN_UNBOUND; RUNTIME_NOT_RUN",
+  "upstream": {
+    "package_id": "DEE-LFE-SEVEN-F32-FORMULA-WASH-V1",
+    "manifest_sha256": "c40d0acab237e4661c6b156b156e813dc0c4cc8c9bfdcc4c26e64e19229be6ef",
+    "seal_sha256": "cd19c6c449cc0135a8cc1a9243cfb349faccfd406b4c96aee9857c2fc8e9a36c",
+    "manifest_files": 5,
+    "manifest_hash_audit": "PASS_5_OF_5",
+    "source_receipts": 10,
+    "source_receipt_hash_audit": "PASS_10_OF_10",
+    "checker": "UPSTREAM_REPORTED_NODE_HASH_INTEGRITY; POWERSHELL_CHECKER_NOT_REPORTED_AS_RUN; WASH_DID_NOT_RUN_CHECKER"
+  },
+  "binary": {
+    "module": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC"
+  },
+  "terminal_functions": {
+    "main": "FUN_18022a310",
+    "companion": "FUN_18022a410",
+    "source_type": "F32[16]",
+    "source_used_indices": [0,1,2,3,4,5,6,7,10,11,12,13,14,15],
+    "source_unused_indices": [8,9],
+    "output_type": "F32[7]",
+    "write_order": [0,2,4,6,5,3,1],
+    "source_stride_bytes": 4,
+    "output_stride_bytes": 4,
+    "source_span_bytes": 64,
+    "output_bytes": 28,
+    "loop_or_recurrence_in_terminal_bodies": false,
+    "f32_rounding_mode_or_fma": "NOT_IDENTIFIED"
+  },
+  "coefficients": {
+    "A_range": {"rva": "0x6bd860", "elements": 128, "bytes": 512, "sha256": "bbd2bd460b0a750ccb45f959561a9a7e2ed2f8c6fd9391fb21abc9216b08fa41"},
+    "B_range": {"rva": "0x6bda60", "elements": 128, "bytes": 512, "sha256": "e4cbb855ed455887b387cdb188bf8bab41976c73648c1b022dd18156214bde50"},
+    "hex_f32": {
+      "A[0]":"-0x1.ffffd8p-1","A[1]":"-0x1.fff382p-1","A[2]":"-0x1.ffd37p-1","A[3]":"-0x1.ff9fa2p-1",
+      "A[125]":"-0x1.20f77p-5","A[126]":"-0x1.78f536p-6","A[127]":"-0x1.5fda04p-7",
+      "B[0]":"-0x1.921faap-10","B[1]":"-0x1.c45ffep-7","B[2]":"-0x1.ab354cp-6","B[3]":"-0x1.3a151p-5",
+      "B[125]":"-0x1.ffae6ep-1","B[126]":"-0x1.ffdd4ep-1","B[127]":"-0x1.fff872p-1"
+    }
+  },
+  "equations": {
+    "main": ["y0=A[0]*x1-B[0]*x0","y1=A[127]*x14+B[127]*x15","y2=A[1]*x3-B[1]*x2","y3=A[126]*x12+B[126]*x13","y4=A[2]*x5-B[2]*x4","y5=A[125]*x10+B[125]*x11","y6=A[3]*x7-B[3]*x6"],
+    "companion": ["y0=B[0]*x0-A[0]*x1","y1=A[127]*x14+B[127]*x15","y2=B[1]*x2-A[1]*x3","y3=A[126]*x12+B[126]*x13","y4=B[2]*x4-A[2]*x5","y5=A[125]*x10+B[125]*x11","y6=B[3]*x6-A[3]*x7"]
+  },
+  "upstream_gates": {
+    "main_wrapper": "FUN_180229d90 -> FUN_18022a310 only when both preceding returns < 1",
+    "companion_wrapper": "FUN_180229de0 -> FUN_18022a410 only when both preceding returns < 1",
+    "prior_layout7_fixtures": "selector-zero pre-transform path in three reused captures only",
+    "prior_recurrence": "64 iterations, four F32 state words/iteration; full recurrence not in this supplement"
+  },
+  "separate_matrix_path": {
+    "function": "FUN_1801d5fe0 -> FUN_1801d5b80",
+    "predicate": "arg6 != 0 && arg7 == 1",
+    "input": "main table pointer vector, count*8 bytes",
+    "matrix": "in-place 6x6 F32 transform",
+    "runtime_predicate_or_execution": "NOT_RUN",
+    "coefficients": "NOT_INCLUDED"
+  },
+  "remaining_unbound": ["full pre-transform recurrence equation", "conditional matrix coefficients and selected-run activation", "same-path LFE table to frame-record/bitwriter join", "LFE exponent/mantissa/lfeon wire fields", "whether this is the current JOCForge output difference"],
+  "execution_scope": {"dee_execution":"NOT_RUN","dynamic_observation":"NOT_RUN","pcm_or_ec3_read":false,"license_content_read":false,"implementation_contact_before_wash":false}
+}

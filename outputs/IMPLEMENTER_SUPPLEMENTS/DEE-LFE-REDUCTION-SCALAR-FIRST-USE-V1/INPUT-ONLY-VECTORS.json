@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_VECTOR_PROVIDED",
+  "vectors": [],
+  "note": "This static Listing boundary does not require PCM or encoded payload input. No sample values or media are included."
+}

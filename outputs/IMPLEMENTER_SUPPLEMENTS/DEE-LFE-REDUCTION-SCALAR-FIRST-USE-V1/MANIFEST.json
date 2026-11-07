@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-REDUCTION-SCALAR-FIRST-USE-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SCOPED_STATIC_R9_OVERWRITE_BOUND; BROADER_LFE_EFFECT_UNBOUND",
+  "implementation_disposition": "Reject only the scalar-through-R9 dataflow hypothesis on the inspected call path; no parity or root-cause claim.",
+  "source_manifest_sha256": "df13b0e319af4aca755a01d5d50505e23ff4c7afa37ea9af5cb542a19be5499c",
+  "source_package_seal_sha256": "5a1aea71baf92d6835f4342631474d113bf8aa5caa4441c879545126767d4066",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4536,
+      "sha256": "3048c7a42648f72c5a3a7098b4e245e77d9732571eaf9fc62b5c893a0008e038"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2102,
+      "sha256": "e813ed5d5bd4def49e89720d30acfc59c66624b3d4c5bea8840fb8f5c062770c"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 237,
+      "sha256": "4bc89a36f9f65fcc014304bddc67bbbd9d964997c7a994c1d71af656e31d664c"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1734,
+      "sha256": "3d704bec2d34f72956a770aa0bb04992d15a3a04544141c0de90d9085b620880"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1371,
+      "sha256": "b679829554ea8fe59870a9023ab9d9af2c85523fe2c6349739641a361bb010b2"
+    }
+  ]
+}

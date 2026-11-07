@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-SELECTOR-SOURCE-OFFSET-CORRECTION-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "LVAR9_OFFSETS_CORRECTED_TO_PLUS94_PLUS98; CONFIG_WRITER_BOUND; ADM_SEMANTIC_CROSSWALK_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "implementation_disposition": "Supersede old +0x40/+0x44 source claim for this path only; do not assign semantic labels or sample behavior until the ADM crosswalk is bound",
+  "source_manifest_sha256": "46473d85233accc9a6a98d00516f2910023175437fc03e28a202c0e67868c2ed",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3125,
+      "sha256": "0a1b1c66506fcfef777d956fe63f8cac2bc89b087a6f86131490e8925ea21e7d"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2526,
+      "sha256": "079fd2148d07e12eb2ec7197f3340ef9741722ba22c846f1d340686dbfc56c46"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 413,
+      "sha256": "16195fd4690e3fa56e5320ee3f261330ca93ab1997d07ef3d35c3ca35a1cb643"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2347,
+      "sha256": "9fa5e836568c881041ffe03d1ed2143d2ed8c796a1c1b9a7747085b6818eaf67"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1134,
+      "sha256": "e3c232e422a187c7291b3f26dbac0fd2450edbd707617e2ec0bbd8e051f8b0a0"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.sha256",
+      "bytes": 81,
+      "sha256": "e72d4362f5a265b90b6663ac7414ad809423eb81a9fb65027e438a22ff8ba36c"
+    }
+  ]
+}

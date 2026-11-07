@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-RECURRENCE-ARITHMETIC-ROUNDING-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "a792b7c8cd85d5d874fa9d81ff9d83e0e9f44cedce66299dea2efacba09da8d5",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-LFE-HELPER-READONLY-EXTENT-V1",
+  "sources": [
+    {
+      "role": "primary_helper_extent_receipt",
+      "package_id": "dee_lfe_buffer_helper_extent_boundary_wash_v1",
+      "manifest_sha256": "52604072ce7175b32c60d66b507137955de5ed168b400af255865c4afa5e9d92",
+      "package_seal_sha256": "1ee4a323de9990acfde2c27a448aa3937b58e8fa3147a6c0a2172018c636013f",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "parent_buffer_transfer_boundary",
+      "package_id": "dee_lfe_intermediate_callee_boundary_wash_v1",
+      "manifest_sha256": "5a5854ae6ac7576879046b3bb04aa667512944eaf57498d97f152f939b588658",
+      "package_seal_sha256": "174cb7f872b8233094990af167ab6325392409e19c3d764c7fa5739cd428a4a4",
+      "availability": "REFERENCE_ONLY"
+    }
+  ],
+  "omitted_material": {
+    "raw_helper_listings": true,
+    "native_binary": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "dee-lfe-base-layer-recurrence-branch-source-identities.v1",
+  "sources": [
+    {
+      "bytes": 5777,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/MANIFEST.json",
+      "sha256": "86e655128b711faa43db8f2bd5bdceca57a14ab5ad86ef4fa992f12bad935106"
+    },
+    {
+      "bytes": 574,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/package_seal.json",
+      "sha256": "e66339e607ed6d21bec228fb8963adbef726a672ae2dc3884170611eb6613310"
+    },
+    {
+      "bytes": 209413,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/core_encoder_lfe_entry_trace.txt",
+      "sha256": "e463d50003ff9661d41d7c0eb2e8d4c779cdbdba4633c3044dfabe066641cf15"
+    },
+    {
+      "bytes": 70883,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/core_layout_selector_flow.txt",
+      "sha256": "a1bfb6fef4cf92a753934fe42ddc5fbff155e6f872a973b63b8e75f47c208a92"
+    },
+    {
+      "bytes": 14545,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/core_channel_layout_map.txt",
+      "sha256": "816d758493081176af7b4d809c2fe5a2c3973300008ae4d5ffa941971781c0ee"
+    },
+    {
+      "bytes": 15837,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/EVIDENCE.json",
+      "sha256": "89b2b4db489b282f0771c8a02a72f08b64326117ae7ba6d448c5578f55aced83"
+    },
+    {
+      "bytes": 891,
+      "codex_relative_path": "2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2/MANIFEST.json",
+      "sha256": "dcdcead2a00e0ea922506cba7c6d2ea90a1656c4aeb501f7d30a11d9b4f2a7d2"
+    },
+    {
+      "bytes": 454,
+      "codex_relative_path": "2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2/package_seal.json",
+      "sha256": "54d1b5d56a3b579393cb423ff469993415b1a234574f3de65a5bf589970eb519"
+    },
+    {
+      "bytes": 3322,
+      "codex_relative_path": "2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2/EVIDENCE.json",
+      "sha256": "41148c693babfe3f5e4d3d145c625359cb6f4d119631007e819075335ae9acce"
+    },
+    {
+      "bytes": 2460,
+      "codex_relative_path": "2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2/REPORT.md",
+      "sha256": "46206373f9bade1d6e0b94bc98e8498dc86802244fa18c1fb5747456c1763e0e"
+    }
+  ]
+}

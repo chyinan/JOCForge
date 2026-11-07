@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-R4-POINTER-ONLY-CAPTURE-NO-GO-BOUNDARY-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "51b38edb32862b21479a814b1132a5b72a1d58b583da5348577b827b0f3f0d35",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

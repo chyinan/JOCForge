@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-INTERMEDIATE-CALLEE-DISPATCH-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ALIGNMENT_BRANCH_AND_HELPER_DISPATCH_STATIC_BOUND; FIRST_HELPER_EXTENT_UNBOUND; BUFFER_CONTENT_CONTINUITY_UNBOUND; NUMERIC_PARITY_NOT_RUN",
+  "implementation_ready": false,
+  "source_manifest_sha256": "5a5854ae6ac7576879046b3bb04aa667512944eaf57498d97f152f939b588658",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2427,
+      "sha256": "779f4d724829f3a2309e3205030a7d3346db043c9bd637e4bbb7205d04bf02b3"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2428,
+      "sha256": "d3f9e8b2ba29568bddeebdfbd021a3a04f996a71cca8d5610502c28f48c10b67"
+    },
+    "REPORT.md": {
+      "bytes": 1325,
+      "sha256": "6c6ed537f080e911901136ee86d6ae2189a2b1a80b8fb0d8497eb680683c7f76"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 995,
+      "sha256": "1a74910777f8305148c58cf69adbafc9994f28c462e8f77c5a1f0148784b8ede"
+    }
+  }
+}

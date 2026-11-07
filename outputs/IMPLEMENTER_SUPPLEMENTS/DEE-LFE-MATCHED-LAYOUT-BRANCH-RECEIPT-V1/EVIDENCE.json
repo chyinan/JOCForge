@@ -1,0 +1,72 @@
+{
+  "schema": "jocforge.dee_lfe_matched_layout_branch_boundary.v1",
+  "package_id": "DEE-LFE-MATCHED-LAYOUT-BRANCH-RECEIPT-V1",
+  "status": {
+    "static_selector_edge": "BOUND",
+    "matched_run_layout_id": "NOT_CAPTURED",
+    "matched_run_lfe_present": "NOT_CAPTURED",
+    "matched_run_fbw_count": "NOT_CAPTURED",
+    "matched_run_descriptor_slot": "NOT_CAPTURED",
+    "matched_run_stride": "NOT_CAPTURED",
+    "selected_zero_or_nonzero_branch": "NOT_CAPTURED",
+    "lfe_residual_root_cause": "UNBOUND"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/dee_lfe_matched_layout_branch_receipt_wash_v1",
+    "package_id": "dee_lfe_matched_layout_branch_receipt_wash_v1",
+    "manifest_sha256": "56d4dfa6a0acdd9a0115667de5738393e588b2c137ba0c39e366635cefa8c34d",
+    "manifest_checksum_file_matches": true,
+    "manifest_checksum_file_sha256": "4a28f20cb84e2603faa81e356828bd47b6742bdf7845d71c0c1a170c9f5194ec",
+    "separate_package_seal_present": false,
+    "verifier_normal": "PASS",
+    "verifier_python_O": "PASS",
+    "verified_manifest_files": 5,
+    "ghidra_version": "12.2 PUBLIC"
+  },
+  "native_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "static_analysis": "Ghidra read-only",
+    "installed_image_rehashed": false
+  },
+  "static_typed_edge": {
+    "producer": "FUN_1403471f0",
+    "context_source_fields": [
+      {"source": "lVar9+0x40 / helper param_1+0x34", "width_bytes": 4, "destination": "core state+0x2c", "role": "layout_id selector input; underlying label UNBOUND"},
+      {"source": "lVar9+0x44 / helper param_1+0x38", "width_bytes": 4, "destination": "core state+0x30", "role": "LFE-present input; underlying label UNBOUND"}
+    ],
+    "normalized_state": {"layout_id": "state+0x1912c", "lfe_present": "state+0x1912e"},
+    "layout_map": {
+      "fbw_count": "DAT_1405f4ba0[layout_id]",
+      "lfe_lane_when_present": "FBW_count",
+      "descriptor_slot": "DAT_1405f4bc0[layout_id*6 + lane]",
+      "stride_source": "U16 descriptor+0x0c",
+      "stride_destination": "state+0x1320[slot]",
+      "zero_stride_branch": "inline recurrence",
+      "nonzero_stride_branch": "FUN_14036d7c0 stride-table path"
+    }
+  },
+  "existing_matched_run_receipts": {
+    "input_adm_sha256_previously_recorded": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "matched_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "output_geometry": "48 kHz, six-channel 5.1(side), 1024 kbps",
+    "separate_success_receipt_input_rows": 38,
+    "success_receipt_output_sha256_reported": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "output_opened_or_rehashed": false,
+    "process_image_cli_pid_timestamp": "NOT_RECORDED"
+  },
+  "exact_first_break": "matched hash-bound input/XML/output geometry -> runtime core context +0x2c/+0x30 -> selected descriptor slot/stride",
+  "minimum_next_receipt": "same-run metadata-only receipt at FUN_140350d00 -> FUN_140317600 bound to input ADM/XML/process image and recording dispatch mode, layout_id, LFE-present, FBW_count, selected slot, and U16 stride",
+  "execution_scope": {
+    "new_ghidra_trace": false,
+    "dee_run": false,
+    "pcm_or_media_read": false,
+    "encoded_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false,
+    "stale_sample6_keyless_artifact_used": false
+  },
+  "disposition": "Do not attribute the LFE residual to a root cause or claim a selected branch from this static receipt."
+}

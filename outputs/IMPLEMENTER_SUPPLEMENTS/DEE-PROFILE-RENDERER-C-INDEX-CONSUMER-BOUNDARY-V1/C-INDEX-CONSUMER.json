@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge-wash-dee-profile-renderer-c-index-consumer.v1",
+  "package_id": "DEE-PROFILE-RENDERER-C-INDEX-CONSUMER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "PROFILE-RENDERER-INDEX-RECORD-CONSUMER-V1",
+    "manifest_sha256": "f70af11810da47d3a77ef297f43c25e7274aa8a82c3f4905ad9ae0865aee5707",
+    "payloads_verified": "12/12",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "count_and_input_owner": {
+    "C_source": "layout/profile object +0x08",
+    "consumer": "FUN_1801ad360 consumes C indexed input records beginning at param_2+0x14 with 0x34-byte stride",
+    "source_record_fields": "Typed overlays/flags are packed into a 30-byte profile/renderer descriptor record; FUN_1801ad7e0 maps category codes to a bitmask.",
+    "destination_owner": "FUN_180126120 creates the profile object; FUN_180126020 builds its +0x60 index pointer table; FUN_180125f60 zeroes cells; FUN_1801261d0 writes the first 30-byte value record for each indexed slot.",
+    "input_array_owner": "FUN_1801abc10 creates frame context and sets its +0x60 pointer; FUN_1801abe00 forwards that pointer to FUN_1801ad360.",
+    "input_array_first_value_writer": "UNBOUND in this bounded slice",
+    "C_to_N_or_M_typed_join": "UNBOUND/NO"
+  },
+  "audio_boundary": {
+    "direct_PCM_sample_read_or_write_by_FUN_1801261d0": false,
+    "direct_EC3_or_BSI_write_by_FUN_1801261d0": false,
+    "immediate_semantics": "profile/renderer descriptor fields; exact product field labels are unavailable in the decompiled type metadata",
+    "later_audio_or_BSI_consumer": "UNBOUND; no global 'profile-only' claim"
+  },
+  "selected_36_38_count_context": {
+    "C": 16 for the selected descriptor-bearing ADM branch,
+    "N": "separate physical source row count (36 or 38)",
+    "M": "separate canonical count from effective objects plus 10",
+    "equality": "No N/M/C identity is inferred from numeric equality or list ordering."
+  },
+  "safety": {"dee_execution":false,"pcm_or_media_read":false,"payload_or_key_read":false,"implementation_contact_in_source_package":false}
+}

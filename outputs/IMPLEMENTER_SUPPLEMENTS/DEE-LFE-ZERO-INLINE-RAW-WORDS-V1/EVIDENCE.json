@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.dee_lfe_zero_inline_raw_words.v1",
+  "package_id": "DEE-LFE-ZERO-INLINE-RAW-WORDS-V1",
+  "status": {
+    "zero_inline_table_a_raw_words": "BOUND_128_BINARY32_WORDS",
+    "zero_inline_table_b_raw_words": "BOUND_128_BINARY32_WORDS",
+    "candidate_f08_a_b_comparison": "NOT_RUN_MISSING_CANDIDATE_TABLE_WORDS",
+    "match_claim": "NOT_MADE",
+    "mismatch_claim": "NOT_MADE",
+    "numeric_parity": "NOT_RUN",
+    "sample_specific_lfe_branch": "UNBOUND"
+  },
+  "source_package": {
+    "package_id": "dee_lfe_zero_inline_raw_words_wash_v1",
+    "evidence_manifest_sha256": "52f001fc2a3215e103899db8358eeb5836b258254acbbd7fc13202e46c3e1eb1",
+    "package_seal_sha256": "1a708cbc3195a6a60369e6680ffc25b83cc8f70676537128b7a4a759cc242493",
+    "raw_words_sha256": "2468568363d487361c8359e50362ebc5502414e6e3924f2486cb31a71c523f54",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis memory export"
+  },
+  "tables": [
+    {
+      "name": "zero_branch_table_a",
+      "base_address": "0x140628c20",
+      "word_count": 128,
+      "byte_count": 512,
+      "element_type": "IEEE-754 binary32 raw word",
+      "byte_order": "little-endian",
+      "raw_byte_sha256": "bbd2bd460b0a750ccb45f959561a9a7e2ed2f8c6fd9391fb21abc9216b08fa41"
+    },
+    {
+      "name": "zero_branch_table_b",
+      "base_address": "0x140628e20",
+      "word_count": 128,
+      "byte_count": 512,
+      "element_type": "IEEE-754 binary32 raw word",
+      "byte_order": "little-endian",
+      "raw_byte_sha256": "e4cbb855ed455887b387cdb188bf8bab41976c73648c1b022dd18156214bde50"
+    }
+  ],
+  "limits": {
+    "dee_executed": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_branch_rule": false,
+    "global_match_or_mismatch_claim": false
+  },
+  "implementation_disposition": "Treat INPUT-ONLY-VECTORS.json as raw binary32 coefficient words for the named zero-inline tables. The candidate comparison and runtime/sample branch remain NOT_RUN/UNBOUND."
+}

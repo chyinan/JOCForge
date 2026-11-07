@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.dee_lfe_selector_offset_correction_sources.v2",
+  "upstream_manifest_sha256": "46473d85233accc9a6a98d00516f2910023175437fc03e28a202c0e67868c2ed",
+  "upstream_manifest_checksum_file_sha256": "e72d4362f5a265b90b6663ac7414ad809423eb81a9fb65027e438a22ff8ba36c",
+  "source_identities_payload_sha256": "49c50aa0c6ae2aea5ba95a6095af13baee68f7d1292c08bb71bef4e33d711d59",
+  "superseded_prior_source_claims": [
+    {"package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1", "manifest_sha256": "86e655128b711faa43db8f2bd5bdceca57a14ab5ad86ef4fa992f12bad935106"},
+    {"package_id": "dee_lfe_matched_layout_branch_receipt_wash_v1", "manifest_sha256": "56d4dfa6a0acdd9a0115667de5738393e588b2c137ba0c39e366635cefa8c34d"}
+  ],
+  "parent_packages": [
+    {"package_id": "sample6-matched-drc-core-dispatch-consumer-wash-v1", "manifest_sha256": "5d3c14fcaa9691b991154a3b5f4eafb79a70c95815c35ee4e413f7a69ca3cdbc"},
+    {"package_id": "DEE-LFE-SELECTED-STRIDE-INPUT-EDGE-WASH-V1", "manifest_sha256": "fd6ec172d610ff94867cec38d937396cdd9444f6d05c0921d0392d34e454f2bd"}
+  ],
+  "raw_ghidra_source_files_or_logs_in_supplement": false
+}

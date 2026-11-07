@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-R4-POINTER-ONLY-CAPTURE-NO-GO-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "NO_ELIGIBLE_NO_KEY_R4_JOB_IDENTIFIED_IN_SCOPE; POINTER_CAPTURE_NOT_RUN; DRC_EFFECT_UNBOUND",
+  "implementation_disposition": "Preserve NOT_RUN and UNBOUND; absence of an eligible job in this receipt set is not a negative DRC result.",
+  "source_package_id": "adm_bwf_ddp_drc_r4_pointer_only_preflight_wash_v1",
+  "source_manifest_sha256": "245f5446b8805f41d43c3d2c000a79afd879254066e5db588d94a337961dd285",
+  "source_package_seal_sha256": "98c7593c1819154fd4d37e425f53d5e2f77907f9cd84553786b73d8cb3f3c64d",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1713,
+      "sha256": "5a6ef5abed6c9201f87b34455bd26364861121a7b5dae4545e2ba4683d7bb9aa"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1268,
+      "sha256": "6b4b7138ff8fe0f339698e92108a6febc5a4e3c93dd68ad9cdc45e83178c5d0d"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 547,
+      "sha256": "629f54b00656957238f6203f7d26c8fe5a32729ef83f0523e5157fd988a43319"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 697,
+      "sha256": "b0d5e099146fb5b2dbc2bda05f57fa74c6942c989c0d95dcf5ae873265486908"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 422,
+      "sha256": "40f3cb29ce1595935390e8878014796fe726fa2fa520cb3cc29971a6ee3717fe"
+    }
+  ]
+}

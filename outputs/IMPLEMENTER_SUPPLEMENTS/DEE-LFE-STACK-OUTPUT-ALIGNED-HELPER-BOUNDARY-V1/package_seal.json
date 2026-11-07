@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-STACK-OUTPUT-ALIGNED-HELPER-BOUNDARY-V1",
+  "manifest_sha256": "5fd4ef74c0f69d42894c83f468818b377b78684ee928abea49e0e3edfc2e98bb",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STACK_OUTPUT_TO_ALIGNED_HELPER_STATIC_BOUND_BY_ABI; RDI_ALIAS_UNBOUND; E350_LINK_NOT_ESTABLISHED; PARITY_NOT_RUN"
+}

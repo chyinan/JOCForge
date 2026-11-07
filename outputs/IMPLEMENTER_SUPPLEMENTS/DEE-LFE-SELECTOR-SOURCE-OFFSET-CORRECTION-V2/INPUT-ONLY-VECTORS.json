@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.dee_lfe_selector_source_offset_vectors.v2",
+  "status": "STATIC_SOURCE_OFFSETS_ONLY",
+  "source_child_offsets": ["+0x94", "+0x98"],
+  "config_fields": {"+0x64": "U32 semantic label UNBOUND", "+0x70": "I32 semantic label UNBOUND"},
+  "adm_crosswalk": "UNBOUND",
+  "matched_run_values": "NOT_CAPTURED",
+  "lfe_root_cause": "UNBOUND",
+  "pcm_or_payload_included": false,
+  "dee_run": false
+}

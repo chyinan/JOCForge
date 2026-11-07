@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.r4_pointer_capture_eligibility_boundary.v1",
+  "package_id": "DEE-R4-POINTER-ONLY-CAPTURE-NO-GO-BOUNDARY-V1",
+  "source": {
+    "package_id": "adm_bwf_ddp_drc_r4_pointer_only_preflight_wash_v1",
+    "manifest_sha256": "245f5446b8805f41d43c3d2c000a79afd879254066e5db588d94a337961dd285",
+    "package_seal_sha256": "98c7593c1819154fd4d37e425f53d5e2f77907f9cd84553786b73d8cb3f3c64d"
+  },
+  "preflight": {
+    "live_dee_processes": 0,
+    "new_job_launched": false,
+    "pointer_capture": "NOT_RUN"
+  },
+  "recent_sample_receipts": {
+    "count": 2,
+    "license_file_argument_passed": true,
+    "status": "FAILED_EXIT_10_NO_OUTPUT",
+    "duration_seconds_approx": [
+      1.1,
+      1.1
+    ],
+    "eligible_normal_no_key_job": false
+  },
+  "other_crash_receipts": {
+    "count": 5,
+    "stage": "CRASH_BEFORE_EC3",
+    "license_argument_metadata": "NOT_RECORDED",
+    "eligible_for_pointer_capture": false
+  },
+  "disposition": {
+    "r4_pointer_capture": "NOT_RUN",
+    "terminal_drc_effect": "UNBOUND_NO",
+    "global_absence_claim": false
+  },
+  "safety": {
+    "license_contents_read": false,
+    "media_or_pcm_read": false,
+    "encoded_output_read": false,
+    "implementation_contact": false
+  }
+}

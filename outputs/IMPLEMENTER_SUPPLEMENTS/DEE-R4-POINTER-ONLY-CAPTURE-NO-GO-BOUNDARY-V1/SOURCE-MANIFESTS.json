@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "adm_bwf_ddp_drc_r4_pointer_only_preflight_wash_v1",
+  "manifest_sha256": "245f5446b8805f41d43c3d2c000a79afd879254066e5db588d94a337961dd285",
+  "package_seal_sha256": "98c7593c1819154fd4d37e425f53d5e2f77907f9cd84553786b73d8cb3f3c64d",
+  "source_checker_normal_and_python_o": "PASS",
+  "raw_xml_media_or_license_contents_copied": false
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-PROFILE-LAYOUT-MODE1-SELECTOR-COUNT-OWNER-EDGE-V1",
+  "manifest_sha256": "d79ef2ab5a38a291610ba2065a5230377cfc0c5c230444c9c2ff4512454ef964",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "cc80478610bca57d63e0edf09ef7fea72b3d16ea1e7da14f998eb9dcd8d8d7a5",
+  "source_package_formal_seal_status": "NOT_CLAIMED",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "COMMON_ARGUMENT_BASE_BOUND; FIELDS_DISTINCT; PHYSICAL_N_AND_K_UNBOUND"
+}

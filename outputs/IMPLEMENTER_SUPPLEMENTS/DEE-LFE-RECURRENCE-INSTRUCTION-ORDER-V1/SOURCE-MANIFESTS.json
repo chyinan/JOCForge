@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.dee_lfe_instruction_order_sources.v1",
+  "upstream_evidence_manifest_sha256": "64b337cedbea20e23e871541e9473a0f5509e41a2cf9027b6326f293967b8087",
+  "upstream_package_seal_sha256": "2a1d93772ac38bb4c8096567fbb701b0d3dfb91c8c745ad96e8b9d9f1194b1cb",
+  "upstream_source_identities_sha256": "49c50aa0c6ae2aea5ba95a6095af13baee68f7d1292c08bb71bef4e33d711d59",
+  "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+  "parent_packages": [
+    {"package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1", "manifest_sha256": "86e655128b711faa43db8f2bd5bdceca57a14ab5ad86ef4fa992f12bad935106", "package_seal_sha256": "e66339e607ed6d21bec228fb8963adbef726a672ae2dc3884170611eb6613310"},
+    {"package_id": "DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2", "manifest_sha256": "dcdcead2a00e0ea922506cba7c6d2ea90a1656c4aeb501f7d30a11d9b4f2a7d2", "package_seal_sha256": "54d1b5d56a3b579393cb423ff469993415b1a234574f3de65a5bf589970eb519"}
+  ],
+  "raw_listing_scripts_or_logs_in_supplement": false
+}

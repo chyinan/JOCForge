@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-OUTPUT-STACK-CLAMP-BOUNDARY-V1",
+  "manifest_sha256": "19dba09c955b837a65c43452b06cd0c1de8224d7655da2f331dc0f7fdb8a8bf7",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "OUTPUT_STACK_BUFFER_CLAMP_STATIC_BOUND; ALIAS_TO_RDI_INPUT_UNBOUND; E350_CONTENT_CONTINUITY_UNBOUND; PARITY_NOT_RUN"
+}

@@ -1,0 +1,110 @@
+{
+  "analysis_method": "Reuse of hash-bound Ghidra 12.2 PUBLIC read-only/no-analysis decompilation and selected-stride static boundary",
+  "correlation_root_cause": "NOT_ESTABLISHED",
+  "dee_execution": "NOT_RUN",
+  "numeric_parity": "NOT_RUN",
+  "package_id": "dee_lfe_base_layer_recurrence_branch_wash_v1",
+  "parent_packages": [
+    {
+      "manifest_sha256": "86e655128b711faa43db8f2bd5bdceca57a14ab5ad86ef4fa992f12bad935106",
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1",
+      "package_seal_sha256": "e66339e607ed6d21bec228fb8963adbef726a672ae2dc3884170611eb6613310"
+    },
+    {
+      "manifest_sha256": "dcdcead2a00e0ea922506cba7c6d2ea90a1656c4aeb501f7d30a11d9b4f2a7d2",
+      "package_id": "DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2",
+      "package_seal_sha256": "54d1b5d56a3b579393cb423ff469993415b1a234574f3de65a5bf589970eb519"
+    }
+  ],
+  "payloads": [
+    {
+      "bytes": 8422,
+      "file": "CHECK.py",
+      "sha256": "24e79fb7ea40a4cd8de826876778844cbe6f58f35a605facf0d7aa11d1133d20"
+    },
+    {
+      "bytes": 7417,
+      "file": "LFE-BASE-LAYER-RECURRENCE-BRANCHES.json",
+      "sha256": "c8bb91bd868500fb74451adb11f0bb77a86f5050b1af859e58fa218a9958c246"
+    },
+    {
+      "bytes": 1827,
+      "file": "README.md",
+      "sha256": "f183d5bc4b53739fc35e6450bfea8e613a3b7fe57ccb7c612c9478768c3818a6"
+    },
+    {
+      "bytes": 2843,
+      "file": "SOURCE-IDENTITIES.json",
+      "sha256": "49c50aa0c6ae2aea5ba95a6095af13baee68f7d1292c08bb71bef4e33d711d59"
+    }
+  ],
+  "runtime_observation": "NOT_RUN",
+  "safety": {
+    "dee_execution": false,
+    "ida_or_everything_used": false,
+    "implementation_contact": false,
+    "implementation_repository_read": false,
+    "key_or_license_read": false,
+    "pcm_or_payload_read": false
+  },
+  "sample_specific_branch": "UNBOUND",
+  "schema": "dee-lfe-base-layer-recurrence-branch-manifest.v1",
+  "source_evidence": [
+    {
+      "bytes": 5777,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/MANIFEST.json",
+      "sha256": "86e655128b711faa43db8f2bd5bdceca57a14ab5ad86ef4fa992f12bad935106"
+    },
+    {
+      "bytes": 574,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/package_seal.json",
+      "sha256": "e66339e607ed6d21bec228fb8963adbef726a672ae2dc3884170611eb6613310"
+    },
+    {
+      "bytes": 209413,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/core_encoder_lfe_entry_trace.txt",
+      "sha256": "e463d50003ff9661d41d7c0eb2e8d4c779cdbdba4633c3044dfabe066641cf15"
+    },
+    {
+      "bytes": 70883,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/core_layout_selector_flow.txt",
+      "sha256": "a1bfb6fef4cf92a753934fe42ddc5fbff155e6f872a973b63b8e75f47c208a92"
+    },
+    {
+      "bytes": 14545,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/core_channel_layout_map.txt",
+      "sha256": "816d758493081176af7b4d809c2fe5a2c3973300008ae4d5ffa941971781c0ee"
+    },
+    {
+      "bytes": 15837,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1/EVIDENCE.json",
+      "sha256": "89b2b4db489b282f0771c8a02a72f08b64326117ae7ba6d448c5578f55aced83"
+    },
+    {
+      "bytes": 891,
+      "codex_relative_path": "2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2/MANIFEST.json",
+      "sha256": "dcdcead2a00e0ea922506cba7c6d2ea90a1656c4aeb501f7d30a11d9b4f2a7d2"
+    },
+    {
+      "bytes": 454,
+      "codex_relative_path": "2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2/package_seal.json",
+      "sha256": "54d1b5d56a3b579393cb423ff469993415b1a234574f3de65a5bf589970eb519"
+    },
+    {
+      "bytes": 3322,
+      "codex_relative_path": "2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2/EVIDENCE.json",
+      "sha256": "41148c693babfe3f5e4d3d145c625359cb6f4d119631007e819075335ae9acce"
+    },
+    {
+      "bytes": 2460,
+      "codex_relative_path": "2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LFE-SELECTED-STRIDE-AND-INPUT-BOUNDARY-V2/REPORT.md",
+      "sha256": "46206373f9bade1d6e0b94bc98e8498dc86802244fa18c1fb5747456c1763e0e"
+    }
+  ],
+  "status": "ZERO_INLINE_AND_NONZERO_TABLE_FUNCTIONS_STATIC_BOUND; LFE_LANE_ZERO_SELECTOR_STATIC_BOUND_IN_TWO_CORE_DISPATCHERS; DESCRIPTOR_STRIDE_GATHER_ONLY_IN_INSPECTED_CALLERS; NONZERO_TABLE_BRANCH_ON_SEPARATE_FBW_SELECTOR_PATH_IN_INSPECTED_CALLERS; SAMPLE_LAYOUT_GENERATION_UNBOUND; CORE_FMA_MXCSR_UNBOUND; NUMERIC_PARITY_NOT_RUN; CORRELATION_CAUSALITY_NOT_ESTABLISHED",
+  "target_image": {
+    "bytes": 7923712,
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-RECURRENCE-INSTRUCTION-ORDER-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "48f6c7f7b909308fbcf4368b5f33eac39751578414ce135194e1f865116a35a8",
+  "payload_file_count": 8,
+  "payload_hash_audit": "PASS_8_OF_8",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

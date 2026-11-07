@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.dee_lfe_selector_source_offset_correction.v2",
+  "package_id": "DEE-LFE-SELECTOR-SOURCE-OFFSET-CORRECTION-V2",
+  "status": {
+    "lvar9_plus_0x40_plus_0x44_as_selector_source": "SUPERSEDED",
+    "effective_child_source_offsets_for_FUN_140350d00_path": ["+0x94", "+0x98"],
+    "same_owner_config_writer": "BOUND_STATIC",
+    "config_object_plus_0x64_semantic_label": "UNBOUND",
+    "config_object_plus_0x70_semantic_label": "UNBOUND",
+    "config_pointer_producer": "UNBOUND",
+    "adm_row_crosswalk": "UNBOUND",
+    "matched_run_values": "NOT_CAPTURED",
+    "lfe_root_cause": "UNBOUND"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/dee_lfe_selector_source_offset_correction_wash_v1",
+    "package_id": "dee_lfe_selector_source_offset_correction_wash_v1",
+    "manifest_sha256": "46473d85233accc9a6a98d00516f2910023175437fc03e28a202c0e67868c2ed",
+    "manifest_checksum_file_sha256": "e72d4362f5a265b90b6663ac7414ad809423eb81a9fb65027e438a22ff8ba36c",
+    "normal_verifier": "PASS",
+    "python_O_verifier": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "ghidra_version": "12.2_PUBLIC"
+  },
+  "register_join": {
+    "dispatch": "FUN_140350d00 -> FUN_140317600; RDX=lVar9",
+    "register_flow": "R14 <- RDX at 0x140317630; RCX=R14+0x60 at 0x140317775; call FUN_1403471f0 at 0x140317779",
+    "helper_copy": "param_1+0x34/+0x38 -> core state+0x2c/+0x30",
+    "effective_child_sources": ["lVar9+0x94", "lVar9+0x98"],
+    "different_child_plus_0x40_store": "FUN_140350ac0 clears child+0x40 qword; not this selector source"
+  },
+  "same_owner_writer": {
+    "child_array": "channel_instance+0x4298",
+    "writer": "FUN_140350ac0 -> FUN_140351c90 -> FUN_14031ff50",
+    "earlier_plus_0x98_assignment": "descriptor entry ID 5; later overwritten on this static path",
+    "config_pointer": "channel_instance+0x1098",
+    "config_plus_0x64": "U32 via FUN_14031ad40; <8 direct to child+0x94, >=8 via static table",
+    "config_plus_0x70": "I32 via FUN_14031af20; -1 normalized to 0 then child+0x98"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false,
+    "raw_ghidra_scripts_or_logs_in_supplement": false
+  },
+  "disposition": "Use +0x94/+0x98 as corrected static source offsets for the reviewed path only; do not infer ADM semantics or sample selection."
+}

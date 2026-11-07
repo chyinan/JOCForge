@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-RECURRENCE-SELECTOR-CORRECTION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "LFE_LANE_ZERO_SELECTOR_STATIC_IN_TWO_DISPATCHERS; STRIDE_GATHER_ONLY; PRIOR_STRIDE_TO_RECURRENCE_JOIN_RETRACTED; ROOT_CAUSE_UNBOUND",
+  "implementation_disposition": "Supersede only the prior descriptor-stride-to-LFE-recurrence-selector inference; do not claim numeric parity or LFE root cause",
+  "source_manifest_sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3374,
+      "sha256": "25e18142883888bfee257c5a94971db47b1cbdb81dea77d8a6058c07cff49efa"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2679,
+      "sha256": "08425e22cb03f72b7eabbc654f71e172f6e49050a79c37e33f92281721dd8611"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 431,
+      "sha256": "f48f2d63d2188377ed1b2ee5ea580946b5510a0f7973e48e11d6721adc4f453c"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2200,
+      "sha256": "55bf9be7b3b367d6d8e30e812943e3961965492bcb7a171617eaf961f765312c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1044,
+      "sha256": "22b0205e48e35573201bf4603d700c65bd2aa8f2a73599464c336fc27ba7c253"
+    },
+    {
+      "name": "UPSTREAM-EVIDENCE-MANIFEST.json",
+      "bytes": 5249,
+      "sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d"
+    },
+    {
+      "name": "UPSTREAM-LFE-RECURRENCE-BRANCHES.json",
+      "bytes": 7417,
+      "sha256": "c8bb91bd868500fb74451adb11f0bb77a86f5050b1af859e58fa218a9958c246"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 1106,
+      "sha256": "0efe3846f472ae11bf27b874ab69f4ec78fa79569a41551b1088e709534f656b"
+    },
+    {
+      "name": "UPSTREAM-SOURCE-IDENTITIES.json",
+      "bytes": 2843,
+      "sha256": "49c50aa0c6ae2aea5ba95a6095af13baee68f7d1292c08bb71bef4e33d711d59"
+    }
+  ]
+}

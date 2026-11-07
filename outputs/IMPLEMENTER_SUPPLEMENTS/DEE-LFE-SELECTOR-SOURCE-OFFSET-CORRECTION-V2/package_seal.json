@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-SELECTOR-SOURCE-OFFSET-CORRECTION-V2",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "d36a0a5e81e8ee81e67e6155747077b81448033adefc349ca48b4d73157cf462",
+  "payload_file_count": 6,
+  "payload_hash_audit": "PASS_6_OF_6",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

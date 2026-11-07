@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-ZERO-INLINE-TABLE-DIGESTS-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "40fd1e8833cbec5cd7ca911dbf2e8666ab2ce1f4a486b99aaf57ea41b2e715d5",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

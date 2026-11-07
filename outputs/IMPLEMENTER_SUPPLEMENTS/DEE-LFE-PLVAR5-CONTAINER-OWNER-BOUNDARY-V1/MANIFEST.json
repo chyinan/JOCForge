@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-PLVAR5-CONTAINER-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PLVAR5_OWNER_AND_GENERATION_UNBOUND",
+  "implementation_disposition": "Record the scoped opaque-param boundary only; no LFE algorithm change.",
+  "source_manifest_sha256": "fa98a0dd90ddd7dea812abe057fea34b61db6f047e3dfa4ba5540d6e2390e226",
+  "source_package_seal_sha256": "43ce73faa0ef9dd80d3f8cddef78900ca85fe517cd91e420bc1a7035463db24c",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4348,
+      "sha256": "414b71e33574ffcddc5efc8fb29b894a02c3f382bcba86df38edef3570c88ccc"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1474,
+      "sha256": "12510e7df8d3e0262246341e6e2db087b7b56b6cc0a1b15df96077638c24666d"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 487,
+      "sha256": "b143d7a576410958964ec0c650cae1328c47ca202c00ae8c8e50bd36f961cafa"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 773,
+      "sha256": "47f8510efd2fa3ef7236db97c7f88ac33f4641d698cf083a5bcc05c76b2385ba"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 781,
+      "sha256": "1cae10535c08747ca9d59d1a6f9b17add393256b4fc564fc5953f1ce5e950bd9"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STRUCTURAL_ONLY; NOT_RUN",
+  "vectors": [
+    {
+      "id": "mode1-common-base-field-projection",
+      "base": "FUN_180175500.param_2",
+      "reader_selector": {"type": "U8", "offset": "+0x140", "zero": "AtmosReader", "nonzero": "AtmosReaderCC"},
+      "host_mode_source": {"type": "U32", "offset": "+0x12C", "destination": "host object +0x54"},
+      "direct_selector_to_host_mode_edge": "NO"
+    },
+    {
+      "id": "reader-count-to-open-config",
+      "descriptor_count": {"type": "U16", "offset": "+0x0A", "pointer_owner": "reader record slot 5"},
+      "destination": "open_config[2]",
+      "physical_adm_N_or_source_K_identity": "UNBOUND"
+    }
+  ],
+  "runtime_values": "NOT_CAPTURED",
+  "dee_or_audio_run": "NOT_RUN"
+}

@@ -1,0 +1,105 @@
+{
+  "active_mxcsr_value": "UNBOUND",
+  "analysis_method": "Ghidra 12.2 PUBLIC read-only/no-analysis Listing export from the hash-bound executable",
+  "dee_execution": "NOT_RUN",
+  "findings": {
+    "arithmetic_rounding": "SEPARATE_MULPS_AND_ADDPS_INSTRUCTIONS_USE_ACTIVE_MXCSR",
+    "explicit_rounding_conversion_candidates": "NONE_IN_SCOPE",
+    "fma": "ABSENT_IN_TWO_TARGETS_AND_FOUR_DIRECT_CALLERS",
+    "instruction_order": "BOUND_FOR_BOTH_TARGET_FUNCTIONS",
+    "mxcsr_reads_or_writes": "NONE_IN_SCOPE"
+  },
+  "numeric_parity": "NOT_RUN",
+  "package_id": "dee_lfe_recurrence_instruction_order_wash_v1",
+  "parent_packages": [
+    {
+      "manifest_sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d",
+      "package_id": "dee_lfe_base_layer_recurrence_branch_wash_v1",
+      "package_seal_sha256": "0efe3846f472ae11bf27b874ab69f4ec78fa79569a41551b1088e709534f656b"
+    }
+  ],
+  "payloads": [
+    {
+      "bytes": 3644,
+      "file": "INSTRUCTION-ORDER.md",
+      "sha256": "1801b81972a2b65328e97ae2ecd047f5bb1b4902bc548ef7482865dafdc1687a"
+    },
+    {
+      "bytes": 25072,
+      "file": "RECURRENCE-LISTING.json",
+      "sha256": "ae6685bc15432448b55eb08d10d76a11c446c214bbdd2e980eaeb389224c27ae"
+    },
+    {
+      "bytes": 1845,
+      "file": "SOURCE-IDENTITIES.json",
+      "sha256": "9ef1d7fe8719595f57db7d70f2d90080268d66766170d13d49e67a36ed9ea28e"
+    },
+    {
+      "bytes": 5884,
+      "file": "check_recurrence_instruction_evidence.py",
+      "sha256": "390bd8a51d6f4377e44c0005b438f38310196e15b43887aab099715a0f5bf5a3"
+    }
+  ],
+  "runtime_observation": "NOT_RUN",
+  "safety": {
+    "coefficient_raw_words_read": false,
+    "dee_execution": false,
+    "ida_or_everything_used": false,
+    "implementation_contact": false,
+    "implementation_repository_read": false,
+    "key_or_license_read": false,
+    "pcm_or_payload_read": false
+  },
+  "sample_specific_branch": "UNBOUND",
+  "schema": "dee-lfe-recurrence-instruction-order-manifest.v1",
+  "scope": {
+    "direct_callers_of_d7c0": [
+      "FUN_14036d9e0"
+    ],
+    "direct_callers_of_d9e0": [
+      "FUN_14036d4e0",
+      "FUN_14036d560",
+      "FUN_14036d5e0",
+      "FUN_14036d630"
+    ],
+    "recursive_call_expansion": false,
+    "target_functions": [
+      "FUN_14036d9e0",
+      "FUN_14036d7c0"
+    ]
+  },
+  "source_evidence": [
+    {
+      "bytes": 7923712,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_adm_eac3_joc_samples_run_20261103/dee_runtime_copy_ascii/dee_ddp_encoder.exe",
+      "name": "dee_ddp_encoder.exe",
+      "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+    },
+    {
+      "bytes": 10062,
+      "codex_relative_path": "2026-10-23/jocforge-reverse-agent-3/work/ghidra_scripts/ExportLfeRecurrenceListing.java",
+      "name": "ExportLfeRecurrenceListing.java",
+      "sha256": "66b9e2bb084076468ddc22e55bd5a921cb23eccf0378e0a5e3854c7df0023bfd"
+    },
+    {
+      "bytes": 5249,
+      "codex_relative_path": "2026-10-23/jocforge-reverse-agent-3/outputs/dee_lfe_base_layer_recurrence_branch_wash_v1/evidence_manifest.json",
+      "name": "parent evidence_manifest.json",
+      "sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d"
+    },
+    {
+      "bytes": 1106,
+      "codex_relative_path": "2026-10-23/jocforge-reverse-agent-3/outputs/dee_lfe_base_layer_recurrence_branch_wash_v1/package_seal.json",
+      "name": "parent package_seal.json",
+      "sha256": "0efe3846f472ae11bf27b874ab69f4ec78fa79569a41551b1088e709534f656b"
+    }
+  ],
+  "status": "ZERO_INLINE_RECURRENCE_INSTRUCTION_ORDER_BOUND; NONZERO_TABLE_RECURRENCE_INSTRUCTION_ORDER_BOUND; FMA_ABSENT_IN_SCOPE; EXPLICIT_ROUNDING_INSTRUCTIONS_ABSENT_IN_SCOPE; MXCSR_READ_WRITE_ABSENT_IN_SCOPE; ACTIVE_MXCSR_VALUE_UNBOUND; TRANSITIVE_CALLER_EFFECTS_UNBOUND; NUMERIC_PARITY_NOT_RUN",
+  "target_image": {
+    "bytes": 7923712,
+    "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_adm_eac3_joc_samples_run_20261103/dee_runtime_copy_ascii/dee_ddp_encoder.exe",
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "transitive_caller_effects": "UNBOUND_OUTSIDE_ONE_HOP_SCOPE"
+}

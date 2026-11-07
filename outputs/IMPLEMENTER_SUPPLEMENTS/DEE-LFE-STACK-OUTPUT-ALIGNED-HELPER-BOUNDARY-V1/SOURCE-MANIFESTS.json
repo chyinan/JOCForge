@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-LFE-STACK-OUTPUT-ALIGNED-HELPER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_stack_output_alignment_path",
+      "package_id": "dee_lfe_filter_stack_output_aligned_helper_path_wash_v1",
+      "manifest_sha256": "c74c838bc2467338dc2e4a5547b1a2056f1bb921d06b9d4e7c61098b501edb99",
+      "package_seal_sha256": "f05b8a0f4f9fc95d295b45e3eaf5c399623f7dbca603c61cd0877a7f5f609139",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "inherited_aligned_helper_extent",
+      "wash_package_id": "DEE-LFE-HELPER-READONLY-EXTENT-V1",
+      "manifest_sha256": "90e29e332787d43d1547769b4f3a70eb59aa57b0977bf2032435f242c27d72ab",
+      "package_seal_sha256": "a3696e6523240144b878739290e9670348a502c4bd7eb1660cc8688994b4eb5d"
+    },
+    {
+      "role": "inherited_post_clamp_stack_output",
+      "wash_package_id": "DEE-LFE-OUTPUT-STACK-CLAMP-BOUNDARY-V1",
+      "manifest_sha256": "19dba09c955b837a65c43452b06cd0c1de8224d7655da2f331dc0f7fdb8a8bf7",
+      "package_seal_sha256": "4a1a6d984b8ccb0d3e140b522d78974845490979407efc9e8ce6672aa7cc02ab"
+    }
+  ],
+  "omitted_material": {
+    "raw_instruction_listing": true,
+    "native_binary": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

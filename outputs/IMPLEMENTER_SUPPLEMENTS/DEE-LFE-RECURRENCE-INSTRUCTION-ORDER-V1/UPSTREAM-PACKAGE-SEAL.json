@@ -1,0 +1,35 @@
+{
+  "file_count": 5,
+  "files": [
+    {
+      "bytes": 3644,
+      "file": "INSTRUCTION-ORDER.md",
+      "sha256": "1801b81972a2b65328e97ae2ecd047f5bb1b4902bc548ef7482865dafdc1687a"
+    },
+    {
+      "bytes": 25072,
+      "file": "RECURRENCE-LISTING.json",
+      "sha256": "ae6685bc15432448b55eb08d10d76a11c446c214bbdd2e980eaeb389224c27ae"
+    },
+    {
+      "bytes": 1845,
+      "file": "SOURCE-IDENTITIES.json",
+      "sha256": "9ef1d7fe8719595f57db7d70f2d90080268d66766170d13d49e67a36ed9ea28e"
+    },
+    {
+      "bytes": 5884,
+      "file": "check_recurrence_instruction_evidence.py",
+      "sha256": "390bd8a51d6f4377e44c0005b438f38310196e15b43887aab099715a0f5bf5a3"
+    },
+    {
+      "bytes": 4345,
+      "file": "evidence_manifest.json",
+      "sha256": "64b337cedbea20e23e871541e9473a0f5509e41a2cf9027b6326f293967b8087"
+    }
+  ],
+  "package_id": "dee_lfe_recurrence_instruction_order_wash_v1",
+  "schema": "dee-lfe-recurrence-instruction-order-seal.v1",
+  "seal_excluded_from_its_own_hash_list": true,
+  "sealed_at_utc": "2026-11-04T05:17:01.999377+00:00",
+  "status": "SEALED_PARTIAL"
+}

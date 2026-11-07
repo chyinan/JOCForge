@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-REDUCTION-SCALAR-FIRST-USE-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "bc161609efd11ae9106996bc087fb660ac2e11a3860ee0680e6f854539220cde",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

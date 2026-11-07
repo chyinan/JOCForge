@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.dee_lfe_intermediate_callee_dispatch_boundary.v1",
+  "package_id": "DEE-LFE-INTERMEDIATE-CALLEE-DISPATCH-BOUNDARY-V1",
+  "status": "ALIGNMENT_BRANCH_AND_HELPER_DISPATCH_STATIC_BOUND; FIRST_HELPER_EXTENT_UNBOUND; BUFFER_CONTENT_CONTINUITY_UNBOUND; NUMERIC_PARITY_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "dee_lfe_intermediate_callee_boundary_wash_v1",
+    "manifest_sha256": "5a5854ae6ac7576879046b3bb04aa667512944eaf57498d97f152f939b588658",
+    "package_seal_sha256": "174cb7f872b8233094990af167ab6325392409e19c3d764c7fa5739cd428a4a4",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only, no-analysis, target-only Listing export",
+    "target_image": {
+      "name": "dee_ddp_encoder.exe",
+      "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+    }
+  },
+  "parent_edge": {
+    "package_id": "dee_lfe_gather_intermediate_call_boundary_wash_v1",
+    "manifest_sha256": "fc5133cff538c1fba6b03f55e81069ee336aad734957ed429914032822d5502f",
+    "package_seal_sha256": "d550613904ce2ba70e67f024db3bb7b07083f445886f71d470419cfb534fcb87",
+    "input": "gathered 256-F32 pointer passed to FUN_14033ecb0"
+  },
+  "callee_dispatch": {
+    "function": "FUN_140340640",
+    "incoming_buffer_register": "R8",
+    "pointee_access_before_first_helper": "NONE_OBSERVED",
+    "branch": "compare pointer against align_up(pointer, 16)",
+    "equal_helper": "FUN_1403174c0",
+    "unequal_helper": "FUN_140317530",
+    "arguments_on_both_branches": {
+      "RCX": "unadjusted incoming buffer pointer",
+      "R8": "unadjusted incoming buffer pointer",
+      "EDX": "0x100; unit/meaning UNBOUND"
+    },
+    "helper_read_write_extent": "UNBOUND"
+  },
+  "later_boundary": {
+    "dispatcher_later_consumer": "FUN_14036e350",
+    "pointer_identity": "STATIC_BOUND",
+    "buffer_content_continuity_after_helper": "UNBOUND"
+  },
+  "scope": {
+    "other_callers_searched": false,
+    "helper_bodies_expanded": false,
+    "dee_execution": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_listing_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "sample_owner_generation": "UNBOUND",
+    "numeric_parity": "NOT_RUN",
+    "correlation_causality": "NOT_ESTABLISHED"
+  }
+}

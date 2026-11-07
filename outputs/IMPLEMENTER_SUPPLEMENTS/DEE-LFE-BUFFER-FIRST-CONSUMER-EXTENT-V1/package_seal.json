@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-BUFFER-FIRST-CONSUMER-EXTENT-V1",
+  "manifest_sha256": "156086e2fa24ce7deafcd33442a36e5211ae89c65d5edef7a7e4746b75e3a9d3",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "FUN_14036BC60_FIRST_CONSUMER_READ_EXTENT_STATIC_BOUND; INPUT_UNMODIFIED_IN_THIS_CALL; LATER_HELPER_CONTENT_CONTINUITY_UNBOUND; PARITY_NOT_RUN"
+}

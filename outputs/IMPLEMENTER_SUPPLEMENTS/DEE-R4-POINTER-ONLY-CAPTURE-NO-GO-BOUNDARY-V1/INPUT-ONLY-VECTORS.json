@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "r4-pointer-capture-eligibility",
+      "input": {
+        "recent_receipts_with_license_argument": 2,
+        "older_crash_receipts": 5
+      },
+      "expected_observation": {
+        "eligible_normal_no_key_job_identified": false,
+        "pointer_capture": "NOT_RUN"
+      },
+      "limitations": [
+        "Bounded receipt set only",
+        "No global no-key absence claim",
+        "No DRC terminal effect conclusion"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.dee_lfe_stack_output_aligned_helper_boundary.v1",
+  "package_id": "DEE-LFE-STACK-OUTPUT-ALIGNED-HELPER-BOUNDARY-V1",
+  "status": "STACK_OUTPUT_TO_ALIGNED_HELPER_STATIC_BOUND_BY_ABI; RDI_ALIAS_UNBOUND; E350_LINK_NOT_ESTABLISHED; PARITY_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "dee_lfe_filter_stack_output_aligned_helper_path_wash_v1",
+    "manifest_sha256": "c74c838bc2467338dc2e4a5547b1a2056f1bb921d06b9d4e7c61098b501edb99",
+    "package_seal_sha256": "f05b8a0f4f9fc95d295b45e3eaf5c399623f7dbca603c61cd0877a7f5f609139",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only/no-analysis"
+  },
+  "static_stack_alignment": {
+    "call_entry_rsp_mod_16": 8,
+    "push_bytes": 56,
+    "stack_subtract_bytes": 1104,
+    "total_delta_bytes": 1160,
+    "current_rsp_mod_16": 0,
+    "output_buffer": "RSP+0x40",
+    "alignment_probe": "(RSP+0x4f)&-0x10 equals RSP+0x40",
+    "branch_type": "STATIC_ABI_BASED_NOT_RUNTIME_CAPTURE",
+    "selected_helper": "FUN_1403174c0",
+    "callsite": "0x34098b"
+  },
+  "selected_helper_behavior": {
+    "inherited_receipt": "DEE-LFE-HELPER-READONLY-EXTENT-V1",
+    "wash_manifest_sha256": "90e29e332787d43d1547769b4f3a70eb59aa57b0977bf2032435f242c27d72ab",
+    "helper_reads": "256 F32 / 0x400 bytes",
+    "writes_to_helper_input": false,
+    "direct_writeback_to_RDI_in_this_edge": false,
+    "direct_e350_transfer_in_this_edge": false
+  },
+  "alias_and_parity": {
+    "stack_output_to_original_RDI_alias": "UNBOUND",
+    "e350_content_continuity": "UNBOUND",
+    "alternate_unaligned_branch": "NOT_REANALYZED",
+    "numeric_parity": "NOT_RUN",
+    "root_cause": "NOT_ESTABLISHED"
+  },
+  "scope": {
+    "runtime_capture": "NOT_RUN",
+    "raw_listing_or_instruction_bytes_included": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

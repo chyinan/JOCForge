@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-MATCHED-LAYOUT-BRANCH-RECEIPT-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "bbb20444d66d14392cd6e5925d9e7eea7815c62e3f2cab395c977a5ad3471247",
+  "payload_file_count": 7,
+  "payload_hash_audit": "PASS_7_OF_7",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

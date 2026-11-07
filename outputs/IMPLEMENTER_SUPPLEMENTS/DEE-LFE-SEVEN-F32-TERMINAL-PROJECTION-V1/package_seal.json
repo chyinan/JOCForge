@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-SEVEN-F32-TERMINAL-PROJECTION-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "10abc590f847e0c07baef9149e5e47b3faf35d243327da60f3c4d384c8c3285f",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "c40d0acab237e4661c6b156b156e813dc0c4cc8c9bfdcc4c26e64e19229be6ef",
+  "upstream_source_receipt_audit": "PASS_10_OF_10",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

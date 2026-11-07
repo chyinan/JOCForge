@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "layout7-lfe-lane-shape",
+      "inputs": {"layout_id": 7, "fbw_lane_count": 5, "total_lane_count": 6, "lfe_lane_index": 5},
+      "expected_static_scope": "lane index 5 takes the remaining-lane LFE consumer path for the three reused fixtures"
+    },
+    {
+      "id": "main-transform-not-taken-zero-count",
+      "inputs": {"arg6": 0, "arg7": 1},
+      "expected_static_scope": "predicate false because arg6 is zero"
+    },
+    {
+      "id": "main-transform-not-taken-wrong-mode",
+      "inputs": {"arg6": 1, "arg7": 0},
+      "expected_static_scope": "predicate false because arg7 is not 1"
+    },
+    {
+      "id": "main-transform-taken-predicate-only",
+      "inputs": {"arg6": 1, "arg7": 1, "count": 1},
+      "expected_static_scope": "predicate true; caller forms a count*8-byte pointer vector and calls the main-table transform; this is a static predicate vector, not an observed run"
+    }
+  ],
+  "warning": "Vectors describe input-only static branch cases. They do not assert captured DEE values, PCM equality, output bytes, or full LFE wire encoding."
+}

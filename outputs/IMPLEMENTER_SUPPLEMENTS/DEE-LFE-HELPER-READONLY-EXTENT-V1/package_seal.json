@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-HELPER-READONLY-EXTENT-V1",
+  "manifest_sha256": "90e29e332787d43d1547769b4f3a70eb59aa57b0977bf2032435f242c27d72ab",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ALIGNMENT_HELPERS_READ_ONLY_256_F32_BOUND; LATER_HELPER_CONTENT_CONTINUITY_UNBOUND; NUMERIC_PARITY_NOT_RUN"
+}

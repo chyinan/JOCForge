@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream_package": {
+    "package_id": "DEE-LFE-SEVEN-F32-FORMULA-WASH-V1",
+    "workspace": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_lfe_seven_f32_formula_wash_v1",
+    "manifest_sha256": "c40d0acab237e4661c6b156b156e813dc0c4cc8c9bfdcc4c26e64e19229be6ef",
+    "seal_sha256": "cd19c6c449cc0135a8cc1a9243cfb349faccfd406b4c96aee9857c2fc8e9a36c",
+    "source_receipts_matched": "10/10",
+    "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "scope": "Only the sanitized terminal formulas/coefficient values and their explicitly stated limitations are implementation review material. Raw Ghidra excerpt and check scripts are excluded."
+}

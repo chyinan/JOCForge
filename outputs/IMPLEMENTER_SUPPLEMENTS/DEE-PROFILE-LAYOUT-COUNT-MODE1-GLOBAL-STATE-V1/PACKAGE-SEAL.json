@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-PROFILE-LAYOUT-COUNT-MODE1-GLOBAL-STATE-V1",
+  "manifest_sha256": "6cd9a2ac516936dc45e9bdc22f7c06031751c6135c8df06239870b04d73e883a",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "117c2bd64ebe9240901f05165821939a1014cc8704132fd9301bef319ab48b27",
+  "target_image_rehashed_this_turn": true,
+  "source_package_formal_seal_present": false,
+  "disposition": "PARTIAL_ACCEPT_STATIC_MODE1_COUNT_TRANSFORM; RUNTIME_STATE_AND_ADM_JOIN_UNBOUND"
+}

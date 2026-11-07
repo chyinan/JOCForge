@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.dee_lfe_output_stack_clamp_boundary.v1",
+  "package_id": "DEE-LFE-OUTPUT-STACK-CLAMP-BOUNDARY-V1",
+  "status": "OUTPUT_STACK_BUFFER_CLAMP_STATIC_BOUND; ALIAS_TO_RDI_INPUT_UNBOUND; E350_CONTENT_CONTINUITY_UNBOUND; PARITY_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "dee_lfe_filter_output_stack_consumer_boundary_wash_v1",
+    "manifest_sha256": "08564bc7c55924ad0d169a8fe9f6e27ca510e6c325af5d24c26abdea572454d6",
+    "package_seal_sha256": "6c1db4c41f6e75b4101bfb6d9731d33b3500f8a30bc52065c2d69d03e5e63820",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only, no-analysis, target-only Listing",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "caller_output_buffer": {
+    "producer": "FUN_14033c0e0 stack argument 7",
+    "caller_local_address": "RSP+0x40",
+    "size_bytes": 1024,
+    "element_count": 256,
+    "element_type": "F32"
+  },
+  "post_return_consumer": {
+    "function": "FUN_140340640",
+    "first_stack_buffer_read": "0x3408d0",
+    "first_stack_buffer_write": "0x3408ee",
+    "iterations": 32,
+    "f32_values_per_iteration": 8,
+    "extent": "complete 256-F32 stack output buffer",
+    "operations": "scalar MAXSS/MINSS clamp, in place",
+    "direct_write_to_rdi_original_input": false,
+    "direct_transfer_to_e350_in_this_excerpt": false
+  },
+  "alias_and_continuity": {
+    "stack_arg7_to_rdi_original_input_alias": "UNBOUND",
+    "next_alignment_helper_transfer": ["FUN_1403174c0", "FUN_140317530"],
+    "e350_content_continuity": "UNBOUND",
+    "numeric_parity": "NOT_RUN",
+    "root_cause": "NOT_ESTABLISHED"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "sample_values": "NOT_CAPTURED",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_listing_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

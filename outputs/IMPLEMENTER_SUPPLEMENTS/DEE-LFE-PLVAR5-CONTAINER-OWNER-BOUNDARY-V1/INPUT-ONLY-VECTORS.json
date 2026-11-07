@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "saved-entry-reference-types",
+      "kind": "static-receipt-summary",
+      "input": {
+        "call_reference_count": 0,
+        "data_reference_count": 3,
+        "data_reference_classes": [
+          "unwind metadata",
+          "runtime function metadata"
+        ]
+      },
+      "expected_status": "OWNER_AND_GENERATION_UNBOUND",
+      "payload_or_pointer_values_included": false
+    }
+  ]
+}

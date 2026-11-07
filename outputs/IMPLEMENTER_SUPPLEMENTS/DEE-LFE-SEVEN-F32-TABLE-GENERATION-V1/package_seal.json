@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-SEVEN-F32-TABLE-GENERATION-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "d2663d3efb890fde26043fdbcad312485cb8d6d4e3cfa9f435d8b385eb5b9aab",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "4e2979e5eb9c69c5017fd44d44cfbb0c5094113f6c38f0c84ce09f75d3d113a0",
+  "upstream_package_seal_sha256": "7741313821db3c4e11353635cb29c21332c87747a0f07dda4ea00011d9e53a40",
+  "checker_status": "NOT_RUN"
+}

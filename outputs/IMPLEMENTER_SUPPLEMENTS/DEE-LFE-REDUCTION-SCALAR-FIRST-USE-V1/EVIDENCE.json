@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.dee_lfe_reduction_scalar_first_use.v1",
+  "package_id": "DEE-LFE-REDUCTION-SCALAR-FIRST-USE-V1",
+  "status": {
+    "selected_aligned_helper_scalar_to_r9_argument": "STATICALLY_BOUND",
+    "incoming_r9_read_before_redefinition_in_FUN_14036bc60": "NO_READ_OBSERVED_IN_INSPECTED_BODY",
+    "scalar_flow_through_r9_to_post_call_xmm0_store": "NOT_ESTABLISHED",
+    "broader_buffer_or_state_effect": "UNBOUND",
+    "runtime_owner_generation": "UNBOUND",
+    "numeric_parity": "NOT_RUN",
+    "lfe_correlation_causality": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "dee_lfe_reduction_scalar_first_use_wash_v1",
+    "evidence_manifest_sha256": "df13b0e319af4aca755a01d5d50505e23ff4c7afa37ea9af5cb542a19be5499c",
+    "package_seal_sha256": "5a1aea71baf92d6835f4342631474d113bf8aa5caa4441c879545126767d4066",
+    "seal_status": "SEALED_PARTIAL",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "tool": "Ghidra 12.2 PUBLIC, read-only/no-analysis Listing reuse"
+  },
+  "path": {
+    "caller": "FUN_140340640",
+    "aligned_helper": "FUN_1403174c0",
+    "callee": "FUN_14036bc60",
+    "aligned_helper_return_first_use": "XMM0 is stored to caller stack local [RSP+0x498]",
+    "argument_flow": "caller derives an integer and passes it in R9D; callee redefines R9D from R11D before any read of incoming R9D",
+    "post_call_store": "caller stores returned XMM0 to the output lane",
+    "bounded_disposition": "the scalar does not flow through the inspected R9D parameter into this post-call XMM0 store"
+  },
+  "limits": {
+    "dee_executed": false,
+    "dynamic_observation": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Use only to reject the narrow scalar-through-R9 dataflow hypothesis for this selected call path; do not claim scalar or helper is globally irrelevant, and do not claim LFE parity or root cause."
+}

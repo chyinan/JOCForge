@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-RECURRENCE-SELECTOR-CORRECTION-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "0381dbb8f9f022cef64884128fd7f7408e1c491a29c7e5e7cc22d76b0a4802a2",
+  "payload_file_count": 9,
+  "payload_hash_audit": "PASS_9_OF_9",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

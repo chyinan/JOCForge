@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-ZERO-INLINE-RAW-WORDS-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TWO_ZERO_INLINE_TABLES_256_RAW_WORDS_BOUND; F08_CANDIDATE_COMPARISON_NOT_RUN",
+  "implementation_disposition": "Use the two named 128-word vectors as raw binary32 coefficient tables; no candidate match/mismatch claim.",
+  "source_manifest_sha256": "52f001fc2a3215e103899db8358eeb5836b258254acbbd7fc13202e46c3e1eb1",
+  "source_package_seal_sha256": "1a708cbc3195a6a60369e6680ffc25b83cc8f70676537128b7a4a759cc242493",
+  "source_raw_words_sha256": "2468568363d487361c8359e50362ebc5502414e6e3924f2486cb31a71c523f54",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 5804,
+      "sha256": "c99c24cd73cc76752c3141650a96ecd778c69595d32f531886713018231013ee"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2078,
+      "sha256": "cf3f487e6e9d0079b7790c4e719792164a20abf31ced9b84a0f7737072f71798"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 35683,
+      "sha256": "2468568363d487361c8359e50362ebc5502414e6e3924f2486cb31a71c523f54"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1479,
+      "sha256": "636e3f27cee8566489e93caea9b238b775aa8ab1f4aba48eda7de5924b25ee7e"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1180,
+      "sha256": "e28d479055d1c2b115d2078490d5683dee353c6d973c680861a4b0dd8de1ba33"
+    }
+  ]
+}

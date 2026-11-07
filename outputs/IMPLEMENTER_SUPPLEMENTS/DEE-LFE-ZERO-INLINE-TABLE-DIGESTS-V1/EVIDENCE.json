@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.dee_lfe_zero_inline_table_digests.v1",
+  "package_id": "DEE-LFE-ZERO-INLINE-TABLE-DIGESTS-V1",
+  "status": {
+    "LFE_selector_in_two_reviewed_dispatchers": "ZERO_STATIC",
+    "zero_inline_table_a_identity": "STATIC_HASH_BOUND",
+    "zero_inline_table_b_identity": "STATIC_HASH_BOUND",
+    "F08_candidate_table_a_comparison": "NOT_RUN_CANDIDATE_128_WORD_VECTOR_ABSENT",
+    "F08_candidate_table_b_comparison": "NOT_RUN_CANDIDATE_128_WORD_VECTOR_ABSENT",
+    "numeric_parity": "NOT_RUN",
+    "sample_layout_generation": "UNBOUND",
+    "correlation_causality": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "dee_lfe_zero_inline_coefficient_f08_comparison_wash_v1",
+    "manifest_sha256": "da136aac97923622f8035428030c42663c79b145ed2216ec263e19c0e961acaa",
+    "package_seal_sha256": "20e3c3d1d980002dfa801fd5f5e1ffd438a4db15544ac174edcf44bcf144c7b7",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "tables": [
+    {
+      "name": "zero_branch_table_a",
+      "element_type": "IEEE-754 binary32 raw words",
+      "element_count": 128,
+      "byte_count": 512,
+      "byte_order": "little-endian raw words in ascending address order",
+      "sha256": "bbd2bd460b0a750ccb45f959561a9a7e2ed2f8c6fd9391fb21abc9216b08fa41",
+      "candidate_comparison": "NOT_RUN"
+    },
+    {
+      "name": "zero_branch_table_b",
+      "element_type": "IEEE-754 binary32 raw words",
+      "element_count": 128,
+      "byte_count": 512,
+      "byte_order": "little-endian raw words in ascending address order",
+      "sha256": "e4cbb855ed455887b387cdb188bf8bab41976c73648c1b022dd18156214bde50",
+      "candidate_comparison": "NOT_RUN"
+    }
+  ],
+  "candidate_evidence": {
+    "package_id": "DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+    "manifest_sha256": "eada50e01fca2cdefcd2b1b67a9f053f00b260ec7db2b637be6cb80df2abd1fa",
+    "package_seal_sha256": "6e7150cf4debfb24b27df9e9a42524febd3ba84300e9585df523f6f49d90aa83",
+    "direct_comparison": "NOT_RUN",
+    "match_claim": "NOT_MADE",
+    "mismatch_claim": "NOT_MADE",
+    "available_candidate_arrays": "8-word recurrence/finalizer arrays only",
+    "missing_for_comparison": "128-word candidate A and B arrays or hash-bound per-table candidate digests with A/B mapping"
+  },
+  "limits": {
+    "dee_executed": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Use these only as native table identity digests. Do not treat the candidate package's prose MATCH as direct table equality."
+}

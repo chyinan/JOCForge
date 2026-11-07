@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.lfe_plvar5_container_owner_boundary.v1",
+  "package_id": "DEE-LFE-PLVAR5-CONTAINER-OWNER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "dee_lfe_plvar5_container_owner_boundary_wash_v1",
+    "evidence_manifest_sha256": "fa98a0dd90ddd7dea812abe057fea34b61db6f047e3dfa4ba5540d6e2390e226",
+    "package_seal_sha256": "43ce73faa0ef9dd80d3f8cddef78900ca85fe517cd91e420bc1a7035463db24c",
+    "checkers_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "ghidra_version": "12.2",
+    "static_read_only": true,
+    "analysis_rerun": false,
+    "dee_run": "NOT_RUN",
+    "runtime_capture": "NOT_RUN",
+    "implementation_source_access": false,
+    "media_pcm_payload_key_license_read": false
+  },
+  "observations": {
+    "entry_call_references": 0,
+    "entry_data_references": 3,
+    "data_reference_classes": [
+      "two PEx64_UnwindInfo records",
+      "one _IMAGE_RUNTIME_FUNCTION_ENTRY record"
+    ],
+    "local_expression": "plVar5 = (longlong *)(param_1 + 0x10a6) within FUN_140350d00",
+    "typed_owner_or_constructor": "NOT_BOUND"
+  },
+  "status": {
+    "plvar5_owner": "UNBOUND",
+    "plvar5_generation": "UNBOUND",
+    "first_break": "FUN_140350d00.param_1",
+    "global_no_caller_or_writer_claim": false,
+    "lfe_algorithm_effect": "NOT_RUN"
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "preserve_owner_and_generation_as_unbound": true,
+    "do_not_infer_identity_from_matching_offset": true
+  }
+}

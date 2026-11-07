@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.dee_lfe_recurrence_selector_vectors.v1",
+  "status": "NO_NEW_SAMPLE_VECTOR",
+  "scope": "Two static dispatcher LFE lanes only",
+  "lfe_selector": 0,
+  "descriptor_stride_role": "input gather only in inspected callers",
+  "runtime_layout_or_generation": "UNBOUND",
+  "numeric_parity": "NOT_RUN",
+  "reported_lfe_correlation": "NOT_REMEASURED; CAUSALITY_NOT_ESTABLISHED",
+  "pcm_or_payload_included": false
+}

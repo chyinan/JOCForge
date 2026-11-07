@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-RECURRENCE-INSTRUCTION-ORDER-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "INSPECTED_RECURRENCE_FUNCTIONS_USE_SEPARATE_MULPS_ADDPS; FMA_NOT_PRESENT_IN_SCOPE; MXCSR_VALUE_NOT_CAPTURED; PARITY_NOT_RUN",
+  "implementation_disposition": "Use as function-scoped instruction-order evidence only; do not claim sample parity or global FMA absence",
+  "source_manifest_sha256": "64b337cedbea20e23e871541e9473a0f5509e41a2cf9027b6326f293967b8087",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3452,
+      "sha256": "72074fc2b6b7373a7d76ee838dfe5fe433449f16adcbb6b378a7b3a63fb939f2"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2063,
+      "sha256": "9228de6763ee3017859f3cd06f70aaee309074ff8f45d3006433acf5e77ae228"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 315,
+      "sha256": "c21c32600f0e25975c07d5e857f31d25ab2788a2120dc9d85a3e82d17f4269d8"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1898,
+      "sha256": "b596c7c4f1f7cf28503dbc6dd2a00f4c3a7b739201d29a938c9afe5ee8150460"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1040,
+      "sha256": "d43dc065ab5d9b27350c434e9b8e9c7cc47c591fcc5a7c261d9e5307f8c6694d"
+    },
+    {
+      "name": "UPSTREAM-EVIDENCE-MANIFEST.json",
+      "bytes": 4345,
+      "sha256": "64b337cedbea20e23e871541e9473a0f5509e41a2cf9027b6326f293967b8087"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 1134,
+      "sha256": "2a1d93772ac38bb4c8096567fbb701b0d3dfb91c8c745ad96e8b9d9f1194b1cb"
+    },
+    {
+      "name": "UPSTREAM-SOURCE-IDENTITIES.json",
+      "bytes": 1845,
+      "sha256": "9ef1d7fe8719595f57db7d70f2d90080268d66766170d13d49e67a36ed9ea28e"
+    }
+  ]
+}

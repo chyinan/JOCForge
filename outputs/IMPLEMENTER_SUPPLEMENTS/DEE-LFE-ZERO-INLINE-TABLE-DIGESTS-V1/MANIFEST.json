@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-ZERO-INLINE-TABLE-DIGESTS-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ZERO_INLINE_TABLE_DIGESTS_BOUND; F08_CANDIDATE_COMPARISON_NOT_RUN",
+  "implementation_disposition": "Use table digests only as native identities; candidate equality remains NOT_RUN.",
+  "source_manifest_sha256": "da136aac97923622f8035428030c42663c79b145ed2216ec263e19c0e961acaa",
+  "source_package_seal_sha256": "20e3c3d1d980002dfa801fd5f5e1ffd438a4db15544ac174edcf44bcf144c7b7",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4470,
+      "sha256": "9048b8e7cdf83e36006a746dc5a9e7ecb3943574ea7b09a045becb6efb7100f2"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2609,
+      "sha256": "2fb579abee328e4d18d8f33b39010b362f6aa6cd7aa356c938bf036e528b9c88"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 231,
+      "sha256": "c54e6b6ec29e91434392e57d2827b8f4f0ec0af9301be0b848ac5a2ad3e070d6"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1440,
+      "sha256": "e21bbaedd991eca6e24cd1ed630d091c79c957640b48a37a9a8b25853416adfb"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1085,
+      "sha256": "869133eb38fcf34cc95d7b3160073976eee114364bcaee0e052dcb5ec7ade544"
+    }
+  ]
+}

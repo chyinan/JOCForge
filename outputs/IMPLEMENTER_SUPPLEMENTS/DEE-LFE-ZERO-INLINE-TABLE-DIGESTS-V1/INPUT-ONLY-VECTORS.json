@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_PCM_OR_SAMPLE_VECTOR",
+  "vectors": [],
+  "note": "Only static coefficient table digests are included; no audio samples or candidate raw table values are included."
+}

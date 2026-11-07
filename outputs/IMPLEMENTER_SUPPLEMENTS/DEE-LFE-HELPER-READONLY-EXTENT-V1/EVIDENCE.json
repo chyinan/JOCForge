@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.dee_lfe_helper_readonly_extent.v1",
+  "package_id": "DEE-LFE-HELPER-READONLY-EXTENT-V1",
+  "status": "ALIGNMENT_HELPERS_READ_ONLY_256_F32_BOUND; LATER_HELPER_CONTENT_CONTINUITY_UNBOUND; NUMERIC_PARITY_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "dee_lfe_buffer_helper_extent_boundary_wash_v1",
+    "manifest_sha256": "52604072ce7175b32c60d66b507137955de5ed168b400af255865c4afa5e9d92",
+    "package_seal_sha256": "1ee4a323de9990acfde2c27a448aa3937b58e8fa3147a6c0a2172018c636013f",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only, no-analysis, target-only Listing",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "alignment_helpers": {
+    "selection": "compare pointer with align_up(pointer, 16)",
+    "aligned_helper": {
+      "function": "FUN_1403174c0",
+      "input": "RCX = original pointer",
+      "element_reads": "256 F32 through 16-byte aligned vector loads",
+      "byte_extent": "0x400 bytes",
+      "writes_to_input": false,
+      "direct_calls": 0,
+      "result": "scalar min/max reduction in XMM0"
+    },
+    "unaligned_helper": {
+      "function": "FUN_140317530",
+      "input": "RCX = original pointer",
+      "element_reads": "256 F32 through scalar groups and a three-element tail",
+      "byte_extent": "0x400 bytes",
+      "writes_to_input": false,
+      "direct_calls": 0,
+      "result": "scalar min/max reduction in XMM0"
+    },
+    "EDX_value": "0x100 = 256 F32 elements, established by both read loops"
+  },
+  "buffer_continuity": {
+    "buffer_unchanged_within_either_alignment_helper": true,
+    "later_dispatcher_transfers": ["FUN_14036bc60", "FUN_14033c0e0"],
+    "later_helper_effects": "NOT_INSPECTED",
+    "pointer_identity_to_e350": "STATIC_BOUND_BY_PARENT_RECEIPT",
+    "buffer_content_at_e350": "UNBOUND"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "sample_values": "NOT_CAPTURED",
+    "numeric_parity": "NOT_RUN",
+    "root_cause": "NOT_ESTABLISHED",
+    "raw_listing_or_decompilation_included": false,
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

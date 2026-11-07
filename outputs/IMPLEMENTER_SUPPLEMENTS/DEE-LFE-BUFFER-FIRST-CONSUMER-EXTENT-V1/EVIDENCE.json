@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.dee_lfe_buffer_first_consumer_extent.v1",
+  "package_id": "DEE-LFE-BUFFER-FIRST-CONSUMER-EXTENT-V1",
+  "status": "FUN_14036BC60_FIRST_CONSUMER_READ_EXTENT_STATIC_BOUND; INPUT_UNMODIFIED_IN_THIS_CALL; LATER_HELPER_CONTENT_CONTINUITY_UNBOUND; PARITY_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "dee_lfe_buffer_input_extent_boundary_wash_v1",
+    "manifest_sha256": "c13bad284c9b330e1fb70823a51a91ddc4ee4af874f9432a09dea4d2c723f751",
+    "package_seal_sha256": "e290d1befc669075da4460af1204fd011c834a1bda832a27f8eaf3c88e04c86e",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only, no-analysis, target-only Listing",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "selected_call": {
+    "caller": "FUN_140340640",
+    "callee": "FUN_14036bc60",
+    "callsite_rva": "0x3407b1",
+    "arguments": {
+      "RCX": "original 256-F32 buffer pointer",
+      "EDX": 1,
+      "R8D": 256
+    },
+    "selected_branch": {
+      "r9d_count_minus_three": 253,
+      "r11d_input_count": 256,
+      "r10d_loop_count_times_four": 256,
+      "post_loop_comparison": "R10D == R11D; skips later RCX-based input loops"
+    }
+  },
+  "input_extent": {
+    "direct_rcx_reads": [
+      {"offset": 0, "type": "F32"},
+      {"offset": 4, "type": "F32"},
+      {"offset": 8, "type": "F32"},
+      {"offset": 12, "type": "F32"}
+    ],
+    "read_bytes": 16,
+    "cached_vector_reused_for": "64 loop iterations",
+    "direct_store_through_rcx": false,
+    "direct_calls": 0,
+    "return": "scalar in XMM0; mathematical meaning not assigned"
+  },
+  "later_lfe_path": {
+    "other_dispatcher_helper_calls": ["FUN_14036bc60", "FUN_14033c0e0"],
+    "other_helper_effects": "UNBOUND",
+    "buffer_content_at_e350": "UNBOUND",
+    "numeric_parity": "NOT_RUN",
+    "root_cause": "NOT_ESTABLISHED"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "sample_values": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_listing_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

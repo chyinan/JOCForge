@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-package-seal.v1",
+  "package_id": "DEE-PROFILE-RENDERER-C-INDEX-CONSUMER-BOUNDARY-V1",
+  "status": "SEALED_STATIC_OWNER_BOUNDARY",
+  "file_count": 4,
+  "manifest_file": "evidence_manifest.json",
+  "manifest_sha256": "28e51d4a0e45e0de5e2edca2bd15a068347c2bbe43fb5c74634045cef876c38a",
+  "seal_excluded_from_its_own_hash_list": true,
+  "files": [
+    {"file":"C-INDEX-CONSUMER.json","bytes":2111,"sha256":"c34e6d7b91e02592f8b9155dce671af692eb02ff5983cd258ce27a96ad6b39f7"},
+    {"file":"README.md","bytes":785,"sha256":"7862e0d76a8953bda0fe84e66be3eeff5573b10d93c28dd975c5a1169bf9a86e"},
+    {"file":"SOURCE-IDENTITIES.json","bytes":642,"sha256":"ab68db60dcf27f5aa613272c96702a252c39527bcb6084d1e13af7d9821b2dc0"},
+    {"file":"evidence_manifest.json","bytes":856,"sha256":"28e51d4a0e45e0de5e2edca2bd15a068347c2bbe43fb5c74634045cef876c38a"}
+  ]
+}

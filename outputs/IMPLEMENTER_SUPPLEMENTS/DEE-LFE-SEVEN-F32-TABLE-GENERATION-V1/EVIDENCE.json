@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge.lfe-seven-value-generation.v1",
+  "package_id": "DEE-LFE-SEVEN-F32-TABLE-GENERATION-V1",
+  "status": "SCOPED_STATIC_TABLE_GENERATION_BOUND; CONDITIONAL_MAIN_TRANSFORM_STATIC_PREDICATE_BOUND; NUMERICAL_FORMULAS_AND_LFE_WIRE_JOIN_UNBOUND",
+  "upstream": {
+    "package_id": "DEE-LFE-FRAME-LFE-BITWRITER-FOLLOWUP-WASH-V1",
+    "manifest_sha256": "4e2979e5eb9c69c5017fd44d44cfbb0c5094113f6c38f0c84ce09f75d3d113a0",
+    "seal_sha256": "7741313821db3c4e11353635cb29c21332c87747a0f07dda4ea00011d9e53a40",
+    "manifest_artifacts": 42,
+    "independent_manifest_artifact_hash_audit": "PASS_42_OF_42",
+    "upstream_checker": "NOT_RUN"
+  },
+  "binary": {
+    "module": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "method": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis": "static existing hash-bound project reports",
+    "dee_runtime": "NOT_RUN",
+    "dynamic_branch_capture": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_license_access": false,
+    "implementation_contact": "NONE"
+  },
+  "fixtures": {
+    "count": 3,
+    "layout_id": 7,
+    "fbw_count": 5,
+    "total_lanes": 6,
+    "lfe_lane_index": 5,
+    "scope": "reused fixtures only; not arbitrary N"
+  },
+  "edges": [
+    {
+      "from": "selected Atmos per-block channel loop",
+      "to": "main LFE table entry",
+      "rule": "for lane index >= FBW count, pass current state+0x14088[block] entry to the main LFE consumer"
+    },
+    {
+      "from": "selected Atmos per-block channel loop",
+      "to": "companion LFE table entry",
+      "rule": "for lane index >= FBW count, pass current state+0x140b8[block] entry to the companion LFE consumer"
+    },
+    {
+      "from": "main LFE consumer",
+      "to": "main table destination",
+      "rule": "consumer/helper chain writes seven F32 values at indices 0..6"
+    },
+    {
+      "from": "companion LFE consumer",
+      "to": "companion table destination",
+      "rule": "consumer/helper chain writes seven F32 values at indices 0..6"
+    },
+    {
+      "from": "main LFE table",
+      "to": "conditional matrix transform",
+      "rule": "only when arg6 != 0 and arg7 == 1; count*8-byte pointer vector; branch execution not captured; companion not passed"
+    }
+  ],
+  "unbound": [
+    "Numerical equations of the seven-value helper transforms in this supplement",
+    "dynamic values and execution of the conditional main-table matrix branch",
+    "same-owner pointer path from either seven-F32 table into selected frame records/bitwriter",
+    "typed LFE exponent/mantissa/lfeon wire fields",
+    "whether this static path explains current JOCForge-vs-DEE output differences"
+  ]
+}

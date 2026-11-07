@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-PROFILE-LAYOUT-COUNT-MODE1-GLOBAL-STATE-V1",
+  "source_package_manifest_sha256": "117c2bd64ebe9240901f05165821939a1014cc8704132fd9301bef319ab48b27",
+  "files": {
+    "REPORT.md": "6859bef9e204778da30c60ea2f2186873ddfb490135665c8dc2037d8f35eddee",
+    "BOUNDARY.json": "246fc26bd11f5463ce964cada749d6fa18b22386ceb28ccf1bad7ebfd5ccdb7a",
+    "SOURCE-LINKS.json": "ae5ce7f5eb714164b853176f4b3e85c3bdf4ffa34fccecb57a23874a3488967b"
+  }
+}

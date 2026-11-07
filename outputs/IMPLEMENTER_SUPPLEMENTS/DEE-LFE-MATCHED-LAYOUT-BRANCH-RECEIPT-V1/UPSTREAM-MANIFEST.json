@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge-wash-output-manifest.v1",
+  "package_id": "dee_lfe_matched_layout_branch_receipt_wash_v1",
+  "status": "STATIC_SELECTOR_EDGE_BOUND_MATCHED_BRANCH_INPUTS_NOT_CAPTURED_CONTROL_RECEIPT_INSUFFICIENT",
+  "files": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 4349,
+      "sha256": "42e483a5a49d3b2285f1926b39046f8bbc56f6405a9d63685ea04ea12f7234fa"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2603,
+      "sha256": "ae80c3e4ddc20ef8b901fdc3e55b1ca119872c1a602572699befcc39ea397fa2"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 3783,
+      "sha256": "747148f4c0de8dde52f8fa62fc468b78cea9e676e192e043bcc32fe0712d069b"
+    },
+    {
+      "name": "seal_matched_lfe_layout_branch.py",
+      "bytes": 1301,
+      "sha256": "2088dbcc9c3362475e0680be86b4b20c968f3f3dddc71eeff91a6c3d6942d0a9"
+    },
+    {
+      "name": "verify_matched_lfe_layout_branch.py",
+      "bytes": 3204,
+      "sha256": "122d7041b55becb1ce4bf9588e337784ed0a8c56037fd573054dfe3d9333ef3d"
+    }
+  ]
+}

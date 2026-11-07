@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/profile-layout-mode1-selector-join-v1/wash-package",
+  "source_package_manifest_sha256": "cc80478610bca57d63e0edf09ef7fea72b3d16ea1e7da14f998eb9dcd8d8d7a5",
+  "formal_source_package_seal": "NOT_CLAIMED",
+  "source_provenance_status_file_sha256": "94f4b095bb4672fae9b5f19a46dd01a81abf937a8a09bb079faf4a0564e76459",
+  "wash_recomputed": {
+    "manifest_files": "9/9",
+    "local_ghidra_traces": "2/2",
+    "parent_manifests_and_reports": "2/2",
+    "target_dll": true
+  },
+  "verified_local_traces": [
+    {"file": "analysis/attempt-r01/shared_selector_owner_edge.log", "sha256": "a33deaa945334a763c9952921118ef66a6052386f56595c581cb81618bb6f836"},
+    {"file": "analysis/attempt-r02/host_reader_context_constructor.log", "sha256": "278a13ce90b3102ce5bcc1e61d10a52badc8dd68e8ed311ff93f5e899d1b3eec"}
+  ],
+  "verified_parent_receipts": [
+    {"package_id": "PROFILE-LAYOUT-MODE1-OPEN-CONFIG-COUNT-PRODUCER-V1", "manifest_sha256": "e23a3c44f225f9c6a4ff3e4ff6fa960a7e1136e872e5a9f824b0bfd0cc7f0fd4", "report_sha256": "7e041a302e665439a6b2a3d1e496c36f6b18a316cfb69e324872fa64f1228105"},
+    {"package_id": "SOURCE-DESCRIPTOR-COUNT-PRODUCER-V1", "manifest_sha256": "a4d0869f4b6f8f07a86611c4dcbd466e7dabef6365bb740163cbf48fe9c5396f", "report_sha256": "3599f4475e9ad8c3587d245e3ecb7ab5562015240cfcc6b059f87c07b542148"}
+  ],
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "target_image_rehash": "matched 3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+}

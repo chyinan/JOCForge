@@ -1,0 +1,65 @@
+{
+  "schema": "jocforge.dee_lfe_matched_layout_branch_sources.v1",
+  "recipient_role": "wash-coordinator",
+  "parent_packages": [
+    {
+      "package_id": "DEE-DDP-CORE-LFE-NUMERIC-EDGE-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_ddp_core_lfe_numeric_edge_wash_v1",
+      "manifest_sha256": "86e655128b711faa43db8f2bd5bdceca57a14ab5ad86ef4fa992f12bad935106",
+      "verification": "PASS_NORMAL_AND_PYTHON_O",
+      "use": "Ghidra layout selector producer, descriptor map, stride consumer, and LFE branch"
+    },
+    {
+      "package_id": "DEE-LFE-SELECTED-STRIDE-INPUT-EDGE-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_lfe_selected_stride_input_edge_wash_v1",
+      "manifest_sha256": "fd6ec172d610ff94867cec38d937396cdd9444f6d05c0921d0392d34e454f2bd",
+      "package_seal_sha256": "de81a8d51dc7bba9ae755add13a11a5c1858384be0f298bb1e32153d8abc8a98",
+      "verification": "PASS_NORMAL_AND_PYTHON_O",
+      "use": "typed U16 stride to zero/nonzero LFE branch and 256-F32 temporary path"
+    },
+    {
+      "package_id": "SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V3",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLE6-DEE-CORE-LFE-LAYOUT-SELECTOR-LINEAGE-V3",
+      "manifest_sha256": "c6367e0abb5a6c1697931f4cafc52eb8826a03762ed896d943ed497bf615a4e5",
+      "verification": "PASS_PACKAGE_VERIFIER",
+      "use": "matched-run input row to core LFE lane remains unbound"
+    },
+    {
+      "package_id": "SAMPLE6-DEE-CORE-LFE-TRANSFORM-CORRECTED-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLE6-DEE-CORE-LFE-TRANSFORM-CORRECTED-V1",
+      "manifest_sha256": "2ce9455b8524d7c6486438345ed1a0f2b7f7a25d9197597c8c4bd66a77eba463",
+      "verification": "PASS_PACKAGE_CHECK",
+      "use": "corrected 256-word transform extent and current window evidence; no repeat analysis"
+    },
+    {
+      "package_id": "SAMPLE6-DEE-DI-THRESHOLD-CONTROL-COMPARISON-V2",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLE6-DEE-DI-THRESHOLD-CONTROL-COMPARISON-V2",
+      "manifest_sha256": "db2f290c6588f650193a0472579e360b04fed441d62fc3c64fcf5334219e579f",
+      "verification": "PASS_NORMAL_AND_PYTHON_O",
+      "use": "DI=false/threshold100 matched control input/XML and six-channel output geometry"
+    },
+    {
+      "package_id": "DEE-80C3-SUCCESSFUL-OUTPUT-38-INPUT-BOUND-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-80C3-SUCCESSFUL-OUTPUT-38-INPUT-BOUND-V1",
+      "manifest_sha256": "54d08a60b41142facbe3004efd987768a8b4fc14adfe65589d037766ad6a5d19",
+      "verification": "PASS_NORMAL_AND_PYTHON_O",
+      "use": "matched output receipt binds 38-row input and XML but has no core layout/stride values"
+    },
+    {
+      "package_id": "DEE-80C3-PROCESS-CONTEXT-BOUNDARY-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-12/files-pasted-by-the-user-agent/outputs/IMPLEMENTER_SUPPLEMENTS/DEE-80C3-PROCESS-CONTEXT-BOUNDARY-V1",
+      "manifest_sha256": "aa979ef2c39b42f7c664b006cb71ff19f86325399cf2112ca6c4a94f0de74814",
+      "verification": "PASS_NORMAL_AND_PYTHON_O",
+      "use": "success receipt lacks encoder image/version, CLI, PID, and timestamp"
+    }
+  ],
+  "access_boundary": {
+    "ghidra": "Ghidra 12.2 static parent package only",
+    "new_ghidra_trace": false,
+    "dee_run": false,
+    "pcm_or_media": false,
+    "payload": false,
+    "key_or_license": false,
+    "implementation_contact": false
+  }
+}

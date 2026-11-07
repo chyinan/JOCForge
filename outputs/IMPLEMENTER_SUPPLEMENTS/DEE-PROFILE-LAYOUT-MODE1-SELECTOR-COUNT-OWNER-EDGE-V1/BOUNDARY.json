@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-PROFILE-LAYOUT-MODE1-SELECTOR-COUNT-OWNER-EDGE-V1",
+  "decision": "COMMON_OUTER_ARGUMENT_BASE_BOUND; FIELDS_DISTINCT; PHYSICAL_ADM_N_AND_SOURCE_K_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": {
+    "package_id": "PROFILE-LAYOUT-MODE1-SELECTOR-OWNER-EDGE-V1",
+    "manifest_sha256": "cc80478610bca57d63e0edf09ef7fea72b3d16ea1e7da14f998eb9dcd8d8d7a5",
+    "formal_package_seal": "NOT_CLAIMED",
+    "provenance_status_file_sha256": "94f4b095bb4672fae9b5f19a46dd01a81abf937a8a09bb079faf4a0564e76459"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "wash_rehashed": true,
+    "tool": "Ghidra 12.2 PUBLIC, read-only, no-analysis"
+  },
+  "common_argument_base": {
+    "function": "FUN_180175500",
+    "argument": "param_2",
+    "reader_variant": {
+      "consumer": "FUN_1801764e0",
+      "field_type": "U8",
+      "field_offset": "+0x140",
+      "zero": "AtmosReader",
+      "nonzero": "AtmosReaderCC"
+    },
+    "host_open_config_mode": {
+      "constructor_path": ["FUN_180175500", "FUN_180177e50", "FUN_180177eb0"],
+      "constructor_input": "derived from param_2 +0x1B",
+      "source_field_type": "U32",
+      "source_field_offset": "+0x12C",
+      "destination": "constructed host object +0x54",
+      "consumer": "FUN_180178dc0 sets open_config[0] when field equals 1"
+    },
+    "relation": {
+      "same_outer_argument_base": true,
+      "same_field": false,
+      "direct_dataflow_between_fields": false,
+      "runtime_values": "NOT_CAPTURED",
+      "actual_reader_variant": "NOT_CAPTURED"
+    }
+  },
+  "count_boundary": {
+    "descriptor_count_field": "U16 at reader-produced descriptor pointer +0x0A",
+    "record_slot": 5,
+    "existing_transfer": "FUN_180179a80 -> FUN_180179ab0 -> FUN_1801788a0 -> FUN_180178dc0 -> open_config[2]",
+    "physical_adm_N_join": "UNBOUND",
+    "source_descriptor_K_join": "UNBOUND",
+    "equal_numeric_count_used_as_identity": false
+  },
+  "execution": {
+    "dee_runtime": "NOT_RUN",
+    "dynamic_capture": "NOT_CAPTURED",
+    "media_or_pcm_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  }
+}

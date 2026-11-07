@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.dee_lfe_instruction_order_vectors.v1",
+  "status": "NO_NEW_SAMPLE_VECTOR",
+  "sample_layout_or_runtime_branch": "NOT_CAPTURED",
+  "numeric_parity": "NOT_RUN",
+  "reported_lfe_correlation": "NOT_REMEASURED; CAUSALITY_NOT_ESTABLISHED",
+  "pcm_or_payload_included": false,
+  "dee_run": false
+}

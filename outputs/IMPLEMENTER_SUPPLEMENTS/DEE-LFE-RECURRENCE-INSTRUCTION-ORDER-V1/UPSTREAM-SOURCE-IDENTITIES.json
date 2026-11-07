@@ -1,0 +1,51 @@
+{
+  "direct_callers": {
+    "FUN_14036d7c0": [
+      "FUN_14036d9e0"
+    ],
+    "FUN_14036d9e0": [
+      "FUN_14036d4e0",
+      "FUN_14036d560",
+      "FUN_14036d5e0",
+      "FUN_14036d630"
+    ]
+  },
+  "ghidra": {
+    "build_date": "2026-Oct-16 1220 UTC",
+    "mode": "read-only project, no-analysis Listing export",
+    "product": "Ghidra",
+    "project": "dee_ddp_encoder_lfe_listing",
+    "release": "PUBLIC",
+    "version": "12.2"
+  },
+  "listing_export": {
+    "bytes": 25072,
+    "exporter": {
+      "bytes": 10062,
+      "codex_relative_path": "2026-10-23/jocforge-reverse-agent-3/work/ghidra_scripts/ExportLfeRecurrenceListing.java",
+      "name": "ExportLfeRecurrenceListing.java",
+      "sha256": "66b9e2bb084076468ddc22e55bd5a921cb23eccf0378e0a5e3854c7df0023bfd"
+    },
+    "payload_file": "RECURRENCE-LISTING.json",
+    "sha256": "ae6685bc15432448b55eb08d10d76a11c446c214bbdd2e980eaeb389224c27ae"
+  },
+  "parent_package": {
+    "manifest_sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d",
+    "package_id": "dee_lfe_base_layer_recurrence_branch_wash_v1",
+    "package_seal_sha256": "0efe3846f472ae11bf27b874ab69f4ec78fa79569a41551b1088e709534f656b"
+  },
+  "raw_value_access": {
+    "coefficient_raw_words_read": false,
+    "dee_executed": false,
+    "implementation_repository_read": false,
+    "key_or_license_read": false,
+    "pcm_or_payload_read": false
+  },
+  "schema": "dee-lfe-recurrence-instruction-source-identities.v1",
+  "target_image": {
+    "bytes": 7923712,
+    "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_adm_eac3_joc_samples_run_20261103/dee_runtime_copy_ascii/dee_ddp_encoder.exe",
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  }
+}

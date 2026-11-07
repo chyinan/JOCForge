@@ -1,0 +1,35 @@
+{
+  "file_count": 5,
+  "files": [
+    {
+      "bytes": 8422,
+      "file": "CHECK.py",
+      "sha256": "24e79fb7ea40a4cd8de826876778844cbe6f58f35a605facf0d7aa11d1133d20"
+    },
+    {
+      "bytes": 7417,
+      "file": "LFE-BASE-LAYER-RECURRENCE-BRANCHES.json",
+      "sha256": "c8bb91bd868500fb74451adb11f0bb77a86f5050b1af859e58fa218a9958c246"
+    },
+    {
+      "bytes": 1827,
+      "file": "README.md",
+      "sha256": "f183d5bc4b53739fc35e6450bfea8e613a3b7fe57ccb7c612c9478768c3818a6"
+    },
+    {
+      "bytes": 2843,
+      "file": "SOURCE-IDENTITIES.json",
+      "sha256": "49c50aa0c6ae2aea5ba95a6095af13baee68f7d1292c08bb71bef4e33d711d59"
+    },
+    {
+      "bytes": 5249,
+      "file": "evidence_manifest.json",
+      "sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d"
+    }
+  ],
+  "package_id": "dee_lfe_base_layer_recurrence_branch_wash_v1",
+  "schema": "dee-lfe-base-layer-recurrence-branch-seal.v1",
+  "seal_excluded_from_its_own_hash_list": true,
+  "sealed_at_utc": "2026-11-04T04:39:47.173742+00:00",
+  "status": "SEALED_PARTIAL"
+}

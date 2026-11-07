@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-LFE-INTERMEDIATE-CALLEE-DISPATCH-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_static_edge",
+      "package_id": "dee_lfe_intermediate_callee_boundary_wash_v1",
+      "manifest_sha256": "5a5854ae6ac7576879046b3bb04aa667512944eaf57498d97f152f939b588658",
+      "package_seal_sha256": "174cb7f872b8233094990af167ab6325392409e19c3d764c7fa5739cd428a4a4",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "prior_gather_boundary",
+      "package_id": "dee_lfe_gather_intermediate_call_boundary_wash_v1",
+      "manifest_sha256": "fc5133cff538c1fba6b03f55e81069ee336aad734957ed429914032822d5502f",
+      "package_seal_sha256": "d550613904ce2ba70e67f024db3bb7b07083f445886f71d470419cfb534fcb87"
+    }
+  ],
+  "omitted_material": {
+    "raw_function_listing": true,
+    "native_binary": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

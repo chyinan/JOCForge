@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.dee_lfe_layout_branch_input_vectors.v1",
+  "status": "EXISTING_RECEIPTS_ONLY",
+  "input": {
+    "user_confirmed_source": "人是猫 - 张卡斯, 洛天依.wav",
+    "sha256_previously_recorded": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "hash_recomputed_in_this_pass": false
+  },
+  "matched_control": {
+    "job_xml_sha256": "c44aaaf5d155d2bc65d67d127ca48c43a5e58402643ffa74169c7f73a9365bc7",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100,
+    "sample_rate_hz": 48000,
+    "output_channels": 6,
+    "output_layout": "5.1(side)",
+    "data_rate_kbps": 1024,
+    "runtime_lfe_branch_fields": "NOT_CAPTURED"
+  },
+  "separate_success_receipt": {
+    "input_rows": 38,
+    "reported_output_sha256": "80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662",
+    "output_opened_or_rehashed": false,
+    "same_run_join_to_lfe_branch_fields": "NOT_ESTABLISHED"
+  },
+  "pcm_or_encoded_payload_included": false,
+  "new_dee_run": false
+}

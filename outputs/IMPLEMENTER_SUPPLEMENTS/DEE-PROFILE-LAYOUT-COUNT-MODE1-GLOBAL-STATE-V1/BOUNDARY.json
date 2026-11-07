@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-PROFILE-LAYOUT-COUNT-MODE1-GLOBAL-STATE-V1",
+  "decision": "PARTIAL_ACCEPT_STATIC_MODE1_COUNT_TRANSFORM; RUNTIME_STATE_AND_ADM_JOIN_UNBOUND",
+  "branch": {
+    "condition": "open_config[0] == 1",
+    "count_field": "open_config[2]",
+    "layout_code_field": "open_config[6]",
+    "preconditions": {"code1": {"count": 12}, "code2": {"count": 10}, "other": {"count": 16}},
+    "type2_helper": "FUN_1801ae5a0",
+    "transform_condition": "DAT_1809d17c0 != 0 && layout_code == 2",
+    "transform": {"code_before": 2, "count_before": 10, "code_after": 1, "count_after": 12},
+    "final_C_storage": "count-1 + 1 -> FUN_1801acfe0 -> layout/profile +0x08"
+  },
+  "global_flag": {
+    "address": "DAT_1809d17c0",
+    "image_initial_u32": 1,
+    "direct_reads": 4,
+    "direct_writer": "FUN_1801ae590",
+    "known_setter_callers": ["FUN_1801a7d50", "FUN_1801a8920", "FUN_1801a9620", "FUN_1801aa130"],
+    "known_callers_reset_non_type2_to_zero": true,
+    "type2_skips_reset": true,
+    "runtime_value_and_prior_call_sequence": "NOT_CAPTURED",
+    "alias_or_indirect_writes_excluded": false
+  },
+  "static_count_projections": [
+    {"code": 2, "input_count": 10, "global_before": 1, "output_code": 1, "output_count_C": 12},
+    {"code": 2, "input_count": 10, "global_before": 0, "output_code": 2, "output_count_C": 10}
+  ],
+  "count_domains": {
+    "C_directly_derived_from_physical_ADM_N": false,
+    "C_directly_derived_from_canonical_M": false,
+    "open_config_count_join_to_N_or_M": "UNBOUND",
+    "descriptor_branch_open_config_0_C": 16
+  },
+  "status": {
+    "dee_execution": "NOT_RUN",
+    "runtime_global_value": "NOT_CAPTURED",
+    "target_image_rehashed_by_wash_this_turn": true,
+    "source_package_formal_seal_present": false,
+    "implementation_modified": false
+  }
+}

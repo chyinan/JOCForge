@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-INTERMEDIATE-CALLEE-DISPATCH-BOUNDARY-V1",
+  "manifest_sha256": "d056541186431fe7cc9bb3ab030dc37477bf98820c594e66a46e95abdeda10bd",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ALIGNMENT_BRANCH_AND_HELPER_DISPATCH_STATIC_BOUND; FIRST_HELPER_EXTENT_UNBOUND; BUFFER_CONTENT_CONTINUITY_UNBOUND; NUMERIC_PARITY_NOT_RUN"
+}

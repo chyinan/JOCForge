@@ -1,0 +1,1366 @@
+{
+  "f08_candidate_comparison": {
+    "available_f32_vector_lengths": {
+      "dee_native_companion_finalizer": 8,
+      "dee_native_main_finalizer": 8,
+      "dee_native_recurrence_precursor": 8,
+      "rust_production_lfe_cosine": 8,
+      "rust_production_lfe_recurrence": 8,
+      "rust_production_lfe_sine": 8
+    },
+    "manifest_sha256": "eada50e01fca2cdefcd2b1b67a9f053f00b260ec7db2b637be6cb80df2abd1fa",
+    "match_claim": "NOT_MADE",
+    "mismatch_claim": "NOT_MADE",
+    "package_id": "DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+    "package_seal_sha256": "6e7150cf4debfb24b27df9e9a42524febd3ba84300e9585df523f6f49d90aa83",
+    "status": "NOT_RUN_MISSING_128_WORD_CANDIDATE_VALUES"
+  },
+  "package_id": "dee_lfe_zero_inline_raw_words_wash_v1",
+  "parent_packages": [
+    {
+      "manifest_sha256": "f41ca962188d127bf7c723d566862adbbe586979bad95f1d18d843f0f6221b60",
+      "package_id": "dee_lfe_recurrence_coefficients_input_only_wash_v1",
+      "package_seal_sha256": "dfeb0ef58b293a568209b65ed32edeb1f7a28e8bbb10e1e656773be8d3acf28a",
+      "status": "HASH_BOUND_CONSTANTS_EXTRACTED; INPUT_ONLY_VECTORS_COMPLETE; SELECTOR_UNBOUND; SAMPLE_LFE_BRANCH_UNBOUND; NUMERIC_PARITY_NOT_RUN; ROOT_CAUSE_NOT_ESTABLISHED"
+    },
+    {
+      "manifest_sha256": "da136aac97923622f8035428030c42663c79b145ed2216ec263e19c0e961acaa",
+      "package_id": "dee_lfe_zero_inline_coefficient_f08_comparison_wash_v1",
+      "package_seal_sha256": "20e3c3d1d980002dfa801fd5f5e1ffd438a4db15544ac174edcf44bcf144c7b7",
+      "status": "ZERO_INLINE_TABLE_A_B_HASHED_FROM_GHIDRA_12_2_MEMORY_EXPORT; F08_LONG_TABLE_WORDS_ABSENT_FROM_SEALED_CANDIDATE; PER_TABLE_COMPARISON_NOT_RUN; NO_MATCH_MISMATCH_CLAIM"
+    },
+    {
+      "manifest_sha256": "eada50e01fca2cdefcd2b1b67a9f053f00b260ec7db2b637be6cb80df2abd1fa",
+      "package_id": "DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+      "package_seal_sha256": "6e7150cf4debfb24b27df9e9a42524febd3ba84300e9585df523f6f49d90aa83"
+    }
+  ],
+  "schema": "dee-lfe-zero-inline-raw-words.v1",
+  "source_memory_export": {
+    "exporter": {
+      "bytes": 7926,
+      "codex_relative_path": "2026-10-23/jocforge-reverse-agent-3/work/ghidra_scripts/ExportLfeCoefficientVectors.java",
+      "name": "ExportLfeCoefficientVectors.java",
+      "sha256": "41f50ca18fafa9852bae5e84dabdc33d97e7dd6f81eca6dface4fdc029fa17cc"
+    },
+    "file": "INPUT-ONLY-VECTORS.json",
+    "file_sha256": "89715925475477ef875265215498aad78c231a3a9c3685f56321885a2ac1767f",
+    "ghidra": {
+      "build_date": "2026-Oct-16 1220 UTC",
+      "mode": "read-only project, no-analysis data-range export",
+      "product": "Ghidra",
+      "project": "dee_ddp_encoder_lfe_listing",
+      "release": "PUBLIC",
+      "version": "12.2"
+    },
+    "manifest_sha256": "f41ca962188d127bf7c723d566862adbbe586979bad95f1d18d843f0f6221b60",
+    "package_id": "dee_lfe_recurrence_coefficients_input_only_wash_v1",
+    "package_seal_sha256": "dfeb0ef58b293a568209b65ed32edeb1f7a28e8bbb10e1e656773be8d3acf28a"
+  },
+  "status": "TABLE_A_B_RAW_BINARY32_WORDS_EXPORTED_FROM_HASH_BOUND_GHIDRA_RECEIPT; F08_CANDIDATE_COMPARISON_NOT_RUN; NO_MATCH_MISMATCH_CLAIM",
+  "tables": [
+    {
+      "base_address": "0x140628c20",
+      "byte_count": 512,
+      "byte_order": "little-endian",
+      "element_type": "IEEE-754 binary32",
+      "name": "zero_branch_table_a",
+      "raw_byte_sha256": "bbd2bd460b0a750ccb45f959561a9a7e2ed2f8c6fd9391fb21abc9216b08fa41",
+      "word_count": 128,
+      "words": [
+        {
+          "address": "0x140628c20",
+          "index": 0,
+          "raw_word_bits_hex": "0xbf7fffec"
+        },
+        {
+          "address": "0x140628c24",
+          "index": 1,
+          "raw_word_bits_hex": "0xbf7ff9c1"
+        },
+        {
+          "address": "0x140628c28",
+          "index": 2,
+          "raw_word_bits_hex": "0xbf7fe9b8"
+        },
+        {
+          "address": "0x140628c2c",
+          "index": 3,
+          "raw_word_bits_hex": "0xbf7fcfd1"
+        },
+        {
+          "address": "0x140628c30",
+          "index": 4,
+          "raw_word_bits_hex": "0xbf7fac0d"
+        },
+        {
+          "address": "0x140628c34",
+          "index": 5,
+          "raw_word_bits_hex": "0xbf7f7e6d"
+        },
+        {
+          "address": "0x140628c38",
+          "index": 6,
+          "raw_word_bits_hex": "0xbf7f46f4"
+        },
+        {
+          "address": "0x140628c3c",
+          "index": 7,
+          "raw_word_bits_hex": "0xbf7f05a4"
+        },
+        {
+          "address": "0x140628c40",
+          "index": 8,
+          "raw_word_bits_hex": "0xbf7eba7f"
+        },
+        {
+          "address": "0x140628c44",
+          "index": 9,
+          "raw_word_bits_hex": "0xbf7e6588"
+        },
+        {
+          "address": "0x140628c48",
+          "index": 10,
+          "raw_word_bits_hex": "0xbf7e06c2"
+        },
+        {
+          "address": "0x140628c4c",
+          "index": 11,
+          "raw_word_bits_hex": "0xbf7d9e30"
+        },
+        {
+          "address": "0x140628c50",
+          "index": 12,
+          "raw_word_bits_hex": "0xbf7d2bd8"
+        },
+        {
+          "address": "0x140628c54",
+          "index": 13,
+          "raw_word_bits_hex": "0xbf7cafbd"
+        },
+        {
+          "address": "0x140628c58",
+          "index": 14,
+          "raw_word_bits_hex": "0xbf7c29e5"
+        },
+        {
+          "address": "0x140628c5c",
+          "index": 15,
+          "raw_word_bits_hex": "0xbf7b9a53"
+        },
+        {
+          "address": "0x140628c60",
+          "index": 16,
+          "raw_word_bits_hex": "0xbf7b010e"
+        },
+        {
+          "address": "0x140628c64",
+          "index": 17,
+          "raw_word_bits_hex": "0xbf7a5e1c"
+        },
+        {
+          "address": "0x140628c68",
+          "index": 18,
+          "raw_word_bits_hex": "0xbf79b183"
+        },
+        {
+          "address": "0x140628c6c",
+          "index": 19,
+          "raw_word_bits_hex": "0xbf78fb4a"
+        },
+        {
+          "address": "0x140628c70",
+          "index": 20,
+          "raw_word_bits_hex": "0xbf783b77"
+        },
+        {
+          "address": "0x140628c74",
+          "index": 21,
+          "raw_word_bits_hex": "0xbf777213"
+        },
+        {
+          "address": "0x140628c78",
+          "index": 22,
+          "raw_word_bits_hex": "0xbf769f24"
+        },
+        {
+          "address": "0x140628c7c",
+          "index": 23,
+          "raw_word_bits_hex": "0xbf75c2b3"
+        },
+        {
+          "address": "0x140628c80",
+          "index": 24,
+          "raw_word_bits_hex": "0xbf74dcc9"
+        },
+        {
+          "address": "0x140628c84",
+          "index": 25,
+          "raw_word_bits_hex": "0xbf73ed6e"
+        },
+        {
+          "address": "0x140628c88",
+          "index": 26,
+          "raw_word_bits_hex": "0xbf72f4ac"
+        },
+        {
+          "address": "0x140628c8c",
+          "index": 27,
+          "raw_word_bits_hex": "0xbf71f28c"
+        },
+        {
+          "address": "0x140628c90",
+          "index": 28,
+          "raw_word_bits_hex": "0xbf70e717"
+        },
+        {
+          "address": "0x140628c94",
+          "index": 29,
+          "raw_word_bits_hex": "0xbf6fd25a"
+        },
+        {
+          "address": "0x140628c98",
+          "index": 30,
+          "raw_word_bits_hex": "0xbf6eb45d"
+        },
+        {
+          "address": "0x140628c9c",
+          "index": 31,
+          "raw_word_bits_hex": "0xbf6d8d2d"
+        },
+        {
+          "address": "0x140628ca0",
+          "index": 32,
+          "raw_word_bits_hex": "0xbf6c5cd4"
+        },
+        {
+          "address": "0x140628ca4",
+          "index": 33,
+          "raw_word_bits_hex": "0xbf6b235e"
+        },
+        {
+          "address": "0x140628ca8",
+          "index": 34,
+          "raw_word_bits_hex": "0xbf69e0d7"
+        },
+        {
+          "address": "0x140628cac",
+          "index": 35,
+          "raw_word_bits_hex": "0xbf68954c"
+        },
+        {
+          "address": "0x140628cb0",
+          "index": 36,
+          "raw_word_bits_hex": "0xbf6740ca"
+        },
+        {
+          "address": "0x140628cb4",
+          "index": 37,
+          "raw_word_bits_hex": "0xbf65e35e"
+        },
+        {
+          "address": "0x140628cb8",
+          "index": 38,
+          "raw_word_bits_hex": "0xbf647d14"
+        },
+        {
+          "address": "0x140628cbc",
+          "index": 39,
+          "raw_word_bits_hex": "0xbf630dfc"
+        },
+        {
+          "address": "0x140628cc0",
+          "index": 40,
+          "raw_word_bits_hex": "0xbf619622"
+        },
+        {
+          "address": "0x140628cc4",
+          "index": 41,
+          "raw_word_bits_hex": "0xbf601596"
+        },
+        {
+          "address": "0x140628cc8",
+          "index": 42,
+          "raw_word_bits_hex": "0xbf5e8c67"
+        },
+        {
+          "address": "0x140628ccc",
+          "index": 43,
+          "raw_word_bits_hex": "0xbf5cfaa3"
+        },
+        {
+          "address": "0x140628cd0",
+          "index": 44,
+          "raw_word_bits_hex": "0xbf5b605a"
+        },
+        {
+          "address": "0x140628cd4",
+          "index": 45,
+          "raw_word_bits_hex": "0xbf59bd9c"
+        },
+        {
+          "address": "0x140628cd8",
+          "index": 46,
+          "raw_word_bits_hex": "0xbf581279"
+        },
+        {
+          "address": "0x140628cdc",
+          "index": 47,
+          "raw_word_bits_hex": "0xbf565f02"
+        },
+        {
+          "address": "0x140628ce0",
+          "index": 48,
+          "raw_word_bits_hex": "0xbf54a347"
+        },
+        {
+          "address": "0x140628ce4",
+          "index": 49,
+          "raw_word_bits_hex": "0xbf52df59"
+        },
+        {
+          "address": "0x140628ce8",
+          "index": 50,
+          "raw_word_bits_hex": "0xbf51134a"
+        },
+        {
+          "address": "0x140628cec",
+          "index": 51,
+          "raw_word_bits_hex": "0xbf4f3f2b"
+        },
+        {
+          "address": "0x140628cf0",
+          "index": 52,
+          "raw_word_bits_hex": "0xbf4d6310"
+        },
+        {
+          "address": "0x140628cf4",
+          "index": 53,
+          "raw_word_bits_hex": "0xbf4b7f09"
+        },
+        {
+          "address": "0x140628cf8",
+          "index": 54,
+          "raw_word_bits_hex": "0xbf499329"
+        },
+        {
+          "address": "0x140628cfc",
+          "index": 55,
+          "raw_word_bits_hex": "0xbf479f84"
+        },
+        {
+          "address": "0x140628d00",
+          "index": 56,
+          "raw_word_bits_hex": "0xbf45a42d"
+        },
+        {
+          "address": "0x140628d04",
+          "index": 57,
+          "raw_word_bits_hex": "0xbf43a138"
+        },
+        {
+          "address": "0x140628d08",
+          "index": 58,
+          "raw_word_bits_hex": "0xbf4196b7"
+        },
+        {
+          "address": "0x140628d0c",
+          "index": 59,
+          "raw_word_bits_hex": "0xbf3f84c0"
+        },
+        {
+          "address": "0x140628d10",
+          "index": 60,
+          "raw_word_bits_hex": "0xbf3d6b67"
+        },
+        {
+          "address": "0x140628d14",
+          "index": 61,
+          "raw_word_bits_hex": "0xbf3b4ac1"
+        },
+        {
+          "address": "0x140628d18",
+          "index": 62,
+          "raw_word_bits_hex": "0xbf3922e1"
+        },
+        {
+          "address": "0x140628d1c",
+          "index": 63,
+          "raw_word_bits_hex": "0xbf36f3df"
+        },
+        {
+          "address": "0x140628d20",
+          "index": 64,
+          "raw_word_bits_hex": "0xbf34bdcf"
+        },
+        {
+          "address": "0x140628d24",
+          "index": 65,
+          "raw_word_bits_hex": "0xbf3280c7"
+        },
+        {
+          "address": "0x140628d28",
+          "index": 66,
+          "raw_word_bits_hex": "0xbf303cde"
+        },
+        {
+          "address": "0x140628d2c",
+          "index": 67,
+          "raw_word_bits_hex": "0xbf2df229"
+        },
+        {
+          "address": "0x140628d30",
+          "index": 68,
+          "raw_word_bits_hex": "0xbf2ba0bf"
+        },
+        {
+          "address": "0x140628d34",
+          "index": 69,
+          "raw_word_bits_hex": "0xbf2948b8"
+        },
+        {
+          "address": "0x140628d38",
+          "index": 70,
+          "raw_word_bits_hex": "0xbf26ea2a"
+        },
+        {
+          "address": "0x140628d3c",
+          "index": 71,
+          "raw_word_bits_hex": "0xbf24852c"
+        },
+        {
+          "address": "0x140628d40",
+          "index": 72,
+          "raw_word_bits_hex": "0xbf2219d7"
+        },
+        {
+          "address": "0x140628d44",
+          "index": 73,
+          "raw_word_bits_hex": "0xbf1fa841"
+        },
+        {
+          "address": "0x140628d48",
+          "index": 74,
+          "raw_word_bits_hex": "0xbf1d3084"
+        },
+        {
+          "address": "0x140628d4c",
+          "index": 75,
+          "raw_word_bits_hex": "0xbf1ab2b8"
+        },
+        {
+          "address": "0x140628d50",
+          "index": 76,
+          "raw_word_bits_hex": "0xbf182ef5"
+        },
+        {
+          "address": "0x140628d54",
+          "index": 77,
+          "raw_word_bits_hex": "0xbf15a554"
+        },
+        {
+          "address": "0x140628d58",
+          "index": 78,
+          "raw_word_bits_hex": "0xbf1315ee"
+        },
+        {
+          "address": "0x140628d5c",
+          "index": 79,
+          "raw_word_bits_hex": "0xbf1080dc"
+        },
+        {
+          "address": "0x140628d60",
+          "index": 80,
+          "raw_word_bits_hex": "0xbf0de638"
+        },
+        {
+          "address": "0x140628d64",
+          "index": 81,
+          "raw_word_bits_hex": "0xbf0b461c"
+        },
+        {
+          "address": "0x140628d68",
+          "index": 82,
+          "raw_word_bits_hex": "0xbf08a0a1"
+        },
+        {
+          "address": "0x140628d6c",
+          "index": 83,
+          "raw_word_bits_hex": "0xbf05f5e2"
+        },
+        {
+          "address": "0x140628d70",
+          "index": 84,
+          "raw_word_bits_hex": "0xbf0345f8"
+        },
+        {
+          "address": "0x140628d74",
+          "index": 85,
+          "raw_word_bits_hex": "0xbf0090ff"
+        },
+        {
+          "address": "0x140628d78",
+          "index": 86,
+          "raw_word_bits_hex": "0xbefbae22"
+        },
+        {
+          "address": "0x140628d7c",
+          "index": 87,
+          "raw_word_bits_hex": "0xbef63093"
+        },
+        {
+          "address": "0x140628d80",
+          "index": 88,
+          "raw_word_bits_hex": "0xbef0a985"
+        },
+        {
+          "address": "0x140628d84",
+          "index": 89,
+          "raw_word_bits_hex": "0xbeeb1930"
+        },
+        {
+          "address": "0x140628d88",
+          "index": 90,
+          "raw_word_bits_hex": "0xbee57fcb"
+        },
+        {
+          "address": "0x140628d8c",
+          "index": 91,
+          "raw_word_bits_hex": "0xbedfdd8d"
+        },
+        {
+          "address": "0x140628d90",
+          "index": 92,
+          "raw_word_bits_hex": "0xbeda32ad"
+        },
+        {
+          "address": "0x140628d94",
+          "index": 93,
+          "raw_word_bits_hex": "0xbed47f64"
+        },
+        {
+          "address": "0x140628d98",
+          "index": 94,
+          "raw_word_bits_hex": "0xbecec3ea"
+        },
+        {
+          "address": "0x140628d9c",
+          "index": 95,
+          "raw_word_bits_hex": "0xbec90077"
+        },
+        {
+          "address": "0x140628da0",
+          "index": 96,
+          "raw_word_bits_hex": "0xbec33544"
+        },
+        {
+          "address": "0x140628da4",
+          "index": 97,
+          "raw_word_bits_hex": "0xbebd628b"
+        },
+        {
+          "address": "0x140628da8",
+          "index": 98,
+          "raw_word_bits_hex": "0xbeb78884"
+        },
+        {
+          "address": "0x140628dac",
+          "index": 99,
+          "raw_word_bits_hex": "0xbeb1a76b"
+        },
+        {
+          "address": "0x140628db0",
+          "index": 100,
+          "raw_word_bits_hex": "0xbeabbf77"
+        },
+        {
+          "address": "0x140628db4",
+          "index": 101,
+          "raw_word_bits_hex": "0xbea5d0e5"
+        },
+        {
+          "address": "0x140628db8",
+          "index": 102,
+          "raw_word_bits_hex": "0xbe9fdbee"
+        },
+        {
+          "address": "0x140628dbc",
+          "index": 103,
+          "raw_word_bits_hex": "0xbe99e0ce"
+        },
+        {
+          "address": "0x140628dc0",
+          "index": 104,
+          "raw_word_bits_hex": "0xbe93dfbf"
+        },
+        {
+          "address": "0x140628dc4",
+          "index": 105,
+          "raw_word_bits_hex": "0xbe8dd8fc"
+        },
+        {
+          "address": "0x140628dc8",
+          "index": 106,
+          "raw_word_bits_hex": "0xbe87ccc1"
+        },
+        {
+          "address": "0x140628dcc",
+          "index": 107,
+          "raw_word_bits_hex": "0xbe81bb4a"
+        },
+        {
+          "address": "0x140628dd0",
+          "index": 108,
+          "raw_word_bits_hex": "0xbe7749a6"
+        },
+        {
+          "address": "0x140628dd4",
+          "index": 109,
+          "raw_word_bits_hex": "0xbe6b132f"
+        },
+        {
+          "address": "0x140628dd8",
+          "index": 110,
+          "raw_word_bits_hex": "0xbe5ed3a8"
+        },
+        {
+          "address": "0x140628ddc",
+          "index": 111,
+          "raw_word_bits_hex": "0xbe528b89"
+        },
+        {
+          "address": "0x140628de0",
+          "index": 112,
+          "raw_word_bits_hex": "0xbe463b4d"
+        },
+        {
+          "address": "0x140628de4",
+          "index": 113,
+          "raw_word_bits_hex": "0xbe39e36c"
+        },
+        {
+          "address": "0x140628de8",
+          "index": 114,
+          "raw_word_bits_hex": "0xbe2d8461"
+        },
+        {
+          "address": "0x140628dec",
+          "index": 115,
+          "raw_word_bits_hex": "0xbe211ea5"
+        },
+        {
+          "address": "0x140628df0",
+          "index": 116,
+          "raw_word_bits_hex": "0xbe14b2b2"
+        },
+        {
+          "address": "0x140628df4",
+          "index": 117,
+          "raw_word_bits_hex": "0xbe084105"
+        },
+        {
+          "address": "0x140628df8",
+          "index": 118,
+          "raw_word_bits_hex": "0xbdf7942c"
+        },
+        {
+          "address": "0x140628dfc",
+          "index": 119,
+          "raw_word_bits_hex": "0xbdde9cc4"
+        },
+        {
+          "address": "0x140628e00",
+          "index": 120,
+          "raw_word_bits_hex": "0xbdc59cc6"
+        },
+        {
+          "address": "0x140628e04",
+          "index": 121,
+          "raw_word_bits_hex": "0xbdac952b"
+        },
+        {
+          "address": "0x140628e08",
+          "index": 122,
+          "raw_word_bits_hex": "0xbd9386e7"
+        },
+        {
+          "address": "0x140628e0c",
+          "index": 123,
+          "raw_word_bits_hex": "0xbd74e5e9"
+        },
+        {
+          "address": "0x140628e10",
+          "index": 124,
+          "raw_word_bits_hex": "0xbd42b491"
+        },
+        {
+          "address": "0x140628e14",
+          "index": 125,
+          "raw_word_bits_hex": "0xbd107bb8"
+        },
+        {
+          "address": "0x140628e18",
+          "index": 126,
+          "raw_word_bits_hex": "0xbcbc7a9b"
+        },
+        {
+          "address": "0x140628e1c",
+          "index": 127,
+          "raw_word_bits_hex": "0xbc2fed02"
+        }
+      ]
+    },
+    {
+      "base_address": "0x140628e20",
+      "byte_count": 512,
+      "byte_order": "little-endian",
+      "element_type": "IEEE-754 binary32",
+      "name": "zero_branch_table_b",
+      "raw_byte_sha256": "e4cbb855ed455887b387cdb188bf8bab41976c73648c1b022dd18156214bde50",
+      "word_count": 128,
+      "words": [
+        {
+          "address": "0x140628e20",
+          "index": 0,
+          "raw_word_bits_hex": "0xbac90fd5"
+        },
+        {
+          "address": "0x140628e24",
+          "index": 1,
+          "raw_word_bits_hex": "0xbc622fff"
+        },
+        {
+          "address": "0x140628e28",
+          "index": 2,
+          "raw_word_bits_hex": "0xbcd59aa6"
+        },
+        {
+          "address": "0x140628e2c",
+          "index": 3,
+          "raw_word_bits_hex": "0xbd1d0a88"
+        },
+        {
+          "address": "0x140628e30",
+          "index": 4,
+          "raw_word_bits_hex": "0xbd4f41af"
+        },
+        {
+          "address": "0x140628e34",
+          "index": 5,
+          "raw_word_bits_hex": "0xbd80b86c"
+        },
+        {
+          "address": "0x140628e38",
+          "index": 6,
+          "raw_word_bits_hex": "0xbd99cb0a"
+        },
+        {
+          "address": "0x140628e3c",
+          "index": 7,
+          "raw_word_bits_hex": "0xbdb2d7bb"
+        },
+        {
+          "address": "0x140628e40",
+          "index": 8,
+          "raw_word_bits_hex": "0xbdcbdd86"
+        },
+        {
+          "address": "0x140628e44",
+          "index": 9,
+          "raw_word_bits_hex": "0xbde4db76"
+        },
+        {
+          "address": "0x140628e48",
+          "index": 10,
+          "raw_word_bits_hex": "0xbdfdd092"
+        },
+        {
+          "address": "0x140628e4c",
+          "index": 11,
+          "raw_word_bits_hex": "0xbe0b5df3"
+        },
+        {
+          "address": "0x140628e50",
+          "index": 12,
+          "raw_word_bits_hex": "0xbe17ce3d"
+        },
+        {
+          "address": "0x140628e54",
+          "index": 13,
+          "raw_word_bits_hex": "0xbe2438ad"
+        },
+        {
+          "address": "0x140628e58",
+          "index": 14,
+          "raw_word_bits_hex": "0xbe309cc9"
+        },
+        {
+          "address": "0x140628e5c",
+          "index": 15,
+          "raw_word_bits_hex": "0xbe3cfa15"
+        },
+        {
+          "address": "0x140628e60",
+          "index": 16,
+          "raw_word_bits_hex": "0xbe495018"
+        },
+        {
+          "address": "0x140628e64",
+          "index": 17,
+          "raw_word_bits_hex": "0xbe559e58"
+        },
+        {
+          "address": "0x140628e68",
+          "index": 18,
+          "raw_word_bits_hex": "0xbe61e45c"
+        },
+        {
+          "address": "0x140628e6c",
+          "index": 19,
+          "raw_word_bits_hex": "0xbe6e21ab"
+        },
+        {
+          "address": "0x140628e70",
+          "index": 20,
+          "raw_word_bits_hex": "0xbe7a55cb"
+        },
+        {
+          "address": "0x140628e74",
+          "index": 21,
+          "raw_word_bits_hex": "0xbe834022"
+        },
+        {
+          "address": "0x140628e78",
+          "index": 22,
+          "raw_word_bits_hex": "0xbe895050"
+        },
+        {
+          "address": "0x140628e7c",
+          "index": 23,
+          "raw_word_bits_hex": "0xbe8f5b32"
+        },
+        {
+          "address": "0x140628e80",
+          "index": 24,
+          "raw_word_bits_hex": "0xbe95608d"
+        },
+        {
+          "address": "0x140628e84",
+          "index": 25,
+          "raw_word_bits_hex": "0xbe9b6027"
+        },
+        {
+          "address": "0x140628e88",
+          "index": 26,
+          "raw_word_bits_hex": "0xbea159c2"
+        },
+        {
+          "address": "0x140628e8c",
+          "index": 27,
+          "raw_word_bits_hex": "0xbea74d25"
+        },
+        {
+          "address": "0x140628e90",
+          "index": 28,
+          "raw_word_bits_hex": "0xbead3a15"
+        },
+        {
+          "address": "0x140628e94",
+          "index": 29,
+          "raw_word_bits_hex": "0xbeb32058"
+        },
+        {
+          "address": "0x140628e98",
+          "index": 30,
+          "raw_word_bits_hex": "0xbeb8ffb2"
+        },
+        {
+          "address": "0x140628e9c",
+          "index": 31,
+          "raw_word_bits_hex": "0xbebed7eb"
+        },
+        {
+          "address": "0x140628ea0",
+          "index": 32,
+          "raw_word_bits_hex": "0xbec4a8c8"
+        },
+        {
+          "address": "0x140628ea4",
+          "index": 33,
+          "raw_word_bits_hex": "0xbeca7210"
+        },
+        {
+          "address": "0x140628ea8",
+          "index": 34,
+          "raw_word_bits_hex": "0xbed0338a"
+        },
+        {
+          "address": "0x140628eac",
+          "index": 35,
+          "raw_word_bits_hex": "0xbed5ecfd"
+        },
+        {
+          "address": "0x140628eb0",
+          "index": 36,
+          "raw_word_bits_hex": "0xbedb9e31"
+        },
+        {
+          "address": "0x140628eb4",
+          "index": 37,
+          "raw_word_bits_hex": "0xbee146ee"
+        },
+        {
+          "address": "0x140628eb8",
+          "index": 38,
+          "raw_word_bits_hex": "0xbee6e6fb"
+        },
+        {
+          "address": "0x140628ebc",
+          "index": 39,
+          "raw_word_bits_hex": "0xbeec7e21"
+        },
+        {
+          "address": "0x140628ec0",
+          "index": 40,
+          "raw_word_bits_hex": "0xbef20c29"
+        },
+        {
+          "address": "0x140628ec4",
+          "index": 41,
+          "raw_word_bits_hex": "0xbef790dc"
+        },
+        {
+          "address": "0x140628ec8",
+          "index": 42,
+          "raw_word_bits_hex": "0xbefd0c04"
+        },
+        {
+          "address": "0x140628ecc",
+          "index": 43,
+          "raw_word_bits_hex": "0xbf013eb5"
+        },
+        {
+          "address": "0x140628ed0",
+          "index": 44,
+          "raw_word_bits_hex": "0xbf03f26d"
+        },
+        {
+          "address": "0x140628ed4",
+          "index": 45,
+          "raw_word_bits_hex": "0xbf06a10e"
+        },
+        {
+          "address": "0x140628ed8",
+          "index": 46,
+          "raw_word_bits_hex": "0xbf094a7f"
+        },
+        {
+          "address": "0x140628edc",
+          "index": 47,
+          "raw_word_bits_hex": "0xbf0beea5"
+        },
+        {
+          "address": "0x140628ee0",
+          "index": 48,
+          "raw_word_bits_hex": "0xbf0e8d65"
+        },
+        {
+          "address": "0x140628ee4",
+          "index": 49,
+          "raw_word_bits_hex": "0xbf1126a7"
+        },
+        {
+          "address": "0x140628ee8",
+          "index": 50,
+          "raw_word_bits_hex": "0xbf13ba50"
+        },
+        {
+          "address": "0x140628eec",
+          "index": 51,
+          "raw_word_bits_hex": "0xbf164847"
+        },
+        {
+          "address": "0x140628ef0",
+          "index": 52,
+          "raw_word_bits_hex": "0xbf18d073"
+        },
+        {
+          "address": "0x140628ef4",
+          "index": 53,
+          "raw_word_bits_hex": "0xbf1b52bb"
+        },
+        {
+          "address": "0x140628ef8",
+          "index": 54,
+          "raw_word_bits_hex": "0xbf1dcf06"
+        },
+        {
+          "address": "0x140628efc",
+          "index": 55,
+          "raw_word_bits_hex": "0xbf20453b"
+        },
+        {
+          "address": "0x140628f00",
+          "index": 56,
+          "raw_word_bits_hex": "0xbf22b543"
+        },
+        {
+          "address": "0x140628f04",
+          "index": 57,
+          "raw_word_bits_hex": "0xbf251f04"
+        },
+        {
+          "address": "0x140628f08",
+          "index": 58,
+          "raw_word_bits_hex": "0xbf278268"
+        },
+        {
+          "address": "0x140628f0c",
+          "index": 59,
+          "raw_word_bits_hex": "0xbf29df57"
+        },
+        {
+          "address": "0x140628f10",
+          "index": 60,
+          "raw_word_bits_hex": "0xbf2c35b9"
+        },
+        {
+          "address": "0x140628f14",
+          "index": 61,
+          "raw_word_bits_hex": "0xbf2e8578"
+        },
+        {
+          "address": "0x140628f18",
+          "index": 62,
+          "raw_word_bits_hex": "0xbf30ce7c"
+        },
+        {
+          "address": "0x140628f1c",
+          "index": 63,
+          "raw_word_bits_hex": "0xbf3310af"
+        },
+        {
+          "address": "0x140628f20",
+          "index": 64,
+          "raw_word_bits_hex": "0xbf354bfb"
+        },
+        {
+          "address": "0x140628f24",
+          "index": 65,
+          "raw_word_bits_hex": "0xbf37804a"
+        },
+        {
+          "address": "0x140628f28",
+          "index": 66,
+          "raw_word_bits_hex": "0xbf39ad85"
+        },
+        {
+          "address": "0x140628f2c",
+          "index": 67,
+          "raw_word_bits_hex": "0xbf3bd398"
+        },
+        {
+          "address": "0x140628f30",
+          "index": 68,
+          "raw_word_bits_hex": "0xbf3df26e"
+        },
+        {
+          "address": "0x140628f34",
+          "index": 69,
+          "raw_word_bits_hex": "0xbf4009f0"
+        },
+        {
+          "address": "0x140628f38",
+          "index": 70,
+          "raw_word_bits_hex": "0xbf421a0b"
+        },
+        {
+          "address": "0x140628f3c",
+          "index": 71,
+          "raw_word_bits_hex": "0xbf4422ab"
+        },
+        {
+          "address": "0x140628f40",
+          "index": 72,
+          "raw_word_bits_hex": "0xbf4623bb"
+        },
+        {
+          "address": "0x140628f44",
+          "index": 73,
+          "raw_word_bits_hex": "0xbf481d27"
+        },
+        {
+          "address": "0x140628f48",
+          "index": 74,
+          "raw_word_bits_hex": "0xbf4a0edc"
+        },
+        {
+          "address": "0x140628f4c",
+          "index": 75,
+          "raw_word_bits_hex": "0xbf4bf8c7"
+        },
+        {
+          "address": "0x140628f50",
+          "index": 76,
+          "raw_word_bits_hex": "0xbf4ddad5"
+        },
+        {
+          "address": "0x140628f54",
+          "index": 77,
+          "raw_word_bits_hex": "0xbf4fb4f4"
+        },
+        {
+          "address": "0x140628f58",
+          "index": 78,
+          "raw_word_bits_hex": "0xbf518710"
+        },
+        {
+          "address": "0x140628f5c",
+          "index": 79,
+          "raw_word_bits_hex": "0xbf535118"
+        },
+        {
+          "address": "0x140628f60",
+          "index": 80,
+          "raw_word_bits_hex": "0xbf5512fb"
+        },
+        {
+          "address": "0x140628f64",
+          "index": 81,
+          "raw_word_bits_hex": "0xbf56cca7"
+        },
+        {
+          "address": "0x140628f68",
+          "index": 82,
+          "raw_word_bits_hex": "0xbf587e0b"
+        },
+        {
+          "address": "0x140628f6c",
+          "index": 83,
+          "raw_word_bits_hex": "0xbf5a2716"
+        },
+        {
+          "address": "0x140628f70",
+          "index": 84,
+          "raw_word_bits_hex": "0xbf5bc7b8"
+        },
+        {
+          "address": "0x140628f74",
+          "index": 85,
+          "raw_word_bits_hex": "0xbf5d5fe1"
+        },
+        {
+          "address": "0x140628f78",
+          "index": 86,
+          "raw_word_bits_hex": "0xbf5eef81"
+        },
+        {
+          "address": "0x140628f7c",
+          "index": 87,
+          "raw_word_bits_hex": "0xbf607689"
+        },
+        {
+          "address": "0x140628f80",
+          "index": 88,
+          "raw_word_bits_hex": "0xbf61f4ea"
+        },
+        {
+          "address": "0x140628f84",
+          "index": 89,
+          "raw_word_bits_hex": "0xbf636a95"
+        },
+        {
+          "address": "0x140628f88",
+          "index": 90,
+          "raw_word_bits_hex": "0xbf64d77b"
+        },
+        {
+          "address": "0x140628f8c",
+          "index": 91,
+          "raw_word_bits_hex": "0xbf663b8e"
+        },
+        {
+          "address": "0x140628f90",
+          "index": 92,
+          "raw_word_bits_hex": "0xbf6796c1"
+        },
+        {
+          "address": "0x140628f94",
+          "index": 93,
+          "raw_word_bits_hex": "0xbf68e907"
+        },
+        {
+          "address": "0x140628f98",
+          "index": 94,
+          "raw_word_bits_hex": "0xbf6a3252"
+        },
+        {
+          "address": "0x140628f9c",
+          "index": 95,
+          "raw_word_bits_hex": "0xbf6b7295"
+        },
+        {
+          "address": "0x140628fa0",
+          "index": 96,
+          "raw_word_bits_hex": "0xbf6ca9c5"
+        },
+        {
+          "address": "0x140628fa4",
+          "index": 97,
+          "raw_word_bits_hex": "0xbf6dd7d5"
+        },
+        {
+          "address": "0x140628fa8",
+          "index": 98,
+          "raw_word_bits_hex": "0xbf6efcba"
+        },
+        {
+          "address": "0x140628fac",
+          "index": 99,
+          "raw_word_bits_hex": "0xbf701867"
+        },
+        {
+          "address": "0x140628fb0",
+          "index": 100,
+          "raw_word_bits_hex": "0xbf712ad4"
+        },
+        {
+          "address": "0x140628fb4",
+          "index": 101,
+          "raw_word_bits_hex": "0xbf7233f4"
+        },
+        {
+          "address": "0x140628fb8",
+          "index": 102,
+          "raw_word_bits_hex": "0xbf7333be"
+        },
+        {
+          "address": "0x140628fbc",
+          "index": 103,
+          "raw_word_bits_hex": "0xbf742a27"
+        },
+        {
+          "address": "0x140628fc0",
+          "index": 104,
+          "raw_word_bits_hex": "0xbf751727"
+        },
+        {
+          "address": "0x140628fc4",
+          "index": 105,
+          "raw_word_bits_hex": "0xbf75fab3"
+        },
+        {
+          "address": "0x140628fc8",
+          "index": 106,
+          "raw_word_bits_hex": "0xbf76d4c4"
+        },
+        {
+          "address": "0x140628fcc",
+          "index": 107,
+          "raw_word_bits_hex": "0xbf77a551"
+        },
+        {
+          "address": "0x140628fd0",
+          "index": 108,
+          "raw_word_bits_hex": "0xbf786c52"
+        },
+        {
+          "address": "0x140628fd4",
+          "index": 109,
+          "raw_word_bits_hex": "0xbf7929bf"
+        },
+        {
+          "address": "0x140628fd8",
+          "index": 110,
+          "raw_word_bits_hex": "0xbf79dd91"
+        },
+        {
+          "address": "0x140628fdc",
+          "index": 111,
+          "raw_word_bits_hex": "0xbf7a87c1"
+        },
+        {
+          "address": "0x140628fe0",
+          "index": 112,
+          "raw_word_bits_hex": "0xbf7b2848"
+        },
+        {
+          "address": "0x140628fe4",
+          "index": 113,
+          "raw_word_bits_hex": "0xbf7bbf20"
+        },
+        {
+          "address": "0x140628fe8",
+          "index": 114,
+          "raw_word_bits_hex": "0xbf7c4c44"
+        },
+        {
+          "address": "0x140628fec",
+          "index": 115,
+          "raw_word_bits_hex": "0xbf7ccfae"
+        },
+        {
+          "address": "0x140628ff0",
+          "index": 116,
+          "raw_word_bits_hex": "0xbf7d4959"
+        },
+        {
+          "address": "0x140628ff4",
+          "index": 117,
+          "raw_word_bits_hex": "0xbf7db940"
+        },
+        {
+          "address": "0x140628ff8",
+          "index": 118,
+          "raw_word_bits_hex": "0xbf7e1f5e"
+        },
+        {
+          "address": "0x140628ffc",
+          "index": 119,
+          "raw_word_bits_hex": "0xbf7e7bb1"
+        },
+        {
+          "address": "0x140629000",
+          "index": 120,
+          "raw_word_bits_hex": "0xbf7ece34"
+        },
+        {
+          "address": "0x140629004",
+          "index": 121,
+          "raw_word_bits_hex": "0xbf7f16e4"
+        },
+        {
+          "address": "0x140629008",
+          "index": 122,
+          "raw_word_bits_hex": "0xbf7f55bf"
+        },
+        {
+          "address": "0x14062900c",
+          "index": 123,
+          "raw_word_bits_hex": "0xbf7f8ac2"
+        },
+        {
+          "address": "0x140629010",
+          "index": 124,
+          "raw_word_bits_hex": "0xbf7fb5ea"
+        },
+        {
+          "address": "0x140629014",
+          "index": 125,
+          "raw_word_bits_hex": "0xbf7fd737"
+        },
+        {
+          "address": "0x140629018",
+          "index": 126,
+          "raw_word_bits_hex": "0xbf7feea7"
+        },
+        {
+          "address": "0x14062901c",
+          "index": 127,
+          "raw_word_bits_hex": "0xbf7ffc39"
+        }
+      ]
+    }
+  ],
+  "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+}

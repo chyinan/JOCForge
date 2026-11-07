@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-SEVEN-F32-TERMINAL-PROJECTION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "MAIN_AND_COMPANION_TERMINAL_F32_FORMULAS_BOUND_STATIC; UPSTREAM_RECURRENCE_AND_MATRIX_TRANSFORM_SEPARATE; FRAME_WIRE_JOIN_UNBOUND; RUNTIME_NOT_RUN",
+  "implementation_disposition": "IMPLEMENT_ONLY_THE_HASH_BOUND_TERMINAL_PROJECTION; KEEP_PRETRANSFORMS_AND_WIRE_JOIN_AS_SEPARATE_DEPENDENCIES",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 3787, "sha256": "3ce36bfb2b1463915167138a077b02b3089b87ee6198b9fee8e4af001f94dd26"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 926, "sha256": "3e4b2486453092abc4cf84dc83e7e7deb0cff5cfed3d16dcb54a07369172f319"},
+    {"name": "REPORT.md", "bytes": 2826, "sha256": "7f81098a7dfbb1d2c0623793a76f748dd4ba8974b0edb4f97125312815744279"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 771, "sha256": "3ffb3edf671b6c9ef4b4d96ce1b01ef03746208b79860d9f5a1057c19807de76"}
+  ]
+}

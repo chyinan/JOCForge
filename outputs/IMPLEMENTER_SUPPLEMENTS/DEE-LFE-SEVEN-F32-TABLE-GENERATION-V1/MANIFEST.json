@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-SEVEN-F32-TABLE-GENERATION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SCOPED_STATIC_TABLE_GENERATION_BOUND; CONDITIONAL_MAIN_TRANSFORM_STATIC_PREDICATE_BOUND; NUMERICAL_FORMULAS_AND_LFE_WIRE_JOIN_UNBOUND",
+  "implementation_disposition": "USE_AS_SCOPED_AUDIO_ALGORITHM_REQUIREMENT; DO_NOT_CLAIM_LFE_WIRE_OR_CURRENT_OUTPUT_EQUIVALENCE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2705, "sha256": "3fbb4b80bc5f9ff34897f8a85d9647b2be44e37172c8fe3c316ad7707fd65c24"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 1145, "sha256": "29f09f5befec3fadb5269d63bc5b73c61d31987a4ecad350a12496097d8e23aa"},
+    {"name": "REPORT.md", "bytes": 2503, "sha256": "e13262c215964380a5bb6af8b77363ff830327426b05c5831cb5ae257dc6cd96"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 1070, "sha256": "7d9a4193fee9bcb0c09463152b86f011cdab02103fa48febf2cf66b7c303d38d"}
+  ]
+}

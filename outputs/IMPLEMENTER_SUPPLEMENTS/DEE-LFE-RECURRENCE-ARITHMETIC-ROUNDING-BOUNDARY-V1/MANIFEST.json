@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-RECURRENCE-ARITHMETIC-ROUNDING-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TWO_FUNCTION_PACKED_ARITHMETIC_BOUND; ENTRY_MXCSR_UNBOUND",
+  "implementation_disposition": "Record the separate function-local MULPS/ADDPS sequences only; no runtime parity or caller MXCSR claim.",
+  "source_manifest_sha256": "01617db22f7759937904489dc6f2087fcc9ee0330043270673b850bbb0b33624",
+  "source_package_seal_sha256": "149f5e8bd2cb806f6221f39dccf7fa9ce54099e36452c0ae7ed0edff950d7de2",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4497,
+      "sha256": "0092d089bf1ba9b7b79846443339972ff5d97a9bd9c2df067b52295994a6b37b"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2213,
+      "sha256": "b56dad6fc43ace520946fb0d72598812f6d1c5e2adce7afdc80aafdcb86c070f"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 210,
+      "sha256": "9360a681f47c1065fab10cb85f3b11d534d7e8dfebc7238059c0f64f9212a851"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1612,
+      "sha256": "704af99802428876a1f1c0e490b8a53da74f39ebf36920c3b3390ba68858dc50"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 836,
+      "sha256": "6b950e2c25ccd8cc5784ce938e47480819e989f1482b15e3a44dd8a0506bd939"
+    }
+  ]
+}

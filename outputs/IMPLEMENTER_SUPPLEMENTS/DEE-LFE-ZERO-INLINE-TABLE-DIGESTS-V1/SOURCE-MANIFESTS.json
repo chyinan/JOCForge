@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "dee_lfe_zero_inline_coefficient_f08_comparison_wash_v1",
+      "manifest_sha256": "da136aac97923622f8035428030c42663c79b145ed2216ec263e19c0e961acaa",
+      "package_seal_sha256": "20e3c3d1d980002dfa801fd5f5e1ffd438a4db15544ac174edcf44bcf144c7b7"
+    },
+    {
+      "package_id": "dee_lfe_base_layer_recurrence_branch_wash_v1",
+      "manifest_sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d",
+      "package_seal_sha256": "0efe3846f472ae11bf27b874ab69f4ec78fa79569a41551b1088e709534f656b"
+    },
+    {
+      "package_id": "DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2",
+      "manifest_sha256": "eada50e01fca2cdefcd2b1b67a9f053f00b260ec7db2b637be6cb80df2abd1fa",
+      "package_seal_sha256": "6e7150cf4debfb24b27df9e9a42524febd3ba84300e9585df523f6f49d90aa83"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

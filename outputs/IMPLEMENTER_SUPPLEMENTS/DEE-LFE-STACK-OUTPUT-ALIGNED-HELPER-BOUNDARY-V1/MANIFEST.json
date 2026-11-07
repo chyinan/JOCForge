@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-STACK-OUTPUT-ALIGNED-HELPER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STACK_OUTPUT_TO_ALIGNED_HELPER_STATIC_BOUND_BY_ABI; RDI_ALIAS_UNBOUND; E350_LINK_NOT_ESTABLISHED; PARITY_NOT_RUN",
+  "implementation_ready": false,
+  "source_manifest_sha256": "c74c838bc2467338dc2e4a5547b1a2056f1bb921d06b9d4e7c61098b501edb99",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2186,
+      "sha256": "ab8f3928ac3f156863803fea425eb9a477ede041c9fc44bad5fff452759ba64f"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2020,
+      "sha256": "a1f22bba474c4ec41bda39fe658d1f353b960f70c4cc8b4a7222e7a08d6b6279"
+    },
+    "REPORT.md": {
+      "bytes": 1056,
+      "sha256": "707c071f464e6920c4be418c58ba57fe3a07d40efe5137cd4ad86cdbbd536ac8"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1343,
+      "sha256": "d1e0ca684abc042cb2df8f1d9d9aa7b02283077e1e0a9ba68b56ee694b712963"
+    }
+  }
+}

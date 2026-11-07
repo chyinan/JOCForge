@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream_package": {
+    "package_id": "DEE-LFE-FRAME-LFE-BITWRITER-FOLLOWUP-WASH-V1",
+    "root": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_lfe_frame_lfe_bitwriter_followup_wash_v1",
+    "manifest_sha256": "4e2979e5eb9c69c5017fd44d44cfbb0c5094113f6c38f0c84ce09f75d3d113a0",
+    "seal_sha256": "7741313821db3c4e11353635cb29c21332c87747a0f07dda4ea00011d9e53a40"
+  },
+  "verification": {
+    "method": "node:crypto SHA-256 and fs byte-length audit in Wash",
+    "manifest_file_count": 42,
+    "matched_file_count": 42,
+    "mismatched_file_count": 0,
+    "seal_manifest_sha256_match": true,
+    "checker_script": "check_package.ps1",
+    "checker_status": "NOT_RUN",
+    "note": "Upstream checker execution is not claimed; declared payload hashes were recomputed directly."
+  },
+  "scope": "Only sanitized findings in REPORT.md and EVIDENCE.json are offered for implementation review. Do not consume upstream Ghidra decompilation, logs, or scripts as implementation source."
+}
