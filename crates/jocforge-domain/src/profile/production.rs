@@ -24,9 +24,106 @@ pub enum SubstreamTopology {
     Unsupported,
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum CodecRateProfile {
-    Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+pub enum SelectedDataRate {
+    Kbps384,
+    Kbps448,
+    Kbps576,
+    Kbps640,
+    Kbps768,
+    Kbps1024,
     Unsupported,
+}
+
+/// The selected data rate is the codec-rate dimension of an encoding profile.
+pub type CodecRateProfile = SelectedDataRate;
+
+impl SelectedDataRate {
+    pub const fn from_kbps(value: u32) -> Option<Self> {
+        match value {
+            384 => Some(Self::Kbps384),
+            448 => Some(Self::Kbps448),
+            576 => Some(Self::Kbps576),
+            640 => Some(Self::Kbps640),
+            768 => Some(Self::Kbps768),
+            1_024 => Some(Self::Kbps1024),
+            _ => None,
+        }
+    }
+
+    /// Maps one explicitly authored, single-valued XML rate to its selected carrier row.
+    pub fn from_xml_token(value: &str) -> Option<Self> {
+        match value {
+            "384" => Some(Self::Kbps384),
+            "448" => Some(Self::Kbps448),
+            "576" => Some(Self::Kbps576),
+            "640" => Some(Self::Kbps640),
+            "768" => Some(Self::Kbps768),
+            "1024" => Some(Self::Kbps1024),
+            _ => None,
+        }
+    }
+
+    pub const fn kbps(self) -> Option<u32> {
+        match self {
+            Self::Kbps384 => Some(384),
+            Self::Kbps448 => Some(448),
+            Self::Kbps576 => Some(576),
+            Self::Kbps640 => Some(640),
+            Self::Kbps768 => Some(768),
+            Self::Kbps1024 => Some(1_024),
+            Self::Unsupported => None,
+        }
+    }
+
+    /// Wash-bound setup selector code; this is not the E-AC-3 `frmsiz` field.
+    pub const fn selector_code(self) -> Option<u8> {
+        match self {
+            Self::Kbps384 => Some(0),
+            Self::Kbps448 => Some(1),
+            Self::Kbps576 => Some(2),
+            Self::Kbps640 => Some(3),
+            Self::Kbps768 => Some(4),
+            Self::Kbps1024 => Some(5),
+            Self::Unsupported => None,
+        }
+    }
+
+    /// E-AC-3 `frmsiz` code from the six-rate, 48 kHz observation set.
+    pub const fn frame_size_code(self) -> Option<u16> {
+        match self {
+            Self::Kbps384 => Some(767),
+            Self::Kbps448 => Some(895),
+            Self::Kbps576 => Some(1_151),
+            Self::Kbps640 => Some(1_279),
+            Self::Kbps768 => Some(1_535),
+            Self::Kbps1024 => Some(2_047),
+            Self::Unsupported => None,
+        }
+    }
+
+    pub const fn frame_bytes(self) -> Option<usize> {
+        match self {
+            Self::Kbps384 => Some(1_536),
+            Self::Kbps448 => Some(1_792),
+            Self::Kbps576 => Some(2_304),
+            Self::Kbps640 => Some(2_560),
+            Self::Kbps768 => Some(3_072),
+            Self::Kbps1024 => Some(4_096),
+            Self::Unsupported => None,
+        }
+    }
+
+    pub const fn identity_label(self) -> &'static str {
+        match self {
+            Self::Kbps384 => "48khz_384kbps_6blocks_1536samples_1536bytes",
+            Self::Kbps448 => "48khz_448kbps_6blocks_1536samples_1792bytes",
+            Self::Kbps576 => "48khz_576kbps_6blocks_1536samples_2304bytes",
+            Self::Kbps640 => "48khz_640kbps_6blocks_1536samples_2560bytes",
+            Self::Kbps768 => "48khz_768kbps_6blocks_1536samples_3072bytes",
+            Self::Kbps1024 => "48khz_1024kbps_6blocks_1536samples_4096bytes",
+            Self::Unsupported => "unsupported",
+        }
+    }
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum EmdfCarriageProfile {
@@ -49,13 +146,24 @@ impl EncodingProfile {
         Self::selected_with_carriage(EmdfCarriageProfile::DeployedCompat)
     }
 
+    pub const fn selected_with_codec_rate(codec_rate: CodecRateProfile) -> Self {
+        Self::selected_with_rate_and_carriage(codec_rate, EmdfCarriageProfile::DeployedCompat)
+    }
+
     pub const fn selected_with_carriage(emdf_carriage: EmdfCarriageProfile) -> Self {
+        Self::selected_with_rate_and_carriage(CodecRateProfile::Kbps1024, emdf_carriage)
+    }
+
+    pub const fn selected_with_rate_and_carriage(
+        codec_rate: CodecRateProfile,
+        emdf_carriage: EmdfCarriageProfile,
+    ) -> Self {
         Self {
             authored_input: AuthoredInputProfile::SelectedAdmBwfPcm24At48Khz,
             core_carrier: CoreCarrierProfile::SelectedFivePointOneSixCarrier,
             joc_downmix: JocDownmixProfile::SelectedMode0Phase1Index3,
             substream_topology: SubstreamTopology::SelectedSingleIndependentZeroDependent,
-            codec_rate: CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+            codec_rate,
             emdf_carriage,
         }
     }
@@ -77,6 +185,16 @@ impl EncodingProfile {
             emdf_carriage,
         }
     }
+
+    /// Compares the input, carrier layout, JOC mode, topology and carriage while leaving the
+    /// independently selected E-AC-3 carrier rate out of the comparison.
+    pub fn same_dimensions_except_codec_rate(self, other: Self) -> bool {
+        self.authored_input == other.authored_input
+            && self.core_carrier == other.core_carrier
+            && self.joc_downmix == other.joc_downmix
+            && self.substream_topology == other.substream_topology
+            && self.emdf_carriage == other.emdf_carriage
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -86,11 +204,16 @@ pub enum ProfileError {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ResolvedEncodingProfile {
     carriage: EmdfCarriageProfile,
+    codec_rate: CodecRateProfile,
 }
 
 impl ResolvedEncodingProfile {
     pub const fn carriage(self) -> EmdfCarriageProfile {
         self.carriage
+    }
+
+    pub const fn codec_rate(self) -> CodecRateProfile {
+        self.codec_rate
     }
 }
 
@@ -111,16 +234,18 @@ pub const fn resolve_selected_profile(
     ) || !matches!(
         profile.substream_topology,
         SubstreamTopology::SelectedSingleIndependentZeroDependent
-    ) || !matches!(
-        profile.codec_rate,
-        CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes
-    ) {
+    ) || profile.codec_rate.kbps().is_none()
+        || profile.codec_rate.selector_code().is_none()
+        || profile.codec_rate.frame_size_code().is_none()
+        || profile.codec_rate.frame_bytes().is_none()
+    {
         return Err(ProfileError::UnsupportedProfile);
     }
     match profile.emdf_carriage {
         EmdfCarriageProfile::DeployedCompat | EmdfCarriageProfile::EtsiEmdf => {
             Ok(ResolvedEncodingProfile {
                 carriage: profile.emdf_carriage,
+                codec_rate: profile.codec_rate,
             })
         }
         EmdfCarriageProfile::Unsupported => Err(ProfileError::UnsupportedProfile),

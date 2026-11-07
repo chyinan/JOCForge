@@ -2,6 +2,7 @@
 //! Noncommitting keyless output-owner proposals for the selected codec source clock.
 
 use crate::{
+    codec::frame_size::Eac3FrameSize,
     integrity::crc16::eac3_crc16,
     timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
     transaction::{GtcOwnerId, GtcOwnerReceiptError, GtcOwnerStateSnapshot},
@@ -9,8 +10,6 @@ use crate::{
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
-const FRAME_BYTES: usize = 4_096;
-const FRAME_BYTES_U32: u32 = FRAME_BYTES as u32;
 const SUPPRESSED_SOURCES: u64 = 2;
 const SOURCE_FRAME_SAMPLES: u64 = 1_536;
 const OUTPUT_OWNER_ID: &str = "output";
@@ -95,6 +94,7 @@ pub struct OutputProvider {
 pub struct OutputConfiguration {
     profile_id: String,
     provider_sha256: [u8; 32],
+    frame_bytes: u32,
     attempt_id: String,
     staging_name: String,
     intent_name: String,
@@ -132,7 +132,11 @@ impl OutputConfiguration {
             .get("frame_bytes")
             .and_then(Value::as_u64)
             .ok_or(OutputOwnerError::ProviderFrameSize)?;
-        if frame_bytes != FRAME_BYTES as u64 {
+        if Eac3FrameSize::from_frame_bytes(
+            usize::try_from(frame_bytes).map_err(|_| OutputOwnerError::ProviderFrameSize)?,
+        )
+        .is_none()
+        {
             return Err(OutputOwnerError::ProviderFrameSize);
         }
         let suppressed_sources = provider
@@ -179,7 +183,12 @@ impl OutputConfiguration {
         if profile_id.is_empty() {
             return Err(OutputOwnerError::ProviderProfile);
         }
-        if provider.frame_bytes != FRAME_BYTES_U32 {
+        if Eac3FrameSize::from_frame_bytes(
+            usize::try_from(provider.frame_bytes)
+                .map_err(|_| OutputOwnerError::ProviderFrameSize)?,
+        )
+        .is_none()
+        {
             return Err(OutputOwnerError::ProviderFrameSize);
         }
         if provider.suppressed_sources != SUPPRESSED_SOURCES {
@@ -221,7 +230,7 @@ impl OutputConfiguration {
             .checked_add(SUPPRESSED_SOURCES)
             .ok_or(OutputOwnerError::CountOverflow)?;
         let expected_product_bytes = published_aus
-            .checked_mul(FRAME_BYTES as u64)
+            .checked_mul(u64::from(provider.frame_bytes))
             .ok_or(OutputOwnerError::CountOverflow)?;
         if published_aus > u64::from(u32::MAX) {
             return Err(OutputOwnerError::CountOverflow);
@@ -230,6 +239,7 @@ impl OutputConfiguration {
         Ok(Self {
             profile_id,
             provider_sha256: provider.provider_sha256,
+            frame_bytes: provider.frame_bytes,
             attempt_id: attempt_id.to_owned(),
             staging_name: staging_name.clone(),
             intent_name: intent_name.clone(),
@@ -247,6 +257,10 @@ impl OutputConfiguration {
 
     pub const fn provider_sha256(&self) -> &[u8; 32] {
         &self.provider_sha256
+    }
+
+    pub const fn frame_bytes(&self) -> u32 {
+        self.frame_bytes
     }
 
     pub fn attempt_id(&self) -> &str {
@@ -521,7 +535,7 @@ impl OutputOwner {
         if identity.au_index != expected_au {
             return Err(OutputOwnerError::AuOrder);
         }
-        if frame.len() != FRAME_BYTES {
+        if frame.len() != self.configuration.frame_bytes as usize {
             return Err(OutputOwnerError::FrameLength);
         }
         let frame_sha256 = sha256(frame);
@@ -566,7 +580,7 @@ impl OutputOwner {
         let au_index = identity.au_index.ok_or(OutputOwnerError::AuOrder)?;
         let offset = au_index
             .value()
-            .checked_mul(FRAME_BYTES as u64)
+            .checked_mul(u64::from(self.configuration.frame_bytes))
             .ok_or(OutputOwnerError::OutputOffset)?;
         if offset != self.state.durable_length {
             return Err(OutputOwnerError::OutputOffset);
@@ -574,7 +588,7 @@ impl OutputOwner {
         let entry = LedgerEntry {
             au_index,
             offset,
-            length: FRAME_BYTES_U32,
+            length: self.configuration.frame_bytes,
             frame_sha256,
             crc_residual,
         };
@@ -584,20 +598,17 @@ impl OutputOwner {
             .ok_or(OutputOwnerError::CountOverflow)?;
         after_state.durable_length = after_state
             .durable_length
-            .checked_add(FRAME_BYTES as u64)
+            .checked_add(u64::from(self.configuration.frame_bytes))
             .ok_or(OutputOwnerError::CountOverflow)?;
         after_state.ledger.push(entry.clone());
 
         let proposed_after_sha256 = after_state.sha256()?;
-        let frame_bytes: [u8; FRAME_BYTES] = frame
-            .try_into()
-            .map_err(|_| OutputOwnerError::FrameLength)?;
         let proposal = OutputAppendProposal {
             attempt_id: self.state.attempt_id.clone(),
             staging_name: self.state.staging_name.clone(),
             identity,
             expected_offset: offset,
-            frame_bytes: Box::new(frame_bytes),
+            frame_bytes: frame.to_vec().into_boxed_slice(),
             frame_sha256,
             before_state_sha256,
             proposed_after_sha256,
@@ -624,11 +635,11 @@ impl OutputOwner {
         for (index, entry) in self.state.ledger.iter().enumerate() {
             let au_index = u64::try_from(index).map_err(|_| OutputOwnerError::FinalizeLedger)?;
             let expected_offset = au_index
-                .checked_mul(FRAME_BYTES as u64)
+                .checked_mul(u64::from(self.configuration.frame_bytes))
                 .ok_or(OutputOwnerError::FinalizeLedger)?;
             if entry.au_index.value() != au_index
                 || entry.offset != expected_offset
-                || entry.length != FRAME_BYTES_U32
+                || entry.length != self.configuration.frame_bytes
                 || entry.crc_residual != 0
             {
                 return Err(OutputOwnerError::FinalizeLedger);
@@ -827,7 +838,7 @@ pub struct OutputAppendProposal {
     staging_name: String,
     identity: OutputSourceIdentity,
     expected_offset: u64,
-    frame_bytes: Box<[u8; FRAME_BYTES]>,
+    frame_bytes: Box<[u8]>,
     frame_sha256: [u8; 32],
     before_state_sha256: [u8; 32],
     proposed_after_sha256: [u8; 32],
@@ -845,16 +856,16 @@ impl OutputAppendProposal {
             "dispatch": self.identity.dispatch.value(),
             "au_index": self.identity.au_index.map(PublishedAuIndex::value),
             "expected_offset": self.expected_offset,
-            "frame_bytes": FRAME_BYTES,
+            "frame_bytes": self.frame_bytes.len(),
             "frame_sha256": hex_lower(&self.frame_sha256),
-            "frame_hex": hex_lower(self.frame_bytes.as_slice()),
+            "frame_hex": hex_lower(&self.frame_bytes),
             "before_state_sha256": hex_lower(&self.before_state_sha256),
             "proposed_after_sha256": hex_lower(&self.proposed_after_sha256),
             "ledger_entry": self.ledger_entry.as_json(),
         })
     }
 
-    pub fn frame_bytes(&self) -> &[u8; FRAME_BYTES] {
+    pub fn frame_bytes(&self) -> &[u8] {
         &self.frame_bytes
     }
 
@@ -898,7 +909,7 @@ impl OutputAppendProposal {
     /// # Safety
     ///
     /// The caller must have consumed this exact proposal through the trusted IO shell and
-    /// completed its full append protocol: write exactly `FRAME_BYTES` at this proposal's
+    /// completed its full append protocol: write exactly this proposal's frame size at its
     /// expected offset using the configured attempt and staging file; verify the resulting
     /// length; read back bytes identical to `self.frame_bytes` and verify their SHA-256; verify
     /// CRC residual zero; flush the file; and successfully call the platform file durability
@@ -937,7 +948,9 @@ impl OutputAppendProposal {
             }
             sum.checked_add(*count)
         });
-        if written != Some(FRAME_BYTES as u64)
+        let frame_bytes =
+            u32::try_from(self.frame_bytes.len()).map_err(|_| OutputOwnerError::DurableReceipt)?;
+        if written != Some(u64::from(frame_bytes))
             || readback_sha256 != self.frame_sha256
             || crc_residual != 0
         {
@@ -948,7 +961,7 @@ impl OutputAppendProposal {
             attempt_id: self.attempt_id.clone(),
             au_index: self.identity.au_index.ok_or(OutputOwnerError::AuOrder)?,
             offset: self.expected_offset,
-            bytes_written: FRAME_BYTES_U32,
+            bytes_written: frame_bytes,
             write_calls,
             readback_sha256,
             crc_residual,
@@ -964,7 +977,7 @@ impl OutputAppendProposal {
         if receipt.attempt_id != self.attempt_id
             || receipt.au_index != self.identity.au_index.ok_or(OutputOwnerError::AuOrder)?
             || receipt.offset != self.expected_offset
-            || receipt.bytes_written != FRAME_BYTES_U32
+            || usize::try_from(receipt.bytes_written).ok() != Some(self.frame_bytes.len())
             || receipt.readback_sha256 != self.frame_sha256
             || receipt.crc_residual != 0
             || !receipt.file_fsync

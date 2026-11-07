@@ -4,29 +4,40 @@
 use super::spatial_control::{
     SpatialControlDigest, SpatialControlMachine, SpatialControlProviderLineage,
 };
+#[cfg(test)]
+use crate::source_axis::SourceAxisOwnerGeneration;
 use crate::{
     frontend::{
         ProviderSha256,
         normal_control_snapshot::{
+            NormalControlAdmFreshZeroView, NormalControlAdmHeldSourceView,
+            NormalControlAdmInputOutput, NormalControlAdmInputSnapshot,
             NormalControlFreshZeroMeterView, NormalControlHeldSourceView,
-            NormalControlPreparedSnapshot, NormalControlRow, NormalControlSnapshotOutput,
-            NormalControlSnapshotProposal, NormalControlTrackKind,
+            NormalControlObjectOwnerBinding, NormalControlPhysicalTrack,
+            NormalControlPreparedSnapshot, NormalControlRegularSourceBinding, NormalControlRow,
+            NormalControlSnapshotOutput, NormalControlSnapshotProposal, NormalControlTrackKind,
         },
         primary_metadata_control::{PrimaryControl38Fields, PrimaryMetadataControlRows},
         selected_adm_graph::{SelectedAdmGraph, SelectedTrackKind},
     },
     numeric::{FiniteF32, R32Error, r32_mul},
     profile::{EncodingProfile, ResolvedEncodingProfile, resolve_selected_profile},
-    timeline::{FrontendCallbackIndex, NormalCallbackCount},
+    source_axis::{
+        F03W_PREFIX_SOURCE_COUNT, F03W_SOURCE_AXIS_CAPACITY, SELECTED_PROFILE_BED_ROW_COUNT,
+        SelectedSourceRowDimensions, SelectedSourceRowShapeError, SourceAxisBinding,
+    },
+    timeline::{CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount},
     transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
 use sha2::{Digest, Sha256};
 use std::sync::Arc;
 
-const HOST_CHANNELS: usize = 38;
-const REGULAR_HOSTS: usize = 37;
-const SOURCE_COUNT: usize = 48;
-const PREFIX_SOURCE_COUNT: usize = 11;
+const MAX_MAPPABLE_PHYSICAL_HOSTS: usize =
+    SelectedSourceRowDimensions::maximum_mappable_physical_rows() as usize;
+const MAX_MAPPABLE_REGULAR_HOSTS: usize = MAX_MAPPABLE_PHYSICAL_HOSTS - 1;
+const MIN_PHYSICAL_HOSTS: usize = SELECTED_PROFILE_BED_ROW_COUNT as usize;
+const SOURCE_COUNT: usize = F03W_SOURCE_AXIS_CAPACITY as usize;
+const PREFIX_SOURCE_COUNT: usize = F03W_PREFIX_SOURCE_COUNT as usize;
 const FRAME_SAMPLES: usize = 1536;
 const WINDOW_WORDS: usize = FRAME_SAMPLES * 2;
 const ACTIVITY_EPSILON_BITS: u32 = 0x3400_0000;
@@ -35,6 +46,58 @@ const SELECTED_FEATURE_COMPONENT_ENUM: u8 = 0;
 const SELECTED_FEATURE_DIFFUSE: u8 = 0;
 const BED_SOURCE_WIDTH_POSITIVE_ZERO_BITS: u32 = 0x0000_0000;
 const WINDOW_SHA256: &str = "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919";
+
+trait NormalControlProjectionIdentity {
+    fn physical_tracks(&self) -> &[NormalControlPhysicalTrack];
+    fn object_owner_bindings(&self) -> &[NormalControlObjectOwnerBinding];
+    fn regular_source_bindings(&self) -> &[NormalControlRegularSourceBinding];
+    fn regular_control_hosts(&self) -> &[u8];
+    fn lfe_host(&self) -> u8;
+}
+
+impl NormalControlProjectionIdentity for NormalControlPreparedSnapshot {
+    fn physical_tracks(&self) -> &[NormalControlPhysicalTrack] {
+        self.physical_tracks()
+    }
+
+    fn object_owner_bindings(&self) -> &[NormalControlObjectOwnerBinding] {
+        self.object_owner_bindings()
+    }
+
+    fn regular_source_bindings(&self) -> &[NormalControlRegularSourceBinding] {
+        self.regular_source_bindings()
+    }
+
+    fn regular_control_hosts(&self) -> &[u8] {
+        self.regular37_hosts()
+    }
+
+    fn lfe_host(&self) -> u8 {
+        self.lfe_host()
+    }
+}
+
+impl NormalControlProjectionIdentity for NormalControlAdmInputSnapshot {
+    fn physical_tracks(&self) -> &[NormalControlPhysicalTrack] {
+        self.physical_tracks()
+    }
+
+    fn object_owner_bindings(&self) -> &[NormalControlObjectOwnerBinding] {
+        self.object_owner_bindings()
+    }
+
+    fn regular_source_bindings(&self) -> &[NormalControlRegularSourceBinding] {
+        self.regular_source_bindings()
+    }
+
+    fn regular_control_hosts(&self) -> &[u8] {
+        self.regular_control_hosts()
+    }
+
+    fn lfe_host(&self) -> u8 {
+        self.lfe_host()
+    }
+}
 
 type FiniteFrame = Box<[FiniteF32; FRAME_SAMPLES]>;
 pub type RawHistoryFrame = [u32; FRAME_SAMPLES];
@@ -45,6 +108,7 @@ pub enum SourceFlagsError {
     InvalidHost,
     InvalidRouteRecord,
     RouteHostCount,
+    SourceAxisCapacityExceeded,
     RouteHostDuplicate,
     RouteLfeCount,
     RouteLfeDestination,
@@ -76,6 +140,7 @@ pub enum SourceFlagsError {
     NonfiniteProduct,
     InvalidFlagPair,
     LineageMismatch,
+    SourceAxisMismatch,
 }
 
 impl SourceFlagsError {
@@ -84,6 +149,7 @@ impl SourceFlagsError {
             Self::InvalidHost => "HOST_DOMAIN",
             Self::InvalidRouteRecord => "ROUTE_RECORD",
             Self::RouteHostCount => "ROUTE_HOST_COUNT",
+            Self::SourceAxisCapacityExceeded => "SOURCE_AXIS_CAPACITY",
             Self::RouteHostDuplicate => "ROUTE_HOST_DUPLICATE",
             Self::RouteLfeCount => "ROUTE_LFE_COUNT",
             Self::RouteLfeDestination => "ROUTE_LFE_DESTINATION",
@@ -115,6 +181,7 @@ impl SourceFlagsError {
             Self::NonfiniteProduct => "NONFINITE_PRODUCT",
             Self::InvalidFlagPair => "INVALID_FLAG_PAIR",
             Self::LineageMismatch => "LINEAGE_MISMATCH",
+            Self::SourceAxisMismatch => "SOURCE_AXIS_MISMATCH",
         }
     }
 }
@@ -140,7 +207,7 @@ pub struct HostId(u8);
 
 impl HostId {
     pub fn new(value: u8) -> Result<Self, SourceFlagsError> {
-        if usize::from(value) < HOST_CHANNELS {
+        if usize::from(value) < MAX_MAPPABLE_PHYSICAL_HOSTS {
             Ok(Self(value))
         } else {
             Err(SourceFlagsError::InvalidHost)
@@ -169,10 +236,12 @@ impl SelectedFeatureFlagsControl {
         callback_index: FrontendCallbackIndex,
         host_channel_index: u8,
     ) -> Result<Self, SourceFlagsError> {
-        let selected_profile = resolve_selected_profile(&EncodingProfile::selected_with_carriage(
-            profile_identity.carriage(),
-        ))
-        .map_err(|_| SourceFlagsError::UnsupportedProfile)?;
+        let selected_profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_rate_and_carriage(
+                profile_identity.codec_rate(),
+                profile_identity.carriage(),
+            ))
+            .map_err(|_| SourceFlagsError::UnsupportedProfile)?;
         if selected_profile != profile_identity {
             return Err(SourceFlagsError::UnsupportedProfile);
         }
@@ -254,7 +323,7 @@ impl HostRouteRecord {
     }
 }
 
-/// Validated exact 38-host semantic route with one excluded LFE and ordered 11..47 destinations.
+/// Validated selected-profile semantic route with one excluded LFE and ordered global IDs.
 #[derive(Debug)]
 pub struct ValidatedSemanticRoute {
     lfe_host: HostId,
@@ -265,19 +334,30 @@ pub struct ValidatedSemanticRoute {
 
 impl ValidatedSemanticRoute {
     pub fn new(records: Vec<HostRouteRecord>) -> Result<Self, SourceFlagsError> {
-        if records.len() != HOST_CHANNELS {
-            return Err(SourceFlagsError::RouteHostCount);
-        }
-        let mut seen = [false; HOST_CHANNELS];
+        let host_count = records.len();
+        let dimensions = SelectedSourceRowDimensions::for_physical_rows(
+            u16::try_from(host_count).map_err(|_| SourceFlagsError::RouteHostCount)?,
+        )
+        .map_err(|error| match error {
+            SelectedSourceRowShapeError::PhysicalRowCountOutsideSelectedProfile => {
+                SourceFlagsError::RouteHostCount
+            }
+            SelectedSourceRowShapeError::SourceAxisCapacityExceeded { .. } => {
+                SourceFlagsError::SourceAxisCapacityExceeded
+            }
+        })?;
+        let regular_count = usize::from(dimensions.regular_row_count());
+        let source_end = usize::from(dimensions.active_source_count());
+        let mut seen = vec![false; host_count];
         let mut lfe = None;
-        let mut regular_hosts = Vec::with_capacity(REGULAR_HOSTS);
-        let mut destination_by_host = Vec::with_capacity(HOST_CHANNELS);
-        destination_by_host.resize(HOST_CHANNELS, None);
-        let mut canonical = Vec::with_capacity(HOST_CHANNELS * 4);
-        let mut next_destination = 11_u8;
+        let mut regular_hosts = Vec::with_capacity(regular_count);
+        let mut destination_by_host = vec![None; host_count];
+        let mut canonical = Vec::with_capacity(host_count * 4);
+        let mut next_destination =
+            u8::try_from(PREFIX_SOURCE_COUNT).map_err(|_| SourceFlagsError::RouteNotBijective)?;
         for record in records {
             let slot = usize::from(record.host.value());
-            if std::mem::replace(&mut seen[slot], true) {
+            if slot >= host_count || std::mem::replace(&mut seen[slot], true) {
                 return Err(SourceFlagsError::RouteHostDuplicate);
             }
             if !record.enabled {
@@ -301,7 +381,8 @@ impl ValidatedSemanticRoute {
                         .destination
                         .ok_or(SourceFlagsError::RouteNotBijective)?;
                     if usize::from(destination) != usize::from(next_destination)
-                        || !(11..=47).contains(&destination)
+                        || usize::from(destination) < PREFIX_SOURCE_COUNT
+                        || usize::from(destination) >= source_end
                     {
                         return Err(SourceFlagsError::RouteNotBijective);
                     }
@@ -315,7 +396,7 @@ impl ValidatedSemanticRoute {
         if seen.iter().any(|present| !present) {
             return Err(SourceFlagsError::RouteHostCount);
         }
-        if regular_hosts.len() != REGULAR_HOSTS || next_destination != 48 {
+        if regular_hosts.len() != regular_count || usize::from(next_destination) != source_end {
             return Err(SourceFlagsError::RouteLfeCount);
         }
         let lfe_host = lfe.ok_or(SourceFlagsError::RouteLfeCount)?;
@@ -337,12 +418,37 @@ impl ValidatedSemanticRoute {
 
     /// Returns the admitted global source for one physical host, or `None` for LFE.
     pub fn destination_for_host(&self, host: HostId) -> Option<u8> {
-        self.destination_by_host[usize::from(host.value())]
+        self.destination_by_host
+            .get(usize::from(host.value()))
+            .copied()
+            .flatten()
     }
 
     fn destination(&self, host: HostId) -> Result<u8, SourceFlagsError> {
-        self.destination_by_host[usize::from(host.value())]
+        self.destination_by_host
+            .get(usize::from(host.value()))
+            .copied()
+            .flatten()
             .ok_or(SourceFlagsError::RouteNotBijective)
+    }
+
+    fn active_source_ids(&self) -> Result<Box<[CodecSourceIndex]>, SourceFlagsError> {
+        let mut source_ids = Vec::with_capacity(PREFIX_SOURCE_COUNT + self.regular_hosts.len());
+        for source in 0..PREFIX_SOURCE_COUNT {
+            source_ids.push(CodecSourceIndex::new(
+                u64::try_from(source).map_err(|_| SourceFlagsError::RouteNotBijective)?,
+            ));
+        }
+        for host in self.regular_hosts.iter().copied() {
+            source_ids.push(CodecSourceIndex::new(u64::from(self.destination(host)?)));
+        }
+        if source_ids
+            .windows(2)
+            .any(|pair| pair[0].value() >= pair[1].value())
+        {
+            return Err(SourceFlagsError::RouteNotBijective);
+        }
+        Ok(source_ids.into_boxed_slice())
     }
 }
 
@@ -396,13 +502,13 @@ pub struct RegularControls {
 
 impl RegularControls {
     pub fn new(values: Vec<RegularControl>) -> Result<Self, SourceFlagsError> {
-        if values.len() != REGULAR_HOSTS {
+        if !(MIN_PHYSICAL_HOSTS - 1..=MAX_MAPPABLE_REGULAR_HOSTS).contains(&values.len()) {
             return Err(SourceFlagsError::RegularControlCount);
         }
-        let mut seen = [false; HOST_CHANNELS];
+        let mut seen = [false; MAX_MAPPABLE_PHYSICAL_HOSTS];
         for control in &values {
             let slot = usize::from(control.host.value());
-            if std::mem::replace(&mut seen[slot], true) {
+            if slot >= MAX_MAPPABLE_PHYSICAL_HOSTS || std::mem::replace(&mut seen[slot], true) {
                 return Err(SourceFlagsError::RegularControlDuplicate);
             }
         }
@@ -581,14 +687,29 @@ pub fn project_primary_regular_source_controls(
         return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
     }
 
+    let physical_host_count = control_rows.row_count();
+    let dimensions = SelectedSourceRowDimensions::for_physical_rows(
+        u16::try_from(physical_host_count).map_err(|_| SourceFlagsError::RouteHostCount)?,
+    )
+    .map_err(|error| match error {
+        SelectedSourceRowShapeError::PhysicalRowCountOutsideSelectedProfile => {
+            SourceFlagsError::RouteHostCount
+        }
+        SelectedSourceRowShapeError::SourceAxisCapacityExceeded { .. } => {
+            SourceFlagsError::SourceAxisCapacityExceeded
+        }
+    })?;
     let direct_lfe_host = graph.receipt().direct_lfe_host().value();
-    if usize::from(direct_lfe_host) >= HOST_CHANNELS || control_rows.row_count() != HOST_CHANNELS {
+    if usize::from(direct_lfe_host) >= physical_host_count
+        || graph.tracks().len() != physical_host_count
+        || usize::from(control_rows.source_binding().wave().channels()) != physical_host_count
+    {
         return Err(SourceFlagsError::PrimaryControlRowMismatch);
     }
-    let mut destination_by_host = [None; HOST_CHANNELS];
+    let mut destination_by_host = vec![None; physical_host_count];
     for binding in graph.regular_source_bindings() {
         let host = usize::from(binding.physical_host().value());
-        if host >= HOST_CHANNELS || host == usize::from(direct_lfe_host) {
+        if host >= physical_host_count || host == usize::from(direct_lfe_host) {
             return Err(SourceFlagsError::PrimaryRegularSourceMapMismatch);
         }
         let destination = u8::try_from(binding.global_source().value())
@@ -598,8 +719,8 @@ pub fn project_primary_regular_source_controls(
         }
     }
 
-    let mut route_records = Vec::with_capacity(HOST_CHANNELS);
-    let mut regular_controls = Vec::with_capacity(REGULAR_HOSTS);
+    let mut route_records = Vec::with_capacity(physical_host_count);
+    let mut regular_controls = Vec::with_capacity(usize::from(dimensions.regular_row_count()));
     let mut direct_lfe_seen = false;
     for (row_index, row) in control_rows.rows().iter().enumerate() {
         let host = row.track().physical_host().value();
@@ -660,7 +781,7 @@ pub fn project_primary_regular_source_controls(
         regular_controls.push(feature_control.into_regular_control(mute, width)?);
     }
 
-    if !direct_lfe_seen || regular_controls.len() != REGULAR_HOSTS {
+    if !direct_lfe_seen || regular_controls.len() != usize::from(dimensions.regular_row_count()) {
         return Err(SourceFlagsError::PrimaryControlRowMismatch);
     }
     let route = ValidatedSemanticRoute::new(route_records)?;
@@ -738,6 +859,57 @@ pub fn project_normal_control_snapshot_output_source_controls(
     project_normal_control_rows(
         output.control38_rows(),
         output.regular37_rows(),
+        prepared,
+        profile_identity,
+        clock,
+    )
+}
+
+/// Projects the same callback-local F03W view from a row-shaped dynamic ADM after-state.
+pub fn project_normal_control_adm_input_output_source_controls(
+    output: &NormalControlAdmInputOutput,
+    graph: &SelectedAdmGraph,
+    profile_identity: ResolvedEncodingProfile,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    let prepared = output.prepared_identity();
+    if !prepared.matches_graph(graph) {
+        return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
+    }
+    if prepared.profile_identity() != profile_identity {
+        return Err(SourceFlagsError::UnsupportedProfile);
+    }
+    let callback_index = output.transaction_id().callback_index();
+    let expected_next = callback_index
+        .value()
+        .checked_add(1)
+        .ok_or(SourceFlagsError::SourceControlClockMismatch)?;
+    let query_sample = u64::from(callback_index.value())
+        .checked_mul(
+            u64::try_from(FRAME_SAMPLES)
+                .map_err(|_| SourceFlagsError::SourceControlClockMismatch)?,
+        )
+        .ok_or(SourceFlagsError::SourceControlClockMismatch)?;
+    let expected_actual = prepared.source_samples().saturating_sub(query_sample);
+    if output.transaction_id().programme_id() != prepared.programme_id()
+        || output.transaction_id().attempt_id() != prepared.attempt_id()
+        || output.value_generation() != callback_index
+        || output.normal_origin_generation() != callback_index
+        || output.next_callback_index().value() != expected_next
+        || output.query_sample() != query_sample
+        || query_sample >= prepared.source_samples()
+        || u64::from(output.actual_samples()) != expected_actual.min(FRAME_SAMPLES as u64)
+        || output.normal_callbacks().value() != u64::from(expected_next)
+    {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    let clock =
+        SourceControlSnapshotClock::for_normal_callback(callback_index, output.normal_callbacks())?;
+    if clock.is_cached_drain() || clock.source_origin() != output.normal_origin_generation() {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    project_normal_control_rows(
+        output.physical_rows(),
+        output.regular_rows(),
         prepared,
         profile_identity,
         clock,
@@ -827,6 +999,42 @@ pub fn project_held_normal_control_snapshot_source_controls(
     )
 }
 
+/// Projects the committed dynamic ADM F01E rows for one of MAIN's four cached drains.
+pub fn project_held_normal_control_adm_input_source_controls(
+    held: &NormalControlAdmHeldSourceView,
+    graph: &SelectedAdmGraph,
+    profile_identity: ResolvedEncodingProfile,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    let prepared = held.prepared_snapshot().as_ref();
+    if !prepared.matches_graph(graph) {
+        return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
+    }
+    if prepared.profile_identity() != profile_identity {
+        return Err(SourceFlagsError::UnsupportedProfile);
+    }
+    let clock = SourceControlSnapshotClock::for_cached_drain(
+        held.delivery_generation(),
+        NormalCallbackCount::new(held.expected_normal_callback_count()),
+    )?;
+    if clock.source_origin() != held.source_origin_generation()
+        || held.delivery_transaction_id().programme_id() != prepared.programme_id()
+        || held.delivery_transaction_id().attempt_id() != prepared.attempt_id()
+        || held.delivery_transaction_id().callback_index() != clock.callback_index()
+        || held.source_origin_transaction_id().programme_id() != prepared.programme_id()
+        || held.source_origin_transaction_id().attempt_id() != prepared.attempt_id()
+        || held.source_origin_transaction_id().callback_index() != clock.source_origin()
+    {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    project_normal_control_rows(
+        held.physical_control_rows(),
+        held.regular_control_rows_data(),
+        prepared,
+        profile_identity,
+        clock,
+    )
+}
+
 /// Projects held normal controls for an independent fresh-zero Meter delivery.
 /// Source values remain from Q-1 while the control projection is bound to the current delivery g.
 pub fn project_meter_fresh_zero_normal_control_snapshot_source_controls(
@@ -865,44 +1073,94 @@ pub fn project_meter_fresh_zero_normal_control_snapshot_source_controls(
     )
 }
 
-fn project_normal_control_rows(
-    control38_rows: &[NormalControlRow; HOST_CHANNELS],
-    regular37_rows: &[NormalControlRow; REGULAR_HOSTS],
-    prepared: &NormalControlPreparedSnapshot,
+/// Projects held dynamic ADM controls for an independent fresh-zero Meter delivery.
+pub fn project_meter_fresh_zero_normal_control_adm_input_source_controls(
+    held: &NormalControlAdmFreshZeroView,
+    graph: &SelectedAdmGraph,
+    profile_identity: ResolvedEncodingProfile,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    let prepared = held.prepared_snapshot().as_ref();
+    if !prepared.matches_graph(graph) {
+        return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
+    }
+    if prepared.profile_identity() != profile_identity {
+        return Err(SourceFlagsError::UnsupportedProfile);
+    }
+    let transaction_id = held.delivery_transaction_id();
+    let normal_callbacks = NormalCallbackCount::new(held.expected_normal_callback_count());
+    let clock = SourceControlSnapshotClock::for_fresh_zero_meter_drain(
+        transaction_id.callback_index(),
+        normal_callbacks,
+    )?;
+    if clock.is_cached_drain()
+        || clock.source_origin() != held.source_origin_generation()
+        || transaction_id.programme_id() != prepared.programme_id()
+        || transaction_id.attempt_id() != prepared.attempt_id()
+        || transaction_id.callback_index() != clock.callback_index()
+        || held.source_origin_transaction_id().programme_id() != prepared.programme_id()
+        || held.source_origin_transaction_id().attempt_id() != prepared.attempt_id()
+        || held.source_origin_transaction_id().callback_index() != clock.source_origin()
+    {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    project_normal_control_rows(
+        held.physical_control_rows(),
+        held.regular_control_rows_data(),
+        prepared,
+        profile_identity,
+        clock,
+    )
+}
+
+fn project_normal_control_rows<P: NormalControlProjectionIdentity>(
+    control_rows: &[NormalControlRow],
+    regular_rows: &[NormalControlRow],
+    prepared: &P,
     profile_identity: ResolvedEncodingProfile,
     clock: SourceControlSnapshotClock,
 ) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
-    if control38_rows.len() != HOST_CHANNELS
-        || regular37_rows.len() != REGULAR_HOSTS
-        || prepared.physical_tracks().len() != HOST_CHANNELS
+    let physical_tracks = prepared.physical_tracks();
+    let regular_hosts = prepared.regular_control_hosts();
+    let regular_bindings = prepared.regular_source_bindings();
+    let owner_bindings = prepared.object_owner_bindings();
+    let host_count = control_rows.len();
+    let regular_count = regular_rows.len();
+    let direct_lfe_host = prepared.lfe_host();
+    let source_end = PREFIX_SOURCE_COUNT
+        .checked_add(regular_count)
+        .ok_or(SourceFlagsError::PrimaryRegularSourceMapMismatch)?;
+    if host_count == 0
+        || regular_count + 1 != host_count
+        || physical_tracks.len() != host_count
+        || regular_hosts.len() != regular_count
+        || regular_bindings.len() != regular_count
+        || usize::from(direct_lfe_host) >= host_count
+        || source_end > SOURCE_COUNT
     {
         return Err(SourceFlagsError::PrimaryControlRowMismatch);
     }
     let callback_index = clock.callback_index();
-    let direct_lfe_host = prepared.lfe_host();
-    if usize::from(direct_lfe_host) >= HOST_CHANNELS {
-        return Err(SourceFlagsError::PrimaryControlRowMismatch);
-    }
 
-    let mut destination_by_host = [None; HOST_CHANNELS];
-    for binding in prepared.regular_source_bindings() {
+    let mut destination_by_host = vec![None; host_count];
+    for binding in regular_bindings {
         let host = usize::from(binding.physical_host());
-        if host >= HOST_CHANNELS || host == usize::from(direct_lfe_host) {
+        if host >= host_count || host == usize::from(direct_lfe_host) {
             return Err(SourceFlagsError::PrimaryRegularSourceMapMismatch);
         }
         let destination = u8::try_from(binding.global_source())
             .map_err(|_| SourceFlagsError::PrimaryRegularSourceMapMismatch)?;
-        let is_selected_global_source = (11..=47).contains(&destination);
+        let is_selected_global_source = usize::from(destination) >= PREFIX_SOURCE_COUNT
+            && usize::from(destination) < source_end;
         if !is_selected_global_source || destination_by_host[host].replace(destination).is_some() {
             return Err(SourceFlagsError::PrimaryRegularSourceMapMismatch);
         }
     }
 
-    let mut route_records = Vec::with_capacity(HOST_CHANNELS);
+    let mut route_records = Vec::with_capacity(host_count);
     let mut direct_lfe_seen = false;
-    for (host_index, row) in control38_rows.iter().enumerate() {
+    for (host_index, row) in control_rows.iter().enumerate() {
         let host = row.physical_host();
-        let track = &prepared.physical_tracks()[host_index];
+        let track = &physical_tracks[host_index];
         if usize::from(host) != host_index
             || track.physical_host() != host
             || track.track_uid() != row.track_uid()
@@ -975,8 +1233,7 @@ fn project_normal_control_rows(
                 && control.words()[11] == 0
                 && control.words()[12] == 1 =>
             {
-                let binding = prepared
-                    .object_owner_bindings()
+                let binding = owner_bindings
                     .iter()
                     .find(|binding| binding.track_uid() == row.track_uid())
                     .ok_or(SourceFlagsError::PrimaryControlRowMismatch)?;
@@ -1004,20 +1261,16 @@ fn project_normal_control_rows(
         return Err(SourceFlagsError::PrimaryControlRowMismatch);
     }
 
-    let mut regular_controls = Vec::with_capacity(REGULAR_HOSTS);
-    for (rank, (row, expected_host)) in regular37_rows
-        .iter()
-        .zip(prepared.regular37_hosts())
-        .enumerate()
-    {
+    let mut regular_controls = Vec::with_capacity(regular_count);
+    for (rank, (row, expected_host)) in regular_rows.iter().zip(regular_hosts).enumerate() {
         let host = row.physical_host();
         if host != *expected_host
             || host == direct_lfe_host
-            || control38_rows[usize::from(host)] != *row
+            || control_rows.get(usize::from(host)) != Some(row)
         {
             return Err(SourceFlagsError::RegularControlHostMismatch);
         }
-        let binding = prepared.regular_source_bindings()[rank];
+        let binding = &regular_bindings[rank];
         if binding.physical_host() != host
             || destination_by_host[usize::from(host)]
                 != Some(
@@ -1060,7 +1313,7 @@ pub struct CurrentHostPcm {
 
 impl CurrentHostPcm {
     pub fn new(rows: Vec<Vec<f32>>) -> Result<Self, SourceFlagsError> {
-        if rows.len() != HOST_CHANNELS {
+        if !(MIN_PHYSICAL_HOSTS..=MAX_MAPPABLE_PHYSICAL_HOSTS).contains(&rows.len()) {
             return Err(SourceFlagsError::PcmShape);
         }
         if rows.iter().any(|row| row.len() != FRAME_SAMPLES) {
@@ -1071,7 +1324,7 @@ impl CurrentHostPcm {
             .map(finite_frame)
             .collect::<Result<Vec<_>, _>>()?
             .into_boxed_slice();
-        let mut canonical = Vec::with_capacity(HOST_CHANNELS * FRAME_SAMPLES * 4);
+        let mut canonical = Vec::with_capacity(rows.len() * FRAME_SAMPLES * 4);
         for row in &rows {
             for value in row.iter() {
                 canonical.extend_from_slice(&value.to_bits().to_le_bytes());
@@ -1113,7 +1366,7 @@ impl BeforeRegularHistory {
         route: &ValidatedSemanticRoute,
     ) -> Result<Self, SourceFlagsError> {
         let bits = owner.committed().regular_raw_history_bits();
-        if bits.len() != REGULAR_HOSTS * FRAME_SAMPLES {
+        if bits.len() != route.regular_hosts().len() * FRAME_SAMPLES {
             return Err(SourceFlagsError::HistoryShape);
         }
         let rows = bits
@@ -1139,7 +1392,7 @@ impl BeforeRegularHistory {
         route: &ValidatedSemanticRoute,
         rows: Vec<Vec<f32>>,
     ) -> Result<Self, SourceFlagsError> {
-        if rows.len() != REGULAR_HOSTS {
+        if rows.len() != route.regular_hosts().len() {
             return Err(SourceFlagsError::HistoryShape);
         }
         if rows.iter().any(|row| row.len() != FRAME_SAMPLES) {
@@ -1242,6 +1495,7 @@ pub struct SourceFlagsInput {
     route: ValidatedSemanticRoute,
     prefix_writers: PrefixWriterSet,
     source_control_clock: Option<SourceControlSnapshotClock>,
+    source_axis: Option<Arc<SourceAxisBinding>>,
     parent: Arc<SourceFlagsParentLineage>,
 }
 
@@ -1261,6 +1515,7 @@ impl SourceFlagsInput {
             route,
             prefix_writers,
             source_control_clock: None,
+            source_axis: None,
             parent: Arc::new(parent),
         }
     }
@@ -1287,12 +1542,60 @@ impl SourceFlagsInput {
             route: projection.route,
             prefix_writers,
             source_control_clock: Some(projection.clock),
+            source_axis: None,
             parent: Arc::new(parent),
         })
     }
 
+    /// Binds the exact selected source-ID order and its owner/input/callback lineage.
+    #[must_use]
+    pub fn with_source_axis(mut self, source_axis: Arc<SourceAxisBinding>) -> Self {
+        self.source_axis = Some(source_axis);
+        self
+    }
+
     pub(super) const fn source_control_clock(&self) -> Option<SourceControlSnapshotClock> {
         self.source_control_clock
+    }
+
+    fn resolve_source_axis(&self) -> Result<Arc<SourceAxisBinding>, SourceFlagsError> {
+        let expected_source_ids = self.route.active_source_ids()?;
+        let source_origin_generation = self.source_control_clock.map_or(
+            self.parent.callback_index,
+            SourceControlSnapshotClock::source_origin,
+        );
+        let source_axis = match &self.source_axis {
+            Some(source_axis) => Arc::clone(source_axis),
+            None => {
+                #[cfg(test)]
+                {
+                    Arc::new(
+                        SourceAxisBinding::new(
+                            Arc::from(expected_source_ids.clone()),
+                            SourceAxisOwnerGeneration::new(
+                                self.parent.before_history_generation.value(),
+                            ),
+                            [0; 32],
+                            self.parent.transaction_id.clone(),
+                            source_origin_generation,
+                        )
+                        .map_err(|_| SourceFlagsError::SourceAxisMismatch)?,
+                    )
+                }
+                #[cfg(not(test))]
+                {
+                    return Err(SourceFlagsError::SourceAxisMismatch);
+                }
+            }
+        };
+        if source_axis.source_ids() != expected_source_ids.as_ref()
+            || source_axis.transaction_id() != &self.parent.transaction_id
+            || source_axis.callback_index() != self.parent.callback_index
+            || source_axis.source_origin_generation() != source_origin_generation
+        {
+            return Err(SourceFlagsError::SourceAxisMismatch);
+        }
+        Ok(source_axis)
     }
 }
 
@@ -1326,6 +1629,7 @@ impl SourceFlagsDigest {
 #[derive(Debug, Eq, PartialEq)]
 pub(super) struct SourceFlagsLineage {
     parent: Arc<SourceFlagsParentLineage>,
+    source_axis: Arc<SourceAxisBinding>,
     current_pcm_receipt: SourceFlagsDigest,
     controls_receipt: SourceFlagsDigest,
     source_control_clock: Option<SourceControlSnapshotClock>,
@@ -1344,6 +1648,10 @@ impl SourceFlagsLineage {
 
     pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.parent.transaction_id
+    }
+
+    pub(super) fn source_axis(&self) -> &SourceAxisBinding {
+        &self.source_axis
     }
 
     pub(crate) fn callback_index(&self) -> FrontendCallbackIndex {
@@ -1393,12 +1701,17 @@ pub struct SourceFlagsProduced {
 /// This value carries no parent receipt, packet capability or commit authority.
 #[derive(Debug)]
 pub struct SourceFlagsValues {
-    payload: [[u8; 2]; SOURCE_COUNT],
+    source_ids: Box<[CodecSourceIndex]>,
+    payload: Box<[[u8; 2]]>,
     raw_history_rows: Box<[RawFrame]>,
 }
 
 impl SourceFlagsValues {
-    pub const fn payload(&self) -> &[[u8; 2]; SOURCE_COUNT] {
+    pub fn source_ids(&self) -> &[CodecSourceIndex] {
+        &self.source_ids
+    }
+
+    pub fn payload(&self) -> &[[u8; 2]] {
         &self.payload
     }
 
@@ -1418,20 +1731,24 @@ impl SourceFlagsProduced {
 /// Opaque linear packet capability produced only by this module.
 #[must_use]
 pub struct SourceFlagsPacket {
-    payload: Box<[[u8; 2]; SOURCE_COUNT]>,
+    payload: Box<[[u8; 2]]>,
     lineage: Arc<SourceFlagsLineage>,
 }
 
 impl SourceFlagsPacket {
-    fn from_producer(payload: [[u8; 2]; SOURCE_COUNT], lineage: Arc<SourceFlagsLineage>) -> Self {
+    fn from_producer(payload: Vec<[u8; 2]>, lineage: Arc<SourceFlagsLineage>) -> Self {
         Self {
-            payload: Box::new(payload),
+            payload: payload.into_boxed_slice(),
             lineage,
         }
     }
 
-    pub(super) fn payload(&self) -> &[[u8; 2]; SOURCE_COUNT] {
+    pub(super) fn payload(&self) -> &[[u8; 2]] {
         &self.payload
+    }
+
+    pub(super) fn source_axis(&self) -> &SourceAxisBinding {
+        self.lineage.source_axis()
     }
 
     pub(super) fn lineage(&self) -> &SourceFlagsLineage {
@@ -1453,10 +1770,11 @@ impl SourceFlagsPacket {
     }
 
     pub(super) fn validate_payload(&self) -> Result<(), SourceFlagsError> {
-        if self
-            .payload()
-            .iter()
-            .any(|pair| pair == &[0, 1] || pair.iter().any(|flag| *flag > 1))
+        if self.payload().len() != self.source_axis().source_count()
+            || self
+                .payload()
+                .iter()
+                .any(|pair| pair == &[0, 1] || pair.iter().any(|flag| *flag > 1))
         {
             Err(SourceFlagsError::InvalidFlagPair)
         } else {
@@ -1495,6 +1813,7 @@ impl SourceFlagsProducer {
             .as_ref()
             .ok_or(SourceFlagsError::MissingBeforeHistory)?;
         preflight(&input, history)?;
+        let source_axis = input.resolve_source_axis()?;
         let values = compute_source_flags_values(
             &input.current_pcm,
             &history.rows,
@@ -1503,9 +1822,13 @@ impl SourceFlagsProducer {
             &input.prefix_writers,
         )?;
         let SourceFlagsValues {
+            source_ids,
             payload,
             raw_history_rows,
         } = values;
+        if source_ids.as_ref() != source_axis.source_ids() {
+            return Err(SourceFlagsError::SourceAxisMismatch);
+        }
         let lineage = Arc::new(make_lineage(
             Arc::clone(&input.parent),
             &input.current_pcm,
@@ -1513,8 +1836,9 @@ impl SourceFlagsProducer {
             &input.route,
             &input.prefix_writers,
             input.source_control_clock,
+            Arc::clone(&source_axis),
         )?);
-        let packet = SourceFlagsPacket::from_producer(payload, Arc::clone(&lineage));
+        let packet = SourceFlagsPacket::from_producer(payload.into_vec(), Arc::clone(&lineage));
         packet.validate_payload()?;
         packet.validate_parent_binding(&input.parent)?;
         let raw_history_proposal = RawHistoryProposal {
@@ -1575,9 +1899,10 @@ fn compute_source_flags_values(
 ) -> Result<SourceFlagsValues, SourceFlagsError> {
     preflight_value_shapes(current_pcm, history_rows, controls, route)?;
     let window = triangle_window()?;
-    let mut payload = [[0_u8; 2]; SOURCE_COUNT];
+    let source_ids = route.active_source_ids()?;
+    let mut payload = vec![[0_u8; 2]; source_ids.len()];
 
-    for (source, pair) in payload[..PREFIX_SOURCE_COUNT].iter_mut().enumerate() {
+    for (source, pair) in payload.iter_mut().take(PREFIX_SOURCE_COUNT).enumerate() {
         *pair = if prefix_writers.written[source] {
             [0, 0]
         } else {
@@ -1586,7 +1911,7 @@ fn compute_source_flags_values(
     }
 
     let width_limit = f32::from_bits(WIDTH_LIMIT_BITS);
-    let mut history_proposal = Vec::with_capacity(REGULAR_HOSTS);
+    let mut history_proposal = Vec::with_capacity(route.regular_hosts().len());
     for (row, host) in route.regular_hosts.iter().copied().enumerate() {
         let current = current_pcm.row(host);
         let before = &history_rows[row];
@@ -1607,11 +1932,17 @@ fn compute_source_flags_values(
         if pair == [0, 1] || pair.iter().any(|flag| *flag > 1) {
             return Err(SourceFlagsError::InvalidFlagPair);
         }
-        payload[usize::from(route.destination(host)?)] = pair;
+        let source_id = CodecSourceIndex::new(u64::from(route.destination(host)?));
+        let source_ordinal = source_ids
+            .iter()
+            .position(|candidate| *candidate == source_id)
+            .ok_or(SourceFlagsError::SourceAxisMismatch)?;
+        payload[source_ordinal] = pair;
         history_proposal.push(raw_frame(current));
     }
     Ok(SourceFlagsValues {
-        payload,
+        source_ids,
+        payload: payload.into_boxed_slice(),
         raw_history_rows: history_proposal.into_boxed_slice(),
     })
 }
@@ -1640,7 +1971,7 @@ fn preflight(
     if history.regular_hosts.as_ref() != input.route.regular_hosts.as_ref() {
         return Err(SourceFlagsError::RegularControlHostMismatch);
     }
-    if input.controls.values.len() != REGULAR_HOSTS {
+    if input.controls.values.len() != input.route.regular_hosts.len() {
         return Err(SourceFlagsError::RegularControlCount);
     }
     resolve_selected_profile(&input.parent.profile_identity)
@@ -1659,7 +1990,10 @@ fn preflight_value_shapes(
     controls: &RegularControls,
     route: &ValidatedSemanticRoute,
 ) -> Result<(), SourceFlagsError> {
-    if current_pcm.rows.len() != HOST_CHANNELS
+    let host_count = route.destination_by_host.len();
+    let regular_count = route.regular_hosts.len();
+    if !(MIN_PHYSICAL_HOSTS..=MAX_MAPPABLE_PHYSICAL_HOSTS).contains(&host_count)
+        || current_pcm.rows.len() != host_count
         || current_pcm
             .rows
             .iter()
@@ -1667,20 +2001,20 @@ fn preflight_value_shapes(
     {
         return Err(SourceFlagsError::PcmShape);
     }
-    if history_rows.len() != REGULAR_HOSTS
+    if history_rows.len() != regular_count
         || history_rows.iter().any(|row| row.len() != FRAME_SAMPLES)
     {
         return Err(SourceFlagsError::HistoryShape);
     }
-    if controls.values.len() != REGULAR_HOSTS {
+    if controls.values.len() != regular_count {
         return Err(SourceFlagsError::RegularControlCount);
     }
     for host in route.regular_hosts.iter().copied() {
         controls.for_host(host)?;
         route.destination(host)?;
     }
-    if route.regular_hosts.len() != REGULAR_HOSTS
-        || route.destination_by_host.len() != HOST_CHANNELS
+    if regular_count + 1 != host_count
+        || regular_count + PREFIX_SOURCE_COUNT > SOURCE_COUNT
         || route.destination(route.lfe_host).is_ok()
     {
         return Err(SourceFlagsError::RouteNotBijective);
@@ -1749,6 +2083,7 @@ fn make_lineage(
     route: &ValidatedSemanticRoute,
     prefix_writers: &PrefixWriterSet,
     source_control_clock: Option<SourceControlSnapshotClock>,
+    source_axis: Arc<SourceAxisBinding>,
 ) -> Result<SourceFlagsLineage, SourceFlagsError> {
     let current_pcm_receipt = digest_current_pcm(current_pcm, &parent);
     let controls_receipt = digest_controls(controls, route, &parent, source_control_clock)?;
@@ -1763,6 +2098,7 @@ fn make_lineage(
     );
     Ok(SourceFlagsLineage {
         parent,
+        source_axis,
         current_pcm_receipt,
         controls_receipt,
         source_control_clock,
@@ -1785,7 +2121,7 @@ fn digest_controls(
     parent: &SourceFlagsParentLineage,
     source_control_clock: Option<SourceControlSnapshotClock>,
 ) -> Result<SourceFlagsDigest, SourceFlagsError> {
-    let mut bytes = Vec::with_capacity(REGULAR_HOSTS * 6);
+    let mut bytes = Vec::with_capacity(MAX_MAPPABLE_REGULAR_HOSTS * 6);
     for host in route.regular_hosts.iter().copied() {
         let control = controls.for_host(host)?;
         bytes.push(host.value());
@@ -1848,8 +2184,32 @@ pub(super) fn current_features_test_packet(
     payload: [[u8; 2]; SOURCE_COUNT],
     parent: SourceFlagsParentLineage,
 ) -> SourceFlagsPacket {
+    let source_ids = (0..SOURCE_COUNT)
+        .map(|source| CodecSourceIndex::new(u64::try_from(source).unwrap_or(u64::MAX)))
+        .collect::<Vec<_>>();
+    let source_axis = Arc::new(
+        SourceAxisBinding::new(
+            Arc::from(source_ids.into_boxed_slice()),
+            SourceAxisOwnerGeneration::new(parent.before_history_generation.value()),
+            [0; 32],
+            parent.transaction_id.clone(),
+            parent.callback_index,
+        )
+        .expect("selected 48-source fixture has an ordered axis and matching callback"),
+    );
+    current_features_test_packet_for_axis(payload.to_vec(), parent, source_axis)
+}
+
+#[cfg(test)]
+pub(super) fn current_features_test_packet_for_axis(
+    payload: Vec<[u8; 2]>,
+    parent: SourceFlagsParentLineage,
+    source_axis: Arc<SourceAxisBinding>,
+) -> SourceFlagsPacket {
+    assert_eq!(payload.len(), source_axis.source_count());
     let lineage = Arc::new(SourceFlagsLineage {
         parent: Arc::new(parent),
+        source_axis,
         current_pcm_receipt: SourceFlagsDigest([0; 32]),
         controls_receipt: SourceFlagsDigest([0; 32]),
         source_control_clock: None,

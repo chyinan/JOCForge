@@ -4,6 +4,9 @@ use serde_json::Value;
 use std::path::PathBuf;
 
 const FIXTURE_DIRECTORY: &str = "tests/fixtures/integrity_owner";
+const FRAME_BYTES: usize = 4_096;
+const FRAME_CRC_START: usize = FRAME_BYTES - 2;
+const FRAME_CRC_INPUT_END: usize = FRAME_CRC_START;
 
 fn fixture_path(name: &str) -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -22,6 +25,79 @@ fn vectors() -> Value {
 
 fn provider() -> Vec<u8> {
     fixture_bytes("integrity-public-provider.json")
+}
+
+fn crc_closed_frame(codec_rate: crate::profile::CodecRateProfile) -> Vec<u8> {
+    let size = crate::codec::frame_size::Eac3FrameSize::from_codec_rate(codec_rate).unwrap();
+    let mut frame = vec![0_u8; size.bytes()];
+    frame[..2].copy_from_slice(&[0x0b, 0x77]);
+    for offset in 0..11 {
+        let value = (size.code().value() >> (10 - offset)) & 1;
+        if value != 0 {
+            let bit = 21 + offset;
+            frame[bit / 8] |= 1 << (7 - (bit % 8));
+        }
+    }
+    let crc_start = frame.len() - 2;
+    let crc = eac3_crc16(&frame[FRAME_CRC_INPUT_START..crc_start]);
+    frame[crc_start..].copy_from_slice(&crc.to_be_bytes());
+    frame
+}
+
+#[test]
+fn integrity_owner_rate_identity_and_crc_window_follow_each_f12_frame_extent() {
+    let provider = validate_keyless_provider(&provider()).unwrap();
+    let rows = [
+        (crate::profile::CodecRateProfile::Kbps384, 1_536),
+        (crate::profile::CodecRateProfile::Kbps448, 1_792),
+        (crate::profile::CodecRateProfile::Kbps576, 2_304),
+        (crate::profile::CodecRateProfile::Kbps640, 2_560),
+        (crate::profile::CodecRateProfile::Kbps768, 3_072),
+        (crate::profile::CodecRateProfile::Kbps1024, 4_096),
+    ];
+    let mut owner_state_hashes = Vec::new();
+
+    for (codec_rate, frame_bytes) in rows {
+        let owner = IntegrityProgrammeOwner::cold_from_provider_for_rate(
+            "integrity-rate-test",
+            0,
+            3,
+            &provider,
+            codec_rate,
+        )
+        .unwrap();
+        assert_eq!(owner.codec_rate(), codec_rate);
+        assert_eq!(
+            owner.committed_state().profile_id(),
+            integrity_profile_id(codec_rate)
+        );
+        let owner_state_hash = owner
+            .owner_state_snapshot()
+            .state_sha256()
+            .as_bytes()
+            .to_vec();
+        assert!(!owner_state_hashes.contains(&owner_state_hash));
+        owner_state_hashes.push(owner_state_hash);
+
+        let frame = crc_closed_frame(codec_rate);
+        assert_eq!(frame.len(), frame_bytes);
+        let (crc_start, expected_crc) = validate_completed_f12_frame(&frame, codec_rate).unwrap();
+        assert_eq!(crc_start, frame_bytes - 2);
+        assert_eq!(
+            u16::from_be_bytes([frame[crc_start], frame[crc_start + 1]]),
+            expected_crc
+        );
+        assert_eq!(eac3_crc16(&frame[FRAME_CRC_INPUT_START..]), 0);
+
+        if codec_rate != crate::profile::CodecRateProfile::Kbps1024 {
+            assert_eq!(
+                validate_completed_f12_frame(&frame, crate::profile::CodecRateProfile::Kbps1024)
+                    .unwrap_err()
+                    .code(),
+                IntegrityErrorCode::FrameShape
+            );
+        }
+    }
 }
 
 fn decode_hex(text: &str) -> Vec<u8> {

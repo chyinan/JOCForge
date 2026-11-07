@@ -11,7 +11,7 @@ fn selected(carriage: EmdfCarriageProfile) -> EncodingProfile {
         CoreCarrierProfile::SelectedFivePointOneSixCarrier,
         JocDownmixProfile::SelectedMode0Phase1Index3,
         SubstreamTopology::SelectedSingleIndependentZeroDependent,
-        CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+        CodecRateProfile::Kbps1024,
         carriage,
     )
 }
@@ -34,7 +34,7 @@ fn each_production_dimension_rejects_independently() {
             CoreCarrierProfile::SelectedFivePointOneSixCarrier,
             JocDownmixProfile::SelectedMode0Phase1Index3,
             SubstreamTopology::SelectedSingleIndependentZeroDependent,
-            CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+            CodecRateProfile::Kbps1024,
             EmdfCarriageProfile::DeployedCompat,
         ),
         EncodingProfile::new(
@@ -42,7 +42,7 @@ fn each_production_dimension_rejects_independently() {
             CoreCarrierProfile::Unsupported,
             JocDownmixProfile::SelectedMode0Phase1Index3,
             SubstreamTopology::SelectedSingleIndependentZeroDependent,
-            CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+            CodecRateProfile::Kbps1024,
             EmdfCarriageProfile::DeployedCompat,
         ),
         EncodingProfile::new(
@@ -50,7 +50,7 @@ fn each_production_dimension_rejects_independently() {
             CoreCarrierProfile::SelectedFivePointOneSixCarrier,
             JocDownmixProfile::Unsupported,
             SubstreamTopology::SelectedSingleIndependentZeroDependent,
-            CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+            CodecRateProfile::Kbps1024,
             EmdfCarriageProfile::DeployedCompat,
         ),
         EncodingProfile::new(
@@ -58,7 +58,7 @@ fn each_production_dimension_rejects_independently() {
             CoreCarrierProfile::SelectedFivePointOneSixCarrier,
             JocDownmixProfile::SelectedMode0Phase1Index3,
             SubstreamTopology::Unsupported,
-            CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+            CodecRateProfile::Kbps1024,
             EmdfCarriageProfile::DeployedCompat,
         ),
         EncodingProfile::new(
@@ -74,7 +74,7 @@ fn each_production_dimension_rejects_independently() {
             CoreCarrierProfile::SelectedFivePointOneSixCarrier,
             JocDownmixProfile::SelectedMode0Phase1Index3,
             SubstreamTopology::SelectedSingleIndependentZeroDependent,
-            CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+            CodecRateProfile::Kbps1024,
             EmdfCarriageProfile::Unsupported,
         ),
     ];

@@ -96,9 +96,14 @@ pub fn prepare_source_frame_from_proposals<'a>(
     )
     .map_err(SourceFrameBridgeError::PublishedEmdf)?;
 
-    let candidate =
-        prepare_selected_source_frame_candidate(analysis_stage, &bsi, &emdf, bap_parameters)
-            .map_err(SourceFrameBridgeError::FrameWriter)?;
+    let candidate = prepare_selected_source_frame_candidate(
+        analysis_stage,
+        prepared.configuration().selected_profile().codec_rate(),
+        &bsi,
+        &emdf,
+        bap_parameters,
+    )
+    .map_err(SourceFrameBridgeError::FrameWriter)?;
     validate_f12_emdf_cursor(&candidate)?;
     Ok(candidate)
 }

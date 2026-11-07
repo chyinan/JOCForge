@@ -3,6 +3,7 @@
 
 use crate::{
     analysis::structure_refresh::{F07_BLOCKS_PER_FRAME, F07_FULLBAND_LANES},
+    codec::frame_size::Eac3FrameSize,
     integrity::crc16::eac3_crc16,
     publication::{OutputSourceAfterProposal, OutputSourceCommitReceipt},
     timeline::{CodecSourceIndex, FrontendCallbackIndex, PublishedAuIndex, source_for_callback},
@@ -15,6 +16,7 @@ use sha2::{Digest, Sha256};
 
 use super::selected_frame_trial::SelectedMainFrameCandidate;
 
+#[cfg(test)]
 const FRAME_BYTES: usize = 4_096;
 const SUPPRESSED_SOURCE_COUNT: u64 = 2;
 const CODEC_OWNER_ID: &str = "codec";
@@ -37,6 +39,7 @@ impl CodecOwnerGeneration {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CodecOwnerRoot {
     generation: CodecOwnerGeneration,
+    codec_rate: crate::profile::CodecRateProfile,
     previous_short: [bool; F07_FULLBAND_LANES],
 }
 
@@ -45,13 +48,31 @@ impl CodecOwnerRoot {
     pub const fn cold() -> Self {
         Self {
             generation: CodecOwnerGeneration(0),
+            codec_rate: crate::profile::CodecRateProfile::Kbps1024,
             previous_short: [false; F07_FULLBAND_LANES],
         }
     }
 
+    pub fn cold_for_rate(
+        codec_rate: crate::profile::CodecRateProfile,
+    ) -> Result<Self, CodecOwnerStageError> {
+        if codec_rate.frame_bytes().is_none() {
+            return Err(CodecOwnerStageError::UnsupportedCodecRate);
+        }
+        Ok(Self {
+            generation: CodecOwnerGeneration(0),
+            codec_rate,
+            previous_short: [false; F07_FULLBAND_LANES],
+        })
+    }
+
     /// Reconstructs this owner from its cold schema during a programme-origin reset.
     pub fn reset(&mut self) {
-        *self = Self::cold();
+        *self = Self {
+            generation: CodecOwnerGeneration(0),
+            codec_rate: self.codec_rate,
+            previous_short: [false; F07_FULLBAND_LANES],
+        };
     }
 
     pub const fn generation(&self) -> CodecOwnerGeneration {
@@ -60,6 +81,10 @@ impl CodecOwnerRoot {
 
     pub const fn previous_short(&self) -> &[bool; F07_FULLBAND_LANES] {
         &self.previous_short
+    }
+
+    pub const fn codec_rate(&self) -> crate::profile::CodecRateProfile {
+        self.codec_rate
     }
 
     /// Serializes this complete owner value as the selected canonical JSON preimage.
@@ -80,6 +105,8 @@ impl CodecOwnerRoot {
     pub fn state_reference(&self) -> CodecOwnerStateReference {
         let canonical_bytes = self.canonical_state_bytes();
         let state_sha256 = Sha256::digest(&canonical_bytes).into();
+        // The selected rate is immutable admission configuration; only the mutable codec state
+        // participates in this owner's canonical GTC value.
         let cold_sha256 = Sha256::digest(Self::cold().canonical_state_bytes()).into();
         CodecOwnerStateReference {
             generation: self.generation,
@@ -119,6 +146,9 @@ impl CodecOwnerRoot {
         current_short_flags: &CodecShortFlags,
         output_after: Option<&OutputSourceAfterProposal>,
     ) -> Result<CodecOwnerProposal, CodecOwnerStageError> {
+        if accepted_frame.codec_rate != self.codec_rate {
+            return Err(CodecOwnerStageError::FrameProfileMismatch);
+        }
         validate_publication(accepted_frame, output_after)?;
         let next_generation = self
             .generation
@@ -127,6 +157,7 @@ impl CodecOwnerRoot {
             .ok_or(CodecOwnerStageError::GenerationOverflow)?;
         let after_state = Self {
             generation: CodecOwnerGeneration(next_generation),
+            codec_rate: self.codec_rate,
             previous_short: current_short_flags[F07_BLOCKS_PER_FRAME - 1],
         };
         let before_state_sha256 = self.state_reference().state_sha256;
@@ -193,6 +224,8 @@ impl CodecOwnerStateReference {
 pub struct AcceptedCodecFrame {
     source_index: CodecSourceIndex,
     attempt_id: AttemptId,
+    codec_rate: crate::profile::CodecRateProfile,
+    frame_bytes: u32,
     frame_sha256: [u8; 32],
 }
 
@@ -206,6 +239,7 @@ impl AcceptedCodecFrame {
             identity.source_index(),
             identity.source_stage_key().attempt_id(),
             candidate.frame_bytes(),
+            candidate.frame_size().bytes(),
         )
     }
 
@@ -213,8 +247,12 @@ impl AcceptedCodecFrame {
         source_index: CodecSourceIndex,
         attempt_id: AttemptId,
         frame: &[u8],
+        expected_frame_bytes: usize,
     ) -> Result<Self, CodecOwnerStageError> {
-        if frame.len() != FRAME_BYTES {
+        let frame_size = Eac3FrameSize::from_frame_bytes(frame.len())
+            .filter(|size| size.bytes() == expected_frame_bytes)
+            .ok_or(CodecOwnerStageError::IncompleteFrame)?;
+        if frame.len() < 2 {
             return Err(CodecOwnerStageError::IncompleteFrame);
         }
         if eac3_crc16(&frame[2..]) != 0 {
@@ -223,6 +261,9 @@ impl AcceptedCodecFrame {
         Ok(Self {
             source_index,
             attempt_id,
+            codec_rate: frame_size.codec_rate(),
+            frame_bytes: u32::try_from(frame_size.bytes())
+                .map_err(|_| CodecOwnerStageError::IncompleteFrame)?,
             frame_sha256: Sha256::digest(frame).into(),
         })
     }
@@ -233,6 +274,14 @@ impl AcceptedCodecFrame {
 
     pub const fn attempt_id(&self) -> AttemptId {
         self.attempt_id
+    }
+
+    pub const fn frame_bytes(&self) -> u32 {
+        self.frame_bytes
+    }
+
+    pub const fn codec_rate(&self) -> crate::profile::CodecRateProfile {
+        self.codec_rate
     }
 
     pub const fn frame_sha256(&self) -> &[u8; 32] {
@@ -308,6 +357,8 @@ impl CodecOwnerProposal {
 pub enum CodecOwnerStageError {
     IncompleteFrame,
     FrameCrc,
+    UnsupportedCodecRate,
+    FrameProfileMismatch,
     MissingDurableAppend,
     UnexpectedDurableAppend,
     DurableAppendMismatch,
@@ -339,7 +390,7 @@ fn validate_publication(
         .checked_sub(SUPPRESSED_SOURCE_COUNT)
         .ok_or(CodecOwnerStageError::DurableAppendMismatch)?;
     let expected_offset = au_index
-        .checked_mul(FRAME_BYTES as u64)
+        .checked_mul(u64::from(accepted_frame.frame_bytes))
         .ok_or(CodecOwnerStageError::DurableAppendMismatch)?;
     let expected_au = PublishedAuIndex::new(au_index);
     let expected_next_source = source
@@ -353,10 +404,11 @@ fn validate_publication(
     if !published_au_matches
         || output_after.after_owner().next_source_index().value() != expected_next_source
         || output_after.after_owner().configuration().attempt_id() != expected_attempt.as_str()
+        || output_after.after_owner().configuration().frame_bytes() != accepted_frame.frame_bytes
         || receipt.attempt_id() != expected_attempt.as_str()
         || receipt.au_index() != expected_au
         || receipt.offset() != expected_offset
-        || receipt.bytes_written() != FRAME_BYTES as u32
+        || receipt.bytes_written() != accepted_frame.frame_bytes
         || receipt.readback_sha256() != &accepted_frame.frame_sha256
         || receipt.crc_residual() != 0
         || !receipt.file_fsync()
@@ -388,8 +440,13 @@ mod tests {
     const TEST_ATTEMPT: AttemptId = AttemptId::new(3);
 
     fn complete_frame(source: u64, bytes: &[u8]) -> AcceptedCodecFrame {
-        AcceptedCodecFrame::from_complete_frame(CodecSourceIndex::new(source), TEST_ATTEMPT, bytes)
-            .expect("self-authored complete frame with valid CRC")
+        AcceptedCodecFrame::from_complete_frame(
+            CodecSourceIndex::new(source),
+            TEST_ATTEMPT,
+            bytes,
+            bytes.len(),
+        )
+        .expect("self-authored complete frame with valid CRC")
     }
 
     fn complete_frame_for_attempt(
@@ -397,8 +454,13 @@ mod tests {
         attempt: AttemptId,
         bytes: &[u8],
     ) -> AcceptedCodecFrame {
-        AcceptedCodecFrame::from_complete_frame(CodecSourceIndex::new(source), attempt, bytes)
-            .expect("self-authored complete frame with valid CRC")
+        AcceptedCodecFrame::from_complete_frame(
+            CodecSourceIndex::new(source),
+            attempt,
+            bytes,
+            bytes.len(),
+        )
+        .expect("self-authored complete frame with valid CRC")
     }
 
     fn output_identity(source: u64) -> OutputSourceIdentity {
@@ -654,6 +716,7 @@ mod tests {
                 CodecSourceIndex::new(0),
                 TEST_ATTEMPT,
                 &[0; FRAME_BYTES - 1],
+                FRAME_BYTES,
             ),
             Err(CodecOwnerStageError::IncompleteFrame)
         );
@@ -663,7 +726,8 @@ mod tests {
             AcceptedCodecFrame::from_complete_frame(
                 CodecSourceIndex::new(0),
                 TEST_ATTEMPT,
-                &invalid
+                &invalid,
+                FRAME_BYTES,
             ),
             Err(CodecOwnerStageError::FrameCrc)
         );

@@ -6,6 +6,7 @@ use jocforge_application::{
     independent_meter_callback::{
         IndependentMeterG0Providers, SelectedSpatialMathGeometry, StandaloneMeterRoot,
     },
+    meter_source_bridge::EncodingProfile,
 };
 use jocforge_io::{
     pcm::{meter_source_cursor::MeterPcmSourceCursor, riff_pcm24::ParsedRiffPcm24},
@@ -14,8 +15,8 @@ use jocforge_io::{
         SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderLoadError,
         SelectedSpatialColdProviderLineage, SelectedSpatialColdProviderLoadError,
         SelectedSpatialColdProviderRoots, load_selected_current_features_math_providers,
-        load_selected_spatial_audio_provider_bundle,
-        load_selected_spatial_cold_provider_candidate_for_selected_profile,
+        load_selected_spatial_audio_provider_bundle_for_profile,
+        load_selected_spatial_cold_provider_candidate_for_profile,
     },
 };
 use std::{error::Error, fmt, path::Path};
@@ -229,8 +230,25 @@ pub fn load_selected_independent_meter_callback_providers(
     current_features_root: &Path,
     geometry: SelectedSpatialMathGeometry,
 ) -> Result<SelectedIndependentMeterCallbackProviders, SelectedIndependentMeterProviderLoadError> {
-    let spatial_candidate = load_selected_spatial_cold_provider_candidate_for_selected_profile(
+    load_selected_independent_meter_callback_providers_for_profile(
+        f03w_provider_root,
+        cold_state_root,
+        current_features_root,
+        geometry,
+        EncodingProfile::selected(),
+    )
+}
+
+pub fn load_selected_independent_meter_callback_providers_for_profile(
+    f03w_provider_root: &Path,
+    cold_state_root: &Path,
+    current_features_root: &Path,
+    geometry: SelectedSpatialMathGeometry,
+    profile: EncodingProfile,
+) -> Result<SelectedIndependentMeterCallbackProviders, SelectedIndependentMeterProviderLoadError> {
+    let spatial_candidate = load_selected_spatial_cold_provider_candidate_for_profile(
         SelectedSpatialColdProviderRoots::new(f03w_provider_root, cold_state_root),
+        profile,
     )
     .map_err(SelectedIndependentMeterProviderLoadError::SpatialCold)?;
     let spatial_cold_lineage = spatial_candidate.lineage();
@@ -280,15 +298,37 @@ pub fn load_selected_main_spatial_callback_providers(
     f04_receiver_provider_root: &Path,
     geometry: SelectedSpatialMathGeometry,
 ) -> Result<SelectedMainSpatialCallbackProviders, SelectedMainSpatialProviderLoadError> {
-    let callback_values = load_selected_independent_meter_callback_providers(
+    load_selected_main_spatial_callback_providers_for_profile(
+        f03w_provider_root,
+        cold_state_root,
+        current_features_root,
+        f04_receiver_provider_root,
+        geometry,
+        EncodingProfile::selected(),
+    )
+}
+
+pub fn load_selected_main_spatial_callback_providers_for_profile(
+    f03w_provider_root: &Path,
+    cold_state_root: &Path,
+    current_features_root: &Path,
+    f04_receiver_provider_root: &Path,
+    geometry: SelectedSpatialMathGeometry,
+    profile: EncodingProfile,
+) -> Result<SelectedMainSpatialCallbackProviders, SelectedMainSpatialProviderLoadError> {
+    let callback_values = load_selected_independent_meter_callback_providers_for_profile(
         f03w_provider_root,
         cold_state_root,
         current_features_root,
         geometry,
+        profile,
     )
     .map_err(SelectedMainSpatialProviderLoadError::CallbackValues)?;
-    let spatial_audio = load_selected_spatial_audio_provider_bundle(f04_receiver_provider_root)
-        .map_err(SelectedMainSpatialProviderLoadError::SpatialAudio)?;
+    let spatial_audio = load_selected_spatial_audio_provider_bundle_for_profile(
+        f04_receiver_provider_root,
+        profile,
+    )
+    .map_err(SelectedMainSpatialProviderLoadError::SpatialAudio)?;
     Ok(SelectedMainSpatialCallbackProviders {
         callback_values,
         spatial_audio,

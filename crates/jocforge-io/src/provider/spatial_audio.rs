@@ -4,6 +4,7 @@
 pub use jocforge_domain::spatial::production_callback::selected_audio_provider_bundle::SelectedSpatialAudioProviderBundle;
 use jocforge_domain::{
     frontend::{PackageManifestEvidence, ProviderFileEvidence},
+    profile::EncodingProfile,
     spatial::{
         F04ParameterProviderError,
         production_callback::selected_audio_provider_bundle::SelectedSpatialAudioProviderEvidence,
@@ -80,6 +81,16 @@ impl std::error::Error for SelectedSpatialAudioProviderLoadError {
 pub fn load_selected_spatial_audio_provider_bundle(
     package_root: impl AsRef<Path>,
 ) -> Result<SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderLoadError> {
+    load_selected_spatial_audio_provider_bundle_for_profile(
+        package_root,
+        EncodingProfile::selected(),
+    )
+}
+
+pub fn load_selected_spatial_audio_provider_bundle_for_profile(
+    package_root: impl AsRef<Path>,
+    profile: EncodingProfile,
+) -> Result<SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderLoadError> {
     let package_root = package_root.as_ref();
     let canonical_root = package_root
         .canonicalize()
@@ -108,7 +119,7 @@ pub fn load_selected_spatial_audio_provider_bundle(
         &descriptor_mathematical,
     );
 
-    SelectedSpatialAudioProviderBundle::validate_selected(&evidence)
+    SelectedSpatialAudioProviderBundle::validate_for_profile(profile, &evidence)
         .map_err(SelectedSpatialAudioProviderLoadError::ProviderBundle)
 }
 
@@ -159,7 +170,9 @@ fn read_package_file(
 mod tests {
     use super::{
         SelectedSpatialAudioProviderLoadError, load_selected_spatial_audio_provider_bundle,
+        load_selected_spatial_audio_provider_bundle_for_profile,
     };
+    use jocforge_domain::profile::{CodecRateProfile, EncodingProfile};
     use std::{
         fs,
         path::{Path, PathBuf},
@@ -246,6 +259,32 @@ mod tests {
             "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
         );
         let _providers = bundle.spatial_audio_joc_providers();
+    }
+
+    #[test]
+    fn f04_spatial_provider_bundle_accepts_each_carrier_rate_profile() {
+        let package = TemporaryProviderPackage::new();
+        package.copy_approved_fixtures();
+        let rates = [
+            CodecRateProfile::Kbps384,
+            CodecRateProfile::Kbps448,
+            CodecRateProfile::Kbps576,
+            CodecRateProfile::Kbps640,
+            CodecRateProfile::Kbps768,
+            CodecRateProfile::Kbps1024,
+        ];
+
+        for codec_rate in rates {
+            let bundle = load_selected_spatial_audio_provider_bundle_for_profile(
+                package.root(),
+                EncodingProfile::selected_with_codec_rate(codec_rate),
+            )
+            .expect("F04 spatial providers are independent of carrier frame extent");
+            assert_eq!(
+                bundle.manifest_sha256().to_hex(),
+                "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+            );
+        }
     }
 
     #[test]

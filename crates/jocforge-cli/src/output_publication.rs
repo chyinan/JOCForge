@@ -232,7 +232,7 @@ pub fn stage_source_frame_output(
     }
     let append_expected = match proposal {
         OutputSourceProposal::Suppressed(_) => None,
-        OutputSourceProposal::Append(append) => Some(append.frame_bytes().as_slice()),
+        OutputSourceProposal::Append(append) => Some(append.frame_bytes()),
     };
     let append_expected = validate_candidate_output_pair(
         &frame.source_index(),

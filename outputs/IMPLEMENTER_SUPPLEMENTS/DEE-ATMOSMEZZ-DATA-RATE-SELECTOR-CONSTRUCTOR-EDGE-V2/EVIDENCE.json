@@ -1,0 +1,65 @@
+{
+  "schema": "jocforge.dee_atmosmezz_data_rate_constructor_edge.v2",
+  "package_id": "DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V2",
+  "supersedes": {
+    "package_id": "DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V1",
+    "manifest_sha256": "63ddeef0d32d8bbc1cf6b4bd5fbf5c9b6a50c3d2dd22671b441ab9ab1868b3b8",
+    "reason": "V2 adds the upstream source join into FUN_1801535b0 workflow-parameter lookup and explicit Priv+0x350 owner caveat."
+  },
+  "status": {
+    "six_string_to_selector_codes": "BOUND_STATIC",
+    "workflow_parameter_string_to_lookup": "BOUND_STATIC_WITHIN_FUN_1801535b0",
+    "frame_local_plus_0xd8_write": "BOUND_STATIC",
+    "plus_0xfc8_eq_2_constructor_transfer": "BOUND_STATIC_CONDITIONAL",
+    "job_xml_to_same_run_priv_plus_0x350_map": "UNBOUND",
+    "selected_processor_branch": "NOT_CAPTURED",
+    "runtime_selector": "NOT_CAPTURED",
+    "full_rate_output_support": "UNBOUND",
+    "dee_run": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-DATA-RATE-CONSTRUCTOR-EDGE-WASH-V1",
+    "package_id": "DEE-ADM-ATMOSMEZZ-DATA-RATE-CONSTRUCTOR-EDGE-WASH-V1",
+    "manifest_sha256_file": "9f94cf5e17bec7659f6defadb9145cdda6f28515f39ca3894031b49bbc6ef3d2",
+    "payload_hashes": "PASS_3_OF_3",
+    "analysis_artifact_hashes": "PASS_16_OF_16",
+    "selected_job_xml_schema_and_parent_evidence": "PASS",
+    "separate_package_seal_present": false,
+    "ghidra_version": "12.2 read-only/no-analysis"
+  },
+  "selected_job": {
+    "input_type": "audio.atmos_mezz",
+    "filter": "encode_to_atmos_ddp",
+    "xml_data_rate_text": "1024",
+    "job_xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+    "user_confirmed_input_label": "人是猫 - 张卡斯, 洛天依",
+    "input_sha256_previous_receipt": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_hash_recomputed_here": false
+  },
+  "static_string_table": [
+    {"xml_text": "384", "selector_code": 0},
+    {"xml_text": "448", "selector_code": 1},
+    {"xml_text": "576", "selector_code": 2},
+    {"xml_text": "640", "selector_code": 3},
+    {"xml_text": "768", "selector_code": 4},
+    {"xml_text": "1024", "selector_code": 5}
+  ],
+  "static_path": {
+    "workflow_parameter_owner_candidate": "Priv+0x350; expressed as plVar9+0x6A when plVar9 is a 64-bit pointer",
+    "lookup_and_write": "FUN_1801535b0 maps workflow rate string and writes U32 to frame-local +0xD8",
+    "conditional_branch": "processor+0xFC8==2",
+    "constructor_path": "FUN_1801475f0 -> FUN_1801746c0 -> FUN_1801746d0 -> FUN_180177e50/eb0 -> FUN_180178dc0",
+    "state_copy": "FUN_180177eb0 copies frame-record U32 to provider state param_1[0]",
+    "open_config_sink": "FUN_180178dc0 writes to open_config[10]",
+    "job_xml_to_runtime_map_generation": "UNBOUND"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "full_encode": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_access": false,
+    "implementation_contact": false,
+    "raw_analysis_logs_or_scripts_in_supplement": false
+  },
+  "disposition": "V2 establishes a static table and conditional field transfer, not a runtime mapping or all-rate successful output."
+}

@@ -9,12 +9,15 @@ use jocforge_domain::{
         ValidatedF03TargetColdProvider, ValidatedFeatureFft4096MathProvider,
         ValidatedFeatureProcessorMathProvider,
         normal_control_snapshot::{
-            NormalControlBeforeState, NormalControlHeldSourceView, NormalControlPreparedSnapshot,
-            NormalControlSnapshotOutput, propose_normal_control_snapshot,
+            NormalControlAdmHeldSourceView, NormalControlAdmInputOutput,
+            NormalControlAdmInputSnapshot, NormalControlBeforeState, NormalControlHeldSourceView,
+            NormalControlPreparedSnapshot, NormalControlSnapshotOutput,
+            propose_next_normal_control_adm_input, propose_normal_control_snapshot,
         },
     },
     profile::EncodingProfile,
     profile::resolve_selected_profile,
+    source_axis::{SourceAxisBinding, SourceAxisError, SourceAxisOwnerGeneration},
     spatial::{
         SpatialAudioMachine, SpatialControlMachine, SpatialProductionCallbackParentParts,
         SpatialProductionCallbackProposal, ValidatedComponentParameterProvider,
@@ -24,7 +27,7 @@ use jocforge_domain::{
             FrontendFeatureStageError, stage_spatial_control_frontend_features_from_installed48,
         },
         installed48_source_map::{
-            Installed48SourceMapError, build_selected_installed48_source_map,
+            Installed48SourceMap, Installed48SourceMapError, build_selected_installed48_source_map,
         },
         production_callback::selected_audio_provider_bundle::SelectedSpatialAudioProviderBundle,
         production_callback::{
@@ -36,12 +39,16 @@ use jocforge_domain::{
         source_flags::{
             BeforeRegularHistory, CurrentHostPcm, PrefixWriterSet, SourceFlagsError,
             SourceFlagsInput, SourceFlagsParentLineage,
+            project_held_normal_control_adm_input_source_controls,
             project_held_normal_control_snapshot_source_controls,
+            project_normal_control_adm_input_output_source_controls,
             project_normal_control_snapshot_output_source_controls,
         },
         source_geometry_outer::{
-            GlobalSourceGeometryError, build_global_source_geometry_snapshot_from_output,
+            GlobalSourceGeometryError, build_global_source_geometry_snapshot_from_adm_input_output,
+            build_global_source_geometry_snapshot_from_output,
             build_held_global_source_geometry_snapshot,
+            build_held_global_source_geometry_snapshot_from_adm_input,
         },
         spatial_control::{
             SpatialControlInstalled48Callback, SpatialControlInstalled48Error,
@@ -64,6 +71,7 @@ pub struct MainSpatialColdRoots {
     frontend_control: Arc<FrontendControlMachine>,
     spatial_control: SpatialControlMachine,
     spatial_audio: SpatialAudioMachine,
+    normal_control_prepared: Arc<NormalControlAdmInputSnapshot>,
 }
 
 impl MainSpatialColdRoots {
@@ -72,24 +80,41 @@ impl MainSpatialColdRoots {
         attempt: AttemptId,
         f01e: &ValidatedF01EColdProvider,
         f03_target: &ValidatedF03TargetColdProvider,
+        p11_geometry: &SelectedP11Geometry,
     ) -> Result<Self, MainSpatialColdRootsError> {
-        let profile = EncodingProfile::selected_with_carriage(
-            prepared.configuration().selected_profile().carriage(),
+        let selected_profile = prepared.configuration().selected_profile();
+        let profile = EncodingProfile::selected_with_rate_and_carriage(
+            selected_profile.codec_rate(),
+            selected_profile.carriage(),
         );
-        let frontend_control = FrontendControlMachine::from_provider(
-            f01e.clone(),
-            prepared.programme_id().clone(),
-            attempt,
+        let cold_owner = prepared
+            .f01e_cold_owner(f01e, attempt)
+            .map_err(MainSpatialColdRootsError::PreparedInput)?;
+        let normal_control_prepared = Arc::clone(
+            &prepared
+                .normal_control_adm_input_snapshot(&cold_owner)
+                .map_err(MainSpatialColdRootsError::PreparedInput)?,
+        );
+        let primary_controls = prepared
+            .primary_metadata_controls()
+            .ok_or(MainSpatialColdRootsError::PrimaryControlsUnavailable)?;
+        let source_map = build_selected_installed48_source_map(primary_controls, p11_geometry)
+            .map_err(MainSpatialColdRootsError::SourceMap)?;
+        let spatial_control = SpatialControlMachine::new_cold_for_source_map(
+            profile,
+            cold_owner.provider(),
+            f03_target,
+            &source_map,
         )
-        .map_err(MainSpatialColdRootsError::FrontendControl)?;
-        let spatial_control = SpatialControlMachine::new_cold(profile, f01e, f03_target)
-            .map_err(MainSpatialColdRootsError::SpatialControl)?;
+        .map_err(MainSpatialColdRootsError::SpatialControl)?;
+        let frontend_control = cold_owner.into_machine();
         let spatial_audio = SpatialAudioMachine::new_cold(profile)
             .map_err(MainSpatialColdRootsError::SpatialAudio)?;
         Ok(Self {
             frontend_control: Arc::new(frontend_control),
             spatial_control,
             spatial_audio,
+            normal_control_prepared,
         })
     }
 
@@ -104,10 +129,18 @@ impl MainSpatialColdRoots {
     pub const fn spatial_audio(&self) -> &SpatialAudioMachine {
         &self.spatial_audio
     }
+
+    pub fn normal_control_prepared(&self) -> &Arc<NormalControlAdmInputSnapshot> {
+        &self.normal_control_prepared
+    }
 }
 
 #[derive(Debug)]
 pub enum MainSpatialColdRootsError {
+    PreparedInput(crate::PreparedJobInputError),
+    SourceMap(Installed48SourceMapError),
+    PrimaryControlsUnavailable,
+    UnsupportedPhysicalRowCount,
     FrontendControl(jocforge_domain::frontend::FrontendControlError),
     SpatialControl(jocforge_domain::spatial::SpatialControlError),
     SpatialAudio(jocforge_domain::spatial::SpatialAudioError),
@@ -118,6 +151,23 @@ pub enum MainSpatialColdRootsError {
 pub struct MainFrontendSnapshotCandidate {
     frontend_control: FrontendControlReplacementCandidate,
     controls: NormalControlSnapshotOutput,
+}
+
+#[must_use]
+pub struct MainFrontendAdmInputSnapshotCandidate {
+    frontend_control: FrontendControlReplacementCandidate,
+    controls: NormalControlAdmInputOutput,
+}
+
+impl MainFrontendAdmInputSnapshotCandidate {
+    pub fn into_parts(
+        self,
+    ) -> (
+        FrontendControlReplacementCandidate,
+        NormalControlAdmInputOutput,
+    ) {
+        (self.frontend_control, self.controls)
+    }
 }
 
 impl MainFrontendSnapshotCandidate {
@@ -190,10 +240,87 @@ pub fn stage_main_frontend_snapshot(
     })
 }
 
+/// Produces one normal MAIN F01E proposal from its admitted dynamic per-input snapshot.
+///
+/// The typed dynamic owner and source rows remain separate from Meter state. This stage returns
+/// an owner candidate and row-shaped control output; the enclosing programme callback still
+/// validates and installs them with the other owners.
+pub fn stage_main_frontend_adm_input_snapshot(
+    prepared: &PreparedJobInput,
+    frontend_before: &FrontendControlMachine,
+    dynamic_prepared: &Arc<NormalControlAdmInputSnapshot>,
+    attempt: AttemptId,
+    transaction_id: CallbackTransactionId,
+) -> Result<MainFrontendAdmInputSnapshotCandidate, MainFrontendSnapshotError> {
+    let prepared_identity = prepared.domain_identity_capability();
+    let frontend_state = frontend_before.committed();
+    if !Arc::ptr_eq(
+        dynamic_prepared.prepared_input_identity(),
+        &prepared_identity,
+    ) || dynamic_prepared.programme_id() != prepared.programme_id()
+        || dynamic_prepared.attempt_id() != attempt
+        || frontend_state.programme_id() != prepared.programme_id()
+        || frontend_state.attempt_id() != attempt
+        || frontend_state.schema() != "F01E_ADM_INPUT_COLD_PROJECTION_V1"
+            && frontend_state.schema() != "F01E_ADM_INPUT_NORMAL_STATE_V1"
+    {
+        return Err(MainFrontendSnapshotError::PreparedInput(
+            crate::PreparedJobInputError::PreparedIdentityMismatch,
+        ));
+    }
+    let callback_index = frontend_state.callback_index();
+    let lineage =
+        CallbackLineageIdentity::new(prepared.programme_id().clone(), attempt, callback_index);
+    let (staged, controls) = if callback_index.value() == 0 {
+        let proposal = dynamic_prepared
+            .propose_first_normal_callback(frontend_state, frontend_before.generation(), lineage)
+            .map_err(MainFrontendSnapshotError::Proposal)?;
+        let controls = proposal.output(Arc::clone(dynamic_prepared));
+        let staged = frontend_before
+            .stage_normal_adm_input(Arc::clone(dynamic_prepared), proposal)
+            .map_err(MainFrontendSnapshotError::Stage)?;
+        (staged, controls)
+    } else {
+        let before = frontend_state
+            .dynamic_after_state()
+            .ok_or(MainFrontendSnapshotError::BeforeState(
+                jocforge_domain::frontend::normal_control_snapshot::NormalControlSnapshotError::StateShapeMismatch,
+            ))?;
+        let proposal = propose_next_normal_control_adm_input(before, dynamic_prepared, lineage)
+            .map_err(MainFrontendSnapshotError::Proposal)?;
+        let controls = proposal.output(Arc::clone(dynamic_prepared));
+        let staged = frontend_before
+            .stage_normal_adm_input_continuation(Arc::clone(dynamic_prepared), proposal)
+            .map_err(MainFrontendSnapshotError::Stage)?;
+        (staged, controls)
+    };
+    let frontend_control = frontend_before
+        .replacement_candidate(staged, transaction_id)
+        .map_err(MainFrontendSnapshotError::Candidate)?;
+    Ok(MainFrontendAdmInputSnapshotCandidate {
+        frontend_control,
+        controls,
+    })
+}
+
 /// Inputs for one normal MAIN callback. PCM has already been read, padded, and identity-bound by IO.
+pub enum MainNormalControlOutput {
+    Selected(NormalControlSnapshotOutput),
+    AdmInput(NormalControlAdmInputOutput),
+}
+
+impl MainNormalControlOutput {
+    pub fn normal_callbacks(&self) -> jocforge_domain::timeline::NormalCallbackCount {
+        match self {
+            Self::Selected(controls) => controls.normal_callbacks(),
+            Self::AdmInput(controls) => controls.normal_callbacks(),
+        }
+    }
+}
+
 pub struct MainSpatialCallbackInput<'a> {
     pub prepared: &'a PreparedJobInput,
-    pub controls: NormalControlSnapshotOutput,
+    pub controls: MainNormalControlOutput,
     pub physical_pcm_rows: &'a [Vec<u32>],
     pub spatial_control: &'a SpatialControlMachine,
     pub spatial_audio: &'a SpatialAudioMachine,
@@ -210,7 +337,7 @@ pub struct MainSpatialCallbackInput<'a> {
 /// Inputs for a MAIN cached-drain callback. PCM is read only from SpatialControl's committed cache.
 pub struct MainSpatialCachedCallbackInput<'a> {
     pub prepared: &'a PreparedJobInput,
-    pub controls: NormalControlHeldSourceView,
+    pub controls: MainHeldControlOutput,
     pub spatial_control: &'a SpatialControlMachine,
     pub spatial_audio: &'a SpatialAudioMachine,
     pub p11_geometry: &'a SelectedP11Geometry,
@@ -223,13 +350,25 @@ pub struct MainSpatialCachedCallbackInput<'a> {
     pub spatial_audio_providers: Option<&'a SelectedSpatialAudioProviderBundle>,
 }
 
+pub enum MainHeldControlOutput {
+    Selected(NormalControlHeldSourceView),
+    AdmInput(NormalControlAdmHeldSourceView),
+}
+
 enum MainF01eCallback<'a> {
-    Normal {
+    NormalSelected {
         controls: Box<NormalControlSnapshotOutput>,
         physical_pcm_rows: &'a [Vec<u32>],
     },
-    CachedDrain {
+    NormalAdmInput {
+        controls: Box<NormalControlAdmInputOutput>,
+        physical_pcm_rows: &'a [Vec<u32>],
+    },
+    CachedDrainSelected {
         controls: Box<NormalControlHeldSourceView>,
+    },
+    CachedDrainAdmInput {
+        controls: Box<NormalControlAdmHeldSourceView>,
     },
 }
 
@@ -256,11 +395,34 @@ pub enum MainSpatialCallbackError {
     WorkerPanicked,
     PrimaryControlsUnavailable,
     SourceMap(Installed48SourceMapError),
+    SourceAxis(SourceAxisError),
     SourceFlags(SourceFlagsError),
     Installed48(SpatialControlInstalled48Error),
     Frontend(FrontendFeatureStageError),
     SourceGeometry(GlobalSourceGeometryError),
     Callback(SpatialProductionCallbackError),
+}
+
+fn source_axis_binding(
+    source_map: &Installed48SourceMap,
+    owner_generation: SourceAxisOwnerGeneration,
+    transaction_id: CallbackLineageIdentity,
+    source_origin_generation: FrontendCallbackIndex,
+) -> Result<Arc<SourceAxisBinding>, MainSpatialCallbackError> {
+    let source_ids = source_map
+        .rows()
+        .iter()
+        .map(|row| row.source_index())
+        .collect::<Vec<_>>();
+    let axis = SourceAxisBinding::new(
+        source_ids,
+        owner_generation,
+        *source_map.source_binding().source_receipt_sha256(),
+        transaction_id,
+        source_origin_generation,
+    )
+    .map_err(MainSpatialCallbackError::SourceAxis)?;
+    Ok(Arc::new(axis))
 }
 
 /// Noncommitting MAIN callback proposal bound to the exact admitted input identity capability.
@@ -497,6 +659,7 @@ impl MainSpatialColdRoots {
                 frontend_control: Arc::clone(&self.frontend_control),
                 spatial_control,
                 spatial_audio,
+                normal_control_prepared: Arc::clone(&self.normal_control_prepared),
             },
             transaction_id,
             callback_index,
@@ -614,6 +777,7 @@ impl MainSpatialColdRoots {
                 frontend_control: Arc::new(frontend_control),
                 spatial_control,
                 spatial_audio,
+                normal_control_prepared: Arc::clone(&self.normal_control_prepared),
             },
             transaction_id,
             callback_index,
@@ -758,12 +922,19 @@ pub fn stage_main_spatial_callback(
         component_parameters,
         spatial_audio_providers,
     } = input;
-    let proposal = stage_main_spatial_callback_work(MainSpatialCallbackWork {
-        prepared,
-        callback: MainF01eCallback::Normal {
+    let callback = match controls {
+        MainNormalControlOutput::Selected(controls) => MainF01eCallback::NormalSelected {
             controls: Box::new(controls),
             physical_pcm_rows,
         },
+        MainNormalControlOutput::AdmInput(controls) => MainF01eCallback::NormalAdmInput {
+            controls: Box::new(controls),
+            physical_pcm_rows,
+        },
+    };
+    let proposal = stage_main_spatial_callback_work(MainSpatialCallbackWork {
+        prepared,
+        callback,
         spatial_control,
         spatial_audio,
         p11_geometry,
@@ -800,11 +971,17 @@ pub fn stage_main_spatial_cached_callback(
         component_parameters,
         spatial_audio_providers,
     } = input;
-    let proposal = stage_main_spatial_callback_work(MainSpatialCallbackWork {
-        prepared,
-        callback: MainF01eCallback::CachedDrain {
+    let callback = match controls {
+        MainHeldControlOutput::Selected(controls) => MainF01eCallback::CachedDrainSelected {
             controls: Box::new(controls),
         },
+        MainHeldControlOutput::AdmInput(controls) => MainF01eCallback::CachedDrainAdmInput {
+            controls: Box::new(controls),
+        },
+    };
+    let proposal = stage_main_spatial_callback_work(MainSpatialCallbackWork {
+        prepared,
+        callback,
         spatial_control,
         spatial_audio,
         p11_geometry,
@@ -866,7 +1043,7 @@ fn stage_main_spatial_callback_inner(
         .map_err(MainSpatialCallbackError::SourceMap)?;
     let (transaction_id, source_control_clock, source_geometry, source_snapshot, frontend) =
         match callback {
-            MainF01eCallback::Normal {
+            MainF01eCallback::NormalSelected {
                 controls,
                 physical_pcm_rows,
             } => {
@@ -883,6 +1060,12 @@ fn stage_main_spatial_callback_inner(
                     &controls,
                 )
                 .map_err(MainSpatialCallbackError::SourceGeometry)?;
+                let source_axis = source_axis_binding(
+                    &source_map,
+                    SourceAxisOwnerGeneration::new(controls.next_owner_generation()),
+                    controls.transaction_id().clone(),
+                    controls.normal_origin_generation(),
+                )?;
                 let before_history =
                     BeforeRegularHistory::from_owner(spatial_control, source_projection.route())
                         .map_err(MainSpatialCallbackError::SourceFlags)?;
@@ -915,7 +1098,8 @@ fn stage_main_spatial_callback_inner(
                     prefix_writers,
                     parent,
                 )
-                .map_err(MainSpatialCallbackError::SourceFlags)?;
+                .map_err(MainSpatialCallbackError::SourceFlags)?
+                .with_source_axis(Arc::clone(&source_axis));
                 let frontend = stage_spatial_control_frontend_features_from_installed48(
                     spatial_control,
                     source_flags,
@@ -932,7 +1116,150 @@ fn stage_main_spatial_callback_inner(
                     frontend,
                 )
             }
-            MainF01eCallback::CachedDrain { controls } => {
+            MainF01eCallback::NormalAdmInput {
+                controls,
+                physical_pcm_rows,
+            } => {
+                let source_projection = project_normal_control_adm_input_output_source_controls(
+                    &controls,
+                    prepared.graph().graph(),
+                    profile,
+                )
+                .map_err(MainSpatialCallbackError::SourceFlags)?;
+                let source_control_clock = source_projection.clock();
+                let source_geometry = build_global_source_geometry_snapshot_from_adm_input_output(
+                    prepared.graph().graph(),
+                    &source_map,
+                    &controls,
+                )
+                .map_err(MainSpatialCallbackError::SourceGeometry)?;
+                let source_axis = source_axis_binding(
+                    &source_map,
+                    SourceAxisOwnerGeneration::new(controls.next_owner_generation()),
+                    controls.transaction_id().clone(),
+                    controls.normal_origin_generation(),
+                )?;
+                let before_history =
+                    BeforeRegularHistory::from_owner(spatial_control, source_projection.route())
+                        .map_err(MainSpatialCallbackError::SourceFlags)?;
+                let transaction_id = controls.transaction_id().clone();
+                let parent = SourceFlagsParentLineage::new(transaction_id.clone(), spatial_control)
+                    .map_err(MainSpatialCallbackError::SourceFlags)?;
+                let installed48 = stage_spatial_control_installed48(
+                    spatial_control,
+                    SpatialControlInstalled48Input {
+                        callback: SpatialControlInstalled48Callback::NormalAdmInputOutput {
+                            controls: &controls,
+                            physical_pcm_rows,
+                        },
+                        source_map: &source_map,
+                        diffusion_parameters: Some(diffusion_parameters),
+                    },
+                )
+                .map_err(MainSpatialCallbackError::Installed48)?;
+                let prefix_writers = PrefixWriterSet::new(installed48.prefix_writer_indices())
+                    .map_err(MainSpatialCallbackError::SourceFlags)?;
+                let current_pcm = physical_pcm_rows
+                    .iter()
+                    .map(|row| row.iter().copied().map(f32::from_bits).collect())
+                    .collect();
+                let source_flags = SourceFlagsInput::from_primary_regular_source_controls(
+                    CurrentHostPcm::new(current_pcm)
+                        .map_err(MainSpatialCallbackError::SourceFlags)?,
+                    Some(before_history),
+                    source_projection,
+                    prefix_writers,
+                    parent,
+                )
+                .map_err(MainSpatialCallbackError::SourceFlags)?
+                .with_source_axis(Arc::clone(&source_axis));
+                let frontend = stage_spatial_control_frontend_features_from_installed48(
+                    spatial_control,
+                    source_flags,
+                    installed48,
+                    feature_processor,
+                    feature_fft,
+                )
+                .map_err(MainSpatialCallbackError::Frontend)?;
+                (
+                    transaction_id,
+                    source_control_clock,
+                    source_geometry,
+                    NormalControlCallbackSource::NormalAdmInputOutput(controls),
+                    frontend,
+                )
+            }
+            MainF01eCallback::CachedDrainAdmInput { controls } => {
+                let source_projection = project_held_normal_control_adm_input_source_controls(
+                    &controls,
+                    prepared.graph().graph(),
+                    profile,
+                )
+                .map_err(MainSpatialCallbackError::SourceFlags)?;
+                let source_control_clock = source_projection.clock();
+                let source_geometry = build_held_global_source_geometry_snapshot_from_adm_input(
+                    prepared.graph().graph(),
+                    &source_map,
+                    &controls,
+                )
+                .map_err(MainSpatialCallbackError::SourceGeometry)?;
+                let source_axis = source_axis_binding(
+                    &source_map,
+                    SourceAxisOwnerGeneration::new(controls.owner_generation()),
+                    controls.delivery_transaction_id().clone(),
+                    controls.source_origin_generation(),
+                )?;
+                let before_history =
+                    BeforeRegularHistory::from_owner(spatial_control, source_projection.route())
+                        .map_err(MainSpatialCallbackError::SourceFlags)?;
+                let transaction_id = controls.delivery_transaction_id().clone();
+                let parent = SourceFlagsParentLineage::new(transaction_id.clone(), spatial_control)
+                    .map_err(MainSpatialCallbackError::SourceFlags)?;
+                let installed48 = stage_spatial_control_installed48(
+                    spatial_control,
+                    SpatialControlInstalled48Input {
+                        callback: SpatialControlInstalled48Callback::CachedDrainAdmInput {
+                            controls: &controls,
+                        },
+                        source_map: &source_map,
+                        diffusion_parameters: Some(diffusion_parameters),
+                    },
+                )
+                .map_err(MainSpatialCallbackError::Installed48)?;
+                let prefix_writers = PrefixWriterSet::new(installed48.prefix_writer_indices())
+                    .map_err(MainSpatialCallbackError::SourceFlags)?;
+                let current_pcm = installed48
+                    .source_pcm_rows()
+                    .iter()
+                    .map(|row| row.iter().copied().map(f32::from_bits).collect())
+                    .collect();
+                let source_flags = SourceFlagsInput::from_primary_regular_source_controls(
+                    CurrentHostPcm::new(current_pcm)
+                        .map_err(MainSpatialCallbackError::SourceFlags)?,
+                    Some(before_history),
+                    source_projection,
+                    prefix_writers,
+                    parent,
+                )
+                .map_err(MainSpatialCallbackError::SourceFlags)?
+                .with_source_axis(Arc::clone(&source_axis));
+                let frontend = stage_spatial_control_frontend_features_from_installed48(
+                    spatial_control,
+                    source_flags,
+                    installed48,
+                    feature_processor,
+                    feature_fft,
+                )
+                .map_err(MainSpatialCallbackError::Frontend)?;
+                (
+                    transaction_id,
+                    source_control_clock,
+                    source_geometry,
+                    NormalControlCallbackSource::CachedAdmHold(controls),
+                    frontend,
+                )
+            }
+            MainF01eCallback::CachedDrainSelected { controls } => {
                 let source_projection = project_held_normal_control_snapshot_source_controls(
                     &controls,
                     prepared.graph().graph(),
@@ -946,6 +1273,12 @@ fn stage_main_spatial_callback_inner(
                     &controls,
                 )
                 .map_err(MainSpatialCallbackError::SourceGeometry)?;
+                let source_axis = source_axis_binding(
+                    &source_map,
+                    SourceAxisOwnerGeneration::new(controls.owner_generation()),
+                    controls.delivery_transaction_id().clone(),
+                    controls.source_origin_generation(),
+                )?;
                 let before_history =
                     BeforeRegularHistory::from_owner(spatial_control, source_projection.route())
                         .map_err(MainSpatialCallbackError::SourceFlags)?;
@@ -978,7 +1311,8 @@ fn stage_main_spatial_callback_inner(
                     prefix_writers,
                     parent,
                 )
-                .map_err(MainSpatialCallbackError::SourceFlags)?;
+                .map_err(MainSpatialCallbackError::SourceFlags)?
+                .with_source_axis(Arc::clone(&source_axis));
                 let frontend = stage_spatial_control_frontend_features_from_installed48(
                     spatial_control,
                     source_flags,

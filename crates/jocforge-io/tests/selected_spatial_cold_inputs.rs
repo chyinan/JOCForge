@@ -148,6 +148,31 @@ fn loads_selected_cold_schemas_and_spatial_parameters_from_two_roots() {
 }
 
 #[test]
+fn cold_spatial_provider_validation_accepts_all_selected_carrier_rates() {
+    let rates = [
+        CodecRateProfile::Kbps384,
+        CodecRateProfile::Kbps448,
+        CodecRateProfile::Kbps576,
+        CodecRateProfile::Kbps640,
+        CodecRateProfile::Kbps768,
+        CodecRateProfile::Kbps1024,
+    ];
+
+    for codec_rate in rates {
+        let candidate = load(
+            &approved_bundle(COLD_BUNDLE),
+            &approved_bundle(PROVIDER_BUNDLE),
+            EncodingProfile::selected_with_codec_rate(codec_rate),
+        )
+        .expect("spatial cold/providers do not depend on carrier AU extent");
+        assert_eq!(
+            candidate.installed48_schema().dimensions().source_count(),
+            48
+        );
+    }
+}
+
+#[test]
 fn rejects_reusing_one_directory_for_both_bundle_roots() {
     let root = approved_bundle(COLD_BUNDLE);
 
@@ -251,7 +276,7 @@ fn rejects_profile_mismatch_without_substitution() {
         CoreCarrierProfile::SelectedFivePointOneSixCarrier,
         JocDownmixProfile::SelectedMode0Phase1Index3,
         SubstreamTopology::SelectedSingleIndependentZeroDependent,
-        CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+        CodecRateProfile::Kbps1024,
         EmdfCarriageProfile::DeployedCompat,
     );
     assert!(matches!(

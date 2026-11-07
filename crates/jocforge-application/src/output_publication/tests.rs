@@ -69,6 +69,32 @@ fn selected_output_projection_matches_both_approved_carriage_hashes() {
 }
 
 #[test]
+fn selected_output_projection_uses_the_admitted_rate_and_frame_extent() {
+    let rows = [
+        (jocforge_domain::profile::CodecRateProfile::Kbps384, 1_536),
+        (jocforge_domain::profile::CodecRateProfile::Kbps448, 1_792),
+        (jocforge_domain::profile::CodecRateProfile::Kbps576, 2_304),
+        (jocforge_domain::profile::CodecRateProfile::Kbps640, 2_560),
+        (jocforge_domain::profile::CodecRateProfile::Kbps768, 3_072),
+        (jocforge_domain::profile::CodecRateProfile::Kbps1024, 4_096),
+    ];
+    let mut rate_hashes = std::collections::HashSet::new();
+
+    for (codec_rate, frame_bytes) in rows {
+        let dimensions = EncodingProfile::selected_with_rate_and_carriage(
+            codec_rate,
+            EmdfCarriageProfile::DeployedCompat,
+        );
+        let profile = resolve_selected_profile(&dimensions).unwrap();
+        let projection =
+            super::SelectedOutputProviderProjection::project_selected_f15_output_provider(profile)
+                .unwrap();
+        assert_eq!(projection.output_provider().frame_bytes, frame_bytes as u32);
+        assert!(rate_hashes.insert(projection.output_provider().provider_sha256));
+    }
+}
+
+#[test]
 fn f15_publication_uses_the_approved_source_to_au_clock_projection() {
     assert_eq!(au_for_source(CodecSourceIndex::new(0)).unwrap(), None);
     assert_eq!(au_for_source(CodecSourceIndex::new(1)).unwrap(), None);

@@ -158,7 +158,7 @@ fn profile_only_mismatch_rejects_without_changing_root_identity_or_generation() 
         CoreCarrierProfile::SelectedFivePointOneSixCarrier,
         JocDownmixProfile::SelectedMode0Phase1Index3,
         SubstreamTopology::SelectedSingleIndependentZeroDependent,
-        CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+        CodecRateProfile::Kbps1024,
         EmdfCarriageProfile::DeployedCompat,
     );
 

@@ -2,7 +2,8 @@
 use jocforge_domain::frontend::bed_channel_join::{PhysicalBedTrack, join_selected_bed_channels};
 use jocforge_domain::frontend::dbmd_sections::parse_selected_dbmd_sections;
 use jocforge_domain::frontend::job_configuration::{
-    PrimaryMetadataChunkHashes, SelectedInputKind, SelectedPrimaryRuntimeIdentity,
+    JobConfigurationError, PrimaryMetadataChunkHashes, SelectedDrcProfile, SelectedHeightTrim,
+    SelectedInputKind, SelectedPrimaryRuntimeIdentity, SelectedSurroundTrim,
     SelectedWaveDescriptor, bind_admitted_selected_input, parse_selected_job_configuration,
 };
 use jocforge_domain::profile::EmdfCarriageProfile;
@@ -145,12 +146,12 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
             assert_eq!(config.loudness().metering_mode(), "1770-4");
             assert!(!config.loudness().dialogue_intelligence());
             assert_eq!(config.loudness().speech_threshold(), 100);
-            assert_eq!(config.line_drc_profile(), "none");
-            assert_eq!(config.rf_drc_profile(), "none");
+            assert_eq!(config.line_drc_profile(), SelectedDrcProfile::None);
+            assert_eq!(config.rf_drc_profile(), SelectedDrcProfile::None);
             assert_eq!(config.downmix().preferred_mode(), "loro");
             assert_eq!(config.downmix().mix_levels(), [-3; 4]);
-            assert_eq!(config.surround_trim_5_1(), "auto");
-            assert_eq!(config.height_trim_5_1(), "auto");
+            assert_eq!(config.surround_trim_5_1(), SelectedSurroundTrim::Auto);
+            assert_eq!(config.height_trim_5_1(), SelectedHeightTrim::Auto);
             assert_eq!(config.time_base(), "file_position");
             assert_eq!(config.prepend_silence_duration(), "0.0");
             assert_eq!(config.append_silence_duration(), "0.0");
@@ -181,6 +182,119 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
     }
     assert_eq!(accepted_count, 4);
     assert_eq!(rejected_count, 7);
+}
+
+#[test]
+fn authored_silence_seconds_truncate_to_sample_counts_and_keep_append_presence() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let authored = case["input_xml"]
+        .as_str()
+        .unwrap()
+        .replace(
+            "<prepend_silence_duration>0.0</prepend_silence_duration>",
+            "<prepend_silence_duration>0.00390625</prepend_silence_duration>",
+        )
+        .replace(
+            "<append_silence_duration>0.0</append_silence_duration>",
+            "<append_silence_duration>0.000001</append_silence_duration>",
+        );
+    let configuration = parse_selected_job_configuration(authored.as_bytes(), wave, source_samples)
+        .expect("selected numeric seconds parse");
+
+    assert_eq!(configuration.prepend_silence_samples().value(), 187);
+    assert_eq!(configuration.append_silence_samples().value(), 0);
+    assert!(configuration.append_silence_duration_explicit());
+
+    let omitted_append = case["input_xml"]
+        .as_str()
+        .unwrap()
+        .replace("<append_silence_duration>0.0</append_silence_duration>", "");
+    let configuration =
+        parse_selected_job_configuration(omitted_append.as_bytes(), wave, source_samples)
+            .expect("append omission remains a typed default at parsing");
+    assert_eq!(configuration.append_silence_samples().value(), 0);
+    assert!(!configuration.append_silence_duration_explicit());
+
+    let frame_duration = case["input_xml"].as_str().unwrap().replace(
+        "<prepend_silence_duration>0.0</prepend_silence_duration>",
+        "<prepend_silence_duration>1f</prepend_silence_duration>",
+    );
+    assert_eq!(
+        parse_selected_job_configuration(frame_duration.as_bytes(), wave, source_samples)
+            .unwrap_err(),
+        JobConfigurationError::TimeDomain
+    );
+}
+
+#[test]
+fn selected_job_admission_carries_each_washed_single_rate_into_the_profile() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+
+    let rows = [
+        (384, 0, 767, 1_536),
+        (448, 1, 895, 1_792),
+        (576, 2, 1_151, 2_304),
+        (640, 3, 1_279, 2_560),
+        (768, 4, 1_535, 3_072),
+        (1_024, 5, 2_047, 4_096),
+    ];
+
+    for (rate, selector_code, frame_size_code, frame_bytes) in rows {
+        let xml = base_xml.replace(
+            "<data_rate>1024</data_rate>",
+            &format!("<data_rate>{rate}</data_rate>"),
+        );
+        let configuration =
+            parse_selected_job_configuration(xml.as_bytes(), wave, source_samples).unwrap();
+        let codec_rate = configuration.selected_profile().codec_rate();
+        let frame_size =
+            jocforge_domain::codec::frame_size::Eac3FrameSize::from_codec_rate(codec_rate).unwrap();
+
+        assert_eq!(configuration.bit_rate_kbps(), rate);
+        assert_eq!(configuration.bit_rate_enum(), selector_code);
+        assert_eq!(codec_rate.kbps(), Some(rate));
+        assert_eq!(codec_rate.selector_code(), Some(selector_code));
+        assert_eq!(frame_size.code().value(), frame_size_code);
+        assert_eq!(frame_size.bytes(), frame_bytes);
+    }
+
+    for token in ["384 448", "0384", "512"] {
+        let xml = base_xml.replace(
+            "<data_rate>1024</data_rate>",
+            &format!("<data_rate>{token}</data_rate>"),
+        );
+        assert!(matches!(
+            parse_selected_job_configuration(xml.as_bytes(), wave, source_samples),
+            Err(JobConfigurationError::BitRate)
+        ));
+    }
 }
 
 #[test]
@@ -325,7 +439,7 @@ fn atmos_mezz_configuration_accepts_authorized_36_and_38_row_metadata_dimensions
 }
 
 #[test]
-fn accepts_dee_film_light_drc_variant_with_selected_meter_controls() {
+fn accepts_selected_film_light_drc_pair_with_selected_meter_controls() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let case = vectors["config_cases"]
         .as_array()
@@ -356,25 +470,227 @@ fn accepts_dee_film_light_drc_variant_with_selected_meter_controls() {
 
     assert!(!config.loudness().dialogue_intelligence());
     assert_eq!(config.loudness().speech_threshold(), 100);
-    assert_eq!(config.line_drc_profile(), "film_light");
-    assert_eq!(config.rf_drc_profile(), "film_light");
+    assert_eq!(config.line_drc_profile(), SelectedDrcProfile::FilmLight);
+    assert_eq!(config.rf_drc_profile(), SelectedDrcProfile::FilmLight);
+}
 
-    let unsupported_dialogue_intelligence = input_xml
-        .replace(
-            "<dialogue_intelligence>false</dialogue_intelligence>",
-            "<dialogue_intelligence>true</dialogue_intelligence>",
-        )
-        .replace(
+#[test]
+fn parses_washed_dialogue_intelligence_inputs_without_claiming_measurement_effect() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["expected"]["status"] == "ACCEPT")
+        .unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+
+    for dialogue_intelligence in ["false", "true"] {
+        for threshold in [0, 15, 20, 100] {
+            let xml = base_xml
+                .replace(
+                    "<dialogue_intelligence>false</dialogue_intelligence>",
+                    &format!(
+                        "<dialogue_intelligence>{dialogue_intelligence}</dialogue_intelligence>"
+                    ),
+                )
+                .replace(
+                    "<speech_threshold>100</speech_threshold>",
+                    &format!("<speech_threshold>{threshold}</speech_threshold>"),
+                );
+            let config =
+                parse_selected_job_configuration(xml.as_bytes(), wave, source_samples).unwrap();
+            assert_eq!(
+                config.loudness().dialogue_intelligence(),
+                dialogue_intelligence == "true"
+            );
+            assert_eq!(config.loudness().speech_threshold(), threshold);
+            let identity = config.normalized_identity_value();
+            assert_eq!(
+                identity["loudness"]["dialogue_intelligence"],
+                dialogue_intelligence == "true"
+            );
+            assert_eq!(identity["loudness"]["speech_threshold"], threshold);
+        }
+    }
+
+    for invalid_threshold in ["-1", "101", "15.0"] {
+        let xml = base_xml.replace(
             "<speech_threshold>100</speech_threshold>",
-            "<speech_threshold>15</speech_threshold>",
+            &format!("<speech_threshold>{invalid_threshold}</speech_threshold>"),
         );
-    let error = parse_selected_job_configuration(
-        unsupported_dialogue_intelligence.as_bytes(),
-        wave,
-        descriptor["source_samples"].as_u64().unwrap(),
-    )
-    .unwrap_err();
-    assert_eq!(error.code(), "CONFIG_FIELD_VALUE");
+        assert_eq!(
+            parse_selected_job_configuration(xml.as_bytes(), wave, source_samples)
+                .unwrap_err()
+                .code(),
+            "CONFIG_FIELD_VALUE"
+        );
+    }
+
+    let invalid_boolean = base_xml.replace(
+        "<dialogue_intelligence>false</dialogue_intelligence>",
+        "<dialogue_intelligence>TRUE</dialogue_intelligence>",
+    );
+    assert_eq!(
+        parse_selected_job_configuration(invalid_boolean.as_bytes(), wave, source_samples)
+            .unwrap_err()
+            .code(),
+        "CONFIG_FIELD_VALUE"
+    );
+}
+
+#[test]
+fn every_declared_trim_xml_choice_is_typed_and_preserved_independently() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["expected"]["status"] == "ACCEPT")
+        .unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let surround_values = ["auto", "0", "-3", "-6", "-9"];
+    let height_values = ["auto", "-3", "-6", "-9", "-12"];
+
+    for surround in surround_values {
+        for height in height_values {
+            let xml = base_xml
+                .replace(
+                    "<surround_trim_5_1>auto</surround_trim_5_1>",
+                    &format!("<surround_trim_5_1>{surround}</surround_trim_5_1>"),
+                )
+                .replace(
+                    "<height_trim_5_1>auto</height_trim_5_1>",
+                    &format!("<height_trim_5_1>{height}</height_trim_5_1>"),
+                );
+            let config =
+                parse_selected_job_configuration(xml.as_bytes(), wave, source_samples).unwrap();
+            assert_eq!(
+                config.surround_trim_5_1(),
+                SelectedSurroundTrim::from_xml_value(surround).unwrap()
+            );
+            assert_eq!(
+                config.height_trim_5_1(),
+                SelectedHeightTrim::from_xml_value(height).unwrap()
+            );
+            let identity = config.normalized_identity_value();
+            assert_eq!(identity["surround_trim_5_1"], surround);
+            assert_eq!(identity["height_trim_5_1"], height);
+        }
+    }
+
+    for (field, invalid_value, xml) in [
+        (
+            "surround_trim_5_1",
+            "-12",
+            base_xml.replace(
+                "<surround_trim_5_1>auto</surround_trim_5_1>",
+                "<surround_trim_5_1>-12</surround_trim_5_1>",
+            ),
+        ),
+        (
+            "height_trim_5_1",
+            "0",
+            base_xml.replace(
+                "<height_trim_5_1>auto</height_trim_5_1>",
+                "<height_trim_5_1>0</height_trim_5_1>",
+            ),
+        ),
+    ] {
+        assert_eq!(
+            parse_selected_job_configuration(xml.as_bytes(), wave, source_samples)
+                .unwrap_err()
+                .code(),
+            "CONFIG_FIELD_VALUE",
+            "field={field} invalid_value={invalid_value}"
+        );
+    }
+}
+
+#[test]
+fn every_line_and_rf_drc_xml_value_is_typed_and_preserved_independently() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["expected"]["status"] == "ACCEPT")
+        .unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let values = [
+        "film_standard",
+        "film_light",
+        "music_standard",
+        "music_light",
+        "speech",
+        "none",
+    ];
+
+    for line in values {
+        for rf in values {
+            let line_field = format!("<line_mode_drc_profile>{line}</line_mode_drc_profile>");
+            let rf_field = format!("<rf_mode_drc_profile>{rf}</rf_mode_drc_profile>");
+            let xml = base_xml
+                .replace(
+                    "<line_mode_drc_profile>none</line_mode_drc_profile>",
+                    &line_field,
+                )
+                .replace("<rf_mode_drc_profile>none</rf_mode_drc_profile>", &rf_field);
+            let config = parse_selected_job_configuration(
+                xml.as_bytes(),
+                wave,
+                descriptor["source_samples"].as_u64().unwrap(),
+            )
+            .unwrap_or_else(|error| panic!("Line={line}, RF={rf}: {error:?}"));
+
+            assert_eq!(
+                config.line_drc_profile(),
+                SelectedDrcProfile::from_xml_value(line).unwrap()
+            );
+            assert_eq!(
+                config.rf_drc_profile(),
+                SelectedDrcProfile::from_xml_value(rf).unwrap()
+            );
+            let identity = config.normalized_identity_value();
+            assert_eq!(identity["line_drc_profile"], line);
+            assert_eq!(identity["rf_drc_profile"], rf);
+        }
+    }
+
+    let unknown = base_xml.replace(
+        "<line_mode_drc_profile>none</line_mode_drc_profile>",
+        "<line_mode_drc_profile>automatic</line_mode_drc_profile>",
+    );
+    assert_eq!(
+        parse_selected_job_configuration(
+            unknown.as_bytes(),
+            wave,
+            descriptor["source_samples"].as_u64().unwrap(),
+        )
+        .unwrap_err()
+        .code(),
+        "CONFIG_FIELD_VALUE"
+    );
 }
 
 #[test]

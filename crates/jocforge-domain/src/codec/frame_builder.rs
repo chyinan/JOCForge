@@ -2,6 +2,7 @@
 //! Boundary that assembles validated typed receipts. It cannot calculate upstream values.
 
 use crate::codec::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
+use crate::codec::frame_size::Eac3FrameSizeCode;
 use crate::codec::frame_syntax::{
     CodecBlockIndex, SelectedBsiDrcFields, SelectedBsiMixingInformationValues,
     SelectedComplexityIndexTypeA,
@@ -40,19 +41,25 @@ impl From<FrameBitWriterError> for SelectedEac3PrefixError {
     }
 }
 
-/// Writes the selected 48 kHz / 1024 kbps / 5.1 fixed E-AC-3 prefix at bit 0.
+/// Writes the selected 48 kHz / 5.1 fixed E-AC-3 prefix with its admitted frame-size code.
 ///
 /// The prefix ends at bit 44; the next caller-owned field begins at bit 45.
 /// Three display-pad bits are not emitted.
 pub fn write_selected_eac3_fixed_prefix(
     writer: &mut FrameBitWriter<'_>,
+    frame_size_code: Eac3FrameSizeCode,
 ) -> Result<FrameBitCursor, SelectedEac3PrefixError> {
     let actual = writer.cursor().bit_offset();
     if actual != 0 {
         return Err(SelectedEac3PrefixError::CursorMismatch { actual });
     }
     writer.preflight_capacity(SELECTED_FIXED_PREFIX_BITS)?;
-    for (value, width) in SELECTED_FIXED_PREFIX_FIELDS {
+    for (index, (value, width)) in SELECTED_FIXED_PREFIX_FIELDS.into_iter().enumerate() {
+        let value = if index == 3 {
+            u32::from(frame_size_code.value())
+        } else {
+            value
+        };
         writer.write_unsigned(value, width)?;
     }
     Ok(writer.cursor())

@@ -13,7 +13,7 @@ use crate::output_publication::{OutputPublicationError, ProgrammeOutputStaging, 
 use crate::programme_roots::{ProgrammeOwnerRoots, source_for_callback_clock};
 use crate::progress::ProgressBar;
 use crate::selected_spatial_callback_providers::{
-    SelectedMainSpatialProviderLoadError, load_selected_main_spatial_callback_providers,
+    SelectedMainSpatialProviderLoadError, load_selected_main_spatial_callback_providers_for_profile,
 };
 use jocforge_application::drc_source_bridge::CallbackLineageIdentity;
 use jocforge_application::independent_meter_callback::CallbackTransactionId;
@@ -26,23 +26,24 @@ use jocforge_application::{
     metadata_source_bridge::{
         MetadataOwnerPreparationError, SelectedJocState, prepare_metadata_owner_from_measurement,
     },
-    meter_source_bridge::FrontendControlReplacementCandidate,
+    meter_source_bridge::{CodecRateProfile, EncodingProfile, FrontendControlReplacementCandidate},
     output_publication::{AttemptId, OutputStagingOwnerId},
     prepare_selected_job_input,
     reader_eof_callback::{
         ReaderEofActualSampleCount, ReaderEofMachine, ReaderEofNormalCallbackClock,
-        ReaderEofPaddingSampleCount, ReaderEofReplacementCandidate, stage_reader_eof_cached_drain,
-        stage_reader_eof_normal_callback,
+        ReaderEofPaddingSampleCount, ReaderEofReplacementCandidate,
+        stage_reader_eof_adm_input_normal_callback, stage_reader_eof_cached_drain,
     },
     source_analysis_bridge::{
         SelectedSourceAnalysisProviders, cold_analysis_root_for_prepared_input,
     },
     source_frame_bridge::CodecOwnerRoot,
     spatial_callback::{
-        MainFrontendSnapshotError, MainSpatialCachedCallbackInput, MainSpatialCallbackCandidate,
-        MainSpatialCallbackError, MainSpatialCallbackInput, MainSpatialColdRoots,
-        MainSpatialColdRootsError, stage_main_frontend_snapshot,
-        stage_main_spatial_cached_callback, stage_main_spatial_callback,
+        MainFrontendSnapshotError, MainHeldControlOutput, MainNormalControlOutput,
+        MainSpatialCachedCallbackInput, MainSpatialCallbackCandidate, MainSpatialCallbackError,
+        MainSpatialCallbackInput, MainSpatialColdRoots, MainSpatialColdRootsError,
+        stage_main_frontend_adm_input_snapshot, stage_main_spatial_cached_callback,
+        stage_main_spatial_callback,
     },
 };
 use jocforge_io::pcm::{
@@ -59,6 +60,7 @@ const ENCODE_REQUEST_STACK_BYTES: usize = 32 * 1024 * 1024;
 pub enum EncodeRequestError {
     InvalidPath,
     OutputAlreadyExists,
+    UnsupportedDataRate,
     InputFile(RiffPcm24FileReadError),
     Riff(jocforge_io::pcm::riff_pcm24::RiffPcm24Error),
     PreparedInput(PreparedJobInputError),
@@ -91,6 +93,9 @@ impl std::fmt::Display for EncodeRequestError {
             Self::OutputAlreadyExists => {
                 formatter.write_str("output exists; refusing to replace it")
             }
+            Self::UnsupportedDataRate => formatter.write_str(
+                "data_rate must be one explicit value: 384, 448, 576, 640, 768, or 1024",
+            ),
             Self::InputFile(error) => write!(formatter, "{error}"),
             Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
             Self::PreparedInput(error) => write!(formatter, "selected ADM input rejected: {error}"),
@@ -146,11 +151,25 @@ impl std::error::Error for EncodeRequestError {}
 /// extent supplies `source_samples`. It adds no timecode conversion or audio algorithm. The output
 /// path is only part of the prepared request; the application gate runs before any output is opened.
 pub fn run(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestError> {
+    run_with_data_rate(input_path, output_path, CodecRateProfile::Kbps1024)
+}
+
+/// Runs the selected full-file CLI pipeline at one explicitly selected supported carrier rate.
+pub fn run_with_data_rate(
+    input_path: &Path,
+    output_path: &Path,
+    codec_rate: CodecRateProfile,
+) -> Result<(), EncodeRequestError> {
+    if codec_rate.kbps().is_none() {
+        return Err(EncodeRequestError::UnsupportedDataRate);
+    }
     thread::scope(|scope| {
         let worker = thread::Builder::new()
             .name("jocforge-encode-request".to_owned())
             .stack_size(ENCODE_REQUEST_STACK_BYTES)
-            .spawn_scoped(scope, move || run_inner(input_path, output_path))
+            .spawn_scoped(scope, move || {
+                run_inner(input_path, output_path, codec_rate)
+            })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
         worker
             .join()
@@ -158,7 +177,11 @@ pub fn run(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestErr
     })
 }
 
-fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestError> {
+fn run_inner(
+    input_path: &Path,
+    output_path: &Path,
+    codec_rate: CodecRateProfile,
+) -> Result<(), EncodeRequestError> {
     eprintln!("Preparing selected ADM input and owner plan...");
     let input_path = normalize_existing_input(input_path)?;
     let output_path = normalize_new_output(output_path)?;
@@ -175,9 +198,12 @@ fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestE
         .selected_adm_payloads()
         .map_err(EncodeRequestError::Riff)?;
     let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
-    let job_xml = selected_full_file_job_xml(&input_reference, &output_reference);
+    let data_rate_kbps = codec_rate
+        .kbps()
+        .ok_or(EncodeRequestError::UnsupportedDataRate)?;
+    let job_xml = selected_full_file_job_xml(&input_reference, &output_reference, data_rate_kbps);
     let prepared = prepare_selected_job_input(
-        run_identity.programme,
+        run_identity.programme.clone(),
         job_xml.as_bytes(),
         wave,
         parsed.total_samples(),
@@ -190,14 +216,25 @@ fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestE
     let prepared = prepared
         .bind_primary_control_rows(data_bytes)
         .map_err(EncodeRequestError::PreparedInput)?;
+    let selected_profile = prepared.configuration().selected_profile();
+    let frame_bytes = selected_profile
+        .codec_rate()
+        .frame_bytes()
+        .ok_or(EncodeRequestError::UnsupportedDataRate)?;
+    let config_sha256 = prepared.config_sha256();
 
     eprintln!(
-        "prepared input: sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits=24 samples_per_channel={} output={}",
+        "prepared input: attempt={} programme={} sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits=24 samples_per_channel={} data_rate_kbps={} frame_bytes={} config_sha256={} output={}",
+        run_identity.attempt.value(),
+        run_identity.programme.as_str(),
         hex_lower(&parsed.source_sha256()),
         resource.len(),
         parsed.sample_rate_hz(),
         parsed.channels(),
         parsed.total_samples(),
+        data_rate_kbps,
+        frame_bytes,
+        hex_lower(&config_sha256),
         output_path.display(),
     );
 
@@ -255,13 +292,18 @@ fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestE
     let supplements = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")
         .join("outputs/IMPLEMENTER_SUPPLEMENTS");
-    let main_providers = load_selected_main_spatial_callback_providers(
+    let spatial_profile = EncodingProfile::selected_with_rate_and_carriage(
+        selected_profile.codec_rate(),
+        selected_profile.carriage(),
+    );
+    let main_providers = load_selected_main_spatial_callback_providers_for_profile(
         &supplements.join("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1"),
         &supplements.join("F01B-F03W-COLD-STATE-ASSETS-V1"),
         &supplements.join("METER-APPROVED-PARAMETER-ASSETS-V1"),
         &supplements.join("F04-RECEIVER-APPROVED-PARAMETERS-V1"),
         generate_selected_spatial_math_geometry()
             .map_err(|_| EncodeRequestError::SpatialGeometry)?,
+        spatial_profile,
     )
     .map_err(EncodeRequestError::SpatialProviders)?;
     let callback_values = main_providers.callback_values().providers();
@@ -270,6 +312,7 @@ fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestE
         run_identity.attempt,
         &callback_values.f01e,
         &callback_values.f03_target,
+        &callback_values.p11_geometry,
     )
     .map_err(EncodeRequestError::SpatialColdRoots)?;
     let reader_eof_root = ReaderEofMachine::cold();
@@ -285,7 +328,11 @@ fn run_inner(input_path: &Path, output_path: &Path) -> Result<(), EncodeRequestE
             EncodeRequestError::SourcePipeline(format!("Integrity cold root: {error:?}"))
         })?;
     let joc_state = SelectedJocState::cold();
-    let codec_root = CodecOwnerRoot::cold();
+    let codec_root =
+        CodecOwnerRoot::cold_for_rate(prepared.configuration().selected_profile().codec_rate())
+            .map_err(|error| {
+                EncodeRequestError::SourcePipeline(format!("Codec cold root: {error:?}"))
+            })?;
     let model_dialnorm = drc_root.state().programme_dialnorm();
     let measurement_receipt = measurement.receipt();
     let roots = ProgrammeOwnerRoots::ready(
@@ -621,14 +668,15 @@ fn stage_main_callback_candidate(
         callback_index.value()
     ))
     .map_err(|_| EncodeRequestError::CallbackTransaction)?;
-    let frontend = stage_main_frontend_snapshot(
+    let candidate = stage_main_frontend_adm_input_snapshot(
         prepared,
         roots.frontend_control(),
+        roots.normal_control_prepared(),
         attempt,
         transaction_id.clone(),
     )
     .map_err(EncodeRequestError::FrontendSnapshot)?;
-    let (frontend, controls) = frontend.into_parts();
+    let (frontend, controls) = candidate.into_parts();
     let actual_samples = ReaderEofActualSampleCount::new(
         u32::try_from(frame.actual_samples().value())
             .map_err(|_| EncodeRequestError::ClockMismatch)?,
@@ -652,7 +700,7 @@ fn stage_main_callback_candidate(
     .map_err(|error| {
         EncodeRequestError::SourcePipeline(format!("ReaderEof callback clock: {error:?}"))
     })?;
-    let reader_eof_candidate = stage_reader_eof_normal_callback(
+    let reader_eof_candidate = stage_reader_eof_adm_input_normal_callback(
         reader_eof_before,
         reader_eof_clock,
         frame.physical_pcm_rows(),
@@ -665,7 +713,7 @@ fn stage_main_callback_candidate(
     let values = providers.callback_values().providers();
     let spatial = stage_main_spatial_callback(MainSpatialCallbackInput {
         prepared,
-        controls,
+        controls: MainNormalControlOutput::AdmInput(controls),
         physical_pcm_rows: frame.physical_pcm_rows(),
         spatial_control: roots.spatial_control(),
         spatial_audio: roots.spatial_audio(),
@@ -709,16 +757,21 @@ fn stage_main_cached_callback_candidate(
     let callback_lineage =
         CallbackLineageIdentity::new(prepared.programme_id().clone(), attempt, callback_index);
     let frontend_control = roots.main().frontend_control();
-    let held_controls = frontend_control
+    let after = frontend_control
         .committed()
-        .held_source_view_for_cached_callback(
-            frontend_control.generation(),
-            callback_lineage,
-            roots.normal_callbacks(),
-        )
-        .map_err(|error| {
-            EncodeRequestError::SourcePipeline(format!("cached F01E held controls: {error:?}"))
+        .dynamic_after_state()
+        .ok_or_else(|| {
+            EncodeRequestError::SourcePipeline("MAIN F01E after-state unavailable".to_owned())
         })?;
+    let held_controls = MainHeldControlOutput::AdmInput(
+        after
+            .held_source_view_for_cached_callback(callback_lineage)
+            .map_err(|error| {
+                EncodeRequestError::SourcePipeline(format!(
+                    "MAIN cached F01E held controls: {error:?}"
+                ))
+            })?,
+    );
     let reader_eof_candidate = stage_reader_eof_cached_drain(
         roots.reader_eof(),
         callback_index,
@@ -797,10 +850,14 @@ fn file_reference_parts(path: &Path) -> Result<FileReferenceParts, EncodeRequest
     })
 }
 
-fn selected_full_file_job_xml(input: &FileReferenceParts, output: &FileReferenceParts) -> String {
+fn selected_full_file_job_xml(
+    input: &FileReferenceParts,
+    output: &FileReferenceParts,
+    data_rate_kbps: u32,
+) -> String {
     format!(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>1770-4</metering_mode><dialogue_intelligence>false</dialogue_intelligence><speech_threshold>100</speech_threshold></measure_only></loudness><data_rate>1024</data_rate><timecode_frame_rate>not_indicated</timecode_frame_rate><start></start><end></end><time_base>file_position</time_base><prepend_silence_duration>0.0</prepend_silence_duration><append_silence_duration>0.0</append_silence_duration><drc><line_mode_drc_profile>film_light</line_mode_drc_profile><rf_mode_drc_profile>film_light</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>-3</loro_center_mix_level><loro_surround_mix_level>-3</loro_surround_mix_level><ltrt_center_mix_level>-3</ltrt_center_mix_level><ltrt_surround_mix_level>-3</ltrt_surround_mix_level><preferred_downmix_mode>loro</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>auto</surround_trim_5_1><height_trim_5_1>auto</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
-        input.file_name, input.local_path, output.file_name, output.local_path
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>1770-4</metering_mode><dialogue_intelligence>false</dialogue_intelligence><speech_threshold>100</speech_threshold></measure_only></loudness><data_rate>{}</data_rate><timecode_frame_rate>not_indicated</timecode_frame_rate><start></start><end></end><time_base>file_position</time_base><prepend_silence_duration>0.0</prepend_silence_duration><append_silence_duration>0.0</append_silence_duration><drc><line_mode_drc_profile>film_light</line_mode_drc_profile><rf_mode_drc_profile>film_light</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>-3</loro_center_mix_level><loro_surround_mix_level>-3</loro_surround_mix_level><ltrt_center_mix_level>-3</ltrt_center_mix_level><ltrt_surround_mix_level>-3</ltrt_surround_mix_level><preferred_downmix_mode>loro</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>auto</surround_trim_5_1><height_trim_5_1>auto</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
+        input.file_name, input.local_path, data_rate_kbps, output.file_name, output.local_path
     )
 }
 
@@ -848,4 +905,56 @@ fn hex_lower(bytes: &[u8]) -> String {
         output.push(char::from(HEX[usize::from(byte & 0x0f)]));
     }
     output
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        EncodeRequestError, FileReferenceParts, run_with_data_rate, selected_full_file_job_xml,
+    };
+    use jocforge_application::meter_source_bridge::CodecRateProfile;
+    use std::path::Path;
+
+    #[test]
+    fn generated_job_xml_preserves_each_explicit_carrier_rate() {
+        let input = FileReferenceParts {
+            file_name: "input.wav".to_owned(),
+            local_path: "D:\\audio".to_owned(),
+        };
+        let output = FileReferenceParts {
+            file_name: "output.ec3".to_owned(),
+            local_path: "D:\\audio".to_owned(),
+        };
+        let rows = [
+            (CodecRateProfile::Kbps384, 384),
+            (CodecRateProfile::Kbps448, 448),
+            (CodecRateProfile::Kbps576, 576),
+            (CodecRateProfile::Kbps640, 640),
+            (CodecRateProfile::Kbps768, 768),
+            (CodecRateProfile::Kbps1024, 1_024),
+        ];
+
+        for (codec_rate, data_rate_kbps) in rows {
+            let xml = selected_full_file_job_xml(&input, &output, data_rate_kbps);
+            assert!(xml.contains(&format!("<data_rate>{data_rate_kbps}</data_rate>")));
+            assert_eq!(
+                xml.matches("<data_rate>").count(),
+                1,
+                "the CLI emits a single rate token"
+            );
+            assert_eq!(codec_rate.kbps(), Some(data_rate_kbps));
+        }
+    }
+
+    #[test]
+    fn unsupported_rate_rejects_before_input_or_output_io() {
+        assert!(matches!(
+            run_with_data_rate(
+                Path::new("missing-input.wav"),
+                Path::new("unused-output.ec3"),
+                CodecRateProfile::Unsupported,
+            ),
+            Err(EncodeRequestError::UnsupportedDataRate)
+        ));
+    }
 }

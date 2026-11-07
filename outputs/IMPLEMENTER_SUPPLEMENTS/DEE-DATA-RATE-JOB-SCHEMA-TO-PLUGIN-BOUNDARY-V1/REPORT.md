@@ -1,0 +1,7 @@
+# DEE `data_rate` job schema and selected-plugin boundary
+
+The host job_config XSD declares `encode_to_atmos_ddp/data_rate` optional, default `448`, as an `xs:list` of string items restricted to `384`, `448`, `576`, `640`, `768`, and `1024`; no list-length facet is declared. Separately, the Atmos DDP plugin metadata declares a six-token DDP-only branch and a wider alternate DDP/Blu-ray branch. These are schema/metadata declarations; they do not reveal whether multiple tokens mean fallback preferences, a selected set, or another runtime policy.
+
+The selected host StageRunner statically builds a generic property-record vector and dispatches eligible records through a stage virtual setter. The inspected route does not identify the `data_rate` record, selected factory index, or connect that record to the Atmos DDP property instance. Within the plugin, the `data_rate` metadata's default-helper argument is the string `448`, but its semantic role is not independently typed and the extended branch has a conflicting Blu-ray description. Treat the field default as a schema declaration; omitted runtime value and multi-token behavior stay UNBOUND.
+
+A separate Wash observation package now records successful single-rate DEE outputs at all six values on one authorized My Jealousy N36 / 48 kHz / 5.1 / 33-frame M4A test configuration, with syncframe lengths scaling from 1536 bytes at 384 kbps through 4096 bytes at 1024 kbps. This empirical coverage does not bind the native writer or prove other layouts/sample rates.

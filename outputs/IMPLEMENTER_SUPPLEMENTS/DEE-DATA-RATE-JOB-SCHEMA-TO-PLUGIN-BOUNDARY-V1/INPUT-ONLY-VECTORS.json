@@ -1,0 +1,28 @@
+{
+  "schema": "data-rate-job-config-vectors.v1",
+  "schema_only_vectors": [
+    {
+      "data_rate_lexical": "384"
+    },
+    {
+      "data_rate_lexical": "448"
+    },
+    {
+      "data_rate_lexical": "576"
+    },
+    {
+      "data_rate_lexical": "640"
+    },
+    {
+      "data_rate_lexical": "768"
+    },
+    {
+      "data_rate_lexical": "1024"
+    },
+    {
+      "data_rate_lexical": "384 448 576 640 768 1024"
+    }
+  ],
+  "single_value_dee_observation": "See separately sealed six-rate frame-header package",
+  "multi_token_semantics": "NOT_RUN_UNBOUND"
+}

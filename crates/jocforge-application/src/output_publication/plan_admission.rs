@@ -553,8 +553,10 @@ struct F15PlanParentContext {
 impl F15PlanParentContext {
     fn from_prepared_input(input: &PreparedJobInput) -> Result<Self, F15PlanAdmissionError> {
         let resolved_profile = input.configuration().selected_profile();
-        let profile_dimensions =
-            EncodingProfile::selected_with_carriage(resolved_profile.carriage());
+        let profile_dimensions = EncodingProfile::selected_with_rate_and_carriage(
+            resolved_profile.codec_rate(),
+            resolved_profile.carriage(),
+        );
         let re_resolved = resolve_selected_profile(&profile_dimensions)
             .map_err(F15PlanAdmissionError::Profile)?;
         if re_resolved != resolved_profile {
@@ -607,14 +609,21 @@ impl F15RoleValidatedValue<CodecF12Role> for CodecF12ProviderValue {
         profile_dimensions: EncodingProfile,
         resolved_profile: ResolvedEncodingProfile,
     ) -> bool {
+        // The hash-bound F12 asset is the 1024 kbps wire baseline. The admitted
+        // carrier-rate row is supplied by the prepared job and selects its own
+        // frame size; these baseline fields must not override that selection.
         self.profile.sample_rate_hz == 48_000
             && self.profile.bit_rate_bps == 1_024_000
             && self.profile.frame_samples == 1_536
             && self.profile.frame_bytes == 4_096
             && self.profile.audio_blocks == 6
             && self.bap.provider_sha256() == sha256_bytes(PUBLIC_BAP_48K)
+            && resolved_profile.codec_rate().frame_bytes().is_some()
             && profile_dimensions
-                == EncodingProfile::selected_with_carriage(resolved_profile.carriage())
+                == EncodingProfile::selected_with_rate_and_carriage(
+                    resolved_profile.codec_rate(),
+                    resolved_profile.carriage(),
+                )
     }
 }
 
@@ -635,8 +644,9 @@ impl F15RoleValidatedValue<JocF05JlRole> for JocF05JlProviderValue {
             && self.profile.capacity_bytes == 372
             && self.profile.dispatch_count == 4_249
             && self.profile.published_writer_count == 4_247
-            && profile_dimensions
-                == EncodingProfile::selected_with_carriage(resolved_profile.carriage())
+            && profile_dimensions.same_dimensions_except_codec_rate(
+                EncodingProfile::selected_with_carriage(resolved_profile.carriage()),
+            )
     }
 }
 
@@ -656,7 +666,10 @@ impl F15RoleValidatedValue<F13MetadataRole> for F13MetadataProviderValue {
             && sha256_hex(self.metadata_owner.wrapper_file())
                 == "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56"
             && profile_dimensions
-                == EncodingProfile::selected_with_carriage(resolved_profile.carriage())
+                == EncodingProfile::selected_with_rate_and_carriage(
+                    resolved_profile.codec_rate(),
+                    resolved_profile.carriage(),
+                )
     }
 }
 
@@ -670,7 +683,10 @@ impl F15RoleValidatedValue<F14IntegrityRole> for F14IntegrityProviderValue {
             && self.provider.provider_sha256().to_hex()
                 == "57b117ab76c597ad6f6d65af65eecc17d2df78cf0874d092fe1f67585e47bd75"
             && profile_dimensions
-                == EncodingProfile::selected_with_carriage(resolved_profile.carriage())
+                == EncodingProfile::selected_with_rate_and_carriage(
+                    resolved_profile.codec_rate(),
+                    resolved_profile.carriage(),
+                )
     }
 }
 
@@ -877,6 +893,7 @@ impl SelectedF15Plan {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(super) enum F15PlanAdmissionError {
+    UnsupportedSilenceTimelineEffect,
     Profile(ProfileError),
     ResolvedProfileMismatch,
     MissingOwnerAdmission(F15ProviderRole),
@@ -1117,6 +1134,9 @@ pub(super) fn admit_selected_f15_plan(
     staging_owner_id: &OutputStagingOwnerId,
     final_destination: &str,
 ) -> Result<SelectedF15Plan, F15PlanAdmissionError> {
+    if !crate::selected_silence_timeline_supported(input.configuration()) {
+        return Err(F15PlanAdmissionError::UnsupportedSilenceTimelineEffect);
+    }
     let context = F15PlanParentContext::from_prepared_input(input)?;
     let admissions = load_selected_owner_admissions(&context)?;
     let final_path = std::path::Path::new(final_destination);
@@ -1167,7 +1187,7 @@ mod tests {
             NormalizedJobConfigurationIdentity, PreparedAdmChunkSpan, PreparedAdmGraphProvenance,
             PreparedInputResourceIdentity,
         },
-        profile::{EmdfCarriageProfile, EncodingProfile},
+        profile::{CodecRateProfile, EmdfCarriageProfile, EncodingProfile},
     };
 
     struct TestProviderValue(u8);
@@ -1200,6 +1220,58 @@ mod tests {
             integrity.provider.profile_id(),
             "keyless-crc32-crc8-crc16.v1"
         );
+    }
+
+    #[test]
+    fn f15_plan_keeps_all_six_admitted_rates_in_its_output_owner() {
+        let rows = [
+            (CodecRateProfile::Kbps384, 1_536),
+            (CodecRateProfile::Kbps448, 1_792),
+            (CodecRateProfile::Kbps576, 2_304),
+            (CodecRateProfile::Kbps640, 2_560),
+            (CodecRateProfile::Kbps768, 3_072),
+            (CodecRateProfile::Kbps1024, 4_096),
+        ];
+
+        for (codec_rate, frame_bytes) in rows {
+            let dimensions = EncodingProfile::selected_with_codec_rate(codec_rate);
+            let context = F15PlanParentContext::for_test(
+                ProgrammeId::new("plan-rate-test").unwrap(),
+                identity(u8::try_from(codec_rate.kbps().unwrap() / 64).unwrap()),
+                dimensions,
+                6_522_906,
+            )
+            .unwrap();
+            let attempt = AttemptId::new(2);
+            let staging_owner_text = format!("stage-rate-{}", codec_rate.kbps().unwrap());
+            let staging_owner = OutputStagingOwnerId::new(&staging_owner_text).unwrap();
+            let final_path = format!("normalized://out/rate-{}.ec3", codec_rate.kbps().unwrap());
+            let staging_path = format!(
+                "normalized://out/stage-rate-{}.partial",
+                codec_rate.kbps().unwrap()
+            );
+            let destination = destination(
+                &context,
+                attempt,
+                staging_owner.clone(),
+                &final_path,
+                &staging_path,
+            );
+            let plan = admit_for_test(
+                context.clone(),
+                attempt,
+                &staging_owner,
+                complete_admissions(&context),
+                Some(destination),
+            )
+            .unwrap();
+            let output = plan.output_binding().output_configuration();
+            assert_eq!(output.frame_bytes(), frame_bytes);
+            assert_eq!(
+                output.expected_product_bytes(),
+                4_247 * u64::try_from(frame_bytes).unwrap()
+            );
+        }
     }
 
     fn identity(resource_byte: u8) -> Arc<PreparedJobInputIdentity> {

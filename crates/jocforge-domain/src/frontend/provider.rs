@@ -348,9 +348,30 @@ pub struct ValidatedF01EColdProvider {
     receipt: F01EProviderReceipt,
 }
 impl ValidatedF01EColdProvider {
+    pub const fn schema(&self) -> &'static str {
+        self.value.schema
+    }
+
     pub const fn callback_index(&self) -> u64 {
         self.value.callback_index
     }
+
+    pub const fn normal_callbacks(&self) -> u64 {
+        self.value.normal_callbacks
+    }
+
+    pub const fn remaining_cached_drains(&self) -> u32 {
+        self.value.remaining_cached_drains
+    }
+
+    pub fn channels(&self) -> u32 {
+        self.value.config.channels
+    }
+
+    pub fn bed_count(&self) -> u32 {
+        self.value.config.bed_count
+    }
+
     pub fn object_count(&self) -> u32 {
         self.value.objects.len() as u32
     }
@@ -381,7 +402,7 @@ impl ValidatedF01EColdProvider {
         let object_bindings = graph.object_sampler_owner_bindings();
         if configuration.input_kind() != SelectedInputKind::Adm
             || wave.channels() == 0
-            || wave.channels() > u8::MAX as u16 + 1
+            || wave.channels() > u16::from(u8::MAX) + 1
             || usize::from(wave.channels()) != usize::from(physical_track_count)
             || bed_track_count != base.config.bed_count as u16
             || u32::from(object_track_count) != object_bindings.len() as u32
@@ -400,10 +421,11 @@ impl ValidatedF01EColdProvider {
         }
 
         let config = &base.config;
+        let codec_rate = configuration.selected_profile().codec_rate();
         if wave.sample_rate_hz() != config.sample_rate_hz
             || wave.pcm_bits() != config.pcm_bits as u16
-            || configuration.bit_rate_kbps() != config.bit_rate_kbps
-            || u32::from(configuration.bit_rate_enum()) != config.bit_rate_enum
+            || codec_rate.kbps() != Some(configuration.bit_rate_kbps())
+            || codec_rate.selector_code() != Some(configuration.bit_rate_enum())
             || u32::from(configuration.layout_enum()) != config.layout_enum
             || u32::from(configuration.target_capacity()) != config.target_capacity
             || u32::from(configuration.frame_samples()) != config.frame_samples
@@ -412,15 +434,6 @@ impl ValidatedF01EColdProvider {
             || u32::from(configuration.route_virtual_prefix_count()) != config.virtual_prefix_count
             || configuration.time_base() != config.time_base
         {
-            return Err(F01EProviderError::DynamicInputShape);
-        }
-        if !matches!(
-            (
-                configuration.line_drc_profile(),
-                configuration.rf_drc_profile()
-            ),
-            ("none", "none") | ("film_light", "film_light")
-        ) {
             return Err(F01EProviderError::DynamicInputShape);
         }
         let sample_count = AdmSampleCount::new(configuration.source_samples())
@@ -434,10 +447,18 @@ impl ValidatedF01EColdProvider {
         value.callback_index = 0;
         value.config.channels = u32::from(wave.channels());
         value.config.source_samples = configuration.source_samples();
+        value.config.bit_rate_kbps = configuration.bit_rate_kbps();
+        value.config.bit_rate_enum = u32::from(configuration.bit_rate_enum());
         value.config.bed_count = u32::from(bed_track_count);
         value.config.object_count = u32::from(object_track_count);
-        value.config.line_drc = configuration.line_drc_profile().to_owned();
-        value.config.rf_drc = configuration.rf_drc_profile().to_owned();
+        configuration
+            .line_drc_profile()
+            .xml_value()
+            .clone_into(&mut value.config.line_drc);
+        configuration
+            .rf_drc_profile()
+            .xml_value()
+            .clone_into(&mut value.config.rf_drc);
         value.objects = object_bindings
             .iter()
             .map(|binding| ObjectCold {

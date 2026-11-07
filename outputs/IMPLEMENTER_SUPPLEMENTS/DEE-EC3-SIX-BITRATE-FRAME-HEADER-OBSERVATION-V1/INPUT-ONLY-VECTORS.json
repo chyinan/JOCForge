@@ -1,0 +1,15 @@
+{
+  "single_variable_axes": [
+    "data_rate_kbps"
+  ],
+  "tested_values_kbps": [
+    384,
+    448,
+    576,
+    640,
+    768,
+    1024
+  ],
+  "source_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+  "status": "OBSERVED_SUCCESSFUL_RUNS; SOURCE_AND_LAYOUT_SCOPED"
+}

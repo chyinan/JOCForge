@@ -322,6 +322,7 @@ mod tests {
 
         let frame_plan = SelectedFrameTrialPlan::new(SelectedFrameTrialPlanInput {
             numeric_plan: &receipt,
+            codec_rate: crate::profile::CodecRateProfile::Kbps1024,
             bsi: bsi.clone(),
             emdf: EmdfFrameInput::AbsentPublishedPayloadV1,
         })

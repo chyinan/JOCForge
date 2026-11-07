@@ -112,7 +112,7 @@ fn rejects_component_provider_for_an_unsupported_profile() {
         CoreCarrierProfile::SelectedFivePointOneSixCarrier,
         JocDownmixProfile::SelectedMode0Phase1Index3,
         SubstreamTopology::SelectedSingleIndependentZeroDependent,
-        CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+        CodecRateProfile::Kbps1024,
         EmdfCarriageProfile::DeployedCompat,
     );
 

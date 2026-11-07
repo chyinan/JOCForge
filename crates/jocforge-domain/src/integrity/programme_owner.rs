@@ -10,6 +10,7 @@ use super::{
 };
 use crate::{
     codec::bitio::FrameBitCursor,
+    codec::frame_size::Eac3FrameSize,
     timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex, source_for_callback},
     transaction::{
         AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId,
@@ -21,12 +22,31 @@ use std::{error::Error, fmt};
 const PROFILE_ID: &str = "keyless-crc32-crc8-crc16.v1";
 const RECEIPT_SCHEMA: &str = "integrity-stage-receipt.v1";
 const OWNER_ID: &str = "integrity";
-const FRAME_BYTES: usize = 4096;
-const FRAME_CRC_START: usize = 4094;
 const FRAME_CRC_INPUT_START: usize = 2;
-const FRAME_CRC_INPUT_END: usize = 4094;
 const SUPPRESSED_SOURCE_COUNT: u64 = 2;
 const GTC_STATE_REF: &str = "owners.integrity";
+
+fn integrity_profile_id(codec_rate: crate::profile::CodecRateProfile) -> &'static str {
+    match codec_rate {
+        crate::profile::CodecRateProfile::Kbps384 => {
+            "keyless-crc32-crc8-crc16.v1/48khz_384kbps_1536bytes"
+        }
+        crate::profile::CodecRateProfile::Kbps448 => {
+            "keyless-crc32-crc8-crc16.v1/48khz_448kbps_1792bytes"
+        }
+        crate::profile::CodecRateProfile::Kbps576 => {
+            "keyless-crc32-crc8-crc16.v1/48khz_576kbps_2304bytes"
+        }
+        crate::profile::CodecRateProfile::Kbps640 => {
+            "keyless-crc32-crc8-crc16.v1/48khz_640kbps_2560bytes"
+        }
+        crate::profile::CodecRateProfile::Kbps768 => {
+            "keyless-crc32-crc8-crc16.v1/48khz_768kbps_3072bytes"
+        }
+        crate::profile::CodecRateProfile::Kbps1024
+        | crate::profile::CodecRateProfile::Unsupported => PROFILE_ID,
+    }
+}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct IntegrityIdentity {
@@ -746,6 +766,7 @@ pub struct IntegrityProgrammeOwner {
     state: IntegrityState,
     programme_id: String,
     attempt: u64,
+    codec_rate: crate::profile::CodecRateProfile,
     expected_source_count: u64,
     retired: bool,
 }
@@ -769,15 +790,34 @@ impl IntegrityProgrammeOwner {
         expected_source_count: u64,
         provider: &KeylessIntegrityProvider,
     ) -> Result<Self, IntegrityError> {
+        Self::cold_from_provider_for_rate(
+            programme_id,
+            attempt,
+            expected_source_count,
+            provider,
+            crate::profile::CodecRateProfile::Kbps1024,
+        )
+    }
+
+    /// Admits the checksum provider for one supported selected E-AC-3 carrier rate.
+    pub fn cold_from_provider_for_rate(
+        programme_id: &str,
+        attempt: u64,
+        expected_source_count: u64,
+        provider: &KeylessIntegrityProvider,
+        codec_rate: crate::profile::CodecRateProfile,
+    ) -> Result<Self, IntegrityError> {
         if programme_id.is_empty() {
             return Err(IntegrityError::new(IntegrityErrorCode::ProgrammeIdentity));
         }
-        if provider.profile_id() != PROFILE_ID {
+        if provider.profile_id() != PROFILE_ID
+            || Eac3FrameSize::from_codec_rate(codec_rate).is_none()
+        {
             return Err(IntegrityError::new(IntegrityErrorCode::UnsupportedProfile));
         }
         Ok(Self {
             state: IntegrityState {
-                profile_id: PROFILE_ID,
+                profile_id: integrity_profile_id(codec_rate),
                 provider_sha256: provider.provider_sha256(),
                 generation: 0,
                 next_source_index: CodecSourceIndex::new(0),
@@ -786,6 +826,7 @@ impl IntegrityProgrammeOwner {
             },
             programme_id: programme_id.to_owned(),
             attempt,
+            codec_rate,
             expected_source_count,
             retired: false,
         })
@@ -1004,17 +1045,8 @@ impl IntegrityProgrammeOwner {
         };
 
         let frame = input.completed_frame.frame;
-        if frame.len() != FRAME_BYTES
-            || eac3_crc16(
-                frame
-                    .get(FRAME_CRC_INPUT_START..)
-                    .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::FrameShape))?,
-            ) != 0
-        {
-            return Err(IntegrityError::new(IntegrityErrorCode::AuFailed));
-        }
+        let (_crc_start, crc16) = validate_completed_f12_frame(frame, self.codec_rate)?;
         let frame_sha256 = sha256(frame);
-        let crc16 = u16::from_be_bytes([frame[FRAME_CRC_START], frame[FRAME_CRC_START + 1]]);
         let before = IntegrityOwnerStateSnapshot::from_state(&self.state);
         let generation = self
             .state
@@ -1096,6 +1128,7 @@ impl IntegrityProgrammeOwner {
             state,
             programme_id: self.programme_id.clone(),
             attempt: self.attempt,
+            codec_rate: self.codec_rate,
             expected_source_count: self.expected_source_count,
             retired: self.retired,
         }
@@ -1137,16 +1170,22 @@ impl IntegrityProgrammeOwner {
         if new_attempt == self.attempt {
             return Err(IntegrityError::new(IntegrityErrorCode::AttemptReuse));
         }
-        Self::cold(
+        let provider = validate_keyless_provider(provider_json).map_err(map_provider_error)?;
+        Self::cold_from_provider_for_rate(
             &self.programme_id,
             new_attempt,
             self.expected_source_count,
-            provider_json,
+            &provider,
+            self.codec_rate,
         )
     }
 
     pub const fn committed_state(&self) -> &IntegrityState {
         &self.state
+    }
+
+    pub const fn codec_rate(&self) -> crate::profile::CodecRateProfile {
+        self.codec_rate
     }
 
     /// Returns the complete current state projection without changing owner state.
@@ -1304,9 +1343,12 @@ impl IntegrityProgrammeOwner {
             input.frame_template.len(),
         )
         .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::FrameShape))?;
-        if input.frame_template.len() != FRAME_BYTES
+        let frame_crc_start = input.frame_template.len().saturating_sub(2);
+        if Eac3FrameSize::from_frame_bytes(input.frame_template.len())
+            .map(Eac3FrameSize::codec_rate)
+            != Some(self.codec_rate)
             || input.container_offset < FRAME_CRC_INPUT_START
-            || frame_carrier_range.end > FRAME_CRC_INPUT_END
+            || frame_carrier_range.end > frame_crc_start
             || input.frame_template[frame_carrier_range.clone()]
                 .iter()
                 .any(|byte| *byte != 0)
@@ -1321,15 +1363,16 @@ impl IntegrityProgrammeOwner {
             source_output_sha256,
             dispatch_output_sha256,
             input.container_offset,
+            frame.len(),
         );
         if fail_after_stage(IntegrityStage::Dispatch) {
             return Err(IntegrityError::new(IntegrityErrorCode::DispatchFailed));
         }
 
-        let crc16 = eac3_crc16(&frame[FRAME_CRC_INPUT_START..FRAME_CRC_INPUT_END]);
+        let crc16 = eac3_crc16(&frame[FRAME_CRC_INPUT_START..frame_crc_start]);
         let au_input_sha256 = dispatch_output_sha256;
-        frame[FRAME_CRC_START..FRAME_BYTES].copy_from_slice(&crc16.to_be_bytes());
-        let crc_residual = eac3_crc16(&frame[FRAME_CRC_INPUT_START..FRAME_BYTES]);
+        frame[frame_crc_start..].copy_from_slice(&crc16.to_be_bytes());
+        let crc_residual = eac3_crc16(&frame[FRAME_CRC_INPUT_START..]);
         if crc_residual != 0 {
             return Err(IntegrityError::new(IntegrityErrorCode::AuFailed));
         }
@@ -1423,6 +1466,7 @@ fn dispatch_receipt(
     input_sha256: IntegritySha256,
     output_sha256: IntegritySha256,
     container_offset: usize,
+    frame_bytes: usize,
 ) -> IntegrityStageReceipt {
     IntegrityStageReceipt {
         schema: RECEIPT_SCHEMA,
@@ -1439,7 +1483,7 @@ fn dispatch_receipt(
         output_sha256,
         details: IntegrityStageDetails::Dispatch {
             container_offset,
-            frame_bytes: FRAME_BYTES,
+            frame_bytes,
         },
     }
 }
@@ -1516,6 +1560,26 @@ fn checked_range(offset: usize, width: usize, bound: usize) -> Option<std::ops::
     (end <= bound).then_some(offset..end)
 }
 
+fn validate_completed_f12_frame(
+    frame: &[u8],
+    expected_rate: crate::profile::CodecRateProfile,
+) -> Result<(usize, u16), IntegrityError> {
+    let frame_size = Eac3FrameSize::from_frame_bytes(frame.len())
+        .filter(|size| size.codec_rate() == expected_rate)
+        .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::FrameShape))?;
+    let crc_start = frame_size.bytes() - 2;
+    let crc_residual = eac3_crc16(
+        frame
+            .get(FRAME_CRC_INPUT_START..)
+            .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::FrameShape))?,
+    );
+    if crc_residual != 0 {
+        return Err(IntegrityError::new(IntegrityErrorCode::AuFailed));
+    }
+    let crc16 = u16::from_be_bytes([frame[crc_start], frame[crc_start + 1]]);
+    Ok((crc_start, crc16))
+}
+
 fn frame_contains_payload_at_cursor(frame: &[u8], cursor: FrameBitCursor, payload: &[u8]) -> bool {
     let Some(payload_bits) = u64::try_from(payload.len())
         .ok()
@@ -1528,8 +1592,11 @@ fn frame_contains_payload_at_cursor(frame: &[u8], cursor: FrameBitCursor, payloa
         return false;
     };
     let range_start = (FRAME_CRC_INPUT_START as u64) * 8;
-    let range_end = (FRAME_CRC_INPUT_END as u64) * 8;
-    if frame.len() != FRAME_BYTES || start_bit < range_start || end_bit > range_end {
+    let Some(frame_size) = Eac3FrameSize::from_frame_bytes(frame.len()) else {
+        return false;
+    };
+    let range_end = u64::try_from(frame_size.bytes().saturating_sub(2)).unwrap_or(0) * 8;
+    if start_bit < range_start || end_bit > range_end {
         return false;
     }
 

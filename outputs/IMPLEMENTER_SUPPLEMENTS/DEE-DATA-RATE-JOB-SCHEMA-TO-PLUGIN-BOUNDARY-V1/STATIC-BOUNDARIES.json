@@ -1,0 +1,17 @@
+{
+  "host_xsd_type": "xs:list of xs:string items",
+  "host_default": "448",
+  "legal_single_items": [
+    384,
+    448,
+    576,
+    640,
+    768,
+    1024
+  ],
+  "host_record_to_selected_ddp_plugin": "UNBOUND",
+  "plugin_ddp_only_metadata_list": "six values confirmed",
+  "plugin_default_helper_argument": "448; semantic role UNBOUND",
+  "multi_token_runtime_policy": "UNBOUND",
+  "carrier_writer_native_join": "UNBOUND"
+}

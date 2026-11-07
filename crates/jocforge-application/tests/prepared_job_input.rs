@@ -1,14 +1,31 @@
 // pattern: Functional Core
 use jocforge_application::{
-    PreparedJobInputError, SelectedAdmResourcePayloads,
+    EncodeError, PreparedJobInputError, SelectedAdmResourcePayloads,
+    independent_meter_callback::{
+        IndependentMeterG0Providers, MeterCallbackGtcBinding,
+        stage_independent_meter_fresh_zero_drain_callback, stage_independent_meter_g0_callback,
+        stage_independent_meter_normal_callback,
+    },
     meter_source_admission::{MeterSourceAdmissionError, admit_meter_source_owner},
     meter_source_bridge::{
-        MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase, MeterSampleCount,
+        KMatrixMode, KMatrixProfile, MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase,
+        MeterKFilterExponentState, MeterProviderIdentity, MeterProviderSet, MeterSampleCount,
         MeterSourceCallbackFrame, MeterSourceCallbackFrameParts, MeterSourceCallbackView,
         MeterSourceIdentity, MeterSourcePosition, MeterSourceReadIndex, MeterSourceSampleCount,
-        MeterUpstreamGeneration,
+        MeterUpstreamGeneration, SharedGainDelayParameters, StandaloneMeterRoot, generate_k_matrix,
     },
+    output_publication::{OutputStagingOwnerId, admit_selected_f15_plan},
     prepare_selected_job_input,
+    reader_eof_callback::{
+        ReaderEofActualSampleCount, ReaderEofMachine, ReaderEofNormalCallbackClock,
+        ReaderEofPaddingSampleCount, stage_reader_eof_adm_input_normal_callback,
+        stage_reader_eof_cached_drain,
+    },
+    spatial_callback::{
+        MainHeldControlOutput, MainNormalControlOutput, MainSpatialCachedCallbackInput,
+        MainSpatialCallbackInput, MainSpatialColdRoots, stage_main_frontend_adm_input_snapshot,
+        stage_main_spatial_cached_callback, stage_main_spatial_callback,
+    },
 };
 use jocforge_domain::frontend::adm_file_storage_map::AdmFileStorageTrackSlot;
 use jocforge_domain::frontend::dbmd_sections::parse_selected_dbmd_sections;
@@ -16,27 +33,56 @@ use jocforge_domain::frontend::selected_adm_graph::SelectedTrackKind;
 use jocforge_domain::frontend::{
     FrontendControlMachine, PackageManifestEvidence, ProviderFileEvidence,
     job_configuration::SelectedWaveDescriptor,
-    normal_control_snapshot::{NormalControlRow, NormalControlSnapshotError},
-    validate_f01e_package_manifest, validate_f01e_provider,
+    normal_control_snapshot::{
+        NormalControlAdmInputOutput, NormalControlBeforeState, NormalControlRow,
+        NormalControlSnapshotError, propose_normal_control_snapshot,
+    },
+    validate_current_features_package_manifest, validate_f01e_package_manifest,
+    validate_f01e_provider, validate_f03_package_manifest, validate_f03_target_cold_provider,
+    validate_feature_fft4096_math_provider, validate_feature_processor_math_provider,
 };
+use jocforge_domain::profile::{CodecRateProfile, EncodingProfile, resolve_selected_profile};
+use jocforge_domain::source_axis::{SelectedSourceRowDimensions, SelectedSourceRowShapeError};
 use jocforge_domain::spatial::{
+    diffusion_filter::{
+        DiffusionFilterParameters, validate_diffusion_filter_package_manifest,
+        validate_diffusion_filter_parameters,
+    },
     installed48_activity::{PrimaryActivityInput, PrimaryInstalled48ActivityProducer},
-    installed48_source_map::{build_meter_installed48_source_map, field_masks_hex},
+    installed48_source_map::{
+        build_meter_installed48_source_map, build_selected_installed48_source_map, field_masks_hex,
+    },
     point_response::{
         PointResponseGateInput, prepare_point_response_sources, produce_point_response_columns,
     },
     prefix_membership::PrefixMembershipProducer,
+    production_callback::selected_audio_provider_bundle::{
+        SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderEvidence,
+    },
     selected_p11_geometry::generate_selected_p11_geometry,
     selected_p15_geometry::generate_selected_p15_geometry,
-    source_flags::SourceControlSnapshotClock,
-    source_geometry_outer::produce_compact_outer_matrix,
+    source_flags::{
+        SourceControlSnapshotClock, project_normal_control_adm_input_output_source_controls,
+    },
+    source_geometry_outer::{
+        build_global_source_geometry_snapshot_from_adm_input_output, produce_compact_outer_matrix,
+    },
+    spatial_audio_state::SpatialAudioMachine,
+    spatial_control::{
+        SpatialControlInstalled48Callback, SpatialControlInstalled48Input, SpatialControlMachine,
+        stage_spatial_control_installed48,
+    },
     target_context::build_target_context_projection,
     target_slot_install::{SelectedTargetSlots, TargetSlotState, install_target_slots},
+    validate_component_parameter_provider, validate_f04_parameter_package_manifest,
+    validate_window_q15_provider,
 };
 use jocforge_domain::timeline::{
     AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount,
 };
-use jocforge_domain::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
+use jocforge_domain::transaction::{
+    AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId,
+};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::{ops::Range, sync::Arc};
@@ -52,6 +98,38 @@ const F01E_MANIFEST: &[u8] =
     include_bytes!("../../jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json");
 const F01E_PROVIDER: &[u8] = include_bytes!(
     "../../jocforge-domain/tests/fixtures/f01e_provider/f01e-selected-constructor-v1.json"
+);
+const F03_PROVIDER: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/target_cold/f03-selected-target-cold-v1.json"
+);
+const FEATURE_PROCESSOR: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/current_features/feature-processor-math-v1.json"
+);
+const FEATURE_FFT: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/current_features/feature-fft4096-math-v1.json"
+);
+const WINDOW_Q15: &[u8] =
+    include_bytes!("../../jocforge-domain/tests/fixtures/f04_parameters/window-q15.json");
+const COMPONENT_PARAMETERS: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"
+);
+const DIFFUSION_PARAMETERS: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/diffusion_filter/diffusion-mathematical-v1.json"
+);
+const DIFFUSION_CONSTRUCTOR: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/diffusion_filter/diffusion-constructor-mathematical-v1.json"
+);
+const QMF_RECEIVER_FUNCTIONAL: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json"
+);
+const QMF_MATHEMATICAL_FFT: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"
+);
+const DESCRIPTOR_MATHEMATICAL: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/f04_parameters/descriptor-mathematical.json"
+);
+const METER_ROOT_V4_COLD: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/METER-ROOT-CANONICAL-STATE-REFERENCE-V4/input-only-cold-roots/N6522906_pre_callback0_cold_root.json"
 );
 const DBMD_PREFIX_BYTES: usize = 4;
 const DBMD_SECTION_HEADER_BYTES: usize = 3;
@@ -71,6 +149,137 @@ fn validated_f01e_provider() -> jocforge_domain::frontend::ValidatedF01EColdProv
     validate_f01e_provider(
         &ProviderFileEvidence::new(Arc::from(F01E_PROVIDER), None),
         &manifest,
+    )
+    .unwrap()
+}
+
+fn sha256_from_hex(value: &str) -> [u8; 32] {
+    let mut bytes = [0_u8; 32];
+    for (index, byte) in bytes.iter_mut().enumerate() {
+        *byte = u8::from_str_radix(&value[index * 2..index * 2 + 2], 16).unwrap();
+    }
+    bytes
+}
+
+fn selected_meter_provider_set() -> MeterProviderSet {
+    let value: Value = serde_json::from_slice(METER_ROOT_V4_COLD).unwrap();
+    let providers = value["binding"]["provider_ids_hash_sorted"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|provider| {
+            MeterProviderIdentity::new(
+                provider["id"].as_str().unwrap(),
+                sha256_from_hex(provider["sha256"].as_str().unwrap()),
+            )
+            .unwrap()
+        })
+        .collect();
+    MeterProviderSet::new(
+        sha256_from_hex(value["binding"]["provider_set_sha256"].as_str().unwrap()),
+        providers,
+    )
+    .unwrap()
+}
+
+fn selected_diffusion_parameters() -> DiffusionFilterParameters {
+    let manifest = validate_diffusion_filter_package_manifest(&PackageManifestEvidence::new(
+        Arc::from(F01E_MANIFEST),
+        None,
+    ))
+    .unwrap();
+    validate_diffusion_filter_parameters(
+        &ProviderFileEvidence::new(Arc::from(DIFFUSION_PARAMETERS), None),
+        &ProviderFileEvidence::new(Arc::from(DIFFUSION_CONSTRUCTOR), None),
+        &manifest,
+    )
+    .unwrap()
+}
+
+fn independent_meter_g0_providers() -> IndependentMeterG0Providers {
+    let manifest = PackageManifestEvidence::new(Arc::from(F01E_MANIFEST), None);
+    let f03_manifest = validate_f03_package_manifest(&manifest).unwrap();
+    let current_features_manifest = validate_current_features_package_manifest(&manifest).unwrap();
+    let f04_manifest = validate_f04_parameter_package_manifest(&manifest).unwrap();
+    IndependentMeterG0Providers {
+        f01e: validated_f01e_provider(),
+        f03_target: validate_f03_target_cold_provider(
+            &ProviderFileEvidence::new(Arc::from(F03_PROVIDER), None),
+            &f03_manifest,
+        )
+        .unwrap(),
+        feature_processor: validate_feature_processor_math_provider(
+            &ProviderFileEvidence::new(Arc::from(FEATURE_PROCESSOR), None),
+            &current_features_manifest,
+        )
+        .unwrap(),
+        feature_fft: validate_feature_fft4096_math_provider(
+            &ProviderFileEvidence::new(Arc::from(FEATURE_FFT), None),
+            &current_features_manifest,
+        )
+        .unwrap(),
+        window: validate_window_q15_provider(
+            &ProviderFileEvidence::new(Arc::from(WINDOW_Q15), None),
+            &f04_manifest,
+        )
+        .unwrap(),
+        component_parameters: validate_component_parameter_provider(
+            &ProviderFileEvidence::new(Arc::from(COMPONENT_PARAMETERS), None),
+            &f04_manifest,
+            &EncodingProfile::selected(),
+        )
+        .unwrap(),
+        diffusion: selected_diffusion_parameters(),
+        p11_geometry: generate_selected_p11_geometry(0x111b, true).unwrap(),
+        p15_geometry: generate_selected_p15_geometry(0x159b, true).unwrap(),
+    }
+}
+
+fn selected_spatial_audio_provider_bundle() -> SelectedSpatialAudioProviderBundle {
+    let manifest = PackageManifestEvidence::new(Arc::from(F01E_MANIFEST), None);
+    let component = ProviderFileEvidence::new(Arc::from(COMPONENT_PARAMETERS), None);
+    let window = ProviderFileEvidence::new(Arc::from(WINDOW_Q15), None);
+    let qmf_receiver = ProviderFileEvidence::new(Arc::from(QMF_RECEIVER_FUNCTIONAL), None);
+    let qmf_fft = ProviderFileEvidence::new(Arc::from(QMF_MATHEMATICAL_FFT), None);
+    let descriptor = ProviderFileEvidence::new(Arc::from(DESCRIPTOR_MATHEMATICAL), None);
+    SelectedSpatialAudioProviderBundle::validate_selected(
+        &SelectedSpatialAudioProviderEvidence::new(
+            &manifest,
+            &component,
+            &window,
+            &qmf_receiver,
+            &qmf_fft,
+            &descriptor,
+        ),
+    )
+    .unwrap()
+}
+
+fn selected_meter_root(
+    prepared: &jocforge_application::PreparedJobInput,
+    source_samples: MeterSourceSampleCount,
+) -> StandaloneMeterRoot {
+    const SELECTED_KERNEL_Q15: [u16; 32] = [
+        20, 177, 491, 958, 1_573, 2_331, 3_224, 4_244, 5_381, 6_624, 7_961, 9_379, 10_864, 12_403,
+        13_980, 15_580, 17_188, 18_788, 20_365, 21_904, 23_389, 24_807, 26_144, 27_387, 28_524,
+        29_544, 30_437, 31_195, 31_810, 32_277, 32_591, 32_748,
+    ];
+    let gain = SharedGainDelayParameters::selected(&SELECTED_KERNEL_Q15).unwrap();
+    let matrix = generate_k_matrix(KMatrixProfile {
+        sample_rate_hz: 48_000,
+        mode: KMatrixMode::Modern,
+        stage_count: 2,
+    })
+    .unwrap();
+    let admission = admit_meter_source_owner(prepared, AttemptId::new(0), source_samples).unwrap();
+    StandaloneMeterRoot::cold_selected(
+        admission.standalone_meter_identity(),
+        source_samples,
+        admission.owner_id().clone(),
+        selected_meter_provider_set(),
+        MeterKFilterExponentState::new([0; 6]),
+        gain,
+        matrix,
     )
     .unwrap()
 }
@@ -628,7 +837,7 @@ fn meter_source_map_materializes_n_plus_ten_active_rows_without_padding() {
 }
 
 #[test]
-fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
+fn f01e_cold_provider_projects_adm_rows_and_selected_drc_profiles() {
     let vectors: Value = serde_json::from_slice(include_bytes!(
         "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
     ))
@@ -644,12 +853,23 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
     let provider = validated_f01e_provider();
     let original_canonical = provider.canonical_bytes().to_vec();
     let mut input_snapshot_hashes = Vec::new();
+    let input_xml = case["input_xml"]
+        .as_str()
+        .unwrap()
+        .replace(
+            "<line_mode_drc_profile>none</line_mode_drc_profile>",
+            "<line_mode_drc_profile>film_standard</line_mode_drc_profile>",
+        )
+        .replace(
+            "<rf_mode_drc_profile>none</rf_mode_drc_profile>",
+            "<rf_mode_drc_profile>music_light</rf_mode_drc_profile>",
+        );
 
     for (channels, expected_objects) in [(36_u16, 26_u64), (38, 28)] {
         let (resource, spans) = selected_resource_with_channels(channels);
         let prepared = prepare_selected_job_input(
             test_programme_id(),
-            case["input_xml"].as_str().unwrap().as_bytes(),
+            input_xml.as_bytes(),
             SelectedWaveDescriptor::new(48_000, channels, 24),
             1,
             Arc::clone(&resource),
@@ -675,6 +895,8 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         assert_eq!(cold["normalized_config"]["bed_count"], 10);
         assert_eq!(cold["normalized_config"]["object_count"], expected_objects);
         assert_eq!(cold["normalized_config"]["frame_samples"], 1_536);
+        assert_eq!(cold["normalized_config"]["line_drc"], "film_standard");
+        assert_eq!(cold["normalized_config"]["rf_drc"], "music_light");
         assert_eq!(
             cold["objects"].as_array().unwrap().len(),
             expected_objects as usize
@@ -703,6 +925,8 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
         assert_eq!(state.remaining_cached_drains(), 4);
         assert_eq!(state.objects().len(), expected_objects as usize);
         assert_eq!(state.normalized_config().channels(), u32::from(channels));
+        assert_eq!(state.normalized_config().line_drc(), "film_standard");
+        assert_eq!(state.normalized_config().rf_drc(), "music_light");
         assert!(state.dbmd_binding().is_none());
         assert!(state.physical_binding().is_none());
         let prepared_with_controls = prepared
@@ -1099,6 +1323,184 @@ fn f01e_cold_provider_projects_36_and_38_adm_rows_from_existing_defaults() {
     assert_eq!(provider.object_count(), 28);
 }
 
+#[test]
+fn explicit_dialogue_measurement_inputs_are_preserved_then_gated_before_meter_admission() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = &vectors["config_cases"][0];
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let (resource, spans) = selected_resource_with_channels(38);
+
+    for (dialogue_intelligence, speech_threshold) in [(true, 15), (true, 100), (false, 15)] {
+        let xml = base_xml
+            .replace(
+                "<dialogue_intelligence>false</dialogue_intelligence>",
+                &format!("<dialogue_intelligence>{dialogue_intelligence}</dialogue_intelligence>"),
+            )
+            .replace(
+                "<speech_threshold>100</speech_threshold>",
+                &format!("<speech_threshold>{speech_threshold}</speech_threshold>"),
+            );
+        let prepared = prepare_selected_job_input(
+            test_programme_id(),
+            xml.as_bytes(),
+            SelectedWaveDescriptor::new(48_000, 38, 24),
+            1,
+            Arc::clone(&resource),
+            metadata_payloads(&resource, &spans),
+        )
+        .unwrap()
+        .bind_primary_control_rows(38 * 3)
+        .unwrap();
+        assert_eq!(
+            prepared.configuration().loudness().dialogue_intelligence(),
+            dialogue_intelligence
+        );
+        assert_eq!(
+            prepared.configuration().loudness().speech_threshold(),
+            speech_threshold
+        );
+
+        let error = admit_meter_source_owner(
+            &prepared,
+            AttemptId::new(0),
+            MeterSourceSampleCount::new(1).unwrap(),
+        )
+        .unwrap_err();
+        assert_eq!(
+            error,
+            MeterSourceAdmissionError::UnsupportedDialogueMeasurementEffect {
+                dialogue_intelligence,
+                speech_threshold,
+            }
+        );
+    }
+}
+
+#[test]
+fn prepared_adm_input_preserves_each_washed_rate_through_profile_and_frame_size() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let (resource, spans) = selected_resource_with_channels(38);
+    let provider = validated_f01e_provider();
+    let rows = [
+        (384, 0, 767, 1_536, CodecRateProfile::Kbps384),
+        (448, 1, 895, 1_792, CodecRateProfile::Kbps448),
+        (576, 2, 1_151, 2_304, CodecRateProfile::Kbps576),
+        (640, 3, 1_279, 2_560, CodecRateProfile::Kbps640),
+        (768, 4, 1_535, 3_072, CodecRateProfile::Kbps768),
+        (1_024, 5, 2_047, 4_096, CodecRateProfile::Kbps1024),
+    ];
+
+    for (rate, selector, frame_size_code, frame_bytes, expected_profile) in rows {
+        let xml = base_xml.replace(
+            "<data_rate>1024</data_rate>",
+            &format!("<data_rate>{rate}</data_rate>"),
+        );
+        let prepared = prepare_selected_job_input(
+            test_programme_id(),
+            xml.as_bytes(),
+            SelectedWaveDescriptor::new(48_000, 38, 24),
+            1,
+            Arc::clone(&resource),
+            metadata_payloads(&resource, &spans),
+        )
+        .unwrap();
+        let configuration = prepared.configuration();
+        assert_eq!(configuration.bit_rate_kbps(), rate);
+        assert_eq!(configuration.bit_rate_enum(), selector);
+        assert_eq!(
+            configuration.selected_profile().codec_rate(),
+            expected_profile
+        );
+        let frame_size = jocforge_domain::codec::frame_size::Eac3FrameSize::from_codec_rate(
+            configuration.selected_profile().codec_rate(),
+        )
+        .unwrap();
+        assert_eq!(frame_size.code().value(), frame_size_code);
+        assert_eq!(frame_size.bytes(), frame_bytes);
+        let meter_admission = admit_meter_source_owner(
+            &prepared,
+            AttemptId::new(0),
+            MeterSourceSampleCount::new(1).unwrap(),
+        )
+        .unwrap();
+        assert!(
+            meter_admission
+                .selected_profile_identity()
+                .unwrap()
+                .contains(expected_profile.identity_label())
+        );
+        prepared
+            .f01e_cold_owner(&provider, AttemptId::new(0))
+            .unwrap();
+    }
+}
+
+#[test]
+fn unsupported_authored_silence_effects_stop_before_meter_and_f15_admission() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let base_xml = vectors["config_cases"][0]["input_xml"].as_str().unwrap();
+    let (resource, spans) = selected_resource_with_channels(38);
+    let owner = OutputStagingOwnerId::new("silence-timeline-gate").unwrap();
+    let cases = [
+        base_xml.replace(
+            "<prepend_silence_duration>0.0</prepend_silence_duration>",
+            "<prepend_silence_duration>0.00390625</prepend_silence_duration>",
+        ),
+        base_xml.replace(
+            "<append_silence_duration>0.0</append_silence_duration>",
+            "<append_silence_duration>0.000001</append_silence_duration>",
+        ),
+        base_xml.replace("<append_silence_duration>0.0</append_silence_duration>", ""),
+    ];
+
+    for xml in cases {
+        let prepared = prepare_selected_job_input(
+            test_programme_id(),
+            xml.as_bytes(),
+            SelectedWaveDescriptor::new(48_000, 38, 24),
+            1,
+            Arc::clone(&resource),
+            metadata_payloads(&resource, &spans),
+        )
+        .expect("typed configuration remains inspectable before selected product admission");
+
+        assert_eq!(
+            admit_meter_source_owner(
+                &prepared,
+                AttemptId::new(0),
+                MeterSourceSampleCount::new(1).unwrap(),
+            )
+            .unwrap_err(),
+            MeterSourceAdmissionError::UnsupportedSilenceTimelineEffect
+        );
+        assert!(matches!(
+            admit_selected_f15_plan(
+                &prepared,
+                AttemptId::new(0),
+                &owner,
+                "C:\\temp\\silence-timeline-gate.ec3",
+            ),
+            Err(EncodeError::F15AdmissionRejected)
+        ));
+    }
+}
+
 fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
     selected_resource_with_channels(38)
 }
@@ -1138,28 +1540,30 @@ fn synthetic_dbmd_payload_for_physical_rows(channels: u16) -> Vec<u8> {
     if channels == 38 {
         return DBMD.to_vec();
     }
-    assert_eq!(channels, 36);
-    let washed_dimensions: Value = serde_json::from_slice(include_bytes!(
-        "fixtures/authorized-adm-dbmd-row-count.json"
-    ))
-    .unwrap();
-    assert_eq!(
-        washed_dimensions["wave_channels"].as_u64(),
-        Some(u64::from(channels))
-    );
-    assert_eq!(
-        washed_dimensions["chna_track_count"].as_u64(),
-        Some(u64::from(channels))
-    );
-    assert_eq!(
-        washed_dimensions["dbmd_section10_track_count"].as_u64(),
-        Some(u64::from(channels))
-    );
-    assert_eq!(washed_dimensions["pcm_bytes_read"], 0);
-    assert_eq!(
-        washed_dimensions["source_package_manifest_sha256"],
-        "fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374"
-    );
+    assert!((10..=37).contains(&channels));
+    if channels == 36 {
+        let washed_dimensions: Value = serde_json::from_slice(include_bytes!(
+            "fixtures/authorized-adm-dbmd-row-count.json"
+        ))
+        .unwrap();
+        assert_eq!(
+            washed_dimensions["wave_channels"].as_u64(),
+            Some(u64::from(channels))
+        );
+        assert_eq!(
+            washed_dimensions["chna_track_count"].as_u64(),
+            Some(u64::from(channels))
+        );
+        assert_eq!(
+            washed_dimensions["dbmd_section10_track_count"].as_u64(),
+            Some(u64::from(channels))
+        );
+        assert_eq!(washed_dimensions["pcm_bytes_read"], 0);
+        assert_eq!(
+            washed_dimensions["source_package_manifest_sha256"],
+            "fd6b5b9e0075ebcf555f7c2b4688ecbc1f88c5af9c34006d1e8f97a245186374"
+        );
+    }
 
     let original = parse_selected_dbmd_sections(DBMD).unwrap();
     assert_eq!(original.track_fields().len(), 38);
@@ -1362,6 +1766,954 @@ fn dynamic_f01e_normal_continuation_binds_36_and_38_row_callback_clocks() {
             );
         }
     }
+}
+
+#[test]
+fn dynamic_f01e_owner_installs_36_and_38_rows_and_keeps_three_meter_drains() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let provider = validated_f01e_provider();
+
+    for channels in [36_u16, 38] {
+        let (resource, spans) = selected_resource_with_channel_samples(channels, 1_537);
+        let prepared = prepare_selected_job_input(
+            test_programme_id(),
+            case["input_xml"].as_str().unwrap().as_bytes(),
+            SelectedWaveDescriptor::new(48_000, channels, 24),
+            1_537,
+            Arc::clone(&resource),
+            metadata_payloads(&resource, &spans),
+        )
+        .unwrap()
+        .bind_primary_control_rows(1_537 * u64::from(channels) * 3)
+        .unwrap();
+        let attempt = AttemptId::new(0);
+        let owner = prepared.f01e_cold_owner(&provider, attempt).unwrap();
+        let prepared_normal = prepared.normal_control_adm_input_snapshot(&owner).unwrap();
+        let first = prepared.propose_f01e_adm_normal_callback(&owner).unwrap();
+        let normal_output = first.output(Arc::clone(&prepared_normal));
+        let profile_identity = resolve_selected_profile(&EncodingProfile::selected()).unwrap();
+        let source_projection = project_normal_control_adm_input_output_source_controls(
+            &normal_output,
+            prepared.graph().graph(),
+            profile_identity,
+        )
+        .unwrap();
+        assert_eq!(
+            source_projection.route().regular_hosts().len(),
+            usize::from(channels - 1)
+        );
+        assert_eq!(
+            source_projection.controls().rows().len(),
+            usize::from(channels - 1)
+        );
+        let source_map = build_meter_installed48_source_map(
+            prepared.primary_metadata_controls().unwrap(),
+            &generate_selected_p11_geometry(0x111b, true).unwrap(),
+        )
+        .unwrap();
+        let source_geometry = build_global_source_geometry_snapshot_from_adm_input_output(
+            prepared.graph().graph(),
+            &source_map,
+            &normal_output,
+        )
+        .unwrap();
+        assert_eq!(source_geometry.rows().len(), usize::from(channels) + 10);
+
+        if channels == 38 {
+            let fixed_provider = provider
+                .for_admitted_adm_input(&prepared.configuration(), prepared.graph().graph())
+                .unwrap();
+            let fixed_machine = FrontendControlMachine::from_provider(
+                fixed_provider,
+                prepared.programme_id().clone(),
+                attempt,
+            )
+            .unwrap();
+            let fixed_snapshot = prepared
+                .normal_control_prepared_snapshot(fixed_machine.committed())
+                .unwrap();
+            let fixed_before = NormalControlBeforeState::from_frontend_state(
+                fixed_machine.committed(),
+                fixed_machine.generation(),
+            )
+            .unwrap();
+            let fixed = propose_normal_control_snapshot(
+                &fixed_before,
+                &fixed_snapshot,
+                CallbackLineageIdentity::new(
+                    prepared.programme_id().clone(),
+                    attempt,
+                    FrontendCallbackIndex::new(0),
+                ),
+            )
+            .unwrap();
+            assert_eq!(first.after_state().physical_rows(), fixed.control38_rows());
+            assert_eq!(first.after_state().regular_rows(), fixed.regular37_rows());
+            assert_eq!(
+                first.after_state().control_words(),
+                fixed.control38_carrier_words()
+            );
+            assert_eq!(
+                first.after_state().regular_control_words(),
+                fixed.regular37_carrier_words()
+            );
+        }
+
+        let staged = owner
+            .machine()
+            .stage_normal_adm_input(Arc::clone(&prepared_normal), first)
+            .unwrap();
+        let after_first = staged.after_state();
+        assert_eq!(after_first.schema(), "F01E_ADM_INPUT_NORMAL_STATE_V1");
+        assert_eq!(after_first.callback_index().value(), 1);
+        assert_eq!(after_first.normal_callbacks().value(), 1);
+        assert_eq!(
+            after_first
+                .dynamic_after_state()
+                .unwrap()
+                .input_physical_rows()
+                .value(),
+            channels
+        );
+        assert_eq!(
+            after_first
+                .dynamic_after_state()
+                .unwrap()
+                .regular_control_rows()
+                .value(),
+            channels - 1
+        );
+        let canonical: Value = serde_json::from_slice(after_first.canonical_bytes()).unwrap();
+        assert_eq!(
+            canonical["input_physical_rows"].as_u64(),
+            Some(u64::from(channels))
+        );
+        assert_eq!(
+            canonical["normal_control_rows"].as_u64(),
+            Some(u64::from(channels))
+        );
+        assert_eq!(
+            canonical["regular_control_rows"].as_u64(),
+            Some(u64::from(channels - 1))
+        );
+        assert_eq!(
+            canonical["last_control_rows"].as_array().unwrap().len(),
+            usize::from(channels)
+        );
+        assert_eq!(
+            canonical["last_regular_rows"].as_array().unwrap().len(),
+            usize::from(channels - 1)
+        );
+
+        let (machine_after_first, _) = owner
+            .machine()
+            .replacement_candidate(
+                staged,
+                CallbackTransactionId::new("f01e-dynamic-normal-g0").unwrap(),
+            )
+            .unwrap()
+            .into_parts();
+        assert_eq!(machine_after_first.generation(), 1);
+        let installed_prepared = Arc::clone(
+            machine_after_first
+                .committed()
+                .dynamic_prepared_identity()
+                .unwrap(),
+        );
+        let installed_after = machine_after_first
+            .committed()
+            .dynamic_after_state()
+            .unwrap();
+
+        let rows = vec![vec![0_u32; 1_536]; usize::from(channels)];
+        let second_frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+            callback_index: MeterCallbackIndex::new(1),
+            upstream_generation: MeterUpstreamGeneration::new(2),
+            phase: MeterCallbackPhase::NormalSource,
+            source_identity: MeterSourceIdentity::from_sha256(
+                prepared.resource_identity().input_sha256(),
+            ),
+            source_samples: MeterSourceSampleCount::new(1_537).unwrap(),
+            normal_callbacks: MeterCallbackCount::new(2),
+            source_cursor_before: MeterSourcePosition::new(1_536),
+            source_cursor_after: MeterSourcePosition::new(1_537),
+            source_read_index_before: MeterSourceReadIndex::new(1),
+            source_read_index_after: MeterSourceReadIndex::new(2),
+            host_input_count: MeterSampleCount::new(1),
+            source_padding_count: MeterSampleCount::new(1_535),
+            rows: &rows,
+        });
+        let second_view = MeterSourceCallbackView::new(&prepared, second_frame).unwrap();
+        let second = prepared
+            .propose_f01e_adm_normal_continuation(
+                &installed_prepared,
+                installed_after,
+                &second_view,
+            )
+            .unwrap();
+        let staged_second = machine_after_first
+            .stage_normal_adm_input_continuation(installed_prepared, second)
+            .unwrap();
+        let (machine_after_second, _) = machine_after_first
+            .replacement_candidate(
+                staged_second,
+                CallbackTransactionId::new("f01e-dynamic-normal-g1").unwrap(),
+            )
+            .unwrap()
+            .into_parts();
+        assert_eq!(machine_after_second.generation(), 2);
+        assert_eq!(machine_after_second.committed().callback_index().value(), 2);
+
+        let zero_rows = vec![vec![0_u32; 1_536]; usize::from(channels)];
+        let after_two_normals = machine_after_second
+            .committed()
+            .dynamic_after_state()
+            .unwrap();
+        for delivery in 2_u32..=4 {
+            let transaction = CallbackLineageIdentity::new(
+                prepared.programme_id().clone(),
+                attempt,
+                FrontendCallbackIndex::new(delivery),
+            );
+            let receipt = after_two_normals
+                .fresh_zero_view(transaction)
+                .unwrap()
+                .validate_zero_physical_input_rows(&zero_rows)
+                .unwrap();
+            assert_eq!(receipt.input_physical_rows().value(), channels);
+            assert_eq!(receipt.normal_control_rows().value(), channels);
+            assert_eq!(
+                receipt
+                    .source_origin_transaction_id()
+                    .callback_index()
+                    .value(),
+                1
+            );
+            assert_eq!(
+                receipt.delivery_transaction_id().callback_index().value(),
+                delivery
+            );
+        }
+    }
+}
+
+#[test]
+fn selected_meter_two_normal_and_three_drain_callbacks_complete_for_36_rows() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let programme_id = test_programme_id();
+    let attempt = AttemptId::new(0);
+    let source_samples = 3_072_u64;
+    let normal_callbacks = 2_u64;
+    let (resource, spans) = selected_resource_with_channel_samples(36, source_samples);
+    let prepared = prepare_selected_job_input(
+        programme_id.clone(),
+        case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(48_000, 36, 24),
+        source_samples,
+        Arc::clone(&resource),
+        metadata_payloads(&resource, &spans),
+    )
+    .unwrap()
+    .bind_primary_control_rows(source_samples * 36 * 3)
+    .unwrap();
+    let source_samples = MeterSourceSampleCount::new(source_samples).unwrap();
+    let meter_before = selected_meter_root(&prepared, source_samples);
+    let zero_rows = vec![vec![0_u32; 1_536]; 36];
+    let g0_frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+        callback_index: MeterCallbackIndex::new(0),
+        upstream_generation: MeterUpstreamGeneration::new(1),
+        phase: MeterCallbackPhase::NormalSource,
+        source_identity: MeterSourceIdentity::from_sha256(
+            prepared.resource_identity().input_sha256(),
+        ),
+        source_samples,
+        normal_callbacks: MeterCallbackCount::new(normal_callbacks),
+        source_cursor_before: MeterSourcePosition::new(0),
+        source_cursor_after: MeterSourcePosition::new(1_536),
+        source_read_index_before: MeterSourceReadIndex::new(0),
+        source_read_index_after: MeterSourceReadIndex::new(1),
+        host_input_count: MeterSampleCount::new(1_536),
+        source_padding_count: MeterSampleCount::new(0),
+        rows: &zero_rows,
+    });
+    let g0_view = MeterSourceCallbackView::new(&prepared, g0_frame).unwrap();
+    let g0_binding = MeterCallbackGtcBinding::new(
+        CallbackTransactionId::new("synthetic-36-meter-g0").unwrap(),
+        programme_id.clone(),
+        attempt,
+        MeterCallbackIndex::new(0),
+    );
+    let providers = independent_meter_g0_providers();
+    let source_map = build_selected_installed48_source_map(
+        prepared.primary_metadata_controls().unwrap(),
+        &providers.p11_geometry,
+    )
+    .unwrap();
+    let cold_frontend = prepared.f01e_cold_owner(&providers.f01e, attempt).unwrap();
+    let cold_spatial = SpatialControlMachine::new_cold_for_source_map(
+        EncodingProfile::selected(),
+        cold_frontend.provider(),
+        &providers.f03_target,
+        &source_map,
+    )
+    .unwrap();
+    assert_eq!(source_map.regular_count(), 35);
+    assert_eq!(
+        cold_spatial.committed().regular_raw_history_bits().len(),
+        35 * 1_536
+    );
+    let mut candidate = stage_independent_meter_g0_callback(
+        &prepared,
+        g0_view,
+        &meter_before,
+        g0_binding,
+        MeterKFilterExponentState::new([0; 6]),
+        &providers,
+    )
+    .unwrap();
+    assert_eq!(
+        candidate.frontend_candidate().receipt().after_generation(),
+        1
+    );
+
+    let normal_frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+        callback_index: MeterCallbackIndex::new(1),
+        upstream_generation: MeterUpstreamGeneration::new(2),
+        phase: MeterCallbackPhase::NormalSource,
+        source_identity: MeterSourceIdentity::from_sha256(
+            prepared.resource_identity().input_sha256(),
+        ),
+        source_samples,
+        normal_callbacks: MeterCallbackCount::new(normal_callbacks),
+        source_cursor_before: MeterSourcePosition::new(1_536),
+        source_cursor_after: MeterSourcePosition::new(3_072),
+        source_read_index_before: MeterSourceReadIndex::new(1),
+        source_read_index_after: MeterSourceReadIndex::new(2),
+        host_input_count: MeterSampleCount::new(1_536),
+        source_padding_count: MeterSampleCount::new(0),
+        rows: &zero_rows,
+    });
+    let normal_view = MeterSourceCallbackView::new(&prepared, normal_frame).unwrap();
+    let normal_binding = MeterCallbackGtcBinding::new(
+        CallbackTransactionId::new("synthetic-36-meter-normal-1").unwrap(),
+        programme_id.clone(),
+        attempt,
+        MeterCallbackIndex::new(1),
+    );
+    let k_filter_exponents = MeterKFilterExponentState::new(
+        *candidate
+            .meter_proposal()
+            .after_root()
+            .k_filter_exponents_i32_by_channel(),
+    );
+    candidate = stage_independent_meter_normal_callback(
+        &prepared,
+        normal_view,
+        candidate,
+        normal_binding,
+        k_filter_exponents,
+        &providers,
+    )
+    .unwrap();
+    assert_eq!(candidate.source_receipt().callback_index().value(), 1);
+    assert_eq!(candidate.installed48_after().callback_index().value(), 2);
+    assert_eq!(
+        candidate.frontend_candidate().next_machine().generation(),
+        2
+    );
+
+    for callback in 2_u32..=4 {
+        let frame = MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+            callback_index: MeterCallbackIndex::new(u64::from(callback)),
+            upstream_generation: MeterUpstreamGeneration::new(u64::from(callback) + 1),
+            phase: MeterCallbackPhase::ZeroInputDrain,
+            source_identity: MeterSourceIdentity::from_sha256(
+                prepared.resource_identity().input_sha256(),
+            ),
+            source_samples,
+            normal_callbacks: MeterCallbackCount::new(normal_callbacks),
+            source_cursor_before: MeterSourcePosition::new(3_072),
+            source_cursor_after: MeterSourcePosition::new(3_072),
+            source_read_index_before: MeterSourceReadIndex::new(2),
+            source_read_index_after: MeterSourceReadIndex::new(2),
+            host_input_count: MeterSampleCount::new(0),
+            source_padding_count: MeterSampleCount::new(1_536),
+            rows: &zero_rows,
+        });
+        let view = MeterSourceCallbackView::new(&prepared, frame).unwrap();
+        let binding = MeterCallbackGtcBinding::new(
+            CallbackTransactionId::new(&format!("synthetic-36-meter-drain-{callback}")).unwrap(),
+            programme_id.clone(),
+            attempt,
+            MeterCallbackIndex::new(u64::from(callback)),
+        );
+        let exponents = MeterKFilterExponentState::new(
+            *candidate
+                .meter_proposal()
+                .after_root()
+                .k_filter_exponents_i32_by_channel(),
+        );
+        candidate = stage_independent_meter_fresh_zero_drain_callback(
+            &prepared, view, candidate, binding, exponents, &providers,
+        )
+        .unwrap();
+        assert_eq!(
+            candidate.source_receipt().callback_index().value(),
+            u64::from(callback)
+        );
+        assert_eq!(
+            candidate.installed48_after().callback_index().value(),
+            u64::from(callback) + 1
+        );
+    }
+
+    assert_eq!(
+        candidate
+            .meter_proposal()
+            .gtc_receipt()
+            .unwrap()
+            .after_generation(),
+        5
+    );
+    assert_eq!(
+        candidate.frontend_candidate().next_machine().generation(),
+        2
+    );
+}
+
+#[test]
+fn main_spatial_callback_stages_dynamic_36_row_controls() {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let source_samples = 3_072_u64;
+    let (resource, spans) = selected_resource_with_channel_samples(36, source_samples);
+    let prepared = prepare_selected_job_input(
+        test_programme_id(),
+        case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(48_000, 36, 24),
+        source_samples,
+        Arc::clone(&resource),
+        metadata_payloads(&resource, &spans),
+    )
+    .unwrap()
+    .bind_primary_control_rows(source_samples * 36 * 3)
+    .unwrap();
+    let providers = independent_meter_g0_providers();
+    let source_map = build_selected_installed48_source_map(
+        prepared.primary_metadata_controls().unwrap(),
+        &providers.p11_geometry,
+    )
+    .unwrap();
+    let owner = prepared
+        .f01e_cold_owner(&providers.f01e, AttemptId::new(0))
+        .unwrap();
+    let spatial = SpatialControlMachine::new_cold_for_source_map(
+        EncodingProfile::selected(),
+        owner.provider(),
+        &providers.f03_target,
+        &source_map,
+    )
+    .unwrap();
+    let prepared_normal = prepared.normal_control_adm_input_snapshot(&owner).unwrap();
+    let normal = prepared.propose_f01e_adm_normal_callback(&owner).unwrap();
+    let controls: NormalControlAdmInputOutput = normal.output(prepared_normal);
+    let physical_pcm_rows = vec![vec![0_u32; 1_536]; 36];
+
+    let proposal = stage_spatial_control_installed48(
+        &spatial,
+        SpatialControlInstalled48Input {
+            callback: SpatialControlInstalled48Callback::NormalAdmInputOutput {
+                controls: &controls,
+                physical_pcm_rows: &physical_pcm_rows,
+            },
+            source_map: &source_map,
+            diffusion_parameters: Some(&providers.diffusion),
+        },
+    )
+    .unwrap();
+
+    assert_eq!(source_map.physical_host_count(), 36);
+    assert_eq!(source_map.regular_count(), 35);
+    assert_eq!(source_map.source_count(), 46);
+    assert_eq!(proposal.quiet_rows(), &[1; 35]);
+    let (_, after) = proposal.into_parts();
+    let after = after.into_parts();
+    assert_eq!(after.source_pcm_rows.len(), 36);
+    assert_eq!(after.regular_raw_history_bits.len(), 35 * 1_536);
+    assert_eq!(after.current_rows_bits.len(), 46 * 1_536);
+
+    let spatial_audio = SpatialAudioMachine::new_cold(EncodingProfile::selected()).unwrap();
+    let spatial_callback = stage_main_spatial_callback(MainSpatialCallbackInput {
+        prepared: &prepared,
+        controls: MainNormalControlOutput::AdmInput(controls),
+        physical_pcm_rows: &physical_pcm_rows,
+        spatial_control: &spatial,
+        spatial_audio: &spatial_audio,
+        p11_geometry: &providers.p11_geometry,
+        p15_geometry: &providers.p15_geometry,
+        diffusion_parameters: &providers.diffusion,
+        feature_processor: &providers.feature_processor,
+        feature_fft: &providers.feature_fft,
+        window: &providers.window,
+        component_parameters: &providers.component_parameters,
+        spatial_audio_providers: None,
+    })
+    .unwrap();
+    assert_eq!(spatial_callback.callback_index().value(), 0);
+    assert_eq!(spatial.generation(), 0);
+}
+
+#[test]
+fn main_dynamic_row_shapes_share_f01e_spatial_and_reader_eof_owners() {
+    for channels in [10_u16, 20, 35, 36, 37, 38] {
+        main_dynamic_schedule_for_channels(channels, 1_536);
+    }
+    for channels in [36_u16, 38] {
+        main_dynamic_schedule_for_channels(channels, 3_072);
+    }
+    assert_eq!(
+        SelectedSourceRowDimensions::for_physical_rows(39),
+        Err(SelectedSourceRowShapeError::SourceAxisCapacityExceeded {
+            required: 49,
+            capacity: 48,
+        })
+    );
+}
+
+fn main_dynamic_schedule_for_channels(channels: u16, source_samples: u64) {
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| {
+            case["expected"]["status"] == "ACCEPT" && case["expected"]["input_kind"] == "adm"
+        })
+        .unwrap();
+    let (resource, spans) = selected_resource_with_channel_samples(channels, source_samples);
+    let prepared = prepare_selected_job_input(
+        test_programme_id(),
+        case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(48_000, channels, 24),
+        source_samples,
+        Arc::clone(&resource),
+        metadata_payloads(&resource, &spans),
+    )
+    .unwrap()
+    .bind_primary_control_rows(source_samples * u64::from(channels) * 3)
+    .unwrap();
+    let providers = independent_meter_g0_providers();
+    let dimensions = SelectedSourceRowDimensions::for_physical_rows(channels).unwrap();
+    let physical_rows = usize::from(dimensions.physical_row_count());
+    let regular_rows = usize::from(dimensions.regular_row_count());
+    let active_sources = usize::from(dimensions.active_source_count());
+    let roots = MainSpatialColdRoots::from_selected_providers(
+        &prepared,
+        AttemptId::new(0),
+        &providers.f01e,
+        &providers.f03_target,
+        &providers.p11_geometry,
+    )
+    .unwrap();
+
+    assert_eq!(
+        roots.frontend_control().committed().schema(),
+        "F01E_ADM_INPUT_COLD_PROJECTION_V1"
+    );
+    assert_eq!(roots.frontend_control().generation(), 0);
+    assert_eq!(roots.spatial_control().generation(), 0);
+    assert_eq!(
+        roots.frontend_control().committed().objects().len(),
+        physical_rows - 10
+    );
+    assert_eq!(
+        roots.spatial_control().committed().physical_row_count(),
+        physical_rows
+    );
+    assert_eq!(
+        roots.spatial_control().committed().regular_row_count(),
+        regular_rows
+    );
+    assert_eq!(
+        roots
+            .spatial_control()
+            .committed()
+            .active_source_ids()
+            .len(),
+        active_sources
+    );
+    assert_eq!(
+        roots
+            .spatial_control()
+            .committed()
+            .active_source_ids()
+            .iter()
+            .map(|source| source.value())
+            .collect::<Vec<_>>(),
+        (0..u64::try_from(active_sources).unwrap()).collect::<Vec<_>>()
+    );
+    assert_eq!(
+        roots
+            .spatial_control()
+            .committed()
+            .target_current_xyz_u32()
+            .len(),
+        45
+    );
+    assert_eq!(
+        roots
+            .spatial_control()
+            .committed()
+            .previous_pcm_bits()
+            .len(),
+        physical_rows * 1_536
+    );
+    assert_eq!(
+        roots
+            .spatial_control()
+            .committed()
+            .regular_raw_history_bits()
+            .len(),
+        regular_rows * 1_536
+    );
+    let prepared_normal = roots.normal_control_prepared();
+    assert_eq!(
+        prepared_normal.schema(),
+        "F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1"
+    );
+    assert_eq!(prepared_normal.physical_tracks().len(), physical_rows);
+    assert_eq!(
+        prepared_normal.regular_source_bindings().len(),
+        regular_rows
+    );
+    assert_eq!(
+        prepared_normal.object_owner_bindings().len(),
+        physical_rows - 10
+    );
+
+    let attempt = AttemptId::new(0);
+    let physical_pcm_rows = vec![vec![0_u32; 1_536]; physical_rows];
+    let reader_eof = ReaderEofMachine::cold();
+    let transaction_g0 = CallbackTransactionId::new("synthetic-main-adm-g0").unwrap();
+    let frontend_g0 = stage_main_frontend_adm_input_snapshot(
+        &prepared,
+        roots.frontend_control(),
+        prepared_normal,
+        attempt,
+        transaction_g0.clone(),
+    )
+    .unwrap();
+    let (frontend_candidate_g0, controls_g0) = frontend_g0.into_parts();
+    assert_eq!(controls_g0.physical_rows().len(), physical_rows);
+    assert_eq!(controls_g0.regular_rows().len(), regular_rows);
+    assert_eq!(controls_g0.normal_callbacks().value(), 1);
+    assert_eq!(
+        frontend_candidate_g0.next_machine().committed().schema(),
+        "F01E_ADM_INPUT_NORMAL_STATE_V1"
+    );
+    let g0_clock = ReaderEofNormalCallbackClock::new(
+        FrontendCallbackIndex::new(0),
+        AdmSampleIndex::new(0),
+        ReaderEofActualSampleCount::new(1_536).unwrap(),
+        ReaderEofPaddingSampleCount::new(0).unwrap(),
+        NormalCallbackCount::new(1),
+    )
+    .unwrap();
+    let reader_g0 = stage_reader_eof_adm_input_normal_callback(
+        &reader_eof,
+        g0_clock,
+        &physical_pcm_rows,
+        &controls_g0,
+        transaction_g0.clone(),
+    )
+    .unwrap();
+    let (reader_after_g0, _, _) = reader_g0.into_parts();
+    assert_eq!(
+        reader_after_g0
+            .committed()
+            .last_normal_host_frame()
+            .unwrap()
+            .physical_rows(),
+        u16::try_from(physical_rows).unwrap()
+    );
+    assert_eq!(
+        reader_after_g0
+            .committed()
+            .last_control_snapshot()
+            .unwrap()
+            .words()
+            .len(),
+        physical_rows * 13
+    );
+    let spatial_audio = roots.spatial_audio();
+    let spatial_g0 = stage_main_spatial_callback(MainSpatialCallbackInput {
+        prepared: &prepared,
+        controls: MainNormalControlOutput::AdmInput(controls_g0),
+        physical_pcm_rows: &physical_pcm_rows,
+        spatial_control: roots.spatial_control(),
+        spatial_audio,
+        p11_geometry: &providers.p11_geometry,
+        p15_geometry: &providers.p15_geometry,
+        diffusion_parameters: &providers.diffusion,
+        feature_processor: &providers.feature_processor,
+        feature_fft: &providers.feature_fft,
+        window: &providers.window,
+        component_parameters: &providers.component_parameters,
+        spatial_audio_providers: None,
+    })
+    .unwrap();
+    let parent_g0 = roots
+        .prepare_spatial_after_callback(
+            &prepared,
+            frontend_candidate_g0,
+            spatial_g0,
+            transaction_g0,
+        )
+        .unwrap();
+    let (mut main_after_normal, _, _, _) = parent_g0.into_parts();
+    let mut reader_after_normal = reader_after_g0;
+    let normal_callback_count = source_samples.div_ceil(1_536);
+    assert_eq!(main_after_normal.frontend_control().generation(), 1);
+    assert_eq!(main_after_normal.spatial_control().generation(), 1);
+    assert_eq!(main_after_normal.spatial_audio().generation(), 1);
+    assert!(Arc::ptr_eq(
+        prepared_normal,
+        main_after_normal.normal_control_prepared()
+    ));
+    assert_eq!(
+        main_after_normal
+            .spatial_control()
+            .committed()
+            .previous_current_rows_bits()
+            .len(),
+        active_sources * 1_536
+    );
+
+    if normal_callback_count > 1 {
+        let transaction_g1 = CallbackTransactionId::new("synthetic-main-adm-g1").unwrap();
+        let frontend_g1 = stage_main_frontend_adm_input_snapshot(
+            &prepared,
+            main_after_normal.frontend_control(),
+            main_after_normal.normal_control_prepared(),
+            attempt,
+            transaction_g1.clone(),
+        )
+        .unwrap();
+        let (frontend_candidate_g1, controls_g1) = frontend_g1.into_parts();
+        assert_eq!(controls_g1.transaction_id().callback_index().value(), 1);
+        assert_eq!(controls_g1.physical_rows().len(), physical_rows);
+        assert_eq!(controls_g1.regular_rows().len(), regular_rows);
+        assert_eq!(frontend_candidate_g1.next_machine().generation(), 2);
+        let g1_clock = ReaderEofNormalCallbackClock::new(
+            FrontendCallbackIndex::new(1),
+            AdmSampleIndex::new(1_536),
+            ReaderEofActualSampleCount::new(1_536).unwrap(),
+            ReaderEofPaddingSampleCount::new(0).unwrap(),
+            NormalCallbackCount::new(2),
+        )
+        .unwrap();
+        let reader_g1 = stage_reader_eof_adm_input_normal_callback(
+            &reader_after_normal,
+            g1_clock,
+            &physical_pcm_rows,
+            &controls_g1,
+            transaction_g1.clone(),
+        )
+        .unwrap();
+        let (reader_after_g1, _, _) = reader_g1.into_parts();
+        let spatial_g1 = stage_main_spatial_callback(MainSpatialCallbackInput {
+            prepared: &prepared,
+            controls: MainNormalControlOutput::AdmInput(controls_g1),
+            physical_pcm_rows: &physical_pcm_rows,
+            spatial_control: main_after_normal.spatial_control(),
+            spatial_audio: main_after_normal.spatial_audio(),
+            p11_geometry: &providers.p11_geometry,
+            p15_geometry: &providers.p15_geometry,
+            diffusion_parameters: &providers.diffusion,
+            feature_processor: &providers.feature_processor,
+            feature_fft: &providers.feature_fft,
+            window: &providers.window,
+            component_parameters: &providers.component_parameters,
+            spatial_audio_providers: None,
+        })
+        .unwrap();
+        let parent_g1 = main_after_normal
+            .prepare_spatial_after_callback(
+                &prepared,
+                frontend_candidate_g1,
+                spatial_g1,
+                transaction_g1,
+            )
+            .unwrap();
+        (main_after_normal, _, _, _) = parent_g1.into_parts();
+        reader_after_normal = reader_after_g1;
+        assert_eq!(main_after_normal.frontend_control().generation(), 2);
+        assert_eq!(main_after_normal.spatial_control().generation(), 2);
+        assert_eq!(main_after_normal.spatial_audio().generation(), 2);
+    }
+    assert_eq!(
+        reader_after_normal.committed().normal_callbacks().value(),
+        normal_callback_count
+    );
+    assert_eq!(
+        main_after_normal.normal_control_prepared().schema(),
+        "F01E_ADM_INPUT_NORMAL_PREFLIGHT_V1"
+    );
+    let spatial_audio_provider_bundle = selected_spatial_audio_provider_bundle();
+    let mut source_producing_drain_count = 0_u32;
+    for drain_offset in 0..4_u32 {
+        let callback_value = u32::try_from(normal_callback_count).unwrap() + drain_offset;
+        let callback_index = FrontendCallbackIndex::new(callback_value);
+        if callback_value >= 2 {
+            source_producing_drain_count += 1;
+        }
+        let transaction_id = CallbackTransactionId::new(&format!(
+            "jocforge-main-callback-g{}",
+            callback_index.value()
+        ))
+        .unwrap();
+        let delivery =
+            CallbackLineageIdentity::new(prepared.programme_id().clone(), attempt, callback_index);
+        let held_controls = main_after_normal
+            .frontend_control()
+            .committed()
+            .dynamic_after_state()
+            .unwrap()
+            .held_source_view_for_cached_callback(delivery)
+            .unwrap();
+        let spatial = stage_main_spatial_cached_callback(MainSpatialCachedCallbackInput {
+            prepared: &prepared,
+            controls: MainHeldControlOutput::AdmInput(held_controls),
+            spatial_control: main_after_normal.spatial_control(),
+            spatial_audio: main_after_normal.spatial_audio(),
+            p11_geometry: &providers.p11_geometry,
+            p15_geometry: &providers.p15_geometry,
+            diffusion_parameters: &providers.diffusion,
+            feature_processor: &providers.feature_processor,
+            feature_fft: &providers.feature_fft,
+            window: &providers.window,
+            component_parameters: &providers.component_parameters,
+            spatial_audio_providers: Some(&spatial_audio_provider_bundle),
+        })
+        .unwrap();
+        let main_drain = main_after_normal
+            .prepare_spatial_after_cached_callback(&prepared, spatial, transaction_id.clone())
+            .unwrap();
+        (main_after_normal, _, _, _) = main_drain.into_parts();
+        let drain = stage_reader_eof_cached_drain(
+            &reader_after_normal,
+            callback_index,
+            NormalCallbackCount::new(normal_callback_count),
+            transaction_id,
+        )
+        .unwrap();
+        (reader_after_normal, _, _) = drain.into_parts();
+        assert_eq!(
+            reader_after_normal
+                .committed()
+                .last_normal_host_frame()
+                .unwrap()
+                .physical_rows(),
+            u16::try_from(physical_rows).unwrap()
+        );
+        assert_eq!(
+            reader_after_normal
+                .committed()
+                .last_control_snapshot()
+                .unwrap()
+                .words()
+                .len(),
+            physical_rows * 13
+        );
+    }
+    assert_eq!(
+        source_producing_drain_count,
+        if normal_callback_count == 1 { 3 } else { 4 }
+    );
+    assert_eq!(
+        reader_after_normal.committed().source_cursor_samples(),
+        source_samples
+    );
+    assert_eq!(reader_after_normal.committed().remaining_cached_drains(), 0);
+    assert_eq!(
+        main_after_normal.frontend_control().generation(),
+        normal_callback_count
+    );
+    let terminal_callback_index = u32::try_from(normal_callback_count + 4).unwrap();
+    assert_eq!(
+        main_after_normal
+            .spatial_control()
+            .committed()
+            .callback_index()
+            .value(),
+        terminal_callback_index
+    );
+    assert_eq!(
+        main_after_normal
+            .spatial_audio()
+            .committed()
+            .callback_index()
+            .value(),
+        terminal_callback_index
+    );
+    assert_eq!(
+        main_after_normal
+            .spatial_control()
+            .committed()
+            .source_cursor_samples()
+            .value(),
+        source_samples
+    );
+    assert_eq!(
+        main_after_normal
+            .spatial_control()
+            .committed()
+            .remaining_cached_drains(),
+        0
+    );
+    assert_eq!(
+        main_after_normal
+            .spatial_control()
+            .committed()
+            .active_source_ids()
+            .len(),
+        active_sources
+    );
 }
 
 fn selected_format_payload(channels: u16) -> Vec<u8> {

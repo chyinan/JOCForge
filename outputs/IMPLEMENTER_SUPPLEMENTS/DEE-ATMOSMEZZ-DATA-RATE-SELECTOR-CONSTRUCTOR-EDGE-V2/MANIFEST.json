@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SIX_DATA_RATE_TEXT_TO_SELECTOR_CODES_BOUND_STATIC; D8_TO_PROVIDER_STATE_BOUND_ON_FC8_EQ_2; PRIV350_JOB_JOIN_UNBOUND",
+  "implementation_disposition": "Use the static code table and conditional constructor edge; do not claim runtime rates or output support without the selected workflow-map/branch join",
+  "source_manifest_sha256": "9f94cf5e17bec7659f6defadb9145cdda6f28515f39ca3894031b49bbc6ef3d2",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3171,
+      "sha256": "6a08bc3413ff296d527a93b863e7578cea15afbcb3303de965b83972020ad1c5"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3257,
+      "sha256": "a3127a50a4b534321f0d6fe0efac1badc5581303bbd607fdce538ff6c35f3032"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 629,
+      "sha256": "6ecf54092831da40064db11fb371887f31bfd20dc4dd928ba5e2de5a16a6c05a"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1773,
+      "sha256": "17a9df3203a012e715fcbd299c21d835a55846ec383b23fb9af3a45e790a07b6"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 847,
+      "sha256": "71939b533ac5b860805e7c137d654c2501599e128272b210c1032195d7f618c7"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.sha256",
+      "bytes": 241,
+      "sha256": "9f94cf5e17bec7659f6defadb9145cdda6f28515f39ca3894031b49bbc6ef3d2"
+    }
+  ]
+}

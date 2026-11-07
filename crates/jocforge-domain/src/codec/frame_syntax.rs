@@ -139,6 +139,7 @@ mod tests {
     use super::*;
     use crate::codec::bitio::{FrameBitCursor, FrameBitWriter};
     use crate::codec::frame_builder::{SelectedBsiDrcWriter, write_selected_eac3_fixed_prefix};
+    use crate::codec::frame_size::Eac3FrameSize;
     use crate::{
         analysis::{
             owner::AnalysisOwnerRoot,
@@ -151,9 +152,36 @@ mod tests {
         meter::measurement_receipt::{
             ProgrammeMeasurementReceipt, ProgrammeMeasurementReceiptInput,
         },
+        profile::CodecRateProfile,
         timeline::FrontendCallbackIndex,
         transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
     };
+
+    fn default_frame_size_code() -> crate::codec::frame_size::Eac3FrameSizeCode {
+        Eac3FrameSize::from_codec_rate(CodecRateProfile::Kbps1024)
+            .unwrap()
+            .code()
+    }
+
+    #[test]
+    fn fixed_prefix_writes_the_selected_rate_frame_size_code() {
+        let rows = [
+            (CodecRateProfile::Kbps384, 767_u16),
+            (CodecRateProfile::Kbps448, 895_u16),
+            (CodecRateProfile::Kbps576, 1_151_u16),
+            (CodecRateProfile::Kbps640, 1_279_u16),
+            (CodecRateProfile::Kbps768, 1_535_u16),
+            (CodecRateProfile::Kbps1024, 2_047_u16),
+        ];
+
+        for (rate, expected_code) in rows {
+            let frame_size = Eac3FrameSize::from_codec_rate(rate).unwrap();
+            let mut bytes = [0_u8; 6];
+            let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
+            write_selected_eac3_fixed_prefix(&mut writer, frame_size.code()).unwrap();
+            assert_eq!(read_bits(&bytes, 21, 11), u32::from(expected_code));
+        }
+    }
     use serde_json::Value;
 
     const OWNER_VECTORS: &[u8] =
@@ -302,7 +330,7 @@ mod tests {
 
         let header_cursor = {
             let mut bit_writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
-            write_selected_eac3_fixed_prefix(&mut bit_writer).unwrap();
+            write_selected_eac3_fixed_prefix(&mut bit_writer, default_frame_size_code()).unwrap();
             writer.write_header_drc(&mut bit_writer).unwrap();
             bit_writer.cursor().bit_offset()
         };
@@ -330,7 +358,7 @@ mod tests {
         {
             let mut bit_writer =
                 FrameBitWriter::new(&mut short_bytes, FrameBitCursor::new(0)).unwrap();
-            write_selected_eac3_fixed_prefix(&mut bit_writer).unwrap();
+            write_selected_eac3_fixed_prefix(&mut bit_writer, default_frame_size_code()).unwrap();
             short_writer.write_header_drc(&mut bit_writer).unwrap();
             assert_eq!(
                 short_writer.write_line_drc(&mut bit_writer, CodecBlockIndex::new(0).unwrap()),
@@ -440,7 +468,7 @@ mod tests {
             let mut writer =
                 FrameBitWriter::new(&mut actual_frame, FrameBitCursor::new(0)).unwrap();
             assert_eq!(
-                write_selected_eac3_fixed_prefix(&mut writer)
+                write_selected_eac3_fixed_prefix(&mut writer, default_frame_size_code())
                     .unwrap()
                     .bit_offset(),
                 45,

@@ -59,11 +59,12 @@ pub fn cold_integrity_owner_for_plan(
         .map_err(IntegrityColdRootError::SourceSchedule)?
         .as_tuple()
         .3;
-    IntegrityProgrammeOwner::cold_from_provider(
+    IntegrityProgrammeOwner::cold_from_provider_for_rate(
         prepared.programme_id().as_str(),
         attempt.value(),
         expected_source_count,
         admitted_plan.source_providers().keyless_integrity(),
+        prepared.configuration().selected_profile().codec_rate(),
     )
     .map_err(IntegrityColdRootError::Owner)
 }

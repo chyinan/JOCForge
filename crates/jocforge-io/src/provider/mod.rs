@@ -29,11 +29,13 @@ pub use selected_spatial_cold_inputs::{
     SelectedSpatialColdProviderCandidate, SelectedSpatialColdProviderLineage,
     SelectedSpatialColdProviderLoadError, SelectedSpatialColdProviderRoots,
     load_selected_spatial_cold_provider_candidate,
+    load_selected_spatial_cold_provider_candidate_for_profile,
     load_selected_spatial_cold_provider_candidate_for_selected_profile,
 };
 pub use spatial_audio::{
     SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderLoadError,
     load_selected_spatial_audio_provider_bundle,
+    load_selected_spatial_audio_provider_bundle_for_profile,
 };
 
 pub fn read_provider_file(path: impl AsRef<Path>) -> io::Result<ProviderFileEvidence> {

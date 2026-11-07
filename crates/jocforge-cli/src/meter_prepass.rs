@@ -15,7 +15,7 @@ use jocforge_application::{
     },
     meter_finalization_bridge::{MeasurementDependentOwnerInputs, MeterFinalizationBridgeError},
     meter_source_admission::{MeterSourceAdmissionError, admit_meter_source_owner},
-    meter_source_bridge::{MeterSourceSampleCount, SharedGainDelayParameters},
+    meter_source_bridge::{EncodingProfile, MeterSourceSampleCount, SharedGainDelayParameters},
 };
 use jocforge_io::{
     pcm::{
@@ -33,7 +33,7 @@ use crate::{
     },
     selected_spatial_callback_providers::{
         SelectedIndependentMeterProviderLoadError,
-        load_selected_independent_meter_callback_providers,
+        load_selected_independent_meter_callback_providers_for_profile,
     },
 };
 
@@ -119,11 +119,17 @@ where
 
     let geometry = generate_selected_spatial_math_geometry()
         .map_err(|failure| error("selected spatial geometry", failure))?;
-    let providers = load_selected_independent_meter_callback_providers(
+    let selected_profile = prepared.configuration().selected_profile();
+    let profile = EncodingProfile::selected_with_rate_and_carriage(
+        selected_profile.codec_rate(),
+        selected_profile.carriage(),
+    );
+    let providers = load_selected_independent_meter_callback_providers_for_profile(
         &spatial_provider_root,
         &cold_state_root,
         &direct_meter_root,
         geometry,
+        profile,
     )
     .map_err(|failure: SelectedIndependentMeterProviderLoadError| {
         error("selected Meter callback providers", failure)
@@ -131,14 +137,15 @@ where
     let direct = load_meter_direct_provider_inventory(&direct_meter_root)
         .map_err(|failure| error("selected direct Meter providers", failure))?;
     let selected_profile_id =
-        selected_meter_profile_id(prepared.configuration().selected_profile().carriage()).map_err(
-            |failure: SelectedMeterProviderIdentityError| error("selected Meter profile", failure),
-        )?;
+        selected_meter_profile_id(selected_profile.codec_rate(), selected_profile.carriage())
+            .map_err(|failure: SelectedMeterProviderIdentityError| {
+                error("selected Meter profile", failure)
+            })?;
     let provider_identity = load_selected_meter_provider_identity(
         &meter_roster_root,
         &providers,
         &direct,
-        selected_profile_id,
+        &selected_profile_id,
     )
     .map_err(|failure| error("selected Meter provider identity", failure))?;
 

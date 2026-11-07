@@ -6,7 +6,7 @@ use std::path::Path;
 use jocforge_application::{
     meter_source_admission::{MeterSourceAdmissionError, MeterSourceProviderSetAdmissionReceipt},
     meter_source_bridge::{
-        EmdfCarriageProfile, ExpectedMeterProviderMember, KMatrixProvider,
+        CodecRateProfile, EmdfCarriageProfile, ExpectedMeterProviderMember, KMatrixProvider,
         MeterDirectProviderAssetId, MeterDirectProviderInventory, MeterProviderMemberReceipt,
         MeterProviderSetIdentityError, SelectedMeterProviderRoster,
         SelectedMeterProviderSetIdentity, SharedGainDelayDirectParameters, TruePeakParameters,
@@ -44,10 +44,13 @@ pub fn load_selected_meter_provider_identity(
 
 /// Profile identity to use before combining an exact selected-profile roster.
 pub fn selected_meter_profile_id(
+    codec_rate: CodecRateProfile,
     carriage: EmdfCarriageProfile,
-) -> Result<&'static str, SelectedMeterProviderIdentityError> {
-    jocforge_application::meter_source_admission::selected_meter_profile_identity(carriage)
-        .map_err(|_| SelectedMeterProviderIdentityError::UnsupportedCarriage)
+) -> Result<String, SelectedMeterProviderIdentityError> {
+    jocforge_application::meter_source_admission::selected_meter_profile_identity(
+        carriage, codec_rate,
+    )
+    .map_err(|_| SelectedMeterProviderIdentityError::UnsupportedCarriage)
 }
 
 /// Builds member receipts from the actual validated selected callback and direct Meter values.

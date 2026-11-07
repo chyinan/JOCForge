@@ -345,7 +345,14 @@ pub fn load_selected_spatial_cold_provider_candidate(
 pub fn load_selected_spatial_cold_provider_candidate_for_selected_profile(
     roots: SelectedSpatialColdProviderRoots<'_>,
 ) -> Result<SelectedSpatialColdProviderCandidate, SelectedSpatialColdProviderLoadError> {
-    load_selected_spatial_cold_provider_candidate(roots, EncodingProfile::selected())
+    load_selected_spatial_cold_provider_candidate_for_profile(roots, EncodingProfile::selected())
+}
+
+pub fn load_selected_spatial_cold_provider_candidate_for_profile(
+    roots: SelectedSpatialColdProviderRoots<'_>,
+    profile: EncodingProfile,
+) -> Result<SelectedSpatialColdProviderCandidate, SelectedSpatialColdProviderLoadError> {
+    load_selected_spatial_cold_provider_candidate(roots, profile)
 }
 
 fn canonical_root(

@@ -2,6 +2,8 @@ use jocforge_domain::codec::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWrit
 use jocforge_domain::codec::frame_builder::{
     SelectedEac3PrefixError, write_selected_eac3_fixed_prefix,
 };
+use jocforge_domain::codec::frame_size::Eac3FrameSize;
+use jocforge_domain::profile::CodecRateProfile;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 
@@ -9,6 +11,12 @@ const PREFIX_INPUTS: &[u8] =
     include_bytes!("fixtures/selected_frame_prefix/input-only-vectors.json");
 const PREFIX_INPUTS_SHA256: &str =
     "865ad85dbef724b6896257baa9454db23d0bd82020297330ada4c8a65b816088";
+
+fn default_frame_size_code() -> jocforge_domain::codec::frame_size::Eac3FrameSizeCode {
+    Eac3FrameSize::from_codec_rate(CodecRateProfile::Kbps1024)
+        .unwrap()
+        .code()
+}
 
 #[test]
 fn selected_fixed_prefix_matches_hash_bound_45_bit_input_vector() {
@@ -27,7 +35,7 @@ fn selected_fixed_prefix_matches_hash_bound_45_bit_input_vector() {
     let mut bytes = [0_u8; 6];
     let final_cursor = {
         let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
-        write_selected_eac3_fixed_prefix(&mut writer).unwrap()
+        write_selected_eac3_fixed_prefix(&mut writer, default_frame_size_code()).unwrap()
     };
     let expected = &vector["expected"];
     assert_eq!(final_cursor.bit_offset(), 45);
@@ -58,7 +66,7 @@ fn selected_fixed_prefix_rejects_wrong_cursor_or_capacity_without_mutation() {
         let mut writer =
             FrameBitWriter::new(&mut wrong_cursor_bytes, FrameBitCursor::new(1)).unwrap();
         assert_eq!(
-            write_selected_eac3_fixed_prefix(&mut writer),
+            write_selected_eac3_fixed_prefix(&mut writer, default_frame_size_code()),
             Err(SelectedEac3PrefixError::CursorMismatch { actual: 1 }),
         );
         writer.cursor().bit_offset()
@@ -71,7 +79,7 @@ fn selected_fixed_prefix_rejects_wrong_cursor_or_capacity_without_mutation() {
     let short_cursor = {
         let mut writer = FrameBitWriter::new(&mut short_bytes, FrameBitCursor::new(0)).unwrap();
         assert_eq!(
-            write_selected_eac3_fixed_prefix(&mut writer),
+            write_selected_eac3_fixed_prefix(&mut writer, default_frame_size_code()),
             Err(SelectedEac3PrefixError::BitWriter(
                 FrameBitWriterError::BufferTooSmall,
             )),

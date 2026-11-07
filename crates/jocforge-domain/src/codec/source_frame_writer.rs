@@ -21,6 +21,7 @@ use crate::{
         },
         selected_source_plan::{SelectedSourcePlanError, prepare_selected_source_numeric_plan},
     },
+    profile::CodecRateProfile,
     transform::fullband_exponent_pipeline::NumericPlanReceipt,
 };
 
@@ -96,6 +97,7 @@ pub enum SelectedSourceFrameWriterError {
 /// after-state, stage the codec owner, append bytes, or advance programme publication.
 pub fn prepare_selected_source_frame_candidate<'a>(
     analysis_stage: &'a mut AnalysisNumericPlanStage,
+    codec_rate: CodecRateProfile,
     bsi: &SelectedBsiInput,
     emdf: &EmdfFrameInput<'a>,
     bap_parameters: Arc<BapParameters>,
@@ -117,6 +119,7 @@ pub fn prepare_selected_source_frame_candidate<'a>(
     let (frame, attempted_qs, midpoint_trials) = {
         let frame_plan = SelectedFrameTrialPlan::new(SelectedFrameTrialPlanInput {
             numeric_plan: &numeric_plan,
+            codec_rate,
             bsi: bsi.clone(),
             emdf: emdf.clone(),
         })
@@ -177,6 +180,7 @@ mod tests {
                 SelectedBsiMixingInput,
             },
         },
+        profile::CodecRateProfile,
         timeline::CodecSourceIndex,
         transaction::{AttemptId, CallbackTransactionId},
         transform::math_generated_parameters::MathGeneratedTransformParameters,
@@ -256,6 +260,7 @@ mod tests {
 
         let candidate = prepare_selected_source_frame_candidate(
             &mut analysis,
+            CodecRateProfile::Kbps1024,
             &bsi,
             &EmdfFrameInput::AbsentPublishedPayloadV1,
             bap_parameters,
@@ -301,6 +306,7 @@ mod tests {
         assert!(matches!(
             prepare_selected_source_frame_candidate(
                 &mut analysis,
+                CodecRateProfile::Kbps1024,
                 &bsi,
                 &EmdfFrameInput::AbsentPublishedPayloadV1,
                 Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap()),

@@ -1,0 +1,25 @@
+{
+  "package_id": "DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1525,
+      "sha256": "cd793af0a76db4e1311b1679d49d1c6c7de2191975c3191356da8183a293c4de"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 560,
+      "sha256": "fbcb2cb1f7c18b9c120a9e01d3ab13f6876134e92165d5aed36236cd7d93bfe0"
+    },
+    {
+      "name": "STATIC-BOUNDARIES.json",
+      "bytes": 424,
+      "sha256": "4d6ada8a35dc1b1f47dc5ce1f023eeef725f35d438f3a0c6b83828a7bce41afd"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 552,
+      "sha256": "ab4a1f81f606ee5d20faa29fa9f2d3537822c161221af85c5cf333736a8e309f"
+    }
+  ]
+}

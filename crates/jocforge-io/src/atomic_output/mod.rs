@@ -22,9 +22,6 @@ use std::{
     path::{Component, Path, PathBuf},
 };
 
-const FRAME_BYTES: usize = 4_096;
-const FRAME_BYTES_U32: u32 = FRAME_BYTES as u32;
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum OutputIoPhase {
     Setup,
@@ -372,9 +369,13 @@ impl AtomicOutputStaging {
             }
         };
 
+        let frame_bytes = proposal.frame_bytes();
+        let frame_length = u64::try_from(frame_bytes.len()).map_err(|_| {
+            OutputIoError::new(OutputIoPhase::AppendWrite, OutputIoFailure::WriteOverrun)
+        })?;
         let expected_end = proposal
             .expected_offset()
-            .checked_add(u64::from(FRAME_BYTES_U32))
+            .checked_add(frame_length)
             .ok_or_else(|| {
                 OutputIoError::new(OutputIoPhase::AppendWrite, OutputIoFailure::WriteOverrun)
             })?;
@@ -391,10 +392,10 @@ impl AtomicOutputStaging {
 
         file.seek(SeekFrom::Start(proposal.expected_offset()))
             .map_err(|error| OutputIoError::from_io(OutputIoPhase::AppendReadback, &error))?;
-        let mut readback = [0_u8; FRAME_BYTES];
+        let mut readback = vec![0_u8; frame_bytes.len()];
         file.read_exact(&mut readback)
             .map_err(|error| OutputIoError::from_io(OutputIoPhase::AppendReadback, &error))?;
-        if readback != *proposal.frame_bytes() || sha256(&readback) != *proposal.frame_sha256() {
+        if readback.as_slice() != frame_bytes || sha256(&readback) != *proposal.frame_sha256() {
             return Err(OutputIoError::new(
                 OutputIoPhase::AppendReadback,
                 OutputIoFailure::ReadbackMismatch,

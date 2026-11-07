@@ -1,0 +1,25 @@
+{
+  "package_id": "DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1552,
+      "sha256": "e0284699febb2b9fa6fd2145f3acf9f03d9f2b9396da1b904c16d694abd92b66"
+    },
+    {
+      "name": "OBSERVED-RATE-FRAMES.json",
+      "bytes": 1045,
+      "sha256": "7f28848c5e9868a96d44fe6dbbe6c3c837e19442827805661e47253a47dd66cf"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 295,
+      "sha256": "a6d79284b81d31854704fb69526f198b9770d06b5badb7c518825a907f9bddb9"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 529,
+      "sha256": "30562f5a608e6504c3a6cb8f93d6c817d271b2208b917c045d0965085d1793e4"
+    }
+  ]
+}

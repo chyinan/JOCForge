@@ -255,7 +255,7 @@ mod tests {
             CoreCarrierProfile::SelectedFivePointOneSixCarrier,
             JocDownmixProfile::SelectedMode0Phase1Index3,
             SubstreamTopology::SelectedSingleIndependentZeroDependent,
-            CodecRateProfile::Selected48Khz1024Kbps6Blocks1536Samples4096Bytes,
+            CodecRateProfile::Kbps1024,
             crate::profile::EmdfCarriageProfile::DeployedCompat,
         );
 

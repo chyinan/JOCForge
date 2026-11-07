@@ -1,0 +1,9 @@
+{
+  "sweep_384_448_576_640_manifest_sha256": "4767735b3f66c0747538c67e5e0721cbb1de144e4240ae01ddaf9036d40f69ca",
+  "sweep_seal_sha256": "7c4c618a04aa95014c6cd008956ca120e637f126cede8a425ddcec7b5cacbc70",
+  "rate_768_manifest_sha256": "43eadaba8f1b7f01811fafb20cfdccb8eea6da630b475850f2b5d15f54076a44",
+  "baseline_attempt": "attempt-05; source receipt binds 1024 kbps and 33 packets; previous first-layer supplement binds its frame header",
+  "raw_packets_saved": false,
+  "PCM_saved": false,
+  "JOC_spatial_render": "NOT_RUN"
+}

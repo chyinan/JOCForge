@@ -45,20 +45,34 @@ impl SelectedOutputProviderProjection {
     fn project_selected_f15_output_provider(
         profile: ResolvedEncodingProfile,
     ) -> Result<Self, OutputRootBindingError> {
-        let canonical_utf8 = match profile.carriage() {
+        let canonical_template = match profile.carriage() {
             EmdfCarriageProfile::DeployedCompat => DEPLOYED_COMPAT_PROVIDER_CANONICAL_UTF8,
             EmdfCarriageProfile::EtsiEmdf => ETSI_EMDF_PROVIDER_CANONICAL_UTF8,
             EmdfCarriageProfile::Unsupported => {
                 return Err(OutputRootBindingError::UnsupportedProfile);
             }
         };
-        let provider_sha256 = Sha256::digest(canonical_utf8.as_bytes()).into();
+        let frame_bytes = profile
+            .codec_rate()
+            .frame_bytes()
+            .ok_or(OutputRootBindingError::UnsupportedProfile)?;
+        let frame_bytes =
+            u32::try_from(frame_bytes).map_err(|_| OutputRootBindingError::UnsupportedProfile)?;
+        let bit_rate_kbps = profile
+            .codec_rate()
+            .kbps()
+            .ok_or(OutputRootBindingError::UnsupportedProfile)?;
+        let encoding_profile_id = format!("eac3-joc-48k-{bit_rate_kbps}k-acmod7-uncoupled-nonspx");
+        let projected_canonical_utf8 = canonical_template
+            .replace("{encoding_profile_id}", &encoding_profile_id)
+            .replace("{frame_bytes}", &frame_bytes.to_string());
+        let provider_sha256 = Sha256::digest(projected_canonical_utf8.as_bytes()).into();
         Ok(Self {
             profile,
             provider: OutputProvider {
                 profile_id: "selected-keyless-output-policy.v1".to_owned(),
                 provider_sha256,
-                frame_bytes: 4_096,
+                frame_bytes,
                 suppressed_sources: 2,
                 staging_name_template: "attempt-{attempt_id}.ec3.partial".to_owned(),
                 intent_name_template: "attempt-{attempt_id}.finalize-intent.json".to_owned(),
@@ -75,9 +89,9 @@ impl SelectedOutputProviderProjection {
     }
 }
 
-const DEPLOYED_COMPAT_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"deployed_compat\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
+const DEPLOYED_COMPAT_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"deployed_compat\",\"encoding_profile_id\":\"{encoding_profile_id}\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":{frame_bytes},\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
 
-const ETSI_EMDF_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"etsi_emdf\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
+const ETSI_EMDF_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"etsi_emdf\",\"encoding_profile_id\":\"{encoding_profile_id}\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":{frame_bytes},\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}";
 
 // This private plan boundary accepts only owner-validated provider values and parent preflight.
 mod plan_admission;

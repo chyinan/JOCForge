@@ -23,6 +23,11 @@ const SELECTED_PCM_BITS: u16 = 24;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterSourceAdmissionError {
     SelectedInputKind,
+    UnsupportedSilenceTimelineEffect,
+    UnsupportedDialogueMeasurementEffect {
+        dialogue_intelligence: bool,
+        speech_threshold: u32,
+    },
     UnsupportedWaveProfile,
     UnsupportedCarriageProfile,
     SourceExtentMismatch,
@@ -81,8 +86,11 @@ impl MeterSourceAdmissionReceipt {
         self.selected_profile
     }
 
-    pub fn selected_profile_identity(&self) -> Result<&'static str, MeterSourceAdmissionError> {
-        selected_meter_profile_identity(self.selected_profile.carriage())
+    pub fn selected_profile_identity(&self) -> Result<String, MeterSourceAdmissionError> {
+        selected_meter_profile_identity(
+            self.selected_profile.carriage(),
+            self.selected_profile.codec_rate(),
+        )
     }
 
     pub const fn wave(&self) -> SelectedWaveDescriptor {
@@ -160,14 +168,16 @@ impl MeterSourceAdmissionReceipt {
 /// Stable local identity for the one supported source/carrier/topology/rate row and its carriage.
 pub fn selected_meter_profile_identity(
     carriage: EmdfCarriageProfile,
-) -> Result<&'static str, MeterSourceAdmissionError> {
+    codec_rate: jocforge_domain::profile::CodecRateProfile,
+) -> Result<String, MeterSourceAdmissionError> {
+    let rate = codec_rate.identity_label();
     match carriage {
-        EmdfCarriageProfile::DeployedCompat => Ok(
-            "selected-meter-profile-v2/adm-bwf-pcm24-48khz-dynamic-rows/5p1-six-carrier/joc-mode0-phase1-index3/single-independent-zero-dependent/48khz-1024kbps-6blocks-1536samples-4096bytes/deployed_compat",
-        ),
-        EmdfCarriageProfile::EtsiEmdf => Ok(
-            "selected-meter-profile-v2/adm-bwf-pcm24-48khz-dynamic-rows/5p1-six-carrier/joc-mode0-phase1-index3/single-independent-zero-dependent/48khz-1024kbps-6blocks-1536samples-4096bytes/etsi_emdf",
-        ),
+        EmdfCarriageProfile::DeployedCompat => Ok(format!(
+            "selected-meter-profile-v2/adm-bwf-pcm24-48khz-dynamic-rows/5p1-six-carrier/joc-mode0-phase1-index3/single-independent-zero-dependent/{rate}/deployed_compat"
+        )),
+        EmdfCarriageProfile::EtsiEmdf => Ok(format!(
+            "selected-meter-profile-v2/adm-bwf-pcm24-48khz-dynamic-rows/5p1-six-carrier/joc-mode0-phase1-index3/single-independent-zero-dependent/{rate}/etsi_emdf"
+        )),
         EmdfCarriageProfile::Unsupported => {
             Err(MeterSourceAdmissionError::UnsupportedCarriageProfile)
         }
@@ -210,6 +220,20 @@ pub fn admit_meter_source_owner(
     let configuration = prepared.configuration();
     if configuration.input_kind() != SelectedInputKind::Adm {
         return Err(MeterSourceAdmissionError::SelectedInputKind);
+    }
+    if !crate::selected_silence_timeline_supported(configuration) {
+        return Err(MeterSourceAdmissionError::UnsupportedSilenceTimelineEffect);
+    }
+    let loudness = configuration.loudness();
+    // Preserve admitted values in the config identity, but stop before source-owner creation
+    // until the selected measurement consumer for these controls is implemented.
+    if loudness.dialogue_intelligence() || loudness.speech_threshold() != 100 {
+        return Err(
+            MeterSourceAdmissionError::UnsupportedDialogueMeasurementEffect {
+                dialogue_intelligence: loudness.dialogue_intelligence(),
+                speech_threshold: loudness.speech_threshold(),
+            },
+        );
     }
     let wave = configuration.wave();
     let physical_rows = usize::from(wave.channels());

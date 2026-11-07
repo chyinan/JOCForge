@@ -5,7 +5,8 @@
 //! not open file references, parse ADM/CHNA graphs, decode DBMD, or create audio.
 
 use crate::profile::{
-    EncodingProfile, ProfileError, ResolvedEncodingProfile, resolve_selected_profile,
+    CodecRateProfile, EncodingProfile, ProfileError, ResolvedEncodingProfile,
+    resolve_selected_profile,
 };
 use crate::timeline::AdmSampleCount;
 use roxmltree::{Document, Node};
@@ -16,8 +17,6 @@ const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
 const SELECTED_RUNTIME_CHANNELS: u16 = 38;
 const MAX_SELECTED_INPUT_CHANNELS: u16 = u8::MAX as u16 + 1;
 const SELECTED_PCM_BITS: u16 = 24;
-const SELECTED_BIT_RATE_KBPS: u32 = 1_024;
-const SELECTED_BIT_RATE_ENUM: u8 = 5;
 const SELECTED_LAYOUT_ENUM: u8 = 8;
 const SELECTED_TARGET_CAPACITY: u8 = 15;
 const SELECTED_SAMPLE_LENGTH_ENUM: u8 = 1;
@@ -69,6 +68,121 @@ impl SelectedInputKind {
             Self::Adm => "adm",
             Self::AtmosMezz => "atmos_mezz",
         }
+    }
+}
+
+/// One explicit XML-selected DRC profile name.
+///
+/// The enum preserves the authored value through admission. It does not itself select or
+/// implement an audio effect or codec/BSI field; those consumers require their own binding.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedDrcProfile {
+    FilmStandard,
+    FilmLight,
+    MusicStandard,
+    MusicLight,
+    Speech,
+    None,
+}
+
+impl SelectedDrcProfile {
+    pub fn from_xml_value(value: &str) -> Option<Self> {
+        match value {
+            "film_standard" => Some(Self::FilmStandard),
+            "film_light" => Some(Self::FilmLight),
+            "music_standard" => Some(Self::MusicStandard),
+            "music_light" => Some(Self::MusicLight),
+            "speech" => Some(Self::Speech),
+            "none" => Some(Self::None),
+            _ => None,
+        }
+    }
+
+    pub const fn xml_value(self) -> &'static str {
+        match self {
+            Self::FilmStandard => "film_standard",
+            Self::FilmLight => "film_light",
+            Self::MusicStandard => "music_standard",
+            Self::MusicLight => "music_light",
+            Self::Speech => "speech",
+            Self::None => "none",
+        }
+    }
+}
+
+/// One exact XML choice for the authored 5.1 surround trim field.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedSurroundTrim {
+    Auto,
+    ZeroDb,
+    Minus3Db,
+    Minus6Db,
+    Minus9Db,
+}
+
+impl SelectedSurroundTrim {
+    pub fn from_xml_value(value: &str) -> Option<Self> {
+        match value {
+            "auto" => Some(Self::Auto),
+            "0" => Some(Self::ZeroDb),
+            "-3" => Some(Self::Minus3Db),
+            "-6" => Some(Self::Minus6Db),
+            "-9" => Some(Self::Minus9Db),
+            _ => None,
+        }
+    }
+
+    pub const fn xml_value(self) -> &'static str {
+        match self {
+            Self::Auto => "auto",
+            Self::ZeroDb => "0",
+            Self::Minus3Db => "-3",
+            Self::Minus6Db => "-6",
+            Self::Minus9Db => "-9",
+        }
+    }
+}
+
+/// One exact XML choice for the authored 5.1 height trim field.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedHeightTrim {
+    Auto,
+    Minus3Db,
+    Minus6Db,
+    Minus9Db,
+    Minus12Db,
+}
+
+impl SelectedHeightTrim {
+    pub fn from_xml_value(value: &str) -> Option<Self> {
+        match value {
+            "auto" => Some(Self::Auto),
+            "-3" => Some(Self::Minus3Db),
+            "-6" => Some(Self::Minus6Db),
+            "-9" => Some(Self::Minus9Db),
+            "-12" => Some(Self::Minus12Db),
+            _ => None,
+        }
+    }
+
+    pub const fn xml_value(self) -> &'static str {
+        match self {
+            Self::Auto => "auto",
+            Self::Minus3Db => "-3",
+            Self::Minus6Db => "-6",
+            Self::Minus9Db => "-9",
+            Self::Minus12Db => "-12",
+        }
+    }
+}
+
+/// Sample count derived from one explicitly authored silence duration.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SelectedSilenceSampleCount(u64);
+
+impl SelectedSilenceSampleCount {
+    pub const fn value(self) -> u64 {
+        self.0
     }
 }
 
@@ -155,11 +269,11 @@ pub struct SelectedJobConfiguration {
     dispatch_mode: u8,
     route_virtual_prefix_count: u8,
     loudness: SelectedLoudnessConfiguration,
-    line_drc_profile: String,
-    rf_drc_profile: String,
+    line_drc_profile: SelectedDrcProfile,
+    rf_drc_profile: SelectedDrcProfile,
     downmix: SelectedDownmixConfiguration,
-    surround_trim_5_1: String,
-    height_trim_5_1: String,
+    surround_trim_5_1: SelectedSurroundTrim,
+    height_trim_5_1: SelectedHeightTrim,
     input_offset: String,
     input_ffoa: String,
     start: String,
@@ -167,6 +281,9 @@ pub struct SelectedJobConfiguration {
     time_base: String,
     prepend_silence_duration: String,
     append_silence_duration: String,
+    prepend_silence_samples: SelectedSilenceSampleCount,
+    append_silence_samples: SelectedSilenceSampleCount,
+    append_silence_duration_explicit: bool,
 }
 
 impl SelectedJobConfiguration {
@@ -184,7 +301,7 @@ impl SelectedJobConfiguration {
                 "core_carrier": "selected_5_1_six_carriers",
                 "joc_downmix": "mode0_phase1_index3",
                 "substream_topology": "single_independent_zero_dependent",
-                "codec_rate": "48khz_1024kbps_6blocks_1536samples_4096bytes",
+                "codec_rate": self.selected_profile.codec_rate().identity_label(),
                 "emdf_carriage": carriage
             },
             "input_kind": self.input_kind.selected_label(),
@@ -216,21 +333,24 @@ impl SelectedJobConfiguration {
                 "dialogue_intelligence": self.loudness.dialogue_intelligence(),
                 "speech_threshold": self.loudness.speech_threshold()
             },
-            "line_drc_profile": self.line_drc_profile,
-            "rf_drc_profile": self.rf_drc_profile,
+            "line_drc_profile": self.line_drc_profile.xml_value(),
+            "rf_drc_profile": self.rf_drc_profile.xml_value(),
             "downmix": {
                 "preferred_mode": downmix.preferred_mode(),
                 "mix_levels": downmix.mix_levels()
             },
-            "surround_trim_5_1": self.surround_trim_5_1,
-            "height_trim_5_1": self.height_trim_5_1,
+            "surround_trim_5_1": self.surround_trim_5_1.xml_value(),
+            "height_trim_5_1": self.height_trim_5_1.xml_value(),
             "input_offset": self.input_offset,
             "input_ffoa": self.input_ffoa,
             "start": self.start,
             "end": self.end,
             "time_base": self.time_base,
             "prepend_silence_duration": self.prepend_silence_duration,
-            "append_silence_duration": self.append_silence_duration
+            "append_silence_duration": self.append_silence_duration,
+            "prepend_silence_samples": self.prepend_silence_samples.value(),
+            "append_silence_samples": self.append_silence_samples.value(),
+            "append_silence_duration_explicit": self.append_silence_duration_explicit
         })
     }
 
@@ -298,24 +418,24 @@ impl SelectedJobConfiguration {
         &self.loudness
     }
 
-    pub fn line_drc_profile(&self) -> &str {
-        &self.line_drc_profile
+    pub const fn line_drc_profile(&self) -> SelectedDrcProfile {
+        self.line_drc_profile
     }
 
-    pub fn rf_drc_profile(&self) -> &str {
-        &self.rf_drc_profile
+    pub const fn rf_drc_profile(&self) -> SelectedDrcProfile {
+        self.rf_drc_profile
     }
 
     pub const fn downmix(&self) -> SelectedDownmixConfiguration {
         self.downmix
     }
 
-    pub fn surround_trim_5_1(&self) -> &str {
-        &self.surround_trim_5_1
+    pub const fn surround_trim_5_1(&self) -> SelectedSurroundTrim {
+        self.surround_trim_5_1
     }
 
-    pub fn height_trim_5_1(&self) -> &str {
-        &self.height_trim_5_1
+    pub const fn height_trim_5_1(&self) -> SelectedHeightTrim {
+        self.height_trim_5_1
     }
 
     pub fn input_offset(&self) -> &str {
@@ -344,6 +464,18 @@ impl SelectedJobConfiguration {
 
     pub fn append_silence_duration(&self) -> &str {
         &self.append_silence_duration
+    }
+
+    pub const fn prepend_silence_samples(&self) -> SelectedSilenceSampleCount {
+        self.prepend_silence_samples
+    }
+
+    pub const fn append_silence_samples(&self) -> SelectedSilenceSampleCount {
+        self.append_silence_samples
+    }
+
+    pub const fn append_silence_duration_explicit(&self) -> bool {
+        self.append_silence_duration_explicit
     }
 
     /// Checks whether this fully parsed job shares the primary metadata/control source binding.
@@ -607,7 +739,7 @@ pub fn bind_selected_primary_control_projection(
     {
         return Err(PrimaryControlBindingError::ProjectionReceipt);
     }
-    validate_primary_job_fields(&job)?;
+    let codec_rate = validate_primary_job_fields(&job)?;
 
     let source_file_name = source["source_file_name"]
         .as_str()
@@ -671,8 +803,9 @@ pub fn bind_selected_primary_control_projection(
         chna: chunk_hash("chna")?,
         dbmd: chunk_hash("dbmd")?,
     };
-    let selected_profile = resolve_selected_profile(&EncodingProfile::selected())
-        .map_err(|_| PrimaryControlBindingError::SelectedProfile)?;
+    let selected_profile =
+        resolve_selected_profile(&EncodingProfile::selected_with_codec_rate(codec_rate))
+            .map_err(|_| PrimaryControlBindingError::SelectedProfile)?;
 
     Ok(SelectedPrimaryControlBinding {
         selected_profile,
@@ -701,7 +834,11 @@ pub fn bind_admitted_selected_input(
     configuration: &SelectedJobConfiguration,
     identity: SelectedPrimaryRuntimeIdentity,
 ) -> Result<SelectedPrimaryControlBinding, PrimaryControlBindingError> {
-    let selected_profile = resolve_selected_profile(&EncodingProfile::selected())
+    let selected_profile =
+        resolve_selected_profile(&EncodingProfile::selected_with_rate_and_carriage(
+            configuration.selected_profile().codec_rate(),
+            configuration.selected_profile().carriage(),
+        ))
         .map_err(|_| PrimaryControlBindingError::SelectedProfile)?;
     let wave = configuration.wave();
     let source_samples = AdmSampleCount::new(configuration.source_samples())
@@ -745,7 +882,9 @@ pub fn bind_admitted_selected_input(
     })
 }
 
-fn validate_primary_job_fields(job: &Value) -> Result<(), PrimaryControlBindingError> {
+fn validate_primary_job_fields(
+    job: &Value,
+) -> Result<CodecRateProfile, PrimaryControlBindingError> {
     let expected_strings = [
         ("/schema", "selected-job-functional-field-projection.v1"),
         ("/input/kind", "atmos_mezz"),
@@ -777,7 +916,7 @@ fn validate_primary_job_fields(job: &Value) -> Result<(), PrimaryControlBindingE
             return Err(PrimaryControlBindingError::SelectedFieldValue);
         }
     }
-    let dialogue_intelligence = job
+    let _dialogue_intelligence = job
         .pointer("/encode/loudness/dialogue_intelligence")
         .and_then(|value| {
             value.as_bool().or_else(|| match value.as_str() {
@@ -796,17 +935,15 @@ fn validate_primary_job_fields(job: &Value) -> Result<(), PrimaryControlBindingE
         .pointer("/encode/drc/rf_mode_drc_profile")
         .and_then(Value::as_str)
         .ok_or(PrimaryControlBindingError::SelectedFieldValue)?;
-    if value_u32(&job["encode"]["data_rate_kbps"])? != SELECTED_BIT_RATE_KBPS
-        || !supported_audio_control_set(
-            dialogue_intelligence,
-            speech_threshold,
-            line_drc_profile,
-            rf_drc_profile,
-        )
+    let codec_rate = CodecRateProfile::from_kbps(value_u32(&job["encode"]["data_rate_kbps"])?)
+        .ok_or(PrimaryControlBindingError::SelectedFieldValue)?;
+    if SelectedDrcProfile::from_xml_value(line_drc_profile).is_none()
+        || SelectedDrcProfile::from_xml_value(rf_drc_profile).is_none()
+        || speech_threshold > 100
     {
         return Err(PrimaryControlBindingError::SelectedFieldValue);
     }
-    Ok(())
+    Ok(codec_rate)
 }
 
 fn value_u32(value: &Value) -> Result<u32, PrimaryControlBindingError> {
@@ -816,23 +953,6 @@ fn value_u32(value: &Value) -> Result<u32, PrimaryControlBindingError> {
             .ok_or(PrimaryControlBindingError::SelectedFieldValue)?,
     )
     .map_err(|_| PrimaryControlBindingError::SelectedFieldValue)
-}
-
-fn supported_audio_control_set(
-    dialogue_intelligence: bool,
-    speech_threshold: u32,
-    line_drc_profile: &str,
-    rf_drc_profile: &str,
-) -> bool {
-    matches!(
-        (
-            dialogue_intelligence,
-            speech_threshold,
-            line_drc_profile,
-            rf_drc_profile
-        ),
-        (false, 100, "none", "none") | (false, 100, "film_light", "film_light")
-    )
 }
 
 fn sha256(bytes: &[u8]) -> [u8; 32] {
@@ -909,9 +1029,12 @@ pub fn parse_selected_job_configuration(
     let encoder = path_node(root, &["filter", "audio", "encode_to_atmos_ddp"])?
         .ok_or(JobConfigurationError::MissingField)?;
     let bit_rate = required_text(encoder, &["data_rate"])?;
-    if bit_rate != "1024" {
-        return Err(JobConfigurationError::BitRate);
-    }
+    let codec_rate =
+        CodecRateProfile::from_xml_token(&bit_rate).ok_or(JobConfigurationError::BitRate)?;
+    let bit_rate_kbps = codec_rate.kbps().ok_or(JobConfigurationError::BitRate)?;
+    let bit_rate_enum = codec_rate
+        .selector_code()
+        .ok_or(JobConfigurationError::BitRate)?;
     if required_text(encoder, &["timecode_frame_rate"])? != "not_indicated" {
         return Err(JobConfigurationError::TimeDomain);
     }
@@ -926,6 +1049,9 @@ pub fn parse_selected_job_configuration(
     };
     let speech_threshold =
         parse_decimal_u32(&required_text(loudness_node, &["speech_threshold"])?)?;
+    if speech_threshold > 100 {
+        return Err(JobConfigurationError::UnsupportedFieldValue);
+    }
     let loudness = SelectedLoudnessConfiguration {
         metering_mode: require_exact(loudness_node, &["metering_mode"], "1770-4")?,
         dialogue_intelligence,
@@ -933,17 +1059,12 @@ pub fn parse_selected_job_configuration(
     };
 
     let data_rate = path_node(encoder, &["drc"])?.ok_or(JobConfigurationError::MissingField)?;
-    let line_drc_profile = required_text(data_rate, &["line_mode_drc_profile"])?;
-    let rf_drc_profile = required_text(data_rate, &["rf_mode_drc_profile"])?;
-    if !supported_audio_control_set(
-        loudness.dialogue_intelligence,
-        loudness.speech_threshold,
-        &line_drc_profile,
-        &rf_drc_profile,
-    ) {
-        return Err(JobConfigurationError::UnsupportedFieldValue);
-    }
-
+    let line_drc_profile_value = required_text(data_rate, &["line_mode_drc_profile"])?;
+    let line_drc_profile = SelectedDrcProfile::from_xml_value(&line_drc_profile_value)
+        .ok_or(JobConfigurationError::UnsupportedFieldValue)?;
+    let rf_drc_profile_value = required_text(data_rate, &["rf_mode_drc_profile"])?;
+    let rf_drc_profile = SelectedDrcProfile::from_xml_value(&rf_drc_profile_value)
+        .ok_or(JobConfigurationError::UnsupportedFieldValue)?;
     let downmix_node =
         path_node(encoder, &["downmix"])?.ok_or(JobConfigurationError::MissingField)?;
     let downmix = SelectedDownmixConfiguration {
@@ -974,8 +1095,12 @@ pub fn parse_selected_job_configuration(
 
     let trims =
         path_node(encoder, &["custom_trims"])?.ok_or(JobConfigurationError::MissingField)?;
-    let surround_trim_5_1 = require_exact(trims, &["surround_trim_5_1"], "auto")?;
-    let height_trim_5_1 = require_exact(trims, &["height_trim_5_1"], "auto")?;
+    let surround_trim_value = required_text(trims, &["surround_trim_5_1"])?;
+    let surround_trim_5_1 = SelectedSurroundTrim::from_xml_value(&surround_trim_value)
+        .ok_or(JobConfigurationError::UnsupportedFieldValue)?;
+    let height_trim_value = required_text(trims, &["height_trim_5_1"])?;
+    let height_trim_5_1 = SelectedHeightTrim::from_xml_value(&height_trim_value)
+        .ok_or(JobConfigurationError::UnsupportedFieldValue)?;
 
     let start = optional_time_alias(encoder, "start", "first_frame_of_action")?;
     let end = optional_time_alias(encoder, "end", "end_of_file")?;
@@ -983,8 +1108,10 @@ pub fn parse_selected_job_configuration(
     if time_base != "file_position" {
         return Err(JobConfigurationError::TimeDomain);
     }
-    let prepend_silence_duration = required_zero_duration(encoder, "prepend_silence_duration")?;
-    let append_silence_duration = optional_zero_duration(encoder, "append_silence_duration")?;
+    let (prepend_silence_duration, prepend_silence_samples) =
+        required_silence_duration(encoder, "prepend_silence_duration", wave.sample_rate_hz())?;
+    let (append_silence_duration, append_silence_samples, append_silence_duration_explicit) =
+        optional_silence_duration(encoder, "append_silence_duration", wave.sample_rate_hz())?;
 
     let output_node =
         path_node(root, &["output", "ec3"])?.ok_or(JobConfigurationError::MissingField)?;
@@ -994,8 +1121,10 @@ pub fn parse_selected_job_configuration(
         return Err(JobConfigurationError::InvalidOutputReference);
     }
 
-    let selected_profile = resolve_selected_profile(&EncodingProfile::selected())
-        .map_err(|ProfileError::UnsupportedProfile| JobConfigurationError::UnsupportedProfile)?;
+    let selected_profile = resolve_selected_profile(&EncodingProfile::selected_with_codec_rate(
+        codec_rate,
+    ))
+    .map_err(|ProfileError::UnsupportedProfile| JobConfigurationError::UnsupportedProfile)?;
 
     Ok(SelectedJobConfiguration {
         selected_profile,
@@ -1004,8 +1133,8 @@ pub fn parse_selected_job_configuration(
         output_reference,
         wave,
         source_samples,
-        bit_rate_kbps: SELECTED_BIT_RATE_KBPS,
-        bit_rate_enum: SELECTED_BIT_RATE_ENUM,
+        bit_rate_kbps,
+        bit_rate_enum,
         layout_enum: SELECTED_LAYOUT_ENUM,
         target_capacity: SELECTED_TARGET_CAPACITY,
         sample_length_enum: SELECTED_SAMPLE_LENGTH_ENUM,
@@ -1026,6 +1155,9 @@ pub fn parse_selected_job_configuration(
         time_base,
         prepend_silence_duration,
         append_silence_duration,
+        prepend_silence_samples,
+        append_silence_samples,
+        append_silence_duration_explicit,
     })
 }
 
@@ -1127,21 +1259,64 @@ fn optional_time_alias(
     }
 }
 
-fn required_zero_duration(root: Node<'_, '_>, name: &str) -> Result<String, JobConfigurationError> {
+fn required_silence_duration(
+    root: Node<'_, '_>,
+    name: &str,
+    sample_rate_hz: u32,
+) -> Result<(String, SelectedSilenceSampleCount), JobConfigurationError> {
     let value = required_text(root, &[name])?;
-    if value == "0" || value == "0.0" {
-        Ok(value)
-    } else {
-        Err(JobConfigurationError::TimeDomain)
+    let samples = silence_duration_samples(&value, sample_rate_hz)?;
+    Ok((value, samples))
+}
+
+fn optional_silence_duration(
+    root: Node<'_, '_>,
+    name: &str,
+    sample_rate_hz: u32,
+) -> Result<(String, SelectedSilenceSampleCount, bool), JobConfigurationError> {
+    match path_text(root, &[name])? {
+        None => Ok(("0.0".to_owned(), SelectedSilenceSampleCount(0), false)),
+        Some(value) => Ok((
+            value.to_owned(),
+            silence_duration_samples(value, sample_rate_hz)?,
+            true,
+        )),
     }
 }
 
-fn optional_zero_duration(root: Node<'_, '_>, name: &str) -> Result<String, JobConfigurationError> {
-    match path_text(root, &[name])? {
-        None => Ok("0.0".to_owned()),
-        Some("0" | "0.0") => Ok(path_text(root, &[name])?.unwrap_or("0.0").to_owned()),
-        Some(_) => Err(JobConfigurationError::TimeDomain),
+fn silence_duration_samples(
+    value: &str,
+    sample_rate_hz: u32,
+) -> Result<SelectedSilenceSampleCount, JobConfigurationError> {
+    let (whole, fraction) = match value.split_once('.') {
+        Some((whole, fraction)) => (whole, Some(fraction)),
+        None => (value, None),
+    };
+    if whole.is_empty()
+        || !whole.bytes().all(|byte| byte.is_ascii_digit())
+        || fraction.is_some_and(|digits| {
+            digits.is_empty() || !digits.bytes().all(|byte| byte.is_ascii_digit())
+        })
+    {
+        return Err(JobConfigurationError::TimeDomain);
     }
+
+    let seconds = value
+        .parse::<f64>()
+        .map_err(|_| JobConfigurationError::TimeDomain)?;
+    if !seconds.is_finite() || seconds < 0.0 {
+        return Err(JobConfigurationError::TimeDomain);
+    }
+    let scaled_samples = seconds * f64::from(sample_rate_hz);
+    if !scaled_samples.is_finite() || scaled_samples >= i64::MAX as f64 {
+        return Err(JobConfigurationError::TimeDomain);
+    }
+    let signed_samples = scaled_samples.trunc() as i64;
+    if signed_samples < 0 {
+        return Err(JobConfigurationError::TimeDomain);
+    }
+    let samples = u64::try_from(signed_samples).map_err(|_| JobConfigurationError::TimeDomain)?;
+    Ok(SelectedSilenceSampleCount(samples))
 }
 
 fn parse_decimal_u32(value: &str) -> Result<u32, JobConfigurationError> {

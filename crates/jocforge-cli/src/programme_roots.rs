@@ -28,7 +28,6 @@ use jocforge_io::pcm::frontend_pcm_source::{
 const MAIN_FRAME_SAMPLES: u64 = 1_536;
 const SUPPRESSED_SOURCES: u64 = 2;
 const CACHED_DRAINS: u64 = 4;
-const OUTPUT_FRAME_BYTES: u64 = 4_096;
 
 const OWNER_ORDER: [GtcOwnerId; 12] = [
     GtcOwnerId::Analysis,
@@ -141,6 +140,14 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         let expected_sources = output.output_configuration().expected_sources();
         let expected_published = output.output_configuration().expected_published_aus();
         let expected_product_bytes = output.output_configuration().expected_product_bytes();
+        let output_frame_bytes = u64::from(output.output_configuration().frame_bytes());
+        let selected_rate = prepared.configuration().selected_profile().codec_rate();
+        let selected_frame_bytes = u64::try_from(
+            selected_rate
+                .frame_bytes()
+                .ok_or_else(|| "prepared input has an unsupported carrier rate".to_owned())?,
+        )
+        .map_err(|_| "selected frame extent does not fit programme accounting".to_owned())?;
         if measurement.programme_id() != prepared.programme_id()
             || measurement.attempt() != attempt
             || measurement.input_sha256() != &prepared.resource_identity().input_sha256()
@@ -172,6 +179,9 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             || joc.generation() != 0
             || metadata.state_reference().generation() != 0
             || codec.generation().value() != 0
+            || codec.codec_rate() != selected_rate
+            || integrity.codec_rate() != selected_rate
+            || output_frame_bytes != selected_frame_bytes
             || output
                 .gtc_state_reference()
                 .map_err(|error| format!("Output cold state reference: {error}"))?
@@ -183,7 +193,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         if expected_sources == 0
             || expected_sources != normal.saturating_add(SUPPRESSED_SOURCES)
             || expected_published != expected_sources.saturating_sub(SUPPRESSED_SOURCES)
-            || expected_published.checked_mul(OUTPUT_FRAME_BYTES) != Some(expected_product_bytes)
+            || expected_published.checked_mul(output_frame_bytes) != Some(expected_product_bytes)
         {
             return Err("READY clock plan does not match the admitted output plan".to_owned());
         }

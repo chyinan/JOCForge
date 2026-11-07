@@ -7,7 +7,7 @@ use crate::{
         FrontendControlReplacementCandidate, MeterCallbackIndex, MeterCallbackPhase,
         MeterComponentOutputRows, MeterRootCallbackProgress, MeterSourceBridgeError,
         MeterSourceCallbackView, MeterSourceOarReceipt, MeterSourcePosition,
-        MeterSourceSampleCount, NormalControlSnapshotOutput, SpatialAudioReplacementCandidate,
+        MeterSourceSampleCount, SpatialAudioReplacementCandidate,
         SpatialControlReplacementCandidate,
     },
 };
@@ -18,14 +18,15 @@ pub use jocforge_domain::meter::standalone_root::{
 pub use jocforge_domain::transaction::{
     AttemptId, CallbackTransactionId, GtcOwnerReceipt, ProgrammeId,
 };
+use std::sync::Arc;
 
 use jocforge_domain::{
     frontend::{
-        FrontendControlMachine, ValidatedF01EColdProvider, ValidatedF03TargetColdProvider,
+        ValidatedF01EColdProvider, ValidatedF03TargetColdProvider,
         ValidatedFeatureFft4096MathProvider, ValidatedFeatureProcessorMathProvider,
         normal_control_snapshot::{
-            NormalControlBeforeState, NormalControlFreshZeroMeterView,
-            propose_normal_control_snapshot,
+            NormalControlAdmFreshZeroView, NormalControlAdmInputOutput,
+            NormalControlFreshZeroMeterView,
         },
     },
     joc::oamd::reader_target::ReaderTargetControlRows,
@@ -36,10 +37,12 @@ use jocforge_domain::{
         owner::{MeterCallbackGtcProposal as DomainMeterCallbackGtcProposal, MeterOwnerGtcError},
     },
     profile::{EncodingProfile, resolve_selected_profile},
+    source_axis::{SourceAxisBinding, SourceAxisError, SourceAxisOwnerGeneration},
     spatial::{
         SpatialAudioMachine, SpatialControlMachine, ValidatedComponentParameterProvider,
         ValidatedWindowQ15Provider,
         diffusion_filter::DiffusionFilterParameters,
+        frontend_stages::FrontendFeatureStageError,
         frontend_stages::RenderedFrontendFeatureStageProposal,
         frontend_stages::{
             stage_frontend_features_from_installed48,
@@ -68,15 +71,18 @@ use jocforge_domain::{
             BeforeRegularHistory, CurrentHostPcm, PrefixWriterSet,
             PrimaryRegularSourceControlProjection, SourceControlSnapshotClock, SourceFlagsError,
             SourceFlagsInput, SourceFlagsParentLineage,
+            project_meter_fresh_zero_normal_control_adm_input_source_controls,
             project_meter_fresh_zero_normal_control_snapshot_source_controls,
-            project_normal_control_snapshot_output_source_controls,
+            project_normal_control_adm_input_output_source_controls,
         },
         source_geometry_outer::{
-            GlobalSourceGeometrySnapshot, build_global_source_geometry_snapshot_from_output,
+            GlobalSourceGeometrySnapshot,
+            build_global_source_geometry_snapshot_from_adm_input_output,
             build_meter_fresh_zero_global_source_geometry_snapshot,
+            build_meter_fresh_zero_global_source_geometry_snapshot_from_adm_input,
         },
     },
-    timeline::{AdmSampleIndex, FrontendCallbackIndex, NormalCallbackCount},
+    timeline::{AdmSampleIndex, FrontendCallbackIndex},
     transaction::CallbackLineageIdentity,
 };
 
@@ -200,6 +206,7 @@ pub enum IndependentMeterG0Error {
     PreparedIdentityMismatch,
     PrimaryMetadataMissing,
     SourceMap,
+    SourceAxis(SourceAxisError),
     Provider,
     FrontendControl,
     FrontendControlBeforeState,
@@ -210,7 +217,7 @@ pub enum IndependentMeterG0Error {
     MeterInstalled48,
     FreshZeroControlsMissing,
     SourceFlags(SourceFlagsError),
-    FrontendFeatures,
+    FrontendFeatures(FrontendFeatureStageError),
     SpatialProduction(SpatialProductionCallbackError),
     SpatialControl,
     SpatialAudio,
@@ -235,6 +242,7 @@ pub struct IndependentMeterG0Candidate {
     component_rows: MeterComponentOutputRows,
     reader_target_controls: ReaderTargetControlRows,
     fresh_zero_controls: Option<NormalControlFreshZeroMeterView>,
+    fresh_zero_adm_controls: Option<NormalControlAdmFreshZeroView>,
     source_receipt: MeterSourceOarReceipt,
     meter: DomainMeterCallbackGtcProposal,
 }
@@ -272,6 +280,10 @@ impl IndependentMeterG0Candidate {
         self.fresh_zero_controls.as_ref()
     }
 
+    pub const fn fresh_zero_adm_controls(&self) -> Option<&NormalControlAdmFreshZeroView> {
+        self.fresh_zero_adm_controls.as_ref()
+    }
+
     pub const fn source_receipt(&self) -> &MeterSourceOarReceipt {
         &self.source_receipt
     }
@@ -286,8 +298,10 @@ struct IndependentMeterG0NormalStage {
     spatial_control: SpatialControlMachine,
     spatial_audio: SpatialAudioMachine,
     source_map: Installed48SourceMap,
-    normal_output: Option<NormalControlSnapshotOutput>,
+    source_axis: Arc<SourceAxisBinding>,
+    normal_source: Option<NormalControlCallbackSource>,
     fresh_zero_controls: Option<NormalControlFreshZeroMeterView>,
+    fresh_zero_adm_controls: Option<NormalControlAdmFreshZeroView>,
     source_geometry: Option<GlobalSourceGeometrySnapshot>,
     source_projection: Option<PrimaryRegularSourceControlProjection>,
 }
@@ -379,10 +393,58 @@ pub fn stage_independent_meter_normal_callback(
 struct IndependentMeterNormalStage {
     frontend: FrontendControlReplacementCandidate,
     source_map: Installed48SourceMap,
-    normal_output: Option<NormalControlSnapshotOutput>,
+    source_axis: Arc<SourceAxisBinding>,
+    normal_source: Option<NormalControlCallbackSource>,
     fresh_zero_controls: Option<NormalControlFreshZeroMeterView>,
+    fresh_zero_adm_controls: Option<NormalControlAdmFreshZeroView>,
     source_geometry: Option<GlobalSourceGeometrySnapshot>,
     source_projection: Option<PrimaryRegularSourceControlProjection>,
+}
+
+fn source_axis_for_adm_output(
+    source_map: &Installed48SourceMap,
+    output: &NormalControlAdmInputOutput,
+) -> Result<Arc<SourceAxisBinding>, IndependentMeterG0Error> {
+    source_axis_binding(
+        source_map,
+        SourceAxisOwnerGeneration::new(output.next_owner_generation()),
+        output.transaction_id().clone(),
+        output.normal_origin_generation(),
+    )
+}
+
+fn source_axis_for_callback_source(
+    source_map: &Installed48SourceMap,
+    source: &NormalControlCallbackSource,
+) -> Result<Arc<SourceAxisBinding>, IndependentMeterG0Error> {
+    source_axis_binding(
+        source_map,
+        source.source_owner_generation(),
+        source.transaction_id().clone(),
+        source.source_origin_generation(),
+    )
+}
+
+fn source_axis_binding(
+    source_map: &Installed48SourceMap,
+    owner_generation: SourceAxisOwnerGeneration,
+    transaction_id: CallbackLineageIdentity,
+    source_origin_generation: FrontendCallbackIndex,
+) -> Result<Arc<SourceAxisBinding>, IndependentMeterG0Error> {
+    let source_ids = source_map
+        .rows()
+        .iter()
+        .map(|row| row.source_index())
+        .collect::<Vec<_>>();
+    let axis = SourceAxisBinding::new(
+        source_ids,
+        owner_generation,
+        *source_map.source_binding().source_receipt_sha256(),
+        transaction_id,
+        source_origin_generation,
+    )
+    .map_err(IndependentMeterG0Error::SourceAxis)?;
+    Ok(Arc::new(axis))
 }
 
 #[inline(never)]
@@ -396,66 +458,64 @@ fn stage_independent_meter_normal_source(
     let metadata_controls = prepared
         .primary_metadata_controls()
         .ok_or(IndependentMeterG0Error::PrimaryMetadataMissing)?;
-    let profile = EncodingProfile::selected();
+    let selected_profile = prepared.configuration().selected_profile();
+    let profile = EncodingProfile::selected_with_rate_and_carriage(
+        selected_profile.codec_rate(),
+        selected_profile.carriage(),
+    );
     let resolved_profile =
         resolve_selected_profile(&profile).map_err(|_| IndependentMeterG0Error::Provider)?;
     let source_map = build_meter_installed48_source_map(metadata_controls, &providers.p11_geometry)
         .map_err(|_| IndependentMeterG0Error::SourceMap)?;
-    let callback = source_view.callback_index();
-    let callback_index = FrontendCallbackIndex::new(
-        u32::try_from(callback.value()).map_err(|_| IndependentMeterG0Error::UnsupportedClock)?,
-    );
     let frontend_before = previous.frontend_candidate().next_machine();
     let frontend_state = frontend_before.committed();
-    let current_prepared = prepared
-        .normal_control_prepared_snapshot(frontend_state)
-        .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
-    let normal_before =
-        NormalControlBeforeState::from_frontend_state(frontend_state, frontend_before.generation())
-            .map_err(|_| IndependentMeterG0Error::FrontendControlBeforeState)?;
-    let lineage = CallbackLineageIdentity::new(
-        prepared.programme_id().clone(),
-        meter_binding.attempt(),
-        callback_index,
+    let dynamic_prepared = Arc::clone(
+        frontend_state
+            .dynamic_prepared_identity()
+            .ok_or(IndependentMeterG0Error::FrontendControl)?,
     );
-    let normal = propose_normal_control_snapshot(&normal_before, &current_prepared, lineage)
+    let dynamic_before = frontend_state
+        .dynamic_after_state()
+        .ok_or(IndependentMeterG0Error::FrontendControl)?;
+    let normal = prepared
+        .propose_f01e_adm_normal_continuation(&dynamic_prepared, dynamic_before, source_view)
         .map_err(|_| IndependentMeterG0Error::FrontendControlProposal)?;
-    let fresh_zero_controls =
-        if callback.value().checked_add(1) == Some(source_view.normal_callbacks().value()) {
-            let next_callback = u32::try_from(source_view.normal_callbacks().value())
-                .map_err(|_| IndependentMeterG0Error::UnsupportedClock)?;
-            let delivery = CallbackLineageIdentity::new(
-                meter_binding.programme_id().clone(),
-                meter_binding.attempt(),
-                FrontendCallbackIndex::new(next_callback),
-            );
-            Some(
-                normal
-                    .after_state()
-                    .held_source_view_for_meter_fresh_zero_drain(
-                        delivery,
-                        NormalCallbackCount::new(source_view.normal_callbacks().value()),
-                    )
-                    .map_err(|_| IndependentMeterG0Error::FrontendControl)?,
-            )
-        } else {
-            None
-        };
-    let frontend_normal_stage = frontend_before
-        .stage_normal_snapshot(normal)
+    let normal_source = normal.output(Arc::clone(&dynamic_prepared));
+    let source_axis = source_axis_for_adm_output(&source_map, &normal_source)?;
+    let fresh_zero_adm_controls = if source_view.callback_index().value().checked_add(1)
+        == Some(source_view.normal_callbacks().value())
+    {
+        let delivery = CallbackLineageIdentity::new(
+            meter_binding.programme_id().clone(),
+            meter_binding.attempt(),
+            FrontendCallbackIndex::new(
+                u32::try_from(source_view.normal_callbacks().value())
+                    .map_err(|_| IndependentMeterG0Error::UnsupportedClock)?,
+            ),
+        );
+        Some(
+            normal_source
+                .after_state()
+                .fresh_zero_view(delivery)
+                .map_err(|_| IndependentMeterG0Error::FrontendControl)?,
+        )
+    } else {
+        None
+    };
+    let frontend_staged = frontend_before
+        .stage_normal_adm_input_continuation(Arc::clone(&dynamic_prepared), normal)
         .map_err(|_| IndependentMeterG0Error::FrontendControlStage)?;
-    let (frontend_staged, normal_output) = frontend_normal_stage.into_parts();
     let frontend = frontend_before
         .replacement_candidate(frontend_staged, meter_binding.transaction_id().clone())
         .map_err(|_| IndependentMeterG0Error::FrontendControlCandidate)?;
-    let source_geometry = build_global_source_geometry_snapshot_from_output(
+    let source_geometry = build_global_source_geometry_snapshot_from_adm_input_output(
         prepared.graph().graph(),
         &source_map,
-        &normal_output,
+        &normal_source,
     )
     .map_err(|_| IndependentMeterG0Error::SourceMap)?;
-    let source_projection = project_normal_control_snapshot_output_source_controls(
-        &normal_output,
+    let source_projection = project_normal_control_adm_input_output_source_controls(
+        &normal_source,
         prepared.graph().graph(),
         resolved_profile,
     )
@@ -464,8 +524,12 @@ fn stage_independent_meter_normal_source(
     Ok(Box::new(IndependentMeterNormalStage {
         frontend,
         source_map,
-        normal_output: Some(normal_output),
-        fresh_zero_controls,
+        source_axis,
+        normal_source: Some(NormalControlCallbackSource::NormalAdmInputOutput(Box::new(
+            normal_source,
+        ))),
+        fresh_zero_controls: None,
+        fresh_zero_adm_controls,
         source_geometry: Some(source_geometry),
         source_projection: Some(source_projection),
     }))
@@ -498,12 +562,12 @@ fn stage_independent_meter_normal_features(
     let before_history =
         BeforeRegularHistory::from_owner(spatial_control_before, source_projection.route())
             .map_err(IndependentMeterG0Error::SourceFlags)?;
-    let normal_output = normal_stage
-        .normal_output
+    let normal_source = normal_stage
+        .normal_source
         .as_ref()
         .ok_or(IndependentMeterG0Error::NormalOutputMissing)?;
     let source_flags_parent = SourceFlagsParentLineage::new(
-        normal_output.transaction_id().clone(),
+        normal_source.transaction_id().clone(),
         spatial_control_before,
     )
     .map_err(IndependentMeterG0Error::SourceFlags)?;
@@ -534,7 +598,8 @@ fn stage_independent_meter_normal_features(
             .map_err(IndependentMeterG0Error::SourceFlags)?,
         source_flags_parent,
     )
-    .map_err(IndependentMeterG0Error::SourceFlags)?;
+    .map_err(IndependentMeterG0Error::SourceFlags)?
+    .with_source_axis(Arc::clone(&normal_stage.source_axis));
     let installed48 = stage_meter_installed48(
         previous.installed48_after(),
         MeterInstalled48Input {
@@ -552,6 +617,7 @@ fn stage_independent_meter_normal_features(
             activity: activity.output(),
             membership_route: activity.membership_route(),
             source_map: &normal_stage.source_map,
+            source_axis: &normal_stage.source_axis,
             controls: metadata_controls,
             diffusion_parameters: Some(&providers.diffusion),
         },
@@ -559,7 +625,7 @@ fn stage_independent_meter_normal_features(
     .map_err(|_| IndependentMeterG0Error::MeterInstalled48)?;
     let mut rendered_frontend = stage_frontend_features_from_installed48(
         spatial_control_before,
-        normal_output.transaction_id().clone(),
+        normal_source.transaction_id().clone(),
         activity,
         installed48,
         source_flags,
@@ -567,7 +633,7 @@ fn stage_independent_meter_normal_features(
         &providers.feature_processor,
         &providers.feature_fft,
     )
-    .map_err(|_| IndependentMeterG0Error::FrontendFeatures)?;
+    .map_err(IndependentMeterG0Error::FrontendFeatures)?;
     let activity_after = rendered_frontend
         .take_primary_activity_after_state()
         .ok_or(IndependentMeterG0Error::ActivityAfterStateMissing)?;
@@ -582,8 +648,8 @@ fn continue_independent_meter_normal_spatial(
     source_control_clock: SourceControlSnapshotClock,
     providers: &IndependentMeterG0Providers,
 ) -> Result<MeterSpatialProductionCallbackProposal, IndependentMeterG0Error> {
-    let normal_output = normal_stage
-        .normal_output
+    let normal_source = normal_stage
+        .normal_source
         .take()
         .ok_or(IndependentMeterG0Error::NormalOutputMissing)?;
     let source_geometry = normal_stage
@@ -592,7 +658,7 @@ fn continue_independent_meter_normal_spatial(
         .ok_or(IndependentMeterG0Error::SourceGeometryMissing)?;
     continue_meter_spatial_production_callback(MeterSpatialProductionCallbackInputs {
         frontend: rendered_frontend,
-        source_snapshot: NormalControlCallbackSource::NormalOutput(Box::new(normal_output)),
+        source_snapshot: normal_source,
         source_geometry,
         source_control_clock,
         source_map: &normal_stage.source_map,
@@ -686,6 +752,7 @@ fn finish_independent_meter_normal_callback(
         component_rows,
         reader_target_controls,
         fresh_zero_controls: normal_stage.fresh_zero_controls,
+        fresh_zero_adm_controls: normal_stage.fresh_zero_adm_controls,
         source_receipt,
         meter,
     })
@@ -711,7 +778,7 @@ pub fn stage_independent_meter_fresh_zero_drain_callback(
         .map_err(|_| IndependentMeterG0Error::SourceMap)?;
     let spatial_control_before = previous.spatial_control_candidate().next_machine();
     let spatial_audio_before = previous.spatial_audio_candidate().next_machine();
-    let (rendered_frontend, activity_after, source_control_clock, source_geometry, held_controls) =
+    let (rendered_frontend, activity_after, source_control_clock, source_geometry, source_snapshot) =
         stage_independent_meter_fresh_zero_features(
             prepared,
             &source_view,
@@ -722,9 +789,7 @@ pub fn stage_independent_meter_fresh_zero_drain_callback(
     let spatial_stage =
         continue_meter_spatial_production_callback(MeterSpatialProductionCallbackInputs {
             frontend: rendered_frontend,
-            source_snapshot: NormalControlCallbackSource::FreshZeroMeterHold(Box::new(
-                held_controls,
-            )),
+            source_snapshot,
             source_geometry,
             source_control_clock,
             source_map: &source_map,
@@ -794,6 +859,7 @@ pub fn stage_independent_meter_fresh_zero_drain_callback(
         component_rows,
         reader_target_controls,
         fresh_zero_controls: previous.fresh_zero_controls,
+        fresh_zero_adm_controls: previous.fresh_zero_adm_controls,
         source_receipt,
         meter,
     })
@@ -812,13 +878,10 @@ fn stage_independent_meter_fresh_zero_features(
         PrimaryActivityState,
         SourceControlSnapshotClock,
         GlobalSourceGeometrySnapshot,
-        NormalControlFreshZeroMeterView,
+        NormalControlCallbackSource,
     ),
     IndependentMeterG0Error,
 > {
-    let base_controls = previous
-        .fresh_zero_controls()
-        .ok_or(IndependentMeterG0Error::FreshZeroControlsMissing)?;
     let callback = source_view.callback_index();
     let callback_index = FrontendCallbackIndex::new(
         u32::try_from(callback.value()).map_err(|_| IndependentMeterG0Error::UnsupportedClock)?,
@@ -828,17 +891,46 @@ fn stage_independent_meter_fresh_zero_features(
         previous.meter_proposal().after_root().identity().attempt(),
         callback_index,
     );
-    let held_controls = base_controls
-        .for_delivery(delivery)
-        .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
-    let profile = EncodingProfile::selected();
+    let source_snapshot = if let Some(base_controls) = previous.fresh_zero_controls() {
+        NormalControlCallbackSource::FreshZeroMeterHold(Box::new(
+            base_controls
+                .for_delivery(delivery.clone())
+                .map_err(|_| IndependentMeterG0Error::FrontendControl)?,
+        ))
+    } else if let Some(base_controls) = previous.fresh_zero_adm_controls() {
+        NormalControlCallbackSource::FreshZeroAdmMeterHold(Box::new(
+            base_controls
+                .for_delivery(delivery.clone())
+                .map_err(|_| IndependentMeterG0Error::FrontendControl)?,
+        ))
+    } else {
+        return Err(IndependentMeterG0Error::FreshZeroControlsMissing);
+    };
+    let source_axis = source_axis_for_callback_source(source_map, &source_snapshot)?;
+    let selected_profile = prepared.configuration().selected_profile();
+    let profile = EncodingProfile::selected_with_rate_and_carriage(
+        selected_profile.codec_rate(),
+        selected_profile.carriage(),
+    );
     let resolved_profile =
         resolve_selected_profile(&profile).map_err(|_| IndependentMeterG0Error::Provider)?;
-    let source_projection = project_meter_fresh_zero_normal_control_snapshot_source_controls(
-        &held_controls,
-        prepared.graph().graph(),
-        resolved_profile,
-    )
+    let source_projection = match &source_snapshot {
+        NormalControlCallbackSource::FreshZeroMeterHold(held) => {
+            project_meter_fresh_zero_normal_control_snapshot_source_controls(
+                held,
+                prepared.graph().graph(),
+                resolved_profile,
+            )
+        }
+        NormalControlCallbackSource::FreshZeroAdmMeterHold(held) => {
+            project_meter_fresh_zero_normal_control_adm_input_source_controls(
+                held,
+                prepared.graph().graph(),
+                resolved_profile,
+            )
+        }
+        _ => return Err(IndependentMeterG0Error::FreshZeroControlsMissing),
+    }
     .map_err(IndependentMeterG0Error::SourceFlags)?;
     let source_control_clock = source_projection.clock();
     let spatial_control_before = previous.spatial_control_candidate().next_machine();
@@ -846,7 +938,7 @@ fn stage_independent_meter_fresh_zero_features(
         BeforeRegularHistory::from_owner(spatial_control_before, source_projection.route())
             .map_err(IndependentMeterG0Error::SourceFlags)?;
     let source_flags_parent = SourceFlagsParentLineage::new(
-        held_controls.delivery_transaction_id().clone(),
+        source_snapshot.transaction_id().clone(),
         spatial_control_before,
     )
     .map_err(IndependentMeterG0Error::SourceFlags)?;
@@ -874,7 +966,8 @@ fn stage_independent_meter_fresh_zero_features(
             .map_err(IndependentMeterG0Error::SourceFlags)?,
         source_flags_parent,
     )
-    .map_err(IndependentMeterG0Error::SourceFlags)?;
+    .map_err(IndependentMeterG0Error::SourceFlags)?
+    .with_source_axis(Arc::clone(&source_axis));
 
     let metadata_controls = prepared
         .primary_metadata_controls()
@@ -891,6 +984,7 @@ fn stage_independent_meter_fresh_zero_features(
             activity: activity.output(),
             membership_route: activity.membership_route(),
             source_map,
+            source_axis: &source_axis,
             controls: metadata_controls,
             diffusion_parameters: Some(&providers.diffusion),
         },
@@ -898,30 +992,42 @@ fn stage_independent_meter_fresh_zero_features(
     .map_err(|_| IndependentMeterG0Error::MeterInstalled48)?;
     let rendered_frontend = stage_meter_frontend_features_from_fresh_zero_input(
         spatial_control_before,
-        held_controls.delivery_transaction_id().clone(),
+        source_snapshot.transaction_id().clone(),
         activity,
         installed48,
         source_flags,
         &providers.feature_processor,
         &providers.feature_fft,
     )
-    .map_err(|_| IndependentMeterG0Error::FrontendFeatures)?;
+    .map_err(IndependentMeterG0Error::FrontendFeatures)?;
     let mut rendered_frontend = rendered_frontend;
     let primary_activity_after = rendered_frontend
         .take_primary_activity_after_state()
         .ok_or(IndependentMeterG0Error::ActivityAfterStateMissing)?;
-    let source_geometry = build_meter_fresh_zero_global_source_geometry_snapshot(
-        prepared.graph().graph(),
-        source_map,
-        &held_controls,
-    )
+    let source_geometry = match &source_snapshot {
+        NormalControlCallbackSource::FreshZeroMeterHold(held) => {
+            build_meter_fresh_zero_global_source_geometry_snapshot(
+                prepared.graph().graph(),
+                source_map,
+                held,
+            )
+        }
+        NormalControlCallbackSource::FreshZeroAdmMeterHold(held) => {
+            build_meter_fresh_zero_global_source_geometry_snapshot_from_adm_input(
+                prepared.graph().graph(),
+                source_map,
+                held,
+            )
+        }
+        _ => return Err(IndependentMeterG0Error::FreshZeroControlsMissing),
+    }
     .map_err(|_| IndependentMeterG0Error::SourceGeometryMissing)?;
     Ok((
         rendered_frontend,
         primary_activity_after,
         source_control_clock,
         source_geometry,
-        held_controls,
+        source_snapshot,
     ))
 }
 
@@ -931,7 +1037,11 @@ fn stage_independent_meter_g0_normal(
     meter_binding: &MeterCallbackGtcBinding,
     providers: &IndependentMeterG0Providers,
 ) -> Result<Box<IndependentMeterG0NormalStage>, IndependentMeterG0Error> {
-    let profile = EncodingProfile::selected();
+    let selected_profile = prepared.configuration().selected_profile();
+    let profile = EncodingProfile::selected_with_rate_and_carriage(
+        selected_profile.codec_rate(),
+        selected_profile.carriage(),
+    );
     let resolved_profile =
         resolve_selected_profile(&profile).map_err(|_| IndependentMeterG0Error::Provider)?;
     let metadata_controls = prepared
@@ -940,17 +1050,18 @@ fn stage_independent_meter_g0_normal(
     let source_map = build_meter_installed48_source_map(metadata_controls, &providers.p11_geometry)
         .map_err(|_| IndependentMeterG0Error::SourceMap)?;
 
-    let programme_id = prepared.programme_id().clone();
     let attempt = meter_binding.attempt();
-    let meter_frontend = FrontendControlMachine::from_provider(
-        providers.f01e.clone(),
-        programme_id.clone(),
-        attempt,
+    let f01e_owner = prepared
+        .f01e_cold_owner(&providers.f01e, attempt)
+        .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
+    let meter_frontend = f01e_owner.machine();
+    let meter_spatial_control = SpatialControlMachine::new_cold_for_source_map(
+        profile,
+        f01e_owner.provider(),
+        &providers.f03_target,
+        &source_map,
     )
-    .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
-    let meter_spatial_control =
-        SpatialControlMachine::new_cold(profile, &providers.f01e, &providers.f03_target)
-            .map_err(|_| IndependentMeterG0Error::SpatialControl)?;
+    .map_err(|_| IndependentMeterG0Error::SpatialControl)?;
     let meter_spatial_audio = SpatialAudioMachine::new_cold(profile)
         .map_err(|_| IndependentMeterG0Error::SpatialAudio)?;
     if meter_frontend.generation() != 0
@@ -963,52 +1074,44 @@ fn stage_independent_meter_g0_normal(
         return Err(IndependentMeterG0Error::UnsupportedClock);
     }
 
-    let lineage =
-        CallbackLineageIdentity::new(programme_id, attempt, FrontendCallbackIndex::new(0));
     let snapshot = prepared
-        .normal_control_prepared_snapshot(meter_frontend.committed())
+        .normal_control_adm_input_snapshot(&f01e_owner)
         .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
-    let before = NormalControlBeforeState::from_frontend_state(
-        meter_frontend.committed(),
-        meter_frontend.generation(),
-    )
-    .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
-    let normal = propose_normal_control_snapshot(&before, &snapshot, lineage)
+    let normal = prepared
+        .propose_f01e_adm_normal_callback(&f01e_owner)
         .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
-    let normal_callbacks = prepared.configuration().source_samples().div_ceil(1_536);
-    let fresh_zero_controls = if normal_callbacks == 1 {
+    let normal_source = normal.output(Arc::clone(&snapshot));
+    let source_axis = source_axis_for_adm_output(&source_map, &normal_source)?;
+    let normal_callbacks = snapshot.expected_normal_callback_count();
+    let fresh_zero_adm_controls = if normal_callbacks == 1 {
         let delivery = CallbackLineageIdentity::new(
             meter_binding.programme_id().clone(),
             meter_binding.attempt(),
             FrontendCallbackIndex::new(1),
         );
         Some(
-            normal
+            normal_source
                 .after_state()
-                .held_source_view_for_meter_fresh_zero_drain(
-                    delivery,
-                    NormalCallbackCount::new(normal_callbacks),
-                )
+                .fresh_zero_view(delivery)
                 .map_err(|_| IndependentMeterG0Error::FrontendControl)?,
         )
     } else {
         None
     };
     let frontend_stage = meter_frontend
-        .stage_normal_snapshot(normal)
+        .stage_normal_adm_input(Arc::clone(&snapshot), normal)
         .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
-    let (frontend_staged, normal_output) = frontend_stage.into_parts();
     let frontend = meter_frontend
-        .replacement_candidate(frontend_staged, meter_binding.transaction_id().clone())
+        .replacement_candidate(frontend_stage, meter_binding.transaction_id().clone())
         .map_err(|_| IndependentMeterG0Error::FrontendControl)?;
-    let source_geometry = build_global_source_geometry_snapshot_from_output(
+    let source_geometry = build_global_source_geometry_snapshot_from_adm_input_output(
         prepared.graph().graph(),
         &source_map,
-        &normal_output,
+        &normal_source,
     )
     .map_err(|_| IndependentMeterG0Error::SourceMap)?;
-    let source_projection = project_normal_control_snapshot_output_source_controls(
-        &normal_output,
+    let source_projection = project_normal_control_adm_input_output_source_controls(
+        &normal_source,
         prepared.graph().graph(),
         resolved_profile,
     )
@@ -1019,8 +1122,12 @@ fn stage_independent_meter_g0_normal(
         spatial_control: meter_spatial_control,
         spatial_audio: meter_spatial_audio,
         source_map,
-        normal_output: Some(normal_output),
-        fresh_zero_controls,
+        source_axis,
+        normal_source: Some(NormalControlCallbackSource::NormalAdmInputOutput(Box::new(
+            normal_source,
+        ))),
+        fresh_zero_controls: None,
+        fresh_zero_adm_controls,
         source_geometry: Some(source_geometry),
         source_projection: Some(source_projection),
     }))
@@ -1056,12 +1163,12 @@ fn stage_independent_meter_g0_features(
         .iter()
         .map(|row| row.iter().copied().map(f32::from_bits).collect())
         .collect();
-    let normal_output = normal_stage
-        .normal_output
+    let normal_source = normal_stage
+        .normal_source
         .as_ref()
         .ok_or(IndependentMeterG0Error::NormalOutputMissing)?;
     let source_flags_parent = SourceFlagsParentLineage::new(
-        normal_output.transaction_id().clone(),
+        normal_source.transaction_id().clone(),
         &normal_stage.spatial_control,
     )
     .map_err(IndependentMeterG0Error::SourceFlags)?;
@@ -1069,8 +1176,12 @@ fn stage_independent_meter_g0_features(
     let source_samples = MeterSourceSampleCount::new(prepared.configuration().source_samples())
         .map_err(|_| IndependentMeterG0Error::PreparedIdentityMismatch)?;
     let source_binding = normal_stage.source_map.source_binding();
-    let meter_installed48_before =
-        MeterInstalled48State::cold(*source_binding.source_receipt_sha256(), source_samples);
+    let meter_installed48_before = MeterInstalled48State::cold_for_source_map(
+        *source_binding.source_receipt_sha256(),
+        source_samples,
+        &normal_stage.source_map,
+    )
+    .map_err(|_| IndependentMeterG0Error::MeterInstalled48)?;
     let activity_producer = PrimaryInstalled48ActivityProducer::new_meter(&normal_stage.source_map)
         .map_err(IndependentMeterG0Error::Activity)?;
     let activity_before = activity_producer
@@ -1097,7 +1208,8 @@ fn stage_independent_meter_g0_features(
             .map_err(IndependentMeterG0Error::SourceFlags)?,
         source_flags_parent,
     )
-    .map_err(IndependentMeterG0Error::SourceFlags)?;
+    .map_err(IndependentMeterG0Error::SourceFlags)?
+    .with_source_axis(Arc::clone(&normal_stage.source_axis));
     let meter_installed48 = stage_meter_installed48(
         &meter_installed48_before,
         MeterInstalled48Input {
@@ -1112,6 +1224,7 @@ fn stage_independent_meter_g0_features(
             activity: activity.output(),
             membership_route: activity.membership_route(),
             source_map: &normal_stage.source_map,
+            source_axis: &normal_stage.source_axis,
             controls: metadata_controls,
             diffusion_parameters: Some(&providers.diffusion),
         },
@@ -1119,7 +1232,7 @@ fn stage_independent_meter_g0_features(
     .map_err(|_| IndependentMeterG0Error::MeterInstalled48)?;
     let mut rendered_frontend = stage_frontend_features_from_installed48(
         &normal_stage.spatial_control,
-        normal_output.transaction_id().clone(),
+        normal_source.transaction_id().clone(),
         activity,
         meter_installed48,
         source_flags,
@@ -1127,7 +1240,7 @@ fn stage_independent_meter_g0_features(
         &providers.feature_processor,
         &providers.feature_fft,
     )
-    .map_err(|_| IndependentMeterG0Error::FrontendFeatures)?;
+    .map_err(IndependentMeterG0Error::FrontendFeatures)?;
     let primary_activity_after = rendered_frontend
         .take_primary_activity_after_state()
         .ok_or(IndependentMeterG0Error::ActivityAfterStateMissing)?;
@@ -1145,8 +1258,8 @@ fn continue_independent_meter_g0_spatial(
     source_control_clock: SourceControlSnapshotClock,
     providers: &IndependentMeterG0Providers,
 ) -> Result<MeterSpatialProductionCallbackProposal, IndependentMeterG0Error> {
-    let normal_output = normal_stage
-        .normal_output
+    let normal_source = normal_stage
+        .normal_source
         .take()
         .ok_or(IndependentMeterG0Error::NormalOutputMissing)?;
     let source_geometry = normal_stage
@@ -1155,7 +1268,7 @@ fn continue_independent_meter_g0_spatial(
         .ok_or(IndependentMeterG0Error::SourceGeometryMissing)?;
     continue_meter_spatial_production_callback(MeterSpatialProductionCallbackInputs {
         frontend: rendered_frontend,
-        source_snapshot: NormalControlCallbackSource::NormalOutput(Box::new(normal_output)),
+        source_snapshot: normal_source,
         source_geometry,
         source_control_clock,
         source_map: &normal_stage.source_map,
@@ -1246,6 +1359,7 @@ fn finish_independent_meter_g0_callback(
         spatial_control,
         spatial_audio,
         fresh_zero_controls: normal_stage.fresh_zero_controls,
+        fresh_zero_adm_controls: normal_stage.fresh_zero_adm_controls,
         component_rows,
         reader_target_controls,
         source_receipt,
@@ -1394,6 +1508,16 @@ fn validate_fresh_zero_callback_identity(
     let callback_end = normal_callbacks
         .checked_add(3)
         .ok_or(IndependentMeterG0Error::UnsupportedClock)?;
+    let frontend_fresh_zero_matches = previous
+        .fresh_zero_controls()
+        .is_some_and(|held| held.normal_callbacks().value() == normal_callbacks)
+        || previous.fresh_zero_adm_controls().is_some_and(|held| {
+            std::sync::Arc::ptr_eq(
+                held.prepared_input_identity(),
+                &prepared.domain_identity_capability(),
+            ) && held.expected_normal_callback_count() == normal_callbacks
+                && held.input_physical_rows().value() == prepared.configuration().wave().channels()
+        });
     if source_view.phase() != MeterCallbackPhase::ZeroInputDrain
         || callback < normal_callbacks
         || callback >= callback_end
@@ -1441,9 +1565,7 @@ fn validate_fresh_zero_callback_identity(
         || previous.installed48_after().callback_index().value() != callback
         || previous.installed48_after().source_cursor().value()
             != prepared.configuration().source_samples()
-        || previous
-            .fresh_zero_controls()
-            .is_none_or(|held| held.normal_callbacks().value() != normal_callbacks)
+        || !frontend_fresh_zero_matches
     {
         return Err(IndependentMeterG0Error::UnsupportedClock);
     }

@@ -1,0 +1,8 @@
+{
+  "source_package_id": "DEE-ENCODE-TO-ATMOS-DDP-DATA-RATE-UPSTREAM-WASH-V1",
+  "source_manifest_sha256": "638d6eab69602b9511979383417b0fd755a8684becfc0139347d2740b3f3cad4",
+  "source_checksums_sha256": "4069cf27f3b26cba9564b3ead766be55eaef12ac4b96b0e21c7bccf7a8a80bc8",
+  "six_rate_observation_package_id": "DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1",
+  "six_rate_observation_manifest_sha256": "c69e412ce749f3553cf5fd2d55fb69bafba0429784df1de9ebb5d74359250d70",
+  "scope": "Wash-only source/schema evidence; no code or source payload copied"
+}

@@ -18,6 +18,7 @@ use super::frame_builder::{
     SelectedBsiMixingInformationWriteError, SelectedEac3PrefixError,
     write_selected_bsi_mixing_information, write_selected_eac3_fixed_prefix,
 };
+use super::frame_size::Eac3FrameSize;
 use super::frame_syntax::{
     CodecBlockIndex, SelectedBsiDrcFields, SelectedBsiMixingInformationValues,
     SelectedComplexityIndexTypeA,
@@ -27,11 +28,13 @@ use super::grouped_quantizer::{
 };
 use crate::analysis::source_frame::{SharedAnalysisIdentity, SharedAnalysisReceipt};
 use crate::integrity::crc16::eac3_crc16;
+use crate::profile::CodecRateProfile;
 use crate::timeline::CodecSourceIndex;
 use crate::transform::fullband_exponent_pipeline::NumericPlanReceipt;
 
+#[cfg(test)]
 const FRAME_BYTES: usize = 4_096;
-const FRAME_BITS: u32 = 32_768;
+#[cfg(test)]
 const PRE_TAIL_BIT_LIMIT: u32 = 32_734;
 const FULLBAND_LANE_COUNT: usize = FULLBAND_CHANNEL_COUNT;
 const BLOCK_COUNT: usize = 6;
@@ -292,6 +295,7 @@ pub struct SelectedSourceNumericPlan {
 pub struct SelectedFrameTrialPlanInput<'a> {
     /// Parent-issued receipt binds the complete fixed source plan to one shared analysis result.
     pub numeric_plan: &'a NumericPlanReceipt<'a, SelectedSourceNumericPlan>,
+    pub codec_rate: CodecRateProfile,
     pub bsi: SelectedBsiInput,
     pub emdf: EmdfFrameInput<'a>,
 }
@@ -299,6 +303,7 @@ pub struct SelectedFrameTrialPlanInput<'a> {
 /// Immutable, preflighted inputs shared by every q trial for one source.
 pub struct SelectedFrameTrialPlan<'a> {
     source_identity: SharedAnalysisIdentity,
+    frame_size: Eac3FrameSize,
     bap_parameters: Arc<BapParameters>,
     coefficients_by_block: &'a [CoefficientBlockInput; BLOCK_COUNT],
     exponent_plan_by_block: &'a [BlockExponentPlan; BLOCK_COUNT],
@@ -336,10 +341,13 @@ pub enum SelectedFramePlanError {
         bin: usize,
     },
     EmdfContainerLengthOutOfRange(usize),
+    UnsupportedCodecRate,
 }
 
 impl<'a> SelectedFrameTrialPlan<'a> {
     pub fn new(input: SelectedFrameTrialPlanInput<'a>) -> Result<Self, SelectedFramePlanError> {
+        let frame_size = Eac3FrameSize::from_codec_rate(input.codec_rate)
+            .ok_or(SelectedFramePlanError::UnsupportedCodecRate)?;
         let numeric_plan = input.numeric_plan.plan();
         let source_identity = input.numeric_plan.identity();
         if numeric_plan.bap_provider_sha256 != numeric_plan.bap_parameters.provider_sha256() {
@@ -397,6 +405,7 @@ impl<'a> SelectedFrameTrialPlan<'a> {
 
         Ok(Self {
             source_identity: source_identity.clone(),
+            frame_size,
             bap_parameters: Arc::clone(&numeric_plan.bap_parameters),
             coefficients_by_block: &numeric_plan.coefficients_by_block,
             exponent_plan_by_block: &numeric_plan.exponent_plan_by_block,
@@ -454,8 +463,9 @@ pub enum SelectedFrameTrialFatalError {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SelectedMainFrameCandidate {
     source_identity: SharedAnalysisIdentity,
+    frame_size: Eac3FrameSize,
     q: u16,
-    frame_bytes: [u8; FRAME_BYTES],
+    frame_bytes: Vec<u8>,
     pre_tail_body_bits: u32,
     mantissa_bits_by_block: [u64; BLOCK_COUNT],
     emdf_container_start: Option<FrameBitCursor>,
@@ -474,7 +484,11 @@ impl SelectedMainFrameCandidate {
         self.q
     }
 
-    pub const fn frame_bytes(&self) -> &[u8; FRAME_BYTES] {
+    pub fn frame_size(&self) -> Eac3FrameSize {
+        self.frame_size
+    }
+
+    pub fn frame_bytes(&self) -> &[u8] {
         &self.frame_bytes
     }
 
@@ -501,7 +515,7 @@ pub enum SelectedFrameTrialOutcome {
     Built(Box<SelectedMainFrameCandidate>),
 }
 
-/// Builds a fresh 4096-byte selected-profile frame candidate from one plan and one U10 q.
+/// Builds a fresh rate-sized selected-profile frame candidate from one plan and one U10 q.
 ///
 /// BAP, block-local groupers, frame scratch, and the bit cursor are recreated
 /// for every call. BAP input failures are candidate-local after preflight;
@@ -577,7 +591,9 @@ pub fn build_selected_frame_trial(
         });
     }
 
-    let mut frame_bytes = [0_u8; FRAME_BYTES];
+    let frame_bits = plan.frame_size.bits();
+    let pre_tail_bit_limit = frame_bits - 34;
+    let mut frame_bytes = vec![0_u8; plan.frame_size.bytes()];
     let (pre_tail_body_bits, mantissa_bits_by_block, emdf_container_start) = {
         let mut writer = match FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(0)) {
             Ok(writer) => writer,
@@ -587,7 +603,7 @@ pub fn build_selected_frame_trial(
                 ));
             }
         };
-        if let Err(error) = writer.preflight_capacity(FRAME_BITS) {
+        if let Err(error) = writer.preflight_capacity(frame_bits) {
             return Ok(SelectedFrameTrialOutcome::Infeasible(
                 CandidateInfeasibleReason::FrameField(error),
             ));
@@ -623,12 +639,12 @@ pub fn build_selected_frame_trial(
             };
 
         let pre_tail_body_bits = writer.cursor().bit_offset();
-        if pre_tail_body_bits > PRE_TAIL_BIT_LIMIT {
+        if pre_tail_body_bits > pre_tail_bit_limit {
             return Ok(SelectedFrameTrialOutcome::Infeasible(
                 CandidateInfeasibleReason::FrameCapacity,
             ));
         }
-        let pad_bits = PRE_TAIL_BIT_LIMIT - pre_tail_body_bits;
+        let pad_bits = pre_tail_bit_limit - pre_tail_body_bits;
         if let Err(error) = writer.skip_zeroes(pad_bits) {
             return Ok(SelectedFrameTrialOutcome::Infeasible(
                 CandidateInfeasibleReason::FrameField(error),
@@ -647,7 +663,7 @@ pub fn build_selected_frame_trial(
                 CandidateInfeasibleReason::FrameField(error),
             ));
         }
-        if writer.cursor().bit_offset() != FRAME_BITS - 16 {
+        if writer.cursor().bit_offset() != frame_bits - 16 {
             return Ok(SelectedFrameTrialOutcome::Infeasible(
                 CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
             ));
@@ -659,10 +675,12 @@ pub fn build_selected_frame_trial(
         )
     };
 
-    let crc16 = eac3_crc16(&frame_bytes[2..FRAME_BYTES - 2]);
+    let crc_start_bit = frame_bits - 16;
+    let crc_start_byte = frame_bytes.len() - 2;
+    let crc16 = eac3_crc16(&frame_bytes[2..crc_start_byte]);
     {
         let mut crc_writer =
-            match FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(FRAME_BITS - 16)) {
+            match FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(crc_start_bit)) {
                 Ok(writer) => writer,
                 Err(error) => {
                     return Ok(SelectedFrameTrialOutcome::Infeasible(
@@ -675,7 +693,7 @@ pub fn build_selected_frame_trial(
                 CandidateInfeasibleReason::FrameField(error),
             ));
         }
-        if crc_writer.cursor().bit_offset() != FRAME_BITS {
+        if crc_writer.cursor().bit_offset() != frame_bits {
             return Ok(SelectedFrameTrialOutcome::Infeasible(
                 CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
             ));
@@ -692,6 +710,7 @@ pub fn build_selected_frame_trial(
     Ok(SelectedFrameTrialOutcome::Built(Box::new(
         SelectedMainFrameCandidate {
             source_identity: plan.source_identity.clone(),
+            frame_size: plan.frame_size,
             q,
             frame_bytes,
             pre_tail_body_bits,
@@ -826,7 +845,7 @@ fn write_frame_body(
     q: u16,
     bap_frame: &super::bap::BapFrame,
 ) -> Result<([u64; BLOCK_COUNT], Option<FrameBitCursor>), BuildError> {
-    match write_selected_eac3_fixed_prefix(writer) {
+    match write_selected_eac3_fixed_prefix(writer, plan.frame_size.code()) {
         Ok(_) => {}
         Err(SelectedEac3PrefixError::BitWriter(error)) => return Err(BuildError::Writer(error)),
         Err(SelectedEac3PrefixError::CursorMismatch { .. }) => {
@@ -1476,7 +1495,8 @@ mod tests {
             .unwrap();
         let plan = SelectedFrameTrialPlan::new(SelectedFrameTrialPlanInput {
             numeric_plan: &numeric_plan,
-            bsi,
+            codec_rate: CodecRateProfile::Kbps1024,
+            bsi: bsi.clone(),
             emdf: EmdfFrameInput::AbsentPublishedPayloadV1,
         })
         .unwrap();
@@ -1521,6 +1541,39 @@ mod tests {
                 1_024
             ))
         );
+
+        let rows = [
+            (CodecRateProfile::Kbps384, 767, 1_536, 50_688),
+            (CodecRateProfile::Kbps448, 895, 1_792, 59_136),
+            (CodecRateProfile::Kbps576, 1_151, 2_304, 76_032),
+            (CodecRateProfile::Kbps640, 1_279, 2_560, 84_480),
+            (CodecRateProfile::Kbps768, 1_535, 3_072, 101_376),
+            (CodecRateProfile::Kbps1024, 2_047, 4_096, 135_168),
+        ];
+        for (codec_rate, expected_code, expected_bytes, expected_33_frame_bytes) in rows {
+            let rate_plan = SelectedFrameTrialPlan::new(SelectedFrameTrialPlanInput {
+                numeric_plan: &numeric_plan,
+                codec_rate,
+                bsi: bsi.clone(),
+                emdf: EmdfFrameInput::AbsentPublishedPayloadV1,
+            })
+            .unwrap();
+            let SelectedFrameTrialOutcome::Built(rate_candidate) =
+                build_selected_frame_trial(&rate_plan, 16).unwrap()
+            else {
+                panic!("each admitted frame-size row should fit the zero coefficient case");
+            };
+            assert_eq!(rate_candidate.frame_bytes().len(), expected_bytes);
+            assert_eq!(
+                read_bits(rate_candidate.frame_bytes(), 21, 11),
+                expected_code
+            );
+            assert_eq!(eac3_crc16(&rate_candidate.frame_bytes()[2..]), 0);
+            assert_eq!(
+                u64::try_from(rate_candidate.frame_bytes().len()).unwrap() * 33,
+                expected_33_frame_bytes
+            );
+        }
     }
 
     #[test]

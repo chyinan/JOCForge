@@ -17,6 +17,8 @@ use std::process::Command;
 const SYNTHETIC_PROVIDER: &[u8] = include_bytes!(
     "../../../jocforge-domain/tests/fixtures/output_owner/synthetic-output-provider.json"
 );
+const FRAME_BYTES: usize = 4_096;
+const FRAME_BYTES_U32: u32 = FRAME_BYTES as u32;
 
 struct ScratchDirectory(PathBuf);
 
@@ -85,15 +87,21 @@ fn frame_sha256(frame: &[u8]) -> [u8; 32] {
 }
 
 fn output_owner() -> OutputOwner {
+    output_owner_for_rate(4_096, "synthetic-0", 4_608)
+}
+
+fn output_owner_for_rate(frame_bytes: usize, attempt_id: &str, source_samples: u64) -> OutputOwner {
     let provider: Value = serde_json::from_slice(SYNTHETIC_PROVIDER).unwrap();
-    let canonical = serde_json::to_vec(&provider).unwrap();
-    let attempt_id = "synthetic-0";
+    let provider_hash = Sha256::digest(
+        format!("{}:{frame_bytes}", provider["profile_id"].as_str().unwrap()).as_bytes(),
+    )
+    .into();
     OutputOwner::cold(
         OutputConfiguration::new(
             OutputProvider {
                 profile_id: provider["profile_id"].as_str().unwrap().to_owned(),
-                provider_sha256: Sha256::digest(&canonical).into(),
-                frame_bytes: provider["frame_bytes"].as_u64().unwrap() as u32,
+                provider_sha256: provider_hash,
+                frame_bytes: frame_bytes as u32,
                 suppressed_sources: provider["suppressed_sources"].as_u64().unwrap(),
                 staging_name_template: provider["staging_name_template"]
                     .as_str()
@@ -106,15 +114,19 @@ fn output_owner() -> OutputOwner {
             },
             attempt_id,
             "product.ec3",
-            4_608,
+            source_samples,
         )
         .unwrap(),
     )
 }
 
-fn advance_suppressed_sources(mut owner: OutputOwner) -> OutputOwner {
+fn advance_suppressed_sources(owner: OutputOwner) -> OutputOwner {
     let frame = [0_u8; FRAME_BYTES];
-    let frame_sha = frame_sha256(&frame);
+    advance_suppressed_sources_for_frame(owner, &frame)
+}
+
+fn advance_suppressed_sources_for_frame(mut owner: OutputOwner, frame: &[u8]) -> OutputOwner {
+    let frame_sha = frame_sha256(frame);
     for source in 0..2 {
         let proposal = owner
             .prepare_source(
@@ -221,6 +233,55 @@ fn selected_append_returns_durable_receipt_only_after_readback_and_fsync() {
         u64::from(FRAME_BYTES_U32)
     );
     assert!(!staging.is_abandoned());
+}
+
+#[test]
+fn selected_append_reads_back_and_finalizes_each_supported_frame_extent() {
+    let rates = [
+        (384, 1_536),
+        (448, 1_792),
+        (576, 2_304),
+        (640, 2_560),
+        (768, 3_072),
+        (1_024, 4_096),
+    ];
+
+    for (rate, frame_bytes) in rates {
+        let scratch = ScratchDirectory::new().unwrap();
+        let frame = vec![0_u8; frame_bytes];
+        let owner = advance_suppressed_sources_for_frame(
+            output_owner_for_rate(frame_bytes, &format!("rate-{rate}"), 1_536),
+            &frame,
+        );
+        let mut staging =
+            AtomicOutputStaging::create(scratch.path(), owner.configuration()).unwrap();
+        let proposal = owner
+            .prepare_source(
+                OutputSourceIdentity::new(
+                    CodecSourceIndex::new(2),
+                    JocDispatchIndex::new(3),
+                    Some(PublishedAuIndex::new(0)),
+                ),
+                &frame,
+                &frame_sha256(&frame),
+            )
+            .unwrap();
+        let OutputSourceProposal::Append(proposal) = proposal else {
+            panic!("source two publishes AU zero");
+        };
+        let receipt = staging.append(&proposal).unwrap();
+        assert_eq!(receipt.bytes_written(), frame_bytes as u32);
+        assert_eq!(
+            receipt.write_calls().iter().sum::<u64>(),
+            frame_bytes as u64
+        );
+        let owner = proposal.complete(receipt).unwrap().into_after_owner();
+        let finalize = owner.prepare_finalize().unwrap();
+        staging
+            .finalize_with_parent_sync(&finalize, |_| Ok(()))
+            .unwrap();
+        assert_eq!(fs::read(scratch.path().join("product.ec3")).unwrap(), frame);
+    }
 }
 
 #[test]

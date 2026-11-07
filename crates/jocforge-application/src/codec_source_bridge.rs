@@ -13,7 +13,9 @@ use jocforge_domain::{
         },
     },
     drc::NoneDrcOwnerAfterProposal,
-    frontend::job_configuration::SelectedInputKind,
+    frontend::job_configuration::{
+        SelectedDrcProfile, SelectedHeightTrim, SelectedInputKind, SelectedSurroundTrim,
+    },
     meter::prepared_job_identity::PreparedJobInputIdentity,
     profile::{EncodingProfile, resolve_selected_profile},
     timeline::{CodecSourceIndex, source_for_callback},
@@ -26,6 +28,14 @@ use crate::PreparedJobInput;
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum CodecSourceBridgeError {
     UnsupportedSelectedProfile,
+    UnsupportedDrcEffect {
+        line_profile: SelectedDrcProfile,
+        rf_profile: SelectedDrcProfile,
+    },
+    UnsupportedTrimEffect {
+        surround_trim: SelectedSurroundTrim,
+        height_trim: SelectedHeightTrim,
+    },
     UnsupportedSelectedMixing,
     UnsupportedSelectedDbmd,
     PreparedJobInputIdentityUnbound,
@@ -136,10 +146,32 @@ fn selected_bsi_profile_inputs(
 ) -> Result<(SelectedBsiMixingInput, SelectedBsiInformationInput), CodecSourceBridgeError> {
     let configuration = prepared.configuration();
     let selected_profile = configuration.selected_profile();
-    let selected_profile_definition =
-        EncodingProfile::selected_with_carriage(selected_profile.carriage());
+    let selected_profile_definition = EncodingProfile::selected_with_rate_and_carriage(
+        selected_profile.codec_rate(),
+        selected_profile.carriage(),
+    );
     let resolved_profile = resolve_selected_profile(&selected_profile_definition)
         .map_err(|_| CodecSourceBridgeError::UnsupportedSelectedProfile)?;
+    let line_drc_profile = configuration.line_drc_profile();
+    let rf_drc_profile = configuration.rf_drc_profile();
+    if !matches!(
+        (line_drc_profile, rf_drc_profile),
+        (SelectedDrcProfile::None, SelectedDrcProfile::None)
+            | (SelectedDrcProfile::FilmLight, SelectedDrcProfile::FilmLight)
+    ) {
+        return Err(CodecSourceBridgeError::UnsupportedDrcEffect {
+            line_profile: line_drc_profile,
+            rf_profile: rf_drc_profile,
+        });
+    }
+    let surround_trim = configuration.surround_trim_5_1();
+    let height_trim = configuration.height_trim_5_1();
+    if surround_trim != SelectedSurroundTrim::Auto || height_trim != SelectedHeightTrim::Auto {
+        return Err(CodecSourceBridgeError::UnsupportedTrimEffect {
+            surround_trim,
+            height_trim,
+        });
+    }
     let wave = configuration.wave();
     // This joins input-side WAVE channels to admitted CHNA rows only; it does not
     // populate a DDP per-call frame-view channel count.
@@ -152,7 +184,8 @@ fn selected_bsi_profile_inputs(
         || physical_channel_count > usize::from(u8::MAX) + 1
         || physical_channel_count != admitted_track_count
         || wave.pcm_bits() != 24
-        || configuration.bit_rate_kbps() != 1_024
+        || selected_profile.codec_rate().kbps() != Some(configuration.bit_rate_kbps())
+        || selected_profile.codec_rate().selector_code() != Some(configuration.bit_rate_enum())
         // F01E's selected layout enum is 8; the resolved E-AC-3 profile carries acmod=7.
         || configuration.layout_enum() != 8
         || configuration.target_capacity() != 15
@@ -162,13 +195,6 @@ fn selected_bsi_profile_inputs(
         || configuration.dispatch_mode() != 2
         || configuration.route_virtual_prefix_count() != 11
         || configuration.source_samples() == 0
-        || !matches!(
-            (
-                configuration.line_drc_profile(),
-                configuration.rf_drc_profile()
-            ),
-            ("none", "none") | ("film_light", "film_light")
-        )
     {
         return Err(CodecSourceBridgeError::UnsupportedSelectedProfile);
     }
@@ -213,6 +239,9 @@ mod tests {
     use super::*;
     use crate::{SelectedAdmResourcePayloads, SelectedWaveDescriptor, prepare_selected_job_input};
     use jocforge_domain::frontend::dbmd_sections::SelectedDbmdSections;
+    use jocforge_domain::frontend::job_configuration::{
+        SelectedDrcProfile, SelectedHeightTrim, SelectedSurroundTrim,
+    };
     use jocforge_domain::meter::prepared_job_identity::{
         NormalizedJobConfigurationIdentity, PreparedAdmChunkSpan, PreparedAdmGraphProvenance,
         PreparedInputResourceIdentity,
@@ -243,6 +272,38 @@ mod tests {
         ))
         .unwrap();
         let case = &vectors["config_cases"][0];
+        selected_prepared_input_from_xml(channels, case["input_xml"].as_str().unwrap())
+    }
+
+    fn selected_prepared_input_with_drc_profiles(
+        line_profile: &str,
+        rf_profile: &str,
+    ) -> PreparedJobInput {
+        let vectors: Value = serde_json::from_slice(include_bytes!(
+            "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+        ))
+        .unwrap();
+        let case = &vectors["config_cases"][0];
+        let xml = case["input_xml"]
+            .as_str()
+            .unwrap()
+            .replace(
+                "<line_mode_drc_profile>none</line_mode_drc_profile>",
+                &format!("<line_mode_drc_profile>{line_profile}</line_mode_drc_profile>"),
+            )
+            .replace(
+                "<rf_mode_drc_profile>none</rf_mode_drc_profile>",
+                &format!("<rf_mode_drc_profile>{rf_profile}</rf_mode_drc_profile>"),
+            );
+        selected_prepared_input_from_xml(38, &xml)
+    }
+
+    fn selected_prepared_input_from_xml(channels: u16, input_xml: &str) -> PreparedJobInput {
+        let vectors: Value = serde_json::from_slice(include_bytes!(
+            "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+        ))
+        .unwrap();
+        let case = &vectors["config_cases"][0];
         let descriptor = &case["pcm_descriptor"];
         let (resource, spans) = selected_resource(channels);
         let metadata = SelectedAdmResourcePayloads::new(
@@ -252,7 +313,7 @@ mod tests {
         );
         prepare_selected_job_input(
             ProgrammeId::new("codec-source-bridge-test").unwrap(),
-            case["input_xml"].as_str().unwrap().as_bytes(),
+            input_xml.as_bytes(),
             SelectedWaveDescriptor::new(
                 u32::try_from(descriptor["sample_rate"].as_u64().unwrap()).unwrap(),
                 channels,
@@ -354,6 +415,69 @@ mod tests {
         assert_eq!(information.surround_ex_mode, expected_surround_ex);
         assert_eq!(dbmd.surround_ex_mode(), expected_surround_ex);
         assert_eq!(information.source_sample_rate_code, 0);
+    }
+
+    #[test]
+    fn previously_admitted_film_light_drc_pair_still_reaches_codec_inputs() {
+        let prepared = selected_prepared_input_with_drc_profiles("film_light", "film_light");
+        assert_eq!(
+            prepared.configuration().line_drc_profile(),
+            SelectedDrcProfile::FilmLight
+        );
+        assert_eq!(
+            prepared.configuration().rf_drc_profile(),
+            SelectedDrcProfile::FilmLight
+        );
+        assert!(selected_bsi_profile_inputs(&prepared).is_ok());
+    }
+
+    #[test]
+    fn admitted_music_profiles_are_preserved_but_dynamic_effect_is_gated() {
+        for line_name in ["music_standard", "music_light"] {
+            let prepared = selected_prepared_input_with_drc_profiles(line_name, "film_light");
+            let line_profile = SelectedDrcProfile::from_xml_value(line_name).unwrap();
+            assert_eq!(prepared.configuration().line_drc_profile(), line_profile);
+            assert_eq!(
+                prepared.configuration().rf_drc_profile(),
+                SelectedDrcProfile::FilmLight
+            );
+            assert_eq!(
+                selected_bsi_profile_inputs(&prepared).unwrap_err(),
+                CodecSourceBridgeError::UnsupportedDrcEffect {
+                    line_profile,
+                    rf_profile: SelectedDrcProfile::FilmLight,
+                }
+            );
+        }
+    }
+
+    #[test]
+    fn non_auto_trim_values_are_preserved_but_not_silently_ignored() {
+        let vectors: Value = serde_json::from_slice(include_bytes!(
+            "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+        ))
+        .unwrap();
+        let base_xml = vectors["config_cases"][0]["input_xml"].as_str().unwrap();
+        let xml = base_xml.replace(
+            "<surround_trim_5_1>auto</surround_trim_5_1>",
+            "<surround_trim_5_1>-3</surround_trim_5_1>",
+        );
+        let prepared = selected_prepared_input_from_xml(38, &xml);
+        assert_eq!(
+            prepared.configuration().surround_trim_5_1(),
+            SelectedSurroundTrim::Minus3Db
+        );
+        assert_eq!(
+            prepared.configuration().height_trim_5_1(),
+            SelectedHeightTrim::Auto
+        );
+        assert_eq!(
+            selected_bsi_profile_inputs(&prepared).unwrap_err(),
+            CodecSourceBridgeError::UnsupportedTrimEffect {
+                surround_trim: SelectedSurroundTrim::Minus3Db,
+                height_trim: SelectedHeightTrim::Auto,
+            }
+        );
     }
 
     #[test]
