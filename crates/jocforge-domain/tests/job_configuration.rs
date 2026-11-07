@@ -74,11 +74,15 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
             descriptor["pcm_bits"].as_u64().unwrap() as u16,
         );
         let source_samples = descriptor["source_samples"].as_u64().unwrap();
-        let result = parse_selected_job_configuration(
-            case["input_xml"].as_str().unwrap().as_bytes(),
-            wave,
-            source_samples,
-        );
+        let source_xml = case["input_xml"].as_str().unwrap();
+        // 768 is now a supported rate. Exercise the local negative gate with an
+        // unregistered 512 token without mutating the hash-bound source vector.
+        let input_xml = if case["id"] == "reject_other_rate" {
+            source_xml.replace("<data_rate>768</data_rate>", "<data_rate>512</data_rate>")
+        } else {
+            source_xml.to_owned()
+        };
+        let result = parse_selected_job_configuration(input_xml.as_bytes(), wave, source_samples);
         let expected = &case["expected"];
 
         if case["id"] == "reject_wrong_pcm_profile" {
