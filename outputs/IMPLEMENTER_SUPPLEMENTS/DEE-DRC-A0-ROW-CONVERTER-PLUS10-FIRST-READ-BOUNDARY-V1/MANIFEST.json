@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DRC-A0-ROW-CONVERTER-PLUS10-FIRST-READ-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ROW_PLUS10_FIRST_READ_BOUND; A0_OWNER_AND_SEMANTIC_TYPE_UNBOUND",
+  "implementation_disposition": "Do not map the QWORD read at row +0x10 to DRC snapshot +0xA0 without a typed owner edge.",
+  "source_package_id": "line_mode_drc_snapshot_a0_row_converter_first_read_wash_v1",
+  "source_manifest_sha256": "b711f9cc198eac261a69189c3c972e95c6fcec2a1cc89894facedb69748afcdf",
+  "source_package_seal_sha256": "60d21ac9a698bef83b91eb1ee731aeaf24b3ee519f1b54b832c9834df669324e",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1688,
+      "sha256": "86b715cdfea12b2b78218862a197606c7c9eb0bb8f658ecc8421ab7b68d87fc8"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1067,
+      "sha256": "9e2370e5ddca7bbbd10c27ca1ab4e2743f04aeabc23dd4e0774f304a775bb8bb"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 489,
+      "sha256": "76a77b25732f989b0e6869999fb264115e8982ddb8344fb8d999935dcc2eadae"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 609,
+      "sha256": "616bb2fba0e15da2b1e5aee27b5f767898ddc29ccfa5f6581be1a7cbb217c2d1"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 449,
+      "sha256": "b70642b1dca41d47784dd707a4c43b33261eecd36ce46923b2de8bb13488a984"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-DRC-MODE2-OBJECT-KIND-OWNER-BOUNDARY-V1",
+  "source_package_manifest_sha256": "4f80c209f39895377807d2f230b5011558769bc6584ca17334ab9199a15a064d",
+  "source_package_seal_sha256": "c021e4369d8e2464677964af0e8f4868eb53e0099f7901ef3afe5d56f8840963",
+  "files": {
+    "REPORT.md": "e7bed50780dcdd5dac4fb32e0d9f3272a943c822824c4b26b8feb303ae17ea38",
+    "BOUNDARY.json": "372dc913534f50a6870b948a48a99f1e120324652b748ce5f8cf14dfef7045dd",
+    "SOURCE-LINKS.json": "c56786af22cea1e00127f19237e62ee98a530f37f51b129a416754c457101f37",
+    "INPUT-ONLY-VECTORS.json": "be96f0d219ec6f460537b3e89967f5b3d4874326f70672f379e82315bd93d7a1"
+  }
+}

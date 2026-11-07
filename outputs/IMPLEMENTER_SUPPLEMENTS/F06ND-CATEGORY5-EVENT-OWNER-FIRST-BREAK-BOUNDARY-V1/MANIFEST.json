@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F06ND-CATEGORY5-EVENT-OWNER-FIRST-BREAK-BOUNDARY-V1",
+  "status": "EVIDENCE_ONLY",
+  "implementation_allowed": false,
+  "source_package_manifest_sha256": "ca8ef796a3547b469c43e37266bc65aeff2d8b86beeda5af87e1896575c9a606",
+  "source_package_seal_sha256": "6093b4cffadded1b575425b56576c3fde065aac275995c7be24b71a5f298ecbd",
+  "contains_native_or_research_source_code": false,
+  "contains_package_checker_code": true,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {"path":"CHECK.py","bytes":2805,"sha256":"94fd29b3ce70034fe51e2a52f0eeb4462ab9deafceed5e004d8249fa2c25c6c8"},
+    {"path":"EVIDENCE.json","bytes":2158,"sha256":"2afb8455e5914022cf13034a943e6cbd7072cc4ffd0542c767d8a6aef1910837"},
+    {"path":"INPUT-ONLY-VECTORS.json","bytes":715,"sha256":"e3432097f6e80ba6983ea23f139231ad792a66b1ef8d6534f9df5ec4136e4dc0"},
+    {"path":"SOURCE-MANIFESTS.json","bytes":1947,"sha256":"9f3deb78fbc0299e0e675fb9a0413eb4183eac33f1d88ecd5baa26f7e240c5e2"},
+    {"path":"WASH-REVIEW.md","bytes":1011,"sha256":"4674d33799ea95f2551c366fd7e0a17a82d11c7cad4a5be1f21a10f3953b0f6a"}
+  ]
+}

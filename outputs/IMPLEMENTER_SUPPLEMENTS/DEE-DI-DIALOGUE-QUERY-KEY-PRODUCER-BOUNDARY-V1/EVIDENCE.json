@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.dee_di_dialogue_query_key_producer_boundary.v1",
+  "package_id": "DEE-DI-DIALOGUE-QUERY-KEY-PRODUCER-BOUNDARY-V1",
+  "status": "GETTER_RECEIVER_STATICALLY_BOUND; QUERY_RECORD_PRODUCER_BOUND; DIALOGUE_KEY_SELECTION_UNBOUND; AUDIO_EFFECT_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "di-flag-priv-pointer-query-producer-addendum-wash-v1",
+    "manifest_sha256": "b39697204309881127d896f8d112523a4b2aeaa8889d92610a8d5ae968df0bec",
+    "package_seal_file_sha256": "2ffab90fcbceb7a4e598b0e1ee7c09a7292914dcbfd779613d93cbdde029f320",
+    "payload_file_count": 16,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only/no-analysis",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "getter_receiver": {
+    "container": "Priv+0xec0 ParametersContainer",
+    "getter_slot": "+0x38",
+    "getter_target": "FUN_1801a39b0",
+    "static_receiver_owner": "BOUND",
+    "runtime_instance_generation": "NOT_CAPTURED"
+  },
+  "query_key_producer": {
+    "dispatcher": "FUN_18014f9f0",
+    "getter_callsite": "RDX receives current linked-record string",
+    "linked_record_string_field": "node+0x10",
+    "producer": "FUN_18014a060",
+    "input_owner": "FUN_18014f9f0::param_2",
+    "input_record_stride_bytes": 104,
+    "name_like_field_offset": "+0x18",
+    "nested_metadata_start": "+0x38",
+    "empty_input_branch": "seeds a linked record from supplied prefix/name state",
+    "non_empty_branch": "copies dynamic record name-like fields and recursively flattens nested entries",
+    "runtime_branch": "NOT_CAPTURED",
+    "selected_query_key_bytes": "NOT_CAPTURED",
+    "query_equals_dialogue_intelligence": "UNBOUND_NOT_CAPTURED"
+  },
+  "prior_static_key_contract": {
+    "wash_package_id": "DEE-DI-DIALOGUE-BOOL-STATIC-KEY-OWNER-BOUNDARY-V1",
+    "wash_manifest_sha256": "b46b594c5c7680820711972e9bb257aff270e390c698902c31255d4f27a2c2c3",
+    "wash_seal_sha256": "3d0e00b29671cba7a64c7afbaf2b494f1a83d0f8e519fc98ada066b5d9160ab9",
+    "contract": "If the exact dialogue_intelligence key is supplied, the static container returns its registered Bool candidate."
+  },
+  "first_break": {
+    "boundary": "input record-array owner/name bytes to the exact dialogue_intelligence query",
+    "audio_or_joc_effect": "UNBOUND"
+  },
+  "scope": {
+    "dee_or_ui_execution": "NOT_RUN",
+    "runtime_capture": "NOT_RUN",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_native_source_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

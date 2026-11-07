@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "HASHED_INPUTS_ONLY; RUNTIME_NOT_RUN",
+  "vectors": [
+    {
+      "id": "controlled_di_false",
+      "dialogue_intelligence": false,
+      "custom_dialnorm_present": false,
+      "xml_sha256": "230004bcaa0147a6dc7617f9c9e416d68360bd5cf22bd563fa0d04c361871b67",
+      "runtime_getter_value": "UNOBSERVED"
+    },
+    {
+      "id": "controlled_di_true",
+      "dialogue_intelligence": true,
+      "custom_dialnorm_present": false,
+      "xml_sha256": "ec17e01cdad6934e9d4129baee13594ca4dec97f70d78e5704918ed6bdeaf8f4",
+      "runtime_getter_value": "UNOBSERVED"
+    }
+  ],
+  "previous_decoded_pcm_sha256s_included": false,
+  "new_dee_or_decode": "NOT_RUN"
+}

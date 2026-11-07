@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-DRC-F98-VECTOR-FIRST-CONSUMER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "F98_VECTOR_BOUNDARY_ONLY; CONSUMER_AND_EFFECT_UNBOUND",
+  "implementation_disposition": "Register the bounded no-consumer-in-caller result; do not infer product-wide absence.",
+  "source_manifest_sha256": "fd20dba27f69640e3127053171eaf432395f338c5dd47cba3abcc54af561184a",
+  "source_package_seal_sha256": "f226d9472c522492d9c3ffd9b3a3f4746bfac86fbb24d5d59c19b7d34363a93b",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2750,
+      "sha256": "a1363949418fbc35c30ca97a34d51b9111280d14b4c1fcd8da59eced3ab0fb8e"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1639,
+      "sha256": "1a977a71f6904838ec7e407e766b2526396d36689c785f14bd9bf77f76ae295b"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 418,
+      "sha256": "d8ac8f764064bdb6b385eb7cbe539a14ff1a939cd73d77c7a94b27fb8c535f95"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 678,
+      "sha256": "648edca42d90df1492fabd657ee0144ebffd11d081cf85b3a572992d22f8e4e7"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 512,
+      "sha256": "288e3893d3146629bd28d6d2bcafcf5aa095094d2298627ad08221beb8c550b7"
+    }
+  ]
+}

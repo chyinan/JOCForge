@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DI-MEASURE-ONLY-TRUE-FALSE-RESULTS-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TWO_ADM_MEASURE_ONLY_DI_EFFECT_REPORTED; PCM_AND_EAC3_JOC_EFFECT_UNBOUND",
+  "implementation_disposition": "USE_ONLY_FOR_1770_4_MEASURE_ONLY_RESULT_RULES; DO_NOT_INFER_ENCODED_AUDIO_EFFECT",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2298, "sha256": "841a64766f6209c888438a7e1f15512e36a28370f1ecaf03bff1b3d5f65cf7e9"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 1347, "sha256": "fc743c5309dce1674f71162bee4a11a8b9777415fd265854651fe103695b3857"},
+    {"name": "REPORT.md", "bytes": 2442, "sha256": "65bd50777bd7c50196dfdf07665afc5818e3782f7612cda5e39496be11f99919"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 1017, "sha256": "9940588b8ee56eef1bd2009f16f68c0b1c069b5895eae7f2a279b03044004d35"}
+  ]
+}

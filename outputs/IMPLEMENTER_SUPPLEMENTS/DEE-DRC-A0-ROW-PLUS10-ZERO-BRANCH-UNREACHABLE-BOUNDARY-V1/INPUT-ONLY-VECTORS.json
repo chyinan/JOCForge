@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "drc-row-zero-branch",
+      "input": {
+        "row_qword": "U64",
+        "third_argument": 0
+      },
+      "expected_observation": {
+        "unsigned_less_than_zero": false
+      },
+      "limitations": [
+        "No fallthrough analysis",
+        "No field semantics",
+        "No A0/codec/BSI join"
+      ]
+    }
+  ]
+}

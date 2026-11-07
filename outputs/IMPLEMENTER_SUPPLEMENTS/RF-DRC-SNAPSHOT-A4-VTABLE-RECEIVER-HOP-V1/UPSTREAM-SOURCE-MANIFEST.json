@@ -1,0 +1,106 @@
+{
+  "schema": "wash-static-source-manifest.v1",
+  "package_id": "rf_drc_snapshot_a4_vtable_receiver_wash_v1",
+  "source_boundary": "No target DLL or media payload is included; the package contains one direct output-pointer hop and a bounded +0xA4 per-frame scan.",
+  "sources": [
+    {
+      "kind": "Ghidra target image",
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "path": "D:\\Programs\\dee71joc\\test_dee\\dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "tool": "Ghidra 12.2 PUBLIC; image base 0x180000000"
+    },
+    {
+      "kind": "Frame output owner Ghidra trace",
+      "name": "ghidra_rf_frame_output_owner.log",
+      "path": "work/ghidra_rf_frame_output_owner.log",
+      "sha256": "a3bb90387cdcb57a5905855e13f3489e0668f03d4da257d72a557dab9b7b405f",
+      "tool": "Ghidra 12.2 PUBLIC; -readOnly -noanalysis; FUN_1801764e0 only"
+    },
+    {
+      "kind": "Snapshot consumer continuation trace",
+      "name": "ghidra_line_drc_profile_consumer_continuation.log",
+      "path": "work/ghidra_line_drc_profile_consumer_continuation.log",
+      "sha256": "ac13fcdb8e7c5307124d0b505e0f01199de6cf4363cdee423d4f8a075ca88ebe",
+      "tool": "Ghidra 12.2 PUBLIC; reused existing RF/DRC receipt; excerpted only at the output pointer call"
+    },
+    {
+      "kind": "Focused per-frame +0xA4 scan",
+      "name": "ghidra_rf_snapshot_per_frame_consumer_explicit_call.log",
+      "path": "work/ghidra_rf_snapshot_per_frame_consumer_explicit_call.log",
+      "sha256": "42082bb6751a9168b0a452eb449a1c64d70b19cc9845c0170650faca6c6b53aa",
+      "tool": "Ghidra 12.2 PUBLIC; -readOnly -noanalysis; FUN_1801764e0 only"
+    },
+    {
+      "kind": "Parent +0xA4 first-consumer manifest",
+      "name": "MANIFEST.json",
+      "path": "outputs/rf_drc_snapshot_a4_first_consumer_wash_v1/MANIFEST.json",
+      "sha256": "471360aa4221542f6ba7d47e22687e1b37cf171ae6283f842d9615212b583e10"
+    },
+    {
+      "kind": "RF DRC profile pipeline manifest",
+      "name": "MANIFEST.json",
+      "path": "outputs/atmos_ddp_drc_profile_pipeline_wash_v1/MANIFEST.json",
+      "sha256": "e4318aa984b26e3851459ef25471c9d282f9689c4a24859b16e872d3eec77401"
+    },
+    {
+      "kind": "RF DRC plugin property manifest",
+      "name": "MANIFEST.json",
+      "path": "outputs/atmos_ddp_plugin_property_setter_wash_v1/MANIFEST.json",
+      "sha256": "bc70f54ce901ce70cbd51db0e6da5b23a22e2a6cc2786bb77cda537f683a51ff"
+    },
+    {
+      "kind": "Frame output owner Ghidra script",
+      "name": "TraceRfFrameOutputOwner.java",
+      "path": "work/ghidra_selector_scripts/TraceRfFrameOutputOwner.java",
+      "sha256": "02b083c15457420367c40fdfcfefc2addc1331e35b0b148b9fdc728c3fc5965b"
+    },
+    {
+      "kind": "Frame output owner runner",
+      "name": "run_rf_frame_output_owner_trace.ps1",
+      "path": "work/run_rf_frame_output_owner_trace.ps1",
+      "sha256": "42a11a4817c7c1a5f350914eaed13823ad755c4db87004ca915a64f5013a9dac"
+    },
+    {
+      "kind": "Per-frame consumer Ghidra script",
+      "name": "InspectRfSnapshotPerFrameConsumer.java",
+      "path": "work/ghidra_selector_scripts/InspectRfSnapshotPerFrameConsumer.java",
+      "sha256": "b6f4c51edf407fa04728bd976fff3e23e6aa29284366070d8c8e91162c1342e1"
+    },
+    {
+      "kind": "Per-frame consumer runner",
+      "name": "run_rf_snapshot_per_frame_consumer_trace.ps1",
+      "path": "work/run_rf_snapshot_per_frame_consumer_trace.ps1",
+      "sha256": "21dfeb91093402e5022f170dcd72f606adcbd390520833a175fb540e5f2e1047"
+    },
+    {
+      "kind": "Wash package sealer",
+      "name": "seal_rf_drc_snapshot_a4_vtable_receiver_wash_package.py",
+      "path": "work/seal_rf_drc_snapshot_a4_vtable_receiver_wash_package.py",
+      "sha256": "069362f88f2d3e9a7c8b3e0ae36007b1c2aec8b8f973a94460e0fba34c659d07"
+    },
+    {
+      "kind": "Wash package checker",
+      "name": "verify_rf_drc_snapshot_a4_vtable_receiver_wash_package.py",
+      "path": "work/verify_rf_drc_snapshot_a4_vtable_receiver_wash_package.py",
+      "sha256": "f976aa317063f1a7aac073094898ba243e4a56ffa40e41546075d9e6b6f23d4d"
+    }
+  ],
+  "parent_references": [
+    {
+      "package_id": "rf_drc_snapshot_a4_first_consumer_wash_v1",
+      "manifest_sha256": "471360aa4221542f6ba7d47e22687e1b37cf171ae6283f842d9615212b583e10",
+      "role": "Binds the same snapshot owner through FUN_1801754f0 and its first per-frame helper; +0xA4 remained unbound there."
+    },
+    {
+      "package_id": "atmos_ddp_drc_profile_pipeline_wash_v1",
+      "manifest_sha256": "e4318aa984b26e3851459ef25471c9d282f9689c4a24859b16e872d3eec77401",
+      "role": "Keeps the known +0xE0 RF config path separate from +0xA4."
+    },
+    {
+      "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+      "manifest_sha256": "bc70f54ce901ce70cbd51db0e6da5b23a22e2a6cc2786bb77cda537f683a51ff",
+      "role": "Supplies the existing RF snapshot and first-consumer receipts."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-DRC-TYPED-SNAPSHOT-TEARDOWN-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RF_TYPED_SNAPSHOT_DESTRUCTOR_CANDIDATE_BOUND; NUMERIC_CONSUMER_UNBOUND",
+  "implementation_disposition": "Record the same-displacement destructor candidate only; do not infer numeric RF DRC consumption or owner identity.",
+  "source_manifest_sha256": "cf33c18ccea1c308a22149dcf41e099da53868c600a932e8ef1539c3609de9af",
+  "source_package_seal_sha256": "82041775969d4805098d66ab31762f774d3204e1189532e305e46a08dfbdce1b",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4374,
+      "sha256": "a6328fb3de08155d9aaa7a495e754e9681af9cc3351e44ed60f451274ce16370"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1640,
+      "sha256": "b8060a42ae91e91566c8f8f06c95ddc5170999e99313d2bb4bdf9c14dd9ad027"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 197,
+      "sha256": "8f59a895da895289cc395148ff6c5766c87ef13065dc475681bc05f29fdba583"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1181,
+      "sha256": "7cbf36f1c734ec5e5c192d51cf6ebea25a2571f4e154975f45341aa63f20c1c7"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 811,
+      "sha256": "902f684944b3d39b6dee412d3d89a74afe1098bb18e40aade18e04981b349283"
+    }
+  ]
+}

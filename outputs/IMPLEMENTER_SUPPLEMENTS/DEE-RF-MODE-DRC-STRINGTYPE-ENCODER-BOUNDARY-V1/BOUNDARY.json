@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-RF-MODE-DRC-STRINGTYPE-ENCODER-BOUNDARY-V1",
+  "decision": "RF_STRING_ENUM_DESCRIPTOR_BOUND; PARSED_VALUE_TO_ENCODER_OR_BSI_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": {
+    "package_id": "rf_mode_drc_profile_encoder_boundary_wash_v1",
+    "manifest_sha256": "91dce089704a22c5db92a540423d17845953ceec46e748ced301922577cd00f7",
+    "package_seal_sha256": "c1d655096c8a8ab63005d1d15b370bd29861e15913ad3308d94934e1f5556c5e"
+  },
+  "plugin_descriptor": {
+    "image": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "token": "drc:rf_mode_drc_profile",
+    "builder": "FUN_180136220",
+    "descriptor_offset": "+0x730",
+    "type": "dee::Types::StringType",
+    "declared_options": ["film_standard", "film_light", "music_standard", "music_light", "speech", "none"],
+    "schema_default": "film_light",
+    "runtime_value": "NOT_OBSERVED"
+  },
+  "encoder_boundaries": {
+    "plugin_encode_path": ["FUN_1801475f0", "FUN_180145380", "FUN_180147d10", "FUN_1801535b0"],
+    "descriptor_plus_0x730_direct_use_in_scoped_path": "NOT_BOUND",
+    "separate_encoder_image": "dee_ddp_encoder.exe",
+    "separate_selector": "U8 state +0xac8",
+    "separate_profile_consumer": "FUN_14033eb60",
+    "rf_string_to_u8_selector_typed_join": "UNBOUND",
+    "enum_ordinal_inference": false,
+    "audible_effect": "UNBOUND"
+  },
+  "execution": {
+    "dee_runtime": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  }
+}

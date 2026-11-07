@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-BOOL-MEASURE-ROUTE-SELECTOR-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "MEASURE_ROUTE_BOUND; BOOL_EFFECT_UNBOUND",
+  "implementation_disposition": "Keep the Bool measurement input distinct from the mode selector; no algorithm change.",
+  "source_manifest_sha256": "da170d890910d3b6f90aa338da3054fc0980f8b26cd5d216cd8f41550340df10",
+  "source_package_seal_sha256": "8ee657cfab8bab0399cd88bc11cc5f22f68fa8399c2771264c33d70e33495855",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4269,
+      "sha256": "7d775b4e8f95140bc9a624471e6936ee6b92b3ab0d27779ab1d1156c4e005a66"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1762,
+      "sha256": "e5ccff85627f23b8845abe10d205eac2cf70ff442fa716dd1b9cca47261b5302"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 785,
+      "sha256": "3825f1c7e92b2b80b469a9be8af39296acb556500e4fd6727cbc2570db74a3ae"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 956,
+      "sha256": "aafdafe61d80baf84118b5745e703c2bcdf162c22d77e2329ac00b95f8f38791"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 778,
+      "sha256": "c15d5b7f4984f2ce5e5858509a3ef2e1368f0089aa427435252b71d787bf6c85"
+    }
+  ]
+}

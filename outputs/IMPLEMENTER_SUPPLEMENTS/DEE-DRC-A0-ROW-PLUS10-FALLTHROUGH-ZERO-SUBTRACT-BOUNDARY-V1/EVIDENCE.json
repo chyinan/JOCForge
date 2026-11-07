@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.drc_row_plus10_fallthrough_boundary.v1",
+  "row_member": "QWORD at +0x10",
+  "bound_argument_r8": 0,
+  "fallthrough_first_use": "SUB RAX,R8",
+  "result_followed": false,
+  "semantic_type_owner": "UNBOUND",
+  "projection_to_snapshot_plus_0xa0": "UNBOUND",
+  "codec_bsi_audio_effect": "UNBOUND",
+  "runtime": "NOT_RUN"
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "di_flag_bool_measurement_result_calc_boundary_addendum_wash_v1",
+      "manifest_sha256": "91d0dd7dc34e5cebb3a58082df7c22cb33bc526ca0f2dce6231322db72c30c60",
+      "package_seal_sha256": "e6448d528f385a709860bb4dff10d1eb2cfdb2b39f9d87ad5be8f235f0ef5bed"
+    },
+    {
+      "package_id": "DEE-DI-MEASUREMENT-RESULT-WRITEBACK-BOUNDARY-V1",
+      "manifest_sha256": "d14120c3c19368f6cde1bbaa037cd9f264efb6fe1b31f71d44fbbc38f726bbbb",
+      "package_seal_sha256": "dd5d6fde632abe76cbe37c3b78c37bf5ad5dab5e0d14aaf6649d4140207346bb"
+    },
+    {
+      "package_id": "DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V2",
+      "manifest_sha256": "4d57fcdb7e3c3e1c43024fe73c758cb2b4188fefc239dc415618e574e453557e",
+      "package_seal_sha256": "1d126bb8f20ba8de99305e3d1162f0978decbcb5a103b370ac326c890dbfefc9"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

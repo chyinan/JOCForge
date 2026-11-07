@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-DRC-LINE-MODE-SEAL-CHAIN-REFRESH-V1",
+  "manifest_sha256": "23baa7705f7acc15d86b7cb01abbf56d8795a70a04685bb0eee7ea273511bb56",
+  "payloads_verified": true,
+  "source_package_manifests": 3,
+  "source_payloads_verified": "18/18",
+  "findings_changed": false
+}

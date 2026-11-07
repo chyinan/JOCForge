@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "line_mode_drc_snapshot_a0_consumer_boundary_wash_v1",
+      "manifest_sha256": "681e6740913768b25c03d0df91b8a3771a5104b31e155459bfc1f699e15cc355",
+      "package_seal_sha256": "8723eff557f552a4a8d9ce135e48c9727b0784283986a7403ae97b1923e8f1b9",
+      "reviewed_payloads": [
+        {
+          "name": "EVIDENCE.json",
+          "sha256": "71ce19bdb7a26f3144861186dee8a33e068502b2def5cb530c6e1aa4810ae6d9"
+        },
+        {
+          "name": "REPORT.md",
+          "sha256": "e1d3b71aa43676bbc8ee3dbd043fd14d4444b03dfeb4168f2991afe370825493"
+        },
+        {
+          "name": "SOURCE-MANIFEST.json",
+          "sha256": "fdb79442f45e70a282b6467d0a6d44725c814f5e1b5c9e73f26d3efea917a968"
+        },
+        {
+          "name": "TRACE-EXCERPTS.txt",
+          "sha256": "156dd946ad82316823b46be4f82637dbfc0dac1099d83d40492b730980df7a0b"
+        },
+        {
+          "name": "INPUT-ONLY-VECTORS.json",
+          "sha256": "0877c0186c75a4dcd589c63f7412397e5399176ad970bfb79cc49a68631a2404"
+        }
+      ],
+      "raw_media_or_audio_payload_copied": false
+    }
+  ],
+  "parent_receipts": [
+    {
+      "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+      "manifest_sha256": "bc70f54ce901ce70cbd51db0e6da5b23a22e2a6cc2786bb77cda537f683a51ff",
+      "role": "Binds the Line StringType profile lookup and snapshot+0xA0 write."
+    },
+    {
+      "package_id": "line_mode_a0_per_frame_pack_first_break_wash_v1",
+      "manifest_sha256": "a524ef64865d1f35887104d57b19884a64a5365dc0f84e0a9fd14b79f847b0f7",
+      "role": "Binds same-snapshot pointer flow to validator/per-frame packer and the no-direct-+0xA0 first-break."
+    }
+  ]
+}

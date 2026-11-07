@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-RF-MODE-DRC-STRINGTYPE-ENCODER-BOUNDARY-V1",
+  "manifest_sha256": "607790106c8d3cc82c731199e8690a7e8e726fac583191c1e12e5e47c6a356a8",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "91dce089704a22c5db92a540423d17845953ceec46e748ced301922577cd00f7",
+  "source_package_seal_sha256": "c1d655096c8a8ab63005d1d15b370bd29861e15913ad3308d94934e1f5556c5e",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "STRINGTYPE_DESCRIPTOR_BOUND; PARSED_VALUE_TO_ENCODER_SELECTOR_UNBOUND"
+}

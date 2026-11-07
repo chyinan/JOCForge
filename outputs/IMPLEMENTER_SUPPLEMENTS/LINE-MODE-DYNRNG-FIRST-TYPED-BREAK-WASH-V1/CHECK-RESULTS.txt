@@ -1,0 +1,3 @@
+Package integrity verification: PASS (normal and python -O)
+Source package manifest and artifact verification: PASS (9 sealed packages)
+DEE, A/B, Ghidra, PCM, and payload runs in this continuation: NOT_RUN

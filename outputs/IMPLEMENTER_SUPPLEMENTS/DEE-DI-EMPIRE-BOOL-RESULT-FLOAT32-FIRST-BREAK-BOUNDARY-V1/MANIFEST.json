@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-EMPIRE-BOOL-RESULT-FLOAT32-FIRST-BREAK-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "BOOL_TO_ENGINE_SUBCONTEXT_CONDITIONAL; SUBCONTEXT_TO_FLOAT32_UNBOUND",
+  "implementation_disposition": "Register the conditional engine path, but keep result causality unbound.",
+  "source_manifest_sha256": "b79a9a9cabb53c33e126c0a6b5195185a031685bd2ebd01ec5fc66b970c04036",
+  "source_package_seal_sha256": "bef27cd37618f210c7183c3561e6413477c900f5e4154ae5dd285067c9930c69",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2767,
+      "sha256": "f41204c8b6ec04542b67b848aa0881d544d9ceb75675a41c2a037306e4a617a4"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1926,
+      "sha256": "41d29c224a34363d757d4a67e29df6613ea22c2fb79f6927d13c4c54b891260a"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 475,
+      "sha256": "8d2481de93d1cc6a5436169db9a3866ec614fd7d8e40ffabb7d0a84ad7df8d11"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 715,
+      "sha256": "e210b498cacc0fbbf7a5cb8216694bc92a7d1bbb67d8169617682d28b6c4a9aa"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1050,
+      "sha256": "e4ae56c5368d35e47969d98d6b6c5afd8d2cc334fe71bd6d287c57a8d959eb59"
+    }
+  ]
+}

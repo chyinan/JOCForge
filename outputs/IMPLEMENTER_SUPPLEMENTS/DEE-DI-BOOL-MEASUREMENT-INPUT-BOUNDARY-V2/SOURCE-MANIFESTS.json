@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "di-flag-bool-measurement-consumer-addendum-wash-v1",
+      "manifest_sha256": "2f5e2b9c2c54f38eefae07dfae60e93f743c336a4f0927ff03822a12abae758b",
+      "package_seal_sha256": "5b62ee37f323fe985f14d51289e8914377f0983cbf3d0eebb8abe700861e7836"
+    },
+    {
+      "package_id": "DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V1",
+      "manifest_sha256": "5f13d9022b8d0ff2a6efafcee9ea1967fb39ba19a1548ff5e356ed7d01af5dcf",
+      "package_seal_sha256": "0e9832d96a913defd7bc07eda417fee77ac9a1a21976ab25c2075857e30bddb0"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

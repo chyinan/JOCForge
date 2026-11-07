@@ -1,0 +1,32 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "rf_drc_snapshot_a4_vtable_receiver_wash_v1",
+  "status": "FRAME_OUTPUT_OBJECT_POINTER_BOUND_STATIC; VTABLE_RECEIVER_EDGE_BOUND_STATIC; PLUS_0XA4_NOT_PASSED_OR_READ_ON_THIS_HOP; CONCRETE_CLASS_AND_A4_DATAFLOW_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2088,
+      "sha256": "9d726c739a16ea0847da5bea09b00fa9d62e497a6ca962a66301327f288ce9a9"
+    },
+    {
+      "name": "RECEIVER-OWNER.json",
+      "bytes": 1824,
+      "sha256": "9c0854a52d9487177136c7f8a7b0e2fa004ecb367191176b4996a3959e0e02e8"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1293,
+      "sha256": "f5e578a9f361256b04244b5cc8551c6736e4155017f1f3b8d8fbc5a2fd8701e6"
+    },
+    {
+      "name": "SOURCE-MANIFEST.json",
+      "bytes": 5054,
+      "sha256": "ab4e143ece2892068c2c6a223e3b25179df759334700e078cb892b4daee9465e"
+    },
+    {
+      "name": "TRACE-EXCERPTS.txt",
+      "bytes": 977,
+      "sha256": "06d61738a4f08d999f43da228765aeefc8c8a6b2870dc7568d42e3bcda6cfd30"
+    }
+  ]
+}

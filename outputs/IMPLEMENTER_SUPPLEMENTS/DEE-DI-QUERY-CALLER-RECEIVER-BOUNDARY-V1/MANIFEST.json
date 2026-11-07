@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-QUERY-CALLER-RECEIVER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "GETTER_RECEIVER_TO_PRIV_EC0_STATIC_BOUND; RDX_QUERY_OWNER_UNBOUND; DIALOGUE_KEY_SELECTION_UNBOUND",
+  "implementation_ready": false,
+  "source_manifest_sha256": "a13c0bfe74eb2b2f3d5c0816e0c7c19f54cdb7ecb31d9755541949a7890ad024",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2278,
+      "sha256": "7621060fb6fd26b151034e8a0cc63246cdf0e472ec7620fce1d25057b6abbdde"
+    },
+    "EVIDENCE.json": {
+      "bytes": 1917,
+      "sha256": "2e3612e01487fa95450587975f6af5960c973c0f3f98f22d52a6336d30bccdb1"
+    },
+    "REPORT.md": {
+      "bytes": 1174,
+      "sha256": "146c060c1a57bb9add9f5dbfc40f428bd862d793a5fea1e911506ea1fa9da823"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1505,
+      "sha256": "73f45df3f848d5f9fd6dc7c907071a5b87ce6a934dfed3fa365b17751202cba9"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "drc-helper-opaque-row",
+      "input": {
+        "selected_row_pointer": "opaque pointer"
+      },
+      "expected_observation": {
+        "helper_member_read": false,
+        "nested_converter_call": true
+      },
+      "limitations": [
+        "Converter body not inspected",
+        "No A0 owner join",
+        "No codec/BSI effect"
+      ]
+    }
+  ]
+}

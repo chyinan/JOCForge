@@ -1,0 +1,75 @@
+{
+  "schema": "wash-static-source-manifest.v1",
+  "package_id": "rf_drc_snapshot_a4_consumer_boundary_wash_v1",
+  "source_boundary": "No DEE, PCM, EC-3, media, key, or license payload is included; package payloads contain only RF/DRC receipt references and bounded RF-only Ghidra excerpts.",
+  "sources": [
+    {
+      "kind": "Ghidra target image",
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "path": "D:\\Programs\\dee71joc\\test_dee\\dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "tool": "Ghidra 12.2 PUBLIC; image base 0x180000000"
+    },
+    {
+      "kind": "RF/DRC plugin configuration package manifest",
+      "name": "MANIFEST.json",
+      "path": "outputs/atmos_ddp_plugin_property_setter_wash_v1/MANIFEST.json",
+      "sha256": "bc70f54ce901ce70cbd51db0e6da5b23a22e2a6cc2786bb77cda537f683a51ff"
+    },
+    {
+      "kind": "RF/DRC profile pipeline package manifest",
+      "name": "MANIFEST.json",
+      "path": "outputs/atmos_ddp_drc_profile_pipeline_wash_v1/MANIFEST.json",
+      "sha256": "e4318aa984b26e3851459ef25471c9d282f9689c4a24859b16e872d3eec77401"
+    },
+    {
+      "kind": "RF profile value map",
+      "name": "DRC-VALUE-MAP.json",
+      "path": "outputs/atmos_ddp_drc_profile_pipeline_wash_v1/DRC-VALUE-MAP.json",
+      "sha256": "c4d7c71ae5234612d918ef3d55a67489e793bf5c1636d08f27082d93f1fa4a96"
+    },
+    {
+      "kind": "RF snapshot and typed path receipt",
+      "name": "LINE-RF-DRC-INPUT-VECTORS.json",
+      "path": "outputs/atmos_ddp_plugin_property_setter_wash_v1/LINE-RF-DRC-INPUT-VECTORS.json",
+      "sha256": "94eac682d7666fafb0fdd00e94a0d63299de8a38da3e1ccc427e0043fc5e64fe"
+    },
+    {
+      "kind": "RF per-stream owner and serializer receipt",
+      "name": "PLUGIN-DRC-SETTER-STREAM-GUARD.json",
+      "path": "outputs/atmos_ddp_plugin_property_setter_wash_v1/PLUGIN-DRC-SETTER-STREAM-GUARD.json",
+      "sha256": "4aa2e960ebecb5b04ac1c91953f502893e7dd151035ea27754050d0194202381"
+    },
+    {
+      "kind": "Existing RF profile writer Ghidra trace",
+      "name": "ghidra_atmos_drc_configuration_trace_scratch_v5.log",
+      "path": "work/ghidra_atmos_drc_configuration_trace_scratch_v5.log",
+      "sha256": "054f7818cc139680521dec7f6b69103b5b588d9304c7c5d45dbc6cc506efe38f",
+      "tool": "Ghidra 12.2 PUBLIC; existing hash-bound receipt; bounded RF excerpts only"
+    },
+    {
+      "kind": "Wash package sealer",
+      "name": "seal_rf_drc_snapshot_a4_consumer_boundary_wash_package.py",
+      "path": "work/seal_rf_drc_snapshot_a4_consumer_boundary_wash_package.py",
+      "sha256": "ac11230ba793dbf538e4d421c0a7546a10aa965d6e878af119cf3bce45b039e3"
+    },
+    {
+      "kind": "Wash package checker",
+      "name": "verify_rf_drc_snapshot_a4_consumer_boundary_wash_package.py",
+      "path": "work/verify_rf_drc_snapshot_a4_consumer_boundary_wash_package.py",
+      "sha256": "84a9c022f256f77ccaf90b9c6268f56b38020c0564747a8b3ee303bb0cdf2757"
+    }
+  ],
+  "parent_references": [
+    {
+      "package_id": "atmos_ddp_drc_profile_pipeline_wash_v1",
+      "manifest_sha256": "e4318aa984b26e3851459ef25471c9d282f9689c4a24859b16e872d3eec77401",
+      "role": "Binds RF StringType lookup to snapshot +0xA4 and the separate RF configuration path to config+0x24."
+    },
+    {
+      "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+      "manifest_sha256": "bc70f54ce901ce70cbd51db0e6da5b23a22e2a6cc2786bb77cda537f683a51ff",
+      "role": "Binds the mode-1 RF snapshot +0xE0 path to raw RF input param_1[2] and downstream per-stream fields."
+    }
+  ]
+}

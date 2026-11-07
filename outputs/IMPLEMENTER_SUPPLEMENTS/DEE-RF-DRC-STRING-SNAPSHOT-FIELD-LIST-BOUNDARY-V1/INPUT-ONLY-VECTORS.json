@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_RF_VALUE",
+  "vectors": [],
+  "note": "Only the static owner/pointer-list path is included; no runtime RF profile value or media is included."
+}

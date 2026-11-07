@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "di-plus164-alternate-same-image",
+      "input": {
+        "candidate_owner": "codec-parent child record"
+      },
+      "expected_observation": {
+        "read_plus_0x164": true,
+        "join_to_empire_subcontext": "UNBOUND"
+      },
+      "limitations": [
+        "No owner pointer join",
+        "No Bool-to-result causality",
+        "No global scan"
+      ]
+    }
+  ]
+}

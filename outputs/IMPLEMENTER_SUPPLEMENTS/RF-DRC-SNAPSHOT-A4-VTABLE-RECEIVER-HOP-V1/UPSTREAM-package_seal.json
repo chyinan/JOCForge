@@ -1,0 +1,9 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "rf_drc_snapshot_a4_vtable_receiver_wash_v1",
+  "manifest_sha256": "09889d43ea572c9b6da76e7bbaa6e51ce125b42f9e15ce546d61244685a56a1e",
+  "sha256sums_sha256": "96c1096c3ca51a6167e404fd915f7a8f7f6afa884b262c3a7474136ec80379c8",
+  "payload_count": 5,
+  "status": "FRAME_OUTPUT_OBJECT_POINTER_BOUND_STATIC; VTABLE_RECEIVER_EDGE_BOUND_STATIC; PLUS_0XA4_NOT_PASSED_OR_READ_ON_THIS_HOP; CONCRETE_CLASS_AND_A4_DATAFLOW_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

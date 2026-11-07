@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.di_empire_bool_result_first_break.v1",
+  "package_id": "DEE-DI-EMPIRE-BOOL-RESULT-FIRST-BREAK-BOUNDARY-V1",
+  "source": {
+    "package_id": "di-flag-bool-empire-loudness-subcontext-result-consumer-boundary-addendum-wash-v1",
+    "manifest_sha256": "240abb2fe291a7316e3a28bf1932f73a489ac07a07d6e8aefa724cc597d5850e",
+    "package_seal_sha256": "549b93c3c4ec348850a35144e3e604775efd54dbfbbc690dad7d62e19dc48a2b"
+  },
+  "typed_path": {
+    "setup_bool_to_owner": "BOUND_STATIC",
+    "owner_to_engine_config": "BOUND_STATIC",
+    "config_to_subcontext_0x164": "CONDITIONAL_BOUND_STATIC",
+    "runtime_mode": "UNBOUND_NOT_CAPTURED"
+  },
+  "selected_consumer": {
+    "same_engine_instance_subcontext": "BOUND_STATIC",
+    "reads_fields": [
+      "+0x08",
+      "+0x10",
+      "+0x18",
+      "+0x20"
+    ],
+    "reads_or_forwards_0x164": false,
+    "next_call_forwards": [
+      "+0x18",
+      "+0x20"
+    ],
+    "first_break": "selected consumer to next-call argument edge"
+  },
+  "result": {
+    "float32_writer_owner_path": "BOUND_STATIC_SEPARATE_PATH",
+    "bool_to_float32_causality": "UNBOUND",
+    "global_absence_claim": false
+  },
+  "execution_scope": {
+    "new_ghidra_analysis": false,
+    "dee_run": false,
+    "runtime_capture": false,
+    "media_or_pcm_read": false,
+    "payload_read": false,
+    "key_or_license_read": false
+  }
+}

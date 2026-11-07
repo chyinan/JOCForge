@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/rf_mode_drc_profile_encoder_boundary_wash_v1",
+  "source_package_manifest_sha256": "91dce089704a22c5db92a540423d17845953ceec46e748ced301922577cd00f7",
+  "source_package_seal_sha256": "c1d655096c8a8ab63005d1d15b370bd29861e15913ad3308d94934e1f5556c5e",
+  "wash_recomputed": {
+    "source_payloads": "4/4",
+    "source_export_hashes": "8/8",
+    "parent_manifest_and_report_pairs": "2/2",
+    "target_binaries": "2/2"
+  },
+  "verified_parent_receipts": [
+    {"package_id": "sample6-matched-drc-profile-table-init-wash-v1", "manifest_sha256": "e545f2f4765b50726e20826a9f70eeba08233036b039996f2e64b53cc8459de7", "report_sha256": "942d5b03b66dfc5e9e536f4a810d4a0b96c1cfe83fdfb85f8f549b3b5bfa50ee"},
+    {"package_id": "sample6-matched-drc-f32-producer-wash-v1", "manifest_sha256": "c6249d6315a10c836c3a7e657ff854efbc634ca22d84d46ef2b2216915c0e49e", "report_sha256": "1637db57baa8fd147ee5bfbdae178517f5be61e3fea6b5c56db54ae987cdaab0"}
+  ],
+  "rehashed_binaries": [
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"name": "dee_ddp_encoder.exe", "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"}
+  ],
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "excluded_from_supplement": ["raw Ghidra traces/scripts", "media/PCM/payload", "private key/license"]
+}

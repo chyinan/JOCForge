@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.dee_rf_drc_string_snapshot_field_list_boundary.v1",
+  "package_id": "DEE-RF-DRC-STRING-SNAPSHOT-FIELD-LIST-BOUNDARY-V1",
+  "status": {
+    "parser_snapshot_priv_owner": "STATICALLY_BOUND_RDI_PLUS_0X750",
+    "snapshot_pointer_in_field_list": "STATICALLY_BOUND_ENTRY_15_OF_31",
+    "field_list_consumer": "FUN_18012bda0_OPAQUE_POINTER_COPY",
+    "string_value_read": "NOT_OBSERVED",
+    "field_list_element_dereference": "NOT_OBSERVED",
+    "typed_value_consumer": "UNBOUND",
+    "numeric_rf_drc_consumer": "UNBOUND",
+    "ddpi_plus_0xa4_join": "UNBOUND",
+    "runtime_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "dialogue_rf_drc_profile_snapshot_owner_followup_addendum",
+    "manifest_sha256": "fc97b3e39b6649765b94529783d4631b8155a3981ba737374faa0e45cfb07672",
+    "package_seal_sha256": "ea3c76b5c26a995082d9356276d2c5f4943e7ded6c572cefb5560497c9af94aa",
+    "report_sha256": "a0db8b686029f01f3ed367587fb43fe30fa927f58c8fd768695e24ff0316d73b",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis"
+  },
+  "path": {
+    "snapshot_initializer": "FUN_180136220",
+    "owner_subobject": "FUN_180135d40 RDI+0x20",
+    "snapshot_pointer": "RDI+0x750",
+    "field_pointer_array": "31 entries; snapshot pointer at entry 15",
+    "consumer": "FUN_18012bda0 copies pointer-list bytes without dereferencing pointees"
+  },
+  "limits": {
+    "dee_executed": false,
+    "xml_runtime_value_captured": false,
+    "string_value_read": false,
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Register only the owner-bound pointer-list copy. Do not claim RF string-value consumption or numeric DRC effect."
+}

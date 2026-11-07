@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-LINE-DRC-A0-FIRST-ROW-PACK-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_first_row_pack_boundary",
+      "package_id": "line_mode_a0_first_row_pack_boundary_wash_v1",
+      "manifest_sha256": "812066b35d3d44d3cc6b4e3cf51604c33c305b559c48b3de45791e39f930ccd9",
+      "manifest_sha256_file": "1ed82f870b3f82f66436382cefaabe55ab1eb3ea52b4e638d86efba9eb79fb4c",
+      "sha256sums_sha256": "2f7dc2ab63fe3be7bfa848411a2b8c45cd8c1ac2216df7281a5ab5409ea54735",
+      "package_seal_file_sha256": "f67c64f793152fb565bb1c7fc4a8135da2686ffb88f8b24d53929e5abea0a6a5",
+      "payload_hash_audit": "PASS_7_OF_7"
+    },
+    {
+      "role": "previous_perframe_packer_boundary",
+      "package_id": "DEE-LINE-DRC-A0-PERFRAME-PACK-FIRST-BREAK-V1",
+      "manifest_sha256": "5ccc2f08330392bf7461419adfbfe94f37d50a76ff2cfeb4969e7a699d04deae",
+      "package_seal_sha256": "a3b05226e8d4dbd039da98ff78ebb0afaaf0e731ab23b25b74b8a31eea52d587"
+    }
+  ],
+  "omitted_material": {
+    "raw_trace_excerpts": true,
+    "native_source_or_binary": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

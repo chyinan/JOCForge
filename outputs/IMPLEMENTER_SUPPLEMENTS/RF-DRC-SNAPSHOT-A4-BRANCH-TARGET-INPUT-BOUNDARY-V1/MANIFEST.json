@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-BRANCH-TARGET-INPUT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "THREE_BRANCHES_AND_SLOT18_TARGETS_BOUND_STATIC; A4_INDIRECT_TRANSFER_UNBOUND; RUNTIME_VARIANT_NOT_CAPTURED",
+  "implementation_disposition": "Do not infer snapshot +0xA4 propagation through the constructor-produced worker inner-state pointer",
+  "source_manifest_sha256": "6761ae7bd37ff11ce25470c9c61c2d0313c98214d5a19d63a2cd444d4e0d778a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3503,
+      "sha256": "0385009beb28d51c17dbb548b262d9c34a4d2058bea8e77a866c6b578b2828cb"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2228,
+      "sha256": "909eb30e12ff452ffbdae6eb98d7e03f1e79ac5b673b02dadcf0276864b47e70"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 391,
+      "sha256": "68537d224b10df20e1d2dc753679dc3b2bb026026e8d8ba9c0bcfc582b16af5c"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1831,
+      "sha256": "071e148d2bbe98dffbb1c242d334b8e0a28cadb1ce969fd2857e4a4955899d3e"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 851,
+      "sha256": "b0af7356165e9e5c45c268e50418cd74f870f5959ca5dabdf7ef9a6886f28c3a"
+    },
+    {
+      "name": "UPSTREAM-BRANCH-TARGET-INPUTS.json",
+      "bytes": 2406,
+      "sha256": "b509c3f3d828623a897df63f12ac875cabeefcb44fac6cad02229fa51485a4db"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 1090,
+      "sha256": "6761ae7bd37ff11ce25470c9c61c2d0313c98214d5a19d63a2cd444d4e0d778a"
+    },
+    {
+      "name": "UPSTREAM-package_seal.json",
+      "bytes": 562,
+      "sha256": "6c81aa388e423ef2e2b548433fdfe964c3c3685f65ec03b339d350bfbde88b7f"
+    },
+    {
+      "name": "UPSTREAM-SHA256SUMS.txt",
+      "bytes": 500,
+      "sha256": "5d1ed64a96b54209cdabef95d81f44bec2cf613fe84ccb70ca825a29b66996ea"
+    }
+  ]
+}

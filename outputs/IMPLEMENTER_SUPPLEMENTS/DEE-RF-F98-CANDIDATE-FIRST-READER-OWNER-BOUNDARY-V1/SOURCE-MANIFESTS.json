@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "dialogue_rf_drc_profile_f98_vector_first_consumer_addendum",
+  "manifest_sha256": "04c765fa9f638feabf07cc1993ee3db96bcf21d0380bf3f627997127952fee41",
+  "package_seal_sha256": "2169f77752a5f2709678ca849f05baec2b299495265db053fc571ab3689dfc3d",
+  "checker_normal_and_python_o": "PASS",
+  "raw_trace_or_native_source_copied": false
+}

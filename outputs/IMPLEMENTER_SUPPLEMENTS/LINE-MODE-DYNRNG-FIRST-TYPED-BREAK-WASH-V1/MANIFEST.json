@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.wash_package_manifest.v1",
+  "package_id": "LINE-MODE-DYNRNG-FIRST-TYPED-BREAK-WASH-V1",
+  "delivery": "WASH_ONLY",
+  "artifacts": [
+    {
+      "path": "CHECK-RESULTS.txt",
+      "bytes": 206,
+      "sha256": "90e11c768da91b4f204571eb2a53d1c9fab2c71be6ec4bd78f9f648b2be0eefd"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 3459,
+      "sha256": "2153de79c54e4031664f994733c4850d2a0a7669c429182c82e268a219e98b82"
+    },
+    {
+      "path": "OBSERVATION-REUSE.json",
+      "bytes": 1934,
+      "sha256": "df379b2ef5406d369ea7e36c4e244fab8dc7f6f47ca7ff1333e4e2a4b888ab5e"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2179,
+      "sha256": "44ea91c47e7633c9eb605f1057f6cea8aba615d72baf126b8d9bf91036f515a1"
+    },
+    {
+      "path": "seal_package.py",
+      "bytes": 1126,
+      "sha256": "8caa5023459ed94b16a179c5f854e07d86c9f05a54a244c2e1dba864bb6cd64a"
+    },
+    {
+      "path": "SOURCE-PACKAGES.json",
+      "bytes": 2690,
+      "sha256": "1e251867b4e2e16df80c4b91189e1ed6c989acf00760465f64a55cd7f85066c0"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 4030,
+      "sha256": "df7fee9f18f6c1465317b49f21a41a561a27c0afa5ac9b54fc01d261ca3fbdbd"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-package-refresh-disposition.v1",
+  "package_id": "DEE-DRC-LINE-MODE-SEAL-CHAIN-REFRESH-V1",
+  "refresh_kind": "SEAL_AND_CHILD_MANIFEST_REFRESH_ONLY",
+  "supersedes_source_links_in": [
+    "DEE-DRC-LINE-MODE-CODE-TO-ENCODER-BOUNDARY-V1",
+    "DEE-DRC-LINE-MODE-ALTERNATE-ENCODE-BOUNDARY-V1"
+  ],
+  "findings_or_runtime_status_changed": false,
+  "line_drc_audio_effect": "UNBOUND_NO",
+  "mode_runtime": "NOT_RUN"
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_BOOL_OR_RESULT_VALUES",
+  "vectors": [],
+  "note": "Static measurement field lineage only; no runtime Bool selection or audio values were captured."
+}

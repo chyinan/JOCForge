@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-F98-CANDIDATE-OUTER-CALLER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "OUTER_CALLER_RCx_FORWARD_BOUND; ENTRY_RCX_TO_R14_AND_PRODUCER_OWNER_UNBOUND",
+  "implementation_disposition": "Do not join the F98 candidate to its producer object through the outer call alone; entry RCX to R14 remains unbound.",
+  "source_package_id": "dialogue_rf_drc_profile_f98_candidate_outer_caller_addendum",
+  "source_manifest_sha256": "a6ddcb5f7a1705453b1164f7008797cbf24f18ea4abd1585725b0896873a07d0",
+  "source_package_seal_sha256": "e89048b7a222cbd119df0d793d9bfed3c2b8def747d1638b48e16bb1abb22e36",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1719,
+      "sha256": "2791142c1e3ad85724b69d41931bae21425750076ec799af04bb4847570b73c6"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 377,
+      "sha256": "7c219711afe0a907a6f3e5eb466b492dd979e7c414fd730f3709323c336db26b"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 482,
+      "sha256": "681f0801097334d9d5a8ee78564d6a4dc950c7f8d3850d86aa5ac2950b9ffb52"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 606,
+      "sha256": "0bcc1783ec3d6ee2415fd92aad1e8d3145104710f8d92a6bb8db56f98e708d04"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 881,
+      "sha256": "69191103fb49b1097b3a22534be9ab7a808ea8a07ae328fdc1282144665d9fb3"
+    }
+  ]
+}

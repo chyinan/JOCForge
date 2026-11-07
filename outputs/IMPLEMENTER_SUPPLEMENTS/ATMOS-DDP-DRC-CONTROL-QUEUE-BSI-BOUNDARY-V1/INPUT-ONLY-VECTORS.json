@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "scope": "Arithmetic checks of the statically reported relative-bit formula only; no observed DEE run or AU output.",
+  "vectors": [
+    {
+      "id": "optional-prefix-minimal",
+      "inputs": {"record0": 0, "record2": 0, "record4": 0, "record5": 0, "record8": 0},
+      "expected": {"p": 6, "presence": "bit 6", "line": "bits 7..9", "rf": "bits 10..12"}
+    },
+    {
+      "id": "optional-prefix-record0-extension",
+      "inputs": {"record0": 3, "record2": 0, "record4": 0, "record5": 0, "record8": 0},
+      "expected": {"p": 10, "presence": "bit 10", "line": "bits 11..13", "rf": "bits 14..16"}
+    },
+    {
+      "id": "optional-prefix-record4-alternate",
+      "inputs": {"record0": 0, "record2": 0, "record4": 1, "record5": 0, "record8": 0},
+      "expected": {"p": 9, "presence": "bit 9", "line": "bits 10..12", "rf": "bits 13..15"}
+    },
+    {
+      "id": "optional-prefix-record8-extension",
+      "inputs": {"record0": 0, "record2": 0, "record4": 0, "record5": 0, "record8": 1},
+      "expected": {"p": 11, "presence": "bit 11", "line": "bits 12..14", "rf": "bits 15..17"}
+    },
+    {
+      "id": "conditional-film-light-code",
+      "inputs": {"line_profile": "film_light", "rf_profile": "film_light", "earlier_raw_enum_mapping_applies": true},
+      "expected": {"line_code": 2, "rf_code": 2, "bits": "010 / 010"},
+      "warning": "Conditional mapping vector only; selected job submission, serializer activation, and AU placement were not observed."
+    }
+  ],
+  "not_asserted": ["absolute E-AC-3/JOC AU bit offsets", "command-2 payload membership in output BSI metadata", "decoded PCM difference", "selected-job runtime behavior"]
+}

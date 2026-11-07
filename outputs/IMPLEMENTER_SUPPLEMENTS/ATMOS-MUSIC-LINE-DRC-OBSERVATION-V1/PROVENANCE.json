@@ -1,0 +1,16 @@
+{
+  "result_receipt_sha256": "a68c3a7b8957bdd7b783a24eff3046b444872d2d52b1433997799c2516d4bf47",
+  "preflight_sha256": "d555e32c16bdbf5adad43f02a2f929ed3ee727c325c8e9557f9de57296c3f8e8",
+  "job_sha256": {
+    "baseline": "6836f16a64fde98133e7192a5cd5d11ba4137363fe7d961b9f3a30a4f34695d8",
+    "music_standard": "763e1efd5a19d59b6a4114b1754671d779734100254fb4f63f72240b53fda852",
+    "music_light": "933de8c711bb5fd513547c8a50be834c4a3ae171dc26e7e0b04580cad714cb07"
+  },
+  "log_sha256": {
+    "baseline": "abd73ac72e76f102579ac81a7455545ecdf4d01218bcca157b99ca3b657a46ef",
+    "music_standard": "2eb5abe8f0b653bb6652e8ec635d6b38d870eabc80be8dcaca791bdb6e7ef872",
+    "music_light": "4ccdc573d151926698f140883c5afa20d7d20b83e9914cf35684e7c0d5cac935"
+  },
+  "output_artifacts": "REMOVED_BEFORE_WASH; INDEPENDENT_REPLAY_NOT_RUN",
+  "comparison_source": "research receipt; no raw audio in Wash"
+}

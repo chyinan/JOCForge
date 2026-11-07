@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DRC-A0-HELPER-BODY-CONVERTER-FIRST-BREAK-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "233ebbd9f28b24444302cbd8a21398cf16bdc470e9595e864fa16de7b00c2805",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

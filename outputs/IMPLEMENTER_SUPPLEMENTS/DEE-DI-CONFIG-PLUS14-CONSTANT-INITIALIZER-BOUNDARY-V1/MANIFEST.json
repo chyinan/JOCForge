@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-CONFIG-PLUS14-CONSTANT-INITIALIZER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CONFIG_PLUS_0X14_CONSTANT_BOUND; SETUP_BOOL_RELATION_UNBOUND",
+  "implementation_disposition": "Keep the constant config field separate from setup Bool; do not infer runtime or audio effect.",
+  "source_manifest_sha256": "b81be512aee5d5cc296a36daf6eb639554d627c4b3c5cf479a17db22a618573d",
+  "source_package_seal_sha256": "9f237b610e9bf32ff5bcd97c7b409236264a37174272b7ee4cee0705f01c278d",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2796,
+      "sha256": "b2d7e1c4908cf88f8938ee601c5df9933a0f7fe740705f6dff501b3e10ef2c34"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2121,
+      "sha256": "a16800422a91717b72b3d4756e01aaa38e6d35281094140d3176dc20c15915bc"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 593,
+      "sha256": "919cc3797c749ca5cd609f31d90ee6970441bd0762fd32bef5741af473e98bcb"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 734,
+      "sha256": "75210483a396c0fa0afe4e832ff7103e1ed22ca9803e0632e960ba7e630b5d5a"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1197,
+      "sha256": "9d322219ec0b58e3e3274778f995c67ff2d61dc6253a12492bec011542bd6a7e"
+    }
+  ]
+}

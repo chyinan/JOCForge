@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.f06nd-text-event-producer-boundary.v1",
+  "package_id": "F06ND-TEXT-EVENT-PRODUCER-BOUNDARY-V1",
+  "source_package_manifest_sha256": "9b89074318558ff692631e0b39f8d8699877c714d08fdadbf68b24e1e66342d5",
+  "source_package_seal_sha256": "0ae3cc3d6155422e3bcc799a61ac07b4de461c4f9f3008de621f62e899d43029",
+  "status": {
+    "generic_text_event_parse": "BOUND_STATICALLY",
+    "callback_and_local_event_collector": "BOUND_STATICALLY",
+    "keyed_entry_submission": "BOUND_STATICALLY",
+    "selected_category5_owner_generation_join": "NO_SELECTED_JOIN_ESTABLISHED",
+    "drc_bsi_effect": "UNBOUND_NO",
+    "runtime": "NOT_RUN"
+  },
+  "bounded_static_path": {
+    "input": "A generic text-line event parser receives text and calls a callback with a parsed event object.",
+    "collector": "The callback adds the event to a local collector; the collector is finalized and its shared pointer is copied into a keyed entry.",
+    "key_domain": "Not assigned in this bounded path.",
+    "first_consumer": "The callback target is the same generic first per-event consumer used by the separate typed storage-event path.",
+    "identity_limit": "A shared code target does not establish shared event-owner or generation identity."
+  },
+  "selected_category5_boundary": {
+    "category": 5,
+    "width_bits": 32,
+    "count": 1,
+    "parser_callback_owner_generation_join": "UNBOUND",
+    "collector_to_selected_category5_join": "UNBOUND"
+  },
+  "scope": {
+    "event_record_layout_reconstructed": false,
+    "global_no_event_claim": false,
+    "audio_or_bsi_effect_established": false,
+    "dee_execution": "NOT_RUN"
+  },
+  "excluded_material": {
+    "native_or_research_source_code": false,
+    "decompilation_or_binary": false,
+    "pcm_or_bitstream_payload": false,
+    "private_key_or_auth_material": false,
+    "absolute_local_paths": false,
+    "raw_native_addresses": false
+  }
+}

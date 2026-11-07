@@ -1,0 +1,20 @@
+{
+  "common": {
+    "source_sample_rate_hz": 48000,
+    "timecode_frame_rate": "not_indicated",
+    "time_base": "file_position"
+  },
+  "arms": [
+    {
+      "id": "zero",
+      "prepend_silence_duration": "0.0",
+      "append_silence_duration": "0.0"
+    },
+    {
+      "id": "fractional",
+      "prepend_silence_duration": "0.00390625",
+      "append_silence_duration": "0.0"
+    }
+  ],
+  "status": "PROPOSED_NOT_RUN"
+}

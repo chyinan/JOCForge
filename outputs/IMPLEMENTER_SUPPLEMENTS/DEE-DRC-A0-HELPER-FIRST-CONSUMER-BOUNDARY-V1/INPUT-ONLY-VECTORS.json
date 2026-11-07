@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "line-drc-a0-row-helper",
+      "input": {
+        "selected_snapshot_branch": "snapshot+0x9C==0"
+      },
+      "expected_observation": {
+        "helper_has_explicit_a0_argument": false,
+        "first_aggregate_data_use_is_diagnostic": true
+      },
+      "limitations": [
+        "No row-owner join",
+        "No codec or BSI effect",
+        "No runtime capture"
+      ]
+    }
+  ]
+}

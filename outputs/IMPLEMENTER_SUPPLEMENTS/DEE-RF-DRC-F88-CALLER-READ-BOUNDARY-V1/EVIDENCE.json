@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge.rf_drc_f88_caller_read_boundary.v1",
+  "package_id": "DEE-RF-DRC-F88-CALLER-READ-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "dialogue_rf_drc_profile_f88_caller_consumer_addendum",
+    "manifest_sha256": "67a43ed724c44cfb13da98146b9f2cb24a36c8fd33fe4ef774e97d91aaae509b",
+    "package_seal_sha256": "2471562ed1d792123ed9bfc317fd89ddd5b679dc77c866b952a0aaf14c00316f",
+    "checkers_normal_and_python_o": "PASS",
+    "inherited_parent_v2_manifest_local_status": "NOT_PRESENT_LOCALLY; NOT_USED_AS_VERIFIED_SOURCE"
+  },
+  "scope": {
+    "ghidra_version": "12.2",
+    "analysis_mode": "read-only/no-analysis",
+    "caller_only": "FUN_180135d40",
+    "global_xref_scan": false,
+    "dee_run": "NOT_RUN",
+    "runtime_capture": "NOT_RUN",
+    "xml_parse_or_decode": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false
+  },
+  "caller_local_facts": {
+    "field_expression": "RDI+0xf88",
+    "alias": "RBX",
+    "initialization": "two qwords set to zero before the call",
+    "argument_transfer": "address saved and passed as RCX to FUN_18013ee70",
+    "callee_signature": "no formal parameters; undefined return",
+    "callee_reads_saved_RCX": false,
+    "post_call_write": "RAX stored to [RBX]",
+    "later_local_read": "NOT_FOUND_BEFORE_ALIAS_REDEFINITION",
+    "saved_address_slot": "overwritten before a later LEA; LEA forms address only"
+  },
+  "status": {
+    "semantic_field_type": "UNBOUND",
+    "owner_generation": "UNBOUND",
+    "join_to_destination_vector": "UNBOUND",
+    "join_to_rf_stringtype": "UNBOUND",
+    "join_to_numeric_rf_state": "UNBOUND",
+    "rf_audio_or_bsi_effect": "NOT_RUN",
+    "global_no_consumer_claim": false
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "do_not_infer_identity_from_neighboring_offsets": true,
+    "preserve_numeric_rf_effect_as_unbound": true
+  }
+}

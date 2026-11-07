@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.rf_drc_snapshot_a4_vtable_receiver_hop.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-VTABLE-RECEIVER-HOP-V1",
+  "status": {
+    "snapshot_to_FUN_1801764e0_param3": "BOUND_STATIC",
+    "out_pointer_to_plVar4_receiver": "BOUND_STATIC",
+    "vtable_plus_0x18_receiver_edge": "BOUND_STATIC",
+    "plus_0xa4_directly_passed_on_this_hop": "NO",
+    "plus_0xa4_indirect_dataflow": "UNBOUND",
+    "concrete_receiver_class_and_target": "UNBOUND",
+    "runtime_rf_value_or_constructor": "NOT_CAPTURED",
+    "global_absence_claim": false
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/rf_drc_snapshot_a4_vtable_receiver_wash_v1",
+    "package_id": "rf_drc_snapshot_a4_vtable_receiver_wash_v1",
+    "manifest_sha256": "09889d43ea572c9b6da76e7bbaa6e51ce125b42f9e15ce546d61244685a56a1e",
+    "package_seal_sha256": "e43d427ea8c68ef1bad1b1995e45b10a7b6c2f0a19569ba10c431b82653056d5",
+    "normal_checker": "PASS",
+    "python_O_checker": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra_version": "12.2 PUBLIC"
+  },
+  "pointer_path": {
+    "snapshot_writer_candidate": "FUN_1801535b0.param_2+0xA4 is the candidate RF U32 store",
+    "snapshot_consumer": "FUN_1801764e0.param_3",
+    "helper_direct_plus_0xa4_read": "NOT_OBSERVED_IN_THIS_FUNCTION",
+    "receiver_constructors": ["FUN_1801850a0", "FUN_180185100", "FUN_180186e40"],
+    "receiver_output": "out-pointer populated by one constructor selected from other snapshot fields",
+    "first_vtable_receiver": "FUN_1801754f0 uses plVar4 as receiver at vtable+0x18; explicit data argument is a local frame buffer",
+    "same_owner_plus_0xa4_transfer_to_receiver": "UNBOUND"
+  },
+  "next_bounded_edge": "Selected constructor vtable+0x18 target and immediate typed input; preserve snapshot owner identity",
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "global_xref_sweep": false,
+    "implementation_contact": false,
+    "ghidra_scripts_or_logs_in_supplement": false
+  },
+  "disposition": "This static receiver hop does not establish an RF profile value consumer or effect."
+}

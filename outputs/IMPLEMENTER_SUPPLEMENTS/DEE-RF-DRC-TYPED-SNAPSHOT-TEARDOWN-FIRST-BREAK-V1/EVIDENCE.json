@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.dee_rf_drc_typed_snapshot_teardown_boundary.v1",
+  "package_id": "DEE-RF-DRC-TYPED-SNAPSHOT-TEARDOWN-FIRST-BREAK-V1",
+  "status": {
+    "parser_rf_string_snapshot": "BOUND_AT_RSI_PLUS_0X730_BY_PARENT",
+    "same_displacement_consumer_candidate": "FUN_18013aad0_TO_FUN_18013adb0",
+    "candidate_operation": "GENERIC_TYPE_TEARDOWN",
+    "string_value_read": "NOT_OBSERVED",
+    "parser_owner_to_destructor_receiver_join": "UNBOUND",
+    "numeric_rf_drc_consumer": "UNBOUND",
+    "runtime_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "dialogue_rf_drc_profile_snapshot_consumer_addendum",
+    "manifest_sha256": "cf33c18ccea1c308a22149dcf41e099da53868c600a932e8ef1539c3609de9af",
+    "package_seal_sha256": "82041775969d4805098d66ab31762f774d3204e1189532e305e46a08dfbdce1b",
+    "report_sha256": "7712feb9f70077fb1c36b1310299b2cf077277a7ee3970ce956adf3776f8cd2c",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis"
+  },
+  "path": {
+    "same_offset_candidate_function": "FUN_18013aad0",
+    "argument": "param_1+0x730",
+    "callee": "FUN_18013adb0",
+    "callee_type": "dee::Types::Type destructor",
+    "typed_owner_identity_to_parser_RSI": "NOT_BOUND"
+  },
+  "limits": {
+    "dee_executed": false,
+    "media_or_pcm_read": false,
+    "payload_key_or_license_read": false,
+    "implementation_source_read": false,
+    "line_mode_plus_0xa0_reanalyzed": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Do not use this same-displacement destructor candidate as evidence of numeric RF DRC consumption."
+}

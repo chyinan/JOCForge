@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.rf_drc_snapshot_a4_branch_target_input_boundary.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-BRANCH-TARGET-INPUT-BOUNDARY-V1",
+  "status": {
+    "three_constructor_branches_and_slot18_targets": "BOUND_STATIC",
+    "wrapper_plus_8_to_worker_first_argument": "BOUND_STATIC",
+    "worker_formal_type": "GENERIC_LONG_LONG_64BIT",
+    "snapshot_plus_0xa4_direct_argument_on_this_hop": "NO",
+    "snapshot_plus_0xa4_indirect_inner_state_transfer": "UNBOUND",
+    "runtime_variant": "NOT_CAPTURED",
+    "receiver_class": "NOT_CAPTURED",
+    "rf_effect": "UNBOUND"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/rf_drc_snapshot_a4_branch_target_inputs_wash_v1",
+    "package_id": "rf_drc_snapshot_a4_branch_target_inputs_wash_v1",
+    "manifest_sha256": "6761ae7bd37ff11ce25470c9c61c2d0313c98214d5a19d63a2cd444d4e0d778a",
+    "package_seal_sha256": "6c81aa388e423ef2e2b548433fdfe964c3c3685f65ec03b339d350bfbde88b7f",
+    "normal_checker": "PASS",
+    "python_O_checker": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC"
+  },
+  "static_branches": [
+    {"predicate": "snapshot+0x9C==0 and snapshot+0x28==0", "constructor": "FUN_1801850a0", "slot18_target": "FUN_180186520", "first_worker": "FUN_180186870", "first_worker_arg": "wrapper+0x08"},
+    {"predicate": "snapshot+0x9C==0 and snapshot+0x28!=0", "constructor": "FUN_180185100", "slot18_target": "FUN_180186550", "first_worker": "FUN_180186580", "first_worker_arg": "wrapper+0x08"},
+    {"predicate": "snapshot+0x9C!=0", "constructor": "FUN_180186e40", "slot18_target": "FUN_180189490", "first_worker": "FUN_1801894c0", "first_worker_arg": "wrapper+0x08"}
+  ],
+  "opaque_first_data_helpers": ["FUN_180182850", "FUN_1801431f0"],
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "global_xref_sweep": false,
+    "implementation_contact": false,
+    "source_scripts_or_traces_in_supplement": false
+  },
+  "disposition": "Do not infer that wrapper+0x08 contains the snapshot +0xA4 value; continue only on a typed same-owner chain."
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_BOOL_OR_RESULT_VECTOR",
+  "vectors": [],
+  "note": "Only static structure/result-field lineage is included; no selected DI value or audio data was captured."
+}

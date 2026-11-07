@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-DRC-PROFILE-TYPED-SNAPSHOT-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RF_XML_STRING_SCHEMA_AND_SNAPSHOT_BOUND; NUMERIC_CONSUMER_UNBOUND",
+  "implementation_disposition": "Register the RF profile string schema and typed snapshot only; no numeric DRC/BSI effect claim.",
+  "source_manifest_sha256": "0d5f1416749104fcf9bb1f09d35c10d3055ea2185abf626912321a43db1545b6",
+  "source_package_seal_sha256": "e6bf60fe80691ae3daef8544db1caf05b7f1870b1287449d134ed68a7bc043d3",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4458,
+      "sha256": "0e0a22c783b7b58a90c67315d52c7040083488501db08d4141c2c5fc03259ea1"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1871,
+      "sha256": "04e06113c4c390020b205d59572270f120b232c4a4abc228bf1a2813b5057cac"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 226,
+      "sha256": "c3c3a7a96ee4c825ddf2b59fe6820df341a35a7890e7e33ffaebe3ed5fbe1e8d"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1158,
+      "sha256": "3f92488776e30042a0e21fdb71eaa94da81d1f232cd7faa4141cf0abdde2bafe"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 633,
+      "sha256": "f38156d69cc5f3e1f64b4367360727a8f237f05f539a4e5488db985cfa7c7d25"
+    }
+  ]
+}

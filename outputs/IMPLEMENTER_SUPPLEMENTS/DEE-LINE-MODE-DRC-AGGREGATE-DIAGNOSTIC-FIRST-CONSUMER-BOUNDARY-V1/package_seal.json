@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-MODE-DRC-AGGREGATE-DIAGNOSTIC-FIRST-CONSUMER-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "e66467d53cb3c027b0b744ece131bfa7f6054ac776c68e1fd9c0f9d9f2c6ea74",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

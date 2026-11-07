@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "di-flag-bool-empire-loudness-owner-2c-to-88-boundary-addendum-wash-v1",
+      "manifest_sha256": "b79a9a9cabb53c33e126c0a6b5195185a031685bd2ebd01ec5fc66b970c04036",
+      "package_seal_sha256": "bef27cd37618f210c7183c3561e6413477c900f5e4154ae5dd285067c9930c69",
+      "reviewed_payloads": [
+        {
+          "name": "BOUNDARY.json",
+          "sha256": "b7186a5aa3f730d29c0d0db13f176322b875d8ab237c7c657af8bcdaadaf8d9d"
+        },
+        {
+          "name": "PRODUCER-DEPENDENCY-RECEIPT.json",
+          "sha256": "c6d8f0903ab71da41160c3c0cc7a0352b5680117a7d0d45d153122dbc95f2807"
+        },
+        {
+          "name": "REPORT.md",
+          "sha256": "7e701499294fe24df33c6c8c7d7a4627259dbdde7b052bbbbc53eff6ddc1e761"
+        },
+        {
+          "name": "PARENT-EVIDENCE.json",
+          "sha256": "b5963b36f9ffc53186d19013dd78d1002ac5da58daf336e8b82baad48be615b4"
+        }
+      ],
+      "raw_native_source_or_media_copied": false
+    }
+  ]
+}

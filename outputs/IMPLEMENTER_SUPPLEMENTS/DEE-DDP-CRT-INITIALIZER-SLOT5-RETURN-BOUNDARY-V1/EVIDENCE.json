@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.ddp_crt_initializer_slot5_return_boundary.v1",
+  "component_scope": "one hash-bound component",
+  "slot_index": 5,
+  "non_sentinel": true,
+  "function_body_length_bytes": 65,
+  "local_field_writes": 4,
+  "static_return_value": 0,
+  "crt_gate_rule": "first nonzero initializer return fails attach; zero permits continuation",
+  "runtime_invocation": "NOT_OBSERVED",
+  "other_components_slot5": "NOT_INSPECTED",
+  "attempt12_error1114_specific_initializer": "NOT_IDENTIFIED",
+  "new_dee_run": false,
+  "global_absence_claim": false
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.rf_drc_snapshot_a4_consumer_boundary.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-CONSUMER-BOUNDARY-V1",
+  "status": {
+    "rf_string_to_snapshot_plus_0xa4": "BOUND_STATIC",
+    "snapshot_plus_0xa4_to_first_typed_consumer": "UNBOUND",
+    "snapshot_plus_0xa4_to_snapshot_plus_0xe0": "UNBOUND",
+    "separate_snapshot_plus_0xe0_to_encoder_config_path": "BOUND_STATIC",
+    "runtime_values_and_route": "NOT_CAPTURED",
+    "rf_drc_audio_effect": "UNBOUND"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/rf_drc_snapshot_a4_consumer_boundary_wash_v1",
+    "package_id": "rf_drc_snapshot_a4_consumer_boundary_wash_v1",
+    "manifest_sha256": "b6f83de105efbb41ec476746b424053d96807d6b218cfd2caf68b5223e576967",
+    "package_seal_sha256": "4f3c853e754d9b1fbcf868921a4d81891d0ce94c3529529c655cca70cb17e68c",
+    "sha256sums_sha256": "c7cc659eb4a486ab8018910041e2b18ac7ec56e452ca5ca6e11cf182033f4217",
+    "normal_python_checker": "NO_CHECKER_FILE; WASH_INDEPENDENT_HASH_AUDIT_PASS",
+    "payload_count": 5,
+    "source_artifact_hash_audit": "PASS_ALL_LISTED_SOURCE_FILES",
+    "target_image": "dee_audio_filter_ddp_atmos.dll",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC"
+  },
+  "rf_candidate": {
+    "property": "rf_mode_drc_profile",
+    "string_owner_fields": {
+      "plugin_property_object_offset": "param+0x730",
+      "current_value_getter_offset": "Priv+0x750"
+    },
+    "snapshot_writer": "FUN_1801535b0",
+    "destination": "param_2+0xA4",
+    "value_source": "exact profile-tree lookup result",
+    "first_break": "FUN_1801535b0.param_2+0xA4 -> first typed RF consumer/owner"
+  },
+  "distinct_config_path": {
+    "snapshot_field": "+0xE0",
+    "route": "mode-1 FUN_1801754f0 -> FUN_180178dc0.param_1[2]",
+    "raw_value_kind": "U32 RF Compr enum",
+    "converter": "FUN_1801787e0",
+    "typed_sink": "DDP_COMPR U32 at config+0x24 via FUN_1801aa730",
+    "same_owner_transfer_from_plus_0xa4": "UNBOUND"
+  },
+  "execution_scope": {
+    "rf_only": true,
+    "line_mode_plus_0xa0_revisited": false,
+    "global_xref_sweep": false,
+    "dee_run": false,
+    "pcm_or_ec3_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "disposition": "Keep +0xA4 and +0xE0 as separate fields. Do not infer an RF DRC product mapping or audio effect."
+}

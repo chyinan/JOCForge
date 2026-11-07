@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.dee_di_bool_measurement_result_boundary.v2",
+  "package_id": "DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V2",
+  "status": {
+    "static_exact_key_to_bool_candidate": "BOUND_IF_EXACT_KEY_SUPPLIED",
+    "runtime_dialogue_intelligence_key_selection": "UNBOUND_NOT_CAPTURED",
+    "typed_bool_read_at_priv_plus_0x290": "STATICALLY_BOUND",
+    "bool_to_measurement_setup_plus_0x94": "STATICALLY_BOUND",
+    "reader_pointer_returned_by_first_per_record_consumer": "STATICALLY_BOUND",
+    "reader_vtable_slot_plus_0x10_status_call": "STATICALLY_BOUND",
+    "reader_factory_controls": ["setup+0x9c", "setup+0x140"],
+    "setup_plus_0x94_to_reader_or_status": "UNBOUND",
+    "effect_on_final_priv_plus_0xf6c": "UNBOUND",
+    "runtime_measurement_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "di-flag-bool-measurement-consumer-addendum-wash-v1",
+    "manifest_sha256": "2f5e2b9c2c54f38eefae07dfae60e93f743c336a4f0927ff03822a12abae758b",
+    "package_seal_sha256": "5b62ee37f323fe985f14d51289e8914377f0983cbf3d0eebb8abe700861e7836",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC headless read-only/no-analysis"
+  },
+  "reader_path": {
+    "per_record_consumer": "FUN_1801764e0",
+    "returned_reader_storage": "FUN_1801769a0 local_130",
+    "next_call": "reader vtable slot +0x10 status method",
+    "reader_factory_conditions": ["measurement input +0x9c", "measurement input +0x140"],
+    "bool_measurement_field": "+0x94; no typed edge to returned reader/status established"
+  },
+  "supersedes": {
+    "package_id": "DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V1",
+    "manifest_sha256": "5f13d9022b8d0ff2a6efafcee9ea1967fb39ba19a1548ff5e356ed7d01af5dcf",
+    "package_seal_sha256": "0e9832d96a913defd7bc07eda417fee77ac9a1a21976ab25c2075857e30bddb0",
+    "scope": "adds the first reader result/status edge; retains the prior Bool-to-setup+0x94 path"
+  },
+  "limits": {
+    "dee_or_ui_executed": false,
+    "runtime_key_selected": false,
+    "pcm_media_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Use only as static Bool-to-measurement-input and subsequent reader-status boundary; final use/effect remains unbound."
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "line_mode_drc_snapshot_a0_row_compare_branch_wash_v1",
+  "source_manifest_sha256": "eec68ebb1e1686382ec2429b2db19a254068d22fb84552d3eb19b5c219e3f023",
+  "source_seal_sha256": "17048a4ebe3ac112797db7c3a82c8f14ed3eb3bf41af8f5c6c36a925426e11d9",
+  "source_integrity_artifacts": [
+    {
+      "name": "package_seal.json",
+      "sha256": "17048a4ebe3ac112797db7c3a82c8f14ed3eb3bf41af8f5c6c36a925426e11d9"
+    },
+    {
+      "name": "SHA256SUMS",
+      "sha256": "9b56bfd1a297c02103c1402f43863a8af17468cd1d4bb1fa0f4211a0e5a9d60a"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "line_mode_drc_snapshot_a0_row_converter_first_read_wash_v1",
+      "manifest_sha256": "b711f9cc198eac261a69189c3c972e95c6fcec2a1cc89894facedb69748afcdf"
+    },
+    {
+      "package_id": "line_mode_drc_snapshot_a0_helper_body_first_break_wash_v1",
+      "manifest_sha256": "dac89b72631ffa611946b16be457658990b4c4e7b17a17ff2d41983247d12438"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

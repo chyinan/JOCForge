@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-MEASURE-ONLY-TO-DDP-OWNER-MODE-BOUNDARY-V1",
+  "source_package_manifest_sha256": "665912add98deaa7c276f728ee8301e8a7cbe571f985fb0ab7570bc8a420aa7f",
+  "source_package_seal_sha256": "cd1f4a31423e51283a3fad7cc7ee1ea9486f0a3879430adaa42a08ef33b69f4e",
+  "files": {
+    "REPORT.md": "93b503fec9a2f465f3eaf83865b71d09377f1e1d8ed135a77a9617444680023a",
+    "BOUNDARY.json": "44b70f2e0a0ec429e2245175b7ddfc7794b1a7ded72993b3c467bab199916b48",
+    "SOURCE-LINKS.json": "816165af330bc1ea102654268e1d752a2636e90380809a9a1e165d5783878c9f"
+  }
+}

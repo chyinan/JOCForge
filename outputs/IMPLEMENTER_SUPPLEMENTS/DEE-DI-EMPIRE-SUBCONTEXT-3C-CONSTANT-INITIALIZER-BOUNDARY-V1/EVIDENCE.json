@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.di_empire_subcontext_3c_initializer.v1",
+  "package_id": "DEE-DI-EMPIRE-SUBCONTEXT-3C-CONSTANT-INITIALIZER-BOUNDARY-V1",
+  "source": {
+    "package_id": "di-flag-bool-empire-loudness-subcontext-3c-init-boundary-addendum-wash-v1",
+    "manifest_sha256": "bdf81b71527d1b67933f5df8822ef56bc0d29b255b2c3917b89d19b9a6b86a9a",
+    "package_seal_sha256": "290992132b66c3935e3aa32d6812b3b4784cda94908dd174a18b44697e3823c3"
+  },
+  "same_subcontext_instance": {
+    "plus_0x164": "conditional Bool-derived mode value on selected branch",
+    "plus_0x3c": "Float32 initialized to -120.0 constant after successful subcontext construction",
+    "plus_0x164_to_plus_0x3c_dataflow": "NOT_PRESENT_IN_SELECTED_INITIALIZER"
+  },
+  "result_path": {
+    "getter_reads_plus_0x3c": "BOUND_STATIC",
+    "active_branch_copies_to_result": "BOUND_STATIC",
+    "later_writers": "NOT_INSPECTED",
+    "final_runtime_value": "NOT_CAPTURED"
+  },
+  "status": {
+    "bool_to_float32_result_causality": "UNBOUND",
+    "global_absence_claim": false
+  },
+  "scope": {
+    "ghidra": "12.2 read-only/no-analysis reused receipts",
+    "new_ghidra_query": false,
+    "dee_run": false,
+    "runtime_capture": false,
+    "media_pcm_payload_key_license_read": false
+  }
+}

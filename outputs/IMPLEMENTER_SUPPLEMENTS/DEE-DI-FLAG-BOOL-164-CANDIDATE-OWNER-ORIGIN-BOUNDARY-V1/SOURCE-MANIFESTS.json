@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "di-flag-bool-empire-loudness-subcontext-164-candidate-owner-origin-boundary-addendum-wash-v1",
+    "manifest_checksum_file_sha256": "5d9d090826c2e686f830ee3807555ecf0469bc2a08e11669130cf87ef735d752",
+    "package_seal_sha256": "6c33751c17d636c1a4a1a9208141d83a75be95c2c85ea5d5bbc8ade4017e036a",
+    "payload_inventory_verified_by_source_checker": true
+  },
+  "parent_packages": [
+    {
+      "package": "di_flag_bool_empire_loudness_subcontext_164_candidate_call_owner_boundary_addendum_wash_v1",
+      "path": "outputs/di_flag_bool_empire_loudness_subcontext_164_candidate_call_owner_boundary_addendum_wash_v1",
+      "manifest_sha256": "3fe2b1d14ea672be5865724ff1f46afc70b3adcb8dc4f05312cfc92327fdd1ee",
+      "package_seal_sha256": "6f7aa6c0ceb40e478bd19989aaa778db8e7cceba93bafbce2c47b604a5adffb1",
+      "selected_trace": "CANDIDATE-EXCERPT.txt",
+      "selected_trace_sha256": "4be10d6bbfd9905056b5b94443f22e5b961b4d0a7d28aca27225048717223311"
+    },
+    {
+      "package": "di_flag_bool_empire_loudness_owner_2c_to_88_boundary_addendum_wash_v1",
+      "path": "outputs/di_flag_bool_empire_loudness_owner_2c_to_88_boundary_addendum_wash_v1",
+      "manifest_sha256": "b79a9a9cabb53c33e126c0a6b5195185a031685bd2ebd01ec5fc66b970c04036",
+      "package_seal_sha256": "9f57a1822b5803232dd1346e0198bb3afac29c291d4b8044512096a84aa392d5",
+      "selected_trace": "empire_loudness_result_calculation_trace.txt",
+      "selected_trace_sha256": "07b69ab98b0e21f4f447cde042bb3049daf6c38a8f0582ba623264e066fabf5d"
+    }
+  ],
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "raw_trace_or_script_included": false
+}

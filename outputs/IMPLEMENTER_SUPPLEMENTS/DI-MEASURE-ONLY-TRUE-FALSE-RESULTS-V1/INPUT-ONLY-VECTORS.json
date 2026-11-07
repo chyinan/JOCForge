@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "human-is-cat-di-pair",
+      "input_source_identity": "inherited from prior Wash receipt; not rehashed in this run",
+      "configuration": {"metering_mode": "1770-4", "operation": "measure_only", "speech_threshold": 15},
+      "pair": [
+        {"dialogue_intelligence": false, "reported_gating": "level", "final_integrated_loudness": -18.605364, "speech_percentage": -1},
+        {"dialogue_intelligence": true, "reported_gating": "level", "final_integrated_loudness": -18.605364, "speech_percentage": 0}
+      ],
+      "receipt_status": "COMPLETED"
+    },
+    {
+      "id": "my-jealousy-di-pair",
+      "input_source_identity": "inherited from prior Wash receipt; not rehashed in this run",
+      "configuration": {"metering_mode": "1770-4", "operation": "measure_only", "speech_threshold": 15},
+      "pair": [
+        {"dialogue_intelligence": false, "reported_gating": "level", "final_integrated_loudness": -16.291187, "speech_percentage": -1},
+        {"dialogue_intelligence": true, "reported_gating": "dialogue", "final_integrated_loudness": -24.719242, "speech_percentage": 91.47}
+      ],
+      "receipt_status": "COMPLETED"
+    }
+  ],
+  "warning": "These are reported meter scalar vectors, not PCM, E-AC-3/JOC payload, or audible-output comparisons."
+}

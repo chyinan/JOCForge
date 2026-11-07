@@ -1,0 +1,16 @@
+{
+  "result_receipt_sha256": "67d4d741ba84535c9cb1faeec3c779584a76aaa5fa310c509b082f57e949b2d3",
+  "preflight_sha256": "f007fd7c7fae3cc55b977ad9df942d1785824d6038db72d88751bcd4f754c5b9",
+  "input_binding_receipt_sha256": "ddee5b6eae309e06d64faba41599db51e807ea816067e99707941983b552a69e",
+  "job_sha256": {
+    "baseline": "c27494f073f827a2adf67a7e83d905edbebd9bda2701283e6bdfbfc199d4d469",
+    "music_standard": "8709e03329e31570924b52193ce0511e77aecdfe4fc6f9887237483cd9294047",
+    "music_light": "42953082275b027884b8f06f48eb1a4b26e35959ec229f470d97f7a22d6aa083"
+  },
+  "output_sha256": {
+    "baseline": "b1bfef70620358b4a6ebc039a17b97149791ad8620402b80e355c4de18229640",
+    "music_standard": "cd61c259cab49e1e257e783941e3a43d9f4e470e822db0b2c981186dfac8553f",
+    "music_light": "e80f8fe5bfe24ad30942fa9702b0b73edcee7034d4787f0eeaa02c0eb28f21e5"
+  },
+  "independent_review": "XML and local outputs: BSI sequence and in-memory PCM comparison rerun; JOC render not run"
+}

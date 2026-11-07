@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "rf-f98-candidate-param-owner",
+      "input": {
+        "caller_first_argument": "R14"
+      },
+      "expected_observation": {
+        "candidate_param1_edge": "BOUND_STATIC",
+        "producer_owner_join": "UNBOUND"
+      },
+      "limitations": [
+        "No producer-object identity",
+        "No element read/type",
+        "No RF semantic effect"
+      ]
+    }
+  ]
+}

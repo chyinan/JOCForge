@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DRC-A0-HELPER-FIRST-CONSUMER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "A0_U32_NOT_TYPED_TO_SELECTED_ROW; FIRST_AGGREGATE_DATA_USE_DIAGNOSTIC; CODEC_BSI_UNBOUND",
+  "implementation_disposition": "Do not infer that the line-mode DRC U32 reaches the per-frame DRC record or codec/BSI from the row-helper call or diagnostic aggregate.",
+  "source_package_id": "line_mode_drc_snapshot_a0_helper_first_consumer_wash_v1",
+  "source_manifest_sha256": "3512daf6bbb36f1c83edc61691ed96daab378d4ff0ad058a0b3d105642995489",
+  "source_package_seal_sha256": "e3f2f061ad0b5396bf6ca471714eaaddff8377473b75bc00fbd0cae49c6dc2b",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1717,
+      "sha256": "0e2f648a2a04a411fef236bbac878081bac2a17bcc612b8bae3d2f6123d90c89"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 462,
+      "sha256": "2d79198bdaa55511e6a8f21799c14fe7f36d40c75339e312d5a36b7e6eb8400f"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 489,
+      "sha256": "f81391b7978f911c6eff5eec380569f69613ba7c9e9787574c828b53dc7da5aa"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 686,
+      "sha256": "d4b137dc9d28f1e6ef260e35981bccbb85ef269cb776bd21a41d6ec4d0f73519"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1454,
+      "sha256": "2b88c208f4dfcfa89536670739d1ff1b1effa52882f9e6ce1b4efe06e4c3d971"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-F98-CANDIDATE-R14-ABI-LINEAGE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CANDIDATE_PARAM1_STATIC_ABI_LINEAGE_BOUND; PRODUCER_OWNER_UNBOUND",
+  "implementation_disposition": "Treat the R14-to-candidate-parameter relationship as static ABI inference; do not assert the incoming object is the F98 producer.",
+  "source_package_id": "dialogue_rf_drc_profile_f98_candidate_r14_lineage_addendum",
+  "source_manifest_sha256": "df0cb0c831bb53fcf14bf769719abf5178b8507bf087f499a10e71b459bac3d3",
+  "source_package_seal_sha256": "474d618594ec3e2ea2eb4fbac897d78d828541ca10cb1385f3a6b24f8b8306fe",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1722,
+      "sha256": "71d9e49893c79f701c04191873b7897562686996cf732d81f1f2bab9ee543802"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 502,
+      "sha256": "5cf41222b0780c1a2120f1f46ce13fbcba95c51b31c3cdad65e44157c8d44bcc"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 522,
+      "sha256": "940625d69a659a76185051616221cfc485b5258520ab6d13a95bc992286b7673"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 759,
+      "sha256": "6319b535653bbffadb7438cff3753e14b02c99f9010a30b7dfd40b587608f59e"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1170,
+      "sha256": "5320170370810b9307a515acc82360eff7e8abcec194d7a0b3329a0f9298367d"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "PREPARED_NOT_RUN",
+  "vector": {
+    "property_token": "drc:rf_mode_drc_profile",
+    "candidate_string": "music_light",
+    "candidate_is_declared_option": true,
+    "schema_default": "film_light",
+    "runtime_value": "NOT_OBSERVED",
+    "numeric_selector": "UNBOUND",
+    "bsi_or_audio_effect": "NOT_EVALUATED"
+  },
+  "enum_ordinal_inference": false,
+  "execution": "NOT_RUN"
+}

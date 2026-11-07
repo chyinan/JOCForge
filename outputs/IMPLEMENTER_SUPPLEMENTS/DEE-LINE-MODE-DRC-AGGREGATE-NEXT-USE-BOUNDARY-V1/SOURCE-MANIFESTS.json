@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "line_mode_a0_aggregate_next_use_wash_v1",
+      "manifest_sha256": "ab2cacc20feedfd216608a146115998d41c7341881951aadc06f7ae3f1a8ac36",
+      "checksum_list_sha256": "9f5bb5b11ebe7609df03bf76a5d5c0f4dfcfbe148cef8446f9f7d5de4df2f690",
+      "package_seal_sha256": "2697d7466fda448765e3a919ad1c70ecc33bf7df46150cdae58ee2100d6140a2",
+      "reviewed_payloads": [
+        {"name": "EVIDENCE.json", "sha256": "f25251aacd573e4d1cdf36c09cffedb8ddf558264bcaa11818ff6ab9228cb34a"},
+        {"name": "REPORT.md", "sha256": "57a4fd4480af2f460d7ace8125c6a10941adb16ff75a213ec9a8266dd93a074a"},
+        {"name": "SOURCE-MANIFEST.json", "sha256": "1c55de133bb9364145afa55e7a7fdf51ccee586060ea2b2cf67548c86baa012b"},
+        {"name": "INPUT-ONLY-VECTORS.json", "sha256": "0877c0186c75a4dcd589c63f7412397e5399176ad970bfb79cc49a68631a2404"},
+        {"name": "TRACE-EXCERPTS.txt", "sha256": "1b01ac755dd4ad37a05e3b6a01d22d15be943a691e96c4b9b411f830cd7d9cd7"}
+      ]
+    }
+  ]
+}

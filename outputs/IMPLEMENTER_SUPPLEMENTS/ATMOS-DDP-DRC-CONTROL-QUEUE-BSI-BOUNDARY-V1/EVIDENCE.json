@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.atmos-ddp-drc-control-queue-bsi-boundary.v1",
+  "package_id": "ATMOS-DDP-DRC-CONTROL-QUEUE-BSI-BOUNDARY-V1",
+  "status": "INTERNAL_CONTROL_BIT_LAYOUT_BOUND_STATIC; CONTROL_API_QUEUE_INSERTION_BOUND_STATIC; OUTPUT_BSI_METADATA_SERIALIZER_PATH_IDENTIFIED; QUEUE_PAYLOAD_TO_OUTPUT_BSI_RECORD_UNBOUND; FINAL_AU_BSI_BIT_POSITION_UNBOUND; SELECTED_JOB_PATH_UNOBSERVED; PCM_EFFECT_NOT_DETERMINED",
+  "source_package": {
+    "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256": "21328ad6e9d0e401f16e7982e0dd68a329127c5399c78d6426135dd822e24645",
+    "sha256sums_sha256": "299f2d901fba0d12e2cc595acf231574a3a6929966891a00acac21f12c81173a",
+    "seal_sha256": "f11bd0d475187d21b1d4d5fda7dd6e8815c0dcfb744c311ef6750c0868ad714d",
+    "payload_hash_audit": "PASS_16_OF_16",
+    "source_identity_audit": "PASS_133_OF_133",
+    "checker_status": "NOT_RUN"
+  },
+  "target": {
+    "module": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "static only"
+  },
+  "control": {
+    "internal_buffer_capacity_bytes": 3,
+    "bit_order": "MSB-first within each byte",
+    "start_bit_formula": "p = 2 + (record[0] == 3 ? 4 : 0) + 1 + (record[2] != 0 ? 16 : 0) + 1 + (record[4] == 0 ? 1 + (record[5] != 0 ? 4 : 0) : 4) + 1 + (record[8] != 0 ? 5 : 0)",
+    "fields": {
+      "presence": {"relative_bit": "p", "width": 1},
+      "line_drc_code": {"relative_bits": "p+1..p+3", "width": 3},
+      "rf_drc_code": {"relative_bits": "p+4..p+6", "width": 3}
+    },
+    "absolute_au_bit_position": "UNBOUND"
+  },
+  "queue_edge": {
+    "wrapper": "FUN_1801c27a0",
+    "command_id": 2,
+    "payload_length": 3,
+    "queue_consumer": "FUN_1801f9de0",
+    "effect": "copies payload to selected command-slot storage and marks slot pending"
+  },
+  "output_candidate": {
+    "path": "type-10/11 operation slot +0x28 -> FUN_1801febe0 -> FUN_1801c1c90 -> FUN_1801f9500 -> FUN_1801f9820 -> metadata serializer FUN_1800df550",
+    "writes_output_bit_buffer": true,
+    "typed_join_from_command_2_queue": "UNBOUND",
+    "selected_job_activation": "UNOBSERVED"
+  },
+  "audio_boundary": {
+    "control_path_vs_sample_array_path": "separate in the bounded static trace",
+    "decoded_pcm_drc_effect": "NOT_DETERMINED",
+    "dee_run": "NOT_RUN",
+    "output_au_or_pcm_read": false,
+    "key_or_license_access": false
+  }
+}

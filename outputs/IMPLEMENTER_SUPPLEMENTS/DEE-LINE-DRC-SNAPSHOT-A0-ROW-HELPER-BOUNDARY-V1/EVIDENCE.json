@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.line_drc_snapshot_a0_row_helper_boundary.v1",
+  "package_id": "DEE-LINE-DRC-SNAPSHOT-A0-ROW-HELPER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "line_mode_drc_snapshot_a0_row_helper_first_break_wash_v1",
+    "manifest_sha256": "7fdb3c6b7a177e5fd4ed325246a337a162ba2f51e35f1559073cac32fdbfcfb5",
+    "package_seal_sha256": "45408259fae5efc4e376fd74ac8fb316a8b5775dda109ac18d7ca1ef420f87e0",
+    "source_integrity": "MANIFEST_AND_SHA256SUMS_VERIFIED"
+  },
+  "parent_receipts": [
+    {
+      "package_id": "line_mode_drc_snapshot_a0_consumer_boundary_wash_v1",
+      "manifest_sha256": "681e6740913768b25c03d0df91b8a3771a5104b31e155459bfc1f699e15cc355"
+    },
+    {
+      "package_id": "line_mode_a0_fun182850_row_pack_first_break_wash_v1",
+      "manifest_sha256": "1d719ccf1137fe33fc12446144eda3ed02f5e2caa41e294c077c78b2956c7c19"
+    }
+  ],
+  "same_record_route": {
+    "source_field_offset": "+0xa0",
+    "source_type": "U32",
+    "packer_receives_same_snapshot_base": true,
+    "selected_branch_condition": "snapshot +0x9C == 0",
+    "runtime_branch": "NOT_CAPTURED"
+  },
+  "first_row_helper_call": {
+    "selected_row_pointer_expression": "row_base + row_index * 0x20",
+    "other_arguments": [
+      "output aggregate",
+      "local vector A",
+      "local vector B"
+    ],
+    "explicit_snapshot_plus_0xa0_value_or_address": false,
+    "selected_row_owner_join_to_snapshot_plus_0xa0": "UNBOUND"
+  },
+  "status": {
+    "snapshot_pointer_to_per_frame_packer": "BOUND_STATIC",
+    "snapshot_plus_0xa0_value_to_row_helper": "UNBOUND",
+    "indirect_helper_transfer": "UNBOUND",
+    "codec_or_bsi_input": "UNBOUND",
+    "audio_effect": "NOT_DETERMINED_STATICALLY"
+  },
+  "scope": {
+    "sibling_plus_0xa4_followed": false,
+    "nested_converter_followed": false,
+    "global_xrefs": false,
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": {
+    "do_not_claim_drc_u32_reaches_codec": true,
+    "do_not_infer_row_owner_from_pointer_expression": true,
+    "algorithm_change_authorized": false
+  }
+}

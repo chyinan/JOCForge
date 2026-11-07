@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F06ND-TEXT-EVENT-PRODUCER-BOUNDARY-V1",
+  "status": "EVIDENCE_ONLY",
+  "implementation_allowed": false,
+  "source_package_manifest_sha256": "9b89074318558ff692631e0b39f8d8699877c714d08fdadbf68b24e1e66342d5",
+  "source_package_seal_sha256": "0ae3cc3d6155422e3bcc799a61ac07b4de461c4f9f3008de621f62e899d43029",
+  "contains_native_or_research_source_code": false,
+  "contains_package_checker_code": true,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {"path":"CHECK.py","bytes":2444,"sha256":"47b4438205091661fc910c0515ebf83fbd83ce7a4f2f76527187d299627feab1"},
+    {"path":"EVIDENCE.json","bytes":1894,"sha256":"2a966127a58c5618a66b19693336dbe1e519df06bc85445f907b4fc32e0d516b"},
+    {"path":"INPUT-ONLY-VECTORS.json","bytes":739,"sha256":"a343a1bf6ab3b02e18dde4fad8e7b5020a4c35bb7fe03e0b0acfd582df288b3a"},
+    {"path":"SOURCE-MANIFESTS.json","bytes":1602,"sha256":"fe60e43601ab111c71f3fdad9036add8209833e5e74a7d073a4761c351f3a48b"},
+    {"path":"WASH-REVIEW.md","bytes":789,"sha256":"705d03adebe9c3ab3c473a666e5e7281824ab6db69366d523f9cff6112da8f69"}
+  ]
+}

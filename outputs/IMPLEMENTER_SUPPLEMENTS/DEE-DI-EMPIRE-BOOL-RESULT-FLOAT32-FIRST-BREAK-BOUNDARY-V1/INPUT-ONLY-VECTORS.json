@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "empire-loudness-bool-to-result",
+      "kind": "static-owner-lineage-summary",
+      "input": {
+        "setup_bool_offset": "+0x94",
+        "owner_copy_offset": "+0x2c"
+      },
+      "observed": {
+        "engine_subcontext_flag": "+0x164",
+        "result_field": "+0x88 Float32"
+      },
+      "status": "BOOL_TO_ENGINE_CONDITIONAL_BOUND; SUBCONTEXT_TO_RESULT_UNBOUND"
+    }
+  ]
+}

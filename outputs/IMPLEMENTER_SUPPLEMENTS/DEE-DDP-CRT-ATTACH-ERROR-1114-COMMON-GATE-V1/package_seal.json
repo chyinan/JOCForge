@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DDP-CRT-ATTACH-ERROR-1114-COMMON-GATE-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "99ff92bfe9e7ea9bc7f77e472cc30f521f6b2a465e27400233f760d34c305e5f",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

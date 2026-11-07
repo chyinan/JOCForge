@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "drc-row-converter-first-read",
+      "input": {
+        "selected_row_pointer": "opaque pointer"
+      },
+      "expected_observation": {
+        "first_pointer_read": "QWORD at row +0x10",
+        "semantic_owner": "UNBOUND"
+      },
+      "limitations": [
+        "No mapping to snapshot +0xA0",
+        "No codec/BSI effect",
+        "No later consumer inspected"
+      ]
+    }
+  ]
+}

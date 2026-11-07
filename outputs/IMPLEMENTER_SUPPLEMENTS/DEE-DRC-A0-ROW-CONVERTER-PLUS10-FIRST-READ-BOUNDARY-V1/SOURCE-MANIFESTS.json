@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "line_mode_drc_snapshot_a0_row_converter_first_read_wash_v1",
+  "manifest_sha256": "b711f9cc198eac261a69189c3c972e95c6fcec2a1cc89894facedb69748afcdf",
+  "package_seal_sha256": "60d21ac9a698bef83b91eb1ee731aeaf24b3ee519f1b54b832c9834df669324e",
+  "source_inventory_and_parent_hashes": "INDEPENDENTLY_RECOMPUTED_PASS",
+  "raw_trace_or_native_source_copied": false
+}

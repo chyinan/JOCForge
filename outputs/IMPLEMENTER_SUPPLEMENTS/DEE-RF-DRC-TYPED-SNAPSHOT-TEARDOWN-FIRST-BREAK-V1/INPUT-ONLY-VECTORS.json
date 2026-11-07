@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_VECTOR",
+  "vectors": [],
+  "note": "Static owner/teardown boundary only; no runtime XML value or audio data is included."
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-F98-CANDIDATE-CALLER-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CANDIDATE_CALL_EDGE_BOUND; PRODUCER_OWNER_JOIN_UNBOUND",
+  "implementation_disposition": "Do not equate the candidate's F98 field access with the producer vector without an owner join.",
+  "source_package_id": "dialogue_rf_drc_profile_f98_candidate_caller_addendum",
+  "source_manifest_sha256": "4e8c7a289319ae3658be00bc8c1a884404eb053d104f4981211da7c2fef4aa61",
+  "source_package_seal_sha256": "fafe32d70b94bac772c22fb5979e77c00573fec9ff6f594c7e045821537c60d0",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1656,
+      "sha256": "63a5ccd9107c0e94f932dbe99a0cc219de49319d138cd288eae93098cca8f50b"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1092,
+      "sha256": "69e1319b5ea7db6755ece25cf0b37041831a7a3246103c676d268d8145cbb053"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 475,
+      "sha256": "0fb8b80a46b5932c5de46b8968b754f93dee1cdc4033adc3b07ec41348297e6f"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 633,
+      "sha256": "933a81025352b4d6bde692824442e5534466bbfa53d4aa5235c3fbdc2b71d4e6"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 419,
+      "sha256": "fa8d80421b8e8b58389dbf7a012980018991c38757e5c6762e46ba595cc24778"
+    }
+  ]
+}

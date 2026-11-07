@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-A0-NESTED-ROW-STRING-BOUNDARY-V1",
+  "manifest_sha256": "7a73c252249a4943f7823b538dd9d6433fc17d2dc482fee34a512d3db7b01806",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "GENERIC_ROW_STRING_LAYOUT_AND_COPY_BOUND; SNAPSHOT_A0_OWNER_JOIN_UNBOUND; CODEC_BSI_OWNER_UNBOUND; NEXT_COPY_HELPER_UNINSPECTED"
+}

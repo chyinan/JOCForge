@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "rf-f98-r14-static-lineage",
+      "input": {
+        "outer_function_entry_rcx": "incoming pointer"
+      },
+      "expected_observation": {
+        "candidate_param1_source": "conditional static ABI path",
+        "producer_owner": "UNBOUND"
+      },
+      "limitations": [
+        "Calls occur between R14 definition/use",
+        "No dynamic register continuity",
+        "No producer-owner join"
+      ]
+    }
+  ]
+}

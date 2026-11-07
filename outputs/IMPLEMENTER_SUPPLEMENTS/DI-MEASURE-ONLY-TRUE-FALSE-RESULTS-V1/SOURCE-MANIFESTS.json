@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "receipt": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/dee-di-dialogue-intelligence-pair-wash-receipt/receipt.json",
+    "sha256": "5fde217056781608cf43dff97fc4d10baf95e815af98a1cef70bc863694f168d",
+    "sha256_sidecar": "4d2225d6aaa51fa53462e9200323366c947214320d0ac5ac07b81b13809669cf"
+  },
+  "input_identity": {
+    "prior_receipt_path": "C:/Users/chyinan/Documents/Codex/2026-11-03/dee-di-false-threshold-wash-receipt/receipt.json",
+    "prior_receipt_sha256": "2a0c63814d6d0783f5736bcfd8232ff1038168ba9cf3fea2461512b831a7ec6e",
+    "human_is_cat_source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d0a825f1d1",
+    "my_jealousy_source_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "source_hashes_recomputed_this_run": false
+  },
+  "scope": "Only the sanitized measurement result and its stated limitations are for implementation review; no raw logs, temporary outputs, or media are included."
+}

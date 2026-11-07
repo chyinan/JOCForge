@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DRC-A0-ROW-PLUS10-FALLTHROUGH-ZERO-SUBTRACT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FALLTHROUGH_FIRST_USE_SUB_RAX_R8_WITH_R8_ZERO; ROW_TYPE_AND_A0_JOIN_UNBOUND",
+  "implementation_disposition": "The selected fallthrough's first use subtracts the bound zero argument; no field meaning or DRC effect is established.",
+  "source_package_id": "line_mode_drc_snapshot_a0_row_compare_fallthrough_wash_v1",
+  "source_manifest_sha256": "bf313d6b97ea2e8d7cc2e4cd9f24aabf111830f93ca2b4a38ea4848c314e90a8",
+  "source_package_seal_sha256": "fd78895a479b75ff1af563327ca8cacc72be48824039b885bbe11582f8d1555f",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1733,
+      "sha256": "523a2a5c7e8fcde8de5f337c89ad07549d20835e9348ead2ce8b7ca69f1670e2"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 354,
+      "sha256": "21a63a8b5a54b8f26a1cb08c9b8fc92118278861b2eb80eb3a180abd263bdc06"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 445,
+      "sha256": "b2c4fb758f42aebf11378ae20950eebbc4e386509583d62c436c55cbbceda7be"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 584,
+      "sha256": "69cf11f5c6df212199d15b01e69112399a98544a8714267098132b74d1b64ca0"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 878,
+      "sha256": "bfb4fa3fcb31df1848ce2b41205c651b65d28383aa9841cdbb7da49beee11c52"
+    }
+  ]
+}

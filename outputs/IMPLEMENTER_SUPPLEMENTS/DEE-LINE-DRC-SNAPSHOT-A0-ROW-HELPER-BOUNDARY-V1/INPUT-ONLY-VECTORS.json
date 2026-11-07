@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "line-drc-a0-row-helper-first-break",
+      "kind": "static-argument-lineage-summary",
+      "input": {
+        "snapshot_field": "+0xa0",
+        "type": "U32"
+      },
+      "observed": {
+        "row_helper_receives_snapshot_field": false,
+        "selected_row_owner_join": "UNBOUND"
+      },
+      "status": "POINTER_ROUTE_BOUND; VALUE_TO_ROW_HELPER_UNBOUND"
+    }
+  ]
+}

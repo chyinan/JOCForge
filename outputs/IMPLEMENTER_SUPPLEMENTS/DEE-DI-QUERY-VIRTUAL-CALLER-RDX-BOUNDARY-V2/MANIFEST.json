@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-QUERY-VIRTUAL-CALLER-RDX-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "THUNK_RECEIVER_TO_PRIV_EC0_STATIC_BOUND; VIRTUAL_CALLER_RDX_OWNER_UNBOUND; DIALOGUE_QUERY_SELECTION_UNBOUND",
+  "implementation_ready": false,
+  "source_manifest_sha256": "8a9157bbcc50468a853cff8582c7844329fe1b876140dea98e6abe1ce08d4063",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 1997,
+      "sha256": "107e2f211662a229fdace4155c33fce1f8774516bbb65ff2687d46a776c017fa"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2582,
+      "sha256": "cdafa8a9dc87e8e8f61f9c4c335b914a499fc09733e494f0a71a811f387bc3a0"
+    },
+    "REPORT.md": {
+      "bytes": 1375,
+      "sha256": "38ed3c0c55073776a3009aee49b0d2ee4fb9beff670db42b1f47d8291f64a8b8"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1320,
+      "sha256": "fd5a85ea8435381a1c8b9a927e353467e987deb278f68c8407945c1fc30a8fd8"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-DRC-MODE2-CODEC-OUTPUT-CONSUMER-BOUNDARY-V1",
+  "manifest_sha256": "e1905ac351fbc565a55dc7e3a5987cca14dbb6f51f445b0abbb71fdb8835c5af",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "05102c90eaacce430cd80318be1c751d286a41598bbc68ae94178d0b19fed873",
+  "source_package_seal_sha256": "a53a705b5b0d0020e19a6dcb157b61b8a04f5ec5abe7ce37830349870ae20e66",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "MODE2_CODEC_TO_OUTPUT_DESCRIPTOR_BOUND; LINE_A0_TRANSFER_AND_EFFECT_UNBOUND"
+}

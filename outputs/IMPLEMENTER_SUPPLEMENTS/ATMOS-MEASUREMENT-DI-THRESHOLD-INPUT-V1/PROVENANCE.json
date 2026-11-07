@@ -1,0 +1,7 @@
+{
+  "source_manifest_sha256": "63aadd23ea30671f0bbf393a786f7add9c623a8dfaf9183e0fd4c2234449be4c",
+  "source_seal_sha256": "4b91e68f2c9ac425955ab3537017fe571d0269d7499b6a12a322bd73a10911aa",
+  "trace_sha256": "ee86c4a1f0ab5b8bd671ba65b4bca6fb4bd02c5400f579c75dd1923828ed5205",
+  "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "scope": "STATIC_INPUT_AND_STATE_COPY; CONTROLLED_AB_NOT_RUN"
+}

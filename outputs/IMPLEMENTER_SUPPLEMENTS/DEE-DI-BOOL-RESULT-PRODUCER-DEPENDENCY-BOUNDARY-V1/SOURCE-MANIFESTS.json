@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "di-flag-bool-measurement-result-producer-boundary-addendum-wash-v1",
+      "manifest_sha256": "c5fc1d10e1a2a3e5d7b2755727bea7e25f2a0be2fb8b0bd918d1ca337e5c4d76",
+      "package_seal_sha256": "3d03ce36ed7945f710603c17ea20af304bd01641e1d3e4a25e0649951488c613",
+      "reviewed_payloads": [
+        {"name": "REPORT.md", "sha256": "2d20645f1bef35db7fd343d2e3c6c6bdb7a5c7962dde6836bffb198c21dcd952"},
+        {"name": "BOUNDARY.json", "sha256": "112c2aede97d6a7a1c831d05d20dc2c5a312f3445eb0d8a8220f1fd75a61dde6"},
+        {"name": "PRODUCER-DEPENDENCY-RECEIPT.json", "sha256": "23406022c343f6ae4edf3cf0c52714549d460db3dbf1fa8b97a1cbc6dedb0939"},
+        {"name": "SOURCE-IDENTITY.json", "sha256": "10568e37f6b44dd35d3a1552acfe57a72f01fb98551a9caa22d4477fe4095655"}
+      ],
+      "raw_Ghidra_traces_or_source_code_copied": false
+    }
+  ]
+}

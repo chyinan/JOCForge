@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.di_config_plus14_initializer_boundary.v1",
+  "package_id": "DEE-DI-CONFIG-PLUS14-CONSTANT-INITIALIZER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "di-flag-bool-meter-config-plus14-initializer-boundary-addendum-wash-v1",
+    "manifest_sha256": "b81be512aee5d5cc296a36daf6eb639554d627c4b3c5cf479a17db22a618573d",
+    "package_seal_sha256": "9f237b610e9bf32ff5bcd97c7b409236264a37174272b7ee4cee0705f01c278d",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2, existing project, read-only/no-analysis",
+    "new_ghidra_run": "NOT_RUN",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_or_encoded_payload_read": false,
+    "key_or_license_contents_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  },
+  "normalized_meter_configuration": {
+    "producer_role": "meter configuration normalizer",
+    "field_byte_offset": 20,
+    "field_byte_offset_hex": "0x14",
+    "first_write": {
+      "source": "immediate constant",
+      "value": 1,
+      "order": "before setup Bool input is read",
+      "status": "BOUND_STATIC"
+    },
+    "later_write": {
+      "source": "immediate constant",
+      "value": 1,
+      "order": "after setup Bool input is read",
+      "status": "BOUND_STATIC"
+    },
+    "setup_bool": {
+      "source_offset_hex": "0x94",
+      "copied_input_offset_hex": "0x04",
+      "affected_configuration_byte_offset_hex": "0x00"
+    },
+    "bool_to_field_plus_0x14_relation": "NOT_SAME_SOURCE_IN_INSPECTED_FUNCTION",
+    "downstream_consumer": "reads configuration byte +0x14 and copies its nonzero state into meter state",
+    "runtime_branch_or_audio_effect": "UNBOUND_NOT_CAPTURED"
+  },
+  "status": {
+    "config_plus_0x14_constant_initializer": "BOUND_STATIC",
+    "setup_bool_plus_0x94_to_config_plus_0x14": "UNBOUND",
+    "bool_measurement_or_audio_effect": "UNBOUND_NOT_RUN"
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "record_constant_field_separately_from_setup_bool": true,
+    "do_not_infer_bool_effect_from_equal_or_adjacent_fields": true
+  }
+}

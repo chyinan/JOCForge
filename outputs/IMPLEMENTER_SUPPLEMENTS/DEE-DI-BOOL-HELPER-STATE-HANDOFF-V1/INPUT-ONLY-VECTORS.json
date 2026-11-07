@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-di-helper-state-vectors.v1",
+  "status": "REUSED_BOUNDED_STATIC_EVIDENCE_NO_NEW_RUNTIME",
+  "static_edges": [
+    "FUN_1801aecf0 return -> outer subcontext +0x18",
+    "outer subcontext +0x18 -> FUN_1801af030 RCX -> FUN_1801aea50 delegate"
+  ],
+  "open_edges": [
+    "outer mode Bool +0x164 -> helper-return object/delegated state",
+    "helper-return/delegate state -> per-channel status context/gate word",
+    "status context -> actual DI algorithm/output effect"
+  ],
+  "runtime_status": "NOT_RUN",
+  "pcm_persisted": false,
+  "payload_persisted": false,
+  "key_or_license_accessed": false
+}

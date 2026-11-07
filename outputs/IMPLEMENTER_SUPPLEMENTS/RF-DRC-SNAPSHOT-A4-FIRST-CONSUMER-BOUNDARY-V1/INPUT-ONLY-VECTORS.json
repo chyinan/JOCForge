@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.rf_snapshot_a4_first_consumer_input_vectors.v1",
+  "status": "STATIC_RECEIPTS_ONLY",
+  "runtime_rf_string": "NOT_CAPTURED",
+  "snapshot_plus_0xa4_value": "NOT_CAPTURED",
+  "selected_mode_1_branch": "NOT_CAPTURED",
+  "typed_per_frame_receiver": "UNBOUND",
+  "pcm_or_encoded_payload_included": false,
+  "dee_run": false
+}

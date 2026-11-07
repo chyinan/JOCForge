@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.di_bool_measure_route_selector_boundary.v1",
+  "package_id": "DEE-DI-BOOL-MEASURE-ROUTE-SELECTOR-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "di-flag-bool-measurement-route-selector-addendum-wash-v1",
+    "manifest_sha256": "da170d890910d3b6f90aa338da3054fc0980f8b26cd5d216cd8f41550340df10",
+    "package_seal_sha256": "8ee657cfab8bab0399cd88bc11cc5f22f68fa8399c2771264c33d70e33495855",
+    "checkers_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "ghidra_version": "12.2",
+    "static_read_only": true,
+    "analysis_rerun": false,
+    "dee_run": "NOT_RUN",
+    "runtime_capture": "NOT_RUN",
+    "implementation_source_access": false,
+    "media_pcm_payload_key_license_read": false
+  },
+  "typed_fields": {
+    "route_mode_source": "FilterDDPJocEnc+0x8",
+    "route_mode_owner_field": "Priv+0xf34",
+    "dialogue_intelligence_bool": "Priv+0x2e0",
+    "measurement_setup_bool": "setup+0x94",
+    "reader_variant_fields_in_prior_receipt": ["setup+0x9c", "setup+0x140"]
+  },
+  "observed_route": {
+    "mode_zero": "Priv::measure",
+    "mode_one": "Priv::encode",
+    "route_function_reads_bool": false,
+    "route_function_branches_on_bool": false,
+    "bool_to_reader_variant_branch": "NOT_BOUND_IN_THIS_EDGE"
+  },
+  "status": {
+    "route_mode_to_measure_encode_dispatch": "BOUND_STATICALLY_FOR_SCOPED_OWNER_CHAIN",
+    "bool_is_measurement_input": "BOUND_STATICALLY",
+    "bool_controls_measure_encode_route": "NOT_PRESENT_IN_SCOPED_EDGE",
+    "bool_to_final_measurement_or_audio_effect": "UNBOUND",
+    "global_absence_claim": false
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "keep_bool_separate_from_route_mode": true,
+    "retain_downstream_bool_effect_as_unbound": true
+  }
+}

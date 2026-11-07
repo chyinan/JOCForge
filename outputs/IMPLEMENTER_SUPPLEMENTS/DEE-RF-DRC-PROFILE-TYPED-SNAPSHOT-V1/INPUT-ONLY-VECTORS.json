@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "STATIC_XML_SCHEMA_ONLY_NO_RUNTIME_VALUE",
+  "vectors": [],
+  "note": "Allowed strings/default are static schema facts; no selected runtime XML value is included."
+}

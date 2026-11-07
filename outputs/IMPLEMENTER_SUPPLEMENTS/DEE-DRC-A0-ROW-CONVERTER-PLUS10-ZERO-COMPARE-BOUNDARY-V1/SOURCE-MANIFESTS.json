@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "line_mode_drc_snapshot_a0_row_member_next_use_wash_v1",
+  "source_manifest_sha256": "6bd832b31bcb26d296bbc749adbf7221a0974c764f464519f01ad5287030712f",
+  "source_seal_sha256": "0e927b5d780df769488ee59130a060816955f6d84d83374c1237f709cdca0bdd",
+  "source_integrity_artifacts": [
+    {
+      "name": "package_seal.json",
+      "sha256": "0e927b5d780df769488ee59130a060816955f6d84d83374c1237f709cdca0bdd"
+    },
+    {
+      "name": "SHA256SUMS",
+      "sha256": "3b5e7bc9b627435b9e128e175190055b7f03ef477fe733b0fd7ce699955e1d72"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "line_mode_drc_snapshot_a0_row_converter_first_read_wash_v1",
+      "manifest_sha256": "b711f9cc198eac261a69189c3c972e95c6fcec2a1cc89894facedb69748afcdf"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

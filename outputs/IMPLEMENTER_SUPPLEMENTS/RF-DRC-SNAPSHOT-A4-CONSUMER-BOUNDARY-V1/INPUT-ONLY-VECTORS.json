@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.rf_drc_snapshot_a4_input_vectors.v1",
+  "status": "STATIC_RECEIPTS_ONLY",
+  "candidate": {
+    "property": "rf_mode_drc_profile",
+    "runtime_string_value": "NOT_CAPTURED",
+    "snapshot_plus_0xa4_value": "NOT_CAPTURED",
+    "mode_1_selection": "NOT_CAPTURED",
+    "encoder_config_value": "NOT_CAPTURED"
+  },
+  "field_separation": {
+    "plus_0xa4": "RF StringType lookup result to raw U32 snapshot write",
+    "plus_0xe0": "Separate mode-1 RF encoder-config path",
+    "same_owner_copy_or_alias": "UNBOUND"
+  },
+  "no_audio_or_payload_vector_included": true,
+  "dee_run": false
+}

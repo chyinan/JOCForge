@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.di-measure-only-paired-results.v1",
+  "package_id": "DI-MEASURE-ONLY-TRUE-FALSE-RESULTS-V1",
+  "status": "TWO_ADM_MEASURE_ONLY_DI_EFFECT_OBSERVED_IN_RECEIPT; PCM_AND_EAC3_JOC_EFFECT_UNBOUND",
+  "source_receipt": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/dee-di-dialogue-intelligence-pair-wash-receipt/receipt.json",
+    "sha256": "5fde217056781608cf43dff97fc4d10baf95e815af98a1cef70bc863694f168d",
+    "sidecar_sha256": "4d2225d6aaa51fa53462e9200323366c947214320d0ac5ac07b81b13809669cf",
+    "sidecar_match": true,
+    "source_hashes_recomputed_in_runs": false,
+    "upstream_source_receipt_sha256": "2a0c63814d6d0783f5736bcfd8232ff1038168ba9cf3fea2461512b831a7ec6e"
+  },
+  "design": {
+    "mode": "1770-4 measure_only",
+    "speech_threshold": 15,
+    "controlled_field": "dialogue_intelligence",
+    "pair_xml_normalized_equal_except_controlled_field": true,
+    "run_count": 4,
+    "samples": ["human_is_cat", "my_jealousy"]
+  },
+  "reported_observations": {
+    "human_is_cat": {
+      "di_false": {"gating": "level", "final_integrated_loudness": -18.605364, "speech_percentage": -1, "dialogue_loudness": -120, "true_peak": -5.47},
+      "di_true": {"gating": "level", "final_integrated_loudness": -18.605364, "speech_percentage": 0, "dialogue_loudness": -120, "true_peak": -5.47}
+    },
+    "my_jealousy": {
+      "di_false": {"gating": "level", "final_integrated_loudness": -16.291187, "speech_percentage": -1, "dialogue_loudness": -120, "true_peak": -2.01},
+      "di_true": {"gating": "dialogue", "final_integrated_loudness": -24.719242, "speech_percentage": 91.47, "dialogue_loudness": -24.72, "true_peak": -2.01}
+    }
+  },
+  "not_established": [
+    "decoded PCM difference",
+    "encoded E-AC-3/JOC BSI or payload difference",
+    "audible output difference",
+    "classifier formula or feature thresholds",
+    "downstream DRC/encoder consumer of measurement result",
+    "numeric process exit code"
+  ],
+  "cleanup_reported": {
+    "temporary_output_files_remaining": 0,
+    "raw_log_files_remaining": 0,
+    "temp_files_remaining": 0,
+    "ascii_input_copy_removed": true,
+    "license_argument_or_path_in_receipt": false,
+    "license_content_read_copied_or_hashed": false,
+    "pcm_output_configured": false,
+    "ffmpeg_used": false
+  }
+}

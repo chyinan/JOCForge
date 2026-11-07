@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-DRC-STRING-SNAPSHOT-FIELD-LIST-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RF_STRING_POINTER_LIST_COPY_BOUND; VALUE_CONSUMER_UNBOUND",
+  "implementation_disposition": "Bind the owner pointer to an opaque pointer-list copy only; no numeric RF DRC effect claim.",
+  "source_manifest_sha256": "fc97b3e39b6649765b94529783d4631b8155a3981ba737374faa0e45cfb07672",
+  "source_package_seal_sha256": "ea3c76b5c26a995082d9356276d2c5f4943e7ded6c572cefb5560497c9af94aa",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4463,
+      "sha256": "14972d3704dd99535c1ad94c4359cc6f688efb73f5933e0ab88cf5f677d1e7b0"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1835,
+      "sha256": "e5687808f8edee5c5f9e816c01f7dcfc73d2fc1130e991bf05804eb5f04652c2"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 217,
+      "sha256": "1f775e22bdaeb5de20485bc26b458cc84e8ea3883651880770632c544d5c743d"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1279,
+      "sha256": "4392866901414fdfa5d931b355f44c0d4e17f2c12602a0dc44d31ef0345001e8"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1092,
+      "sha256": "2351687fedffadcebbb4c13a37378c14ed9256bfda1b7295c5057576405fd9d7"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "rf_drc_snapshot_a4_first_consumer_wash_v1",
+  "manifest_sha256": "471360aa4221542f6ba7d47e22687e1b37cf171ae6283f842d9615212b583e10",
+  "sha256sums_sha256": "b3258e09db026eeca514e79a85ee0aa39a7ec7ff855d9ba93f8c11e29c91f124",
+  "payload_count": 5,
+  "status": "SELECTED_SNAPSHOT_OWNER_BOUND_STATIC; FIRST_CONSUMER_PLUS_0XA4_NOT_OBSERVED; A4_TYPED_RECEIVER_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

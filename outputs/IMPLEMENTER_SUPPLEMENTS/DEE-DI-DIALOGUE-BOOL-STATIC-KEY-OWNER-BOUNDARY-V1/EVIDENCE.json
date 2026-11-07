@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.dee_di_dialogue_bool_static_key_owner_boundary.v1",
+  "package_id": "DEE-DI-DIALOGUE-BOOL-STATIC-KEY-OWNER-BOUNDARY-V1",
+  "status": "PRIV_PARAMETERS_CONTAINER_GETTER_STATIC_BOUND; DIALOGUE_KEY_TO_BOOL_CANDIDATE_STATIC_BOUND; RUNTIME_SELECTION_AND_AUDIO_EFFECT_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "di-flag-priv-pointer-map-getter-addendum-wash-v1",
+    "manifest_sha256": "f2192a5956fab3a03be35d944ac1b28c767b9bf59f41e29674a911193d01d326",
+    "package_seal_file_sha256": "86edc665ba5725e3848b67e503489ce0c8fcb8d0a225cf94360d3cd64a447c35",
+    "payload_file_count": 51,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "parameters_container": {
+    "owner": "dee::proc::Priv",
+    "field": "+0xec0",
+    "type": "dee::ParametersContainer",
+    "getter_slot": "+0x38",
+    "candidate_vector": "[this+0x28, this+0x30)",
+    "candidate_name_accessor_slot": "+0x18",
+    "name_record_size_bytes": 32,
+    "match_rule": "memcmp over shorter length plus equal-length check",
+    "case_folding_or_normalization": "NONE_OBSERVED",
+    "zero_match": "not-found error",
+    "multiple_matches": "ambiguous-property error",
+    "unique_match": "returns candidate object pointer"
+  },
+  "dialogue_intelligence_candidate": {
+    "exact_key": "loudness:measure_only:dialogue_intelligence",
+    "constructor": "FUN_180136220",
+    "candidate_pointer": "Priv+0x290",
+    "candidate_array_membership": "BOUND_STATIC",
+    "registered_type": "dee::bool",
+    "exact_key_occurrences_in_constructor": 1,
+    "bool_name_vector_accessor_slot": "+0x18",
+    "static_exact_key_to_bool_result": "BOUND"
+  },
+  "runtime_and_effect": {
+    "dispatcher_runtime_key": "NOT_CAPTURED",
+    "runtime_candidate_pointer": "NOT_CAPTURED",
+    "runtime_owner_generation": "UNBOUND",
+    "measurement_or_audio_consumer": "NOT_IDENTIFIED",
+    "audio_or_joc_effect": "UNBOUND",
+    "dee_execution": "NOT_RUN",
+    "ui_or_runtime_capture": "NOT_RUN"
+  },
+  "scope": {
+    "audio_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_ghidra_material_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "wash.line_mode_dynrng_first_typed_break.v1",
+  "package_id": "LINE-MODE-DYNRNG-FIRST-TYPED-BREAK-WASH-V1",
+  "delivery": "WASH_ONLY",
+  "status": "LINE_PROFILE_TO_PLUGIN_TREE_U32_CONDITIONAL; FIRST_TYPED_BREAK_AT_PERFRAME_ROW_HELPER; CORE_CURVE_SELECTOR_JOIN_UNBOUND; NO_MODE_TO_DYNRNG_RULE",
+  "source_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_tool_for_line_path": "Ghidra 12.2 PUBLIC",
+    "static_mode": "read-only/no-analysis"
+  },
+  "line_profile_path": {
+    "property": "drc:line_mode_drc_profile",
+    "xml_representation": "validated StringType; exact text remains in descriptor storage",
+    "first_string_consumer": "FUN_1801535b0 profile-tree lookup",
+    "successful_write": "matched node U32 -> snapshot+0xA0",
+    "conditional_static_values": {
+      "music_standard": {"profile_tree_u32": 3, "condition": "token reaches selected plugin and inspected mode-1 path"},
+      "music_light": {"profile_tree_u32": 2, "condition": "token reaches selected plugin and inspected mode-1 path"}
+    },
+    "profile_to_ddp_compr_values_are_curve_selectors": false
+  },
+  "first_typed_break": {
+    "same_snapshot_base_reaches": "FUN_1801764e0 per-frame packer",
+    "snapshot_plus_0xA0_direct_reads_or_copies_in_bounded_validator_and_packer": 0,
+    "selected_zero_branch": {
+      "first_row_helper": "FUN_180182850",
+      "row_pointer_expression": "param_4*0x20 + *param_3",
+      "explicit_plus_0xA0_value_or_address_argument": false,
+      "row_owner_join_to_plus_0xA0": "UNBOUND",
+      "nested_callee": "FUN_1801431f0",
+      "nested_callee_type": "generic string-like conversion; codec/BSI record not identified"
+    },
+    "codec_or_bsi_transfer": "NOT_REACHED_IN_THIS_BOUNDED_SLICE",
+    "runtime_branch_and_record_generation": "NOT_CAPTURED"
+  },
+  "separate_native_core_curve_and_dynrng_evidence": {
+    "profile_inputs": {
+      "custom_profile_enabled": "I32",
+      "preset_selector": "U8",
+      "custom_profile_record": "optional four U8 selectors",
+      "builtin_selector_rows_when_custom_disabled": {"selectors_1_to_5": "rows_0_to_4", "selector_0": "no built-in row"}
+    },
+    "producer": "selected curve pointer + per-block F32 control state -> U16 candidate code; U16 reference code -> U16 per-block mode-0 code row",
+    "mode0_presence_when_param2_zero": {"block0": "code[0] != 0", "later_blocks": "code[i] != code[i-1]"},
+    "xml_line_string_to_preset_selector": "UNBOUND",
+    "numeric_mode_0_or_1_to_line_or_rf": "UNBOUND",
+    "music_A_B_run_selector_float_and_reference_inputs": "UNBOUND",
+    "plugin_snapshot_U32_to_core_selector_U8": "UNBOUND"
+  },
+  "observations_reused": {
+    "new_A_B_runs": 0,
+    "music_standard_dynrng_vs_film_light": "DIFFERENT_IN_BOTH_SEALED_WINDOWS",
+    "music_light_dynrng_vs_film_light": "MATCHED_IN_BOTH_MEASURED_WINDOWS_ONLY",
+    "general_music_light_alias": "NOT_INFERRED",
+    "raw_pcm_persisted": false,
+    "encoded_output_in_this_package": false
+  },
+  "limits": {
+    "implementable_mode_to_curve_coefficients_or_dynrng_rule": "NOT_ESTABLISHED",
+    "DDP_COMPR_vs_per_block_dynrng": "SEPARATE_FIELDS",
+    "DEE_run": "NOT_RUN",
+    "Ghidra_run_in_this_continuation": "NOT_RUN; reused sealed Ghidra 12.2 receipts",
+    "IDA_used": false,
+    "payload_pcm_key_license_read": false,
+    "implementation_contact": false,
+    "implementation_modified": false
+  }
+}

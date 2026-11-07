@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.dee_line_drc_a0_first_row_converter_boundary.v1",
+  "package_id": "DEE-LINE-DRC-A0-FIRST-ROW-CONVERTER-BOUNDARY-V1",
+  "status": "ZERO_BRANCH_ROW_PACK_HELPER_BOUND; SNAPSHOT_A0_NOT_ARGUMENT; FIRST_NESTED_ROW_CONVERTER_BOUNDARY; CODEC_BSI_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "line_mode_a0_fun182850_row_pack_first_break_wash_v1",
+    "manifest_sha256": "1d719ccf1137fe33fc12446144eda3ed02f5e2caa41e294c077c78b2956c7c19",
+    "sha256sums_sha256": "334939fc06a22053d53a9cb969c018159649c8d477bd823f00bd9643feb9a174",
+    "package_seal_file_sha256": "8d94d887152184660fdedde5f9af09d2e505356275236df72f36f157e29c576b",
+    "payload_hash_audit": "PASS_7_OF_7",
+    "agent_reported_checker_normal": "PASS",
+    "agent_reported_checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "selected_zero_branch": {
+    "predicate": "snapshot+0x9C == 0",
+    "caller": "FUN_1801764e0",
+    "first_pack_helper": "FUN_180182850",
+    "selected_row_pointer": "param_4*0x20 + *param_3",
+    "explicit_snapshot_plus_0xa0_argument": false,
+    "row_owner_join_to_snapshot_a0": "UNBOUND",
+    "first_nested_row_converter": "FUN_1801431f0(param_1,param_2,0,-1)",
+    "nested_converter_body_followed": false,
+    "output_buffer_initialization": ["capacity=0xF", "length=0", "NUL terminator"],
+    "subsequent_output_metadata_copies": "generic QWORD stores to helper output offsets +0x20..+0x38",
+    "callee_formals": 6,
+    "caller_decomp_actual_arguments": 4,
+    "extra_formal_sources": "UNBOUND",
+    "named_codec_or_bsi_type": "NOT_IDENTIFIED"
+  },
+  "first_break": {
+    "at": "first nested row-converter call input boundary",
+    "codec_or_bsi_input_reached": false,
+    "downstream_codec_bsi_lineage": "UNBOUND",
+    "runtime_branch": "NOT_CAPTURED",
+    "generation_clock": "NOT_CAPTURED"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_trace_excerpt_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

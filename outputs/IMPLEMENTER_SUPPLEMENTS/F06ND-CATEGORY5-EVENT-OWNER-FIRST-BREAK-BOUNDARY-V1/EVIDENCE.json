@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.f06nd-category5-event-owner-first-break.v1",
+  "package_id": "F06ND-CATEGORY5-EVENT-OWNER-FIRST-BREAK-BOUNDARY-V1",
+  "source_package_manifest_sha256": "ca8ef796a3547b469c43e37266bc65aeff2d8b86beeda5af87e1896575c9a606",
+  "source_package_seal_sha256": "6093b4cffadded1b575425b56576c3fde065aac275995c7be24b71a5f298ecbd",
+  "status": {
+    "approved_category5_logical_input": "BOUND_STATICALLY",
+    "category5_to_native_typed_application": "UNBOUND_NO",
+    "selected_category5_to_generic_event_vector": "NO_SELECTED_JOIN_ESTABLISHED",
+    "selected_category5_to_text_event_collector": "NO_SELECTED_JOIN_ESTABLISHED",
+    "owner_generation": "UNBOUND_NO",
+    "drc_bsi_effect": "UNBOUND_NO",
+    "runtime": "NOT_RUN"
+  },
+  "approved_logical_input": {
+    "category": 5,
+    "width_bits": 32,
+    "count": 1,
+    "logical_effect": "Does not write the selected DRC-control FIFO; four logical records remain zero after the selected submission."
+  },
+  "event_path_separation": {
+    "typed_storage_path": "Generic writeData<int> vector to a first per-event consumer; its source owner/generation is not joined to selected Category5.",
+    "text_event_path": "Generic parsed event through callback/local collector to keyed entry; its owner/generation is not joined to selected Category5.",
+    "same_consumer_code_proves_same_owner": false
+  },
+  "first_break": "The approved Category5 logical input supplies no native producer pointer, event-vector handle, call context, source owner, or generation token that connects it to either generic event path.",
+  "limits": {
+    "global_absence_claim": false,
+    "event_record_layout_reconstructed": false,
+    "selected_pcm_process_path_reanalyzed": false,
+    "audio_core_blocked": false
+  },
+  "implementation_effect": {
+    "new_product_receipt_api_required": "NOT_ESTABLISHED",
+    "algorithm_change_authorized": false
+  },
+  "excluded_material": {
+    "native_or_research_source_code": false,
+    "decompilation_or_binary": false,
+    "pcm_or_bitstream_payload": false,
+    "private_key_or_auth_material": false,
+    "absolute_local_paths": false,
+    "raw_native_addresses": false
+  }
+}

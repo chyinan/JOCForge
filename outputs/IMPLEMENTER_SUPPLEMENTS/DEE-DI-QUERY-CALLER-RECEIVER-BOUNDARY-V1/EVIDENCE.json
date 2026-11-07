@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.dee_di_query_caller_receiver_boundary.v1",
+  "package_id": "DEE-DI-QUERY-CALLER-RECEIVER-BOUNDARY-V1",
+  "status": "GETTER_RECEIVER_TO_PRIV_EC0_STATIC_BOUND; RDX_QUERY_OWNER_UNBOUND; DIALOGUE_KEY_SELECTION_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "di-flag-priv-param2-caller-owner-addendum-wash-v1",
+    "manifest_list_sha256": "a13c0bfe74eb2b2f3d5c0816e0c7c19f54cdb7ecb31d9755541949a7890ad024",
+    "package_seal_file_sha256": "4754c7ae968e1d168631e7619902de180f1d99f7a891c9019c058c3304968dbd",
+    "payload_file_count": 13,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only/no-analysis",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "getter_call": {
+    "thunk": "FUN_18013e9d0 at FilterDDPJocEnc vtable +0x08",
+    "receiver_load": "loads Priv from FilterDDPJocEnc+0xb8 into RCX",
+    "tail_branch": "FUN_18014f9f0",
+    "rdx_preserved": true,
+    "container_receiver": "Priv+0xec0 ParametersContainer",
+    "runtime_instance_generation": "NOT_CAPTURED"
+  },
+  "query_key_boundary": {
+    "rdx_source": "virtual caller argument",
+    "query_owner": "UNBOUND",
+    "query_bytes": "NOT_CAPTURED",
+    "exact_dialogue_intelligence_key_join": "UNBOUND_NOT_CAPTURED",
+    "prior_static_exact_key_to_bool_binding": "BOUND_IF_EXACT_KEY_IS_SUPPLIED",
+    "runtime_key_selection": "UNBOUND_NOT_CAPTURED"
+  },
+  "audio_effect": {
+    "measurement_or_audio_consumer": "NOT_IDENTIFIED",
+    "audio_or_joc_effect": "UNBOUND"
+  },
+  "scope": {
+    "dee_or_ui_execution": "NOT_RUN",
+    "runtime_capture": "NOT_RUN",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_ghidra_material_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

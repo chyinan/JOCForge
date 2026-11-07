@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-7-multi-adm-dialnorm/work/encoder_analysis/reports/dialogue_dialnorm_override_addendum",
+  "source_package_manifest_sha256": "5d8517d2d4a53f1e46e4c966ec717ebb59aad8b88a3e7fbedd88cc1aa250bcd0",
+  "source_package_seal_sha256": "7705b1a46c0cee31b2d2ca34865b656c8c31fd8bd1e6e9b05ae19abd0a9ae833",
+  "wash_recomputed": {
+    "seal_files": "11/11",
+    "sha256sums_entries": "10/10",
+    "parent_seals": "3/3",
+    "parent_artifacts": "3/3",
+    "controlled_di_xmls": "2/2",
+    "target_dll": true
+  },
+  "verified_parent_seals": [
+    {"package_id": "dialogue_encoder_slot_effect_addendum", "seal_sha256": "c0b9ef5a233686cd9f45b833444ae1e6d816bda189f16ec5f291426c6a10211f"},
+    {"package_id": "dialogue_measurement_cache_consumer_addendum", "seal_sha256": "210449486119cc4b5c7bd0c7abf7e487ae4ad407d09b112e7538e157f7c2cace"},
+    {"package_id": "dialogue_intelligence_audio_path_closure_v1", "seal_sha256": "ae27d287098e247a1973a24b338b5cd49d8a20a8656935cf4c4828b5d5608fa3"}
+  ],
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "excluded_from_supplement": ["checker/sealer source", "Ghidra scripts and traces", "job XML payloads", "PCM/media/payload", "private key/license"]
+}

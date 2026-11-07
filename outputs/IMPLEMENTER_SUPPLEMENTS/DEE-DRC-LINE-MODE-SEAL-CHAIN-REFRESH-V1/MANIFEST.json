@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-DRC-LINE-MODE-SEAL-CHAIN-REFRESH-V1",
+  "files": {
+    "REPORT.md": "e42b29e9092118de96b8936dfcd44a550fce8798d1b56fc99f17e8be1e9a6aa4",
+    "SOURCE-PACKAGES.json": "806ddbcb1ce8fbb508d78b0e77f635665f8ba1d5e75311e1e5a8c86c53ac43a5",
+    "DISPOSITION.json": "0443f9be32403fa3fc0d99bd94bd25145aa08cefd2f74ac3fda5ff0880730c17"
+  }
+}

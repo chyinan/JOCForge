@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DI-QUERY-CALLER-RECEIVER-BOUNDARY-V1",
+  "manifest_sha256": "0b9bf8bfc028c0295a9fa503c45b753339eb3a13fbbff1f3c7041f9b7a13e19d",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "GETTER_RECEIVER_TO_PRIV_EC0_STATIC_BOUND; RDX_QUERY_OWNER_UNBOUND; DIALOGUE_KEY_SELECTION_UNBOUND"
+}

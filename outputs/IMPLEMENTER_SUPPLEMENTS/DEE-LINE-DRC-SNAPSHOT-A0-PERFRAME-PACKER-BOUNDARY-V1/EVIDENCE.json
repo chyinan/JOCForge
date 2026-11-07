@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.line_drc_snapshot_a0_packer_boundary.v1",
+  "package_id": "DEE-LINE-DRC-SNAPSHOT-A0-PERFRAME-PACKER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "line_mode_drc_snapshot_a0_consumer_boundary_wash_v1",
+    "manifest_sha256": "681e6740913768b25c03d0df91b8a3771a5104b31e155459bfc1f699e15cc355",
+    "package_seal_sha256": "8723eff557f552a4a8d9ce135e48c9727b0784283986a7403ae97b1923e8f1b9",
+    "source_integrity": "MANIFEST_AND_SHA256SUMS_VERIFIED"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 static, bounded same-record continuation",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "sibling_field_plus_0xa4_followed": false,
+    "global_search": false,
+    "global_absence_claim": false
+  },
+  "writer_field": {
+    "snapshot_byte_offset_hex": "0xa0",
+    "value_type": "U32",
+    "source": "Line DRC profile-tree result",
+    "writer_edge": "BOUND_STATIC_FROM_PARENT_RECEIPT"
+  },
+  "record_continuation": {
+    "mode1_snapshot_base_reaches_validator": true,
+    "validator_role": "vector length and string-presence validation",
+    "validator_direct_plus_0xa0_reads": 0,
+    "snapshot_base_reaches_per_frame_packer": true,
+    "packer_direct_plus_0xa0_reads_or_copies": 0,
+    "distinct_field_read_before_packing": "+0x130"
+  },
+  "status": {
+    "same_snapshot_pointer_reaches_per_frame_packer": "BOUND_STATIC",
+    "plus_0xa0_value_consumed_by_packer": "UNBOUND",
+    "indirect_row_or_helper_transfer": "UNBOUND",
+    "codec_or_bsi_join": "UNBOUND",
+    "audio_effect": "NOT_DETERMINED_STATICALLY"
+  },
+  "implementation_disposition": {
+    "do_not_claim_drc_audio_effect": true,
+    "do_not_follow_sibling_plus_0xa4": true,
+    "algorithm_change_authorized": false
+  }
+}

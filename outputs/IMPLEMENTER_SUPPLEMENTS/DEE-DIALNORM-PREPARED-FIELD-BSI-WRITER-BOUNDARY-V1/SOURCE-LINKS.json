@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-7-multi-adm-dialnorm/work/encoder_analysis/reports/dialogue_dialnorm_bsi_writer_boundary_addendum",
+  "source_package_manifest_sha256": "c8146b35e0691dda6388ee3de693dbb82c811003e988759634feb6364d0c9c92",
+  "source_package_seal_sha256": "b5ab533276bed9b9baad19b3897cba52bf05a4d0d00faf9d41f8d773d060b20c",
+  "wash_recomputed": {
+    "seal_files": "11/11",
+    "parent_seals": "2/2",
+    "target_binary": true
+  },
+  "verified_parent_seals": [
+    {"package_id": "dialogue_encoder_slot_effect_addendum", "seal_sha256": "c0b9ef5a233686cd9f45b833444ae1e6d816bda189f16ec5f291426c6a10211f"},
+    {"package_id": "dialogue_dialnorm_override_addendum", "seal_sha256": "7705b1a46c0cee31b2d2ca34865b656c8c31fd8bd1e6e9b05ae19abd0a9ae833"}
+  ],
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "excluded_from_supplement": ["Ghidra scripts/traces", "checker/sealer source", "PCM/media/payload", "private key/license"]
+}

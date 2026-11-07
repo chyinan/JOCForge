@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "di-bool-plus00-consumer-boundary",
+      "kind": "static-field-lineage-summary",
+      "input": {
+        "setup_bool": "+0x94",
+        "normalized_config_byte": "+0x00"
+      },
+      "observed": {
+        "first_downstream_config_read": "+0x14",
+        "plus00_read_or_retained": false
+      },
+      "status": "BOOL_TO_CONFIG_BOUND; BOOL_TO_RESULT_UNBOUND"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-A0-FIRST-ROW-CONVERTER-BOUNDARY-V1",
+  "manifest_sha256": "d4435a85efc332cad1b3a7bb9e4b417630395da1d46116b1f370f842e5a7417b",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ZERO_BRANCH_ROW_PACK_HELPER_BOUND; SNAPSHOT_A0_NOT_ARGUMENT; FIRST_NESTED_ROW_CONVERTER_BOUNDARY; CODEC_BSI_UNBOUND"
+}

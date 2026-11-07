@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.rf_f98_r14_lineage_boundary.v1",
+  "candidate_entry_rcx_to_r14": "BOUND_STATIC_REGISTER_MOVE",
+  "r14_to_candidate_param1": "BOUND_STATIC_CALL_SETUP",
+  "r14_continuity_across_intervening_calls": "STATIC_ABI_INFERENCE_NOT_DYNAMICALLY_OBSERVED",
+  "outer_incoming_rcx_to_candidate_entry": "BOUND_STATIC_CALL_SETUP",
+  "outer_rcx_to_f98_producer_owner": "UNBOUND",
+  "entry_read_type": "UNBOUND",
+  "rf_stringtype_or_numeric_state": "UNBOUND",
+  "runtime": "NOT_RUN"
+}

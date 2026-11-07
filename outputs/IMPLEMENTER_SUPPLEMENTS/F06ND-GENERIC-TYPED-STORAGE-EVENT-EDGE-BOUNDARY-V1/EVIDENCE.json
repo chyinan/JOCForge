@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.f06nd-generic-typed-storage-event-edge.v1",
+  "package_id": "F06ND-GENERIC-TYPED-STORAGE-EVENT-EDGE-BOUNDARY-V1",
+  "source_package_manifest_sha256": "3d0462cb661b40efbac0b228f0a507de5644241b0e9f82de2996195ccc851dba",
+  "source_package_seal_sha256": "4585eaa30e542b798d828854c633541637ec8d420b8cd8ad867923c62657ff47",
+  "status": {
+    "generic_typed_event_vector_submission": "BOUND_STATICALLY",
+    "first_per_event_consumer": "BOUND_STATICALLY",
+    "selected_category5_owner_generation_join": "NO_SELECTED_JOIN_ESTABLISHED",
+    "drc_bsi_output_effect": "UNBOUND_NO",
+    "runtime": "NOT_RUN"
+  },
+  "bounded_static_path": {
+    "submission": "A generic writeData<int> storage method forwards an InputControlEvent vector to an event helper.",
+    "first_consumer": "The helper conditionally forwards matching entries to its first per-event consumer.",
+    "template_type_meaning": "The int template parameter identifies the storage/sample-buffer type; it is not an identity for selected F06ND Category5.",
+    "event_identity": "The event-vector producer, owner, and generation are not joined to the selected category5 source."
+  },
+  "scope_limits": {
+    "selected_pcm_process_path_reanalyzed": false,
+    "generic_event_record_layout_reconstructed": false,
+    "global_absence_claim": false,
+    "audio_or_bsi_effect_established": false
+  },
+  "excluded_material": {
+    "native_or_research_source_code": false,
+    "decompilation_or_binary": false,
+    "pcm_or_bitstream_payload": false,
+    "private_key_or_auth_material": false,
+    "absolute_local_paths": false,
+    "raw_native_addresses": false
+  }
+}

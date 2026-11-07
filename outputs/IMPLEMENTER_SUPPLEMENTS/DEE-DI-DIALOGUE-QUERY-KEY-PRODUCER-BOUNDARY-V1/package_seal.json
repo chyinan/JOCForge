@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DI-DIALOGUE-QUERY-KEY-PRODUCER-BOUNDARY-V1",
+  "manifest_sha256": "c0a8d3be31e0ffe59d51ab8f160bc743797ac17ae5be396009918def7cd3312d",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "GETTER_RECEIVER_STATICALLY_BOUND; QUERY_RECORD_PRODUCER_BOUND; DIALOGUE_KEY_SELECTION_UNBOUND; AUDIO_EFFECT_UNBOUND"
+}

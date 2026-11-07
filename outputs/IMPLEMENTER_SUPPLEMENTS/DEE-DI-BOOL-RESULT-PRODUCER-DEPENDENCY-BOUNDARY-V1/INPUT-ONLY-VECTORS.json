@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "empire-loudness-bool-field-separation",
+      "kind": "static-owner-field-summary",
+      "input": {"setup_bool": "+0x94", "owner_bool_copy": "+0x2c", "record_float_source": "+0x88"},
+      "expected_status": "NO_TYPED_DEPENDENCY_FROM_BOOL_OWNER_FIELD_TO_RESULT_SCALAR",
+      "status": "STATIC_TRACE_ONLY"
+    },
+    {
+      "vector_id": "atmos-proc-measure-bool-field-separation",
+      "kind": "static-producer-summary",
+      "input": {"setup_bool": "+0x94", "config_bool_byte": "+0x00", "config_byte_read_by_constructor": "+0x14"},
+      "expected_status": "BOOL_TO_RESULT_SCALAR_UNBOUND",
+      "status": "STATIC_TRACE_ONLY"
+    }
+  ]
+}

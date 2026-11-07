@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "dialogue_rf_drc_profile_vector_f98_owner_producer_addendum",
+      "manifest_sha256": "1de72843f243f0276132442653037639f133a87a4aa1e37bbf8d3b7026dadeba",
+      "package_seal_sha256": "41213f159f339d56bb3a4df763f474c802e85d8a80c9b34dfd424a8838d17974"
+    },
+    {
+      "package_id": "dialogue_rf_drc_profile_vector_f98_first_consumer_addendum",
+      "manifest_sha256": "fd20dba27f69640e3127053171eaf432395f338c5dd47cba3abcc54af561184a",
+      "package_seal_sha256": "f226d9472c522492d9c3ffd9b3a3f4746bfac86fbb24d5d59c19b7d34363a93b"
+    }
+  ],
+  "raw_media_or_native_code_copied": false
+}

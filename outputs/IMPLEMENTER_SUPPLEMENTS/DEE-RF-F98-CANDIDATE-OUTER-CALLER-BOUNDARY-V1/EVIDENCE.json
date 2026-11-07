@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.rf_f98_outer_caller_boundary.v1",
+  "outer_call_incoming_rcx_to_candidate_entry_rcx": "BOUND_STATIC",
+  "candidate_entry_rcx_to_inner_r14": "UNBOUND",
+  "candidate_param1_to_f98_producer_owner": "UNBOUND",
+  "entry_read_type": "UNBOUND",
+  "rf_stringtype_or_numeric_state": "UNBOUND",
+  "runtime": "NOT_RUN",
+  "global_absence_claim": false
+}

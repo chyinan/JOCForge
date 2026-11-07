@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "di-flag-bool-meter-config-plus14-initializer-boundary-addendum-wash-v1",
+      "manifest_sha256": "b81be512aee5d5cc296a36daf6eb639554d627c4b3c5cf479a17db22a618573d",
+      "package_seal_sha256": "9f237b610e9bf32ff5bcd97c7b409236264a37174272b7ee4cee0705f01c278d",
+      "reviewed_payloads": [
+        {
+          "name": "BOUNDARY.json",
+          "sha256": "e41d84914ae97950eae01638f11ad5db818cfe8a5d59f6fc1f4aeae84f37bcdd"
+        },
+        {
+          "name": "DEPENDENCY-RECEIPT.json",
+          "sha256": "95e05c08ed7db956063bc0b36b40ad63895408246ad0b712a8e7608de2f60c68"
+        },
+        {
+          "name": "GHIDRA-QUERY-RECEIPT.json",
+          "sha256": "bd2c2659403df5653f675fadf400b91db3f793ec75b580838991787aefae9ce2"
+        },
+        {
+          "name": "PARENT-EVIDENCE.json",
+          "sha256": "e5726eaa2070bc1432ebad6b25c8e29e7918cc49bbc884a7c6ee6902cc56eeef"
+        },
+        {
+          "name": "REPORT.md",
+          "sha256": "f1814daa0ea8dd220d684836d1e931d927557340e751f50cb9ce6802919d5106"
+        }
+      ],
+      "raw_media_or_audio_payload_copied": false
+    }
+  ]
+}

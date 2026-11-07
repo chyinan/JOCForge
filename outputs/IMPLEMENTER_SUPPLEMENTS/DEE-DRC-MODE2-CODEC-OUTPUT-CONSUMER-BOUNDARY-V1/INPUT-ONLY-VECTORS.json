@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STRUCTURAL_ONLY; NOT_RUN",
+  "vectors": [
+    {
+      "id": "mode2_line-profile-input",
+      "xml_path": "/job_config/filter/audio/encode_to_atmos_ddp/drc/line_mode_drc_profile",
+      "reported_text": "none",
+      "selection_condition": "Priv +0xfc8 == 2",
+      "runtime_receipt": "NOT_CAPTURED"
+    },
+    {
+      "id": "mode2-output-descriptor-dispatch",
+      "owner": "context array +0xc0f8",
+      "dispatch_slot": "+0x28 at callsite 0x1801b18d9",
+      "typed_target": "UNBOUND"
+    }
+  ],
+  "payload_included": false,
+  "audio_or_bsi_effect": "UNBOUND"
+}

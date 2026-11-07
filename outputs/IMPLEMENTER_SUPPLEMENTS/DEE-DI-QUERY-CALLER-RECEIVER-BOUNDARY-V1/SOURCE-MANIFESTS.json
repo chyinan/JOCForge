@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-DI-QUERY-CALLER-RECEIVER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_query_caller_receiver_edge",
+      "package_id": "di-flag-priv-param2-caller-owner-addendum-wash-v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_flag_priv_param2_caller_owner_addendum_wash_v1",
+      "manifest_list_sha256": "a13c0bfe74eb2b2f3d5c0816e0c7c19f54cdb7ecb31d9755541949a7890ad024",
+      "package_seal_file_sha256": "4754c7ae968e1d168631e7619902de180f1d99f7a891c9019c058c3304968dbd",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "prior_exact_key_to_bool_contract",
+      "package_id": "DEE-DI-DIALOGUE-BOOL-STATIC-KEY-OWNER-BOUNDARY-V1",
+      "wash_manifest_sha256": "b46b594c5c7680820711972e9bb257aff270e390c698902c31255d4f27a2c2c3",
+      "wash_seal_sha256": "3d0e00b29671cba7a64c7afbaf2b494f1a83d0f8e519fc98ada066b5d9160ab9"
+    },
+    {
+      "role": "prior_query_record_producer",
+      "package_id": "DEE-DI-DIALOGUE-QUERY-KEY-PRODUCER-BOUNDARY-V1",
+      "wash_manifest_sha256": "c0a8d3be31e0ffe59d51ab8f160bc743797ac17ae5be396009918def7cd3312d",
+      "wash_seal_sha256": "e5827a2ff3bd610590021fcea502b83bba1f1c9ef6003a56b314cd5df8e41af1"
+    }
+  ],
+  "omitted_material": {
+    "raw_ghidra_scripts_or_slices": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true
+  }
+}

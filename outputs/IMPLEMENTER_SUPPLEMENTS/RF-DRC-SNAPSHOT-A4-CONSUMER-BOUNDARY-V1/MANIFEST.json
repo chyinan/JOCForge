@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-CONSUMER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RF_STRING_TO_SNAPSHOT_PLUS_A4_BOUND; A4_TYPED_CONSUMER_UNBOUND; A4_TO_E0_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "implementation_disposition": "Do not map the RF profile from snapshot +0xA4 until its same-owner typed consumer is bound",
+  "source_manifest_sha256": "b6f83de105efbb41ec476746b424053d96807d6b218cfd2caf68b5223e576967",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3364,
+      "sha256": "be32bb46803f4c566f4f6b605406a371789a8f0181fbf3b4afa7123f8b0ad06f"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2463,
+      "sha256": "5f0b11ba704dc6f1d536872fb57a851ae2c8a2bded7decc9919571805e4ed152"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 606,
+      "sha256": "c9905214267992813de8c99e4cafd0a05091b6b855ab0cb7db0508f2c40d56e3"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1816,
+      "sha256": "37f1f67f9afed49953cf25e86508b7fa0da483805206ac8ffe846eb887c67f96"
+    },
+    {
+      "name": "SOURCE-MANIFEST.json",
+      "bytes": 3667,
+      "sha256": "8cdd635850bd012c569e7cce4683cc6165a440c19b511d1e463bab88a713f154"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 1037,
+      "sha256": "b6f83de105efbb41ec476746b424053d96807d6b218cfd2caf68b5223e576967"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 520,
+      "sha256": "4f3c853e754d9b1fbcf868921a4d81891d0ce94c3529529c655cca70cb17e68c"
+    },
+    {
+      "name": "UPSTREAM-SHA256SUMS.txt",
+      "bytes": 497,
+      "sha256": "c7cc659eb4a486ab8018910041e2b18ac7ec56e452ca5ca6e11cf182033f4217"
+    }
+  ]
+}

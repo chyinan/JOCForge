@@ -1,0 +1,4 @@
+{
+  "manifest_sha256": "8e2b80cad673be80694fc04a4cfb9debe47d511b9510472c0d856d08b54a97ad",
+  "status": "STATIC_CONSUMER_BOUNDARY; CAUSAL_BOOL_JOIN_UNBOUND"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.drc_a0_helper_consumer_boundary.v1",
+  "selected_row_helper_arguments_include_snapshot_a0": false,
+  "row_pointer_typed_owner_join_to_snapshot_a0": "UNBOUND",
+  "helper_return_first_receiver_reads_aggregate": false,
+  "aggregate_first_data_use": "generic diagnostic formatting and logging",
+  "per_frame_drc_effect": "UNBOUND",
+  "codec_or_bsi_effect": "UNBOUND",
+  "runtime": "NOT_CAPTURED",
+  "global_absence_claim": false
+}

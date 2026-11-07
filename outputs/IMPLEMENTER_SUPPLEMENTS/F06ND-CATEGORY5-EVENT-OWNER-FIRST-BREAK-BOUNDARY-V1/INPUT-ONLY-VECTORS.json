@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.f06nd-category5-event-owner-input-only.v1",
+  "vectors": [
+    {
+      "id": "selected-category5-without-native-owner-receipt",
+      "kind": "logical input/receipt boundary; not executed",
+      "input": {
+        "category": 5,
+        "width_bits": 32,
+        "count": 1,
+        "native_producer_pointer": "NOT_PRESENT_IN_APPROVED_INPUT_RECEIPT",
+        "event_vector_or_collector_owner_generation": "UNBOUND"
+      },
+      "expected": {
+        "typed_application_join": "UNBOUND_NO",
+        "selected_event_join": "NO_SELECTED_JOIN_ESTABLISHED",
+        "drc_bsi_effect": "UNBOUND_NO",
+        "global_absence_claim": false,
+        "audio_core_blocked": false
+      }
+    }
+  ]
+}

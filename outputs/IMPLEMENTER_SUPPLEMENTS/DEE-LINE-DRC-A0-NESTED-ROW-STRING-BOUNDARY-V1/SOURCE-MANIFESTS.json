@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-LINE-DRC-A0-NESTED-ROW-STRING-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_nested_row_string_boundary",
+      "package_id": "line_mode_a0_nested_row_string_consumer_wash_v1",
+      "manifest_sha256": "45292eba4506d5c084e47cd538c903f2542e9931e08741ffd9c4f22ba275c53e",
+      "sha256sums_sha256": "27e3611340e3bc000fc7cc688fc2a2044c4826a8bf0970f00f5e574a6f3d9a7e",
+      "package_seal_file_sha256": "534e15c1d22d37b54d2314dda146615904b854b4b46e5a9d42450322b5b1f878",
+      "payload_hash_audit": "PASS_7_OF_7",
+      "agent_reported_checker_normal": "PASS",
+      "agent_reported_checker_python_O": "PASS"
+    },
+    {
+      "role": "parent_zero_branch_row_pack_boundary",
+      "package_id": "line_mode_a0_fun182850_row_pack_first_break_wash_v1",
+      "manifest_sha256": "1d719ccf1137fe33fc12446144eda3ed02f5e2caa41e294c077c78b2956c7c19",
+      "package_seal_file_sha256": "8d94d887152184660fdedde5f9af09d2e505356275236df72f36f157e29c576b"
+    }
+  ],
+  "omitted_material": {
+    "raw_trace_or_listing": true,
+    "native_source_or_binary": true,
+    "media_pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

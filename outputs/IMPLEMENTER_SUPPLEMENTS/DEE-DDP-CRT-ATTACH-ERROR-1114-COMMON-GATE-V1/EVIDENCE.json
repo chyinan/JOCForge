@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.ddp_crt_attach_error_boundary.v1",
+  "component_count": 4,
+  "process_attach_pattern": "cookie setup -> local CRT dispatcher -> CRT startup/init table -> component callback",
+  "per_image_tables_are_distinct": true,
+  "component_callbacks_static_return": true,
+  "crt_initializer_gate_can_fail_attach": true,
+  "candidate_runtime_state_allocation_failure": "STATIC_POSSIBLE_NOT_OBSERVED",
+  "unresolved_table_slot": true,
+  "attempt12_error_id": 1114,
+  "specific_failing_initializer": "NOT_IDENTIFIED",
+  "requester_vs_dependency": "UNBOUND",
+  "runtime_component_loaded": false,
+  "global_absence_claim": false
+}

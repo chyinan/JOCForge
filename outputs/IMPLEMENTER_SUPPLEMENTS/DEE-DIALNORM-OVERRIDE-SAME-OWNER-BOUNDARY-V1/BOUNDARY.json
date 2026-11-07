@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-DIALNORM-OVERRIDE-SAME-OWNER-BOUNDARY-V1",
+  "decision": "CUSTOM_DIALNORM_OWNER_AND_DEFAULT_BOUND; RUNTIME_BRANCH_UNOBSERVED; PCM_CAUSE_UNBOUND",
+  "source_package": {
+    "manifest_sha256": "5d8517d2d4a53f1e46e4c966ec717ebb59aad8b88a3e7fbedd88cc1aa250bcd0",
+    "package_seal_sha256": "7705b1a46c0cee31b2d2ca34865b656c8c31fd8bd1e6e9b05ae19abd0a9ae833",
+    "payload_files_verified": "11/11",
+    "sha256sums_verified": true
+  },
+  "field": {
+    "root_owner": "dee::proc::Priv constructed by FUN_180135d40",
+    "registration": "FUN_180136220(root +0x20)",
+    "schema_name": "custom_dialnorm",
+    "root_offset": "+0xa88",
+    "type": "integer SafeType<int64,Integer>",
+    "range": [-31, 0],
+    "default": 0,
+    "default_semantics": "no override"
+  },
+  "record_store": {
+    "function": "FUN_1801535b0",
+    "getter": "FUN_180152dd0(owner +0xa88)",
+    "condition": "getter result != 0",
+    "conversion": "integer to float",
+    "destination": "source record +0x114",
+    "adjacent_trim_fields_also_changed": true,
+    "runtime_value_or_branch": "UNOBSERVED"
+  },
+  "controlled_di_pair": {
+    "di_false_xml_sha256": "230004bcaa0147a6dc7617f9c9e416d68360bd5cf22bd563fa0d04c361871b67",
+    "di_true_xml_sha256": "ec17e01cdad6934e9d4129baee13594ca4dec97f70d78e5704918ed6bdeaf8f4",
+    "custom_dialnorm_present": false,
+    "pcm_hashes_differ_in_prior_receipt": true,
+    "override_as_pcm_difference_cause": "NOT_SUPPORTED_BY_RECORDED_INPUTS; overall cause UNBOUND"
+  },
+  "execution": {
+    "dee_rerun": false,
+    "decode_or_pcm_read": false,
+    "payload_key_license_read": false,
+    "implementation_contact": false
+  }
+}

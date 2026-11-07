@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "first-data-use-is-diagnostic",
+      "kind": "static-call-boundary-summary",
+      "input": {
+        "aggregate_local": "FUN_1801764e0 stack local",
+        "first_following_call_reads_argument": false,
+        "first_later_helper_reads_fields": true
+      },
+      "expected_status": "DIAGNOSTIC_FIRST_READ; DRC_CODEC_BSI_JOIN_UNBOUND",
+      "status": "STATIC_TRACE_ONLY",
+      "payload_values_included": false
+    }
+  ]
+}

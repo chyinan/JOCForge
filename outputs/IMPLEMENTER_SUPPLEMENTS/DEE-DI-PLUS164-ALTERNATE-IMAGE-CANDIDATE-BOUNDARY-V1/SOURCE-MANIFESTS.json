@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "di-flag-bool-empire-loudness-offset164-candidate-owner-boundary-addendum-wash-v1",
+  "manifest_sha256": "c0e8a2510244e073c4a93bcc089f256b780e680acb61f4b03cfaa055c7535a70",
+  "package_seal_sha256": "2742cb6e72fd832b820b2adada0f8772dfa5e952cd6f74c639e11546968cb3a2",
+  "source_verifier_normal_and_optimized": "PASS",
+  "raw_trace_or_native_source_copied": false
+}

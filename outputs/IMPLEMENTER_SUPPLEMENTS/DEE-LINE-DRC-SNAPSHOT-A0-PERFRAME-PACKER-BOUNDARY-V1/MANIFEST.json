@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-SNAPSHOT-A0-PERFRAME-PACKER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SNAPSHOT_TO_PERFRAME_PACKER_BOUND; A0_VALUE_AND_CODEC_BSI_JOIN_UNBOUND",
+  "implementation_disposition": "Register pointer-flow boundary only; no DRC value consumption or audio effect is established.",
+  "source_manifest_sha256": "681e6740913768b25c03d0df91b8a3771a5104b31e155459bfc1f699e15cc355",
+  "source_package_seal_sha256": "8723eff557f552a4a8d9ce135e48c9727b0784283986a7403ae97b1923e8f1b9",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2579,
+      "sha256": "777bbb287be31887a81492c01510ab50a4ddc67dff2cab938da955e8f356830f"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1756,
+      "sha256": "07a3c4aa4c8c44461a59349253fb67eb6bc1a607f93f6019a51ed5eed341c7ff"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 477,
+      "sha256": "5956ca532734c8185eaaecca6efe6d8eca80d6282ea9e91f12514ce4cd400279"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 820,
+      "sha256": "2e07802b87f0cabb58ee541412c545f2706901186d166bd9cd73b425ce60625e"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1743,
+      "sha256": "d5caa3e501aa3a255aaedb871c51970441d72fec6b029718b38897d15cbd9e46"
+    }
+  ]
+}

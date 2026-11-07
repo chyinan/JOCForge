@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-A0-FIRST-ROW-PACK-BOUNDARY-V1",
+  "manifest_sha256": "efe9886183b41e1bdb3654606b0d727e6d6ad8ff64e83da28ca10d693d92f31a",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "LINE_MODE_A0_NOT_IN_FIRST_ROW_PACK_ARGUMENTS; SELECTED_ROW_OWNER_JOIN_UNBOUND; CODEC_BSI_EDGE_UNBOUND; RUNTIME_BRANCH_NOT_CAPTURED"
+}

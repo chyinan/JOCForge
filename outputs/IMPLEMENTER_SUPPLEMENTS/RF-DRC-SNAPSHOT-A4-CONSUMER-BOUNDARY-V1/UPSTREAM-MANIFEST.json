@@ -1,0 +1,32 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "rf_drc_snapshot_a4_consumer_boundary_wash_v1",
+  "status": "RF_STRING_TO_SNAPSHOT_PLUS_0XA4_BOUND_STATIC; A4_TO_TYPED_CONSUMER_UNBOUND; DISTINCT_E0_TO_CONFIG_PATH_BOUND_STATIC; RUNTIME_NOT_CAPTURED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1711,
+      "sha256": "4379d70bf734ce93226a4e1e8d9c50325625522da19bc2dea45a4719922a46eb"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1413,
+      "sha256": "8d73322fe4f86360d56ba3f7bedd013474fa91d22453d7438c7a9606f193eba1"
+    },
+    {
+      "name": "RF-A4-TO-CONSUMER.json",
+      "bytes": 1586,
+      "sha256": "a66167cb04cd3b484d6d4dcfc650bc20246f11c3c864b8c6f5e92392b1a69a32"
+    },
+    {
+      "name": "SOURCE-MANIFEST.json",
+      "bytes": 3667,
+      "sha256": "8cdd635850bd012c569e7cce4683cc6165a440c19b511d1e463bab88a713f154"
+    },
+    {
+      "name": "TRACE-EXCERPTS.txt",
+      "bytes": 1271,
+      "sha256": "feb28d43d35502a7e7ffbf8e1790140e0011dffd07d4496b176288dc05d58db2"
+    }
+  ]
+}

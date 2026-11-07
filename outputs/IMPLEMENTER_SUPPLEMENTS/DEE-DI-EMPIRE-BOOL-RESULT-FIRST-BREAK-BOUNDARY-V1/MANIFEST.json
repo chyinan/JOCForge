@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-EMPIRE-BOOL-RESULT-FIRST-BREAK-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "BOOL_TO_ENGINE_SUBCONTEXT_CONDITIONAL_BOUND; RESULT_CAUSALITY_UNBOUND",
+  "implementation_disposition": "Preserve the selected consumer first-break; do not infer Bool-to-result effect.",
+  "source_package_id": "di-flag-bool-empire-loudness-subcontext-result-consumer-boundary-addendum-wash-v1",
+  "source_manifest_sha256": "240abb2fe291a7316e3a28bf1932f73a489ac07a07d6e8aefa724cc597d5850e",
+  "source_package_seal_sha256": "549b93c3c4ec348850a35144e3e604775efd54dbfbbc690dad7d62e19dc48a2b",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1789,
+      "sha256": "f21923a73e7c5af9c2c6952e4b2dad851172e9dd8379088791ff3c120c4900eb"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1407,
+      "sha256": "a6d70cbbcf7b100fee056166857dda17286d97b5ff942fabfd299ad92a5e37e5"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 547,
+      "sha256": "f2cdba8abe988cb4343ce97925f1d695157dc419d1981a360076f28c59d6fac4"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 847,
+      "sha256": "facd3fd9e0d4c794b5c2b1ecff441090bbce90a166467005183f788b0e12b62f"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 448,
+      "sha256": "840ba6203bc546c957eba1dd447a2ec0a9944d186b3c58bd484c5698604b9ecf"
+    }
+  ]
+}

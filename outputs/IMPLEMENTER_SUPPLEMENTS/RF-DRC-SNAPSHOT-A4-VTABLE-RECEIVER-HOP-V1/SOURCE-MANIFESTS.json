@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.rf_a4_vtable_receiver_source_manifest.v1",
+  "upstream_manifest_sha256": "09889d43ea572c9b6da76e7bbaa6e51ce125b42f9e15ce546d61244685a56a1e",
+  "upstream_package_seal_sha256": "e43d427ea8c68ef1bad1b1995e45b10a7b6c2f0a19569ba10c431b82653056d5",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "previous_boundary_manifest_sha256": "b6f83de105efbb41ec476746b424053d96807d6b218cfd2caf68b5223e576967",
+  "raw_ghidra_code_or_logs_in_supplement": false
+}

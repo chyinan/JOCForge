@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "line-drc-a0-snapshot-pack-boundary",
+      "kind": "static-same-record-field-consumer-summary",
+      "input": {
+        "snapshot_field": "+0xa0",
+        "value_type": "U32"
+      },
+      "observed": {
+        "validator_direct_reads": 0,
+        "packer_direct_reads_or_copies": 0
+      },
+      "status": "SNAPSHOT_BASE_REACHES_PACKER; A0_VALUE_AND_CODEC_EFFECT_UNBOUND"
+    }
+  ]
+}

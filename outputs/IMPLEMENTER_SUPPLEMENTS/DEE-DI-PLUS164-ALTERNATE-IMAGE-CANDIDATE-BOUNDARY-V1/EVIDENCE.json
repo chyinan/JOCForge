@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.di_plus164_alternate_image_candidate.v1",
+  "package_id": "DEE-DI-PLUS164-ALTERNATE-IMAGE-CANDIDATE-BOUNDARY-V1",
+  "source": {
+    "package_id": "di-flag-bool-empire-loudness-offset164-candidate-owner-boundary-addendum-wash-v1",
+    "manifest_sha256": "c0e8a2510244e073c4a93bcc089f256b780e680acb61f4b03cfaa055c7535a70",
+    "package_seal_sha256": "2742cb6e72fd832b820b2adada0f8772dfa5e952cd6f74c639e11546968cb3a2"
+  },
+  "candidate": {
+    "image": "dee_ddp_encoder.exe",
+    "image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "reads_plus_0x164": true,
+    "use": "comparison and derived value passed onward",
+    "input_owner": "child-record array entry"
+  },
+  "target_bool_subcontext": {
+    "image": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "owner_path": "engine +0x1d0 to selected processor consumer"
+  },
+  "identity_boundary": {
+    "candidate_child_record_to_target_dll_subcontext": "UNBOUND",
+    "typed_pointer_owner_join": "UNBOUND",
+    "bool_to_float32_result_causality": "UNBOUND",
+    "global_absence_claim": false
+  },
+  "scope": {
+    "one_existing_candidate": true,
+    "global_xref_list": false,
+    "dee_run": false,
+    "runtime_capture": false,
+    "media_pcm_payload_key_license_read": false
+  }
+}

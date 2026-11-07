@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.rf_drc_snapshot_a4_branch_target_sources.v1",
+  "upstream_manifest_sha256": "6761ae7bd37ff11ce25470c9c61c2d0313c98214d5a19d63a2cd444d4e0d778a",
+  "upstream_package_seal_sha256": "6c81aa388e423ef2e2b548433fdfe964c3c3685f65ec03b339d350bfbde88b7f",
+  "upstream_sha256sums_sha256": "5d1ed64a96b54209cdabef95d81f44bec2cf613fe84ccb70ca825a29b66996ea",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "parent_manifests": [
+    {"package_id": "rf_drc_snapshot_a4_vtable_targets_wash_v1", "manifest_sha256": "dc5b49d5c1d4e87858dd5c890a834029d0ed294ed8aa98850a7009c6ef413d30"},
+    {"package_id": "rf_drc_snapshot_a4_first_consumer_wash_v1", "manifest_sha256": "471360aa4221542f6ba7d47e22687e1b37cf171ae6283f842d9615212b583e10"}
+  ],
+  "raw_ghidra_scripts_or_traces_in_supplement": false
+}

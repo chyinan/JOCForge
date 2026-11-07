@@ -1,0 +1,6 @@
+{
+  "source_package_id": "di-bool-first-algorithm-consumer-boundary-wash-v1",
+  "source_manifest_sha256": "dca615398ae27d75f7d87e1eaab483c0f0e50aa84c501ff71a14ea2ebb26d8a4",
+  "source_seal_sha256": "747b2e58df48e18dd40330c08d033c4775a824172ed472fd62235c9ace518a33",
+  "status": "STATIC_FIRST_CONSUMER_IDENTIFIED; BOOL_JOIN_UNBOUND"
+}

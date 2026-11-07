@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.rf_f98_candidate_caller_owner_boundary.v1",
+  "package_id": "DEE-RF-F98-CANDIDATE-CALLER-OWNER-BOUNDARY-V1",
+  "source": {
+    "package_id": "dialogue_rf_drc_profile_f98_candidate_caller_addendum",
+    "manifest_sha256": "4e8c7a289319ae3658be00bc8c1a884404eb053d104f4981211da7c2fef4aa61",
+    "package_seal_sha256": "fafe32d70b94bac772c22fb5979e77c00573fec9ff6f594c7e045821537c60d0"
+  },
+  "direct_call_edge": {
+    "caller_first_argument": "R14",
+    "candidate_first_parameter": "param_1",
+    "edge": "BOUND_STATIC",
+    "typed_source_of_R14": "NOT_ESTABLISHED"
+  },
+  "owner_boundary": {
+    "candidate_param1_to_f98_producer_object": "UNBOUND",
+    "candidate_f98_access_is_producer_vector_read": "NOT_ESTABLISHED",
+    "entry_element_read_and_type": "UNBOUND",
+    "stringtype_mapping": "UNBOUND",
+    "numeric_rf_state": "UNBOUND"
+  },
+  "scope": {
+    "caller_of_caller_followed": false,
+    "helper_body_followed": false,
+    "global_search": false,
+    "runtime": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false
+  }
+}

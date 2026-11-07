@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-PLUS164-ALTERNATE-SAME-IMAGE-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ALTERNATE_SAME_IMAGE_PLUS164_READ_BOUND; CANDIDATE_OWNER_TO_ENGINE_SUBCONTEXT_UNBOUND; RESULT_CAUSALITY_UNBOUND",
+  "implementation_disposition": "Do not equate the alternate codec-parent owner with the EmpireLoudness engine subcontext; preserve Bool-to-result UNBOUND.",
+  "source_package_id": "di_flag_bool_empire_loudness_subcontext_164_candidate_call_owner_boundary_addendum_wash_v1",
+  "source_manifest_sha256": "3fe2b1d14ea672be5865724ff1f46afc70b3adcb8dc4f05312cfc92327fdd1ee",
+  "source_package_seal_sha256": "6f7aa6c0ceb40e478bd19989aaa778db8e7cceba93bafbce2c47b604a5adffb1",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1727,
+      "sha256": "c05b46d331902e5e33e4ac3d15239011ae2a61c757d4ba1ce80c6aef97e599a5"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 396,
+      "sha256": "9ef2d635335364cbdcea44b88daeba5a8308b67989c98b3ac4654a98084f85c4"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 478,
+      "sha256": "3e58e4929be04e0f3b4bf1959b8cb2d3c4aed5801f85f74c7ca6153c0aa88f16"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 642,
+      "sha256": "204b203c5e6406e5a8ac5ab8e31fa466e5fa968e9335cec6bcf4a87ea68ed2f1"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 846,
+      "sha256": "d15d3b4eb073a303dc418aa906ca640fffe4883c910d4a89e184987eb2dbe6ff"
+    }
+  ]
+}

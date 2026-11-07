@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "di-flag-bool-meter-config-plus00-consumer-boundary-addendum-wash-v1",
+      "manifest_sha256": "5800986d25422fca144fb41309605043df1514c2a794e985bb9310d8383360ba",
+      "package_seal_sha256": "1c8649f401df4df0013d94e6e89acdc418baa8a479633cc01bf562aeca6b7142"
+    },
+    {
+      "package_id": "DEE-DI-CONFIG-PLUS14-CONSTANT-INITIALIZER-BOUNDARY-V1",
+      "manifest_sha256": "4a1612c34b133ec1830bee0cc8d74c8690f312014a65cfc09938c7728cf20e75",
+      "package_seal_sha256": "fccfa441e29d05a9674db9ab7e66a69fb1094199b8dcfea5e3b03bb982a81af7"
+    }
+  ],
+  "raw_native_source_or_media_copied": false
+}

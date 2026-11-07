@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ATMOS-DDP-DRC-CONTROL-QUEUE-BSI-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "1bea337bc0f9b7beb00b787852dd7f4b437f9b51b3fae799cc3b5ae18b0562f7",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "21328ad6e9d0e401f16e7982e0dd68a329127c5399c78d6426135dd822e24645",
+  "upstream_source_identity_audit": "PASS_133_OF_133",
+  "checker_status": "NOT_RUN"
+}

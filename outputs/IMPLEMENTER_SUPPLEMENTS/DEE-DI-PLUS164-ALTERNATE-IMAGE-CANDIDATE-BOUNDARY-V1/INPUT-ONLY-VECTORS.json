@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "alternate-image-plus164-candidate",
+      "input": {
+        "candidate_image": "separate DDP encoder EXE",
+        "field_offset": "+0x164"
+      },
+      "expected_observation": {
+        "candidate_read": "BOUND_STATIC",
+        "join_to_bool_subcontext": "UNBOUND"
+      },
+      "limitations": [
+        "Different image and owner path",
+        "No typed pointer join",
+        "No Bool-to-result causality"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-DI-BOOL-HELPER-STATE-HANDOFF-V1",
+  "scope": "Static helper-pointer handoff only; Bool-to-gate lineage/effect remain open.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1298,
+      "sha256": "b0892cf26be4262f5313efe73e9f55f2975c76458fb9c1b67b8674057209ea59"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 620,
+      "sha256": "d2677c132f54d61c8b993b7bd1e4bd013ef435ea8c59a2aebb40f7f079a7014a"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 670,
+      "sha256": "8aed977f1a24c3a308258b691c276c870265625ee905070d52b6ef1c9e797339"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1828,
+      "sha256": "e1314a30e143bda1ef504e6b5f815206b7c716605b6158014155fe02d98b20e9"
+    }
+  ]
+}

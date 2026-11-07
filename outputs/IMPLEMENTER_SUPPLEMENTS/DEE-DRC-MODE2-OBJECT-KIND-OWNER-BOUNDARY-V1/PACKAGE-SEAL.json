@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-DRC-MODE2-OBJECT-KIND-OWNER-BOUNDARY-V1",
+  "manifest_sha256": "38c6b61448fafba687bd9a8701ce685424ada031fa6d3977f78f587f02e23e35",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "4f80c209f39895377807d2f230b5011558769bc6584ca17334ab9199a15a064d",
+  "source_package_seal_sha256": "c021e4369d8e2464677964af0e8f4868eb53e0099f7901ef3afe5d56f8840963",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "MODE2_OBJECT_KIND_OWNER_BOUND; SLOT_28_TARGET_AND_EFFECT_UNBOUND"
+}

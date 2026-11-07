@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "di-flag-bool-measurement-route-selector-addendum-wash-v1",
+      "manifest_kind": "MANIFEST.sha256",
+      "manifest_sha256": "da170d890910d3b6f90aa338da3054fc0980f8b26cd5d216cd8f41550340df10",
+      "package_seal_sha256": "8ee657cfab8bab0399cd88bc11cc5f22f68fa8399c2771264c33d70e33495855",
+      "reviewed_payloads": [
+        {"name": "REPORT.md", "sha256": "22d1775b7f67a1474d90dcaac278f11809c87894156e442c3d3547d981ac169c"},
+        {"name": "BOUNDARY.json", "sha256": "9b959afbf4149a8949377555065ccf3379ac71473911bbc9ce2fa3119ecab75d"},
+        {"name": "SELECTOR-RECEIPT.json", "sha256": "e659bdc1c5396a3b4ddb9cc3b870bf7c558b29a00dca5287560852ac0aee8ca9"}
+      ]
+    }
+  ]
+}

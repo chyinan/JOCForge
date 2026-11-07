@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-DRC-LINE-MODE2-CODEC-CALLSITE-BOUNDARY-V2",
+  "decision": "MODE2_CODEC_PROCESS_CALL_BOUND; LINE_PLUS_A0_TRANSFER_UNBOUND",
+  "selected_mode2_path": {
+    "condition": "Priv+0xfc8 == 2",
+    "functions": ["FUN_1801746c0", "FUN_1801746d0"],
+    "record_to_item_constructor": "record +0xd8 -> FUN_180177e50/FUN_180177eb0",
+    "constructor_copy_range": "+0x00..+0x5c of the +0xd8 config subobject",
+    "record_plus_0xa0_passed_to_constructor": false
+  },
+  "codec_process": {
+    "callsite_rva": "0x174fc7",
+    "wrapper_type": "ddpjoc::EmpireEnc",
+    "vtable_slot": "+0x8 -> FUN_180179a80",
+    "implementation": "FUN_180179ab0",
+    "accepted_descriptor_sizes": [0, 1536],
+    "codec_api": "FUN_1801a8840",
+    "input_origin": "current block descriptor plus implementation state",
+    "output_adapter": "FUN_1801776b0 packages produced bytes into output descriptor",
+    "writer": "FUN_180189c70 at caller mode-2 route"
+  },
+  "profile_effect": {
+    "line_profile_record_plus_0xa0_to_config_or_process_args": "UNBOUND_NO_TYPED_TRANSFER_IN_INSPECTED_EDGE",
+    "record_plus_0xa0_to_final_bsi": "UNBOUND_NO",
+    "provider_rooted_handler_join": "UNBOUND_NO",
+    "runtime_mode_selection": "NOT_RUN",
+    "global_absence_claim": false
+  },
+  "status": {
+    "source_manifest_six_payloads_and_seal_verified": true,
+    "target_plugin_rehashed_by_wash_this_turn": true,
+    "dee_execution": "NOT_RUN",
+    "media_or_key_read": false,
+    "implementation_modified": false
+  },
+  "next_exact_gap": "Inspect FUN_1801a8840 and its direct selected consumer for a typed path from mode-2 config to line-profile code +0xa0; preserve UNBOUND if absent."
+}

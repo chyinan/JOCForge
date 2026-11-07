@@ -1,0 +1,5 @@
+# DI input, first numeric consumer and observation boundary
+
+The inspected `dialogue_intelligence` Bool flows into an outer measurement subcontext. A selected static path proceeds through a nested engine state into per-channel F32 row processing and the first numeric metric/gating consumer. That consumer uses its own nested-state flags. The Bool is not forwarded as an explicit argument on this path, and no typed alias or owner/generation link joins the Bool field to those flags. Therefore the consumer is identified, but the causal DI-to-gating-state connection remains UNBOUND.
+
+A previously authorized same-input Human Cat 38-channel pair at 1770-4 and threshold 15 observed gating change from level to dialogue and a final integrated-loudness difference. This is one input/configuration pair; the static trace does not prove that the observed A/B change is caused by this selected subcontext path. No playback or Atmos/JOC spatial render was done. A Love Song comparison changed metering mode with DI true in both arms and is not DI A/B evidence.

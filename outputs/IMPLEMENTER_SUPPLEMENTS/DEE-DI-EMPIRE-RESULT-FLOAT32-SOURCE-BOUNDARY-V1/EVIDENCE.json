@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.di_empire_float32_source_boundary.v1",
+  "package_id": "DEE-DI-EMPIRE-RESULT-FLOAT32-SOURCE-BOUNDARY-V1",
+  "source": {
+    "package_id": "di_flag_bool_empire_loudness_result_value_writer_boundary_addendum_wash_v1",
+    "manifest_sha256": "2f529606be67f68fe502b81e50541820303da2940ddc07be950014997073b8d9",
+    "package_seal_sha256": "5537e6e9ea18446fa934ae39fbad37decef96303b6e4af046b57fb97483f8628"
+  },
+  "float32_result": {
+    "owner_source_field": "+0x238",
+    "owner_output_field": "+0x88",
+    "direct_source": "engine subcontext +0x3C in nonzero engine-state branch",
+    "nonzero_branch": "BOUND_STATIC",
+    "zero_branch_store": "NOT_PRESENT_IN_SELECTED_FUNCTION; VALUE_NOT_INFERRED"
+  },
+  "bool_mode": {
+    "setup_bool_to_subcontext_0x164": "CONDITIONALLY_BOUND_STATIC",
+    "direct_float32_source_reads_0x164": false,
+    "typed_or_generation_join_0x164_to_0x3c": "UNBOUND",
+    "bool_to_result_causality": "UNBOUND"
+  },
+  "scope": {
+    "new_ghidra_analysis": false,
+    "dee_run": false,
+    "runtime_capture": false,
+    "media_pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  }
+}

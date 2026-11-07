@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "crt-slot5-return",
+      "input": {
+        "slot_index": 5
+      },
+      "expected_observation": {
+        "static_return": 0,
+        "can_trigger_nonzero_gate_if_invoked": false
+      },
+      "limitations": [
+        "Runtime invocation not observed",
+        "Other component slot not inspected",
+        "No 1114 attribution"
+      ]
+    }
+  ]
+}

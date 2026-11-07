@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "source_package": {
+    "package_id": "atmos_ddp_plugin_property_setter_wash_v1",
+    "workspace": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/atmos_ddp_plugin_property_setter_wash_v1",
+    "manifest_sha256": "21328ad6e9d0e401f16e7982e0dd68a329127c5399c78d6426135dd822e24645",
+    "sha256sums_sha256": "299f2d901fba0d12e2cc595acf231574a3a6929966891a00acac21f12c81173a",
+    "seal_sha256": "f11bd0d475187d21b1d4d5fda7dd6e8815c0dcfb744c311ef6750c0868ad714d"
+  },
+  "independent_wash_audit": {
+    "declared_payloads": 16,
+    "payload_hashes_and_lengths_matched": 16,
+    "declared_source_identities": 133,
+    "source_hashes_matched": 133,
+    "manifest_and_sha256sums_links_match_seal": true,
+    "checker_status": "NOT_RUN"
+  },
+  "scope": "Only this sanitized supplement is offered for implementation review; do not use raw Ghidra logs/scripts or native source as implementation source."
+}

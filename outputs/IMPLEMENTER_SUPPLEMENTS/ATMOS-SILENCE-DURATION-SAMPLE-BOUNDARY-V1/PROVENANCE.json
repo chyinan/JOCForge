@@ -1,0 +1,6 @@
+{
+  "source_manifest_sha256": "95f2282edfbf32fbbf6f4c72662242c400429b44fdc32396bf595c8367fb9220",
+  "source_seal_sha256": "4b617e06a3fd7ede6c5707fac4bddb2d57a7bd32ce669dabaa812faa5346aaca",
+  "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "status": "STATIC_CONVERSION; NONZERO_OUTPUT_AND_CLOCK_NOT_OBSERVED"
+}

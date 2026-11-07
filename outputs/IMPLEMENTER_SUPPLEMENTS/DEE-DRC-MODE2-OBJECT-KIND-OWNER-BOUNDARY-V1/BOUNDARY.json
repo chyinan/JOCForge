@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-DRC-MODE2-OBJECT-KIND-OWNER-BOUNDARY-V1",
+  "decision": "INNER_CONTEXT_OWNER_AND_KIND_WRITER_BOUND; SELECTED_KIND_AND_SLOT_TARGET_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": {
+    "package_id": "adm_bwf_ddp_drc_line_mode_mode2_object_kind_owner_boundary_wash_v1",
+    "evidence_manifest_sha256": "4f80c209f39895377807d2f230b5011558769bc6584ca17334ab9199a15a064d",
+    "package_seal_sha256": "c021e4369d8e2464677964af0e8f4868eb53e0099f7901ef3afe5d56f8840963",
+    "sealed_files_verified": "7/7",
+    "source_evidence_verified": "8/8"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "wash_rehashed": true,
+    "tool": "Ghidra 12.2 PUBLIC, read-only, no-analysis"
+  },
+  "owner_flow": {
+    "mode2_setup": ["FUN_180179ab0", "FUN_1801788a0", "FUN_1801a7d50"],
+    "wrapper_storage": "context +0x810",
+    "builder": "FUN_1801ab520",
+    "inner_context_assignment": "FUN_1801b0750 receives the inner context through descriptor second qword",
+    "object_pointer_array": "inner_context +0xc0f8 + index*8",
+    "kind_writer": "FUN_1801b0750 stores the same uVar3 at object first dword",
+    "kind_source": "inner_context +0xc13c, prepared by FUN_1801c3150 from selector-1 pair or static default",
+    "reader": "FUN_1801ab800 retrieves the same inner context from wrapper +0x810 and passes it to FUN_1801b1590"
+  },
+  "dispatch": {
+    "function": "FUN_1801b1590",
+    "table": "DAT_1806521e8 + kind*0x30",
+    "slot": "+0x28 at 0x1801b18d9",
+    "selected_kind_runtime_value": "NOT_CAPTURED",
+    "selected_target": "UNBOUND",
+    "sampled_rows_0_to_7_zero": true,
+    "global_absence_claim": false
+  },
+  "effect": {
+    "record_plus_0xa0_to_kind_or_target": "UNBOUND",
+    "first_profile_or_bsi_access": "UNBOUND",
+    "audio_effect": "UNBOUND",
+    "dee_or_runtime": "NOT_RUN"
+  }
+}

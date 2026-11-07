@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-A0-PERFRAME-PACK-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SAME_SNAPSHOT_POINTER_REACHES_PERFRAME_PACKER_STATIC; NO_DIRECT_A0_TRANSFER_IN_VALIDATOR_OR_FIRST_PACKER; CODEC_BSI_JOIN_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "implementation_ready": false,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2343,
+      "sha256": "be620cb5601f1fb84ea3e75aa85a8bc42758f681d6323226f550ff654824c9ad"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2652,
+      "sha256": "897f9e9bb6f3791aceb4f308f6d995fc7f5b9141455061d6a345d66d44975f9b"
+    },
+    "REPORT.md": {
+      "bytes": 1316,
+      "sha256": "fee47d3cb1a241d6b0279a48bc32fac73df626819ef0dccb3c26239cde89554d"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1152,
+      "sha256": "dd01c6bdce758649a524be2135b01540defbefe043ea55eb0710ec381445405c"
+    }
+  },
+  "source_manifest_sha256": "a524ef64865d1f35887104d57b19884a64a5365dc0f84e0a9fd14b79f847b0f7"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "wash.line_mode_dynrng_source_packages.v1",
+  "source_root": "D:/Programs/JOCForge-isolated/outputs/IMPLEMENTER_SUPPLEMENTS",
+  "packages": [
+    {"package_id":"ATMOS-MUSIC-LINE-DRC-OBSERVATION-V1","directory":"ATMOS-MUSIC-LINE-DRC-OBSERVATION-V1","manifest_sha256":"cb76898f591e7d2ebb938a82486bc0d1079ecb3086d0889a1f29daf19909aaa7","role":"38-channel music-vs-film observation"},
+    {"package_id":"ATMOS-MUSIC-LINE-DRC-LOVE-SONG-OBSERVATION-V1","directory":"ATMOS-MUSIC-LINE-DRC-LOVE-SONG-OBSERVATION-V1","manifest_sha256":"ba3817f24cdfc6f04b0edb62503229a79f6303d9a084cf3c7936bb12020e8bcd","role":"36-channel Love Song music-vs-film observation"},
+    {"package_id":"ATMOS-LINE-DRC-STATIC-PROFILE-MAPPING-V1","directory":"ATMOS-LINE-DRC-STATIC-PROFILE-MAPPING-V1","manifest_sha256":"9fa9b57f59058cc73a9db44babf0aad9cd43922301766d1b9062d6eed2a0da32","role":"conditional token-to-profile-tree U32 and separate DDP_COMPR static map"},
+    {"package_id":"ATMOS-LINE-DRC-PROFILE-FIRST-CONSUMER-BOUNDARY-V1","directory":"ATMOS-LINE-DRC-PROFILE-FIRST-CONSUMER-BOUNDARY-V1","manifest_sha256":"08746f785a27946c6f869adf52815cb35a18f22b1124e3a7dd4bc6d8a32364ab","role":"Line StringType setter/default and profile-tree first consumer"},
+    {"package_id":"DEE-LINE-DRC-A0-PERFRAME-PACK-FIRST-BREAK-V1","directory":"DEE-LINE-DRC-A0-PERFRAME-PACK-FIRST-BREAK-V1","manifest_sha256":"5ccc2f08330392bf7461419adfbfe94f37d50a76ff2cfeb4969e7a699d04deae","role":"snapshot +0xA0 to per-frame packer first break"},
+    {"package_id":"DEE-LINE-DRC-A0-FIRST-ROW-PACK-BOUNDARY-V1","directory":"DEE-LINE-DRC-A0-FIRST-ROW-PACK-BOUNDARY-V1","manifest_sha256":"efe9886183b41e1bdb3654606b0d727e6d6ad8ff64e83da28ca10d693d92f31a","role":"per-frame first row helper input and missing +0xA0 owner join"},
+    {"package_id":"DEE-LINE-DRC-A0-FIRST-ROW-CONVERTER-BOUNDARY-V1","directory":"DEE-LINE-DRC-A0-FIRST-ROW-CONVERTER-BOUNDARY-V1","manifest_sha256":"d4435a85efc332cad1b3a7bb9e4b417630395da1d46116b1f370f842e5a7417b","role":"first nested generic row conversion; no codec/BSI type reached"},
+    {"package_id":"SAMPLE6-DRC-BSI-PROFILE-TABLE-INIT-V1","directory":"SAMPLE6-DRC-BSI-PROFILE-TABLE-INIT-V1","manifest_sha256":"c7640e04add5f025f9f5c30f97855ccc5e0c42db7bdc83ba44584a2d285587bc","role":"separate core profile selector and curve-row contract"},
+    {"package_id":"SAMPLE6-DRC-BSI-BLOCK-PRODUCER-V1","directory":"SAMPLE6-DRC-BSI-BLOCK-PRODUCER-V1","manifest_sha256":"0e1802e700a4ed0e574c514a3d71a43f8ffe226eec63fb6d21f2b1c477745555","role":"separate core per-block U16 code/presence producer for optional dynrng"}
+  ],
+  "raw_ghidra_traces_or_binaries_copied": false,
+  "audio_or_pcm_copied": false
+}

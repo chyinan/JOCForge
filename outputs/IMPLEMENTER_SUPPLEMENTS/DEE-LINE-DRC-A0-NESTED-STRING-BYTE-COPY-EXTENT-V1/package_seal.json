@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-A0-NESTED-STRING-BYTE-COPY-EXTENT-V1",
+  "manifest_sha256": "1a2982d3e3c4a6d67dce5d47950c5feed7d481f9d549172897baa095fbf46f6d",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "GENERIC_OVERLAP_SAFE_BYTE_COPY_STATIC_BOUND; STRING_METADATA_UPDATE_BOUND; CODEC_BSI_OWNER_UNBOUND"
+}

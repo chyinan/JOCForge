@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-DRC-F98-VECTOR-ENTRY-PRODUCER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "F98_HEADER_AND_ENTRY_SOURCE_BOUND; SEMANTIC_OWNER_AND_CONSUMER_UNBOUND",
+  "implementation_disposition": "Register the bounded vector source only; do not assign its semantic type or RF DRC effect.",
+  "source_manifest_sha256": "1de72843f243f0276132442653037639f133a87a4aa1e37bbf8d3b7026dadeba",
+  "source_package_seal_sha256": "41213f159f339d56bb3a4df763f474c802e85d8a80c9b34dfd424a8838d17974",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2615,
+      "sha256": "9c763fe214303baf2197cc5280d07de4cea3c3cb22d0f222f72ec9717292e329"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1843,
+      "sha256": "0fa508af263dbbed0d663161fc9085ada1ac1fe06778559097bf594c51a0e3a8"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 490,
+      "sha256": "1985f868c2993e27a7e41563b38a12bbbb2e43e2011c88ad1b616a0c479ad609"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 629,
+      "sha256": "7aba8a7e53573221b766d3ec153153d2311da22024d83b2f3745c576764f1341"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 686,
+      "sha256": "8fd5f44afb9282a7150d0fff3f647f32136cf8fa50fe946e98c3b095378f4ea3"
+    }
+  ]
+}

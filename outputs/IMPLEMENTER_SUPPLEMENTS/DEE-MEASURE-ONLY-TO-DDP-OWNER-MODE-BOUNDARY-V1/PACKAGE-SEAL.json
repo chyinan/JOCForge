@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-MEASURE-ONLY-TO-DDP-OWNER-MODE-BOUNDARY-V1",
+  "manifest_sha256": "5ce226e83a05ed31208896439eaefc5fc84f78fed8b66f674df18437c6861238",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "665912add98deaa7c276f728ee8301e8a7cbe571f985fb0ab7570bc8a420aa7f",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "HOST_STAGE_PROPERTY_PATH_BOUND; MEASURE_ONLY_TO_F34_UNBOUND"
+}

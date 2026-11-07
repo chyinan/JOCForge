@@ -1,0 +1,20 @@
+{
+  "package_id": "ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1177,
+      "sha256": "fb1f6f4f7ea27300f298233a8f5b19cebf5c0a9bdfa29a71a98eb445ee2e68fe"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 422,
+      "sha256": "919546f3a22beb55afe357e90257db8529acff0dab5156cdb6ffa14525426be2"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 350,
+      "sha256": "65f36dca26133b3d4f92c0ec5a5cbd2fab54e8c1b21b917196e3d65e5c079884"
+    }
+  ]
+}

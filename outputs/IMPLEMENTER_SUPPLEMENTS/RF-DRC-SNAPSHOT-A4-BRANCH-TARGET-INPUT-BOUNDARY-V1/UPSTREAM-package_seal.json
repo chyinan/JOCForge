@@ -1,0 +1,9 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "rf_drc_snapshot_a4_branch_target_inputs_wash_v1",
+  "manifest_sha256": "6761ae7bd37ff11ce25470c9c61c2d0313c98214d5a19d63a2cd444d4e0d778a",
+  "sha256sums_sha256": "5d1ed64a96b54209cdabef95d81f44bec2cf613fe84ccb70ca825a29b66996ea",
+  "payload_count": 5,
+  "status": "THREE_BRANCHES_AND_SLOT18_TARGETS_BOUND_STATIC; WORKER_FIRST_INPUTS_ARE_GENERIC_64BIT; SAME_SNAPSHOT_A4_VALUE_NOT_BOUND; RUNTIME_VARIANT_NOT_CAPTURED; INDIRECT_TRANSFER_UNBOUND",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-BOOL-RESULT-CALC-DEPENDENCY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "MEASUREMENT_RESULT_WRITEBACK_BOUND; BOOL_CAUSALITY_UNBOUND",
+  "implementation_disposition": "Register only the result field calculation/writeback; keep Bool causal effect unbound.",
+  "source_manifest_sha256": "91d0dd7dc34e5cebb3a58082df7c22cb33bc526ca0f2dce6231322db72c30c60",
+  "source_package_seal_sha256": "e6448d528f385a709860bb4dff10d1eb2cfdb2b39f9d87ad5be8f235f0ef5bed",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4494,
+      "sha256": "e384fd2791936d749aaef8dccea8ca6db4598dca93e155fbe4eceb2dbf6fd877"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1544,
+      "sha256": "f4888a6ab3a454e984271664a103979df5d326bea1e4d5fd537be66472ed4163"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 223,
+      "sha256": "8385735364e4219652e10ee5e6a433fd6143550fb39df4eabf72a3e3f8579b1a"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1366,
+      "sha256": "c6b9266b5b2010513763f5daf5c316945d75fc387af7bede0701cc042dc900f0"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1101,
+      "sha256": "46e543484273020ed0c15d6ed1e82e7ffcb283558557575e53dc4bc453b514b6"
+    }
+  ]
+}

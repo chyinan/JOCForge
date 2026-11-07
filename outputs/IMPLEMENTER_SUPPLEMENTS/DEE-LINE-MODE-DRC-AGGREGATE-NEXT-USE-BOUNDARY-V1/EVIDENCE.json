@@ -1,0 +1,62 @@
+{
+  "schema": "jocforge.line_mode_drc_aggregate_next_use_boundary.v1",
+  "package_id": "DEE-LINE-MODE-DRC-AGGREGATE-NEXT-USE-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "line_mode_a0_aggregate_next_use_wash_v1",
+    "manifest_sha256": "ab2cacc20feedfd216608a146115998d41c7341881951aadc06f7ae3f1a8ac36",
+    "checksum_list_sha256": "9f5bb5b11ebe7609df03bf76a5d5c0f4dfcfbe148cef8446f9f7d5de4df2f690",
+    "package_seal_sha256": "2697d7466fda448765e3a919ad1c70ecc33bf7df46150cdae58ee2100d6140a2"
+  },
+  "parents": [
+    {
+      "package_id": "line_mode_a0_aggregate_first_consumer_wash_v1",
+      "manifest_sha256": "e7f3ba0021f4c96d3782e5232c1ac9aea89f7483670ca503aaedd46ee1b1f0dc",
+      "wash_supplement_manifest_sha256": "e66467d53cb3c027b0b744ece131bfa7f6054ac776c68e1fd9c0f9d9f2c6ea74",
+      "wash_supplement_seal_sha256": "ff35cbafe479012168786fa7a4a142155c3933607a8f12b9a78852373361f8c9"
+    },
+    {
+      "package_id": "line_mode_a0_per_frame_pack_first_break_wash_v1",
+      "manifest_sha256": "a524ef64865d1f35887104d57b19884a64a5365dc0f84e0a9fd14b79f847b0f7"
+    }
+  ],
+  "target": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis"
+  },
+  "scope": {
+    "dee_run": "NOT_RUN",
+    "runtime_capture": "NOT_CAPTURED",
+    "caller_range": "same aggregate local in FUN_1801764e0 from the known diagnostic read to its next direct pointer pass",
+    "later_aggregate_uses": "NOT_INSPECTED",
+    "job_process_control": "NONE",
+    "media_pcm_payload_key_license_read": false
+  },
+  "next_use": {
+    "same_aggregate_local": "RBP+0x40 in FUN_1801764e0",
+    "callee": "FUN_180184100",
+    "caller_arguments": {
+      "RCX": "separate destination stack object",
+      "RDX": "same aggregate pointer"
+    },
+    "callee_formal_parameter_count": 1,
+    "callee_reads_RDX": false,
+    "callee_effect": "initializes fields of the RCX destination object and calls FUN_1801848d0",
+    "nested_helper_inspected": false
+  },
+  "status": {
+    "aggregate_copy_or_typed_consumer_at_this_edge": "NOT_ESTABLISHED",
+    "aggregate_concrete_type": "UNBOUND",
+    "destination_concrete_type": "UNBOUND",
+    "owner_generation_join": "UNBOUND",
+    "per_frame_drc_plus_0xa0_transfer": "UNBOUND",
+    "codec_or_bsi_transfer": "UNBOUND",
+    "global_no_consumer_claim": false
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "do_not_infer_RDX_carryover_as_typed_lineage": true,
+    "preserve_drc_codec_bsi_effect_as_unbound": true
+  }
+}

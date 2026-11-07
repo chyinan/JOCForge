@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "codec-child-record-plus-df0-owner-boundary",
+      "input": {
+        "record_owner": "lVar6 selected from parent +0x10cc array",
+        "candidate_param_1": "*(lVar6+0xdf0)",
+        "comparison_owner": "engine+0x1d0"
+      },
+      "expected_disposition": {
+        "candidate_pointer_target": "OPAQUE",
+        "typed_owner_generation_join": "UNBOUND",
+        "bool_to_result": "UNBOUND"
+      },
+      "limitations": [
+        "One direct caller only.",
+        "No writer search or global absence claim.",
+        "No runtime or audible-effect observation."
+      ]
+    }
+  ]
+}

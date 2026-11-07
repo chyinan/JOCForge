@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-FIRST-CONSUMER-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "28ad76b482110204ccf44f20bb0fe14e4726c3aab0c3a80b3859f9410cb004f2",
+  "payload_file_count": 8,
+  "payload_hash_audit": "PASS_8_OF_8",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

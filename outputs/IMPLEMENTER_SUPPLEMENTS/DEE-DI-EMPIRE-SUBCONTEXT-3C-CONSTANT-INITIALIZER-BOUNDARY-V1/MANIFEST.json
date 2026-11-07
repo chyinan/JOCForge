@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-EMPIRE-SUBCONTEXT-3C-CONSTANT-INITIALIZER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SUBCONTEXT_3C_INITIAL_CONSTANT_BOUND; BOOL_RESULT_CAUSALITY_UNBOUND",
+  "implementation_disposition": "Treat -120.0 as the observed initial value only; no final runtime value or Bool causality is established.",
+  "source_package_id": "di-flag-bool-empire-loudness-subcontext-3c-init-boundary-addendum-wash-v1",
+  "source_manifest_sha256": "bdf81b71527d1b67933f5df8822ef56bc0d29b255b2c3917b89d19b9a6b86a9a",
+  "source_package_seal_sha256": "290992132b66c3935e3aa32d6812b3b4784cda94908dd174a18b44697e3823c3",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1738,
+      "sha256": "89e86f8adf0d682b58c5e241b3d6e5428be4543546b4234f80cf1734697e4f12"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1284,
+      "sha256": "32508b1a98f34ad9e02a815da47f3b707ad5db25a46c750b70c96b8564f3fa9d"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 545,
+      "sha256": "a76729dd365c724d38cc03feb38bd54dcc9b4a0b5fa399b762e17cbfd8d0832e"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 747,
+      "sha256": "04e7f7eab608573c6eeaecdd1b0086446f9ac8a157b826e3750e1402611dedca"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 441,
+      "sha256": "4bf57c30914425798f2e5c0810346853a7c6cdf21eca0322f621ac5dab7fb094"
+    }
+  ]
+}

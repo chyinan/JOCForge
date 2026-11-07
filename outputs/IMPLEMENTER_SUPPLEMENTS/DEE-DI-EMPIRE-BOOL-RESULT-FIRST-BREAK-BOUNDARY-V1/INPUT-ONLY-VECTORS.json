@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "empire-bool-selected-consumer",
+      "input": {
+        "setup_bool": "configured",
+        "selected_static_mode_branch": "neither 3 nor 4"
+      },
+      "expected_observation": {
+        "subcontext_0x164": "Bool-derived",
+        "selected_consumer_forwards_0x164": false
+      },
+      "limitations": [
+        "Runtime mode not captured",
+        "Result causality remains UNBOUND",
+        "No global absence claim"
+      ]
+    }
+  ]
+}

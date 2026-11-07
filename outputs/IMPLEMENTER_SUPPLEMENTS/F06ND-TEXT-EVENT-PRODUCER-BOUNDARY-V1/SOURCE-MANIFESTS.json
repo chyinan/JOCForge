@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "f06nd_category5_text_event_producer_boundary_wash_v1",
+      "manifest_sha256": "9b89074318558ff692631e0b39f8d8699877c714d08fdadbf68b24e1e66342d5",
+      "seal_sha256": "0ae3cc3d6155422e3bcc799a61ac07b4de461c4f9f3008de621f62e899d43029",
+      "scope": "One typed text-event producer, callback collector, and local keyed-entry submission."
+    },
+    {
+      "package_id": "f06nd_category5_native_effect_wash_v1",
+      "manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+      "seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+      "scope": "Selected Category5 rule and selected PCM-process boundary."
+    },
+    {
+      "package_id": "f06nd_category5_dispatcher_followup_v1",
+      "manifest_sha256": "23757cc5f08fafb02ec80e1a04afb339d26be9512859bdd6faae26a43fd8d793",
+      "seal_sha256": "7ae7782974c9c3135d5e39c4fe27ae1299dfb44cb718d772c75bcdf5b1a8c60e",
+      "scope": "Existing selected-category dispatcher boundary."
+    },
+    {
+      "package_id": "f06nd_category5_typed_storage_event_edge_wash_v1",
+      "manifest_sha256": "3d0462cb661b40efbac0b228f0a507de5644241b0e9f82de2996195ccc851dba",
+      "seal_sha256": "4585eaa30e542b798d828854c633541637ec8d420b8cd8ad867923c62657ff47",
+      "scope": "Separate generic typed storage-event vector path; not the text event owner."
+    }
+  ],
+  "normal_and_python_o_source_checker": "PASS",
+  "source_payloads_and_parent_hashes_reverified": true,
+  "raw_research_payload_copied": false
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-DIALNORM-PREPARED-FIELD-BSI-WRITER-BOUNDARY-V1",
+  "manifest_sha256": "7e6ddf32587d744d6aaa4ffd340d18a7787ceb3f0ea2d831d0047e9b86fa3da0",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "c8146b35e0691dda6388ee3de693dbb82c811003e988759634feb6364d0c9c92",
+  "source_package_seal_sha256": "b5ab533276bed9b9baad19b3897cba52bf05a4d0d00faf9d41f8d773d060b20c",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "FRAME_PREP_FIELD_BOUND; FINAL_BSI_WRITER_JOIN_UNBOUND"
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.di_bool_result_producer_dependency_boundary.v1",
+  "package_id": "DEE-DI-BOOL-RESULT-PRODUCER-DEPENDENCY-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "di-flag-bool-measurement-result-producer-boundary-addendum-wash-v1",
+    "manifest_sha256": "c5fc1d10e1a2a3e5d7b2755727bea7e25f2a0be2fb8b0bd918d1ca337e5c4d76",
+    "package_seal_sha256": "3d03ce36ed7945f710603c17ea20af304bd01641e1d3e4a25e0649951488c613",
+    "checkers_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "ghidra_version": "12.2",
+    "analysis_mode": "existing project, read-only/no-analysis",
+    "new_ghidra_query": false,
+    "runtime_branch_selection": "UNBOUND_NOT_CAPTURED",
+    "dee_run": "NOT_RUN",
+    "ui_or_runtime_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  },
+  "record_field": {
+    "consumer": "FUN_1801769a0",
+    "field": "lVar7+0x14",
+    "type": "Float32"
+  },
+  "producer_candidates": {
+    "empire_loudness": {
+      "result_source": "owner+0x88 copied into record+0x14",
+      "setup_bool_copy": "setup+0x94 copied into same private owner+0x2c",
+      "typed_dependency_from_plus_0x2c_to_plus_0x88": "UNBOUND"
+    },
+    "atmos_proc_measure": {
+      "setup_bool": "setup+0x94 maps to configuration byte+0x00",
+      "consumer_configuration_byte": "FUN_18017ecc0 reads configuration+0x14, which is constant 1 in the inspected constructor path",
+      "measurement_scalar_source": "meter context+0x40 → result structure+0x14 → record+0x14",
+      "zero_count_flush": "same result finalizer"
+    }
+  },
+  "status": {
+    "result_record_field_writers": "BOUND_STATIC_FOR_TWO_CANDIDATES",
+    "bool_to_result_scalar_dependency": "UNBOUND",
+    "runtime_producer_selection": "UNBOUND_NOT_CAPTURED",
+    "bool_final_measurement_or_audio_effect": "UNBOUND_NOT_RUN"
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "preserve_bool_to_scalar_dependency_as_unbound": true,
+    "do_not_infer_runtime_candidate_selection": true
+  }
+}

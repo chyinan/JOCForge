@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STATIC_FIELD_PROJECTION_ONLY; RUNTIME_NOT_RUN",
+  "vectors": [
+    {
+      "id": "dialnorm-to-frame-prep",
+      "source": "DDPi per-stream +0x9c",
+      "destination": "frame context +0x191f4 U16",
+      "store_rva": "0x3483a4",
+      "sentinel_compare_rva": "0x348768"
+    },
+    {
+      "id": "post-prep-writer-candidate",
+      "candidate_call": "FUN_140317600 RVA 0x317d28 -> FUN_14033b5f0",
+      "stuffer": "FUN_14036ac00 RVA 0x33b76b",
+      "typed_join": "UNBOUND"
+    }
+  ],
+  "serialized_bit_offset": "UNBOUND",
+  "pcm_samples_or_output_payload": "NOT_INCLUDED"
+}

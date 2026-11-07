@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "di_flag_bool_measurement_result_writeback_addendum_wash_v1",
+      "manifest_sha256": "52b9d7038edf33c0012401ada04e3add9e4da34c014e28b1a62fed9254b214ae",
+      "package_seal_sha256": "ca1bf3f9624c05f6a6f0d542431654e155d421798aa823cc96fff8c2a96c58dd"
+    },
+    {
+      "package_id": "DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V2",
+      "manifest_sha256": "4d57fcdb7e3c3e1c43024fe73c758cb2b4188fefc239dc415618e574e453557e",
+      "package_seal_sha256": "1d126bb8f20ba8de99305e3d1162f0978decbcb5a103b370ac326c890dbfefc9"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

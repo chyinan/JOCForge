@@ -1,0 +1,16 @@
+{
+  "status": "OBSERVED_ONE_INPUT_CONFIGURATION_PAIR",
+  "false": {
+    "gate": "level",
+    "speech_percentage": -1,
+    "final_integrated_loudness_db": -16.784912
+  },
+  "true": {
+    "gate": "dialogue",
+    "speech_percentage": 61.16,
+    "final_integrated_loudness_db": -25.022484
+  },
+  "core_pcm_difference": "reported in source Wash receipt; no PCM persisted",
+  "spatial_render": "NOT_RUN",
+  "causal_typed_join_to_static_subcontext": "UNBOUND"
+}

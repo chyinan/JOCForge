@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-DIALNORM-OVERRIDE-SAME-OWNER-BOUNDARY-V1",
+  "source_package_manifest_sha256": "5d8517d2d4a53f1e46e4c966ec717ebb59aad8b88a3e7fbedd88cc1aa250bcd0",
+  "source_package_seal_sha256": "7705b1a46c0cee31b2d2ca34865b656c8c31fd8bd1e6e9b05ae19abd0a9ae833",
+  "files": {
+    "REPORT.md": "427d04faa43cceb4649166c9137670385b23f6f394d884493dcfd1ad0c5ba2f2",
+    "BOUNDARY.json": "55593405dcbd14280c0d06f3154c0664c0c20944ba4479f3410d77c51e8d69c3",
+    "SOURCE-LINKS.json": "97ba51b0df36bebf3c27a2ea0b060038038a0260ae627f5476f32055b17688e6",
+    "INPUT-ONLY-VECTORS.json": "b9e66bd0b9cd1e283044ab0dd53d1325e6f0dbf1762956020e469e940e98be7e"
+  }
+}

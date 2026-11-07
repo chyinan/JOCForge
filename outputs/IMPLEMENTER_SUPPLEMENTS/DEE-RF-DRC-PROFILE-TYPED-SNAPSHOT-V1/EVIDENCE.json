@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.dee_rf_drc_profile_typed_snapshot.v1",
+  "package_id": "DEE-RF-DRC-PROFILE-TYPED-SNAPSHOT-V1",
+  "status": {
+    "rf_profile_xml_schema": "STATICALLY_BOUND_XS_STRING",
+    "rf_profile_default": "film_light",
+    "rf_profile_enum": ["film_standard", "film_light", "music_standard", "music_light", "speech", "none"],
+    "rf_typed_string_snapshot_writer": "STATICALLY_BOUND_AT_RSI_PLUS_0X730",
+    "snapshot_to_numeric_rf_drc_field": "UNBOUND",
+    "rf_snapshot_to_ddpi_plus_0xa4": "UNBOUND",
+    "runtime_or_audio_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "dialogue_rf_drc_profile_typed_path_addendum",
+    "manifest_sha256": "0d5f1416749104fcf9bb1f09d35c10d3055ea2185abf626912321a43db1545b6",
+    "package_seal_sha256": "e6bf60fe80691ae3daef8544db1caf05b7f1870b1287449d134ed68a7bc043d3",
+    "report_sha256": "0b48191a69a3d5e4ca68b2137804400ad0eff8cf7a2470986784b3e5587276b5",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis"
+  },
+  "path": {
+    "xml_token": "drc:rf_mode_drc_profile",
+    "schema_registry": "FUN_180133b10",
+    "token_reference": "FUN_180136220 at RVA 0x1373c2",
+    "string_type_writer": "FUN_180138690",
+    "string_snapshot_owner_base": "RSI+0x730",
+    "line_mode_consumer_offset": "+0xA0 (separate reused path)",
+    "rf_consumer_offset": "+0xA4 (not joined from this XML snapshot)"
+  },
+  "limits": {
+    "dee_executed": false,
+    "xml_runtime_value_captured": false,
+    "media_or_pcm_read": false,
+    "payload_key_or_license_read": false,
+    "implementation_source_read": false,
+    "installed_dll_rehashed": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Register the RF profile string schema and typed snapshot only. Keep the numeric RF DRC/BSI effect UNBOUND and separate from line-mode."
+}

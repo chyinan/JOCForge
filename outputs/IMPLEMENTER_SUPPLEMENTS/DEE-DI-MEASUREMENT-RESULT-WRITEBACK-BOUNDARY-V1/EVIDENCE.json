@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.dee_di_measurement_result_writeback_boundary.v1",
+  "package_id": "DEE-DI-MEASUREMENT-RESULT-WRITEBACK-BOUNDARY-V1",
+  "status": {
+    "bool_candidate_to_measurement_setup_plus_0x94": "STATICALLY_BOUND_BY_PARENT_V2",
+    "measurement_result_puvar12_plus_0x14_to_priv_plus_0xf6c": "STATICALLY_BOUND",
+    "setup_plus_0x94_to_result_plus_0x14": "UNBOUND",
+    "runtime_dialogue_intelligence_key_selection": "UNBOUND_NOT_CAPTURED",
+    "effect_of_bool_on_final_measurement": "UNBOUND",
+    "runtime_measurement": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "di-flag-bool-measurement-result-writeback-addendum-wash-v1",
+    "manifest_sha256": "52b9d7038edf33c0012401ada04e3add9e4da34c014e28b1a62fed9254b214ae",
+    "package_seal_sha256": "ca1bf3f9624c05f6a6f0d542431654e155d421798aa823cc96fff8c2a96c58dd",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC; sealed read-only/no-analysis traces reused"
+  },
+  "result_path": {
+    "measure_function": "FUN_18014aba0",
+    "wrapper": "FUN_180176980",
+    "engine": "FUN_1801769a0",
+    "result_field": "U32 puVar12+0x14",
+    "destination": "Priv+0xf6c",
+    "writeback": "BOUND"
+  },
+  "bool_input_path": {
+    "field": "measurement setup local_198+0x94",
+    "join_to_result_field": "UNBOUND"
+  },
+  "limits": {
+    "dee_or_ui_run": false,
+    "runtime_key_selected": false,
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Keep the result writeback and Bool-to-setup edge separate; do not claim DI affects the final measurement without a typed join."
+}

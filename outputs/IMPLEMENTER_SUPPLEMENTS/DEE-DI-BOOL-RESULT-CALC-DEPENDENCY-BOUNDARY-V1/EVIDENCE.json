@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.dee_di_bool_result_calc_dependency_boundary.v1",
+  "package_id": "DEE-DI-BOOL-RESULT-CALC-DEPENDENCY-BOUNDARY-V1",
+  "status": {
+    "bool_to_setup_local_198_plus_0x94": "STATICALLY_BOUND_BY_PARENT",
+    "setup_to_FUN_1801769a0_param_3": "STATICALLY_BOUND",
+    "result_param_2_plus_5_initial_value": "-120.0",
+    "result_param_2_plus_5_update_source": "per-record value lVar7+0x14",
+    "result_puvar12_plus_0x14_to_priv_plus_0xf6c": "STATICALLY_BOUND_BY_PARENT",
+    "setup_plus_0x94_to_result_value_dataflow": "UNBOUND",
+    "effect_of_bool_on_final_measurement": "UNBOUND",
+    "runtime_key_selection": "UNBOUND_NOT_CAPTURED",
+    "runtime_measurement": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "di_flag_bool_measurement_result_calc_boundary_addendum_wash_v1",
+    "manifest_sha256": "91d0dd7dc34e5cebb3a58082df7c22cb33bc526ca0f2dce6231322db72c30c60",
+    "package_seal_sha256": "e6448d528f385a709860bb4dff10d1eb2cfdb2b39f9d87ad5be8f235f0ef5bed",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC; sealed read-only/no-analysis traces reused"
+  },
+  "limits": {
+    "dee_or_ui_run": false,
+    "runtime_query_key_selected": false,
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Preserve the result-buffer calculation/writeback and Bool-to-input as separate facts; do not claim the Bool changes the measurement result."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DI-MEASURE-ONLY-TRUE-FALSE-RESULTS-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "44e030ddc075979886b8e5da05136db973d4278dbc5f4c2639186fb79a2e98c8",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "source_receipt_sha256": "5fde217056781608cf43dff97fc4d10baf95e815af98a1cef70bc863694f168d",
+  "source_receipt_sidecar_verified": true,
+  "checker_status": "NOT_RUN_BY_WASH"
+}

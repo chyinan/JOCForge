@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.wash.source-package-refresh.v1",
+  "packages": [
+    {
+      "package_id": "adm_bwf_ddp_drc_line_mode_codec_consumer_boundary_wash_v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/adm_bwf_ddp_drc_line_mode_codec_consumer_boundary_wash_v1",
+      "manifest_sha256": "c1ccfd222e409453bf152dc43d3c2c146ac0967d017038dcc3e395a0df1fcfec",
+      "seal_sha256": "7ccc4c414a307627b8717bcd15a39b43da98e3733f4cb2cca8a340ad5167d701",
+      "payloads_verified": "6/6"
+    },
+    {
+      "package_id": "adm_bwf_ddp_drc_line_mode_alternate_encode_consumer_boundary_wash_v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/adm_bwf_ddp_drc_line_mode_alternate_encode_consumer_boundary_wash_v1",
+      "manifest_sha256": "98355e72c205b32e9b47ec2f37e628f369aaedb7b3de8a1681ab584abc626143",
+      "seal_sha256": "415f25a4658ba590506ff10760ec8b6b158c8b3901b7f76b8bce5f35e69d8308",
+      "payloads_verified": "6/6"
+    },
+    {
+      "package_id": "adm_bwf_ddp_drc_line_mode_mode2_encode_consumer_boundary_wash_v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/adm_bwf_ddp_drc_line_mode_mode2_encode_consumer_boundary_wash_v1",
+      "manifest_sha256": "582bb849c498acd32a06fbf193bb0553141a416226e30ec1a8c01149d35f46ab",
+      "seal_sha256": "54291d980e4289e48a604d4c3a08c6617b0a4c644b9fb7fa80325f1d28317d9a",
+      "payloads_verified": "6/6"
+    }
+  ],
+  "wash_actions": {
+    "all_three_manifests_recomputed": true,
+    "all_payloads_recomputed": true,
+    "all_three_seals_recomputed": true,
+    "findings_changed": false,
+    "implementation_contacted": false,
+    "media_or_key_read": false
+  }
+}

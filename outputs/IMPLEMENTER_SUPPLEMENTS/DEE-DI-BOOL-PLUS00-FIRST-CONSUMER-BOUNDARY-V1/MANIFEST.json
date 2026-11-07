@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-BOOL-PLUS00-FIRST-CONSUMER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "BOOL_TO_CONFIG_PLUS00_BOUND; BOOL_TO_METER_RESULT_UNBOUND",
+  "implementation_disposition": "Register the input mapping and first-consumer break; do not claim a measurement or audio effect.",
+  "source_manifest_sha256": "5800986d25422fca144fb41309605043df1514c2a794e985bb9310d8383360ba",
+  "source_package_seal_sha256": "1c8649f401df4df0013d94e6e89acdc418baa8a479633cc01bf562aeca6b7142",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2737,
+      "sha256": "f00b99383544255349ddf85d5d73c2d8cbf3dac61a4084c19e3cde9e3b716f36"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2048,
+      "sha256": "0a72364519ef17f471337937466bcb2749380f33f43fd7e48cf21a687cc9600b"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 463,
+      "sha256": "ffd915572cf4d360a2941aab090cc72d4b34eb82d82307f5191a817c41416950"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 601,
+      "sha256": "6d49c0d29e73b66d05888a94f57a80471885ee2010c078b7e3665cc753604468"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 692,
+      "sha256": "3a1f8ca9693ae5d126310ce2c32adfd738571dfc4429cc6e20a9707ef7bea701"
+    }
+  ]
+}

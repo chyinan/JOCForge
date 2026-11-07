@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "meter-config-plus14-vs-setup-bool",
+      "kind": "static-field-producer-summary",
+      "input": {
+        "setup_bool_offset": "+0x94",
+        "copied_input_offset": "+0x04",
+        "configuration_field_offset": "+0x14"
+      },
+      "observed": {
+        "configuration_plus14_first_value": 1,
+        "configuration_plus14_later_value": 1,
+        "configuration_byte_affected_by_bool": "+0x00"
+      },
+      "status": "PLUS14_CONSTANT_BOUND; BOOL_TO_PLUS14_UNBOUND; RUNTIME_NOT_RUN"
+    }
+  ]
+}

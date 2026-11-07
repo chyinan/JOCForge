@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.rf_f98_candidate_consumer_boundary.v1",
+  "package_id": "DEE-RF-F98-CANDIDATE-FIRST-READER-OWNER-BOUNDARY-V1",
+  "source": {
+    "package_id": "dialogue_rf_drc_profile_f98_vector_first_consumer_addendum",
+    "manifest_sha256": "04c765fa9f638feabf07cc1993ee3db96bcf21d0380bf3f627997127952fee41",
+    "package_seal_sha256": "2169f77752a5f2709678ca849f05baec2b299495265db053fc571ab3689dfc3d"
+  },
+  "candidate_observation": {
+    "candidate_argument_field": "+0xf98 qword",
+    "accessed_as": "pointer/offset arithmetic",
+    "entry_read_before_next_helper": "NOT_OBSERVED",
+    "candidate_argument_to_producer_owner_join": "UNBOUND"
+  },
+  "retained_boundaries": {
+    "producer_owner": "UNBOUND",
+    "entry_read_and_type": "UNBOUND",
+    "stringtype_mapping": "UNBOUND",
+    "numeric_rf_state": "UNBOUND",
+    "next_helper_body": "NOT_FOLLOWED",
+    "global_search": "NOT_RUN",
+    "runtime": "NOT_RUN"
+  },
+  "execution_scope": {
+    "ghidra_version": "12.2",
+    "read_only_no_analysis": true,
+    "dee_run": false,
+    "media_or_pcm_read": false,
+    "payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  }
+}

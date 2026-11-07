@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "dialogue_rf_drc_profile_snapshot_owner_followup_addendum",
+      "manifest_sha256": "fc97b3e39b6649765b94529783d4631b8155a3981ba737374faa0e45cfb07672",
+      "package_seal_sha256": "ea3c76b5c26a995082d9356276d2c5f4943e7ded6c572cefb5560497c9af94aa"
+    },
+    {
+      "package_id": "DEE-RF-DRC-PROFILE-TYPED-SNAPSHOT-V1",
+      "manifest_sha256": "d315d056f970ffb04cf472b6bc1b7fd4b33ddac7237ce686a0ae7e6df04204b6",
+      "package_seal_sha256": "140f0a91b897df4cf60d94be4e4e8cc7133ad0c81e0ed59da4e8d930f634ae77"
+    },
+    {
+      "package_id": "DEE-RF-DRC-TYPED-SNAPSHOT-TEARDOWN-FIRST-BREAK-V1",
+      "manifest_sha256": "61aa9912053c3e220068dff5e1fb34c2415eacb6f433418cfd16e2d4ebe3abd9",
+      "package_seal_sha256": "566c0400fe357db421104d3dcc7757387aed36ccf9d7f090c994e8b078246f16"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

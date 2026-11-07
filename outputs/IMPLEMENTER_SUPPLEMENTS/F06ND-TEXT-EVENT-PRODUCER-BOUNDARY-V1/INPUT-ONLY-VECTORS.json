@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.f06nd-text-event-input-only.v1",
+  "vectors": [
+    {
+      "id": "generic-text-event-collector-does-not-join-category5",
+      "kind": "static symbolic ownership boundary; not executed",
+      "input": {
+        "source": "generic text-line event parser",
+        "callback": "parsed event to local collector",
+        "submission": "collector shared pointer to keyed entry",
+        "selected_category5_owner_generation": "UNBOUND"
+      },
+      "expected": {
+        "text_event_path": "BOUND_STATICALLY",
+        "shared_callback_target_means_same_owner": false,
+        "category5_join": "NO_SELECTED_JOIN_ESTABLISHED",
+        "drc_bsi_effect": "UNBOUND_NO",
+        "runtime": "NOT_RUN"
+      }
+    }
+  ]
+}

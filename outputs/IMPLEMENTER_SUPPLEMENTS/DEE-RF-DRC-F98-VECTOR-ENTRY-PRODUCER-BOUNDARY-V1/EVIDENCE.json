@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.rf_drc_f98_vector_entry_producer_boundary.v1",
+  "package_id": "DEE-RF-DRC-F98-VECTOR-ENTRY-PRODUCER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "dialogue_rf_drc_profile_vector_f98_owner_producer_addendum",
+    "manifest_sha256": "1de72843f243f0276132442653037639f133a87a4aa1e37bbf8d3b7026dadeba",
+    "package_seal_sha256": "41213f159f339d56bb3a4df763f474c802e85d8a80c9b34dfd424a8838d17974",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "parent_first_consumer_receipt": {
+    "package_id": "dialogue_rf_drc_profile_vector_f98_first_consumer_addendum",
+    "manifest_sha256": "fd20dba27f69640e3127053171eaf432395f338c5dd47cba3abcc54af561184a",
+    "package_seal_sha256": "f226d9472c522492d9c3ffd9b3a3f4746bfac86fbb24d5d59c19b7d34363a93b",
+    "same_caller_f98_consumer": "NOT_FOUND"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 static, reused sealed caller/callee traces",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "global_xref_scan": false,
+    "global_absence_claim": false
+  },
+  "vector_header": {
+    "destination_owner_field_offset_hex": "0xf98",
+    "header_qwords": 3,
+    "source_slot_range": "[RSP+0x28, RSP+0x30)",
+    "source_entry_width_bytes": 8,
+    "caller_source_value": "RSI",
+    "generic_copy_element_type": "longlong",
+    "semantic_entry_type_or_owner": "UNBOUND",
+    "stringtype_or_numeric_rf_join": "UNBOUND"
+  },
+  "status": {
+    "header_destination_and_copy": "BOUND_STATIC",
+    "entry_source_slot": "BOUND_STATIC",
+    "entry_semantic_owner": "UNBOUND",
+    "first_consumer": "UNBOUND",
+    "rf_drc_or_numeric_effect": "UNBOUND"
+  },
+  "implementation_disposition": {
+    "do_not_infer_entry_type_from_longlong": true,
+    "do_not_join_to_adjacent_f88_or_fb0_fields": true,
+    "algorithm_change_authorized": false
+  }
+}

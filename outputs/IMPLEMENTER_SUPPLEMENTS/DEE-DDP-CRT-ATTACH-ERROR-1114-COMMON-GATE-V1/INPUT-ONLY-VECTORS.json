@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "ddp-common-init-failure-class",
+      "input": {
+        "loader_error": 1114
+      },
+      "expected_observation": {
+        "failure_class": "DLL initialization failure",
+        "specific_initializer": "NOT_IDENTIFIED"
+      },
+      "limitations": [
+        "Static candidate sites are not runtime failures",
+        "No component/dependency attribution",
+        "No successful load proved"
+      ]
+    }
+  ]
+}

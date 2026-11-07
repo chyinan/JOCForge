@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "di-flag-bool-empire-loudness-subcontext-result-consumer-boundary-addendum-wash-v1",
+  "manifest_sha256": "240abb2fe291a7316e3a28bf1932f73a489ac07a07d6e8aefa724cc597d5850e",
+  "package_seal_sha256": "549b93c3c4ec348850a35144e3e604775efd54dbfbbc690dad7d62e19dc48a2b",
+  "source_checker_normal_and_optimized": "PASS",
+  "raw_trace_or_native_source_copied": false
+}

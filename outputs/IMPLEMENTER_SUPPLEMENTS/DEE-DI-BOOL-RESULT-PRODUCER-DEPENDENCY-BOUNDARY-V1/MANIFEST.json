@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-BOOL-RESULT-PRODUCER-DEPENDENCY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RECORD_PRODUCERS_BOUND; BOOL_SCALAR_DEPENDENCY_UNBOUND",
+  "implementation_disposition": "Register static record producers only; do not infer the Bool's measurement effect.",
+  "source_manifest_sha256": "c5fc1d10e1a2a3e5d7b2755727bea7e25f2a0be2fb8b0bd918d1ca337e5c4d76",
+  "source_package_seal_sha256": "3d03ce36ed7945f710603c17ea20af304bd01641e1d3e4a25e0649951488c613",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4187,
+      "sha256": "5e5e7165edf1db8fd6c914eaad1aaab44baaf4fc16f2065d2c7c9b56565a6b81"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2082,
+      "sha256": "50401495f2bbb45490cb5bc6b51392488f07c5847ef9fff2a6323d9ca61bfab1"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 732,
+      "sha256": "50d5e521f413a8bbc81c6f0237988cd14ee0e77c856d381c7ec2a48910ec839a"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 987,
+      "sha256": "fbaabc44288f33e83a889c64966ed965f548ad67587779d3bc1e57c0b0917807"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 933,
+      "sha256": "a3c43b838cb2ff7535fcb132f2de2c20104dcdc11a1d47567f23f2f6191786b4"
+    }
+  ]
+}

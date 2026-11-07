@@ -1,0 +1,20 @@
+{
+  "package_id": "ATMOS-51-TRIM-METADATA-BOUNDARY-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 777,
+      "sha256": "5aec95d9bf0cff0091b6e460033fd272f3eba938e7a40ddefae675f5d69f2fa3"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 407,
+      "sha256": "3f531eac94d757e6c1df566b2092496806440ebcd2928a9f24a45fe23040b347"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 331,
+      "sha256": "aa87fe4462adf3baba9aa1380b45e4f49f592efa510fd5100aea0057f23b63f3"
+    }
+  ]
+}

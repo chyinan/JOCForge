@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "caller-local-f88-no-direct-read",
+      "kind": "static-caller-boundary-summary",
+      "input": {
+        "field_alias": "RDI+0xf88 via RBX",
+        "pre_call_qwords_zeroed": 2,
+        "passed_to_callee_as": "RCX",
+        "callee_reads_saved_value": false,
+        "later_local_read_before_redefinition": false
+      },
+      "expected_status": "TYPE_AND_RF_EFFECT_UNBOUND",
+      "status": "STATIC_TRACE_ONLY",
+      "payload_values_included": false
+    }
+  ]
+}

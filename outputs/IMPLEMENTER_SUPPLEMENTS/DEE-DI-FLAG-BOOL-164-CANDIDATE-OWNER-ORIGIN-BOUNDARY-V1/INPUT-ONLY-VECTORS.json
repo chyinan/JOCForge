@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "codec-child-record-opaque-pointer-vs-atmos-subcontext",
+      "input": {
+        "codec_child_owner": "lVar6 selected from parent +0x10cc array",
+        "candidate_pointer": "*(lVar6+0xdf0) -> FUN_1801bcf40 param_1",
+        "comparison_pointer": "engine+0x1d0"
+      },
+      "expected_disposition": {
+        "candidate_pointer_target": "OPAQUE",
+        "typed_owner_generation_join": "UNBOUND",
+        "bool_result_causality": "UNBOUND"
+      },
+      "limitations": [
+        "Single direct caller slice only.",
+        "No global xref enumeration or absence claim.",
+        "No runtime or audible-effect observation."
+      ]
+    }
+  ]
+}

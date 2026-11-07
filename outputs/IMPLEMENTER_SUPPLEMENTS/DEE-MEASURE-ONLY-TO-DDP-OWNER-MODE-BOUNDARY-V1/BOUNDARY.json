@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-MEASURE-ONLY-TO-DDP-OWNER-MODE-BOUNDARY-V1",
+  "decision": "HOST_STAGE_PROPERTY_PATH_BOUND_TO_INDIRECT_CALL; DDP_MODE_JOIN_UNBOUND",
+  "host_image": "dee.exe",
+  "host_stage_path": {
+    "builder": "FUN_14003f690",
+    "stage_factory": "FUN_140041be0",
+    "stage_object_field": "+0x280",
+    "set_stage_properties": "FUN_14004d610 at 0x140040c9a",
+    "row_key_offset": "+0x18",
+    "row_value_offset": "+0x38",
+    "generic_property_adapter": "FUN_140054010 at 0x14004d977",
+    "indirect_target_callsite": "0x14005421f vtable slot +0x8",
+    "runtime_ddp_vtable_identity": "UNBOUND"
+  },
+  "ddp_plugin_image": "dee_audio_filter_ddp_atmos.dll",
+  "plugin_path": {
+    "measure_only_registration": "FUN_180136220, config member +0xad0",
+    "slot1_property_setter": "FUN_18013e9d0",
+    "setter_behavior": "indirect property-object vtable +0x28 callback; no direct store to adapter +0x8",
+    "slot5_mode_writer": "FUN_18013e920 reads this+0x8 -> writes owner+0xf34",
+    "host_measure_only_to_adapter_plus_0x8": "UNBOUND",
+    "measure_only_to_owner_plus_0xf34": "UNBOUND"
+  },
+  "prior_mode_semantics": {"owner_plus_0xf34_zero": "measurement", "owner_plus_0xf34_one": "normal encode", "source_join_to_measure_only": "UNBOUND"},
+  "status": {
+    "vectors": "SYMBOLIC_NOT_RUN",
+    "runtime_vtable_target": "NOT_CAPTURED",
+    "dee_execution": "NOT_RUN",
+    "media_license_auth_read": false,
+    "implementation_modified": false,
+    "source_manifest_and_six_payloads_verified": true,
+    "host_and_plugin_images_rehashed_by_wash": true
+  },
+  "next_exact_gap": "Resolve the host stage vtable slot+0x8 target and the DDP property callback that writes adapter+0x8; preserve separate identities until typed lineage joins them."
+}

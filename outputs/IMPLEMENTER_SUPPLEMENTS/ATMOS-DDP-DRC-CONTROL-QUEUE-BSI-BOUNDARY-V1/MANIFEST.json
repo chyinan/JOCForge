@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ATMOS-DDP-DRC-CONTROL-QUEUE-BSI-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "INTERNAL_CONTROL_BIT_LAYOUT_BOUND_STATIC; CONTROL_API_QUEUE_INSERTION_BOUND_STATIC; OUTPUT_BSI_METADATA_SERIALIZER_PATH_IDENTIFIED; QUEUE_PAYLOAD_TO_OUTPUT_BSI_RECORD_UNBOUND; FINAL_AU_BSI_BIT_POSITION_UNBOUND; SELECTED_JOB_PATH_UNOBSERVED; PCM_EFFECT_NOT_DETERMINED",
+  "implementation_disposition": "USE_SCOPED_INTERNAL_CONTROL_RULE; DO_NOT_CLAIM_SELECTED_JOB_BSI_OR_PCM_EFFECT",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2438, "sha256": "3f4347a4fd6ca03d43620522a02bdb1eee4ae59f80dcedc7d8fff9b06546c6e6"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 1701, "sha256": "a4bc4b178341172ce2bce4f44fcb198ae6e6275b56c6890d914607d8810a8108"},
+    {"name": "REPORT.md", "bytes": 2054, "sha256": "d29fa804a008ecd5f35c769b7e2372bce3033354400cfa6f9069ca2c60bea0b3"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 981, "sha256": "fb77726f5c15b18ba7dc4a2e992355dc417e6d394201ffff909c5058b90880f6"}
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "rf-f98-outer-caller",
+      "input": {
+        "outer_caller_entry_rcx": "forwarded to candidate entry"
+      },
+      "expected_observation": {
+        "candidate_entry_to_r14": "UNBOUND",
+        "producer_owner_join": "UNBOUND"
+      },
+      "limitations": [
+        "No caller-of-caller",
+        "No alternate callsite",
+        "No RF semantic mapping"
+      ]
+    }
+  ]
+}

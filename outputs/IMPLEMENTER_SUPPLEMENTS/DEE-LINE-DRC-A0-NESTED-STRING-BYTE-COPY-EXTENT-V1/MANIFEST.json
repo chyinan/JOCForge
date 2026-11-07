@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-A0-NESTED-STRING-BYTE-COPY-EXTENT-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "GENERIC_OVERLAP_SAFE_BYTE_COPY_STATIC_BOUND; STRING_METADATA_UPDATE_BOUND; CODEC_BSI_OWNER_UNBOUND",
+  "implementation_ready": false,
+  "source_manifest_sha256": "31a411a8ab940f1e2f4dd3fe5faef02144ffaf7479073fb755c88f926532099d",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2250,
+      "sha256": "6d8f0bf5000393223f269ccfe152921b8b6d43dab57c92c46a343b5cf030e214"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2063,
+      "sha256": "cab9085d3fd3211e367a41820ff7dafa153827a5a78244eb2252e361912ee4ef"
+    },
+    "REPORT.md": {
+      "bytes": 1082,
+      "sha256": "ed6f2f412d21be365765d71f711bb939996640e9d2b2ca6e3d5c2107693fc7e9"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1102,
+      "sha256": "2c57fd44d4d8a9c39dfbd2e7cf89135dd3810b807159f17f6ccc56e3b3fae98e"
+    }
+  }
+}

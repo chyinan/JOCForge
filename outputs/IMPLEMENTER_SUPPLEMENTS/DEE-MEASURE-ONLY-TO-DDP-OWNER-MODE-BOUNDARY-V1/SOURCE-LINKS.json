@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/measure_only_owner_mode_wash_v1",
+    "manifest_sha256": "665912add98deaa7c276f728ee8301e8a7cbe571f985fb0ab7570bc8a420aa7f",
+    "payloads_verified": "6/6",
+    "source_seal_sha256": "cd1f4a31423e51283a3fad7cc7ee1ea9486f0a3879430adaa42a08ef33b69f4e"
+  },
+  "target_images": [
+    {"path": "D:/Programs/dee71joc/test_dee/dee.exe", "bytes": 4233728, "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll", "bytes": 10942464, "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+  ],
+  "wash_actions": {
+    "source_manifest_and_payloads_recomputed": true,
+    "source_seal_recomputed": true,
+    "host_and_plugin_images_rehashed": true,
+    "raw_ghidra_traces_or_scripts_copied": false,
+    "private_key_or_license_material_copied": false
+  }
+}

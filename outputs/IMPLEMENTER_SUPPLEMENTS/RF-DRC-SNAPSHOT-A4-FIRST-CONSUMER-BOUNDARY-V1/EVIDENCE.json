@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.rf_drc_snapshot_a4_first_consumer_boundary.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-FIRST-CONSUMER-BOUNDARY-V1",
+  "status": {
+    "same_snapshot_owner_through_per_frame_helper": "BOUND_STATIC",
+    "plus_0xa4_direct_consumer_in_checked_path": "NOT_OBSERVED",
+    "plus_0xa4_typed_receiver": "UNBOUND",
+    "runtime_rf_value_or_mode": "NOT_CAPTURED",
+    "global_no_consumer_claim": false,
+    "rf_drc_effect": "UNBOUND"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/rf_drc_snapshot_a4_first_consumer_wash_v1",
+    "package_id": "rf_drc_snapshot_a4_first_consumer_wash_v1",
+    "manifest_sha256": "471360aa4221542f6ba7d47e22687e1b37cf171ae6283f842d9615212b583e10",
+    "package_seal_sha256": "c7acded5f269782aa878a05d3c74d4625c2c6fc64802d331893b901f202dcf0d0",
+    "normal_checker": "PASS",
+    "python_O_checker": "PASS",
+    "payload_count": 5,
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC"
+  },
+  "same_owner_static_path": {
+    "writer": "FUN_1801535b0.param_2 writes the profile lookup result to snapshot+0xA4",
+    "direct_caller_owner": "FUN_1801475f0 local snapshot RBP+0x400",
+    "first_same_owner_consumer": "FUN_1801754f0 receives the same snapshot pointer",
+    "validation_helper": "FUN_180177230 receives the same snapshot pointer",
+    "per_frame_helper": "FUN_1801764e0 receives the same snapshot pointer",
+    "bounded_plus_0xa4_scan": "zero direct memory operands and zero decompiled references in FUN_1801764e0",
+    "separate_plus_0xe0_path": "not joined to +0xA4"
+  },
+  "next_bounded_edge": "FUN_1801764e0 output pointer &plStack_140 -> immediate vtable+0x18 receiver; test same-owner value flow from snapshot+0xA4",
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "line_mode_revisited": false,
+    "global_xref_sweep": false,
+    "implementation_contact": false,
+    "ghidra_source_or_logs_in_supplement": false
+  },
+  "disposition": "Retain the bounded first-break and follow only the stated output-pointer receiver edge. Do not claim global absence or RF effect."
+}

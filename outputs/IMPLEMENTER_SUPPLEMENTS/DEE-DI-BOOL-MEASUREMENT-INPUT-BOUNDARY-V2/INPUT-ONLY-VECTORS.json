@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_QUERY_OR_MEDIA_VECTOR",
+  "vectors": [],
+  "note": "Static field path only; runtime key selection and audio values were not captured."
+}

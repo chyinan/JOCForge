@@ -1,0 +1,23 @@
+{
+  "common": {
+    "input_type": "atmos_mezz"
+  },
+  "arms": [
+    {
+      "id": "baseline",
+      "surround_trim_5_1": "auto",
+      "height_trim_5_1": "auto"
+    },
+    {
+      "id": "surround",
+      "surround_trim_5_1": "-6",
+      "height_trim_5_1": "auto"
+    },
+    {
+      "id": "height",
+      "surround_trim_5_1": "auto",
+      "height_trim_5_1": "-9"
+    }
+  ],
+  "status": "PROPOSED_NOT_RUN"
+}

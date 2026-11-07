@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-DRC-MODE2-CODEC-OUTPUT-CONSUMER-BOUNDARY-V1",
+  "decision": "MODE2_CODEC_TO_OUTPUT_DESCRIPTOR_BOUND; LINE_A0_TRANSFER_UNBOUND; OUTPUT_SLOT_TARGET_UNBOUND; EFFECT_UNBOUND",
+  "source_package": {
+    "package_id": "adm_bwf_ddp_drc_line_mode_mode2_codec_input_writer_boundary_wash_v1",
+    "evidence_manifest_sha256": "05102c90eaacce430cd80318be1c751d286a41598bbc68ae94178d0b19fed873",
+    "package_seal_sha256": "a53a705b5b0d0020e19a6dcb157b61b8a04f5ec5abe7ce37830349870ae20e66",
+    "payload_count": 7,
+    "wash_verified_seal_entries": "7/7",
+    "wash_verified_source_evidence": "11/11"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "wash_rehashed": true,
+    "tool": "Ghidra 12.2 PUBLIC, static, read-only/no-analysis"
+  },
+  "typed_path": {
+    "codec_entry": "FUN_1801a8840",
+    "config_builder": "FUN_180179ab0",
+    "config_inputs": ["block descriptor +0x18", "block descriptor +0x20", "encoder state +0x88"],
+    "state_preparation": "FUN_1801ac850",
+    "process_stage": "FUN_1801a7710",
+    "output_descriptor_builder": "FUN_1801ab800",
+    "first_descriptor_consumer": "FUN_1801b1590",
+    "dispatch_owner": "context array +0xc0f8",
+    "output_dispatch": {"callsite": "0x1801b18d9", "slot": "+0x28", "typed_target": "UNBOUND"}
+  },
+  "line_profile": {
+    "record_field": "+0xa0",
+    "explicit_transfer_to_codec_arguments": "NOT_PRESENT_IN_INSPECTED_ARGUMENTS",
+    "typed_equivalent_parameter": "UNBOUND",
+    "global_absence_claim": false
+  },
+  "effect": {
+    "final_bsi": "UNBOUND",
+    "audio_dynamic_range": "UNBOUND",
+    "runtime_selection": "NOT_RUN",
+    "same_run_generation": "UNBOUND"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "wash-static-evidence-package.v1",
+  "package_id": "rf_drc_snapshot_a4_branch_target_inputs_wash_v1",
+  "status": "THREE_BRANCHES_AND_SLOT18_TARGETS_BOUND_STATIC; WORKER_FIRST_INPUTS_ARE_GENERIC_64BIT; SAME_SNAPSHOT_A4_VALUE_NOT_BOUND; RUNTIME_VARIANT_NOT_CAPTURED; INDIRECT_TRANSFER_UNBOUND",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2181,
+      "sha256": "49ed584a01aa5a538aaa01bf93fd241b463eee26b901797fb2be483a14d3cd03"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1911,
+      "sha256": "8cfa8694f6aef5457917ca6c341506002c037dbca6469cebab29cd006c283ac9"
+    },
+    {
+      "name": "SOURCE-MANIFEST.json",
+      "bytes": 3084,
+      "sha256": "d78e22f870fbd95ed39072c7e9b7ebeb88dc5eca03a3c727a6cf4e989bb448d2"
+    },
+    {
+      "name": "TRACE-EXCERPTS.txt",
+      "bytes": 11701,
+      "sha256": "1f7fe1dbd8fc7f16e35aa207fe1f818645ad8aefcbf60f100ec08f6982a85a6f"
+    },
+    {
+      "name": "BRANCH-TARGET-INPUTS.json",
+      "bytes": 2406,
+      "sha256": "b509c3f3d828623a897df63f12ac875cabeefcb44fac6cad02229fa51485a4db"
+    }
+  ]
+}

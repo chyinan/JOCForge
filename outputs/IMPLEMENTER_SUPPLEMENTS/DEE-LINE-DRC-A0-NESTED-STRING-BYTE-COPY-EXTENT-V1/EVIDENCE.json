@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.dee_line_drc_a0_nested_string_byte_copy.v1",
+  "package_id": "DEE-LINE-DRC-A0-NESTED-STRING-BYTE-COPY-EXTENT-V1",
+  "status": "GENERIC_OVERLAP_SAFE_BYTE_COPY_STATIC_BOUND; STRING_METADATA_UPDATE_BOUND; CODEC_BSI_OWNER_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "line_mode_a0_byte_copy_extent_wash_v1",
+    "manifest_sha256": "31a411a8ab940f1e2f4dd3fe5faef02144ffaf7479073fb755c88f926532099d",
+    "sha256sums_sha256": "27e3611340e3bc000fc7cc688fc2a2044c4826a8bf0970f00f5e574a6f3d9a7e",
+    "package_seal_file_sha256": "1564500077c4d1ddc8ed6237b8fa3f590a390c412ff7288b28b4c950e5ec4e1d",
+    "payload_hash_audit": "PASS_7_OF_7",
+    "agent_reported_checker_normal": "PASS",
+    "agent_reported_checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "analysis_mode": "read-only/no-analysis",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "generic_copy": {
+    "caller": "FUN_1801431f0",
+    "helper": "FUN_18059a7e0",
+    "arguments": {
+      "destination": "generic string-like buffer",
+      "source": "selected row string data + start",
+      "extent": "U64 byte count, clamped to source length"
+    },
+    "start_position": 0,
+    "copy_behavior": "length-specific small paths; chunked larger paths; backward copy on overlapping ranges",
+    "return": "destination pointer",
+    "caller_after_copy": ["stores destination string length", "writes NUL terminator"],
+    "record_type": "generic string-like object; not codec/BSI"
+  },
+  "audio_boundary": {
+    "snapshot_plus_0xa0_join": "UNBOUND",
+    "codec_or_bsi_owner": "UNBOUND",
+    "later_consumer": "UNBOUND",
+    "runtime_string_bytes": "NOT_CAPTURED",
+    "generation_clock": "NOT_CAPTURED"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "source_bytes_read": false,
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_trace_excerpt_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

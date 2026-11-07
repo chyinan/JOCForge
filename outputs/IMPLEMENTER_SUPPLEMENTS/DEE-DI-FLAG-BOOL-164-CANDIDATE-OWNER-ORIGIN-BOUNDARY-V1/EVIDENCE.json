@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.di_flag_bool_164_owner_origin_boundary.v1",
+  "package_id": "DEE-DI-FLAG-BOOL-164-CANDIDATE-OWNER-ORIGIN-BOUNDARY-V1",
+  "status": "CANDIDATE_CHILD_OWNER_BOUND; PLUS_0XDF0_POINTER_TARGET_OPAQUE; DLL_SUBCONTEXT_JOIN_UNBOUND",
+  "source": {
+    "package_id": "di-flag-bool-empire-loudness-subcontext-164-candidate-owner-origin-boundary-addendum-wash-v1",
+    "manifest_sha256": "5d9d090826c2e686f830ee3807555ecf0469bc2a08e11669130cf87ef735d752",
+    "package_seal_sha256": "6c33751c17d636c1a4a1a9208141d83a75be95c2c85ea5d5bbc8ade4017e036a",
+    "normal_and_python_o_checker": "PASS"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2 PUBLIC",
+    "mode": "existing project; read-only; analysis disabled",
+    "tier": "STATIC",
+    "scope": "One direct caller FUN_1801febe0 and the +0xdf0 pointer load only."
+  },
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "candidate": {
+    "function": "FUN_1801bcf40",
+    "rva": "0x1bcf40",
+    "field_read": "param_1+0x164",
+    "direct_caller": "FUN_1801febe0"
+  },
+  "owner_path": {
+    "child_record_array": "param_1+0x10cc",
+    "selected_record": "lVar6=*plVar8",
+    "candidate_param_1_source": "*(undefined8 *)(lVar6+0xdf0)",
+    "nearest_typed_owner": "codec-parent child record at lVar6",
+    "pointer_target": "OPAQUE",
+    "field_store_or_constructor_in_caller": "NOT_OBSERVED_IN_THIS_ONE_FUNCTION_TRACE"
+  },
+  "comparison_target": {
+    "name": "Atmos engine subcontext",
+    "pointer": "engine+0x1d0",
+    "typed_owner_generation_join": "UNBOUND"
+  },
+  "result_causality": "UNBOUND",
+  "global_absence_claim": false,
+  "execution_scope": {
+    "new_ghidra_query": "NOT_RUN_BY_WASH",
+    "runtime_capture": "NOT_RUN",
+    "dee": "NOT_RUN",
+    "ui": "NOT_RUN",
+    "audio_or_pcm": "NOT_READ",
+    "key_or_license": "NOT_READ",
+    "implementation_contact": "NOT_RUN"
+  }
+}

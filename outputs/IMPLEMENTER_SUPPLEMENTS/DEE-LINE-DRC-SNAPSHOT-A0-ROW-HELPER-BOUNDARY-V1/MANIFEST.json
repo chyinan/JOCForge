@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-SNAPSHOT-A0-ROW-HELPER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SNAPSHOT_TO_PACKER_BOUND; A0_VALUE_TO_ROW_HELPER_UNBOUND",
+  "implementation_disposition": "Register the first row-helper argument boundary; do not claim DRC effect.",
+  "source_manifest_sha256": "7fdb3c6b7a177e5fd4ed325246a337a162ba2f51e35f1559073cac32fdbfcfb5",
+  "source_package_seal_sha256": "45408259fae5efc4e376fd74ac8fb316a8b5775dda109ac18d7ca1ef420f87e0",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2654,
+      "sha256": "74d826e757c22ca486eb50137f87d590fc584ea54e0e246e61a50f2766223586"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2141,
+      "sha256": "264718dde47a3f540cc197e32b127c5a1c2e9c302bf33f724ead8b43bc571aec"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 464,
+      "sha256": "690340d66a4f6ba4539bc207278b2454674535d242ac14e2ded639b079e1393d"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 621,
+      "sha256": "2998f29706c26e024bafb10960408bdef2b5d659c0dd6914ca8805a404365a5d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 797,
+      "sha256": "e0162c3cdda5b34f0994bd0a8f3db19aea11012ca6ef2a082caae5f3ce191d2f"
+    }
+  ]
+}

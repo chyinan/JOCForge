@@ -1,0 +1,32 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "rf_drc_snapshot_a4_first_consumer_wash_v1",
+  "status": "SELECTED_SNAPSHOT_OWNER_BOUND_STATIC; FIRST_CONSUMER_PLUS_0XA4_NOT_OBSERVED; A4_TYPED_RECEIVER_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2134,
+      "sha256": "6f0f3b526e602c4a7b55a14ecce5105a3b4445fcb2fc97213f25d293cc1a5c6b"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1844,
+      "sha256": "37459fc7b7204e9a14e639429b483a83677b007a8446d13bea642ebc4ad9cd43"
+    },
+    {
+      "name": "SNAPSHOT-FIRST-CONSUMER.json",
+      "bytes": 2052,
+      "sha256": "38c75badfb9e5a625b16eb996bc4738795767426e37043afa0fad4e7d1d00f9e"
+    },
+    {
+      "name": "SOURCE-MANIFEST.json",
+      "bytes": 6168,
+      "sha256": "96ed00628fc473426baf18ff040d1b4227804d9982396b193d39cd264a4abae0"
+    },
+    {
+      "name": "TRACE-EXCERPTS.txt",
+      "bytes": 1570,
+      "sha256": "1d96c7d7f325915fe4bdfaf4c502f5837df5ce58c7f1f0ce7b9743a2d57bd00b"
+    }
+  ]
+}

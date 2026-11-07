@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.drc_row_converter_first_read_boundary.v1",
+  "package_id": "DEE-DRC-A0-ROW-CONVERTER-PLUS10-FIRST-READ-BOUNDARY-V1",
+  "source": {
+    "package_id": "line_mode_drc_snapshot_a0_row_converter_first_read_wash_v1",
+    "manifest_sha256": "b711f9cc198eac261a69189c3c972e95c6fcec2a1cc89894facedb69748afcdf",
+    "package_seal_sha256": "60d21ac9a698bef83b91eb1ee731aeaf24b3ee519f1b54b832c9834df669324e"
+  },
+  "selected_row_transfer": {
+    "helper_passes_row_pointer_unchanged_to_converter": "BOUND_STATIC",
+    "converter_first_pointer_read": "QWORD at row +0x10",
+    "field_semantic_type": "UNBOUND"
+  },
+  "identity_boundary": {
+    "row_plus_0x10_to_snapshot_plus_0xa0": "UNBOUND",
+    "same_owner_typed_projection": "UNBOUND",
+    "codec_bsi_effect": "UNBOUND"
+  },
+  "stopping_scope": {
+    "trace_stopped_at_first_read": true,
+    "later_instructions_inspected": false,
+    "other_callers_or_global_xrefs": false,
+    "plus_0xa4_revisited": false,
+    "runtime": "NOT_RUN",
+    "global_absence_claim": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "measure-only-di-input-v1",
+  "common": {
+    "speech_threshold": 15,
+    "metering_mode": "1770-4",
+    "data_rate_kbps": 1024,
+    "sample_rate_hz": 48000,
+    "line_drc": "film_light",
+    "rf_drc": "film_light"
+  },
+  "arms": [
+    {
+      "id": "di_false",
+      "dialogue_intelligence": false
+    },
+    {
+      "id": "di_true",
+      "dialogue_intelligence": true
+    }
+  ],
+  "status": "PROPOSED_NOT_RUN"
+}

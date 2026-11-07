@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DDP-CRT-ATTACH-ERROR-1114-COMMON-GATE-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "COMMON_CRT_ATTACH_GATE_BOUND_STATIC; FAILING_INITIALIZER_UNIDENTIFIED",
+  "implementation_disposition": "Classify error 1114 as DLL initialization failure; do not attribute it to a specific component or dependency initializer.",
+  "source_package_id": "ddp_four_component_initialization_comparison_wash_v1",
+  "source_manifest_sha256": "8901e160d80c07f8bc050e6992a0d9eefd7fb88c829e7cc0a7239e29b55fe7af",
+  "source_package_seal_sha256": "167419231bb88ae644897d4be89fdbbec8439b00b693163bd3709e2cac66ae46",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1718,
+      "sha256": "04b10f97e5921c80afa70e6ec840c8f186d7e86fe4210884c0bb2602c3857707"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 654,
+      "sha256": "d388a9990d6849585ec4a3b95e2fde8c8bc4ac78ad7fe19de9465fe8bdd78f21"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 519,
+      "sha256": "849cb17a60cb2229cd572f8cf8459723226d055da2c84b019d064672f84cff9c"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1169,
+      "sha256": "d1044949478ab683fbae6d6a896c4446692d300c507265757621dc5ceee2aa71"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 860,
+      "sha256": "6b4068e7eaaa5df431370361396002bc93d672d2f501ef695956f859c22ce74a"
+    }
+  ]
+}

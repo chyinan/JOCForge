@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-di-helper-post-delegate-receipts.v1",
+  "source_package": "di_bool_initializer_status_join_boundary_wash_v1",
+  "source_path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_bool_initializer_status_join_boundary_wash_v1",
+  "manifest_sha256": "6b325cad518f549cf078604a6aaff8bf970b6abde6800a414330935dcb59aabe",
+  "package_seal_sha256": "b673c3c9ea325455c4d6487287c5ece947f2e2b5899705035a99b3ccaf57a0d9",
+  "normal_checker": "PASS_IN_WASH",
+  "optimized_checker": "PASS_IN_WASH",
+  "static_tool": "Ghidra 12.2 read-only/no-analysis",
+  "runtime_status": "NOT_RUN",
+  "implementation_contact": false
+}

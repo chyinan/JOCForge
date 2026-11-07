@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "empire-subcontext-initial-fields",
+      "input": {
+        "selected_mode_branch": "Bool-conditioned"
+      },
+      "expected_observation": {
+        "subcontext_0x164": "Bool-derived on selected branch",
+        "subcontext_0x3c": "constant -120.0 at construction"
+      },
+      "limitations": [
+        "No causal edge between fields",
+        "Later writers not inspected",
+        "Final runtime value not captured"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-PLUS164-ALTERNATE-IMAGE-CANDIDATE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ALTERNATE_IMAGE_PLUS164_READ_BOUND; TARGET_OWNER_JOIN_UNBOUND",
+  "implementation_disposition": "Do not use this separate EXE candidate as evidence of the Atmos DLL Bool/result path.",
+  "source_package_id": "di-flag-bool-empire-loudness-offset164-candidate-owner-boundary-addendum-wash-v1",
+  "source_manifest_sha256": "c0e8a2510244e073c4a93bcc089f256b780e680acb61f4b03cfaa055c7535a70",
+  "source_package_seal_sha256": "2742cb6e72fd832b820b2adada0f8772dfa5e952cd6f74c639e11546968cb3a2",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1666,
+      "sha256": "735430e2b44aeb590ab44cb6b69c72af148a6db83f6efbe22d90526589572fa5"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1402,
+      "sha256": "773b68ac801c2657701dd14be486a7b4346b5dd5068b7c00e79b66414b6515b0"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 537,
+      "sha256": "3bd22953eaf91f171381ab2ee49694a70423d7e0a12d1ec0069cbfa2140e0ed2"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 736,
+      "sha256": "875a873fd73d825394dc6dc56a567e5ddd32a8156d2cf21d6e296447bfbf665a"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 448,
+      "sha256": "e6578890003b4a927fab74100abc32073031c315697b6659e8b0c127753eba98"
+    }
+  ]
+}

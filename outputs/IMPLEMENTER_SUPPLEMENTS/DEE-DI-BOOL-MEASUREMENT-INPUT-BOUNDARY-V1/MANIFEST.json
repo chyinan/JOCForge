@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "BOOL_TO_MEASUREMENT_INPUT_BOUND; FINAL_EFFECT_UNBOUND",
+  "implementation_disposition": "Register the conditional value-to-input field path only; leave measurement and final-result use unbound.",
+  "source_manifest_sha256": "e448cfc7c496e260825b6d4dea6229f2769dc92c1adf39d869b41469dd858ffa",
+  "source_package_seal_sha256": "5219e93218a933903224c8ba3e91dabf3df8a9a8b2ae9b281fa15c1cbc7d5076",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4481,
+      "sha256": "13961f98205692670d328d57a93af7457c0eaf4f7f637d5c34086061f32c757a"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2111,
+      "sha256": "d8b78a592d1250e9874d6a056796e2d5487725666d7a6dd8ec1cc1ed59da6abe"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 240,
+      "sha256": "fad6012cf241f818ee0fed7108a47782ae97fcdbd13207c4a83f8ba74cc7c099"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1340,
+      "sha256": "22824f8648fc7ff6212f2b362f6d03f538bb671cffffe5f746c678e6bfd16413"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1925,
+      "sha256": "c0e0963c45ffc0e398cf981c99017ea07cee62ee5a62afbd1acfe48a12a9a3db"
+    }
+  ]
+}

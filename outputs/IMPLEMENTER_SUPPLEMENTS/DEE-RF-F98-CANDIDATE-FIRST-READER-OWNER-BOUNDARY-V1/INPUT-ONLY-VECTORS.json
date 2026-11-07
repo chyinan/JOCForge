@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "rf-f98-candidate-access",
+      "input": {
+        "candidate_field": "+0xf98 qword"
+      },
+      "expected_observation": {
+        "pointer_offset_use": true,
+        "entry_read_before_helper": "NOT_OBSERVED",
+        "join_to_producer_vector": "UNBOUND"
+      },
+      "limitations": [
+        "Candidate is not typed/joined to producer owner",
+        "No RF semantic mapping",
+        "No runtime capture"
+      ]
+    }
+  ]
+}

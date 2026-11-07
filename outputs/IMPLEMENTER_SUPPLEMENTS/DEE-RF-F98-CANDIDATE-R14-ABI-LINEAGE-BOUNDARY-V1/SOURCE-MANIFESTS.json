@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "dialogue_rf_drc_profile_f98_candidate_r14_lineage_addendum",
+  "source_manifest_sha256": "df0cb0c831bb53fcf14bf769719abf5178b8507bf087f499a10e71b459bac3d3",
+  "source_seal_sha256": "474d618594ec3e2ea2eb4fbac897d78d828541ca10cb1385f3a6b24f8b8306fe",
+  "source_integrity_artifacts": [
+    {
+      "name": "PACKAGE-SEAL.json",
+      "sha256": "474d618594ec3e2ea2eb4fbac897d78d828541ca10cb1385f3a6b24f8b8306fe"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "dialogue_rf_drc_profile_f98_candidate_outer_caller_addendum",
+      "manifest_sha256": "a6ddcb5f7a1705453b1164f7008797cbf24f18ea4abd1585725b0896873a07d0",
+      "package_seal_sha256": "e89048b7a222cbd119df0d793d9bfed3c2b8def747d1638b48e16bb1abb22e36"
+    },
+    {
+      "package_id": "dialogue_rf_drc_profile_f98_candidate_caller_addendum",
+      "manifest_sha256": "4e8c7a289319ae3658be00bc8c1a884404eb053d104f4981211da7c2fef4aa61",
+      "package_seal_sha256": "fafe32d70b94bac772c22fb5979e77c00573fec9ff6f594c7e045821537c60d0"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

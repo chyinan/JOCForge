@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "line_mode_drc_snapshot_a0_row_helper_first_break_wash_v1",
+      "manifest_sha256": "7fdb3c6b7a177e5fd4ed325246a337a162ba2f51e35f1559073cac32fdbfcfb5",
+      "package_seal_sha256": "45408259fae5efc4e376fd74ac8fb316a8b5775dda109ac18d7ca1ef420f87e0"
+    }
+  ],
+  "parent_receipts": [
+    {
+      "package_id": "line_mode_drc_snapshot_a0_consumer_boundary_wash_v1",
+      "manifest_sha256": "681e6740913768b25c03d0df91b8a3771a5104b31e155459bfc1f699e15cc355"
+    },
+    {
+      "package_id": "line_mode_a0_fun182850_row_pack_first_break_wash_v1",
+      "manifest_sha256": "1d719ccf1137fe33fc12446144eda3ed02f5e2caa41e294c077c78b2956c7c19"
+    }
+  ],
+  "raw_native_source_or_audio_payload_copied": false
+}

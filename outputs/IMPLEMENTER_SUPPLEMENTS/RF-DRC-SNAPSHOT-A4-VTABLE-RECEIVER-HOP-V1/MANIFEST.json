@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-VTABLE-RECEIVER-HOP-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FRAME_OUTPUT_POINTER_TO_VTABLE_RECEIVER_BOUND_STATIC; A4_INDIRECT_FLOW_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "implementation_disposition": "Follow only the selected receiver vtable target and typed input; do not claim RF effect or global absence",
+  "source_manifest_sha256": "09889d43ea572c9b6da76e7bbaa6e51ce125b42f9e15ce546d61244685a56a1e",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3361,
+      "sha256": "0ef5958bb841ca10729991a55ca68e8e90c0d3fa8f4af2889b41cf88352fc7ad"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2245,
+      "sha256": "301a41033b353eecafc28d0bd939fbf0fb8ef308b3689cb8cfce71735fcd4581"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 336,
+      "sha256": "dc20c50d204a2fcade407abefb1b50d93e622e067214ac145466df1e5f15f449"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1487,
+      "sha256": "1b1ed4f1af8c23617caf89c421358795689146b1b9255f081139b3ffcf9c228d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 518,
+      "sha256": "28f1253e4da8044bbf6a5753b25daac93accdced7e9920e3a37dec4dd850734f"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 1073,
+      "sha256": "09889d43ea572c9b6da76e7bbaa6e51ce125b42f9e15ce546d61244685a56a1e"
+    },
+    {
+      "name": "UPSTREAM-package_seal.json",
+      "bytes": 560,
+      "sha256": "e43d427ea8c68ef1bad1b1995e45b10a7b6c2f0a19569ba10c431b82653056d5"
+    },
+    {
+      "name": "UPSTREAM-SOURCE-MANIFEST.json",
+      "bytes": 5054,
+      "sha256": "ab4e143ece2892068c2c6a223e3b25179df759334700e078cb892b4daee9465e"
+    }
+  ]
+}

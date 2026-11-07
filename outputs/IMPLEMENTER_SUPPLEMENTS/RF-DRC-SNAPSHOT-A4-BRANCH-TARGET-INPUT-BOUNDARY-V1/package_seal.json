@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "RF-DRC-SNAPSHOT-A4-BRANCH-TARGET-INPUT-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "2b9517c5fbbc32b67c00677edeaf4115561355f0015001101c17f80a2c14c7cb",
+  "payload_file_count": 9,
+  "payload_hash_audit": "PASS_9_OF_9",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

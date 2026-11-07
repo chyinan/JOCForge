@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DRC-A0-ROW-PLUS10-ZERO-BRANCH-UNREACHABLE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ROW_PLUS_0X10_QWORD_FIRST_USE_ZERO_COMPARE; SELECTED_TAKEN_BRANCH_FALSE; DRC_EFFECT_UNBOUND",
+  "implementation_disposition": "The explicit zero comparison makes this selected taken edge false; do not infer the QWORD's semantic field or any DRC/codec effect.",
+  "source_package_id": "line_mode_drc_snapshot_a0_row_compare_branch_wash_v1",
+  "source_manifest_sha256": "eec68ebb1e1686382ec2429b2db19a254068d22fb84552d3eb19b5c219e3f023",
+  "source_package_seal_sha256": "17048a4ebe3ac112797db7c3a82c8f14ed3eb3bf41af8f5c6c36a925426e11d9",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1731,
+      "sha256": "08d702d574bac48507ed3bb6246095543b453b252bf4df5e8eb06d9ffe6819db"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 500,
+      "sha256": "741a6e109069ecb276505b5ef49af5442f6567799a8bfd3efd77838dcc7b0e7c"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 427,
+      "sha256": "237c3bf575bcba8fb9a09333d04766c14a7f0e4cc7294ababf848779eae2d553"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 649,
+      "sha256": "c9ce28c83b3ea8614793ef1015446459629a73a0763534a43481e5a38fbb8d0b"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1099,
+      "sha256": "efd488a12833bf5ea3054e53ab71bbe0921816e4852c0f6092063cd9f94e58b3"
+    }
+  ]
+}

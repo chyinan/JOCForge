@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_QUERY_OR_MEDIA_VECTOR",
+  "vectors": [],
+  "note": "The exact key and value selection are conditional static candidates; no runtime query or audio data is included."
+}

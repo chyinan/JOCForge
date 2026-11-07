@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/adm_bwf_ddp_drc_line_mode_mode2_codec_callsite_boundary_wash_v1",
+    "manifest_sha256": "fb34f4f2a02f11b0f55c77eefc12adca04fcf6a919a73df4dc66c6b2e6f84827",
+    "payloads_verified": "6/6",
+    "package_seal_sha256": "3d03cfc3f059ab6b977990704c4d65adb880cd920653f1400d12bbc31c492517"
+  },
+  "parent_package": {
+    "package_id": "adm_bwf_ddp_drc_line_mode_mode2_encode_consumer_boundary_wash_v1",
+    "manifest_sha256": "582bb849c498acd32a06fbf193bb0553141a416226e30ec1a8c01149d35f46ab",
+    "package_seal_sha256": "54291d980e4289e48a604d4c3a08c6617b0a4c644b9fb7fa80325f1d28317d9a",
+    "payloads_verified": "6/6"
+  },
+  "target_image": {
+    "path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll",
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "rehash_by_wash_this_turn": true
+  },
+  "wash_actions": {
+    "source_manifest_payloads_and_seal_recomputed": true,
+    "parent_manifest_payloads_and_seal_recomputed": true,
+    "target_plugin_rehashed": true,
+    "raw_ghidra_sources_or_decompilation_copied": false,
+    "private_key_or_license_material_copied": false
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.rf_a4_receiver_hop_input_vectors.v1",
+  "status": "STATIC_RECEIPTS_ONLY",
+  "snapshot_plus_0xa4_value": "NOT_CAPTURED",
+  "selected_receiver_constructor": "NOT_CAPTURED",
+  "typed_vtable_plus_0x18_target": "UNBOUND",
+  "runtime_rf_route": "NOT_CAPTURED",
+  "dee_run": false,
+  "pcm_or_payload_included": false
+}

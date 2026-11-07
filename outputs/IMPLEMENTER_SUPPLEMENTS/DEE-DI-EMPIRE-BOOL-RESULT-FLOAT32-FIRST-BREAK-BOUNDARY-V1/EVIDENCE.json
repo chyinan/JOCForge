@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.di_empire_loudness_bool_result_boundary.v1",
+  "package_id": "DEE-DI-EMPIRE-BOOL-RESULT-FLOAT32-FIRST-BREAK-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "di-flag-bool-empire-loudness-owner-2c-to-88-boundary-addendum-wash-v1",
+    "manifest_sha256": "b79a9a9cabb53c33e126c0a6b5195185a031685bd2ebd01ec5fc66b970c04036",
+    "package_seal_sha256": "bef27cd37618f210c7183c3561e6413477c900f5e4154ae5dd285067c9930c69",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 read-only/no-analysis",
+    "runtime_mode_selection": "UNBOUND_NOT_CAPTURED",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  },
+  "same_owner_bool_path": {
+    "setup_bool_source_offset": "+0x94",
+    "owner_bool_copy_offset": "+0x2c",
+    "bool_typed_read": "BOUND_STATIC",
+    "config_bool_field_offset": "+0x44",
+    "mode_condition": "conditional; runtime mode not captured",
+    "engine_subcontext_field_offset": "+0x164",
+    "engine_owner_field_offset": "+0x1d0",
+    "same_owner_static_path_to_engine": "BOUND_CONDITIONAL"
+  },
+  "float32_result_path": {
+    "result_owner_field_offset": "+0x88",
+    "result_type": "Float32",
+    "writer_status": "BOUND_STATIC",
+    "subcontext_to_result_numeric_dependency": "UNBOUND",
+    "first_break": "first processing consumer receives subcontext but reads only +0x08/+0x10/+0x18/+0x20; it does not read or forward Bool-derived +0x164"
+  },
+  "status": {
+    "bool_to_engine_subcontext": "CONDITIONAL_BOUND_STATIC",
+    "engine_subcontext_to_float32_result": "UNBOUND",
+    "runtime_branch_selection": "UNBOUND_NOT_CAPTURED",
+    "audio_or_measurement_effect": "UNBOUND_NOT_RUN"
+  },
+  "implementation_disposition": {
+    "do_not_claim_bool_to_result_effect": true,
+    "do_not_claim_runtime_branch_selection": true,
+    "algorithm_change_authorized": false
+  }
+}

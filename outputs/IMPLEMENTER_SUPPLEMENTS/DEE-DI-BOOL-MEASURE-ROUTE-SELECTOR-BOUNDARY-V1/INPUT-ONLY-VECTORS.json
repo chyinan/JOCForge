@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "scoped-route-mode-zero",
+      "kind": "static-branch-summary",
+      "input": {"Priv+0xf34": 0},
+      "expected_path": "Priv::measure",
+      "status": "STATIC_TRACE_ONLY"
+    },
+    {
+      "vector_id": "scoped-route-mode-one",
+      "kind": "static-branch-summary",
+      "input": {"Priv+0xf34": 1},
+      "expected_path": "Priv::encode",
+      "status": "STATIC_TRACE_ONLY"
+    },
+    {
+      "vector_id": "dialogue-bool-field-separation",
+      "kind": "static-field-separation",
+      "input": {"Priv+0x2e0": "dialogue_intelligence Bool"},
+      "expected_path": "measurement setup+0x94 input; no route branch on this field in scoped edge",
+      "status": "STATIC_TRACE_ONLY"
+    }
+  ]
+}

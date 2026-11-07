@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.rf_drc_f98_vector_consumer_boundary.v1",
+  "package_id": "DEE-RF-DRC-F98-VECTOR-FIRST-CONSUMER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "dialogue_rf_drc_profile_vector_f98_first_consumer_addendum",
+    "manifest_sha256": "fd20dba27f69640e3127053171eaf432395f338c5dd47cba3abcc54af561184a",
+    "package_seal_sha256": "f226d9472c522492d9c3ffd9b3a3f4746bfac86fbb24d5d59c19b7d34363a93b",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 static, one caller continuation",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "xml_parse_decode_media_pcm_payload_key_license_read": false,
+    "implementation_contact": false,
+    "global_xref_scan": false,
+    "global_absence_claim": false
+  },
+  "vector": {
+    "destination_owner_field_offset_hex": "0xf98",
+    "same_caller_instructions_after_copy_scanned": 22,
+    "exact_offset_references_after_copy": 0,
+    "first_consumer_or_serialization_in_this_caller": "NOT_FOUND"
+  },
+  "next_call": {
+    "explicit_destination_field_offset_hex": "0xfb0",
+    "other_arguments": [
+      "stack value A",
+      "stack value B"
+    ],
+    "same_owner_join_to_prior_f98_vector": "UNBOUND",
+    "relation": "kept separate; adjacency and same callee do not prove identity"
+  },
+  "status": {
+    "f98_vector_copy_edge": "BOUND_STATIC",
+    "f98_first_consumer": "UNBOUND",
+    "rf_drc_encoding_setup": "UNBOUND",
+    "numeric_rf_effect": "UNBOUND"
+  },
+  "implementation_disposition": {
+    "preserve_owner_consumer_join_as_unbound": true,
+    "do_not_join_f98_to_fb0_by_nearness": true,
+    "algorithm_change_authorized": false
+  }
+}

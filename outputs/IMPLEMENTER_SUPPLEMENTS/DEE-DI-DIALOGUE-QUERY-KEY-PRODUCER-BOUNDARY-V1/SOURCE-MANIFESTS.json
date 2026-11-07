@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-DI-DIALOGUE-QUERY-KEY-PRODUCER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_single_getter_callsite",
+      "package_id": "di-flag-priv-pointer-query-producer-addendum-wash-v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_flag_priv_pointer_query_producer_addendum_wash_v1",
+      "manifest_sha256": "b39697204309881127d896f8d112523a4b2aeaa8889d92610a8d5ae968df0bec",
+      "package_seal_file_sha256": "2ffab90fcbceb7a4e598b0e1ee7c09a7292914dcbfd779613d93cbdde029f320",
+      "payload_file_count": 16,
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "prior_exact_key_to_bool_static_binding",
+      "package_id": "DEE-DI-DIALOGUE-BOOL-STATIC-KEY-OWNER-BOUNDARY-V1",
+      "manifest_sha256": "b46b594c5c7680820711972e9bb257aff270e390c698902c31255d4f27a2c2c3",
+      "package_seal_sha256": "3d0e00b29671cba7a64c7afbaf2b494f1a83d0f8e519fc98ada066b5d9160ab9"
+    }
+  ],
+  "omitted_material": {
+    "raw_ghidra_scripts_or_slices": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true
+  }
+}

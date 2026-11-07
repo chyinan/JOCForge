@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-di-helper-state-boundary-receipt.v1",
+  "source_package": "di_bool_cd170_context_initializer_boundary_wash_v2",
+  "source_path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_bool_cd170_context_initializer_boundary_wash_v2",
+  "manifest_sha256": "e8d043e31e43501defde4f14c51dd35c865975e24c6ec7f22551a27023984e6d",
+  "package_seal_sha256": "9f4074bae92b4a1773701c770f66018090a5059ae65c617bd70be864bf9dd1dc",
+  "normal_checker": "PASS_IN_WASH",
+  "optimized_checker": "PASS_IN_WASH",
+  "ghidra": "12.2 read-only/no-analysis",
+  "runtime_status": "NOT_RUN",
+  "media_pcm_payload_key_license_access": false
+}

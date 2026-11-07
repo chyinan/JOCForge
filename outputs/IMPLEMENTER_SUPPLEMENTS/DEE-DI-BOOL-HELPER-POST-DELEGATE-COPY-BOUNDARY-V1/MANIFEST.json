@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-DI-BOOL-HELPER-POST-DELEGATE-COPY-BOUNDARY-V1",
+  "scope": "Static post-delegate helper-field copy/alias only; DI gate lineage remains open.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1190,
+      "sha256": "e65a28238dbed6dd4beddb0bbab26d0a447565e956b7b497d78b0a9271bdb51f"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 428,
+      "sha256": "e57e7e864125871c84eb784af14820dc2df9642c3764c30cf5d88221fd0d35b2"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 664,
+      "sha256": "34bc85af1d4d5a6c08685d03d6cf3ca73f7dbe73ff4a768e0440079fa796ff4a"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1833,
+      "sha256": "7fa725463a9fb233334f067f7b7402e13a3308d8f4c38e3cb8ec9cec7134c89d"
+    }
+  ]
+}

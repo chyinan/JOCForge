@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.dee_di_bool_measurement_input_boundary.v1",
+  "package_id": "DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V1",
+  "status": {
+    "static_exact_key_to_bool_candidate": "BOUND_IF_EXACT_KEY_SUPPLIED",
+    "runtime_dialogue_intelligence_key_selection": "UNBOUND_NOT_CAPTURED",
+    "typed_bool_value_reader": "STATICALLY_BOUND",
+    "bool_to_measurement_setup_plus_0x94": "STATICALLY_BOUND",
+    "setup_pointer_to_measurement_engine_and_first_record_consumer": "STATICALLY_BOUND",
+    "direct_plus_0x94_read_in_scoped_engine_or_first_consumer": "NOT_OBSERVED",
+    "measurement_effect_or_final_priv_plus_0xf6c_result": "UNBOUND",
+    "runtime_owner_generation": "UNBOUND"
+  },
+  "source_package": {
+    "package_id": "di-flag-bool-measurement-consumer-addendum-wash-v1",
+    "manifest_sha256": "e448cfc7c496e260825b6d4dea6229f2769dc92c1adf39d869b41469dd858ffa",
+    "package_seal_sha256": "5219e93218a933903224c8ba3e91dabf3df8a9a8b2ae9b281fa15c1cbc7d5076",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC headless read-only/no-analysis"
+  },
+  "typed_reader": {
+    "owner": "dee::proc::Priv",
+    "candidate_offset": "+0x290",
+    "type": "SafeType<bool>",
+    "validity_byte": "this+0x8 must be nonzero",
+    "value_byte": "this+0x50 = Priv+0x2e0",
+    "reader": "FUN_180152f30"
+  },
+  "measurement_path": {
+    "owner_entry": "FUN_18014aba0 (Priv::measure)",
+    "stage_writer": "FUN_1801535b0 writes returned AL to setup+0x94",
+    "forwarding": "same setup pointer in R8 through FUN_180176980 to FUN_1801769a0",
+    "first_per_record_consumer": "FUN_1801764e0",
+    "neighbor_read": "+0x9c read by FUN_1801764e0; not evidence of +0x94 use"
+  },
+  "limits": {
+    "dee_or_ui_run": false,
+    "runtime_key_selected": false,
+    "pcm_media_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Register the conditional Bool-to-measurement-input path only; do not claim the measurement calculation or final result consumes the Bool."
+}

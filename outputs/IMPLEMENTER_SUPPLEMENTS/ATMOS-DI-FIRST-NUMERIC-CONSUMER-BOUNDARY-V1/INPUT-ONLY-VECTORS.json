@@ -1,0 +1,22 @@
+{
+  "sample_id": "human_cat_38ch",
+  "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "common": {
+    "input_type": "atmos_mezz",
+    "metering_mode": "1770-4",
+    "speech_threshold": 15,
+    "data_rate_kbps": 1024,
+    "target_layout": "5.1"
+  },
+  "arms": [
+    {
+      "id": "observed_false",
+      "dialogue_intelligence": false
+    },
+    {
+      "id": "observed_true",
+      "dialogue_intelligence": true
+    }
+  ],
+  "vector_status": "OBSERVED_INPUTS; RESULTS_SEPARATE"
+}

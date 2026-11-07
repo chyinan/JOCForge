@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DI-DIALOGUE-BOOL-STATIC-KEY-OWNER-BOUNDARY-V1",
+  "manifest_sha256": "b46b594c5c7680820711972e9bb257aff270e390c698902c31255d4f27a2c2c3",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "PRIV_PARAMETERS_CONTAINER_GETTER_STATIC_BOUND; DIALOGUE_KEY_TO_BOOL_CANDIDATE_STATIC_BOUND; RUNTIME_SELECTION_AND_AUDIO_EFFECT_UNBOUND"
+}

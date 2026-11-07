@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge.dee_di_query_virtual_caller_rdx_boundary.v2",
+  "package_id": "DEE-DI-QUERY-VIRTUAL-CALLER-RDX-BOUNDARY-V2",
+  "status": "THUNK_RECEIVER_TO_PRIV_EC0_STATIC_BOUND; VIRTUAL_CALLER_RDX_OWNER_UNBOUND; DIALOGUE_QUERY_SELECTION_UNBOUND",
+  "implementation_ready": false,
+  "supersedes": {
+    "package_id": "DEE-DI-QUERY-CALLER-RECEIVER-BOUNDARY-V1",
+    "manifest_sha256": "0b9bf8bfc028c0295a9fa503c45b753339eb3a13fbbff1f3c7041f9b7a13e19d",
+    "package_seal_sha256": "f960138d56c39fb89fb17c4887353697d9690e4b3e366799f7173581d462dc33",
+    "scope": "replace only with revised source-pack hash and explicit vtable-reference break"
+  },
+  "source_package": {
+    "package_id": "di-flag-priv-param2-caller-owner-addendum-wash-v1",
+    "manifest_list_sha256": "8a9157bbcc50468a853cff8582c7844329fe1b876140dea98e6abe1ce08d4063",
+    "package_seal_file_sha256": "a9b155ece5dd14eed9d7e272fd8e8c2599275cc3baac63c84dc95d53cfbfc930",
+    "payload_file_count": 13,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only/no-analysis",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "thunk_receiver": {
+    "function": "FUN_18013e9d0",
+    "owner": "FilterDDPJocEnc",
+    "vtable_slot": "+0x8",
+    "receiver_operation": "loads Priv from FilterDDPJocEnc+0xb8",
+    "dispatcher": "FUN_18014f9f0",
+    "rdx_behavior": "preserved unchanged by thunk",
+    "static_getter_receiver": "Priv+0xec0 ParametersContainer",
+    "runtime_generation": "NOT_CAPTURED"
+  },
+  "virtual_caller_rdx": {
+    "exact_thunk_vtable_data_reference": "BOUND",
+    "exact_code_references_to_slot_address": "NONE_FOUND_IN_SCOPED_QUERY",
+    "global_virtual_call_scan": false,
+    "param_2_source": "RDX supplied by unresolved virtual caller",
+    "param_2_record_owner": "UNBOUND",
+    "current_query_name_or_value": "NOT_CAPTURED",
+    "exact_dialogue_intelligence_match": "UNBOUND_NOT_CAPTURED"
+  },
+  "prior_static_key_contract": {
+    "wash_package_id": "DEE-DI-DIALOGUE-BOOL-STATIC-KEY-OWNER-BOUNDARY-V1",
+    "manifest_sha256": "b46b594c5c7680820711972e9bb257aff270e390c698902c31255d4f27a2c2c3",
+    "contract": "If the exact key is supplied, static lookup returns the registered Bool candidate."
+  },
+  "scope": {
+    "dee_ui_or_runtime_capture": "NOT_RUN",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_ghidra_material_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

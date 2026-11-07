@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.dee_line_drc_a0_first_row_pack_boundary.v1",
+  "package_id": "DEE-LINE-DRC-A0-FIRST-ROW-PACK-BOUNDARY-V1",
+  "status": "LINE_MODE_A0_NOT_IN_FIRST_ROW_PACK_ARGUMENTS; SELECTED_ROW_OWNER_JOIN_UNBOUND; CODEC_BSI_EDGE_UNBOUND; RUNTIME_BRANCH_NOT_CAPTURED",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "line_mode_a0_first_row_pack_boundary_wash_v1",
+    "manifest_sha256": "812066b35d3d44d3cc6b4e3cf51604c33c305b559c48b3de45791e39f930ccd9",
+    "manifest_sha256_file": "1ed82f870b3f82f66436382cefaabe55ab1eb3ea52b4e638d86efba9eb79fb4c",
+    "sha256sums_sha256": "2f7dc2ab63fe3be7bfa848411a2b8c45cd8c1ac2216df7281a5ab5409ea54735",
+    "package_seal_file_sha256": "f67c64f793152fb565bb1c7fc4a8135da2686ffb88f8b24d53929e5abea0a6a5",
+    "payload_count": 7,
+    "wash_payload_hash_audit": "PASS_7_OF_7",
+    "agent_reported_checker_normal": "PASS",
+    "agent_reported_checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "inherited_line_mode_sink": {
+    "property": "line_mode_drc_profile",
+    "snapshot_field": "snapshot+0xA0",
+    "representation": "U32 profile-tree result",
+    "writer_revisited": false
+  },
+  "row_pack_branches": [
+    {
+      "predicate": "snapshot+0x9C == 0",
+      "first_helper": "FUN_180182850",
+      "selected_row_pointer": "param_4*0x20 + *param_3",
+      "snapshot_plus_0xa0_explicit_argument": false,
+      "row_owner_join_to_snapshot_plus_0xa0": "UNBOUND"
+    },
+    {
+      "predicate": "snapshot+0x9C != 0",
+      "first_helper": "FUN_1801431f0",
+      "selected_row_pointer": "param_4*0x20 + *param_3",
+      "snapshot_plus_0xa0_explicit_argument": false,
+      "row_owner_join_to_snapshot_plus_0xa0": "UNBOUND"
+    }
+  ],
+  "first_break": {
+    "at": "branch-specific first row/vector pack helper input",
+    "codec_or_bsi_input_reached": false,
+    "downstream_codec_bsi_lineage": "UNBOUND",
+    "runtime_branch": "NOT_CAPTURED"
+  },
+  "scope": {
+    "writer_or_enum_mapping_revisited": false,
+    "helper_bodies_followed": false,
+    "global_xref_scan": false,
+    "dee_execution": "NOT_RUN",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_trace_excerpt_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

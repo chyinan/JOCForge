@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.di_bool_plus00_first_consumer_boundary.v1",
+  "package_id": "DEE-DI-BOOL-PLUS00-FIRST-CONSUMER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "di-flag-bool-meter-config-plus00-consumer-boundary-addendum-wash-v1",
+    "manifest_sha256": "5800986d25422fca144fb41309605043df1514c2a794e985bb9310d8383360ba",
+    "package_seal_sha256": "1c8649f401df4df0013d94e6e89acdc418baa8a479633cc01bf562aeca6b7142",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "prior_constant_field_receipt": {
+    "package_id": "DEE-DI-CONFIG-PLUS14-CONSTANT-INITIALIZER-BOUNDARY-V1",
+    "manifest_sha256": "4a1612c34b133ec1830bee0cc8d74c8690f312014a65cfc09938c7728cf20e75",
+    "package_seal_sha256": "fccfa441e29d05a9674db9ab7e66a69fb1094199b8dcfea5e3b03bb982a81af7",
+    "finding": "config +0x14 is set to constant 1 before and after Bool read"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2, reused sealed read-only/no-analysis traces",
+    "new_ghidra_run": "NOT_RUN",
+    "runtime_or_dee_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  },
+  "bool_path": {
+    "source_field_offset_hex": "0x94",
+    "normalized_configuration_field_offset_hex": "0x00",
+    "producer_relation": "BOUND_STATIC",
+    "normalized_pointer_forwarded_through_adapters": true,
+    "first_downstream_field_read": "+0x14",
+    "first_downstream_reader_uses_bool_derived_plus_0x00": false,
+    "first_downstream_reader_retains_configuration_pointer": false,
+    "first_typed_break": "normalized config consumer does not read or preserve the Bool-derived +0x00 byte"
+  },
+  "status": {
+    "setup_bool_to_config_plus_0x00": "BOUND_STATIC",
+    "bool_to_meter_result_dependency": "UNBOUND",
+    "runtime_branch_selection": "UNBOUND_NOT_CAPTURED",
+    "audio_effect": "NOT_ESTABLISHED"
+  },
+  "implementation_disposition": {
+    "record_bool_input_mapping_without_claiming_measurement_effect": true,
+    "do_not_infer_effect_from_config_pointer_forwarding": true,
+    "algorithm_change_authorized": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.rf_snapshot_a4_branch_input_vectors.v1",
+  "status": "STATIC_BRANCH_PREDICATES_ONLY",
+  "snapshot_plus_0x9c_runtime": "NOT_CAPTURED",
+  "snapshot_plus_0x28_runtime": "NOT_CAPTURED",
+  "selected_constructor": "NOT_CAPTURED",
+  "snapshot_plus_0xa4_value": "NOT_CAPTURED",
+  "worker_input_owner_join": "UNBOUND",
+  "pcm_or_payload_included": false,
+  "dee_run": false
+}

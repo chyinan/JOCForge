@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "second-argument-aggregate-not-read",
+      "kind": "static-call-boundary-summary",
+      "input": {
+        "RCX_role": "separate destination object",
+        "RDX_role": "aggregate pointer",
+        "callee_formal_parameters": 1,
+        "callee_reads_RDX": false
+      },
+      "expected_status": "NO_TYPED_AGGREGATE_CONSUMER_ESTABLISHED",
+      "status": "STATIC_TRACE_ONLY",
+      "payload_values_included": false
+    }
+  ]
+}

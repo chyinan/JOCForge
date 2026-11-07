@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "di-flag-bool-measurement-consumer-addendum-wash-v1",
+      "manifest_sha256": "e448cfc7c496e260825b6d4dea6229f2769dc92c1adf39d869b41469dd858ffa",
+      "package_seal_sha256": "5219e93218a933903224c8ba3e91dabf3df8a9a8b2ae9b281fa15c1cbc7d5076"
+    },
+    {
+      "package_id": "di_flag_priv_pointer_map_getter_addendum_wash_v1",
+      "manifest_sha256": "f2192a5956fab3a03be35d944ac1b28c767b9bf59f41e29674a911193d01d326",
+      "package_seal_sha256": "86edc665ba5725e3848b67e503489ce0c8fcb8d0a225cf94360d3cd64a447c35"
+    },
+    {
+      "package_id": "di_flag_property_application_addendum_wash_v1",
+      "manifest_sha256": "13280334c376c4783d31b0156ae93af1b2c6209b95e4891cdf11c56456079815",
+      "package_seal_sha256": "c0efd28b6b732ed2d56e23174271f93449dc2efd02e9c6b87b03f85dadb06f20"
+    },
+    {
+      "package_id": "di_flag_property_registration_entry_addendum_wash_v1",
+      "manifest_sha256": "0d6d2d10b67e27659567825fb4bec472c5bb33d3cfdfcd383104ba34db331f83",
+      "package_seal_sha256": "9bd97339c8ab809de9b7aa820ac2693170c911db0d9b2ad6c99a23796922a8af"
+    },
+    {
+      "package_id": "di_flag_priv_pointer_query_producer_addendum_wash_v1",
+      "manifest_sha256": "b39697204309881127d896f8d112523a4b2aeaa8889d92610a8d5ae968df0bec",
+      "package_seal_sha256": "2ffab90fcbceb7a4e598b0e1ee7c09a7292914dcbfd779613d93cbdde029f320"
+    },
+    {
+      "package_id": "di_flag_priv_param2_caller_owner_addendum_wash_v1",
+      "manifest_sha256": "8a9157bbcc50468a853cff8582c7844329fe1b876140dea98e6abe1ce08d4063",
+      "package_seal_sha256": "a9b155ece5dd14eed9d7e272fd8e8c2599275cc3baac63c84dc95d53cfbfc930"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

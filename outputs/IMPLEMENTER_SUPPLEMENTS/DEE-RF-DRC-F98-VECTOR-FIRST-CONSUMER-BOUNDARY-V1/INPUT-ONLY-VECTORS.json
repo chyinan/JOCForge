@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "rf-drc-f98-first-consumer",
+      "kind": "static-single-caller-summary",
+      "input": {
+        "vector_destination": "+0xf98"
+      },
+      "observed": {
+        "subsequent_exact_references_in_caller": 0,
+        "next_call_destination": "+0xfb0"
+      },
+      "status": "F98_CONSUMER_UNBOUND; FB0_NOT_JOINED"
+    }
+  ]
+}

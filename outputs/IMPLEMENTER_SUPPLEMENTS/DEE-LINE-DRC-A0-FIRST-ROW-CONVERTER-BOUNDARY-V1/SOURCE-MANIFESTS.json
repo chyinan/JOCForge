@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-LINE-DRC-A0-FIRST-ROW-CONVERTER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_zero_branch_row_converter_boundary",
+      "package_id": "line_mode_a0_fun182850_row_pack_first_break_wash_v1",
+      "manifest_sha256": "1d719ccf1137fe33fc12446144eda3ed02f5e2caa41e294c077c78b2956c7c19",
+      "package_seal_file_sha256": "8d94d887152184660fdedde5f9af09d2e505356275236df72f36f157e29c576b",
+      "payload_hash_audit": "PASS_7_OF_7",
+      "agent_reported_checker_normal": "PASS",
+      "agent_reported_checker_python_O": "PASS"
+    },
+    {
+      "role": "parent_first_row_pack_boundary",
+      "package_id": "DEE-LINE-DRC-A0-FIRST-ROW-PACK-BOUNDARY-V1",
+      "manifest_sha256": "efe9886183b41e1bdb3654606b0d727e6d6ad8ff64e83da28ca10d693d92f31a",
+      "package_seal_sha256": "015369ddf3cd46b5ed8a3a121a6abdc8a28db9161d3d1c64224819708e04b8dc"
+    }
+  ],
+  "omitted_material": {
+    "raw_trace_excerpts": true,
+    "native_source_or_binary": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-RF-MODE-DRC-STRINGTYPE-ENCODER-BOUNDARY-V1",
+  "source_package_manifest_sha256": "91dce089704a22c5db92a540423d17845953ceec46e748ced301922577cd00f7",
+  "source_package_seal_sha256": "c1d655096c8a8ab63005d1d15b370bd29861e15913ad3308d94934e1f5556c5e",
+  "files": {
+    "REPORT.md": "6e472979e4c3a60f1118c2c02139fb291320b26ebdf2ce4bbc0cb60c8d047b21",
+    "BOUNDARY.json": "0742e473cfb8c1e190f7ac153b39157b49bdf8645c360617776f860628ae63ab",
+    "SOURCE-LINKS.json": "3f8e9d58d55dca8cba83437ce07b8124e7792ca2520171f3832816468d5eb24c",
+    "INPUT-ONLY-VECTORS.json": "78caf25f2ac83293dde745706fdb58f63247182789cf7cfcfbe667699ed650eb"
+  }
+}

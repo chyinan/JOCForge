@@ -1,0 +1,28 @@
+{
+  "input_reference_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+  "common": {
+    "sample_rate_hz": 48000,
+    "data_rate_kbps": 1024,
+    "time_base": "file_position",
+    "frame_start": 5520,
+    "frame_end": 5639,
+    "rf_mode_drc_profile": "film_light",
+    "dialogue_intelligence": true,
+    "speech_threshold": 15
+  },
+  "arms": [
+    {
+      "id": "baseline",
+      "line_mode_drc_profile": "film_light"
+    },
+    {
+      "id": "standard",
+      "line_mode_drc_profile": "music_standard"
+    },
+    {
+      "id": "light",
+      "line_mode_drc_profile": "music_light"
+    }
+  ],
+  "status": "OBSERVED_INPUTS"
+}

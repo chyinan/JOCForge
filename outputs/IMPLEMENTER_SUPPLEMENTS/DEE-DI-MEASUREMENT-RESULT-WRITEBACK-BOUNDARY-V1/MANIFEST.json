@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-MEASUREMENT-RESULT-WRITEBACK-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PRIV_F6C_WRITEBACK_BOUND; BOOL_TO_RESULT_CAUSALITY_UNBOUND",
+  "implementation_disposition": "Register the measurement result writeback only; preserve the missing Bool-to-result dataflow.",
+  "source_manifest_sha256": "52b9d7038edf33c0012401ada04e3add9e4da34c014e28b1a62fed9254b214ae",
+  "source_package_seal_sha256": "ca1bf3f9624c05f6a6f0d542431654e155d421798aa823cc96fff8c2a96c58dd",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4490,
+      "sha256": "e35230ddac3dd85b019b871e87f628b5a37a386881b230146adc5578cbeaf4cd"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1713,
+      "sha256": "06eae3e7dbce27ca28af1f092d2e9ae438d35cf60b23109d94611afc76b6254f"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 232,
+      "sha256": "a09aca5255ab12f9d9d60035b1a18e2312242bbca90df68a874ac7b2867dacc5"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1210,
+      "sha256": "3ed7bd057a8e73f6085e653e2a14e81bda29ebb50c8230bbe46ba83c76f4f96a"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 824,
+      "sha256": "43a6c38aba41af828b8aba04df2bc021d22d6c8a489a1ec02753f5350352d097"
+    }
+  ]
+}

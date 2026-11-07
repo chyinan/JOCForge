@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "drc-row-member-zero-compare",
+      "input": {
+        "row_member": "+0x10 QWORD",
+        "third_converter_argument": 0
+      },
+      "expected_observation": {
+        "first_next_use": "compare with zero"
+      },
+      "limitations": [
+        "No branch successor inspected",
+        "No semantic field type",
+        "No A0/codec/BSI join"
+      ]
+    }
+  ]
+}

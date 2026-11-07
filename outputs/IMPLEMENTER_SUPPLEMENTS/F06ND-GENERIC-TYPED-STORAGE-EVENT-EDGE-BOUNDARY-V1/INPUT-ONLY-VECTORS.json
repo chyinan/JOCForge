@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.f06nd-generic-storage-event-input-only.v1",
+  "vectors": [
+    {
+      "id": "generic-event-vector-not-selected-category5",
+      "kind": "symbolic ownership boundary; not executed",
+      "input": {
+        "storage_template_sample_type": "int",
+        "event_vector_type": "InputControlEvent[]",
+        "selected_category5_source_owner_generation": "UNBOUND"
+      },
+      "expected": {
+        "generic_event_submission": "BOUND_STATICALLY",
+        "selected_category5_join": "NO_SELECTED_JOIN_ESTABLISHED",
+        "drc_bsi_effect": "UNBOUND_NO",
+        "runtime": "NOT_RUN"
+      }
+    }
+  ]
+}

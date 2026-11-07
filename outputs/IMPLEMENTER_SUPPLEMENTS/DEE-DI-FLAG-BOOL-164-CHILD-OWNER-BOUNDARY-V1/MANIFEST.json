@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-FLAG-BOOL-164-CHILD-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CODEC_CHILD_OWNER_BOUND; PLUS_0XDF0_POINTER_TARGET_OPAQUE; DLL_SUBCONTEXT_JOIN_UNBOUND",
+  "source_package_id": "di-flag-bool-empire-loudness-subcontext-164-candidate-owner-field-producer-boundary-addendum-wash-v1",
+  "source_manifest_sha256": "1491cf69d68d90801b471ce0a72eab073d9106ad2804bc661ec6ea552d9b642b",
+  "source_package_seal_sha256": "b284915082fa11be87756025091a90a5d651e5708502303d05cd2976f676612a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2694,
+      "sha256": "2649c76b15fa9b7b2a029c4192fa785b6b7b1fe5aea950f4db550fd137aac0b9"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1607,
+      "sha256": "57f5cfa4f54d59823b972c2f705fbb4f82fa168f3af7723732f488db9e223282"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 690,
+      "sha256": "072f994ea7ccaf69328e7d30fa0672f4326e8c1bf376a376b9779dbcb4959529"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 863,
+      "sha256": "e450d3959adafb7fb12e80e6134c29ef8c1470c791626d6904826e657d4a321e"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 2309,
+      "sha256": "47970d8dbff5263b154bd7d0b7c111334ef5f25e350fcbafa4386892294ebd64"
+    }
+  ]
+}

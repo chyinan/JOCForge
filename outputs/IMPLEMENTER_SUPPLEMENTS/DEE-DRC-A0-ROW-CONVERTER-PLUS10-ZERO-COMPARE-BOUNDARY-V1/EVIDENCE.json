@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.drc_row_plus10_zero_compare_boundary.v1",
+  "row_plus_0x10_load_type": "QWORD",
+  "next_use": "comparison with explicit zero argument",
+  "semantic_field_type": "UNBOUND",
+  "typed_projection_to_snapshot_plus_0xa0": "UNBOUND",
+  "trace_stops_at_compare": true,
+  "codec_bsi_audio_effect": "UNBOUND",
+  "global_absence_claim": false,
+  "runtime": "NOT_RUN"
+}

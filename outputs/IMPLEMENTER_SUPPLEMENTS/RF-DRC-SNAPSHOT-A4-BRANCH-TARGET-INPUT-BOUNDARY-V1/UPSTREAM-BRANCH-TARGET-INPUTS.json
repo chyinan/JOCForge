@@ -1,0 +1,50 @@
+{
+  "schema": "wash-rf-snapshot-a4-branch-target-inputs.v1",
+  "package_id": "rf_drc_snapshot_a4_branch_target_inputs_wash_v1",
+  "runtime_variant": "NOT_CAPTURED",
+  "unique_static_selection": false,
+  "snapshot_a4_value_reaches_worker_first_input": "UNBOUND",
+  "worker_first_formal_type_is_semantic_owner_type": false,
+  "candidates": [
+    {
+      "variant": "AtmosReader",
+      "predicate": "snapshot +0x9C == 0 and snapshot +0x28 == 0",
+      "constructor": "FUN_1801850a0",
+      "vtable": "0x18064c688",
+      "slot18_target": "FUN_180186520",
+      "first_worker": "FUN_180186870",
+      "slot_target_worker_argument": "*(undefined8 *)(param_1 + 8)",
+      "worker_first_formal": "longlong param_1",
+      "worker_first_formal_width_bytes": 8,
+      "wrapper_inner_state_source": "FUN_1801852e0 return stored to wrapper +8",
+      "first_untraced_snapshot_data_helper": "FUN_180182850"
+    },
+    {
+      "variant": "AtmosReaderCC",
+      "predicate": "snapshot +0x9C == 0 and snapshot +0x28 != 0",
+      "constructor": "FUN_180185100",
+      "vtable": "0x18064c6c8",
+      "slot18_target": "FUN_180186550",
+      "first_worker": "FUN_180186580",
+      "slot_target_worker_argument": "*(undefined8 *)(param_1 + 8)",
+      "worker_first_formal": "longlong param_1",
+      "worker_first_formal_width_bytes": 8,
+      "wrapper_inner_state_source": "FUN_180185160 return stored to wrapper +8",
+      "first_untraced_snapshot_data_helper": "FUN_180182850"
+    },
+    {
+      "variant": "CBIReader",
+      "predicate": "snapshot +0x9C != 0",
+      "constructor": "FUN_180186e40",
+      "vtable": "0x18064c9b8",
+      "slot18_target": "FUN_180189490",
+      "first_worker": "FUN_1801894c0",
+      "slot_target_worker_argument": "*(undefined8 *)(param_1 + 8)",
+      "worker_first_formal": "longlong param_1",
+      "worker_first_formal_width_bytes": 8,
+      "wrapper_inner_state_source": "FUN_180186f10 return stored to wrapper +8",
+      "first_untraced_snapshot_data_helper": "FUN_1801431f0"
+    }
+  ],
+  "boundary": "The first worker argument is explicitly wrapper+8, initialized from the constructor helper return. The decompiled first formal is generic 64-bit longlong. No evidence binds that pointer/value to the same snapshot +0xA4. Stop at the first untraced helper that transforms selected snapshot data; indirect transfer remains UNBOUND."
+}

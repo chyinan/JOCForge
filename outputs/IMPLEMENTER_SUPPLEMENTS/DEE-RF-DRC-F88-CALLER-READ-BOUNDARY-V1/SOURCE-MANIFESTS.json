@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "dialogue_rf_drc_profile_f88_caller_consumer_addendum",
+      "manifest_sha256": "67a43ed724c44cfb13da98146b9f2cb24a36c8fd33fe4ef774e97d91aaae509b",
+      "package_seal_sha256": "2471562ed1d792123ed9bfc317fd89ddd5b679dc77c866b952a0aaf14c00316f",
+      "reviewed_payloads": [
+        {"name": "REPORT.md", "sha256": "c6afa28bf90bd79a8537eff5d745bca68edfd7e04b51b12c2568f5ddadf504dd"},
+        {"name": "input_vector.json", "sha256": "083831ffc6e33c019da5f02df3042f18a908486d9f33ab466c501e63e9f45e46"}
+      ],
+      "inherited_parent_manifest_local_status": "NOT_PRESENT_LOCALLY; NOT_USED_AS_VERIFIED_SOURCE",
+      "raw_Ghidra_logs_or_source_code_copied": false
+    }
+  ]
+}

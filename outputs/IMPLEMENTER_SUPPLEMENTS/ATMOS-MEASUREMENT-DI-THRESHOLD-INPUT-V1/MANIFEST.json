@@ -1,0 +1,20 @@
+{
+  "package_id": "ATMOS-MEASUREMENT-DI-THRESHOLD-INPUT-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "72f8c7360533f44028fd61d1e16b17f5eca3df16460e65d0c9403125b38c9613",
+      "bytes": 1350
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "sha256": "4cfecbe06533aaee9584cb23b17bc7cac8ee0006b1461010c6880f59cd292a9d",
+      "bytes": 429
+    },
+    {
+      "name": "PROVENANCE.json",
+      "sha256": "3fa3d3635ab1bc20aaef02efc3daf069f87f7a5d085f8da3c775010d774a1cdc",
+      "bytes": 429
+    }
+  ]
+}

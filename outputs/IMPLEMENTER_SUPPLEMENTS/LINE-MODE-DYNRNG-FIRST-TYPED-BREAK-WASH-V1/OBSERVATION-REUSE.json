@@ -1,0 +1,28 @@
+{
+  "schema": "wash.line_mode_drc_observation_reuse.v1",
+  "observations": [
+    {
+      "package_id": "ATMOS-MUSIC-LINE-DRC-OBSERVATION-V1",
+      "manifest_sha256": "cb76898f591e7d2ebb938a82486bc0d1079ecb3086d0889a1f29daf19909aaa7",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "shape_and_window": "38-channel 48 kHz/1024 kbps/5.1; 32 decoded core frames; 49,152 samples per channel; configured source range 50,000 samples, exact final consumption not proven",
+      "common_controls": {"rf_mode_drc_profile": "film_light", "dialogue_intelligence": true, "speech_threshold": 15},
+      "finding": "music_standard per-block dynrng distribution differs from film_light; music_light DRC fields and core PCM match film_light in this window under both decoder DRC settings",
+      "output_replay": "NOT_RUN_AFTER_OUTPUT_REMOVAL"
+    },
+    {
+      "package_id": "ATMOS-MUSIC-LINE-DRC-LOVE-SONG-OBSERVATION-V1",
+      "manifest_sha256": "ba3817f24cdfc6f04b0edb62503229a79f6303d9a084cf3c7936bb12020e8bcd",
+      "input_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+      "shape_and_window": "36-channel Love Song ADM; frame interval [5520,5639); 157 frames/942 audio blocks; 241,152 5.1 core samples per channel",
+      "common_controls": {"rf_mode_drc_profile": "film_light", "dialogue_intelligence": true, "speech_threshold": 15},
+      "finding": "music_standard dynrng sequence differs from film_light; music_light sequence matches film_light in this five-second window; at decoder DRC scale 0 all three core decodes match, at scale 1 music_standard differs while music_light matches film_light",
+      "outputs": "retained in research workspace; not copied into this Wash package"
+    }
+  ],
+  "comparison_policy": {
+    "no_A_B_rerun": true,
+    "music_light_general_alias": "NOT_INFERRED_FROM_EQUAL_MEASURED_WINDOWS",
+    "pcm_retained": false
+  }
+}

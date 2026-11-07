@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STRUCTURAL_ONLY; RUNTIME_NOT_RUN",
+  "vectors": [
+    {
+      "id": "mode2-inner-context-owner",
+      "object_array": "inner_context +0xc0f8",
+      "kind_scalar": "inner_context +0xc13c",
+      "writer": "FUN_1801b0750",
+      "reader": "FUN_1801b1590",
+      "same_inner_context_pointer": true
+    },
+    {
+      "id": "mode2-kind-dispatch",
+      "kind_value_rule": "FUN_1801c3150: selector-1 pair or static default",
+      "runtime_kind": "NOT_CAPTURED",
+      "table": "DAT_1806521e8 + kind*0x30",
+      "slot_0x28_target": "UNBOUND"
+    }
+  ],
+  "record_plus_0xa0_join": "UNBOUND",
+  "output_effect": "UNBOUND"
+}

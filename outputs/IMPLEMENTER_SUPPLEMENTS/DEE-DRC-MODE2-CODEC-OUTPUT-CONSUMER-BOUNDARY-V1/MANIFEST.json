@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-DRC-MODE2-CODEC-OUTPUT-CONSUMER-BOUNDARY-V1",
+  "source_package_manifest_sha256": "05102c90eaacce430cd80318be1c751d286a41598bbc68ae94178d0b19fed873",
+  "source_package_seal_sha256": "a53a705b5b0d0020e19a6dcb157b61b8a04f5ec5abe7ce37830349870ae20e66",
+  "files": {
+    "REPORT.md": "520685d215190f4492f0fc05484f914b73713675e920edf0cd9ac419994d9616",
+    "BOUNDARY.json": "716d8c3498661a5a0640a81356fe6c4729874e66602c8856807e0158b9a276c7",
+    "SOURCE-LINKS.json": "ed49ef5c41fd33c905e564164142013560e1dbb688c28231c8bd75b4527433a4",
+    "INPUT-ONLY-VECTORS.json": "2ca8596ecd7f912913f1eb6f159fbba09559e91dc903590027a614baaa5b4676"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-DI-DIALOGUE-BOOL-STATIC-KEY-OWNER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_static_parameters_container_getter",
+      "package_id": "di-flag-priv-pointer-map-getter-addendum-wash-v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_flag_priv_pointer_map_getter_addendum_wash_v1",
+      "manifest_sha256": "f2192a5956fab3a03be35d944ac1b28c767b9bf59f41e29674a911193d01d326",
+      "package_seal_file_sha256": "86edc665ba5725e3848b67e503489ce0c8fcb8d0a225cf94360d3cd64a447c35",
+      "payload_file_count": 51,
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    }
+  ],
+  "target_image": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity_provenance": "hash-matched Ghidra project"
+  },
+  "omitted_material": {
+    "raw_Ghidra_scripts_or_slices": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "empire-float32-direct-source",
+      "input": {
+        "engine_state_0x1e0": "nonzero"
+      },
+      "expected_observation": {
+        "float32_source": "subcontext+0x3c",
+        "bool_member_0x164_forwarded": false
+      },
+      "limitations": [
+        "Zero branch result value not inferred",
+        "Bool-to-result causality UNBOUND"
+      ]
+    }
+  ]
+}

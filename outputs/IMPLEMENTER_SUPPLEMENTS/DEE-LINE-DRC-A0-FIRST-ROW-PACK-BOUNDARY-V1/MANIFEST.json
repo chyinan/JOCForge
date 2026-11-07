@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-A0-FIRST-ROW-PACK-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "LINE_MODE_A0_NOT_IN_FIRST_ROW_PACK_ARGUMENTS; SELECTED_ROW_OWNER_JOIN_UNBOUND; CODEC_BSI_EDGE_UNBOUND; RUNTIME_BRANCH_NOT_CAPTURED",
+  "implementation_ready": false,
+  "source_manifest_sha256": "812066b35d3d44d3cc6b4e3cf51604c33c305b559c48b3de45791e39f930ccd9",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2219,
+      "sha256": "f1913a1b1943ba9ba03fc16bb874156e7f49345ac9941b8823c200058707e7d8"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2392,
+      "sha256": "87ce14bcbdb873d128624349aee3320d49925bb6477b013e341744ce7df982c6"
+    },
+    "REPORT.md": {
+      "bytes": 1143,
+      "sha256": "3ffde8531285e17d4eba50c4d37d6f1aeb709bf2b2c6968cbd673bfd74c59ba6"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1191,
+      "sha256": "59dab9ae31b2eb69ad0fe42c047096928bacaae56d6d64d193b61df7a4302fdc"
+    }
+  }
+}

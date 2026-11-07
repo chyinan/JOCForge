@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.drc_helper_converter_first_break.v1",
+  "selected_row_member_dereference_in_helper": false,
+  "row_pointer_forwarded_unchanged_to_nested_converter": true,
+  "a0_typed_owner_join": "UNBOUND",
+  "converter_body": "NOT_INSPECTED",
+  "codec_bsi_effect": "UNBOUND",
+  "runtime": "NOT_RUN",
+  "global_absence_claim": false
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DI-QUERY-VIRTUAL-CALLER-RDX-BOUNDARY-V2",
+  "manifest_sha256": "8239d3f3a6b174f9ab98d997702cc4799135dfb6088913c9f9b84f31798bcc39",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "THUNK_RECEIVER_TO_PRIV_EC0_STATIC_BOUND; VIRTUAL_CALLER_RDX_OWNER_UNBOUND; DIALOGUE_QUERY_SELECTION_UNBOUND"
+}

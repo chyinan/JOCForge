@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-di-helper-post-delegate-vectors.v1",
+  "status": "REUSED_STATIC_ONLY_NO_NEW_RUNTIME",
+  "post_delegate_mapping": "outer +0x164 / param_2+8 -> helper object +0x18 by copy-or-alias on success path",
+  "prior_delegate_may_modify_input": "UNBOUND; FUN_1801ae690 body not inspected",
+  "helper_to_per_channel_gate_join": "UNBOUND",
+  "runtime_status": "NOT_RUN",
+  "pcm_payload_key_license_accessed": false
+}

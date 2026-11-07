@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/adm_bwf_ddp_drc_line_mode_mode2_codec_input_writer_boundary_wash_v1",
+  "source_evidence_manifest_sha256": "05102c90eaacce430cd80318be1c751d286a41598bbc68ae94178d0b19fed873",
+  "source_package_seal_sha256": "a53a705b5b0d0020e19a6dcb157b61b8a04f5ec5abe7ce37830349870ae20e66",
+  "wash_recomputed": {
+    "seal_entries": "7/7",
+    "source_evidence_files": "11/11",
+    "parent_manifest_and_seal": "2/2",
+    "target_dll": true
+  },
+  "verified_parent": {
+    "package_id": "adm_bwf_ddp_drc_line_mode_mode2_codec_callsite_boundary_wash_v1",
+    "manifest_sha256": "fb34f4f2a02f11b0f55c77eefc12adca04fcf6a919a73df4dc66c6b2e6f84827",
+    "package_seal_sha256": "3d03cfc3f059ab6b977990704c4d65adb880cd920653f1400d12bbc31c492517"
+  },
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "excluded_from_supplement": ["CHECK.py", "Ghidra exporter source", "raw traces", "XML/media/payload/key/license"]
+}

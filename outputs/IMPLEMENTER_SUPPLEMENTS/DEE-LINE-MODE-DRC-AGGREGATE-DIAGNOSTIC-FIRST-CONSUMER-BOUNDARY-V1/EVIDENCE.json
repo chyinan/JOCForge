@@ -1,0 +1,64 @@
+{
+  "schema": "jocforge.line_mode_drc_aggregate_diagnostic_boundary.v1",
+  "package_id": "DEE-LINE-MODE-DRC-AGGREGATE-DIAGNOSTIC-FIRST-CONSUMER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "line_mode_a0_aggregate_first_consumer_wash_v1",
+    "manifest_sha256": "e7f3ba0021f4c96d3782e5232c1ac9aea89f7483670ca503aaedd46ee1b1f0dc",
+    "checksum_list_sha256": "bf95092a3e976eb3f29f3c975312f578acc1adec14f732254280874fc37d3a80",
+    "package_seal_sha256": "063c4411071a513f0867a423da78cbb752d66b6f16c8fa3fa649ba7bd2806034",
+    "parent_manifest_sha256s": [
+      "8c5a4ce2e0b3387a089060fea5b6bc8c16448480bf3eb5519af362d28f314e6b",
+      "1d719ccf1137fe33fc12446144eda3ed02f5e2caa41e294c077c78b2956c7c19",
+      "a524ef64865d1f35887104d57b19884a64a5365dc0f84e0a9fd14b79f847b0f7"
+    ],
+    "source_payload_hashes_match_checksum_list": true
+  },
+  "target": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis"
+  },
+  "scope": {
+    "dee_run": "NOT_RUN",
+    "runtime_capture": "NOT_CAPTURED",
+    "later_aggregate_uses": "NOT_INSPECTED",
+    "job_process_control": "NONE",
+    "media_pcm_payload_key_license_read": false
+  },
+  "first_consumer_path": {
+    "aggregate_producer": "FUN_180182850",
+    "caller": "FUN_1801764e0",
+    "aggregate_local": "stack local at RBP+0x40",
+    "first_following_call": {
+      "function": "FUN_180184c10",
+      "receives_aggregate": true,
+      "reads_aggregate": false,
+      "uses": "separate output string plus static version text"
+    },
+    "first_data_reader": {
+      "function": "FUN_180184960",
+      "reads": [
+        "aggregate+0x18 capacity discriminator",
+        "aggregate+0x00 string storage or inline string bytes",
+        "aggregate+0x20, +0x28, +0x30, +0x38 as four QWORD format arguments"
+      ],
+      "output_kind": "diagnostic string prefixed as Initializing Composite Item",
+      "sink": "logger virtual slot +0x20"
+    }
+  },
+  "status": {
+    "first_aggregate_data_use": "DIAGNOSTIC_FORMATTING",
+    "typed_transfer_to_per_frame_drc_plus_0xa0": "NOT_ESTABLISHED",
+    "typed_transfer_to_codec_or_bsi": "NOT_ESTABLISHED",
+    "aggregate_concrete_type": "UNBOUND",
+    "logger_owner_and_generation": "UNBOUND",
+    "later_uses": "NOT_INSPECTED",
+    "global_no_consumer_claim": false
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "do_not_treat_diagnostic_fields_as_drc_audio_controls": true,
+    "preserve_codec_bsi_effect_as_unbound": true
+  }
+}

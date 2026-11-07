@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-A0-PERFRAME-PACK-FIRST-BREAK-V1",
+  "manifest_sha256": "5ccc2f08330392bf7461419adfbfe94f37d50a76ff2cfeb4969e7a699d04deae",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SAME_SNAPSHOT_POINTER_REACHES_PERFRAME_PACKER_STATIC; NO_DIRECT_A0_TRANSFER_IN_VALIDATOR_OR_FIRST_PACKER; CODEC_BSI_JOIN_UNBOUND; RUNTIME_NOT_CAPTURED"
+}

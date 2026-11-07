@@ -1,0 +1,9 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "rf_drc_snapshot_a4_consumer_boundary_wash_v1",
+  "manifest_sha256": "b6f83de105efbb41ec476746b424053d96807d6b218cfd2caf68b5223e576967",
+  "sha256sums_sha256": "c7cc659eb4a486ab8018910041e2b18ac7ec56e452ca5ca6e11cf182033f4217",
+  "payload_count": 5,
+  "status": "RF_STRING_TO_SNAPSHOT_PLUS_0XA4_BOUND_STATIC; A4_TO_TYPED_CONSUMER_UNBOUND; DISTINCT_E0_TO_CONFIG_PATH_BOUND_STATIC; RUNTIME_NOT_CAPTURED",
+  "sha256sums_scope": "payloads plus MANIFEST.json"
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "rf-drc-f98-entry-producer",
+      "kind": "static-vector-header-copy",
+      "input": {
+        "destination": "+0xf98",
+        "source_slot": "[RSP+0x28, RSP+0x30)"
+      },
+      "observed": {
+        "entry_width_bytes": 8,
+        "generic_copy_type": "longlong",
+        "semantic_owner": "UNBOUND"
+      },
+      "status": "HEADER_AND_SOURCE_BOUND; ENTRY_TYPE_AND_CONSUMER_UNBOUND"
+    }
+  ]
+}

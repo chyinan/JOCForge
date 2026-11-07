@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "drc-row-plus10-zero-subtract",
+      "input": {
+        "row_qword": "U64",
+        "third_argument": 0
+      },
+      "expected_observation": {
+        "fallthrough_first_use": "subtract zero"
+      },
+      "limitations": [
+        "No result value captured",
+        "No field semantics",
+        "No A0/codec/BSI join"
+      ]
+    }
+  ]
+}

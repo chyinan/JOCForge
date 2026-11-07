@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.di_plus164_alternate_same_image_owner_boundary.v1",
+  "alternate_plus164_read": "BOUND_STATIC",
+  "alternate_owner": "codec-parent child record",
+  "empire_subcontext_owner": "engine +0x1d0 path",
+  "alternate_owner_to_empire_subcontext_join": "UNBOUND",
+  "bool_to_float32_result_causality": "UNBOUND",
+  "global_absence_claim": false,
+  "runtime": "NOT_RUN"
+}

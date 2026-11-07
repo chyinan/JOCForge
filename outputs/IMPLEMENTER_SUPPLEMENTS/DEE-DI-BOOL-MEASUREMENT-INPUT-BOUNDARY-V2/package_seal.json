@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V2",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "4d57fcdb7e3c3e1c43024fe73c758cb2b4188fefc239dc415618e574e453557e",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

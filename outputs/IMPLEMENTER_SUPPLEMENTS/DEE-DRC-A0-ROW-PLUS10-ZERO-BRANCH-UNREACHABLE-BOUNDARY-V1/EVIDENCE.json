@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.drc_row_plus10_zero_branch_boundary.v1",
+  "row_member": "QWORD at +0x10",
+  "next_use": "unsigned compare with explicit zero third argument",
+  "selected_taken_condition": "row_qword < 0",
+  "selected_taken_edge_for_bound_call": false,
+  "branch_target_body_followed": false,
+  "fallthrough_followed": false,
+  "row_semantic_type_owner": "UNBOUND",
+  "projection_to_snapshot_plus_0xa0": "UNBOUND",
+  "audio_codec_bsi_effect": "UNBOUND",
+  "runtime": "NOT_RUN"
+}

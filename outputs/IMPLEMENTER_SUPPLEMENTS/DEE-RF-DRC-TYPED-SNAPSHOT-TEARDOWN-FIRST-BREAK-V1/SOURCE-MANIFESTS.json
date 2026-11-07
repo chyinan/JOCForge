@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "dialogue_rf_drc_profile_snapshot_consumer_addendum",
+      "manifest_sha256": "cf33c18ccea1c308a22149dcf41e099da53868c600a932e8ef1539c3609de9af",
+      "package_seal_sha256": "82041775969d4805098d66ab31762f774d3204e1189532e305e46a08dfbdce1b"
+    },
+    {
+      "package_id": "DEE-RF-DRC-PROFILE-TYPED-SNAPSHOT-V1",
+      "manifest_sha256": "d315d056f970ffb04cf472b6bc1b7fd4b33ddac7237ce686a0ae7e6df04204b6",
+      "package_seal_sha256": "140f0a91b897df4cf60d94be4e4e8cc7133ad0c81e0ed59da4e8d930f634ae77"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

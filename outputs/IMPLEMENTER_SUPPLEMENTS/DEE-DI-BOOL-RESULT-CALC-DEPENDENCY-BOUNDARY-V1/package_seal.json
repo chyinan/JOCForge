@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DI-BOOL-RESULT-CALC-DEPENDENCY-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "ca23fefc41eaeafca198257093472dbb4f1ce38b106def292959519c0755b404",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PENDING_NORMAL_AND_PYTHON_O"
+}
