@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.mp4_output_format_boundary.v1",
+  "status": "OUTPUT_FORMAT_STATIC_SETTER_AND_INITPLUGIN_CALL_BOUND; SAME_OBJECT_MUXER_CREATION_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "DEE-ADM-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-WASH-V1",
+  "source_manifest_sidecar_sha256": "0ade275c8342f84aada8906224316a06b9dfc4f0b757eea3a0cb172c2c1a6afb",
+  "output_nodes": {"ec3": "elementary EC-3 output schema", "mp4": "MP4 container schema"},
+  "candidate_schema": {"installation_bound": false, "output_format": {"default": "mp4", "choices": ["mp4", "dash"]}, "override_frame_rate": {"default": "no", "choices": "enumerated frame-rate tokens"}, "plugin_base": ["cmd_proc", "cmd_proc_args", "interpreter"]},
+  "static_setter": {"function": "FUN_1401496e0", "path": "dee::output::Mp4::SetProperty", "output_format_branch": "compares mp4/dash and stores accepted value at member +0x3b; invalid value returns false", "code_call_references_to_entry": 0},
+  "run_path": {"function": "FUN_140148e90", "calls": "FUN_140147140 Mp4::InitPlugin", "init_plugin_reads": "output_format from property data at param_1+0x1d8 and passes it to local property collection"},
+  "first_break": "typed MP4 property handling -> same-object muxer selection/creation",
+  "unbound": ["setter object to Run/InitPlugin same-object join", "concrete muxer selection/creation", "output writer/container result", "runtime acceptance", "override_frame_rate consumer beyond setter", "plugin script execution"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "audio_algorithm_change_authorized": false}
+}

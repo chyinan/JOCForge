@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1",
+  "manifest_sha256": "d8c1f3075149f11e7e9fa7a1156b72458a8fa71f4e15cd4c6ff2f2d8eb694685",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "DIAGNOSTIC_ROW_FORMATTER_BOUND; FIRST_FIELD_EDGE_FUN_180184960_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

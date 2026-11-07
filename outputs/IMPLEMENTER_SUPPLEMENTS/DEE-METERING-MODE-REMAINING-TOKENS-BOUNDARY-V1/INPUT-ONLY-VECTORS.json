@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "INPUTS_ONLY; NO_DERIVED_OUTPUTS; NOT_OBSERVED",
+  "source_identity": {"dee_audio_filter_ddp_atmos_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2", "dee_schema_xsd_sha256": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44"},
+  "vectors": [
+    {"metering_mode": "1770-2", "static_translation": "UNBOUND", "runtime_binding": "UNBOUND", "effect": "NOT_RUN"},
+    {"metering_mode": "1770-1", "static_translation": "UNBOUND", "runtime_binding": "UNBOUND", "effect": "NOT_RUN"},
+    {"metering_mode": "LeqA", "static_translation": "UNBOUND", "runtime_binding": "UNBOUND", "effect": "NOT_RUN"}
+  ]
+}

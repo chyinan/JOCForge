@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"field": "output/mp4/output_format", "token": "mp4", "status": "STATIC_SCHEMA_AND_SETTER_CANDIDATE_ONLY", "expected_container_output": null},
+    {"field": "output/mp4/output_format", "token": "dash", "status": "STATIC_SCHEMA_AND_SETTER_CANDIDATE_ONLY", "expected_container_output": null}
+  ],
+  "note": "No runtime writer/container output asserted."
+}

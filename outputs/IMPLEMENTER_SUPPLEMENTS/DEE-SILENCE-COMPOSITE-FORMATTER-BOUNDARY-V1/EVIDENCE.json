@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.silence_composite_formatter_boundary.v1",
+  "status": "DIAGNOSTIC_ROW_FORMATTER_BOUND; FIRST_FIELD_EDGE_FUN_180184960_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "dee_atmos_ddp_silence_composite_formatter_wash_v1",
+  "source_manifest_sha256": "8dd0187dc9aaf59c4f226fa76a8ef662a529480ec71b91351a260d0a5eded4b4",
+  "source_seal_sha256": "84e71bcB59a8504edfb8ddc8113526fbfec9051697ba440ed61c04adae96d4ac",
+  "formatter": {"function": "FUN_1801849c0", "row_stride_bytes": 64, "row_count_formula": "(end-begin)>>6", "index_format": "%02zu: ", "per_row_helper": "FUN_180184960(row_base,&local_40)", "returned_row_string_appended": true},
+  "caller_use": "format result as Initializing Composite Master diagnostic and send to logger",
+  "direct_row_field_reads": {"+0x20": false, "+0x38": false},
+  "first_unbound_edge": "FUN_180184960 body; silence qword reads/types not inspected",
+  "unbound": ["silence qword field reads/types in FUN_180184960", "sample insertion", "Reader/PTS effect", "audio/PCM effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

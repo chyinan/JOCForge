@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "DIAGNOSTIC_ROW_FORMATTER_BOUND; FIRST_FIELD_EDGE_FUN_180184960_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 828,
+      "sha256": "295944573af76eba9448d9f80c8c2d7022534b78060f60cd56bd0fd963d171a3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1363,
+      "sha256": "021ef8312e22b4c744f9fcc594dbde0bbbcf46862a9c38abdc477dd8f8cf8b17"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 538,
+      "sha256": "2f78e69e5b0e07ea5540b0ec1d250bba5026ed83d78a8f5f4b4c9c8ff9f6218e"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 138,
+      "sha256": "97876387670209bd951c3c0e9ffe331cb44ade738a72dfefd40da33054b6454c"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 814,
+      "sha256": "a27f06064a699f117385ea593a50517547660b660654e43210e0acf4d5e782eb"
+    }
+  ]
+}

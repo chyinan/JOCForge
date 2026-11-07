@@ -5300,7 +5300,8 @@
           "scope": "Reference-only static time_base path: schema enum/default, a Priv+0x550 StringType typed consumer at FUN_18014fd90, and the conditional embedded_timecode comparison/sample-rate-times-offset expression are bound. Runtime XML owner/generation, full offset syntax/rounding, and downstream seek remain unbound.",
           "dependencies": [],
           "spec_files": [
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5322,7 +5323,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "6bc06d2d0111fb70c3ec89abcb355a842052dd19e1fc85f6aa1f57389f75ac08",
             "supplement_seal_sha256": "936564901f5c703ea3421dc2fce833b9501c412f7be2419e25d88520e74b6e12",
@@ -5337,7 +5345,38 @@
               "typed_consumer": "FUN_18014fd90",
               "runtime_value_and_seek": "UNBOUND/NOT_RUN"
             },
-            "validation_boundary": "Reference-only static time_base path: schema enum/default, a Priv+0x550 StringType typed consumer at FUN_18014fd90, and the conditional embedded_timecode comparison/sample-rate-times-offset expression are bound. Runtime XML owner/generation, full offset syntax/rounding, and downstream seek remain unbound."
+            "validation_boundary": "Reference-only static time_base path: schema enum/default, a Priv+0x550 StringType typed consumer at FUN_18014fd90, and the conditional embedded_timecode comparison/sample-rate-times-offset expression are bound. Runtime XML owner/generation, full offset syntax/rounding, and downstream seek remain unbound.",
+            "latest_addendum": {
+              "package": "DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1",
+              "manifest_sha256": "7ac41fde00e32b94b297c502a9a5a0fa935ed8d38fff4041e47bcf71f43d5b6b",
+              "seal_sha256": "428ee606ecc439fb3ec235f49f870fb5ff7581056dceb94760f5ce26396a92af",
+              "static_evidence": {
+                "schema_enum": [
+                  "file_position",
+                  "embedded_timecode"
+                ],
+                "constructor_default": "file_position; not a runtime value",
+                "same_priv_consumer": "Priv+0x550 StringType -> FUN_18014fd90",
+                "accepted_host_value_to_current_value_writer": "UNBOUND",
+                "runtime_value": "NOT_CAPTURED",
+                "range_seek": "NOT_RUN"
+              },
+              "not_run": [
+                "Accepted host XML time_base owner/generation to selected DDP Priv+0x550 current-value writer.",
+                "Native runtime value, range/seek behavior, and embedded_timecode effect."
+              ],
+              "provider_files": [
+                "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/MANIFEST.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/package_seal.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/REPORT.md",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/EVIDENCE.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/CHECK.py"
+              ],
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false
+            }
           },
           "vectors": {
             "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
@@ -5345,7 +5384,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-RANGE-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only static time_base path: schema enum/default, a Priv+0x550 StringType typed consumer at FUN_18014fd90, and the conditional embedded_timecode comparison/sample-rate-times-offset expression are bound. Runtime XML owner/generation, full offset syntax/rounding, and downstream seek remain unbound."
@@ -5558,6 +5601,217 @@
             "Reader/range/PTS behavior, cleanup owner/generation, and audio effect."
           ],
           "validation_boundary": "Reference-only callsite boundary: prepend vector context+0x18 and append vector context+0x60 reach FUN_1801844c0; the output vector's first observed post-call use is FUN_1801849c0 for a Composite Master diagnostic log. Helper row reads, sample insertion, Reader/range/PTS behavior, and audio effect remain unbound.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-silence-composite-formatter-boundary",
+          "mapping_status": "DIAGNOSTIC_ROW_FORMATTER_BOUND__FIRST_FIELD_EDGE_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_DIAGNOSTIC_FORMATTER__NO_SILENCE_OR_AUDIO_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only formatter boundary: FUN_1801849c0 traverses 0x40-stride rows, formats indexes, calls FUN_180184960 for per-row text, and appends it to a Composite Master diagnostic. It does not directly read row +0x20 or +0x38; the helper field reads remain unbound.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The formatter row stride is 0x40 bytes and count is (end-begin)>>6.",
+              "FUN_180184960 is the first unbound row-field edge; the formatter itself does not read +0x20/+0x38.",
+              "No sample insertion, Reader/PTS, PCM, or audio effect is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "d8c1f3075149f11e7e9fa7a1156b72458a8fa71f4e15cd4c6ff2f2d8eb694685",
+            "supplement_seal_sha256": "b7e277b8b368f1c3f9afb849f1fd62b8c94c4f02182340259a78a7fd4f7e4874",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "formatter": "FUN_1801849c0",
+              "row_stride_bytes": 64,
+              "row_count_formula": "(end-begin)>>6",
+              "per_row_helper": "FUN_180184960",
+              "first_unbound_edge": "FUN_180184960 row field reads/types"
+            },
+            "validation_boundary": "Reference-only formatter boundary: FUN_1801849c0 traverses 0x40-stride rows, formats indexes, calls FUN_180184960 for per-row text, and appends it to a Composite Master diagnostic. It does not directly read row +0x20 or +0x38; the helper field reads remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only formatter boundary: FUN_1801849c0 traverses 0x40-stride rows, formats indexes, calls FUN_180184960 for per-row text, and appends it to a Composite Master diagnostic. It does not directly read row +0x20 or +0x38; the helper field reads remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "FUN_180184960 row field reads/types.",
+            "Silence sample insertion, Reader/PTS behavior, PCM and audio effect."
+          ],
+          "validation_boundary": "Reference-only formatter boundary: FUN_1801849c0 traverses 0x40-stride rows, formats indexes, calls FUN_180184960 for per-row text, and appends it to a Composite Master diagnostic. It does not directly read row +0x20 or +0x38; the helper field reads remain unbound.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-metering-mode-remaining-token-boundary",
+          "mapping_status": "SCHEMA_TOKENS_AND_GENERIC_MAP_CONSUMER_BOUND__TOKEN_VALUES_AND_OWNER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_REMAINING_TOKEN_REGISTRATION__NO_METER_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only boundary for 1770-2, 1770-1, and LeqA: schema registration and a generic conditional raw-U32 map consumer are bound, but no token-specific raw values were captured. XML StringType owner/receiver, selected Meter/provider/generation, and effect remain unbound/not run. DI-ignore notes are descriptor text only.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "1770-2, 1770-1, and LeqA are schema-listed and reach a generic candidate map consumer only conditionally.",
+              "Token-specific raw U32 values are NOT_CAPTURED; the XML StringType owner is not joined to the receiver.",
+              "No selected Meter/provider, generation, measurement result, or effect is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "752e297432bacd0ac4e7e26993bed26882e73a662da4efa1b87cc5b50388f7c4",
+            "supplement_seal_sha256": "0e40e661a9f34a31bb288beb459432e6cd9db2ea1934ac64fb7bdd8213e7cbe1",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "tokens": [
+                "1770-2",
+                "1770-1",
+                "LeqA"
+              ],
+              "generic_consumer": "FUN_1801535b0; raw U32 candidate at param_2+0x90 on map hit",
+              "token_specific_values": "UNBOUND/NOT_CAPTURED",
+              "di_ignore_for_1770_1_and_LeqA": "descriptor text only"
+            },
+            "validation_boundary": "Reference-only boundary for 1770-2, 1770-1, and LeqA: schema registration and a generic conditional raw-U32 map consumer are bound, but no token-specific raw values were captured. XML StringType owner/receiver, selected Meter/provider/generation, and effect remain unbound/not run. DI-ignore notes are descriptor text only."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only boundary for 1770-2, 1770-1, and LeqA: schema registration and a generic conditional raw-U32 map consumer are bound, but no token-specific raw values were captured. XML StringType owner/receiver, selected Meter/provider/generation, and effect remain unbound/not run. DI-ignore notes are descriptor text only."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Token-specific map values and XML owner-to-processing receiver join.",
+            "Selected Meter/provider/generation, measurement result, and Meter/audio effect."
+          ],
+          "validation_boundary": "Reference-only boundary for 1770-2, 1770-1, and LeqA: schema registration and a generic conditional raw-U32 map consumer are bound, but no token-specific raw values were captured. XML StringType owner/receiver, selected Meter/provider/generation, and effect remain unbound/not run. DI-ignore notes are descriptor text only.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-mp4-output-format-first-consumer-boundary",
+          "mapping_status": "MP4_FORMAT_SCHEMA_AND_STATIC_SETTER_BOUND__SAME_OBJECT_MUXER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_CONTAINER_PATH__LOCAL_MP4_GATE_REMAINS_REJECTED",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only MP4 container boundary: candidate XSD lists mp4/dash and plugin/base fields; a static setter compares mp4/dash, and Mp4::Run calls InitPlugin which reads output_format. The XSD is not installation-bound, setter and Run/InitPlugin objects are not joined, and no muxer creation/output writer is established.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Candidate schema distinguishes elementary EC-3 from MP4 container output and lists mp4/dash.",
+              "Static host setter accepts mp4/dash into member +0x3b; static Run calls InitPlugin which reads output_format.",
+              "Setter-to-Run same-object join, muxer creation, output writer, runtime acceptance, and container result remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "a1026e952f90091b2c11da5f04b59fd6e2ee3b3104d5a99425eb5cfb6e2c8fab",
+            "supplement_seal_sha256": "fcddf32a7fa79f970f363ce7dc7e4580e1fd616ea8ce18d23045168c1a959930",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "schema_tokens": [
+                "mp4",
+                "dash"
+              ],
+              "schema_installation_bound": false,
+              "setter": "FUN_1401496e0 stores candidate at member +0x3b",
+              "run_path": "Mp4::Run -> Mp4::InitPlugin; output_format read into local property collection",
+              "same_object_muxer_and_output": "UNBOUND"
+            },
+            "validation_boundary": "Reference-only MP4 container boundary: candidate XSD lists mp4/dash and plugin/base fields; a static setter compares mp4/dash, and Mp4::Run calls InitPlugin which reads output_format. The XSD is not installation-bound, setter and Run/InitPlugin objects are not joined, and no muxer creation/output writer is established."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only MP4 container boundary: candidate XSD lists mp4/dash and plugin/base fields; a static setter compares mp4/dash, and Mp4::Run calls InitPlugin which reads output_format. The XSD is not installation-bound, setter and Run/InitPlugin objects are not joined, and no muxer creation/output writer is established."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Setter instance to Mp4::Run/InitPlugin instance join and runtime acceptance.",
+            "Concrete muxer selection/creation, output writer, and container result.",
+            "override_frame_rate consumer beyond setter and plugin script execution."
+          ],
+          "validation_boundary": "Reference-only MP4 container boundary: candidate XSD lists mp4/dash and plugin/base fields; a static setter compares mp4/dash, and Mp4::Run calls InitPlugin which reads output_format. The XSD is not installation-bound, setter and Run/InitPlugin objects are not joined, and no muxer creation/output writer is established.",
           "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
         }
       ]
@@ -65327,6 +65581,83 @@
         "Candidate vtable slot to keyed StringType +0x968 owner/value join.",
         "Runtime owner/generation and effective surround trim consumer.",
         "Units, numeric mapping, BSI serialization, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1",
+      "manifest_sha256": "d8c1f3075149f11e7e9fa7a1156b72458a8fa71f4e15cd4c6ff2f2d8eb694685",
+      "supplement_seal_sha256": "b7e277b8b368f1c3f9afb849f1fd62b8c94c4f02182340259a78a7fd4f7e4874",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "DIAGNOSTIC_ROW_FORMATTER_BOUND__FIRST_FIELD_EDGE_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "FUN_180184960 row field reads/types.",
+        "Silence sample insertion, Reader/PTS behavior, PCM and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1",
+      "manifest_sha256": "752e297432bacd0ac4e7e26993bed26882e73a662da4efa1b87cc5b50388f7c4",
+      "supplement_seal_sha256": "0e40e661a9f34a31bb288beb459432e6cd9db2ea1934ac64fb7bdd8213e7cbe1",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SCHEMA_TOKENS_AND_GENERIC_MAP_CONSUMER_BOUND__TOKEN_VALUES_AND_OWNER_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Token-specific map values and XML owner-to-processing receiver join.",
+        "Selected Meter/provider/generation, measurement result, and Meter/audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1",
+      "manifest_sha256": "7ac41fde00e32b94b297c502a9a5a0fa935ed8d38fff4041e47bcf71f43d5b6b",
+      "supplement_seal_sha256": "428ee606ecc439fb3ec235f49f870fb5ff7581056dceb94760f5ce26396a92af",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_MEMBER_CONSUMER_BOUND; XML_CURRENT_VALUE_WRITER_UNBOUND; RUNTIME_VALUE_NOT_CAPTURED; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Accepted host XML time_base owner/generation to selected DDP Priv+0x550 current-value writer.",
+        "Native runtime value, range/seek behavior, and embedded_timecode effect."
+      ]
+    },
+    {
+      "package_id": "DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1",
+      "manifest_sha256": "a1026e952f90091b2c11da5f04b59fd6e2ee3b3104d5a99425eb5cfb6e2c8fab",
+      "supplement_seal_sha256": "fcddf32a7fa79f970f363ce7dc7e4580e1fd616ea8ce18d23045168c1a959930",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MP4_FORMAT_SCHEMA_AND_STATIC_SETTER_BOUND__SAME_OBJECT_MUXER_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Setter instance to Mp4::Run/InitPlugin instance join and runtime acceptance.",
+        "Concrete muxer selection/creation, output writer, and container result.",
+        "override_frame_rate consumer beyond setter and plugin script execution."
       ]
     }
   ]

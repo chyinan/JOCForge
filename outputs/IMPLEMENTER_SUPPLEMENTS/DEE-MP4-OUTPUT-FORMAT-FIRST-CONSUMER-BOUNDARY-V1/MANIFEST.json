@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "OUTPUT_FORMAT_STATIC_SETTER_AND_INITPLUGIN_CALL_BOUND; SAME_OBJECT_MUXER_CREATION_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1223,
+      "sha256": "bbb52afd6b911e7d54ddaa1f8e205a34c9d65e0b96b2555f6a6101108cab1213"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1821,
+      "sha256": "18d5c059d413070ef3898db1b4b186ff134acb3ded20be0ca9d9854dc3b72d79"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 462,
+      "sha256": "c81ec4bf652640a6a391241de0078401e9e18bfad03bddbcbfaab53202c556fe"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 420,
+      "sha256": "23e2694e3ccea20287ac352bf9cb692ef6c8113b24ee784cb1477f9db3aaead9"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 946,
+      "sha256": "0cbe6902d0ebce6cbfcbd78f6c9bcfbbf6c016fc2565866c1f523cbdb184348a"
+    }
+  ]
+}

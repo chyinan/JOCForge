@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.time_base_xml_writer_boundary.v1",
+  "status": "SCHEMA_FIELD_AND_SAME_PRIV_CONSUMER_BOUND; XML_VALUE_WRITER_UNBOUND; RUNTIME_VALUE_NOT_CAPTURED; RANGE_SEEK_NOT_RUN",
+  "source_package": "dee_encode_to_atmos_ddp_time_base_priv_writer_gap_wash_v1",
+  "source_manifest_sha256": "80a7239c3c414c2aeff01e281b63bc4171f524076dbc22bd5e6728a45efdca3e",
+  "source_seal_sha256": "96331a690ef361e2147a9fcc883c08a61754af68df32647a28915bea99f0a73d",
+  "selected_route": {"configuration_key": "encode_to_atmos_ddp", "plugin": "FilterDDPJocEncPlugin", "module": "dee_audio_filter_ddp_atmos.dll"},
+  "schema_field": {"type": "xs:string", "enum": ["file_position", "embedded_timecode"], "constructor_default": "file_position", "default_is_not_runtime_value": true},
+  "typed_member_and_consumer": {"member": "Priv+0x550 StringType", "consumer": "FUN_18014fd90 reads through vtable +0x30 and compares with embedded_timecode", "static_same_Priv_join": true},
+  "first_missing_edge": "accepted host XML time_base value owner/generation -> selected DDP Priv+0x550 current-value writer/callsite and runtime owner/generation",
+  "statuses": {"xml_value_to_priv_writer": "UNBOUND", "native_time_base_value": "NOT_CAPTURED", "priv_runtime_generation": "NOT_CAPTURED", "time_base_to_adm_generation": "UNBOUND", "runtime_range_or_seek": "NOT_RUN"},
+  "execution": {"dee_run": false, "attempt_14_changed": false, "e333_touched": false, "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

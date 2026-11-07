@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1",
+  "manifest_sha256": "a1026e952f90091b2c11da5f04b59fd6e2ee3b3104d5a99425eb5cfb6e2c8fab",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "OUTPUT_FORMAT_STATIC_SETTER_AND_INITPLUGIN_CALL_BOUND; SAME_OBJECT_MUXER_CREATION_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

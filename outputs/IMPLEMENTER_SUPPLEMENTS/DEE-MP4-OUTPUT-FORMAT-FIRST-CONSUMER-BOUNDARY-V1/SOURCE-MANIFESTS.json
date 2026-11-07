@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-ADM-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-WASH-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-03\\jocforge-reverse-agent-5\\outputs\\DEE-ADM-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-WASH-V1",
+    "manifest_sidecar_sha256": "0ade275c8342f84aada8906224316a06b9dfc4f0b757eea3a0cb172c2c1a6afb",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

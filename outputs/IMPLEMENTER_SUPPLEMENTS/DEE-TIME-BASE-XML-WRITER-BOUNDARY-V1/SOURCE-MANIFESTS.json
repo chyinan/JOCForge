@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "dee_encode_to_atmos_ddp_time_base_priv_writer_gap_wash_v1",
+    "root": "D:\\Tools\\Dolby_Encoding_Engine\\work\\research-audit\\adm-processor-frame-shape-dynamic-v1\\attempt-14\\analysis\\timebase-xml-priv-writer-gap-wash-v1",
+    "manifest_sha256": "80a7239c3c414c2aeff01e281b63bc4171f524076dbc22bd5e6728a45efdca3e",
+    "seal_sha256": "96331a690ef361e2147a9fcc883c08a61754af68df32647a28915bea99f0a73d",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

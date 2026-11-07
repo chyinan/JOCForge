@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SCHEMA_TOKENS_CONFIRMED; TOKEN_SPECIFIC_TRANSLATION_UNBOUND; SELECTED_METER_PROVIDER_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 964,
+      "sha256": "61130ea0962875b477c5811847d1e107ca57b57b45866d09445054a07ab33e69"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2106,
+      "sha256": "1e05cd9755c70297ba0e58c4f8c975951fca9a2d91f8babedb632701560f7544"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 618,
+      "sha256": "445b70dc13d4f1407b852ae76e7ad943d230da65a033e621ac217749cc1ea235"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 698,
+      "sha256": "3c882a58a3c9e30e531478d7e9657ca4ec9162b46c107165d15f8ee57b2269fa"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1000,
+      "sha256": "cb8162cd31ebe25ff44c1640bd61b8690955604a7658c82a343b68724b25fc89"
+    }
+  ]
+}

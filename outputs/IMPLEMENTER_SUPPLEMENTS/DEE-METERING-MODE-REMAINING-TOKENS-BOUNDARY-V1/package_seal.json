@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1",
+  "manifest_sha256": "752e297432bacd0ac4e7e26993bed26882e73a662da4efa1b87cc5b50388f7c4",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SCHEMA_TOKENS_CONFIRMED; TOKEN_SPECIFIC_TRANSLATION_UNBOUND; SELECTED_METER_PROVIDER_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

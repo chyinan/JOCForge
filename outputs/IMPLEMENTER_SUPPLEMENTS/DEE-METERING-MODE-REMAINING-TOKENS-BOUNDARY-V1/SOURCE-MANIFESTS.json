@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-METERING-MODE-REMAINING-TOKENS-FIRST-CONSUMER-BOUNDARY-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-7-multi-adm-dialnorm\\work\\encoder_analysis\\reports\\metering_mode_remaining_tokens_first_consumer_boundary_20261107_1400z",
+    "manifest_sha256": "1680c1614d87ae99c7da33433adb43ba75be3cde260cf79b978d718bc9d0be09",
+    "seal_sha256": "5b9daca9156788737a3dde20ccacbc90fecd2db5b9212b25a0cb187696770e53",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

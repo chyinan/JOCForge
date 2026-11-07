@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "dee_atmos_ddp_silence_composite_formatter_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_composite_formatter_wash_v1",
+    "manifest_sha256": "8dd0187dc9aaf59c4f226fa76a8ef662a529480ec71b91351a260d0a5eded4b4",
+    "seal_sha256": "84e71bcB59a8504edfb8ddc8113526fbfec9051697ba440ed61c04adae96d4ac",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

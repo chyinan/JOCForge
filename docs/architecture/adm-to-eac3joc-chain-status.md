@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following seven packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
+The following eleven packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1396,5 +1396,9 @@ The following seven packages were independently hash-checked and passed their pa
 | DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1 | 44b4886b49d3f1f1f6869f7c3a79de51ff94387c5b4d40d5d0d47f4506e4d1d4 / 67900bbec7462b6925da8889063892abb610c2994282268571abada7dd054aaf | Surround +0x968 U16 candidate and bounded height +0x9e8 query. | StringType/provider join, units/precision, BSI mapping, and audio effect. |
 | DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1 | 3e481b71454373f36e1b03462a303d1f9b22ca9d104f6fe6b3ee6f1b9bc9cf82 / 277dbea1973ea98049f3195429cb974069d6eb255f56b6d1aa98280a2eabda8d | Same snapshot base reaches the mode-1 validator/packer; +0xa0 is not read on the scoped edge and +0x130 is distinct. | XML runtime owner, selected mode-1 generation, codec/BSI consumer, and audio effect. |
 | DEE-SILENCE-COMPOSITE-POSTCALL-BOUNDARY-V1 | dc617ae8c8bf05793ac79a4a11d09dd396a4b4ecb74fd4409aa1f6b1db6844c9 / 0372b8228412d4972e03f4563ff036923174c82657a695225c7858e31aa6fb74 | Prepend/append vector call arguments and first observed output-vector use in diagnostic logging. | Helper row reads, sample insertion, Reader/range/PTS, cleanup owner generation, and audio effect. |
+| DEE-SILENCE-COMPOSITE-FORMATTER-BOUNDARY-V1 | d8c1f3075149f11e7e9fa7a1156b72458a8fa71f4e15cd4c6ff2f2d8eb694685 / b7e277b8b368f1c3f9afb849f1fd62b8c94c4f02182340259a78a7fd4f7e4874 | 0x40-stride diagnostic row formatter, index prefix, and per-row FUN_180184960 call. | Helper field reads, sample insertion, Reader/PTS, and audio effect. |
+| DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1 | 752e297432bacd0ac4e7e26993bed26882e73a662da4efa1b87cc5b50388f7c4 / 0e40e661a9f34a31bb288beb459432e6cd9db2ea1934ac64fb7bdd8213e7cbe1 | Schema registration and conditional generic map-consumer path for 1770-2, 1770-1, and LeqA. | Token-specific values, XML owner/provider/generation, measurement result, and effect. |
+| DEE-TIME-BASE-XML-WRITER-BOUNDARY-V1 | 7ac41fde00e32b94b297c502a9a5a0fa935ed8d38fff4041e47bcf71f43d5b6b / 428ee606ecc439fb3ec235f49f870fb5ff7581056dceb94760f5ce26396a92af | Static member/default and same-Priv consumer; constructor default is not runtime value. | Accepted host XML value to current-value writer/generation, runtime value, range/seek. |
+| DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1 | a1026e952f90091b2c11da5f04b59fd6e2ee3b3104d5a99425eb5cfb6e2c8fab / fcddf32a7fa79f970f363ce7dc7e4580e1fd616ea8ce18d23045168c1a959930 | Candidate mp4/dash schema, static setter and Run/InitPlugin path. | Same-object join, muxer selection/creation, output writer and runtime result. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.

@@ -166,6 +166,9 @@
 | F01E/washed-custom-trim-value-boundary | F01E | `UNBOUND` |
 | F01E/washed-line-drc-mode1-snapshot-a0-boundary | F01E | `UNBOUND` |
 | F01E/washed-silence-composite-postcall-boundary | F01E | `UNBOUND` |
+| F01E/washed-silence-composite-formatter-boundary | F01E | `UNBOUND` |
+| F01E/washed-metering-mode-remaining-token-boundary | F01E | `UNBOUND` |
+| F01E/washed-mp4-output-format-first-consumer-boundary | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |
