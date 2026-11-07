@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.speech_threshold_query_owner_boundary.v1",
+  "status": "STATIC_INTEGER_CANDIDATE_AND_READER_POINTER_PATH_BOUND; QUERY_OWNER_AND_SAME_GENERATION_JOIN_UNBOUND; XREF_CONFLICT_PRESERVED; EFFECT_NOT_RUN",
+  "source_package": "speech_threshold_query_owner_generation_boundary_wash_v1",
+  "source_manifest_sha256": "794bb3ec3f4c6584b90aafc055dbeff7dbde31e0bafac86ec348bfb55e14bba3",
+  "source_seal_sha256": "4697d2cd83229cae79d442f1c2b0db85e70030e453d51e0c6ada9e7ed74b0388",
+  "integer_candidate": {"property": "loudness:measure_only:speech_threshold", "priv_offset": "0x2e8", "container": "Priv+0xec0 ParametersContainer candidate vector", "selection": "conditional on exact byte-equal query name"},
+  "dynamic_query": {"producer": "FUN_18014a060", "record_stride": "0x68", "name_like_field": "+0x18", "actual_name_bytes": "UNBOUND", "record_array_owner_generation": "UNBOUND"},
+  "reader_path": {"reader": "FUN_1801792c0", "source": "param_1+0x30 U32", "direct_caller": "FUN_180179790 at 0x1801797da", "caller_of_prepare": "FUN_180179d30 at 0x180179dc4", "pointer_passthrough_static": true, "Priv_plus_0x2e8_to_reader_owner_join": "UNBOUND"},
+  "xref_discrepancy": {"legacy_receipt": "0x180178fae listed as call to FUN_1801792c0", "current_instruction": "0x180178fae calls FUN_1801799b0", "current_getReferencesTo": "FUN_180179790", "cause": "UNRESOLVED; preserve both"},
+  "unbound": ["actual query name equals speech_threshold", "record-array/runtime Integer owner and generation", "same-object join to reader param_1+0x30", "first post-open algorithm read", "measurement/audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

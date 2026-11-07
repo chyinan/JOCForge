@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1",
+  "manifest_sha256": "a3c5b4e1816471e3d4459cee1133a291194c1c2f553b1c10051141254066c7b3",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ASSIGN_TEMP_FILE_DELEGATE_EDGE_BOUND; CALLEE_FILE_EFFECT_UNBOUND; CLEAN_TEMP_CONSUMER_UNBOUND; IMPLEMENTATION_READY=NO"
+}

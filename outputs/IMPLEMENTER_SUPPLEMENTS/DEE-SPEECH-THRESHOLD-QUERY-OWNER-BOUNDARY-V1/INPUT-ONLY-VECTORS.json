@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Query-owner and pointer-lineage addendum only; no runtime values or output vectors."
+}

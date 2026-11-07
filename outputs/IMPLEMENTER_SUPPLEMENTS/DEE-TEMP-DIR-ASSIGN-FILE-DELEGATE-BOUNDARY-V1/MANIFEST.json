@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ASSIGN_TEMP_FILE_DELEGATE_EDGE_BOUND; CALLEE_FILE_EFFECT_UNBOUND; CLEAN_TEMP_CONSUMER_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 781,
+      "sha256": "f98af8bef8377391c30cb2f2698fc1bd351f8215bc8f6415497f89df9f12d4c5"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1468,
+      "sha256": "ba09502e085828ac3aa2c20a4411981d93ed78a6c5d3b23c7b9bedaa410cf213"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 611,
+      "sha256": "bc72208137e7b46173f271387ddf9a602c0d0c4bf0dbf00f23fef25d2ea3d661"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 140,
+      "sha256": "a20fe41e233588bf7459dd90bca6d1af81b41e106e73fdadc7943a952bb45491"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 812,
+      "sha256": "8184510472ea8e0e6f573c6ba2e33b4cd5d13d9b056dc46a6d88bdd0cf4144b4"
+    }
+  ]
+}

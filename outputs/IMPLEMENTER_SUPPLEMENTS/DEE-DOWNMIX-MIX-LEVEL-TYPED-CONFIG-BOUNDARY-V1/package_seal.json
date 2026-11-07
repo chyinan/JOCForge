@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1",
+  "manifest_sha256": "9774184942c196b259fa3c9bc60e2b37f9e1456fa6a7763e0f287c51abc19cc4",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "FOUR_SEPARATE_TYPED_U32_CONFIGS_BOUND_STATICALLY; RUNTIME_OWNER_BSI_AND_RENDER_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO"
+}

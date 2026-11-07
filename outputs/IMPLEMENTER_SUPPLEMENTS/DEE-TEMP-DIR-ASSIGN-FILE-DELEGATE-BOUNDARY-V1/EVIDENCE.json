@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.temp_dir_assign_file_delegate_boundary.v1",
+  "status": "ASSIGN_TEMP_FILE_DELEGATE_EDGE_BOUND; CALLEE_FILE_EFFECT_UNBOUND; CLEAN_TEMP_CONSUMER_UNBOUND",
+  "source_package": "DEE-ATMOS-MISC-TEMP-ASSIGN-FILE-CALLEE-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "34ef31e4a2d31425fac3c702295f20add422fe89a8168596dcb7770252d77ec9",
+  "source_sha256sums_sha256": "301851c51b4a9d3546a754cb09ff7c01a0cc833ba160ecc744f7ea02bb1d5965",
+  "host_image_sha256_recorded": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+  "caller": {"function": "FUN_140067610", "owner_argument": "param_1", "owner_source_reused": "*(path_object+0x70)", "local_a8_source": "FUN_1400207f0 copy from param_4", "local_88_source": "FUN_1400207f0 copy from param_2"},
+  "delegate": {"site": "0x1400676d5", "callee": "FUN_140066230", "arguments": ["param_1", "local_88", "param_3", "local_a8"], "body_inspected": false},
+  "unbound": ["FUN_140066230 file creation/deletion/queue semantics", "clean_temp path-object+0x90 to cleanup consumer", "runtime job/provider identity and generation"],
+  "execution": {"dee_run": false, "winDbg_run": false, "ab_run": false, "e254_touched": false, "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

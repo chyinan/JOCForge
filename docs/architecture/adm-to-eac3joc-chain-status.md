@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following twenty-two packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
+The following twenty-five packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1411,5 +1411,8 @@ The following twenty-two packages were independently hash-checked and passed the
 | DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1 | 4cde83dabf8ec1f47a980fbd2fa5439044fe8d0690fc4a7ab89777176e072706 / 399eea510f3e90e4d3485f64d76e6e74e64feda6a6489507bbd8bab70074c469 | Untyped, unreferenced slot contains the static SetProperty function pointer. | Slot caller, same-Mp4-instance join, muxer/writer, runtime output and container effect. |
 | DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1 | 8b7c680d54d361b537931fa132248c14c21192520027103dadb366838cc6f2d7 / c92b14e55fae38ad8c347c56c5f75173b7c5995f6211bf19be69467fd5093f37 | Setter expression corrected to byte +0x188; separate reader candidate reads its own +0x188. | Setter/reader object identity, XML node attribution, conversion, and runtime effect. |
 | DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1 | c5a540472baa418d805f6860767ca8889789b0dc953048022e881f868ba00f41 / 6acd70506a01357dffb774ecba3920e6ae28910248c5dec7ce248947a6118daf | Unsigned selected-row +0x10 compare against caller R8=0; taken branch not taken on this edge. | Field owner, snapshot +0xa0 join, other branch callee, codec/BSI and audio effect. |
+| DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1 | de373c42a60212e81ee0794c19c4ad81d862a4daa49da10cf4c263583d993971 / feedd8bdcb546d476d98f1d3c9637416c5f8aec83918d82f2a75d14c1095f020 | Priv+0x2e8 Integer candidate and current reader pointer path; xref discrepancy preserved. | Query owner/generation, same-object reader join, first algorithm read and effect. |
+| DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1 | 9774184942c196b259fa3c9bc60e2b37f9e1456fa6a7763e0f287c51abc19cc4 / 28006864017b0379d33e4939c2b64e968139f68af36d8bffebfcd307852d3b0a | Four typed internal MixLevel U32 configs with per-field offsets and accepted-code sets. | BSI/DDP interpretation, runtime owner/event, DME host bridge and rendered effect. |
+| DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1 | a3c5b4e1816471e3d4459cee1133a291194c1c2f553b1c10051141254066c7b3 / b1285e4d865a1f9595540be1c7615c835e3984a5f77ce5620a9210ebb8243205 | AssignTempFile path arguments delegated to FUN_140066230. | Callee file operation, cleanup consumer and runtime job/provider identity. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.

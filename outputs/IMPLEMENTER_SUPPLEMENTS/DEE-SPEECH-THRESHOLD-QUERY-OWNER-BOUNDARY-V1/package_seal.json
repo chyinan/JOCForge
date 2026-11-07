@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1",
+  "manifest_sha256": "de373c42a60212e81ee0794c19c4ad81d862a4daa49da10cf4c263583d993971",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STATIC_INTEGER_CANDIDATE_AND_READER_POINTER_PATH_BOUND; QUERY_OWNER_AND_SAME_GENERATION_JOIN_UNBOUND; XREF_CONFLICT_PRESERVED; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

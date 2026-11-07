@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.downmix_mix_level_typed_config_boundary.v1",
+  "status": "FOUR_SEPARATE_TYPED_U32_CONFIGS_BOUND_STATICALLY; RUNTIME_OWNER_BSI_AND_RENDER_EFFECT_UNBOUND",
+  "source_package": "downmix-mix-level-typed-config-consumer-wash-v1",
+  "source_manifest_sha256": "21b636b236c846da04cda0a0957734164bec9c0ca560c00a0703fa8564999cfe",
+  "source_manifest_sidecar_sha256": "2197576196bd2c6796d14695e7628ccb5551e9d25ac6cb9d5add96d3221f0d4e",
+  "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "internal_token_map": [
+    {"token": "+3", "raw_u32": 0}, {"token": "+1.5", "raw_u32": 1}, {"token": "0", "raw_u32": 2}, {"token": "-1.5", "raw_u32": 3}, {"token": "-3", "raw_u32": 4}, {"token": "-4.5", "raw_u32": 5}, {"token": "-6", "raw_u32": 6}, {"token": "-inf", "raw_u32": 7}
+  ],
+  "fields": [
+    {"field": "loro_center_mix_level", "member": "Priv+0x7D0", "accepted_codes": [0,1,2,3,4,5,6,7], "static_default": "-3 / U32 4"},
+    {"field": "loro_surround_mix_level", "member": "Priv+0x828", "accepted_codes": [3,4,5,6,7], "static_default": "-3 / U32 4"},
+    {"field": "ltrt_center_mix_level", "member": "Priv+0x880", "accepted_codes": [0,1,2,3,4,5,6,7], "static_default": "-3 / U32 4"},
+    {"field": "ltrt_surround_mix_level", "member": "Priv+0x8D8", "accepted_codes": [3,4,5,6,7], "static_default": "-3 / U32 4"}
+  ],
+  "typed_path": {"converter": "FUN_1801700d0 at MixLevel vtable+0x28", "setter": "FUN_18014f6c0 via vtable+0x50", "stored_member": "+0x50 U32", "flag_byte": "+0x08"},
+  "unbound": ["runtime property event", "selected object owner/generation", "DME host key to native fields", "BSI/DDP consumer", "rendered downmix/audio effect"],
+  "execution": {"dee_run": false, "dme_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}
