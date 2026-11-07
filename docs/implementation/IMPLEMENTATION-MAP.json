@@ -5503,7 +5503,8 @@
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5539,7 +5540,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3e481b71454373f36e1b03462a303d1f9b22ca9d104f6fe6b3ee6f1b9bc9cf82",
             "supplement_seal_sha256": "277dbea1973ea98049f3195429cb974069d6eb255f56b6d1aa98280a2eabda8d",
@@ -5570,6 +5578,17 @@
               "bounded_trace": "FUN_1801431f0 loads QWORD [RDX+0x10] then compares with caller R8=0",
               "row_member_semantics_and_snapshot_plus_a0_join": "UNBOUND",
               "codec_bsi_and_audio_effect": "UNBOUND/NOT_RUN"
+            },
+            "latest_zero_compare_addendum": {
+              "package_id": "DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1",
+              "manifest_sha256": "c5a540472baa418d805f6860767ca8889789b0dc953048022e881f868ba00f41",
+              "seal_sha256": "6acd70506a01357dffb774ecba3920e6ae28910248c5dec7ce248947a6118daf",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "compare": "row+0x10 QWORD versus caller R8=0; unsigned RAX < R8 is false on this edge",
+              "taken_block_first_callee": "FUN_180554ed8; body not inspected",
+              "row_owner_and_snapshot_plus_a0_join": "UNBOUND",
+              "codec_bsi_and_audio_effect": "UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -5586,7 +5605,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only mode-1 edge: the same snapshot base reaches validator and packer; the scoped path does not read/copy the +0xa0 candidate, while +0x130 is a distinct field. XML runtime owner, mode-1 generation, indirect packer relation, and audio effect remain unbound."
@@ -66243,6 +66266,26 @@
         "Setter object to reader candidate object identity/owner/generation.",
         "adm versus atmos_mezz node attribution and conversion semantics.",
         "Downstream timecode behavior and runtime effect."
+      ]
+    },
+    {
+      "package_id": "DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1",
+      "manifest_sha256": "c5a540472baa418d805f6860767ca8889789b0dc953048022e881f868ba00f41",
+      "supplement_seal_sha256": "6acd70506a01357dffb774ecba3920e6ae28910248c5dec7ce248947a6118daf",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ROW_PLUS_0X10_ZERO_COMPARE_BOUND; OWNER_A0_JOIN_AND_CALLEE_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Row member owner and typed join to snapshot +0xa0.",
+        "FUN_180554ed8 behavior and branch consequences.",
+        "Codec/BSI input and audio effect."
       ]
     }
   ]

@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.line_drc_row_zero_compare_boundary.v1",
+  "status": "ROW_QWORD_ZERO_COMPARE_BOUND; OWNER_AND_A0_JOIN_UNBOUND; STOPPED_AT_CALLSITE",
+  "source_package": "line_mode_drc_snapshot_a0_row_compare_branch_wash_v1",
+  "source_manifest_sha256": "eec68ebb1e1686382ec2429b2db19a254068d22fb84552d3eb19b5c219e3f023",
+  "source_manifest_sidecar_sha256": "d0fc09affb847e95d6fec517a2e100cb38ed82ff7d1e68c5d4d506931c7419ff",
+  "source_seal_sha256": "17048a4ebe3ac112797db7c3a82c8f14ed3eb3bf41af8f5c6c36a925426e11d9",
+  "source_payload_audit": "PASS_5_OF_5",
+  "trace": {"function": "FUN_1801431f0", "row_field_load": "QWORD [RDX+0x10] at 0x180143205", "compare": "CMP RAX,R8 at 0x180143215", "R8": 0, "branch": "unsigned RAX < R8", "taken_block": "0x1801432f7", "first_call": "FUN_180554ed8 at 0x1801432fe", "callee_inspected": false},
+  "unbound": ["row+0x10 semantic identity/owner", "typed relation to snapshot+0xA0", "branch semantics beyond comparison", "FUN_180554ed8 behavior", "codec/BSI/audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Static compare boundary only; no branch/runtime/audio vectors."
+}

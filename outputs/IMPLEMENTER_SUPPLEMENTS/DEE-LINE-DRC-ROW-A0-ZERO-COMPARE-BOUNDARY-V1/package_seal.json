@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1",
+  "manifest_sha256": "c5a540472baa418d805f6860767ca8889789b0dc953048022e881f868ba00f41",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ROW_QWORD_ZERO_COMPARE_BOUND; OWNER_AND_A0_JOIN_UNBOUND; STOPPED_AT_CALLSITE; IMPLEMENTATION_READY=NO"
+}
