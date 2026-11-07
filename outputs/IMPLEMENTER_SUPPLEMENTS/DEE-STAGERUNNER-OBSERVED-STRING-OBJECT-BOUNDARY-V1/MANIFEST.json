@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "REFERENCE_ONLY; FOUR_OBSERVED_ROUTING_KEYS_LAYOUT_BOUND; TIME_BASE_VALUE_NOT_CAPTURED; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1927,
+      "sha256": "fb50e2d87ecc69f97bb18a6ce1af85e5a9d3bb4e24ac270577a4dc57452a7811"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2407,
+      "sha256": "1170f2dfe9d22a79d1d469ddfa7856df4d750708bc6f37658ec01a2c48b6759d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1073,
+      "sha256": "a0fddf5b7556181a6bf70041ab77e71520ee6bf4d14fa74b3656788043b4131d"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 2286,
+      "sha256": "36616e7f980dc3a883727d665cbfc1429d08731c6f5139db437efab0be770824"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1",
+  "manifest_sha256": "e2087fc2b62f06a6245e5ce685d3f28cf65690d5de4863263138f73c06bbf24d",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "REFERENCE_ONLY; FOUR_OBSERVED_ROUTING_KEYS_LAYOUT_BOUND; TIME_BASE_VALUE_NOT_CAPTURED; IMPLEMENTATION_READY=NO"
+}

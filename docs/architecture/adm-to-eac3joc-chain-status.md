@@ -1336,3 +1336,11 @@ E-325 使用同一 optimized release binary，全文件 Meter/Main 耗时 02:10 
 新输出 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-1024kbps-release-20261107\love-song-fangdatong-36ch-1024kbps-release.ec3` 为 34,476,032 bytes，SHA-256 `bc01dcfc3b21cfefc4f20e522762e466d98d03375a14988d0b440d437f1db0a5`；其字节 hash 恰与旧隔离仓 1024 kbps EC-3 reference 一致，但它在不同路径新建且旧文件未覆盖。FFprobe: E-AC-3 Dolby Digital Plus + Dolby Atmos、48 kHz、6 channels、1,024 kbps、8,417 frames、269.344 s；8,417 个 packet 均为 4,096 bytes；FFmpeg base-layer null-sink decode 通过，未保存 PCM。此 hash equality 不表示与 DEE M4A 同配置或 audio parity；没有 PCM 比较、spatial render、playback 或 W04。
 
 至此 384/448/576/640/768/1024 六档均有 full-file JOCForge CLI 输出。release 576/640/768/1024 耗时约 6:46–7:03；与此前 debug 384/448 的约 318–320 分钟相比，跨 rate/profile 的观察约 45×。没有同 rate debug/release 受控比较，因此该比率是性能证据而非精确保证。六档输出完成不等于 DEE runtime rate handoff、PCM/audio parity 或端到端闭合。
+## 2026-11-07：E-340 StageRunner routing-string boundary
+
+Wash 包 DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1 已物化并独立核验：manifest SHA-256 e2087fc2b62f06a6245e5ce685d3f28cf65690d5de4863263138f73c06bbf24d、seal SHA-256 e90c4a1c7248d0a8fdb8fadc3e227ea8d3d3a2c8ccdea217bcfba90a6e369ee1，六个本地文件与 Wash 交付副本哈希一致；普通 Python 和 python -O checker 均 PASS。它是 reference-only，IMPLEMENTATION_READY=NO。
+
+范围仅限 attempt-13 实际观察到的四个通用 SetProperty caller：dee_audio_source_type、dee_audio_target_type、dee_audio_filter_source、dee_audio_filter_target:<index>。这些键都不是 time_base。只对这四个 caller 记录 string-like 对象布局：length 位于 +0x10，capacity 位于 +0x18；capacity 小于 0x10 时内联存储，大于等于 0x10 时对象起始处存放外部数据指针，终止 NUL 写在 data+length。此前把对象起始地址当 C string 读取的假设不适用于这四个调用；具体失败异常仍未知。
+
+attempt-13 的四个 time_base hook 均为 READ_FAILED / SKIPPED_KEY_UNREADABLE，原生 time_base 值仍 NOT_CAPTURED。time_base producer/callsite、字段身份及 generation、U/K/ADM owner-generation join 均 UNBOUND；source_record_count 仍 NOT_CAPTURED。不从这四个音频路由调用推广到 time_base，不修改 parser 或音频逻辑。
+

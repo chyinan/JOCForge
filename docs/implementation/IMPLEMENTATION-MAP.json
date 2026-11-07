@@ -4397,6 +4397,107 @@
             "Same-run owner/generation join to E-203 PrivInvocation or ADM source generations."
           ],
           "validation_boundary": "The accepted parsed job_config object and same StageRunner filter/audio tree are statically connected; XML/job input and runtime behavior are not."
+        },
+        {
+          "slice_id": "washed-stagerunner-routing-string-object-boundary",
+          "mapping_status": "WASHED_FOUR_ATTEMPT13_AUDIO_ROUTING_KEYS_LAYOUT_BOUND__TIMEBASE_PRODUCER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_ROUTING_STRING_LAYOUT__TIMEBASE_NOT_CAPTURED_AND_OWNER_JOIN_UNBOUND",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only static boundary for exactly four attempt-13 generic StageRunner SetProperty callers. Their observed keys are audio routing properties; the package does not identify a time_base producer or bind a time_base value.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Four observed attempt-13 SetProperty callers use the listed audio-routing keys; none is time_base.",
+              "The string-like object layout applies only to those four callers and is not promoted to a project-wide property representation.",
+              "Attempt-13 time_base hooks report READ_FAILED and SKIPPED_KEY_UNREADABLE; native time_base value remains NOT_CAPTURED.",
+              "No same-generation join to a time_base field, ADM U/K owner, or source_record_count is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_STAGERUNNER_ROUTING_STRING_LAYOUT",
+            "package_id": "DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "e2087fc2b62f06a6245e5ce685d3f28cf65690d5de4863263138f73c06bbf24d",
+            "supplement_seal_sha256": "e90c4a1c7248d0a8fdb8fadc3e227ea8d3d3a2c8ccdea217bcfba90a6e369ee1",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "observed_attempt_id": "attempt-13",
+            "observed_setproperty_call_count": 4,
+            "observed_static_keys": [
+              "dee_audio_source_type",
+              "dee_audio_target_type",
+              "dee_audio_filter_source",
+              "dee_audio_filter_target:<index>"
+            ],
+            "time_base_key_observed_at_these_callers": false,
+            "string_like_representation": {
+              "scope": "four hash-bound callers only",
+              "length_offset": "+0x10",
+              "capacity_offset": "+0x18",
+              "inline_threshold": "capacity < 0x10",
+              "inline_data_location": "object base",
+              "external_data_location": "pointer at object base when capacity >= 0x10",
+              "terminator": "NUL at data+length",
+              "cpp_type_identity": "CANDIDATE_ONLY",
+              "previous_direct_c_string_read_failure_cause": "UNBOUND"
+            },
+            "attempt_13_time_base_hooks": {
+              "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+              "process_generation": "attempt-13:dee-pid-16144",
+              "time_base_hook_calls": 4,
+              "key_status": "READ_FAILED",
+              "value_status": "SKIPPED_KEY_UNREADABLE",
+              "native_time_base_value": "NOT_CAPTURED",
+              "time_base_to_adm_owner_generation_join": "UNBOUND",
+              "source_record_count": "NOT_CAPTURED"
+            },
+            "source_wash_package": {
+              "package_id": "timebase_observed_setter_callers_wash_v1",
+              "manifest_sha256": "61ffa5b8db35556ecccb6a39b7c11bc0821c79a83ee566c10adf9dd846c43db5",
+              "seal_sha256": "e163f086d99eab9c156170ec3664cd0c3c534c0a840a74cf93539c062808f0d9",
+              "checker_normal": "PASS",
+              "checker_python_optimized": "PASS"
+            },
+            "validation_boundary": "This is an evidence-only negative boundary for four audio-routing SetProperty callers. It does not validate a direct-C-string parser hypothesis outside those callers, identify a time_base producer, or authorize parser/algorithm changes."
+          },
+          "vectors": {
+            "kind": "WASHED_ATTEMPT13_STATIC_CALLER_BOUNDARY_NO_TIMEBASE_VALUE",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "The four observed static keys are dee_audio_source_type, dee_audio_target_type, dee_audio_filter_source, and dee_audio_filter_target:<index>.",
+              "Attempt-13 time_base hook key reads failed; values were skipped and no native time_base value was captured."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_OBSERVED_ATTEMPT13_STATIC_BOUNDARY"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Actual time_base producer/callsite and typed join to the component field.",
+            "External-storage string reads and the exact failure exception for the earlier direct UTF-8 read.",
+            "time_base value, validation acceptance, or audio effect.",
+            "U/K/ADM owner-generation join and source_record_count.",
+            "Parser changes, audio algorithms, and codec effects."
+          ],
+          "validation_boundary": "Wash evidence is reference-only. time_base remains NOT_CAPTURED/UNBOUND; implementation readiness remains NO.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
         }
       ]
     },
@@ -63893,6 +63994,26 @@
         "Six-rate coverage and other inputs.",
         "Carrier writer, PCM/audio parity, and output payload hash.",
         "Playback, listening, or spatial rendering."
+      ]
+    },
+    {
+      "package_id": "DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1",
+      "manifest_sha256": "e2087fc2b62f06a6245e5ce685d3f28cf65690d5de4863263138f73c06bbf24d",
+      "supplement_seal_sha256": "e90c4a1c7248d0a8fdb8fadc3e227ea8d3d3a2c8ccdea217bcfba90a6e369ee1",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "FOUR_OBSERVED_AUDIO_ROUTING_KEYS_LAYOUT_BOUND; TIME_BASE_VALUE_NOT_CAPTURED; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "time_base producer/callsite and typed field join.",
+        "U/K/ADM owner-generation and source_record_count.",
+        "Parser or audio behavior."
       ]
     }
   ]

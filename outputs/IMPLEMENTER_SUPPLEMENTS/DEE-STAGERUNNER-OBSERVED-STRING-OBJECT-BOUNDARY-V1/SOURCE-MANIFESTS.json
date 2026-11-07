@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash-source-bindings.v1",
+  "package_id": "DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_wash_supplement",
+      "package_id": "timebase_observed_setter_callers_wash_v1",
+      "manifest_sha256": "61ffa5b8db35556ecccb6a39b7c11bc0821c79a83ee566c10adf9dd846c43db5",
+      "seal_sha256": "e163f086d99eab9c156170ec3664cd0c3c534c0a840a74cf93539c062808f0d9",
+      "status": "SEALED_FOR_WASH_REVIEW"
+    },
+    {
+      "role": "attempt_13_runtime_metadata_only",
+      "run_summary_sha256": "5482217cf83616d70efbb26530e6473e1f0b1963d3b836dcb256a04ac38ebddd",
+      "event_log_sha256": "574373a34a7fcd5dceb37268d1bc0524bfef8b82f072f88b3d52aa73f66aff2b",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "attempt_id": "attempt-13",
+      "process_generation": "attempt-13:dee-pid-16144"
+    }
+  ],
+  "excluded": [
+    "native source/decompilation",
+    "input media or audio essence",
+    "PCM or encoded payload",
+    "private key or license material"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge.wash-implementation-supplement.v1",
+  "package_id": "DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "implementation_ready": false,
+  "status": "FOUR_OBSERVED_ROUTING_KEYS_LAYOUT_BOUND; TIME_BASE_PRODUCER_UNBOUND; TIME_BASE_VALUE_NOT_CAPTURED",
+  "scope": {
+    "observed_setproperty_call_count": 4,
+    "observed_static_keys": [
+      "dee_audio_source_type",
+      "dee_audio_target_type",
+      "dee_audio_filter_source",
+      "dee_audio_filter_target:<index>"
+    ],
+    "time_base_key_observed_at_these_callers": false,
+    "global_absence_claim": false
+  },
+  "observed_string_like_representation": {
+    "applies_only_to": "the four hash-bound SetProperty callers listed in REPORT.md",
+    "length_offset": "+0x10",
+    "capacity_offset": "+0x18",
+    "inline_threshold": "capacity < 0x10",
+    "inline_data_location": "object base",
+    "external_data_location": "pointer at object base when capacity >= 0x10",
+    "terminator": "NUL at data+length",
+    "cpp_type_identity": "CANDIDATE_ONLY",
+    "previous_direct_c_string_read_failure_cause": "UNBOUND"
+  },
+  "attempt_13": {
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "attempt_id": "attempt-13",
+    "process_generation": "attempt-13:dee-pid-16144",
+    "run_summary_sha256": "5482217cf83616d70efbb26530e6473e1f0b1963d3b836dcb256a04ac38ebddd",
+    "event_log_sha256": "574373a34a7fcd5dceb37268d1bc0524bfef8b82f072f88b3d52aa73f66aff2b",
+    "time_base_hook_calls": 4,
+    "time_base_key_statuses": ["READ_FAILED"],
+    "time_base_value_statuses": ["SKIPPED_KEY_UNREADABLE"],
+    "native_time_base_value": "NOT_CAPTURED",
+    "same_process_as_adm_observer": true,
+    "time_base_to_adm_owner_generation_join": "UNBOUND"
+  },
+  "source_wash_package": {
+    "package_id": "timebase_observed_setter_callers_wash_v1",
+    "manifest_sha256": "61ffa5b8db35556ecccb6a39b7c11bc0821c79a83ee566c10adf9dd846c43db5",
+    "seal_sha256": "e163f086d99eab9c156170ec3664cd0c3c534c0a840a74cf93539c062808f0d9",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "preserve": [
+    "time_base producer/callsite UNBOUND",
+    "time_base value NOT_CAPTURED",
+    "ADM U-to-K owner/generation UNBOUND",
+    "source_record_count NOT_CAPTURED",
+    "no implementation algorithm or codec effect inferred"
+  ]
+}
