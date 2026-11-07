@@ -362,7 +362,7 @@ impl<'a> MeterSourceCallbackView<'a> {
         if frame.source_identity() != expected_identity {
             return Err(MeterSourceBridgeError::ResourceIdentityMismatch);
         }
-        if prepared.configuration().input_kind() != SelectedInputKind::Adm {
+        if !prepared.configuration().input_kind().is_adm_bwf() {
             return Err(MeterSourceBridgeError::SelectedInputKindMismatch);
         }
         if frame.source_samples().value() == 0

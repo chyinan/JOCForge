@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.wash-implementation-supplement.v1",
+  "package_id": "DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "implementation_ready": false,
+  "status": "DLL_LOCAL_TOKEN_MAP_AND_PROCESSING_CALLER_BOUND; XML_OWNER_JOIN_UNBOUND; EFFECT_NOT_RUN",
+  "xml_property": {
+    "path": "filter/audio/encode_to_atmos_ddp/loudness/measure_only/metering_mode",
+    "type": "xs:string",
+    "schema_default": "1770-4",
+    "runtime_parser_acceptance": "NOT_OBSERVED",
+    "selected_provider_join": "UNBOUND"
+  },
+  "candidate_static_translation": {
+    "map_global": "DAT_180a17e08",
+    "initializer_function": "FUN_180001ea0",
+    "consumer_candidate": "FUN_1801535b0",
+    "consumer_getter_receiver": "param_1+0x210; vtable slot +0x30",
+    "consumer_output": "param_2+0x90 raw U32 candidate",
+    "output_precision_bits": 32,
+    "output_signedness": "UNBOUND",
+    "entries": [
+      {"token":"1770-4","raw_u32_candidate":0},
+      {"token":"1770-3","raw_u32_candidate":1}
+    ]
+  },
+  "processing_caller": {
+    "function": "FUN_18014f1f0",
+    "branch": "dword [RCX+0xf34] == 0",
+    "callsite": "0x18014f23e",
+    "callee": "FUN_18014aba0",
+    "this_pointer_flow": "RCX copied to RBX and not rewritten before call",
+    "consumer_callsite": "0x18014afb0",
+    "processing_this_to_candidate_consumer_receiver": "BOUND_STATICALLY",
+    "xml_schema_owner_to_processing_this_or_receiver": "UNBOUND"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "metering_effect": "NOT_RUN",
+    "audio_effect": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "native_source_or_decompilation_included": false
+  }
+}

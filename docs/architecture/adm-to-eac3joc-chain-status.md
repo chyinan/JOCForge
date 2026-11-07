@@ -1344,3 +1344,40 @@ Wash 包 DEE-STAGERUNNER-OBSERVED-STRING-OBJECT-BOUNDARY-V1 已物化并独立�
 
 attempt-13 的四个 time_base hook 均为 READ_FAILED / SKIPPED_KEY_UNREADABLE，原生 time_base 值仍 NOT_CAPTURED。time_base producer/callsite、字段身份及 generation、U/K/ADM owner-generation join 均 UNBOUND；source_record_count 仍 NOT_CAPTURED。不从这四个音频路由调用推广到 time_base，不修改 parser 或音频逻辑。
 
+## 2026-11-07：E-343 DRC Line/RF conditional profile boundary
+
+Wash 包 DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1 已物化并独立核验：manifest SHA-256 854fcdd8275d7575d1e0888f9f811930da82d60ef19bc827363cc8ed28d4f7a0、seal SHA-256 d0c6b9996f6a0f29516872191f7ba163de5d12378bc12be13ff9ec19b9744e41；实现仓 normal 与 python -O checker 均 PASS。包为 reference-only，IMPLEMENTATION_READY=NO。
+
+Line 的六个 XML token 静态映射到 DLL-local profile tree、DDP_COMPR 值和条件 3-bit BSI code；serializer 是否激活仍取决于未闭合的 XML handoff、mode-1 选择和 serializer gates。Decoded PCM/audio effect 未确定。RF 的 runtime value、typed owner、BSI mapping 和 audio effect 均 UNBOUND/NOT_RUN，不将 Line 表套用到 RF。
+
+本地 XML ingress 的 DRC gate 保持现有 selected pair 限制；本包只登记证据边界，没有改 DRC 音频行为，也没有把静态条件映射升级为产品支持。
+## 2026-11-07：job_config XML ingress and input-branch identity
+
+The additive CLI form encode --job-xml reads a job_config file, extracts its local input/output references, resolves either authored input branch (adm or atmos_mezz) to the same ADM BWF RIFF reader, and passes the original XML bytes plus the actual WAVE descriptor into the selected parser and pipeline. The normalized configuration preserves whether the XML used adm or atmos_mezz. No variant-specific media behavior is inferred. The existing positional input/output command and its optional six-rate selector remain unchanged.
+
+This ingress accepts only output/ec3 elementary output. output/mp4 and output/dash reject before media loading; no MP4/M4A muxer is implemented here. The current XML example using output/mp4 is therefore not runnable unchanged. Unknown XML elements/attributes, AtmosMezz-specific controls beyond shared file references, non-default dialogue measurement, non-empty ranges, nonzero or omitted append silence, unselected DRC pairs, non-selected downmix, and non-auto trims fail closed. The ingress does not add their audio semantics.
+
+Wash package DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1 (manifest SHA-256 854fcdd8275d7575d1e0888f9f811930da82d60ef19bc827363cc8ed28d4f7a0; seal SHA-256 d0c6b9996f6a0f29516872191f7ba163de5d12378bc12be13ff9ec19b9744e41) binds a static conditional Line-to-BSI map only; XML handoff, mode-1 selection, serializer activation, and decoded PCM effect remain UNBOUND/NOT_RUN. RF runtime/owner/BSI/audio effect remain UNBOUND.
+
+Wash package DEE-CUSTOM-TRIM-XML-BOUNDARY-V1 (manifest SHA-256 f343a73687f8f3870655d9668bd5b94d05f79cf759e2a384f06320dc07ff59de; seal SHA-256 cf612a1344971fe8608181e3d8787584508f552cb471f692d1a50dff6d2c932b) binds declared trim StringType members and constructor defaults only. XML transfer, omission, units, BSI and audio effects remain UNBOUND/NOT_RUN.
+
+No full external job XML encode was executed in this slice. One user-authorized no-launch preflight is recorded below. DEE parity, audio effects and W04 remain NOT_RUN.
+
+## 2026-11-07：AtmosMezz XML no-launch ingress preflight
+
+The user-authorized N36 Love Song ADM BWF preflight used the atmos_mezz input branch and exited 0 after XML/reference validation, RIFF/ADM metadata admission, and PreparedJobInput binding. The authored XML is retained at `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-atmos-mezz-1024-preflight-20261107\job_config.xml`: 2,121 bytes, SHA-256 `980622a283b2e7402db7a7ac25e8b46b15db3384477f9de7c00269f344c3c585`. Prepared normalized configuration SHA-256 is `00d0c4b75ddaf1f149fff5be8945f94a3f03cd6f781ae8b5c4670b896531cb40`.
+
+Input identity: `D:\Love Song 方大同.wav`, SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`, 1,396,237,802 bytes, 48 kHz, 36-channel PCM24, 12,927,379 samples/channel. The normalized identity retains input_kind `atmos_mezz`. Selected rate is 1,024 kbps / 4,096 bytes per AU.
+
+The unique EC-3 path is `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-atmos-mezz-1024-preflight-20261107\destination\love-song-fangdatong-atmos-mezz-1024-preflight.ec3`. It was absent before and after preflight; the destination directory is empty. Meter, callbacks, output staging and encoder did not start. The preflight receipt is workspace-only at the same `.test-tmp` root, not a checked-in vector. This confirms AtmosMezz ingress to PreparedJobInput, not downstream audio or DEE equivalence.
+
+## 2026-11-07：XML time-control Reader boundary supplement
+
+Wash 包 `DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1` 已物化并独立核验：manifest SHA-256 `3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37`、seal SHA-256 `9d9657f7a0cbfddee54982588cdc957c82c483952395f47ec6ad97b6a8c0a576`，普通与 `python -O` checker 均 PASS。
+
+它明确 start/end 与 input offset/ffoa 是不同时间域。start/end 的 schema 默认值和 input-only lexical values 没有连接到 typed range owner 或 Reader cursor；offset/ffoa 的向量路径写为 adm 分支，而报告中的 AtmosMezz host normalizer edge 没有与这些 XML leaves、当前 atmos_mezz XML 分支或 PrivContext converter consumer 建立 join。Host response 到 Reader seek/sample position、单位和实际值均 `UNBOUND/NOT_CAPTURED/NOT_RUN`。当前 CLI 继续固定为 start/end empty、offset/ffoa auto、time_base file_position，不据此增加 seek 或 timebase 行为。
+## 2026-11-07：metering_mode static caller boundary
+
+Wash 包 DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2 已物化并独立核验：manifest SHA-256 d2e31f4b10565c8d21c008c80f90fee7030f1607160144c3fad9d202482126d6、seal SHA-256 42f75a5b0ba8be2498d24042d9deb6eb4cd007d66b0a8b43ba0ef2ace9fafc38；普通 Python 与 python -O checker 均 PASS。它是 reference-only，IMPLEMENTATION_READY=NO。
+
+DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处理对象在 guard 分支到候选 string-to-code consumer 的 caller edge 静态绑定。schema StringType +0x1f0 到 processing this/getter receiver +0x210 仍 UNBOUND；候选输出的 signedness/语义、selected provider、Meter/audio effect 均 UNBOUND/NOT_RUN。CLI 仍要求显式 1770-4；1770-3 不因候选码映射而开放。

@@ -81,6 +81,7 @@ fn combines_approved_math_and_cold_values_without_claiming_runtime_layout_or_cal
             .expect("the directly inventoried Meter assets load and pass owner validators");
     let profile_id = jocforge_application::meter_source_admission::selected_meter_profile_identity(
         jocforge_application::meter_source_bridge::EmdfCarriageProfile::DeployedCompat,
+        jocforge_domain::profile::CodecRateProfile::Kbps1024,
     )
     .unwrap();
     let meter_identity =
@@ -88,7 +89,7 @@ fn combines_approved_math_and_cold_values_without_claiming_runtime_layout_or_cal
             &approved_bundle("METER-PROVIDER-SET-IDENTITY-APPLICATION-V1"),
             &inputs,
             &meter_direct,
-            profile_id,
+            &profile_id,
         )
         .expect("the selected static provider set identity is assembled from validated assets");
     assert_eq!(meter_identity.members().len(), 19);

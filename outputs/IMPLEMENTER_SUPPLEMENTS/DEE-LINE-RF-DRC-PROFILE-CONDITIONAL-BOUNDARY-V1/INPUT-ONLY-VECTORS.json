@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-input-only-vectors.v1",
+  "package_id": "DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1",
+  "status": "INPUTS_ONLY; NO_DERIVED_OUTPUTS; NOT_OBSERVED",
+  "source_job_xml_sha256": "bd4f4ee16215b527d50ca3c63db973ed7d0270e6f06334d4c97569e0c796e4ac",
+  "vectors": [
+    {"id":"line_film_light_candidate","line_mode_drc_profile":"film_light","rf_mode_drc_profile":"film_light","execution_status":"NOT_RUN"},
+    {"id":"line_none_candidate","line_mode_drc_profile":"none","rf_mode_drc_profile":"film_light","execution_status":"NOT_RUN"},
+    {"id":"rf_music_light_candidate","line_mode_drc_profile":"film_light","rf_mode_drc_profile":"music_light","execution_status":"NOT_RUN"}
+  ],
+  "warning": "These are input values only. Static token mappings in EVIDENCE.json are separate predictions; no runtime or decoded output is implied."
+}

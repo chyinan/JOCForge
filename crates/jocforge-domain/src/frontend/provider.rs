@@ -7,10 +7,7 @@ use std::fmt::Write as _;
 use std::sync::Arc;
 
 use super::selected_provider_manifests::ValidatedF01bColdAssetManifest;
-use super::{
-    job_configuration::{SelectedInputKind, SelectedJobConfiguration},
-    selected_adm_graph::SelectedAdmGraph,
-};
+use super::{job_configuration::SelectedJobConfiguration, selected_adm_graph::SelectedAdmGraph};
 use crate::timeline::AdmSampleCount;
 
 const PROVIDER_BYTES: u64 = 20_138;
@@ -400,7 +397,7 @@ impl ValidatedF01EColdProvider {
         let bed_track_count = graph.receipt().bed_track_count();
         let object_track_count = graph.receipt().object_track_count();
         let object_bindings = graph.object_sampler_owner_bindings();
-        if configuration.input_kind() != SelectedInputKind::Adm
+        if !configuration.input_kind().is_adm_bwf()
             || wave.channels() == 0
             || wave.channels() > u16::from(u8::MAX) + 1
             || usize::from(wave.channels()) != usize::from(physical_track_count)

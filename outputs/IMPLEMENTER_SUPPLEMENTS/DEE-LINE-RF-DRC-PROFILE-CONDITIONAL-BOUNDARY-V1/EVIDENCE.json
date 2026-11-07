@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.wash-implementation-supplement.v1",
+  "package_id": "DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "implementation_ready": false,
+  "status": "LINE_STATIC_MAP_CONDITIONAL; RF_RUNTIME_VALUE_AND_EFFECT_UNBOUND; DEE_NOT_RUN",
+  "line": {
+    "xml_path": "filter/audio/encode_to_atmos_ddp/drc/line_mode_drc_profile",
+    "xml_field_type": "xs:string enum",
+    "xml_to_selected_plugin_handoff": "UNBOUND",
+    "mode1_selection": "UNOBSERVED",
+    "serializer_activation": "UNOBSERVED",
+    "serializer_path": "conditional presence bit plus 3-bit DDP_COMPR code",
+    "native_parameter_id": "0x0D",
+    "per_stream_destination": "+0x100",
+    "decoded_pcm_effect": "NOT_DETERMINED_STATICALLY",
+    "audible_effect": "NOT_EVALUATED",
+    "tokens": [
+      {"xml_token":"film_standard","tree_u32":1,"ddp_compr_u32":1,"bits_if_serialized":"001"},
+      {"xml_token":"film_light","tree_u32":0,"ddp_compr_u32":2,"bits_if_serialized":"010"},
+      {"xml_token":"music_standard","tree_u32":3,"ddp_compr_u32":3,"bits_if_serialized":"011"},
+      {"xml_token":"music_light","tree_u32":2,"ddp_compr_u32":4,"bits_if_serialized":"100"},
+      {"xml_token":"speech","tree_u32":4,"ddp_compr_u32":5,"bits_if_serialized":"101"},
+      {"xml_token":"none","tree_u32":5,"ddp_compr_u32":0,"bits_if_serialized":"000"}
+    ],
+    "none_presence_semantics": "explicit value zero with presence if serializer gates pass; not omission"
+  },
+  "rf": {
+    "xml_path": "filter/audio/encode_to_atmos_ddp/drc/rf_mode_drc_profile",
+    "schema_default": "film_light",
+    "input_only_candidate": "music_light",
+    "runtime_value": "UNBOUND",
+    "value_to_stringtype_plus_0x08": "UNBOUND",
+    "param_2_plus_0xa4_owner_join": "UNBOUND",
+    "first_reader_on_inspected_edge": "NOT_FOUND",
+    "code_or_enum_map": "NOT_BOUND",
+    "audio_or_bsi_effect": "UNBOUND/NOT_RUN"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "input_only_vectors_are_not_runtime_observations": true,
+    "pcm_persisted": false,
+    "private_key_or_license_read": false,
+    "native_source_or_decompilation_included": false
+  }
+}

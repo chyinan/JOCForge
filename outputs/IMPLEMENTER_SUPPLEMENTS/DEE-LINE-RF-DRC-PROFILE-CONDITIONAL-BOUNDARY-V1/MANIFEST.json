@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "LINE_STATIC_MAP_CONDITIONAL; RF_RUNTIME_VALUE_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1479,
+      "sha256": "c665b1acdcefef9a81d4d04c96985a4d3fc6c39c406160969402c9aa5a8d23f4"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2162,
+      "sha256": "af107fcf678bc20e20b18d322d724fb7850e77804c13818d0ed933b4e685dac5"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 858,
+      "sha256": "989c8f0d825c1c07dea2fbe16d456e2c7d556cf113b2bd1d3c730846b547f24d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1874,
+      "sha256": "a5e53a8a30f3b730dbc0af1c49497033ba75a7ced1bdbec6fa33a62cd9c253c9"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 2494,
+      "sha256": "690ab7d10cf2f4d2436687bd49536368b898ab40701feac0334f34dc154696be"
+    }
+  ]
+}

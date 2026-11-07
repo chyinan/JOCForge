@@ -1,11 +1,14 @@
 // pattern: Functional Core
 //! Selected input value preparation and the currently unavailable encode boundary.
 
-pub use jocforge_domain::frontend::job_configuration::SelectedWaveDescriptor;
 use jocforge_domain::frontend::job_configuration::{
     JobConfigurationError, PrimaryControlBindingError, PrimaryMetadataChunkHashes,
     SelectedJobConfiguration, SelectedPrimaryControlBinding, SelectedPrimaryRuntimeIdentity,
     bind_admitted_selected_input, parse_selected_job_configuration,
+};
+pub use jocforge_domain::frontend::job_configuration::{
+    JobXmlIngressError, SelectedJobFileReferences, SelectedWaveDescriptor,
+    parse_selected_job_file_references,
 };
 use jocforge_domain::frontend::{
     F01EProviderError, FrontendControlError, FrontendControlMachine, FrontendControlState,

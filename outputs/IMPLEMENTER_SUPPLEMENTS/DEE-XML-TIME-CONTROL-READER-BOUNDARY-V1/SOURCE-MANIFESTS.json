@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash-source-bindings.v1",
+  "package_id": "DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1",
+  "sources": [
+    {
+      "package_id": "dee_time_control_input_reader_boundary_wash_v1",
+      "manifest_sha256": "1adaf43b781e23039675d067cfa116e36f151b9366ebc830820e11d05685bf38",
+      "seal_sha256": "aba3aa55f4876c3cf2a46247314348b4dfce302c5a55dfff4e983eea262fa44c",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "dee_xml_start_end_reader_first_consumer_wash_v1",
+      "manifest_sha256": "4852052ec9e15d963be8713a9c3ba9aef1ecc8036f53a3850757e17a9c5ba90c",
+      "seal_sha256": "fe8cde089b3c99057c35aa98e71579dbda9494be9aa5c0afca70c38e83d3716d"
+    },
+    {
+      "package_id": "adm_bwf_input_offset_ffoa_consumer_boundary_wash_v1",
+      "manifest_sha256": "fb51cbd50eec6876cda6394b51b106b5bca6b98b91a1d853878a836f2e7ec94b",
+      "seal_sha256": "356633d861d3fc765f7eae888ba901030980ef2410281611b2b1e1ccc286adbe"
+    },
+    {
+      "package_id": "dee_time_base_xml_to_sample_range_reader_boundary_wash_v1",
+      "manifest_sha256": "58a7cd433fcda8d8c1c4d63758908e21ee34f425f6f3c03356d4ee5d847a59e5",
+      "seal_sha256": "dc6e34572ffc09f8509061a7b35c1b2673262e52b9d52e1e634830f90b86d88c"
+    }
+  ],
+  "excluded": ["raw XML", "native source/decompilation", "PCM", "encoded payload", "private key", "license"]
+}

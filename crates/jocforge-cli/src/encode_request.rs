@@ -2,7 +2,7 @@
 //! Reads one selected ADM BWF, prepares its input identity, and enters the application encode gate.
 
 use std::{
-    path::{Path, PathBuf},
+    path::{Component, Path, PathBuf},
     sync::Arc,
     thread,
     time::{SystemTime, UNIX_EPOCH},
@@ -18,8 +18,8 @@ use crate::selected_spatial_callback_providers::{
 use jocforge_application::drc_source_bridge::CallbackLineageIdentity;
 use jocforge_application::independent_meter_callback::CallbackTransactionId;
 use jocforge_application::{
-    EncodeError, PreparedJobInput, PreparedJobInputError, ProgrammeId, SelectedAdmResourcePayloads,
-    SelectedWaveDescriptor,
+    EncodeError, JobXmlIngressError, PreparedJobInput, PreparedJobInputError, ProgrammeId,
+    SelectedAdmResourcePayloads, SelectedWaveDescriptor,
     drc_source_bridge::{NoneDrcOwnerError, cold_drc_owner_after_measurement},
     independent_meter_callback::generate_selected_spatial_math_geometry,
     integrity_source_bridge::cold_integrity_owner_for_plan,
@@ -28,7 +28,7 @@ use jocforge_application::{
     },
     meter_source_bridge::{CodecRateProfile, EncodingProfile, FrontendControlReplacementCandidate},
     output_publication::{AttemptId, OutputStagingOwnerId},
-    prepare_selected_job_input,
+    parse_selected_job_file_references, prepare_selected_job_input,
     reader_eof_callback::{
         ReaderEofActualSampleCount, ReaderEofMachine, ReaderEofNormalCallbackClock,
         ReaderEofPaddingSampleCount, ReaderEofReplacementCandidate,
@@ -59,6 +59,10 @@ const ENCODE_REQUEST_STACK_BYTES: usize = 32 * 1024 * 1024;
 #[derive(Debug)]
 pub enum EncodeRequestError {
     InvalidPath,
+    JobXmlInput(std::io::Error),
+    JobXmlIngress(JobXmlIngressError),
+    InvalidJobXmlReference,
+    UnsupportedJobXmlOption(&'static str),
     OutputAlreadyExists,
     UnsupportedDataRate,
     InputFile(RiffPcm24FileReadError),
@@ -90,6 +94,15 @@ impl std::fmt::Display for EncodeRequestError {
             Self::InvalidPath => {
                 formatter.write_str("encode requires absolute input and output file paths")
             }
+            Self::JobXmlInput(error) => write!(formatter, "could not read job XML: {error}"),
+            Self::JobXmlIngress(error) => write!(formatter, "{error}"),
+            Self::InvalidJobXmlReference => formatter.write_str(
+                "job XML storage/local/path must be absolute and file_name must be a basename",
+            ),
+            Self::UnsupportedJobXmlOption(path) => write!(
+                formatter,
+                "job XML option is parsed but not supported by the selected pipeline: {path}"
+            ),
             Self::OutputAlreadyExists => {
                 formatter.write_str("output exists; refusing to replace it")
             }
@@ -163,12 +176,231 @@ pub fn run_with_data_rate(
     if codec_rate.kbps().is_none() {
         return Err(EncodeRequestError::UnsupportedDataRate);
     }
+    run_worker(input_path, output_path, Some(codec_rate), None)
+}
+
+/// Reads an external job XML and runs the existing selected-profile CLI pipeline.
+///
+/// The XML remains authored input. Only its file references and the already admitted selected
+/// control row are accepted; unsupported or unclosed options fail before output is opened.
+pub fn run_from_job_xml(job_xml_path: &Path) -> Result<(), EncodeRequestError> {
+    let request = resolve_job_xml_request(job_xml_path)?;
+    run_worker(
+        &request.input_path,
+        &request.output_path,
+        None,
+        Some(request.job_xml),
+    )
+}
+
+/// Validates an external job XML and its actual ADM BWF through PreparedJobInput, then stops
+/// before Meter prepass, output staging, source callbacks, or encoding.
+pub fn preflight_from_job_xml(job_xml_path: &Path) -> Result<(), EncodeRequestError> {
+    let request = resolve_job_xml_request(job_xml_path)?;
+    thread::scope(|scope| {
+        let worker = thread::Builder::new()
+            .name("jocforge-job-xml-preflight".to_owned())
+            .stack_size(ENCODE_REQUEST_STACK_BYTES)
+            .spawn_scoped(scope, move || run_job_xml_preflight(request))
+            .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
+        worker
+            .join()
+            .map_err(|_| EncodeRequestError::WorkerPanicked)?
+    })
+}
+
+struct ResolvedJobXmlRequest {
+    job_xml_path: PathBuf,
+    job_xml: Vec<u8>,
+    input_path: PathBuf,
+    output_path: PathBuf,
+}
+
+fn resolve_job_xml_request(
+    job_xml_path: &Path,
+) -> Result<ResolvedJobXmlRequest, EncodeRequestError> {
+    let job_xml_path =
+        std::fs::canonicalize(job_xml_path).map_err(EncodeRequestError::JobXmlInput)?;
+    let job_xml = std::fs::read(&job_xml_path).map_err(EncodeRequestError::JobXmlInput)?;
+    let references =
+        parse_selected_job_file_references(&job_xml).map_err(EncodeRequestError::JobXmlIngress)?;
+    let input_reference = references.input_reference();
+    let input_path =
+        resolve_job_xml_reference(input_reference.file_name(), input_reference.local_path())?;
+    let output_reference = references.output_reference();
+    let output_path =
+        resolve_job_xml_reference(output_reference.file_name(), output_reference.local_path())?;
+    if !output_path
+        .extension()
+        .and_then(|extension| extension.to_str())
+        .is_some_and(|extension| extension.eq_ignore_ascii_case("ec3"))
+    {
+        return Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/job_config/output/ec3/file_name (this CLI emits elementary .ec3 output)",
+        ));
+    }
+
+    Ok(ResolvedJobXmlRequest {
+        job_xml_path,
+        job_xml,
+        input_path: normalize_existing_input(&input_path)?,
+        output_path: normalize_new_output(&output_path)?,
+    })
+}
+
+fn run_job_xml_preflight(request: ResolvedJobXmlRequest) -> Result<(), EncodeRequestError> {
+    if request.output_path.exists() {
+        return Err(EncodeRequestError::OutputAlreadyExists);
+    }
+    let resource = read_resource(&request.input_path).map_err(EncodeRequestError::InputFile)?;
+    let parsed = parse_selected_riff_pcm24(&resource, None).map_err(EncodeRequestError::Riff)?;
+    let adm = parsed
+        .selected_adm_payloads()
+        .map_err(EncodeRequestError::Riff)?;
+    let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
+    let programme = ProgrammeId::new("jocforge-xml-preflight")
+        .map_err(|_| EncodeRequestError::ProgrammeIdentity)?;
+    let prepared = prepare_selected_job_input(
+        programme,
+        &request.job_xml,
+        wave,
+        parsed.total_samples(),
+        Arc::clone(&resource),
+        SelectedAdmResourcePayloads::new(adm.axml(), adm.chna(), adm.dbmd()),
+    )
+    .map_err(EncodeRequestError::PreparedInput)?;
+    let data_bytes =
+        u64::try_from(parsed.data_payload_bytes()).map_err(|_| EncodeRequestError::InputExtent)?;
+    let prepared = prepared
+        .bind_primary_control_rows(data_bytes)
+        .map_err(EncodeRequestError::PreparedInput)?;
+    validate_external_job_configuration(&prepared)?;
+
+    let configuration = prepared.configuration();
+    let codec_rate = configuration.selected_profile().codec_rate();
+    let frame_bytes = codec_rate
+        .frame_bytes()
+        .ok_or(EncodeRequestError::UnsupportedDataRate)?;
+    println!(
+        "preflight_only=true\njob_xml_path={}\njob_xml_sha256={}\nconfig_sha256={}\ninput_kind={}\ninput_path={}\ninput_file_sha256={}\ninput_file_bytes={}\nsample_rate_hz={}\nchannels={}\npcm_bits={}\nsamples_per_channel={}\ndata_rate_kbps={}\nframe_bytes={}\noutput_path={}\noutput_exists=false\noutput_created=false\nmeter_started=false\nsource_callbacks_started=false",
+        request.job_xml_path.display(),
+        hex_lower(&prepared.job_xml_sha256()),
+        hex_lower(&prepared.config_sha256()),
+        configuration.input_kind().selected_label(),
+        request.input_path.display(),
+        hex_lower(&parsed.source_sha256()),
+        resource.len(),
+        parsed.sample_rate_hz(),
+        parsed.channels(),
+        24,
+        parsed.total_samples(),
+        configuration.bit_rate_kbps(),
+        frame_bytes,
+        request.output_path.display(),
+    );
+    Ok(())
+}
+
+fn resolve_job_xml_reference(
+    file_name: &str,
+    local_path: &str,
+) -> Result<PathBuf, EncodeRequestError> {
+    let file_name_path = Path::new(file_name);
+    let mut components = file_name_path.components();
+    let is_basename = matches!(components.next(), Some(Component::Normal(_)))
+        && components.next().is_none()
+        && !file_name
+            .chars()
+            .any(|character| matches!(character, '/' | '\\' | ':'));
+    let directory = Path::new(local_path);
+    if file_name.is_empty() || !is_basename || !directory.is_absolute() {
+        return Err(EncodeRequestError::InvalidJobXmlReference);
+    }
+    Ok(directory.join(file_name_path))
+}
+
+fn validate_external_job_configuration(
+    prepared: &PreparedJobInput,
+) -> Result<(), EncodeRequestError> {
+    let configuration = prepared.configuration();
+    let loudness = configuration.loudness();
+    if loudness.dialogue_intelligence() || loudness.speech_threshold() != 100 {
+        return Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/filter/audio/encode_to_atmos_ddp/loudness/measure_only/dialogue_intelligence or speech_threshold",
+        ));
+    }
+
+    let line_drc = configuration.line_drc_profile().xml_value();
+    let rf_drc = configuration.rf_drc_profile().xml_value();
+    if !((line_drc == "film_light" && rf_drc == "film_light")
+        || (line_drc == "none" && rf_drc == "none"))
+    {
+        return Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/filter/audio/encode_to_atmos_ddp/drc",
+        ));
+    }
+
+    let downmix = configuration.downmix();
+    if downmix.preferred_mode() != "loro" || downmix.mix_levels() != [-3; 4] {
+        return Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/filter/audio/encode_to_atmos_ddp/downmix",
+        ));
+    }
+    if configuration.surround_trim_5_1().xml_value() != "auto"
+        || configuration.height_trim_5_1().xml_value() != "auto"
+    {
+        return Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/filter/audio/encode_to_atmos_ddp/custom_trims",
+        ));
+    }
+    if !configuration.start().is_empty() || !configuration.end().is_empty() {
+        return Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/filter/audio/encode_to_atmos_ddp/start or end",
+        ));
+    }
+    if configuration.input_offset() != "auto"
+        || configuration.input_ffoa() != "auto"
+        || configuration.time_base() != "file_position"
+    {
+        return Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/input/audio/{adm,atmos_mezz}/offset or ffoa, or /filter/audio/encode_to_atmos_ddp/time_base",
+        ));
+    }
+
+    let prepend_is_zero = configuration
+        .prepend_silence_duration()
+        .parse::<f64>()
+        .is_ok_and(|seconds| seconds.is_finite() && seconds == 0.0);
+    let append_is_zero = configuration
+        .append_silence_duration()
+        .parse::<f64>()
+        .is_ok_and(|seconds| seconds.is_finite() && seconds == 0.0);
+    if !configuration.append_silence_duration_explicit()
+        || configuration.prepend_silence_samples().value() != 0
+        || configuration.append_silence_samples().value() != 0
+        || !prepend_is_zero
+        || !append_is_zero
+    {
+        return Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/filter/audio/encode_to_atmos_ddp/prepend_silence_duration or append_silence_duration",
+        ));
+    }
+
+    Ok(())
+}
+
+fn run_worker(
+    input_path: &Path,
+    output_path: &Path,
+    codec_rate: Option<CodecRateProfile>,
+    authored_job_xml: Option<Vec<u8>>,
+) -> Result<(), EncodeRequestError> {
     thread::scope(|scope| {
         let worker = thread::Builder::new()
             .name("jocforge-encode-request".to_owned())
             .stack_size(ENCODE_REQUEST_STACK_BYTES)
             .spawn_scoped(scope, move || {
-                run_inner(input_path, output_path, codec_rate)
+                run_inner(input_path, output_path, codec_rate, authored_job_xml)
             })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
         worker
@@ -180,7 +412,8 @@ pub fn run_with_data_rate(
 fn run_inner(
     input_path: &Path,
     output_path: &Path,
-    codec_rate: CodecRateProfile,
+    codec_rate_override: Option<CodecRateProfile>,
+    authored_job_xml: Option<Vec<u8>>,
 ) -> Result<(), EncodeRequestError> {
     eprintln!("Preparing selected ADM input and owner plan...");
     let input_path = normalize_existing_input(input_path)?;
@@ -189,8 +422,22 @@ fn run_inner(
         return Err(EncodeRequestError::OutputAlreadyExists);
     }
 
-    let input_reference = file_reference_parts(&input_path)?;
-    let output_reference = file_reference_parts(&output_path)?;
+    let is_external_job_xml = authored_job_xml.is_some();
+    let generated_rate = codec_rate_override.unwrap_or(CodecRateProfile::Kbps1024);
+    if generated_rate.kbps().is_none() {
+        return Err(EncodeRequestError::UnsupportedDataRate);
+    }
+    let job_xml = match authored_job_xml {
+        Some(job_xml) => job_xml,
+        None => {
+            let input_reference = file_reference_parts(&input_path)?;
+            let output_reference = file_reference_parts(&output_path)?;
+            let rate_kbps = generated_rate
+                .kbps()
+                .ok_or(EncodeRequestError::UnsupportedDataRate)?;
+            selected_full_file_job_xml(&input_reference, &output_reference, rate_kbps).into_bytes()
+        }
+    };
     let run_identity = fresh_run_identity()?;
     let resource = read_resource(&input_path).map_err(EncodeRequestError::InputFile)?;
     let parsed = parse_selected_riff_pcm24(&resource, None).map_err(EncodeRequestError::Riff)?;
@@ -198,19 +445,24 @@ fn run_inner(
         .selected_adm_payloads()
         .map_err(EncodeRequestError::Riff)?;
     let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
-    let data_rate_kbps = codec_rate
-        .kbps()
-        .ok_or(EncodeRequestError::UnsupportedDataRate)?;
-    let job_xml = selected_full_file_job_xml(&input_reference, &output_reference, data_rate_kbps);
     let prepared = prepare_selected_job_input(
         run_identity.programme.clone(),
-        job_xml.as_bytes(),
+        &job_xml,
         wave,
         parsed.total_samples(),
         Arc::clone(&resource),
         SelectedAdmResourcePayloads::new(adm.axml(), adm.chna(), adm.dbmd()),
     )
     .map_err(EncodeRequestError::PreparedInput)?;
+    if is_external_job_xml {
+        validate_external_job_configuration(&prepared)?;
+    }
+    if codec_rate_override
+        .is_some_and(|rate| prepared.configuration().selected_profile().codec_rate() != rate)
+    {
+        return Err(EncodeRequestError::UnsupportedDataRate);
+    }
+    let data_rate_kbps = prepared.configuration().bit_rate_kbps();
     let data_bytes =
         u64::try_from(parsed.data_payload_bytes()).map_err(|_| EncodeRequestError::InputExtent)?;
     let prepared = prepared

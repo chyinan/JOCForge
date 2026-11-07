@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash-source-bindings.v1",
+  "package_id": "DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2",
+  "sources": [
+    {
+      "package_id": "DEE-LOUDNESS-METERING-MODE-TYPED-CONSUMER-WASH-V3",
+      "manifest_sha256": "950f65ba777cec362326e751b1ef46582eb528c7c759269382f39dbcaf6e881a",
+      "seal_sha256": "926e68bf8e8b238487afe2e9baece8f3fb8603bde8b0ab2ebc42de2a98faa9b2",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "ghidra_trace_sha256": "1090beff5bb4a58d92702cc27e8db0a07f44173f2686cf06b916d275c81605d6",
+      "target_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    },
+    {
+      "package_id": "DEE-LOUDNESS-METERING-PROCESSING-CALLER-ADDENDUM-WASH-V2",
+      "manifest_sha256": "520a4e1e463c6f7d226d3a5f36bb3415210c265afd6cc854a8bbfeb7804ef7a8",
+      "seal_sha256": "d55cbb0254cf1643ca89ea44f9b2a0d0c6cd70db756cda9bfc028680f6bf4beb",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "trace_sha256": "53437da3dcbaa1a49487a57d0c63c650d50d32b6c6cc3f26d4a203aea2cc4a8f"
+    }
+  ],
+  "excluded": ["native source/decompilation", "PCM", "encoded payload", "private key", "license"]
+}

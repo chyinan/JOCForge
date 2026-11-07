@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-CUSTOM-TRIM-XML-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TRIM_ENUM_DEFAULTS_BOUND; XML_TRANSFER_AND_AUDIO_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1269,
+      "sha256": "d81781ada331145b17f283f2d745176e8a29715daba209d6f608bb5ac0cc02b5"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1946,
+      "sha256": "474c449707ea7ca6a233ca06656173548deb15f234e9ebd7f20d0d7509651d43"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 579,
+      "sha256": "5ebb750cb567bf30ac9de5b065d2d928cfe4184cfb34b0e76fd368a765cebf8d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 658,
+      "sha256": "73e0bc084e81750978b8f4a34407ea3de6b8c18078387c5ee99ee877f4b967e5"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 2218,
+      "sha256": "f9825d9b252e5fd954688ce246e397d8e4991f5eaa38065dce1a6d49c6c3675c"
+    }
+  ]
+}

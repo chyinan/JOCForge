@@ -154,6 +154,11 @@
 | F01E/selected-silence-duration-sample-count | F01E | `frontend` |
 | F01E/washed-timebase-job-config-to-stage-runner-option-tree | F01E | `UNBOUND` |
 | F01E/washed-stagerunner-routing-string-object-boundary | F01E | `UNBOUND` |
+| F01E/washed-line-rf-drc-profile-conditional-boundary | F01E | `UNBOUND` |
+| F01E/selected-profile-external-job-xml-reference-ingress | F01E | `cli` |
+| F01E/washed-custom-trim-xml-boundary | F01E | `UNBOUND` |
+| F01E/washed-xml-time-control-reader-boundary | F01E | `UNBOUND` |
+| F01E/washed-metering-mode-static-caller-boundary | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

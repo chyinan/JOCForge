@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash-input-only-vectors.v1",
+  "package_id": "DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1",
+  "status": "SOURCE_DOCUMENT_VALUES_ONLY; NOT_EXECUTED",
+  "source_document_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+  "domains": [
+    {
+      "name": "encode_to_atmos_ddp_time_control",
+      "values": {"start":"86640","end":"86664"},
+      "omitted_defaults": {"start":"first_frame_of_action","end":"end_of_file"},
+      "effective_runtime_value": "UNBOUND"
+    },
+    {
+      "name": "input_audio_adm_offset_ffoa",
+      "values": {"offset":"auto","ffoa":"auto"},
+      "omitted_defaults": {"offset":"auto","ffoa":"auto"},
+      "effective_runtime_value": "UNBOUND"
+    }
+  ],
+  "warning": "These are source-document values only; they are not joined to a runtime owner or Reader position."
+}

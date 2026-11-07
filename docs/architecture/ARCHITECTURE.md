@@ -2,7 +2,7 @@
 
 状态：ARCHITECTURE_REVIEW=APPROVED；REPOSITORY_IMPLEMENTATION_READY=YES_FOR_SELECTED_PROFILE。
 
-本仓库正在独立物化批准设计。product encode 入口仍在 application 返回 BackendUnavailable，CLI 映射退出码 2。当前没有产品级音频读取、完整 codec 执行、AU 状态推进、payload 或发布步骤。已物化的纯 direct-slice wire 函数不接入该入口，也不改变产品 readiness。帮助和版本输出保留。
+本仓库正在独立物化批准设计。`jocforge-application::encode` 仍返回 BackendUnavailable；CLI 另有 selected full-file pipeline，可读取 ADM BWF 并为六档显式码率生成 elementary EC-3 输出。新增 `encode --job-xml` 接受严格的 ADM BWF / EC-3 子集，输入 XML 可用 `adm` 或 `atmos_mezz` 分支并保留分支身份；`--preflight-only` 在 PreparedJobInput admission 后停止，不启动 Meter 或输出。MP4/DASH 与未闭合选项显式拒绝。CLI 输出、XML parser acceptance 和选项的音频效果是不同证据层级；DEE parity、独立实现验证和 W04 产品验收仍未完成。帮助和版本输出保留。
 
 采用五个小 crate：domain、application、io、CLI 和 validation。生产入口仅依赖 application，再依赖 domain。io 和 validation 目前是空壳；io 不能反向驱动 domain。未来 CLI 负责 gather/process/persist，application 保持纯协调，通过类型化输入和 staged result 连接 domain。
 

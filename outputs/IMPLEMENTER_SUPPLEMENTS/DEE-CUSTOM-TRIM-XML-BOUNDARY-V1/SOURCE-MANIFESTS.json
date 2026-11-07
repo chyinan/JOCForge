@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.wash-source-bindings.v1",
+  "package_id": "DEE-CUSTOM-TRIM-XML-BOUNDARY-V1",
+  "sources": [
+    {
+      "package_id": "custom_trims_5_1_token_consumer_boundary_wash_v2",
+      "manifest_sha256": "a15784d51a60bcfa6b5d1c2d96b1feb3734aaddbc902dc51763944c8a688f154",
+      "seal_sha256": "f2a4b45c263897b240824d06d8b3a0591241039bef5d634b6ff267d289aca1c8",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "target_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    }
+  ],
+  "excluded": ["native source/decompilation", "PCM", "encoded payload", "private key", "license"]
+}

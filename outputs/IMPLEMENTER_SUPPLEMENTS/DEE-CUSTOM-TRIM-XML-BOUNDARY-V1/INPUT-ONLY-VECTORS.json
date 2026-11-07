@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-input-only-vectors.v1",
+  "package_id": "DEE-CUSTOM-TRIM-XML-BOUNDARY-V1",
+  "status": "DECLARED_INPUT_VALUES_ONLY; NO_DERIVED_OUTPUTS; NOT_OBSERVED",
+  "vectors": [
+    {"id":"surround_trim_5_1","field":"custom_trims/surround_trim_5_1","values":["auto","0","-3","-6","-9"],"execution_status":"NOT_RUN"},
+    {"id":"height_trim_5_1","field":"custom_trims/height_trim_5_1","values":["auto","-3","-6","-9","-12"],"execution_status":"NOT_RUN"}
+  ],
+  "warning": "These are declared XML values only; no token effect or omission behavior is predicted."
+}

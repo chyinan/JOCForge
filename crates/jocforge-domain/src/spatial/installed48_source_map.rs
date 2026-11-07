@@ -3,7 +3,7 @@
 
 use crate::frontend::dbmd_sections::DbmdTrackFields;
 use crate::frontend::job_configuration::{
-    PrimaryMetadataChunkHashes, SelectedInputKind, SelectedPrimaryControlBinding,
+    PrimaryMetadataChunkHashes, SelectedPrimaryControlBinding,
 };
 use crate::frontend::normal_control_snapshot::{
     NormalControlAdmHeldSourceView, NormalControlAdmInputOutput, NormalControlAdmInputSnapshot,
@@ -980,7 +980,7 @@ fn build_installed48_source_map(
 fn validate_selected_source_binding(
     binding: &SelectedPrimaryControlBinding,
 ) -> Result<(), Installed48SourceMapError> {
-    if !binding.runtime_resource_bound() || binding.input_kind() != SelectedInputKind::Adm {
+    if !binding.runtime_resource_bound() || !binding.input_kind().is_adm_bwf() {
         return Err(Installed48SourceMapError::SourceBinding);
     }
     let channels = usize::from(binding.wave().channels());

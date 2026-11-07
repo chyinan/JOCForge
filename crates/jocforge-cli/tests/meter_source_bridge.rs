@@ -224,15 +224,16 @@ fn source_frame_extent_must_match_the_prepared_adm_job() {
 }
 
 #[test]
-fn meter_oar_bridge_rejects_non_adm_input_kind() {
+fn meter_oar_bridge_accepts_atmos_mezz_adm_bwf_input_and_keeps_its_xml_identity() {
     let prepared = prepared_job_input_for_case(1);
     let rows = vec![vec![0; 1_536]; 38];
     let frame = callback_frame(&prepared, &rows, prepared.configuration().source_samples());
 
     assert_eq!(
-        MeterSourceCallbackView::new(&prepared, frame).err(),
-        Some(MeterSourceBridgeError::SelectedInputKindMismatch)
+        prepared.configuration().input_kind().selected_label(),
+        "atmos_mezz"
     );
+    assert!(MeterSourceCallbackView::new(&prepared, frame).is_ok());
 }
 
 #[test]

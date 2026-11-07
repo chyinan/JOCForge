@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-CUSTOM-TRIM-XML-BOUNDARY-V1",
+  "manifest_sha256": "f343a73687f8f3870655d9668bd5b94d05f79cf759e2a384f06320dc07ff59de",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "TRIM_ENUM_DEFAULTS_BOUND; XML_TRANSFER_AND_AUDIO_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO"
+}

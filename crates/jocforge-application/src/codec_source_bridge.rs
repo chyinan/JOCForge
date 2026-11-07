@@ -13,9 +13,7 @@ use jocforge_domain::{
         },
     },
     drc::NoneDrcOwnerAfterProposal,
-    frontend::job_configuration::{
-        SelectedDrcProfile, SelectedHeightTrim, SelectedInputKind, SelectedSurroundTrim,
-    },
+    frontend::job_configuration::{SelectedDrcProfile, SelectedHeightTrim, SelectedSurroundTrim},
     meter::prepared_job_identity::PreparedJobInputIdentity,
     profile::{EncodingProfile, resolve_selected_profile},
     timeline::{CodecSourceIndex, source_for_callback},
@@ -178,7 +176,7 @@ fn selected_bsi_profile_inputs(
     let physical_channel_count = usize::from(wave.channels());
     let admitted_track_count = prepared.graph().graph().tracks().len();
     if resolved_profile != selected_profile
-        || configuration.input_kind() != SelectedInputKind::Adm
+        || !configuration.input_kind().is_adm_bwf()
         || wave.sample_rate_hz() != 48_000
         || physical_channel_count == 0
         || physical_channel_count > usize::from(u8::MAX) + 1
@@ -240,7 +238,7 @@ mod tests {
     use crate::{SelectedAdmResourcePayloads, SelectedWaveDescriptor, prepare_selected_job_input};
     use jocforge_domain::frontend::dbmd_sections::SelectedDbmdSections;
     use jocforge_domain::frontend::job_configuration::{
-        SelectedDrcProfile, SelectedHeightTrim, SelectedSurroundTrim,
+        SelectedDrcProfile, SelectedHeightTrim, SelectedInputKind, SelectedSurroundTrim,
     };
     use jocforge_domain::meter::prepared_job_identity::{
         NormalizedJobConfigurationIdentity, PreparedAdmChunkSpan, PreparedAdmGraphProvenance,

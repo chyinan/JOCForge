@@ -507,7 +507,7 @@ fn build_global_source_geometry_snapshot_from_adm_input_parts(
         || after.lfe_host() != source_map.direct_lfe_host().value()
         || usize::from(source_map.physical_host_count()) != physical_count
         || source_map.rows().len() != usize::from(source_map.source_count())
-        || source_binding.input_kind() != crate::frontend::job_configuration::SelectedInputKind::Adm
+        || !source_binding.input_kind().is_adm_bwf()
         || source_binding.wave().channels() != after.input_physical_rows().value()
         || metadata_hashes.axml() != *graph.receipt().axml_sha256()
         || metadata_hashes.chna() != *graph.receipt().chna_sha256()
@@ -675,7 +675,7 @@ pub fn build_held_global_source_geometry_snapshot_from_adm_input(
         || held.source_origin_transaction_id().programme_id() != prepared.programme_id()
         || held.source_origin_transaction_id().attempt_id() != prepared.attempt_id()
         || held.source_origin_transaction_id().callback_index() != held.source_origin_generation()
-        || source_binding.input_kind() != crate::frontend::job_configuration::SelectedInputKind::Adm
+        || !source_binding.input_kind().is_adm_bwf()
         || resource_identity.input_sha256() != *source_binding.source_receipt_sha256()
         || resource_identity.resource_bytes() != source_binding.source_file_bytes()
         || config_identity.config_sha256() != *source_binding.job_projection_sha256()
@@ -962,7 +962,7 @@ fn build_global_source_geometry_from_rows(
 
     let source_binding = source_map.source_binding();
     let metadata_hashes = source_binding.metadata_hashes();
-    if source_binding.input_kind() != crate::frontend::job_configuration::SelectedInputKind::Adm
+    if !source_binding.input_kind().is_adm_bwf()
         || source_binding.selected_profile() != prepared.profile_identity()
         || source_binding.source_samples().value() != prepared.source_samples()
         || metadata_hashes.axml() != *graph.receipt().axml_sha256()

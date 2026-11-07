@@ -2487,8 +2487,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 161933,
-              "sha256": "7e9e6d6fa9a688ce74e6dfd56885d4b09d38e67f92d4bc25b84dfad521d6d831"
+              "bytes": 161897,
+              "sha256": "85fb66bc451dff99a6567024dc92eefec9f56bd297c96dfaac84e09e60c2b695"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/adm_object_events.rs",
@@ -2517,8 +2517,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
-              "bytes": 32054,
-              "sha256": "2ba6ab1fb062a17c648d792d794d0644d0b1165159b21c2263b95d4b86cb1b3b"
+              "bytes": 32010,
+              "sha256": "2e0365132938ac4836d97feac3e07cd824c5f452ab806432c50087c10a9a4767"
             }
           ],
           "test_inventory": [
@@ -2739,8 +2739,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
-              "bytes": 63886,
-              "sha256": "cdd6558ea455d34971150fe35259b6b1a39881411deece296fe01bd4b22642f5"
+              "bytes": 63742,
+              "sha256": "2b0d4884830141127cceda3796333a8e9dd767653b8c12c885d00d507f16ee4c"
             }
           ],
           "test_inventory": [
@@ -2817,15 +2817,15 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
-              "bytes": 21575,
-              "sha256": "a5fd2e01b81932cebeb3f9085def3facae73c62fe134c183081c5ac08ca61cbb"
+              "bytes": 21636,
+              "sha256": "dd4d68ee2f3f5ad2d5999e520deb0e90f0293230bd093214ef6b7cdd964d3ac6"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -2896,8 +2896,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             }
           ],
           "test_inventory": [
@@ -3194,8 +3194,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 47459,
-              "sha256": "7bfd56d9b1ea8e621d10e6e6a6bef838f125b7eb82d1308f1fcc95361de5dc6c"
+              "bytes": 59573,
+              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
@@ -3224,13 +3224,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 161933,
-              "sha256": "7e9e6d6fa9a688ce74e6dfd56885d4b09d38e67f92d4bc25b84dfad521d6d831"
+              "bytes": 161897,
+              "sha256": "85fb66bc451dff99a6567024dc92eefec9f56bd297c96dfaac84e09e60c2b695"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -3239,23 +3239,23 @@
             },
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 25279,
-              "sha256": "d424bca17132d77f65f45ac0ae48c8790099633d82898caf0dba85be626b3d02"
+              "bytes": 25252,
+              "sha256": "6affa5de48a2cde9ddcb73a1f7c86171fdefc40911a2df444acc945c368de914"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35467,
-              "sha256": "f489b2e37dc3147bcf820d6e40da88bc8983b66676a04eab96db6dbd497ab5e1"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 11341,
-              "sha256": "1174097438dedc0961e3a984bf92417b64189968478d577afeb4788575d2e72a"
+              "bytes": 11329,
+              "sha256": "e6061a697af26c788145a20a201e038bd3644657c377c4004ef6199c844743ce"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
-              "bytes": 32054,
-              "sha256": "2ba6ab1fb062a17c648d792d794d0644d0b1165159b21c2263b95d4b86cb1b3b"
+              "bytes": 32010,
+              "sha256": "2e0365132938ac4836d97feac3e07cd824c5f452ab806432c50087c10a9a4767"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/state.rs",
@@ -3296,13 +3296,13 @@
             },
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 25279,
-              "sha256": "d424bca17132d77f65f45ac0ae48c8790099633d82898caf0dba85be626b3d02"
+              "bytes": 25252,
+              "sha256": "6affa5de48a2cde9ddcb73a1f7c86171fdefc40911a2df444acc945c368de914"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35467,
-              "sha256": "f489b2e37dc3147bcf820d6e40da88bc8983b66676a04eab96db6dbd497ab5e1"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             }
           ]
         },
@@ -4325,8 +4325,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 47459,
-              "sha256": "7bfd56d9b1ea8e621d10e6e6a6bef838f125b7eb82d1308f1fcc95361de5dc6c"
+              "bytes": 59573,
+              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
             }
           ],
           "test_inventory": [
@@ -4497,6 +4497,588 @@
             "Parser changes, audio algorithms, and codec effects."
           ],
           "validation_boundary": "Wash evidence is reference-only. time_base remains NOT_CAPTURED/UNBOUND; implementation readiness remains NO.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-line-rf-drc-profile-conditional-boundary",
+          "mapping_status": "WASHED_LINE_TOKEN_TO_CONDITIONAL_BSI_MAP__XML_ACTIVATION_AND_RF_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_LINE_STATIC_MAP__XML_SERIALIZER_AND_RF_EFFECT_UNBOUND",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only DRC boundary. Wash binds the static Line token table through a DLL-local profile tree and DDP_COMPR conversion to conditional 3-bit BSI codes. It does not bind XML delivery to the selected plugin, mode-1 selection, serializer activation, or decoded-PCM effect. RF runtime value and effect remain unbound and must not inherit the Line table.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The six Line token to tree U32 to DDP_COMPR U32 to conditional BSI mappings are static reference facts only.",
+              "Serializer activation, XML delivery, mode-1 selection, and decoded-PCM effect are UNBOUND or NOT_RUN.",
+              "RF runtime value, typed owner, BSI mapping, and audio effect remain UNBOUND; no Line mapping is applied to RF."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_LINE_RF_DRC_CONDITIONAL_BOUNDARY",
+            "package_id": "DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "854fcdd8275d7575d1e0888f9f811930da82d60ef19bc827363cc8ed28d4f7a0",
+            "supplement_seal_sha256": "d0c6b9996f6a0f29516872191f7ba163de5d12378bc12be13ff9ec19b9744e41",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "line_xml_path": "filter/audio/encode_to_atmos_ddp/drc/line_mode_drc_profile",
+            "line_static_tokens": [
+              {
+                "xml_token": "film_standard",
+                "tree_u32": 1,
+                "ddp_compr_u32": 1,
+                "bits_if_serialized": "001"
+              },
+              {
+                "xml_token": "film_light",
+                "tree_u32": 0,
+                "ddp_compr_u32": 2,
+                "bits_if_serialized": "010"
+              },
+              {
+                "xml_token": "music_standard",
+                "tree_u32": 3,
+                "ddp_compr_u32": 3,
+                "bits_if_serialized": "011"
+              },
+              {
+                "xml_token": "music_light",
+                "tree_u32": 2,
+                "ddp_compr_u32": 4,
+                "bits_if_serialized": "100"
+              },
+              {
+                "xml_token": "speech",
+                "tree_u32": 4,
+                "ddp_compr_u32": 5,
+                "bits_if_serialized": "101"
+              },
+              {
+                "xml_token": "none",
+                "tree_u32": 5,
+                "ddp_compr_u32": 0,
+                "bits_if_serialized": "000"
+              }
+            ],
+            "line_presence_semantics": "explicit zero code with presence if serializer gates pass; not omission",
+            "line_xml_handoff": "UNBOUND",
+            "line_mode1_selection": "UNOBSERVED",
+            "line_serializer_activation": "UNOBSERVED",
+            "line_decoded_pcm_effect": "NOT_DETERMINED_STATICALLY",
+            "rf_xml_path": "filter/audio/encode_to_atmos_ddp/drc/rf_mode_drc_profile",
+            "rf_schema_default": "film_light",
+            "rf_input_only_candidate": "music_light",
+            "rf_runtime_value": "UNBOUND",
+            "rf_value_to_stringtype_plus_0x08": "UNBOUND",
+            "rf_typed_owner_join": "UNBOUND",
+            "rf_code_map": "NOT_BOUND",
+            "rf_bsi_or_audio_effect": "UNBOUND/NOT_RUN",
+            "validation_boundary": "Static reference evidence only. Does not authorize DRC audio behavior or claim XML-to-selected-plugin support."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_DRC_BOUNDARY_NO_RUNTIME_EFFECT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Line six-token mapping is conditional on downstream serializer gates.",
+              "RF value mapping and runtime/audio effect are unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_DEE_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "XML delivery to selected plugin, mode-1 selection, and serializer activation.",
+            "Decoded PCM or audible DRC effect.",
+            "RF runtime value, typed owner, BSI mapping, and audio effect."
+          ],
+          "validation_boundary": "Reference-only; implementation readiness is NO.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "selected-profile-external-job-xml-reference-ingress",
+          "mapping_status": "LOCALLY_MATERIALIZED_STRICT_XML_REFERENCE_INGRESS__ADM_BWF_BRANCHES_AND_EC3_ONLY",
+          "implementation_status": "LOCALLY_VERIFIED_ATMOSMEZZ_PREPARED_INPUT_PREFLIGHT__FULL_ENCODING_NOT_RUN",
+          "implementation_requirement": true,
+          "owner": "cli",
+          "scope": "Additive CLI job-XML ingress. Both authored ADM BWF XML branches, adm and atmos_mezz, use the same RIFF WAVE reader while their branch label is preserved in normalized configuration identity. The ingress resolves XML input and EC-3 output references, reads the selected input, passes the original XML bytes and actual WAVE descriptor through the existing selected parser and pipeline, and rejects unknown structure and unsupported control combinations.",
+          "dependencies": [
+            "F01R/selected-riff-pcm24-reader-and-hop",
+            "F01E/selected-job-xml-profile-normalization"
+          ],
+          "spec_files": [
+            "docs/implementation/job-configuration.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/job_configuration.rs",
+            "crates/jocforge-application/src/lib.rs",
+            "crates/jocforge-application/src/codec_source_bridge.rs",
+            "crates/jocforge-application/src/meter_source_admission.rs",
+            "crates/jocforge-application/src/meter_source_bridge.rs",
+            "crates/jocforge-domain/src/frontend/provider.rs",
+            "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+            "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
+            "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
+            "crates/jocforge-io/examples/meter_input_probe.rs",
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-cli/src/main.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-cli/tests/meter_source_bridge.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "No new source clock, range conversion, timecode conversion, silence insertion, DRC algorithm, downmix render, or trim algorithm is introduced.",
+              "The authored input branch remains distinct in normalized identity while both supported branches open the same ADM BWF RIFF representation."
+            ]
+          },
+          "parameters": {
+            "kind": "STRICT_SELECTED_PROFILE_EXTERNAL_JOB_XML_INGRESS",
+            "cli_form": "jocforge encode --job-xml <job.xml> [--preflight-only]",
+            "legacy_positional_cli_preserved": true,
+            "xml_data_rate_override": "required explicit XML data_rate; CLI --data-rate is not accepted in XML mode",
+            "accepted_input_branches": [
+              "adm",
+              "atmos_mezz"
+            ],
+            "input_container": "ADM BWF RIFF through the existing loader",
+            "input_branch_identity": "exact authored branch label is preserved",
+            "accepted_output_branch": "/job_config/output/ec3 only",
+            "reference_policy": "absolute storage/local/path plus basename file_name",
+            "output_policy": "elementary .ec3 file; no MP4 or DASH muxing",
+            "strict_surface_policy": "unknown elements and attributes reject with the path",
+            "external_control_gate": "the existing fixed selected row; other effectful or unclosed values reject",
+            "validated_controls": [
+              "six explicit data rates",
+              "1770-4, dialogue_intelligence=false, speech_threshold=100",
+              "timecode_frame_rate=not_indicated, offset=auto, ffoa=auto",
+              "start/end empty, time_base=file_position",
+              "prepend and explicit append silence are numeric zero",
+              "line/rf DRC pair film_light/film_light or none/none",
+              "Lo/Ro with all four mix levels at -3",
+              "surround/height trim auto/auto"
+            ],
+            "validation_boundary": "XML parsing and selected-profile admission are distinct from effect implementation. No external job XML execution or output was run in this slice.",
+            "provider_files": [],
+            "preflight_only_mode": "Parses XML, resolves references, reads ADM BWF, and prepares/binds PreparedJobInput; returns before Meter prepass, output staging, source callbacks, and encoding.",
+            "local_preflight": {
+              "status": "PASS_NO_LAUNCH",
+              "xml_path": ".test-tmp/love-song-n36-atmos-mezz-1024-preflight-20261107/job_config.xml",
+              "xml_bytes": 2121,
+              "xml_sha256": "980622a283b2e7402db7a7ac25e8b46b15db3384477f9de7c00269f344c3c585",
+              "prepared_config_sha256": "00d0c4b75ddaf1f149fff5be8945f94a3f03cd6f781ae8b5c4670b896531cb40",
+              "input_kind": "atmos_mezz",
+              "input_path": "D:/Love Song 方大同.wav",
+              "input_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+              "input_bytes": 1396237802,
+              "sample_rate_hz": 48000,
+              "physical_channels": 36,
+              "pcm_bits": 24,
+              "samples_per_channel": 12927379,
+              "data_rate_kbps": 1024,
+              "frame_bytes": 4096,
+              "output_path": ".test-tmp/love-song-n36-atmos-mezz-1024-preflight-20261107/destination/love-song-fangdatong-atmos-mezz-1024-preflight.ec3",
+              "exit_code": 0,
+              "output_existed": false,
+              "output_created": false,
+              "meter_started": false,
+              "callbacks_started": false,
+              "receipt_path": ".test-tmp/love-song-n36-atmos-mezz-1024-preflight-20261107/preflight-receipt.txt",
+              "receipt_sha256": "5f6e0ce2211e9809c632d558ef6c4579be7f5bdbe2ec387855d769117a6429fa",
+              "workspace_only_not_a_checked_in_vector": true
+            }
+          },
+          "vectors": {
+            "kind": "USER_AUTHORIZED_ATMOSMEZZ_N36_NO_LAUNCH_PREFLIGHT",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "One user-authorized N36 AtmosMezz XML preflight passed XML/reference validation and PreparedJobInput binding.",
+              "The XML and receipt are workspace-only in .test-tmp; no full encode or output was run."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "PASS_EXIT_0_NO_OUTPUT"
+          },
+          "error_outcomes": [
+            {
+              "outcome": "UnsupportedJobXmlOption",
+              "scope": "Unclosed selected effect/control paths return a path-specific CLI error."
+            },
+            {
+              "outcome": "UnsupportedOutputContainer",
+              "scope": "/job_config/output/mp4 and /job_config/output/dash reject explicitly."
+            },
+            {
+              "outcome": "UnsupportedElementOrAttribute",
+              "scope": "Unknown or unconsumed XML structure rejects explicitly."
+            }
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
+              "bytes": 59573,
+              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
+            },
+            {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
+            },
+            {
+              "path": "crates/jocforge-application/src/codec_source_bridge.rs",
+              "bytes": 25252,
+              "sha256": "6affa5de48a2cde9ddcb73a1f7c86171fdefc40911a2df444acc945c368de914"
+            },
+            {
+              "path": "crates/jocforge-application/src/meter_source_admission.rs",
+              "bytes": 11329,
+              "sha256": "e6061a697af26c788145a20a201e038bd3644657c377c4004ef6199c844743ce"
+            },
+            {
+              "path": "crates/jocforge-application/src/meter_source_bridge.rs",
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/provider.rs",
+              "bytes": 32010,
+              "sha256": "2e0365132938ac4836d97feac3e07cd824c5f452ab806432c50087c10a9a4767"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+              "bytes": 161897,
+              "sha256": "85fb66bc451dff99a6567024dc92eefec9f56bd297c96dfaac84e09e60c2b695"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
+              "bytes": 46010,
+              "sha256": "8c2a9c1f1aecf28b68e720e74f22c0aeb9892153bacaa3e53e149aa4021658af"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
+              "bytes": 63742,
+              "sha256": "2b0d4884830141127cceda3796333a8e9dd767653b8c12c885d00d507f16ee4c"
+            },
+            {
+              "path": "crates/jocforge-io/examples/meter_input_probe.rs",
+              "bytes": 29537,
+              "sha256": "e63f74801a4f74b51bf9f2befe5e7d1add4b2492ec584a7ed1f5d796a538025b"
+            },
+            {
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 52066,
+              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
+            },
+            {
+              "path": "crates/jocforge-cli/src/main.rs",
+              "bytes": 3753,
+              "sha256": "1a50ff33e398824b93fa4481c63286a92ad7211ce52c26d6a3bd1230c629bc69"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
+              "bytes": 21636,
+              "sha256": "dd4d68ee2f3f5ad2d5999e520deb0e90f0293230bd093214ef6b7cdd964d3ac6"
+            }
+          ],
+          "not_run": [
+            "Full-file encoding, Meter prepass, callbacks, output staging, and output publication.",
+            "MP4/DASH muxing and non-EC-3 outputs.",
+            "DI, DRC, downmix, time_base, silence, trim, or non-empty range audio effects.",
+            "DEE parity, whole-chain acceptance, and W04."
+          ],
+          "validation_boundary": "The single no-launch preflight confirms AtmosMezz XML ingress to PreparedJobInput with input_kind preserved. It does not claim full DEE XML option or audio-effect support.",
+          "delivery_scope": "LOCAL_CLI_JOB_XML_INGRESS_ONLY"
+        },
+        {
+          "slice_id": "washed-custom-trim-xml-boundary",
+          "mapping_status": "WASHED_TRIM_ENUM_AND_CONSTRUCTOR_DEFAULT__XML_TRANSFER_AND_EFFECT_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_TRIM_MEMBERS_AND_DEFAULTS__AUDIO_BSI_EFFECT_UNBOUND",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only trim boundary. Washed evidence binds the two declared StringType members and constructor defaults, but not XML token transfer, omission materialization, numeric mapping/unit, BSI writes, or audio effect.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Surround trim member is at param+0x968 with constructor value auto.",
+              "Height trim member is at param+0x9e8 with constructor value auto.",
+              "XML transfer, omission behavior, typed first consumer, and audio/BSI effects remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_CUSTOM_TRIM_BOUNDARY",
+            "package_id": "DEE-CUSTOM-TRIM-XML-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "f343a73687f8f3870655d9668bd5b94d05f79cf759e2a384f06320dc07ff59de",
+            "supplement_seal_sha256": "cf612a1344971fe8608181e3d8787584508f552cb471f692d1a50dff6d2c932b",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "surround_trim": {
+              "choices": [
+                "auto",
+                "0",
+                "-3",
+                "-6",
+                "-9"
+              ],
+              "stringtype_member": "FUN_180136220 param+0x968",
+              "constructor_default": "auto",
+              "xml_omission": "UNBOUND",
+              "consumer_candidate_owner_join": "UNBOUND",
+              "numeric_mapping_and_unit": "UNBOUND"
+            },
+            "height_trim": {
+              "choices": [
+                "auto",
+                "-3",
+                "-6",
+                "-9",
+                "-12"
+              ],
+              "stringtype_member": "FUN_180136220 param+0x9e8",
+              "constructor_default": "auto",
+              "xml_omission": "UNBOUND",
+              "scoped_use": "cleanup-shaped path only; not a token reader",
+              "numeric_mapping_and_unit": "UNBOUND"
+            },
+            "audio_or_bsi_effect": "UNBOUND/NOT_RUN",
+            "validation_boundary": "Reference-only; implementation readiness is NO."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_TRIM_MEMBERS_NO_AUDIO_EFFECT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Declared trim enums and constructor defaults only."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "XML token transfer and omitted-field materialization for either trim.",
+            "Numeric mapping, units, BSI write, decoded PCM effect, and audible effect.",
+            "Runtime capture."
+          ],
+          "validation_boundary": "Reference-only; implementation readiness is NO.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-xml-time-control-reader-boundary",
+          "mapping_status": "WASHED_TIME_DOMAINS_DISTINCT__XML_TO_READER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_STATIC_PARTIAL_TIME_FIELDS__RUNTIME_AND_SEEK_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only time-control boundary. start/end lexical defaults and input-only values are not joined to a typed range owner or Reader cursor. offset/ffoa static evidence is split across adm XML leaves and an AtmosMezz host normalizer edge; no XML-to-policy-owner or host-response-to-Reader join is established.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "start/end and offset/ffoa remain separate time domains.",
+              "The package adm offset/ffoa leaves do not bind to the separate AtmosMezz host normalizer edge.",
+              "Host response to PrivContext converter input and Reader seek/sample position remain UNBOUND."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_TIME_CONTROL_READER_BOUNDARY",
+            "package_id": "DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37",
+            "supplement_seal_sha256": "9d9657f7a0cbfddee54982588cdc957c82c483952395f47ec6ad97b6a8c0a576",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "start_end": {
+              "xsd_defaults": {
+                "start": "first_frame_of_action",
+                "end": "end_of_file"
+              },
+              "input_only_values": {
+                "start": "86640",
+                "end": "86664"
+              },
+              "typed_range_owner": "UNBOUND",
+              "reader_cursor_join": "UNBOUND",
+              "runtime_sample_position": "NOT_CAPTURED"
+            },
+            "input_offset_ffoa": {
+              "xsd_defaults": {
+                "offset": "auto",
+                "ffoa": "auto"
+              },
+              "washed_xml_paths": [
+                "/job_config/input/audio/adm/offset",
+                "/job_config/input/audio/adm/ffoa"
+              ],
+              "atmosmezz_host_edge": "AtmosMezz::Run normalizer at RVA 0xf10da; XML-to-host join UNBOUND",
+              "host_response_to_converter": "UNBOUND",
+              "reader_seek_or_sample_effect": "UNBOUND/NOT_CAPTURED"
+            },
+            "time_base_is_separate": true,
+            "validation_boundary": "Static partial evidence only; no runtime value, unit, sample position, Reader seek, or audio effect is established."
+          },
+          "vectors": {
+            "kind": "WASHED_INPUT_ONLY_TIME_CONTROL_VECTOR_NO_RUNTIME",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "R138 lexical values are source-document input-only, not runtime observations."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_PARTIAL_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "XML leaves to selected host/policy owner and runtime effective values.",
+            "Typed range owner, Reader cursor, total, seek/sample position, units, and audio effect.",
+            "XML-to-AtmosMezz host-edge join and host-response-to-PrivContext converter join."
+          ],
+          "validation_boundary": "Reference-only; implementation readiness is NO.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-metering-mode-static-caller-boundary",
+          "mapping_status": "WASHED_DLL_LOCAL_METERING_TOKEN_MAP_AND_PROCESSING_EDGE__XML_OWNER_JOIN_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_STATIC_MODE_CANDIDATES__METER_AUDIO_EFFECT_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only metering-mode boundary. A DLL-local candidate token map and one processing-object-to-string-code-consumer path are static. The schema StringType member is not owner/generation joined to that processing object, and no selected provider or Meter/audio effect is established.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static candidate codes: 1770-4 maps to raw U32 0 and 1770-3 maps to raw U32 1.",
+              "Processing-object-to-candidate-consumer path is bound statically only.",
+              "XML StringType owner join, selected provider, candidate meaning/signedness, and Meter/audio effect remain UNBOUND or NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_METERING_MODE_CANDIDATE_MAP",
+            "package_id": "DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "d2e31f4b10565c8d21c008c80f90fee7030f1607160144c3fad9d202482126d6",
+            "supplement_seal_sha256": "42f75a5b0ba8be2498d24042d9deb6eb4cd007d66b0a8b43ba0ef2ace9fafc38",
+            "functional_ids": [
+              "F01E",
+              "F06"
+            ],
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "xml_path": "filter/audio/encode_to_atmos_ddp/loudness/measure_only/metering_mode",
+            "schema_type": "xs:string",
+            "schema_default": "1770-4",
+            "local_parser_gate": "requires explicit 1770-4",
+            "static_candidates": {
+              "1770-4": 0,
+              "1770-3": 1
+            },
+            "consumer_candidate": {
+              "map_global": "DAT_180a17e08",
+              "function": "FUN_1801535b0",
+              "getter_receiver": "param_1+0x210 via vtable slot +0x30",
+              "output": "param_2+0x90 raw U32 candidate",
+              "signedness_and_meaning": "UNBOUND"
+            },
+            "processing_caller": {
+              "function": "FUN_18014f1f0",
+              "guard": "dword [RCX+0xf34] == 0",
+              "callsite": "0x18014f23e",
+              "helper": "FUN_18014aba0",
+              "candidate_consumer_callsite": "0x18014afb0",
+              "processing_object_to_consumer_receiver": "BOUND_STATICALLY"
+            },
+            "schema_stringtype_plus_0x1f0_to_processing_receiver_plus_0x210": "UNBOUND",
+            "selected_provider_or_meter_effect": "NOT_RUN",
+            "validation_boundary": "Static candidate map and caller path only; does not enable 1770-3 or establish runtime mode/audio effect."
+          },
+          "vectors": {
+            "kind": "WASHED_INPUT_ONLY_MODE_TOKENS_NO_RUNTIME_OUTPUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Input-only tokens 1770-4 and 1770-3; candidate U32 outputs are static analysis, not runtime observations."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_DEE_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "XML StringType owner/generation join to the processing object and selected provider.",
+            "Runtime mode selection, Meter consumer semantics, and audio effect.",
+            "Signedness/meaning of the candidate U32 code and other modes."
+          ],
+          "validation_boundary": "Reference-only; the current CLI continues to require explicit 1770-4.",
           "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
         }
       ]
@@ -7975,8 +8557,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
-              "bytes": 63886,
-              "sha256": "cdd6558ea455d34971150fe35259b6b1a39881411deece296fe01bd4b22642f5"
+              "bytes": 63742,
+              "sha256": "2b0d4884830141127cceda3796333a8e9dd767653b8c12c885d00d507f16ee4c"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/mod.rs",
@@ -7990,8 +8572,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             }
           ],
           "test_inventory": [
@@ -8472,8 +9054,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 47459,
-              "sha256": "7bfd56d9b1ea8e621d10e6e6a6bef838f125b7eb82d1308f1fcc95361de5dc6c"
+              "bytes": 59573,
+              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -8482,8 +9064,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
-              "bytes": 46041,
-              "sha256": "c68b76c38a0b54df25556c1a0a714efa1b05884a5f37f42501f536b9158b59a1"
+              "bytes": 46010,
+              "sha256": "8c2a9c1f1aecf28b68e720e74f22c0aeb9892153bacaa3e53e149aa4021658af"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/installed48_activity.rs",
@@ -8517,8 +9099,8 @@
             },
             {
               "path": "crates/jocforge-io/examples/meter_input_probe.rs",
-              "bytes": 29568,
-              "sha256": "789e2d7a6bbe1a77b6aa414dca693d874d3b25d1a919b181bc15cd1038ef5a3a"
+              "bytes": 29537,
+              "sha256": "e63f74801a4f74b51bf9f2befe5e7d1add4b2492ec584a7ed1f5d796a538025b"
             }
           ],
           "test_inventory": [
@@ -9081,8 +9663,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
-              "bytes": 63886,
-              "sha256": "cdd6558ea455d34971150fe35259b6b1a39881411deece296fe01bd4b22642f5"
+              "bytes": 63742,
+              "sha256": "2b0d4884830141127cceda3796333a8e9dd767653b8c12c885d00d507f16ee4c"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/frontend_stages.rs",
@@ -9091,8 +9673,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
-              "bytes": 46041,
-              "sha256": "c68b76c38a0b54df25556c1a0a714efa1b05884a5f37f42501f536b9158b59a1"
+              "bytes": 46010,
+              "sha256": "8c2a9c1f1aecf28b68e720e74f22c0aeb9892153bacaa3e53e149aa4021658af"
             }
           ],
           "test_inventory": [
@@ -9489,8 +10071,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
-              "bytes": 46041,
-              "sha256": "c68b76c38a0b54df25556c1a0a714efa1b05884a5f37f42501f536b9158b59a1"
+              "bytes": 46010,
+              "sha256": "8c2a9c1f1aecf28b68e720e74f22c0aeb9892153bacaa3e53e149aa4021658af"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
@@ -9529,8 +10111,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-application/src/reader_eof_callback.rs",
@@ -9539,13 +10121,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 41646,
-              "sha256": "8373abc591ff251b9dbbf59441b48174290a285630e572b9534fb500d6aa467d"
+              "bytes": 52066,
+              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 161933,
-              "sha256": "7e9e6d6fa9a688ce74e6dfd56885d4b09d38e67f92d4bc25b84dfad521d6d831"
+              "bytes": 161897,
+              "sha256": "85fb66bc451dff99a6567024dc92eefec9f56bd297c96dfaac84e09e60c2b695"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
@@ -9554,8 +10136,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
-              "bytes": 63886,
-              "sha256": "cdd6558ea455d34971150fe35259b6b1a39881411deece296fe01bd4b22642f5"
+              "bytes": 63742,
+              "sha256": "2b0d4884830141127cceda3796333a8e9dd767653b8c12c885d00d507f16ee4c"
             },
             {
               "path": "crates/jocforge-domain/src/state/mod.rs",
@@ -9898,8 +10480,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/selected_spatial_callback_providers.rs",
-              "bytes": 7890,
-              "sha256": "132f61c575823caf61c601c4ed16a7eb50fabe6ce5185be25feeed4a76102047"
+              "bytes": 7953,
+              "sha256": "571aafdcbaa350551daafe8ba15013b9898803a21ca00881f0dddb7cbe486645"
             },
             {
               "path": "crates/jocforge-domain/tests/selected_p11_geometry.rs",
@@ -12591,8 +13173,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/selected_spatial_callback_providers.rs",
-              "bytes": 7890,
-              "sha256": "132f61c575823caf61c601c4ed16a7eb50fabe6ce5185be25feeed4a76102047"
+              "bytes": 7953,
+              "sha256": "571aafdcbaa350551daafe8ba15013b9898803a21ca00881f0dddb7cbe486645"
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
@@ -12601,8 +13183,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077489,
-              "sha256": "6338796dcd8fca021e645d3dc37f1193cf9ea44f764e6db8f43f07ee5ac41c20"
+              "bytes": 2077800,
+              "sha256": "8cc68fbeea069d009867c1f069a760d05fa0e8e6981865e13df3b77517bb99fc"
             }
           ],
           "test_modules": [
@@ -12636,8 +13218,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/selected_spatial_callback_providers.rs",
-              "bytes": 7890,
-              "sha256": "132f61c575823caf61c601c4ed16a7eb50fabe6ce5185be25feeed4a76102047"
+              "bytes": 7953,
+              "sha256": "571aafdcbaa350551daafe8ba15013b9898803a21ca00881f0dddb7cbe486645"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -15358,8 +15940,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35467,
-              "sha256": "f489b2e37dc3147bcf820d6e40da88bc8983b66676a04eab96db6dbd497ab5e1"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -15598,8 +16180,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             }
           ],
           "test_inventory": [
@@ -16085,8 +16667,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/selected_spatial_callback_providers.rs",
-              "bytes": 7890,
-              "sha256": "132f61c575823caf61c601c4ed16a7eb50fabe6ce5185be25feeed4a76102047"
+              "bytes": 7953,
+              "sha256": "571aafdcbaa350551daafe8ba15013b9898803a21ca00881f0dddb7cbe486645"
             }
           ]
         },
@@ -16123,13 +16705,13 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077489,
-              "sha256": "6338796dcd8fca021e645d3dc37f1193cf9ea44f764e6db8f43f07ee5ac41c20"
+              "bytes": 2077800,
+              "sha256": "8cc68fbeea069d009867c1f069a760d05fa0e8e6981865e13df3b77517bb99fc"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -16369,13 +16951,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 11341,
-              "sha256": "1174097438dedc0961e3a984bf92417b64189968478d577afeb4788575d2e72a"
+              "bytes": 11329,
+              "sha256": "e6061a697af26c788145a20a201e038bd3644657c377c4004ef6199c844743ce"
             },
             {
               "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -16597,8 +17179,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/selected_spatial_callback_providers.rs",
-              "bytes": 7890,
-              "sha256": "132f61c575823caf61c601c4ed16a7eb50fabe6ce5185be25feeed4a76102047"
+              "bytes": 7953,
+              "sha256": "571aafdcbaa350551daafe8ba15013b9898803a21ca00881f0dddb7cbe486645"
             },
             {
               "path": "crates/jocforge-domain/src/meter/object_renderer.rs",
@@ -16848,13 +17430,13 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 11341,
-              "sha256": "1174097438dedc0961e3a984bf92417b64189968478d577afeb4788575d2e72a"
+              "bytes": 11329,
+              "sha256": "e6061a697af26c788145a20a201e038bd3644657c377c4004ef6199c844743ce"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35467,
-              "sha256": "f489b2e37dc3147bcf820d6e40da88bc8983b66676a04eab96db6dbd497ab5e1"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             }
           ],
           "test_modules": [
@@ -16863,8 +17445,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/selected_spatial_callback_providers.rs",
-              "bytes": 7890,
-              "sha256": "132f61c575823caf61c601c4ed16a7eb50fabe6ce5185be25feeed4a76102047"
+              "bytes": 7953,
+              "sha256": "571aafdcbaa350551daafe8ba15013b9898803a21ca00881f0dddb7cbe486645"
             }
           ],
           "clock": {
@@ -18223,13 +18805,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 11341,
-              "sha256": "1174097438dedc0961e3a984bf92417b64189968478d577afeb4788575d2e72a"
+              "bytes": 11329,
+              "sha256": "e6061a697af26c788145a20a201e038bd3644657c377c4004ef6199c844743ce"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
@@ -19852,13 +20434,13 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35467,
-              "sha256": "f489b2e37dc3147bcf820d6e40da88bc8983b66676a04eab96db6dbd497ab5e1"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-domain/src/meter/mod.rs",
@@ -19909,8 +20491,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
-              "bytes": 21575,
-              "sha256": "a5fd2e01b81932cebeb3f9085def3facae73c62fe134c183081c5ac08ca61cbb"
+              "bytes": 21636,
+              "sha256": "dd4d68ee2f3f5ad2d5999e520deb0e90f0293230bd093214ef6b7cdd964d3ac6"
             },
             {
               "path": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
@@ -20647,8 +21229,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35467,
-              "sha256": "f489b2e37dc3147bcf820d6e40da88bc8983b66676a04eab96db6dbd497ab5e1"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             },
             {
               "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
@@ -20684,25 +21266,25 @@
           "historical_implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 34872,
-              "sha256": "0d04ca10195b082df9e84862da7620a12056b4457c24a39c40b2871d2001700c"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             },
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
-              "bytes": 21575,
-              "sha256": "06c4c017a46660d9673a33f1ed08256342a93de06b3351a7a6dc6589980a22be"
+              "bytes": 21636,
+              "sha256": "dd4d68ee2f3f5ad2d5999e520deb0e90f0293230bd093214ef6b7cdd964d3ac6"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35467,
-              "sha256": "f489b2e37dc3147bcf820d6e40da88bc8983b66676a04eab96db6dbd497ab5e1"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             },
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
-              "bytes": 21575,
-              "sha256": "a5fd2e01b81932cebeb3f9085def3facae73c62fe134c183081c5ac08ca61cbb"
+              "bytes": 21636,
+              "sha256": "dd4d68ee2f3f5ad2d5999e520deb0e90f0293230bd093214ef6b7cdd964d3ac6"
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
@@ -20790,8 +21372,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
@@ -20805,13 +21387,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
-              "bytes": 161933,
-              "sha256": "7e9e6d6fa9a688ce74e6dfd56885d4b09d38e67f92d4bc25b84dfad521d6d831"
+              "bytes": 161897,
+              "sha256": "85fb66bc451dff99a6567024dc92eefec9f56bd297c96dfaac84e09e60c2b695"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
-              "bytes": 32054,
-              "sha256": "2ba6ab1fb062a17c648d792d794d0644d0b1165159b21c2263b95d4b86cb1b3b"
+              "bytes": 32010,
+              "sha256": "2e0365132938ac4836d97feac3e07cd824c5f452ab806432c50087c10a9a4767"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/state.rs",
@@ -20830,8 +21412,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
-              "bytes": 46041,
-              "sha256": "c68b76c38a0b54df25556c1a0a714efa1b05884a5f37f42501f536b9158b59a1"
+              "bytes": 46010,
+              "sha256": "8c2a9c1f1aecf28b68e720e74f22c0aeb9892153bacaa3e53e149aa4021658af"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/production_callback.rs",
@@ -20845,8 +21427,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
-              "bytes": 63886,
-              "sha256": "cdd6558ea455d34971150fe35259b6b1a39881411deece296fe01bd4b22642f5"
+              "bytes": 63742,
+              "sha256": "2b0d4884830141127cceda3796333a8e9dd767653b8c12c885d00d507f16ee4c"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
@@ -20890,8 +21472,8 @@
             },
             {
               "path": "crates/jocforge-io/examples/meter_input_probe.rs",
-              "bytes": 29568,
-              "sha256": "789e2d7a6bbe1a77b6aa414dca693d874d3b25d1a919b181bc15cd1038ef5a3a"
+              "bytes": 29537,
+              "sha256": "e63f74801a4f74b51bf9f2befe5e7d1add4b2492ec584a7ed1f5d796a538025b"
             }
           ],
           "test_modules": [
@@ -30784,13 +31366,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 25279,
-              "sha256": "d424bca17132d77f65f45ac0ae48c8790099633d82898caf0dba85be626b3d02"
+              "bytes": 25252,
+              "sha256": "6affa5de48a2cde9ddcb73a1f7c86171fdefc40911a2df444acc945c368de914"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -30826,8 +31408,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 25279,
-              "sha256": "d424bca17132d77f65f45ac0ae48c8790099633d82898caf0dba85be626b3d02"
+              "bytes": 25252,
+              "sha256": "6affa5de48a2cde9ddcb73a1f7c86171fdefc40911a2df444acc945c368de914"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
@@ -36557,8 +37139,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
@@ -36602,8 +37184,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 41646,
-              "sha256": "8373abc591ff251b9dbbf59441b48174290a285630e572b9534fb500d6aa467d"
+              "bytes": 52066,
+              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -36614,8 +37196,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 25279,
-              "sha256": "d424bca17132d77f65f45ac0ae48c8790099633d82898caf0dba85be626b3d02"
+              "bytes": 25252,
+              "sha256": "6affa5de48a2cde9ddcb73a1f7c86171fdefc40911a2df444acc945c368de914"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -38449,13 +39031,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 47459,
-              "sha256": "7bfd56d9b1ea8e621d10e6e6a6bef838f125b7eb82d1308f1fcc95361de5dc6c"
+              "bytes": 59573,
+              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
-              "bytes": 32054,
-              "sha256": "2ba6ab1fb062a17c648d792d794d0644d0b1165159b21c2263b95d4b86cb1b3b"
+              "bytes": 32010,
+              "sha256": "2e0365132938ac4836d97feac3e07cd824c5f452ab806432c50087c10a9a4767"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
@@ -38509,8 +39091,8 @@
             },
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
-              "bytes": 25279,
-              "sha256": "d424bca17132d77f65f45ac0ae48c8790099633d82898caf0dba85be626b3d02"
+              "bytes": 25252,
+              "sha256": "6affa5de48a2cde9ddcb73a1f7c86171fdefc40911a2df444acc945c368de914"
             },
             {
               "path": "crates/jocforge-application/src/independent_meter_callback.rs",
@@ -38519,13 +39101,13 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
-              "bytes": 11341,
-              "sha256": "1174097438dedc0961e3a984bf92417b64189968478d577afeb4788575d2e72a"
+              "bytes": 11329,
+              "sha256": "e6061a697af26c788145a20a201e038bd3644657c377c4004ef6199c844743ce"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35467,
-              "sha256": "f489b2e37dc3147bcf820d6e40da88bc8983b66676a04eab96db6dbd497ab5e1"
+              "bytes": 35455,
+              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
             },
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
@@ -38579,13 +39161,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 41646,
-              "sha256": "8373abc591ff251b9dbbf59441b48174290a285630e572b9534fb500d6aa467d"
+              "bytes": 52066,
+              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
-              "bytes": 2294,
-              "sha256": "6b57ff74f40e1fa5ce17eaea4ebf8edee3461ded6bee2bd980317052f6f77bab"
+              "bytes": 3753,
+              "sha256": "1a50ff33e398824b93fa4481c63286a92ad7211ce52c26d6a3bd1230c629bc69"
             },
             {
               "path": "crates/jocforge-cli/src/meter_prepass.rs",
@@ -38686,8 +39268,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 41646,
-              "sha256": "8373abc591ff251b9dbbf59441b48174290a285630e572b9534fb500d6aa467d"
+              "bytes": 52066,
+              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
             },
             {
               "path": "crates/jocforge-io/src/provider/spatial_audio.rs",
@@ -42976,8 +43558,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
@@ -47718,8 +48300,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077489,
-              "sha256": "6338796dcd8fca021e645d3dc37f1193cf9ea44f764e6db8f43f07ee5ac41c20"
+              "bytes": 2077800,
+              "sha256": "8cc68fbeea069d009867c1f069a760d05fa0e8e6981865e13df3b77517bb99fc"
             }
           ],
           "test_inventory": [
@@ -48452,8 +49034,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39140,
-              "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+              "bytes": 39236,
+              "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
@@ -48492,8 +49074,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 41646,
-              "sha256": "8373abc591ff251b9dbbf59441b48174290a285630e572b9534fb500d6aa467d"
+              "bytes": 52066,
+              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -51385,8 +51967,8 @@
         },
         {
           "path": "crates/jocforge-application/src/lib.rs",
-          "bytes": 39140,
-          "sha256": "040c45a53ce714431d7e318e0a65f271867df8ff93ea36a778c811d2228b9484"
+          "bytes": 39236,
+          "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
@@ -51430,8 +52012,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/encode_request.rs",
-          "bytes": 41646,
-          "sha256": "8373abc591ff251b9dbbf59441b48174290a285630e572b9534fb500d6aa467d"
+          "bytes": 52066,
+          "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
         },
         {
           "path": "crates/jocforge-cli/src/lib.rs",
@@ -64014,6 +64596,84 @@
         "time_base producer/callsite and typed field join.",
         "U/K/ADM owner-generation and source_record_count.",
         "Parser or audio behavior."
+      ]
+    },
+    {
+      "package_id": "DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1",
+      "manifest_sha256": "854fcdd8275d7575d1e0888f9f811930da82d60ef19bc827363cc8ed28d4f7a0",
+      "supplement_seal_sha256": "d0c6b9996f6a0f29516872191f7ba163de5d12378bc12be13ff9ec19b9744e41",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "LINE_STATIC_MAP_CONDITIONAL; XML_ACTIVATION_UNBOUND; RF_RUNTIME_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "XML delivery to selected plugin, mode-1 selection, and serializer activation.",
+        "Decoded PCM/audio effect.",
+        "RF runtime value, typed owner, BSI mapping, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-CUSTOM-TRIM-XML-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-XML-BOUNDARY-V1",
+      "manifest_sha256": "f343a73687f8f3870655d9668bd5b94d05f79cf759e2a384f06320dc07ff59de",
+      "supplement_seal_sha256": "cf612a1344971fe8608181e3d8787584508f552cb471f692d1a50dff6d2c932b",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "TRIM_ENUM_AND_DEFAULT_BOUND; XML_TRANSFER_AND_AUDIO_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "XML token transfer and omitted-field materialization.",
+        "Numeric mapping, units, BSI write, decoded PCM effect, and audible effect."
+      ]
+    },
+    {
+      "package_id": "DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1",
+      "manifest_sha256": "3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37",
+      "supplement_seal_sha256": "9d9657f7a0cbfddee54982588cdc957c82c483952395f47ec6ad97b6a8c0a576",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "TIME_CONTROL_STATIC_PARTIAL; XML_TO_READER_AND_SEEK_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Runtime values, Reader seek/sample position, and audio effect.",
+        "Typed XML owner/generation joins for start/end and offset/ffoa."
+      ]
+    },
+    {
+      "package_id": "DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2",
+      "manifest_sha256": "d2e31f4b10565c8d21c008c80f90fee7030f1607160144c3fad9d202482126d6",
+      "supplement_seal_sha256": "42f75a5b0ba8be2498d24042d9deb6eb4cd007d66b0a8b43ba0ef2ace9fafc38",
+      "functional_ids": [
+        "F01E",
+        "F06"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_MODE_MAP_AND_PROCESSING_CALLER_BOUND; XML_OWNER_JOIN_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "XML StringType owner/generation join to selected provider.",
+        "Runtime metering mode, Meter/audio effect, and selected output."
       ]
     }
   ]

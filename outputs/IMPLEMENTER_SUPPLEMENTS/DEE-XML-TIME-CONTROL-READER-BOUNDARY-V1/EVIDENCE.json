@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.wash-implementation-supplement.v1",
+  "package_id": "DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "implementation_ready": false,
+  "status": "INPUT_TIME_FIELDS_STATIC_PARTIAL; XML_TO_OWNER_AND_READER_SEEK_UNBOUND; RUNTIME_NOT_RUN",
+  "start_end": {
+    "xml_paths": [
+      "/job_config/filter/audio/encode_to_atmos_ddp/start",
+      "/job_config/filter/audio/encode_to_atmos_ddp/end"
+    ],
+    "xsd_type": "xs:string",
+    "optional": true,
+    "schema_defaults": {"start":"first_frame_of_action","end":"end_of_file"},
+    "source_document_input_only_values": {"start":"86640","end":"86664"},
+    "xml_to_host_key_value": "UNBOUND",
+    "xml_to_typed_range_owner": "UNBOUND",
+    "range_record_to_reader_edge": "BOUND_STATICALLY_FOR_A_SEPARATE_FILE_POSITION/EMBEDDED_TIMECODE_BRANCH; NOT_JOINED_TO_START_END",
+    "reader_cursor_total_join": "UNBOUND",
+    "runtime_sample_position": "NOT_CAPTURED"
+  },
+  "input_offset_ffoa": {
+    "xml_paths": [
+      "/job_config/input/audio/adm/offset",
+      "/job_config/input/audio/adm/ffoa"
+    ],
+    "xsd_type": "xs:string",
+    "optional": true,
+    "schema_defaults": {"offset":"auto","ffoa":"auto"},
+    "source_document_input_only_values": {"offset":"auto","ffoa":"auto"},
+    "selected_host_edge": {
+      "function": "FUN_1400f09d0 (dee::input::AtmosMezz::Run)",
+      "callee": "FUN_14012ff20",
+      "callsite_rva": "0xf10da",
+      "R8": "AtmosMezz input field +0x148; consumed as ffoa policy",
+      "R9": "AtmosMezz input field +0x168; consumed as offset policy",
+      "destination": "host-local property list / AtmosMezz+0x130"
+    },
+    "xml_to_policy_owner": "UNBOUND",
+    "host_response_to_converter_context": "UNBOUND",
+    "separate_converter_consumer": "FUN_18007fba0 reads offset and first_frame_of_action from PrivContext+0xa8",
+    "reader_seek_or_sample_effect": "UNBOUND/NOT_CAPTURED"
+  },
+  "domains_remain_distinct": true,
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "reader_seek": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "native_source_or_decompilation_included": false
+  }
+}

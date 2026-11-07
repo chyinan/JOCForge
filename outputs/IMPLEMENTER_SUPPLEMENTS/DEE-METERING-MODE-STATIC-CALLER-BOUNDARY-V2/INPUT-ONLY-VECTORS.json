@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-input-only-vectors.v1",
+  "package_id": "DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2",
+  "status": "INPUTS_ONLY; NO_DERIVED_OUTPUTS; NOT_OBSERVED",
+  "vectors": [
+    {"id":"schema_default","metering_mode":"1770-4","runtime_binding":"UNBOUND","effect":"NOT_ASSERTED"},
+    {"id":"nondefault_candidate","metering_mode":"1770-3","runtime_binding":"UNBOUND","effect":"NOT_ASSERTED"}
+  ],
+  "warning": "Candidate DLL-local U32 map values are not runtime acceptance or metering outputs."
+}

@@ -69,6 +69,12 @@ impl SelectedInputKind {
             Self::AtmosMezz => "atmos_mezz",
         }
     }
+
+    /// Both authored XML branches reference an ADM BWF consumed by the same RIFF reader.
+    /// The enum value remains distinct in normalized configuration identity.
+    pub const fn is_adm_bwf(self) -> bool {
+        matches!(self, Self::Adm | Self::AtmosMezz)
+    }
 }
 
 /// One explicit XML-selected DRC profile name.
@@ -200,6 +206,30 @@ impl SelectedFileReference {
 
     pub fn local_path(&self) -> &str {
         &self.local_path
+    }
+}
+
+/// File references extracted from one structurally supported external job XML.
+///
+/// Functional Core: this value contains authored references only; it performs no file I/O.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SelectedJobFileReferences {
+    input_kind: SelectedInputKind,
+    input_reference: SelectedFileReference,
+    output_reference: SelectedFileReference,
+}
+
+impl SelectedJobFileReferences {
+    pub const fn input_kind(&self) -> SelectedInputKind {
+        self.input_kind
+    }
+
+    pub fn input_reference(&self) -> &SelectedFileReference {
+        &self.input_reference
+    }
+
+    pub fn output_reference(&self) -> &SelectedFileReference {
+        &self.output_reference
     }
 }
 
@@ -515,6 +545,49 @@ pub enum JobConfigurationError {
     UnsupportedFieldValue,
     UnsupportedProfile,
 }
+
+/// Rejection from the strict external-XML reference boundary.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum JobXmlIngressError {
+    Configuration(JobConfigurationError),
+    UnsupportedElement(String),
+    UnsupportedAttribute {
+        path: String,
+        name: String,
+        value: String,
+    },
+    UnsupportedOutputContainer(String),
+    UnsupportedContainerText(String),
+    AmbiguousInputBranches,
+}
+
+impl std::fmt::Display for JobXmlIngressError {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Configuration(error) => {
+                write!(formatter, "job XML rejected ({})", error.code())
+            }
+            Self::UnsupportedElement(path) => {
+                write!(formatter, "unsupported or unconsumed job XML element: {path}")
+            }
+            Self::UnsupportedAttribute { path, name, value } => {
+                write!(formatter, "unsupported job XML attribute: {path}/@{name}={value}")
+            }
+            Self::UnsupportedOutputContainer(path) => write!(
+                formatter,
+                "unsupported output container at {path}; this CLI writer accepts only /job_config/output/ec3"
+            ),
+            Self::UnsupportedContainerText(path) => {
+                write!(formatter, "unexpected text content in job XML container: {path}")
+            }
+            Self::AmbiguousInputBranches => formatter.write_str(
+                "job XML must select exactly one input branch: /job_config/input/audio/adm or /job_config/input/audio/atmos_mezz",
+            ),
+        }
+    }
+}
+
+impl std::error::Error for JobXmlIngressError {}
 
 impl JobConfigurationError {
     pub const fn code(self) -> &'static str {
@@ -848,7 +921,7 @@ pub fn bind_admitted_selected_input(
         .checked_mul(u64::from(wave.channels()) * u64::from(wave.pcm_bits()) / 8)
         .ok_or(PrimaryControlBindingError::SourceExtent)?;
     if configuration.selected_profile() != selected_profile
-        || configuration.input_kind() != SelectedInputKind::Adm
+        || !configuration.input_kind().is_adm_bwf()
     {
         return Err(PrimaryControlBindingError::SelectedJobMismatch);
     }
@@ -865,7 +938,7 @@ pub fn bind_admitted_selected_input(
     }
     Ok(SelectedPrimaryControlBinding {
         selected_profile,
-        input_kind: SelectedInputKind::Adm,
+        input_kind: configuration.input_kind(),
         source_file_name: configuration.input_reference().file_name().to_owned(),
         source_file_bytes: identity.source_file_bytes,
         data_bytes: identity.data_bytes,
@@ -1159,6 +1232,205 @@ pub fn parse_selected_job_configuration(
         append_silence_samples,
         append_silence_duration_explicit,
     })
+}
+
+/// Extracts file references from the XML surface admitted by the current CLI ingress.
+///
+/// This strict reference pass rejects unknown nodes and attributes before the CLI opens the
+/// referenced media. It does not validate WAVE metadata or create a prepared job input; callers
+/// must still pass the original bytes to `parse_selected_job_configuration` after reading the WAVE.
+pub fn parse_selected_job_file_references(
+    xml_utf8: &[u8],
+) -> Result<SelectedJobFileReferences, JobXmlIngressError> {
+    let xml = std::str::from_utf8(xml_utf8)
+        .map_err(|_| JobXmlIngressError::Configuration(JobConfigurationError::InvalidUtf8))?;
+    if contains_forbidden_declaration(xml.as_bytes()) {
+        return Err(JobXmlIngressError::Configuration(
+            JobConfigurationError::ForbiddenXmlDeclaration,
+        ));
+    }
+    let document = Document::parse(xml)
+        .map_err(|_| JobXmlIngressError::Configuration(JobConfigurationError::XmlSyntax))?;
+    let root = document.root_element();
+    if root.tag_name().name() != "job_config" || root.tag_name().namespace().is_some() {
+        return Err(JobXmlIngressError::Configuration(
+            JobConfigurationError::RootElement,
+        ));
+    }
+    validate_external_job_xml_node(root, "/job_config")?;
+
+    let input_root = path_node(root, &["input", "audio"])
+        .map_err(JobXmlIngressError::Configuration)?
+        .ok_or(JobXmlIngressError::Configuration(
+            JobConfigurationError::MissingField,
+        ))?;
+    let adm = single_child(input_root, "adm").map_err(JobXmlIngressError::Configuration)?;
+    let atmos_mezz =
+        single_child(input_root, "atmos_mezz").map_err(JobXmlIngressError::Configuration)?;
+    let (input_kind, input_node) = match (adm, atmos_mezz) {
+        (Some(adm), None) => (SelectedInputKind::Adm, adm),
+        (None, Some(atmos_mezz)) => (SelectedInputKind::AtmosMezz, atmos_mezz),
+        (Some(_), Some(_)) | (None, None) => {
+            return Err(JobXmlIngressError::AmbiguousInputBranches);
+        }
+    };
+    let input_reference =
+        parse_file_reference(input_node, JobConfigurationError::InvalidInputReference)
+            .map_err(JobXmlIngressError::Configuration)?;
+
+    let output_node = path_node(root, &["output", "ec3"])
+        .map_err(JobXmlIngressError::Configuration)?
+        .ok_or(JobXmlIngressError::Configuration(
+            JobConfigurationError::MissingField,
+        ))?;
+    let output_reference =
+        parse_file_reference(output_node, JobConfigurationError::InvalidOutputReference)
+            .map_err(JobXmlIngressError::Configuration)?;
+    if output_reference.file_name.is_empty() || output_reference.local_path.is_empty() {
+        return Err(JobXmlIngressError::Configuration(
+            JobConfigurationError::InvalidOutputReference,
+        ));
+    }
+
+    Ok(SelectedJobFileReferences {
+        input_kind,
+        input_reference,
+        output_reference,
+    })
+}
+
+fn validate_external_job_xml_node(
+    node: Node<'_, '_>,
+    path: &str,
+) -> Result<(), JobXmlIngressError> {
+    if matches!(path, "/job_config/output/mp4" | "/job_config/output/dash") {
+        return Err(JobXmlIngressError::UnsupportedOutputContainer(
+            path.to_owned(),
+        ));
+    }
+    if node.tag_name().namespace().is_some() || !external_job_xml_element_is_supported(path) {
+        return Err(JobXmlIngressError::UnsupportedElement(path.to_owned()));
+    }
+    for attribute in node.attributes() {
+        let allowed_version = attribute.namespace().is_none()
+            && attribute.name() == "version"
+            && attribute.value() == "1"
+            && matches!(
+                path,
+                "/job_config/input/audio/adm"
+                    | "/job_config/input/audio/atmos_mezz"
+                    | "/job_config/filter/audio/encode_to_atmos_ddp"
+                    | "/job_config/output/ec3"
+            );
+        if !allowed_version {
+            return Err(JobXmlIngressError::UnsupportedAttribute {
+                path: path.to_owned(),
+                name: attribute.name().to_owned(),
+                value: attribute.value().to_owned(),
+            });
+        }
+    }
+
+    let is_container = external_job_xml_container_is_supported(path);
+    for child in node.children() {
+        if child.is_element() {
+            let child_path = format!("{path}/{}", child.tag_name().name());
+            validate_external_job_xml_node(child, &child_path)?;
+        } else if child.is_text()
+            && is_container
+            && child.text().is_some_and(|text| !text.trim().is_empty())
+        {
+            return Err(JobXmlIngressError::UnsupportedContainerText(
+                path.to_owned(),
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn external_job_xml_element_is_supported(path: &str) -> bool {
+    matches!(
+        path,
+        "/job_config"
+            | "/job_config/input"
+            | "/job_config/input/audio"
+            | "/job_config/input/audio/adm"
+            | "/job_config/input/audio/adm/file_name"
+            | "/job_config/input/audio/adm/storage"
+            | "/job_config/input/audio/adm/storage/local"
+            | "/job_config/input/audio/adm/storage/local/path"
+            | "/job_config/input/audio/adm/timecode_frame_rate"
+            | "/job_config/input/audio/adm/offset"
+            | "/job_config/input/audio/adm/ffoa"
+            | "/job_config/input/audio/atmos_mezz"
+            | "/job_config/input/audio/atmos_mezz/file_name"
+            | "/job_config/input/audio/atmos_mezz/storage"
+            | "/job_config/input/audio/atmos_mezz/storage/local"
+            | "/job_config/input/audio/atmos_mezz/storage/local/path"
+            | "/job_config/input/audio/atmos_mezz/timecode_frame_rate"
+            | "/job_config/input/audio/atmos_mezz/offset"
+            | "/job_config/input/audio/atmos_mezz/ffoa"
+            | "/job_config/filter"
+            | "/job_config/filter/audio"
+            | "/job_config/filter/audio/encode_to_atmos_ddp"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/loudness"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only/metering_mode"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only/dialogue_intelligence"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only/speech_threshold"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/data_rate"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/timecode_frame_rate"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/start"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/end"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/time_base"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/prepend_silence_duration"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/append_silence_duration"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/drc"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/drc/line_mode_drc_profile"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/drc/rf_mode_drc_profile"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/downmix"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/downmix/loro_center_mix_level"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/downmix/loro_surround_mix_level"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/downmix/ltrt_center_mix_level"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/downmix/ltrt_surround_mix_level"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/downmix/preferred_downmix_mode"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/custom_trims"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/custom_trims/surround_trim_5_1"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/custom_trims/height_trim_5_1"
+            | "/job_config/output"
+            | "/job_config/output/ec3"
+            | "/job_config/output/ec3/file_name"
+            | "/job_config/output/ec3/storage"
+            | "/job_config/output/ec3/storage/local"
+            | "/job_config/output/ec3/storage/local/path"
+    )
+}
+
+fn external_job_xml_container_is_supported(path: &str) -> bool {
+    matches!(
+        path,
+        "/job_config"
+            | "/job_config/input"
+            | "/job_config/input/audio"
+            | "/job_config/input/audio/adm"
+            | "/job_config/input/audio/adm/storage"
+            | "/job_config/input/audio/adm/storage/local"
+            | "/job_config/input/audio/atmos_mezz"
+            | "/job_config/input/audio/atmos_mezz/storage"
+            | "/job_config/input/audio/atmos_mezz/storage/local"
+            | "/job_config/filter"
+            | "/job_config/filter/audio"
+            | "/job_config/filter/audio/encode_to_atmos_ddp"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/loudness"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/drc"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/downmix"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/custom_trims"
+            | "/job_config/output"
+            | "/job_config/output/ec3"
+            | "/job_config/output/ec3/storage"
+            | "/job_config/output/ec3/storage/local"
+    )
 }
 
 fn contains_forbidden_declaration(xml_bytes: &[u8]) -> bool {

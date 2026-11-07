@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1",
+  "manifest_sha256": "3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "TIME_CONTROL_XML_TO_READER_UNBOUND; REFERENCE_ONLY; IMPLEMENTATION_READY=NO"
+}

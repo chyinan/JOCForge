@@ -522,7 +522,7 @@ impl NormalControlAdmInputSnapshot {
         {
             return Err(NormalControlSnapshotError::ColdStateRequired);
         }
-        if source_identity.input_kind != SelectedInputKind::Adm
+        if !source_identity.input_kind.is_adm_bwf()
             || source_identity.source_samples == 0
             || wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
             || wave.pcm_bits() != SELECTED_PCM_BITS as u16
@@ -552,7 +552,7 @@ impl NormalControlAdmInputSnapshot {
             || normalized_identity.config_sha256() != source_identity.job_projection_sha256
             || normalized_identity.job_xml_sha256()
                 != source_identity.original_job_sha256_declaration
-            || normalized_identity.selected_input_kind() != SelectedInputKind::Adm
+            || !normalized_identity.selected_input_kind().is_adm_bwf()
             || graph_provenance.parent_resource() != resource_identity
             || graph_provenance.axml().payload_sha256() != *graph_receipt.axml_sha256()
             || graph_provenance.chna().payload_sha256() != *graph_receipt.chna_sha256()
@@ -3414,7 +3414,7 @@ fn validate_selected_profile(
     profile: &NormalControlProfileIdentity,
     source: &NormalControlSourceIdentity,
 ) -> Result<(), NormalControlSnapshotError> {
-    if source.input_kind != SelectedInputKind::Adm
+    if !source.input_kind.is_adm_bwf()
         || source.wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
         || u32::from(source.wave.channels()) != SELECTED_CHANNELS
         || u32::from(source.wave.pcm_bits()) != SELECTED_PCM_BITS

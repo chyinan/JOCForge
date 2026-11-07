@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.wash-source-bindings.v1",
+  "package_id": "DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1",
+  "target_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "research_index_sha256": "9a2f67e8304598fc38bae6b172d510db006f9755144220c2ee2ff150467e8d12",
+  "sources": [
+    {"package_id":"line_mode_xml_drc_profile_minimal_path_wash_v1","manifest_sha256":"92b374ee79f385d8750f27bc55f80c04468a573c12d5096c9bd660200d608531","seal_sha256":"8b2adfe2573aa3228bd4d3c318c069ea145d73c1c698bea5ff61e570cb132a4f"},
+    {"package_id":"rf_mode_drc_profile_value_origin_boundary_wash_v1","manifest_sha256":"f051aca52b7ce38683d17a77d85fdfea989fada31bbf0f96c31462745e5bc573","seal_sha256":"67c6a901ebecd77a6739a3010cafb1d9acd190b858c9906fe2e65b85002c61f8"},
+    {"package_id":"rf_mode_drc_profile_runtime_value_writer_boundary_wash_v1","manifest_sha256":"7a825c825666aac6cc1682e8f14413872b5deb9e7858c72f3271dcf05ab2b420","seal_sha256":"06cfb5614105cf94ca45e89cffec1896ee7a296ff7ead367f4a83c6d033f1cfc"},
+    {"package_id":"rf_mode_drc_profile_stringtype_perframe_boundary_wash_v1","manifest_sha256":"8bd39b86614ed883a57379434645e873e84d5fcd0a1f2be56c97fdcd7f542d68","seal_sha256":"622b3344941aa6ddb5c396a2af8c46202a0c9278f7c99874b42e6e0e642dd5cf"},
+    {"package_id":"rf_mode_drc_profile_perframe_receiver_owner_boundary_wash_v1","manifest_sha256":"19a6ca3a58e4fcc1789d2240a79986b1bd99bf849f113f61c53b48103fcdcb3f","seal_sha256":"737a8092e226f71d69a29222d151d2f81463af4f2f866b4be980fe329f60b0c8"},
+    {"package_id":"rf_mode_drc_profile_code_field_consumer_wash_v1","manifest_sha256":"07eb62326209dca60e83cbc5e66841060e4878a39f3a39a0fe1897d0f7a23f85","seal_sha256":"2654690fb8bbee4b5d985174f1870fdae99315ffae590930fbb527067e8ea855"}
+  ],
+  "excluded": ["native source/decompilation", "PCM", "encoded payload", "private key", "license"]
+}

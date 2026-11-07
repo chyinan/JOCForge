@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-METERING-MODE-STATIC-CALLER-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_MODE_MAP_AND_PROCESSING_CALLER_BOUND; XML_OWNER_JOIN_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1564,
+      "sha256": "7c01248e566826e2e60353670e2a17e4231535aa22a7df9acd3280f24d74422c"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1711,
+      "sha256": "9c3dc41fa5f44f12d594c9adeadcd3a9e98cc4e7a97b1e93ce969cbace6392ce"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 514,
+      "sha256": "8c13f79d6d115989e1790e2f311b1b2f7d52f8e54136872f6b48d26330eee6e6"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1206,
+      "sha256": "6138d9f7dfbb5c98f4ecf6d2daf1e8e071a259498f9ae2aa99847222177d70d8"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 2291,
+      "sha256": "e9e5a6d73f319594b965811b1bb505164cc898f7231b93984affa8e42419bc30"
+    }
+  ]
+}

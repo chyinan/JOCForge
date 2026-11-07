@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.wash-implementation-supplement.v1",
+  "package_id": "DEE-CUSTOM-TRIM-XML-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "implementation_ready": false,
+  "status": "TRIM_ENUM_AND_CONSTRUCTOR_DEFAULT_BOUND; XML_TRANSFER_AND_EFFECT_UNBOUND; RUNTIME_NOT_RUN",
+  "fields": [
+    {
+      "xml_path": "filter/audio/encode_to_atmos_ddp/custom_trims/surround_trim_5_1",
+      "declared_choices": ["auto", "0", "-3", "-6", "-9"],
+      "type": "StringType",
+      "typed_member": "FUN_180136220 param_1+0x968",
+      "constructor_default": "auto",
+      "xml_omission_materialization": "UNBOUND",
+      "runtime_token_assignment": "UNBOUND",
+      "numeric_mapping_or_unit": "UNBOUND",
+      "consumer_candidate": {
+        "function": "FUN_1800b5c60",
+        "operation": "U16 read from [RDI+0x968], store to [RCX+0x240]",
+        "receiver_owner": "UNBOUND",
+        "typed_string_member_join": "UNBOUND",
+        "selected_first_consumer": false
+      },
+      "audio_effect": "UNBOUND/NOT_RUN",
+      "bsi_effect": "UNBOUND/NOT_RUN"
+    },
+    {
+      "xml_path": "filter/audio/encode_to_atmos_ddp/custom_trims/height_trim_5_1",
+      "declared_choices": ["auto", "-3", "-6", "-9", "-12"],
+      "type": "StringType",
+      "typed_member": "FUN_180136220 param_1+0x9e8",
+      "constructor_default": "auto",
+      "xml_omission_materialization": "UNBOUND",
+      "runtime_token_assignment": "UNBOUND",
+      "numeric_mapping_or_unit": "UNBOUND",
+      "scoped_member_use": "FUN_18013aad0 passes member+0x9e8 to FUN_18013adb0 cleanup; not a token value reader",
+      "global_absence_claim": false,
+      "audio_effect": "UNBOUND/NOT_RUN",
+      "bsi_effect": "UNBOUND/NOT_RUN"
+    }
+  ],
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "runtime_capture": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "native_source_or_decompilation_included": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TIME_CONTROL_XML_TO_READER_UNBOUND; REFERENCE_ONLY; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1489,
+      "sha256": "a7ee713f6dc8a34da9800f4ce9f73ecaee4cfbc662d33242976b993c2be868e5"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2186,
+      "sha256": "23c1e2eb7cd471747cf443b035bc74e6b21b7a01397ba0b4dc615a0bae12f3c5"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 844,
+      "sha256": "b6b0d11f0a63d57b2144eb33da3350dfbcf363dabf592c2f737e34fb8e61f675"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1386,
+      "sha256": "e0ce7640a94498d15d2a4b85bb21fd4dc584c4396fe6d01f5b6fb5a2f2fc7bee"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 2409,
+      "sha256": "73a75412efd7d18ced9ca2f7336c57388de6cc1e3d00c34aa217fd5b648b5b47"
+    }
+  ]
+}

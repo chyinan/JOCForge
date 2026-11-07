@@ -7,8 +7,8 @@ use jocforge_domain::{
         PackageManifestEvidence, ProviderFileEvidence,
         dbmd_sections::parse_selected_dbmd_sections,
         job_configuration::{
-            PrimaryMetadataChunkHashes, SelectedInputKind, SelectedPrimaryRuntimeIdentity,
-            SelectedWaveDescriptor, bind_admitted_selected_input,
+            PrimaryMetadataChunkHashes, SelectedPrimaryRuntimeIdentity, SelectedWaveDescriptor,
+            bind_admitted_selected_input,
         },
         primary_metadata_control::{PrimaryControl38Fields, produce_primary_metadata_control_rows},
         selected_adm_graph::parse_selected_adm_graph,
@@ -117,7 +117,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         SelectedAdmResourcePayloads::new(axml, chna, dbmd_payload),
     )
     .map_err(|error| io::Error::other(format!("selected F01E input admission failed: {error}")))?;
-    if prepared.configuration().input_kind() != SelectedInputKind::Adm
+    if !prepared.configuration().input_kind().is_adm_bwf()
         || prepared.resource().as_ptr() != resource.as_ptr()
         || prepared.resource_identity().input_sha256() != source_identity.sha256()
         || prepared.graph().provenance().parent_resource() != prepared.resource_identity()
