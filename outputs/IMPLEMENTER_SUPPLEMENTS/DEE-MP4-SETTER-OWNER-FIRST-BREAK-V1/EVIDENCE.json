@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.mp4_setter_owner_boundary.v1",
+  "status": "SETTER_FUNCTION_SLOT_BOUND; SLOT_UNTYPED_AND_NO_XREFS; SAME_MP4_OWNER_JOIN_UNBOUND; OUTPUT_NOT_RUN",
+  "source_package": "DEE-ADM-MP4-SETTER-OWNER-JOIN-WASH-V1",
+  "source_manifest_sidecar_sha256": "7cbde1284a6c1ddc57e4e86fd919672b3844be265e1c07e7acf03693f94cb356",
+  "source_image": {"name": "dee.exe", "analysis": "Ghidra 12.2 read-only/no-analysis"},
+  "slot": {"address": "0x1402f2760", "type": "UNDEFINED", "qword": "0x1401496e0", "references_to_slot": "NONE"},
+  "setter_candidate": {"function": "FUN_1401496e0", "label": "dee::output::Mp4::SetProperty", "entry_code_references": 0},
+  "separate_run_path": "Mp4::Run -> Mp4::InitPlugin; same object join not established",
+  "first_break": "untyped function-pointer slot -> typed caller/factory owner -> same Mp4 instance",
+  "unbound": ["slot caller/factory", "setter object to Run/InitPlugin same-instance join", "selected muxer/writer", "runtime output", "container effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

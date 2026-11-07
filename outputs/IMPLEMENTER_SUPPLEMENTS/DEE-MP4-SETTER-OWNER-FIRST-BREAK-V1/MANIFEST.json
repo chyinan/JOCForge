@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SETTER_FUNCTION_SLOT_BOUND; SLOT_UNTYPED_AND_NO_XREFS; SAME_MP4_OWNER_JOIN_UNBOUND; OUTPUT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 750,
+      "sha256": "aad1f21bef7852fb780fb67d1fafb8b9d6385175edd23a5f3c628826c07f36bb"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1333,
+      "sha256": "0f478066fec23ef5eeca5c0f5cd6e3a4a4d9539b1f188033aa7c279e6396e5ca"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 440,
+      "sha256": "44c513ca35169c6aa0809300f6d52c576a4d29db8c4c151febe12b85ef2c97f0"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 134,
+      "sha256": "4e3fdf36de12c2bcdc47902af60e2df3376e5ba5bbe17df26606f116a5ed2bf7"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 793,
+      "sha256": "5065fe6e5c56ae419f426c4a293802ccd5a75a8a2de3f2d6293f59834a3dbe47"
+    }
+  ]
+}

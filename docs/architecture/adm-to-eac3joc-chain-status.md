@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following nineteen packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
+The following twenty packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1408,5 +1408,6 @@ The following nineteen packages were independently hash-checked and passed their
 | DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1 | 3ec5385807a5a080bd93d099ab1ee0562c960200cdddc3889d947b2bd5288b54 / 81762e2c76295df51bed9a26825a9212f2503d9468e71ec7f914f0db31c0ecbe | StageRunner temp path/flag writes and write-mode temp_dir_test probe. | Probe/job-output deletion, clean_temp consumer, provider generation, and cleanup effect. |
 | DEE-METERING-MODE-RAW-U32-MAP-V1 | 3ae0d1afd07106b2cb73962a7dd5a21c5792bc28559c697bb81413bebc51c21c / e14cc01d3ff40be830b1218d2bfec58170669d9ebfed259bd3e34b6474a479cf | Five static raw U32 token map entries. | Semantic mode meaning, XML/provider join, measurement and audio effects. |
 | DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1 | e7018922584b434b1eb9602268ed29ed9dbe4a8dbfd4dc616cab6f782939f102 / 88160c135db4292873a2f5d64f4b74c8fc7a4918697bdcd6d707f9579d391050 | Generic StringType getter copies the value string. | Height-field instance/provider join, units, numeric conversion and audio effect. |
+| DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1 | 4cde83dabf8ec1f47a980fbd2fa5439044fe8d0690fc4a7ab89777176e072706 / 399eea510f3e90e4d3485f64d76e6e74e64feda6a6489507bbd8bab70074c469 | Untyped, unreferenced slot contains the static SetProperty function pointer. | Slot caller, same-Mp4-instance join, muxer/writer, runtime output and container effect. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.
