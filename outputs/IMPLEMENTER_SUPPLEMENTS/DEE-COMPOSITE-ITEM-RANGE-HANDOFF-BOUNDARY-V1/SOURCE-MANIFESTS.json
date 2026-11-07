@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "dee_atmos_ddp_composite_item_start_end_handoff_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_composite_item_start_end_handoff_wash_v1",
+    "manifest_sha256": "12eaa69d7aea54ff71a9585a6d39c00034876d415a1efd9f0dc8a18c364d8064",
+    "package_seal_sha256": "a11aef5a08287f1ac75bb29a577c02f28ce23ddab65a16c70da6c7c19fa943e1",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

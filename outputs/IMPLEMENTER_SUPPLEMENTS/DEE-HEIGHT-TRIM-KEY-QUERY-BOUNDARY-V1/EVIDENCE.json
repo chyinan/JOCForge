@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.height_trim_key_query_boundary.v1",
+  "status": "HEIGHT_KEY_REGISTRATION_BOUND; GENERIC_QUERY_PATH_REUSED; KEY_AND_RETURN_OWNER_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "custom_trim_height_key_property_query_boundary_wash_v1",
+  "source_manifest_sha256": "def631ee24b7ff99b8d4372a69ed2aa1b5f24cff55a5b3e2d6a90ae91b74418d",
+  "source_manifest_sidecar_sha256": "6e27b41a5434013107d4781878ea0883a674f8531924d75ad9aae2f4b857280f",
+  "registered_key": {"name": "custom_trims:height_trim_5_1", "field": "Priv+0x9e8 StringType", "descriptor_builder": "FUN_18012beb0", "initializer": "FUN_180138690"},
+  "reused_generic_query": {"query": "FUN_18014f9f0", "dynamic_record_name_builder": "FUN_18014a060", "selection": "exact key equality"},
+  "unbound": ["height registered key to dynamic query name", "query returned object to Priv+0x9e8 instance", "selected provider and generation", "numeric conversion/units", "BSI/audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

@@ -4910,7 +4910,8 @@
           "scope": "Reference-only time-control boundary. start/end lexical defaults and input-only values are not joined to a typed range owner or Reader cursor. offset/ffoa static evidence is split across adm XML leaves and an AtmosMezz host normalizer edge; no XML-to-policy-owner or host-response-to-Reader join is established.",
           "dependencies": [],
           "spec_files": [
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -4932,7 +4933,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37",
             "supplement_seal_sha256": "9d9657f7a0cbfddee54982588cdc957c82c483952395f47ec6ad97b6a8c0a576",
@@ -4965,7 +4973,17 @@
               "reader_seek_or_sample_effect": "UNBOUND/NOT_CAPTURED"
             },
             "time_base_is_separate": true,
-            "validation_boundary": "Static partial evidence only; no runtime value, unit, sample position, Reader seek, or audio effect is established."
+            "validation_boundary": "Static partial evidence only; no runtime value, unit, sample position, Reader seek, or audio effect is established.",
+            "composite_range_handoff_addendum": {
+              "package_id": "DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1",
+              "manifest_sha256": "10d0ff327ab98b1318a0ca5f9e96bdf6d3c98c5bcf8e5cb2de7912b22836b74c",
+              "seal_sha256": "cb56c20de1499e3939756b17988b17927a18e0d74a90102b3c8f479d31492dc5",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "selected_j_vector_handoff": "FUN_180553a60 -> FUN_180550800 -> FUN_1805506b0 -> FUN_18054a900; 0x58-byte rows",
+              "row_5_6_and_master_source_0x20_0x28_to_reader_start_end_owner_join": "UNBOUND",
+              "duration_pcm_pts": "UNBOUND/NOT_RUN"
+            }
           },
           "vectors": {
             "kind": "WASHED_INPUT_ONLY_TIME_CONTROL_VECTOR_NO_RUNTIME",
@@ -4973,7 +4991,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "R138 lexical values are source-document input-only, not runtime observations."
@@ -5414,7 +5436,8 @@
           "dependencies": [],
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5443,7 +5466,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "44b4886b49d3f1f1f6869f7c3a79de51ff94387c5b4d40d5d0d47f4506e4d1d4",
             "supplement_seal_sha256": "67900bbec7462b6925da8889063892abb610c2994282268571abada7dd054aaf",
@@ -5464,6 +5494,17 @@
               "type_level_getter": "FUN_180152490 vtable +0x30 copies StringType param_1+0x08",
               "height_instance_callsite_provider_generation": "UNBOUND",
               "numeric_conversion_units_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "height_trim_key_query_addendum": {
+              "package_id": "DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1",
+              "manifest_sha256": "b80551101abe6d2ef1cf8efc75be33ff8ad7644fc228c07f9a2db42e27601713",
+              "seal_sha256": "497263917403796717b1652f9bc5f8c2c0f6c3e07199730fa7550c655bdeba85",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "registered_key_candidate": "custom_trims:height_trim_5_1 at Priv+0x9e8 StringType",
+              "generic_query_mechanism": "FUN_18014f9f0 / FUN_18014a060 exact key equality",
+              "key_to_query_and_return_to_field_instance_join": "UNBOUND",
+              "units_numeric_conversion_and_effect": "UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -5476,7 +5517,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only trim boundary: surround +0x968 has a U16 candidate not joined to the keyed StringType owner or selected provider; height +0x9e8 has a bounded query with no identified value reader. Tokens remain strings; units, precision, BSI mapping, and audio effects are unbound."
@@ -66489,6 +66534,46 @@
         "FUN_140066230 creation/deletion/queue semantics.",
         "clean_temp flag to actual output cleanup consumer.",
         "Runtime job/provider identity and generation."
+      ]
+    },
+    {
+      "package_id": "DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1",
+      "manifest_sha256": "10d0ff327ab98b1318a0ca5f9e96bdf6d3c98c5bcf8e5cb2de7912b22836b74c",
+      "supplement_seal_sha256": "cb56c20de1499e3939756b17988b17927a18e0d74a90102b3c8f479d31492dc5",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "J_VECTOR_HANDOFF_BOUND; ROW_AND_MASTER_RANGE_TO_READER_OWNER_JOIN_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "J qword[5]/[6] and MasterSourceImpl +0x20/+0x28 semantic identity.",
+        "Typed owner/generation join to Reader CompositeMasterItem startSample/endSample.",
+        "Duration, PCM, PTS, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1",
+      "manifest_sha256": "b80551101abe6d2ef1cf8efc75be33ff8ad7644fc228c07f9a2db42e27601713",
+      "supplement_seal_sha256": "497263917403796717b1652f9bc5f8c2c0f6c3e07199730fa7550c655bdeba85",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "HEIGHT_KEY_AND_GENERIC_QUERY_BOUND_SEPARATELY; INSTANCE_JOIN_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Registered height key to dynamic query name equality.",
+        "Returned query object to selected Priv+0x9e8 instance/provider generation.",
+        "Units, numeric conversion, BSI/audio effect."
       ]
     }
   ]

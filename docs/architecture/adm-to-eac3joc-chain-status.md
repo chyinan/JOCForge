@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following twenty-five packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
+The following twenty-eight packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1414,5 +1414,7 @@ The following twenty-five packages were independently hash-checked and passed th
 | DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1 | de373c42a60212e81ee0794c19c4ad81d862a4daa49da10cf4c263583d993971 / feedd8bdcb546d476d98f1d3c9637416c5f8aec83918d82f2a75d14c1095f020 | Priv+0x2e8 Integer candidate and current reader pointer path; xref discrepancy preserved. | Query owner/generation, same-object reader join, first algorithm read and effect. |
 | DEE-DOWNMIX-MIX-LEVEL-TYPED-CONFIG-BOUNDARY-V1 | 9774184942c196b259fa3c9bc60e2b37f9e1456fa6a7763e0f287c51abc19cc4 / 28006864017b0379d33e4939c2b64e968139f68af36d8bffebfcd307852d3b0a | Four typed internal MixLevel U32 configs with per-field offsets and accepted-code sets. | BSI/DDP interpretation, runtime owner/event, DME host bridge and rendered effect. |
 | DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1 | a3c5b4e1816471e3d4459cee1133a291194c1c2f553b1c10051141254066c7b3 / b1285e4d865a1f9595540be1c7615c835e3984a5f77ce5620a9210ebb8243205 | AssignTempFile path arguments delegated to FUN_140066230. | Callee file operation, cleanup consumer and runtime job/provider identity. |
+| DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1 | 10d0ff327ab98b1318a0ca5f9e96bdf6d3c98c5bcf8e5cb2de7912b22836b74c / cb56c20de1499e3939756b17988b17927a18e0d74a90102b3c8f479d31492dc5 | Selected-source J-vector handoff and candidate row/MasterSourceImpl fields. | Typed join to Reader startSample/endSample, duration/PCM/PTS effects. |
+| DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1 | b80551101abe6d2ef1cf8efc75be33ff8ad7644fc228c07f9a2db42e27601713 / 497263917403796717b1652f9bc5f8c2c0f6c3e07199730fa7550c655bdeba85 | Height key registration and generic exact-key query mechanism. | Key-to-record and query-result-to-field instance/provider joins, units and effects. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.

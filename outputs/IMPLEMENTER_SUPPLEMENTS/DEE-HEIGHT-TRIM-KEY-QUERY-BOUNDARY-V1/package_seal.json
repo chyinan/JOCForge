@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1",
+  "manifest_sha256": "b80551101abe6d2ef1cf8efc75be33ff8ad7644fc228c07f9a2db42e27601713",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "HEIGHT_KEY_REGISTRATION_BOUND; GENERIC_QUERY_PATH_REUSED; KEY_AND_RETURN_OWNER_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

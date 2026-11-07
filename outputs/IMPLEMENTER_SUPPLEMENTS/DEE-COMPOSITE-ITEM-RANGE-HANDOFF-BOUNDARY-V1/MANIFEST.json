@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SELECTED_J_VECTOR_HANDOFF_BOUND; ROW_QWORD5_6_AND_MASTER_SOURCE_FIELDS_UNBOUND_TO_TYPED_READER_RANGE; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1190,
+      "sha256": "1c05c689ac55c47f9dda7bc18507adffdc8963c9f81ad78e9936e5f19852b1fc"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1472,
+      "sha256": "5621056169b85b6a701727d2c027b0384ab0fa4f84150f5edf177f6ec9e1b2f6"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 568,
+      "sha256": "6f2cc98f816341581561a22635ef2aa5630825fa7d9796a08a019bdc46a32cf6"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 153,
+      "sha256": "4da9757a2997fbafac1162d5ad0ebbb1490819eefc8f819fd79691c019d37e17"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 788,
+      "sha256": "90aee154922aea205ee760a7a6eb5a0c102858500c7e6c65445b9382bc3047ec"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.composite_item_range_handoff_boundary.v1",
+  "status": "SELECTED_J_VECTOR_HANDOFF_BOUND; ROW_QWORD5_6_AND_MASTER_SOURCE_FIELDS_UNBOUND_TO_TYPED_READER_RANGE",
+  "source_package": "dee_atmos_ddp_composite_item_start_end_handoff_wash_v1",
+  "source_manifest_sha256": "12eaa69d7aea54ff71a9585a6d39c00034876d415a1efd9f0dc8a18c364d8064",
+  "source_seal_sha256": "a11aef5a08287f1ac75bb29a577c02f28ce23ddab65a16c70da6c7c19fa943e1",
+  "bound_edges": ["FUN_180553a60.param_2 -> FUN_180550800.param_2 -> FUN_1805506b0.param_2", "FUN_1805506b0 forwards same J-vector pointer to FUN_18054a900", "J row stride is 0x58; FUN_18054a900 loads qwords 0..10", "FUN_180536180 stores local values at MasterSourceImpl+0x20/+0x28"],
+  "unbound": ["J row qword[5]/[6] semantic identity as startSample/endSample", "MasterSourceImpl+0x20/+0x28 sample-range meaning", "J-vector owner/generation to FUN_1801831c0 Reader param_2 owner/generation", "duration/PCM/PTS effect"],
+  "separate_reader_receipt": {"function": "FUN_1801831c0", "typed_fields": ["param_2[5] startSample", "param_2[6] endSample"], "same_owner_join_to_J_vector": "UNBOUND"},
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1",
+  "manifest_sha256": "10d0ff327ab98b1318a0ca5f9e96bdf6d3c98c5bcf8e5cb2de7912b22836b74c",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SELECTED_J_VECTOR_HANDOFF_BOUND; ROW_QWORD5_6_AND_MASTER_SOURCE_FIELDS_UNBOUND_TO_TYPED_READER_RANGE; IMPLEMENTATION_READY=NO"
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HEIGHT_KEY_REGISTRATION_BOUND; GENERIC_QUERY_PATH_REUSED; KEY_AND_RETURN_OWNER_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 825,
+      "sha256": "aa2bce47a47e6ff303fdf8aa4d8603a4ccb61f9e6251267a6a03303cabb55802"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1286,
+      "sha256": "b990b7817ddb85f53e63838701ca972629e149e5e819b9d533b7618b373969c5"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 592,
+      "sha256": "11fdf7625b9723e00a2dc9997f930ed19caf7a51dc31bc3cb6e748c7bf73c18a"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 155,
+      "sha256": "526e69a1aaee0c6620c9b959eb17570d66bd3cbbd48dd5efcb5af03d85bae938"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 781,
+      "sha256": "8db9c6342c9712c398a506ac7697a480a43d0e254fdb5d96422547a74c661c1e"
+    }
+  ]
+}
