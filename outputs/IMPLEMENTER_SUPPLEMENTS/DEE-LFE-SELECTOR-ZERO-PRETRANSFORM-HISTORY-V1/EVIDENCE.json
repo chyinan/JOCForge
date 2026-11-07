@@ -1,0 +1,123 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "package_id": "DEE-LFE-SELECTOR-ZERO-PRETRANSFORM-HISTORY-V1",
+  "status": "SELECTOR_ZERO_PRETRANSFORM_AND_HISTORY_UPDATE_STATIC_RULES_BOUND; NEW_RECORD_SEED_ZERO_ONLY; CURRENT_CALL_ORDER_UNBOUND; LFE_WIRE_JOIN_UNBOUND; PCM_PARITY_NOT_RUN",
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "upstream_package": {
+    "package_id": "DEE-LFE-SELECTOR-ZERO-RECURRENCE-WASH-V1",
+    "manifest_sha256": "c8f8edaf80b5fd84c6ee0d4c28fd4a94b58a1dd9a0d10cfec8a6fc1347697a21",
+    "seal_sha256": "8fa2b7f8c30a704211aef99c870c030a2d80cdf030d6c78818210540bdd97dbb",
+    "manifest_payloads_verified": "17/17",
+    "source_receipts_verified": "14/14",
+    "upstream_checker_reported": "PASS_160",
+    "wash_checker": "NOT_RUN_BY_WASH"
+  },
+  "table_audit": {
+    "pretransform_L": {
+      "elements": 128,
+      "bytes": 512,
+      "sha256": "3cc6d9c18f0039289b8abe5aa339897bb231d744c3e8a9885535b0745c135328",
+      "parsed_from": "exact F32 hex values in hash-bound coefficient report",
+      "recomputed_little_endian_binary32_sha256_matches": true
+    },
+    "pretransform_R": {
+      "elements": 128,
+      "bytes": 512,
+      "sha256": "057c2f083acdb472fdd81a0fc0eb5fc77804586ae27c65066214cee242cd98cb",
+      "parsed_from": "exact F32 hex values in hash-bound coefficient report",
+      "recomputed_little_endian_binary32_sha256_matches": true
+    },
+    "selector_zero_A": {
+      "elements": 128,
+      "bytes": 512,
+      "sha256": "bbd2bd460b0a750ccb45f959561a9a7e2ed2f8c6fd9391fb21abc9216b08fa41",
+      "reused_from_wash_package": "DEE-DDP-RECURRENCE-SELECTOR-SEMANTICS-WASH-V1",
+      "raw_u32_rows_rehashed": true
+    },
+    "selector_zero_B": {
+      "elements": 128,
+      "bytes": 512,
+      "sha256": "e4cbb855ed455887b387cdb188bf8bab41976c73648c1b022dd18156214bde50",
+      "reused_from_wash_package": "DEE-DDP-RECURRENCE-SELECTOR-SEMANTICS-WASH-V1",
+      "raw_u32_rows_rehashed": true
+    }
+  },
+  "pretransform": {
+    "input": "u=F32[256]",
+    "work": "W=F32[256], all 256 positions overwritten per call",
+    "iterations": 64,
+    "history_half_elements": 128,
+    "main_base": "state+0x268c8+slot*0x400",
+    "companion_base": "state+0x26ac8+slot*0x400",
+    "main_companion_base_delta_bytes": 512,
+    "slot_stride_bytes": 1024,
+    "history_indices_per_iteration": [
+      "64+i",
+      "63-i"
+    ],
+    "block_state": "same slot history halves updated in place across the six blocks in the three reused layout-7 captures; no in-loop reset observed",
+    "main_equations": [
+      "W[128+2i]=u[2i]*R[127-2i]+u[255-2i]*L[2i]",
+      "W[129+2i]=Hm_old[64+i]",
+      "W[127-2i]=u[2i+1]*R[126-2i]+u[254-2i]*L[2i+1]",
+      "W[126-2i]=Hm_old[63-i]",
+      "Hm_new[64+i]=u[255-2i]*R[127-2i]-L[2i]*u[2i]",
+      "Hm_new[63-i]=u[254-2i]*R[126-2i]-L[2i+1]*u[2i+1]"
+    ],
+    "companion_equations": [
+      "W[128+2i]=Hc_old[64+i]",
+      "W[129+2i]=u[2i]*R[127-2i]-u[255-2i]*L[2i]",
+      "W[127-2i]=Hc_old[63-i]",
+      "W[126-2i]=u[2i+1]*R[126-2i]-u[254-2i]*L[2i+1]",
+      "Hc_new[64+i]=u[255-2i]*R[127-2i]+L[2i]*u[2i]",
+      "Hc_new[63-i]=u[254-2i]*R[126-2i]+L[2i+1]*u[2i+1]"
+    ],
+    "nonzero_selector": "NOT_CLOSED_HERE"
+  },
+  "history_initialization": {
+    "new_record": "zero for newly carved record only, via prior hash-bound arena-constructor Wash package",
+    "prior_package_id": "DEE-RECURRENCE-HISTORY-INITIALIZATION-ZERO-BOUND-V1",
+    "prior_manifest_sha256": "f3f91012d9d2c26539ac819a4b97aafbbf7978c551591ca34ddeeb474640db7c",
+    "prior_seal_sha256": "aff4d18f7c78455fd265b5cf90549a02574c29e608825f02cb88f086a424da8b",
+    "per_frame_rezero": false,
+    "current_record_generation_or_prior_use": "UNBOUND"
+  },
+  "selector_zero_recurrence": {
+    "iterations": 64,
+    "group_size_f32": 4,
+    "formula_source_package_id": "DEE-DDP-RECURRENCE-SELECTOR-SEMANTICS-WASH-V1",
+    "formula_source_manifest_sha256": "fd5a91138ee433a46574944fead910b9e5bb2aaf0add44f300fc39a9377b5814",
+    "formula_source_seal_sha256": "36ec6d36c409b7d06f106fbc2bbf915f2accf9786621015ff9fca489cd783f95",
+    "precision": "binary32 F32",
+    "fma_in_helper": false,
+    "mxcsr_rounding": "NOT_CAPTURED"
+  },
+  "downstream": {
+    "next_stage": "16-point F32 stage precedes terminal seven-F32 projection; complete butterfly equations are outside this supplement",
+    "terminal_projection_source_package_id": "DEE-LFE-SEVEN-F32-TERMINAL-PROJECTION-V1",
+    "terminal_manifest_sha256": "10abc590f847e0c07baef9149e5e47b3faf35d243327da60f3c4d384c8c3285f",
+    "terminal_seal_sha256": "96d6b4f041b5587d16f3e9c60dd14333d4695023116dc44ad999d78074e7afbf"
+  },
+  "selection_scope": {
+    "prior_capture_layout": 7,
+    "prior_capture_lane": 5,
+    "prior_capture_slot": 5,
+    "block_count": 6,
+    "scope": "three reused prior captures only; not re-captured here"
+  },
+  "separate_conditional_matrix_branch": {
+    "predicate": "arg6 != 0 && arg7 == 1",
+    "status": "DISTINCT_STATIC_PATH; runtime NOT_RUN"
+  },
+  "limits": {
+    "dee_run": "NOT_RUN",
+    "pcm_or_ec3_payload_read": false,
+    "license_or_key_read": false,
+    "frame_wire_lfe_fields": "UNBOUND",
+    "decoded_pcm_parity": "NOT_RUN",
+    "host_to_sample_owner_generation": "UNBOUND"
+  }
+}

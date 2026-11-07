@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-SELECTOR-ZERO-PRETRANSFORM-HISTORY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SELECTOR_ZERO_PRETRANSFORM_AND_HISTORY_UPDATE_STATIC_RULES_BOUND; NEW_RECORD_SEED_ZERO_ONLY; CURRENT_CALL_ORDER_UNBOUND; LFE_WIRE_JOIN_UNBOUND; PCM_PARITY_NOT_RUN",
+  "implementation_disposition": "IMPLEMENT_OR_COMPARE_THIS_HASH_BOUND_SELECTOR_ZERO_STAGE_FOR_MATCHING_LAYOUT-7 CASES; KEEP NONZERO/MATRIX PATH, CURRENT OWNER-GENERATION, FRAME-WIRE JOIN AND PCM PARITY SEPARATE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "COEFFICIENTS.json",
+      "bytes": 7290,
+      "sha256": "f72b9f960a880c53e8536e53263fe7a3b9a94ee1445f2bd2985cf5d5f0116cc8"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 5302,
+      "sha256": "3ba6784548a415f6e5b67f2f9642721df4dd78b11da72955ef272193e285d3e7"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2944,
+      "sha256": "72d7162d816d9f53ae3327bceefcc1cb1f09bab29e543aeaa3f1f43c6b379d2d"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 3617,
+      "sha256": "ce30b662e9e5f30b0b3f1ffc197c95706f0da4b68e766b7014321289571c34e5"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 2098,
+      "sha256": "67f77680a75e9848c12a23a0cc585ad0dd97dd1353ea08ec28e7f7acc170e597"
+    }
+  ]
+}

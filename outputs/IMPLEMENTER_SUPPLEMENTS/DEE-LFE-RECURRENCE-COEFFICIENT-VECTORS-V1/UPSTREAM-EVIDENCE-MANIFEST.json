@@ -1,0 +1,108 @@
+{
+  "analysis_method": "Ghidra 12.2 PUBLIC static data-memory reads from initialized non-executable blocks",
+  "numeric_parity": "NOT_RUN",
+  "package_id": "dee_lfe_recurrence_coefficients_input_only_wash_v1",
+  "parent_packages": [
+    {
+      "manifest_sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d",
+      "package_id": "dee_lfe_base_layer_recurrence_branch_wash_v1",
+      "package_seal_sha256": "0efe3846f472ae11bf27b874ab69f4ec78fa79569a41551b1088e709534f656b"
+    },
+    {
+      "manifest_sha256": "64b337cedbea20e23e871541e9473a0f5509e41a2cf9027b6326f293967b8087",
+      "package_id": "dee_lfe_recurrence_instruction_order_wash_v1",
+      "package_seal_sha256": "2a1d93772ac38bb4c8096567fbb701b0d3dfb91c8c745ad96e8b9d9f1194b1cb"
+    }
+  ],
+  "payloads": [
+    {
+      "bytes": 1016,
+      "file": "CONSTANTS-SOURCE.md",
+      "sha256": "03e19ed0e55b802758f3575465486ecb93e645417066751ad27d0d444fb8444c"
+    },
+    {
+      "bytes": 37273,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "89715925475477ef875265215498aad78c231a3a9c3685f56321885a2ac1767f"
+    },
+    {
+      "bytes": 2771,
+      "file": "SOURCE-IDENTITIES.json",
+      "sha256": "d6e12c8843ccde2ce994b25fb18aed5f4a11b7ab200edf3615781a6a4e7414e4"
+    },
+    {
+      "bytes": 6202,
+      "file": "check_lfe_coefficient_vectors.py",
+      "sha256": "ebbd3f5ba9eefa08ab047917cd687333c3b2ff8159c828220b06039bc5efc9e1"
+    }
+  ],
+  "root_cause": "NOT_ESTABLISHED",
+  "runtime_observation": "NOT_RUN",
+  "safety": {
+    "dee_execution": false,
+    "implementation_repository_read": false,
+    "key_or_license_read": false,
+    "pcm_or_payload_read": false
+  },
+  "sample_lfe_branch": "UNBOUND",
+  "schema": "dee-lfe-recurrence-coefficients-input-only-manifest.v1",
+  "scope": {
+    "only_requested_data_ranges": true,
+    "target_code_or_decompilation_exported": false,
+    "unrequested_ranges_read": false
+  },
+  "selector": "UNBOUND",
+  "source_evidence": [
+    {
+      "bytes": 7923712,
+      "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_adm_eac3_joc_samples_run_20261103/dee_runtime_copy_ascii/dee_ddp_encoder.exe",
+      "name": "dee_ddp_encoder.exe",
+      "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+    },
+    {
+      "bytes": 7926,
+      "codex_relative_path": "2026-10-23/jocforge-reverse-agent-3/work/ghidra_scripts/ExportLfeCoefficientVectors.java",
+      "name": "ExportLfeCoefficientVectors.java",
+      "sha256": "41f50ca18fafa9852bae5e84dabdc33d97e7dd6f81eca6dface4fdc029fa17cc"
+    }
+  ],
+  "status": "HASH_BOUND_CONSTANTS_EXTRACTED; INPUT_ONLY_VECTORS_COMPLETE; SELECTOR_UNBOUND; SAMPLE_LFE_BRANCH_UNBOUND; NUMERIC_PARITY_NOT_RUN; ROOT_CAUSE_NOT_ESTABLISHED",
+  "target_image": {
+    "bytes": 7923712,
+    "codex_relative_path": "2026-10-25/jocforge-reverse-agent-4-f06of/outputs/dee_adm_eac3_joc_samples_run_20261103/dee_runtime_copy_ascii/dee_ddp_encoder.exe",
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "vector_inventory": [
+    {
+      "base_address": "0x140628c20",
+      "byte_count": 512,
+      "element_count": 128,
+      "name": "zero_branch_table_a"
+    },
+    {
+      "base_address": "0x140628e20",
+      "byte_count": 512,
+      "element_count": 128,
+      "name": "zero_branch_table_b"
+    },
+    {
+      "base_address": "0x140616dd0",
+      "byte_count": 16,
+      "element_count": 4,
+      "name": "zero_branch_shared_scalars"
+    },
+    {
+      "base_address": "0x140629020",
+      "byte_count": 256,
+      "element_count": 64,
+      "name": "nonzero_branch_table_a"
+    },
+    {
+      "base_address": "0x140628820",
+      "byte_count": 256,
+      "element_count": 64,
+      "name": "nonzero_branch_table_b"
+    }
+  ]
+}

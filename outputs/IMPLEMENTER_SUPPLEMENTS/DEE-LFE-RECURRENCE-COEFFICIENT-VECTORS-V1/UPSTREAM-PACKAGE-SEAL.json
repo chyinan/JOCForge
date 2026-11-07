@@ -1,0 +1,35 @@
+{
+  "file_count": 5,
+  "files": [
+    {
+      "bytes": 1016,
+      "file": "CONSTANTS-SOURCE.md",
+      "sha256": "03e19ed0e55b802758f3575465486ecb93e645417066751ad27d0d444fb8444c"
+    },
+    {
+      "bytes": 37273,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "89715925475477ef875265215498aad78c231a3a9c3685f56321885a2ac1767f"
+    },
+    {
+      "bytes": 2771,
+      "file": "SOURCE-IDENTITIES.json",
+      "sha256": "d6e12c8843ccde2ce994b25fb18aed5f4a11b7ab200edf3615781a6a4e7414e4"
+    },
+    {
+      "bytes": 6202,
+      "file": "check_lfe_coefficient_vectors.py",
+      "sha256": "ebbd3f5ba9eefa08ab047917cd687333c3b2ff8159c828220b06039bc5efc9e1"
+    },
+    {
+      "bytes": 3911,
+      "file": "evidence_manifest.json",
+      "sha256": "f41ca962188d127bf7c723d566862adbbe586979bad95f1d18d843f0f6221b60"
+    }
+  ],
+  "package_id": "dee_lfe_recurrence_coefficients_input_only_wash_v1",
+  "schema": "dee-lfe-recurrence-coefficients-input-only-seal.v1",
+  "seal_excluded_from_its_own_hash_list": true,
+  "sealed_at_utc": "2026-11-04T06:30:04.386479+00:00",
+  "status": "SEALED_PARTIAL"
+}

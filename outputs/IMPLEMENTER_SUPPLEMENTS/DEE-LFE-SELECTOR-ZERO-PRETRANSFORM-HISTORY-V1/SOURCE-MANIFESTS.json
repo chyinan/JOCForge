@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "DEE-LFE-SELECTOR-ZERO-PRETRANSFORM-HISTORY-V1",
+  "references": [
+    {
+      "package_id": "DEE-LFE-SELECTOR-ZERO-RECURRENCE-WASH-V1",
+      "manifest_sha256": "c8f8edaf80b5fd84c6ee0d4c28fd4a94b58a1dd9a0d10cfec8a6fc1347697a21",
+      "package_seal_sha256": "8fa2b7f8c30a704211aef99c870c030a2d80cdf030d6c78818210540bdd97dbb",
+      "role": "primary static recurrence and L/R coefficient extraction"
+    },
+    {
+      "package_id": "DEE-LFE-SEVEN-F32-TABLE-GENERATION-V1",
+      "manifest_sha256": "d2663d3efb890fde26043fdbcad312485cb8d6d4e3cfa9f435d8b385eb5b9aab",
+      "package_seal_sha256": "bd1418ce9210878804918fc53e07c158f17afca551ceb1da175d218c597d07d4",
+      "role": "selected layout-7 LFE lane-to-slot and dual seven-F32 generation boundary"
+    },
+    {
+      "package_id": "DEE-DDP-RECURRENCE-SELECTOR-SEMANTICS-WASH-V1",
+      "manifest_sha256": "fd5a91138ee433a46574944fead910b9e5bb2aaf0add44f300fc39a9377b5814",
+      "package_seal_sha256": "36ec6d36c409b7d06f106fbc2bbf915f2accf9786621015ff9fca489cd783f95",
+      "role": "selector-zero 64-group recurrence formula, A/B raw coefficient words, gather contract"
+    },
+    {
+      "package_id": "DEE-LFE-SEVEN-F32-TERMINAL-PROJECTION-V1",
+      "manifest_sha256": "10abc590f847e0c07baef9149e5e47b3faf35d243327da60f3c4d384c8c3285f",
+      "package_seal_sha256": "96d6b4f041b5587d16f3e9c60dd14333d4695023116dc44ad999d78074e7afbf",
+      "role": "terminal seven-F32 projection equations"
+    },
+    {
+      "package_id": "DEE-RECURRENCE-HISTORY-INITIALIZATION-ZERO-BOUND-V1",
+      "manifest_sha256": "f3f91012d9d2c26539ac819a4b97aafbbf7978c551591ca34ddeeb474640db7c",
+      "package_seal_sha256": "aff4d18f7c78455fd265b5cf90549a02574c29e608825f02cb88f086a424da8b",
+      "role": "new-record zero seed condition; no per-frame reset; later order not revalidated"
+    }
+  ],
+  "wash_scope": "Only sanitized formula/constants/evidence references are included; raw Ghidra reports, scripts, logs, source code, binaries, audio/media, EC3 payload and secrets are excluded."
+}

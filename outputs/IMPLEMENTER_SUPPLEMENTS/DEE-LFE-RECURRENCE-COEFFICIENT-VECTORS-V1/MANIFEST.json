@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-RECURRENCE-COEFFICIENT-VECTORS-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_LFE_BRANCH_COEFFICIENTS_HASH_BOUND; SAMPLE_SELECTOR_UNBOUND; NUMERIC_PARITY_NOT_RUN",
+  "implementation_disposition": "Provides hash-bound static coefficients for the two recurrence branches. Does not identify a sample-selected branch, prove parity, or establish root cause.",
+  "source_manifest_sha256": "f41ca962188d127bf7c723d566862adbbe586979bad95f1d18d843f0f6221b60",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name":"CHECK.py","bytes":8080,"sha256":"a4901d5123db64f4333fd9108fe2c0c2d34500db59346ed36e971c438e6a0c87"},
+    {"name":"CONSTANTS-SOURCE.md","bytes":1016,"sha256":"03e19ed0e55b802758f3575465486ecb93e645417066751ad27d0d444fb8444c"},
+    {"name":"EVIDENCE.json","bytes":2826,"sha256":"2c94eb2594a7b6ba79ad4dca01ce0076418947ce44d6d82c64caa005a4060736"},
+    {"name":"INPUT-ONLY-VECTORS.json","bytes":37273,"sha256":"89715925475477ef875265215498aad78c231a3a9c3685f56321885a2ac1767f"},
+    {"name":"REPORT.md","bytes":1302,"sha256":"6dd8bbb098651d3d390677dba3f2798f531a941c26d5f1a9d4d4d1e937c399f5"},
+    {"name":"SOURCE-MANIFESTS.json","bytes":1652,"sha256":"f019768f44bed7397dc494f2044d845149d61866965737fbb5d28682c5a2804e"},
+    {"name":"UPSTREAM-EVIDENCE-MANIFEST.json","bytes":3911,"sha256":"f41ca962188d127bf7c723d566862adbbe586979bad95f1d18d843f0f6221b60"},
+    {"name":"UPSTREAM-PACKAGE-SEAL.json","bytes":1137,"sha256":"dfeb0ef58b293a568209b65ed32edeb1f7a28e8bbb10e1e656773be8d3acf28a"},
+    {"name":"UPSTREAM-SOURCE-IDENTITIES.json","bytes":2771,"sha256":"d6e12c8843ccde2ce994b25fb18aed5f4a11b7ab200edf3615781a6a4e7414e4"}
+  ]
+}

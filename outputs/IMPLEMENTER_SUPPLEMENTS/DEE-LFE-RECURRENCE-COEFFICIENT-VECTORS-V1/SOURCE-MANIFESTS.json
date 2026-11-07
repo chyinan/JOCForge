@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "supplement_package_id": "DEE-LFE-RECURRENCE-COEFFICIENT-VECTORS-V1",
+  "upstream_package_id": "dee_lfe_recurrence_coefficients_input_only_wash_v1",
+  "upstream_evidence_manifest_sha256": "f41ca962188d127bf7c723d566862adbbe586979bad95f1d18d843f0f6221b60",
+  "upstream_package_seal_sha256": "dfeb0ef58b293a568209b65ed32edeb1f7a28e8bbb10e1e656773be8d3acf28a",
+  "upstream_source_identities_sha256": "d6e12c8843ccde2ce994b25fb18aed5f4a11b7ab200edf3615781a6a4e7414e4",
+  "target_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "bytes": 7923712
+  },
+  "exporter": {
+    "name": "ExportLfeCoefficientVectors.java",
+    "codex_relative_path": "2026-10-23/jocforge-reverse-agent-3/work/ghidra_scripts/ExportLfeCoefficientVectors.java",
+    "sha256": "41f50ca18fafa9852bae5e84dabdc33d97e7dd6f81eca6dface4fdc029fa17cc",
+    "bytes": 7926
+  },
+  "parent_packages": [
+    {
+      "package_id": "dee_lfe_base_layer_recurrence_branch_wash_v1",
+      "evidence_manifest_sha256": "af45b96787219eb31b9a62c64e5c1b62590d2824ac37132404cf339e3509893d",
+      "package_seal_sha256": "0efe3846f472ae11bf27b874ab69f4ec78fa79569a41551b1088e709534f656b"
+    },
+    {
+      "package_id": "dee_lfe_recurrence_instruction_order_wash_v1",
+      "evidence_manifest_sha256": "64b337cedbea20e23e871541e9473a0f5509e41a2cf9027b6326f293967b8087",
+      "package_seal_sha256": "2a1d93772ac38bb4c8096567fbb701b0d3dfb91c8c745ad96e8b9d9f1194b1cb"
+    }
+  ],
+  "raw_source_code_or_decompilation_copied": false,
+  "pcm_payload_key_or_license_copied": false
+}

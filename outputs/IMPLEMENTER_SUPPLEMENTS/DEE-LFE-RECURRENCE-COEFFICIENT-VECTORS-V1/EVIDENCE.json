@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.dee_lfe_recurrence_coefficients.v1",
+  "package_id": "DEE-LFE-RECURRENCE-COEFFICIENT-VECTORS-V1",
+  "status": {
+    "coefficient_constants": "HASH_BOUND_STATIC_DATA",
+    "zero_branch_function": "FUN_14036d9e0",
+    "nonzero_branch_function": "FUN_14036d7c0",
+    "sample_lfe_branch": "UNBOUND",
+    "runtime_selector": "NOT_CAPTURED",
+    "core_fma_mxcsr": "UNBOUND",
+    "numeric_parity": "NOT_RUN",
+    "correlation_root_cause": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "dee_lfe_recurrence_coefficients_input_only_wash_v1",
+    "evidence_manifest_sha256": "f41ca962188d127bf7c723d566862adbbe586979bad95f1d18d843f0f6221b60",
+    "package_seal_sha256": "dfeb0ef58b293a568209b65ed32edeb1f7a28e8bbb10e1e656773be8d3acf28a",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "target_image": {
+    "name": "dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "bytes": 7923712
+  },
+  "extraction": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "project_mode": "read-only, no-analysis data-range export",
+    "memory_block": ".rdata",
+    "memory_block_executable": false,
+    "requested_ranges_only": true,
+    "element_type": "IEEE-754 binary32",
+    "byte_order": "little-endian",
+    "vector_count": 5,
+    "element_count_total": 388,
+    "raw_word_and_f32_value_recomputed": true
+  },
+  "ranges": [
+    {"name":"zero_branch_table_a","base_address":"0x140628c20","element_count":128,"byte_count":512},
+    {"name":"zero_branch_table_b","base_address":"0x140628e20","element_count":128,"byte_count":512},
+    {"name":"zero_branch_shared_scalars","base_address":"0x140616dd0","element_count":4,"byte_count":16},
+    {"name":"nonzero_branch_table_a","base_address":"0x140629020","element_count":64,"byte_count":256},
+    {"name":"nonzero_branch_table_b","base_address":"0x140628820","element_count":64,"byte_count":256}
+  ],
+  "branch_boundary": {
+    "lfe_lane_in_FUN_140343530_and_FUN_1403448d0": "selector=0; inline branch",
+    "separate_fbw_path": "selector sourced from state+0x15208; may select nonzero table branch",
+    "descriptor_u16_stride_state_plus_0x1320": "gather input only in the two inspected dispatchers; overwritten before recurrence call",
+    "sample_specific_selector": "UNBOUND"
+  },
+  "scope_and_safety": {
+    "target_binary_in_supplement": false,
+    "native_source_or_decompilation_in_supplement": false,
+    "pcm_or_media_in_supplement": false,
+    "encoded_payload_in_supplement": false,
+    "private_key_or_license_in_supplement": false,
+    "dee_execution": false,
+    "implementation_repository_read": false
+  },
+  "disposition": "Static coefficients are bound to the stated image and ranges. This does not establish selected sample branch, numeric parity, or LFE residual cause."
+}

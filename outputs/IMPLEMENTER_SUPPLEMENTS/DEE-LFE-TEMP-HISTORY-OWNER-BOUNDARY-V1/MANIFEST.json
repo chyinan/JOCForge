@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-TEMP-HISTORY-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "E350_ARGUMENT_EXTENTS_BOUND; HISTORY_OWNER_GENERATION_UNBOUND",
+  "implementation_disposition": "Preserve distinct RCX temporary and RDX state expressions; no same-owner cross-frame feedback claim.",
+  "source_manifest_sha256": "ac35e0147171e1facd546baec9b928b8bc0dc855ee75766ff82d0e40f03b7425",
+  "source_package_seal_sha256": "019e12e569adcc1fc5652870e991d62a89953c6273fa1da6f31b5553018190e7",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4474,
+      "sha256": "8fc0ffee5940adfdeb5a7977932c000ac5590be7b3caa7ff2735b6b3fd11c683"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1902,
+      "sha256": "efd020dcebba2fb98379c9ecc31a0230b549afbe495c585c7c683365a045c199"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 210,
+      "sha256": "c4edde778a9202ed6e7aece9c9431909bd73a44c36146736a35442c5be25781a"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1410,
+      "sha256": "a2f703595d5e70e6912e2c65fae22c90ee22aa39b133a1398e2aef866e9c9518"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 830,
+      "sha256": "d3ad8e896bc27664ef34bbfe9cc498ba83819dba92e75d3177f8a44e45799a7a"
+    }
+  ]
+}

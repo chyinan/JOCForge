@@ -1,0 +1,109 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "scope": "Synthetic vectors for the pre-transform and selector-zero recurrence only; not DEE output and not an audio-parity claim.",
+  "vectors": [
+    {
+      "id": "main-pretransform-u0-one",
+      "precision": "F32 binary32",
+      "input": {
+        "u_nonzero": {
+          "0": "0x3f800000"
+        },
+        "H_main": "all +0.0 (128 values)"
+      },
+      "expected": {
+        "W_nonzero": {
+          "128": "0x3f800000"
+        },
+        "H_main_new_nonzero": {
+          "64": "0xb90e9922"
+        },
+        "all_other_W_and_H_values": "0x00000000"
+      },
+      "derivation": "R[127]=1.0 and L[0]=0x1.1d3244p-13; only i=0 terms can be nonzero."
+    },
+    {
+      "id": "main-pretransform-u255-one",
+      "precision": "F32 binary32",
+      "input": {
+        "u_nonzero": {
+          "255": "0x3f800000"
+        },
+        "H_main": "all +0.0 (128 values)"
+      },
+      "expected": {
+        "W_nonzero": {
+          "128": "0x390e9922"
+        },
+        "H_main_new_nonzero": {
+          "64": "0x3f800000"
+        },
+        "all_other_W_and_H_values": "0x00000000"
+      },
+      "derivation": "R[127]=1.0 and L[0]=0x1.1d3244p-13; only i=0 terms can be nonzero."
+    },
+    {
+      "id": "companion-pretransform-u0-one",
+      "precision": "F32 binary32",
+      "input": {
+        "u_nonzero": {
+          "0": "0x3f800000"
+        },
+        "H_companion": "all +0.0 (128 values)"
+      },
+      "expected": {
+        "W_nonzero": {
+          "129": "0x3f800000"
+        },
+        "H_companion_new_nonzero": {
+          "64": "0x390e9922"
+        },
+        "all_other_W_and_H_values": "0x00000000"
+      },
+      "derivation": "R[127]=1.0 and L[0]=0x1.1d3244p-13; only i=0 terms can be nonzero."
+    },
+    {
+      "id": "companion-pretransform-u255-one",
+      "precision": "F32 binary32",
+      "input": {
+        "u_nonzero": {
+          "255": "0x3f800000"
+        },
+        "H_companion": "all +0.0 (128 values)"
+      },
+      "expected": {
+        "W_nonzero": {
+          "129": "0xb90e9922"
+        },
+        "H_companion_new_nonzero": {
+          "64": "0x3f800000"
+        },
+        "all_other_W_and_H_values": "0x00000000"
+      },
+      "derivation": "R[127]=1.0 and L[0]=0x1.1d3244p-13; only i=0 terms can be nonzero."
+    },
+    {
+      "id": "selector-zero-group0-v0-one",
+      "precision": "F32 binary32",
+      "input": {
+        "W_group0_old": [
+          "0x3f800000",
+          "0x00000000",
+          "0x00000000",
+          "0x00000000"
+        ],
+        "A0": "0xbf7fffec",
+        "B0": "0xbac90fd5"
+      },
+      "expected": {
+        "W_group0_new": [
+          "0x3f7fffec",
+          "0xbac90fd5",
+          "0x00000000",
+          "0x00000000"
+        ]
+      },
+      "derivation": "Applies the already-washed selector-zero formula with separate F32 operations to one four-value group; all other groups remain zero."
+    }
+  ]
+}

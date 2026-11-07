@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-SELECTOR-ZERO-PRETRANSFORM-HISTORY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "8fe794aa046defe87c43827300b1068c05d26e84748341371c7dad1c30aac0e4",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "upstream_manifest_sha256": "c8f8edaf80b5fd84c6ee0d4c28fd4a94b58a1dd9a0d10cfec8a6fc1347697a21",
+  "upstream_source_receipt_audit": "PASS_14_OF_14; UPSTREAM_PAYLOADS_17_OF_17",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.dee_lfe_temp_history_owner_boundary.v1",
+  "package_id": "DEE-LFE-TEMP-HISTORY-OWNER-BOUNDARY-V1",
+  "status": {
+    "e350_rcx_temporary_input": "STATICALLY_BOUND",
+    "e350_rdx_in_place_state_extent": "128_F32_0X200_BOUND_BY_PARENT_RECEIPT",
+    "e350_r8_output_extent": "256_F32_0X400_BOUND_BY_PARENT_RECEIPT",
+    "rcx_rdx_pointer_alias": "UNBOUND",
+    "first_caller_context_owner": "FUN_140317600_RDI_OWNER_TYPE_UNBOUND",
+    "cross_frame_same_owner_generation_reuse": "UNBOUND_NOT_PROVEN",
+    "runtime_history_observation": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "dee_lfe_temp_history_owner_boundary_wash_v1",
+    "evidence_manifest_sha256": "ac35e0147171e1facd546baec9b928b8bc0dc855ee75766ff82d0e40f03b7425",
+    "package_seal_sha256": "019e12e569adcc1fc5652870e991d62a89953c6273fa1da6f31b5553018190e7",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "listing_instruction_encoding_crosscheck": "28_OF_28_MATCHED",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+  },
+  "dispatchers": [
+    {"function":"FUN_140343530","e350_callsite":"0x343814","rcx":"R12; content after intermediate helpers UNBOUND","rdx":"RSI+0x266f0+(index<<10)"},
+    {"function":"FUN_1403448d0","e350_callsite":"0x344ef5","rcx":"R13; parent receipt traces row+0x400 snapshot, runtime owner/generation UNBOUND","rdx":"R14+0x266f0+(index<<10)"}
+  ],
+  "first_caller": {
+    "function": "FUN_140317600",
+    "context_register": "RDI",
+    "typed_owner_or_generation": "UNBOUND"
+  },
+  "limits": {
+    "dee_executed": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_cross_frame_claim": false
+  },
+  "implementation_disposition": "Do not infer same-buffer aliasing or cross-frame history reuse from separate RCX/RDX argument expressions."
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_PCM_OR_FRAME_SEQUENCE_CAPTURED",
+  "vectors": [],
+  "note": "Static function-call lineage only; no runtime frame or sample vector is included."
+}
