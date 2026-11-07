@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-OPAQUE-OWNER-INITIALIZER-BOUNDARY-V1",
+  "decision": "OPAQUE_OWNER_BRANCH_AND_INDIRECT_CALLBACK_BOUND_STATIC; WRITERS_UNBOUND; LORO_JOIN_UNBOUND; EFFECT_UNBOUND",
+  "source_package": {
+    "package_id": "F13C-preferred-downmix-loro-selector-object-initializer-boundary-v1",
+    "manifest_sha256": "4da9a8d5e953e422963f8627c03a019410cbd809455f61f37c606e07ce2e3875",
+    "sha256sums_sha256": "9c4e8e6bcdfa35a0ee68e00ba5b30d779bc015e0bf1ee4a644eb5140775a506b",
+    "formal_package_seal": "NOT_PRESENT"
+  },
+  "target_image": {
+    "name": "dee_ddpjoc_encoder.exe",
+    "sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "bytes": 20116992,
+    "wash_rehashed": true
+  },
+  "static_callback_path": {
+    "descriptor_field": "+0x6368",
+    "helper_address": "0x14045b640",
+    "helper_function_defined": false,
+    "observed_behavior": "read owner U8 +0x1e8; select subobject +0x248 or +0x1f0; return owner plus offset",
+    "flag_writer": "UNBOUND",
+    "next_consumer": "FUN_140473290",
+    "indirect_slot": "selected subobject +0x8",
+    "callback_pointer_candidates": ["owner +0x1f8", "owner +0x250"],
+    "active_pointer_writer": "UNBOUND",
+    "callback_target": "UNBOUND"
+  },
+  "selected_mode_join": {
+    "preferred_downmix_mode_loro_to_descriptor": "UNBOUND",
+    "loro_to_callback_target": "UNBOUND",
+    "loro_to_native_dmixmod_typed_consumer": "UNBOUND",
+    "audio_or_metadata_effect": "UNBOUND"
+  },
+  "execution": {
+    "dee": false,
+    "windbg": false,
+    "ab_run": false,
+    "media_pcm_payload_key_license_read": false,
+    "spatial_object_rendering": "NOT_COVERED",
+    "implementation_contact": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-loro-callback-first-consumer-boundary-v1",
+  "source_package_manifest_sha256": "1d217fe5ff0ed3af5907f141decae587e9bb37f58414653c0f000a98bdcf0436",
+  "source_package_sha256sums_sha256": "dbe5604231f411727e0f4bf3f0466263b8193f14230cdc27ba3f631b1ce5008d",
+  "wash_recomputed": {
+    "source_payloads": "5/5",
+    "source_sha256sums_entries": "6/6",
+    "source_scripts_and_logs": "4/4",
+    "available_parent_manifests": "2/2",
+    "target_executable": true
+  },
+  "target": {
+    "name": "dee_ddpjoc_encoder.exe",
+    "sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "current_installed_image_matched": true
+  },
+  "verified_parent_manifests": [
+    {"package_id": "F13C-preferred-downmix-factory-instance-registration-boundary-v1", "manifest_sha256": "06576a27c87f4758d2edbc22fa20c58edae981858bd0223c08295fd7d1a8111d"},
+    {"package_id": "F13C-preferred-downmix-selected-consumer-boundary-addendum-v1", "manifest_sha256": "e5fc8a6ee7f1325685cd5a75f9d737d4a01cbc82020a543ec41b9bd8a87864f5"}
+  ],
+  "additional_referenced_parent": {
+    "package_id": "F13C Atmos JOC dMixMod audio-impact addendum v31",
+    "manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd",
+    "wash_located_and_rehashed": true
+  },
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "excluded_from_supplement": ["raw Ghidra scripts/logs", "checker source", "media/PCM/encoded payload", "private key/license"]
+}

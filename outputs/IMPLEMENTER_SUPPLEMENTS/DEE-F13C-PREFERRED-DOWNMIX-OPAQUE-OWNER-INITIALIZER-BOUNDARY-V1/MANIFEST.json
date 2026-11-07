@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-OPAQUE-OWNER-INITIALIZER-BOUNDARY-V1",
+  "source_package_manifest_sha256": "4da9a8d5e953e422963f8627c03a019410cbd809455f61f37c606e07ce2e3875",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "files": {
+    "REPORT.md": "9d168da990250dd8d0c77999e2282bc6ab0893ff1d142605afafae3351e984de",
+    "BOUNDARY.json": "eedac698ff0e5ab54bcfae9265d1dd651c7718a1ed1b84b1c861a916c5b79082",
+    "SOURCE-LINKS.json": "8ffbd7738c1e228e206e209ac8caf31a6ee4bc14b149120b00a6698fbfbeb698",
+    "INPUT-ONLY-VECTORS.json": "2ab4c8848cbb1491d807bd13414f9b7c21628313550948b9e74c3e724dd1ff5f"
+  }
+}

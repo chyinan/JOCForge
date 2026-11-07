@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-FACTORY-REGISTRATION-BOUNDARY-V4",
+  "manifest_sha256": "1c2df9fbb76ae9b5b49705c4704bebd82251701013997bc6a091a835a959a7e7",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "06576a27c87f4758d2edbc22fa20c58edae981858bd0223c08295fd7d1a8111d",
+  "target_image_rehashed_this_turn": true,
+  "source_package_formal_seal_present": false,
+  "disposition": "PARTIAL_ACCEPT_FACTORY_OWNER_AND_SELECTOR_TRANSFER; VALUE_SOURCE_UNBOUND"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "current-source-first-producer-transaction-compare",
+      "input": {
+        "expected": "source_execution-derived source_transaction_id",
+        "actual": "ID14 provenance producer_transaction_id",
+        "generation": "separate validated source-index lineage",
+        "parent_token": "separate GTC callback transaction argument"
+      },
+      "expected_disposition": {
+        "current_source_static_divergence_before_compare": "NOT_OBSERVED",
+        "historical_runtime_expected_actual": "UNBOUND",
+        "failed_binary_to_source_join": "UNBOUND"
+      },
+      "limitations": [
+        "Current working-tree snapshot only; Git HEAD and failed binary identity unavailable.",
+        "No historical operand capture or causal attribution.",
+        "No implementation change or test execution."
+      ]
+    }
+  ]
+}

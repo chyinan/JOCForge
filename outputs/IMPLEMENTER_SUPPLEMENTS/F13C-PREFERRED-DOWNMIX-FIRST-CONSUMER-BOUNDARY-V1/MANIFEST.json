@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F13C-PREFERRED-DOWNMIX-FIRST-CONSUMER-BOUNDARY-V1",
+  "status": "EVIDENCE_ONLY",
+  "implementation_allowed": false,
+  "source_package_manifest_sha256": "a2ed71f829bda692bd8662c9186ff0b33625703a529d0f4ab1e24e9797ea5383",
+  "source_package_sha256sums_sha256": "0030a09cfd24f227a05c384f3bf2a68302897b488c228bbc3897f63538fde753",
+  "contains_native_or_research_source_code": false,
+  "contains_package_checker_code": true,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {"path":"CHECK.py","bytes":2379,"sha256":"a23b47de9c6dfb206de02cf97084640ca4147189f237cd3f376187168f3cda34"},
+    {"path":"EVIDENCE.json","bytes":2460,"sha256":"ee7cc81cae9c39bbf2fe8ca232d46de73b4dcaee2c6a4a540add41207c1ada62"},
+    {"path":"INPUT-ONLY-VECTORS.json","bytes":579,"sha256":"643ea7f2d5bd42582622e8519dceda22641aa33f7eb8eed5df697b28c8905ff5"},
+    {"path":"SOURCE-MANIFESTS.json","bytes":2142,"sha256":"3ac8afa844d0ce9ddfbda4808f9e5c616e308804eb329be9d5640652ae640a06"},
+    {"path":"WASH-REVIEW.md","bytes":851,"sha256":"92f462f805d7017dad5126d68c40319309c8f367745f3df804cfa43b883342fc"}
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-CALLBACK-CONSUMER-BOUNDARY-V1",
+  "decision": "OPAQUE_CALLBACK_SUBOBJECT_BRANCH_BOUND_STATIC; LORO_JOIN_UNBOUND; EFFECT_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": {
+    "package_id": "F13C-preferred-downmix-loro-callback-first-consumer-boundary-v1",
+    "manifest_sha256": "1d217fe5ff0ed3af5907f141decae587e9bb37f58414653c0f000a98bdcf0436",
+    "sha256sums_sha256": "dbe5604231f411727e0f4bf3f0466263b8193f14230cdc27ba3f631b1ce5008d",
+    "formal_package_seal": "NOT_PRESENT"
+  },
+  "target_image": {
+    "name": "dee_ddpjoc_encoder.exe",
+    "sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "bytes": 20116992,
+    "wash_rehashed": true,
+    "tool": "Ghidra 12.2 PUBLIC, read-only, no-analysis"
+  },
+  "static_edges": {
+    "opaque_descriptor_field": "+0x6368",
+    "helper_address": "0x14045b640",
+    "helper_function_defined_in_project": false,
+    "observed_instructions": ["read owner byte +0x1e8", "select subobject +0x248 or +0x1f0", "return owner plus selected offset"],
+    "flag_producer_and_active_branch": "UNBOUND",
+    "next_helper": "FUN_140473290",
+    "indirect_callback": "subobject +0x8 invoked with owner and string-data pointer",
+    "callback_target_initializer_owner_type": "UNBOUND",
+    "separate_native_dmixmod_path": "FUN_1404802e0 reaches parser; typed join to opaque callback and selected loro is UNBOUND"
+  },
+  "selected_input": {
+    "field": "preferred_downmix_mode",
+    "reported_value": "loro",
+    "source_xml_hash": "17ea167465d24f420b5218f8a8bb8acf15f1bdd0eb8c5aa3efe1052e8a86d85c",
+    "runtime_xml_capture": false,
+    "wash_reopened_xml": false,
+    "join_to_descriptor_callback": "UNBOUND"
+  },
+  "execution": {
+    "dee_run": false,
+    "windbg": false,
+    "ab_run": false,
+    "media_pcm_payload_key_license_read": false,
+    "spatial_object_rendering": "NOT_COVERED",
+    "implementation_contact": false
+  }
+}

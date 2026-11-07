@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-CALLBACK-CONSUMER-BOUNDARY-V1",
+  "manifest_sha256": "55b66c69b343e0ac1c377c2f474c397cd648f2f0303088bf879c76674964c3db",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "1d217fe5ff0ed3af5907f141decae587e9bb37f58414653c0f000a98bdcf0436",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "OPAQUE_CALLBACK_SUBOBJECT_BOUND; PREFERRED_LORO_JOIN_UNBOUND; EFFECT_UNBOUND"
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-loro-selector-object-initializer-boundary-v1",
+  "source_package_manifest_sha256": "4da9a8d5e953e422963f8627c03a019410cbd809455f61f37c606e07ce2e3875",
+  "source_package_sha256sums_sha256": "9c4e8e6bcdfa35a0ee68e00ba5b30d779bc015e0bf1ee4a644eb5140775a506b",
+  "wash_recomputed": {
+    "source_payloads": "5/5",
+    "source_sha256sums_entries": "6/6",
+    "query_scripts_and_logs": "4/4",
+    "parent_manifests": "3/3",
+    "target_executable": true
+  },
+  "verified_parent_manifests": [
+    {"package_id": "F13C-preferred-downmix-factory-instance-registration-boundary-v1", "manifest_sha256": "06576a27c87f4758d2edbc22fa20c58edae981858bd0223c08295fd7d1a8111d"},
+    {"package_id": "F13C-preferred-downmix-loro-callback-first-consumer-boundary-v1", "manifest_sha256": "1d217fe5ff0ed3af5907f141decae587e9bb37f58414653c0f000a98bdcf0436"},
+    {"package_id": "F13C-atmos-joc-dmixmod-audio-impact-addendum-v31", "manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd"}
+  ],
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "excluded_from_supplement": ["verify_package.py", "Ghidra scripts and logs", "raw XML", "media/PCM/payload", "private key/license"]
+}

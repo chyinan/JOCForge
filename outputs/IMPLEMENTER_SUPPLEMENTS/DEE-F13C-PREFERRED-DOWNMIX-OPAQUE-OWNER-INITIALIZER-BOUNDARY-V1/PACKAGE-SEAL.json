@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-OPAQUE-OWNER-INITIALIZER-BOUNDARY-V1",
+  "manifest_sha256": "8870ab9b11dc4ee50d04ed8bcdbd47a9566e9504f912ebf8db591c1c5eb7cc42",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "4da9a8d5e953e422963f8627c03a019410cbd809455f61f37c606e07ce2e3875",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "OWNER_FLAG_AND_CALLBACK_SLOT_WRITERS_UNBOUND; LORO_JOIN_UNBOUND"
+}

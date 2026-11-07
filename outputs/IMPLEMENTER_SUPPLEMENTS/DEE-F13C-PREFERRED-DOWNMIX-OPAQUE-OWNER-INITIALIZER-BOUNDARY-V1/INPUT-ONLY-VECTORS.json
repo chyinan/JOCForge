@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "PREPARED_NOT_RUN",
+  "vectors": [
+    {
+      "id": "loro-source-projection",
+      "reported_xml_value": "loro",
+      "runtime_xml_capture": false,
+      "typed_join_to_opaque_owner": "UNBOUND"
+    },
+    {
+      "id": "opaque-callback-layout",
+      "owner_flag": "U8 at +0x1e8",
+      "candidate_subobjects": ["+0x248", "+0x1f0"],
+      "callback_candidates": ["+0x1f8", "+0x250"],
+      "active_branch_and_target": "UNBOUND"
+    }
+  ],
+  "audio_effect": "UNBOUND",
+  "dee_or_ab_run": "NOT_RUN"
+}

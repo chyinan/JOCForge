@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-F05-F13-APPROVED-PARENT-SNAPSHOT-DIFF-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SIX_COMPARE_PATH_FILES_IDENTICAL_TO_APPROVED_PARENT; CURRENT_STATIC_TOKEN_FLOW_MATCHES; HISTORICAL_OPERANDS_UNBOUND",
+  "source_package_id": "f05_f13_transaction_compare_parent_snapshot_diff_wash_v1",
+  "source_manifest_sha256": "5e88d3742c8c9d127ca958f83931df08ea056ea9b808591d2d56fa26789a7acf",
+  "source_package_seal_sha256": null,
+  "implementation_ready": false,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2015,
+      "sha256": "be73834a2b85f9d981ee9058bf6c3c073c4fda330b727d6977607af8f45f0c17"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2106,
+      "sha256": "17b17df6d650136ea430491c3ddcb61d1e9ab94a128620940ea53356ba0833dc"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1587,
+      "sha256": "c14c60bb6dad771b39bc21cedfc34dd2dca15f1de7dcb1b8a2ff0f8d7a9a8727"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1441,
+      "sha256": "8c21b8d96fd868f9c4736eefb58467fda864286ebec4455f6ddfede4df0276cb"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 744,
+      "sha256": "19f09f0e51009e5691a4c3c9a753dd438874ccc362fdfb9daf465423663860b5"
+    }
+  ]
+}

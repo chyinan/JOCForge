@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.f13c-preferred-downmix-first-consumer-boundary.v1",
+  "package_id": "F13C-PREFERRED-DOWNMIX-FIRST-CONSUMER-BOUNDARY-V1",
+  "source_package_manifest_sha256": "a2ed71f829bda692bd8662c9186ff0b33625703a529d0f4ab1e24e9797ea5383",
+  "source_package_sha256sums_sha256": "0030a09cfd24f227a05c384f3bf2a68302897b488c228bbc3897f63538fde753",
+  "status": {
+    "preferred_downmix_xml_values": "SCHEMA_VALIDATED_CANDIDATES",
+    "xml_value_to_native_typed_dmixmod_owner": "UNBOUND",
+    "native_dmixmod_text_validator": "BOUND_AS_SEPARATE_KEY_PATH",
+    "preferred_literal_direct_code_xrefs": "ZERO_IN_BOUNDED_QUERY",
+    "audio_bsi_and_spatial_effect": "UNBOUND",
+    "candidate_pair_runtime": "NOT_RUN",
+    "new_ghidra_query_this_pass": false
+  },
+  "bounded_property_fact": {
+    "xml_property": "preferred_downmix_mode",
+    "candidate_values": ["loro", "ltrt"],
+    "candidate_pair_other_settings": "Same 1024 kbps and four -3 dB mix levels; only this XML leaf differs.",
+    "ui_mapping": "A separate static app-source receipt maps UI labels to `loro`/`ltrt`/`not_indicated`; no same-run UI/XML capture is present."
+  },
+  "separate_native_key_path": {
+    "native_string_key": "dmixmod",
+    "first_proven_consumer": "Presence and string-allowlist validation only.",
+    "observed_allowlist": ["not_indicated", "pro_logic", "stereo", "pro_logic_ii"],
+    "preferred_values_in_allowlist": false,
+    "alias_or_forwarding_relation": "UNBOUND"
+  },
+  "other_paths": {
+    "numeric_mix_level_path": "Separate numeric getters/write path; not a bound preferred-mode consumer.",
+    "generic_result_tree": "Not a bound audio or metadata sink."
+  },
+  "first_break": "preferred_downmix_mode XML string -> typed native ddp_dmixmod owner/consumer.",
+  "limits": {
+    "global_absence_claim": false,
+    "product_mode_policy": "UNBOUND",
+    "atmos_5_1_joc_audio_effect": "UNBOUND",
+    "bsi_metadata_effect": "UNBOUND",
+    "ui_or_side_path_only": "UNBOUND",
+    "spatial_object_rendering": "NOT_COVERED"
+  },
+  "implementation_effect": {
+    "algorithm_change_authorized": false,
+    "do_not_treat_separate_dmixmod_validation_as_preferred_mode_effect": true
+  },
+  "excluded_material": {
+    "native_or_research_source_code": false,
+    "decompilation_or_binary": false,
+    "raw_xml": false,
+    "pcm_or_bitstream_payload": false,
+    "private_key_or_auth_material": false,
+    "absolute_local_paths": false,
+    "raw_native_addresses": false
+  }
+}

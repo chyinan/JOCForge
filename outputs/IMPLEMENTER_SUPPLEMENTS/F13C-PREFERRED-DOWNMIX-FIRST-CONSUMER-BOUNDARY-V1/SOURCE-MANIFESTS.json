@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "F13C-preferred-downmix-property-native-consumer-first-break-v1",
+      "manifest_sha256": "a2ed71f829bda692bd8662c9186ff0b33625703a529d0f4ab1e24e9797ea5383",
+      "sha256sums_file_sha256": "0030a09cfd24f227a05c384f3bf2a68302897b488c228bbc3897f63538fde753",
+      "scope": "Schema-validated candidate values to separate native dmixmod validation boundary; no typed owner/effect join."
+    },
+    {
+      "package_id": "F13C-atmos-joc-dmixmod-audio-impact-addendum-v31",
+      "manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd",
+      "scope": "Static UI/property mapping and prior DDP dmixmod boundary."
+    },
+    {
+      "package_id": "F13C-preferred-downmix-selected-consumer-boundary-addendum-v1",
+      "manifest_sha256": "e5fc8a6ee7f1325685cd5a75f9d737d4a01cbc82020a543ec41b9bd8a87864f5",
+      "scope": "Bounded native literal xref boundary."
+    },
+    {
+      "package_id": "F13C-preferred-downmix-registry-consumer-boundary-addendum-v1",
+      "manifest_sha256": "1773b53708bb4b42cdd692dc54d7280578bdfff3ba6f4207a67032c3da1cd3ea",
+      "scope": "Separate dmixmod allowlist validation; typed owner unbound."
+    },
+    {
+      "package_id": "F13C-dmixmod-first-dsp-consumer-addendum-v29",
+      "manifest_sha256": "f0c42ba60d2de6105e2662c10b14dc4b22cdd4cd9b9069068010233159916cfa",
+      "scope": "Generic result-tree and final writer boundary."
+    },
+    {
+      "package_id": "F13C-preferred-downmix-postparse-consumer-addendum-v1",
+      "manifest_sha256": "0a5ce7b7c05d2d0c7cb65109742bbf4e49a5079d26529bca814a2ef59ee76925",
+      "scope": "Separate numeric mix-level path."
+    },
+    {
+      "package_id": "F13C-preferred-downmix-atmos-mezz-ab-preflight-reuse-v1",
+      "manifest_sha256": "b5378276df5b6a411775b2e727cce935d3d9e4e164eb198c739908eca9de5ef0",
+      "scope": "Schema-validated LoRo/LtRt candidate pair; pair not run."
+    }
+  ],
+  "source_package_normal_and_python_o_checker": "PASS",
+  "six_parent_receipts_verified_by_source_checker": true,
+  "raw_research_payload_copied": false
+}

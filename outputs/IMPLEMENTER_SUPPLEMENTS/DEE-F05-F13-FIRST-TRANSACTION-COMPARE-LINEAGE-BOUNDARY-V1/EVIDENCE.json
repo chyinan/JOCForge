@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.f05_f13_first_transaction_compare_boundary.v1",
+  "package_id": "DEE-F05-F13-FIRST-TRANSACTION-COMPARE-LINEAGE-BOUNDARY-V1",
+  "source": {
+    "package_id": "f05_f13_first_transaction_compare_lineage_wash_v1",
+    "manifest_sha256": "61f33b558c3210ef6c50e15b44b55d1e7ffae8deaa2f665f6d24afa8f92ed2de",
+    "source_checker_normal_and_python_o": "PASS",
+    "identity": "selected working-tree file-byte hashes; Git HEAD unavailable"
+  },
+  "status": "CURRENT_SOURCE_EXPECTED_ACTUAL_TOKEN_PATHS_BOUND_AND_EQUAL; HISTORICAL_RUNTIME_OPERANDS_AND_BINARY_JOIN_UNBOUND; GENERATION_VALIDATED_SEPARATELY",
+  "first_comparison": {
+    "path": "crates/jocforge-application/src/metadata_source_bridge.rs:274",
+    "actual": "joc_after.id14_body().provenance().producer_transaction_id()",
+    "expected": "Some(&source_transaction_id)",
+    "actual_type": "Option<CallbackTransactionId>",
+    "parent_callback_transaction_is_operand": false
+  },
+  "expected_token_origin": {
+    "source": "CodecSourceIndex validated against source_for_callback_clock(callback_index)",
+    "projection": "source_index = callback_index - 2",
+    "field": "MainMetadataBodiesInput.source_transaction_id"
+  },
+  "actual_token_forwarding": [
+    "metadata_source_bridge.rs passes source_transaction_id.clone() into transaction-aware source stage",
+    "source_stage.rs passes Some(producer_transaction_id) into JocPayloadInput",
+    "dispatch_state.rs forwards producer_transaction_id through proposal and representation",
+    "id14_body.rs stores the supplied token unchanged in producer provenance"
+  ],
+  "current_snapshot_result": {
+    "expected_and_actual_source": "same typed source_transaction_id forwarding route",
+    "divergence_before_first_compare": "NOT_OBSERVED",
+    "generation_is_comparison_operand": false,
+    "parent_callback_token_is_comparison_operand": false
+  },
+  "historical_failure": {
+    "observed_error": "Joc(ProducerTransactionMismatch)",
+    "expected_actual_values": "UNBOUND",
+    "generation_and_parent_values": "UNBOUND",
+    "failed_executable_sha256": "UNBOUND",
+    "historical_first_diverging_operand_or_cause": "UNBOUND"
+  },
+  "scope": {
+    "git_head_verified": false,
+    "tests_run": false,
+    "dee_launched": false,
+    "media_pcm_payload_or_key_license_accessed": false,
+    "implementation_changed": false
+  }
+}

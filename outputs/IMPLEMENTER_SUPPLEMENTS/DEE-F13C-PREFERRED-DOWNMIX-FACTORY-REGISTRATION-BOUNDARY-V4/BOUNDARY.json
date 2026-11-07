@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-FACTORY-REGISTRATION-BOUNDARY-V4",
+  "supersedes": ["DEE-F13C-PREFERRED-DOWNMIX-JOIN-BOUNDARY-V1", "DEE-F13C-PREFERRED-DOWNMIX-OWNER-TRANSFER-BOUNDARY-V2", "DEE-F13C-PREFERRED-DOWNMIX-FACTORY-REGISTRATION-BOUNDARY-V3"],
+  "decision": "FACTORY_TYPE_AND_OPAQUE_FIELD_TRANSFER_BOUND; INSTANCE_REGISTRATION_UNBOUND",
+  "factory": {
+    "rtti_type": "Factory<AtmosMasterFileStorage>",
+    "vtable_address_point": "0x140bca558",
+    "complete_object_locator": "0x141036e98",
+    "type_descriptor": "0x141288690",
+    "hierarchy_types": ["Factory<AtmosMasterFileStorage>", "PrintmasterStorageFactory"],
+    "slot_0x08": "FUN_1403c3980",
+    "slot_0x10": "FUN_1403c3d30",
+    "code_refs_to_address_point_in_imported_program": 0,
+    "constructor_or_registration_writer": "UNBOUND_IN_THIS_IMPORT"
+  },
+  "opaque_selector_transfer": {
+    "source": "Factory param_1+8",
+    "slot_0x08_path": "FUN_1403c3980 -> FUN_1403f5270 -> FUN_1403f1dd0 -> descriptor +0x6368 -> FUN_1403f4e90 callback read",
+    "sibling_slot_0x10_also_reads_source": true,
+    "selector_semantic_name_and_type": "UNBOUND",
+    "selected_loro_value_join": "UNBOUND",
+    "join_to_native_dmixmod": "UNBOUND"
+  },
+  "effect": {
+    "main_5_1_joc_audio": "UNBOUND",
+    "compatibility_stereo_fold_down": "UNBOUND",
+    "bsi_or_metadata": "UNBOUND",
+    "intentional_ignore": "UNBOUND",
+    "spatial_object_rendering": "NOT_COVERED"
+  },
+  "status": {
+    "input_vectors": "NOT_RUN",
+    "runtime_factory_registration": "NOT_CAPTURED",
+    "source_manifest_and_five_payloads_verified": true,
+    "three_related_packages_verified": true,
+    "target_executable_rehashed_by_wash": true,
+    "source_package_formal_seal_present": false,
+    "implementation_modified": false
+  },
+  "next_exact_gap": "Find the constructor/registration outside or within the imported image that writes vptr 0x140bca558 and initializes factory +0x8."
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "f05_f13_transaction_compare_parent_snapshot_diff_wash_v1",
+  "manifest_file": "MANIFEST.json",
+  "manifest_sha256": "5e88d3742c8c9d127ca958f83931df08ea056ea9b808591d2d56fa26789a7acf",
+  "source_seal_file": null,
+  "source_package_seal_sha256": null,
+  "checksum_file": null,
+  "checksum_file_sha256": null,
+  "checksum_content": null,
+  "source_verification": "SOURCE_CHECKER_NORMAL_AND_PYTHON_O_PASS",
+  "parent_bindings": [
+    {
+      "package_id": "current_head_f05_failure_recovery_receipt_wash",
+      "manifest_sha256": "e7526ec9fdb9773dad926f08a3d06826c2a7333054ca1454e11133a56b9b60de"
+    }
+  ],
+  "raw_reverse_source_forwarded": false
+}

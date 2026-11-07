@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-FACTORY-REGISTRATION-BOUNDARY-V4",
+  "source_package_manifest_sha256": "06576a27c87f4758d2edbc22fa20c58edae981858bd0223c08295fd7d1a8111d",
+  "files": {
+    "REPORT.md": "bc8cefbe24fe2d970233d6be0eca51d33cd4174ba63ef95363e801849fcff81d",
+    "BOUNDARY.json": "38f4650c7aeaa8d645672ebce7f94ab5fd41b84075ea43b129adc472a9115a2d",
+    "SOURCE-LINKS.json": "96ac3e5e8943e11ca7ca33d0b96d1203a95633a15bbf5023bb90ef396b52c432"
+  }
+}

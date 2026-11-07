@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-downmix-level-input-vectors.v1",
+  "status": "REFERENCE_ONLY_NO_NEW_RUNTIME",
+  "existing_binding": "lorocmixlev -> uint helper-result slot puVar16[0xf] / callback object +0x1a8",
+  "selected_candidate": "FUN_1403f3610",
+  "candidate_object_field_reads": 0,
+  "stack_relative_hits_are_object_reads": false,
+  "separate_double_getter_join": "UNBOUND",
+  "first_typed_reader": "UNBOUND",
+  "runtime_status": "NOT_RUN",
+  "pcm_or_payload_accessed": false
+}

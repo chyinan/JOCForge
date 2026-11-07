@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-factory-instance-registration-boundary-v1",
+    "manifest_sha256": "06576a27c87f4758d2edbc22fa20c58edae981858bd0223c08295fd7d1a8111d",
+    "payloads_verified": "5/5",
+    "sha256sums_sha256": "2a1846165d6abb65fb6274504570a7f61d9a439710adb72221a0b578b6969763",
+    "formal_package_seal_present": false
+  },
+  "verified_related_packages": [
+    {"manifest_sha256": "66a48a8aa488876d76f8b7f589c9df64f5c403682ba0523f41077a9f5d84a358", "payloads": "5/5"},
+    {"manifest_sha256": "e5fc8a6ee7f1325685cd5a75f9d737d4a01cbc82020a543ec41b9bd8a87864f5", "payloads": "5/5"},
+    {"manifest_sha256": "fa4d4d89bae114f2c4c67c18755ecfcffd34e273f3b8d1c673ad1b30e04b2f68", "payloads": "10/10"},
+    {"manifest_sha256": "97206a60a8736fbd579400e3f580e1decd80265ac5da659ada93cf30b18b9abb", "payloads": "3/3"},
+    {"manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd", "payloads": "15/15"},
+    {"manifest_sha256": "3c8512f969c03754044c98723773fca43cdf9ed0dc91433f02f444a940a0ad99", "payloads": "4/4", "seal_sha256": "9ce15656a49f0aaeccb0a121d5793945febe337f4fd3b0d4776d2e3bccd6d098"}
+  ],
+  "target_image": {
+    "path": "C:/Program Files/Dolby Media Encoder/resources/dee/dee_ddpjoc_encoder.exe",
+    "bytes": 20116992,
+    "sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "rehash_by_wash_this_turn": true
+  },
+  "wash_actions": {
+    "source_manifest_payloads_and_sha256sums_recomputed": true,
+    "parent_manifests_and_payloads_recomputed": true,
+    "metadata_receipt_manifest_seal_payloads_recomputed": true,
+    "target_executable_rehashed": true,
+    "raw_ghidra_logs_or_scripts_copied": false,
+    "private_key_or_license_material_copied": false
+  }
+}

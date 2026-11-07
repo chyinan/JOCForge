@@ -1,0 +1,91 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "f05_f13_first_transaction_compare_lineage_wash_v1",
+    "manifest_sha256": "61f33b558c3210ef6c50e15b44b55d1e7ffae8deaa2f665f6d24afa8f92ed2de",
+    "payload_hashes_checked": true
+  },
+  "working_tree_files": [
+    {
+      "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
+      "bytes": 12505,
+      "sha256": "98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132",
+      "relevant_lines": "234-304"
+    },
+    {
+      "path": "crates/jocforge-cli/src/source_execution.rs",
+      "bytes": 18298,
+      "sha256": "0b8a09282203a5743d380e99a7d6ec93019cc3e738463ec29421fd790d8b8606",
+      "relevant_lines": "76-153; 286-303"
+    },
+    {
+      "path": "crates/jocforge-cli/src/encode_request.rs",
+      "bytes": 38044,
+      "sha256": "5c7bb4aee9cc6760520323bde06a724b7c8f691d46dcacd7fbd610c7f48b9206",
+      "relevant_lines": "338-370; 610-630; 698-714"
+    },
+    {
+      "path": "crates/jocforge-cli/src/programme_roots.rs",
+      "bytes": 39227,
+      "sha256": "b41e877a0967fdf122e464f9bb97df5c1773195cfe317daab8865ff41f8349e8",
+      "relevant_lines": "54-64"
+    },
+    {
+      "path": "crates/jocforge-domain/src/joc/source_stage.rs",
+      "bytes": 7525,
+      "sha256": "720e13dda29b4175d83a73171d11b99b63147b10405ae0414c1875ba597e9e6c",
+      "relevant_lines": "145-205"
+    },
+    {
+      "path": "crates/jocforge-domain/src/joc/dispatch_state.rs",
+      "bytes": 11129,
+      "sha256": "092d79388987bfe0689aefc34d76d23d6d1769a8187d0e881affcc3d7901ddff",
+      "relevant_lines": "98-151; 217-257; 280-373"
+    },
+    {
+      "path": "crates/jocforge-domain/src/joc/coefficient_representation.rs",
+      "bytes": 12320,
+      "sha256": "0f41a355b37ab1ab6004822dea3a54a1a5628b2fd4b3992d4e0eb3d230ed4cda",
+      "relevant_lines": "145-168"
+    },
+    {
+      "path": "crates/jocforge-domain/src/joc/coefficient_payload.rs",
+      "bytes": 21328,
+      "sha256": "34497b4c130a874410d6469141e9b4cb9a9ba68c43a9589587050b0c608e0dc3",
+      "relevant_lines": "168-196"
+    },
+    {
+      "path": "crates/jocforge-domain/src/joc/id14_body.rs",
+      "bytes": 8333,
+      "sha256": "794f27cc2fe7a44b940c6fe8d8da77a8f2730cbdb2e05b837fdfd05e9574a7f3",
+      "relevant_lines": "43-96; 199-220"
+    },
+    {
+      "path": "crates/jocforge-domain/src/joc/programme_state.rs",
+      "bytes": 23854,
+      "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58",
+      "relevant_lines": "264-278"
+    },
+    {
+      "path": "crates/jocforge-domain/src/transaction/mod.rs",
+      "bytes": 15248,
+      "sha256": "d652f68c5b707855ba8dcdd77181a6c2ef90142fb46ea2fb214da73d049cb8c6",
+      "relevant_lines": "63-90"
+    }
+  ],
+  "approved_parent_receipts": [
+    {
+      "package_id": "current_head_f05_failure_recovery_receipt_wash",
+      "manifest_path": "2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/current_head_f05_failure_recovery_receipt_wash/MANIFEST.json",
+      "manifest_sha256": "e7526ec9fdb9773dad926f08a3d06826c2a7333054ca1454e11133a56b9b60de",
+      "used_for": "historical attempt operands and failed executable/source join remain UNBOUND"
+    },
+    {
+      "package_id": "F05-F13-PRODUCER-TRANSACTION-BINDING-WASH-V1",
+      "manifest_path": "2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/f05_f13_producer_transaction_binding_wash_v1/MANIFEST.json",
+      "manifest_sha256": "39c7cee28e7ae9a9c6822b7fe37d4c70107d6b7b62fadce0d51069365900be60",
+      "used_for": "approved historical error note; runtime expected/actual values absent"
+    }
+  ],
+  "implementation_source_or_tests_included": false
+}

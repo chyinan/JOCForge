@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-F13C-PREFERRED-DOWNMIX-CALLBACK-CONSUMER-BOUNDARY-V1",
+  "source_package_manifest_sha256": "1d217fe5ff0ed3af5907f141decae587e9bb37f58414653c0f000a98bdcf0436",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "source_package_sha256sums_sha256": "dbe5604231f411727e0f4bf3f0466263b8193f14230cdc27ba3f631b1ce5008d",
+  "files": {
+    "REPORT.md": "947bf54ef4a081934bac4d0c42c4a334a8d716f21b88a54eaec1566b84028238",
+    "BOUNDARY.json": "acc642f57be30e09c0cb12db41cab092dc2c9414febb3ace7e5b3dd33e1bf6b2",
+    "SOURCE-LINKS.json": "b9fda1f92921c9069742540b492717fd07e88ef0c736f571a84366a9e6fb57f2",
+    "INPUT-ONLY-VECTORS.json": "06e3d322deb75b187190f1988ed4437d56e8c066db0aa81fa3512ca294274116"
+  }
+}

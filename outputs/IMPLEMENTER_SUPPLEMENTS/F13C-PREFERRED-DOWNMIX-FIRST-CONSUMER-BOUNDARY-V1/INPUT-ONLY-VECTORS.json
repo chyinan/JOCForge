@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.f13c-preferred-downmix-input-only.v1",
+  "vectors": [
+    {
+      "id": "preferred-loro-candidate",
+      "kind": "schema-valid candidate; NOT_RUN",
+      "input": {"preferred_downmix_mode":"loro"},
+      "expected": {"native_typed_owner":"UNBOUND","audio_effect":"UNBOUND","runtime":"NOT_RUN"}
+    },
+    {
+      "id": "preferred-ltrt-candidate",
+      "kind": "schema-valid candidate; NOT_RUN",
+      "input": {"preferred_downmix_mode":"ltrt"},
+      "expected": {"native_typed_owner":"UNBOUND","audio_effect":"UNBOUND","runtime":"NOT_RUN"}
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "PREPARED_NOT_RUN",
+  "vectors": [
+    {
+      "id": "preferred-downmix-loro-source-branch",
+      "xml_value_reported_by_source_package": "loro",
+      "source_xml_sha256": "17ea167465d24f420b5218f8a8bb8acf15f1bdd0eb8c5aa3efe1052e8a86d85c",
+      "runtime_xml_capture": false,
+      "callback_object_join": "UNBOUND"
+    },
+    {
+      "id": "authorized-adm-metadata-range",
+      "channel_counts_reported_by_source_package": [36, 38],
+      "sample_rate_hz": 48000,
+      "bit_depth": 24,
+      "payload_or_pcm_read": false,
+      "vector_status": "NOT_RUN"
+    }
+  ],
+  "audio_effect": "UNBOUND",
+  "dee_or_ab_run": "NOT_RUN"
+}

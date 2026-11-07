@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-downmix-level-first-reader-receipts.v1",
+  "source_package": "loro_center_helper_slot_postparse_reader_boundary_wash_v1",
+  "source_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/loro_center_helper_slot_postparse_reader_boundary_wash_v1",
+  "manifest_sha256": "ea88836a31e2c5f65e4b97481c4680e07109a627dda71471658a710647c746a4",
+  "normal_checker": "PASS_IN_WASH",
+  "optimized_checker": "PASS_IN_WASH",
+  "static_tool": "Ghidra 12.2 read-only/no-analysis",
+  "runtime_status": "NOT_RUN",
+  "implementation_contact": false
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-DOWNMIX-LORO-CENTER-FIRST-READER-BOUNDARY-V1",
+  "scope": "Wash-verified helper-slot first reader boundary only; no matrix/audio effect claimed.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1037,
+      "sha256": "495f578a391c34a52c774b8698d739a21642b802056aa9268f553b3b89b142d4"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 478,
+      "sha256": "a16be7cc7a934638b413a036cf5e875e22a345a49db396831ead24834b1e6771"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 606,
+      "sha256": "b7ba4ca09a81273b26d367b1ebe126a83eec359a51674b1feb18e96c0f9ddbac"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1904,
+      "sha256": "962e59f362c90f6ce7b0701a479862e7804987c459e1476b957f550a8c4b3ab8"
+    }
+  ]
+}
