@@ -167,13 +167,22 @@ fn control_join_with(
     )
 }
 
+fn source_axis_binding(
+    callback: FrontendCallbackIndex,
+    source_count: usize,
+) -> Arc<SourceAxisBinding> {
+    super::fixture_source_axis(component_transaction_id(callback), 0, source_count)
+}
+
 fn zero_packet(context: &TestContext) -> SpatialAudioInputPacket {
+    let transaction_id = component_transaction_id(FrontendCallbackIndex::new(0));
     SpatialAudioInputPacket::fixture(ComponentPacketFixture {
         programme_id: component_programme_id(),
         attempt: SourceFlagsAttempt::new(7),
-        transaction_id: component_transaction_id(FrontendCallbackIndex::new(0)),
+        transaction_id: transaction_id.clone(),
         callback_index: FrontendCallbackIndex::new(0),
         phase: ComponentCallbackPhase::Normal,
+        source_axis: source_axis_binding(FrontendCallbackIndex::new(0), SOURCE_ROW_COUNT),
         profile_identity: context.profile,
         spatial_control: &context.spatial_control,
         provider_lineage: provider_lineage(context),
@@ -335,6 +344,7 @@ fn assert_rows_equal(actual: &[FiniteF32], expected: &Value, row_width: usize) {
 fn validated_payload(
     installed48_bits: Vec<u32>,
     matrix_rows: usize,
+    source_count: usize,
     matrix_bits: Vec<u32>,
     destinations: Vec<u8>,
 ) -> ValidatedComponentPayload {
@@ -351,6 +361,7 @@ fn validated_payload(
             .into_boxed_slice(),
         destinations: destinations.into_boxed_slice(),
         matrix_rows,
+        source_count,
     }
 }
 
@@ -377,7 +388,14 @@ fn matrix_stage_replays_u_front_matrix_case() {
         .map(|value| u8::try_from(value.as_u64().unwrap()).unwrap())
         .collect::<Vec<_>>();
 
-    let output = mix_matrix(&validated_payload(installed48, 15, matrix, destinations)).unwrap();
+    let output = mix_matrix(&validated_payload(
+        installed48,
+        15,
+        SOURCE_ROW_COUNT,
+        matrix,
+        destinations,
+    ))
+    .unwrap();
     assert_eq!(output.len(), COMPONENT_ROW_COUNT * INSTALLED_SAMPLES);
     assert_eq!(
         row_hashes(&output, INSTALLED_SAMPLES),
@@ -1042,8 +1060,13 @@ fn whole_chain_component_projection_replays_two_normal_and_four_drain_callbacks(
             digest_u32_words(&matrix_bits),
             case["input"]["matrix_u32le_sha256"].as_str().unwrap()
         );
-        let payload =
-            validated_payload(installed48, COMPONENT_ROW_COUNT, matrix_bits, destinations);
+        let payload = validated_payload(
+            installed48,
+            COMPONENT_ROW_COUNT,
+            SOURCE_ROW_COUNT,
+            matrix_bits,
+            destinations,
+        );
         let mixer = mix_matrix(&payload).unwrap();
         assert_eq!(
             digest_words(&mixer),
@@ -1651,8 +1674,10 @@ fn compact_active_matrix_scatter_and_gather_preserve_slots_and_words() {
         let all_zero =
             case["coefficient_recipe_override"].as_str() == Some("POSITIVE_ZERO_ALL_CELLS");
         let compact_words = active_matrix_recipe(row_count, all_zero);
+        let source_axis = source_axis_binding(callback, SOURCE_ROW_COUNT);
         let compact = ActiveComponentMatrix::from_producer_output(
             callback,
+            Arc::clone(&source_axis),
             compact_words.clone(),
             destinations.clone(),
         )
@@ -1662,11 +1687,13 @@ fn compact_active_matrix_scatter_and_gather_preserve_slots_and_words() {
         assert_eq!(usize::from(compact.row_count()), row_count);
         assert_eq!(compact.target_slots(), destinations);
         assert_eq!(compact.coefficient_bits(), compact_words);
+        assert_eq!(compact.source_axis().source_ids().len(), SOURCE_ROW_COUNT);
 
-        let dense = compact.scatter_to_canonical_dense();
+        let dense = compact.scatter_to_target_source_matrix();
         assert_eq!(dense.len(), COMPONENT_ROW_COUNT * MATRIX_COLUMN_COUNT);
-        let gathered = ActiveComponentMatrix::gather_from_canonical_dense(
+        let gathered = ActiveComponentMatrix::gather_from_target_source_matrix(
             callback,
+            Arc::clone(&source_axis),
             &dense,
             destinations.clone(),
         )
@@ -1702,6 +1729,7 @@ fn compact_active_matrix_scatter_and_gather_preserve_slots_and_words() {
         assert_eq!(
             ActiveComponentMatrix::from_producer_output(
                 callback,
+                source_axis_binding(callback, SOURCE_ROW_COUNT),
                 vec![0; row_count * MATRIX_COLUMN_COUNT],
                 destinations,
             )
@@ -1712,13 +1740,123 @@ fn compact_active_matrix_scatter_and_gather_preserve_slots_and_words() {
 }
 
 #[test]
+fn component_mixer_uses_only_the_ordered_46_source_axis_rows() {
+    let callback = FrontendCallbackIndex::new(4);
+    let source_axis = source_axis_binding(callback, 46);
+    assert_eq!(source_axis.source_count(), 46);
+    assert_eq!(source_axis.source_ids().first().unwrap().value(), 0);
+    assert_eq!(source_axis.source_ids().last().unwrap().value(), 45);
+
+    let mut installed_rows = vec![0_u32; 46 * INSTALLED_SAMPLES];
+    installed_rows[45 * INSTALLED_SAMPLES..46 * INSTALLED_SAMPLES].fill(1.0_f32.to_bits());
+    let mut matrix = vec![0_u32; 46];
+    matrix[45] = 1.0_f32.to_bits();
+    let active = ActiveComponentMatrix::from_producer_output(
+        callback,
+        Arc::clone(&source_axis),
+        matrix.clone(),
+        vec![3],
+    )
+    .unwrap();
+    let target_source_matrix = active.scatter_to_target_source_matrix();
+    assert_eq!(target_source_matrix.len(), COMPONENT_ROW_COUNT * 46);
+    assert_eq!(target_source_matrix[3 * 46..4 * 46], matrix);
+
+    let installed48 = installed_rows.clone();
+    let mixed = mix_matrix(&validated_payload(
+        installed_rows,
+        1,
+        source_axis.source_count(),
+        matrix,
+        vec![3],
+    ))
+    .unwrap();
+    assert_eq!(mixed.len(), COMPONENT_ROW_COUNT * INSTALLED_SAMPLES);
+    assert!(
+        mixed[..3 * INSTALLED_SAMPLES]
+            .iter()
+            .all(|sample| sample.value() == 0.0)
+    );
+    assert!(
+        mixed[3 * INSTALLED_SAMPLES..4 * INSTALLED_SAMPLES]
+            .iter()
+            .all(|sample| sample.value().to_bits() == 1.0_f32.to_bits())
+    );
+    assert!(
+        mixed[4 * INSTALLED_SAMPLES..]
+            .iter()
+            .all(|sample| sample.value() == 0.0)
+    );
+    assert_eq!(
+        installed48.len(),
+        source_axis.source_count() * INSTALLED_SAMPLES
+    );
+}
+
+#[test]
+fn component_matrix_and_audio_rows_keep_only_present_s46_sources() {
+    let callback = FrontendCallbackIndex::new(4);
+    let source_axis = source_axis_binding(callback, 46);
+    assert_eq!(source_axis.source_count(), 46);
+    assert_eq!(source_axis.source_ids().first().unwrap().value(), 0);
+    assert_eq!(source_axis.source_ids().last().unwrap().value(), 45);
+
+    let mut source_audio = vec![0_u32; 46 * INSTALLED_SAMPLES];
+    source_audio[45 * INSTALLED_SAMPLES..46 * INSTALLED_SAMPLES].fill(1.0_f32.to_bits());
+    let mut coefficients = vec![0_u32; 46];
+    coefficients[45] = 1.0_f32.to_bits();
+    let active_matrix = ActiveComponentMatrix::from_producer_output(
+        callback,
+        Arc::clone(&source_axis),
+        coefficients.clone(),
+        vec![3],
+    )
+    .unwrap();
+
+    let target_source_matrix = active_matrix.scatter_to_target_source_matrix();
+    assert_eq!(target_source_matrix.len(), COMPONENT_ROW_COUNT * 46);
+    assert_eq!(target_source_matrix[3 * 46..4 * 46], coefficients);
+
+    let mixed = mix_matrix(&validated_payload(
+        source_audio,
+        1,
+        source_axis.source_count(),
+        coefficients,
+        vec![3],
+    ))
+    .unwrap();
+    assert_eq!(mixed.len(), COMPONENT_ROW_COUNT * INSTALLED_SAMPLES);
+    assert!(
+        mixed[..3 * INSTALLED_SAMPLES]
+            .iter()
+            .all(|sample| sample.value() == 0.0)
+    );
+    assert!(
+        mixed[3 * INSTALLED_SAMPLES..4 * INSTALLED_SAMPLES]
+            .iter()
+            .all(|sample| sample.value().to_bits() == 1.0_f32.to_bits())
+    );
+    assert!(
+        mixed[4 * INSTALLED_SAMPLES..]
+            .iter()
+            .all(|sample| sample.value() == 0.0)
+    );
+}
+
+#[test]
 fn production_packet_constructor_binds_empty_current_matrix_and_stages_component_history() {
     let context = context();
     let callback = FrontendCallbackIndex::new(0);
     let audio_join = callback_join(&context, callback);
     let control_join = control_join(&context, callback);
-    let matrix = ActiveComponentMatrix::from_producer_output(callback, Vec::new(), Vec::new())
-        .expect("empty C/d is an explicit current producer result");
+    let source_axis = source_axis_binding(callback, SOURCE_ROW_COUNT);
+    let matrix = ActiveComponentMatrix::from_producer_output(
+        callback,
+        Arc::clone(&source_axis),
+        Vec::new(),
+        Vec::new(),
+    )
+    .expect("empty C/d is an explicit current producer result");
     let packet = SpatialAudioInputPacket::from_current_component_callback(
         &context.spatial_audio,
         &audio_join,
@@ -1727,6 +1865,7 @@ fn production_packet_constructor_binds_empty_current_matrix_and_stages_component
         ComponentCallbackPhase::Normal,
         &context.window,
         &context.parameters,
+        Arc::clone(&source_axis),
         vec![0; INSTALLED_WORDS],
         matrix,
     )
@@ -1759,8 +1898,14 @@ fn production_packet_with_matrix(
     coefficients: Vec<u32>,
     destinations: Vec<u8>,
 ) -> SpatialAudioInputPacket {
-    let matrix = ActiveComponentMatrix::from_producer_output(callback, coefficients, destinations)
-        .expect("current C/d rows are valid");
+    let source_axis = source_axis_binding(callback, SOURCE_ROW_COUNT);
+    let matrix = ActiveComponentMatrix::from_producer_output(
+        callback,
+        Arc::clone(&source_axis),
+        coefficients,
+        destinations,
+    )
+    .expect("current C/d rows are valid");
     SpatialAudioInputPacket::from_current_component_callback(
         &context.spatial_audio,
         &callback_join(context, callback),
@@ -1769,6 +1914,7 @@ fn production_packet_with_matrix(
         ComponentCallbackPhase::Normal,
         &context.window,
         &context.parameters,
+        source_axis,
         vec![1.0_f32.to_bits(); INSTALLED_WORDS],
         matrix,
     )

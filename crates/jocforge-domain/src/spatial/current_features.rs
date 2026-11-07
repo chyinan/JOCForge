@@ -1,5 +1,5 @@
 // pattern: Functional Core
-//! Fixed-route CurrentFeatures consumer and linear staged proposal boundary.
+//! Source-axis ordered CurrentFeatures consumer and linear staged proposal boundary.
 
 use super::{
     SourceFlagsPacket,
@@ -20,15 +20,15 @@ use crate::{
     },
     numeric::{FiniteF32, R32Error, r32_add, r32_mul, r32_sub},
     profile::{EncodingProfile, resolve_selected_profile},
+    source_axis::{SelectedSourceRowDimensions, SourceAxisBinding},
     spatial::source_flags::{
         SourceFlagsAttempt, SourceFlagsError, SourceFlagsParentLineage, SourceFlagsProgrammeId,
     },
-    timeline::FrontendCallbackIndex,
+    timeline::{CodecSourceIndex, FrontendCallbackIndex},
     transaction::CallbackLineageIdentity,
 };
 use std::sync::Arc;
 
-const SOURCE_COUNT: usize = 48;
 const AUDIO_SAMPLES: usize = 3072;
 const FFT_LENGTH: usize = 4096;
 const FREQUENCY_BIN_COUNT: usize = 2048;
@@ -59,30 +59,38 @@ pub enum CurrentFeaturesError {
 pub struct CurrentFeaturesPacket {
     _callback_index: FrontendCallbackIndex,
     _parent_transaction_id: CallbackLineageIdentity,
-    features_f32_bits_24x48: Box<[[u32; SOURCE_COUNT]]>,
+    source_axis: Arc<SourceAxisBinding>,
+    features_f32_bits_by_band: Box<[Box<[u32]>]>,
 }
 
 impl CurrentFeaturesPacket {
     fn from_producer(
         callback_index: FrontendCallbackIndex,
         parent_transaction_id: CallbackLineageIdentity,
-        features_f32_bits_24x48: Box<[[u32; SOURCE_COUNT]]>,
+        source_axis: Arc<SourceAxisBinding>,
+        features_f32_bits_by_band: Box<[Box<[u32]>]>,
     ) -> Self {
         Self {
             _callback_index: callback_index,
             _parent_transaction_id: parent_transaction_id,
-            features_f32_bits_24x48,
+            source_axis,
+            features_f32_bits_by_band,
         }
     }
 
-    pub(super) fn band_major_features(&self) -> &[[u32; SOURCE_COUNT]] {
-        &self.features_f32_bits_24x48
+    pub(super) fn source_axis(&self) -> &SourceAxisBinding {
+        &self.source_axis
+    }
+
+    pub(super) fn band_major_features(&self) -> &[Box<[u32]>] {
+        &self.features_f32_bits_by_band
     }
 }
 
 pub(super) struct FeatureStateProposal {
     pub(super) source_vector_bits: Box<[u32]>,
     pub(super) source_scalar_bits: Box<[u32]>,
+    pub(super) source_axis: Arc<SourceAxisBinding>,
     pub(super) before_generation: u64,
     pub(super) before_digest: SpatialControlDigest,
 }
@@ -106,6 +114,7 @@ pub(super) struct CurrentFeaturesLineage {
     pub(super) before_generation: u64,
     pub(super) before_digest: SpatialControlDigest,
     pub(super) callback_phase: CallbackPhase,
+    pub(super) source_axis: Arc<SourceAxisBinding>,
     pub(super) render_stage_identity: Option<Arc<RenderStageIdentity>>,
     pub(super) spatial_control_render_identity: Option<Arc<SpatialControlRenderIdentity>>,
     pub(super) spatial_control_after_proposal_identity: Option<Arc<SpatialControlJoinMetadata>>,
@@ -122,7 +131,11 @@ struct FftComplex32 {
 }
 
 pub(super) fn validate_source_count(source_count: usize) -> Result<(), CurrentFeaturesError> {
-    if source_count == SOURCE_COUNT {
+    let supported = u16::try_from(source_count)
+        .ok()
+        .and_then(|count| SelectedSourceRowDimensions::for_active_source_count(count).ok())
+        .is_some();
+    if supported {
         Ok(())
     } else {
         Err(CurrentFeaturesError::SourceShape)
@@ -174,21 +187,36 @@ pub(super) fn produce_current_features(
         validate_audio_shape(audio_view)?;
     }
 
+    let source_axis = Arc::new(source_flags.source_axis().clone());
+    if post_window_audio
+        .as_ref()
+        .is_some_and(|audio| source_axis.validate_handoff(audio.source_axis()).is_err())
+    {
+        return Err(CurrentFeaturesError::ParentLineageMismatch);
+    }
+
     let before_generation = owner.generation();
     let before_digest = owner.digest();
     let before_state = owner.committed();
     let before_vector_bits = before_state.source_vector_bits();
     let before_scalar_bits = before_state.source_scalar_bits();
-    validate_source_count(source_flags.payload().len())?;
-    if before_vector_bits.len() != SOURCE_COUNT * BAND_COUNT {
+    let source_count = source_axis.source_count();
+    validate_source_count(source_count)?;
+    if source_flags.payload().len() != source_count
+        || source_axis.callback_index() != callback_index
+        || source_axis.transaction_id() != transaction_id
+    {
+        return Err(CurrentFeaturesError::SourceShape);
+    }
+    if before_vector_bits.len() != source_count * BAND_COUNT {
         return Err(CurrentFeaturesError::BeforeVectorShape);
     }
-    if before_scalar_bits.len() != SOURCE_COUNT {
+    if before_scalar_bits.len() != source_count {
         return Err(CurrentFeaturesError::BeforeScalarShape);
     }
 
-    let mut before_vector = [[zero(); BAND_COUNT]; SOURCE_COUNT];
-    for source in 0..SOURCE_COUNT {
+    let mut before_vector = vec![[zero(); BAND_COUNT]; source_count];
+    for source in 0..source_count {
         for band in 0..BAND_COUNT {
             before_vector[source][band] = FiniteF32::new(f32::from_bits(
                 before_vector_bits[source * BAND_COUNT + band],
@@ -196,8 +224,8 @@ pub(super) fn produce_current_features(
             .map_err(|_| CurrentFeaturesError::NonFiniteBefore)?;
         }
     }
-    let mut before_scalar = [zero(); SOURCE_COUNT];
-    for source in 0..SOURCE_COUNT {
+    let mut before_scalar = vec![zero(); source_count];
+    for source in 0..source_count {
         before_scalar[source] = FiniteF32::new(f32::from_bits(before_scalar_bits[source]))
             .map_err(|_| CurrentFeaturesError::NonFiniteBefore)?;
     }
@@ -205,10 +233,10 @@ pub(super) fn produce_current_features(
     let fast_decay = finite_provider_word(processor.fast_decay_u32())?;
     let slow_retain = finite_provider_word(processor.slow_retain_u32())?;
     let accept = r32_sub(one(), slow_retain).map_err(nonfinite)?;
-    let mut after_vector = [[0_u32; BAND_COUNT]; SOURCE_COUNT];
-    let mut after_scalar = [0_u32; SOURCE_COUNT];
+    let mut after_vector = vec![[0_u32; BAND_COUNT]; source_count];
+    let mut after_scalar = vec![0_u32; source_count];
 
-    for source in 0..SOURCE_COUNT {
+    for (source, source_id) in source_axis.source_ids().iter().copied().enumerate() {
         let [processing_inactive, selection_suppressed] = source_flags.payload()[source];
         if selection_suppressed == 1 {
             after_vector[source] = [0; BAND_COUNT];
@@ -226,7 +254,7 @@ pub(super) fn produce_current_features(
             let audio_view = post_window_audio
                 .as_ref()
                 .ok_or(CurrentFeaturesError::ReadAudioMissing)?;
-            let observed = observed_features(audio_view, source, processor, fft_provider)?;
+            let observed = observed_features(audio_view, source_id, processor, fft_provider)?;
             let mut current_sum = zero();
             for observed_band in observed {
                 current_sum = r32_add(current_sum, observed_band).map_err(nonfinite)?;
@@ -259,12 +287,16 @@ pub(super) fn produce_current_features(
         }
     }
 
-    let mut features = vec![[0_u32; SOURCE_COUNT]; BAND_COUNT].into_boxed_slice();
-    for band in 0..BAND_COUNT {
-        for source in 0..SOURCE_COUNT {
-            features[band][source] = after_vector[source][band];
-        }
-    }
+    let features = (0..BAND_COUNT)
+        .map(|band| {
+            after_vector
+                .iter()
+                .map(|source| source[band])
+                .collect::<Vec<_>>()
+                .into_boxed_slice()
+        })
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
 
     let render_stage_identity = post_window_audio
         .as_ref()
@@ -291,6 +323,7 @@ pub(super) fn produce_current_features(
         before_generation,
         before_digest,
         callback_phase,
+        source_axis: Arc::clone(&source_axis),
         render_stage_identity,
         spatial_control_render_identity,
         spatial_control_after_proposal_identity,
@@ -309,11 +342,16 @@ pub(super) fn produce_current_features(
             .into_iter()
             .collect::<Vec<_>>()
             .into_boxed_slice(),
+        source_axis: Arc::clone(&source_axis),
         before_generation,
         before_digest,
     };
-    let packet =
-        CurrentFeaturesPacket::from_producer(callback_index, transaction_id.clone(), features);
+    let packet = CurrentFeaturesPacket::from_producer(
+        callback_index,
+        transaction_id.clone(),
+        Arc::clone(&source_axis),
+        features,
+    );
     drop(post_window_audio);
     Ok(CurrentFeaturesProduced {
         feature_state_proposal,
@@ -370,7 +408,11 @@ fn validate_parent_identity(
         .validate_profile_identity(&profile)
         .map_err(|_| CurrentFeaturesError::UnsupportedProfile)?;
     if let Some(audio) = audio {
-        if audio.boundary() != PostWindowBoundary::Installed48PostWindow48x3072 {
+        if !matches!(
+            audio.boundary(),
+            PostWindowBoundary::Installed48PostWindow48x3072
+                | PostWindowBoundary::ActiveSourceAxisPostWindow3072
+        ) {
             return Err(CurrentFeaturesError::RenderBoundaryMismatch);
         }
         if audio.callback_phase() != callback_phase {
@@ -402,8 +444,15 @@ fn validate_parent_identity(
     source_flags
         .validate_parent_binding(&parent)
         .map_err(map_source_flags_error)?;
+    let source_axis = source_flags.source_axis();
+    if source_axis.transaction_id() != transaction_id
+        || source_axis.callback_index() != callback_index
+        || source_axis.source_count() != source_flags.payload().len()
+    {
+        return Err(CurrentFeaturesError::SourceShape);
+    }
     let flags = source_flags.payload();
-    if flags.len() != SOURCE_COUNT {
+    if flags.is_empty() {
         return Err(CurrentFeaturesError::SourceShape);
     }
     if flags.iter().any(|pair| pair.iter().any(|flag| *flag > 1)) {
@@ -413,11 +462,12 @@ fn validate_parent_identity(
 }
 
 fn validate_audio_shape(audio: &CurrentFeaturesAudioView) -> Result<(), CurrentFeaturesError> {
-    if audio.sample_count() != SOURCE_COUNT * AUDIO_SAMPLES {
+    let source_count = audio.source_axis().source_count();
+    if source_count == 0 || audio.sample_count() != source_count * AUDIO_SAMPLES {
         return Err(CurrentFeaturesError::AudioShape);
     }
-    for source in 0..SOURCE_COUNT {
-        if audio.source_samples(source).map(<[_]>::len) != Some(AUDIO_SAMPLES) {
+    for source in audio.source_axis().source_ids() {
+        if audio.source_samples(*source).map(<[_]>::len) != Some(AUDIO_SAMPLES) {
             return Err(CurrentFeaturesError::AudioShape);
         }
     }
@@ -426,7 +476,7 @@ fn validate_audio_shape(audio: &CurrentFeaturesAudioView) -> Result<(), CurrentF
 
 fn observed_features(
     audio: &CurrentFeaturesAudioView,
-    source: usize,
+    source: CodecSourceIndex,
     processor: &ValidatedFeatureProcessorMathProvider,
     fft_provider: &ValidatedFeatureFft4096MathProvider,
 ) -> Result<[FiniteF32; BAND_COUNT], CurrentFeaturesError> {
@@ -626,8 +676,8 @@ impl CurrentFeaturesPacket {
         self._callback_index
     }
 
-    fn test_payload_bits(&self) -> &[[u32; SOURCE_COUNT]] {
-        &self.features_f32_bits_24x48
+    fn test_payload_bits(&self) -> &[Box<[u32]>] {
+        &self.features_f32_bits_by_band
     }
 }
 

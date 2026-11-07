@@ -24,6 +24,7 @@ use crate::{
         },
         source_stage::stage_joc_source_with_transaction,
     },
+    source_axis::{SourceAxisBinding, SourceAxisOwnerGeneration},
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         SpatialAudioJocProviders, ValidatedWindowQ15Provider,
@@ -213,17 +214,30 @@ fn compose_full_parent_source() -> ComposedSourceFixture {
 
     for callback in 0..=2 {
         let (parent, phase, component, lfe) = valid_pair(&context, callback);
+        let callback_index = FrontendCallbackIndex::new(u32::try_from(callback).unwrap());
+        let transaction_id = parent.transaction_id().clone();
+        let source_axis = SourceAxisBinding::new(
+            (0_u64..48)
+                .map(crate::timeline::CodecSourceIndex::new)
+                .collect::<Vec<_>>(),
+            SourceAxisOwnerGeneration::new(0),
+            [0; 32],
+            transaction_id.clone(),
+            FrontendCallbackIndex::new(0),
+        )
+        .unwrap();
         let type10 = assemble_type10(&parent, phase, component, lfe)
             .expect("same-callback component and LFE stages assemble");
         let reader = stage_reader_target(
             &reader_state,
             &ReaderTargetCallbackInputs {
-                callback_index: FrontendCallbackIndex::new(u32::try_from(callback).unwrap()),
+                callback_index,
                 reader_enabled: callback >= 2,
-                snapshot_keys_complete: true,
+                source_axis: &source_axis,
+                source_flags_axis: &source_axis,
                 programme_id: parent.programme_id().clone(),
                 attempt_id: READER_ATTEMPT_ID,
-                transaction_id: parent.transaction_id().clone(),
+                transaction_id,
                 profile_id: SELECTED_PROFILE_ID,
                 current_xyz_words: &current_xyz_words,
                 current_ids: &current_ids,

@@ -3,6 +3,10 @@
 
 use crate::{
     numeric::{FiniteF32, r32_add, r32_mul},
+    source_axis::{
+        F03W_PREFIX_SOURCE_COUNT, F03W_SOURCE_AXIS_CAPACITY, SelectedSourceRowDimensions,
+        SelectedSourceRowShapeError,
+    },
     spatial::{
         diffusion_filter::DiffusionFilterParameters,
         diffusion_tail::{
@@ -13,12 +17,10 @@ use crate::{
     },
 };
 
-const SOURCE_COUNT: usize = 48;
-const HOST_COUNT: usize = 38;
+const SOURCE_COUNT: usize = F03W_SOURCE_AXIS_CAPACITY as usize;
 const FRAME_SAMPLES: usize = 1_536;
 const RENDERED_SAMPLES: usize = FRAME_SAMPLES * 2;
-const PREFIX_ROWS: usize = 11;
-const REGULAR_ROWS: usize = 37;
+const PREFIX_ROWS: usize = F03W_PREFIX_SOURCE_COUNT as usize;
 const MEMBERSHIP_GAIN_THRESHOLD: f32 = 0.000_001;
 const SELECTED_WIDE_OBJECT_THRESHOLD: f32 = 0.2;
 const SELECTED_SPREAD_DENOMINATOR: f32 = 0.4;
@@ -32,23 +34,23 @@ pub(crate) struct Installed48AudioControl {
     pub(crate) diffuse: u8,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug)]
 pub(crate) struct Installed48Activity {
-    pub(crate) quiet: [u8; REGULAR_ROWS],
-    pub(crate) mute_reset: [bool; REGULAR_ROWS],
+    pub(crate) quiet: Vec<u8>,
+    pub(crate) mute_reset: Vec<bool>,
 }
 
 #[derive(Clone, Copy)]
 pub(crate) struct Installed48RenderInput<'a> {
     pub(crate) current_pcm_rows: &'a [Vec<u32>],
-    /// Physical-host-major bits for the complete 38×1536 before frame.
+    /// Physical-host-major bits for the complete N×1536 before frame.
     pub(crate) previous_pcm_bits: &'a [u32],
-    pub(crate) controls: &'a [Installed48AudioControl; REGULAR_ROWS],
+    pub(crate) controls: &'a [Installed48AudioControl],
     pub(crate) activity: &'a Installed48Activity,
     pub(crate) membership_route: &'a PrimaryPrefixRoute,
     pub(crate) source_map: &'a Installed48SourceMap,
     /// Diffusion state by regular tail ordinal, not by host or source ordinal.
-    pub(crate) diffusion_before: &'a [Option<&'a DiffusionTailState>; REGULAR_ROWS],
+    pub(crate) diffusion_before: &'a [Option<&'a DiffusionTailState>],
     pub(crate) diffusion_parameters: Option<&'a DiffusionFilterParameters>,
 }
 
@@ -60,12 +62,13 @@ pub(crate) struct Installed48RenderOutput {
     /// Raw regular source history in source-map regular-tail order.
     pub(crate) regular_raw_history_bits: Box<[u32]>,
     /// Proposed F04F states in regular-tail order; inactive tails are absent.
-    pub(crate) diffusion_after: [Option<DiffusionTailState>; REGULAR_ROWS],
+    pub(crate) diffusion_after: Vec<Option<DiffusionTailState>>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum Installed48RenderError {
     InputShape,
+    SourceAxisCapacityExceeded,
     SourceMapBinding,
     ControlDomain,
     MembershipOrder,
@@ -78,6 +81,7 @@ impl Installed48RenderError {
     pub(crate) const fn code(self) -> &'static str {
         match self {
             Self::InputShape => "INSTALLED48_RENDER_INPUT_SHAPE",
+            Self::SourceAxisCapacityExceeded => "INSTALLED48_RENDER_SOURCE_AXIS_CAPACITY",
             Self::SourceMapBinding => "INSTALLED48_RENDER_SOURCE_MAP",
             Self::ControlDomain => "INSTALLED48_RENDER_CONTROL_DOMAIN",
             Self::MembershipOrder => "INSTALLED48_RENDER_MEMBERSHIP_ORDER",
@@ -91,7 +95,7 @@ impl Installed48RenderError {
 struct PrefixRows {
     previous: Vec<Vec<f32>>,
     current: Vec<Vec<f32>>,
-    diffusion_after: [Option<DiffusionTailState>; REGULAR_ROWS],
+    diffusion_after: Vec<Option<DiffusionTailState>>,
 }
 
 /// Renders one callback without owning or mutating any callback history.
@@ -109,11 +113,13 @@ pub(crate) fn render_installed48(
         return Err(Installed48RenderError::InputShape);
     }
 
-    let mut previous_current = Vec::with_capacity(SOURCE_COUNT);
+    let active_source_count = input.source_map.rows().len();
+    let regular_count = input.source_map.physical_to_global_source().len();
+    let mut previous_current = Vec::with_capacity(active_source_count);
     previous_current.extend(previous_prefix);
-    let mut current_current = Vec::with_capacity(SOURCE_COUNT);
+    let mut current_current = Vec::with_capacity(active_source_count);
     current_current.extend(current_prefix);
-    let mut regular_raw_history_bits = Vec::with_capacity(REGULAR_ROWS * FRAME_SAMPLES);
+    let mut regular_raw_history_bits = Vec::with_capacity(regular_count * FRAME_SAMPLES);
 
     for (tail, binding) in input
         .source_map
@@ -147,11 +153,12 @@ pub(crate) fn render_installed48(
         regular_raw_history_bits.extend(current.iter().copied());
     }
 
-    if previous_current.len() != SOURCE_COUNT || current_current.len() != SOURCE_COUNT {
+    if previous_current.len() != active_source_count || current_current.len() != active_source_count
+    {
         return Err(Installed48RenderError::InputShape);
     }
 
-    let mut postwindow_rows = Vec::with_capacity(SOURCE_COUNT);
+    let mut postwindow_rows = Vec::with_capacity(active_source_count);
     for (previous, current) in previous_current.iter().zip(&current_current) {
         if previous.len() != FRAME_SAMPLES || current.len() != FRAME_SAMPLES {
             return Err(Installed48RenderError::InputShape);
@@ -183,12 +190,33 @@ pub(crate) fn render_installed48(
 }
 
 fn validate_render_input(input: &Installed48RenderInput<'_>) -> Result<(), Installed48RenderError> {
-    if input.current_pcm_rows.len() != HOST_COUNT
+    let host_count = usize::from(input.source_map.physical_host_count());
+    let regular_count = input.source_map.physical_to_global_source().len();
+    let active_source_count = input.source_map.rows().len();
+    let dimensions = SelectedSourceRowDimensions::for_physical_rows(
+        u16::try_from(host_count).map_err(|_| Installed48RenderError::InputShape)?,
+    )
+    .map_err(|error| match error {
+        SelectedSourceRowShapeError::PhysicalRowCountOutsideSelectedProfile => {
+            Installed48RenderError::InputShape
+        }
+        SelectedSourceRowShapeError::SourceAxisCapacityExceeded { .. } => {
+            Installed48RenderError::SourceAxisCapacityExceeded
+        }
+    })?;
+    if regular_count != usize::from(dimensions.regular_row_count())
+        || active_source_count != usize::from(dimensions.active_source_count())
+        || active_source_count > SOURCE_COUNT
+        || input.current_pcm_rows.len() != host_count
         || input
             .current_pcm_rows
             .iter()
             .any(|row| row.len() != FRAME_SAMPLES)
-        || input.previous_pcm_bits.len() != HOST_COUNT * FRAME_SAMPLES
+        || input.previous_pcm_bits.len() != host_count * FRAME_SAMPLES
+        || input.controls.len() != regular_count
+        || input.diffusion_before.len() != regular_count
+        || input.activity.quiet.len() != regular_count
+        || input.activity.mute_reset.len() != regular_count
         || input
             .current_pcm_rows
             .iter()
@@ -205,9 +233,8 @@ fn validate_render_input(input: &Installed48RenderInput<'_>) -> Result<(), Insta
             .mute_reset
             .iter()
             .zip(input.controls)
-            .zip(input.activity.quiet)
-            .any(|((reset, control), quiet)| *reset && (control.mute == 0 || quiet == 0))
-        || input.source_map.physical_to_global_source().len() != REGULAR_ROWS
+            .zip(&input.activity.quiet)
+            .any(|((reset, control), quiet)| *reset && (control.mute == 0 || *quiet == 0))
     {
         return Err(Installed48RenderError::InputShape);
     }
@@ -218,7 +245,7 @@ fn validate_render_input(input: &Installed48RenderInput<'_>) -> Result<(), Insta
         .enumerate()
     {
         if binding.source_index().value() != (PREFIX_ROWS + tail) as u64
-            || usize::from(binding.physical_host().value()) >= HOST_COUNT
+            || usize::from(binding.physical_host().value()) >= host_count
             || input.activity.mute_reset[tail]
                 && (input.controls[tail].mute == 0 || input.activity.quiet[tail] == 0)
         {
@@ -241,9 +268,13 @@ fn produce_prefix_rows(
 ) -> Result<PrefixRows, Installed48RenderError> {
     let mut previous_prefix = zero_rows(PREFIX_ROWS);
     let mut current_prefix = zero_rows(PREFIX_ROWS);
-    let mut diffusion_after: [Option<DiffusionTailState>; REGULAR_ROWS] =
-        std::array::from_fn(|_| None);
-    let mut diffusion_outputs = std::array::from_fn::<_, REGULAR_ROWS, _>(|_| None);
+    let regular_count = input.source_map.physical_to_global_source().len();
+    let mut diffusion_after = std::iter::repeat_with(|| None)
+        .take(regular_count)
+        .collect::<Vec<Option<DiffusionTailState>>>();
+    let mut diffusion_outputs = std::iter::repeat_with(|| None)
+        .take(regular_count)
+        .collect::<Vec<_>>();
 
     for (tail, binding) in input
         .source_map
@@ -301,7 +332,7 @@ fn produce_prefix_rows(
     for contribution in input.membership_route.contributions() {
         let source_index = contribution.source_index().value();
         if previous_source.is_some_and(|previous| previous >= source_index)
-            || !(PREFIX_ROWS as u64..(PREFIX_ROWS + REGULAR_ROWS) as u64).contains(&source_index)
+            || !(PREFIX_ROWS as u64..(PREFIX_ROWS + regular_count) as u64).contains(&source_index)
         {
             return Err(Installed48RenderError::MembershipOrder);
         }

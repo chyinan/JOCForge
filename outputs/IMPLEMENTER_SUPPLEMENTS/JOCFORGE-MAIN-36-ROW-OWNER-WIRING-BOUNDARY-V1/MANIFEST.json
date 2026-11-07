@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-wash-evidence-manifest.v1",
+  "package_id": "JOCFORGE-MAIN-36-ROW-OWNER-WIRING-BOUNDARY-V1",
+  "status": "METER_DYNAMIC_PROPOSAL_PRESENT_MAIN_F01E_READER_EOF_SPATIAL_COLD_STILL_FIXED38_SOURCE_SNAPSHOT",
+  "source_snapshot_path": "D:/Programs/JOCForge-isolated",
+  "payloads": [
+    {
+      "file": "MAIN-36-ROW-BOUNDARY.json",
+      "bytes": 7418,
+      "sha256": "77a276cd7d0b853d0dd1a7035295b0485cc93e987d7fdc79b38a47e6b77f91c8"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1526,
+      "sha256": "d281837c2625a7456a0194f17eeb61fdd0aca820466b2dc7c69de96612b8cf4f"
+    },
+    {
+      "file": "SOURCE-SNAPSHOT.json",
+      "bytes": 2510,
+      "sha256": "2d3b0af2ce0ddab0cb22efeda4866f194c81954063f3697d147bc49917e9be7c"
+    }
+  ]
+}

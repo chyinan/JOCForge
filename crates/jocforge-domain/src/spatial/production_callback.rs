@@ -51,34 +51,57 @@ use super::{
 use crate::{
     frontend::normal_control_snapshot::NormalControlSnapshotOutput,
     frontend::normal_control_snapshot::{
-        NormalControlFreshZeroMeterView, NormalControlHeldSourceView, NormalControlSnapshotProposal,
+        NormalControlAdmFreshZeroView, NormalControlAdmHeldSourceView, NormalControlAdmInputOutput,
+        NormalControlFreshZeroMeterView, NormalControlHeldSourceView,
+        NormalControlSnapshotProposal,
     },
     joc::oamd::reader_target::{
         ReaderTargetCallbackInputs, ReaderTargetControlRows, ReaderTargetError,
         ReaderTargetStageProposal, SELECTED_PROFILE_ID, stage_reader_target,
     },
     meter::installed48_renderer::MeterInstalled48State,
+    source_axis::{F03W_SOURCE_AXIS_CAPACITY, SourceAxisOwnerGeneration},
     spatial::installed48_source_map::Installed48SourceMap,
     timeline::{CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount},
     transaction::CallbackLineageIdentity,
 };
+use std::sync::Arc;
 
 /// The delivery callback may carry either a current normal snapshot or a typed held Q-1 snapshot.
 #[derive(Debug)]
 pub enum NormalControlCallbackSource {
     Normal(Box<NormalControlSnapshotProposal>),
     NormalOutput(Box<NormalControlSnapshotOutput>),
+    NormalAdmInputOutput(Box<NormalControlAdmInputOutput>),
     CachedHold(Box<NormalControlHeldSourceView>),
+    CachedAdmHold(Box<NormalControlAdmHeldSourceView>),
     FreshZeroMeterHold(Box<NormalControlFreshZeroMeterView>),
+    FreshZeroAdmMeterHold(Box<NormalControlAdmFreshZeroView>),
 }
 
 impl NormalControlCallbackSource {
+    pub fn source_owner_generation(&self) -> SourceAxisOwnerGeneration {
+        let generation = match self {
+            Self::Normal(snapshot) => snapshot.after_state().next_owner_generation(),
+            Self::NormalOutput(snapshot) => snapshot.next_owner_generation(),
+            Self::NormalAdmInputOutput(snapshot) => snapshot.next_owner_generation(),
+            Self::CachedHold(snapshot) => snapshot.owner_generation(),
+            Self::CachedAdmHold(snapshot) => snapshot.owner_generation(),
+            Self::FreshZeroMeterHold(snapshot) => snapshot.owner_generation(),
+            Self::FreshZeroAdmMeterHold(snapshot) => snapshot.owner_generation(),
+        };
+        SourceAxisOwnerGeneration::new(generation)
+    }
+
     pub fn transaction_id(&self) -> &CallbackLineageIdentity {
         match self {
             Self::Normal(snapshot) => snapshot.transaction_id(),
             Self::NormalOutput(snapshot) => snapshot.transaction_id(),
+            Self::NormalAdmInputOutput(snapshot) => snapshot.transaction_id(),
             Self::CachedHold(snapshot) => snapshot.delivery_transaction_id(),
+            Self::CachedAdmHold(snapshot) => snapshot.delivery_transaction_id(),
             Self::FreshZeroMeterHold(snapshot) => snapshot.delivery_transaction_id(),
+            Self::FreshZeroAdmMeterHold(snapshot) => snapshot.delivery_transaction_id(),
         }
     }
 
@@ -86,8 +109,11 @@ impl NormalControlCallbackSource {
         match self {
             Self::Normal(snapshot) => snapshot.transaction_id(),
             Self::NormalOutput(snapshot) => snapshot.transaction_id(),
+            Self::NormalAdmInputOutput(snapshot) => snapshot.transaction_id(),
             Self::CachedHold(snapshot) => snapshot.source_origin_transaction_id(),
+            Self::CachedAdmHold(snapshot) => snapshot.source_origin_transaction_id(),
             Self::FreshZeroMeterHold(snapshot) => snapshot.source_origin_transaction_id(),
+            Self::FreshZeroAdmMeterHold(snapshot) => snapshot.source_origin_transaction_id(),
         }
     }
 
@@ -95,8 +121,13 @@ impl NormalControlCallbackSource {
         match self {
             Self::Normal(snapshot) => snapshot.value_generation(),
             Self::NormalOutput(snapshot) => snapshot.value_generation(),
+            Self::NormalAdmInputOutput(snapshot) => snapshot.value_generation(),
             Self::CachedHold(snapshot) => snapshot.delivery_generation(),
+            Self::CachedAdmHold(snapshot) => snapshot.delivery_generation(),
             Self::FreshZeroMeterHold(snapshot) => snapshot.delivery_generation(),
+            Self::FreshZeroAdmMeterHold(snapshot) => {
+                snapshot.delivery_transaction_id().callback_index()
+            }
         }
     }
 
@@ -104,28 +135,55 @@ impl NormalControlCallbackSource {
         match self {
             Self::Normal(snapshot) => snapshot.normal_origin_generation(),
             Self::NormalOutput(snapshot) => snapshot.normal_origin_generation(),
+            Self::NormalAdmInputOutput(snapshot) => snapshot.normal_origin_generation(),
             Self::CachedHold(snapshot) => snapshot.source_origin_generation(),
+            Self::CachedAdmHold(snapshot) => snapshot.source_origin_generation(),
             Self::FreshZeroMeterHold(snapshot) => snapshot.source_origin_generation(),
+            Self::FreshZeroAdmMeterHold(snapshot) => snapshot.source_origin_generation(),
         }
     }
 
-    pub const fn control38_rows(
+    pub fn control38_rows(
         &self,
-    ) -> &[super::super::frontend::normal_control_snapshot::NormalControlRow; 38] {
+    ) -> &[super::super::frontend::normal_control_snapshot::NormalControlRow] {
         match self {
             Self::Normal(snapshot) => snapshot.control38_rows(),
             Self::NormalOutput(snapshot) => snapshot.control38_rows(),
+            Self::NormalAdmInputOutput(snapshot) => snapshot.physical_rows(),
             Self::CachedHold(snapshot) => snapshot.control38_rows(),
+            Self::CachedAdmHold(snapshot) => snapshot.physical_control_rows(),
             Self::FreshZeroMeterHold(snapshot) => snapshot.control38_rows(),
+            Self::FreshZeroAdmMeterHold(snapshot) => snapshot.physical_control_rows(),
         }
     }
 
-    pub const fn normal_callbacks(&self) -> NormalCallbackCount {
+    pub fn regular37_rows(
+        &self,
+    ) -> &[super::super::frontend::normal_control_snapshot::NormalControlRow] {
+        match self {
+            Self::Normal(snapshot) => snapshot.regular37_rows(),
+            Self::NormalOutput(snapshot) => snapshot.regular37_rows(),
+            Self::NormalAdmInputOutput(snapshot) => snapshot.regular_rows(),
+            Self::CachedHold(snapshot) => snapshot.regular37_rows(),
+            Self::CachedAdmHold(snapshot) => snapshot.regular_control_rows_data(),
+            Self::FreshZeroMeterHold(snapshot) => snapshot.regular37_rows(),
+            Self::FreshZeroAdmMeterHold(snapshot) => snapshot.regular_control_rows_data(),
+        }
+    }
+
+    pub fn normal_callbacks(&self) -> NormalCallbackCount {
         match self {
             Self::Normal(snapshot) => snapshot.after_state().next_normal_callbacks(),
             Self::NormalOutput(snapshot) => snapshot.normal_callbacks(),
+            Self::NormalAdmInputOutput(snapshot) => snapshot.normal_callbacks(),
             Self::CachedHold(snapshot) => snapshot.normal_callbacks(),
+            Self::CachedAdmHold(snapshot) => {
+                NormalCallbackCount::new(snapshot.expected_normal_callback_count())
+            }
             Self::FreshZeroMeterHold(snapshot) => snapshot.normal_callbacks(),
+            Self::FreshZeroAdmMeterHold(snapshot) => {
+                NormalCallbackCount::new(snapshot.expected_normal_callback_count())
+            }
         }
     }
 }
@@ -270,6 +328,7 @@ pub(super) struct SpatialControlCallbackProjection {
     assignment_i32: [i32; 15],
     markers_i32: [i32; 15],
     matrix_f32_bits: Box<[u32]>,
+    active_source_ids: Box<[CodecSourceIndex]>,
     writer_set: Box<[u8]>,
 }
 
@@ -288,6 +347,10 @@ impl SpatialControlCallbackProjection {
 
     pub(super) fn matrix_f32_bits(&self) -> &[u32] {
         &self.matrix_f32_bits
+    }
+
+    pub(super) fn active_source_ids(&self) -> &[CodecSourceIndex] {
+        &self.active_source_ids
     }
 
     pub(super) fn writer_set(&self) -> &[u8] {
@@ -311,6 +374,10 @@ impl SpatialControlCallbackProjection {
             assignment_i32: [-1; 15],
             markers_i32: [0; 15],
             matrix_f32_bits: vec![0; 15 * 48].into_boxed_slice(),
+            active_source_ids: (0_u64..48)
+                .map(CodecSourceIndex::new)
+                .collect::<Vec<_>>()
+                .into_boxed_slice(),
             writer_set: Box::new([]),
         }
     }
@@ -714,13 +781,17 @@ fn prepare_spatial_production_core(
         (callback_phase, &source_snapshot),
         (
             CallbackPhase::Normal,
-            NormalControlCallbackSource::Normal(_) | NormalControlCallbackSource::NormalOutput(_)
+            NormalControlCallbackSource::Normal(_)
+                | NormalControlCallbackSource::NormalOutput(_)
+                | NormalControlCallbackSource::NormalAdmInputOutput(_)
         ) | (
             CallbackPhase::CachedDrain,
             NormalControlCallbackSource::CachedHold(_)
+                | NormalControlCallbackSource::CachedAdmHold(_)
         ) | (
             CallbackPhase::FreshZeroInputDrain,
             NormalControlCallbackSource::FreshZeroMeterHold(_)
+                | NormalControlCallbackSource::FreshZeroAdmMeterHold(_)
         )
     );
     if !allowed_phase {
@@ -733,6 +804,8 @@ fn prepare_spatial_production_core(
         .transaction_id
         .clone();
     let callback_index = transaction_id.callback_index();
+    let source_flags_packet = &frontend.frontend.current_features.source_flags;
+    let source_axis = Arc::new(source_flags_packet.source_axis().clone());
     if source_geometry.value_generation() != callback_index
         || source_geometry.transaction_id() != &transaction_id
         || source_snapshot.delivery_generation() != callback_index
@@ -751,6 +824,17 @@ fn prepare_spatial_production_core(
             != transaction_id.programme_id()
         || source_snapshot.source_origin_transaction_id().attempt_id()
             != transaction_id.attempt_id()
+        || source_axis.transaction_id() != &transaction_id
+        || source_axis.callback_index() != callback_index
+        || source_axis.source_origin_generation() != source_snapshot.source_origin_generation()
+        || source_axis.owner_generation() != source_snapshot.source_owner_generation()
+        || source_axis.input_sha256() != source_geometry.source_receipt_sha256()
+        || source_axis.source_ids().len() != source_geometry.rows().len()
+        || source_axis
+            .source_ids()
+            .iter()
+            .zip(source_geometry.rows())
+            .any(|(source_id, row)| *source_id != row.source_index())
         || spatial_control.committed().callback_index() != callback_index
         || spatial_audio.generation() != u64::from(callback_index.value())
         || spatial_control.committed().reader_targets_callback_index() != callback_index
@@ -832,6 +916,7 @@ fn prepare_spatial_production_core(
             frontend.frontend.current_features.lineage.callback_phase,
             window,
             parameters,
+            Arc::clone(&source_axis),
             installed48_f32_bits,
             &matrix,
         )
@@ -844,15 +929,18 @@ fn prepare_spatial_production_core(
         .map(|destination| destination.target_slot().value())
         .collect::<Vec<_>>();
     let compact_matrix = component_preview.compact_matrix_f32();
-    let source_flags = std::array::from_fn(|source| {
-        frontend.frontend.current_features.source_flags.payload()[source][0]
-    });
+    let source_flags = source_flags_packet
+        .payload()
+        .iter()
+        .map(|pair| pair[0])
+        .collect::<Vec<_>>();
     let previous_overlap_rows = component_preview.previous_overlap_rows();
     let current_mixer_rows = component_preview.current_mixer_rows();
     let reader_inputs = ReaderTargetCallbackInputs {
         callback_index,
         reader_enabled: callback_index.value() >= 2,
-        snapshot_keys_complete: source_geometry.rows().len() == 48,
+        source_axis: &source_axis,
+        source_flags_axis: source_flags_packet.source_axis(),
         programme_id: transaction_id.programme_id().clone(),
         attempt_id: transaction_id.attempt_id(),
         transaction_id: transaction_id.clone(),
@@ -872,12 +960,17 @@ fn prepare_spatial_production_core(
         &reader_inputs,
     )
     .map_err(SpatialProductionCallbackError::ReaderTarget)?;
-    let spatial_control_projection =
-        spatial_control_callback_projection(&installation, &matrix, &reader_target)?;
+    let spatial_control_projection = spatial_control_callback_projection(
+        &installation,
+        &matrix,
+        &reader_target,
+        &source_geometry,
+        &source_axis,
+    )?;
     let (reader_target_state, reader_target_receipt, reader_target_controls, _) =
         reader_target.into_parent_parts();
     let dense_d_f32_bits = component_preview
-        .canonical_dense_matrix_f32_bits()
+        .target_source_matrix_f32_bits()
         .to_vec()
         .into_boxed_slice();
     let component = component_preview
@@ -981,11 +1074,7 @@ fn finish_spatial_production_callback(
         .copied()
         .map(f32::from_bits)
         .collect::<Vec<_>>();
-    let control38_rows = source_snapshot
-        .control38_rows()
-        .to_vec()
-        .try_into()
-        .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
+    let control38_rows = source_snapshot.control38_rows().to_vec();
     let spatial_control_after = spatial_control
         .propose_callback_after(
             transaction_id.clone(),
@@ -998,7 +1087,7 @@ fn finish_spatial_production_callback(
                 control38_rows,
                 regular_raw_history_bits: parts.regular_raw_history_bits,
                 previous_current_rows_bits: parts.current_rows_bits,
-                diffusion_tails: parts.diffusion_after,
+                diffusion_tails: parts.diffusion_after.into_iter().collect(),
                 reader_target_state,
                 projection: spatial_control_projection,
             },
@@ -1118,18 +1207,16 @@ fn finish_meter_spatial_production_callback(
     }
     let projection = installed48_after.spatial_control_projection();
     let mut diffusion_by_host = projection.diffusion_states;
-    let mut diffusion_after = std::array::from_fn(|_| None);
+    let mut diffusion_after = std::iter::repeat_with(|| None)
+        .take(source_map.physical_to_global_source().len())
+        .collect::<Vec<_>>();
     for (tail, binding) in source_map.physical_to_global_source().iter().enumerate() {
         diffusion_after[tail] = diffusion_by_host.remove(&binding.physical_host().value());
     }
     if !diffusion_by_host.is_empty() {
         return Err(SpatialProductionCallbackError::CallbackIdentity);
     }
-    let control38_rows = source_snapshot
-        .control38_rows()
-        .to_vec()
-        .try_into()
-        .map_err(|_| SpatialProductionCallbackError::CallbackIdentity)?;
+    let control38_rows = source_snapshot.control38_rows().to_vec();
     let spatial_control_after = spatial_control
         .propose_callback_after(
             transaction_id.clone(),
@@ -1193,10 +1280,29 @@ fn spatial_control_callback_projection(
     installation: &TargetSlotInstallResult,
     matrix: &CompactOuterMatrix,
     reader_target: &ReaderTargetStageProposal,
+    source_geometry: &GlobalSourceGeometrySnapshot,
+    source_axis: &crate::source_axis::SourceAxisBinding,
 ) -> Result<SpatialControlCallbackProjection, SpatialProductionCallbackError> {
+    let active_source_ids = source_axis.source_ids().to_vec();
+    let active_source_count = active_source_ids.len();
     if installation.mapping().len() != 15
         || matrix.destinations().len() != matrix.c_rows_u32().len()
-        || matrix.c_rows_u32().iter().any(|row| row.len() != 48)
+        || usize::from(matrix.active_source_count()) != active_source_count
+        || source_axis.transaction_id() != source_geometry.transaction_id()
+        || source_axis.callback_index() != source_geometry.value_generation()
+        || source_axis.source_origin_generation() != source_geometry.source_origin_generation()
+        || source_axis.input_sha256() != source_geometry.source_receipt_sha256()
+        || source_axis.source_ids() != matrix.source_axis_ids()
+        || active_source_ids.len() != source_geometry.rows().len()
+        || active_source_ids
+            .iter()
+            .zip(source_geometry.rows())
+            .any(|(source, row)| *source != row.source_index())
+        || active_source_ids.len() > usize::from(F03W_SOURCE_AXIS_CAPACITY)
+        || matrix
+            .c_rows_u32()
+            .iter()
+            .any(|row| row.len() != active_source_count)
     {
         return Err(SpatialProductionCallbackError::SpatialControlProjection);
     }
@@ -1206,7 +1312,7 @@ fn spatial_control_callback_projection(
         assignment_i32[target] = i32::from(mapped_source);
     }
 
-    let mut matrix_f32_bits = vec![0_u32; 15 * 48].into_boxed_slice();
+    let mut matrix_f32_bits = vec![0_u32; 15 * active_source_count].into_boxed_slice();
     let mut writer_set = Vec::with_capacity(matrix.destinations().len());
     for (compact_row, destination) in matrix.destinations().iter().enumerate() {
         let target = usize::from(destination.target_slot().value());
@@ -1221,7 +1327,9 @@ fn spatial_control_callback_projection(
         {
             return Err(SpatialProductionCallbackError::SpatialControlProjection);
         }
-        matrix_f32_bits[target * 48..(target + 1) * 48].copy_from_slice(row);
+        for (column, coefficient) in row.iter().copied().enumerate() {
+            matrix_f32_bits[target * active_source_count + column] = coefficient;
+        }
         writer_set.push(
             u8::try_from(target)
                 .map_err(|_| SpatialProductionCallbackError::SpatialControlProjection)?,
@@ -1233,6 +1341,7 @@ fn spatial_control_callback_projection(
         assignment_i32,
         markers_i32: *reader_target.markers_i32(),
         matrix_f32_bits,
+        active_source_ids: active_source_ids.into_boxed_slice(),
         writer_set: writer_set.into_boxed_slice(),
     })
 }
@@ -1368,7 +1477,12 @@ fn flatten_target_xyz(xyz: [[u32; 3]; 15]) -> [u32; 45] {
 fn installed48_bits(
     frontend: &SpatialProductionFrontend,
 ) -> Result<Vec<u32>, SpatialProductionCallbackError> {
-    let rows = (0..48)
+    let rows = frontend
+        .spatial_audio
+        .source_axis()
+        .source_ids()
+        .iter()
+        .copied()
         .map(|source| {
             frontend
                 .spatial_audio

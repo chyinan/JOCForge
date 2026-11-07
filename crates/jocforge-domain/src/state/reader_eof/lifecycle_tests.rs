@@ -1,5 +1,5 @@
 use super::{
-    Control38Snapshot, Host38Frame, ReaderEofDigest, ReaderEofError, ReaderEofMachine,
+    ControlSnapshot, HostPcmFrame, ReaderEofDigest, ReaderEofError, ReaderEofMachine,
     ReaderEofPhase, ReaderEofState,
 };
 use crate::timeline::{FrontendCallbackIndex, NormalCallbackCount};
@@ -26,7 +26,7 @@ fn generated_cold_constructor_has_exact_fields_and_serialization() {
     assert_eq!(state.source_cursor_samples(), 0);
     assert_eq!(state.normal_callbacks().value(), 0);
     assert_eq!(state.remaining_cached_drains(), 4);
-    assert!(state.last_normal_host38().is_none());
+    assert!(state.last_normal_host_frame().is_none());
     assert!(state.last_control_snapshot().is_none());
     assert_eq!(state.phase(), ReaderEofPhase::Unset);
     let mut expected = vec![0_u8; 31];
@@ -121,8 +121,8 @@ fn canonical_options_use_presence_then_row_major_little_endian_payload() {
         1_536,
         NormalCallbackCount::new(1),
         4,
-        Some(Host38Frame::new(host).unwrap()),
-        Some(Control38Snapshot::new(control).unwrap()),
+        Some(HostPcmFrame::new(38, host).unwrap()),
+        Some(ControlSnapshot::new(38, 13, control).unwrap()),
         ReaderEofPhase::Normal,
     )
     .unwrap();
@@ -137,6 +137,31 @@ fn canonical_options_use_presence_then_row_major_little_endian_payload() {
         &0x1122_3344_u32.to_le_bytes()
     );
     assert_eq!(*bytes.last().unwrap(), ReaderEofPhase::Normal as u8);
+}
+
+#[test]
+fn dynamic_36_row_cache_keeps_physical_and_control_extents() {
+    let host = HostPcmFrame::new(36, vec![0.0; 36 * 1_536]).unwrap();
+    let controls = ControlSnapshot::new(36, 13, vec![0; 36 * 13]).unwrap();
+    let state = ReaderEofState::from_parts(
+        FrontendCallbackIndex::new(1),
+        1_536,
+        NormalCallbackCount::new(1),
+        4,
+        Some(host),
+        Some(controls),
+        ReaderEofPhase::Normal,
+    )
+    .unwrap();
+
+    assert_eq!(state.last_normal_host_frame().unwrap().physical_rows(), 36);
+    assert_eq!(state.last_control_snapshot().unwrap().physical_rows(), 36);
+    assert_eq!(state.last_control_snapshot().unwrap().words_per_row(), 13);
+    assert_eq!(state.remaining_cached_drains(), 4);
+    assert_ne!(
+        state.canonical_bytes(),
+        ReaderEofState::cold().canonical_bytes()
+    );
 }
 
 #[test]
@@ -224,11 +249,11 @@ fn fatal_retires_and_only_consuming_full_restart_returns_to_cold() {
 #[test]
 fn shape_phase_transaction_and_generation_validation_rejects_before_mutation() {
     assert_eq!(
-        Host38Frame::new(vec![0.0; 1]),
+        HostPcmFrame::new(38, vec![0.0; 1]),
         Err(ReaderEofError::HostShape)
     );
     assert_eq!(
-        Control38Snapshot::new(vec![0; 1]),
+        ControlSnapshot::new(38, 13, vec![0; 1]),
         Err(ReaderEofError::ControlShape)
     );
     let machine = ReaderEofMachine::cold();

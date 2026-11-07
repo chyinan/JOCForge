@@ -21,6 +21,8 @@ use crate::{
     frontend::{
         dbmd_sections::DbmdTrackFields,
         normal_control_snapshot::{
+            NormalControlAdmFreshZeroView, NormalControlAdmHeldSourceView,
+            NormalControlAdmInputAfterState, NormalControlAdmInputOutput,
             NormalControlAdmInputProposal, NormalControlDbmdFields,
             NormalControlFreshZeroMeterView, NormalControlHeldSourceView,
             NormalControlPreparedSnapshot, NormalControlRegularSourceBinding, NormalControlRow,
@@ -70,7 +72,7 @@ impl OuterSourceResult {
     }
 }
 
-/// Compact F03S output matrix. Rows are compact target ordinals; columns are global sources0..47.
+/// Compact F03S output matrix. Rows are compact target ordinals; columns follow the complete S axis.
 #[must_use]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CompactOuterMatrix {
@@ -80,6 +82,7 @@ pub struct CompactOuterMatrix {
     source_receipt_sha256: [u8; 32],
     target_context_identity: super::selected_p15_geometry::SelectedP15GeometryIdentity,
     destinations: Box<[TargetDestination]>,
+    source_axis_ids: Box<[CodecSourceIndex]>,
     processing_source_order: Box<[CodecSourceIndex]>,
     active_source_count: u16,
     c_rows_u32: Box<[Vec<u32>]>,
@@ -111,6 +114,10 @@ impl CompactOuterMatrix {
 
     pub fn destinations(&self) -> &[TargetDestination] {
         &self.destinations
+    }
+
+    pub fn source_axis_ids(&self) -> &[CodecSourceIndex] {
+        &self.source_axis_ids
     }
 
     pub fn processing_source_order(&self) -> &[CodecSourceIndex] {
@@ -421,28 +428,76 @@ pub fn build_global_source_geometry_snapshot_from_adm_input(
     source_map: &Installed48SourceMap,
     proposal: &NormalControlAdmInputProposal,
 ) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
-    let after = proposal.after_state();
-    let transaction_id = proposal.transaction_id();
+    let expected_owner_generation = proposal
+        .before_generation()
+        .checked_add(1)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    build_global_source_geometry_snapshot_from_adm_input_parts(
+        graph,
+        source_map,
+        proposal.transaction_id(),
+        proposal.query_sample(),
+        proposal.actual_samples(),
+        expected_owner_generation,
+        proposal.after_state(),
+    )
+}
+
+/// Builds source geometry from the output view retained after a dynamic F01E owner install.
+pub fn build_global_source_geometry_snapshot_from_adm_input_output(
+    graph: &SelectedAdmGraph,
+    source_map: &Installed48SourceMap,
+    output: &NormalControlAdmInputOutput,
+) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
+    build_global_source_geometry_snapshot_from_adm_input_parts(
+        graph,
+        source_map,
+        output.transaction_id(),
+        output.query_sample(),
+        output.actual_samples(),
+        output.next_owner_generation(),
+        output.after_state(),
+    )
+}
+
+fn build_global_source_geometry_snapshot_from_adm_input_parts(
+    graph: &SelectedAdmGraph,
+    source_map: &Installed48SourceMap,
+    transaction_id: &CallbackLineageIdentity,
+    query_sample: u64,
+    actual_samples: u32,
+    expected_owner_generation: u64,
+    after: &NormalControlAdmInputAfterState,
+) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
     let callback_index = transaction_id.callback_index();
     let expected_next_callback = callback_index
         .value()
-        .checked_add(1)
-        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
-    let expected_owner_generation = proposal
-        .before_generation()
         .checked_add(1)
         .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
     let physical_count = usize::from(after.input_physical_rows().value());
     let regular_count = source_map.physical_to_global_source().len();
     let source_binding = source_map.source_binding();
     let metadata_hashes = source_binding.metadata_hashes();
+    let expected_query = u64::from(callback_index.value())
+        .checked_mul(1_536)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    let expected_actual = source_binding
+        .source_samples()
+        .value()
+        .saturating_sub(expected_query)
+        .min(1_536);
     if after.schema() != "F01E_ADM_INPUT_NORMAL_STATE_V1"
         || transaction_id.programme_id() != after.programme_id()
         || transaction_id.attempt_id() != after.attempt_id()
         || after.source_origin_generation() != callback_index
         || after.next_callback_index().value() != expected_next_callback
         || after.owner_generation() != expected_owner_generation
-        || after.processed_normal_callbacks().value() != 1
+        || after.processed_normal_callbacks().value() != u64::from(expected_next_callback)
+        || after.expected_normal_callback_count()
+            != source_binding.source_samples().value().div_ceil(1_536)
+        || query_sample != expected_query
+        || query_sample >= source_binding.source_samples().value()
+        || u64::from(actual_samples) != expected_actual
         || usize::from(after.normal_control_rows().value()) != physical_count
         || usize::from(after.regular_control_rows().value()) != regular_count
         || after.physical_rows().len() != physical_count
@@ -585,6 +640,152 @@ pub fn build_held_global_source_geometry_snapshot(
     )
 }
 
+/// Reuses the completed dynamic ADM F01E rows at one of MAIN's cached-drain deliveries.
+pub fn build_held_global_source_geometry_snapshot_from_adm_input(
+    graph: &SelectedAdmGraph,
+    source_map: &Installed48SourceMap,
+    held: &NormalControlAdmHeldSourceView,
+) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
+    let transaction_id = held.delivery_transaction_id();
+    let prepared = held.prepared_snapshot().as_ref();
+    let normal_count = held.expected_normal_callback_count();
+    let delivery_end = normal_count
+        .checked_add(4)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    let expected_source_origin = normal_count
+        .checked_sub(1)
+        .and_then(|value| u32::try_from(value).ok())
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    let prepared_identity = prepared.prepared_input_identity();
+    let resource_identity = prepared_identity.resource();
+    let config_identity = prepared_identity.normalized_configuration();
+    let provenance = prepared_identity.graph_provenance();
+    let source_binding = source_map.source_binding();
+    let metadata_hashes = source_binding.metadata_hashes();
+    let physical_count = usize::from(held.input_physical_rows().value());
+    let regular_count = usize::from(held.regular_control_rows().value());
+    if !prepared.matches_graph(graph)
+        || normal_count != source_binding.source_samples().value().div_ceil(1_536)
+        || u64::from(held.delivery_generation().value()) < normal_count
+        || u64::from(held.delivery_generation().value()) >= delivery_end
+        || u64::from(held.source_origin_generation().value()) != u64::from(expected_source_origin)
+        || transaction_id.callback_index() != held.delivery_generation()
+        || transaction_id.programme_id() != prepared.programme_id()
+        || transaction_id.attempt_id() != prepared.attempt_id()
+        || held.source_origin_transaction_id().programme_id() != prepared.programme_id()
+        || held.source_origin_transaction_id().attempt_id() != prepared.attempt_id()
+        || held.source_origin_transaction_id().callback_index() != held.source_origin_generation()
+        || source_binding.input_kind() != crate::frontend::job_configuration::SelectedInputKind::Adm
+        || resource_identity.input_sha256() != *source_binding.source_receipt_sha256()
+        || resource_identity.resource_bytes() != source_binding.source_file_bytes()
+        || config_identity.config_sha256() != *source_binding.job_projection_sha256()
+        || provenance.axml().payload_sha256() != metadata_hashes.axml()
+        || provenance.chna().payload_sha256() != metadata_hashes.chna()
+        || provenance.dbmd().payload_sha256() != metadata_hashes.dbmd()
+        || physical_count != usize::from(source_map.physical_host_count())
+        || regular_count != source_map.physical_to_global_source().len()
+        || held.physical_control_rows().len() != physical_count
+        || held.regular_control_rows_data().len() != regular_count
+        || prepared.physical_tracks().len() != physical_count
+        || prepared.regular_control_hosts().len() != regular_count
+        || prepared.regular_source_bindings().len() != regular_count
+        || usize::from(source_map.source_count()) != source_map.rows().len()
+        || source_map
+            .source_for_physical_host(graph.receipt().direct_lfe_host())
+            .is_some()
+        || prepared.lfe_host() != source_map.direct_lfe_host().value()
+        || metadata_hashes.axml() != *graph.receipt().axml_sha256()
+        || metadata_hashes.chna() != *graph.receipt().chna_sha256()
+    {
+        return Err(GlobalSourceGeometryError::CallbackIdentityMismatch);
+    }
+    for (physical_host, control_row) in held.physical_control_rows().iter().enumerate() {
+        let host = u8::try_from(physical_host)
+            .map_err(|_| GlobalSourceGeometryError::PhysicalRowIdentityMismatch)?;
+        let graph_track = graph
+            .tracks()
+            .iter()
+            .find(|track| track.physical_host().value() == host)
+            .ok_or(GlobalSourceGeometryError::PhysicalRowIdentityMismatch)?;
+        let prepared_track = &prepared.physical_tracks()[physical_host];
+        if usize::from(control_row.physical_host()) != physical_host
+            || control_row.track_uid() != graph_track.uid()
+            || control_row.channel_format_id() != graph_track.channel_format()
+            || prepared_track.physical_host() != host
+            || prepared_track.track_uid() != graph_track.uid()
+            || prepared_track.channel_format_id() != graph_track.channel_format()
+            || prepared_track.dbmd() != control_row.dbmd()
+        {
+            return Err(GlobalSourceGeometryError::PhysicalRowIdentityMismatch);
+        }
+    }
+    for (ordinal, ((source_binding, prepared_binding), regular_host)) in source_map
+        .physical_to_global_source()
+        .iter()
+        .zip(prepared.regular_source_bindings())
+        .zip(prepared.regular_control_hosts())
+        .enumerate()
+    {
+        if source_binding.physical_host().value() != prepared_binding.physical_host()
+            || source_binding.source_index().value() != prepared_binding.global_source()
+            || source_binding.physical_host().value() != *regular_host
+            || held.physical_control_rows().get(usize::from(*regular_host))
+                != held.regular_control_rows_data().get(ordinal)
+        {
+            return Err(GlobalSourceGeometryError::RegularSourceBindingMismatch);
+        }
+    }
+
+    let lfe_host = graph.receipt().direct_lfe_host();
+    let lfe_track = graph
+        .tracks()
+        .iter()
+        .find(|track| track.physical_host() == lfe_host)
+        .ok_or(GlobalSourceGeometryError::DirectLfeIdentityMismatch)?;
+    let lfe_row = held
+        .physical_control_rows()
+        .get(usize::from(lfe_host.value()))
+        .ok_or(GlobalSourceGeometryError::DirectLfeIdentityMismatch)?;
+    if !matches!(
+        lfe_track.kind(),
+        SelectedTrackKind::DirectSpeakersBed { bed_id: 3, .. }
+    ) || !matches!(lfe_row, NormalControlRow::Bed6 { words, .. } if words == &[0, 0, 3, 2, 1, 3])
+    {
+        return Err(GlobalSourceGeometryError::DirectLfeIdentityMismatch);
+    }
+
+    let prefix_rows = build_prefix_source_geometry_rows(source_map)?;
+    let regular_rows = build_regular_source_geometry_rows(
+        graph,
+        source_map,
+        held.physical_control_rows(),
+        prepared.regular_control_hosts(),
+        None,
+    )?;
+    let rows = prefix_rows
+        .into_iter()
+        .chain(regular_rows)
+        .enumerate()
+        .map(|(expected, row)| {
+            if row.source_index.value() == u64::try_from(expected).unwrap_or(u64::MAX) {
+                Ok(row)
+            } else {
+                Err(GlobalSourceGeometryError::SourceIndexDomain)
+            }
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if rows.len() != usize::from(source_map.source_count()) {
+        return Err(GlobalSourceGeometryError::SourceIndexDomain);
+    }
+    Ok(GlobalSourceGeometrySnapshot {
+        transaction_id: transaction_id.clone(),
+        value_generation: held.delivery_generation(),
+        source_origin_generation: held.source_origin_generation(),
+        source_receipt_sha256: *source_binding.source_receipt_sha256(),
+        rows,
+    })
+}
+
 /// Reuses Q-1 F01E controls for one independent fresh-zero Meter delivery callback.
 pub fn build_meter_fresh_zero_global_source_geometry_snapshot(
     graph: &SelectedAdmGraph,
@@ -621,6 +822,122 @@ pub fn build_meter_fresh_zero_global_source_geometry_snapshot(
         held.prepared_identity(),
         held.control38_rows(),
     )
+}
+
+/// Reuses the Q-1 dynamic F01E row values at one of three Meter FreshZero deliveries.
+pub fn build_meter_fresh_zero_global_source_geometry_snapshot_from_adm_input(
+    graph: &SelectedAdmGraph,
+    source_map: &Installed48SourceMap,
+    held: &NormalControlAdmFreshZeroView,
+) -> Result<GlobalSourceGeometrySnapshot, GlobalSourceGeometryError> {
+    let transaction_id = held.delivery_transaction_id();
+    let prepared = held.prepared_snapshot();
+    let normal_callbacks = held.expected_normal_callback_count();
+    let expected_source_origin = normal_callbacks
+        .checked_sub(1)
+        .and_then(|value| u32::try_from(value).ok())
+        .map(FrontendCallbackIndex::new)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    let delivery_end = normal_callbacks
+        .checked_add(3)
+        .ok_or(GlobalSourceGeometryError::CallbackIdentityMismatch)?;
+    let physical_count = usize::from(held.input_physical_rows().value());
+    let regular_count = source_map.physical_to_global_source().len();
+    let source_binding = source_map.source_binding();
+    if normal_callbacks == 0
+        || prepared.expected_normal_callback_count() != normal_callbacks
+        || u64::from(transaction_id.callback_index().value()) < normal_callbacks
+        || u64::from(transaction_id.callback_index().value()) >= delivery_end
+        || held.source_origin_generation() != expected_source_origin
+        || held.source_origin_transaction_id().programme_id() != transaction_id.programme_id()
+        || held.source_origin_transaction_id().attempt_id() != transaction_id.attempt_id()
+        || held.source_origin_transaction_id().callback_index() != expected_source_origin
+        || !prepared.matches_graph(graph)
+        || source_binding.wave().channels() != held.input_physical_rows().value()
+        || source_binding.metadata_hashes().axml() != *graph.receipt().axml_sha256()
+        || source_binding.metadata_hashes().chna() != *graph.receipt().chna_sha256()
+        || physical_count != graph.tracks().len()
+        || regular_count != usize::from(held.regular_control_rows().value())
+        || source_map.physical_host_count() != held.input_physical_rows().value()
+        || held.physical_control_rows().len() != physical_count
+        || held.regular_control_rows_data().len() != regular_count
+        || held.source_origin_generation().value() >= transaction_id.callback_index().value()
+    {
+        return Err(GlobalSourceGeometryError::CallbackIdentityMismatch);
+    }
+    for (regular_host, regular_row) in prepared
+        .regular_control_hosts()
+        .iter()
+        .zip(held.regular_control_rows_data())
+    {
+        if held.physical_control_rows().get(usize::from(*regular_host)) != Some(regular_row) {
+            return Err(GlobalSourceGeometryError::RegularSourceBindingMismatch);
+        }
+    }
+    for (physical_host, control_row) in held.physical_control_rows().iter().enumerate() {
+        let host = u8::try_from(physical_host)
+            .map_err(|_| GlobalSourceGeometryError::PhysicalRowIdentityMismatch)?;
+        let graph_track = graph
+            .tracks()
+            .iter()
+            .find(|track| track.physical_host().value() == host)
+            .ok_or(GlobalSourceGeometryError::PhysicalRowIdentityMismatch)?;
+        if usize::from(control_row.physical_host()) != physical_host
+            || control_row.track_uid() != graph_track.uid()
+            || control_row.channel_format_id() != graph_track.channel_format()
+        {
+            return Err(GlobalSourceGeometryError::PhysicalRowIdentityMismatch);
+        }
+    }
+    let lfe_host = graph.receipt().direct_lfe_host();
+    let lfe_track = graph
+        .tracks()
+        .iter()
+        .find(|track| track.physical_host() == lfe_host)
+        .ok_or(GlobalSourceGeometryError::DirectLfeIdentityMismatch)?;
+    let lfe_row = held
+        .physical_control_rows()
+        .get(usize::from(lfe_host.value()))
+        .ok_or(GlobalSourceGeometryError::DirectLfeIdentityMismatch)?;
+    if source_map.source_for_physical_host(lfe_host).is_some()
+        || !matches!(
+            lfe_track.kind(),
+            SelectedTrackKind::DirectSpeakersBed { bed_id: 3, .. }
+        )
+        || !matches!(lfe_row, NormalControlRow::Bed6 { words, .. } if words == &[0, 0, 3, 2, 1, 3])
+    {
+        return Err(GlobalSourceGeometryError::DirectLfeIdentityMismatch);
+    }
+    let prefix_rows = build_prefix_source_geometry_rows(source_map)?;
+    let regular_rows = build_regular_source_geometry_rows(
+        graph,
+        source_map,
+        held.physical_control_rows(),
+        prepared.regular_control_hosts(),
+        None,
+    )?;
+    let rows = prefix_rows
+        .into_iter()
+        .chain(regular_rows)
+        .enumerate()
+        .map(|(expected, row)| {
+            if row.source_index.value() == u64::try_from(expected).unwrap_or(u64::MAX) {
+                Ok(row)
+            } else {
+                Err(GlobalSourceGeometryError::SourceIndexDomain)
+            }
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if rows.len() != usize::from(source_map.source_count()) {
+        return Err(GlobalSourceGeometryError::SourceIndexDomain);
+    }
+    Ok(GlobalSourceGeometrySnapshot {
+        transaction_id: transaction_id.clone(),
+        value_generation: transaction_id.callback_index(),
+        source_origin_generation: held.source_origin_generation(),
+        source_receipt_sha256: *source_binding.source_receipt_sha256(),
+        rows,
+    })
 }
 
 fn build_global_source_geometry_from_rows(
@@ -1025,6 +1342,11 @@ pub fn produce_compact_outer_matrix(
     if !(20..=266).contains(&active_source_count) {
         return Err(CompactOuterMatrixError::SourceGeometryMissing);
     }
+    let source_axis_ids = source_geometry
+        .rows()
+        .iter()
+        .map(GlobalSourceGeometryRow::source_index)
+        .collect::<Vec<_>>();
     validate_target_context_shape(target_context)?;
     validate_response_columns(response, active_source_count)?;
 
@@ -1139,6 +1461,7 @@ pub fn produce_compact_outer_matrix(
         active_source_count: u16::try_from(active_source_count)
             .map_err(|_| CompactOuterMatrixError::OutputShapeMismatch)?,
         destinations: target_context.destinations().to_vec().into_boxed_slice(),
+        source_axis_ids: source_axis_ids.into_boxed_slice(),
         processing_source_order: processing_source_order.into_boxed_slice(),
         c_rows_u32: c_rows_u32.into_boxed_slice(),
         source_results: source_results.into_boxed_slice(),

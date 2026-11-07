@@ -30,6 +30,7 @@ use crate::spatial::installed48_activity::{
     PrimaryActivityPhase, PrimaryActivityProposal, PrimaryActivityState,
 };
 use crate::transaction::CallbackLineageIdentity;
+use std::sync::Arc;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum FrontendFeatureStageError {
@@ -327,12 +328,15 @@ fn stage_meter_frontend_features_for_phase(
         return Err(FrontendFeatureStageError::PrimaryActivityIdentity);
     }
     let (installed48_after, installed48_frame) = installed48.into_parts();
+    let source_axis = Arc::clone(installed48_frame.source_axis());
     let expected_upstream_generation = u64::from(callback.value())
         .checked_add(1)
         .ok_or(FrontendFeatureStageError::MeterFrameIdentity)?;
     if installed48_frame.callback_index().value() != u64::from(callback.value())
         || installed48_frame.upstream_generation() != expected_upstream_generation
-        || installed48_frame.rows().len() != 48
+        || installed48_frame.rows().len() != source_axis.source_count()
+        || source_axis.transaction_id() != &transaction_id
+        || source_axis.callback_index() != callback
         || installed48_frame
             .rows()
             .iter()
@@ -352,6 +356,7 @@ fn stage_meter_frontend_features_for_phase(
         owner,
         transaction_id,
         callback_phase,
+        source_axis,
         installed48_payload,
     )
     .map_err(FrontendFeatureStageError::PostWindow)?;
@@ -383,11 +388,26 @@ pub(super) fn gate_current_features(
         .map_err(FrontendFeatureStageError::SourceFlags)?;
     let bands = features.band_major_features();
     let source_count = bands.first().map_or(0, |band| band.len());
+    let source_axis = features.source_axis();
+    if source_count == 0
+        || bands.len() != 24
+        || source_axis.source_count() != source_count
+        || bands.iter().any(|band| band.len() != source_count)
+        || source_flags
+            .source_axis()
+            .validate_handoff(source_axis)
+            .is_err()
+        || source_flags.payload().len() != source_count
+    {
+        return Err(FrontendFeatureStageError::CurrentFeatures(
+            CurrentFeaturesError::SourceShape,
+        ));
+    }
     let half = FiniteF32::new(0.5).map_err(|_| numeric_error())?;
     let mut candidate_ids = Vec::new();
     let mut processing_ids = Vec::new();
 
-    for source in 0..source_count {
+    for (source, source_id) in source_axis.source_ids().iter().copied().enumerate() {
         let mut total = FiniteF32::new(0.0).map_err(|_| numeric_error())?;
         for band in bands {
             let value =
@@ -396,7 +416,7 @@ pub(super) fn gate_current_features(
         }
 
         let [plus0, plus4] = source_flags.payload()[source];
-        let source_id = u32::try_from(source).map_err(|_| {
+        let source_id = u32::try_from(source_id.value()).map_err(|_| {
             FrontendFeatureStageError::CurrentFeatures(CurrentFeaturesError::SourceShape)
         })?;
         if plus4 == 0 && total.value() >= half.value() {
@@ -408,16 +428,19 @@ pub(super) fn gate_current_features(
     }
 
     let response_source_ids =
-        merge_response_source_ids(&candidate_ids, &processing_ids, source_count)?;
+        merge_response_source_ids(&candidate_ids, &processing_ids, source_axis.source_ids())?;
     let candidate_features = bands
         .iter()
         .map(|band| {
             candidate_ids
                 .iter()
                 .map(|source| {
-                    let source = usize::try_from(*source)
-                        .expect("candidate source IDs originate from the feature extent");
-                    band[source]
+                    let source = u64::from(*source);
+                    let ordinal = source_axis
+                        .source_ids()
+                        .binary_search_by_key(&source, |active| active.value())
+                        .expect("candidate source IDs originate from the active source axis");
+                    band[ordinal]
                 })
                 .collect::<Vec<_>>()
                 .into_boxed_slice()
@@ -436,16 +459,13 @@ pub(super) fn gate_current_features(
 fn merge_response_source_ids(
     candidate_ids: &[u32],
     processing_ids: &[u32],
-    source_count: usize,
+    active_source_ids: &[crate::timeline::CodecSourceIndex],
 ) -> Result<Box<[u32]>, FrontendFeatureStageError> {
-    let source_count = u32::try_from(source_count).map_err(|_| {
-        FrontendFeatureStageError::CurrentFeatures(CurrentFeaturesError::SourceShape)
-    })?;
-    if candidate_ids
-        .iter()
-        .chain(processing_ids)
-        .any(|source| *source >= source_count)
-        || candidate_ids.windows(2).any(|pair| pair[0] >= pair[1])
+    if candidate_ids.iter().chain(processing_ids).any(|source| {
+        active_source_ids
+            .binary_search_by_key(&u64::from(*source), |active| active.value())
+            .is_err()
+    }) || candidate_ids.windows(2).any(|pair| pair[0] >= pair[1])
         || processing_ids.windows(2).any(|pair| pair[0] >= pair[1])
     {
         return Err(FrontendFeatureStageError::CurrentFeatures(

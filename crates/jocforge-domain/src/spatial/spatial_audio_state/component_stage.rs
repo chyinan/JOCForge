@@ -8,6 +8,7 @@ use super::{
 use crate::{
     numeric::{FiniteF32, R32Error, r32_add, r32_mul, r32_sub},
     profile::{EncodingProfile, resolve_selected_profile},
+    source_axis::{SelectedSourceRowDimensions, SelectedSourceRowShapeError, SourceAxisBinding},
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     spatial::{
         F04ParameterProviderLineage, SpatialControlDigest, SpatialControlJoinMetadata,
@@ -17,16 +18,21 @@ use crate::{
     timeline::FrontendCallbackIndex,
     transaction::CallbackLineageIdentity,
 };
+#[cfg(test)]
+use crate::{source_axis::SourceAxisOwnerGeneration, timeline::CodecSourceIndex};
 
-const SOURCE_ROW_COUNT: usize = 48;
 const INSTALLED_SAMPLES: usize = 3072;
 const COMPONENT_ROW_COUNT: usize = 15;
-const MATRIX_COLUMN_COUNT: usize = 48;
 const FRAME_SAMPLES: usize = 1536;
 const RING_SAMPLES: usize = 1472;
 const BLOCK_SAMPLES: usize = 64;
 const BLOCK_COUNT: u8 = 24;
 const F32_BYTES: usize = 4;
+#[cfg(test)]
+const SOURCE_ROW_COUNT: usize = 48;
+#[cfg(test)]
+const MATRIX_COLUMN_COUNT: usize = 48;
+#[cfg(test)]
 const INSTALLED_WORDS: usize = SOURCE_ROW_COUNT * INSTALLED_SAMPLES;
 #[cfg(test)]
 const MATRIX_WORDS: usize = COMPONENT_ROW_COUNT * MATRIX_COLUMN_COUNT;
@@ -38,6 +44,8 @@ pub enum ComponentStageError {
     State,
     PipelineRetired,
     CallbackOrder,
+    SourceAxisMismatch,
+    SourceAxisCapacityExceeded,
     Input,
     ProfileUnsupported,
     NumericFailure,
@@ -51,6 +59,8 @@ impl ComponentStageError {
             Self::State => "F04_STATE_ERROR",
             Self::PipelineRetired => "F04_PIPELINE_RETIRED",
             Self::CallbackOrder => "F04_CALLBACK_ORDER",
+            Self::SourceAxisMismatch => "F04_SOURCE_AXIS_MISMATCH",
+            Self::SourceAxisCapacityExceeded => "F04_SOURCE_AXIS_CAPACITY",
             Self::Input => "F04_INPUT_ERROR",
             Self::ProfileUnsupported => "F04_PROFILE_UNSUPPORTED",
             Self::NumericFailure => "F04_NUMERIC_FAILURE",
@@ -75,6 +85,7 @@ pub(crate) struct SpatialAudioInputPacket {
     transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     phase: ComponentCallbackPhase,
+    source_axis: std::sync::Arc<SourceAxisBinding>,
     profile_identity: EncodingProfile,
     spatial_control_before_generation: u64,
     spatial_control_before_digest: SpatialControlDigest,
@@ -109,6 +120,7 @@ pub(super) struct ComponentStageReceipt {
     transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     phase: ComponentCallbackPhase,
+    source_axis: std::sync::Arc<SourceAxisBinding>,
     profile_identity: EncodingProfile,
     spatial_audio_before_generation: u64,
     spatial_audio_before_digest: super::SpatialAudioDigest,
@@ -143,6 +155,7 @@ struct ValidatedComponentPayload {
     matrix: Box<[FiniteF32]>,
     destinations: Box<[u8]>,
     matrix_rows: usize,
+    source_count: usize,
 }
 
 struct ComponentControllerParameters {
@@ -189,6 +202,7 @@ struct ComponentPacketFixture<'a> {
     transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     phase: ComponentCallbackPhase,
+    source_axis: std::sync::Arc<SourceAxisBinding>,
     profile_identity: EncodingProfile,
     spatial_control: &'a SpatialControlMachine,
     provider_lineage: [F04ParameterProviderLineage; 2],
@@ -198,7 +212,29 @@ struct ComponentPacketFixture<'a> {
     destinations: Vec<u8>,
 }
 
-/// Paired compact C[n,48] rows and target slots for one component callback.
+#[cfg(test)]
+fn fixture_source_axis(
+    transaction_id: CallbackLineageIdentity,
+    owner_generation: u64,
+    source_count: usize,
+) -> std::sync::Arc<SourceAxisBinding> {
+    let ids = (0..source_count)
+        .map(|index| CodecSourceIndex::new(u64::try_from(index).unwrap_or(u64::MAX)))
+        .collect::<Vec<_>>();
+    let source_origin_generation = transaction_id.callback_index();
+    std::sync::Arc::new(
+        SourceAxisBinding::new(
+            ids,
+            SourceAxisOwnerGeneration::new(owner_generation),
+            [0; 32],
+            transaction_id,
+            source_origin_generation,
+        )
+        .expect("fixture source axis is ordered and bound to the callback"),
+    )
+}
+
+/// Paired compact A×S rows, source-axis binding, and target slots for one component callback.
 ///
 /// The parent spatial-control producer is the only production constructor
 /// caller. It must pass the output captured before marker quiet for this same
@@ -207,6 +243,7 @@ struct ComponentPacketFixture<'a> {
 #[allow(dead_code)]
 pub(super) struct ActiveComponentMatrix {
     callback_index: FrontendCallbackIndex,
+    source_axis: std::sync::Arc<SourceAxisBinding>,
     row_count: u8,
     coefficient_bits: Box<[u32]>,
     target_slots: Box<[u8]>,
@@ -216,12 +253,16 @@ pub(super) struct ActiveComponentMatrix {
 impl ActiveComponentMatrix {
     pub(super) fn from_producer_output(
         callback_index: FrontendCallbackIndex,
+        source_axis: std::sync::Arc<SourceAxisBinding>,
         coefficient_bits: Vec<u32>,
         target_slots: Vec<u8>,
     ) -> Result<Self, ComponentStageError> {
         let row_count = target_slots.len();
+        let source_count = source_axis.source_count();
+        validate_source_axis_count(source_count)?;
         if row_count > COMPONENT_ROW_COUNT
-            || coefficient_bits.len() != row_count * MATRIX_COLUMN_COUNT
+            || source_axis.callback_index() != callback_index
+            || coefficient_bits.len() != row_count * source_count
             || coefficient_bits
                 .iter()
                 .any(|word| !f32::from_bits(*word).is_finite())
@@ -232,19 +273,24 @@ impl ActiveComponentMatrix {
         let row_count = u8::try_from(row_count).map_err(|_| ComponentStageError::Input)?;
         Ok(Self {
             callback_index,
+            source_axis,
             row_count,
             coefficient_bits: coefficient_bits.into_boxed_slice(),
             target_slots: target_slots.into_boxed_slice(),
         })
     }
 
-    pub(super) fn gather_from_canonical_dense(
+    pub(super) fn gather_from_target_source_matrix(
         callback_index: FrontendCallbackIndex,
-        dense_target_rows: &[u32],
+        source_axis: std::sync::Arc<SourceAxisBinding>,
+        target_source_matrix: &[u32],
         target_slots: Vec<u8>,
     ) -> Result<Self, ComponentStageError> {
-        if dense_target_rows.len() != COMPONENT_ROW_COUNT * MATRIX_COLUMN_COUNT
-            || dense_target_rows
+        let source_count = source_axis.source_count();
+        validate_source_axis_count(source_count)?;
+        if source_axis.callback_index() != callback_index
+            || target_source_matrix.len() != COMPONENT_ROW_COUNT * source_count
+            || target_source_matrix
                 .iter()
                 .any(|word| !f32::from_bits(*word).is_finite())
             || !target_slots_are_selected_order(&target_slots)
@@ -257,35 +303,40 @@ impl ActiveComponentMatrix {
         }
         for (slot, is_active) in active.into_iter().enumerate() {
             if !is_active
-                && dense_target_rows[slot * MATRIX_COLUMN_COUNT..(slot + 1) * MATRIX_COLUMN_COUNT]
+                && target_source_matrix[slot * source_count..(slot + 1) * source_count]
                     .iter()
                     .any(|word| *word != 0)
             {
                 return Err(ComponentStageError::Input);
             }
         }
-        let mut compact = Vec::with_capacity(target_slots.len() * MATRIX_COLUMN_COUNT);
+        let mut compact = Vec::with_capacity(target_slots.len() * source_count);
         for slot in target_slots.iter().copied() {
-            let offset = usize::from(slot) * MATRIX_COLUMN_COUNT;
-            compact.extend_from_slice(&dense_target_rows[offset..offset + MATRIX_COLUMN_COUNT]);
+            let offset = usize::from(slot) * source_count;
+            compact.extend_from_slice(&target_source_matrix[offset..offset + source_count]);
         }
-        Self::from_producer_output(callback_index, compact, target_slots)
+        Self::from_producer_output(callback_index, source_axis, compact, target_slots)
     }
 
-    pub(super) fn scatter_to_canonical_dense(&self) -> Box<[u32]> {
-        let mut dense = vec![0; COMPONENT_ROW_COUNT * MATRIX_COLUMN_COUNT];
+    pub(super) fn scatter_to_target_source_matrix(&self) -> Box<[u32]> {
+        let source_count = self.source_axis.source_count();
+        let mut target_source_matrix = vec![0; COMPONENT_ROW_COUNT * source_count];
         for (logical_row, slot) in self.target_slots.iter().copied().enumerate() {
-            let source_offset = logical_row * MATRIX_COLUMN_COUNT;
-            let target_offset = usize::from(slot) * MATRIX_COLUMN_COUNT;
-            dense[target_offset..target_offset + MATRIX_COLUMN_COUNT].copy_from_slice(
-                &self.coefficient_bits[source_offset..source_offset + MATRIX_COLUMN_COUNT],
+            let source_offset = logical_row * source_count;
+            let target_offset = usize::from(slot) * source_count;
+            target_source_matrix[target_offset..target_offset + source_count].copy_from_slice(
+                &self.coefficient_bits[source_offset..source_offset + source_count],
             );
         }
-        dense.into_boxed_slice()
+        target_source_matrix.into_boxed_slice()
     }
 
     pub(super) const fn callback_index(&self) -> FrontendCallbackIndex {
         self.callback_index
+    }
+
+    pub(super) fn source_axis(&self) -> &std::sync::Arc<SourceAxisBinding> {
+        &self.source_axis
     }
 
     pub(super) const fn row_count(&self) -> u8 {
@@ -356,6 +407,7 @@ impl SpatialAudioInputPacket {
         phase: ComponentCallbackPhase,
         window: &ValidatedWindowQ15Provider,
         parameters: &ValidatedComponentParameterProvider,
+        source_axis: std::sync::Arc<SourceAxisBinding>,
         installed48_f32_bits: Vec<u32>,
         matrix: ActiveComponentMatrix,
     ) -> Result<Self, ComponentStageError> {
@@ -377,6 +429,16 @@ impl SpatialAudioInputPacket {
         {
             return Err(ComponentStageError::CallbackOrder);
         }
+        matrix
+            .source_axis()
+            .validate_handoff(&source_axis)
+            .map_err(|_| ComponentStageError::SourceAxisMismatch)?;
+        if source_axis.callback_index() != callback_index
+            || source_axis.transaction_id() != spatial_audio_join.transaction_id()
+            || source_axis.transaction_id() != spatial_control_join.transaction_id()
+        {
+            return Err(ComponentStageError::SourceAxisMismatch);
+        }
         if spatial_audio_join.before_generation() != spatial_audio.generation()
             || spatial_audio_join.before_digest() != spatial_audio.digest()
             || spatial_control_join.before_generation() != spatial_control.generation()
@@ -389,7 +451,8 @@ impl SpatialAudioInputPacket {
         {
             return Err(ComponentStageError::Input);
         }
-        if installed48_f32_bits.len() != INSTALLED_WORDS
+        validate_source_axis_count(source_axis.source_count())?;
+        if installed48_f32_bits.len() != source_axis.source_count() * INSTALLED_SAMPLES
             || installed48_f32_bits
                 .iter()
                 .any(|word| !f32::from_bits(*word).is_finite())
@@ -403,6 +466,7 @@ impl SpatialAudioInputPacket {
             transaction_id: spatial_audio_join.transaction_id().clone(),
             callback_index,
             phase,
+            source_axis,
             profile_identity: selected_profile,
             spatial_control_before_generation: spatial_control.generation(),
             spatial_control_before_digest: spatial_control.digest(),
@@ -426,6 +490,7 @@ impl SpatialAudioInputPacket {
             transaction_id: fixture.transaction_id,
             callback_index: fixture.callback_index,
             phase: fixture.phase,
+            source_axis: fixture.source_axis,
             profile_identity: fixture.profile_identity,
             spatial_control_before_generation: fixture.spatial_control.generation(),
             spatial_control_before_digest: fixture.spatial_control.digest(),
@@ -470,6 +535,11 @@ impl ComponentStageProposal {
                 transaction_id: spatial_audio_join.transaction_id().clone(),
                 callback_index: spatial_audio_join.callback_index(),
                 phase,
+                source_axis: fixture_source_axis(
+                    spatial_audio_join.transaction_id().clone(),
+                    spatial_control.generation(),
+                    48,
+                ),
                 profile_identity: spatial_audio_join.profile_identity(),
                 spatial_audio_before_generation: spatial_audio_join.before_generation(),
                 spatial_audio_before_digest: spatial_audio_join.before_digest(),
@@ -543,6 +613,10 @@ impl ComponentStageReceipt {
 
     pub(super) fn matrix_destination_slots(&self) -> &[u8] {
         &self.matrix_destination_slots
+    }
+
+    pub(super) fn source_axis(&self) -> &std::sync::Arc<SourceAxisBinding> {
+        &self.source_axis
     }
 }
 
@@ -657,6 +731,8 @@ fn produce_component_stage_impl(
         || packet.attempt != spatial_audio_join.attempt()
         || packet.transaction_id != *spatial_audio_join.transaction_id()
         || packet.transaction_id != *spatial_control_join.transaction_id()
+        || packet.source_axis.transaction_id() != &packet.transaction_id
+        || packet.source_axis.callback_index() != packet.callback_index
         || packet.profile_identity != spatial_audio_join.profile_identity()
         || packet.spatial_control_provider_lineage != spatial_control.provider_lineage()
         || spatial_control_join.provider_lineage() != spatial_control.provider_lineage()
@@ -702,6 +778,7 @@ fn produce_component_stage_impl(
         transaction_id: packet.transaction_id,
         callback_index: packet.callback_index,
         phase: packet.phase,
+        source_axis: std::sync::Arc::clone(&packet.source_axis),
         profile_identity: packet.profile_identity,
         spatial_audio_before_generation: spatial_audio_join.before_generation(),
         spatial_audio_before_digest: spatial_audio_join.before_digest(),
@@ -776,9 +853,11 @@ fn validate_packet_payload(
     packet: &SpatialAudioInputPacket,
 ) -> Result<ValidatedComponentPayload, ComponentStageError> {
     let rows = usize::from(packet.matrix_rows);
+    let source_count = packet.source_axis.source_count();
+    validate_source_axis_count(source_count)?;
     if rows > COMPONENT_ROW_COUNT
-        || packet.installed48_f32_bits.len() != INSTALLED_WORDS
-        || packet.matrix_f32_bits.len() != rows * MATRIX_COLUMN_COUNT
+        || packet.installed48_f32_bits.len() != source_count * INSTALLED_SAMPLES
+        || packet.matrix_f32_bits.len() != rows * source_count
         || packet.destinations.len() != rows
     {
         return Err(ComponentStageError::Input);
@@ -800,6 +879,7 @@ fn validate_packet_payload(
         matrix,
         destinations: packet.destinations.clone(),
         matrix_rows: rows,
+        source_count,
     })
 }
 
@@ -871,8 +951,8 @@ fn mix_matrix(
     let mut mixer = vec![zero; COMPONENT_ROW_COUNT * INSTALLED_SAMPLES].into_boxed_slice();
     for logical_row in 0..payload.matrix_rows {
         let destination = usize::from(payload.destinations[logical_row]);
-        for source_row in 0..SOURCE_ROW_COUNT {
-            let coefficient = payload.matrix[logical_row * MATRIX_COLUMN_COUNT + source_row];
+        for source_row in 0..payload.source_count {
+            let coefficient = payload.matrix[logical_row * payload.source_count + source_row];
             if coefficient.value() <= 0.0 {
                 continue;
             }
@@ -888,6 +968,19 @@ fn mix_matrix(
         }
     }
     Ok(mixer)
+}
+
+pub(super) fn validate_source_axis_count(source_count: usize) -> Result<(), ComponentStageError> {
+    let source_count = u16::try_from(source_count).map_err(|_| ComponentStageError::Input)?;
+    match SelectedSourceRowDimensions::for_active_source_count(source_count) {
+        Ok(_) => Ok(()),
+        Err(SelectedSourceRowShapeError::SourceAxisCapacityExceeded { .. }) => {
+            Err(ComponentStageError::SourceAxisCapacityExceeded)
+        }
+        Err(SelectedSourceRowShapeError::PhysicalRowCountOutsideSelectedProfile) => {
+            Err(ComponentStageError::Input)
+        }
+    }
 }
 
 /// Computes the stateless current-C/d mixer preview without reading or advancing component.before.

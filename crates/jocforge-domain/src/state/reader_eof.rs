@@ -24,24 +24,68 @@ impl ReaderEofDigest {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct Host38Frame(Arc<[f32]>);
-impl Host38Frame {
-    pub fn new(values: Vec<f32>) -> Result<Self, ReaderEofError> {
-        if values.len() != 38 * 1536 {
+pub struct HostPcmFrame {
+    physical_rows: u16,
+    values: Arc<[f32]>,
+}
+impl HostPcmFrame {
+    pub fn new(physical_rows: u16, values: Vec<f32>) -> Result<Self, ReaderEofError> {
+        let expected = usize::from(physical_rows)
+            .checked_mul(1_536)
+            .ok_or(ReaderEofError::HostShape)?;
+        if physical_rows == 0 || values.len() != expected {
             return Err(ReaderEofError::HostShape);
         }
-        Ok(Self(values.into()))
+        Ok(Self {
+            physical_rows,
+            values: values.into(),
+        })
+    }
+
+    pub const fn physical_rows(&self) -> u16 {
+        self.physical_rows
+    }
+
+    pub fn samples(&self) -> &[f32] {
+        &self.values
     }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct Control38Snapshot(Arc<[u32]>);
-impl Control38Snapshot {
-    pub fn new(values: Vec<u32>) -> Result<Self, ReaderEofError> {
-        if values.len() != 38 * 13 {
+pub struct ControlSnapshot {
+    physical_rows: u16,
+    words_per_row: u16,
+    values: Arc<[u32]>,
+}
+impl ControlSnapshot {
+    pub fn new(
+        physical_rows: u16,
+        words_per_row: u16,
+        values: Vec<u32>,
+    ) -> Result<Self, ReaderEofError> {
+        let expected = usize::from(physical_rows)
+            .checked_mul(usize::from(words_per_row))
+            .ok_or(ReaderEofError::ControlShape)?;
+        if physical_rows == 0 || words_per_row == 0 || values.len() != expected {
             return Err(ReaderEofError::ControlShape);
         }
-        Ok(Self(values.into()))
+        Ok(Self {
+            physical_rows,
+            words_per_row,
+            values: values.into(),
+        })
+    }
+
+    pub const fn physical_rows(&self) -> u16 {
+        self.physical_rows
+    }
+
+    pub const fn words_per_row(&self) -> u16 {
+        self.words_per_row
+    }
+
+    pub fn words(&self) -> &[u32] {
+        &self.values
     }
 }
 
@@ -59,8 +103,8 @@ pub struct ReaderEofState {
     source_cursor_samples: u64,
     normal_callbacks: crate::timeline::NormalCallbackCount,
     remaining_cached_drains: u32,
-    last_normal_host38: Option<Host38Frame>,
-    last_control_snapshot: Option<Control38Snapshot>,
+    last_normal_host_frame: Option<HostPcmFrame>,
+    last_control_snapshot: Option<ControlSnapshot>,
     phase: ReaderEofPhase,
 }
 
@@ -71,7 +115,7 @@ impl ReaderEofState {
             source_cursor_samples: 0,
             normal_callbacks: crate::timeline::NormalCallbackCount::new(0),
             remaining_cached_drains: 4,
-            last_normal_host38: None,
+            last_normal_host_frame: None,
             last_control_snapshot: None,
             phase: ReaderEofPhase::Unset,
         }
@@ -82,19 +126,26 @@ impl ReaderEofState {
         source_cursor_samples: u64,
         normal_callbacks: crate::timeline::NormalCallbackCount,
         remaining_cached_drains: u32,
-        last_normal_host38: Option<Host38Frame>,
-        last_control_snapshot: Option<Control38Snapshot>,
+        last_normal_host_frame: Option<HostPcmFrame>,
+        last_control_snapshot: Option<ControlSnapshot>,
         phase: ReaderEofPhase,
     ) -> Result<Self, ReaderEofError> {
         if remaining_cached_drains > 4 {
             return Err(ReaderEofError::DrainRange);
+        }
+        if last_normal_host_frame
+            .as_ref()
+            .zip(last_control_snapshot.as_ref())
+            .is_some_and(|(host, controls)| host.physical_rows() != controls.physical_rows())
+        {
+            return Err(ReaderEofError::CacheShape);
         }
         Ok(Self {
             callback_index,
             source_cursor_samples,
             normal_callbacks,
             remaining_cached_drains,
-            last_normal_host38,
+            last_normal_host_frame,
             last_control_snapshot,
             phase,
         })
@@ -111,10 +162,10 @@ impl ReaderEofState {
     pub const fn remaining_cached_drains(&self) -> u32 {
         self.remaining_cached_drains
     }
-    pub const fn last_normal_host38(&self) -> Option<&Host38Frame> {
-        self.last_normal_host38.as_ref()
+    pub const fn last_normal_host_frame(&self) -> Option<&HostPcmFrame> {
+        self.last_normal_host_frame.as_ref()
     }
-    pub const fn last_control_snapshot(&self) -> Option<&Control38Snapshot> {
+    pub const fn last_control_snapshot(&self) -> Option<&ControlSnapshot> {
         self.last_control_snapshot.as_ref()
     }
     pub const fn phase(&self) -> ReaderEofPhase {
@@ -128,20 +179,31 @@ impl ReaderEofState {
         out.extend_from_slice(&self.source_cursor_samples.to_le_bytes());
         out.extend_from_slice(&self.normal_callbacks.value().to_le_bytes());
         out.extend_from_slice(&self.remaining_cached_drains.to_le_bytes());
-        match &self.last_normal_host38 {
+        match &self.last_normal_host_frame {
             None => out.push(0),
             Some(frame) => {
-                out.push(1);
-                for value in frame.0.iter() {
+                if frame.physical_rows() == 38 {
+                    out.push(1);
+                } else {
+                    out.push(2);
+                    out.extend_from_slice(&u32::from(frame.physical_rows()).to_le_bytes());
+                }
+                for value in frame.samples() {
                     out.extend_from_slice(&value.to_bits().to_le_bytes());
                 }
             }
         }
         match &self.last_control_snapshot {
             None => out.push(0),
-            Some(control) => {
-                out.push(1);
-                for value in control.0.iter() {
+            Some(controls) => {
+                if controls.physical_rows() == 38 && controls.words_per_row() == 13 {
+                    out.push(1);
+                } else {
+                    out.push(2);
+                    out.extend_from_slice(&u32::from(controls.physical_rows()).to_le_bytes());
+                    out.extend_from_slice(&u32::from(controls.words_per_row()).to_le_bytes());
+                }
+                for value in controls.words() {
                     out.extend_from_slice(&value.to_le_bytes());
                 }
             }
@@ -218,6 +280,7 @@ impl ReaderEofOwnerStateReference {
 pub enum ReaderEofError {
     HostShape,
     ControlShape,
+    CacheShape,
     DrainRange,
     EmptyTransactionId,
     GenerationMismatch,

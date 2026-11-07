@@ -4,7 +4,7 @@
 mod reader_eof;
 
 pub use reader_eof::{
-    Control38Snapshot, Host38Frame, ReaderEofDigest, ReaderEofError, ReaderEofMachine,
+    ControlSnapshot, HostPcmFrame, ReaderEofDigest, ReaderEofError, ReaderEofMachine,
     ReaderEofOwnerId, ReaderEofOwnerStateReference, ReaderEofPhase, ReaderEofPrepared,
     ReaderEofReceipt, ReaderEofReplacementCandidate, ReaderEofStaged, ReaderEofState,
 };

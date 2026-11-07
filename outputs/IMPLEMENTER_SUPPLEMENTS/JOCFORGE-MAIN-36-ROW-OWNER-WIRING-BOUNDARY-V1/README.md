@@ -1,0 +1,7 @@
+# JOCForge MAIN 36-row production wiring boundary
+
+In the captured current source snapshot, dynamic 36-row F01E/normal-control and dynamic SpatialControl APIs exist, but the selected MAIN encode route still constructs its F01E and SpatialControl roots from the selected static providers. MAIN then builds a fixed NormalControlPreparedSnapshot and a separate fixed ReaderEofMachine. The dynamic per-input F01E after-state and dynamic SpatialControl source-map constructor are called by the independent Meter candidate path, not the MAIN callsites audited here.
+
+The MAIN normal callback path calls stage_main_frontend_snapshot before ReaderEof. Its prepared snapshot requires 38 channels, DBMD rows of length 38, and fixed 38/28/10/37 arrays; that is the first source-derived 36-row rejection gate. ReaderEof separately requires 38 PCM rows of 1536 samples and caches 38x1536 PCM plus 38x13 control words. Four cached drains reuse those fixed caches. MainSpatialColdRoots also uses the fixed SpatialControlMachine::new_cold path with dense 48 source IDs; the dynamic map constructor is only used by the Meter route.
+
+Thus synthetic 36-row G0/G1/Q3 Spatial/OAR proposals do not demonstrate the production CLI MAIN chain. The next implementable closure is to connect the MAIN owner root, normal-control proposal, ReaderEof row/cache state, and Main SpatialControl to the same prepared-input-bound N/S row identity; preserve reset and cached-drain generations. No real input/output or codec parity is claimed by this Wash review.

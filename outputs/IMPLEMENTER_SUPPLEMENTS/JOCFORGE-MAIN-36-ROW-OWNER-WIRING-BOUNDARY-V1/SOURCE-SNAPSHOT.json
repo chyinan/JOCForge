@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge-wash-current-source-snapshot.v1",
+  "worktree": "D:/Programs/JOCForge-isolated",
+  "captured_utc": "2026-11-03T13:33:58Z",
+  "implementation_thread_active": true,
+  "source_files": [
+    {
+      "path": "crates/jocforge-cli/src/encode_request.rs",
+      "bytes": 37632,
+      "sha256": "8715555af6c1255be0e41323107fecc7386613d81052fd2be408ee61d8415a5c"
+    },
+    {
+      "path": "crates/jocforge-application/src/spatial_callback.rs",
+      "bytes": 42245,
+      "sha256": "7f07921a77557cc4d60df0c8a5d17294c7936a369ec623a00a3dd50903e647ec"
+    },
+    {
+      "path": "crates/jocforge-application/src/reader_eof_callback.rs",
+      "bytes": 20331,
+      "sha256": "c37118b4f8159fc8d8375286b09f925f19696f6b343f86785605e82e9d1b0bcd"
+    },
+    {
+      "path": "crates/jocforge-domain/src/state/reader_eof.rs",
+      "bytes": 19763,
+      "sha256": "0cdf3578aa8b1a4723681e381b196c20e336b8b629bedd3584384b5284595789"
+    },
+    {
+      "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+      "bytes": 156954,
+      "sha256": "ff9044c11e2cf4dc0e22eca6b843629db41963cdcc3bc521074f85a4cfddeb1e"
+    },
+    {
+      "path": "crates/jocforge-domain/src/frontend/provider.rs",
+      "bytes": 32073,
+      "sha256": "8ead7f6f49f3cf78ea65f632da0b8a3252a435968f27dcc0d26d646bc4d47973"
+    },
+    {
+      "path": "crates/jocforge-application/src/independent_meter_callback.rs",
+      "bytes": 66459,
+      "sha256": "bb40107684439a3baf23d93976e5e0a5d2f3699603b4d1d2bc1c094c06fe2c54"
+    },
+    {
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "bytes": 69842,
+      "sha256": "443b81ddbd56973035b6dc830d8191b5f38614824712390a6c03b43b3ecb5a14"
+    },
+    {
+      "path": "crates/jocforge-cli/src/selected_spatial_callback_providers.rs",
+      "bytes": 11537,
+      "sha256": "8b2fcef472dc172e9529b5f5f598f12b53f2e3a2d42e0a787a755547ba4a7be8"
+    },
+    {
+      "path": "crates/jocforge-application/src/lib.rs",
+      "bytes": 38293,
+      "sha256": "0f6efe74a6d6bcdee334b7ba343b3215f60fbcf83047b33adac904b2c90851c9"
+    },
+    {
+      "path": "crates/jocforge-cli/src/source_execution.rs",
+      "bytes": 18298,
+      "sha256": "0b8a09282203a5743d380e99a7d6ec93019cc3e738463ec29421fd790d8b8606"
+    },
+    {
+      "path": "crates/jocforge-cli/src/programme_roots.rs",
+      "bytes": 39227,
+      "sha256": "b41e877a0967fdf122e464f9bb97df5c1773195cfe317daab8865ff41f8349e8"
+    }
+  ],
+  "tests_run_by_wash": false,
+  "media_pcm_payload_read": false
+}

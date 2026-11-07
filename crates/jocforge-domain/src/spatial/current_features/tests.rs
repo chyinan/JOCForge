@@ -10,18 +10,20 @@ use crate::{
         validate_feature_processor_math_provider,
     },
     profile::{EmdfCarriageProfile, EncodingProfile},
+    source_axis::{SourceAxisBinding, SourceAxisOwnerGeneration},
     spatial::{
         SourceFlagsPacket, SpatialControlJoinMetadata, SpatialControlMachine,
         frontend_stages::gate_current_features,
         post_window_fanout::{
-            CallbackPhase, CurrentFeaturesAudioView, PAYLOAD_BYTE_COUNT, PostWindowFanoutError,
+            CallbackPhase, CurrentFeaturesAudioView, PostWindowFanoutError,
             tests::{current_features_audio_view_fixture, render_proposal_fixture},
         },
         source_flags::{
             SourceFlagsAttempt, SourceFlagsParentLineage, current_features_test_packet,
+            current_features_test_packet_for_axis,
         },
     },
-    timeline::FrontendCallbackIndex,
+    timeline::{CodecSourceIndex, FrontendCallbackIndex},
     transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
 use serde_json::Value;
@@ -360,6 +362,7 @@ fn fanout_error_label(error: PostWindowFanoutError) -> &'static str {
         PostWindowFanoutError::PayloadShape => "RENDER_PAYLOAD_SHAPE",
         PostWindowFanoutError::NonFinitePayload => "RENDER_NONFINITE_PAYLOAD",
         PostWindowFanoutError::CallbackIdentityMismatch => "RENDER_CALLBACK_IDENTITY",
+        PostWindowFanoutError::SourceAxisCapacityExceeded => "RENDER_SOURCE_AXIS_CAPACITY",
     }
 }
 
@@ -454,7 +457,7 @@ fn current_features_preserves_shared_render_and_after_proposal_identities() {
     );
     assert_eq!(
         produced.lineage.audio_payload_byte_count,
-        Some(PAYLOAD_BYTE_COUNT)
+        Some((48 * 3_072 * std::mem::size_of::<u32>()) as u64)
     );
     assert!(Arc::ptr_eq(
         produced.lineage.render_stage_identity.as_ref().unwrap(),
@@ -891,14 +894,23 @@ fn feature_gate_uses_independent_flags_and_preserves_candidate_features() {
     flags[5] = [1, 0];
     let source_flags = current_features_test_packet(flags, parent);
 
-    let mut bands = vec![[0_u32; 48]; 24];
+    let mut bands = vec![vec![0_u32; 48]; 24];
     bands[0][1] = 0x3f00_0000;
     bands[0][2] = 0x3eff_ffff;
     bands[0][3] = 0x3f80_0000;
     bands[0][5] = 0x3e80_0000;
     bands[1][5] = 0x3e80_0000;
-    let packet =
-        CurrentFeaturesPacket::from_producer(callback_index, transaction, bands.into_boxed_slice());
+    let bands = bands
+        .into_iter()
+        .map(Vec::into_boxed_slice)
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
+    let packet = CurrentFeaturesPacket::from_producer(
+        callback_index,
+        transaction,
+        Arc::new(source_flags.source_axis().clone()),
+        bands,
+    );
 
     let gate = gate_current_features(&packet, &source_flags).unwrap();
 
@@ -910,4 +922,41 @@ fn feature_gate_uses_independent_flags_and_preserves_candidate_features() {
     assert_eq!(gate.candidate_features[0][0], 0x3f00_0000);
     assert_eq!(gate.candidate_features[0][1], 0x3e80_0000);
     assert_eq!(gate.candidate_features[1][1], 0x3e80_0000);
+}
+
+#[test]
+fn feature_gate_preserves_global_ids_on_a_compact_46_source_axis() {
+    let context = context();
+    let callback_index = frontend_callback_index(0);
+    let transaction = transaction_id(callback_index);
+    let source_axis = Arc::new(
+        SourceAxisBinding::new(
+            (0_u64..46).map(CodecSourceIndex::new).collect::<Vec<_>>(),
+            SourceAxisOwnerGeneration::new(0),
+            [1; 32],
+            transaction.clone(),
+            callback_index,
+        )
+        .unwrap(),
+    );
+    let parent = SourceFlagsParentLineage::new(transaction.clone(), &context.machine).unwrap();
+    let mut flags = vec![[1, 1]; source_axis.source_count()];
+    flags[0] = [0, 0];
+    let source_flags =
+        current_features_test_packet_for_axis(flags, parent, Arc::clone(&source_axis));
+
+    let mut bands = vec![vec![0_u32; 46]; 24];
+    bands[0][0] = 0x3f00_0000;
+    let features = bands
+        .into_iter()
+        .map(Vec::into_boxed_slice)
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
+    let packet =
+        CurrentFeaturesPacket::from_producer(callback_index, transaction, source_axis, features);
+
+    let gate = gate_current_features(&packet, &source_flags).unwrap();
+    assert_eq!(&*gate.candidate_ids, &[0]);
+    assert_eq!(&*gate.processing_ids, &[0]);
+    assert_eq!(&*gate.response_source_ids, &[0]);
 }

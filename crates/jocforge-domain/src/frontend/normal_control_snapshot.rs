@@ -478,6 +478,7 @@ pub struct NormalControlAdmInputSnapshot {
     regular_source_bindings: Vec<NormalControlRegularSourceBinding>,
     lfe_host: u8,
     regular_control_hosts: Vec<u8>,
+    canonical_identity_value: Value,
     identity_sha256: [u8; 32],
 }
 
@@ -514,8 +515,8 @@ impl NormalControlAdmInputSnapshot {
             || frontend_state.phase() != FrontendControlPhase::BeforeFirstNormal
             || frontend_state.remaining_cached_drains() != MAIN_CACHED_DRAIN_CALLBACKS
             || frontend_state.normal_callbacks().value() != 0
-            || frontend_state.last_control38_snapshot().is_some()
-            || frontend_state.last_regular37_snapshot().is_some()
+            || frontend_state.last_physical_control_snapshot().is_some()
+            || frontend_state.last_regular_control_snapshot().is_some()
             || frontend_state.physical_binding().is_some()
             || frontend_state.dbmd_binding().is_some()
         {
@@ -712,6 +713,7 @@ impl NormalControlAdmInputSnapshot {
             regular_source_bindings,
             lfe_host,
             regular_control_hosts,
+            canonical_identity_value: identity_value,
             identity_sha256,
         })
     }
@@ -770,6 +772,40 @@ impl NormalControlAdmInputSnapshot {
 
     pub const fn identity_sha256(&self) -> &[u8; 32] {
         &self.identity_sha256
+    }
+
+    pub fn canonical_identity_value(&self) -> &Value {
+        &self.canonical_identity_value
+    }
+
+    pub const fn profile_identity(&self) -> crate::profile::ResolvedEncodingProfile {
+        self.source_identity.selected_profile
+    }
+
+    pub const fn source_samples(&self) -> u64 {
+        self.source_identity.source_samples
+    }
+
+    pub fn matches_graph(&self, graph: &SelectedAdmGraph) -> bool {
+        if self.graph_identity != NormalControlGraphIdentity::from_receipt(graph.receipt())
+            || self.lfe_host != graph.bed_channel_join().lfe_host()
+            || self.bed_pack_channel_format_ids != *graph.bed_pack_channel_format_ids()
+            || self.bed_pack_hosts != *graph.bed_channel_join().slots_by_pack()
+            || self.regular_control_hosts != *graph.bed_channel_join().regular_control_order()
+            || self.source_identity.metadata_hashes.axml() != *graph.receipt().axml_sha256()
+            || self.source_identity.metadata_hashes.chna() != *graph.receipt().chna_sha256()
+        {
+            return false;
+        }
+        graph.tracks().iter().all(|track| {
+            let host = usize::from(track.physical_host().value());
+            self.physical_tracks.get(host).is_some_and(|prepared| {
+                prepared.physical_host() == track.physical_host().value()
+                    && prepared.track_uid() == track.uid()
+                    && prepared.object_id == track.object_id()
+                    && prepared.channel_format_id() == track.channel_format()
+            })
+        })
     }
 
     pub const fn input_physical_rows(&self) -> u16 {
@@ -838,7 +874,7 @@ impl NormalControlObjectOwnerCount {
 }
 
 /// Noncommitting per-input F01E state after one normal callback.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct NormalControlAdmInputAfterState {
     schema: &'static str,
     programme_id: ProgrammeId,
@@ -859,6 +895,7 @@ pub struct NormalControlAdmInputAfterState {
     control_words: Arc<[u32]>,
     regular_control_words: Arc<[u32]>,
     objects: Arc<[NormalControlObjectState]>,
+    prepared_snapshot: Arc<NormalControlAdmInputSnapshot>,
     prepared_input_identity: Arc<PreparedJobInputIdentity>,
     prepared_input_identity_sha256: [u8; 32],
 }
@@ -940,12 +977,64 @@ impl NormalControlAdmInputAfterState {
         NormalControlObjectOwnerCount(u16::try_from(self.objects.len()).unwrap_or(u16::MAX))
     }
 
+    pub fn objects(&self) -> &[NormalControlObjectState] {
+        &self.objects
+    }
+
     pub const fn prepared_input_identity_sha256(&self) -> &[u8; 32] {
         &self.prepared_input_identity_sha256
     }
 
     pub fn prepared_input_identity(&self) -> &Arc<PreparedJobInputIdentity> {
         &self.prepared_input_identity
+    }
+
+    /// Holds the completed dynamic F01E source rows for one of MAIN's four cached drains.
+    pub fn held_source_view_for_cached_callback(
+        &self,
+        delivery_transaction_id: CallbackLineageIdentity,
+    ) -> Result<NormalControlAdmHeldSourceView, NormalControlSnapshotError> {
+        let normal_count = self.expected_normal_callback_count;
+        let delivery_end = normal_count
+            .checked_add(u64::from(MAIN_CACHED_DRAIN_CALLBACKS))
+            .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+        let source_origin_value = normal_count
+            .checked_sub(1)
+            .and_then(|value| u32::try_from(value).ok())
+            .ok_or(NormalControlSnapshotError::GenerationMismatch)?;
+        let source_origin_generation = FrontendCallbackIndex::new(source_origin_value);
+        let delivery_value = u64::from(delivery_transaction_id.callback_index().value());
+        if normal_count == 0
+            || self.processed_normal_callbacks.value() != normal_count
+            || u64::from(self.next_callback_index.value()) != normal_count
+            || self.remaining_cached_drains != MAIN_CACHED_DRAIN_CALLBACKS
+            || delivery_value < normal_count
+            || delivery_value >= delivery_end
+            || delivery_transaction_id.programme_id() != &self.programme_id
+            || delivery_transaction_id.attempt_id() != self.attempt_id
+        {
+            return Err(NormalControlSnapshotError::FreshZeroWindowMismatch);
+        }
+        let source_origin_transaction_id = CallbackLineageIdentity::new(
+            self.programme_id.clone(),
+            self.attempt_id,
+            source_origin_generation,
+        );
+        Ok(NormalControlAdmHeldSourceView {
+            delivery_transaction_id,
+            source_origin_transaction_id,
+            expected_normal_callback_count: normal_count,
+            source_origin_generation,
+            owner_generation: self.owner_generation,
+            input_physical_rows: self.input_physical_rows,
+            normal_control_rows: self.normal_control_rows,
+            regular_control_rows: self.regular_control_rows,
+            physical_control_rows: Arc::clone(&self.physical_rows),
+            regular_control_rows_data: Arc::clone(&self.regular_rows),
+            prepared_snapshot: Arc::clone(&self.prepared_snapshot),
+            prepared_input_identity: Arc::clone(&self.prepared_input_identity),
+            prepared_input_identity_sha256: self.prepared_input_identity_sha256,
+        })
     }
 
     /// Rebinds this completed normal source to one of its three fresh-zero deliveries.
@@ -988,9 +1077,86 @@ impl NormalControlAdmInputAfterState {
             regular_control_rows: self.regular_control_rows,
             physical_control_rows: Arc::clone(&self.physical_rows),
             regular_control_rows_data: Arc::clone(&self.regular_rows),
+            prepared_snapshot: Arc::clone(&self.prepared_snapshot),
             prepared_input_identity: Arc::clone(&self.prepared_input_identity),
             prepared_input_identity_sha256: self.prepared_input_identity_sha256,
         })
+    }
+}
+
+/// MAIN cached-drain view over one completed dynamic ADM F01E source after-state.
+#[derive(Debug)]
+pub struct NormalControlAdmHeldSourceView {
+    delivery_transaction_id: CallbackLineageIdentity,
+    source_origin_transaction_id: CallbackLineageIdentity,
+    expected_normal_callback_count: u64,
+    source_origin_generation: FrontendCallbackIndex,
+    owner_generation: u64,
+    input_physical_rows: AdmPhysicalRowCount,
+    normal_control_rows: NormalControlRowCount,
+    regular_control_rows: NormalControlRegularRowCount,
+    physical_control_rows: Arc<[NormalControlRow]>,
+    regular_control_rows_data: Arc<[NormalControlRow]>,
+    prepared_snapshot: Arc<NormalControlAdmInputSnapshot>,
+    prepared_input_identity: Arc<PreparedJobInputIdentity>,
+    prepared_input_identity_sha256: [u8; 32],
+}
+
+impl NormalControlAdmHeldSourceView {
+    pub const fn delivery_transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.delivery_transaction_id
+    }
+
+    pub const fn source_origin_transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.source_origin_transaction_id
+    }
+
+    pub const fn expected_normal_callback_count(&self) -> u64 {
+        self.expected_normal_callback_count
+    }
+
+    pub const fn delivery_generation(&self) -> FrontendCallbackIndex {
+        self.delivery_transaction_id.callback_index()
+    }
+
+    pub const fn source_origin_generation(&self) -> FrontendCallbackIndex {
+        self.source_origin_generation
+    }
+
+    pub const fn owner_generation(&self) -> u64 {
+        self.owner_generation
+    }
+
+    pub const fn input_physical_rows(&self) -> AdmPhysicalRowCount {
+        self.input_physical_rows
+    }
+
+    pub const fn normal_control_rows(&self) -> NormalControlRowCount {
+        self.normal_control_rows
+    }
+
+    pub const fn regular_control_rows(&self) -> NormalControlRegularRowCount {
+        self.regular_control_rows
+    }
+
+    pub fn physical_control_rows(&self) -> &[NormalControlRow] {
+        &self.physical_control_rows
+    }
+
+    pub fn regular_control_rows_data(&self) -> &[NormalControlRow] {
+        &self.regular_control_rows_data
+    }
+
+    pub fn prepared_snapshot(&self) -> &Arc<NormalControlAdmInputSnapshot> {
+        &self.prepared_snapshot
+    }
+
+    pub fn prepared_input_identity(&self) -> &Arc<PreparedJobInputIdentity> {
+        &self.prepared_input_identity
+    }
+
+    pub const fn prepared_input_identity_sha256(&self) -> &[u8; 32] {
+        &self.prepared_input_identity_sha256
     }
 }
 
@@ -1007,6 +1173,7 @@ pub struct NormalControlAdmFreshZeroView {
     regular_control_rows: NormalControlRegularRowCount,
     physical_control_rows: Arc<[NormalControlRow]>,
     regular_control_rows_data: Arc<[NormalControlRow]>,
+    prepared_snapshot: Arc<NormalControlAdmInputSnapshot>,
     prepared_input_identity: Arc<PreparedJobInputIdentity>,
     prepared_input_identity_sha256: [u8; 32],
 }
@@ -1058,6 +1225,45 @@ impl NormalControlAdmFreshZeroView {
 
     pub fn prepared_input_identity(&self) -> &Arc<PreparedJobInputIdentity> {
         &self.prepared_input_identity
+    }
+
+    pub fn prepared_snapshot(&self) -> &Arc<NormalControlAdmInputSnapshot> {
+        &self.prepared_snapshot
+    }
+
+    pub fn for_delivery(
+        &self,
+        delivery_transaction_id: CallbackLineageIdentity,
+    ) -> Result<Self, NormalControlSnapshotError> {
+        let delivery_end = self
+            .expected_normal_callback_count
+            .checked_add(3)
+            .ok_or(NormalControlSnapshotError::IndexOverflow)?;
+        let delivery = u64::from(delivery_transaction_id.callback_index().value());
+        if delivery_transaction_id.programme_id() != self.delivery_transaction_id.programme_id()
+            || delivery_transaction_id.attempt_id() != self.delivery_transaction_id.attempt_id()
+            || delivery < self.expected_normal_callback_count
+            || delivery >= delivery_end
+            || self.source_origin_generation.value().checked_add(1)
+                != u32::try_from(self.expected_normal_callback_count).ok()
+        {
+            return Err(NormalControlSnapshotError::FreshZeroWindowMismatch);
+        }
+        Ok(Self {
+            delivery_transaction_id,
+            source_origin_transaction_id: self.source_origin_transaction_id.clone(),
+            expected_normal_callback_count: self.expected_normal_callback_count,
+            source_origin_generation: self.source_origin_generation,
+            owner_generation: self.owner_generation,
+            input_physical_rows: self.input_physical_rows,
+            normal_control_rows: self.normal_control_rows,
+            regular_control_rows: self.regular_control_rows,
+            physical_control_rows: Arc::clone(&self.physical_control_rows),
+            regular_control_rows_data: Arc::clone(&self.regular_control_rows_data),
+            prepared_snapshot: Arc::clone(&self.prepared_snapshot),
+            prepared_input_identity: Arc::clone(&self.prepared_input_identity),
+            prepared_input_identity_sha256: self.prepared_input_identity_sha256,
+        })
     }
 
     /// Validates a separate physical-source zero view, without conflating it with control rows.
@@ -1145,7 +1351,7 @@ pub struct NormalControlAdmInputProposal {
     actual_samples: u32,
     invocation_hosts: Arc<[u8]>,
     sampler_before: Arc<[NormalControlSamplerBefore]>,
-    after_state: NormalControlAdmInputAfterState,
+    after_state: Arc<NormalControlAdmInputAfterState>,
 }
 
 /// In-memory continuation proposal tied to the exact preceding dynamic after-state.
@@ -1160,10 +1366,78 @@ pub struct NormalControlAdmInputContinuationProposal<'a> {
     actual_samples: u32,
     invocation_hosts: Arc<[u8]>,
     sampler_before: Arc<[NormalControlSamplerBefore]>,
-    after_state: NormalControlAdmInputAfterState,
+    after_state: Arc<NormalControlAdmInputAfterState>,
 }
 
-impl NormalControlAdmInputContinuationProposal<'_> {
+/// Read-only F03W projection of one installed dynamic F01E normal proposal.
+#[derive(Debug)]
+pub struct NormalControlAdmInputOutput {
+    transaction_id: CallbackLineageIdentity,
+    query_sample: u64,
+    actual_samples: u32,
+    prepared_identity: Arc<NormalControlAdmInputSnapshot>,
+    after_state: Arc<NormalControlAdmInputAfterState>,
+}
+
+impl NormalControlAdmInputOutput {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub const fn value_generation(&self) -> FrontendCallbackIndex {
+        self.transaction_id.callback_index()
+    }
+
+    pub const fn normal_origin_generation(&self) -> FrontendCallbackIndex {
+        self.transaction_id.callback_index()
+    }
+
+    pub fn next_callback_index(&self) -> FrontendCallbackIndex {
+        self.after_state.next_callback_index()
+    }
+
+    pub fn next_owner_generation(&self) -> u64 {
+        self.after_state.owner_generation()
+    }
+
+    pub fn normal_callbacks(&self) -> NormalCallbackCount {
+        self.after_state.processed_normal_callbacks()
+    }
+
+    pub const fn query_sample(&self) -> u64 {
+        self.query_sample
+    }
+
+    pub const fn actual_samples(&self) -> u32 {
+        self.actual_samples
+    }
+
+    pub fn prepared_identity(&self) -> &NormalControlAdmInputSnapshot {
+        &self.prepared_identity
+    }
+
+    pub fn after_state(&self) -> &NormalControlAdmInputAfterState {
+        &self.after_state
+    }
+
+    pub fn physical_rows(&self) -> &[NormalControlRow] {
+        self.after_state.physical_rows()
+    }
+
+    pub fn regular_rows(&self) -> &[NormalControlRow] {
+        self.after_state.regular_rows()
+    }
+
+    pub fn control_words(&self) -> &[u32] {
+        self.after_state.control_words()
+    }
+
+    pub fn regular_control_words(&self) -> &[u32] {
+        self.after_state.regular_control_words()
+    }
+}
+
+impl<'a> NormalControlAdmInputContinuationProposal<'a> {
     pub const fn before_state(&self) -> &NormalControlAdmInputAfterState {
         self.before_state
     }
@@ -1188,8 +1462,37 @@ impl NormalControlAdmInputContinuationProposal<'_> {
         &self.sampler_before
     }
 
-    pub const fn after_state(&self) -> &NormalControlAdmInputAfterState {
+    pub fn after_state(&self) -> &NormalControlAdmInputAfterState {
         &self.after_state
+    }
+
+    pub fn output(
+        &self,
+        prepared_identity: Arc<NormalControlAdmInputSnapshot>,
+    ) -> NormalControlAdmInputOutput {
+        NormalControlAdmInputOutput {
+            transaction_id: self.transaction_id.clone(),
+            query_sample: self.query_sample,
+            actual_samples: self.actual_samples,
+            prepared_identity,
+            after_state: Arc::clone(&self.after_state),
+        }
+    }
+
+    pub(crate) fn into_frontend_owner_parts(
+        self,
+    ) -> (
+        &'a NormalControlAdmInputAfterState,
+        CallbackLineageIdentity,
+        Arc<NormalControlAdmInputAfterState>,
+    ) {
+        let Self {
+            before_state,
+            transaction_id,
+            after_state,
+            ..
+        } = self;
+        (before_state, transaction_id, after_state)
     }
 }
 
@@ -1222,8 +1525,44 @@ impl NormalControlAdmInputProposal {
         &self.sampler_before
     }
 
-    pub const fn after_state(&self) -> &NormalControlAdmInputAfterState {
+    pub fn after_state(&self) -> &NormalControlAdmInputAfterState {
         &self.after_state
+    }
+
+    pub fn output(
+        &self,
+        prepared_identity: Arc<NormalControlAdmInputSnapshot>,
+    ) -> NormalControlAdmInputOutput {
+        NormalControlAdmInputOutput {
+            transaction_id: self.transaction_id.clone(),
+            query_sample: self.query_sample,
+            actual_samples: self.actual_samples,
+            prepared_identity,
+            after_state: Arc::clone(&self.after_state),
+        }
+    }
+
+    pub(crate) fn into_frontend_owner_parts(
+        self,
+    ) -> (
+        CallbackLineageIdentity,
+        u64,
+        FrontendControlDigest,
+        Arc<NormalControlAdmInputAfterState>,
+    ) {
+        let Self {
+            transaction_id,
+            before_generation,
+            before_digest,
+            after_state,
+            ..
+        } = self;
+        (
+            transaction_id,
+            before_generation,
+            before_digest,
+            after_state,
+        )
     }
 }
 
@@ -1309,6 +1648,7 @@ pub fn propose_normal_control_adm_input(
         control_words: Arc::from(rows.physical_words.into_boxed_slice()),
         regular_control_words: Arc::from(rows.regular_words.into_boxed_slice()),
         objects: Arc::from(rows.next_objects.into_boxed_slice()),
+        prepared_snapshot: Arc::new(prepared.clone()),
         prepared_input_identity: Arc::clone(&prepared.prepared_input_identity),
         prepared_input_identity_sha256: *prepared.identity_sha256(),
     };
@@ -1320,7 +1660,7 @@ pub fn propose_normal_control_adm_input(
         actual_samples,
         invocation_hosts: Arc::from(rows.invocation_hosts.into_boxed_slice()),
         sampler_before: Arc::from(rows.sampler_before.into_boxed_slice()),
-        after_state,
+        after_state: Arc::new(after_state),
     })
 }
 
@@ -1340,9 +1680,9 @@ impl NormalControlAdmInputSnapshot {
 
 /// Proposes a contiguous NORMAL callback from the previous dynamic after-state.
 ///
-/// This is limited to the washed 36/38-row profile and the same admitted input snapshot. The
-/// borrowed `before` value establishes in-memory lineage; this function creates neither a
-/// canonical serialization nor an installable owner replacement.
+/// This follows the same admitted input snapshot at its actual row count. The borrowed `before`
+/// value establishes in-memory lineage; this function creates neither a canonical serialization
+/// nor an installable owner replacement.
 pub fn propose_next_normal_control_adm_input<'a>(
     before: &'a NormalControlAdmInputAfterState,
     prepared: &NormalControlAdmInputSnapshot,
@@ -1366,8 +1706,7 @@ pub fn propose_next_normal_control_adm_input<'a>(
     {
         return Err(NormalControlSnapshotError::PreparedIdentityMismatch);
     }
-    if !matches!(channels, 36 | 38)
-        || prepared.source_identity.wave.channels() != channels
+    if prepared.source_identity.wave.channels() != channels
         || before.normal_control_rows.value() != channels
         || usize::from(before.regular_control_rows.value()) != prepared.regular_control_hosts.len()
         || before.regular_control_hosts.as_ref() != prepared.regular_control_hosts.as_slice()
@@ -1460,6 +1799,7 @@ pub fn propose_next_normal_control_adm_input<'a>(
         control_words: Arc::from(rows.physical_words.into_boxed_slice()),
         regular_control_words: Arc::from(rows.regular_words.into_boxed_slice()),
         objects: Arc::from(rows.next_objects.into_boxed_slice()),
+        prepared_snapshot: Arc::new(prepared.clone()),
         prepared_input_identity: Arc::clone(&prepared.prepared_input_identity),
         prepared_input_identity_sha256: *prepared.identity_sha256(),
     };
@@ -1470,7 +1810,7 @@ pub fn propose_next_normal_control_adm_input<'a>(
         actual_samples,
         invocation_hosts: Arc::from(rows.invocation_hosts.into_boxed_slice()),
         sampler_before: Arc::from(rows.sampler_before.into_boxed_slice()),
-        after_state,
+        after_state: Arc::new(after_state),
     })
 }
 
@@ -2134,8 +2474,8 @@ impl NormalControlBeforeState {
             profile: NormalControlProfileIdentity::from_config(state.normalized_config()),
             state_digest: Some(state.digest()),
             objects,
-            last_control38_snapshot: state.last_control38_snapshot().cloned(),
-            last_regular37_snapshot: state.last_regular37_snapshot().cloned(),
+            last_control38_snapshot: state.last_physical_control_snapshot().cloned(),
+            last_regular37_snapshot: state.last_regular_control_snapshot().cloned(),
             physical_binding: state.physical_binding().cloned(),
             dbmd_binding: state.dbmd_binding().cloned(),
             previous_prepared_identity,
@@ -2444,6 +2784,7 @@ impl NormalControlAfterState {
             source_origin_transaction_id,
             normal_callbacks,
             source_origin_generation,
+            owner_generation: self.next_owner_generation,
             prepared_identity,
             control38_rows,
             regular37_rows,
@@ -2524,6 +2865,7 @@ impl NormalControlAfterState {
             source_origin_transaction_id,
             normal_callbacks,
             source_origin_generation,
+            owner_generation: self.next_owner_generation,
             prepared_identity,
             control38_rows,
             regular37_rows,
@@ -2592,11 +2934,11 @@ impl FrontendControlState {
             phase: self.phase(),
             objects,
             control38_snapshot: self
-                .last_control38_snapshot()
+                .last_physical_control_snapshot()
                 .cloned()
                 .ok_or(NormalControlSnapshotError::SnapshotShapeMismatch)?,
             regular37_snapshot: self
-                .last_regular37_snapshot()
+                .last_regular_control_snapshot()
                 .cloned()
                 .ok_or(NormalControlSnapshotError::SnapshotShapeMismatch)?,
             physical_binding_before: self.physical_binding().cloned(),
@@ -2619,6 +2961,7 @@ pub struct NormalControlHeldSourceView {
     source_origin_transaction_id: CallbackLineageIdentity,
     normal_callbacks: NormalCallbackCount,
     source_origin_generation: FrontendCallbackIndex,
+    owner_generation: u64,
     prepared_identity: Arc<NormalControlPreparedSnapshot>,
     control38_rows: [NormalControlRow; PHYSICAL_TRACK_COUNT],
     regular37_rows: [NormalControlRow; REGULAR_TRACK_COUNT],
@@ -2634,6 +2977,7 @@ pub struct NormalControlFreshZeroMeterView {
     source_origin_transaction_id: CallbackLineageIdentity,
     normal_callbacks: NormalCallbackCount,
     source_origin_generation: FrontendCallbackIndex,
+    owner_generation: u64,
     prepared_identity: Arc<NormalControlPreparedSnapshot>,
     control38_rows: [NormalControlRow; PHYSICAL_TRACK_COUNT],
     regular37_rows: [NormalControlRow; REGULAR_TRACK_COUNT],
@@ -2680,6 +3024,7 @@ impl NormalControlFreshZeroMeterView {
             source_origin_transaction_id: self.source_origin_transaction_id.clone(),
             normal_callbacks: self.normal_callbacks,
             source_origin_generation: self.source_origin_generation,
+            owner_generation: self.owner_generation,
             prepared_identity: Arc::clone(&self.prepared_identity),
             control38_rows: self.control38_rows.clone(),
             regular37_rows: self.regular37_rows.clone(),
@@ -2704,6 +3049,10 @@ impl NormalControlFreshZeroMeterView {
 
     pub const fn normal_callbacks(&self) -> NormalCallbackCount {
         self.normal_callbacks
+    }
+
+    pub const fn owner_generation(&self) -> u64 {
+        self.owner_generation
     }
 
     pub fn prepared_identity(&self) -> &NormalControlPreparedSnapshot {
@@ -2738,6 +3087,10 @@ impl NormalControlHeldSourceView {
 
     pub const fn normal_callbacks(&self) -> NormalCallbackCount {
         self.normal_callbacks
+    }
+
+    pub const fn owner_generation(&self) -> u64 {
+        self.owner_generation
     }
 
     pub fn prepared_identity(&self) -> &NormalControlPreparedSnapshot {

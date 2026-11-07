@@ -20,6 +20,7 @@ use jocforge_domain::{
         sample_block_queue::{MeterCallbackIndex, MeterSourceSampleCount},
     },
     profile::ResolvedEncodingProfile,
+    source_axis::{SourceAxisBinding, SourceAxisOwnerGeneration},
     spatial::{
         diffusion_filter::{
             DiffusionFilterParameters, validate_diffusion_filter_package_manifest,
@@ -38,7 +39,7 @@ use jocforge_domain::{
         },
     },
     timeline::{AdmSampleCount, AdmSampleIndex, FrontendCallbackIndex},
-    transaction::ProgrammeId,
+    transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
 use jocforge_io::pcm::{
     meter_source_cursor::{
@@ -311,14 +312,36 @@ fn main() -> Result<(), Box<dyn Error>> {
             };
             flag_pair_counts[bucket] += 1;
         }
-        if flag_pair_counts.iter().sum::<usize>() != 48 {
-            return Err(io::Error::other("F03R payload count is not 48 pairs").into());
+        if flag_pair_counts.iter().sum::<usize>() != source_map.source_count() as usize {
+            return Err(io::Error::other("F03R payload count differs from S source axis").into());
         }
         let mut flags_digest = Sha256::new();
         for pair in values.payload() {
             flags_digest.update(pair);
         }
         previous_regular_rows = values.raw_history_rows().map(|row| row.to_vec()).collect();
+        let frontend_callback = FrontendCallbackIndex::new(
+            u32::try_from(callback)
+                .map_err(|_| io::Error::other("callback index exceeds its U32 domain"))?,
+        );
+        let source_axis = Arc::new(
+            SourceAxisBinding::new(
+                source_map
+                    .rows()
+                    .iter()
+                    .map(|row| row.source_index())
+                    .collect::<Vec<_>>(),
+                SourceAxisOwnerGeneration::new(0),
+                renderer_source_sha256,
+                CallbackLineageIdentity::new(
+                    diagnostic_programme_id(),
+                    AttemptId::new(0),
+                    frontend_callback,
+                ),
+                frontend_callback,
+            )
+            .map_err(|_| io::Error::other("source-axis identity is invalid"))?,
+        );
         let render_proposal = stage_meter_installed48(
             &renderer_state,
             MeterInstalled48Input {
@@ -333,6 +356,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 activity: &activity_output,
                 membership_route: &membership_route,
                 source_map: &source_map,
+                source_axis: &source_axis,
                 controls: &primary_controls,
                 diffusion_parameters: Some(&diffusion_parameters),
             },

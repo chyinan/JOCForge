@@ -1,5 +1,8 @@
 use super::*;
+use crate::source_axis::{SourceAxisBinding, SourceAxisOwnerGeneration};
 use crate::timeline::AdmSampleIndex;
+use crate::timeline::{CodecSourceIndex, FrontendCallbackIndex};
+use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
 use crate::{
     frontend::{
         PackageManifestEvidence, ProviderFileEvidence, ValidatedFeatureFft4096MathProvider,
@@ -157,6 +160,28 @@ fn vector_ids(value: &Value) -> Vec<u32> {
         .collect()
 }
 
+fn source_axis_for(
+    source_map: &super::super::installed48_source_map::Installed48SourceMap,
+    transaction_id: CallbackLineageIdentity,
+    owner_generation: SourceAxisOwnerGeneration,
+    source_origin_generation: FrontendCallbackIndex,
+) -> Arc<SourceAxisBinding> {
+    Arc::new(
+        SourceAxisBinding::new(
+            source_map
+                .rows()
+                .iter()
+                .map(super::super::installed48_source_map::Installed48SourceRow::source_index)
+                .collect::<Vec<CodecSourceIndex>>(),
+            owner_generation,
+            *source_map.source_binding().source_receipt_sha256(),
+            transaction_id,
+            source_origin_generation,
+        )
+        .unwrap(),
+    )
+}
+
 fn vector_matrix(value: &Value) -> Vec<Vec<u32>> {
     value.as_array().unwrap().iter().map(vector_ids).collect()
 }
@@ -202,6 +227,17 @@ fn stage_activity_and_installed48(
         *source_binding.source_receipt_sha256(),
         MeterSourceSampleCount::new(source_binding.source_samples().value()).unwrap(),
     );
+    let callback_index = FrontendCallbackIndex::new(0);
+    let source_axis = source_axis_for(
+        &fixture.source_map,
+        CallbackLineageIdentity::new(
+            ProgrammeId::new("meter-stage-test").unwrap(),
+            AttemptId::new(0),
+            callback_index,
+        ),
+        SourceAxisOwnerGeneration::new(1),
+        callback_index,
+    );
     let installed48 = stage_meter_installed48(
         &installed_before,
         MeterInstalled48Input {
@@ -214,6 +250,7 @@ fn stage_activity_and_installed48(
             activity: activity.output(),
             membership_route: activity.membership_route(),
             source_map: &fixture.source_map,
+            source_axis: &source_axis,
             controls: &fixture.primary_controls,
             diffusion_parameters: None,
         },
@@ -260,6 +297,12 @@ fn run_callback(
     )
     .unwrap();
     let source_control_clock = source_projection.clock();
+    let source_axis = source_axis_for(
+        &fixture.source_map,
+        normal_output.transaction_id().clone(),
+        SourceAxisOwnerGeneration::new(normal_output.next_owner_generation()),
+        normal_output.normal_origin_generation(),
+    );
     let source_geometry = build_global_source_geometry_snapshot_from_output(
         &fixture.graph,
         &fixture.source_map,
@@ -302,6 +345,7 @@ fn run_callback(
         parent,
     )
     .unwrap();
+    let source_flags_input = source_flags_input.with_source_axis(Arc::clone(&source_axis));
     let frontend = stage_spatial_control_frontend_features_from_installed48(
         &owners.spatial_control,
         source_flags_input,

@@ -6,6 +6,7 @@ use crate::{
         validate_f01e_provider, validate_f03_package_manifest, validate_f03_target_cold_provider,
     },
     profile::EncodingProfile,
+    source_axis::{SourceAxisBinding, SourceAxisOwnerGeneration},
     spatial::{
         SpatialControlJoinMetadata, SpatialControlMachine,
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
@@ -15,6 +16,9 @@ use crate::{
     transaction::{AttemptId, CallbackLineageIdentity},
 };
 use std::sync::Arc;
+
+const PAYLOAD_SAMPLE_COUNT: usize = SOURCE_COUNT * SAMPLES_PER_SOURCE;
+const PAYLOAD_BYTE_COUNT: u64 = (PAYLOAD_SAMPLE_COUNT * std::mem::size_of::<u32>()) as u64;
 
 const MANIFEST_BYTES: &[u8] = include_bytes!("../../../tests/fixtures/f01e_provider/MANIFEST.json");
 const F01E_PROVIDER_BYTES: &[u8] =
@@ -34,6 +38,24 @@ fn test_callback_transaction_id() -> CallbackLineageIdentity {
     )
 }
 
+fn source_axis_fixture(
+    identity: &SpatialControlJoinMetadata,
+    source_count: usize,
+) -> Arc<SourceAxisBinding> {
+    Arc::new(
+        SourceAxisBinding::new(
+            (0..source_count)
+                .map(|source| CodecSourceIndex::new(u64::try_from(source).unwrap()))
+                .collect::<Vec<_>>(),
+            SourceAxisOwnerGeneration::new(identity.before_generation()),
+            [0; 32],
+            identity.transaction_id().clone(),
+            identity.callback_index(),
+        )
+        .unwrap(),
+    )
+}
+
 #[allow(clippy::too_many_arguments)]
 pub(in crate::spatial) fn render_proposal_fixture(
     programme_id: SourceFlagsProgrammeId,
@@ -42,12 +64,33 @@ pub(in crate::spatial) fn render_proposal_fixture(
     phase: CallbackPhase,
     payload: Vec<f32>,
 ) -> Result<PostWindowRenderProposal, PostWindowFanoutError> {
+    let source_axis = source_axis_fixture(&spatial_control_after_proposal_identity, SOURCE_COUNT);
+    render_proposal_fixture_for_axis(
+        programme_id,
+        attempt,
+        spatial_control_after_proposal_identity,
+        phase,
+        source_axis,
+        payload,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+pub(in crate::spatial) fn render_proposal_fixture_for_axis(
+    programme_id: SourceFlagsProgrammeId,
+    attempt: SourceFlagsAttempt,
+    spatial_control_after_proposal_identity: Arc<SpatialControlJoinMetadata>,
+    phase: CallbackPhase,
+    source_axis: Arc<SourceAxisBinding>,
+    payload: Vec<f32>,
+) -> Result<PostWindowRenderProposal, PostWindowFanoutError> {
     PostWindowRenderProposal::try_from_spatial_control_renderer(
         SpatialControlRenderAuthority::fixture(),
         programme_id,
         attempt,
         spatial_control_after_proposal_identity,
         phase,
+        source_axis,
         payload,
     )
 }
@@ -156,11 +199,17 @@ fn fanout_returns_two_views_of_one_payload_with_explicit_phase_and_identity() {
     );
     assert_eq!(current_features.lineage.attempt, SourceFlagsAttempt::new(3));
     for source in 0..SOURCE_COUNT {
-        let source_samples = current_features.source_samples(source).unwrap();
+        let source_samples = current_features
+            .source_samples(CodecSourceIndex::new(u64::try_from(source).unwrap()))
+            .unwrap();
         assert_eq!(source_samples.len(), SAMPLES_PER_SOURCE);
         assert!(source_samples.iter().all(|sample| sample.to_bits() == 0));
     }
-    assert!(current_features.source_samples(SOURCE_COUNT).is_none());
+    assert!(
+        current_features
+            .source_samples(CodecSourceIndex::new(SOURCE_COUNT as u64))
+            .is_none()
+    );
 }
 
 #[test]
@@ -172,6 +221,7 @@ fn callback_fanout_binds_the_before_owner_without_claiming_an_after_root() {
         &machine,
         transaction_id.clone(),
         CallbackPhase::Normal,
+        source_axis_fixture(&after_proposal_identity(&machine), SOURCE_COUNT),
         vec![0.0; PAYLOAD_SAMPLE_COUNT],
     )
     .unwrap();
@@ -186,6 +236,56 @@ fn callback_fanout_binds_the_before_owner_without_claiming_an_after_root() {
     assert!(spatial_audio.after_digest().is_none());
     assert!(Arc::ptr_eq(&features.payload, &spatial_audio.payload));
     assert_eq!(machine.generation(), 0);
+}
+
+#[test]
+fn fanout_keeps_only_present_ids_on_a_46_source_axis() {
+    let machine = spatial_control();
+    let identity = after_proposal_identity(&machine);
+    let source_axis = source_axis_fixture(&identity, 46);
+    let payload = (0..46 * SAMPLES_PER_SOURCE)
+        .map(|sample| sample as f32)
+        .collect();
+    let proposal = render_proposal_fixture_for_axis(
+        test_programme_id(),
+        SourceFlagsAttempt::new(3),
+        identity,
+        CallbackPhase::Normal,
+        source_axis,
+        payload,
+    )
+    .unwrap();
+    let (current_features, spatial_audio) = proposal.fanout();
+
+    assert_eq!(current_features.source_axis().source_count(), 46);
+    assert_eq!(
+        current_features
+            .source_axis()
+            .source_ids()
+            .iter()
+            .map(|source| source.value())
+            .collect::<Vec<_>>(),
+        (0_u64..46).collect::<Vec<_>>()
+    );
+    let last_present_id = CodecSourceIndex::new(45);
+    assert_eq!(
+        current_features.source_samples(last_present_id).unwrap()[0].to_bits(),
+        ((45 * SAMPLES_PER_SOURCE) as f32).to_bits()
+    );
+    assert!(
+        current_features
+            .source_samples(CodecSourceIndex::new(46))
+            .is_none()
+    );
+    assert!(
+        spatial_audio
+            .source_samples(CodecSourceIndex::new(47))
+            .is_none()
+    );
+    assert_eq!(
+        current_features.payload_byte_count(),
+        (46 * SAMPLES_PER_SOURCE * std::mem::size_of::<u32>()) as u64
+    );
 }
 
 #[test]
@@ -237,8 +337,9 @@ fn payload_borrows_preserve_every_source_major_sample() {
     let (current_features, spatial_audio) = proposal.fanout();
 
     for source in 0..SOURCE_COUNT {
-        let current_samples = current_features.source_samples(source).unwrap();
-        let spatial_samples = spatial_audio.source_samples(source).unwrap();
+        let source_id = CodecSourceIndex::new(u64::try_from(source).unwrap());
+        let current_samples = current_features.source_samples(source_id).unwrap();
+        let spatial_samples = spatial_audio.source_samples(source_id).unwrap();
         assert_eq!(current_samples.len(), SAMPLES_PER_SOURCE);
         assert_eq!(current_samples, spatial_samples);
         for (sample, value) in current_samples.iter().enumerate() {

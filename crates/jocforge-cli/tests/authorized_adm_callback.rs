@@ -29,7 +29,9 @@ use jocforge_application::{
         SourceAnalysisBridgeError, SpatialSourceAnalysisBridgeInput,
         prepare_source_analysis_from_spatial_callback,
     },
-    spatial_callback::{MainSpatialCallbackInput, stage_main_spatial_callback},
+    spatial_callback::{
+        MainNormalControlOutput, MainSpatialCallbackInput, stage_main_spatial_callback,
+    },
 };
 use jocforge_domain::{
     analysis::{
@@ -65,7 +67,7 @@ use jocforge_domain::{
         validate_component_parameter_provider, validate_f04_parameter_package_manifest,
         validate_window_q15_provider,
     },
-    state::{Control38Snapshot, Host38Frame, ReaderEofMachine, ReaderEofPhase, ReaderEofState},
+    state::{ControlSnapshot, HostPcmFrame, ReaderEofMachine, ReaderEofPhase, ReaderEofState},
     timeline::{FrontendCallbackIndex, NormalCallbackCount},
     transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId},
     transform::math_generated_parameters::MathGeneratedTransformParameters,
@@ -947,7 +949,10 @@ fn stage_authorized_main_g1_current_features_candidate(
 
     let failed_shape = stage_main_spatial_callback(MainSpatialCallbackInput {
         prepared,
-        controls: normal_controls_for_frontend(prepared, frontend_after_g0),
+        controls: MainNormalControlOutput::Selected(normal_controls_for_frontend(
+            prepared,
+            frontend_after_g0,
+        )),
         physical_pcm_rows: &g1_callback.physical_rows()[..37],
         spatial_control: spatial_control_after_g0,
         spatial_audio: spatial_audio_after_g0,
@@ -971,7 +976,7 @@ fn stage_authorized_main_g1_current_features_candidate(
         frontend_candidate_and_controls(prepared, frontend_after_g0, "authorized-main-f01e-g1");
     let g1_proposal = stage_main_spatial_callback(MainSpatialCallbackInput {
         prepared,
-        controls: g1_controls,
+        controls: MainNormalControlOutput::Selected(g1_controls),
         physical_pcm_rows: g1_callback.physical_rows(),
         spatial_control: spatial_control_after_g0,
         spatial_audio: spatial_audio_after_g0,
@@ -1050,7 +1055,10 @@ fn stage_authorized_main_g1_current_features_candidate(
     let spatial_audio_before_repeated = spatial_audio_after_g1.digest();
     let repeated_g1 = stage_main_spatial_callback(MainSpatialCallbackInput {
         prepared,
-        controls: normal_controls_for_frontend(prepared, frontend_after_g0),
+        controls: MainNormalControlOutput::Selected(normal_controls_for_frontend(
+            prepared,
+            frontend_after_g0,
+        )),
         physical_pcm_rows: g1_callback.physical_rows(),
         spatial_control: spatial_control_after_g1,
         spatial_audio: spatial_audio_after_g1,
@@ -1166,7 +1174,7 @@ fn stage_authorized_main_g2_receiver_candidate(
 
     let g2_proposal = stage_main_spatial_callback(MainSpatialCallbackInput {
         prepared,
-        controls: g2_controls,
+        controls: MainNormalControlOutput::Selected(g2_controls),
         physical_pcm_rows: g2_callback.physical_rows(),
         spatial_control: spatial_control_after_g1,
         spatial_audio: spatial_audio_after_g1,
@@ -1460,7 +1468,8 @@ fn stage_authorized_initial_spatial_callback(
 
     let reader_eof = ReaderEofMachine::cold();
     let reader_eof_before = reader_eof.state_reference();
-    let reader_host38 = Host38Frame::new(
+    let reader_host38 = HostPcmFrame::new(
+        38,
         callback
             .physical_rows()
             .iter()
@@ -1474,7 +1483,9 @@ fn stage_authorized_initial_spatial_callback(
         NormalCallbackCount::new(1),
         4,
         Some(reader_host38),
-        Some(Control38Snapshot::new(normal_output.control38_carrier_words().to_vec()).unwrap()),
+        Some(
+            ControlSnapshot::new(38, 13, normal_output.control38_carrier_words().to_vec()).unwrap(),
+        ),
         ReaderEofPhase::Normal,
     )
     .unwrap();
@@ -1515,7 +1526,7 @@ fn stage_authorized_initial_spatial_callback(
         .canonical_sha256();
     let spatial_stage = stage_main_spatial_callback(MainSpatialCallbackInput {
         prepared,
-        controls: normal_output,
+        controls: MainNormalControlOutput::Selected(normal_output),
         physical_pcm_rows: callback.physical_rows(),
         spatial_control: &owners.spatial_control,
         spatial_audio: &owners.spatial_audio,

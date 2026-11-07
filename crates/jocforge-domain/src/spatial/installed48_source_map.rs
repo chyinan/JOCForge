@@ -1,12 +1,14 @@
 // pattern: Functional Core
-//! Primary-source 11-prefix and 37-physical-host installed48 source map.
+//! Dynamic selected-profile physical-row and F03W source-axis mapping.
 
 use crate::frontend::dbmd_sections::DbmdTrackFields;
 use crate::frontend::job_configuration::{
     PrimaryMetadataChunkHashes, SelectedInputKind, SelectedPrimaryControlBinding,
 };
 use crate::frontend::normal_control_snapshot::{
-    NormalControlPreparedSnapshot, NormalControlRow, NormalControlTrackKind,
+    NormalControlAdmHeldSourceView, NormalControlAdmInputOutput, NormalControlAdmInputSnapshot,
+    NormalControlPhysicalTrack, NormalControlPreparedSnapshot, NormalControlRegularSourceBinding,
+    NormalControlRow, NormalControlTrackKind,
 };
 use crate::frontend::object_control::ObjectControl52;
 use crate::frontend::primary_metadata_control::{
@@ -21,12 +23,16 @@ use crate::spatial::prefix_membership::{
     PrefixMembershipError, PrefixMembershipProducer, PrefixMembershipResult,
 };
 use crate::spatial::selected_p11_geometry::{P11PrefixOrdinal, SelectedP11Geometry};
-use crate::timeline::CodecSourceIndex;
+use crate::{
+    source_axis::{
+        F03W_PREFIX_SOURCE_COUNT, SELECTED_PROFILE_BED_ROW_COUNT, SelectedSourceRowDimensions,
+        SelectedSourceRowShapeError,
+    },
+    timeline::CodecSourceIndex,
+};
 
-const PREFIX_COUNT: usize = 11;
-const REGULAR_COUNT: usize = 37;
-const PHYSICAL_HOST_COUNT: usize = 38;
-const MIN_PROFILE_PHYSICAL_HOST_COUNT: usize = 10;
+const PREFIX_COUNT: usize = F03W_PREFIX_SOURCE_COUNT as usize;
+const MIN_PROFILE_PHYSICAL_HOST_COUNT: usize = SELECTED_PROFILE_BED_ROW_COUNT as usize;
 const MAX_PROFILE_PHYSICAL_HOST_COUNT: usize = u8::MAX as usize + 1;
 const SELECTED_SAMPLE_COUNT: u64 = 6_522_906;
 const SELECTED_SOURCE_BYTES: u64 = 743_696_526;
@@ -49,6 +55,7 @@ pub enum Installed48SourceMapError {
     SourceBinding,
     SourceExtent,
     RowCount,
+    SourceAxisCapacityExceeded,
     PhysicalHostOrder,
     DirectLfeIdentity,
     NormalControlIdentityMismatch,
@@ -66,6 +73,7 @@ impl Installed48SourceMapError {
             Self::SourceBinding => "INSTALLED48_SOURCE_BINDING",
             Self::SourceExtent => "INSTALLED48_SOURCE_EXTENT",
             Self::RowCount => "INSTALLED48_ROW_COUNT",
+            Self::SourceAxisCapacityExceeded => "INSTALLED48_SOURCE_AXIS_CAPACITY",
             Self::PhysicalHostOrder => "INSTALLED48_PHYSICAL_HOST_ORDER",
             Self::DirectLfeIdentity => "INSTALLED48_DIRECT_LFE_IDENTITY",
             Self::NormalControlIdentityMismatch => "INSTALLED48_NORMAL_CONTROL_IDENTITY",
@@ -400,18 +408,68 @@ impl Installed48SourceMap {
     /// Static source-map rows provide identity and routing only; dynamic controls come from F01E.
     pub fn produce_primary_prefix_route_from_normal_controls(
         &self,
-        quiet37: &[u8; REGULAR_COUNT],
+        quiet_regular_rows: &[u8],
         prepared: &NormalControlPreparedSnapshot,
-        control38_rows: &[NormalControlRow; PHYSICAL_HOST_COUNT],
+        control_rows: &[NormalControlRow],
         producer: &PrefixMembershipProducer,
     ) -> Result<PrimaryPrefixRoute, Installed48SourceMapError> {
-        let controls = self.regular_audio_controls_from_normal_rows(prepared, control38_rows)?;
+        let controls = self.regular_audio_controls_from_normal_rows(prepared, control_rows)?;
+        self.produce_primary_prefix_route_from_rows(
+            quiet_regular_rows,
+            control_rows,
+            &controls,
+            producer,
+        )
+    }
+
+    /// Produces the same prefix-membership route from the current dynamic ADM F01E view.
+    pub fn produce_primary_prefix_route_from_adm_input_output(
+        &self,
+        quiet_regular_rows: &[u8],
+        output: &NormalControlAdmInputOutput,
+        producer: &PrefixMembershipProducer,
+    ) -> Result<PrimaryPrefixRoute, Installed48SourceMapError> {
+        let controls = self.regular_audio_controls_from_adm_input_output(output)?;
+        self.produce_primary_prefix_route_from_rows(
+            quiet_regular_rows,
+            output.physical_rows(),
+            &controls,
+            producer,
+        )
+    }
+
+    pub fn produce_primary_prefix_route_from_adm_held_view(
+        &self,
+        quiet_regular_rows: &[u8],
+        held: &NormalControlAdmHeldSourceView,
+        producer: &PrefixMembershipProducer,
+    ) -> Result<PrimaryPrefixRoute, Installed48SourceMapError> {
+        let controls = self.regular_audio_controls_from_adm_held_view(held)?;
+        self.produce_primary_prefix_route_from_rows(
+            quiet_regular_rows,
+            held.physical_control_rows(),
+            &controls,
+            producer,
+        )
+    }
+
+    fn produce_primary_prefix_route_from_rows(
+        &self,
+        quiet_regular_rows: &[u8],
+        control_rows: &[NormalControlRow],
+        controls: &[Installed48AudioControl],
+        producer: &PrefixMembershipProducer,
+    ) -> Result<PrimaryPrefixRoute, Installed48SourceMapError> {
         if producer.basis_f32le_sha256() != self.p11_geometry.f32le_sha256() {
             return Err(Installed48SourceMapError::Membership(
                 PrefixMembershipError::ParameterDomain,
             ));
         }
-        if quiet37.iter().any(|quiet| *quiet > 1) {
+        if quiet_regular_rows.len() != self.physical_to_global_source.len()
+            || quiet_regular_rows.iter().any(|quiet| *quiet > 1)
+            || control_rows.len() != usize::from(self.physical_host_count)
+            || controls.len() != self.physical_to_global_source.len()
+        {
             return Err(Installed48SourceMapError::ControlFieldDomain);
         }
 
@@ -426,14 +484,17 @@ impl Installed48SourceMap {
             let row = self
                 .row_for_source(binding.source_index())
                 .ok_or(Installed48SourceMapError::SourceIndexDomain)?;
-            if quiet37[tail] != 0 || row.kind() != "object" || controls[tail].spread <= 0.0 {
+            if quiet_regular_rows[tail] != 0
+                || row.kind() != "object"
+                || controls[tail].spread <= 0.0
+            {
                 continue;
             }
             if controls[tail].mute != 0 {
                 return Err(Installed48SourceMapError::AudioControlDomain);
             }
             let NormalControlRow::Object13 { control, .. } =
-                &control38_rows[usize::from(binding.physical_host().value())]
+                &control_rows[usize::from(binding.physical_host().value())]
             else {
                 return Err(Installed48SourceMapError::NormalControlIdentityMismatch);
             };
@@ -463,37 +524,121 @@ impl Installed48SourceMap {
     pub(crate) fn regular_audio_controls_from_normal_rows(
         &self,
         prepared: &NormalControlPreparedSnapshot,
-        control38_rows: &[NormalControlRow; PHYSICAL_HOST_COUNT],
-    ) -> Result<[Installed48AudioControl; REGULAR_COUNT], Installed48SourceMapError> {
-        self.validate_normal_control_identity(prepared, control38_rows)?;
-        let mut controls = Vec::with_capacity(REGULAR_COUNT);
+        control_rows: &[NormalControlRow],
+    ) -> Result<Vec<Installed48AudioControl>, Installed48SourceMapError> {
+        self.validate_normal_control_identity(prepared, control_rows)?;
+        let mut controls = Vec::with_capacity(self.physical_to_global_source.len());
         for binding in &self.physical_to_global_source {
-            let row = control38_rows
+            let row = control_rows
                 .get(usize::from(binding.physical_host().value()))
                 .ok_or(Installed48SourceMapError::NormalControlIdentityMismatch)?;
             controls.push(audio_control(row)?);
         }
-        controls
-            .try_into()
-            .map_err(|_| Installed48SourceMapError::NormalControlIdentityMismatch)
+        Ok(controls)
+    }
+
+    pub(crate) fn regular_audio_controls_from_adm_input_output(
+        &self,
+        output: &NormalControlAdmInputOutput,
+    ) -> Result<Vec<Installed48AudioControl>, Installed48SourceMapError> {
+        let prepared = output.prepared_identity();
+        let control_rows = output.physical_rows();
+        self.regular_audio_controls_from_adm_rows(prepared, control_rows)
+    }
+
+    pub(crate) fn regular_audio_controls_from_adm_held_view(
+        &self,
+        held: &NormalControlAdmHeldSourceView,
+    ) -> Result<Vec<Installed48AudioControl>, Installed48SourceMapError> {
+        let prepared = held.prepared_snapshot().as_ref();
+        let control_rows = held.physical_control_rows();
+        self.regular_audio_controls_from_adm_rows(prepared, control_rows)
+    }
+
+    fn regular_audio_controls_from_adm_rows(
+        &self,
+        prepared: &NormalControlAdmInputSnapshot,
+        control_rows: &[NormalControlRow],
+    ) -> Result<Vec<Installed48AudioControl>, Installed48SourceMapError> {
+        self.validate_adm_input_identity(prepared)?;
+        self.validate_normal_control_rows(
+            prepared.source_samples(),
+            prepared.lfe_host(),
+            prepared.physical_tracks(),
+            prepared.regular_source_bindings(),
+            prepared.regular_control_hosts(),
+            control_rows,
+        )?;
+        let mut controls = Vec::with_capacity(self.physical_to_global_source.len());
+        for binding in &self.physical_to_global_source {
+            let row = control_rows
+                .get(usize::from(binding.physical_host().value()))
+                .ok_or(Installed48SourceMapError::NormalControlIdentityMismatch)?;
+            controls.push(audio_control(row)?);
+        }
+        Ok(controls)
+    }
+
+    fn validate_adm_input_identity(
+        &self,
+        prepared: &NormalControlAdmInputSnapshot,
+    ) -> Result<(), Installed48SourceMapError> {
+        let input_identity = prepared.prepared_input_identity();
+        let resource_identity = input_identity.resource();
+        let configuration_identity = input_identity.normalized_configuration();
+        let graph_provenance = input_identity.graph_provenance();
+        let metadata_hashes = self.source_binding.metadata_hashes();
+        if resource_identity.input_sha256() != *self.source_binding.source_receipt_sha256()
+            || resource_identity.resource_bytes() != self.source_binding.source_file_bytes()
+            || configuration_identity.config_sha256()
+                != *self.source_binding.job_projection_sha256()
+            || graph_provenance.axml().payload_sha256() != metadata_hashes.axml()
+            || graph_provenance.chna().payload_sha256() != metadata_hashes.chna()
+            || graph_provenance.dbmd().payload_sha256() != metadata_hashes.dbmd()
+        {
+            return Err(Installed48SourceMapError::NormalControlIdentityMismatch);
+        }
+        Ok(())
     }
 
     fn validate_normal_control_identity(
         &self,
         prepared: &NormalControlPreparedSnapshot,
-        control38_rows: &[NormalControlRow; PHYSICAL_HOST_COUNT],
+        control_rows: &[NormalControlRow],
     ) -> Result<(), Installed48SourceMapError> {
-        if prepared.lfe_host() != self.direct_lfe_host().value()
-            || prepared.source_samples() != self.source_binding.source_samples().value()
-            || prepared.regular_source_bindings().len() != self.physical_to_global_source.len()
-            || prepared.physical_tracks().len() != PHYSICAL_HOST_COUNT
+        self.validate_normal_control_rows(
+            prepared.source_samples(),
+            prepared.lfe_host(),
+            prepared.physical_tracks(),
+            prepared.regular_source_bindings(),
+            prepared.regular37_hosts(),
+            control_rows,
+        )
+    }
+
+    fn validate_normal_control_rows(
+        &self,
+        source_samples: u64,
+        lfe_host: u8,
+        prepared_tracks: &[NormalControlPhysicalTrack],
+        prepared_bindings: &[NormalControlRegularSourceBinding],
+        regular_control_hosts: &[u8],
+        control_rows: &[NormalControlRow],
+    ) -> Result<(), Installed48SourceMapError> {
+        let physical_count = usize::from(self.physical_host_count);
+        if lfe_host != self.direct_lfe_host().value()
+            || source_samples != self.source_binding.source_samples().value()
+            || prepared_bindings.len() != self.physical_to_global_source.len()
+            || regular_control_hosts.len() != self.physical_to_global_source.len()
+            || prepared_tracks.len() != physical_count
+            || control_rows.len() != physical_count
         {
             return Err(Installed48SourceMapError::NormalControlIdentityMismatch);
         }
-        for (host, row) in control38_rows.iter().enumerate() {
+        for (host, row) in control_rows.iter().enumerate() {
             let host_u8 = u8::try_from(host)
                 .map_err(|_| Installed48SourceMapError::NormalControlIdentityMismatch)?;
-            let prepared_track = &prepared.physical_tracks()[host];
+            let prepared_track = &prepared_tracks[host];
             let map_track = if host_u8 == self.direct_lfe_host().value() {
                 &self.direct_lfe_track
             } else {
@@ -523,10 +668,8 @@ impl Installed48SourceMap {
                 return Err(Installed48SourceMapError::NormalControlIdentityMismatch);
             }
         }
-        for (map_binding, prepared_binding) in self
-            .physical_to_global_source
-            .iter()
-            .zip(prepared.regular_source_bindings())
+        for (map_binding, prepared_binding) in
+            self.physical_to_global_source.iter().zip(prepared_bindings)
         {
             if map_binding.physical_host().value() != prepared_binding.physical_host()
                 || map_binding.source_index().value() != prepared_binding.global_source()
@@ -537,7 +680,7 @@ impl Installed48SourceMap {
         if self
             .physical_to_global_source
             .iter()
-            .zip(prepared.regular37_hosts())
+            .zip(regular_control_hosts)
             .any(|(binding, host)| binding.physical_host().value() != *host)
         {
             return Err(Installed48SourceMapError::NormalControlIdentityMismatch);
@@ -699,19 +842,24 @@ fn build_installed48_source_map(
     geometry: &SelectedP11Geometry,
 ) -> Result<Installed48SourceMap, Installed48SourceMapError> {
     let physical_host_count = controls.row_count();
-    if !(MIN_PROFILE_PHYSICAL_HOST_COUNT..=MAX_PROFILE_PHYSICAL_HOST_COUNT)
-        .contains(&physical_host_count)
-        || controls.rows().len() != physical_host_count
+    if controls.rows().len() != physical_host_count
         || usize::from(controls.source_binding().wave().channels()) != physical_host_count
     {
         return Err(Installed48SourceMapError::RowCount);
     }
-    let regular_host_count = physical_host_count
-        .checked_sub(1)
-        .ok_or(Installed48SourceMapError::RowCount)?;
-    let active_source_count = PREFIX_COUNT
-        .checked_add(regular_host_count)
-        .ok_or(Installed48SourceMapError::RowCount)?;
+    let dimensions = SelectedSourceRowDimensions::for_physical_rows(
+        u16::try_from(physical_host_count).map_err(|_| Installed48SourceMapError::RowCount)?,
+    )
+    .map_err(|error| match error {
+        SelectedSourceRowShapeError::PhysicalRowCountOutsideSelectedProfile => {
+            Installed48SourceMapError::RowCount
+        }
+        SelectedSourceRowShapeError::SourceAxisCapacityExceeded { .. } => {
+            Installed48SourceMapError::SourceAxisCapacityExceeded
+        }
+    })?;
+    let regular_host_count = usize::from(dimensions.regular_row_count());
+    let active_source_count = usize::from(dimensions.active_source_count());
 
     let mut rows = Vec::with_capacity(active_source_count);
     for point in geometry.points() {

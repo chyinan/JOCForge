@@ -2,8 +2,8 @@
 //! Stages one normal ReaderEof owner transition from accepted input-clock values.
 
 use jocforge_domain::{
-    frontend::normal_control_snapshot::NormalControlSnapshotOutput,
-    state::{Control38Snapshot, Host38Frame, ReaderEofError, ReaderEofPhase, ReaderEofState},
+    frontend::normal_control_snapshot::{NormalControlAdmInputOutput, NormalControlSnapshotOutput},
+    state::{ControlSnapshot, HostPcmFrame, ReaderEofError, ReaderEofPhase, ReaderEofState},
     timeline::{AdmSampleIndex, FrontendCallbackIndex, NormalCallbackCount},
     transaction::CallbackTransactionId,
 };
@@ -13,7 +13,6 @@ pub use jocforge_domain::{
 };
 
 const SELECTED_FRAME_SAMPLES: u32 = 1_536;
-const SELECTED_HOST_CHANNELS: usize = 38;
 const MAIN_CACHED_DRAIN_COUNT: u32 = 4;
 
 /// Actual input samples accepted for one normal frontend callback.
@@ -139,6 +138,118 @@ pub fn stage_reader_eof_normal_callback(
     controls: &NormalControlSnapshotOutput,
     parent_transaction_id: CallbackTransactionId,
 ) -> Result<ReaderEofReplacementCandidate, ReaderEofCallbackError> {
+    stage_reader_eof_normal_callback_with_controls(
+        before,
+        clock,
+        physical_pcm_rows,
+        controls,
+        parent_transaction_id,
+    )
+}
+
+/// Stages ReaderEof from the selected dynamic ADM F01E row view.
+pub fn stage_reader_eof_adm_input_normal_callback(
+    before: &ReaderEofMachine,
+    clock: ReaderEofNormalCallbackClock,
+    physical_pcm_rows: &[Vec<u32>],
+    controls: &NormalControlAdmInputOutput,
+    parent_transaction_id: CallbackTransactionId,
+) -> Result<ReaderEofReplacementCandidate, ReaderEofCallbackError> {
+    stage_reader_eof_normal_callback_with_controls(
+        before,
+        clock,
+        physical_pcm_rows,
+        controls,
+        parent_transaction_id,
+    )
+}
+
+trait ReaderEofNormalControls {
+    fn transaction_id(&self) -> &jocforge_domain::transaction::CallbackLineageIdentity;
+    fn value_generation(&self) -> FrontendCallbackIndex;
+    fn normal_origin_generation(&self) -> FrontendCallbackIndex;
+    fn query_sample(&self) -> u64;
+    fn actual_samples(&self) -> u32;
+    fn normal_callbacks(&self) -> NormalCallbackCount;
+    fn next_callback_index(&self) -> FrontendCallbackIndex;
+    fn next_owner_generation(&self) -> u64;
+    fn physical_rows(&self) -> usize;
+    fn control_words(&self) -> &[u32];
+}
+
+impl ReaderEofNormalControls for NormalControlSnapshotOutput {
+    fn transaction_id(&self) -> &jocforge_domain::transaction::CallbackLineageIdentity {
+        self.transaction_id()
+    }
+    fn value_generation(&self) -> FrontendCallbackIndex {
+        self.value_generation()
+    }
+    fn normal_origin_generation(&self) -> FrontendCallbackIndex {
+        self.normal_origin_generation()
+    }
+    fn query_sample(&self) -> u64 {
+        self.query_sample()
+    }
+    fn actual_samples(&self) -> u32 {
+        self.actual_samples()
+    }
+    fn normal_callbacks(&self) -> NormalCallbackCount {
+        self.normal_callbacks()
+    }
+    fn next_callback_index(&self) -> FrontendCallbackIndex {
+        self.next_callback_index()
+    }
+    fn next_owner_generation(&self) -> u64 {
+        self.next_owner_generation()
+    }
+    fn physical_rows(&self) -> usize {
+        self.control38_rows().len()
+    }
+    fn control_words(&self) -> &[u32] {
+        self.control38_carrier_words()
+    }
+}
+
+impl ReaderEofNormalControls for NormalControlAdmInputOutput {
+    fn transaction_id(&self) -> &jocforge_domain::transaction::CallbackLineageIdentity {
+        self.transaction_id()
+    }
+    fn value_generation(&self) -> FrontendCallbackIndex {
+        self.value_generation()
+    }
+    fn normal_origin_generation(&self) -> FrontendCallbackIndex {
+        self.normal_origin_generation()
+    }
+    fn query_sample(&self) -> u64 {
+        self.query_sample()
+    }
+    fn actual_samples(&self) -> u32 {
+        self.actual_samples()
+    }
+    fn normal_callbacks(&self) -> NormalCallbackCount {
+        self.normal_callbacks()
+    }
+    fn next_callback_index(&self) -> FrontendCallbackIndex {
+        self.next_callback_index()
+    }
+    fn next_owner_generation(&self) -> u64 {
+        self.next_owner_generation()
+    }
+    fn physical_rows(&self) -> usize {
+        self.physical_rows().len()
+    }
+    fn control_words(&self) -> &[u32] {
+        self.control_words()
+    }
+}
+
+fn stage_reader_eof_normal_callback_with_controls<C: ReaderEofNormalControls>(
+    before: &ReaderEofMachine,
+    clock: ReaderEofNormalCallbackClock,
+    physical_pcm_rows: &[Vec<u32>],
+    controls: &C,
+    parent_transaction_id: CallbackTransactionId,
+) -> Result<ReaderEofReplacementCandidate, ReaderEofCallbackError> {
     let current = before.committed();
     if current.callback_index() != clock.callback_index()
         || u64::from(current.callback_index().value()) != current.normal_callbacks().value()
@@ -169,10 +280,11 @@ pub fn stage_reader_eof_normal_callback(
     {
         return Err(ReaderEofCallbackError::ControlMismatch);
     }
-    if physical_pcm_rows.len() != SELECTED_HOST_CHANNELS
+    if physical_pcm_rows.len() != controls.physical_rows()
         || physical_pcm_rows
             .iter()
             .any(|row| row.len() != SELECTED_FRAME_SAMPLES as usize)
+        || controls.control_words().len() != controls.physical_rows() * 13
     {
         return Err(ReaderEofCallbackError::PcmShape);
     }
@@ -200,14 +312,17 @@ pub fn stage_reader_eof_normal_callback(
         .value()
         .checked_add(1)
         .ok_or(ReaderEofCallbackError::CallbackOrder)?;
-    let host = Host38Frame::new(
+    let physical_rows =
+        u16::try_from(controls.physical_rows()).map_err(|_| ReaderEofCallbackError::PcmShape)?;
+    let host = HostPcmFrame::new(
+        physical_rows,
         physical_pcm_rows
             .iter()
             .flat_map(|row| row.iter().copied().map(f32::from_bits))
             .collect(),
     )
     .map_err(ReaderEofCallbackError::ReaderEof)?;
-    let controls = Control38Snapshot::new(controls.control38_carrier_words().to_vec())
+    let controls = ControlSnapshot::new(physical_rows, 13, controls.control_words().to_vec())
         .map_err(ReaderEofCallbackError::ReaderEof)?;
     let after = ReaderEofState::from_parts(
         FrontendCallbackIndex::new(next_callback),
@@ -279,8 +394,8 @@ pub fn stage_reader_eof_cached_drain(
         return Err(ReaderEofCallbackError::CachedDrainPhaseMismatch);
     }
 
-    let last_normal_host38 = committed
-        .last_normal_host38()
+    let last_normal_host_frame = committed
+        .last_normal_host_frame()
         .cloned()
         .ok_or(ReaderEofCallbackError::CachedDrainCacheMissing)?;
     let last_control_snapshot = committed
@@ -299,7 +414,7 @@ pub fn stage_reader_eof_cached_drain(
         committed.source_cursor_samples(),
         committed.normal_callbacks(),
         next_remaining,
-        Some(last_normal_host38),
+        Some(last_normal_host_frame),
         Some(last_control_snapshot),
         ReaderEofPhase::CachedDrain,
     )
@@ -329,16 +444,16 @@ mod tests {
         include_cached_inputs: bool,
     ) -> ReaderEofMachine {
         let before = ReaderEofMachine::cold();
-        let last_normal_host38 =
-            include_cached_inputs.then(|| Host38Frame::new(vec![0.0; CACHED_HOST_WORDS]).unwrap());
+        let last_normal_host_frame = include_cached_inputs
+            .then(|| HostPcmFrame::new(38, vec![0.0; CACHED_HOST_WORDS]).unwrap());
         let last_control_snapshot = include_cached_inputs
-            .then(|| Control38Snapshot::new(vec![0; CACHED_CONTROL_WORDS]).unwrap());
+            .then(|| ControlSnapshot::new(38, 13, vec![0; CACHED_CONTROL_WORDS]).unwrap());
         let after = ReaderEofState::from_parts(
             FrontendCallbackIndex::new(1),
             u64::from(SELECTED_FRAME_SAMPLES),
             NormalCallbackCount::new(1),
             remaining_cached_drains,
-            last_normal_host38,
+            last_normal_host_frame,
             last_control_snapshot,
             phase,
         )
@@ -414,7 +529,11 @@ mod tests {
         let mut machine = reader_after_normal_callback(4, ReaderEofPhase::Normal, true);
         let initial_cursor = machine.committed().source_cursor_samples();
         let initial_normal_callbacks = machine.committed().normal_callbacks();
-        let initial_host = machine.committed().last_normal_host38().cloned().unwrap();
+        let initial_host = machine
+            .committed()
+            .last_normal_host_frame()
+            .cloned()
+            .unwrap();
         let initial_controls = machine
             .committed()
             .last_control_snapshot()
@@ -455,7 +574,7 @@ mod tests {
             assert_eq!(next.committed().remaining_cached_drains(), 3 - drain_offset);
             assert_eq!(next.committed().phase(), ReaderEofPhase::CachedDrain);
             assert_eq!(
-                next.committed().last_normal_host38().unwrap(),
+                next.committed().last_normal_host_frame().unwrap(),
                 &initial_host
             );
             assert_eq!(

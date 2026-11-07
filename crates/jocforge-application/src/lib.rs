@@ -87,10 +87,19 @@ pub struct PreparedJobInput {
 /// Cold F01E owner paired with the exact immutable input admission that created it.
 pub struct PreparedF01EColdOwner {
     machine: FrontendControlMachine,
+    provider: ValidatedF01EColdProvider,
     prepared_identity: Arc<PreparedJobInputIdentity>,
 }
 
 impl PreparedF01EColdOwner {
+    pub const fn machine(&self) -> &FrontendControlMachine {
+        &self.machine
+    }
+
+    pub const fn provider(&self) -> &ValidatedF01EColdProvider {
+        &self.provider
+    }
+
     pub const fn committed(&self) -> &FrontendControlState {
         self.machine.committed()
     }
@@ -101,6 +110,10 @@ impl PreparedF01EColdOwner {
 
     pub const fn attempt_id(&self) -> AttemptId {
         self.machine.committed().attempt_id()
+    }
+
+    pub(crate) fn into_machine(self) -> FrontendControlMachine {
+        self.machine
     }
 }
 
@@ -318,11 +331,15 @@ impl PreparedJobInput {
         let projected = provider
             .for_admitted_adm_input(&self.configuration, self.graph.graph())
             .map_err(PreparedJobInputError::F01EProviderProjection)?;
-        let machine =
-            FrontendControlMachine::from_provider(projected, self.programme_id.clone(), attempt_id)
-                .map_err(PreparedJobInputError::F01EColdOwner)?;
+        let machine = FrontendControlMachine::from_provider(
+            projected.clone(),
+            self.programme_id.clone(),
+            attempt_id,
+        )
+        .map_err(PreparedJobInputError::F01EColdOwner)?;
         Ok(PreparedF01EColdOwner {
             machine,
+            provider: projected,
             prepared_identity: Arc::clone(&self.domain_identity),
         })
     }
@@ -823,6 +840,22 @@ pub fn prepare_selected_job_input(
         primary_control_binding: None,
         primary_metadata_controls: None,
     })
+}
+
+/// Functional Core: the selected product path only admits authored zero-duration
+/// silence controls until insertion, output-length, and timestamp effects are specified.
+pub(crate) fn selected_silence_timeline_supported(
+    configuration: &SelectedJobConfiguration,
+) -> bool {
+    fn authored_duration_is_zero(value: &str) -> bool {
+        matches!(value.parse::<f64>(), Ok(seconds) if seconds == 0.0)
+    }
+
+    configuration.append_silence_duration_explicit()
+        && configuration.prepend_silence_samples().value() == 0
+        && configuration.append_silence_samples().value() == 0
+        && authored_duration_is_zero(configuration.prepend_silence_duration())
+        && authored_duration_is_zero(configuration.append_silence_duration())
 }
 
 fn bind_resource_payload(

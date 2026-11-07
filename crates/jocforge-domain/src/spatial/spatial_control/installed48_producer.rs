@@ -3,9 +3,11 @@
 
 use crate::{
     frontend::normal_control_snapshot::{
-        NormalControlHeldSourceView, NormalControlRow, NormalControlSnapshotOutput,
+        NormalControlAdmHeldSourceView, NormalControlAdmInputOutput, NormalControlHeldSourceView,
+        NormalControlRow, NormalControlSnapshotOutput,
     },
     numeric::FiniteF32,
+    source_axis::{SourceAxisBinding, SourceAxisError, SourceAxisOwnerGeneration},
     spatial::{
         diffusion_filter::DiffusionFilterParameters,
         diffusion_tail::DiffusionTailState,
@@ -22,10 +24,10 @@ use crate::{
         spatial_control::{SpatialControlMachine, SpatialControlState},
     },
     timeline::{AdmSampleIndex, FrontendCallbackIndex, NormalCallbackCount},
+    transaction::CallbackLineageIdentity,
 };
+use std::sync::Arc;
 
-const HOST_COUNT: usize = 38;
-const REGULAR_COUNT: usize = 37;
 const FRAME_SAMPLES: usize = 1_536;
 const CACHED_DRAIN_COUNT: u64 = 4;
 
@@ -35,8 +37,15 @@ pub enum SpatialControlInstalled48Callback<'a> {
         controls: &'a NormalControlSnapshotOutput,
         physical_pcm_rows: &'a [Vec<u32>],
     },
+    NormalAdmInputOutput {
+        controls: &'a NormalControlAdmInputOutput,
+        physical_pcm_rows: &'a [Vec<u32>],
+    },
     CachedDrain {
         controls: &'a NormalControlHeldSourceView,
+    },
+    CachedDrainAdmInput {
+        controls: &'a NormalControlAdmHeldSourceView,
     },
 }
 
@@ -45,6 +54,79 @@ pub struct SpatialControlInstalled48Input<'a> {
     pub callback: SpatialControlInstalled48Callback<'a>,
     pub source_map: &'a Installed48SourceMap,
     pub diffusion_parameters: Option<&'a DiffusionFilterParameters>,
+}
+
+#[derive(Clone, Copy)]
+enum NormalControlRows<'a> {
+    Selected {
+        prepared: &'a crate::frontend::normal_control_snapshot::NormalControlPreparedSnapshot,
+        rows: &'a [NormalControlRow],
+    },
+    AdmInput(&'a NormalControlAdmInputOutput),
+    AdmHeld(&'a NormalControlAdmHeldSourceView),
+}
+
+impl NormalControlRows<'_> {
+    fn identity_matches(self, transaction_id: &CallbackLineageIdentity) -> bool {
+        match self {
+            Self::Selected { prepared, .. } => {
+                transaction_id.programme_id() == prepared.programme_id()
+                    && transaction_id.attempt_id() == prepared.attempt_id()
+            }
+            Self::AdmInput(output) => output.transaction_id() == transaction_id,
+            Self::AdmHeld(held) => {
+                transaction_id == held.delivery_transaction_id()
+                    && transaction_id.programme_id() == held.prepared_snapshot().programme_id()
+                    && transaction_id.attempt_id() == held.prepared_snapshot().attempt_id()
+            }
+        }
+    }
+
+    fn regular_audio_controls(
+        self,
+        source_map: &Installed48SourceMap,
+    ) -> Result<
+        Vec<crate::spatial::installed48_render::Installed48AudioControl>,
+        Installed48SourceMapError,
+    > {
+        match self {
+            Self::Selected { prepared, rows } => {
+                source_map.regular_audio_controls_from_normal_rows(prepared, rows)
+            }
+            Self::AdmInput(output) => {
+                source_map.regular_audio_controls_from_adm_input_output(output)
+            }
+            Self::AdmHeld(held) => source_map.regular_audio_controls_from_adm_held_view(held),
+        }
+    }
+
+    fn prefix_route(
+        self,
+        source_map: &Installed48SourceMap,
+        quiet_regular_rows: &[u8],
+        producer: &PrefixMembershipProducer,
+    ) -> Result<PrimaryPrefixRoute, Installed48SourceMapError> {
+        match self {
+            Self::Selected { prepared, rows } => source_map
+                .produce_primary_prefix_route_from_normal_controls(
+                    quiet_regular_rows,
+                    prepared,
+                    rows,
+                    producer,
+                ),
+            Self::AdmInput(output) => source_map
+                .produce_primary_prefix_route_from_adm_input_output(
+                    quiet_regular_rows,
+                    output,
+                    producer,
+                ),
+            Self::AdmHeld(held) => source_map.produce_primary_prefix_route_from_adm_held_view(
+                quiet_regular_rows,
+                held,
+                producer,
+            ),
+        }
+    }
 }
 
 #[derive(Debug, Eq, PartialEq)]
@@ -57,6 +139,7 @@ pub enum SpatialControlInstalled48Error {
     CachedFrameUnavailable,
     CachedControlMismatch,
     NormalControlIdentity(Installed48SourceMapError),
+    SourceAxis(SourceAxisError),
     PrefixMembership(PrefixMembershipError),
     Activity(SourceFlagsError),
     Render(&'static str),
@@ -73,7 +156,7 @@ pub struct SpatialControlInstalled48AfterProjection {
     source_pcm_rows: Vec<Vec<u32>>,
     regular_raw_history_bits: Box<[u32]>,
     current_rows_bits: Box<[u32]>,
-    diffusion_after: [Option<DiffusionTailState>; REGULAR_COUNT],
+    diffusion_after: Vec<Option<DiffusionTailState>>,
 }
 
 #[must_use]
@@ -85,7 +168,7 @@ pub struct SpatialControlInstalled48AfterParts {
     pub source_pcm_rows: Vec<Vec<u32>>,
     pub regular_raw_history_bits: Box<[u32]>,
     pub current_rows_bits: Box<[u32]>,
-    pub diffusion_after: [Option<DiffusionTailState>; REGULAR_COUNT],
+    pub diffusion_after: Vec<Option<DiffusionTailState>>,
 }
 
 impl SpatialControlInstalled48AfterProjection {
@@ -129,7 +212,7 @@ pub struct SpatialControlInstalled48Proposal {
 }
 
 impl SpatialControlInstalled48Proposal {
-    pub const fn quiet37(&self) -> &[u8; REGULAR_COUNT] {
+    pub fn quiet_rows(&self) -> &[u8] {
         &self.activity.quiet
     }
 
@@ -163,12 +246,15 @@ pub fn stage_spatial_control_installed48(
 ) -> Result<SpatialControlInstalled48Proposal, SpatialControlInstalled48Error> {
     let before = owner.committed();
     let callback_index = before.callback_index();
+    let physical_host_count = usize::from(input.source_map.physical_host_count());
+    let regular_count = usize::from(input.source_map.regular_count());
     let (
         phase,
         transaction_id,
-        prepared,
         control_rows,
         normal_callbacks,
+        owner_generation,
+        source_origin_generation,
         current_pcm_rows,
         source_cursor,
         actual_samples,
@@ -181,28 +267,81 @@ pub fn stage_spatial_control_installed48(
             (
                 CallbackPhase::Normal,
                 controls.transaction_id().clone(),
-                controls.prepared_identity(),
-                controls.control38_rows(),
+                NormalControlRows::Selected {
+                    prepared: controls.prepared_identity(),
+                    rows: controls.control38_rows(),
+                },
                 controls.normal_callbacks(),
-                validate_normal_pcm_rows(physical_pcm_rows, controls.actual_samples())?,
+                controls.next_owner_generation(),
+                controls.normal_origin_generation(),
+                validate_normal_pcm_rows(
+                    physical_pcm_rows,
+                    controls.actual_samples(),
+                    physical_host_count,
+                )?,
+                before.source_cursor_samples(),
+                controls.actual_samples(),
+            )
+        }
+        SpatialControlInstalled48Callback::NormalAdmInputOutput {
+            controls,
+            physical_pcm_rows,
+        } => {
+            validate_adm_input_normal_callback(before, controls, input.source_map)?;
+            (
+                CallbackPhase::Normal,
+                controls.transaction_id().clone(),
+                NormalControlRows::AdmInput(controls),
+                controls.normal_callbacks(),
+                controls.next_owner_generation(),
+                controls.normal_origin_generation(),
+                validate_normal_pcm_rows(
+                    physical_pcm_rows,
+                    controls.actual_samples(),
+                    physical_host_count,
+                )?,
                 before.source_cursor_samples(),
                 controls.actual_samples(),
             )
         }
         SpatialControlInstalled48Callback::CachedDrain { controls } => {
-            validate_cached_drain(before, controls)?;
+            validate_cached_drain(before, controls, input.source_map)?;
             let cached_pcm = before
                 .source_cache
-                .last_normal_host38_bits
+                .last_normal_physical_pcm_rows_bits
                 .as_ref()
                 .ok_or(SpatialControlInstalled48Error::CachedFrameUnavailable)?;
-            let current_pcm_rows = rows_from_cached_pcm(cached_pcm)?;
+            let current_pcm_rows = rows_from_cached_pcm(cached_pcm, physical_host_count)?;
             (
                 CallbackPhase::CachedDrain,
                 controls.delivery_transaction_id().clone(),
-                controls.prepared_identity(),
-                controls.control38_rows(),
+                NormalControlRows::Selected {
+                    prepared: controls.prepared_identity(),
+                    rows: controls.control38_rows(),
+                },
                 controls.normal_callbacks(),
+                controls.owner_generation(),
+                controls.source_origin_generation(),
+                current_pcm_rows,
+                before.source_cursor_samples(),
+                0,
+            )
+        }
+        SpatialControlInstalled48Callback::CachedDrainAdmInput { controls } => {
+            validate_adm_input_cached_drain(before, controls, input.source_map)?;
+            let cached_pcm = before
+                .source_cache
+                .last_normal_physical_pcm_rows_bits
+                .as_ref()
+                .ok_or(SpatialControlInstalled48Error::CachedFrameUnavailable)?;
+            let current_pcm_rows = rows_from_cached_pcm(cached_pcm, physical_host_count)?;
+            (
+                CallbackPhase::CachedDrain,
+                controls.delivery_transaction_id().clone(),
+                NormalControlRows::AdmHeld(controls),
+                NormalCallbackCount::new(controls.expected_normal_callback_count()),
+                controls.owner_generation(),
+                controls.source_origin_generation(),
                 current_pcm_rows,
                 before.source_cursor_samples(),
                 0,
@@ -211,12 +350,34 @@ pub fn stage_spatial_control_installed48(
     };
 
     let current_index = transaction_id.callback_index();
+    let source_axis = Arc::new(
+        SourceAxisBinding::new(
+            input
+                .source_map
+                .rows()
+                .iter()
+                .map(super::super::installed48_source_map::Installed48SourceRow::source_index)
+                .collect::<Vec<_>>(),
+            SourceAxisOwnerGeneration::new(owner_generation),
+            *input.source_map.source_binding().source_receipt_sha256(),
+            transaction_id.clone(),
+            source_origin_generation,
+        )
+        .map_err(SpatialControlInstalled48Error::SourceAxis)?,
+    );
     if current_index != callback_index
-        || transaction_id.programme_id() != prepared.programme_id()
-        || transaction_id.attempt_id() != prepared.attempt_id()
+        || before.physical_host_count != physical_host_count
+        || before.regular_tail_count != regular_count
+        || before.active_source_ids.len() != input.source_map.rows().len()
+        || before
+            .active_source_ids
+            .iter()
+            .zip(input.source_map.rows())
+            .any(|(before_id, map_row)| before_id != &map_row.source_index())
+        || !control_rows.identity_matches(&transaction_id)
         || before.retired()
-        || before.previous_pcm_bits().len() != HOST_COUNT * FRAME_SAMPLES
-        || before.regular_raw_history_bits().len() != REGULAR_COUNT * FRAME_SAMPLES
+        || before.previous_pcm_bits().len() != physical_host_count * FRAME_SAMPLES
+        || before.regular_raw_history_bits().len() != regular_count * FRAME_SAMPLES
         || before
             .previous_pcm_bits()
             .iter()
@@ -226,26 +387,23 @@ pub fn stage_spatial_control_installed48(
         return Err(SpatialControlInstalled48Error::BeforeStateShape);
     }
 
-    let controls = input
-        .source_map
-        .regular_audio_controls_from_normal_rows(prepared, control_rows)
+    let controls = control_rows
+        .regular_audio_controls(input.source_map)
         .map_err(SpatialControlInstalled48Error::NormalControlIdentity)?;
     let activity = produce_activity(before, input.source_map, &current_pcm_rows, &controls)?;
     let membership =
         PrefixMembershipProducer::for_selected_primary_p11(input.source_map.p11_geometry())
             .map_err(SpatialControlInstalled48Error::PrefixMembership)?;
-    let membership_route = input
-        .source_map
-        .produce_primary_prefix_route_from_normal_controls(
-            &activity.quiet,
-            prepared,
-            control_rows,
-            &membership,
-        )
+    let membership_route = control_rows
+        .prefix_route(input.source_map, &activity.quiet, &membership)
         .map_err(SpatialControlInstalled48Error::NormalControlIdentity)?;
 
-    let diffusion_before =
-        std::array::from_fn(|tail| before.render_audio.diffusion_tails[tail].as_ref());
+    let diffusion_before = before
+        .render_audio
+        .diffusion_tails
+        .iter()
+        .map(Option::as_ref)
+        .collect::<Vec<_>>();
     let rendered = render_installed48(Installed48RenderInput {
         current_pcm_rows: &current_pcm_rows,
         previous_pcm_bits: before.previous_pcm_bits(),
@@ -274,6 +432,7 @@ pub fn stage_spatial_control_installed48(
         owner,
         transaction_id,
         phase,
+        source_axis,
         postwindow_payload,
     )
     .map_err(SpatialControlInstalled48Error::PostWindow)?;
@@ -282,7 +441,7 @@ pub fn stage_spatial_control_installed48(
         .value()
         .checked_add(u64::from(actual_samples))
         .ok_or(SpatialControlInstalled48Error::SourceExtent)?;
-    if source_cursor_after > prepared.source_samples()
+    if source_cursor_after > input.source_map.source_binding().source_samples().value()
         || (phase == CallbackPhase::CachedDrain
             && source_cursor_after != before.source_cursor_samples().value())
     {
@@ -336,9 +495,48 @@ fn validate_normal_callback(
     Ok(())
 }
 
+fn validate_adm_input_normal_callback(
+    before: &SpatialControlState,
+    controls: &NormalControlAdmInputOutput,
+    source_map: &Installed48SourceMap,
+) -> Result<(), SpatialControlInstalled48Error> {
+    let callback = before.callback_index();
+    let prepared = controls.prepared_identity();
+    let source_samples = prepared.source_samples();
+    let expected_normal_callbacks = source_samples.div_ceil(FRAME_SAMPLES as u64);
+    let expected_actual_samples = source_samples
+        .checked_sub(before.source_cursor_samples().value())
+        .ok_or(SpatialControlInstalled48Error::SourceExtent)?
+        .min(FRAME_SAMPLES as u64);
+    let next_callback = callback
+        .value()
+        .checked_add(1)
+        .ok_or(SpatialControlInstalled48Error::SourceExtent)?;
+    if source_samples != source_map.source_binding().source_samples().value()
+        || usize::from(source_map.physical_host_count()) != before.physical_host_count
+        || usize::from(source_map.regular_count()) != before.regular_tail_count
+        || u64::from(callback.value()) >= expected_normal_callbacks
+        || before.normal_callbacks().value() != u64::from(callback.value())
+        || controls.value_generation() != callback
+        || controls.normal_origin_generation() != callback
+        || controls.transaction_id().callback_index() != callback
+        || controls.query_sample() != before.source_cursor_samples().value()
+        || u64::from(controls.actual_samples()) != expected_actual_samples
+        || controls.normal_callbacks().value() != u64::from(next_callback)
+        || controls.next_callback_index().value() != next_callback
+        || controls.next_owner_generation() != u64::from(next_callback)
+        || controls.physical_rows().len() != usize::from(source_map.physical_host_count())
+        || controls.regular_rows().len() != usize::from(source_map.regular_count())
+    {
+        return Err(SpatialControlInstalled48Error::CallbackIdentity);
+    }
+    Ok(())
+}
+
 fn validate_cached_drain(
     before: &SpatialControlState,
     controls: &NormalControlHeldSourceView,
+    source_map: &Installed48SourceMap,
 ) -> Result<(), SpatialControlInstalled48Error> {
     let normal_count = controls.normal_callbacks().value();
     let expected_count = controls
@@ -372,10 +570,65 @@ fn validate_cached_drain(
             != controls.prepared_identity().programme_id()
         || controls.source_origin_transaction_id().attempt_id()
             != controls.prepared_identity().attempt_id()
-        || cached_rows.len() != HOST_COUNT
+        || cached_rows.len() != usize::from(source_map.physical_host_count())
         || cached_rows
             .iter()
             .zip(controls.control38_rows())
+            .any(|(cached, row)| !cached_control_matches(cached, row))
+    {
+        return Err(SpatialControlInstalled48Error::CachedControlMismatch);
+    }
+    Ok(())
+}
+
+fn validate_adm_input_cached_drain(
+    before: &SpatialControlState,
+    controls: &NormalControlAdmHeldSourceView,
+    source_map: &Installed48SourceMap,
+) -> Result<(), SpatialControlInstalled48Error> {
+    let normal_count = controls.expected_normal_callback_count();
+    let expected_count = source_map
+        .source_binding()
+        .source_samples()
+        .value()
+        .div_ceil(FRAME_SAMPLES as u64);
+    let callback = u64::from(before.callback_index().value());
+    let delivery_end = normal_count
+        .checked_add(CACHED_DRAIN_COUNT)
+        .ok_or(SpatialControlInstalled48Error::SourceExtent)?;
+    let origin = normal_count
+        .checked_sub(1)
+        .and_then(|value| u32::try_from(value).ok())
+        .map(FrontendCallbackIndex::new)
+        .ok_or(SpatialControlInstalled48Error::CallbackIdentity)?;
+    let cached_rows = before
+        .source_cache
+        .last_control_snapshot
+        .as_ref()
+        .ok_or(SpatialControlInstalled48Error::CachedControlMismatch)?;
+    if expected_count != normal_count
+        || before.normal_callbacks().value() != normal_count
+        || before.source_cursor_samples().value()
+            != source_map.source_binding().source_samples().value()
+        || before.remaining_cached_drains() == 0
+        || callback < normal_count
+        || callback >= delivery_end
+        || controls.delivery_generation() != before.callback_index()
+        || controls.source_origin_generation() != origin
+        || controls.owner_generation() != normal_count
+        || controls.source_origin_transaction_id().callback_index() != origin
+        || controls.source_origin_transaction_id().programme_id()
+            != controls.prepared_snapshot().programme_id()
+        || controls.source_origin_transaction_id().attempt_id()
+            != controls.prepared_snapshot().attempt_id()
+        || controls.delivery_transaction_id().programme_id()
+            != controls.prepared_snapshot().programme_id()
+        || controls.delivery_transaction_id().attempt_id()
+            != controls.prepared_snapshot().attempt_id()
+        || cached_rows.len() != usize::from(source_map.physical_host_count())
+        || cached_rows
+            .iter()
+            .zip(controls.physical_control_rows())
             .any(|(cached, row)| !cached_control_matches(cached, row))
     {
         return Err(SpatialControlInstalled48Error::CachedControlMismatch);
@@ -402,12 +655,13 @@ fn cached_control_matches(
 fn validate_normal_pcm_rows(
     rows: &[Vec<u32>],
     actual_samples: u32,
+    expected_physical_rows: usize,
 ) -> Result<Vec<Vec<u32>>, SpatialControlInstalled48Error> {
     let actual_samples = usize::try_from(actual_samples)
         .map_err(|_| SpatialControlInstalled48Error::SourcePcmShape)?;
     if actual_samples == 0
         || actual_samples > FRAME_SAMPLES
-        || rows.len() != HOST_COUNT
+        || rows.len() != expected_physical_rows
         || rows.iter().any(|row| {
             row.len() != FRAME_SAMPLES
                 || row.iter().any(|word| !f32::from_bits(*word).is_finite())
@@ -419,8 +673,11 @@ fn validate_normal_pcm_rows(
     Ok(rows.to_vec())
 }
 
-fn rows_from_cached_pcm(cached: &[u32]) -> Result<Vec<Vec<u32>>, SpatialControlInstalled48Error> {
-    if cached.len() != HOST_COUNT * FRAME_SAMPLES {
+fn rows_from_cached_pcm(
+    cached: &[u32],
+    physical_host_count: usize,
+) -> Result<Vec<Vec<u32>>, SpatialControlInstalled48Error> {
+    if cached.len() != physical_host_count * FRAME_SAMPLES {
         return Err(SpatialControlInstalled48Error::CachedFrameUnavailable);
     }
     Ok(cached
@@ -433,16 +690,19 @@ fn produce_activity(
     before: &SpatialControlState,
     source_map: &Installed48SourceMap,
     current_pcm_rows: &[Vec<u32>],
-    controls: &[crate::spatial::installed48_render::Installed48AudioControl; REGULAR_COUNT],
+    controls: &[crate::spatial::installed48_render::Installed48AudioControl],
 ) -> Result<Installed48Activity, SpatialControlInstalled48Error> {
     let window = triangle_window().map_err(SpatialControlInstalled48Error::Activity)?;
-    if current_pcm_rows.len() != HOST_COUNT
-        || before.regular_raw_history_bits().len() != REGULAR_COUNT * FRAME_SAMPLES
+    let physical_host_count = usize::from(source_map.physical_host_count());
+    let regular_count = usize::from(source_map.regular_count());
+    if current_pcm_rows.len() != physical_host_count
+        || before.regular_raw_history_bits().len() != regular_count * FRAME_SAMPLES
+        || controls.len() != regular_count
     {
         return Err(SpatialControlInstalled48Error::BeforeStateShape);
     }
-    let mut quiet = [0_u8; REGULAR_COUNT];
-    let mut mute_reset = [false; REGULAR_COUNT];
+    let mut quiet = vec![0_u8; regular_count];
+    let mut mute_reset = vec![false; regular_count];
     for (tail, binding) in source_map.physical_to_global_source().iter().enumerate() {
         let host = usize::from(binding.physical_host().value());
         let current_words = current_pcm_rows
@@ -495,6 +755,7 @@ mod tests {
         },
         profile::EncodingProfile,
         spatial::{SpatialControlMachine, source_geometry_outer::tests::f01b_f01e_fixture},
+        timeline::CodecSourceIndex,
     };
     use std::sync::Arc;
 
@@ -545,7 +806,7 @@ mod tests {
         )
         .unwrap();
 
-        assert_eq!(proposal.quiet37(), &[1; 37]);
+        assert_eq!(proposal.quiet_rows(), &[1; 37]);
         assert!(proposal.membership_route().contributions().is_empty());
         assert!(proposal.prefix_writer_indices().is_empty());
         assert_eq!(proposal.source_pcm_rows(), physical_pcm_rows);
@@ -558,7 +819,7 @@ mod tests {
         assert_eq!(spatial_audio.sample_count(), 48 * 3_072);
         assert!(
             spatial_audio
-                .source_samples(0)
+                .source_samples(CodecSourceIndex::new(0))
                 .unwrap()
                 .iter()
                 .all(|sample| sample.to_bits() == 0)

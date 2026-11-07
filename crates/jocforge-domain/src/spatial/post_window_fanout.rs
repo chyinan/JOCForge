@@ -8,7 +8,9 @@ use super::{SpatialControlDigest, SpatialControlJoinMetadata, SpatialControlProv
 use crate::{
     numeric::{FiniteF32, FiniteF32Error},
     profile::EncodingProfile,
+    source_axis::{SelectedSourceRowDimensions, SelectedSourceRowShapeError, SourceAxisBinding},
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+    timeline::CodecSourceIndex,
     timeline::FrontendCallbackIndex,
     transaction::CallbackLineageIdentity,
 };
@@ -17,9 +19,6 @@ use std::sync::Arc;
 
 const SOURCE_COUNT: usize = 48;
 const SAMPLES_PER_SOURCE: usize = 3072;
-const PAYLOAD_SAMPLE_COUNT: usize = SOURCE_COUNT * SAMPLES_PER_SOURCE;
-pub(super) const PAYLOAD_BYTE_COUNT: u64 =
-    (PAYLOAD_SAMPLE_COUNT * std::mem::size_of::<u32>()) as u64;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CallbackPhase {
@@ -31,6 +30,7 @@ pub enum CallbackPhase {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PostWindowBoundary {
     Installed48PostWindow48x3072,
+    ActiveSourceAxisPostWindow3072,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -45,6 +45,7 @@ pub enum PostWindowFanoutError {
     PayloadShape,
     NonFinitePayload,
     CallbackIdentityMismatch,
+    SourceAxisCapacityExceeded,
 }
 
 #[derive(Clone)]
@@ -55,6 +56,7 @@ struct PostWindowLineage {
     boundary: PostWindowBoundary,
     payload_sha256: AudioPayloadSha256,
     payload_byte_count: u64,
+    source_axis: Arc<SourceAxisBinding>,
     render_stage_identity: Arc<RenderStageIdentity>,
     render_identity: Arc<SpatialControlRenderIdentity>,
     spatial_control_after_proposal_identity: Option<Arc<SpatialControlJoinMetadata>>,
@@ -125,6 +127,7 @@ impl PostWindowRenderProposal {
         attempt: SourceFlagsAttempt,
         spatial_control_after_proposal_identity: Arc<SpatialControlJoinMetadata>,
         phase: CallbackPhase,
+        source_axis: Arc<SourceAxisBinding>,
         payload: Vec<f32>,
     ) -> Result<Self, PostWindowFanoutError> {
         let render_identity = Arc::new(spatial_control_after_proposal_identity.render_identity());
@@ -134,6 +137,7 @@ impl PostWindowRenderProposal {
             render_identity,
             Some(spatial_control_after_proposal_identity),
             phase,
+            source_axis,
             payload,
         )
     }
@@ -145,6 +149,7 @@ impl PostWindowRenderProposal {
         owner: &SpatialControlMachine,
         transaction_id: CallbackLineageIdentity,
         phase: CallbackPhase,
+        source_axis: Arc<SourceAxisBinding>,
         payload: Vec<f32>,
     ) -> Result<Self, PostWindowFanoutError> {
         let render_identity = Arc::new(
@@ -154,7 +159,15 @@ impl PostWindowRenderProposal {
         );
         let programme_id = render_identity.transaction_id().programme_id().clone();
         let attempt = render_identity.transaction_id().attempt_id();
-        Self::from_render_identity(programme_id, attempt, render_identity, None, phase, payload)
+        Self::from_render_identity(
+            programme_id,
+            attempt,
+            render_identity,
+            None,
+            phase,
+            source_axis,
+            payload,
+        )
     }
 
     fn from_render_identity(
@@ -163,12 +176,35 @@ impl PostWindowRenderProposal {
         render_identity: Arc<SpatialControlRenderIdentity>,
         spatial_control_after_proposal_identity: Option<Arc<SpatialControlJoinMetadata>>,
         phase: CallbackPhase,
+        source_axis: Arc<SourceAxisBinding>,
         payload: Vec<f32>,
     ) -> Result<Self, PostWindowFanoutError> {
-        if payload.len() != PAYLOAD_SAMPLE_COUNT {
+        let source_count = u16::try_from(source_axis.source_count())
+            .map_err(|_| PostWindowFanoutError::PayloadShape)?;
+        match SelectedSourceRowDimensions::for_active_source_count(source_count) {
+            Ok(_) => {}
+            Err(SelectedSourceRowShapeError::SourceAxisCapacityExceeded { .. }) => {
+                return Err(PostWindowFanoutError::SourceAxisCapacityExceeded);
+            }
+            Err(SelectedSourceRowShapeError::PhysicalRowCountOutsideSelectedProfile) => {
+                return Err(PostWindowFanoutError::PayloadShape);
+            }
+        }
+        let expected_samples = source_axis
+            .source_count()
+            .checked_mul(SAMPLES_PER_SOURCE)
+            .ok_or(PostWindowFanoutError::PayloadShape)?;
+        if source_axis.transaction_id().programme_id() != &programme_id
+            || source_axis.transaction_id().attempt_id() != attempt
+            || source_axis.transaction_id() != render_identity.transaction_id()
+            || source_axis.callback_index() != render_identity.callback_index()
+        {
+            return Err(PostWindowFanoutError::CallbackIdentityMismatch);
+        }
+        if payload.len() != expected_samples {
             return Err(PostWindowFanoutError::PayloadShape);
         }
-        let mut finite_payload = Vec::with_capacity(PAYLOAD_SAMPLE_COUNT);
+        let mut finite_payload = Vec::with_capacity(expected_samples);
         let mut hasher = Sha256::new();
         for sample in payload {
             let finite = FiniteF32::new(sample).map_err(map_finite_error)?;
@@ -185,9 +221,16 @@ impl PostWindowRenderProposal {
                 programme_id: Arc::new(programme_id),
                 attempt,
                 phase,
-                boundary: PostWindowBoundary::Installed48PostWindow48x3072,
+                boundary: if source_axis.source_count() == SOURCE_COUNT {
+                    PostWindowBoundary::Installed48PostWindow48x3072
+                } else {
+                    PostWindowBoundary::ActiveSourceAxisPostWindow3072
+                },
                 payload_sha256: AudioPayloadSha256(payload_sha256),
-                payload_byte_count: PAYLOAD_BYTE_COUNT,
+                payload_byte_count: u64::try_from(expected_samples)
+                    .unwrap_or(u64::MAX)
+                    .saturating_mul(std::mem::size_of::<u32>() as u64),
+                source_axis,
                 render_stage_identity: Arc::new(RenderStageIdentity),
                 render_identity,
                 spatial_control_after_proposal_identity,
@@ -259,6 +302,10 @@ impl CurrentFeaturesAudioView {
         self.lineage.payload_byte_count
     }
 
+    pub(super) fn source_axis(&self) -> &SourceAxisBinding {
+        &self.lineage.source_axis
+    }
+
     pub(super) fn render_stage_identity(&self) -> &Arc<RenderStageIdentity> {
         &self.lineage.render_stage_identity
     }
@@ -279,8 +326,8 @@ impl CurrentFeaturesAudioView {
         self.payload.len()
     }
 
-    pub(super) fn source_samples(&self, source: usize) -> Option<&[FiniteF32]> {
-        source_sample_range(&self.payload, source)
+    pub(super) fn source_samples(&self, source: CodecSourceIndex) -> Option<&[FiniteF32]> {
+        source_sample_range(&self.payload, &self.lineage.source_axis, source)
     }
 }
 
@@ -341,6 +388,10 @@ impl SpatialAudioPostWindowView {
         self.lineage.payload_byte_count
     }
 
+    pub(super) fn source_axis(&self) -> &SourceAxisBinding {
+        &self.lineage.source_axis
+    }
+
     pub(super) fn render_stage_identity(&self) -> &Arc<RenderStageIdentity> {
         &self.lineage.render_stage_identity
     }
@@ -361,16 +412,25 @@ impl SpatialAudioPostWindowView {
         self.payload.len()
     }
 
-    pub(super) fn source_samples(&self, source: usize) -> Option<&[FiniteF32]> {
-        source_sample_range(&self.payload, source)
+    pub(super) fn source_samples(&self, source: CodecSourceIndex) -> Option<&[FiniteF32]> {
+        source_sample_range(&self.payload, &self.lineage.source_axis, source)
     }
 }
 
-fn source_sample_range(payload: &[FiniteF32], source: usize) -> Option<&[FiniteF32]> {
-    if source >= SOURCE_COUNT || payload.len() != PAYLOAD_SAMPLE_COUNT {
+fn source_sample_range<'a>(
+    payload: &'a [FiniteF32],
+    source_axis: &SourceAxisBinding,
+    source: CodecSourceIndex,
+) -> Option<&'a [FiniteF32]> {
+    let ordinal = source_axis
+        .source_ids()
+        .binary_search_by_key(&source.value(), |candidate| candidate.value())
+        .ok()?;
+    let expected_samples = source_axis.source_count().checked_mul(SAMPLES_PER_SOURCE)?;
+    if payload.len() != expected_samples {
         return None;
     }
-    let start = source * SAMPLES_PER_SOURCE;
+    let start = ordinal.checked_mul(SAMPLES_PER_SOURCE)?;
     Some(&payload[start..start + SAMPLES_PER_SOURCE])
 }
 

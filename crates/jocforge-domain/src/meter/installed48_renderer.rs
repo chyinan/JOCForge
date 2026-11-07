@@ -8,6 +8,7 @@ use crate::{
     meter::sample_block_queue::{
         MeterCallbackIndex, MeterSourceSampleCount, SampleBlockQueueError,
     },
+    source_axis::SourceAxisBinding,
     spatial::{
         diffusion_filter::DiffusionFilterParameters,
         diffusion_tail::{DiffusionTailError, DiffusionTailState},
@@ -17,11 +18,12 @@ use crate::{
             Installed48RenderInput, render_installed48,
         },
         installed48_source_map::{
-            Installed48SourceMap, Installed48SourceOwner, PrimaryPrefixRoute,
+            Installed48SourceMap, Installed48SourceOwner, Installed48SourceRow, PrimaryPrefixRoute,
         },
     },
     timeline::AdmSampleIndex,
 };
+use std::sync::Arc;
 
 pub const METER_INSTALLED48_ROWS: usize = 48;
 pub const METER_INSTALLED48_SAMPLES: usize = 3_072;
@@ -37,6 +39,7 @@ pub enum MeterInstalled48Error {
     CallbackOrder,
     CallbackPhase,
     InputShape,
+    SourceAxisCapacityExceeded,
     SourceMapBinding,
     ControlDomain,
     MembershipOrder,
@@ -54,6 +57,7 @@ impl MeterInstalled48Error {
             Self::CallbackOrder => "METER_INSTALLED48_CALLBACK_ORDER",
             Self::CallbackPhase => "METER_INSTALLED48_CALLBACK_PHASE",
             Self::InputShape => "METER_INSTALLED48_INPUT_SHAPE",
+            Self::SourceAxisCapacityExceeded => "METER_INSTALLED48_SOURCE_AXIS_CAPACITY",
             Self::SourceMapBinding => "METER_INSTALLED48_SOURCE_MAP_BINDING",
             Self::ControlDomain => "METER_INSTALLED48_CONTROL_DOMAIN",
             Self::MembershipOrder => "METER_INSTALLED48_MEMBERSHIP_ORDER",
@@ -75,6 +79,7 @@ impl From<Installed48RenderError> for MeterInstalled48Error {
     fn from(error: Installed48RenderError) -> Self {
         match error {
             Installed48RenderError::InputShape => Self::InputShape,
+            Installed48RenderError::SourceAxisCapacityExceeded => Self::SourceAxisCapacityExceeded,
             Installed48RenderError::SourceMapBinding => Self::SourceMapBinding,
             Installed48RenderError::ControlDomain => Self::ControlDomain,
             Installed48RenderError::MembershipOrder => Self::MembershipOrder,
@@ -91,6 +96,8 @@ impl From<Installed48RenderError> for MeterInstalled48Error {
 pub struct MeterInstalled48State {
     source_sha256: [u8; 32],
     source_samples: MeterSourceSampleCount,
+    physical_row_count: usize,
+    active_source_ids: Arc<[crate::timeline::CodecSourceIndex]>,
     callback_index: MeterCallbackIndex,
     source_cursor: AdmSampleIndex,
     previous_pcm_rows: Vec<Vec<u32>>,
@@ -110,6 +117,11 @@ impl MeterInstalled48State {
         Self {
             source_sha256,
             source_samples,
+            physical_row_count: METER_INSTALLED48_HOST_ROWS,
+            active_source_ids: (0_u64..METER_INSTALLED48_ROWS as u64)
+                .map(crate::timeline::CodecSourceIndex::new)
+                .collect::<Vec<_>>()
+                .into(),
             callback_index: MeterCallbackIndex::new(0),
             source_cursor: AdmSampleIndex::new(0),
             previous_pcm_rows: zero_rows(
@@ -122,6 +134,39 @@ impl MeterInstalled48State {
             ),
             diffusion_states: BTreeMap::new(),
         }
+    }
+
+    pub fn cold_for_source_map(
+        source_sha256: [u8; 32],
+        source_samples: MeterSourceSampleCount,
+        source_map: &Installed48SourceMap,
+    ) -> Result<Self, MeterInstalled48Error> {
+        let physical_row_count = usize::from(source_map.physical_host_count());
+        let active_source_ids: Arc<[crate::timeline::CodecSourceIndex]> = source_map
+            .rows()
+            .iter()
+            .map(Installed48SourceRow::source_index)
+            .collect::<Vec<_>>()
+            .into();
+        let active_source_count = active_source_ids.len();
+        if !(10..=METER_INSTALLED48_HOST_ROWS).contains(&physical_row_count)
+            || source_map.physical_to_global_source().len() + 1 != physical_row_count
+            || source_map.rows().len() != active_source_count
+            || active_source_count > METER_INSTALLED48_ROWS
+        {
+            return Err(MeterInstalled48Error::SourceMapBinding);
+        }
+        Ok(Self {
+            source_sha256,
+            source_samples,
+            physical_row_count,
+            active_source_ids,
+            callback_index: MeterCallbackIndex::new(0),
+            source_cursor: AdmSampleIndex::new(0),
+            previous_pcm_rows: zero_rows(physical_row_count, METER_INSTALLED48_FRAME_SAMPLES),
+            previous_current_rows: zero_rows(active_source_count, METER_INSTALLED48_FRAME_SAMPLES),
+            diffusion_states: BTreeMap::new(),
+        })
     }
 
     pub const fn callback_index(&self) -> MeterCallbackIndex {
@@ -163,6 +208,7 @@ pub struct MeterInstalled48Input<'a> {
     pub activity: &'a PrimaryActivityOutput,
     pub membership_route: &'a PrimaryPrefixRoute,
     pub source_map: &'a Installed48SourceMap,
+    pub source_axis: &'a Arc<SourceAxisBinding>,
     pub controls: &'a PrimaryMetadataControlRows,
     pub diffusion_parameters: Option<&'a DiffusionFilterParameters>,
 }
@@ -171,6 +217,7 @@ pub struct MeterInstalled48Input<'a> {
 pub struct MeterInstalled48Frame {
     callback_index: MeterCallbackIndex,
     upstream_generation: u64,
+    source_axis: Arc<SourceAxisBinding>,
     rows: Vec<Vec<u32>>,
 }
 
@@ -181,6 +228,10 @@ impl MeterInstalled48Frame {
 
     pub const fn upstream_generation(&self) -> u64 {
         self.upstream_generation
+    }
+
+    pub const fn source_axis(&self) -> &Arc<SourceAxisBinding> {
+        &self.source_axis
     }
 
     pub fn rows(&self) -> &[Vec<u32>] {
@@ -215,10 +266,7 @@ pub fn stage_meter_installed48(
 ) -> Result<MeterInstalled48Proposal, MeterInstalled48Error> {
     validate_input(before, &input)?;
     let regular_rows = regular_rows(input.source_map)?;
-    let controls: [Installed48AudioControl; METER_INSTALLED48_REGULAR_ROWS] =
-        regular_controls(input.source_map, &regular_rows)?
-            .try_into()
-            .map_err(|_| MeterInstalled48Error::SourceMapBinding)?;
+    let controls = regular_controls(input.source_map, &regular_rows)?;
     if controls.iter().any(|control| control.mute != 0) {
         return Err(MeterInstalled48Error::ControlDomain);
     }
@@ -228,16 +276,13 @@ pub fn stage_meter_installed48(
         .flatten()
         .copied()
         .collect::<Vec<_>>();
-    let diffusion_before =
-        std::array::from_fn(|tail| before.diffusion_states.get(&regular_rows[tail]));
-    let quiet_regular_rows: [u8; METER_INSTALLED48_REGULAR_ROWS] = input
-        .activity
-        .quiet_regular_rows()
-        .try_into()
-        .map_err(|_| MeterInstalled48Error::InputShape)?;
+    let diffusion_before = regular_rows
+        .iter()
+        .map(|host| before.diffusion_states.get(host))
+        .collect::<Vec<_>>();
     let activity = Installed48Activity {
-        quiet: quiet_regular_rows,
-        mute_reset: [false; METER_INSTALLED48_REGULAR_ROWS],
+        quiet: input.activity.quiet_regular_rows().to_vec(),
+        mute_reset: vec![false; regular_rows.len()],
     };
     let rendered = render_installed48(Installed48RenderInput {
         current_pcm_rows: input.raw_pcm_rows,
@@ -277,6 +322,8 @@ pub fn stage_meter_installed48(
     let after = MeterInstalled48State {
         source_sha256: before.source_sha256,
         source_samples: before.source_samples,
+        physical_row_count: before.physical_row_count,
+        active_source_ids: Arc::clone(&before.active_source_ids),
         callback_index: MeterCallbackIndex::new(next_callback),
         source_cursor: AdmSampleIndex::new(next_cursor),
         previous_pcm_rows: input.raw_pcm_rows.to_vec(),
@@ -288,6 +335,7 @@ pub fn stage_meter_installed48(
         frame: MeterInstalled48Frame {
             callback_index: input.callback_index,
             upstream_generation: next_callback,
+            source_axis: Arc::clone(input.source_axis),
             rows: rendered.postwindow_rows,
         },
     })
@@ -374,23 +422,37 @@ fn validate_input(
     };
     if u64::from(input.host_input_samples) != expected_host_samples
         || u64::from(input.source_padding_samples) != expected_padding_samples
-        || input.raw_pcm_rows.len() != METER_INSTALLED48_HOST_ROWS
+        || input.raw_pcm_rows.len() != before.physical_row_count
+        || before.physical_row_count != usize::from(input.source_map.physical_host_count())
+        || before.active_source_ids.len() != usize::from(input.source_map.source_count())
+        || input.source_axis.source_ids() != before.active_source_ids.as_ref()
+        || input.source_axis.input_sha256() != &input.source_sha256
+        || u64::from(input.source_axis.callback_index().value()) != callback
         || input.raw_pcm_rows.iter().any(|row| {
             row.len() != METER_INSTALLED48_FRAME_SAMPLES
                 || row.iter().any(|word| !f32::from_bits(*word).is_finite())
         })
-        || input.activity.quiet_regular_rows().len() != METER_INSTALLED48_REGULAR_ROWS
-        || before.previous_pcm_rows.len() != METER_INSTALLED48_HOST_ROWS
-        || before.previous_current_rows.len() != METER_INSTALLED48_ROWS
+        || input.activity.quiet_regular_rows().len()
+            != input.source_map.physical_to_global_source().len()
+        || before.previous_pcm_rows.len() != before.physical_row_count
+        || before.previous_current_rows.len() != before.active_source_ids.len()
     {
         return Err(MeterInstalled48Error::InputShape);
     }
     if !normal_callback && input.raw_pcm_rows.iter().flatten().any(|word| *word != 0) {
         return Err(MeterInstalled48Error::InputShape);
     }
+    let block_align = before
+        .physical_row_count
+        .checked_mul(3)
+        .ok_or(MeterInstalled48Error::ArithmeticOverflow)?;
     if before.source_samples.value() != input.source_map.source_binding().source_samples().value()
-        || input.source_map.source_binding().data_bytes() % 114 != 0
-        || input.source_map.source_binding().data_bytes() / 114 != before.source_samples.value()
+        || input.source_map.source_binding().data_bytes()
+            % u64::try_from(block_align).unwrap_or(u64::MAX)
+            != 0
+        || input.source_map.source_binding().data_bytes()
+            / u64::try_from(block_align).unwrap_or(u64::MAX)
+            != before.source_samples.value()
     {
         return Err(MeterInstalled48Error::SourceExtentMismatch);
     }
@@ -398,7 +460,7 @@ fn validate_input(
 }
 
 fn regular_rows(source_map: &Installed48SourceMap) -> Result<Vec<u8>, MeterInstalled48Error> {
-    let mut hosts = Vec::with_capacity(METER_INSTALLED48_REGULAR_ROWS);
+    let mut hosts = Vec::with_capacity(source_map.physical_to_global_source().len());
     for binding in source_map.physical_to_global_source() {
         let row = source_map
             .row_for_source(binding.source_index())
@@ -411,7 +473,7 @@ fn regular_rows(source_map: &Installed48SourceMap) -> Result<Vec<u8>, MeterInsta
         }
         hosts.push(binding.physical_host().value());
     }
-    if hosts.len() != METER_INSTALLED48_REGULAR_ROWS
+    if hosts.len() != source_map.physical_to_global_source().len()
         || hosts.windows(2).any(|pair| pair[0] >= pair[1])
     {
         return Err(MeterInstalled48Error::SourceMapBinding);

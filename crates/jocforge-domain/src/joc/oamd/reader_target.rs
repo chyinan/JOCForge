@@ -10,6 +10,7 @@ mod type11;
 
 use crate::{
     joc::emdf::metadata_owner::MetadataPayloadBody,
+    source_axis::{SelectedSourceRowDimensions, SelectedSourceRowShapeError, SourceAxisBinding},
     spatial::target_context::TargetSlotIndex,
     timeline::{CodecSourceIndex, FrontendCallbackIndex},
     transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
@@ -23,7 +24,6 @@ const READER_ROWS: usize = 16;
 const RECORD_BYTES: usize = 56;
 const TARGET_ROW_IDENTITIES: [i64; 15] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 const SAMPLES_PER_ENERGY_ROW: usize = 1536;
-const SOURCE_COUNT: usize = 48;
 pub(crate) const SELECTED_PROFILE_ID: &str = "reader56-main-target-panner.v1";
 const READER_PRIMING_CALLBACKS: u32 = 2;
 
@@ -96,10 +96,11 @@ pub struct ReaderTargetState {
 pub struct ReaderTargetCallbackInputs<'a> {
     pub callback_index: FrontendCallbackIndex,
     pub reader_enabled: bool,
-    pub snapshot_keys_complete: bool,
     pub programme_id: ProgrammeId,
     pub attempt_id: AttemptId,
     pub transaction_id: CallbackLineageIdentity,
+    pub source_axis: &'a SourceAxisBinding,
+    pub source_flags_axis: &'a SourceAxisBinding,
     pub profile_id: &'a str,
     pub current_xyz_words: &'a [u32; TARGET_ROWS * 3],
     pub current_ids: &'a [u32; TARGET_ROWS],
@@ -107,7 +108,7 @@ pub struct ReaderTargetCallbackInputs<'a> {
     pub assignment_active: &'a [u8; TARGET_ROWS],
     pub active_target_indices: &'a [u8],
     pub matrix: &'a [f32],
-    pub source_flags: &'a [u8; SOURCE_COUNT],
+    pub source_flags: &'a [u8],
     pub previous_overlap_rows: [&'a [f32]; TARGET_ROWS],
     pub current_mixer_rows: [&'a [f32]; TARGET_ROWS],
 }
@@ -118,6 +119,8 @@ pub enum ReaderTargetError {
     PipelineRetired,
     CallbackOrder,
     CallbackIdentityMismatch,
+    SourceAxisMismatch,
+    SourceAxisCapacityExceeded,
     InputError,
     ProfileUnsupported,
     NumericFailure,
@@ -130,6 +133,8 @@ impl ReaderTargetError {
             Self::PipelineRetired => "R56T_PIPELINE_RETIRED",
             Self::CallbackOrder => "R56T_CALLBACK_ORDER",
             Self::CallbackIdentityMismatch => "R56T_CALLBACK_IDENTITY_MISMATCH",
+            Self::SourceAxisMismatch => "R56T_SOURCE_AXIS_MISMATCH",
+            Self::SourceAxisCapacityExceeded => "R56T_SOURCE_AXIS_CAPACITY",
             Self::InputError => "R56T_INPUT_ERROR",
             Self::ProfileUnsupported => "R56T_PROFILE_UNSUPPORTED",
             Self::NumericFailure => "R56T_NUMERIC_FAILURE",
@@ -618,9 +623,35 @@ fn validate_callback_inputs(
     {
         return Err(ReaderTargetError::CallbackIdentityMismatch);
     }
-    if !input.snapshot_keys_complete
-        || input.active_target_indices.len() > TARGET_ROWS
-        || input.matrix.len() != input.active_target_indices.len() * SOURCE_COUNT
+    let axis = &input.source_axis;
+    let source_count = axis.source_count();
+    let source_count_u16 =
+        u16::try_from(source_count).map_err(|_| ReaderTargetError::SourceAxisMismatch)?;
+    match SelectedSourceRowDimensions::for_active_source_count(source_count_u16) {
+        Ok(_) => {}
+        Err(SelectedSourceRowShapeError::SourceAxisCapacityExceeded { .. }) => {
+            return Err(ReaderTargetError::SourceAxisCapacityExceeded);
+        }
+        Err(SelectedSourceRowShapeError::PhysicalRowCountOutsideSelectedProfile) => {
+            return Err(ReaderTargetError::SourceAxisMismatch);
+        }
+    }
+    if axis.transaction_id() != &input.transaction_id
+        || axis.validate_handoff(input.source_flags_axis).is_err()
+        || axis.callback_index() != input.callback_index
+        || axis.source_origin_generation().value() > input.callback_index.value()
+        || axis
+            .source_ids()
+            .iter()
+            .enumerate()
+            .any(|(ordinal, source)| source.value() != u64::try_from(ordinal).unwrap_or(u64::MAX))
+    {
+        return Err(ReaderTargetError::SourceAxisMismatch);
+    }
+    if input.active_target_indices.len() > TARGET_ROWS
+        || input.matrix.len() != input.active_target_indices.len() * source_count
+        || input.source_flags.len() != source_count
+        || input.source_flags.iter().any(|flag| *flag > 1)
     {
         return Err(ReaderTargetError::InputError);
     }
@@ -747,7 +778,8 @@ fn has_quiet_witness(input: &ReaderTargetCallbackInputs<'_>, target_row: usize) 
     else {
         return false;
     };
-    let row = &input.matrix[ordinal * SOURCE_COUNT..(ordinal + 1) * SOURCE_COUNT];
+    let source_count = input.source_axis.source_count();
+    let row = &input.matrix[ordinal * source_count..(ordinal + 1) * source_count];
     row.iter()
         .enumerate()
         .any(|(source, coefficient)| input.source_flags[source] == 0 && *coefficient > 0.0)

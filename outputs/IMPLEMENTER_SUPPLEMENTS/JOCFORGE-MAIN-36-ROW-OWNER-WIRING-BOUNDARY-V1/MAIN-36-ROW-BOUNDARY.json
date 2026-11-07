@@ -1,0 +1,138 @@
+{
+  "schema": "jocforge-wash-main-36-row-production-boundary.v1",
+  "package_id": "JOCFORGE-MAIN-36-ROW-OWNER-WIRING-BOUNDARY-V1",
+  "source_snapshot": {
+    "worktree": "D:/Programs/JOCForge-isolated",
+    "captured_utc": "2026-11-03T13:33:58Z",
+    "implementation_thread_active": true,
+    "read_only": true,
+    "tests_run_by_wash": false
+  },
+  "question_results": {
+    "main_f01e_cold_owner": {
+      "result": "NOT_USING_DYNAMIC_PER_INPUT_OWNER_IN_AUDITED_MAIN_CALLSITE",
+      "evidence": "encode_request loads selected static F01E provider and passes it to MainSpatialColdRoots::from_selected_providers; that constructs FrontendControlMachine::from_provider(f01e.clone()). PreparedJobInput::f01e_cold_owner exists but audited callsite is only independent_meter_callback.rs:1043."
+    },
+    "normal_f01e": {
+      "result": "MAIN_USES_FIXED_NORMAL_CONTROL_SNAPSHOT",
+      "evidence": "stage_main_frontend_snapshot calls PreparedJobInput::normal_control_prepared_snapshot -> NormalControlPreparedSnapshot::from_validated -> propose_normal_control_snapshot. Fixed arrays are 38 physical, 28 object, 10 bed, 37 regular; validate_selected_profile requires 38 channels/28 objects; DBMD fields must have length 38; graph rows convert to [SelectedPhysicalTrack;38]. The dynamic NormalControlAdmInputSnapshot/AfterState uses Vecs but its audited callers are only the independent Meter path."
+    },
+    "reader_eof": {
+      "result": "FIXED_38_ROW_CACHE_AND_FOUR_DRAINS",
+      "cold": "ReaderEofMachine::cold sets callback/source/normal counts to 0, four drains, no cached PCM/control, phase Unset.",
+      "normal": "stage_reader_eof_normal_callback requires 38 physical rows x1536; serializes Host38Frame (38*1536 f32 words) and Control38Snapshot (38*13 u32 words).",
+      "drain": "four cached deliveries reuse last normal PCM/control and keep source cursor while advancing callback/drain counters; shape remains fixed."
+    },
+    "main_spatial_cold": {
+      "result": "FIXED_38_MAIN_OWNER; DYNAMIC_CONSTRUCTOR_METER_ONLY",
+      "evidence": "MainSpatialColdRoots::from_selected_providers calls SpatialControlMachine::new_cold, which requires F01E_SELECTED_COLD_V1, 38 channels, 10 bed, 28 object and initializes dense 48 source IDs. The dynamic new_cold_for_source_map accepts F01E_ADM_INPUT_COLD_PROJECTION_V1 plus an explicit map but the only audited callsite is independent_meter_callback.rs:1046."
+    },
+    "normal_and_drain_f01e": {
+      "result": "NO_DYNAMIC_F01E_AFTER_STATE_SHARED_IN_MAIN",
+      "evidence": "MAIN normal uses NormalControlPreparedSnapshot/Output fixed arrays. Cached control view is NormalControlHeldSourceView fixed [NormalControlRow;38]/[NormalControlRow;37]; ReaderEof also retains fixed Host38/Control38 caches. Dynamic F01E per-input after-state is exercised only in the Meter path."
+    }
+  },
+  "main_call_order": {
+    "entry": "encode_request.rs constructs MainSpatialColdRoots and ReaderEofMachine::cold at request setup",
+    "normal": "stage_main_callback_candidate calls stage_main_frontend_snapshot before stage_reader_eof_normal_callback",
+    "first_static_36_rejection": "NormalControlPreparedSnapshot::from_validated requires SELECTED_CHANNELS=38 and DBMD/graph fixed arrays; static source-derived blocker, runtime error NOT_OBSERVED"
+  },
+  "meter_vs_main": "Synthetic 36-row G0/G1/Q3 Meter/spatial proposals do not prove the production CLI MAIN path is dynamic.",
+  "remaining": {
+    "main_f01e_dynamic_wiring": "OPEN",
+    "main_reader_eof_dynamic_shape": "OPEN",
+    "main_spatial_cold_dynamic_map": "OPEN",
+    "main_cached_control_dynamic_view": "OPEN",
+    "real_36_input": "NOT_RUN",
+    "full_36_main_output": "NOT_RUN",
+    "row_identity_native_join": "UNBOUND",
+    "audio_parity": "NOT_RUN"
+  },
+  "source_files": [
+    {
+      "path": "crates/jocforge-cli/src/encode_request.rs",
+      "bytes": 37632,
+      "sha256": "8715555af6c1255be0e41323107fecc7386613d81052fd2be408ee61d8415a5c"
+    },
+    {
+      "path": "crates/jocforge-application/src/spatial_callback.rs",
+      "bytes": 42245,
+      "sha256": "7f07921a77557cc4d60df0c8a5d17294c7936a369ec623a00a3dd50903e647ec"
+    },
+    {
+      "path": "crates/jocforge-application/src/reader_eof_callback.rs",
+      "bytes": 20331,
+      "sha256": "c37118b4f8159fc8d8375286b09f925f19696f6b343f86785605e82e9d1b0bcd"
+    },
+    {
+      "path": "crates/jocforge-domain/src/state/reader_eof.rs",
+      "bytes": 19763,
+      "sha256": "0cdf3578aa8b1a4723681e381b196c20e336b8b629bedd3584384b5284595789"
+    },
+    {
+      "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+      "bytes": 156954,
+      "sha256": "ff9044c11e2cf4dc0e22eca6b843629db41963cdcc3bc521074f85a4cfddeb1e"
+    },
+    {
+      "path": "crates/jocforge-domain/src/frontend/provider.rs",
+      "bytes": 32073,
+      "sha256": "8ead7f6f49f3cf78ea65f632da0b8a3252a435968f27dcc0d26d646bc4d47973"
+    },
+    {
+      "path": "crates/jocforge-application/src/independent_meter_callback.rs",
+      "bytes": 66459,
+      "sha256": "bb40107684439a3baf23d93976e5e0a5d2f3699603b4d1d2bc1c094c06fe2c54"
+    },
+    {
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "bytes": 69842,
+      "sha256": "443b81ddbd56973035b6dc830d8191b5f38614824712390a6c03b43b3ecb5a14"
+    },
+    {
+      "path": "crates/jocforge-cli/src/selected_spatial_callback_providers.rs",
+      "bytes": 11537,
+      "sha256": "8b2fcef472dc172e9529b5f5f598f12b53f2e3a2d42e0a787a755547ba4a7be8"
+    },
+    {
+      "path": "crates/jocforge-application/src/lib.rs",
+      "bytes": 38293,
+      "sha256": "0f6efe74a6d6bcdee334b7ba343b3215f60fbcf83047b33adac904b2c90851c9"
+    },
+    {
+      "path": "crates/jocforge-cli/src/source_execution.rs",
+      "bytes": 18298,
+      "sha256": "0b8a09282203a5743d380e99a7d6ec93019cc3e738463ec29421fd790d8b8606"
+    },
+    {
+      "path": "crates/jocforge-cli/src/programme_roots.rs",
+      "bytes": 39227,
+      "sha256": "b41e877a0967fdf122e464f9bb97df5c1773195cfe317daab8865ff41f8349e8"
+    }
+  ],
+  "approved_contract_refs": [
+    {
+      "id": "JOCFORGE-READER-TARGET-DYNAMIC-AXIS-CONTRACT-V3",
+      "manifest_sha256": "1d422839d7da503241e9cd923aa9e4a2d0dc276561644b35a182a85a0df6a40c",
+      "seal_sha256": "b668063023340640a4afa0aa1c2bebee0bd7303dd4db0972611e2ca864b1557e",
+      "note": "approved S=N+10 sparse axis; current MAIN root not wired to it"
+    },
+    {
+      "id": "F01E-36-ROW-COLD-OWNER-BOUNDARY-V1",
+      "manifest_sha256": "65d36ef6b0ae295e54c55ea473fbd2653a38b5ce068105603bc5071d4684a9a7",
+      "seal_sha256": "7936eb576b5b226de44a0f05099a0b2b5e10360f7edb122d38ed685615c65714",
+      "note": "dynamic F01E projection exists separately from MAIN callsite"
+    },
+    {
+      "id": "DEE-PROFILE-ARRAY-CONSUMER-COUNT-SEPARATION-V1",
+      "manifest_sha256": "f8c1df5789199618195773c348aba9e70ceab338a54607a49c53e0945f71ed80",
+      "seal_sha256": "8b1e9bf58157e45153f7afdd72efce2cecefac6d24bc8baf911f5f322986367b",
+      "note": "DEE C and producer R remain distinct domains"
+    }
+  ],
+  "limits": [
+    "Current source snapshot was observed while implementation thread was active; hashes bind this exact observed source set and may be stale after edits.",
+    "No source code was changed and no tests/CLI/DEE/media/PCM were run by Wash.",
+    "This audit identifies implementation-owned MAIN gates; it does not infer DEE runtime behavior or codec conformance."
+  ]
+}

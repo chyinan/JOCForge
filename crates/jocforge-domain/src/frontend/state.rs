@@ -3,8 +3,10 @@
 
 use super::ProviderSha256;
 use super::normal_control_snapshot::{
-    NormalControlAfterState, NormalControlAfterStateParts, NormalControlObjectState,
-    NormalControlPreparedSnapshot, NormalControlSnapshotOutput, NormalControlSnapshotProposal,
+    NormalControlAdmInputAfterState, NormalControlAdmInputContinuationProposal,
+    NormalControlAdmInputProposal, NormalControlAdmInputSnapshot, NormalControlAfterState,
+    NormalControlAfterStateParts, NormalControlObjectState, NormalControlPreparedSnapshot,
+    NormalControlSnapshotOutput, NormalControlSnapshotProposal,
 };
 use super::provider::{F01EProviderReceipt, NormalizedConfig, ValidatedF01EColdProvider};
 use crate::timeline::{FrontendCallbackIndex, NormalCallbackCount};
@@ -180,12 +182,14 @@ pub struct FrontendControlState {
     remaining_cached_drains: u32,
     phase: FrontendControlPhase,
     objects: Arc<[FrontendObjectState]>,
-    last_control38_snapshot: Option<Arc<[u32]>>,
-    last_regular37_snapshot: Option<Arc<[u32]>>,
+    last_physical_control_snapshot: Option<Arc<[u32]>>,
+    last_regular_control_snapshot: Option<Arc<[u32]>>,
     dbmd_binding: Option<Arc<[u8]>>,
     physical_binding: Option<Arc<[u8]>>,
     normalized_config: Arc<FrontendNormalizedConfig>,
     prepared_identity: Option<Arc<NormalControlPreparedSnapshot>>,
+    dynamic_prepared_identity: Option<Arc<NormalControlAdmInputSnapshot>>,
+    dynamic_after_state: Option<Arc<NormalControlAdmInputAfterState>>,
     canonical: Arc<[u8]>,
     provider_receipt: F01EProviderReceipt,
 }
@@ -224,12 +228,14 @@ impl FrontendControlState {
             remaining_cached_drains: cold.remaining_cached_drains,
             phase: FrontendControlPhase::BeforeFirstNormal,
             objects,
-            last_control38_snapshot: None,
-            last_regular37_snapshot: None,
+            last_physical_control_snapshot: None,
+            last_regular_control_snapshot: None,
             dbmd_binding: None,
             physical_binding: None,
             normalized_config: Arc::new(cold.config.into()),
             prepared_identity: None,
+            dynamic_prepared_identity: None,
+            dynamic_after_state: None,
             canonical,
             provider_receipt,
         })
@@ -265,12 +271,121 @@ impl FrontendControlState {
             remaining_cached_drains: parts.remaining_cached_drains,
             phase: parts.phase,
             objects,
-            last_control38_snapshot: Some(parts.control38_snapshot),
-            last_regular37_snapshot: Some(parts.regular37_snapshot),
+            last_physical_control_snapshot: Some(parts.control38_snapshot),
+            last_regular_control_snapshot: Some(parts.regular37_snapshot),
             dbmd_binding: parts.dbmd_binding_before,
             physical_binding: parts.physical_binding_before,
             normalized_config: Arc::clone(&before.normalized_config),
             prepared_identity: Some(parts.prepared_identity),
+            dynamic_prepared_identity: None,
+            dynamic_after_state: None,
+            canonical: Arc::from([]),
+            provider_receipt: before.provider_receipt.clone(),
+        };
+        let canonical = encode_frontend_control_after_state(&state)?;
+        state.canonical = Arc::from(canonical.into_boxed_slice());
+        Ok(state)
+    }
+
+    fn from_dynamic_normal_after_state(
+        before: &Self,
+        prepared: Arc<NormalControlAdmInputSnapshot>,
+        after_state: Arc<NormalControlAdmInputAfterState>,
+    ) -> Result<Self, FrontendControlError> {
+        let expected_callback = before
+            .callback_index
+            .value()
+            .checked_add(1)
+            .ok_or(FrontendControlError::CallbackIndexOutOfRange)?;
+        let expected_generation = before
+            .owner_generation
+            .checked_add(1)
+            .ok_or(FrontendControlError::GenerationMismatch)?;
+        let expected_normal_callbacks = before
+            .normal_callbacks
+            .value()
+            .checked_add(1)
+            .ok_or(FrontendControlError::NormalAfterStateMismatch)?;
+        let expected_control_words = usize::from(prepared.physical_input_row_count().value())
+            .checked_mul(FRONTEND_CONTROL_WORDS_PER_ROW)
+            .ok_or(FrontendControlError::NormalAfterStateMismatch)?;
+        let expected_regular_words = usize::from(prepared.regular_control_row_count().value())
+            .checked_mul(FRONTEND_CONTROL_WORDS_PER_ROW)
+            .ok_or(FrontendControlError::NormalAfterStateMismatch)?;
+        let prepared_input_identity = prepared.prepared_input_identity();
+        if after_state.schema() != "F01E_ADM_INPUT_NORMAL_STATE_V1"
+            || after_state.programme_id() != &before.programme_id
+            || after_state.attempt_id() != before.attempt_id
+            || after_state.next_callback_index().value() != expected_callback
+            || after_state.owner_generation() != expected_generation
+            || after_state.processed_normal_callbacks().value() != expected_normal_callbacks
+            || after_state.expected_normal_callback_count()
+                != prepared.expected_normal_callback_count()
+            || after_state.remaining_cached_drains() != before.remaining_cached_drains
+            || after_state.input_physical_rows().value()
+                != prepared.physical_input_row_count().value()
+            || after_state.normal_control_rows().value()
+                != prepared.normal_control_row_count().value()
+            || after_state.regular_control_rows().value()
+                != prepared.regular_control_row_count().value()
+            || after_state.physical_rows().len()
+                != usize::from(prepared.physical_input_row_count().value())
+            || after_state.regular_rows().len()
+                != usize::from(prepared.regular_control_row_count().value())
+            || after_state.control_words().len() != expected_control_words
+            || after_state.regular_control_words().len() != expected_regular_words
+            || after_state.objects().len() != prepared.object_owner_bindings().len()
+            || after_state.lfe_host() != prepared.lfe_host()
+            || after_state.regular_control_hosts() != prepared.regular_control_hosts()
+            || !Arc::ptr_eq(
+                after_state.prepared_input_identity(),
+                prepared_input_identity,
+            )
+            || after_state.prepared_input_identity_sha256() != prepared.identity_sha256()
+            || prepared.programme_id() != &before.programme_id
+            || prepared.attempt_id() != before.attempt_id
+            || prepared.physical_input_row_count().value()
+                != u16::try_from(before.normalized_config.channels()).unwrap_or(u16::MAX)
+            || prepared.object_track_count() as usize != before.objects.len()
+            || (before.owner_generation == 0
+                && before.schema != "F01E_ADM_INPUT_COLD_PROJECTION_V1")
+            || (before.owner_generation > 0
+                && (before.schema != "F01E_ADM_INPUT_NORMAL_STATE_V1"
+                    || before
+                        .dynamic_prepared_identity
+                        .as_ref()
+                        .is_none_or(|identity| !Arc::ptr_eq(identity, &prepared))))
+        {
+            return Err(FrontendControlError::NormalAfterStateMismatch);
+        }
+
+        let objects: Arc<[FrontendObjectState]> = after_state
+            .objects()
+            .iter()
+            .cloned()
+            .map(frontend_object_from_normal_control)
+            .collect::<Vec<_>>()
+            .into();
+        let mut state = Self {
+            schema: "F01E_ADM_INPUT_NORMAL_STATE_V1",
+            programme_id: after_state.programme_id().clone(),
+            attempt_id: after_state.attempt_id(),
+            owner_generation: after_state.owner_generation(),
+            callback_index: after_state.next_callback_index(),
+            normal_callbacks: after_state.processed_normal_callbacks(),
+            remaining_cached_drains: after_state.remaining_cached_drains(),
+            phase: before.phase,
+            objects,
+            last_physical_control_snapshot: Some(Arc::from(after_state.control_words().to_vec())),
+            last_regular_control_snapshot: Some(Arc::from(
+                after_state.regular_control_words().to_vec(),
+            )),
+            dbmd_binding: before.dbmd_binding.clone(),
+            physical_binding: before.physical_binding.clone(),
+            normalized_config: Arc::clone(&before.normalized_config),
+            prepared_identity: None,
+            dynamic_prepared_identity: Some(prepared),
+            dynamic_after_state: Some(after_state),
             canonical: Arc::from([]),
             provider_receipt: before.provider_receipt.clone(),
         };
@@ -303,11 +418,19 @@ impl FrontendControlState {
     pub fn objects(&self) -> &[FrontendObjectState] {
         &self.objects
     }
-    pub const fn last_control38_snapshot(&self) -> Option<&Arc<[u32]>> {
-        self.last_control38_snapshot.as_ref()
+    pub const fn last_physical_control_snapshot(&self) -> Option<&Arc<[u32]>> {
+        self.last_physical_control_snapshot.as_ref()
     }
+    pub const fn last_regular_control_snapshot(&self) -> Option<&Arc<[u32]>> {
+        self.last_regular_control_snapshot.as_ref()
+    }
+    /// Compatibility accessor retained for callers of the original fixed-38 view.
+    pub const fn last_control38_snapshot(&self) -> Option<&Arc<[u32]>> {
+        self.last_physical_control_snapshot()
+    }
+    /// Compatibility accessor retained for callers of the original fixed-37 view.
     pub const fn last_regular37_snapshot(&self) -> Option<&Arc<[u32]>> {
-        self.last_regular37_snapshot.as_ref()
+        self.last_regular_control_snapshot()
     }
     pub const fn dbmd_binding(&self) -> Option<&Arc<[u8]>> {
         self.dbmd_binding.as_ref()
@@ -320,6 +443,12 @@ impl FrontendControlState {
     }
     pub fn prepared_identity(&self) -> Option<&NormalControlPreparedSnapshot> {
         self.prepared_identity.as_deref()
+    }
+    pub fn dynamic_prepared_identity(&self) -> Option<&Arc<NormalControlAdmInputSnapshot>> {
+        self.dynamic_prepared_identity.as_ref()
+    }
+    pub fn dynamic_after_state(&self) -> Option<&Arc<NormalControlAdmInputAfterState>> {
+        self.dynamic_after_state.as_ref()
     }
     pub fn canonical_bytes(&self) -> &[u8] {
         &self.canonical
@@ -704,6 +833,50 @@ impl FrontendControlMachine {
         })
     }
 
+    fn stage_dynamic_normal_after_state(
+        &self,
+        prepared: Arc<NormalControlAdmInputSnapshot>,
+        transaction_id: CallbackLineageIdentity,
+        before_generation: u64,
+        before_digest: FrontendControlDigest,
+        after_state: Arc<NormalControlAdmInputAfterState>,
+    ) -> Result<FrontendControlStaged, FrontendControlError> {
+        if transaction_id.programme_id() != &self.committed.programme_id
+            || transaction_id.attempt_id() != self.committed.attempt_id
+            || transaction_id.callback_index() != self.committed.callback_index
+        {
+            return Err(FrontendControlError::CallbackIdentityMismatch);
+        }
+        if before_generation != self.generation || before_digest != self.committed.digest() {
+            return Err(FrontendControlError::GenerationMismatch);
+        }
+        let next_generation = self
+            .generation
+            .checked_add(1)
+            .ok_or(FrontendControlError::GenerationMismatch)?;
+        if after_state.owner_generation() != next_generation {
+            return Err(FrontendControlError::GenerationMismatch);
+        }
+        let after = FrontendControlState::from_dynamic_normal_after_state(
+            &self.committed,
+            prepared,
+            after_state,
+        )?;
+        let after_digest = after.digest();
+        Ok(FrontendControlStaged {
+            join: FrontendControlJoinMetadata {
+                transaction_id,
+                before_generation,
+                before_digest,
+                provider_manifest_sha256: self.committed.provider_receipt.manifest_sha256(),
+                provider_file_sha256: self.committed.provider_receipt.provider_file_sha256(),
+            },
+            after,
+            after_digest,
+            after_generation: next_generation,
+        })
+    }
+
     /// Consumes the exact normal proposal, transferring its after-state to the frontend owner
     /// while retaining the same computed source projection for F03W.
     pub fn stage_normal_snapshot(
@@ -714,6 +887,51 @@ impl FrontendControlMachine {
         let transaction_id = output.transaction_id().clone();
         let staged = self.stage_normal_after_state(transaction_id, after_state)?;
         Ok(FrontendControlNormalStage { staged, output })
+    }
+
+    /// Stages the selected per-input dynamic ADM normal proposal under the existing
+    /// frontend_control owner. Its local canonical bytes include the complete row-shaped
+    /// after-state; they do not describe a DEE-native state schema.
+    pub fn stage_normal_adm_input(
+        &self,
+        prepared: Arc<NormalControlAdmInputSnapshot>,
+        proposal: NormalControlAdmInputProposal,
+    ) -> Result<FrontendControlStaged, FrontendControlError> {
+        let (transaction_id, before_generation, before_digest, after_state) =
+            proposal.into_frontend_owner_parts();
+        self.stage_dynamic_normal_after_state(
+            prepared,
+            transaction_id,
+            before_generation,
+            before_digest,
+            after_state,
+        )
+    }
+
+    /// Stages a contiguous dynamic ADM normal continuation from the same installed owner.
+    pub fn stage_normal_adm_input_continuation(
+        &self,
+        prepared: Arc<NormalControlAdmInputSnapshot>,
+        proposal: NormalControlAdmInputContinuationProposal<'_>,
+    ) -> Result<FrontendControlStaged, FrontendControlError> {
+        let (before_state, transaction_id, after_state) = proposal.into_frontend_owner_parts();
+        if self
+            .committed
+            .dynamic_after_state
+            .as_deref()
+            .is_none_or(|committed| !std::ptr::eq(committed, before_state))
+        {
+            return Err(FrontendControlError::NormalAfterStateMismatch);
+        }
+        let before_generation = self.generation;
+        let before_digest = self.committed.digest();
+        self.stage_dynamic_normal_after_state(
+            prepared,
+            transaction_id,
+            before_generation,
+            before_digest,
+            after_state,
+        )
     }
 
     /// Returns a new owner value and its GTC transition receipt without mutating this machine.
@@ -727,9 +945,13 @@ impl FrontendControlMachine {
             .generation
             .checked_add(1)
             .ok_or(FrontendControlError::GenerationMismatch)?;
+        let selected_after_state = staged.after.schema == FRONTEND_CONTROL_AFTER_STATE_SCHEMA
+            && staged.after.prepared_identity.is_some();
+        let dynamic_adm_after_state = staged.after.schema == "F01E_ADM_INPUT_NORMAL_STATE_V1"
+            && staged.after.dynamic_prepared_identity.is_some()
+            && staged.after.dynamic_after_state.is_some();
         if staged.after_generation != next_generation
-            || staged.after.schema != FRONTEND_CONTROL_AFTER_STATE_SCHEMA
-            || staged.after.prepared_identity.is_none()
+            || !(selected_after_state || dynamic_adm_after_state)
             || staged.join.before_generation != self.generation
             || staged.join.before_digest != self.committed.digest()
             || staged.join.transaction_id.programme_id() != &self.committed.programme_id
@@ -788,20 +1010,26 @@ fn frontend_object_from_normal_control(value: NormalControlObjectState) -> Front
 fn encode_frontend_control_after_state(
     state: &FrontendControlState,
 ) -> Result<Vec<u8>, FrontendControlError> {
+    if let (Some(prepared), Some(after_state)) = (
+        state.dynamic_prepared_identity.as_ref(),
+        state.dynamic_after_state.as_ref(),
+    ) {
+        return encode_frontend_control_dynamic_after_state(state, prepared, after_state);
+    }
     let prepared = state
         .prepared_identity
         .as_ref()
         .ok_or(FrontendControlError::NormalAfterStateMismatch)?;
     let control38 = snapshot_rows_json(
         state
-            .last_control38_snapshot
+            .last_physical_control_snapshot
             .as_ref()
             .ok_or(FrontendControlError::NormalAfterStateMismatch)?,
         FRONTEND_CONTROL_ROWS,
     )?;
     let regular37 = snapshot_rows_json(
         state
-            .last_regular37_snapshot
+            .last_regular_control_snapshot
             .as_ref()
             .ok_or(FrontendControlError::NormalAfterStateMismatch)?,
         FRONTEND_CONTROL_REGULAR_ROWS,
@@ -867,6 +1095,89 @@ fn encode_frontend_control_after_state(
         "prepared_identity": prepared
             .canonical_json_value()
             .map_err(|_| FrontendControlError::CanonicalEncoding)?,
+    });
+    let canonical = canonicalize_json(value);
+    serde_json::to_vec(&canonical).map_err(|_| FrontendControlError::CanonicalEncoding)
+}
+
+fn encode_frontend_control_dynamic_after_state(
+    state: &FrontendControlState,
+    prepared: &NormalControlAdmInputSnapshot,
+    after_state: &NormalControlAdmInputAfterState,
+) -> Result<Vec<u8>, FrontendControlError> {
+    let physical_rows = snapshot_rows_json(
+        after_state.control_words(),
+        usize::from(after_state.normal_control_rows().value()),
+    )?;
+    let regular_rows = snapshot_rows_json(
+        after_state.regular_control_words(),
+        usize::from(after_state.regular_control_rows().value()),
+    )?;
+    let objects = state
+        .objects
+        .iter()
+        .map(|object| {
+            json!({
+                "object_ordinal": object.object_ordinal,
+                "event_cache_bytes": object.event_cache.as_deref(),
+                "host_channel_index": object.host_channel_index,
+                "sampler_previous_present": object.sampler_previous_present,
+                "sampler_previous_xyz_u32": object.sampler_previous_xyz_u32,
+            })
+        })
+        .collect::<Vec<_>>();
+    let config = &state.normalized_config;
+    let provider = &state.provider_receipt;
+    let value = json!({
+        "schema": "FRONTEND_CONTROL_ADM_INPUT_AFTER_STATE_V1",
+        "owner_id": FRONTEND_CONTROL_OWNER_ID,
+        "programme_id": state.programme_id.as_str(),
+        "attempt_id": state.attempt_id.value(),
+        "owner_generation": state.owner_generation,
+        "callback_index": state.callback_index.value(),
+        "normal_callbacks": state.normal_callbacks.value(),
+        "remaining_cached_drains": state.remaining_cached_drains,
+        "phase": frontend_phase_name(state.phase),
+        "input_physical_rows": after_state.input_physical_rows().value(),
+        "normal_control_rows": after_state.normal_control_rows().value(),
+        "regular_control_rows": after_state.regular_control_rows().value(),
+        "lfe_host": after_state.lfe_host(),
+        "regular_control_hosts": after_state.regular_control_hosts(),
+        "objects": objects,
+        "last_control_rows": physical_rows,
+        "last_regular_rows": regular_rows,
+        "physical_binding_bytes": state.physical_binding.as_deref(),
+        "dbmd_binding_bytes": state.dbmd_binding.as_deref(),
+        "normalized_config": {
+            "sample_rate_hz": config.sample_rate_hz(),
+            "channels": config.channels(),
+            "pcm_bits": config.pcm_bits(),
+            "source_samples": config.source_samples(),
+            "bit_rate_kbps": config.bit_rate_kbps(),
+            "bit_rate_enum": config.bit_rate_enum(),
+            "layout_enum": config.layout_enum(),
+            "target_capacity": config.target_capacity(),
+            "frame_samples": config.frame_samples(),
+            "spatial_config_mode": config.spatial_config_mode(),
+            "dispatch_mode": config.dispatch_mode(),
+            "virtual_prefix_count": config.virtual_prefix_count(),
+            "bed_count": config.bed_count(),
+            "object_count": config.object_count(),
+            "event_start_samples": config.event_start_samples(),
+            "line_drc": config.line_drc(),
+            "rf_drc": config.rf_drc(),
+            "time_base": config.time_base(),
+        },
+        "provider_identity": {
+            "manifest_sha256": provider.manifest_sha256().to_hex(),
+            "provider_file_sha256": provider.provider_file_sha256().to_hex(),
+            "provider_file_bytes": provider.provider_file_bytes(),
+            "canonical_sha256": provider.canonical_sha256().to_hex(),
+            "canonical_bytes": provider.canonical_bytes(),
+            "provider_generation": provider.provider_generation(),
+        },
+        "prepared_identity": prepared.canonical_identity_value(),
+        "prepared_input_identity_sha256": after_state.prepared_input_identity_sha256().to_vec(),
     });
     let canonical = canonicalize_json(value);
     serde_json::to_vec(&canonical).map_err(|_| FrontendControlError::CanonicalEncoding)

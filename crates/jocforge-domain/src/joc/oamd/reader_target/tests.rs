@@ -5,6 +5,8 @@ use super::{
     ReaderTargetError, ReaderTargetUpdateReceipt, SELECTED_PROFILE_ID, TARGET_ROWS, hex,
     make_fit_record, read_record_word, stage_reader_target,
 };
+use crate::source_axis::{SourceAxisBinding, SourceAxisOwnerGeneration};
+use crate::timeline::CodecSourceIndex;
 use crate::timeline::FrontendCallbackIndex;
 use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
 use serde_json::Value;
@@ -36,6 +38,44 @@ fn cold_state_digest_matches_the_complete_schema_preimage() {
     assert_eq!(
         actual,
         "309a342e6fcb4d6dee13b8da144c7e61880ce1fbd4a5e555291bd3c62470a588"
+    );
+}
+
+#[test]
+fn compact_s46_axis_keeps_absent_ids_out_of_reader_matrix() {
+    let mut state = ReaderTargetState::cold();
+    for callback in 0..=2 {
+        let recipe = recipe_data_with_source_count(callback, 46);
+        let axis_input = recipe.inputs(callback);
+        assert_eq!(axis_input.source_axis.source_count(), 46);
+        assert_eq!(axis_input.source_axis.source_ids()[0].value(), 0);
+        assert_eq!(axis_input.source_axis.source_ids()[45].value(), 45);
+        assert_eq!(
+            axis_input.matrix.len(),
+            axis_input.active_target_indices.len() * 46
+        );
+        assert_eq!(axis_input.source_flags.len(), 46);
+        assert_eq!(
+            axis_input
+                .source_axis
+                .validate_handoff(axis_input.source_flags_axis),
+            Ok(())
+        );
+        let proposal = stage_reader_target(&state, &axis_input).unwrap();
+        state = proposal.next_state;
+    }
+    assert_eq!(state.reader_invocations.value(), 1);
+}
+
+#[test]
+fn s49_capacity_vector_is_not_runtime_reader_support() {
+    let recipe = recipe_data_with_source_count(0, 49);
+    let input = recipe.inputs(0);
+    assert_eq!(
+        stage_reader_target(&ReaderTargetState::cold(), &input)
+            .err()
+            .unwrap(),
+        ReaderTargetError::SourceAxisMismatch
     );
 }
 
@@ -461,13 +501,30 @@ fn producer_rejections_return_no_proposal_and_leave_committed_state_unchanged() 
         ReaderTargetError::InputError
     );
 
-    let mut snapshot_missing = cold_recipe.inputs(0);
-    snapshot_missing.snapshot_keys_complete = false;
+    let short_axis_recipe = recipe_data_with_source_count(0, 45);
+    let snapshot_missing = short_axis_recipe.inputs(0);
     assert_eq!(
         stage_reader_target(&committed, &snapshot_missing)
             .err()
             .unwrap(),
-        ReaderTargetError::InputError
+        ReaderTargetError::SourceAxisMismatch
+    );
+
+    let mut mismatched_axes = cold_recipe.inputs(0);
+    let source_flags_axis = SourceAxisBinding::new(
+        mismatched_axes.source_axis.source_ids().to_vec(),
+        SourceAxisOwnerGeneration::new(7),
+        [0x7b; 32],
+        mismatched_axes.transaction_id.clone(),
+        mismatched_axes.callback_index,
+    )
+    .unwrap();
+    mismatched_axes.source_flags_axis = &source_flags_axis;
+    assert_eq!(
+        stage_reader_target(&committed, &mismatched_axes)
+            .err()
+            .unwrap(),
+        ReaderTargetError::SourceAxisMismatch
     );
 
     let mut invalid_profile = cold_recipe.inputs(0);
@@ -545,24 +602,28 @@ struct RecipeData {
     assignment_active: [u8; 15],
     active_target_indices: Vec<u8>,
     matrix: Vec<f32>,
-    source_flags: [u8; 48],
+    source_flags: Vec<u8>,
+    source_axis: SourceAxisBinding,
+    transaction_id: CallbackLineageIdentity,
+    callback_index: FrontendCallbackIndex,
     previous_overlap: Vec<[f32; 1536]>,
     current_mixer: Vec<[f32; 3072]>,
 }
 
 impl RecipeData {
     fn inputs(&self, callback: u64) -> ReaderTargetCallbackInputs<'_> {
+        assert_eq!(
+            self.callback_index.value(),
+            u32::try_from(callback).unwrap()
+        );
         ReaderTargetCallbackInputs {
-            callback_index: FrontendCallbackIndex::new(u32::try_from(callback).unwrap()),
+            callback_index: self.callback_index,
             reader_enabled: callback >= 2,
-            snapshot_keys_complete: true,
             programme_id: test_programme_id(),
             attempt_id: AttemptId::new(0),
-            transaction_id: CallbackLineageIdentity::new(
-                test_programme_id(),
-                AttemptId::new(0),
-                FrontendCallbackIndex::new(u32::try_from(callback).unwrap()),
-            ),
+            transaction_id: self.transaction_id.clone(),
+            source_axis: &self.source_axis,
+            source_flags_axis: &self.source_axis,
             profile_id: SELECTED_PROFILE_ID,
             current_xyz_words: &self.current_xyz_words,
             current_ids: &self.current_ids,
@@ -578,6 +639,13 @@ impl RecipeData {
 }
 
 fn recipe_data(callback: u64) -> RecipeData {
+    recipe_data_with_source_count(callback, 48)
+}
+
+fn recipe_data_with_source_count(callback: u64, source_count: usize) -> RecipeData {
+    let callback_index = FrontendCallbackIndex::new(u32::try_from(callback).unwrap());
+    let transaction_id =
+        CallbackLineageIdentity::new(test_programme_id(), AttemptId::new(0), callback_index);
     let current_ids = std::array::from_fn(|row| {
         if callback < 2 {
             100 + row as u32
@@ -607,12 +675,23 @@ fn recipe_data(callback: u64) -> RecipeData {
     let active_target_indices = (0..15_u8)
         .filter(|row| assignment_active[usize::from(*row)] == 1)
         .collect::<Vec<_>>();
-    let mut matrix = vec![0.0_f32; active_target_indices.len() * 48];
+    let mut matrix = vec![0.0_f32; active_target_indices.len() * source_count];
     for (ordinal, row) in active_target_indices.iter().enumerate() {
-        let source = (usize::from(*row) + callback as usize) % 48;
-        matrix[ordinal * 48 + source] = 1.0;
+        let source = (usize::from(*row) + callback as usize) % source_count;
+        matrix[ordinal * source_count + source] = 1.0;
     }
-    let source_flags = [0_u8; 48];
+    let source_ids: Vec<CodecSourceIndex> = (0..source_count)
+        .map(|index| CodecSourceIndex::new(u64::try_from(index).unwrap()))
+        .collect();
+    let source_axis = SourceAxisBinding::new(
+        source_ids.clone(),
+        SourceAxisOwnerGeneration::new(callback + 1),
+        [0x5a; 32],
+        transaction_id.clone(),
+        callback_index,
+    )
+    .unwrap();
+    let source_flags = vec![0_u8; source_count];
     let mut previous_overlap = vec![[0.0_f32; 1536]; 15];
     let mut current_mixer = vec![[0.0_f32; 3072]; 15];
     for row in 0..15 {
@@ -633,6 +712,9 @@ fn recipe_data(callback: u64) -> RecipeData {
         active_target_indices,
         matrix,
         source_flags,
+        source_axis,
+        transaction_id,
+        callback_index,
         previous_overlap,
         current_mixer,
     }

@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge-wash-package-seal.v1",
+  "package_id": "JOCFORGE-MAIN-36-ROW-OWNER-WIRING-BOUNDARY-V1",
+  "status": "SEALED_SOURCE_SNAPSHOT_BOUNDARY",
+  "manifest_file": "MANIFEST.json",
+  "manifest_sha256": "c1a109096037ce64c88b206dbaf1600d500b37e70bcbffa5bdb618b094415bce",
+  "files": [
+    {
+      "file": "MAIN-36-ROW-BOUNDARY.json",
+      "bytes": 7418,
+      "sha256": "77a276cd7d0b853d0dd1a7035295b0485cc93e987d7fdc79b38a47e6b77f91c8"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1526,
+      "sha256": "d281837c2625a7456a0194f17eeb61fdd0aca820466b2dc7c69de96612b8cf4f"
+    },
+    {
+      "file": "SOURCE-SNAPSHOT.json",
+      "bytes": 2510,
+      "sha256": "2d3b0af2ce0ddab0cb22efeda4866f194c81954063f3697d147bc49917e9be7c"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 766,
+      "sha256": "c1a109096037ce64c88b206dbaf1600d500b37e70bcbffa5bdb618b094415bce"
+    }
+  ],
+  "seal_excluded_from_its_own_hash_list": true
+}

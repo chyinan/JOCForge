@@ -2,12 +2,12 @@
 #[cfg(test)]
 mod tests {
     use super::super::{
-        ACTIVITY_EPSILON_BITS, BeforeRegularHistory, CurrentHostPcm, FRAME_SAMPLES, HOST_CHANNELS,
-        HostRole, HostRouteRecord, PREFIX_SOURCE_COUNT, PrefixWriterSet, REGULAR_HOSTS,
-        RegularControl, RegularControls, SOURCE_COUNT, SelectedFeatureFlagsControl,
-        SourceFlagsError, SourceFlagsHistoryGeneration, SourceFlagsInput, SourceFlagsParentLineage,
-        SourceFlagsProducer, SourceFlagsProgrammeId, ValidatedSemanticRoute, WINDOW_WORDS,
-        triangle_activity_witness,
+        ACTIVITY_EPSILON_BITS, BeforeRegularHistory, CurrentHostPcm, FRAME_SAMPLES, HostRole,
+        HostRouteRecord, MAX_MAPPABLE_PHYSICAL_HOSTS, MAX_MAPPABLE_REGULAR_HOSTS,
+        PREFIX_SOURCE_COUNT, PrefixWriterSet, RegularControl, RegularControls, SOURCE_COUNT,
+        SelectedFeatureFlagsControl, SourceFlagsError, SourceFlagsHistoryGeneration,
+        SourceFlagsInput, SourceFlagsParentLineage, SourceFlagsProducer, SourceFlagsProgrammeId,
+        ValidatedSemanticRoute, WINDOW_WORDS, triangle_activity_witness,
     };
     use crate::{
         frontend::{
@@ -35,6 +35,9 @@ mod tests {
         io::{Read, Seek, SeekFrom},
         sync::Arc,
     };
+
+    const HOST_CHANNELS: usize = MAX_MAPPABLE_PHYSICAL_HOSTS;
+    const REGULAR_HOSTS: usize = MAX_MAPPABLE_REGULAR_HOSTS;
 
     const MANIFEST_BYTES: &[u8] =
         include_bytes!("../../../tests/fixtures/f01e_provider/MANIFEST.json");
@@ -75,9 +78,18 @@ mod tests {
         enabled: bool,
         duplicate_destination: bool,
     ) -> Vec<HostRouteRecord> {
+        route_records_for_channels(HOST_CHANNELS, lfe_host, enabled, duplicate_destination)
+    }
+
+    fn route_records_for_channels(
+        channel_count: usize,
+        lfe_host: u8,
+        enabled: bool,
+        duplicate_destination: bool,
+    ) -> Vec<HostRouteRecord> {
         let mut next_source = 11_u8;
         let mut first_destination = None;
-        (0..HOST_CHANNELS)
+        (0..channel_count)
             .map(|host| {
                 let role = if host as u8 == lfe_host {
                     HostRole::Lfe
@@ -488,7 +500,7 @@ mod tests {
         assert_eq!(machine.generation(), 0);
     }
 
-    fn payload_hex(payload: &[[u8; 2]; SOURCE_COUNT]) -> String {
+    fn payload_hex(payload: &[[u8; 2]]) -> String {
         let bytes: Vec<u8> = payload.iter().flatten().copied().collect();
         hex_encode(&bytes)
     }
@@ -816,6 +828,40 @@ mod tests {
             values.payload()[PREFIX_SOURCE_COUNT..]
                 .iter()
                 .all(|flags| *flags == [1, 0])
+        );
+    }
+
+    #[test]
+    fn dynamic_36_row_flags_contain_only_the_46_present_source_ids() {
+        let route =
+            ValidatedSemanticRoute::new(route_records_for_channels(36, 3, true, false)).unwrap();
+        let controls = controls_for(&route, None).unwrap();
+        let current_pcm = vec![vec![0_u32; FRAME_SAMPLES]; 36];
+        let previous_regular = vec![vec![0_u32; FRAME_SAMPLES]; 35];
+        let values = SourceFlagsProducer::produce_meter_values(
+            &current_pcm,
+            &previous_regular,
+            &controls,
+            &route,
+            &[],
+        )
+        .unwrap();
+
+        assert_eq!(values.source_ids().len(), 46);
+        assert_eq!(values.payload().len(), 46);
+        assert_eq!(
+            values
+                .source_ids()
+                .iter()
+                .map(|source| source.value())
+                .collect::<Vec<_>>(),
+            (0_u64..46).collect::<Vec<_>>()
+        );
+        assert!(
+            !values
+                .source_ids()
+                .iter()
+                .any(|source| matches!(source.value(), 46 | 47))
         );
     }
 

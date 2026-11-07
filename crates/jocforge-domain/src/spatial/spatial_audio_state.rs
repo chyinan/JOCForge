@@ -2,6 +2,7 @@
 //! Typed F04 cold state and staging capabilities. No DSP or local commit authority lives here.
 use crate::{
     profile::{EncodingProfile, resolve_selected_profile},
+    source_axis::SourceAxisBinding,
     spatial::{
         F04ParameterProviderLineage, ValidatedComponentParameterProvider,
         ValidatedWindowQ15Provider,
@@ -204,6 +205,7 @@ impl ComponentBeforeOverlapRows {
 #[must_use]
 pub struct MeterComponentStagePreview {
     packet: component_stage::SpatialAudioInputPacket,
+    source_axis: Arc<SourceAxisBinding>,
     mixer_preview: Box<[crate::numeric::FiniteF32]>,
     matrix: CompactOuterMatrix,
     active_target_slots: Box<[TargetSlotIndex]>,
@@ -213,7 +215,7 @@ pub struct MeterComponentStagePreview {
     transaction_id: CallbackLineageIdentity,
     phase: component_stage::ComponentCallbackPhase,
     current_mixer_rows_f32: Box<[f32]>,
-    canonical_dense_matrix_f32_bits: Box<[u32]>,
+    target_source_matrix_f32_bits: Box<[u32]>,
     component_before_overlap: ComponentBeforeOverlapRows,
 }
 
@@ -224,6 +226,10 @@ impl MeterComponentStagePreview {
 
     pub fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
+    }
+
+    pub fn source_axis(&self) -> &Arc<SourceAxisBinding> {
+        &self.source_axis
     }
 
     pub fn active_target_slots(&self) -> &[TargetSlotIndex] {
@@ -253,9 +259,9 @@ impl MeterComponentStagePreview {
             .collect()
     }
 
-    /// Canonical D[15][48] from the same C/d adapter used by marker preview and F04A.
-    pub const fn canonical_dense_matrix_f32_bits(&self) -> &[u32] {
-        &self.canonical_dense_matrix_f32_bits
+    /// Target-slot rows T=15, with only the bound S source columns present.
+    pub const fn target_source_matrix_f32_bits(&self) -> &[u32] {
+        &self.target_source_matrix_f32_bits
     }
 
     #[allow(clippy::too_many_arguments)]
@@ -309,6 +315,14 @@ pub(crate) fn component_output_rows_for_meter(
         .collect::<Vec<_>>();
     if receipt.callback_index() != matrix.value_generation()
         || receipt.transaction_id() != matrix.transaction_id()
+        || receipt.source_axis().callback_index() != receipt.callback_index()
+        || receipt.source_axis().source_ids() != matrix.source_axis_ids()
+        || receipt.source_axis().input_sha256() != matrix.source_receipt_sha256()
+        || receipt.source_axis().source_origin_generation() != matrix.source_origin_generation()
+        || matrix
+            .c_rows_u32()
+            .iter()
+            .any(|row| row.len() != receipt.source_axis().source_count())
         || receipt.matrix_destination_slots() != destinations
         || matrix.c_rows_u32().len() != destinations.len()
         || destinations.windows(2).any(|pair| pair[0] >= pair[1])
@@ -507,6 +521,7 @@ impl SpatialAudioMachine {
         phase: CallbackPhase,
         window: &ValidatedWindowQ15Provider,
         parameters: &ValidatedComponentParameterProvider,
+        source_axis: Arc<SourceAxisBinding>,
         installed48_f32_bits: Vec<u32>,
         matrix: &CompactOuterMatrix,
     ) -> Result<MeterComponentStagePreview, component_stage::ComponentStageError> {
@@ -514,6 +529,23 @@ impl SpatialAudioMachine {
             || matrix.transaction_id() != spatial_audio_join.transaction_id()
             || matrix.value_generation() != spatial_control_join.callback_index()
             || matrix.transaction_id() != spatial_control_join.transaction_id()
+        {
+            return Err(component_stage::ComponentStageError::CallbackOrder);
+        }
+        if source_axis.callback_index() != spatial_audio_join.callback_index()
+            || source_axis.transaction_id() != spatial_audio_join.transaction_id()
+            || source_axis.transaction_id() != spatial_control_join.transaction_id()
+            || source_axis.source_ids() != matrix.source_axis_ids()
+            || source_axis.input_sha256() != matrix.source_receipt_sha256()
+            || source_axis.source_origin_generation() != matrix.source_origin_generation()
+        {
+            return Err(component_stage::ComponentStageError::SourceAxisMismatch);
+        }
+        component_stage::validate_source_axis_count(source_axis.source_count())?;
+        if matrix
+            .c_rows_u32()
+            .iter()
+            .any(|row| row.len() != source_axis.source_count())
         {
             return Err(component_stage::ComponentStageError::Input);
         }
@@ -533,10 +565,11 @@ impl SpatialAudioMachine {
             .collect::<Vec<_>>();
         let active_matrix = component_stage::ActiveComponentMatrix::from_producer_output(
             matrix.value_generation(),
+            Arc::clone(&source_axis),
             coefficient_bits,
             target_slots,
         )?;
-        let canonical_dense_matrix_f32_bits = active_matrix.scatter_to_canonical_dense();
+        let target_source_matrix_f32_bits = active_matrix.scatter_to_target_source_matrix();
         let component_phase = match phase {
             CallbackPhase::Normal => component_stage::ComponentCallbackPhase::Normal,
             CallbackPhase::CachedDrain => component_stage::ComponentCallbackPhase::CachedDrain,
@@ -552,6 +585,7 @@ impl SpatialAudioMachine {
             component_phase,
             window,
             parameters,
+            Arc::clone(&source_axis),
             installed48_f32_bits,
             active_matrix,
         )?;
@@ -569,6 +603,7 @@ impl SpatialAudioMachine {
             .into_boxed_slice();
         Ok(MeterComponentStagePreview {
             packet,
+            source_axis,
             mixer_preview,
             matrix: matrix.clone(),
             before_generation: self.generation,
@@ -578,7 +613,7 @@ impl SpatialAudioMachine {
             phase: component_phase,
             active_target_slots,
             current_mixer_rows_f32,
-            canonical_dense_matrix_f32_bits,
+            target_source_matrix_f32_bits,
             component_before_overlap,
         })
     }
@@ -593,6 +628,7 @@ impl SpatialAudioMachine {
         phase: CallbackPhase,
         window: &ValidatedWindowQ15Provider,
         parameters: &ValidatedComponentParameterProvider,
+        source_axis: Arc<SourceAxisBinding>,
         installed48_f32_bits: Vec<u32>,
         matrix: &CompactOuterMatrix,
     ) -> Result<MeterComponentStageProposal, component_stage::ComponentStageError> {
@@ -603,6 +639,7 @@ impl SpatialAudioMachine {
             phase,
             window,
             parameters,
+            source_axis,
             installed48_f32_bits,
             matrix,
         )?;
