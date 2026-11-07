@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.flattened_master_channel_count_getter_vectors.v1",
+  "scope": "Static getter source selection; no sample-specific runtime values.",
+  "vectors": [
+    {"flag":0,"getter_slot":"+0x80","source":"format descriptor +0x0A U16","result_type":"U16 zero-extended to U64"},
+    {"flag":1,"getter_slot":"+0x80","source":"FUN_1805890F0 child pointer +0x0A U16","fallback_owner":"UNBOUND"},
+    {"resolver_param8":"NOT_CAPTURED","selected_flag":"NOT_CAPTURED","physical_N_to_format_u16":"UNBOUND"}
+  ],
+  "sample_track_support": "NOT_ASSERTED",
+  "pcm_or_payload_included": false,
+  "dee_run": "NOT_RUN"
+}

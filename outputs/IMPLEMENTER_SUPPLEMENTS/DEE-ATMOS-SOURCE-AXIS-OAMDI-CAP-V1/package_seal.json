@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ATMOS-SOURCE-AXIS-OAMDI-CAP-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "847514711fbb916b7f0828b8b2f0c09b29a11aed8e0cc3cf1bd94e18ad3c7124",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "b864c94152763edc68a8d2d595c6e8526acb9af3de2bd7853837f05d4abf79c6",
+  "upstream_external_reference_audit": "PASS_7_OF_7",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

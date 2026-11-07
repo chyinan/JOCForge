@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.composite_count_lookup_shape_boundary.v1",
+  "nonzero_layout_immediate_count_source": "per-source shape metadata view",
+  "returned_metadata_view_count_relation": "BOUND_STATIC",
+  "physical_adm_n_path": "descriptor U16 +0x0A to layout U32 N, guard 1..128",
+  "n_to_source_row_or_metadata_view_typed_join": "UNBOUND",
+  "direct_n_copy_in_inspected_lookup_path": false,
+  "runtime_layout_branch": "NOT_CAPTURED",
+  "global_absence_claim": false
+}

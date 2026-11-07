@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "COMPOSITE-SELECTOR-K-COUNT-HANDLER-SELECTION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PER_ITEM_SUFFIX_DISPATCH_STATIC; ACTUAL_SUFFIX_AND_SELECTED_HANDLER_UNBOUND; K_COUNT_APPLICABILITY_NOT_REACHED",
+  "implementation_ready": false,
+  "source_manifest_sha256": "82ec118eb0bc4bba8133bdcaadacf12c33f4c3b3fd86adcef6cb5419f179c516",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2787,
+      "sha256": "6d6d816bad76c35ad150bbc949db947b0b1acbffb24050591f246c84717a9aa4"
+    },
+    "EVIDENCE.json": {
+      "bytes": 3471,
+      "sha256": "b7a4d69f35492933f2653d604d3b97ca5252a2cadaa55bf34f9a2d1e9017be8b"
+    },
+    "REPORT.md": {
+      "bytes": 1857,
+      "sha256": "e032b14b44023bad9225981b1308b92dd115be4e5b8a1e55793628c8ddf5c97a"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1665,
+      "sha256": "9c3cda4b3252b7636fec0df2b39ae917095076a0cd29bba664d7053e6ec208ed"
+    }
+  }
+}

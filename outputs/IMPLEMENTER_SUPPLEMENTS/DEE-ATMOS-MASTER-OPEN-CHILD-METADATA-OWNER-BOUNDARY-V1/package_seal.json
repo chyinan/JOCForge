@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ATMOS-MASTER-OPEN-CHILD-METADATA-OWNER-BOUNDARY-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "e126c61711bc9c20abf6860e77e64a6dc675b4dd13dd94398d6fe7c23e35da02",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

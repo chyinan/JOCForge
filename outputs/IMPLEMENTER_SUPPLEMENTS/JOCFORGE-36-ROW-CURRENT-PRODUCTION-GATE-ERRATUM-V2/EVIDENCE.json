@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "package_id": "JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V2",
+  "status": "METER_SOURCE_MAP_DYNAMIC; SELECTED_METER_NORMAL_SNAPSHOT_FIXED_38; PRIMARY_SELECTED_38_BINDING_IS_SEPARATE; FRESHZERO_DYNAMIC",
+  "source_snapshot": {
+    "repo": "D:/Programs/JOCForge-isolated",
+    "branch": "experimental/independent-encoder",
+    "head": "aefd8cc12538cab251a59c9a08f9c9ca0608eb9b",
+    "files": [
+      {
+        "path": "crates/jocforge-application/src/independent_meter_callback.rs",
+        "sha256": "8c8388a4c32446ee2fa5e6e2ee95c0d248699fb96e783c2d76d9483def48fb24"
+      },
+      {
+        "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
+        "sha256": "232462446b4a650187d113eaf0e0ac5e4c6d63454b5a6c09e5ff412c935c8283"
+      },
+      {
+        "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+        "sha256": "dc57a81f7083b44aa9b3a5233551f196685d0bd088cf4f16de840cfb4ba99519"
+      },
+      {
+        "path": "crates/jocforge-application/src/meter_source_admission.rs",
+        "sha256": "835f460a3e638aa72bf7cc9ad231418288be86744bab0d2a25555c9485d9b6f2"
+      }
+    ],
+    "hashes_recomputed": "PASS_4_OF_4"
+  },
+  "call_path": {
+    "selected_meter_normal": "stage_independent_meter_normal_source -> build_meter_installed48_source_map -> build_selected_installed48_source_map -> validate_selected_source_binding",
+    "source_map_shape": "dynamic N from metadata rows, regular=N-1, active=11+regular",
+    "source_binding_predicate": "ADM; channels 10..256; 48 kHz PCM24; data bytes divisible by N*3; source sample count matches",
+    "next_selected_meter_call": "PreparedJobInput::normal_control_prepared_snapshot -> legacy propose_normal_control_snapshot",
+    "fixed_next_shape": "channels=38, bed=10, object=28; snapshot physical38/regular37",
+    "fresh_zero": "dynamic N exact-row identity and 1536 zero samples",
+    "separate_primary_helper": "build_primary_installed48_source_map -> validate_primary_binding; exact selected 38 file/hash/sample extent; not the Meter G0 builder"
+  },
+  "mapping": {
+    "current_model_assignment": "regular CodecSourceIndex values assigned while iterating PhysicalHostIndex in order",
+    "dee_oamdi_equivalence": "UNBOUND; do not infer native equivalence from model iteration"
+  },
+  "limits": {
+    "selected_meter_36_normal_snapshot": "rejected by fixed 38 profile unless dynamic path is wired",
+    "primary_map_full_main_use": "not established in this narrow trace",
+    "real_36_cli_run": "NOT_RUN",
+    "dee_run": "NOT_RUN",
+    "pcm_parity": "NOT_RUN"
+  }
+}

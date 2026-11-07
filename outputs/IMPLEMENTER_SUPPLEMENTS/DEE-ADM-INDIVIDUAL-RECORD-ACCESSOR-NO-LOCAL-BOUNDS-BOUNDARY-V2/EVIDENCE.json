@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.individual_record_accessor_bounds_boundary.v1",
+  "package_id": "DEE-ADM-INDIVIDUAL-RECORD-ACCESSOR-NO-LOCAL-BOUNDS-BOUNDARY-V2",
+  "source": {
+    "package_id": "adm_individual_record_accessor_bounds_wash_v1",
+    "manifest_sha256": "3656d7ad09f5c8647b239ba931872a58d094de1644ba93cc2f102c9f3d93209b",
+    "package_seal_sha256": "79fa02f48aa7e8575f4693b618766348b193ebfc3597384a3b35c00c94e53b36"
+  },
+  "accessor_rule": "U+0x20 pointer-table begin + sign_extend(ordinal)*8 -> QWORD record pointer",
+  "local_bounds_in_selected_accessor": false,
+  "accessor_reads_uid_slot_plus_0x4c": false,
+  "accessor_reads_k_count": false,
+  "remaining_boundaries": {
+    "ordinal_validity": "UNBOUND",
+    "pointer_table_capacity": "UNBOUND",
+    "allocator_extent": "NOT_CAPTURED",
+    "physical_slot_less_than_k_count": "UNBOUND",
+    "physical_n_to_k_join": "UNBOUND",
+    "runtime_oob_observed": false
+  },
+  "scope": {
+    "one_accessor_body_only": true,
+    "ghidra": "12.2 read-only/no-analysis",
+    "dee_run": false,
+    "media_pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  }
+}

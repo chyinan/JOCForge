@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ADM-INDIVIDUAL-RECORD-ACCESSOR-NO-LOCAL-BOUNDS-BOUNDARY-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "c36be3f7cbec34cfcc0e65d9b0b6152a056ceee996a7ba9f477cb11f2b0fbac7",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.dee_attempt12_loader_error_boundary.v1",
+  "package_id": "DEE-ADM-ATTEMPT12-LOADER-ERROR-1114-BOUNDARY-V1",
+  "source": {
+    "package_id": "formatmessage_loader_error_1114_wash_v1",
+    "manifest_sha256": "edb59767188568dc798a130057f70c7a1b255d6283c7694fcd5f837f72e1bea7",
+    "package_seal_sha256": "0267e5719a5661322473da189872d39325ead424e75ec8c595c996367bb17168"
+  },
+  "scope": {
+    "attempt_id": "attempt-12",
+    "sample_channel_count": 36,
+    "analysis": "Ghidra 12.2 read-only/no-analysis",
+    "target_component_loaded": false,
+    "DEE_attempt_completed": true,
+    "PCM_or_essence_read": false,
+    "compressed_payload_read": false,
+    "license_or_key_content_read": false,
+    "call_arguments_or_returns_modified": false,
+    "global_absence_claim": false
+  },
+  "observed_loader_error": {
+    "boundary": "Existing host formatter error-id argument after failed library load",
+    "observation_count": 44,
+    "error_code_values": [
+      1114
+    ],
+    "windows_symbol": "ERROR_DLL_INIT_FAILED",
+    "system_error_class": "A dynamic link library initialization routine failed",
+    "wrapper_group_counts": {
+      "wrapper_a": 40,
+      "wrapper_b": 4
+    },
+    "failed_component_basename_count": 4,
+    "failed_component_names_included": false,
+    "component_files_present": true,
+    "static_import_name_check_missing_files": false,
+    "exact_failing_initializer": "UNBOUND",
+    "requester_vs_dependency": "UNBOUND"
+  },
+  "run_result": {
+    "exit_code_decimal": 3221225477,
+    "target_component_loaded": false,
+    "u_k_b_d_observations": 0,
+    "output_bytes": null,
+    "observer_errors": 0
+  },
+  "previous_observation": {
+    "attempt11_direct_GetLastError_event_count": 0,
+    "attempt12_existing_formatter_argument_observed": true
+  },
+  "retained_boundaries": {
+    "static_u_to_k_ordering": "K writer initializes source-owner slot after entry, passes it to count helper, then stores narrowed result in K count",
+    "runtime_u_to_k_owner_generation": "NOT_CAPTURED",
+    "physical_n_to_k_instance": "UNBOUND",
+    "loader_root_cause": "UNBOUND"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.adm-frame-count-lineage-static.v1",
+  "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+  "status": "ADM_COUNT_TO_FRAME_DESCRIPTOR_CLOSED_CONDITIONALLY; NO_36_38_GATE_IN_INSPECTED_WRAPPER; SELECTED_OWNER_AND_OPAQUE_API_LIMIT_UNBOUND",
+  "upstream": {
+    "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+    "manifest_sha256": "46230ce4aa5fa9a0f060887282dbb7fe86c47c5e2ea67fbbe4e943eb97c31c0c",
+    "manifest_files": 6,
+    "manifest_hash_audit": "PASS_6_OF_6",
+    "raw_ghidra_receipts": 9,
+    "receipt_hash_audit": "PASS_9_OF_9",
+    "checker": "REPORTED_PASS_NORMAL_AND_PYTHON_O; NOT_RERUN_BY_WASH"
+  },
+  "route": {
+    "input_type": "audio.atmos_mezz",
+    "filter_type": "encode_to_atmos_ddp",
+    "type_handoff": "BOUND_BY_TYPE_INTERFACE",
+    "ordinary_reader_pe_branch": "STATICALLY_TRACED_CONDITIONALLY",
+    "selected_source_instance_and_generation": "NOT_CAPTURED",
+    "host_source_property_to_worker_configuration_owner": "UNBOUND"
+  },
+  "descriptor_rules": {
+    "count_formula": "individual_record_count + sum(group_entry_count for each group record)",
+    "accumulator": "U32 addition",
+    "K_count": "low 16 bits stored at K+0x0A",
+    "K_row_base": "K+0x10",
+    "row_stride_bytes": 6,
+    "individual_row": "UID-derived physical slot; tag byte 255",
+    "group_row": "UID-derived physical slot; selected label tag",
+    "ordinary_composite_mode": "selected adapter count narrowed to U16; copy exactly N*6 bytes",
+    "extended_composite_mode": "max tag-255 object-row count across source adapters + 10 prefix rows; narrow to U16; copy N*6 bytes",
+    "selected_runtime_mode": "NOT_CAPTURED"
+  },
+  "frame_and_pe_rules": {
+    "M_plus_0x58": "returns exact composite descriptor B",
+    "D_plus_0x08": "widened U16(B+0x0A), channel-row count domain",
+    "D_plus_0x10": "sample frame count/size, not channel-row count",
+    "D_plus_0x28": "exact B descriptor pointer",
+    "same_D_to_reader_and_pe": "BOUND_STATIC_FOR_IDENTIFIED_WORKER_BRANCH",
+    "pe_allocation": "N*1536*4 float samples plus N channel pointers",
+    "matrix_copy": "iterates N channel rows for 1536-sample frames",
+    "explicit_gate": "sample frame count is 1536 or zero for flush; not an N gate",
+    "36_38_wrapper_predicate": "NONE_FOUND_BEFORE_OPAQUE_PE_JOC_API_BOUNDARY",
+    "opaque_api_n_limit": "UNBOUND"
+  },
+  "execution_scope": {
+    "native_execution": "NOT_RUN",
+    "runtime_count_values": "NOT_READ",
+    "pcm_or_ec3_payload_read": false,
+    "private_key_or_license_secret_read": false,
+    "implementation_contact_before_wash": false
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "jocforge.host_provider_init_to_adm_n_boundary.v1",
+  "package_id": "DEE-ATMOS-MASTER-OPEN-PROVIDER-INIT-BOUNDARY-V1",
+  "status": "HOST_PROVIDER_INITIALIZATION_BOUND; ADM_PHYSICAL_N_OWNER_JOIN_UNBOUND; RUNTIME_NOT_RUN",
+  "source": {
+    "package_id": "DEE-ATMOS-MASTER-OPEN-PROVIDER-INIT-BOUNDARY-WASH-V1",
+    "manifest_sha256": "2508a2ac601c187f87ca010102ea578279c407e3ee8b861f762101027322119a",
+    "manifest_sha256_receipt": "2508a2ac601c187f87ca010102ea578279c407e3ee8b861f762101027322119a",
+    "normal_and_python_o_checker": "PASS"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "mode": "read-only/no-analysis",
+    "tier": "STATIC",
+    "new_query_scope": "FUN_180182330 helper only; caller and identity receipts reused by hash."
+  },
+  "image": {
+    "module": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "host_path": {
+    "selected_caller": "FUN_1801828c0",
+    "host_handle_field": "+0x48",
+    "initialization_call": "FUN_180182330(&param_1[9], 0) at 0x1801829d5",
+    "master_open_call": "FUN_1801831c0 param_3 = qword [param_1 +0x48] at 0x180182a94",
+    "same_handle_setup": "FUN_1804cb720 receives param_1[9], callback FUN_180184380, context param_1[5] (= caller +0x28)"
+  },
+  "provider_initialization": {
+    "function": "FUN_180182330",
+    "system_init": "FUN_1804cb8b0",
+    "registrations": [
+      {
+        "function": "FUN_180547140",
+        "provider": "DAMF"
+      },
+      {
+        "function": "FUN_18048fc70",
+        "provider": "DAMF-create"
+      },
+      {
+        "function": "FUN_1803ecb80",
+        "provider": "ADM/BWF"
+      },
+      {
+        "function": "FUN_18027b5d0",
+        "provider": "IAB"
+      },
+      {
+        "function": "FUN_1805506a0",
+        "provider": "composite"
+      }
+    ],
+    "optional_filesystem_setup": {
+      "function": "FUN_1804cb770",
+      "condition": "param_2 != 0",
+      "selected_caller_value": 0,
+      "selected_result": "NOT_CALLED"
+    }
+  },
+  "adm_n_parent": {
+    "package_id": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+    "manifest_sha256": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10",
+    "field": "layout object +0x28 U32 N",
+    "static_gate": "1..128 inclusive"
+  },
+  "join_disposition": {
+    "host_provider_handle_to_adm_n_layout_owner": "UNBOUND_AT_OPAQUE_PROVIDER_REGISTRY_BOUNDARY",
+    "caller_callback_context_plus_0x28_to_adm_n_layout_owner": "UNBOUND",
+    "provider_registration_name_used_as_owner_identity": false,
+    "same_offset_used_as_identity": false,
+    "global_absence_claim": false
+  },
+  "runtime": "NOT_RUN",
+  "scope_exclusions": {
+    "raw_ghidra_data_or_decompilation_included": false,
+    "target_run_launched": false,
+    "media_pcm_payload_key_or_license_accessed": false,
+    "implementation_source_accessed": false
+  }
+}

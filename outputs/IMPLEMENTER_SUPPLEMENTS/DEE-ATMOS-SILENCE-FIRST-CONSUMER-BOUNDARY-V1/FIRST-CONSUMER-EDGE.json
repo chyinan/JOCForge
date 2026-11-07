@@ -1,0 +1,81 @@
+{
+  "schema": "dee-atmos-ddp-silence-first-consumer-edge.v1",
+  "status": "PER_SOURCE_COUNT_VECTORS_BOUND_TO_COMPOSITE_RECORD_BUILDER; PCM_PTS_EFFECT_UNBOUND; RUNTIME_NOT_RUN",
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "reused_rule_package": {
+    "package_id": "dee_atmos_ddp_silence_duration_sample_rule_wash_v1",
+    "manifest_sha256": "95f2282edfbf32fbbf6f4c72662242c400429b44fdc32396bf595c8367fb9220",
+    "seal_sha256": "4b617e06a3fd7ede6c5707fac4bddb2d57a7bd32ce669dabaa812faa5346aaca"
+  },
+  "record_to_encode_context": {
+    "record_builder": "FUN_180145380",
+    "prepend_value": {
+      "parser_result_type": "longlong sample count",
+      "record_field_offset": "0x38 (qword vector at param_3+7)",
+      "vector_insert_call": "FUN_18014e980(&uStack_3c0, &local_498)"
+    },
+    "append_value": {
+      "parser_result_type": "longlong sample count",
+      "record_field_offset": "0x50 (qword vector at param_3+10)",
+      "vector_insert_call": "FUN_18014e980(&local_3a8, &local_490)"
+    },
+    "encode_context_copy": {
+      "function": "FUN_1801535b0",
+      "prepend": "vector copy param_3+7 -> param_2+0x18",
+      "append": "vector copy param_3+10 -> param_2+0x60",
+      "copy_helper": "FUN_18013be90; copies qword vectors with eight-byte element stride"
+    }
+  },
+  "first_typed_consumer": {
+    "caller": "FUN_180175c80",
+    "callsite_rva": "0x175e10",
+    "callee": "FUN_1801844c0",
+    "callee_rva": "0x1844c0",
+    "callee_file_offset": "0x1838c0",
+    "callee_bytes": 1037,
+    "callee_region_sha256": "1f6d40dd98ea38779e6c02c8f4ccdc8e312aff9ed2a52082f26e53acf9fa1d0c",
+    "decompiler_signature": "FUN_1801844c0(ulonglong *param_1, longlong *param_2, longlong *param_3, longlong *param_4, longlong *param_5, longlong *param_6)",
+    "argument_mapping": {
+      "param_1": "RCX; destination composite row vector",
+      "param_2": "RDX; base per-source row vector, 0x20-byte stride",
+      "param_3": "R8; prepend qword count vector from encode-context +0x18",
+      "param_4": "R9; other parallel qword vector from encode-context +0x30",
+      "param_5": "stack argument [RSP+0x20]; other parallel qword vector from encode-context +0x48",
+      "param_6": "stack argument [RSP+0x28]; append qword count vector from encode-context +0x60"
+    },
+    "matching_rule": "callee compares base-record count against each qword-vector count before zipping",
+    "output_mapping": {
+      "output_row_stride": "0x40 bytes",
+      "prepend_input_param": 3,
+      "prepend_output_qword_offset": "0x20",
+      "append_input_param": 6,
+      "append_output_qword_offset": "0x38",
+      "operation": "copy each per-source qword value unchanged into the composite row"
+    },
+    "semantic_name_evidence": "callee error string: makeCompositeMasterPrams: input vectors size mismatch"
+  },
+  "effects_at_this_edge": {
+    "sample_count_arithmetic": false,
+    "pcm_buffer_zero_fill": false,
+    "start_end_range_shift": false,
+    "pts_clock_shift": false,
+    "counts_passed_downstream_as_record_metadata": true
+  },
+  "remaining_unknowns": {
+    "first_downstream_consumer_of_composite_rows": "NOT_INSPECTED",
+    "actual_pcm_silence_materialization": "UNBOUND",
+    "native_output_length_effect": "UNBOUND",
+    "native_pts_or_clock_effect": "UNBOUND",
+    "dee_runtime": "NOT_RUN"
+  },
+  "scope": {
+    "one_new_consumer_function": "FUN_1801844c0",
+    "one_callsite_window": "FUN_180175c80 RVA 0x175db4..0x175e15",
+    "other_callers_or_consumers": false,
+    "callee_expansion_beyond_first_typed_consumer": false,
+    "media_pcm_payload_key_license_access": false
+  }
+}

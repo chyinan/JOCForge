@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge-reader-target-dynamic-axis-contract.v3",
+  "package_id": "JOCFORGE-READER-TARGET-DYNAMIC-AXIS-CONTRACT-V3",
+  "source_snapshot": {
+    "repository": "D:\\Programs\\JOCForge-isolated",
+    "branch": "experimental/independent-encoder",
+    "base_head": "aefd8cc12538cab251a59c9a08f9c9ca0608eb9b",
+    "snapshot_semantics": "Exact working-tree hashes at the Wash review; rehash relevant files after later implementation edits.",
+    "all_12_source_files_rehashed": true
+  },
+  "row_dimensions_for_selected_10_bed_one_lfe_profile": {
+    "physical_rows_N": "actual ADM/graph physical rows",
+    "regular_rows_R": "N - 1",
+    "global_source_axis_S": "N + 10",
+    "target_slots_T": 15,
+    "N36": {"N":36,"R":35,"beds":10,"objects":26,"S":46,"present_ids":"0..45","absent_ids":[46,47]},
+    "N38": {"N":38,"R":37,"beds":10,"objects":28,"S":48,"present_ids":"0..47","absent_ids":[]},
+    "N39_structural_vector": {"N":39,"R":38,"beds":10,"objects":29,"S":49,"meaning":"synthetic shape/capacity vector only; no native runtime acceptance claimed"}
+  },
+  "verified_progress_and_current_gates": {
+    "f01e_owner_stage": "The implementation agent reports a dynamic F01E after-state can now create a GTC replacement candidate and pass a synthetic 36/38 NORMAL plus Q..Q+2 FreshZero test; this is not the full selected Meter path.",
+    "first_current_36_failure": "stage_meter_frontend_features_from_installed48 rejects installed48_frame.rows().len() != 48 with MeterFrameIdentity; predicate is source-hash-bound in frontend_stages.rs.",
+    "installed_audio": "installed48_render remains a 48-source output shape; production lookup asks IDs 0..47.",
+    "component_and_reader": "ActiveComponentMatrix and ReaderTarget still consume A x 48; ReaderTarget has snapshot_keys_complete: bool and [u8;48] source_flags; production sets completeness only when geometry.rows().len()==48.",
+    "partial_active_source_ids": "production_callback and SpatialControl now carry an active_source_ids vector, but current projection/state still stores a 15x48 matrix and 48x1536/48x24/48 scalar histories.",
+    "source_flags": "SourceFlags remains a fixed 48 positional array; [0,0] is active/default, not absent.",
+    "postwindow_and_features": "PostWindowFanout and CurrentFeatures still require dense 48x3072 audio and 48 feature/flag rows."
+  },
+  "absence_contract": {
+    "presence_field_currently_proven": "NONE",
+    "zero_fill_absent_ids_valid": false,
+    "required": "Carry one ordered CodecSourceIndex list with owner/input/callback identity through installed audio, flags, features, component matrices, ReaderTarget, post-window and SpatialControl. Preserve absent IDs as no entries, and validate identical order at each handoff."
+  },
+  "independent_count_domains": {
+    "jocforge_physical_N_regular_R_source_S_target_T": "Keep distinct typed axes.",
+    "dee_profile_count_C": "Separate native count domain; no mapping to JOCForge S or target T is established by this package.",
+    "36_38_equality": "For the sampled 10-bed ADM vectors S=N; this numeric equality does not prove identity with DEE's canonical M or renderer C."
+  },
+  "scope": {
+    "runtime": "NOT_RUN",
+    "36_row_full_encode": "NOT_RUN",
+    "pcm_or_payload_read_by_wash": false,
+    "tests_run_by_wash": false,
+    "global_support_claim": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-ADM-FIRST-DOWNSTREAM-COUNT-GUARD-BOUNDARY-V1",
+  "decision": "FIRST_ROW_CONSUMER_AND_BED_COUNT_GUARD_BOUND_STATIC; TOTAL_N_OR_K_LIMIT_NOT_FOUND_IN_THIS_SLICE; FULL_CHAIN_SUPPORT_UNPROVEN",
+  "source_package": {
+    "package_id": "DEE-ADM-FIRST-DOWNSTREAM-GUARD-WASH-V1",
+    "source_manifest_sha256": "9d5ebe9cd9053392fe92975710f460fc7efcc45500078f486a5ba985c951758b",
+    "payload_files_verified": "4/4",
+    "existing_ghidra_rerun": "BLOCKED_PROJECT_LOCK"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "wash_rehashed": true,
+    "current_binary_matched": true
+  },
+  "row_flow": {
+    "dispatch": "FUN_1801ad9d0 called by FUN_1801a7710 at RVA 0x1a7774",
+    "slot_domain": "0..127",
+    "object_marker": "U16 bit 0x8000",
+    "record_stride": 88,
+    "record_count": "K active object-marked slots",
+    "stored_source_id": "record byte 0 stores (char)slot",
+    "first_direct_consumer": "FUN_1801acd10 called at RVA 0x1a7808",
+    "map_length": "U32 M from canonical-map object +0x108",
+    "consumer_behavior": "iterate M map entries; consume object records by compact ordinal uVar7",
+    "source_id_read_or_compare": false,
+    "identity_relation": "positional ordinal only in this slice"
+  },
+  "first_additional_guard": {
+    "counter": "U32 uVar8 for non-object/bed entries",
+    "maximum": 10,
+    "failure_code": 6,
+    "paired_low_byte": "U8 <= 1",
+    "is_total_N_or_K_limit": false
+  },
+  "separate_profile_count": {
+    "consumer": "FUN_1801ad360",
+    "source": "profile/layout object +0x08",
+    "type": "U32 C",
+    "relation_to_N_K_M": "UNBOUND",
+    "codec_count": "NOT_EVALUATED"
+  },
+  "execution": {
+    "dee": "NOT_RUN",
+    "dynamic_capture": "NOT_CAPTURED",
+    "media_or_pcm_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false,
+    "full_chain_support_claim": false
+  }
+}

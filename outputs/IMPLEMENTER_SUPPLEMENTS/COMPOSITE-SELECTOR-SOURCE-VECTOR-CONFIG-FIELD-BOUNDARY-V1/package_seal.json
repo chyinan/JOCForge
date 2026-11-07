@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-CONFIG-FIELD-BOUNDARY-V1",
+  "manifest_sha256": "65f9aa8afc68ec66cb9d9202b750ba7cec9b54dad06ed368ebf18203ed25dca8",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "QUEUE_RECORD_PLUS_0X08_VECTOR_FIELD_STATIC_BOUND; SYMBOLIC_OWNER_AND_GENERATION_UNBOUND; PATH_VALUE_AND_HANDLER_UNBOUND"
+}

@@ -1,0 +1,11 @@
+{
+  "ADM_time_token_to_double": "BOUND_STATIC_FOR_SELECTED_VALIDATION_PATH",
+  "double_to_AdmFileStorageDesc_plus0x60": "BOUND_STATIC",
+  "descriptor_plus0x60_to_master_plus0xa8": "BOUND_STATIC",
+  "reported_field": "Start time in seconds",
+  "source_XML_or_ADM_chunk": "UNBOUND",
+  "AXML_candidate_identity": "UNBOUND",
+  "FFOA_plus0x58_source": "UNBOUND",
+  "timebase_origin": "UNBOUND",
+  "range_sample_rate_conversion": "separate_integer_range_difference_field"
+}

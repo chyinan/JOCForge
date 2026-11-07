@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "scope": "Sanitized aggregate and formula vectors only; actual track identifiers and raw metadata are excluded.",
+  "vectors": [
+    {
+      "id": "N36-ordinary-copy",
+      "input": {
+        "N": 36,
+        "bed_entries": 10,
+        "object_entries": 26,
+        "ordinary_copy_mode": true
+      },
+      "expected": {
+        "row_slots": "0..35",
+        "K_bytes": 216,
+        "map_gate": "1..128 passes",
+        "map_bytes": 256,
+        "object_row_rule": "0x8000|r",
+        "bed_row_rule": "((translate(tag)&0x7f)<<8)|group_bucket",
+        "native_capture": false
+      }
+    },
+    {
+      "id": "N38-ordinary-copy",
+      "input": {
+        "N": 38,
+        "bed_entries": 10,
+        "object_entries": 28,
+        "ordinary_copy_mode": true
+      },
+      "expected": {
+        "row_slots": "0..37",
+        "K_bytes": 228,
+        "map_gate": "1..128 passes",
+        "map_bytes": 256,
+        "object_row_rule": "0x8000|r",
+        "bed_row_rule": "((translate(tag)&0x7f)<<8)|group_bucket",
+        "native_capture": false
+      }
+    },
+    {
+      "id": "extended-synthesis-branch",
+      "input": {
+        "descriptor_mode": "extended synthesis"
+      },
+      "expected": {
+        "row_positions": "synthesized; not joined to original physical slot",
+        "mode_selection": "NOT_CAPTURED"
+      }
+    }
+  ]
+}

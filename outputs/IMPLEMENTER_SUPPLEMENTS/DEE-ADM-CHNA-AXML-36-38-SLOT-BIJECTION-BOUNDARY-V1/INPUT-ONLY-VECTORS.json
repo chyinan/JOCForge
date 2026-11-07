@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "authorized-36-row-metadata-coverage",
+      "physical_N": 36,
+      "track_index_min_max": [1, 36],
+      "missing_indices": 0,
+      "duplicate_indices": 0,
+      "chna_uid_to_axml_track_uid": "one-to-one",
+      "direct_channel_format_coverage": "36/36 unique",
+      "pcm_bytes_read": 0
+    },
+    {
+      "vector_id": "authorized-38-row-metadata-coverage",
+      "physical_N": 38,
+      "track_index_min_max": [1, 38],
+      "missing_indices": 0,
+      "duplicate_indices": 0,
+      "chna_uid_to_axml_track_uid": "one-to-one",
+      "direct_channel_format_coverage": "38/38 unique",
+      "pcm_bytes_read": 0
+    }
+  ]
+}

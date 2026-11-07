@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.composite_nested_source_path_boundary.v1",
+  "package_id": "COMPOSITE-SELECTOR-NESTED-SOURCE-PATH-BOUNDARY-V1",
+  "status": "NESTED_PATH_CONSTRUCTION_STATIC_BOUND; SYMBOLIC_SOURCE_OWNER_AND_PATH_VALUE_UNBOUND; HANDLER_SELECTION_UNBOUND; K_COUNT_NOT_REACHED",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "COMPOSITE-SELECTOR-NESTED-SOURCE-PATH-PRODUCER-V1",
+    "manifest_sha256": "7859913891c7eb9608b692811435f5923f6b5f45069ba6890066f8f84407c837",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "analysis_mode": "reused hash-bound read-only static traces",
+    "new_ghidra_query": "NOT_RUN",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "nested_path_producer": {
+    "owner": "per-item reader source-entry vector; symbolic job/config owner NOT_OBSERVED",
+    "record_stride_bytes": 32,
+    "record_selection": "vector_begin + index * 32",
+    "path_field_offset": 0,
+    "path_field_type": "string-like, NUL-terminated",
+    "path_value": "NOT_CAPTURED",
+    "carrier_row_stride_bytes": 64,
+    "carrier_path_location": "first 32 bytes at carrier row +0",
+    "projection": "source-entry string copied into carrier, carrier copied through reader config/owner, then passed to storage-open dispatcher",
+    "string_storage": "inline or heap representation",
+    "runtime_owner_generation": "UNBOUND"
+  },
+  "handler_gate": {
+    "prior_package_id": "COMPOSITE-SELECTOR-K-COUNT-HANDLER-SELECTION-V1",
+    "prior_source_manifest_sha256": "82ec118eb0bc4bba8133bdcaadacf12c33f4c3b3fd86adcef6cb5419f179c516",
+    "wash_supplement_manifest_sha256": "63529a6bb3f0c2626290f0a1126ca93f7c57b1d7b4cf0898b3e67b8c2b8d3b2e",
+    "wash_supplement_seal_sha256": "e7c7b013c548b80d62f77cfed9d9cb075997d9ed41e32496dd6c2a1ff6634805",
+    "actual_path_suffix": "NOT_CAPTURED",
+    "selected_storage_handler": "UNBOUND",
+    "top_level_adm_bwf_filename_substituted": false
+  },
+  "k_count_gate": {
+    "candidate_formula": "low16(IndividualRecordCount + sum(GroupEntryCount(g)))",
+    "applicability_to_selected_j_plus_0x08": "UNBOUND_PENDING_SUFFIX_AND_HANDLER"
+  },
+  "scope": {
+    "native_execution": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

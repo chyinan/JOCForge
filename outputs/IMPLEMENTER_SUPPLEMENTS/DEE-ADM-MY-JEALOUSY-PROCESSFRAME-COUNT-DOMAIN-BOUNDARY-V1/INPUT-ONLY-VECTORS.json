@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.dee-adm-my-jealousy-count-input-only.v1",
+  "vectors": [
+    {
+      "id": "my-jealousy-metadata-n36-conditional-mode0",
+      "kind": "metadata plus symbolic marker projection; not a DEE runtime execution",
+      "input": {
+        "N_source_descriptor_rows": 36,
+        "bed_rows": 10,
+        "object_rows": 26,
+        "mode": 0,
+        "assumption": "all object rows use the expected object marker"
+      },
+      "expected": {
+        "K_object_marked_rows": 26,
+        "M_default_map_count": 36,
+        "mode0_gate": "1..128 passes if the runtime descriptor count is N=36",
+        "runtime_mode_and_N": "NOT_CAPTURED",
+        "same_job_source_join": "UNBOUND",
+        "full_output": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "my-jealousy-metadata-n36-conditional-mode1",
+      "kind": "conditional static gate projection; not executed",
+      "input": {"N_source_descriptor_rows": 36, "mode": 1},
+      "expected": {"mode1_count_set": [10, 12, 16], "conditional_result": "rejects N=36", "runtime_mode": "NOT_CAPTURED"}
+    }
+  ]
+}

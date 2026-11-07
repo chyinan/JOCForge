@@ -1,0 +1,48 @@
+{
+  "schema": "wash.ghidra-function-body-hashes.v1",
+  "tool": "Ghidra 12.2",
+  "selected_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "status": "REUSED_FROM_HASH_BOUND_WASH_RECEIPTS",
+  "functions": {
+    "FUN_180179ab0": {
+      "bytes": 608,
+      "sha256": "165697fe62a576335d32f9eac08cdb7f517e230a3d9ea65f28e12daa42fb2044",
+      "role": "Process callback wrapper"
+    },
+    "FUN_180178cc0": {
+      "bytes": 254,
+      "sha256": "a025a369930ac62a8d3c96861a4cf67a759cc7c0499bb3f861201e48b5f67a4f",
+      "role": "decoded-row to PE staging-matrix copier"
+    },
+    "FUN_1801788a0": {
+      "bytes": 542,
+      "sha256": "37697a7c1696b65ffc3685dd6a1bd9629b25e3663d2e09636a83652909f66dc9",
+      "role": "row staging allocator"
+    },
+    "FUN_1801a8840": {
+      "bytes": 223,
+      "sha256": "5f2ec6e39e467265c130f99466571bd618aa5c8a89f9353d14321295bcaf75a3",
+      "role": "DDP process entry wrapper"
+    },
+    "FUN_1801a7710": {
+      "bytes": 1238,
+      "sha256": "75f819dfb9e30456dd533725dcc1eb58c92e6e03b7db6d9972ab455a2365090f",
+      "role": "internal per-frame process handler"
+    },
+    "FUN_1801ac670": {
+      "bytes": 471,
+      "sha256": "0762b17533f540ccf6d4e8dfec9ca215047b2935dd3f6b3e99f1725b9acf19be",
+      "role": "previously sealed open-time N range gate 1..128"
+    },
+    "FUN_1801aadf0": {
+      "bytes": 464,
+      "sha256": "41e459e2267e28ac3fe2880fdc821094f5778e1b3de5adc874cfb7811747b3c5",
+      "role": "previously sealed open-path N recheck 1..128"
+    }
+  },
+  "additional_static_region": {
+    "role": "frame descriptor writer",
+    "bytes": 414,
+    "sha256": "919828e79149784292dd5cc7be89bf05fbd8047db6a3be6e91aeff3aebf91580"
+  }
+}

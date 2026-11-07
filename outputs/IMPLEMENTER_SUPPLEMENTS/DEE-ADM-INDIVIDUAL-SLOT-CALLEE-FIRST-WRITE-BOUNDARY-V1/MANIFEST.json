@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-INDIVIDUAL-SLOT-CALLEE-FIRST-WRITE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CALLEE_FIRST_TRACKED_FIELD_STORE_FOUND; UID_SLOT_NOT_ESTABLISHED; TYPED_DESCRIPTOR_UNBOUND; POST_STORE_NOT_INSPECTED; RUNTIME_NOT_RUN",
+  "source_package_id": "adm_individual_slot_callee_first_write_wash_v1",
+  "source_manifest_sha256": "2b1f18ddaf1c880a183e27cbf91e0743fc8158d6c4972894e57572a11eedf5c5",
+  "source_package_seal_sha256": "21e8b8a63258d9db63babee732582b22975141753ef8a8780c5d3bb595aa1095",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2829,
+      "sha256": "69844516ee851f4b127b6da97687755870a9aa4ab7af168282a68ffd2fd3d128"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2415,
+      "sha256": "3750b802a47b484ef3e612b87ae6aafff36ee377638d99a01bfbd9ebc8bde299"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 787,
+      "sha256": "51ba8a501bae2319f78913dc33569407ec9e08be749e8973059e15fa294d747f"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1268,
+      "sha256": "63930cc6fd5a79528aa6c3111667432e51ea00a3ae4847871ead667df2669032"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 838,
+      "sha256": "9d1fcfd6bb4f00cd131ad03e9345fe0edc1db2748b123c566d7e720cf517e70a"
+    }
+  ]
+}

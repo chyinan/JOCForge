@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "METER_ADMISSION_AND_ZERO_DRAIN_DYNAMIC; INSTALLED48_SELECTED_BINDING_AND_NORMAL_SNAPSHOT_STILL_38; REAL_36_OUTPUT_NOT_RUN",
+  "implementation_disposition": "SUPERSEDES_V1_STATUS_ONLY; FIRST_CURRENT_PRODUCTION_GATE_IS_THE_SELECTED_38_CHANNEL_INSTALLED48_SOURCE_BINDING, THEN_FIXED_NORMAL_SNAPSHOT_AND_SPATIAL_ARRAYS",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3508,
+      "sha256": "4bd3277bfc1531ca7fbdd429788ed4c5704440b2da1ac45c1f0cc454dc71fbbc"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1106,
+      "sha256": "211d552866978d2e9f831bf62e74ffeabf8a95ea89203b70533305e39d493b43"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2304,
+      "sha256": "4ba68d344e570d6c0aaa9800e0bd2657eace932b6bc50507920c641c8e045f37"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1647,
+      "sha256": "3f53766bd8f568c0a20029327a7d07665ff15f72f24c7c191a948d52e98d9d3a"
+    }
+  ]
+}

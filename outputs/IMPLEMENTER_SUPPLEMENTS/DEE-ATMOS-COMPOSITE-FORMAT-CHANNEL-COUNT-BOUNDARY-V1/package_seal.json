@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-CHANNEL-COUNT-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "e159e7316f2e206480f7d6e15ad2f545b1a5d25a0b20f506d0826bffda5c92be",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

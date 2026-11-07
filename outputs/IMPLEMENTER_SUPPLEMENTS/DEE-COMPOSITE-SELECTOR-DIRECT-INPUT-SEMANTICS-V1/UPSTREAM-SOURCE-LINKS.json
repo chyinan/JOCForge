@@ -1,0 +1,60 @@
+{
+  "schema": "wash.composite-selector-input-semantics-sources.v1",
+  "research_root_relative_to_this_package": "../../",
+  "prior_packages": [
+    {
+      "package_id": "COMPOSITE-DESCRIPTOR-MODE-SELECTOR-SOURCE-V1",
+      "path": "composite-descriptor-mode-selector-source-v1/wash-package",
+      "manifest_sha256": "d65cc7211fd14973244cb408d982c9a2a64ad654a5e5888d2f336f793d0add95",
+      "report_file": "MODE-SELECTOR-SOURCE.json",
+      "report_sha256": "70f57ca43952a6eb64140cb92da301c1d8024b69a8f58f7b91959f71e3b32fc8",
+      "contribution": "Existing selector field and OR producer; this package drills only the two direct inputs."
+    },
+    {
+      "package_id": "COMPOSITE-DESCRIPTOR-WRITER-OWNER-JOIN-V1",
+      "path": "composite-descriptor-writer-owner-join-v1",
+      "manifest_sha256": "248c105c22c0f8ee85f8538cc350ebee3ab056978f862be20fd38f8131bb2783",
+      "report_file": "DESCRIPTOR-CONTRACT.json",
+      "report_sha256": "690d1e845e1feafbb0a87794f073fc81bde40bacbdc6a6bb0c67eb4e8350622e"
+    },
+    {
+      "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+      "path": "adm-frame-descriptor-lineage-static-v1/wash-package",
+      "manifest_sha256": "46230ce4aa5fa9a0f060887282dbb7fe86c47c5e2ea67fbbe4e943eb97c31c0c",
+      "report_file": "FRAME-COUNT-LINEAGE.json",
+      "report_sha256": "5c194b79c0a631ba1dcc21b09aff921750231ff10f6adebbafec76abb1173fc7"
+    }
+  ],
+  "ghidra_source_artifacts": [
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/composite_mode_owner_r9.log",
+      "sha256": "165c58a000be71c95e1ffc8d462d6e881f8e85730ac50ef90320cb7390ce255b",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/composite_mode_owner_r9.log"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/composite_mode_helpers_r9.log",
+      "sha256": "ec8a88a668b8d95ac8d6194334a1ab7c1d7b8dce14e93ceb5ebae4dfd549af70",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/composite_mode_helpers_r9.log"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/reader_and_composite_r9.log",
+      "sha256": "bacd7ecde2a543cad170c686a6cbb5fcfd614b3ffe58d1d9b71625ab80012380",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/reader_and_composite_r9.log"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/lineage_function_hashes_r9.log",
+      "sha256": "8f63fcf25682024e0aee79dfe9be421ee26cd284f96271b24c8f4e341e8feb8e",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/lineage_function_hashes_r9.log"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/mode_function_hashes_r9.log",
+      "sha256": "c733dd7416a8d527393b99d4d5355456553c77c21775795ea45415126009b1aa",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/mode_function_hashes_r9.log"
+    }
+  ]
+}

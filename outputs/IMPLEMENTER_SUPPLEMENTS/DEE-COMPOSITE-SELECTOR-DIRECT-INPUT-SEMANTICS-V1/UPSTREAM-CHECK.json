@@ -1,0 +1,12 @@
+{
+  "schema": "wash.research-check.v1",
+  "package_id": "COMPOSITE-SELECTOR-INPUT-SEMANTICS-V1",
+  "result": "PASS_HASH_BOUND_DIRECT_OR_INPUT_SEMANTICS",
+  "key_2_input": "U8 key on param_7 option tree; only nonzero lookup result is consumed",
+  "key_2_mapped_payload": "NOT_READ",
+  "descriptor_comparison": "compares U16 count plus row U16@0, U8@2, U16@4 at stride 6; byte @3 is loaded with the U32@0 word but not compared",
+  "comparator_truth": "nonzero on mismatch in valid 1..128 domain",
+  "selector_is_single_field_copy": false,
+  "actual_mode": "NOT_CAPTURED",
+  "implementation_contact": false
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "wash.research-check.v1",
+  "package_id": "COMPOSITE-DESCRIPTOR-COUNT-PRODUCER-V1",
+  "result": "PASS_HASH_BOUND_B_PLUS_0A_BRANCH_PRODUCER",
+  "B_owner": "STATICALLY_BOUND_AS_T_PLUS_0x10",
+  "typed_count_store": "U16_AT_B_PLUS_0x0A",
+  "ordinary_mode": "COPY_SELECTED_ADAPTER_K_U16_COUNT",
+  "extended_mode": "MAX_TAG_255_ROWS_PLUS_10",
+  "physical_CHNA_N_directness": "BRANCH_CONDITIONAL",
+  "actual_mode_and_selected_adapter": "NOT_CAPTURED / UNBOUND",
+  "native_K_or_B_count": "NOT_CAPTURED",
+  "implementation_contact": false
+}

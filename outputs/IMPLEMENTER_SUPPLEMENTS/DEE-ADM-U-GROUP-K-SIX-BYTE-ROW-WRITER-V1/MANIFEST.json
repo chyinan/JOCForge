@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-U-GROUP-K-SIX-BYTE-ROW-WRITER-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "U_GROUP_ENTRY_TO_K_ROW_BOUND; ROW_SEMANTIC_AND_BYTE3_INIT_PARTIAL",
+  "implementation_disposition": "Use exact row offsets and source fields; preserve byte+3 as not evaluated and semantics as partial.",
+  "source_manifest_sha256": "cf865e0eb2617a25a8d2619b9a381c80b8aff8034ca90854f7ad8d1bc86a65cf",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4267,
+      "sha256": "015a5f16d053ba94e5111812ff67773ab095a2954dae24389f01476f7cf6a774"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2319,
+      "sha256": "95ff4a31d5f791477ceb854d57d22f021303ee81e1db45a7a9660b04024c4b81"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 226,
+      "sha256": "33ec541ca0d38fca32bfdd3863b9cf085d46a62fbfdca515d738376744a5d1e4"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1668,
+      "sha256": "1574183e68dd2270ed4e3a465b17d7a0c679bd69e897980dfb557cde188e4059"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 840,
+      "sha256": "ce1a81187bf18a32ecdb6f474ecd8bd93e64d42b609ab78aedc2b7acb7669837"
+    }
+  ]
+}

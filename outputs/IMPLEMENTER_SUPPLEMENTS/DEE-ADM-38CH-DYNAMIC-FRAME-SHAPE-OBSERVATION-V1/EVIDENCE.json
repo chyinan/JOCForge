@@ -1,0 +1,84 @@
+{
+  "schema": "jocforge.adm_dynamic_frame_shape_observation.v1",
+  "package_id": "DEE-ADM-38CH-DYNAMIC-FRAME-SHAPE-OBSERVATION-V1",
+  "source_package": {
+    "package_id": "adm_processor_frame_shape_native_capture_wash_v1",
+    "manifest_sha256": "ca170481a74cb704a3e6e2ab35bb88b27498b0fad814704be4c160db10a59b21",
+    "package_seal_sha256": "b52954a5642a311755ecd0b43fddf0baea58d13a91aa40b3c3bd962c83261e1a",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "attempt": {
+    "attempt_id": "attempt-04",
+    "input_type": "atmos_mezz",
+    "input_sample_id": "authorized_38",
+    "input_sha256_from_prior_receipt": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_hash_recomputed_this_attempt": false,
+    "source_sample_rate_hz": 48000,
+    "physical_chna_rows": 38,
+    "job_time_base_value": "file_position",
+    "native_time_base_value": "NOT_CAPTURED",
+    "configured_source_sample_interval": [0, 50000],
+    "configured_frames": "0..24 inclusive at 24 fps",
+    "exit_code": 0,
+    "ordinary_measurement_and_encoder_passes": "COMPLETED",
+    "output_file_bytes": 135893,
+    "output_payload_read_or_decoded": false
+  },
+  "observed_counts": {
+    "fmt_channel_count": {"value": 38, "observations": 4},
+    "chna_physical_entry_count": {"value": 38, "observations": 7, "u_owner_bound": 4, "u_owner_missing": 3},
+    "u_container_helper_count": {"value": 38, "serialized_events": 64, "event_cap": 64, "total_calls_after_cap": "NOT_CAPTURED"},
+    "k_descriptor_count": {"values": [38, 38, 38, 38], "row_bytes_per_count": 6, "row_bytes_observed_capacity": 228, "u_owner_token_null": 4},
+    "composite_b_count": {"values": [38, 38], "observations": 2},
+    "composite_j_adapter_count": {"values": [1, 1], "semantics": "adapter vector length, not physical channel count"}
+  },
+  "owner_generation_edges": {
+    "u_to_k": "UNBOUND; K writer U owner token null in all four writes",
+    "k_writer_to_B_to_processor_D": {
+      "status": "JOINED_FOR_TGEN_1_JGEN_1",
+      "k_count": 38,
+      "b_count": 38,
+      "k_writer_events_joined": 1,
+      "frame_consumer_calls_same_B_processor_descriptor": 33,
+      "opaque_owner_tokens": {"B": "owner-18", "processor": "owner-20", "D": "owner-21"}
+    },
+    "second_generation": {
+      "generation": "Tgen-2/Jgen-2",
+      "B_descriptor_token": "owner-18",
+      "row_table_token": "owner-40",
+      "D_consumer_observed": false
+    }
+  },
+  "frame_shape_observation": {
+    "nonempty_calls": 33,
+    "first_nonempty": {"actual_channels": 38, "expected_channels": 0, "samples": 1536},
+    "next_nonempty_same_processor_descriptor": {"expected_channels": 38},
+    "remaining_nonempty_expected_38": 31,
+    "empty_zero_channel_zero_sample_calls_without_B": 10,
+    "absolute_adm_sample_position": "NOT_CAPTURED",
+    "selected_layout_flag_0x100": "NOT_CAPTURED"
+  },
+  "time_base_hook": {
+    "ready": true,
+    "setter_calls": 4,
+    "key_read_status": "READ_FAILED",
+    "value_reads": 0,
+    "alternative_string_layout_probe": false,
+    "selected_native_value": "NOT_CAPTURED"
+  },
+  "limits": {
+    "source_record_count": "NOT_CAPTURED",
+    "active_target_count": "NOT_CAPTURED",
+    "general_track_count_range": "NOT_ESTABLISHED",
+    "physical_N_to_K_owner_join": "UNBOUND",
+    "pcm_or_raw_audio_persisted": false,
+    "raw_addresses_persisted": false,
+    "key_or_license_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "use_as_single_N38_dynamic_vector_only": true,
+    "do_not_promote_equal_counts_to_owner_identity": true
+  }
+}

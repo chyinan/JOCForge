@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "k-writer-owner-initialization-order",
+      "kind": "static-call-order-summary",
+      "input": {
+        "k_writer_entry_owner_slot": "uninitialized"
+      },
+      "observed": {
+        "slot_init_before_helper_call": true,
+        "helper_return_to_k_u16": true
+      },
+      "status": "U_TO_K_STATIC_PATH_BOUND; RUNTIME_OWNER_GENERATION_NOT_CAPTURED"
+    },
+    {
+      "vector_id": "host-loader-last-error-boundary",
+      "kind": "static-error-path-summary",
+      "input": {
+        "library_load_result": "null"
+      },
+      "observed": {
+        "host_reads_last_error_immediately": true,
+        "attempt08_generic_hook_error": 0
+      },
+      "status": "HOST_ERROR_VALUE_NOT_CAPTURED"
+    }
+  ]
+}

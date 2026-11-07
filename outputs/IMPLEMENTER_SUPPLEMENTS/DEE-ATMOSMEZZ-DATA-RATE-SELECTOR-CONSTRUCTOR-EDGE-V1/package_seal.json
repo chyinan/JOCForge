@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "63ddeef0d32d8bbc1cf6b4bd5fbf5c9b6a50c3d2dd22671b441ab9ab1868b3b8",
+  "payload_file_count": 6,
+  "payload_hash_audit": "PASS_6_OF_6",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

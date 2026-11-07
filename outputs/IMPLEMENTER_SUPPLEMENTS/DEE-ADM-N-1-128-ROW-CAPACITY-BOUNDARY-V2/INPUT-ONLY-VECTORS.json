@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "physical-n-static-gate",
+      "kind": "static-boundary",
+      "input": {
+        "N": 1,
+        "upper_bound": 128
+      },
+      "observed": {
+        "accepted_range": "1..128"
+      },
+      "status": "STATIC_ONLY"
+    },
+    {
+      "vector_id": "n-k-b-domain-separation",
+      "kind": "static-count-domains",
+      "input": {
+        "N": "physical rows",
+        "K": "U record count",
+        "B": "composite count"
+      },
+      "observed": {
+        "N_to_K_B_join": "UNBOUND"
+      },
+      "status": "KEEP_SEPARATE"
+    }
+  ]
+}

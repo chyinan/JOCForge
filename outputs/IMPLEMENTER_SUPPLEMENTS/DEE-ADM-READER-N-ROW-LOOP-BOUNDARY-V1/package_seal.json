@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ADM-READER-N-ROW-LOOP-BOUNDARY-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "6f18291c24afa881358e0b85d0f4558d8df9dd937c84b3f2764ab14f332237cd",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

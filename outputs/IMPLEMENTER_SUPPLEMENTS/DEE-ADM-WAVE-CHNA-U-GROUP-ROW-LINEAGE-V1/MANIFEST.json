@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-WAVE-CHNA-U-GROUP-ROW-LINEAGE-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CHNA_TO_U_GROUP_ROWS_BOUND; K_ROW_PROJECTION_AND_ARBITRARY_N_UNBOUND",
+  "implementation_disposition": "Register the indirect CHNA-to-U-row path; keep K row serialization and universal input support unbound.",
+  "source_manifest_sha256": "7af3ea125b1029bf9407a10c20fee4f6dd70807ec93b2e92d5bc2865141474aa",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4141,
+      "sha256": "e05866bd3b88f8127c55ec18ffa582d0f64e5e864f23db21d9989bc93d123f86"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2053,
+      "sha256": "5672039f72b38bdddd36e37ecc1d676989239c2eedf094b4dde7159658092eca"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 211,
+      "sha256": "84adfcae360a5566726a409c65caf1730d5ebaf57b199b288abcde40e9b9aac7"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1596,
+      "sha256": "10f31036abd35b227c7a8779e9a6518fb7d33e4f0e9d37c8bee4fb77455e7002"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 706,
+      "sha256": "88ff939119ebb3a05345db9d1cb6aa96b2f1bcf155cf172fba8c194a4c0bb8e0"
+    }
+  ]
+}

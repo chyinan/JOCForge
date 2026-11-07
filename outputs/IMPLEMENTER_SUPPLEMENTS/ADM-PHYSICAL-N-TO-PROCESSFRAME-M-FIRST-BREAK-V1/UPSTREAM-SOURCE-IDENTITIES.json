@@ -1,0 +1,35 @@
+{
+  "schema": "washed.physical-n-to-processframe-m-first-break-identities.v1",
+  "recipient": "WASH_ONLY",
+  "ghidra_tool_scope": "Ghidra 12.2 hash-bound static parent receipts only; no new analysis run",
+  "input_metadata_receipt": {
+    "package_id": "authorized_adm_admission_evidence",
+    "manifest_sha256": "6a2ccb7cc514736fd16b1acc3e8f6f2243a98cb429443bdbfd90410519d398d9",
+    "input_only_metadata_sha256": "1df83f697dd893f19a9d1b348a64d271690f156a3cc58b909c4be6e95530bc53",
+    "metadata_audit_receipt_sha256": "02750b4badf913faafc7774b112a614a9e79303be8e09ba43ce080302d383917",
+    "probe_summary_sha256": "d60d0860c62a254680da84ed4e77ada1e9b4dfe94108c8be4049898d6540264a",
+    "metadata_parser_pcm_data_bytes_read": 0
+  },
+  "parent_receipts": [
+    {"package_id": "sample6-atmos-channel-count-producer-boundary-wash-v1", "manifest_sha256": "08981f85f75fddf13a32ce763700415a959fdb0d1060f3c46772ce8b376fa07a"},
+    {"package_id": "sample6-atmos-reader-channel-packet-dimension-wash-v1", "manifest_sha256": "1fa9964ca78537e24a93862960d9a9951cf50e8faaeb619628781c890d654cf8"},
+    {"package_id": "sample6-atmos-channel-count-provider-slot-writer-wash-v1", "manifest_sha256": "37c6b05764a0b98bdfbc0bf9da7737cb7846451ba4b4d1a92527db2c3e8952f4"},
+    {"package_id": "sample6-matched-drc-host-frame-abi-boundary-wash-v1", "manifest_sha256": "e4481a1659dd602b450a39cde861b225ebfe594b2007565ee1fca3890b527732"},
+    {"package_id": "sample6-post-selection-callback-abi-boundary-wash-v1", "manifest_sha256": "f039c0825ba7abcb1ea1aa4f70a0f7c8498a89f330355f296d3d72b4257715b8"},
+    {"package_id": "sample6-matched-drc-track-count-admission-boundary-wash-v1", "manifest_sha256": "613d934c86bb9a3bf21049fed7a5bc92f6650d11fadddcf79167533adef9b066"},
+    {"package_id": "sample6-process-frame-eac3-writer-boundary-wash-v1", "manifest_sha256": "ea654ef938b0dd5020ddef2cfaf93bcdc78e80b466a87877c5662af49fd21ae3"},
+    {"package_id": "sample6-core-selected-profile-index-wash-v1", "manifest_sha256": "e50c225e4ef465271c93db438a264880714e8f52603d08de42cd471ae3589458"},
+    {"package_id": "sample6-core-capacity-key2-producer-wash-v1", "manifest_sha256": "502c4dfbe4010f70a4c7485f81d1c48fb780d73b8c8274b0dbdd86674cf74ff0"}
+  ],
+  "native_module_identities_reused_from_parents": [
+    {"program": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"program": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"program": "dee_ddp_encoder.exe", "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"}
+  ],
+  "exclusions": [
+    "No source media file was reopened; only existing metadata receipts were used.",
+    "No DEE process or encoding was started.",
+    "No PCM, EC-3 payload, key, or license material was read.",
+    "No implementation checkout was accessed or modified."
+  ]
+}

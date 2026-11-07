@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-PHYSICAL-ROW-U16-LAYOUT-MAP-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_TYPED_U16_ROW_MAP_BOUND; 36_38_INPUT_ONLY_VECTORS_BOUND; NATIVE_MODE_AND_RUNTIME_VALUES_UNBOUND",
+  "implementation_disposition": "USE_THE_HASH_BOUND_ORDINARY_COPY_U16_RULE_CONDITIONALLY; KEEP_EXTENDED_MODE_AND_NATIVE_SELECTION_SEPARATE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2158,
+      "sha256": "387011cce2faa8f29b7948455958e3a7c79fadc7d531ebb815e7389e9c8cca1f"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1387,
+      "sha256": "14251bc413e8b3858fddc80400537846ed129d5dfd314bf1da7ecee1dc636ec0"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2351,
+      "sha256": "2489716bfc514d7aa53ad6c4550efa0342322efbe9acb1154e254a91c16a9c5e"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 763,
+      "sha256": "c37e68d72c254b504482df5fd84fa90cd4aa950b513f6ec8d43b229c9c3a35a5"
+    }
+  ]
+}

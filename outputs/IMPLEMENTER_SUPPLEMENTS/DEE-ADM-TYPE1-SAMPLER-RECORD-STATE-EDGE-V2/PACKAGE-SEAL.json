@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-ADM-TYPE1-SAMPLER-RECORD-STATE-EDGE-V2",
+  "manifest_sha256": "098931d0c7c7ee28210ad57aa041507b52317e395b6d97221be3ebda3a511335",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "01e82938e5d958dabe2786e3e465ac719107d95d03f2bf50bbf61be053fdaa2b",
+  "source_package_seal_sha256": "537ef0927c60cc54bbf3a30c3b62c63cc909444438b3931fa6a0ff658bf4c18a",
+  "target_plugin_rehashed_this_turn": true,
+  "disposition": "ROW_OUTPUT_TO_CANONICAL_METADATA_BOUND; AUDIO_BLOCK_HANDOFF_UNBOUND"
+}

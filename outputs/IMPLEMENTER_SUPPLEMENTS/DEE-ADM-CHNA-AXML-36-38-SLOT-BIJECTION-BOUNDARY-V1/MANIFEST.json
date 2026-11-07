@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-CHNA-AXML-36-38-SLOT-BIJECTION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TWO_INPUT_METADATA_SLOT_BIJECTIONS_BOUND; DEE_K_JOIN_UNBOUND",
+  "implementation_disposition": "Use only as two input metadata coverage vectors; no general-N or DEE runtime claim.",
+  "source_manifest_sha256": "e409fbffde7f08924edffac49c790669a06a94c63b5a83c55c20230a12775c51",
+  "source_package_seal_sha256": "a82c7f6e331d6b81e1d95cb659c8e92ce5831169505ee2c8942045f1dbef90fb",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4458,
+      "sha256": "2fe5ba60c03ec12857fc24fcfaa288c46acbf4aae04803d641b2e9934e061f86"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2239,
+      "sha256": "760cb873f9af27eb21fdf9fb1fa6590df200bdf970c11e23b009ed903bf77f02"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 714,
+      "sha256": "6130e6c8f2ac1b78f1f283bbc84fa4b9eee4e440e12fd59101458c966e85e5da"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 960,
+      "sha256": "239a2d30eb31f15bb83c8474e6ecf84af62dea3ca1088c294d41a0b4d07fd9a4"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 779,
+      "sha256": "ee4a45d5db2a7dcd92f02c24eeadfe66d7abd9a98bfe0dc1d3a9432ec9e8da45"
+    }
+  ]
+}

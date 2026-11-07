@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge.composite_descriptor_count_producer.v1",
+  "package_id": "ADM-COMPOSITE-DESCRIPTOR-COUNT-PRODUCER-V1",
+  "status": {
+    "B_owner_and_U16_plus_0x0A_store": "BOUND_STATIC",
+    "ordinary_selected_J_count_to_B": "CONDITIONALLY_COUNT_PRESERVING",
+    "extended_tag255_max_plus_10_to_B": "BOUND_STATIC_FORMULA",
+    "selected_composite_mode": "NOT_CAPTURED",
+    "selected_source_adapter_J": "UNBOUND",
+    "opened_K_identity_generation": "UNBOUND",
+    "native_B_count": "NOT_CAPTURED",
+    "runtime_execution": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/composite-descriptor-count-producer-v1/wash-package",
+    "package_id": "COMPOSITE-DESCRIPTOR-COUNT-PRODUCER-V1",
+    "manifest_sha256": "6a9456349c5414bdedd03d342b787e544e8d82566333344adcd59ade26c5c2b9",
+    "normal_verifier": "PASS",
+    "python_O_verifier": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra_version": "12.2",
+    "new_ghidra_query": false
+  },
+  "descriptor_writer": {
+    "function": "FUN_18054fa70",
+    "owner": "T",
+    "embedded_B": "T+0x10",
+    "typed_store": "U16 at T+0x1A == B+0x0A"
+  },
+  "ordinary_mode": {
+    "selected_adapter": "J",
+    "count_getter_slot": "+0x80 returns U16(K+0x0A)",
+    "writer_rule": "copy selected_J_count to B+0x0A without transform",
+    "same_K_identity_generation_for_actual_invocation": "UNBOUND"
+  },
+  "extended_mode": {
+    "row_width_bytes": 6,
+    "object_tag_test": "row byte +2 == 255",
+    "aggregation": "maximum count across source adapters plus 10 prefix rows",
+    "writer_rule": "store U16(max_tag255_rows + 10) to B+0x0A",
+    "direct_physical_CHNA_N_copy": false
+  },
+  "conditional_metadata_projection": {
+    "objects_26_plus_prefix_10": 36,
+    "objects_28_plus_prefix_10": 38,
+    "runtime_mode_or_B_value_inferred": false
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "disposition": "Do not infer that physical N is always copied to B or that the extended mode was selected."
+}

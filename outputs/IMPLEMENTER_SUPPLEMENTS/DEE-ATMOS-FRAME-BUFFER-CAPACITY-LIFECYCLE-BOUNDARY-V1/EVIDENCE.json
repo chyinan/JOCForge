@@ -1,0 +1,67 @@
+{
+  "schema": "jocforge.atmos_frame_buffer_capacity_lifecycle.v1",
+  "package_id": "DEE-ATMOS-FRAME-BUFFER-CAPACITY-LIFECYCLE-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-FRAME-BUFFER-CAPACITY-LIFECYCLE-WASH-V1",
+    "manifest_sha256": "8300eb50440b08d7cf3f436ed89661a90bfb1f270837e332d5496890b8b9fba5",
+    "source_checker_normal_and_python_o": "PASS"
+  },
+  "parent_receipts": [
+    {
+      "package_id": "DEE-ATMOS-COUNT-FRAME-CAPACITY-WASH-V1",
+      "manifest_sha256": "f30a57b2456311aeda1144708c8126f2843686327e864190afd8ac0a834dd766"
+    },
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-WASH-V1",
+      "manifest_sha256": "d72f1bb76bc0d1dcfbf757a424538e07ba1835836b1fe601f541e34e5c7943d7"
+    }
+  ],
+  "selected_owner": {
+    "initialization_flag_offset": "+0x68",
+    "float_matrix_pointer_offset": "+0x80",
+    "channel_pointer_table_offset": "+0x88",
+    "stored_matrix_capacity": "NOT_PRESENT_IN_INSPECTED_OWNER_FIELDS",
+    "stored_channel_table_capacity": "NOT_PRESENT_IN_INSPECTED_OWNER_FIELDS"
+  },
+  "allocation": {
+    "condition": "allocate only when initialization flag +0x68 is zero",
+    "size_basis": "current CompositeFormatCount",
+    "matrix_size_basis": "current CompositeFormatCount; exact byte extent not independently re-derived in this addendum",
+    "pointer_table_size_basis": "current CompositeFormatCount; exact byte extent not independently re-derived in this addendum",
+    "flag_set_after_allocation": true,
+    "capacity_recheck_on_initialized_path": "NOT_PRESENT_IN_INSPECTED_BODY"
+  },
+  "first_consumer": {
+    "frame_samples": 1536,
+    "channel_count_source": "current U16 metadata +0xA",
+    "uses_matrix_pointer": true,
+    "same_owner_capacity_argument": "NOT_PRESENT",
+    "same_owner_capacity_guard": "NOT_PRESENT_IN_INSPECTED_BODY"
+  },
+  "post_process": {
+    "same_owner_passed_to_encoder_parameter_refresh": true,
+    "observed_cache_offsets": [
+      "+0x228",
+      "+0x230"
+    ],
+    "matrix_or_table_released_or_reset": "NOT_PRESENT_IN_INSPECTED_BODY",
+    "initialization_flag_reset": "NOT_PRESENT_IN_INSPECTED_BODY"
+  },
+  "status": {
+    "same_owner_static_path": "BOUND",
+    "same_owner_reuse_with_larger_count": "NOT_CAPTURED",
+    "capacity_guard_or_resize": "NOT_SHOWN_IN_INSPECTED_PATH",
+    "observed_overrun": "NOT_OBSERVED"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 read-only/no-analysis",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "pcm_payload_or_private_content_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": {
+    "do_not_claim_dynamic_resize": true,
+    "do_not_claim_observed_overrun": true,
+    "owner_reuse_and_count_change_remain_unbound": true
+  }
+}

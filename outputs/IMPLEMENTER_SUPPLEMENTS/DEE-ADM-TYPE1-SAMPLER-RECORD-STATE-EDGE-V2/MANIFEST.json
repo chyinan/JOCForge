@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-ADM-TYPE1-SAMPLER-RECORD-STATE-EDGE-V2",
+  "source_package_manifest_sha256": "01e82938e5d958dabe2786e3e465ac719107d95d03f2bf50bbf61be053fdaa2b",
+  "source_package_seal_sha256": "537ef0927c60cc54bbf3a30c3b62c63cc909444438b3931fa6a0ff658bf4c18a",
+  "supersedes": "DEE-ADM-TYPE1-SAMPLER-RECORD-STATE-EDGE-V1",
+  "files": {
+    "REPORT.md": "41263fb5154eae7661b4644451fa4b481e357f41c17dbdafc46b4efaef667820",
+    "BOUNDARY.json": "41b8fede7a5c7080e36b9687a018af1fe9fcf308ccf1e5f4ea3b6fb0cf561741",
+    "SOURCE-LINKS.json": "adfb3725e14e65b0e67d0310fcadc2723a15666e11d30e954f5958c75955fb46"
+  }
+}

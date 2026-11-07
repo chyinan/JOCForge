@@ -1,0 +1,37 @@
+{
+  "schema": "washed.process-frame-eac3-writer-boundary-identities.v1",
+  "recipient": "WASH_ONLY",
+  "binary": {
+    "program": "dee_ddp_encoder.exe",
+    "path": "D:/Programs/dee71joc/test_dee/dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "verified_on_disk": true,
+    "source_program_identity_source": "parent hash-bound Wash receipt and current on-disk SHA-256"
+  },
+  "ghidra": {
+    "version": "12.2_PUBLIC",
+    "project": "outputs/ghidra-dee-ddp-projects/ddp_writer_trace",
+    "mode": "existing project; -process dee_ddp_encoder.exe; -noanalysis; -readOnly",
+    "script_path": "outputs/work/ghidra_dispatch_scripts/TraceProcessFrameWriterBoundary.java",
+    "script_sha256": "18c5b9c20441bce6a89b06cbc37df0f4faa8ceb6cc94cff43dc09ba4a6a924c7",
+    "run_log_path": "outputs/work/ghidra-processframe-writer-boundary.txt",
+    "run_log_sha256": "3ba4b7731e8a3d7180b6d5e02643e2f0a7a6bd097c065fbb7cfd68a9e884f2d0"
+  },
+  "parent_receipt": {
+    "package_id": "sample6-matched-drc-track-count-admission-boundary-wash-v1",
+    "path": "outputs/sample6-matched-drc-track-count-admission-boundary-wash-v1",
+    "manifest_sha256": "613d934c86bb9a3bf21049fed7a5bc92f6650d11fadddcf79167533adef9b066"
+  },
+  "function_code_sha256": {
+    "FUN_140213470": "71a826313ac8e6ccbcb6c8c4e895c0785de03755d2fd1289d22262659d85270b",
+    "FUN_140315db0": "f0b0e98cfbfb9938ab19a3fe8cf1d934aef881e44b8eb0a8b1291f66d46895b0",
+    "FUN_140350D00": "ed418e3478c9e0e3ca001defc93fccb2cdf85bd64352d9f694f2ee6b2cb2b7ca",
+    "FUN_140317600": "2196ed09813b9b68eec3d9d485ea4a8412c92675b9246537eef7b9a8a0a6e46f",
+    "FUN_14033B5F0": "601f39c33d203659f4cc7c6c00cfb0bc71a2b533d96eac6ed95b0fb3ccbfeea2"
+  },
+  "exclusions": [
+    "No DEE process or encoding was started.",
+    "No ADM input audio, PCM, EC-3 output payload, key, or license material was accessed.",
+    "No implementation-side checkout or process was accessed."
+  ]
+}

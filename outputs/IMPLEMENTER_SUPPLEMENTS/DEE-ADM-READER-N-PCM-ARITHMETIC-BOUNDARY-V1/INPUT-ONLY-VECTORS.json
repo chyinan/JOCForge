@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "reader-n-sample-count-u64-byte-extent",
+      "kind": "derived-arithmetic-bound",
+      "input": {
+        "N_range": "1..128",
+        "sample_count": "S>=0"
+      },
+      "expected_safe_condition": "S <= floor((2^64 - 1)/(4*N))",
+      "derived_uniform_bound": "S <= 2^55 - 1",
+      "status": "ARITHMETIC_ONLY; RUNTIME_NOT_CAPTURED"
+    }
+  ]
+}

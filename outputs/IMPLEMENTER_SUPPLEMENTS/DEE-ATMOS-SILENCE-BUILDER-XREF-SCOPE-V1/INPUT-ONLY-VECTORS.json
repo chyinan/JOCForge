@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-silence-builder-xref-vectors.v1",
+  "status": "REFERENCE_ONLY_NO_RUNTIME",
+  "function": "FUN_1801844c0",
+  "reference_count": 3,
+  "direct_call_count": 1,
+  "direct_call": "FUN_180175c80 RVA 0x175e10",
+  "other_reference_records": "UNCLASSIFIED",
+  "indirect_calls_or_out_of_program_uses": "NOT_EXCLUDED",
+  "global_absence_claim": false,
+  "runtime_status": "NOT_RUN",
+  "pcm_payload_key_license_accessed": false
+}

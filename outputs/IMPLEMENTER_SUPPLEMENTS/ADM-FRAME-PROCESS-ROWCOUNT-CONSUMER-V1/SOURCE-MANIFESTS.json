@@ -1,0 +1,65 @@
+{
+  "schema": "wash.adm-frame-process-rowcount-consumer-sources.v1",
+  "research_root_relative_to_this_package": "../../",
+  "prior_packages": [
+    {
+      "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+      "path": "adm-frame-descriptor-lineage-static-v1/wash-package",
+      "manifest_sha256": "46230ce4aa5fa9a0f060887282dbb7fe86c47c5e2ea67fbbe4e943eb97c31c0c",
+      "report_file": "FRAME-COUNT-LINEAGE.json",
+      "report_sha256": "5c194b79c0a631ba1dcc21b09aff921750231ff10f6adebbafec76abb1173fc7",
+      "contribution": "CHNA/K/B to frame descriptor D fields and same-D process path."
+    },
+    {
+      "package_id": "ADM-PHYSICAL-ROW-DOWNSTREAM-COUNT-LINEAGE-V1",
+      "path": "adm-physical-row-downstream-consumer-v1/wash-package",
+      "manifest_sha256": "b514065f2f91c35ff87bf2c74a6f481e34607e46bd7a9e71ebdb2faf1b2064be",
+      "report_file": "DOWNSTREAM-COUNT-LINEAGE.json",
+      "report_sha256": "3cd792b777c003d61cb0e6f08e1896ac9bf7c221e4d20469ca0e390413ead931",
+      "contribution": "Hash-bound per-frame source-row and canonical-map consumers; no native execution."
+    },
+    {
+      "package_id": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+      "path": "adm-to-atmos-joc-row-count-capacity-v1/wash-package",
+      "manifest_sha256": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10",
+      "report_file": "ROW-COUNT-AND-K-N-M-JOINS.json",
+      "report_sha256": "8980865451af5eb5b7ecc15876c33dc29db54af4a776d0a3666c2721a94ec286",
+      "contribution": "Existing 36/38 input-only row metadata and the previously sealed 1..128 N gate."
+    },
+    {
+      "package_id": "MY-JEALOUSY-PHYSICAL-ROW-K-MARKER-CROSSWALK-V1",
+      "path": "my-jealousy-physical-row-k-marker-crosswalk-v1/wash-package",
+      "manifest_sha256": "c36ada1bc9d8f3e32a76f7d2c1cdb88d481166ae975ed71d8214981b0c7a71bf",
+      "report_file": "EVIDENCE.json",
+      "report_sha256": "5a51e422d2943df92f332d3244a9364e8aeaa096e119102e2511c1eda43db1d6",
+      "contribution": "Sample-specific 36-row My Jealousy metadata receipt; native K remains NOT_CAPTURED."
+    }
+  ],
+  "ghidra_source_artifacts": [
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/frame_desc_query_and_encoder_r9.log",
+      "sha256": "5be988f179b377b885a421991d7c04ab567794ac00929f17be718eda3b619317",
+      "receipt_file": "RESEARCH-RECEIPTS.json"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/first_encoder_descriptor_use_r9.log",
+      "sha256": "3fbe0ec3b858af42d7ee1edf73f6c7140a9d72159b0c79014b9a9604e9afe947",
+      "receipt_file": "RESEARCH-RECEIPTS.json"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/lineage_function_hashes_r9.log",
+      "sha256": "8f63fcf25682024e0aee79dfe9be421ee26cd284f96271b24c8f4e341e8feb8e",
+      "receipt_file": "RESEARCH-RECEIPTS.json"
+    },
+    {
+      "path": "adm-physical-row-downstream-consumer-v1/wash-package/analysis/open_to_process_context.log",
+      "sha256": "e387f3c52f4f43ab47edeffb8101c7ba16fba98e37d7485c430061ca31e071f8",
+      "parent_manifest_entry": "analysis/open_to_process_context.log"
+    },
+    {
+      "path": "adm-physical-row-downstream-consumer-v1/wash-package/analysis/row_count_function_hashes.log",
+      "sha256": "b6dc43c9862657576051ee50d858ddb6c1084f5dd563115e6cb7844c21a28be9",
+      "parent_manifest_entry": "analysis/row_count_function_hashes.log"
+    }
+  ]
+}

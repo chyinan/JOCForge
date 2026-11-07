@@ -1,0 +1,32 @@
+{
+  "schema": "washed-package-manifest.v1",
+  "package_id": "sample6-core-capacity-key2-producer-wash-v1",
+  "scope": "Ghidra-only key-2 capacity producer, same-root initialization and separate arena boundary; no media retained",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "889fb4e2b828da3011d5e93ef17feef5ebdd51073de0a8a83a00a471b97ef74c",
+      "bytes": 7480
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "324c6b91e8dcb3e434b978338b669c698f0d8316ca4129a25d2405abdd966228",
+      "bytes": 6513
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "sha256": "e489195ddef1752a367110b7e84804aa593b93623a956fec51772535ef3fda93",
+      "bytes": 1918
+    },
+    {
+      "name": "REPORT.md",
+      "sha256": "2ed6425a84d5feec65072e984b2d74ede23285e44f3e8a2db934edc169c4231a",
+      "bytes": 4210
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "sha256": "de615a4253cd48905e3a7c2bfcc9b24be1af552259d5a46936dc623b5cc2d80c",
+      "bytes": 2352
+    }
+  ]
+}

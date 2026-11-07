@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-MASTER-OPEN-PROVIDER-INIT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_PROVIDER_INITIALIZATION_BOUND; ADM_PHYSICAL_N_OWNER_JOIN_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package_id": "DEE-ATMOS-MASTER-OPEN-PROVIDER-INIT-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "2508a2ac601c187f87ca010102ea578279c407e3ee8b861f762101027322119a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2803,
+      "sha256": "156c9c097197889af06a6805953c86cbcbdc7067eda1ced5d6511cdd8ede2da5"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2967,
+      "sha256": "887b2b4aaa3e6e6f0408aeddfa7582c907aa538cc3e8b56270bd540133255ee9"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 838,
+      "sha256": "e06364525d7663764ffd90d39b62c19c4a7201373045b9f1fb53143ad3885469"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1553,
+      "sha256": "582213b12dc06ce82e4732a845d3f595fc1bf994c42c153b63cb16c26e8cb0b8"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 2179,
+      "sha256": "aab62706823cc7fceb0d3ea5ce4c93e792d09960c035889ddba10677ef3f680f"
+    }
+  ]
+}

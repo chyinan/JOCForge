@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-ADM-SAMPLER-FIRST-CONSUMER-AUDIO-BOUNDARY-V1",
+  "decision": "SAMPLER_STATE_READ_MODIFY_WRITE_BOUND; CALLER_OUTPARAM_BOUND; PCM_AUDIO_OWNER_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": {
+    "package_id": "adm_sampler_float_first_consumer_wash_v1",
+    "manifest_sha256": "1e93f781fb2b83b56f85572e28428332108dabcb5af0be345bc9abccc8adbff6",
+    "package_seal_sha256": "581bd4fad8a2faf0c45b3321d2972506085031469ba2951ea34f85afb5679d78",
+    "source_sha256sums_sha256": "59e292c820fecba649fab38c0bb088d4a0b4519adef8318ba233d79debc46e9b"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "wash_rehashed": true,
+    "tool": "Ghidra 12.2 PUBLIC, read-only, no-analysis"
+  },
+  "sampler_state": {
+    "function": "FUN_1801b6fa0",
+    "first_reads": [
+      {"receiver_offset": "+0x8c", "local": "local_a8", "type": "U64"},
+      {"receiver_offset": "+0x94", "local": "iVar5", "type": "U32"}
+    ],
+    "conditional_return_helper": "FUN_1801caa90",
+    "same_receiver_writeback": ["+0x8c", "+0x94"],
+    "semantic_audio_role": "UNBOUND"
+  },
+  "caller_outparam": {
+    "caller": "FUN_1801ad9d0",
+    "callsite": "0x1801adc88",
+    "RCX": "current per-slot receiver *R14",
+    "RDX": "caller stack pointer RBP-0x80, reported as local_d8",
+    "callee_action": "writes descriptor/state snapshot through param_2",
+    "postcall_local_d8_consumer": "NOT_ESTABLISHED_IN_VERIFIED_TRACE"
+  },
+  "open_edges": {
+    "receiver_plus_0x8c_0x94_to_pcm_or_atmos_audio_block": "UNBOUND",
+    "local_d8_to_pcm_or_audio_block": "UNBOUND",
+    "conditional_plus_0x80_outcome": "NOT_CAPTURED",
+    "sampler_generation": "UNBOUND"
+  },
+  "execution": {
+    "dee": "NOT_RUN",
+    "runtime_capture": "NOT_RUN",
+    "pcm_or_media_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  }
+}

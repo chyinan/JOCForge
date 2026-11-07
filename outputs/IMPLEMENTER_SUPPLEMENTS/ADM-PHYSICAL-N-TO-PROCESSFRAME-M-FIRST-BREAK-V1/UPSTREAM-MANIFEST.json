@@ -1,0 +1,32 @@
+{
+  "schema": "washed-package-manifest.v1",
+  "package_id": "sample6-physical-n-to-processframe-m-first-break-wash-v1",
+  "scope": "Hash-bound input-only physical N to ProcessFrame M first-break; no media payload retained",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "475800ea203cdfa1bf18707a3143eb160b4eb5a52ab768ae4610d53b73c51caa",
+      "bytes": 11986
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "df4d1f3b19160ce3e7e60601676f74b148d715091e4041fdeaa895c5ef0389ee",
+      "bytes": 7387
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "sha256": "2c016985aa7ab1da57c91256866d54fb298ba32626ff977cdb8841ebc0fecb7e",
+      "bytes": 1587
+    },
+    {
+      "name": "REPORT.md",
+      "sha256": "bbc08cb38c8b95a315fa7ea3f64997108289ce17a74da81904af11a33b82dd8a",
+      "bytes": 4111
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "sha256": "095b86f2a4f2969b4ce7347c883460d53372a7dd7346782a80e53e37c4dba2a3",
+      "bytes": 2907
+    }
+  ]
+}

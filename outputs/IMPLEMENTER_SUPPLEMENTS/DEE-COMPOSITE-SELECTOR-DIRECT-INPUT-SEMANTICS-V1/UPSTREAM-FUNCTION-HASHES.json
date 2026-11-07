@@ -1,0 +1,28 @@
+{
+  "schema": "wash.ghidra-function-body-hashes.v1",
+  "tool": "Ghidra 12.2",
+  "selected_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "status": "REUSED_FROM_HASH_BOUND_WASH_PACKAGES",
+  "functions": {
+    "FUN_1805506b0": {
+      "bytes": 323,
+      "sha256": "9bd1ecad278d852592bed8f52c1b1b77e4625a722c55386acb7817a72bea89ae",
+      "role": "selector producer"
+    },
+    "FUN_18054ea90": {
+      "bytes": 215,
+      "sha256": "771d1b75e3eaa88283114549a7aac702c44c178eb34a34787ed9b6f34a96396b",
+      "role": "byte-key option lookup/count helper"
+    },
+    "FUN_1805505d0": {
+      "bytes": 201,
+      "sha256": "8bfd3440621414a5a094f44d099ee5dccb51cf1413a29b0b83ee447bbaa114fc",
+      "role": "source-descriptor comparison predicate"
+    },
+    "FUN_18054fa70": {
+      "bytes": 1630,
+      "sha256": "fca70cb8f6feede8ba304b709263cd55988b604d6ed3ace8a9579b2620cc55d8",
+      "role": "ordinary/extended branch consumer"
+    }
+  }
+}

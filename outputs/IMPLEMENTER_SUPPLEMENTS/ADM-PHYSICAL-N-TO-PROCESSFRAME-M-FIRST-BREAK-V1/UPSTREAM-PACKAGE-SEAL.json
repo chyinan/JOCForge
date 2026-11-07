@@ -1,0 +1,7 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "sample6-physical-n-to-processframe-m-first-break-wash-v1",
+  "manifest_sha256": "34bc62d82c87e54b0405e82d4dca44f709ba525693b82b5ecac77a1f56ed5180",
+  "recipient": "WASH_ONLY",
+  "sealed": true
+}

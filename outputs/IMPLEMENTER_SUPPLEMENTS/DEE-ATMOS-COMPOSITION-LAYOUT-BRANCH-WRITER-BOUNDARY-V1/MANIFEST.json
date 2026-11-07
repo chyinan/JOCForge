@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-COMPOSITION-LAYOUT-BRANCH-WRITER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "LAYOUT_BRANCH_STATIC_WRITER_BOUND; RUNTIME_SELECTION_NOT_CAPTURED",
+  "implementation_disposition": "Record the static same-owner flag rule only; do not infer sample selection or audio effect.",
+  "source_manifest_sha256": "fa60ca124c7dcbd694ef64828277cf864f0700b11231acbf97a0d184d3f089d8",
+  "source_checksum_file_sha256": "d3848abf82fcd83f8a010646103d2b34df68fefe2725c555a29a06bdbebab2ff",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4230,
+      "sha256": "e6d4938ac485ea5d305a15784629f1ce742514a9e70d3b8f3a61cc2a2e749356"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2847,
+      "sha256": "7aab6a322d8a21b8ced94353d06c22d37defe1bc59fb87612d5a91ec180ae4aa"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 861,
+      "sha256": "f3092b7c774238f6fe26cd05f5fa5673057b70cdda1dd8b1b9eed252c2f146fe"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 989,
+      "sha256": "e97843cae9739285fdcbc57394b3572fa5a9990614ddf73247a62eb6ad97d206"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 786,
+      "sha256": "4e427bbbc90e78c518a486a363b1ae7cfded4221d25e69acd8cb9352d3d8be8e"
+    }
+  ]
+}

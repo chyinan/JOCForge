@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-FLATTENED-MASTER-PROVIDER-GETTER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FLATTENED_FORMAT_U16_TYPED_GETTER_BOUND; INNER_PROVIDER_AND_SELECTED_ADM_OWNER_UNBOUND",
+  "implementation_disposition": "Use the static U16 getter and wrapper rule only. Do not equate format+0x0A with physical ADM N until the selected provider/owner join is established.",
+  "source_manifest_sha256": "994d15a917c8e6fce1581ecef20413bcdaec8affa3414e8c507766ae6d766af0",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name":"CHECK.py","bytes":5219,"sha256":"321c14fc67d931b9b106d70876465fd53f85c3ad08a8d8fc23556f9c8b0da45f"},
+    {"name":"EVIDENCE.json","bytes":2764,"sha256":"01665e3c0d8a061f3fb23e6ed2021fa1511eaff165734e8046d6ec5781918394"},
+    {"name":"INPUT-ONLY-VECTORS.json","bytes":618,"sha256":"1ea1ff63d216f513ec779d4cdfb908a3179345956bf197b217be0b9a232f9b75"},
+    {"name":"REPORT.md","bytes":1822,"sha256":"2ac006ca34de245cd724211c6fcb52911d64384cd5496c3053e6d3f5e76935cb"},
+    {"name":"SOURCE-MANIFESTS.json","bytes":1387,"sha256":"e612c9b6370c48a02bedd41e1b7b7388a31af7fbe4359f8997af62acef90aacb"},
+    {"name":"UPSTREAM-EVIDENCE.json","bytes":6451,"sha256":"66d558ea571170746cb2b644e0ae8a3c46e5a862c44aa2b2386e52f66169dcea"},
+    {"name":"UPSTREAM-INPUT-ONLY-VECTORS.json","bytes":1530,"sha256":"d3039b369fdc330b0c352f993410ca7088866ac559851e4b5c5f621ce4d00698"},
+    {"name":"UPSTREAM-MANIFEST-SHA256.txt","bytes":79,"sha256":"982477102a18496db54816f47fb578d11d468f3b6e971d7df755c25ee15f560b"},
+    {"name":"UPSTREAM-MANIFEST.json","bytes":1042,"sha256":"994d15a917c8e6fce1581ecef20413bcdaec8affa3414e8c507766ae6d766af0"},
+    {"name":"UPSTREAM-PACKAGE-SEAL.json","bytes":260,"sha256":"937ae9d6d8db1bdd41f2358927f86ed60fd1581bfec58a96f2f93bb4ae77001c"},
+    {"name":"UPSTREAM-REPORT.md","bytes":4051,"sha256":"256aab3fa58130ae1b8d71b6fe6ce33e8694909653cc910b3dea95d2a7011b9b"},
+    {"name":"UPSTREAM-SOURCE-IDENTITIES.json","bytes":3340,"sha256":"232447fdaf2787995daf2129a16078d37931bccea650a9e293355527f0937919"}
+  ]
+}

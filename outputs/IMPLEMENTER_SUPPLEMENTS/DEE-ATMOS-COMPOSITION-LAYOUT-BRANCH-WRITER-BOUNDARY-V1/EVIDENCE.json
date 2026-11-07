@@ -1,0 +1,73 @@
+{
+  "schema": "jocforge.atmos_composition_layout_branch_writer_boundary.v1",
+  "package_id": "DEE-ATMOS-COMPOSITION-LAYOUT-BRANCH-WRITER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-LAYOUT-BRANCH-WRITER-WASH-V1",
+    "manifest_sha256": "fa60ca124c7dcbd694ef64828277cf864f0700b11231acbf97a0d184d3f089d8",
+    "manifest_checksum_file_sha256": "d3848abf82fcd83f8a010646103d2b34df68fefe2725c555a29a06bdbebab2ff",
+    "checker_normal_and_python_o": "PASS",
+    "raw_decompilation_copied": false
+  },
+  "target": {
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis"
+  },
+  "owner_and_storage": {
+    "class_label_from_vtable": "atmos_storage_composite_master",
+    "allocation_function": "FUN_180553a60",
+    "allocation_size_bytes": "0x1e8",
+    "constructor": "FUN_18054c580",
+    "branch_field": "+0x100 byte",
+    "constructor_initialization": {
+      "store_width_bytes": 2,
+      "value": 0,
+      "covered_bytes": ["+0x100", "+0x101"]
+    }
+  },
+  "first_post_constructor_writer": {
+    "function": "FUN_1805506b0",
+    "owner_lineage": [
+      "FUN_180553a60 allocates and constructs the owner",
+      "FUN_180553a60 passes the same pointer to FUN_180550800",
+      "FUN_180550800 forwards it as FUN_1805506b0 parameter 1"
+    ],
+    "admission_gate": "FUN_180552d20 must return nonzero before the store",
+    "condition_inputs": {
+      "option_map": {
+        "lookup_function": "FUN_18054ea90",
+        "lookup_key": 2,
+        "map_builder": "FUN_180553970",
+        "factory_byte_parameter": 3,
+        "bit_to_key": {"0x1": 1, "0x2": 2, "0x4": 4}
+      },
+      "shape_comparison": {
+        "function": "FUN_1805505d0",
+        "compares": ["source shape count at +0xA", "six-byte mapping entries from +0x10"],
+        "nonzero_on_mismatch": true
+      }
+    },
+    "rule": "write 1 if option-map key 2 is nonzero OR shape comparison reports mismatch; otherwise write 0",
+    "separate_parameter": "FUN_180550800 supplies zero as FUN_1805506b0 parameter 3; that controls owner +0x8, not branch +0x100"
+  },
+  "branch_consumer": "FUN_18054fa70 reads owner+0x100",
+  "status": {
+    "owner_constructor_and_first_writer": "BOUND_STATICALLY_FOR_FACTORY_PATH",
+    "runtime_branch_value": "NOT_CAPTURED",
+    "selected_36_or_38_track_branch": "NOT_CAPTURED",
+    "audio_or_bsi_effect": "NOT_ESTABLISHED",
+    "global_absence_claim": false
+  },
+  "scope": {
+    "dee_run": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "job_process_control": "NONE"
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "do_not_infer_selected_runtime_value": true,
+    "preserve_audio_effect_boundary": true
+  }
+}

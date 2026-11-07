@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.dee_atmosmezz_data_rate_path.v1",
+  "package_id": "DEE-ATMOSMEZZ-DATA-RATE-PATH-V1",
+  "status": {
+    "selected_job_xml_1024_text": "BOUND",
+    "xml_token_to_native_selector_code": "UNBOUND",
+    "selector_code_domain_0_to_5": "STATICALLY_BOUND",
+    "first_dimension_split_code0_vs_1_to_5": "STATICALLY_BOUND",
+    "selected_runtime_code": "NOT_CAPTURED",
+    "writer_after_first_capacity": "NOT_EVALUATED",
+    "per_rate_native_support": "UNBOUND",
+    "dee_run": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-DATA-RATE-PATH-WASH-V1",
+    "package_id": "DEE-ADM-ATMOSMEZZ-DATA-RATE-PATH-WASH-V1",
+    "manifest_sha256": "2352b6835dd2d6b202dd71aa96ddaf6019487670b2d2c1609d70a20c6b03d191",
+    "listed_payload_hashes": "PASS_3_OF_3",
+    "listed_analysis_artifact_hashes": "PASS_12_OF_12",
+    "source_evidence_and_schema_hashes": "PASS",
+    "separate_package_seal_present": false,
+    "dee_runtime": "NOT_RUN",
+    "ghidra_version": "12.2 read-only/no-analysis"
+  },
+  "selected_input": {
+    "type": "audio.atmos_mezz",
+    "user_confirmed_label": "人是猫 - 张卡斯, 洛天依",
+    "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "source_hash_recomputed_here": false,
+    "selected_job_xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+    "xml_data_rate_text": "1024"
+  },
+  "schema_alternatives": {
+    "element": "encode_to_atmos_ddp.audio.filter.type/data_rate",
+    "type": "xs:list of xs:string enumeration items",
+    "listed_tokens": [384, 448, 576, 640, 768, 1024],
+    "default": "448",
+    "runtime_support_inferred": false
+  },
+  "native_selector_path": {
+    "reader": "FUN_180178dc0 reads U32 *param_1; accepts codes 0..5; writes open_config[10]",
+    "xml_value_to_param_1_source": "UNBOUND",
+    "separate_workflowparams_diagnostic": "FUN_1801535b0 reads data_rate on a guarded error path; does not assign open_config selector",
+    "first_selector_consumer": "FUN_1801ac100: code 0 -> 11; codes 1..5 -> 15",
+    "normal_open_dimension": "consumer result + 1 -> 12 or 16; into FUN_1801acfe0/FUN_1801ad2d0",
+    "later_typed_config": "FUN_1801abc10 -> FUN_1801ac130: field[2]=6 for code 0, 8 for codes 1..5",
+    "earliest_static_split": "native code 0 versus codes 1..5",
+    "per_xml_token_code_mapping": "UNBOUND"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "full_encode": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_access": false,
+    "expired_sample6_keyless_artifact_used": false,
+    "implementation_contact": false
+  },
+  "disposition": "Do not assign any of the six XML values to native selector branches until the XML-to-code mapping is bound."
+}

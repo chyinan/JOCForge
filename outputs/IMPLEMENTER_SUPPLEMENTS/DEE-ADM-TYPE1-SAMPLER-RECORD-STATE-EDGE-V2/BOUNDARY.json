@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-ADM-TYPE1-SAMPLER-RECORD-STATE-EDGE-V2",
+  "supersedes": "DEE-ADM-TYPE1-SAMPLER-RECORD-STATE-EDGE-V1",
+  "decision": "ROW_OUTPUT_TO_CANONICAL_METADATA_BOUND; PCM_AUDIO_BLOCK_EDGE_UNBOUND",
+  "same_slot_path": {
+    "frame_reader": "FUN_1801ad9d0",
+    "writer_dispatch": {"callsite": "0x1801adc54", "target": "FUN_1801b73f0"},
+    "readback_dispatch": {"callsite": "0x1801adc88", "target": "FUN_1801b7340"},
+    "receiver_source": "same *R14 per-slot pointer in one iteration",
+    "readback_method": "FUN_1801b6fa0",
+    "record_stride": "0x58",
+    "dirty_flags": "read and cleared"
+  },
+  "conditional_float_state": {
+    "gate": "nested receiver +0x80 != 0",
+    "helper": "FUN_1801caa90",
+    "behavior": "conditional float/state recurrence and state update",
+    "input_specific_execution": "NOT_OBSERVED"
+  },
+  "row_output_and_consumer": {
+    "context_field": "+0x858",
+    "producer": "FUN_1801ad9d0 writes active 0x58-byte row descriptors",
+    "consumer": "FUN_1801acd10 at callsite 0x1801a7808",
+    "consumer_reads": "0x58-byte row descriptor records",
+    "consumer_output": "0x34-byte canonical metadata record array",
+    "classification": "frame metadata processing; not PCM/audio-block binding",
+    "pcm_or_audio_block_pointer_at_callsite": false
+  },
+  "remaining": {
+    "canonical_record_array_to_audio_or_encoded_output": "UNBOUND",
+    "runtime_generation": "UNBOUND",
+    "float_vector_is_pcm": "NOT_ESTABLISHED"
+  },
+  "status": {
+    "source_package_manifest_four_payloads_and_seal_verified": true,
+    "parent_packages_verified": ["adm_sampler_float_state_handoff_wash_v1", "adm_row_dispatch_owner_target_wash_v1"],
+    "target_plugin_rehashed_by_wash_this_turn": true,
+    "dee_execution": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "implementation_modified": false
+  },
+  "next_exact_gap": "Trace the first consumer of the 0x34 canonical metadata array to an audio block, AtmosProcessor, or encoder output; keep the current boundary metadata-only until that edge is shown."
+}

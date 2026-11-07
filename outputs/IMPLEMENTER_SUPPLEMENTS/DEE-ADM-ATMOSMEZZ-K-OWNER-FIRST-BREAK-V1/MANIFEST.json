@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-ATMOSMEZZ-K-OWNER-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SOURCE_REFERENCE_TO_U_STATIC; WAVE_CHNA_TO_K_OWNER_UNBOUND",
+  "implementation_disposition": "Do not equate source-reference, WAVE fmt/CHNA rows, and K count without typed owner/generation lineage.",
+  "source_manifest_sha256": "e2428134072e35fd13488ac4f0547f8894b521d40a70a6b3a968cb98f25a24b5",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4118,
+      "sha256": "ec3112853520bab480a9aa2fc38f691fe0dad36cfd63e930f36d5d7d7fa4be78"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1820,
+      "sha256": "522e43e65f485aec200ece098a7db2fb13d6bb44a30e7d36520241d0dbf1b368"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 189,
+      "sha256": "4a1654d267cf3aa7d4deb682dae514f807916a9a411056addcadc1bf6bc76fbe"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1494,
+      "sha256": "1eac72e2b3897f56db67e895020c58c0426c6ccbc69de23140a07db7c54b3f54"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 576,
+      "sha256": "59e3a7e21b7c0a3111eae47fae27befe860c953c75ba36703d1243e502532864"
+    }
+  ]
+}

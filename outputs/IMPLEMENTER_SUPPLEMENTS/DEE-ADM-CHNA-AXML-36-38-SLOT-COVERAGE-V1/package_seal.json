@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ADM-CHNA-AXML-36-38-SLOT-COVERAGE-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "42d81e2104ed139e26438a2972a3c9c864eb380f77aac3d11742d27ada49e687",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

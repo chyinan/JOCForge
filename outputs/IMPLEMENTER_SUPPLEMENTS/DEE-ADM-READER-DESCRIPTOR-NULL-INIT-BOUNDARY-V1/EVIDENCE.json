@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.reader_descriptor_null_init_boundary.v1",
+  "package_id": "DEE-ADM-READER-DESCRIPTOR-NULL-INIT-BOUNDARY-V1",
+  "source": {
+    "package_id": "DEE-ADM-READER-DESCRIPTOR-COUNT-WRITER-WASH-V1-revision",
+    "manifest_sha256_file_sha256": "187f24fade0b83a5e2a63377fa2af61dff1480f05253d7ab8501933df2b52bf7",
+    "standalone_package_seal": "NOT_PROVIDED"
+  },
+  "reader_getter": {
+    "inner_state_descriptor_pointer_field": "+0x58",
+    "reader_n_field": "descriptor U16 +0x0A",
+    "getter_path": "BOUND_STATIC"
+  },
+  "constructor": {
+    "inner_state_plus_0x58_initial_value": "NULL",
+    "composite_master_to_plus_0x58_transfer": "NOT_PRESENT_IN_SELECTED_CONSTRUCTOR",
+    "source_vector_stride_bytes": 64,
+    "descriptor_count_u16_write_from_composite_master": "NOT_PRESENT_IN_SELECTED_INITIALIZER"
+  },
+  "first_breaks": {
+    "later_nonzero_writer_to_inner_state_plus_0x58": "UNBOUND",
+    "physical_chna_n_to_reader_descriptor": "UNBOUND",
+    "reader_descriptor_to_k_same_owner_generation": "UNBOUND"
+  },
+  "separate_k_count": {
+    "formula": "individual plus group count accumulator narrowed to U16",
+    "join_to_reader_descriptor": "UNBOUND"
+  },
+  "scope": {
+    "ghidra": "12.2 read-only/no-analysis",
+    "dee_run": false,
+    "runtime_owner_generation": "NOT_CAPTURED",
+    "media_pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  }
+}

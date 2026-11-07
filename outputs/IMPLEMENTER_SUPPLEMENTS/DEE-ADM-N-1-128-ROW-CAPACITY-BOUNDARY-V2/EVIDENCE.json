@@ -1,0 +1,85 @@
+{
+  "schema": "jocforge.adm_native_count_capacity_domains.v2",
+  "package_id": "DEE-ADM-N-1-128-ROW-CAPACITY-BOUNDARY-V2",
+  "source_package": {
+    "package_id": "adm_native_row_count_capacity_boundary_wash_v1",
+    "manifest_sha256": "79ac8fc623f6078e130795ce07de5493021f67fdef48e39a429f9f0ec6325e28",
+    "package_seal_sha256": "bee8ad474d639af7193c615fa10c1c976083152cb7bd0d6e131bda3661b238e4",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "source_image": {
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2",
+    "analysis": "read-only/no-analysis"
+  },
+  "physical_n_gate": {
+    "unsigned_predicate": "fail when N-1 > 0x7f",
+    "local_failure_code": 5,
+    "static_accepted_range": {
+      "minimum": 1,
+      "maximum": 128
+    },
+    "map_owner_n_field_offset": "+0x28",
+    "map_capacity": {
+      "slots": 128,
+      "entry_type": "U16",
+      "field_offset": "+0x2c"
+    },
+    "loop_bound": "iterate while index < N",
+    "runtime_acceptance": "NOT_RUN"
+  },
+  "first_row_wrapper": {
+    "slot_capacity": 128,
+    "receives_n_as_allocation_count": false,
+    "constructed_per_slot_objects": 128,
+    "factory_parameters": [
+      "0x600",
+      "1",
+      "48000"
+    ],
+    "meaning_of_0x600": "NOT_INFERRED",
+    "reader_loop_slots": 128,
+    "active_slot_selection": "descriptor map high bit",
+    "per_slot_row_record_count": "separate domain; producer/identity relative to N and K UNBOUND"
+  },
+  "k_count_domain": {
+    "formula": "individual-record count + sum of group-entry counts",
+    "accumulator_width": 32,
+    "stored_count": "low U16 at K+0x0A",
+    "row_base": "K+0x10",
+    "row_stride_bytes": 6,
+    "native_values": "NOT_CAPTURED"
+  },
+  "composite_b_domain": {
+    "ordinary_mode": "selected adapter count narrowed to U16; allocate B_count * 6",
+    "extended_mode": "max UID-tagged rows + 10, narrowed to U16; allocate B_count * 6",
+    "selected_mode_and_inputs": "NOT_CAPTURED"
+  },
+  "input_only_projections": [
+    {
+      "user_designation": "My Jealousy; authorized 36-track input",
+      "physical_rows": 36,
+      "projected_source_count_formula": "26 individual records + 10 group entries = 36",
+      "evidence_grade": "INPUT_ONLY_MODEL_PROJECTION_NOT_NATIVE_CAPTURE",
+      "native_K_values": "NOT_CAPTURED"
+    },
+    {
+      "user_designation": "Human Cat; authorized 38-track input",
+      "physical_rows": 38,
+      "projected_source_count_formula": "28 individual records + 10 group entries = 38",
+      "evidence_grade": "INPUT_ONLY_MODEL_PROJECTION_NOT_NATIVE_CAPTURE",
+      "native_K_values": "NOT_CAPTURED"
+    }
+  ],
+  "count_domain_joins": {
+    "physical_n_to_k": "UNBOUND",
+    "physical_n_to_b": "UNBOUND",
+    "per_slot_row_count_to_n_or_k": "UNBOUND",
+    "36_and_38_are_general_range_proofs": false
+  },
+  "implementation_disposition": {
+    "static_gate_is_not_runtime_admission": true,
+    "keep_n_wrapper_k_b_and_per_slot_counts_distinct": true,
+    "do_not_claim_end_to_end_range_1_to_128": true
+  }
+}

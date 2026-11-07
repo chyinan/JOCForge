@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ADM-MY-JEALOUSY-JOC-PROCESSFRAME-COUNT-WASH-V1",
+      "manifest_sha256": "13eaaae38f784ca2fd38a2a5fdc50110c411d0ce39354a7ba1f03b11f421ff9b",
+      "scope": "Static My Jealousy N/K/M count flow to ProcessFrame with runtime source/job joins open."
+    },
+    {
+      "package_id": "my-jealousy-metadata-only-receipt",
+      "receipt_sha256": "eb14dd147019f917b59ee20420ed96e9bb05e8de81d5f9d465c77a58610e9946",
+      "source_file_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+      "source_hash_status": "INHERITED_NOT_RECOMPUTED",
+      "scope": "Metadata-only N=36, 10 bed rows, 26 object rows."
+    },
+    {
+      "package_id": "DEE-ADM-FIRST-DOWNSTREAM-GUARD-WASH-V1",
+      "input_only_vector_sha256": "df33f466789916211feab4ca1d083d2e564afa683edc61530d8f20ef0bdc21c3",
+      "scope": "Conditional N36/N38 synthetic marker-count projections; not runtime evidence."
+    },
+    {
+      "package_id": "ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-WASH-V1",
+      "report_sha256": "900be3b95a6d53ed993427692f9409c4e118210376b83ea258abbb0e0e346b94",
+      "scope": "Separate 16-entry staging boundary; relation to this ProcessFrame state remains UNBOUND."
+    }
+  ],
+  "source_manifest_list_payloads_rehashed": true,
+  "metadata_receipt_rehashed": true,
+  "original_ADM_media_rehashed_this_turn": false,
+  "raw_research_payload_copied": false
+}

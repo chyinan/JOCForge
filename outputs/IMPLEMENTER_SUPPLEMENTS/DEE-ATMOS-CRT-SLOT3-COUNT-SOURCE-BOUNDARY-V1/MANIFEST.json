@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-CRT-SLOT3-COUNT-SOURCE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SLOT3_COUNT_FROM_COMPONENT_GLOBAL; ADM_PHYSICAL_N_JOIN_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package_id": "ddp_component_b_crt_slot3_failure_edge_wash_v1",
+  "source_manifest_sha256": "a2de9dd402e2bcae73cdd0ba14e731b851ed187f3a75aedbb28602ca741274e8",
+  "source_package_seal_sha256": "2e0114feff43f40b7ef0265b026bc644870c59ee2abc46c2d424e059556dfed2",
+  "implementation_ready": false,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1872,
+      "sha256": "95b073a53d5d7c501df0be2d82e6448c3b0bb42c0199b5b76fc38d58729e7688"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1836,
+      "sha256": "68f0324dfe928de3c0bb89e0bae47bc10c0f3c80c53455a676142e2ef7fbb0a7"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1362,
+      "sha256": "7091221ef25960c26c005821752a896c8f7cc67ba8a24b9f44d33fc54670557e"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1182,
+      "sha256": "35770ddbdecb8cb980eb3cf17084dbfa2bfcc8f852a064559e109b345e4cd833"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 817,
+      "sha256": "ae25256666a72bd9dcd12ebfec2a3d8c8b432e9bdab8ae850fff720f04765dd3"
+    }
+  ]
+}

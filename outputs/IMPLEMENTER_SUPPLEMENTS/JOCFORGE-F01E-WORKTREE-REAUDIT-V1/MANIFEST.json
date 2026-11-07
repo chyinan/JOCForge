@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "JOCFORGE-F01E-WORKTREE-REAUDIT-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FIXED38_GATE_REMAINS; DYNAMIC_CONTINUATION_WIP_NOT_CONNECTED_TO_SELECTED_PRODUCTION_CALLBACK",
+  "implementation_disposition": "CONNECT_DYNAMIC_F01E_CONTINUATION_TO_SELECTED_36_38_PRODUCTION_CALLBACK; KEEP_RUNTIME_SCOPE_EXPLICIT",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2324, "sha256": "ace2b3618d368fb9e34317886e1047bfc7ed00ea6b02dd83ad92bdd071d31d3d"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 1031, "sha256": "0bff8ed7a8b4e31b1b2308119fab599a6426fd020c86fcafc7207b5d36eda0ea"},
+    {"name": "REPORT.md", "bytes": 2388, "sha256": "a4b9736260acccede3cf863103b474cddb5e85f00ba2fa7c4f0d85882eb68618"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 907, "sha256": "4602f4b12cb8d37a3a0b05978caf217cf3777f27bd15e85a442b3363299b499e"}
+  ]
+}

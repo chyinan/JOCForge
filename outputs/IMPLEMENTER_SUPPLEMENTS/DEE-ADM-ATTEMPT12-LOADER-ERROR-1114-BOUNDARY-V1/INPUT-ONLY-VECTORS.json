@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "attempt12-loader-error-classification",
+      "input": {
+        "attempt_id": "attempt-12",
+        "sample_channel_count": 36
+      },
+      "expected_observation": {
+        "observed_error_code": 1114,
+        "symbol": "ERROR_DLL_INIT_FAILED",
+        "observation_count": 44,
+        "target_component_loaded": false
+      },
+      "limitations": [
+        "Does not identify failing module or initializer",
+        "Does not capture runtime U-to-K ownership or generation",
+        "Does not establish a channel-count range"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STRUCTURAL_ONLY; RUNTIME_NOT_RUN",
+  "vectors": [
+    {
+      "id": "sampler-state-first-read",
+      "owner": "same nested sampler receiver",
+      "fields": ["+0x8c U64", "+0x94 U32"],
+      "consumer": "FUN_1801b6fa0",
+      "typed_pcm_pointer": "UNBOUND"
+    },
+    {
+      "id": "sampler-caller-outparam",
+      "caller": "FUN_1801ad9d0",
+      "receiver": "RCX = *R14",
+      "output": "RDX = caller stack local at RBP-0x80",
+      "postcall_consumer": "NOT_ESTABLISHED_IN_VERIFIED_TRACE"
+    }
+  ],
+  "descriptor_value_or_pcm_samples": "NOT_INCLUDED",
+  "conditional_plus_0x80": "NOT_EVALUATED"
+}

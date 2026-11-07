@@ -1,0 +1,84 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "package_id": "JOCFORGE-36-ROW-DYNAMIC-SHAPE-COLD-RESET-V1",
+  "status": "36_38_INPUT_SHAPE_AND_COLD_RESET_RULE_BOUND_FOR_MODEL; NATIVE_ROW_IDENTITY_AND_PLAYABLE_36_OUTPUT_UNBOUND",
+  "status_basis": "Derived implementation contract from verified JOCForge source audits and user-selected 10-bed/direct-LFE profile; not a DEE behavior claim.",
+  "count_formula": {
+    "profile": "10 bed rows including one direct LFE",
+    "physical_rows": "N",
+    "bed_rows": 10,
+    "object_rows": "N-10",
+    "regular_non_lfe_rows": "N-1",
+    "active_global_sources": "11 + (N-1) = N+10",
+    "global_source_presence": "IDs 0..N+9 are active; higher fixed-axis IDs are absent, not zero-filled"
+  },
+  "vectors": [
+    {
+      "N": 36,
+      "physical": 36,
+      "bed": 10,
+      "object": 26,
+      "regular": 35,
+      "active_sources": 46,
+      "global_ids": "0..45",
+      "absent_ids": "46,47"
+    },
+    {
+      "N": 38,
+      "physical": 38,
+      "bed": 10,
+      "object": 28,
+      "regular": 37,
+      "active_sources": 48,
+      "global_ids": "0..47",
+      "absent_ids": "none"
+    },
+    {
+      "N": 39,
+      "physical": 39,
+      "bed": 10,
+      "object": 29,
+      "regular": 38,
+      "active_sources": 49,
+      "global_ids": "0..48",
+      "status": "exceeds current fixed 48-wide internal axis"
+    }
+  ],
+  "cold_reset": {
+    "boundary": "new programme/attempt",
+    "action": "discard previous event/sampler/binding/snapshot/counter/history state and reconstruct selected owners from current PreparedJobInput graph",
+    "in_place_resize": false,
+    "within_attempt": "preserve owner generation and row identity across callbacks; preserve per-slot history across callback blocks"
+  },
+  "consumer_dimensions": {
+    "meter_normal_rows": "N",
+    "fresh_zero_rows": "N",
+    "f01e_normal_control_rows": "N",
+    "spatial_control_rows": "N",
+    "object_owner_rows": "N-10",
+    "regular_history_samples": "(N-1)*1536 at 48 kHz/1536-sample callback",
+    "global_axis": "N+10 active IDs with explicit presence when carried in wider sparse domain"
+  },
+  "current_fixed_gates": {
+    "meter_g0": "requires 38 channels and 114-byte PCM24 block align",
+    "normal_snapshot": "38 physical / 10 bed / 28 object / 37 regular",
+    "fresh_zero": "requires 38 physical rows",
+    "reader_target": "requires complete dense 48-key matrix"
+  },
+  "absence_rule": "Never synthesize or zero-fill IDs 46/47 for N=36; preserve absence and have consumers honor it.",
+  "source_facts": {
+    "first_gate_package_manifest": "d9214781aa5189d10681ca70f23898ba002c1020363efb6ceb53c200be5cb1b8",
+    "cold_owner_package_manifest": "65d36ef6b0ae295e54c55ea473fbd2653a38b5ce068105603bc5071d4684a9a7",
+    "production_sequence_package_manifest": "3aa67555e39035049718cf485004dac19edeb8498ddb0d510b7779d03601bbff",
+    "payload_hash_audits": "PASS_ALL_LISTED_FILES",
+    "real_36_cli_run": "NOT_RUN"
+  },
+  "limits": {
+    "physical_channel_to_global_source_typed_map": "UNBOUND",
+    "native_ADM_row_semantics": "NOT_ASSERTED",
+    "selected_production_callback_dynamic_wiring": "NOT_PRESENT_IN_AUDITED_SNAPSHOT",
+    "playable_36_row_output": "NOT_RUN",
+    "PCM_parity": "NOT_RUN",
+    "arbitrary_N_beyond_internal_widths": "NOT_IMPLEMENTED"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "adm_individual_slot_source_first_break_wash_v1",
+    "evidence_manifest_sha256": "51baf681b94999d8f56b4e1e4178b917954c364e23c8397b5826a0dc086de181",
+    "package_seal_sha256": "9b07a5b59fc3fef6696a2f5fcdc2c7bfd8cfff6127be1ab0f8ed18702f79e694",
+    "payload_hashes_checked_by_source_checker": true
+  },
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "parent_writer_receipt": "adm_individual_row_slot_k_capacity_boundary_wash_v1",
+  "parent_accessor_receipt": "adm_individual_record_accessor_bounds_wash_v1",
+  "raw_trace_script_or_log_included": false
+}

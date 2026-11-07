@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.adm_chna_axml_slot_bijection.v1",
+  "package_id": "DEE-ADM-CHNA-AXML-36-38-SLOT-BIJECTION-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "dee_adm_chna_axml_slot_coverage_wash_v1",
+    "evidence_manifest_sha256": "e409fbffde7f08924edffac49c790669a06a94c63b5a83c55c20230a12775c51",
+    "package_seal_sha256": "a82c7f6e331d6b81e1d95cb659c8e92ce5831169505ee2c8942045f1dbef90fb",
+    "checkers_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "samples": 2,
+    "sample_N_values": [36, 38],
+    "metadata_chunks_read": ["fmt", "chna", "axml"],
+    "data_or_pcm_bytes_read": 0,
+    "whole_file_hashes": "NOT_COMPUTED",
+    "input_copied_or_renamed": false,
+    "dee_run": "NOT_RUN"
+  },
+  "coverage": [
+    {
+      "sample_id": "authorized_36",
+      "label": "My jealousy (Original ver.).wav",
+      "physical_N": 36,
+      "fmt_channels": 36,
+      "chna_tracks_uids_capacity": [36, 36, 36],
+      "track_index_domain": "1..36 exactly once",
+      "missing_or_duplicate_indices": false,
+      "each_chna_uid_has_one_axml_audioTrackUID": true,
+      "trackref_packref_agree": true,
+      "unique_direct_audioChannelFormat_coverage": true,
+      "status": "EXACT_ONE_TO_ONE_INPUT_METADATA_MAPPING"
+    },
+    {
+      "sample_id": "authorized_38",
+      "label": "人是猫 - 张卡斯, 洛天依.wav",
+      "physical_N": 38,
+      "fmt_channels": 38,
+      "chna_tracks_uids_capacity": [38, 38, 38],
+      "track_index_domain": "1..38 exactly once",
+      "missing_or_duplicate_indices": false,
+      "each_chna_uid_has_one_axml_audioTrackUID": true,
+      "trackref_packref_agree": true,
+      "unique_direct_audioChannelFormat_coverage": true,
+      "status": "EXACT_ONE_TO_ONE_INPUT_METADATA_MAPPING"
+    }
+  ],
+  "limits": {
+    "physical_CHNA_to_DEE_U_K_owner_generation": "UNBOUND",
+    "selected_runtime_reader_branch": "NOT_CAPTURED",
+    "DEE_acceptance": "NOT_RUN",
+    "general_track_count_range": "NOT_ESTABLISHED",
+    "packref_multi_member_grouping": "PRESERVED; NOT_TREATED_AS_PER_TRACK_MAPPING"
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "treat_as_two_input_metadata_vectors_only": true,
+    "do_not_claim_DEE_or_JOCForge_runtime_acceptance": true
+  }
+}

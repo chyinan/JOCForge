@@ -1,0 +1,7 @@
+{
+  "schema": "atmos-info-start-time-input-only-v1",
+  "input_metadata_candidate": "AXML audioProgramme@start=01:00:10.00000",
+  "input_count": 7,
+  "candidate_status": "OBSERVED_METADATA_ONLY; SOURCE_JOIN_UNBOUND",
+  "execution_status": "NOT_RUN"
+}

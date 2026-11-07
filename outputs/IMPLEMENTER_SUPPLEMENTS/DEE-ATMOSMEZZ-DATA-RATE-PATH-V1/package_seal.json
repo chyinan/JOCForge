@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ATMOSMEZZ-DATA-RATE-PATH-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "99a0e5f55b6051fdc39389d746db7551e880fa5ff0fff09976ca61f41f650cdf",
+  "payload_file_count": 6,
+  "payload_hash_audit": "PASS_6_OF_6",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

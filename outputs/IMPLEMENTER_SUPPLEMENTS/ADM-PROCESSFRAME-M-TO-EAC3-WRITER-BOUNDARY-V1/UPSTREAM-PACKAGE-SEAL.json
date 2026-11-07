@@ -1,0 +1,7 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "sample6-process-frame-eac3-writer-boundary-wash-v1",
+  "manifest_sha256": "ea654ef938b0dd5020ddef2cfaf93bcdc78e80b466a87877c5662af49fd21ae3",
+  "recipient": "WASH_ONLY",
+  "sealed": true
+}

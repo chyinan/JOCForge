@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "factory-bit-2-sets-layout-branch",
+      "kind": "static-condition-summary",
+      "input": {"factory_byte_parameter_3_bit_0x2": "nonzero", "shape_mismatch": false},
+      "expected_branch_byte": 1,
+      "status": "STATIC_TRACE_ONLY"
+    },
+    {
+      "vector_id": "shape-mismatch-sets-layout-branch",
+      "kind": "static-condition-summary",
+      "input": {"factory_byte_parameter_3_bit_0x2": "zero", "shape_mismatch": true},
+      "expected_branch_byte": 1,
+      "status": "STATIC_TRACE_ONLY"
+    },
+    {
+      "vector_id": "neither-condition-sets-zero",
+      "kind": "static-condition-summary",
+      "input": {"factory_byte_parameter_3_bit_0x2": "zero", "shape_mismatch": false},
+      "expected_branch_byte": 0,
+      "status": "STATIC_TRACE_ONLY"
+    }
+  ]
+}

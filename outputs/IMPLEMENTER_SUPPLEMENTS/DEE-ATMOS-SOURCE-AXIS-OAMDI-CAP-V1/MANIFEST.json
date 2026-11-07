@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-SOURCE-AXIS-OAMDI-CAP-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "DYNAMIC_SOURCE_AXIS_STATICALLY_BOUND; OAMDI_SOURCE_COUNT_MAX_159; CODE_ROW_AXIS_SEPARATE; SELECTED_INPUT_AND_AU_UNBOUND",
+  "implementation_disposition": "USE_DYNAMIC_PHYSICAL_COUNT_RULE_FOR_SCOPED_PATH; KEEP_PROFILE_CODE_AXIS_AND_NATIVE_AU_MAPPING_SEPARATE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2261, "sha256": "f8f0d051054603722467858209f29b7a53a17575b264b5ccd4b5b50ccc9270f9"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 989, "sha256": "4579ad55788e668d366ddb28a534ee7e0ad9b6cb46fcc69721a3fe1f7981b7f8"},
+    {"name": "REPORT.md", "bytes": 3368, "sha256": "9a1c84ba195b4b30171ca7a91783f2127544da91df20395c9a71a00058ec1626"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 984, "sha256": "9aa3c9796fc77f75e9dc11b252a4d82b73b4ebda767b030c8c36118d576e977d"}
+  ]
+}

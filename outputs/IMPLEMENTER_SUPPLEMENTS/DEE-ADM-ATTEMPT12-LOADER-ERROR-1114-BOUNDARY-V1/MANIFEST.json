@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-ATTEMPT12-LOADER-ERROR-1114-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "LOADER_ERROR_CLASS_BOUND; FAILING_INITIALIZER_UNBOUND; RUNTIME_U_TO_K_NOT_CAPTURED",
+  "implementation_disposition": "Record Windows error 1114 as the observed loader-failure class; do not attribute a specific failing module or infer runtime N/K ownership.",
+  "source_package_id": "formatmessage_loader_error_1114_wash_v1",
+  "source_manifest_sha256": "edb59767188568dc798a130057f70c7a1b255d6283c7694fcd5f837f72e1bea7",
+  "source_package_seal_sha256": "0267e5719a5661322473da189872d39325ead424e75ec8c595c996367bb17168",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2015,
+      "sha256": "8dd21280bd431aaf1236c89373f1f82f0ff9c55cb0840c23fe7c807795d019d5"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2168,
+      "sha256": "8e534d6a654cff4c0d0baa2ef439883cffa759fe3c40bf7b9bdcba7046a2c3b8"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 657,
+      "sha256": "38b361950b6bcebfbe3aad1722995237e61a8c6b6056f89d8a4a0d37fbb66c87"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1307,
+      "sha256": "b755bedf4a7413339811e80cb9e3d25c0508598197219530fe43aceb90ee5327"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 904,
+      "sha256": "3325e38453a57986cdc4a3d765fd6bbb8a3aed7cca154930ff2956c63c8cd27b"
+    }
+  ]
+}

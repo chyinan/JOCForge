@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ADM-READER-DESCRIPTOR-COUNT-OWNER-BOUNDARY-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "a4ca9e31a67d21b789737c97a0609d2753d4cca08923932be1bf718298c23f09",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

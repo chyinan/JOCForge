@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.adm_reader_n_row_loop_boundary.v1",
+  "package_id": "DEE-ADM-READER-N-ROW-LOOP-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "DEE-ADM-READER-N-CONSUMER-WASH-V1",
+    "manifest_sha256": "de85b168909fdd0b56d9c4ef6cff83a5b4bec68cc421a511174e0e4b75732d7a",
+    "source_checker_normal_and_python_o": "PASS"
+  },
+  "inherited_count_transfer": {
+    "package_id": "DEE-ADM-K-COUNT-READER-N-TRANSFER-WASH-V1",
+    "manifest_sha256": "febecb984e28ab1a9d4db891531c924a55984e073b8e177c4ee1a42b9a689796",
+    "reader_record_n_type": "U64",
+    "k_count_to_reader_owner_join": "UNBOUND"
+  },
+  "selected_reader_consumer": {
+    "n_source_record_field": "Reader record param_2[1]",
+    "n_type": "U64",
+    "first_row_consumer_role": "Pcm row constructor",
+    "n_storage": "stored on Pcm object dimension",
+    "loop_bound": "uVar1 starts at 0 and continues while uVar1 < N",
+    "row_pointer_count": "N",
+    "per_row_byte_extent": "sample_count * 4",
+    "sample_count_source": "Reader record param_2[2]",
+    "count_domains_distinct": true
+  },
+  "separate_allocation_gate": {
+    "guard_source": "sample_count != 0",
+    "metadata_allocation_size_bytes": 296,
+    "gate_controls_n": false
+  },
+  "status": {
+    "static_transfer_to_first_n_loop_bound": "BOUND_WITHIN_SELECTED_CALL_CHAIN",
+    "runtime_n_value": "NOT_CAPTURED",
+    "physical_chna_n_join": "UNBOUND",
+    "owner_generation": "UNBOUND",
+    "initializer_helper_internal_allocation_extent": "NOT_EVALUATED",
+    "general_channel_count_range": "NOT_ESTABLISHED"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 read-only/no-analysis",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "pcm_payload_or_private_content_read": false,
+    "implementation_repository_access": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": {
+    "use_reader_n_for_row_loop": "STATIC_CONTRACT_BOUND",
+    "keep_sample_count_as_separate_per_row_extent": true,
+    "do_not_infer_admission_range_or_chna_owner_join": true
+  }
+}

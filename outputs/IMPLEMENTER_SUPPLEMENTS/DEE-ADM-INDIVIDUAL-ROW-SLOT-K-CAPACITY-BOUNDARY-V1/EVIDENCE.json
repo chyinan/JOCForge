@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.adm_individual_row_slot_k_capacity_boundary.v1",
+  "physical_slot_source": "U32 individual-record field defined by parent source contract as UID-derived slot",
+  "slot_distinct_from_enumeration_ordinal": true,
+  "k_count": "U16",
+  "allocation_bytes": "K_count*6",
+  "allocation_success_check": "nonnull pointer only",
+  "selected_sequence_slot_to_kcount_compare": false,
+  "upstream_slot_validation": "UNBOUND",
+  "actual_allocator_extent": "NOT_CAPTURED",
+  "slot_less_than_k_invariant": "UNBOUND",
+  "physical_n_to_k_join": "UNBOUND",
+  "runtime_out_of_bounds_observed": false
+}

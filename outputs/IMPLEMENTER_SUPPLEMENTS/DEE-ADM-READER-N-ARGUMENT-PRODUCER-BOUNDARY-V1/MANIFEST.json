@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-READER-N-ARGUMENT-PRODUCER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "READER_N_AND_SAMPLE_COUNT_ARGUMENTS_BOUND; PHYSICAL_CHNA_AND_COMPOSITE_K_JOINS_UNBOUND",
+  "implementation_disposition": "Keep N and S as separate count fields; do not infer the 1..128 static gate as end-to-end N support.",
+  "source_package_id": "DEE-ADM-READER-N-PCM-ARGUMENT-PRODUCER-WASH-V1",
+  "source_manifest_sha256": "b037cddeaea066337fd753cc1f73be66b504eeb035982c6b1339779c29f0fae4",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1865,
+      "sha256": "088f787bf31beef369ff504a32cd0ec38dad20f6956f56c4392705fb8aaa4b2d"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1358,
+      "sha256": "8c84bd6c0202f9b1d5aa56881da3e6f41ff0ad080e96350140e9e6fe1ccb1b99"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 575,
+      "sha256": "e2f2838f47f06e811d3d38c5d09631c298a6ee5b4021ee31013fb09dd424cc4b"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1012,
+      "sha256": "fe7e7ba42327092577f19b26cc79358d30501ef58609584559e3c6903b91862b"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 362,
+      "sha256": "c95e36b5577f8a18ca8e2955ff6165138fb71399709286a8d669be4838a287de"
+    }
+  ]
+}

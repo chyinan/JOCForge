@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge.adm_native_n_row_capacity_boundary.v1",
+  "package_id": "DEE-ADM-N-1-128-ROW-CAPACITY-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "adm_native_row_count_capacity_boundary_wash_v1",
+    "manifest_sha256": "a3c5b0597dc5ab7d3b366ba87f05dccf55d543e65ba9cabbd8f35f639312f0a9",
+    "package_seal_sha256": "cbe9dcbd3cb1a97e787718abc809f026f585d30d19ee383a697ef5dd135f29a0",
+    "source_checker_normal_and_python_o": "PASS"
+  },
+  "source_image": {
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis_tool": "Ghidra 12.2",
+    "analysis_mode": "read-only/no-analysis"
+  },
+  "physical_n_gate": {
+    "input_domain": "unsigned physical N from the selected descriptor-bearing path",
+    "predicate": "if (0x7f < N-1) return 5",
+    "static_accepted_range": {
+      "minimum": 1,
+      "maximum": 128
+    },
+    "rejected_boundary": {
+      "N": 0,
+      "reason": "unsigned subtraction underflow reaches the failure branch"
+    },
+    "rejected_boundary_2": {
+      "N": 129,
+      "reason": "N-1 exceeds 0x7f"
+    },
+    "runtime_acceptance": "NOT_RUN"
+  },
+  "first_row_wrapper": {
+    "slot_capacity": 128,
+    "wrapper_receives_n_separately": false,
+    "wrapper_inputs": [
+      "row-map buffer",
+      "construction arena"
+    ],
+    "per_slot_objects_constructed": 128,
+    "constructor_parameters": [
+      "0x600",
+      "1",
+      "48000"
+    ],
+    "meaning_of_0x600": "NOT_INFERRED",
+    "later_reader_loop_capacity": 128,
+    "per_slot_row_count": "separate domain"
+  },
+  "count_domains": {
+    "physical_n_to_k_or_b_typed_join": "UNBOUND",
+    "native_k_values_or_mode": "NOT_CAPTURED",
+    "k_definition": "individual-record count plus group-entry counts; low U16 stored from a 32-bit accumulator",
+    "k_row_stride_bytes": 6,
+    "composite_b_definition": "independent adapter/UID-derived count path",
+    "composite_b_row_allocation": "B_count * 6",
+    "do_not_merge_n_k_b_or_per_slot_row_count": true
+  },
+  "status": {
+    "physical_n_gate": "BOUND_STATIC",
+    "first_row_wrapper_capacity": "BOUND_STATIC_128",
+    "runtime_acceptance": "NOT_RUN",
+    "n_to_k_b_owner_join": "UNBOUND",
+    "k_b_runtime_values": "NOT_CAPTURED"
+  },
+  "implementation_disposition": {
+    "use_1_to_128_only_as_static_gate_contract": true,
+    "do_not_claim_runtime_or_end_to_end_support": true,
+    "keep_count_domains_separate": true
+  }
+}

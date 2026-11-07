@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.individual_slot_source_first_break.v1",
+  "package_id": "DEE-ADM-INDIVIDUAL-SLOT-PRODUCER-FIRST-BREAK-BOUNDARY-V1",
+  "status": "SELECTED_U_OPEN_BRANCH_NO_EXPLICIT_0X4C_ACCESS; ONE_HELPER_NO_EXPLICIT_0X4C_ACCESS; SLOT_PRODUCER_UNBOUND; RUNTIME_NOT_RUN",
+  "source": {
+    "package_id": "adm_individual_slot_source_first_break_wash_v1",
+    "evidence_manifest_sha256": "51baf681b94999d8f56b4e1e4178b917954c364e23c8397b5826a0dc086de181",
+    "package_seal_sha256": "9b07a5b59fc3fef6696a2f5fcdc2c7bfd8cfff6127be1ab0f8ed18702f79e694",
+    "normal_and_python_o_checker": "PASS"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "mode": "read-only/noanalysis",
+    "tier": "STATIC",
+    "scope": "One zero-byte U-open branch and one directly called helper."
+  },
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "selected_branch": {
+    "vtable_slot": "+0x88",
+    "dispatcher_rva": "0x407ec0",
+    "zero_branch_start_rva": "0x408160",
+    "zero_branch_end_rva_exclusive": "0x40a585",
+    "explicit_record_plus_0x4c_accesses": 0,
+    "explicit_record_plus_0x4c_stores": 0
+  },
+  "helper_edge": {
+    "caller": "U-open branch at 0x4081d7",
+    "helper": "FUN_1804d8b90",
+    "helper_body_explicit_plus_0x4c_reads": 0,
+    "helper_body_explicit_plus_0x4c_stores": 0,
+    "next_call": "FUN_1802809a0 at RVA 0x4d8bbc",
+    "arguments": "RCX=helper entry RDX; RDX=&local output",
+    "callee_type_and_uid_slot_relation": "UNBOUND"
+  },
+  "post_call_condition": {
+    "operation": "[RAX+0x18] compared with 0x10; carry branch",
+    "relationship_to_slot_or_k_count": "UNBOUND",
+    "demonstrated_slot_guard": false
+  },
+  "result": {
+    "slot_plus_0x4c_producer": "UNBOUND_IN_SELECTED_PATH",
+    "pre_assignment_guard": "UNBOUND",
+    "runtime_oob_behavior": "NOT_INFERRED",
+    "global_writer_scan": false
+  },
+  "execution_scope": {
+    "runtime": "NOT_RUN",
+    "dee": "NOT_RUN",
+    "media_pcm_payload_key_or_license_read": false
+  }
+}

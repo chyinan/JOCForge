@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "JOCFORGE-READER-TARGET-DYNAMIC-AXIS-CONTRACT-V3",
+  "status": "SEALED_CURRENT_HASHED_SOURCE_SNAPSHOT",
+  "manifest_sha256": "1d422839d7da503241e9cd923aa9e4a2d0dc276561644b35a182a85a0df6a40c",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "source_hash_audit": "PASS_12_OF_12_CURRENT_SNAPSHOT",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

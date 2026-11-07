@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "physical-n-composite-count-domains",
+      "input": {
+        "adm_physical_n": "descriptor row count",
+        "composite_format_count": "shape metadata count or shape-map transform"
+      },
+      "expected_observation": {
+        "direct_copy_from_n_in_inspected_path": false,
+        "identity_relation": "UNBOUND"
+      },
+      "limitations": [
+        "No same-owner/generation join",
+        "No runtime count capture",
+        "Static gate does not establish end-to-end range"
+      ]
+    }
+  ]
+}

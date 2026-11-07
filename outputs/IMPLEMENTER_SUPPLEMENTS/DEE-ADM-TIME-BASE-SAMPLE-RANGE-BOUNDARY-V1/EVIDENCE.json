@@ -1,0 +1,64 @@
+{
+  "schema": "jocforge.dee_time_base_sample_range_boundary.v1",
+  "package_id": "DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1",
+  "status": "TIME_BASE_TYPED_FIELD_TO_SAMPLE_RANGE_STATIC_BOUND; XML_TO_SETTER_VALUE_UNBOUND; RUNTIME_BRANCH_UNBOUND; DEE_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "DEE-ADM-ATMOSMEZZ-TIME-BASE-RANGE-CONTROL-WASH-V1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-TIME-BASE-RANGE-CONTROL-WASH-V1",
+    "checksum_list_sha256": "5d7a7593a15b02380cb6ed61a665b37555584655742f407e006ced6da782cb70",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_program": "dee_audio_filter_ddp_atmos.dll",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_hash_provenance": "project-recorded; installed DLL not rehashed"
+  },
+  "xml_property": {
+    "name": "time_base",
+    "owner": "dee::proc::Priv",
+    "field_offset": "+0x550",
+    "type": "StringType",
+    "allowed_values": ["file_position", "embedded_timecode"],
+    "static_default_candidate": "file_position",
+    "effective_value_for_selected_job": "UNBOUND"
+  },
+  "string_type_contract": {
+    "setter": "FUN_18014f820",
+    "setter_effect": "writes string at StringType+0x08 and sets initialized flag",
+    "getter": "FUN_180152490",
+    "getter_effect": "reads stored string after initialized-flag check",
+    "XML_value_to_setter_argument": "UNBOUND"
+  },
+  "sample_range_path": {
+    "first_field_consumer": "FUN_18014fd90 / Priv::setRange",
+    "guard": "local map-entry count < 2; alternate path calls FUN_180150cb0",
+    "mode_comparison": "exact comparison with embedded_timecode",
+    "embedded_timecode_behavior": "applies time offset and range checks while producing start/end seconds",
+    "range_converter": "FUN_180162560",
+    "bounds": [
+      "start and end must be within source sample count",
+      "end must not be less than start"
+    ],
+    "sample_conversion": "startSeconds/endSeconds multiplied by sampling rate",
+    "start_sample_bound_store": "Priv+0xf98",
+    "end_sample_bound_store": "Priv+0xfb0",
+    "runtime_guard_branch": "NOT_CAPTURED"
+  },
+  "runtime_join": {
+    "host_setproperty_to_typed_setter": "UNBOUND",
+    "selected_xml_value": "NOT_CAPTURED",
+    "runtime_priv_instance_join": "UNBOUND",
+    "runtime_generation": "UNBOUND",
+    "DEE_execution": "NOT_RUN"
+  },
+  "scope": {
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_native_source_or_listing_included": false,
+    "implementation_repository_read": false,
+    "process_control": false
+  }
+}

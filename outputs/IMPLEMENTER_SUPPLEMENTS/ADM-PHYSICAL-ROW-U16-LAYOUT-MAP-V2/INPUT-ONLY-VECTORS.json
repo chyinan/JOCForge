@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "scope": "Aggregated shape vectors only; no track UID or raw ADM metadata is included.",
+  "vectors": [
+    {
+      "id": "N36",
+      "input": {
+        "physical_rows": 36,
+        "bed_entries": 10,
+        "object_entries": 26,
+        "ordinary_copy": true
+      },
+      "expected": {
+        "layout_count": 36,
+        "layout_gate": "1..128 pass",
+        "K_bytes": 216,
+        "object_map": "0x800A..0x8023",
+        "target_object_map": "0x800B..0x8024",
+        "native_capture": false
+      }
+    },
+    {
+      "id": "N38",
+      "input": {
+        "physical_rows": 38,
+        "bed_entries": 10,
+        "object_entries": 28,
+        "ordinary_copy": true
+      },
+      "expected": {
+        "layout_count": 38,
+        "layout_gate": "1..128 pass",
+        "K_bytes": 228,
+        "object_map": "0x800A..0x8025",
+        "target_object_map": "0x800B..0x8026",
+        "native_capture": false
+      }
+    },
+    {
+      "id": "extended-mode",
+      "input": {
+        "composite_mode": "extended synthesis"
+      },
+      "expected": {
+        "physical_slot_preservation": "NOT_ESTABLISHED",
+        "selected_mode": "NOT_CAPTURED"
+      }
+    }
+  ]
+}

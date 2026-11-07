@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "scope": "Static structural vectors only; not executed, no native output or PCM is asserted.",
+  "vectors": [
+    {
+      "id": "N36-zero-drain-identity",
+      "input": {
+        "configured_channels": 36,
+        "physical_rows": 36,
+        "row_samples": 1536,
+        "all_zero": true
+      },
+      "expected": "The FreshZero identity guard's row-count checks are dynamic and can pass; the selected Installed48 map still fails on its fixed selected 38-channel source receipt."
+    },
+    {
+      "id": "N36-meter-G0",
+      "input": {
+        "input_kind": "Adm",
+        "wave_channels": 36,
+        "graph_tracks": 36
+      },
+      "expected": "Dynamic source admission accepts shape; selected Meter G0 later reaches the exact 38-channel Installed48 binding gate."
+    },
+    {
+      "id": "different-38-row-resource",
+      "input": {
+        "wave_channels": 38,
+        "selected_receipt_hashes_match": false
+      },
+      "expected": "The selected map still rejects unless a matching runtime-bound source receipt is constructed."
+    }
+  ]
+}

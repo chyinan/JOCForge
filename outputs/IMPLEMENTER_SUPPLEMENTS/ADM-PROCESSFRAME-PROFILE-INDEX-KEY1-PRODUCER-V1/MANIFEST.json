@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-PROCESSFRAME-PROFILE-INDEX-KEY1-PRODUCER-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "KEY1_PROFILE_INDEX_I32_SOURCE_BOUND; STATIC_DEFAULT_INDEX0; ACTIVE_PROFILE_UNBOUND; C_AND_N_TO_M_UNBOUND",
+  "implementation_disposition": "Keep the index-0/default C=11 result conditional; do not claim actual 36/38 rejection or support",
+  "source_manifest_sha256": "e50c225e4ef465271c93db438a264880714e8f52603d08de42cd471ae3589458",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3563,
+      "sha256": "c22a44170139020b6513c69a65d84cf579cf484eabe9b197e2f15ec9ae587013"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2527,
+      "sha256": "e136d6aee157cf850a528552712cc568ccf942e6cc558e937a54a71e534d48e1"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 468,
+      "sha256": "c4b3e57b33c024bfe0bc9832d4f83f738400e191de85a0ff257a6e07a485f6ee"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1765,
+      "sha256": "1baa4fb65bea3bcb9b4eb1b314d4da4f7ec1e117bdbd7bb714e5529a088ef342"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 529,
+      "sha256": "f5fec082324dcac2a19dd0ee824d5ac1ff9961f55246a771baa4057470fef250"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 1016,
+      "sha256": "e50c225e4ef465271c93db438a264880714e8f52603d08de42cd471ae3589458"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 246,
+      "sha256": "8e5c4dcf212fee5406a11d7d34eb2f031fe6fe92ef54e967d69be75f14bfc679"
+    },
+    {
+      "name": "UPSTREAM-SOURCE-IDENTITIES.json",
+      "bytes": 2039,
+      "sha256": "551bef59c26c5c0cb1b952335f9f5113027fde7e22c31869b2103b35e46037a4"
+    }
+  ]
+}

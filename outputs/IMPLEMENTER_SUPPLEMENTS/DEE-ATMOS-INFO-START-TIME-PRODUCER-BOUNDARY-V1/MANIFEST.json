@@ -1,0 +1,25 @@
+{
+  "package_id": "DEE-ATMOS-INFO-START-TIME-PRODUCER-BOUNDARY-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1181,
+      "sha256": "edcd9d56702d459dc9526b646cf9f08b296a101fb40018f18055eb998a1cf48f"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 250,
+      "sha256": "6ca95a2f4b2cd6d311aec9ffb7adc1a45e461d7b736994c40fcf0aeab1ab714e"
+    },
+    {
+      "name": "STATIC-BOUNDARIES.json",
+      "bytes": 468,
+      "sha256": "9f600a3ffbf44f5734c52fa115de1b69470b7c7d7d18f4203abf58c109e8a36f"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 345,
+      "sha256": "9981e72d07f0c2587eb47f3200f873bff2386e1af0bf6e1021e181b646ccab05"
+    }
+  ]
+}

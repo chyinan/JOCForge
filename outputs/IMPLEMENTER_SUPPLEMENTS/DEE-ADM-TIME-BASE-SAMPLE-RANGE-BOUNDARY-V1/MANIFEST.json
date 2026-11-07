@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TIME_BASE_TYPED_FIELD_TO_SAMPLE_RANGE_STATIC_BOUND; XML_TO_SETTER_VALUE_UNBOUND; RUNTIME_BRANCH_UNBOUND; DEE_NOT_RUN",
+  "implementation_ready": false,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2203,
+      "sha256": "b7a5c09e7bec962656cd215dde1614ea6042e9796f41a3f5244fbfe4e54dbd21"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2784,
+      "sha256": "61d960e05a859efb1e1ae0002dfa39575fbec664269fbf86e6e8e493d6c230d8"
+    },
+    "REPORT.md": {
+      "bytes": 1468,
+      "sha256": "aef7828ef4c6b6ab7ad82339bce3d34b93d621f22f59d5b9854ed7887fea86b6"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 836,
+      "sha256": "8989d44b9fad545c41df6dfe2a3461e421ec926e59bfeab1eb57f9cdf7eacc61"
+    }
+  },
+  "source_checksum_list_sha256": "5d7a7593a15b02380cb6ed61a665b37555584655742f407e006ced6da782cb70"
+}

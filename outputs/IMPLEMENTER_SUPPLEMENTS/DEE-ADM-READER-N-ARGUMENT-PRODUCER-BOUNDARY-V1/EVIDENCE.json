@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.reader_n_argument_producer_boundary.v1",
+  "package_id": "DEE-ADM-READER-N-ARGUMENT-PRODUCER-BOUNDARY-V1",
+  "source": {
+    "package_id": "DEE-ADM-READER-N-PCM-ARGUMENT-PRODUCER-WASH-V1",
+    "manifest_sha256": "b037cddeaea066337fd753cc1f73be66b504eeb035982c6b1339779c29f0fae4",
+    "standalone_package_seal": "NOT_PROVIDED"
+  },
+  "reader_n": {
+    "source": "Reader descriptor U16 +0x0A",
+    "conversion": "zero-extension into Reader record",
+    "forwarded_as": "separate N argument to allocation helper",
+    "runtime_value": "NOT_CAPTURED"
+  },
+  "sample_count_s": {
+    "source_selector": "Reader-state byte +0x14",
+    "selector_zero_source": "float-read returned sample count",
+    "otherwise_source": "Reader-state U32 +0x10 zero-extended",
+    "forwarded_separately_from_n": true,
+    "runtime_branch_and_value": "NOT_CAPTURED"
+  },
+  "first_breaks": {
+    "physical_chna_n_to_reader_descriptor": "UNBOUND",
+    "reader_descriptor_to_mode_zero_composite_k_same_owner_generation": "UNBOUND",
+    "end_to_end_n_range": "NOT_ESTABLISHED"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 inherited read-only/no-analysis receipts",
+    "new_ghidra_query": false,
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_access": false
+  }
+}

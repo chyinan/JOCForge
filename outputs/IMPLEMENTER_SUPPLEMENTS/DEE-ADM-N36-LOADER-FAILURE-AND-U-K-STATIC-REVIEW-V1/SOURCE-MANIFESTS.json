@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "dee_n36_loader_failure_and_u_to_k_static_review_wash_v1",
+      "manifest_sha256": "43bfe4193c1eaef42bfd758adf09d2a8e1e878e342d382c980fbd59356923df5",
+      "package_seal_sha256": "37ea041a58dc9cd2f914fad52c954040670c3cf3436e5e9db76a4686f0b2d40f",
+      "reviewed_payloads": [
+        {
+          "name": "FINDINGS.md",
+          "sha256": "6fe8f21044cb38ee82f2446d453b455813e82cf08cc0bc0a4ce8b55574de8cee"
+        },
+        {
+          "name": "ATTEMPT-REVIEW.json",
+          "sha256": "2f1dcfbc229a299e6362798c0dbdecaa98bcece82356c5f3cc3dfd76870124f8"
+        },
+        {
+          "name": "STATIC-CALLCHAIN.json",
+          "sha256": "100b5e188a2426f2e7f253f8b3e27cdf0e69026242424b4b10af1943a2ee4fe4"
+        },
+        {
+          "name": "SOURCE-IDENTITIES.json",
+          "sha256": "147dae2dd15a4b8ea838bb9d055d79b8dda6172028860badc470cd8106883f32"
+        }
+      ],
+      "raw_attempt_logs_or_native_source_copied": false
+    }
+  ]
+}

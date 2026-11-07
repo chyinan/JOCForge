@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-FIRST-DOWNSTREAM-GUARD-WASH-V1",
+  "source_manifest_sha256": "9d5ebe9cd9053392fe92975710f460fc7efcc45500078f486a5ba985c951758b",
+  "source_payloads_verified": "4/4",
+  "source_checker_status": "The package contains CHECK.json PASS_HASHES_AND_VECTOR_ARITHMETIC; Wash independently recomputed the listed payloads.",
+  "verified_parent_manifests_and_payloads": [
+    {"package_id": "DEE-STAGE-FACTORY-BINDING-V1", "manifest_sha256": "49ca286cf86d221d42413bd5dced050e2413651c88dcef1d453f85e3b028d8b8", "payload_files_verified": "2/2"},
+    {"package_id": "ADM-PHYSICAL-ROW-DOWNSTREAM-COUNT-LINEAGE-V1", "manifest_sha256": "b514065f2f91c35ff87bf2c74a6f481e34607e46bd7a9e71ebdb2faf1b2064be", "payload_files_verified": "14/14"},
+    {"package_id": "PROFILE-RENDERER-INDEX-RECORD-CONSUMER-V1", "manifest_sha256": "f70af11810da47d3a77ef297f43c25e7274aa8a82c3f4905ad9ae0865aee5707", "payload_files_verified": "12/12"},
+    {"package_id": "PROFILE-RENDERER-CONSUMER-COUNT-BOUNDARY-V1", "manifest_sha256": "de2dd60dbc1874a7d8a6d3f8f560a22ae5713177dd2f1a742a1c039b8b4fe0fc", "payload_files_verified": "11/11"}
+  ],
+  "target_binary_rehash": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "matched": true
+  },
+  "ghidra_status": "Existing hash-bound read-only/no-analysis receipts used; new open attempt BLOCKED_PROJECT_LOCK",
+  "excluded_from_supplement": ["raw Ghidra traces/scripts", "checker source", "PCM/media/payload", "private key/license"]
+}

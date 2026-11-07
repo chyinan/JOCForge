@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-PROCESSFRAME-CAPACITY-KEY2-PRODUCER-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "ceddbde5e76657245dfcd8580ce2d8c00b7bc2d4bd6919cf15e838f8b45fc591",
+  "payload_file_count": 8,
+  "payload_hash_audit": "PASS_8_OF_8",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

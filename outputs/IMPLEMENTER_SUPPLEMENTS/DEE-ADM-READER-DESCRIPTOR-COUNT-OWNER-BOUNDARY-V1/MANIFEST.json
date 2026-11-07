@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-READER-DESCRIPTOR-COUNT-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "READER_DESCRIPTOR_N_READ_BOUND; DESCRIPTOR_WRITER_AND_PHYSICAL_CHNA_JOIN_UNBOUND",
+  "implementation_disposition": "Keep Reader N and K count separate; do not infer physical CHNA N from the Reader getter or same-offset stores on other metadata objects.",
+  "source_package_id": "DEE-ADM-READER-DESCRIPTOR-COUNT-WRITER-WASH-V1",
+  "source_manifest_sha256": "f803f54efc8b22c22a75f1f79c048391c147936527a59861a090f2ca5a3c1634",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1589,
+      "sha256": "36c33574f1b3ab137cb985b587366e562082485e02c4c54b48100f27d9201e6a"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1513,
+      "sha256": "1bc826df0cc0fd3e953ee29f141136f198a6a490e5c4d9f16a507d8e9c7b5fbc"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 586,
+      "sha256": "57baabf2ce58c28eb772c6af69aadb2ed0a42d07d93a02d2bb3cbf7500c587d6"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1087,
+      "sha256": "250967b22873d052fe02544f0848826ae7ad4b1d43f90532a5f0128e8eba1192"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 374,
+      "sha256": "c376f4e354a608eca8cdba7948f0385db5d3759fb9a5fd02acb355dda5c8b4a3"
+    }
+  ]
+}

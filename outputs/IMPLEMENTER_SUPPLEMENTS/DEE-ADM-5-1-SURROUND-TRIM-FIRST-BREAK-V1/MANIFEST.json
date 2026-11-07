@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-ADM-5-1-SURROUND-TRIM-FIRST-BREAK-V1",
+  "scope": "Washed static first-break only; trim rule and audio effect remain unbound.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1456,
+      "sha256": "79c870ddee8d23652e292ab55e85bf3888f2f9ebb7b0d9bdf08bb6a89aeea078"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 452,
+      "sha256": "8ae49460cabd9eb0e1ceee5a3b1e3e3ec75989c51a471e20ad698cd5f1820b88"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 855,
+      "sha256": "dd9d9a9f791f51937b3f0e70422e1f0756b15b4dd218bf326a00d6ab6bd63e94"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1912,
+      "sha256": "2df42e6fe21dfaad01c23233db4dc38bde9d76c3646a87199b2e505c219e69a3"
+    }
+  ]
+}

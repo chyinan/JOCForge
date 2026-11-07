@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.processframe_profile_index_key1_producer.v1",
+  "package_id": "ADM-PROCESSFRAME-PROFILE-INDEX-KEY1-PRODUCER-V1",
+  "status": {
+    "key1_i32_override_to_profile_index": "BOUND_STATIC_DIRECT_COPY",
+    "global_default_flag_and_index": "BOUND_STATIC_FLAG1_INDEX0",
+    "profile_table_direct_index": "BOUND_STATIC_NO_REMAP",
+    "runtime_key1_override": "NOT_CAPTURED",
+    "runtime_selected_profile": "NOT_CAPTURED",
+    "runtime_C": "NOT_CAPTURED",
+    "runtime_M": "NOT_CAPTURED",
+    "adm_N_to_M": "UNBOUND",
+    "root_clear_extent_covers_profile_and_capacity": "UNBOUND"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/sample6-core-selected-profile-index-wash-v1",
+    "package_id": "sample6-core-selected-profile-index-wash-v1",
+    "manifest_sha256": "e50c225e4ef465271c93db438a264880714e8f52603d08de42cd471ae3589458",
+    "package_seal_sha256": "8e5c4dcf212fee5406a11d7d34eb2f031fe6fe92ef54e967d69be75f14bfc679",
+    "normal_checker": "PASS",
+    "python_O_checker": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "ghidra_version": "12.2_PUBLIC"
+  },
+  "key1_selection": {
+    "builder": "FUN_14031FAE0",
+    "custom_pair_list": "config+0x40 with count config+0x3C; I32 key/value records",
+    "selected_key": 1,
+    "destination": "builder block+0x3C == root+0xC13C",
+    "copy_rule": "matching key-1 I32 value copied directly"
+  },
+  "static_default": {
+    "condition": "DAT_1405EDA90 == 1",
+    "hash_matched_image_values": {"DAT_1405EDA90": 1, "DAT_1405EDA9C": 0},
+    "default_profile_index": 0,
+    "caller_clear_extent_covers_root_plus_0xC13C": "UNBOUND"
+  },
+  "profile_table": {
+    "supported_indices": [0, 1, 3, 4],
+    "row_counts": {"0": 13, "1": 11, "3": 10, "4": 5},
+    "indexes_without_rows": [2, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    "index_remap": "NONE"
+  },
+  "conditional_capacity_example": {
+    "profile_index_0_key2_default_C": 11,
+    "profile_index_0_key2_allowed_custom_range": [1, 11],
+    "capacity_gate_from_parent": "reject if M > C",
+    "36_or_38_rejection": "CONDITIONAL_ONLY; profile/C/M/N joins NOT_CAPTURED/UNBOUND"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "disposition": "Do not claim actual 36/38 rejection or support; the default profile path is static and job override/runtime root state is not captured."
+}

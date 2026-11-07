@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-FLATTENED-MASTER-PROVIDER-GETTER-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "565ef0d9bf6dfcad7cacc3747f750347709fd916f952947d7f072d91be2df1ab",
+  "payload_file_count": 12,
+  "payload_hash_audit": "PASS_12_OF_12",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

@@ -1,0 +1,163 @@
+{
+  "schema": "dee-atmos-ddp-silence-first-consumer-source-identities.v1",
+  "rule_package_dir": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_duration_sample_rule_wash_v1",
+  "timeline_package_dir": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-DDP-TIMELINE-XML-MAPPING-WASH-V1",
+  "range_reader_work_dir": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-9-f05-f13-static-lineage\\work\\ghidra_range_reader_consumer",
+  "range_context_copy_work_dir": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-9-f05-f13-static-lineage\\work\\ghidra_range_context_copy",
+  "sources": [
+    {
+      "kind": "target_image",
+      "name": "dee_audio_filter_ddp_atmos.dll",
+      "bytes": 10942464,
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "absolute_path": "E:\\Tools\\Dolby_Encoding_Engine\\dee_audio_filter_ddp_atmos.dll"
+    },
+    {
+      "kind": "rule_manifest",
+      "name": "silence duration rule evidence_manifest.json",
+      "bytes": 11269,
+      "sha256": "95f2282edfbf32fbbf6f4c72662242c400429b44fdc32396bf595c8367fb9220",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_duration_sample_rule_wash_v1\\evidence_manifest.json"
+    },
+    {
+      "kind": "rule_seal",
+      "name": "silence duration rule package_seal.json",
+      "bytes": 1408,
+      "sha256": "4b617e06a3fd7ede6c5707fac4bddb2d57a7bd32ce669dabaa812faa5346aaca",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_duration_sample_rule_wash_v1\\package_seal.json"
+    },
+    {
+      "kind": "rule_report",
+      "name": "silence duration REPORT.md",
+      "bytes": 4470,
+      "sha256": "8c76d9c008aacfafa3dfed7af3560376aee59cab2164fed6ac1417d96b2f1505",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_duration_sample_rule_wash_v1\\REPORT.md"
+    },
+    {
+      "kind": "rule_json",
+      "name": "SILENCE-RULE.json",
+      "bytes": 3697,
+      "sha256": "f6ff83220afd41d818ffcc9d4c7da458ef382f1720b0b7c752df80fabb29ce62",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_duration_sample_rule_wash_v1\\SILENCE-RULE.json"
+    },
+    {
+      "kind": "rule_input_vectors",
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 4818,
+      "sha256": "f488d5a86ab9bb08463a7096b7128e3efd1215c8d68ef09749703996c1a32ce2",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_duration_sample_rule_wash_v1\\INPUT-ONLY-VECTORS.json"
+    },
+    {
+      "kind": "rule_checker",
+      "name": "silence rule CHECK.py",
+      "bytes": 8982,
+      "sha256": "c1991addd52376733ef9594ca5dea693a82079ff9e6115c65a3fccb5c7ff21b6",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_silence_duration_sample_rule_wash_v1\\CHECK.py"
+    },
+    {
+      "kind": "timeline_manifest",
+      "name": "DEE-ATMOS-DDP-TIMELINE manifest.json",
+      "bytes": 1300,
+      "sha256": "8e66d14fe387cabb5e3246bc50f48cf9e582661bbf55a79714698f7a8b3b85c1",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-DDP-TIMELINE-XML-MAPPING-WASH-V1\\MANIFEST.json"
+    },
+    {
+      "kind": "timeline_project_record",
+      "name": "GHIDRA-PROJECT-RECORD.json",
+      "bytes": 1073,
+      "sha256": "19c2cae485b15958a41b141f488e31a0ecbeac28a54d98786d58cb56f064858b",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-DDP-TIMELINE-XML-MAPPING-WASH-V1\\GHIDRA-PROJECT-RECORD.json"
+    },
+    {
+      "kind": "timeline_trace_excerpt",
+      "name": "GHIDRA-TIMELINE-TRACE.txt",
+      "bytes": 8073,
+      "sha256": "7ed1d6844849253c9f261a78cf0de18ce349d19ed4a4a7e97f0ac450b9f66580",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-DDP-TIMELINE-XML-MAPPING-WASH-V1\\GHIDRA-TIMELINE-TRACE.txt"
+    },
+    {
+      "kind": "timeline_report",
+      "name": "timeline REPORT.md",
+      "bytes": 7211,
+      "sha256": "4846671345357c0fb34e33373a926787e47df242626231a8c0a35f4d84eee368",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-DDP-TIMELINE-XML-MAPPING-WASH-V1\\REPORT.md"
+    },
+    {
+      "kind": "timeline_trace_log",
+      "name": "ghidra_timeline_final_trace.log",
+      "bytes": 225942,
+      "sha256": "393ae43404b93c30bbd871bbd2addb5d66252f70607e268a1b21cabfa096f66b",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\work\\ghidra_timeline_final_trace.log"
+    },
+    {
+      "kind": "range_consumer_raw",
+      "name": "RAW-RANGE-CONSUMER-FINAL.txt",
+      "bytes": 92576,
+      "sha256": "38b609e70251bd503d521aa02576d85b2804fcc1b08610f0abe4afe507561c3a",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-9-f05-f13-static-lineage\\work\\ghidra_range_reader_consumer\\RAW-RANGE-CONSUMER-FINAL.txt"
+    },
+    {
+      "kind": "range_boundary_copies_raw",
+      "name": "RAW-RANGE-BOUNDARY-COPIES.txt",
+      "bytes": 10784,
+      "sha256": "3632eeb32b601ade1f2041bc4820fbab0641cf413a5962ea6fcfaaba0fcf93ac",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-9-f05-f13-static-lineage\\work\\ghidra_range_context_copy\\RAW-RANGE-BOUNDARY-COPIES.txt"
+    },
+    {
+      "kind": "range_reader_process_receipt",
+      "name": "GHIDRA-PROCESS-FINAL.txt",
+      "bytes": 4257,
+      "sha256": "f2762419685ab083798e61fa53aa40ce94b34c6685a374c5570cce6b14c9cde6",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-9-f05-f13-static-lineage\\work\\ghidra_range_reader_consumer\\GHIDRA-PROCESS-FINAL.txt"
+    },
+    {
+      "kind": "consumer_script",
+      "name": "InspectSilenceDurationFirstConsumer.java",
+      "bytes": 1743,
+      "sha256": "24eac5ab71e607c5dc23aa7cad0be5578ab080c696cba02b0039f628ae4ae514",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\work\\ghidra_core_quantizer_scripts\\InspectSilenceDurationFirstConsumer.java"
+    },
+    {
+      "kind": "consumer_runner",
+      "name": "run_silence_duration_first_consumer.ps1",
+      "bytes": 2077,
+      "sha256": "80eacbd6ce7dda6468d2f536ddccded0253e7f1350d158feeaf98b6d7758d690",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\work\\run_silence_duration_first_consumer.ps1"
+    },
+    {
+      "kind": "consumer_decomp_log",
+      "name": "ghidra_silence_duration_first_consumer.log",
+      "bytes": 10500,
+      "sha256": "011a9d86d078c943185570574200fa710f9a9c814bc7bb79271d7c8fe03f16c8",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\work\\ghidra_silence_duration_first_consumer.log"
+    },
+    {
+      "kind": "callsite_script",
+      "name": "InspectSilenceCountCompositeCallsite.java",
+      "bytes": 4316,
+      "sha256": "90bd9e93c475a5ae3eee92f3474c5a904fbc40e1409e267930d398350f25181a",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\work\\ghidra_core_quantizer_scripts\\InspectSilenceCountCompositeCallsite.java"
+    },
+    {
+      "kind": "callsite_runner",
+      "name": "run_silence_count_composite_callsite.ps1",
+      "bytes": 2074,
+      "sha256": "b479d9f4792bd92d50c464f0b45100ef1644a6131ea6da732c96ff40447a21dc",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\work\\run_silence_count_composite_callsite.ps1"
+    },
+    {
+      "kind": "callsite_window_log",
+      "name": "ghidra_silence_count_composite_callsite.log",
+      "bytes": 7789,
+      "sha256": "9771fa88fdd3c94f47b6bc014d24853fe3c18d84aca1521e29af0164bb544d4e",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\work\\ghidra_silence_count_composite_callsite.log"
+    },
+    {
+      "kind": "pe_extent_helper",
+      "name": "inspect_pe_runtime_function_extent.py",
+      "bytes": 3005,
+      "sha256": "f524ef420e4a521886a6c77939ce4bd1368c979c68b50e0c95503b4bd64900f0",
+      "absolute_path": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\work\\inspect_pe_runtime_function_extent.py"
+    }
+  ]
+}

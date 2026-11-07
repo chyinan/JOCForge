@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {"package_id":"ADM-WAVE-CHNA-U-ROW-CONTAINER-V1","manifest_sha256":"7af3ea125b1029bf9407a10c20fee4f6dd70807ec93b2e92d5bc2865141474aa"},
+    {"package_id":"ADM-ATMOSMEZZ-ROW-COUNT-FIRST-CONSUMER-V1","manifest_sha256":"d9e45e2519718ed154fcc5c5ec9e1692434ccdeec64585a47a38ef918328d63a"},
+    {"package_id":"ADM-ATMOSMEZZ-K-OWNER-FIRST-BREAK-V1","manifest_sha256":"e2428134072e35fd13488ac4f0547f8894b521d40a70a6b3a968cb98f25a24b5"}
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

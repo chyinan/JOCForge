@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "adm_bwf_input_offset_ffoa_consumer_boundary_wash_v1",
+      "manifest_sha256": "fb51cbd50eec6876cda6394b51b106b5bca6b98b91a1d853878a836f2e7ec94b",
+      "package_seal_sha256": "356633d861d3fc765f7eae888ba901030980ef2410281611b2b1e1ccc286adbe",
+      "reviewed_payloads": [
+        {
+          "name": "FINDINGS.md",
+          "sha256": "bae45f75f7d3d46c4d3a698b66734246eea7e6dde68d68a8db06beb1b4bfd856"
+        },
+        {
+          "name": "FIELD-PATH.json",
+          "sha256": "792c018d03087d9bbf8c77888d1279e23fe8877611c5c524e7a0df1087cd3e66"
+        },
+        {
+          "name": "SOURCE-IDENTITIES.json",
+          "sha256": "331037afd0382946544971960cd1c4b419716e5c440647118d6d1bf6fbcc1225"
+        }
+      ],
+      "parent_receipts": [
+        {
+          "package_id": "r138_adm_job_schema_completeness_wash_v1",
+          "manifest_sha256": "d82300912609c9d1579c8ca265264bbfa26ee3f76c655f86fc78743d538e6991",
+          "package_seal_sha256": "eb5189349cfc7461125c99ff38814c3c0aa1559b133fe329da57a7b15d787dcb"
+        },
+        {
+          "package_id": "adm_bwf_auto_input_normalizer_edge_wash_v1",
+          "manifest_sha256": "3e65f19e751014cd1eb414ea58f1ff663b74b85ac24d0a7d7c1cb3455a6aeb51",
+          "package_seal_sha256": "e8bf4a705b745c7f63ea06896cfb8dc1cfaf7b29709895554fb161db186785ac"
+        },
+        {
+          "package_id": "adm_bwf_auto_time_position_wash_v1",
+          "manifest_sha256": "d1e1ce52c070ed2e2a92b314f53c83d0a3ca5b704a5c96601097ebe598b7c95d",
+          "package_seal_sha256": "03e3a03cfd1278193f87e449b503fbbad407aa9ccd05e8f1d07ef61a6c77d914"
+        },
+        {
+          "package_id": "adm_bwf_atmosmezz_input_property_adapter_boundary_wash_v1",
+          "manifest_sha256": "8a4f50a71ea37e9049311dffa5c419d0ae9b817397524e2c5ba4980eb3b168ac",
+          "package_seal_sha256": "011bdca1868fc92c27d1bfaaa476676d0b7e6035fe6a091ddb4c92e5630a4396"
+        },
+        {
+          "package_id": "adm_bwf_property_response_converter_setter_edge_wash_v1",
+          "manifest_sha256": "3e58ecce98022c5c54055d9cabced6f9b887cc0d8c06cf35dc2c1d00ece7e026",
+          "package_seal_sha256": "ed99f4164a07b914837f274eee98028107d94a911f8e3c1b88405c93828f4067"
+        },
+        {
+          "package_id": "adm_bwf_auto_time_writer_join_wash_v1",
+          "manifest_sha256": "a0b30f4783e3c85cbaf30ee2f65877fdafec092be1059b12bca61efe2fd5ac69",
+          "package_seal_sha256": "680f16688e72c1ad373e6f3c809419153faaa2b27e185b9b6e00a1731ea56cb7"
+        }
+      ],
+      "raw_media_or_audio_payload_copied": false
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-COMPOSITE-SELECTOR-DIRECT-INPUT-SEMANTICS-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "DIRECT_OR_INPUTS_BOUND_STATIC; KEY2_PAYLOAD_AND_DESCRIPTOR_OWNER_UNBOUND; RUNTIME_MODE_NOT_CAPTURED",
+  "implementation_disposition": "Use only the static OR truth rule; do not infer an XML/UI/default field or a sample-selected branch from key ID 2 or matching descriptor values.",
+  "source_manifest_sha256": "47f91ba7eb4efacb5ad19202631d508a8b39b26d1e14547ce926521998141ff4",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name":"CHECK.py","bytes":5066,"sha256":"426ac98f5f945615bf92ccda42d9d7fe72aed40bc71092ca2ef42697f7f5bbd0"},
+    {"name":"EVIDENCE.json","bytes":2575,"sha256":"f327d6179306407b5d753a0b26648809c262f08a01885084667719ffa1503dca"},
+    {"name":"INPUT-ONLY-VECTORS.json","bytes":727,"sha256":"3b35c84644cf411b7469a7e0cf43b9ef1c5bd1969bfc4d458af3fe8e345fefbd"},
+    {"name":"REPORT.md","bytes":1665,"sha256":"fe853228f14b4c2bbd7520992989c852d3f4f47298a15af082aecb59192da6b0"},
+    {"name":"SOURCE-MANIFESTS.json","bytes":878,"sha256":"9ca85ad2201b9b871ca7414773f32571946438b86734f7b6df31c77a00b87b63"},
+    {"name":"UPSTREAM-CHECK.json","bytes":606,"sha256":"0e561f2d1011392763beefe7a61ebd6958fea396b005459aa0dcf44ea9632f84"},
+    {"name":"UPSTREAM-FUNCTION-HASHES.json","bytes":975,"sha256":"b48de2859d2c5c00debe1999bb63d091376d0030a5c4a44000282169c6df224f"},
+    {"name":"UPSTREAM-INVOCATION.json","bytes":294,"sha256":"79e1fdf4c9c37949578ed998ceb461d4cdf18121ee497e7c0f963d9ca5a12c8c"},
+    {"name":"UPSTREAM-MANIFEST.json","bytes":815,"sha256":"47f91ba7ebe4facb5ad19202631d508a8b39b26d1e14547ce926521998141ff4"},
+    {"name":"UPSTREAM-SELECTOR-INPUT-SEMANTICS.json","bytes":3481,"sha256":"2cd683cb8a76862d058135095b8a0f31223b2e1dc6b68011a58f9d40b41e59ef"},
+    {"name":"UPSTREAM-SOURCE-LINKS.json","bytes":2977,"sha256":"7a1486d03d40764db34d2f29faa71f0c665a4a8388775ad9e69231ab1e847370"}
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "physical-count-36",
+      "inputs": {"N": 36, "E": 36, "R": 0, "descriptor_stride_bytes": 6},
+      "expected_static_scope": {"R_plus_E": 36, "within_oamdi_source_cap_159": true, "runtime_acceptance": "NOT_RUN"}
+    },
+    {
+      "id": "physical-count-38",
+      "inputs": {"N": 38, "E": 38, "R": 0, "descriptor_stride_bytes": 6},
+      "expected_static_scope": {"R_plus_E": 38, "within_oamdi_source_cap_159": true, "runtime_acceptance": "NOT_RUN"}
+    },
+    {
+      "id": "mixed-present-and-absent-descriptors",
+      "inputs": {"N": 36, "E": 26, "R": 10, "absent_tag": 255},
+      "expected_static_scope": {"R_plus_E": 36, "within_oamdi_source_cap_159": true, "runtime_acceptance": "NOT_RUN"}
+    }
+  ],
+  "warning": "Synthetic arithmetic vectors only. They do not prove selected job identity, native metadata values, composite mode, code-row mapping, AU membership, or opaque PE/JOC API acceptance."
+}

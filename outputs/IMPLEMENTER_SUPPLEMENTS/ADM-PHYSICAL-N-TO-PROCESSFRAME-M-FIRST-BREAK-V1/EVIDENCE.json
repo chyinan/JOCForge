@@ -1,0 +1,74 @@
+{
+  "schema": "jocforge.adm_physical_n_to_processframe_m_first_break.v1",
+  "package_id": "ADM-PHYSICAL-N-TO-PROCESSFRAME-M-FIRST-BREAK-V1",
+  "status": {
+    "physical_metadata_N_for_36_and_38_samples": "BOUND",
+    "N_to_compositemaster_format_u16": "UNBOUND",
+    "format_u16_to_atmos_packet_plus_0x08": "BOUND_STATIC",
+    "packet_plus_0x08_to_core_M": "UNBOUND",
+    "core_M_formula_from_physical_N": "UNBOUND",
+    "36_versus_38_local_diagnostic_split": "BOUND_TO_EXISTING_RECEIPT",
+    "native_parser_predicate_for_split": "UNBOUND",
+    "end_to_end_track_support": "NOT_RUN"
+  },
+  "upstream_package": {
+    "package_id": "sample6-physical-n-to-processframe-m-first-break-wash-v1",
+    "manifest_sha256": "34bc62d82c87e54b0405e82d4dca44f709ba525693b82b5ecac77a1f56ed5180",
+    "package_seal_sha256": "47d054d2e5ffffc335453da330ed698a0693d251f564616c41ee89da074d21ae",
+    "manifest_checksum_sha256": "c8b75b9085dbf8909964b0c26705fb1bb16a514ba3cdff85f26d6c3079284d6a",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "inputs": [
+    {
+      "name": "First Love.wav",
+      "sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "physical_N": 36,
+      "format_channels": 36,
+      "chna_tracks": 36,
+      "dbmd_tracks": 36,
+      "local_diagnostic_category": "RIFF_PCM24_PARSE",
+      "native_encoder_or_ProcessFrame_result": "NOT_RUN"
+    },
+    {
+      "name": "人是猫 - 张卡斯, 洛天依.wav",
+      "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "physical_N": 38,
+      "format_channels": 38,
+      "chna_tracks": 38,
+      "dbmd_tracks": 38,
+      "local_diagnostic_category": "PASS_LOCAL_MODEL_3_HOPS",
+      "local_meter_hops": 3,
+      "source_flags_packet": "NOT_CREATED",
+      "native_encoder_or_ProcessFrame_result": "NOT_RUN"
+    }
+  ],
+  "typed_dimensions": {
+    "atmos_format_channel_count": {
+      "field": "CompositeMaster.format+0x0A",
+      "type": "U16",
+      "constructor_gate": "reject zero",
+      "use": "per-channel state sizing",
+      "producer_owner_or_generation_from_N": "UNBOUND"
+    },
+    "atmos_packet": {
+      "channel_u16": "+0x08",
+      "frame_sample_count": "+0x10",
+      "channel_to_core_M": "UNBOUND"
+    },
+    "core_processframe_M": {
+      "type": "U64",
+      "field": "frame view +0x20 pointer-entry count",
+      "pointer_list": "+0x08",
+      "physical_N_formula": "UNBOUND"
+    }
+  },
+  "scope_and_safety": {
+    "new_ghidra_query": "NOT_RUN",
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

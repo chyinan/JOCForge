@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.processframe_profile_index_sources.v1",
+  "upstream_manifest_sha256": "e50c225e4ef465271c93db438a264880714e8f52603d08de42cd471ae3589458",
+  "upstream_package_seal_sha256": "8e5c4dcf212fee5406a11d7d34eb2f031fe6fe92ef54e967d69be75f14bfc679",
+  "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+  "parent_key2_capacity_package_manifest_sha256": "502c4dfbe4010f70a4c7485f81d1c48fb780d73b8c8274b0dbdd86674cf74ff0",
+  "raw_ghidra_scripts_or_logs_in_supplement": false
+}

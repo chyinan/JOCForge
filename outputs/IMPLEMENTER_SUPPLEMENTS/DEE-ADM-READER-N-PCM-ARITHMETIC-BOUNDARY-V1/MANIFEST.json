@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-READER-N-PCM-ARITHMETIC-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ARITHMETIC_BOUND_STATIC; RUNTIME_ALLOCATOR_UNOBSERVED",
+  "implementation_disposition": "Use the formula as an arithmetic guard only; it does not establish runtime allocator or end-to-end support.",
+  "source_manifest_sha256": "011ac807da1d8c663e29bf7639d116d98b7716d1321bfda5949188c83e333686",
+  "source_package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2869,
+      "sha256": "8468ee3dfb3aab5aaea70f68c68e53b3ed457444a63eb286b8b2de461e9648c0"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2342,
+      "sha256": "ca59b1ef638e34cf753817be1dcd707144ca0ce6c12aeab76af4e6048c397123"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 438,
+      "sha256": "8776fd518c47b04c212a1c3129dd35089e6522d5ac9c5ccaefe26c070d32e51c"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 840,
+      "sha256": "ccb73d0358299ec0ba150d64a24943bdb5f69f0d57ef3f91c058c559b45bbff5"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 708,
+      "sha256": "9fd766a3c19ff6802cd6b7d035c26187e9d26fd31c2cb228f56ce860525696df"
+    }
+  ]
+}

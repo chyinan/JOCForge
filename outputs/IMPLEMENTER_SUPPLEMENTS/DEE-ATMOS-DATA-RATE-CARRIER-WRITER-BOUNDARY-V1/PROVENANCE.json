@@ -1,0 +1,6 @@
+{
+  "source_package_id": "eac3_carrier_rate_writer_gap_wash_v1",
+  "source_manifest_sha256": "44b719cb1fac49946701d16c81f1178e3217cb46ef91795017bbbef2dd510242",
+  "source_seal_sha256": "03d9e44c1b98bf188f4011f1212bcc0ba02e3e736b183ebb79e33fe6fb30e3e3",
+  "scope": "static rate-to-carrier boundary only"
+}

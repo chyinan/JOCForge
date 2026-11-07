@@ -1,0 +1,25 @@
+{
+  "package_id": "DEE-ATMOS-DATA-RATE-CARRIER-WRITER-BOUNDARY-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1231,
+      "sha256": "da482c8e8e8e591594281dbbaf888ead35e737d3ecbeb787c6875dc54977dc26"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 474,
+      "sha256": "c9aeea8679ac29ed93617dccace85e3f6b77f9cee7a312983602721c2e2f7c81"
+    },
+    {
+      "name": "STATIC-BOUNDARIES.json",
+      "bytes": 329,
+      "sha256": "590ea118fd9898c308bf258f368916ddf459754d1a489ff4ac7f493bdfed4f38"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 305,
+      "sha256": "592af9c1bb8578a2cd57b7a7cda035294970b5d9b358b409712c9ee38213b326"
+    }
+  ]
+}

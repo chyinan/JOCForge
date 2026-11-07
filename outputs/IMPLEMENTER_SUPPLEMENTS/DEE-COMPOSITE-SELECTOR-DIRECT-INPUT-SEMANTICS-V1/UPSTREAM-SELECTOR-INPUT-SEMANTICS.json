@@ -1,0 +1,61 @@
+{
+  "schema": "wash.composite-selector-input-semantics.v1",
+  "package_id": "COMPOSITE-SELECTOR-INPUT-SEMANTICS-V1",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "scope": {
+    "analysis": "Ghidra 12.2 hash-bound static evidence",
+    "new_ghidra_query_this_turn": "NOT_RUN",
+    "DEE_or_native_run": "NOT_RUN",
+    "PCM_payload_key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "selector": {
+    "owner_field": "U8 at T+0x100",
+    "producer": "FUN_1805506b0",
+    "write": "*(undefined1 *)(param_1 + 0x100) = uVar3",
+    "truth_rule": "uVar3 = 1 if key-2 lookup result is nonzero OR FUN_1805505d0(param_2) is nonzero; otherwise uVar3 = 0",
+    "consumer": "FUN_18054fa70 selects ordinary mode when T+0x100 == 0 and extended mode when nonzero",
+    "runtime_value": "NOT_CAPTURED"
+  },
+  "direct_input_1_option_lookup": {
+    "lookup_function": "FUN_18054ea90",
+    "same_config_pointer": "param_7 is passed to the key lookup and unchanged as FUN_18054fa70's final argument",
+    "key_type": "U8",
+    "key_value": 2,
+    "key_source": "local_res8[0] = 2 in FUN_1805506b0",
+    "lookup_helper_result_type": "longlong",
+    "lookup_result_use": "caller tests only result != 0",
+    "helper_observed_work": "ordered byte-key tree traversal; it compares the requested byte to node key byte at node+0x1A and returns a traversal/range count",
+    "mapped_option_payload_read": false,
+    "mapped_value_type_or_source": "NOT_OBSERVED; no mapped payload is consumed by this selector edge",
+    "prior_contract_label": "option key 2 present; the direct producer evidence proves key ID and nonzero use, not a UI/XML name or payload schema"
+  },
+  "direct_input_2_source_descriptor_comparison": {
+    "function": "FUN_1805505d0",
+    "input": "param_2 passed by FUN_1805506b0",
+    "input_shape_observed": "pointer to a descriptor list; U32 list count at param_1+8; descriptor pointers at base + 0x58*index + 8",
+    "baseline_descriptor": "pointer from the first list entry",
+    "fields_compared": [
+      "U16 descriptor count at descriptor+0x0A",
+      "for each row up to that count, U16 at row+0x00",
+      "U8 tag at row+0x02",
+      "U16 at row+0x04"
+    ],
+    "row_stride_bytes": 6,
+    "byte_0x03": "READ_AS_PART_OF_A_U32_ROW_LOAD_BUT_NOT_COMPARED",
+    "truth_semantics": "count mismatch or any compared field mismatch returns nonzero immediately; equal descriptors return zero in the previously sealed valid N range 1..128",
+    "actual_descriptor_list_owner_or_generation": "UNBOUND"
+  },
+  "configuration_field_separation": {
+    "same_options_object": "YES for key-2 lookup and subsequent FUN_18054fa70 param_7",
+    "single_config_scalar_is_the_only_selector_source": false,
+    "T_plus_0x08": "separate byte written from param_3 after clamping values greater than 1 to zero; it is not the branch field read by FUN_18054fa70",
+    "T_plus_0x102": "separate bool set inside FUN_18054fa70 from option key 4 on the same param_7 object",
+    "cross_component_numeric_key_identity": "NOT_INFERRED; key 2 is bound only as a byte key in this composite option-tree object"
+  },
+  "first_unbound_edges": {
+    "option_payload_semantics_or_external_name": "UNBOUND; only the byte key and truth-tested lookup result are observed",
+    "source_descriptor_list_to_concrete_opened_K_owner": "UNBOUND beyond the caller's typed descriptor-list input",
+    "selected_runtime_mode_and_generation": "NOT_CAPTURED"
+  }
+}

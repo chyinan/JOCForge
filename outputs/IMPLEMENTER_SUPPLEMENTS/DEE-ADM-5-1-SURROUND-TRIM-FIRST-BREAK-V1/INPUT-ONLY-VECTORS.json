@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-washed-trim-input-only-vectors.v1",
+  "vectors": [
+    {
+      "name": "surround-auto-vs-minus6",
+      "surround_trim_5_1": ["auto", "-6"],
+      "height_trim_5_1": ["auto", "auto"],
+      "status": "PROPOSED_NOT_RUN",
+      "purpose": "one-variable contrast only; does not establish a native trim or PCM rule"
+    }
+  ],
+  "runtime_status": "NOT_RUN",
+  "pcm_or_payload_persisted": false,
+  "key_or_license_accessed": false
+}

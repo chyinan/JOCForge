@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "reader-descriptor-null-initialization",
+      "input": {
+        "inner_state_field": "+0x58"
+      },
+      "expected_observation": {
+        "constructor_initial_value": "NULL",
+        "later_nonzero_writer": "UNBOUND"
+      },
+      "limitations": [
+        "No physical CHNA N join",
+        "No K same-generation join",
+        "No runtime capture"
+      ]
+    }
+  ]
+}

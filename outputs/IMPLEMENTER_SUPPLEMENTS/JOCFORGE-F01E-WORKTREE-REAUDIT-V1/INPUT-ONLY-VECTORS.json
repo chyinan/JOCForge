@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "production-path-current-36",
+      "input": {"physical_rows": 36, "profile_channels": 38},
+      "expected_static_scope": {"first_gate": "validate_selected_profile", "result": "SourceConfigurationMismatch before Spatial"}
+    },
+    {
+      "id": "dynamic-proposal-test-only-36",
+      "input": {"physical_rows": 36, "callback_index_before": 0, "callback_index_after": 1},
+      "expected_static_scope": {"dynamic_after_state_tested": true, "selected_production_callback": false, "runtime_encode": "NOT_RUN"}
+    },
+    {
+      "id": "dynamic-proposal-test-only-38",
+      "input": {"physical_rows": 38, "callback_index_before": 0, "callback_index_after": 1},
+      "expected_static_scope": {"dynamic_after_state_tested": true, "selected_production_callback": false, "runtime_encode": "NOT_RUN"}
+    }
+  ],
+  "warning": "These vectors do not establish selected production callback completion, SpatialControl owner installation, or native output."
+}

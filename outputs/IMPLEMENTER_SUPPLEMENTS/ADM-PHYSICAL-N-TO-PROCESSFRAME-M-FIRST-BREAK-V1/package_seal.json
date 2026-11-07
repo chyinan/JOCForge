@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-PHYSICAL-N-TO-PROCESSFRAME-M-FIRST-BREAK-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "cdefbcf086eeef3a70838befe342454caa65a93cbaca2282e5ebfd8a71321c0e",
+  "payload_file_count": 12,
+  "payload_hash_audit": "PASS_12_OF_12",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

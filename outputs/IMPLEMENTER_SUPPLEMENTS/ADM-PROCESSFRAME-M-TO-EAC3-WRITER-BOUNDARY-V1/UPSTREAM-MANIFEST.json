@@ -1,0 +1,32 @@
+{
+  "schema": "washed-package-manifest.v1",
+  "package_id": "sample6-process-frame-eac3-writer-boundary-wash-v1",
+  "scope": "Ghidra-only ProcessFrame M to E-AC-3 writer guard and shared static handler boundary; no media retained",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "05288879e31762b5e398fa384a971586790ca9a6d4458237c67d3a545f22487e",
+      "bytes": 5589
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "8b4fbb3d917ea93cf19bcbad102fc630e8ec6d1b8cf29c5a98a6ebe343cdb363",
+      "bytes": 5021
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "sha256": "66b874848718a7c85054014d55681064f5d63c9653b88eec201a2dcd4b38c736",
+      "bytes": 2097
+    },
+    {
+      "name": "REPORT.md",
+      "sha256": "534875103347210d246b143e532fe34006df8f8a45fffd9d9e92fa282c314caf",
+      "bytes": 3556
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "sha256": "1d9c1d99a8a51e04c2ec793e49b40401b1408c37639945d25c91f56cfff9b072",
+      "bytes": 1968
+    }
+  ]
+}

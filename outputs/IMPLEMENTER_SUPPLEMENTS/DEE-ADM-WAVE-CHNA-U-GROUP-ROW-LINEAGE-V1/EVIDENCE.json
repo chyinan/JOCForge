@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.dee_adm_wave_chna_u_group_row_lineage.v1",
+  "package_id": "DEE-ADM-WAVE-CHNA-U-GROUP-ROW-LINEAGE-V1",
+  "status": {
+    "fmt_count_to_chna_entry_count_validation": "STATICALLY_BOUND_IN_U_OPEN",
+    "fmt_or_raw_chna_to_K_count_direct_store": "NOT_OBSERVED",
+    "CHNA_UID_to_zero_based_physical_track_slot": "STATICALLY_BOUND",
+    "physical_slot_to_typed_U_Bed_Channel_record": "STATICALLY_BOUND_AT_RECORD_PLUS_0X10",
+    "U_Bed_Channel_records_to_U_group_container": "STATICALLY_BOUND",
+    "U_group_entry_count_to_K_count_producer": "BOUND_BY_REUSED_RECEIPT",
+    "concrete_U_K_owner_generation": "NOT_CAPTURED",
+    "K_six_byte_group_row_projection": "NOT_EVALUATED",
+    "arbitrary_track_support": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "ADM-WAVE-CHNA-U-ROW-CONTAINER-V1",
+    "manifest_sha256": "7af3ea125b1029bf9407a10c20fee4f6dd70807ec93b2e92d5bc2865141474aa",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 read-only/no-analysis"
+  },
+  "row_path": {
+    "reader_owner": "fresh U created by WAVE storage factory",
+    "fmt_count_field": "U+0x6368",
+    "chna_reader_field": "U+0x63A8",
+    "chna_lookup_map_field": "U+0x6370",
+    "chna_result": "one-based physical WAVE track index, decremented to zero-based slot",
+    "bed_channel_record_size": 56,
+    "physical_slot_record_field": "+0x10",
+    "row_container_path": "record -> bed group vector -> U group-record container",
+    "K_count_relationship": "existing K producer consumes U group-entry counts; exact K row projection not re-evaluated"
+  },
+  "limits": {
+    "actual_fmt_or_chna_count_read": false,
+    "dee_executed": false,
+    "parser_replay": false,
+    "pcm_or_input_payload_read": false,
+    "dbmd_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_all_branches_claim": false
+  },
+  "implementation_disposition": "Use as the static CHNA-to-U-row lineage only; no runtime count, universal ADM support, or exact K serialization claim."
+}

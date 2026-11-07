@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.atmos_composite_format_channel_count_boundary.v1",
+  "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-CHANNEL-COUNT-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-WASH-V1",
+    "manifest_sha256": "3f9af4c10a78ebc9e3e27ca802e39e0026e0018c0a5fde16a2ef30439d382038",
+    "manifest_checksum_file_sha256": "ae49f1ef7e4d364ef6c4dcc4b0b9fef7eb84c86a5c2bb0492f3aea5b4a339396",
+    "checker_normal_and_python_o": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "parents": [
+    {"package_id": "DEE-ATMOS-LAYOUT-BRANCH-WRITER-WASH-V1", "manifest_sha256": "fa60ca124c7dcbd694ef64828277cf864f0700b11231acbf97a0d184d3f089d8"},
+    {"package_id": "DEE-ATMOS-PROCESSOR-FRAME-SHAPE-WASH-V1", "manifest_sha256": "34c7a9bff992cf4e76ddc48b1633094c8603c8e898e8faa103a29c9068ae0863"}
+  ],
+  "target": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis",
+    "dee_run": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "job_process_control": "NONE"
+  },
+  "owner_and_output": {
+    "function": "FUN_18054fa70",
+    "layout_flag": "owner+0x100",
+    "output_metadata_base": "owner+0x10",
+    "channel_count_store": "U16 at owner+0x1A = metadata+0xA",
+    "reader_consumer": "FUN_180186870 reads metadata+0xA"
+  },
+  "branch_zero": {
+    "count_source": "format-shape interface at owner+0x48, vtable slot +0x80",
+    "count_rule": "direct U16 from the count accessor",
+    "mapping_source": "same interface slot +0x88, copied as six-byte entries"
+  },
+  "branch_nonzero": {
+    "source_vector": "owner+0x50 through owner+0x58",
+    "count_accessor": "vtable slot +0x80",
+    "entry_accessor": "vtable slot +0x88",
+    "per_source_count": "number of entries with byte at entry+0x2 equal to 0xFF",
+    "output_rule": "maximum per-source count plus 10"
+  },
+  "handoff_gates": {
+    "pre_count_callback_can_return_without_store": true,
+    "map_allocation": "six bytes per entry",
+    "allocation_failure_returns_before_metadata_pointer_handoff": true,
+    "post_format_callback_can_return_before_metadata_pointer_handoff": true
+  },
+  "status": {
+    "both_static_count_stores_to_reader_metadata_field": "BOUND",
+    "runtime_layout_branch": "NOT_CAPTURED",
+    "selected_36_or_38_branch": "NOT_CAPTURED",
+    "physical_chna_rows_to_output_channel_count": "UNBOUND",
+    "general_track_count_range": "NOT_ESTABLISHED",
+    "global_absence_claim": false
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "do_not_promote_static_gate_to_observed_support_range": true,
+    "do_not_equate_composite_count_with_physical_chna_rows": true
+  }
+}

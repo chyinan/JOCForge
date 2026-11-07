@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.data_rate_selector_static_vectors.v1",
+  "status": "STATIC_LOOKUP_ONLY_NOT_RUNTIME",
+  "variants": [
+    {"xml_text": "384", "static_selector_code": 0},
+    {"xml_text": "448", "static_selector_code": 1},
+    {"xml_text": "576", "static_selector_code": 2},
+    {"xml_text": "640", "static_selector_code": 3},
+    {"xml_text": "768", "static_selector_code": 4},
+    {"xml_text": "1024", "static_selector_code": 5}
+  ],
+  "selected_job_xml_text": "1024",
+  "selected_job_static_result_if_lookup_reached": 5,
+  "runtime_workflow_map_and_branch": "NOT_CAPTURED",
+  "dee_run": false,
+  "pcm_or_payload_included": false
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-ADM-FIRST-DOWNSTREAM-COUNT-GUARD-BOUNDARY-V1",
+  "manifest_sha256": "58b419380b5b1c7157176275b9529876f2963c912277085b47ae5861562cffa1",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "9d5ebe9cd9053392fe92975710f460fc7efcc45500078f486a5ba985c951758b",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "FIRST_BED_COUNT_GUARD_BOUND; NOT_A_TOTAL_N_OR_K_LIMIT"
+}

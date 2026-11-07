@@ -1,0 +1,12 @@
+{
+  "schema": "wash.composite-selector-opened-k-owner-join-manifest.v1",
+  "package_id": "COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+  "files": {
+    "CHECK.json": "d32b8ceb5d81fc676ca52fb6fa820b84be514f4af51ee2d7ac644b9ce7ba92b4",
+    "FUNCTION-HASHES.json": "038c2aa3bf9938eb5db4f0f1420d1377645fad5b93e5ffcf44f834351d16d2e7",
+    "OWNER-OPENED-K-JOIN.json": "fbc0783526220262df667a043c8c6de155baef79f0bb0c48d7759bd255159357",
+    "README.md": "63032b08e0f2acbd938734bae8726d3c34acb977fe7b07693d81e9274e747645",
+    "SOURCE-RECEIPTS.json": "73024f6d4f191720287a90ebdddc945fb8ef60b24456ed924ae8f486f8243d5e",
+    "verify_evidence_package.py": "88995060e02aa64373c5426f28535f7f8c4582119565f78aa26bc0f1a8a7877b"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.dee_time_base_default_setter_producer.v1",
+  "package_id": "DEE-ADM-TIME-BASE-DEFAULT-SETTER-PRODUCER-V1",
+  "status": "TIME_BASE_CONSTRUCTOR_DEFAULT_TO_STRINGTYPE_SETTER_STATIC_BOUND; SELECTED_XML_VALUE_AND_HOST_VIRTUAL_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "DEE-ADM-ATMOSMEZZ-TIME-BASE-SETTER-PRODUCER-WASH-V1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-TIME-BASE-SETTER-PRODUCER-WASH-V1",
+    "checksum_list_sha256": "6c8c4d072a0157efdc4ccd8491da38ca095d4e86d9e5b961d8fffb5bc964f4ba",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "separate_package_seal": "NOT_PRESENT",
+    "tool": "Ghidra 12.2",
+    "analysis_mode": "read-only/no-analysis targeted references and field inspection",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_hash_provenance": "project-recorded; installed DLL not rehashed"
+  },
+  "typed_member": {
+    "owner": "dee::proc::Priv",
+    "field": "time_base",
+    "offset": "+0x550",
+    "type": "StringType",
+    "setter": "FUN_18014f820",
+    "vtable_slot": 5,
+    "slot_byte_offset": "+0x28"
+  },
+  "constructor_producer": {
+    "only_direct_code_caller_observed": "FUN_180138690",
+    "role": "constructor for the time_base StringType member",
+    "argument_source": "FUN_180136220 supplies static default file_position",
+    "setter_effect": "constructor helper calls StringType setter with the supplied default string",
+    "selected_job_xml_value_to_setter_argument": "UNBOUND",
+    "host_setproperty_virtual_target_to_setter": "UNBOUND",
+    "runtime_setter_invocation": "NOT_CAPTURED"
+  },
+  "inherited_range_contract": {
+    "wash_package_id": "DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1",
+    "wash_manifest_sha256": "8ec2de3c452aded30a5aad5a370e93fdcae958ebc6f516c18265ca76c16437f1",
+    "wash_seal_sha256": "273db15bdc1196598f36a0f2f2439ee8837a9e36a3985c0267ba7d1ea88c4ca2",
+    "reopened_or_retraced_here": false,
+    "selected_value_and_runtime_branch": "UNBOUND"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "runtime_owner_generation": "UNBOUND",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "process_control": false
+  }
+}

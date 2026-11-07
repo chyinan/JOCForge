@@ -1,0 +1,49 @@
+{
+  "schema": "washed.flattened-master-provider-getter-identities.v1",
+  "recipient": "WASH_ONLY",
+  "binary": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "path": "E:/Tools/Dolby_Encoding_Engine/dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "verified_on_disk": true
+  },
+  "ghidra": {
+    "version": "12.2_PUBLIC",
+    "project": "work/ghidra-param13-source/dee_ddp_atmos_config_lineage_r2",
+    "mode": "existing project; -process dee_audio_filter_ddp_atmos.dll; -noanalysis; -readOnly",
+    "script_path": "outputs/work/ghidra_dispatch_scripts/TraceFlattenedMasterProviderGetter.java",
+    "script_sha256": "950ef973424560565e643c0d20154b05d97ec23ed5f60a0ec20b28b86a517f3a",
+    "run_log_path": "outputs/work/ghidra-flattened-master-provider-getter-v5.txt",
+    "run_log_sha256": "76857bb53d2c8fa730edd5e88cb1eac4cc739e6f426b7bec90afc00e77fd5dbb"
+  },
+  "parent_receipts": [
+    {"package_id": "sample6-physical-n-to-processframe-m-first-break-wash-v1", "manifest_sha256": "34bc62d82c87e54b0405e82d4dca44f709ba525693b82b5ecac77a1f56ed5180"},
+    {"package_id": "sample6-atmos-channel-count-provider-slot-writer-wash-v1", "manifest_sha256": "37c6b05764a0b98bdfbc0bf9da7737cb7846451ba4b4d1a92527db2c3e8952f4"},
+    {"package_id": "sample6-atmos-channel-count-producer-boundary-wash-v1", "manifest_sha256": "08981f85f75fddf13a32ce763700415a959fdb0d1060f3c46772ce8b376fa07a"},
+    {"package_id": "sample6-atmos-reader-channel-packet-dimension-wash-v1", "manifest_sha256": "1fa9964ca78537e24a93862960d9a9951cf50e8faaeb619628781c890d654cf8"}
+  ],
+  "function_code_sha256": {
+    "FUN_1804CBC20": "03d1cc24e9a386e7440166f56e6959cfe2e9054e93eb1867cc5740076131f6e7",
+    "FUN_1804F5250": "657c30f05454e81b245d25251ce67f865173b4e3da962da813e00d68d52b2efa",
+    "FUN_1804F5B00": "c891c5464b68e1529ef901626c2b5f538cd72636d2ebdcf317e3de1c72728235",
+    "FUN_1804F5AF0": "75a8b0e4f67155ab51726601cbbecd8bbddaa4544b094b5c781ead82d94e04e3",
+    "FUN_180536E40": "90c33b2a68b628045d1ebe0ba9d31726fc074d9e9b9574c72233c83faadd0e37",
+    "FUN_180536180": "4b5af00d92e234f05ef0d4e02fdef5c6912f58a42b2f51a7478d8ccdc7158c4f",
+    "FUN_1805364D0": "a6a7ed6e2680176ef2f11757e593877adb2dab6f988f8d7022d78231ab023c21",
+    "FUN_1805364C0": "a09030b62741de8bde347fd215c57c53753c8487a36dcd073b43b710b6b4763c",
+    "FUN_180537030": "6553778ea692ace5535adbfe92ed5302c6ebc7f34117994122b28e4c2da638ec",
+    "FUN_180537170": "ec570840fc39861c9310b17d397eca0b61da5d806b79edd4c04f18586aaf6fe2",
+    "FUN_180536320": "60f1f4beeffb3b8819631bf524e6bfdf185cf3a1fa73d54373874434110dbf7d",
+    "FUN_1805890F0": "20079dcb13f6f722cbd484a7ab5f1afc081ce44433d165cfd9f3a95d2d319332",
+    "FUN_180420580": "813b00f48d4cf0d99dea047ab4852415937c2c310855ec0ec2bda6184b705ba3"
+  },
+  "vtable_identities": {
+    "atmos_storage_flatten_master": {"base": "0x1807FD688", "slot_0xA0": "FUN_1804F5AF0"},
+    "atmos_storage_FlattenedMasterSource": {"base": "0x180806CD0", "slot_0x68": "FUN_1805364D0", "slot_0x78": "FUN_1805364C0", "slot_0x80": "FUN_180537030", "slot_0x120": "FUN_180537170"}
+  },
+  "exclusions": [
+    "No DEE process or encoding was started.",
+    "No input audio, PCM, EC-3 payload, key, or license material was accessed.",
+    "No implementation-side checkout or process was accessed."
+  ]
+}

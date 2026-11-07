@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "COMPOSITE-SELECTOR-NESTED-SOURCE-PATH-BOUNDARY-V1",
+  "manifest_sha256": "3ce58ded640e63686cfb922b6827e87534396758cdd67cadb3f10271af0b2bde",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "NESTED_PATH_CONSTRUCTION_STATIC_BOUND; SYMBOLIC_SOURCE_OWNER_AND_PATH_VALUE_UNBOUND; HANDLER_SELECTION_UNBOUND; K_COUNT_NOT_REACHED"
+}

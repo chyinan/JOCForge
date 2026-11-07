@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "composite-frame-buffer-capacity-lifecycle",
+      "kind": "static-allocation-and-consumer-summary",
+      "input": {
+        "composite_count": "current U16 metadata +0xA",
+        "frame_samples": 1536
+      },
+      "observed": {
+        "allocation_once_flag": "+0x68",
+        "matrix_capacity_saved": false,
+        "consumer_capacity_guard": false,
+        "same_owner_larger_count_reuse": "NOT_CAPTURED"
+      },
+      "status": "STATIC_CAPACITY_GAP; NO_OVERRUN_OBSERVED"
+    }
+  ]
+}

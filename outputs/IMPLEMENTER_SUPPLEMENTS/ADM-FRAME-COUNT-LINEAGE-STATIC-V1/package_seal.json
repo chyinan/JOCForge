@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "5fca02a1dd968790b5449aa8c0ab47d14251de101ec64f93fcbcf29ddb6c925a",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "46230ce4aa5fa9a0f060887282dbb7fe86c47c5e2ea67fbbe4e943eb97c31c0c",
+  "upstream_raw_ghidra_receipts_audit": "PASS_9_OF_9",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

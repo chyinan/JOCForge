@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-FLATTENED-MASTER-INNER-PROVIDER-FIRST-BREAK-V1",
+  "manifest_sha256": "68beaf1e33787941727a3d5481ffdaf221d393d1f2e8a842a0a6a384177476b1",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "RESOLVER_WRAPPER_AND_OUTER_PROVIDER_SLOT_STATIC_BOUND; INNER_PROVIDER_TARGET_UNBOUND; RETURN_OWNER_TYPE_UNBOUND; FORMAT_OWNER_JOIN_UNBOUND"
+}

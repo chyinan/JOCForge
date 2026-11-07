@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "JOCFORGE-36-ROW-DYNAMIC-SHAPE-COLD-RESET-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "36_38_INPUT_SHAPE_AND_COLD_RESET_RULE_BOUND_FOR_MODEL; NATIVE_ROW_IDENTITY_AND_PLAYABLE_36_OUTPUT_UNBOUND",
+  "implementation_disposition": "USE_DYNAMIC_N_ROW_SHAPES_AND_EXPLICIT_ABSENCE_FOR_36_38_MVP; DO_NOT_ZERO_FILL_MISSING_GLOBAL_IDS; KEEP_TYPED_ROW_MAP_AND_PRODUCTION_CALLBACK_JOIN_AS_SEPARATE_GATES",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3285,
+      "sha256": "3c1dd5ee287a26043a8a459acaaac6c50a4c8f9c2ab8695f0003f3bcffd8a5b4"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1773,
+      "sha256": "111cfcdd3fde2e3df41c5970a4d1ff31535fa6b737cfb662ff0f67f899181481"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 3478,
+      "sha256": "c2108a273b3137aa6e296b3370a440a93e6e876f244d5c5008c66c69db246f12"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1306,
+      "sha256": "4509db43cc19d69867246cf41a020f4dc4d01133675be3b4540ceeb70f3d444a"
+    }
+  ]
+}

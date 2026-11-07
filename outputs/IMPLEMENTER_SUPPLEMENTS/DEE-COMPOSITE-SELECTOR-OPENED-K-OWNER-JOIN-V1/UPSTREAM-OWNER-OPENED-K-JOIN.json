@@ -1,0 +1,103 @@
+{
+  "schema": "wash.composite-selector-opened-k-owner-join.v1",
+  "package_id": "COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "scope": {
+    "tool": "Ghidra 12.2",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "DEE_or_native_execution": "NOT_RUN",
+    "PCM_payload_key_license_reads": false,
+    "implementation_contact": false,
+    "runtime_pointer_values": "NOT_CAPTURED",
+    "runtime_generation": "NOT_CAPTURED",
+    "runtime_time_join": "NOT_CAPTURED"
+  },
+  "reused_carrier_result": {
+    "parent_package_id": "COMPOSITE-SELECTOR-OWNER-INPUT-JOIN-V2",
+    "parent_manifest_sha256": "d758c6b49171705a635a66abc203ad51a6c3e1ba8fbc9ecfcea2256638aa4844",
+    "reader_input_vector_and_flag_same_carrier": "YES_STATIC",
+    "U8_flag_plus_0x18_static_initialization": "ZERO_IN_BOTH_TRACED_PRODUCER_PATHS"
+  },
+  "typed_owner_chain": [
+    {
+      "stage": "reader source-item owner construction",
+      "owner_role": "per-item source owner J",
+      "source_record_stride_bytes": 64,
+      "owner_layout_fields": {
+        "+0x00": "opened master handle slot",
+        "+0x08": "opened source-item descriptor K pointer slot",
+        "+0x20": "U64 source start-sample field",
+        "+0x28": "U64 source end-sample field"
+      },
+      "field_semantic_type_limit": "The exception text identifies start/end sample bounds. Sampling rate/timebase is not recovered in this edge."
+    },
+    {
+      "stage": "opened-source dispatch arguments",
+      "operation": "For each J created from a 64-byte input record, the master-open dispatch receives the reader storage-service owner and source path; its typed stack outputs include J and the address of J+0x08. The generic storage wrapper forwards both stack outputs to its selected method implementation.",
+      "dispatch_arguments": {
+        "arg6": "J object pointer",
+        "arg7": "address of J+0x08 K pointer slot"
+      },
+      "selected_extension_handler": "NOT_CAPTURED",
+      "open_status_or_nonnull_handle": "NOT_CAPTURED"
+    },
+    {
+      "stage": "first typed K consumers",
+      "owner_role": "pointer loaded from J+0x08",
+      "observed_layout": {
+        "count": "U16 at K+0x0A",
+        "row_base": "U64 pointer at K+0x10",
+        "row_stride_bytes": 6
+      },
+      "consumers": [
+        "bed-order validator reads the U16 count and indexed six-byte rows through J+0x08",
+        "7.1.2-bed validator reads the same K header/count and indexed six-byte rows through J+0x08"
+      ],
+      "layout_link": "Matches the already-sealed K typed-getter contract; that prior contract is referenced, not rederived."
+    },
+    {
+      "stage": "selector descriptor projection",
+      "operation": "The per-item J pointer is stored in the reader source-owner vector. The later 0x58-byte descriptor projection reads J fields and copies J+0x08 into descriptor-row +0x08. The selector input contract reads its descriptor pointer from each 0x58-byte row at +0x08.",
+      "descriptor_stride_bytes": 88,
+      "descriptor_pointer_field": "U64 at row +0x08, copied from the same per-item J+0x08 K slot",
+      "source_vector_count_formula": "(source_vector_end - source_vector_begin) / 64",
+      "descriptor_vector_count_formula": "(descriptor_vector_end - descriptor_vector_begin) / 88",
+      "actual_counts": "NOT_CAPTURED"
+    }
+  ],
+  "join_result": {
+    "selector_descriptor_row_to_opened_K_slot": "YES_STATIC_DIRECT_FIELD_COPY",
+    "same_per_item_owner_instance": "YES_STATIC_POINTER_LINEAGE",
+    "same_runtime_opened_K_pointer_value": "NOT_CAPTURED",
+    "same_runtime_source_generation": "NOT_CAPTURED",
+    "selector_runtime_mode": "NOT_CAPTURED"
+  },
+  "time_and_bounds": {
+    "source_time_domain": "U64 sample positions at J+0x20 and J+0x28",
+    "static_range_checks": [
+      "end sample is checked against sample count returned for J+0x00 master handle",
+      "start sample must not exceed end sample"
+    ],
+    "actual_sample_bounds": "NOT_CAPTURED",
+    "sampling_rate_or_timebase": "UNBOUND",
+    "host_frame_spatial_callback_fit_U04_consumer_generation_join": "NOT_APPLICABLE_TO_THIS_STATIC_EDGE; NOT_CAPTURED_AT_RUNTIME"
+  },
+  "first_unresolved_runtime_edge": {
+    "edge": "storage-open dispatch to a concrete non-null K pointer and runtime source-generation token",
+    "status": "NOT_CAPTURED",
+    "reason": "Static evidence binds the dispatch output slot, K readers, and selector row field to one per-item J object. No allowed runtime observation identifies the concrete pointer value, selected extension handler result, successful open status, or generation token for an actual run."
+  },
+  "prior_contracts": [
+    {
+      "package_id": "COMPOSITE-SELECTOR-INPUT-SEMANTICS-V1",
+      "manifest_sha256": "47f91ba7eb4efacb5ad19202631d508a8b39b26d1e14547ce926521998141ff4",
+      "reused_fact": "selector descriptor-list pointer is read from each 0x58-byte row at +0x08; selector predicates are not rederived"
+    },
+    {
+      "package_id": "COMPOSITE-DESCRIPTOR-WRITER-OWNER-JOIN-V1",
+      "manifest_sha256": "248c105c22c0f8ee85f8538cc350ebee3ab056978f862be20fd38f8131bb2783",
+      "reused_fact": "K is the opened source-item descriptor with a U16 count and six-byte indexed rows; the prior source-generation and selected-runtime claims remain unbound"
+    }
+  ]
+}

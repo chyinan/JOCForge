@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "dee-adm-physical-n-reader-descriptor-boundary-v1",
+      "input": {
+        "scope": "One selected inner/outer Reader construction path and its immediate descriptor count use.",
+        "inner_reader": "FUN_180185160 constructs outer Reader then FUN_1801852e0 creates inner AtmosReaderPrv from CompositeMaster; inner +0x58 initialized NULL.",
+        "descriptor_consumer": "Later FUN_1801852e0 reads inner +0x58, then U16 descriptor +0x0A; paired CompositeMaster U32 +0x30 is passed to a helper whose result is stored in outer param_1[3].",
+        "distinct_count_domain": "K candidate = individual_record_count + sum(group_entry_count), accumulated U32 and low U16 written to K +0x0A; typed join to inner Reader descriptor is UNBOUND.",
+        "physical_n": "Input-only examples N=36 and N=38 do not join to Reader descriptor count.",
+        "first_break": "Nonzero producer of inner Reader +0x58 descriptor pointer remains UNBOUND."
+      },
+      "expected_disposition": "physical N-to-Reader and K-to-Reader typed owner/generation joins remain UNBOUND.",
+      "limitations": [
+        "One selected construction path only; no other writers searched.",
+        "No global support/absence claim.",
+        "DEE runtime and PCM remain NOT_RUN/NOT_READ."
+      ]
+    }
+  ]
+}

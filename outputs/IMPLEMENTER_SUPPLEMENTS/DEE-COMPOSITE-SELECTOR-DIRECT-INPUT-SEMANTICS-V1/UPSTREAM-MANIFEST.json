@@ -1,0 +1,13 @@
+{
+  "schema": "wash.composite-selector-input-semantics-manifest.v1",
+  "package_id": "COMPOSITE-SELECTOR-INPUT-SEMANTICS-V1",
+  "files": {
+    "CHECK.json": "0e561f2d1011392763beefe7a61ebd6958fea396b005459aa0dcf44ea9632f84",
+    "FUNCTION-HASHES.json": "b48de2859d2c5c00debe1999bb63d091376d0030a5c4a44000282169c6df224f",
+    "INVOCATION.json": "79e1fdf4c9c37949578ed998ceb461d4cdf18121ee497e7c0f963d9ca5a12c8c",
+    "README.md": "3a89fef525a968afee31998f1d504b7fc62c50017b25c7a0b62ad6021496cea4",
+    "SELECTOR-INPUT-SEMANTICS.json": "2cd683cb8a76862d058135095b8a0f31223b2e1dc6b68011a58f9d40b41e59ef",
+    "SOURCE-LINKS.json": "7a1486d03d40764db34d2f29faa71f0c665a4a8388775ad9e69231ab1e847370",
+    "verify_evidence_package.py": "098bb1e7843935472dd883acf15d85078974c2b21480f232a7552c0518596394"
+  }
+}

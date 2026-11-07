@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "layout-flag-zero-count-path",
+      "kind": "static-branch-summary",
+      "input": {"owner_plus_0x100": 0, "shape_count_accessor": "U16"},
+      "output": {"metadata_plus_0xA": "shape count"},
+      "status": "STATIC_TRACE_ONLY"
+    },
+    {
+      "vector_id": "layout-flag-nonzero-count-path",
+      "kind": "static-branch-summary",
+      "input": {"owner_plus_0x100": "nonzero", "entry_marker": "entry+0x2 == 0xFF"},
+      "output": {"metadata_plus_0xA": "maximum per-source marked-entry count plus 10"},
+      "status": "STATIC_TRACE_ONLY"
+    }
+  ]
+}

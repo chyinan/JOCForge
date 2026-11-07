@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.dee-atmos-per-source-silence-alternate-branch.v1",
+  "package_id": "DEE-ATMOS-PER-SOURCE-SILENCE-ALTERNATE-BRANCH-BOUNDARY-V1",
+  "status": "SELECTED_FUN_180175C80_VECTOR_LENGTH_AND_PARAM_ROW_BUILD_BOUND; VECTOR_TO_READER_CONSUMPTION_NOT_FOUND_IN_BRANCH; OTHER_BRANCHES_UNBOUND; AU_COUNT_UNBOUND",
+  "upstream": {
+    "package_id": "dee_atmos_ddp_audio_window_consumer_wash_v1",
+    "manifest_sha256": "f43b90771b2a4982f8d52b1657593519db5990243832acc846636f629b547d14",
+    "package_seal_sha256": "a07d42333921564ea318833e1b2b10cc21754d06b0811ebe7a608b477ea52145",
+    "manifest_files": 26,
+    "manifest_hash_audit": "PASS_26_OF_26",
+    "seal_manifest_link": "PASS"
+  },
+  "branch": {
+    "selected_function": "FUN_180175c80",
+    "vector_validator": "FUN_180177230 validates vector lengths against source count",
+    "temporary_parameter_builder": "FUN_1801844c0 builds composite per-source parameter rows",
+    "reader_wrapper_constructor": "FUN_180185240 uses separate inline context fields and fixed parameters; temporary parameter rows are released",
+    "four_vector_values_copied_into_reader_config": "NOT_FOUND_IN_SCOPED_TRACE",
+    "reader_chain": "FUN_1801850a0 -&gt; vtable slot 3 FUN_180186520 -&gt; FUN_180186870",
+    "reader_output_fields": "data pointer, channel count, sample count",
+    "duration_vector_sample_consumption": "NOT_FOUND_IN_SCOPED_TRACE"
+  },
+  "separate_worker": {
+    "function": "FUN_180179ab0",
+    "direct_owner": "FUN_180179a80",
+    "call_reference_context": "CBI workflow FUN_180175500",
+    "joined_to_FUN_180175c80_owner_generation": "NO_EVIDENCE"
+  },
+  "unbound": ["other encoder branch consumers of duration vectors", "requested silence to actual sample insertion/fill", "runtime reader branch selection", "AU count", "span-to-AU relation"],
+  "execution": {"dee_run":"NOT_RUN","pcm_or_payload_read":false,"key_or_license_access":false}
+}

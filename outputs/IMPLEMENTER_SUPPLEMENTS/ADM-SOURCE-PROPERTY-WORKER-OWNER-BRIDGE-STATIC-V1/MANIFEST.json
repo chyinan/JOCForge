@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-SOURCE-PROPERTY-WORKER-OWNER-BRIDGE-STATIC-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_SOURCE_PROPERTY_TO_WORKER_PRIVATE_STATE_TYPED_OWNER_CHAIN_BOUND_STATICALLY; SELECTED_INSTANCE_AND_GENERATION_UNBOUND",
+  "implementation_disposition": "USE_CONDITIONAL_TYPED_OWNER_CHAIN; VERIFY_SELECTED_RUNTIME_SOURCE_AND_GENERATION_SEPARATELY",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2207, "sha256": "deb36f81d930034c4064bf07774ddc1efd196ecde12476e9e0dd641902c747b6"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 1042, "sha256": "9b08482d1c8278bca1012ffd687cfe4881ae389930b4897171ce876884110e82"},
+    {"name": "REPORT.md", "bytes": 2823, "sha256": "fd6a652f6e9cb98b020f6e11423f71a856e5d214a5c0245459f150c326b2d420"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 913, "sha256": "5c7caae233bf8251221ea8cfc7285a479d7063efa33911f8196538dddc3ed5d4"}
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "DEE-ADM-READER-N-PCM-ARGUMENT-PRODUCER-WASH-V1",
+  "manifest_sha256": "b037cddeaea066337fd753cc1f73be66b504eeb035982c6b1339779c29f0fae4",
+  "standalone_seal_file": "NOT_PROVIDED",
+  "source_checker_normal_and_optimized": "PASS",
+  "raw_trace_or_native_source_copied": false
+}

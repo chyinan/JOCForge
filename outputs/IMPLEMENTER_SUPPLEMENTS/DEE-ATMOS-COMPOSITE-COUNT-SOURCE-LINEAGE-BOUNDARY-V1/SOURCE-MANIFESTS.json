@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "DEE-ATMOS-COMPOSITE-COUNT-SOURCE-LINEAGE-WASH-V1",
+  "source_manifest_sha256": "4ef254d06424ae9c736aeb0f00f25ba535eafff2a9d2b983ed66461a0e34c781",
+  "source_seal_sha256": null,
+  "source_integrity_artifacts": [
+    {
+      "name": "MANIFEST.sha256",
+      "sha256": "VERIFIED_BY_SOURCE_VERIFY_PACKAGE"
+    },
+    {
+      "name": "standalone package seal",
+      "status": "NOT_PROVIDED"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-WASH-V1",
+      "manifest_sha256": "d72f1bb76bc0d1dcfbf757a424538e07ba1835836b1fe601f541e34e5c7943d7"
+    },
+    {
+      "package_id": "DEE-ATMOS-COUNT-FRAME-CAPACITY-WASH-V1",
+      "manifest_sha256": "f30a57b2456311aeda1144708c8126f2843686327e864190afd8ac0a834dd766"
+    },
+    {
+      "package_id": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+      "manifest_sha256": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

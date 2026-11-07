@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-PROCESSFRAME-CAPACITY-KEY2-PRODUCER-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "KEY2_I32_C_PRODUCER_BOUND; PROFILE_ROWS_0_1_3_4_DEFAULT_11_RANGE_1_11; ACTIVE_PROFILE_C_AND_ARENA_UNBOUND; C_NOT_JOINED_TO_N_OR_M",
+  "implementation_disposition": "Keep C, M, N, derived slots, and allocator arena byte capacity as distinct domains; treat rejection of 36/38 as conditional only",
+  "source_manifest_sha256": "502c4dfbe4010f70a4c7485f81d1c48fb780d73b8c8274b0dbdd86674cf74ff0",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3564,
+      "sha256": "6ee0ff8341100c3162584a82aa4827320af7f28ac73d54694a044dc0212199ca"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2781,
+      "sha256": "b0151f9cd67aa8135507bed472afb89b21e1819dc8d3fe0a3cbd1fa3a6784c52"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 663,
+      "sha256": "e5cef31e3f5795c7f120714566f5dca337bf2fab9b6327100359c25937a5086a"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2381,
+      "sha256": "9357b86168c617bd0fe3d867b000fdd13ec4ed6e1aa0a853ff74db8b61a79c3d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 768,
+      "sha256": "39883cbb16335050175aac59786dd9c026a0ada79054c636d2bec400f2ac6aa6"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 1030,
+      "sha256": "502c4dfbe4010f70a4c7485f81d1c48fb780d73b8c8274b0dbdd86674cf74ff0"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 246,
+      "sha256": "6a812cc6c3a12cbb4b4e8cedbbf5542c5f4d1ef0cfdad91b9b2807f37e211ba5"
+    },
+    {
+      "name": "UPSTREAM-SOURCE-IDENTITIES.json",
+      "bytes": 2352,
+      "sha256": "de615a4253cd48905e3a7c2bfcc9b24be1af552259d5a46936dc623b5cc2d80c"
+    }
+  ]
+}

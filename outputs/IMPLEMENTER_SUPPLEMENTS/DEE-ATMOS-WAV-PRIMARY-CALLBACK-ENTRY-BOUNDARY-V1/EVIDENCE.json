@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.washed_reverse_boundary.v1",
+  "package_id": "DEE-ATMOS-WAV-PRIMARY-CALLBACK-ENTRY-BOUNDARY-V1",
+  "source_package_id": "DEE-ATMOS-WAV-PRIMARY-CALLBACK-ENTRY-BOUNDARY-WASH-V1",
+  "status": "PRIMARY_WAV_CALLBACK_ENTRY_BOUND; ARGUMENT_TYPES_AND_PHYSICAL_N_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "source_integrity": "SOURCE_VERIFIER_NORMAL_AND_PYTHON_O_PASS",
+  "facts": {
+    "scope": "FUN_1803ec660 entry register saves through its first helper call only.",
+    "registration": "Provider ID 3 registers FUN_1803ec660 as primary callback; registration does not supply N identity.",
+    "prototype": "Ghidra prototype remains undefined FUN_1803ec660(void); RCX/RDX/R8B/R9 are saved into local registers but no pointee field reads occur in the prefix.",
+    "first_call": "FUN_18057a410 at 0x1803ec69a with RCX=0x10 and RDX=&DAT_180a53b10; trace stops there.",
+    "n_join": "No Reader/ADM layout or physical N argument is typed in this prefix; runtime callback invocation NOT_CAPTURED."
+  },
+  "parent_bindings": [
+    {
+      "package_id": "DEE-ATMOS-WAV-PROVIDER-REGISTRY-BOUNDARY-WASH-V1",
+      "manifest_sha256": "bf913facbc0d6a6642b8854b871c540a6c1965b5c3472e3b9a9496defb087a44"
+    },
+    {
+      "package_id": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+      "manifest_sha256": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10"
+    }
+  ],
+  "runtime": "NOT_RUN",
+  "limitations": [
+    "Callback body beyond the first helper was not inspected.",
+    "No runtime callback, DEE job, or media/key access."
+  ],
+  "scope_exclusions": {
+    "native_source_or_decompilation_forwarded": false,
+    "media_pcm_or_payload_forwarded": false,
+    "private_key_or_license_forwarded": false,
+    "global_absence_claim": false
+  }
+}

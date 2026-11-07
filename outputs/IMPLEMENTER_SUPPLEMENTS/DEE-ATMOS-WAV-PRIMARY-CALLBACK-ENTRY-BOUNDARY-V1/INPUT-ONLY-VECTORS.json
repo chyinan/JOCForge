@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "dee-atmos-wav-primary-callback-entry-boundary-v1",
+      "input": {
+        "scope": "FUN_1803ec660 entry register saves through its first helper call only.",
+        "registration": "Provider ID 3 registers FUN_1803ec660 as primary callback; registration does not supply N identity.",
+        "prototype": "Ghidra prototype remains undefined FUN_1803ec660(void); RCX/RDX/R8B/R9 are saved into local registers but no pointee field reads occur in the prefix.",
+        "first_call": "FUN_18057a410 at 0x1803ec69a with RCX=0x10 and RDX=&DAT_180a53b10; trace stops there.",
+        "n_join": "No Reader/ADM layout or physical N argument is typed in this prefix; runtime callback invocation NOT_CAPTURED."
+      },
+      "expected_disposition": "No typed Reader/physical-N owner at callback entry; runtime invocation NOT_CAPTURED.",
+      "limitations": [
+        "Callback body beyond the first helper was not inspected.",
+        "No runtime callback, DEE job, or media/key access."
+      ]
+    }
+  ]
+}

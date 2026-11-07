@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "attempt04-tgen1-frame-shape",
+      "kind": "dynamic-metadata-only-observation",
+      "input": {"physical_N": 38, "sample_rate_hz": 48000, "window_samples": 50000},
+      "observed": {"K_count": 38, "B_count": 38, "nonempty_D_calls": 33, "samples_per_call": 1536},
+      "owner_join": "K_TO_B_TO_PROCESSOR_D_JOINED_FOR_TGEN1_JGEN1; U_TO_K_UNBOUND",
+      "status": "ONE_SHORT_RUNTIME_ATTEMPT_ONLY",
+      "pcm_bytes_observed_or_saved": 0
+    }
+  ]
+}

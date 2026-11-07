@@ -1,0 +1,73 @@
+{
+  "schema": "jocforge.composite_selector_direct_inputs.v1",
+  "package_id": "DEE-COMPOSITE-SELECTOR-DIRECT-INPUT-SEMANTICS-V1",
+  "status": {
+    "selector_field_and_consumer": "BOUND_BY_PARENT_PACKAGE",
+    "key2_direct_input_type_and_truth_test": "BOUND_STATIC",
+    "key2_mapped_payload_semantics": "UNBOUND",
+    "source_descriptor_comparison_fields": "BOUND_STATIC",
+    "source_descriptor_owner_generation": "UNBOUND",
+    "selected_runtime_mode": "NOT_CAPTURED",
+    "audio_effect": "NOT_RUN"
+  },
+  "upstream_source": {
+    "package_id": "COMPOSITE-SELECTOR-INPUT-SEMANTICS-V1",
+    "manifest_sha256": "47f91ba7eb4efacb5ad19202631d508a8b39b26d1e14547ce926521998141ff4",
+    "formal_package_seal": "NOT_PRESENT",
+    "verifier_normal": "PASS",
+    "verifier_python_o": "PASS"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "static_selector_rule": {
+    "producer": "FUN_1805506b0",
+    "field": "T+0x100",
+    "field_type": "U8",
+    "expression": "key2_lookup(param_7) != 0 OR FUN_1805505d0(param_2) != 0",
+    "consumer": "FUN_18054fa70",
+    "zero_mode": "ordinary",
+    "nonzero_mode": "extended"
+  },
+  "direct_input_1": {
+    "lookup_function": "FUN_18054ea90",
+    "config_object": "param_7",
+    "key_type": "U8",
+    "key_value": 2,
+    "lookup_result_type": "longlong",
+    "consumer_use": "nonzero test only",
+    "mapped_payload_read": false,
+    "external_name_or_schema": "UNBOUND"
+  },
+  "direct_input_2": {
+    "function": "FUN_1805505d0",
+    "input": "param_2 descriptor-list pointer",
+    "list_count": "U32 at list+8",
+    "descriptor_stride": "0x58",
+    "fields_compared": [
+      "U16 descriptor count at descriptor+0x0A",
+      "for each six-byte row, U16 at row+0x00",
+      "U8 tag at row+0x02",
+      "U16 at row+0x04"
+    ],
+    "row_stride_bytes": 6,
+    "byte_0x03": "READ_AS_PART_OF_A_U32_ROW_LOAD_BUT_NOT_COMPARED",
+    "valid_count_domain": "1..128 from linked sealed package",
+    "predicate": "nonzero on first mismatch; zero when all compared fields match",
+    "owner_generation": "UNBOUND"
+  },
+  "separate_fields": {
+    "T+0x08": "separate byte derived from param_3 and clamped",
+    "T+0x102": "separate bool set by key-4 lookup in FUN_18054fa70"
+  },
+  "runtime_and_safety": {
+    "new_ghidra_query": "NOT_RUN",
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "wash.research-check.v1",
+  "package_id": "COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+  "result": "PASS_NORMAL_AND_PYTHON_O",
+  "normal_run": "PASS",
+  "optimized_run": "PASS",
+  "static_selector_row_to_K_owner": "BOUND",
+  "runtime_open_success_and_generation": "NOT_CAPTURED",
+  "native_execution": "NOT_RUN",
+  "implementation_contact": false
+}

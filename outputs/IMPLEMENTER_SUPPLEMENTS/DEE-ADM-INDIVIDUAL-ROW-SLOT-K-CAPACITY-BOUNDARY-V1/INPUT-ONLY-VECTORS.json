@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "individual-slot-k-count-guard",
+      "input": {
+        "slot_source": "individual record U32",
+        "k_count": "separate U16"
+      },
+      "expected_observation": {
+        "selected_store_has_local_slot_kcount_guard": false,
+        "runtime_violation": "NOT_CAPTURED"
+      },
+      "limitations": [
+        "No upstream slot validation closure",
+        "No runtime allocation extent",
+        "No N-to-K identity"
+      ]
+    }
+  ]
+}

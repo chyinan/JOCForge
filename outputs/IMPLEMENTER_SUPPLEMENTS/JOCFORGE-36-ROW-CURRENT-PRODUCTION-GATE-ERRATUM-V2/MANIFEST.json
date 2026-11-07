@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "METER_SOURCE_MAP_DYNAMIC; SELECTED_METER_NORMAL_SNAPSHOT_FIXED_38; PRIMARY_SELECTED_38_BINDING_IS_SEPARATE; FRESHZERO_DYNAMIC",
+  "implementation_disposition": "IGNORE_V1_METER_SOURCE_MAP_FIXED38_CLAIM; FIX_THE_SELECTED_NORMAL_SNAPSHOT_AND_LATER_FIXED_SPATIAL_ROWS_AFTER_DYNAMIC_METER_MAP",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2616,
+      "sha256": "4d3fe63a5a9a951ff96bb35ecb2e5177f80ec99847c268e43cbd76ebe2bc64d0"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1372,
+      "sha256": "8b298d2f11ff93550d94dbb7b1e9f7d492cd7e6915ad12452305aa4f068617d5"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2324,
+      "sha256": "3632864f0ce17e5739acd3642fc591a0c90661b46580623fa20b67b5addb7f5a"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 667,
+      "sha256": "4cc92e250932610a6f9a9c9fe18c74232ba2009427ca9f599344913c13fc0421"
+    }
+  ]
+}

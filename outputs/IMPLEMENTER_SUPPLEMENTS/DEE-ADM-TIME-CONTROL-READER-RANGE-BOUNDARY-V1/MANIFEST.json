@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-TIME-CONTROL-READER-RANGE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "R138_EMBEDDED_TIMECODE_CONVERSION_RULE_BOUND_STATIC; OFFSET_FFOA_BRANCHES_DISTINCT; OWNER_AND_READER_JOIN_UNBOUND",
+  "implementation_disposition": "PRESERVE_OFFSET_AND_FFOA_AS_SEPARATE_INPUTS; DO NOT CLAIM R138 READER EXECUTION OR RESOLVED SAMPLE RANGE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2669,
+      "sha256": "615f4035840b71afd097cf330b71120da8d8389b728ea256aa941402eded73ad"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1072,
+      "sha256": "69dcd1f6df2b9eebbea9be75ad296b8fa88c3e071e565b6091a97d57ff8813d2"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1965,
+      "sha256": "f0798fa6613f49b9a031151e823d0ae0e4e780b994d148f4e7a8155e2b72a12a"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 689,
+      "sha256": "c5e81a8ab846fd79f074e34a6b6c9f00374010ff36cfe1f63fdc100c71da434f"
+    }
+  ]
+}

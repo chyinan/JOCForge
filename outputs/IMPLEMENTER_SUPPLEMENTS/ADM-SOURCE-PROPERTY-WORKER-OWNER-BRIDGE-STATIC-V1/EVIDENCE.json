@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.adm-source-property-worker-owner-bridge.v1",
+  "package_id": "ADM-SOURCE-PROPERTY-WORKER-OWNER-BRIDGE-STATIC-V1",
+  "status": "HOST_SOURCE_PROPERTY_TO_WORKER_PRIVATE_STATE_TYPED_OWNER_CHAIN_BOUND_STATICALLY; SELECTED_INSTANCE_AND_GENERATION_UNBOUND",
+  "upstream": {
+    "package_id": "ADM-SOURCE-PROPERTY-WORKER-OWNER-BRIDGE-STATIC-V1",
+    "manifest_sha256": "a4f09e46efa60550322478d5f90d4a29935c087aee3231ac000ac410a9ade945",
+    "manifest_files": 6,
+    "manifest_hash_audit": "PASS_6_OF_6",
+    "research_receipts": 12,
+    "receipt_hash_audit": "PASS_12_OF_12",
+    "prior_wash_manifests": 7,
+    "prior_manifest_hash_audit": "PASS_7_OF_7",
+    "checker": "REPORTED_PASS_NORMAL_AND_PYTHON_O; NOT_RERUN_BY_WASH"
+  },
+  "route": {"input_type":"audio.atmos_mezz","filter_type":"encode_to_atmos_ddp","factory_type_handoff":"BOUND_STATIC_BY_PRIOR_PACKAGE"},
+  "typed_owner_chain": [
+    {"from":"StageRunner factory create slot +0x30","to":"P2 processing stage","rule":"host stores the exact create-return pointer at H+0x270"},
+    {"from":"RunAudioFilter host source field H+0x448","key":"dee_audio_filter_source","to":"P2 setter virtual slot +0x08","rule":"generic property packet contains 0x68-byte records"},
+    {"from":"P2+0x08","to":"V=P2+0xB8","rule":"setter loads the same private state V and resolves the key through V parameter registry"},
+    {"from":"V registry","to":"Q dee_audio_filter_source parameter","rule":"resolved string setter validates then commits to Q-owned storage on success"},
+    {"from":"P2 lifecycle slot +0x28","to":"same V=P2+0xB8","rule":"stage execution reloads V from the same P2 subobject"},
+    {"from":"Q getter","to":"workflow source vector -> S worker source vector","rule":"inherited hash-bound source-property contract"},
+    {"from":"S","to":"K->J->B->D count lineage","rule":"conditional on inherited ordinary-reader/PE branch"}
+  ],
+  "runtime_unbound": ["selected P2 instance token","source generation","actual property value","selected pass/reader/PE branch","native K/B/D count and frame values"],
+  "scope": {"native_execution":"NOT_RUN","audio_payload_read":false,"secret_read":false,"implementation_contact_before_wash":false}
+}

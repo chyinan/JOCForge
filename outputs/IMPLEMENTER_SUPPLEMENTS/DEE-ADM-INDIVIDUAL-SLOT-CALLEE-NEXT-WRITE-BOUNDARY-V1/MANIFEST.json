@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-INDIVIDUAL-SLOT-CALLEE-NEXT-WRITE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CALLEE_NEXT_OUTPUT_FIELD_STORE_FOUND; UID_SLOT_NOT_ESTABLISHED; SLOT_GUARD_UNBOUND; POST_NEXT_NOT_INSPECTED; RUNTIME_NOT_RUN",
+  "source_package_id": "adm_individual_slot_callee_next_write_wash_v1",
+  "source_manifest_sha256": "c36b7d09f43ee30eaf5350190cbac474c972234e096687bdd89bc99da57a9c1a",
+  "source_package_seal_sha256": "756c97f28da63707755979acfb0e3fac1b57cbfbe09095ea7171cbf39983e7b9",
+  "implementation_ready": false,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2053,
+      "sha256": "efab7bde2fc39ae16675ca8d3b7e1f7c4dc3ae427b94d75e5142f2c2bfac386d"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1695,
+      "sha256": "ab3d35c83bcc1b69368425ab2937f5e44cef965e754052f3d4ce87f8d5ec1fce"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1082,
+      "sha256": "481f485fbefe0a4f7510ff7c24c978fcb0758b38d96dba51d37a35db147acb3d"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 965,
+      "sha256": "9f6f92a3eeb81e543752ec0a7f3e74db973948d86a310ad11a73494839c33eb9"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 909,
+      "sha256": "d9c1894c7c3d4beee174644350754b3c8aacdaadeeda4728cf8a5b5d22551178"
+    }
+  ]
+}

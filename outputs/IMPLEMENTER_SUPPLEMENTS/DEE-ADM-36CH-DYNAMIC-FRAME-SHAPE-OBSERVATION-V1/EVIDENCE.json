@@ -1,0 +1,214 @@
+{
+  "attempt_id": "attempt-05",
+  "first_nonempty_frame_shape": {
+    "actual_channels": 36,
+    "b_count": 36,
+    "call_order": "first nonempty frame-shape consumer call in this attempt",
+    "frame_sample_count": 1536,
+    "interpretation": "Observed native shape transition; cause NOT_CLOSED and not called a model/native divergence.",
+    "next_call_delta_ms": 123,
+    "next_nonempty_call_expected_channels": 36,
+    "processor_expected_channels": 0,
+    "same_processor_and_frame_descriptor_on_next_nonempty_call": true,
+    "t_generation": "Tgen-1"
+  },
+  "frame_shape_population": {
+    "absolute_adm_sample_position": "NOT_CAPTURED",
+    "empty_zero_channel_zero_sample_calls_without_b_descriptor": 10,
+    "expected_channels_36_calls_among_nonempty": 32,
+    "expected_channels_zero_calls_among_nonempty": 1,
+    "host_frame_number": "NOT_CAPTURED",
+    "nonempty_actual_36_sample_1536_calls": 33,
+    "same_chain_nonempty_calls": 33,
+    "total_consumer_events": 43
+  },
+  "generation_lineage": {
+    "k_to_t_j_b_to_d": {
+      "b_count": 36,
+      "b_descriptor_owner_token": "owner-16",
+      "composite_generation": "Tgen-1",
+      "frame_consumer_calls_same_b_and_generation": 33,
+      "frame_descriptor_owner_token": "owner-19",
+      "j_generation": "Jgen-1",
+      "matched_k_count": 36,
+      "matched_k_writer_count": 1,
+      "processor_owner_token": "owner-18",
+      "status": "JOINED_FOR_TGEN_1"
+    },
+    "native_time_base_to_u_k_j_t_b_d_generation": "NOT_BOUND_KEY_READ_FAILED; NO_ALTERNATE_STRING_LAYOUT_PROBE",
+    "process_attempt_binding": "BOUND_BY_ATTEMPT_ID_AND_PROCESS_GENERATION",
+    "second_composite_generation": {
+      "b_descriptor_owner_token": "owner-16",
+      "b_row_table_owner_token": "owner-34",
+      "d_consumer_after_this_generation_in_capture": false,
+      "generation": "Tgen-2",
+      "j_generation": "Jgen-2",
+      "same_b_descriptor_owner_as_tgen1": true
+    },
+    "u_to_k": "UNBOUND_COUNT_VALUES_MATCH_NUMERICALLY_BUT_K_WRITER_U_OWNER_TOKEN_IS_NULL"
+  },
+  "input_identity": {
+    "file_format": "RIFF/WAVE PCM24",
+    "physical_chna_track_rows_from_prior_metadata": 36,
+    "prior_receipt_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+    "recomputed_this_attempt": false,
+    "same_ntfs_file_id_verified_before_run": true,
+    "source_path_relation": "ASCII_basename_opened_directly; no rename, copy, or alias",
+    "source_sample_count_from_prior_metadata": 7328771,
+    "source_sample_rate_hz": 48000
+  },
+  "job_configuration": {
+    "configured_sample_count": 50000,
+    "configured_source_sample_interval": [
+      0,
+      50000
+    ],
+    "effective_source_frame_rate_hz": 24,
+    "end_frame_inclusive": 24,
+    "input_type": "atmos_mezz",
+    "native_time_base_value_observed": false,
+    "start_frame_inclusive": 0,
+    "time_base_in_job_xml": "file_position"
+  },
+  "model_and_later_stages": {
+    "model_count_comparison": "NOT_EVALUATED",
+    "six_plane_value_comparison": "NOT_RUN",
+    "type10_composition": "NOT_RUN"
+  },
+  "native_count_domains": {
+    "active_target_count": {
+      "status": "NOT_CAPTURED",
+      "value": null
+    },
+    "chna_physical_entry_count": {
+      "observations": 7,
+      "status": "OBSERVED_COUNT; PARTIAL_CALL_OWNER_BINDING",
+      "u_owner_token_bound_observations": 4,
+      "u_owner_token_missing_observations": 3,
+      "values": [
+        36
+      ]
+    },
+    "composite_b_descriptor_count": {
+      "observations": 2,
+      "status": "OBSERVED",
+      "values": [
+        36,
+        36
+      ]
+    },
+    "composite_j_adapter_count": {
+      "observations": 2,
+      "semantics": "J adapter vector length; not an ADM or channel count",
+      "values": [
+        1,
+        1
+      ]
+    },
+    "fmt_channel_count": {
+      "observations": 4,
+      "status": "OBSERVED",
+      "values": [
+        36
+      ]
+    },
+    "k_descriptor_count": {
+      "observations": 4,
+      "row_bytes_observed_capacity": 216,
+      "row_bytes_per_count": 6,
+      "u_owner_token_bound_observations": 0,
+      "u_to_k_owner_join": "UNBOUND_NULL_SOURCE_OWNER_TOKEN_IN_ALL_FOUR_WRITES",
+      "values": [
+        36,
+        36,
+        36,
+        36
+      ]
+    },
+    "source_record_count": {
+      "status": "NOT_CAPTURED_LAYOUT_NOT_BOUND",
+      "value": null
+    },
+    "u_container_helper_count": {
+      "event_cap_per_kind": 64,
+      "observed_generations": [
+        {
+          "count": 36,
+          "serialized_event_count": 1,
+          "u_generation": "Ugen-1",
+          "u_owner": "owner-1"
+        },
+        {
+          "count": 36,
+          "serialized_event_count": 63,
+          "u_generation": "Ugen-2",
+          "u_owner": "owner-11"
+        }
+      ],
+      "serialized_events_at_event_cap": 64,
+      "total_helper_calls": "NOT_CAPTURED_AFTER_EVENT_CAP",
+      "values": [
+        36
+      ]
+    }
+  },
+  "native_reference_encoding": {
+    "executed": true,
+    "exit_code": 0,
+    "ordinary_measurement_and_encoder_passes": "COMPLETED",
+    "output_file_bytes_only": 135893,
+    "output_payload_read_by_observer": false
+  },
+  "observer_scope": {
+    "license_or_key_content_read": false,
+    "owner_identity_representation": "per-attempt opaque tokens only",
+    "raw_emdf_or_ec3_or_mp4_payload_read_by_observer": false,
+    "raw_native_addresses_saved": false,
+    "raw_pcm_or_adm_essence_saved": false
+  },
+  "schema": "jocforge.adm_dynamic_frame_shape_observation.v1",
+  "time_base_observation": {
+    "direct_utf8_c_string_layout": "UNBOUND",
+    "hook_ready": true,
+    "key_statuses": [
+      "READ_FAILED"
+    ],
+    "native_value": "NOT_CAPTURED",
+    "setter_calls": 4,
+    "std_string_or_alternate_layout_probe": false,
+    "value_reads": 0,
+    "value_statuses": [
+      "SKIPPED_KEY_UNREADABLE"
+    ]
+  },
+  "time_domains": {
+    "generation_domain": "U/K/J/T/B/D owner and build tokens; equal counts are not identity",
+    "host_timestamp_domain": "epoch milliseconds from Date.now",
+    "job_sample_domain": "configured file-position sample interval only",
+    "native_frame_size_domain": "1536 samples per observed nonempty call; no absolute sample position"
+  },
+  "package_id": "DEE-ADM-36CH-DYNAMIC-FRAME-SHAPE-OBSERVATION-V1",
+  "source_package": {
+    "package_id": "adm_processor_frame_shape_n36_native_capture_wash_v1",
+    "manifest_sha256": "e96a393c1a0a4c3087890afc9cd5e8ad3b5bdd81a64c2f07c00c6359892f9923",
+    "package_seal_sha256": "5ebfe35afeb73fc7981106f1630d9902845e9f2d037eff4ba9932c89c20ef1f6",
+    "checkers_normal_and_python_o": "PASS"
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "use_as_single_n36_short_dynamic_observation_only": true,
+    "do_not_generalize_to_other_channel_counts": true,
+    "do_not_promote_equal_counts_to_owner_identity": true
+  },
+  "limits": {
+    "general_channel_count_range": "NOT_ESTABLISHED",
+    "physical_N_to_U_or_K_owner_join": "UNBOUND",
+    "native_time_base_and_sample_position": "NOT_CAPTURED",
+    "model_count_comparison": "NOT_EVALUATED",
+    "six_plane_value_comparison": "NOT_RUN",
+    "pcm_or_raw_audio_persisted": false,
+    "raw_addresses_persisted": false,
+    "key_or_license_read": false,
+    "global_absence_claim": false
+  }
+}

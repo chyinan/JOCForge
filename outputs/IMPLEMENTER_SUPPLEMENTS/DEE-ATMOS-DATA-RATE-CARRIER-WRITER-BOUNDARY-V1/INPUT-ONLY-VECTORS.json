@@ -1,0 +1,20 @@
+{
+  "schema": "data-rate-carrier-pair-input-only.v1",
+  "source_sample": "My Jealousy N36",
+  "source_sha256_prior_receipt": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+  "sample_hash_recompute_at_future_launch": "REQUIRED",
+  "fixed": {
+    "route": "encode_to_atmos_ddp",
+    "layout": "5.1",
+    "sample_rate_hz": 48000
+  },
+  "arms": [
+    {
+      "data_rate": 1024
+    },
+    {
+      "data_rate": 768
+    }
+  ],
+  "status": "PROPOSED_NOT_RUN"
+}

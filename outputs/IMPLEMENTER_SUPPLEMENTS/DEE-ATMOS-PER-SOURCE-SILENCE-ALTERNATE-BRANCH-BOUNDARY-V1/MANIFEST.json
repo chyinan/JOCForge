@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-PER-SOURCE-SILENCE-ALTERNATE-BRANCH-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SELECTED_FUN_180175C80_VECTOR_LENGTH_AND_PARAM_ROW_BUILD_BOUND; VECTOR_TO_READER_CONSUMPTION_NOT_FOUND_IN_BRANCH; OTHER_BRANCHES_UNBOUND; AU_COUNT_UNBOUND",
+  "implementation_disposition": "DO_NOT_ADD_SILENCE_SAMPLE_CONSUMPTION_FROM_THIS_BRANCH; PRESERVE_OTHER_BRANCHES_UNBOUND",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 1901, "sha256": "e56e844d49c3087d0ca6e092708862d429eac4c6e914311122efc7887b081dc4"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 716, "sha256": "493a8001082fb3cf3b2ee5f58ea1d2c9eafb7ee08253b3b3822bfecdfd61e14a"},
+    {"name": "REPORT.md", "bytes": 2342, "sha256": "21161afc495b34d0e3a45d659e7f14af5519c6ffb1624f5161cf421eaa6c0326"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 758, "sha256": "2e20ccfd7439a3bec8b3707fc520e012d4095be3ff1049b46255e242ab0f93e7"}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "wash.adm-frame-process-rowcount-consumer-manifest.v1",
+  "package_id": "ADM-FRAME-PROCESS-ROWCOUNT-CONSUMER-V1",
+  "files": {
+    "CHECK.json": "1659a620051c1c02ea98c986d8236502183e5c9285af8fe09a6da509b89c3710",
+    "EVIDENCE.json": "12a3c09bf1171380765e5ee8c4f013a7fb04f406683ceff8dc2919c32e94df6e",
+    "FUNCTION-HASHES.json": "7aa36b1e9fb98816ff47cbb910c0b48a20c90f9146b12e77167b9f7f77d758e2",
+    "INVOCATION.json": "2dae70be06c45176ebc0bd4fd06bda2eed00265d92382440f3e3e76d753814dd",
+    "README.md": "a0f65dac5eaf7ab575464a9776396b6862ded20be172c31363d81dd9fb6d4c4e",
+    "SOURCE-LINKS.json": "38a093dc1ab7edd0c9d28ba14166f86db284438242466ec7cc5f210c91a35329",
+    "verify_evidence_package.py": "de744ade976d249f02ff7a38e944e843b661231ec082b2f8bda9c03a013d99b2"
+  }
+}

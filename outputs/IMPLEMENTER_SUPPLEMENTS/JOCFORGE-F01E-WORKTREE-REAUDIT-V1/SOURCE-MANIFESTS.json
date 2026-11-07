@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream_package": {
+    "package_id": "F01E-WORKTREE-REAUDIT-WASH-V1",
+    "workspace": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-9-f05-f13-static-lineage/outputs/f01e-worktree-reaudit-wash-v1",
+    "manifest_sha256": "9f7f63634d6dd6a5fc8a7482dd46f9170e71c2d3db510f7a4ad2b05d61feb109",
+    "source_head": "31a21d72797d487fefe102581e5e83e1334b4d74",
+    "source_tree": "aa17672d0d70592e2548a93581e2c8d08ac528bb"
+  },
+  "wash_audit": {
+    "package_payloads_matched": "4/4",
+    "current_worktree_file_hashes_matched": "all listed files",
+    "current_head_ref_matches_snapshot": true,
+    "checker_status": "upstream CHECK-RESULTS reports PASS; Wash manually rehashed payload and source files"
+  },
+  "scope": "No implementation source or tests are included. Dirty worktree file hashes are distinct from committed HEAD blob IDs."
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V1",
+  "supersedes_specific_status_wording_in": "JOCFORGE-36-ROW-DYNAMIC-SHAPE-COLD-RESET-V1",
+  "references": [
+    {
+      "package_id": "JOCFORGE-36-ROW-DYNAMIC-SHAPE-COLD-RESET-V1",
+      "manifest_sha256": "7d7ed2fe971d43f5ced37fc5fbfa40e4c41a943ba43346041cfb0a3e97b816c8",
+      "package_seal_sha256": "20f9c5cb96e3cf75623f337e895bfd88eca5c0e6dc3ebdecdc489bf419f95bd9",
+      "role": "36/38 row-shape and new-attempt reset contract"
+    },
+    {
+      "package_id": "JOCFORGE-36-ROW-METER-AND-F01E-GATES-V2",
+      "manifest_sha256": "d9214781aa5189d10681ca70f23898ba002c1020363efb6ceb53c200be5cb1b8",
+      "package_seal_sha256": "1b30ab330b611f0834e75200f74c3a0568e05ef470d885d5a7f1db79102710bc",
+      "role": "prior Meter/F01E gate inventory; current worktree hash audit updates its FreshZero status"
+    },
+    {
+      "package_id": "F01E-36-ROW-COLD-OWNER-BOUNDARY-V1",
+      "manifest_sha256": "65d36ef6b0ae295e54c55ea473fbd2653a38b5ce068105603bc5071d4684a9a7",
+      "package_seal_sha256": "7936eb576b5b226de44a0f05099a0b2b5e10360f7edb122d38ed685615c65714",
+      "role": "cold owner reset rule; downstream normal snapshot remains fixed"
+    },
+    {
+      "package_id": "JOCFORGE-36-ROW-PRODUCTION-GATE-SEQUENCE-V2",
+      "manifest_sha256": "3aa67555e39035049718cf485004dac19edeb8498ddb0d510b7779d03601bbff",
+      "package_seal_sha256": "3f3ebad6f51eade2ad7d321dc5bae3f0155cf85d2960177331b2f25622f524f9",
+      "role": "ordered 36-row production gates"
+    }
+  ],
+  "current_source_files_rehashed": "PASS_7_OF_7"
+}

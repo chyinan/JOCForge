@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream_package": {
+    "package_id": "DEE-ATMOS-SOURCE-TO-AU-WASH-V1",
+    "workspace": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ATMOS-SOURCE-TO-AU-WASH-V1",
+    "manifest_sha256": "b864c94152763edc68a8d2d595c6e8526acb9af3de2bd7853837f05d4abf79c6",
+    "seal_sha256": "13e532f4989882cfc3ed8ac4c35b3a99ed834b1ba4bbd9d8cf22092650969e30",
+    "target_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "wash_audit": {
+    "payload_hashes_matched": "32/32",
+    "external_reference_hashes_matched": "7/7",
+    "source_commit_snapshot": "31a21d72797d487fefe102581e5e83e1334b4d74",
+    "working_tree_changes_included": false,
+    "dee_runtime": "NOT_RUN",
+    "pcm_payload": "NOT_READ"
+  },
+  "scope": "Only the sanitized static count rules, separate-axis distinction, and explicit UNBOUND limits in this supplement are approved for implementation review."
+}

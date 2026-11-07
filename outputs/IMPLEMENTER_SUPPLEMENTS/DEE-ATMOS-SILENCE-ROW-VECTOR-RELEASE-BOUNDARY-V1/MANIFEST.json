@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-ATMOS-SILENCE-ROW-VECTOR-RELEASE-BOUNDARY-V1",
+  "scope": "Selected row cleanup branch only; no silence/audio effect asserted.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1182,
+      "sha256": "ffa5b245d2378178fa5cc7abb8af14741f8dfa0586c05276d806bb09d0d08ef8"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 563,
+      "sha256": "cbc3ef45b50fcb1df2e218d13cc1d78c4f3bfae97561028a180d2a33a437df7d"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 707,
+      "sha256": "cfba1e19043b74794a3c28724772b89a001a6eb8310935cf32991d3dd8cb757e"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 2006,
+      "sha256": "0949f247b40d6773dc995862645e22ac6d770a5f16624f94269d07b39446429d"
+    }
+  ]
+}

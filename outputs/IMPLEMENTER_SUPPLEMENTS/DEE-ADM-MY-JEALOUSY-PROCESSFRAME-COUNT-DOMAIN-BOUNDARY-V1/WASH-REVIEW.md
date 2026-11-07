@@ -1,0 +1,7 @@
+# My Jealousy DDP JOC ProcessFrame count domains
+
+The hash-bound static path carries the ordinary-reader descriptor count N through the mode-0 open-config count into a canonical map transform `M=K+10`, then stores M in the encoder state consumed by ProcessFrame. The first ProcessFrame map consumer uses M for row loops/strides without a local total-M check. The first explicit guard limits unmarked/bed entries to ten with a per-entry low-byte constraint; this is not a total N/M limit. A separate mode-1 branch accepts only 10, 12, or 16, so it would reject N=36 if that mode and count were selected.
+
+The My Jealousy metadata receipt records N=36, ten bed rows, and 26 object rows, but its media hash is inherited and not recomputed in this pass; no PCM was read. A symbolic all-objects-active projection gives K=26 and M=36, only a numerical equality. The actual My Jealousy-to-job source join, runtime reader count, and selected mode are not captured. The separate 38-channel fixture is not the same source. Thus this evidence identifies a plausible dynamic mode-0 map path but does not establish a complete 36-track JOC output or arbitrary-N support.
+
+The N/K/M/C/sample-count domains remain distinct. Do not treat the 1..128 row-map gate as codec channel capacity or merge it with the independent 16-slot RAW PCM staging boundary. No code, decompilation, binary, PCM, payload, key, local path, or runtime behavior is included.

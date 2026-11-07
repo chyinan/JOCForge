@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-ADM-SAMPLER-FLOAT-RETURN-AUDIO-BOUNDARY-V1",
+  "source_package_manifest_sha256": "b1137d853d2f1f59a3a3cdc133a13d652be2edcb045488ec52329f0b2a228046",
+  "source_package_seal_sha256": "48b8730b3e67d2e44022425fc271f2d7891fc9aa109910c9e10319e947df3c06",
+  "files": {
+    "REPORT.md": "1b6281c632b991ac43cb747449a25a0c42132ea49980c15694704e6250255eb4",
+    "BOUNDARY.json": "d80da5269014431c4084bd0377a01489d2cc447da97d614185d2febda6f448ca",
+    "SOURCE-LINKS.json": "d99dc0fe15a16ff2d057349e3630250a45991f184fd29006f49e12aa5a6a6500",
+    "INPUT-ONLY-VECTORS.json": "10397524e9f0afa62b20be044c58dc3cf259ccd3cab43773399be071a5740d41"
+  }
+}

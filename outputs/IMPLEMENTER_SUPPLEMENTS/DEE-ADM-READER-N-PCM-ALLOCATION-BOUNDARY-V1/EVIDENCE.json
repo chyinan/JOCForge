@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.adm_reader_n_pcm_allocation_boundary.v1",
+  "package_id": "DEE-ADM-READER-N-PCM-ALLOCATION-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "DEE-ADM-READER-N-PCM-INITIALIZER-CAPACITY-WASH-V1",
+    "manifest_sha256": "2cebbfe36bb6dce9f4935dcaaf2145e66ef693c6be378632ec350d3bc9d78718",
+    "source_package_seal": "NOT_PROVIDED_BY_SOURCE",
+    "source_checker_normal_and_python_o": "PASS"
+  },
+  "parent_reader_n_receipt": {
+    "package_id": "DEE-ADM-READER-N-CONSUMER-WASH-V1",
+    "manifest_sha256": "de85b168909fdd0b56d9c4ef6cff83a5b4bec68cc421a511174e0e4b75732d7a",
+    "reader_record_n_type": "U64",
+    "reader_n_to_pcm_row_loop": "BOUND_STATIC"
+  },
+  "pcm_initializer": {
+    "mode_zero": true,
+    "stored_fields": {
+      "n": "+0x20",
+      "sample_count": "+0x28",
+      "mode": "+0x38",
+      "buffer_pointer": "+0x40",
+      "capacity_u32_elements": "+0x48"
+    },
+    "required_elements": "N * sample_count",
+    "growth_condition": "capacity < N * sample_count",
+    "growth_action": "release old buffer; request 4 * (N * sample_count) bytes; store pointer and element capacity",
+    "row_pointer_count": "N",
+    "row_pointer_stride_bytes": "4 * sample_count"
+  },
+  "overflow": {
+    "n_times_sample_count_guard": "NONE_OBSERVED",
+    "byte_scale_guard": "high word of 128-bit 4 * (N * sample_count)",
+    "overflow_allocator_argument": "UINT64_MAX",
+    "runtime_n_sample_count_and_allocator_result": "NOT_CAPTURED"
+  },
+  "status": {
+    "n_row_extent": "BOUND_STATIC",
+    "per_row_extent": "BOUND_STATIC",
+    "runtime_n": "NOT_CAPTURED",
+    "runtime_sample_count": "NOT_CAPTURED",
+    "runtime_capacity": "NOT_CAPTURED",
+    "allocator_outcome": "NOT_CAPTURED",
+    "pcm_data_read": false,
+    "general_channel_count_range": "NOT_ESTABLISHED_BY_THIS_PACKAGE"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 read-only/no-analysis",
+    "dee_execution": "NOT_RUN",
+    "k_source_retraced": false,
+    "1_to_128_gate_rechecked": false,
+    "media_or_payload_read": false
+  },
+  "implementation_disposition": {
+    "keep_n_and_sample_count_separate": true,
+    "mirror_checked_byte_scale_overflow_behavior": true,
+    "do_not_claim_runtime_allocation_success": true
+  }
+}

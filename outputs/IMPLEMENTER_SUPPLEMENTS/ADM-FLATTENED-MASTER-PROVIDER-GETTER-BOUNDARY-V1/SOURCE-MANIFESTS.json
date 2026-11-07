@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "supplement_package_id": "ADM-FLATTENED-MASTER-PROVIDER-GETTER-BOUNDARY-V1",
+  "upstream_package_id": "sample6-flattened-master-provider-getter-boundary-wash-v1",
+  "upstream_manifest_sha256": "994d15a917c8e6fce1581ecef20413bcdaec8affa3414e8c507766ae6d766af0",
+  "upstream_package_seal_sha256": "937ae9d6d8db1bdd41f2358927f86ed60fd1581bfec58a96f2f93bb4ae77001c",
+  "upstream_manifest_checksum_sha256": "982477102a18496db54816f47fb578d11d468f3b6e971d7df755c25ee15f560b",
+  "parent_receipts": [
+    {"package_id":"sample6-physical-n-to-processframe-m-first-break-wash-v1","manifest_sha256":"34bc62d82c87e54b0405e82d4dca44f709ba525693b82b5ecac77a1f56ed5180"},
+    {"package_id":"sample6-atmos-channel-count-provider-slot-writer-wash-v1","manifest_sha256":"37c6b05764a0b98bdfbc0bf9da7737cb7846451ba4b4d1a92527db2c3e8952f4"},
+    {"package_id":"sample6-atmos-channel-count-producer-boundary-wash-v1","manifest_sha256":"08981f85f75fddf13a32ce763700415a959fdb0d1060f3c46772ce8b376fa07a"},
+    {"package_id":"sample6-atmos-reader-channel-packet-dimension-wash-v1","manifest_sha256":"1fa9964ca78537e24a93862960d9a9951cf50e8faaeb619628781c890d654cf8"}
+  ],
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "raw_listing_or_decompilation_copied": false,
+  "pcm_payload_key_or_license_copied": false
+}

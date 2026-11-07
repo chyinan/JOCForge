@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.dee_atmosmezz_data_rate_source_manifest.v1",
+  "source_manifest_sha256": "2352b6835dd2d6b202dd71aa96ddaf6019487670b2d2c1609d70a20c6b03d191",
+  "source_package_id": "DEE-ADM-ATMOSMEZZ-DATA-RATE-PATH-WASH-V1",
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+  ],
+  "selected_job": {"xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6", "data_rate_text": "1024"},
+  "schema": {"sha256": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44", "listed_data_rate_tokens": [384, 448, 576, 640, 768, 1024], "default": "448"},
+  "listed_analysis_artifact_count": 12,
+  "raw_analysis_logs_or_scripts_in_supplement": false
+}

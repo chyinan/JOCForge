@@ -1,0 +1,87 @@
+{
+  "schema": "wash.hash-bound-static-source-receipts.v1",
+  "package_id": "COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+  "raw_source_material_in_package": false,
+  "source_program_identity": {
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "tool": "Ghidra 12.2",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED"
+  },
+  "prior_packages": [
+    {
+      "package_id": "COMPOSITE-SELECTOR-INPUT-SEMANTICS-V1",
+      "manifest_sha256": "47f91ba7eb4efacb5ad19202631d508a8b39b26d1e14547ce926521998141ff4"
+    },
+    {
+      "package_id": "COMPOSITE-SELECTOR-OWNER-INPUT-JOIN-V2",
+      "manifest_sha256": "d758c6b49171705a635a66abc203ad51a6c3e1ba8fbc9ecfcea2256638aa4844",
+      "report_sha256": "e3311cdf1f483f74c898e6e88ae3f6572ceac6fe223a779cd888a30208d88142"
+    },
+    {
+      "package_id": "COMPOSITE-DESCRIPTOR-WRITER-OWNER-JOIN-V1",
+      "manifest_sha256": "248c105c22c0f8ee85f8538cc350ebee3ab056978f862be20fd38f8131bb2783"
+    }
+  ],
+  "query_artifacts": [
+    {
+      "artifact_id": "source-item-owner-body-and-callers",
+      "sha256": "b649239d972fa29e8612daccd9be36498101f8e7e5f039c6a67f51fdf01e4fd7"
+    },
+    {
+      "artifact_id": "source-item-owner-open-call-arguments",
+      "sha256": "ea0ed53bd395ea6783c7a659e98d2f188efe5b530a492f609f055a7a9b7fcbef"
+    },
+    {
+      "artifact_id": "opened-K-layout-consumers",
+      "sha256": "a1aad76f18623f5ed3ce7b7c68b01cec3e0a0a079bfe8c25efdab906caf04f89"
+    },
+    {
+      "artifact_id": "storage-open-call-stack-argument-setup",
+      "sha256": "389ff162d354347bf5ec7520f29ec4e59acce170d68e0a75cc620d6f3633ca4c"
+    },
+    {
+      "artifact_id": "outer-reader-storage-service-owner-setup",
+      "sha256": "83f2ef5cb4bec2792f297785d584fab3ea37712484f8813c00eb3f92d2a2d7be"
+    },
+    {
+      "artifact_id": "storage-wrapper-output-argument-forwarding",
+      "sha256": "e5c0aafa25adaf98b568870bf4a4bbf87c5b4c499503e498a2dca83e1e25cee1"
+    },
+    {
+      "artifact_id": "opened-source-function-body-hashes",
+      "sha256": "2b3c541b6b61bd179cb659a9ef153efc71c8582b3010bfddc276b2bf7fd82156"
+    },
+    {
+      "artifact_id": "opened-K-consumer-body-hashes",
+      "sha256": "a0eb079f3de25fcd21025c830cfb0856ec9d22f5e2439e845eec338c261b9c46"
+    },
+    {
+      "artifact_id": "selector-row-projection-source-receipt",
+      "sha256": "165c58a000be71c95e1ffc8d462d6e881f8e85730ac50ef90320cb7390ce255b"
+    }
+  ],
+  "query_scripts": [
+    {
+      "role": "function_context_decompiler_and_xrefs",
+      "sha256": "810155a0504ff6365970e11e0384e646221e7047dfd5b0d212d4d3e18dbde0a3"
+    },
+    {
+      "role": "function_body_sha256_reader",
+      "sha256": "4cb67edfb3d14cf5982d8358b2b180fd1dc86c874105a0f1e44724abd1f1cb43"
+    },
+    {
+      "role": "instruction_window_register_trace",
+      "sha256": "0dc8af8a4a98cf69947e863bdd4453f428ef23773fcf9dd6b3072f67cdbda0b3"
+    },
+    {
+      "role": "selected_function_decompilation",
+      "sha256": "1d27b50564abc31d59027e7fe7f4f5f41dcb4abc4059c32a72f7cf4a82495a23"
+    },
+    {
+      "role": "function_call_setup_trace",
+      "sha256": "5b43f593ac81a8735c116db5c552855d7a501df82c9b7e8b77e37f421c36e1cd"
+    }
+  ],
+  "native_or_runtime_receipt": "NOT_CAPTURED"
+}

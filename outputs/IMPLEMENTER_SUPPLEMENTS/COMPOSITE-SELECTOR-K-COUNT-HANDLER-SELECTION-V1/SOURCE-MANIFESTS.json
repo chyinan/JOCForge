@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "COMPOSITE-SELECTOR-K-COUNT-HANDLER-SELECTION-V1",
+  "sources": [
+    {
+      "role": "primary_static_handler_selection_receipt",
+      "package_id": "COMPOSITE-SELECTOR-K-COUNT-HANDLER-SELECTION-V1",
+      "path": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/composite-selector-k-count-handler-selection-v1/wash-package",
+      "manifest_sha256": "82ec118eb0bc4bba8133bdcaadacf12c33f4c3b3fd86adcef6cb5419f179c516",
+      "package_seal": "NOT_PRESENT",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "owner_edge_reference_in_primary_receipt",
+      "package_id": "COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+      "manifest_sha256": "8ba69c952f128bd64faec02670501315fc9de2a0f7fa6feb8ed1c0b4edab0bb3",
+      "availability": "REFERENCE_ONLY_NOT_REOPENED_IN_THIS_PASS"
+    },
+    {
+      "role": "existing_candidate_k_count_contract",
+      "wash_package_id": "F13C-OPENED-SOURCE-DESCRIPTOR-COUNT-ORIGIN-V1",
+      "wash_manifest_sha256": "a4d0869f4b6f8f07a86611c4dcbd466e7dabef6365bb740163cbf48fe9c5396f",
+      "relationship": "Reused only as a candidate formula; applicability to this J+0x08 depends on selected handler and remains UNBOUND."
+    }
+  ],
+  "target_image": {
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity_source": "upstream evidence manifest"
+  },
+  "wash_boundary": {
+    "raw_source_code_or_decompilation_copied": false,
+    "pcm_or_encoded_payload_copied": false,
+    "private_key_or_license_copied": false,
+    "parent_owner_package_independently_reopened": false
+  }
+}

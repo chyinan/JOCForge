@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STRUCTURAL_ONLY; NOT_RUN",
+  "synthetic_layout": {
+    "bed_slots": "0..9",
+    "object_slots": "10..N-1",
+    "object_marker": "U16 bit 0x8000",
+    "bed_count": 10,
+    "all_object_entries_active": true,
+    "M_relation": "K+10=N for these constructed vectors only",
+    "profile_C": "separate symbolic U32"
+  },
+  "vectors": [
+    {"id": "N36", "N": 36, "K": 26, "M": 36, "object_slots": [10, 35], "dispatch_ordinals": [0, 25]},
+    {"id": "N38", "N": 38, "K": 28, "M": 38, "object_slots": [10, 37], "dispatch_ordinals": [0, 27]},
+    {"id": "N37-structural", "N": 37, "K": 27, "M": 37, "object_slots": [10, 36], "dispatch_ordinals": [0, 26], "claim": "no runtime/full-chain support"}
+  ],
+  "slot_ordinals_bind_adm_uid_identity": false,
+  "media_or_runtime_values_included": false
+}

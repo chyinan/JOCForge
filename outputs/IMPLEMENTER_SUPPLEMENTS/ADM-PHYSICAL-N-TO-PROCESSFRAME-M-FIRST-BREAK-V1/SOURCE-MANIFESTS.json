@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "supplement_package_id": "ADM-PHYSICAL-N-TO-PROCESSFRAME-M-FIRST-BREAK-V1",
+  "upstream_package_id": "sample6-physical-n-to-processframe-m-first-break-wash-v1",
+  "upstream_manifest_sha256": "34bc62d82c87e54b0405e82d4dca44f709ba525693b82b5ecac77a1f56ed5180",
+  "upstream_package_seal_sha256": "47d054d2e5ffffc335453da330ed698a0693d251f564616c41ee89da074d21ae",
+  "upstream_manifest_checksum_sha256": "c8b75b9085dbf8909964b0c26705fb1bb16a514ba3cdff85f26d6c3079284d6a",
+  "input_metadata_parent": {
+    "package_id": "authorized_adm_admission_evidence",
+    "manifest_sha256": "6a2ccb7cc514736fd16b1acc3e8f6f2243a98cb429443bdbfd90410519d398d9"
+  },
+  "source_images": [
+    {"name":"dee_audio_filter_ddp_atmos.dll","sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"},
+    {"name":"dee_ddp_encoder.exe","sha256":"0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"}
+  ],
+  "raw_native_code_or_decompilation_copied": false,
+  "pcm_payload_key_or_license_copied": false
+}

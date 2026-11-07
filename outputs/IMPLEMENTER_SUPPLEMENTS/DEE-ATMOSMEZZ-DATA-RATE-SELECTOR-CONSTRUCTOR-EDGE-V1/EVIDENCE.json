@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge.dee_atmosmezz_data_rate_selector_constructor_edge.v1",
+  "package_id": "DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V1",
+  "status": {
+    "six_xml_string_to_selector_codes": "BOUND_STATIC",
+    "selected_job_1024_static_lookup_result": 5,
+    "workflow_parameter_map_to_lookup_input_same_run": "UNBOUND",
+    "frame_local_plus_0xd8_mapped_code_write": "BOUND_STATIC",
+    "plus_0xfc8_eq_2_constructor_transfer": "BOUND_STATIC_CONDITIONAL",
+    "selected_runtime_plus_0xfc8_branch": "NOT_CAPTURED",
+    "runtime_selector_value": "NOT_CAPTURED",
+    "all_rate_runtime_support": "UNBOUND",
+    "writer_behavior_after_capacity": "NOT_EVALUATED",
+    "dee_run": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-DATA-RATE-CONSTRUCTOR-EDGE-WASH-V1",
+    "package_id": "DEE-ADM-ATMOSMEZZ-DATA-RATE-CONSTRUCTOR-EDGE-WASH-V1",
+    "manifest_sha256_file": "5c92d48a60682928e4fb9abd6f04c7e2062c19e31b27587a93ddf8452f284e81",
+    "payload_hashes": "PASS_3_OF_3",
+    "raw_analysis_artifacts": "PASS_20_OF_20",
+    "job_xml_schema_and_parent_evidence": "PASS",
+    "separate_package_seal_present": false,
+    "tool": "Ghidra 12.2 read-only/no-analysis"
+  },
+  "selected_job": {
+    "input_type": "audio.atmos_mezz",
+    "filter": "encode_to_atmos_ddp",
+    "xml_data_rate_text": "1024",
+    "job_xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+    "user_confirmed_input_label": "人是猫 - 张卡斯, 洛天依",
+    "input_sha256_previous_receipt": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_hash_recomputed_here": false
+  },
+  "static_string_table": [
+    {"xml_text": "384", "selector_code": 0},
+    {"xml_text": "448", "selector_code": 1},
+    {"xml_text": "576", "selector_code": 2},
+    {"xml_text": "640", "selector_code": 3},
+    {"xml_text": "768", "selector_code": 4},
+    {"xml_text": "1024", "selector_code": 5}
+  ],
+  "static_constructor_path": {
+    "lookup_and_frame_local_write": "FUN_1801535b0 maps workflow rate string and writes U32 to frame-local +0xD8",
+    "conditional_branch": "processor+0xFC8==2",
+    "call_chain": "FUN_1801475f0 -> FUN_1801746c0 -> FUN_1801746d0 -> FUN_180177e50/eb0 -> FUN_180178dc0",
+    "state_copy": "FUN_180177eb0 copies first U32 from constructor field into provider state param_1[0]",
+    "open_config_sink": "FUN_180178dc0 writes code into open_config[10]",
+    "xml_to_workflowparams_map_same_run": "UNBOUND"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "full_encode": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_access": false,
+    "implementation_contact": false,
+    "raw_analysis_logs_in_supplement": false
+  },
+  "disposition": "Static code table is bound; do not label the six rates runtime-supported without the same-run job-map and branch join."
+}

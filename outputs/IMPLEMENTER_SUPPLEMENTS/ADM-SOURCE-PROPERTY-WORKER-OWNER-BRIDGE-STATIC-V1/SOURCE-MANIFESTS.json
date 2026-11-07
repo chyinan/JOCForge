@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream_package": {
+    "package_id": "ADM-SOURCE-PROPERTY-WORKER-OWNER-BRIDGE-STATIC-V1",
+    "workspace": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/adm-source-property-worker-owner-bridge-static-v1/wash-package",
+    "manifest_sha256": "a4f09e46efa60550322478d5f90d4a29935c087aee3231ac000ac410a9ade945",
+    "source_links_sha256": "8a08099799b035e7ba4759bedd24bf031b8cbd82d560931caf4118f470b09d59",
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "plugin_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "wash_audit": {"manifest_files":"6/6","research_receipts":"12/12","prior_manifests":"7/7","native_execution":"NOT_RUN"},
+  "scope": "Only the sanitized owner-chain facts and explicit limitations in this supplement are available for implementation review."
+}

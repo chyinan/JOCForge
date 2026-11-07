@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "ADM-PHYSICAL-ROW-U16-LAYOUT-MAP-V1",
+  "references": [
+    {
+      "package_id": "ADM-PHYSICAL-ROW-OAMDI-U16-MAP-V1",
+      "manifest_sha256": "a556e48244645b60d1b6c5996d3151e03e15c2ba675872ee22fef711d5bc6db6",
+      "role": "primary static U16 map writer/consumer, metadata-only 36/38 projections"
+    },
+    {
+      "package_id": "ADM-SEMANTIC-DESCRIPTOR-INPUT-BINDING-V1",
+      "manifest_sha256": "addaf3bcf7866351380e7c9bd9de40457ae6b5d6e1014462cf232233ff23ee2e",
+      "role": "prior hash-bound CHNA TrackUID-to-AXML graph crosswalk"
+    }
+  ],
+  "wash_scope": "Only sanitized formulas, aggregate counts, and static source hashes; no raw ADM metadata, track UIDs, media, or key/license."
+}

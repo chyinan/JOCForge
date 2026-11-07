@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-PHYSICAL-ROW-U16-LAYOUT-MAP-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "988f096644c76f535c4b9e8c3dd022fd80e6f7d605544a025babd8ceaa677dea",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "a556e48244645b60d1b6c5996d3151e03e15c2ba675872ee22fef711d5bc6db6",
+  "upstream_artifacts": "PASS_12_OF_12; RESEARCH_RECEIPTS_PASS_7_OF_7; PARENT_REFS_PASS_7_OF_10",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

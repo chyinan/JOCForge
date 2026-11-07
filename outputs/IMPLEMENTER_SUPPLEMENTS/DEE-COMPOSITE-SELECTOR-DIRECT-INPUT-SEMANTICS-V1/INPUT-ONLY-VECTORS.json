@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.composite_selector_symbolic_vectors.v1",
+  "vector_scope": "SYMBOLIC_PREDICATE_TRUTH_TABLE_NOT_SAMPLE",
+  "sample_specific_inputs": false,
+  "expected_values_derive_from": "Bound static OR predicate only",
+  "cases": [
+    {"key2_lookup_nonzero": false, "descriptor_comparison_nonzero": false, "selector_T_plus_0x100": 0},
+    {"key2_lookup_nonzero": true,  "descriptor_comparison_nonzero": false, "selector_T_plus_0x100": 1},
+    {"key2_lookup_nonzero": false, "descriptor_comparison_nonzero": true,  "selector_T_plus_0x100": 1},
+    {"key2_lookup_nonzero": true,  "descriptor_comparison_nonzero": true,  "selector_T_plus_0x100": 1}
+  ],
+  "runtime_mode": "NOT_CAPTURED",
+  "audio_effect": "NOT_RUN"
+}

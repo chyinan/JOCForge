@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOSMEZZ-OFFSET-FFOA-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SCHEMA_AND_HOST_NORMALIZER_BOUND; CONVERTER_OWNER_AND_SEEK_UNBOUND",
+  "implementation_disposition": "Register schema and static normalization only; selected values and Reader seek remain unbound.",
+  "source_manifest_sha256": "fb51cbd50eec6876cda6394b51b106b5bca6b98b91a1d853878a836f2e7ec94b",
+  "source_package_seal_sha256": "356633d861d3fc765f7eae888ba901030980ef2410281611b2b1e1ccc286adbe",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2859,
+      "sha256": "504828dbd05a787d7ea3cf1617d09c1528474e18b587a63e50a0b1aab23b8a21"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3862,
+      "sha256": "9d257e99377df9c9985488efc816b407f4d1fe1f7f1abecf688353da238481b6"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 486,
+      "sha256": "9fb6e3534517382207de7f59dad8a0d56cf8b81a001d4c7c0c99efa66a2d9805"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1105,
+      "sha256": "253aca3de706186c4c69dde1dfc7e7a7bdd6cb404c965b0b8cdcd201ad69eb55"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 2652,
+      "sha256": "c7c3ab1262b278afe3737b33751fe012d80e808f36565d833a19a4448887cdab"
+    }
+  ]
+}

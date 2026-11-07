@@ -1,0 +1,43 @@
+{
+  "schema": "washed.core-selected-profile-index-identities.v1",
+  "recipient": "WASH_ONLY",
+  "binary": {
+    "program": "dee_ddp_encoder.exe",
+    "path": "D:/Programs/dee71joc/test_dee/dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "verified_on_disk": true
+  },
+  "ghidra": {
+    "version": "12.2_PUBLIC",
+    "project": "outputs/ghidra-dee-ddp-projects/ddp_writer_trace",
+    "mode": "existing project; -process dee_ddp_encoder.exe; -noanalysis; -readOnly",
+    "script_path": "outputs/work/ghidra_dispatch_scripts/TraceSelectedProfileIndex.java",
+    "script_sha256": "6e22cec31ef3e9e0f72884d9ab81259b4693b510cd7d814700c1602f1b5a4006",
+    "run_log_path": "outputs/work/ghidra-selected-profile-index.txt",
+    "run_log_sha256": "ae20074a8ebdf9ae78d06acd9ba7ddad13ca5b2c803844933a0ba9034c6812cb"
+  },
+  "parent_receipt": {
+    "package_id": "sample6-core-capacity-key2-producer-wash-v1",
+    "manifest_path": "outputs/sample6-core-capacity-key2-producer-wash-v1/MANIFEST.json",
+    "manifest_sha256": "502c4dfbe4010f70a4c7485f81d1c48fb780d73b8c8274b0dbdd86674cf74ff0"
+  },
+  "function_code_sha256": {
+    "FUN_140314F50": "c63bda1c14579a1cbc5ba09dc74e78af7ed18fb15f9cbbfbc44ba58f86f507eb",
+    "FUN_14031FAE0": "c2d2b27e50214a2dec8c410a3c5612f68873ac4aa34f2ca629b0923605fd3fd3",
+    "FUN_1403210C0": "83064e33dc96c1c7868a4ec8c572d58f77f8df8f022c096271c9a3cb420f7161",
+    "FUN_140321500": "2945c89076b2b6c2cfd3feb7000f55bd7d8ea8159bd5aff8311d9168af54693b"
+  },
+  "static_global_data": {
+    "DAT_1405EDA90": 1,
+    "DAT_1405EDA9C": 0,
+    "DAT_1405EDAAC": 4,
+    "PTR_DAT_1405EDAB0": "0x1405EF548",
+    "supported_profile_i32_values": [0, 1, 3, 4],
+    "resolved_references_to_default_globals": "READ references only; indirect runtime mutation not excluded"
+  },
+  "exclusions": [
+    "No DEE process or encoding was started.",
+    "No input audio, PCM, payload, key, or license material was accessed.",
+    "No implementation-side checkout or process was accessed."
+  ]
+}

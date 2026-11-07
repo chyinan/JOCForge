@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "dee-atmos-crt-slot3-count-source-boundary-v1",
+      "input": {
+        "scope": "One slot3 allocation initializer count source and its static CRT failure edge.",
+        "count_source": "No explicit function parameters; U32 loaded from a component-local global.",
+        "normalization": "Global value 0 becomes default 512; nonzero values below 3 clamp to 3; values >=3 are preserved.",
+        "allocator": "Normalized count is passed as element count with element width 8; retry after null uses count 3.",
+        "n_join": "No ADM physical N parameter is present on this call edge; global's upstream writer/owner remains untraced, so global-to-N relationship is UNBOUND.",
+        "failure_edge": "Double allocation null returns unsigned -1, propagated through CRT error table to PROCESS_ATTACH FALSE; runtime allocation failure NOT_RUN."
+      },
+      "expected_disposition": "slot3 allocation count is not typed as ADM physical N in this function; runtime failure remains NOT_RUN.",
+      "limitations": [
+        "Global upstream writer/owner/generation not traced.",
+        "Static possible CRT failure route only; attempt-12 error 1114 source remains NOT_IDENTIFIED.",
+        "No DEE run or allocation-failure observation."
+      ]
+    }
+  ]
+}

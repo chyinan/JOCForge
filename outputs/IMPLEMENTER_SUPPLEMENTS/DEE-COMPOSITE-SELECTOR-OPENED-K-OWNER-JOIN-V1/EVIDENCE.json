@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.composite_selector_opened_k_owner_join.v1",
+  "package_id": "DEE-COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+  "status": {
+    "selector_descriptor_row_to_opened_K_slot": "BOUND_STATIC_DIRECT_FIELD_COPY",
+    "same_per_item_owner_instance": "BOUND_STATIC_POINTER_LINEAGE",
+    "physical_N_to_K_count": "UNBOUND",
+    "successful_open_and_K_pointer_value": "NOT_CAPTURED",
+    "selected_extension_handler": "NOT_CAPTURED",
+    "runtime_source_generation": "NOT_CAPTURED",
+    "sample_selector_mode": "NOT_CAPTURED"
+  },
+  "source_package": {
+    "package_id": "COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+    "manifest_sha256": "8ba69c952f128bd64faec02670501315fc9de2a0f7fa6feb8ed1c0b4edab0bb3",
+    "formal_seal": "NOT_PRESENT",
+    "verifier_normal": "PASS",
+    "verifier_python_o": "PASS"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "field_lineage": {
+    "source_record_stride": 64,
+    "per_item_owner": "J",
+    "opened_K_slot": "U64 at J+0x08",
+    "master_open_out_args": ["J", "&J+0x08"],
+    "K_layout": {
+      "count": "U16 at K+0x0A",
+      "row_pointer": "U64 at K+0x10",
+      "row_stride_bytes": 6
+    },
+    "selector_row_stride_bytes": 88,
+    "selector_K_pointer": "U64 at descriptor row+0x08, statically copied from same J+0x08 slot",
+    "selector_contract": "reads descriptor pointer from row+0x08"
+  },
+  "safety": {
+    "tool": "Ghidra 12.2",
+    "read_only": true,
+    "analysis_disabled": true,
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "raw_source_or_decompilation_copied": false
+  }
+}

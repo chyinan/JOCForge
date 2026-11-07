@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-N-1-128-ROW-CAPACITY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "N_GATE_STATIC_1_TO_128; WRAPPER_CAPACITY_128; N_TO_K_B_UNBOUND",
+  "implementation_disposition": "Register the native static gate and separate capacities; do not claim runtime or end-to-end N support.",
+  "source_manifest_sha256": "a3c5b0597dc5ab7d3b366ba87f05dccf55d543e65ba9cabbd8f35f639312f0a9",
+  "source_package_seal_sha256": "cbe9dcbd3cb1a97e787718abc809f026f585d30d19ee383a697ef5dd135f29a0",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2671,
+      "sha256": "5637cb22e0301aeda882efec86220aaba9c0c52a061bdfddbe73a2dafc311cd4"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2413,
+      "sha256": "bb6bd644a5347bd3ad1d80190e6e78db4e3f8f29b6f25121cc30ef05cc21b8f0"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 809,
+      "sha256": "b43ac4f6a0b3bfd123ab6e9e717260039760c09075f98a99175d6f3107674861"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1087,
+      "sha256": "11b5b42e866c4598397d76cce4b4f09d52ea544fdacf9175b843881fcb534cfe"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1286,
+      "sha256": "d6e60bd2da1f3a9a04882a2007808925b1d4fbfa5e06ea1302f2ceb46bf43968"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-N36-LOADER-FAILURE-AND-U-K-STATIC-REVIEW-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "U_TO_K_STATIC_PATH_BOUND; RUNTIME_JOIN_UNBOUND; LOADER_ROOT_CAUSE_UNRESOLVED",
+  "implementation_disposition": "Correct the attempt-05 early-sample interpretation; runtime U/K and physical N joins remain open.",
+  "source_manifest_sha256": "43bfe4193c1eaef42bfd758adf09d2a8e1e878e342d382c980fbd59356923df5",
+  "source_package_seal_sha256": "37ea041a58dc9cd2f914fad52c954040670c3cf3436e5e9db76a4686f0b2d40f",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3030,
+      "sha256": "057e8e1017f0dee1aa277bd4033e905fe789fc8600b96b8d3cc9ed11cbd34f4b"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3116,
+      "sha256": "16a3634ce8514e3a31a922c6f98f3f749bfce2a87f1fb9dc4b488a5b6d59f76d"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 801,
+      "sha256": "4b45a245145fffa6a1aebca234682fca8e2fc131bf2bbe4a6769c9d003c22655"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1536,
+      "sha256": "2ab04961f5aaa73b0a19b955332a4209985260c62bd0a986eae71b6d1a08c24d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1042,
+      "sha256": "bbf6f7533df4f9f4e978d70ef3c20d067464c83e91d7df130229b56fd4e1b5a2"
+    }
+  ]
+}

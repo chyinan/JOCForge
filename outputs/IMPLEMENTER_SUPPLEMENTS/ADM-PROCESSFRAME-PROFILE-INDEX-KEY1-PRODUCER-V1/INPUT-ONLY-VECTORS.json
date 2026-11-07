@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.processframe_profile_index_input_vectors.v1",
+  "status": "STATIC_TABLE_AND_CONDITIONAL_DEFAULT_ONLY",
+  "key1_custom_value": "I32 copied directly when present; runtime value NOT_CAPTURED",
+  "global_default_if_flag_one": {"flag": 1, "profile_index": 0},
+  "supported_profile_indices": [0, 1, 3, 4],
+  "profile_zero_key2_default_C": 11,
+  "actual_profile_C_M_and_ADM_N_join": "UNBOUND",
+  "dee_run": false,
+  "pcm_or_payload_included": false
+}

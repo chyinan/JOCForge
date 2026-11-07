@@ -1,0 +1,13 @@
+{
+  "schema": "wash.research-check.v1",
+  "package_id": "ADM-FRAME-PROCESS-ROWCOUNT-CONSUMER-V1",
+  "result": "PASS_HASH_BOUND_FRAME_TO_FIRST_PROCESS_ROW_CONSUMER",
+  "first_process_row_consumer": "FUN_180178cc0 via FUN_180179ab0",
+  "frame_N_read_path": "D+0x28 -> B -> U16(B+0x0A); D+0x08 is a parallel widened copy",
+  "sample_gate": "D+0x10 == 0x600 or 0",
+  "process_side_N_guard": "NOT_OBSERVED",
+  "previously_sealed_open_N_guard": "1..128 inclusive",
+  "36_38_path": "SAME_GENERIC_STATIC_WRAPPER_PATH; INPUT_ONLY",
+  "native_process_execution": "NOT_RUN",
+  "runtime_N_and_generation": "NOT_CAPTURED / UNBOUND"
+}

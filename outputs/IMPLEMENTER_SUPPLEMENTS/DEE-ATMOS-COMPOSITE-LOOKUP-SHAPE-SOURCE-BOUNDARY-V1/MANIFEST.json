@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-COMPOSITE-LOOKUP-SHAPE-SOURCE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ALTERNATE_SHAPE_METADATA_PATH_BOUND; SAME_ADM_N_OWNER_JOIN_UNBOUND",
+  "implementation_disposition": "Both inspected layout branches derive the immediate composite count from per-source shape metadata; ultimate identity with physical ADM N remains open.",
+  "source_package_id": "DEE-ATMOS-COMPOSITE-COUNT-LOOKUP-LINEAGE-WASH-V1",
+  "source_manifest_sha256": "0487326f29ee1e93a9285428d7a94cf4b15c0ed585c550bd35287b2ed365247d",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1663,
+      "sha256": "f38beb17cadc46bd7bf50022b336f9a7a05f3cee3bee95239735a5e53cfb020e"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 480,
+      "sha256": "5c3785285f5f13e21bc7a40d47b3cbc2d0bacbf64b2ecd54ba619b1987cdbfb6"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 500,
+      "sha256": "7e7f1140a46d3c0908bdbc596acfcc9099b837428432c497d0cd6385a746e39f"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 857,
+      "sha256": "f35cfec200e739b51fd269ced5119d0ed67ed2109d5ffd6d8ca244c6f392b3e3"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1156,
+      "sha256": "f8bc6a5096d38803d51128ee812f6f801950f41226f251079367e969bb8cda92"
+    }
+  ]
+}

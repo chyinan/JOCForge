@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ADM-READER-N-PCM-ARITHMETIC-BOUND-WASH-V1",
+      "manifest_sha256": "011ac807da1d8c663e29bf7639d116d98b7716d1321bfda5949188c83e333686",
+      "source_package_seal": "NOT_PROVIDED_BY_SOURCE"
+    },
+    {
+      "package_id": "DEE-ADM-READER-N-PCM-INITIALIZER-CAPACITY-WASH-V1",
+      "manifest_sha256": "2cebbfe36bb6dce9f4935dcaaf2145e66ef693c6be378632ec350d3bc9d78718"
+    },
+    {
+      "package_id": "adm_native_row_count_capacity_boundary_wash_v1",
+      "manifest_sha256": "79ac8fc623f6078e130795ce07de5493021f67fdef48e39a429f9f0ec6325e28"
+    }
+  ],
+  "raw_native_source_or_pcm_payload_copied": false
+}

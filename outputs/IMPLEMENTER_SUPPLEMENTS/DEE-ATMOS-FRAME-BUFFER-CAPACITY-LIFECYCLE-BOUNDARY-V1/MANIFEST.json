@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-FRAME-BUFFER-CAPACITY-LIFECYCLE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FRAME_BUFFER_ONCE_ALLOCATED; CAPACITY_GUARD_NOT_SHOWN; REUSE_NOT_CAPTURED",
+  "implementation_disposition": "Preserve the static capacity gap; no resize or overrun claim is supported.",
+  "source_manifest_sha256": "8300eb50440b08d7cf3f436ed89661a90bfb1f270837e332d5496890b8b9fba5",
+  "source_package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3242,
+      "sha256": "35517c765d574c0b7680a4a6966732999b01c0daa99375ec9771f8be9847cb8f"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2728,
+      "sha256": "5043de2935e7ea09607eafd145f20e53c3255d15f7703d1eeef79a0ab8251a42"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 580,
+      "sha256": "6bed9325c83ef6eed695bbca153adb7f2b53030aaefd0f830d345220d8688b00"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 935,
+      "sha256": "f7ceeb03365c2faccc3511267fb297c50479e3e0d589a7d4d2aecd1d8a1e5a7d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 662,
+      "sha256": "6154821c7e31d2d56b5823e071ad12b75afe26101323f9c7773507ea98783c78"
+    }
+  ]
+}

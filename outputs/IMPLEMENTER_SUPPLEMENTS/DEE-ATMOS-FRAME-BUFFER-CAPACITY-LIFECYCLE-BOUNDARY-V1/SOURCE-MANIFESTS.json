@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-FRAME-BUFFER-CAPACITY-LIFECYCLE-WASH-V1",
+      "manifest_sha256": "8300eb50440b08d7cf3f436ed89661a90bfb1f270837e332d5496890b8b9fba5"
+    },
+    {
+      "package_id": "DEE-ATMOS-COUNT-FRAME-CAPACITY-WASH-V1",
+      "manifest_sha256": "f30a57b2456311aeda1144708c8126f2843686327e864190afd8ac0a834dd766"
+    },
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-WASH-V1",
+      "manifest_sha256": "d72f1bb76bc0d1dcfbf757a424538e07ba1835836b1fe601f541e34e5c7943d7"
+    }
+  ],
+  "raw_native_source_or_audio_payload_copied": false
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-CHNA-AXML-36-38-SLOT-COVERAGE-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "N36_N38_METADATA_SLOT_BIJECTION_BOUND; RUNTIME_ADMISSION_UNBOUND",
+  "implementation_disposition": "Use as two input-only metadata vectors; do not infer broader runtime N support.",
+  "source_manifest_sha256": "e409fbffde7f08924edffac49c790669a06a94c63b5a83c55c20230a12775c51",
+  "source_package_seal_sha256": "a82c7f6e331d6b81e1d95cb659c8e92ce5831169505ee2c8942045f1dbef90fb",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2741,
+      "sha256": "8907af517894ffbfdf71059c6da0bd0bd4d5253f6dc65e152beee6a0599f6a1a"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2167,
+      "sha256": "0bb12a48bacbf0a49edf24b40e7cd73bb78d2c1f1e517e85a5384b801c56f8d7"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 644,
+      "sha256": "a6e0913144f8e58bb4104e438df6d5347ca3aba8e10d75fd54a81654ada1a6c2"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 701,
+      "sha256": "19f0532241ea523c8cb6da8775b3cef53ce849e04ac21d9cb29de946d83478c7"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 862,
+      "sha256": "1fc44c519c0addc442dbd9161fd1bf07531b98f4f02387b8be6760992a2a0a22"
+    }
+  ]
+}

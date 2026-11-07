@@ -1,0 +1,45 @@
+{
+  "schema": "washed.core-capacity-key2-producer-identities.v1",
+  "recipient": "WASH_ONLY",
+  "binary": {
+    "program": "dee_ddp_encoder.exe",
+    "path": "D:/Programs/dee71joc/test_dee/dee_ddp_encoder.exe",
+    "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "verified_on_disk": true
+  },
+  "ghidra": {
+    "version": "12.2_PUBLIC",
+    "project": "outputs/ghidra-dee-ddp-projects/ddp_writer_trace",
+    "mode": "existing project; -process dee_ddp_encoder.exe; -noanalysis; -readOnly",
+    "script_path": "outputs/work/ghidra_dispatch_scripts/TraceProfileCapacityProducer.java",
+    "script_sha256": "026a7000fbb079640784ebeb62234a7203b1eab154cba89454e95411c308079ac",
+    "run_log_path": "outputs/work/ghidra-profile-capacity-producer-v3.txt",
+    "run_log_sha256": "b1f6981d46703cf63ff5388202b942209753227bbc8e51c9c70dfcf0d6304f0a"
+  },
+  "parent_receipts": [
+    {
+      "package_id": "sample6-process-frame-eac3-writer-boundary-wash-v1",
+      "manifest_path": "outputs/sample6-process-frame-eac3-writer-boundary-wash-v1/MANIFEST.json",
+      "manifest_sha256": "ea654ef938b0dd5020ddef2cfaf93bcdc78e80b466a87877c5662af49fd21ae3"
+    },
+    {
+      "package_id": "sample6-matched-drc-track-count-admission-boundary-wash-v1",
+      "manifest_path": "outputs/sample6-matched-drc-track-count-admission-boundary-wash-v1/MANIFEST.json",
+      "manifest_sha256": "613d934c86bb9a3bf21049fed7a5bc92f6650d11fadddcf79167533adef9b066"
+    }
+  ],
+  "function_code_sha256": {
+    "FUN_140314F50": "c63bda1c14579a1cbc5ba09dc74e78af7ed18fb15f9cbbfbc44ba58f86f507eb",
+    "FUN_14031FAE0": "c2d2b27e50214a2dec8c410a3c5612f68873ac4aa34f2ca629b0923605fd3fd3",
+    "FUN_1403210C0": "83064e33dc96c1c7868a4ec8c572d58f77f8df8f022c096271c9a3cb420f7161",
+    "FUN_140321500": "2945c89076b2b6c2cfd3feb7000f55bd7d8ea8159bd5aff8311d9168af54693b",
+    "FUN_14031A250": "9d97000d4d28a99ac7d8231fb5c74e461e10972046f700e0b6d5fdbeded14d35",
+    "FUN_14031A310": "8a95d6344c2396ffcf4d70d11c756a0892021624d9889b8efa410f3984c91e37"
+  },
+  "key2_table_row_sha256": "310b05a4452d1a8fbcc95401f7f4b197493bf64a5ee9e693975b32c753d67abf",
+  "exclusions": [
+    "No DEE process or encoding was started.",
+    "No input audio, PCM, EC-3 payload, key, or license material was accessed.",
+    "No implementation-side checkout or process was accessed."
+  ]
+}

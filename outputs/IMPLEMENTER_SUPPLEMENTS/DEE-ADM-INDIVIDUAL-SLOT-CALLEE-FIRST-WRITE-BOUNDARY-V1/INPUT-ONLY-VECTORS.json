@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "helper-first-write-is-output-initialization-only",
+      "input": {
+        "callee": "FUN_1802809a0",
+        "first_store": "[RDX+0x18]=0xF at RVA 0x2809a8",
+        "caller_rdx": "stack-local output object",
+        "candidate_slot": "individual record +0x4c"
+      },
+      "expected_disposition": {
+        "store_is_proven_individual_slot_write": false,
+        "slot_producer": "UNBOUND",
+        "slot_guard": "UNBOUND",
+        "post_store_body": "NOT_SEMANTICALLY_REVIEWED"
+      },
+      "limitations": [
+        "First store only; no post-store tracing.",
+        "Output field type/semantic role unknown.",
+        "No runtime behavior inferred."
+      ]
+    }
+  ]
+}

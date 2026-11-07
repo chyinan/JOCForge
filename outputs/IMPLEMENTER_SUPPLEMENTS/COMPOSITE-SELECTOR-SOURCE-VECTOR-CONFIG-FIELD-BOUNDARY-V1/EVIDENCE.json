@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.composite_source_vector_config_field_boundary.v1",
+  "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-CONFIG-FIELD-BOUNDARY-V1",
+  "status": "QUEUE_RECORD_PLUS_0X08_VECTOR_FIELD_STATIC_BOUND; SYMBOLIC_OWNER_AND_GENERATION_UNBOUND; PATH_VALUE_AND_HANDLER_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-CONFIG-OWNER-V1",
+    "manifest_sha256": "347b2b29af855b2736fd8ece036df0997db43e8ed12db2e1e43ff1d1194bc2c0",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "analysis_mode": "read-only existing project; noanalysis",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "typed_vector_field": {
+    "record_owner": "queue/deque record pointer; symbolic job/class owner NOT_OBSERVED",
+    "field_offset": "+0x08",
+    "header_fields": {
+      "begin": "U64 at record+0x08",
+      "end": "U64 at record+0x10",
+      "capacity": "U64 at record+0x18"
+    },
+    "element_stride_bytes": 32,
+    "copy": "header and source-entry rows copied into a temporary source-config object",
+    "mode_two_wrapper_forwarding": "same vector pointer forwarded to the per-item consumer and reader builder",
+    "static_route_condition": "reader-mode field equals 2; runtime branch NOT_CAPTURED",
+    "actual_count": "NOT_CAPTURED",
+    "runtime_generation": "NOT_CAPTURED"
+  },
+  "nested_path_and_handler": {
+    "nested_path_record_field": "string-like row+0, reused from previous static receipt",
+    "actual_path_value_or_suffix": "NOT_CAPTURED",
+    "selected_storage_handler": "UNBOUND",
+    "top_level_adm_bwf_name_used_as_substitute": false,
+    "k_count_formula_applicability": "UNBOUND_PENDING_SELECTED_HANDLER"
+  },
+  "separate_sample_argument": {
+    "type": "U32",
+    "value": 1536,
+    "meaning": "per-item frame-sample count; not owner/generation identity"
+  },
+  "first_break": {
+    "edge": "queue/deque record pointer to semantic source-config owner and generation",
+    "status": "UNBOUND"
+  },
+  "scope": {
+    "native_execution": "NOT_RUN",
+    "source_path_value": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

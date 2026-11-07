@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.f01e-worktree-production-path-reaudit.v1",
+  "package_id": "JOCFORGE-F01E-WORKTREE-REAUDIT-V1",
+  "status": "FIXED38_GATE_REMAINS; DYNAMIC_CONTINUATION_WIP_NOT_CONNECTED_TO_SELECTED_PRODUCTION_CALLBACK",
+  "source_snapshot": {
+    "head_commit": "31a21d72797d487fefe102581e5e83e1334b4d74",
+    "head_tree_sha1": "aa17672d0d70592e2548a93581e2c8d08ac528bb",
+    "local_git_ref_matches_head": true,
+    "dirty_worktree_included_in_findings": true,
+    "tests_run": false
+  },
+  "observed_worktree_contract": {
+    "selected_meter_path": "stage_independent_meter_g0_normal -> prepared.normal_control_prepared_snapshot -> propose_normal_control_snapshot",
+    "first_count_gate": "NormalControlPreparedSnapshot::from_validated -> validate_selected_profile requires source and profile channels == 38",
+    "36_row_result": "rejected before selected Spatial callback on this path",
+    "dynamic_f01e_continuation": {
+      "available_in_worktree": true,
+      "row_shapes": [36,38],
+      "state": "borrowed noncommitting after-state",
+      "checks": ["prepared input identity", "programme/attempt/callback lineage", "source resource/ADM metadata hashes", "cursor/read index", "physical row count", "owner/source generation"],
+      "canonical_digest": "NOT_PRESENT",
+      "owner_install_or_replacement": "NOT_PRESENT",
+      "gtc_receipt_authority": "NOT_PRESENT",
+      "only_current_caller": "test"
+    }
+  },
+  "selected_callbacks": {
+    "production_uses_dynamic_continuation": false,
+    "production_uses_dynamic_proposal_geometry": false,
+    "spatial_control_machine_called_by_dynamic_tests": false,
+    "dynamic_geometry_test_scope": "direct source geometry and outer matrix only",
+    "continuation_test_scope": "callback 0->1 after-state plus fresh-zero receipt validation for 2..4"
+  },
+  "source_hash_audit": {
+    "upstream_package_manifest_sha256": "9f7f63634d6dd6a5fc8a7482dd46f9170e71c2d3db510f7a4ad2b05d61feb109",
+    "payload_hashes": "PASS_4_OF_4",
+    "current_worktree_source_hashes": "MATCH_ALL_LISTED_FILES",
+    "git_head_ref": "31a21d72797d487fefe102581e5e83e1334b4d74"
+  },
+  "scope": {
+    "implementation_ready_for_selected_36_row_production_callback": "NO",
+    "arbitrary_n_end_to_end": "NOT_ESTABLISHED",
+    "dee_runtime": "NOT_RUN",
+    "audio_payload_read": false
+  }
+}

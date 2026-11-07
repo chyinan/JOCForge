@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-ATMOSMEZZ-ROW-COUNT-FIRST-CONSUMER-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CONDITIONAL_DYNAMIC_COUNT_PATH_1_TO_128_BOUND; UNIVERSAL_ADM_ADMISSION_UNBOUND",
+  "implementation_disposition": "Register the conditional native count path and numeric gate only; do not claim arbitrary-track support.",
+  "source_manifest_sha256": "d9e45e2519718ed154fcc5c5ec9e1692434ccdeec64585a47a38ef918328d63a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4158,
+      "sha256": "a6d498d7ec57c3d5109dbadf6690ec012c6014ca629775de722a58f5d5e1d1e1"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2567,
+      "sha256": "29b3aaa2896b057a1e4864836c4f8c1f31ed9ff4e73259ed0729754ee8ce51ab"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 222,
+      "sha256": "5538db37ec011b65c23ff74bda48168aea67ed5f847c3108185e01863b511b40"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1791,
+      "sha256": "68dfeea795fbae2bad6b6da9d0d94b6875bf0418fb4fc454367bf0b014edc9bb"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1318,
+      "sha256": "b6b3bcd4140cdc00933e07c27732bb690b0e4b06ffb680d55f601b71cd0eac81"
+    }
+  ]
+}

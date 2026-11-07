@@ -1,0 +1,45 @@
+{
+  "schema": "washed.physical-n-to-processframe-m-input-only-vectors.v1",
+  "recipient": "WASH_ONLY",
+  "evidence_class": "HASH_BOUND_METADATA_AND_EXISTING_DIAGNOSTIC_STATUS; NO_MEDIA_PAYLOAD",
+  "vectors": [
+    {
+      "id": "physical_n_36_first_love",
+      "source_name": "First Love.wav",
+      "input_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335",
+      "N_physical_tracks": 36,
+      "wave_channels": 36,
+      "chna_tracks": 36,
+      "dbmd_tracks": 36,
+      "existing_diagnostic_first_stage": "RIFF_PCM24_PARSE",
+      "core_M": "UNBOUND"
+    },
+    {
+      "id": "physical_n_38_people_are_cats",
+      "source_name": "人是猫 - 张卡斯, 洛天依.wav",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "N_physical_tracks": 38,
+      "wave_channels": 38,
+      "chna_tracks": 38,
+      "dbmd_tracks": 38,
+      "existing_diagnostic_first_stage": "PASS_LOCAL_MODEL_3_HOPS",
+      "callback_commit": "NOT_COMMITTED",
+      "encode": "NOT_RUN",
+      "core_M": "UNBOUND"
+    },
+    {
+      "id": "conditional_atmos_u16_nonzero_gate",
+      "assumption": "if the N value were typed into CompositeMaster.format+0x0A",
+      "N_values": [36, 38],
+      "checked_condition": "U16 count != 0",
+      "conditional_result": "both values pass the nonzero check",
+      "N_to_format_u16_join": "UNBOUND"
+    },
+    {
+      "id": "processframe_m_domain",
+      "M_type": "U64 frame-view pointer-entry count at +0x20",
+      "N_to_M_formula": "UNBOUND",
+      "packet_channel_u16_to_M": "UNBOUND"
+    }
+  ]
+}

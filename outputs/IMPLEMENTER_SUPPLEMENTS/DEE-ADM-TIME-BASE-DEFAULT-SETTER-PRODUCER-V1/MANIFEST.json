@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-TIME-BASE-DEFAULT-SETTER-PRODUCER-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TIME_BASE_CONSTRUCTOR_DEFAULT_TO_STRINGTYPE_SETTER_STATIC_BOUND; SELECTED_XML_VALUE_AND_HOST_VIRTUAL_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "source_checksum_list_sha256": "6c8c4d072a0157efdc4ccd8491da38ca095d4e86d9e5b961d8fffb5bc964f4ba",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2273,
+      "sha256": "d2b03c074235b6c9cab3800bc50202537d82495d78b483c93e6fc01fd9d0f440"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2377,
+      "sha256": "470390e40544525f5cec6b5d0ee1243a989be7ebc0a1d843663cf7bf2fa71496"
+    },
+    "REPORT.md": {
+      "bytes": 1238,
+      "sha256": "2d6f6cf38d46804430f330a995f85be38f13ab8c91240bc7381aee06a59ae888"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1267,
+      "sha256": "8902e3584546ff88d66914b11548d4e68864fcdc4741bd94fbcfca8da205b2ec"
+    }
+  }
+}

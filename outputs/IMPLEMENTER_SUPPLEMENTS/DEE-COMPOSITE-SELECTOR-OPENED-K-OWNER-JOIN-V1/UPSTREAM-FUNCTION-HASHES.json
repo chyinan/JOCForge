@@ -1,0 +1,28 @@
+{
+  "schema": "wash.ghidra-function-role-hashes.v1",
+  "tool": "Ghidra 12.2",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "address_or_image_path_included": false,
+  "functions": {
+    "reader_input_owner_constructor": {
+      "bytes": 2292,
+      "sha256": "d88434ea8ca23bfd8de22c6735c175028be54851cf9d6737896676a27360b80e"
+    },
+    "per_item_opened_source_owner_constructor": {
+      "bytes": 410,
+      "sha256": "73335293f70558cc4a8af544c91e026ed88fd14738e2c82473e831b98bf58b0a"
+    },
+    "storage_open_dispatch_wrapper": {
+      "bytes": 1763,
+      "sha256": "b0e4fc1aec898a30b6efe1a09d7c76a4735a4bed0558c24af8c5ec6afc5e44e9"
+    },
+    "opened_K_bed_order_consumer": {
+      "bytes": 319,
+      "sha256": "16b2c798a25ba01af862565c33929b7c23a8f4acd580e9b0f68f71882b40f714"
+    },
+    "opened_K_bed_layout_consumer": {
+      "bytes": 367,
+      "sha256": "5fecd0a87acabb477d674e5503cbcb6df556dce93823ef9381a66a85f0d1081d"
+    }
+  }
+}

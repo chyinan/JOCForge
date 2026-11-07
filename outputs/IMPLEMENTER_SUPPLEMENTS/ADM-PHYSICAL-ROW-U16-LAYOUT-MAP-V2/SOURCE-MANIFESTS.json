@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "ADM-PHYSICAL-ROW-U16-LAYOUT-MAP-V2",
+  "supersedes": "ADM-PHYSICAL-ROW-U16-LAYOUT-MAP-V1",
+  "references": [
+    {
+      "package_id": "ADM-PHYSICAL-ROW-OAMDI-U16-MAP-V1",
+      "manifest_sha256": "e46213bb89f94e8da10814c4bab38a2c2cc51ed1bfef25ed516e24f779b25a69",
+      "role": "refreshed source package with corrected checker/script payload"
+    },
+    {
+      "package_id": "ADM-SEMANTIC-DESCRIPTOR-INPUT-BINDING-V1",
+      "manifest_sha256": "addaf3bcf7866351380e7c9bd9de40457ae6b5d6e1014462cf232233ff23ee2e",
+      "role": "exact CHNA TrackUID-to-AXML graph projection"
+    },
+    {
+      "package_id": "SOURCE-DESCRIPTOR-COUNT-PRODUCER-V1",
+      "manifest_sha256": "a4d0869f4b6f8f07a86611c4dcbd466e7dabef6365bb740163cbf48fe9c5396f",
+      "role": "K count and six-byte row writer"
+    },
+    {
+      "package_id": "COMPOSITE-DESCRIPTOR-WRITER-OWNER-JOIN-V1",
+      "manifest_sha256": "248c105c22c0f8ee85f8538cc350ebee3ab056978f862be20fd38f8131bb2783",
+      "role": "ordinary copy versus extended synthesis branch"
+    },
+    {
+      "package_id": "DESCRIPTOR-ROW-TYPED-CONSUMER-PROJECTION-V1",
+      "manifest_sha256": "117cef8f4c1349252cada6382c2ce8c084c5fd8341b06fb0ec4d06163bfb64cb",
+      "role": "typed U16 map consumers"
+    }
+  ],
+  "scope": "No raw track identifiers, XML/CHNA bytes, source scripts, binaries, PCM, EC3 payload, key, or license included."
+}

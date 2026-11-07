@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "DEE-ADM-PHYSICAL-N-READER-DESCRIPTOR-BOUNDARY-WASH-V1",
+  "manifest_file": "MANIFEST.sha256",
+  "manifest_sha256": "0eaf7fa2282a7dd184330720e82b5de1bdbebb97a64c07a1fa1aaaeeb0cbc6ce",
+  "source_seal_file": null,
+  "source_package_seal_sha256": null,
+  "checksum_file": null,
+  "checksum_file_sha256": null,
+  "checksum_content": null,
+  "source_verification": "SOURCE_CHECKER_NORMAL_AND_PYTHON_O_PASS",
+  "parent_bindings": [
+    {
+      "package_id": "DEE-ADM-READER-DESCRIPTOR-ALLOCATION-INIT-BOUNDARY-WASH-V1",
+      "manifest_sha256": "e2969cd5253320214475cd7bd7d65c83d65267eb29f5fdd1d79a08c50efe7c3d"
+    },
+    {
+      "package_id": "DEE-ADM-READER-DESCRIPTOR-CANDIDATE-SOURCE-BOUNDARY-WASH-V1",
+      "manifest_sha256": "09a430f5bed592fe1cf6180fa359921c524967198966a7de217ddfad23e31065"
+    },
+    {
+      "package_id": "DEE-ADM-READER-DESCRIPTOR-POSTCONSTRUCT-OWNER-BOUNDARY-WASH-V1",
+      "manifest_sha256": "b08588557d3f630bb4728d9d3b7121c555a0c37c2473cea01da40d165404390b"
+    },
+    {
+      "package_id": "DEE-ADM-READER-COUNT-PATH-WASH-V1",
+      "provenance_sha256": "28bc9b359a1cc8665c1a1d25d2494bb030ed225997eeaec4d01f20543f4e1114"
+    }
+  ],
+  "raw_reverse_source_forwarded": false
+}

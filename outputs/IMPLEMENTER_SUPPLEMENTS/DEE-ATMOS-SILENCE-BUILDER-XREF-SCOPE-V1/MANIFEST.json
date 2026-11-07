@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-ATMOS-SILENCE-BUILDER-XREF-SCOPE-V1",
+  "scope": "Bounded reference-scope only; no global no-consumer claim.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 724,
+      "sha256": "518a0b81c39de33cd5e7668fce62ad4ca5a5b3020d160caa6cce3e2ca0d99ce8"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 441,
+      "sha256": "26fad4bc7bf6d0f93877eb7f0a93054109891c90e437e84467fd3686d6e0c0b7"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 647,
+      "sha256": "db7b1a126d8c604aba47b1b47ec7c858396202ef8ca28f0c5175a0f79e699c6b"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1820,
+      "sha256": "a50d3d3e589fb5463a4d898464bc40ebf6987bdbc71792fa16022330d125ac11"
+    }
+  ]
+}

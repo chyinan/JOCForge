@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-COMPOSITE-SELECTOR-DIRECT-INPUT-SEMANTICS-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "a1ac0c829a5039531d1323c7e52ec5cc3637e253cf49af28a3a3d8e14bfb6a6a",
+  "payload_file_count": 11,
+  "payload_hash_audit": "PASS_11_OF_11",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

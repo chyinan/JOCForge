@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.dee_adm_u_group_k_row_writer.v1",
+  "package_id": "DEE-ADM-U-GROUP-K-SIX-BYTE-ROW-WRITER-V1",
+  "status": {
+    "K_U16_header_count_source": "EXISTING_U_GROUP_AND_INDIVIDUAL_COUNT_HELPER",
+    "K_row_allocation": "6_BYTES_PER_U16_COUNT_WITH_HIGH_HALF_OVERFLOW_FALLBACK",
+    "accepted_group_entry_to_K_row": "STATICALLY_BOUND_ONE_ROW_PER_ACCEPTED_ENTRY",
+    "physical_slot_destination": "BOUND_FROM_U_BED_CHANNEL_PLUS_0X10",
+    "row_plus_0x08_semantics": "UNASSIGNED",
+    "row_plus_0x0c_label_conversion": "SENTINEL_REJECT_BOUND; TABLE_NOT_RECONSTRUCTED",
+    "row_byte_plus_0x03_store_or_initialization": "NOT_EVALUATED",
+    "outer_group_ordinal_to_row_plus_0x04": "STATICALLY_BOUND",
+    "actual_K_values_or_runtime_branch": "NOT_CAPTURED",
+    "universal_ADM_admission": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "ADM-U-GROUP-K-ROW-WRITER-V1",
+    "manifest_sha256": "cf865e0eb2617a25a8d2619b9a381c80b8aff8034ca90854f7ad8d1bc86a65cf",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 read-only/no-analysis"
+  },
+  "row_fields": [
+    {"offset": 0, "width": "U16", "source": "low 16 bits of Bed::Channel+0x08", "semantic": "UNASSIGNED"},
+    {"offset": 2, "width": "U8", "source": "converted low byte of I32 Bed::Channel+0x0C", "negative_sentinel_rejected": true},
+    {"offset": 3, "width": "1 byte", "store_in_selected_body": "NOT_PRESENT", "initial_value": "NOT_EVALUATED"},
+    {"offset": 4, "width": "U16", "source": "outer zero-based group ordinal"}
+  ],
+  "lineage": {
+    "chna_uid_to_zero_based_physical_slot": "BOUND_BY_PARENT_RECEIPT",
+    "physical_slot_to_u_bed_channel_plus_0x10": "BOUND_BY_PARENT_RECEIPT",
+    "u_group_entry_to_k_row": "STATICALLY_BOUND_FOR_SELECTED_WRITER_PATH",
+    "raw_chna_row_to_k_direct_copy": "NOT_OBSERVED",
+    "fmt_channel_count_to_K_direct_store": "NOT_OBSERVED"
+  },
+  "limits": {
+    "dee_executed": false,
+    "pcm_or_payload_read": false,
+    "dbmd_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_arbitrary_track_claim": false
+  },
+  "implementation_disposition": "Use the six-byte row layout and per-accepted-entry mapping only; do not assume row+3=0 or equate the separate downstream 1..128 gate with all-source admission."
+}

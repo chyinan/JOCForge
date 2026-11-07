@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge.adm_reader_n_pcm_arithmetic_boundary.v1",
+  "package_id": "DEE-ADM-READER-N-PCM-ARITHMETIC-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "DEE-ADM-READER-N-PCM-ARITHMETIC-BOUND-WASH-V1",
+    "manifest_sha256": "011ac807da1d8c663e29bf7639d116d98b7716d1321bfda5949188c83e333686",
+    "source_package_seal": "NOT_PROVIDED_BY_SOURCE",
+    "source_checker_normal_and_python_o": "PASS"
+  },
+  "parent_receipts": [
+    {
+      "package_id": "DEE-ADM-READER-N-PCM-INITIALIZER-CAPACITY-WASH-V1",
+      "manifest_sha256": "2cebbfe36bb6dce9f4935dcaaf2145e66ef693c6be378632ec350d3bc9d78718"
+    },
+    {
+      "package_id": "adm_native_row_count_capacity_boundary_wash_v1",
+      "manifest_sha256": "79ac8fc623f6078e130795ce07de5493021f67fdef48e39a429f9f0ec6325e28"
+    }
+  ],
+  "integer_contract": {
+    "n_type": "U64 Reader N",
+    "sample_count_type": "signed longlong; nonnegative range not validated in helper",
+    "element_product": "N * sample_count, low 64-bit IMUL result",
+    "element_product_overflow_guard": "NONE_OBSERVED",
+    "capacity_field": "object +0x48, U32 element count",
+    "growth_condition": "capacity < low64(N * sample_count)",
+    "allocation_bytes": "4 * low64(N * sample_count)",
+    "byte_product_overflow_guard": "high word of 128-bit multiply",
+    "overflow_allocator_argument": "UINT64_MAX",
+    "allocator_failure_check": "NONE_OBSERVED_AFTER_OPERATOR_NEW"
+  },
+  "derived_safe_domain": {
+    "assumptions": [
+      "sample_count S >= 0",
+      "conditional N gate 1..128 applies"
+    ],
+    "per_n_condition": "S <= floor((2^64 - 1) / (4*N))",
+    "uniform_safe_s_for_n_1_to_128": {
+      "formula": "2^55 - 1",
+      "maximum": 36028797018963967,
+      "limiting_n": 128
+    },
+    "n1_safe_s_maximum": 4611686018427387903,
+    "meaning": "arithmetic safety only; not runtime support or allocator success"
+  },
+  "runtime_status": {
+    "n": "NOT_CAPTURED",
+    "sample_count": "NOT_CAPTURED",
+    "existing_capacity": "NOT_CAPTURED",
+    "allocator_result": "NOT_CAPTURED",
+    "actual_extent": "NOT_OBSERVED",
+    "pcm_read": false
+  },
+  "implementation_disposition": {
+    "keep_n_and_sample_count_separate": true,
+    "mirror_dee_byte_scale_overflow_behavior": true,
+    "do_not_claim_allocations_succeeded": true,
+    "do_not_claim_full_1_to_128_runtime_support": true
+  }
+}

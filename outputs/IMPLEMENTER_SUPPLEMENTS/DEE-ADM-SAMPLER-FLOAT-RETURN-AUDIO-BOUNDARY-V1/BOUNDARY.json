@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-ADM-SAMPLER-FLOAT-RETURN-AUDIO-BOUNDARY-V1",
+  "decision": "STATIC_RETURN_TO_SAMPLER_STATE_BOUND; PCM_AUDIO_CONSUMER_UNBOUND; CONDITIONAL_PLUS80_GATE_PRESERVED; RUNTIME_NOT_RUN",
+  "source_package": {
+    "package_id": "adm_sampler_float_return_owner_wash_v1",
+    "manifest_sha256": "b1137d853d2f1f59a3a3cdc133a13d652be2edcb045488ec52329f0b2a228046",
+    "package_seal_sha256": "48b8730b3e67d2e44022425fc271f2d7891fc9aa109910c9e10319e947df3c06",
+    "sha256sums_sha256": "293a011e4cc6086c514a65f86a3261e019f37d4fa63c3dc98b2e8de787ff8d47"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "wash_rehashed": true,
+    "tool": "Ghidra 12.2 PUBLIC, read-only, no-analysis"
+  },
+  "static_edges": {
+    "helper": "FUN_1801caa90",
+    "first_typed_owner": "FUN_1801b6fa0 nested sampler receiver",
+    "return_fields": [
+      {"type": "U64", "wrapper_local": "local_78", "receiver_offset": "+0x8c"},
+      {"type": "U32", "wrapper_local": "local_70", "receiver_offset": "+0x94"}
+    ],
+    "caller": "FUN_1801ad9d0",
+    "output_argument": "param_2 points to caller-local local_d8 at callsite 0x1801adc88"
+  },
+  "open_edges": {
+    "nested_receiver_plus_0x8c_0x94_to_pcm_or_atmos_audio_block": "UNBOUND",
+    "local_d8_to_pcm_or_atmos_audio_block": "UNBOUND",
+    "conditional_plus_0x80_runtime_value": "NOT_CAPTURED",
+    "frame_generation_identity": "UNBOUND"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "runtime_debug_capture": "NOT_RUN",
+    "pcm_or_media_read": false,
+    "encoded_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  }
+}

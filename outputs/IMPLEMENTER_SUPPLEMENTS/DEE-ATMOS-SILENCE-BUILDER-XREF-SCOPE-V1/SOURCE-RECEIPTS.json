@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-silence-builder-xref-scope-receipt.v1",
+  "source_package": "dee_atmos_ddp_silence_builder_xref_wash_v1",
+  "source_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/dee_atmos_ddp_silence_builder_xref_wash_v1",
+  "manifest_sha256": "1c34d8d52dff39da0c902e3cd641324a93376fdcb178bb65791723bda27c3844",
+  "package_seal_sha256": "92299aa445e7c2beb4ee94a4cd7995bb81c31f57abcaff2ecddf5c2655c20359",
+  "normal_checker": "PASS_IN_WASH",
+  "optimized_checker": "PASS_IN_WASH",
+  "ghidra": "12.2 read-only/no-analysis",
+  "runtime_status": "NOT_RUN",
+  "raw_source_or_media_access": false
+}

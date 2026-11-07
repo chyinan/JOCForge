@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-reader-source-manifest.v3",
+  "repository": "D:\\Programs\\JOCForge-isolated",
+  "base_head": "aefd8cc12538cab251a59c9a08f9c9ca0608eb9b",
+  "source_snapshot_note": "Working-tree hashes at the Wash review; active implementation edits can supersede these hashes.",
+  "files": [
+    {"path":"crates/jocforge-domain/src/joc/oamd/reader_target.rs","bytes":39054,"sha256":"4df9cb5c10be3514705e37b414e6181ab88279f9664fff4c730125bbd07898ca"},
+    {"path":"crates/jocforge-domain/src/spatial/production_callback.rs","bytes":55723,"sha256":"f21f67bc6ced735773fd3816679160710f5b0a6e3072a948b9491066d7d04953"},
+    {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":63125,"sha256":"d5a5f1667d2025870e07bb18f3eca3e5d183d990a529e1669556183f9331ba09"},
+    {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":48767,"sha256":"cae0c79e1ee76bbdaa563efbf12ddd38f1a77b7db945743f13d93fd11d869a5b"},
+    {"path":"crates/jocforge-domain/src/spatial/post_window_fanout.rs","bytes":12729,"sha256":"286808ef1a0be8d280b099f0680dad45b6419f5e853ab4e2c06f96f368f41117"},
+    {"path":"crates/jocforge-domain/src/spatial/current_features.rs","bytes":23580,"sha256":"8f4fee85d353dbe2448217c11d53f3ae3d9ca8843d306e65172ed8f1742b5814"},
+    {"path":"crates/jocforge-domain/src/spatial/installed48_render.rs","bytes":19303,"sha256":"33f5426b590770600988757557182d0331adb4c86386162433157d367f7451c0"},
+    {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":69517,"sha256":"d5bc8536a0786ef06c18f3cbb3a82db3d7e6191b1fee6d7dae575c975c7965b5"},
+    {"path":"crates/jocforge-domain/src/spatial/source_flags.rs","bytes":73898,"sha256":"2f14fa7c51fb7baf222b6a12f25c46cabc4e871663ea2d20efdb88a2533cbcfd"},
+    {"path":"crates/jocforge-domain/src/spatial/frontend_stages.rs","bytes":18217,"sha256":"83b918d784ffb0bca31b2cb52e989a1409d22c3b45267050dd229bb1c1bc5f2b"},
+    {"path":"crates/jocforge-domain/src/frontend/selected_cold_contracts.rs","bytes":20963,"sha256":"caa291ae316e7405bacd843793ede8b5920129cfec544ecf9a10b898c935f1e3"},
+    {"path":"crates/jocforge-domain/src/frontend/target_cold_provider.rs","bytes":20419,"sha256":"d0c0e5446f550e0ed2c7590ab041d766ed050ccb9877043bb4e3214d94a056f2"}
+  ]
+}

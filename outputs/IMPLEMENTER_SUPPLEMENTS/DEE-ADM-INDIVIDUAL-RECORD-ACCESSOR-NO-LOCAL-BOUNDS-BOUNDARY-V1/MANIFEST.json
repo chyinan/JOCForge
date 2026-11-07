@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-INDIVIDUAL-RECORD-ACCESSOR-NO-LOCAL-BOUNDS-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ACCESSOR_HAS_NO_LOCAL_BOUNDS; UPSTREAM_SLOT_VALIDATION_AND_N_K_JOIN_UNBOUND",
+  "implementation_disposition": "Do not count the non-null allocation check as an ordinal or slot-capacity guard; no runtime OOB is observed.",
+  "source_package_id": "adm_individual_record_accessor_bounds_wash_v1",
+  "source_manifest_sha256": "0e865871e6805302af369e650c608f51da98e2b20bc93b7bf0f97d51d43ea2ea",
+  "source_package_seal_sha256": "c43f4abef8e9ed3bc1348a88e231e59ecadf2b5abe36bebf5a7786a103ece430",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1724,
+      "sha256": "fc803a11e2fee169c0c10341af577bfd23bb25e6cb3ec9c41f1e595f7567671f"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1154,
+      "sha256": "05eddde31c93936db0473ea02b9e45eb63345581beeceb1b23d45092e51833ad"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 528,
+      "sha256": "8186f97adafd232f2464493c7f118907dbf2100a0fddac1d1e7a95a0d34172a8"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 728,
+      "sha256": "563ee9907885e69af54654c959e800c4325a68d161e71b2e01aa50d93b53fe8e"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 420,
+      "sha256": "7abec1e8f35b1a82e37e76cbe6a4fd772d07f6c4cbeccf6822be66ab3900499f"
+    }
+  ]
+}

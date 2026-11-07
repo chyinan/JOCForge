@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "adm_individual_record_accessor_bounds_wash_v1",
+  "manifest_sha256": "3656d7ad09f5c8647b239ba931872a58d094de1644ba93cc2f102c9f3d93209b",
+  "package_seal_sha256": "79fa02f48aa7e8575f4693b618766348b193ebfc3597384a3b35c00c94e53b36",
+  "source_checker_normal_and_optimized": "PASS",
+  "raw_native_source_or_decompilation_copied": false
+}

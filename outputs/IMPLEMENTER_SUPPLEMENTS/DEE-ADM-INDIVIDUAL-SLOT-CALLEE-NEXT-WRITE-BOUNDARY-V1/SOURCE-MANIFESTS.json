@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "adm_individual_slot_callee_next_write_wash_v1",
+  "manifest_file": "evidence_manifest.json",
+  "manifest_sha256": "c36b7d09f43ee30eaf5350190cbac474c972234e096687bdd89bc99da57a9c1a",
+  "source_seal_file": "package_seal.json",
+  "source_package_seal_sha256": "756c97f28da63707755979acfb0e3fac1b57cbfbe09095ea7171cbf39983e7b9",
+  "checksum_file": null,
+  "checksum_file_sha256": null,
+  "checksum_content": null,
+  "source_verification": "SOURCE_CHECKER_NORMAL_AND_PYTHON_O_PASS",
+  "parent_bindings": [
+    {
+      "package_id": "adm_individual_slot_callee_first_write_wash_v1",
+      "manifest_sha256": "2b1f18ddaf1c880a183e27cbf91e0743fc8158d6c4972894e57572a11eedf5c5",
+      "seal_sha256": "21e8b8a63258d9db63babee732582b22975141753ef8a8780c5d3bb595aa1095"
+    }
+  ],
+  "raw_reverse_source_forwarded": false
+}

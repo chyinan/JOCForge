@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "reader-n-row-loop",
+      "kind": "static-reader-contract",
+      "input": {
+        "reader_n_type": "U64",
+        "sample_count_type": "separate field"
+      },
+      "observed": {
+        "row_loop_iterations": "N",
+        "bytes_per_row": "sample_count * 4"
+      },
+      "status": "N_LOOP_BOUND_STATIC; RUNTIME_N_AND_ADMISSION_RANGE_UNBOUND"
+    }
+  ]
+}

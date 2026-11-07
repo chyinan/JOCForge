@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-PHYSICAL-N-TO-PROCESSFRAME-M-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "METADATA_N_36_38_BOUND; ATMOS_FORMAT_U16_AND_CORE_M_SEPARATE; N_TO_FORMAT_U16_UNBOUND; PACKET_TO_CORE_M_UNBOUND",
+  "implementation_disposition": "Do not treat physical ADM N, the Atmos U16, packet sample count, or core ProcessFrame M as interchangeable. No N-to-M formula is established.",
+  "source_manifest_sha256": "34bc62d82c87e54b0405e82d4dca44f709ba525693b82b5ecac77a1f56ed5180",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name":"CHECK.py","bytes":5266,"sha256":"4559f420cfa1e18e90f0382969f92becacbf333a7d3c9d65331337f782841854"},
+    {"name":"EVIDENCE.json","bytes":2675,"sha256":"3288b29b1d24b19ce47c254368045c98082f24cabba1ac0e3d4994d7db50ab25"},
+    {"name":"INPUT-ONLY-VECTORS.json","bytes":850,"sha256":"a98606d25322aeb360d2c84c03fef793b2ecf505f55bc7641c82e0cb919614d0"},
+    {"name":"REPORT.md","bytes":1921,"sha256":"c8e89d0e55ca03bb7f22a30e88f70a254779223e00e4dde198fb7758e02b7bc4"},
+    {"name":"SOURCE-MANIFESTS.json","bytes":1058,"sha256":"e9a94b8508ec559f4e2d95cf516044646728621c864e9ba962a4c1734e0d2015"},
+    {"name":"UPSTREAM-EVIDENCE.json","bytes":7387,"sha256":"df4d1f3b19160ce3e7e60601676f74b148d715091e4041fdeaa895c5ef0389ee"},
+    {"name":"UPSTREAM-INPUT-ONLY-VECTORS.json","bytes":1587,"sha256":"2c016985aa7ab1da57c91256866d54fb298ba32626ff977cdb8841ebc0fecb7e"},
+    {"name":"UPSTREAM-MANIFEST-SHA256.txt","bytes":79,"sha256":"c8b75b9085dbf8909964b0c26705fb1bb16a514ba3cdff85f26d6c3079284d6a"},
+    {"name":"UPSTREAM-MANIFEST.json","bytes":1025,"sha256":"34bc62d82c87e54b0405e82d4dca44f709ba525693b82b5ecac77a1f56ed5180"},
+    {"name":"UPSTREAM-PACKAGE-SEAL.json","bytes":259,"sha256":"47d054d2e5ffffc335453da330ed698a0693d251f564616c41ee89da074d21ae"},
+    {"name":"UPSTREAM-SOURCE-IDENTITIES.json","bytes":2907,"sha256":"095b86f2a4f2969b4ce7347c883460d53372a7dd7346782a80e53e37c4dba2a3"},
+    {"name":"UPSTREAM-REPORT.md","bytes":4111,"sha256":"bbc08cb38c8b95a315fa7ea3f64997108289ce17a74da81904af11a33b82dd8a"}
+  ]
+}

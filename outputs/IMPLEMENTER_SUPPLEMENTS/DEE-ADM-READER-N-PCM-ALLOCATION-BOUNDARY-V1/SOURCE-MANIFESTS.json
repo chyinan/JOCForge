@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ADM-READER-N-PCM-INITIALIZER-CAPACITY-WASH-V1",
+      "manifest_sha256": "2cebbfe36bb6dce9f4935dcaaf2145e66ef693c6be378632ec350d3bc9d78718",
+      "source_package_seal": "NOT_PROVIDED_BY_SOURCE"
+    },
+    {
+      "package_id": "DEE-ADM-READER-N-CONSUMER-WASH-V1",
+      "manifest_sha256": "de85b168909fdd0b56d9c4ef6cff83a5b4bec68cc421a511174e0e4b75732d7a"
+    }
+  ],
+  "raw_native_source_or_pcm_payload_copied": false
+}

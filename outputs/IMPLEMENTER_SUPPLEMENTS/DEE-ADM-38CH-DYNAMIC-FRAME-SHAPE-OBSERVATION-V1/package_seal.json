@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ADM-38CH-DYNAMIC-FRAME-SHAPE-OBSERVATION-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "52b6145b8689d4b4f89da0cda82be3a9c7bc0ad47c7ec3c74c10842cf8f4d3a2",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

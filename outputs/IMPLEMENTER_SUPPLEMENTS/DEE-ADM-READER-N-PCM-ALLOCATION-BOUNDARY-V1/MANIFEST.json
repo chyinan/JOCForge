@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-READER-N-PCM-ALLOCATION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "N_TIMES_SAMPLE_EXTENT_BOUND_STATIC; OVERFLOW_AND_RUNTIME_ALLOCATOR_OPEN",
+  "implementation_disposition": "Use N for row count and sample_count for row bytes; preserve the observed overflow boundary.",
+  "source_manifest_sha256": "2cebbfe36bb6dce9f4935dcaaf2145e66ef693c6be378632ec350d3bc9d78718",
+  "source_package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2773,
+      "sha256": "2b5fa7198f8865a35a11bb26b307ef23e00741c575caf9650ad3861dce6f8abc"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2218,
+      "sha256": "b94023a3343103836c009f021b72724211eb17cfe464f78a03119caa09eddac5"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 526,
+      "sha256": "405810512a6ba037b3898fa0cd205131562ff483e6f1cdb2efadd1bae06cfacb"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 813,
+      "sha256": "03ca197e418b588daa1d931f53bd0bf251b4d441893d6bd29f0519e9b8b0295d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 521,
+      "sha256": "34f7ef3d20a4661232a860dac49641d2c17de7ade374c4b59c8b04473fbb5f75"
+    }
+  ]
+}

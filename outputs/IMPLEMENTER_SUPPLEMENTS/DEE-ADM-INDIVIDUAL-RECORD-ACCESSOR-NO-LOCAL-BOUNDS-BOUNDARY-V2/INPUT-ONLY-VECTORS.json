@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "individual-record-accessor-bounds",
+      "input": {
+        "ordinal": "sign-extended U32 index",
+        "pointer_table_begin": "U+0x20"
+      },
+      "expected_observation": {
+        "selected_accessor_local_bounds_check": false,
+        "k_count_read": false
+      },
+      "limitations": [
+        "No runtime ordinal or extent",
+        "No slot<K_count invariant",
+        "No N-to-K typed join"
+      ]
+    }
+  ]
+}

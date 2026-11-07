@@ -1,0 +1,32 @@
+{
+  "schema": "washed-package-manifest.v1",
+  "package_id": "sample6-core-selected-profile-index-wash-v1",
+  "scope": "Ghidra-only typed selected-profile producer and direct table-index boundary; no media retained",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "294cfbb271cb93ce6639047569aaa841dd11fa9c194644ab54c7c239b833cb01",
+      "bytes": 6329
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "9828d84c9fd7f74fea3b04034e0957de25cdffef1a99b045d9f0877943aa7535",
+      "bytes": 5112
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "sha256": "52dec1aca7e814024a122d35f53f5ca98e69a46968b78259378809414bcbd6c4",
+      "bytes": 1637
+    },
+    {
+      "name": "REPORT.md",
+      "sha256": "20ca8506b85af130d502e61fc6bcf625902c1c32866ba8a4faec54d8b9ee0f66",
+      "bytes": 2451
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "sha256": "551bef59c26c5c0cb1b952335f9f5113027fde7e22c31869b2103b35e46037a4",
+      "bytes": 2039
+    }
+  ]
+}

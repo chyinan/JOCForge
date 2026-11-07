@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "valid-adm-source-property-owner-route",
+      "input": {"filter":"encode_to_atmos_ddp","source_key":"dee_audio_filter_source","source_value":"SYMBOLIC_VALID_ADM_REFERENCE"},
+      "expected_static_scope": {"route":"H+0x448 -> P2+0x08 -> V+registry -> Q setter -> same V at P2+0x28 execution", "runtime_value":"NOT_CAPTURED"}
+    },
+    {
+      "id": "ordinary-branch-count-36",
+      "input": {"source_count_N":36,"branch":"ordinary-reader/PE"},
+      "expected_static_scope": {"conditional_lineage":"S -> K -> J -> B -> D", "native_acceptance":"NOT_RUN"}
+    },
+    {
+      "id": "ordinary-branch-count-38",
+      "input": {"source_count_N":38,"branch":"ordinary-reader/PE"},
+      "expected_static_scope": {"conditional_lineage":"S -> K -> J -> B -> D", "native_acceptance":"NOT_RUN"}
+    }
+  ],
+  "warning": "Vectors encode static type/owner routes only; they do not assert a selected runtime instance, generation, decoded samples, or full-chain output."
+}

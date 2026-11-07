@@ -1,0 +1,7 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "sample6-flattened-master-provider-getter-boundary-wash-v1",
+  "manifest_sha256": "994d15a917c8e6fce1581ecef20413bcdaec8affa3414e8c507766ae6d766af0",
+  "recipient": "WASH_ONLY",
+  "sealed": true
+}

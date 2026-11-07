@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.composite_count_source_lineage.v1",
+  "composite_format_count_immediate_source": "per-source shape metadata view or shape-map transform",
+  "source_record_vector_element_count": "separate domain",
+  "physical_adm_n_source": "incoming descriptor U16 +0x0A to open_config[2] to layout object U32; static guard 1..128",
+  "direct_copy_from_physical_n_in_inspected_path": false,
+  "typed_join_from_physical_n_to_shape_metadata": "UNBOUND",
+  "source_record_count_to_physical_n": "UNBOUND",
+  "shape_count_to_reader_consumer": "BOUND_STATIC",
+  "runtime_count_and_branch": "NOT_CAPTURED",
+  "global_absence_claim": false
+}

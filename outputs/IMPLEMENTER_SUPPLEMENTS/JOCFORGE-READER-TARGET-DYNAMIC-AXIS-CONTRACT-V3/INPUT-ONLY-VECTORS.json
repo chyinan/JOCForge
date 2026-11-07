@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-reader-source-axis-input-only-vectors.v3",
+  "evidence_grade": "INPUT_ONLY_MODEL_PROJECTION_NOT_RUNTIME",
+  "vectors": [
+    {"id":"N36","N":36,"R":35,"beds":10,"objects":26,"S":46,"source_ids":"0..45","absent_ids":[46,47],"reader_matrix":"A x 46","flags":46,"postwindow":"46 x 3072","feature_rows":46,"spatial_history":"46 x 1536","target_source_matrix":"15 x 46","current_first_fixed_failure":"MeterFrameIdentity when installed48 rows!=48"},
+    {"id":"N38","N":38,"R":37,"beds":10,"objects":28,"S":48,"source_ids":"0..47","absent_ids":[],"reader_matrix":"A x 48","flags":48,"postwindow":"48 x 3072","feature_rows":48,"spatial_history":"48 x 1536","target_source_matrix":"15 x 48","current_baseline_shape":true},
+    {"id":"N39-structural","N":39,"R":38,"beds":10,"objects":29,"S":49,"source_ids":"0..48","absent_ids":[],"meaning":"synthetic shape test only; fixed-48 consumers must widen to S=49"}
+  ],
+  "invariants": ["T remains 15 independent of N/R/S.","Do not materialize absent IDs as zero rows.","Do not equate DEE C or M with JOCForge S by value alone."]
+}

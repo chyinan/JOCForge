@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.processframe_capacity_symbolic_vectors.v1",
+  "status": "SYMBOLIC_CONDITION_CHECKS_NOT_NATIVE",
+  "scenarios": [
+    {"id": "hypothetical_m36_capacity_exact", "process_frame_M": 36, "capacity_C": 36, "gate_if_reached": "ACCEPT", "pre_gate_staging": "POTENTIAL_OUT_OF_BOUNDS_IF_M_IS_ACTUAL", "adm_N_to_M": "UNBOUND"},
+    {"id": "hypothetical_m38_capacity_exact", "process_frame_M": 38, "capacity_C": 38, "gate_if_reached": "ACCEPT", "pre_gate_staging": "POTENTIAL_OUT_OF_BOUNDS_IF_M_IS_ACTUAL", "adm_N_to_M": "UNBOUND"},
+    {"id": "hypothetical_m36_capacity_short", "process_frame_M": 36, "capacity_C": 35, "gate_if_reached": "REJECT_0x1D", "pre_gate_staging": "POTENTIAL_OUT_OF_BOUNDS_BEFORE_GATE", "adm_N_to_M": "UNBOUND"},
+    {"id": "hypothetical_m38_capacity_short", "process_frame_M": 38, "capacity_C": 37, "gate_if_reached": "REJECT_0x1D", "pre_gate_staging": "POTENTIAL_OUT_OF_BOUNDS_BEFORE_GATE", "adm_N_to_M": "UNBOUND"}
+  ],
+  "stuffer_six_frame_and_block_guards": "SEPARATE_DOMAINS; PROCESSFRAME_M_NOT_JOINED",
+  "dee_run": false
+}

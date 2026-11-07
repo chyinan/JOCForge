@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.atmos_composite_image_identity_correction.v1",
+  "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-V1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-WASH-V1",
+    "manifest_sha256": "d72f1bb76bc0d1dcfbf757a424538e07ba1835836b1fe601f541e34e5c7943d7",
+    "manifest_checksum_file_sha256": "7334e8a5b0c260e36055bde48ac91543d5dfb7b2284d97263c48bc539bb07c82",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "identity": {
+    "target_module": "dee_audio_filter_ddp_atmos.dll",
+    "corrected_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "corrected_sha256_chars": 64,
+    "ghidra_program_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "source_file_sha256_in_correction_receipt": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "source_file_sha256_recomputed_by_wash": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "historical_parent_source_identity_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd1e1cce8b7e95d2",
+    "historical_parent_digest_suffix": "cd1e1cce",
+    "historical_parent_digest_used_as_identity": false
+  },
+  "parent_runners": {
+    "same_read_only_project_and_program": "BOUND_BY_CORRECTION_PACKAGE_CHECKER",
+    "project_program": "StageRunnerPluginBinding / dee_audio_filter_ddp_atmos.dll",
+    "layout_branch_writer_manifest": "fa60ca124c7dcbd694ef64828277cf864f0700b11231acbf97a0d184d3f089d8",
+    "frame_shape_manifest": "34c7a9bff992cf4e76ddc48b1633094c8603c8e898e8faa103a29c9068ae0863"
+  },
+  "scope": {
+    "ghidra_version": "12.2",
+    "mode": "read-only/no-analysis",
+    "parent_packages_modified": false,
+    "dee_run": "NOT_RUN",
+    "runtime_layout_branch": "NOT_CAPTURED",
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false
+  },
+  "status": {
+    "same_image_identity_for_static_layout_and_count_receipts": "BOUND_BY_CORRECTED_PROGRAM_AND_FILE_HASH",
+    "runtime_layout_branch_value": "NOT_CAPTURED",
+    "physical_chna_N_to_composite_count": "UNBOUND",
+    "general_track_count_range": "NOT_ESTABLISHED",
+    "audio_effect": "NOT_ESTABLISHED"
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "join_static_same_image_receipts_only": true,
+    "do_not_promote_runtime_branch_or_general_range": true
+  }
+}

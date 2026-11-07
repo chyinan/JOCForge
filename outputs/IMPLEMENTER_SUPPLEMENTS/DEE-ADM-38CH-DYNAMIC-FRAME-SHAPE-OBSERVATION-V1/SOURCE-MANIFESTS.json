@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "adm_processor_frame_shape_native_capture_wash_v1",
+      "manifest_sha256": "ca170481a74cb704a3e6e2ab35bb88b27498b0fad814704be4c160db10a59b21",
+      "package_seal_sha256": "b52954a5642a311755ecd0b43fddf0baea58d13a91aa40b3c3bd962c83261e1a",
+      "reviewed_payloads": [
+        {"name": "FINDINGS.md", "sha256": "d13b536157274d7c09283b60d84ce21ff043d03cb5c1b55fb1a76771723aaf8d"},
+        {"name": "NATIVE-OBSERVATION.json", "sha256": "c16fb8d094bd7b3ebe9cd3a13fa941aca1d641e35d2295a9114c8482dd70c478"},
+        {"name": "SOURCE-IDENTITIES.json", "sha256": "981c8a2a055c346f045e993cfc8e142ae799185eb1f3d8765ffafb2749bc1d10"}
+      ],
+      "raw_PCM_or_EC3_payload_copied": false
+    }
+  ]
+}

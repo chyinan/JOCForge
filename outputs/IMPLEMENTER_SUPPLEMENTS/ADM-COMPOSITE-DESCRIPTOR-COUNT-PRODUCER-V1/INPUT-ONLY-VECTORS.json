@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.composite_descriptor_count_input_vectors.v1",
+  "status": "EXISTING_METADATA_PROJECTIONS_ONLY",
+  "ordinary_mode": {
+    "rule": "selected_J count getter returns U16(K+0x0A), copied to B+0x0A",
+    "selected_J_and_K_generation": "UNBOUND"
+  },
+  "extended_mode": {
+    "rule": "max rows with tag byte +2 == 255 across adapters, plus 10",
+    "object_rows_26_projection": 36,
+    "object_rows_28_projection": 38,
+    "selected_mode": "NOT_CAPTURED"
+  },
+  "native_B_value": "NOT_CAPTURED",
+  "dee_run": false,
+  "pcm_or_payload_included": false
+}

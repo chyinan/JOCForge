@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "reader-descriptor-n-owner",
+      "input": {
+        "reader_n_field": "descriptor U16 +0x0A",
+        "inner_state_field": "+0x58 pointer"
+      },
+      "expected_observation": {
+        "reader_field_read": "BOUND_STATIC",
+        "descriptor_writer_owner": "UNBOUND",
+        "physical_chna_join": "UNBOUND"
+      },
+      "limitations": [
+        "No CHNA-to-descriptor transfer",
+        "K count is a separate domain",
+        "No end-to-end range proof"
+      ]
+    }
+  ]
+}

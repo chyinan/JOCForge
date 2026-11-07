@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "scope": "Count/shape vectors derived from the sanitized JOCForge source model; no native output or PCM is asserted.",
+  "vectors": [
+    {
+      "id": "physical36",
+      "input": {
+        "physical_rows": 36,
+        "profile_bed_rows": 10,
+        "direct_lfe_rows": 1
+      },
+      "expected": {
+        "object_rows": 26,
+        "regular_non_lfe_rows": 35,
+        "active_global_sources": 46,
+        "present_global_ids": "0..45",
+        "absent_global_ids": [
+          "46",
+          "47"
+        ],
+        "absent_ids_zero_filled": false
+      }
+    },
+    {
+      "id": "physical38",
+      "input": {
+        "physical_rows": 38,
+        "profile_bed_rows": 10,
+        "direct_lfe_rows": 1
+      },
+      "expected": {
+        "object_rows": 28,
+        "regular_non_lfe_rows": 37,
+        "active_global_sources": 48,
+        "present_global_ids": "0..47",
+        "absent_global_ids": [],
+        "absent_ids_zero_filled": false
+      }
+    },
+    {
+      "id": "physical39-capacity",
+      "input": {
+        "physical_rows": 39,
+        "profile_bed_rows": 10,
+        "direct_lfe_rows": 1
+      },
+      "expected": {
+        "object_rows": 29,
+        "regular_non_lfe_rows": 38,
+        "active_global_sources": 49,
+        "present_global_ids": "0..48",
+        "current_fixed48_axis": "reject_or_use_dynamic_wider_storage",
+        "not_zero_filled": true
+      }
+    },
+    {
+      "id": "cold-reset",
+      "input": {
+        "same_job_callbacks": 2,
+        "new_attempt": true
+      },
+      "expected": {
+        "same_job_callbacks": "preserve generation/row identity/history",
+        "new_attempt": "discard old owners and construct fresh shape from PreparedJobInput"
+      }
+    }
+  ]
+}

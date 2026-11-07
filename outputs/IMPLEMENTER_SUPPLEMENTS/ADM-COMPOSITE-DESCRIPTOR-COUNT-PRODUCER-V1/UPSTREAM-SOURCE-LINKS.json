@@ -1,0 +1,76 @@
+{
+  "schema": "wash.composite-descriptor-count-producer-sources.v1",
+  "research_root_relative_to_this_package": "../../",
+  "prior_packages": [
+    {
+      "package_id": "COMPOSITE-DESCRIPTOR-WRITER-OWNER-JOIN-V1",
+      "path": "composite-descriptor-writer-owner-join-v1",
+      "manifest_sha256": "248c105c22c0f8ee85f8538cc350ebee3ab056978f862be20fd38f8131bb2783",
+      "report_file": "DESCRIPTOR-CONTRACT.json",
+      "report_sha256": "690d1e845e1feafbb0a87794f073fc81bde40bacbdc6a6bb0c67eb4e8350622e"
+    },
+    {
+      "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+      "path": "adm-frame-descriptor-lineage-static-v1/wash-package",
+      "manifest_sha256": "46230ce4aa5fa9a0f060887282dbb7fe86c47c5e2ea67fbbe4e943eb97c31c0c",
+      "report_file": "FRAME-COUNT-LINEAGE.json",
+      "report_sha256": "5c194b79c0a631ba1dcc21b09aff921750231ff10f6adebbafec76abb1173fc7"
+    },
+    {
+      "package_id": "SOURCE-DESCRIPTOR-COUNT-PRODUCER-V1",
+      "path": "source-descriptor-count-producer-v1",
+      "manifest_sha256": "a4d0869f4b6f8f07a86611c4dcbd466e7dabef6365bb740163cbf48fe9c5396f",
+      "report_file": "COUNT-CONTRACT.json",
+      "report_sha256": "3599f4475e9ad8c3587d245e3eecb7ab5562015240cfcc6b059f87c07b542148"
+    },
+    {
+      "package_id": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+      "path": "adm-to-atmos-joc-row-count-capacity-v1/wash-package",
+      "manifest_sha256": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10",
+      "report_file": "ROW-COUNT-AND-K-N-M-JOINS.json",
+      "report_sha256": "8980865451af5eb5b7ecc15876c33dc29db54af4a776d0a3666c2721a94ec286"
+    },
+    {
+      "package_id": "MY-JEALOUSY-PHYSICAL-ROW-K-MARKER-CROSSWALK-V1",
+      "path": "my-jealousy-physical-row-k-marker-crosswalk-v1/wash-package",
+      "manifest_sha256": "c36ada1bc9d8f3e32a76f7d2c1cdb88d481166ae975ed71d8214981b0c7a71bf",
+      "report_file": "EVIDENCE.json",
+      "report_sha256": "5a51e422d2943df92f332d3244a9364e8aeaa096e119102e2511c1eda43db1d6"
+    }
+  ],
+  "ghidra_source_artifacts": [
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/reader_and_composite_r9.log",
+      "sha256": "bacd7ecde2a543cad170c686a6cbb5fcfd614b3ffe58d1d9b71625ab80012380",
+      "tool": "Ghidra 12.2",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/reader_and_composite_r9.log"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/composite_mode_owner_r9.log",
+      "sha256": "165c58a000be71c95e1ffc8d462d6e881f8e85730ac50ef90320cb7390ce255b",
+      "tool": "Ghidra 12.2",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/composite_mode_owner_r9.log"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/composite_mode_helpers_r9.log",
+      "sha256": "ec8a88a668b8d95ac8d6194334a1ab7c1d7b8dce14e93ceb5ebae4dfd549af70",
+      "tool": "Ghidra 12.2",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/composite_mode_helpers_r9.log"
+    },
+    {
+      "path": "adm-frame-descriptor-lineage-static-v1/analysis/lineage_function_hashes_r9.log",
+      "sha256": "8f63fcf25682024e0aee79dfe9be421ee26cd284f96271b24c8f4e341e8feb8e",
+      "tool": "Ghidra 12.2",
+      "receipt_file": "RESEARCH-RECEIPTS.json",
+      "receipt_relative_path": "analysis/lineage_function_hashes_r9.log"
+    }
+  ],
+  "sample_metadata_receipts": {
+    "my_jealousy_36": "MY-JEALOUSY-PHYSICAL-ROW-K-MARKER-CROSSWALK-V1",
+    "primary_38": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+    "native_values": "NOT_CAPTURED"
+  }
+}

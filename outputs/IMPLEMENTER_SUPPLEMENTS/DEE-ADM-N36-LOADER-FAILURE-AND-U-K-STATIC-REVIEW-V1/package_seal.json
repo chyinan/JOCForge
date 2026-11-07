@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ADM-N36-LOADER-FAILURE-AND-U-K-STATIC-REVIEW-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "579d2841d0e8d0671fab48fc60d3c1baf81ce06d779e4077bc687a6d0de4c2a9",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

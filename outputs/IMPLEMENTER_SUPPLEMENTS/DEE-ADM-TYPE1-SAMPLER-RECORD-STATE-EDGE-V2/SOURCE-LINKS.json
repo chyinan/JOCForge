@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/adm_sampler_audio_edge_first_consumer_wash_v1",
+    "manifest_sha256": "01e82938e5d958dabe2786e3e465ac719107d95d03f2bf50bbf61be053fdaa2b",
+    "payloads_verified": "4/4",
+    "sha256sums_sha256": "2ddb4801772c8fc9629a22a4e308169360f79a1b81b747d746cace187c1c2cb3",
+    "package_seal_sha256": "537ef0927c60cc54bbf3a30c3b62c63cc909444438b3931fa6a0ff658bf4c18a"
+  },
+  "verified_parents": [
+    {"manifest_sha256": "41bd71d89cfd1876959a4c9a17327bffc8ccd40d65a147988992673def2664ee", "payloads": "4/4", "package_seal_sha256": "cca17e52a70026237fd044bf0cd30558873c9850b6d7f2ae41d4c2efc6deaf0b"},
+    {"manifest_sha256": "bb5f9f9892355ea692db422dff93744ec79be41bfd94cd392e7aca12b5d0a4c6", "payloads": "4/4", "package_seal_sha256": "cbf483efd4f63376792fc9b58ea37947611603764f8b46e50b7ff08cd7b6106f"},
+    {"manifest_sha256": "4479dcef6a38f809ca324b7809af25edd32b370c16900529e920c7a673cf7606", "payloads": "5/5", "package_seal_sha256": "b179c6afac13acd5bc80cbeb4fe3d23e56d5c5f01e05cee7d652270aa4481ffa"},
+    {"manifest_sha256": "1eb26528fb9edaedfe1f596d03f1dfb8e7a260b209bf0e9739940c5b80fecc18", "payloads": "4/4", "package_seal_sha256": "8afadbad5b21ee1fc166a5360878699b4124ff1246d7d7bd4cc98662ca2e770e"}
+  ],
+  "target_image": {
+    "path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll",
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "rehash_by_wash_this_turn": true
+  },
+  "wash_actions": {
+    "source_manifest_payloads_sums_and_seal_recomputed": true,
+    "parent_manifests_payloads_and_seals_recomputed": true,
+    "target_plugin_rehashed": true,
+    "raw_trace_scripts_or_decompilation_copied": false,
+    "private_key_or_license_material_copied": false
+  }
+}

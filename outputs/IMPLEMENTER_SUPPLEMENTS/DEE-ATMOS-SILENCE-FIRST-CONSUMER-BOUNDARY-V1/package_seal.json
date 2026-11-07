@@ -1,0 +1,40 @@
+{
+  "schema": "dee-atmos-ddp-silence-first-consumer-seal.v1",
+  "package_id": "dee_atmos_ddp_silence_first_consumer_wash_v1",
+  "sealed_at_utc": "2026-11-06T15:33:42.522387+00:00",
+  "status": "SEALED_PARTIAL",
+  "file_count": 6,
+  "seal_excluded_from_its_own_hash_list": true,
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 257,
+      "sha256": "989596a3cac69c7b88cd933712d858b5443fb2449504839f6882ff598eaf2e2a"
+    },
+    {
+      "file": "FINDINGS.md",
+      "bytes": 1906,
+      "sha256": "67e55ed1c8c8373ea4f7eaaade4b8826da2c3e0ab5e1ed8e7b1a390132c8ad65"
+    },
+    {
+      "file": "FIRST-CONSUMER-EDGE.json",
+      "bytes": 3696,
+      "sha256": "3b01a0fe759586142ff9e326e27548ba110e8386e80f24870bac263081e2b5d7"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 9255,
+      "sha256": "951d913e88b6e7e80d8436765a1f93779abe4492a24b09452a7f79465002489d"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 9044,
+      "sha256": "ed2f220d0bf37b780cdd434ac052178fdb6f3611708715fc1768e41fda4e7a1e"
+    },
+    {
+      "file": "evidence_manifest.json",
+      "bytes": 10149,
+      "sha256": "eb1a164cfe7190b1c75b8840c46b2dc3c3fd3fce0136aa4844b4d67b996857de"
+    }
+  ]
+}

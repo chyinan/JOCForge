@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "atmosmezz-offset-ffoa-auto-schema",
+      "kind": "schema-and-static-normalizer-summary",
+      "input": {
+        "offset": "auto",
+        "ffoa": "auto"
+      },
+      "observed": {
+        "offset_type": "xs:string",
+        "ffoa_type": "xs:string",
+        "literal_auto_to_stod": "REJECTED"
+      },
+      "status": "SCHEMA_ONLY; HOST_NORMALIZER_STATIC; CONVERTER_JOIN_UNBOUND"
+    }
+  ]
+}

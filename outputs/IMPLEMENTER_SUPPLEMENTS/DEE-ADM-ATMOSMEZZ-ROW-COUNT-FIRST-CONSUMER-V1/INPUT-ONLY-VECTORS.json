@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_NATIVE_RUNTIME_COUNT_CAPTURED",
+  "vectors": [],
+  "note": "Prior 36/38 examples are metadata-only context and are not treated as native K/N observations."
+}

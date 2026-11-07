@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-PROCESSFRAME-M-TO-EAC3-WRITER-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "424aae07eaab6fb2ad9a1b45079490b0b3820842c456c13387b29add13ff4d5c",
+  "payload_file_count": 7,
+  "payload_hash_audit": "PASS_7_OF_7",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

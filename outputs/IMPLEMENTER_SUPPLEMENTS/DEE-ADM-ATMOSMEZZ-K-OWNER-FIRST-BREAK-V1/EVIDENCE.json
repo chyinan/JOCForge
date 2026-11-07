@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.dee_atmosmezz_k_owner_first_break.v1",
+  "package_id": "DEE-ADM-ATMOSMEZZ-K-OWNER-FIRST-BREAK-V1",
+  "status": {
+    "host_source_reference_to_new_reader_u": "CONDITIONAL_STATIC_PATH_BOUND",
+    "reader_u_to_descriptor_k_record_containers": "STATIC_COUNT_SOURCE_BOUND",
+    "wave_fmt_channels_to_k_instance": "UNBOUND",
+    "chna_physical_rows_to_k_instance": "UNBOUND",
+    "stage_runner_file_name_to_worker_source_owner_generation": "UNBOUND",
+    "runtime_k_count_and_mode": "NOT_CAPTURED",
+    "arbitrary_adm_end_to_end_admission": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "ADM-ATMOSMEZZ-WAVE-CHNA-TO-K-OWNER-BOUNDARY-V1",
+    "manifest_sha256": "e2428134072e35fd13488ac4f0547f8894b521d40a70a6b3a968cb98f25a24b5",
+    "manifest_checksum_file_sha256": "d0f9abce545a50bb22ccbb0c41532f2b8e1a9f65091f3a45c5d7a913d1058b91",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "route": {
+    "stage_runner_input": "AtmosMezz.file_name",
+    "worker_property": "dee_audio_filter_source / source-reference",
+    "storage_factory": "conditionally reached from source-reference",
+    "reader_owner": "fresh U created by the storage factory",
+    "descriptor_owner": "K derived from U individual/group record containers",
+    "converter_chna_owner": "C; not joined to encoder U/K"
+  },
+  "limits": {
+    "dee_executed": false,
+    "dynamic_capture": false,
+    "parser_replay": false,
+    "pcm_or_payload_read": false,
+    "dbmd_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Keep the conditional native row-count path separate from concrete ADM WAVE/CHNA identity and allocation. Do not claim arbitrary-track support from the 1..128 native guard."
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-WASH-V1",
+      "manifest_sha256": "d72f1bb76bc0d1dcfbf757a424538e07ba1835836b1fe601f541e34e5c7943d7",
+      "manifest_checksum_file_sha256": "7334e8a5b0c260e36055bde48ac91543d5dfb7b2284d97263c48bc539bb07c82",
+      "reviewed_payloads": [
+        {"name": "IMAGE-IDENTITY-CORRECTION.json", "sha256": "eece7b78586ac237f7cebc6d57142fd0628406442700f1ce63ff0e4495973566"},
+        {"name": "OPENED-PROGRAM-IDENTITY.txt", "sha256": "8a69a89d1bb7d15f2be0274876cfe5b5b9efd265b21d4cebb5a522d5f71dc0c7"},
+        {"name": "REPORT.md", "sha256": "dbd1c2a56ab5d90076c1731c2ee3d71a99bab6094e7b83c7f487321cd3708644"},
+        {"name": "PREDECESSOR-SOURCE-IDENTITIES.json", "sha256": "aee9d97a41895ddbc8ea828aa432851909972a8f0756938b0ba9262e001af341"},
+        {"name": "parent-evidence/layout-branch-writer/SOURCE-IDENTITIES.json", "sha256": "cc8c5eff34e26531b777516bd6e569048251b33a69e9b54de67ea49111a72c82"},
+        {"name": "parent-evidence/frame-shape/SOURCE-IDENTITIES.json", "sha256": "7d9f14124b241e9f77de8cbe5d9dd63d99647070a251204bfacdd2cdc04de137"}
+      ],
+      "raw_binary_or_decompilation_copied": false
+    }
+  ]
+}

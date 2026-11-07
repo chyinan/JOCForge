@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.adm_physical_n_to_m_input_only.v1",
+  "scope": "Metadata-only shape vectors from hash-bound existing receipts; not audio content or expected codec output.",
+  "vectors": [
+    {"sample":"First Love.wav","physical_N":36,"format_channels":36,"CHNA":36,"DBMD":36,"local_diagnostic":"RIFF_PCM24_PARSE"},
+    {"sample":"人是猫 - 张卡斯, 洛天依.wav","physical_N":38,"format_channels":38,"CHNA":38,"DBMD":38,"local_diagnostic":"PASS_LOCAL_MODEL_3_HOPS","meter_hops":3}
+  ],
+  "conditional_static_rule": "if the same 36 or 38 value reaches CompositeMaster.format+0x0A, it passes the zero-only constructor gate",
+  "N_to_format_u16_owner_join": "UNBOUND",
+  "packet_channel_u16_to_core_M": "UNBOUND",
+  "expected_track_support_result": "NOT_ASSERTED",
+  "pcm_payload_included": false,
+  "native_processframe_run": "NOT_RUN"
+}

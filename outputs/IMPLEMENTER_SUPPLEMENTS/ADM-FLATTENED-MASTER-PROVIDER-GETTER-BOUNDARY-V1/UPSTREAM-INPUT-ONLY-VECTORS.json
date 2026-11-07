@@ -1,0 +1,39 @@
+{
+  "schema": "washed.flattened-master-provider-getter-static-branch-vectors.v1",
+  "recipient": "WASH_ONLY",
+  "evidence_class": "SYMBOLIC_STATIC_ONLY_NOT_RUNTIME_OBSERVATIONS",
+  "vectors": [
+    {
+      "id": "resolver_factory_path",
+      "param8": "NONZERO",
+      "factory": "FUN_1804CBC20 constructs atmos_storage_flatten_master",
+      "factory_outputs": ["wrapper owner", "wrapper+0x18 record pointer"],
+      "runtime_selected": "NOT_OBSERVED",
+      "inner_provider_vtable_target": "UNBOUND"
+    },
+    {
+      "id": "typed_channel_count_getter_flag_zero",
+      "flattened_source_flag_plus_0x48": 0,
+      "typed_getter": "FlattenedMasterSource vtable+0x80 / FUN_180537030",
+      "return_shape": "U16 descriptor+0x0A zero-extended to U64",
+      "same_descriptor_owner": true,
+      "physical_adm_owner_join": "UNBOUND"
+    },
+    {
+      "id": "typed_channel_count_getter_flag_one",
+      "flattened_source_flag_plus_0x48": 1,
+      "typed_getter": "FlattenedMasterSource vtable+0x80 / FUN_180537030",
+      "return_shape": "U16 at child+0x38 pointer+0x0A zero-extended to U64",
+      "fallback_pointer_owner": "UNBOUND",
+      "physical_adm_owner_join": "UNBOUND"
+    },
+    {
+      "id": "outer_provider_slot_delegation",
+      "wrapper_vtable_slot": "+0xA0",
+      "target": "FUN_1804F5AF0",
+      "delegated_slot": "dynamic child provider vtable+0xA0 via FUN_1804CBBC0",
+      "typed_return_record_from_parent_path": "three qwords; qword 0 is owner pointer",
+      "concrete_child_target": "UNBOUND"
+    }
+  ]
+}

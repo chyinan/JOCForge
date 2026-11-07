@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_CONCRETE_FILE_COUNT_OR_K_VALUE_CAPTURED",
+  "vectors": [],
+  "note": "No WAVE or CHNA payload was opened; this is a static row-lineage receipt."
+}

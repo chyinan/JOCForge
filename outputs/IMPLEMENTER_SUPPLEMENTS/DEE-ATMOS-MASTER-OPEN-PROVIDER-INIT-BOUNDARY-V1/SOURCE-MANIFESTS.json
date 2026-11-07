@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-MASTER-OPEN-PROVIDER-INIT-BOUNDARY-WASH-V1",
+    "manifest_sha256": "2508a2ac601c187f87ca010102ea578279c407e3ee8b861f762101027322119a",
+    "payload_hashes_checked_by_source_checker": true
+  },
+  "parent_receipts": [
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-VECTOR-CALLER-LINEAGE-WASH-V1",
+      "manifest_sha256": "a2d43917a6e3227ac634685e0e4be0bb32d2d915f9589f22a8efa19c91899ef2",
+      "contribution": "selected FUN_1801828c0 owner fields and master_open call context argument"
+    },
+    {
+      "package_id": "DEE-ATMOS-MASTER-OPEN-OWNER-BOUNDARY-WASH-V1",
+      "manifest_sha256": "e9ac845b15337b48b83a488868754a584ff013eb8a47b5f09e0f3b524a10379d",
+      "contribution": "child master_open result pair, qword+8 metadata view and unresolved ADM N join"
+    },
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-WASH-V1",
+      "manifest_sha256": "d72f1bb76bc0d1dcfbf757a424538e07ba1835836b1fe601f541e34e5c7943d7",
+      "contribution": "corrected target image identity"
+    },
+    {
+      "package_id": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+      "manifest_sha256": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10",
+      "contribution": "ADM physical N field and writer path"
+    }
+  ],
+  "host_parent_manifests_recomputed_on_disk": [
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-VECTOR-CALLER-LINEAGE-WASH-V1",
+      "manifest_sha256": "a2d43917a6e3227ac634685e0e4be0bb32d2d915f9589f22a8efa19c91899ef2"
+    },
+    {
+      "package_id": "DEE-ATMOS-MASTER-OPEN-OWNER-BOUNDARY-WASH-V1",
+      "manifest_sha256": "e9ac845b15337b48b83a488868754a584ff013eb8a47b5f09e0f3b524a10379d"
+    },
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-WASH-V1",
+      "manifest_sha256": "d72f1bb76bc0d1dcfbf757a424538e07ba1835836b1fe601f541e34e5c7943d7"
+    }
+  ],
+  "adm_n_parent_manifest": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10",
+  "raw_ghidra_scripts_logs_or_decompilation_copied": false,
+  "target_execution": false
+}

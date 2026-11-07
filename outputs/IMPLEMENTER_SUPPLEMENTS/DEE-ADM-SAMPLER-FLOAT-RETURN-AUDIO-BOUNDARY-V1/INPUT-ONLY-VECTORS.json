@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STRUCTURAL_ONLY; NOT_RUN",
+  "vectors": [
+    {
+      "id": "sampler_float_return_owner",
+      "helper": "FUN_1801caa90",
+      "return_capture": {"u64": "wrapper local_78 -> nested receiver +0x8c", "u32": "wrapper local_70 -> nested receiver +0x94"},
+      "audio_buffer_pointer": "UNBOUND",
+      "pcm_values": "NOT_PRESENT"
+    },
+    {
+      "id": "caller_snapshot_output",
+      "caller": "FUN_1801ad9d0",
+      "output": "local_d8 passed by pointer as param_2",
+      "typed_join_to_pcm_or_atmos_audio_block": "UNBOUND",
+      "runtime_generation": "NOT_CAPTURED"
+    }
+  ],
+  "conditional_plus_0x80": "NOT_EVALUATED",
+  "dee_or_pcm_run": "NOT_RUN"
+}

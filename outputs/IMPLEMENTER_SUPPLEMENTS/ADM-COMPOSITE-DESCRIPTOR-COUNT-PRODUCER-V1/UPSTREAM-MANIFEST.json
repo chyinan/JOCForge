@@ -1,0 +1,13 @@
+{
+  "schema": "wash.composite-descriptor-count-producer-manifest.v1",
+  "package_id": "COMPOSITE-DESCRIPTOR-COUNT-PRODUCER-V1",
+  "files": {
+    "B-COUNT-PRODUCER.json": "9aefb0a91b3a976c171498ae8b8f6022e2b43298499753cecf9a43cb3d8b133a",
+    "CHECK.json": "5239b9ac67a15d325536f23d63306865ffb244c09d7d027113865eb764bce628",
+    "FUNCTION-HASHES.json": "4cdf6ea50a23b323f5cfaf062e05f5e9a547ad1cd7f84a83528adcda3148cd6e",
+    "INVOCATION.json": "dd7ca1b9e74a22077ff85b09b299348a850defa3a0f49e4faa68456cceb06fe0",
+    "README.md": "190817b0cc2b363fcbcd035eff0c3641ce83a814ef3d3e5808082b187dee7a43",
+    "SOURCE-LINKS.json": "bdcf53a49463a8b428839cf1c0ea3e7e3e300abd314f3cc8293756eb0fe3e032",
+    "verify_evidence_package.py": "80a4eb78a01e39b0531c5c9879502cdbd96fca1ffea160cb75a516e1400995a0"
+  }
+}

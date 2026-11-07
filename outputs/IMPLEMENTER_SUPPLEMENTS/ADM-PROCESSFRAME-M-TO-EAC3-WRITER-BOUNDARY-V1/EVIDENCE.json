@@ -1,0 +1,62 @@
+{
+  "schema": "jocforge.adm_processframe_eac3_writer_boundary.v1",
+  "package_id": "ADM-PROCESSFRAME-M-TO-EAC3-WRITER-BOUNDARY-V1",
+  "status": {
+    "process_frame_M_capacity_gate": "STATICALLY_BOUND_CONFIGURABLE",
+    "capacity_C_active_value": "UNBOUND",
+    "table_entries_0_1_shared_handler": "STATICALLY_BOUND",
+    "scratch_allocation_owner": "UNBOUND",
+    "adm_N_to_process_frame_M": "UNBOUND",
+    "runtime_table_index": "NOT_CAPTURED",
+    "process_frame_M_to_stuffer_frame_block_counters": "UNBOUND",
+    "36_38_native_execution": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/sample6-process-frame-eac3-writer-boundary-wash-v1",
+    "package_id": "sample6-process-frame-eac3-writer-boundary-wash-v1",
+    "manifest_sha256": "ea654ef938b0dd5020ddef2cfaf93bcdc78e80b466a87877c5662af49fd21ae3",
+    "package_seal_sha256": "2a09daa833fe8076d8b668737598825ad5ee765e7cfd4927d3f383162160220b",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "ghidra_version": "12.2_PUBLIC"
+  },
+  "process_frame_capacity": {
+    "function": "FUN_140315db0",
+    "count_domain": "ProcessFrame per-group U32 M",
+    "capacity_field": "root+0xC140",
+    "capacity_source": "selected configuration/profile key 2; active value UNBOUND",
+    "reject_condition": "root+0xC140 < M -> 0x1D",
+    "same_static_handler_for_table_indices": [0, 1],
+    "shared_handler": "FUN_140350D00"
+  },
+  "scratch_and_stuffer": {
+    "scratch_base": "root+0x38 caller-provided span; allocation owner UNBOUND",
+    "bounded_child_layout": "selector*0x2000; child view stride 0x1000; child size 0x800",
+    "stuffer": "FUN_14033B5F0",
+    "stuffer_frame_count_guard": ">6 at state+0x182 -> 0x12E",
+    "stuffer_block_count_guard": ">6 at state+0x180 -> 0x135",
+    "M_to_either_stuffer_counter_join": "UNBOUND"
+  },
+  "staging_boundary": {
+    "extent": "16-qword local pointer staging array",
+    "count_le_16_guard_before_multi_entry_copy": "NOT_PRESENT_IN_INSPECTED_PATH",
+    "if_actual_M_exceeds_16": "POTENTIAL_OUT_OF_BOUNDS_BOUNDARY; runtime effect NOT_OBSERVED",
+    "confirmed_runtime_fault": false
+  },
+  "input_only_scenarios": {
+    "M36_C36": "capacity gate would accept if reached; ADM N->M UNBOUND",
+    "M38_C38": "capacity gate would accept if reached; ADM N->M UNBOUND",
+    "M36_C35": "capacity gate would reject 0x1D if reached; ADM N->M UNBOUND",
+    "M38_C37": "capacity gate would reject 0x1D if reached; ADM N->M UNBOUND",
+    "vector_evidence_class": "SYMBOLIC_NOT_NATIVE_OBSERVATION"
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "pcm_or_media_read": false,
+    "encoded_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "disposition": "Do not state arbitrary-track end-to-end support or infer N=M. Keep all count domains and the potential pre-gate staging boundary separate."
+}

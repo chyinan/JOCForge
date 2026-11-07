@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.individual_slot_callee_first_write_boundary.v1",
+  "package_id": "DEE-ADM-INDIVIDUAL-SLOT-CALLEE-FIRST-WRITE-BOUNDARY-V1",
+  "status": "CALLEE_FIRST_TRACKED_FIELD_STORE_FOUND; UID_SLOT_NOT_ESTABLISHED; TYPED_DESCRIPTOR_UNBOUND; POST_STORE_NOT_INSPECTED; RUNTIME_NOT_RUN",
+  "source": {
+    "package_id": "adm_individual_slot_callee_first_write_wash_v1",
+    "evidence_manifest_sha256": "2b1f18ddaf1c880a183e27cbf91e0743fc8158d6c4972894e57572a11eedf5c5",
+    "package_seal_sha256": "21e8b8a63258d9db63babee732582b22975141753ef8a8780c5d3bb595aa1095",
+    "normal_and_python_o_checker": "PASS"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2 PUBLIC",
+    "mode": "read-only/noanalysis",
+    "tier": "STATIC",
+    "scope": "One helper body; stop at first RCX/RDX-based field store."
+  },
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "callee": {
+    "function": "FUN_1802809a0",
+    "rva_start": "0x2809a0",
+    "rva_end_exclusive": "0x2809d8",
+    "bytes": 56,
+    "function_sha256": "449db1a6aafc3c0b2cbf9e353b627731b0616f6d137cdcc96d3dabe549885735"
+  },
+  "caller_setup": {
+    "caller": "FUN_1804d8b90",
+    "callsite_rva": "0x4d8bbc",
+    "rcx": "caller entry RDX; semantic identity UNBOUND",
+    "rdx": "address of caller stack local [RSP+0x28]"
+  },
+  "first_write": {
+    "rva": "0x2809a8",
+    "instruction": "MOV qword ptr [RDX+0x18],0xF",
+    "value": "constant 0xF",
+    "prior_tracked_field_reads": 0,
+    "prior_conditional_guards": 0,
+    "prior_calls": 0,
+    "output_field_type_and_semantics": "UNBOUND",
+    "proven_individual_record_plus_0x4c_write": false
+  },
+  "slot_contract": {
+    "uid_derived_physical_slot_produced": "NOT_ESTABLISHED",
+    "slot_producer": "UNBOUND",
+    "pre_assignment_guard": "UNBOUND",
+    "typed_descriptor_join": "UNBOUND",
+    "post_store_body": "NOT_SEMANTICALLY_REVIEWED",
+    "runtime": "NOT_RUN"
+  },
+  "query_history": {
+    "initial_query_predecoded_in_memory_instruction_count": 17,
+    "initial_query_emitted_and_analyzed_instructions": 4,
+    "v2_query_behavior": "incremental decode stopped at first store"
+  },
+  "scope_exclusions": {
+    "post_store_body_semantically_reviewed": false,
+    "other_callers_or_writers": false,
+    "dee_runtime": false,
+    "media_pcm_payload_key_or_license_read": false
+  }
+}

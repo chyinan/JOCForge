@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ATMOS-PER-SOURCE-SILENCE-ALTERNATE-BRANCH-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "f34d83b5e1a0817bd48cd799fbb1add7a8f8a02ca03cb4f2b720279aa4d59e0d",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "f43b90771b2a4982f8d52b1657593519db5990243832acc846636f629b547d14",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

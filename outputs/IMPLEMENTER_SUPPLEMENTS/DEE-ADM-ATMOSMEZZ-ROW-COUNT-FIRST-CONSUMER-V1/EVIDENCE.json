@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.dee_atmosmezz_row_count_first_consumer.v1",
+  "package_id": "DEE-ADM-ATMOSMEZZ-ROW-COUNT-FIRST-CONSUMER-V1",
+  "status": {
+    "conditional_dynamic_count_path": "STATICALLY_BOUND",
+    "first_numeric_gate": "U32 N in range 1..128 inclusive",
+    "fixed_36_38_or_48_gate_in_inspected_branch": "NOT_FOUND_IN_THIS_BOUNDED_PATH",
+    "wave_fmt_channels_to_K_instance_and_generation": "UNBOUND",
+    "current_native_count": "NOT_CAPTURED",
+    "physical_row_heap_reservation": "NOT_EVALUATED",
+    "pcm_sample_row_allocation": "NOT_EVALUATED",
+    "end_to_end_arbitrary_ADM_admission": "NOT_ESTABLISHED"
+  },
+  "source_package": {
+    "package_id": "ADM-ATMOSMEZZ-ROW-COUNT-FIRST-CONSUMER-V1",
+    "manifest_sha256": "d9e45e2519718ed154fcc5c5ec9e1692434ccdeec64585a47a38ef918328d63a",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 read-only/no-analysis"
+  },
+  "count_flow": {
+    "source_descriptor_owner": "K embedded in opened storage master A",
+    "K_formula": "individual_record_count + sum(group_entry_count for each group)",
+    "K_accumulator": "U32; low U16 stored as descriptor count",
+    "descriptor_row_stride": 6,
+    "conditional_composite_owner": "B distinct from K",
+    "mode_false": "copies ordinary adapter K count and six-byte rows",
+    "mode_true": "synthesizes B count as max(tag-255 count across adapters)+10",
+    "selected_mode_and_count": "NOT_CAPTURED",
+    "reader_count_source": "U16 B+0x0A, zero-extended to open_config[2] U32 N",
+    "row_map_builder": "creates N pointer entries; 128-entry source-map capacity",
+    "descriptor_copy_extent": "6*N bytes; physical allocation not evaluated",
+    "per_frame_source_map_loop": "fixed 128 slots; N represented by populated entries/flags"
+  },
+  "separate_count_domains": {
+    "canonical_M": "effective_object_count + 10",
+    "M_equals_N": "only observed in prior 36/38 metadata-only ten-bed vectors; not generalized",
+    "codec_frame_samples": 1536,
+    "profile_layout_C_relation": "UNBOUND"
+  },
+  "limits": {
+    "dee_executed": false,
+    "dynamic_capture": false,
+    "parser_replay": false,
+    "pcm_or_payload_read": false,
+    "dbmd_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_arbitrary_track_claim": false
+  },
+  "implementation_disposition": "The inspected native branch is count-driven through 128, not hard-coded to 36/38/48. Do not promote this to universal ADM support without the remaining typed input/count join and sample-row allocation evidence."
+}

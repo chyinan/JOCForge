@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "individual-slot-selected-u-open-first-break",
+      "input": {
+        "selected_branch": "U-open zero-byte branch",
+        "record_field": "+0x4c",
+        "helper_call": "FUN_1804d8b90 -> FUN_1802809a0",
+        "candidate_post_call_check": "[RAX+0x18] versus 0x10"
+      },
+      "expected_disposition": {
+        "slot_producer": "UNBOUND",
+        "slot_guard": "UNBOUND",
+        "relation_to_k_count": "UNBOUND",
+        "runtime_oob": "NOT_INFERRED"
+      },
+      "limitations": [
+        "One branch and one helper only.",
+        "No alternate branch or global writer scan.",
+        "No runtime observation."
+      ]
+    }
+  ]
+}

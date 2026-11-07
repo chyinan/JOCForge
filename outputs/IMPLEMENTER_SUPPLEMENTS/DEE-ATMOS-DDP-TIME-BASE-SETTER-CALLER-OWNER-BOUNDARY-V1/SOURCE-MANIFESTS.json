@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-CALLER-OWNER-BOUNDARY-WASH-V1",
+    "manifest_sha256": "9866ae6a18bccac39e5f63b201a3b13f3cc57394a4b37463c892f6cbc74996fe",
+    "sha256sums_sha256": "a1efcf954fec2e0bcf34be53a45e0cb278e00ebfecca2bac3f6cae4713b8535b",
+    "payload_hashes_checked": true
+  },
+  "parent_manifests": [
+    {
+      "package_id": "DEE-ATMOS-DDP-TIME-BASE-PROXY-SETTER-CHAIN-WASH-V1",
+      "manifest_sha256": "172f69569673e605bb1d0077317cc4c62e7082d19fbee81e56006cdd7c947717",
+      "verification": "MATCHED_ON_DISK"
+    },
+    {
+      "package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-HELPER-FIRST-EDGE-WASH-V1",
+      "manifest_sha256": "65e6bc91b2a43ffd628b82ac47498152b3e40d9f5ad3b7b12a5402784ef160f6",
+      "verification": "MATCHED_ON_DISK"
+    },
+    {
+      "package_id": "DEE-ATMOS-DDP-TIME-BASE-VALUE-EDGE-WASH-V1",
+      "manifest_sha256": "d085fb456dcdc285476e3702f67a731c3c1b96f8fea349ac7b610fb715d64805",
+      "verification": "MATCHED_ON_DISK"
+    }
+  ],
+  "source_identities": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "raw_ghidra_script_or_log_included": false,
+  "execution_scope": "No target execution, media, PCM, payload, key, license, or implementation access."
+}

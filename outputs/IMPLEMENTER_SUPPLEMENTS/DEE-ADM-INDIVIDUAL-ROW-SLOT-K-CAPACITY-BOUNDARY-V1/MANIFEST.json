@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-INDIVIDUAL-ROW-SLOT-K-CAPACITY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "INDIVIDUAL_SLOT_STORE_BOUND; SELECTED_SEQUENCE_HAS_NO_SLOT_TO_KCOUNT_GUARD; UPSTREAM_SLOT_VALIDATION_UNBOUND",
+  "implementation_disposition": "Preserve K allocation as 6 bytes per K-count and the selected individual writer's missing local slot-to-Kcount guard; do not claim runtime out-of-bounds behavior or N-to-K identity.",
+  "source_package_id": "adm_individual_row_slot_k_capacity_boundary_wash_v1",
+  "source_manifest_sha256": "29e43456134526e279963af0ee329e05fd55a4665afdbeaf9c3976d489078482",
+  "source_package_seal_sha256": "d5f254fdfed630ce9cae7c5d00746b94c3bbd6f5ea60c99351d21d60fd718982",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1724,
+      "sha256": "028bd3a35d64810c15098e362007a5e595c4511afb282b4279aedf126c203946"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 620,
+      "sha256": "498eb5c627ef600dd8dc9412fc3c56059eaadeff5421b19b848e9e1aa47d2880"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 548,
+      "sha256": "ebdfd744d559f8ffc40cadd0f647db9c6a2bef6ed4e310dfa496cea36a9c09fc"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 980,
+      "sha256": "7980509fca4eea9135b6c3f60c1a32b4f2eca89330c2b0fd30c1ff1571a3f111"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1137,
+      "sha256": "7b01add2c8875849a58c18c47b28882b7b9bf25647801ccb5d2796d81dac2430"
+    }
+  ]
+}

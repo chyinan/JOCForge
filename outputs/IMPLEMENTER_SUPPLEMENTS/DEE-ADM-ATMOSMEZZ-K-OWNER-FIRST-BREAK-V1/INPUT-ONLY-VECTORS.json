@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_ROW_COUNT_VECTOR",
+  "vectors": [],
+  "note": "No native K value or WAVE/CHNA-to-K runtime identity was captured."
+}

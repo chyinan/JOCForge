@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.dee-atmos-source-axis-oamdi-cap.v1",
+  "package_id": "DEE-ATMOS-SOURCE-AXIS-OAMDI-CAP-V1",
+  "status": "DYNAMIC_SOURCE_AXIS_STATICALLY_BOUND; OAMDI_SOURCE_COUNT_MAX_159; CODE_ROW_AXIS_SEPARATE; SELECTED_INPUT_AND_AU_UNBOUND",
+  "upstream": {
+    "package_id": "DEE-ATMOS-SOURCE-TO-AU-WASH-V1",
+    "manifest_sha256": "b864c94152763edc68a8d2d595c6e8526acb9af3de2bd7853837f05d4abf79c6",
+    "seal_sha256": "13e532f4989882cfc3ed8ac4c35b3a99ed834b1ba4bbd9d8cf22092650969e30",
+    "manifest_payloads": 32,
+    "manifest_payload_audit": "PASS_32_OF_32",
+    "external_references": 7,
+    "external_reference_audit": "PASS_7_OF_7",
+    "verifier": "REPORTED_PASS; NOT_RERUN_BY_WASH"
+  },
+  "route": {
+    "stage_factory": "audio.atmos_mezz -> encode_to_atmos_ddp",
+    "plugin": "dee_audio_filter_ddp_atmos.dll",
+    "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra": "12.2 static",
+    "job_input_identity": "UNBOUND",
+    "selected_source_owner_generation": "UNBOUND"
+  },
+  "source_axis": {
+    "atmosprocessor_rule": "actual channel count equals configured expected count; frame size <= allocated frame capacity",
+    "fixed_38_or_48_gate_in_inspected_path": "NOT_FOUND",
+    "multichannel_buffer": "N rows; copy requested_frame_size*4 bytes per row",
+    "md_to_evo_descriptor_stride": 6,
+    "descriptor_tag_offset": 2,
+    "absent_tag": 255,
+    "active_count": "E = descriptors whose tag != 255",
+    "remainder_count": "R = N - E",
+    "oamdi_source_count": "R+E=N",
+    "oamdi_source_count_guard": "1 <= N <= 159",
+    "oamdi_expanded_table_capacity": 159,
+    "overflow_error_propagation": "UNBOUND"
+  },
+  "separate_code_axis": {
+    "profile_code_row_shapes": [16,12,10,8],
+    "physical_N_equivalence": "NOT_ESTABLISHED",
+    "writer_to_selected_au": "UNBOUND"
+  },
+  "n36_n38": {
+    "36": {"below_159_cap": true, "metadata_join": "UNBOUND", "runtime_acceptance": "NOT_RUN"},
+    "38": {"below_159_cap": true, "sidecar_to_job_input_identity": "UNBOUND", "runtime_acceptance": "NOT_RUN"}
+  },
+  "execution_scope": {
+    "dee_or_encoder_executed": false,
+    "pcm_or_ec3_payload_read": false,
+    "key_or_license_secret_read": false,
+    "source_or_test_files_modified": false
+  }
+}

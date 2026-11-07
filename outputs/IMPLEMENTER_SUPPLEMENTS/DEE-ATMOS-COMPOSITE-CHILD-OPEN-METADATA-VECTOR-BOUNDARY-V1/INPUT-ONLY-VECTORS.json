@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "composite-vector-metadata-source",
+      "input": {
+        "source_record_qword_1": "child-open metadata view"
+      },
+      "expected_observation": {
+        "metadata_qword_source": "child-open result",
+        "physical_n_identity": "UNBOUND"
+      },
+      "limitations": [
+        "No same-ADM-N owner join",
+        "No source-vector count equals N proof",
+        "Runtime selection not captured"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "scope": "Sanitized metadata-only timeline values; no output sample indices computed because frame rate is not indicated.",
+  "vectors": [
+    {
+      "id": "r138-embedded-timecode",
+      "input": {
+        "time_base": "embedded_timecode",
+        "start_frame_token": 86640,
+        "end_frame_token": 86664,
+        "timecode_frame_rate": "not_indicated",
+        "offset": "auto",
+        "ffoa": "auto",
+        "sample_rate_hz": 48000
+      },
+      "expected": {
+        "start_end_units": "frame counts",
+        "converted_units": "seconds then rounded sample indices after resolved rate",
+        "ffoa_used_in_this_branch": false,
+        "resolved_rate": "UNBOUND"
+      }
+    },
+    {
+      "id": "r139-file-position",
+      "input": {
+        "time_base": "file_position",
+        "offset": "offset",
+        "ffoa": "ffoa"
+      },
+      "expected": {
+        "first_frame_of_action_relation": "max(offset,ffoa)-offset"
+      },
+      "note": "Separate branch; not a rule for the R138 vector."
+    }
+  ]
+}

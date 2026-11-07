@@ -1,0 +1,77 @@
+{
+  "schema": "jocforge.adm_chna_axml_slot_coverage.v1",
+  "package_id": "DEE-ADM-CHNA-AXML-36-38-SLOT-COVERAGE-V1",
+  "source_package": {
+    "package_id": "dee_adm_chna_axml_slot_coverage_wash_v1",
+    "manifest_sha256": "e409fbffde7f08924edffac49c790669a06a94c63b5a83c55c20230a12775c51",
+    "package_seal_sha256": "a82c7f6e331d6b81e1d95cb659c8e92ce5831169505ee2c8942045f1dbef90fb",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "sample_coverage": [
+    {
+      "sample_id": "authorized_n36",
+      "physical_n": 36,
+      "fmt_channels": 36,
+      "chna_tracks_uids_capacity": [
+        36,
+        36,
+        36
+      ],
+      "track_index_range": [
+        1,
+        36
+      ],
+      "missing_or_duplicate_indices": false,
+      "missing_or_extra_axml_uids": false,
+      "direct_channel_format_coverage": "36_of_36_unique",
+      "slot_bijection": "EXACT_ONE_TO_ONE"
+    },
+    {
+      "sample_id": "authorized_n38",
+      "physical_n": 38,
+      "fmt_channels": 38,
+      "chna_tracks_uids_capacity": [
+        38,
+        38,
+        38
+      ],
+      "track_index_range": [
+        1,
+        38
+      ],
+      "missing_or_duplicate_indices": false,
+      "missing_or_extra_axml_uids": false,
+      "direct_channel_format_coverage": "38_of_38_unique",
+      "slot_bijection": "EXACT_ONE_TO_ONE"
+    }
+  ],
+  "mapping_rules": {
+    "track_index_base": 1,
+    "each_chna_uid_has_one_axml_audio_track_uid": true,
+    "track_and_pack_references_match": true,
+    "packref_is_recorded_separately_from_per_track_channel_mapping": true
+  },
+  "read_boundary": {
+    "chunks_read": [
+      "RIFF/WAVE headers",
+      "fmt ",
+      "chna",
+      "axml"
+    ],
+    "data_chunk_payload_read": false,
+    "pcm_bytes_read": 0,
+    "whole_file_hash_computed": false
+  },
+  "limits": {
+    "samples": 2,
+    "runtime_dee_acceptance": "NOT_RUN",
+    "u_k_owner_or_generation": "NOT_CAPTURED",
+    "general_n_range": "NOT_ESTABLISHED",
+    "global_absence_claim": false
+  },
+  "implementation_disposition": {
+    "use_as_two_input_metadata_vectors_only": true,
+    "do_not_infer_runtime_admission_or_u_k_identity": true,
+    "algorithm_change_authorized": false
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "DEE-ATMOS-WAV-PROVIDER-REGISTRY-BOUNDARY-WASH-V1",
+  "manifest_file": "MANIFEST.json",
+  "manifest_sha256": "bf913facbc0d6a6642b8854b871c540a6c1965b5c3472e3b9a9496defb087a44",
+  "source_seal_file": null,
+  "source_package_seal_sha256": null,
+  "checksum_file": "MANIFEST.sha256",
+  "checksum_file_sha256": null,
+  "checksum_content": "bf913facbc0d6a6642b8854b871c540a6c1965b5c3472e3b9a9496defb087a44",
+  "source_verification": "SOURCE_VERIFIER_NORMAL_AND_PYTHON_O_PASS",
+  "parent_bindings": [
+    {
+      "package_id": "DEE-ATMOS-MASTER-OPEN-PROVIDER-INIT-BOUNDARY-WASH-V1",
+      "manifest_sha256": "2508a2ac601c187f87ca010102ea578279c407e3ee8b861f762101027322119a"
+    },
+    {
+      "package_id": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+      "manifest_sha256": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10"
+    }
+  ],
+  "raw_reverse_source_forwarded": false
+}

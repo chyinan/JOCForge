@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "local-temporary-vs-nested-time-base-descriptor",
+      "input": {
+        "caller_owner": "FUN_18014f9f0.param_1 = nested stage object P+0xb8",
+        "helper_argument": "&local_1e0 at callsite 0x18014fc94",
+        "candidate_descriptor": "nested stage owner +0x550"
+      },
+      "expected_disposition": {
+        "typed_join_in_bounded_slice": "UNBOUND",
+        "xml_value_or_omission": "UNBOUND",
+        "runtime": "NOT_RUN"
+      },
+      "limitations": [
+        "One caller-local static slice only.",
+        "No callee-body or whole-image expansion.",
+        "Absence of a visible alias in this slice is not a global absence claim."
+      ]
+    }
+  ]
+}

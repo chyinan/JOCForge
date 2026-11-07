@@ -1,0 +1,7 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "sample6-core-capacity-key2-producer-wash-v1",
+  "manifest_sha256": "502c4dfbe4010f70a4c7485f81d1c48fb780d73b8c8274b0dbdd86674cf74ff0",
+  "recipient": "WASH_ONLY",
+  "sealed": true
+}

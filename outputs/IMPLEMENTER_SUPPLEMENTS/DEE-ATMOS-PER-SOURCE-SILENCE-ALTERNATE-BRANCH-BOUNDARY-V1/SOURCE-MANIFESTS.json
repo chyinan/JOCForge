@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream": {
+    "package_id": "dee_atmos_ddp_audio_window_consumer_wash_v1",
+    "workspace": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/dee_atmos_ddp_audio_window_consumer_wash_v1",
+    "manifest_sha256": "f43b90771b2a4982f8d52b1657593519db5990243832acc846636f629b547d14",
+    "package_seal_sha256": "a07d42333921564ea318833e1b2b10cc21754d06b0811ebe7a608b477ea52145"
+  },
+  "wash_audit": {"manifest_payloads":"26/26","manifest_seal_link":true,"checker_status":"UPSTREAM_REPORTED_PASS_NORMAL_AND_O; NOT_RERUN_BY_WASH"},
+  "scope": "This supplement covers only the selected FUN_180175c80 branch and does not generalize to other encoder paths."
+}

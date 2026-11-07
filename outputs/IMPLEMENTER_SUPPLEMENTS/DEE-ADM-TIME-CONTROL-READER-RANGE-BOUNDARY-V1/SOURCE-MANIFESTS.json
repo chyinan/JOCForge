@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "DEE-ADM-TIME-CONTROL-READER-RANGE-BOUNDARY-V1",
+  "references": [
+    {
+      "package_id": "DEE-ADM-TIME-CONTROL-READER-RANGE-WASH-V1",
+      "manifest_sha256": "70f436856c1a24379599cb02cb0997008b48ea87428e99168d27078992f145bd",
+      "role": "primary static host normalizer, setter, and range trace"
+    }
+  ],
+  "target_hashes": {
+    "dee_exe": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_atmos": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "wash_scope": "No raw XML, source binary, media/PCM/EC3 payload, key, license, or Ghidra raw listing included."
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "washed-package-seal.v1",
+  "package_id": "sample6-core-selected-profile-index-wash-v1",
+  "manifest_sha256": "e50c225e4ef465271c93db438a264880714e8f52603d08de42cd471ae3589458",
+  "recipient": "WASH_ONLY",
+  "sealed": true
+}

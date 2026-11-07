@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "per-source-duration-row-example",
+      "inputs": {"source_count":1,"prepend_samples":4800,"start_sample":2160,"end_sample":2208,"append_samples":9600},
+      "expected_static_scope": {"vector_lengths_validated_against_source_count":true,"values_enter_temporary_parameter_row":true,"reader_cursor_or_limit_use":"NOT_FOUND_IN_SCOPED_BRANCH","runtime":"NOT_RUN"}
+    },
+    {
+      "id": "byte-span-not-au-count",
+      "inputs": {"synthetic_output_span_bytes":2048},
+      "expected_static_scope": {"au_count":"UNBOUND","runtime":"NOT_RUN"}
+    }
+  ],
+  "warning": "Values are synthetic and do not describe a real DEE input or run."
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-PROCESSFRAME-PROFILE-INDEX-KEY1-PRODUCER-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "7fd71afea105cfe930f626e5be5e82f2d3503bfdc51db66c2a0a72d0a3059257",
+  "payload_file_count": 8,
+  "payload_hash_audit": "PASS_8_OF_8",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

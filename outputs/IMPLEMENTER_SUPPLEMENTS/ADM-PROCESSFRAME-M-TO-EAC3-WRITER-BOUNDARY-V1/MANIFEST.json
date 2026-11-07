@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-PROCESSFRAME-M-TO-EAC3-WRITER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "M_CONFIGURABLE_CAPACITY_GATE_BOUND; TABLE_0_1_SHARED_HANDLER_BOUND; ADM_N_TO_M_UNBOUND; M_TO_STUFFER_COUNTER_UNBOUND; STAGING_EXTENT_RISK_CONDITIONAL",
+  "implementation_disposition": "Do not infer arbitrary-track end-to-end support or merge N/M/stuffer count domains; review the potential pre-gate 16-entry staging boundary only within the recorded conditional scope",
+  "source_manifest_sha256": "ea654ef938b0dd5020ddef2cfaf93bcdc78e80b466a87877c5662af49fd21ae3",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3197,
+      "sha256": "2510b1890e7d68603b815515a952b220ae9df5843724d0a341087c3d87e3d1c4"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3020,
+      "sha256": "bee5926998ee4cc0d877eb519e86691f0aaa1bb92262d0a52bcf99252ab68131"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1069,
+      "sha256": "39cdd14cbd2e2962515a37b78eb1f154f8d786482ee2e009850ef1f90e67bbd9"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2686,
+      "sha256": "8aff6d3a033e4391f821236bd3e776667c3aceedda54136ab9293d37c47b7947"
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "bytes": 1968,
+      "sha256": "1d9c1d99a8a51e04c2ec793e49b40401b1408c37639945d25c91f56cfff9b072"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 1032,
+      "sha256": "ea654ef938b0dd5020ddef2cfaf93bcdc78e80b466a87877c5662af49fd21ae3"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 253,
+      "sha256": "2a09daa833fe8076d8b668737598825ad5ee765e7cfd4927d3f383162160220b"
+    }
+  ]
+}

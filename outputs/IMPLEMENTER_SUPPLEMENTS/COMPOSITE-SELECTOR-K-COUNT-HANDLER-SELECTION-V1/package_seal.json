@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "COMPOSITE-SELECTOR-K-COUNT-HANDLER-SELECTION-V1",
+  "manifest_sha256": "63529a6bb3f0c2626290f0a1126ca93f7c57b1d7b4cf0898b3e67b8c2b8d3b2e",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "PER_ITEM_SUFFIX_DISPATCH_STATIC; ACTUAL_SUFFIX_AND_SELECTED_HANDLER_UNBOUND; K_COUNT_APPLICABILITY_NOT_REACHED"
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge.adm_n36_loader_failure_and_u_to_k_static_review.v1",
+  "package_id": "DEE-ADM-N36-LOADER-FAILURE-AND-U-K-STATIC-REVIEW-V1",
+  "source_package": {
+    "package_id": "dee_n36_loader_failure_and_u_to_k_static_review_wash_v1",
+    "manifest_sha256": "43bfe4193c1eaef42bfd758adf09d2a8e1e878e342d382c980fbd59356923df5",
+    "package_seal_sha256": "37ea041a58dc9cd2f914fad52c954040670c3cf3436e5e9db76a4686f0b2d40f",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 read-only/no-analysis plus sanitized attempt metadata review",
+    "new_dee_attempt": false,
+    "pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  },
+  "attempt_comparison": {
+    "sample_scope": "authorized N36 input only",
+    "attempt05": {
+      "exit_code": 0,
+      "target_component_loaded": true,
+      "output_bytes_only": 135893
+    },
+    "attempts06_to_10": {
+      "exit_code_decimal": 3221225477,
+      "exit_status": "STATUS_ACCESS_VIOLATION",
+      "target_component_loaded": false,
+      "u_k_b_d_events": 0
+    },
+    "same_input_identity_host_and_plugin_hashes": true,
+    "failed_library_files_present": true,
+    "recursive_pe_import_scan_missing_file": false,
+    "windows_application_error_event": "NOT_FOUND",
+    "root_cause": "UNRESOLVED",
+    "attempt08_generic_last_error_result": 0,
+    "attempt08_generic_last_error_is_host_error": false
+  },
+  "host_loader_static_boundary": {
+    "hash_bound_wrapper_count": 2,
+    "wrapper_body_sha256": [
+      "bc5f330cb1c95b384f8cf619b6a74bf34dfdd6b429b6c7c788ca606dd6942297",
+      "7e98df116025656ce5ce01d3590c09cc8ec3f135721db79989deca218ddbc327"
+    ],
+    "sequence": "wide library load; on null result immediately read system last-error; format the returned error",
+    "attempt08_hook_boundary": "LoadLibraryExW return",
+    "attempt08_hook_error_value_reliable": false,
+    "minimum_next_dynamic_observation": "host wrapper's own last-error return, associated with the failed library basename"
+  },
+  "u_to_k_static_chain": {
+    "source_owner_slot_at_k_writer_entry": "NOT_INITIALIZED_YET",
+    "initialization_order": "writer initializes source-owner slot after entry",
+    "helper_call": "writer passes initialized source-owner slot to U count helper",
+    "k_writeback": "helper result is narrowed to U16 and written to K count header",
+    "attempt05_early_probe_explanation": "entry-time sample occurred before source-owner slot initialization",
+    "safe_dynamic_boundary": "ordinary count-helper entry nested on active K-writer thread; correlate input owner/generation, returned count, and later K U16 store",
+    "runtime_owner_generation": "NOT_CAPTURED"
+  },
+  "status": {
+    "u_to_k_selected_static_call_path": "BOUND_STATIC",
+    "physical_n_to_same_k_instance": "UNBOUND",
+    "runtime_u_to_k_generation": "NOT_CAPTURED",
+    "loader_root_cause": "UNRESOLVED"
+  },
+  "implementation_disposition": {
+    "do_not_call_attempt08_getlasterror_zero_the_host_error": true,
+    "do_not_generalize_n36_to_other_channel_counts": true,
+    "do_not_claim_runtime_u_to_k_join": true
+  }
+}

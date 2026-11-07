@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-WAV-PRIMARY-CALLBACK-ENTRY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PRIMARY_WAV_CALLBACK_ENTRY_BOUND; ARGUMENT_TYPES_AND_PHYSICAL_N_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "source_package_id": "DEE-ATMOS-WAV-PRIMARY-CALLBACK-ENTRY-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "96e1a3d1c8ebba38f2c1d3dffe4f008eb96dbdce04fa7c0baafc7e41e990ba7c",
+  "source_package_seal_sha256": null,
+  "implementation_ready": false,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1897,
+      "sha256": "166a35ccdfed99175a4d203db2fbfb62e64560588571c632c7b107dc99034041"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1794,
+      "sha256": "af18191e045dcd7f93924b05f014ee3ee5d2dc2a17634c52eb6b770b0d6a281e"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1103,
+      "sha256": "ce5a5fcdd9edddbe9967a059a006b45381a1f348c97d8eaa6f679abe8c870cf7"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 977,
+      "sha256": "390758ad35df3909aabc2694a340b37210abfeca622d6d64aa3dd251ea137c4c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 990,
+      "sha256": "f5dc07b68ace0a455f7986251455dd94e52a7bc0f9e346e1414ee056e533e884"
+    }
+  ]
+}

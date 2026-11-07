@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SIX_DATA_RATE_TEXT_TO_SELECTOR_CODES_BOUND_STATIC; CONSTRUCTOR_FIELD_COPY_BOUND_ON_FC8_EQ_2; RUNTIME_WORKFLOW_MAP_JOIN_UNBOUND",
+  "implementation_disposition": "Static mapping is available for all six XML strings; do not claim runtime support or active mode without the same-run workflow-map and branch join",
+  "source_manifest_sha256": "5c92d48a60682928e4fb9abd6f04c7e2062c19e31b27587a93ddf8452f284e81",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3065,
+      "sha256": "8d1234efedcc2d13e460c32be44a2ea68dc367ff7e37d93d7af986e40c06bc83"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2918,
+      "sha256": "1e0e8c977d9187a9ec0b34281269aa3eec18e4924e7e415924d9f29c033bc6e5"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 640,
+      "sha256": "6e02a16c460459c0bc87f89be319a6d1061c7ecf59b0fec1f985d2f702247f66"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1831,
+      "sha256": "f327062897204dacb19ecfb5c0a58f2bacab988889d99b982fbbda5062396cf8"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 787,
+      "sha256": "2861ec6ff535240b08c2a82f28ea6f8d535fc3b61eb9cf2f8ac38c11d408ba76"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.sha256",
+      "bytes": 241,
+      "sha256": "5c92d48a60682928e4fb9abd6f04c7e2062c19e31b27587a93ddf8452f284e81"
+    }
+  ]
+}

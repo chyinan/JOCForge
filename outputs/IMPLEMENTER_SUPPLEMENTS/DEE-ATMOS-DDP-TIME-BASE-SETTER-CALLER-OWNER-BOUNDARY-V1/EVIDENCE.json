@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.time_base_setter_caller_owner_boundary.v1",
+  "package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-CALLER-OWNER-BOUNDARY-V1",
+  "status": "CALLER_OWNER_NOT_TYPED_JOINED_TO_PLUS_0X550",
+  "source": {
+    "package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-CALLER-OWNER-BOUNDARY-WASH-V1",
+    "manifest_sha256": "9866ae6a18bccac39e5f63b201a3b13f3cc57394a4b37463c892f6cbc74996fe",
+    "sha256sums_sha256": "a1efcf954fec2e0bcf34be53a45e0cb278e00ebfecca2bac3f6cae4713b8535b"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2 PUBLIC",
+    "mode": "read-only/no-analysis",
+    "tier": "STATIC",
+    "scope": "One caller FUN_18014f9f0 and local_1e0 argument construction at callsite 0x18014fc94."
+  },
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "caller_owner": {
+    "function": "FUN_18014f9f0",
+    "param_1": "nested stage object P+0xb8",
+    "separate_copy": "local_1c0 = param_1"
+  },
+  "helper_argument": {
+    "temporary": "local_1e0",
+    "construction_call": "FUN_180157ea0(&local_1e0,&local_160)",
+    "population_call": "FUN_18012ca90(pbVar8,local_1d8,&local_1e0)",
+    "callsite_rva": "0x14fc94",
+    "callee": "FUN_180146180(&local_1e0)",
+    "machine_argument": "RCX=RSP+0x38",
+    "owner_plus_0x550_alias_or_address_formation_visible_in_slice": false,
+    "typed_option_descriptor_join": "UNBOUND"
+  },
+  "time_base": {
+    "caller_owner_to_nested_descriptor_plus_0x550": "UNBOUND",
+    "xml_value_or_omission_to_plus_0x550": "UNBOUND"
+  },
+  "runtime": "NOT_RUN",
+  "scope_exclusions": {
+    "other_callees_inspected": false,
+    "whole_image_search": false,
+    "dee_job_run": false,
+    "media_pcm_payload_key_or_license_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

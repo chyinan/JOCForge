@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOSMEZZ-DATA-RATE-PATH-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "XML_DATA_RATE_TO_NATIVE_SELECTOR_UNBOUND; CODE0_VS_CODES1_5_DIMENSION_SPLIT_BOUND_STATIC; ALL_VALUES_RUNTIME_NOT_RUN",
+  "implementation_disposition": "Do not infer the six advertised bitrates map to native selector codes; retain the XML-to-code mapping as open",
+  "source_manifest_sha256": "2352b6835dd2d6b202dd71aa96ddaf6019487670b2d2c1609d70a20c6b03d191",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2955,
+      "sha256": "643dfa46e532e1d3eba148809d21b5e78b63c21896e8d78226167e2342912417"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2806,
+      "sha256": "d2d8448110fd15ef51e17cb17e8eb088f7e2ba28be6ce302e459d60894d89f2e"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 684,
+      "sha256": "d3ecde7d168d76901f8796b06b6c02323e67b4db870fd9cf8ec88d93e51e28c0"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2374,
+      "sha256": "46714eb06dd6b0d3808e08f5830193d398cf4fdce90282c03fc435318c7e6aab"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 880,
+      "sha256": "09495f00e09931556811cefd2c569b9f8a83f09713ce9352660db91855726424"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.sha256",
+      "bytes": 241,
+      "sha256": "2352b6835dd2d6b202dd71aa96ddaf6019487670b2d2c1609d70a20c6b03d191"
+    }
+  ]
+}

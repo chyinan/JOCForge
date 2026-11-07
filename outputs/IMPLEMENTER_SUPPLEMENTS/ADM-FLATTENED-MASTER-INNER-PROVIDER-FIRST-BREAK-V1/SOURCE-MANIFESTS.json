@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "ADM-FLATTENED-MASTER-INNER-PROVIDER-FIRST-BREAK-V1",
+  "sources": [
+    {
+      "role": "primary_inner_provider_boundary",
+      "package_id": "sample6-flattened-master-provider-getter-boundary-wash-v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/sample6-flattened-master-provider-getter-boundary-wash-v1",
+      "manifest_sha256": "e859bccf68ea0aaf1a0353652b4e3905f6fe7088f8e111043ce47d0a7965a5cf",
+      "manifest_sha256_file": "5b95a10103a48896a93be187c4c4af60ccda16fe716e23caf78de4bec64ed337",
+      "package_seal_file_sha256": "8b7a660f7cf1ca323b4f2525207e1d3fc6b7bce3d5c5273eda5d8262215b9f73",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "parent_provider_slot_and_map_receipt",
+      "package_id": "sample6-atmos-channel-count-provider-slot-writer-wash-v1",
+      "manifest_sha256": "37c6b05764a0b98bdfbc0bf9da7737cb7846451ba4b4d1a92527db2c3e8952f4",
+      "availability": "REFERENCE_ONLY_NOT_REOPENED_IN_THIS_PASS"
+    },
+    {
+      "role": "parent_format_channel_count_receipt",
+      "package_id": "sample6-atmos-channel-count-producer-boundary-wash-v1",
+      "manifest_sha256": "08981f85f75fddf13a32ce763700415a959fdb0d1060f3c46772ce8b376fa07a",
+      "availability": "REFERENCE_ONLY_NOT_REOPENED_IN_THIS_PASS"
+    },
+    {
+      "role": "parent_physical_n_to_processframe_m_receipt",
+      "package_id": "sample6-physical-n-to-processframe-m-first-break-wash-v1",
+      "manifest_sha256": "34bc62d82c87e54b0405e82d4dca44f709ba525693b82b5ecac77a1f56ed5180",
+      "availability": "REFERENCE_ONLY_NOT_REOPENED_IN_THIS_PASS"
+    }
+  ],
+  "omitted_material": {
+    "raw_code_or_decompilation": true,
+    "native_binary": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

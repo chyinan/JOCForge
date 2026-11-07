@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-washed-trim-boundary-source-receipts.v1",
+  "sources": [
+    {
+      "package": "DEE-ADM-XML-5-1-SURROUND-TRIM-CONSUMER-BOUNDARY-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-XML-5-1-SURROUND-TRIM-CONSUMER-BOUNDARY-WASH-V1",
+      "manifest_sha256": "d5f931d39e9bab9657c758d2825e15684b5a0836ca427c4ad7dbdcb3030d8cd5",
+      "manifest_lists_sha256": "MANIFEST.sha256",
+      "checker": "check_surround_trim_boundary.py",
+      "normal_checker": "PASS_IN_WASH_SOURCE_WORKSPACE",
+      "optimized_checker": "PASS_IN_WASH_SOURCE_WORKSPACE",
+      "limitations": "Original checker expects a sibling raw Ghidra log that is intentionally excluded from this implementer supplement."
+    }
+  ],
+  "runtime_status": "NOT_RUN",
+  "media_pcm_payload_key_license_access": false
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.washed_reverse_boundary.v1",
+  "package_id": "DEE-ATMOS-CRT-SLOT3-ATTACH-FAILURE-PATH-BOUNDARY-V1",
+  "source_package_id": "ddp_component_b_crt_slot3_failure_edge_wash_v1",
+  "status": "SLOT3_STATIC_ALLOCATION_FAILURE_TO_CRT_FALSE_PATH_BOUND; RUNTIME_FAILURE_AND_ATTEMPT12_CAUSE_UNOBSERVED",
+  "source_integrity": "SOURCE_CHECKER_NORMAL_AND_PYTHON_O_PASS",
+  "facts": {
+    "scope": "One component B initializer table slot and its direct CRT error-table propagation path.",
+    "slot": "Initializer table slot index 3, one-based ordinal 4, in a seven-qword table including sentinel.",
+    "failure_path": "Requested allocation null triggers retry with count 3; retry null returns unsigned -1; error-table walker treats nonzero initializer return as failure; PROCESS_ATTACH returns FALSE if the table result is nonzero.",
+    "runtime": "Allocation failure NOT_RUN; this slot as attempt-12 1114 source NOT_OBSERVED; specific failing initializer NOT_IDENTIFIED."
+  },
+  "parent_bindings": [
+    {
+      "package_id": "ddp_four_component_initialization_comparison_wash_v1",
+      "manifest_sha256": "8901e160d80c07f8bc050e6992a0d9eefd7fb88c829e7cc0a7239e29b55fe7af"
+    }
+  ],
+  "runtime": "NOT_RUN",
+  "limitations": [
+    "One slot only; no other initializer table entries scanned.",
+    "This does not attribute runtime error 1114.",
+    "No DEE attempt or runtime allocation observation."
+  ],
+  "scope_exclusions": {
+    "native_source_or_decompilation_forwarded": false,
+    "media_pcm_or_payload_forwarded": false,
+    "private_key_or_license_forwarded": false,
+    "global_absence_claim": false
+  }
+}

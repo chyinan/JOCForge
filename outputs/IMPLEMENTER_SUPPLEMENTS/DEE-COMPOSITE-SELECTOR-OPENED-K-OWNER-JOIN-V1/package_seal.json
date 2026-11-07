@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "9836bd2f746333890afc63efdbe7c0f620f29df9ef79aa0cda520e93663d44da",
+  "payload_file_count": 10,
+  "payload_hash_audit": "PASS_10_OF_10",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

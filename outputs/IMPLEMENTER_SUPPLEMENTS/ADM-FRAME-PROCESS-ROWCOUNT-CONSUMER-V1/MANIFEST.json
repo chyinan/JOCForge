@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-FRAME-PROCESS-ROWCOUNT-CONSUMER-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "GENERIC_ROW_COPY_AND_ALLOCATION_SLICE_BOUND_FOR_INPUT_N36_38; OPEN_TIME_N_GATE_1_128; RUNTIME_NOT_RUN; OWNER_GENERATION_UNBOUND",
+  "implementation_disposition": "Do not claim arbitrary track end-to-end support; preserve the 1..128 input gate and keep runtime owner join open",
+  "source_manifest_sha256": "b9d327c0726e9bc2dee694e3202720f648dbceefa274bdc49bc505088c3586d3",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2989,
+      "sha256": "dab2b117a77cd7491db1eba3754cdd3d122ed8ccb315e4f996a7cb9b5771f6d3"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2809,
+      "sha256": "2736d6d0bc15c71ca525fa795c49064c45c71844e54131379b3c49df6e0e4570"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 822,
+      "sha256": "c47ad397e4ade469e3ff91fa0f469129721f897d6c204b74e92a715f5f6b7a02"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2355,
+      "sha256": "d35278d49ce68018ec29803124a0385fa34adb5ed8bb6c1af286753ebdaa58e3"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 3398,
+      "sha256": "38a093dc1ab7edd0c9d28ba14166f86db284438242466ec7cc5f210c91a35329"
+    },
+    {
+      "name": "UPSTREAM-CHECK.json",
+      "bytes": 621,
+      "sha256": "1659a620051c1c02ea98c986d8236502183e5c9285af8fe09a6da509b89c3710"
+    },
+    {
+      "name": "UPSTREAM-FUNCTION-HASHES.json",
+      "bytes": 1714,
+      "sha256": "7aa36b1e9fb98816ff47cbb910c0b48a20c90f9146b12e77167b9f7f77d758e2"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 801,
+      "sha256": "b9d327c0726e9bc2dee694e3202720f648dbceefa274bdc49bc505088c3586d3"
+    }
+  ]
+}

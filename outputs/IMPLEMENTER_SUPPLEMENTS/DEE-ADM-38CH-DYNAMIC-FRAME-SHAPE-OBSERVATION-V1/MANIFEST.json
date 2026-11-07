@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-38CH-DYNAMIC-FRAME-SHAPE-OBSERVATION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ATTEMPT04_N38_K_TO_B_TO_D_TGEN1_BOUND; U_TO_K_AND_RANGE_UNBOUND",
+  "implementation_disposition": "Use as a single short N=38 dynamic vector; do not generalize or infer equal-count owner identity.",
+  "source_manifest_sha256": "ca170481a74cb704a3e6e2ab35bb88b27498b0fad814704be4c160db10a59b21",
+  "source_package_seal_sha256": "b52954a5642a311755ecd0b43fddf0baea58d13a91aa40b3c3bd962c83261e1a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4318,
+      "sha256": "1152bc1bcb15c10ff546c5657c713b9a8679a1a6849454722620d7ea5f2d704d"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3601,
+      "sha256": "b6261d61252ed136d8eea58c51271e45ad918b0cef71d6a45ce81777f2442b83"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 540,
+      "sha256": "464550677bce8a2b5d70cbdcf0387becc43c116d5afe697d693a5ce57fbdf257"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1415,
+      "sha256": "6b355ed1bbe3c10edfdfb345212c1c57e1793911b12945fb4b317f830938345d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 787,
+      "sha256": "f2cd1649b9cfdb289505983018d64fbd208e582606c51737945fc25140f1b69c"
+    }
+  ]
+}

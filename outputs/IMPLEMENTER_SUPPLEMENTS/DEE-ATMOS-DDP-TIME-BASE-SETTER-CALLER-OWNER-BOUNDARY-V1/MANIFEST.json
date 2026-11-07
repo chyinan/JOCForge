@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-CALLER-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CALLER_OWNER_NOT_TYPED_JOINED_TO_PLUS_0X550",
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-CALLER-OWNER-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "9866ae6a18bccac39e5f63b201a3b13f3cc57394a4b37463c892f6cbc74996fe",
+  "source_sha256sums_sha256": "a1efcf954fec2e0bcf34be53a45e0cb278e00ebfecca2bac3f6cae4713b8535b",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2596,
+      "sha256": "0b2f0587b38a5a0618603b879db22f09d6c448df95cd0f808f54ac23c5618562"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1842,
+      "sha256": "a25b009d632b7fef7cf47f80db911e7d7d2d1a5dfc0f6cc6a7a09c35d0df4b83"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 771,
+      "sha256": "485157f7dd4209f5add8933d5f0eee32b9e73b7de89f0cb729dd6a418e520838"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1189,
+      "sha256": "d0971e15dedb9ee23d5be0331050a43c074c33dda86bc7cd619a51756ab78b31"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1341,
+      "sha256": "354c45ffd8b4b1ce7ff3790445c34f4e5619c81fdc754aa7e3869e2d74ef4dc4"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_time_base_to_range_receipt",
+      "package_id": "DEE-ADM-ATMOSMEZZ-TIME-BASE-RANGE-CONTROL-WASH-V1",
+      "checksum_list_sha256": "5d7a7593a15b02380cb6ed61a665b37555584655742f407e006ced6da782cb70",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS",
+      "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "target_hash_provenance": "project-recorded; installed DLL not rehashed"
+    }
+  ],
+  "omitted_material": {
+    "raw_listing_or_decompilation": true,
+    "native_source_or_binary": true,
+    "xml_sample_or_user_media": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

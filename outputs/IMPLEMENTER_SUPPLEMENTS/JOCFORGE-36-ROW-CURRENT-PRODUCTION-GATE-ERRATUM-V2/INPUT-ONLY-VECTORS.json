@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "scope": "Static call-path shape vectors only; not executed.",
+  "vectors": [
+    {
+      "id": "meter-N36",
+      "input": {
+        "kind": "Adm",
+        "N": 36,
+        "graph_rows": 36,
+        "pcm_bits": 24,
+        "sample_rate": 48000,
+        "data_bytes_divisible_by": 108
+      },
+      "expected": {
+        "dynamic_meter_source_map_shape": "36 physical / 35 regular / 46 active global",
+        "next_selected_gate": "NormalControlPreparedSnapshot fixed channels38 rejects",
+        "fresh_zero_identity": "N-shaped; not the first fixed gate"
+      }
+    },
+    {
+      "id": "meter-N38",
+      "input": {
+        "kind": "Adm",
+        "N": 38,
+        "graph_rows": 38,
+        "pcm_bits": 24,
+        "sample_rate": 48000,
+        "data_bytes_divisible_by": 114
+      },
+      "expected": {
+        "dynamic_meter_source_map_shape": "38 physical / 37 regular / 48 active global",
+        "normal_snapshot_shape": "38/10/28/37; compatible with dimensions if identity/hash gates pass"
+      }
+    },
+    {
+      "id": "primary-helper-distinction",
+      "input": {
+        "builder": "build_primary_installed48_source_map"
+      },
+      "expected": {
+        "validator": "validate_primary_binding",
+        "selected_38_receipt_gate": true,
+        "applies_to_meter_builder": false
+      }
+    }
+  ]
+}

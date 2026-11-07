@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_K_ROWS_OR_ACTUAL_COUNT",
+  "vectors": [],
+  "note": "The evidence is a static row-writer contract; no concrete ADM or runtime row values are included."
+}

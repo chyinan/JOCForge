@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.composite_child_open_metadata_vector_boundary.v1",
+  "input_descriptor_stride_bytes": 64,
+  "item_to_source_record_stride_bytes": 88,
+  "source_record_qword_0": "child-open object pointer",
+  "source_record_qword_1": "child-open metadata view pointer",
+  "source_record_vector_count_equals_adm_n": "UNBOUND",
+  "child_open_metadata_to_physical_adm_n_owner": "UNBOUND",
+  "direct_copy_of_scalar_n_in_selected_caller": false,
+  "runtime_count_or_selection": "NOT_CAPTURED",
+  "global_absence_claim": false
+}

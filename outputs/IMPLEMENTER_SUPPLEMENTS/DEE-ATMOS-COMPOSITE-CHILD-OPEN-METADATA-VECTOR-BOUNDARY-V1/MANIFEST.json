@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-COMPOSITE-CHILD-OPEN-METADATA-VECTOR-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CHILD_OPEN_METADATA_TO_SOURCE_VECTOR_BOUND; SAME_ADM_N_OWNER_JOIN_UNBOUND",
+  "implementation_disposition": "Treat the source-row metadata qword as a child-open result; its ultimate relation to physical ADM N remains unbound.",
+  "source_package_id": "DEE-ATMOS-COMPOSITE-VECTOR-CALLER-LINEAGE-WASH-V1",
+  "source_manifest_sha256": "a2d43917a6e3227ac634685e0e4be0bb32d2d915f9589f22a8efa19c91899ef2",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1670,
+      "sha256": "91c6d828cc785dd8f5016a7653d34f3186fe81fbd2e42dcbdc933e805cf5e57d"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 542,
+      "sha256": "57756fb502edbe2aa8e3c3fad1c812f4441f6b941c33176b0516ede17bdc3e9d"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 528,
+      "sha256": "721c4022e2d14b85cf3f343a192ca37504284272752dc48e2a0ac6c91fb6d988"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 916,
+      "sha256": "e8be541c63c3f32b4915247cfa8a3f51146547c5e485842d76d90fe6c4f3edae"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1145,
+      "sha256": "db59bd444a4e1b3eba4a9b79e2cc60fff9725715e4bbec5d5d7c54aa875ba611"
+    }
+  ]
+}

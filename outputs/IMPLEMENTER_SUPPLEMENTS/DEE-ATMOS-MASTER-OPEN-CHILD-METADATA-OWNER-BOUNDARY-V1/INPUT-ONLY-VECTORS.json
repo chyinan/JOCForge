@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "child-open-metadata-physical-n-join",
+      "input": {
+        "child_open_metadata_view": "copied to source-record qword+0x08",
+        "physical_adm_n": "separate layout object field"
+      },
+      "expected_observation": {
+        "typed_owner_join": "UNBOUND"
+      },
+      "limitations": [
+        "No same-generation pointer join",
+        "No vector count equals N",
+        "Runtime values not captured"
+      ]
+    }
+  ]
+}

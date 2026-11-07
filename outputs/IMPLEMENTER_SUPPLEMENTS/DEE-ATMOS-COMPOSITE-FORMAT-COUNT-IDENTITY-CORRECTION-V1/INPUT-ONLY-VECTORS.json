@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "program-and-file-image-hash-match",
+      "kind": "static-image-identity",
+      "input": {
+        "ghidra_program_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+        "wash_source_file_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+      },
+      "expected_status": "SAME_IMAGE_CONFIRMED",
+      "status": "IDENTITY_CHECK_ONLY"
+    },
+    {
+      "vector_id": "historical-source-identity-transcription",
+      "kind": "metadata-erratum",
+      "input": {"previous_parent_digest_suffix": "cd1e1cce"},
+      "corrected_image_digest_suffix": "cdce1cce",
+      "expected_status": "HISTORICAL_RECEIPT_PRESERVED; CORRECTED_HASH_USED",
+      "status": "IDENTITY_CHECK_ONLY"
+    }
+  ]
+}

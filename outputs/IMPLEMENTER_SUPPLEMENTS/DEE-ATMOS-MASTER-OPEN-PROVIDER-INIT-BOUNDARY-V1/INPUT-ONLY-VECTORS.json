@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "opaque-provider-registry-vs-adm-physical-n-owner",
+      "input": {
+        "host_handle": "FUN_1801828c0 +0x48 -> FUN_180182330 -> FUN_1801831c0 param_3",
+        "adm_n_owner": "FUN_1801ac670 layout object +0x28 U32 N",
+        "registered_provider": "ADM/BWF"
+      },
+      "expected_disposition": {
+        "typed_owner_join": "UNBOUND",
+        "runtime": "NOT_RUN",
+        "product_acceptance": "NOT_ESTABLISHED"
+      },
+      "limitations": [
+        "Provider registration does not establish selected input identity or carry physical N.",
+        "The caller callback context at +0x28 is not joined to the layout object's +0x28.",
+        "Static 1..128 admission is not an end-to-end runtime result."
+      ]
+    }
+  ]
+}

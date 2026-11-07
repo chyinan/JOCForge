@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-PHYSICAL-N-READER-DESCRIPTOR-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PHYSICAL_CHNA_N_TO_READER_DESCRIPTOR_UNBOUND; K_TO_READER_DESCRIPTOR_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package_id": "DEE-ADM-PHYSICAL-N-READER-DESCRIPTOR-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "0eaf7fa2282a7dd184330720e82b5de1bdbebb97a64c07a1fa1aaaeeb0cbc6ce",
+  "source_package_seal_sha256": null,
+  "implementation_ready": false,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1897,
+      "sha256": "07c9542638ab39b7986a58362beb65275caca0e867b8bec44ae619a9a3263a1b"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2463,
+      "sha256": "ef13d6dc5fcbc8fadc76b548c32ea368c81ee837af76f976258722057547b559"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1384,
+      "sha256": "270ebe6004699981800c7b1ec867ad709d92330f10d4783fc0d12f311a13ada4"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1241,
+      "sha256": "b4ccf2ac64a797d486111516bb884243ce920b5d7a33e00986e6fe4286eeca2b"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1310,
+      "sha256": "820ae409d6a573f25780eebb3321bed5ec86f66ab7b418afee363af19ec32de4"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-CHANNEL-COUNT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "BOTH_STATIC_COUNT_PATHS_BOUND_TO_METADATA_A_PLUS_0A; RUNTIME_BRANCH_UNBOUND",
+  "implementation_disposition": "Record both static count formulas and gates; do not claim a sample branch or general N support.",
+  "source_manifest_sha256": "3f9af4c10a78ebc9e3e27ca802e39e0026e0018c0a5fde16a2ef30439d382038",
+  "source_checksum_file_sha256": "ae49f1ef7e4d364ef6c4dcc4b0b9fef7eb84c86a5c2bb0492f3aea5b4a339396",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4279,
+      "sha256": "1857423d3d632962a6a3515f5b6279435de6cfdc8d9171e2221df0ac3bb401fb"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2719,
+      "sha256": "c3ee1b9d4799f5c6718984f3ac996945da5d654a6e0b09dd8b9ad32453e416c6"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 645,
+      "sha256": "87cd967e424b4de2c23c8b98a138fb6f9e196c8a3d37cb0635d1dce33ed0efa3"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1188,
+      "sha256": "26c800e7ad9956edef316858968f28424760d6c67342b0c1b58d6c8131660e91"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 779,
+      "sha256": "f0a098f1dd75ff8438c03e0c1c030403438751764532beb5739ea580f963e20e"
+    }
+  ]
+}

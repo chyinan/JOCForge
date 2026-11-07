@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "DEE-ADM-MY-JEALOUSY-PROCESSFRAME-COUNT-DOMAIN-BOUNDARY-V1",
+  "status": "EVIDENCE_ONLY",
+  "implementation_allowed": false,
+  "source_package_manifest_sha256": "13eaaae38f784ca2fd38a2a5fdc50110c411d0ce39354a7ba1f03b11f421ff9b",
+  "contains_native_or_research_source_code": false,
+  "contains_package_checker_code": true,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {"path":"CHECK.py","bytes":2422,"sha256":"52756072be9da4c773a6d2e2d20b9acc423793ccdef9c314cb16e60e9c9913c7"},
+    {"path":"EVIDENCE.json","bytes":2806,"sha256":"a87c56919d4bcf2848825c7bc0fc5764a538ce80e59e5d7f3f078609d51e03f8"},
+    {"path":"INPUT-ONLY-VECTORS.json","bytes":1078,"sha256":"aa2176a47490bf6bbea9590f89da795a011f7d2c1677fc8828b1dacdfb2d4e74"},
+    {"path":"SOURCE-MANIFESTS.json","bytes":1463,"sha256":"cf920f1173c471b675b915713642b602e9b26c2de950569c720d9a4b5e110445"},
+    {"path":"WASH-REVIEW.md","bytes":1434,"sha256":"11557d2d1da8bdba64dd32b40c08e610166fcaa51c9ad60570ab3108d94e2a18"}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-silence-row-release-vectors.v1",
+  "status": "REUSED_STATIC_CALLER_ONLY_NO_NEW_RUNTIME",
+  "selected_cleanup_chain": [
+    "FUN_180185240 forwards composite-row span to FUN_180173c70",
+    "FUN_180173c70 clears row string members",
+    "FUN_180185240 calls FUN_18029c130 with backing pointer and 0x40-byte row count",
+    "FUN_18029c130 calls generic storage release helper FUN_180579528"
+  ],
+  "per_row_silence_fields_read": false,
+  "runtime_status": "NOT_RUN",
+  "pcm_or_payload_persisted": false,
+  "key_or_license_accessed": false
+}

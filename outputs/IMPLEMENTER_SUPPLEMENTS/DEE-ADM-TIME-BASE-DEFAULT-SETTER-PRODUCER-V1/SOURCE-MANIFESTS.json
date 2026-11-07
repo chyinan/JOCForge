@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-ADM-TIME-BASE-DEFAULT-SETTER-PRODUCER-V1",
+  "sources": [
+    {
+      "role": "primary_time_base_default_setter_edge",
+      "package_id": "DEE-ADM-ATMOSMEZZ-TIME-BASE-SETTER-PRODUCER-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-TIME-BASE-SETTER-PRODUCER-WASH-V1",
+      "checksum_list_sha256": "6c8c4d072a0157efdc4ccd8491da38ca095d4e86d9e5b961d8fffb5bc964f4ba",
+      "separate_package_seal": "NOT_PRESENT",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "prior_time_base_range_consumer",
+      "package_id": "DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1",
+      "manifest_sha256": "8ec2de3c452aded30a5aad5a370e93fdcae958ebc6f516c18265ca76c16437f1",
+      "package_seal_sha256": "273db15bdc1196598f36a0f2f2439ee8837a9e36a3985c0267ba7d1ea88c4ca2",
+      "relationship": "Referenced as previously washed downstream contract; not rederived."
+    }
+  ],
+  "omitted_material": {
+    "raw_listing_or_decompilation": true,
+    "native_source_or_binary": true,
+    "xml_sample_or_user_media": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

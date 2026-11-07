@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.selector_opened_k_structural_vectors.v1",
+  "scope": "Static structure relationships only; no sample data or runtime pointer values.",
+  "vectors": [
+    {
+      "input_source_record_stride": 64,
+      "owner": "J",
+      "opened_K_slot": "J+0x08",
+      "K_count": "U16 K+0x0A",
+      "K_rows": "U64 K+0x10, six-byte rows",
+      "selector_descriptor_stride": 88,
+      "selector_K_pointer": "row+0x08 copied from J+0x08",
+      "same_per_item_owner": true
+    }
+  ],
+  "physical_N_to_K_count": "UNBOUND",
+  "runtime_pointer_and_generation": "NOT_CAPTURED",
+  "track_support_result": "NOT_ASSERTED",
+  "raw_audio_or_payload_included": false
+}

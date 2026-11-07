@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge.processframe_capacity_key2_producer.v1",
+  "package_id": "ADM-PROCESSFRAME-CAPACITY-KEY2-PRODUCER-V1",
+  "status": {
+    "key2_to_same_root_c140_writer": "BOUND_STATIC",
+    "profile_key2_defaults_and_ranges": "BOUND_STATIC_FOR_LISTED_ROWS",
+    "selected_profile": "UNBOUND",
+    "active_capacity_C": "UNBOUND",
+    "root_clear_extent_covers_c140": "UNBOUND",
+    "process_frame_M_to_C_gate": "BOUND_STATIC_FROM_PARENT",
+    "actual_M_or_C": "NOT_CAPTURED",
+    "C_to_ADM_N_or_track_count": "UNBOUND",
+    "arena_capacity": "UNBOUND"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/sample6-core-capacity-key2-producer-wash-v1",
+    "package_id": "sample6-core-capacity-key2-producer-wash-v1",
+    "manifest_sha256": "502c4dfbe4010f70a4c7485f81d1c48fb780d73b8c8274b0dbdd86674cf74ff0",
+    "package_seal_sha256": "6a812cc6c3a12cbb4b4e8cedbbf5542c5f4d1ef0cfdad91b9b2807f37e211ba5",
+    "normal_checker": "PASS",
+    "python_O_checker": "PASS",
+    "target_image_sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532",
+    "ghidra_version": "12.2_PUBLIC"
+  },
+  "key2_profile_rows": {
+    "indexes_with_rows": [0, 1, 3, 4],
+    "default_i32": 11,
+    "inclusive_range": [1, 11],
+    "validation_error": "0xBA",
+    "indexes_without_key2_row_in_bounded_table": [2, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    "custom_value_type": "signed I32"
+  },
+  "same_root_path": {
+    "initializer": "FUN_140314F50",
+    "caller_root_clear": "param_3[0] bytes at root; extent not guaranteed to include +0xC140",
+    "builder": "FUN_14031FAE0 receives root+0xC100 block",
+    "key2_output_slot": "block+0x40 == root+0xC140",
+    "missing_key2_row_behavior": "returns 0 without writing output slot; caller ignores status"
+  },
+  "derived_layout_and_arena": {
+    "root_plus_0xc144_slots": [
+      {"condition": "C==2", "slots": 3},
+      {"condition": "C<7 and C!=2", "slots": 6},
+      {"condition": "C>=7", "slots": 11}
+    ],
+    "per_slot_width": {"profile_indexes_12_or_13": "0x400", "other_indexes": "0x1800", "selected_profile": "UNBOUND"},
+    "request_bytes": "per-slot width * slots + 0x1F",
+    "arena_base": "root+0xC188",
+    "arena_byte_extent": "root+0xC180",
+    "arena_equals_C_or_M": false
+  },
+  "conditional_risk": "If an active key2 row caps C at 11 and a joined M is 36/38, the parent capacity gate would reject; neither the active profile/C nor the ADM-N-to-M join is captured.",
+  "execution_scope": {
+    "dee_run": false,
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "disposition": "Preserve conditional risk and distinct N/M/C/slot-count/arena domains; do not claim a runtime 36/38 rejection."
+}

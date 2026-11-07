@@ -1,0 +1,6 @@
+{
+  "source_package_id": "DEE-ATMOS-INFO-ADM-TIME-FIELD-PRODUCER-WASH-V1",
+  "source_manifest_sha256": "ea03a119f5fca6d8b397a7df37341b815b8170b8d2035ad2a60543af3f79831f",
+  "source_checksums_sha256": "b8701e779c47e54f366de52458ecfca713f2d970eb8863ca88f6ea512f72ce5c",
+  "scope": "Ghidra 12.2 static only; no native execution or sample rescan"
+}

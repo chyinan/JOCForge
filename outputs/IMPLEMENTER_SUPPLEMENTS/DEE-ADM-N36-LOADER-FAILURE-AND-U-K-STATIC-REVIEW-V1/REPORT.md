@@ -1,0 +1,7 @@
+# N36 loader failure and U-to-K static review
+
+Attempts 06 through 10 exited with decimal status 3221225477 (STATUS_ACCESS_VIOLATION) before the Atmos component loaded, so none produced U/K/B/D events. Attempts 09 and 10 reused the successful attempt-05 observer semantics; attempt 10 also reused the successful output basename. The input identity and host/plugin image hashes matched the successful attempt. The installation contains the failed component files, and the bounded PE import-name scan found no missing direct or transitive filenames. No matching Windows Application Error event was found. The loader root cause remains unresolved.
+
+Two hash-bound host wrappers call the wide library loader, then immediately read the system last-error value and format it. The attempt-08 hook called GetLastError later at the loader API return; its zero result is not the host's error. The next minimum observation is the host wrapper's own last-error return, paired with the failed basename.
+
+The selected static U-to-K path also clarifies attempt-05's null token: the K writer initializes its source-owner slot after function entry, then passes that initialized slot to the U count helper. The helper result is narrowed to U16 and written to the K header. The prior dynamic probe sampled at writer entry, before initialization. A safe runtime observation point is the ordinary count-helper entry nested on the active K writer thread. Runtime owner/generation remains NOT_CAPTURED, and physical N to that same K instance remains UNBOUND.

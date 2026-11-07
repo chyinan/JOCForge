@@ -1,0 +1,64 @@
+{
+  "schema": "jocforge.flattened_master_provider_getter_boundary.v1",
+  "package_id": "ADM-FLATTENED-MASTER-PROVIDER-GETTER-BOUNDARY-V1",
+  "status": {
+    "resolver_factory_branch": "BOUND_STATIC_NONZERO_PARAM8",
+    "wrapper_type_and_fields": "BOUND_STATIC",
+    "outer_provider_slot_plus_a0": "BOUND_STATIC_FORWARDER",
+    "inner_provider_target_and_owner": "UNBOUND",
+    "flattened_master_source_typed_getters": "BOUND_STATIC",
+    "format_plus_0x0a_internal_channel_count": "BOUND_BY_PARENT",
+    "N_to_format_plus_0x0a": "UNBOUND",
+    "N_to_core_M": "UNBOUND",
+    "runtime_param8_and_flag": "NOT_CAPTURED",
+    "arbitrary_track_support": "NOT_CLAIMED"
+  },
+  "upstream_package": {
+    "package_id": "sample6-flattened-master-provider-getter-boundary-wash-v1",
+    "manifest_sha256": "994d15a917c8e6fce1581ecef20413bcdaec8affa3414e8c507766ae6d766af0",
+    "package_seal_sha256": "937ae9d6d8db1bdd41f2358927f86ed60fd1581bfec58a96f2f93bb4ae77001c",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "resolver_branch": {
+    "resolver": "FUN_18054A900 param8 != 0",
+    "factory": "FUN_1804CBC20 -> FUN_1804F5250",
+    "wrapper_type": "atmos_storage_flatten_master",
+    "wrapper_vtable": "0x1807FD688",
+    "format_descriptor_field": "wrapper+0x58",
+    "nested_provider_field": "wrapper+0x60",
+    "outer_slot_plus_0xa0": "FUN_1804F5AF0 -> FUN_1804CBBC0(wrapper+0x60) -> inner provider vtable+0xA0",
+    "inner_provider_target": "UNBOUND"
+  },
+  "typed_getters": [
+    {"slot":"+0x68","return":"U32","source":"format descriptor +0x04"},
+    {"slot":"+0x78","return":"U8","source":"format descriptor +0x08"},
+    {
+      "slot":"+0x80",
+      "return":"U16 zero-extended to U64",
+      "flag":"FlattenedMasterSource+0x48",
+      "flag_zero_source":"FUN_180536320 reads U16 from child+0x28+0x0A",
+      "flag_one_source":"FUN_1805890F0 child pointer, then U16 at returned pointer+0x0A",
+      "flag_initialization":"FUN_180536E40 initializes zero; can set on map change/miss",
+      "flag_one_pointer_owner":"UNBOUND"
+    }
+  ],
+  "first_break": {
+    "edge": "wrapper+0x60 nested provider vtable+0xA0 to concrete provider/owner",
+    "selected_reader_profile_join": "UNBOUND",
+    "physical_N_to_format_u16": "UNBOUND",
+    "reason": "Static getter typing does not identify the runtime nested provider or prove that the descriptor belongs to the selected ADM reader."
+  },
+  "safety": {
+    "dee_run": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

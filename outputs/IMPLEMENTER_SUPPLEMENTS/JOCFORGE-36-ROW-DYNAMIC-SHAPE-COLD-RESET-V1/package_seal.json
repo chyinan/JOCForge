@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "JOCFORGE-36-ROW-DYNAMIC-SHAPE-COLD-RESET-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "7d7ed2fe971d43f5ced37fc5fbfa40e4c41a943ba43346041cfb0a3e97b816c8",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PENDING_FINAL_RECHECK",
+  "upstream_package_audit": "PASS_3_OF_3_MANIFEST_AND_SEAL_LINKS; PASS_ALL_LISTED_PAYLOADS",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

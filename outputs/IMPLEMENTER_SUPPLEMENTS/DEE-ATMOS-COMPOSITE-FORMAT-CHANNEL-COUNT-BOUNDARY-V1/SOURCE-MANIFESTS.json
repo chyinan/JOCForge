@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-WASH-V1",
+      "manifest_sha256": "3f9af4c10a78ebc9e3e27ca802e39e0026e0018c0a5fde16a2ef30439d382038",
+      "manifest_checksum_file_sha256": "ae49f1ef7e4d364ef6c4dcc4b0b9fef7eb84c86a5c2bb0492f3aea5b4a339396",
+      "reviewed_payloads": [
+        {"name": "REPORT.md", "sha256": "6aac7bb0b4ccada02e4e4b3809310faae0a686b1ec15686ef6d1cf914d4ac58c"},
+        {"name": "EVIDENCE.json", "sha256": "79a5ccc14e54f575f40c291b5f1daa967baefe8f210f685a8c47ac25c7c9a003"},
+        {"name": "SOURCE-IDENTITIES.json", "sha256": "aee9d97a41895ddbc8ea828aa432851909972a8f0756938b0ba9262e001af341"}
+      ],
+      "raw_Ghidra_decompilation_copied": false
+    }
+  ]
+}

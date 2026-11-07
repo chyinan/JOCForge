@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.adm_frame_process_rowcount_consumer.v1",
+  "package_id": "ADM-FRAME-PROCESS-ROWCOUNT-CONSUMER-V1",
+  "status": {
+    "D_to_B_same_descriptor_owner_edge": "STATICALLY_BOUND",
+    "first_decoded_row_vector_consumer": "STATICALLY_BOUND_CONDITIONALLY",
+    "36_and_38_same_generic_static_copy_path": "SUPPORTED_BY_EXISTING_METADATA_AND_STATIC_PATH",
+    "N_specific_branch_in_inspected_wrapper": "NONE_OBSERVED",
+    "runtime_execution_36_or_38": "NOT_RUN",
+    "native_D_to_process_owner_generation": "UNBOUND",
+    "opaque_PE_JOC_internal_limits": "NOT_EVALUATED"
+  },
+  "source_package": {
+    "path": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/adm-frame-process-rowcount-consumer-v1/wash-package",
+    "package_id": "ADM-FRAME-PROCESS-ROWCOUNT-CONSUMER-V1",
+    "manifest_sha256": "b9d327c0726e9bc2dee694e3202720f648dbceefa274bdc49bc505088c3586d3",
+    "verifier_normal": "PASS",
+    "verifier_python_O": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra_version": "12.2 PUBLIC",
+    "new_ghidra_query": false,
+    "dee_runtime": "NOT_RUN"
+  },
+  "typed_row_count_path": {
+    "descriptor_D": {
+      "plus_0x00": "decoded row-vector/frame-data pointer",
+      "plus_0x08": "widened copy of U16(B+0x0A)",
+      "plus_0x10": "frame sample count",
+      "plus_0x28": "exact composite descriptor B pointer"
+    },
+    "owner_basis": "Same D contains the count copy and B pointer; the consumer follows D+0x28 and reads B+0x0A.",
+    "callback_wrapper": "FUN_180179ab0",
+    "first_row_consumer": "FUN_180178cc0",
+    "call_shape": "FUN_180178cc0(*D, row_staging_buffer, 0x600, U16(*(D+0x28)+0x0A))",
+    "copy_extent": "1536 samples across N decoded row pointers",
+    "vectorization": "N>3 selects four-wide copy followed by scalar tail; not an N limit",
+    "open_time_storage": "FUN_1801788a0 allocates N float rows of 1536 samples and an N-entry QWORD row-pointer table from the same count",
+    "callback_sample_gate": "D+0x10 must be 0x600 samples or 0 flush; it is not a row-count gate",
+    "previous_open_time_N_gate": "1..128 inclusive; reused from existing sealed receipt, not rescanned"
+  },
+  "input_metadata_projection": [
+    {"physical_rows_N": 36, "beds": 10, "objects": 26, "native_value": "NOT_CAPTURED"},
+    {"physical_rows_N": 38, "beds": 10, "objects": 28, "native_value": "NOT_CAPTURED"}
+  ],
+  "execution_scope": {
+    "sample_file_opened": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "everything_used": false,
+    "ida_used": false,
+    "implementation_contact": false
+  },
+  "disposition": "Evidence supports one generic static row-copy/allocation slice for input metadata counts 36 and 38. Do not call it arbitrary-track end-to-end runtime support."
+}

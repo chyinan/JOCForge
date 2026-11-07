@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "alternate-layout-shape-count",
+      "input": {
+        "layout_branch": "nonzero"
+      },
+      "expected_observation": {
+        "immediate_composite_count_source": "per-source shape metadata",
+        "same_adm_n_identity": "UNBOUND"
+      },
+      "limitations": [
+        "No typed N owner join",
+        "Runtime branch not captured",
+        "No end-to-end range proof"
+      ]
+    }
+  ]
+}

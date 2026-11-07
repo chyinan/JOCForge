@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SAME_IMAGE_STATIC_RECEIPTS_BOUND_BY_CORRECTED_HASH; RUNTIME_BRANCH_UNBOUND",
+  "implementation_disposition": "Use the corrected same-image receipt for static paths only; preserve runtime and N-join gaps.",
+  "source_manifest_sha256": "d72f1bb76bc0d1dcfbf757a424538e07ba1835836b1fe601f541e34e5c7943d7",
+  "source_checksum_file_sha256": "7334e8a5b0c260e36055bde48ac91543d5dfb7b2284d97263c48bc539bb07c82",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4863,
+      "sha256": "79c2a2b2c5986c63bb8b3c9767cfd39d6586e8d808db5b369a2845eb43c75e6e"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2450,
+      "sha256": "f30e871a8763219820d6835917a778bad1c2e0f04d75ab47ee2ad9fc50a87cd9"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 831,
+      "sha256": "8aa2bac54f4f26ee11b36dfbcf120e5c56fefb6b93c11c84f493921e9606743f"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 909,
+      "sha256": "a2bd688bcf2109a59bcac2ba8dbb89329bd11314eb32aca01ad0abbdabece168"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1267,
+      "sha256": "d59a2164f3ef52b39bcea10a670dc01ffac81c57323dc0dec100a0c048a37ffc"
+    }
+  ]
+}

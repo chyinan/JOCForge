@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-SOURCE-PROPERTY-WORKER-OWNER-BRIDGE-STATIC-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "6878dcc0bdba9e4989112527760bff2f6b00fda15d396276eb986d33afd16b1f",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "a4f09e46efa60550322478d5f90d4a29935c087aee3231ac000ac410a9ade945",
+  "upstream_source_receipt_audit": "PASS_12_OF_12",
+  "upstream_prior_manifest_audit": "PASS_7_OF_7",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

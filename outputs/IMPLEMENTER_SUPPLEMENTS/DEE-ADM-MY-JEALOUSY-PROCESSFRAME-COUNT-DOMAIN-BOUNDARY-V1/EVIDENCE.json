@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.dee-adm-my-jealousy-processframe-count-domain.v1",
+  "package_id": "DEE-ADM-MY-JEALOUSY-PROCESSFRAME-COUNT-DOMAIN-BOUNDARY-V1",
+  "source_manifest_list_sha256": "13eaaae38f784ca2fd38a2a5fdc50110c411d0ce39354a7ba1f03b11f421ff9b",
+  "metadata_receipt_sha256": "eb14dd147019f917b59ee20420ed96e9bb05e8de81d5f9d465c77a58610e9946",
+  "input_identity": {
+    "metadata_source_rows_N": 36,
+    "bed_rows": 10,
+    "object_rows": 26,
+    "source_file_hash_status": "INHERITED_NOT_RECOMPUTED",
+    "MyJealousy_to_selected_StageRunner_job": "UNBOUND"
+  },
+  "status": {
+    "reader_descriptor_N_to_mode0_open_count": "BOUND_STATIC_CONDITIONAL",
+    "mode0_N_to_canonical_map_M": "BOUND_STATIC_TRANSFORM",
+    "canonical_map_M_to_ProcessFrame_owner_field": "BOUND_STATIC",
+    "first_ProcessFrame_guard": "BOUND_STATIC",
+    "actual_mode_and_runtime_N": "NOT_CAPTURED",
+    "runtime_generation": "NOT_CAPTURED",
+    "native_execution": "NOT_RUN",
+    "full_36_track_output": "NOT_ESTABLISHED"
+  },
+  "count_domains": {
+    "N": "U16 reader descriptor / ADM physical source rows",
+    "K": "Count of object-marked map entries; accumulator saturates at 118",
+    "M": "Default canonical map count K+10",
+    "C": "Separate profile/layout count; relation to N/K/M UNBOUND",
+    "frame_samples": "Separate sample/frame metadata domain"
+  },
+  "mode_specific_rules": {
+    "mode0_common_gate": "1..128 inclusive for the descriptor count",
+    "mode1_gate": [10, 12, 16],
+    "mode1_if_N36": "Rejects if runtime reader descriptor count is 36",
+    "mode0_map_builder": "Walks N marker rows, computes K, defaults M=K+10, stores M for ProcessFrame consumption.",
+    "first_ProcessFrame_M_consumer": "Uses U32 M for map row loops/strides; no local total-M guard.",
+    "first_explicit_guard": "At most 10 unmarked/bed map entries and per-entry low byte <=1; this does not limit total N or M."
+  },
+  "conditional_input_only_projection": {
+    "N36": {"N": 36, "K": 26, "M": 36, "bed_rows": 10, "assumption": "all 26 object entries carry the expected object marker"},
+    "N38": {"N": 38, "K": 28, "M": 38, "bed_rows": 10, "assumption": "all 28 object entries carry the expected object marker"},
+    "equal_counts_are_identity": false
+  },
+  "limits": {
+    "selected_mode": "NOT_CAPTURED",
+    "actual_MyJealousy_runtime_reader_N": "NOT_CAPTURED",
+    "MyJealousy_source_to_runtime_job": "UNBOUND",
+    "other_38_channel_fixture_is_same_input": false,
+    "codec_output_channel_count_join": "UNBOUND",
+    "audio_or_spatial_effect": "NOT_ESTABLISHED"
+  },
+  "excluded_material": {
+    "source_code_or_decompilation": false,
+    "binary": false,
+    "pcm_or_bitstream_payload": false,
+    "private_key_or_auth_material": false,
+    "absolute_local_paths": false,
+    "raw_native_addresses": false
+  }
+}

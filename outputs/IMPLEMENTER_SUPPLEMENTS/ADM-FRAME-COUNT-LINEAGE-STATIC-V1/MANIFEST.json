@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ADM_COUNT_TO_FRAME_DESCRIPTOR_CLOSED_CONDITIONALLY; NO_36_38_GATE_IN_INSPECTED_WRAPPER; SELECTED_OWNER_AND_OPAQUE_API_LIMIT_UNBOUND",
+  "implementation_disposition": "USE_COUNT_DRIVEN_ROW_RULE_FOR_SCOPED_BRANCH; VERIFY_SELECTED_OWNER_AND_OPAQUE_API_LIMIT_BEFORE_ARBITRARY_N_CLAIM",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2576, "sha256": "113faad280c41246c4ffb825418d65c3c35a4051032cc96bbf627ab6f8f988dc"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 1274, "sha256": "eeb0cbfc78c38228a1068bead5964ae3cf8330322f0ccadebb51a71dc6e84caf"},
+    {"name": "REPORT.md", "bytes": 3115, "sha256": "72c94b090db2312135ea14017b7c38e376b073b54e22dc45aa70d4c53f889b97"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 1010, "sha256": "049f58df5332637c942586dd635c43ef03853d6af8371d89bfd6cba317fb03d2"}
+  ]
+}

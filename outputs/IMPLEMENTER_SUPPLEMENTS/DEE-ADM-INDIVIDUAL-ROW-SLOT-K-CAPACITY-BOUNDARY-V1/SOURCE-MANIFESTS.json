@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "adm_individual_row_slot_k_capacity_boundary_wash_v1",
+  "source_manifest_sha256": "29e43456134526e279963af0ee329e05fd55a4665afdbeaf9c3976d489078482",
+  "source_seal_sha256": "d5f254fdfed630ce9cae7c5d00746b94c3bbd6f5ea60c99351d21d60fd718982",
+  "source_integrity_artifacts": [
+    {
+      "name": "package_seal.json",
+      "sha256": "d5f254fdfed630ce9cae7c5d00746b94c3bbd6f5ea60c99351d21d60fd718982"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "adm_native_row_count_capacity_boundary_wash_v1",
+      "manifest_sha256": "79ac8fc623f6078e130795ce07de5493021f67fdef48e39a429f9f0ec6325e28",
+      "package_seal_sha256": "bee8ad474d639af7193c615fa10c1c976083152cb7bd0d6e131bda3661b238e4"
+    },
+    {
+      "package_id": "adm_k_row_metadata_discriminator_wash_v1",
+      "manifest_sha256": "fa2af73a3256845711a95bb6d5f6db28ebcfa4c3e67f760cdd8f584b14767707",
+      "package_seal_sha256": "f26a13e1f8bc1465a89158968c26d6fef618e50312cbc3733931355ee408494d"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

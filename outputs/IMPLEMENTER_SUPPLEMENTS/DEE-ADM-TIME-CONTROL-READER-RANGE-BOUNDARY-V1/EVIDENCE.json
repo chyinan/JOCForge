@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "package_id": "DEE-ADM-TIME-CONTROL-READER-RANGE-BOUNDARY-V1",
+  "status": "EMBEDDED_TIMECODE_AND_FILE_POSITION_RULES_STATICALLY_DISTINCT; HOST_TO_DDP_OWNER_JOIN_UNBOUND; RESOLVED_RATE_NOT_CAPTURED",
+  "source_package": {
+    "package_id": "DEE-ADM-TIME-CONTROL-READER-RANGE-WASH-V1",
+    "manifest_sha256": "70f436856c1a24379599cb02cb0997008b48ea87428e99168d27078992f145bd",
+    "artifacts_verified": "3/3",
+    "manifest_sidecar_match": true,
+    "parent_manifests_verified": "8/8",
+    "target_binaries_rehashed": true,
+    "wash_checker": "NOT_RUN_BY_WASH"
+  },
+  "target_binaries": {
+    "dee_exe_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_atmos_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "input_only_metadata": {
+    "source_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "configuration_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "input_type": "adm via atmos_mezz source object",
+    "time_base": "embedded_timecode",
+    "start_frame_token": 86640,
+    "end_frame_token": 86664,
+    "frame_rates": "not_indicated",
+    "offset": "auto",
+    "ffoa": "auto",
+    "sample_rate_hz": 48000,
+    "raw_xml_or_wav_included": false
+  },
+  "static_rules": {
+    "normalizer_argument_order": [
+      "map",
+      "timecode_frame_rate",
+      "ffoa",
+      "offset"
+    ],
+    "embedded_timecode": "start/end frame counts -> seconds using resolved frame rate -> round(sample_rate*seconds); offset rebases source bound and endpoints; FFOA not observed here",
+    "file_position": "separate branch; first-frame-of-action relation max(offset,ffoa)-offset",
+    "ddp_time_setter": {
+      "function": "FUN_1804d6410",
+      "vtable_slot_byte_offset": "0x68",
+      "input_record_bytes": 120,
+      "qword_slots_copied": 15,
+      "offset_slot": 10,
+      "ffoa_slot": 11,
+      "field_type": "binary64 seconds"
+    },
+    "range_path": "sample-range converter -> multi-source IOSet -> encoder setup statically bound",
+    "stage_route": "StageRunner selects encode_to_atmos_ddp; source-property packet to DDP handler static; time fields inside packet not evidenced"
+  },
+  "limits": {
+    "resolved_r138_frame_rate": "NOT_CAPTURED",
+    "input_record_writer": "UNBOUND",
+    "selected_ddp_setter_receiver": "UNBOUND",
+    "r138_runtime_map_owner_generation": "UNBOUND",
+    "range_vector_owner_generation": "NOT_CAPTURED",
+    "reader_request": "NOT_CAPTURED",
+    "dee_run": "NOT_RUN",
+    "media_pcm_key_license_read": false,
+    "implementation_contact": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "ordinary-mode-36",
+      "inputs": {"mode": "ordinary", "K_count": 36, "row_stride_bytes": 6},
+      "expected_static_scope": {"B_count": 36, "row_copy_bytes": 216, "U16_representable": true, "runtime_acceptance": "NOT_RUN"}
+    },
+    {
+      "id": "ordinary-mode-38",
+      "inputs": {"mode": "ordinary", "K_count": 38, "row_stride_bytes": 6},
+      "expected_static_scope": {"B_count": 38, "row_copy_bytes": 228, "U16_representable": true, "runtime_acceptance": "NOT_RUN"}
+    },
+    {
+      "id": "extended-mode-36",
+      "inputs": {"mode": "extended", "bed_rows_not_tag_255": 10, "object_rows_tag_255": 26},
+      "expected_static_scope": {"B_count": 36, "row_copy_bytes": 216, "runtime_acceptance": "NOT_RUN"}
+    },
+    {
+      "id": "extended-mode-38",
+      "inputs": {"mode": "extended", "bed_rows_not_tag_255": 10, "object_rows_tag_255": 28},
+      "expected_static_scope": {"B_count": 38, "row_copy_bytes": 228, "runtime_acceptance": "NOT_RUN"}
+    }
+  ],
+  "warning": "These are formula vectors, not observed native run values. They do not establish selected mode, selected owner/generation, malformed-input acceptance, low-16 overflow behavior, or opaque PE/JOC API limits."
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-LAYOUT-BRANCH-WRITER-WASH-V1",
+      "manifest_sha256": "fa60ca124c7dcbd694ef64828277cf864f0700b11231acbf97a0d184d3f089d8",
+      "manifest_checksum_file_sha256": "d3848abf82fcd83f8a010646103d2b34df68fefe2725c555a29a06bdbebab2ff",
+      "reviewed_payloads": [
+        {"name": "REPORT.md", "sha256": "16a29cb249d7208257478578ecaac0771afe99e77b33fb5b6e71870887cab4bd"},
+        {"name": "EVIDENCE.json", "sha256": "2eba6d0a98c6c98114e748e36193a31e517db2024ea7ef9b892a072a40f90f6a"},
+        {"name": "SOURCE-IDENTITIES.json", "sha256": "cc8c5eff34e26531b777516bd6e569048251b33a69e9b54de67ea49111a72c82"}
+      ],
+      "raw_native_or_decompilation_files_copied": false
+    }
+  ]
+}

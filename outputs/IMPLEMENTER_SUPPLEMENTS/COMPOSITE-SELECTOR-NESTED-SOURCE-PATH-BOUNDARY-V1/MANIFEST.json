@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "COMPOSITE-SELECTOR-NESTED-SOURCE-PATH-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "NESTED_PATH_CONSTRUCTION_STATIC_BOUND; SYMBOLIC_SOURCE_OWNER_AND_PATH_VALUE_UNBOUND; HANDLER_SELECTION_UNBOUND; K_COUNT_NOT_REACHED",
+  "implementation_ready": false,
+  "source_manifest_sha256": "7859913891c7eb9608b692811435f5923f6b5f45069ba6890066f8f84407c837",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2298,
+      "sha256": "280daf9a337fc02fcdae2c80d80e22df35f54c0a2ee089c4665c366fb3fa7408"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2444,
+      "sha256": "1282e34c0eb4b2de12f739d04cc8b712b8a4ec1295bdfb4a8cd38b6f7bcd91d6"
+    },
+    "REPORT.md": {
+      "bytes": 1335,
+      "sha256": "1a72d5c2e2da64d56aa6db8c5c65c8d46eecaec6025d604049c9478b7ae41418"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1333,
+      "sha256": "5df91de57ed6d1acb1ca0c21d4f8dc94d0cd522efe5e9530168cc8387d0b0739"
+    }
+  }
+}

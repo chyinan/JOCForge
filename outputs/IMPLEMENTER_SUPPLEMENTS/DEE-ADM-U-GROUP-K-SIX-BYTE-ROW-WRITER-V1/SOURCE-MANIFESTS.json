@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {"package_id":"ADM-U-GROUP-K-ROW-WRITER-V1","manifest_sha256":"cf865e0eb2617a25a8d2619b9a381c80b8aff8034ca90854f7ad8d1bc86a65cf"},
+    {"package_id":"ADM-WAVE-CHNA-U-ROW-CONTAINER-V1","manifest_sha256":"7af3ea125b1029bf9407a10c20fee4f6dd70807ec93b2e92d5bc2865141474aa"},
+    {"package_id":"ADM-ATMOSMEZZ-ROW-COUNT-FIRST-CONSUMER-V1","manifest_sha256":"d9e45e2519718ed154fcc5c5ec9e1692434ccdeec64585a47a38ef918328d63a"},
+    {"package_id":"SOURCE-DESCRIPTOR-COUNT-PRODUCER-V1","manifest_sha256":"a4d0869f4b6f8f07a86611c4dcbd466e7dabef6365bb740163cbf48fe9c5396f"}
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

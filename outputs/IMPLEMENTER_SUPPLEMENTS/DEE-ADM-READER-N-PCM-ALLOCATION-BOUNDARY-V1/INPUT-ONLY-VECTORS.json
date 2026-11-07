@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "reader-n-sample-count-buffer-extent",
+      "kind": "static-allocation-contract",
+      "input": {
+        "N": "Reader channel count",
+        "sample_count": "samples per channel"
+      },
+      "observed": {
+        "elements": "N * sample_count",
+        "bytes": "4 * N * sample_count",
+        "row_stride_bytes": "4 * sample_count"
+      },
+      "status": "STATIC_FORMULA_BOUND; RUNTIME_VALUES_AND_ALLOCATOR_UNBOUND"
+    }
+  ]
+}

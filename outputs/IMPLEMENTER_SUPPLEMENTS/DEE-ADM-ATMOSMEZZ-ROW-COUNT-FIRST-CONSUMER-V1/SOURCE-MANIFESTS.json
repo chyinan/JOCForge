@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {"package_id":"ADM-ATMOSMEZZ-ROW-COUNT-FIRST-CONSUMER-V1","manifest_sha256":"d9e45e2519718ed154fcc5c5ec9e1692434ccdeec64585a47a38ef918328d63a"},
+    {"package_id":"SOURCE-DESCRIPTOR-COUNT-PRODUCER-V1","manifest_sha256":"a4d0869f4b6f8f07a86611c4dcbd466e7dabef6365bb740163cbf48fe9c5396f"},
+    {"package_id":"ADM-SOURCE-K-TO-ATMOS-READER-POINTER-JOIN-V1","manifest_sha256":"ca520dada247c6ec271c6830de289d39c1c7dd23ae9c34d2159464b2701aac75"},
+    {"package_id":"ADM-K-TO-READER-DESCRIPTOR-STATIC-JOIN-V1","manifest_sha256":"f71c6275dd62a1a0ce120f198c7c0126227de11d5d5de7b46e2568f4e0a50deb"},
+    {"package_id":"ADM-PHYSICAL-ROW-DOWNSTREAM-COUNT-LINEAGE-V1","manifest_sha256":"b514065f2f91c35ff87bf2c74a6f481e34607e46bd7a9e71ebdb2faf1b2064be"},
+    {"package_id":"ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1","manifest_sha256":"1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01eb2e7bde10"},
+    {"package_id":"SELECTED-WAVE-METADATA-PROFILE-INPUT-STATUS-V1","manifest_sha256":"6487567d8b94b301760bc4788d1c0e825209bf848d75c2b29f542ec9033010a2"}
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

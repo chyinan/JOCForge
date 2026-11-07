@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.composite_source_vector_owner_boundary.v1",
+  "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-OWNER-BOUNDARY-V1",
+  "status": "SOURCE_VECTOR_SHAPE_AND_FORWARDING_STATIC_BOUND; OWNER_AND_GENERATION_UNBOUND; PATH_AND_HANDLER_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-OWNER-V1",
+    "manifest_sha256": "94dbe3ae124341ded8296991427db2f8693614e3d916b3bdf9267bb6402f2c62",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "analysis_mode": "read-only existing project; noanalysis",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "source_vector": {
+    "consumer_input": "param_2",
+    "shape": "begin/end-backed vector of 32-byte source-entry rows",
+    "entry_count_formula": "(end - begin) >> 5",
+    "record_address": "vector_begin + index * 32",
+    "path_field": "string-like field at row +0",
+    "pointer_forwarding": "same param_2 pointer passed to reader builder for each selected index",
+    "vector_writer_in_consumer": "NONE_OBSERVED",
+    "owner_above_param_2": "UNBOUND",
+    "runtime_generation": "NOT_CAPTURED"
+  },
+  "related_nested_path_boundary": {
+    "wash_package_id": "COMPOSITE-SELECTOR-NESTED-SOURCE-PATH-BOUNDARY-V1",
+    "wash_manifest_sha256": "3ce58ded640e63686cfb922b6827e87534396758cdd67cadb3f10271af0b2bde",
+    "path_value": "NOT_CAPTURED",
+    "path_suffix": "NOT_CAPTURED",
+    "selected_handler": "UNBOUND"
+  },
+  "separate_sample_argument": {
+    "type": "U32",
+    "value": 1536,
+    "meaning": "per-item frame sample count argument; not a source-vector owner/generation token"
+  },
+  "k_count": {
+    "candidate_formula": "low16(IndividualRecordCount + sum(GroupEntryCount(g)))",
+    "applicability_to_selected_j_plus_0x08": "UNBOUND_PENDING_PATH_SUFFIX_AND_HANDLER"
+  },
+  "scope": {
+    "native_execution": "NOT_RUN",
+    "runtime_path_value": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

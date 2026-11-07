@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.reader_descriptor_count_owner_boundary.v1",
+  "package_id": "DEE-ADM-READER-DESCRIPTOR-COUNT-OWNER-BOUNDARY-V1",
+  "source": {
+    "package_id": "DEE-ADM-READER-DESCRIPTOR-COUNT-WRITER-WASH-V1",
+    "manifest_sha256_file_sha256": "f803f54efc8b22c22a75f1f79c048391c147936527a59861a090f2ca5a3c1634",
+    "standalone_package_seal": "NOT_PROVIDED"
+  },
+  "reader_chain": {
+    "wrapper_input": "CompositeMaster pointer",
+    "inner_state_descriptor_pointer_field": "+0x58",
+    "getter_count_field": "descriptor U16 +0x0A",
+    "reader_n_transfer": "BOUND_STATIC"
+  },
+  "initializer_boundary": {
+    "source_vector_record_stride_bytes": 64,
+    "u16_store_to_reader_descriptor_plus_0x0a_observed": false,
+    "typed_composite_master_to_reader_count_edge": "UNBOUND",
+    "descriptor_count_writer_owner": "UNBOUND"
+  },
+  "separate_k_count": {
+    "formula": "individual plus group U32 accumulator narrowed to U16",
+    "k_field": "K +0x0A",
+    "source_generation": "UNBOUND",
+    "typed_join_to_reader_descriptor": "UNBOUND"
+  },
+  "physical_n_join": "UNBOUND",
+  "matching_offset_store_other_metadata_record": "EXCLUDED_DIFFERENT_OWNER",
+  "runtime_owner_generation": "UNBOUND_NOT_CAPTURED",
+  "end_to_end_n_range": "NOT_ESTABLISHED",
+  "scope": {
+    "ghidra": "12.2 read-only/no-analysis inherited receipts",
+    "dee_run": false,
+    "media_pcm_payload_key_license_read": false,
+    "process_control": false,
+    "global_absence_claim": false
+  }
+}

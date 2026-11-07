@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "supplement_package_id": "DEE-COMPOSITE-SELECTOR-DIRECT-INPUT-SEMANTICS-V1",
+  "upstream_package_id": "COMPOSITE-SELECTOR-INPUT-SEMANTICS-V1",
+  "upstream_manifest_sha256": "47f91ba7eb4efacb5ad19202631d508a8b39b26d1e14547ce926521998141ff4",
+  "upstream_formal_seal": "NOT_PRESENT",
+  "upstream_source_links_sha256": "7a1486d03d40764db34d2f29faa71f0c665a4a8388775ad9e69231ab1e847370",
+  "upstream_function_hashes_sha256": "b48de2859d2c5c00debe1999bb63d091376d0030a5c4a44000282169c6df224f",
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "ghidra_version": "12.2",
+  "new_query_this_turn": "NOT_RUN",
+  "raw_native_logs_scripts_or_code_copied": false,
+  "pcm_payload_key_or_license_copied": false
+}

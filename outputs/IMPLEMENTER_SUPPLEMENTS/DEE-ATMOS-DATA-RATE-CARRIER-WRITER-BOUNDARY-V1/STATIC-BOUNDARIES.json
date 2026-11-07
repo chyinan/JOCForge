@@ -1,0 +1,10 @@
+{
+  "rate_field_id": 3,
+  "type1_serializer_slot": "STATIC_SLOT_BOUND",
+  "static_callback_cell": "ZERO",
+  "runtime_callback_target": "UNBOUND",
+  "carrier_frame_size_writer": "UNBOUND",
+  "actual_output_rate": "NOT_RUN",
+  "JOC_open_rate_path": "BOUND_TO_JOC_CONFIGURATION_ONLY",
+  "existing_pair_status": "PROPOSED_NOT_RUN"
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-ADM-SAMPLER-FIRST-CONSUMER-AUDIO-BOUNDARY-V1",
+  "manifest_sha256": "13d6e2d39dfd892359583640c211a332beebabc7406e2120cae591843d261ddc",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "1e93f781fb2b83b56f85572e28428332108dabcb5af0be345bc9abccc8adbff6",
+  "source_package_seal_sha256": "581bd4fad8a2faf0c45b3321d2972506085031469ba2951ea34f85afb5679d78",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "SAMPLER_STATE_RMW_BOUND; PCM_AUDIO_OWNER_UNBOUND"
+}

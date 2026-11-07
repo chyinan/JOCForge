@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "package_id": "ADM-PHYSICAL-ROW-U16-LAYOUT-MAP-V2",
+  "status": "STATIC_U16_LAYOUT_WRITER_CONSUMER_BOUND; N36_N38_INPUT_ONLY_MAPS_BOUND; NATIVE_MODE_AND_VALUES_NOT_CAPTURED",
+  "source_package": {
+    "package_id": "ADM-PHYSICAL-ROW-OAMDI-U16-MAP-V1",
+    "manifest_sha256": "e46213bb89f94e8da10814c4bab38a2c2cc51ed1bfef25ed516e24f779b25a69",
+    "manifest_files_verified": "12/12",
+    "research_receipts_verified": "7/7",
+    "parent_references_located_and_verified": "7/10",
+    "upstream_check_reported": "PASS_HASHED_STATIC_MAP_PROJECTIONS",
+    "wash_checker": "NOT_RUN_BY_WASH"
+  },
+  "typed_rules": {
+    "physical_slot": "resolved one-based CHNA track_index minus one after exact UID graph resolution",
+    "row_stride_bytes": 6,
+    "row_count": "object count + sum of group entries",
+    "row_fields": {
+      "input_id": "U16 +0",
+      "tag": "U8 +2; 255 object",
+      "ordinal": "U16 +4"
+    },
+    "ordinary_copy_mode": "row r remains at slot r",
+    "builder_gate": {
+      "min": 1,
+      "max": 128,
+      "output_entries": 128,
+      "output_bytes": 256
+    },
+    "object_entry": "0x8000 | physical_slot",
+    "bed_entry": "((translated_label & 0x7f)<<8)|group_bucket",
+    "target_map_is_separate_domain": true
+  },
+  "input_vectors": {
+    "N36": {
+      "physical": 36,
+      "beds": 10,
+      "objects": 26,
+      "K_bytes": 216,
+      "ordinary_copy_object_map": "0x800A..0x8023",
+      "target_object_map": "0x800B..0x8024"
+    },
+    "N38": {
+      "physical": 38,
+      "beds": 10,
+      "objects": 28,
+      "K_bytes": 228,
+      "ordinary_copy_object_map": "0x800A..0x8025",
+      "target_object_map": "0x800B..0x8026"
+    }
+  },
+  "scope": {
+    "metadata_only_36_input": true,
+    "raw_track_uids_in_supplement": false,
+    "raw_xml_in_supplement": false,
+    "native_K_B_D_values": "NOT_CAPTURED",
+    "selected_composite_mode": "NOT_CAPTURED",
+    "native_execution": "NOT_RUN",
+    "full_audio_parity": "NOT_RUN"
+  }
+}

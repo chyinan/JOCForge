@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ADM-N-1-128-ROW-CAPACITY-BOUNDARY-V2",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "1d103e5f7fcb77f7067027786947eb40849bc62c932357d3eb5c6a19a9da8119",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

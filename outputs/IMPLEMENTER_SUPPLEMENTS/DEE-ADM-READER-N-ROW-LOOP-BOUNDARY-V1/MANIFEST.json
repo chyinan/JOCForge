@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ADM-READER-N-ROW-LOOP-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "READER_N_ROW_LOOP_BOUND_STATIC; RUNTIME_N_AND_RANGE_UNBOUND",
+  "implementation_disposition": "Use the N-driven row loop only within this static consumer scope; preserve the sample-count field as a separate row extent.",
+  "source_manifest_sha256": "de85b168909fdd0b56d9c4ef6cff83a5b4bec68cc421a511174e0e4b75732d7a",
+  "source_package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2670,
+      "sha256": "e8578fc901938b6da1bd1ca9c6458fd01a0e3d4c12ac2d8af5054427730ce8de"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2012,
+      "sha256": "68e7b923c6827f9cdd025c7893e1307936cbe1ee4027db5c68f5ea5e6aa05135"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 451,
+      "sha256": "bed887f25dd0d03e6110df5e8e07fe818685062b6823c1d6214f30e5830ae4bd"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 740,
+      "sha256": "8a69f251a725f0af1e1b52394faeed27211966a17baca1f5403c6adada0ef3c6"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 453,
+      "sha256": "ec00e8af571e90d1e5c04dfb288bf535b4d97076817a171a8e6c51fb538356fb"
+    }
+  ]
+}

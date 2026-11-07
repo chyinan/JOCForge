@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V2",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "9bc12cc20b21e1a4ca60b4e77020d6cc3c43c6c7a8d917e197e212ed19b948bb",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "current_source_hash_audit": "PASS_4_OF_4",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

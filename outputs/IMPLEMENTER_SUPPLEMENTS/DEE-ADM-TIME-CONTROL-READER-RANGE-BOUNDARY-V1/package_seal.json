@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-ADM-TIME-CONTROL-READER-RANGE-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "67f9edd6b4e49871d0a6664633985f08e3f779c4fa51a79c46520bce8403d177",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_artifacts": "PASS_3_OF_3; MANIFEST_SIDECAR_MATCH; PARENT_MANIFESTS_PASS_8_OF_8; DEE_AND_DDP_IMAGE_HASHES_RECOMPUTED",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

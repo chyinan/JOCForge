@@ -1,0 +1,32 @@
+{
+  "schema": "washed-package-manifest.v1",
+  "package_id": "sample6-flattened-master-provider-getter-boundary-wash-v1",
+  "scope": "Ghidra-only provider factory, typed output and exact dynamic inner-provider first-break; no media retained",
+  "files": [
+    {
+      "name": "CHECK.py",
+      "sha256": "49c0de45e410b67105d924219e2757fa63f67c5846512ddeb6df2f3df67fd556",
+      "bytes": 8212
+    },
+    {
+      "name": "EVIDENCE.json",
+      "sha256": "66d558ea571170746cb2b644e0ae8a3c46e5a862c44aa2b2386e52f66169dcea",
+      "bytes": 6451
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "sha256": "d3039b369fdc330b0c352f993410ca7088866ac559851e4b5c5f621ce4d00698",
+      "bytes": 1530
+    },
+    {
+      "name": "REPORT.md",
+      "sha256": "256aab3fa58130ae1b8d71b6fe6ce33e8694909653cc910b3dea95d2a7011b9b",
+      "bytes": 4051
+    },
+    {
+      "name": "SOURCE-IDENTITIES.json",
+      "sha256": "232447fdaf2787995daf2129a16078d37931bccea650a9e293355527f0937919",
+      "bytes": 3340
+    }
+  ]
+}

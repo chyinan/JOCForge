@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "ddp_component_b_crt_slot3_failure_edge_wash_v1",
+  "manifest_file": "MANIFEST.json",
+  "manifest_sha256": "a2de9dd402e2bcae73cdd0ba14e731b851ed187f3a75aedbb28602ca741274e8",
+  "source_seal_file": "package_seal.json",
+  "source_package_seal_sha256": "2e0114feff43f40b7ef0265b026bc644870c59ee2abc46c2d424e059556dfed2",
+  "checksum_file": null,
+  "checksum_file_sha256": null,
+  "checksum_content": null,
+  "source_verification": "SOURCE_CHECKER_NORMAL_AND_PYTHON_O_PASS",
+  "parent_bindings": [
+    {
+      "package_id": "ddp_four_component_initialization_comparison_wash_v1",
+      "manifest_sha256": "8901e160d80c07f8bc050e6992a0d9eefd7fb88c829e7cc0a7239e29b55fe7af"
+    }
+  ],
+  "raw_reverse_source_forwarded": false
+}

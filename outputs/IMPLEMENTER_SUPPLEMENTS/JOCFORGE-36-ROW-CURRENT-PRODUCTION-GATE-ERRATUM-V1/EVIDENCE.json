@@ -1,0 +1,80 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "package_id": "JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V1",
+  "status": "METER_ADMISSION_AND_ZERO_DRAIN_DYNAMIC; INSTALLED48_SELECTED_BINDING_AND_NORMAL_SNAPSHOT_STILL_38; REAL_36_OUTPUT_NOT_RUN",
+  "source_snapshot": {
+    "repo": "D:/Programs/JOCForge-isolated",
+    "branch": "experimental/independent-encoder",
+    "head": "aefd8cc12538cab251a59c9a08f9c9ca0608eb9b",
+    "files": [
+      {
+        "path": "crates/jocforge-application/src/meter_source_admission.rs",
+        "sha256": "835f460a3e638aa72bf7cc9ad231418288be86744bab0d2a25555c9485d9b6f2"
+      },
+      {
+        "path": "crates/jocforge-application/src/independent_meter_callback.rs",
+        "sha256": "8c8388a4c32446ee2fa5e6e2ee95c0d248699fb96e783c2d76d9483def48fb24"
+      },
+      {
+        "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
+        "sha256": "232462446b4a650187d113eaf0e0ac5e4c6d63454b5a6c09e5ff412c935c8283"
+      },
+      {
+        "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+        "sha256": "dc57a81f7083b44aa9b3a5233551f196685d0bd088cf4f16de840cfb4ba99519"
+      },
+      {
+        "path": "crates/jocforge-domain/src/frontend/provider.rs",
+        "sha256": "59fa54ec2629b8a28f530f2b1c7276c3fd9f4ab3562008198b3afd578a46862a"
+      },
+      {
+        "path": "crates/jocforge-domain/src/frontend/state.rs",
+        "sha256": "54136a712b4657e82018f13892170d320cabe5120ad51cfadde9b4e8b70fdac6"
+      },
+      {
+        "path": "crates/jocforge-application/src/lib.rs",
+        "sha256": "e4c160d0d0cd811934dfd9e1592587264ec7453951ef879b4845d93fb09f325f"
+      }
+    ],
+    "current_file_hashes_recomputed": true
+  },
+  "dynamic_facts": {
+    "meter_source_admission": "ADM 10..256; WAVE channel count equals graph track count",
+    "fresh_zero_identity": "checks row count against configured N and requires zero rows of 1536 samples",
+    "first_selected_meter_g0_blocker": "build_meter_installed48_source_map reaches validate_primary_binding; it still requires the selected 38-channel job's exact hashes, file/data extents, sample count, and channels=38",
+    "next_normal_snapshot_blocker": "profile channels=38, bed=10, objects=28; physical rows=38 and regular rows=37",
+    "installed48_arrays": "PHYSICAL_HOST_COUNT=38; REGULAR_COUNT=37; control rows [NormalControlRow;38]; quiet rows [u8;37]",
+    "dynamic_f01e_cold_projection": "derives channel/bed/object counts and zero object owners from graph; resets callback index; no normal after-state or DDP frame-view join",
+    "selected_meter_callback": "still uses normal_control_prepared_snapshot and legacy propose_normal_control_snapshot",
+    "dynamic_continuation": "available but not connected to selected production callback in this snapshot",
+    "fresh_zero_fixed_38": false
+  },
+  "shape_vectors": {
+    "N36": {
+      "physical": 36,
+      "bed": 10,
+      "object": 26,
+      "regular": 35,
+      "active_global_sources": 46,
+      "present_ids": "0..45",
+      "absent_ids": ["46", "47"]
+    },
+    "N38": {
+      "physical": 38,
+      "bed": 10,
+      "object": 28,
+      "regular": 37,
+      "active_global_sources": 48,
+      "present_ids": "0..47",
+      "absent_ids": []
+    }
+  },
+  "limits": {
+    "physical_row_to_global_source_typed_map": "UNBOUND",
+    "36_row_cli_encode": "NOT_RUN",
+    "DEE_execution": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "playable_output": "NOT_ESTABLISHED"
+  }
+}

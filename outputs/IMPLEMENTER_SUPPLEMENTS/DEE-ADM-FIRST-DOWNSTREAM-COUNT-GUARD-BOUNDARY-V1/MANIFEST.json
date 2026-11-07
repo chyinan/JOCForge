@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-ADM-FIRST-DOWNSTREAM-COUNT-GUARD-BOUNDARY-V1",
+  "source_package_manifest_sha256": "9d5ebe9cd9053392fe92975710f460fc7efcc45500078f486a5ba985c951758b",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "files": {
+    "REPORT.md": "a6bfbb32636c8e63abf4abbaa57dadf56ae128fcb9a694f696f381ecb3e3957d",
+    "BOUNDARY.json": "9933e9f3986b07cfa192b56603773444b349a5f71995f0a6e4444c343af57dbf",
+    "SOURCE-LINKS.json": "8d6db91843c215c02e2e109e09e3706c739dc970da7de1bb548faefc7dee284e",
+    "INPUT-ONLY-VECTORS.json": "ae471799ea3a35763fb84cee35f340f13bf73ca3a24597ab2e446833248de15b"
+  }
+}

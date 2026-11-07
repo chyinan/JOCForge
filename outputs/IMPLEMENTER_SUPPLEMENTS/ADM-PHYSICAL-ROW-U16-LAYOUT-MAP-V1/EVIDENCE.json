@@ -1,0 +1,62 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "package_id": "ADM-PHYSICAL-ROW-U16-LAYOUT-MAP-V1",
+  "status": "STATIC_TYPED_U16_ROW_MAP_WRITER_AND_CONSUMER_BOUND; N36_N38_INPUT_ONLY_PROJECTIONS_BOUND; NATIVE_RUNTIME_VALUES_AND_SELECTED_MODE_NOT_CAPTURED",
+  "source_package": {
+    "package_id": "ADM-PHYSICAL-ROW-OAMDI-U16-MAP-V1",
+    "manifest_sha256": "a556e48244645b60d1b6c5996d3151e03e15c2ba675872ee22fef711d5bc6db6",
+    "manifest_sidecar_sha256_matches": true,
+    "manifest_files_verified": "12/12",
+    "research_receipts_verified": "7/7",
+    "parent_manifest_references_reverified": "7/10; three references were not found in the inspected research-audit roots",
+    "upstream_check_reported": "PASS_HASHED_STATIC_MAP_PROJECTIONS",
+    "wash_reexecution": "NOT_RUN_BY_WASH"
+  },
+  "typed_map": {
+    "physical_slot_formula": "one-based CHNA track_index minus one after exact UID graph resolution",
+    "K_row_stride_bytes": 6,
+    "K_count": "individual_record_count + sum(group_entry_count)",
+    "K_count_field": "U16 at +0x0A",
+    "K_fields": {
+      "semantic_input_id": "U16 +0",
+      "row_tag": "U8 +2; 255 marks object",
+      "ordinal_or_group": "U16 +4"
+    },
+    "ordinary_copy_mode": "B preserves the same six-byte row-table slot r",
+    "map_gate": {
+      "count_min": 1,
+      "count_max": 128,
+      "map_entries": 128,
+      "map_bytes": 256
+    },
+    "object_formula": "0x8000 | (r & 0xff)",
+    "bed_formula": "((translate(tag) & 0x7f) << 8) | (group_bucket & 0xff)",
+    "canonical_target_map_is_separate": true
+  },
+  "input_only": {
+    "N36": {
+      "rows": 36,
+      "beds": 10,
+      "objects": 26,
+      "K_bytes": 216,
+      "map_bytes": 256,
+      "gate_passes_static": true
+    },
+    "N38": {
+      "rows": 38,
+      "beds": 10,
+      "objects": 28,
+      "K_bytes": 228,
+      "map_bytes": 256,
+      "gate_passes_static": true
+    }
+  },
+  "limits": {
+    "composite_mode": "NOT_CAPTURED",
+    "native_K_B_D_values": "NOT_CAPTURED",
+    "native_36_or_38_run": "NOT_RUN",
+    "C_converter_owner_to_opened_K": "UNBOUND",
+    "PCM_EC3_DBMD_payload_key_license_read": false,
+    "full_audio_parity": "NOT_RUN"
+  }
+}

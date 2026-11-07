@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-ADM-SAMPLER-FIRST-CONSUMER-AUDIO-BOUNDARY-V1",
+  "source_package_manifest_sha256": "1e93f781fb2b83b56f85572e28428332108dabcb5af0be345bc9abccc8adbff6",
+  "source_package_seal_sha256": "581bd4fad8a2faf0c45b3321d2972506085031469ba2951ea34f85afb5679d78",
+  "files": {
+    "REPORT.md": "83a81254a8bc20602cfb77ecf44641b82f09693b926cd1143caeb92a5703de58",
+    "BOUNDARY.json": "6905cd3ee3f4dd16a8d18c81c44af226e7504553e0c742a3e9aa4bed4e3b0148",
+    "SOURCE-LINKS.json": "d1220d352b6bc24dfb9d1694e434f5b22a75e2940b205ceedbfc9c43c900f93e",
+    "INPUT-ONLY-VECTORS.json": "ec551dd3de4b8c28a5218338089bd98a1ab886b75c76500ed4d75165dca0232d"
+  }
+}

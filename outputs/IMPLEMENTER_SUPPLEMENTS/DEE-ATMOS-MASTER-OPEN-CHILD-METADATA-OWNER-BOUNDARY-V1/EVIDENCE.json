@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.master_open_child_metadata_owner_boundary.v1",
+  "child_open_result_pair_to_source_record_qword_0_1": "BOUND_STATIC",
+  "metadata_view_to_composite_source_vector": "BOUND_STATIC",
+  "physical_adm_n_path": "descriptor U16 +0x0A to open_config to layout U32 N",
+  "child_open_context_to_physical_n_owner_join": "UNBOUND",
+  "vector_count_equals_physical_n": "UNBOUND",
+  "same_offset_identity_inference": false,
+  "runtime_values": "NOT_CAPTURED",
+  "global_absence_claim": false
+}

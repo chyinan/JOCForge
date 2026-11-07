@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "DEE-ATMOS-MASTER-OPEN-OWNER-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "e9ac845b15337b48b83a488868754a584ff013eb8a47b5f09e0f3b524a10379d",
+  "source_seal_sha256": null,
+  "source_integrity_artifacts": [
+    {
+      "name": "MANIFEST.sha256",
+      "sha256": "74c95eb2e31bd11c9eb3172787f5c691ed6d0bba65a4f3725790476ab5380993"
+    },
+    {
+      "name": "standalone package seal",
+      "status": "NOT_PROVIDED"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "DEE-ATMOS-COMPOSITE-VECTOR-CALLER-LINEAGE-WASH-V1",
+      "manifest_sha256": "a2d43917a6e3227ac634685e0e4be0bb32d2d915f9589f22a8efa19c91899ef2"
+    },
+    {
+      "package_id": "ADM-TO-ATMOS-JOC-ROW-COUNT-CAPACITY-V1",
+      "manifest_sha256": "1df59a5dcfb184649a2e2346c8a44f044d521462adb56897375f01ebe2b7de10"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

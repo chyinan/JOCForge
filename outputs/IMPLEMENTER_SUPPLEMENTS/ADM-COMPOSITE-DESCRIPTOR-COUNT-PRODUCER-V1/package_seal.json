@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ADM-COMPOSITE-DESCRIPTOR-COUNT-PRODUCER-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "97163232fbebe1cc009d4afa59d67a9d89513e5468cace3c244dc381e0d53b5d",
+  "payload_file_count": 8,
+  "payload_hash_audit": "PASS_8_OF_8",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "attempt05-n36-frame-shape",
+      "kind": "single-short-window-dynamic-metadata-observation",
+      "input": {
+        "physical_N": 36,
+        "sample_rate_hz": 48000,
+        "window_samples": 50000,
+        "time_base_configured": "file_position"
+      },
+      "observed": {
+        "K_count": 36,
+        "B_count": 36,
+        "nonempty_D_calls": 33,
+        "samples_per_call": 1536,
+        "first_actual_channels": 36,
+        "first_processor_expected_channels": 0,
+        "next_same_processor_expected_channels": 36
+      },
+      "owner_join": "K_TO_B_TO_PROCESSOR_D_JOINED_FOR_TGEN1_JGEN1; U_TO_K_UNBOUND",
+      "status": "ONE_SHORT_N36_RUNTIME_ATTEMPT_ONLY; RANGE_NOT_ESTABLISHED",
+      "pcm_bytes_observed_or_saved": 0
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "wash.composite-selector-input-semantics-invocation.v1",
+  "tool": "Ghidra 12.2 existing hash-bound read-only static logs",
+  "new_query_this_turn": "NOT_RUN",
+  "DEE_run": false,
+  "PCM_or_payload_read": false,
+  "key_or_license_read": false,
+  "implementation_contact": false
+}

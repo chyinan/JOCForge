@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "formatmessage_loader_error_1114_wash_v1",
+      "manifest_sha256": "edb59767188568dc798a130057f70c7a1b255d6283c7694fcd5f837f72e1bea7",
+      "package_seal_sha256": "0267e5719a5661322473da189872d39325ead424e75ec8c595c996367bb17168",
+      "reviewed_payloads": [
+        {
+          "name": "FINDINGS.md",
+          "sha256": "2b652942c53a700ff47257927d4a1ddfd8b2e97aca18e7fa9b4fd8bd4081bd51"
+        },
+        {
+          "name": "NATIVE-OBSERVATION.json",
+          "sha256": "987e7d34f60b5fe785bdc142e387c7b57df5e1fafb33bdbff0022ab269129620"
+        },
+        {
+          "name": "SOURCE-IDENTITIES.json",
+          "sha256": "5898257ef01986822102447df6932f2985d4bee9c40d4c16c503b793f7bdd300"
+        }
+      ],
+      "raw_attempt_logs_or_native_source_copied": false
+    }
+  ]
+}

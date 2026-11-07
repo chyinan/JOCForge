@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "native-physical-n-gate",
+      "kind": "static-boundary-summary",
+      "input": {
+        "N": 1,
+        "128": "inclusive upper bound"
+      },
+      "observed": {
+        "gate_predicate": "fail when N-1 > 0x7f"
+      },
+      "status": "STATIC_RANGE_1_TO_128; RUNTIME_NOT_RUN"
+    },
+    {
+      "vector_id": "separate-count-domains",
+      "kind": "static-domain-separation",
+      "input": {
+        "physical_N": "descriptor-bearing path",
+        "K": "U container count",
+        "B": "composite adapter count"
+      },
+      "observed": {
+        "N_to_K_B_join": "UNBOUND",
+        "K_row_stride_bytes": 6,
+        "B_row_bytes_per_count": 6
+      },
+      "status": "DO_NOT_MERGE_COUNT_DOMAINS"
+    }
+  ]
+}

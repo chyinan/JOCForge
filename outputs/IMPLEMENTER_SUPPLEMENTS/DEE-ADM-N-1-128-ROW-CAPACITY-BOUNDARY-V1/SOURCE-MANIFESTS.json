@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "adm_native_row_count_capacity_boundary_wash_v1",
+      "manifest_sha256": "a3c5b0597dc5ab7d3b366ba87f05dccf55d543e65ba9cabbd8f35f639312f0a9",
+      "package_seal_sha256": "cbe9dcbd3cb1a97e787718abc809f026f585d30d19ee383a697ef5dd135f29a0",
+      "parent_receipts": [
+        {
+          "package_id": "adm_row_map_frame_reader_handoff_wash_v1",
+          "manifest_sha256": "4479dcef6a38f809ca324b7809af25edd32b370c16900529e920c7a673cf7606",
+          "package_seal_sha256": "b179c6afac13acd5bc80cbeb4fe3d23e56d5c5f01e05cee7d652270aa4481ffa"
+        },
+        {
+          "package_id": "adm_row_dispatch_owner_target_wash_v1",
+          "manifest_sha256": "1eb26528fb9edaedfe1f596d03f1dfb8e7a260b209bf0e9739940c5b80fecc18",
+          "package_seal_sha256": "8afadbad5b21ee1fc166a5360878699b4124ff1246d7d7bd4cc98662ca2e770e"
+        },
+        {
+          "package_id": "adm_k_row_metadata_discriminator_wash_v1",
+          "manifest_sha256": "fa2af73a3256845711a95bb6d5f6db28ebcfa4c3e67f760cdd8f584b14767707",
+          "package_seal_sha256": "f26a13e1f8bc1465a89158968c26d6fef618e50312cbc3733931355ee408494d"
+        }
+      ],
+      "raw_native_source_or_media_copied": false
+    }
+  ]
+}

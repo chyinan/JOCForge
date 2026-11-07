@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-CONFIG-FIELD-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_typed_vector_field_producer",
+      "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-CONFIG-OWNER-V1",
+      "path": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/composite-selector-source-vector-config-owner-v1/wash-package",
+      "manifest_sha256": "347b2b29af855b2736fd8ece036df0997db43e8ed12db2e1e43ff1d1194bc2c0",
+      "separate_package_seal": "NOT_PRESENT",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "nested_path_field_shape",
+      "package_id": "COMPOSITE-SELECTOR-NESTED-SOURCE-PATH-PRODUCER-V1",
+      "manifest_sha256": "7859913891c7eb9608b692811435f5923f6b5f45069ba6890066f8f84407c837",
+      "wash_supplement_manifest_sha256": "3ce58ded640e63686cfb922b6827e87534396758cdd67cadb3f10271af0b2bde",
+      "relationship": "Reused for row path-field shape only; no runtime value or handler inferred."
+    },
+    {
+      "role": "source_vector_consumer_shape",
+      "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-OWNER-V1",
+      "manifest_sha256": "94dbe3ae124341ded8296991427db2f8693614e3d916b3bdf9267bb6402f2c62",
+      "wash_supplement_manifest_sha256": "3495b4c9d5e4f07c0c92fd1a4021601c73098c66c705ca4be28d5ff36962b5d7"
+    }
+  ],
+  "omitted_material": {
+    "raw_source_code_or_decompilation": true,
+    "source_path_or_user_media": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

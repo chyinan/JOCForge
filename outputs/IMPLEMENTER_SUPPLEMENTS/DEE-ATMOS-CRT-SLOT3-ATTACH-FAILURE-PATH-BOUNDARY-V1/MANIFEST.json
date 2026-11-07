@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-CRT-SLOT3-ATTACH-FAILURE-PATH-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SLOT3_STATIC_ALLOCATION_FAILURE_TO_CRT_FALSE_PATH_BOUND; RUNTIME_FAILURE_AND_ATTEMPT12_CAUSE_UNOBSERVED",
+  "source_package_id": "ddp_component_b_crt_slot3_failure_edge_wash_v1",
+  "source_manifest_sha256": "f4c827fcd3fab7d41880100fd7a352a5b6d0c97b5e1c4ba04f37aa5e7c10fa01",
+  "source_package_seal_sha256": "43944bc607e6431a0cbdc476893d241e2fc9a24b9a6a4a84355c6319e9b50a9c",
+  "implementation_ready": false,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1971,
+      "sha256": "127b588d13ad53c4d6bab4a82a81e52b8e5fc72c15ceeac0c11bf7fc3a9dc287"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1661,
+      "sha256": "3a95fe0494dde3bfc0511d456737d387a6f84a47d4a4cc9f78640cad136706d6"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1160,
+      "sha256": "ccebc21b232e1a6f8a0cb29bf622f93f5f6819dc100e00063f474870cd620537"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1021,
+      "sha256": "f88a81aad28f5db422d104467b5bcbc28d545a950f1b0b4095fae7bb9c74dfd9"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 817,
+      "sha256": "675d635832f7e64ccb77af6828dc11c31126462c9c0a6584de008d882d13507a"
+    }
+  ]
+}

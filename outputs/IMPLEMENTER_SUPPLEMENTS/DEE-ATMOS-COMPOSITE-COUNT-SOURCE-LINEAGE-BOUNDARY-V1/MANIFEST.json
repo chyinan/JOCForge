@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-ATMOS-COMPOSITE-COUNT-SOURCE-LINEAGE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "COMPOSITE_SHAPE_SOURCE_BOUND; DIRECT_COPY_FROM_PHYSICAL_N_NO_IN_INSPECTED_PATH; SAME_N_LINEAGE_UNBOUND",
+  "implementation_disposition": "Keep physical ADM N, source-record vector length, and CompositeFormatCount as separate count domains until an owner/typed join is found.",
+  "source_package_id": "DEE-ATMOS-COMPOSITE-COUNT-SOURCE-LINEAGE-WASH-V1",
+  "source_manifest_sha256": "4ef254d06424ae9c736aeb0f00f25ba535eafff2a9d2b983ed66461a0e34c781",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1664,
+      "sha256": "0c3105cec4031c833f91afa65f71cc98b55ed04ed9e64c605c89db11a1e77e25"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 654,
+      "sha256": "e4b067c461efa63793d29d7a185174321d7aafba00891d466e23e2c3a124f5f1"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 609,
+      "sha256": "8c05411b454dd2f970b1bf75eddec11f5922eaab8dece0655eb8a391580b9125"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1154,
+      "sha256": "0524565c3baf02caa686341bf7a8d917c2679af648e97bd22ff4e9341ac2224a"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1115,
+      "sha256": "51f88ffc1ef2cbd45bb60e1457b3b8f4293ac47283d4de7a62c13292031187a4"
+    }
+  ]
+}

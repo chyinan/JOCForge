@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "reader-n-versus-sample-count",
+      "input": {
+        "reader_descriptor_n": "U16 +0x0A",
+        "reader_state_selector": "U8 +0x14"
+      },
+      "expected_observation": {
+        "N": "separate zero-extended channel count",
+        "S": "conditional sample-count source",
+        "n_s_join": "UNBOUND"
+      },
+      "limitations": [
+        "No physical CHNA N join",
+        "No same-owner/generation K join",
+        "No runtime range proof"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-OWNER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_source_vector_consumer",
+      "package_id": "COMPOSITE-SELECTOR-SOURCE-VECTOR-OWNER-V1",
+      "path": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/composite-selector-source-vector-owner-v1/wash-package",
+      "manifest_sha256": "94dbe3ae124341ded8296991427db2f8693614e3d916b3bdf9267bb6402f2c62",
+      "separate_package_seal": "NOT_PRESENT",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "nested_path_carrier",
+      "package_id": "COMPOSITE-SELECTOR-NESTED-SOURCE-PATH-PRODUCER-V1",
+      "manifest_sha256": "7859913891c7eb9608b692811435f5923f6b5f45069ba6890066f8f84407c837",
+      "wash_supplement_manifest_sha256": "3ce58ded640e63686cfb922b6827e87534396758cdd67cadb3f10271af0b2bde",
+      "relationship": "Reused only to bind the static row path-field shape; actual value remains uncaptured."
+    },
+    {
+      "role": "prior_handler_selection",
+      "package_id": "COMPOSITE-SELECTOR-K-COUNT-HANDLER-SELECTION-V1",
+      "wash_supplement_manifest_sha256": "63529a6bb3f0c2626290f0a1126ca93f7c57b1d7b4cf0898b3e67b8c2b8d3b2e",
+      "wash_supplement_seal_sha256": "e7c7b013c548b80d62f77cfed9d9cb075997d9ed41e32496dd6c2a1ff6634805",
+      "relationship": "Retained as the suffix-to-handler first-break; no selected handler inferred."
+    }
+  ],
+  "omitted_material": {
+    "raw_source_code_or_decompilation": true,
+    "path_value_or_user_media": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

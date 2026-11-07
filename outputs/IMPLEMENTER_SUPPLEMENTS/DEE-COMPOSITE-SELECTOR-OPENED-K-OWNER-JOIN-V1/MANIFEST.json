@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-COMPOSITE-SELECTOR-OPENED-K-OWNER-JOIN-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_SELECTOR_ROW_TO_PER_ITEM_OPENED_K_SLOT_BOUND; RUNTIME_OPEN_AND_GENERATION_NOT_CAPTURED",
+  "implementation_disposition": "Use the same-J field copy as static owner lineage. Do not infer a successful open, runtime K pointer, generation, or N-to-K count formula.",
+  "source_manifest_sha256": "8ba69c952f128bd64faec02670501315fc9de2a0f7fa6feb8ed1c0b4edab0bb3",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name":"CHECK.py","bytes":4531,"sha256":"73e4a71025692a8e62d6bc276ceb55aafd060df7d74eb429bff0b54319d38b96"},
+    {"name":"EVIDENCE.json","bytes":1786,"sha256":"45487dedb9db4c0b3683c5011cd0f17ff11a3a24b62af161fe866f49ab3972c2"},
+    {"name":"INPUT-ONLY-VECTORS.json","bytes":668,"sha256":"1e711b5da97533046b03a6daf2035ca8328a702927567b066e526741649fd982"},
+    {"name":"REPORT.md","bytes":1111,"sha256":"8589c65705154266f9f40f3754155618c8f76b73bb2bac45a7f63dc61f106349"},
+    {"name":"SOURCE-MANIFESTS.json","bytes":988,"sha256":"63f621d862c67cfe0cbfd2de577533c1dff47e615af56881eebb45300ee2b137"},
+    {"name":"UPSTREAM-CHECK.json","bytes":363,"sha256":"d32b8ceb5d81fc676ca52fb6fa820b84be514f4af51ee2d7ac644b9ce7ba92b4"},
+    {"name":"UPSTREAM-FUNCTION-HASHES.json","bytes":992,"sha256":"038c2aa3bf9938eb5db4f0f1420d1377645fad5b93e5ffcf44f834351d16d2e7"},
+    {"name":"UPSTREAM-MANIFEST.json","bytes":727,"sha256":"8ba69c952f128bd64faec02670501315fc9de2a0f7fa6feb8ed1c0b4edab0bb3"},
+    {"name":"UPSTREAM-OWNER-OPENED-K-JOIN.json","bytes":5384,"sha256":"fbc0783526220262df667a043c8c6de155baef79f0bb0c48d7759bd255159357"},
+    {"name":"UPSTREAM-SOURCE-RECEIPTS.json","bytes":3242,"sha256":"73024f6d4f191720287a90ebdddc945fb8ef60b24456ed924ae8f486f8243d5e"}
+  ]
+}

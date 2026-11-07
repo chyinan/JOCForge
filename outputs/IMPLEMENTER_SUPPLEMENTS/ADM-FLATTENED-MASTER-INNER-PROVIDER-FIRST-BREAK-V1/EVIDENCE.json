@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.flattened_master_inner_provider_first_break.v1",
+  "package_id": "ADM-FLATTENED-MASTER-INNER-PROVIDER-FIRST-BREAK-V1",
+  "status": "RESOLVER_WRAPPER_AND_OUTER_PROVIDER_SLOT_STATIC_BOUND; INNER_PROVIDER_TARGET_UNBOUND; RETURN_OWNER_TYPE_UNBOUND; FORMAT_OWNER_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "sample6-flattened-master-provider-getter-boundary-wash-v1",
+    "manifest_sha256": "e859bccf68ea0aaf1a0353652b4e3905f6fe7088f8e111043ce47d0a7965a5cf",
+    "manifest_sha256_file": "5b95a10103a48896a93be187c4c4af60ccda16fe716e23caf78de4bec64ed337",
+    "package_seal_file_sha256": "8b7a660f7cf1ca323b4f2525207e1d3fc6b7bce3d5c5273eda5d8262215b9f73",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_image_provenance": "project-recorded hash; current installed DLL not rehashed"
+  },
+  "resolver_route": {
+    "branch_condition": "param8 != 0",
+    "runtime_branch_selection": "NOT_OBSERVED",
+    "factory_result": "atmos_storage_flatten_master wrapper owner plus separate companion pointer",
+    "zero_branch": "param8 == 0 direct source-copy branch; separate and not traced here"
+  },
+  "wrapper_handoff": {
+    "wrapper_format_descriptor_field": "+0x58 from caller param3",
+    "wrapper_nested_provider_field": "+0x60 from caller param2",
+    "outer_provider_virtual_slot": "+0xA0",
+    "outer_slot_behavior": "forward wrapper+0x60 to inner provider virtual slot +0xA0",
+    "same_owner_join_between_fields": "UNBOUND"
+  },
+  "inner_provider_return": {
+    "record_shape_from_reused_parent_path": "three qwords",
+    "qword_zero_role_in_parent_path": "owner pointer",
+    "concrete_inner_provider_target": "UNBOUND",
+    "qword_zero_concrete_type": "UNBOUND",
+    "qword_zero_to_wrapper_format_plus_0x58": "UNBOUND",
+    "qword_zero_to_selected_adm_reader_or_profile": "UNBOUND"
+  },
+  "inherited_field": {
+    "format_plus_0x0a": "internal U16 channel-count field, referenced from parent receipt only",
+    "rederived_in_this_package": false,
+    "physical_adm_n_join": "UNBOUND"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "runtime_owner_generation": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_listing_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

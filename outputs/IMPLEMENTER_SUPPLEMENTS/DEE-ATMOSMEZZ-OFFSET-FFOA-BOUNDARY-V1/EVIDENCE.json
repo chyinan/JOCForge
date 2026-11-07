@@ -1,0 +1,93 @@
+{
+  "schema": "jocforge.atmosmezz_offset_ffoa_boundary.v1",
+  "package_id": "DEE-ATMOSMEZZ-OFFSET-FFOA-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "adm_bwf_input_offset_ffoa_consumer_boundary_wash_v1",
+    "manifest_sha256": "fb51cbd50eec6876cda6394b51b106b5bca6b98b91a1d853878a836f2e7ec94b",
+    "package_seal_sha256": "356633d861d3fc765f7eae888ba901030980ef2410281611b2b1e1ccc286adbe",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "schema_fact": {
+    "input_offset": {
+      "required": false,
+      "type": "xs:string",
+      "schema_default": "auto"
+    },
+    "input_ffoa": {
+      "required": false,
+      "type": "xs:string",
+      "schema_default": "auto"
+    },
+    "xsd_sha256": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44",
+    "executing_image_binding": "UNBOUND",
+    "source_document_values": {
+      "offset": "auto",
+      "ffoa": "auto",
+      "selected_runtime_values": "UNBOUND"
+    }
+  },
+  "host_normalizer": {
+    "static_auto_branch": true,
+    "offset_source": "existing input metadata map key offset",
+    "ffoa_source": "metadata ffoa and offset; normalized result = metadata_ffoa - metadata_offset + normalized_offset",
+    "writes": [
+      "host-local property list",
+      "AtmosMezz field +0x130"
+    ],
+    "xml_leaf_to_policy_field": "UNBOUND",
+    "host_map_to_converter_privcontext": "UNBOUND"
+  },
+  "converter_consumer": {
+    "priv_context_map_offset": "+0xa8",
+    "offset_parser": "std::stod",
+    "literal_auto_directly_accepted": false,
+    "literal_auto_failure": "invalid stod argument when no numeric prefix is consumed",
+    "ffoa_consumer_key": "first_frame_of_action",
+    "xml_ffoa_to_converter_key_join": "UNBOUND",
+    "time_base_sample_conversion": "OUT_OF_SCOPE_NOT_RETRACED"
+  },
+  "status": {
+    "selected_offset_or_ffoa_values": "UNBOUND",
+    "auto_units_or_frame_meaning": "NOT_INFERRED",
+    "owner_generation": "UNBOUND",
+    "reader_seek_sample": "NOT_CAPTURED",
+    "runtime": "NOT_RUN"
+  },
+  "parent_receipts": [
+    {
+      "package_id": "r138_adm_job_schema_completeness_wash_v1",
+      "manifest_sha256": "d82300912609c9d1579c8ca265264bbfa26ee3f76c655f86fc78743d538e6991",
+      "package_seal_sha256": "eb5189349cfc7461125c99ff38814c3c0aa1559b133fe329da57a7b15d787dcb"
+    },
+    {
+      "package_id": "adm_bwf_auto_input_normalizer_edge_wash_v1",
+      "manifest_sha256": "3e65f19e751014cd1eb414ea58f1ff663b74b85ac24d0a7d7c1cb3455a6aeb51",
+      "package_seal_sha256": "e8bf4a705b745c7f63ea06896cfb8dc1cfaf7b29709895554fb161db186785ac"
+    },
+    {
+      "package_id": "adm_bwf_auto_time_position_wash_v1",
+      "manifest_sha256": "d1e1ce52c070ed2e2a92b314f53c83d0a3ca5b704a5c96601097ebe598b7c95d",
+      "package_seal_sha256": "03e3a03cfd1278193f87e449b503fbbad407aa9ccd05e8f1d07ef61a6c77d914"
+    },
+    {
+      "package_id": "adm_bwf_atmosmezz_input_property_adapter_boundary_wash_v1",
+      "manifest_sha256": "8a4f50a71ea37e9049311dffa5c419d0ae9b817397524e2c5ba4980eb3b168ac",
+      "package_seal_sha256": "011bdca1868fc92c27d1bfaaa476676d0b7e6035fe6a091ddb4c92e5630a4396"
+    },
+    {
+      "package_id": "adm_bwf_property_response_converter_setter_edge_wash_v1",
+      "manifest_sha256": "3e58ecce98022c5c54055d9cabced6f9b887cc0d8c06cf35dc2c1d00ece7e026",
+      "package_seal_sha256": "ed99f4164a07b914837f274eee98028107d94a911f8e3c1b88405c93828f4067"
+    },
+    {
+      "package_id": "adm_bwf_auto_time_writer_join_wash_v1",
+      "manifest_sha256": "a0b30f4783e3c85cbaf30ee2f65877fdafec092be1059b12bca61efe2fd5ac69",
+      "package_seal_sha256": "680f16688e72c1ad373e6f3c809419153faaa2b27e185b9b6e00a1731ea56cb7"
+    }
+  ],
+  "implementation_disposition": {
+    "do_not_pass_literal_auto_as_numeric": true,
+    "do_not_merge_input_offset_ffoa_with_filter_start_end_or_time_base": true,
+    "do_not_infer_runtime_seek_or_audio_effect": true
+  }
+}

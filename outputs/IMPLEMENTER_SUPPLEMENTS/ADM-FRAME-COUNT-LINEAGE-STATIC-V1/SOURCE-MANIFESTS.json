@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream_package": {
+    "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+    "workspace": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/adm-frame-descriptor-lineage-static-v1/wash-package",
+    "manifest_sha256": "46230ce4aa5fa9a0f060887282dbb7fe86c47c5e2ea67fbbe4e943eb97c31c0c",
+    "research_receipts_sha256": "1618b1bebbd808d3f23ead0223f967b7ce71cf5735caddf1cfc9b03341989984",
+    "source_links_sha256": "1c30a31ebdcac5eecd5f8c9efa3d467feac79a14471eeb97a9d200ab2e819274"
+  },
+  "independent_audit": {
+    "manifest_files": 6,
+    "manifest_files_matched": 6,
+    "ghidra_receipt_logs": 9,
+    "ghidra_receipt_logs_matched": 9,
+    "prior_manifest_links": "recorded by upstream; not used to infer runtime identity",
+    "checker_status": "NOT_RERUN_BY_WASH"
+  },
+  "scope": "Only the sanitized count/layout/descriptor rules and explicit limitations in this supplement are available to implementation review; raw Ghidra logs/scripts are excluded."
+}

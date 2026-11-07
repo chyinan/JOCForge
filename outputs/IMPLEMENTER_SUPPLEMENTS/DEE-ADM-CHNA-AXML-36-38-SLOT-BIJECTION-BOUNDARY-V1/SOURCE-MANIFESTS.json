@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "dee_adm_chna_axml_slot_coverage_wash_v1",
+      "evidence_manifest_sha256": "e409fbffde7f08924edffac49c790669a06a94c63b5a83c55c20230a12775c51",
+      "package_seal_sha256": "a82c7f6e331d6b81e1d95cb659c8e92ce5831169505ee2c8942045f1dbef90fb",
+      "reviewed_payloads": [
+        {"name": "REPORT.md", "sha256": "63cfedba60ac6acf72b3e1d0e63a658be26b18c012d72f5f4040e7c5d2e78f63"},
+        {"name": "SLOT-COVERAGE.json", "sha256": "4af86057d051105168c7f9be6d516de4b45af412c4352087a21254c7e81dde5b"},
+        {"name": "SOURCE-IDENTITIES.json", "sha256": "047276c27473745fb3d43d9853ac5f98a4e52a2919237b90158ccefcbca76c4e"}
+      ],
+      "raw_PCM_or_WAV_data_included": false
+    }
+  ]
+}

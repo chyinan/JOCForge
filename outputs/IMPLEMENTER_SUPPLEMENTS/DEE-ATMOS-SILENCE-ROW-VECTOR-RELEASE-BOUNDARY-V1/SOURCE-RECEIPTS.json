@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-silence-row-vector-release-receipts.v1",
+  "source_package": "dee_atmos_ddp_silence_row_vector_release_wash_v1",
+  "source_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-5-f09-u5/outputs/dee_atmos_ddp_silence_row_vector_release_wash_v1",
+  "manifest_sha256": "b6ddd9c666edb5d04e1fa2a431f84cdf74f2c7aac67e3aba765c76a4302b6cec",
+  "seal_sha256": "11982acac56561a32f3f4b5e949889e0dec7d651fdc43e8c196f4db8885a2bfd",
+  "normal_checker": "PASS_IN_WASH",
+  "optimized_checker": "PASS_IN_WASH",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "runtime_status": "NOT_RUN",
+  "pcm_payload_key_license_access": false
+}

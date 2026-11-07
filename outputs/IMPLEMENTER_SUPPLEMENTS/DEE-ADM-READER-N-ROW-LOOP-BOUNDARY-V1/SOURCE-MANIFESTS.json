@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ADM-READER-N-CONSUMER-WASH-V1",
+      "manifest_sha256": "de85b168909fdd0b56d9c4ef6cff83a5b4bec68cc421a511174e0e4b75732d7a"
+    },
+    {
+      "package_id": "DEE-ADM-K-COUNT-READER-N-TRANSFER-WASH-V1",
+      "manifest_sha256": "febecb984e28ab1a9d4db891531c924a55984e073b8e177c4ee1a42b9a689796"
+    }
+  ],
+  "raw_analysis_or_pcm_payload_copied": false
+}

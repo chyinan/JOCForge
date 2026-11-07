@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "authorized-n36-slot-map",
+      "kind": "input-metadata-only",
+      "input": {
+        "physical_n": 36
+      },
+      "observed": {
+        "slot_indices": "1..36",
+        "unique_direct_channel_formats": 36
+      },
+      "status": "EXACT_ONE_TO_ONE"
+    },
+    {
+      "vector_id": "authorized-n38-slot-map",
+      "kind": "input-metadata-only",
+      "input": {
+        "physical_n": 38
+      },
+      "observed": {
+        "slot_indices": "1..38",
+        "unique_direct_channel_formats": 38
+      },
+      "status": "EXACT_ONE_TO_ONE"
+    }
+  ]
+}

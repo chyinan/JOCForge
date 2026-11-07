@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "DEE-ADM-READER-DESCRIPTOR-COUNT-WRITER-WASH-V1",
+  "manifest_sha256_file_sha256": "f803f54efc8b22c22a75f1f79c048391c147936527a59861a090f2ca5a3c1634",
+  "standalone_seal_file": "NOT_PROVIDED",
+  "source_checker_normal_and_optimized": "PASS",
+  "raw_trace_or_native_source_copied": false
+}

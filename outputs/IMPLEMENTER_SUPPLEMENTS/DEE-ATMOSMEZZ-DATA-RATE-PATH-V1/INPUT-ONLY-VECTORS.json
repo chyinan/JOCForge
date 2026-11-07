@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.dee_atmosmezz_data_rate_input_vectors.v1",
+  "status": "SCHEMA_AND_ONE_SELECTED_JOB_ONLY",
+  "selected_job": {
+    "input_type": "audio.atmos_mezz",
+    "data_rate_xml_text": "1024",
+    "job_xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+    "user_confirmed_input_label": "人是猫 - 张卡斯, 洛天依",
+    "input_sha256_previously_recorded": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_sha_recomputed_here": false,
+    "dee_run": false
+  },
+  "schema_tokens_not_run": [384, 448, 576, 640, 768],
+  "native_selector_mapping": "UNBOUND",
+  "no_audio_or_encoded_payload_included": true
+}
