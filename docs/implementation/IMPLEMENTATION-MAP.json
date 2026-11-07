@@ -4913,7 +4913,8 @@
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -4956,7 +4957,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37",
             "supplement_seal_sha256": "9d9657f7a0cbfddee54982588cdc957c82c483952395f47ec6ad97b6a8c0a576",
@@ -5019,6 +5027,18 @@
               "bounded_dispatch": "FUN_1804cba30 loads vptr then calls slot +0x70 without explicit arguments",
               "first_break": "param_1 owner/vptr/generation to concrete slot target",
               "range_sample_and_audio_effect": "UNBOUND/NOT_RUN"
+            },
+            "master_source_slot70_field_read_addendum": {
+              "package_id": "DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1",
+              "manifest_sha256": "56d3779fd9b94a9710cb2d7ea72ca677397b74aa2ec64fbd927f1bcdaab6c633",
+              "seal_sha256": "39e44c7af6bf1d1ff61b876694e9e08593c4abe6c28392fa7a856698a86b3f85",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "slot_target": "FUN_1805364e0",
+              "reads": "QWORD this+0x30 -> pointer; QWORD pointee+0x50 -> undefined8 return",
+              "this_plus_0x20_and_0x28": "NOT_READ",
+              "pointee_owner_generation_and_return_semantics": "UNBOUND",
+              "range_pts_and_audio_effect": "UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -5039,7 +5059,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "R138 lexical values are source-document input-only, not runtime observations."
@@ -5619,7 +5643,8 @@
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5669,7 +5694,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3e481b71454373f36e1b03462a303d1f9b22ca9d104f6fe6b3ee6f1b9bc9cf82",
             "supplement_seal_sha256": "277dbea1973ea98049f3195429cb974069d6eb255f56b6d1aa98280a2eabda8d",
@@ -5723,6 +5755,16 @@
                 "Pointer semantic type/owner and same-record join to snapshot+0xa0.",
                 "Callee behavior, serializer output/BSI relation, runtime activation, audio effect."
               ]
+            },
+            "serializer_callee_return_addendum": {
+              "package_id": "DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1",
+              "manifest_sha256": "7416935ad1816256c23cf0b22b0cedcb0535c6337ebb3c26ff7cdcc404f13193",
+              "seal_sha256": "0cb84f0b13c7cbc5d7bdea43d6646c886668268360e298a73584f8342e6b7baf",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_callee_body": "FUN_1801c24a0 writes U32 zero to RCX pointee +0x0 then returns",
+              "pointer_field_owner_snapshot_a0_and_bsi_relation": "UNBOUND",
+              "audio_effect": "NOT_RUN"
             }
           },
           "vectors": {
@@ -5747,7 +5789,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only mode-1 edge: the same snapshot base reaches validator and packer; the scoped path does not read/copy the +0xa0 candidate, while +0x130 is a distinct field. XML runtime owner, mode-1 generation, indirect packer relation, and audio effect remain unbound."
@@ -67089,6 +67135,46 @@
         "Concrete param_1 owner/vtable base/generation and slot+0x70 target.",
         "MasterSourceImpl +0x20/+0x28 sample/range semantics and Reader join.",
         "Duration, PTS, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1",
+      "manifest_sha256": "7416935ad1816256c23cf0b22b0cedcb0535c6337ebb3c26ff7cdcc404f13193",
+      "supplement_seal_sha256": "0cb84f0b13c7cbc5d7bdea43d6646c886668268360e298a73584f8342e6b7baf",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "CALLEE_U32_ZERO_WRITE_AND_RETURN_BOUND; POINTER_FIELD_OWNER_A0_JOIN_AND_BSI_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "RCX pointee semantic field and owner/generation.",
+        "Snapshot +0xa0 join and coded field/BSI relation.",
+        "Runtime activation and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1",
+      "manifest_sha256": "56d3779fd9b94a9710cb2d7ea72ca677397b74aa2ec64fbd927f1bcdaab6c633",
+      "supplement_seal_sha256": "39e44c7af6bf1d1ff61b876694e9e08593c4abe6c28392fa7a856698a86b3f85",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SLOT70_QWORD_READS_BOUND; RETURN_TYPE_RANGE_OWNER_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Pointee owner/generation and returned QWORD semantic type/unit.",
+        "Start/end/duration/PTS or Reader relationship.",
+        "Audio effect."
       ]
     }
   ]

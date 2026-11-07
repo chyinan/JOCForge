@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following thirty-eight tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
+The following forty tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1427,6 +1427,8 @@ The following thirty-eight tabled packages were independently hash-checked and p
 | DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1 | c53ef7e00f8c19a793538241f3c90214e6d56df932c7beb2d6de544d2ec7a344 / 5ffa2dc19a542390f6ae9dd76a77a492f074eb832bd31a5bd75853f2b468e05d | First vtable +0x18 delegate on one temp-file branch. | Target operation, create/delete/retain behavior, clean_temp join and runtime identity. |
 | DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1 | a25dcb37e1ccc3367233ac1f0f57b4e3baae5a18910d6bdc726a03911616c5f9 / d5d34ba7552fb33d1d45cd7885e103d5155986af5902a982f6e1431cda4bdd56 | First helper argument and 16-byte read after threshold config copy. | Helper owner/alias to engine +0x48, algorithmic threshold read and effect. |
 | DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1 | 7c8f491defcd5750a6e2b937d753c8fbb9a29fda51999740b9c84a21d5cf2a0e / 9b2367347d0398c619e20c71d9a2b600e5b39072dceb6dabca544fdc1f3d6196 | Serializer +0x42f0 pointer forwarded to FUN_1801c24a0. | Pointer type/owner, snapshot +0xa0 join, callee behavior and BSI/audio effect. |
+| DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1 | 7416935ad1816256c23cf0b22b0cedcb0535c6337ebb3c26ff7cdcc404f13193 / 0cb84f0b13c7cbc5d7bdea43d6646c886668268360e298a73584f8342e6b7baf | Callee writes U32 zero to RCX pointee then returns. | Pointee semantics/owner, snapshot +0xa0 relation, BSI and audio effect. |
+| DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1 | 56d3779fd9b94a9710cb2d7ea72ca677397b74aa2ec64fbd927f1bcdaab6c633 / 39e44c7af6bf1d1ff61b876694e9e08593c4abe6c28392fa7a856698a86b3f85 | Slot target reads this+0x30 pointer then pointee+0x50 QWORD. | Pointee type/owner, start/end/duration semantics, Reader/PTS/audio effect. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.
 

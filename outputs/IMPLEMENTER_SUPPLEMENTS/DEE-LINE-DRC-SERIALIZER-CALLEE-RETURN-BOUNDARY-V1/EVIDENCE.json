@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.line_drc_serializer_callee_return_boundary.v1",
+  "status": "FIRST_WRITE_ZERO32_AT_PLUS0; NEXT_INSTRUCTION_RET; FIELD_SEMANTICS_AND_A0_JOIN_UNBOUND",
+  "source_package": "LINE-DRC-SERIALIZER-CALLEE-NEXT-INSTRUCTION-WASH-V1",
+  "source_manifest_sha256": "1c1dfc7e8fceb112dbbd76f9b061b566fe07832349ddc13b54d23f4305a80d22",
+  "source_seal_sha256": "456a7fc2d865cb515519a705c10fd85078f4c5e8e37404d1bccc6b56aed22a58",
+  "function": "FUN_1801c24a0",
+  "instructions": ["0x1801c24a0 MOV dword ptr [RCX],0", "0x1801c24a6 RET"],
+  "unbound": ["RCX pointee field semantics and owner/generation", "snapshot+0xA0 join", "later coded field/BSI relation", "runtime activation", "audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1",
+  "manifest_sha256": "56d3779fd9b94a9710cb2d7ea72ca677397b74aa2ec64fbd927f1bcdaab6c633",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SLOT70_TARGET_BOUND; THIS_PLUS30_POINTER_AND_POINTEE_PLUS50_QWORD_READ_BOUND; TYPE_UNIT_OWNER_UNBOUND; IMPLEMENTATION_READY=NO"
+}

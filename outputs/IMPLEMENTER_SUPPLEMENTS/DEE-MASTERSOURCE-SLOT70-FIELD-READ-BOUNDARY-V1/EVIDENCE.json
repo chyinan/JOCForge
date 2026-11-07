@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.master_source_slot70_field_read_boundary.v1",
+  "status": "SLOT70_TARGET_BOUND; THIS_PLUS30_POINTER_AND_POINTEE_PLUS50_QWORD_READ_BOUND; TYPE_UNIT_OWNER_UNBOUND",
+  "source_package": "dee_atmos_ddp_master_source_slot70_field_read_wash_v1",
+  "source_manifest_sha256": "e241d2e1725e01ccf2e931e5a5c3e91b8ba9b6af0b90ba80ce0a077be0bdfaf2",
+  "source_seal_sha256": "7ad083474001e5942356c2f38d7be6c08d6df23153ed06667573f581e35cc229",
+  "target": {"function": "FUN_1805364e0", "body_bytes": 10, "vtable_slot": "+0x70"},
+  "reads": ["QWORD this+0x30 -> pointer", "QWORD [pointer+0x50] -> undefined8 return"],
+  "not_read": ["this+0x20", "this+0x28"],
+  "unbound": ["pointee owner/generation", "returned value semantic type/unit", "duration/start/end/sample meaning", "Reader/PTS join", "audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

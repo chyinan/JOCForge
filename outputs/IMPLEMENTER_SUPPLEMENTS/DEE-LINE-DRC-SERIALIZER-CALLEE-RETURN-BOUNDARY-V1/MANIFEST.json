@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FIRST_WRITE_ZERO32_AT_PLUS0; NEXT_INSTRUCTION_RET; FIELD_SEMANTICS_AND_A0_JOIN_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 528,
+      "sha256": "a10df30dea48e4727cc6a7aeeb0643a82cec0354d94a09a19fda446b912dea8d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1036,
+      "sha256": "2877754a80abdb5c8deeea21a4f174995af896b3ecd18462d97878528d8dfef9"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 609,
+      "sha256": "a6c6add0fa4568c087bad2fa4201718fd8b8e97a4f021df3e28cea756472b022"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 149,
+      "sha256": "a12c2e40d5a400b83fac54343b81ff2cd94c29e9dd091bd5c8600c5eea146b38"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 766,
+      "sha256": "39e5a14756fd8bc66829786c68388a62a635d25010b366d1a374af9000918f65"
+    }
+  ]
+}

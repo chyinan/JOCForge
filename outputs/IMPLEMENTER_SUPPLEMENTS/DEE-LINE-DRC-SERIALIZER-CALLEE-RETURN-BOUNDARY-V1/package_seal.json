@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1",
+  "manifest_sha256": "7416935ad1816256c23cf0b22b0cedcb0535c6337ebb3c26ff7cdcc404f13193",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "FIRST_WRITE_ZERO32_AT_PLUS0; NEXT_INSTRUCTION_RET; FIELD_SEMANTICS_AND_A0_JOIN_UNBOUND; IMPLEMENTATION_READY=NO"
+}

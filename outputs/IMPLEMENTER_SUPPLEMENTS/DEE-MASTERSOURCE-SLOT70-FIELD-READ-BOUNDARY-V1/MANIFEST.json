@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SLOT70_TARGET_BOUND; THIS_PLUS30_POINTER_AND_POINTEE_PLUS50_QWORD_READ_BOUND; TYPE_UNIT_OWNER_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 636,
+      "sha256": "af45084f97b1e0195307c698d24cd8cb148cedd1615d76225e032fcc2c6493e8"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1150,
+      "sha256": "18d73c5a2b9c753c49ba863d0d172cd259aa5a1a92ed06ebc3098118d68049dc"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 554,
+      "sha256": "d3b53bfdd862267c1a69497ef32c4d958b4a1925dd97ef828dc6bd50c55d53c3"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 142,
+      "sha256": "656c472c79469b16d1eb7a6fa0bacb1386145f2e909b2d9b9b4ef551ab2614d6"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 811,
+      "sha256": "ddf2b3d3c742fa6e7329d732e8867ed4af60f842317d9c14b342d85d08adbb4e"
+    }
+  ]
+}

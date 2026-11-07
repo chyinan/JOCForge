@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "line_mode_drc_serializer_callee_next_instruction_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-2\\outputs\\line_mode_drc_serializer_callee_next_instruction_wash_v1",
+    "manifest_sha256": "1c1dfc7e8fceb112dbbd76f9b061b566fe07832349ddc13b54d23f4305a80d22",
+    "manifest_sha256_sidecar_sha256": "91612af561a9f4b0ef45fac4ebcaa71bdb3cb68274cd30962bcd83743f701635",
+    "package_seal_sha256": "456a7fc2d865cb515519a705c10fd85078f4c5e8e37404d1bccc6b56aed22a58"
+  }
+}
