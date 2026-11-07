@@ -81,6 +81,18 @@ The linear proposal carries one immutable Arc payload. Its two consumer views sh
       "typed spatial-control after-proposal identity",
       "payload byte count and SHA-256"
     ],
+    "local_source_axis_extension": {
+      "maximum_shape": [
+        48,
+        3072
+      ],
+      "payload_byte_count": "source_axis.source_count * 3072 * 4; maximum 589824",
+      "shape": [
+        "source_axis.source_count",
+        3072
+      ],
+      "source_axis_gate": "SelectedSourceRowDimensions::for_active_source_count; the current selected physical-row gate yields active source counts 20..48"
+    },
     "payload_byte_count": 589824,
     "payload_sha256": "SHA-256 over exact source-major F32 U32LE bytes",
     "payload_type": "Arc<[FiniteF32]>",
@@ -115,7 +127,8 @@ The linear proposal carries one immutable Arc payload. Its two consumer views sh
     "crates/jocforge-domain/src/spatial/current_features/tests.rs"
   ],
   "test_scope": [
-    "fixed shape and finite sample admission",
+    "selected active-source-axis shape and finite sample admission",
+    "46-source fixture preserves only present IDs",
     "source-major payload byte count and SHA-256",
     "explicit normal/cached-drain phase",
     "one-time two-view fanout",
@@ -127,11 +140,11 @@ The linear proposal carries one immutable Arc payload. Its two consumer views sh
   ],
   "verification": {
     "compile_fail_contracts": 5,
-    "current_features_tests": 10,
+    "current_features_tests": 11,
     "full_repository_boundary_mutations_rejected": 585,
     "matrix_destination_producer": "NOT_IMPLEMENTED",
     "parent_transaction": "NOT_IMPLEMENTED",
-    "post_window_fanout_tests": 6,
+    "post_window_fanout_tests": 7,
     "render_producer": "NOT_IMPLEMENTED",
     "spatial_audio_assembler": "NOT_IMPLEMENTED",
     "targeted_boundary_mutations_rejected": 32

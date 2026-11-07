@@ -33,6 +33,12 @@ def manifest_entries(manifest: dict) -> list[dict]:
         entries = manifest.get(key)
         if isinstance(entries, list):
             return entries
+        if isinstance(entries, dict):
+            return [
+                {"file": name, "sha256": digest}
+                for name, digest in entries.items()
+                if isinstance(name, str) and isinstance(digest, str)
+            ]
     return []
 
 
@@ -107,7 +113,7 @@ def explicit_status(package_dir: Path, manifest: dict, entries: list[dict]) -> s
             status_doc = json.loads(content)
         except json.JSONDecodeError:
             continue
-        for key in ("status", "overall_status", "implementation_readiness", "decision"):
+        for key in ("status", "overall_status", "implementation_readiness", "decision", "disposition"):
             value = status_doc.get(key)
             if isinstance(value, str) and value:
                 return f"{name}:{key}={value}"

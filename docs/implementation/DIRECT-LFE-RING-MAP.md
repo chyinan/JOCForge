@@ -119,14 +119,14 @@ This is only the direct-LFE ring transition and a future Type10 row0 input; it d
       "sha256": "93f15f67ea011a5c078dc78018d57d521a124f2b19a4f18985462c99a73312fa"
     },
     {
-      "bytes": 63125,
+      "bytes": 64855,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "d5a5f1667d2025870e07bb18f3eca3e5d183d990a529e1669556183f9331ba09"
+      "sha256": "0f0c64923239e8a1ab087f3f29d75cef0d5e89c8627ba492268f335d68816dc2"
     },
     {
-      "bytes": 64598,
+      "bytes": 71522,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "16920191053f65237c620a5ec2e25414b8f35d72e677515dca47b159abaf4441"
+      "sha256": "940cf8b95c6a43ddfae1e909fd35d235e549e116bdcace51ae6a3f5ffff0e1a1"
     }
   ],
   "implementation_prohibitions": [

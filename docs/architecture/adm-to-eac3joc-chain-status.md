@@ -1,6 +1,118 @@
+
+
+
+
 # ADM BWF 到 E-AC-3 JOC 的架构与状态
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
+
+## 2026-11-06：authored silence duration admission gate
+
+Wash 包 `ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1` 已物化到隔离仓。manifest SHA-256 `1295151443daca741c7ca0477b91bdf84d88eae76065d7b861ca4125f895980c`、seal SHA-256 `47f5b8c8538894acdecad538f0537056b3ec216b5894943addf0d490b67f6852`，REPORT、INPUT-ONLY-VECTORS 与 PROVENANCE 三个 payload 本地逐项校验通过；普通 Python 与 `python -O` 均 PASS。向量只列 zero/fractional 两个输入，标为 `PROPOSED_NOT_RUN`。
+
+REPORT 规定所查数值秒路径为 double × source rate 后向零转为 signed integer；48 kHz 下 `0.00390625` 秒先得 187.5，再转为 187。它与独立的 start/end range-rounding 路径不同。小写 `f` 的整数帧时长要求 indicated frame rate；负数与 fractional frame count 在所查路径被拒。当前本地 parser 保留 authored 字符串，并按 selected 48 kHz 计算本地样本数；本地中间整数用 i64，但 Wash 未给出原生整数宽度/溢出范围，故不声称原生类型相同。计数未连接到实际 per-source 写入。
+
+F15 plan admission 与 Meter source admission 仅接受 authored prepend/append 均为数值零、append 明确提供的输入；正时长即使被向零截断成 0 个样本也会拒绝。描述符静态默认 0.0 不证明 host omission overlay，因此 append 缺省也拒绝。尚未实现静音 PCM 插入、零填充位置、输入/输出长度、PTS/时钟、reader cursor/limit、EOF flush 或 AU 计数。长度变化和 prefix/suffix zero-fill 只是报告中的模型推测；nonzero runtime、时间轴效果及 input-only 对照仍 `NOT_RUN/UNBOUND`。
+
+## 2026-11-06：DI Bool 与首个数值消费者边界
+
+Wash 包 `ATMOS-DI-FIRST-NUMERIC-CONSUMER-BOUNDARY-V1` 已物化并独立核验：manifest SHA-256 `8e2b80cad673be80694fc04a4cfb9debe47d511b9510472c0d856d08b54a97ad`、seal SHA-256 `451184ae34101748b0da235397999f02a31bca2ab6b832caabd4b33a3b69f5ea`，payload 4/4；普通 Python 和 `python -O` 均 PASS。REPORT 定位到静态 per-channel F32 gating/loudness 数值消费者，但外层 Bool+0x164 到消费者所用 nested state flags 没有 typed alias 或 owner/generation join，DI Bool 因果关系保持 `UNBOUND`。
+
+OBSERVED-MEASUREMENTS 只记录一个 Human Cat 38-channel、1770-4、speech threshold 15 的 A/B：gate 从 level 到 dialogue、speech percentage 从 -1 到 61.16、integrated loudness 从 -16.784912 dB 到 -25.022484 dB。它是单样本观察，不能证明该静态子上下文路径造成差异；没有保存 PCM，也没有 playback 或 Atmos/JOC spatial render。Love Song 比较的两臂 DI 都为 true 且 metering mode 不同，不是 DI 对照。本地 F06 只登记 evidence-only 边界；Meter admission 仍在创建 source owner 前拒绝 DI=true，没有实现该 F32 消费算法。
+
+## 2026-11-06：E-203 time_base comparator return-only observation
+
+Wash 包 `DEE-TIMEBASE-COMPARATOR-RETURN-OBSERVATION-V1` 已物化并独立校验：manifest SHA-256 `cad0570f5b242a75d4554cc2555dfd2a588308baff42b23ba226d85885edc48b`、seal SHA-256 `558d242b6233fe636a00cb75816aa5c3edcb5e3d0db9f1edf9fc06db453c5d87`，payload 4/4；普通 Python 与 `python -O` 均 PASS。E-203 是 Love Song N36、input SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5` 的一次自然完成尝试；observer 在两次 attempt-local `PrivInvocation` 上各记录 signed comparator return `1`。这仅表示值“不等于 `embedded_timecode`”。向量中的 `file_position` 是配置输入值，不证明 enum validation 接受了该值。
+
+该尝试 DEE exit code=0、observer errors=0、清理通过，无 PCM/payload 持久化。CHNA、U-format、K descriptor、composite-B 的 36 计数分别保留在各自域；不从数值相同推导所有权或跨域身份。既有 F01E/F06OF 静态 setter/reader slice 仅作上下文，没有与本次 `PrivInvocation` 做同对象/同代连接。Enum acceptance 与 Priv→ADM generation 均 `NOT_CAPTURED`；本地不改变 time_base、reader 或 timeline 代码。
+
+## 2026-11-06：time_base plugin enum setter static boundary
+
+Wash 包 `DEE-TIMEBASE-PLUGIN-ENUM-SETTER-BOUNDARY-V1` 已物化并独立核验：manifest SHA-256 `1a344c3b2a135f644e1bd8f882997707fcc5044dbc77347d87e1994e2ae80955`、seal SHA-256 `3ad87a65e919ea887aba9da78554f354c1e254c927b9e5ab3e7f93b44f1272af`，payload 4/4；普通 Python 与 `python -O` 均 PASS。包静态闭合 DDP option-tree 中已存在的 `time_base` key/value 到 `Priv+0x550` StringType allowed-value setter；允许 token 为 `file_position` 与 `embedded_timecode`。未观察 XML/job 如何填入 option tree，也未观察任一值在 E-203 中通过 enum validation。
+
+该静态 setter 证据不提升 E-203 的 `1` comparator return：它仍只证明输入值“不等于 `embedded_timecode`”，不是 enum 接受的证据。XML 上游、runtime value/acceptance、Priv→ADM generation、PTS/reader range 和音频效果均保持 `UNBOUND/NOT_CAPTURED/NOT_RUN`；本地没有因该包修改 parser 或 timebase 规则。
+
+## 2026-11-06：StageRunner time_base option-tree static path
+
+Wash 包 `DEE-TIMEBASE-STAGERUNNER-PROPERTY-TREE-BOUNDARY-V1` 已物化并独立核验：manifest SHA-256 `85e861d7e2a9b39f80ea58af9f2976199a72b3d38e308d7ce05be71565499280`、seal SHA-256 `6f87dc452837671a63d9dbc5fe3964e500d43af62e90d9db06bf9401a92868f4`，payload 4/4；普通 Python 与 `python -O` 均 PASS。静态链从已解析/接受的 `job_config` 到同一 StageRunner 的 `filter/audio` 子树（`+0x68`）、DDP proxy（`+0x270`）、plugin option tree 的 `time_base` key/value，再到 `Priv+0x550` StringType setter；显式合法项覆盖 descriptor 默认 `file_position`。
+
+包没有具体 XML 或解析后的 job 向量。省略 XML 的 XSD default 是否物化、运行时选择值/枚举接受、同次 owner/generation 仍未观察。E-203 非零 comparator 仍只表示“不等于 `embedded_timecode`”，不能据此升级为 `file_position`。本地没有修改 parser、default 或 timebase 行为。
+
+## 2026-11-06：省略 time_base 的单次 best-supported 默认值
+
+Wash 包 `DEE-TIMEBASE-OMITTED-FIELD-OBSERVED-DEFAULT-V1` 已物化并核验：manifest SHA-256 `4002ee379ac55d329b05433c07b3bf5983bf03dba17f417a9acb15a1c0065ae5`、seal SHA-256 `d4c48d8722f5c36f5f9df9eaf4271f2b2302706933f8606fec6108dc08f782f4`，payload 4/4；普通 Python 与 `python -O` 均 PASS。同次成功 Love Song N36 attempt 缺少 XML `time_base` 元素，comparator 两次返回 signed i32 `1`。当前 XSD 与已洗白 plugin descriptor 均把 `file_position` 声明为 default 并允许两项；结合成功退出及非 embedded_timecode 比较，Wash 将该 attempt 的 best-supported effective value 记录为 `file_position`。
+
+这不是 literal getter 捕获，也没有独立 setter acceptance event。default source 在 XSD materialization 与 descriptor initialization 之间仍 `UNATTRIBUTED`；XSD hash与先前 schema identity 相同，但该运行 preflight 没有当时的 XSD hash receipt。Priv→ADM U/K/J/T/B/D generation join 仍 `NOT_CAPTURED`。因此只记录该一次省略字段尝试的最优支持值，不外推到其他 job/parser，也不改变通用 timebase 规则。
+
+## 2026-11-06：ADM Start time 到 AtmosInfo 输出字段的静态 producer
+
+Wash 包 `DEE-ATMOS-INFO-START-TIME-PRODUCER-BOUNDARY-V1` 已物化并独立校验：manifest SHA-256 `7b465fce02c42544b8839f62b9f91b217ac2daf01564ac32fbc6076a2ab71389`、seal SHA-256 `05e5edd07bca31269bac7ee2d835e08ccfb530a7b2904caf2dfa4609cf06ce5b`，payload 4/4；普通 Python 与 `python -O` 均 PASS。选定静态验证路径中，ADM time token → double → `AdmFileStorageDesc+0x60` → `master+0xa8`，最后报告 `Start time` 秒数；乘 source rate 的转换进入独立 integer range-difference 字段，不与 Start-time 秒数合并。
+
+具体 XML/ADM 来源字段、AXML `audioProgramme@start` 的 source identity、FFOA `+0x58` 来源和 timebase origin 仍 `UNBOUND`。AXML 候选值与报告值相同只是数值相等，不能提升为 source attribution。未执行 DEE/atmos_info、未读取 sample/data chunk/PCM/payload，本地不改时间转换或 parser 规则。
+
+## 2026-11-06：data_rate 到 carrier writer gap
+
+Wash 包 `DEE-ATMOS-DATA-RATE-CARRIER-WRITER-BOUNDARY-V1` 已物化并独立核验：manifest SHA-256 `120d9e2e0f9348f7eb2dbad80e4b0df0dacf14d4ac4ae8be69f6bf6e66a919d5`、seal SHA-256 `a74b5fd21281580fb8d4ff5e80efbacc407d8bd608fb9c7a303e178e785fa782`，payload 4/4；普通 Python 与 `python -O` 均 PASS。所查静态路径区分 XML rate selector/setup、field ID 3 的 type-1 serializer slot 与独立 JOC configuration dependency；slot callback cell 为零，runtime callback target 未绑定，也没有 field ID 3 到 carrier BSI/frame-size/output-rate writer 的连接。
+
+1024/768 kbps 的单变量输入对照仍 `PROPOSED_NOT_RUN`，旧输入 SHA 需在未来启动前刷新。没有声称两档或全部六档能产生有效 Atmos E-AC-3 JOC；不能从 JOC metadata 或输出字节长度推导 carrier 帧尺寸/码率。此包是证据映射，不改 codec。
+
+## 2026-11-06：1024/768 两档 M4A 内 E-AC-3 帧头观察
+
+Wash 包 `DEE-EC3-DATA-RATE-FRAME-HEADER-OBSERVATION-V1` 已物化并独立核验：manifest SHA-256 `164e10ada2a0d90b86eaf1b33baa7835f0ac1c1434ca12ad5a6362f41a6ab9a2`、seal SHA-256 `705ef96413c7aa4b97d2338a72bacd57c537efef95dd83e37bddafc6e843af38`，payload 4/4；普通 Python 与 `python -O` 均 PASS。同一 My Jealousy N36、48 kHz、5.1、M4A、0..24 帧窗口中，每档观察到 33 个 syncframe：1024 kbps 为 frmsiz code 2047 / 4096 bytes，768 kbps 为 code 1535 / 3072 bytes。Wash 使用 copy-only demux 流式解析并丢弃帧体；未保存 packet bytes，也未重新编码。
+
+这只确认该输入/窗口的两档载波帧头差异；DEE carrier writer、rate field ID3 到实际帧尺寸/输出码率的生成链仍未绑定。candidate payload hash 未计算，PCM/audio parity 未测；不能推广到其余四档，也不能从文件总字节数推断帧大小或六档支持。
+
+## 2026-11-05：Line/RF DRC XML typed admission
+
+`ATMOS-DDP-DRC-PROFILE-INPUT-PACK-BOUNDARY-V1`（manifest SHA-256 `f675d60fac512750cb17d9fd65cd016d64eb8d254da65fe6131b5139b37a2f45`）给出的六个字符串现在由 `SelectedDrcProfile` 显式解析；Line 与 RF 独立校验，36 种组合均保留原字符串进入配置身份和 F01E dynamic normalized config。已有 `metadata_bodies.rs` → ID2 wire 的字符串消费者继续收到相同枚举值文本，不改变其 profile-code map。
+
+原 codec source profile gate 继续允许先前的 `none/none` 与 `film_light/film_light` 两组。其它已被 XML 接纳的组合在该 gate 返回 `UnsupportedDrcEffect { line_profile, rf_profile }`，不会被替换为默认值或 `none`。Wash 包只证明六值映射与 packed slots；XML-to-stage 的 native transfer、最终 E-AC-3 DRC BSI/audio curve effect 仍 `UNBOUND/NOT_RUN`。保留字段及 ID2 的 metadata profile code 不代表 DRC 音频处理已经闭合。
+
+新增 Wash `ATMOS-LINE-DRC-STATIC-PROFILE-MAPPING-V1`（manifest SHA-256 `9fa9b57f59058cc73a9db44babf0aad9cd43922301766d1b9062d6eed2a0da32`，seal SHA-256 `e43eb60bebc265e02341eb2a28a0a1dd518d9020f1993866d49b2890debbeb98`）界定 Line profile-tree U32 与 DDP_COMPR U32 的静态表，以及条件序列化时的 U3 值。`drc_profile_code.rs` 已为这些值提供分开的纯映射与类型；包的输入向量未运行，selected-plugin transfer、mode-1 path、serializer guard、解码 PCM 与听感效果仍未确认。该表不改变旧 pair codec gate。
+
+已有 Wash `DRC-FILM-LIGHT-MODE1-ENCODER-CONFIG-BOUNDARY-V3`（manifest `2e4e0c8979930becf3ee96c073276c40f3bcd5360bb2cf9218ef6bb6847f3af1`）将 mode-1 条件链静态连到 film_light：profile-tree U32 0 → raw Line U32 0 → DDP_COMPR U32 2；所选 job 的 mode/同次运行仍未观察。`ATMOS-DDP-LINE-DRC-CONTROL-BOUNDARY-V2`（manifest `b19509505e794fa4726a33f3c0ce5def3193c866f934ddf9a07e574df895c417`）静态绑定 film_light/none 的显式 0x0d 参数 presence 与 guarded serializer 的三位 010/000。它没有建立 music 曲线，也不证明选中该 guard。music 模式现有缺口集中在 profile selector/curve row 与动态 Line DRC 状态的同源代连接及具体系数；2 号追 Line dynrng，3 号追 RF compr，不重复它们的生产规则。
+
+Wash `ATMOS-MEASUREMENT-DI-THRESHOLD-INPUT-V1`（manifest SHA-256 `5044c4a091d21b4a872e60217d975487accab47115f49122195c9614f9e0f960`，seal SHA-256 `e3ef93203eb401c7543f1ba3860d841c3ee37e436f4b906d7273e2bdc24756eb`）确认 DI 是 `true/false` 字符串，speech threshold 是十进制整数 `0..=100`。XML parser 与 primary-control validation 保留这些显式值；当前 Meter admission 仅继续支持既有 `false/100`，其它组合以带原值的 `UnsupportedDialogueMeasurementEffect` 拒绝，尚未创建 Meter source owner。descriptor 初值与 host overlay 不合并；测量算法、响度、DialNorm、PCM 和音频 effect 未闭合。
+
+Wash `ATMOS-51-TRIM-METADATA-BOUNDARY-V1`（manifest SHA-256 `bef793f7424c03309c0571708aa831f85b172add83d2917de4840e8fb93dcb49`，seal SHA-256 `abf8ec94f89b09dc5ef211013ae203a07c271d0f74f16037195612bdbf314372`）确认 surround trim 声明为 `auto/0/-3/-6/-9`，height trim 声明为 `auto/-3/-6/-9/-12`，descriptor 初值均为 `auto`。两字段现被解析为独立类型并保留精确 XML 值；codec source gate 只延续旧 `auto/auto` 组合，其它合法组合以 `UnsupportedTrimEffect` 显式暂停。host omission、单位精度、runtime signaling 和音频效果仍未绑定。
+
+Wash observation 包 `ATMOS-MUSIC-LINE-DRC-OBSERVATION-V1`（manifest SHA-256 `cb76898f591e7d2ebb938a82486bc0d1079ecb3086d0889a1f29daf19909aaa7`，seal SHA-256 `e4f49331363bd1a4c124bc8100943879d8601740c98aad0ee905015c35af7634`）限一个 Human Cat 38-track 短窗、RF=`film_light`、DI=true/threshold=15、32 个 AU。Wash 报告：music_standard 的 per-block `dynrng` 分布不同于 film_light；禁用 DRC 的 FFmpeg core PCM 字节相同，启用 DRC 后五个非 LFE 声道不同。music_light 仅在这个窗口、这组控制下字段及 core PCM 相同；不能推广为等价。实验输出已删除，Wash 通过作业 XML、日志和结果收据核对，但无法重放；没有完整 JOC 空间渲染或听感比较。
+
+该观察不是 profile-to-curve 算法。当前实现的 F12 codec gate 仍以 `UnsupportedDrcEffect` 拦截 music 模式；其最短开放边界是 profile 到 Line 动态曲线选择/系数与同代 owner 的连接。该 DEE 对照使用 DI=true/threshold=15，而当前本地 Meter admission 对非 `false/100` 显式返回 `UnsupportedDialogueMeasurementEffect`，不能在本模型中复现同一配置。
+
+第二份 Wash observation 包 `ATMOS-MUSIC-LINE-DRC-LOVE-SONG-OBSERVATION-V1`（manifest SHA-256 `ba3817f24cdfc6f04b0edb62503229a79f6303d9a084cf3c7936bb12020e8bcd`，seal SHA-256 `d96ec086a9a2163ed181a8f3ab8f902328765cb491bb0765e3a4f1a97005c929`）限 Love Song 36-channel 五秒窗口、157 frames/942 audio blocks、RF=`film_light`、DI=true/threshold=15。Wash 在保留的三份输出上重跑 BSI dynrng 时间序列和 FFmpeg DRC-off/on core 比较：music_standard 的 dynrng 与 DRC-on core PCM 不同于 film_light；music_light 在该窗口与 film_light 相同，不能推广。无 JOC 空间 render 或听感测试；输出仍在研究侧，本包没有音频/PCM。该配置同样不经当前 Meter admission；它增加的是第二首歌/声道数的有限观察，不闭合 profile-to-curve 算法或产品支持。
+
+## 2026-11-05：E-AC-3 BSI 到 audfrm cursor 更正
+
+Wash 包 `DEE-KEYLESS-EAC3-BSI-AUDFRM-CURSOR-ERRATUM-V1` 已复制并登记，manifest SHA-256 `1a4eab7fa16748be61c5882c43eddac3e3f4fe2ec68604d115e1fc2a693ce17e`、seal SHA-256 `1775211b7ab7b44901e5fb8c3705013d7e1d38f77a304428c500877450dcda74`；payload checker 在普通 Python 与 `python -O` 均 PASS。该包更正先前 bit 113 被称为 `frmfgaincode` 的说明：候选与历史 Rust attempt-10 首帧 BSI 都结束于 bit 113；此处是 `expstre`，取值分别为 0 与 1。`frmfgaincode` 位于 bit 121，两个文件均为 1。条件长度分支解析出的 audfrm 末端分别为 bit 198 与 233；parser 未继续解析完整 audblk。
+
+该包基于 source addendum manifest `f53822974ccb9482b01caf34b207c03404486eebc25e16fc6c208fc561866572` 与 parent v2 manifest `838c9b711129dbc23de8c47247308b753eb3a5f41e16692ca7da50d1c6f83187`。
+
+当前用户报告的 Audition 失败文件未按 path/run/hash 绑定到历史 attempt-10，候选生成记录未封存，候选到 ADM 身份及恢复 ADM 完整性未验证；因此此 cursor 差异不是失败根因或音频算法缺陷的证据。该 erratum 只记录边界并留待后续验证，不据此修改音频逻辑。
+
+## 2026-11-04：measure_only 与 DDP owner mode 边界
+
+Wash 包 `DEE-MEASURE-ONLY-TO-DDP-OWNER-MODE-BOUNDARY-V1` 已物化，manifest SHA-256 `5ce226e83a05ed31208896439eaefc5fc84f78fed8b66f674df18437c6861238`，seal SHA-256 `f9ce0784d0d330dd44b26b2c12cbda640833762faed471f744e800d9d0340fc6`；本地复算 3/3 Wash payload 哈希匹配。它连接了 host StageRunner 属性行到一个间接 stage vtable slot `+0x8`，但未识别目标对象为 DDP `FilterDDPJocEnc` 实例。DDP 侧独立注册 `measure_only`；slot 1 setter 通过属性对象的间接 vtable `+0x28` callback，slot 5 则读取其 adapter `+0x8` 并写 owner `+0xf34`。两侧无 typed instance/字段 transfer；`measure_only=false/true` 到 owner mode `0/1` 的映射仍 `UNBOUND`。既有 owner mode 0=measurement、1=normal encode 的证据保持独立，不能由配置名或布尔值推出。本包向量是 symbolic/`NOT_RUN`，未运行 DEE 或媒体输入。
+
+## 2026-11-04：DRC seal-chain 与 preferred-downmix 边界更新
+
+Wash `DEE-DRC-LINE-MODE-SEAL-CHAIN-REFRESH-V1` 已物化，manifest SHA-256 `23baa7705f7acc15d86b7cb01abbf56d8795a70a04685bb0eee7ea273511bb56`，seal SHA-256 `8753d5e1aeb31c560550cdb1896480691c982a5aade27c3b755503316e8cbc64`；本地复算 3/3 supplement payload 匹配。该包仅刷新三份 line-mode source package 的 parent/child manifest 与 seal 链，18/18 payload hash 由 Wash 重算，调查结论未变化：default、mode 1、mode 2 的 line-profile audio effect 均 `UNBOUND/NO`，runtime `NOT_RUN`。三份当前 source identities 和旧 seal supersession 见 `SOURCE-PACKAGES.json`；normal 与 `python -O` checker 结果只是 agent-reported，Wash 未重跑。
+
+后续 Wash `DEE-DRC-LINE-MODE2-CODEC-CALLSITE-BOUNDARY-V2`（manifest `f1a6fb3c3d214a4ea9a87ac78a438f2928f2b9d53b20949422db9c9f1a7b0ab8`，seal `07370e4d1ea443d10211f3b2580f6f610c47f2b67022a902822766e628821fe6`）更新 mode-2 的执行边界：selected mode-2 路径经 `EmpireEnc` slot `+0x8` 调用 `FUN_180179ab0` / `FUN_1801a8840` 处理 0x600-byte block，并把生成的 bytes 交给 writer。它 supersedes 旧的“mode-2 未进入 codec call”结论；但记录 `+0xa0` 未传入 per-item `+0xd8` config 或 codec args，final BSI/audio effect 仍 `UNBOUND/NO`，runtime `NOT_RUN`。这没有改变 DRC seal refresh 对 profile effect 的判断，也不支持实现 line-mode DRC 规则。
+
+Wash `DEE-F13C-PREFERRED-DOWNMIX-FACTORY-REGISTRATION-BOUNDARY-V4` 已物化，manifest SHA-256 `1c2df9fbb76ae9b5b49705c4704bebd82251701013997bc6a091a835a959a7e7`，seal SHA-256 `0878212e213a34d16545b900645f52eab927644ffd23a3f645ab68f3008ba2b7`；本地复算 3/3 supplement payload 匹配，V4 取代此前 V1–V3 边界包。RTTI 将 vtable `0x140bca558` 绑定到 `Factory<AtmosMasterFileStorage>`；slot `+0x08/+0x10` 传递 opaque factory field，但导入程序没有该 vtable 的 code reference、registration initializer 或 `+0x8` 初始化者。opaque selector 到 `preferred_downmix_mode=loro` 及 typed `dmixmod` consumer 均 `UNBOUND`，音频/metadata effect 未验证，input vectors/runtime `NOT_RUN`。来源包没有 formal seal；Wash 已验证来源 manifest、payload、SHA256SUMS、三个关联包和目标 encoder image。不得从字段名或相邻 XML 设置推导默认值或效果。
+
+## 2026-11-04：range record 到 frame reader 边界更新
+
+Wash `DEE-RANGE-RECORD-TO-FRAME-READER-BOUNDARY-V2` 已物化，manifest SHA-256 `5c17024bdfa50c9de1c40e84705bc4ca80333f1031d043cd128622cd21c2943d`，seal SHA-256 `40583bd9016b479024323f8f53b9f1cb95acdb135e8789c051b5fa848daef443`；本地复算 3/3 supplement payload 匹配。V2 取代 V1。当前 source manifest 为 `250b3594fe21b7f5e6883705d4cc68ac5d6655acca97ebb3bf1093cecc5d9515`，替代先前报告的 `d6d9f5b...`；Wash 报告重算 11/11 source artifacts 和关联包。来源包无 formal seal，normal/`python -O` checker 结果记录在源包，但 Wash 本轮未执行 checker。
+
+静态路径现在把 selected mode-1 range record 接到 per-source Reader 输入构造；根据未捕获的 per-source `+0x140`，候选是 `AtmosReader` 或 `AtmosReaderCC`。`AtmosReader` cursor `+0x28`、total `+0x20` 与首次 `read_float`/queued-read 接口已定位，但具体选中 reader 仍 `UNBOUND`。XML start/end 或 stage `+0xf98` 到 cursor/total 的 typed producer 连接、时间单位与精确 trim 效果仍 `UNBOUND/NOT_RUN`；不据此宣称 timebase parity，也不改产品 seek/trim 规则。
+
+## 2026-11-04：ADM type-1 sampler 到 metadata consumer 边界
+
+Wash `DEE-ADM-TYPE1-SAMPLER-RECORD-STATE-EDGE-V2` 已物化，manifest SHA-256 `098931d0c7c7ee28210ad57aa041507b52317e395b6d97221be3ebda3a511335`，seal SHA-256 `0805ee51065790883828d9fcb35ebe724419037260682375ecb777177b991e7b`；本地复算 3/3 supplement payload 匹配，V2 取代 V1。Wash 报告验证 source package 的 4/4 payload、SHA256SUMS、seal、父包和目标插件。
+
+同一 slot 的 0x58-byte descriptor 写入/读取已静态绑定；`FUN_1801acd10` 把这些行转换为独立的 0x34-byte canonical metadata records。该 callsite 没有 PCM/audio-block pointer。条件 `+0x80` float/state recurrence 未观察到具体输入执行，也未证明输入是 PCM。canonical metadata 到 audio/encoded output 的 consumer 仍 `UNBOUND`；不将其列为 DSP 证据或改音频实现。
 
 ## 2026-11-03：F08 R4 候选整曲实验
 
@@ -70,9 +182,27 @@ Candidate 将该 matched-control I0 base PCM 的 LFE RMSE 降低约 28.8 倍（0
 - 局部36-row schedule/root断言与既有36-row source-cursor边界验证的是结构值，不是真实 PCM callback回放；未运行36-row全Q Meter schedule、terminal receipt、F01E parent安装或Spatial callback。
 - Wash R10 `ADM-ARBITRARY-TRACK-48-AXIS-CAPACITY-V1` 已在隔离仓库物化，manifest SHA-256 `7d7bee4a7e4c9ae638917e2d39cb756ce94332da049152d099b1c8ecc68118b8`；4个 payload length/SHA、6行checksums、manifest sidecar和seal通过普通/`python -O`身份校验。有效的 `REPORT.md` 与 `AXIS-SIZE-VECTORS.json` 给出 `S=N+10`：N=38刚好占满48个内部source slots，N=39需49 slots；N=246的S=256超出U8 active-count，N=247的最大ID256超出U8 ID字段。它不证明外部/native ABI上限。`EVIDENCE.json` 虽与manifest哈希匹配，但 JSON 在line39/column39语法无效；实现侧已排除其字段，并已请求Wash重新交付修正版。native 1..128与另一个DDP capacity 11域均未和ADM行数typed join。36-row source IDs 46/47没有分配依据，不能补零或合并。本地尚未实现动态F01E/Spatial owners、48-wide消费者/presence或U8字段扩展，故N>38仍不支持，Meter切片不标记为arbitrary-N支持。
 - F03W source map 已改为使用 `N+10` 活跃source rows，并让 Meter activity 的 regular history、postroute rows 和field masks依该map长度变化。合成输入验证36→46和38→48，36-row的IDs46/47保持缺席；一个单样本合成callback产生N−1 activity行与S条postroute行。应用层现将同一 `PreparedJobInput` 的动态F01E首个normal proposal、PCM source frame和source map绑定，产生同callback `GlobalSourceGeometrySnapshot`，并构造动态 `PointResponseSourceSnapshot`；36/38合成路径各产生一个P15 source-column候选。再用一个合成目标与prefix source分别生成 `C[1][46]` 和 `C[1][48]`，outer矩阵按活动source数而非48列分配。候选不安装F01E owner，也未运行多source/U04/后续outer或SpatialControl消费者；未运行真实PCM、完整多callback序列或整曲输出。
+- F01E dynamic NORMAL 在36/38 synthetic input上新增一次 noncommitting continuation：1537 samples对应 g=0/1536 samples 与 g=1/1 sample；g=1 使用g=0精确 after-state borrow，同一 PreparedJobInput、graph、PCM row extent、cursor、read-index和callback均匹配。after-state推进到callback/owner generation 2；FreshZero views g=2..4以g=1为origin。该测试验证的是纯内存proposal连续性，没有 canonical dynamic state digest、GTC receipt、parent install、真实PCM或完整4247 callback执行；其他 row-count不支持。
 - F06OF FreshZero Meter callback 的 PCM 行数门现在要求 Meter owner source_channels、PreparedJobInput.configuration().wave().channels() 与 source view 实际 rows 长度三者相等；这不扩展后续固定形状的 F01E/Spatial owner 数组，Q+3 序列仍 NOT_RUN。
 - F03U stateless U04 projection 的 source vectors/gain rows 上限已从48扩大到R10内部容量S=266；49和266行用合成有限值可计算，267拒绝。该函数仍只消费调用者给的 arrays，不建立N+10 graph/source ID身份、不接同源PointResponse/selector gate，也不证明全F03U或产品链闭合。
-- 本次无全量整曲或 Dee 编码；36-row可播放输出、12-owner READY/root swap、AU发布及W04仍 `NOT_RUN`。
+- Wash `DEE-LFE-SEVEN-F32-TABLE-GENERATION-V1`、`DEE-LFE-SEVEN-F32-TERMINAL-PROJECTION-V1`、`DEE-LFE-SELECTOR-ZERO-PRETRANSFORM-HISTORY-V1`（manifest `8fe794aa046defe87c43827300b1068c05d26e84748341371c7dad1c30aac0e4`）和 `DEE-LFE-16POINT-TERMINAL-TRANSFORM-IMPLEMENTER-V1`（manifest `2b7d085bd727c36b489ebc9619090c7b2c7003fc051d7e93197af1ef8fbc07d9`）均已在隔离仓库按 payload hash 与 manifest/seal link 核验。`transform/lfe_transform.rs` 现含 layout-7 selector-zero main/companion pre-transform/history、64-group recurrence formula（显式调用方 A/B words）、256→16 16-point stage、16→7 terminal projection，以及将这些值阶段组合的一块函数。定向测试覆盖 L/R one-hot、跨 block history carry、Wash group0 recurrence vector、16-point synthetic input-only rows/block equations和terminal coefficient taps。A/B constants manifest所指的 raw table payload 尚未物化到实施目录，当前只有 caller-supplied table 接口；不能声称全系数级 DEE算法已闭合。Runtime MXCSR mode、selected lane/slot、wrapper gates、条件6×6 matrix分支、frame/wire join与PCM parity仍开放；这些测试仅校验本地公式/位模式，不是 DEE parity或当前输出差异证明。
+- Wash `ATMOS-DDP-DRC-CONTROL-QUEUE-BSI-BOUNDARY-V1` 已物化并独立验证 payload 4/4、manifest SHA `1bea337bc0f9b7beb00b787852dd7f4b437f9b51b3fae799cc3b5ae18b0562f7`。本地 `drc/drc_control_buffer.rs` 现实现内部3-byte MSB-first相对bit布局和显式Line/RF三位值编码，包含输入向量与one-hot byte placement测试；它与已有E-AC-3帧内F12 DRC writer是不同路径。command-2 queue到output BSI record、selected-job activation、absolute AU bit position及decoded PCM effect仍UNBOUND/NOT_RUN；没有声称元数据或音频效果闭合。
+- Wash `ATMOS-DDP-DRC-PROFILE-INPUT-PACK-BOUNDARY-V1` 已物化并验证payload 4/4、manifest SHA `f675d60fac512750cb17d9fd65cd016d64eb8d254da65fe6131b5139b37a2f45`。原有 `drc/drc_profile_code.rs` 六字符串到U32纯映射不选择默认。2026-11-05 的 XML admission 扩展已把 Line/RF 字段解析为 `SelectedDrcProfile`，并将原值保留到配置身份、F01E dynamic normalized config 与现有 ID2 metadata body 输入。Wash 所述 native host/XML-to-stage transfer、selected E-AC-3 DRC BSI/audio curve consumer、AU及decoded PCM效果仍UNBOUND。
+- Wash `DEE-TIMELINE-SILENCE-READER-JOIN-RETRACTION-V1` 已物化并独立验证 payload 4/4、manifest SHA `9ce3ad6a94f6b8413ac4a9afe37f2f534344b3a47b35822eb50733503cfa47a9`。它保留 per-source record/profile-copy 的 prepend/start/end/append 字段映射，但撤回临时 diagnostic descriptor 到 reader cursor/limit 的推断：临时 descriptor 在 reader wrapper 构造前已格式化、移动并释放；wrapper 使用独立 local fields。local-field 到 per-source vector 的 lineage、silence insertion、reader limit/flush effect、AU count 仍 `UNBOUND/NOT_RUN`。上方 2026-11-06 本地秒数解析与 admission 拒绝门不据此推导这些下游行为；上游 checker 结果为原包报告值，Wash 本次未重跑。
+- Wash `ADM-FRAME-COUNT-LINEAGE-STATIC-V1` 的 REPORT.md 以交接提供的精确 base64 字节替换后，payload 4/4 与 manifest SHA `5fca02a1dd968790b5449aa8c0ab47d14251de101ec64f93fcbcf29ddb6c925a`、seal 链接均通过本地普通/`-O`核验。其静态规则区分 opened K、composite B 与 frame D：普通模式保留 selected adapter count，extended 模式为 `max(tag-255 rows)+10`；D+0x08为B的U16行数，D+0x10为sample-frame size；被检查的PE wrapper按N分配并迭代行。36/38公式向量可执行；selected mode/source identity/runtime acceptance及opaque PE/JOC上限仍UNBOUND，upstream checker未由Wash重跑。
+- Wash `DEE-ATMOS-SOURCE-AXIS-OAMDI-CAP-V1` 已物化并独立验证payload 4/4、manifest SHA `847514711fbb916b7f0828b8b2f0c09b29a11aed8e0cc3cf1bd94e18ad3c7124`。它给出所检查分支的动态 physical N 行和 OAMDI `1..=159`静态源轴守卫，并明确 `{16,12,10,8}` 是独立 profile code-row 轴。它不绑定选中job/owner generation，也不证明36/38运行接受、任意N或AU路径；upstream checker为NOT_RUN_BY_WASH。此与R10内部 `S=N+10`数组容量是不同计数域。
+- Wash `ADM-FRAME-COUNT-LINEAGE-STATIC-V1` 已修复 REPORT.md 精确传输字节并通过4/4 payload核验。本地 `frontend/frame_channel_count.rs` 以输入-only向量分别计算 ordinary K-count与extended `max(tag-255)+10` 两种 36/38 frame-count候选，并单独建模所查分支的 1..=159 OAMDI 静态守卫；不选择运行时mode，也不把profile code-row数等同物理N。P2/source identity/generation、selected mode、PE/JOC opaque limit和 AU join仍UNBOUND；不宣称任意N runtime接受。
+- Wash `ADM-SOURCE-PROPERTY-WORKER-OWNER-BRIDGE-STATIC-V1` 已验证并物化：静态链闭合 host `dee_audio_filter_source` property → P2 → private V → Q setter → 同一V stage执行，再条件连接到普通reader/PE分支的S→K→J→B→D。它不绑定实际P2实例、source值/generation或native descriptor值；不同count/hash相等不能替代identity join。
+- Wash `JOCFORGE-F01E-WORKTREE-REAUDIT-V1` 是对历史 committed HEAD `31a21d7` 的快照：当时选定 Meter callback 仍走固定38行 `NormalControlPreparedSnapshot`。本地 F01E dynamic continuation 仍是 noncommitting proposal，尚未接入 selected callback 或 parent owner install。
+- Wash `DEE-TIMELINE-TIMEBASE-DIRECTION-CORRECTION-V1` 已物化并验证4/4 payload，修正旧的减法方向：在所查 parser path，`embedded_timecode` exact-match 分支对 start/end 减 FFOA，`file_position` 非匹配分支不减 FFOA。selected FFOA/rate保持UNBOUND，XML `offset=auto`不是该值；本地没有据此增加默认值或改写时钟代码。其上游 checker未由 Wash 重跑。
+- Wash `DEE-ADM-TIME-CONTROL-READER-RANGE-BOUNDARY-V1`（manifest `67f9edd6b4e49871d0a6664633985f08e3f779c4fa51a79c46520bce8403d177`）已按 payload hash 与 seal 独立核验。它按版本/路径区分：所查 R138 `embedded_timecode` 将 frame counts 用 resolved rate 转秒，offset 重置 source bound/endpoints，显式分支未观察到 FFOA；R139 `file_position` 为另一 `max(offset,ffoa)-offset` 路径。resolved rate、FFOA runtime value、normalizer→DDP setter/reader owner join 和具体 reader range 仍 `UNBOUND/NOT_CAPTURED`。不要合并成通用规则或推导默认/样本索引；本地未改时钟代码。
+- DRC profile string→native U32 静态映射仍是独立纯值函数，未选择默认，也未连接 Wash 所述 native pack-slot/BSI/audio consumer。模型 XML admission 已实现六值 typed parsing 与原值传递；它不证明 Host DocModel、plugin constructor、XSD、R138 source 与所选 production XML 之间的默认或 owner transfer，因此不合并这些来源。
+- Wash `JOCFORGE-36-ROW-DYNAMIC-SHAPE-COLD-RESET-V1`（manifest `7d7ed2fe971d43f5ced37fc5fbfa40e4c41a943ba43346041cfb0a3e97b816c8`）给出 10-bed/one-direct-LFE 的 36/38 model shape：N=36→object26/regular35/46 active IDs `0..45`、46/47 absent；N=38→object28/regular37/48 IDs `0..47`。不得填充缺失 ID。新 attempt 重建 owners；同 attempt 保留 row identity/generation/history。物理 PCM row→global-source typed crosswalk 仍 `UNBOUND`。
+- Wash `ADM-PHYSICAL-ROW-U16-LAYOUT-MAP-V2`（manifest `9c1e53e93a34f9b66172bc217c7cbc0aef54a9208c32db3cc588537b8737ee97`）取代 V1 并修正了 source-package manifest 引用。它只绑定 conditional ordinary-copy 模式下的静态映射：精确 CHNA TrackUID→AXML graph resolution 后，physical slot=one-based CHNA track_index−1；每条 6-byte row 含 U16 input ID +0、U8 tag +2、U16 ordinal +4；row count=object count+group entries 总数。builder 仅接收 1..128 rows，并写 128 个 U16/256 bytes；object row 为 `0x8000 | physical_slot`，bed row 为 `((translated_label & 0x7f)<<8)|group_bucket`。N=36 为 10 beds/26 objects/216 K bytes，ordinary object map `0x800A..0x8023`，独立 target map `0x800B..0x8024`；N=38 为 10/28/228 bytes，maps 分别为 `0x800A..0x8025` 与 `0x800B..0x8026`。所选 native mode、K/B/D 值未捕获；runtime transfer、converter-owned C→opened-source K 同代绑定、global-source/OAMDI 等价及 PCM parity 仍 `UNBOUND/NOT_RUN`。target map 属于独立身份域，不是 global source map。
+- Wash `JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V2`（manifest `9bc12cc20b21e1a4ca60b4e77020d6cc3c43c6c7a8d917e197e212ed19b948bb`）取代 V1：选定 Meter G0 的 `build_meter_installed48_source_map` 调用动态 `validate_selected_source_binding`，支持 10..256 通道 ADM、48 kHz PCM24、block-align 与 sample-count 校验。随后调用 `normal_control_prepared_snapshot`，该路径仍固定38/10/28/37；SpatialControl/Installed48 arrays仍固定38/37。精确38 binding 是独立 `build_primary_installed48_source_map` helper，不能归给 Meter G0。FreshZero row identity 已按 N 动态校验。物理row→OAMDI/全局源身份等价仍 UNBOUND；不得把36行补零。selected 36-row callback、owner install、playable output均 `NOT_RUN`。
+- `DEE-TIMELINE-TIMEBASE-DIRECTION-CORRECTION-V1` 已修正历史 R3 `ADM-AUTO-TIME-POSITION-CONVERSION-BOUNDARY-V1` 的 time-base 方向：`embedded_timecode` exact-match 减 FFOA，`file_position` 不减 FFOA；旧方向描述仅作历史记录，不再作为实现规则。selected FFOA/rate仍UNBOUND。
+- `DEE-ATMOS-PER-SOURCE-SILENCE-ALTERNATE-BRANCH-BOUNDARY-V1` 当前只有 manifest/seal、REPORT 与 vectors 哈希匹配，EVIDENCE/SOURCE-MANIFESTS 仍有字节差异，未消费。`DI-MEASURE-ONLY-TRUE-FALSE-RESULTS-V1` 的 SOURCE-MANIFESTS 同样仍有3-byte差异；没有将其测量标量用于编码/PCM结论。
+- 已推送独立提交至 `experimental/independent-encoder`：`7d43fd8`（LFE terminal projection）、`3e976a5`（DRC profile/control helpers）、`55b0abd`（静态 frame-count candidates）、`aefd8cc`（F01E dynamic continuation proposal）。按后续 Wash handoff，四个提交保持原样；`aefd8cc` 之后未发生 Git 提交、推送或其它远端操作。其后未提交的 LFE 代码已补入 selector-zero pre-transform/history、caller-supplied A/B 的64-group公式、256→16 stage、16→7 projection及一块组合函数；A/B raw table包未落到实施目录，且该算法候选未接入产品 callback。没有运行 DEE 编码、整曲输出或 PCM parity。36-row callback、12-owner READY/root swap、AU 发布及 W04 仍 `NOT_RUN`。
 
 > 历史 run 记录（2026-11-02）：Rust film_light DRC candidate 使用 JOCForge commit `42925e78da48d942d51a4f8e82efb7860aa024eb`，Release exe SHA-256 为 `e61dd4de59804ee42b7193e5bda06718ef4da5b33ec6d2673fcd54d646b024df`。输入 SHA-256 为 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`。
 >
@@ -87,7 +217,7 @@ R1–R8 八个边界补充包、两个 R8 补充、两个 R2/R3 followup、既�
 - R1 `DEE-ADM-LFE-ROUTING-MODEL-BOUNDARY-V1`，manifest `1e5f0dcfa714a0b0569c60f3c4f93572f5fd8e3c0bbe72be7f993031c4a2bafa`：UID `ATU_00000004` / CHNA index4 对应 physical row3、`AC_00011004` / `RC_LFE`。模型合同给出 direct-LFE lane、3-slot delay 与 allocated16 row0；native per-frame row→DEE lane、owner/generation 仍 `UNBOUND`。
 - R2 `ATMOS-SELECTOR8-WAV-PROVIDER-OWNER-BOUNDARY-V1`，manifest `fab1a777f9db2a967742408544c412dde32b45ab2a2e9c31e08ff09544bcf331`：仅在 `extension=wav/type3` 条件下 getter/writer 与 selector8 记录存在静态关系。实际所选 job extension、返回 owner 类型和 profile join 仍未绑定，不能据此设置生产默认。
 - R2 `ATMOS-SELECTOR8-CALLSITE-OWNER-UNBOUND-V1`，manifest `ee53dcc7ba4685ff6619f7de90499cc12be9394eb67092a5c8ff7d6e944535f0`：某个 selector8 caller 候选因缺少 typed identity 被拒为 selected writer；实际 selected caller 与 selector8 owner 仍 `NOT_OBSERVED/UNBOUND`。
-- R3 `ADM-AUTO-TIME-POSITION-CONVERSION-BOUNDARY-V1`，manifest `9385643c861a797c0ba17a03e147a2940eb971af732684ca75dc0b62a1e38617`：`file_position` 分支跳过 sample-rate multiply，因此 selected file-position MVP 不被 auto-source 缺口阻塞；`embedded_timecode` 条件分支按 offset seconds × sample rate 并向零截断。字面 `auto` 不被 `std::stod` 接受；auto source、FFOA source、master-start 丢弃后的值仍 `UNBOUND`，且 `(-1, offset)` 有独立 invalid guard。
+- R3 `ADM-AUTO-TIME-POSITION-CONVERSION-BOUNDARY-V1`，manifest `9385643c861a797c0ba17a03e147a2940eb971af732684ca75dc0b62a1e38617`：历史静态观察记录 `file_position` 分支跳过 sample-rate multiply、`embedded_timecode` 条件分支按 offset seconds × sample rate 并向零截断；字面 `auto` 不被 `std::stod` 接受，`(-1, offset)` 有独立 invalid guard。后续 `DEE-TIMELINE-TIMEBASE-DIRECTION-CORRECTION-V1` 明确 supersede 该历史条目可能暗示的 FFOA 减法方向：当前洗白规则仅为 embedded exact-match 对 start/end 减 FFOA、file-position 不减 FFOA。auto source、selected FFOA/rate 与 master-start 丢弃后的值仍 `UNBOUND`，不得据历史行推导运行值或产品实现规则。
 - R3 `ADM-AUTO-TIME-WARP-OWNER-BRANCH-BOUNDARY-V1`，manifest `06f2d71a656221cb07d0bd5c4d9eff14876da9f66afcc1ec8bfb9552047b9711`：同一 `PrivContext` 的 `dont_change` 分支选择读取 offset/FFOA map 的 `setRange`，或 `runWarpModeChange/master-open` owner-open；后者不写 map，也不传 owner 给 `setRange`。sample6 分支值、auto/seek source join 仍未绑定，不影响 default file-position MVP。
 - R4 `DEE-JOCFORGE-LFE-STAGE-SHAPE-COMPARISON-V1`，manifest `c42f5e79f6b64f7b11fb31927a049a7b3ed2188d80a7ab935160094e392ea8c3`：发现 DEE/Rust LFE stage-shape 差异候选：共享256-word window hash 相同，但 native 独立 wrappers/table-or-recursion/16-point precursor/seven-value mixers 与 Rust lane3 post-filter/F08七bin路径尚未映射对应。它没有证明数值或听感差异；row3→DEE lane、layout/stride、numeric parity 仍 `UNBOUND/NOT_RUN`。
 - R4 `DEE-36-38-DYNAMIC-NATIVE-ROW-MAP-V1`，manifest `11bef3de6d48b32b02f05440756185b9d26311fd87a0cfebbf89d6838b432b85`：DEE channel map 按实际 U16 count 分配36或38行；在模型 F03W 48-ID 轴上，36-row regular IDs 只到45，46/47未分配。native row→global ID join、真实U16/child partition、CHNA slot同代join仍 `UNBOUND`，没有零填充依据。
@@ -564,3 +694,645 @@ run-99 Wash package manifest SHA-256：`ae7217ffbc881a48e741fbf91329492335501c39
 5. 当前有 matched 4 秒窗口和整曲分块指标；整曲 PCM equality、OpenJOC object render、听感和 W04 仍未验证。
 
 channel 3 根因、整曲 PCM parity 和空间渲染通过前，不宣称 audio parity 或感知一致性。
+
+## 2026-11-03：36 行 Meter 动态 owner 接线进度
+
+本轮按 Wash V3 补齐 selected Meter 的动态 S 轴，并贯通 synthetic 36-row G0、G1 与三个 FreshZero callback 的 Spatial/OAR proposal 路径。S 轴回调阶段已通过合成测试；真实 36-row 文件、完整 programme commit、AU 生成和产品输出仍未完成。
+
+- `NormalControlAdmInputOutput`、F01E dynamic after-state 与 selected Meter source map 现在在本地路径中携带实际行数。合成测试覆盖 36/10/26 与 38/10/28，验证 g=0/g=1 owner stage、35/37 regular rows、46/48 个活动 source ID，以及三个 Meter FreshZero 控制 receipts；测试通过。该测试不运行 feature handoff，也不使用授权文件的 PCM。
+- MAIN 36-row 路径现从独立 per-input F01E cold owner 建立 normal preflight 和 N+10 SpatialControl cold root；CLI MAIN normal callback 会使用动态 G0/G1 F01E proposal、动态 ReaderEof cache 和动态 SpatialControl proposal。Cached path使用新的动态 held-control view；normal/cached 回调均与同一 prepared input 和 S=N+10 source map绑定。合成 36-row schedule 已覆盖 G0/G1 与四个 cached drains，在非提交 MAIN owner proposal 内推进 ReaderEof、SpatialControl、SpatialAudio；未运行真实 PCM、全长 Q、12-owner programme transaction 或 AU。
+- Wash V3 `JOCFORGE-READER-TARGET-DYNAMIC-AXIS-CONTRACT-V3` 的 MANIFEST SHA-256 `1d422839d7da503241e9cd923aa9e4a2d0dc276561644b35a182a85a0df6a40c`、四个 payload 及实际封印 SHA-256 `b668063023340640a4afa0aa1c2bebee0bd7303dd4db0972611e2ca864b1557e` 已重验并物化到本地 supplements；Wash 更正了先前错发的 seal 摘要。其 S=46 IDs 0..45 合同明确 46/47 不存在；同一 ordered `CodecSourceIndex` 绑定 owner generation、source receipt SHA、callback transaction 和 source origin，在各 handoff 保序。N=38 对应 S=48；N=39/S=49 只是结构向量，不是 runtime 支持。独立 DEE C-index 包 `DEE-PROFILE-RENDERER-C-INDEX-CONSUMER-BOUNDARY-V1`（manifest `28e51d4a0e45e0de5e2edca2bd15a068347c2bbe43fb5c74634045cef876c38a`，seal `4be1251bdf8a221e7402182ac49b812825b2734b57013c526ccc1d48a32eb850`）把 C=16 绑定到 profile/renderer metadata records；它与 JOCForge S/T 无 mapping。Wash V3 快照 12 个源码身份中 2 个已因本地更改变陈旧；实现按稳定合同进行，不引用旧源码哈希。
+- Wash `DEE-PROFILE-LAYOUT-COUNT-MODE1-GLOBAL-STATE-V1` 已物化到本地 supplements（manifest `6cd9a2ac516936dc45e9bdc22f7c06031751c6135c8df06239870b04d73e883a`，seal `d77c25297789e6f2bb73d8b4f9842c7688a796835426939fb50644bbed77dcec`）；本地复算的 3/3 payload 哈希匹配。新包限定另一个 `open_config[0]==1` mode-1 branch：code 2/count 10 在 `DAT_1809d17c0 != 0` 时静态变成 code 1/count 12，否则维持 count 10，最后作为 DEE layout/profile count C 写入 `+0x08`。运行时 global value/调用顺序未捕获，输入 count 与 ADM physical N 或 canonical M 的 typed join 仍 UNBOUND。原 C=16 结论仅适用于独立的 descriptor-bearing `open_config[0]==0` branch；不得将 C 固定为 16，也不得将 mode-1 的 10/12 解释为 JOCForge N/M/S/T。源包无正式 seal；Wash package seal 记录了这一限制。Wash 报告 normal 与 `python -O` checker 通过，但该 Wash 轮未自行执行 checker。
+- Wash MAIN owner-wiring 包 `JOCFORGE-MAIN-36-ROW-OWNER-WIRING-BOUNDARY-V1`（manifest `c1a109096037ce64c88b206dbaf1600d500b37e70bcbffa5bdb618b094415bce`，seal `f53f0558f259c23dc2492f73794f87114edbe0307180eb1d3b6f3342638d0952`）的 3/3 payload/seal 与 12 个源码快照身份在物化时均匹配。它记录的是本地动态 MAIN 接线之前的静态边界；当前实现已在这些源文件上继续修改，因此该源快照仅作历史基线。Wash 未运行测试、CLI、媒体或 PCM。
+- 本地 `SourceAxisBinding` 现贯穿 Installed48 frame、SourceFlags、PostWindow、CurrentFeatures、component matrix、ReaderTarget 与 SpatialControl。36-row 路径 compact 保存 46 个 source entries，矩阵按 A×S/T×S，flags/features/audio/history 只包含有序 S 行；T=15 独立，缺失的 IDs 46/47 不创建、不补零。ReaderTarget 去掉 `snapshot_keys_complete` boolean，检查 source axis 与 flags axis 的 owner/input/callback lineage、完整 ID 顺序和 S=46/48；S=49 被拒绝。
+- Synthetic 36-row schedule 现覆盖两个连续 normal callbacks（共 3,072 samples/channel）及其后的三个 FreshZero callbacks，五个 proposal 都走到 Spatial/OAR 并通过；G1 继续 G0 的 after-state，FreshZero 以 normal-count=2 和 cursor=3,072 开始。这不是 6,522,906-sample real-input prepass，也不安装 12-owner programme root、不产生 codec AU。38-row main callback 回归、36/38 F01E owner、S46 SourceFlags/CurrentFeatures/PostWindow/component/ReaderTarget 及 S49 reject 定向测试均通过。
+- `cargo check --workspace --all-targets --locked`、`cargo fmt --all -- --check`、生成映射检查与 `git diff --check` 通过。未跑完整 workspace tests、W04 或真实 36-row PCM。之前 broad domain filter 遇到 Windows linker `LNK1285` PDB 损坏；不清理 target。严格 Clippy 仍被未改动的 Analysis/DRC/Metadata/ProgrammeState 文件 lint 阻断。
+- `prepared_job_input` 测试目标 15 项通过，含 `main_spatial_callback_stages_dynamic_36_row_controls` 与 `main_36_row_normal_and_cached_callbacks_stage_spatial_and_reader_eof`；后者合成推进 G0/G1、ReaderEof cache及四个 MAIN cached proposal。ReaderEof domain测试 10 项、38-row SpatialControl regression 1 项通过。domain Clippy 有 8 条既有 Analysis/DRC/Metadata/ProgrammeState lint，本轮修改文件未在错误列表中；未运行 workspace 全量 tests。
+- `scripts/render-implementation-maps.py --check` 通过。boundary checker 普通模式和 `python -O` 都停在 F15 map/status 不一致：checker 要求 `LOCALLY_VERIFIED_F12_F05_F13_F14_PROVIDER_ADMISSION_AND_OUTPUT_STAGING...`，当前 F15 子切片标为 `EVIDENCE_ONLY_TYPED_PLAN_AND_OUTPUT_AUTHORITY__PRODUCTION_BINDING_NOT_RUN`。这不属于 36-row 代码链，本轮保留该状态。
+
+36-row Meter 五-callback schedule 和 MAIN 六-callback（G0/G1+四次 cached drain）synthetic owner-proposal schedule均已验证。此段是当时 36-row 的进度检查点；Love Song N36 全长产物后来出现并于 2026-11-06 只读复核，不能再将该行当成当前“尚无 N36 文件”的状态。产物与收据边界见文末补记。用户在 2026-11-03 turn `01a1a132-3692-73a1-8c34-1929f532141c` 明确授权：36-row 链路闭合后优先实验 `D:\Love Song 方大同.wav`（36-track）及预先生成的 DEE 对照版。
+
+## 2026-11-04：MAIN 动态行数 owner 接线
+
+`SelectedSourceRowDimensions` 将 physical rows `N`、regular rows `R=N-1`、active source IDs `S=11+R=N+10` 分开建模。F03W 的 48-ID 容量给出当前 MAIN 可映射范围 `N=10..38`；`N=39` 明确以 `S=49` 超容量拒绝。目标容量 `T=15` 与 DEE profile/metadata count `C/M` 保持独立。
+
+- MAIN cold roots 使用同一份 PreparedJobInput 与 dynamic F01E cold owner，生成对应的 normal-control snapshot、source map、SpatialControl 与 SpatialAudio owners。产品 CLI 的 normal 和 cached callback 均沿 dynamic F01E/ReaderEof/SpatialControl 路径推进；MAIN EOF 保留四次 cached drain 时钟。
+- 合成 schedule 覆盖 `N={10,20,35,36,37,38}` 的单 callback 输入，以及 `N={36,38}` 的双 callback 输入；`N=39` 覆盖显式 source-axis capacity rejection。测试检查 N/R/S、连续 source IDs、MAIN owner 行数与 ReaderEof cache 行数，不为缺失 ID 补零。该 schedule 不代表 DEE 对 N=10/20/35/37/39 的接受或整曲输出支持。
+- 已验证 `SelectedSourceRowDimensions` 单元向量和 `main_dynamic_row_shapes_share_f01e_spatial_and_reader_eof_owners` 定向 integration 测试。`cargo fmt --all -- --check`、`scripts/render-implementation-maps.py --check` 与 `git diff --check` 通过。边界门禁已改为检查共享 N/R/S 维度、N=39 容量拒绝、F03W 动态 source map 和 typed clock；全量 collector 从首轮 104 项降至 91 项。其余包含更早 slice 的本地文件登记哈希与其他门禁不匹配，因此整体 boundary check 仍未通过。workspace Clippy 仍有先前 Analysis/DRC/Metadata/ProgrammeState lint。
+- 用户授权的 38-row PCM24/48 kHz ADM 输入已从 g=0 重新完整编码，attempt `1793748416359072600`。新输出 `.test-tmp/main-dynamic-row-shape-human-cat-20261104-power-retry.ec3` 为 17,395,712 bytes / 4,247 AUs，SHA-256 `d786ac4dcef680e2fb3a4fee7e52bf9b82e9d3585b5b09e2dde2a521e37cf11b`；finalize intent 的 length/hash 与文件匹配。旧的完整 final 与被中断 partial 均保留。CLI managed-session exit code 在会话重启后未捕获，但最终输出和匹配 finalize intent 已验证；run receipt 为 `.test-tmp/main-dynamic-row-shape-human-cat-20261104-power-retry.run.json`。
+- Meter prepass 完成 4,247 normal callbacks + 3 drains，selected LUFS `-16.785` (`0xc18647ae`)，模型 DialNorm=17（单位/DEE parity仍未绑定）。MAIN 完成 4,251 callbacks、4,249 sources 与 4,247 个 durable AU；最后 AU 4246 在 g=4250 commit，frame 4096 bytes、CRC residual=0，EOF drop receipts=7。目标 profile 为 48 kHz / 5.1 / 1024 kbps / 6 blocks / 1536 samples per AU / 4096 bytes per AU。
+- OpenJOC 0.18.0 inspect 在新 retry 文件上解析 4,247/4,247 JOC payloads，malformed=0、decoder-admissible=true、15 coded objects；deployed compatibility 4,247/4,247 pass。ETSI strict 4,247/4,247 fail，原因是观察到的 ID11/ID14 字段差异，不能报告严格符合。FFprobe 确认 E-AC-3 JOC、48 kHz、5.1(side)、1024 kbps、135.904 s；FFmpeg 基础层解码返回 0。OpenJOC streaming decode 已在与 retry SHA 相同的完整输出上完成 4,247 frame；内部基础层 PCM 为 48 kHz/6 channel，FFprobe/FFmpeg 均通过。该 PCM 是诊断基础层解码，不是 authored-object PCM；JOC render、playback、W04、DEE parity均未运行。
+- CLI 未暴露 normalized job/config SHA；当前产品不持久化完整 programme owner after-state，也没有 AU-offset resume 命令。旧 run receipt 中保留了 staging/intent/checkpoint 信息；断点恢复仍不支持，只能用新输出路径从 g=0 重跑。
+
+### 2026-11-04：DEE E-AC-3 base PCM 对照
+
+按请求对新 JOCForge 输出与两份同输入 DEE 文件做只读比较。三者均为 4,247 AU、48 kHz、5.1(side)，FFmpeg 8.1 用同一解码器与 `drc_scale=0` 输出 interleaved f32le；PCM 仅在内存中比较，保存的只有 `.test-tmp/power-retry-base-pcm-comparison.json` 指标。Best sync offset 两份对照均为 0 samples，使用 6,523,392 samples/channel（135.904 s）。
+
+| Channel | matched-control correlation / RMS residual / peak | DI=true ref correlation / RMS residual / peak |
+|---|---:|---:|
+| FL | 0.999976 / 0.000445576 / 0.018295 | 0.999976 / 0.000445606 / 0.018295 |
+| FR | 0.999974 / 0.000442406 / 0.012721 | 0.999974 / 0.000442236 / 0.012775 |
+| FC | 0.999955 / 0.000407105 / 0.010160 | 0.999955 / 0.000407099 / 0.010160 |
+| LFE | 0.818616 / 0.006119758 / 0.041010 | 0.818616 / 0.006119758 / 0.041010 |
+| SL | 0.999975 / 0.000437145 / 0.010111 | 0.999975 / 0.000437179 / 0.010111 |
+| SR | 0.999975 / 0.000422109 / 0.007728 | 0.999975 / 0.000422140 / 0.008148 |
+
+`D:\Tools\Dolby_Encoding_Engine\authorized_adm_window_2112_2207\dee_full_matched_control_20261102_01\output\sample6-dee-matched-control-20261102.ec3`（SHA-256 `80c3b9b9a3ed1eaa74a53dbd5bbdc714b0f00c1501e44e4c43eb1aa4ca9a2662`）是 Wash 文档标注的同输入 DI=false / threshold=100 matched-control；JOCForge CLI 也用 DI=false / threshold=100，但它没有暴露 normalized job hash，所以完整 XML equality 没有独立确认。`D:\人是猫 - 张卡斯, 洛天依.ec3`（SHA-256 `315c6a4bdc9b0d1317466d06c39b1809ce992c6d6b17997d82ca08aeebecf8a2`）是 DI=true / threshold=15，属于 settings 不匹配的第二份参考；不能把它的差异归因于编码器。
+
+这只比较 E-AC-3 independent base PCM：5 个非 LFE 声道相关系数约 0.99995–0.99998，LFE correlation 约 0.819、RMS residual 约 0.00612，明显是较大差异通道。它不证明 JOC authored-object 或 Atmos spatial parity。OpenJOC CLI 的 `render-joc` 输出 WAV/CAF 文件；本轮没有执行该磁盘渲染，也没有保存 A/B 的 raw PCM。此前独立 OpenJOC streaming 诊断产生的 base PCM WAV 仍保存在 `.test-tmp/openjoc-power-retry-streaming-decode`，其输入 SHA 与新输出相同；A/B 脚本没有读写这些 PCM 文件。
+
+## 2026-11-04：Wash 计数域与时间元数据索引补充
+
+- `DEE-ADM-MY-JEALOUSY-PROCESSFRAME-COUNT-DOMAIN-BOUNDARY-V1`（manifest SHA-256 `1b0348ab4274f170d798c3d287158ff45d7d32cf230f160ec851d77d5a2a756f`）与 `DEE-TIME-ENDPOINT-METADATA-INDEX-BOUNDARY-V1`（manifest SHA-256 `52ff70977290b6a433f9fed322ad9e6d70a73e4915e9b4ce5bcf556004bfd23a`）已批量物化到隔离仓库；两包各 5 个 payload 哈希匹配，普通和 `python -O` checker 均 PASS。两包已登记到实现映射，并更新生成 catalog。
+- My Jealousy count-domain 包给出静态条件 mode-0 路径：descriptor N 通过 1..128 gate，marker count K 派生默认 M=K+10，M 到达 ProcessFrame；首个显式 guard 检查未标记/bed 项最多 10 且每项 low byte <=1，不是总 N/M 上限。独立 mode-1 只接受 10/12/16。My Jealousy metadata-only receipt 为 N=36、10 bed、26 objects；同源 selected job、runtime mode/N/M、marker 身份与 generation 均 `UNBOUND`/`NOT_CAPTURED`。K=26/M=36 仅为 all-markers-active 合成投影；1.4-GB 源媒体本轮没有重读或重哈希，完整 36-track 输出及任意 N codec 容量均未建立。N/K/M/C/frame-samples 保持不同计数域。
+- Time endpoint 包仅绑定 start/end 作为成对的 per-source metadata-table 索引用于构造 I/O sets。没有证据把它们连接到 PCM frame slicing 或 reader frame-counter 比较；端点 inclusive/exclusive、运行时 source-map 选择、embedded-timecode alignment 和最终音频效果仍开放。未据此修改时间转换或音频处理逻辑。
+
+## 2026-11-04：Preferred-downmix native consumer first-break
+
+`F13C-PREFERRED-DOWNMIX-FIRST-CONSUMER-BOUNDARY-V1`（manifest SHA-256 `8f5939c24687d9c92b7d5824183e80c755612b5c4f9f698414a8d4da5edfd2da`）已物化并通过 5/5 payload 哈希、普通和 `python -O` checker。Wash source checker 同时核验六个 parent receipts。
+
+候选 XML 的 `preferred_downmix_mode=loro/ltrt` 均 schema-valid，pair runtime `NOT_RUN`。独立 native key `dmixmod` 仅闭合字符串 allowlist 检查（`not_indicated`、`pro_logic`、`stereo`、`pro_logic_ii`）；没有 typed owner/alias/forwarding 边连接 XML property 与该 key。Numeric mix-level 和 generic result-tree paths 是独立路径。模式策略、音频/BSI 效果和空间渲染仍 `UNBOUND`/`NOT_COVERED`；有限的 direct-xref 查询不构成全局缺失证明。实现映射保留为 F01E/F13C evidence-only slice，不增加产品 mode mapping 或算法。
+
+## 2026-11-04：F06ND Category5 event-owner first-break
+
+F06ND 的三个相关 Wash 包已批量物化到隔离仓库；各包 payload 哈希、普通和 `python -O` checker 均通过。实现映射把它们并列挂到 `washed-selected-category5-process-boundary-status`，registry 现有 38 项。
+
+- `F06ND-GENERIC-TYPED-STORAGE-EVENT-EDGE-BOUNDARY-V1`（manifest `227290201bcaffccc354584ceaad3df9148223bb009571fcc50dbf0c5e28b102`）只闭合 generic `writeData<int>` typed storage-event vector 到首个 per-event consumer；selected Category5 owner/generation join 与 DRC/BSI effect 未建立。
+- `F06ND-TEXT-EVENT-PRODUCER-BOUNDARY-V1`（manifest `4cba6ea548a317f96ea3967669456804b3b4010b738d1c84fca56c4a46087425`）只闭合 generic text parser 到本地 collector/keyed entry；它与 typed storage path 是两个独立通路。
+- `F06ND-CATEGORY5-EVENT-OWNER-FIRST-BREAK-BOUNDARY-V1`（manifest `9017e4a06d5900498f6420b4a299b6d48b83db37428d28777434b8645c1426e2`）记录 selected Category5 tuple 为 logical category 5 / width32 / count1；提交 receipt 没有 native producer pointer、event-vector handle、call context、owner 或 generation。它不写 selected DRC-control FIFO，四个逻辑记录保持零；到两条 generic path 的 typed application 均 `NO_SELECTED_JOIN_ESTABLISHED`，DRC/BSI effect `UNBOUND/NO`，runtime `NOT_RUN`。这不等于全局不存在 event，也不授权新 receipt API。
+
+## 2026-11-04：Seven ADM metadata count matrix
+
+`ADM-SEVEN-INPUT-METADATA-COUNT-PROJECTION-V1`（manifest SHA-256 `1e00f9c0770e88d8ce7a31d1993fe7bb17c593c244d33b3e4bf2c9e94d44442d`）已物化并通过 5/5 payload 哈希、普通和 `python -O` checker。七份既有 metadata receipts 中，六个输入为 N=36（10 bed + 26 CHNA Objects），一个为 N=38（10 + 28）；本轮没有重开 WAV。可选 K=Objects、M=K+10 仅在“每个 Objects row 都有 native marker 且属于同一 child partition”假设下产生与 N 数值相等的候选。Native K、child partition 和运行时行身份仍 `NOT_EVALUATED`/`UNBOUND`；数值相等不代表域或身份相同，也不证明任意 N codec 容量或端到端输出。该包已并入 F01E `process-frame-channel-count-candidates`，registry 现39项。
+
+## 2026-11-04：Downmix、LFE 分支与 RF DRC 边界补充
+
+三份 Wash evidence-only 包已批量物化；manifest、seal、payload 哈希及普通/`python -O` checker 均通过，并分别登记到 F13C、F04、F06NR。
+
+- `ATMOS-PREFERRED-DOWNMIX-NATIVE-CONSUMER-FIRST-BREAK-V1`（manifest `2eafac0a19cb5b5feeb1f96f6f8a9d6533688e55121ad0954e7cfd6a3ec1c683`）仍未把 `preferred_downmix_mode=loro/ltrt` 接到 typed `ddp_dmixmod` owner/consumer；audio、BSI、UI-only、intentional-ignore 与 A/B 均 `UNBOUND`/`NOT_RUN`。Human Cat ADM hash 沿用既有记录，本轮未重哈希；未读 BWF/PCM。
+- `DEE-LFE-MATCHED-LAYOUT-BRANCH-RECEIPT-V1` 的 lVar9+0x40/+0x44 claim 已由 `DEE-LFE-SELECTOR-SOURCE-OFFSET-CORRECTION-V2` supersede（仅对 reviewed FUN_140350d00 path）：有效 child source 是 lVar9+0x94/+0x98。配置字段 +0x64 U32/+0x70 I32 的语义标签、config producer、ADM row/layout crosswalk 和 matched values仍UNBOUND/NOT_CAPTURED。另一个 `DEE-LFE-RECURRENCE-SELECTOR-CORRECTION-V1` 的两 dispatcher selector=0 / stride gather-only结论独立保留；两者均不证明 sample parity 或 0.819 symptom 根因。
+- `RF-DRC-SNAPSHOT-A4-CONSUMER-BOUNDARY-V1`（manifest `2a3d31dfdbcfdabe1c2394c337e3dafe5e22132d3b6dcfd4e135c0668e2ed11b`）绑定 +0xA4 RF StringType snapshot write；first typed consumer 和到独立 +0xE0 RF config 的 same-owner transfer 仍 `UNBOUND`，runtime `NOT_CAPTURED`。不得合并 +0xA4 与 +0xE0 字段。
+
+以上材料均为 bounded static/model evidence，不推出整链音频效果。
+
+## 2026-11-04：ProcessFrame N/M 与 downmix host-transfer 补充
+
+三份 Wash evidence-only 包已批量物化，并分别挂到 F01E 的 `process-frame-channel-count-candidates` 与 F13C 的 preferred-downmix first-break slice；registry 现45项。
+
+- `ADM-FRAME-PROCESS-ROWCOUNT-CONSUMER-V1`（manifest `b4bc7b5db3821eebbdafff7b027714fef32ef068937063275d9b20d42afd5fad`）绑定 D pointer 与 U16 count 同 owner，first copier 沿 D+0x28 读取 B+0x0A，按 N 行×1536 samples。N>3 只是 4-wide SIMD 分支加 scalar tail；1..128 gate 是已知 open-time gate，不代表任意 N。Native execution/generation 未运行/未捕获。
+- `ADM-PROCESSFRAME-M-TO-EAC3-WRITER-BOUNDARY-V1`（manifest `424aae07eaab6fb2ad9a1b45079490b0b3820842c456c13387b29add13ff4d5c`）绑定 M 与 configurable root+0xC140 gate/shared handler；M→ADM N、M→stuffer 6-frame/6-block counters 仍 `UNBOUND`。16-qword staging array 的 pre-copy count guard 缺口仅为条件性潜在边界，未观察到运行时故障；symbolic M36/M38 不属 native evidence。
+- `ATMOS-PREFERRED-DOWNMIX-HOST-PROPERTY-TRANSFER-BOUNDARY-V2`（manifest `e1d3d21dc0808e6b303806daad0cc8822be2ddf7ab31f6deff147521c5e21882`）supersedes V1's generic serializer note: the exact static DME method maps `PreferredStereoDownmix` to `preferred_downmix_mode` and serializes an active entry inside composite `--encoder`. Runtime UI/child argument and same-run XML join, host→native setter, typed `dmixmod`, audio/BSI effect, and A/B remain `NOT_CAPTURED/UNBOUND/NOT_RUN`.
+
+以上各包不合并 N、M、stuffer frame/block counters 或 owner 域，也不宣称任意轨端到端闭合。
+
+## 2026-11-04：DI receiver 与 RF A4 first-consumer 补充
+
+`DI-FLAG-PROPERTY-RECEIVER-BOUNDARY-V1`（manifest `22ece1cfe149f0594f8863bea3354b9b575fd8e6921168c66d1014cf555d3735`，seal `33e345698086e343cdc5a3f383af55f70a9e86670a55391f0e8c1afefd495e5b`）已物化；7/7 payload 哈希及普通、`python -O` checker 通过，3 个 parent manifest/seal pair 已由 Wash 验证。它只绑定同一 `SimpleType<bool>` receiver 在 `FUN_18014f640`→`FUN_18016a540` wrapper/setter 内的静态连续性。Generic property-map caller、typed owner/generation 与 `this+0x50` 的首个 measurement/audio consumer 仍 `UNBOUND`/`NOT_IDENTIFIED`；DI A/B/runtime `NOT_RUN`。Wash V2（manifest `94afe3f54d3038c5710dbb3b73b160c1b7b750e51dce27a5e370668b62b317dd`）已封存并核验：截图显示获准输入路径，CLI 显示 `D:\ADM.wav` 别名；但没有逐次 source copy/hash receipt，因此 alias→source 仍 `USER_ASSERTED/UNBOUND`。V2 仅撤回 V1 的“别名证明非授权源”推断。两次尝试分别取消于 64.6%/74.8%，无最终 EC-3，均非 PASS；Human Cat 仍 NOT_RUN。不能据此声称 DI 有音频效果、UI-only 或被忽略。
+
+`RF-DRC-SNAPSHOT-A4-FIRST-CONSUMER-BOUNDARY-V1`（manifest `28ad76b482110204ccf44f20bb0fe14e4726c3aab0c3a80b3859f9410cb004f2`，seal `07ff5309dc0f900834044456478d0cd3fc9764fe5d2628d48c2e157ccfa00b9c`）绑定同一 +0xA4 snapshot owner 经 `FUN_1801764e0`；bounded per-frame helper 中未观察到直接 +0xA4 access，但这不是全局不存在断言。下一边界为 helper 输出指针到立即 vtable+0x18 receiver；typed +0xA4 consumer、RF effect 和 runtime value 仍 `UNBOUND`/`NOT_CAPTURED`，+0xE0 保持独立 新 `RF-DRC-SNAPSHOT-A4-VTABLE-RECEIVER-HOP-V1` 将该 out-pointer→vtable+0x18 receiver hop 绑定：显式数据参数只是 local frame buffer，+0xA4 未作为该 hop 的显式参数；indirect +0xA4 流和具体 receiver class/target仍 `UNBOUND`。下一边界为选中构造器的 vtable+0x18 target及其 immediate typed input；这不是全局无 consumer 结论。
+
+两包均保持 evidence-only，未读 PCM/媒体或运行 A/B/DEE；分别并入 F01E `selected-job-xml-profile-normalization` 与 F06NR `washed-rf-drc-snapshot-a4-consumer-boundary`，registry 现47项。
+
+## 2026-11-04：Reader EOF 与 AtmosMezz data-rate 边界补充
+
+- `TIME-ENDPOINT-READER-EOF-BOUNDARY-V1`（manifest `6e306a56916def0f2c35b4cb55ea20f3eb72ca5830a13a981ca7cf6c89eab94f`）绑定 CompositeMasterItem 的 start + length(end-start) 编码和 source_count 相等接受，即半开长度编码；底层 storage read 最终谓词、末样本包含性仍 `UNBOUND`，runtime 分支 `NOT_CAPTURED`。旧父目录的未封签额外文件和 raw trace/script 未复制。
+- `DEE-WAV-SELECTOR3-STATIC-READ-EOF-BOUNDARY-V2`（manifest `29b8781a9c08e2149ed0558e5206fe5883b196a86ad8a06c20b8ef1cbd5ac3ad`，seal `a7a090d75e0efdcde90c163d1bcad27962ad44076f71bd87129bc5eb30dbb677`）补齐 WAV selector 3 的静态 read body：`FUN_1803ec660` 构造 type-3 `atmos_storage_master_s`，vtable `+0xd8` 到 `FUN_1804ccb00`；仅当 `current < limit` 且 request 非零时读取，将 request 限制到 `limit-current`，并将返回数限制到 lower reader 的实际返回数；`current >= limit` 返回 0。对历史 full-file 样本，`endSample=6,522,906`，`endSample-1=6,522,905` 只是算术候选；实际 provider selection、request/returned count 和末样本交付均 `NOT_CAPTURED`。本地 `ParsedRiffPcm24::read_pcm24_chunk` 原本越界/零长度请求返回错误，现按已解析 RIFF extent 截短 request，并在 EOF 或零请求返回零帧；它是纯内存 RIFF model API，不做 OS read，不证明 native/runtime parity。严格 hop API、callback/drain policy、编码帧尾填充均未更改。
+- `DEE-ATMOSMEZZ-DATA-RATE-PATH-V1`（manifest `99a0e5f55b6051fdc39389d746db7551e880fa5ff0fff09976ca61f41f650cdf`）中，获准 Human Cat job 的 `atmos_mezz` XML text 为 1024，schema 候选为 {384,448,576,640,768,1024}。native selector 接受 U32 0..5，code0→dimension11、1..5→15；normal-open increment 后为12/16。XML number→selector code仍 `UNBOUND`，其他 rate未运行，writer after-capacity `NOT_EVALUATED`；不得称六个 XML rate均已支持。
+- 同批再次交付的 `RF-DRC-SNAPSHOT-A4-FIRST-CONSUMER-BOUNDARY-V1` 与已登记包 manifest/seal 完全相同，维持既有 F06NR slice，不重复登记。
+
+## 2026-11-04：LFE recurrence selector correction
+
+`DEE-LFE-RECURRENCE-SELECTOR-CORRECTION-V1`（manifest `0381dbb8f9f022cef64884128fd7f7408e1c491a29c7e5e7cc22d76b0a4802a2`，seal `94c364fd9debbcc03fcfc23ee702ccd2ce1397cfd4ad1c69dbfd42585e063e92`）已核验。它仅 supersedes descriptor stride→recurrence-selector 推断于 `FUN_140343530` 与 `FUN_1403448d0`：两处 LFE lane selector 明确置零并进入 inline recurrence；descriptor stride 是 gather 输入，局部变量在 recurrence 前覆盖。FBW lane 的 nonzero table branch 使用独立 per-lane 字段。V1 `lVar9` source offsets仍待 Agent6 完整 register-chain correction；sample layout/generation、FMA/MXCSR、numeric parity 与 0.819 symptom 根因继续 `UNBOUND/NOT_RUN`。
+
+## 2026-11-04：RF A4 constructed-receiver hop
+
+`RF-DRC-SNAPSHOT-A4-VTABLE-RECEIVER-HOP-V1`（manifest `15418deb63d7d16fa42088f326d21880574afbc58e43545cd18033685db80202`，seal `4be10417c72b34988114850c0089bef0bf37e6e03a437ee7a8838ab1705b8bca`）已物化；8/8 payload、普通和 `python -O` checker 均通过。它把 `FUN_1801764e0` out-pointer 到 `FUN_1801754f0` vtable+0x18 receiver 的 hop 静态绑定；显式参数是 local frame buffer，+0xA4 未显式传入。具体构造类/slot target 与间接 +0xA4 流仍 `UNBOUND`，不是全局无 consumer 断言。V2 已并入 F06NR 既有 A4 slice，registry 现52项。
+
+## 2026-11-04：Composite descriptor B+0x0A count producer
+
+`ADM-COMPOSITE-DESCRIPTOR-COUNT-PRODUCER-V1`（manifest `97163232fbebe1cc009d4afa59d67a9d89513e5468cace3c244dc381e0d53b5d`，seal `340e41c9999c5d95119c312f03a1538eac48d6439daa2f2a4bdba4def92fdbba`）已并入 F01E count-construction slice。`FUN_18054fa70` 将 U16 写入 composite `B+0x0A`（`B=T+0x10`）。普通模式条件性复制所选 adapter J 的 K+0x0A count；扩展模式按六字节 row tag=255 统计、跨 adapter 取最大后加 10。26/28 Objects + 10 的 36/38 只是数值投影，不选择 native mode/J/K/generation/B，也不是物理 N 的恒等。Native execution/generation未捕获；不同 count domains保持分离。
+
+## 2026-11-04：Preferred-downmix exact host-method binding
+
+`ATMOS-PREFERRED-DOWNMIX-HOST-PROPERTY-TRANSFER-BOUNDARY-V2`（manifest `e1d3d21dc0808e6b303806daad0cc8822be2ddf7ab31f6deff147521c5e21882`，seal `6f546f5b676cfd8120dd15a81b19fd97ef0929df77f228b98af3726de4944265`）已核验；9/9 payload 与普通、`python -O` checker 通过。V2 仅以精确静态 DME method path supersede V1 的 generic serializer note：属性值形成 `preferred_downmix_mode` 后，在 active entry 下作为 `key=value` 放入 composite `--encoder` 参数。runtime UI/child argument、同次 prepared XML、native setter/typed `dmixmod`、audio/BSI 效果与 A/B 仍开放。
+
+## 2026-11-04：ProcessFrame capacity-key2 profile boundary
+
+`ADM-PROCESSFRAME-CAPACITY-KEY2-PRODUCER-V1`（manifest `ceddbde5e76657245dfcd8580ce2d8c00b7bc2d4bd6919cf15e838f8b45fc591`，seal `2acde5cb19a97ec5eb5e29bf19d96a7a741de7a25d45dfb2d8e1f721cf72ebe0`）已并入 F01E count-construction slice。它绑定 profile-dependent key2 的 C producer、同 root 的 slot-count 字段与独立 allocation arena；parent M gate 只在 `C < M` 时拒绝。由于 active profile/C、zero-clear extent 和 N→M join 均 `UNBOUND`，36/38 结论只是条件式，不是失败或支持证据。
+
+## 2026-11-04：LFE recurrence instruction-order boundary
+
+`DEE-LFE-RECURRENCE-INSTRUCTION-ORDER-V1`（manifest `48f6c7f7b909308fbcf4368b5f33eac39751578414ce135194e1f865116a35a8`，seal `34e0b39c6e22346ff4dd7a65242d302141e98d9e3ca17d8cbfae4c4c08b41908`）已通过 8/8 payload 与普通、`python -O` 检查。在六个指定函数中，inline path 是独立 MULPS 后 ADDPS；未见 FMA、MXCSR 读写或显式 ROUND/CVT/RCP/RSQRT。运行时 MXCSR 值、六函数外调用者、样本 numeric parity 和约0.819相关性的因果仍 `NOT_CAPTURED/NOT_RUN/UNBOUND`。此为函数范围 Listing 事实，不据此改算法或声称 LFE parity。
+
+## 2026-11-04：DI property registration entry
+
+`DI-FLAG-PROPERTY-REGISTRATION-ENTRY-V1`（manifest `22a6b2c3f87de0a9f436ac9dcf5e4c95f42105dc02641e3356d3e0e084215691`，seal `9771594f21fd5c9f7b3d1d54c1578d1967cb313ca59d0848bf41f14d67bddfc9`）已验证。静态链把 `loudness:measure_only:dialogue_intelligence` 绑定到 `FUN_180133420` 的 `param_1+0x270` 存储、同地址 `SimpleType<bool>` base 初始化及最终 `Bool` vptr；这只是注册/构造 storage edge，与现有 receiver→setter edge 分开。Generic-map runtime receiver、owner/generation、measurement/audio consumer 和 DI 效果仍 `UNBOUND`/`NOT_IDENTIFIED`/`NOT_RUN`。
+
+## 2026-11-04：AtmosMezz data_rate selector constructor edge
+
+`DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V1`（manifest `63ddeef0d32d8bbc1cf6b4bd5fbf5c9b6a50c3d2dd22671b441ab9ab1868b3b8`，seal `b5bc2ed74a1c9edfa28b543830c0c818f48992cea03021d67693dae5cbf6efe5`）已核验。静态表将 XML 字符串 384/448/576/640/768/1024 映射到 selector code 0..5；selected job XML 的 1024 若进入 lookup 则候选为 code5。该包还绑定条件性 `processor+0xFC8==2` 时 `+0xD8` 到 provider state `param_1[0]` 再写 `open_config[10]` 的 constructor path。Same-run XML→Priv+0x6A workflow map 与 branch selection 仍 `UNBOUND/NOT_CAPTURED`；其它 rates 未运行，writer after-capacity `NOT_EVALUATED`，不可称六码率均已支持。
+
+## 2026-11-04：Preferred-downmix host-to-child argv V3
+
+`ATMOS-PREFERRED-DOWNMIX-HOST-ARGV-TRANSFER-BOUNDARY-V3`（manifest `181b292befdd83ed92d55305430f81082ea44fc0a47fe2ffdb0c543b8b8ddc0b`，seal `b9ba439a2849fac780a50b90e292227379f0862ba3f8f29f0be50360992a3d1e`）已核验；9/9 payload 及普通、`python -O` checker 通过。它把 active preferred_downmix_mode 的 composite `--encoder` pair 静态追踪到 child_process.spawn，host路径未见 split/rename/drop。实际 UI/inputType/child argv、native parser处理、typed dmixmod owner、audio/BSI效果和A/B仍未捕获/未绑定/未运行；V3 仅替代 V2 的 host-to-child 边界。
+
+## 2026-11-04：AtmosMezz data_rate selector constructor edge V2
+
+`DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V2`（manifest `ecbddc90e07a1a238113116068dc7c17a983f7bbd249fd4c29858f35d951cc7f`，seal `33b22df369422c3371e464bfea2df88122fbf4cfc49112078d5af9d3188bb1de`）supersedes V1 的 source-linkage wording。它绑定 workflow rate string 到 `FUN_1801535b0` 静态查表及 +0xD8 frame-local 写入；六值静态表为 384→0 至1024→5。仍未绑定同次 job XML→`Priv+0x350` workflowParams entry，`processor+0xFC8==2` 实际分支未捕获，writer after-capacity未评估；因此不是全码率运行支持。
+
+## 2026-11-04：LFE source-offset correction V2
+
+`DEE-LFE-SELECTOR-SOURCE-OFFSET-CORRECTION-V2`（manifest `d36a0a5e81e8ee81e67e6155747077b81448033adefc349ca48b4d73157cf462`，seal `3ffd3edc92dfbcc0dcb1e4483748cc1bd6af3ca7ae1c2a927d34ae267b5a7db5`）修正 reviewed static register chain：FUN_140350d00→FUN_140317600→FUN_1403471f0 得到 child +0x94/+0x98，而非旧 +0x40/+0x44。Same-owner writer从 channel_instance+0x1098 的 +0x64 U32 和 +0x70 I32 生成字段值，descriptor-ID5 的较早 +0x98 store 在此静态路径被覆盖。字段语义、config pointer producer、ADM row crosswalk、matched values及 LFE root cause仍 `UNBOUND/NOT_CAPTURED`。这与两个 dispatcher 的 recurrence selector=0 更正是独立结论。
+
+## 2026-11-04：ProcessFrame profile-index key1 producer
+
+`ADM-PROCESSFRAME-PROFILE-INDEX-KEY1-PRODUCER-V1`（manifest `7fd71afea105cfe930f626e5be5e82f2d3503bfdc51db66c2a0a72d0a3059257`，seal `83671f7a5e1d526b3ca3f549dc1524232825736121fbe93bbb452edf8176e623`）已并入 F01E count/capacity slice。静态 key1 signed-I32 override 直接复制为 profile index；若未覆盖且 image flag 为1，则静态 default index 为0。profile index 是直接 table index，仅 `[0,1,3,4]` 有行。profile0 的 key2 C=11 与 M>C 拒绝仅是条件关系；active key1/profile/C、root clear extent、N→M join均 `UNBOUND/NOT_CAPTURED`，不能据此宣称36/38实际拒绝或支持。
+
+## 2026-11-04：RF A4 branch-to-worker input boundary
+
+`RF-DRC-SNAPSHOT-A4-BRANCH-TARGET-INPUT-BOUNDARY-V1`（manifest `2b9517c5fbbc32b67c00677edeaf4115561355f0015001101c17f80a2c14c7cb`，seal `b3a56041e0043a36d10c527f44a7dfa7a646d96c677d2deaf0d55332921e2750`）已核验；9/9 payload 与普通、`python -O` checker 通过。三条静态分支均把构造对象 `wrapper+0x08` 作为 first-worker 的通用 64-bit `longlong` 首参数。它不是已证明的 `+0xA4` 标量；opaque helper 是否把 +0xA4 复制进 inner state仍 `UNBOUND`。运行时分支/class `NOT_CAPTURED`；下一边只沿同一 snapshot owner 检查选中 worker 的 typed input。
+
+## 2026-11-04：LFE recurrence coefficient crosswalk
+
+`DEE-LFE-RECURRENCE-COEFFICIENT-VECTORS-V1`（manifest `8cdbdd776b0066b4110a4d6ae73070eeb2e52b5f0b0bba9c0e9a6fdfe3dc7fd6`，seal `502b46ee6e38671ccd6d0efff81697402cf1a04495308bd7d8294f53f85d0e86`）的 388 个静态 F32 words 已与 Rust 比对并实施零分支 A/B provider。`lfe_transform.rs` 现嵌入完整 128-word primary/secondary arrays；`transform_selector_zero_lfe_block` 固定使用这些 module-owned words，低层 `apply_selector_zero_lfe_recurrence` 仍保留 caller-supplied primitive。四个 shared scalars 与 `LFE_SELECTOR_ZERO_SCALE_BITS` 完全匹配；新增 exact-word test 对 sealed Wash 向量逐项核对 128+128 words，composition test 使用 Wash arrays。PRETRANSFORM_L/R 同为128 words但属另一阶段，均与两个 recurrence 表128/128 words不同，不能替代。非零64+64表与selector dispatch仍未实现，workspace中未找到非测试调用点。Sample branch、numeric parity、MXCSR/FMA与0.819根因仍 `UNBOUND/NOT_RUN`。
+
+下一最小边界仍是 selected owner/selector dispatch 与 matched sample branch；非零64+64 FBW tables 属于独立路径，须有对应 owner/branch 证据后再单独实现。当前零分支系数实现不建立 sample parity、MXCSR/FMA等价或 residual root cause。
+
+## 2026-11-04：RIFF PCM24 parser channel cardinality
+
+Read-only gate inspection found no fixed 38-channel rejection in `parse_selected_riff_pcm24` or `parse_selected_format`: the parser preserves `fmt.channels`, rejects zero, and checks PCM24 block-align/byte-rate consistency from the actual channel count. `parse_selected_job_configuration` separately permits 1..=256 channels. `decode_selected_pcm24_read_chunk` retains a 38-channel convenience shape; it is not the RIFF parser gate. A hash-bound metadata-only receipt provides six N=36 and one N=38 shape values; a new synthetic RIFF regression also covers N=37. No original WAV/PCM is read. Fixed 38 gates in `bind_selected_primary_control_projection`/`normal_control_snapshot` and downstream source/capacity owners remain separate and unchanged; this does not claim arbitrary-N end-to-end support.
+
+## 2026-11-04：First Love 与 Human Cat 授权输入的 parser header gate
+
+对 `D:\First Love.wav` 与 `D:\人是猫 - 张卡斯, 洛天依.wav` 做了流式 SHA-256 重算和有界 RIFF/ADM metadata scan。SHA-256 必须遍历完整文件（包含 `data` 字节）作为摘要输入；这些字节没有被解码、保存或解释为 PCM。独立 metadata scanner 只读取 656/660 个 RIFF/format/CHNA/DBMD 元数据字节，并 seek 跳过对应的 1,334,998,044 / 743,611,284-byte `data` payload。
+
+- First Love：SHA-256 `db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335`；文件/Riff extent 1,335,078,774 bytes；fmt=PCM24/48 kHz/36 channels/block-align 108；data=12,361,093 samples/channel；CHNA=36 tracks/36 UIDs；DBMD section-10 track count=36，3 sections。fmt/data/axml/chna/dbmd 各一块。
+- Human Cat：SHA-256 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`；文件/Riff extent 743,696,526 bytes；fmt=PCM24/48 kHz/38 channels/block-align 114；data=6,522,906 samples/channel；CHNA=38 tracks/38 UIDs；DBMD section-10 track count=38，3 sections。fmt/data/axml/chna/dbmd 各一块。
+- 两份 header 都满足 RIFF extent、fmt 格式、data block-align 与计数匹配条件；没有 `N != 38` 的 parser gate。当前实现中没有字面错误标签 `RIFF_PCM24_PARSE`；对应的路径是 `encode_request::run_inner` 的 `read_resource -> parse_selected_riff_pcm24 -> selected_adm_payloads -> prepare_selected_job_input`，parser 错误包在 `EncodeRequestError::Riff`。
+- 使用一次性、只读 Windows memory map 将两份真实文件逐个传给实际 `parse_selected_riff_pcm24` 函数。First Love (N=36) 与 Human Cat (N=38) 都 `PASS`；每个文件的 before、parser 内、after SHA-256 完全相同，parser 返回的 channel/sample/data extent 与 header scan 一致。没有创建 PCM 副本或输出文件。
+- 此调用验证的是实际 parser 函数；CLI 文件 adapter/整条 admission 仍未运行：当前 `read_resource` 采用 `std::fs::read`，而 `parse_selected_riff_pcm24` 要求完整 `&[u8]`，所以没有运行 `encode_request::run_inner`、`selected_adm_payloads`、`prepare_selected_job_input` 或完整编码。两份样本都未命中固定 38 gate，因此本轮无需改 parser channel rule；下游 N→M identity、normal-control 安装和任意轨产品闭合仍未验证。
+
+## 2026-11-04：Wash 静态 first-break supplement 批次登记
+
+以下登记只保留隔离后的静态边界。没有据此声称运行时选中、音频/BSI效果、numeric parity 或任意轨闭合；lower-storage V1、preferred-downmix XML V1 与 V2 的重复交付按各自 manifest/seal 去重，V1 与 V2 仍分别保留为两个版本记录。
+
+| Supplement | Manifest / seal SHA-256 | 已绑定的静态边界 | 仍开放 |
+|---|---|---|---|
+| `COMPOSITE-SELECTOR-K-COUNT-HANDLER-SELECTION-V1` | `63529a6bb3f0c2626290f0a1126ca93f7c57b1d7b4cf0898b3e67b8c2b8d3b2e` / `e7c7b013c548b80d62f77cfed9d9cb075997d9ed41e32496dd6c2a1ff6634805` | per-item suffix map 与条件 WAV slot-3 route | 当前嵌套 path suffix/handler、J+0x08 K-count 公式适用性、writer reach |
+| `COMPOSITE-SELECTOR-NESTED-SOURCE-PATH-BOUNDARY-V1` | `3ce58ded640e63686cfb922b6827e87534396758cdd67cadb3f10271af0b2bde` / `7e9c9154be93b0b2331fafbbd644ba066f8e7232850c1e77ba46d122089854a1` | indexed 32-byte source record 的 +0 字段经 64-byte carrier 到 storage-open | symbolic owner、path bytes/suffix、generation、handler；不以顶层文件名替代 |
+| `DEE-LFE-INTERMEDIATE-CALLEE-DISPATCH-BOUNDARY-V1` | `d056541186431fe7cc9bb3ab030dc37477bf98820c594e66a46e95abdeda10bd` / `df8b76765056f04432a424bfefc5c4c32196790bf780098145c7f1c14b22b887` | 16-byte alignment 分支与两条 helper 调用，保留原指针及 EDX=0x100 | runtime branch、numeric parity、后续 buffer 内容 |
+| `DEE-LFE-HELPER-READONLY-EXTENT-V1` | `90e29e332787d43d1547769b4f3a70eb59aa57b0977bf2035f242c27d72ab` / `a3696e6523240144b878739290e9670348a502c4bd7eb1660cc8688994b4eb5d` | 两个 alignment helper 各读 256 F32/0x400 bytes、scalar min/max、无输入写入 | 后续 helper 效果与 e350 内容连续性、parity/root cause |
+| `DEE-LINE-DRC-A0-PERFRAME-PACK-FIRST-BREAK-V1` | `5ccc2f08330392bf7461419adfbfe94f37d50a76ff2cfeb4969e7a699d04deae` / `a3b05226e8d4dbd039da98ff78ebb0afaaf0e731ab23b25b74b8a31eea52d587` | snapshot 指针到 validator/per-frame packer | 两个有界 body 均未直接读/拷贝 +0xA0；codec/BSI join 与音频效果 UNBOUND |
+| `DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1` | `8ec2de3c452aded30a5aad5a370e93fdcae958ebc6f516c18265ca76c16437f1` / `273db15bdc1196598f36a0f2f2439ee8837a9e36a3985c0267ba7d1ea88c4ca2` | `time_base` 分支与 embedded-timecode sample-bound 写入 | 选中 XML/setter、Priv owner/generation、runtime branch |
+| `DEE-ADM-TIME-BASE-DEFAULT-SETTER-PRODUCER-V1` | `5495ac7a41da20518ebb91cb8d00a1edae8b80f1f5d9555890ee196a6593193a` / `1a515a1813fb6e9f74112844072e95db52d21aa05ad686e1e3f1b09e8d1ccf12` | 构造器把 static default candidate `file_position` 交给 StringType setter | 选中 XML 值和 host SetProperty target、runtime branch |
+| `DEE-WAV-LOWER-STORAGE-RANGE-INITIALIZATION-BOUNDARY-V1` | `6c3f61ad8c7aa2723d75219530b7261c1d88310a2c5b3b9b18af59bbad2ec23c` / `3d7de197f0e99f7f07241d2a482de48ed469a4b7148d3bf5fd57baea6eb34034` | current/limit getter 与构造期静态初始 `[0,0)` | nonzero limit writer、单位 runtime 验证、provider selection；parent V2 仅保留 supplied hash reference |
+| `DEE-DI-DIALOGUE-BOOL-STATIC-KEY-OWNER-BOUNDARY-V1` | `b46b594c5c7680820711972e9bb257aff270e390c698902c31255d4f27a2c2c3` / `3d0e00b29671cba7a64c7afbaf2b494f1a83d0f8e519fc98ada066b5d9160ab9` | ParametersContainer 精确 key 到注册 Bool candidate | runtime 是否查询、owner/generation、measurement/audio/JOC effect |
+| `DEE-FLATTENED-MASTER-INNER-PROVIDER-FIRST-BREAK-V1` | `68beaf1e33787941727a3d5481ffdaf221d393d1f2e8a842a0a6a384177476b1` / `eff72f5111b6a38ddc253cf008da85389304b67303149417b9d2d3d902d1d11d` | nonzero param8 wrapper 的 +0xA0 到 inner provider +0xA0 forwarding；+0x58 与 +0x60 分开 | concrete inner provider、qword0 owner、selected ADM reader/profile join 与 runtime branch |
+| `DEE-PREFERRED-DOWNMIX-ARGV-INPUT-VECTOR-BOUNDARY-V1` | `1e8d409b2e11033b318b9b96087d18d7ce49d0871f9c62e6d8271babb2c5fbdc` / `a93e787cc98300c7f734bba7984faead2c2b683ff4e959ab69388be109c940c3` | +0x318 repeatable input-path vector 与 consumer；不拆 colon/equal | 专属 `--encoder` storage/parser、actual argv、native join/effect |
+| `DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V1` | `e8f22f112e8376efd34bbf38b252e6842445428e19e4fb94d310cc8f15ddf1c8` / `2d671996a65dad4b3f1fa7acd2643ce6168f57ea738188b7f812d62c2096b100` | 四 token 到 0/1/2/3；V1 callback-null setter 路径 | XML ordinal 到既有值、initializer 与 effect |
+| `DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V2` | `8cc3571d5a28c506b303ba0358cafa0235b6d9278f9ae9712c76814ba42f6d74` / `05a967e6311a13bbeaf1be907f2b63be599564e5602a595831dbeb0f623173d5` | 补充：构造期没有直接初始化 +0x50；V1 token map 保留 | 首次 setter 写回既有值，ordinal-to-value、runtime 与 audio/BSI 仍 UNBOUND/NOT_RUN |
+
+## 2026-11-04：selector、DRC 与 downmix first-break 续补
+
+后续 Wash 包继续收窄静态 first-break。重复交付按相同 package ID/manifest/seal 去重；以下均是独立静态边界，没有 runtime、codec/BSI 或音频效果结论。
+
+| Supplement | Manifest / seal SHA-256 | 新绑定事实 | First-break / 未绑定边界 |
+|---|---|---|---|
+| `DEE-LINE-DRC-A0-FIRST-ROW-PACK-BOUNDARY-V1` | `efe9886183b41e1bdb3654606b0d727e6d6ad8ff64e83da28ca10d693d92f31a` / `015369ddf3cd46b5ed8a3a121a6abdc8a28db9161d3d1c64224819708e04b8dc` | snapshot+0xA0 到 +0x9C 两分支的 row-pack helper 路径绑定；+0xA0 非显式参数 | row owner/alias 与 codec/BSI join UNBOUND |
+| `DEE-LINE-DRC-A0-FIRST-ROW-CONVERTER-BOUNDARY-V1` | `d4435a85efc332cad1b3a7bb9e4b417630395da1d46116b1f370f842e5a7417b` / `b577df431c2964596e29e9ff4800af86fd0732e5363c19dfcc96ecfecd5b4b84` | zero branch 进入 FUN_180182850 的首个 nested row-converter | child body/type/extra formals、row owner 与 codec/BSI UNBOUND；另一分支未展开 |
+| `DEE-LINE-DRC-A0-NESTED-ROW-STRING-BOUNDARY-V1` | `7a73c252249a4943f7823b538dd9d6433fc17d2dc482fee34a512d3db7b01806` / `0dc864acc40d2bb241f6a9de6a84c2b07f72c4b9497936df8d66a6312593f937` | generic string consumer 读 +0x10 length/+0x18 capacity，有限复制后 NUL terminate | 这是 generic string，非 typed codec/BSI record；snapshot+0xA0 owner join 和后续 copy consumer UNBOUND |
+| `DEE-WAV-DESC-LIMIT-WRITER-FIRST-BREAK-V1` | `7bc353061c346d29cf371b4cd3814607318748aac32ca16c18d1b7079e0d8460` / `a08db0685e3ceca061eb6923fc373d551c1ddbfc9cdee3e29e6b26d7d36c88b5` | selected Factory-open 到 Desc+0x88 call 静态绑定；bounded target 无同实例 +0x68 显式 store | 后续/global writer 与 runtime limit UNBOUND；不是全局不存在断言 |
+| `DEE-WAV-DESC-ALTERNATE-CALLER-BOUNDARY-V1` | `92c13e47e23ca05188177588c299b6fbba6b8ab2a9fb5246ebcc1e6121219087` / `682a7163d11bb06b42aff53a7ab705b488eb0c123dc2dbacd3ba8b86dd07f94f` | FUN_180406cd0 分配另一 Desc 并写 +0x38；该函数无 +0x68 post-write | alternate instance 到 selector-3 消费对象的 owner/generation join UNBOUND；其它 writer 未排除 |
+| `COMPOSITE-SELECTOR-SOURCE-VECTOR-OWNER-BOUNDARY-V1` | `3495b4c9d5e4f07c0c92fd1a4021601c73098c66c705ca4be28d5ff36962b5d7` / `84eb7118bfdfe65dd240fe987e3e0838e44ca0244f39cdaec6d853a3dd368a66` | param_2 begin/end-backed vector count=(end-begin)>>5，same pointer 传 reader builder | vector writer/owner、job field、generation、path/suffix 与 handler UNBOUND/NOT_CAPTURED |
+| `COMPOSITE-SELECTOR-SOURCE-VECTOR-CONFIG-FIELD-BOUNDARY-V1` | `65f9aa8afc68ec66cb9d9202b750ba7cec9b54dad06ed368ebf18203ed25dca8` / `ee8db5d162de556cc14e3e1dbb197ec9fdc96e3d5c4e089a1bdcbaf69a4a014e` | mode-two queue record +0x08 U64 begin/end/capacity header被复制，32-byte rows经 wrapper 以原指针到 reader | queue record owner/job field、generation、actual path/handler UNBOUND；1536 U32 独立为 frame sample count |
+| `DEE-LFE-BUFFER-FIRST-CONSUMER-EXTENT-V1` | `156086e2fa24ce7deafcd33442a36e5211ae89c65d5edef7a7e4746b75e3a9d3` / `ec48c5a2f2429e8dd14ba844f11cfa3a58c214e7698aaa221b83ee9d8ae7a3db` | FUN_14036bc60 的一处调用只读 RCX 0/4/8/12 四个 F32（16 bytes），缓存用于 64 轮且不写 RCX | scalar 意义、其它 helpers 与 e350 buffer 内容、parity/root cause UNBOUND/NOT_RUN |
+| `DEE-TIME-BASE-HOST-TO-SETTER-BOUNDARY-V1` | `e0c84b29c31809d3488312513906067484b01e37cd793a248a6fa9d1e01e920c` / `6c05eabd5ca77cda10d491ef4965d2ededad2cbe16ff3b0e609abff46dd9f9a1` | StageRunner::Build descriptor +0x30 interface -> StageRunner+0x270 -> RunAudioFilter -> generic SetProperty | 当前 keys 是 source/target，不含 time_base；dynamic factory/setter 与 typed Atmos setter join UNBOUND |
+| `DEE-TIME-BASE-DEFAULT-SETTER-PRODUCER-V1` | `5495ac7a41da20518ebb91cb8d00a1edae8b80f1f5d9555890ee196a6593193a` / `1a515a1813fb6e9f74112844072e95db52d21aa05ad686e1e3f1b09e8d1ccf12` | FUN_180136220 构造器把 static default candidate file_position 交给 setter | selected XML 值、host SetProperty 目标、runtime branch/owner UNBOUND |
+| `DEE-PREFERRED-DOWNMIX-ENCODER-STRING-PARSER-V1` | `e39222a99bef7c9006033f9ca033b308a95a7a8a66a23cfaf81c5ef3c5209bcd` / `7bfc61839b10b676d6ec0bf01c726ae5d571997baa1a7ea5a8135fea0a2a4dc0` | +0x360 typed encoder string 按 colon 分段、首个 equals 拆 key/value 并进入 preferred_downmix reader | child argv/branch/effective value 与 audio/BSI consumer UNBOUND/NOT_CAPTURED；ddpjoc: 仅空字符串 fallback |
+| `DEE-PREFERRED-DOWNMIX-STAGE-CONSUMER-FIRST-BREAK-V1` | `82beecbe27f18154de45dabff6a01f2f844df21d448fd87bd4ea6fe72adeaf0a` / `bb299d73124f23d6266259addbcd23bb0dbe3d0f00e411a40f67281936f819c4` | getter scoped xref 只见 formatter caller；selected setup/encode未见 direct ref；首个候选 receiver 为 param_1+0x210 slot+0x30 | receiver 到 MixMode owner/type 与 audio/BSI consumer UNBOUND；不是全局缺失结论 |
+| `DEE-DI-DIALOGUE-QUERY-KEY-PRODUCER-BOUNDARY-V1` | `c0a8d3be31e0ffe59d51ab8f160bc743797ac17ae5be396009918def7cd3312d` / `e5827a2ff3bd610590021fcea502b83bba1f1c9ef6003a56b314cd5df8e41af1` | getter receiver 静态为 Priv+0xec0；query 来自 FUN_18014a060 展平 0x68-byte records | dynamic name/query 是否等于 dialogue_intelligence key、runtime Bool selection/effect UNBOUND |
+
+## 2026-11-04：LFE、参数传递与 writer first-break 补充
+
+新增记录均来自 Wash-only 静态/边界包。包检查在隔离仓库 normal 与 `python -O` 下通过；没有运行 DEE、读取媒体 PCM、改写音频逻辑或推断未绑定 owner/generation。重复交付按 package ID、manifest 与 seal 去重。
+
+| Supplement | Manifest / seal SHA-256 | 新绑定边界 | 仍开放 |
+|---|---|---|---|
+| `DEE-LFE-OUTPUT-STACK-CLAMP-BOUNDARY-V1` | `19dba09c955b837a65c43452b06cd0c1de8224d7655da2f331dc0f7fdb8a8bf7` / `4a1a6d984b8ccb0d3e140b522d78974845490979407efc9e8ce6672aa7cc02ab` | arg7 的 256-F32 stack output 在返回后由 FUN_140340640 原位 clamp | 与 RDI 输入 alias、后续 e350 内容连续性及数值 parity UNBOUND/NOT_RUN |
+| `DEE-WAV-ALT-DESC-SOURCE-OWNER-BOUNDARY-V1` | `4fd4a4dd19f1ec7cf5bc1d8d319ae0ed1567282276adf355ddf0ddb915b6d4fd` / `9f962d0e29b567ff43d854a7020dbd04e799d7e3952c2245d83292c0d742560f` | Factory +0x20 shared owner 参数经 source vtable +0x60 返回值写入新 Desc+0x38 | source pointee owner/generation、与 selector-3/PcmMd getter 的同对象连接及后续 writer UNBOUND |
+| `DEE-DI-QUERY-CALLER-RECEIVER-BOUNDARY-V1` | `0b9bf8bfc028c0295a9fa503c45b753339eb3a13fbbff1f3c7041f9b7a13e19d` / `f960138d56c39fb89fb17c4887353697d9690e4b3e366799f7173581d462dc33` | getter thunk 从 FilterDDPJocEnc+0xb8 取 Priv，保留 RDX；receiver 为 Priv+0xec0 | caller query owner/bytes、是否匹配 dialogue_intelligence、运行时选择与效果 UNBOUND |
+| `DEE-PREFERRED-DOWNMIX-VCALL-FIRST-BREAK-V1` | `3193c097333426dc1ad80e85f9067b0f48982226d993a0c7630c66904f9f8411` / `5f571cfd3681631e35dc89706f6f89adf69668e9cdc71f9240e7b613df7f99b2` | FUN_1801535b0 的 +0x30 virtual call receiver 为 param_1+0x210 | dynamic target、MixMode typed owner、audio/BSI effect UNBOUND |
+| `DEE-LFE-STACK-OUTPUT-ALIGNED-HELPER-BOUNDARY-V1` | `5fd4ef74c0f69d42894c83f468818b377b78684ee928abea49e0e3edfc2e98bb` / `50b3070a7c94558e3c24610c82ec3d03254e93d1c5ea67fe8f8e82f202102ad6` | ABI 静态推导 RSP+0x40 stack output 到 FUN_1403174c0；helper 只读 256 F32 | runtime stack/RDI alias、e350 link 与 numeric parity UNBOUND/NOT_RUN |
+| `DEE-RATE-CODEC-WRITER-FIRST-BREAK-V1` | `c9328dd7994774da8434ccfea280f6937a349f86070ced5cd3d6f99f4a5d725d` / `4c3fbcac6f4ee9f63da46a417ce826222e2713e936ea412a873fa1adcaee543e` | rate code 静态构造 typed codec config 并进入 writer adapter 路径 | config 与 writer-state pointer owner join、动态 writer target、具体 bitrate field UNBOUND/NOT_ESTABLISHED |
+| `DEE-PREFERRED-DOWNMIX-CLI-ARGV-STORAGE-BOUNDARY-V1` | `a168d53ca33fba23029b02bfa319188ccea84895e6ee597f2bd9859f7d135007` / `eff2780bb1bb7e8d6664493ac06f91a8f31871143a44d8db8aa5cb6845a144fe` | 宽 argv 转窄字符串后作为 R8 传入 app runner；已绑定 typed encoder-string storage 与空串 fallback | argv 到 Boost parse/store/notify 写入、child argv 与实际参数值 UNBOUND/NOT_CAPTURED |
+| `DEE-DI-QUERY-VIRTUAL-CALLER-RDX-BOUNDARY-V2` | `8239d3f3a6b174f9ab98d997702cc4799135dfb6088913c9f9b84f31798bcc39` / `b5fa159280d79bc5eb857dc29054317689e428b0c589473979373c152a392ed0` | V2 绑定 getter thunk 保留 RDX，修订 virtual caller 边界 | caller/param2 name owner、query bytes 与 dialogue_intelligence key join UNBOUND；V1 receiver 事实保留 |
+| `DEE-LINE-DRC-A0-NESTED-STRING-BYTE-COPY-EXTENT-V1` | `1a2982d3e3c4a6d67dce5d47950c5feed7d481f9d549172897baa095fbf46f6d` / `ce15a5ea116e03f8ec7f95e81e4810d3d790cf958e314788383b90fe16ed4db6` | FUN_18059a7e0 被静态界定为 generic overlap-safe byte copy，之后写 string length/NUL | +0xA0 owner、codec/BSI consumer 与音频效果 UNBOUND |
+| `DEE-LFE-REDUCTION-SCALAR-FIRST-USE-V1` | `bc161609efd11ae9106996bc087fb660ac2e11a3860ee0680e6f854539220cde` / `80cce8b3f7fbd34814609b934220dfbe4415f345e381392ffb7618a022f26b20` | selected `FUN_14036bc60` 在读取 incoming R9D 前重定义它；后续输出 store 使用 returned XMM0 | 仅否定该 R9D 参数到该次 XMM0 store 的直接路径；更广 helper effect、owner/generation、parity/root cause UNBOUND/NOT_RUN |
+| `DEE-RATE-PAIR-BSI-WRITER-BOUNDARY-V1` | `f1ea2ab322a39cf411ae8817da7662bcf89dda4f250fd136c9303fdf0a934ce9` / `e6087dc22a5b2e5e83886488431eedac4b782129a1c4d40ade89548a498cbcc9` | lookup reached 条件下，384→selector 0→typed setup value 6；1024→selector 5→typed setup value 8 | 其它码率、rate config 到 writer state owner join、动态 writer target 与具体 BSI bitrate field UNBOUND |
+
+另一次 `DEE-LFE-STACK-OUTPUT-ALIGNED-HELPER-BOUNDARY-V1` 交付与上表 package ID、manifest、seal 完全相同，故不重复登记。
+
+## 2026-11-04：row-count、rate、DRC 与 downmix 边界续补
+
+以下为新增 Wash-only 静态/边界事实。checker 在 normal 与 `python -O` 下均通过；没有运行 DEE、读取 PCM/payload/key/license、修改 DSP/codec 算法或将未绑定事实升级为产品支持结论。
+
+| Supplement | Manifest / seal SHA-256 | 新绑定边界 | 仍开放 |
+|---|---|---|---|
+| `DEE-ADM-ATMOSMEZZ-ROW-COUNT-FIRST-CONSUMER-V1` | `88803f96751c30843dc357731c7b0e5f9c9af8bb9a10b2a18ab61a87b612dd20` / `a5ab2c6d86d281249cfa0230133df7336e2be19e64fa4442d961022f6fb7d891` | descriptor-bearing branch 的 U32 N gate 为 1..128，创建 N 个 map entries 并复制 6*N physical rows | fmt/CHNA 到具体 K instance/generation、heap/PCM row allocation 与 arbitrary ADM admission UNBOUND/NOT_EVALUATED；不构成固定行数结论 |
+| `DEE-RATE-SETUP-ENUM-BOUNDARY-V1` | `bb44a5580d4a8d602ff13ba63a483bbd3a3e629f017c365c66c56892dd93533f` / `1f0515ae38ec7805cb00fc8dbc14f0a2c9de030beab099b6f678f1afb24c7686` | 六个 XML rate 值条件映射到 selector 0..5 和 typed setup 值：384→6，其余五值→8 | lookup/setup 是否到达、writer owner/generation 与 BSI bitrate field UNBOUND；不是全码率 E2E 结论 |
+| `DEE-LFE-ZERO-INLINE-TABLE-DIGESTS-V1` | `40fd1e8833cbec5cd7ca911dbf2e8666ab2ce1f4a486b99aaf57ea41b2e715d5` / `8ae4cd657a4e0986424c60dc4e6c626c41e45d18bc6502f036205ef52731fea8` | 两个 reviewed dispatcher 的 zero-inline A/B 128-F32 表 digest 已 hash-bind | F08 候选缺少对应 128-word vectors，表比较与 parity NOT_RUN；不作 match/mismatch 判断 |
+| `DEE-RF-DRC-PROFILE-TYPED-SNAPSHOT-V1` | `d315d056f970ffb04cf472b6bc1b7fd4b33ddac7237ce686a0ae7e6df04204b6` / `140f0a91b897df4cf60d94be4e4e8cc7133ad0c81e0ed59da4e8d930f634ae77` | RF DRC xs:string schema、film_light default、六个枚举和 RSI+0x730 StringType snapshot writer | 数值 RF 字段和 DDPI+0xA4 join UNBOUND；与 line-mode +0xA0 分开，runtime/audio effect NOT_RUN |
+| `DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V1` | `5f13d9022b8d0ff2a6efafcee9ea1967fb39ba19a1548ff5e356ed7d01af5dcf` / `0e9832d96a913defd7bc07eda417fee77ac9a1a21976ab25c2075857e30bddb0` | candidate Priv+0x290 SafeType<bool> 到 measurement setup +0x94、engine 和 first-record consumer 的静态路径 | +0x94 用途、最终 Priv+0xf6c effect、runtime key selection 与 owner/generation UNBOUND |
+| `DEE-PREFERRED-DOWNMIX-FIELD-LIST-COPY-BOUNDARY-V1` | `21deec0bd9317571ddd9b2fe1c1fd0a3e8bafcefa25b1c730192e97854930d97` / `7499bf330362a0f5a49bb9d38b241a1057906a6c6a68071c276795351ac5d705` | Priv+0xec0 ParametersContainer 与被复制的 Priv+0x210 pointer-list 元素属于不同对象域 | member constructor/vptr writer、ordinal/MixMode、audio consumer、generation/effect UNBOUND |
+| `DEE-PREFERRED-DOWNMIX-CLI-ARGV-SEMANTIC-BOUNDARY-V2` | `a86ff9e516f43370fc0cf213707bdf49fb53212ca622708206436aaae3ce051c` / `830d630471ee0b5235ff56b706bb1a08e714404480308b570a8293b370dec7e1` | V2 沿 slot +0x20 到 FUN_1401da950、ChildOp RDX 与 semantic token-count bounds；parsed records 进入 this+0x18 config tree | RDX 未被 ChildOp 消费；this+0x18 到 encoder storage this+0x360 及 parse/store/notify 仍未连接 |
+| `DEE-LFE-RECURRENCE-ARITHMETIC-ROUNDING-BOUNDARY-V1` | `a792b7c8cd85d5d874fa9d81ff9d83e0e9f44cedce66299dea2efacba09da8d5` / `703d859ab220434fd3063edeaea6bfcb07565ca861d9d0445e5b4e82cbfd768b` | 两个指定函数体中 MULPS/ADDPS 是分离的 binary32 rounding points；105/105 instruction encodings 匹配 hash-bound EXE | 函数体外 entry MXCSR、numeric parity、sample generation 与 0.819 因果仍 UNBOUND/NOT_RUN |
+
+注：Wash 回传的 LFE recurrence package_seal 摘要字符串含 65 个十六进制字符；上表采用隔离仓库 `package_seal.json` 重算出的 64 位 SHA-256，并以本地包 checker 验证 payload 封存。
+
+## 2026-11-04：LFE zero-inline words 对照当前 F08 Rust 常量
+
+`DEE-LFE-ZERO-INLINE-RAW-WORDS-V1`（manifest SHA-256 `bb0458a351d4f923ceaf23f92c231ae5c5254e67ddfbcf433714a478c6ed03e1`；seal SHA-256 `7f3acaf810bab466ae4afb35f2019ca76533127f66dee6742d4dc2e05b8a2e2b`；`INPUT-ONLY-VECTORS.json` SHA-256 `2468568363d487361c8359e50362ebc5502414e6e3924f2486cb31a71c523f54`）提供了 zero-inline A/B 两张 128-word little-endian binary32 原始表。逐 word 对照当前 [lfe_transform.rs](D:/Programs/JOCForge-isolated/crates/jocforge-domain/src/transform/lfe_transform.rs) 的 `SELECTOR_ZERO_LFE_RECURRENCE_PRIMARY_COEFFICIENT_BITS` 与 `SELECTOR_ZERO_LFE_RECURRENCE_SECONDARY_COEFFICIENT_BITS`，两张表均 128/128 完全一致，raw byte SHA-256 分别为 `bbd2bd460b0a750ccb45f959561a9a7e2ed2f8c6fd9391fb21abc9216b08fa41` 与 `e4cbb855ed455887b387cdb188bf8bab41976c73648c1b022dd18156214bde50`。本地源码当时的 SHA-256 为 `d9011f5a3ec28e7bed0d5621569fc3289834fbbfd8a38f7d7428c338ab7e39eb`。
+
+该结果仅是隔离仓库当前 Rust 常量与 Wash 原始字数组的精确相等；单独封存的 `DEE-LFE-F08-COEFFICIENT-CANDIDATE-V2` 仍没有 128-word arrays，未对它本身作包间比较。selector/runtime 分支、sample generation、numeric parity 与 0.819 causality 仍为 UNBOUND/NOT_RUN。
+
+## 2026-11-04：LFE temporary/history owner first-break
+
+`DEE-LFE-TEMP-HISTORY-OWNER-BOUNDARY-V1`（manifest SHA-256 `cdc6f7192712bd90648eed975b7aa0bcee60f68924ca26d9356079de57ad665c`；seal SHA-256 `ae6931ed92e43054dd90b9465292ce89251124662522ad2cb0e4d486846cc59b`）补充到 F08 selector-zero pretransform/history slice。FUN_14036e350 的 RCX temporary、RDX 128-F32 in-place state、R8 256-F32 output extent 静态区分；dispatcher 的 RCX/RDX 是不同表达式，但 pointer alias 未证明。首个 caller FUN_140317600 的 RDI owner/type/generation 和跨帧同 owner history reuse 仍 `UNBOUND/NOT_PROVEN`；runtime 未运行。
+
+## 2026-11-04：K owner、RF teardown 与 downmix config-tree 后续边界
+
+新增包都已 normal / `python -O` checker 验证，保持静态 first-break 范围，不推断运行时选择或算法效果。
+
+| Supplement | Manifest / seal SHA-256 | 新绑定边界 | 仍开放 |
+|---|---|---|---|
+| `DEE-ADM-ATMOSMEZZ-K-OWNER-FIRST-BREAK-V1` | `1ec4a6a5fc8b7fbe44fb4e33bfba651c08792fa7854f7c3b58e7eb63ba014766` / `6be61003d9ba93802f009f9c801cb7546103f3b25526678b84f2d6252ccce56c` | StageRunner file_name 到 source-reference 的条件路径、fresh reader U 与 descriptor K count source | StageRunner 到 worker source owner/generation、WAVE fmt/CHNA C 到具体 U/K join UNBOUND；不主张 arbitrary-N admission |
+| `DEE-RF-DRC-TYPED-SNAPSHOT-TEARDOWN-FIRST-BREAK-V1` | `61aa9912053c3e220068dff5e1fb34c2415eacb6f433418cfd16e2d4ebe3abd9` / `566c0400fe357db421104d3dcc7757387aed36ccf9d7f090c994e8b078246f16` | +0x730 same-offset candidate 到 generic Type destructor call | parser RSI owner join、string value read 和 numeric RF consumer UNBOUND |
+| `DEE-DI-BOOL-MEASUREMENT-INPUT-BOUNDARY-V2` | `4d57fcdb7e3c3e1c43024fe73c758cb2b4188fefc239dc415618e574e453557e` / `1d126bb8f20ba8de99305e3d1162f0978decbcb5a103b370ac326c890dbfefc9` | V2 保留 Bool 到 setup+0x94，并增加 first-record reader result 和 slot+0x10 status call | setup+0x94 到 reader/status typed join、runtime key selection 和最终 measurement effect UNBOUND；V1 保留为 superseded revision |
+| `DEE-PREFERRED-DOWNMIX-CONFIG-TREE-WRITER-BOUNDARY-V1` | `3a2dc4cccd0f02aee9b341a32c840404ee47ae4ac4535e3987d49a2bfba268a2` / `1200a5e3d305de0bc0e7db79e92487f29f38fe2ed2846d2b2268c5088e58718a` | parsed intermediate option 与 merge path 到 DdpjocEncoderApp this+0x18 config tree；首个值写入 RBX+0x40 | semantic identity 与 typed encoder storage this+0x360 writer join UNBOUND |
+| `DEE-PREFERRED-DOWNMIX-PRIV-MEMBER-STRINGTYPE-BOUNDARY-V1` | `72da75d70462f3af11b4ad8993eb96e1e39a1f85b6ad892a82b31c3919ad3668` / `906defa281ae9e904ee389dfa9c90959ec45a9fb672f0ab5979a6b5e33f29eca` | inspected constructor path 在 Priv+0x210 写 StringType vptr；slot +0x30 转换 contents 为输出 string | 与先前 pointer-vector copy element 的实例 join、preferred ordinal/MixMode 和 audio/BSI consumer UNBOUND；仅对该 constructor 路径取代 V1 的 member-type 缺口 |
+| `DEE-PREFERRED-DOWNMIX-ORDINAL-MIXMODE-SETTER-BOUNDARY-V1` | `978c3754e3ee8e4c6dbba771444c1ae71aff3e5cf10d4ba1a534e8f808045c2b` / `51682c7814a08ec48e74b6c836b9a9943fbbaad4c117e5e3be241a20994157d1` | XML mapped code 0..3 到达 typed SafeType<MixModeValue,MixMode> setter +0x50；write source 为 FUN_180143cf0 return | null callback 返回预存 +0x50 code，不能据此认定 XML ordinal 已成为 effective value；audio/BSI consumer UNBOUND，Priv+0x210 StringType 为另一对象 |
+| `DEE-PREFERRED-DOWNMIX-MIXMODE-INITIAL-VALUE-BOUNDARY-V1` | `64196c5c264d63dc92155bc0e21b4883790898e445e4c60745d8b4b04438aca0` / `f4456f27ef4d21d5dea28fd7ff99acecd07ba1e2ab59da4197cd3d95d63f1e04` | bounded initializer 未观察到 field +0x960 直接写；首个 +0x50 写入是 callback-null helper 返回的预存值 | 预存值来源 UNBOUND、zero-init NOT_CONFIRMED、runtime/effective XML value 和 audio/BSI effect 未运行/未绑定 |
+
+## 2026-11-04：CHNA→U lineage、reader range 与 DI result writeback
+
+以下 Wash 包均经隔离仓库 normal 与 `python -O` checker 验证；只登记静态字段/owner first-break，保持任意 N、reader cursor、DI 因果边界开放。
+
+| Supplement | Manifest / seal SHA-256 | 新绑定边界 | 仍开放 |
+|---|---|---|---|
+| `DEE-ADM-WAVE-CHNA-U-GROUP-ROW-LINEAGE-V1` | `d9b131b1e08cc88f32a29bac649e5a0e51abc2fd125357893c71d0bda102e0b6` / `8532631139f2b0ff041e44ff46a86efc5a35bb005d4cd594f3887d0bcc1d02a4` | CHNA UID→physical slot→U Bed::Channel→U group entries→已有 K count producer 静态路径 | concrete U/K owner/generation、K serialization 和 arbitrary N UNBOUND/NOT_EVALUATED |
+| `DEE-TIME-BASE-RANGE-READER-BOUNDARY-V1` | `b596f28957eb13816b0ccaa36d0f0745437da699f1b76338a17aa2b30c091890` / `3511fb713dcc78d9e4041a1ec92d4e212ad63a9bccb6a51fc97c8ce7dfbe21a5` | sample bounds to reader-input handoff 与 +0x140 reader selection byte 静态绑定 | selected XML/setter、offset units/multiplier、bounds 到 cursor/total 与 runtime owner/branch UNBOUND |
+| `DEE-DI-MEASUREMENT-RESULT-WRITEBACK-BOUNDARY-V1` | `d14120c3c19368f6cde1bbaa037cd9f264efb6fe1b31f71d44fbbc38f726bbbb` / `dd5d6fde632abe76cbe37c3b78c37bf5ad5dab5e0d14aaf6649d4140207346bb` | U32 result+0x14→Priv+0xf6c writeback 静态绑定 | Bool setup+0x94 到 result+0x14 的 causal join、runtime DI key selection 与 Bool effect UNBOUND |
+
+注：Wash 初次回传的 `DEE-TIME-BASE-RANGE-READER-BOUNDARY-V1` seal 有一位差异；上表和实现映射使用隔离仓库 `package_seal.json` 重算出的 SHA-256。
+
+## 2026-11-04：preferred-downmix semantic vtable first-break
+
+`DEE-PREFERRED-DOWNMIX-ENCODER-SEMANTIC-VTABLE-BOUNDARY-V1`（manifest SHA-256 `add8628176e2648df89290058b348606383611bcd1286901fdda1f56f137af6d`；seal SHA-256 `7232f35d8c0d6a4a28deb0943a0b5a2966bbf43fad45d5a6f9ebd00d78ba264a`）补到 F13C CLI argv-to-typed-storage slice：typed_value vtable slot+0x28 到 FUN_140296e20 的 parse/conversion target 静态绑定；该边不写 storage+0x10 或 app+0x360，notify/storage writer 仍 UNBOUND。实际 child argv、effective preferred-downmix value 和 audio/BSI consumer 未捕获。
+
+## 2026-11-04：RF StringType snapshot field-list first-break
+
+`DEE-RF-DRC-STRING-SNAPSHOT-FIELD-LIST-BOUNDARY-V1`（manifest SHA-256 `db7f9988798b045936da529532f3bfcd57b70078ca0643d1142d2af23df918b6`；seal SHA-256 `9b7b8b90bb3a590cbeb24c7af026af8c3e871c7855b313a9afafbb0d5accc15b`）登记到 F06NR 新 direct slice：snapshot pointer RDI+0x750 落在 31-entry field-pointer array 的 entry 15，FUN_18012bda0 只复制 pointer bytes、不解引用 pointee。typed value consumer、numeric RF DRC 与 DDPI+0xA4 effect 仍 UNBOUND；不以相同 displacement destructor 作为值消费证据。
+
+## 2026-11-04：preferred-downmix config-tree first observer
+
+`DEE-PREFERRED-DOWNMIX-CONFIG-TREE-OBSERVER-BOUNDARY-V1`（manifest SHA-256 `9e38f4b01e2c28fc9196907580c9d9ee4fad57f37bbdbd4ec976431fad25209b`；seal SHA-256 `521fe41ee7e6f775b755de0c884bc6d645b9e0b96fa35be2f1467adc9a72f698`）补充到 F13C config-tree writer slice：FUN_1400b46b0 首个 observer 收到 this+0x18 config tree 并做 required/conflict 检查；没有收到 this+0x360 typed storage 指针。observer 到 storage/notify 写入仍 UNBOUND_STATIC；这不是全局无 consumer 断言。
+
+## 2026-11-04：U group-entry 到 K six-byte row writer
+
+`DEE-ADM-U-GROUP-K-SIX-BYTE-ROW-WRITER-V1`（manifest SHA-256 `2a3dbac8ace62ffe1aab3b52251eee903069da09ef01556a946a4b5e7bf2224a`；seal SHA-256 `36b4614c1c0304e9ad55476ad3d04f8f38ffc8570780836ccdf39eb2c7433dc2`）补到 F06OF CHNA→U group rows slice：selected writer 对每个 accepted U Bed::Channel group entry 生成一条 6-byte K row；+0 U16 来自 record+0x08 low16、+2 U8 来自 record+0x0C 转换低位并拒绝负 sentinel、+4 U16 是 outer zero-based group ordinal。row+3 无 store，initial value 未评估；具体 K 值、所有行接受情况、owner/generation 和 arbitrary-N 仍未闭合。
+
+## 2026-11-04：LFE local owner first-break 与 DI route selector
+
+以下两个 Wash-only 包均为静态边界证据；不改写算法，也不作全局 caller/writer 缺失结论。
+
+| Supplement | Manifest / seal SHA-256 | 新绑定边界 | 仍开放 |
+|---|---|---|---|
+| `DEE-LFE-PLVAR5-CONTAINER-OWNER-BOUNDARY-V1` | `0835d83e523fe2409fdc72e0247be217bcebd9ce80cb892b0307e8106fa8468d` / `1b3318ad91c84047f536750bbc1a4fa126484dbbfdf5aaec728f6c10c81006bb` | FUN_140350d00 中 local expression `plVar5=(param_1+0x10a6)`；0 CALL refs，3 DATA refs 均为 unwind metadata | plVar5 owner/generation UNBOUND；不是全局无 writer 结论，LFE effect NOT_RUN |
+| `DEE-DI-BOOL-MEASURE-ROUTE-SELECTOR-BOUNDARY-V1` | `4483449ae67c93244bd3d6650352d89df7128ec40ffe44937c1c6a83ddcb090e` / `b2d13adc7dd9e23383c30be0be381f067b93d3fc59daffc2a52a3b1e207b72f8` | FilterDDPJocEnc+0x8 route selector→Priv+0xf34 的 measure/encode dispatch 与 Bool Priv+0x2e0→setup+0x94 是分离字段 | scoped route edge 不读/分支 Bool；reader variant、final Bool effect/runtime key selection 与全局 absence 仍未绑定 |
+
+## 2026-11-04：DI Bool input 与 measurement result 依赖 first-break
+
+`DEE-DI-BOOL-RESULT-CALC-DEPENDENCY-BOUNDARY-V1`（manifest SHA-256 `ca23fefc41eaeafca198257093472dbb4f1ce38b106def292959519c0755b404`；seal SHA-256 `30377206c47f881ad382f12a3c7c959dc8d89b9aee945ff97c4ad4ed6de23100`）补充到 F06 result-writeback slice：setup+0x94 到 FUN_1801769a0 param_3 静态绑定；result param_2+0x14 起始 -120.0，由 per-record lVar7+0x14 更新，最后写到 Priv+0xf6c。Bool 输入与计算结果无 typed dataflow join，runtime key selection 和 Bool 对最终测量的影响仍 UNBOUND/NOT_RUN。
+
+## 2026-11-04：line-mode DRC aggregate diagnostic first-consumer
+
+`DEE-LINE-MODE-DRC-AGGREGATE-DIAGNOSTIC-FIRST-CONSUMER-BOUNDARY-V1`（manifest SHA-256 `e66467d53cb3c027b0b744ece131bfa7f6054ac776c68e1fd9c0f9d9f2c6ea74`；seal SHA-256 `ff35cbafe479012168786fa7a4a142155c3933607a8f12b9a78852373361f8c9`）登记为 F06NR 独立 diagnostic first-read slice：aggregate 由 FUN_180182850 产生并传至 FUN_1801764e0；FUN_180184c10 接收但不读取，随后 FUN_180184960 读取 string/capacity 与四个 QWORD，仅格式化 “Initializing Composite Item” 诊断文本并送 logger slot+0x20。到 per-frame DRC+0xA0 或 codec/BSI 的 typed transfer 未建立；owner/generation UNBOUND，后续 uses 未检查，不作全局无消费者结论。
+
+## 2026-11-04：授权 ADM 36/38 metadata-only inventory
+
+`DEE-AUTHORIZED-ADM-36-38-METADATA-INVENTORY-V1`（manifest SHA-256 `cf9ba36859cdd8d3f1ff6dff0a67cbf824138812e5e4bfbb3d0ef32006187e75`；seal SHA-256 `8a473415a547d097704efc8d981780693eb1f3d04f680e53bacd53c1623d8143`）列出七份获准输入：均为 48 kHz/24-bit，fmt/CHNA/AXML 数量一致；其中 6 份 N=36、1 份 N=38。metadata scan 读取 PCM bytes=0，未计算 whole-file hash，也未运行 DEE。最短 N=36 样本 7,328,771 frames（2:32.683），最短整体样本 6,522,906 frames（2:15.894）。这只是七份文件的 metadata 清单，不证明一般 track-count 支持；本条不改变仅 First Love N=36 与 Human Cat N=38 曾通过 read-only mmap parser 的既有范围。
+
+## 2026-11-04：RF DRC F88 caller-local first-break
+
+`DEE-RF-DRC-F88-CALLER-READ-BOUNDARY-V1`（manifest SHA-256 `f0db547153e1895e1a443453cba6b5b21ddaf3e7665032001b7044d418dd6240`；seal SHA-256 `f61ccb271f99637ebdc3a7264b03723dc867ed56a188e06e17d19c35fefbd43b`）登记为 F06NR 独立 caller-local slice：在 FUN_180135d40 中 RDI+0xf88/RBX 两个 qword 清零后地址作为 RCX 传给 FUN_18013ee70；callee 未读保存的 RCX，返回后 RAX 写回 [RBX]，alias 重定义前无 caller-local read。field type、owner/generation 与 destination vector/RF StringType/numeric RF state joins 仍 UNBOUND；仅限单 caller body，不作全局无消费者结论。
+
+## 2026-11-04：Atmos composition-layout branch writer
+
+`DEE-ATMOS-COMPOSITION-LAYOUT-BRANCH-WRITER-BOUNDARY-V1`（manifest SHA-256 `e8f866c59734a30738b344a566d547039fa4ac2cc2e92e2eac46c8da8b0a433d`；seal SHA-256 `e9b78d798cddf980c1539dae45a1ca698e93547006400acc72ad7fbbad3bbdb5`）登记为 F06OF 静态 writer observation。构造器先将 composite master+0x100 置零；admission 后 first writer 按 option-map key2 或 shape-count/six-byte-entry mismatch 写 1/0。后续 identity correction 已将此 writer 与 composite format count receipt 的静态 image identity 对齐；这不构成 owner/generation、物理 CHNA N 或运行时分支 join，也不闭合轨数链。
+
+`DEE-ATMOS-COMPOSITE-FORMAT-CHANNEL-COUNT-BOUNDARY-V1`（manifest SHA-256 `e159e7316f2e206480f7d6e15ad2f545b1a5d25a0b20f506d0826bffda5c92be`；seal SHA-256 `24f28dfbf06b6e0060b9eacf7dd20105026e152005dea54c87bd389ffd8d6753`）登记到独立 F06OF slice：FUN_18054fa70 的 layout flag=0 分支取 direct format-shape count，非零分支按 per-source 六字节 entry 中 +0x2==0xFF 的计数取 max+10；两支写 U16 到 metadata+0xA，由 FUN_180186870 读取。运行时选择与物理 CHNA N 到 composite count 仍 UNBOUND。
+
+`DEE-ATMOS-COMPOSITE-FORMAT-COUNT-IDENTITY-CORRECTION-V1`（manifest SHA-256 `9eced28b10c000096088ab1ae45c0c0573d6efa75a5686b97fa5caddce4962b9`；seal SHA-256 `9d3dd2508027020c5a4f8161f80bdded3ef9bc8dd08f48d8f6e4bef5108b8567`）以 corrected target DLL SHA-256 `3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2` 匹配 Ghidra Program property 与重算 source file hash；历史 parent receipt 中 `...cd1e...` 是转录错误，未用作身份。此 correction 只绑定 layout writer/count receipts 的 same-image static identity；不修改 parent 包，也不绑定 owner/generation、物理 CHNA N、运行时分支或一般轨数范围。
+
+## 2026-11-04：time_base host property dispatch boundary
+
+`DEE-TIME-BASE-HOST-PROPERTY-DISPATCH-BOUNDARY-V2`（manifest SHA-256 `74153c6e7d111cd9b2e476954e0374a8854150a3d3db6eb023cd13c3d4fadb09`；seal SHA-256 `04c2110e1e774b3ffd88ff04aca6d8bbbd9643f7c12a7fcf2ab93ef5d5b043cd`）登记为 F06OF 独立 host property dispatch 切片：StageRunner::Build → factory vtable+0x30 → StageRunner+0x270 → RunAudioFilter → generic SetProperty vtable+0x8；所查 keys 只有 source/target，没有 time_base key，也没有到 AtmosMezz Priv+0x550 setter 的 join。构造默认 file_position 不是 selected XML 值；concrete target、owner/generation 与 runtime selection 仍 UNBOUND。sealed parent 的 plugin hash 长度错误未用作 identity。
+
+## 2026-11-04：preferred-downmix selected child 与 line-mode DRC aggregate next-use
+
+| Supplement | Manifest / seal SHA-256 | 新绑定边界 | 仍开放 |
+|---|---|---|---|
+| `DEE-PREFERRED-DOWNMIX-FIRST-PASS-CHILD-DIAGNOSTIC-BOUNDARY-V1` | `193d3cf9bf64768c676536de02080f922d3661480ddb3cb582d1787b7c7b30ff` / `3a80aa0daca880aedb12564ac34c1fa425d83339afebf102b6d073cf2eea8379` | selected edge FUN_1801475f0→FUN_180153090 passes Priv+0x350 record/subobject pointer; return+0x20 is source-count/mismatch diagnostic | MixMode scalar/effect, typed DSP/renderer/BSI consumer and other callers remain UNBOUND; not a global absence claim |
+| `DEE-LINE-MODE-DRC-AGGREGATE-NEXT-USE-BOUNDARY-V1` | `300cbafd12c5ca07fd6e59eff9aee2ce526e472ec23b6736286206565b69502e` / `045ac5b15ddef838008951090b1059b92a76c2416935c4356464deb0bba7095b` | same aggregate RBP+0x40 passed as RDX to FUN_180184100 while RCX points to separate destination object | callee does not read RDX in the bounded body; nested helper, later uses, typed DRC/codec/BSI transfer and owner/generation remain open |
+
+注：selected-child package 的原始 Wash seal 字符串长度为 65 位；表内使用隔离副本 `package_seal.json` 重算的 64-hex SHA-256。
+
+## 2026-11-04：data_rate to writer-state consumer first-break
+
+`DEE-EAC3-JOC-DATA-RATE-WRITER-STATE-CONSUMER-BOUNDARY-V1`（manifest SHA-256 `b53c69b9b55f2ec9acd3e142d4b624ce452d1c611ec004f67e2dba0c117e0c5d`；seal SHA-256 `7ff5efa5019ba96d0ad9684ed75afbcee8a21ea87fdf82a2357385d09bc5b959`）登记为 F13C 独立 writer-state consumer slice：同一 FUN_1801c0770 callback 内 `rate_kbps * 1000` 仅在 validation 成功后写入 writer receiver+0x20；FUN_180236590 读取低 32 位并选择 table row，后续 FUN_180231ce0 把 nested U32 写到 generic destination。destination codec/BSI 类型、slot2 到 slot4 的同 handle/generation、特定 1024 kbps instance 链仍 UNBOUND/CONDITIONAL_UNBOUND；不是端到端码率或 BSI 字段结论。
+
+## 2026-11-04：授权输入 bijection 与 DI result producer 边界
+
+| Supplement | Manifest / seal SHA-256 | 新绑定边界 | 仍开放 |
+|---|---|---|---|
+| `DEE-ADM-CHNA-AXML-36-38-SLOT-BIJECTION-BOUNDARY-V1` | `0c4bf35590bdf941e0661620eedc7367b4d581dde94711bd32094342c0d9acd4` / `0bff87b9b58719de4b1443c9c051eb6c4d6c664ff86d104ae58d4254f44450d7` | My jealousy N=36 和 Human Cat N=38 两份 metadata 中，CHNA trackIndex 1..N 无缺/重，UID→AXML audioTrackUID 一对一，trackref/packref 一致且直接 channelFormat 覆盖唯一 | 仅限两份输入 metadata；PCM=0、whole-file hash 未计算、DEE 未运行，CHNA→U/K owner/generation 与 general N 仍 UNBOUND/NOT_RUN |
+| `DEE-DI-BOOL-RESULT-PRODUCER-DEPENDENCY-BOUNDARY-V1` | `644b2cf00de7d5108cd3df19009cda85daf516db878141d5924023a3e20f7cda` / `38912474f832e69cc7aa4f3ac599ba36e1a0d26c30963458bcf28d56cc1002dc` | 两种 static producer 更新 record Float32 lVar7+0x14；EmpireLoudness owner+0x88 与 Bool owner+0x2c 分开，AtmosProcMeasure Bool→config+0x00 | runtime producer selection、Bool→scalar dependency 和最终 measurement effect UNBOUND/NOT_RUN |
+
+## 2026-11-04：attempt-04 authorized N38 dynamic frame-shape observation
+
+`DEE-ADM-38CH-DYNAMIC-FRAME-SHAPE-OBSERVATION-V1`（manifest SHA-256 `52b6145b8689d4b4f89da0cda82be3a9c7bc0ad47c7ec3c74c10842cf8f4d3a2`；seal SHA-256 `91f499766846037568ee2f97af5950805942e23f9f50619d1d16f062913ba372`）仅覆盖 attempt-04 对授权 Human Cat N=38 atmos_mezz 的 50,000-sample 短窗：DEE exit 0，ordinary measurement/encoder passes 完成，135,893-byte 输出内容未读取或解码。fmt/CHNA/U/K/B counts 均观察为 38；K→B→processor D 的 scoped Tgen-1/Jgen-1 中一个 writer 与 33 次调用 joined，但四个 K writers 的 U-owner token 均 null，故 U→K 仍 UNBOUND。首个 nonempty frame 实际 38/expected 0，其后同 descriptor expected 38；10 次空零调用不携带 B。time_base hook 四次 key read 均失败，native value/absolute position/layout flag 未捕获。此单样本不支持 N36、一般 N 范围或任意轨闭合。
+
+## 2026-11-04：attempt-05 authorized N36 dynamic frame-shape observation
+
+`DEE-ADM-36CH-DYNAMIC-FRAME-SHAPE-OBSERVATION-V1`（manifest SHA-256 `ff6ee179a5fc1379a7b7ac85aa46be795d7cb07f81fef8ff7b0626ce4d8edb6d`；seal SHA-256 `9e3e983a6ac44afa30894d6cb300a0390f318bcfdb84183bf6b56569c8ab1e38`）仅覆盖 attempt-05 对授权 N36/48 kHz/50,000-sample atmos_mezz 短窗：DEE exit 0，ordinary measurement/encoder passes 完成，135,893-byte 输出内容未解码。Tgen-1/Jgen-1 中一个 K writer joined 到 B 和 processor D，33 次非空调用实际 36；但四个 K writer U-owner token 都是 null，U→K 仍 UNBOUND。首个 nonempty frame actual=36/expected=0，下一个同 descriptor expected=36；time_base key read failed。此 attempt 与 N38 attempt-04 是两份样本级证据，不证明 N36/38 之外的一般范围或任意轨闭合。
+
+## 2026-11-04：time-axis start/end host-property first-break
+
+`DEE-TIME-AXIS-HOST-START-END-READER-JOIN-BOUNDARY-V1`（manifest SHA-256 `da86a39c2f600d8f8c5d6c52207abe170535235374747fa713b6c6d726d6ee32`；seal SHA-256 `62882ba0c91145de009dd112432ed6ec577f45257ae512a6a8d6a1fc028d5434`）登记为 F06OF 独立 host-property slice。StageRunner/SetProperty 的 source/target 调度路径与 parent sample-range reader receipt 分开；没有 start/end key/value 或 host property 到 Priv+0xf98/+0xfb0、reader cursor+0x28/total+0x20 的 join。selected values、owner/generation 和 runtime sample position 仍 UNBOUND/NOT_RUN。
+
+## 2026-11-05：CLI 输入 N 容量与 native count owner 边界
+
+以下 N 都是不同数据域；不得用数值相同代替 owner/generation join。
+
+| 数据域/阶段 | 当前代码或 Wash 边界 | 判定 |
+|---|---|---|
+| Authored ADM input N | RIFF channels 与 CHNA graph rows 动态配对；选定 graph 为 10 bed + N−10 object，输入准备上限 256。 | 输入准备/profile 准入范围，不等于 callback 或端到端支持范围。 |
+| CLI 的 F01E、PCM cursor 与 physical-row map | 当前 CLI 调用动态 `NormalControlAdmInputSnapshot`；cursor 和 bridge 按实际行数建表。 | 这些层保留 N；固定 38-row `NormalControlPreparedSnapshot` / detached projection 是并行 API，不是当前 CLI 路径的统一 N 门禁。 |
+| Meter installed48 与 MAIN F03W source axis | `R=N−1`，`S=11+R=N+10`；48-source axis 令 N≤38。Meter installed48 renderer 另有 10..=38 host-row gate。 | 当前 CLI callback 路径的结构性 N 窗口为 10..=38；这是形状容量判断，不证明该区间每个 N 都通过运行时或完整输出验证。N>38 会在 Meter/F03W 容量边界被拒绝。 |
+| Codec BSI profile projection | 它把 WAVE N 与 graph row count 配对，最多 256。 | 输入侧 BSI projection 不设置 DDP per-call frame-view channel count。 |
+| DEE descriptor-bearing Reader N | V2 source receipt 报告条件性 static N=1..128 gate、固定 128-slot wrapper/map、per-slot row count 为独立维度；`DEE-ADM-READER-N-ROW-LOOP-BOUNDARY-V1` 报告 N 进入 Pcm row loop。 | Native descriptor N 尚未 join 到 Authored N、具体 U/K、composite B 分支及实际 D frame-view count；这不是 CLI 或端到端 1..128 支持声明。 |
+| K / composite B | K 是 U16 count 与六字节 rows；B 的 U16 count 来自两种条件分支之一。 | 输入 physical N→K/B count 和实际 branch 仍 UNBOUND。K、B、Reader N 与 D frame count 不可互换。 |
+| N36 / N38 runtime observations | 已登记的 attempt-05 N36 与 attempt-04 N38 各为一次短窗观察。 | 两个样本不定义中间连续范围，也不证明任意 N 或完整输出链；既有 N36 package registration 保持不变。 |
+
+### 新登记的 Wash 边界包
+
+下列 9 个新包已登记在 `docs/implementation/IMPLEMENTATION-MAP.json` 的 F06OF、F06、F13C、F06NR package registry；N36 包此前已登记，本轮没有重复添加。它们是静态/模型边界证据，不是产品实现或端到端通过收据。
+
+| Package ID | Manifest SHA-256 | 登记功能域 | 已绑定 | 仍开放 |
+|---|---|---|---|---|
+| `DEE-ADM-N-1-128-ROW-CAPACITY-BOUNDARY-V1`（V1 source manifest superseded by V2; V1 package retained） | `5b3471620135b298794e5bfa947d1fcc8a6002e47de03c880bf8590b1176b43c` | F06OF | 条件性 native 1..128 gate、128-slot wrapper | physical N→U/K/B owner/generation、runtime count |
+| `DEE-ADM-READER-N-ROW-LOOP-BOUNDARY-V1` | `6f18291c24afa881358e0b85d0f4558d8df9dd937c84b3f2764ab14f332237cd` | F06OF | Reader N 到 Pcm row-loop 的静态路径 | runtime N、physical CHNA owner、通用范围 |
+| `DEE-DI-CONFIG-PLUS14-CONSTANT-INITIALIZER-BOUNDARY-V1` | `4a1612c34b133ec1830bee0cc8d74c8690f312014a65cfc09938c7728cf20e75` | F06 | config+0x14 初始化常量 1 | 与 Bool+0x94 的关系 |
+| `DEE-DI-BOOL-PLUS00-FIRST-CONSUMER-BOUNDARY-V1` | `c8c0e94a95cae7aa506d8336418e99c1ece2520a3695cf03dc8116bf664812eb` | F06 | Bool→config+0x00 producer edge；首个 consumer 读取+0x14 | Bool 到 meter result 的依赖及最终 effect |
+| `DEE-EAC3-JOC-DATA-RATE-WRITER-RETURN-CONSUMER-BOUNDARY-V1` | `b0516a25df7fc7046478c88099cb088db56620c46af690ba84edd2fb788a8e0d` | F13C | writer return 后的 RDX 丢弃边界 | destination 首读、codec/BSI owner |
+| `DEE-EAC3-JOC-DATA-RATE-WRITER-DESTINATION-OWNER-BOUNDARY-V1` | `81da57f74937a2a3305ae50e382eabaaa536590fb6cad0ad84b4f039ded3eb38` | F13C | receiver+0x2a8 所指对象+0x10 的 generic U32 store | child owner/reader 与 codec/BSI join |
+| `DEE-TIME-AXIS-XML-START-END-SCHEMA-BOUNDARY-V1` | `54101e607209579b6101f708011b0a5ac96ea2381eaf96be773cc223758efe35` | F06OF | optional xs:string start/end schema 与默认值 | selected runtime 值、执行版本、Reader join |
+| `DEE-RF-DRC-F98-VECTOR-FIRST-CONSUMER-BOUNDARY-V1` | `af5e1ac7274255ab6302f79819d79531eaa1353fbb50fcdf6017d39db736a2b3` | F06NR | scoped caller 中 F98 vector 的 first-consumer 边界 | vector consumer、owner join、效果；FB0 是独立目标 |
+| `DEE-LINE-DRC-SNAPSHOT-A0-PERFRAME-PACKER-BOUNDARY-V1` | `bfb329ab3659a3bcd7c098d02487e20b9f752f22284d6fb0bdb96a013f363118` | F06NR | snapshot→per-frame packer call path | +0xA0 值消费、row owner 与 codec/BSI join |
+
+### 扩展 N 的最小前置 join
+
+扩大 N 前，Wash 至少需要在同一 selected run 中用 typed owner/token 与 generation 连接：
+
+1. WAVE fmt/CHNA physical N → 同一个 ADM reader U owner。
+2. 该 U → 具体 K owner 的 U16 count 与全部已接受六字节 row buffer。
+3. 同一 K → 实际选中的 composite B owner、branch、count 与 mapping rows。
+4. B count → Reader 入口 N/row-loop → 同一处理器 D frame descriptor 的实际 channels。
+
+单个 N39 joined observation 可判定本地 N38 容量边界之后的一个 case，但不能证明 39..128；声称 1..128 还需要在范围端点及 gate 邻界上有对应的 joined observations 和明确拒绝向量。若继续沿用本地公式 `S=N+10`，N=128 需要 138 个 active-source slots；是否能这样扩展取决于上述 native count/owner join，不能仅把 48 改成 138。
+
+### 最小可实施扩展顺序（计划，不代表已实现）
+
+| 步骤 | 最小变更 | 必要前置 |
+|---|---|---|
+| 1 | 将 `PhysicalInputRowCount`、U/K row count、composite B count、Reader row count、DDP frame-view count 作为不同 typed domains；跨层只接受带 source/owner/generation lineage 的转换 receipt。 | 上述 same-run Wash join 至少闭合一个越过 N38 的实际 N，且选定目标上限。 |
+| 2 | 按已闭合的物理 N→active-source 映射扩展 MAIN source axis 与 Meter installed48 的 host-row gate；保持 checked capacity admission。 | Wash 证明确切 row 映射及容量语义。若 `S=N+10` 得到 same-owner native confirmation，则 N=128 至少需要 S=138；若不成立，按实际 join 定义新映射，不能沿用此算式扩容。 |
+| 3 | 仅通过 typed receipt 把所选 frame-view count 送入 codec/BSI/frame descriptor；未知输入拒绝为 `UNSUPPORTED_PROFILE`。 | physical N→K→B→Reader N→D frame-view count 的同一 run/owner/generation 链闭合。 |
+
+当前轮只更新映射和支持矩阵；未按此计划改生产代码，也未运行测试。
+
+## 2026-11-05：N gate V2 与分配/控制 addenda
+
+新增 6 个 supplement 已进入实现映射。N gate V2 只 supersede V1 的 source manifest receipt；旧 V1 包、manifest 与 seal 保留。V2 仍只证明静态 gate/capacity，不闭合 physical N→K/B。
+
+| Package ID | Manifest SHA-256 / seal SHA-256 | FID | 本次可登记事实 | 仍开放 |
+|---|---|---|---|---|
+| `DEE-ADM-N-1-128-ROW-CAPACITY-BOUNDARY-V2` | `1d103e5f7fcb77f7067027786947eb40849bc62c932357d3eb5c6a19a9da8119` / `91235b228668ac8e68e331e5b5c5864a66d26b77e04bfd01a0ab8bf94bc0eee8` | F06OF | static physical-N gate 1..128；fixed 128-slot wrapper/map；per-slot row count 独立 | N→K/B 与运行时 count |
+| `DEE-ADM-READER-N-PCM-ALLOCATION-BOUNDARY-V1` | `1fb31dcca1fb22c93f7df0def6804f1b03a5de32ab4c1bf622ca894a474974c9` / `e27b1361ff27c7de6cd7ef0978955d78fd686bc22be9cfb6f0e30b08ae203ca5` | F06OF | Pcm extent N×sample_count；capacity 以 elements 增长并有 4-byte scaling overflow path | runtime values 与 allocator result `NOT_CAPTURED` |
+| `DEE-ATMOS-FRAME-BUFFER-CAPACITY-LIFECYCLE-BOUNDARY-V1` | `f3102cc6c327096e5e30080af6ca815ff7e03fa9fb5a3cfe0dddb6700d8a47a2` / `2630086873e1ff396e5e497dc4635280504fe9593281f5f51daa088433f2b729` | F06OF | owner+0x68 one-time allocation flag；matrix/table pointers +0x80/+0x88 | capacity field/guard 未观察；changed-count reuse `NOT_CAPTURED`；不由“未观察到 overrun”推断安全 |
+| `DEE-LINE-DRC-SNAPSHOT-A0-ROW-HELPER-BOUNDARY-V1` | 实际 MANIFEST SHA-256 `1c4d19e0bf96749d816390baef29eb0b9c03e5603f89a1c4c8d06e461eeda76b` / `ca4a500b0daa2f7f33aba65d32e8c3c09db0e281e9d546c33bc82be5bfcdb3be` | F06NR | snapshot pointer reaches first row-helper call | +0xA0 U32 不是显式 argument；row owner join `UNBOUND` |
+| `DEE-ATMOSMEZZ-OFFSET-FFOA-BOUNDARY-V1` | `531dbb986a323aaf54cd84e6a171ad55ae1027046f3f68f3eb0951742b3711fe` / `d40d2bb36e8685acfcb3fbed871e8bca91b9b5d79f166ef26992f9604b67815d` | F06OF | optional-string schema 与 static host normalizer；literal `auto` 被 converter stod reject | host→PrivContext、selected value 与 Reader seek `UNBOUND` |
+| `DEE-RF-DRC-F98-VECTOR-ENTRY-PRODUCER-BOUNDARY-V1` | `6838713e0b1473d12a97c36a203e7422628ce320ca567ac64c9e905ccae7d89c` / `33f548d5d23de24c65a9d6795f27ad2c9ab1467eee0826b02e13841b8ca13956` | F06NR | F98 vector header/source qword；generic longlong width 8 | semantic owner/type 与 consumer `UNBOUND` |
+
+`DEE-LINE-DRC-SNAPSHOT-A0-ROW-HELPER-BOUNDARY-V1` 的交接摘要漏了最终 `b`；本地 MANIFEST 重算哈希为表中的 64-hex 值，映射按本地 bytes 登记。
+
+这批 addenda 没有把结构性 callback ceiling 从 N38 提高：V2 的 native 1..128 gate 仍未 join 到 input N；allocation 的运行值、buffer 的实际 capacity/reuse，以及 DRC/time-control 的 selected owner/consumer 都未捕获。现阶段最小安全代码切片仍是把本地 N>38 的已知 capacity rejection 前移到 Meter prepass 之前，作为 typed unsupported-input outcome；这不扩大支持范围。扩展 N 的生产实现仍需先完成 physical WAVE/CHNA N→U→K count+rows→B owner/branch/count→Reader N/allocation→D frame descriptor actual channels 的同 run/owner/generation join，并补齐运行时 allocation/capacity evidence。
+
+其他未闭合边界：offset/ffoa `auto` 虽有 schema 与静态 normalizer 证据，但 host→PrivContext/Reader seek 未绑定；line DRC snapshot+0xA0 未作为 row-helper argument；RF DRC F98 的语义 owner 与 consumer 未绑定。上述证据不支持实现其音频/DRC 行为。
+
+## 2026-11-05：U→K 静态修正、time_base proxy、nested rate writer 与 DI Bool first-break
+
+本批 4 个 Wash-only supplement 已登记为新的 F06/F06OF/F13C evidence slices。N gate V1/V2 的 source-receipt supersession 关系保持不变：V2 只替换 V1 source manifest receipt，不删除或覆盖任一 package。
+
+| Package ID | Manifest SHA-256 / seal SHA-256 | FID / slice | 新静态事实 | 仍开放 |
+|---|---|---|---|---|
+| `DEE-ADM-N36-LOADER-FAILURE-AND-U-K-STATIC-REVIEW-V1` | `579d2841d0e8d0671fab48fc60d3c1baf81ce06d779e4077bc687a6d0de4c2a9` / `104928577689f32caa9bc9a0ed9e59fe09f8e8963b9fcbf59bfd22d29137062a` | F06OF / `washed-atmosmezz-wave-chna-to-k-owner-boundary` | attempt-05 的 K writer 在 entry 后初始化 U owner slot，传入 count helper，返回低 U16 写 K header；修正此前“entry 时 U slot null”解释，静态 U→K writer path bound。 | runtime U owner/generation 未捕获；physical N→K/B 仍 UNBOUND。attempt06–10 在 module load 前失败，loader root cause unresolved；attempt08 `GetLastError=0` 不是 host error。 |
+| `DEE-TIME-BASE-HOST-SETTER-PROXY-BOUNDARY-V1` | `42f1363e1ad8210d94160101fca254914a8d0546faf8997f6dd6682b4372c3f2` / `9d7330ca2001eccb540f18a9024c7ed10f835234ef4650e9dc7e4875a90a1156` | F06OF / `washed-time-base-host-property-dispatch-boundary` | generic SetProperty bounded body 无 +0x550 operand；8 个 bounded callsites 只路由 source/target。 | selected DDP proxy 和 concrete proxy+0x08 target 未绑定。 |
+| `DEE-EAC3-JOC-RATE-NESTED-RECORD-FIRST-WRITER-BOUNDARY-V1` | `a7491f60a6bd80fd4ff55aaaecf29202d7baa8f53e07bb3ac01b6ab77cda4af7` / `c097ffd88eacd664016271bc6279786aef870c7f47611b656e06374329e076da` | F13C / `washed-data-rate-writer-state-consumer-boundary` | rate-conditioned table writer 向 nested object+0x4/+0x8/+0x10 写 U32。 | nested semantic owner/type 和 codec/BSI 仍 UNBOUND。 |
+| `DEE-DI-EMPIRE-BOOL-RESULT-FLOAT32-FIRST-BREAK-BOUNDARY-V1` | `26d86de2db113ce14f69e2a28f56bb3b84bb6a14c4badebc80de18a710f8df7d` / `f87448060df3245e1b2a091fff57e368dff285982526a49ad9bb8c4e1ed973e2` | F06 / `washed-empire-bool-subcontext-result-first-break` | Bool+0x94 条件性到 engine subcontext+0x164。 | 首个 processing consumer 不读/forward +0x164；owner+0x88 Float32 result 因果边 UNBOUND。 |
+
+N36 修正只关闭静态 U→K writer 路径；不能把 attempt-05 的样本值提升成 runtime owner/generation join，也不能连接物理 N→K/B。对扩大 N，最小下一 Wash join 仍需将同一 selected run 的物理 WAVE/CHNA N、实际 U owner/generation、该 K count/rows、所选 B branch/count、Reader N/分配和 D frame descriptor actual channels 连成一条链。当前 N>38 仍由本地 Meter/F03W 容量边界拒绝；该阻塞没有变化。
+
+### attempt-12 loader error-id boundary
+
+`DEE-ADM-ATTEMPT12-LOADER-ERROR-1114-BOUNDARY-V1`（manifest SHA-256 `30e97afb93878e1426b9fb98fcb10e8bef37d15d7faa9b7693bd24a26e1fb8d1`；seal SHA-256 `35864ef8debbe4dfe32f059d8f4c329543e1d30482968be3f85e30be96c2702b`）已登记为单独 F06OF evidence slice `washed-attempt12-loader-error-1114-boundary`。Attempt-12 在 host formatter 参数观察到 44 个 error-id，全部为 1114 / `ERROR_DLL_INIT_FAILED`，wrapper A=40、B=4；target Atmos component 未加载，U/K/B/D observations=0。该结果把失败类别限定为 DLL initializer failure，但无法区分 requested component initializer 与 dependency initializer。Runtime U→K owner/generation 仍 `NOT_CAPTURED`，physical N→K/B 仍 `UNBOUND`。Attempt06–10 的 module-load failure root cause 仍 unresolved；attempt-08 generic `GetLastError=0` 不是 host error。包不含 source、decompilation、PCM、compressed payload 或 key，也不声称模块成功加载或输出成功。
+
+## 2026-11-05：N=10..128 静态边界与首消费者 addenda
+
+下列 8 个 Wash-only supplement 已分别登记为 F06OF/F06/F06NR/F13C 的新 evidence slices；它们只更新静态事实，不改变产品支持范围。
+
+| Package ID | Manifest SHA-256 / seal SHA-256 | FID | 已绑定 | 仍开放 |
+|---|---|---|---|---|
+| `DEE-DRC-A0-HELPER-FIRST-CONSUMER-BOUNDARY-V1` | `34b2af9dcc0ef6ec406d773770d5b9de096ce758600f32e0e2d73cae681949c2` / `8e68fee87f3b0748cf7c96ac3296659f525b05d2a02f8d426e857349c30dbbf1` | F06NR | row helper 未显式接收 snapshot+0xA0 U32/typed row；aggregate 首次数据用途是 diagnostic | A0 到 row/codec/BSI typed join |
+| `DEE-XML-START-END-READER-FIRST-CONSUMER-BOUNDARY-V1` | `3c9f6f5027e516f49e79049c8390a5c16d23e388568e5489fc053caed893e77c` / `7ff63e05dce47e019f80f5c7b422e3bde58fc64fc10a1b602457c2d07598efe2` | F06OF | XSD optional string/default、sanitized XML 文本与独立 Reader range path | XML selected value/omission→host key/value→实际 Reader position |
+| `DEE-EAC3-RATE-NESTED-RECORD-GENERIC-PROJECTION-BOUNDARY-V1` | `dcb4837ca1b37f9d8b26896d65abcfbf02612e80a87d81adf9b737e212b9af10` / `5cd153c25934fe9abb77390e6d4d553e6dbf551603ade23be4415613eb307ed5` | F13C | nested+0x10 U32 在同一 invocation 投影到另一 generic destination+0x4 | destination semantic owner/type 与 codec/BSI effect |
+| `DEE-TIME-BASE-SELECTED-PROXY-VTABLE-BOUNDARY-V1` | `4105e1f4408f748119d2c2d1be5963992f4ccc144ad3ee42cb6ddf347726aa12` / `5714dd6b3eadc5a7d14c03d3b8cf8179651fbd0347918eb6979efe47195cb90a` | F06OF | filter key encode_to_atmos_ddp→DDP class；host property 经 proxy/vtable 路由 | selected factory instance→host proxy/vtable+0x08 setter→+0x550 descriptor write |
+| `DEE-ATMOS-COMPOSITE-COUNT-SOURCE-LINEAGE-BOUNDARY-V1` | `38fe9dde445867e0146cdb044d3d2b0f82de59b3de459ab1c8491ee01bb02ebb` / `1d6cee623816d5f6572950a4c8bc03cd3100ecde6ac2bd1963aa4ffebf77576d` | F06OF | 所检查路径 CompositeFormatCount 的立即来源是 per-source shape metadata/view 或 map transform | 本路径物理 N→shape count typed join 未见；runtime branch/value 未捕获；不能推断其他路径永远无关联 |
+| `DEE-DI-EMPIRE-BOOL-RESULT-FIRST-BREAK-BOUNDARY-V1` | `367af35e98f00f6a88c7fab72172d151068b1e51f6d3aaf0ab7ef709b07033eb` / `11a47126e2573d896806423b9b77e7b9a71b6a97788575eeabd6b5a5e22ebfae` | F06 | Bool+0x94 条件性写 subcontext+0x164；selected consumer 只读其他字段且不转发+0x164 | Bool→owner+0x88 Float32 result 因果边 |
+| `DEE-RF-F98-CANDIDATE-FIRST-READER-OWNER-BOUNDARY-V1` | `1b42484c1cd97d21bac8991ffb65c594ab04cf79efa3f0db89e44cff91e6284f` / `ca3a530ff9363e4f5a77c9e7ba0eb5a47b20234bdf5375df76f59bc3f7594fba` | F06NR | bounded candidate 读取自己的+0xF98 qword并用于 pointer/offset arithmetic | candidate argument→sealed parent produced vector owner/type join；不证明它消费该 vector |
+| `DEE-ADM-READER-N-ARGUMENT-PRODUCER-BOUNDARY-V1` | `28a0a069a25abddc5559f9b22c5c477397048047f90e185749067ebd17d2ebb0` / `df00d42f98a58019d708ce9b03f9e41eb1339f18d53ace80ac5b3b4155e9e370` | F06OF | Reader N 来自 descriptor U16+0x0A 并零扩展；sample-count S 来自独立 selector，N/S 分别传给 allocation helper | physical CHNA N→Reader descriptor 与 Reader→mode-zero composite K 的同 owner/generation join；runtime values/allocator |
+
+其中四个 source package（rate nested generic projection、selected time_base proxy、composite count lineage、Reader N/S argument producer）未提供 standalone source seal；其 source manifest/payload inventory 与 parent hashes 已按 Wash 交付说明核验。本地 package manifest/seal hashes 均已复算匹配。
+
+### 已派发 N=10..128 只读扩展审计状态
+
+截至本次登记可读到的审计 turn 仍为 `inProgress`，只完成仓库状态、F01/F01E/F01R/F03W/F04/F06OF/F12 切片清单和相关源文件清单；尚无完整审计报告。现有可确认边界为：输入准备动态 N=10..256；当前 MAIN F03W/Meter callback 仍受 48-source axis 限制（S=N+10，结构上 N≤38）；DEE descriptor path 有静态 N=1..128 gate/128 slots，但不等于产品支持范围。
+
+本批 CompositeFormatCount lineage addendum进一步限定：该 inspected path 的 immediate count source 是 per-source shape metadata/view 或 map transform；观察到的 physical N 输入不是该路径的直接 load/copy source。这个 scoped fact 不证明全局不存在同值/转换关系；ultimate same-N derivation 和 typed owner/generation join 仍 `UNBOUND`。Reader 内部的 N/S argument source 现已静态绑定：N 来自 descriptor U16+0x0A，S 由 Reader-state +0x14 selector 选择 float-read 返回 count 或 Reader-state U32+0x10；两者作为独立参数传到 allocation helper。此事实仍不连接 physical CHNA N 到 Reader descriptor，也不连接 Reader descriptor 到 mode-zero composite K；运行时值、selector branch 与 allocator 结果未捕获。
+
+具体剩余链仍是同一 selected run 中 physical WAVE/CHNA N→U owner/generation→K U16 count 与完整 rows→selected B branch/count/map→Reader descriptor N→D frame descriptor actual channels；Reader sample-count S 与 PCM extent/allocator 另行核对并保持 distinct。physical CHNA N→Reader descriptor 和 Reader→mode-zero K 的 owner/generation 仍是明确 first breaks。另需实际证明 N>38 的应用层容量扩展与 buffer growth/reuse 安全；36/38 两个短窗例不能外推为 10..128。
+
+## 2026-11-05：CRT attach gate、K slot 与 count-domain boundaries
+
+本批 5 个 supplement 已独立登记为 F06OF/F06NR/F13C evidence slices；随后补入的 DI Float32 source addendum 另登记为 F06 slice。它们增加静态边界信息，不宣称 runtime loader 归因、slot 越界，或 physical N→K/B typed join 已闭合。
+
+| Package ID | Manifest SHA-256 / seal SHA-256 | FID | 已绑定 | 仍开放 |
+|---|---|---|---|---|
+| `DEE-DDP-CRT-ATTACH-ERROR-1114-COMMON-GATE-V1` | `99ff92bfe9e7ea9bc7f77e472cc30f521f6b2a465e27400233f760d34c305e5f` / `1a0b28d9d5c7ac24cb31cec1349dc2db4f5d4d65ecb8908d5afbf2e851e89f62` | F06OF | 四个 hash-bound DLL 的共同 CRT PROCESS_ATTACH/initializer-gate 静态形状；可能解释 1114 类别 | 具体 initializer/component/dependency 未识别 |
+| `DEE-DRC-A0-HELPER-BODY-CONVERTER-FIRST-BREAK-V1` | `233ebbd9f28b24444302cbd8a21398cf16bdc470e9595e864fa16de7b00c2805` / `46f0549752510bcb042002cff74db50ca495936fe7b5445774b435217d8153a5` | F06NR | helper 不读取 selected-row 成员，只将 row pointer opaque-forward 给 converter | +0xA0 owner/value、codec/BSI 仍 UNBOUND |
+| `DEE-EAC3-RATE-CHILD-OWNER-FIRST-BREAK-V1` | `e04d32eeeff9c4c8afb9df5e89b7ba1d912a523d5486de9e7efa67422f5c4756` / `2fe638dac988037bad6b859dd1ca8bbb018e588c0425ca3312759d7dd7e71e20` | F13C | nested U32 静态到 generic child+0x4 store | child constructor/type/reader、codec/BSI 未绑定 |
+| `DEE-ATMOS-COMPOSITE-LOOKUP-SHAPE-SOURCE-BOUNDARY-V1` | `7de64116928d9de64d986df803c98248df544dcc79e18180738366d4d3219b36` / `97f663902813c98bfd4ccb615a0737cc86a145bfa4913da4435090c36710cf11` | F06OF | nonzero-layout branch 的 immediate count source 是 per-source shape metadata/view | ultimate physical ADM N identity 未绑定；不推断全局无关联 |
+| `DEE-ADM-INDIVIDUAL-ROW-SLOT-K-CAPACITY-BOUNDARY-V1` | `5da726f70894168c453c463e254042a6282dcff4a2fd77e67c3ec17f14340e20` / `31e2e113d6dd86837b212efd685f395c159ee782b2814c3437af2abf6c8fdd81` | F06OF | K allocation `U16 K_count × 6`；UID-derived physical slot store；selected individual writer 无本地 `slot < K_count` check | 上游 slot validation、allocated extent、slot invariant 与 physical N→K join 均未绑定；不声称 runtime OOB |
+| `DEE-DI-EMPIRE-RESULT-FLOAT32-SOURCE-BOUNDARY-V1` | `5198d341bc8196284f0a9998e6e5c3585160519d8dca4860a6bae5c9d8ebc20f` / `06f9c497ee4ed71b59a8c7edce7f0dfecc2b8131f73715e6817df07737070164` | F06 | selected nonzero engine-state branch 的 Float32 result source 是 subcontext+0x3C；producer 不读 Bool-conditioned +0x164 | +0x164→+0x3C/result causality 未绑定；zero branch 本函数无 store，不推断值 |
+
+E-120 count domains 必须分开：physical N、K_count、CompositeFormatCount、per-slot physical row slot、Reader descriptor N 和 sample-count S 是不同域。Native static 1..128 gate 及 128-slot wrapper 只覆盖被检查的 descriptor/map capacity；K 的 `K_count × 6` 是另一容量域，per-slot slot store 缺少 local comparison 也不能单独证明越界。Reader N/S 只在 Reader 内部分别进入 allocation helper，不闭合 physical CHNA N→Reader descriptor 或 Reader→mode-zero composite K 的 owner/generation。
+
+两份 source package（`DEE-EAC3-RATE-CHILD-OWNER-FIRST-BREAK-V1`、`DEE-ATMOS-COMPOSITE-LOOKUP-SHAPE-SOURCE-BOUNDARY-V1`）未提供 standalone source seal；其 source manifest/payload inventory 与 parent hashes 按 Wash 交付核验。本地 6 个 supplement 的 manifest/seal 均已复算匹配。N=10..128 扩展仍需 physical N→U→K count/rows→B shape source/branch→Reader N/S allocation→D actual channels 的同 run owner/generation 链，并确认本地 48-source callback capacity 如何扩展；当前没有 1..128 端到端结论。
+
+### DRC row converter and selected time_base setter followups
+
+| Package ID | Manifest SHA-256 / seal SHA-256 | FID / slice | 新绑定事实 | 仍开放 |
+|---|---|---|---|---|
+| `DEE-DRC-A0-ROW-CONVERTER-PLUS10-FIRST-READ-BOUNDARY-V1` | `105fbc3788656dda51f53b2896c27cd2b16dd8c9370e08eec5b3b993b0fadce8` / `9a87812d896293ad7593458425753a8914a567ce1d3ab721cdf50c08bccc5a72` | F06NR / `washed-drc-a0-row-converter-plus10-first-read-boundary` | opaque row pointer到converter；首个读取是row+0x10 QWORD | semantic type与snapshot+0xA0 owner/projection join、codec/BSI |
+| `DEE-TIME-BASE-SELECTED-PROXY-SETTER-CHAIN-BOUNDARY-V1` | `6611a0a1ea3e424f4c88f87ee371d6fcf762ce60d8907619b463b0e86d1e8ed2` / `693005b5673d8f1bb953301c2c5b3c9848de8b32637def94aad9ed19b6aeea05` | F06OF / `washed-time-base-selected-proxy-nested-setter-chain-boundary` | callback→FD→P→nested setter静态链绑定 | helper targets、XML value/omission transfer及最终`+0x550` writer |
+| `DEE-DRC-A0-ROW-CONVERTER-PLUS10-ZERO-COMPARE-BOUNDARY-V1` | `6883db5649ef47b5d81361e81166ed55d1dd59e0721832d88d2d424112a546dd` / `d3a6f795c90b3ae0eb67269e5b3fed89fe011426c697bf459340c3ef356bf248` | F06NR / `washed-drc-a0-row-plus10-zero-compare-boundary` | row+0x10首读为QWORD，下一处直接用途为与显式零值比较 | 字段语义、snapshot+0xA0 owner/projection；后续分支未检查 |
+| `DEE-DRC-A0-ROW-PLUS10-ZERO-BRANCH-UNREACHABLE-BOUNDARY-V1` | `50867815678c1352e4ad65c5d518743a556e627f3d1c3335060f2d25ce902866` / `28e4d3f1a3c222363a8a36633d7393e968c88b457be0c56365e982bfe44df54d` | F06NR / `washed-drc-a0-row-plus10-zero-branch-one-hop-boundary` | bounded call 中 row+0x10 QWORD 与显式零做 unsigned compare；taken condition QWORD<0 为false | trace止于branch target；字段语义、A0 projection和后续分支/helper未检查 |
+
+两个本地supplement package的manifest/seal均重算匹配。time_base setter补充包的source package未提供standalone source seal；其source manifest/payload inventory按Wash交付已核验。
+
+## 2026-11-05：Reader descriptor N owner、RF candidate caller 与 Float32 initializer
+
+本批 4 个新 slice 分别登记到 F06OF、F06NR 和 F06。`DEE-DI-EMPIRE-RESULT-FLOAT32-SOURCE-BOUNDARY-V1` 与既有 F06 package/slice 的 manifest/seal 完全相同，本轮复用既有记录，不重复注册。
+
+| Package ID | Manifest SHA-256 / seal SHA-256 | FID / slice | 新绑定事实 | 仍开放 |
+|---|---|---|---|---|
+| `DEE-ADM-READER-DESCRIPTOR-COUNT-OWNER-BOUNDARY-V1` | `a4ca9e31a67d21b789737c97a0609d2753d4cca08923932be1bf718298c23f09` / `11e137be83fa67b91517310a59d175a5d14fbf03f2bc2a7f14ef5443fb684504` | F06OF / `washed-reader-descriptor-count-owner-boundary` | getter 经 inner-state+0x58 读 Reader descriptor U16+0x0A；构造链复制 CompositeMaster 64-byte rows 到 inner state | 没有该 descriptor count typed write；getter N 不是已证明的 physical input N producer；physical CHNA N→Reader descriptor 与 descriptor→mode-zero K owner/generation UNBOUND |
+| `DEE-ADM-READER-DESCRIPTOR-NULL-INIT-BOUNDARY-V1` | `8ce784c2c0d605f303e5b6cdbb3c0a6e0076e9dbb01f0530bc72b69bbe1098d2` / `05b4032c96774ba393f8307a846d9662a582f2024ff25056a78609c9c4b88d7a` | F06OF / `washed-reader-descriptor-null-initializer-boundary` | selected initializer 将 inner Reader state+0x58 置零；getter随后从 descriptor+0x0A 读U16 | constructor source rows不产生descriptor pointer的typed write；后续nonzero writer、physical CHNA N→descriptor、descriptor→mode-zero K owner/generation仍 UNBOUND |
+| `DEE-RF-F98-CANDIDATE-CALLER-OWNER-BOUNDARY-V1` | `ad1dbee510b903d58c343e5f90eda4aa7fdbb2ab7ca450b1a857bb399fe8207c` / `e73d1677fea6f998cea7cdb5caeee2dc995c9495ffa2e7f1ccd7ac7b124e9038` | F06NR / `washed-rf-f98-candidate-caller-owner-boundary` | bounded direct caller 把 R14 作为 candidate param_1 | R14→producer F98 vector object typed owner join 未绑定；entry/type、StringType/numeric meaning 未绑定 |
+| `DEE-DI-EMPIRE-SUBCONTEXT-3C-CONSTANT-INITIALIZER-BOUNDARY-V1` | `6879191679bccc266e0c47882881bc6bcdba7015ce88704d124e64f6903fae5f` / `9d7e97bd7f82526454ae11002d4b40b4479ad3517acadcde8150130741e14ac2` | F06 / `washed-empire-subcontext-3c-constant-initializer-boundary` | 同一成功 subcontext 构造中 +0x3C 初始化为 -120.0，独立于条件 Bool 写 +0x164 | 仅初始值绑定；后续 writer/final value 未观察；Bool→结果因果仍 UNBOUND；zero branch 不推断 |
+
+Reader getter 的 N 值、physical CHNA N、K_count、CompositeFormatCount、per-slot row slot 和 sample-count S 必须继续作为独立 count domains。新 null-init slice进一步确认 inner+0x58 在所选initializer中为零；getter读到descriptor N不等于建立physical N producer。后续nonzero writer及physical N→descriptor、descriptor→K连接仍未建立。
+
+## 2026-11-05：alternate-image Bool candidate 与 accessor V2 supersession
+
+`DEE-DI-PLUS164-ALTERNATE-IMAGE-CANDIDATE-BOUNDARY-V1`（manifest SHA-256 `304fb389afc5a1426b6de8c4523d27dae036591cb94d7ac6f105d294471827d9`；seal SHA-256 `8254b0ae8e56f8cb8d71b5f37adf5805068436dd1b8d1adce7e5ea522833090b`）作为新 F06 slice 登记：另一个 DDP encoder EXE 的 child-record owner 有读取+0x164的 candidate，但没有 typed owner join 到 Atmos DLL subcontext，因此 Bool→Float32 result causality 仍 `UNBOUND`。
+
+`DEE-ADM-INDIVIDUAL-RECORD-ACCESSOR-NO-LOCAL-BOUNDS-BOUNDARY-V2`（manifest SHA-256 `10c1822411dd0e6e8c3155e3fe73b22c9c5b67f2f022973061fdc1c8a8f8d5d4`；seal SHA-256 `52d82dc0bcb387d57fa1c6706c6c6579847ce270f0d490fbfd992a880943ee6a`）更正 V1 的 Ghidra runner postcondition；12-byte static accessor finding 相同。V2 仅替换既有 F06OF accessor slice 的 active receipt；V1 package identity/manifest/seal 保留为 superseded provenance。未新增第二条 accessor evidence slice，避免同一 finding 重复计数。N/K/slot upstream validity、allocation extent 与 runtime owner joins 仍 `UNBOUND`，没有 runtime OOB claim。
+
+Third-U32 独立捕获 scope 已由 E-135 排期，E-138 曾发一次性 GO；E-140 将 GO 限定为纯 keyless，禁止任何 license/key 参数或内容。Wash preflight `DEE-CARRIER-BLOCK-KEYLESS-CAPTURE-NO-GO-BOUNDARY-V1`（manifest `4590f5b3d0a04c591203aa63710ba68c3b79e27b692b37a4286bad8096459752`；seal `ce39cfa58bcfb19cfba49c8f3c875053bff592df4d917f7e31ec8d0b75c93cd2`）将当前状态记录为 `NO_GO/BLOCKED_BEFORE_LAUNCH`：R4 receipts 没有 eligible keyless job；两份近期 job 带 license-file 参数且在 output 前失败；R141 使用 license 参数且 completion 未确认。本次 Wash 未使用 credential path/content。Capture 未启动、runtime=`NOT_RUN`、third-U32 writer/semantic owner/carrier transfer=`UNBOUND`。
+
+Wash compatibility supplement `DEE-CARRIER-R141-R1R4-THIRD-U32-COMPATIBILITY-BOUNDARY-V1`（manifest `6a259751b6f02c32b0f0ee199eabae7aca1217629305c4bc60accf2eff34c74b`；seal `a97b7df82afb22bed9f6d5b4c6f604703e4b91845cd3a6281a31f424643454c5`）完成 R141/R1-R4 callsite compatibility 边界核验：R141 terminal process state 的 exit code 与 encoder completion 未捕获；record `+0x08` 的 U16 `0x0010` width-five 字段是 BSID，不是 per-frame descriptor `+0x0B1C` third U32。R1/R4 serializer callsites 不是 plan caller A/B，且 R141 不具备这些 callers 所需的 owner/generation tokens；同一 DLL hash 不构成 join。`+0xB18` candidate store 未与 `+0xB1C` 建立 typed base/generation 连接，R138 caller applicability=`NOT_EVALUATED`。E-142 `NO-GO` 仍有效；third-U32 runtime=`NOT_RUN`、writer/semantic owner/carrier transfer=`UNBOUND`。该补充只收窄兼容性判断，不是启动授权，也不改变 workflow/evidence blocker 分类。
+
+Wash static owner-break supplement `DEE-CARRIER-BLOCK-THIRD-SCALAR-OWNER-BREAK-BOUNDARY-V1`（manifest `f4cfe6d87f9170b93002aae1adb523544e7fc7fb7d41c7c9fff67972a2fec758`；seal `1a2321e3e97c9547695bf21ca0c4708d976b9099e079c005809aa84a3e847710`）仅绑定 Ghidra 12.2 的一个 candidate store `FUN_1800d24e0` RVA `0xd252b`、operand `[R8+0xb18]`，及一个 direct caller `FUN_18009edb0` callsite `0x9ee54` 的 argument 2=`param_2+0x348`。该 row-relative store expression 尚未绑定为 third-U32 值；Plan-B 另从 `*local_68` 传 descriptor 并在 `FUN_180073ef0` 读 `[RDI+0xb1c]`，无 typed owner/generation join。candidate 不是已证明的 first writer。R8 owner、third-U32 semantic owner、carrier transfer 均 `UNBOUND`；R138 applicability `NOT_EVALUATED`；E-142 `NO-GO` 持续，runtime/capture `NOT_RUN`。
+
+## 2026-11-05：六份独立 Wash evidence-only boundaries
+
+以下条目是相互独立的静态/当前源边界，不合并对象、owner 或运行状态；所有 package checker 普通与 `python -O` 均通过。它们不触发 DEE、capture、测试或产品状态改变。
+
+- `DEE-ATMOS-DDP-TIME-BASE-SETTER-CALLER-OWNER-BOUNDARY-V1`（manifest `69f2fa7c5ba15afb708875f3ae716ba2052559eecb34edca903c2a5dd127bb7c`；seal `b28b1d0fca72d9e2fbc62cd2eb4a7a7d71d3351fa2d1c9ba308e69193014cbb8`）：一个 caller 中 `FUN_18014f9f0.param_1` 与传入 helper 的 stack temporary `local_1e0` 是不同可见路径；未绑定 temporary 到 nested owner `+0x550`，XML value/omission join 与 runtime 均 `UNBOUND/NOT_RUN`。
+- `DEE-ATMOS-MASTER-OPEN-PROVIDER-INIT-BOUNDARY-V1`（manifest `797b0ba75b6518323ae5a0b08f18bb400e7f4e7c55604ca25d89fa480139170b`；seal `acd00f67454073798d6401b047d24f81e8217b8e3406c7955902ab3aaec25629`）：host `+0x48` registry handle 的 ADM/BWF provider registration 与同 handle 到 `master_open` 的 argument 3 已绑定；其到单独 ADM layout `+0x28` physical N 的 typed owner/generation join 仍 `UNBOUND`。parent `1..128` gate 仅静态，runtime `NOT_RUN`。
+- `DEE-CARRIER-BLOCK-CANDIDATE-ARG2-PRODUCER-BOUNDARY-V1`（manifest `dda3dae87b0540fab575d1726885b64a922f1634f18f5015af3a67d6e8d6c2fb`；seal `cf0c465e63b9905fba89836de8e6557998dc790e54178cdd88f39bb8b28e404d`）：单独绑定一条 arg2 affine path 至 candidate arena `puVar16+0x1690`。这不是 prior R8 owner first-break 的合并或闭合；与 Plan-B `local_68/[RDI+0xb1c]` 的 pointer/generation join 及 first-writer 仍未成立，semantic owner/carrier transfer `UNBOUND`，keyless capture `NO_GO`、runtime `NOT_RUN`。
+- `DEE-DI-FLAG-BOOL-164-CANDIDATE-OWNER-ORIGIN-BOUNDARY-V1`（manifest `f74171281641ffed130f3f164bfa4d6f7520f4e1738da27ecc53e363edc678f5`；seal `f695318e1818768eeadfaeb33761f882302048cbc8f83c2200b817c14b73bf86`）：一个 codec-child owner 的 `+0xdf0` pointer target 作为 candidate `param_1` 来源，但 target opaque；未与 Atmos engine `+0x1d0` join，Bool/result causality `UNBOUND`。
+- `DEE-F05-F13-FIRST-TRANSACTION-COMPARE-LINEAGE-BOUNDARY-V1`（manifest `073198a8ade5c232161fac620a08f51384cdb41910927951bccd969f8953c4e0`；seal `4894a9476612750e8044f9bd37dfb3ca93815719e1f22dfbfa8c6bbb692ef7ab`）：hash-bound current source route 在 `metadata_source_bridge.rs:274` 的 expected/actual token paths equal，当前比较前未观察到 divergence；generation 是独立 lineage。历史失败 operands、failed binary identity 与 cause 仍 `UNBOUND`，不据此改验证或称历史故障已修复。
+- `DEE-ADM-INDIVIDUAL-SLOT-PRODUCER-FIRST-BREAK-BOUNDARY-V1`（manifest `50bb86d75061708d10d069ff545d1fcf920eb840d880a0beedec2d0253bf95ac`；seal `9479317c10c934cc2eb5f2b371484627658a2c1101accd4f78e6b7ff0f85ae64`）：选定 U-open 分支和一个 helper body 未见显式 individual row `+0x4c` access；下一 helper relation、slot producer 与 pre-assignment guard 均 `UNBOUND`。比较值不是已证明的 slot/K_count guard；runtime OOB 不推断。
+
+这些 evidence-only entries 保留各自的 direct slice；E-142 `NO-GO`、third-U32 capture/runtime `NOT_RUN` 及 owner/carrier open statuses 不变。
+
+### 后续三份独立 first-break 补充
+
+- `DEE-DI-FLAG-BOOL-164-CHILD-OWNER-BOUNDARY-V1`（manifest `086d19194c40d8a2c49d1b86b6ae545c6fd7d194bfe98eecdee9d097c8d3c6d8`；seal `b0cca8b02c50e13f4ec976a99261fef24ae30fd6415d0f3d720e69554682820a`）把 `FUN_1801febe0` 中 child-record 的最近 typed owner `lVar6` 绑定到 candidate reader 的 `param_1=*(undefined8 *)(lVar6+0xdf0)` 来源；`+0xdf0` target 仍 opaque，无 typed join 到 engine `+0x1d0`，Bool/result causality `UNBOUND`。
+- `DEE-ADM-INDIVIDUAL-SLOT-CALLEE-FIRST-WRITE-BOUNDARY-V1`（manifest `28ab7e221170f957b7da4f60c2f2659a2d15b4f743f6e2780ce0ff2ae1a03f9c`；seal `8105201cbde2863a91f56ebbfee8cb28e68cc3ebc7f660b26905774a6b7b17cb`）将 `FUN_1802809a0` 首个 tracked store 定位为栈输出对象 `[RDX+0x18]=0xF`；它不是已证明的 UID/+0x4c slot store。slot producer/guard `UNBOUND`，post-store `NOT_SEMANTICALLY_REVIEWED`，runtime `NOT_RUN`。
+- `DEE-CARRIER-BLOCK-LOCAL140-AFFINE-SOURCE-BOUNDARY-V1`（manifest `a3e1038a443de32087a471dc87de3f611ceb1b51c6ccaadc86071b683c7ee595`；seal `144eb9e4e254f3d53cb0c28dbd7753e049e08e3c97bf3c3f3f39a3f120649938`）绑定 `FUN_18006da40` 内 `local_140=param_3[1]-0x7586e+*param_3` 的 affine producer 与传给 `FUN_1800729a0` 的 argument 2；param_3 owner、puVar16 arena 和 Plan-B local_68 typed/generation joins 仍 `UNBOUND`，runtime `NOT_RUN`。
+
+三份包分别登记为独立 slices；child `+0xdf0` pointer、stack output `[RDX+0x18]` 和 local_140/param_3 是不同对象边界。E-142 keyless `NO-GO` 持续。
+
+另一个独立 slice `DEE-CARRIER-BLOCK-PARAM3-CALLER-STACK-PAIR-BOUNDARY-V1`（manifest `4165d40b148e94cb15f252ccae205a2b5c6b0233546a87e3461463017f29d987`；seal `1bb61713ab1ebb7240f0a335ccd97a6c992c7a45f56dc87c15bc8d8d3485fb2a`）绑定 `FUN_18017bfc0@0x17c3c5` 的 arg3=`&local_2c8`、R8=`RSP+0x30` 及 caller-entry 相邻两个 `undefined8` locals 初始为零。该初值不决定 `FUN_18006da40` 后续读取 `param_3` 时的值；`local_140` 保持 `NOT_EVALUATED`，param_3 owner、puVar16 arena 与 Plan-B local_68 joins 保持 `UNBOUND`，runtime `NOT_RUN`。本条与 local_140 affine-source slice 独立，不做合并。
+
+该 preflight 状态不改变 N 矩阵：N>38 callback capacity仍 open，1..128 native gate不构成产品支持结论。
+
+## 2026-11-06：selected 48 kHz / 5.1 六档载波码率
+
+实现侧现已把显式单值 `data_rate` 384、448、576、640、768、1024 kbps 作为 `SelectedDataRate`/`CodecRateProfile` 贯通。六个 frame-size 映射分别为 `frmsiz` 767/895/1151/1279/1535/2047，AU 长度 1536/1792/2304/2560/3072/4096 bytes；仍固定 48 kHz、5.1 六 carrier、6 blocks、1536 samples/AU、single independent / zero dependent。PROFILE-DIMENSIONS 和 F12/F15 owner 都携带实际选中的单值；F12 prefix、候选 scratch、Codec owner、Integrity owner、Output owner 与 atomic writer 按其对应长度运行，其他 rate/layout 组合拒绝。
+
+Wash 输入：`DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1`（manifest SHA-256 `c69e412ce749f3553cf5fd2d55fb69bafba0429784df1de9ebb5d74359250d70`；seal SHA-256 `0d31de2b9e59e6ad3150bf99cae3730464e22899608c48b1e8c64f432e0d2278`）记录同一 My Jealousy N36、48 kHz、5.1 Atmos DDP M4A 输入的六档单变量观察，每档窗口 33 syncframes。`DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1`（manifest SHA-256 `cfb03f7b46f77cd91601878a5979c14af540b4b25010c0bfd916f4101e5c1c53`；seal SHA-256 `33eab9e0795339cdbfbbc719a30a2cda0b1f512329aece1ae19d5bf904ff2dd9`）给出六个 schema token；`DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V2`（manifest SHA-256 `ecbddc90e07a1a238113116068dc7c17a983f7bbd249fd4c29858f35d951cc7f`；seal SHA-256 `33b22df369422c3371e464bfea2df88122fbf4cfc49112078d5af9d3188bb1de2`）给出静态 rate→selector table。
+
+局部验证覆盖 parser/profile→frame-size、六档 F12 prefix/frame/CRC、F15 output-length projection、F14 rate-bound CRC window、owner append receipt 与 variable-length filesystem write。它们证明 JOCForge 本地模型在此选定 profile 下接受六种显式单值并按观察到的 frame size 构造/校验字节；本轮没有运行 DEE 或真实六档产品编码，也没有验证多值 list、schema omission default、其他输入样本、音频相等、JOC 元数据等价、playback 或 W04。Wash 的 Priv+0x350 job-map/运行时 branch join仍 `UNBOUND`；这不是六档都已在 DEE 上端到端验证的结论。
+
+## 当前端到端闭合状态
+
+- 已记录的一次全长产品执行是 38-channel / 1024 kbps：4,251 callbacks、4,249 sources、4,247 durable AUs；新文件长度 17,395,712 bytes，OpenJOC/FFprobe/FFmpeg 基础层检查通过。相同记录里的 DEE base-PCM 对照显示五个非 LFE 声道接近、LFE 差异较大；用户接受的是该基础层差异范围，不是 Atmos/JOC render 或听感验收。
+- Love Song N36 的 JOCForge EC-3 产物现已存在；只读 FFprobe 读到 8,417 帧。文件与 run receipt 不是同一时点记录：目前本地 `.run.json` 仍为较早的 IN_PROGRESS 快照，不能当作该产物的完成/commit receipt。精确文件和收据状态见文末补记。
+- `jocforge-cli encode` 调用 CLI 自己的 `encode_request::run` 流程；application `encode()` 仍直接返回 `SOURCE_PIPELINE_UNAVAILABLE`。通用 application 入口与 CLI 可运行路径尚未统一。
+- 六档码率已在本地 admission、F12/F14/F15 owner 与可变长度写入中通过定向测试，但没有六档 JOCForge 全长输出。DEE 的同次 XML→host property/selector branch 仍 `UNBOUND`；本地测试不证明 DEE runtime 在所有档位都执行相同设置。
+- 仍未完成 Atmos/JOC spatial render、播放/听感和 W04；ETSI strict carriage 的 ID11/ID14 差异保持已记录状态。Measure-only DI=true、非零 silence 及未登记的 DRC/downmix/timebase 组合也不属于当前已闭合的 selected row。
+
+因此当前结果是：38-channel/1024 kbps 全长 CLI 输出已有完整记录；Love Song N36 也有长度与流元数据可读的产物，但缺少与该文件同一 attempt 的完成/耐久收据及匹配 DEE job/config 证据。六档真实输出矩阵、application `encode()` 入口、空间渲染和 W04 仍是端到端闭合前的缺口。
+
+## 2026-11-06：Love Song N36 产物及匹配证据边界
+
+Wash timeline 的 U-014 记录用户确认 Love Song 本次作业完成；E-075/E-113 记录以下文件存在、长度一致。隔离仓本地只读复核到：
+
+- 输入收据记录 `D:\Love Song 方大同.wav`，SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`，1,396,237,802 bytes，48 kHz / 36 channels / PCM24，12,927,379 samples/channel。本轮未重读 WAV PCM。
+- 输出 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-fangdatong-36ch-rerun-20261104-1143.ec3` 为 34,476,032 bytes，SHA-256 `bc01dcfc3b21cfefc4f20e522762e466d98d03375a14988d0b440d437f1db0a5`。FFprobe 读取到 E-AC-3 JOC、48 kHz、5.1(side)、1024 kbps、8,417 frames、269.344 s；文件长度恰为 8,417×4,096。此检查确认容器/帧数元数据，不扫描每帧 CRC、不验证 JOC payload 或 spatial audio。
+- `love-song-fangdatong-36ch-rerun-20261104-1143.run.json` 捕获于 2026-11-04T06:24:41Z，状态仍是 `IN_PROGRESS`；其中 attempt ID 未创建、checkpoint 为 0 bytes、normalized job/XML SHA 未由 CLI 暴露。文件修改时间晚于这份收据，因此它不是当前产物的完成 receipt。较早的 10:55 receipt 是 CANCELLED、无输出。
+- 用户提供的 DEE 对照 `D:\Love Song 方大同.m4a` 存在，34,801,970 bytes，SHA-256 `223fecf76fed09da6f495329ceb49433d4df00a6c8af0f5635a4cdce2c407923`。FFprobe 读到 E-AC-3 JOC、48 kHz、5.1(side)、1024 kbps、8,417 frames、269.343333 s，另有一个 MJPEG 封面流。
+
+本轮未做 PCM/audio 比较，也未保存 PCM/payload。当前没有与 DEE M4A 绑定的同源输入 SHA 和 normalized job/XML 配置 receipt；JOCForge 的当前 run receipt 也没有配置 hash，且此前提供的 DI=true / threshold=15 XML 与当前 Meter admission 的拒绝规则需要先证明是否属于同一作业。两端元数据相近不构成同输入同配置证据，不能据此报告 DEE parity。
+
+## 2026-11-07：384 kbps full-file attempt 的输出长度 guard
+
+Wash package `JOCFORGE-RATE-APPEND-GUARD-384-FIRST-FAILURE-V1`（manifest SHA-256 `e32693d2af52cf563c5487e58074b3a13e6cfba9f766d4ec0c49c5cf1736e194`）将 E-245 首个 published AU 的拒绝定位到 CLI `ProgrammeOwnerRoots::commit_source_advance`：durable append guard 固定要求 4,096 bytes，而已选 384 kbps 输出配置的 frame extent 为 1,536 bytes。AU 序号、CRC residual、fsync、durable、metadata 与 F12/F14 receipt 校验均保留。
+
+E-245 的输入 SHA-256 为 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`，attempt ID `1793978113099218400`，config SHA-256 `c509bcfbb102da5d78ef6e3396b213e7614d43aa46393669abc0b9a148a9af16`。Meter 完成 8,420/8,420 callbacks（103:51）；随后 application log 报 `published source failed F12/F14/F15 durable receipt checks`。仅有 1,536-byte attempt partial，SHA-256 `3ed05aa1bde8ef8fb045d2ff87ad9e323a53cd72f9017861d86a7ec5e8678c43`，没有最终 EC-3 输出。Monitor 观察到 process exit code 0；应用日志仍明确记录 guard rejection，两个结果分别保留，不将 exit code 当成功。
+
+guard 已改为与所选 F15 `output_configuration().frame_bytes()` 比较，其他 durable receipt 条件未变。修复提交 `bab81c21` 已推送。E-254 使用同一 Love Song N36 输入和新 cold owner state 完成全文件 384 kbps 编码：attempt `1794000211995336000`，config SHA-256 `802f9a8f0ce341ca77926b85240376f6ce4c574294064b1748d6ef688a630aa3`；child exit code 0，CLI receipt 为 `OUTPUT_PUBLISHED`，8,421 callbacks / 8,419 sources / 8,417 AUs，输出 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-384-e254-20261107\love-song-fangdatong-36ch-384kbps.ec3` 为 12,928,512 bytes，SHA-256 `6e15e21d689389490850b653f198fa731337496daa0512aff82c320dee79fe69`。FFprobe 识别为 E-AC-3 Dolby Digital Plus + Dolby Atmos、48 kHz、6 channels、384 kbps、8,417 frames、269.344 s；独立 packet 查询得到 8,417 个 1,536-byte packets，FFmpeg base-layer null-sink decode 通过。产品日志最终记录 8,417 published AUs 和 12,928,512 bytes。没有保存 PCM，也没有做同配置 DEE 对照、PCM parity、spatial render、playback 或 W04。
+
+E-254 启动 supervisor 的 receipt 替换操作因空 backup path 报错并提前退出；编码 child 未被停止，recovery monitor 接管相同 PID 并捕获真实 exit/output receipt。该 supervisor 问题已记录，不影响本次自然完成的编码进程。E-245 的失败 partial 仍独立保留，未用于恢复或覆盖。384、448、576 kbps 各有一份本地全文件产品输出；640/768/1024 的新鲜全文件尝试尚未完成，因此六档矩阵和 DEE parity 仍未闭合。
+
+## 2026-11-07：448 kbps full-file output
+
+E-275 使用与 E-254 相同的 Love Song N36 输入，full-file/cold-owner，448 kbps。输入 SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`；binary SHA-256 `010c39b8783e8a74a64f9b6e6ab2380cf4909e8068d049477bbf4968ce6f3379`；attempt `1794020495838268300`；config SHA-256 `12795bb1e71152ff0a457beb2ac6e1e02b7a4db0bda71ee9dd6b4c874658f439`。Receipt `OUTPUT_PUBLISHED`，实际 child ExitCode 0，8,421 callbacks、8,419 sources、8,417 AUs。
+
+输出 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-448kbps-20261107\love-song-fangdatong-36ch-448kbps.ec3` 为 15,083,264 bytes，SHA-256 `9c462e0ab1b330ddcdcd01db90746ef2c88e93d52dc6e7cd301c4c239a8984fb`。FFprobe 读取到 E-AC-3 Dolby Digital Plus + Dolby Atmos、48 kHz、6 channels、448 kbps、8,417 frames、269.344 s；packet-size 查询确认 8,417 个 packet 均为 1,792 bytes；FFmpeg base-layer decode 到 null sink 通过且未保存 PCM。最后 AU receipt 为 frame_bytes=1792、crc_residual=0、durable=true；完整输出已发布。没有做同配置 DEE 对照、PCM/audio parity、spatial render、playback 或 W04。
+
+supervisor receipt 的 `timeline_event` 初始沿用 E-274 preflight 编号；终态 receipt 已更正为 launch E-275，并单独保留 `preflight_timeline_event=E-274`。该更正只涉及收据元数据，没有改动已经发布的输出文件。
+
+## 2026-11-07：release build 的 576 kbps 性能基线
+
+在用户要求先优化处理速度后，对 E-254/E-275 的收据与日志作了阶段计时。两次都使用 `target/debug/jocforge.exe`；E-254 384 kbps Meter/Main 分别耗时 102:37 / 215:48，E-275 448 kbps 为 101:45 / 218:11，Main 约 0.64 callbacks/s。仓库没有显式 `profile.dev` 或 rustflags 覆盖，默认 development profile 未优化是主要性能假设；未改音频算法。
+
+隔离执行 `cargo build --release -p jocforge --locked`（4 crates，18.76 s）后，首次使用 `target/release/jocforge.exe` 运行 E-304 576 kbps。Release binary SHA-256 `9ff1a53ef2ff608fcaf8756cf7966a003f17c163693fe2ef02d1e75cd6c3f765`。该次全文件 Meter/Main 耗时 02:16 / 04:30，总计 06:46；8,421 callbacks、8,419 sources、8,417 AUs 均提交，输出发布成功。与两次 debug 运行跨码率比较，总运行时间约快 47 倍；这不是同码率受控基准，因此只视为强性能证据，不当作精确倍数保证。
+
+输出 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-576kbps-20261107\love-song-fangdatong-36ch-576kbps.ec3` 为 19,392,768 bytes，SHA-256 `4c156a371c51b0e35ad633fee8d5deef7ae7d23eff0796eb5c5ef11a6685fd8f`。FFprobe 读取到 E-AC-3 Dolby Digital Plus + Dolby Atmos、48 kHz、6 channels、576 kbps、8,417 frames、269.344 s；packet-size 查询确认 8,417 个 packet 均为 2,304 bytes；FFmpeg base-layer decode 到 null sink 通过且未保存 PCM。无同配置 DEE 对照、PCM/audio parity、spatial render、playback 或 W04。
+
+## 2026-11-07：release build 的 640 kbps 性能复核
+
+E-310 继续使用同一 optimized release binary，完整运行 640 kbps full-file/cold-owner：Meter 2:24、Main 4:39、总计 7:03；child exit 0、8,421 callbacks、8,419 sources、8,417 AUs，全部发布成功。相较 E-254/E-275 的 debug runs（约 318–320 分钟），跨码率总时长比约 45×；384/448 与 576/640 的 rate 不同，因此这只是优化构建的强性能证据，不是同码率受控基准。
+
+输出 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-640kbps-20261107\love-song-fangdatong-36ch-640kbps.ec3` 为 21,547,520 bytes，SHA-256 `969d2000e0a770db1c136f3dc2b7bd092ab285086de1ff3dc33ffcf1921ea3fe`。FFprobe 读取到 E-AC-3 Dolby Digital Plus + Dolby Atmos、48 kHz、6 channels、640 kbps、8,417 frames、269.344 s；packet-size 查询确认 8,417 个 packet 均为 2,560 bytes；FFmpeg base-layer decode 到 null sink 通过且未保存 PCM。无同配置 DEE 对照、PCM/audio parity、spatial render、playback 或 W04。
+
+E-318 的 768 kbps release full-file attempt 已完成；E-325 随后完成 fresh 1024 kbps run，当前六个 selected rates 均有一份 full-file CLI 输出。DEE audio parity仍未闭合。
+
+## 2026-11-07：release build 的 768 kbps 性能复核
+
+E-318 使用同一 optimized release binary，全文件 Meter/Main 耗时 02:22 / 04:25，总计 06:47；child exit 0，8,421 callbacks、8,419 sources、8,417 AUs 全部发布。
+
+输出 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-768kbps-20261107\love-song-fangdatong-36ch-768kbps.ec3` 为 25,857,024 bytes，SHA-256 `53ab5de14af4f72d54a3b0657203a9d081e6d916cdf4eada00f3aa3937c9b6c4`。FFprobe 识别 E-AC-3 Dolby Digital Plus + Dolby Atmos、48 kHz、6 channels、768 kbps、8,417 frames、269.344 s；8,417 个 packet 均为 3,072 bytes；FFmpeg base-layer null-sink decode 通过且未保存 PCM。未做同配置 DEE 对照、PCM/audio parity、spatial render、playback 或 W04。
+
+## 2026-11-07：release build 的 1024 kbps full-file output
+
+E-325 使用同一 optimized release binary，全文件 Meter/Main 耗时 02:10 / 04:48，总计 06:58；child exit 0，8,421 callbacks、8,419 sources、8,417 AUs 全部发布。
+
+新输出 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-n36-1024kbps-release-20261107\love-song-fangdatong-36ch-1024kbps-release.ec3` 为 34,476,032 bytes，SHA-256 `bc01dcfc3b21cfefc4f20e522762e466d98d03375a14988d0b440d437f1db0a5`；其字节 hash 恰与旧隔离仓 1024 kbps EC-3 reference 一致，但它在不同路径新建且旧文件未覆盖。FFprobe: E-AC-3 Dolby Digital Plus + Dolby Atmos、48 kHz、6 channels、1,024 kbps、8,417 frames、269.344 s；8,417 个 packet 均为 4,096 bytes；FFmpeg base-layer null-sink decode 通过，未保存 PCM。此 hash equality 不表示与 DEE M4A 同配置或 audio parity；没有 PCM 比较、spatial render、playback 或 W04。
+
+至此 384/448/576/640/768/1024 六档均有 full-file JOCForge CLI 输出。release 576/640/768/1024 耗时约 6:46–7:03；与此前 debug 384/448 的约 318–320 分钟相比，跨 rate/profile 的观察约 45×。没有同 rate debug/release 受控比较，因此该比率是性能证据而非精确保证。六档输出完成不等于 DEE runtime rate handoff、PCM/audio parity 或端到端闭合。
