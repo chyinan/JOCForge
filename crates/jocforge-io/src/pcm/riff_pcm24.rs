@@ -228,7 +228,7 @@ impl<'a> ParsedRiffPcm24<'a> {
         Ok(planar)
     }
 
-    /// Reads one bounded sample chunk from this already parsed in-memory RIFF.
+    /// Reads one sample chunk, capping its request at this RIFF's sample extent.
     ///
     /// The per-channel sample position is converted to a relative byte offset using
     /// the parsed block alignment. This does not perform an operating-system read.
@@ -237,12 +237,22 @@ impl<'a> ParsedRiffPcm24<'a> {
         first_sample: AdmSampleIndex,
         requested_frames: u64,
     ) -> Result<DecodedPcm24ReadChunk, RiffPcm24Error> {
-        let end_sample = first_sample
-            .value()
-            .checked_add(requested_frames)
-            .ok_or(RiffPcm24Error::InvalidInput)?;
-        if requested_frames == 0 || end_sample > self.total_samples {
-            return Err(RiffPcm24Error::InvalidInput);
+        let Some(remaining_frames) = self.total_samples.checked_sub(first_sample.value()) else {
+            return decode_pcm24_read_chunk_with_layout(
+                &[],
+                0,
+                usize::from(self.channels),
+                usize::from(self.block_align),
+            );
+        };
+        let capped_frames = requested_frames.min(remaining_frames);
+        if capped_frames == 0 {
+            return decode_pcm24_read_chunk_with_layout(
+                &[],
+                0,
+                usize::from(self.channels),
+                usize::from(self.block_align),
+            );
         }
 
         let block_align = u64::from(self.block_align);
@@ -250,7 +260,7 @@ impl<'a> ParsedRiffPcm24<'a> {
             .value()
             .checked_mul(block_align)
             .ok_or(RiffPcm24Error::InvalidInput)?;
-        let requested_bytes = requested_frames
+        let requested_bytes = capped_frames
             .checked_mul(block_align)
             .and_then(|bytes| u32::try_from(bytes).ok())
             .ok_or(RiffPcm24Error::InvalidInput)?;

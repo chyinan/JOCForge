@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.authorized_adm_metadata_inventory.v1",
+  "package_id": "DEE-AUTHORIZED-ADM-36-38-METADATA-INVENTORY-V1",
+  "source_package": {
+    "package_id": "dee_authorized_adm_input_inventory_wash_v1",
+    "evidence_manifest_sha256": "bfeda613adf62c3b33160d996ef4f742ac980f98296f0b07587aeb29e71c8dfd",
+    "package_seal_sha256": "fcae8953be139bae311f04b5fcb83ddfc9b79a4cd0b1fa54a3f3a7feffdf7f76",
+    "checkers_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "authorized_inputs": 7,
+    "metadata_only": true,
+    "pcm_bytes_read": 0,
+    "whole_file_hashes": "NOT_COMPUTED",
+    "dee_run": "NOT_RUN",
+    "input_files_copied_or_renamed": false,
+    "absolute_source_paths_included": false
+  },
+  "samples": [
+    {"sample_id":"authorized_01","label":"First Love.wav","physical_N":36,"chna_tracks":36,"chna_uids":36,"axml_tracks":36,"axml_channels":36,"sample_rate_hz":48000,"bits_per_sample":24,"frames_per_channel":12361093,"duration":"00:04:17.523","file_size_bytes":1335078774},
+    {"sample_id":"authorized_02","label":"Hortus Regis Alti.wav","physical_N":36,"chna_tracks":36,"chna_uids":36,"axml_tracks":36,"axml_channels":36,"sample_rate_hz":48000,"bits_per_sample":24,"frames_per_channel":15642220,"duration":"00:05:25.880","file_size_bytes":1689440628},
+    {"sample_id":"authorized_03","label":"My jealousy (Original ver.).wav","physical_N":36,"chna_tracks":36,"chna_uids":36,"axml_tracks":36,"axml_channels":36,"sample_rate_hz":48000,"bits_per_sample":24,"frames_per_channel":7328771,"duration":"00:02:32.683","file_size_bytes":791588070},
+    {"sample_id":"authorized_04","label":"アルジャーノン.wav","physical_N":36,"chna_tracks":36,"chna_uids":36,"axml_tracks":36,"axml_channels":36,"sample_rate_hz":48000,"bits_per_sample":24,"frames_per_channel":12506501,"duration":"00:04:20.552","file_size_bytes":1350782840},
+    {"sample_id":"authorized_05","label":"潜在的なアイ.wav","physical_N":36,"chna_tracks":36,"chna_uids":36,"axml_tracks":36,"axml_channels":36,"sample_rate_hz":48000,"bits_per_sample":24,"frames_per_channel":9903478,"duration":"00:03:26.322","file_size_bytes":1069656356},
+    {"sample_id":"authorized_06","label":"人是猫 - 张卡斯, 洛天依.wav","physical_N":38,"chna_tracks":38,"chna_uids":38,"axml_tracks":38,"axml_channels":38,"sample_rate_hz":48000,"bits_per_sample":24,"frames_per_channel":6522906,"duration":"00:02:15.894","file_size_bytes":743696526},
+    {"sample_id":"authorized_07","label":"咲き誇れ - YOASOBI.wav","physical_N":36,"chna_tracks":36,"chna_uids":36,"axml_tracks":36,"axml_channels":36,"sample_rate_hz":48000,"bits_per_sample":24,"frames_per_channel":11852374,"duration":"00:04:06.924","file_size_bytes":1280137260}
+  ],
+  "summary": {
+    "distinct_physical_N": [36, 38],
+    "counts_by_N": {"36": 6, "38": 1},
+    "minimum_frames": 6522906,
+    "maximum_frames": 15642220,
+    "shortest_N36_sample": "authorized_03",
+    "shortest_overall_sample": "authorized_06"
+  },
+  "status": {
+    "sample_metadata_consistency": "BOUND_FOR_THESE_SEVEN_FILES",
+    "dee_runtime_acceptance": "NOT_RUN",
+    "jocforge_runtime_acceptance": "NOT_RUN",
+    "general_track_count_range": "NOT_ESTABLISHED"
+  }
+}

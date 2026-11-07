@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "authorized-seven-sample-metadata-counts",
+      "kind": "metadata-only-input-inventory",
+      "physical_N_values": [36, 38],
+      "samples_by_N": {"36": 6, "38": 1},
+      "per_sample_chna_and_axml_count_matches_fmt_N": true,
+      "pcm_bytes_read": 0,
+      "status": "COVERS_ONLY_THE_SEVEN_AUTHORIZED_INPUTS"
+    }
+  ]
+}

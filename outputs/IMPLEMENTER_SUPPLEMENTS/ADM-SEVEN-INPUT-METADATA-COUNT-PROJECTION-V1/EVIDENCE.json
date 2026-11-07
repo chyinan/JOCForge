@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.adm-seven-input-metadata-count-projection.v1",
+  "package_id": "ADM-SEVEN-INPUT-METADATA-COUNT-PROJECTION-V1",
+  "source_manifest_list_sha256": "5a8d953b5be8c0e4e23a57c7974d8ebe633ed8856314407e59b911c5d24e36a8",
+  "authorized_input_identity_receipt_sha256": "19b134d2d3409d48429bdbf9d0779452fd26099c2ebb64ae39a47bb11a6f4e11",
+  "status": {
+    "metadata_counts_across_seven_inputs": "BOUND_TO_HASHED_METADATA_RECEIPTS",
+    "native_K_marker_count": "NOT_EVALUATED",
+    "native_child_partition": "NOT_EVALUATED",
+    "native_runtime": "NOT_RUN",
+    "source_media_reopened": false,
+    "pcm_or_payload_read": false
+  },
+  "cross_sample_shape": {
+    "sample_count": 7,
+    "n36_samples": 6,
+    "n38_samples": 1,
+    "directspeaker_bed_rows": "10 rows; each metadata vector length 1, aggregate 10",
+    "objects_rows": {"n36": 26, "n38": 28},
+    "metadata_formula": "N = 10 DirectSpeakers bed rows + CHNA Objects rows",
+    "conditional_candidate_projection": {
+      "assumption": "one native marker per CHNA Objects row and all such markers belong to one native child",
+      "n36": {"K_candidate": 26, "M_candidate": 36},
+      "n38": {"K_candidate": 28, "M_candidate": 38},
+      "native_K_or_M": "NOT_EVALUATED"
+    }
+  },
+  "interpretation": {
+    "supports": "A consistent input-only metadata row-count projection across six 36-row files and one 38-row file.",
+    "does_not_support": [
+      "Native K marker counts or child partition.",
+      "N=K/M semantic identity from numerical equality.",
+      "All physical-row counts beyond the observed 36/38 examples.",
+      "Selected runtime path, codec capacity, or full JOC output."
+    ]
+  },
+  "implementation_effect": {
+    "metadata_projection_vectors_may_be_reused": true,
+    "native_or_audio_algorithm_change_authorized": false
+  },
+  "excluded_material": {
+    "native_or_research_source_code": false,
+    "decompilation_or_binary": false,
+    "original_audio_files": false,
+    "pcm_or_bitstream_payload": false,
+    "private_key_or_auth_material": false,
+    "absolute_local_paths": false,
+    "raw_native_addresses": false
+  }
+}

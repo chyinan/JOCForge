@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-AUTHORIZED-ADM-36-38-METADATA-INVENTORY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SEVEN_FILES_METADATA_BOUND; GENERAL_RANGE_NOT_ESTABLISHED",
+  "implementation_disposition": "Use only as a seven-file sample inventory and dynamic-test selector; not as a general track-admission claim.",
+  "source_manifest_sha256": "bfeda613adf62c3b33160d996ef4f742ac980f98296f0b07587aeb29e71c8dfd",
+  "source_package_seal_sha256": "fcae8953be139bae311f04b5fcb83ddfc9b79a4cd0b1fa54a3f3a7feffdf7f76",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4406,
+      "sha256": "25171b6fb16306496dfdae2162e194a3c905ddf149da589196836b2974795069"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3187,
+      "sha256": "cf12cb7f727413be390464081ad61312b3a34d95ca81edc2920fcdc57fe9fd51"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 414,
+      "sha256": "6a4bbecbc5a938ae693d80cabe4fcb2f84dc06c4b06f1082c709b6770f340ed7"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 898,
+      "sha256": "25e451361acbeed150ec7fb3e46493305abd0a108d8045136b9e59e2b251678c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 694,
+      "sha256": "6ac0a9ae5329ab0020e70c1fb96dd3c5051aef1274b149f7e06dca73c1b9b41f"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "ADM-SEVEN-SAMPLE-CHNA-AXML-K-MATRIX-WASH-V1",
+      "manifest_checksum_list_sha256": "5a8d953b5be8c0e4e23a57c7974d8ebe633ed8856314407e59b911c5d24e36a8",
+      "manifest_payloads_rehashed": true,
+      "source_wavs_reopened": false,
+      "scope": "Seven authorized sample metadata projections; native K not evaluated."
+    },
+    {
+      "package_id": "authorized-bwf-input-identities-wash-v2",
+      "identities_sha256": "19b134d2d3409d48429bdbf9d0779452fd26099c2ebb64ae39a47bb11a6f4e11",
+      "source_identity_claims_match": true
+    },
+    {
+      "package_id": "ADM-CHILD-COUNT-SEVEN-SAMPLE-CANDIDATE-V1",
+      "evidence_sha256": "dbdca6c6b37341a6837a0269d2fe350391a30df3e64645dd1802c6e7dd7034e8",
+      "input_vector_sha256": "fa198bab2912017f0dfdea29427b026b89bff83ae7be21eecdbc4e0f7dbe9731",
+      "scope": "Conditional metadata candidate K/M projection."
+    },
+    {
+      "package_id": "ATMOS-SPECIAL-CHILD-COUNT-MARKER-CANDIDATE-V1",
+      "evidence_sha256": "7c2385ca4cf493f4f51973a0da9885f3446ef8753330b0f56beeb94582de81af",
+      "input_vector_sha256": "6e1866f705dc1db955076be94c799b5d097f265de2fbd261e04bcd3ffb1137b3",
+      "scope": "Native marker rule source; actual K not measured."
+    }
+  ],
+  "all_provenance_hashes_reverified": true,
+  "raw_research_payload_copied": false
+}

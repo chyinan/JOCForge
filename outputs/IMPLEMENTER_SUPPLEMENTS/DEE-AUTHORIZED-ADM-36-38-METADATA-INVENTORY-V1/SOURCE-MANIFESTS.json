@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "dee_authorized_adm_input_inventory_wash_v1",
+      "evidence_manifest_sha256": "bfeda613adf62c3b33160d996ef4f742ac980f98296f0b07587aeb29e71c8dfd",
+      "package_seal_sha256": "fcae8953be139bae311f04b5fcb83ddfc9b79a4cd0b1fa54a3f3a7feffdf7f76",
+      "reviewed_payloads": [
+        {"name":"REPORT.md","sha256":"6c0d7b208bda86546f99021c14410ebf7f68033911a3612048c3e141874921a1"},
+        {"name":"INPUT-METADATA.json","sha256":"4f157f41fe0cc63759f26e3e3a65dda1a00078ef681885c0ad1929760f8ccc03"}
+      ],
+      "raw_pcm_or_audio_bytes_copied": false,
+      "absolute_paths_copied": false
+    }
+  ]
+}

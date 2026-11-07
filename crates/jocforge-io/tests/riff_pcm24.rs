@@ -20,6 +20,11 @@ const UNIT_README_SHA256: &str = "a455c6b33e582b0d359face09667e91622404fd203d376
 const F06OF_INPUT_ONLY_VECTORS_PATH: &str = "../../outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json";
 const F06OF_INPUT_ONLY_VECTORS_SHA256: &str =
     "16958ad2622e17d6667e825d430c2c6e5edd39dc61e148913ff1de252e39c976";
+const ADM_SEVEN_INPUT_METADATA_VECTORS: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/ADM-SEVEN-INPUT-METADATA-COUNT-PROJECTION-V1/INPUT-ONLY-VECTORS.json"
+);
+const ADM_SEVEN_INPUT_METADATA_VECTORS_SHA256: &str =
+    "6b7eb0f68eabd002bbfd7c4a0846d53b43f6cefe7277f1dc10cec213c742c565";
 
 fn crate_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -280,6 +285,64 @@ fn pcm24_riff_reader_preserves_a_36_channel_input_without_padding() {
     let decoded = decode_pcm24_read_chunk(&[0; 36 * 3], (36 * 3) as u32, 36).unwrap();
     assert_eq!(decoded.planar_f32_bits().len(), 36);
     assert!(decode_pcm24_read_chunk(&[0; 3], 3, 0).is_err());
+}
+
+#[test]
+fn pcm24_chunk_caps_requests_at_source_extent_and_returns_zero_at_eof() {
+    let bytes = riff_pcm24_with_channels(2, 3);
+    let parsed = parse_selected_riff_pcm24(&bytes, None).unwrap();
+
+    let final_partial = parsed.read_pcm24_chunk(AdmSampleIndex::new(2), 4).unwrap();
+    assert_eq!(final_partial.actual_frames().value(), 1);
+    assert_eq!(final_partial.planar_f32_bits().len(), 2);
+    assert!(
+        final_partial
+            .planar_f32_bits()
+            .iter()
+            .all(|row| row.len() == 1)
+    );
+
+    for (first_sample, requested_frames) in [(3, 1), (4, 8), (0, 0)] {
+        let empty = parsed
+            .read_pcm24_chunk(AdmSampleIndex::new(first_sample), requested_frames)
+            .unwrap();
+        assert_eq!(empty.actual_frames().value(), 0);
+        assert_eq!(empty.planar_f32_bits().len(), 2);
+        assert!(empty.planar_f32_bits().iter().all(Vec::is_empty));
+    }
+}
+
+#[test]
+fn riff_pcm24_parser_preserves_metadata_rows_and_another_valid_count() {
+    assert_eq!(
+        sha256(ADM_SEVEN_INPUT_METADATA_VECTORS),
+        ADM_SEVEN_INPUT_METADATA_VECTORS_SHA256
+    );
+    let vectors: Value = serde_json::from_slice(ADM_SEVEN_INPUT_METADATA_VECTORS).unwrap();
+    let metadata_cases = vectors["vectors"].as_array().unwrap();
+    let row_count = |case_id: &str| {
+        let case = metadata_cases
+            .iter()
+            .find(|case| case["id"] == case_id)
+            .unwrap();
+        u16::try_from(case["input"]["N_physical_rows"].as_u64().unwrap()).unwrap()
+    };
+    let metadata_36 = row_count("six-authorized-n36-inputs");
+    let metadata_38 = row_count("one-authorized-n38-input");
+    assert_eq!((metadata_36, metadata_38), (36, 38));
+
+    // 36/38 come from hash-bound metadata-only receipts; 37 is a synthetic valid intervening shape.
+    for channels in [metadata_36, metadata_38, 37] {
+        let bytes = riff_pcm24_with_channels(channels, 1);
+        let parsed = parse_selected_riff_pcm24(&bytes, None).unwrap();
+
+        assert_eq!(parsed.channels(), channels);
+        assert_eq!(parsed.block_align(), channels * 3);
+        assert_eq!(parsed.total_samples(), 1);
+        let rows = parsed.read_pcm24_hop(AdmSampleIndex::new(0), 1).unwrap();
+        assert_eq!(rows.len(), usize::from(channels));
+        assert!(rows.iter().all(|row| row.len() == 1));
+    }
 }
 
 #[test]

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.adm-seven-input-count-vectors.v1",
+  "vectors": [
+    {
+      "id": "six-authorized-n36-inputs",
+      "kind": "metadata-only aggregate projection; no media opened",
+      "input": {"sample_count": 6, "N_physical_rows": 36, "DirectSpeakers_beds": 10, "CHNA_Objects_rows": 26},
+      "expected": {"metadata_row_sum": 36, "K_native": "NOT_EVALUATED", "M_native": "NOT_EVALUATED"}
+    },
+    {
+      "id": "one-authorized-n38-input",
+      "kind": "metadata-only aggregate projection; no media opened",
+      "input": {"sample_count": 1, "N_physical_rows": 38, "DirectSpeakers_beds": 10, "CHNA_Objects_rows": 28},
+      "expected": {"metadata_row_sum": 38, "K_native": "NOT_EVALUATED", "M_native": "NOT_EVALUATED"}
+    },
+    {
+      "id": "conditional-one-marker-per-object-model",
+      "kind": "synthetic input-only assumption; not native execution",
+      "input": {"N36_K_candidate":26,"N38_K_candidate":28,"assumption":"all object entries marked and one child partition"},
+      "expected": {"M36_candidate":36,"M38_candidate":38,"native_join":"NOT_EVALUATED"}
+    }
+  ]
+}
