@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.atmos-ddp-drc-profile-input-pack-boundary.v1",
+  "package_id": "ATMOS-DDP-DRC-PROFILE-INPUT-PACK-BOUNDARY-V1",
+  "status": "SIX_VALUE_STRING_TO_U32_MAP_BOUND_STATIC; LINE_RF_PACK_SLOTS_BOUND_STATIC; XML_TO_STAGE_ROW_UNBOUND; FINAL_ENCODER_CONSUMER_AND_AUDIO_EFFECT_UNBOUND",
+  "upstream": {
+    "package_id": "adm_bwf_ddp_drc_profile_input_boundary_wash_v1",
+    "manifest_sha256": "05a1f8d1c7c7d0cb28c564df676954bbb83b440bbc937b31afdeb4b1fc06587d",
+    "seal_sha256": "c4c4c719eddb34aa1521a06e5c828d0e9f0dc92057e819baa7fc2bd19cddce70",
+    "payloads": 5,
+    "payload_hash_audit": "PASS_5_OF_5",
+    "source_evidence": 8,
+    "source_hash_audit": "PASS_8_OF_8",
+    "upstream_checker": "REPORTED_PASS_NORMAL_AND_O; NOT_RERUN_BY_WASH"
+  },
+  "images": {
+    "host_dee_exe_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "ddp_atmos_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "native_profile_map": [
+    {"profile":"film_light","code":0},
+    {"profile":"film_standard","code":1},
+    {"profile":"music_light","code":2},
+    {"profile":"music_standard","code":3},
+    {"profile":"speech","code":4},
+    {"profile":"none","code":5}
+  ],
+  "fields": {
+    "line_stringtype": "backend+0x6d0",
+    "rf_stringtype": "backend+0x750",
+    "line_packed_u32": "workflow block+0xa0",
+    "rf_packed_u32": "workflow block+0xa4",
+    "packer": "FUN_1801535b0",
+    "mode_1_2_alternate_paths": true,
+    "other_mode_block_path": "FUN_1801475f0 -> FUN_180175c70 -> FUN_180175c80"
+  },
+  "distinct_defaults": {
+    "plugin_stringtype_constructor": "film_light",
+    "host_docmodel_template": "music_light",
+    "local_xsd": "film_light; executing-image identity unbound",
+    "r138_source_xml": "explicit none/none; job/input identity unbound",
+    "effective_selected_default": "UNBOUND"
+  },
+  "unbound": ["XML DRC child to StageRunner+0x68 key/value row", "host namespace conversion to DDP drc: property keys", "selected runtime mode", "workflow slots +0xa0/+0xa4 final codec/bitstream consumer", "decoded PCM/audio effect", "product approval for all six values"]
+}

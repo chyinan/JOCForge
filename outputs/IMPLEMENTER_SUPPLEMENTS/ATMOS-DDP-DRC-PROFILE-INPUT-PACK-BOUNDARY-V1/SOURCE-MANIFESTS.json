@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream": {
+    "package_id": "adm_bwf_ddp_drc_profile_input_boundary_wash_v1",
+    "workspace": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-3/outputs/adm_bwf_ddp_drc_profile_input_boundary_wash_v1",
+    "manifest_sha256": "05a1f8d1c7c7d0cb28c564df676954bbb83b440bbc937b31afdeb4b1fc06587d",
+    "seal_sha256": "c4c4c719eddb34aa1521a06e5c828d0e9f0dc92057e819baa7fc2bd19cddce70"
+  },
+  "wash_audit": {"payloads_matched":"5/5","source_evidence_matched":"8/8","seal_manifest_link":true,"checker_status":"UPSTREAM_REPORTED_PASS; NOT_RERUN_BY_WASH"},
+  "scope": "Only the sanitized enum/default/pack-slot facts and explicit UNBOUND boundaries are offered for implementation review."
+}

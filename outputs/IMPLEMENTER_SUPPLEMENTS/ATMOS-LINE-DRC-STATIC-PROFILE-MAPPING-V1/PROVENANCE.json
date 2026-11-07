@@ -1,0 +1,9 @@
+{
+  "source_manifest_sha256": "92b374ee79f385d8750f27bc55f80c04468a573c12d5096c9bd660200d608531",
+  "source_seal_sha256": "8b2adfe2573aa3228bd4d3c318c069ea145d73c1c698bea5ff61e570cb132a4f",
+  "constructor_trace_sha256": "0d033abe216bc46f4e77b6a55a9397c3d4aeb4f1d7e409e66a6153cbbc59537c",
+  "constructor_trace_lines": "416-466, 472-477",
+  "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "line_to_compr_source_sha256": "c4d7c71ae5234612d918ef3d55a67489e793bf5c1636d08f27082d93f1fa4a96",
+  "status": "STATIC_CONDITIONAL; RUNTIME_NOT_RUN"
+}

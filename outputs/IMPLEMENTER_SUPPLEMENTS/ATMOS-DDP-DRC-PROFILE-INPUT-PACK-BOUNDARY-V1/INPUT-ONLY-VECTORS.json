@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "explicit-r138-none-pair-conditional",
+      "input": {"line_mode_drc_profile":"none","rf_mode_drc_profile":"none"},
+      "expected_static_scope": {"line_native_code":5,"rf_native_code":5,"condition":"only if these exact values reach the DDP native StringType parameters"},
+      "runtime_selection":"NOT_RUN"
+    },
+    {
+      "id": "host-template-default-pair",
+      "input": {"origin":"host DocModel template"},
+      "expected_static_scope": {"line":"music_light","rf":"music_light","line_code":2,"rf_code":2},
+      "runtime_selection":"NOT_RUN"
+    },
+    {
+      "id": "plugin-constructor-default-pair",
+      "input": {"origin":"DDP StringType constructor"},
+      "expected_static_scope": {"line":"film_light","rf":"film_light","line_code":0,"rf_code":0},
+      "runtime_selection":"NOT_RUN"
+    }
+  ],
+  "warning": "Vectors describe static maps/defaults; they do not assert XML-to-row handoff, selected job values, final BSI fields, or audible effects."
+}

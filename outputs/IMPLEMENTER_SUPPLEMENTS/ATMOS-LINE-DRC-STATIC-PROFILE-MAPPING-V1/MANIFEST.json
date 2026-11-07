@@ -1,0 +1,21 @@
+{
+  "package_id": "ATMOS-LINE-DRC-STATIC-PROFILE-MAPPING-V1",
+  "scope": "LINE_DRC_STATIC_MAPPING_ONLY",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "sha256": "e6c063edcf49e2ff5e947bf39190cb8c7f406174ad2d9b39300b6015dc34a257",
+      "bytes": 1282
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "sha256": "007940c5533dca0a3b62c64cefaf8affb2b8e35a9f45aedfe2f57bfc164b39e5",
+      "bytes": 1011
+    },
+    {
+      "name": "PROVENANCE.json",
+      "sha256": "097980cb3ee2b318c4280f5c8e7ebbdb0048961d9c5a7c95cae295e08045e055",
+      "bytes": 577
+    }
+  ]
+}

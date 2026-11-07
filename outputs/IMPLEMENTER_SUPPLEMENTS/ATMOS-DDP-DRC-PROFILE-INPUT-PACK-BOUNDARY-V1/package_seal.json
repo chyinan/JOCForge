@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ATMOS-DDP-DRC-PROFILE-INPUT-PACK-BOUNDARY-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "f675d60fac512750cb17d9fd65cd016d64eb8d254da65fe6131b5139b37a2f45",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "05a1f8d1c7c7d0cb28c564df676954bbb83b440bbc937b31afdeb4b1fc06587d",
+  "upstream_source_audit": "PASS_8_OF_8",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

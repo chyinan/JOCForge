@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ATMOS-DDP-DRC-PROFILE-INPUT-PACK-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SIX_VALUE_STRING_TO_U32_MAP_BOUND_STATIC; LINE_RF_PACK_SLOTS_BOUND_STATIC; XML_TO_STAGE_ROW_UNBOUND; FINAL_ENCODER_CONSUMER_AND_AUDIO_EFFECT_UNBOUND",
+  "implementation_disposition": "USE_ONLY_IF_PROFILE_VALUE_REACHES_TYPED_DDP_PARAMETER; DO_NOT_CLAIM_XML_OR_AUDIBLE_EFFECT",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2156, "sha256": "7c59c2a116a99f320e558e3360f5e4099f1ebafeb40c333d9c0ce7c4722bdf3e"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 1050, "sha256": "8ebbfbd5c118db302fe5dd62f1f40e8da7e82edff07473fba123161b67de0392"},
+    {"name": "REPORT.md", "bytes": 2279, "sha256": "d0bbf2c38728eee45834a658ab0b974f6914e83b4dafe1b71845a62b20a4dd27"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 753, "sha256": "717de8176141bffe5fa8028026d0193905fa4b44487f32f7163774b019799be1"}
+  ]
+}
