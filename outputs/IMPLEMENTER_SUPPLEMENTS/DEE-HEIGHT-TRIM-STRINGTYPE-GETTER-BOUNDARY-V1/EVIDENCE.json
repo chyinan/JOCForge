@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.height_trim_stringtype_getter_boundary.v1",
+  "status": "STRINGTYPE_VALUE_GETTER_BOUND; FIELD_INVOCATION_AND_PROVIDER_GENERATION_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "custom_trim_height_value_getter_boundary_wash_v1",
+  "source_manifest_sha256": "0f928a6effd7abd5f491bf6d02bba29bcaaf370500c964352ae2b45e960caf89",
+  "source_manifest_sidecar_sha256": "191db679380172c83d696f7f1e7d93397e0405b0c66fc2efc33c1183308a2bbf",
+  "field": {"xml_key": "custom_trims:height_trim_5_1", "member": "Priv+0x9e8 StringType", "initializer": "FUN_180138690"},
+  "getter": {"function": "FUN_180152490", "vtable_slot": "+0x30", "operation": "copy string param_1+0x08 to output string param_2", "generic_typed_getter_bound": true},
+  "unbound": ["height field instance to virtual getter callsite", "selected Atmos DDP provider/generation", "numeric conversion and units", "BSI/audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

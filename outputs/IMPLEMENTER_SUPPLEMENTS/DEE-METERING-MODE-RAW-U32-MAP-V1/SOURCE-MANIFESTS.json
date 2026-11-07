@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-METERING-MODE-INITIALIZER-RAW-U32-VALUES-WASH-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-7-multi-adm-dialnorm\\work\\encoder_analysis\\reports\\metering_mode_initializer_raw_values_20261107_1730z",
+    "manifest_sha256": "16ac0dc3537afb0e2d7d4d34383d68730305c50e589e3cffd67a878ad1b22aa9",
+    "seal_sha256": "7636f468ebb756f02281cc2b0f707754311a64ed5e2206ab90624db7c27602b6",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.metering_mode_raw_u32_map.v1",
+  "status": "STATIC_INITIALIZER_RAW_VALUES_BOUND; SEMANTIC_MODE_UNBOUND; OWNER_PROVIDER_JOIN_UNBOUND; EFFECT_NOT_RUN",
+  "source_package": "DEE-METERING-MODE-INITIALIZER-RAW-U32-VALUES-WASH-V1",
+  "source_manifest_sha256": "16ac0dc3537afb0e2d7d4d34383d68730305c50e589e3cffd67a878ad1b22aa9",
+  "source_seal_sha256": "7636f468ebb756f02281cc2b0f707754311a64ed5e2206ab90624db7c27602b6",
+  "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "initializer": {"function": "FUN_180001ea0", "map": "DAT_180a17e08", "record_stride_bytes": 40, "raw_value_width_bits": 32},
+  "token_map": [
+    {"token": "1770-4", "raw_u32": 0},
+    {"token": "1770-3", "raw_u32": 1},
+    {"token": "1770-2", "raw_u32": 2},
+    {"token": "1770-1", "raw_u32": 3},
+    {"token": "LeqA", "raw_u32": 4}
+  ],
+  "unbound": ["semantic interpretation of raw values", "XML StringType owner to processing getter receiver", "selected Meter/provider owner and generation", "measurement/control effect", "audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "measurement_effect": "NOT_RUN", "audio_effect": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

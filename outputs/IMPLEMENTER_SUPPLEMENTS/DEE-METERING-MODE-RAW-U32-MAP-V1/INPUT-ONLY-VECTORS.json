@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"metering_mode": "1770-4", "static_raw_u32": 0, "status": "STATIC_ONLY", "effect": "NOT_RUN"},
+    {"metering_mode": "1770-3", "static_raw_u32": 1, "status": "STATIC_ONLY", "effect": "NOT_RUN"},
+    {"metering_mode": "1770-2", "static_raw_u32": 2, "status": "STATIC_ONLY", "effect": "NOT_RUN"},
+    {"metering_mode": "1770-1", "static_raw_u32": 3, "status": "STATIC_ONLY", "effect": "NOT_RUN"},
+    {"metering_mode": "LeqA", "static_raw_u32": 4, "status": "STATIC_ONLY", "effect": "NOT_RUN"}
+  ],
+  "note": "Raw initializer entries, not semantic enum/effect vectors."
+}

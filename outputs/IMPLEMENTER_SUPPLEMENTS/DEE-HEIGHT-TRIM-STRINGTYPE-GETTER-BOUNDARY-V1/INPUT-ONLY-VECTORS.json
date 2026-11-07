@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"field": "custom_trims:height_trim_5_1", "token": "-3", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:height_trim_5_1", "token": "-6", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:height_trim_5_1", "token": "-9", "status": "DECLARED_ONLY", "expected_effect": null},
+    {"field": "custom_trims:height_trim_5_1", "token": "-12", "status": "DECLARED_ONLY", "expected_effect": null}
+  ],
+  "note": "Lexical choices only; no unit/effect expectation."
+}

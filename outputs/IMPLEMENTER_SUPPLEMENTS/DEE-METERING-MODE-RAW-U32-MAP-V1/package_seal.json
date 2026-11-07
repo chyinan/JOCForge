@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-METERING-MODE-RAW-U32-MAP-V1",
+  "manifest_sha256": "3ae0d1afd07106b2cb73962a7dd5a21c5792bc28559c697bb81413bebc51c21c",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STATIC_INITIALIZER_RAW_VALUES_BOUND; SEMANTIC_MODE_UNBOUND; OWNER_PROVIDER_JOIN_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}
