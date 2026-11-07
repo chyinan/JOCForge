@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following forty tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
+The following forty-one tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1429,6 +1429,7 @@ The following forty tabled packages were independently hash-checked and passed t
 | DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1 | 7c8f491defcd5750a6e2b937d753c8fbb9a29fda51999740b9c84a21d5cf2a0e / 9b2367347d0398c619e20c71d9a2b600e5b39072dceb6dabca544fdc1f3d6196 | Serializer +0x42f0 pointer forwarded to FUN_1801c24a0. | Pointer type/owner, snapshot +0xa0 join, callee behavior and BSI/audio effect. |
 | DEE-LINE-DRC-SERIALIZER-CALLEE-RETURN-BOUNDARY-V1 | 7416935ad1816256c23cf0b22b0cedcb0535c6337ebb3c26ff7cdcc404f13193 / 0cb84f0b13c7cbc5d7bdea43d6646c886668268360e298a73584f8342e6b7baf | Callee writes U32 zero to RCX pointee then returns. | Pointee semantics/owner, snapshot +0xa0 relation, BSI and audio effect. |
 | DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1 | 56d3779fd9b94a9710cb2d7ea72ca677397b74aa2ec64fbd927f1bcdaab6c633 / 39e44c7af6bf1d1ff61b876694e9e08593c4abe6c28392fa7a856698a86b3f85 | Slot target reads this+0x30 pointer then pointee+0x50 QWORD. | Pointee type/owner, start/end/duration semantics, Reader/PTS/audio effect. |
+| DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1 | 75154594b8a5ef295ae91a9b61de48c0936199052212435235788c3f870fbdb4 / 2cc56bd5c3115d20159b9918f77dbcd45d23de5412ef693583a9b78c577b709b | Exact ten-token validator set; parent normalizes 29.97df separately. | Units, rounding, XML owner, runtime behavior and additional CLI options. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.
 

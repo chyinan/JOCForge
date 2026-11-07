@@ -6359,7 +6359,8 @@
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -6395,7 +6396,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "5e74aef07b179668ab263f07642209a223dbaa1bcedeadd5f2fd1929a0a63f90",
             "supplement_seal_sha256": "1100d0026618279ebdd35ecd36c2a132d03b841c7a926965ead4ff1278549ffd",
@@ -6429,6 +6437,28 @@
               "non_sentinel_first_helper": "FUN_1401359e0 returns value treated as double",
               "offset_first_helper": "FUN_140054460 result cast to double",
               "xml_owner_numeric_semantics_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "exact_validator_allowlist_addendum": {
+              "package_id": "DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1",
+              "manifest_sha256": "75154594b8a5ef295ae91a9b61de48c0936199052212435235788c3f870fbdb4",
+              "seal_sha256": "2cc56bd5c3115d20159b9918f77dbcd45d23de5412ef693583a9b78c577b709b",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "validator": "FUN_140135d90 exact byte/length comparison",
+              "accepted_tokens": [
+                "not_indicated",
+                "23.976",
+                "24",
+                "25",
+                "29.97",
+                "30",
+                "48",
+                "50",
+                "59.94",
+                "60"
+              ],
+              "direct_29_97df": "rejected; parent canonicalizes to 29.97 and adds separate drop_frame property",
+              "numeric_conversion_and_runtime_effect": "NONE_AT_VALIDATOR; parent semantics UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -6445,7 +6475,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only timecode_frame_rate boundary: the host exact-key setter stores a typed value at input object +0x31 without identifying its adm/atmos_mezz owner or first consumer. The DDP plugin has a numeric property-map consumer at +0xa0 in FUN_18014fd90, but XML output-node owner/generation is not joined. Input/output fields may not be merged; template not_indicated does not prove omission defaults."
@@ -67175,6 +67209,25 @@
         "Pointee owner/generation and returned QWORD semantic type/unit.",
         "Start/end/duration/PTS or Reader relationship.",
         "Audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1",
+      "manifest_sha256": "75154594b8a5ef295ae91a9b61de48c0936199052212435235788c3f870fbdb4",
+      "supplement_seal_sha256": "2cc56bd5c3115d20159b9918f77dbcd45d23de5412ef693583a9b78c577b709b",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "EXACT_TEN_TOKEN_VALIDATOR_SET_BOUND; PARENT_NORMALIZATION_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "XML owner/generation and parent converter unit/precision/rounding semantics.",
+        "Runtime acceptance and timecode effect."
       ]
     }
   ]

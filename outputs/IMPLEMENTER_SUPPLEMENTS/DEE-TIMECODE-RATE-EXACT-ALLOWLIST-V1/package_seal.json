@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1",
+  "manifest_sha256": "75154594b8a5ef295ae91a9b61de48c0936199052212435235788c3f870fbdb4",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "EXACT_TEN_TOKEN_ALLOWLIST_BOUND; XML_OWNER_CONVERSION_EFFECT_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

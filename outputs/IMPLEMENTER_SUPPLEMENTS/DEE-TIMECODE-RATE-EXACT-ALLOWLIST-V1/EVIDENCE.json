@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.timecode_frame_rate_exact_allowlist.v1",
+  "status": "EXACT_TEN_TOKEN_ALLOWLIST_BOUND; XML_OWNER_CONVERSION_EFFECT_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "timecode-frame-rate-validator-boundary-wash-v1",
+  "source_manifest_sidecar_sha256": "231e7fe00dd83ed8ea2c5b6882729a54bbb6cd2d18c3af46826f74efeae4329c",
+  "source_package_seal_sha256": "0e45ef763084c6e6b4610348270eb343d97b7519c046a805ed0dfdb54fca3a53",
+  "validator": "FUN_140135d90",
+  "accepted_exact_tokens": ["not_indicated", "23.976", "24", "25", "29.97", "30", "48", "50", "59.94", "60"],
+  "invalid_behavior": "returns 0 after full length-and-byte comparison; parent maps zero to exception path",
+  "special_parent_normalization": {"input": "29.97df", "canonical_rate": "29.97", "separate_property": "drop_frame", "normalization_function": "FUN_14012ff20"},
+  "validator_numeric_conversion": "NONE",
+  "unbound": ["XML field owner/generation", "parent conversion helper units/precision/rounding", "runtime acceptance", "timecode effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

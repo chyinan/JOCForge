@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "EXACT_TEN_TOKEN_ALLOWLIST_BOUND; XML_OWNER_CONVERSION_EFFECT_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 778,
+      "sha256": "f0d1bf36346dfeb5a3471f62a918cd73e62b146763b7a5cea98907a1cfa93ad6"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1364,
+      "sha256": "a91c4e48a96bca890cb51645d709f3b57a6ba6178a43fd4dde4c06c33b330493"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 559,
+      "sha256": "d6fc2d7e1a5fa7f914d30cca05b9ae472e25c3531697a7cf8e5bcef772cce6c7"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 511,
+      "sha256": "77b76908e2280327344e267ed5a50c06474293de98a1895cef4e81dd42c5672c"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 802,
+      "sha256": "acf54bfebd2228430f7894f01a1c3cd31bb6bc783f472d1c5b9c0b3c1cdd6da4"
+    }
+  ]
+}

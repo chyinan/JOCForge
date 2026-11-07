@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"field": "timecode_frame_rate", "accepted_exact_tokens": ["not_indicated", "23.976", "24", "25", "29.97", "30", "48", "50", "59.94", "60"], "validator_expected": 1, "runtime_effect": "NOT_RUN"},
+    {"field": "timecode_frame_rate", "direct_token": "29.97df", "validator_expected": 0, "parent_normalizes_before_validator": true, "runtime_effect": "NOT_RUN"}
+  ],
+  "note": "Static validator vectors only; no job execution or output asserted."
+}
