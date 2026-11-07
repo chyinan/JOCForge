@@ -630,6 +630,667 @@ fn f08_lfe_negate(value: f32) -> f32 {
     f32::from_bits(value.to_bits() ^ 0x8000_0000)
 }
 
+const PRETRANSFORM_L_COEFFICIENTS_BITS: [u32; 128] = [
+    0x390e9922, 0x397fbf9c, 0x39c02722, 0x3a051ad5, 0x3a2fa573, 0x3a603cef, 0x3a8bb306, 0x3aaad318,
+    0x3acdc2b0, 0x3af4c794, 0x3b1014bd, 0x3b28190d, 0x3b42969b, 0x3b5fb449, 0x3b7f99f5, 0x3b91383a,
+    0x3ba430c2, 0x3bb8cbe7, 0x3bcf1f67, 0x3be74167, 0x3c00a436, 0x3c0ea5aa, 0x3c1db0a7, 0x3c2dd0ec,
+    0x3c3f1258, 0x3c5180e4, 0x3c6528a7, 0x3c7a15c9, 0x3c882a40, 0x3c93f889, 0x3ca07be2, 0x3cadba70,
+    0x3cbbba55, 0x3cca81ad, 0x3cda168e, 0x3cea7f00, 0x3cfbc102, 0x3d06f13f, 0x3d1074a7, 0x3d1a6d9a,
+    0x3d24deec, 0x3d2fcb64, 0x3d3b35b8, 0x3d47208e, 0x3d538e78, 0x3d6081f5, 0x3d6dfd6d, 0x3d7c0332,
+    0x3d854abe, 0x3d8cdb35, 0x3d94b400, 0x3d9cd612, 0x3da5424d, 0x3dadf987, 0x3db6fc83, 0x3dc04bf2,
+    0x3dc9e876, 0x3dd3d29b, 0x3dde0ade, 0x3de891a5, 0x3df36744, 0x3dfe8bfa, 0x3e04fff8, 0x3e0ae19d,
+    0x3e10eaec, 0x3e171bd8, 0x3e1d744b, 0x3e23f422, 0x3e2a9b2e, 0x3e316936, 0x3e385df4, 0x3e3f7917,
+    0x3e46ba41, 0x3e4e2108, 0x3e55acf8, 0x3e5d5d90, 0x3e653241, 0x3e6d2a74, 0x3e754584, 0x3e7d82bf,
+    0x3e82f0b5, 0x3e873060, 0x3e8b7ff5, 0x3e8fdf07, 0x3e944d20, 0x3e98c9c8, 0x3e9d5480, 0x3ea1ecc3,
+    0x3ea6920a, 0x3eab43c5, 0x3eb00165, 0x3eb4ca51, 0x3eb99df0, 0x3ebe7ba1, 0x3ec362c4, 0x3ec852b1,
+    0x3ecd4abf, 0x3ed24a41, 0x3ed75087, 0x3edc5cde, 0x3ee16e92, 0x3ee684ec, 0x3eeb9f31, 0x3ef0bca8,
+    0x3ef5dc93, 0x3efafe35, 0x3f001068, 0x3f02a1d3, 0x3f0532fb, 0x3f07c380, 0x3f0a5303, 0x3f0ce124,
+    0x3f0f6d85, 0x3f11f7c7, 0x3f147f8c, 0x3f170477, 0x3f19862c, 0x3f1c0450, 0x3f1e7e8a, 0x3f20f481,
+    0x3f2365dd, 0x3f25d24b, 0x3f283975, 0x3f2a9b0b, 0x3f2cf6bc, 0x3f2f4c3b, 0x3f319b3c, 0x3f33e377,
+];
+
+const PRETRANSFORM_R_COEFFICIENTS_BITS: [u32; 128] = [
+    0x3f3624a4, 0x3f385e7e, 0x3f3a90c5, 0x3f3cbb3a, 0x3f3edd9f, 0x3f40f7bc, 0x3f43095a, 0x3f451245,
+    0x3f47124d, 0x3f490945, 0x3f4af702, 0x3f4cdb5e, 0x3f4eb633, 0x3f508762, 0x3f524ecd, 0x3f540c5a,
+    0x3f55bff3, 0x3f576983, 0x3f5908fb, 0x3f5a9e4d, 0x3f5c2970, 0x3f5daa5d, 0x3f5f2112, 0x3f608d8d,
+    0x3f61efd1, 0x3f6347e6, 0x3f6495d4, 0x3f65d9a6, 0x3f67136d, 0x3f684339, 0x3f69691f, 0x3f6a8537,
+    0x3f6b9799, 0x3f6ca062, 0x3f6d9fb0, 0x3f6e95a5, 0x3f6f8263, 0x3f70660f, 0x3f7140d1, 0x3f7212d0,
+    0x3f72dc37, 0x3f739d33, 0x3f7455f1, 0x3f7506a0, 0x3f75af70, 0x3f765093, 0x3f76ea39, 0x3f777c98,
+    0x3f7807e1, 0x3f788c4b, 0x3f790a09, 0x3f798151, 0x3f79f258, 0x3f7a5d55, 0x3f7ac27c, 0x3f7b2203,
+    0x3f7b7c1f, 0x3f7bd106, 0x3f7c20ec, 0x3f7c6c06, 0x3f7cb285, 0x3f7cf49f, 0x3f7d3284, 0x3f7d6c65,
+    0x3f7da274, 0x3f7dd4de, 0x3f7e03d4, 0x3f7e2f80, 0x3f7e5810, 0x3f7e7daf, 0x3f7ea085, 0x3f7ec0bb,
+    0x3f7ede78, 0x3f7ef9e2, 0x3f7f131c, 0x3f7f2a4a, 0x3f7f3f8c, 0x3f7f5304, 0x3f7f64d0, 0x3f7f750d,
+    0x3f7f83d7, 0x3f7f9148, 0x3f7f9d7b, 0x3f7fa887, 0x3f7fb282, 0x3f7fbb83, 0x3f7fc39d, 0x3f7fcae3,
+    0x3f7fd168, 0x3f7fd73b, 0x3f7fdc6d, 0x3f7fe10c, 0x3f7fe525, 0x3f7fe8c6, 0x3f7febf9, 0x3f7feeca,
+    0x3f7ff143, 0x3f7ff36c, 0x3f7ff54f, 0x3f7ff6f2, 0x3f7ff85d, 0x3f7ff997, 0x3f7ffaa4, 0x3f7ffb8b,
+    0x3f7ffc50, 0x3f7ffcf7, 0x3f7ffd84, 0x3f7ffdfb, 0x3f7ffe5e, 0x3f7ffeb1, 0x3f7ffef5, 0x3f7fff2d,
+    0x3f7fff5b, 0x3f7fff80, 0x3f7fff9e, 0x3f7fffb6, 0x3f7fffc9, 0x3f7fffd7, 0x3f7fffe3, 0x3f7fffeb,
+    0x3f7ffff2, 0x3f7ffff6, 0x3f7ffffa, 0x3f7ffffc, 0x3f7ffffe, 0x3f7fffff, 0x3f800000, 0x3f800000,
+];
+/// The two history halves for one selected selector-zero LFE record.
+///
+/// Construct with [`LfeSelectorZeroHistory::new_record_zeroed`] only for a newly carved record.
+/// Reuse the returned after-state for later blocks; the evidence does not support per-block reset
+/// or arbitrary lane/slot selection.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct LfeSelectorZeroHistory {
+    main_history_bits: [u32; 128],
+    companion_history_bits: [u32; 128],
+}
+
+impl LfeSelectorZeroHistory {
+    /// Creates the zero history bound to a newly carved record.
+    pub const fn new_record_zeroed() -> Self {
+        Self {
+            main_history_bits: [0; 128],
+            companion_history_bits: [0; 128],
+        }
+    }
+
+    pub const fn main_history_bits(&self) -> &[u32; 128] {
+        &self.main_history_bits
+    }
+
+    pub const fn companion_history_bits(&self) -> &[u32; 128] {
+        &self.companion_history_bits
+    }
+}
+
+/// Noncommitting outputs of the selector-zero LFE pre-transform for one 256-sample block.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct LfeSelectorZeroPretransformResult {
+    main_work_bits: [u32; 256],
+    companion_work_bits: [u32; 256],
+    after_history: LfeSelectorZeroHistory,
+}
+
+impl LfeSelectorZeroPretransformResult {
+    pub const fn main_work_bits(&self) -> &[u32; 256] {
+        &self.main_work_bits
+    }
+
+    pub const fn companion_work_bits(&self) -> &[u32; 256] {
+        &self.companion_work_bits
+    }
+
+    pub const fn after_history(&self) -> &LfeSelectorZeroHistory {
+        &self.after_history
+    }
+}
+
+/// Applies the hash-bound main and companion selector-zero LFE pre-transforms to one block.
+///
+/// Each work array is overwritten in full. Main and companion consume independent history
+/// halves; the caller owns the returned history and carries it to the next block. This function
+/// implements the captured layout-7 pre-transform only. It does not select a lane or slot, run the
+/// following 64-group recurrence, execute wrapper gates, apply the 6x6 matrix branch, or emit frame
+/// data. The pre-transform's runtime rounding/FMA policy was not captured.
+#[must_use]
+pub fn pretransform_selector_zero_lfe_block(
+    before: &LfeSelectorZeroHistory,
+    input_bits: &[u32; 256],
+) -> LfeSelectorZeroPretransformResult {
+    let mut main_work_bits = [0_u32; 256];
+    let mut companion_work_bits = [0_u32; 256];
+    let mut after_history = *before;
+
+    for iteration in 0..64 {
+        let even = iteration * 2;
+        let odd = even + 1;
+        let tail_even = 255 - even;
+        let tail_odd = 254 - even;
+        let right_even = 127 - even;
+        let right_odd = 126 - even;
+
+        let input_even = f32::from_bits(input_bits[even]);
+        let input_odd = f32::from_bits(input_bits[odd]);
+        let input_tail_even = f32::from_bits(input_bits[tail_even]);
+        let input_tail_odd = f32::from_bits(input_bits[tail_odd]);
+        let left_even = f32::from_bits(PRETRANSFORM_L_COEFFICIENTS_BITS[even]);
+        let left_odd = f32::from_bits(PRETRANSFORM_L_COEFFICIENTS_BITS[odd]);
+        let right_even_value = f32::from_bits(PRETRANSFORM_R_COEFFICIENTS_BITS[right_even]);
+        let right_odd_value = f32::from_bits(PRETRANSFORM_R_COEFFICIENTS_BITS[right_odd]);
+
+        let old_main_upper = f32::from_bits(before.main_history_bits[64 + iteration]);
+        let old_main_lower = f32::from_bits(before.main_history_bits[63 - iteration]);
+        let old_companion_upper = f32::from_bits(before.companion_history_bits[64 + iteration]);
+        let old_companion_lower = f32::from_bits(before.companion_history_bits[63 - iteration]);
+
+        main_work_bits[128 + even] =
+            (input_even * right_even_value + input_tail_even * left_even).to_bits();
+        main_work_bits[129 + even] = old_main_upper.to_bits();
+        main_work_bits[127 - even] =
+            (input_odd * right_odd_value + input_tail_odd * left_odd).to_bits();
+        main_work_bits[126 - even] = old_main_lower.to_bits();
+        after_history.main_history_bits[64 + iteration] =
+            (input_tail_even * right_even_value - left_even * input_even).to_bits();
+        after_history.main_history_bits[63 - iteration] =
+            (input_tail_odd * right_odd_value - left_odd * input_odd).to_bits();
+
+        companion_work_bits[128 + even] = old_companion_upper.to_bits();
+        companion_work_bits[129 + even] =
+            (input_even * right_even_value - input_tail_even * left_even).to_bits();
+        companion_work_bits[127 - even] = old_companion_lower.to_bits();
+        companion_work_bits[126 - even] =
+            (input_odd * right_odd_value - input_tail_odd * left_odd).to_bits();
+        after_history.companion_history_bits[64 + iteration] =
+            (input_tail_even * right_even_value + left_even * input_even).to_bits();
+        after_history.companion_history_bits[63 - iteration] =
+            (input_tail_odd * right_odd_value + left_odd * input_odd).to_bits();
+    }
+
+    LfeSelectorZeroPretransformResult {
+        main_work_bits,
+        companion_work_bits,
+        after_history,
+    }
+}
+const LFE_16POINT_W0_BITS: [u32; 8] = [
+    0x3f80_0000,
+    0x3f7f_b10f,
+    0x3f7e_c46d,
+    0x3f7d_3aac,
+    0x3f7b_14be,
+    0x3f7d_3aac,
+    0x3f7e_c46d,
+    0x3f7f_b10f,
+];
+const LFE_16POINT_W1_BITS: [u32; 8] = [
+    0x0000_0000,
+    0x3d48_fb30,
+    0x3dc8_bd36,
+    0x3e16_4083,
+    0xbe47_c5c2,
+    0xbe16_4083,
+    0xbdc8_bd36,
+    0xbd48_fb30,
+];
+const LFE_16POINT_C_BITS: [u32; 8] = [
+    0x4000_0000,
+    0x3fff_b10f,
+    0x3ffe_c46d,
+    0x3ffd_3aac,
+    0x3ffb_14be,
+    0x3ffd_3aac,
+    0x3ffe_c46d,
+    0x3fff_b10f,
+];
+const LFE_16POINT_BIN_PERMUTATION: [usize; 8] = [0, 4, 2, 6, 1, 5, 3, 7];
+const LFE_16POINT_OUTPUT_SCALE_BITS: u32 = 0x3d80_0000;
+const LFE_16POINT_SIGN_MASK: u32 = 0x8000_0000;
+const LFE_16POINT_ROTATION_Q_BITS: u32 = 0x3f35_04f3;
+
+/// Applies the sanitized 16-point butterfly to one gathered F32 row.
+///
+/// Input and output words are IEEE-754 binary32 bits. The equations use separate F32
+/// multiply/add/subtract operations and sign-bit flips; this helper does not apply wrapper gates.
+#[must_use]
+pub fn transform_lfe_16point_butterfly_row(input_bits: &[u32; 16]) -> [u32; 16] {
+    let v = input_bits.map(f32::from_bits);
+    let mut a = [0.0_f32; 16];
+
+    for index in 0..4 {
+        a[index] = v[index] + v[8 + index];
+        a[4 + index] = v[4 + index] + v[12 + index];
+        a[8 + index] = v[index] - v[8 + index];
+    }
+    a[12] = f32::from_bits((v[5] - v[13]).to_bits() ^ LFE_16POINT_SIGN_MASK);
+    a[13] = v[4] - v[12];
+    a[14] = f32::from_bits((v[7] - v[15]).to_bits() ^ LFE_16POINT_SIGN_MASK);
+    a[15] = v[6] - v[14];
+
+    let mut b = [0.0_f32; 16];
+    b[0] = a[0] + a[4];
+    b[4] = a[0] - a[4];
+    b[1] = a[1] + a[5];
+    b[5] = a[1] - a[5];
+    b[2] = a[2] + a[6];
+    b[3] = a[2] + a[7];
+    b[6] = f32::from_bits((a[3] - a[7]).to_bits() ^ LFE_16POINT_SIGN_MASK);
+    b[7] = a[2] - a[6];
+    b[8..].copy_from_slice(&a[8..]);
+
+    let mut c = b;
+    for index in 0..4 {
+        c[8 + index] = b[8 + index] - b[12 + index];
+        c[12 + index] = b[12 + index] + b[8 + index];
+    }
+
+    let rotation = f32::from_bits(LFE_16POINT_ROTATION_Q_BITS);
+    let q10 = rotation * c[10];
+    let q11 = rotation * c[11];
+    let q14 = rotation * c[14];
+    let q15 = rotation * c[15];
+    c[10] = q10 + q11;
+    c[11] = q11 - q10;
+    c[14] = q15 - q14;
+    c[15] = f32::from_bits(q14.to_bits() ^ LFE_16POINT_SIGN_MASK) - q15;
+
+    c.map(f32::to_bits)
+}
+
+/// Applies the sanitized 256-to-16 F32 stage to one already-prepared block.
+///
+/// The caller owns pre-transform/history and selector-zero selection. This stage gathers the
+/// sixteen 16-value rows, applies the butterfly, runs the three-pass recurrence, and returns raw
+/// F32 bits. Runtime MXCSR mode, the separate 6x6 matrix branch, wrapper gates, LFE wire fields,
+/// and PCM parity remain outside this value function.
+#[must_use]
+pub fn transform_lfe_16point_block(input_bits: &[u32; 256]) -> [u32; 16] {
+    let mut rows = [[0.0_f32; 16]; 16];
+    for row in 0..16 {
+        let mut gathered_bits = [0_u32; 16];
+        for group in 0..8 {
+            gathered_bits[2 * group] = input_bits[32 * group + 2 * row];
+            gathered_bits[2 * group + 1] = input_bits[32 * group + 2 * row + 1];
+        }
+        rows[row] = transform_lfe_16point_butterfly_row(&gathered_bits).map(f32::from_bits);
+    }
+
+    let output_scale = f32::from_bits(LFE_16POINT_OUTPUT_SCALE_BITS);
+    let mut output = [0_u32; 16];
+    for bin in 0..8 {
+        let column = 2 * LFE_16POINT_BIN_PERMUTATION[bin];
+        let cosine = f32::from_bits(LFE_16POINT_C_BITS[bin]);
+        let window_0 = f32::from_bits(LFE_16POINT_W0_BITS[bin]);
+        let window_1 = f32::from_bits(LFE_16POINT_W1_BITS[bin]);
+        let mut state_r = 0.0_f32;
+        let mut state_q = 0.0_f32;
+        let mut state_a = rows[15][column];
+        let mut state_b = rows[15][column + 1];
+
+        for top in [14, 9, 4] {
+            let next_r = (cosine * state_a - state_r) + rows[top][column];
+            let next_q = (cosine * state_b - state_q) + rows[top][column + 1];
+            let next_a = (cosine * next_r - state_a) + rows[top - 1][column];
+            let next_u = (cosine * next_q - state_b) + rows[top - 1][column + 1];
+            let next_b = (cosine * next_a - next_r) + rows[top - 2][column];
+            let next_v = (cosine * next_u - next_q) + rows[top - 2][column + 1];
+            state_r = (cosine * next_b - next_a) + rows[top - 3][column];
+            state_q = (cosine * next_v - next_u) + rows[top - 3][column + 1];
+            state_a = (cosine * state_r - next_b) + rows[top - 4][column];
+            state_b = (cosine * state_q - next_v) + rows[top - 4][column + 1];
+        }
+
+        output[2 * bin] =
+            (((state_a - state_r) * window_0 + state_q * window_1) * output_scale).to_bits();
+        output[2 * bin + 1] =
+            (((state_b - state_r * window_1) - state_q * window_0) * output_scale).to_bits();
+    }
+    output
+}
+const LFE_SELECTOR_ZERO_SCALE_BITS: [u32; 4] = [0xbf80_0000, 0x3f80_0000, 0xbf80_0000, 0x3f80_0000];
+
+/// Exact Wash-bound primary A words for the selector-zero recurrence.
+pub const SELECTOR_ZERO_LFE_RECURRENCE_PRIMARY_COEFFICIENT_BITS: [u32; 128] = [
+    0xbf7f_ffec,
+    0xbf7f_f9c1,
+    0xbf7f_e9b8,
+    0xbf7f_cfd1,
+    0xbf7f_ac0d,
+    0xbf7f_7e6d,
+    0xbf7f_46f4,
+    0xbf7f_05a4,
+    0xbf7e_ba7f,
+    0xbf7e_6588,
+    0xbf7e_06c2,
+    0xbf7d_9e30,
+    0xbf7d_2bd8,
+    0xbf7c_afbd,
+    0xbf7c_29e5,
+    0xbf7b_9a53,
+    0xbf7b_010e,
+    0xbf7a_5e1c,
+    0xbf79_b183,
+    0xbf78_fb4a,
+    0xbf78_3b77,
+    0xbf77_7213,
+    0xbf76_9f24,
+    0xbf75_c2b3,
+    0xbf74_dcc9,
+    0xbf73_ed6e,
+    0xbf72_f4ac,
+    0xbf71_f28c,
+    0xbf70_e717,
+    0xbf6f_d25a,
+    0xbf6e_b45d,
+    0xbf6d_8d2d,
+    0xbf6c_5cd4,
+    0xbf6b_235e,
+    0xbf69_e0d7,
+    0xbf68_954c,
+    0xbf67_40ca,
+    0xbf65_e35e,
+    0xbf64_7d14,
+    0xbf63_0dfc,
+    0xbf61_9622,
+    0xbf60_1596,
+    0xbf5e_8c67,
+    0xbf5c_faa3,
+    0xbf5b_605a,
+    0xbf59_bd9c,
+    0xbf58_1279,
+    0xbf56_5f02,
+    0xbf54_a347,
+    0xbf52_df59,
+    0xbf51_134a,
+    0xbf4f_3f2b,
+    0xbf4d_6310,
+    0xbf4b_7f09,
+    0xbf49_9329,
+    0xbf47_9f84,
+    0xbf45_a42d,
+    0xbf43_a138,
+    0xbf41_96b7,
+    0xbf3f_84c0,
+    0xbf3d_6b67,
+    0xbf3b_4ac1,
+    0xbf39_22e1,
+    0xbf36_f3df,
+    0xbf34_bdcf,
+    0xbf32_80c7,
+    0xbf30_3cde,
+    0xbf2d_f229,
+    0xbf2b_a0bf,
+    0xbf29_48b8,
+    0xbf26_ea2a,
+    0xbf24_852c,
+    0xbf22_19d7,
+    0xbf1f_a841,
+    0xbf1d_3084,
+    0xbf1a_b2b8,
+    0xbf18_2ef5,
+    0xbf15_a554,
+    0xbf13_15ee,
+    0xbf10_80dc,
+    0xbf0d_e638,
+    0xbf0b_461c,
+    0xbf08_a0a1,
+    0xbf05_f5e2,
+    0xbf03_45f8,
+    0xbf00_90ff,
+    0xbefb_ae22,
+    0xbef6_3093,
+    0xbef0_a985,
+    0xbeeb_1930,
+    0xbee5_7fcb,
+    0xbedf_dd8d,
+    0xbeda_32ad,
+    0xbed4_7f64,
+    0xbece_c3ea,
+    0xbec9_0077,
+    0xbec3_3544,
+    0xbebd_628b,
+    0xbeb7_8884,
+    0xbeb1_a76b,
+    0xbeab_bf77,
+    0xbea5_d0e5,
+    0xbe9f_dbee,
+    0xbe99_e0ce,
+    0xbe93_dfbf,
+    0xbe8d_d8fc,
+    0xbe87_ccc1,
+    0xbe81_bb4a,
+    0xbe77_49a6,
+    0xbe6b_132f,
+    0xbe5e_d3a8,
+    0xbe52_8b89,
+    0xbe46_3b4d,
+    0xbe39_e36c,
+    0xbe2d_8461,
+    0xbe21_1ea5,
+    0xbe14_b2b2,
+    0xbe08_4105,
+    0xbdf7_942c,
+    0xbdde_9cc4,
+    0xbdc5_9cc6,
+    0xbdac_952b,
+    0xbd93_86e7,
+    0xbd74_e5e9,
+    0xbd42_b491,
+    0xbd10_7bb8,
+    0xbcbc_7a9b,
+    0xbc2f_ed02,
+];
+
+/// Exact Wash-bound secondary B words for the selector-zero recurrence.
+pub const SELECTOR_ZERO_LFE_RECURRENCE_SECONDARY_COEFFICIENT_BITS: [u32; 128] = [
+    0xbac9_0fd5,
+    0xbc62_2fff,
+    0xbcd5_9aa6,
+    0xbd1d_0a88,
+    0xbd4f_41af,
+    0xbd80_b86c,
+    0xbd99_cb0a,
+    0xbdb2_d7bb,
+    0xbdcb_dd86,
+    0xbde4_db76,
+    0xbdfd_d092,
+    0xbe0b_5df3,
+    0xbe17_ce3d,
+    0xbe24_38ad,
+    0xbe30_9cc9,
+    0xbe3c_fa15,
+    0xbe49_5018,
+    0xbe55_9e58,
+    0xbe61_e45c,
+    0xbe6e_21ab,
+    0xbe7a_55cb,
+    0xbe83_4022,
+    0xbe89_5050,
+    0xbe8f_5b32,
+    0xbe95_608d,
+    0xbe9b_6027,
+    0xbea1_59c2,
+    0xbea7_4d25,
+    0xbead_3a15,
+    0xbeb3_2058,
+    0xbeb8_ffb2,
+    0xbebe_d7eb,
+    0xbec4_a8c8,
+    0xbeca_7210,
+    0xbed0_338a,
+    0xbed5_ecfd,
+    0xbedb_9e31,
+    0xbee1_46ee,
+    0xbee6_e6fb,
+    0xbeec_7e21,
+    0xbef2_0c29,
+    0xbef7_90dc,
+    0xbefd_0c04,
+    0xbf01_3eb5,
+    0xbf03_f26d,
+    0xbf06_a10e,
+    0xbf09_4a7f,
+    0xbf0b_eea5,
+    0xbf0e_8d65,
+    0xbf11_26a7,
+    0xbf13_ba50,
+    0xbf16_4847,
+    0xbf18_d073,
+    0xbf1b_52bb,
+    0xbf1d_cf06,
+    0xbf20_453b,
+    0xbf22_b543,
+    0xbf25_1f04,
+    0xbf27_8268,
+    0xbf29_df57,
+    0xbf2c_35b9,
+    0xbf2e_8578,
+    0xbf30_ce7c,
+    0xbf33_10af,
+    0xbf35_4bfb,
+    0xbf37_804a,
+    0xbf39_ad85,
+    0xbf3b_d398,
+    0xbf3d_f26e,
+    0xbf40_09f0,
+    0xbf42_1a0b,
+    0xbf44_22ab,
+    0xbf46_23bb,
+    0xbf48_1d27,
+    0xbf4a_0edc,
+    0xbf4b_f8c7,
+    0xbf4d_dad5,
+    0xbf4f_b4f4,
+    0xbf51_8710,
+    0xbf53_5118,
+    0xbf55_12fb,
+    0xbf56_cca7,
+    0xbf58_7e0b,
+    0xbf5a_2716,
+    0xbf5b_c7b8,
+    0xbf5d_5fe1,
+    0xbf5e_ef81,
+    0xbf60_7689,
+    0xbf61_f4ea,
+    0xbf63_6a95,
+    0xbf64_d77b,
+    0xbf66_3b8e,
+    0xbf67_96c1,
+    0xbf68_e907,
+    0xbf6a_3252,
+    0xbf6b_7295,
+    0xbf6c_a9c5,
+    0xbf6d_d7d5,
+    0xbf6e_fcba,
+    0xbf70_1867,
+    0xbf71_2ad4,
+    0xbf72_33f4,
+    0xbf73_33be,
+    0xbf74_2a27,
+    0xbf75_1727,
+    0xbf75_fab3,
+    0xbf76_d4c4,
+    0xbf77_a551,
+    0xbf78_6c52,
+    0xbf79_29bf,
+    0xbf79_dd91,
+    0xbf7a_87c1,
+    0xbf7b_2848,
+    0xbf7b_bf20,
+    0xbf7c_4c44,
+    0xbf7c_cfae,
+    0xbf7d_4959,
+    0xbf7d_b940,
+    0xbf7e_1f5e,
+    0xbf7e_7bb1,
+    0xbf7e_ce34,
+    0xbf7f_16e4,
+    0xbf7f_55bf,
+    0xbf7f_8ac2,
+    0xbf7f_b5ea,
+    0xbf7f_d737,
+    0xbf7f_eea7,
+    0xbf7f_fc39,
+];
+
+/// Applies the washed 64-group selector-zero recurrence with caller-supplied A/B tables.
+///
+/// The table arguments are raw IEEE-754 binary32 words and must come from the hash-bound
+/// selector-zero coefficient package. This function does not choose a selector or supply any
+/// nonzero-selector table.
+#[must_use]
+pub fn apply_selector_zero_lfe_recurrence(
+    before_bits: &[u32; 256],
+    selector_zero_primary_words: &[u32; 128],
+    selector_zero_secondary_words: &[u32; 128],
+) -> [u32; 256] {
+    let scale = LFE_SELECTOR_ZERO_SCALE_BITS.map(f32::from_bits);
+    let mut after_bits = [0_u32; 256];
+
+    for group in 0..64 {
+        let base = group * 4;
+        let value_0 = f32::from_bits(before_bits[base]);
+        let value_1 = f32::from_bits(before_bits[base + 1]);
+        let value_2 = f32::from_bits(before_bits[base + 2]);
+        let value_3 = f32::from_bits(before_bits[base + 3]);
+        let a_even = f32::from_bits(selector_zero_primary_words[group * 2]);
+        let a_odd = f32::from_bits(selector_zero_primary_words[group * 2 + 1]);
+        let b_even = f32::from_bits(selector_zero_secondary_words[group * 2]);
+        let b_odd = f32::from_bits(selector_zero_secondary_words[group * 2 + 1]);
+
+        let first_product = a_even * value_0;
+        let first_scaled = first_product * scale[0];
+        let second_product = b_even * value_1;
+        after_bits[base] = (first_scaled + second_product).to_bits();
+
+        let first_product = a_even * value_1;
+        let first_scaled = first_product * scale[1];
+        let second_product = b_even * value_0;
+        after_bits[base + 1] = (first_scaled + second_product).to_bits();
+
+        let first_product = a_odd * value_2;
+        let first_scaled = first_product * scale[2];
+        let second_product = b_odd * value_3;
+        after_bits[base + 2] = (first_scaled + second_product).to_bits();
+
+        let first_product = a_odd * value_3;
+        let first_scaled = first_product * scale[3];
+        let second_product = b_odd * value_2;
+        after_bits[base + 3] = (first_scaled + second_product).to_bits();
+    }
+
+    after_bits
+}
+/// Final main/companion values and the carried selector-zero history for one LFE block.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct LfeSelectorZeroBlockResult {
+    main_terminal_bits: [u32; 7],
+    companion_terminal_bits: [u32; 7],
+    after_history: LfeSelectorZeroHistory,
+}
+
+impl LfeSelectorZeroBlockResult {
+    pub const fn main_terminal_bits(&self) -> &[u32; 7] {
+        &self.main_terminal_bits
+    }
+
+    pub const fn companion_terminal_bits(&self) -> &[u32; 7] {
+        &self.companion_terminal_bits
+    }
+
+    pub const fn after_history(&self) -> &LfeSelectorZeroHistory {
+        &self.after_history
+    }
+}
+
+/// Composes the selector-zero pre-transform, recurrence with the module-owned Wash-bound tables,
+/// 16-point stage, and terminal projection for one 256-sample block.
+///
+/// The caller owns record/slot selection and history carry. This function does not select a runtime
+/// branch, run wrapper gates, apply the conditional 6x6 matrix branch, or emit frame/wire output; it
+/// also does not reproduce an uncaptured runtime rounding mode.
+#[must_use]
+pub fn transform_selector_zero_lfe_block(
+    before_history: &LfeSelectorZeroHistory,
+    input_bits: &[u32; 256],
+) -> LfeSelectorZeroBlockResult {
+    let pretransform = pretransform_selector_zero_lfe_block(before_history, input_bits);
+    let main_recurrence = apply_selector_zero_lfe_recurrence(
+        pretransform.main_work_bits(),
+        &SELECTOR_ZERO_LFE_RECURRENCE_PRIMARY_COEFFICIENT_BITS,
+        &SELECTOR_ZERO_LFE_RECURRENCE_SECONDARY_COEFFICIENT_BITS,
+    );
+    let companion_recurrence = apply_selector_zero_lfe_recurrence(
+        pretransform.companion_work_bits(),
+        &SELECTOR_ZERO_LFE_RECURRENCE_PRIMARY_COEFFICIENT_BITS,
+        &SELECTOR_ZERO_LFE_RECURRENCE_SECONDARY_COEFFICIENT_BITS,
+    );
+    let main_window_bits = transform_lfe_16point_block(&main_recurrence);
+    let companion_window_bits = transform_lfe_16point_block(&companion_recurrence);
+    let main_window = main_window_bits.map(f32::from_bits);
+    let companion_window = companion_window_bits.map(f32::from_bits);
+    let main_terminal_bits = project_main_lfe_terminal_window(&main_window).map(f32::to_bits);
+    let companion_terminal_bits =
+        project_companion_lfe_terminal_window(&companion_window).map(f32::to_bits);
+
+    LfeSelectorZeroBlockResult {
+        main_terminal_bits,
+        companion_terminal_bits,
+        after_history: *pretransform.after_history(),
+    }
+}
 const TERMINAL_A_0_BITS: u32 = 0xbf7f_ffec;
 const TERMINAL_A_1_BITS: u32 = 0xbf7f_f9c1;
 const TERMINAL_A_2_BITS: u32 = 0xbf7f_e9b8;
