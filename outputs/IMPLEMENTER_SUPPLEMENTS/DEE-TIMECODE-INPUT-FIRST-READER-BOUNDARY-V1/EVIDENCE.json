@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.timecode_input_reader_boundary.v1",
+  "status": "HOST_SETTER_BYTE_0X188_BOUND; READER_CANDIDATE_BYTE_0X188_BOUND; OBJECT_OWNER_JOIN_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "timecode-input-field-first-consumer-boundary-wash-v1",
+  "source_manifest_sidecar_sha256": "e7926bc2da0a723c623f28a30c6a717ab58f24f956eb330742e45905bcad3f7b",
+  "source_seal_sha256": "6284b7353d2b5a2536cd29b4c19aeca8e841d7dea41e1d54702834e2ef234089",
+  "correction": {"base_type": "longlong*", "source_expression": "param_1+0x31", "byte_offset": "0x188", "replaces_ambiguous_wording": true},
+  "setter": {"function": "FUN_1400f13e0", "parser": "FUN_1400705c0", "store_helper": "FUN_14001d440", "stored_byte_offset": "0x188"},
+  "reader_candidate": {"function": "FUN_1400f09d0", "label": "dee::input::AtmosMezz::Run", "read_byte_offset": "0x188", "copy_helper": "FUN_1400207f0", "next_call": "FUN_14012ff20", "same_typed_owner_as_setter": "UNBOUND"},
+  "unbound": ["setter object to reader object identity/owner/generation", "adm vs atmos_mezz XML node attribution", "FUN_14012ff20 conversion semantics", "downstream timecode consumer", "runtime behavior"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1",
+  "manifest_sha256": "8b7c680d54d361b537931fa132248c14c21192520027103dadb366838cc6f2d7",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "HOST_SETTER_BYTE_0X188_BOUND; READER_CANDIDATE_BYTE_0X188_BOUND; OBJECT_OWNER_JOIN_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

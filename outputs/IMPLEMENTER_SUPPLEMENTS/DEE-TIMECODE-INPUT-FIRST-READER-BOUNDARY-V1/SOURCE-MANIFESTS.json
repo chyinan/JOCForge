@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "timecode_input_field_first_consumer_boundary_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-25\\jocforge-reverse-agent-4-f06of\\outputs\\timecode_input_field_first_consumer_boundary_wash_v1",
+    "manifest_sidecar_sha256": "e7926bc2da0a723c623f28a30c6a717ab58f24f956eb330742e45905bcad3f7b",
+    "package_seal_sha256": "6284b7353d2b5a2536cd29b4c19aeca8e841d7dea41e1d54702834e2ef234089",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

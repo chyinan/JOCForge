@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"xml_path": "input/audio/adm/timecode_frame_rate", "template_value": "not_indicated", "setter_to_reader_owner": "UNBOUND", "runtime": "NOT_RUN"},
+    {"xml_path": "input/audio/atmos_mezz/timecode_frame_rate", "template_value": "not_indicated", "setter_to_reader_owner": "UNBOUND", "runtime": "NOT_RUN"}
+  ],
+  "note": "Template values only; no XML-to-object identity or output asserted."
+}
