@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "JOCFORGE-RATE-APPEND-GUARD-384-FIRST-FAILURE-V1",
+  "scope": "Implementation-side non-audio rate-dependent durable append guard diagnosis for E-245 only.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 2288,
+      "sha256": "6ff88e3fa7687b9cf180006067fa522f15b3401c95f18192221a82a970f112b7"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 859,
+      "sha256": "1246e6207359c7a6a9c1c8da9f0b639395930ac3582d22e1ee8dd98584677da8"
+    },
+    {
+      "path": "SOURCE-IDENTITIES.json",
+      "bytes": 1870,
+      "sha256": "3d551b4271ae1b3af085e5d6feaab61a1e67543c2136f5e286d6adf3cb5797f5"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1993,
+      "sha256": "a4e6b37bfad800efc62bbf5adc7b3498d84911c0379d86bbc29966757943159b"
+    }
+  ]
+}

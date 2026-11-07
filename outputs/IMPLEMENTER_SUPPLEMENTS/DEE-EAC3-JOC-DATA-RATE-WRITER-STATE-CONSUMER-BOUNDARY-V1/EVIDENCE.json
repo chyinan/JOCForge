@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.eac3_joc_rate_writer_state_consumer_boundary.v1",
+  "package_id": "DEE-EAC3-JOC-DATA-RATE-WRITER-STATE-CONSUMER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "eac3_joc_data_rate_writer_state_consumer_wash_v1",
+    "manifest_sha256": "7bd4e88fbe5f44fe266bb510c651edcc5fed14cb4871d61a12f957b973f33b5f",
+    "checkers_normal_and_python_o": "PASS",
+    "installed_target_image_rehashed": false,
+    "image_identity_origin": "related sealed parent receipts"
+  },
+  "target": {
+    "ghidra_version": "12.2",
+    "analysis_mode": "read-only/no-analysis",
+    "image_name": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256_from_parent_receipts": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "scope": {
+    "selected_callback": "FUN_1801c0770",
+    "dee_run": "NOT_RUN",
+    "encoding_run": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false
+  },
+  "writer_state_path": {
+    "rate_input": "local_280 = (int)param_1[0x306e] * 1000",
+    "source_member_byte_offset": "+0x18370",
+    "source_member_type_from_parent": "U32 rate_kbps",
+    "adjacent_input": "local_27c = (undefined4)param_1[4]",
+    "receiver_expression": "param_1[0x3063] at byte offset +0x18318",
+    "validation": "FUN_1801f6a20(input_struct, writer_receiver)",
+    "commit": "on validation success, writer_receiver+0x20 receives the input qword"
+  },
+  "consumers": {
+    "first_reader": {
+      "function": "FUN_180236590",
+      "reads_rate": "low 32 bits of writer_receiver+0x20",
+      "reads_nested_pointer": "writer_receiver+0x2a8",
+      "effect": "selects a table row and optionally writes nested +0x4, +0x8, +0x10"
+    },
+    "next_nested_word_reader": {
+      "function": "FUN_180231ce0",
+      "source": "U32 at nested +0x10",
+      "destination": "U32 at +0x4 of object reached through writer_receiver+0x38",
+      "destination_semantic_type": "UNBOUND"
+    }
+  },
+  "status": {
+    "rate_to_writer_state_plus_0x20": "BOUND_STATIC_ON_VALIDATION_SUCCESS",
+    "writer_state_to_table_lookup_and_nested_fields": "BOUND_STATIC",
+    "nested_word_to_generic_destination_store": "BOUND_STATIC",
+    "destination_codec_or_bsi_identity": "UNBOUND",
+    "slot2_selected_code_to_slot4_same_handle_generation": "CONDITIONAL_UNBOUND",
+    "selected_1024_kbps_to_writer_state": "NOT_PROVEN",
+    "bitstream_or_encode_success": "NOT_RUN"
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "do_not_label_generic_u32_as_bsi_bitrate": true,
+    "preserve_cross_callback_owner_join_as_unbound": true
+  }
+}

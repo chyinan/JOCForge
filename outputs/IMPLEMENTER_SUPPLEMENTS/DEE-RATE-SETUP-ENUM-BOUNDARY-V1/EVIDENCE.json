@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.dee_rate_setup_enumeration_boundary.v1",
+  "package_id": "DEE-RATE-SETUP-ENUM-BOUNDARY-V1",
+  "status": {
+    "six_xml_rate_values_to_static_selector_setup": "STATICALLY_BOUND_IF_LOOKUP_AND_SETUP_PATH_REACHED",
+    "rate_setup_to_writer_state_owner": "UNBOUND",
+    "dynamic_writer_target": "UNBOUND",
+    "bsi_bitrate_field": "UNBOUND",
+    "runtime_selection_and_audio_effect": "NOT_RUN"
+  },
+  "values": [
+    {"xml_text": "384", "selector_code": 0, "typed_setup": "U32 param_1[2]=6", "condition": "INHERITED_STATIC"},
+    {"xml_text": "448", "selector_code": 1, "typed_setup": "U32 param_1[2]=8", "condition": "IF_LOOKUP_REACHED"},
+    {"xml_text": "576", "selector_code": 2, "typed_setup": "U32 param_1[2]=8", "condition": "IF_LOOKUP_REACHED"},
+    {"xml_text": "640", "selector_code": 3, "typed_setup": "U32 param_1[2]=8", "condition": "IF_LOOKUP_REACHED"},
+    {"xml_text": "768", "selector_code": 4, "typed_setup": "U32 param_1[2]=8", "condition": "IF_LOOKUP_REACHED"},
+    {"xml_text": "1024", "selector_code": 5, "typed_setup": "U32 param_1[2]=8", "condition": "IF_LOOKUP_REACHED"}
+  ],
+  "path": {
+    "process_function": "FUN_1801a7d50",
+    "setup_path": "FUN_1801abc10 -> FUN_1801ac130 -> FUN_1801b2250",
+    "rate_derived_config_candidate": "piVar17+0x206",
+    "writer_adapter": "FUN_1801ab800",
+    "writer_state_source": "*(param_1+0x810)",
+    "writer_consumer": "FUN_1801b1590",
+    "dynamic_writer_dispatch": "DAT_1806521e8, per-stream slot +0x28"
+  },
+  "limits": {
+    "runtime_rate_values_captured": false,
+    "all_bitrates_e2e_verified": false,
+    "bsi_bitrate_field_identified": false,
+    "dee_executed": false,
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "The static selector-to-setup mapping is complete for the six listed XML enum texts only. Do not treat typed setup values as BSI fields or claim end-to-end bitrate support."
+}

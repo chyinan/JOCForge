@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-9-f05-f13-static-lineage/outputs/dee-range-reader-consumer-wash",
+    "current_manifest_sha256": "250b3594fe21b7f5e6883705d4cc68ac5d6655acca97ebb3bf1093cecc5d9515",
+    "previously_reported_manifest_sha256": "d6d9f5b972c3a35bf78bd0e1af1284f11a79d40cc76307e79d7432cbb3990d7a",
+    "artifacts_verified": "11/11",
+    "manifest_sha256_file_matches": true,
+    "checker_result": "normal and python -O PASS per CHECK-RESULTS.txt; Wash did not execute checker",
+    "formal_package_seal_present": false
+  },
+  "verified_parents": [
+    {"manifest_sha256": "fe47e41b8bff833bcf06d0dfd762cb678dbd373c4212ab5c48404d3e5983a1e8", "payloads": "8/8"},
+    {"manifest_sha256": "70f436856c1a24379599cb02cb0997008b48ea87428e99168d27078992f145bd", "payloads": "3/3"},
+    {"manifest_sha256": "455a8bc74256d9c714aa35c52f7bcf0fa833c9cfc9d65d2f2d9f335f188d184f", "payloads": "7/7"},
+    {"manifest_sha256": "aa503c4de1d9124a35019ad5dab6fecd81e3be3cfebef7ec5eb87d6cd7a593b0", "payloads": "6/6"},
+    {"manifest_sha256": "b4dd97267a00c91452ba344fc057b81ec9e60ddc483f2f3eb2d4e156117f100a", "payloads": "5/5"}
+  ],
+  "target_images": [
+    {"path": "D:/Programs/dee71joc/test_dee/dee.exe", "bytes": 4233728, "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"},
+    {"path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll", "bytes": 10942464, "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"}
+  ],
+  "wash_actions": {
+    "current_manifest_and_all_artifacts_recomputed": true,
+    "five_parent_manifests_and_payloads_recomputed": true,
+    "both_images_rehashed_this_turn": true,
+    "raw_ghidra_artifacts_copied": false,
+    "private_key_or_license_material_copied": false
+  }
+}

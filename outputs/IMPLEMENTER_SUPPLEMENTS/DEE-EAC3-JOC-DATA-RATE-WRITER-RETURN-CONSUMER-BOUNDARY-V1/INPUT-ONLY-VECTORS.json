@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "rate-writer-post-return-boundary",
+      "kind": "static-pointer-consumer-summary",
+      "input": {
+        "writer_receiver_offset": "root-relative +0x38",
+        "destination_field_offset": "+0x4",
+        "returned_subaddress": "writer receiver +0x86b0"
+      },
+      "observed": {
+        "returned_subaddress_passed_to_second_argument": true,
+        "next_callee_consumes_second_argument": false,
+        "next_callee_root_field_offset": "+0x182e0"
+      },
+      "status": "RETURN_EDGE_BOUND; DESTINATION_FIRST_READER_UNBOUND"
+    }
+  ]
+}

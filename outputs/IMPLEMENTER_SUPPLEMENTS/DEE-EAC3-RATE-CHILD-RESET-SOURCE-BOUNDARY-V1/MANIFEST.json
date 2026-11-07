@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-EAC3-RATE-CHILD-RESET-SOURCE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PARENT_PLUS_0X248_RESET_BOUND; CHILD_PLUS_0X38_SOURCE_UNBOUND; HANDLE_GENERATION_UNBOUND",
+  "implementation_disposition": "Do not treat the parent +0x248 reset as initialization of child pointer +0x38; repeated handle offsets do not establish same runtime generation.",
+  "source_package_id": "eac3_joc_writer_child_store_source_break_wash_v1",
+  "source_manifest_sha256": "4f0e4dfa73a64c8019761c8c0e30633a255149c7ece07e87ebe4a180fd54e19f",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1656,
+      "sha256": "92a5e11027c9a88fc304787ca6534c98b2f38ec954bcddfa4b5f5188c1ecbb93"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 490,
+      "sha256": "13633aaebe09d063767da2dce2c1684f12fad4495c03eebf119f9a54da0ebbb1"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 520,
+      "sha256": "5ef7fc50d2287674e54e8de122c59f614c72640cad5a10cf522a68f625478b10"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 703,
+      "sha256": "0483a006277d807c04a274fce00b5b596d86025d5fa50868bcb537a75b078915"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 970,
+      "sha256": "7362bae834e78b37bde139e34de59922b4641be07a11d8b0f701286ed0d7980e"
+    }
+  ]
+}

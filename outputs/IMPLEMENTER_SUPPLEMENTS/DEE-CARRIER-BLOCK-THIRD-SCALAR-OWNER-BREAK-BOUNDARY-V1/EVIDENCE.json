@@ -1,0 +1,66 @@
+{
+  "schema": "jocforge.carrier_block_candidate_owner_break.v1",
+  "package_id": "DEE-CARRIER-BLOCK-THIRD-SCALAR-OWNER-BREAK-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "carrier_block_third_scalar_candidate_owner_break_wash_v1",
+    "manifest_sha256": "ff6dac386ac871b5a0eebc14bc9ba39505fd849f016c2972aa1e80bf277c14b7",
+    "package_seal_sha256": "c5b9a6b3bfb041d33f8b492c4f73f351758dd20c7f510b3437011d37fef40f08",
+    "status": "SEALED_PARTIAL",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "mode": "read-only/noanalysis selected-function export",
+    "scope": "One existing direct caller of the candidate qword store and one comparison to the already sealed plan-B descriptor; no caller expansion.",
+    "evidence_tier": "STATIC"
+  },
+  "candidate_store": {
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "function": "FUN_1800d24e0",
+    "instruction_rva": "0xd252b",
+    "operand": "qword ptr [R8+0xb18]",
+    "stored_expression": "lVar2=0 for row 0; otherwise callee_param_2+(row_index-1)*0x1080",
+    "callee_local_base": "callee_param_2+0x560",
+    "only_inspected_direct_caller": {
+      "function": "FUN_18009edb0",
+      "callsite_rva": "0x9ee54",
+      "argument_1": "param_1+0x1264",
+      "argument_2": "param_2+0x348"
+    },
+    "r8_typed_owner": "UNBOUND",
+    "owner_generation": "UNBOUND"
+  },
+  "plan_b_descriptor": {
+    "native_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "parent": "FUN_1800b7930",
+    "parent_entry_rva": "0xb7930",
+    "helper": "FUN_180073ef0",
+    "parent_to_helper_callsite_rva": "0xb7bc3",
+    "descriptor_expression": "lVar16=*local_68; passed as helper arg2",
+    "third_u32_read_rva": "0x73f96",
+    "third_u32_operand": "dword ptr [RDI+0xb1c]"
+  },
+  "join_disposition": {
+    "candidate_r8_base_to_plan_b_descriptor": "UNBOUND",
+    "typed_owner_join": "UNBOUND",
+    "generation_join": "UNBOUND",
+    "candidate_is_first_writer_for_plan_b_third_u32": "NOT_ESTABLISHED",
+    "same_offset_or_adjacency_used_as_join": false
+  },
+  "runtime_gate": {
+    "keyless_capture": "NO_GO/BLOCKED_BEFORE_LAUNCH",
+    "capture": "NOT_RUN",
+    "dee_runtime": "NOT_RUN",
+    "reason": "No hash-bound credential-free initialization route was established in the reviewed receipt set."
+  },
+  "scope_exclusions": {
+    "implementation_source_included": false,
+    "decompilation_included": false,
+    "private_key_or_license_included": false,
+    "media_pcm_or_payload_included": false,
+    "global_absence_claim": false,
+    "product_readiness_claim": false
+  },
+  "status": "CANDIDATE_QWORD_STORE_ONE_DIRECT_CALLER_ARG_SETUP_BOUND; R8_BASE_TYPED_OWNER_UNBOUND; NO_JOIN_TO_PLAN_B_LOCAL68_DESCRIPTOR; THIRD_U32_FIRST_WRITER_SEMANTIC_OWNER_AND_PROFILE_TRANSFER_UNBOUND; KEYLESS_NO_GO; RUNTIME_NOT_RUN"
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-RATE-CODEC-WRITER-FIRST-BREAK-V1",
+  "sources": [
+    {
+      "role": "primary_rate_to_writer_boundary",
+      "package_id": "DEE-ADM-ATMOSMEZZ-RATE-TO-CODEC-WRITER-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-RATE-TO-CODEC-WRITER-WASH-V1",
+      "checksum_list_sha256": "880719cd751c0b6ba88ce470c48232c75aa6c94232bebac28004ba4fd8282c77",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "inherited_rate_mode_path",
+      "package_id": "DEE-ADM-ATMOSMEZZ-DATA-RATE-PATH-WASH-V1",
+      "checksum_list_sha256": "2352b6835dd2d6b202dd71aa96ddaf6019487670b2d2c1609d70a20c6b03d191",
+      "relationship": "Referenced by upstream package; rate map not rederived here."
+    }
+  ],
+  "omitted_material": {
+    "raw_ghidra_logs_or_scripts": true,
+    "native_binary": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

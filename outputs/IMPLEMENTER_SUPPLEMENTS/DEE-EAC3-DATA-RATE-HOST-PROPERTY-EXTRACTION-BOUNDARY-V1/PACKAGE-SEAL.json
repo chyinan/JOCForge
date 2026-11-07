@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-EAC3-DATA-RATE-HOST-PROPERTY-EXTRACTION-BOUNDARY-V1",
+  "manifest_sha256": "1bd943db3291366f7d11f17b747006ccda7ef081be8cbb92e7653fa777b05cf6",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "4892384f16f094f965cd482e1a63f9fa63993b4ab11a6ea58b4dc2c071b3579e",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "GENERIC_STRING_EXTRACTION_BOUND; DATA_RATE_OWNER_AND_PROVIDER_DISPATCH_UNBOUND"
+}

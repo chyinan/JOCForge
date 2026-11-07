@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "carrier_block_candidate_argument2_producer_break_wash_v1",
+    "manifest_sha256": "93c8993b891844e7bc7f207acfeddac9823eb14b0540be88c418e0cff70902b3",
+    "package_seal_sha256": "a316b41b402fe7d90834265e860bb19ad43ce64011ea8a7db1e005dc44abfc15",
+    "payload_hashes_checked": true
+  },
+  "parent_packages": [
+    {
+      "package_id": "carrier_block_third_scalar_candidate_owner_break_wash_v1",
+      "manifest_sha256": "ff6dac386ac871b5a0eebc14bc9ba39505fd849f016c2972aa1e80bf277c14b7",
+      "package_seal_sha256": "c5b9a6b3bfb041d33f8b492c4f73f351758dd20c7f510b3437011d37fef40f08",
+      "verification": "MATCHED_ON_DISK"
+    },
+    {
+      "package_id": "carrier_block_third_scalar_capture_spec_wash_v1",
+      "manifest_sha256": "8e01e47819ddb6bc573847548025bbbb10d8f1a26bfd1db2c8aa3af2bb935d91",
+      "package_seal_sha256": "e46b32f7b0e41e7c8b6a3767e3b041b0aef859e3878f5b5a9dd52015981e8ea5",
+      "verification": "MATCHED_ON_DISK"
+    },
+    {
+      "package_id": "carrier_block_third_scalar_keyless_no_go_wash_v1",
+      "manifest_sha256": "9466a1a59ffef87bcedad71e7a789d3a719ef0a315145adfe597540904af46ea",
+      "package_seal_sha256": "5cdff0a74a2b52daebb41285a8ba3f724cbeefe0403252dd55b7637ea6c97718",
+      "verification": "MATCHED_ON_DISK"
+    }
+  ],
+  "source_identities": {
+    "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ghidra_version": "12.2",
+    "mode": "read-only/noanalysis"
+  },
+  "raw_static_export_or_query_script_included": false
+}

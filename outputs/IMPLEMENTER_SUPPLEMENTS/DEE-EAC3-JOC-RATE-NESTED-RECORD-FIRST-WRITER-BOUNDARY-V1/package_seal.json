@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-EAC3-JOC-RATE-NESTED-RECORD-FIRST-WRITER-BOUNDARY-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "a7491f60a6bd80fd4ff55aaaecf29202d7baa8f53e07bb3ac01b6ab77cda4af7",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

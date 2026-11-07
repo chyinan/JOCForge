@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "caller-zeroed-param3-pair-value-at-callee-read",
+      "input": {
+        "caller": "FUN_18017bfc0",
+        "pair": [
+          "local_2c8=0",
+          "uStack_2c0=0"
+        ],
+        "arg3": "&local_2c8 via R8=RSP+0x30",
+        "callee_local140_expression": "param_3[1] - 0x7586e + *param_3"
+      },
+      "expected_disposition": {
+        "caller_entry_pointer": "STACK_PAIR_BOUND",
+        "local140_at_callee_read": "NOT_EVALUATED",
+        "arena_owner_join": "UNBOUND",
+        "plan_b_join": "UNBOUND"
+      },
+      "limitations": [
+        "Callee may modify the pair before reading param_3.",
+        "One caller only; no caller expansion.",
+        "No runtime capture or product conclusion."
+      ]
+    }
+  ]
+}

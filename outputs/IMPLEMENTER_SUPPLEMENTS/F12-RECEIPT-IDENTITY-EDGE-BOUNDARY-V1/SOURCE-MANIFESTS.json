@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "f12_prefix_dialnorm_receipt_followup_v1",
+      "source_package_manifest_sha256": "b0e79e0fd8f0214d8a29d7ee7254ab8ea93291d7110143885e3cba8148520099",
+      "source_package_seal_sha256": "b2d1092b37355b2c62cf968fd4031ffc96c992b74bf683a98925889f0f8508b5",
+      "source_manifest_status": "NOT_READY",
+      "source_seal_status": "SEALED_UNBOUND",
+      "source_payloads": [
+        {"file":"README.md","bytes":1485,"sha256":"eefa48e288f4d13db96cac46c23a584741ef2f3bb5a73303857773c64b5f4dd6"},
+        {"file":"RECEIPT-EDGE-FINDINGS.json","bytes":7691,"sha256":"e990ef536c25d218250ad393c594ada54d12863d0668c0230d59fc34852f6acf"}
+      ],
+      "source_manifest_bytes": 1126,
+      "source_seal_file_count": 3
+    },
+    {
+      "package_id": "f06nd_category5_native_effect_wash_v1",
+      "source_package_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+      "source_package_seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+      "source_manifest_status": "PARTIAL_SELECTED_PROCESS_BYTE_LAYOUT_NOT_APPLICABLE",
+      "source_seal_status": "SEALED_PARTIAL",
+      "note": "Already represented by F06ND-CATEGORY5-SELECTED-PROCESS-BOUNDARY-V1 in the Wash supplement set; this entry is provenance context only, not a second finding."
+    }
+  ]
+}

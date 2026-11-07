@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.f12-receipt-edge-input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "same-source-typed-receipt-join",
+      "inputs": {
+        "finalized_programme_receipt": "not demonstrated",
+        "f06nd_source_receipt_consumer": "not demonstrated",
+        "f12_bsi_input_consumer": "not demonstrated",
+        "source_identity_and_generation_join": "UNBOUND"
+      },
+      "expected": {
+        "readiness": "NOT_READY",
+        "receipt_edge": "UNBOUND",
+        "product_api_inference": "NOT_ESTABLISHED",
+        "audio_core_blocked": false
+      }
+    },
+    {
+      "id": "category5-selected-process-scope",
+      "inputs": {
+        "selected_category5_fifo_write": false,
+        "selected_process_byte_layout": "NOT_APPLICABLE_TO_SELECTED_PROCESS_PATH",
+        "generic_storage_event_edge": "UNBOUND"
+      },
+      "expected": {
+        "selected_path_conclusion": "PARTIAL",
+        "global_absence_claim": false
+      }
+    }
+  ]
+}

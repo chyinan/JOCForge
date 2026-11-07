@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge-rate-append-failure-source-identities.v1",
+  "implementation": {
+    "repo": "D:/Programs/JOCForge-isolated",
+    "head_state": "dirty pre-existing worktree; no checkout reset or unrelated diff change",
+    "source": {
+      "path": "crates/jocforge-cli/src/programme_roots.rs",
+      "sha256": "8f5ac4765986bfe4f5d377e61ea45df898f6114029aab3e260137b653277e731",
+      "failure_guard_line": 592,
+      "predicate": "append.bytes_written != 4096"
+    },
+    "rate_profile_source": {
+      "path": "crates/jocforge-domain/src/profile/production.rs",
+      "sha256": "4f5e746ff2dfc616b2817049f8400b9548fdd6cd8fdef6f82223cca3392a4619"
+    }
+  },
+  "run": {
+    "attempt_id": "1793978113099218400",
+    "programme_id": "jocforge-cli-6292-1793978113099218400",
+    "timeline_events": ["E-245", "E-246", "E-247", "E-248", "E-249", "E-250", "E-251", "E-252"],
+    "receipt_path": "D:/Programs/JOCForge-isolated/.test-tmp/love-song-n36-384-e245-20261106/run-receipt.json",
+    "receipt_sha256": "719288a58ff1d1a3bd3ed52adbf9f229d585831a7f0937b11fe9e9d137078d6d",
+    "stderr_path": "D:/Programs/JOCForge-isolated/.test-tmp/love-song-n36-384-e245-20261106/stderr.log",
+    "stderr_sha256": "59a36efcd9c3abf2be03f86d46b0ab2aae0dfdaf3f21530ad2b40d160f9f60e0",
+    "partial_path": "D:/Programs/JOCForge-isolated/.test-tmp/love-song-n36-384-e245-20261106/attempt-1793978113099218400.ec3.partial",
+    "partial_bytes_only": 1536,
+    "partial_payload_read": false,
+    "final_output_created": false
+  },
+  "washed_rate_evidence": {
+    "package": "DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1",
+    "manifest_sha256": "c69e412ce749f3553cf5fd2d55fb69bafba0429784df1de9ebb5d74359250d70",
+    "seal_sha256": "0d31de2b9e59e6ad3150bf99cae3730464e22899608c48b1c8e64f432e0d2278",
+    "384_kbps_bytes_per_access_unit": 1536
+  },
+  "secrets_or_pcm_accessed": false
+}

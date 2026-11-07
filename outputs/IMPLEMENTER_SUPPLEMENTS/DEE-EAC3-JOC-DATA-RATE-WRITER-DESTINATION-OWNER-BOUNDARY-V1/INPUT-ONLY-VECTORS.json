@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "rate-writer-destination-owner-break",
+      "kind": "static-writer-and-return-boundary",
+      "input": {
+        "destination": "writer receiver +0x38, child +0x4",
+        "source_value": "object referenced by writer receiver +0x2a8, field +0x10"
+      },
+      "observed": {
+        "store_type": "U32",
+        "post_return_subaddress": "writer receiver +0x86b0",
+        "typed_join": "UNBOUND"
+      },
+      "status": "STORE_BOUND; CHILD_OWNER_READER_UNBOUND"
+    }
+  ]
+}

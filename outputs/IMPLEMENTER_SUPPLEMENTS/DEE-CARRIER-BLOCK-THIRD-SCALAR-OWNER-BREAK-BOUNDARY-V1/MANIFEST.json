@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-CARRIER-BLOCK-THIRD-SCALAR-OWNER-BREAK-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_CANDIDATE_STORE_BOUND_TO_ONE_CALLER_SETUP; THIRD_U32_OWNER_AND_TRANSFER_UNBOUND; KEYLESS_CAPTURE_NO_GO_NOT_RUN",
+  "source_package_id": "carrier_block_third_scalar_candidate_owner_break_wash_v1",
+  "source_manifest_sha256": "ff6dac386ac871b5a0eebc14bc9ba39505fd849f016c2972aa1e80bf277c14b7",
+  "source_package_seal_sha256": "c5b9a6b3bfb041d33f8b492c4f73f351758dd20c7f510b3437011d37fef40f08",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3639,
+      "sha256": "897f4726f1e2d812edb5fc2215d3958b4a5136d8cf46a57664630b641d3c66c2"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2964,
+      "sha256": "20446986a141283291b42593f7fd2bde1e69a031812b16e051b8e2dfc4bfe683"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 829,
+      "sha256": "e38a0dadeb084129e93f727ff3553e346b0b2028c2a96a31bb0c3d147cd4ea2c"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1302,
+      "sha256": "b6513c1e6b3063be133130937545ac8f201320c788a3c4ddde9cdace4d9c98b0"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 2903,
+      "sha256": "a1bfd13d9ad57614d28be133140da56325f85d992860ec473bd3162230aa0731"
+    }
+  ]
+}

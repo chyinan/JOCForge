@@ -1,0 +1,25 @@
+{
+  "package_id": "DEE-EC3-DATA-RATE-FRAME-HEADER-OBSERVATION-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1082,
+      "sha256": "244370fd9048a63a9032cf90518d3d8ecaf78a8fad23760730a2e30e71bc5684"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 510,
+      "sha256": "49bca0fd906cbae51b329987657141a0537096e400aec992daff03b03a97f4e3"
+    },
+    {
+      "name": "OBSERVED-FRAME-HEADERS.json",
+      "bytes": 746,
+      "sha256": "7e416d9cc17c4176145d970d7f507266ccb901fba4e82c9553e48229d40470f6"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 401,
+      "sha256": "e19798bb44ee8580e56e1dfd2a1a1e322f0c5ec4adebcd7e19aa52848b3dcf47"
+    }
+  ]
+}

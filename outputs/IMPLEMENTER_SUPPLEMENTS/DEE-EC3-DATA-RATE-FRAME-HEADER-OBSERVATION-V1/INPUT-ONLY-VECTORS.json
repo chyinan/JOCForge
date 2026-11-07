@@ -1,0 +1,22 @@
+{
+  "source_sample": "My Jealousy N36",
+  "source_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d",
+  "fixed_configuration": {
+    "input_type": "atmos_mezz",
+    "sample_rate_hz": 48000,
+    "target_layout": "5.1",
+    "output_container": "M4A",
+    "frame_window": "0..24 inclusive"
+  },
+  "arms": [
+    {
+      "id": "baseline",
+      "data_rate_kbps": 1024
+    },
+    {
+      "id": "variant",
+      "data_rate_kbps": 768
+    }
+  ],
+  "status": "OBSERVED_SUCCESSFUL_INPUT_PAIR"
+}

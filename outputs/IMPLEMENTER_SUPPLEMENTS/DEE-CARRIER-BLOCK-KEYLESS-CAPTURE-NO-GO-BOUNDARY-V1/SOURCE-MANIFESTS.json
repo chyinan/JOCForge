@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "carrier_block_third_scalar_keyless_no_go_wash_v1",
+  "manifest_sha256": "9466a1a59ffef87bcedad71e7a789d3a719ef0a315145adfe597540904af46ea",
+  "package_seal_sha256": "5cdff0a74a2b52daebb41285a8ba3f724cbeefe0403252dd55b7637ea6c97718",
+  "source_checker_normal_and_python_o": "PASS",
+  "credential_paths_or_contents_copied": false
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.eac3_joc_data_rate_return_consumer_boundary.v1",
+  "package_id": "DEE-EAC3-JOC-DATA-RATE-WRITER-RETURN-CONSUMER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "eac3_joc_data_rate_writer_state_return_consumer_wash_v1",
+    "manifest_sha256": "94efe989c4d57916a0f86977f49b0a9966be878b36a84ad1386308e843171210",
+    "package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+    "source_checker_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 static continuation, one direct caller only",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_or_encoded_payload_read": false,
+    "key_or_license_contents_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  },
+  "writer_state": {
+    "stored_value_type": "U32",
+    "destination_object_field_offset_hex": "0x4",
+    "destination_owner_field_offset_hex": "0x38",
+    "destination_first_reader": "UNBOUND"
+  },
+  "post_return_path": {
+    "helper_return_relation": "writer receiver +0x86b0",
+    "next_call_argument": "returned pointer passed in second argument",
+    "next_callee_behavior": "only first root-object argument is consumed",
+    "root_object_field_offset_hex": "0x182e0",
+    "second_argument_consumed": false,
+    "typed_join_to_writer_destination": "UNBOUND"
+  },
+  "status": {
+    "post_return_pointer": "BOUND_STATIC",
+    "destination_plus_0x4_first_reader": "UNBOUND",
+    "destination_type": "UNBOUND_STATIC",
+    "codec_or_bsi_identity": "UNBOUND_STATIC"
+  },
+  "implementation_disposition": {
+    "do_not_treat_returned_subaddress_as_destination": true,
+    "do_not_infer_codec_or_bsi_from_numeric_value": true,
+    "algorithm_change_authorized": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "r141-bsid-vs-third-u32",
+      "input": {
+        "r141_member": "serializer record +0x08 width-five U16",
+        "plan_member": "frame descriptor +0x0B1C U32"
+      },
+      "expected_observation": {
+        "identity_join": false,
+        "third_u32_capture": "NOT_RUN"
+      },
+      "limitations": [
+        "R141 completion status unconfirmed",
+        "No object/generation join",
+        "No third-U32 runtime value"
+      ]
+    }
+  ]
+}

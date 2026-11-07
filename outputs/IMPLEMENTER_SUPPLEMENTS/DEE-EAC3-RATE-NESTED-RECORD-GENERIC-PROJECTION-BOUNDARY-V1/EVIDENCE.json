@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.rate_nested_record_generic_projection.v1",
+  "nested_u32_field": "+0x10",
+  "projection": "nested U32 passed to generic setter and stored at destination +0x4",
+  "same_writer_invocation": true,
+  "destination_typed_owner": "UNBOUND",
+  "codec_configuration_effect": "UNBOUND",
+  "bsi_effect": "UNBOUND",
+  "nested_record_type": "UNBOUND",
+  "slot2_to_slot4_same_instance_generation": "CONDITIONAL_UNBOUND",
+  "runtime": "NOT_RUN"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "rate-conditioned-nested-record",
+      "kind": "static-field-write-summary",
+      "input": {
+        "selection_inputs": "rate plus writer-state controls"
+      },
+      "observed": {
+        "nested_u32_fields_written": [
+          "+0x4",
+          "+0x8",
+          "+0x10"
+        ],
+        "semantic_owner": "UNBOUND"
+      },
+      "status": "WRITER_BOUND; CODEC_BSI_TYPE_UNBOUND"
+    }
+  ]
+}

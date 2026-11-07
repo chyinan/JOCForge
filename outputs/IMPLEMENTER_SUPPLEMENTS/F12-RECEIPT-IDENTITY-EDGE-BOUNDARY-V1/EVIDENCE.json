@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.f12-receipt-identity-edge-evidence.v1",
+  "package_id": "F12-RECEIPT-IDENTITY-EDGE-BOUNDARY-V1",
+  "source_package_id": "f12_prefix_dialnorm_receipt_followup_v1",
+  "source_package_manifest_sha256": "b0e79e0fd8f0214d8a29d7ee7254ab8ea93291d7110143885e3cba8148520099",
+  "source_package_seal_sha256": "b2d1092b37355b2c62cf968fd4031ffc96c992b74bf683a98925889f0f8508b5",
+  "status": "NOT_READY",
+  "receipt_edge_status": "UNBOUND",
+  "finding": "No verified typed finalized-programme identity receipt is shown as consumed by both the F06ND source input and the same-source F12 BSI input.",
+  "model_boundary": {
+    "model_source_in_freeze_manifest": false,
+    "independent_model_review": "NOT_RUN",
+    "native_or_dll_execution": false,
+    "model_representation": "In-state measurement values and event labels; no demonstrated shared typed consumer receipt carrying source identity and generation."
+  },
+  "approved_spec_boundary": {
+    "f06nd_input": "Scalar dialnorm d in [1,31] with source generation.",
+    "f12_bsi_input": "Same-source BSI; the five-bit dialnorm field carries no programme identity.",
+    "whole_composition_digest": "Specified for BSI/ID1 projections; does not itself establish a shared typed F06ND/F12 receipt join."
+  },
+  "implementation_effect": {
+    "product_receipt_api_required": "NOT_ESTABLISHED",
+    "blocks_supported_audio_core": false,
+    "do_not_invent_receipt_schema": true
+  },
+  "excluded_material": {
+    "source_code_or_decompilation": false,
+    "pcm_or_bitstream_payload": false,
+    "private_key_or_auth_material": false,
+    "absolute_local_paths": false
+  }
+}

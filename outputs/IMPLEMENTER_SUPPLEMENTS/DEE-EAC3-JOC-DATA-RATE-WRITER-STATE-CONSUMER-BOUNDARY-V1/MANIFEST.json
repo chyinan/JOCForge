@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-EAC3-JOC-DATA-RATE-WRITER-STATE-CONSUMER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SAME_CALLBACK_RATE_TO_GENERIC_WRITER_FIELDS_BOUND; CODEC_BSI_IDENTITY_UNBOUND",
+  "implementation_disposition": "Record the same-callback rate/write path only; do not assign BSI bitrate semantics.",
+  "source_manifest_sha256": "7bd4e88fbe5f44fe266bb510c651edcc5fed14cb4871d61a12f957b973f33b5f",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4038,
+      "sha256": "4a3db5626ffa1ea7663bd1e2eeb9cebafd02299f6d81c514e78a90fcb707963e"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2602,
+      "sha256": "5bb7c5bc4af9e1d41cbb1f749ed5295f2de85cfe330717534ef8f9a7378237a5"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 557,
+      "sha256": "d145e34eda99702f9edd2b6a5447d8b9c94e7984602055c3f2cf60fbb4a6e64f"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1134,
+      "sha256": "0cf5e738388365655ed57cc59812c044c3bfef073808642ecba6b615d68d1ea9"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 730,
+      "sha256": "70c4f2e12c2c10fc506dc3be471030348cf82dfdef525dd5a6fdacba8b2da5c7"
+    }
+  ]
+}

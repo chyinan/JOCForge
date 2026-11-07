@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/eac3_joc_data_rate_codec_sink_chain_wash_v1",
+  "source_package_manifest_sha256": "443de212a9c9fe24bef9cc36fecb2703875e64b6b57ffe72772094c5482e2511",
+  "source_package_check": "7/7 manifest files and MANIFEST.sha256 verified by Wash",
+  "formal_source_package_seal": "NOT_PRESENT",
+  "verified_parent_manifests": [
+    {"package_id": "eac3_joc_data_rate_wash_v1", "manifest_sha256": "f28ccfbb6e447fbbb3d39c17f68f49e1b6211f28f64ae555fb760988cbb9b6c0"},
+    {"package_id": "eac3_joc_data_rate_string_to_i32_followup_wash_v1", "manifest_sha256": "e4346b49962c4a12f93c0031d83add015a90c5186e521f784776a17a870caa07"},
+    {"package_id": "eac3_joc_data_rate_host_xml_selector_wash_v1", "manifest_sha256": "28ad2004fd00e4384354a1a4eff70337e5ab0029b5128e16b04aa8823e7c9521"},
+    {"package_id": "dee_encoder_open_config_fields_wash_v1", "manifest_sha256": "7b30ee2e340f03a354fbc8ff5f22c39d434511326cf18366bbd16a0b10bfd551"},
+    {"package_id": "eac3_joc_frame_size_path_wash_v1", "manifest_sha256": "730b8f88c4c95cab9ccd47313caf024d57cf39c2e6a429412b2441df665961cf"},
+    {"package_id": "eac3_joc_open_config_rate_consumer_wash_v1", "manifest_sha256": "20f63273f1d35b845b4d56a4d430762c86c170274c7bfc2aba4912b4d1bf6f09"},
+    {"package_id": "eac3_joc_data_rate_encoder_consumer_wash_v1", "manifest_sha256": "08ae9059b6113c6f92f0dec7b4e337776db556d14c9c1ea7cba56b762d75e186"},
+    {"package_id": "eac3_joc_rate_frmsiz_owner_followup_wash_v1", "manifest_sha256": "71e98a6990a6da6c34c15ab0dca7bd0fca00fb375dfc6b50e7038462001449a8"}
+  ],
+  "target_images_rehashed": true,
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "excluded_from_supplement": ["CHECK.py", "raw traces/scripts", "media/payload", "private key/license"]
+}

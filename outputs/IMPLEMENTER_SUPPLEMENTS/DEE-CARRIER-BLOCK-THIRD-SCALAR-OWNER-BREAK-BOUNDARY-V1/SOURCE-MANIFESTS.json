@@ -1,0 +1,69 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "carrier_block_third_scalar_candidate_owner_break_wash_v1",
+    "manifest_sha256": "ff6dac386ac871b5a0eebc14bc9ba39505fd849f016c2972aa1e80bf277c14b7",
+    "package_seal_sha256": "c5b9a6b3bfb041d33f8b492c4f73f351758dd20c7f510b3437011d37fef40f08",
+    "on_disk_payload_hashes_checked": true
+  },
+  "parent_packages": [
+    {
+      "package_id": "carrier_block_native_producer_lineage_wash_v1",
+      "manifest_sha256": "fe7da26714bf09be3820ace5629d388c7db30243f6db435e93a02ab43a75a648",
+      "package_seal_sha256": "0313634f77e296c432d7c9f6766b3de450a1a2ed6c1f06c761507b2287b24f3a",
+      "verification": "MATCHED_ON_DISK"
+    },
+    {
+      "package_id": "carrier_block_third_scalar_owner_followup_wash_v1",
+      "manifest_sha256": "d3de48e5b079a84524d93c1c337dd3728eee6e9885a8b72bef23bd1a64bb0963",
+      "package_seal_sha256": "023447cfc10817a365d15a78da3a88110ff57c6ee2aed518df696f05482f9e05",
+      "verification": "MATCHED_ON_DISK"
+    },
+    {
+      "package_id": "carrier_block_third_scalar_capture_spec_wash_v1",
+      "manifest_sha256": "8e01e47819ddb6bc573847548025bbbb10d8f1a26bfd1db2c8aa3af2bb935d91",
+      "package_seal_sha256": "e46b32f7b0e41e7c8b6a3767e3b041b0aef859e3878f5b5a9dd52015981e8ea5",
+      "verification": "MATCHED_ON_DISK"
+    },
+    {
+      "package_id": "carrier_block_r141_plan_compatibility_boundary_wash_v1",
+      "manifest_sha256": "1b4db8524ac9f9e1c6dd1992218e42f25efb6382c2c8950d79d08347fa8e782c",
+      "package_seal_sha256": "67fd7d40c612be04b764847427ad7dd84f283d586de773c6167b02d87780a79a",
+      "verification": "MATCHED_ON_DISK"
+    },
+    {
+      "package_id": "carrier_block_third_scalar_keyless_no_go_wash_v1",
+      "manifest_sha256": "9466a1a59ffef87bcedad71e7a789d3a719ef0a315145adfe597540904af46ea",
+      "package_seal_sha256": "5cdff0a74a2b52daebb41285a8ba3f724cbeefe0403252dd55b7637ea6c97718",
+      "verification": "MATCHED_ON_DISK"
+    }
+  ],
+  "source_identifiers": [
+    {
+      "bytes": 1480,
+      "path": "FINDINGS.md",
+      "sha256": "cc8abb8b8f9ade1d7673a4810f1908e55457265ed63ae4b9dea093733c256244"
+    },
+    {
+      "bytes": 5231,
+      "path": "CANDIDATE-OWNER-BREAK.json",
+      "sha256": "2df6942c8f9bc6295b3758365a91fde5274abee562c10b20a1f3ed25c6b0efcf"
+    },
+    {
+      "bytes": 3572,
+      "path": "SOURCE-IDENTITIES.json",
+      "sha256": "697c230ae3040b252d0d6ea33ff158b2ab5e43926530fd3f8a6ede1986efc11f"
+    },
+    {
+      "bytes": 5468,
+      "path": "check_carrier_third_scalar_candidate_owner_break.py",
+      "sha256": "86a71ff80a98b841c58db7d6700a7d081f5d6e3879b79c6d33661bbad65cb2c5"
+    }
+  ],
+  "safety": {
+    "credential_content_read": false,
+    "dee_launched": false,
+    "implementation_source_read": false,
+    "media_or_payload_read": false
+  }
+}

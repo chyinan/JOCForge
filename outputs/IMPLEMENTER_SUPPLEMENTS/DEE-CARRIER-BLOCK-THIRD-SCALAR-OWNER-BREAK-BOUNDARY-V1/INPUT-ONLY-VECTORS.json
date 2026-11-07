@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "candidate-qword-store-vs-plan-b-third-u32",
+      "input": {
+        "candidate_store": "FUN_1800d24e0 [R8+0xb18]",
+        "candidate_direct_caller_argument_2": "param_2+0x348",
+        "plan_b_read": "FUN_180073ef0 [RDI+0xb1c]",
+        "plan_b_descriptor": "*local_68"
+      },
+      "expected_disposition": {
+        "typed_owner_join": "UNBOUND",
+        "generation_join": "UNBOUND",
+        "candidate_first_writer": "NOT_ESTABLISHED",
+        "capture": "NOT_RUN"
+      },
+      "limitations": [
+        "Static selected-function/callsite slice only.",
+        "No caller expansion or runtime capture.",
+        "Different offsets and matching image identity do not establish object identity."
+      ]
+    }
+  ]
+}

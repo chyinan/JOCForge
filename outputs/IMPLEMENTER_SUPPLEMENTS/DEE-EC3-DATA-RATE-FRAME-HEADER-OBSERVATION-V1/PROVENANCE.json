@@ -1,0 +1,8 @@
+{
+  "attempt_manifest_sha256": "43eadaba8f1b7f01811fafb20cfdccb8eea6da630b475850f2b5d15f54076a44",
+  "baseline_M4A_bytes": 135893,
+  "candidate_M4A_bytes": 102101,
+  "baseline_source_output_hash": "from prior attempt-05 receipt; not recomputed in this review",
+  "candidate_output_hash": "not computed",
+  "review": "Wash streamed frame headers and discarded frame bodies; no raw payload persisted"
+}

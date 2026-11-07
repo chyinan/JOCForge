@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "eac3_joc_data_rate_writer_state_return_consumer_wash_v1",
+      "manifest_sha256": "94efe989c4d57916a0f86977f49b0a9966be878b36a84ad1386308e843171210",
+      "package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+      "reviewed_payloads": [
+        {
+          "name": "EVIDENCE.json",
+          "sha256": "06a056fbc825fc9bb1625c40842427e13cfef05bdaefcc33e12697219d737c60"
+        },
+        {
+          "name": "REPORT.md",
+          "sha256": "0c4d084be5f9a2a47b39e4f081a6059d6c065817fcca34df63a17550899647c8"
+        },
+        {
+          "name": "SOURCE-MANIFESTS.json",
+          "sha256": "d6288b2eefc11c557389f82fea253303d60bf5931af3d1e65084c265d9e6fd81"
+        }
+      ],
+      "raw_media_or_audio_payload_copied": false
+    }
+  ]
+}

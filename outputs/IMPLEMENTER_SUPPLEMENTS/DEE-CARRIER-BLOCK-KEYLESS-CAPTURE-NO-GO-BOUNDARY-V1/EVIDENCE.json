@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.carrier_block_keyless_capture_no_go.v1",
+  "package_id": "DEE-CARRIER-BLOCK-KEYLESS-CAPTURE-NO-GO-BOUNDARY-V1",
+  "source": {
+    "package_id": "carrier_block_third_scalar_keyless_no_go_wash_v1",
+    "manifest_sha256": "9466a1a59ffef87bcedad71e7a789d3a719ef0a315145adfe597540904af46ea",
+    "package_seal_sha256": "5cdff0a74a2b52daebb41285a8ba3f724cbeefe0403252dd55b7637ea6c97718"
+  },
+  "decision": {
+    "attempt": "NO_GO/BLOCKED_BEFORE_LAUNCH",
+    "capture": "NOT_RUN",
+    "reason": "No hash-bound no-credential initialization route or successful keyless receipt for the selected profile"
+  },
+  "receipt_scope": {
+    "two_recent_jobs": {
+      "license_file_argument": true,
+      "result": "exit 10 before output",
+      "output_exists": false
+    },
+    "five_prior_crash_receipts": {
+      "reached_ec3": false
+    },
+    "r141": {
+      "license_file_argument": true,
+      "encoder_completion": "NOT_CONFIRMED"
+    },
+    "job_xml_credential_field": false,
+    "license_or_key_content_read": false
+  },
+  "retained_boundaries": {
+    "third_u32_first_writer": "UNBOUND",
+    "third_u32_semantic_owner": "UNBOUND",
+    "approved_carrier_block_transfer": "UNBOUND",
+    "global_absence_claim": false
+  },
+  "execution_scope": {
+    "dee_launched": false,
+    "capture_started": false,
+    "process_control": false,
+    "pcm_or_payload_read": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "local140-affine-argument-source",
+      "input": {
+        "function": "FUN_18006da40",
+        "opaque_param3": "R8 -> RDI, decompiler type longlong*",
+        "stack_expression": "param_3[1] - 0x7586e + *param_3",
+        "call": "FUN_1800729a0 argument 2 at 0x6e635",
+        "comparison_targets": [
+          "puVar16 arena owner",
+          "Plan-B local_68 descriptor"
+        ]
+      },
+      "expected_disposition": {
+        "param3_owner": "UNBOUND",
+        "arena_owner_join": "UNBOUND",
+        "plan_b_join": "UNBOUND",
+        "runtime": "NOT_RUN"
+      },
+      "limitations": [
+        "One static function only; no caller expansion.",
+        "Affine value flow does not establish semantic owner/generation.",
+        "No runtime capture or product conclusion."
+      ]
+    }
+  ]
+}

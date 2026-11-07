@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-EAC3-JOC-DATA-RATE-WRITER-DESTINATION-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "GENERIC_U32_STORE_BOUND; CHILD_OWNER_READER_AND_CODEC_BSI_UNBOUND",
+  "implementation_disposition": "Register the scalar source and object boundary only; no codec/BSI effect is established.",
+  "source_manifest_sha256": "78428df8f49605218df857ce851052abf54dd19ac3f2ab179c81ea384f155d43",
+  "source_package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2651,
+      "sha256": "540b12a89050fee9d1646137ecf5767537dd78855329c0baf7a357a40e56b1c0"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1921,
+      "sha256": "140989b2ae3fa36b3b8c62400fdb94e5b81009bd6b1e1ab7518ba3e95c015d32"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 568,
+      "sha256": "401bed2316e38819b90aa139795eff8f9a1f3a1a0db712e01068b4921d1e2ca8"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 744,
+      "sha256": "7dc061ec28e4c7c6bbe243cd99ac4ddd5fd5a95cce52a98e6b3f128275874c55"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 835,
+      "sha256": "4bf23db1575d5f3c3f1b63bc9afa8e5a71418b727f2f27ee195983bb044450ea"
+    }
+  ]
+}

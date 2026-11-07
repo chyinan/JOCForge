@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "carrier_block_r141_plan_compatibility_boundary_wash_v1",
+  "source_manifest_sha256": "1b4db8524ac9f9e1c6dd1992218e42f25efb6382c2c8950d79d08347fa8e782c",
+  "source_seal_sha256": "67fd7d40c612be04b764847427ad7dd84f283d586de773c6167b02d87780a79a",
+  "source_integrity_artifacts": [
+    {
+      "name": "package_seal.json",
+      "sha256": "67fd7d40c612be04b764847427ad7dd84f283d586de773c6167b02d87780a79a"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "native-adm-r141-combined-observation-wash-v1",
+      "manifest_sha256": "4c1d7dbac78a6057327975dc6ebf525968ec65a1c6ea7b9afc055a2cea1b6556"
+    },
+    {
+      "package_id": "native-eac3-bsid-field-mapping-wash-v1",
+      "manifest_sha256": "75503650988a4deafd73c1f46025062482a70dc0d484805b9307447864f10881"
+    },
+    {
+      "package_id": "native-eac3-writer-field-classification-wash-v4",
+      "manifest_sha256": "71772ccf1ac3881d6724225322420c3cbcd338228ca62b95673eab145d4aad30"
+    },
+    {
+      "package_id": "carrier_block_third_scalar_capture_preflight_wash_v1",
+      "manifest_sha256": "96ca95a00899d7f20e7bda372f1db2b6453bad7ee819507697ca4eea698d6bc0"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

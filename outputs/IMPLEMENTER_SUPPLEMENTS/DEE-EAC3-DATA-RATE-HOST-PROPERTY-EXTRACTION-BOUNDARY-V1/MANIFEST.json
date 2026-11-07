@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-EAC3-DATA-RATE-HOST-PROPERTY-EXTRACTION-BOUNDARY-V1",
+  "source_package_manifest_sha256": "4892384f16f094f965cd482e1a63f9fa63993b4ab11a6ea58b4dc2c071b3579e",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "files": {
+    "REPORT.md": "ac31ff253ac33c594498f5767a5b66e0dd190d93022ac57972b317e2aee740ab",
+    "BOUNDARY.json": "f8bf5e9ef096ccdfa630cfb852c369c76e3c53dd502ddd4ff43aab62a1172b91",
+    "SOURCE-LINKS.json": "f154ed1a28871ec25341d2e3bb92cb2c74cd4013066e0f50b306866f10ade0e3",
+    "INPUT-ONLY-VECTORS.json": "de995999c6be9472078492b1ea4d8b1b656a941f7728f0cc93a3300fea7276e4"
+  }
+}

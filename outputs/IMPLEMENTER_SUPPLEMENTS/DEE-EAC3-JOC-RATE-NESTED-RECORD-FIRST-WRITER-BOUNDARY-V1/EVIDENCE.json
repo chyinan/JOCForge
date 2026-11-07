@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge.eac3_joc_rate_nested_record_first_writer.v1",
+  "package_id": "DEE-EAC3-JOC-RATE-NESTED-RECORD-FIRST-WRITER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "eac3_joc_data_rate_nested_record_first_writer_wash_v1",
+    "manifest_sha256": "aa11109eb3d3557c6c200ac3869cf7c20ab755d6348692ac598733f105c84936",
+    "source_package_seal": "NOT_PROVIDED_BY_SOURCE",
+    "source_checker_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 static, bounded rate writer path",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  },
+  "nested_record": {
+    "pointer_source": "writer receiver +0x2a8",
+    "first_writer_role": "rate-conditioned table row copier",
+    "write_condition": "nested pointer is non-null",
+    "fields_written": [
+      {
+        "offset": "+0x4",
+        "type": "U32",
+        "source_row_offset": "+0x8"
+      },
+      {
+        "offset": "+0x8",
+        "type": "U32",
+        "source_row_offset": "+0xc"
+      },
+      {
+        "offset": "+0x10",
+        "type": "U32",
+        "source_row_offset": "+0x10"
+      }
+    ],
+    "table_selection_inputs": [
+      "rate value",
+      "writer-state field +0xc",
+      "writer-state field +0x1c"
+    ],
+    "constructor_or_type_owner": "UNBOUND_STATIC",
+    "semantic_classification": "UNBOUND_STATIC"
+  },
+  "subsequent_generic_store": {
+    "source_field": "nested record +0x10",
+    "source_type": "U32",
+    "destination": "writer child +0x4",
+    "destination_owner": "UNBOUND_STATIC",
+    "codec_or_bsi_identity": "UNBOUND_STATIC"
+  },
+  "status": {
+    "rate_conditioned_nested_record_writer": "BOUND_STATIC",
+    "nested_record_semantic_type": "UNBOUND_STATIC",
+    "same_runtime_handle_generation": "CONDITIONAL_UNBOUND",
+    "codec_or_bsi_effect": "UNBOUND_STATIC"
+  },
+  "implementation_disposition": {
+    "do_not_infer_rate_option_model_from_value": true,
+    "do_not infer_codec_or_bsi_identity": true,
+    "algorithm_change_authorized": false
+  }
+}

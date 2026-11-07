@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-EAC3-JOC-RATE-NESTED-RECORD-FIRST-WRITER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RATE_NESTED_WRITER_BOUND; NESTED_TYPE_AND_CODEC_BSI_UNBOUND",
+  "implementation_disposition": "Register the rate-conditioned table writes only; do not assign semantic meaning to the nested object.",
+  "source_manifest_sha256": "aa11109eb3d3557c6c200ac3869cf7c20ab755d6348692ac598733f105c84936",
+  "source_package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2410,
+      "sha256": "90f222264f8ab33ff5287e3add9e75af7d018d39e1260195b8f021987afb1e02"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2055,
+      "sha256": "a539d02cd0653261e5b6969db7f8d0fa6f59b3da10ea268d474a7871ea63026e"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 490,
+      "sha256": "c9d0d86ef6f0bc834fd365199626870d2e7f02fcf6a0b4bc750d9bbe92137abd"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 571,
+      "sha256": "9d0e42e3c781f9e14fc8747176a3fa8a04051f23cd8441e4ae5f464c2af5ed5b"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 390,
+      "sha256": "0ff8871d3bf55640c182629ef173e106e96b4fc3277e6d105abbf75208789a68"
+    }
+  ]
+}

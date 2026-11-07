@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "rate-child-reset-does-not-init-child",
+      "input": {
+        "reset_receiver_field": "+0x248",
+        "child_pointer_field": "+0x38"
+      },
+      "expected_observation": {
+        "reset_writes_child_pointer": false,
+        "owner_generation": "UNBOUND"
+      },
+      "limitations": [
+        "No child constructor/source",
+        "No same-generation join",
+        "No codec/BSI effect"
+      ]
+    }
+  ]
+}

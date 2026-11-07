@@ -1,0 +1,36 @@
+{
+  "source_package_manifest_sha256": "43eadaba8f1b7f01811fafb20cfdccb8eea6da630b475850f2b5d15f54076a44",
+  "attempt": "agent7-data-rate-768-20261106-0634z",
+  "baseline_attempt": "attempt-05",
+  "DEE_exit_codes": [
+    0,
+    0
+  ],
+  "syncframe_counts": [
+    33,
+    33
+  ],
+  "frame_size_code_histogram_by_rate": {
+    "1024": {
+      "2047": 33
+    },
+    "768": {
+      "1535": 33
+    }
+  },
+  "frame_bytes_by_rate": {
+    "1024": {
+      "4096": 33
+    },
+    "768": {
+      "3072": 33
+    }
+  },
+  "M4A_container_bytes": {
+    "1024": 135893,
+    "768": 102101
+  },
+  "candidate_output_payload_hash": "NOT_COMPUTED",
+  "packet_bytes_saved": false,
+  "FFmpeg_use": "copy-only demux to transient pipe for header parsing; no encoder path"
+}

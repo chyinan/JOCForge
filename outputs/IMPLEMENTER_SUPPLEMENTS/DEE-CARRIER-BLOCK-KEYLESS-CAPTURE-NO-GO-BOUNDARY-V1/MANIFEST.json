@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-CARRIER-BLOCK-KEYLESS-CAPTURE-NO-GO-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "NO_GO_BEFORE_LAUNCH; THIRD_U32_RUNTIME_NOT_RUN; SEMANTIC_OWNER_UNBOUND",
+  "implementation_disposition": "Keep third-U32 owner/transfer open. No credential path was used; a no-key initialization prerequisite is absent in the reviewed receipt set.",
+  "source_package_id": "carrier_block_third_scalar_keyless_no_go_wash_v1",
+  "source_manifest_sha256": "9466a1a59ffef87bcedad71e7a789d3a719ef0a315145adfe597540904af46ea",
+  "source_package_seal_sha256": "5cdff0a74a2b52daebb41285a8ba3f724cbeefe0403252dd55b7637ea6c97718",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1762,
+      "sha256": "5798cae4f10b3ff96dcb5e2e0648c02a3b29e8aa5a83d7fc08cc2693e8867937"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1430,
+      "sha256": "e9ef7e861498374fdb3c684cee4904aa31953c17d77edb85b57b1b541e7e588a"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 530,
+      "sha256": "6318177c145b77bd7f7f02fc81cd40121c30cff62e851b63962a0bf3db9adb5e"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 964,
+      "sha256": "c6585320bf459e3f3efb610b5b56412e81cf43282e1f2090d4faba964b4d5cdc"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 416,
+      "sha256": "fdd256e807ca92a7483baeb9088e97458d45ad6103965e403036da6e2643b20e"
+    }
+  ]
+}

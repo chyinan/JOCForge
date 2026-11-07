@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "eac3_joc_data_rate_writer_child_owner_boundary_wash_v1",
+  "source_manifest_sha256": "1728e4a8987cd2b08dfc147842bb5c962f5917ef6ac5d49c2b7c726edfb5a326",
+  "source_seal_sha256": null,
+  "source_integrity_artifacts": [
+    {
+      "name": "standalone package seal",
+      "status": "NOT_PROVIDED"
+    },
+    {
+      "name": "manifest file inventory",
+      "status": "CHECKED_BY_SOURCE_CHECK.py_NORMAL_AND_PYTHON_O"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "eac3_joc_data_rate_writer_state_consumer_wash_v1",
+      "manifest_sha256": "7bd4e88fbe5f44fe266bb510c651edcc5fed14cb4871d61a12f957b973f33b5f"
+    },
+    {
+      "package_id": "eac3_joc_data_rate_nested_record_consumer_boundary_wash_v1",
+      "manifest_sha256": "ba32e846399f3f88525cb09c800024e4dcbb05ed9ece1887cfc414f11aa0b45f"
+    },
+    {
+      "package_id": "eac3_joc_data_rate_writer_destination_owner_break_wash_v1",
+      "manifest_sha256": "78428df8f49605218df857ce851052abf54dd19ac3f2ab179c81ea384f155d43"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

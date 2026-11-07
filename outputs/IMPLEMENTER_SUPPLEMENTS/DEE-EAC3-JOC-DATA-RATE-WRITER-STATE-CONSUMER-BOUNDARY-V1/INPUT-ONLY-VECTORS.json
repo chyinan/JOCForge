@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "same-callback-rate-to-writer-state-and-generic-store",
+      "kind": "static-dataflow-summary",
+      "input": {
+        "rate_member_byte_offset": "0x18370",
+        "writer_state_field": "+0x20",
+        "nested_value_offset": "+0x10",
+        "generic_destination_offset": "+0x4"
+      },
+      "expected_status": "TYPED_SAME_RECEIVER_PATH_BOUND; CODEC_BSI_SEMANTICS_UNBOUND",
+      "status": "STATIC_TRACE_ONLY",
+      "payload_values_included": false
+    }
+  ]
+}

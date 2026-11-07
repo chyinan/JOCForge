@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_manifest_sha256": "f53822974ccb9482b01caf34b207c03404486eebc25e16fc6c208fc561866572",
+  "parent_manifest_sha256": "838c9b711129dbc23de8c47247308b753eb3a5f41e16692ca7da50d1c6f83187",
+  "independent_reproduction": "PASS_NORMAL_AND_PYTHON_O",
+  "format_authority": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+  "raw_source_or_media_included": false
+}

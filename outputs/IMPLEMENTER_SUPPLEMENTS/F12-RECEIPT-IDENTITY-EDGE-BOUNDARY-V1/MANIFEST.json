@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F12-RECEIPT-IDENTITY-EDGE-BOUNDARY-V1",
+  "status": "EVIDENCE_ONLY_UNBOUND",
+  "implementation_allowed": false,
+  "source_package_manifest_sha256": "b0e79e0fd8f0214d8a29d7ee7254ab8ea93291d7110143885e3cba8148520099",
+  "source_package_seal_sha256": "b2d1092b37355b2c62cf968fd4031ffc96c992b74bf683a98925889f0f8508b5",
+  "contains_native_or_research_source_code": false,
+  "contains_package_checker_code": true,
+  "contains_binary_or_decompilation": false,
+  "contains_pcm_or_bitstream": false,
+  "contains_private_auth_or_key": false,
+  "contains_raw_addresses": false,
+  "contains_local_absolute_paths": false,
+  "files": [
+    {"path":"CHECK.py","bytes":2724,"sha256":"d9517c6f66f1bd9aa19d466dcf3d9ad12cf8514aa332b0ab7a698e6bc613c2e5"},
+    {"path":"EVIDENCE.json","bytes":1632,"sha256":"c0090ed5705d1919078b8e976a8057659723a09475b106471c22a1d170b44252"},
+    {"path":"INPUT-ONLY-VECTORS.json","bytes":967,"sha256":"6fc93f8bb565e55a5aef1c344eb5e50e891d4b6d49a89d8cb2a6397067d3c2e4"},
+    {"path":"SOURCE-MANIFESTS.json","bytes":1403,"sha256":"67f173053b15ef1fc68b6b846d2e89f4813347ebcd20b80c33dd6991da6ca9f3"},
+    {"path":"WASH-REVIEW.md","bytes":1303,"sha256":"6b59608ac63a94f1d1b3e1bf1334c3ebcb6a182fcb6b2d968bf3b5500687a84d"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-EAC3-RATE-CHILD-OWNER-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "WRITER_CHILD_GENERIC_U32_STORE_BOUND; CHILD_OWNER_TYPE_AND_READER_UNBOUND; CODEC_BSI_UNBOUND",
+  "implementation_disposition": "The generic child-field store does not establish a codec or BSI consumer; preserve the child owner/type first-break.",
+  "source_package_id": "eac3_joc_data_rate_writer_child_owner_boundary_wash_v1",
+  "source_manifest_sha256": "1728e4a8987cd2b08dfc147842bb5c962f5917ef6ac5d49c2b7c726edfb5a326",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1652,
+      "sha256": "72cdbe7d994b9a849d45bdd204ef5fb3d4ee412fc0f89c6dd5c1b3b0958b1982"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 410,
+      "sha256": "56e19302cf0a29424641b8061366409f4f6b4a12b4dd32a525727e2895287dd0"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 490,
+      "sha256": "62d6b11d2a23a2bd2a01d1048e51fc3e5a59e4357a8b85c181306e215de524c0"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 609,
+      "sha256": "c7c74f3f2cfe6061c2b9811726136a3302a1e26728e03991bc79407cfc5e2e3e"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1169,
+      "sha256": "ed53823af71d9dce22a93a7fdb88610475bbaf884100e478f0fcd00dba9da2ee"
+    }
+  ]
+}

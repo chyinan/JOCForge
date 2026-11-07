@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-RANGE-RECORD-TO-FRAME-READER-BOUNDARY-V2",
+  "supersedes": "DEE-RANGE-RECORD-TO-FRAME-READER-BOUNDARY-V1",
+  "decision": "RANGE_RECORD_TO_READER_INPUT_BOUND; CURSOR_AND_RUNTIME_READER_JOIN_UNBOUND",
+  "range_path": {
+    "time_base_branch": "FUN_18014fd90",
+    "range_consumer": "FUN_180175500",
+    "per_source_setup": "FUN_1801764e0",
+    "reader_config_builder": "FUN_1801852e0 -> FUN_1801828c0",
+    "source_descriptor_consumer": "FUN_1801831c0 at RVA 0x182a94",
+    "source_object_destination": "AtmosReaderPrv+0x8",
+    "range_record_to_reader_input_config": "BOUND_STATICALLY"
+  },
+  "reader_candidates": [
+    {"selection": "per-source byte +0x140 == 0", "constructor": "FUN_1801850a0", "type": "AtmosReader", "slot_plus_0x18_target": "FUN_180186520", "wrapper": "FUN_180186870", "first_float_read_rva": "0x18692f"},
+    {"selection": "per-source byte +0x140 != 0", "constructor": "FUN_180185100", "type": "AtmosReaderCC", "slot_plus_0x18_target": "FUN_180186550", "wrapper": "FUN_180186580", "first_queued_read_rva": "0x18669e"}
+  ],
+  "atmos_reader_cursor": {
+    "cursor_field": "AtmosReaderPrv+0x28",
+    "cursor_init_rva": "0x185347",
+    "total_field": "AtmosReaderPrv+0x20",
+    "total_source_call_rva": "0x1854ae",
+    "first_check_rvas": ["0x1868a4", "0x1868a8"],
+    "plus_0x140_runtime_value": "NOT_CAPTURED"
+  },
+  "unbound": [
+    "XML start/end or stage+0xf98 to AtmosReaderPrv cursor/total",
+    "timebase units and exact trim effect",
+    "runtime Reader owner selection",
+    "runtime mode/owner generation"
+  ],
+  "status": {
+    "input_vectors": "NOT_RUN",
+    "dee_or_windbg": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "implementation_modified": false,
+    "current_source_manifest_and_artifacts_verified": true,
+    "formal_source_package_seal_present": false
+  },
+  "next_exact_gap": "Bind start/end or stage+0xf98 to cursor +0x28/total +0x20 through a typed producer/consumer edge, then capture the selected Reader only if needed."
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge.carrier_block_candidate_argument2_producer_boundary.v1",
+  "package_id": "DEE-CARRIER-BLOCK-CANDIDATE-ARG2-PRODUCER-BOUNDARY-V1",
+  "status": "CANDIDATE_ARG2_ARENA_AFFINE_CHAIN_BOUND; NO_TYPED_JOIN_TO_PLAN_B_LOCAL68; THIRD_U32_WRITER_OWNER_AND_CARRIER_TRANSFER_UNBOUND; RUNTIME_NOT_RUN",
+  "source": {
+    "package_id": "carrier_block_candidate_argument2_producer_break_wash_v1",
+    "manifest_sha256": "93c8993b891844e7bc7f207acfeddac9823eb14b0540be88c418e0cff70902b3",
+    "package_seal_sha256": "a316b41b402fe7d90834265e860bb19ad43ce64011ea8a7db1e005dc44abfc15",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "mode": "read-only/noanalysis existing project",
+    "tier": "STATIC",
+    "scope": "One bounded candidate argument-2 producer chain; no whole-image field scan."
+  },
+  "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "candidate_store": {
+    "function": "FUN_1800d24e0",
+    "instruction_rva": "0xd252b",
+    "destination": "qword ptr [R8+0xb18]"
+  },
+  "candidate_argument2_chain": {
+    "writer_caller": "FUN_18009edb0",
+    "writer_caller_rva": "0x9ee54",
+    "writer_caller_argument_2": "param_2+0x348",
+    "producer": "FUN_1800729a0",
+    "producer_callsite_rva": "0x72b91",
+    "producer_argument_2": "puVar16+0x9a4",
+    "puVar16_type": "undefined2*",
+    "element_size_bytes": 2,
+    "byte_offset": "0x1348",
+    "aligned_cursor": "puVar16=align_up(*param_1,32); *param_1=puVar16",
+    "derived_candidate_argument2_offset_from_puVar16": "0x1690",
+    "nearest_parent": {
+      "function": "FUN_18006da40",
+      "callsite_rva": "0x6e635",
+      "argument_1": "child-table-entry+0xdf0",
+      "argument_2": "local_140 ([RBP-0x48])"
+    }
+  },
+  "plan_b_descriptor": {
+    "function": "FUN_1800b7930 -> FUN_180073ef0",
+    "descriptor": "local_68",
+    "third_u32_read": "dword ptr [RDI+0xb1c]",
+    "third_u32_read_rva": "0x73f96",
+    "typed_pointer_generation_join_from_candidate_arena": "UNBOUND"
+  },
+  "join_disposition": {
+    "candidate_arena_semantic_owner": "UNBOUND",
+    "candidate_arena_generation": "UNBOUND",
+    "third_u32_first_writer": "UNBOUND",
+    "approved_carrier_transfer": "UNBOUND",
+    "candidate_as_plan_b_first_writer": "NOT_ESTABLISHED"
+  },
+  "runtime_gate": {
+    "keyless_initialization": "NOT_ESTABLISHED; NO_GO_REMAINS",
+    "dee_runtime": "NOT_RUN",
+    "capture": "NOT_RUN"
+  },
+  "scope_exclusions": {
+    "bsi_presence_recaptured": false,
+    "credential_content_read": false,
+    "dee_launched": false,
+    "implementation_source_read": false,
+    "media_or_payload_read": false,
+    "global_absence_claim": false
+  }
+}

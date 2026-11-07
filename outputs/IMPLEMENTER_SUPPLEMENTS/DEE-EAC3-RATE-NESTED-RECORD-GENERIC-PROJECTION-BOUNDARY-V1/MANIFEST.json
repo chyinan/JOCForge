@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-EAC3-RATE-NESTED-RECORD-GENERIC-PROJECTION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "NESTED_U32_TO_GENERIC_DESTINATION_BOUND; CODEC_CONFIG_AND_BSI_OWNER_UNBOUND",
+  "implementation_disposition": "Record only the generic U32 projection; do not label the destination as codec configuration or BSI.",
+  "source_package_id": "eac3_joc_data_rate_nested_record_consumer_boundary_wash_v1",
+  "source_manifest_sha256": "ba32e846399f3f88525cb09c800024e4dcbb05ed9ece1887cfc414f11aa0b45f",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1670,
+      "sha256": "b16666522ac77dd53c0cd711b86ad806964d6850bf64139b9f69071db0d26120"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 468,
+      "sha256": "cf46bba726584e2ae0ed09f547429939eff5a3c92c21b04095cd6a7e99d146c0"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 444,
+      "sha256": "65b3e24206d89f81829bba2b0b4179d8b2a1eaab1edece8878d70958c352902b"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 618,
+      "sha256": "6da1f33e0be5878dce302c7a771b8ddc7f6c179740d0f4a0983809168c27acce"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 978,
+      "sha256": "5773f1f5ce9b6481e982ea3b4f66a948bfba61a00b3d4bc41ee320f7d07e8b4a"
+    }
+  ]
+}

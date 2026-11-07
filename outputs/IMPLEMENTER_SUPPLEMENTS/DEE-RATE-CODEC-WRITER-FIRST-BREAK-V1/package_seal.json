@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-RATE-CODEC-WRITER-FIRST-BREAK-V1",
+  "manifest_sha256": "c9328dd7994774da8434ccfea280f6937a349f86070ced5cd3d6f99f4a5d725d",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "RATE_DERIVED_CODEC_CONFIG_STATIC_BOUND; CONFIG_TO_WRITER_STATE_JOIN_UNBOUND; CODEC_WRITER_TARGET_DYNAMIC; DEE_NOT_RUN"
+}

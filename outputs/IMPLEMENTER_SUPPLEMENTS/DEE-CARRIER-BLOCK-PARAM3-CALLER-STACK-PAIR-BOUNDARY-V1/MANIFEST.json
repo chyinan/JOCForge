@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-CARRIER-BLOCK-PARAM3-CALLER-STACK-PAIR-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PARAM3_CALLER_STACK_PAIR_BOUND_INITIAL_ZERO_ONLY; CALLEE_READ_VALUE_UNEVALUATED; ARENA_AND_PLAN_B_OWNER_JOINS_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package_id": "carrier_block_param3_caller_stack_pair_boundary_wash_v1",
+  "source_manifest_sha256": "a9e6754e2f334d148f23d7aa8b437eee15cb43996f0884dd9c364bd3e0bbd894",
+  "source_package_seal_sha256": "8b162b5e16262b0647e73471b349091c15007450f6b7cdb4a7d5b73875d0db8b",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2810,
+      "sha256": "197244897c6fb5e1a3d1fc114d5cc2fca7d953c27abfd76cb89c56b285a5a299"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2320,
+      "sha256": "a5ef0f444561c5d626eaebca254e2904659298bda17a3e6e6f4bd1accc8c5a5e"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 840,
+      "sha256": "18df66a14b3214de58c37c5346d90a47c7c3951ff4ed895d30f47b7c598b18b5"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1056,
+      "sha256": "646c22526d1d0c2f20a0cf89440eed857fe4d758091ce2e5602aa9d8db2a97dc"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1544,
+      "sha256": "fac5cca3fa7cc0cc9c22212ce9c13badcae5764ede2720c692789bc0f1c41787"
+    }
+  ]
+}

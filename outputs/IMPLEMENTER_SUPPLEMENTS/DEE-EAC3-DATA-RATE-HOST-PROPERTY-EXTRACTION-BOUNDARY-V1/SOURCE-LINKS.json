@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash.source-links.v1",
+  "source_package_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/eac3_joc_data_rate_host_property_dispatch_followup_wash_v1",
+  "source_package_manifest_sha256": "4892384f16f094f965cd482e1a63f9fa63993b4ab11a6ea58b4dc2c071b3579e",
+  "source_package_check": "9/9 manifest files and MANIFEST.sha256 verified by Wash",
+  "formal_source_package_seal": "NOT_PRESENT",
+  "wash_recomputed": {
+    "parent_manifests": "6/6",
+    "host_and_plugin_binaries": "2/2",
+    "source_manifest_files": "verified"
+  },
+  "verified_parent_manifests": [
+    {"package_id": "eac3_joc_data_rate_host_xml_selector_wash_v1", "manifest_sha256": "28ad2004fd00e4384354a1a4eff70337e5ab0029b5128e16b04aa8823e7c9521"},
+    {"package_id": "dee_xml_schema_validation_source_wash_v1", "manifest_sha256": "488f0e87b99179530abe133349db3b4a4e571cce60bb3d520ea71345fd33bc49"},
+    {"package_id": "eac3_joc_data_rate_wash_v1", "manifest_sha256": "f28ccfbb6e447fbbb3d39c17f68f49e1b6211f28f64ae555fb760988cbb9b6c0"},
+    {"package_id": "eac3_joc_data_rate_string_to_i32_followup_wash_v1", "manifest_sha256": "e4346b49962c4a12f93c0031d83add015a90c5186e521f784776a17a870caa07"},
+    {"package_id": "eac3_joc_data_rate_codec_sink_chain_wash_v1", "manifest_sha256": "443de212a9c9fe24bef9cc36fecb2703875e64b6b57ffe72772094c5482e2511"},
+    {"package_id": "dee_frame_provider_type_wash_v1", "manifest_sha256": "51ce0964d527147a2fe52db1cc9b82976a12ef1a8bd4086f84760ccde46506c1"}
+  ],
+  "source_checker_status": "Agent-reported normal and python -O PASS; not executed by Wash",
+  "excluded_from_supplement": ["CHECK.py", "Ghidra script/log", "raw XML", "media/payload", "private key/license"]
+}

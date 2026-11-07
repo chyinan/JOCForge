@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-RANGE-RECORD-TO-FRAME-READER-BOUNDARY-V2",
+  "source_package_manifest_sha256": "250b3594fe21b7f5e6883705d4cc68ac5d6655acca97ebb3bf1093cecc5d9515",
+  "files": {
+    "REPORT.md": "8fe6e49519ab23757fa086867b150646e9d24a414aee74071d519e3debf77a8a",
+    "BOUNDARY.json": "0707dddd565154fab3e7845756135e9cb31f8d5b20eafc87f554d2966ea65b5e",
+    "SOURCE-LINKS.json": "0686260c51eda12795aa30a9c22b2260cb8d1707cc7b7d9b72df66c91a4f6954"
+  }
+}

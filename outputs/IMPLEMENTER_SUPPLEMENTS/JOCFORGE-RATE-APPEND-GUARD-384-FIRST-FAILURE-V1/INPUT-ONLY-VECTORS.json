@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-selected-rate-append-guard-vectors.v1",
+  "status": "OBSERVED_FAILED_PRODUCT_ATTEMPT",
+  "selected_rate_kbps": 384,
+  "selected_frame_bytes": 1536,
+  "run_observation": {
+    "meter_callbacks_completed": 8420,
+    "source_callbacks_committed_before_failure": 2,
+    "application_error": "published source failed F12/F14/F15 durable receipt checks",
+    "partial_file_size_bytes": 1536,
+    "final_output": "NOT_CREATED",
+    "exit_code_disposition": "CHILD_EXIT_CODE_0_BUT_MONITOR_STATUS_EXITED_NONZERO_AND_APPLICATION_LOG_FAILED"
+  },
+  "static_guard": {
+    "field": "append.bytes_written",
+    "hardcoded_expected_bytes": 4096,
+    "selected_rate_expected_bytes": 1536,
+    "predicate_fails_for_selected_profile": true
+  },
+  "raw_partial_content_read": false,
+  "pcm_persisted": false,
+  "private_key_or_license_accessed": false
+}

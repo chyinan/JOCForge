@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ADM-ATMOSMEZZ-RATE-PAIR-BSI-WRITER-WASH-V1",
+      "checksum_manifest_file_sha256": "aa1a3298a4406c27e90dced75add919afe54b80c9edf401aca4cf2ae6afd26b0",
+      "evidence_json_sha256": "bd2f80ec24ea12f87904d7d4646baadbb87130879f03aa70989b5f90b34d54ad"
+    },
+    {
+      "package_id": "DEE-ADM-ATMOSMEZZ-RATE-SETUP-ENUM-WASH-V1",
+      "checksum_manifest_file_sha256": "af6532e2de5d6445acc709fee25bde840832f0f963b574805435d0f7222712ce",
+      "evidence_json_sha256": "2272fa2a549bd8648ee31cb383c572fcaa3cfc6e621ed77acc812bcfbf2f8480"
+    },
+    {
+      "package_id": "DEE-ADM-ATMOSMEZZ-RATE-TO-CODEC-WRITER-WASH-V1",
+      "checksum_manifest_file_sha256": "880719cd751c0b6ba88ce470c48232c75aa6c94232bebac28004ba4fd8282c77",
+      "evidence_json_sha256": "6eba8895bdc619c428fb7eb55d2b1947af4b10548dd8971ff0d54e34c8aa6015"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.dee_rate_codec_writer_first_break.v1",
+  "package_id": "DEE-RATE-CODEC-WRITER-FIRST-BREAK-V1",
+  "status": "RATE_DERIVED_CODEC_CONFIG_STATIC_BOUND; CONFIG_TO_WRITER_STATE_JOIN_UNBOUND; CODEC_WRITER_TARGET_DYNAMIC; DEE_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "DEE-ADM-ATMOSMEZZ-RATE-TO-CODEC-WRITER-WASH-V1",
+    "checksum_list_sha256": "880719cd751c0b6ba88ce470c48232c75aa6c94232bebac28004ba4fd8282c77",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "analysis_mode": "read-only/no-analysis",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_hash_provenance": "project-recorded"
+  },
+  "rate_derived_config": {
+    "process_function": "FUN_1801a7d50",
+    "rate_code_input": "param_1[10]",
+    "typed_consumer": "FUN_1801abc10",
+    "config_constructor": "FUN_1801ac130",
+    "codec_config_builder": "FUN_1801b2250",
+    "config_storage": "piVar17+0x206",
+    "rate_lookup_table_revisited": false
+  },
+  "writer_path": {
+    "writer_state_adapter": "FUN_1801ab800",
+    "writer_state_source": "*(param_1+0x810)",
+    "codec_writer": "FUN_1801b1590",
+    "per_stream_dispatch": "vtable slot +0x28 selected from per-stream table",
+    "rate_config_to_writer_state_pointer_join": "UNBOUND",
+    "concrete_writer_target": "UNBOUND_DYNAMIC",
+    "specific_bsi_bitrate_field_effect": "NOT_ESTABLISHED"
+  },
+  "runtime_and_scope": {
+    "mode_2_selected": "NOT_CAPTURED",
+    "runtime_encoder_instance_generation": "UNBOUND",
+    "dee_execution": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

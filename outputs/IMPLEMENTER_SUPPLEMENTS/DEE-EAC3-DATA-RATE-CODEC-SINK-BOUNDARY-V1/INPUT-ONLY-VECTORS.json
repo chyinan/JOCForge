@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STATIC_DOMAIN_ONLY; NOT_RUN",
+  "vectors": [
+    {
+      "id": "plugin-open-request-selector-domain",
+      "input_type": "signed I32",
+      "input_codes": [0, 1, 2, 3, 4, 5],
+      "typed_kbps_output": [384, 448, 576, 640, 768, 1024],
+      "xml_text_to_code": "UNBOUND",
+      "runtime_result": "NOT_RUN"
+    }
+  ],
+  "expected_encoding_output": "NOT_INCLUDED"
+}

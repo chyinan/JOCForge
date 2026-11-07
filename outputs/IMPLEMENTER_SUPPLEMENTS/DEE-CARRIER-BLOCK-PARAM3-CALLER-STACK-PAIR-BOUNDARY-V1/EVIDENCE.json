@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge.carrier_block_param3_caller_stack_pair_boundary.v1",
+  "package_id": "DEE-CARRIER-BLOCK-PARAM3-CALLER-STACK-PAIR-BOUNDARY-V1",
+  "status": "PARAM3_CALLER_STACK_PAIR_BOUND_INITIAL_ZERO_ONLY; CALLEE_READ_VALUE_UNEVALUATED; ARENA_AND_PLAN_B_OWNER_JOINS_UNBOUND; RUNTIME_NOT_RUN",
+  "source": {
+    "package_id": "carrier_block_param3_caller_stack_pair_boundary_wash_v1",
+    "manifest_sha256": "a9e6754e2f334d148f23d7aa8b437eee15cb43996f0884dd9c364bd3e0bbd894",
+    "package_seal_sha256": "8b162b5e16262b0647e73471b349091c15007450f6b7cdb4a7d5b73875d0db8b",
+    "normal_and_python_o_checker": "PASS"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "mode": "read-only/noanalysis",
+    "tier": "STATIC",
+    "scope": "One direct caller FUN_18017bfc0 and its param_3 stack pair only."
+  },
+  "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "caller": {
+    "function": "FUN_18017bfc0",
+    "callsite_rva": "0x17c3c5",
+    "callee": "FUN_18006da40",
+    "argument_3": "&local_2c8",
+    "machine_argument": "LEA R8,[RSP+0x30]"
+  },
+  "stack_pair": {
+    "first_local": "undefined8 local_2c8",
+    "first_local_initial_value": 0,
+    "second_local": "undefined8 uStack_2c0",
+    "second_local_initial_value": 0,
+    "other_reference": "local_2a8=&local_2c8 passed to FUN_18006d550; callee effects not inspected"
+  },
+  "callee_relation": {
+    "callee_local140_expression": "param_3[1] + -0x7586e + *param_3",
+    "callee_local140_write_rva": "0x6dbde",
+    "value_at_callee_read": "NOT_EVALUATED",
+    "reason": "Caller initialization does not prove absence of intervening callee writes.",
+    "param3_semantic_owner": "OPAQUE"
+  },
+  "owner_joins": {
+    "typed_puVar16_arena_owner": "UNBOUND",
+    "typed_plan_b_local68_descriptor": "UNBOUND",
+    "generation_identity": "UNBOUND"
+  },
+  "stop_boundary": "caller-local stack pair plus opaque FUN_18006d550 call; callers of FUN_18017bfc0 not inspected",
+  "runtime": "NOT_RUN",
+  "scope_exclusions": {
+    "other_function_expanded": false,
+    "whole_image_scan": false,
+    "bsi_presence_recaptured": false,
+    "dee_launched": false,
+    "media_pcm_payload_key_or_license_read": false,
+    "implementation_source_read": false
+  }
+}

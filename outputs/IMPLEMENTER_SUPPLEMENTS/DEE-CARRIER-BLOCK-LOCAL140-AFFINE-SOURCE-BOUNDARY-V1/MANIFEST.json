@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-CARRIER-BLOCK-LOCAL140-AFFINE-SOURCE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "LOCAL140_STACK_AFFINE_SOURCE_BOUND; PARAM3_OWNER_OPAQUE; NO_TYPED_JOIN_TO_PUVAR16_OWNER_OR_PLAN_B_LOCAL68; RUNTIME_NOT_RUN",
+  "source_package_id": "carrier_block_local140_affine_source_boundary_wash_v1",
+  "source_manifest_sha256": "bbf85685eba4166a09b850ec8b689b3a5e2d922f996d881534e8ce6dae6f2a8b",
+  "source_package_seal_sha256": "7ee5fb02e6c80abd09ae714bcf31ca1446751c7d24fb67d367242e096318bebf",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2675,
+      "sha256": "23cd4cf2d850a9f196941b55eb0450cac5f5483a9c60fed0ee5c5070271ee530"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2118,
+      "sha256": "32d680ee5df631d8a756482ad20ddb786eb505eb61bc5cdaed46e8d7c6a8c645"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 911,
+      "sha256": "e68a0bd53db6a603b9bcc4e2c59f9bfcaff11c212c49b41dfcc4e6c200390289"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1073,
+      "sha256": "46686c1d65b3a1a7c1017e566e3f68b0e7a7e365f59b44f4f8cd39252dbddaa2"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1537,
+      "sha256": "bc596baa8e5c78c64e2343f23cab29491b4ac41eac855ddbd4ca58ab587e4365"
+    }
+  ]
+}

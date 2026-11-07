@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "rate-writer-child-first-break",
+      "input": {
+        "writer_child_pointer": "generic child pointer",
+        "value": "nested U32"
+      },
+      "expected_observation": {
+        "store": "child +0x4",
+        "typed_owner": "UNBOUND"
+      },
+      "limitations": [
+        "No constructor/type token",
+        "No typed reader",
+        "No codec/BSI effect"
+      ]
+    }
+  ]
+}

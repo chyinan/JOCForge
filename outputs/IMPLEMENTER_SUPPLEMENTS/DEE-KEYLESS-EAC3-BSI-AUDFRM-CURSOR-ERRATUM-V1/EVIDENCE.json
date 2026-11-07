@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.wash.eac3_bsi_audfrm_cursor_erratum.v1",
+  "package_id": "DEE-KEYLESS-EAC3-BSI-AUDFRM-CURSOR-ERRATUM-V1",
+  "status": "BIT113_EXPSTRE_CURSOR_REPRODUCED; AUDFRM_PREFIX_ONLY; USER_FAILURE_ID_AND_ROOT_CAUSE_UNBOUND",
+  "source_package": {
+    "package_id": "keyless_crc32_frame_structure_addendum_wash_v1",
+    "manifest_sha256": "f53822974ccb9482b01caf34b207c03404486eebc25e16fc6c208fc561866572",
+    "parent_v2_manifest_sha256": "838c9b711129dbc23de8c47247308b753eb3a5f41e16692ca7da50d1c6f83187"
+  },
+  "artifacts": {
+    "candidate": {
+      "sha256": "a24b6a223f27175c7dc282d11168853ea60a8223172efaf20c5ad921a39c9871",
+      "bytes": 17395712,
+      "generation_record": "UNSEALED"
+    },
+    "rust_attempt_10_historical": {
+      "sha256": "593b6f866bf4396d25cd7b6307515f965f69e9884ce46599675c6f5d0a8c0473",
+      "bytes": 17395712,
+      "current_source_to_attempt_binary": "UNBOUND"
+    }
+  },
+  "observed": {
+    "frame_count": 4247,
+    "frame_bytes": 4096,
+    "crc2_residual": 0,
+    "first_difference_frame": 0,
+    "first_difference_bit_msb_zero_based": 113,
+    "bsi_end_bit_both": 113,
+    "expstre_bit": 113,
+    "candidate_expstre": 0,
+    "historical_rust_expstre": 1,
+    "frmfgaincode_bit": 121,
+    "candidate_frmfgaincode": 1,
+    "historical_rust_frmfgaincode": 1,
+    "candidate_audfrm_end_bit": 198,
+    "historical_rust_audfrm_end_bit": 233
+  },
+  "boundaries": {
+    "audblk_fast_gain_and_converter_snr_cursor": "UNBOUND_NOT_PARSED",
+    "user_reported_failure_file_identity": "UNBOUND",
+    "audition_failure_root_cause": "UNBOUND",
+    "candidate_to_current_adm_identity": "UNBOUND",
+    "post_recovery_adm_integrity": "UNVERIFIED",
+    "complete_decoder_validation": "NOT_RUN"
+  },
+  "format_authority": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+  "access_exclusions": {
+    "raw_ec3_pcm_key_license_or_native_source_included": false
+  }
+}

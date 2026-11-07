@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ADM-ATMOSMEZZ-RATE-PAIR-BSI-WRITER-WASH-V1",
+      "checksum_manifest_file_sha256": "aa1a3298a4406c27e90dced75add919afe54b80c9edf401aca4cf2ae6afd26b0",
+      "report_sha256": "d057fd39595fc29dbfdfd24daa8f8a05387a7ddc9b5797b7369e0662224c9628",
+      "evidence_sha256": "bd2f80ec24ea12f87904d7d4646baadbb87130879f03aa70989b5f90b34d54ad"
+    },
+    {
+      "package_id": "DEE-ADM-ATMOSMEZZ-DATA-RATE-PATH-WASH-V1",
+      "manifest_sha256_file": "2352b6835dd2d6b202dd71aa96ddaf6019487670b2d2c1609d70a20c6b03d191",
+      "evidence_json_sha256": "c09a289db4aebcced7fe47445a6af7ee1f0135d53b8165af67b0202994deaa84"
+    },
+    {
+      "package_id": "DEE-ADM-ATMOSMEZZ-DATA-RATE-CONSTRUCTOR-EDGE-WASH-V1",
+      "manifest_sha256_file": "9f94cf5e17bec7659f6defadb9145cdda6f28515f39ca3894031b49bbc6ef3d2",
+      "evidence_json_sha256": "7f91ef278a27a9489773a3022b47e798f8b6d0dfbfc9974c82d7335c991ee33a"
+    },
+    {
+      "package_id": "DEE-ADM-ATMOSMEZZ-RATE-TO-CODEC-WRITER-WASH-V1",
+      "manifest_sha256_file": "880719cd751c0b6ba88ce470c48232c75aa6c94232bebac28004ba4fd8282c77",
+      "evidence_json_sha256": "6eba8895bdc619c428fb7eb55d2b1947af4b10548dd8971ff0d54e34c8aa6015"
+    },
+    {
+      "package_id": "DEE-ADM-ATMOSMEZZ-WRITER-TABLE-STATIC-ENTRY-WASH-V1",
+      "manifest_sha256_file": "c48baffee8e0e09f5d5596412051d7b42a7a301e0a5e2451974475eee81cb69b",
+      "evidence_json_sha256": "0e722571d26d9fa1562a178d158ccb0b12e723465a23332888c92369aba799d2"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

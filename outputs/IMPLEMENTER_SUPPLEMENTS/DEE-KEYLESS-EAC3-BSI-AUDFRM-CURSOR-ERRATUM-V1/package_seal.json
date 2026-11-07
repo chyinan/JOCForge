@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-KEYLESS-EAC3-BSI-AUDFRM-CURSOR-ERRATUM-V1",
+  "manifest_sha256": "1a4eab7fa16748be61c5882c43eddac3e3f4fe2ec68604d115e1fc2a693ce17e",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

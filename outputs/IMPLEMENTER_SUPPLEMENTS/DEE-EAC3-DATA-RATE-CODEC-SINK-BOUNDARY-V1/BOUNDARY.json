@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-EAC3-DATA-RATE-CODEC-SINK-BOUNDARY-V1",
+  "decision": "PLUGIN_SELECTOR_TO_TYPED_KBPS_BOUND; PUBLIC_XML_STRING_TO_SELECTOR_UNBOUND; SETTER_OWNER_JOIN_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": {
+    "package_id": "eac3_joc_data_rate_codec_sink_chain_wash_v1",
+    "manifest_sha256": "443de212a9c9fe24bef9cc36fecb2703875e64b6b57ffe72772094c5482e2511",
+    "manifest_sha256_file_matched": true,
+    "formal_package_seal": "NOT_PRESENT"
+  },
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e", "wash_rehashed": true},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2", "wash_rehashed": true}
+  ],
+  "selector_to_rate": {
+    "open_request_builder": "FUN_180178dc0",
+    "selector_type": "signed I32",
+    "selector_domain": [0, 1, 2, 3, 4, 5],
+    "storage": "U32 encoder-open config word 10 at byte offset +0x28",
+    "typed_mapper": "FUN_1801ab520",
+    "mapped_type_and_unit": "U32 kbps in typed key 3",
+    "mapping": {"0": 384, "1": 448, "2": 576, "3": 640, "4": 768, "5": 1024},
+    "public_xml_string_to_selector": "UNBOUND"
+  },
+  "first_validator": {
+    "function": "FUN_1801fe3d0",
+    "callee": "FUN_180200570",
+    "constraint": "min_kbps <= rate_kbps - rate_offset && rate_kbps <= max_kbps",
+    "active_registry_row": "UNBOUND",
+    "typed_key_4_semantics": "UNBOUND",
+    "rate_offset_unit": "UNBOUND"
+  },
+  "setter_endpoint": {
+    "functions": ["FUN_1801ff1e0", "FUN_1801c1470"],
+    "write": "type-3 U32 to handle +0x18370",
+    "same_owner_generation_as_open_config": "CONDITIONAL_UNBOUND"
+  },
+  "execution": {
+    "dee_encoding": "NOT_RUN",
+    "runtime_observation": "NOT_RUN",
+    "media_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  }
+}

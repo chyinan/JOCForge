@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "TWO_XML_RATE_TEXT_VALUES_ONLY",
+  "vectors": [
+    {"xml_text": "384", "lookup_code": 0, "typed_setup_value": 6},
+    {"xml_text": "1024", "lookup_code": 5, "typed_setup_value": 8, "lookup_condition": "IF_LOOKUP_REACHED"}
+  ],
+  "media_pcm_or_payload_included": false
+}

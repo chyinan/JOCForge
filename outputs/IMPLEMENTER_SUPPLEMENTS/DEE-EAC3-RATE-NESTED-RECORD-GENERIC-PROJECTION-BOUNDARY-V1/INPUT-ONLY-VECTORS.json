@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "rate-nested-generic-projection",
+      "input": {
+        "nested_field": "U32 +0x10"
+      },
+      "expected_observation": {
+        "generic_destination_write": "U32 +0x4"
+      },
+      "limitations": [
+        "Destination owner/type unknown",
+        "Codec and BSI effect unbound",
+        "No same-generation join"
+      ]
+    }
+  ]
+}

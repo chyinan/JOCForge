@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "five-full-band-plus-lfe-independent-six-blocks",
+      "input": {
+        "frame_bytes": 4096,
+        "strmtyp": 0,
+        "substreamid": 0,
+        "fscod": 0,
+        "blocks": 6,
+        "acmod": 7,
+        "lfeon": 1,
+        "bsid": 16
+      },
+      "limitations": [
+        "Parser stops at audfrm end.",
+        "No raw bytes, PCM or current-failure identity are supplied."
+      ]
+    }
+  ]
+}

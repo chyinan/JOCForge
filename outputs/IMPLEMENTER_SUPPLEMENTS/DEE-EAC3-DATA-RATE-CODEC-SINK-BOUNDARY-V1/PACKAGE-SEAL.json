@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-EAC3-DATA-RATE-CODEC-SINK-BOUNDARY-V1",
+  "manifest_sha256": "8eeaa2c6e3b8fceba4c76c3ae0219c121f74be6a5e910246240cfc8931b2dc72",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "443de212a9c9fe24bef9cc36fecb2703875e64b6b57ffe72772094c5482e2511",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "target_binaries_rehashed_this_turn": true,
+  "disposition": "PLUGIN_SELECTOR_TO_TYPED_KBPS_BOUND; PUBLIC_XML_JOIN_UNBOUND; SETTER_JOIN_UNBOUND"
+}

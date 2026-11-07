@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash.input-only-vectors.v1",
+  "status": "STATIC_STRUCTURE_ONLY; NOT_RUN",
+  "vectors": [
+    {
+      "id": "generic-xml-string-read",
+      "parse_path": ["XmlParse::Parse", "FUN_140029330", "FUN_1400207f0"],
+      "parsed_member_offset": "+0x68",
+      "result_type": "string-like",
+      "ddp_data_rate_property_identity": "UNBOUND",
+      "signed_i32_selector": "UNBOUND"
+    },
+    {
+      "id": "plugin-request-sink",
+      "field": "FUN_180178dc0.param_1[0]",
+      "type": "signed I32",
+      "host_property_writer": "UNBOUND"
+    }
+  ],
+  "dee_or_encoding": "NOT_RUN"
+}

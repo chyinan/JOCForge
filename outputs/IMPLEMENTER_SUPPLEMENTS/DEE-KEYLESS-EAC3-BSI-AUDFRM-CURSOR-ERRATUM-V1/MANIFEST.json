@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-KEYLESS-EAC3-BSI-AUDFRM-CURSOR-ERRATUM-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "source_manifest_sha256": "f53822974ccb9482b01caf34b207c03404486eebc25e16fc6c208fc561866572",
+  "status": "BIT113_EXPSTRE_CURSOR_REPRODUCED; AUDFRM_PREFIX_ONLY; USER_FAILURE_ID_AND_ROOT_CAUSE_UNBOUND",
+  "implementation_ready": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1742,
+      "sha256": "1e10fb711b5605147186e1df1c40c9891bdb8e65df840625ddf3d19c03232168"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1994,
+      "sha256": "7dd79d70527842684a13a63ccfb15674036f830629db5de38f9b4f3f5f861fe9"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 508,
+      "sha256": "796b3ece378bb1658f5b7dcef98f27aae471a78f81ec7c21ca461aaefd5c0f16"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1406,
+      "sha256": "36bc0785da087b696b8e771d10b259c118bb44c6deec94ce2cd6d202b00ad624"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 471,
+      "sha256": "f5332b42d4aa0b2bd5666dce3f577d6a2116501a6b8fd18ca9251a8a19d7df9e"
+    }
+  ]
+}

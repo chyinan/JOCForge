@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "candidate-affine-arena-vs-plan-b-descriptor",
+      "input": {
+        "candidate_store": "FUN_1800d24e0 [R8+0xb18]",
+        "candidate_argument2": "FUN_1800729a0 puVar16+0x9a4 -> FUN_18009edb0 param_2+0x348",
+        "plan_b_descriptor": "FUN_1800b7930 local_68 -> FUN_180073ef0 [RDI+0xb1c]"
+      },
+      "expected_disposition": {
+        "typed_pointer_generation_join": "UNBOUND",
+        "candidate_third_u32_first_writer": "NOT_ESTABLISHED",
+        "runtime": "NOT_RUN"
+      },
+      "limitations": [
+        "Static affine address derivation only; no semantic owner or generation token.",
+        "No whole-image scan or runtime capture.",
+        "Offset similarity does not establish identity."
+      ]
+    }
+  ]
+}

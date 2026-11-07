@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "eac3_joc_data_rate_writer_state_consumer_wash_v1",
+      "manifest_sha256": "7bd4e88fbe5f44fe266bb510c651edcc5fed14cb4871d61a12f957b973f33b5f",
+      "reviewed_payloads": [
+        {"name": "EVIDENCE.json", "sha256": "6103c8f26ce9f5058ed595326cf31bd5ada18132f60b731c63f743ade222b3ce"},
+        {"name": "REPORT.md", "sha256": "57ff31759fdf1e1de9722e67d2e41bbfefbd24e67c1ae6fc807f00c7b550984a"},
+        {"name": "SOURCE-MANIFESTS.json", "sha256": "d4b7890cc09fb2b219ee5fdfc055eb8370f2ec39a68c5b91e677c73ce7fc593b"}
+      ],
+      "raw_Ghidra_or_native_source_copied": false,
+      "installed_target_image_rehashed": false
+    }
+  ]
+}

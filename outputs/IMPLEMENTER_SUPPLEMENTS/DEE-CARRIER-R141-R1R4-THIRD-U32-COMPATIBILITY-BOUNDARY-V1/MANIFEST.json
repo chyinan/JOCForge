@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-CARRIER-R141-R1R4-THIRD-U32-COMPATIBILITY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "R141_WIDTH5_IS_BSID_NOT_THIRD_U32; R1R4_CALLSITE_OWNER_GENERATION_INCOMPATIBLE_OR_UNBOUND; THIRD_U32_OWNER_UNBOUND",
+  "implementation_disposition": "Do not merge R141 serializer evidence into the third-U32 plan capture; same image hash does not establish object/generation identity.",
+  "source_package_id": "carrier_block_r141_plan_compatibility_boundary_wash_v1",
+  "source_manifest_sha256": "1b4db8524ac9f9e1c6dd1992218e42f25efb6382c2c8950d79d08347fa8e782c",
+  "source_package_seal_sha256": "67fd7d40c612be04b764847427ad7dd84f283d586de773c6167b02d87780a79a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1731,
+      "sha256": "366098ba145f47107f2775872a287f7c06588c4aef61bf247902752afa93a4bb"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 754,
+      "sha256": "90c0d9d897018c8bcbbfc19f2cd53e3a528e05fd4b605d7fc8d1be554ebb9b8f"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 548,
+      "sha256": "f2dfe4d7838404f9fbc51f01565d9f17e607d2794e9628221070ef00920ae021"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1137,
+      "sha256": "cb6a4e846c100d8051916b73499be314def02416a9d87c8970576891645071b1"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1305,
+      "sha256": "69203ab968340abd7e7e3782c558829358444b586de514e58338ceb10cc1d3f3"
+    }
+  ]
+}

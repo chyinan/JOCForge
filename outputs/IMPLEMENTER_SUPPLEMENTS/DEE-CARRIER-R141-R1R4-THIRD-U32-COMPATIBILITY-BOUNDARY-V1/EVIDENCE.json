@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.carrier_r141_third_u32_compatibility_boundary.v1",
+  "r141_process_state": "TERMINAL_OUTPUT_CLEANED",
+  "r141_exit_code": "NOT_CAPTURED",
+  "r141_encoder_completion": "NOT_CONFIRMED",
+  "r141_observed_field": "record +0x08, U16 0x0010, width 5; mapped as BSID",
+  "third_u32_field": "per-frame descriptor +0x0B1C",
+  "r141_field_is_third_u32": false,
+  "r1_r4_serializer_callsites_match_plan_A_or_B": false,
+  "same_module_hash_is_owner_generation_join": false,
+  "candidate_plus_0xb18_store_to_plan_plus_0xb1c_join": "UNBOUND",
+  "plan_A_B_owner_tokens": "REQUIRED_NOT_PRESENT_IN_R141",
+  "third_u32_owner_and_profile_transfer": "UNBOUND",
+  "r138_caller_applicability": "NOT_EVALUATED",
+  "capture": "NOT_RUN"
+}

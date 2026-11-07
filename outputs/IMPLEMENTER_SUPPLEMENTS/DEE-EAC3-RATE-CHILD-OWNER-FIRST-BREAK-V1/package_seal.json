@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-EAC3-RATE-CHILD-OWNER-FIRST-BREAK-V1",
+  "status": "SEALED_FOR_CHECK",
+  "manifest_sha256": "e04d32eeeff9c4c8afb9df5e89b7ba1d912a523d5486de9e7efa67422f5c4756",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.eac3_joc_data_rate_writer_destination_owner_boundary.v1",
+  "package_id": "DEE-EAC3-JOC-DATA-RATE-WRITER-DESTINATION-OWNER-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "eac3_joc_data_rate_writer_destination_owner_break_wash_v1",
+    "manifest_sha256": "78428df8f49605218df857ce851052abf54dd19ac3f2ab179c81ea384f155d43",
+    "source_checker_normal_and_python_o": "PASS",
+    "source_package_seal": "NOT_PROVIDED_BY_SOURCE"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2 static, one writer and bounded continuation",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "global_xref_scan": false,
+    "global_absence_claim": false
+  },
+  "generic_writer": {
+    "destination_expression": "writer receiver +0x38",
+    "stored_value_type": "U32",
+    "stored_value_source": {
+      "owner_pointer_field": "writer receiver +0x2a8",
+      "value_field_offset": "+0x10",
+      "type": "U32"
+    },
+    "destination_child_field_offset_hex": "0x4",
+    "child_owner_type": "UNBOUND_STATIC",
+    "child_constructor_or_initializer": "NOT_FOUND_IN_BOUNDED_PATH",
+    "typed_reader_of_child_plus_0x4": "NOT_FOUND_IN_BOUNDED_PATH"
+  },
+  "bounded_continuation": {
+    "post_return_helper_result": "writer receiver +0x86b0",
+    "result_argument_position": "RDX / second argument",
+    "next_callee_consumes_second_argument": false,
+    "next_callee_first_argument_root_offset_hex": "0x182e0",
+    "typed_join_to_writer_destination": "UNBOUND"
+  },
+  "status": {
+    "generic_destination_store": "BOUND_STATIC",
+    "destination_owner_and_type": "UNBOUND_STATIC",
+    "destination_first_reader": "UNBOUND_STATIC",
+    "codec_or_bsi_identity": "UNBOUND_STATIC"
+  },
+  "implementation_disposition": {
+    "do_not_treat_post_return_pointer_as_destination": true,
+    "do_not_infer_codec_bsi_from_writer_scalar": true,
+    "algorithm_change_authorized": false
+  }
+}

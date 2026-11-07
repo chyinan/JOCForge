@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.rate_writer_child_owner_boundary.v1",
+  "nested_u32_to_generic_child_plus_0x4_store": "BOUND_STATIC",
+  "child_constructor_or_initializer": "NOT_FOUND_IN_BOUNDED_TRACE",
+  "typed_reader_of_child_plus_0x4": "NOT_FOUND_IN_BOUNDED_TRACE",
+  "codec_bsi_owner": "UNBOUND",
+  "other_receiver_call_join_to_child": "UNBOUND",
+  "global_absence_claim": false,
+  "runtime": "NOT_RUN"
+}

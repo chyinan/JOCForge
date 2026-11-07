@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash.implementation-boundary.v1",
+  "package_id": "DEE-EAC3-DATA-RATE-HOST-PROPERTY-EXTRACTION-BOUNDARY-V1",
+  "decision": "GENERIC_XML_STRING_EXTRACTION_BOUND; DDP_PROPERTY_OWNER_UNBOUND; STRING_TO_I32_UNBOUND; PROVIDER_DISPATCH_UNBOUND",
+  "source_package": {
+    "package_id": "eac3_joc_data_rate_host_property_dispatch_followup_wash_v1",
+    "manifest_sha256": "4892384f16f094f965cd482e1a63f9fa63993b4ab11a6ea58b4dc2c071b3579e",
+    "manifest_sha256_file_matched": true,
+    "formal_package_seal": "NOT_PRESENT"
+  },
+  "target_images": [
+    {"name": "dee.exe", "sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e", "wash_rehashed": true},
+    {"name": "dee_audio_filter_ddp_atmos.dll", "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2", "wash_rehashed": true}
+  ],
+  "host_xml_path": {
+    "validation_wrapper": "FUN_14002a0b0",
+    "parse_callsite": "0x14002b3a2 -> dee::xml::XmlParse::Parse",
+    "post_parse_callsite": "0x14002b3bd -> FUN_140029330",
+    "member_read": "param_1 +0x68 string-like member",
+    "generic_helper": "FUN_1400207f0",
+    "helper_semantics": "bounds check, string copy, null termination",
+    "specific_ddp_data_rate_name_or_i32_conversion": "NOT_ESTABLISHED"
+  },
+  "unjoined_candidates": {
+    "host_static_data_rate_strings": "FUN_1400b9d20..FUN_1400c3698; not joined to parse node/provider request",
+    "plugin_request_field": "FUN_180178dc0.param_1[0] signed I32",
+    "host_property_owner_to_provider_request": "UNBOUND",
+    "xml_text_to_i32": "UNBOUND",
+    "unknown_or_omitted_behavior": "UNBOUND",
+    "runtime_provider_selection": "NOT_RUN"
+  },
+  "execution": {
+    "dee": "NOT_RUN",
+    "encoding": "NOT_RUN",
+    "media_payload_key_license_read": false,
+    "implementation_contact": false
+  }
+}

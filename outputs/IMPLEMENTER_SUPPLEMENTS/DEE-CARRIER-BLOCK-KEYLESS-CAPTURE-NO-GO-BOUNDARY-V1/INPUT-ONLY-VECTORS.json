@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "keyless-capture-launch-gate",
+      "input": {
+        "credential_argument_allowed": false,
+        "eligible_no_key_job_receipt": false
+      },
+      "expected_observation": {
+        "launch": "NO_GO/BLOCKED_BEFORE_LAUNCH",
+        "capture": "NOT_RUN"
+      },
+      "limitations": [
+        "Bounded receipt set only",
+        "No global no-key absence claim",
+        "No third-U32 runtime evidence"
+      ]
+    }
+  ]
+}

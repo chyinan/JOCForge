@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.rate_writer_child_reset_source_boundary.v1",
+  "slot2_reset_handle_field": "+0x18318",
+  "slot4_consumer_handle_field": "+0x18318",
+  "reset_helper_store": "writer receiver +0x248",
+  "reset_helper_access_to_child_plus_0x38": false,
+  "same_handle_offset_proves_same_instance": false,
+  "slot2_slot4_runtime_generation_join": "UNBOUND",
+  "child_plus_0x38_constructor_or_store_source": "UNBOUND",
+  "codec_bsi_owner": "UNBOUND",
+  "runtime": "NOT_RUN"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "eac3_joc_data_rate_nested_record_first_writer_wash_v1",
+      "manifest_sha256": "aa11109eb3d3557c6c200ac3869cf7c20ab755d6348692ac598733f105c84936",
+      "source_package_seal": "NOT_PROVIDED_BY_SOURCE"
+    }
+  ],
+  "parent_receipts": [],
+  "raw_native_source_or_audio_payload_copied": false
+}

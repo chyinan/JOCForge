@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash-supplement-seal.v1",
+  "package_id": "DEE-RANGE-RECORD-TO-FRAME-READER-BOUNDARY-V2",
+  "manifest_sha256": "5c17024bdfa50c9de1c40e84705bc4ca80333f1031d043cd128622cd21c2943d",
+  "payloads_verified": true,
+  "source_package_manifest_sha256": "250b3594fe21b7f5e6883705d4cc68ac5d6655acca97ebb3bf1093cecc5d9515",
+  "source_package_formal_seal_present": false,
+  "target_images_rehashed_this_turn": true,
+  "disposition": "PARTIAL_ACCEPT_RANGE_RECORD_TO_READER_INPUT; CURSOR_JOIN_UNBOUND"
+}

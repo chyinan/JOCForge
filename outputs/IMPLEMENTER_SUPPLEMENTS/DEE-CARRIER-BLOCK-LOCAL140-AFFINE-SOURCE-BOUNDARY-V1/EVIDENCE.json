@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.carrier_block_local140_affine_source_boundary.v1",
+  "package_id": "DEE-CARRIER-BLOCK-LOCAL140-AFFINE-SOURCE-BOUNDARY-V1",
+  "status": "LOCAL140_STACK_AFFINE_SOURCE_BOUND; PARAM3_OWNER_OPAQUE; NO_TYPED_JOIN_TO_PUVAR16_OWNER_OR_PLAN_B_LOCAL68; RUNTIME_NOT_RUN",
+  "source": {
+    "package_id": "carrier_block_local140_affine_source_boundary_wash_v1",
+    "manifest_sha256": "bbf85685eba4166a09b850ec8b689b3a5e2d922f996d881534e8ce6dae6f2a8b",
+    "package_seal_sha256": "7ee5fb02e6c80abd09ae714bcf31ca1446751c7d24fb67d367242e096318bebf",
+    "normal_and_python_o_checker": "PASS"
+  },
+  "method": {
+    "tool": "Ghidra",
+    "version": "12.2",
+    "mode": "read-only/noanalysis existing project",
+    "tier": "STATIC",
+    "scope": "One function FUN_18006da40; no caller expansion or whole-image scan."
+  },
+  "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "function_input": {
+    "function": "FUN_18006da40",
+    "entry_rva": "0x6da40",
+    "param_3_type": "longlong*",
+    "entry_register": "R8",
+    "local_register": "RDI",
+    "semantic_owner": "OPAQUE"
+  },
+  "local_140": {
+    "stack_slot": "[RBP-0x48]",
+    "write_rva": "0x6dbde",
+    "expression": "param_3[1] - 0x7586e + *param_3",
+    "machine_expression": "qword[RDI+8] - 0x7586e + qword[RDI]",
+    "read_rva": "0x6e626",
+    "callee": "FUN_1800729a0",
+    "callsite_rva": "0x6e635",
+    "argument_index": 2,
+    "other_arguments": [
+      "child-table-entry+0xdf0",
+      "param_4",
+      "param_5"
+    ]
+  },
+  "joins": {
+    "local_140_to_puVar16_arena_owner": "UNBOUND",
+    "local_140_to_plan_b_local68_descriptor": "UNBOUND",
+    "param_3_semantic_owner_generation": "UNBOUND",
+    "first_break": "opaque param_3 input to FUN_18006da40"
+  },
+  "runtime": "NOT_RUN",
+  "scope_exclusions": {
+    "other_function_expanded": false,
+    "whole_image_scan": false,
+    "bsi_presence_recaptured": false,
+    "dee_launched": false,
+    "media_pcm_payload_key_or_license_read": false,
+    "implementation_source_read": false
+  }
+}

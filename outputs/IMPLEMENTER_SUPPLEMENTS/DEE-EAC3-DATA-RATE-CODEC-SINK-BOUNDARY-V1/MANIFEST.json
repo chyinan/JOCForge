@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash-supplement-manifest.v1",
+  "package_id": "DEE-EAC3-DATA-RATE-CODEC-SINK-BOUNDARY-V1",
+  "source_package_manifest_sha256": "443de212a9c9fe24bef9cc36fecb2703875e64b6b57ffe72772094c5482e2511",
+  "source_package_formal_seal_status": "NOT_PRESENT",
+  "files": {
+    "REPORT.md": "fc4f0dd6d8b63c19daeae729c706f0a8b85c8bb26ecc876bb7d74e7b2da6b03e",
+    "BOUNDARY.json": "eb170156f59de78e9a287e8e54ce97b7cdfde4d85b56beb2c4e5b17db1a9dcf6",
+    "SOURCE-LINKS.json": "0a2969ae7f1d61f9ad0ff43ab6a9762c50780bd0ca7b6a3db45bd5aa1b17d671",
+    "INPUT-ONLY-VECTORS.json": "29a2164cb5cf61a65838abc842043548f96f2a8af6be42b4c85d69379a4c4867"
+  }
+}
