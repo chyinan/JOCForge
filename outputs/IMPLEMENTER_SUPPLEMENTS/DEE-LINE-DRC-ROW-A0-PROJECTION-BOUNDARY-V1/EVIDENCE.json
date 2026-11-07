@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.line_drc_row_member_a0_projection_boundary.v1",
+  "status": "ROW_PLUS_0X10_QWORD_ZERO_COMPARE_BOUND; FIELD_SEMANTICS_AND_A0_PROJECTION_UNBOUND; STOPPED_AT_COMPARE",
+  "source_package": "line_mode_drc_snapshot_a0_row_member_next_use_wash_v1",
+  "source_manifest_sha256": "6bd832b31bcb26d296bbc749adbf7221a0974c764f464519f01ad5287030712f",
+  "source_manifest_sidecar_sha256": "66706a8013f761b9607b5fa38edff2bcbc22912ad6a7c7e08f1829c26f8cf7f1",
+  "source_seal_sha256": "0e927b5d780df769488ee59130a060816955f6d84d83374c1237f709cdca0bdd",
+  "source_payload_audit": "PASS_5_OF_5",
+  "trace": {"function": "FUN_1801431f0", "row_pointer_register": "RDX", "load": "QWORD [RDX+0x10] at 0x180143205", "next_use": "CMP RAX,R8 at 0x180143215", "caller_R8": 0},
+  "unbound": ["semantic type/owner of row+0x10", "typed owner/alias join to snapshot+0xA0", "branch successor", "codec/BSI input", "audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

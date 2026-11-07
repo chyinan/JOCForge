@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ROW_PLUS_0X10_QWORD_ZERO_COMPARE_BOUND; FIELD_SEMANTICS_AND_A0_PROJECTION_UNBOUND; STOPPED_AT_COMPARE; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 674,
+      "sha256": "1979e84af1732dd488126cc8ddb1810cdc08381335151a45f97b46f125040526"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1251,
+      "sha256": "172bd4c719feb3648f7658d15d7aae07c75b5606dfb3c380bf87b62babb1b26f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 632,
+      "sha256": "277a95277451c4426c4c386408f480611a1349d83f7394b40a628d433479e612"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 142,
+      "sha256": "bec78774e4b0d305f47041aa0a1c66d0745ac2bb905a10717f590a90c2f3b537"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 793,
+      "sha256": "81c2dfb6568ee4e8ed40461373144c48a6253a4e5b04b9b4ac321b81c3180da6"
+    }
+  ]
+}

@@ -5480,7 +5480,8 @@
           "dependencies": [],
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5509,7 +5510,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3e481b71454373f36e1b03462a303d1f9b22ca9d104f6fe6b3ee6f1b9bc9cf82",
             "supplement_seal_sha256": "277dbea1973ea98049f3195429cb974069d6eb255f56b6d1aa98280a2eabda8d",
@@ -5530,6 +5538,16 @@
               "selected_row_pointer_first_call": "FUN_180182850.param_2 -> FUN_1801431f0 second argument",
               "snapshot_plus_a0_owner_generation_join": "UNBOUND",
               "codec_bsi_and_audio_effect": "UNBOUND/NOT_RUN"
+            },
+            "latest_row_member_addendum": {
+              "package_id": "DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1",
+              "manifest_sha256": "111f79b1c47bb4eebc1bf0febf6aedef009a7bf9f6b9c50b40d3ccdc3a292297",
+              "seal_sha256": "5f6ad93151e176f38a3e8ee8662fac8f8e8861bc2f4339fa32235d9cec2257f3",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_trace": "FUN_1801431f0 loads QWORD [RDX+0x10] then compares with caller R8=0",
+              "row_member_semantics_and_snapshot_plus_a0_join": "UNBOUND",
+              "codec_bsi_and_audio_effect": "UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -5542,7 +5560,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only mode-1 edge: the same snapshot base reaches validator and packer; the scoped path does not read/copy the +0xa0 candidate, while +0x130 is a distinct field. XML runtime owner, mode-1 generation, indirect packer relation, and audio effect remain unbound."
@@ -5996,6 +6018,73 @@
             "Omitted-field runtime default, frame-rate conversion, and audio effect."
           ],
           "validation_boundary": "Reference-only timecode_frame_rate boundary: the host exact-key setter stores a typed value at input object +0x31 without identifying its adm/atmos_mezz owner or first consumer. The DDP plugin has a numeric property-map consumer at +0xa0 in FUN_18014fd90, but XML output-node owner/generation is not joined. Input/output fields may not be merged; template not_indicated does not prove omission defaults.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-temp-dir-lifecycle-boundary",
+          "mapping_status": "TEMP_PATH_AND_FLAG_WRITES_BOUND__DELETE_RETAIN_CONSUMER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_TEMP_DIR_LIFECYCLE__NO_CLEANUP_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only temp_dir lifecycle boundary: StageRunner fields and path/clean_temp writes plus a temp_dir_test write-mode open/close are observed. No probe deletion or job-output cleanup is proven; clean_temp consumer, selected storage-provider instance, and job generation remain unbound.",
+          "dependencies": [],
+          "spec_files": [
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "StageRunner misc/temp_dir path and clean_temp flag writes are statically identified.",
+              "The bounded filesystem use is a write-mode temp_dir_test open/close probe.",
+              "Probe deletion and actual output cleanup consumer remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_TEMP_DIR_BOUNDARY",
+            "package_id": "DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "3ec5385807a5a080bd93d099ab1ee0562c960200cdddc3889d947b2bd5288b54",
+            "supplement_seal_sha256": "81762e2c76295df51bed9a26825a9212f2503d9468e71ec7f914f0db31c0ecbe",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "misc_temp_dir": "StageRunner +0x138 / +0x1a0",
+              "path_object": "+0x2a0; resolved path +0x68; clean_temp byte +0x90",
+              "bounded_filesystem_probe": "temp_dir_test open write-mode then close"
+            },
+            "validation_boundary": "Reference-only temp_dir lifecycle boundary: StageRunner fields and path/clean_temp writes plus a temp_dir_test write-mode open/close are observed. No probe deletion or job-output cleanup is proven; clean_temp consumer, selected storage-provider instance, and job generation remain unbound."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_BOUNDARY_WITHOUT_RUNTIME_VECTOR",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Reference-only temp_dir lifecycle boundary: StageRunner fields and path/clean_temp writes plus a temp_dir_test write-mode open/close are observed. No probe deletion or job-output cleanup is proven; clean_temp consumer, selected storage-provider instance, and job generation remain unbound."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "clean_temp semantic/default behavior and +0x90 delete/retain consumer.",
+            "Selected storage-provider instance and job generation.",
+            "Probe-file deletion and cleanup of actual job outputs."
+          ],
+          "validation_boundary": "Reference-only temp_dir lifecycle boundary: StageRunner fields and path/clean_temp writes plus a temp_dir_test write-mode open/close are observed. No probe deletion or job-output cleanup is proven; clean_temp consumer, selected storage-provider instance, and job generation remain unbound.",
           "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
         }
       ]
@@ -65942,6 +66031,46 @@
         "Input host owner variant and first frame-rate consumer.",
         "DDP output-node to numeric property-map owner/generation join and input/output consumer relationship.",
         "Omitted-field runtime default, frame-rate conversion, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1",
+      "manifest_sha256": "111f79b1c47bb4eebc1bf0febf6aedef009a7bf9f6b9c50b40d3ccdc3a292297",
+      "supplement_seal_sha256": "5f6ad93151e176f38a3e8ee8662fac8f8e8861bc2f4339fa32235d9cec2257f3",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ROW_PLUS_0X10_QWORD_ZERO_COMPARE_BOUND; A0_PROJECTION_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Row +0x10 semantic type/owner and typed join to snapshot +0xa0.",
+        "Branch successor and codec/BSI input.",
+        "Runtime mode-1 behavior and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1",
+      "manifest_sha256": "3ec5385807a5a080bd93d099ab1ee0562c960200cdddc3889d947b2bd5288b54",
+      "supplement_seal_sha256": "81762e2c76295df51bed9a26825a9212f2503d9468e71ec7f914f0db31c0ecbe",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "TEMP_PATH_AND_FLAG_WRITES_BOUND; DELETE_RETAIN_CONSUMER_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "clean_temp semantic/default behavior and +0x90 delete/retain consumer.",
+        "Selected storage-provider instance and job generation.",
+        "Probe-file deletion and cleanup of actual job outputs."
       ]
     }
   ]

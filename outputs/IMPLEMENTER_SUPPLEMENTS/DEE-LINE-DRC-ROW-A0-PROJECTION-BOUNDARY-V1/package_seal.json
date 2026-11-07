@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1",
+  "manifest_sha256": "111f79b1c47bb4eebc1bf0febf6aedef009a7bf9f6b9c50b40d3ccdc3a292297",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ROW_PLUS_0X10_QWORD_ZERO_COMPARE_BOUND; FIELD_SEMANTICS_AND_A0_PROJECTION_UNBOUND; STOPPED_AT_COMPARE; IMPLEMENTATION_READY=NO"
+}

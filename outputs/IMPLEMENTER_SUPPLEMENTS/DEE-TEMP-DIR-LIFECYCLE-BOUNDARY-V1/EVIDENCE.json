@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.temp_dir_lifecycle_boundary.v1",
+  "status": "TEMP_PATH_AND_CLEAN_TEMP_FLAG_WRITE_BOUND; DELETE_RETAIN_CONSUMER_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "DEE-ATMOS-MISC-TEMP-PATH-LIFECYCLE-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "6790408766ef797fd0bf50ea86ad007aa6c9432729ab03474366a21a158212e3",
+  "source_sha256sums_sha256": "301851c51b4a9d3546a754cb09ff7c01a0cc833ba160ecc744f7ea02bb1d5965",
+  "stage_runner_fields": {"misc": "+0x138", "temp_dir": "+0x1a0", "storage_descriptor": "+0x290/+0x298", "path_object": "+0x2a0"},
+  "path_object": {"resolved_path_pointer": "+0x68", "clean_temp_flag": "+0x90", "flag_writer": "FUN_14007c880"},
+  "filesystem_probe": {"function": "FUN_1400503d0", "leaf": "temp_dir_test", "operation": "open write-mode then close", "delete_or_job_cleanup_proven": false},
+  "unbound": ["clean_temp lexical/default semantics", "path-object+0x90 consumer that deletes/retains actual job temp files", "selected storage-provider instance", "job generation", "probe-file deletion"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

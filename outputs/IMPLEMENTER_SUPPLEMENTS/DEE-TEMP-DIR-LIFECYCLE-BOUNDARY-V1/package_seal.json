@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1",
+  "manifest_sha256": "3ec5385807a5a080bd93d099ab1ee0562c960200cdddc3889d947b2bd5288b54",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "TEMP_PATH_AND_CLEAN_TEMP_FLAG_WRITE_BOUND; DELETE_RETAIN_CONSUMER_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

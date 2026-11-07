@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-ATMOS-MISC-TEMP-PATH-LIFECYCLE-BOUNDARY-WASH-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-MISC-TEMP-PATH-LIFECYCLE-BOUNDARY-WASH-V1",
+    "manifest_sha256": "6790408766ef797fd0bf50ea86ad007aa6c9432729ab03474366a21a158212e3",
+    "checksums_file_sha256": "301851c51b4a9d3546a754cb09ff7c01a0cc833ba160ecc744f7ea02bb1d5965",
+    "payload_count": 7,
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}
