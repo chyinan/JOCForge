@@ -1,0 +1,59 @@
+{
+  "format": "wash-evidence-package-v1",
+  "package": "F13C-preferred-downmix-enum-serialization-addendum-v1",
+  "recipient": "Wash-only",
+  "source": "Dolby Media Encoder app.asar; DME host static source only",
+  "source_app_sha256": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+  "enum_value_count": 3,
+  "fourth_explicit_enum_value": "NOT_PRESENT_IN_HASHED_DME_HOST_SCHEMA_OR_HANDLER",
+  "result": "DME host schema/handler enumerate three labels; the inactive initial/default case omits the member and is not a fourth enum.",
+  "reused_receipts": [
+    {
+      "package": "F13C-preferred-downmix-host-property-transfer-boundary-v2",
+      "manifest_sha256": "10e1580e55c9b33f4b65c17fa00b8060eab81ad71227c210cc491e8638dc6979"
+    },
+    {
+      "package": "F13C-preferred-downmix-host-property-transfer-boundary-v3",
+      "manifest_sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6"
+    }
+  ],
+  "execution_scope": {
+    "dme_app_source_static": true,
+    "ui_run": false,
+    "dee_run": false,
+    "ab_run": false,
+    "media_read": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "key_read": false,
+    "license_read": false,
+    "implementation_contacted": false
+  },
+  "payloads": [
+    {
+      "path": "ENUM-SERIALIZATION.json",
+      "sha256": "a8eef5730d0f6ac6e7d2a36aaf158143eceb293b5ab3e41d91ef7f081b18a062",
+      "size_bytes": 5974
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "66d05350ccc4cfb1c75cb58271952fb0abe85f81c5ed3f6f9a695b55e395d77d",
+      "size_bytes": 1461
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "dfc742aff8b297adad148d2e7bdbdc918a8074094e27275852d82adbe00db9b1",
+      "size_bytes": 2047
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "sha256": "d4d5d38a935b615d4b40557e0f804b1cb91122b2ea7c16cb0bd02a3e53212d52",
+      "size_bytes": 2406
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "40450c618d25f5664915b927178ad6535a13e5b9fcf846a841612e33973c97e1",
+      "size_bytes": 12175
+    }
+  ]
+}

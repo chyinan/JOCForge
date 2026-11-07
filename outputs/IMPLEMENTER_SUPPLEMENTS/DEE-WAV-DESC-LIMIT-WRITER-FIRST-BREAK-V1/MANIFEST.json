@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-WAV-DESC-LIMIT-WRITER-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SELECTED_DESC_CONSTRUCTOR_ZERO_INITIALIZER_AND_PLUS_0X88_CALL_BOUND; NONZERO_LIMIT_WRITER_UNBOUND; OTHER_CONSTRUCTOR_CALLER_NOT_FOLLOWED",
+  "implementation_ready": false,
+  "source_manifest_sha256": "1715f69df93c6d6f0b163c62565de8474494c72004564fde724d7474151aa1bc",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2045,
+      "sha256": "55e235aca13de82ceda6cb806a973725e39b76dd2dc02a6b2647b4f8facb4307"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2611,
+      "sha256": "f95f23e7c5830d0e8793ac797becd30c8437d058deacb58e719ba22118e930ba"
+    },
+    "REPORT.md": {
+      "bytes": 1365,
+      "sha256": "ce14031b5d8ac170b26d2b04df85cd21462cd894473422e5f6cf8a86a5b81fe4"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1235,
+      "sha256": "f2c4ab7c29ab186ef4841e5d6d69f630038e24e05d8c25b40936801317c41512"
+    }
+  }
+}

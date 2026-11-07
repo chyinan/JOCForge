@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_SELECTED_XML_OR_SAMPLE_VECTOR",
+  "vectors": [],
+  "note": "Static field/range/reader boundary only; selected time_base and sample bounds were not captured."
+}

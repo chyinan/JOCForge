@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V2",
+  "sources": [
+    {
+      "role": "primary_revised_xml_setter_receipt",
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-XML-PARSER-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/DEE-ATMOS-DDP-PREFERRED-DOWNMIX-XML-PARSER-WASH-V1",
+      "manifest_json_sha256": "d3495410ffacd0c942ba04731e87fc4ae8ba76046d9f83cb700ed10395bd9b49",
+      "checksum_file": "SHA256SUMS.txt",
+      "payloads_verified": 7,
+      "checksums_verified": 8,
+      "separate_package_seal": "NOT_PRESENT",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "superseded_wash_supplement",
+      "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V1",
+      "manifest_sha256": "e8f22f112e8376efd34bbf38b252e6842445428e19e4fb94d310cc8f15ddf1c8",
+      "package_seal_sha256": "2d671996a65dad4b3f1fa7acd2643ce6168f57ea738188b7f812d62c2096b100",
+      "relation": "V2 adds the exact first-writer/no-direct-initializer detail; prior artifact remains immutable."
+    }
+  ],
+  "omitted_material": {
+    "raw_listing_or_decompilation": true,
+    "native_source_or_binary": true,
+    "xml_sample_or_user_media": true,
+    "pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

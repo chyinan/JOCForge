@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge.di_simpletype_bool_receiver_boundary.v1",
+  "package_id": "DI-FLAG-PROPERTY-RECEIVER-BOUNDARY-V1",
+  "status": {
+    "same_receiver_wrapper_to_setter": "BOUND_STATIC",
+    "generic_property_map_caller": "UNBOUND",
+    "typed_owner_pointer": "UNBOUND",
+    "run_generation": "UNBOUND",
+    "receiver_to_priv_plus_0x274": "UNBOUND",
+    "receiver_to_measurement_root_plus_0xf6c": "UNBOUND",
+    "receiver_to_source_record_plus_0x114": "UNBOUND",
+    "first_measurement_or_audio_consumer_of_this_plus_0x50": "NOT_IDENTIFIED",
+    "di_ab_or_runtime_capture": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_flag_property_map_consumer_addendum_wash_v1",
+    "package_id": "di-flag-property-map-consumer-addendum-wash-v1",
+    "manifest_sha256": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971",
+    "package_seal_sha256": "3d7ab162b3b6623178e42f0d9a4a7adf878c6a76c724fb043094738b672c2772",
+    "manifest_list_entries": 9,
+    "all_manifest_entries_rehashed": true,
+    "parent_package_count": 3,
+    "all_parent_manifest_seal_pairs_verified": true,
+    "ghidra_version": "12.2 PUBLIC"
+  },
+  "receiver_edge": {
+    "method": "FUN_18014f640 at RVA 0x14f640",
+    "receiver_parameter": "SimpleType<bool> this in RCX",
+    "preservation": "RCX -> RBX -> RCX before indirect call",
+    "indirect_call": "RVA 0x14f68f through receiver vtable slot +0x28",
+    "target_for_this_vtable": "FUN_18016a540 at RVA 0x16a540",
+    "same_receiver_continuity": "BOUND_WITHIN_WRAPPER"
+  },
+  "inherited_parent_facts": {
+    "simpletype_bool_this_plus_0x50_write": "BOUND_IN_PARENT_RECEIPT",
+    "first_consumer_of_this_plus_0x50": "NOT_IDENTIFIED",
+    "bounded_indirect_call_scan": "100-candidate cap reached; no unique generic map caller",
+    "stage_runner_project": "LOCKED; target not analyzed in this addendum"
+  },
+  "excluded_prior_ui_attempts": {
+    "input_path": "D:\\ADM.wav",
+    "authorized_sample": false,
+    "sample_pass_evidence": false,
+    "new_attempt_or_process_control": false
+  },
+  "execution_scope": {
+    "dee_run_for_this_static_trace": false,
+    "di_ab": false,
+    "audio_or_pcm_read": false,
+    "payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false,
+    "ghidra_scripts_logs_trace_in_this_supplement": false
+  },
+  "disposition": "Do not claim DI control reaches measurement/audio processing or classify the option as ignored/UI-only."
+}

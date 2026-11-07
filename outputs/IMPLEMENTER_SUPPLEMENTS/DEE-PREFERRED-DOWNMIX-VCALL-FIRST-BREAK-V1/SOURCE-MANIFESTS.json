@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-VCALL-FIRST-BREAK-V1",
+  "sources": [
+    {
+      "role": "primary_per_source_virtual_call_boundary",
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-VTABLE-TARGET-BOUNDARY-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/DEE-ATMOS-DDP-PREFERRED-DOWNMIX-VTABLE-TARGET-BOUNDARY-WASH-V1",
+      "manifest_sha256": "d6faad88e4ccb7dc71768f99484de17dc9c9fe339c3f18bac9ae39eee43eca48",
+      "checksum_list_sha256": "bd8e95a62fbd4d84a2a4ee1c2262ae4426538141920d9892fc72ab5dd2c274e2",
+      "payloads_verified": 7,
+      "checksums_verified": 8,
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "prior_preferred_downmix_xml_token_boundary",
+      "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V2",
+      "wash_manifest_sha256": "8cc3571d5a28c506b303ba0358cafa0235b6d9278f9ae9712c76814ba42f6d74",
+      "wash_seal_sha256": "05a967e6311a13bbeaf1be907f2b63be599564e5602a595831dbeb0f623173d5"
+    }
+  ],
+  "omitted_material": {
+    "raw_ghidra_logs_or_scripts": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true
+  }
+}

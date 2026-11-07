@@ -1,0 +1,65 @@
+{
+  "schema": "jocforge.time_axis_xml_start_end_schema_boundary.v1",
+  "package_id": "DEE-TIME-AXIS-XML-START-END-SCHEMA-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "dee_time_axis_xml_start_end_reader_binding_wash_v1",
+    "manifest_sha256": "08fe6b2e98e173deb51044595c8362471e11c2fd2bba6480eace74cf807969a0",
+    "package_seal_sha256": "c615ff7e7944725c73f54c7831f32ac4b646e195e1e9ec79fbb715d18fb615b8",
+    "checker_normal_and_python_o": "PASS"
+  },
+  "schema_fact": {
+    "declaration_owner_type": "encode_to_atmos_ddp.audio.filter.type",
+    "executing_dee_binding": "UNBOUND",
+    "xsd_sha256": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44",
+    "xsd_bytes": 421753,
+    "elements": [
+      {
+        "name": "start",
+        "required": false,
+        "type": "xs:string",
+        "schema_default": "first_frame_of_action"
+      },
+      {
+        "name": "end",
+        "required": false,
+        "type": "xs:string",
+        "schema_default": "end_of_file"
+      }
+    ],
+    "defaults_are_selected_runtime_values": false
+  },
+  "runtime_and_native_joins": {
+    "selected_start_value": "UNBOUND",
+    "selected_end_value": "UNBOUND",
+    "xml_value_to_typed_owner_or_setter": "UNBOUND",
+    "xml_elements_to_plugin_range_members": "UNBOUND",
+    "plugin_range_members_to_reader_cursor_total": "UNBOUND",
+    "native_time_base_value": "NOT_CAPTURED",
+    "offset_or_auto_interpretation": "NOT_INFERRED",
+    "runtime_capture": "NOT_RUN",
+    "global_absence_claim": false
+  },
+  "bounded_prior_edges": {
+    "observed_host_keys": [
+      "dee_audio_filter_source",
+      "dee_audio_filter_target:<index>"
+    ],
+    "plugin_range_member_offsets": [
+      "+0xf98",
+      "+0xfb0"
+    ],
+    "reader_cursor_offset": "+0x28",
+    "reader_total_offset": "+0x20",
+    "these_edges_do_not_join_start_or_end": true
+  },
+  "source_xml_receipt": {
+    "manifest_sha256": "d82300912609c9d1579c8ca265264bbfa26ee3f76c655f86fc78743d538e6991",
+    "source_xml_sha256": "fa65143f0bd7de52b36367137e61d681baa4c17824aded10be26317e7d1018a4",
+    "selected_runtime_start_end": "UNBOUND"
+  },
+  "implementation_disposition": {
+    "schema_name_type_defaults_only": true,
+    "do_not_use_defaults_as_selected_values": true,
+    "do_not_claim_runtime_range_or_offset_semantics": true
+  }
+}

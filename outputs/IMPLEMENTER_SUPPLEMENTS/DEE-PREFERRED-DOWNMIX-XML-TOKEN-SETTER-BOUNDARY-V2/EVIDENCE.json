@@ -1,0 +1,69 @@
+{
+  "schema": "jocforge.dee_preferred_downmix_xml_token_setter_boundary.v2",
+  "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V2",
+  "status": "XML_TOKEN_MAP_STATIC_BOUND; FIRST_SETTER_WRITES_PREEXISTING_VALUE_IN_INSPECTED_CONSTRUCTOR; VALUE_INITIALIZER_AND_STAGE_CONSUMER_UNBOUND; RUNTIME_NOT_RUN",
+  "implementation_ready": false,
+  "supersedes": {
+    "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V1",
+    "manifest_sha256": "e8f22f112e8376efd34bbf38b252e6842445428e19e4fb94d310cc8f15ddf1c8",
+    "package_seal_sha256": "2d671996a65dad4b3f1fa7acd2643ce6168f57ea738188b7f812d62c2096b100",
+    "scope": "replace only with the revised constructor/no-initializer and first-writer evidence"
+  },
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-XML-PARSER-WASH-V1",
+    "manifest_json_sha256": "d3495410ffacd0c942ba04731e87fc4ae8ba76046d9f83cb700ed10395bd9b49",
+    "checksum_file": "SHA256SUMS.txt",
+    "payloads_verified": 7,
+    "checksums_verified": 8,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "separate_package_seal": "NOT_PRESENT",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_image_provenance": "project-recorded hash; installed image not rehashed"
+  },
+  "xml_property": {
+    "stage": "encode_to_atmos_ddp",
+    "path": "filter/audio/encode_to_atmos_ddp/downmix/preferred_downmix_mode",
+    "xml_type": "xs:string",
+    "tokens_to_codes": {
+      "loro": 0,
+      "ltrt": 1,
+      "ltrt-pl2": 2,
+      "not_indicated": 3
+    },
+    "unknown_token": "invalid map<K,T> key",
+    "static_default_candidate": "loro",
+    "effective_value_for_omitted_or_empty_xml": "NOT_CAPTURED"
+  },
+  "typed_value_path": {
+    "owner": "dee::Types::MixMode / SafeType<MixModeValue, MixMode>",
+    "field_offset": "+0x50",
+    "constructor_directly_initializes_field_before_parse": false,
+    "parser_passes_code_to_typed_setter": true,
+    "first_observed_writer": "FUN_18014f6e0 via vtable slot +0x50",
+    "constructor_optional_callback": "null",
+    "constraint_helper": "FUN_180143cf0 skips null callback and returns pre-existing +0x50 value",
+    "setter_effect": "stores returned pre-existing value back at +0x50",
+    "xml_ordinal_to_stored_value": "UNBOUND",
+    "preexisting_value_initializer": "UNBOUND"
+  },
+  "typed_reader": {
+    "getter": "FUN_180171f50 reads +0x50",
+    "formatter": "FUN_180171ce0 reverse-maps code to token",
+    "selected_stage_processing_callsite": "UNBOUND",
+    "audio_or_bsi_consumer": "UNBOUND"
+  },
+  "scope": {
+    "dee_or_xml_job_run": "NOT_RUN",
+    "runtime_owner_generation": "NOT_CAPTURED",
+    "actual_xml_value": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_native_source_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

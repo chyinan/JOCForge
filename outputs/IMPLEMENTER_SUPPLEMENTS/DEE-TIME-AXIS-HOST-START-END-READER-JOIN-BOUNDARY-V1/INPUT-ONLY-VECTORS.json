@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "host-start-end-key-not-observed",
+      "kind": "static-property-dispatch-summary",
+      "input": {
+        "observed_keys": ["dee_audio_filter_source", "dee_audio_filter_target:<index>"],
+        "start_or_end_key_observed": false,
+        "plugin_range_members": ["Priv+0xf98", "Priv+0xfb0"],
+        "reader_cursor_total": ["+0x28", "+0x20"]
+      },
+      "expected_status": "HOST_VALUE_TO_RANGE_READER_UNBOUND",
+      "status": "STATIC_TRACE_ONLY"
+    }
+  ]
+}

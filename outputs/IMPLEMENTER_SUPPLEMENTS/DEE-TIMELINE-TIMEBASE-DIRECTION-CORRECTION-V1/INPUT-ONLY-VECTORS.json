@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "classification": "SYNTHETIC_ARITHMETIC_ONLY_NOT_EXECUTED",
+  "sample_rate_hz": 48000,
+  "synthetic_frame_rate": 25,
+  "synthetic_ffoa_seconds": 10,
+  "vectors": [
+    {"id":"file-position-no-ffoa-subtraction","time_base":"file_position","start_frame":1440,"end_text":"1490","end_boundary_frame":1491,"start_samples":2764800,"end_samples":2862720,"ffoa_subtracted":false},
+    {"id":"embedded-timecode-ffoa-subtraction","time_base":"embedded_timecode","start_frame":1440,"end_text":"1490","end_boundary_frame":1491,"adjusted_start_seconds":47.6,"adjusted_end_seconds":49.64,"start_samples":2284800,"end_samples":2382720,"ffoa_subtracted":true},
+    {"id":"integer-colon-dotted-end-forms","integer_end":{"text":"1490","boundary_frame":1491,"seconds":59.64},"colon_end":{"text":"00:00:59:15","seconds":59.6},"dotted_end":{"text":"00:00:59.64","seconds":59.64}},
+    {"id":"validation-round-vs-storage-truncate","seconds":0.00002,"sample_rate":48000,"validation_samples_round":1,"stored_boundary_samples_truncate":0},
+    {"id":"decimal-silence-truncation","seconds":0.00003,"sample_rate":48000,"product_samples":1.44,"stored_samples":1},
+    {"id":"frame-silence","frame_count":1,"frame_rate":25,"sample_rate":48000,"duration_seconds":0.04,"stored_samples":1920},
+    {"id":"partial-frame-tail-conditional","source_window_samples":97920,"core_frame_samples":1536,"full_frames":63,"last_frame_samples":1152,"tail_samples":384,"zero_tail":"CONDITIONAL_NOT_OBSERVED","au_count":"UNBOUND"}
+  ],
+  "warning": "The FFOA and frame-rate values are synthetic. No selected job or runtime outcome is inferred."
+}

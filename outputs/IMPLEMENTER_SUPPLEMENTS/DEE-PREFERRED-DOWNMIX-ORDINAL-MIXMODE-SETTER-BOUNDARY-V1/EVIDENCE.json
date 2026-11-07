@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.preferred_downmix_ordinal_mixmode_setter_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ORDINAL-MIXMODE-SETTER-BOUNDARY-V1",
+  "status": {
+    "xml_ordinal_to_typed_mixmode_setter_call": "STATICALLY_BOUND_CODE_0_TO_3",
+    "typed_destination": "SafeType<MixModeValue, MixMode> at FilterDDPJocEncPlugin+0x910 / outer+0x930",
+    "setter_marks_mixmode_plus_0x08": "STATICALLY_BOUND",
+    "setter_value_write_source": "FUN_180143cf0 return to MixMode+0x50",
+    "xml_constructor_optional_callback": "NULL",
+    "stored_plus_0x50_value": "PREEXISTING_VALUE_RETURNED_BY_HELPER",
+    "parsed_ordinal_to_stored_plus_0x50": "UNBOUND",
+    "mixmode_audio_or_bsi_consumer": "UNBOUND",
+    "runtime_selection_or_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-TYPED-WRITE-DESTINATION-BOUNDARY-WASH-V1",
+    "manifest_sha256": "70b680374a68e72184c6a3e3753d00533cebe4221c3b3d4b98a3180365554a76",
+    "report_sha256": "0cf572b180a6a5a26b28fbde97ff2c438697079a983ea974a82dda00635afe11",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC; reused sealed read-only/no-analysis evidence"
+  },
+  "path": {
+    "parser": "FUN_1801719b0 maps preferred_downmix_mode to 32-bit code 0..3",
+    "setter_call": "MixMode vtable slot +0x50 -> FUN_18014f6e0",
+    "member": "FilterDDPJocEncPlugin subobject +0x910 / outer +0x930",
+    "setter_helper": "FUN_180143cf0 returns pre-existing MixMode+0x50 code when optional callback is null",
+    "write": "helper return stored into MixMode+0x50"
+  },
+  "limits": {
+    "dee_executed": false,
+    "xml_runtime_value_captured": false,
+    "mixmode_plus_0x50_read_in_this_addendum": false,
+    "audio_or_bsi_effect": "UNBOUND",
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false
+  },
+  "implementation_disposition": "Do not set MixMode+0x50 from the XML ordinal based on this call alone; the setter writes the helper's pre-existing value in the null-callback path."
+}

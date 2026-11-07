@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.atmos_preferred_downmix_host_argv_boundary.v3",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-HOST-ARGV-TRANSFER-BOUNDARY-V3",
+  "status": {
+    "preferred_mode_to_composite_encoder_argv_static_path": "BOUND_CONDITIONAL_ON_ACTIVE_PROPERTY",
+    "host_side_split_rename_or_drop": "NOT_OBSERVED_IN_SCOPED_STATIC_PATH",
+    "runtime_ui_or_input_type": "NOT_CAPTURED",
+    "actual_child_argv": "NOT_CAPTURED",
+    "selected_ddpjoc_encoder_exe_branch": "UNBOUND",
+    "native_composite_argument_parse": "UNBOUND",
+    "native_typed_dmixmod_owner": "UNBOUND",
+    "audio_bsi_or_ui_only_effect": "UNBOUND",
+    "loro_ltrt_ab": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-host-property-transfer-boundary-v3",
+    "package_id": "F13C-preferred-downmix-host-property-transfer-boundary-v3",
+    "manifest_sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6",
+    "sha256sums_sha256": "3b074606eadcc8e96617e77347496a5d6bd280332d1ca85a0ba67a43a44ef17e",
+    "normal_checker": "PASS",
+    "python_O_checker": "PASS",
+    "verified_payloads": 5,
+    "verified_parent_receipts": 8,
+    "app_asar_sha256_recomputed_in_source_pass": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917"
+  },
+  "static_host_chain": [
+    "PropertiesMapper.map() -> Cmd.encoderConfigProps",
+    "ServerJobFactory -> ServerJob.config",
+    "generateCmd() pushes each encoderConfigProps key then value",
+    "DeeCaller copies argv",
+    "ShellCmd passes binaryPath and args to child_process.spawn"
+  ],
+  "property_and_tool_selection": {
+    "property_key": "preferred_downmix_mode",
+    "composite_argument_name": "--encoder",
+    "host_renames_to_dmixmod": false,
+    "ddp_online_media_input_types_for_dpjoc_exe": ["ChannelBasedImmersive", "DolbyAtmos"],
+    "atmos_mezz_runtime_input_type_observed": false
+  },
+  "execution_scope": {
+    "new_ghidra_query": false,
+    "dee_run": false,
+    "ab_run": false,
+    "windbg": false,
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false,
+    "raw_app_source_in_supplement": false
+  },
+  "disposition": "Host argv forwarding is statically bound; native parsing and audio effects remain unresolved."
+}

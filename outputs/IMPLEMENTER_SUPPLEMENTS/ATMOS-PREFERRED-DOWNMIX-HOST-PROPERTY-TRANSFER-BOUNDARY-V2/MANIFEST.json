@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-HOST-PROPERTY-TRANSFER-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_PROPERTY_MAP_TO_COMPOSITE_ENCODER_BOUND_STATIC; RUNTIME_ARGUMENT_UNBOUND; NATIVE_TYPED_DMIXMOD_UNBOUND; EFFECTS_UNBOUND",
+  "implementation_disposition": "Bind only the DME app-method composite --encoder serialization path; do not infer native mode mapping or audio effects",
+  "source_manifest_sha256": "10e1580e55c9b33f4b65c17fa00b8060eab81ad71227c210cc491e8638dc6979",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3272,
+      "sha256": "b9ab0be1aecc6b819d7b8d26bfdbf86074fe40d73f76d2f3cdd3e0ba322e1ac0"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2929,
+      "sha256": "931ab32881308b4c591cbc166258ed8b24a4fe2913b4ec276cd0a5a6563a45d8"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 634,
+      "sha256": "d7ee7419d74f9b7c4c05d83b417b1b27f5513860e30cdf6e28552e9b202a77a9"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2230,
+      "sha256": "1619106a4e3eb1a3a34947b549659f7e8f5756adf58560e7377f4854f5e3764a"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1063,
+      "sha256": "e49273704d82095482faa65d57f54da418bc23cbff488652277114c0051cbb99"
+    },
+    {
+      "name": "UPSTREAM-INPUT-ONLY-VECTORS.json",
+      "bytes": 658,
+      "sha256": "32874f69fb98ae6960bfa2c5587d6c438544369bee9446348e4198c38b74072b"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 2296,
+      "sha256": "10e1580e55c9b33f4b65c17fa00b8060eab81ad71227c210cc491e8638dc6979"
+    },
+    {
+      "name": "UPSTREAM-SHA256SUMS.txt",
+      "bytes": 518,
+      "sha256": "2248f9f96bf49e4f88ddad0cd9e0bda0c32da832d16e50e7cb5d58c180694a8f"
+    },
+    {
+      "name": "UPSTREAM-SOURCE-MANIFESTS.json",
+      "bytes": 4808,
+      "sha256": "4d6ad63c5ae6655b2b5f0100fd8e69781cb94860e6fbbf022da9c1ed27dfd4bb"
+    }
+  ]
+}

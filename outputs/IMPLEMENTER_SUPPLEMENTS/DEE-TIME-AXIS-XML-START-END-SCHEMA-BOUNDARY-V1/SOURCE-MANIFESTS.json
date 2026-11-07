@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "dee_time_axis_xml_start_end_reader_binding_wash_v1",
+      "manifest_sha256": "08fe6b2e98e173deb51044595c8362471e11c2fd2bba6480eace74cf807969a0",
+      "package_seal_sha256": "c615ff7e7944725c73f54c7831f32ac4b646e195e1e9ec79fbb715d18fb615b8",
+      "reviewed_payloads": [
+        {
+          "name": "FINDINGS.md",
+          "sha256": "43caf6a25ae99285d1b8972742962865276b6f0018343a1275531d3f577e0b81"
+        },
+        {
+          "name": "XML-TIME-AXIS.json",
+          "sha256": "6992763c91fe373c7f61610a62de44c6ba23fdd77e6fa354fecfcaaa333626f6"
+        },
+        {
+          "name": "SOURCE-IDENTITIES.json",
+          "sha256": "6eddeea32a9db8afd1c81d733053d9c1f5e2e9536ed1c2a2cc6825d454b4d72e"
+        }
+      ],
+      "parent_receipts": [
+        {
+          "package_id": "r138_adm_job_schema_completeness_wash_v1",
+          "manifest_sha256": "d82300912609c9d1579c8ca265264bbfa26ee3f76c655f86fc78743d538e6991",
+          "package_seal_sha256": "eb5189349cfc7461125c99ff38814c3c0aa1559b133fe329da57a7b15d787dcb"
+        },
+        {
+          "package_id": "dee_time_base_xml_to_sample_range_reader_boundary_wash_v1",
+          "manifest_sha256": "58a7cd433fcda8d8c1c4d63758908e21ee34f425f6f3c03356d4ee5d847a59e5",
+          "package_seal_sha256": "dc6e34572ffc09f8509061a7b35c1b2673262e52b9d52e1e634830f90b86d88c"
+        },
+        {
+          "package_id": "dee_time_axis_host_property_range_boundary_wash_v1",
+          "manifest_sha256": "4f1387108a35b35bfc9fe583e34cb46891a6c94b706f50af4e0eb432d7b8a3dd",
+          "package_seal_sha256": "109f946b3f7f75f8727bccf8a3b95c9b2911f0c749911f89f9c88d64f6559cce"
+        }
+      ],
+      "raw_media_or_audio_payload_copied": false
+    }
+  ]
+}

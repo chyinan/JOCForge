@@ -1,0 +1,17 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "di-flag-property-map-consumer-addendum-wash-v1",
+  "sealed_at_local": "2026-11-04T12:31:18+08:00",
+  "manifest_path": "MANIFEST.sha256",
+  "manifest_sha256": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971",
+  "scope": "Wash-only Ghidra 12.2 static follow-up: SimpleType<bool> same-receiver wrapper edge to the first generic property-map caller break.",
+  "status": "SIMPLETYPE_RECEIVER_ALIAS_BOUND_GENERIC_MAP_OWNER_UNBOUND",
+  "dee_ab": "NOT_RUN",
+  "dee_execution": "NOT_RUN",
+  "audio_read": "NOT_RUN",
+  "pcm_persisted": false,
+  "contains_original_audio": false,
+  "contains_encoded_audio": false,
+  "key_or_license_contents_included": false,
+  "implementation_contacted": false
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.dee-timeline-silence-reader-join-correction.v1",
+  "package_id": "DEE-TIMELINE-SILENCE-READER-JOIN-RETRACTION-V1",
+  "status": "PER_SOURCE_RECORD_FIELD_FLOW_BOUND; TEMP_DESCRIPTOR_TO_READER_JOIN_RETRACTED; READER_CONTEXT_LINEAGE_UNBOUND; AU_COUNT_UNBOUND",
+  "upstream_package": {
+    "package_id": "dee_atmos_ddp_silence_count_reader_cursor_wash_v1",
+    "manifest_sha256": "2b5f430ccff98522a432b229dcce77c6667b7c482c49c9f0b9d190a3f21013ea",
+    "package_seal_sha256": "4465b6a00a734ff062dbd392535638b956c0862622650e03ff4ad71b7d51bd41",
+    "manifest_files": 34,
+    "independent_artifact_hash_audit": "PASS_34_OF_34",
+    "seal_and_manifest_linkage": "PASS",
+    "upstream_checker": "REPORTED_PASS_NORMAL_AND_PYTHON_O; NOT_RERUN_BY_WASH"
+  },
+  "binary": {
+    "module": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "source_trace_reports_image_rehashed": true,
+    "tool": "Ghidra 12.2, read-only, no-analysis"
+  },
+  "per_source_record": {
+    "builder": "FUN_180145380",
+    "fields": {
+      "+0x38": "prepend silence sample-count vector",
+      "+0x50": "append silence sample-count vector",
+      "+0x68": "stored start sample-boundary vector",
+      "+0x80": "stored end sample-boundary vector"
+    },
+    "encoder_profile_copy": {
+      "+0x38 to +0x18": "prepend samples",
+      "+0x68 to +0x30": "start boundary",
+      "+0x80 to +0x48": "end boundary",
+      "+0x50 to +0x60": "append samples"
+    }
+  },
+  "reader_join_correction": {
+    "temporary_descriptor_builder": "FUN_180182850",
+    "diagnostic_formatter": "FUN_180184960",
+    "reader_wrapper_constructor": "FUN_180185240",
+    "reader_cursor_limit_constructor": "FUN_1801828c0",
+    "fact": "temporary descriptor is formatted, moved, and released before reader wrapper construction; wrapper uses separate local fields",
+    "prior_direct_vector_to_reader_cursor_or_limit_join": "RETRACTED",
+    "reader_local_field_lineage_to_per_source_vectors": "UNBOUND",
+    "silence_insertion_or_reader_limit_effect": "NOT_ESTABLISHED",
+    "other_encoder_branch_or_global_consumer": "UNBOUND"
+  },
+  "au_count": {
+    "output": "byte span and byte length",
+    "au_count_field": "UNBOUND",
+    "one_au_per_span": "UNBOUND",
+    "runtime_result": "NOT_RUN"
+  },
+  "execution_scope": {
+    "dee_run": "NOT_RUN",
+    "pcm_or_media_read": false,
+    "encoded_payload_read": false,
+    "key_or_license_access": false,
+    "implementation_contact_before_wash": false
+  }
+}

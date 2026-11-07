@@ -1,0 +1,7 @@
+{
+  "sample_id": "Love Song N36",
+  "input_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+  "input_type": "atmos_mezz",
+  "configured_time_base": "file_position",
+  "status": "OBSERVED_INPUT_AND_ATTEMPT_BINDING"
+}

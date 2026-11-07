@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ARGV-INPUT-VECTOR-BOUNDARY-V1",
+  "manifest_sha256": "1e8d409b2e11033b318b9b96087d18d7ce49d0871f9c62e6d8271babb2c5fbdc",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "INPUT_PATH_VECTOR_STATIC_BOUND; ENCODER_COMPOSITE_JOIN_UNBOUND; AUDIO_EFFECT_UNBOUND; DEE_NOT_RUN"
+}

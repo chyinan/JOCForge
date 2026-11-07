@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.dee_time_base_range_reader_boundary.v1",
+  "package_id": "DEE-TIME-BASE-RANGE-READER-BOUNDARY-V1",
+  "status": {
+    "plugin_time_base_stringtype_field": "STATICALLY_BOUND_PRIV_PLUS_0X550",
+    "constructor_file_position_default": "STATIC_DEFAULT_ONLY_NOT_SELECTED_XML",
+    "host_setproperty_to_atmos_setter": "UNBOUND_DYNAMIC_TARGET",
+    "setrange_sample_bound_writes": "STATICALLY_BOUND_PRIV_PLUS_0XF98_AND_0XFB0",
+    "branch_arithmetic": "PARTIAL_STATIC; OFFSET_UNITS_AND_MULTIPLIER_UNBOUND",
+    "range_to_reader_input": "STATICALLY_BOUND",
+    "sample_bounds_to_reader_cursor_or_total": "UNBOUND",
+    "runtime_reader_owner_and_branch": "UNBOUND_NOT_CAPTURED",
+    "runtime_sample_vectors": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "dee_time_base_xml_to_sample_range_reader_boundary_wash_v1",
+    "evidence_manifest_sha256": "58a7cd433fcda8d8c1c4d63758908e21ee34f425f6f3c03356d4ee5d847a59e5",
+    "package_seal_sha256": "dc6e34572ffc09f8509061a7b35c1b2673262e52b9d52e1e634830f90b86d88c",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis receipt reuse"
+  },
+  "path": {
+    "typed_field": "StringType at dee::proc::Priv+0x550",
+    "setter": "FUN_18014f820",
+    "getter": "FUN_180152490",
+    "first_field_consumer": "FUN_18014fd90 setRange",
+    "bounds": ["Priv+0xf98", "Priv+0xfb0"],
+    "reader_selection_byte": "+0x140 chooses AtmosReader or AtmosReaderCC",
+    "reader_cursor": "+0x28",
+    "reader_total": "+0x20"
+  },
+  "limits": {
+    "dee_executed": false,
+    "xml_selected_value_captured": false,
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_time_base_formula_claim": false
+  },
+  "implementation_disposition": "Attach to the existing time_base sample-range reader slice; do not infer a selected XML value, universal offset formula, or reader cursor effect."
+}

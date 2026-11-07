@@ -1,0 +1,35 @@
+{
+  "schema": "wash-ui-screenshot-evidence.v1",
+  "screenshots": [
+    {
+      "id": "log_alias_and_output_rename",
+      "file": "evidence/dee_log_alias_attempt2.png",
+      "source_path": "C:\\Users\\chyinan\\AppData\\Local\\Temp\\codex-clipboard-3e20b96d-ed21-4f14-80a2-81e9080cdb7f.png",
+      "bytes": 22945,
+      "sha256": "908b7421c948b52973c6bfc9433a82f65721e82bf216a7932b533ed4b20ff711",
+      "visible_facts": [
+        "Temporary output D:\\dolby_auto_output_mw1m7dtz.ec3",
+        "Planned final name D:\\DEE_POTENTIAL_ATMOS_MEZZ_20261104.ec3",
+        "Parsed CLI input D:\\ADM.wav",
+        "last_params.txt was loaded"
+      ]
+    },
+    {
+      "id": "selected_input_form",
+      "file": "evidence/dee_form_selected_input.png",
+      "source_path": "C:\\Users\\chyinan\\AppData\\Local\\Temp\\codex-clipboard-87894c07-826b-4b31-9afb-91b327e3bde1.png",
+      "bytes": 16353,
+      "sha256": "ac150640143f417b075a720e0de49ef4d2ad50ff1d2a7fff3b4dac7e3e59b336",
+      "visible_facts": [
+        "Input field D:\\潜在的なアイ.wav",
+        "Output field D:\\DEE_POTENTIAL_ATMOS_MEZZ_20261104.ec3"
+      ]
+    }
+  ],
+  "source_log_provenance": {
+    "kind": "prior UI accessibility/log observations recorded in current conversation",
+    "standalone_raw_log_in_package": false,
+    "per_attempt_source_hash_receipt": false,
+    "interpretation": "The observations are hash-bound in this package as a derived receipt, not as a cryptographic attestation of the original source file."
+  }
+}

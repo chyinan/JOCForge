@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "selected-child-receives-record-pointer-not-mixmode",
+      "kind": "static-call-boundary-summary",
+      "input": {
+        "selected_child": "FUN_180153090",
+        "priv_plus_0x350_record_pointer_passed": true,
+        "mixmode_scalar_passed": false,
+        "return_plus_0x20_used_for_diagnostic_count": true
+      },
+      "expected_status": "NO_TYPED_AUDIO_OR_BSI_EFFECT_ESTABLISHED",
+      "status": "STATIC_TRACE_ONLY",
+      "payload_values_included": false
+    }
+  ]
+}

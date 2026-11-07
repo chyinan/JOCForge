@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.time_base_setter_helper_temp_boundary.v1",
+  "nested_setter_direct_helper_call": "BOUND_STATIC",
+  "helper_argument": "stack-local temporary address",
+  "nested_descriptor_plus_0x550_address_passed": false,
+  "helper_body": "NOT_INSPECTED",
+  "option_descriptor_writer": "UNBOUND",
+  "xml_value_or_omission_to_plus_0x550": "UNBOUND",
+  "runtime": "NOT_RUN"
+}

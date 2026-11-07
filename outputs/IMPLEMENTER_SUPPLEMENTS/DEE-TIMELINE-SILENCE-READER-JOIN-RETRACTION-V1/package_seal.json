@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIMELINE-SILENCE-READER-JOIN-RETRACTION-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "9ce3ad6a94f6b8413ac4a9afe37f2f534344b3a47b35822eb50733503cfa47a9",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "2b5f430ccff98522a432b229dcce77c6667b7c482c49c9f0b9d190a3f21013ea",
+  "upstream_package_seal_sha256": "4465b6a00a734ff062dbd392535638b956c0862622650e03ff4ad71b7d51bd41",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.preferred_downmix_host_transfer_vectors.v2",
+  "status": "PREPARED_CANDIDATES_NOT_RUN",
+  "property_map": {"Stereo": "loro", "Surround": "ltrt", "Not Indicated": "not_indicated"},
+  "input_type": "atmos_mezz",
+  "candidate_xmls": [
+    {"value": "loro", "xml_sha256": "4a8f7754b16d81611d0ff9e268c661fbb51b36eaaa405b420df670ef47eb9905", "run": "NOT_RUN"},
+    {"value": "ltrt", "xml_sha256": "2049f5fcb5fcafc7e5bf121130e173d4d19ad02739d27a3ed730283de7c8fe7c", "run": "NOT_RUN"}
+  ],
+  "runtime_ui_state_or_child_argument": "NOT_CAPTURED",
+  "native_typed_owner": "UNBOUND",
+  "pcm_or_payload_included": false
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "di-flag-property-registration-entry-addendum-wash-v1",
+  "sealed_at_local": "2026-11-04T13:12:33+08:00",
+  "manifest_path": "MANIFEST.sha256",
+  "manifest_sha256": "0d6d2d10b67e27659567825fb4bec472c5bb33d3cfdfcd383104ba34db331f83",
+  "scope": "Wash-only Ghidra 12.2 direct static registration edge from dialogue_intelligence property key to Bool factory and same-destination SimpleType<bool> base initialization; reuses sealed parent receipts; no new analysis or DEE run.",
+  "status": "DIRECT_PROPERTY_KEY_TO_BOOL_CONSTRUCTOR_STORAGE_BOUND_SIMPLETYPE_BASE_INIT; GENERIC_MAP_RUNTIME_RECEIVER_UNBOUND; AUDIO_EFFECT_UNBOUND",
+  "new_ghidra_query": "NOT_RUN",
+  "DEE": "NOT_RUN",
+  "audio_read": "NOT_RUN",
+  "pcm_persisted": false,
+  "contains_original_audio": false,
+  "contains_encoded_audio": false,
+  "key_or_license_contents_included": false,
+  "implementation_contacted": false
+}

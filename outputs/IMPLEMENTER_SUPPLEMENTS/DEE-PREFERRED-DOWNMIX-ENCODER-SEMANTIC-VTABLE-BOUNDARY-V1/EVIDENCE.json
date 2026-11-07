@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.preferred_downmix_encoder_semantic_vtable_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ENCODER-SEMANTIC-VTABLE-BOUNDARY-V1",
+  "status": {
+    "encoder_typed_value_registration": "STATICALLY_BOUND",
+    "storage_target_pointer": "typed_value_object_plus_0x10 -> DdpjocEncoderApp_plus_0x360",
+    "option_description_semantic_pointer": "STATICALLY_BOUND_AT_PLUS_0x60",
+    "semantic_vtable_slot_plus_0x28_target": "FUN_140296e20",
+    "nested_typed_value_slot_plus_0x48_target": "FUN_1400bee30",
+    "parse_result_destination": "INTERMEDIATE_OPTION_RECORD_RBX_PLUS_0x40",
+    "slot_plus_0x28_reads_or_writes_storage_plus_0x10": "NO_IN_INSPECTED_BODY",
+    "notify_or_storage_writer_to_app_plus_0x360": "UNBOUND_STATIC",
+    "runtime_selected_encoder_entry": "NOT_CAPTURED"
+  },
+  "source_package": {
+    "package_id": "preferred_downmix_encoder_semantic_vtable_target_wash_v1",
+    "manifest_sha256": "56b7585da3b2fe2cd5fc7336085a119e4950908180ce873ab1c2f876fb6165a5",
+    "report_sha256": "a6f82794c76b45fe0878dbf0284730052e4f0f4819b7907d9f2a744148474cb9",
+    "evidence_sha256": "246c2c20e7dfeff3f3fb2f365164900c0579df9e6bb669b0fd4b6ed6c197bf0a",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis"
+  },
+  "path": {
+    "typed_value_factory": "FUN_1400befa0",
+    "typed_value_type": "boost::program_options::typed_value<std::string>",
+    "option_description_attach": "FUN_140299aa0 -> FUN_1402992f0",
+    "semantic_pointer_reader": "FUN_14029cbf0",
+    "config_merge_semantic_call": "FUN_1402a3881; primary typed-value slot +0x28 -> FUN_140296e20",
+    "parse_conversion_call": "FUN_140296e20 slot +0x48 -> FUN_1400bee30",
+    "storage_target": "DdpjocEncoderApp this+0x360, not passed to the traced parser body"
+  },
+  "limits": {
+    "dee_executed": false,
+    "actual_child_argv_captured": false,
+    "media_or_pcm_read": false,
+    "payload_key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "The resolved +0x28 vtable target is a parse/conversion implementation, not the encoder storage writer. Preserve the +0x360 gap."
+}

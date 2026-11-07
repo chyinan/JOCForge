@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-line-drc-boundary-vectors.v1",
+  "status": "REUSED_SEALED_OBSERVATIONS_NO_NEW_RUN",
+  "observations": [
+    {
+      "comparison": "music_standard vs film_light",
+      "scope": "two bounded ADM windows; per-block dynrng differs in both",
+      "generalization": "NOT_ESTABLISHED"
+    },
+    {
+      "comparison": "music_light vs film_light",
+      "scope": "measured fields match in the two bounded windows",
+      "generalization": "NOT_ESTABLISHED"
+    }
+  ],
+  "new_runtime_vectors": [],
+  "runtime_status": "NOT_RUN",
+  "pcm_or_payload_persisted": false
+}

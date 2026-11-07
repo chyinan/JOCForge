@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "time-base-proxy-selected-setter",
+      "input": {
+        "filter_key": "encode_to_atmos_ddp"
+      },
+      "expected_observation": {
+        "plugin_factory_class": "BOUND_WITHIN_IMAGE",
+        "selected_proxy_setter": "UNBOUND"
+      },
+      "limitations": [
+        "No factory-to-proxy join",
+        "No selected setter identity",
+        "No +0x550 write observed"
+      ]
+    }
+  ]
+}

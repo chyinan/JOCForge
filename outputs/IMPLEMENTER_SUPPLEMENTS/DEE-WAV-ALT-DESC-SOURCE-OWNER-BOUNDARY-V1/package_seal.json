@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-WAV-ALT-DESC-SOURCE-OWNER-BOUNDARY-V1",
+  "manifest_sha256": "4fd4a4dd19f1ec7cf5bc1d8d319ae0ed1567282276adf355ddf0ddb915b6d4fd",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "FACTORY_SLOT_PLUS_0X20_SOURCE_VALUE_TRANSFER_STATIC_BOUND; SOURCE_POINTEE_OWNER_UNBOUND; SELECTED_DESC_IDENTITY_UNBOUND"
+}

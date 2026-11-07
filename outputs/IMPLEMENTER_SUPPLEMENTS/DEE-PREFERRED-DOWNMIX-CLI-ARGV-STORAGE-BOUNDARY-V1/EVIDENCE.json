@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.dee_preferred_downmix_cli_argv_storage_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CLI-ARGV-STORAGE-BOUNDARY-V1",
+  "status": "ARGV_CONVERSION_AND_APP_ENTRY_STATIC_BOUND; BOOST_TYPED_STORAGE_STATIC_BOUND; ARGV_TO_TYPED_STORAGE_WRITE_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "preferred_downmix_encoder_boost_boundary_wash_v1",
+    "manifest_sha256": "b614131e246adc9950a73dd469d7a39d46fabba9596a6ed1da10e9401181134f",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "target_image_provenance": "parent project record; installed image not rehashed"
+  },
+  "argv_to_app_entry": {
+    "startup": "FUN_1400afa90 receives argc and wide argv",
+    "conversion": "wide argv converted to narrow strings and pointer vector",
+    "app_vtable_slot": "+0x08",
+    "resolved_target": "FUN_1400b5310",
+    "call_register_contract": {
+      "RCX": "DdpjocEncoderApp this",
+      "EDX": "argc",
+      "R8": "converted argv pointer vector"
+    },
+    "target_formals": ["this", "argc"],
+    "target_reads_or_forwards_R8": "NOT_OBSERVED"
+  },
+  "typed_encoder_storage": {
+    "option_name": "encoder",
+    "short_alias": "e",
+    "typed_value": "Boost typed_value<std::string>",
+    "storage_field": "DdpjocEncoderApp+0x360",
+    "runner_reads_field": true,
+    "empty_string_fallback": "ddpjoc:",
+    "fallback_only_if_field_empty": true,
+    "runner_config_to_composite_parser": "BOUND_STATIC_FROM_PARENT_PACKAGE",
+    "argv_to_boost_parse_store_notify_write": "UNBOUND_STATIC"
+  },
+  "first_break": {
+    "at": "app vtable +0x08 call to FUN_1400b5310",
+    "argv_R8_consumed": false,
+    "typed_storage_write_reached": false,
+    "nearby_option_validation": "does not bind argv write into encoder storage",
+    "scope_limit": "No claim Boost store/notify is absent elsewhere."
+  },
+  "runtime_and_scope": {
+    "actual_child_argv": "NOT_CAPTURED",
+    "dee_execution": "NOT_RUN",
+    "media_or_pcm_read": false,
+    "encoded_payload_read": false,
+    "private_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

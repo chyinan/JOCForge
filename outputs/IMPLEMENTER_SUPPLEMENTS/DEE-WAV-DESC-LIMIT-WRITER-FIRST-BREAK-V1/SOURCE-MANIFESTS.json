@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-WAV-DESC-LIMIT-WRITER-FIRST-BREAK-V1",
+  "sources": [
+    {
+      "role": "primary_selected_desc_limit_writer_boundary",
+      "package_id": "dialogue_wav_desc_limit_producer_addendum",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-7-multi-adm-dialnorm/work/encoder_analysis/reports/dialogue_wav_desc_limit_producer_addendum",
+      "manifest_json_sha256": "1715f69df93c6d6f0b163c62565de8474494c72004564fde724d7474151aa1bc",
+      "package_seal_file_sha256": "14991dfc70f6dd355eaa106428db57bb9af65e9f6a48f17520c890f657687669",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "previous_lower_storage_range_boundary",
+      "package_id": "DEE-WAV-LOWER-STORAGE-RANGE-INITIALIZATION-BOUNDARY-V1",
+      "manifest_sha256": "6c3f61ad8c7aa2723d75219530b7261c1d88310a2c5b3b9b18af59bbad2ec23c",
+      "package_seal_sha256": "3d7de197f0e99f7f07241d2a482de48ed469a4b7148d3bf5fd57baea6eb34034"
+    }
+  ],
+  "omitted_material": {
+    "raw_attempt_logs_or_ghidra_traces": true,
+    "native_binary": true,
+    "media_pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

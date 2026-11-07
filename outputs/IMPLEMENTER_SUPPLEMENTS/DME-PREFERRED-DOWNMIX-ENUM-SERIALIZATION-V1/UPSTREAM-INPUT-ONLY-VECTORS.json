@@ -1,0 +1,37 @@
+{
+  "schema": "f13c-preferred-downmix-enum-serialization-vectors.v1",
+  "status": "SOURCE_DERIVED_NOT_EXECUTED",
+  "execution": "NOT_RUN",
+  "scope": "String-property serialization only; no UI or DME execution.",
+  "vectors": [
+    {
+      "active": true,
+      "ui_value": "Stereo",
+      "mapped_token": "loro",
+      "atmos_branch_mode_only_composite": "preferred_downmix_mode=loro",
+      "other_branch_mode_only_composite": "ddp:preferred_downmix_mode=loro"
+    },
+    {
+      "active": true,
+      "ui_value": "Surround",
+      "mapped_token": "ltrt",
+      "atmos_branch_mode_only_composite": "preferred_downmix_mode=ltrt",
+      "other_branch_mode_only_composite": "ddp:preferred_downmix_mode=ltrt"
+    },
+    {
+      "active": true,
+      "ui_value": "Not Indicated",
+      "mapped_token": "not_indicated",
+      "atmos_branch_mode_only_composite": "preferred_downmix_mode=not_indicated",
+      "other_branch_mode_only_composite": "ddp:preferred_downmix_mode=not_indicated"
+    },
+    {
+      "active": false,
+      "ui_value": "Stereo (static schema/state template only)",
+      "mapped_token_before_active_gate": "loro",
+      "preferred_downmix_member": "OMITTED",
+      "runtime_or_persisted_default_inferred": false
+    }
+  ],
+  "mode_only_qualifier": "The composite values above assume no other valuesToCombineMap member is active. Other active entries are joined with ':' in map insertion order. The outer --encoder property remains present."
+}

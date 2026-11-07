@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.dee-timeline-timebase-direction-correction.v1",
+  "package_id": "DEE-TIMELINE-TIMEBASE-DIRECTION-CORRECTION-V1",
+  "status": "TIMEBASE_DIRECTION_CORRECTED_STATIC; SAMPLE_CONVERSION_RULES_BOUND; FFOA_AND_RATE_RUNTIME_VALUES_UNBOUND; AU_COUNT_UNBOUND",
+  "upstream": {
+    "package_id": "DEE-ATMOS-TIMEBASE-ENCODE-CORRECTION-WASH-V1",
+    "manifest_sha256": "59426234b80bd3e6858d89f8a4edb958ea93fc5143fbf074b8ba029285db202e",
+    "seal_sha256": "4465b6a00a734ff062dbd392535638b956c0862622650e03ff4ad71b7d51bd41",
+    "manifest_files": 18,
+    "hash_audit": "PASS_18_OF_18",
+    "manifest_seal_link": "PASS",
+    "source_image": "dee_audio_filter_ddp_atmos.dll",
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "upstream_checker": "REPORTED_PASS_NORMAL_AND_PYTHON_O; NOT_RERUN_BY_WASH"
+  },
+  "runtime_slots": {"timecode_frame_rate":"+0x3f8","start":"+0x450","end":"+0x4d0","time_base":"+0x550"},
+  "timebase": {
+    "comparison": "FUN_18014FD90 compares +0x550 with embedded_timecode",
+    "embedded_timecode": "exact match enters ffoa-subtraction branch for start and end",
+    "file_position": "nonmatching branch; no ffoa subtraction in this parser path",
+    "source_offset_key": "ffoa",
+    "selected_input_ffoa": "UNBOUND",
+    "xml_offset_auto": "separate field; resolved value UNBOUND"
+  },
+  "time_forms": {
+    "dotted": "HH:MM:SS.xx as seconds",
+    "colon": "HH:MM:SS:FF with indicated frame rate",
+    "integer": "frame count; nonempty integer end adds one frame; zero sentinel uses source duration",
+    "frame_rate_fallback": "source metadata timecode_frame_rate if configured slot absent",
+    "selected_frame_rate": "UNBOUND"
+  },
+  "sample_math": {
+    "range_validation": "round(sample_rate * adjusted_seconds)",
+    "stored_boundaries": "truncate(longlong(adjusted_seconds * sample_rate))",
+    "decimal_silence": "truncate(duration_seconds * sample_rate)",
+    "frame_silence": "frames / frame_rate -> seconds * sample_rate -> truncating cast"
+  },
+  "encode_boundary": {
+    "frame_samples": 1536,
+    "flush_samples": 0,
+    "worker_flush_loop": "continues until output byte span empty",
+    "process_result": "byte span + byte length",
+    "span_to_one_au": "UNBOUND",
+    "total_au_count": "UNBOUND"
+  },
+  "tail_boundary": {
+    "precleared_reader_row": "STATIC_BOUND_IN_AGENT6_PACKAGE",
+    "short_read_tail_zero": "CONDITIONAL_ON_SELECTED_ATMOSREADER_BRANCH_AND_WRITE_COUNT",
+    "requested_silence_to_zero_fill": "UNBOUND",
+    "runtime_reader_selection": "NOT_RUN"
+  },
+  "execution": {"dee_run":false,"pcm_or_payload_read":false,"key_or_license_access":false}
+}

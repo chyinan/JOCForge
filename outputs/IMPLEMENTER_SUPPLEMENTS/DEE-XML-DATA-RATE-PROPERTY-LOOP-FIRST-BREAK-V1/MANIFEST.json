@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-XML-DATA-RATE-PROPERTY-LOOP-FIRST-BREAK-V1",
+  "scope": "Wash-verified generic XML property branch; data_rate leaf identity remains unbound.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1071,
+      "sha256": "cb0d50856130cbd44e04ee9b8d682e6b5197c8a8594dab4ef0223d29fe6173ad"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 520,
+      "sha256": "680959cd287d05c073339516c2b0589a9cfb1dba46bc167458f7d0f212b83e78"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 607,
+      "sha256": "afebbdfb4cf1726491f74bf0455d7da0b836ab2618a1958319e49a9e790f8a5e"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1918,
+      "sha256": "c68296199a95fd785fc1deeba05ca3a70997c21c6fd2cc99c5d639712c8dd79a"
+    }
+  ]
+}

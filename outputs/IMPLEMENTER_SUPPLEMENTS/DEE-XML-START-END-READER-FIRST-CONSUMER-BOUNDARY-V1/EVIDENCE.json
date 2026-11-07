@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.xml_start_end_reader_boundary.v1",
+  "xsd": {
+    "start": {
+      "type": "optional xs:string",
+      "default": "first_frame_of_action"
+    },
+    "end": {
+      "type": "optional xs:string",
+      "default": "end_of_file"
+    }
+  },
+  "source_document_text": {
+    "start": "86640",
+    "end": "86664"
+  },
+  "runtime_selected_values": "UNBOUND",
+  "omission_state_effective_value": "UNBOUND",
+  "observed_host_keys": [
+    "source",
+    "target"
+  ],
+  "start_end_host_key_observed": false,
+  "range_record_to_reader_cursor_path_identified_as_xml_start_end": false,
+  "xml_to_reader_position": "UNBOUND",
+  "runtime": "NOT_RUN"
+}

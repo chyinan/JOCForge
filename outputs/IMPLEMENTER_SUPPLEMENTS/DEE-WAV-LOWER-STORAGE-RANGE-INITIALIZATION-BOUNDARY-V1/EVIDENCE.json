@@ -1,0 +1,67 @@
+{
+  "schema": "jocforge.dee_wav_lower_storage_range_initialization.v1",
+  "package_id": "DEE-WAV-LOWER-STORAGE-RANGE-INITIALIZATION-BOUNDARY-V1",
+  "status": "ADMFILESTORAGE_GETTERS_AND_ZERO_INITIAL_RANGE_STATIC_BOUND; LATER_NONZERO_LIMIT_WRITER_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "dialogue_wav_storage_position_bounds_addendum",
+    "package_seal_file_sha256": "34b826fe953744542d5e1b8687717f604680f4d47b209a8a1160ce3db4fabec7",
+    "manifest_json_sha256": "693e91a5923df0fff83e96375d9ed7a55493276853803334130fd684270b241b8",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_program": "dee_audio_filter_ddp_atmos.dll",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "lower_storage": {
+    "type": "atmos_storage::AdmFileStorage",
+    "storage_position_getter": {
+      "vtable_slot": "+0x60",
+      "member_returned": "+0x10"
+    },
+    "storage_limit_getter": {
+      "vtable_slot": "+0x68",
+      "member_returned": "+0x18"
+    },
+    "base_initializer": {
+      "position_initial_value": 0,
+      "limit_source": "fifth constructor argument from AdmFileStorageDesc vtable +0x18"
+    }
+  },
+  "limit_source": {
+    "descriptor_type": "atmos_storage::AdmFileStorageDesc",
+    "descriptor_getter": "vtable +0x18 returns Desc+0x68",
+    "desc_plus_0x68_initial_value": 0,
+    "nonzero_writer": "UNBOUND",
+    "later_writer_in_inspected_factory_open_path": "NONE_OBSERVED_BEFORE_LOWER_STORAGE_CONSTRUCTION"
+  },
+  "initial_range": {
+    "current": 0,
+    "limit": 0,
+    "interpretation": "empty initial range [0,0)"
+  },
+  "units": {
+    "candidate_domain": "per-channel F32 sample-index/count",
+    "basis": "inherited planar wrapper contract scales offsets/counts by four bytes",
+    "classification": "STATIC_CALL_CONTRACT_INFERENCE",
+    "limit_producer_unit": "UNBOUND",
+    "reader_plus_0xd8_body_reanalyzed": false
+  },
+  "unverified_references": {
+    "supplied_parent_v2_manifest_sha256": "29b8781a9c08e2149ed0558e5206fe5883b196a86ad8a06c20b8ef1cbd5ac3ad",
+    "parent_manifest_file_in_current_checkout": "NOT_FOUND",
+    "supporting_reader_package_refs": "REFERENCE_ONLY"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "runtime_values": "NOT_CAPTURED",
+    "runtime_provider_selection": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_ghidra_trace_or_attempt_log_included": false,
+    "implementation_repository_read": false,
+    "process_control": false
+  }
+}

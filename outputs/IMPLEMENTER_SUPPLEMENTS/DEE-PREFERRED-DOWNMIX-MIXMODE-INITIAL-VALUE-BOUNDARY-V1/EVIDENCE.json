@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.preferred_downmix_mixmode_initial_value_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-MIXMODE-INITIAL-VALUE-BOUNDARY-V1",
+  "status": {
+    "mixmode_value_field": "FUN_180136220.param_1+0x960",
+    "initializer_direct_plus_0x960_write": "NOT_OBSERVED_IN_BOUNDED_BODY",
+    "xml_parser_direct_plus_0x50_write": "NOT_OBSERVED_IN_REUSED_FUNCTIONS",
+    "first_observed_plus_0x50_write": "FUN_18014f6e0 stores FUN_180143cf0 return",
+    "preexisting_value_source": "UNBOUND",
+    "zero_initialization": "NOT_CONFIRMED",
+    "runtime_selected_value": "NOT_RUN",
+    "audio_or_bsi_effect": "UNBOUND"
+  },
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-MIXMODE-INITIAL-VALUE-BOUNDARY-WASH-V1",
+    "manifest_sha256": "6be2353eba98fc3d79247f1f61d2c5777f6c913c13ab08235b098fe208ba1125",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis"
+  },
+  "limits": {
+    "mixmode_plus_0x50_bytes_read": false,
+    "dee_or_xml_run": false,
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "displacement_wide_scan": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Do not invent a default stored MixMode code. The callback-null setter writes the pre-existing value; its origin remains unbound."
+}

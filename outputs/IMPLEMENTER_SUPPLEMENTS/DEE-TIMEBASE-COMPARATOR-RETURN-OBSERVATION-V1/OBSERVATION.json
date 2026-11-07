@@ -1,0 +1,46 @@
+{
+  "attempt_id": "agent7-timebase-comparator-20261105-2231z",
+  "dee_exit_code": 0,
+  "comparator_return_i32": [
+    1,
+    1
+  ],
+  "priv_invocation_tokens": [
+    "PrivInvocation-1",
+    "PrivInvocation-2"
+  ],
+  "interpretation": "not equal to embedded_timecode only; enum acceptance not captured",
+  "enum_validation": "NOT_CAPTURED",
+  "priv_to_adm_generation_join": "NOT_CAPTURED",
+  "counts_by_domain": {
+    "CHNA": [
+      36,
+      36,
+      36,
+      36,
+      36,
+      36,
+      36
+    ],
+    "U_format": [
+      36,
+      36,
+      36,
+      36
+    ],
+    "K_descriptor": [
+      36,
+      36,
+      36,
+      36
+    ],
+    "composite_B": [
+      36,
+      36
+    ]
+  },
+  "cross_domain_identity": "NOT_INFERRED",
+  "observer_errors": 0,
+  "cleanup": "PASS",
+  "pcm_or_payload_persisted": false
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.di_receiver_boundary_sources.v1",
+  "source_manifest_sha256": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971",
+  "source_package_seal_sha256": "3d7ab162b3b6623178e42f0d9a4a7adf878c6a76c724fb043094738b672c2772",
+  "parent_packages": [
+    {"package_id": "di-flag-property-map-caller-addendum-wash-v1", "manifest_sha256": "b9b64929a322f9fee6913eced123f77105595688546df0cd1a4d35ce9a68f703", "package_seal_sha256": "ca9f4c3e86e7bdb6715a2892cbbd31c743343cb7264338616397e875a9ace3d5"},
+    {"package_id": "di-flag-property-application-addendum-wash-v1", "manifest_sha256": "13280334c376c4783d31b0156ae93af1b2c6209b95e4891cdf11c56456079815", "package_seal_sha256": "c0efd28b6b732ed2d56e23174271f93449dc2efd02e9c6b87b03f85dadb06f20"},
+    {"package_id": "di-flag-stage-static-wash-v1", "manifest_sha256": "775e5c9633dd103d082d3126a122a42d601ed1949e3f3e47b8e84f75a8bfc4d2", "package_seal_sha256": "90b83f64955aa0d3067aad263f5c47270e9a2792e570c389cf60c40ecb1f34c9"}
+  ],
+  "raw_ghidra_code_or_logs_in_wash_supplement": false
+}

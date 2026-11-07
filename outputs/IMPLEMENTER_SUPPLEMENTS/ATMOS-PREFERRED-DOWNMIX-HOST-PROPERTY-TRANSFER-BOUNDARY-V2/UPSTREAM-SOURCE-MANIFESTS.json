@@ -1,0 +1,65 @@
+{
+  "schema": "f13c-preferred-downmix-host-property-transfer-source-manifests.v2",
+  "app_source": {
+    "path": "C:/Program Files/Dolby Media Encoder/resources/app.asar",
+    "sha256_recomputed_this_pass": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+    "bytes": 15462158,
+    "prior_source_extract_artifact": {
+      "package": "F13C-atmos-joc-dmixmod-audio-impact-addendum-v31",
+      "manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd",
+      "artifact": "DME-APP-SOURCE.json",
+      "artifact_sha256": "941eb2f30af8e30fc66994baf62740b784991c30126eb41757a1634da2e8d6ee"
+    },
+    "offset_basis": "UTF-8 byte offset in app.asar including the ASAR header",
+    "excerpt_hashes": {
+      "getEncoderConfig_dispatch": {"start": 5595629, "end_exclusive": 5596410, "sha256": "03cf966e1b2e94066821832dd19add3c129265595feccbe86ae075d89f46546f"},
+      "getDolbyDigitalPlusOnlineMediaConfig_method": {"start": 5604777, "end_exclusive": 5610067, "sha256": "70d7a7b4354a4cd3b23aa2c892a6d8edd6183a001133da899c2986f83c202c45"},
+      "preferred_downmix_mode_valuesToCombineMap_entry": {"start": 5607504, "end_exclusive": 5607799, "sha256": "35c6e2dc7abb8c3e953ebada4e55ee78014aeaf23408a3147f3d2b0edfca5b70"},
+      "inputType_branch_and_encoder_serialization": {"start": 5608879, "end_exclusive": 5609779, "sha256": "48dbab9b1a6f60ee4d436b452743d70bb344485ec396bf4388215db896b69b38"},
+      "handlePreferredStereoDownmix": {"start": 5630760, "end_exclusive": 5631120, "sha256": "2d8371d0a44dc59fa3f51e7ffebbd9447d32be1d17ea24d6ca57d7156fcb211b"}
+    }
+  },
+  "reused_receipts": [
+    {
+      "package": "F13C-preferred-downmix-host-property-transfer-first-break-v1",
+      "manifest_sha256": "12d878c0a32c593269f07c1d6fe79d925c7f8be0c97fa4527f51f30e7c4c1f99",
+      "artifacts": [{"path": "PROPERTY-TRANSFER-BOUNDARY.json", "sha256": "336a5a4bdf705e3570602d3f9938b92cefe8f4d1c5ee938ac36d302faf15c145", "role": "Earlier generic-serializer-pattern boundary; v2 binds the exact method-level path."}]
+    },
+    {
+      "package": "F13C-atmos-joc-dmixmod-audio-impact-addendum-v31",
+      "manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd",
+      "artifacts": [{"path": "ATTEMPT10-JOB-PROVENANCE.json", "sha256": "4014694fecb584c26a1a6d8e11d5e215ba67f08e4025a448964e0c7f2292b899", "role": "Selected reconstructed XML provenance; not a DME runtime capture."}]
+    },
+    {
+      "package": "F13C-preferred-downmix-atmos-mezz-ab-preflight-reuse-v1",
+      "manifest_sha256": "b5378276df5b6a411775b2e727cce935d3d9e4e164eb198c739908eca9de5ef0",
+      "artifacts": [{"path": "PREFLIGHT-REUSE.json", "sha256": "ad5d79da98eb5154979b8e2994f0773522b74b5eb8c620375c388ef8dcb271f7", "role": "Schema-validated candidate pair; NOT_RUN."}]
+    },
+    {
+      "package": "F13C-preferred-downmix-selected-consumer-boundary-addendum-v1",
+      "manifest_sha256": "e5fc8a6ee7f1325685cd5a75f9d737d4a01cbc82020a543ec41b9bd8a87864f5",
+      "artifacts": [{"path": "MODE-CONSUMER-BOUNDARY.json", "sha256": "7b664b970de6d8ab5e0ada5abfda61a9510160c25117b3e653685eb84b800e40", "role": "Native preferred literal and separate dmixmod parser boundary."}]
+    },
+    {
+      "package": "F13C-preferred-downmix-registry-consumer-boundary-addendum-v1",
+      "manifest_sha256": "1773b53708bb4b42cdd692dc54d7280578bdfff3ba6f4207a67032c3da1cd3ea",
+      "artifacts": [{"path": "REGISTRY-CONSUMER-EDGE.json", "sha256": "dfde099e2a7e964aee08084fd394c973006569d7641a71caae684674dda89558", "role": "dmixmod text validation only; typed owner UNBOUND."}]
+    },
+    {
+      "package": "F13C-dmixmod-first-dsp-consumer-addendum-v29",
+      "manifest_sha256": "f0c42ba60d2de6105e2662c10b14dc4b22cdd4cd9b9069068010233159916cfa",
+      "artifacts": [{"path": "NATIVE-CONSUMER-V2.json", "sha256": "cf5464f663814b4b109f011bc8910f0e5b8344465d93469d8910f5e2366eb48a", "role": "Native diagnostic handoff; final writer and typed consumer UNBOUND."}]
+    },
+    {
+      "package": "F13C-preferred-downmix-postparse-consumer-addendum-v1",
+      "manifest_sha256": "0a5ce7b7c05d2d0c7cb65109742bbf4e49a5079d26529bca814a2ef59ee76925",
+      "artifacts": [{"path": "CONSUMER-EDGE.json", "sha256": "569c5e81898bf2232d22246b161ded05c9c1c69783bd51f05b4c6c809b9aefb3", "role": "Numeric level consumer, not preferred enum."}]
+    },
+    {
+      "package": "F13C-preferred-downmix-factory-resolver-instance-flow-v1",
+      "manifest_sha256": "cab719e7712db269cecd578b2356b1be9aebb9793c4e5caec4d6b860406173ed",
+      "artifacts": [{"path": "FACTORY-INSTANCE-FLOW.json", "sha256": "6df2eaaea9bc33bfcff1950595dcab1b2ad831935577dcfcffe56259f98ae0ac", "role": "Static Factory resolver flow; property source join UNBOUND."}]
+    }
+  ],
+  "no_raw_app_source_or_ghidra_script_in_package": true
+}

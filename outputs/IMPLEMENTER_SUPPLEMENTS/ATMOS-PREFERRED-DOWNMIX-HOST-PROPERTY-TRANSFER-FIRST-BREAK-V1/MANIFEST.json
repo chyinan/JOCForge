@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-HOST-PROPERTY-TRANSFER-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "APP_UI_MAP_STATIC; GENERIC_SERIALIZER_BINDING_UNBOUND; NATIVE_DDMIXMOD_OWNER_UNBOUND; A_B_NOT_RUN",
+  "implementation_disposition": "Keep the preferred-downmix host-to-native option path open; do not infer a product mapping or intentional ignore",
+  "source_manifest_sha256": "12d878c0a32c593269f07c1d6fe79d925c7f8be0c97fa4527f51f30e7c4c1f99",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3137,
+      "sha256": "b3f61dd636f6a3d1880d256999e78745b389b9f4b5af1f922207b3bdc42fa9f4"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3052,
+      "sha256": "ae06db1e4412de5e3b34ed079621b946bdf8f6887146bf2033d105e8c102bf79"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 800,
+      "sha256": "d3c65cd0fc1568caef50dc889aef5e98782de8886502f706b78faaed4a2b0986"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2183,
+      "sha256": "9fbf2d1316c5f7e418cf410713bb01c37830255c60d6de8abb3f421e14d4bf83"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 3293,
+      "sha256": "b11e674aeac1d5f4da5c7bc4a7555cdd89a80d186f6bc67c8a5a667fb7e2f2a7"
+    },
+    {
+      "name": "UPSTREAM-INPUT-ONLY-VECTORS.json",
+      "bytes": 696,
+      "sha256": "37802f4b1f84e1c6fa45c94f76f1257f43c62f8bafafd27913c4a07753b10f70"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 2112,
+      "sha256": "12d878c0a32c593269f07c1d6fe79d925c7f8be0c97fa4527f51f30e7c4c1f99"
+    },
+    {
+      "name": "UPSTREAM-SHA256SUMS.txt",
+      "bytes": 522,
+      "sha256": "ea6aaa40ad0570169fc3495b33bbbefa50239b433385fad1347f75cfe15d3133"
+    }
+  ]
+}

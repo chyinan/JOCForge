@@ -1,0 +1,88 @@
+{
+  "schema": "jocforge.preferred-downmix-owner-consumer-boundary.v1",
+  "package_id": "preferred_downmix_owner_to_matrix_boundary_wash_v1",
+  "recipient": "Wash-only",
+  "status": "FIRST_MATRIX_PCM_CONSUMER_UNBOUND_AT_TYPED_OWNER_EDGE",
+  "scope": "One selected owner-to-child edge plus reused enum/host-child/level receipts",
+  "targets": [
+    {
+      "image": "dee_audio_filter_ddp_atmos.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "ghidra_version": "12.2 PUBLIC",
+      "mode_owner": "dee::proc::Priv",
+      "mode_subobject_offset": "+0x930",
+      "mode_value_field": "MixMode+0x50 / Priv+0x980"
+    },
+    {
+      "image": "dee_ddpjoc_encoder.exe",
+      "sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+      "ghidra_version": "12.2 PUBLIC",
+      "role": "native XML dmixmod and four mix-level field parser receipts"
+    }
+  ],
+  "selected_direct_edge": {
+    "caller": "FUN_1801475f0",
+    "child": "FUN_1801535b0",
+    "callsite": "0x180147acf",
+    "caller_owner": "FUN_1801475f0.param_1 = dee::proc::Priv",
+    "argument_transfer": "containing Priv pointer; no scalar read of Priv+0x980 observed",
+    "caller_instruction_hits_for_priv_plus_0x980": 0,
+    "caller_decompiler_hits_for_priv_plus_0x980": 0,
+    "child_instruction_hits_for_priv_plus_0x980": 0,
+    "child_decompiler_hits_for_priv_plus_0x980": 0,
+    "first_other_member_path": {
+      "field": "Priv+0x210",
+      "type": "dee::Types::StringType",
+      "consumer": "FUN_180152490",
+      "relation_to_mixmode_or_audio": "UNBOUND"
+    },
+    "first_actual_channel_matrix_or_pcm_consumer": "UNBOUND",
+    "first_break": "No MixMode+0x50 value transfer/read exists on the selected pass-to-child edge. The child only receives the owner pointer; the first bound member call is a distinct StringType path."
+  },
+  "reused_mode_reader_path": {
+    "typed_getter": "FUN_180171f50 reads MixMode+0x50 after SafeType validity check",
+    "sole_direct_caller": "FUN_180171ce0",
+    "caller_role": "token/string formatting",
+    "formatter_direct_callers": 0,
+    "matrix_pcm_consumer": "UNBOUND"
+  },
+  "host_to_native_boundary": {
+    "host_property": "preferred_downmix_mode",
+    "host_ui_mapping": {
+      "Stereo": "loro",
+      "Surround": "ltrt",
+      "Not Indicated": "not_indicated"
+    },
+    "host_child_argv_route": "HASH_BOUND_TO_ARGV",
+    "separate_native_xml_key": "dmixmod",
+    "native_parser": "FUN_1404ecea0",
+    "first_native_text_consumer": "FUN_1404dddd0 string allowlist validator",
+    "native_allowlist": ["not_indicated", "pro_logic", "stereo", "pro_logic_ii"],
+    "host_property_to_native_typed_mixmode_owner": "UNBOUND"
+  },
+  "mix_level_boundary": {
+    "native_parser_helper": "FUN_1404de3d0",
+    "fields": [
+      {"host_key": "loro_cmix", "native_xml_key": "lorocmixlev", "parser_result_slot": "puVar16[0xf]"},
+      {"host_key": "loro_smix", "native_xml_key": "lorosurmixlev", "parser_result_slot": "puVar16[0x10]"},
+      {"host_key": "ltrt_cmix", "native_xml_key": "ltrtcmixlev", "parser_result_slot": "puVar16[0x12]"},
+      {"host_key": "ltrt_smix", "native_xml_key": "ltrtsurmixlev", "parser_result_slot": "puVar16[0x13]"}
+    ],
+    "typed_level_owner": "UNBOUND",
+    "first_typed_consumer": "UNBOUND",
+    "join_to_dee_proc_priv_mixmode": "UNBOUND"
+  },
+  "classification": {
+    "first_actual_matrix_or_pcm_consumer": "UNBOUND",
+    "bsi_or_signaling_only": "UNBOUND",
+    "sample_transform": "UNBOUND",
+    "intentional_ignore": "UNBOUND",
+    "runtime": "NOT_RUN"
+  },
+  "access_boundary": {
+    "ghidra_read_only_noanalysis_reused": true,
+    "new_dee_run": false,
+    "media_pcm_payload_key_license_read": false,
+    "implementation_repo_edited_or_contacted": false
+  }
+}

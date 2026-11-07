@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-WAV-DESC-ALTERNATE-CALLER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_alternate_descriptor_constructor_caller",
+      "package_id": "dialogue_wav_desc_alternate_caller_addendum",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-7-multi-adm-dialnorm/work/encoder_analysis/reports/dialogue_wav_desc_alternate_caller_addendum",
+      "manifest_json_sha256": "1fb3a897112c44d42e9c32037872e0b9de2f7c6c4003e74e6bb57651e4ac9e73",
+      "package_seal_file_sha256": "62627d05ebf4248539ee4a5ea6f196049aa1a643c5e869493f931abf67fda968",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "related_selected_factory_limit_path",
+      "package_id": "DEE-WAV-DESC-LIMIT-WRITER-FIRST-BREAK-V1",
+      "manifest_sha256": "7bc353061c346d29cf371b4cd3814607318748aac32ca16c18d1b7079e0d8460",
+      "package_seal_sha256": "a08db0685e3ceca061eb6923fc373d551c1ddbfc9cdee3e29e6b26d7d36c88b5",
+      "relationship": "Separate caller/instance; no identity inferred."
+    },
+    {
+      "role": "related_lower_storage_initial_range",
+      "package_id": "DEE-WAV-LOWER-STORAGE-RANGE-INITIALIZATION-BOUNDARY-V1",
+      "manifest_sha256": "6c3f61ad8c7aa2723d75219530b7261c1d88310a2c5b3b9b18af59bbad2ec23c",
+      "package_seal_sha256": "3d7de197f0e99f7f07241d2a482de48ed469a4b7148d3bf5fd57baea6eb34034",
+      "relationship": "Parent/current range reused as a separate evidence path."
+    }
+  ],
+  "omitted_material": {
+    "raw_logs_or_source_code": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true
+  }
+}

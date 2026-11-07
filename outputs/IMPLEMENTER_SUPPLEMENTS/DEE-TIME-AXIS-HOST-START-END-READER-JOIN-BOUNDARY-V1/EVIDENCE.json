@@ -1,0 +1,66 @@
+{
+  "schema": "jocforge.time_axis_host_start_end_reader_join_boundary.v1",
+  "package_id": "DEE-TIME-AXIS-HOST-START-END-READER-JOIN-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "dee_time_axis_host_property_range_boundary_wash_v1",
+    "evidence_manifest_sha256": "4f1387108a35b35bfc9fe583e34cb46891a6c94b706f50af4e0eb432d7b8a3dd",
+    "package_seal_sha256": "109f946b3f7f75f8727bccf8a3b95c9b2911f0c749911f89f9c88d64f6559cce",
+    "checkers_normal_and_python_o": "PASS"
+  },
+  "parent_packages": [
+    {
+      "package_id": "dee_time_base_host_setter_first_break_wash_v2",
+      "manifest_sha256": "d9eea08d1f4bf95d6dfa0fd59aa5be88757c7d2640629015fa3ba5aec92e701e",
+      "package_seal_sha256": "cdc83d686a490a15345adf158d74043f78d5f5166a34071f5b0fe00231ec5a83"
+    },
+    {
+      "package_id": "DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1",
+      "manifest_sha256": "8ec2de3c452aded30a5aad5a370e93fdcae958ebc6f516c18265ca76c16437f1",
+      "package_seal_sha256": "273db15bdc1196598f36a0f2f2439ee8837a9e36a3985c0267ba7d1ea88c4ca2"
+    },
+    {
+      "package_id": "DEE-RANGE-RECORD-TO-FRAME-READER-BOUNDARY-V2",
+      "manifest_sha256": "5c17024bdfa50c9de1c40e84705bc4ca80333f1031d043cd128622cd21c2943d",
+      "package_seal_sha256": "40583bd9016b479024323f8f53b9f1cb95acdb135e8789c051b5fa848daef443"
+    }
+  ],
+  "scope": {
+    "ghidra_rerun": false,
+    "dee_run": "NOT_RUN",
+    "xml_job_run": "NOT_RUN",
+    "time_base_hook_executed": false,
+    "sample_range_retraced": false,
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false
+  },
+  "host_dispatch": {
+    "builder": "FUN_14003f690 StageRunner::Build",
+    "factory": "FUN_140041be0 through vtable +0x30",
+    "interface_storage": "StageRunner+0x270",
+    "property_runner": "FUN_14004ab50 RunAudioFilter",
+    "property_call": "FUN_14002fad0 through vtable +0x8",
+    "observed_static_keys": ["dee_audio_filter_source", "dee_audio_filter_target:<index>"],
+    "start_or_end_key_observed": false
+  },
+  "range_fields_and_reader": {
+    "plugin_range_producer": "FUN_18014fd90",
+    "plugin_members": ["Priv+0xf98", "Priv+0xfb0"],
+    "reader_cursor": "+0x28",
+    "reader_total": "+0x20",
+    "range_record_to_reader_input_path": "BOUND_STATIC_BY_PARENT",
+    "host_property_to_priv_range_members": "UNBOUND",
+    "host_property_to_reader_cursor_total": "UNBOUND"
+  },
+  "status": {
+    "selected_start_value": "UNBOUND",
+    "selected_end_value": "UNBOUND",
+    "runtime_owner_generation": "UNBOUND",
+    "runtime_sample_position": "NOT_RUN",
+    "global_no_key_claim": false
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "do_not_use_time_base_default_as_selected_xml_value": true,
+    "preserve_range_reader_join_as_unbound": true
+  }
+}

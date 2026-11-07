@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.dee-time-endpoint-metadata-index-input-only.v1",
+  "vectors": [
+    {
+      "id": "stored-endpoints-select-metadata-items",
+      "kind": "symbolic input-only projection; no endpoint values supplied or executed",
+      "input": {
+        "stored_start_index": "start",
+        "stored_end_index": "end",
+        "per_source_metadata_table": "source-indexed entries"
+      },
+      "expected": {
+        "start_entry_used_for_ioset_metadata": true,
+        "end_entry_used_for_ioset_metadata": true,
+        "frame_clip_boundary": "UNBOUND",
+        "inclusive_exclusive": "NOT_CAPTURED",
+        "runtime_path": "NOT_CAPTURED",
+        "audio_effect": "NOT_RUN"
+      }
+    }
+  ]
+}

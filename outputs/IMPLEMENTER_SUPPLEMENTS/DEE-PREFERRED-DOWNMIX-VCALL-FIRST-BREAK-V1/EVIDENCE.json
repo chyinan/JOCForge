@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge.dee_preferred_downmix_vcall_first_break.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-VCALL-FIRST-BREAK-V1",
+  "status": "PER_SOURCE_VCALL_SITE_STATIC_BOUND; VTABLE_TARGET_AND_OWNER_UNBOUND; AUDIO_BSI_EFFECT_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-VTABLE-TARGET-BOUNDARY-WASH-V1",
+    "manifest_sha256": "d6faad88e4ccb7dc71768f99484de17dc9c9fe339c3f18bac9ae39eee43eca48",
+    "checksum_list_sha256": "bd8e95a62fbd4d84a2a4ee1c2262ae4426538141920d9892fc72ab5dd2c274e2",
+    "payloads_verified": 7,
+    "checksums_verified": 8,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "read-only/no-analysis",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_image_provenance": "project-recorded; installed DLL not rehashed"
+  },
+  "selected_per_source_call": {
+    "candidate": "FUN_1801535b0",
+    "selected_encode_pass_caller": "FUN_1801475f0",
+    "other_direct_caller": "FUN_18014aba0",
+    "first_virtual_call_receiver": "param_1+0x210",
+    "virtual_slot": "+0x30",
+    "vptr_load_and_dispatch": "BOUND_STATIC_INSTRUCTION_SEQUENCE",
+    "target": "UNBOUND_DYNAMIC",
+    "receiver_typed_owner": "UNBOUND"
+  },
+  "preferred_downmix_join": {
+    "mixmode_field": "MixMode+0x50",
+    "typed_getter": "FUN_180171f50",
+    "receiver_to_mixmode_owner_join": "UNBOUND",
+    "audio_consumer": "UNBOUND",
+    "bsi_consumer": "UNBOUND",
+    "preferred_downmix_effect": "UNBOUND"
+  },
+  "scope": {
+    "dee_or_xml_job_run": "NOT_RUN",
+    "runtime_owner_generation": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "displacement_wide_scan": false,
+    "raw_ghidra_trace_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

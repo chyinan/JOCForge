@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-line-row-writer-first-source-break-receipts.v1",
+  "source_package": "line-mode-dynrng-row-writer-followup-wash",
+  "source_path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-9-f05-f13-static-lineage/outputs/line-mode-dynrng-row-writer-followup-wash",
+  "manifest_sha256": "dfc3f1e23a85a83a439b1c074373637d024940d90cdcfc0f806b22493d30511e",
+  "normal_checker": "PASS_IN_WASH",
+  "optimized_checker": "PASS_IN_WASH",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "new_runtime_or_ab_run": false,
+  "runtime_status": "NOT_RUN"
+}

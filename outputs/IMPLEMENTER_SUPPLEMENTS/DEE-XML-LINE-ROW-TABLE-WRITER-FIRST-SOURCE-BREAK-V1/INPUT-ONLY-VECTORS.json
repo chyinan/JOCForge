@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-line-row-writer-vectors.v1",
+  "status": "REUSED_STATIC_RECEIPTS_NO_NEW_RUNTIME",
+  "writer": "FUN_18013b870",
+  "direct_callsite": "FUN_1801535b0 RVA 0x180153636",
+  "record_stride_bytes": 32,
+  "records_field_semantics": "UNBOUND",
+  "row_contents_to_snapshot_plus_0xa0": "UNBOUND",
+  "row_contents_to_core_u8_selector": "UNBOUND",
+  "runtime_status": "NOT_RUN",
+  "pcm_payload_key_license_accessed": false
+}

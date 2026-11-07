@@ -1,0 +1,96 @@
+{
+  "schema": "jocforge.preferred-downmix-owner-boundary.sources.v1",
+  "status": "REUSED_HASH_BOUND_WASH_RECEIPTS",
+  "packages": [
+    {
+      "package": "F13C-preferred-downmix-host-property-transfer-boundary-v3",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-host-property-transfer-boundary-v3",
+      "manifest_sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6",
+      "payloads": [
+        {"path": "HOST-ARGV-TRANSFER.json", "sha256": "d7e54676ee9620388b449d697792ec98bdfc1c621cf1582602d1615935383dc4"}
+      ]
+    },
+    {
+      "package": "F13C-mix-level-field-lineage-addendum-v1",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-mix-level-field-lineage-addendum-v1",
+      "manifest_sha256": "1ec72691e2c34df1a002b6d04aa0fe2dfa97b5cf77b554bb21babe7f10b4d0ec",
+      "payloads": [
+        {"path": "LEVEL-FIELD-LINEAGE.json", "sha256": "8f59f4bc7c7ef4ec5fbb39465c531b37f7088c017c9de331c70fd22f391ba77f"}
+      ]
+    },
+    {
+      "package": "F13C-dmixmod-first-dsp-consumer-addendum-v29",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-dmixmod-first-dsp-consumer-addendum-v29",
+      "manifest_sha256": "f0c42ba60d2de6105e2662c10b14dc4b22cdd4cd9b9069068010233159916cfa",
+      "payloads": [
+        {"path": "ADDENDUM.md", "sha256": "626e91c6ce96075635c4a321a5945d10b28f0b472f458a774fc90205ece7473a"},
+        {"path": "NATIVE-DOWNMIX-LINEAGE-V5.json", "sha256": "243db1cd8a37ee42e40d96cb786722a02dee4f865034c9126a77120b0b48ea95"}
+      ]
+    },
+    {
+      "package": "F13C-atmos-joc-dmixmod-audio-impact-addendum-v31",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-atmos-joc-dmixmod-audio-impact-addendum-v31",
+      "manifest_sha256": "b0c7ef16fc3bbe6767039142fb8c0666a1de48a21d3a5b5428ddb6fb0097dabd",
+      "payloads": [
+        {"path": "ADDENDUM.md", "sha256": "695eea983f894156be4f0e37401234a019fb46e127f1e48e552ccea6d9b46eb0"},
+        {"path": "GHIDRA-DMIXMOD-FIRST-DSP-CONSUMER.json", "sha256": "cac00412bcfc6c521e9e3bb549edf0c4f897ac21b63b9344df2e7c8aef712398"}
+      ]
+    },
+    {
+      "package": "F13C-dmixmod-owned-consumer-edge-addendum-v1",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-dmixmod-owned-consumer-edge-addendum-v1",
+      "manifest_sha256": "d70d4d9e7948c5f78efbb486bf16a1aa6b223fff9e1e487e9e344dd877ad02ea",
+      "payloads": [
+        {"path": "FIELD-LINEAGE.json", "sha256": "a1b5eaa5e7bb2d31225b95a3d0ab6330477441d192219b33ad5c9dcbf3930936"}
+      ]
+    },
+    {
+      "package": "F13C-preferred-downmix-selected-consumer-boundary-addendum-v1",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-selected-consumer-boundary-addendum-v1",
+      "manifest_sha256": "e5fc8a6ee7f1325685cd5a75f9d737d4a01cbc82020a543ec41b9bd8a87864f5",
+      "payloads": [
+        {"path": "MODE-CONSUMER-BOUNDARY.json", "sha256": "7b664b970de6d8ab5e0ada5abfda61a9510160c25117b3e653685eb84b800e40"}
+      ]
+    },
+    {
+      "package": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-RECEIVER-OWNER-BOUNDARY-WASH-V1",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/DEE-ATMOS-DDP-PREFERRED-DOWNMIX-RECEIVER-OWNER-BOUNDARY-WASH-V1",
+      "manifest_sha256": "c88d5f856ce5ffd655f422fa55c806a7282652615eef81ccb3f9fcbb592a8850",
+      "payloads": [
+        {"path": "RECEIVER-OWNER-BOUNDARY.json", "sha256": "8128e7e5605611c4d9097a1d31400c299409473d9fd623db1f650614c4bd0b4d"}
+      ]
+    },
+    {
+      "package": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-SELECTED-PASS-READ-BOUNDARY-WASH-V1",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/DEE-ATMOS-DDP-PREFERRED-DOWNMIX-SELECTED-PASS-READ-BOUNDARY-WASH-V1",
+      "manifest_sha256": "a6e1aa6c1f2cd4cce6fa80fc9cc8ee408b29f0a2ddeccd8a91f08ff782392e78",
+      "payloads": [
+        {"path": "SELECTED-PASS-READ-BOUNDARY.json", "sha256": "6630345d0f7d8c6da165a0577a8ff1e1e3684f5514e868c0a448b68ba521ed2a"}
+      ]
+    },
+    {
+      "package": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-PROCESSING-OWNER-ARGUMENT-BOUNDARY-WASH-V1",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/DEE-ATMOS-DDP-PREFERRED-DOWNMIX-PROCESSING-OWNER-ARGUMENT-BOUNDARY-WASH-V1",
+      "manifest_sha256": "c4c6c93d70c807419b24f1b6dd28f71e12c8e04373a1089f655a46507ada9f8b",
+      "payloads": [
+        {"path": "PROCESSING-OWNER-ARGUMENT-BOUNDARY.json", "sha256": "4a6dbf21afe998720192e6018e7b1c5b9d9d6c4c18d0bb0910052266227a8062"}
+      ]
+    },
+    {
+      "package": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FIRST-PASS-CHILD-BOUNDARY-WASH-V1",
+      "root": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FIRST-PASS-CHILD-BOUNDARY-WASH-V1",
+      "manifest_sha256": "4a6dcf7b774cfd18c3a5512d7e7e41517fcb81696519780bcf04d225234af3e2",
+      "payloads": [
+        {"path": "FIRST-PASS-CHILD-BOUNDARY.json", "sha256": "600d75d2721e597ae0f4fd6bbad47c5213b1bf2f9dd21431a675d8ab5cf6065a"}
+      ]
+    }
+  ],
+  "audit_boundary": {
+    "host_xml_enum_or_generic_routing_reanalyzed": false,
+    "new_product_or_source_wide_scan": false,
+    "dee_execution": false,
+    "pcm_payload_key_license_access": false,
+    "implementation_contact": false,
+    "ghidra_mode": "REUSED_GHIDRA_12_2_READ_ONLY_NO_ANALYSIS_RECEIPTS"
+  }
+}

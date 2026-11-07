@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "dee_time_base_host_setter_first_break_wash_v2",
+      "manifest_sha256": "d9eea08d1f4bf95d6dfa0fd59aa5be88757c7d2640629015fa3ba5aec92e701e",
+      "package_seal_sha256": "cdc83d686a490a15345adf158d74043f78d5f5166a34071f5b0fe00231ec5a83",
+      "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "reviewed_payloads": [
+        {"name": "FINDINGS.md", "sha256": "1d881966c5e241e66cf47ed727f51e79f3b7376686c0096cd5916517e70242a1"},
+        {"name": "HOST-EDGE.json", "sha256": "d06d3eb974f529e7f1a5defd8c871193ca0c732a5c9058c9c799665e9ad74214"},
+        {"name": "SOURCE-IDENTITIES.json", "sha256": "6286234b77482b76f6c07c4bb39174323b906a2050eb0c01caeb5b85de20a34f"}
+      ],
+      "parent_plugin_hash_discrepancy_handling": "Host parent 62-character report preserved as invalid and not used; canonical 64-character hash comes from the sealed plugin setter receipt."
+    }
+  ]
+}

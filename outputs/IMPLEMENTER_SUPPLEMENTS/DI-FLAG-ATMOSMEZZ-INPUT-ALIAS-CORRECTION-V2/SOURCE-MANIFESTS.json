@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.di_input_alias_correction_sources.v2",
+  "source_manifest_list_sha256": "5f4774fe7f935863014417e61719e83a1554c559e456e80475c9b1b1ffdea128",
+  "source_package_seal_sha256": "5d1d13b04a382d8f495515175c709b7823fb9d955536a629e1974d950a52fcc8",
+  "parent_package": {
+    "package_id": "di-flag-property-map-consumer-addendum-wash-v1",
+    "manifest_sha256": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971",
+    "package_seal_sha256": "3d7ab162b3b6623178e42f0d9a4a7adf878c6a76c724fb043094738b672c2772"
+  },
+  "screenshot_hashes": [
+    "ac150640143f417b075a720e0de49ef4d2ad50ff1d2a7fff3b4dac7e3e59b336",
+    "908b7421c948b52973c6bfc9433a82f65721e82bf216a7932b533ed4b20ff711"
+  ],
+  "screenshot_images_in_implementer_supplement": false,
+  "raw_dee_log_in_implementer_supplement": false
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "f13c-preferred-downmix-host-property-source-vectors.v3",
+  "status": "REUSED_PREPARED_NOT_RUN",
+  "source_package": "F13C-preferred-downmix-atmos-mezz-ab-preflight-reuse-v1",
+  "source_manifest_sha256": "b5378276df5b6a411775b2e727cce935d3d9e4e164eb198c739908eca9de5ef0",
+  "variants": [
+    {"id": "A_loro", "value": "loro", "xml_sha256": "4a8f7754b16d81611d0ff9e268c661fbb51b36eaaa405b420df670ef47eb9905"},
+    {"id": "B_ltrt", "value": "ltrt", "xml_sha256": "2049f5fcb5fcafc7e5bf121130e173d4d19ad02739d27a3ed730283de7c8fe7c"}
+  ],
+  "shared_data_rate_kbps": 1024,
+  "only_xml_difference": "preferred_downmix_mode",
+  "same_run_dme_job_capture": false,
+  "execution": "NOT_RUN"
+}

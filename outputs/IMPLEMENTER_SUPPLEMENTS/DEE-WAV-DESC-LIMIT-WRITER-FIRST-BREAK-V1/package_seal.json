@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-WAV-DESC-LIMIT-WRITER-FIRST-BREAK-V1",
+  "manifest_sha256": "7bc353061c346d29cf371b4cd3814607318748aac32ca16c18d1b7079e0d8460",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SELECTED_DESC_CONSTRUCTOR_ZERO_INITIALIZER_AND_PLUS_0X88_CALL_BOUND; NONZERO_LIMIT_WRITER_UNBOUND; OTHER_CONSTRUCTOR_CALLER_NOT_FOLLOWED"
+}

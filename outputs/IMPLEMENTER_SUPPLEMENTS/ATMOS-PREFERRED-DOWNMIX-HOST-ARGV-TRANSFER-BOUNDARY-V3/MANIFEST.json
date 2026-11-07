@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-HOST-ARGV-TRANSFER-BOUNDARY-V3",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_COMPOSITE_ENCODER_TO_CHILD_ARGV_BOUND_STATIC_CONDITIONAL; NATIVE_PARSE_UNBOUND; EFFECTS_UNBOUND",
+  "implementation_disposition": "Use only as a conditional host argv transfer fact; do not infer native option acceptance or audio effect",
+  "source_manifest_sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3290,
+      "sha256": "a73b4b1c2b82ddc4bf512e4b6f798c98a01378c644caa2fc7221bd0505db3051"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2325,
+      "sha256": "2c7fbc73247b22ae2398f64c976c12db8b2af5347e3681e5b5f5eca141676e4f"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 578,
+      "sha256": "739c8d6a47870fd5d91ce68a4b4e4dde1e1bf2e8a706bc68080b1cb2fa5e5757"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2036,
+      "sha256": "1d2183bd521f359165950bc42721577fc326bc6a770d46b260c91c93d91dc7d1"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 466,
+      "sha256": "f18e7d140aad7c41b9e9825f9a21ccd1a4bdaefeec35178f7f60d2816d935cfb"
+    },
+    {
+      "name": "UPSTREAM-INPUT-ONLY-VECTORS.json",
+      "bytes": 696,
+      "sha256": "def5d35a95256c8e00de118547253ff5c69059898765107085f09d031ab4596b"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 2375,
+      "sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6"
+    },
+    {
+      "name": "UPSTREAM-SHA256SUMS.txt",
+      "bytes": 508,
+      "sha256": "3b074606eadcc8e96617e77347496a5d6bd280332d1ca85a0ba67a43a44ef17e"
+    },
+    {
+      "name": "UPSTREAM-SOURCE-MANIFESTS.json",
+      "bytes": 4479,
+      "sha256": "010324cab37441a37aa65f4186eef0fea6b296e739c3325d81eca49b9a6ddab2"
+    }
+  ]
+}

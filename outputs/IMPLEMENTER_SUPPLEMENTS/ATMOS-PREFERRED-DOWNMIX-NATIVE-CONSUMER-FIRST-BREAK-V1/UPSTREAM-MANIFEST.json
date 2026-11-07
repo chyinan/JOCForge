@@ -1,0 +1,54 @@
+{
+  "format": "wash-evidence-package-v1",
+  "package": "F13C-preferred-downmix-native-consumer-first-break-v1",
+  "recipient": "Wash-only",
+  "target": "dee_ddpjoc_encoder.exe",
+  "target_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+  "ghidra_version": "12.2 PUBLIC",
+  "first_break_status": "UNBOUND",
+  "effect_classification": "UNBOUND",
+  "first_break": "preferred_downmix_mode XML string -> typed native ddp_dmixmod owner/consumer",
+  "conclusion": "The selected LoRo/LtRt property value does not join to the separate native dmixmod validator or a typed ddp_dmixmod read. No 5.1/JOC audio or BSI/metadata consumer was reached.",
+  "execution_scope": {
+    "reused_ghidra_12_2_receipts_only": true,
+    "new_ghidra_query_run": false,
+    "ida_used": false,
+    "dee_run": false,
+    "ab_run": false,
+    "windbg_attached": false,
+    "media_read": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "key_read": false,
+    "license_read": false,
+    "implementation_contacted": false,
+    "spatial_object_rendering": "NOT_COVERED"
+  },
+  "payloads": [
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "69baf07f84300f56ef81823e84ed3dc11575697a6f248e0a0d68c160929090b8",
+      "size_bytes": 697
+    },
+    {
+      "path": "PROPERTY-CONSUMER-BOUNDARY.json",
+      "sha256": "bfc32e654ee241bbb16d4db2dbe1c722c3fa754aa6a13a31d8147c4252cd1f8a",
+      "size_bytes": 3250
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "fb3b1a6239f46ee9b6a5ac23320ef762b1ae9c6e750896c3ebd6f44172c18b57",
+      "size_bytes": 2280
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "sha256": "d2b8030bcf98b6696c5f34ae5bb0e20bde1ea0c8e482db9d72a954902e79cc1b",
+      "size_bytes": 3367
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "77b59633050158a35279b8168cbf65fe15f553bd08bf84a1d3af58a089992d15",
+      "size_bytes": 6530
+    }
+  ]
+}

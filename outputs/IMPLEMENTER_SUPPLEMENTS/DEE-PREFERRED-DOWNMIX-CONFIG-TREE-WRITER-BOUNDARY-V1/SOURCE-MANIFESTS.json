@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "preferred_downmix_encoder_config_tree_writer_boundary_wash_v1",
+      "manifest_sha256": "eab045aee24d204d1a7b576aff79ec3c42d90d6db3af7bf5b244e702d5f983b4",
+      "evidence_sha256": "31f733861d99c776ed3f92a3eaf5eb914792daffeecb45075ac71a4839c7b58c"
+    },
+    {
+      "package_id": "DEE-PREFERRED-DOWNMIX-CLI-ARGV-SEMANTIC-BOUNDARY-V2",
+      "manifest_sha256": "a86ff9e516f43370fc0cf213707bdf49fb53212ca622708206436aaae3ce051c",
+      "package_seal_sha256": "830d630471ee0b5235ff56b706bb1a08e714404480308b570a8293b370dec7e1"
+    },
+    {
+      "package_id": "DEE-PREFERRED-DOWNMIX-CLI-ARGV-STORAGE-BOUNDARY-V1",
+      "manifest_sha256": "a168d53ca33fba23029b02bfa319188ccea84895e6ee597f2bd9859f7d135007",
+      "package_seal_sha256": "eff2780bb1bb7e8d6664493ac06f91a8f31871143a44d8db8aa5cb6845a144fe"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

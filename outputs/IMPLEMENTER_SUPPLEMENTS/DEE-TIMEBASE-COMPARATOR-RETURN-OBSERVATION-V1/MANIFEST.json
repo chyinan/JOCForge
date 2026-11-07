@@ -1,0 +1,25 @@
+{
+  "package_id": "DEE-TIMEBASE-COMPARATOR-RETURN-OBSERVATION-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1411,
+      "sha256": "a12b15e382ee11bdec81dccd394855d649909c39c3246859d9bf712628c3120f"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 244,
+      "sha256": "7328cb7fa00edc5072d33af84a9cb7dfb833f29f9021b77d4b11971f634ca090"
+    },
+    {
+      "name": "OBSERVATION.json",
+      "bytes": 812,
+      "sha256": "dc902c4035b130803bb18f5ef5617e46c12809295f5c677574278ac26f3dfa55"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 446,
+      "sha256": "b625011ac727f0f12b113b660b9d4eedd8be6b1c6eab60f45bf2989ef8c79881"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.dee_preferred_downmix_field_list_copy_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-FIELD-LIST-COPY-BOUNDARY-V1",
+  "status": {
+    "selected_field_pointer_vector_copy": "STATICALLY_BOUND",
+    "separate_parameters_container_owner": "STATICALLY_BOUND_PRIV_PLUS_0EC0",
+    "priv_plus_0x210_member_type_or_vptr_writer": "UNBOUND",
+    "ordinal_to_member_join": "UNBOUND",
+    "first_audio_or_bsi_consumer": "UNBOUND",
+    "runtime_generation_or_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FIELD-LIST-CONSUMER-BOUNDARY-WASH-V1",
+    "manifest_sha256": "68b826e4383c1b71ee4023a8045ad8eefa5d7f61825eb5064a9fc0882de4f29a",
+    "checksum_list_sha256": "13e560ed3a004fb335a9d066ba30b10dbac14ee08a945fbd51af190e4eea3c39",
+    "field_list_evidence_sha256": "14eb22b13aaefa4b7ffd0ed92a3f84abb871c1bbc1cdf339cbc642009fc0bc2b",
+    "analysis_tool": "Ghidra 12.2 PUBLIC read-only/no-analysis",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "path": {
+    "builder": "FUN_180135d40",
+    "container_constructor": "FUN_1801a2580 at 0x180135f5b",
+    "separate_output_object": "dee::ParametersContainer at Priv+0xec0",
+    "separate_vptr_write": "dee::ParametersContainer::vftable, not the Priv+0x210 member",
+    "vector_copy_helper": "FUN_1801a23e0 at 0x1801a25fc",
+    "vector_operation": "qword count from bounds, allocation, byte-copy of pointer vector; elements are not dereferenced"
+  },
+  "limits": {
+    "dee_executed": false,
+    "xml_job_run": false,
+    "media_or_pcm_read": false,
+    "payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contacted": false,
+    "displacement_wide_scan": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Keep the separate ParametersContainer initialization distinct from the Priv+0x210 list element. Do not infer MixMode identity from the vector copy or offsets."
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.time_base_selected_proxy_setter_chain.v1",
+  "package_id": "DEE-TIME-BASE-SELECTED-PROXY-SETTER-CHAIN-BOUNDARY-V1",
+  "source": {
+    "package_id": "DEE-ATMOS-DDP-TIME-BASE-PROXY-SETTER-CHAIN-WASH-V1",
+    "manifest_sha256": "172f69569673e605bb1d0077317cc4c62e7082d19fbee81e56006cdd7c947717",
+    "sha256sums_file_sha256": "c6ff39336cdd9d5a802062e142a37795b6021caa04577c76d22d1d312922a121",
+    "standalone_package_seal": "NOT_PROVIDED"
+  },
+  "static_chain": {
+    "registered_callback_to_stage_factory_descriptor": "BOUND_STATIC",
+    "selected_key": "encode_to_atmos_ddp",
+    "key_to_ddp_factory_class": "BOUND_STATIC",
+    "descriptor_vtable_plus_0x30_to_proxy": "BOUND_STATIC",
+    "proxy_vptr_and_property_slot_plus_0x08": "BOUND_STATIC",
+    "slot_to_nested_stage_setter": "BOUND_STATIC",
+    "runtime_object_identity": "NOT_CAPTURED"
+  },
+  "time_base_field": {
+    "descriptor_offset": "+0x550",
+    "direct_operand_in_selected_setter_body": "NOT_OBSERVED",
+    "helper_or_indirect_downstream_writer": "UNBOUND",
+    "xml_value_or_omission_to_descriptor": "UNBOUND"
+  },
+  "scope": {
+    "ghidra": "12.2 read-only/no-analysis",
+    "dee_run": false,
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

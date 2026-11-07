@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-MIXMODE-INITIAL-VALUE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "MIXMODE_PREEXISTING_VALUE_ORIGIN_UNBOUND; DEFAULT_NOT_CONFIRMED",
+  "implementation_disposition": "Do not supply a guessed zero/default. Preserve the pre-existing MixMode value source as unbound.",
+  "source_manifest_sha256": "6be2353eba98fc3d79247f1f61d2c5777f6c913c13ab08235b098fe208ba1125",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4128,
+      "sha256": "b26e5a3f5e35b76fd7fc233efa16bb369c82234aaf1f0f4e380b16fffaf8bd46"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1355,
+      "sha256": "410a3b2fdb95416b4ca89dabe1f20e13dc2dc8a090b3873a5a391703b1bc23ae"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 200,
+      "sha256": "808cc1fe90de5ccb9c6ac0ec0eea55b18f81f2abb936918f7209d9396c017771"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1290,
+      "sha256": "0f35d206c260fb120c2ac82e598587698c150e23b9f235bbc12b3b193f21b450"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 933,
+      "sha256": "9818b1fba78edc8c76e4be1effded2c3139dc8c5be78efb93a3bfdc40c3c3aa1"
+    }
+  ]
+}

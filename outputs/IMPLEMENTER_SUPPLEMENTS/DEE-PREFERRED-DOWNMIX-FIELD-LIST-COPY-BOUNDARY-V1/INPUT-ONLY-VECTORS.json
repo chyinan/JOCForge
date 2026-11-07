@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_RUNTIME_VECTOR_PROVIDED",
+  "vectors": [],
+  "note": "Static constructor/vector-copy evidence only; no XML runtime value or media is included."
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.preferred_downmix_config_tree_observer_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CONFIG-TREE-OBSERVER-BOUNDARY-V1",
+  "status": {
+    "parsed_records_to_app_config_tree_this_plus_0x18": "STATICALLY_BOUND_BY_PARENT",
+    "first_observer": "FUN_1400b46b0",
+    "observer_behavior": "REQUIRED_AND_CONFLICT_OPTION_CHECKS",
+    "observer_receives_this_plus_0x360_storage": "FALSE_STATIC",
+    "observer_to_typed_encoder_notify_or_store": "UNBOUND_STATIC",
+    "actual_child_argv": "NOT_CAPTURED",
+    "runtime_branch": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "preferred_downmix_encoder_config_tree_first_observer_wash_v1",
+    "manifest_sha256": "1e4d12e16da249b43c3ca0acc2d0316d21ce85bc196ec06d1ef6d190171d6a71",
+    "report_sha256": "e7b584f4c5cebd8c80649d044fc1c3d5d404ae7e4580e1a7cf2fb18864828aad",
+    "evidence_sha256": "e61db722d09819da1994ec68f22bb2c8709c8e7376f210deeacc584d6c977ada",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis"
+  },
+  "path": {
+    "runner": "FUN_1400b5310",
+    "observer_callsite": "0x1400b5372",
+    "observer": "FUN_1400b46b0",
+    "config_tree_argument": "DdpjocEncoderApp this+0x18 in R8",
+    "required_option_helper": "FUN_1401d8ea0",
+    "conflict_validator": "FUN_1401d8bb0",
+    "typed_storage_target": "DdpjocEncoderApp this+0x360; not passed to this observer"
+  },
+  "limits": {
+    "dee_executed": false,
+    "child_argv_captured": false,
+    "media_or_pcm_read": false,
+    "payload_key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "This is the first config observer, not a typed encoder storage writer; keep the write edge unbound."
+}

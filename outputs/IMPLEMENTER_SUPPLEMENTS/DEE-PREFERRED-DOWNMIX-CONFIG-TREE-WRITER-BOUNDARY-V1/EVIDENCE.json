@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.preferred_downmix_config_tree_writer_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CONFIG-TREE-WRITER-BOUNDARY-V1",
+  "status": {
+    "config_tree_merge_call": "STATICALLY_BOUND",
+    "semantic_parse_vcall_slot_plus_0x28": "STATIC_CALLSITE_BOUND_DYNAMIC_TARGET",
+    "first_option_value_write": "STATICALLY_BOUND_AT_RBX_PLUS_0x40",
+    "config_tree_destination": "DdpjocEncoderApp_THIS_PLUS_0x18",
+    "semantic_identity_as_encoder_typed_value": "UNBOUND_STATIC",
+    "config_tree_to_this_plus_0x360_writer": "UNBOUND_STATIC",
+    "actual_child_argv": "NOT_CAPTURED",
+    "runtime_branch": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "preferred_downmix_encoder_config_tree_writer_boundary_wash_v1",
+    "manifest_sha256": "eab045aee24d204d1a7b576aff79ec3c42d90d6db3af7bf5b244e702d5f983b4",
+    "evidence_sha256": "31f733861d99c776ed3f92a3eaf5eb914792daffeecb45075ac71a4839c7b58c",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis"
+  },
+  "path": {
+    "caller": "FUN_1401da950 at 0x1401daab6",
+    "merge": "FUN_1402a3350",
+    "destination": "DdpjocEncoderApp this+0x18 config tree",
+    "semantic_vcall": "FUN_1402a3350 at 0x1402a3881, slot +0x28",
+    "vcall_arguments": "RCX semantic interface; RDX=RBX+0x40 option value slot; R8 parsed option range; R9D mode/flag",
+    "first_value_destination": "RBX+0x40 intermediate option record",
+    "later_merge": "FUN_1402a2470 updates intermediate tree, then FUN_1402a3350 merges into app tree",
+    "separate_typed_encoder_storage": "DdpjocEncoderApp this+0x360; no pointer edge observed"
+  },
+  "limits": {
+    "dee_executed": false,
+    "child_argv_captured": false,
+    "media_or_pcm_read": false,
+    "payload_key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Keep the parsed intermediate option record/config tree distinct from the typed encoder string storage; do not infer a +0x360 write."
+}

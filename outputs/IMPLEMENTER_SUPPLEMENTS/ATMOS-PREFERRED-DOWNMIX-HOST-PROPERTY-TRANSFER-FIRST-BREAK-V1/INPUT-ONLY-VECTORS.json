@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.preferred_downmix_host_property_input_vectors.v1",
+  "status": "PREPARED_NOT_RUN",
+  "source_package_manifest_sha256": "12d878c0a32c593269f07c1d6fe79d925c7f8be0c97fa4527f51f30e7c4c1f99",
+  "prepared_candidate_pair": {
+    "input_type": "atmos_mezz",
+    "data_rate_kbps": 1024,
+    "mix_levels_db": [-3, -3, -3, -3],
+    "only_changed_xml_leaf": "preferred_downmix_mode",
+    "variants": [
+      {"value": "loro", "xml_sha256": "4a8f7754b16d81611d0ff9e268c661fbb51b36eaaa405b420df670ef47eb9905", "run": "NOT_RUN"},
+      {"value": "ltrt", "xml_sha256": "2049f5fcb5fcafc7e5bf121130e173d4d19ad02739d27a3ed730283de7c8fe7c", "run": "NOT_RUN"}
+    ]
+  },
+  "runtime_ui_property_or_argument_capture": "NOT_CAPTURED",
+  "pcm_or_encoded_payload_included": false,
+  "dee_run": false
+}

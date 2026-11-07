@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "timebase-generic-setter-boundary",
+      "kind": "static-host-dispatch-summary",
+      "input": {
+        "key_values": "bounded source/target routing properties"
+      },
+      "observed": {
+        "descriptor_plus550_operand": false,
+        "concrete_proxy_target": "UNBOUND"
+      },
+      "status": "GENERIC_EDGE_BOUND; DDP_OPTION_TRANSFER_UNBOUND"
+    }
+  ]
+}

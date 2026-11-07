@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash-source-manifests.v1",
+  "sources": [
+    {
+      "package_id": "dialogue_sample_selection_consumer_addendum",
+      "manifest_sha256": "17d122408803bed5e3026cfe7dc42bbadd5d1728fb9c4fda0c8040e16f623db1",
+      "package_seal_sha256": "7ff573ef2be516f152d9e39440cee25675fb3391b4bb22fee6756c896be5ae73",
+      "scope": "Endpoint values to I/O-set metadata indexing; no audio-frame clipping join."
+    },
+    {
+      "package_id": "dialogue_time_range_addendum",
+      "package_seal_sha256": "f584c9f55772ddabe61d2446bb388d9aa814f32a7ea0f3b6f5419aa37dbebcc2",
+      "scope": "Existing seconds/file_position conversion boundary."
+    },
+    {
+      "package_id": "dialogue_intelligence_audio_path_closure_v1",
+      "package_seal_sha256": "ae27d287098e247a1973a24b338b5cd49d8a20a8656935cf4c4828b5d5608fa3",
+      "scope": "Existing reader/audio-path boundary reused by the source package."
+    }
+  ],
+  "source_checker_normal_and_python_o": "PASS",
+  "parent_seal_hashes_reverified": true,
+  "raw_research_payload_copied": false
+}

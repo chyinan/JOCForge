@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-PROXY-SETTER-CHAIN-WASH-V1",
+  "manifest_sha256": "172f69569673e605bb1d0077317cc4c62e7082d19fbee81e56006cdd7c947717",
+  "sha256sums_file_sha256": "c6ff39336cdd9d5a802062e142a37795b6021caa04577c76d22d1d312922a121",
+  "standalone_seal_file": "NOT_PROVIDED",
+  "source_verifier_normal_and_optimized": "PASS",
+  "raw_ghidra_scripts_or_logs_copied": false
+}

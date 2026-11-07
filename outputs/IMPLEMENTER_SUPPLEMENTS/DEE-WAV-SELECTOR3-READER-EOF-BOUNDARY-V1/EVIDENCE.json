@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.wav_selector3_reader_eof_boundary.v1",
+  "package_id": "DEE-WAV-SELECTOR3-READER-EOF-BOUNDARY-V1",
+  "status": {
+    "suffix_to_selector": "BOUND_STATIC",
+    "registry_slot_expression": "BOUND_STATIC",
+    "concrete_callback": "UNBOUND_RUNTIME_REGISTRY_CALLBACK",
+    "storage_read_vtable_implementation": "UNBOUND",
+    "offset_count_request_shape": "BOUND_IN_WRAPPER",
+    "endSample_minus_one_read": "NOT_CAPTURED",
+    "final_eof_predicate": "UNBOUND",
+    "sample_specific_provider": "NOT_CAPTURED"
+  },
+  "source_package": {
+    "package_id": "dialogue_wav_provider_dispatch_addendum",
+    "manifest_sha256": "cf989438b3d4bc1c0d691504dc521e68881a2458bb27b4cc85391f1a36ac791a",
+    "package_seal_sha256": "58a81486835f87be5a3535490d79551884a2772c8890042431e57760afe8c489",
+    "verifier_normal": "PASS",
+    "verifier_python_o": "PASS"
+  },
+  "binary_identity": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "dispatch": {
+    "suffix": "wav",
+    "selector": 3,
+    "registry_expression": "param1+8+selector*8",
+    "slot_expression": "param1+0x20",
+    "open_callsite_rva": "0x4cc2c2",
+    "read_wrapper": "FUN_1805369a0 -> FUN_1804cc430 -> receiver vtable +0xd8"
+  },
+  "existing_receipt": {
+    "sample": "human_is_cat",
+    "input_alias": "human_is_cat_ascii.wav",
+    "range": "full file",
+    "successful_runs": 2,
+    "registry_pointer_or_callback": "NOT_CAPTURED",
+    "run_status": "decoded_pair_compared"
+  },
+  "execution_scope": {
+    "new_dee_run": false,
+    "decode": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "media_file_in_supplement": false
+  },
+  "disposition": "Selector 3 dispatch and wrapper request shape are static facts. Do not claim the final sample is included or excluded."
+}

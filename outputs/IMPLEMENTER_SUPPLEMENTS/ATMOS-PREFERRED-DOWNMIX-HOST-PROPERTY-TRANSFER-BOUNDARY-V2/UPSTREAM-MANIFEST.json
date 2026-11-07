@@ -1,0 +1,58 @@
+{
+  "format": "wash-evidence-package-v1",
+  "package": "F13C-preferred-downmix-host-property-transfer-boundary-v2",
+  "supersedes": {
+    "package": "F13C-preferred-downmix-host-property-transfer-first-break-v1",
+    "manifest_sha256": "12d878c0a32c593269f07c1d6fe79d925c7f8be0c97fa4527f51f30e7c4c1f99",
+    "reason": "v2 binds the exact DME app config method's valuesToCombineMap entry to its composite --encoder serializer."
+  },
+  "recipient": "Wash-only",
+  "target": "dee_ddpjoc_encoder.exe",
+  "target_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+  "ghidra_version": "12.2 PUBLIC",
+  "first_break_status": "UNBOUND",
+  "effect_classification": "UNBOUND",
+  "conclusion": "The hash-matched DME app source conditionally serializes preferred_downmix_mode inside the composite --encoder property. Its key remains preferred_downmix_mode; no link to the separate native dmixmod typed owner/consumer or to the prepared candidate XML as a same-run DME job is established.",
+  "execution_scope": {
+    "dme_app_source_only_static": true,
+    "app_asar_sha256_recomputed": true,
+    "new_ghidra_query_run": false,
+    "ida_used": false,
+    "dee_run": false,
+    "ab_run": false,
+    "windbg_attached": false,
+    "media_read": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "key_read": false,
+    "license_read": false,
+    "implementation_contacted": false
+  },
+  "payloads": [
+    {
+      "path": "HOST-PROPERTY-TRANSFER.json",
+      "sha256": "27cefdd81f9108536396fe3c251c92180c1025fe1a11e7debc41af8d7cfe8903",
+      "size_bytes": 4519
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "32874f69fb98ae6960bfa2c5587d6c438544369bee9446348e4198c38b74072b",
+      "size_bytes": 658
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "1c2e22076ffceae50a97445613434aa08cf5ba03ca67bc0e3812163ba7aa8f5d",
+      "size_bytes": 2433
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "sha256": "4d6ad63c5ae6655b2b5f0100fd8e69781cb94860e6fbbf022da9c1ed27dfd4bb",
+      "size_bytes": 4808
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "e418ab22bf2079d42f3bcad7001fa63217529bfd8e1a6d0372ae60d998691132",
+      "size_bytes": 10865
+    }
+  ]
+}

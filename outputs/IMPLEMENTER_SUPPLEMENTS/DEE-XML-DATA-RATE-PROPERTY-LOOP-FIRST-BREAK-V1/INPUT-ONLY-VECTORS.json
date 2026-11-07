@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-data-rate-property-loop-vectors.v1",
+  "scope": "Caller branch shape only; no concrete data_rate leaf value was followed.",
+  "runtime_status": "NOT_RUN",
+  "edges": [
+    "candidate XML node -> opaque boolean gate FUN_140054fe0",
+    "gate true branch -> generic record conversion candidate FUN_1400244c0",
+    "generic output -> 0x68-byte iteration through FUN_140072630"
+  ],
+  "data_rate_record_identity": "UNBOUND",
+  "new_runtime_vectors": [],
+  "pcm_payload_key_license_accessed": false
+}

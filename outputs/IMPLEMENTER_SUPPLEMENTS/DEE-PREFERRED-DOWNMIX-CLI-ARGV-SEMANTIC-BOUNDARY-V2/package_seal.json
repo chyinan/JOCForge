@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CLI-ARGV-SEMANTIC-BOUNDARY-V2",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "a86ff9e516f43370fc0cf213707bdf49fb53212ca622708206436aaae3ce051c",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

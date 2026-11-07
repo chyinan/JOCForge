@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-TIME-BASE-HOST-TO-SETTER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_host_dispatch_path",
+      "package_id": "DEE-ADM-ATMOSMEZZ-TIME-BASE-HOST-DISPATCH-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-TIME-BASE-HOST-DISPATCH-WASH-V1",
+      "checksum_list_sha256": "ab65d0d6774e842e59d3dc9f85e33eb1aa66474635d91b270dc8cd0dd144c8dc",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    }
+  ],
+  "inherited_time_base_receipts": {
+    "setter_default": {
+      "wash_package_id": "DEE-ADM-TIME-BASE-DEFAULT-SETTER-PRODUCER-V1",
+      "manifest_sha256": "5495ac7a41da20518ebb91cb8d00a1edae8b80f1f5d9555890ee196a6593193a",
+      "seal_sha256": "1a515a1813fb6e9f74112844072e95db52d21aa05ad686e1e3f1b09e8d1ccf12"
+    },
+    "sample_range_consumer": {
+      "wash_package_id": "DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1",
+      "manifest_sha256": "8ec2de3c452aded30a5aad5a370e93fdcae958ebc6f516c18265ca76c16437f1",
+      "seal_sha256": "273db15bdc1196598f36a0f2f2439ee8837a9e36a3985c0267ba7d1ea88c4ca2"
+    }
+  },
+  "omitted_material": {
+    "raw_ghidra_logs_or_scripts": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true
+  }
+}

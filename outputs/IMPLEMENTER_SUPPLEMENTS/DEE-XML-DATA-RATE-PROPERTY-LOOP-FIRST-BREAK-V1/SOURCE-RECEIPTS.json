@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-data-rate-property-loop-first-break-receipts.v1",
+  "source_package": "data-rate-xml-record-producer-gap-wash-v1",
+  "source_path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/data-rate-xml-record-producer-gap-wash-v1",
+  "manifest_sha256": "a2dcc70797bd030299419c3c1b28816c8b6bcac9728c01c16219db095a566d45",
+  "package_seal_sha256": "f6d1ca618f010316d208f9907df3c313f6db7dfeb6c033756bddc90c2035b6b7",
+  "normal_checker": "PASS_IN_WASH",
+  "optimized_checker": "PASS_IN_WASH",
+  "target_image_identity_reused": true,
+  "runtime_status": "NOT_RUN"
+}

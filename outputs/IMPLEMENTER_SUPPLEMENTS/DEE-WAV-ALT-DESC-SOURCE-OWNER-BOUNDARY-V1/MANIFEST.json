@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-WAV-ALT-DESC-SOURCE-OWNER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FACTORY_SLOT_PLUS_0X20_SOURCE_VALUE_TRANSFER_STATIC_BOUND; SOURCE_POINTEE_OWNER_UNBOUND; SELECTED_DESC_IDENTITY_UNBOUND",
+  "implementation_ready": false,
+  "source_manifest_sha256": "936285bdcff2f19ae29578f4c1703439127797391cc604174fadc0a9d646945a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2143,
+      "sha256": "c27dc51f435d98125ecf5772eced937611051eb7cd62a50f94fbabbdcfc4e4a5"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2366,
+      "sha256": "06349c7e212cdc409fb395394913f046cd9ecc69159e759287fa082f1502f678"
+    },
+    "REPORT.md": {
+      "bytes": 1201,
+      "sha256": "5075dd45028365fce70b6049cad4c2e49f34e783ddf77660ab949641df00c643"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1533,
+      "sha256": "00b268a09b19c7c94dae921f9eb7bc10bb5f72f5ca62767b3ec291faedffd0ab"
+    }
+  }
+}

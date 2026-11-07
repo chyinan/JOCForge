@@ -1,0 +1,12 @@
+{
+  "parsed_job_config_to_same_StageRunner": "BOUND_STATIC",
+  "filter_audio_subtree": "StageRunner+0x68",
+  "selected_DDP_proxy": "StageRunner+0x270",
+  "dispatch": "property key/value copied into plugin option tree",
+  "Priv+0x550_StringType_setter": "BOUND_STATIC",
+  "explicit_valid_value": "overrides initialized default",
+  "descriptor_default": "file_position",
+  "omitted_XML_default_materialization": "UNBOUND",
+  "specific_runtime_acceptance": "NOT_CAPTURED",
+  "E203_nonzero": "not embedded_timecode only; not upgraded to file_position"
+}

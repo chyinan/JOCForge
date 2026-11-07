@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "ARGV_SHAPE_STATIC_ONLY_NO_RUNTIME_VALUES",
+  "vectors": [],
+  "note": "The trace binds argv vector shape and static argument forwarding only; actual child argv contents were not captured."
+}

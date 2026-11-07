@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream_package": {
+    "package_id": "dee_atmos_ddp_silence_count_reader_cursor_wash_v1",
+    "workspace": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/dee_atmos_ddp_silence_count_reader_cursor_wash_v1",
+    "manifest_sha256": "2b5f430ccff98522a432b229dcce77c6667b7c482c49c9f0b9d190a3f21013ea",
+    "package_seal_sha256": "4465b6a00a734ff062dbd392535638b956c0862622650e03ff4ad71b7d51bd41",
+    "binary_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "independent_audit": {
+    "declared_package_artifacts": 34,
+    "matched_artifacts": 34,
+    "mismatches": 0,
+    "manifest_sha_file_matches": true,
+    "seal_manifest_link_matches": true,
+    "checker_status": "NOT_RERUN"
+  },
+  "scope": "This supplement explicitly retracts only the provisional direct per-source-vector to reader-cursor/limit join. No raw Ghidra scripts or logs are included."
+}

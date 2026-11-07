@@ -1,0 +1,59 @@
+{
+  "schema": "wash-wav-storage-provider-input-v1",
+  "source_binary": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "ghidra": {
+    "version": "12.2",
+    "project": "empire_scalar_trace",
+    "read_only": true,
+    "analysis_disabled": true
+  },
+  "parent_packages": [
+    {
+      "path": "work/encoder_analysis/reports/dialogue_storage_reader_eof_addendum/PACKAGE-SEAL.json",
+      "sha256": "f6f1f729cf3e3b2f075de470d9edc08c70c9512ea517e865b694edd1504f9165"
+    }
+  ],
+  "run_receipt": {
+    "path": "work/encoder_analysis/reports/di_encoded_audio_pair_wash_receipt/receipt.json",
+    "sha256": "15d7c5a5c8c29993ec17149268ff1dcd2d4cca4b93e244b1f98ec1cfc793cd92",
+    "run_status_path": "work/encoder_analysis/reports/di_encoded_audio_pair_wash_receipt/dee_run_status.json",
+    "run_status_sha256": "f61df2892c9569563020d70e9af5303b10e4600d56d1ffc54586428f6e92baca",
+    "sample": "human_is_cat",
+    "input_alias": "human_is_cat_ascii.wav",
+    "range": "full file",
+    "successful_runs": 2,
+    "provider_callback_target": "NOT_CAPTURED"
+  },
+  "provider_dispatch": {
+    "suffix": "wav",
+    "selector": 3,
+    "registry_entry_expression": "param1 + 8 + selector*8",
+    "wav_registry_slot_expression": "param1 + 0x20",
+    "provider_open_callback_site_rva": "0x4cc2c2",
+    "provider_open_callback_target": "UNBOUND",
+    "master_source_read_thunk": "FUN_1805369a0 -> FUN_1804cc430 -> receiver vtable +0xd8",
+    "storage_read_vtable_target": "UNBOUND"
+  },
+  "disposition": {
+    "concrete_wav_provider_type": "UNBOUND beyond selector 3",
+    "read_callback_implementation": "UNBOUND at runtime registry callback",
+    "sample_offset_count_request_shape": "BOUND in wrapper",
+    "end_sample_minus_one_read": "NOT_CAPTURED",
+    "final_storage_eof_predicate": "UNBOUND",
+    "receipt_selects_provider_branch": "NO"
+  },
+  "not_run": {
+    "dee": true,
+    "decode": true,
+    "pcm_or_payload_read": true,
+    "runtime_provider_pointer_capture": true,
+    "storage_reader_execution": true,
+    "key_or_license_read": true,
+    "implementation_contact": true
+  }
+}

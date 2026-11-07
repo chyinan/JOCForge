@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge.dme_preferred_downmix_enum_serialization.v1",
+  "package_id": "DME-PREFERRED-DOWNMIX-ENUM-SERIALIZATION-V1",
+  "status": {
+    "dme_host_enum_values": "BOUND_STATIC_THREE_VALUES",
+    "exact_string_mapping": "BOUND_STATIC",
+    "active_gate_and_serialization": "BOUND_STATIC",
+    "fourth_explicit_enum": "NOT_PRESENT_IN_HASHED_DME_HOST_SCHEMA_OR_HANDLER",
+    "job_xml_schema_join": "UNBOUND",
+    "dee_native_parser_and_typed_consumer": "UNBOUND",
+    "runtime_user_value": "NOT_CAPTURED",
+    "audio_or_bsi_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "F13C-preferred-downmix-enum-serialization-addendum-v1",
+    "manifest_sha256": "c30e7eb3c4577ff81d25105e0e1011379d15431068e01e918ba96e759a359eb5",
+    "formal_seal": "NOT_PRESENT",
+    "verifier_normal": "PASS",
+    "verifier_python_o": "PASS"
+  },
+  "source_identity": {
+    "source_kind": "DME app.asar static host source",
+    "app_sha256": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+    "app_bytes": 15462158,
+    "property_path": "DolbyDigitalPlusOnlineMedia.DownmixOptions.PreferredStereoDownmix"
+  },
+  "enum_mapping": [
+    {"label":"Stereo","token":"loro"},
+    {"label":"Surround","token":"ltrt"},
+    {"label":"Not Indicated","token":"not_indicated"}
+  ],
+  "mapping_rule": {
+    "input_type": "case-sensitive JavaScript string label",
+    "normalization": "exact Map lookup; no trim, case folding, numeric conversion, or fallback",
+    "unknown_label": "throws; enclosing config method reports error 400",
+    "mapping_order": "evaluated while valuesToCombineMap is built, before active gate",
+    "inactive_valid_member": "mapped then omitted",
+    "active_member": "serialized inside --encoder composite"
+  },
+  "static_template_default": {
+    "schema_active": false,
+    "schema_value": "Stereo",
+    "initial_state_active": false,
+    "initial_state_value": "Stereo",
+    "runtime_or_persisted_value": "NOT_CAPTURED"
+  },
+  "serialization": {
+    "outer_key": "--encoder",
+    "atmos_mode_only": {
+      "loro":"preferred_downmix_mode=loro",
+      "ltrt":"preferred_downmix_mode=ltrt",
+      "not_indicated":"preferred_downmix_mode=not_indicated"
+    },
+    "other_mode_only": {
+      "loro":"ddp:preferred_downmix_mode=loro",
+      "ltrt":"ddp:preferred_downmix_mode=ltrt",
+      "not_indicated":"ddp:preferred_downmix_mode=not_indicated"
+    },
+    "inactive_behavior": "preferred_downmix_mode member omitted; other active members remain; outer --encoder stays constructed"
+  },
+  "execution_scope": {
+    "dme_source_static_only": true,
+    "ui_or_dme_run": false,
+    "dee_run": false,
+    "ab_run": false,
+    "media_pcm_payload_key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

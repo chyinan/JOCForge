@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.dme_preferred_downmix_source_vectors.v1",
+  "status": "SOURCE_DERIVED_NOT_EXECUTED",
+  "execution": "NOT_RUN",
+  "scope": "DME host string mapping and composite serialization only; not DEE job XML acceptance or audio output.",
+  "cases": [
+    {"active":true,"label":"Stereo","token":"loro","atmos":"preferred_downmix_mode=loro","other":"ddp:preferred_downmix_mode=loro"},
+    {"active":true,"label":"Surround","token":"ltrt","atmos":"preferred_downmix_mode=ltrt","other":"ddp:preferred_downmix_mode=ltrt"},
+    {"active":true,"label":"Not Indicated","token":"not_indicated","atmos":"preferred_downmix_mode=not_indicated","other":"ddp:preferred_downmix_mode=not_indicated"},
+    {"active":false,"static_template_label":"Stereo","mapped_before_gate":"loro","member_serialized":false,"runtime_default_inferred":false}
+  ],
+  "fourth_enum": "NOT_PRESENT_IN_HASHED_DME_HOST_SCHEMA_OR_HANDLER",
+  "native_audio_effect": "UNBOUND"
+}

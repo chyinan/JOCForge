@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge.preferred_downmix_host_transfer_sources.v2",
+  "upstream_manifest_sha256": "10e1580e55c9b33f4b65c17fa00b8060eab81ad71227c210cc491e8638dc6979",
+  "upstream_sha256sums_sha256": "2248f9f96bf49e4f88ddad0cd9e0bda0c32da832d16e50e7cb5d58c180694a8f",
+  "app_asar_sha256_recomputed_in_source_pass": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+  "excerpt_hashes": {
+    "getEncoderConfig_dispatch": "03cf966e1b2e94066821832dd19add3c129265595feccbe86ae075d89f46546f",
+    "getDolbyDigitalPlusOnlineMediaConfig_method": "70d7a7b4354a4cd3b23aa2c892a6d8edd6183a001133da899c2986f83c202c45",
+    "preferred_downmix_mode_valuesToCombineMap_entry": "35c6e2dc7abb8c3e953ebada4e55ee78014aeaf23408a3147f3d2b0edfca5b70",
+    "inputType_branch_and_encoder_serialization": "48dbab9b1a6f60ee4d436b452743d70bb344485ec396bf4388215db896b69b38",
+    "handlePreferredStereoDownmix": "2d8371d0a44dc59fa3f51e7ffebbd9447d32be1d17ea24d6ca57d7156fcb211b"
+  },
+  "parent_receipt_count": 8,
+  "raw_app_source_or_reverse_scripts_in_supplement": false
+}

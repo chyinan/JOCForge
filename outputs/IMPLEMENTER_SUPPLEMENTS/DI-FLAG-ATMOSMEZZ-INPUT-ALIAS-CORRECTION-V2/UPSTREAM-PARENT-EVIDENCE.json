@@ -1,0 +1,13 @@
+{
+  "schema": "wash-dee-input-alias-correction-parent-evidence.v1",
+  "parents": [
+    {
+      "package_id": "di-flag-property-map-consumer-addendum-wash-v1",
+      "path": "outputs/di_flag_property_map_consumer_addendum_wash_v1",
+      "manifest_sha256": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971",
+      "package_seal_sha256": "3d7ab162b3b6623178e42f0d9a4a7adf878c6a76c724fb043094738b672c2772",
+      "trace_sha256": "6c251bbb94d26a54010dd49cd43f95e929fb725dfb6da3b13340d6fc6297bf5e",
+      "disposition": "Static SimpleType<bool> receiver edge and generic-map first-break are unchanged; this addendum only corrects DEE path-alias interpretation and attempt status."
+    }
+  ]
+}

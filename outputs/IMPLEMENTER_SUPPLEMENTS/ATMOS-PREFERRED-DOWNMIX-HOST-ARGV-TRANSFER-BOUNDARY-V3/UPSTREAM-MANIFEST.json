@@ -1,0 +1,58 @@
+{
+  "format": "wash-evidence-package-v1",
+  "package": "F13C-preferred-downmix-host-property-transfer-boundary-v3",
+  "supersedes": {
+    "package": "F13C-preferred-downmix-host-property-transfer-boundary-v2",
+    "manifest_sha256": "10e1580e55c9b33f4b65c17fa00b8060eab81ad71227c210cc491e8638dc6979",
+    "reason": "v3 continues the hash-bound DME property path through ServerJob argv generation and child-process spawn."
+  },
+  "recipient": "Wash-only",
+  "target": "DME app.asar host path to conditional DEE encoder child process",
+  "target_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+  "ghidra_version": "12.2 PUBLIC (existing receipts reused; no new query)",
+  "host_to_argv_status": "STATIC_SOURCE_BOUND_CONDITIONAL",
+  "native_parser_disposition": "UNBOUND",
+  "first_break_status": "UNBOUND",
+  "conclusion": "When the DME property is active, static host source keeps preferred_downmix_mode inside the composite --encoder value and passes the key/value pair through encoderConfigProps into the child-process argv array without a host-side split, rename to dmixmod, or drop. The native provider parser disposition remains UNBOUND.",
+  "execution_scope": {
+    "dme_app_source_static": true,
+    "app_asar_sha256_recomputed": true,
+    "new_ghidra_query_run": false,
+    "dee_run": false,
+    "ab_run": false,
+    "windbg_attached": false,
+    "media_read": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "key_read": false,
+    "license_read": false,
+    "implementation_contacted": false
+  },
+  "payloads": [
+    {
+      "path": "HOST-ARGV-TRANSFER.json",
+      "sha256": "d7e54676ee9620388b449d697792ec98bdfc1c621cf1582602d1615935383dc4",
+      "size_bytes": 5066
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "def5d35a95256c8e00de118547253ff5c69059898765107085f09d031ab4596b",
+      "size_bytes": 696
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "74652524feb4423e555383c565f6e1635e1e31652eec663a9f3cceee9206a33e",
+      "size_bytes": 2150
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "sha256": "010324cab37441a37aa65f4186eef0fea6b296e739c3325d81eca49b9a6ddab2",
+      "size_bytes": 4479
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "269f965b3c6655f932dfabddd624f250394b91ab087d75dc7e4c080544344fea",
+      "size_bytes": 12898
+    }
+  ]
+}

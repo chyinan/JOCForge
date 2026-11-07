@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "dee_time_axis_host_property_range_boundary_wash_v1",
+      "manifest_sha256": "4f1387108a35b35bfc9fe583e34cb46891a6c94b706f50af4e0eb432d7b8a3dd",
+      "package_seal_sha256": "109f946b3f7f75f8727bccf8a3b95c9b2911f0c749911f89f9c88d64f6559cce",
+      "reviewed_payloads": [
+        {"name": "FINDINGS.md", "sha256": "9dc2885bdabe4cbc136397730be6504e1d7dc2ae3c0dfd4204ae525b5e18b916"},
+        {"name": "TIME-AXIS-EDGE.json", "sha256": "ceb04f1a1e54ef7d79b6a2b30fbb81b2cdebcc5f2f60939ad7c2a835df141606"},
+        {"name": "SOURCE-IDENTITIES.json", "sha256": "45dda0a30b2bd79a18052b545ef6f68283dd410b101a0c3d38fe8f2dd892ecf5"}
+      ],
+      "raw_Ghidra_trace_or_source_code_copied": false
+    }
+  ]
+}

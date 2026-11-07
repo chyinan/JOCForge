@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.wav_selector3_static_read_eof_vectors.v2",
+  "scope": "Static function rule and receipt metadata; no sample bytes or output payload.",
+  "vectors": [
+    {
+      "current_lt_limit": true,
+      "requested_count_nonzero": true,
+      "request_cap": "min(requested_count, limit-current)",
+      "returned_count_cap": "min(lower_read_returned_count, request_cap)"
+    },
+    {
+      "current_ge_limit": true,
+      "requested_count_nonzero": true,
+      "returned_count": 0
+    },
+    {
+      "source_sample_count": 6522906,
+      "endSample": 6522906,
+      "final_index_candidate": 6522905,
+      "actual_final_sample_returned": "NOT_CAPTURED"
+    }
+  ],
+  "runtime_provider_selection": "NOT_CAPTURED",
+  "raw_audio_or_payload_included": false
+}

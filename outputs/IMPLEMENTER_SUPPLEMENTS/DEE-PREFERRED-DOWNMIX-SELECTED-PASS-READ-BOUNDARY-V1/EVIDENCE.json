@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.preferred_downmix_selected_pass_read_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-SELECTED-PASS-READ-BOUNDARY-V1",
+  "status": {
+    "typed_mixmode_getter": "FUN_180171f50 reads MixMode+0x50",
+    "getter_direct_caller": "FUN_180171ce0 token formatter; no direct code caller found",
+    "selected_pass_FUN_1801475f0_direct_plus_0x980_hits": 0,
+    "selected_pass_FUN_1801475f0_decompiler_plus_0x980_hits": 0,
+    "audio_or_bsi_consumer": "UNBOUND",
+    "runtime_selected_value": "NOT_RUN",
+    "preferred_downmix_effect": "UNBOUND"
+  },
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-SELECTED-PASS-READ-BOUNDARY-WASH-V1",
+    "manifest_sha256": "a6e1aa6c1f2cd4cce6fa80fc9cc8ee408b29f0a2ddeccd8a91f08ff782392e78",
+    "checksum_list_sha256": "19f84ef9fe79468a37a1152d63103e82d29ea5ea6bda14e1ff3fd1ee4820d59a",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC read-only/no-analysis"
+  },
+  "limits": {
+    "dee_or_xml_run": false,
+    "media_pcm_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "This is a bounded negative for the selected pass body only; do not treat it as a product-wide no-consumer claim."
+}

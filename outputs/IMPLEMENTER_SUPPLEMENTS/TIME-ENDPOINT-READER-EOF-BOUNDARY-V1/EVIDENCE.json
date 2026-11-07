@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.time_endpoint_reader_eof_boundary.v1",
+  "package_id": "TIME-ENDPOINT-READER-EOF-BOUNDARY-V1",
+  "status": {
+    "start_end_to_length_encoding": "STATICALLY_BOUND_HALF_OPEN_LENGTH",
+    "end_sample_equal_source_count": "ACCEPTED_AT_CONSTRUCTION",
+    "storage_read_end_predicate": "UNBOUND",
+    "final_sample_inclusion": "UNBOUND",
+    "selected_runtime_reader_branch": "NOT_CAPTURED",
+    "audio_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-7-multi-adm-dialnorm/work/encoder_analysis/reports/dialogue_reader_end_boundary_addendum",
+    "manifest_sha256": "1f76b5f2cd2b862fbe16912bbbabe8e30f77755174cc0b8463fcfe5015014420",
+    "package_seal_sha256": "5f184ec151d5eff78ca9fae75a4ca1aa179e003ab7c8b1c2b66e370d5a204e29",
+    "sha256sums_sha256": "a4eade7083f55cf289278d1eebcce23658cf77ac4f339da861a1513726e77682",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "ghidra_version": "12.2",
+    "analysis_read_only": true,
+    "analysis_disabled": true
+  },
+  "range_semantics": {
+    "construction": "startSample plus length=(endSample-startSample)",
+    "reject_end_greater_than_source_count": true,
+    "reject_start_greater_than_end": true,
+    "end_equal_source_count_accepted": true,
+    "tail_padding_start_plus_length_minus_1": "last-index candidate only; not the storage read predicate",
+    "storage_wrapper": "offset+count allocation/clear then indirect storage vtable call; no endSample compare in bounded wrappers"
+  },
+  "existing_receipt": {
+    "sample": "human_is_cat",
+    "runs_completed": 2,
+    "job_range": "full file",
+    "selected_reader_branch": "NOT_CAPTURED",
+    "runtime_offsets_or_end_predicate": "NOT_CAPTURED"
+  },
+  "upstream_parent_directory": {
+    "status": "EXTRA_UNSEALED_FILES_PRESENT_RECORDED",
+    "original_sealed_file_hashes_match": true,
+    "current_directory_as_whole_matches_old_seal": false
+  },
+  "execution_scope": {
+    "dee_run": false,
+    "decode": false,
+    "pcm_or_payload_read": false,
+    "implementation_contact": false,
+    "early_sample6_structure_error_artifact_used": false
+  },
+  "disposition": "Do not claim inclusive/exclusive final sample behavior from the static half-open length encoding."
+}

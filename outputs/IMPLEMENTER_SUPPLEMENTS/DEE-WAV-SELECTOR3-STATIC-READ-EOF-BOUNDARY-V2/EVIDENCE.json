@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge.wav_selector3_static_read_eof_boundary.v2",
+  "package_id": "DEE-WAV-SELECTOR3-STATIC-READ-EOF-BOUNDARY-V2",
+  "status": {
+    "wav_suffix_to_selector3": "BOUND_STATIC",
+    "selector3_registry_writer": "BOUND_STATIC",
+    "selector3_open_callback": "BOUND_STATIC_FUN_1803ec660",
+    "concrete_storage_type": "BOUND_STATIC_ATMOS_STORAGE_MASTER_S",
+    "vtable_plus_0xd8_read_body": "BOUND_STATIC_FUN_1804ccb00",
+    "static_eof_count_rule": "BOUND_STATIC_ZERO_WHEN_CURRENT_GE_LIMIT",
+    "runtime_provider_selection": "NOT_CAPTURED",
+    "runtime_read_request_and_return_count": "NOT_CAPTURED",
+    "actual_endSample_minus_one_returned": "NOT_CAPTURED"
+  },
+  "source_package": {
+    "package_id": "dialogue_wav_selector3_reader_eof_addendum",
+    "manifest_sha256": "13f753a6ccc95572e3a124fc83bca7b0fc642c89550f8de7b2c45d4e5240da98",
+    "package_seal_sha256": "264c51eeb8d5cd55eec840caea58f0f458523cd0fffc83abeb2fa42b75c3afe1",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "target_image": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "registration": {
+    "function": "FUN_1803ecb80",
+    "label": "adm_bwf_sys_reg",
+    "selector": 3,
+    "slot_expression": "param1+0x20",
+    "open_callback": "FUN_1803ec660",
+    "factory": "FUN_1804d14c0 selector 3",
+    "constructor": "FUN_1804cfc80",
+    "storage_type": "atmos_storage_master_s"
+  },
+  "read_body": {
+    "vtable_slot": "+0xd8",
+    "function": "FUN_1804ccb00",
+    "current_getter_slot": "+0x60",
+    "limit_getter_slot": "+0x68",
+    "branch": "current < limit && requested_count != 0",
+    "remaining_count": "limit-current",
+    "request_cap": "min(requested_count, remaining_count)",
+    "return_cap": "min(lower_read_returned_count, request_cap)",
+    "eof_behavior": "returned_count remains zero when current >= limit"
+  },
+  "sample_boundary": {
+    "range_representation": "startSample plus length=(endSample-startSample)",
+    "endSample_equal_source_count_accepted": true,
+    "source_sample_count": 6522906,
+    "final_index_candidate": 6522905,
+    "actual_final_sample_returned": "NOT_CAPTURED"
+  },
+  "execution_scope": {
+    "new_dee_run": false,
+    "decode": false,
+    "pcm_or_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "raw_listing_or_scripts_copied": false
+  },
+  "supersedes": {
+    "package_id": "DEE-WAV-SELECTOR3-READER-EOF-BOUNDARY-V1",
+    "manifest_sha256": "7e9c04964c41a692046a3b50f04563224e791c31fea5af2336638a18bab42224",
+    "package_seal_sha256": "ab365a496c43e12f29e02a2ea40078055179b5b21373073ef696443221c5c9ed",
+    "scope": "static callback/EOF implementation path only; runtime provider remains unbound"
+  }
+}

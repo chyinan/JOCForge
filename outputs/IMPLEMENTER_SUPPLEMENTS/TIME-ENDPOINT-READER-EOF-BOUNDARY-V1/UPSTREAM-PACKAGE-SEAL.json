@@ -1,0 +1,85 @@
+{
+  "schema": "wash-reader-end-boundary-seal-v1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 693,
+      "sha256": "bf1ae88fdfc81123940ef26027b81b4d1a5d5bf75067aecfed505c50c059b6d6"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2933,
+      "sha256": "5f12fcb8a5790d9449ecbc2c96c129656859c88361b8c1d5f067550b500d479c"
+    },
+    {
+      "path": "check_reader_end_boundary.py",
+      "bytes": 10548,
+      "sha256": "d61bc9703ea778d80e091c698b9b5cf155759bdcf86639cb37cce19391f9745d"
+    },
+    {
+      "path": "input_vector.json",
+      "bytes": 4125,
+      "sha256": "30b057db9898139ea192524c5b05e751c477c937c577d97e925736919732b9b4"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 6681,
+      "sha256": "1f76b5f2cd2b862fbe16912bbbabe8e30f77755174cc0b8463fcfe5015014420"
+    },
+    {
+      "path": "queries/TraceCompositeReaderTermination.java",
+      "bytes": 6710,
+      "sha256": "8b251b2c94d4c08eac7b46276e8cf94c561b184c5983ed0262d9dba456c2f829"
+    },
+    {
+      "path": "queries/TraceMasterSourceRangeMethods.java",
+      "bytes": 4603,
+      "sha256": "c2ad4991abe6195a0924f9ece752b4a6ec5e526d3608cb00334a97ad7044d9a0"
+    },
+    {
+      "path": "queries/TraceReaderInputTransfer.java",
+      "bytes": 6322,
+      "sha256": "9156b4f016b34ef03838fba298ffdd300277212af7edfa5168dd3f73b439095e"
+    },
+    {
+      "path": "seal_reader_end_boundary.py",
+      "bytes": 3117,
+      "sha256": "4a0b0502abf1ba9267b66ea022bfd231fe41d9c1c8b94c081129b57a05b4a13f"
+    },
+    {
+      "path": "trace/composite_open_termination.txt",
+      "bytes": 91549,
+      "sha256": "4be8f1c0b737717c82dfbf109191f09e5ed06cf2de2c3dca0469bded0d358489"
+    },
+    {
+      "path": "trace/ghidra_composite_open_termination.log",
+      "bytes": 6540,
+      "sha256": "b3d53aa983e173f911579ca8d9b597c2b5131d40d2e332f05a405c31eb1e40b8"
+    },
+    {
+      "path": "trace/ghidra_item_to_reader.log",
+      "bytes": 6520,
+      "sha256": "ba700eaafb3d05539a355c1dea7c74e0218cd67f2e804481d495a171b5a8a5f9"
+    },
+    {
+      "path": "trace/ghidra_master_source_range_methods.log",
+      "bytes": 6541,
+      "sha256": "b44b33116d53e9b6523480e3dd97cf16f53e712df77c4dfca2cd359b6b7efde9"
+    },
+    {
+      "path": "trace/item_to_reader.txt",
+      "bytes": 154236,
+      "sha256": "2060f7d943f222876c1afa8b3e2928e3548a5649d2f211dd5863bff054d0fa83"
+    },
+    {
+      "path": "trace/master_source_range_methods.txt",
+      "bytes": 6754,
+      "sha256": "b950fc01ed14bf80aafa2b252054c3e9a0d120999722a36f5afb33f57b7f463b"
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "bytes": 1629,
+      "sha256": "a4eade7083f55cf289278d1eebcce23658cf77ac4f339da861a1513726e77682"
+    }
+  ]
+}

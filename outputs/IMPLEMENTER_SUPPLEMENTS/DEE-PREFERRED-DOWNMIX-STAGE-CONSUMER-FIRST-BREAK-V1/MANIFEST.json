@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-STAGE-CONSUMER-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "MIXMODE_GETTER_TO_FORMATTER_STATIC_BOUND; SELECTED_PROCESSING_JOIN_UNBOUND; AUDIO_BSI_EFFECT_UNBOUND",
+  "implementation_ready": false,
+  "source_manifest_sha256": "e66c7c13900ddec00aa0f5353e75dbe1ec9d2a648b6216252a3193e730c9318b",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2157,
+      "sha256": "670c13718674928b8d840179c0ba9752a9361818bb7b722912a2430ed16bce6c"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2201,
+      "sha256": "6843042816069cdbd278466e74e5de7d1d9ac28b2559758c43362c145961f797"
+    },
+    "REPORT.md": {
+      "bytes": 1272,
+      "sha256": "f32ca789e3efb06e67c941404ac664d2faf10f4f4405847034dd283f9aed1ee7"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1365,
+      "sha256": "54f9479784a67ad8e8283609582f4fada045b14bc02a12b6642b000c2e10f3f4"
+    }
+  }
+}

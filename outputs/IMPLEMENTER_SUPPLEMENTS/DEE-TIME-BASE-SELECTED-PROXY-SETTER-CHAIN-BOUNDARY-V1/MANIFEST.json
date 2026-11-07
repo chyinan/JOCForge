@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-BASE-SELECTED-PROXY-SETTER-CHAIN-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SELECTED_PROXY_TO_NESTED_SETTER_BOUND; XML_TO_550_AND_WRITER_UNBOUND",
+  "implementation_disposition": "The selected static setter chain is bound, but XML value/omission transfer and downstream +0x550 writing remain open.",
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-PROXY-SETTER-CHAIN-WASH-V1",
+  "source_manifest_sha256": "172f69569673e605bb1d0077317cc4c62e7082d19fbee81e56006cdd7c947717",
+  "source_package_seal_sha256": null,
+  "source_sha256sums_file_sha256": "c6ff39336cdd9d5a802062e142a37795b6021caa04577c76d22d1d312922a121",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1770,
+      "sha256": "3bb1568192804f93c3ca71cc78a61ee1e7583724a6fe7db27a77d6693fde1664"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1342,
+      "sha256": "a0a5e3e34ae3fd8019c38af9c1ed5c6517d0517ed75b7948c51b9ee032a37511"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 590,
+      "sha256": "553767e65a97640ef41322d6e067c9201040e70914367d3a72dd8e54955018f9"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 915,
+      "sha256": "4908d56eadf6852fd4f325c7551d369ea97c9fadaf50f8fe981779ed981d75b6"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 464,
+      "sha256": "e7c44024d543babf9d58860388edb6d7ad9d3dff7decddea1279674887c32dc4"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "time-base-selected-proxy-to-setter",
+      "input": {
+        "selected_filter_key": "encode_to_atmos_ddp"
+      },
+      "expected_observation": {
+        "host_proxy_setter_chain": "BOUND_STATIC",
+        "direct_plus_0x550_write": "NOT_OBSERVED",
+        "xml_value_to_descriptor": "UNBOUND"
+      },
+      "limitations": [
+        "Runtime selected invocation not observed",
+        "Helper callees not joined to writer",
+        "No XML omission-state transfer"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_XML_RUNTIME_VALUE_OR_AUDIO_VECTOR",
+  "vectors": [],
+  "note": "Constructor/type lineage only; preferred_downmix_mode runtime ordinal was not captured."
+}

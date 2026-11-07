@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-BASE-HOST-SETTER-PROXY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "GENERIC_SETTER_BOUND; SELECTED_DDP_PROXY_AND_DESCRIPTOR_WRITE_UNBOUND",
+  "implementation_disposition": "Register the host setter boundary only; XML option transfer remains unbound.",
+  "source_manifest_sha256": "30a929a9e8a4890fe53ec1041bf0178faed0501be01a92ffeec17ee0034548ef",
+  "source_package_seal_sha256": "NOT_PROVIDED_BY_SOURCE",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2411,
+      "sha256": "60b0e8b9212d71835a2c3060d427a32e252b5020c49a2b5e5cb917f0353dcfbe"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1972,
+      "sha256": "c377dcb9b4d0e9c4dc9ce22abbb7b8ab0df7ebca5f18f365168117e437c16326"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 456,
+      "sha256": "a38f9fec1453d85969e78f93068e0260a5fa7007dfc61064f72200e3147e4c9e"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 644,
+      "sha256": "407d0012158aa3872ee5e2a1765761599de6ab1f556788e0639f92479b319c7c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 794,
+      "sha256": "1a3ce07e72df1f55631de6095ab61181c6dca737d3d4b4a1ac03059d8e77bde1"
+    }
+  ]
+}

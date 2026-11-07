@@ -1,0 +1,9 @@
+{
+  "typed_descriptor_owner": "Priv+0x550",
+  "name_indexed_container": "Priv+0xec0",
+  "option_tree_key_lookup_to_descriptor": "BOUND_STATIC",
+  "constraint_validation": "allowed string list match then value store; mismatch constraint failure",
+  "xml_to_option_tree": "UNBOUND",
+  "runtime_value": "NOT_CAPTURED",
+  "E203_nonzero_interpretation": "not equal only; do not call file_position without enum acceptance"
+}

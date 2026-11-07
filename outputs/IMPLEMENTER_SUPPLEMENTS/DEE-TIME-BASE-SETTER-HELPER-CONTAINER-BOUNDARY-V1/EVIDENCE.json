@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.time_base_helper_container_boundary.v1",
+  "input": "stack-local container temporary",
+  "allocation_guard_checked": true,
+  "allocator_header_read_on_large_branch": true,
+  "temporary_storage_cleanup_call": "BOUND_STATIC",
+  "cleanup_helper_body": "NOT_INSPECTED",
+  "typed_option_descriptor_owner": "UNBOUND",
+  "descriptor_plus_0x550_write": "UNBOUND",
+  "xml_value_or_omission": "UNBOUND",
+  "runtime": "NOT_RUN"
+}

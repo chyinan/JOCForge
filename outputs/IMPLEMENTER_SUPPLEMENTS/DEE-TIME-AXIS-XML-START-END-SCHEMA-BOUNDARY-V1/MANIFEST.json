@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-AXIS-XML-START-END-SCHEMA-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SCHEMA_KEYS_TYPE_DEFAULTS_BOUND_ONLY; RUNTIME_AND_READER_JOIN_UNBOUND",
+  "implementation_disposition": "Use as an optional-string XSD schema fact; defaults are not selected runtime values.",
+  "source_manifest_sha256": "08fe6b2e98e173deb51044595c8362471e11c2fd2bba6480eace74cf807969a0",
+  "source_package_seal_sha256": "c615ff7e7944725c73f54c7831f32ac4b646e195e1e9ec79fbb715d18fb615b8",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 2941,
+      "sha256": "c8b565670c78594b1dcfac5823c100d0bf201db90954bd365a21bafa18b8639c"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2307,
+      "sha256": "ce0fcfe5016f63fe102ccf38975b7bf2267c1f20d180079808efdedff07e3bca"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 580,
+      "sha256": "bd3148aa37708cfa391ce1d01ade0a17da4d57c73cf9001d8e717b14d8d8f39e"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 726,
+      "sha256": "d9169acd7b62b6b537a6eb7d760d5883cae411e1ff125abef5ac3f91338ae7c4"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1798,
+      "sha256": "ed82249957ceb9ccbb575f570421fc500b1afa3e924b7854e89803d1de0d93da"
+    }
+  ]
+}

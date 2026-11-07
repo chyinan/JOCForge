@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-XML-RATE-DI-TIME-FIRST-BREAK-BOUNDARIES-V1",
+  "scope": "Wash-verified static first-break boundaries; no unbound algorithm promoted.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 2534,
+      "sha256": "45ba5670f5ea3750ba403a60b241e213e8c7c93bac3e1287b0cb410c63491d7a"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1009,
+      "sha256": "ae7178fa1a36f9cf131283dcf089c28e90e781fb74aebeba91affae157fd2f97"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 2135,
+      "sha256": "40a6accf9cf5ade1829ec7dde6a24e5842c05c8e9f648fa6ecafc61feef87dec"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1843,
+      "sha256": "60a5e84e63f31129950dab8932d74e6c866d072811b0b89aa88af0f9e9874d22"
+    }
+  ]
+}

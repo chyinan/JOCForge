@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.preferred_downmix_host_argv_vectors.v3",
+  "status": "PREPARED_XML_PAIR_NOT_RUNTIME_CAPTURE",
+  "variants": [
+    {"preferred_downmix_mode": "loro", "xml_sha256": "4a8f7754b16d81611d0ff9e268c661fbb51b36eaaa405b420df670ef47eb9905", "dee_run": "NOT_RUN"},
+    {"preferred_downmix_mode": "ltrt", "xml_sha256": "2049f5fcb5fcafc7e5bf121130e173d4d19ad02739d27a3ed730283de7c8fe7c", "dee_run": "NOT_RUN"}
+  ],
+  "dme_runtime_input_type": "NOT_CAPTURED",
+  "child_argv": "NOT_CAPTURED",
+  "native_dmixmod_mapping": "UNBOUND",
+  "pcm_or_payload_included": false
+}

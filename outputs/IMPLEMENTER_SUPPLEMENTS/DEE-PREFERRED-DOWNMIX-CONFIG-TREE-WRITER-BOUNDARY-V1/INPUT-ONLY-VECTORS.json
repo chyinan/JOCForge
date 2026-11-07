@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_CHILD_ARGV_CAPTURED",
+  "vectors": [],
+  "note": "Static argument and config-tree flow only; no actual argv or runtime value was captured."
+}

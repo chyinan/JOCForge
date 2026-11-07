@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-BASE-HOST-TO-SETTER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_STAGE_RUNNER_INTERFACE_TRANSFER_STATIC_BOUND; FACTORY_AND_SET_PROPERTY_TARGETS_DYNAMIC; XML_TO_TIME_BASE_SETTER_UNBOUND",
+  "implementation_ready": false,
+  "source_checksum_list_sha256": "ab65d0d6774e842e59d3dc9f85e33eb1aa66474635d91b270dc8cd0dd144c8dc",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2227,
+      "sha256": "85bb8baab9b36238cf475f85828eb9cbbe145ec60571a0a27a4caeea07b19477"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2728,
+      "sha256": "306c4fb1bf88b937ac43aeccdb9e3d9f9b12804b3d6d1b6ebb312993178e731e"
+    },
+    "REPORT.md": {
+      "bytes": 1375,
+      "sha256": "23620cf2edd64f5ae401ec37e2d8465afc7827869831b26fead1597cb5ed6121"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1356,
+      "sha256": "cbac61c4882bbc42397475513e803578d1557db6de52c7a0c7a3d8f1c3132fd7"
+    }
+  }
+}

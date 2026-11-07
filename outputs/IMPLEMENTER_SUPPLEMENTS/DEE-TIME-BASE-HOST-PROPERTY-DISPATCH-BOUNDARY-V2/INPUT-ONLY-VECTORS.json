@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "host-path-static-keys-do-not-include-time-base",
+      "kind": "static-property-dispatch-summary",
+      "input": {
+        "factory_slot": "+0x30",
+        "property_dispatch_slot": "+0x8",
+        "observed_keys": ["dee_audio_filter_source", "dee_audio_filter_target:<index>"],
+        "time_base_key_observed": false
+      },
+      "expected_status": "TIME_BASE_XML_KEY_VALUE_UNBOUND",
+      "status": "STATIC_TRACE_ONLY"
+    }
+  ]
+}

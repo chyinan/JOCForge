@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.time_base_selected_proxy_boundary.v1",
+  "selected_filter_key": "encode_to_atmos_ddp",
+  "key_to_ddp_factory_and_class": "BOUND_WITHIN_IMAGE",
+  "host_proxy_owner": "P",
+  "property_virtual_slot": "+0x08",
+  "selected_factory_to_host_proxy_join": "UNBOUND",
+  "proxy_vtable_to_concrete_setter": "UNBOUND",
+  "image_local_vtable_candidate_join_to_selected_proxy": "UNBOUND",
+  "setter_write_to_time_base_descriptor_+0x550": "UNBOUND",
+  "xml_value_or_omission_to_descriptor": "UNBOUND",
+  "runtime": "NOT_RUN"
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.dee_time_base_host_to_setter_boundary.v1",
+  "package_id": "DEE-TIME-BASE-HOST-TO-SETTER-BOUNDARY-V1",
+  "status": "HOST_STAGE_RUNNER_INTERFACE_TRANSFER_STATIC_BOUND; FACTORY_AND_SET_PROPERTY_TARGETS_DYNAMIC; XML_TO_TIME_BASE_SETTER_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "DEE-ADM-ATMOSMEZZ-TIME-BASE-HOST-DISPATCH-WASH-V1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/DEE-ADM-ATMOSMEZZ-TIME-BASE-HOST-DISPATCH-WASH-V1",
+    "checksum_list_sha256": "ab65d0d6774e842e59d3dc9f85e33eb1aa66474635d91b270dc8cd0dd144c8dc",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "analysis_mode": "read-only/no-analysis",
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "plugin_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "host_path": {
+    "builder": "StageRunner::Build",
+    "descriptor_factory_call": "vtable +0x30",
+    "factory_result_stored_at": "StageRunner+0x270",
+    "consumer": "StageRunner::RunAudioFilter reads +0x270 and calls generic SetProperty",
+    "generic_setproperty_target": "vtable +0x8",
+    "observed_keys": ["dee_audio_filter_source", "dee_audio_filter_target:<index>"],
+    "time_base_key_observed_on_this_call": false
+  },
+  "typed_atmos_target_comparison": {
+    "member": "Priv+0x550 StringType",
+    "setter": "FUN_18014f820 / StringType vtable slot 5",
+    "host_factory_target": "UNBOUND_DYNAMIC_DESCRIPTOR_VTABLE",
+    "host_setproperty_target": "UNBOUND_DYNAMIC_OBJECT_VTABLE",
+    "static_link_to_atmos_setter": "NOT_FOUND",
+    "selected_job_time_base_value": "UNBOUND",
+    "runtime_owner_generation": "UNBOUND"
+  },
+  "inherited_time_base_receipts": [
+    {
+      "package_id": "DEE-ADM-TIME-BASE-DEFAULT-SETTER-PRODUCER-V1",
+      "manifest_sha256": "5495ac7a41da20518ebb91cb8d00a1edae8b80f1f5d9555890ee196a6593193a",
+      "package_seal_sha256": "1a515a1813fb6e9f74112844072e95db52d21aa05ad686e1e3f1b09e8d1ccf12",
+      "reopened_here": false
+    },
+    {
+      "package_id": "DEE-ADM-TIME-BASE-SAMPLE-RANGE-BOUNDARY-V1",
+      "manifest_sha256": "8ec2de3c452aded30a5aad5a370e93fdcae958ebc6f516c18265ca76c16437f1",
+      "package_seal_sha256": "273db15bdc1196598f36a0f2f2439ee8837a9e36a3985c0267ba7d1ea88c4ca2",
+      "reopened_here": false
+    }
+  ],
+  "scope": {
+    "dee_or_xml_job_run": "NOT_RUN",
+    "runtime_key_value": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_ghidra_material_included": false,
+    "implementation_repository_read": false,
+    "process_control": false
+  }
+}

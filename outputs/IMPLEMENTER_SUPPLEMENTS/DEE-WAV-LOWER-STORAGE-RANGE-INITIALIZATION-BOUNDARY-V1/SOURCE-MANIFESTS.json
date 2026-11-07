@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-WAV-LOWER-STORAGE-RANGE-INITIALIZATION-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_lower_storage_position_limit_receipt",
+      "package_id": "dialogue_wav_storage_position_bounds_addendum",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-7-multi-adm-dialnorm/work/encoder_analysis/reports/dialogue_wav_storage_position_bounds_addendum",
+      "package_seal_file_sha256": "34b826fe953744542d5e1b8687717f604680f4d47b209a8a1160ce3db4fabec7",
+      "manifest_json_sha256": "693e91a5923df0fff83e96375d9ed7a55493276853803334130fd684270b241b8",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "user_supplied_parent_v2_reference",
+      "package_id": "DEE-WAV-SELECTOR3-STATIC-READ-EOF-BOUNDARY-V2",
+      "manifest_sha256": "29b8781a9c08e2149ed0558e5206fe5883b196a86ad8a06c20b8ef1cbd5ac3ad",
+      "availability": "NOT_FOUND_IN_CURRENT_CHECKOUT; HASH_RECORDED_AS_SUPPLIED_REFERENCE_ONLY"
+    }
+  ],
+  "target_image": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity_provenance": "Ghidra project record"
+  },
+  "omitted_material": {
+    "raw_ghidra_trace_or_attempt_logs": true,
+    "native_binary": true,
+    "media_pcm_or_encoded_payload": true,
+    "private_key_or_license": true
+  }
+}

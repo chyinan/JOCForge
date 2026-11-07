@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ARGV-INPUT-VECTOR-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_static_argv_owner_boundary",
+      "package_id": "preferred_downmix_argv_owner_first_break_wash_v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/preferred_downmix_argv_owner_first_break_wash_v1",
+      "manifest_sha256": "6b27f90541a950ac46e4f6e466de2444d58074bff19aa5621837e09e7b0da344",
+      "package_seal": "NOT_PRESENT",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    }
+  ],
+  "target_image": {
+    "sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "identity_provenance": "parent project record; installed image not rehashed"
+  },
+  "omitted_material": {
+    "native_source_or_decompilation": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true,
+    "runtime_argv": true
+  }
+}

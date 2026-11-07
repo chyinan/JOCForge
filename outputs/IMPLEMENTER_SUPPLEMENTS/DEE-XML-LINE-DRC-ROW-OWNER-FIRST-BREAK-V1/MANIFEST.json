@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-XML-LINE-DRC-ROW-OWNER-FIRST-BREAK-V1",
+  "scope": "Wash-verified Line DRC row-owner boundary; no mode-to-curve/dynrng rule.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1720,
+      "sha256": "060aa5e65f8993932c83df3efb05bc59c6c9122efc9d1a7cfa046230ff163211"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 584,
+      "sha256": "9466bb67d2ccb55d86d15fd5c697f7fe1ded64a411151258a05b70a072968662"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1341,
+      "sha256": "f176fd3680f2620aefd5662d2d40f0a8931a1f57c79dd2813524ba255acbbd2e"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1956,
+      "sha256": "aa872b94ef9f3e3a74e4a20c7ece7f332ffd6a110809812ed523d7fad48f57e2"
+    }
+  ]
+}

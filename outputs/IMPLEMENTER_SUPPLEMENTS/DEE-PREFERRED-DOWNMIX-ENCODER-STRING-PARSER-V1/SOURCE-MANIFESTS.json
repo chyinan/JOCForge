@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ENCODER-STRING-PARSER-V1",
+  "sources": [
+    {
+      "role": "primary_encoder_schema_and_parser_receipt",
+      "package_id": "preferred_downmix_encoder_schema_parser_wash_v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/preferred_downmix_encoder_schema_parser_wash_v1",
+      "manifest_sha256": "1fffe96f847866e3e26a891685d9b005c5e2fa1bf9eebee911b8c31c623852f1",
+      "separate_package_seal": "NOT_PRESENT",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "preferred_downmix_typed_reader",
+      "package_id": "preferred_downmix_native_cli_boundary_wash_v1",
+      "manifest_sha256": "3c1769ef7d0e74417fdc982498f18445db33723f6a421933ec186ed21504dcbd",
+      "relationship": "Reused for the typed reader path; no runtime or audio effect inferred."
+    }
+  ],
+  "target_image": {
+    "program": "dee_ddpjoc_encoder.exe",
+    "sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "identity_provenance": "parent project record"
+  },
+  "omitted_material": {
+    "raw_ghidra_material": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true,
+    "runtime_child_argv": true
+  }
+}

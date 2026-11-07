@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-WAV-SELECTOR3-STATIC-READ-EOF-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_SELECTOR3_CALLBACK_AND_EOF_BODY_BOUND_RUNTIME_SELECTION_NOT_CAPTURED",
+  "implementation_disposition": "Use the static selector/provider/read body contract; keep runtime branch and final-sample return unbound.",
+  "source_manifest_sha256": "13f753a6ccc95572e3a124fc83bca7b0fc642c89550f8de7b2c45d4e5240da98",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name":"CHECK.py","bytes":4798,"sha256":"5f467f529ba5140fe6c8abd27e10734a9be96d47933ef377d99c5309bdc08d32"},
+    {"name":"EVIDENCE.json","bytes":2868,"sha256":"0dd493407f5467879c47ac17bdc8308fe844ecadde0fff633a83a1c7d0ce4d56"},
+    {"name":"INPUT-ONLY-VECTORS.json","bytes":769,"sha256":"bf1c987fc14bfff48f2893d21227bb962849d448150a486bc03f53385f59edba"},
+    {"name":"REPORT.md","bytes":1660,"sha256":"0723168a801050db8283d445e5e5dbc1a35ac8f0a81c4f5d08d6e3eadcaf9aff"},
+    {"name":"SOURCE-MANIFESTS.json","bytes":1213,"sha256":"9e98e63d3cbcdd1f9772e4170a5947d3bd5cbdaf55d06f948111c692207838b5"},
+    {"name":"UPSTREAM-INPUT-VECTOR.json","bytes":3736,"sha256":"81a1e90622ab68cb3a8d1bab9f131c51e2236833c7c5a82c444a9268869bc3a3"},
+    {"name":"UPSTREAM-MANIFEST.json","bytes":5822,"sha256":"13f753a6ccc95572e3a124fc83bca7b0fc642c89550f8de7b2c45d4e5240da98"},
+    {"name":"UPSTREAM-PACKAGE-SEAL.json","bytes":2192,"sha256":"264c51eeb8d5cd55eec840caea58f0f458523cd0fffc83abeb2fa42b75c3afe1"},
+    {"name":"UPSTREAM-SHA256SUMS.txt","bytes":1298,"sha256":"2f8d698e5c959b57c577382ccd94c95122f428bea348810b1d8b45ff316e55d8"}
+  ]
+}

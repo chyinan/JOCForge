@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "per-source-record-field-map",
+      "sample_rate_hz": 48000,
+      "source_record_values": {"prepend_silence_samples": 0, "start_sample_boundary": 2160, "end_sample_boundary": 2208, "append_silence_samples": 0},
+      "profile_arrays": {"offset_0x18": "prepend_silence_samples", "offset_0x30": "start_sample_boundary", "offset_0x48": "end_sample_boundary", "offset_0x60": "append_silence_samples"},
+      "temporary_descriptor_disposition": "formatted then copied/released before reader-wrapper construction",
+      "reader_cursor_or_limit_effect": "NOT_ESTABLISHED",
+      "runtime_result": "NOT_RUN"
+    },
+    {
+      "id": "byte-span-is-not-au-count",
+      "synthetic_process_output_bytes": 2048,
+      "writer_bytes": 2048,
+      "au_count": "UNBOUND_NOT_EVALUATED",
+      "runtime_result": "NOT_RUN"
+    },
+    {
+      "id": "sample-duration-arithmetic-only",
+      "sample_rate_hz": 48000,
+      "prepend_seconds": 0.1,
+      "prepend_samples": 4800,
+      "append_seconds": 0.2,
+      "append_samples": 9600,
+      "reader_pull_count": "UNBOUND_NOT_EVALUATED",
+      "silent_block_count": "UNBOUND_NOT_EVALUATED",
+      "au_count": "UNBOUND_NOT_EVALUATED",
+      "runtime_result": "NOT_RUN"
+    }
+  ],
+  "warning": "All values are synthetic; they do not correspond to a DEE run or media sample. The vectors do not assert reader consumption, inserted silence, output bytes, or AU counts."
+}

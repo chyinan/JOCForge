@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "XML_ORDINAL_MAPPING_STATIC_ONLY_NO_RUNTIME_VALUE",
+  "vectors": [
+    {"xml_token": "loro", "mapped_code": 0},
+    {"xml_token": "ltrt", "mapped_code": 1},
+    {"xml_token": "ltrt-pl2", "mapped_code": 2},
+    {"xml_token": "not_indicated", "mapped_code": 3}
+  ],
+  "note": "These are reused static parser mappings, not observed selected runtime values or stored MixMode results."
+}

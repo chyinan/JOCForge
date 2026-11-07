@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "XML_TOKEN_SCHEMA_AND_ENUM_MAP_STATIC_BOUND; SETTER_PRESERVES_PREEXISTING_VALUE_IN_INSPECTED_CONSTRUCTOR; INITIALIZER_AND_STAGE_CONSUMER_UNBOUND; RUNTIME_NOT_RUN",
+  "implementation_ready": false,
+  "source_manifest_sha256": "bdd71adc1d6387fa4645416bb28760922a38064c9e9a651e6aec62a217280a1c",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2353,
+      "sha256": "bdf5b36d07a4cd24cfcb80c1ee2a978ac4ce6bf8c00c2f475b0f6452195177e3"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2527,
+      "sha256": "9e59d1c48b2cf581256378d252d6a2dcacb361ce892fae108954f8202edbf9ae"
+    },
+    "REPORT.md": {
+      "bytes": 1656,
+      "sha256": "2edfa5d88938f5cf31b7203cb5dd569aebd0748455f85005ca4e945fa0738d99"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1146,
+      "sha256": "4574bc86c5a4d3599298bf5ec831a596c8180a72ce90262121c2c9b01f85f444"
+    }
+  }
+}

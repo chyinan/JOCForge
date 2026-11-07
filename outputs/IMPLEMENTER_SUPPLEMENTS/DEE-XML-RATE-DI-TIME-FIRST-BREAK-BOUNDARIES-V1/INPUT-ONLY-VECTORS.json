@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge-washed-boundary-vectors.v1",
+  "status": "REFERENCE_ONLY_NO_NEW_RUNTIME",
+  "runtime_status": "NOT_RUN",
+  "vectors": [
+    {
+      "topic": "E-AC-3 data_rate host/parser list shape",
+      "source": "data-rate-stage-object-handoff-wash-v3",
+      "vectors_in_source": ["single token", "multi-token list shape"],
+      "runtime": "NOT_RUN",
+      "single_vs_multi_semantics": "UNBOUND"
+    },
+    {
+      "topic": "DI mode observation",
+      "source": "di_bool_first_algorithm_consumer_boundary_wash_v1",
+      "observation": "reused Human Cat A/B, one input only",
+      "new_ab_run": false,
+      "spatial_render": "NOT_RUN",
+      "bool_to_inner_gate_join": "UNBOUND"
+    },
+    {
+      "topic": "ADM time field source",
+      "source": "DEE-ATMOS-INFO-ADM-TIME-FIELD-PRODUCER-WASH-V2",
+      "candidate": "AXML audioProgramme@start",
+      "source_join": "UNBOUND",
+      "sample_rescan": false
+    }
+  ],
+  "pcm_or_payload_persisted": false,
+  "key_or_license_accessed": false
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "time-base-helper-temporary-container",
+      "input": {
+        "helper_argument": "stack local container"
+      },
+      "expected_observation": {
+        "helper_checks_container_storage": true,
+        "descriptor_550_transfer": "UNBOUND"
+      },
+      "limitations": [
+        "No typed descriptor projection",
+        "Cleanup helper not inspected",
+        "No XML value transfer"
+      ]
+    }
+  ]
+}

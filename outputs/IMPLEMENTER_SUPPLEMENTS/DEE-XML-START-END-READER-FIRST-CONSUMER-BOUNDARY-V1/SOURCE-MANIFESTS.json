@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "dee_xml_start_end_reader_first_consumer_wash_v1",
+  "source_manifest_sha256": "4852052ec9e15d963be8713a9c3ba9aef1ecc8036f53a3850757e17a9c5ba90c",
+  "source_seal_sha256": "fe8cde089b3c99057c35aa98e71579dbda9494be9aa5c0afca70c38e83d3716d",
+  "source_integrity_artifacts": [
+    {
+      "name": "package_seal.json",
+      "sha256": "fe8cde089b3c99057c35aa98e71579dbda9494be9aa5c0afca70c38e83d3716d"
+    }
+  ],
+  "parent_manifest_bindings": [],
+  "raw_native_source_or_disassembly_copied": false
+}

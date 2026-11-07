@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-WAV-DESC-ALTERNATE-CALLER-BOUNDARY-V1",
+  "manifest_sha256": "92c13e47e23ca05188177588c299b6fbba6b8ab2a9fb5246ebcc1e6121219087",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ALTERNATE_DESC_CONSTRUCTOR_CALLER_BOUND; PLUS_0X38_WRITE_BOUND; PLUS_0X68_NONZERO_WRITE_NOT_FOUND_IN_FUNCTION; OBJECT_JOIN_UNBOUND"
+}

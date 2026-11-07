@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.dee-time-endpoint-metadata-index-boundary.v1",
+  "package_id": "DEE-TIME-ENDPOINT-METADATA-INDEX-BOUNDARY-V1",
+  "source_package_manifest_sha256": "17d122408803bed5e3026cfe7dc42bbadd5d1728fb9c4fda0c8040e16f623db1",
+  "source_package_seal_sha256": "7ff573ef2be516f152d9e39440cee25675fb3391b4bb22fee6756c896be5ae73",
+  "status": {
+    "stored_endpoints_to_create_iosets_metadata_index": "BOUND_STATICALLY",
+    "endpoints_to_actual_input_frame_clip": "UNBOUND",
+    "inclusive_exclusive_comparison": "NOT_CAPTURED",
+    "runtime_source_map_selection": "NOT_CAPTURED",
+    "embedded_timecode_alignment": "UNBOUND",
+    "final_audio_effect": "NOT_RUN"
+  },
+  "bounded_static_rule": {
+    "start_end_use": "Stored start and end indices select two separate entries from a per-source metadata table while constructing I/O sets.",
+    "scope_of_first_consumer": "Metadata-index selection in I/O-set construction.",
+    "not_bound": "No typed connection to input PCM frame slicing or to a reader frame counter was shown.",
+    "reader_termination": "Nearby measurement and encode reader loops terminate through hasNext/container iteration; no comparison to the stored endpoints was found in this bounded trace."
+  },
+  "provenance": {
+    "selected_job_inputs": "Existing Human Cat DI false/true job receipts are referenced by the source package; no runtime source-map item was captured.",
+    "xml_parser_or_rounding_rescanned": false,
+    "dee_or_decode_run": false,
+    "pcm_or_payload_read": false
+  },
+  "implementation_effect": {
+    "algorithm_change_authorized": false,
+    "metadata_indexing_may_be_implemented_as_audio_clip": false
+  },
+  "excluded_material": {
+    "native_or_research_source_code": false,
+    "decompilation_or_binary": false,
+    "raw_xml": false,
+    "pcm_or_bitstream_payload": false,
+    "private_key_or_auth_material": false,
+    "absolute_local_paths": false,
+    "raw_native_addresses": false
+  }
+}

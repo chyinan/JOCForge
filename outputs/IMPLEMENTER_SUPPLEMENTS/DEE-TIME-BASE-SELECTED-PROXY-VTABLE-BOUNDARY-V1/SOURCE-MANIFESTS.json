@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-SELECTED-PROXY-VTABLE-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "fac7823bc25939b84bc7dd627a90619100b4cce2dab572c5e26b5234bdf34a37",
+  "source_seal_sha256": null,
+  "source_integrity_artifacts": [
+    {
+      "name": "SHA256SUMS.txt",
+      "sha256": "411b9ff4995330f35aef34768826f238c2538a1cd17d6cf1293dc6b44d3f9b5b"
+    },
+    {
+      "name": "standalone package seal",
+      "status": "NOT_PROVIDED"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "stage-runner-plugin-binding-static",
+      "manifest_sha256": "49ca286cf86d221d42413bd5dced050e2413651c88dcef1d453f85e3b028d8b8"
+    },
+    {
+      "package_id": "stage-runner-selection-static",
+      "manifest_sha256": "c4698113b15fa1524e7161c79ce8ffd841e73db6eb268c627fb66bbd2e6be2e2"
+    },
+    {
+      "package_id": "source-property-proxy-construction-stop",
+      "manifest_sha256": "4682134bad51cab316dd79f18319c2d45d3454146a3dfc2ef878c39bfdfe2d04"
+    },
+    {
+      "package_id": "time-base-host-setter-boundary",
+      "manifest_sha256": "30a929a9e8a4890fe53ec1041bf0178faed0501be01a92ffeec17ee0034548ef"
+    },
+    {
+      "package_id": "time-base-value-edge",
+      "manifest_sha256": "d085fb456dcdc285476e3702f67a731c3c1b96f8fea349ac7b610fb715d64805"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

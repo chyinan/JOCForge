@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ENCODER-SEMANTIC-VTABLE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SEMANTIC_PARSE_TARGET_BOUND; TYPED_STORAGE_WRITER_UNBOUND",
+  "implementation_disposition": "Slot +0x28 is parse/conversion; retain the missing +0x360 storage/notify edge.",
+  "source_manifest_sha256": "56b7585da3b2fe2cd5fc7336085a119e4950908180ce873ab1c2f876fb6165a5",
+  "source_evidence_sha256": "246c2c20e7dfeff3f3fb2f365164900c0579df9e6bb669b0fd4b6ed6c197bf0a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4371,
+      "sha256": "910c9c91bbfac44146b0d0c28ceb06b4117e4f0909f77003a314583d93d752e2"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2218,
+      "sha256": "22067327c48737719b4e9edde0caba9391042ab9ffc1d63d896c2de1185765be"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 197,
+      "sha256": "b38ff9ea32dbf0d293a6e032357c6188f3548d833cc21ead3c790e3951725407"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1494,
+      "sha256": "405ac98b588ea101b6bf306b7885e0819a73482cef94c51614fb3f3af96aa0e3"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1197,
+      "sha256": "f133624f419cb431d1de48d0e1b556ac1640b265a1372596f91576e122f32b8e"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_xml_parser_and_typed_setter_receipt",
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-XML-PARSER-WASH-V1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/DEE-ATMOS-DDP-PREFERRED-DOWNMIX-XML-PARSER-WASH-V1",
+      "manifest_sha256": "bdd71adc1d6387fa4645416bb28760922a38064c9e9a651e6aec62a217280a1c",
+      "separate_package_seal": "NOT_PRESENT",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    }
+  ],
+  "target_image": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity_provenance": "project-recorded hash; installed image not rehashed"
+  },
+  "wash_boundary": {
+    "raw_listing_or_decompilation_copied": false,
+    "native_source_code_copied": false,
+    "xml_sample_or_user_media_copied": false,
+    "pcm_or_payload_copied": false,
+    "private_key_or_license_copied": false
+  }
+}

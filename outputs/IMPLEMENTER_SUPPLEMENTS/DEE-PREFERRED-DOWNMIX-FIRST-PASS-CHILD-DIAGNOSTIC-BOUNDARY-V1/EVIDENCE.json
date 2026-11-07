@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge.preferred_downmix_selected_child_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-FIRST-PASS-CHILD-DIAGNOSTIC-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FIRST-PASS-CHILD-BOUNDARY-WASH-V1",
+    "manifest_sha256": "4a6dcf7b774cfd18c3a5512d7e7e41517fcb81696519780bcf04d225234af3e2",
+    "checksum_list_sha256": "a82440f2e9c8cdf2f221985b2f8b5fa3d86ce29412d85864d2a1d9b98e8bf611",
+    "checker_normal_and_python_o": "PASS",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "scope": {
+    "ghidra_version": "12.2",
+    "analysis_mode": "read-only/no-analysis",
+    "selected_call_chain_only": true,
+    "other_direct_callers_followed": false,
+    "dee_run": "NOT_RUN",
+    "xml_job_run": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false
+  },
+  "selected_edge": {
+    "caller": "FUN_1801475f0",
+    "child": "FUN_180153090",
+    "first_argument": "Priv+0x350 record/subobject pointer",
+    "second_argument": "caller-local record pointer",
+    "child_direct_caller_count": 11,
+    "return_plus_0x20_use": "source-count/mismatch diagnostic"
+  },
+  "mixmode_check": {
+    "field": "Priv+0x980",
+    "caller_instruction_or_decompiler_hits": 0,
+    "child_instruction_or_decompiler_hits": 0,
+    "scalar_passed_on_selected_edge": "NOT_OBSERVED"
+  },
+  "status": {
+    "record_type": "UNBOUND",
+    "typed_dsp_renderer_bsi_consumer": "UNBOUND",
+    "preferred_downmix_effect": "UNBOUND",
+    "selected_runtime_value": "NOT_RUN",
+    "global_no_consumer_claim": false
+  },
+  "implementation_disposition": {
+    "algorithm_change_authorized": false,
+    "do_not_treat_diagnostic_count_as_audio_control": true,
+    "preserve_audio_bsi_effect_as_unbound": true
+  }
+}

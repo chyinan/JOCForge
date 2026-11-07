@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.di_input_alias_attempt_vectors.v2",
+  "status": "CANCELLED_ATTEMPTS_ONLY",
+  "selected_ui_input": "D:\\潜在的なアイ.wav",
+  "cli_alias": "D:\\ADM.wav",
+  "alias_to_file_identity": "USER_ASSERTED/UNBOUND",
+  "per_attempt_source_sha256": "NOT_CAPTURED",
+  "attempt_progress": [64.6, 74.8],
+  "attempts_cancelled": true,
+  "final_ec3_verified": false,
+  "human_cat_run": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

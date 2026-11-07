@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIMELINE-TIMEBASE-DIRECTION-CORRECTION-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "c0a99ff92d32536abc02479ded7ff043ab78db51d312c96ea76c9b556cdd4a54",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "upstream_manifest_sha256": "59426234b80bd3e6858d89f8a4edb958ea93fc5143fbf074b8ba029285db202e",
+  "upstream_package_audit": "PASS_18_OF_18",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

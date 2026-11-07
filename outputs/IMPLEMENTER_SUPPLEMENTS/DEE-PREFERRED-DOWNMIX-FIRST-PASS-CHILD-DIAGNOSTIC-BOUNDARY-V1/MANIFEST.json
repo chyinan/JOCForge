@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-FIRST-PASS-CHILD-DIAGNOSTIC-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SELECTED_CHILD_DIAGNOSTIC; MIXMODE_AUDIO_BSI_EFFECT_UNBOUND",
+  "implementation_disposition": "Record the selected child edge only; no preferred-downmix algorithm change.",
+  "source_manifest_sha256": "4a6dcf7b774cfd18c3a5512d7e7e41517fcb81696519780bcf04d225234af3e2",
+  "source_checksum_file_sha256": "a82440f2e9c8cdf2f221985b2f8b5fa3d86ce29412d85864d2a1d9b98e8bf611",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4189,
+      "sha256": "36eea569eadfffec00cd95de6aa8dedfec1dfa28cbc170ca3c0a62a4725ecb75"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1822,
+      "sha256": "439c1da1c83564bb17b2b4d558b3050674c28903786bfc14bae9cba72d56217e"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 568,
+      "sha256": "30d6a1ace8da29ca7d3be84272f01df0db22981bfe40545c7b0cc357060189b1"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 942,
+      "sha256": "d98cbc812aa40fa8d089b4115e767ed51a1c0a4e06587d5a4c390c42e4ff9d40"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 813,
+      "sha256": "c3430a9c2d8111b7df459fde39b4303bb5cd1d7dfbd905e9763be982b84b5a83"
+    }
+  ]
+}

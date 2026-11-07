@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.atmos_preferred_downmix_host_transfer_boundary.v2",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-HOST-PROPERTY-TRANSFER-BOUNDARY-V2",
+  "status": {
+    "dme_property_map_entry_to_composite_encoder_string": "BOUND_STATIC_IN_EXACT_METHOD",
+    "runtime_ui_state_or_child_argument": "NOT_CAPTURED",
+    "candidate_xml_same_run_join": "UNBOUND",
+    "host_composite_argument_to_native_setter": "UNBOUND",
+    "preferred_downmix_mode_to_typed_ddp_dmixmod": "UNBOUND",
+    "audio_or_bsi_effect": "UNBOUND",
+    "ui_only_or_intentional_ignore": "UNBOUND",
+    "candidate_ab": "NOT_RUN",
+    "spatial_object_rendering": "NOT_COVERED"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-host-property-transfer-boundary-v2",
+    "package_id": "F13C-preferred-downmix-host-property-transfer-boundary-v2",
+    "manifest_sha256": "10e1580e55c9b33f4b65c17fa00b8060eab81ad71227c210cc491e8638dc6979",
+    "sha256sums_sha256": "2248f9f96bf49e4f88ddad0cd9e0bda0c32da832d16e50e7cb5d58c180694a8f",
+    "separate_package_seal_present": false,
+    "normal_checker": "PASS",
+    "python_O_checker": "PASS",
+    "verified_payloads": 5,
+    "verified_parent_receipts": 8,
+    "app_asar_sha256_recomputed_in_source_pass": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917"
+  },
+  "bound_app_method": {
+    "dispatch_method": "getEncoderConfig -> getDolbyDigitalPlusOnlineMediaConfig",
+    "property_source": "PreferredStereoDownmix.active + handlePreferredStereoDownmix(value)",
+    "map_key": "preferred_downmix_mode",
+    "map_values": {"Stereo": "loro", "Surround": "ltrt", "Not Indicated": "not_indicated"},
+    "serializer_condition": "propertyIsActive(value[0])",
+    "composite_output": "PropertyKeyValue('--encoder', cmd) with key=value appended inside cmd",
+    "key_renamed_to_dmixmod": false,
+    "runtime_invocation": "NOT_CAPTURED"
+  },
+  "candidate_pair": {
+    "input_type": "atmos_mezz",
+    "values": [
+      {"preferred_downmix_mode": "loro", "xml_sha256": "4a8f7754b16d81611d0ff9e268c661fbb51b36eaaa405b420df670ef47eb9905", "run": "NOT_RUN"},
+      {"preferred_downmix_mode": "ltrt", "xml_sha256": "2049f5fcb5fcafc7e5bf121130e173d4d19ad02739d27a3ed730283de7c8fe7c", "run": "NOT_RUN"}
+    ],
+    "same_run_dme_property_to_xml": "UNBOUND"
+  },
+  "native_boundary": {
+    "separate_key": "dmixmod",
+    "first_text_consumer": "FUN_1404dddd0 validates key presence/allowlist",
+    "typed_owner_or_alias": "UNBOUND"
+  },
+  "execution_scope": {
+    "new_ghidra_query": false,
+    "dee_or_ab_run": false,
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false,
+    "raw_app_source_or_reverse_script_in_supplement": false
+  },
+  "disposition": "Host static serialization is bound; do not implement a native downmix mapping or claim audio effect from this evidence."
+}

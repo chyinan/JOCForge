@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-BASE-SETTER-HELPER-CONTAINER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STACK_TEMPORARY_CONTAINER_CHECK_BOUND; OPTION_DESCRIPTOR_AND_550_WRITE_UNBOUND",
+  "implementation_disposition": "The helper operates on temporary container storage; do not map it to the DDP time_base descriptor or setter until a typed edge is shown.",
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-HELPER-FIRST-EDGE-WASH-V1",
+  "source_manifest_sha256": "65e6bc91b2a43ffd628b82ac47498152b3e40d9f5ad3b7b12a5402784ef160f6",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1661,
+      "sha256": "60fb6f842445f0053baaf2b2e52c1f51308b6b18c118b7791423793f94927f61"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 455,
+      "sha256": "1fb6f5aad3df0277fc983d5ec8fabcdae5c8316ba2d5e9d42891671a5f26516a"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 510,
+      "sha256": "8a77580f704c4db11a6387dbd6057645d1d4402b3786895183e71d130e60213b"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 693,
+      "sha256": "8f5af62d32fd7ae2c6e2b0319d26d1b1af0e750a0ca9e699096ea9fc9272259d"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 997,
+      "sha256": "7c0e4a5738a50f9f6885663daa4f5d6e15094ff2fdfe394b3b82cf0087464147"
+    }
+  ]
+}

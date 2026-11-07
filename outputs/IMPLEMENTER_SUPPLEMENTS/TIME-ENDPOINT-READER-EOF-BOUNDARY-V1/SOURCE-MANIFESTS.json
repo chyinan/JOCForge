@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.time_endpoint_reader_sources.v1",
+  "upstream_package_id": "wash-reader-end-boundary-manifest-v1",
+  "upstream_manifest_sha256": "1f76b5f2cd2b862fbe16912bbbabe8e30f77755174cc0b8463fcfe5015014420",
+  "upstream_package_seal_sha256": "5f184ec151d5eff78ca9fae75a4ca1aa179e003ab7c8b1c2b66e370d5a204e29",
+  "upstream_sha256sums_sha256": "a4eade7083f55cf289278d1eebcce23658cf77ac4f339da861a1513726e77682",
+  "ghidra_target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "parent_seal_hashes": [
+    "f584c9f55772ddabe61d2446bb388d9aa814f32a7ea0f3b6f5419aa37dbebcc2",
+    "7ff573ef2be516f152d9e39440cee25675fb3391b4bb22fee6756c896be5ae73",
+    "ae27d287098e247a1973a24b338b5cd49d8a20a8656935cf4c4828b5d5608fa3"
+  ],
+  "prior_reader_input_directory": {
+    "original_package_seal_sha256": "25ebf22e51b36101060df11c42d946c5020a6e4100f921ee649d3853dcf828fa",
+    "original_manifest_sha256": "cedb5e6f971adc28e34f149433f90c25416dd36b65855ff31d6d6ee7c9a34e8b",
+    "current_directory_status": "EXTRA_UNSEALED_FILES_PRESENT_RECORDED",
+    "original_sealed_listed_file_hashes_match": true
+  },
+  "raw_ghidra_scripts_or_logs_in_this_supplement": false
+}

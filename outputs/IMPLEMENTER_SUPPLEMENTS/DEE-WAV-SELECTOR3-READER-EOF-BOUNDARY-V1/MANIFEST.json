@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-WAV-SELECTOR3-READER-EOF-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "WAV_SELECTOR3_AND_READ_WRAPPER_BOUND_STATIC; CALLBACK_AND_EOF_READER_UNBOUND",
+  "implementation_disposition": "Record selector 3 and offset/count wrapper only. Do not claim endSample-1 inclusion or exclusion until the concrete registry callback/read provider is bound.",
+  "source_manifest_sha256": "cf989438b3d4bc1c0d691504dc521e68881a2458bb27b4cc85391f1a36ac791a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name":"CHECK.py","bytes":4329,"sha256":"c494c8c551e353fee79f13630094f98254242df07fef7d0a6488a54e90afc98f"},
+    {"name":"EVIDENCE.json","bytes":1966,"sha256":"4e691e21ad7e7d861676fad581e95fe1dca14b61771fefe1a39ed67b96af0ee9"},
+    {"name":"INPUT-ONLY-VECTORS.json","bytes":456,"sha256":"e00f4a263028afed8c09eb8562f8384860d479fe03fe81d4b9904cad1b78d6ac"},
+    {"name":"REPORT.md","bytes":1111,"sha256":"bbbc296e6253bfdc593108aa02e194b8513ac3a3be11543a55f624a5d28ae6dc"},
+    {"name":"SOURCE-MANIFESTS.json","bytes":877,"sha256":"18b72b746d9bb78d7fc014674ffd62ed85a13f41a7d687edd3b21730df29e3c5"},
+    {"name":"UPSTREAM-INPUT-VECTOR.json","bytes":2262,"sha256":"f6630dc5cb0e95bb3c11e3c10783ae148c02c1e3dd1b05d22c3001cc27fd77fd"},
+    {"name":"UPSTREAM-MANIFEST.json","bytes":3729,"sha256":"cf989438b3d4bc1c0d691504dc521e68881a2458bb27b4cc85391f1a36ac791a"},
+    {"name":"UPSTREAM-PACKAGE-SEAL.json","bytes":1642,"sha256":"58a81486835f87be5a3535490d79551884a2772c8890042431e57760afe8c489"},
+    {"name":"UPSTREAM-SHA256SUMS.txt","bytes":921,"sha256":"cd5fc6ff23c4df0931b46d63fb3ba29332d55bd3a846303b7cebf0d90092a0bc"}
+  ]
+}

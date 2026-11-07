@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DME-PREFERRED-DOWNMIX-ENUM-SERIALIZATION-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "cc360b594b674156906c33d383524fff19fcd8c58d3aeac3601ede10570a5338",
+  "payload_file_count": 9,
+  "payload_hash_audit": "PASS_9_OF_9",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

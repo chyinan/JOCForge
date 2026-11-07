@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DI-FLAG-ATMOSMEZZ-INPUT-ALIAS-CORRECTION-V2",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "94afe3f54d3038c5710dbb3b73b160c1b7b750e51dce27a5e370668b62b317dd",
+  "payload_file_count": 10,
+  "payload_hash_audit": "PASS_10_OF_10",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

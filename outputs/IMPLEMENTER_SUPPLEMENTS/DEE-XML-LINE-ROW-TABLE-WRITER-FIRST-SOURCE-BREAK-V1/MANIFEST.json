@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package": "DEE-XML-LINE-ROW-TABLE-WRITER-FIRST-SOURCE-BREAK-V1",
+  "scope": "One generic row-table writer hop; content semantics remain unbound.",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1252,
+      "sha256": "4b8657f78dfffea5728ebee23fa1ccd9f1ff4c32ee896bbee603b06be4dba574"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 435,
+      "sha256": "27c8bf3ed01deac408843628f691367cff52d4461466c92c8b02169823eb326b"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 623,
+      "sha256": "53ae2169d6fed02efe1c1fcb98ddd57d74044b10ca760e23ce18cf6d6758f75e"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 1824,
+      "sha256": "9961a7ecb3c19993563fae3eac30ddfd2b2229b2408840f28d39dfbcf119ddd4"
+    }
+  ]
+}

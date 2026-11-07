@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_ACTUAL_CHILD_ARGV",
+  "vectors": [],
+  "note": "Static typed-value and semantic-vtable facts only; runtime argv was not captured."
+}

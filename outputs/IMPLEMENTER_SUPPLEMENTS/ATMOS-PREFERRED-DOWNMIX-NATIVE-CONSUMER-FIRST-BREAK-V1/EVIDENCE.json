@@ -1,0 +1,69 @@
+{
+  "schema": "jocforge.atmos_preferred_downmix_native_consumer_boundary.v1",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-NATIVE-CONSUMER-FIRST-BREAK-V1",
+  "status": {
+    "xml_property_to_typed_native_ddp_dmixmod": "UNBOUND",
+    "audio_effect": "UNBOUND",
+    "bsi_or_metadata_effect": "UNBOUND",
+    "ui_or_reporting_only": "UNBOUND",
+    "intentional_ignore": "UNBOUND",
+    "spatial_object_rendering": "NOT_COVERED",
+    "ab_execution": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-native-consumer-first-break-v1",
+    "package_id": "F13C-preferred-downmix-native-consumer-first-break-v1",
+    "manifest_sha256": "1c75cf415e566ccf260e031ef8bb818c293c7d32fcd04de28a78b29502c4e508",
+    "separate_package_seal_present": false,
+    "sha256sums_sha256": "25a17988929b66e33cdd4a83d6e029ea11ff5d30dd0f60417da0c58b0736c5bc",
+    "sha256sums_entries": 6,
+    "source_checker": "PASS_NORMAL_AND_PYTHON_O",
+    "verified_payloads": 5,
+    "verified_parent_receipts": 7,
+    "primary_target_image_sha256_recorded": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "target_image_rehashed_in_source_pass": false,
+    "ghidra_version": "12.2 PUBLIC"
+  },
+  "candidate_job": {
+    "input_type": "atmos_mezz",
+    "xml_property": "job_config/filter/audio/encode_to_atmos_ddp/downmix/preferred_downmix_mode",
+    "candidate_values": ["loro", "ltrt"],
+    "data_rate_kbps": 1024,
+    "mix_levels_db": [-3, -3, -3, -3],
+    "only_changed_field": "preferred_downmix_mode",
+    "schema_validation": "PASS_RECORDED_BOTH",
+    "execution": "NOT_RUN"
+  },
+  "input_identity": {
+    "user_confirmed_source_alias": "人是猫 - 张卡斯, 洛天依.wav",
+    "ascii_alias_in_preflight": "human_is_cat_ascii.wav",
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "length_bytes": 743696526,
+    "identity_status": "USER_CONFIRMED_PREVIOUSLY_RECORDED_NOT_RECOMPUTED_IN_THIS_PASS",
+    "bwf_or_pcm_content_read": false
+  },
+  "native_boundary": {
+    "distinct_native_key": "dmixmod",
+    "parser": "FUN_1404ecea0",
+    "first_proven_text_consumer": "FUN_1404dddd0",
+    "consumer_kind": "presence and string-allowlist validation",
+    "recorded_allowlist": ["not_indicated", "pro_logic", "stereo", "pro_logic_ii"],
+    "preferred_mode_value_to_dmixmod": "UNBOUND",
+    "typed_ddp_dmixmod_owner_or_read": "UNBOUND",
+    "bounded_numeric_mix_level_path": "FUN_1403f3610 -> FUN_1404813f0; no preferred-mode enum input observed",
+    "precise_first_break": "preferred_downmix_mode XML string -> typed native ddp_dmixmod owner/member"
+  },
+  "execution_scope": {
+    "new_ghidra_query": false,
+    "dee_run": false,
+    "ab_run": false,
+    "windbg": false,
+    "ida": false,
+    "media_read": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "disposition": "Evidence only. Do not implement a LoRo/LtRt mapping or claim a no-op from this boundary."
+}

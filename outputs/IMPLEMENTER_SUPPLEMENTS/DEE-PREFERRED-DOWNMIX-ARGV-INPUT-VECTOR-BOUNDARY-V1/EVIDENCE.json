@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.dee_preferred_downmix_argv_input_vector_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ARGV-INPUT-VECTOR-BOUNDARY-V1",
+  "status": "INPUT_PATH_VECTOR_STATIC_BOUND; ENCODER_COMPOSITE_JOIN_UNBOUND; AUDIO_EFFECT_UNBOUND; DEE_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "preferred_downmix_argv_owner_first_break_wash_v1",
+    "manifest_sha256": "6b27f90541a950ac46e4f6e466de2444d58074bff19aa5621837e09e7b0da344",
+    "separate_package_seal": "NOT_PRESENT",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "analysis_mode": "existing project opened read-only with no analysis",
+    "target_image_hash_source": "parent project record; installed image not rehashed",
+    "target_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7"
+  },
+  "typed_input_vector": {
+    "owner": "DdpjocEncoderApp",
+    "member_offset": "0x318",
+    "storage_type": "Boost typed_value<vector<string>>",
+    "option_role": "repeatable input-file path list",
+    "short_alias": "i",
+    "runner_transfer": "owner field copied into runner argument field param_2+5",
+    "consumer_element_type": "std::string",
+    "consumer_element_stride_bytes": 32,
+    "wrapped_input_record_stride_bytes": 40,
+    "consumer_splits_colon_or_equal_fields": false
+  },
+  "encoder_composite_boundary": {
+    "argv_to_member_writer": "NOT_CAPTURED",
+    "dedicated_encoder_option_storage": "UNBOUND",
+    "delimiter_splitter": "UNBOUND",
+    "argv_to_map_owner": "UNBOUND",
+    "actual_child_argv": "NOT_CAPTURED",
+    "preferred_downmix_typed_reader": "BOUND_STATIC_REUSED; no join to this input vector established",
+    "audio_bsi_or_frame_writer_consumer": "UNBOUND"
+  },
+  "scope": {
+    "dee_execution": "NOT_RUN",
+    "child_argv_captured": false,
+    "media_or_pcm_read": false,
+    "encoded_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_native_source_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-SELECTED-PASS-READ-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SELECTED_PASS_NO_DIRECT_MIXMODE_READ; GLOBAL_CONSUMER_UNBOUND",
+  "implementation_disposition": "Record only the bounded selected-pass check; do not make a product-wide absence claim.",
+  "source_manifest_sha256": "a6e1aa6c1f2cd4cce6fa80fc9cc8ee408b29f0a2ddeccd8a91f08ff782392e78",
+  "source_checksum_list_sha256": "19f84ef9fe79468a37a1152d63103e82d29ea5ea6bda14e1ff3fd1ee4820d59a",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4328,
+      "sha256": "e2183e4b9de4b6ff2e223a92aeb7daec15ec6db9f304a93570b6e9aa2a8c29b3"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1332,
+      "sha256": "b33244d9490fce77b6e49e09d86815c30d77ab2d1e61386e1825b2aa64788b57"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1113,
+      "sha256": "5f8f802f788e10cf5974972c378b69bcad9fc7171497c3536239d24efe8319f9"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1015,
+      "sha256": "a1ce329aeb5f88e0b533e55a8bccf3e35aece94fe61d736fec0c83abc202179c"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-WAV-LOWER-STORAGE-RANGE-INITIALIZATION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ADMFILESTORAGE_GETTERS_AND_ZERO_INITIAL_RANGE_STATIC_BOUND; LATER_NONZERO_LIMIT_WRITER_UNBOUND; RUNTIME_NOT_CAPTURED",
+  "implementation_ready": false,
+  "source_package_seal_file_sha256": "34b826fe953744542d5e1b8687717f604680f4d47b209a8a1160ce3db4fabec7",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2294,
+      "sha256": "525d93644253f4cb9ce0f8272dfdd56659f977edea70d3ab84fbf5b47ed96c78"
+    },
+    "EVIDENCE.json": {
+      "bytes": 2686,
+      "sha256": "82b05deb23c74cde0ccb9770c2490796fb19f46b2d56fcf7ef1ff3827fb8e3dc"
+    },
+    "REPORT.md": {
+      "bytes": 1386,
+      "sha256": "aebff7fc9580e842a2cf8660dbc1d67b3f8cfb3dd166ea4bf316c50e8587554a"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1452,
+      "sha256": "31b209ea642e883800060583a7647ddb2e65a993f7acc1c01de7a7df93a9a9c9"
+    }
+  }
+}

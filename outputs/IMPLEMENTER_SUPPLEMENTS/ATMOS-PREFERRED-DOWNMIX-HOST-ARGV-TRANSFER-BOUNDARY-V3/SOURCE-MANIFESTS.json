@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.preferred_downmix_host_argv_sources.v3",
+  "upstream_manifest_sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6",
+  "upstream_sha256sums_sha256": "3b074606eadcc8e96617e77347496a5d6bd280332d1ca85a0ba67a43a44ef17e",
+  "app_asar_sha256_recomputed_in_source_pass": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+  "parent_receipt_count": 8,
+  "raw_app_source_or_native_script_in_supplement": false
+}

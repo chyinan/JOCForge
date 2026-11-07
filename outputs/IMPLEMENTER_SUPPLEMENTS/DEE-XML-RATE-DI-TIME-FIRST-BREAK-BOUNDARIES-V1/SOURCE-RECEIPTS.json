@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-washed-static-boundary-receipts.v1",
+  "scope": "Static Wash boundaries only; no algorithm-transfer authorization or runtime result.",
+  "receipts": [
+    {
+      "package": "eac3_carrier_rate_first_break_wash_v1",
+      "path": "D:/Tools/Dolby_Encoding_Engine/work/research-audit/eac3-carrier-rate-static-analysis/first-break-wash-package",
+      "manifest_sha256": "2ed80ebd653041679f0e77d87e7ec5653f0b60572e5eb9c21543ff0bc5d69475",
+      "seal_sha256": "4d203417c6504749886b67063a0c52713e5ac009de68b86f3fa0ba5cb29ca708",
+      "normal_checker": "PASS",
+      "optimized_checker": "PASS"
+    },
+    {
+      "package": "data-rate-stage-object-handoff-wash-v3",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/data-rate-stage-object-handoff-wash-v3",
+      "manifest_sha256": "30f0094392f6568e34843b9be3634b0596432fd6e81d31defdd4a43ccc04d7c5",
+      "seal_sha256": "bf34fba57822ab8c36ec405fc5c04a809969d276e366c4c9c68dec22ca401040",
+      "normal_checker": "PASS",
+      "optimized_checker": "PASS"
+    },
+    {
+      "package": "di_bool_first_algorithm_consumer_boundary_wash_v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_bool_first_algorithm_consumer_boundary_wash_v1",
+      "manifest_sha256": "bcef23daf5b7c79bf28782b0e0b97480cdf7c4deec9275b519d906676c89ef64",
+      "seal_sha256": "8d15f4ff3cb2b5d02fa69d7f0caa58306ac08451955d7ba58d280147679c4ff8",
+      "normal_checker": "PASS",
+      "optimized_checker": "PASS"
+    },
+    {
+      "package": "DEE-ATMOS-INFO-ADM-TIME-FIELD-PRODUCER-WASH-V2",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/DEE-ATMOS-INFO-ADM-TIME-FIELD-PRODUCER-WASH-V2",
+      "manifest_sha256": "a13f23aaa542ce34361ec26eae44b3e03938e018b3aff96bf1f2384d48a1b651",
+      "checksums_sha256": "7464b87b223af0e99b2f92baea751796dfb6371ca44f40f67fa472a02671fc7e1",
+      "normal_checker": "PASS",
+      "optimized_checker": "PASS"
+    }
+  ],
+  "runtime_status": "NOT_RUN",
+  "media_pcm_payload_or_secret_access": false
+}

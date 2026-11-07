@@ -1,0 +1,54 @@
+{
+  "schema": "jocforge.dee_wav_descriptor_limit_writer_first_break.v1",
+  "package_id": "DEE-WAV-DESC-LIMIT-WRITER-FIRST-BREAK-V1",
+  "status": "SELECTED_DESC_CONSTRUCTOR_ZERO_INITIALIZER_AND_PLUS_0X88_CALL_BOUND; NONZERO_LIMIT_WRITER_UNBOUND; OTHER_CONSTRUCTOR_CALLER_NOT_FOLLOWED",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "dialogue_wav_desc_limit_producer_addendum",
+    "manifest_json_sha256": "1715f69df93c6d6f0b163c62565de8474494c72004564fde724d7474151aa1bc",
+    "package_seal_file_sha256": "14991dfc70f6dd355eaa106428db57bb9af65e9f6a48f17520c890f657687669",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_program": "dee_audio_filter_ddp_atmos.dll",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_hash_provenance": "project-recorded; installed DLL not rehashed"
+  },
+  "selected_factory_route": {
+    "route": "selector-3 AdmFileStorage::Factory open",
+    "parameter_producer": "FUN_1803f9aa0",
+    "selected_constructor_caller": "FUN_18040a7e0",
+    "descriptor_constructor": "FUN_180405c90",
+    "constructor_constants": [0, -2],
+    "desc_plus_0x68_initializer": "FUN_1803eeef0 writes zero",
+    "path_and_record_arguments_used_as_plus_0x68_value": false,
+    "alternative_constructor_caller": "FUN_180406cd0; NOT_FOLLOWED"
+  },
+  "post_open_call": {
+    "descriptor_virtual_slot": "+0x88",
+    "target": "FUN_180407ec0",
+    "arguments_forwarded": ["path param_3", "record+0x10", "record+0x18"],
+    "explicit_same_instance_plus_0x68_store_in_bounded_body": "NONE_OBSERVED",
+    "later_nonzero_writer": "UNBOUND"
+  },
+  "inherited_range_boundary": {
+    "wash_package_id": "DEE-WAV-LOWER-STORAGE-RANGE-INITIALIZATION-BOUNDARY-V1",
+    "manifest_sha256": "6c3f61ad8c7aa2723d75219530b7261c1d88310a2c5b3b9b18af59bbad2ec23c",
+    "package_seal_sha256": "3d7de197f0e99f7f07241d2a482de48ed469a4b7148d3bf5fd57baea6eb34034",
+    "relationship": "Reused initial [0,0) and unit-inference boundary; no +0xd8 reader re-analysis."
+  },
+  "scope": {
+    "user_supplied_parent_v2_manifest": "NOT_FOUND; hash retained as supplied reference only",
+    "dee_execution": "NOT_RUN",
+    "runtime_values": "NOT_CAPTURED",
+    "decode_or_audio_output": "NOT_RUN",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_ghidra_trace_included": false,
+    "implementation_repository_read": false,
+    "process_control": false,
+    "global_absence_claim": false
+  }
+}

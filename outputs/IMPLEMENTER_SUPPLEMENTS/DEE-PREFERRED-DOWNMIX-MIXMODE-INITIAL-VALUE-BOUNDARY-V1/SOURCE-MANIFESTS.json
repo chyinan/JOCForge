@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-MIXMODE-INITIAL-VALUE-BOUNDARY-WASH-V1",
+      "manifest_sha256": "6be2353eba98fc3d79247f1f61d2c5777f6c913c13ab08235b098fe208ba1125"
+    },
+    {
+      "package_id": "DEE-PREFERRED-DOWNMIX-ORDINAL-MIXMODE-SETTER-BOUNDARY-V1",
+      "manifest_sha256": "978c3754e3ee8e4c6dbba771444c1ae71aff3e5cf10d4ba1a534e8f808045c2b",
+      "package_seal_sha256": "51682c7814a08ec48e74b6c836b9a9943fbbaad4c117e5e3be241a20994157d1"
+    },
+    {
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-XML-PARSER-WASH-V1",
+      "manifest_sha256": "d3495410ffacd0c942ba04731e87fc4ae8ba76046d9f83cb700ed10395bd9b49"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

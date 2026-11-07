@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.di_bool_receiver_input_vectors.v1",
+  "status": "NO_AUTHORIZED_SAMPLE_VECTOR_USED",
+  "static_candidate": {
+    "type": "SimpleType<bool>",
+    "wrapper": "FUN_18014f640",
+    "same_receiver_target": "FUN_18016a540 via vtable slot +0x28"
+  },
+  "prior_ui_attempts": {
+    "path": "D:\\ADM.wav",
+    "authorized_sample": false,
+    "result_classification": "NOT_SAMPLE_EVIDENCE"
+  },
+  "di_ab": "NOT_RUN",
+  "pcm_or_media_included": false
+}

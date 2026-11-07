@@ -1,0 +1,7 @@
+{
+  "source_manifest_sha256": "c9ebdbffb2d38dc927b00854c3254feaa72300a3110bb0be6acc71b1d9f65f31",
+  "source_seal_sha256": "4e3495197bc588bebd2766117838ef6770199eaabf3ec5878abf215427dbe85e",
+  "events_sha256": "13d6b3ba8e96e2a19eed639b82820f36f19f588969511fa90c583f5ee57e14b9",
+  "run_result_sha256": "b2d6033bf7e804865a0d30216eb73eb7c1f18e9c901683e75ffe3cdd60b792af",
+  "status": "WASH_REVIEWED_OBSERVATION; ENUM_AND_ADM_GENERATION_JOINS_OPEN"
+}

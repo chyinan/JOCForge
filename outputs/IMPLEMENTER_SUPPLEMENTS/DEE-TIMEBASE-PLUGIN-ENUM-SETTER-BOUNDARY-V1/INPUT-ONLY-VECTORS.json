@@ -1,0 +1,9 @@
+{
+  "field": "time_base",
+  "input_type": "StringType token",
+  "accepted_tokens": [
+    "file_position",
+    "embedded_timecode"
+  ],
+  "status": "STATIC_SCHEMA_VALUES"
+}

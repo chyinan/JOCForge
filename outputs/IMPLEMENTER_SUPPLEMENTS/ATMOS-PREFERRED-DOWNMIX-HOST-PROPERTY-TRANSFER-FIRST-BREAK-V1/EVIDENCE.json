@@ -1,0 +1,66 @@
+{
+  "schema": "jocforge.atmos_preferred_downmix_host_property_boundary.v1",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-HOST-PROPERTY-TRANSFER-FIRST-BREAK-V1",
+  "status": {
+    "ui_field_to_property_value_map": "STATIC_SOURCE_BOUND",
+    "specific_map_entry_to_generic_serializer_invocation": "UNBOUND",
+    "runtime_ui_event_or_child_argument": "NOT_CAPTURED",
+    "candidate_xml_to_selected_native_setter": "UNBOUND",
+    "preferred_mode_to_typed_ddp_dmixmod": "UNBOUND",
+    "audio_or_bsi_effect": "UNBOUND",
+    "ui_only_or_intentional_ignore": "UNBOUND",
+    "spatial_object_rendering": "NOT_COVERED",
+    "ab_execution": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/F13C-preferred-downmix-host-property-transfer-first-break-v1",
+    "package_id": "F13C-preferred-downmix-host-property-transfer-first-break-v1",
+    "manifest_sha256": "12d878c0a32c593269f07c1d6fe79d925c7f8be0c97fa4527f51f30e7c4c1f99",
+    "sha256sums_sha256": "ea6aaa40ad0570169fc3495b33bbbefa50239b433385fad1347f75cfe15d3133",
+    "separate_package_seal_present": false,
+    "source_checker": "PASS_NORMAL_AND_PYTHON_O",
+    "verified_payloads": 5,
+    "verified_parent_receipts": 7,
+    "ghidra_version": "12.2 PUBLIC",
+    "target_image_sha256_recorded": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "target_image_rehashed_in_source_pass": false
+  },
+  "host_property": {
+    "field": "PreferredStereoDownmix",
+    "property_key": "preferred_downmix_mode",
+    "ui_value_map": {"Stereo": "loro", "Surround": "ltrt", "Not Indicated": "not_indicated"},
+    "generic_serializer_pattern": "active valuesMap -> PropertyKeyValue('--' + key, value[1])",
+    "same_function_map_entry_join": "UNBOUND"
+  },
+  "candidate_jobs": {
+    "input_type": "atmos_mezz",
+    "variants": [
+      {"value": "loro", "xml_sha256": "4a8f7754b16d81611d0ff9e268c661fbb51b36eaaa405b420df670ef47eb9905", "schema_validation": "PASS_RECORDED", "run": "NOT_RUN"},
+      {"value": "ltrt", "xml_sha256": "2049f5fcb5fcafc7e5bf121130e173d4d19ad02739d27a3ed730283de7c8fe7c", "schema_validation": "PASS_RECORDED", "run": "NOT_RUN"}
+    ],
+    "common_data_rate_kbps": 1024,
+    "common_mix_levels_db": [-3, -3, -3, -3],
+    "same_run_app_property_to_xml": "UNBOUND"
+  },
+  "native_candidate": {
+    "separate_key": "dmixmod",
+    "parser": "FUN_1404ecea0",
+    "first_text_consumer": "FUN_1404dddd0",
+    "consumer_kind": "presence/string allowlist validation",
+    "preferred_mode_to_dmixmod": "UNBOUND",
+    "typed_ddp_dmixmod_owner_or_setter": "UNBOUND"
+  },
+  "execution_scope": {
+    "new_ghidra_query": false,
+    "dee_run": false,
+    "ab_run": false,
+    "windbg": false,
+    "ida": false,
+    "media_read": false,
+    "pcm_read": false,
+    "payload_read": false,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  },
+  "disposition": "Do not infer a preferred-downmix setter, audio mapping, ignore path, or playback effect from this static boundary."
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-AXIS-HOST-START-END-READER-JOIN-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_START_END_VALUE_NOT_OBSERVED; READER_RANGE_JOIN_UNBOUND",
+  "implementation_disposition": "Preserve the static host and Reader boundaries; no seek/trim implementation change.",
+  "source_manifest_sha256": "4f1387108a35b35bfc9fe583e34cb46891a6c94b706f50af4e0eb432d7b8a3dd",
+  "source_package_seal_sha256": "109f946b3f7f75f8727bccf8a3b95c9b2911f0c749911f89f9c88d64f6559cce",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4138,
+      "sha256": "87802dccef3ce115ee14cf2ec13d3a0d217d82f55c6ac92314bb6b8de92b7d45"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2777,
+      "sha256": "bb2c2e808eb3fca26a6459590bbfd2bffc90f420286b6832ef5070fc6590cdbc"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 555,
+      "sha256": "d68515ed043e7ffeb5309a5ee4001f2b0c9140ced69719e66e275a0bb876d613"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 923,
+      "sha256": "c681e29d1386f533250ee75394c312f376b1b873847269355eb1c39cab4bbdeb"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 794,
+      "sha256": "1f36e8448c35af497b3d18d31ee9217d75d78759931644e846bbfe2bed284308"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-VCALL-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PER_SOURCE_VCALL_SITE_STATIC_BOUND; VTABLE_TARGET_AND_OWNER_UNBOUND; AUDIO_BSI_EFFECT_UNBOUND",
+  "implementation_ready": false,
+  "source_manifest_sha256": "d6faad88e4ccb7dc71768f99484de17dc9c9fe339c3f18bac9ae39eee43eca48",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2153,
+      "sha256": "cb006f8e2b6178fcac73998d278fb6f4104ff5352bf8cea0e870493f0b4aceb3"
+    },
+    "EVIDENCE.json": {
+      "bytes": 1954,
+      "sha256": "7fb167f442feb7c67e6cb2b4fc6fb5c587abe5d2ecf58ab91db85f00d1abcb98"
+    },
+    "REPORT.md": {
+      "bytes": 989,
+      "sha256": "dd3f36f9d0da12805282d69157f161eb3c4b458609368057479ae6ddda8b033c"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1297,
+      "sha256": "efe55d2598cc5140c2fcf899353b6247792b7ecb2eb179bf1225381cfcf6ba74"
+    }
+  }
+}

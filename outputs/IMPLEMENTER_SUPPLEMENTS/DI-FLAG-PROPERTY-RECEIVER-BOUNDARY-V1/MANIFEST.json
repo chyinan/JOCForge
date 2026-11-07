@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DI-FLAG-PROPERTY-RECEIVER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SIMPLETYPE_BOOL_RECEIVER_EDGE_BOUND; GENERIC_PROPERTY_MAP_CALLER_UNBOUND; OWNER_GENERATION_UNBOUND; CONSUMER_NOT_IDENTIFIED; DI_AB_NOT_RUN",
+  "implementation_disposition": "No DI product routing or audio effect follows from this local receiver continuity; keep generic caller and consumer open",
+  "source_manifest_sha256": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3172,
+      "sha256": "b679d05a6c260a9efc5b673c692d887f618eca1561c2c9dfc967ca4e27f7db79"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2518,
+      "sha256": "42e6001ae0e4d6f03451f51d82615d9c67b884d60debebdb09fcad8b2d9433af"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 464,
+      "sha256": "eeea3d4b3b62f1a23cae8547f214acb6e856af43d3e8089003caf60219cf117c"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1956,
+      "sha256": "7510bcf892aa96f6baadf4fa7329c6ba0d93e96c3631086b0e63d8a6522e2e47"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1060,
+      "sha256": "ac70dbd27010f162c6cfacb3cf6f1cba6b0f80387abf2e6d5b13d13457ca7271"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.sha256",
+      "bytes": 849,
+      "sha256": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 777,
+      "sha256": "3d7ab162b3b6623178e42f0d9a4a7adf878c6a76c724fb043094738b672c2772"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.atmos_preferred_downmix_input_vectors.v1",
+  "status": "PREPARED_NOT_RUN",
+  "source_package_manifest_sha256": "1c75cf415e566ccf260e031ef8bb818c293c7d32fcd04de28a78b29502c4e508",
+  "input_identity": {
+    "alias": "human_is_cat_ascii.wav",
+    "user_confirmed_source": "人是猫 - 张卡斯, 洛天依.wav",
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 743696526,
+    "hash_recomputed_here": false
+  },
+  "common_job_fields": {
+    "input_type": "atmos_mezz",
+    "data_rate_kbps": 1024,
+    "mix_levels_db": [-3, -3, -3, -3]
+  },
+  "variants": [
+    {
+      "id": "A_loro",
+      "preferred_downmix_mode": "loro",
+      "xml_sha256": "4a8f7754b16d81611d0ff9e268c661fbb51b36eaaa405b420df670ef47eb9905",
+      "schema_validation": "PASS_RECORDED",
+      "execution": "NOT_RUN"
+    },
+    {
+      "id": "B_ltrt",
+      "preferred_downmix_mode": "ltrt",
+      "xml_sha256": "2049f5fcb5fcafc7e5bf121130e173d4d19ad02739d27a3ed730283de7c8fe7c",
+      "schema_validation": "PASS_RECORDED",
+      "execution": "NOT_RUN"
+    }
+  ],
+  "no_pcm_or_encoded_payload_included": true
+}

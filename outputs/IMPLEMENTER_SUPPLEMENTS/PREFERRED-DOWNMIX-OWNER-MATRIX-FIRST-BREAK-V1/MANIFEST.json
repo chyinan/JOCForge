@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.wash.output.manifest.v1",
+  "package_id": "preferred_downmix_owner_to_matrix_boundary_wash_v1",
+  "audience": "WASH_ONLY",
+  "status": "HASH_BOUND_ONE_HOP_WITH_MATRIX_PCM_CONSUMER_UNBOUND",
+  "scope": "Reuse preferred-downmix host/enum and native owner receipts; stop at the selected typed-owner field-transfer boundary",
+  "artifacts": [
+    {
+      "path": "REPORT.md",
+      "bytes": 3409,
+      "sha256": "9612bba39cd53ec7a1151ed441262002077399da8105ae95cde257debb9bec31"
+    },
+    {
+      "path": "OWNER-CONSUMER-BOUNDARY.json",
+      "bytes": 3771,
+      "sha256": "00c8da8ee55ae4d8c565035031bf1d884482677d23fc6c0938e1eaa782facdb5"
+    },
+    {
+      "path": "SOURCE-IDENTITIES.json",
+      "bytes": 5797,
+      "sha256": "98981819c85a5f7a4d9a60af12b8a559d26de1319688d2fa1bdaa3e875294dcd"
+    },
+    {
+      "path": "check_owner_consumer_boundary.py",
+      "bytes": 3828,
+      "sha256": "c8d846075a3377671d6909e2835868468b06360e824affe229e06c83be56034a"
+    }
+  ],
+  "access_boundary": {
+    "dee_executed": false,
+    "media_pcm_payload_key_license_read": false,
+    "implementation_repo_edited_or_contacted": false,
+    "new_ghidra_scan": false
+  }
+}

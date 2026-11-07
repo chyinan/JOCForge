@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DI-FLAG-ATMOSMEZZ-INPUT-ALIAS-CORRECTION-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ALIAS_MAPPING_USER_ASSERTED_SOURCE_ID_UNBOUND; TWO_CANCELLED_ATTEMPTS_NOT_PASS; NO_FINAL_EC3_RECEIPT",
+  "implementation_disposition": "Supersedes only the V1 input-alias classification; retain cancelled attempts as NOT_PASS and keep source identity unbound",
+  "source_manifest_sha256": "5f4774fe7f935863014417e61719e83a1554c559e456e80475c9b1b1ffdea128",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3615,
+      "sha256": "2494e91a413317c2a8c418944fda7ec244f9969e113eddacfa799d5c4280c0fa"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3265,
+      "sha256": "0927056e4e8a78d90f3fcc971e80439a051101a823142388bcf2b60a643ea800"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 446,
+      "sha256": "fe08b01c5d211ed3dd35f295cb60b46e9a9aa34a2e94038c27224c0923c4e0d8"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2212,
+      "sha256": "13db1e65c8bd3a46e4b7e0b9016e02d6ffecc2f1ea094cca8a9013d4b8270ce1"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 824,
+      "sha256": "e07e0bbdf605e0b764c3ada3ff6ed2f15e5e31b68d4691734bbfc5c5f4376097"
+    },
+    {
+      "name": "UPSTREAM-ATTEMPTS.json",
+      "bytes": 4266,
+      "sha256": "ad68388363bc15239e05c701f04fd62c4f98a1cbc8ca4a15a0f54abeaffc0a8b"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.sha256",
+      "bytes": 618,
+      "sha256": "5f4774fe7f935863014417e61719e83a1554c559e456e80475c9b1b1ffdea128"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 977,
+      "sha256": "5d1d13b04a382d8f495515175c709b7823fb9d955536a629e1974d950a52fcc8"
+    },
+    {
+      "name": "UPSTREAM-PARENT-EVIDENCE.json",
+      "bytes": 718,
+      "sha256": "711d68b9d777e6b87b20d1120cb38a138b4eb966be934111d75c79eb8e4127bb"
+    },
+    {
+      "name": "UPSTREAM-UI-EVIDENCE.json",
+      "bytes": 1539,
+      "sha256": "be2784ad7dbc551043716a533588a1075a0799bac89dd1e28fc6ee7db467cdcc"
+    }
+  ]
+}

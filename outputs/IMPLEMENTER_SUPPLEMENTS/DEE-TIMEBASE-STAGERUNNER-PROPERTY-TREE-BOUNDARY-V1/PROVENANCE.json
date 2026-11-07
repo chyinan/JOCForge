@@ -1,0 +1,6 @@
+{
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-STAGERUNNER-PROPERTY-TREE-WASH-V1",
+  "source_manifest_sha256": "87b2ee9844326e3946d89bb60430ad795f42d3f1bf602549c6d09d319d2dc8b3",
+  "source_checksums_sha256": "67f07d0fe0b977038ba79c462ab63222508d58b72f8e28a252da05ef4da0ecaa",
+  "scope": "selected DDP time_base static property-tree producer and typed setter only"
+}

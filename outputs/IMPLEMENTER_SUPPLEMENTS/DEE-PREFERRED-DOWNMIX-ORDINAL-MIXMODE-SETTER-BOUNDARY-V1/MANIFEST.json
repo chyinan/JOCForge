@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ORDINAL-MIXMODE-SETTER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ORDINAL_REACHES_MIXMODE_SETTER; STORED_VALUE_PREEXISTING_UNBOUND",
+  "implementation_disposition": "Record the typed setter edge, but do not store the XML ordinal as the effective MixMode value without a consumer/default join.",
+  "source_manifest_sha256": "70b680374a68e72184c6a3e3753d00533cebe4221c3b3d4b98a3180365554a76",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4158,
+      "sha256": "a6ffdc0bf01464c1009b72a697ae482636ed1cb761d54f40242d57fec69bd3f6"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2065,
+      "sha256": "ce977a283012176ca39570decc81cd92924500430af883786fcd38198471e842"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 443,
+      "sha256": "d903f88054b498789bd8ab46757d807c4b5eabf915010e2970ba88e48ac761f3"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1361,
+      "sha256": "ed9686cd8cd0cd1a6e07e6beff95ecdd2e312974190b354d18d9dbcef1eacc90"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1026,
+      "sha256": "f2c70d97bef1835a2ff42e1434f908aeaec705bc456c0ff8a28ede8dc60026bb"
+    }
+  ]
+}

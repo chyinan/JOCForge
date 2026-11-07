@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V1",
+  "manifest_sha256": "e8f22f112e8376efd34bbf38b252e6842445428e19e4fb94d310cc8f15ddf1c8",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "XML_TOKEN_SCHEMA_AND_ENUM_MAP_STATIC_BOUND; SETTER_PRESERVES_PREEXISTING_VALUE_IN_INSPECTED_CONSTRUCTOR; INITIALIZER_AND_STAGE_CONSUMER_UNBOUND; RUNTIME_NOT_RUN"
+}

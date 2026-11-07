@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CONFIG-TREE-WRITER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CONFIG_TREE_OPTION_WRITER_BOUND; TYPED_ENCODER_STORAGE_JOIN_UNBOUND",
+  "implementation_disposition": "Register the intermediate record/config-tree write; preserve the absent typed edge to encoder storage.",
+  "source_manifest_sha256": "eab045aee24d204d1a7b576aff79ec3c42d90d6db3af7bf5b244e702d5f983b4",
+  "source_evidence_sha256": "31f733861d99c776ed3f92a3eaf5eb914792daffeecb45075ac71a4839c7b58c",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4390,
+      "sha256": "163763a27529e4b14ebcaab56c2261e539719b3c9158ad41e6b4ccbf2d3e20b0"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2049,
+      "sha256": "ce770e28fc1ab4d3463a53b79ad7216068e43c58e8b6cf99bad02f6229ba6d5c"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 206,
+      "sha256": "4696a7a554c05a1d9a187798f7de346d3ac68497ffb305339c4de8c9448b2605"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1313,
+      "sha256": "39aabf08de7dc1200b17e3be9ed827653c7d51b22d27d4f97fdb3cac60485b8c"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1109,
+      "sha256": "c71043c99aebe1106350b7bdb7d78fca22772511ece5920b36818a4678600b80"
+    }
+  ]
+}

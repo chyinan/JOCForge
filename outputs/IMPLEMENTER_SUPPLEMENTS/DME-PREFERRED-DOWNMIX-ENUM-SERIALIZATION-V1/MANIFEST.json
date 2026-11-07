@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DME-PREFERRED-DOWNMIX-ENUM-SERIALIZATION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "DME_HOST_ENUM_AND_SERIALIZATION_BOUND_STATIC; XML_SCHEMA_AND_NATIVE_AUDIO_CONSUMER_UNBOUND",
+  "implementation_disposition": "Use the three source-derived host labels and exact string mappings only. Do not infer a fourth enum, XML schema acceptance, runtime value, or native audio effect.",
+  "source_manifest_sha256": "c30e7eb3c4577ff81d25105e0e1011379d15431068e01e918ba96e759a359eb5",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name":"CHECK.py","bytes":4266,"sha256":"b248a8d9a0e21765722803bc4c2e64898a276f8e842c7aed8f87e5540a6e43ea"},
+    {"name":"EVIDENCE.json","bytes":2791,"sha256":"4d7aba5de7b11964e60e197aac91c8771970e390a7b539d8fef6288bb61fa79d"},
+    {"name":"INPUT-ONLY-VECTORS.json","bytes":951,"sha256":"b660e371bf1088cd604061e70a3e6a5c422a35fcc152ca36cd1f01e66b34bc37"},
+    {"name":"REPORT.md","bytes":1686,"sha256":"736ec289f380518c0cbffda9e719d409ca7c2f1e7f23fcc805c0620a7a8fa7d9"},
+    {"name":"SOURCE-MANIFESTS.json","bytes":1321,"sha256":"428557b22141b889288fef89478fba7fe31ae5c0ea4dc4837ce502e469569167"},
+    {"name":"UPSTREAM-ENUM-SERIALIZATION.json","bytes":5974,"sha256":"a8eef5730d0f6ac6e7d2a36aaf158143eceb293b5ab3e41d91ef7f081b18a062"},
+    {"name":"UPSTREAM-INPUT-ONLY-VECTORS.json","bytes":1461,"sha256":"66d05350ccc4cfb1c75cb58271952fb0abe85f81c5ed3f6f9a695b55e395d77d"},
+    {"name":"UPSTREAM-MANIFEST.json","bytes":2059,"sha256":"c30e7eb3c4577ff81d25105e0e1011379d15431068e01e918ba96e759a359eb5"},
+    {"name":"UPSTREAM-SOURCE-MANIFESTS.json","bytes":2406,"sha256":"d4d5d38a935b615d4b40557e0f804b1cb91122b2ea7c16cb0bd02a3e53212d52"}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "observer_run_manifest_sha256": "a42ef2365f2d95072605772ff20a48e725624c5e2f4b654c0e6e78970660a1d8",
+  "observer_run_seal_sha256": "6a4cc4f839ace9ac18be5793fae03a1e6409f7e046e69132ae7fad00bc4dd507",
+  "events_sha256": "b1a269f1d89d9feb00ccc6619140d6cc423de6f96dd73b5005cff264eb4ab995",
+  "observer_plan_manifest_sha256": "cad0570f5b242a75d4554cc2555dfd2a588308baff42b23ba226d85885edc48b",
+  "plugin_setter_manifest_sha256": "1a344c3b2a135f644e1bd8f882997707fcc5044dbc77347d87e1994e2ae80955",
+  "stage_runner_manifest_sha256": "85e861d7e2a9b39f80ea58af9f2976199a72b3d38e308d7ce05be71565499280",
+  "current_xsd_sha256": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44",
+  "binding_note": "Current XSD hash equals the prior DEE schema identity; run preflight recorded XSD validation but did not itself hash-bind the XSD at that instant."
+}

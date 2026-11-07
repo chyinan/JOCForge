@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "di-flag-atmos-mezz-input-alias-correction-addendum-wash-v1",
+  "sealed_at_local": "2026-11-04T12:50:50+08:00",
+  "manifest_path": "MANIFEST.sha256",
+  "manifest_sha256": "5f4774fe7f935863014417e61719e83a1554c559e456e80475c9b1b1ffdea128",
+  "scope": "Wash-only correction addendum using the two provided screenshots and previously captured DEE UI log observations; no new UI input, DEE run, or Ghidra analysis.",
+  "status": "ALIAS_MAPPING_USER_ASSERTED_SOURCE_ID_UNBOUND; ATTEMPTS_CANCELLED; NO_FINAL_EC3_RECEIPT",
+  "sample1": "TWO_CANCELLED_ATTEMPTS_NOT_PASS",
+  "sample2": "NOT_RUN",
+  "source_alias": "USER_ASSERTED/UNBOUND",
+  "final_ec3": "NOT_OBSERVED",
+  "audio_playback": "NOT_RUN",
+  "static_receiver_edge": "UNCHANGED_PARENT_HASH_BOUND",
+  "contains_original_audio": false,
+  "contains_encoded_audio": false,
+  "key_or_license_contents_included": false,
+  "implementation_contacted": false
+}

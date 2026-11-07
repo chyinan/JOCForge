@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-BASE-RANGE-READER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RANGE_TO_READER_INPUT_BOUND; XML_SETTER_AND_CURSOR_JOIN_UNBOUND",
+  "implementation_disposition": "Append to existing time_base sample-range slice; retain partial arithmetic and reader boundary.",
+  "source_manifest_sha256": "58a7cd433fcda8d8c1c4d63758908e21ee34f425f6f3c03356d4ee5d847a59e5",
+  "source_package_seal_sha256": "dc6e34572ffc09f8509061a7b35c1b2673262e52b9d52e1e634830f90b86d88c",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4494,
+      "sha256": "af1cbddc6fcc40d6478102a67cedb58d1e4471c443164d798fce28a0f4a32aa0"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1965,
+      "sha256": "e3c2b9e67d4223c9b4a03166390c6f40a470c8d603b1ccd6664799c8073dc9c8"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 224,
+      "sha256": "e3e2109852fb0ef4d15bd17a3630408a6c4107094118edc18dabff6e6996b783"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2121,
+      "sha256": "cdb16ddd272119bcfec7a9f2e8099904f004cdb2e5155911d4b046fa2b205002"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 565,
+      "sha256": "372d8b53c81eebb2b6a0d812467d99d2f4280d7b8e3a4985300977dfc8886c0c"
+    }
+  ]
+}

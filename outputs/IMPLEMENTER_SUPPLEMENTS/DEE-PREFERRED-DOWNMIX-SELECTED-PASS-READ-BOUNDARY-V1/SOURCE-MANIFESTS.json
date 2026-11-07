@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {"package_id":"DEE-ATMOS-DDP-PREFERRED-DOWNMIX-SELECTED-PASS-READ-BOUNDARY-WASH-V1","manifest_sha256":"a6e1aa6c1f2cd4cce6fa80fc9cc8ee408b29f0a2ddeccd8a91f08ff782392e78","checksum_list_sha256":"19f84ef9fe79468a37a1152d63103e82d29ea5ea6bda14e1ff3fd1ee4820d59a"},
+    {"package_id":"DEE-PREFERRED-DOWNMIX-ORDINAL-MIXMODE-SETTER-BOUNDARY-V1","manifest_sha256":"978c3754e3ee8e4c6dbba771444c1ae71aff3e5cf10d4ba1a534e8f808045c2b","package_seal_sha256":"51682c7814a08ec48e74b6c836b9a9943fbbaad4c117e5e3be241a20994157d1"},
+    {"package_id":"DEE-PREFERRED-DOWNMIX-MIXMODE-INITIAL-VALUE-BOUNDARY-V1","manifest_sha256":"64196c5c264d63dc92155bc0e21b4883790898e445e4c60745d8b4b04438aca0","package_seal_sha256":"f4456f27ef4d21d5dea28fd7ff99acecd07ba1e2ab59da4197cd3d95d63f1e04"}
+  ],
+  "cleanroom_boundary":{"native_source_or_decompilation_included":false,"pcm_or_media_included":false,"key_or_license_included":false,"implementation_source_included":false}
+}

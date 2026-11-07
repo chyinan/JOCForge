@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "preferred_downmix_encoder_config_tree_first_observer_wash_v1",
+      "manifest_sha256": "1e4d12e16da249b43c3ca0acc2d0316d21ce85bc196ec06d1ef6d190171d6a71",
+      "report_sha256": "e7b584f4c5cebd8c80649d044fc1c3d5d404ae7e4580e1a7cf2fb18864828aad",
+      "evidence_sha256": "e61db722d09819da1994ec68f22bb2c8709c8e7376f210deeacc584d6c977ada"
+    },
+    {
+      "package_id": "DEE-PREFERRED-DOWNMIX-CONFIG-TREE-WRITER-BOUNDARY-V1",
+      "manifest_sha256": "3a2dc4cccd0f02aee9b341a32c840404ee47ae4ac4535e3987d49a2bfba268a2",
+      "package_seal_sha256": "1200a5e3d305de0bc0e7db79e92487f29f38fe2ed2846d2b2268c5088e58718a"
+    },
+    {
+      "package_id": "DEE-PREFERRED-DOWNMIX-ENCODER-SEMANTIC-VTABLE-BOUNDARY-V1",
+      "manifest_sha256": "add8628176e2648df89290058b348606383611bcd1286901fdda1f56f137af6d",
+      "package_seal_sha256": "7232f35d8c0d6a4a28deb0943a0b5a2966bbf43fad45d5a6f9ebd00d78ba264a"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

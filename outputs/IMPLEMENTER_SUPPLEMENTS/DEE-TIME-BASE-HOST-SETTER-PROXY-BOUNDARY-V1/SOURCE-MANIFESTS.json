@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-DDP-TIME-BASE-HOST-SETTER-BOUNDARY-WASH-V1",
+      "manifest_sha256": "30a929a9e8a4890fe53ec1041bf0178faed0501be01a92ffeec17ee0034548ef",
+      "reviewed_payloads": [
+        {
+          "name": "REPORT.md",
+          "sha256": "6faa08d58626284524d272a52afdda913fcd66a8d2cfdecd0eac78a6df0d03cb"
+        },
+        {
+          "name": "HOST-PROPERTY-TRANSFER-EDGE.json",
+          "sha256": "823d243f8306a82899d4fe08561d9cbe0bd5d081f0b848e402a0920e20eb9d63"
+        },
+        {
+          "name": "SOURCE-MANIFESTS.json",
+          "sha256": "36521cdcbd06585ab755516b203483535efa5f857bfae119bdf6902aa7921fba"
+        }
+      ],
+      "raw_native_source_or_media_copied": false
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-line-drc-first-break-source-receipts.v1",
+  "scope": "Two bounded prior ADM observations plus two static Wash packages; no new runtime result.",
+  "sources": [
+    {
+      "package": "LINE-MODE-DYNRNG-FIRST-TYPED-BREAK-WASH-V1",
+      "manifest_sha256": "8380356bf9d5415d6d5ca59c5dceca9ee4e3eacd6aad63a5bd185a7c344aee2c",
+      "normal_checker": "PASS_IN_WASH",
+      "optimized_checker": "PASS_IN_WASH",
+      "finding_scope": "conditional Line string->snapshot+0xA0 U32 mapping; row/helper first typed break; no mode-to-dynrng rule"
+    },
+    {
+      "package": "LINE-MODE-DYNRNG-ROW-OWNER-FOLLOWUP-WASH-V1",
+      "manifest_sha256": "e2bd81958aa0cca338b0096a848090cbf4ee7fb095103c266b51461f9370497b",
+      "normal_checker": "PASS_IN_WASH_AND_INDEPENDENT_REVIEW",
+      "optimized_checker": "PASS_IN_WASH_AND_INDEPENDENT_REVIEW",
+      "finding_scope": "same static snapshot base owns +0xA0 and row-range descriptor; row values are not joined to +0xA0"
+    }
+  ],
+  "input_observations": {
+    "bounded_adm_window_count": 2,
+    "music_standard_vs_film_light_dynrng": "DIFFERENT_IN_BOTH_WINDOWS",
+    "music_light_vs_film_light_dynrng": "MATCHED_IN_MEASURED_FIELDS_ONLY",
+    "new_ab_or_dee_run": false
+  },
+  "runtime_status": "NOT_RUN",
+  "pcm_or_payload_persisted": false,
+  "key_or_license_accessed": false
+}

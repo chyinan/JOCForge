@@ -1,0 +1,64 @@
+{
+  "schema": "jocforge.preferred_downmix_cli_argv_semantic_boundary.v2",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CLI-ARGV-SEMANTIC-BOUNDARY-V2",
+  "status": {
+    "argv_to_app_vtable_slot_plus_0x20": "STATICALLY_BOUND",
+    "slot_plus_0x20_to_FUN_1401da950": "STATICALLY_BOUND_THIS_ARGC_ARGV",
+    "argv_vector_to_FUN_14029d4d0": "STATIC_CALL_BOUND_RDX_CONSUMPTION_UNBOUND",
+    "semantic_vcall_plus_0x08_plus_0x10": "TOKEN_COUNT_BOUNDS_ONLY",
+    "parsed_records_to_config_tree_this_plus_0x18": "STATICALLY_BOUND",
+    "selected_semantic_to_encoder_typed_storage": "UNBOUND",
+    "argv_to_this_plus_0x360_parse_store_notify": "UNBOUND_STATIC",
+    "actual_child_argv": "NOT_CAPTURED",
+    "runtime_branch": "NOT_RUN"
+  },
+  "source_package": {
+    "package_id": "preferred_downmix_encoder_boost_semantic_boundary_wash_v1",
+    "manifest_sha256": "064b940f13846be0fe512c061d4ef8472311cbbbf90da707d39e574d165c8ed8",
+    "report_sha256": "6b96147ed85e686e80375047a014e6b939789485651293619d605f39f3a86ca8",
+    "evidence_sha256": "c814c9f8fc36c98e7e981c633c5bf1bd2a7d4d2db38ef525ca09e4016d85fa7c",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC, read-only/no-analysis"
+  },
+  "corrected_app_dispatch": {
+    "runner": "FUN_1400b5310",
+    "call_site": "0x1400b534c",
+    "app_vtable_slot": "+0x20",
+    "target": "FUN_1401da950",
+    "arguments": ["this", "argc", "argv pointer preserved in R8"]
+  },
+  "argv_path": {
+    "vector_builder": "FUN_1401d5ad0",
+    "range": "argv[1..argc)",
+    "childop_call": "FUN_14029d4d0",
+    "rdx_argument": "constructed argv string vector",
+    "childop_consumes_rdx": "NOT_OBSERVED_IN_INSPECTED_BODY"
+  },
+  "parser_commit": {
+    "parser": "FUN_14029fe70",
+    "semantic_calls": [
+      {"slot": "+0x08", "observed_result": "option token-count bound"},
+      {"slot": "+0x10", "observed_result": "other option token-count bound"}
+    ],
+    "selected_semantic_identity": "DYNAMIC_UNRESOLVED",
+    "parsed_record_commit": "FUN_1401d7110 then FUN_1402a3350 into app config tree this+0x18",
+    "typed_encoder_storage": "DdpjocEncoderApp this+0x360; no direct edge from this merge observed",
+    "temporary_record_cleanup": "FUN_1400d2d70 releases temporary record allocation"
+  },
+  "supersedes": {
+    "wash_package_id": "DEE-PREFERRED-DOWNMIX-CLI-ARGV-STORAGE-BOUNDARY-V1",
+    "manifest_sha256": "a168d53ca33fba23029b02bfa319188ccea84895e6ee597f2bd9859f7d135007",
+    "package_seal_sha256": "eff2780bb1bb7e8d6664493ac06f91a8f31871143a44d8db8aa5cb6845a144fe",
+    "scope": "V1 app-entry first-break was premature; V2 carries argv through app vtable slot +0x20 to the ChildOp vector boundary. V1 schema/fallback facts are unchanged."
+  },
+  "limits": {
+    "dee_executed": false,
+    "child_argv_captured": false,
+    "media_or_pcm_read": false,
+    "payload_key_or_license_read": false,
+    "implementation_source_read": false,
+    "global_absence_claim": false
+  },
+  "implementation_disposition": "Replace only V1's premature argv first-break. Preserve the existing typed encoder schema and empty-string fallback; argv-to-typed-storage remains unbound."
+}

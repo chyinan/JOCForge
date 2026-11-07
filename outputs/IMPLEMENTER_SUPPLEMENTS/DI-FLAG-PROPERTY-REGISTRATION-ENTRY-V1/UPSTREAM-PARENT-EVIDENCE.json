@@ -1,0 +1,44 @@
+{
+  "schema": "wash-di-registration-entry-parents.v1",
+  "parent_packages": [
+    {
+      "seal": "90b83f64955aa0d3067aad263f5c47270e9a2792e570c389cf60c40ecb1f34c9",
+      "manifest": "775e5c9633dd103d082d3126a122a42d601ed1949e3f3e47b8e84f75a8bfc4d2",
+      "package": "di_flag_stage_static_wash_v1"
+    },
+    {
+      "seal": "c0efd28b6b732ed2d56e23174271f93449dc2efd02e9c6b87b03f85dadb06f20",
+      "manifest": "13280334c376c4783d31b0156ae93af1b2c6209b95e4891cdf11c56456079815",
+      "package": "di_flag_property_application_addendum_wash_v1"
+    },
+    {
+      "seal": "3d7ab162b3b6623178e42f0d9a4a7adf878c6a76c724fb043094738b672c2772",
+      "manifest": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971",
+      "package": "di_flag_property_map_consumer_addendum_wash_v1"
+    }
+  ],
+  "source_trace_files": [
+    {
+      "sha256": "51517d4d45069d47e3e743ea24dc790f334c5940d491936480c7eb96597cf630",
+      "file": "trace\\plugin_to_processor_constructor.txt",
+      "package": "di_flag_stage_static_wash_v1"
+    },
+    {
+      "sha256": "d216b524cc09bc64194ac29453b6f8e3443116ec9d18df2f459db22e4c969d97",
+      "file": "trace\\dialogue_property_consumer_boundary_r1.txt",
+      "package": "di_flag_stage_static_wash_v1"
+    },
+    {
+      "sha256": "3accb8de4fb94c2ee8d78614972b37c5b32d7f845f74d723666c44c3bafb36c6",
+      "file": "trace\\simple_bool_descriptor_vtable.txt",
+      "package": "di_flag_property_application_addendum_wash_v1"
+    },
+    {
+      "sha256": "6c251bbb94d26a54010dd49cd43f95e929fb725dfb6da3b13340d6fc6297bf5e",
+      "file": "trace\\simple_bool_value_reader.txt",
+      "package": "di_flag_property_map_consumer_addendum_wash_v1"
+    }
+  ],
+  "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "disposition": "All listed parent manifests/seals were re-verified before this addendum. The existing SimpleType<bool> receiver edge is cited unchanged."
+}

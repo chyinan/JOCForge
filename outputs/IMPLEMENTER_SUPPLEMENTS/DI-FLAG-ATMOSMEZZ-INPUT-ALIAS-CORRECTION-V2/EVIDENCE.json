@@ -1,0 +1,74 @@
+{
+  "schema": "jocforge.di_atmosmezz_input_alias_correction.v2",
+  "package_id": "DI-FLAG-ATMOSMEZZ-INPUT-ALIAS-CORRECTION-V2",
+  "supersedes": {
+    "package_id": "DI-FLAG-PROPERTY-RECEIVER-BOUNDARY-V1",
+    "manifest_sha256": "22ece1cfe149f0594f8863bea3354b9b575fd8e6921168c66d1014cf555d3735",
+    "corrected_claim": "D:\\ADM.wav was not an authorized source"
+  },
+  "status": {
+    "selected_ui_path": "D:\\潜在的なアイ.wav",
+    "cli_alias": "D:\\ADM.wav",
+    "alias_to_selected_source": "USER_ASSERTED/UNBOUND",
+    "source_hash_per_attempt": "UNBOUND",
+    "attempt_1": "CANCELLED_AT_64_6_PERCENT; NO_FINAL_EC3_RECEIPT; NOT_PASS",
+    "attempt_2": "CANCELLED_AT_74_8_PERCENT; NO_FINAL_EC3_RECEIPT; NOT_PASS",
+    "human_cat_attempt": "NOT_RUN",
+    "di_receiver_edge": "UNCHANGED_STATIC_BOUNDARY",
+    "di_owner_generation_and_audio_consumer": "UNBOUND/NOT_IDENTIFIED"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_flag_atmos_mezz_input_alias_correction_addendum_wash_v1",
+    "package_id": "di-flag-atmos-mezz-input-alias-correction-addendum-wash-v1",
+    "manifest_list_sha256": "5f4774fe7f935863014417e61719e83a1554c559e456e80475c9b1b1ffdea128",
+    "package_seal_sha256": "5d1d13b04a382d8f495515175c709b7823fb9d955536a629e1974d950a52fcc8",
+    "all_manifest_listed_files_rehashed": true,
+    "parent_manifest_seal_pair_rehashed": true,
+    "screenshots_independently_viewed": true,
+    "per_attempt_source_hash_receipt": false,
+    "raw_dee_log_included": false
+  },
+  "screenshot_observations": [
+    {
+      "id": "selected_input_form",
+      "sha256": "ac150640143f417b075a720e0de49ef4d2ad50ff1d2a7fff3b4dac7e3e59b336",
+      "visible_input_path": "D:\\潜在的なアイ.wav"
+    },
+    {
+      "id": "cli_alias_and_temporary_output",
+      "sha256": "908b7421c948b52973c6bfc9433a82f65721e82bf216a7932b533ed4b20ff711",
+      "visible_cli_input": "D:\\ADM.wav",
+      "visible_event": "temporary output and planned final rename; this is not a successful completion receipt"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "attempt-1",
+      "start_time_observed": "2026-11-04 12:24:27.926 Asia/Shanghai",
+      "last_progress_observed": "64.6% at 2026-11-04 12:24:52.202 Asia/Shanghai",
+      "cancel_status": "CANCELLED",
+      "cancel_timestamp": "NOT_CAPTURED",
+      "final_ec3_completion_or_rename": "NOT_OBSERVED",
+      "source_hash_join": "UNBOUND"
+    },
+    {
+      "id": "attempt-2",
+      "start_time_observed": "2026-11-04 12:26:47.737 Asia/Shanghai",
+      "last_progress_observed": "74.8% at 2026-11-04 12:27:15.572 Asia/Shanghai",
+      "cancel_status": "CANCELLED",
+      "cancel_timestamp": "NOT_CAPTURED",
+      "final_ec3_completion_or_rename": "NOT_OBSERVED",
+      "source_hash_join": "UNBOUND"
+    }
+  ],
+  "execution_scope": {
+    "new_ui_input": false,
+    "new_dee_run": false,
+    "ghidra_analysis": false,
+    "audio_or_pcm_read": false,
+    "payload_or_key_license_read": false,
+    "implementation_contact": false,
+    "old_structure_error_sample_used": false
+  },
+  "disposition": "Retract only the wrong-source inference. Do not treat cancelled attempts as output PASS or claim the temporary alias is hash-bound to the selected ADM."
+}

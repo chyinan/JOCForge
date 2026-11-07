@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.wav_selector3_input_boundary.v1",
+  "status": "METADATA_ONLY_BOUNDARY_NOT_RUNTIME",
+  "sample": "human_is_cat",
+  "input_alias": "human_is_cat_ascii.wav",
+  "run_range": "full file",
+  "successful_runs_recorded": 2,
+  "dee_or_decode_run_in_this_slice": "NOT_RUN",
+  "provider_callback_target": "UNBOUND",
+  "read_vtable_implementation": "UNBOUND",
+  "endSample_minus_one": "NOT_CAPTURED",
+  "raw_audio_or_payload_included": false
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "wash-wav-selector3-reader-eof-seal-v1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 685,
+      "sha256": "eeeec56bd19e6f02647744809cce8fbfdf6e689cee7789bab53ef7b5eb3ce05b"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 3924,
+      "sha256": "3f0ff35b871407f318c9ede928bf1b62f2da29c910921e801649ac34e4b41d14"
+    },
+    {
+      "path": "check_selector3_reader_eof.py",
+      "bytes": 9084,
+      "sha256": "38a4ffb1a6ddd8c64088fcbe256b00e8b23e8a559160919231c5856cd1c6e492"
+    },
+    {
+      "path": "input_vector.json",
+      "bytes": 3736,
+      "sha256": "81a1e90622ab68cb3a8d1bab9f131c51e2236833c7c5a82c444a9268869bc3a3"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 5822,
+      "sha256": "13f753a6ccc95572e3a124fc83bca7b0fc642c89550f8de7b2c45d4e5240da98"
+    },
+    {
+      "path": "queries/TraceWavMasterStorageRead.java",
+      "bytes": 8260,
+      "sha256": "55e7bb9e39f69d1aace636d6a24ac99eeba0719ad7e711b154eb8221a56fe866"
+    },
+    {
+      "path": "queries/TraceWavRegistryOwnerInitialization.java",
+      "bytes": 5970,
+      "sha256": "71f9efc00e74afcdfdc975d6b0b903644300da7acbd46d74baf16c1a5f72f15c"
+    },
+    {
+      "path": "seal_selector3_reader_eof.py",
+      "bytes": 3338,
+      "sha256": "120c6376995b3360de9dc18050cbf2fac053fc34a1103a7c9be41870344fc708"
+    },
+    {
+      "path": "trace/ghidra_registry_owner_initialization.log",
+      "bytes": 6556,
+      "sha256": "72489984333faf6021c851f4ae20510a93c6809efc1ae1b4bc2b10cb6c589b8d"
+    },
+    {
+      "path": "trace/ghidra_wav_master_storage_read.log",
+      "bytes": 6540,
+      "sha256": "13c209299ed186da966cda9a7846b8ac399b8fc34e5b1eb1e04b957e660aac2f"
+    },
+    {
+      "path": "trace/registry_owner_initialization.txt",
+      "bytes": 93320,
+      "sha256": "ffe7eb5954ada3efa6e7cd01bb2a036ee697799500023211bd05841be348105f"
+    },
+    {
+      "path": "trace/wav_master_storage_read.txt",
+      "bytes": 21016,
+      "sha256": "8daf6c503167ec6802ed58ff276d06e2aecad3d703411baa600ebd8b0009a263"
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "bytes": 1298,
+      "sha256": "2f8d698e5c959b57c577382ccd94c95122f428bea348810b1d8b45ff316e55d8"
+    }
+  ]
+}

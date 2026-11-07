@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.di_registration_entry_sources.v1",
+  "upstream_manifest_list_sha256": "0d6d2d10b67e27659567825fb4bec472c5bb33d3cfdfcd383104ba34db331f83",
+  "upstream_package_seal_sha256": "9bd97339c8ab809de9b7aa820ac2693170c911db0d9b2ad6c99a23796922a8af",
+  "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "parent_packages": [
+    {"package_id": "di_flag_stage_static_wash_v1", "manifest_sha256": "775e5c9633dd103d082d3126a122a42d601ed1949e3f3e47b8e84f75a8bfc4d2", "package_seal_sha256": "90b83f64955aa0d3067aad263f5c47270e9a2792e570c389cf60c40ecb1f34c9"},
+    {"package_id": "di_flag_property_application_addendum_wash_v1", "manifest_sha256": "13280334c376c4783d31b0156ae93af1b2c6209b95e4891cdf11c56456079815", "package_seal_sha256": "c0efd28b6b732ed2d56e23174271f93449dc2efd02e9c6b87b03f85dadb06f20"},
+    {"package_id": "di_flag_property_map_consumer_addendum_wash_v1", "manifest_sha256": "9bb2cd833efdd70256b42c5c52689010a84eed02ab3b47ad5b12abf3a1168971", "package_seal_sha256": "3d7ab162b3b6623178e42f0d9a4a7adf878c6a76c724fb043094738b672c2772"}
+  ],
+  "raw_ghidra_trace_in_supplement": false
+}

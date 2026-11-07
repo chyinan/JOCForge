@@ -1,0 +1,55 @@
+{
+  "schema": "wash-wav-storage-provider-seal-v1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 542,
+      "sha256": "0a801a926f787aedb90b6c40de74fce8fe6e997ef379ce05af8d47a043844a06"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1738,
+      "sha256": "f7a84a6b2bb9b2f6ab70eab30ab370fa42862944aa86728ad7f893f690007063"
+    },
+    {
+      "path": "check_wav_storage_provider.py",
+      "bytes": 6620,
+      "sha256": "71008e6262697960d3c5491639c4f2929c5165b175589609ad6814a06daf64e9"
+    },
+    {
+      "path": "input_vector.json",
+      "bytes": 2262,
+      "sha256": "f6630dc5cb0e95bb3c11e3c10783ae148c02c1e3dd1b05d22c3001cc27fd77fd"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3729,
+      "sha256": "cf989438b3d4bc1c0d691504dc521e68881a2458bb27b4cc85391f1a36ac791a"
+    },
+    {
+      "path": "queries/TraceWavStorageProvider.java",
+      "bytes": 5374,
+      "sha256": "3d081a08019316e3fb84cf19c0e25714a89485ac195205fe5171d769103faf77"
+    },
+    {
+      "path": "seal_wav_storage_provider.py",
+      "bytes": 3052,
+      "sha256": "f9a6dc4532f8d30673e021380bfe4418dc7083fca0927a6144539892dc0c8828"
+    },
+    {
+      "path": "trace/ghidra_wav_provider_dispatch.log",
+      "bytes": 6519,
+      "sha256": "0b053ab5c13c9d580d0ded57afc186ed697550da8ea12ad78c239783a13cf8d5"
+    },
+    {
+      "path": "trace/wav_provider_dispatch.txt",
+      "bytes": 23176,
+      "sha256": "e226a23a76c352fe3c9a03f612d22adf6d642ed5eb4e7d781a6de7a3a8ebf8a9"
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "bytes": 921,
+      "sha256": "cd5fc6ff23c4df0931b46d63fb3ba29332d55bd3a846303b7cebf0d90092a0bc"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "schema": "f13c-preferred-downmix-enum-serialization.v1",
+  "source_identity": {
+    "path": "C:/Program Files/Dolby Media Encoder/resources/app.asar",
+    "sha256_recomputed_this_pass": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+    "size_bytes": 15462158,
+    "offset_basis": "absolute byte offsets in app.asar, including the ASAR header"
+  },
+  "property_identity": {
+    "workflow": "DolbyDigitalPlusOnlineMedia",
+    "json_state_path": "Encoders.DolbyDigitalPlusOnlineMedia.DownmixOptions.PreferredStereoDownmix",
+    "composite_member_key": "preferred_downmix_mode",
+    "ui_and_json_schema_enum_values": ["Not Indicated", "Surround", "Stereo"],
+    "enum_value_count": 3,
+    "fourth_explicit_enum_value": "NOT_PRESENT_IN_HASHED_DME_HOST_SCHEMA_OR_HANDLER",
+    "no_input_or_inactive_state_is_an_enum_value": false
+  },
+  "value_flow": {
+    "input_type": "case-sensitive JavaScript string label",
+    "active_type": "boolean",
+    "normalization": "exact Map lookup; no trim, case folding, numeric conversion, or fallback",
+    "mapping": {
+      "Stereo": "loro",
+      "Surround": "ltrt",
+      "Not Indicated": "not_indicated"
+    },
+    "output_type": "string token inside the composite --encoder value",
+    "unknown_or_fourth_label": "handler throws; the enclosing DME config method catches and rethrows as error code 400",
+    "evaluation_order": "The handler call is evaluated while valuesToCombineMap is built, before the later active gate. A valid inactive value is normalized and then omitted; an invalid value is rejected before serialization even when inactive.",
+    "active_gate": "Only active PreferredStereoDownmix contributes preferred_downmix_mode=<token> to the composite.",
+    "default_state_recorded_in_source": {
+      "schema_default_active": false,
+      "schema_default_value": "Stereo",
+      "initial_state_active": false,
+      "initial_state_value": "Stereo",
+      "runtime_or_persisted_value_without_user_input": "NOT_CAPTURED; do not infer"
+    }
+  },
+  "serialization": {
+    "outer_argument_key": "--encoder",
+    "active_entries_order": "valuesToCombineMap insertion order",
+    "atmos_input_branch": {
+      "condition": "inputType is ChannelBasedImmersive or DolbyAtmos",
+      "formula": "join(':', active entries formatted as key + '=' + value)",
+      "mode_only_composite_by_token": {
+        "loro": "preferred_downmix_mode=loro",
+        "ltrt": "preferred_downmix_mode=ltrt",
+        "not_indicated": "preferred_downmix_mode=not_indicated"
+      }
+    },
+    "other_input_branch": {
+      "formula": "'ddp' followed by ':' + each active entry formatted as key + '=' + value",
+      "mode_only_composite_by_token": {
+        "loro": "ddp:preferred_downmix_mode=loro",
+        "ltrt": "ddp:preferred_downmix_mode=ltrt",
+        "not_indicated": "ddp:preferred_downmix_mode=not_indicated"
+      }
+    },
+    "inactive_mode_member": "omitted from the composite; the outer --encoder property is still constructed, with other active entries, an empty value in the Atmos branch, or the base 'ddp' value in the other branch.",
+    "explicit_not_indicated": "normalized to not_indicated and included only when active; no missing/inactive-value fallback synthesizes not_indicated."
+  },
+  "four_case_reconciliation": [
+    {
+      "case": "Stereo",
+      "input_label": "Stereo",
+      "canonical_token": "loro",
+      "when_active": "serialize key and canonical token",
+      "when_inactive": "omit this member"
+    },
+    {
+      "case": "Surround",
+      "input_label": "Surround",
+      "canonical_token": "ltrt",
+      "when_active": "serialize key and canonical token",
+      "when_inactive": "omit this member"
+    },
+    {
+      "case": "Not Indicated",
+      "input_label": "Not Indicated",
+      "canonical_token": "not_indicated",
+      "when_active": "serialize key and canonical token",
+      "when_inactive": "omit this member"
+    },
+    {
+      "case": "initial/inactive default state",
+      "input_label": "Stereo from the static schema/state template; not a fourth enum value",
+      "canonical_token_before_gate": "loro",
+      "active": false,
+      "serialization": "omit preferred_downmix_mode member",
+      "runtime_default_claim": "NOT_MADE"
+    }
+  ],
+  "numeric_and_temporal_properties": {
+    "formula": "string map, then conditional member serialization; no numeric formula",
+    "numeric_precision": "NOT_APPLICABLE",
+    "numeric_bounds": "NOT_APPLICABLE",
+    "clock_or_time_dependency": "NONE_IDENTIFIED",
+    "state_dependency": "PreferredStereoDownmix.active gates emission; value is independently mapped first."
+  },
+  "scope_limits": {
+    "dme_host_static_source_only": true,
+    "xml_schema_beyond_reused_candidate_property_path": "UNBOUND",
+    "actual_user_or_persisted_value": "NOT_CAPTURED",
+    "ui_runtime_or_dme_run": "NOT_RUN",
+    "dee_or_ab": "NOT_RUN",
+    "media_pcm_payload_key_or_license_read": false,
+    "fourth_dme_host_enum": "NOT_PRESENT_IN_THE_HASHED_FIELD_SCHEMA_AND_HANDLER"
+  },
+  "source_ranges": {
+    "online_ui_allowed_values": {"start": 2058369, "end_exclusive": 2058533, "sha256": "5e716f65e6f91de5b79f6f21a9ae4d3361d6ef685da3d45744e6782e9faa24aa"},
+    "online_json_schema_default_and_enum": {"start": 3560895, "end_exclusive": 3561713, "sha256": "0b2356df56dd715309783d3fb7898aa791b52cb0ceb59779f96b916f06f4b17b"},
+    "online_initial_state_default": {"start": 2367126, "end_exclusive": 2367198, "sha256": "70ea3ebf3c7e10b0d6a764c19c3ee0918ab71b6e98d8196304acd64c3ad619e3"}
+  },
+  "reused_source_edges": {
+    "dme_serializer_and_handler": {
+      "package": "F13C-preferred-downmix-host-property-transfer-boundary-v2",
+      "manifest_sha256": "10e1580e55c9b33f4b65c17fa00b8060eab81ad71227c210cc491e8638dc6979"
+    },
+    "child_argv_boundary": {
+      "package": "F13C-preferred-downmix-host-property-transfer-boundary-v3",
+      "manifest_sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6"
+    }
+  }
+}

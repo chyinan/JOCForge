@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CLI-ARGV-STORAGE-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_argv_to_typed_storage_boundary",
+      "package_id": "preferred_downmix_encoder_boost_boundary_wash_v1",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-6-f05-f13-transaction/outputs/preferred_downmix_encoder_boost_boundary_wash_v1",
+      "manifest_sha256": "b614131e246adc9950a73dd469d7a39d46fabba9596a6ed1da10e9401181134f",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "parent_static_composite_parser",
+      "package_id": "DEE-PREFERRED-DOWNMIX-ENCODER-STRING-PARSER-V1",
+      "wash_manifest_sha256": "e39222a99bef7c9006033f9ca033b308a95a7a8a66a23cfaf81c5ef3c5209bcd",
+      "wash_seal_sha256": "7bfc61839b10b676d6ec0bf01c726ae5d571997baa1a7ea5a8135fea0a2a4dc0",
+      "relationship": "Static parser output path reused; actual argv and storage write remain unbound."
+    }
+  ],
+  "omitted_material": {
+    "raw_ghidra_logs_or_scripts": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true,
+    "runtime_child_argv": true
+  }
+}

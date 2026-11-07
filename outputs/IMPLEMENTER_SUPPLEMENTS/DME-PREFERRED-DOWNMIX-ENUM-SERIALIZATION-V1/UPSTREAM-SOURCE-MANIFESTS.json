@@ -1,0 +1,41 @@
+{
+  "schema": "f13c-preferred-downmix-enum-source-manifests.v1",
+  "app_source": {
+    "path": "C:/Program Files/Dolby Media Encoder/resources/app.asar",
+    "sha256": "c51aa127eb0d18b9bd78f7189b681ab5209efd87a9c16b3f48ed2e1cd1649917",
+    "bytes": 15462158,
+    "offset_basis": "absolute byte offsets in app.asar, including the ASAR header",
+    "excerpt_hashes": {
+      "online_ui_allowed_values": {"start": 2058369, "end_exclusive": 2058533, "sha256": "5e716f65e6f91de5b79f6f21a9ae4d3361d6ef685da3d45744e6782e9faa24aa"},
+      "online_json_schema_default_and_enum": {"start": 3560895, "end_exclusive": 3561713, "sha256": "0b2356df56dd715309783d3fb7898aa791b52cb0ceb59779f96b916f06f4b17b"},
+      "online_initial_state_default": {"start": 2367126, "end_exclusive": 2367198, "sha256": "70ea3ebf3c7e10b0d6a764c19c3ee0918ab71b6e98d8196304acd64c3ad619e3"}
+    }
+  },
+  "reused_receipts": [
+    {
+      "package": "F13C-preferred-downmix-host-property-transfer-boundary-v2",
+      "manifest_sha256": "10e1580e55c9b33f4b65c17fa00b8060eab81ad71227c210cc491e8638dc6979",
+      "artifacts": [
+        {"path": "HOST-PROPERTY-TRANSFER.json", "sha256": "27cefdd81f9108536396fe3c251c92180c1025fe1a11e7debc41af8d7cfe8903", "role": "valuesToCombineMap key, exact handler token map, active serializer, and composite branch boundary."},
+        {"path": "SOURCE-MANIFESTS.json", "sha256": "4d6ad63c5ae6655b2b5f0100fd8e69781cb94860e6fbbf022da9c1ed27dfd4bb", "role": "Hash-bound source excerpt ranges for the V2 serializer and handler."},
+        {"path": "verify_package.py", "sha256": "e418ab22bf2079d42f3bcad7001fa63217529bfd8e1a6d0372ae60d998691132", "role": "Parent source and package verifier."}
+      ]
+    },
+    {
+      "package": "F13C-preferred-downmix-host-property-transfer-boundary-v3",
+      "manifest_sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6",
+      "artifacts": [
+        {"path": "HOST-ARGV-TRANSFER.json", "sha256": "d7e54676ee9620388b449d697792ec98bdfc1c621cf1582602d1615935383dc4", "role": "Previously sealed host property-to-child-argv boundary."}
+      ]
+    }
+  ],
+  "package_scope": {
+    "only_dme_source_ranges_added": true,
+    "child_process_spawn_retraced": false,
+    "host_general_map_retraced": false,
+    "ui_or_dme_run": false,
+    "dee_or_ab_run": false,
+    "media_pcm_payload_key_or_license_read": false,
+    "implementation_contacted": false
+  }
+}

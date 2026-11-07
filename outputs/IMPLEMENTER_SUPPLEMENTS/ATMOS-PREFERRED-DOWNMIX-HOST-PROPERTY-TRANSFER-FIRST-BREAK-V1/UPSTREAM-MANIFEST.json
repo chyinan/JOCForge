@@ -1,0 +1,54 @@
+{
+  "format": "wash-evidence-package-v1",
+  "package": "F13C-preferred-downmix-host-property-transfer-first-break-v1",
+  "recipient": "Wash-only",
+  "target": "dee_ddpjoc_encoder.exe",
+  "target_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+  "ghidra_version": "12.2 PUBLIC",
+  "first_break_status": "UNBOUND",
+  "effect_classification": "UNBOUND",
+  "first_break": "Active host property-list entry / candidate encode_to_atmos_ddp XML value -> native typed ddp_dmixmod owner/consumer",
+  "conclusion": "DME app source maps the UI choice into preferred_downmix_mode and has a generic active-property serialization path. No same-run transfer to the candidate XML or typed native ddp_dmixmod owner/consumer is established. The separate dmixmod key reaches text validation only.",
+  "execution_scope": {
+    "reused_ghidra_12_2_receipts_only": true,
+    "new_ghidra_query_run": false,
+    "ida_used": false,
+    "dee_run": false,
+    "ab_run": false,
+    "windbg_attached": false,
+    "media_read": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "key_read": false,
+    "license_read": false,
+    "implementation_contacted": false,
+    "spatial_object_rendering": "NOT_COVERED"
+  },
+  "payloads": [
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "37802f4b1f84e1c6fa45c94f76f1257f43c62f8bafafd27913c4a07753b10f70",
+      "size_bytes": 696
+    },
+    {
+      "path": "PROPERTY-TRANSFER-BOUNDARY.json",
+      "sha256": "336a5a4bdf705e3570602d3f9938b92cefe8f4d1c5ee938ac36d302faf15c145",
+      "size_bytes": 3885
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "cdaf4abf7961abd1ea922ce64aeef8fab6a555c1bb7aa5acb2e312f442b99515",
+      "size_bytes": 2435
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "sha256": "b11e674aeac1d5f4da5c7bc4a7555cdd89a80d186f6bc67c8a5a667fb7e2f2a7",
+      "size_bytes": 3293
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "4c1f5739bb975e8a30cd6249f016ca99db9a4e80fcbe7173c5347dd3d23c70d4",
+      "size_bytes": 6720
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-NATIVE-CONSUMER-FIRST-BREAK-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PREFERRED_MODE_TO_TYPED_DDP_DMIXMOD_UNBOUND; EFFECT_UNBOUND; A_B_NOT_RUN",
+  "implementation_disposition": "Do not add a preferred-mode audio mapping from this evidence; preserve the option seam and keep behavior unclaimed",
+  "source_manifest_sha256": "1c75cf415e566ccf260e031ef8bb818c293c7d32fcd04de28a78b29502c4e508",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3196,
+      "sha256": "77267722d9aa0a42c77cb5192f56ce061247a195631e48eb7f089424c32da7e6"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3100,
+      "sha256": "5be78ff251601f3b8e8dd8264365114c48c254bd6a764b2b1cede7d469f695d3"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1145,
+      "sha256": "bb3be476810d160f76c123fc1b6aa2d30ea6672067572cc0a17c749f760c68c2"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2366,
+      "sha256": "2028d2628c557ee5451f8d921e5f4028aba18c30de211e89cd7d6fa1cbbbc35b"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 3367,
+      "sha256": "d2b8030bcf98b6696c5f34ae5bb0e20bde1ea0c8e482db9d72a954902e79cc1b"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 1970,
+      "sha256": "1c75cf415e566ccf260e031ef8bb818c293c7d32fcd04de28a78b29502c4e508"
+    },
+    {
+      "name": "UPSTREAM-SHA256SUMS.txt",
+      "bytes": 522,
+      "sha256": "25a17988929b66e33cdd4a83d6e029ea11ff5d30dd0f60417da0c58b0736c5bc"
+    }
+  ]
+}

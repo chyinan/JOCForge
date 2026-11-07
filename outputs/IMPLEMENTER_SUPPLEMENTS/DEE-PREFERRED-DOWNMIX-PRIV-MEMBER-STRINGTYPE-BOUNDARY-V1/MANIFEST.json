@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-PRIV-MEMBER-STRINGTYPE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PRIV_PLUS_0X210_STRINGTYPE_BOUND; ORDINAL_AND_AUDIO_JOIN_UNBOUND",
+  "implementation_disposition": "Supersede only the member-type boundary for the selected constructor route; keep preferred ordinal/MixMode/audio joins unbound.",
+  "source_manifest_sha256": "5a09cdaef80b89170cc39ad5f7a893651b23b94c78ec9f79926e9dbe57dfa366",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4179,
+      "sha256": "9daed895ec371eea4791977bbe9f2000836347a880cf1498b8f3f10d28a70ce6"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2119,
+      "sha256": "1da59afb7fa93154b3e7ad985b52cf295cf3ed19f639b56d29d60fc0d437eb02"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 219,
+      "sha256": "7a6a4ef3557c69e69b16285f256e359ef74aa9b50dd20a698dd33976965b12ad"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1138,
+      "sha256": "594faf7e2b6a788a554cc3becb89253e664bf0f31abf44bb27a0d61514faf130"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 928,
+      "sha256": "e1bff293ed822646068ce427598aad5693a8e90ed164761ebc65f174522d7da2"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_bindings.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FIRST-PASS-CHILD-BOUNDARY-WASH-V1",
+      "manifest_sha256": "4a6dcf7b774cfd18c3a5512d7e7e41517fcb81696519780bcf04d225234af3e2",
+      "checksum_list_sha256": "a82440f2e9c8cdf2f221985b2f8b5fa3d86ce29412d85864d2a1d9b98e8bf611",
+      "reviewed_payloads": [
+        {"name": "FIRST-PASS-CHILD-BOUNDARY.json", "sha256": "600d75d2721e597ae0f4fd6bbad47c5213b1bf2f9dd21431a675d8ab5cf6065a"},
+        {"name": "REPORT.md", "sha256": "f1c080dc8537310ea22f0d9b4fd335536c8d4cd8f297c3e6cb591ac186b3e329"},
+        {"name": "SOURCE-MANIFESTS.json", "sha256": "ae636673f1fef194347b0ee68076e8c5df91fc58e240342df673dd252f446804"}
+      ],
+      "raw_Ghidra_trace_or_script_copied": false
+    }
+  ]
+}

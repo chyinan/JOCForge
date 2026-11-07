@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CLI-ARGV-SEMANTIC-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ARGV_TO_APP_SLOT20_BOUND; CHILDOP_CONTENT_AND_TYPED_STORAGE_UNBOUND",
+  "implementation_disposition": "Supersede only V1's premature argv first-break; keep typed encoder schema/fallback facts and argv-to-storage UNBOUND.",
+  "source_manifest_sha256": "064b940f13846be0fe512c061d4ef8472311cbbbf90da707d39e574d165c8ed8",
+  "source_evidence_sha256": "c814c9f8fc36c98e7e981c633c5bf1bd2a7d4d2db38ef525ca09e4016d85fa7c",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4586,
+      "sha256": "989664fe67b8dae676476b7ebd685a2dc755d45824ed58a6ea3b975d85598ccb"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 3141,
+      "sha256": "43d5038acaabfa2551cf9edd6565d32e040d4150ef4eabb6521436eb359fc2b2"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 252,
+      "sha256": "931257bfdcbd2b91e7e29a518ae0dbc737e8c51c423f56e6c20d90d3667e78da"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1986,
+      "sha256": "c5c87406f99da6886d0591e359c29b07681487983203881791d9d1f2c77f0fdd"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1095,
+      "sha256": "47b57ca96fec2d77c2da5190406229df3aa23c029543051767a31a92cf17ca25"
+    }
+  ]
+}

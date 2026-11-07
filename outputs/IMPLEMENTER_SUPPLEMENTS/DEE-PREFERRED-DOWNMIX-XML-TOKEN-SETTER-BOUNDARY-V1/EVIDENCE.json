@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.dee_preferred_downmix_xml_token_setter_boundary.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-XML-TOKEN-SETTER-BOUNDARY-V1",
+  "status": "XML_TOKEN_SCHEMA_AND_ENUM_MAP_STATIC_BOUND; SETTER_PRESERVES_PREEXISTING_VALUE_IN_INSPECTED_CONSTRUCTOR; INITIALIZER_AND_STAGE_CONSUMER_UNBOUND; RUNTIME_NOT_RUN",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-XML-PARSER-WASH-V1",
+    "manifest_sha256": "bdd71adc1d6387fa4645416bb28760922a38064c9e9a651e6aec62a217280a1c",
+    "normal_checker": "PASS",
+    "python_O_checker": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_image_provenance": "project-recorded hash; installed image not rehashed"
+  },
+  "xml_property": {
+    "stage": "encode_to_atmos_ddp",
+    "path": "filter/audio/encode_to_atmos_ddp/downmix/preferred_downmix_mode",
+    "xml_type": "xs:string",
+    "exact_tokens": {
+      "loro": 0,
+      "ltrt": 1,
+      "ltrt-pl2": 2,
+      "not_indicated": 3
+    },
+    "unknown_token": "invalid map<K,T> key",
+    "static_default_literal": "loro",
+    "effective_value_when_omitted_or_empty": "NOT_CAPTURED"
+  },
+  "typed_value_path": {
+    "typed_owner": "dee::Types::MixMode / SafeType<MixModeValue, MixMode>",
+    "relative_field": "+0x910",
+    "outer_plugin_offset": "+0x930",
+    "parser_output": "32-bit enum-like code 0..3",
+    "setter": "vtable +0x50 / FUN_18014f6e0",
+    "constructor_callback": "null in the inspected XML construction path",
+    "setter_helper_behavior": "With null callback, returns the pre-existing MixModeValue at +0x50; setter stores that returned value back at +0x50.",
+    "xml_ordinal_to_stored_code": "UNBOUND",
+    "preexisting_code_initializer": "UNBOUND"
+  },
+  "typed_reader": {
+    "getter": "FUN_180171f50",
+    "field_read": "MixModeValue at +0x50",
+    "formatter": "FUN_180171ce0 reverse-maps the value to a token",
+    "selected_stage_processing_callsite": "UNBOUND",
+    "audio_or_bsi_consumer": "UNBOUND"
+  },
+  "scope": {
+    "dee_or_xml_job_run": "NOT_RUN",
+    "runtime_owner_generation": "NOT_CAPTURED",
+    "actual_xml_value": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_native_source_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

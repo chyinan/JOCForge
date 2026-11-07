@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "TIME-ENDPOINT-READER-EOF-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HALF_OPEN_RANGE_ENCODING_BOUND; FINAL_STORAGE_READ_PREDICATE_UNBOUND; RUNTIME_BRANCH_NOT_CAPTURED",
+  "implementation_disposition": "Do not claim inclusive/exclusive last-sample behavior from the half-open length encoding alone",
+  "source_manifest_sha256": "1f76b5f2cd2b862fbe16912bbbabe8e30f77755174cc0b8463fcfe5015014420",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 3053,
+      "sha256": "de385c7319b9b8adfb95e84bb1e0248178d103c275d294d57f898ec0d7da8253"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2282,
+      "sha256": "c319cc937e31aa55e0ec0dfa8e6efb0cc57382fe8e99c71b250bdbbc17e429b6"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 358,
+      "sha256": "05a0fa1f5a10732148951bf024e49961c0108a0422d2d537f47b0267c935a0db"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 2066,
+      "sha256": "0b7a7aa4dda8a3a5b9c037dc97e26616c8d5d016e7298b65e53a292d0fa626bb"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1199,
+      "sha256": "b7e64a9e677dc1e8801204870ef022c9ba7b198037ea3c8ff676c9419b779c22"
+    },
+    {
+      "name": "UPSTREAM-MANIFEST.json",
+      "bytes": 6681,
+      "sha256": "1f76b5f2cd2b862fbe16912bbbabe8e30f77755174cc0b8463fcfe5015014420"
+    },
+    {
+      "name": "UPSTREAM-PACKAGE-SEAL.json",
+      "bytes": 2686,
+      "sha256": "5f184ec151d5eff78ca9fae75a4ca1aa179e003ab7c8b1c2b66e370d5a204e29"
+    },
+    {
+      "name": "UPSTREAM-SHA256SUMS.txt",
+      "bytes": 1629,
+      "sha256": "a4eade7083f55cf289278d1eebcce23658cf77ac4f339da861a1513726e77682"
+    }
+  ]
+}

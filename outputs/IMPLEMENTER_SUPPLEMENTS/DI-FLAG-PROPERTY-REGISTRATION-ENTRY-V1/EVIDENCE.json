@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.di_property_bool_registration_entry.v1",
+  "package_id": "DI-FLAG-PROPERTY-REGISTRATION-ENTRY-V1",
+  "status": {
+    "property_key_to_bool_factory": "BOUND_STATIC",
+    "same_destination_simpletype_base_initialization": "BOUND_STATIC",
+    "generic_map_runtime_receiver_join": "UNBOUND",
+    "typed_owner_generation": "UNBOUND",
+    "measurement_audio_consumer": "NOT_IDENTIFIED",
+    "di_ab_or_runtime_effect": "NOT_RUN"
+  },
+  "source_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-25/jocforge-reverse-agent-4-f06of/outputs/di_flag_property_registration_entry_addendum_wash_v1",
+    "package_id": "di-flag-property-registration-entry-addendum-wash-v1",
+    "manifest_sha256": "0d6d2d10b67e27659567825fb4bec472c5bb33d3cfdfcd383104ba34db331f83",
+    "package_seal_sha256": "9bd97339c8ab809de9b7aa820ac2693170c911db0d9b2ad6c99a23796922a8af",
+    "all_listed_file_hashes": "PASS",
+    "parent_manifest_seal_pairs": "PASS_3_OF_3",
+    "tool": "Ghidra 12.2 PUBLIC"
+  },
+  "direct_registration": {
+    "property_key": "loudness:measure_only:dialogue_intelligence",
+    "entry_function": "FUN_180136220",
+    "intermediate": "FUN_18012beb0",
+    "factory": "FUN_180133420 at RVA 0x136615",
+    "destination": "param_1+0x270",
+    "type_label": "dee::bool",
+    "base_initializer": "FUN_18016a3e0 at RVA 0x1334a8",
+    "simpletype_bool_vtable_rva": "0x647938",
+    "final_bool_vtable_rva": "0x640fd8",
+    "same_destination_sequence": "BOUND_STATIC"
+  },
+  "unchanged_receiver_edge": {
+    "wrapper": "FUN_18014f640",
+    "target": "FUN_18016a540",
+    "slot": "+0x28",
+    "registration_object_to_runtime_receiver_join": "UNBOUND"
+  },
+  "execution_scope": {
+    "new_ghidra_query": false,
+    "stage_runner_opened": false,
+    "dee_run": false,
+    "di_ab": false,
+    "audio_or_pcm_read": false,
+    "payload_or_key_license_read": false,
+    "implementation_contact": false,
+    "raw_ghidra_trace_in_supplement": false
+  },
+  "disposition": "Static property registration is bound; runtime owner, generation, consumer, and audio effect are not."
+}

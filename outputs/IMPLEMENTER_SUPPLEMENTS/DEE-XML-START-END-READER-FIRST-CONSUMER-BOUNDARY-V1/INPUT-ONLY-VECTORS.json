@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "xml-start-end-boundary",
+      "input": {
+        "xsd_defaults_present": true,
+        "document_text_present": true
+      },
+      "expected_observation": {
+        "selected_runtime_value": "UNBOUND",
+        "reader_position_effect": "UNBOUND"
+      },
+      "limitations": [
+        "No selected job value",
+        "No omission-to-runtime join",
+        "No XML-to-reader-position edge"
+      ]
+    }
+  ]
+}

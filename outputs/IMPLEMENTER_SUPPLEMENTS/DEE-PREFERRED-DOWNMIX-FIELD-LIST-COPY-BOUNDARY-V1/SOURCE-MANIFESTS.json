@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FIELD-LIST-CONSUMER-BOUNDARY-WASH-V1",
+      "manifest_sha256": "68b826e4383c1b71ee4023a8045ad8eefa5d7f61825eb5064a9fc0882de4f29a",
+      "checksum_list_sha256": "13e560ed3a004fb335a9d066ba30b10dbac14ee08a945fbd51af190e4eea3c39",
+      "field_list_evidence_sha256": "14eb22b13aaefa4b7ffd0ed92a3f84abb871c1bbc1cdf339cbc642009fc0bc2b"
+    },
+    {
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-RECEIVER-OWNER-BOUNDARY-WASH-V1",
+      "manifest_sha256": "c88d5f856ce5ffd655f422fa55c806a7282652615eef81ccb3f9fcbb592a8850"
+    },
+    {
+      "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-XML-PARSER-WASH-V1",
+      "manifest_sha256": "d3495410ffacd0c942ba04731e87fc4ae8ba76046d9f83cb700ed10395bd9b49"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

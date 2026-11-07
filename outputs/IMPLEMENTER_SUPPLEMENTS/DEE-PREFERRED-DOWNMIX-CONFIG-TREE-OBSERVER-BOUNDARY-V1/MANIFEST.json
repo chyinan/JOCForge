@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-CONFIG-TREE-OBSERVER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "CONFIG_TREE_OBSERVER_BOUND; TYPED_STORAGE_WRITER_UNBOUND",
+  "implementation_disposition": "Register the first required/conflict observer only; do not infer a typed-value store from config-tree checks.",
+  "source_manifest_sha256": "1e4d12e16da249b43c3ca0acc2d0316d21ce85bc196ec06d1ef6d190171d6a71",
+  "source_evidence_sha256": "e61db722d09819da1994ec68f22bb2c8709c8e7376f210deeacc584d6c977ada",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4383,
+      "sha256": "6f561dc86069baa22c1280949256c5bd104c559c112beea1911a85d635037ce3"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1788,
+      "sha256": "61d662f1240c23483b1508b19842abc881cf9f025adcabd7de1ec5582c1b46c4"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 217,
+      "sha256": "2b011bffc27a928f5c79468387b1434810e7e63c11f1e1efc2633e3c8a398a43"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1088,
+      "sha256": "3e36476c42ff9c4f4f449ad766a91e415badc37ee952bb18b25617713692a744"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1207,
+      "sha256": "71fdf77b3390850838002e266480aec2c9ba249c26b9815e7f9d7ce8b2fe0b8f"
+    }
+  ]
+}

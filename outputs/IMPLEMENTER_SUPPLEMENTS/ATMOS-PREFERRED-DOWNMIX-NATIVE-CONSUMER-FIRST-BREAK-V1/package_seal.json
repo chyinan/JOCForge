@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-NATIVE-CONSUMER-FIRST-BREAK-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "2eafac0a19cb5b5feeb1f96f6f8a9d6533688e55121ad0954e7cfd6a3ec1c683",
+  "payload_file_count": 7,
+  "payload_hash_audit": "PASS_7_OF_7",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

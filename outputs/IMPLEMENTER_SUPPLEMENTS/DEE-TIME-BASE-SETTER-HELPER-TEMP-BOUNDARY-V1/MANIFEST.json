@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-BASE-SETTER-HELPER-TEMP-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "NESTED_SETTER_HELPER_ARGUMENT_TEMP_BOUND; DESCRIPTOR_PLUS_0X550_TRANSFER_UNBOUND",
+  "implementation_disposition": "The selected nested setter's helper receives a local temporary, not a proven +0x550 descriptor address; do not infer a time_base write.",
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-HELPER-ARGUMENT-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "98170ea51689db58cad5b830cc3de69c2d3a999de05c8e64f7ba5a546e023586",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1656,
+      "sha256": "48ca04b38e445c5405ca211e018edab4c69feca9dfe8dd51bf67a944e349cd93"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 393,
+      "sha256": "c50af856ffdcfff9b42b34d292d552d65e7e1233776d2db7b8398f6eeec6eebe"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 452,
+      "sha256": "63f9287ac0fe50542510bcf8428b3f911fec796e093a148aafa0b873b346c9c8"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 547,
+      "sha256": "26d4a671dd19b2929045f0e386294a424981a772f614baddd291190417c837d0"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 808,
+      "sha256": "80eaac847466ac9800b373c01274351235b123b2fd347d545fb456cad28ec122"
+    }
+  ]
+}

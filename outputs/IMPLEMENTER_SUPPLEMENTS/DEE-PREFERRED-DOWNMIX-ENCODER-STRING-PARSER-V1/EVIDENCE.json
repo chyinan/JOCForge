@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.dee_preferred_downmix_encoder_string_parser.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ENCODER-STRING-PARSER-V1",
+  "status": "ENCODER_OPTION_TO_COMPOSITE_MAP_AND_PREFERRED_READER_STATIC_BOUND; CHILD_ARGV_NOT_CAPTURED; AUDIO_CONSUMER_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "preferred_downmix_encoder_schema_parser_wash_v1",
+    "manifest_sha256": "1fffe96f847866e3e26a891685d9b005c5e2fa1bf9eebee911b8c31c623852f1",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a7",
+    "target_image_provenance": "parent project record; installed image not rehashed"
+  },
+  "encoder_option": {
+    "owner": "DdpjocEncoderApp",
+    "option_name": "encoder",
+    "short_alias": "e",
+    "storage_type": "Boost typed_value<std::string>",
+    "storage_offset": "+0x360",
+    "runner_transfer": "static string copied into runner config",
+    "empty_string_fallback": "ddpjoc:",
+    "fallback_condition": "only when stored encoder string is empty"
+  },
+  "composite_parser": {
+    "field_delimiter": ":",
+    "colon_tokenizer_auxiliary_sequences": ["://"],
+    "colon_backslash_sequence_codepoints": [58, 92],
+    "key_value_delimiter": "=",
+    "equals_split_rule": "first '='; left substring is key, remaining substring is value",
+    "empty_key_or_value": "rejected",
+    "map_pair_record": {
+      "stride_bytes": 64,
+      "key": "std::string, 32 bytes",
+      "value": "std::string, 32 bytes"
+    },
+    "map_installation": "BOUND_STATIC",
+    "encoder_section_selection": "BOUND_STATIC"
+  },
+  "preferred_downmix_reader": {
+    "property": "preferred_downmix_mode",
+    "path": "BOUND_STATIC_REUSED",
+    "reused_wash_package": "preferred_downmix_native_cli_boundary_wash_v1",
+    "reused_manifest_sha256": "3c1769ef7d0e74417fdc982498f18445db33723f6a421933ec186ed21504dcbd",
+    "effective_value": "UNBOUND",
+    "first_audio_bsi_or_frame_writer_consumer": "UNBOUND"
+  },
+  "runtime_and_scope": {
+    "actual_child_argv": "NOT_CAPTURED",
+    "parser_branch": "NOT_RUN",
+    "dee_execution": "NOT_RUN",
+    "media_or_pcm_read": false,
+    "encoded_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_native_source_or_decompilation_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-XML-START-END-READER-FIRST-CONSUMER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "XML_START_END_TO_HOST_KEY_UNBOUND; READER_RANGE_PATH_NOT_JOINED; RUNTIME_NOT_RUN",
+  "implementation_disposition": "Treat XSD defaults and document text as schema/source facts only; selected runtime values and reader-position effect remain unbound.",
+  "source_package_id": "dee_xml_start_end_reader_first_consumer_wash_v1",
+  "source_manifest_sha256": "4852052ec9e15d963be8713a9c3ba9aef1ecc8036f53a3850757e17a9c5ba90c",
+  "source_package_seal_sha256": "fe8cde089b3c99057c35aa98e71579dbda9494be9aa5c0afca70c38e83d3716d",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1725,
+      "sha256": "3ce2c3eb4a8ab41e23db15347bf302d53449f09bc120408f72e1d39c716bd6d5"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 685,
+      "sha256": "23eeee9039d2e19023f04bdda676301cd29697b4c22ba73eca41f00e38dab5fd"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 516,
+      "sha256": "9d9e7473609ddb5dc19e038db528af3431573d0e0b157e2dbd23da1842e3b581"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 951,
+      "sha256": "9ad0e7cda5cf10c37de508f51269e99eddfc9ce9199141962f4881a4a76b9700"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 582,
+      "sha256": "516a43c12bbf6933a6855ac0bc83f18dda6ff6d44cea432fa438899477b55375"
+    }
+  ]
+}

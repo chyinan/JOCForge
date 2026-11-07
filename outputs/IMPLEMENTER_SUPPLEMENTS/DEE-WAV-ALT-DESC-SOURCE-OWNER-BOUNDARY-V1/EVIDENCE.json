@@ -1,0 +1,49 @@
+{
+  "schema": "jocforge.dee_wav_alternate_desc_source_owner_boundary.v1",
+  "package_id": "DEE-WAV-ALT-DESC-SOURCE-OWNER-BOUNDARY-V1",
+  "status": "FACTORY_SLOT_PLUS_0X20_SOURCE_VALUE_TRANSFER_STATIC_BOUND; SOURCE_POINTEE_OWNER_UNBOUND; SELECTED_DESC_IDENTITY_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "dialogue_wav_desc_alternate_caller_source_addendum",
+    "package_seal_file_sha256": "76afe6c1b6fb9760217d5fd6a49cc8c3e58a34828b9cb7ba1421e10d0a84b2b9",
+    "manifest_sha256": "936285bdcff2f19ae29578f4c1703439127797391cc604174fadc0a9d646945a",
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "target_hash_provenance": "project-recorded"
+  },
+  "alternate_source_method": {
+    "caller_function": "FUN_1803f8d10",
+    "factory_vtable_slot": "+0x20",
+    "direct_code_callers": 0,
+    "only_identified_reference": "Factory vtable data pointer",
+    "parameter_source": "param_4 shared-owner/control-block pair copied and passed as FUN_1803f3ad0 param_3",
+    "source_object_method": "vtable +0x60",
+    "value_flow": "returned value initializes a separate AdmFileStorageDesc +0x38, later forwarded as FUN_180406cd0 param_3",
+    "source_pointee_type": "UNBOUND",
+    "source_owner_generation": "UNBOUND",
+    "new_desc_same_as_selector3_consumed_instance": "NOT_ESTABLISHED"
+  },
+  "selected_limit_relation": {
+    "desc_plus_0x68_nonzero_writer": "UNBOUND",
+    "alternate_source_flow_proves_selected_desc_identity": false
+  },
+  "inherited_prior_caller_boundary": {
+    "wash_package_id": "DEE-WAV-DESC-ALTERNATE-CALLER-BOUNDARY-V1",
+    "manifest_sha256": "92c13e47e23ca05188177588c299b6fbba6b8ab2a9fb5246ebcc1e6121219087",
+    "package_seal_sha256": "682a7163d11bb06b42aff53a7ab705b488eb0c123dc2dbacd3ba8b86dd07f94f"
+  },
+  "scope": {
+    "supplied_parent_v2_manifest": "NOT_FOUND; hash retained only as supplied reference",
+    "dee_execution": "NOT_RUN",
+    "runtime_values": "NOT_CAPTURED",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_ghidra_material_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false
+  }
+}

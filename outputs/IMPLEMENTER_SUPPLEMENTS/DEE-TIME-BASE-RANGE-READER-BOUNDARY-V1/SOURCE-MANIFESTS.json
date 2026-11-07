@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.source_manifest_refs.v1",
+  "sources": [
+    {
+      "package_id": "dee_time_base_xml_to_sample_range_reader_boundary_wash_v1",
+      "evidence_manifest_sha256": "58a7cd433fcda8d8c1c4d63758908e21ee34f425f6f3c03356d4ee5d847a59e5",
+      "package_seal_sha256": "dc6e34572ffc09f8509061a7b35c1b2673262e52b9d52e1e634830f90b86d88c"
+    }
+  ],
+  "cleanroom_boundary": {
+    "native_source_or_decompilation_included": false,
+    "pcm_or_media_included": false,
+    "key_or_license_included": false,
+    "implementation_source_included": false
+  }
+}

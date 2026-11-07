@@ -1,0 +1,13 @@
+{
+  "schema": "f13c-preferred-downmix-host-property-transfer-vectors.v1",
+  "status": "PREPARED_NOT_RUN",
+  "source": "Reused schema-validated AtmosMezz pair; no XML regenerated.",
+  "variants": [
+    {"id": "A_loro", "preferred_downmix_mode": "loro", "xml_sha256": "4a8f7754b16d81611d0ff9e268c661fbb51b36eaaa405b420df670ef47eb9905", "validation": "PASS_RECORDED"},
+    {"id": "B_ltrt", "preferred_downmix_mode": "ltrt", "xml_sha256": "2049f5fcb5fcafc7e5bf121130e173d4d19ad02739d27a3ed730283de7c8fe7c", "validation": "PASS_RECORDED"}
+  ],
+  "shared_data_rate_kbps": 1024,
+  "shared_mix_levels_db": [-3, -3, -3, -3],
+  "only_changed_xml_leaf": "preferred_downmix_mode",
+  "execution": "NOT_RUN"
+}

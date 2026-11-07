@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "package_id": "DEE-WAV-ALT-DESC-SOURCE-OWNER-BOUNDARY-V1",
+  "sources": [
+    {
+      "role": "primary_alternate_desc_source_owner",
+      "package_id": "dialogue_wav_desc_alternate_caller_source_addendum",
+      "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-7-multi-adm-dialnorm/work/encoder_analysis/reports/dialogue_wav_desc_alternate_caller_source_addendum",
+      "manifest_sha256": "936285bdcff2f19ae29578f4c1703439127797391cc604174fadc0a9d646945a",
+      "package_seal_file_sha256": "76afe6c1b6fb9760217d5fd6a49cc8c3e58a34828b9cb7ba1421e10d0a84b2b9",
+      "checker_normal": "PASS",
+      "checker_python_O": "PASS"
+    },
+    {
+      "role": "prior_alternate_constructor_boundary",
+      "package_id": "DEE-WAV-DESC-ALTERNATE-CALLER-BOUNDARY-V1",
+      "manifest_sha256": "92c13e47e23ca05188177588c299b6fbba6b8ab2a9fb5246ebcc1e6121219087",
+      "package_seal_sha256": "682a7163d11bb06b42aff53a7ab705b488eb0c123dc2dbacd3ba8b86dd07f94f"
+    },
+    {
+      "role": "prior_selected_limit_factory_boundary",
+      "package_id": "DEE-WAV-DESC-LIMIT-WRITER-FIRST-BREAK-V1",
+      "manifest_sha256": "7bc353061c346d29cf371b4cd3814607318748aac32ca16c18d1b7079e0d8460",
+      "package_seal_sha256": "a08db0685e3ceca061eb6923fc373d551c1ddbfc9cdee3e29e6b26d7d36c88b5"
+    }
+  ],
+  "omitted_material": {
+    "raw_ghidra_logs_or_scripts": true,
+    "native_binary": true,
+    "media_pcm_or_payload": true,
+    "private_key_or_license": true
+  }
+}

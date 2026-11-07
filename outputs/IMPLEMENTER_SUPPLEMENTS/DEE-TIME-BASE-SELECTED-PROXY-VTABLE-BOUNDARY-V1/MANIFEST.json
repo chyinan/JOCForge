@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-BASE-SELECTED-PROXY-VTABLE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "KEY_TO_PLUGIN_CLASS_BOUND; SELECTED_HOST_PROXY_VTABLE_AND_550_WRITER_UNBOUND",
+  "implementation_disposition": "Do not treat the image-local plugin vtable candidate as the selected host proxy setter.",
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-SELECTED-PROXY-VTABLE-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "fac7823bc25939b84bc7dd627a90619100b4cce2dab572c5e26b5234bdf34a37",
+  "source_package_seal_sha256": null,
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 1659,
+      "sha256": "1f7a15ca1d99358f925824b4a57c34b1559bbce2ac541aceb2f2667e6f1d6ed6"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 548,
+      "sha256": "8baedb332332a009b7d2241b8c568b0bc95b5ff82eefe5fdd9f966d24e6d41f0"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 497,
+      "sha256": "3019a9799bc38bc605be626b4a56913fc8380f399d8d89adc2f7e19a08c3a522"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 710,
+      "sha256": "89ae0ba08a69dfb1f711d2717e5228a1ef9528fddd8c7a90ff24e5eb19d78922"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1441,
+      "sha256": "ac07447b5e559b90903b3b79d9d7588bc76284c0d4e61dd5a6382ede7da03ca3"
+    }
+  ]
+}

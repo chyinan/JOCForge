@@ -1,0 +1,7 @@
+# `time_base` comparator return observation
+
+In one naturally completed DEE attempt on the authorized Love Song 36-channel ADM, the callsite-filtered comparator observer recorded two signed 32-bit return values. Both were nonzero and were associated with two attempt-local `Priv` invocation tokens. The observer read no string bytes, retained no owner pointer, and changed no call arguments or return value.
+
+A zero return means the configured value exactly equals `embedded_timecode`. These two nonzero results establish only “not equal to `embedded_timecode`”. The same attempt did not capture enum-validation acceptance, so this Wash package does not label the value `file_position`. The `Priv` invocation was correlated to the attempt and ADM hash, but its generation was not joined to ADM U/K/J/T/B/D audio generations. The separate counts observed for CHNA, U-format, K, and composite-B descriptors are retained as separate domains; no ownership is inferred from their matching value.
+
+The task exited naturally with DEE code 0, target identity was verified, observer errors were zero, and generated media and alias were removed after capture. No PCM, encoded payload, key or license content was read or persisted. This observation supplies the selected consumer's return projection only; it does not close schema-validation or ADM-generation joins, and it does not replace prior time_base A/B tests.

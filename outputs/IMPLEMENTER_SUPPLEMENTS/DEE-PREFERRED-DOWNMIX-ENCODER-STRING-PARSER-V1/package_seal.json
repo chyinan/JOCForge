@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-ENCODER-STRING-PARSER-V1",
+  "manifest_sha256": "e39222a99bef7c9006033f9ca033b308a95a7a8a66a23cfaf81c5ef3c5209bcd",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ENCODER_OPTION_TO_COMPOSITE_MAP_AND_PREFERRED_READER_STATIC_BOUND; CHILD_ARGV_NOT_CAPTURED; AUDIO_CONSUMER_UNBOUND"
+}

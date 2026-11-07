@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-WAV-SELECTOR3-STATIC-READ-EOF-BOUNDARY-V2",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "29b8781a9c08e2149ed0558e5206fe5883b196a86ad8a06c20b8ef1cbd5ac3ad",
+  "payload_file_count": 9,
+  "payload_hash_audit": "PASS_9_OF_9",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

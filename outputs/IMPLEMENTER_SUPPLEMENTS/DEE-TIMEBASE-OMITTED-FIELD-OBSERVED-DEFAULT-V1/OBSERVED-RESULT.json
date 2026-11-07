@@ -1,0 +1,15 @@
+{
+  "attempt_id": "agent7-timebase-omission-20261106-0230z",
+  "DEE_exit_code": 0,
+  "comparator_returns": [
+    1,
+    1
+  ],
+  "comparison_semantics": "not equal to embedded_timecode",
+  "best_supported_effective_value": "file_position",
+  "scope": "this successful omitted-field attempt only",
+  "default_source_provenance": "UNATTRIBUTED",
+  "same_run_setter_acceptance_event": "NOT_CAPTURED",
+  "Priv_to_ADM_generation": "NOT_CAPTURED",
+  "cleanup": "PASS"
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "time-base-helper-temp-argument",
+      "input": {
+        "selected_setter_helper_argument": "stack temporary"
+      },
+      "expected_observation": {
+        "descriptor_plus_0x550_passed": false
+      },
+      "limitations": [
+        "Helper body not inspected",
+        "No descriptor writer",
+        "No XML value transfer"
+      ]
+    }
+  ]
+}

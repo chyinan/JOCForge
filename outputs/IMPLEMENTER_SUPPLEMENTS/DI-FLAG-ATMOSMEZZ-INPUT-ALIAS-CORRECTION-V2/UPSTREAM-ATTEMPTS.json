@@ -1,0 +1,79 @@
+{
+  "schema": "wash-dee-input-alias-attempts.v1",
+  "package_id": "di-flag-atmos-mezz-input-alias-correction-addendum-wash-v1",
+  "created_at_local": "2026-11-04T12:50:05+08:00",
+  "requested_input_type": "atmos_mezz (ADM BWF)",
+  "requested_output_scope": "48 kHz / 1024 kbps / 5.1 E-AC-3 JOC",
+  "source_alias_assessment": {
+    "selected_ui_path": "D:\\潜在的なアイ.wav",
+    "cli_input_alias": "D:\\ADM.wav",
+    "user_assertion": "The GUI temporarily renames the selected ADM BWF input to ADM.wav to avoid a Chinese path and restores the original filename after processing.",
+    "mapping_status": "USER_ASSERTED/UNBOUND",
+    "source_file_sha256": "UNBOUND",
+    "copy_or_rename_receipt": "NOT_PRESENT_IN_INCLUDED_EVIDENCE",
+    "same_authorized_file_identity": "UNBOUND",
+    "interpretation": "The CLI alias alone is not evidence that the wrong source file was used; the provided screenshot and UI log do not cryptographically bind the alias to the selected source."
+  },
+  "attempts": [
+    {
+      "attempt_id": "attempt-1",
+      "start_time_ui": "2026-11-04 12:24:27.926",
+      "selected_input_path_ui": "D:\\潜在的なアイ.wav",
+      "selected_path_evidence": "Prior UI accessibility observation in this conversation; no standalone screenshot for this exact pre-run state.",
+      "cli_input": "D:\\ADM.wav",
+      "input_type": "atmos_mezz",
+      "input_target_observation": "D:\\ADM.wav; ffoa=3610; offset=3610; samples=9903478; sampling_rate=48000; timecode_frame_rate=24",
+      "data_rate_configured": 1024,
+      "output_temp": "D:\\dolby_auto_output_mw1m4dj8.ec3",
+      "output_final_target": "D:\\潜在的なアイ__atmos_mezz_verify_20261104.ec3",
+      "last_progress_time_ui": "2026-11-04 12:24:52.202",
+      "last_progress_percent": 64.6,
+      "cancel_status": "CANCELLED; UI log showed 编码已取消",
+      "cancel_timestamp": "NOT_CAPTURED",
+      "cancel_reason_as_recorded": "Cancelled after the CLI alias was incorrectly interpreted as a stale input path; that interpretation is retracted.",
+      "final_ec3_completion": "NOT_OBSERVED",
+      "final_ec3_file_existence": "NOT_CHECKED"
+    },
+    {
+      "attempt_id": "attempt-2",
+      "start_time_ui": "2026-11-04 12:26:47.737",
+      "selected_input_path_ui": "D:\\潜在的なアイ.wav",
+      "selected_path_evidence": "Included UI form screenshot dee_form_selected_input.png; the form shows the selected path.",
+      "cli_input": "D:\\ADM.wav",
+      "input_type": "atmos_mezz",
+      "input_target_observation": "D:\\ADM.wav; ffoa=3610; offset=3610; samples=9903478; sampling_rate=48000; timecode_frame_rate=24",
+      "data_rate_configured": 1024,
+      "output_temp": "D:\\dolby_auto_output_mw1m7dtz.ec3",
+      "output_final_target": "D:\\DEE_POTENTIAL_ATMOS_MEZZ_20261104.ec3",
+      "log_screenshot": "evidence/dee_log_alias_attempt2.png",
+      "last_progress_time_ui": "2026-11-04 12:27:15.572",
+      "last_progress_percent": 74.8,
+      "cancel_status": "CANCELLED; UI log showed 编码已取消 and the UI later showed Start enabled / Cancel disabled.",
+      "cancel_timestamp": "NOT_CAPTURED",
+      "cancel_reason_as_recorded": "Cancelled after the CLI alias was incorrectly interpreted as a stale input path; that interpretation is retracted.",
+      "final_ec3_completion": "NOT_OBSERVED",
+      "final_ec3_file_existence": "NOT_CHECKED"
+    }
+  ],
+  "sample_coverage": [
+    {
+      "sample_path": "D:\\潜在的なアイ.wav",
+      "state": "TWO_ATTEMPTS_CANCELLED; NO_FINAL_EC3_RECEIPT; NOT_PASS",
+      "source_identity_hash": "UNBOUND"
+    },
+    {
+      "sample_path": "D:\\人是猫 - 张卡斯, 洛天依.wav",
+      "state": "NOT_RUN",
+      "source_identity_hash": "NOT_CAPTURED"
+    }
+  ],
+  "final_output_assessment": {
+    "completion_rename_success": "NOT_OBSERVED",
+    "ec3_stream_properties": "NOT_VERIFIED",
+    "channel_count": "NOT_VERIFIED",
+    "joc_structure": "NOT_VERIFIED",
+    "playback": "NOT_RUN",
+    "output_file_existence": "NOT_CHECKED"
+  },
+  "evidence_limit": "Attempts and progress are transcribed from prior UI observations in this conversation. No standalone raw DEE log or per-run source-copy/hash receipt is included."
+}

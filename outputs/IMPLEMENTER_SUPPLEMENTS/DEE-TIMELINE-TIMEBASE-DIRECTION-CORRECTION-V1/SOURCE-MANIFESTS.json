@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.source-manifests.v1",
+  "upstream_package": {
+    "package_id": "DEE-ATMOS-TIMEBASE-ENCODE-CORRECTION-WASH-V1",
+    "workspace": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/dee-atmos-timebase-encode-correction-wash-v1",
+    "manifest_sha256": "59426234b80bd3e6858d89f8a4edb958ea93fc5143fbf074b8ba029285db202e",
+    "seal_sha256": "4465b6a00a734ff062dbd392535638b956c0862622650e03ff4ad71b7d51bd41",
+    "prior_wash_manifests": ["a39637fb8632f3ca357b57cad1546be061c4d91dacaf3457ca375b3c646feb64","be1889e0a535c63014445855c31dd9ac609b5e3be71972a6deed8d5c115a43cf"],
+    "agent6_core_input_manifest": "24ab5df5c541626f5927983b9ba20f158d5c2ebd5b8a1bbfb8ed5cabf3620762"
+  },
+  "wash_audit": {"declared_package_files":18,"matched":18,"mismatches":0,"manifest_seal_link":true,"checker_status":"UPSTREAM_REPORTED_PASS; NOT_RERUN_BY_WASH"},
+  "scope": "This correction supersedes only the prior time_base subtraction direction. Other static rules remain scoped to their own packages."
+}

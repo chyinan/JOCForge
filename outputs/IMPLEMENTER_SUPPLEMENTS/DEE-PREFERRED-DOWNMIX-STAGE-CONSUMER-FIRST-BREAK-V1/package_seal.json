@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-STAGE-CONSUMER-FIRST-BREAK-V1",
+  "manifest_sha256": "82beecbe27f18154de45dabff6a01f2f844df21d448fd87bd4ea6fe72adeaf0a",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "MIXMODE_GETTER_TO_FORMATTER_STATIC_BOUND; SELECTED_PROCESSING_JOIN_UNBOUND; AUDIO_BSI_EFFECT_UNBOUND"
+}

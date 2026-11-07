@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "NO_MIXMODE_VALUE_BYTES_OR_RUNTIME_VALUE",
+  "vectors": [],
+  "note": "The exact +0x50 field was not read; no default value is inferred."
+}

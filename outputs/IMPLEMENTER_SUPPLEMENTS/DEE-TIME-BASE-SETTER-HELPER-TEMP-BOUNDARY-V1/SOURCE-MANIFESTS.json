@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.wash_source_bindings.v1",
+  "source_package_id": "DEE-ATMOS-DDP-TIME-BASE-SETTER-HELPER-ARGUMENT-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "98170ea51689db58cad5b830cc3de69c2d3a999de05c8e64f7ba5a546e023586",
+  "source_seal_sha256": null,
+  "source_integrity_artifacts": [
+    {
+      "name": "SHA256SUMS.txt",
+      "sha256": "8314c48327a3e413103dd96b5f6e3a2959a4defd670874011fee61ef33497b65"
+    },
+    {
+      "name": "standalone package seal",
+      "status": "NOT_PROVIDED"
+    }
+  ],
+  "parent_manifest_bindings": [
+    {
+      "package_id": "DEE-ATMOS-DDP-TIME-BASE-PROXY-SETTER-CHAIN-WASH-V1",
+      "manifest_sha256": "172f69569673e605bb1d0077317cc4c62e7082d19fbee81e56006cdd7c947717"
+    }
+  ],
+  "raw_native_source_or_disassembly_copied": false
+}

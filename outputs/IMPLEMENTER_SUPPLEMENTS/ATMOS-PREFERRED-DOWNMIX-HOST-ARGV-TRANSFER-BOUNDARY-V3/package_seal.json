@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "ATMOS-PREFERRED-DOWNMIX-HOST-ARGV-TRANSFER-BOUNDARY-V3",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "181b292befdd83ed92d55305430f81082ea44fc0a47fe2ffdb0c543b8b8ddc0b",
+  "payload_file_count": 9,
+  "payload_hash_audit": "PASS_9_OF_9",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+}

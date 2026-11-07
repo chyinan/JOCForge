@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-VCALL-FIRST-BREAK-V1",
+  "manifest_sha256": "3193c097333426dc1ad80e85f9067b0f48982226d993a0c7630c66904f9f8411",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "PER_SOURCE_VCALL_SITE_STATIC_BOUND; VTABLE_TARGET_AND_OWNER_UNBOUND; AUDIO_BSI_EFFECT_UNBOUND"
+}

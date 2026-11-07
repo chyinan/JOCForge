@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.reader_eof_boundary_input_vectors.v1",
+  "status": "EXISTING_RECEIPT_ONLY",
+  "sample": "human_is_cat",
+  "full_file_runs_reported": 2,
+  "selected_reader_branch": "NOT_CAPTURED",
+  "runtime_start_end": "NOT_CAPTURED",
+  "last_sample_returned": "NOT_CAPTURED",
+  "dee_run_in_this_receipt": false,
+  "pcm_or_payload_included": false
+}

@@ -1,0 +1,154 @@
+{
+  "schema": "wash-wav-selector3-reader-eof-manifest-v1",
+  "status": "STATIC_SELECTOR3_CALLBACK_AND_EOF_BODY_BOUND_RUNTIME_SELECTION_NOT_CAPTURED",
+  "scope": "WAV selector-3 registration, concrete callback construction, atmos_storage_master_s vtable +0xd8 reader, and static EOF/count behavior",
+  "source_binary": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "ghidra": {
+    "version": "12.2",
+    "project": "empire_scalar_trace",
+    "read_only": true,
+    "analysis_disabled": true
+  },
+  "parent_packages": [
+    {
+      "path": "work/encoder_analysis/reports/dialogue_wav_provider_registration_addendum/PACKAGE-SEAL.json",
+      "sha256": "e08d4a4d3842c97454ae38adc669fb06e3a47582adada33aeab613c770f27e42"
+    },
+    {
+      "path": "work/encoder_analysis/reports/dialogue_wav_provider_dispatch_addendum/PACKAGE-SEAL.json",
+      "sha256": "58a81486835f87be5a3535490d79551884a2772c8890042431e57760afe8c489"
+    },
+    {
+      "path": "work/encoder_analysis/reports/dialogue_storage_reader_eof_addendum/PACKAGE-SEAL.json",
+      "sha256": "f6f1f729cf3e3b2f075de470d9edc08c70c9512ea517e865b694edd1504f9165"
+    }
+  ],
+  "run_receipt": {
+    "path": "work/encoder_analysis/reports/di_encoded_audio_pair_wash_receipt/receipt.json",
+    "sha256": "15d7c5a5c8c29993ec17149268ff1dcd2d4cca4b93e244b1f98ec1cfc793cd92",
+    "run_status_path": "work/encoder_analysis/reports/di_encoded_audio_pair_wash_receipt/dee_run_status.json",
+    "run_status_sha256": "f61df2892c9569563020d70e9af5303b10e4600d56d1ffc54586428f6e92baca",
+    "sample": "human_is_cat",
+    "input_alias": "human_is_cat_ascii.wav",
+    "range": "full file",
+    "source_sample_count": 6522906,
+    "prior_successful_runs": 2,
+    "runtime_provider_pointer": "NOT_CAPTURED",
+    "runtime_reader_branch": "NOT_CAPTURED"
+  },
+  "static_registration": {
+    "owner_registration_function": "FUN_1803ecb80",
+    "registration_label": "adm_bwf_sys_reg",
+    "registry_slot_writer": "FUN_1804cb200",
+    "selector": 3,
+    "slot_expression": "param1 + 8 + selector*8",
+    "resolved_slot_expression": "param1 + 0x20",
+    "open_callback": "FUN_1803ec660",
+    "secondary_table_expression": "param1 + 200 + selector*8",
+    "secondary_callback": "FUN_1803ec480"
+  },
+  "static_storage_type": {
+    "factory": "FUN_1804d14c0",
+    "factory_selector": 3,
+    "constructor": "FUN_1804cfc80",
+    "vtable_label": "atmos_storage_master_s::vftable",
+    "stored_type_byte_offset": "0x2f",
+    "callback_returns_object_on_open_success": true
+  },
+  "static_read": {
+    "vtable_address": "0x1807f9bc8",
+    "slot_offset": "0xd8",
+    "slot_address": "0x1807f9ca0",
+    "slot_thunk": "thunk_FUN_1804ccb00",
+    "body": "FUN_1804ccb00",
+    "lower_storage_current_getter_slot": "0x60",
+    "lower_storage_limit_getter_slot": "0x68",
+    "read_condition": "current < limit and requested_count != 0",
+    "available_count": "limit - current",
+    "requested_count_cap": "min(requested_count, available_count)",
+    "actual_count_cap": "min(lower_read_returned_count, requested_count_cap)",
+    "eof_when_current_greater_or_equal_limit": "returned_count remains zero",
+    "invalid_access_mode": 2,
+    "invalid_access_status": 3
+  },
+  "sample_boundary_arithmetic": {
+    "range_representation": "length = endSample - startSample",
+    "endSample_equal_to_sample_count_accepted": true,
+    "full_file_end_sample": 6522906,
+    "final_sample_index_candidate": 6522905,
+    "actual_final_sample_returned": "NOT_CAPTURED"
+  },
+  "not_run": {
+    "dee": true,
+    "new_scalar_measurement": true,
+    "decode": true,
+    "pcm_or_payload_read": true,
+    "runtime_provider_pointer_capture": true,
+    "runtime_storage_reader_execution": true,
+    "key_or_license_read": true,
+    "implementation_contact": true
+  },
+  "media_files_created": false,
+  "artifacts": [
+    {
+      "path": "check_selector3_reader_eof.py",
+      "bytes": 9084,
+      "sha256": "38a4ffb1a6ddd8c64088fcbe256b00e8b23e8a559160919231c5856cd1c6e492"
+    },
+    {
+      "path": "input_vector.json",
+      "bytes": 3736,
+      "sha256": "81a1e90622ab68cb3a8d1bab9f131c51e2236833c7c5a82c444a9268869bc3a3"
+    },
+    {
+      "path": "queries/TraceWavMasterStorageRead.java",
+      "bytes": 8260,
+      "sha256": "55e7bb9e39f69d1aace636d6a24ac99eeba0719ad7e711b154eb8221a56fe866"
+    },
+    {
+      "path": "queries/TraceWavRegistryOwnerInitialization.java",
+      "bytes": 5970,
+      "sha256": "71f9efc00e74afcdfdc975d6b0b903644300da7acbd46d74baf16c1a5f72f15c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 685,
+      "sha256": "eeeec56bd19e6f02647744809cce8fbfdf6e689cee7789bab53ef7b5eb3ce05b"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 3924,
+      "sha256": "3f0ff35b871407f318c9ede928bf1b62f2da29c910921e801649ac34e4b41d14"
+    },
+    {
+      "path": "seal_selector3_reader_eof.py",
+      "bytes": 3338,
+      "sha256": "120c6376995b3360de9dc18050cbf2fac053fc34a1103a7c9be41870344fc708"
+    },
+    {
+      "path": "trace/ghidra_registry_owner_initialization.log",
+      "bytes": 6556,
+      "sha256": "72489984333faf6021c851f4ae20510a93c6809efc1ae1b4bc2b10cb6c589b8d"
+    },
+    {
+      "path": "trace/ghidra_wav_master_storage_read.log",
+      "bytes": 6540,
+      "sha256": "13c209299ed186da966cda9a7846b8ac399b8fc34e5b1eb1e04b957e660aac2f"
+    },
+    {
+      "path": "trace/registry_owner_initialization.txt",
+      "bytes": 93320,
+      "sha256": "ffe7eb5954ada3efa6e7cd01bb2a036ee697799500023211bd05841be348105f"
+    },
+    {
+      "path": "trace/wav_master_storage_read.txt",
+      "bytes": 21016,
+      "sha256": "8daf6c503167ec6802ed58ff276d06e2aecad3d703411baa600ebd8b0009a263"
+    }
+  ]
+}

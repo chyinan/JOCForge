@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "vector_id": "xml-start-end-schema-only",
+      "kind": "schema-contract-summary",
+      "input": {
+        "start": {
+          "required": false,
+          "type": "xs:string",
+          "schema_default": "first_frame_of_action"
+        },
+        "end": {
+          "required": false,
+          "type": "xs:string",
+          "schema_default": "end_of_file"
+        }
+      },
+      "expected_status": "OPTIONAL_STRING_SCHEMA_ONLY; DEFAULTS_NOT_SELECTED",
+      "runtime_values": "UNBOUND"
+    }
+  ]
+}

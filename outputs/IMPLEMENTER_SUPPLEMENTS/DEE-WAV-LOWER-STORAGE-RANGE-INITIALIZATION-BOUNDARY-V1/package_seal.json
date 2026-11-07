@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-WAV-LOWER-STORAGE-RANGE-INITIALIZATION-BOUNDARY-V1",
+  "manifest_sha256": "6c3f61ad8c7aa2723d75219530b7261c1d88310a2c5b3b9b18af59bbad2ec23c",
+  "payload_file_count": 4,
+  "payload_hash_audit": "PASS_4_OF_4",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ADMFILESTORAGE_GETTERS_AND_ZERO_INITIAL_RANGE_STATIC_BOUND; LATER_NONZERO_LIMIT_WRITER_UNBOUND; RUNTIME_NOT_CAPTURED"
+}

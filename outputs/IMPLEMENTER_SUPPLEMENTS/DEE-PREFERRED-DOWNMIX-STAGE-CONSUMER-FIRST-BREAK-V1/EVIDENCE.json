@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.dee_preferred_downmix_stage_consumer_first_break.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-STAGE-CONSUMER-FIRST-BREAK-V1",
+  "status": "MIXMODE_GETTER_TO_FORMATTER_STATIC_BOUND; SELECTED_PROCESSING_JOIN_UNBOUND; AUDIO_BSI_EFFECT_UNBOUND",
+  "implementation_ready": false,
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-READER-CALLER-BOUNDARY-WASH-V1",
+    "manifest_sha256": "e66c7c13900ddec00aa0f5353e75dbe1ec9d2a648b6216252a3193e730c9318b",
+    "checksum_list_sha256": "bd8e95a62fbd4d84a2a4ee1c2262ae4426538141920d9892fc72ab5dd2c274e2",
+    "payloads_verified": 7,
+    "checksums_verified": 8,
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "tool": "Ghidra 12.2 PUBLIC",
+    "project_access": "READ_ONLY",
+    "automatic_analysis": "DISABLED",
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cd3ce1cce8b7e95d2",
+    "target_image_provenance": "project-recorded; installed DLL not rehashed"
+  },
+  "typed_reader": {
+    "getter": "FUN_180171f50",
+    "exact_entry_direct_callers": 1,
+    "sole_direct_caller": "FUN_180171ce0 formatter",
+    "formatter_exact_entry_direct_callers": 0,
+    "selected_setup_has_getter_or_formatter_reference": false,
+    "selected_encode_pass_has_getter_or_formatter_reference": false
+  },
+  "first_per_source_candidate": {
+    "function": "FUN_1801535b0",
+    "selected_encode_pass_call": "BOUND_STATIC",
+    "other_direct_caller_exists": true,
+    "first_virtual_call_receiver": "param_1+0x210",
+    "virtual_slot": "+0x30",
+    "virtual_target": "UNRESOLVED",
+    "typed_join_to_mixmode_owner": "UNBOUND"
+  },
+  "first_break": {
+    "at": "getter/formatter chain to selected per-source processing path",
+    "audio_consumer": "UNBOUND",
+    "bsi_consumer": "UNBOUND",
+    "preferred_downmix_audio_effect": "UNBOUND"
+  },
+  "scope": {
+    "dee_or_xml_job_run": "NOT_RUN",
+    "runtime_owner_generation": "UNBOUND",
+    "media_pcm_or_payload_read": false,
+    "private_key_or_license_read": false,
+    "raw_ghidra_trace_or_script_included": false,
+    "implementation_repository_read": false,
+    "implementation_contact": false,
+    "global_absence_claim": false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "package_id": "DEE-TIMEBASE-PLUGIN-ENUM-SETTER-BOUNDARY-V1",
+  "files": [
+    {
+      "name": "REPORT.md",
+      "bytes": 1084,
+      "sha256": "d01429558569e297db3a0b35b8e9af27b7627506e386e81b7c9715b092056a87"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 172,
+      "sha256": "03c5d95538b2266b5c7e8b5125340f79726113c67f54327533dba5e7adbcf42c"
+    },
+    {
+      "name": "STATIC-BOUNDARIES.json",
+      "bytes": 419,
+      "sha256": "bd986413c042f83192761e7ec74c46fead1b1c3a142868d496bb059d84a6cc5b"
+    },
+    {
+      "name": "PROVENANCE.json",
+      "bytes": 462,
+      "sha256": "4569aa39faaf33ed6e20aa392b88ec4bc884120db3f9c2cb8030ce98cdbe87f4"
+    }
+  ]
+}

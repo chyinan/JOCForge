@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-PREFERRED-DOWNMIX-FIELD-LIST-COPY-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "POINTER_VECTOR_COPY_BOUND; PLUS_0X210_MEMBER_TYPE_UNBOUND",
+  "implementation_disposition": "Keep the copied pointer vector and separate ParametersContainer output object distinct; no MixMode ordinal or audio/BSI join is established.",
+  "source_manifest_sha256": "68b826e4383c1b71ee4023a8045ad8eefa5d7f61825eb5064a9fc0882de4f29a",
+  "source_checksum_list_sha256": "13e560ed3a004fb335a9d066ba30b10dbac14ee08a945fbd51af190e4eea3c39",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4674,
+      "sha256": "46f73a26107f232c74979a6d35d1f7ba1f28eabb395ac12881e133256f103a9f"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 1953,
+      "sha256": "f5fc86aecfff0dd3381f48cb30a6bed4c1c5ce6209f084416cc7434a915d9dde"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 210,
+      "sha256": "f679909219d9e3575d4180b206e06fede90cccaeba64e0728ce9c88166ef526f"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1400,
+      "sha256": "40703eeb834eed93b5e3ec1a7dbae9d3a0458942095ddd8324f9d566d874dfdc"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1043,
+      "sha256": "2e247a609f08abcc7b6feecba87de805eb8be609bc77e304df6350ca15157cfb"
+    }
+  ]
+}

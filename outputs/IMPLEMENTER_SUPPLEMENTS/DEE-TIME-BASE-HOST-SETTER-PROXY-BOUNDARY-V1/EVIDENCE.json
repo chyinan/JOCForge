@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.time_base_host_setter_proxy_boundary.v1",
+  "package_id": "DEE-TIME-BASE-HOST-SETTER-PROXY-BOUNDARY-V1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-DDP-TIME-BASE-HOST-SETTER-BOUNDARY-WASH-V1",
+    "manifest_sha256": "30a929a9e8a4890fe53ec1041bf0178faed0501be01a92ffeec17ee0034548ef",
+    "source_checker_normal_and_python_o": "PASS"
+  },
+  "scope": {
+    "analysis": "Ghidra 12.2, read-only/no-analysis, bounded generic setter and direct callsites",
+    "dee_or_runtime_capture": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "global_absence_claim": false
+  },
+  "generic_setter": {
+    "property_record_copy": "BOUND_STATIC",
+    "dispatch": "indirect qword call at proxy vtable +0x08",
+    "explicit_stage_descriptor_plus_0x550_operand": false,
+    "bounded_direct_callsite_count": 8,
+    "observed_properties": [
+      "dee_audio_source_type",
+      "dee_video_source_type",
+      "dee_audio_target_type",
+      "dee_video_target_type",
+      "dee_audio_filter_source",
+      "dee_audio_filter_target",
+      "dee_video_filter_source",
+      "dee_video_filter_target"
+    ],
+    "selected_ddp_proxy_instance_join": "UNBOUND",
+    "concrete_proxy_vtable_target": "UNBOUND"
+  },
+  "reused_plugin_boundary": {
+    "ddp_time_base_descriptor_offset": "+0x550",
+    "plugin_getter": "time_base descriptor read through getter slot +0x30",
+    "host_xml_string_or_omission_to_descriptor": "UNBOUND",
+    "xsd_start_end_runtime_values": "UNBOUND"
+  },
+  "first_unresolved_edge": "selected StageRunner factory descriptor to returned host proxy to concrete proxy vtable +0x08 setter",
+  "status": {
+    "generic_setter_boundary": "BOUND_STATIC",
+    "xml_time_base_start_end_to_ddp_descriptor": "UNBOUND",
+    "runtime_value_owner_generation": "UNBOUND"
+  },
+  "implementation_disposition": {
+    "do_not_claim_xml_value_transfer": true,
+    "do_not_claim_whole_host_absence": true,
+    "algorithm_change_authorized": false
+  }
+}

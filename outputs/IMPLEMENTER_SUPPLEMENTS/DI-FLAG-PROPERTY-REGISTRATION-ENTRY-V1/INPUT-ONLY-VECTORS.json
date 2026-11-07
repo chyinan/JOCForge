@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.di_property_registration_vectors.v1",
+  "status": "NO_SAMPLE_VECTOR_USED",
+  "property_key": "loudness:measure_only:dialogue_intelligence",
+  "static_constructor_destination": "param_1+0x270",
+  "runtime_generic_map_selection": "UNBOUND",
+  "dee_run": false,
+  "di_ab": "NOT_RUN",
+  "pcm_or_payload_included": false
+}

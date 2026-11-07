@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-WAV-DESC-ALTERNATE-CALLER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "ALTERNATE_DESC_CONSTRUCTOR_CALLER_BOUND; PLUS_0X38_WRITE_BOUND; PLUS_0X68_NONZERO_WRITE_NOT_FOUND_IN_FUNCTION; OBJECT_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "source_manifest_sha256": "1fb3a897112c44d42e9c32037872e0b9de2f7c6c4003e74e6bb57651e4ac9e73",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": {
+    "CHECK.py": {
+      "bytes": 2258,
+      "sha256": "452abaac24120abd5629e6233c36c2e7a70c0c09a356a49f7f278231d0bd0df6"
+    },
+    "EVIDENCE.json": {
+      "bytes": 1994,
+      "sha256": "c3ac146d5d9e7c47ae3692b09a9b57d3ac4df2dadb00cbefca3996f7a561d58b"
+    },
+    "REPORT.md": {
+      "bytes": 1121,
+      "sha256": "e2a321515bd8cca6d8fcdaf1a70e582bc4e888a060862103bd194837126f5b38"
+    },
+    "SOURCE-MANIFESTS.json": {
+      "bytes": 1698,
+      "sha256": "fc93b44dcf0c698f16b437369e9742482922a0ee93cfacdbb1a010eb8113b72c"
+    }
+  }
+}

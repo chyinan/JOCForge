@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIME-BASE-HOST-PROPERTY-DISPATCH-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HOST_PROPERTY_PATH_STATIC_BOUND; SELECTED_TIME_BASE_UNBOUND",
+  "implementation_disposition": "Keep XML time_base and host-to-plugin setter transfer unbound; do not substitute the constructor default.",
+  "source_manifest_sha256": "d9eea08d1f4bf95d6dfa0fd59aa5be88757c7d2640629015fa3ba5aec92e701e",
+  "source_package_seal_sha256": "cdc83d686a490a15345adf158d74043f78d5f5166a34071f5b0fe00231ec5a83",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "CHECK.py",
+      "bytes": 4372,
+      "sha256": "554ace0c716d27d8385822c951b8d9b21ca1a1321c786d303880ebb3cd5e994a"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2603,
+      "sha256": "f3cc59e4d65369bb8beb43d7cd96eefe3b2119b94d79ebd35128e7b749143f3e"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 526,
+      "sha256": "fea9c3ad5302eddbbbdd2b74a7114679bc2689dd27711678be067750b130ab99"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 1115,
+      "sha256": "d927f630b6458d853012f0cbf9f1c1de219a96806f7a8e5ad99767b56be5d4e1"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 973,
+      "sha256": "4f5003018335ca75c3a417c8b4c7fc9ff4a45188c5e9320abef1551bdbb5ae0f"
+    }
+  ]
+}

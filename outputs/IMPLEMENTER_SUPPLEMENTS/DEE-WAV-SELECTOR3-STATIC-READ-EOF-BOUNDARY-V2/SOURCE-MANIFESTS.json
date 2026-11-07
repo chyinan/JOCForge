@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "supplement_package_id": "DEE-WAV-SELECTOR3-STATIC-READ-EOF-BOUNDARY-V2",
+  "upstream_package_id": "dialogue_wav_selector3_reader_eof_addendum",
+  "upstream_manifest_sha256": "13f753a6ccc95572e3a124fc83bca7b0fc642c89550f8de7b2c45d4e5240da98",
+  "upstream_package_seal_sha256": "264c51eeb8d5cd55eec840caea58f0f458523cd0fffc83abeb2fa42b75c3afe1",
+  "upstream_input_vector_sha256": "81a1e90622ab68cb3a8d1bab9f131c51e2236833c7c5a82c444a9268869bc3a3",
+  "upstream_sha256sums_sha256": "2f8d698e5c959b57c577382ccd94c95122f428bea348810b1d8b45ff316e55d8",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "parent_registry_package_seal_sha256": "e08d4a4d3842c97454ae38adc669fb06e3a47582adada33aeab613c770f27e42",
+  "parent_dispatch_package_seal_sha256": "58a81486835f87be5a3535490d79551884a2772c8890042431e57760afe8c489",
+  "parent_range_package_seal_sha256": "f6f1f729cf3e3b2f075de470d9edc08c70c9512ea517e865b694edd1504f9165",
+  "supersedes_supplement_manifest_sha256": "7e9c04964c41a692046a3b50f04563224e791c31fea5af2336638a18bab42224",
+  "raw_trace_or_script_copied": false,
+  "pcm_payload_key_or_license_copied": false
+}

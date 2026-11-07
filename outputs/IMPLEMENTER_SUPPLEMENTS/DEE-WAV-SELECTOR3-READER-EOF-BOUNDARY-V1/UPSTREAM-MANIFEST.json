@@ -1,0 +1,103 @@
+{
+  "schema": "wash-wav-storage-provider-manifest-v1",
+  "status": "WAV_SELECTOR_BOUND_CONCRETE_CALLBACK_AND_EOF_READ_UNBOUND",
+  "scope": "WAV suffix selector, runtime registry lookup, and MasterSource read thunk only",
+  "source_binary": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464
+  },
+  "ghidra": {
+    "version": "12.2",
+    "project": "empire_scalar_trace",
+    "read_only": true,
+    "analysis_disabled": true
+  },
+  "parent_packages": [
+    {
+      "path": "work/encoder_analysis/reports/dialogue_storage_reader_eof_addendum/PACKAGE-SEAL.json",
+      "sha256": "f6f1f729cf3e3b2f075de470d9edc08c70c9512ea517e865b694edd1504f9165"
+    }
+  ],
+  "run_receipt": {
+    "path": "work/encoder_analysis/reports/di_encoded_audio_pair_wash_receipt/receipt.json",
+    "sha256": "15d7c5a5c8c29993ec17149268ff1dcd2d4cca4b93e244b1f98ec1cfc793cd92",
+    "run_status_path": "work/encoder_analysis/reports/di_encoded_audio_pair_wash_receipt/dee_run_status.json",
+    "run_status_sha256": "f61df2892c9569563020d70e9af5303b10e4600d56d1ffc54586428f6e92baca",
+    "sample": "human_is_cat",
+    "input_alias": "human_is_cat_ascii.wav",
+    "range": "full file",
+    "successful_runs": 2,
+    "provider_callback_target": "NOT_CAPTURED"
+  },
+  "provider_dispatch": {
+    "suffix": "wav",
+    "selector": 3,
+    "registry_entry_expression": "param1 + 8 + selector*8",
+    "wav_registry_slot_expression": "param1 + 0x20",
+    "provider_open_callback_site_rva": "0x4cc2c2",
+    "provider_open_callback_target": "UNBOUND",
+    "master_source_read_thunk": "FUN_1805369a0 -> FUN_1804cc430 -> receiver vtable +0xd8",
+    "storage_read_vtable_target": "UNBOUND"
+  },
+  "disposition": {
+    "concrete_wav_provider_type": "UNBOUND beyond selector 3",
+    "read_callback_implementation": "UNBOUND at runtime registry callback",
+    "sample_offset_count_request_shape": "BOUND in wrapper",
+    "end_sample_minus_one_read": "NOT_CAPTURED",
+    "final_storage_eof_predicate": "UNBOUND",
+    "receipt_selects_provider_branch": "NO"
+  },
+  "not_run": {
+    "dee": true,
+    "decode": true,
+    "pcm_or_payload_read": true,
+    "runtime_provider_pointer_capture": true,
+    "storage_reader_execution": true,
+    "key_or_license_read": true,
+    "implementation_contact": true
+  },
+  "artifacts": [
+    {
+      "path": "check_wav_storage_provider.py",
+      "bytes": 6620,
+      "sha256": "71008e6262697960d3c5491639c4f2929c5165b175589609ad6814a06daf64e9"
+    },
+    {
+      "path": "input_vector.json",
+      "bytes": 2262,
+      "sha256": "f6630dc5cb0e95bb3c11e3c10783ae148c02c1e3dd1b05d22c3001cc27fd77fd"
+    },
+    {
+      "path": "queries/TraceWavStorageProvider.java",
+      "bytes": 5374,
+      "sha256": "3d081a08019316e3fb84cf19c0e25714a89485ac195205fe5171d769103faf77"
+    },
+    {
+      "path": "README.md",
+      "bytes": 542,
+      "sha256": "0a801a926f787aedb90b6c40de74fce8fe6e997ef379ce05af8d47a043844a06"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1738,
+      "sha256": "f7a84a6b2bb9b2f6ab70eab30ab370fa42862944aa86728ad7f893f690007063"
+    },
+    {
+      "path": "seal_wav_storage_provider.py",
+      "bytes": 3052,
+      "sha256": "f9a6dc4532f8d30673e021380bfe4418dc7083fca0927a6144539892dc0c8828"
+    },
+    {
+      "path": "trace/ghidra_wav_provider_dispatch.log",
+      "bytes": 6519,
+      "sha256": "0b053ab5c13c9d580d0ded57afc186ed697550da8ea12ad78c239783a13cf8d5"
+    },
+    {
+      "path": "trace/wav_provider_dispatch.txt",
+      "bytes": 23176,
+      "sha256": "e226a23a76c352fe3c9a03f612d22adf6d642ed5eb4e7d781a6de7a3a8ebf8a9"
+    }
+  ]
+}

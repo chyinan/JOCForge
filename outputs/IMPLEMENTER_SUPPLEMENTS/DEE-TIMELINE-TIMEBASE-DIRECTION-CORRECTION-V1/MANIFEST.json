@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIMELINE-TIMEBASE-DIRECTION-CORRECTION-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TIMEBASE_DIRECTION_CORRECTED_STATIC; SAMPLE_CONVERSION_RULES_BOUND; FFOA_AND_RATE_RUNTIME_VALUES_UNBOUND; AU_COUNT_UNBOUND",
+  "implementation_disposition": "REPLACE_PRIOR_REVERSED_TIMEBASE_RULE; KEEP_FFOA_AND_SELECTED_JOB_VALUES_UNBOUND",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {"name": "EVIDENCE.json", "bytes": 2666, "sha256": "711adcb0309a068472d2214ace6ae190d632011ae1f822e9241567d32618db91"},
+    {"name": "INPUT-ONLY-VECTORS.json", "bytes": 1650, "sha256": "ffc7b6af7c1704d4694e316a9cfe43037ed922d48ba4c27dd83092bfabd9588d"},
+    {"name": "REPORT.md", "bytes": 2839, "sha256": "076801ff558d137e20d18684fa495b5752df91474667fc288129961a597e1292"},
+    {"name": "SOURCE-MANIFESTS.json", "bytes": 1035, "sha256": "563e504d49860efe114f2a8740c2908dda9741024893d5b7856bb0118dca8b26"}
+  ]
+}
