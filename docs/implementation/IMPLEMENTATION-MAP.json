@@ -4912,7 +4912,8 @@
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -4948,7 +4949,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37",
             "supplement_seal_sha256": "9d9657f7a0cbfddee54982588cdc957c82c483952395f47ec6ad97b6a8c0a576",
@@ -5001,6 +5009,16 @@
               "master_source_plus20_first_consumer": "FUN_1804cba30 reads first qword as vtable and calls slot +0x70; target owner/generation UNBOUND",
               "master_source_plus28": "not forwarded on this direct edge; first Reader consumer UNBOUND",
               "start_end_reader_owner_join_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "master_source_vtable_slot_addendum": {
+              "package_id": "DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1",
+              "manifest_sha256": "ecae4027ddbcd4d0eef3f4f832ecb49e2299ad4b8089cbeffb55debb65a55b7f",
+              "seal_sha256": "597d225a6c81d6b2d47beed6fce44086544ef7503bc61f3ce434fb5ec8203e18",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_dispatch": "FUN_1804cba30 loads vptr then calls slot +0x70 without explicit arguments",
+              "first_break": "param_1 owner/vptr/generation to concrete slot target",
+              "range_sample_and_audio_effect": "UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -5017,7 +5035,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "R138 lexical values are source-document input-only, not runtime observations."
@@ -5596,7 +5618,8 @@
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-MODE1-SNAPSHOT-A0-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-PROJECTION-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5639,7 +5662,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3e481b71454373f36e1b03462a303d1f9b22ca9d104f6fe6b3ee6f1b9bc9cf82",
             "supplement_seal_sha256": "277dbea1973ea98049f3195429cb974069d6eb255f56b6d1aa98280a2eabda8d",
@@ -5681,6 +5711,18 @@
               "taken_block_first_callee": "FUN_180554ed8; body not inspected",
               "row_owner_and_snapshot_plus_a0_join": "UNBOUND",
               "codec_bsi_and_audio_effect": "UNBOUND/NOT_RUN"
+            },
+            "serializer_pointer_first_use_addendum": {
+              "package_id": "DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1",
+              "manifest_sha256": "7c8f491defcd5750a6e2b937d753c8fbb9a29fda51999740b9c84a21d5cf2a0e",
+              "seal_sha256": "9b2367347d0398c619e20c71d9a2b600e5b39072dceb6dabca544fdc1f3d6196",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "FUN_1802001a0 reads a pointer at RCX+0x42f0 and passes it unchanged to FUN_1801c24a0 as RCX; callee body is uninspected.",
+              "remaining": [
+                "Pointer semantic type/owner and same-record join to snapshot+0xa0.",
+                "Callee behavior, serializer output/BSI relation, runtime activation, audio effect."
+              ]
             }
           },
           "vectors": {
@@ -5701,7 +5743,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-ROW-A0-ZERO-COMPARE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only mode-1 edge: the same snapshot base reaches validator and packer; the scoped path does not read/copy the +0xa0 candidate, while +0x130 is a distinct field. XML runtime owner, mode-1 generation, indirect packer relation, and audio effect remain unbound."
@@ -5889,7 +5935,8 @@
           "dependencies": [],
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5918,7 +5965,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "752e297432bacd0ac4e7e26993bed26882e73a662da4efa1b87cc5b50388f7c4",
             "supplement_seal_sha256": "0e40e661a9f34a31bb288beb459432e6cd9db2ea1934ac64fb7bdd8213e7cbe1",
@@ -5949,6 +6003,16 @@
                 "LeqA": 4
               },
               "semantic_mode_owner_provider_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "downstream_validator_addendum": {
+              "package_id": "DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1",
+              "manifest_sha256": "13832c3738af22ef9d36cd5d528e23669ce974fc0077e7f51d41f65fc16d9807",
+              "seal_sha256": "4f972092f925c78711cc2b22160024cfb6f5ba0c3e43566f858a2a8951c2dcc4",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "record_plus_0x90_to_validator_param2": "FUN_18014aba0 -> FUN_180176980 -> FUN_180177230",
+              "scoped_validator_trace": "104 instructions; no +0x90 access observed",
+              "global_consumer_absence_or_effect": "NOT_CLAIMED; UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -5961,7 +6025,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only boundary for 1770-2, 1770-1, and LeqA: schema registration and a generic conditional raw-U32 map consumer are bound, but no token-specific raw values were captured. XML StringType owner/receiver, selected Meter/provider/generation, and effect remain unbound/not run. DI-ignore notes are descriptor text only."
@@ -6107,7 +6175,8 @@
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-INTEGER-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -6143,7 +6212,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "1b59ecb4b781516580d223e14d03591330f815f3ab56921e8e0b1d55ff8583d7",
             "supplement_seal_sha256": "b3700eb78adf83bede7789f0b96132bc352d8a9a9bf3bf6c1a268a24f161fc97",
@@ -6177,6 +6253,18 @@
                 "First algorithmic read of engine+0x48.",
                 "Runtime query owner/generation, final engine state after fallback, and measurement/audio effect."
               ]
+            },
+            "first_break_helper_addendum": {
+              "package_id": "DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1",
+              "manifest_sha256": "a25dcb37e1ccc3367233ac1f0f57b4e3baae5a18910d6bdc726a03911616c5f9",
+              "seal_sha256": "d5d34ba7552fb33d1d45cd7885e103d5155986af5902a982f6e1431cda4bdd56",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "At FUN_1801a8d00->FUN_1801ad9d0, RCX is *(engine+0x1f8), RDX is record value, and R8 is engine+0x228; first helper read is a 16-byte vector at RCX+0x100.",
+              "remaining": [
+                "First-argument owner/generation and alias to engine+0x48.",
+                "First algorithmic engine+0x48 read, Meter result/effect, and audio/control effect."
+              ]
             }
           },
           "vectors": {
@@ -6193,7 +6281,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only Integer transfer boundary: schema registers base-10 Integer default 15 and inclusive 0..100 bounds; static setup transfers U32 unchanged to Meter config +0x48. The engine copy precedes a branch that may rewrite config to 15 without writing the engine field; final engine state after fallback, XML query owner, first algorithm read, Meter result, and effects remain unbound/not run."
@@ -66920,6 +67012,83 @@
         "Vtable target/typed operation and alternate branch.",
         "clean_temp flag to cleanup consumer and runtime provider/job identity.",
         "Create/delete/retain behavior."
+      ]
+    },
+    {
+      "package_id": "DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1",
+      "manifest_sha256": "13832c3738af22ef9d36cd5d528e23669ce974fc0077e7f51d41f65fc16d9807",
+      "supplement_seal_sha256": "4f972092f925c78711cc2b22160024cfb6f5ba0c3e43566f858a2a8951c2dcc4",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "RECORD_POINTER_TO_VALIDATOR_BOUND; SCOPED_NO_READ_ONLY; FIRST_TYPED_CONSUMER_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "First downstream typed MeteringMode field consumer and provider generation.",
+        "Measurement result/effect and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1",
+      "manifest_sha256": "a25dcb37e1ccc3367233ac1f0f57b4e3baae5a18910d6bdc726a03911616c5f9",
+      "supplement_seal_sha256": "d5d34ba7552fb33d1d45cd7885e103d5155986af5902a982f6e1431cda4bdd56",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "FIRST_HELPER_READ_BOUND; ENGINE_PLUS48_ALIAS_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "First-argument owner/generation and alias to engine+0x48.",
+        "First algorithmic engine+0x48 read, Meter result/effect, and audio/control effect."
+      ]
+    },
+    {
+      "package_id": "DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1",
+      "manifest_sha256": "7c8f491defcd5750a6e2b937d753c8fbb9a29fda51999740b9c84a21d5cf2a0e",
+      "supplement_seal_sha256": "9b2367347d0398c619e20c71d9a2b600e5b39072dceb6dabca544fdc1f3d6196",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "POINTER_FIRST_CALLEE_BOUND; A0_JOIN_AND_CODING_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Pointer semantic type/owner and same-record join to snapshot+0xa0.",
+        "Callee behavior, serializer output/BSI relation, runtime activation, audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1",
+      "manifest_sha256": "ecae4027ddbcd4d0eef3f4f832ecb49e2299ad4b8089cbeffb55debb65a55b7f",
+      "supplement_seal_sha256": "597d225a6c81d6b2d47beed6fce44086544ef7503bc61f3ce434fb5ec8203e18",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "VTABLE_INDIRECT_CALL_BOUND; PARAM_OWNER_TARGET_GENERATION_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Concrete param_1 owner/vtable base/generation and slot+0x70 target.",
+        "MasterSourceImpl +0x20/+0x28 sample/range semantics and Reader join.",
+        "Duration, PTS, and audio effect."
       ]
     }
   ]

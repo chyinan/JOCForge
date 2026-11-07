@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1",
+  "manifest_sha256": "ecae4027ddbcd4d0eef3f4f832ecb49e2299ad4b8089cbeffb55debb65a55b7f",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "INPUT_VPTR_INDIRECT_BOUND; STATIC_TARGET_UNBOUND; PARAM_OWNER_VPTR_GENERATION_FIRST_BREAK; IMPLEMENTATION_READY=NO"
+}

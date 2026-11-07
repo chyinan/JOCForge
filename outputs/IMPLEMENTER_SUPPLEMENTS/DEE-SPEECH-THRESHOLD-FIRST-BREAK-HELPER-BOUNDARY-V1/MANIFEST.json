@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FIRST_HELPER_ARGUMENT_AND_READ_BOUND; ENGINE_0X48_ALIAS_UNBOUND; AUDIO_EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 800,
+      "sha256": "60ef8c9b54bbcf9810c75964903ea1d6ed67302bc58545c64eab70fd954b7afe"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1326,
+      "sha256": "855d2af58567f7a2425cb3fc9bd321ac9bc8e8bb884fdfbdef9f93b52a09495e"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 549,
+      "sha256": "680e22a31998a4a01e608ddaf33837f58abbb05ac2e218febcd68d2caa46abf1"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 149,
+      "sha256": "86130fab7f41218d8b982360314c1f2f186565c35a1ee47ae0bdd6a6f0081c79"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 807,
+      "sha256": "c5a5fe2770c80d196628ffbcb58b9385274429bb4200f8c36812dd78f4edd3d1"
+    }
+  ]
+}

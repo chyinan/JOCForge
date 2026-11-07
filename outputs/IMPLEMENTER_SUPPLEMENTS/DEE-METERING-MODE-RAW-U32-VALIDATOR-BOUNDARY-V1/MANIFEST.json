@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RECORD_POINTER_HANDOFF_BOUND; MODE_FIELD_READ_NOT_CAPTURED_IN_SCOPED_VALIDATOR; PROVIDER_GENERATION_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 827,
+      "sha256": "4606fbf6671397efa2df1726ba2224c8abf74c984bdc8dda1bc0420168620994"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1416,
+      "sha256": "3cb07449937d05012e4cd46a7d7803eef4993828a4d9490889a3a59e6ae15201"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 612,
+      "sha256": "8d6eee819097c57b0a354f0b5306d70d1d811ee5ac5b1e17d80e6994e9995789"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 152,
+      "sha256": "7fb20e8b9e9ef948609374e57803bf2ddcf03a2072185fb6e1ecc41e8d1a94fd"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 807,
+      "sha256": "7146f8bd96202dbf0dc55fed42a09d2e8a132978ca5936d62fa7d97fabf2431c"
+    }
+  ]
+}

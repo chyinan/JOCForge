@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following thirty-four tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
+The following thirty-eight tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1421,8 +1421,12 @@ The following thirty-four tabled packages were independently hash-checked and pa
 | DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1 | 3534886eae140fcc04ef4c37b99da6bef1fe835e3aeeb677ed64cde288368783 / 3de440e816fc5cdb8fab1d10ddb9d5a7f6ed299e5d0969d51f6fe3e92b4f43dd | Sentinel/special-rate branches and first non-sentinel helper calls. | Units, syntax, precision, rounding, rejection behavior, XML owner and runtime effect. |
 | DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1 | c8d1c30461625978279c2033b04a737a2542cde61c6371280615e6e3106a2c1f / fd7995bb4ed87328f0a61e50023455242303e702e90e859d150cd1a992f9778e | Static Lo/Ro center MixLevel object/value member at Priv+0x7d0/+0x50. | Selected runtime owner/generation, read/serialization, first BSI sink and render effect. |
 | DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1 | b6010cc1304f5f41d2954865b2474b1e54dfb769551c02db7afa73f4cc56c9fa / 98d4a2ebf9eff34b64477482691acf0323dffd96734481e3d1180fb10c8f0f99 | MasterSourceImpl +0x20 reaches pointer dispatch; +0x28 is not forwarded on that edge. | Target owner/generation and typed Reader start/end range join, duration/PTS/audio effect. |
+| DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1 | ecae4027ddbcd4d0eef3f4f832ecb49e2299ad4b8089cbeffb55debb65a55b7f / 597d225a6c81d6b2d47beed6fce44086544ef7503bc61f3ce434fb5ec8203e18 | FUN_1804cba30 reads a vptr and dispatches slot +0x70. | Concrete target and param_1 owner/generation; sample-range and audio effect. |
+| DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1 | 13832c3738af22ef9d36cd5d528e23669ce974fc0077e7f51d41f65fc16d9807 / 4f972092f925c78711cc2b22160024cfb6f5ba0c3e43566f858a2a8951c2dcc4 | Raw record pointer reaches validator param_2; bounded body lacks +0x90 access. | First typed Meter consumer, selected provider, measurement result and effect. |
 | DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1 | 4032fee4e402b0b7c3cf5ae9f5bf0febc4ca1222b3b6415a582c25da007574fb / 9265c062a7cdf58eadbfc101df10016499621da494329905a13c519ab1021acf | output_format property array reaches the first indirect InitPlugin activation call. | Target/ABI, setter receiver join, muxer/writer and runtime output. |
 | DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1 | c53ef7e00f8c19a793538241f3c90214e6d56df932c7beb2d6de544d2ec7a344 / 5ffa2dc19a542390f6ae9dd76a77a492f074eb832bd31a5bd75853f2b468e05d | First vtable +0x18 delegate on one temp-file branch. | Target operation, create/delete/retain behavior, clean_temp join and runtime identity. |
+| DEE-SPEECH-THRESHOLD-FIRST-BREAK-HELPER-BOUNDARY-V1 | a25dcb37e1ccc3367233ac1f0f57b4e3baae5a18910d6bdc726a03911616c5f9 / d5d34ba7552fb33d1d45cd7885e103d5155986af5902a982f6e1431cda4bdd56 | First helper argument and 16-byte read after threshold config copy. | Helper owner/alias to engine +0x48, algorithmic threshold read and effect. |
+| DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1 | 7c8f491defcd5750a6e2b937d753c8fbb9a29fda51999740b9c84a21d5cf2a0e / 9b2367347d0398c619e20c71d9a2b600e5b39072dceb6dabca544fdc1f3d6196 | Serializer +0x42f0 pointer forwarded to FUN_1801c24a0. | Pointer type/owner, snapshot +0xa0 join, callee behavior and BSI/audio effect. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.
 

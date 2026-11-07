@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.line_drc_serializer_pointer_first_callee_boundary.v1",
+  "status": "PLUS_42F0_POINTER_PASSED_TO_FUN_1801C24A0; SNAPSHOT_A0_AND_BSI_JOINS_UNBOUND; NOT_RUN",
+  "source_package": "LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-WASH-V1",
+  "source_manifest_sha256": "aca5e10606eb834a6dc05fd7aca197d246593d282804b48e6d83613281c864ca",
+  "source_manifest_sidecar_sha256": "f41000ddafb5eccf1cf64280e19614bb90b9fef8de0e96ae3bc1b2010e930bbf",
+  "source_seal_sha256": "f9c023af89ffec042e57a3a3b95eb221f42b7d6e8227db74f15c15e84e278bf2",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "trace": {"function": "FUN_1802001a0", "pointer_load": "QWORD [RCX+0x42f0] at 0x1802001be", "first_use": "RCX to direct call FUN_1801c24a0 at 0x1802001cb", "intervening_RCX_rewrite": false, "callee_body_inspected": false},
+  "unbound": ["pointer semantic type/owner", "same-record owner/generation join to snapshot+0xA0", "callee behavior", "serializer output/BSI relation", "runtime activation", "audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-METERING-MODE-RAW-U32-DOWNSTREAM-READ-BOUNDARY-WASH-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-7-multi-adm-dialnorm\\work\\encoder_analysis\\reports\\metering_mode_raw_u32_first_downstream_read_20261107_1803z",
+    "manifest_sha256": "7001068b991a6a10ae81bbe75b0ac703b8d9023ef9cbf650cf78caef40bce1bd",
+    "package_seal_sha256": "ee669b7dc48f5dd51b94f6bda5b5d0f236e7c7e3534ce8a6853d8cb3905a6719",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

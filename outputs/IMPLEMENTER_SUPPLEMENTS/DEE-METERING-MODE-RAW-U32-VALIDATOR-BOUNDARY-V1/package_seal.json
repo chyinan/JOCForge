@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1",
+  "manifest_sha256": "13832c3738af22ef9d36cd5d528e23669ce974fc0077e7f51d41f65fc16d9807",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "RECORD_POINTER_HANDOFF_BOUND; MODE_FIELD_READ_NOT_CAPTURED_IN_SCOPED_VALIDATOR; PROVIDER_GENERATION_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

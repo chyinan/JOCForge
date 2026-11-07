@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.metering_mode_raw_u32_downstream_boundary.v1",
+  "status": "RECORD_POINTER_HANDOFF_BOUND; MODE_FIELD_READ_NOT_CAPTURED_IN_SCOPED_VALIDATOR; PROVIDER_GENERATION_UNBOUND; EFFECT_NOT_RUN",
+  "source_package": "DEE-METERING-MODE-RAW-U32-DOWNSTREAM-READ-BOUNDARY-WASH-V1",
+  "source_manifest_sha256": "7001068b991a6a10ae81bbe75b0ac703b8d9023ef9cbf650cf78caef40bce1bd",
+  "source_seal_sha256": "ee669b7dc48f5dd51b94f6bda5b5d0f236e7c7e3534ce8a6853d8cb3905a6719",
+  "writer": {"function": "FUN_1801535b0", "record_field": "+0x90 raw U32 candidate"},
+  "handoff": {"caller": "FUN_18014aba0", "site": "0x18014b000", "record_pointer_register": "R8", "wrapper": "FUN_180176980", "first_validator": "FUN_180177230 param_2", "wrapper_uses_or_rewrites_R8": false},
+  "scoped_reads": {"FUN_180177230_instruction_count": 104, "plus_0x90_accesses": 0, "FUN_1801764e0_plus_0x90_read": "NOT_OBSERVED_IN_SCOPED_BODY"},
+  "unbound": ["first downstream typed MeteringMode field consumer", "selected Meter/provider owner and generation", "metering result/effect", "audio effect"],
+  "execution": {"dee_run": false, "measurement": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

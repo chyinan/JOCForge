@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1",
+  "manifest_sha256": "7c8f491defcd5750a6e2b937d753c8fbb9a29fda51999740b9c84a21d5cf2a0e",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "PLUS_42F0_POINTER_PASSED_TO_FUN_1801C24A0; SNAPSHOT_A0_AND_BSI_JOINS_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO"
+}

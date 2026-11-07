@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-SERIALIZER-POINTER-FIRST-CALLEE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "PLUS_42F0_POINTER_PASSED_TO_FUN_1801C24A0; SNAPSHOT_A0_AND_BSI_JOINS_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 638,
+      "sha256": "276757137d18f99fe06032cafa7a6a8d85a55bd9834d11749cfe3a657bf4d836"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1384,
+      "sha256": "affee96ecf8843782ac2005409cf86e353a942d54490151ce74dfc068da08de0"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 658,
+      "sha256": "f4f0f30131df07526b2b806a527085ca3f4470c9a0cd6980f9aeadce36b90365"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 147,
+      "sha256": "b8b72572350646c929e7717ad40cc282305acd47cf4f9b0797da2514ccfc3f12"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 777,
+      "sha256": "5eb970ed2e744a361cb430eecc0d3095c85328c13f748df96793954d3752a226"
+    }
+  ]
+}

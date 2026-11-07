@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Static pointer first-use trace only; no runtime/coded-audio vectors."
+}

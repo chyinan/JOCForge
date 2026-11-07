@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.master_source_vtable_slot70_boundary.v1",
+  "status": "INPUT_VPTR_INDIRECT_BOUND; STATIC_TARGET_UNBOUND; PARAM_OWNER_VPTR_GENERATION_FIRST_BREAK",
+  "source_package": "dee_atmos_ddp_master_source_vtable_dispatch_resolution_wash_v1",
+  "source_manifest_sha256": "12da408edcf812196a4f1544a734d1304333f12da40243672f5e0983feec2f61",
+  "source_seal_sha256": "9c50b9a9d470606a4564b5aa07bd9a3cee32bdf2665f4e921f3eda36de64d367",
+  "function": {"name": "FUN_1804cba30", "argument_representation": "longlong* param_1", "vptr_load": "0x1804cba3d from [param_1]", "call": "0x1804cba40 through vptr+0x70", "explicit_call_arguments": 0},
+  "unbound": ["concrete param_1 owner and vtable base", "generation", "slot+0x70 target function", "semantic identity of MasterSourceImpl+0x20/+0x28", "start/end or duration/PTS relation", "audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

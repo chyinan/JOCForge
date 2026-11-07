@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "INPUT_VPTR_INDIRECT_BOUND; STATIC_TARGET_UNBOUND; PARAM_OWNER_VPTR_GENERATION_FIRST_BREAK; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 747,
+      "sha256": "90d85fdf76422218e92bd70a57cf145187f6bb0364f4f28ac65952d467a3ed6d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1185,
+      "sha256": "142e793c9a341f5b50accfbe646a4d6c3805e91aa7024e7fb6d306b04c4d4356"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 564,
+      "sha256": "00df4bde3834e7db01ae9bf9829af3060a0ef83e4342e3d4d51c4f9757bf0f17"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 146,
+      "sha256": "700f8c80286261a69dce1ae96db74c0dab2c8cf7d658f2d0eacd86ea9d00f2f1"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 766,
+      "sha256": "9c4791ecc331f5d821d0b0738e8784afdaabf9a3cda07f3a51758d83ff69598f"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.speech_threshold_first_break_helper_boundary.v1",
+  "status": "FIRST_HELPER_ARGUMENT_AND_READ_BOUND; ENGINE_0X48_ALIAS_UNBOUND; AUDIO_EFFECT_NOT_RUN",
+  "source_package": "speech_threshold_first_break_helper_boundary_wash_v1",
+  "source_manifest_sha256": "4a7f72301f06ecff7c7d335ccb4953a49b525fe3ddb5daf5886b911b8dc29c2a",
+  "source_seal_sha256": "f5ed8ce074157186569a0210526171466781ab02934ae26fe2f1004ada86b733",
+  "caller": {"function": "FUN_1801a8d00", "site": "0x1a8d7a", "callee": "FUN_1801ad9d0", "RCX": "*(engine+0x1f8)", "RDX": "*param_2 current record/output-carried value", "R8": "engine+0x228"},
+  "first_read": {"instruction_rva": "0x1ad9f5", "operation": "MOVUPS XMM0,[RCX+0x100]", "read_width_bytes": 16, "later_copy": "first-argument data copied to R8 output buffer"},
+  "unbound": ["first-argument concrete owner/generation", "first-argument alias to engine+0x48", "first algorithmic read of engine+0x48", "Meter result/effect", "audio/control effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}
